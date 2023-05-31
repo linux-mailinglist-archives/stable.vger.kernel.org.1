@@ -2,133 +2,267 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 713A8717483
-	for <lists+stable@lfdr.de>; Wed, 31 May 2023 05:51:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7406717498
+	for <lists+stable@lfdr.de>; Wed, 31 May 2023 06:00:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230001AbjEaDvY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 30 May 2023 23:51:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50876 "EHLO
+        id S232880AbjEaEAl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 31 May 2023 00:00:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229676AbjEaDvX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 30 May 2023 23:51:23 -0400
-Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC3E293
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 20:51:21 -0700 (PDT)
-Received: by mail-oi1-x22e.google.com with SMTP id 5614622812f47-39425ea8e1fso3648703b6e.3
-        for <stable@vger.kernel.org>; Tue, 30 May 2023 20:51:21 -0700 (PDT)
+        with ESMTP id S231417AbjEaEAk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 00:00:40 -0400
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9953510E
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 21:00:38 -0700 (PDT)
+Received: by mail-oi1-x22f.google.com with SMTP id 5614622812f47-392116b8f31so1799114b6e.2
+        for <stable@vger.kernel.org>; Tue, 30 May 2023 21:00:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1685505081; x=1688097081;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mc749fSoT7HRuZHMhc7vPNXSe/JLAydSHJGmkjEZ7Fw=;
-        b=Tyw1GlPkBOpYbtCaPr1gWiNTs0bxcS6ipEd5PkOHCkTMrkh1ohHRoksZR0UIArJ3rg
-         hsYeEAhYA0cXPOqUq2M+3QFgZEUXxlYNU3ZxeyfnqnulkOIDEX6fkmRpLDxIAp4GZghe
-         EyJvK5eEVUeQWu0uZDXJAPY0yJA5p49qVhRCucigkF0nbqGHcvxIq9lT1RDydxJbZzhi
-         E35zaf4AdqKIrM2DyWkr6PIX4uEONBZrlOGqQUGSE8Ad6C8xMhOFypJr9FUPLlCSHJkJ
-         Fwntqrm4vyIeOcD6Ec3g0RvqurFYAQRtgu0K3r3vSHcorv11AxDERz5EaCwgbad/0rIe
-         GEHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685505081; x=1688097081;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20221208; t=1685505637; x=1688097637;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mc749fSoT7HRuZHMhc7vPNXSe/JLAydSHJGmkjEZ7Fw=;
-        b=ah7VXviu+y9CrUQEWLUxHkmXHvwRrMBH1jSf+5U3BtAJ2DTNRkAoVIFEJJzzaRJKFf
-         h7kEqkJpSRapKjPLIBoSg47ck/L4vGHx3CBtmCIXdVkt620YivFvmMaqZYNj2yoJgKxR
-         gLZRPCqeVUM1jV8wNVpMU1IidSqMmQrMms4Qsx8tmt/sr8cKGeM24Z/YoX7uOI/hVh2p
-         YjJ7i2tDzvU88EvqDCGUsRBVj7Aq4XQH5VrZJ0Z2lyXmH7HNJ/mwsnA5VD9u2aR4QPez
-         QPXqXQ7rZlL0bOcsMIeJbF5utsCu7Q2dKbWh6nFBK+gu6nlty9eAxGXMWVijPveMB4VC
-         1bww==
-X-Gm-Message-State: AC+VfDyTRlDbzwo42w8bOTSKkvf/0ODgeXZjCR/qcl6x1mJ//vhBNjRk
-        b8taGDV4Dy9cwo5sPQe9dCC00CWZFGldRt6Efmc=
-X-Google-Smtp-Source: ACHHUZ60r75L+3Ycnf3xvFGl18uDOQ2gSUt6IFQ22YuOR4Dob9Ig7awwVDgye5CrNzIKDflk01jw+g==
-X-Received: by 2002:a05:6358:7241:b0:123:3133:1899 with SMTP id i1-20020a056358724100b0012331331899mr590034rwa.1.1685505081036;
-        Tue, 30 May 2023 20:51:21 -0700 (PDT)
-Received: from localhost ([122.172.87.195])
-        by smtp.gmail.com with ESMTPSA id i10-20020a17090332ca00b001af98dcf958sm81371plr.288.2023.05.30.20.51.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 May 2023 20:51:20 -0700 (PDT)
-Date:   Wed, 31 May 2023 09:21:18 +0530
-From:   Viresh Kumar <viresh.kumar@linaro.org>
-To:     Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-Cc:     Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] opp: Fix use-after-free in lazy_opp_tables after
- probe deferral
-Message-ID: <20230531035118.p3iogejcmatd7nql@vireshk-i7>
-References: <20230524-opp-lazy-uaf-v2-1-c26304544a47@kernkonzept.com>
+        bh=RHDjygTzLc8sdyc1LG6xEWQa/iYL6FBSkCQhU3z4NP8=;
+        b=JN3BNR5Fi0IsPQhZUhp+eZFypsOzPoYvnVm5WW9sYoUlnByaWouL4H3+bGoR1b8yXi
+         gpn59Xd6SlU7dChSNjbUY1lbCrm6/ELMrWQpiIDYvdoyB8Ij+FyUNSUSHATgMHohb4bF
+         j1PzGfJOZ3D26vbXPP+yHhfG0eGDYVM/uoUbpPA0X0TsJN0kN50Kizeek36AooaBIpuD
+         hNFnKn+NDmTG5PlINhGk47zGTmEz6vyMyHMSaGLvPUA/OIyEcve8wEnw5EnYg56V9EPT
+         zyokWa/WGuE6y+TSkk5cYyukWu7TsBp2Bo0d6HmCCNCMvStAoNC/qRcYZ0TPG+OVPxLB
+         DWQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685505637; x=1688097637;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RHDjygTzLc8sdyc1LG6xEWQa/iYL6FBSkCQhU3z4NP8=;
+        b=GUIb1vvBrMJBiAiRBgk1eryTHaRtS2IAIThwFSTqc+0L2fYRhtvEMvtr2L0/2UB4La
+         QZOkB8KgFHBeasZ3PmyGc6F3gUCiP8VPGFPv+GyAzf7SaNQZl+e5aZYXcYCetE6qkBc6
+         b182ynr6cc5z+sSfWByK+Dqv9Qe/9F6TsUXiKPCNlURpH34pO/SRMLRV69Pl36gE8yA0
+         4jvCQCzUZ7EqNYcgMmYTCa1FdvKFCjzN0VutJRVVmWTNBoMh8ju+Xg0ni3nBYVAkyYOU
+         FntpgsCrE/2i2cR9lAaDwicktmzlHQ3e1d5wwXe+PPyjTW1KaT4uBliWASaDvosUx0Pl
+         w+mw==
+X-Gm-Message-State: AC+VfDxK0kq1xKmr3Fdn0FC74gt9qXZdccdyuQSHeshv1LRifciFGIv5
+        OZ20fpvqLITehrAnXefSkHB2/t1TaVVbqz9293HaQg==
+X-Google-Smtp-Source: ACHHUZ4XQp19jHbybQDPbBGoNA4plMsHL9Pu5+K+hOlTvfM9WMNUJ4Sh840UxXWosKdyIljG4Tc3rz1Gg86cx0wV84Q=
+X-Received: by 2002:a05:6808:3315:b0:398:45e0:38c0 with SMTP id
+ ca21-20020a056808331500b0039845e038c0mr2361190oib.15.1685505637404; Tue, 30
+ May 2023 21:00:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230524-opp-lazy-uaf-v2-1-c26304544a47@kernkonzept.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20230529234816.3720623-1-badhri@google.com> <20230529234816.3720623-3-badhri@google.com>
+ <eca2b381-2b1f-47de-8385-ea448f2cbdb3@rowland.harvard.edu>
+In-Reply-To: <eca2b381-2b1f-47de-8385-ea448f2cbdb3@rowland.harvard.edu>
+From:   Badhri Jagan Sridharan <badhri@google.com>
+Date:   Tue, 30 May 2023 21:00:00 -0700
+Message-ID: <CAPTae5+iPW2Cr-+yodZ26wtSTo=GAwAZn9q39JyAcUBJ1CzmKw@mail.gmail.com>
+Subject: Re: [PATCH v4 3/3] usb: gadget: udc: core: Offload
+ usb_udc_vbus_handler processing
+To:     Alan Stern <stern@rowland.harvard.edu>
+Cc:     gregkh@linuxfoundation.org, colin.i.king@gmail.com,
+        xuetao09@huawei.com, quic_eserrao@quicinc.com,
+        water.zhangjiantao@huawei.com, peter.chen@freescale.com,
+        balbi@ti.com, francesco@dolcini.it, alistair@alistair23.me,
+        stephan@gerhold.net, bagasdotme@gmail.com, luca@z3ntu.xyz,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org,
+        Francesco Dolcini <francesco.dolcini@toradex.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 30-05-23, 17:54, Stephan Gerhold wrote:
-> When dev_pm_opp_of_find_icc_paths() in _allocate_opp_table() returns
-> -EPROBE_DEFER, the opp_table is freed again, to wait until all the
-> interconnect paths are available.
-> 
-> However, if the OPP table is using required-opps then it may already
-> have been added to the global lazy_opp_tables list. The error path
-> does not remove the opp_table from the list again.
-> 
-> This can cause crashes later when the provider of the required-opps
-> is added, since we will iterate over OPP tables that have already been
-> freed. E.g.:
-> 
->   Unable to handle kernel NULL pointer dereference when read
->   CPU: 0 PID: 7 Comm: kworker/0:0 Not tainted 6.4.0-rc3
->   PC is at _of_add_opp_table_v2 (include/linux/of.h:949
->   drivers/opp/of.c:98 drivers/opp/of.c:344 drivers/opp/of.c:404
->   drivers/opp/of.c:1032) -> lazy_link_required_opp_table()
-> 
-> Fix this by calling _of_clear_opp_table() to remove the opp_table from
-> the list and clear other allocated resources. While at it, also add the
-> missing mutex_destroy() calls in the error path.
-> 
-> Cc: stable@vger.kernel.org
-> Suggested-by: Viresh Kumar <viresh.kumar@linaro.org>
-> Fixes: 7eba0c7641b0 ("opp: Allow lazy-linking of required-opps")
-> Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-> ---
-> Changes in v2:
-> - Call _of_clear_opp_table() as suggested by Viresh
-> - Also add missing mutex_destroy() calls in the error path
-> - Link to v1: https://lore.kernel.org/r/20230524-opp-lazy-uaf-v1-1-f5f95cb4b6de@kernkonzept.com
-> ---
-> This fixes the crash I ran into after adding an OPP table with
-> both "required-opps" and interconnect paths (opp-peak-kBps).
-> ---
->  drivers/opp/core.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/opp/core.c b/drivers/opp/core.c
-> index 85cbc8de407c..7046487dc6f4 100644
-> --- a/drivers/opp/core.c
-> +++ b/drivers/opp/core.c
-> @@ -1358,7 +1358,10 @@ static struct opp_table *_allocate_opp_table(struct device *dev, int index)
->  	return opp_table;
->  
->  remove_opp_dev:
-> +	_of_clear_opp_table(opp_table);
->  	_remove_opp_dev(opp_dev, opp_table);
-> +	mutex_destroy(&opp_table->genpd_virt_dev_lock);
-> +	mutex_destroy(&opp_table->lock);
->  err:
->  	kfree(opp_table);
->  	return ERR_PTR(ret);
-> 
+On Mon, May 29, 2023 at 6:08=E2=80=AFPM Alan Stern <stern@rowland.harvard.e=
+du> wrote:
+>
+> On Mon, May 29, 2023 at 11:48:16PM +0000, Badhri Jagan Sridharan wrote:
+> > chipidea udc calls usb_udc_vbus_handler from udc_start gadget
+> > ops causing a deadlock. Avoid this by offloading usb_udc_vbus_handler
+> > processing.
+>
+> This is not a good explanation.  In particular, it doesn't explain why
+> moving the processing to a workqueue is the proper solution.
+>
+> You should describe the issue I raised earlier, namely, that
+> usb_udc_vbus_handler() has to run in interrupt context but it calls
+> usb_udc_connect_control(), which has to run in process context.  And
+> explain _why_ these routines have to run in those contexts.
+>
+> > ---
+> >  drivers/usb/gadget/udc/core.c | 269 ++++++++++++++++------------------
+> >  1 file changed, 123 insertions(+), 146 deletions(-)
+> >
+> > diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/cor=
+e.c
+> > index 4641153e9706..26380e621e9f 100644
+> > --- a/drivers/usb/gadget/udc/core.c
+> > +++ b/drivers/usb/gadget/udc/core.c
+> > @@ -38,9 +38,10 @@ static const struct bus_type gadget_bus_type;
+> >   * for udcs who do not care about vbus status, this value is always tr=
+ue
+> >   * @started: the UDC's started state. True if the UDC had started.
+> >   * @connect_lock: protects udc->vbus, udc->started, gadget->connect, g=
+adget->deactivate related
+> > - * functions. usb_gadget_connect_locked, usb_gadget_disconnect_locked,
+> > - * usb_udc_connect_control_locked, usb_gadget_udc_start_locked, usb_ga=
+dget_udc_stop_locked are
+> > - * called with this lock held.
+> > + * functions. usb_gadget_pullup_update_locked called with this lock he=
+ld.
+> > + * @vbus_events: list head for processing vbus updates on usb_udc_vbus=
+_handler.
+> > + * @vbus_events_lock: protects vbus_events list
+> > + * @vbus_work: work item that invokes usb_gadget_pullup_update_locked.
+> >   *
+> >   * This represents the internal data structure which is used by the UD=
+C-class
+> >   * to hold information about udc driver and gadget together.
+> > @@ -53,6 +54,20 @@ struct usb_udc {
+> >       bool                            vbus;
+> >       bool                            started;
+> >       struct mutex                    connect_lock;
+> > +     struct list_head                vbus_events;
+> > +     spinlock_t                      vbus_events_lock;
+> > +     struct work_struct              vbus_work;
+>
+> Do you really need three new fields here?  Isn't vbus_work sufficient?
 
-Applied. Thanks.
+Ack. Just the vbus_work is sufficient as vbus can be updated to the
+latest value.
+Addressing in v5.
 
--- 
-viresh
+>
+> > +     bool                            unbinding;
+>
+> Do not include this in the same patch.  The unbinding flag does
+> something different from the vbus_work structure, so it belongs in a
+> different patch.
+
+Sure, uploaded as a separate patch in v5.
+However, I named it allow_start instead as I believe that UDC should
+neither be started nor pulled up when unbound.
+Let me know your thoughts in v5 !
+
+>
+> > +};
+> > +
+> > +/**
+> > + * struct vbus_event - used to notify vbus updates posted through usb_=
+udc_vbus_handler.
+> > + * @vbus_on: true when vbus is on. false other wise.
+> > + * @node: list node for maintaining a list of pending updates to be pr=
+ocessed.
+> > + */
+> > +struct vbus_event {
+> > +     bool vbus_on;
+> > +     struct list_head node;
+> >  };
+>
+> Why do we need this?  Why can't the work routine simply set the pullup
+> according to the current setting of vbus and the other flags?  That's
+> what usb_udc_vbus_handler() does now.
+
+Ack. Dropping vbus_event and related fields.
+>
+> >
+> >  static struct class *udc_class;
+> > @@ -693,40 +708,46 @@ int usb_gadget_vbus_disconnect(struct usb_gadget =
+*gadget)
+> >  EXPORT_SYMBOL_GPL(usb_gadget_vbus_disconnect);
+> >
+> >  /* Internal version of usb_gadget_connect needs to be called with conn=
+ect_lock held. */
+> > -static int usb_gadget_connect_locked(struct usb_gadget *gadget)
+> > +static int usb_gadget_pullup_update_locked(struct usb_gadget *gadget)
+> >       __must_hold(&gadget->udc->connect_lock)
+> >  {
+> >       int ret =3D 0;
+> > +     bool connect =3D !gadget->deactivated && gadget->udc->started && =
+gadget->udc->vbus &&
+> > +                    !gadget->udc->unbinding;
+>
+> Since you are wrapping this line anyway, you might as well wrap it
+> before column 76.
+>
+> >
+> >       if (!gadget->ops->pullup) {
+> >               ret =3D -EOPNOTSUPP;
+> >               goto out;
+> >       }
+> >
+> > -     if (gadget->connected)
+> > -             goto out;
+> > -
+> > -     if (gadget->deactivated || !gadget->udc->started) {
+> > -             /*
+> > -              * If gadget is deactivated we only save new state.
+> > -              * Gadget will be connected automatically after activatio=
+n.
+> > -              *
+> > -              * udc first needs to be started before gadget can be pul=
+led up.
+> > -              */
+> > -             gadget->connected =3D true;
+> > -             goto out;
+> > +     if (connect !=3D gadget->connected) {
+> > +             ret =3D gadget->ops->pullup(gadget, connect);
+> > +             if (!ret)
+> > +                     gadget->connected =3D connect;
+> > +             mutex_lock(&udc_lock);
+> > +             if (!connect)
+> > +                     gadget->udc->driver->disconnect(gadget);
+> > +             mutex_unlock(&udc_lock);
+> >       }
+>
+> What will happen if the gadget isn't deactivated, but it is started and
+> VBUS power is prevent and the driver isn't unbinding, but the gadget
+> driver decides to call usb_gadget_disconnect()?
+
+Simplified as you recommended to directly call
+usb_udc_connect_control() from the work item. So, this is no longer an
+issue.
+
+>
+> >
+> > -     ret =3D gadget->ops->pullup(gadget, 1);
+> > -     if (!ret)
+> > -             gadget->connected =3D 1;
+> > -
+> >  out:
+> >       trace_usb_gadget_connect(gadget, ret);
+> >
+> >       return ret;
+> >  }
+> >
+> > +static int usb_gadget_set_vbus(struct usb_gadget *gadget, bool vbus)
+> > +{
+> > +     int ret;
+> > +
+> > +     mutex_lock(&gadget->udc->connect_lock);
+> > +     gadget->udc->vbus =3D vbus;
+>
+> Why does this have to be here?  What's wrong with setting vbus in
+> interrupt context?
+>
+> > +     ret =3D usb_gadget_pullup_update_locked(gadget);
+> > +     mutex_unlock(&gadget->udc->connect_lock);
+>
+> Sorry, but at this point I'm getting tired of pointing out all the
+> problems in this patch, so I'm going to stop here.
+>
+> How about instead doing something really simple, like just make
+> usb_udc_vbus_handler() queue up a work routine that calls
+> usb_udc_connect_control()?  Just a minimal change that will be really
+> easy to review.
+
+Ack. v5 now does this.
+
+Thanks for all the feedback,
+Badhri
+>
+> Alan Stern
