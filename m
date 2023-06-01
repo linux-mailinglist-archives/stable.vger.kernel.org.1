@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA842719E31
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:30:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45F53719E26
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:30:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233888AbjFANaF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:30:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37262 "EHLO
+        id S233873AbjFAN3i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:29:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234052AbjFAN3i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:29:38 -0400
+        with ESMTP id S233988AbjFAN31 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:29:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C80C1199
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:29:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AA48E44
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:29:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1EE136450F
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:29:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C6DAC433EF;
-        Thu,  1 Jun 2023 13:29:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B7F16450C
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:29:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63197C433EF;
+        Thu,  1 Jun 2023 13:29:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685626149;
-        bh=0gQE4kISWtQk4+U8e4MuMW+y4uFIpHJBnW3l5++bCrI=;
+        s=korg; t=1685626144;
+        bh=MILY39kd8rCMkR/XdLUoPwEY904DFCAaG/DiuQJQ4f0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sX125/j0rWvh0r8v7b9sAwxpGlRW+jcYaqNLFBLI6HSZQMii2HIL665xS9ATrQNpj
-         jalOzUD6x1QBiI5w/wP5nY7JSSX1T+mU2ZA7MX/FOVu8ByLhb36LvqsepJGZboMqYW
-         3O8A1FJwaWGvOKQKstK96RB1KdHM4kE7/wqjL2PY=
+        b=lRL62wKcNRR1s5AxmLq44W+vwSF09LZvuybWDtln+qlN52KsI/ddRmVLDabqFf/kB
+         haLbgl+13w6VuGYS+YrhhjO1VByzThOWTkO0ZfvnBsuyGwaSUmcmFfTyCxv6S6Uc23
+         F0fDe2y1PtrCuqs+EErHaDRPrWI/kwfDluJjZK/8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-        Wyes Karny <wyes.karny@amd.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.1 40/42] cpufreq: amd-pstate: Add ->fast_switch() callback
-Date:   Thu,  1 Jun 2023 14:21:49 +0100
-Message-Id: <20230601131940.857550671@linuxfoundation.org>
+        patches@lists.linux.dev, Paul Blakey <paulb@nvidia.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
+        Demi Marie Obenour <demi@invisiblethingslab.com>
+Subject: [PATCH 6.1 41/42] netfilter: ctnetlink: Support offloaded conntrack entry deletion
+Date:   Thu,  1 Jun 2023 14:21:50 +0100
+Message-Id: <20230601131940.905506316@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230601131939.051934720@linuxfoundation.org>
 References: <20230601131939.051934720@linuxfoundation.org>
@@ -55,96 +56,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Paul Blakey <paulb@nvidia.com>
 
-commit 4badf2eb1e986bdbf34dd2f5d4c979553a86fe54 upstream.
+commit 9b7c68b3911aef84afa4cbfc31bce20f10570d51 upstream.
 
-Schedutil normally calls the adjust_perf callback for drivers with
-adjust_perf callback available and fast_switch_possible flag set.
-However, when frequency invariance is disabled and schedutil tries to
-invoke fast_switch. So, there is a chance of kernel crash if this
-function pointer is not set. To protect against this scenario add
-fast_switch callback to amd_pstate driver.
+Currently, offloaded conntrack entries (flows) can only be deleted
+after they are removed from offload, which is either by timeout,
+tcp state change or tc ct rule deletion. This can cause issues for
+users wishing to manually delete or flush existing entries.
 
-Fixes: 1d215f0319c2 ("cpufreq: amd-pstate: Add fast switch function for AMD P-State")
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Signed-off-by: Wyes Karny <wyes.karny@amd.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Support deletion of offloaded conntrack entries.
+
+Example usage:
+ # Delete all offloaded (and non offloaded) conntrack entries
+ # whose source address is 1.2.3.4
+ $ conntrack -D -s 1.2.3.4
+ # Delete all entries
+ $ conntrack -F
+
+Signed-off-by: Paul Blakey <paulb@nvidia.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Acked-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Cc: Demi Marie Obenour <demi@invisiblethingslab.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/amd-pstate.c |   37 ++++++++++++++++++++++++++++++-------
- 1 file changed, 30 insertions(+), 7 deletions(-)
+ net/netfilter/nf_conntrack_netlink.c |    8 --------
+ 1 file changed, 8 deletions(-)
 
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -249,9 +249,8 @@ static int amd_pstate_verify(struct cpuf
- 	return 0;
- }
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -1559,9 +1559,6 @@ static const struct nla_policy ct_nla_po
  
--static int amd_pstate_target(struct cpufreq_policy *policy,
--			     unsigned int target_freq,
--			     unsigned int relation)
-+static int amd_pstate_update_freq(struct cpufreq_policy *policy,
-+				  unsigned int target_freq, bool fast_switch)
+ static int ctnetlink_flush_iterate(struct nf_conn *ct, void *data)
  {
- 	struct cpufreq_freqs freqs;
- 	struct amd_cpudata *cpudata = policy->driver_data;
-@@ -270,14 +269,36 @@ static int amd_pstate_target(struct cpuf
- 	des_perf = DIV_ROUND_CLOSEST(target_freq * cap_perf,
- 				     cpudata->max_freq);
- 
--	cpufreq_freq_transition_begin(policy, &freqs);
--	amd_pstate_update(cpudata, min_perf, des_perf,
--			  max_perf, false);
--	cpufreq_freq_transition_end(policy, &freqs, false);
-+	WARN_ON(fast_switch && !policy->fast_switch_enabled);
-+	/*
-+	 * If fast_switch is desired, then there aren't any registered
-+	 * transition notifiers. See comment for
-+	 * cpufreq_enable_fast_switch().
-+	 */
-+	if (!fast_switch)
-+		cpufreq_freq_transition_begin(policy, &freqs);
-+
-+	amd_pstate_update(cpudata, min_perf, des_perf, max_perf, fast_switch);
-+
-+	if (!fast_switch)
-+		cpufreq_freq_transition_end(policy, &freqs, false);
- 
- 	return 0;
+-	if (test_bit(IPS_OFFLOAD_BIT, &ct->status))
+-		return 0;
+-
+ 	return ctnetlink_filter_match(ct, data);
  }
  
-+static int amd_pstate_target(struct cpufreq_policy *policy,
-+			     unsigned int target_freq,
-+			     unsigned int relation)
-+{
-+	return amd_pstate_update_freq(policy, target_freq, false);
-+}
-+
-+static unsigned int amd_pstate_fast_switch(struct cpufreq_policy *policy,
-+				  unsigned int target_freq)
-+{
-+	return amd_pstate_update_freq(policy, target_freq, true);
-+}
-+
- static void amd_pstate_adjust_perf(unsigned int cpu,
- 				   unsigned long _min_perf,
- 				   unsigned long target_perf,
-@@ -523,6 +544,7 @@ static int amd_pstate_cpu_exit(struct cp
+@@ -1631,11 +1628,6 @@ static int ctnetlink_del_conntrack(struc
  
- 	freq_qos_remove_request(&cpudata->req[1]);
- 	freq_qos_remove_request(&cpudata->req[0]);
-+	policy->fast_switch_possible = false;
- 	kfree(cpudata);
+ 	ct = nf_ct_tuplehash_to_ctrack(h);
  
- 	return 0;
-@@ -614,6 +636,7 @@ static struct cpufreq_driver amd_pstate_
- 	.flags		= CPUFREQ_CONST_LOOPS | CPUFREQ_NEED_UPDATE_LIMITS,
- 	.verify		= amd_pstate_verify,
- 	.target		= amd_pstate_target,
-+	.fast_switch    = amd_pstate_fast_switch,
- 	.init		= amd_pstate_cpu_init,
- 	.exit		= amd_pstate_cpu_exit,
- 	.suspend	= amd_pstate_cpu_suspend,
+-	if (test_bit(IPS_OFFLOAD_BIT, &ct->status)) {
+-		nf_ct_put(ct);
+-		return -EBUSY;
+-	}
+-
+ 	if (cda[CTA_ID]) {
+ 		__be32 id = nla_get_be32(cda[CTA_ID]);
+ 
 
 
