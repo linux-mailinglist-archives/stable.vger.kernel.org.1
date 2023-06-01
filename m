@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A008B719E1B
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7870E719DF4
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:27:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233828AbjFAN3G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:29:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37252 "EHLO
+        id S233850AbjFAN1v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:27:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233865AbjFAN2l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:28:41 -0400
+        with ESMTP id S233772AbjFAN1q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:27:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D63418F
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:28:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED7271A1
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:27:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 69438644F1
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:28:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81509C4339E;
-        Thu,  1 Jun 2023 13:28:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F0E3644D3
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:27:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99BB2C433EF;
+        Thu,  1 Jun 2023 13:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685626100;
-        bh=03I1+lMVnPSrcRvbkcK/XVlzcxyXw6Fx0z6omMs9Rm0=;
+        s=korg; t=1685626038;
+        bh=GjH+nnBujQzIYCU8lP5q5Jy2hG6codrKi9wAAAEWZdU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Yl8a5oD3eTAWZ0/Af7F62dYFPWVMj9y2WiqZronSAmGwtj3BV/7gWxK6fGa+iU/WF
-         W7/jP3aXcskBnYwusBQPhwcqi/H0LQ/pmVbfgFXD4/gqimP+ErgQ3VJfMmEBKXy6yn
-         TY1ZtUxCkX9hgUDa27E+kJt6AEx6ET/mnyx7LuyI=
+        b=vO8ffQ1DwjUC9qaXd5py+pkr0vOkJvO9Zas9rWmMzLAZjinOM8FW4UxWgXjqma1da
+         vH2qZoZ6wwvV4nHjfcCxrVAX8OuEuGQ5Czm/Nvcs+iTOwMxGz2I4ZS3K1uF9Jf+RDl
+         azF/sShk8GREMNrfqsITBlIx6T92dIx/dFI4tiVw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xing Tong Wu <xingtong.wu@siemens.com>,
-        Henning Schild <henning.schild@siemens.com>,
-        Simon Guinot <simon.guinot@sequanux.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        patches@lists.linux.dev, Maher Sanalla <msanalla@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 13/42] gpio-f7188x: fix chip name and pin count on Nuvoton chip
+Subject: [PATCH 6.3 26/45] Revert "net/mlx5: Expose vnic diagnostic counters for eswitch managed vports"
 Date:   Thu,  1 Jun 2023 14:21:22 +0100
-Message-Id: <20230601131939.645633569@linuxfoundation.org>
+Message-Id: <20230601131939.884004257@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131939.051934720@linuxfoundation.org>
-References: <20230601131939.051934720@linuxfoundation.org>
+In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
+References: <20230601131938.702671708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,145 +54,337 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Henning Schild <henning.schild@siemens.com>
+From: Maher Sanalla <msanalla@nvidia.com>
 
-[ Upstream commit 3002b8642f016d7fe3ff56240dacea1075f6b877 ]
+[ Upstream commit 0a431418f685e100c45ff150efaf4a5afa6f1982 ]
 
-In fact the device with chip id 0xD283 is called NCT6126D, and that is
-the chip id the Nuvoton code was written for. Correct that name to avoid
-confusion, because a NCT6116D in fact exists as well but has another
-chip id, and is currently not supported.
+This reverts commit 606e6a72e29dff9e3341c4cc9b554420e4793f401 which exposes
+the vnic diagnostic counters via debugfs. Instead, The upcoming series will
+expose the same counters through devlink health reporter.
 
-The look at the spec also revealed that GPIO group7 in fact has 8 pins,
-so correct the pin count in that group as well.
-
-Fixes: d0918a84aff0 ("gpio-f7188x: Add GPIO support for Nuvoton NCT6116")
-Reported-by: Xing Tong Wu <xingtong.wu@siemens.com>
-Signed-off-by: Henning Schild <henning.schild@siemens.com>
-Acked-by: Simon Guinot <simon.guinot@sequanux.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Stable-dep-of: 8c253dfc89ef ("net/mlx5: E-switch, Devcom, sync devcom events and devcom comp register")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/Kconfig       |  2 +-
- drivers/gpio/gpio-f7188x.c | 28 ++++++++++++++--------------
- 2 files changed, 15 insertions(+), 15 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/Makefile  |   2 +-
+ .../ethernet/mellanox/mlx5/core/esw/debugfs.c | 182 ------------------
+ .../net/ethernet/mellanox/mlx5/core/eswitch.c |   6 -
+ .../net/ethernet/mellanox/mlx5/core/eswitch.h |   5 -
+ .../mellanox/mlx5/core/eswitch_offloads.c     |   3 -
+ 5 files changed, 1 insertion(+), 197 deletions(-)
+ delete mode 100644 drivers/net/ethernet/mellanox/mlx5/core/esw/debugfs.c
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index e3af86f06c630..3e8e5f4ffa59f 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -882,7 +882,7 @@ config GPIO_F7188X
- 	help
- 	  This option enables support for GPIOs found on Fintek Super-I/O
- 	  chips F71869, F71869A, F71882FG, F71889F and F81866.
--	  As well as Nuvoton Super-I/O chip NCT6116D.
-+	  As well as Nuvoton Super-I/O chip NCT6126D.
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/Makefile b/drivers/net/ethernet/mellanox/mlx5/core/Makefile
+index 8d4e25cc54ea3..78755dfeaccea 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/Makefile
++++ b/drivers/net/ethernet/mellanox/mlx5/core/Makefile
+@@ -69,7 +69,7 @@ mlx5_core-$(CONFIG_MLX5_TC_SAMPLE)   += en/tc/sample.o
+ #
+ mlx5_core-$(CONFIG_MLX5_ESWITCH)   += eswitch.o eswitch_offloads.o eswitch_offloads_termtbl.o \
+ 				      ecpf.o rdma.o esw/legacy.o \
+-				      esw/debugfs.o esw/devlink_port.o esw/vporttbl.o esw/qos.o
++				      esw/devlink_port.o esw/vporttbl.o esw/qos.o
  
- 	  To compile this driver as a module, choose M here: the module will
- 	  be called f7188x-gpio.
-diff --git a/drivers/gpio/gpio-f7188x.c b/drivers/gpio/gpio-f7188x.c
-index 9effa7769bef5..f54ca5a1775ea 100644
---- a/drivers/gpio/gpio-f7188x.c
-+++ b/drivers/gpio/gpio-f7188x.c
-@@ -48,7 +48,7 @@
- /*
-  * Nuvoton devices.
-  */
--#define SIO_NCT6116D_ID		0xD283  /* NCT6116D chipset ID */
-+#define SIO_NCT6126D_ID		0xD283  /* NCT6126D chipset ID */
+ mlx5_core-$(CONFIG_MLX5_ESWITCH)   += esw/acl/helper.o \
+ 				      esw/acl/egress_lgcy.o esw/acl/egress_ofld.o \
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/debugfs.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/debugfs.c
+deleted file mode 100644
+index 2db13c71e88cd..0000000000000
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/debugfs.c
++++ /dev/null
+@@ -1,182 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0 OR Linux-OpenIB
+-/* Copyright (c) 2022, NVIDIA CORPORATION & AFFILIATES. All rights reserved. */
+-
+-#include <linux/debugfs.h>
+-#include "eswitch.h"
+-
+-enum vnic_diag_counter {
+-	MLX5_VNIC_DIAG_TOTAL_Q_UNDER_PROCESSOR_HANDLE,
+-	MLX5_VNIC_DIAG_SEND_QUEUE_PRIORITY_UPDATE_FLOW,
+-	MLX5_VNIC_DIAG_COMP_EQ_OVERRUN,
+-	MLX5_VNIC_DIAG_ASYNC_EQ_OVERRUN,
+-	MLX5_VNIC_DIAG_CQ_OVERRUN,
+-	MLX5_VNIC_DIAG_INVALID_COMMAND,
+-	MLX5_VNIC_DIAG_QOUTA_EXCEEDED_COMMAND,
+-};
+-
+-static int mlx5_esw_query_vnic_diag(struct mlx5_vport *vport, enum vnic_diag_counter counter,
+-				    u32 *val)
+-{
+-	u32 out[MLX5_ST_SZ_DW(query_vnic_env_out)] = {};
+-	u32 in[MLX5_ST_SZ_DW(query_vnic_env_in)] = {};
+-	struct mlx5_core_dev *dev = vport->dev;
+-	u16 vport_num = vport->vport;
+-	void *vnic_diag_out;
+-	int err;
+-
+-	MLX5_SET(query_vnic_env_in, in, opcode, MLX5_CMD_OP_QUERY_VNIC_ENV);
+-	MLX5_SET(query_vnic_env_in, in, vport_number, vport_num);
+-	if (!mlx5_esw_is_manager_vport(dev->priv.eswitch, vport_num))
+-		MLX5_SET(query_vnic_env_in, in, other_vport, 1);
+-
+-	err = mlx5_cmd_exec(dev, in, sizeof(in), out, sizeof(out));
+-	if (err)
+-		return err;
+-
+-	vnic_diag_out = MLX5_ADDR_OF(query_vnic_env_out, out, vport_env);
+-	switch (counter) {
+-	case MLX5_VNIC_DIAG_TOTAL_Q_UNDER_PROCESSOR_HANDLE:
+-		*val = MLX5_GET(vnic_diagnostic_statistics, vnic_diag_out, total_error_queues);
+-		break;
+-	case MLX5_VNIC_DIAG_SEND_QUEUE_PRIORITY_UPDATE_FLOW:
+-		*val = MLX5_GET(vnic_diagnostic_statistics, vnic_diag_out,
+-				send_queue_priority_update_flow);
+-		break;
+-	case MLX5_VNIC_DIAG_COMP_EQ_OVERRUN:
+-		*val = MLX5_GET(vnic_diagnostic_statistics, vnic_diag_out, comp_eq_overrun);
+-		break;
+-	case MLX5_VNIC_DIAG_ASYNC_EQ_OVERRUN:
+-		*val = MLX5_GET(vnic_diagnostic_statistics, vnic_diag_out, async_eq_overrun);
+-		break;
+-	case MLX5_VNIC_DIAG_CQ_OVERRUN:
+-		*val = MLX5_GET(vnic_diagnostic_statistics, vnic_diag_out, cq_overrun);
+-		break;
+-	case MLX5_VNIC_DIAG_INVALID_COMMAND:
+-		*val = MLX5_GET(vnic_diagnostic_statistics, vnic_diag_out, invalid_command);
+-		break;
+-	case MLX5_VNIC_DIAG_QOUTA_EXCEEDED_COMMAND:
+-		*val = MLX5_GET(vnic_diagnostic_statistics, vnic_diag_out, quota_exceeded_command);
+-		break;
+-	}
+-
+-	return 0;
+-}
+-
+-static int __show_vnic_diag(struct seq_file *file, struct mlx5_vport *vport,
+-			    enum vnic_diag_counter type)
+-{
+-	u32 val = 0;
+-	int ret;
+-
+-	ret = mlx5_esw_query_vnic_diag(vport, type, &val);
+-	if (ret)
+-		return ret;
+-
+-	seq_printf(file, "%d\n", val);
+-	return 0;
+-}
+-
+-static int total_q_under_processor_handle_show(struct seq_file *file, void *priv)
+-{
+-	return __show_vnic_diag(file, file->private, MLX5_VNIC_DIAG_TOTAL_Q_UNDER_PROCESSOR_HANDLE);
+-}
+-
+-static int send_queue_priority_update_flow_show(struct seq_file *file, void *priv)
+-{
+-	return __show_vnic_diag(file, file->private,
+-				MLX5_VNIC_DIAG_SEND_QUEUE_PRIORITY_UPDATE_FLOW);
+-}
+-
+-static int comp_eq_overrun_show(struct seq_file *file, void *priv)
+-{
+-	return __show_vnic_diag(file, file->private, MLX5_VNIC_DIAG_COMP_EQ_OVERRUN);
+-}
+-
+-static int async_eq_overrun_show(struct seq_file *file, void *priv)
+-{
+-	return __show_vnic_diag(file, file->private, MLX5_VNIC_DIAG_ASYNC_EQ_OVERRUN);
+-}
+-
+-static int cq_overrun_show(struct seq_file *file, void *priv)
+-{
+-	return __show_vnic_diag(file, file->private, MLX5_VNIC_DIAG_CQ_OVERRUN);
+-}
+-
+-static int invalid_command_show(struct seq_file *file, void *priv)
+-{
+-	return __show_vnic_diag(file, file->private, MLX5_VNIC_DIAG_INVALID_COMMAND);
+-}
+-
+-static int quota_exceeded_command_show(struct seq_file *file, void *priv)
+-{
+-	return __show_vnic_diag(file, file->private, MLX5_VNIC_DIAG_QOUTA_EXCEEDED_COMMAND);
+-}
+-
+-DEFINE_SHOW_ATTRIBUTE(total_q_under_processor_handle);
+-DEFINE_SHOW_ATTRIBUTE(send_queue_priority_update_flow);
+-DEFINE_SHOW_ATTRIBUTE(comp_eq_overrun);
+-DEFINE_SHOW_ATTRIBUTE(async_eq_overrun);
+-DEFINE_SHOW_ATTRIBUTE(cq_overrun);
+-DEFINE_SHOW_ATTRIBUTE(invalid_command);
+-DEFINE_SHOW_ATTRIBUTE(quota_exceeded_command);
+-
+-void mlx5_esw_vport_debugfs_destroy(struct mlx5_eswitch *esw, u16 vport_num)
+-{
+-	struct mlx5_vport *vport = mlx5_eswitch_get_vport(esw, vport_num);
+-
+-	debugfs_remove_recursive(vport->dbgfs);
+-	vport->dbgfs = NULL;
+-}
+-
+-/* vnic diag dir name is "pf", "ecpf" or "{vf/sf}_xxxx" */
+-#define VNIC_DIAG_DIR_NAME_MAX_LEN 8
+-
+-void mlx5_esw_vport_debugfs_create(struct mlx5_eswitch *esw, u16 vport_num, bool is_sf, u16 sf_num)
+-{
+-	struct mlx5_vport *vport = mlx5_eswitch_get_vport(esw, vport_num);
+-	struct dentry *vnic_diag;
+-	char dir_name[VNIC_DIAG_DIR_NAME_MAX_LEN];
+-	int err;
+-
+-	if (!MLX5_CAP_GEN(esw->dev, vport_group_manager))
+-		return;
+-
+-	if (vport_num == MLX5_VPORT_PF) {
+-		strcpy(dir_name, "pf");
+-	} else if (vport_num == MLX5_VPORT_ECPF) {
+-		strcpy(dir_name, "ecpf");
+-	} else {
+-		err = snprintf(dir_name, VNIC_DIAG_DIR_NAME_MAX_LEN, "%s_%d", is_sf ? "sf" : "vf",
+-			       is_sf ? sf_num : vport_num - MLX5_VPORT_FIRST_VF);
+-		if (WARN_ON(err < 0))
+-			return;
+-	}
+-
+-	vport->dbgfs = debugfs_create_dir(dir_name, esw->dbgfs);
+-	vnic_diag = debugfs_create_dir("vnic_diag", vport->dbgfs);
+-
+-	if (MLX5_CAP_GEN(esw->dev, vnic_env_queue_counters)) {
+-		debugfs_create_file("total_q_under_processor_handle", 0444, vnic_diag, vport,
+-				    &total_q_under_processor_handle_fops);
+-		debugfs_create_file("send_queue_priority_update_flow", 0444, vnic_diag, vport,
+-				    &send_queue_priority_update_flow_fops);
+-	}
+-
+-	if (MLX5_CAP_GEN(esw->dev, eq_overrun_count)) {
+-		debugfs_create_file("comp_eq_overrun", 0444, vnic_diag, vport,
+-				    &comp_eq_overrun_fops);
+-		debugfs_create_file("async_eq_overrun", 0444, vnic_diag, vport,
+-				    &async_eq_overrun_fops);
+-	}
+-
+-	if (MLX5_CAP_GEN(esw->dev, vnic_env_cq_overrun))
+-		debugfs_create_file("cq_overrun", 0444, vnic_diag, vport, &cq_overrun_fops);
+-
+-	if (MLX5_CAP_GEN(esw->dev, invalid_command_count))
+-		debugfs_create_file("invalid_command", 0444, vnic_diag, vport,
+-				    &invalid_command_fops);
+-
+-	if (MLX5_CAP_GEN(esw->dev, quota_exceeded_count))
+-		debugfs_create_file("quota_exceeded_command", 0444, vnic_diag, vport,
+-				    &quota_exceeded_command_fops);
+-}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+index 19fed514fc173..bb2720a23a501 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+@@ -36,7 +36,6 @@
+ #include <linux/mlx5/vport.h>
+ #include <linux/mlx5/fs.h>
+ #include <linux/mlx5/mpfs.h>
+-#include <linux/debugfs.h>
+ #include "esw/acl/lgcy.h"
+ #include "esw/legacy.h"
+ #include "esw/qos.h"
+@@ -1056,7 +1055,6 @@ int mlx5_eswitch_load_vport(struct mlx5_eswitch *esw, u16 vport_num,
+ 	if (err)
+ 		return err;
  
- #define SIO_LD_GPIO_NUVOTON	0x07	/* GPIO logical device */
+-	mlx5_esw_vport_debugfs_create(esw, vport_num, false, 0);
+ 	err = esw_offloads_load_rep(esw, vport_num);
+ 	if (err)
+ 		goto err_rep;
+@@ -1064,7 +1062,6 @@ int mlx5_eswitch_load_vport(struct mlx5_eswitch *esw, u16 vport_num,
+ 	return err;
  
-@@ -62,7 +62,7 @@ enum chips {
- 	f81866,
- 	f81804,
- 	f81865,
--	nct6116d,
-+	nct6126d,
+ err_rep:
+-	mlx5_esw_vport_debugfs_destroy(esw, vport_num);
+ 	mlx5_esw_vport_disable(esw, vport_num);
+ 	return err;
+ }
+@@ -1072,7 +1069,6 @@ int mlx5_eswitch_load_vport(struct mlx5_eswitch *esw, u16 vport_num,
+ void mlx5_eswitch_unload_vport(struct mlx5_eswitch *esw, u16 vport_num)
+ {
+ 	esw_offloads_unload_rep(esw, vport_num);
+-	mlx5_esw_vport_debugfs_destroy(esw, vport_num);
+ 	mlx5_esw_vport_disable(esw, vport_num);
+ }
+ 
+@@ -1672,7 +1668,6 @@ int mlx5_eswitch_init(struct mlx5_core_dev *dev)
+ 	dev->priv.eswitch = esw;
+ 	BLOCKING_INIT_NOTIFIER_HEAD(&esw->n_head);
+ 
+-	esw->dbgfs = debugfs_create_dir("esw", mlx5_debugfs_get_dev_root(esw->dev));
+ 	esw_info(dev,
+ 		 "Total vports %d, per vport: max uc(%d) max mc(%d)\n",
+ 		 esw->total_vports,
+@@ -1696,7 +1691,6 @@ void mlx5_eswitch_cleanup(struct mlx5_eswitch *esw)
+ 
+ 	esw_info(esw->dev, "cleanup\n");
+ 
+-	debugfs_remove_recursive(esw->dbgfs);
+ 	esw->dev->priv.eswitch = NULL;
+ 	destroy_workqueue(esw->work_queue);
+ 	WARN_ON(refcount_read(&esw->qos.refcnt));
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+index c8c12d1672f99..31876db3c7641 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+@@ -195,7 +195,6 @@ struct mlx5_vport {
+ 	enum mlx5_eswitch_vport_event enabled_events;
+ 	int index;
+ 	struct devlink_port *dl_port;
+-	struct dentry *dbgfs;
  };
  
- static const char * const f7188x_names[] = {
-@@ -74,7 +74,7 @@ static const char * const f7188x_names[] = {
- 	"f81866",
- 	"f81804",
- 	"f81865",
--	"nct6116d",
-+	"nct6126d",
+ struct mlx5_esw_indir_table;
+@@ -342,7 +341,6 @@ struct mlx5_eswitch {
+ 		u32             large_group_num;
+ 	}  params;
+ 	struct blocking_notifier_head n_head;
+-	struct dentry *dbgfs;
  };
  
- struct f7188x_sio {
-@@ -187,8 +187,8 @@ static int f7188x_gpio_set_config(struct gpio_chip *chip, unsigned offset,
- /* Output mode register (0:open drain 1:push-pull). */
- #define f7188x_gpio_out_mode(base) ((base) + 3)
+ void esw_offloads_disable(struct mlx5_eswitch *esw);
+@@ -705,9 +703,6 @@ int mlx5_esw_offloads_devlink_port_register(struct mlx5_eswitch *esw, u16 vport_
+ void mlx5_esw_offloads_devlink_port_unregister(struct mlx5_eswitch *esw, u16 vport_num);
+ struct devlink_port *mlx5_esw_offloads_devlink_port(struct mlx5_eswitch *esw, u16 vport_num);
  
--#define f7188x_gpio_dir_invert(type)	((type) == nct6116d)
--#define f7188x_gpio_data_single(type)	((type) == nct6116d)
-+#define f7188x_gpio_dir_invert(type)	((type) == nct6126d)
-+#define f7188x_gpio_data_single(type)	((type) == nct6126d)
+-void mlx5_esw_vport_debugfs_create(struct mlx5_eswitch *esw, u16 vport_num, bool is_sf, u16 sf_num);
+-void mlx5_esw_vport_debugfs_destroy(struct mlx5_eswitch *esw, u16 vport_num);
+-
+ int mlx5_esw_devlink_sf_port_register(struct mlx5_eswitch *esw, struct devlink_port *dl_port,
+ 				      u16 vport_num, u32 controller, u32 sfnum);
+ void mlx5_esw_devlink_sf_port_unregister(struct mlx5_eswitch *esw, u16 vport_num);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+index 590df9bf39a56..727b30f3a229a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+@@ -3777,14 +3777,12 @@ int mlx5_esw_offloads_sf_vport_enable(struct mlx5_eswitch *esw, struct devlink_p
+ 	if (err)
+ 		goto devlink_err;
  
- static struct f7188x_gpio_bank f71869_gpio_bank[] = {
- 	F7188X_GPIO_BANK(0, 6, 0xF0, DRVNAME "-0"),
-@@ -274,7 +274,7 @@ static struct f7188x_gpio_bank f81865_gpio_bank[] = {
- 	F7188X_GPIO_BANK(60, 5, 0x90, DRVNAME "-6"),
- };
+-	mlx5_esw_vport_debugfs_create(esw, vport_num, true, sfnum);
+ 	err = mlx5_esw_offloads_rep_load(esw, vport_num);
+ 	if (err)
+ 		goto rep_err;
+ 	return 0;
  
--static struct f7188x_gpio_bank nct6116d_gpio_bank[] = {
-+static struct f7188x_gpio_bank nct6126d_gpio_bank[] = {
- 	F7188X_GPIO_BANK(0, 8, 0xE0, DRVNAME "-0"),
- 	F7188X_GPIO_BANK(10, 8, 0xE4, DRVNAME "-1"),
- 	F7188X_GPIO_BANK(20, 8, 0xE8, DRVNAME "-2"),
-@@ -282,7 +282,7 @@ static struct f7188x_gpio_bank nct6116d_gpio_bank[] = {
- 	F7188X_GPIO_BANK(40, 8, 0xF0, DRVNAME "-4"),
- 	F7188X_GPIO_BANK(50, 8, 0xF4, DRVNAME "-5"),
- 	F7188X_GPIO_BANK(60, 8, 0xF8, DRVNAME "-6"),
--	F7188X_GPIO_BANK(70, 1, 0xFC, DRVNAME "-7"),
-+	F7188X_GPIO_BANK(70, 8, 0xFC, DRVNAME "-7"),
- };
- 
- static int f7188x_gpio_get_direction(struct gpio_chip *chip, unsigned offset)
-@@ -490,9 +490,9 @@ static int f7188x_gpio_probe(struct platform_device *pdev)
- 		data->nr_bank = ARRAY_SIZE(f81865_gpio_bank);
- 		data->bank = f81865_gpio_bank;
- 		break;
--	case nct6116d:
--		data->nr_bank = ARRAY_SIZE(nct6116d_gpio_bank);
--		data->bank = nct6116d_gpio_bank;
-+	case nct6126d:
-+		data->nr_bank = ARRAY_SIZE(nct6126d_gpio_bank);
-+		data->bank = nct6126d_gpio_bank;
- 		break;
- 	default:
- 		return -ENODEV;
-@@ -559,9 +559,9 @@ static int __init f7188x_find(int addr, struct f7188x_sio *sio)
- 	case SIO_F81865_ID:
- 		sio->type = f81865;
- 		break;
--	case SIO_NCT6116D_ID:
-+	case SIO_NCT6126D_ID:
- 		sio->device = SIO_LD_GPIO_NUVOTON;
--		sio->type = nct6116d;
-+		sio->type = nct6126d;
- 		break;
- 	default:
- 		pr_info("Unsupported Fintek device 0x%04x\n", devid);
-@@ -569,7 +569,7 @@ static int __init f7188x_find(int addr, struct f7188x_sio *sio)
- 	}
- 
- 	/* double check manufacturer where possible */
--	if (sio->type != nct6116d) {
-+	if (sio->type != nct6126d) {
- 		manid = superio_inw(addr, SIO_FINTEK_MANID);
- 		if (manid != SIO_FINTEK_ID) {
- 			pr_debug("Not a Fintek device at 0x%08x\n", addr);
-@@ -581,7 +581,7 @@ static int __init f7188x_find(int addr, struct f7188x_sio *sio)
- 	err = 0;
- 
- 	pr_info("Found %s at %#x\n", f7188x_names[sio->type], (unsigned int)addr);
--	if (sio->type != nct6116d)
-+	if (sio->type != nct6126d)
- 		pr_info("   revision %d\n", superio_inb(addr, SIO_FINTEK_DEVREV));
- 
- err:
+ rep_err:
+-	mlx5_esw_vport_debugfs_destroy(esw, vport_num);
+ 	mlx5_esw_devlink_sf_port_unregister(esw, vport_num);
+ devlink_err:
+ 	mlx5_esw_vport_disable(esw, vport_num);
+@@ -3794,7 +3792,6 @@ int mlx5_esw_offloads_sf_vport_enable(struct mlx5_eswitch *esw, struct devlink_p
+ void mlx5_esw_offloads_sf_vport_disable(struct mlx5_eswitch *esw, u16 vport_num)
+ {
+ 	mlx5_esw_offloads_rep_unload(esw, vport_num);
+-	mlx5_esw_vport_debugfs_destroy(esw, vport_num);
+ 	mlx5_esw_devlink_sf_port_unregister(esw, vport_num);
+ 	mlx5_esw_vport_disable(esw, vport_num);
+ }
 -- 
 2.39.2
 
