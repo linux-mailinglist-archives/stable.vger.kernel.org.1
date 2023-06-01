@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C056719D73
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:23:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 228FC719DA4
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:25:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233577AbjFANXU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:23:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60002 "EHLO
+        id S233685AbjFANZX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:25:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233585AbjFANXT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:23:19 -0400
+        with ESMTP id S233805AbjFANZD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:25:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86E0B18B
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:23:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE8A7E46
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:24:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 087896445A
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:23:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2020EC433D2;
-        Thu,  1 Jun 2023 13:23:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 79E1564487
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:24:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED58C433D2;
+        Thu,  1 Jun 2023 13:24:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625793;
-        bh=EbMPqo4maRt5bidUGqxd+nm+94DkP1MFoie6RZkj60o=;
+        s=korg; t=1685625879;
+        bh=/00MB5J6vc9MNPSaYcCU7zLoPG+zMO5bx/bNyFRPH1g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L9wDHxUELjFMyMIgbBi4BoNf7n+piLabG6grDgABToMZcVxX6rYUC164wj9eRRIV7
-         BEYvzzT/Ey7MfUOA8GHte5995EnOocRbMv3VaR1cSd3tujUaYVh4PhKj5oI4Dl86Dt
-         ZmnWYPtxMwlnP5Wv7b8L7Jgz80FRODlYgBkeMiyo=
+        b=rehcWgSzAHdF9i1vbC60BwIg7C6B2R6uT5/iVki1hDCJqQ0FpQpM7S3qewMGf5aqE
+         q6HOOQm5LVl9mlOzjIuA2OD9M0/BX5gbOGgbhCsKUTaJlecye9moKBLSXxmtS3ik1+
+         ns7CQQgbL6jMuV0E6eL4tBhCeHsA11ODEHh0tee8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        David Epping <david.epping@missinglinkelectronics.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 18/22] net: phy: mscc: enable VSC8501/2 RGMII RX clock
+        patches@lists.linux.dev, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 29/42] irqchip/mips-gic: Use raw spinlock for gic_lock
 Date:   Thu,  1 Jun 2023 14:21:16 +0100
-Message-Id: <20230601131934.591093713@linuxfoundation.org>
+Message-Id: <20230601131938.020420891@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131933.727832920@linuxfoundation.org>
-References: <20230601131933.727832920@linuxfoundation.org>
+In-Reply-To: <20230601131936.699199833@linuxfoundation.org>
+References: <20230601131936.699199833@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,132 +54,161 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Epping <david.epping@missinglinkelectronics.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit 71460c9ec5c743e9ffffca3c874d66267c36345e ]
+[ Upstream commit 3d6a0e4197c04599d75d85a608c8bb16a630a38c ]
 
-By default the VSC8501 and VSC8502 RGMII/GMII/MII RX_CLK output is
-disabled. To allow packet forwarding towards the MAC it needs to be
-enabled.
+Since we may hold gic_lock in hardirq context, use raw spinlock
+makes more sense given that it is for low-level interrupt handling
+routine and the critical section is small.
 
-For other PHYs supported by this driver the clock output is enabled
-by default.
+Fixes BUG:
 
-Fixes: d3169863310d ("net: phy: mscc: add support for VSC8502")
-Signed-off-by: David Epping <david.epping@missinglinkelectronics.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[    0.426106] =============================
+[    0.426257] [ BUG: Invalid wait context ]
+[    0.426422] 6.3.0-rc7-next-20230421-dirty #54 Not tainted
+[    0.426638] -----------------------------
+[    0.426766] swapper/0/1 is trying to lock:
+[    0.426954] ffffffff8104e7b8 (gic_lock){....}-{3:3}, at: gic_set_type+0x30/08
+
+Fixes: 95150ae8b330 ("irqchip: mips-gic: Implement irq_set_type callback")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Tested-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230424103156.66753-3-jiaxun.yang@flygoat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mscc/mscc.h      |  1 +
- drivers/net/phy/mscc/mscc_main.c | 54 +++++++++++++++++---------------
- 2 files changed, 29 insertions(+), 26 deletions(-)
+ drivers/irqchip/irq-mips-gic.c | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/phy/mscc/mscc.h b/drivers/net/phy/mscc/mscc.h
-index c2023f93c0b24..79117d281c1ec 100644
---- a/drivers/net/phy/mscc/mscc.h
-+++ b/drivers/net/phy/mscc/mscc.h
-@@ -175,6 +175,7 @@ enum rgmii_clock_delay {
- #define VSC8502_RGMII_CNTL		  20
- #define VSC8502_RGMII_RX_DELAY_MASK	  0x0070
- #define VSC8502_RGMII_TX_DELAY_MASK	  0x0007
-+#define VSC8502_RGMII_RX_CLK_DISABLE	  0x0800
+diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+index 0f14b2d7b19cb..0d4515257c59c 100644
+--- a/drivers/irqchip/irq-mips-gic.c
++++ b/drivers/irqchip/irq-mips-gic.c
+@@ -49,7 +49,7 @@ void __iomem *mips_gic_base;
  
- #define MSCC_PHY_WOL_LOWER_MAC_ADDR	  21
- #define MSCC_PHY_WOL_MID_MAC_ADDR	  22
-diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
-index ffac713afa551..c64ac142509a5 100644
---- a/drivers/net/phy/mscc/mscc_main.c
-+++ b/drivers/net/phy/mscc/mscc_main.c
-@@ -527,14 +527,27 @@ static int vsc85xx_mac_if_set(struct phy_device *phydev,
-  *  * 2.0 ns (which causes the data to be sampled at exactly half way between
-  *    clock transitions at 1000 Mbps) if delays should be enabled
-  */
--static int vsc85xx_rgmii_set_skews(struct phy_device *phydev, u32 rgmii_cntl,
--				   u16 rgmii_rx_delay_mask,
--				   u16 rgmii_tx_delay_mask)
-+static int vsc85xx_update_rgmii_cntl(struct phy_device *phydev, u32 rgmii_cntl,
-+				     u16 rgmii_rx_delay_mask,
-+				     u16 rgmii_tx_delay_mask)
- {
- 	u16 rgmii_rx_delay_pos = ffs(rgmii_rx_delay_mask) - 1;
- 	u16 rgmii_tx_delay_pos = ffs(rgmii_tx_delay_mask) - 1;
- 	u16 reg_val = 0;
--	int rc;
-+	u16 mask = 0;
-+	int rc = 0;
-+
-+	/* For traffic to pass, the VSC8502 family needs the RX_CLK disable bit
-+	 * to be unset for all PHY modes, so do that as part of the paged
-+	 * register modification.
-+	 * For some family members (like VSC8530/31/40/41) this bit is reserved
-+	 * and read-only, and the RX clock is enabled by default.
-+	 */
-+	if (rgmii_cntl == VSC8502_RGMII_CNTL)
-+		mask |= VSC8502_RGMII_RX_CLK_DISABLE;
-+
-+	if (phy_interface_is_rgmii(phydev))
-+		mask |= rgmii_rx_delay_mask | rgmii_tx_delay_mask;
+ static DEFINE_PER_CPU_READ_MOSTLY(unsigned long[GIC_MAX_LONGS], pcpu_masks);
  
- 	mutex_lock(&phydev->lock);
+-static DEFINE_SPINLOCK(gic_lock);
++static DEFINE_RAW_SPINLOCK(gic_lock);
+ static struct irq_domain *gic_irq_domain;
+ static int gic_shared_intrs;
+ static unsigned int gic_cpu_pin;
+@@ -210,7 +210,7 @@ static int gic_set_type(struct irq_data *d, unsigned int type)
  
-@@ -545,10 +558,9 @@ static int vsc85xx_rgmii_set_skews(struct phy_device *phydev, u32 rgmii_cntl,
- 	    phydev->interface == PHY_INTERFACE_MODE_RGMII_ID)
- 		reg_val |= RGMII_CLK_DELAY_2_0_NS << rgmii_tx_delay_pos;
+ 	irq = GIC_HWIRQ_TO_SHARED(d->hwirq);
  
--	rc = phy_modify_paged(phydev, MSCC_PHY_PAGE_EXTENDED_2,
--			      rgmii_cntl,
--			      rgmii_rx_delay_mask | rgmii_tx_delay_mask,
--			      reg_val);
-+	if (mask)
-+		rc = phy_modify_paged(phydev, MSCC_PHY_PAGE_EXTENDED_2,
-+				      rgmii_cntl, mask, reg_val);
+-	spin_lock_irqsave(&gic_lock, flags);
++	raw_spin_lock_irqsave(&gic_lock, flags);
+ 	switch (type & IRQ_TYPE_SENSE_MASK) {
+ 	case IRQ_TYPE_EDGE_FALLING:
+ 		pol = GIC_POL_FALLING_EDGE;
+@@ -250,7 +250,7 @@ static int gic_set_type(struct irq_data *d, unsigned int type)
+ 	else
+ 		irq_set_chip_handler_name_locked(d, &gic_level_irq_controller,
+ 						 handle_level_irq, NULL);
+-	spin_unlock_irqrestore(&gic_lock, flags);
++	raw_spin_unlock_irqrestore(&gic_lock, flags);
  
- 	mutex_unlock(&phydev->lock);
+ 	return 0;
+ }
+@@ -268,7 +268,7 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *cpumask,
+ 		return -EINVAL;
  
-@@ -557,19 +569,11 @@ static int vsc85xx_rgmii_set_skews(struct phy_device *phydev, u32 rgmii_cntl,
+ 	/* Assumption : cpumask refers to a single CPU */
+-	spin_lock_irqsave(&gic_lock, flags);
++	raw_spin_lock_irqsave(&gic_lock, flags);
  
- static int vsc85xx_default_config(struct phy_device *phydev)
- {
--	int rc;
--
- 	phydev->mdix_ctrl = ETH_TP_MDI_AUTO;
+ 	/* Re-route this IRQ */
+ 	write_gic_map_vp(irq, BIT(mips_cm_vp_id(cpu)));
+@@ -279,7 +279,7 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *cpumask,
+ 		set_bit(irq, per_cpu_ptr(pcpu_masks, cpu));
  
--	if (phy_interface_mode_is_rgmii(phydev->interface)) {
--		rc = vsc85xx_rgmii_set_skews(phydev, VSC8502_RGMII_CNTL,
--					     VSC8502_RGMII_RX_DELAY_MASK,
--					     VSC8502_RGMII_TX_DELAY_MASK);
--		if (rc)
--			return rc;
--	}
--
--	return 0;
-+	return vsc85xx_update_rgmii_cntl(phydev, VSC8502_RGMII_CNTL,
-+					 VSC8502_RGMII_RX_DELAY_MASK,
-+					 VSC8502_RGMII_TX_DELAY_MASK);
+ 	irq_data_update_effective_affinity(d, cpumask_of(cpu));
+-	spin_unlock_irqrestore(&gic_lock, flags);
++	raw_spin_unlock_irqrestore(&gic_lock, flags);
+ 
+ 	return IRQ_SET_MASK_OK;
+ }
+@@ -357,12 +357,12 @@ static void gic_mask_local_irq_all_vpes(struct irq_data *d)
+ 	cd = irq_data_get_irq_chip_data(d);
+ 	cd->mask = false;
+ 
+-	spin_lock_irqsave(&gic_lock, flags);
++	raw_spin_lock_irqsave(&gic_lock, flags);
+ 	for_each_online_cpu(cpu) {
+ 		write_gic_vl_other(mips_cm_vp_id(cpu));
+ 		write_gic_vo_rmask(BIT(intr));
+ 	}
+-	spin_unlock_irqrestore(&gic_lock, flags);
++	raw_spin_unlock_irqrestore(&gic_lock, flags);
  }
  
- static int vsc85xx_get_tunable(struct phy_device *phydev,
-@@ -1646,13 +1650,11 @@ static int vsc8584_config_init(struct phy_device *phydev)
- 	if (ret)
- 		return ret;
+ static void gic_unmask_local_irq_all_vpes(struct irq_data *d)
+@@ -375,12 +375,12 @@ static void gic_unmask_local_irq_all_vpes(struct irq_data *d)
+ 	cd = irq_data_get_irq_chip_data(d);
+ 	cd->mask = true;
  
--	if (phy_interface_is_rgmii(phydev)) {
--		ret = vsc85xx_rgmii_set_skews(phydev, VSC8572_RGMII_CNTL,
--					      VSC8572_RGMII_RX_DELAY_MASK,
--					      VSC8572_RGMII_TX_DELAY_MASK);
--		if (ret)
--			return ret;
--	}
-+	ret = vsc85xx_update_rgmii_cntl(phydev, VSC8572_RGMII_CNTL,
-+					VSC8572_RGMII_RX_DELAY_MASK,
-+					VSC8572_RGMII_TX_DELAY_MASK);
-+	if (ret)
-+		return ret;
+-	spin_lock_irqsave(&gic_lock, flags);
++	raw_spin_lock_irqsave(&gic_lock, flags);
+ 	for_each_online_cpu(cpu) {
+ 		write_gic_vl_other(mips_cm_vp_id(cpu));
+ 		write_gic_vo_smask(BIT(intr));
+ 	}
+-	spin_unlock_irqrestore(&gic_lock, flags);
++	raw_spin_unlock_irqrestore(&gic_lock, flags);
+ }
  
- 	ret = genphy_soft_reset(phydev);
- 	if (ret)
+ static void gic_all_vpes_irq_cpu_online(void)
+@@ -393,7 +393,7 @@ static void gic_all_vpes_irq_cpu_online(void)
+ 	unsigned long flags;
+ 	int i;
+ 
+-	spin_lock_irqsave(&gic_lock, flags);
++	raw_spin_lock_irqsave(&gic_lock, flags);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(local_intrs); i++) {
+ 		unsigned int intr = local_intrs[i];
+@@ -405,7 +405,7 @@ static void gic_all_vpes_irq_cpu_online(void)
+ 			write_gic_vl_smask(BIT(intr));
+ 	}
+ 
+-	spin_unlock_irqrestore(&gic_lock, flags);
++	raw_spin_unlock_irqrestore(&gic_lock, flags);
+ }
+ 
+ static struct irq_chip gic_all_vpes_local_irq_controller = {
+@@ -435,11 +435,11 @@ static int gic_shared_irq_domain_map(struct irq_domain *d, unsigned int virq,
+ 
+ 	data = irq_get_irq_data(virq);
+ 
+-	spin_lock_irqsave(&gic_lock, flags);
++	raw_spin_lock_irqsave(&gic_lock, flags);
+ 	write_gic_map_pin(intr, GIC_MAP_PIN_MAP_TO_PIN | gic_cpu_pin);
+ 	write_gic_map_vp(intr, BIT(mips_cm_vp_id(cpu)));
+ 	irq_data_update_effective_affinity(data, cpumask_of(cpu));
+-	spin_unlock_irqrestore(&gic_lock, flags);
++	raw_spin_unlock_irqrestore(&gic_lock, flags);
+ 
+ 	return 0;
+ }
+@@ -534,12 +534,12 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
+ 	if (!gic_local_irq_is_routable(intr))
+ 		return -EPERM;
+ 
+-	spin_lock_irqsave(&gic_lock, flags);
++	raw_spin_lock_irqsave(&gic_lock, flags);
+ 	for_each_online_cpu(cpu) {
+ 		write_gic_vl_other(mips_cm_vp_id(cpu));
+ 		write_gic_vo_map(mips_gic_vx_map_reg(intr), map);
+ 	}
+-	spin_unlock_irqrestore(&gic_lock, flags);
++	raw_spin_unlock_irqrestore(&gic_lock, flags);
+ 
+ 	return 0;
+ }
 -- 
 2.39.2
 
