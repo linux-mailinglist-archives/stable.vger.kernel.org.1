@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AE6C719D6C
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:23:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 641F6719D8E
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:24:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233563AbjFANWr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:22:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59578 "EHLO
+        id S233364AbjFANYY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:24:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233562AbjFANWq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:22:46 -0400
+        with ESMTP id S233679AbjFANYU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:24:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CD6313E
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:22:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F68818D
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:24:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D53760BFA
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:22:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97966C433EF;
-        Thu,  1 Jun 2023 13:22:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0AC2E6447B
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:24:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28217C433D2;
+        Thu,  1 Jun 2023 13:24:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625760;
-        bh=9ncxuGZ7Ir1eotIA07rbA7WU38lufl/G11GctjpIRYc=;
+        s=korg; t=1685625843;
+        bh=B6MC9oxD00Vtij0IFY+9rSaqc/4TxjZQC9CwsFybzno=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CU5Dgu8Fk9YORlvlx9uX5D+mP0UVFUXzXUwQ2hpeV8krpqCTMhFGyoJ57dVIJs8yJ
-         YJYT3I52q25OHuuQy+ZAnNWU9zD1niutsfhH5bL/dctsF38upQpKI9INs3eyqvMkC3
-         bKZ50uKwW+2sJulH50enQfNAOboQTSdJlqqV0/jU=
+        b=kALlwo69h6eJYdguwNoY860Yz0zLsVzxbSd2BYxDzaAA1JcSxx6PZ6F/GWXQG2BKw
+         bT49AIt3D2dAUO5pwZPPQNIkdVPxLBlFIjxPTM13pYDWlS7ATYtp2ThhdD73mBqsQ+
+         uoYznslfxK/MJDm+9Etld5HnNnUt8kD6gWS4rkZE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Bloch <mbloch@nvidia.com>,
-        Maor Gottlieb <maorg@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 07/16] net/mlx5: devcom only supports 2 ports
+        patches@lists.linux.dev,
+        Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 15/42] dmaengine: at_xdmac: Remove a level of indentation in at_xdmac_tasklet()
 Date:   Thu,  1 Jun 2023 14:21:02 +0100
-Message-Id: <20230601131932.291137077@linuxfoundation.org>
+Message-Id: <20230601131937.409173281@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131931.947241286@linuxfoundation.org>
-References: <20230601131931.947241286@linuxfoundation.org>
+In-Reply-To: <20230601131936.699199833@linuxfoundation.org>
+References: <20230601131936.699199833@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,107 +54,115 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Bloch <mbloch@nvidia.com>
+From: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-[ Upstream commit 8a6e75e5f57e9ac82268d9bfca3403598d9d0292 ]
+[ Upstream commit a61210cae80cac0701d5aca9551466a389717fd2 ]
 
-Devcom API is intended to be used between 2 devices only add this
-implied assumption into the code and check when it's no true.
+Apart of making the code easier to read, this patch is a prerequisite for
+a functional change: tasklets run with interrupts enabled, so we need to
+protect atchan->irq_status with spin_lock_irq() otherwise the tasklet can
+be interrupted by the IRQ that modifies irq_status. atchan->irq_status
+will be protected in a further patch.
 
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Stable-dep-of: 1f893f57a3bf ("net/mlx5: Devcom, serialize devcom registration")
+Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+Link: https://lore.kernel.org/r/20211215110115.191749-12-tudor.ambarus@microchip.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: 44fe8440bda5 ("dmaengine: at_xdmac: do not resume channels paused by consumers")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/lib/devcom.c | 16 +++++++++-------
- .../net/ethernet/mellanox/mlx5/core/lib/devcom.h |  2 ++
- 2 files changed, 11 insertions(+), 7 deletions(-)
+ drivers/dma/at_xdmac.c | 66 ++++++++++++++++++++----------------------
+ 1 file changed, 32 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-index abd066e952286..617eea1b1701b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-@@ -14,7 +14,7 @@ static LIST_HEAD(devcom_list);
- struct mlx5_devcom_component {
- 	struct {
- 		void *data;
--	} device[MLX5_MAX_PORTS];
-+	} device[MLX5_DEVCOM_PORTS_SUPPORTED];
+diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
+index b45437aab1434..f9aa5396c0f8e 100644
+--- a/drivers/dma/at_xdmac.c
++++ b/drivers/dma/at_xdmac.c
+@@ -1670,53 +1670,51 @@ static void at_xdmac_tasklet(struct tasklet_struct *t)
+ {
+ 	struct at_xdmac_chan	*atchan = from_tasklet(atchan, t, tasklet);
+ 	struct at_xdmac_desc	*desc;
++	struct dma_async_tx_descriptor *txd;
+ 	u32			error_mask;
  
- 	mlx5_devcom_event_handler_t handler;
- 	struct rw_semaphore sem;
-@@ -25,7 +25,7 @@ struct mlx5_devcom_list {
- 	struct list_head list;
+ 	dev_dbg(chan2dev(&atchan->chan), "%s: status=0x%08x\n",
+ 		__func__, atchan->irq_status);
  
- 	struct mlx5_devcom_component components[MLX5_DEVCOM_NUM_COMPONENTS];
--	struct mlx5_core_dev *devs[MLX5_MAX_PORTS];
-+	struct mlx5_core_dev *devs[MLX5_DEVCOM_PORTS_SUPPORTED];
- };
+-	error_mask = AT_XDMAC_CIS_RBEIS
+-		     | AT_XDMAC_CIS_WBEIS
+-		     | AT_XDMAC_CIS_ROIS;
++	if (at_xdmac_chan_is_cyclic(atchan))
++		return at_xdmac_handle_cyclic(atchan);
  
- struct mlx5_devcom {
-@@ -74,13 +74,15 @@ struct mlx5_devcom *mlx5_devcom_register_device(struct mlx5_core_dev *dev)
+-	if (at_xdmac_chan_is_cyclic(atchan)) {
+-		at_xdmac_handle_cyclic(atchan);
+-	} else if ((atchan->irq_status & AT_XDMAC_CIS_LIS)
+-		   || (atchan->irq_status & error_mask)) {
+-		struct dma_async_tx_descriptor  *txd;
++	error_mask = AT_XDMAC_CIS_RBEIS | AT_XDMAC_CIS_WBEIS |
++		AT_XDMAC_CIS_ROIS;
  
- 	if (!mlx5_core_is_pf(dev))
- 		return NULL;
-+	if (MLX5_CAP_GEN(dev, num_lag_ports) != MLX5_DEVCOM_PORTS_SUPPORTED)
-+		return NULL;
+-		if (atchan->irq_status & error_mask)
+-			at_xdmac_handle_error(atchan);
++	if (!(atchan->irq_status & AT_XDMAC_CIS_LIS) &&
++	    !(atchan->irq_status & error_mask))
++		return;
  
- 	sguid0 = mlx5_query_nic_system_image_guid(dev);
- 	list_for_each_entry(iter, &devcom_list, list) {
- 		struct mlx5_core_dev *tmp_dev = NULL;
+-		spin_lock_irq(&atchan->lock);
+-		desc = list_first_entry(&atchan->xfers_list,
+-					struct at_xdmac_desc,
+-					xfer_node);
+-		dev_vdbg(chan2dev(&atchan->chan), "%s: desc 0x%p\n", __func__, desc);
+-		if (!desc->active_xfer) {
+-			dev_err(chan2dev(&atchan->chan), "Xfer not active: exiting");
+-			spin_unlock_irq(&atchan->lock);
+-			return;
+-		}
++	if (atchan->irq_status & error_mask)
++		at_xdmac_handle_error(atchan);
  
- 		idx = -1;
--		for (i = 0; i < MLX5_MAX_PORTS; i++) {
-+		for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++) {
- 			if (iter->devs[i])
- 				tmp_dev = iter->devs[i];
- 			else
-@@ -135,11 +137,11 @@ void mlx5_devcom_unregister_device(struct mlx5_devcom *devcom)
+-		txd = &desc->tx_dma_desc;
+-		dma_cookie_complete(txd);
+-		/* Remove the transfer from the transfer list. */
+-		list_del(&desc->xfer_node);
++	spin_lock_irq(&atchan->lock);
++	desc = list_first_entry(&atchan->xfers_list, struct at_xdmac_desc,
++				xfer_node);
++	dev_vdbg(chan2dev(&atchan->chan), "%s: desc 0x%p\n", __func__, desc);
++	if (!desc->active_xfer) {
++		dev_err(chan2dev(&atchan->chan), "Xfer not active: exiting");
+ 		spin_unlock_irq(&atchan->lock);
++		return;
++	}
  
- 	kfree(devcom);
+-		if (txd->flags & DMA_PREP_INTERRUPT)
+-			dmaengine_desc_get_callback_invoke(txd, NULL);
++	txd = &desc->tx_dma_desc;
++	dma_cookie_complete(txd);
++	/* Remove the transfer from the transfer list. */
++	list_del(&desc->xfer_node);
++	spin_unlock_irq(&atchan->lock);
  
--	for (i = 0; i < MLX5_MAX_PORTS; i++)
-+	for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++)
- 		if (priv->devs[i])
- 			break;
+-		dma_run_dependencies(txd);
++	if (txd->flags & DMA_PREP_INTERRUPT)
++		dmaengine_desc_get_callback_invoke(txd, NULL);
  
--	if (i != MLX5_MAX_PORTS)
-+	if (i != MLX5_DEVCOM_PORTS_SUPPORTED)
- 		return;
- 
- 	list_del(&priv->list);
-@@ -192,7 +194,7 @@ int mlx5_devcom_send_event(struct mlx5_devcom *devcom,
- 
- 	comp = &devcom->priv->components[id];
- 	down_write(&comp->sem);
--	for (i = 0; i < MLX5_MAX_PORTS; i++)
-+	for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++)
- 		if (i != devcom->idx && comp->device[i].data) {
- 			err = comp->handler(event, comp->device[i].data,
- 					    event_data);
-@@ -240,7 +242,7 @@ void *mlx5_devcom_get_peer_data(struct mlx5_devcom *devcom,
- 		return NULL;
- 	}
- 
--	for (i = 0; i < MLX5_MAX_PORTS; i++)
-+	for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++)
- 		if (i != devcom->idx)
- 			break;
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
-index 939d5bf1581b5..94313c18bb647 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
-@@ -6,6 +6,8 @@
- 
- #include <linux/mlx5/driver.h>
- 
-+#define MLX5_DEVCOM_PORTS_SUPPORTED 2
+-		spin_lock_irq(&atchan->lock);
+-		/* Move the xfer descriptors into the free descriptors list. */
+-		list_splice_tail_init(&desc->descs_list,
+-				      &atchan->free_descs_list);
+-		at_xdmac_advance_work(atchan);
+-		spin_unlock_irq(&atchan->lock);
+-	}
++	dma_run_dependencies(txd);
 +
- enum mlx5_devcom_components {
- 	MLX5_DEVCOM_ESW_OFFLOADS,
++	spin_lock_irq(&atchan->lock);
++	/* Move the xfer descriptors into the free descriptors list. */
++	list_splice_tail_init(&desc->descs_list, &atchan->free_descs_list);
++	at_xdmac_advance_work(atchan);
++	spin_unlock_irq(&atchan->lock);
+ }
  
+ static irqreturn_t at_xdmac_interrupt(int irq, void *dev_id)
 -- 
 2.39.2
 
