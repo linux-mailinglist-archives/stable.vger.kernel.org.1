@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECE4B719E1C
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6229F719DEB
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:27:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234093AbjFAN3O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:29:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36934 "EHLO
+        id S233752AbjFAN1f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:27:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233894AbjFAN25 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:28:57 -0400
+        with ESMTP id S233888AbjFAN1X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:27:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 036D31A8
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:28:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F2BE1BD
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:27:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A984644FC
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:28:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FBEC433D2;
-        Thu,  1 Jun 2023 13:28:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B94D6449E
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:27:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260EEC433D2;
+        Thu,  1 Jun 2023 13:27:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685626105;
-        bh=8fVECFHP9ZvZXtQY/+6EpwYdAyXQaQ0UHP9UK1tzG88=;
+        s=korg; t=1685626024;
+        bh=MILY39kd8rCMkR/XdLUoPwEY904DFCAaG/DiuQJQ4f0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hUF+VqbmzruWnOpgFYtfvyQMmlJJmDdqFwbZ1mNkPLoNfxEsDMl6O1Hh+vp5JmNPf
-         VTgN9YbDGK9RzClHKnRmXkqF+BUzIiS4DfNh+lKHiGaxXsmk7eEcA7mE4lGb+L6A/+
-         ZJEoj+Jk0l28tmjU42GuDn0NCOhTs/NdnefMBgYU=
+        b=C6vHKpi+qYVWqeWF73ZbvwsWP3546VEQ54yRBNlewFw6ifuYKmA3h3DYG8sAtecyv
+         Qoiq+2UkCXjROtbg5DZNO2Wxw1HhqiPTCTT0cS7hKXfjpEy4Rid95Y/RCIDHzutjku
+         Zluks0ZG7J4TNMrn2ydN0V1O//3V1ncYU+RI0VoU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 32/42] dmaengine: at_xdmac: do not resume channels paused by consumers
+        patches@lists.linux.dev, Paul Blakey <paulb@nvidia.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
+        Demi Marie Obenour <demi@invisiblethingslab.com>
+Subject: [PATCH 6.3 45/45] netfilter: ctnetlink: Support offloaded conntrack entry deletion
 Date:   Thu,  1 Jun 2023 14:21:41 +0100
-Message-Id: <20230601131940.479423088@linuxfoundation.org>
+Message-Id: <20230601131940.779545951@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131939.051934720@linuxfoundation.org>
-References: <20230601131939.051934720@linuxfoundation.org>
+In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
+References: <20230601131938.702671708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,134 +56,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Paul Blakey <paulb@nvidia.com>
 
-[ Upstream commit 44fe8440bda545b5d167329df88c47609a645168 ]
+commit 9b7c68b3911aef84afa4cbfc31bce20f10570d51 upstream.
 
-In case there are DMA channels not paused by consumers in suspend
-process (valid on AT91 SoCs for serial driver when no_console_suspend) the
-driver pauses them (using at_xdmac_device_pause() which is also the same
-function called by dmaengine_pause()) and then in the resume process the
-driver resumes them calling at_xdmac_device_resume() which is the same
-function called by dmaengine_resume()). This is good for DMA channels
-not paused by consumers but for drivers that calls
-dmaengine_pause()/dmaegine_resume() on suspend/resume path this may lead to
-DMA channel being enabled before the IP is enabled. For IPs that needs
-strict ordering with regards to DMA channel enablement this will lead to
-wrong behavior. To fix this add a new set of functions
-at_xdmac_device_pause_internal()/at_xdmac_device_resume_internal() to be
-called only on suspend/resume.
+Currently, offloaded conntrack entries (flows) can only be deleted
+after they are removed from offload, which is either by timeout,
+tcp state change or tc ct rule deletion. This can cause issues for
+users wishing to manually delete or flush existing entries.
 
-Fixes: e1f7c9eee707 ("dmaengine: at_xdmac: creation of the atmel eXtended DMA Controller driver")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Link: https://lore.kernel.org/r/20230214151827.1050280-4-claudiu.beznea@microchip.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Support deletion of offloaded conntrack entries.
+
+Example usage:
+ # Delete all offloaded (and non offloaded) conntrack entries
+ # whose source address is 1.2.3.4
+ $ conntrack -D -s 1.2.3.4
+ # Delete all entries
+ $ conntrack -F
+
+Signed-off-by: Paul Blakey <paulb@nvidia.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Acked-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Cc: Demi Marie Obenour <demi@invisiblethingslab.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/at_xdmac.c | 48 ++++++++++++++++++++++++++++++++++++------
- 1 file changed, 42 insertions(+), 6 deletions(-)
+ net/netfilter/nf_conntrack_netlink.c |    8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
-index 7f7557e4c31d7..cb1374b161291 100644
---- a/drivers/dma/at_xdmac.c
-+++ b/drivers/dma/at_xdmac.c
-@@ -186,6 +186,7 @@
- enum atc_status {
- 	AT_XDMAC_CHAN_IS_CYCLIC = 0,
- 	AT_XDMAC_CHAN_IS_PAUSED,
-+	AT_XDMAC_CHAN_IS_PAUSED_INTERNAL,
- };
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -1559,9 +1559,6 @@ static const struct nla_policy ct_nla_po
  
- struct at_xdmac_layout {
-@@ -346,6 +347,11 @@ static inline int at_xdmac_chan_is_paused(struct at_xdmac_chan *atchan)
- 	return test_bit(AT_XDMAC_CHAN_IS_PAUSED, &atchan->status);
+ static int ctnetlink_flush_iterate(struct nf_conn *ct, void *data)
+ {
+-	if (test_bit(IPS_OFFLOAD_BIT, &ct->status))
+-		return 0;
+-
+ 	return ctnetlink_filter_match(ct, data);
  }
  
-+static inline int at_xdmac_chan_is_paused_internal(struct at_xdmac_chan *atchan)
-+{
-+	return test_bit(AT_XDMAC_CHAN_IS_PAUSED_INTERNAL, &atchan->status);
-+}
-+
- static inline bool at_xdmac_chan_is_peripheral_xfer(u32 cfg)
- {
- 	return cfg & AT_XDMAC_CC_TYPE_PER_TRAN;
-@@ -1807,6 +1813,26 @@ static int at_xdmac_device_config(struct dma_chan *chan,
- 	return ret;
- }
+@@ -1631,11 +1628,6 @@ static int ctnetlink_del_conntrack(struc
  
-+static void at_xdmac_device_pause_set(struct at_xdmac *atxdmac,
-+				      struct at_xdmac_chan *atchan)
-+{
-+	at_xdmac_write(atxdmac, atxdmac->layout->grws, atchan->mask);
-+	while (at_xdmac_chan_read(atchan, AT_XDMAC_CC) &
-+	       (AT_XDMAC_CC_WRIP | AT_XDMAC_CC_RDIP))
-+		cpu_relax();
-+}
-+
-+static void at_xdmac_device_pause_internal(struct at_xdmac_chan *atchan)
-+{
-+	struct at_xdmac		*atxdmac = to_at_xdmac(atchan->chan.device);
-+	unsigned long		flags;
-+
-+	spin_lock_irqsave(&atchan->lock, flags);
-+	set_bit(AT_XDMAC_CHAN_IS_PAUSED_INTERNAL, &atchan->status);
-+	at_xdmac_device_pause_set(atxdmac, atchan);
-+	spin_unlock_irqrestore(&atchan->lock, flags);
-+}
-+
- static int at_xdmac_device_pause(struct dma_chan *chan)
- {
- 	struct at_xdmac_chan	*atchan = to_at_xdmac_chan(chan);
-@@ -1819,15 +1845,25 @@ static int at_xdmac_device_pause(struct dma_chan *chan)
- 		return 0;
+ 	ct = nf_ct_tuplehash_to_ctrack(h);
  
- 	spin_lock_irqsave(&atchan->lock, flags);
--	at_xdmac_write(atxdmac, atxdmac->layout->grws, atchan->mask);
--	while (at_xdmac_chan_read(atchan, AT_XDMAC_CC)
--	       & (AT_XDMAC_CC_WRIP | AT_XDMAC_CC_RDIP))
--		cpu_relax();
-+
-+	at_xdmac_device_pause_set(atxdmac, atchan);
-+	/* Decrement runtime PM ref counter for each active descriptor. */
- 	spin_unlock_irqrestore(&atchan->lock, flags);
+-	if (test_bit(IPS_OFFLOAD_BIT, &ct->status)) {
+-		nf_ct_put(ct);
+-		return -EBUSY;
+-	}
+-
+ 	if (cda[CTA_ID]) {
+ 		__be32 id = nla_get_be32(cda[CTA_ID]);
  
- 	return 0;
- }
- 
-+static void at_xdmac_device_resume_internal(struct at_xdmac_chan *atchan)
-+{
-+	struct at_xdmac		*atxdmac = to_at_xdmac(atchan->chan.device);
-+	unsigned long		flags;
-+
-+	spin_lock_irqsave(&atchan->lock, flags);
-+	at_xdmac_write(atxdmac, atxdmac->layout->grwr, atchan->mask);
-+	clear_bit(AT_XDMAC_CHAN_IS_PAUSED_INTERNAL, &atchan->status);
-+	spin_unlock_irqrestore(&atchan->lock, flags);
-+}
-+
- static int at_xdmac_device_resume(struct dma_chan *chan)
- {
- 	struct at_xdmac_chan	*atchan = to_at_xdmac_chan(chan);
-@@ -1982,7 +2018,7 @@ static int __maybe_unused atmel_xdmac_suspend(struct device *dev)
- 		atchan->save_cc = at_xdmac_chan_read(atchan, AT_XDMAC_CC);
- 		if (at_xdmac_chan_is_cyclic(atchan)) {
- 			if (!at_xdmac_chan_is_paused(atchan))
--				at_xdmac_device_pause(chan);
-+				at_xdmac_device_pause_internal(atchan);
- 			atchan->save_cim = at_xdmac_chan_read(atchan, AT_XDMAC_CIM);
- 			atchan->save_cnda = at_xdmac_chan_read(atchan, AT_XDMAC_CNDA);
- 			atchan->save_cndc = at_xdmac_chan_read(atchan, AT_XDMAC_CNDC);
-@@ -2027,7 +2063,7 @@ static int __maybe_unused atmel_xdmac_resume(struct device *dev)
- 		at_xdmac_chan_write(atchan, AT_XDMAC_CC, atchan->save_cc);
- 		if (at_xdmac_chan_is_cyclic(atchan)) {
- 			if (at_xdmac_chan_is_paused(atchan))
--				at_xdmac_device_resume(chan);
-+				at_xdmac_device_resume_internal(atchan);
- 			at_xdmac_chan_write(atchan, AT_XDMAC_CNDA, atchan->save_cnda);
- 			at_xdmac_chan_write(atchan, AT_XDMAC_CNDC, atchan->save_cndc);
- 			at_xdmac_chan_write(atchan, AT_XDMAC_CIE, atchan->save_cim);
--- 
-2.39.2
-
 
 
