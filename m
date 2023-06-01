@@ -2,115 +2,104 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F05771F3BA
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 22:20:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 764CF71F3D3
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 22:27:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232202AbjFAUTS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 16:19:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48334 "EHLO
+        id S232270AbjFAU1K (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 16:27:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231883AbjFAUTF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 16:19:05 -0400
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9270318D;
-        Thu,  1 Jun 2023 13:19:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-        ; s=x; h=Subject:Content-Transfer-Encoding:MIME-Version:References:
-        In-Reply-To:Message-Id:Date:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=ZiPCnMO76qB2BYRsvuFD+LhH0HMktcgnm3k8GmGktA0=; b=gaQlY1Tpf826FLJhqZ0W/h8y3Y
-        Q3pcsBMndgOTqToKTrhhmARqESXglDkRjHZogGUTT8eZAm4krxDGtMJbIhDTwZFrusXXAvICE6aTH
-        VWndAG32nz4jnbEQDg/EZ0XEP+1NR1mDkswdczq99+Cp7LNbbMuY3vAJWKPMH279taXU=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:39204 helo=pettiford.lan)
-        by mail.hugovil.com with esmtpa (Exim 4.92)
-        (envelope-from <hugo@hugovil.com>)
-        id 1q4ol6-000686-8C; Thu, 01 Jun 2023 16:18:56 -0400
-From:   Hugo Villeneuve <hugo@hugovil.com>
-To:     gregkh@linuxfoundation.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        jirislaby@kernel.org, jringle@gridpoint.com,
-        tomasz.mon@camlingroup.com, l.perczak@camlintechnologies.com
-Cc:     linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, hugo@hugovil.com,
-        linux-gpio@vger.kernel.org,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        stable@vger.kernel.org, Lech Perczak <lech.perczak@camlingroup.com>
-Date:   Thu,  1 Jun 2023 16:18:41 -0400
-Message-Id: <20230601201844.3739926-7-hugo@hugovil.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230601201844.3739926-1-hugo@hugovil.com>
-References: <20230601201844.3739926-1-hugo@hugovil.com>
+        with ESMTP id S231698AbjFAU1K (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 16:27:10 -0400
+Received: from mail-il1-x131.google.com (mail-il1-x131.google.com [IPv6:2607:f8b0:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6092D8E
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:27:05 -0700 (PDT)
+Received: by mail-il1-x131.google.com with SMTP id e9e14a558f8ab-3357fc32a31so36835ab.1
+        for <stable@vger.kernel.org>; Thu, 01 Jun 2023 13:27:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1685651224; x=1688243224;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QWBKQP7vVkJhhBssZg4awleL2zGJW9kgrjr0/VfEE8k=;
+        b=cWBGFQpN/mtiiE0qRp0NzVkvAC9GFTramLfyxZv5vxQ8dm9SrCS2C3hnG0Iys/eiLO
+         707L5uSmdZhe0xS28D2gJg2eW8W/ULeHjPs3oR+j6dbfv/jxqgf/qRGIL471Sj+EtQ4E
+         VZAL0Y6J/QWrpoGjFph3vDqdWeHQGI9ZJTS24=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685651224; x=1688243224;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QWBKQP7vVkJhhBssZg4awleL2zGJW9kgrjr0/VfEE8k=;
+        b=LgaGKL+ABC1x1pstk0u/TRIPgkUh2UvO9QoDRyGK3g4LDysy+tEWYrUigQI30z2UtL
+         S18BoyQxWCLpIBsweapRF4xDiAVFdpyEz3SNXX4DodhmwVFys38u1Qlp29Mna2NpX5dM
+         EShC7M0o99YCMeAU9IyLnY8YgkwmhAPlPRCnNRP0rwJND6MaxdyNiVZaEoyKFigO6gzH
+         GNwzYcezADAjeUGA7LF0ulm4FSjtB9sh0hTJQOx5zQ3rM5TVZH4ElSYt3xBEkoeCBJAp
+         gZw924hQYPL5+e44rHnuJ8a4DfwSQx+1mDXjQR3OVNkyIiassM11Vh59jwBVphkf/chm
+         qxPg==
+X-Gm-Message-State: AC+VfDzQ90ERskH+zTiBTLx1nY+lB8IWonoWQqWAq+1WwnaRJ6hxUdim
+        Nse1ehoYPGwDIcDTXrirzjstDg==
+X-Google-Smtp-Source: ACHHUZ6JlTDpujIStID5N1PWmlkzLws2U6mW19OXDwAS09wixvCF06e5l9QOZwBFKp5eTDQEbl7AGg==
+X-Received: by 2002:a05:6602:2c49:b0:76c:5c79:81bf with SMTP id x9-20020a0566022c4900b0076c5c7981bfmr6465399iov.2.1685651224704;
+        Thu, 01 Jun 2023 13:27:04 -0700 (PDT)
+Received: from [192.168.1.128] ([38.15.45.1])
+        by smtp.gmail.com with ESMTPSA id g186-20020a025bc3000000b0041643b78cbesm2547800jab.120.2023.06.01.13.27.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Jun 2023 13:27:04 -0700 (PDT)
+Message-ID: <0fa8408e-81d6-db13-4f97-c975a4647aac@linuxfoundation.org>
+Date:   Thu, 1 Jun 2023 14:27:03 -0600
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 6.3 00/45] 6.3.6-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de,
+        Shuah Khan <skhan@linuxfoundation.org>
+References: <20230601131938.702671708@linuxfoundation.org>
+From:   Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
-Subject: [PATCH v6 6/9] serial: sc16is7xx: fix bug when first setting GPIO direction
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+On 6/1/23 07:20, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.3.6 release.
+> There are 45 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 03 Jun 2023 13:19:19 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.3.6-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.3.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-When configuring a pin as an output pin with a value of logic 0, we
-end up as having a value of logic 1 on the output pin. Setting a
-logic 0 a second time (or more) after that will correctly output a
-logic 0 on the output pin.
+Compiled and booted on my test system. No dmesg regressions.
 
-By default, all GPIO pins are configured as inputs. When we enter
-sc16is7xx_gpio_direction_output() for the first time, we first set the
-desired value in IOSTATE, and then we configure the pin as an output.
-The datasheet states that writing to IOSTATE register will trigger a
-transfer of the value to the I/O pin configured as output, so if the
-pin is configured as an input, nothing will be transferred.
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-Therefore, set the direction first in IODIR, and then set the desired
-value in IOSTATE.
-
-This is what is done in NXP application note AN10587.
-
-Fixes: dfeae619d781 ("serial: sc16is7xx")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
-Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
----
- drivers/tty/serial/sc16is7xx.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index ad6b9d613b33..2fa09baf28e3 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1340,9 +1340,18 @@ static int sc16is7xx_gpio_direction_output(struct gpio_chip *chip,
- 		state |= BIT(offset);
- 	else
- 		state &= ~BIT(offset);
--	sc16is7xx_port_write(port, SC16IS7XX_IOSTATE_REG, state);
-+
-+	/*
-+	 * If we write IOSTATE first, and then IODIR, the output value is not
-+	 * transferred to the corresponding I/O pin.
-+	 * The datasheet states that each register bit will be transferred to
-+	 * the corresponding I/O pin programmed as output when writing to
-+	 * IOSTATE. Therefore, configure direction first with IODIR, and then
-+	 * set value after with IOSTATE.
-+	 */
- 	sc16is7xx_port_update(port, SC16IS7XX_IODIR_REG, BIT(offset),
- 			      BIT(offset));
-+	sc16is7xx_port_write(port, SC16IS7XX_IOSTATE_REG, state);
- 
- 	return 0;
- }
--- 
-2.30.2
-
+thanks,
+-- Shuah
