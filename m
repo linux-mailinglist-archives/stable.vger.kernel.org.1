@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3558C719DE4
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:27:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A38F0719E18
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:29:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233890AbjFAN1X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:27:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35830 "EHLO
+        id S233975AbjFAN2m (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:28:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233891AbjFAN1D (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:27:03 -0400
+        with ESMTP id S233971AbjFAN2W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:28:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E02CCE6A
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:26:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC5E3E6A
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:28:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C1673644A6
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:26:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF90C433EF;
-        Thu,  1 Jun 2023 13:26:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AE119644E0
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:28:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7CF1C4339B;
+        Thu,  1 Jun 2023 13:28:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685626007;
-        bh=aqVK/aFHene3fMXpiV9PVreukKsTMhLtTjmZeC3NWww=;
+        s=korg; t=1685626086;
+        bh=Av6Qp9Uh8t3sKnlxPA/NEwE1ChSJ4ZUeAMOBvYH+PfM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y4EeeyeRedhU8xAvTDADMh0sNAsxMFNrhi2hwlH5GTVVaMnPc26/qinYcHlXD3fgs
-         m40nqUlK5auf5J9pMF2UhUKxIl+DBzD1VFeGRds3ZyNaOCrcJkGkKD8IzODIEreUyR
-         c9u0lzfuGIGlCLo3R017JYFni0RNPj6EoYZ5a3kg=
+        b=kKQuOKi4FlxkTKtIJ5oQgSKaFcPsotWuYB7D9gYTm2AXFIqVFnTX2ATMJ/BqEg/zu
+         qgYCB3i4hlZx/dLwLNocbqGR1fzWE+OzdrHA8jvGWuMY8hEYIcOeE1Ith4hENLvlMU
+         2ZZcVeb29igoi8Gm0NLTHHVNC+jDscoiSxBRRjd4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tian Lan <tian.lan@twosigma.com>,
-        Ming Lei <ming.lei@redhat.com>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        John Garry <john.g.garry@oracle.com>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 38/45] blk-mq: fix race condition in active queue accounting
+        patches@lists.linux.dev, Yunsheng Lin <linyunsheng@huawei.com>,
+        Jesper Dangaard Brouer <brouer@redhat.com>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 25/42] page_pool: fix inconsistency for page_pool_ring_[un]lock()
 Date:   Thu,  1 Jun 2023 14:21:34 +0100
-Message-Id: <20230601131940.443054353@linuxfoundation.org>
+Message-Id: <20230601131940.143968395@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
-References: <20230601131938.702671708@linuxfoundation.org>
+In-Reply-To: <20230601131939.051934720@linuxfoundation.org>
+References: <20230601131939.051934720@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,55 +56,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tian Lan <tian.lan@twosigma.com>
+From: Yunsheng Lin <linyunsheng@huawei.com>
 
-[ Upstream commit 3e94d54e83cafd2b562bb6d15bb2f72d76200fb5 ]
+[ Upstream commit 368d3cb406cdd074d1df2ad9ec06d1bfcb664882 ]
 
-If multiple CPUs are sharing the same hardware queue, it can
-cause leak in the active queue counter tracking when __blk_mq_tag_busy()
-is executed simultaneously.
+page_pool_ring_[un]lock() use in_softirq() to decide which
+spin lock variant to use, and when they are called in the
+context with in_softirq() being false, spin_lock_bh() is
+called in page_pool_ring_lock() while spin_unlock() is
+called in page_pool_ring_unlock(), because spin_lock_bh()
+has disabled the softirq in page_pool_ring_lock(), which
+causes inconsistency for spin lock pair calling.
 
-Fixes: ee78ec1077d3 ("blk-mq: blk_mq_tag_busy is no need to return a value")
-Signed-off-by: Tian Lan <tian.lan@twosigma.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20230522210555.794134-1-tilan7663@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+This patch fixes it by returning in_softirq state from
+page_pool_producer_lock(), and use it to decide which
+spin lock variant to use in page_pool_producer_unlock().
+
+As pool->ring has both producer and consumer lock, so
+rename it to page_pool_producer_[un]lock() to reflect
+the actual usage. Also move them to page_pool.c as they
+are only used there, and remove the 'inline' as the
+compiler may have better idea to do inlining or not.
+
+Fixes: 7886244736a4 ("net: page_pool: Add bulk support for ptr_ring")
+Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+Acked-by: Jesper Dangaard Brouer <brouer@redhat.com>
+Acked-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Link: https://lore.kernel.org/r/20230522031714.5089-1-linyunsheng@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq-tag.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ include/net/page_pool.h | 18 ------------------
+ net/core/page_pool.c    | 28 ++++++++++++++++++++++++++--
+ 2 files changed, 26 insertions(+), 20 deletions(-)
 
-diff --git a/block/blk-mq-tag.c b/block/blk-mq-tag.c
-index 9eb968e14d31f..a80d7c62bdfe6 100644
---- a/block/blk-mq-tag.c
-+++ b/block/blk-mq-tag.c
-@@ -41,16 +41,20 @@ void __blk_mq_tag_busy(struct blk_mq_hw_ctx *hctx)
+diff --git a/include/net/page_pool.h b/include/net/page_pool.h
+index 34bf531ffc8d6..ad0bafc877d48 100644
+--- a/include/net/page_pool.h
++++ b/include/net/page_pool.h
+@@ -383,22 +383,4 @@ static inline void page_pool_nid_changed(struct page_pool *pool, int new_nid)
+ 		page_pool_update_nid(pool, new_nid);
+ }
+ 
+-static inline void page_pool_ring_lock(struct page_pool *pool)
+-	__acquires(&pool->ring.producer_lock)
+-{
+-	if (in_softirq())
+-		spin_lock(&pool->ring.producer_lock);
+-	else
+-		spin_lock_bh(&pool->ring.producer_lock);
+-}
+-
+-static inline void page_pool_ring_unlock(struct page_pool *pool)
+-	__releases(&pool->ring.producer_lock)
+-{
+-	if (in_softirq())
+-		spin_unlock(&pool->ring.producer_lock);
+-	else
+-		spin_unlock_bh(&pool->ring.producer_lock);
+-}
+-
+ #endif /* _NET_PAGE_POOL_H */
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 193c187998650..2396c99bedeaa 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -133,6 +133,29 @@ EXPORT_SYMBOL(page_pool_ethtool_stats_get);
+ #define recycle_stat_add(pool, __stat, val)
+ #endif
+ 
++static bool page_pool_producer_lock(struct page_pool *pool)
++	__acquires(&pool->ring.producer_lock)
++{
++	bool in_softirq = in_softirq();
++
++	if (in_softirq)
++		spin_lock(&pool->ring.producer_lock);
++	else
++		spin_lock_bh(&pool->ring.producer_lock);
++
++	return in_softirq;
++}
++
++static void page_pool_producer_unlock(struct page_pool *pool,
++				      bool in_softirq)
++	__releases(&pool->ring.producer_lock)
++{
++	if (in_softirq)
++		spin_unlock(&pool->ring.producer_lock);
++	else
++		spin_unlock_bh(&pool->ring.producer_lock);
++}
++
+ static int page_pool_init(struct page_pool *pool,
+ 			  const struct page_pool_params *params)
  {
- 	unsigned int users;
+@@ -615,6 +638,7 @@ void page_pool_put_page_bulk(struct page_pool *pool, void **data,
+ 			     int count)
+ {
+ 	int i, bulk_len = 0;
++	bool in_softirq;
  
-+	/*
-+	 * calling test_bit() prior to test_and_set_bit() is intentional,
-+	 * it avoids dirtying the cacheline if the queue is already active.
-+	 */
- 	if (blk_mq_is_shared_tags(hctx->flags)) {
- 		struct request_queue *q = hctx->queue;
+ 	for (i = 0; i < count; i++) {
+ 		struct page *page = virt_to_head_page(data[i]);
+@@ -633,7 +657,7 @@ void page_pool_put_page_bulk(struct page_pool *pool, void **data,
+ 		return;
  
--		if (test_bit(QUEUE_FLAG_HCTX_ACTIVE, &q->queue_flags))
-+		if (test_bit(QUEUE_FLAG_HCTX_ACTIVE, &q->queue_flags) ||
-+		    test_and_set_bit(QUEUE_FLAG_HCTX_ACTIVE, &q->queue_flags))
- 			return;
--		set_bit(QUEUE_FLAG_HCTX_ACTIVE, &q->queue_flags);
- 	} else {
--		if (test_bit(BLK_MQ_S_TAG_ACTIVE, &hctx->state))
-+		if (test_bit(BLK_MQ_S_TAG_ACTIVE, &hctx->state) ||
-+		    test_and_set_bit(BLK_MQ_S_TAG_ACTIVE, &hctx->state))
- 			return;
--		set_bit(BLK_MQ_S_TAG_ACTIVE, &hctx->state);
+ 	/* Bulk producer into ptr_ring page_pool cache */
+-	page_pool_ring_lock(pool);
++	in_softirq = page_pool_producer_lock(pool);
+ 	for (i = 0; i < bulk_len; i++) {
+ 		if (__ptr_ring_produce(&pool->ring, data[i])) {
+ 			/* ring full */
+@@ -642,7 +666,7 @@ void page_pool_put_page_bulk(struct page_pool *pool, void **data,
+ 		}
  	}
+ 	recycle_stat_add(pool, ring, i);
+-	page_pool_ring_unlock(pool);
++	page_pool_producer_unlock(pool, in_softirq);
  
- 	users = atomic_inc_return(&hctx->tags->active_queues);
+ 	/* Hopefully all pages was return into ptr_ring */
+ 	if (likely(i == bulk_len))
 -- 
 2.39.2
 
