@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A09AB719DEC
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:27:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C11E719DA7
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:25:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233747AbjFAN1h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:27:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34346 "EHLO
+        id S233725AbjFANZY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:25:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233772AbjFAN1Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:27:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 965A2E4A
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:27:07 -0700 (PDT)
+        with ESMTP id S233822AbjFANZF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:25:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0BF3E51
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:24:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 77724644AB
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:27:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D71C433EF;
-        Thu,  1 Jun 2023 13:27:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DAA2864472
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:24:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02881C433D2;
+        Thu,  1 Jun 2023 13:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685626026;
-        bh=XUeEaJx8O5Ql4cHjKXrktV9MBQ7NFKrSs1iCs1SeYdE=;
+        s=korg; t=1685625882;
+        bh=6WHCp0vcFycMP43T7Nkn5gQAUU7gsOx3eeV0ZDV63XY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QDcfV+3h0SwZBkfk+5rQHPM8qnpfFNXZkTwL/8rgINfKrc5nzelfPwQfjtcIylpWW
-         oumk854sR3uZrlnEXll0icWbjQ6e6Z/plePXrommLYxUXvxIoDsrW/JOGUBYRMgL41
-         lOnZzajgwmLDzWYszR5NkHqx68UlT53rS0UGkt2g=
+        b=lp+gc01HuBC1VmHXJ5a3g9KesfrY9tOERlk8moorUSDZpgGklahhbMAA62DtRlAob
+         f5FsPRL4wm3AZgCokj3rqgZuOjlNvAiZ3guhvwuwB6uB/LBKq85FknbvygYq9xgDal
+         tA+u2PXdFmKXoIvPC4Eu14J3WwrHqH8HToK8UbFI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Imre Deak <imre.deak@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Mika Kahola <mika.kahola@intel.com>
-Subject: [PATCH 6.3 21/45] drm/i915: Move shared DPLL disabling into CRTC disable hook
+        patches@lists.linux.dev, Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+        Tariq Toukan <tariqt@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 30/42] net/mlx5e: Fix SQ wake logic in ptp napi_poll context
 Date:   Thu,  1 Jun 2023 14:21:17 +0100
-Message-Id: <20230601131939.678247433@linuxfoundation.org>
+Message-Id: <20230601131938.068906471@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
-References: <20230601131938.702671708@linuxfoundation.org>
+In-Reply-To: <20230601131936.699199833@linuxfoundation.org>
+References: <20230601131936.699199833@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,69 +55,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Imre Deak <imre.deak@intel.com>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-[ Upstream commit 3acac2d06a7e0f0b182b86b25bb8a2e9b3300406 ]
+[ Upstream commit 7aa50380191635e5897a773f272829cc961a2be5 ]
 
-The spec requires disabling the PLL on TC ports before disconnecting the
-port's PHY. Prepare for that by moving the PLL disabling to the CRTC
-disable hook, while disconnecting the PHY will be moved to the
-post_pll_disable() encoder hook in the next patch.
+Check in the mlx5e_ptp_poll_ts_cq context if the ptp tx sq should be woken
+up. Before change, the ptp tx sq may never wake up if the ptp tx ts skb
+fifo is full when mlx5e_poll_tx_cq checks if the queue should be woken up.
 
-v2: Move the call from intel_crtc_disable_noatomic() as well.
-
-Reviewed-by: Mika Kahola <mika.kahola@intel.com> # v1
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230323142035.1432621-27-imre.deak@intel.com
-Stable-dep-of: 45dfbd992923 ("drm/i915: Fix PIPEDMC disabling for a bigjoiner configuration")
+Fixes: 1880bc4e4a96 ("net/mlx5e: Add TX port timestamp support")
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_display.c       | 5 ++++-
- drivers/gpu/drm/i915/display/intel_modeset_setup.c | 1 -
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/en/ptp.c  |  2 ++
+ .../net/ethernet/mellanox/mlx5/core/en/txrx.h |  2 ++
+ .../net/ethernet/mellanox/mlx5/core/en_tx.c   | 19 ++++++++++++-------
+ 3 files changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
-index 2bef50ab0ad19..df4c6e000961c 100644
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -2000,6 +2000,8 @@ static void ilk_crtc_disable(struct intel_atomic_state *state,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
+index 3a86f66d12955..ee95cc3a03786 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
+@@ -126,6 +126,8 @@ static bool mlx5e_ptp_poll_ts_cq(struct mlx5e_cq *cq, int budget)
+ 	/* ensure cq space is freed before enabling more cqes */
+ 	wmb();
  
- 	intel_set_cpu_fifo_underrun_reporting(dev_priv, pipe, true);
- 	intel_set_pch_fifo_underrun_reporting(dev_priv, pipe, true);
++	mlx5e_txqsq_wake(&ptpsq->txqsq);
 +
-+	intel_disable_shared_dpll(old_crtc_state);
+ 	return work_done == budget;
  }
  
- static void hsw_crtc_disable(struct intel_atomic_state *state,
-@@ -2018,6 +2020,8 @@ static void hsw_crtc_disable(struct intel_atomic_state *state,
- 		intel_encoders_post_disable(state, crtc);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h b/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h
+index f5c872043bcbd..cf62d1f6d7f20 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h
+@@ -172,6 +172,8 @@ static inline u16 mlx5e_txqsq_get_next_pi(struct mlx5e_txqsq *sq, u16 size)
+ 	return pi;
+ }
+ 
++void mlx5e_txqsq_wake(struct mlx5e_txqsq *sq);
++
+ struct mlx5e_icosq_wqe_info {
+ 	u8 wqe_type;
+ 	u8 num_wqebbs;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
+index e18fa5ae0fd84..6813279b57f89 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
+@@ -810,6 +810,17 @@ static void mlx5e_tx_wi_consume_fifo_skbs(struct mlx5e_txqsq *sq, struct mlx5e_t
  	}
- 
-+	intel_disable_shared_dpll(old_crtc_state);
-+
- 	intel_dmc_disable_pipe(i915, crtc->pipe);
  }
  
-@@ -7140,7 +7144,6 @@ static void intel_old_crtc_state_disables(struct intel_atomic_state *state,
- 	dev_priv->display.funcs.display->crtc_disable(state, crtc);
- 	crtc->active = false;
- 	intel_fbc_disable(crtc);
--	intel_disable_shared_dpll(old_crtc_state);
++void mlx5e_txqsq_wake(struct mlx5e_txqsq *sq)
++{
++	if (netif_tx_queue_stopped(sq->txq) &&
++	    mlx5e_wqc_has_room_for(&sq->wq, sq->cc, sq->pc, sq->stop_room) &&
++	    mlx5e_ptpsq_fifo_has_room(sq) &&
++	    !test_bit(MLX5E_SQ_STATE_RECOVERING, &sq->state)) {
++		netif_tx_wake_queue(sq->txq);
++		sq->stats->wake++;
++	}
++}
++
+ bool mlx5e_poll_tx_cq(struct mlx5e_cq *cq, int napi_budget)
+ {
+ 	struct mlx5e_sq_stats *stats;
+@@ -909,13 +920,7 @@ bool mlx5e_poll_tx_cq(struct mlx5e_cq *cq, int napi_budget)
  
- 	if (!new_crtc_state->hw.active)
- 		intel_initial_watermarks(state, crtc);
-diff --git a/drivers/gpu/drm/i915/display/intel_modeset_setup.c b/drivers/gpu/drm/i915/display/intel_modeset_setup.c
-index 52cdbd4fc2fa0..48b726e408057 100644
---- a/drivers/gpu/drm/i915/display/intel_modeset_setup.c
-+++ b/drivers/gpu/drm/i915/display/intel_modeset_setup.c
-@@ -96,7 +96,6 @@ static void intel_crtc_disable_noatomic(struct intel_crtc *crtc,
+ 	netdev_tx_completed_queue(sq->txq, npkts, nbytes);
  
- 	intel_fbc_disable(crtc);
- 	intel_update_watermarks(i915);
--	intel_disable_shared_dpll(crtc_state);
+-	if (netif_tx_queue_stopped(sq->txq) &&
+-	    mlx5e_wqc_has_room_for(&sq->wq, sq->cc, sq->pc, sq->stop_room) &&
+-	    mlx5e_ptpsq_fifo_has_room(sq) &&
+-	    !test_bit(MLX5E_SQ_STATE_RECOVERING, &sq->state)) {
+-		netif_tx_wake_queue(sq->txq);
+-		stats->wake++;
+-	}
++	mlx5e_txqsq_wake(sq);
  
- 	intel_display_power_put_all_in_set(i915, &crtc->enabled_power_domains);
- 
+ 	return (i == MLX5E_TX_CQ_POLL_BUDGET);
+ }
 -- 
 2.39.2
 
