@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D242719DE6
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75C69719E14
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:29:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233898AbjFAN10 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:27:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35624 "EHLO
+        id S234006AbjFAN3A (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:29:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233831AbjFAN1I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:27:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB9D5125
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:26:52 -0700 (PDT)
+        with ESMTP id S234003AbjFAN2b (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:28:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B99F910D7
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:28:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CBE6F644C0
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:26:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAAFFC433D2;
-        Thu,  1 Jun 2023 13:26:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 99A2A64473
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:28:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C9FC433EF;
+        Thu,  1 Jun 2023 13:28:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685626012;
-        bh=l8Sp1rRdzkG/FxY65CYqI3d8YVfl+w3I91K39+OAy5w=;
+        s=korg; t=1685626091;
+        bh=b6MfFNY3Iz/RWUvsvgWRjbIqcdP3Ru+hFWkpfYvaEfM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yfISMLZSvJDzefWxxSkWGjafFqdIO11uuwg0GTyLfmF7/YOaobenlIqSTXCerTLt0
-         1dRBRRR/y2DjCASeJF/113k+bjWyyr4P+ITBqEozKvGXyOSF+c4uTq4YsQxymToQ6q
-         iixWXE26DuYML0t4kpGwZOwZSOPu3mntvOxAvQ58=
+        b=knJzib3I0uB0WdsMNjRqVva+ownwOec1zlsgS4TbvIVqACy+YoRGy2ZIHUyk8Wj1k
+         XH4d0dEaxUmGgWa5sJbcuSWGAQ7osuRUzwNEWUXVkoXztMwYcU+pR63o2itj7l2X8e
+         dRnaDZl2v0suyQ6Enz2wP+OKJ/l+gTIvPP8P1vpA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wyes Karny <wyes.karny@amd.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 40/45] cpufreq: amd-pstate: Remove fast_switch_possible flag from active driver
+        patches@lists.linux.dev, Eric Huang <echuang@realtek.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 27/42] wifi: rtw89: correct 5 MHz mask setting
 Date:   Thu,  1 Jun 2023 14:21:36 +0100
-Message-Id: <20230601131940.538835001@linuxfoundation.org>
+Message-Id: <20230601131940.228186343@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
-References: <20230601131938.702671708@linuxfoundation.org>
+In-Reply-To: <20230601131939.051934720@linuxfoundation.org>
+References: <20230601131939.051934720@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,42 +54,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wyes Karny <wyes.karny@amd.com>
+From: Eric Huang <echuang@realtek.com>
 
-[ Upstream commit 249b62c448de7117c18531d626aed6e153cdfd75 ]
+[ Upstream commit d33fc8d0368c180fe2338bfae4f5367a66a719f4 ]
 
-amd_pstate active mode driver is only compatible with static governors.
-Therefore it doesn't need fast_switch functionality. Remove
-fast_switch_possible flag from amd_pstate active mode driver.
+Use primary channel index to determine which 5 MHz mask should be enable.
+This mask is used to prevent noise from channel edge to effect CCA
+threshold in wide bandwidth (>= 40 MHZ).
 
-Fixes: ffa5096a7c33 ("cpufreq: amd-pstate: implement Pstate EPP support for the AMD processors")
-Signed-off-by: Wyes Karny <wyes.karny@amd.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 1b00e9236a71 ("rtw89: 8852c: add set channel of BB part")
+Fixes: 6b0698984eb0 ("wifi: rtw89: 8852b: add chip_ops::set_channel")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Huang <echuang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230406072841.8308-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/amd-pstate.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-index 8dd46fad151eb..fda15b4a0770f 100644
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -996,7 +996,6 @@ static int amd_pstate_epp_cpu_init(struct cpufreq_policy *policy)
- 	policy->policy = CPUFREQ_POLICY_POWERSAVE;
- 
- 	if (boot_cpu_has(X86_FEATURE_CPPC)) {
--		policy->fast_switch_possible = true;
- 		ret = rdmsrl_on_cpu(cpudata->cpu, MSR_AMD_CPPC_REQ, &value);
- 		if (ret)
- 			return ret;
-@@ -1019,7 +1018,6 @@ static int amd_pstate_epp_cpu_init(struct cpufreq_policy *policy)
- static int amd_pstate_epp_cpu_exit(struct cpufreq_policy *policy)
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+index 67653b3e1a356..3109114cec6ff 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
+@@ -1484,18 +1484,19 @@ static void rtw8852c_5m_mask(struct rtw89_dev *rtwdev,
+ 			     const struct rtw89_chan *chan,
+ 			     enum rtw89_phy_idx phy_idx)
  {
- 	pr_debug("CPU %d exiting\n", policy->cpu);
--	policy->fast_switch_possible = false;
- 	return 0;
- }
+-	u8 pri_ch = chan->primary_channel;
++	u8 pri_ch = chan->pri_ch_idx;
+ 	bool mask_5m_low;
+ 	bool mask_5m_en;
  
+ 	switch (chan->band_width) {
+ 	case RTW89_CHANNEL_WIDTH_40:
+ 		mask_5m_en = true;
+-		mask_5m_low = pri_ch == 2;
++		mask_5m_low = pri_ch == RTW89_SC_20_LOWER;
+ 		break;
+ 	case RTW89_CHANNEL_WIDTH_80:
+-		mask_5m_en = ((pri_ch == 3) || (pri_ch == 4));
+-		mask_5m_low = pri_ch == 4;
++		mask_5m_en = pri_ch == RTW89_SC_20_UPMOST ||
++			     pri_ch == RTW89_SC_20_LOWEST;
++		mask_5m_low = pri_ch == RTW89_SC_20_LOWEST;
+ 		break;
+ 	default:
+ 		mask_5m_en = false;
 -- 
 2.39.2
 
