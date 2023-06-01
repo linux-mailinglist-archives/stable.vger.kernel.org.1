@@ -2,46 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 217947192FF
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 08:07:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F36EE719342
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 08:32:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229476AbjFAGG6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 02:06:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37946 "EHLO
+        id S230468AbjFAGcj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 02:32:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231145AbjFAGG5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 02:06:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE80799
-        for <stable@vger.kernel.org>; Wed, 31 May 2023 23:06:55 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 66E9B61BF4
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:06:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B8FC433EF;
-        Thu,  1 Jun 2023 06:06:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685599614;
-        bh=kqJf6nuimr8Zid7L9LY8ukzVHnuhrDW7INmS/dywrXc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=XBSeF2duUAft1zLAKrWRn3hbkI1PzGS3pboAY7YY1HxRzqqQi+N+8z28iH/COPqTh
-         w/w9tWbdhpjNWwAMtDyLbWob62KBdsX+NqjrqHT/7LKHVg0icPxdnzdptZuDOtRLuW
-         RCE8WrD4Ebgaun5ps50v9vXECU2dNb9I2DnLP5jQ=
-Date:   Thu, 1 Jun 2023 07:06:52 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Luiz Capitulino <luizcap@amazon.com>
-Cc:     paul@paul-moore.com, sashal@kernel.org, stable@vger.kernel.org
-Subject: Re: Possible build time regression affecting stable kernels
-Message-ID: <2023060156-precision-prorate-ce46@gregkh>
-References: <8892cb92-0f30-db36-e9db-4bec5e7eb46e@amazon.com>
+        with ESMTP id S229927AbjFAGci (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 02:32:38 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B929998;
+        Wed, 31 May 2023 23:32:36 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DB024169C;
+        Wed, 31 May 2023 23:33:21 -0700 (PDT)
+Received: from bogus (unknown [10.57.96.86])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D3D063F7D8;
+        Wed, 31 May 2023 23:32:34 -0700 (PDT)
+Date:   Thu, 1 Jun 2023 07:32:31 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Florian Fainelli <florian.fainelli@broadcom.com>
+Cc:     Conor Dooley <conor@kernel.org>, stable@vger.kernel.org,
+        Pierre Gondois <pierre.gondois@arm.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "open list:GENERIC ARCHITECTURE TOPOLOGY" 
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH stable 6.3 v2] arch_topology: Remove early cacheinfo
+ error message if -ENOENT
+Message-ID: <20230601063231.dyvrl37afhk65zit@bogus>
+References: <20230530201955.848176-1-florian.fainelli@broadcom.com>
+ <20230530-basically-wildly-84415a94171d@spud>
+ <72d84100-55cf-566d-8301-7147ce14b1e9@broadcom.com>
+ <20230531085356.ru4fmtawyxo5cq5s@bogus>
+ <7eae52f6-ca7e-5017-629e-43761d4eb5d7@broadcom.com>
+ <20230531154338.x7rivfpxj2wtjpq6@bogus>
+ <0f2e3a2b-477b-cbd7-e756-4b3f4df8e045@broadcom.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8892cb92-0f30-db36-e9db-4bec5e7eb46e@amazon.com>
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <0f2e3a2b-477b-cbd7-e756-4b3f4df8e045@broadcom.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -49,62 +53,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, May 31, 2023 at 10:12:40PM -0400, Luiz Capitulino wrote:
-> Hi Paul,
+On Wed, May 31, 2023 at 12:52:22PM -0700, Florian Fainelli wrote:
 > 
-> A number of stable kernels recently backported this upstream commit:
 > 
-> """
-> commit 4ce1f694eb5d8ca607fed8542d32a33b4f1217a5
-> Author: Paul Moore <paul@paul-moore.com>
-> Date:   Wed Apr 12 13:29:11 2023 -0400
+> On 5/31/2023 8:43 AM, Sudeep Holla wrote:
+> > On Wed, May 31, 2023 at 08:28:26AM -0700, Florian Fainelli wrote:
+> > > 
+> > > 
+> > > On 5/31/2023 1:53 AM, Sudeep Holla wrote:
+> > > > On Tue, May 30, 2023 at 03:42:45PM -0700, Florian Fainelli wrote:
+> > > > > Hi Conor,
+> > > > > 
+> > > > > On 5/30/23 14:39, Conor Dooley wrote:
+> > > > > > Yo Florian,
+> > > > > > 
+> > > > > > On Tue, May 30, 2023 at 01:19:55PM -0700, Florian Fainelli wrote:
+> > > > > > > From: Pierre Gondois <pierre.gondois@arm.com>
+> > > > > > > 
+> > > > > > > commit 3522340199cc060b70f0094e3039bdb43c3f6ee1 upstream
+> > > > > > > 
+> > > > > > > fetch_cache_info() tries to get the number of cache leaves/levels
+> > > > > > > for each CPU in order to pre-allocate memory for cacheinfo struct.
+> > > > > > > Allocating this memory later triggers a:
+> > > > > > >      'BUG: sleeping function called from invalid context'
+> > > > > > > in PREEMPT_RT kernels.
+> > > > > > > 
+> > > > > > > If there is no cache related information available in DT or ACPI,
+> > > > > > > fetch_cache_info() fails and an error message is printed:
+> > > > > > >      'Early cacheinfo failed, ret = ...'
+> > > > > > > 
+> > > > > > > Not having cache information should be a valid configuration.
+> > > > > > > Remove the error message if fetch_cache_info() fails with -ENOENT.
+> > > > > > > 
+> > > > > > > Suggested-by: Conor Dooley <conor.dooley@microchip.com>
+> > > > > > > Link: https://lore.kernel.org/all/20230404-hatred-swimmer-6fecdf33b57a@spud/
+> > > > > > > Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
+> > > > > > > Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> > > > > > > Link: https://lore.kernel.org/r/20230414081453.244787-4-pierre.gondois@arm.com
+> > > > > > > Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+> > > > > > > Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+> > > > > > 
+> > > > > > How come this now needs a backport? Did the rest of the series get
+> > > > > > backported, but not this one since it has no fixes tag?
+> > > > > 
+> > > > > Humm, indeed, this has been present in v6.3.2 since I requested it to be
+> > > > > included. The error that I saw this morning was not -ENOENT, but -EINVAL.
+> > > > > 
+> > > > > With those patches applied, no more -EINVAL:
+> > > > > 
+> > > > > cacheinfo: Allow early level detection when DT/ACPI info is missing/broken
+> > > > > cacheinfo: Add arm64 early level initializer implementation
+> > > > > cacheinfo: Add arch specific early level initializer
+> > > > > cacheinfo: Add use_arch[|_cache]_info field/function
+> > > > > 
+> > > > > I will submit those shortly unless we think they better not be in 6.3, in
+> > > > > which case it would be nice to silence those -EINVAL errors.
+> > > > 
+> > > > I prefer this option instead of back porting all the above 4 as there are
+> > > > some pending fixes for the issues found in those patches. I am fine if Greg
+> > > > is happy with the backport, so no strong rejection from my side :).
+> > > 
+> > > OK, so are you suggesting that we specific check for -EINVAL and -ENOENT
+> > > rather than take all of the 4 above patches,
+> > 
+> > Yes that is my preference ATM or if possible to wait until all the fixes
+> > are sorted for the bugs associated with above 4 commits [1] and [2].
+> > I have queued [1] but waiting for response/patch on [2] and hence not yet
+> > bothered Greg.
+> > 
+> > > if so, any preference on how to do it given the state of 6.3 stable?
+> > 
+> > I don't understand what exactly do you mean ?
 > 
->     selinux: ensure av_permissions.h is built when needed
-> """
+> Linux 6.3.y currently contains:
 > 
-> We're seeing a build issue with this commit where the "crash" tool will fail
-> to start, it complains that the vmlinux image and /proc/version don't match.
+> cacheinfo: Check sib_leaf in cache_leaves_are_shared()
+> cacheinfo: Check cache properties are present in DT
+> arch_topology: Remove early cacheinfo error message if -ENOENT
 > 
-> A minimum reproducer would be having "make" version before 4.3 and building
-> the kernel with:
+> however my logs are full of:
 > 
-> $ make bzImages
-> $ make modules
+> [    0.001484] Early cacheinfo failed, ret = -22
 > 
-> Then compare the version strings in the bzImage and vmlinux images,
-> we can use "strings" for this. For example, in the 5.10.181 kernel I get:
+> reverting these 3 patches mentioned above does not eliminate the error.
 > 
-> $ strings vmlinux | egrep '^Linux version'
-> Linux version 5.10.181 (ec2-user@ip-172-31-79-134.ec2.internal) (gcc (GCC) 7.3.1 20180712 (Red Hat 7.3.1-15), GNU ld version 2.29.1-31.amzn2) #2 SMP Thu Jun 1 01:26:38 UTC 2023
-> 
-> $ strings ./arch/x86_64/boot/bzImage | egrep 'ld version'
-> 5.10.181 (ec2-user@ip-172-31-79-134.ec2.internal) (gcc (GCC) 7.3.1 20180712 (Red Hat 7.3.1-15), GNU ld version 2.29.1-31.amzn2) #1 SMP Thu Jun 1 01:23:59 UTC 2023
-> 
-> The version string in the bzImage doesn't have the "Linux version" part, but
-> I think this is added by the kernel when printing. If you compare the strings,
-> you'll see that they have a different build date and the "#1" and "#2" are
-> different.
-> 
-> This only happens with commit 4ce1f694eb5 applied and older "make", in my case I
-> have "make" version 3.82.
-> 
-> If I revert 4ce1f694eb5 or use "make" version 4.3 I get identical strings (except
-> for the "Linux version" part):
-> 
-> $ strings vmlinux | egrep '^Linux version'
-> Linux version 5.10.181+ (ec2-user@ip-172-31-79-134.ec2.internal) (gcc (GCC) 7.3.1 20180712 (Red Hat 7.3.1-15), GNU ld version 2.29.1-31.amzn2) #1 SMP Thu Jun 1 01:29:11 UTC 2023
-> 
-> $ strings ./arch/x86_64/boot/bzImage | egrep 'ld version'
-> 5.10.181+ (ec2-user@ip-172-31-79-134.ec2.internal) (gcc (GCC) 7.3.1 20180712 (Red Hat 7.3.1-15), GNU ld version 2.29.1-31.amzn2) #1 SMP Thu Jun 1 01:29:11 UTC 2023
-> 
-> Maybe the grouped target usage in 4ce1f694eb5 with older "make" is causing a
-> rebuild of the vmlinux image in "make modules"? If yes, is this expected?
-> 
-> I'm afraid this issue could be high impact for distros with older user-space.
+> What I am asking is if we need a targeted fix for 6.3 like this:
+>
 
-Is this issue also in 6.4-rc1 where this change came from?  What about
-the other stable releases?
+I am fine with that. Please note Greg has now pulled the fixes I pointed.
+So I am fine if you want to backport the 4 patches discussed earlier as
+the stable will get the fixes soon which was my main concern earlier.
 
-thanks,
+The other issue I pointed should also be resolved soon based on [1]
 
-greg k-h
+-- 
+Regards,
+Sudeep
+
+[1] https://lore.kernel.org/all/20230531170336.GA22753@ranerica-svr.sc.intel.com
