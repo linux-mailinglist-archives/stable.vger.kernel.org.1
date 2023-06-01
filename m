@@ -2,167 +2,154 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0608719DD5
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:26:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14D65719DE2
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:27:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233741AbjFAN0v (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:26:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35206 "EHLO
+        id S233866AbjFAN1U (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:27:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233734AbjFAN0m (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:26:42 -0400
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD63519B;
-        Thu,  1 Jun 2023 06:26:18 -0700 (PDT)
-Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-3f60e730bf2so8787015e9.1;
-        Thu, 01 Jun 2023 06:26:18 -0700 (PDT)
+        with ESMTP id S233865AbjFAN1A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:27:00 -0400
+Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 692A3E5B
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:26:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685625977; x=1688217977;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mY4ulbNFE/jjkAM6F1KYjqgtbBRcYBjAGNE85b4mha4=;
-        b=Eyrfbb4GRekIwaWBrbBJoAQ+TnpS4Wpf9ICO7qzsFvxrI9yFUyGrFRxRngKXl20JW3
-         tEbx+C9qcNg2G+jhDjaxDGirdsMr/nreZgAB9LkqbAaVVfWCJFlrs3R8sFu+BsIiquMP
-         lbCyVxQMJzaR1SqXubYb72QmrEP1SnkUlHjOwgYf6cZjhmdUf0SWLC5O5Ya/hRGn8rHe
-         v9SzgNnKjXNQNNs/ci1y7YuRaMQWCCUzO3r6LLTJz12h5My9spUJ8CexcmAWpWSJowE8
-         MspDWpWbFA3mTGmxvAt9KdlZhRjlGfdLXibIIdrUbLBeVgxKF+cZsb4pvM56w+unqb+z
-         CfgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685625977; x=1688217977;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mY4ulbNFE/jjkAM6F1KYjqgtbBRcYBjAGNE85b4mha4=;
-        b=cgqF1eLqN//cS5cC7lWmVficG2kWef2OtvL1fbhR4JgfUMYhzXzovcBhN0epRyum/J
-         7fAmAUHeOFOGgrHYbhRu/n0A9n75ly9FeP7p4CsJzS1jvel9SQmkOZDVtmxWu+3gbmLx
-         3i1WbTovfUFOYxtaFgQNYp6M4tSOYGGAOAUZPOExxwxbWsUB/2UeqnjyAbgbzqRlvdUx
-         rtSH4+hrqvyCjWMMCPrq8jmQBIbDt1WL4AEHE3IXh3djGbYro3TD5uSIkTykX1Em054y
-         f0Nztyn+TkTGdOE10O5itjxIQ1sFaM+V7CYIRB7bpMVw2sfNiVJZN89yZ88J66nmxJ+W
-         0eZQ==
-X-Gm-Message-State: AC+VfDwtaKZ8rp1xgf+2pMiGyBLXQNCSeEgGfN2XVpcY6C+IMH1Mzf3j
-        0Y3VaEUDhn+U6oq5aYpAYNI=
-X-Google-Smtp-Source: ACHHUZ4u07oje+b/pW5QY8IISmc/7hrBKpGR8OodL8MJC5Gg23AvYMTBZe3OPWHRjosNZWA7j6ukxw==
-X-Received: by 2002:a7b:ca59:0:b0:3f4:f7c2:d681 with SMTP id m25-20020a7bca59000000b003f4f7c2d681mr2294755wml.29.1685625976702;
-        Thu, 01 Jun 2023 06:26:16 -0700 (PDT)
-Received: from localhost.localdomain (84-72-105-84.dclient.hispeed.ch. [84.72.105.84])
-        by smtp.gmail.com with ESMTPSA id n16-20020a1c7210000000b003f60119ee08sm2396549wmc.43.2023.06.01.06.26.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Jun 2023 06:26:16 -0700 (PDT)
-From:   Nicolas Frattaroli <frattaroli.nicolas@gmail.com>
-To:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Peter Geis <pgwipeout@gmail.com>
-Cc:     Andrew Powers-Holmes <aholmes@omnom.net>,
-        Ondrej Jirman <megi@xff.cz>, stable@vger.kernel.org,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Nicolas Frattaroli <frattaroli.nicolas@gmail.com>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] arm64: dts: rockchip: rk356x: Fix PCIe register and range mappings
-Date:   Thu,  1 Jun 2023 15:25:16 +0200
-Message-Id: <20230601132516.153934-1-frattaroli.nicolas@gmail.com>
-X-Mailer: git-send-email 2.40.1
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1685626004; x=1717162004;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=wR7Pnn+sjcbvo9YdqZ6xZNjdfjHq7+gCC1FAsErQcsE=;
+  b=pdH1A2tVIu2fUMEnUcfP7nrrtTVrLuZeZseS/QwBfFq2g/I8Ohb1U8rS
+   mVtOqenzWc6fKi1PmLmjozvMA2x1WFdkXCRrg0spXB93AIjZFABYjg6eu
+   c4btsnvhSIw/ta6oUTjDTDb/PyB/hI59f4mZJclAiKrI3sOBn4EeX0O8C
+   E=;
+X-IronPort-AV: E=Sophos;i="6.00,210,1681171200"; 
+   d="scan'208";a="331065692"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-iad-1a-m6i4x-54a853e6.us-east-1.amazon.com) ([10.43.8.6])
+  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 13:26:38 +0000
+Received: from EX19MTAUEC002.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan3.iad.amazon.com [10.40.163.38])
+        by email-inbound-relay-iad-1a-m6i4x-54a853e6.us-east-1.amazon.com (Postfix) with ESMTPS id 204BC45DC3;
+        Thu,  1 Jun 2023 13:26:37 +0000 (UTC)
+Received: from EX19D028UEC003.ant.amazon.com (10.252.137.159) by
+ EX19MTAUEC002.ant.amazon.com (10.252.135.253) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Thu, 1 Jun 2023 13:26:34 +0000
+Received: from [192.168.209.155] (10.106.239.22) by
+ EX19D028UEC003.ant.amazon.com (10.252.137.159) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Thu, 1 Jun 2023 13:26:33 +0000
+Message-ID: <71ab9b4b-ef82-10d0-e97b-b870c3bd85f1@amazon.com>
+Date:   Thu, 1 Jun 2023 09:26:30 -0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: Possible build time regression affecting stable kernels
+Content-Language: en-US
+To:     Greg KH <gregkh@linuxfoundation.org>
+CC:     <paul@paul-moore.com>, <sashal@kernel.org>,
+        <stable@vger.kernel.org>
+References: <8892cb92-0f30-db36-e9db-4bec5e7eb46e@amazon.com>
+ <2023060156-precision-prorate-ce46@gregkh>
+ <20259cf7-d50d-4eca-482b-3a89cc94df7b@amazon.com>
+ <2023060148-levers-freight-5b11@gregkh>
+From:   Luiz Capitulino <luizcap@amazon.com>
+In-Reply-To: <2023060148-levers-freight-5b11@gregkh>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.106.239.22]
+X-ClientProxiedBy: EX19D036UWC004.ant.amazon.com (10.13.139.205) To
+ EX19D028UEC003.ant.amazon.com (10.252.137.159)
+X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andrew Powers-Holmes <aholmes@omnom.net>
 
-The register and range mappings for the PCIe controller in Rockchip's
-RK356x SoCs are incorrect. Replace them with corrected values from the
-vendor BSP sources, updated to match current DT schema.
 
-These values are also used in u-boot.
+On 2023-06-01 09:20, Greg KH wrote:
 
-Fixes: 66b51ea7d70f ("arm64: dts: rockchip: Add rk3568 PCIe2x1 controller")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrew Powers-Holmes <aholmes@omnom.net>
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Signed-off-by: Nicolas Frattaroli <frattaroli.nicolas@gmail.com>
----
+> 
+> 
+> 
+> On Thu, Jun 01, 2023 at 09:13:21AM -0400, Luiz Capitulino wrote:
+>>
+>>
+>> On 2023-06-01 02:06, Greg KH wrote:
+>>
+>>>
+>>>
+>>>
+>>> On Wed, May 31, 2023 at 10:12:40PM -0400, Luiz Capitulino wrote:
+>>>> Hi Paul,
+>>>>
+>>>> A number of stable kernels recently backported this upstream commit:
+>>>>
+>>>> """
+>>>> commit 4ce1f694eb5d8ca607fed8542d32a33b4f1217a5
+>>>> Author: Paul Moore <paul@paul-moore.com>
+>>>> Date:   Wed Apr 12 13:29:11 2023 -0400
+>>>>
+>>>>       selinux: ensure av_permissions.h is built when needed
+>>>> """
+>>>>
+>>>> We're seeing a build issue with this commit where the "crash" tool will fail
+>>>> to start, it complains that the vmlinux image and /proc/version don't match.
+>>>>
+>>>> A minimum reproducer would be having "make" version before 4.3 and building
+>>>> the kernel with:
+>>>>
+>>>> $ make bzImages
+>>>> $ make modules
+>>>>
+>>>> Then compare the version strings in the bzImage and vmlinux images,
+>>>> we can use "strings" for this. For example, in the 5.10.181 kernel I get:
+>>>>
+>>>> $ strings vmlinux | egrep '^Linux version'
+>>>> Linux version 5.10.181 (ec2-user@ip-172-31-79-134.ec2.internal) (gcc (GCC) 7.3.1 20180712 (Red Hat 7.3.1-15), GNU ld version 2.29.1-31.amzn2) #2 SMP Thu Jun 1 01:26:38 UTC 2023
+>>>>
+>>>> $ strings ./arch/x86_64/boot/bzImage | egrep 'ld version'
+>>>> 5.10.181 (ec2-user@ip-172-31-79-134.ec2.internal) (gcc (GCC) 7.3.1 20180712 (Red Hat 7.3.1-15), GNU ld version 2.29.1-31.amzn2) #1 SMP Thu Jun 1 01:23:59 UTC 2023
+>>>>
+>>>> The version string in the bzImage doesn't have the "Linux version" part, but
+>>>> I think this is added by the kernel when printing. If you compare the strings,
+>>>> you'll see that they have a different build date and the "#1" and "#2" are
+>>>> different.
+>>>>
+>>>> This only happens with commit 4ce1f694eb5 applied and older "make", in my case I
+>>>> have "make" version 3.82.
+>>>>
+>>>> If I revert 4ce1f694eb5 or use "make" version 4.3 I get identical strings (except
+>>>> for the "Linux version" part):
+>>>>
+>>>> $ strings vmlinux | egrep '^Linux version'
+>>>> Linux version 5.10.181+ (ec2-user@ip-172-31-79-134.ec2.internal) (gcc (GCC) 7.3.1 20180712 (Red Hat 7.3.1-15), GNU ld version 2.29.1-31.amzn2) #1 SMP Thu Jun 1 01:29:11 UTC 2023
+>>>>
+>>>> $ strings ./arch/x86_64/boot/bzImage | egrep 'ld version'
+>>>> 5.10.181+ (ec2-user@ip-172-31-79-134.ec2.internal) (gcc (GCC) 7.3.1 20180712 (Red Hat 7.3.1-15), GNU ld version 2.29.1-31.amzn2) #1 SMP Thu Jun 1 01:29:11 UTC 2023
+>>>>
+>>>> Maybe the grouped target usage in 4ce1f694eb5 with older "make" is causing a
+>>>> rebuild of the vmlinux image in "make modules"? If yes, is this expected?
+>>>>
+>>>> I'm afraid this issue could be high impact for distros with older user-space.
+>>>
+>>> Is this issue also in 6.4-rc1 where this change came from?
+>>
+>> Yes. I'm reporting this here because I'm more concerned with -stable kernels since
+>> they're more likely to be running on older user-space.
+> 
+> Yeah, we are bug-compatible!  :)
+> 
+> When this gets fixed in Linus's tree, I'll be glad to backport the
+> changes to the other kernels.  Please work with the developers to get
+> that fixed there.
 
-Since nobody else was gonna submit this fix on a fix, I decided
-to do it myself, based on the u-boot patch Jonas Karlman wrote.
+OK, I'll report it there, but shouldn't we avoid regressing -stable kernels?
 
-Please test that this does not break the PCIe 3 controller on
-RK3568 hardware, I don't have the right setup to easily test it
-on there.
-
-Changes since v1:
- - Fix copy-paste error on second reg property from 0xf2000000
-   to 0xf0000000
-
- arch/arm64/boot/dts/rockchip/rk3568.dtsi | 14 ++++++++------
- arch/arm64/boot/dts/rockchip/rk356x.dtsi |  7 ++++---
- 2 files changed, 12 insertions(+), 9 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568.dtsi b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-index ba67b58f05b7..f1be76a54ceb 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-@@ -94,9 +94,10 @@ pcie3x1: pcie@fe270000 {
- 		power-domains = <&power RK3568_PD_PIPE>;
- 		reg = <0x3 0xc0400000 0x0 0x00400000>,
- 		      <0x0 0xfe270000 0x0 0x00010000>,
--		      <0x3 0x7f000000 0x0 0x01000000>;
--		ranges = <0x01000000 0x0 0x3ef00000 0x3 0x7ef00000 0x0 0x00100000>,
--			 <0x02000000 0x0 0x00000000 0x3 0x40000000 0x0 0x3ef00000>;
-+		      <0x0 0xf2000000 0x0 0x00100000>;
-+		ranges = <0x01000000 0x0 0xf2100000 0x0 0xf2100000 0x0 0x00100000>,
-+			 <0x02000000 0x0 0xf2200000 0x0 0xf2200000 0x0 0x01e00000>,
-+			 <0x03000000 0x0 0x40000000 0x3 0x40000000 0x0 0x40000000>;
- 		reg-names = "dbi", "apb", "config";
- 		resets = <&cru SRST_PCIE30X1_POWERUP>;
- 		reset-names = "pipe";
-@@ -146,9 +147,10 @@ pcie3x2: pcie@fe280000 {
- 		power-domains = <&power RK3568_PD_PIPE>;
- 		reg = <0x3 0xc0800000 0x0 0x00400000>,
- 		      <0x0 0xfe280000 0x0 0x00010000>,
--		      <0x3 0xbf000000 0x0 0x01000000>;
--		ranges = <0x01000000 0x0 0x3ef00000 0x3 0xbef00000 0x0 0x00100000>,
--			 <0x02000000 0x0 0x00000000 0x3 0x80000000 0x0 0x3ef00000>;
-+		      <0x0 0xf0000000 0x0 0x00100000>;
-+		ranges = <0x01000000 0x0 0xf0100000 0x0 0xf0100000 0x0 0x00100000>,
-+			 <0x02000000 0x0 0xf0200000 0x0 0xf0200000 0x0 0x01e00000>,
-+			 <0x03000000 0x0 0x40000000 0x3 0x80000000 0x0 0x40000000>;
- 		reg-names = "dbi", "apb", "config";
- 		resets = <&cru SRST_PCIE30X2_POWERUP>;
- 		reset-names = "pipe";
-diff --git a/arch/arm64/boot/dts/rockchip/rk356x.dtsi b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-index f62e0fd881a9..61680c7ac489 100644
---- a/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-@@ -952,7 +952,7 @@ pcie2x1: pcie@fe260000 {
- 		compatible = "rockchip,rk3568-pcie";
- 		reg = <0x3 0xc0000000 0x0 0x00400000>,
- 		      <0x0 0xfe260000 0x0 0x00010000>,
--		      <0x3 0x3f000000 0x0 0x01000000>;
-+		      <0x0 0xf4000000 0x0 0x00100000>;
- 		reg-names = "dbi", "apb", "config";
- 		interrupts = <GIC_SPI 75 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH>,
-@@ -982,8 +982,9 @@ pcie2x1: pcie@fe260000 {
- 		phys = <&combphy2 PHY_TYPE_PCIE>;
- 		phy-names = "pcie-phy";
- 		power-domains = <&power RK3568_PD_PIPE>;
--		ranges = <0x01000000 0x0 0x3ef00000 0x3 0x3ef00000 0x0 0x00100000
--			  0x02000000 0x0 0x00000000 0x3 0x00000000 0x0 0x3ef00000>;
-+		ranges = <0x01000000 0x0 0xf4100000 0x0 0xf4100000 0x0 0x00100000>,
-+			 <0x02000000 0x0 0xf4200000 0x0 0xf4200000 0x0 0x01e00000>,
-+			 <0x03000000 0x0 0x40000000 0x3 0x00000000 0x0 0x40000000>;
- 		resets = <&cru SRST_PCIE20_POWERUP>;
- 		reset-names = "pipe";
- 		#address-cells = <3>;
--- 
-2.40.1
-
+- Luiz
