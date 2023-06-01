@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 604A2719D7E
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 518CB719D99
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:24:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233625AbjFANXx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:23:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60358 "EHLO
+        id S233528AbjFANYq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:24:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233676AbjFANXr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:23:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7ABD1B5
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:23:41 -0700 (PDT)
+        with ESMTP id S233698AbjFANYh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:24:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2159E7E
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:24:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5722E64469
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:23:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74FEAC433EF;
-        Thu,  1 Jun 2023 13:23:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8664864472
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:24:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF3FC433D2;
+        Thu,  1 Jun 2023 13:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625820;
-        bh=ncWtDGqcy0qJCKDJ2tPDV5aK6Txdd060JRdohn/53eo=;
+        s=korg; t=1685625857;
+        bh=blpFw6Hs25H0Wrulu6P5M0Y/actFofid44YwKWg/m0k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wHoUag5qIYElYfMqEjZAKCz062KrWQsKpOpDo5WTiB7u1qnrqjDUjAJZiB1DvsX9y
-         lmg0yffqrljmjb+UzXHZBh9CAAFDjuSKbJXRz9laxs4g3h0mHZVctFnPBcuMjecO8/
-         JOb4pzTT6tpGAojbT5fT3EBkVEHdfkGTk3t1AK5A=
+        b=vTq+wKmTOtxOTqWiIg+Qvi8AlOCkVCQOuRdRkIoo9HxSUf/x3uuN2IuezSrFiktZs
+         UvblIwCLgT4ogMFP7F1ji1tvuUW+d3cf/MGS0P8IYzt8yVV4FFq37imqp5ZLcnvMjg
+         RkFUjv76uamMjXOJTvJmuaHHveWDhSO4tYHeOHiQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 10/22] power: supply: bq27xxx: After charger plug in/out wait 0.5s for things to stabilize
+Subject: [PATCH 5.15 21/42] net: dsa: introduce helpers for iterating through ports using dp
 Date:   Thu,  1 Jun 2023 14:21:08 +0100
-Message-Id: <20230601131934.216000375@linuxfoundation.org>
+Message-Id: <20230601131937.674646135@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131933.727832920@linuxfoundation.org>
-References: <20230601131933.727832920@linuxfoundation.org>
+In-Reply-To: <20230601131936.699199833@linuxfoundation.org>
+References: <20230601131936.699199833@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,38 +55,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 59a99cd462fbdf71f4e845e09f37783035088b4f ]
+[ Upstream commit 82b318983c515f29b8b3a0dad9f6a5fe8a68a7f4 ]
 
-bq27xxx_external_power_changed() gets called when the charger is plugged
-in or out. Rather then immediately scheduling an update wait 0.5 seconds
-for things to stabilize, so that e.g. the (dis)charge current is stable
-when bq27xxx_battery_update() runs.
+Since the DSA conversion from the ds->ports array into the dst->ports
+list, the DSA API has encouraged driver writers, as well as the core
+itself, to write inefficient code.
 
-Fixes: 740b755a3b34 ("bq27x00: Poll battery state")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Currently, code that wants to filter by a specific type of port when
+iterating, like {!unused, user, cpu, dsa}, uses the dsa_is_*_port helper.
+Under the hood, this uses dsa_to_port which iterates again through
+dst->ports. But the driver iterates through the port list already, so
+the complexity is quadratic for the typical case of a single-switch
+tree.
+
+This patch introduces some iteration helpers where the iterator is
+already a struct dsa_port *dp, so that the other variant of the
+filtering functions, dsa_port_is_{unused,user,cpu_dsa}, can be used
+directly on the iterator. This eliminates the second lookup.
+
+These functions can be used both by the core and by drivers.
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 120a56b01bee ("net: dsa: mt7530: fix network connectivity with multiple CPU ports")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/bq27xxx_battery.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/net/dsa.h | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
-index 8984f66bd2bc3..235647b21af71 100644
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -2022,8 +2022,8 @@ static void bq27xxx_external_power_changed(struct power_supply *psy)
- {
- 	struct bq27xxx_device_info *di = power_supply_get_drvdata(psy);
- 
--	cancel_delayed_work_sync(&di->work);
--	schedule_delayed_work(&di->work, 0);
-+	/* After charger plug in/out wait 0.5s for things to stabilize */
-+	mod_delayed_work(system_wq, &di->work, HZ / 2);
+diff --git a/include/net/dsa.h b/include/net/dsa.h
+index d784e76113b8d..bec439c4a0859 100644
+--- a/include/net/dsa.h
++++ b/include/net/dsa.h
+@@ -472,6 +472,34 @@ static inline bool dsa_is_user_port(struct dsa_switch *ds, int p)
+ 	return dsa_to_port(ds, p)->type == DSA_PORT_TYPE_USER;
  }
  
- int bq27xxx_battery_setup(struct bq27xxx_device_info *di)
++#define dsa_tree_for_each_user_port(_dp, _dst) \
++	list_for_each_entry((_dp), &(_dst)->ports, list) \
++		if (dsa_port_is_user((_dp)))
++
++#define dsa_switch_for_each_port(_dp, _ds) \
++	list_for_each_entry((_dp), &(_ds)->dst->ports, list) \
++		if ((_dp)->ds == (_ds))
++
++#define dsa_switch_for_each_port_safe(_dp, _next, _ds) \
++	list_for_each_entry_safe((_dp), (_next), &(_ds)->dst->ports, list) \
++		if ((_dp)->ds == (_ds))
++
++#define dsa_switch_for_each_port_continue_reverse(_dp, _ds) \
++	list_for_each_entry_continue_reverse((_dp), &(_ds)->dst->ports, list) \
++		if ((_dp)->ds == (_ds))
++
++#define dsa_switch_for_each_available_port(_dp, _ds) \
++	dsa_switch_for_each_port((_dp), (_ds)) \
++		if (!dsa_port_is_unused((_dp)))
++
++#define dsa_switch_for_each_user_port(_dp, _ds) \
++	dsa_switch_for_each_port((_dp), (_ds)) \
++		if (dsa_port_is_user((_dp)))
++
++#define dsa_switch_for_each_cpu_port(_dp, _ds) \
++	dsa_switch_for_each_port((_dp), (_ds)) \
++		if (dsa_port_is_cpu((_dp)))
++
+ static inline u32 dsa_user_ports(struct dsa_switch *ds)
+ {
+ 	u32 mask = 0;
 -- 
 2.39.2
 
