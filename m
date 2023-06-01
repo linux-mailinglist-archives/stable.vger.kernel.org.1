@@ -2,252 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0383671A04F
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 16:37:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1990D71A06E
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 16:39:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233923AbjFAOhB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 10:37:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50814 "EHLO
+        id S233423AbjFAOjd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 10:39:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233423AbjFAOgo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 10:36:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2567510E0;
-        Thu,  1 Jun 2023 07:36:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 68B4B60C86;
-        Thu,  1 Jun 2023 14:36:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D5AC433EF;
-        Thu,  1 Jun 2023 14:36:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685630168;
-        bh=/xK7oMYZYUP4DJKjzDrCOCYODgLlz31gSGqfZuxsvp4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ShlBKkZxsn9Zji6NNyspbCGu03d/o/KDauuHeJa3dbnJeG+D3HVvdj1Y3ktbYQkLI
-         5ChVW6QfyXx9neTbXJmLT4upiAG3Kegae2grCC41VjUVJABp7nnN05Mk75Cmvdq3jo
-         cB+cMW6i3Kh97FUF3V8nWJpKwsX4J+6OU61IP7Iw=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de
-Subject: [PATCH 5.15 00/37] 5.15.115-rc2 review
-Date:   Thu,  1 Jun 2023 15:36:06 +0100
-Message-Id: <20230601143331.405588582@linuxfoundation.org>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S233532AbjFAOj3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 10:39:29 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A02AEE45
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 07:39:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685630363; x=1717166363;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=kN660c8NFUyOdJrkLu+dYkEvaszRGd9qNNXBXk/WuAU=;
+  b=l9jWTMgd6SevfcswDEWsHYY98b5kfu87yWII75ZpCOTNW89duNY5jwuo
+   Zsg8MF6xHeUP6oQxyHtvjJnNUJtzq5k062HIQec4JOgT1N2ifFN4nYW3z
+   veQMqAD6LXCsCy8DTCy1YBM4v8nkszs3W4M1sEvhm3e1P9TdPXWMQu/4H
+   Np1TB7It927utkWglL48/ujQIjiJTcq6aprHnk9NF1MnemdE0v5w6WAPH
+   tyxalgBwc4HXrzB+bjfu3Cw+rlDoOcYbM2StvQJJ5lQibdC0CXt7Nk5Np
+   Ii6qlPEo9Wv+oecQnVsrzS5er43MKVp/7vQksxfY/FbbwSAPBmh/aX2Nf
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="441936187"
+X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
+   d="scan'208";a="441936187"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 07:38:11 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="684867629"
+X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
+   d="scan'208";a="684867629"
+Received: from mborsali-mobl.amr.corp.intel.com (HELO intel.com) ([10.251.208.75])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 07:38:05 -0700
+Date:   Thu, 1 Jun 2023 16:38:02 +0200
+From:   Andi Shyti <andi.shyti@linux.intel.com>
+To:     "Upadhyay, Tejas" <tejas.upadhyay@intel.com>
+Cc:     "Hajda, Andrzej" <andrzej.hajda@intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Intel GFX <intel-gfx@lists.freedesktop.org>,
+        DRI Devel <dri-devel@lists.freedesktop.org>,
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Andi Shyti <andi.shyti@kernel.org>
+Subject: Re: [Intel-gfx] [PATCH] drm/i915/gt: Use the correct error value
+ when kernel_context() fails
+Message-ID: <ZHitSozwyB69h8kU@ashyti-mobl2.lan>
+References: <20230526124138.2006110-1-andi.shyti@linux.intel.com>
+ <6897a425-8217-8fca-d0a0-fc02073f6b45@intel.com>
+ <SJ1PR11MB620427ACD1EB3B717FDFA1BF81499@SJ1PR11MB6204.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.115-rc2.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-5.15.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 5.15.115-rc2
-X-KernelTest-Deadline: 2023-06-03T14:33+00:00
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SJ1PR11MB620427ACD1EB3B717FDFA1BF81499@SJ1PR11MB6204.namprd11.prod.outlook.com>
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is the start of the stable review cycle for the 5.15.115 release.
-There are 37 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+Hi Tejas,
 
-Responses should be made by Sat, 03 Jun 2023 14:33:22 +0000.
-Anything received after that time might be too late.
+> > > @@ -1530,8 +1530,8 @@ static int live_busywait_preempt(void *arg)
+> > >   	struct drm_i915_gem_object *obj;
+> > >   	struct i915_vma *vma;
+> > >   	enum intel_engine_id id;
+> > > -	int err = -ENOMEM;
+> > >   	u32 *map;
+> > > +	int err;
+> 
+> We could initialize err with 0 and remove err = 0 assignment below but leaving up to you. 
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.115-rc2.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-and the diffstat can be found below.
+that assignement must be a leftover from previous patches because
+err is already initialized here:
 
-thanks,
+	err = i915_vma_pin(vma, 0, 0, PIN_GLOBAL);
 
-greg k-h
+will remove it. Thanks!
 
--------------
-Pseudo-Shortlog of commits:
+> > >
+> > >   	/*
+> > >   	 * Verify that even without HAS_LOGICAL_RING_PREEMPTION, we
+> > can @@
+> > > -1539,13 +1539,17 @@ static int live_busywait_preempt(void *arg)
+> > >   	 */
+> > >
+> > >   	ctx_hi = kernel_context(gt->i915, NULL);
+> > > -	if (!ctx_hi)
+> > > -		return -ENOMEM;
+> > > +	if (IS_ERR(ctx_hi))
+> > > +		return PTR_ERR(ctx_hi);
+> > > +
+> > >   	ctx_hi->sched.priority = I915_CONTEXT_MAX_USER_PRIORITY;
+> > >
+> > >   	ctx_lo = kernel_context(gt->i915, NULL);
+> > > -	if (!ctx_lo)
+> > > +	if (IS_ERR(ctx_lo)) {
+> > > +		err = PTR_ERR(ctx_lo);
+> > >   		goto err_ctx_hi;
+> > > +	}
+> > > +
+> 
+> Looks fine,
+> Acked-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 5.15.115-rc2
+Thank you!
+Andi
 
-Paul Blakey <paulb@nvidia.com>
-    netfilter: ctnetlink: Support offloaded conntrack entry deletion
-
-Nicolas Dichtel <nicolas.dichtel@6wind.com>
-    ipv{4,6}/raw: fix output xfrm lookup wrt protocol
-
-Carlos Llamas <cmllamas@google.com>
-    binder: fix UAF of alloc->vma in race with munmap()
-
-Carlos Llamas <cmllamas@google.com>
-    binder: add lockless binder_alloc_(set|get)_vma()
-
-Carlos Llamas <cmllamas@google.com>
-    Revert "android: binder: stop saving a pointer to the VMA"
-
-Carlos Llamas <cmllamas@google.com>
-    Revert "binder_alloc: add missing mmap_lock calls when using the VMA"
-
-Ruihan Li <lrh2000@pku.edu.cn>
-    bluetooth: Add cmd validity checks at the start of hci_sock_ioctl()
-
-Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-    xdp: xdp_mem_allocator can be NULL in trace_mem_connect().
-
-Jiaxun Yang <jiaxun.yang@flygoat.com>
-    irqchip/mips-gic: Don't touch vl_map if a local interrupt is not routable
-
-Yunsheng Lin <linyunsheng@huawei.com>
-    page_pool: fix inconsistency for page_pool_ring_[un]lock()
-
-Qingfang DENG <qingfang.deng@siflower.com.cn>
-    net: page_pool: use in_softirq() instead
-
-Toke Høiland-Jørgensen <toke@redhat.com>
-    xdp: Allow registering memory model without rxq reference
-
-Rahul Rameshbabu <rrameshbabu@nvidia.com>
-    net/mlx5e: Fix SQ wake logic in ptp napi_poll context
-
-Jiaxun Yang <jiaxun.yang@flygoat.com>
-    irqchip/mips-gic: Use raw spinlock for gic_lock
-
-Marc Zyngier <maz@kernel.org>
-    irqchip/mips-gic: Get rid of the reliance on irq_cpu_online()
-
-Carlos Llamas <cmllamas@google.com>
-    binder: fix UAF caused by faulty buffer cleanup
-
-Hangbin Liu <liuhangbin@gmail.com>
-    bonding: fix send_peer_notif overflow
-
-Hangbin Liu <liuhangbin@gmail.com>
-    Bonding: add arp_missed_max option
-
-Arınç ÜNAL <arinc.unal@arinc9.com>
-    net: dsa: mt7530: fix network connectivity with multiple CPU ports
-
-Daniel Golle <daniel@makrotopia.org>
-    net: dsa: mt7530: split-off common parts from mt7531_setup
-
-Frank Wunderlich <frank-w@public-files.de>
-    net: dsa: mt7530: rework mt753[01]_setup
-
-Vladimir Oltean <vladimir.oltean@nxp.com>
-    net: dsa: introduce helpers for iterating through ports using dp
-
-Claudio Imbrenda <imbrenda@linux.ibm.com>
-    KVM: s390: fix race in gmap_make_secure()
-
-Claudio Imbrenda <imbrenda@linux.ibm.com>
-    KVM: s390: pv: add export before import
-
-David Epping <david.epping@missinglinkelectronics.com>
-    net: phy: mscc: enable VSC8501/2 RGMII RX clock
-
-Steve Wahl <steve.wahl@hpe.com>
-    platform/x86: ISST: Remove 8 socket limit
-
-Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-    platform/x86: ISST: PUNIT device mapping with Sub-NUMA clustering
-
-Shay Drory <shayd@nvidia.com>
-    net/mlx5: Devcom, serialize devcom registration
-
-Vlad Buslov <vladbu@nvidia.com>
-    net/mlx5e: Fix deadlock in tc route query code
-
-Mark Bloch <mbloch@nvidia.com>
-    net/mlx5: devcom only supports 2 ports
-
-Anton Protopopov <aspsk@isovalent.com>
-    bpf: fix a memory leak in the LRU and LRU_PERCPU hash maps
-
-Hans de Goede <hdegoede@redhat.com>
-    power: supply: bq24190: Call power_supply_changed() after updating input current
-
-Hans de Goede <hdegoede@redhat.com>
-    power: supply: core: Refactor power_supply_set_input_current_limit_from_supplier()
-
-Hans de Goede <hdegoede@redhat.com>
-    power: supply: bq27xxx: After charger plug in/out wait 0.5s for things to stabilize
-
-Hans de Goede <hdegoede@redhat.com>
-    power: supply: bq27xxx: Ensure power_supply_changed() is called on current sign changes
-
-Hans de Goede <hdegoede@redhat.com>
-    power: supply: bq27xxx: Move bq27xxx_battery_update() down
-
-Sicelo A. Mhlongo <absicsz@gmail.com>
-    power: supply: bq27xxx: expose battery data when CI=1
-
-
--------------
-
-Diffstat:
-
- Documentation/networking/bonding.rst               |  11 ++
- Makefile                                           |   4 +-
- arch/s390/kernel/uv.c                              |  56 ++++---
- drivers/android/binder.c                           |  26 +++-
- drivers/android/binder_alloc.c                     |  64 +++-----
- drivers/android/binder_alloc.h                     |   2 +-
- drivers/android/binder_alloc_selftest.c            |   2 +-
- drivers/irqchip/irq-mips-gic.c                     |  65 +++++---
- drivers/net/bonding/bond_main.c                    |  17 +-
- drivers/net/bonding/bond_netlink.c                 |  22 ++-
- drivers/net/bonding/bond_options.c                 |  36 ++++-
- drivers/net/bonding/bond_procfs.c                  |   2 +
- drivers/net/bonding/bond_sysfs.c                   |  13 ++
- drivers/net/dsa/mt7530.c                           | 124 +++++++++------
- drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c   |   2 +
- drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h  |   2 +
- drivers/net/ethernet/mellanox/mlx5/core/en_tc.c    |  19 +--
- drivers/net/ethernet/mellanox/mlx5/core/en_tx.c    |  19 ++-
- .../net/ethernet/mellanox/mlx5/core/lib/devcom.c   |  81 +++++++---
- .../net/ethernet/mellanox/mlx5/core/lib/devcom.h   |   3 +
- drivers/net/phy/mscc/mscc.h                        |   1 +
- drivers/net/phy/mscc/mscc_main.c                   |  54 +++----
- .../x86/intel/speed_select_if/isst_if_common.c     |  49 ++++--
- drivers/power/supply/bq24190_charger.c             |  13 +-
- drivers/power/supply/bq27xxx_battery.c             | 171 +++++++++++----------
- drivers/power/supply/power_supply_core.c           |  57 +++----
- include/linux/power/bq27xxx_battery.h              |   3 +
- include/linux/power_supply.h                       |   5 +-
- include/net/bond_options.h                         |   1 +
- include/net/bonding.h                              |   3 +-
- include/net/dsa.h                                  |  28 ++++
- include/net/ip.h                                   |   2 +
- include/net/page_pool.h                            |  18 ---
- include/net/xdp.h                                  |   3 +
- include/uapi/linux/if_link.h                       |   1 +
- include/uapi/linux/in.h                            |   2 +
- kernel/bpf/hashtab.c                               |   6 +-
- net/bluetooth/hci_sock.c                           |  28 ++++
- net/core/page_pool.c                               |  34 +++-
- net/core/xdp.c                                     |  93 +++++++----
- net/ipv4/ip_sockglue.c                             |  12 +-
- net/ipv4/raw.c                                     |   5 +-
- net/ipv6/raw.c                                     |   3 +-
- net/netfilter/nf_conntrack_netlink.c               |   8 -
- tools/include/uapi/linux/if_link.h                 |   1 +
- 45 files changed, 763 insertions(+), 408 deletions(-)
-
-
+> 
+> > >   	ctx_lo->sched.priority = I915_CONTEXT_MIN_USER_PRIORITY;
+> > >
+> > >   	obj = i915_gem_object_create_internal(gt->i915, PAGE_SIZE);
+> 
