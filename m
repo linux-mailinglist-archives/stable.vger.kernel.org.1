@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF5BA719D75
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:23:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 681EF719DA8
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:25:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233546AbjFANXT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:23:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60002 "EHLO
+        id S233678AbjFANZV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:25:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233591AbjFANXQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:23:16 -0400
+        with ESMTP id S233781AbjFANZA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:25:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4872A184
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:23:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21BDA1A5
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:24:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8DA816445E
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:23:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4BF6C4339C;
-        Thu,  1 Jun 2023 13:23:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0077864484
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:24:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B163C433EF;
+        Thu,  1 Jun 2023 13:24:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625791;
-        bh=csGBHSLMTywrf+G5mxuLNvCLcQ3JOfYfd77tWemtpQA=;
+        s=korg; t=1685625877;
+        bh=+vBfn5AS8Y/uomLGs8q+vJ+bPnG5RKoKW8JLkSHTy4A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LvpVh2HEfaIAsZq82CMJBRGxjCA1XOZWnw9/KFOGNE9u/ehKFQWClOvaAf1s5qhhJ
-         VEub/R23lLO7MfiFT7pliryvJyudpiEllSom8jcqpwjooJkzzFJutf1GHUzTxNrqdC
-         RXnYS0lwjslSW7+FOz4KtoWxi5Zqds0hN7Znidn0=
+        b=DFCrF0ZJqVadlK7IDh6y+Nrte9l9vSvGmFS5MGGLWxg42uCf465Bmu8443TviFOBA
+         Q/z1W7+oXtWpqEYjk4DC1QUPzXJ8HH5MF7wAT9Y0oSWeT8WOxMS4+blimeja0WCXb/
+         pVLK9FGoOdWxZ/WmF17Rcd8DoStdQp957AfNJ51g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shay Drory <shayd@nvidia.com>,
-        Mark Bloch <mbloch@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
+        patches@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 17/22] net/mlx5: Devcom, serialize devcom registration
+Subject: [PATCH 5.15 28/42] irqchip/mips-gic: Get rid of the reliance on irq_cpu_online()
 Date:   Thu,  1 Jun 2023 14:21:15 +0100
-Message-Id: <20230601131934.545100992@linuxfoundation.org>
+Message-Id: <20230601131937.971182271@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131933.727832920@linuxfoundation.org>
-References: <20230601131933.727832920@linuxfoundation.org>
+In-Reply-To: <20230601131936.699199833@linuxfoundation.org>
+References: <20230601131936.699199833@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,98 +55,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shay Drory <shayd@nvidia.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 1f893f57a3bf9fe1f4bcb25b55aea7f7f9712fe7 ]
+[ Upstream commit dd098a0e031928cf88c89f7577d31821e1f0e6de ]
 
->From one hand, mlx5 driver is allowing to probe PFs in parallel.
->From the other hand, devcom, which is a share resource between PFs, is
-registered without any lock. This might resulted in memory problems.
+The MIPS GIC driver uses irq_cpu_online() to go and program the
+per-CPU interrupts. However, this method iterates over all IRQs
+in the system, despite only 3 per-CPU interrupts being of interest.
 
-Hence, use the global mlx5_dev_list_lock in order to serialize devcom
-registration.
+Let's be terribly bold and do the iteration ourselves. To ensure
+mutual exclusion, hold the gic_lock spinlock that is otherwise
+taken while dealing with these interrupts.
 
-Fixes: fadd59fc50d0 ("net/mlx5: Introduce inter-device communication mechanism")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
+Tested-by: Serge Semin <fancer.lancer@gmail.com>
+Link: https://lore.kernel.org/r/20211021170414.3341522-3-maz@kernel.org
+Stable-dep-of: 3d6a0e4197c0 ("irqchip/mips-gic: Use raw spinlock for gic_lock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlx5/core/lib/devcom.c  | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ drivers/irqchip/irq-mips-gic.c | 37 ++++++++++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-index 617eea1b1701b..438be215bbd45 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-@@ -3,6 +3,7 @@
- 
- #include <linux/mlx5/vport.h>
- #include "lib/devcom.h"
-+#include "mlx5_core.h"
- 
- static LIST_HEAD(devcom_list);
- 
-@@ -77,6 +78,7 @@ struct mlx5_devcom *mlx5_devcom_register_device(struct mlx5_core_dev *dev)
- 	if (MLX5_CAP_GEN(dev, num_lag_ports) != MLX5_DEVCOM_PORTS_SUPPORTED)
- 		return NULL;
- 
-+	mlx5_dev_list_lock();
- 	sguid0 = mlx5_query_nic_system_image_guid(dev);
- 	list_for_each_entry(iter, &devcom_list, list) {
- 		struct mlx5_core_dev *tmp_dev = NULL;
-@@ -102,8 +104,10 @@ struct mlx5_devcom *mlx5_devcom_register_device(struct mlx5_core_dev *dev)
- 
- 	if (!priv) {
- 		priv = mlx5_devcom_list_alloc();
--		if (!priv)
--			return ERR_PTR(-ENOMEM);
-+		if (!priv) {
-+			devcom = ERR_PTR(-ENOMEM);
-+			goto out;
-+		}
- 
- 		idx = 0;
- 		new_priv = true;
-@@ -114,12 +118,14 @@ struct mlx5_devcom *mlx5_devcom_register_device(struct mlx5_core_dev *dev)
- 	if (!devcom) {
- 		if (new_priv)
- 			kfree(priv);
--		return ERR_PTR(-ENOMEM);
-+		devcom = ERR_PTR(-ENOMEM);
-+		goto out;
- 	}
- 
- 	if (new_priv)
- 		list_add(&priv->list, &devcom_list);
--
-+out:
-+	mlx5_dev_list_unlock();
- 	return devcom;
+diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
+index d815285f1efe3..0f14b2d7b19cb 100644
+--- a/drivers/irqchip/irq-mips-gic.c
++++ b/drivers/irqchip/irq-mips-gic.c
+@@ -383,24 +383,35 @@ static void gic_unmask_local_irq_all_vpes(struct irq_data *d)
+ 	spin_unlock_irqrestore(&gic_lock, flags);
  }
  
-@@ -132,6 +138,7 @@ void mlx5_devcom_unregister_device(struct mlx5_devcom *devcom)
- 	if (IS_ERR_OR_NULL(devcom))
- 		return;
+-static void gic_all_vpes_irq_cpu_online(struct irq_data *d)
++static void gic_all_vpes_irq_cpu_online(void)
+ {
+-	struct gic_all_vpes_chip_data *cd;
+-	unsigned int intr;
++	static const unsigned int local_intrs[] = {
++		GIC_LOCAL_INT_TIMER,
++		GIC_LOCAL_INT_PERFCTR,
++		GIC_LOCAL_INT_FDC,
++	};
++	unsigned long flags;
++	int i;
  
-+	mlx5_dev_list_lock();
- 	priv = devcom->priv;
- 	priv->devs[devcom->idx] = NULL;
+-	intr = GIC_HWIRQ_TO_LOCAL(d->hwirq);
+-	cd = irq_data_get_irq_chip_data(d);
++	spin_lock_irqsave(&gic_lock, flags);
  
-@@ -142,10 +149,12 @@ void mlx5_devcom_unregister_device(struct mlx5_devcom *devcom)
- 			break;
- 
- 	if (i != MLX5_DEVCOM_PORTS_SUPPORTED)
--		return;
-+		goto out;
- 
- 	list_del(&priv->list);
- 	kfree(priv);
-+out:
-+	mlx5_dev_list_unlock();
+-	write_gic_vl_map(mips_gic_vx_map_reg(intr), cd->map);
+-	if (cd->mask)
+-		write_gic_vl_smask(BIT(intr));
++	for (i = 0; i < ARRAY_SIZE(local_intrs); i++) {
++		unsigned int intr = local_intrs[i];
++		struct gic_all_vpes_chip_data *cd;
++
++		cd = &gic_all_vpes_chip_data[intr];
++		write_gic_vl_map(mips_gic_vx_map_reg(intr), cd->map);
++		if (cd->mask)
++			write_gic_vl_smask(BIT(intr));
++	}
++
++	spin_unlock_irqrestore(&gic_lock, flags);
  }
  
- void mlx5_devcom_register_component(struct mlx5_devcom *devcom,
+ static struct irq_chip gic_all_vpes_local_irq_controller = {
+ 	.name			= "MIPS GIC Local",
+ 	.irq_mask		= gic_mask_local_irq_all_vpes,
+ 	.irq_unmask		= gic_unmask_local_irq_all_vpes,
+-	.irq_cpu_online		= gic_all_vpes_irq_cpu_online,
+ };
+ 
+ static void __gic_irq_dispatch(void)
+@@ -481,6 +492,10 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
+ 	intr = GIC_HWIRQ_TO_LOCAL(hwirq);
+ 	map = GIC_MAP_PIN_MAP_TO_PIN | gic_cpu_pin;
+ 
++	/*
++	 * If adding support for more per-cpu interrupts, keep the the
++	 * array in gic_all_vpes_irq_cpu_online() in sync.
++	 */
+ 	switch (intr) {
+ 	case GIC_LOCAL_INT_TIMER:
+ 		/* CONFIG_MIPS_CMP workaround (see __gic_init) */
+@@ -711,8 +726,8 @@ static int gic_cpu_startup(unsigned int cpu)
+ 	/* Clear all local IRQ masks (ie. disable all local interrupts) */
+ 	write_gic_vl_rmask(~0);
+ 
+-	/* Invoke irq_cpu_online callbacks to enable desired interrupts */
+-	irq_cpu_online();
++	/* Enable desired interrupts */
++	gic_all_vpes_irq_cpu_online();
+ 
+ 	return 0;
+ }
 -- 
 2.39.2
 
