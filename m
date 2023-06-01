@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1527A719DAA
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:25:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BF59719DFD
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:28:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233491AbjFANZd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:25:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33948 "EHLO
+        id S233870AbjFAN2I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:28:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233676AbjFANZR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:25:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DC65188
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:24:50 -0700 (PDT)
+        with ESMTP id S233865AbjFAN1w (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:27:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D31DE6B
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:27:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BD54F6448A
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:24:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8F34C433D2;
-        Thu,  1 Jun 2023 13:24:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 730CF644AB
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:27:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 699F9C433AA;
+        Thu,  1 Jun 2023 13:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625887;
-        bh=8N0MHEFgnhJt6rB7dl2xdWtXJ5dtl4GVX2AQ6iZGt0U=;
+        s=korg; t=1685626048;
+        bh=LOj8PO2IKk4isEWSiuS7dpvXhrsKiGN/aU7Iwv3lRpY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F5iH4UH/1HFBPvDmVmh9tjd5t8T2i3R5f4cPuhlrRDrv500Kv2sz0CE8tSXjB1vv5
-         niXPDdDnLAjMHh/k//eruflk/V9uIE/IquKZ/4PKGv6W8WpSDsXyjtc42WMPBgS23S
-         5TNCkxJ5h5SG4M89W7/GcIbicZ5kVssxWwg40mzo=
+        b=vfAh7cBTNFMfVfQB6N0BCgNk426VrPZAqK3ZkzKx/z+Z+dSh8KKWQCDu3CZW2/HJb
+         duHXk/lwBk5byVVtU1Zj5gRMzinwL4FF+9Ml2EKbMsK8mQ7AvZSOy837JjMAET+Ary
+         c2Oiv7y7h9w9LZJSNXAljvjS9oiIrJga4ymKAbRY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Qingfang DENG <qingfang.deng@siflower.com.cn>,
-        Felix Fietkau <nbd@nbd.name>,
+        patches@lists.linux.dev, Shai Amiram <samiram@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 32/42] net: page_pool: use in_softirq() instead
+Subject: [PATCH 6.1 10/42] tls: rx: strp: factor out copying skb data
 Date:   Thu,  1 Jun 2023 14:21:19 +0100
-Message-Id: <20230601131938.155562715@linuxfoundation.org>
+Message-Id: <20230601131939.518003084@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131936.699199833@linuxfoundation.org>
-References: <20230601131936.699199833@linuxfoundation.org>
+In-Reply-To: <20230601131939.051934720@linuxfoundation.org>
+References: <20230601131939.051934720@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,73 +56,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Qingfang DENG <qingfang.deng@siflower.com.cn>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 542bcea4be866b14b3a5c8e90773329066656c43 ]
+[ Upstream commit c1c607b1e5d5477d82ca6a86a05a4f10907b33ee ]
 
-We use BH context only for synchronization, so we don't care if it's
-actually serving softirq or not.
+We'll need to copy input skbs individually in the next patch.
+Factor that code out (without assuming we're copying a full record).
 
-As a side node, in case of threaded NAPI, in_serving_softirq() will
-return false because it's in process context with BH off, making
-page_pool_recycle_in_cache() unreachable.
-
-Signed-off-by: Qingfang DENG <qingfang.deng@siflower.com.cn>
-Tested-by: Felix Fietkau <nbd@nbd.name>
+Tested-by: Shai Amiram <samiram@nvidia.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 368d3cb406cd ("page_pool: fix inconsistency for page_pool_ring_[un]lock()")
+Stable-dep-of: eca9bfafee3a ("tls: rx: strp: preserve decryption status of skbs when needed")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/page_pool.h | 4 ++--
- net/core/page_pool.c    | 6 +++---
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ net/tls/tls_strp.c | 33 +++++++++++++++++++++++----------
+ 1 file changed, 23 insertions(+), 10 deletions(-)
 
-diff --git a/include/net/page_pool.h b/include/net/page_pool.h
-index a4082406a0039..80d987419436e 100644
---- a/include/net/page_pool.h
-+++ b/include/net/page_pool.h
-@@ -285,7 +285,7 @@ static inline void page_pool_nid_changed(struct page_pool *pool, int new_nid)
- static inline void page_pool_ring_lock(struct page_pool *pool)
- 	__acquires(&pool->ring.producer_lock)
- {
--	if (in_serving_softirq())
-+	if (in_softirq())
- 		spin_lock(&pool->ring.producer_lock);
- 	else
- 		spin_lock_bh(&pool->ring.producer_lock);
-@@ -294,7 +294,7 @@ static inline void page_pool_ring_lock(struct page_pool *pool)
- static inline void page_pool_ring_unlock(struct page_pool *pool)
- 	__releases(&pool->ring.producer_lock)
- {
--	if (in_serving_softirq())
-+	if (in_softirq())
- 		spin_unlock(&pool->ring.producer_lock);
- 	else
- 		spin_unlock_bh(&pool->ring.producer_lock);
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 1a6978427d6c8..1d520fa1b98a8 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -390,8 +390,8 @@ static void page_pool_return_page(struct page_pool *pool, struct page *page)
- static bool page_pool_recycle_in_ring(struct page_pool *pool, struct page *page)
- {
- 	int ret;
--	/* BH protection not needed if current is serving softirq */
--	if (in_serving_softirq())
-+	/* BH protection not needed if current is softirq */
-+	if (in_softirq())
- 		ret = ptr_ring_produce(&pool->ring, page);
- 	else
- 		ret = ptr_ring_produce_bh(&pool->ring, page);
-@@ -446,7 +446,7 @@ __page_pool_put_page(struct page_pool *pool, struct page *page,
- 			page_pool_dma_sync_for_device(pool, page,
- 						      dma_sync_size);
+diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
+index e2e48217e7ac9..61fbf84baf9e0 100644
+--- a/net/tls/tls_strp.c
++++ b/net/tls/tls_strp.c
+@@ -34,31 +34,44 @@ static void tls_strp_anchor_free(struct tls_strparser *strp)
+ 	strp->anchor = NULL;
+ }
  
--		if (allow_direct && in_serving_softirq() &&
-+		if (allow_direct && in_softirq() &&
- 		    page_pool_recycle_in_cache(page, pool))
- 			return NULL;
+-/* Create a new skb with the contents of input copied to its page frags */
+-static struct sk_buff *tls_strp_msg_make_copy(struct tls_strparser *strp)
++static struct sk_buff *
++tls_strp_skb_copy(struct tls_strparser *strp, struct sk_buff *in_skb,
++		  int offset, int len)
+ {
+-	struct strp_msg *rxm;
+ 	struct sk_buff *skb;
+-	int i, err, offset;
++	int i, err;
  
+-	skb = alloc_skb_with_frags(0, strp->stm.full_len, TLS_PAGE_ORDER,
++	skb = alloc_skb_with_frags(0, len, TLS_PAGE_ORDER,
+ 				   &err, strp->sk->sk_allocation);
+ 	if (!skb)
+ 		return NULL;
+ 
+-	offset = strp->stm.offset;
+ 	for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {
+ 		skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
+ 
+-		WARN_ON_ONCE(skb_copy_bits(strp->anchor, offset,
++		WARN_ON_ONCE(skb_copy_bits(in_skb, offset,
+ 					   skb_frag_address(frag),
+ 					   skb_frag_size(frag)));
+ 		offset += skb_frag_size(frag);
+ 	}
+ 
+-	skb->len = strp->stm.full_len;
+-	skb->data_len = strp->stm.full_len;
+-	skb_copy_header(skb, strp->anchor);
++	skb->len = len;
++	skb->data_len = len;
++	skb_copy_header(skb, in_skb);
++	return skb;
++}
++
++/* Create a new skb with the contents of input copied to its page frags */
++static struct sk_buff *tls_strp_msg_make_copy(struct tls_strparser *strp)
++{
++	struct strp_msg *rxm;
++	struct sk_buff *skb;
++
++	skb = tls_strp_skb_copy(strp, strp->anchor, strp->stm.offset,
++				strp->stm.full_len);
++	if (!skb)
++		return NULL;
++
+ 	rxm = strp_msg(skb);
+ 	rxm->offset = 0;
+ 	return skb;
 -- 
 2.39.2
 
