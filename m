@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F8E2719D5B
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E2C5719D68
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:23:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232295AbjFANWa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:22:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59162 "EHLO
+        id S233580AbjFANXD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:23:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233548AbjFANWY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:22:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23D07125
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:22:23 -0700 (PDT)
+        with ESMTP id S233595AbjFANXB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:23:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3609518F
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:22:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B3F1861AF5
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:22:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2DF2C433EF;
-        Thu,  1 Jun 2023 13:22:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8C3C964457
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:22:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9707C433D2;
+        Thu,  1 Jun 2023 13:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625742;
-        bh=kXjK89xKLafkQgckt12yJg1Qtp3ufTdrYdDIA09jcU0=;
+        s=korg; t=1685625778;
+        bh=FDmF5mDlASdDyByVMqNUgffnOU9sMzu8qnKuEqxk2go=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v10XHUeHl9crsxkM/IUoWUWMvQdDOuNIkX+AAVjhHwwRt6yWoBWBIdyEfN8GLewG3
-         mTgQSJPibts1C4tn4l3vnf1KQktwSX4esg8tozN1T1PIZ8X8eWv6xYolGXNSDzjRwz
-         lPiSVdNRvNI97ZY3erL3Jr7r9imGIf2fcb7FaQbE=
+        b=we5+K8fID0LSuKJUl/7KWdyvPHHpCJeKLi30hsU/EikK+rwOe1RjLB9HoIImren7g
+         /9eLGXmRXvAPvxjFpHNwIXaaVEgRm29qz8HXuA7DHtx5twEHNO9dbji5tR80hqIwaQ
+         +41rrZBlvRVpCoYB+1hKO7Hv/3s7pTpH0S+P8OdQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.4 15/16] ipv{4,6}/raw: fix output xfrm lookup wrt protocol
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 12/22] power: supply: bq24190: Call power_supply_changed() after updating input current
 Date:   Thu,  1 Jun 2023 14:21:10 +0100
-Message-Id: <20230601131932.656420907@linuxfoundation.org>
+Message-Id: <20230601131934.305774382@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131931.947241286@linuxfoundation.org>
-References: <20230601131931.947241286@linuxfoundation.org>
+In-Reply-To: <20230601131933.727832920@linuxfoundation.org>
+References: <20230601131933.727832920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,127 +54,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 3632679d9e4f879f49949bb5b050e0de553e4739 upstream.
+[ Upstream commit 77c2a3097d7029441e8a91aa0de1b4e5464593da ]
 
-With a raw socket bound to IPPROTO_RAW (ie with hdrincl enabled), the
-protocol field of the flow structure, build by raw_sendmsg() /
-rawv6_sendmsg()),  is set to IPPROTO_RAW. This breaks the ipsec policy
-lookup when some policies are defined with a protocol in the selector.
+The bq24192 model relies on external charger-type detection and once
+that is done the bq24190_charger code will update the input current.
 
-For ipv6, the sin6_port field from 'struct sockaddr_in6' could be used to
-specify the protocol. Just accept all values for IPPROTO_RAW socket.
+In this case, when the initial power_supply_changed() call is made
+from the interrupt handler, the input settings are 5V/0.5A which
+on many devices is not enough power to charge (while the device is on).
 
-For ipv4, the sin_port field of 'struct sockaddr_in' could not be used
-without breaking backward compatibility (the value of this field was never
-checked). Let's add a new kind of control message, so that the userland
-could specify which protocol is used.
+On many devices the fuel-gauge relies in its external_power_changed
+callback to timely signal userspace about charging <-> discharging
+status changes. Add a power_supply_changed() call after updating
+the input current. This allows the fuel-gauge driver to timely recheck
+if the battery is charging after the new input current has been applied
+and then it can immediately notify userspace about this.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-CC: stable@vger.kernel.org
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Link: https://lore.kernel.org/r/20230522120820.1319391-1-nicolas.dichtel@6wind.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 18f8e6f695ac ("power: supply: bq24190_charger: Get input_current_limit from our supplier")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip.h        |    2 ++
- include/uapi/linux/in.h |    2 ++
- net/ipv4/ip_sockglue.c  |   12 +++++++++++-
- net/ipv4/raw.c          |    5 ++++-
- net/ipv6/raw.c          |    3 ++-
- 5 files changed, 21 insertions(+), 3 deletions(-)
+ drivers/power/supply/bq24190_charger.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -73,6 +73,7 @@ struct ipcm_cookie {
- 	__be32			addr;
- 	int			oif;
- 	struct ip_options_rcu	*opt;
-+	__u8			protocol;
- 	__u8			ttl;
- 	__s16			tos;
- 	char			priority;
-@@ -93,6 +94,7 @@ static inline void ipcm_init_sk(struct i
- 	ipcm->sockc.tsflags = inet->sk.sk_tsflags;
- 	ipcm->oif = inet->sk.sk_bound_dev_if;
- 	ipcm->addr = inet->inet_saddr;
-+	ipcm->protocol = inet->inet_num;
+diff --git a/drivers/power/supply/bq24190_charger.c b/drivers/power/supply/bq24190_charger.c
+index 7a7b03b09ea64..5769b36851c34 100644
+--- a/drivers/power/supply/bq24190_charger.c
++++ b/drivers/power/supply/bq24190_charger.c
+@@ -1215,6 +1215,7 @@ static void bq24190_input_current_limit_work(struct work_struct *work)
+ 	bq24190_charger_set_property(bdi->charger,
+ 				     POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
+ 				     &val);
++	power_supply_changed(bdi->charger);
  }
  
- #define IPCB(skb) ((struct inet_skb_parm*)((skb)->cb))
---- a/include/uapi/linux/in.h
-+++ b/include/uapi/linux/in.h
-@@ -154,6 +154,8 @@ struct in_addr {
- #define MCAST_MSFILTER			48
- #define IP_MULTICAST_ALL		49
- #define IP_UNICAST_IF			50
-+#define IP_LOCAL_PORT_RANGE		51
-+#define IP_PROTOCOL			52
- 
- #define MCAST_EXCLUDE	0
- #define MCAST_INCLUDE	1
---- a/net/ipv4/ip_sockglue.c
-+++ b/net/ipv4/ip_sockglue.c
-@@ -316,7 +316,14 @@ int ip_cmsg_send(struct sock *sk, struct
- 			ipc->tos = val;
- 			ipc->priority = rt_tos2priority(ipc->tos);
- 			break;
--
-+		case IP_PROTOCOL:
-+			if (cmsg->cmsg_len != CMSG_LEN(sizeof(int)))
-+				return -EINVAL;
-+			val = *(int *)CMSG_DATA(cmsg);
-+			if (val < 1 || val > 255)
-+				return -EINVAL;
-+			ipc->protocol = val;
-+			break;
- 		default:
- 			return -EINVAL;
- 		}
-@@ -1524,6 +1531,9 @@ static int do_ip_getsockopt(struct sock
- 	case IP_MINTTL:
- 		val = inet->min_ttl;
- 		break;
-+	case IP_PROTOCOL:
-+		val = inet_sk(sk)->inet_num;
-+		break;
- 	default:
- 		release_sock(sk);
- 		return -ENOPROTOOPT;
---- a/net/ipv4/raw.c
-+++ b/net/ipv4/raw.c
-@@ -558,6 +558,9 @@ static int raw_sendmsg(struct sock *sk,
- 	}
- 
- 	ipcm_init_sk(&ipc, inet);
-+	/* Keep backward compat */
-+	if (hdrincl)
-+		ipc.protocol = IPPROTO_RAW;
- 
- 	if (msg->msg_controllen) {
- 		err = ip_cmsg_send(sk, msg, &ipc, false);
-@@ -625,7 +628,7 @@ static int raw_sendmsg(struct sock *sk,
- 
- 	flowi4_init_output(&fl4, ipc.oif, ipc.sockc.mark, tos,
- 			   RT_SCOPE_UNIVERSE,
--			   hdrincl ? IPPROTO_RAW : sk->sk_protocol,
-+			   hdrincl ? ipc.protocol : sk->sk_protocol,
- 			   inet_sk_flowi_flags(sk) |
- 			    (hdrincl ? FLOWI_FLAG_KNOWN_NH : 0),
- 			   daddr, saddr, 0, 0, sk->sk_uid);
---- a/net/ipv6/raw.c
-+++ b/net/ipv6/raw.c
-@@ -828,7 +828,8 @@ static int rawv6_sendmsg(struct sock *sk
- 
- 		if (!proto)
- 			proto = inet->inet_num;
--		else if (proto != inet->inet_num)
-+		else if (proto != inet->inet_num &&
-+			 inet->inet_num != IPPROTO_RAW)
- 			return -EINVAL;
- 
- 		if (proto > 255)
+ /* Sync the input-current-limit with our parent supply (if we have one) */
+-- 
+2.39.2
+
 
 
