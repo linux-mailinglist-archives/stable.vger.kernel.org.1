@@ -2,130 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DF1C71905A
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 04:07:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BCB3719066
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 04:13:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229882AbjFACHu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 31 May 2023 22:07:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49618 "EHLO
+        id S229562AbjFACNE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 31 May 2023 22:13:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229925AbjFACHt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 22:07:49 -0400
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9C46133
-        for <stable@vger.kernel.org>; Wed, 31 May 2023 19:07:45 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.nyi.internal (Postfix) with ESMTP id 733B05C01CA;
-        Wed, 31 May 2023 22:07:43 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute6.internal (MEProxy); Wed, 31 May 2023 22:07:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        invisiblethingslab.com; h=cc:cc:content-type:content-type:date
-        :date:from:from:in-reply-to:message-id:mime-version:reply-to
-        :sender:subject:subject:to:to; s=fm1; t=1685585263; x=
-        1685671663; bh=bg7JvsvfSAtwjJ2bCs1qjuCrVNfS6ZSDnqTL+rRGNZE=; b=F
-        39gU2iKfk+9sniCcAPnRqOvbmByW3yXaMPzdZ4GywQZSxa9PwKEqy9XxLVBTDaO9
-        z6iErB6+PSP78dUktjNFGVgrZVuonAl97YIJTsxAWF+GiZpkrmUdqF8KD8HzSF+N
-        XIoc31/nZXoilapt8J7naBM4T8IszQorf4XARbVsVLbQD8B8yekYBhhXVOIreSIC
-        7mOekVTsCxlSwEzGke0g339d5hzoHz/adnHR8P/GM+elfEiKKUnxvxrK1c9Nw8mE
-        l7DZBalVIPLdTAU9/59y2G0rjd9E3YNrfFYA8oSor71OwIG41fOxAv1KtGTnhMll
-        FX6h4S9Ej5EzsYMiCpltg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:message-id
-        :mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-        1685585263; x=1685671663; bh=bg7JvsvfSAtwjJ2bCs1qjuCrVNfS6ZSDnqT
-        L+rRGNZE=; b=xWFBp+eUsr13M/ijXcv8gDXVTUcKXYhiBIV18WDbzTaW5g/PnNl
-        Uvhxvjzwd+XoyK+5/K0dFO2W6ksvBoEqRp12/mwhIkYD6fd7awBfHv3rQlgT3J18
-        RNCORskzCkMh6J+NqTdYXwEiFzoCckWHegFHQzHIF80pH8nTJECuc57pBey8Buea
-        gPpbyXRaUzY5hjuVBD4up821svajN26ogMTY9l9wwNFl6vDaXFuc76xu5gWM/hTU
-        MbUiRrnOE7ejJ5+U9YPjHfAhDe1oGKWzbOleCKypPqd+GhOZke8lA423XgCgrgJW
-        399GiCkl/wf7rj4dcrKVwFO0ch4TIJnAyOw==
-X-ME-Sender: <xms:b_13ZOxpOz4hTC_83x18CXRZ2ewauyRjwtqC2ZES2sU3p58oNLQF1Q>
-    <xme:b_13ZKQ9_HW-IybuWcAWnis7sCeT9MtGbm15mZmAovzZ1UrVUv-rQ19TBgfBqH2I1
-    l_xQQIgVDmF65E>
-X-ME-Received: <xmr:b_13ZAXvV97FW0RjkKfEaRRtcxKbr4FlpxbwTl9B6KIRIfOc3Z765jSHI6A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeeltddgheehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkgggtugesghdtreertddtvdenucfhrhhomhepffgvmhhiucfo
-    rghrihgvucfqsggvnhhouhhruceouggvmhhisehinhhvihhsihgslhgvthhhihhnghhslh
-    grsgdrtghomheqnecuggftrfgrthhtvghrnhepieeivdefvedvtdfguddvkeeikeeigeeh
-    leektefffeejkeefvdfggfdtjeevleejnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
-    hrrghmpehmrghilhhfrhhomhepuggvmhhisehinhhvihhsihgslhgvthhhihhnghhslhgr
-    sgdrtghomh
-X-ME-Proxy: <xmx:b_13ZEivrp8Zpf-dwnISZif7xQ3XsQYJFs-zE_8ch6YDGCbygSNhRA>
-    <xmx:b_13ZAAWfzGymVd_m9pzi6iyOrxbmwsivJ13hNz8cBR2fyt2xbJJHQ>
-    <xmx:b_13ZFL6xgmH8-iOkIHyXKjWzTluhIGvp7wOLrq5q4WfEPP0ixViYA>
-    <xmx:b_13ZP8ARRQd_CzCZlX4Hj1bzOKpK-CYfg79J5zPvAzIvXmMhQBEBg>
-Feedback-ID: iac594737:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 31 May 2023 22:07:43 -0400 (EDT)
-Date:   Wed, 31 May 2023 22:07:37 -0400
-From:   Demi Marie Obenour <demi@invisiblethingslab.com>
-To:     stable@vger.kernel.org
-Cc:     Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
-        <marmarek@invisiblethingslab.com>
-Subject: Please cherry-pick 9b7c68b3911aef84afa4cbfc31bce20f10570d51
- ("netfilter: ctnetlink: Support offloaded conntrack entry deletion")
-Message-ID: <ZHf9bdGWnOG4+EM+@itl-email>
+        with ESMTP id S229682AbjFACND (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 22:13:03 -0400
+Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44BC612F
+        for <stable@vger.kernel.org>; Wed, 31 May 2023 19:13:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1685585582; x=1717121582;
+  h=message-id:date:mime-version:from:subject:to:cc:
+   content-transfer-encoding;
+  bh=pavXskyrhinWph7H7qGdEsJWwrxYj7UzH+kmlwPcS5g=;
+  b=SyZb75bRB1w9sfcJ/DHl5z7sdyEdHbYBc77DJ/wRYaJ46h1xf0vAhBfj
+   KgzN/gOMQWLGfMzIBjyofsvvyIPBCHY3MiOMU7stRSlvAAtRAeEOH4N0f
+   Cp5mSEvGs9nDRxLeGhPSF4SpptWhNricEaVf/O0OiFodE23/AwZmORja3
+   U=;
+X-IronPort-AV: E=Sophos;i="6.00,207,1681171200"; 
+   d="scan'208";a="337801353"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-pdx-2a-m6i4x-83883bdb.us-west-2.amazon.com) ([10.43.8.2])
+  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 02:12:57 +0000
+Received: from EX19MTAUEA001.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
+        by email-inbound-relay-pdx-2a-m6i4x-83883bdb.us-west-2.amazon.com (Postfix) with ESMTPS id 9401C60AB4;
+        Thu,  1 Jun 2023 02:12:55 +0000 (UTC)
+Received: from EX19D028UEC003.ant.amazon.com (10.252.137.159) by
+ EX19MTAUEA001.ant.amazon.com (10.252.134.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Thu, 1 Jun 2023 02:12:45 +0000
+Received: from [192.168.2.200] (10.106.178.32) by
+ EX19D028UEC003.ant.amazon.com (10.252.137.159) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Thu, 1 Jun 2023 02:12:43 +0000
+Message-ID: <8892cb92-0f30-db36-e9db-4bec5e7eb46e@amazon.com>
+Date:   Wed, 31 May 2023 22:12:40 -0400
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="EZMipC3VuI6ixQsr"
-Content-Disposition: inline
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Content-Language: en-US
+From:   Luiz Capitulino <luizcap@amazon.com>
+Subject: Possible build time regression affecting stable kernels
+To:     <paul@paul-moore.com>, <sashal@kernel.org>,
+        Greg KH <gregkh@linuxfoundation.org>
+CC:     <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.106.178.32]
+X-ClientProxiedBy: EX19D035UWA002.ant.amazon.com (10.13.139.60) To
+ EX19D028UEC003.ant.amazon.com (10.252.137.159)
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi Paul,
 
---EZMipC3VuI6ixQsr
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 31 May 2023 22:07:37 -0400
-From: Demi Marie Obenour <demi@invisiblethingslab.com>
-To: stable@vger.kernel.org
-Cc: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-Subject: Please cherry-pick 9b7c68b3911aef84afa4cbfc31bce20f10570d51
- ("netfilter: ctnetlink: Support offloaded conntrack entry deletion")
+A number of stable kernels recently backported this upstream commit:
 
-Please cherry-pick 9b7c68b3911aef84afa4cbfc31bce20f10570d51
-("netfilter: ctnetlink: Support offloaded conntrack entry deletion") to
-all supported stable trees except for 4.14.  The lack of it makes the
-flowtables feature much more difficult (if not impossible) to use in
-environments where connection tracking entries must be removed to
-terminate flows.  The diffstat is -8,+0 and the commit only removes
-code that was not necessary to begin with.
---=20
-Sincerely,
-Demi Marie Obenour (she/her/hers)
-Invisible Things Lab
+"""
+commit 4ce1f694eb5d8ca607fed8542d32a33b4f1217a5
+Author: Paul Moore <paul@paul-moore.com>
+Date:   Wed Apr 12 13:29:11 2023 -0400
 
---EZMipC3VuI6ixQsr
-Content-Type: application/pgp-signature; name="signature.asc"
+     selinux: ensure av_permissions.h is built when needed
+"""
 
------BEGIN PGP SIGNATURE-----
+We're seeing a build issue with this commit where the "crash" tool will fail
+to start, it complains that the vmlinux image and /proc/version don't match.
 
-iQIzBAEBCgAdFiEEdodNnxM2uiJZBxxxsoi1X/+cIsEFAmR3/WwACgkQsoi1X/+c
-IsFb6g//SbWpHxzoweFPkdmH/WUWXPGwV0+XTjNURSkCAz1fztthdx16b/9Wy04e
-uywfPAEtX/2E4BBwKppDUaua1Z/ammI/oeOVLDO0uxVlEoz/pKfA34NMeZX2xVtN
-MmAW22ORvyfZBhQ9dOzMpXB2PT1ufpu3A9ULxV/SnUnobd6UYmE4zu6Yp5N7S4qd
-9xqAl67JEkGEMTkU8iaXaPLgKNOQwI+/Xn9nNDBptPd/wJTXzFmPlIcS4FQxQaA2
-uxEPtdm+QQXCxpktssW6jYZSj4lU9WdBkbEh0ItS7gLj8Wt4qAmDgczitk23BRDo
-fa/lntkWZ8wJtpFiqL1Gf57D0rJIxQ4Kb+0qD+jMvyKXtyZHpFbP8C5i3jMd8flP
-Ns1LTADFsuKluqxmJcqZXbTS7sG1v5rUoyrm5elwY+oC47SLBGeVyuW1IZLP4a8U
-tFGbRW4xuMGRC/sMqDSBLCZQkbsZO6HYQTePhQg2JFYrzYrG1Ze6BxmMg3ywkF43
-wJxAHq46xbxqt4rK4qRSps1ttVjanE/f0N+9zVNSyilOH2d/fdFNxfeUFud/bDPq
-w4v60a2nJo/Y5l2xDXpXifazPBnP0pV10LLqrFSz1iafzt3/WKDr4Kg09qhCDtKW
-0xWrmOwIC7mYdxeVWTIMkBs00qMnPencGBs7nKOpVjChDkbEzhw=
-=Pr4v
------END PGP SIGNATURE-----
+A minimum reproducer would be having "make" version before 4.3 and building
+the kernel with:
 
---EZMipC3VuI6ixQsr--
+$ make bzImages
+$ make modules
+
+Then compare the version strings in the bzImage and vmlinux images,
+we can use "strings" for this. For example, in the 5.10.181 kernel I get:
+
+$ strings vmlinux | egrep '^Linux version'
+Linux version 5.10.181 (ec2-user@ip-172-31-79-134.ec2.internal) (gcc (GCC) 7.3.1 20180712 (Red Hat 7.3.1-15), GNU ld version 2.29.1-31.amzn2) #2 SMP Thu Jun 1 01:26:38 UTC 2023
+
+$ strings ./arch/x86_64/boot/bzImage | egrep 'ld version'
+5.10.181 (ec2-user@ip-172-31-79-134.ec2.internal) (gcc (GCC) 7.3.1 20180712 (Red Hat 7.3.1-15), GNU ld version 2.29.1-31.amzn2) #1 SMP Thu Jun 1 01:23:59 UTC 2023
+
+The version string in the bzImage doesn't have the "Linux version" part, but
+I think this is added by the kernel when printing. If you compare the strings,
+you'll see that they have a different build date and the "#1" and "#2" are
+different.
+
+This only happens with commit 4ce1f694eb5 applied and older "make", in my case I
+have "make" version 3.82.
+
+If I revert 4ce1f694eb5 or use "make" version 4.3 I get identical strings (except
+for the "Linux version" part):
+
+$ strings vmlinux | egrep '^Linux version'
+Linux version 5.10.181+ (ec2-user@ip-172-31-79-134.ec2.internal) (gcc (GCC) 7.3.1 20180712 (Red Hat 7.3.1-15), GNU ld version 2.29.1-31.amzn2) #1 SMP Thu Jun 1 01:29:11 UTC 2023
+
+$ strings ./arch/x86_64/boot/bzImage | egrep 'ld version'
+5.10.181+ (ec2-user@ip-172-31-79-134.ec2.internal) (gcc (GCC) 7.3.1 20180712 (Red Hat 7.3.1-15), GNU ld version 2.29.1-31.amzn2) #1 SMP Thu Jun 1 01:29:11 UTC 2023
+
+Maybe the grouped target usage in 4ce1f694eb5 with older "make" is causing a
+rebuild of the vmlinux image in "make modules"? If yes, is this expected?
+
+I'm afraid this issue could be high impact for distros with older user-space.
+
+- Luiz
