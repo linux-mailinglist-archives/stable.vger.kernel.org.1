@@ -2,146 +2,130 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 460C9719003
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 03:27:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DF1C71905A
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 04:07:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230000AbjFAB1z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 31 May 2023 21:27:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39318 "EHLO
+        id S229882AbjFACHu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 31 May 2023 22:07:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229536AbjFAB1x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 21:27:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0501B121
-        for <stable@vger.kernel.org>; Wed, 31 May 2023 18:27:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1685582828;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=LQdQSnx/rlaXnVn9lu0zbQvQz9m8jGMKPxDj8CsPUow=;
-        b=ZYngr59IeixLVJzkBtQHJuYGtDESkR2MeqYygBVPLx4kspsBFiKBapmk2I0pES7VekF3o1
-        w+nXySyeS8MPzo+nkaIDGvs1h5nxkmsOmKbEuIYy+4YNnJ0wfStqt0bL09uFpZaS96ryf4
-        ljAmGfmWgAvhAMaSINemdnubEnNom30=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-454-6D654ibmNVmKeSklYGPSrg-1; Wed, 31 May 2023 21:27:06 -0400
-X-MC-Unique: 6D654ibmNVmKeSklYGPSrg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8A31C811E7F;
-        Thu,  1 Jun 2023 01:27:06 +0000 (UTC)
-Received: from li-a71a4dcc-35d1-11b2-a85c-951838863c8d.ibm.com.com (ovpn-12-188.pek2.redhat.com [10.72.12.188])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A8994140E95D;
-        Thu,  1 Jun 2023 01:27:01 +0000 (UTC)
-From:   xiubli@redhat.com
-To:     idryomov@gmail.com, ceph-devel@vger.kernel.org
-Cc:     jlayton@kernel.org, vshankar@redhat.com, mchangir@redhat.com,
-        Xiubo Li <xiubli@redhat.com>, stable@vger.kernel.org
-Subject: [PATCH v2] ceph: fix use-after-free bug for inodes when flushing capsnaps
-Date:   Thu,  1 Jun 2023 09:24:44 +0800
-Message-Id: <20230601012444.851749-1-xiubli@redhat.com>
+        with ESMTP id S229925AbjFACHt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 22:07:49 -0400
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9C46133
+        for <stable@vger.kernel.org>; Wed, 31 May 2023 19:07:45 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.nyi.internal (Postfix) with ESMTP id 733B05C01CA;
+        Wed, 31 May 2023 22:07:43 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Wed, 31 May 2023 22:07:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        invisiblethingslab.com; h=cc:cc:content-type:content-type:date
+        :date:from:from:in-reply-to:message-id:mime-version:reply-to
+        :sender:subject:subject:to:to; s=fm1; t=1685585263; x=
+        1685671663; bh=bg7JvsvfSAtwjJ2bCs1qjuCrVNfS6ZSDnqTL+rRGNZE=; b=F
+        39gU2iKfk+9sniCcAPnRqOvbmByW3yXaMPzdZ4GywQZSxa9PwKEqy9XxLVBTDaO9
+        z6iErB6+PSP78dUktjNFGVgrZVuonAl97YIJTsxAWF+GiZpkrmUdqF8KD8HzSF+N
+        XIoc31/nZXoilapt8J7naBM4T8IszQorf4XARbVsVLbQD8B8yekYBhhXVOIreSIC
+        7mOekVTsCxlSwEzGke0g339d5hzoHz/adnHR8P/GM+elfEiKKUnxvxrK1c9Nw8mE
+        l7DZBalVIPLdTAU9/59y2G0rjd9E3YNrfFYA8oSor71OwIG41fOxAv1KtGTnhMll
+        FX6h4S9Ej5EzsYMiCpltg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:message-id
+        :mime-version:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+        1685585263; x=1685671663; bh=bg7JvsvfSAtwjJ2bCs1qjuCrVNfS6ZSDnqT
+        L+rRGNZE=; b=xWFBp+eUsr13M/ijXcv8gDXVTUcKXYhiBIV18WDbzTaW5g/PnNl
+        Uvhxvjzwd+XoyK+5/K0dFO2W6ksvBoEqRp12/mwhIkYD6fd7awBfHv3rQlgT3J18
+        RNCORskzCkMh6J+NqTdYXwEiFzoCckWHegFHQzHIF80pH8nTJECuc57pBey8Buea
+        gPpbyXRaUzY5hjuVBD4up821svajN26ogMTY9l9wwNFl6vDaXFuc76xu5gWM/hTU
+        MbUiRrnOE7ejJ5+U9YPjHfAhDe1oGKWzbOleCKypPqd+GhOZke8lA423XgCgrgJW
+        399GiCkl/wf7rj4dcrKVwFO0ch4TIJnAyOw==
+X-ME-Sender: <xms:b_13ZOxpOz4hTC_83x18CXRZ2ewauyRjwtqC2ZES2sU3p58oNLQF1Q>
+    <xme:b_13ZKQ9_HW-IybuWcAWnis7sCeT9MtGbm15mZmAovzZ1UrVUv-rQ19TBgfBqH2I1
+    l_xQQIgVDmF65E>
+X-ME-Received: <xmr:b_13ZAXvV97FW0RjkKfEaRRtcxKbr4FlpxbwTl9B6KIRIfOc3Z765jSHI6A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeeltddgheehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkgggtugesghdtreertddtvdenucfhrhhomhepffgvmhhiucfo
+    rghrihgvucfqsggvnhhouhhruceouggvmhhisehinhhvihhsihgslhgvthhhihhnghhslh
+    grsgdrtghomheqnecuggftrfgrthhtvghrnhepieeivdefvedvtdfguddvkeeikeeigeeh
+    leektefffeejkeefvdfggfdtjeevleejnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
+    hrrghmpehmrghilhhfrhhomhepuggvmhhisehinhhvihhsihgslhgvthhhihhnghhslhgr
+    sgdrtghomh
+X-ME-Proxy: <xmx:b_13ZEivrp8Zpf-dwnISZif7xQ3XsQYJFs-zE_8ch6YDGCbygSNhRA>
+    <xmx:b_13ZAAWfzGymVd_m9pzi6iyOrxbmwsivJ13hNz8cBR2fyt2xbJJHQ>
+    <xmx:b_13ZFL6xgmH8-iOkIHyXKjWzTluhIGvp7wOLrq5q4WfEPP0ixViYA>
+    <xmx:b_13ZP8ARRQd_CzCZlX4Hj1bzOKpK-CYfg79J5zPvAzIvXmMhQBEBg>
+Feedback-ID: iac594737:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 31 May 2023 22:07:43 -0400 (EDT)
+Date:   Wed, 31 May 2023 22:07:37 -0400
+From:   Demi Marie Obenour <demi@invisiblethingslab.com>
+To:     stable@vger.kernel.org
+Cc:     Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
+        <marmarek@invisiblethingslab.com>
+Subject: Please cherry-pick 9b7c68b3911aef84afa4cbfc31bce20f10570d51
+ ("netfilter: ctnetlink: Support offloaded conntrack entry deletion")
+Message-ID: <ZHf9bdGWnOG4+EM+@itl-email>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="EZMipC3VuI6ixQsr"
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xiubo Li <xiubli@redhat.com>
 
-There is racy between capsnaps flush and removing the inode from
-'mdsc->snap_flush_list' list:
+--EZMipC3VuI6ixQsr
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 31 May 2023 22:07:37 -0400
+From: Demi Marie Obenour <demi@invisiblethingslab.com>
+To: stable@vger.kernel.org
+Cc: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+Subject: Please cherry-pick 9b7c68b3911aef84afa4cbfc31bce20f10570d51
+ ("netfilter: ctnetlink: Support offloaded conntrack entry deletion")
 
-   == Thread A ==                     == Thread B ==
-ceph_queue_cap_snap()
- -> allocate 'capsnapA'
- ->ihold('&ci->vfs_inode')
- ->add 'capsnapA' to 'ci->i_cap_snaps'
- ->add 'ci' to 'mdsc->snap_flush_list'
-    ...
-   == Thread C ==
-ceph_flush_snaps()
- ->__ceph_flush_snaps()
-  ->__send_flush_snap()
-                                handle_cap_flushsnap_ack()
-                                 ->iput('&ci->vfs_inode')
-                                   this also will release 'ci'
-                                    ...
-				      == Thread D ==
-                                ceph_handle_snap()
-                                 ->flush_snaps()
-                                  ->iterate 'mdsc->snap_flush_list'
-                                   ->get the stale 'ci'
- ->remove 'ci' from                ->ihold(&ci->vfs_inode) this
-   'mdsc->snap_flush_list'           will WARNING
+Please cherry-pick 9b7c68b3911aef84afa4cbfc31bce20f10570d51
+("netfilter: ctnetlink: Support offloaded conntrack entry deletion") to
+all supported stable trees except for 4.14.  The lack of it makes the
+flowtables feature much more difficult (if not impossible) to use in
+environments where connection tracking entries must be removed to
+terminate flows.  The diffstat is -8,+0 and the commit only removes
+code that was not necessary to begin with.
+--=20
+Sincerely,
+Demi Marie Obenour (she/her/hers)
+Invisible Things Lab
 
-To fix this we will increase the ihold the inode when adding 'ci'
-to the 'mdsc->snap_flush_list' list.
+--EZMipC3VuI6ixQsr
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Cc: stable@vger.kernel.org
-URL: https://bugzilla.redhat.com/show_bug.cgi?id=2209299
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
----
+-----BEGIN PGP SIGNATURE-----
 
-V2:
-- Increase the i_count reference instead to fix this issue
+iQIzBAEBCgAdFiEEdodNnxM2uiJZBxxxsoi1X/+cIsEFAmR3/WwACgkQsoi1X/+c
+IsFb6g//SbWpHxzoweFPkdmH/WUWXPGwV0+XTjNURSkCAz1fztthdx16b/9Wy04e
+uywfPAEtX/2E4BBwKppDUaua1Z/ammI/oeOVLDO0uxVlEoz/pKfA34NMeZX2xVtN
+MmAW22ORvyfZBhQ9dOzMpXB2PT1ufpu3A9ULxV/SnUnobd6UYmE4zu6Yp5N7S4qd
+9xqAl67JEkGEMTkU8iaXaPLgKNOQwI+/Xn9nNDBptPd/wJTXzFmPlIcS4FQxQaA2
+uxEPtdm+QQXCxpktssW6jYZSj4lU9WdBkbEh0ItS7gLj8Wt4qAmDgczitk23BRDo
+fa/lntkWZ8wJtpFiqL1Gf57D0rJIxQ4Kb+0qD+jMvyKXtyZHpFbP8C5i3jMd8flP
+Ns1LTADFsuKluqxmJcqZXbTS7sG1v5rUoyrm5elwY+oC47SLBGeVyuW1IZLP4a8U
+tFGbRW4xuMGRC/sMqDSBLCZQkbsZO6HYQTePhQg2JFYrzYrG1Ze6BxmMg3ywkF43
+wJxAHq46xbxqt4rK4qRSps1ttVjanE/f0N+9zVNSyilOH2d/fdFNxfeUFud/bDPq
+w4v60a2nJo/Y5l2xDXpXifazPBnP0pV10LLqrFSz1iafzt3/WKDr4Kg09qhCDtKW
+0xWrmOwIC7mYdxeVWTIMkBs00qMnPencGBs7nKOpVjChDkbEzhw=
+=Pr4v
+-----END PGP SIGNATURE-----
 
-
- fs/ceph/caps.c | 6 ++++++
- fs/ceph/snap.c | 4 +++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
-index feabf4cc0c4f..7c2cb813aba4 100644
---- a/fs/ceph/caps.c
-+++ b/fs/ceph/caps.c
-@@ -1684,6 +1684,7 @@ void ceph_flush_snaps(struct ceph_inode_info *ci,
- 	struct inode *inode = &ci->netfs.inode;
- 	struct ceph_mds_client *mdsc = ceph_inode_to_client(inode)->mdsc;
- 	struct ceph_mds_session *session = NULL;
-+	int put = 0;
- 	int mds;
- 
- 	dout("ceph_flush_snaps %p\n", inode);
-@@ -1728,8 +1729,13 @@ void ceph_flush_snaps(struct ceph_inode_info *ci,
- 		ceph_put_mds_session(session);
- 	/* we flushed them all; remove this inode from the queue */
- 	spin_lock(&mdsc->snap_flush_lock);
-+	if (!list_empty(&ci->i_snap_flush_item))
-+		put++;
- 	list_del_init(&ci->i_snap_flush_item);
- 	spin_unlock(&mdsc->snap_flush_lock);
-+
-+	if (put)
-+		iput(inode);
- }
- 
- /*
-diff --git a/fs/ceph/snap.c b/fs/ceph/snap.c
-index 5a4bf0201737..d5ad10d94424 100644
---- a/fs/ceph/snap.c
-+++ b/fs/ceph/snap.c
-@@ -697,8 +697,10 @@ int __ceph_finish_cap_snap(struct ceph_inode_info *ci,
- 	     capsnap->size);
- 
- 	spin_lock(&mdsc->snap_flush_lock);
--	if (list_empty(&ci->i_snap_flush_item))
-+	if (list_empty(&ci->i_snap_flush_item)) {
-+		ihold(inode);
- 		list_add_tail(&ci->i_snap_flush_item, &mdsc->snap_flush_list);
-+	}
- 	spin_unlock(&mdsc->snap_flush_lock);
- 	return 1;  /* caller may want to ceph_flush_snaps */
- }
--- 
-2.40.1
-
+--EZMipC3VuI6ixQsr--
