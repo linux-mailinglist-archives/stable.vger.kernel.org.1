@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 535CE719D77
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:23:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5844A719DED
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:27:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233601AbjFANX0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:23:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60000 "EHLO
+        id S233793AbjFAN1j (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:27:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233588AbjFANXY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:23:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 832ED198
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:23:19 -0700 (PDT)
+        with ESMTP id S233848AbjFAN11 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:27:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0289A10D8
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:27:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1551764463
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:23:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C50C433D2;
-        Thu,  1 Jun 2023 13:23:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D8124644CC
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:27:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3BD4C433EF;
+        Thu,  1 Jun 2023 13:27:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625798;
-        bh=aWWNUxP5rMNoP1Ze+w7a+P8W+6x8xSyDKGs1IBixpHU=;
+        s=korg; t=1685626029;
+        bh=AuWkn0cGR/4t4dFzzB6Ssg1RmVdzV/AP4ldZK4QR+hE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vQD9OVaPb70wckP9YlzD0a6uEeTsAlv6GkrOCKiTPUeQBA7ltk9LgsfnwUB92zTqu
-         stUSleak1Fp12hD6PkZYwhWWOroGfpANgjE1eRUPXBwVqzIaAggQHVjFc1GTagKfk9
-         zj72dTVLisDkSL1D0R/es52EUvnUqfo7/adpDAUs=
+        b=0LwfS+EO+iN9YkKUynxzDdlbnSliGx5AiHfX/vOofXKB2N1eq8dwNkVaw/JNjfQPz
+         LhNtGoXNLsSOX2W1kBzvLPJqzhjDM4wg8H6Nqr2FDHXq8eZzVTi+aPS+CmzwTL6GBX
+         wHbK3BNIoWSzyGAurbf4Fo5Hkjhzjm0l20XeqcvQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zi Fan Tan <zifantan@google.com>,
-        Carlos Llamas <cmllamas@google.com>,
-        Todd Kjos <tkjos@google.com>
-Subject: [PATCH 5.10 20/22] binder: fix UAF caused by faulty buffer cleanup
+        patches@lists.linux.dev, Mika Kahola <mika.kahola@intel.com>,
+        Imre Deak <imre.deak@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 22/45] drm/i915: Disable DPLLs before disconnecting the TC PHY
 Date:   Thu,  1 Jun 2023 14:21:18 +0100
-Message-Id: <20230601131934.675745513@linuxfoundation.org>
+Message-Id: <20230601131939.719965868@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131933.727832920@linuxfoundation.org>
-References: <20230601131933.727832920@linuxfoundation.org>
+In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
+References: <20230601131938.702671708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,151 +54,113 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Imre Deak <imre.deak@intel.com>
 
-commit bdc1c5fac982845a58d28690cdb56db8c88a530d upstream.
+[ Upstream commit b108bdd0e22a402bd3e4a6391acbb6aefad31a9e ]
 
-In binder_transaction_buffer_release() the 'failed_at' offset indicates
-the number of objects to clean up. However, this function was changed by
-commit 44d8047f1d87 ("binder: use standard functions to allocate fds"),
-to release all the objects in the buffer when 'failed_at' is zero.
+Bspec requires disabling the DPLLs on TC ports before disconnecting the
+port's PHY. Add a post_pll_disable encoder hook and move the call to
+disconnect the port's PHY from the post_disable hook to the new hook.
 
-This introduced an issue when a transaction buffer is released without
-any objects having been processed so far. In this case, 'failed_at' is
-indeed zero yet it is misinterpreted as releasing the entire buffer.
-
-This leads to use-after-free errors where nodes are incorrectly freed
-and subsequently accessed. Such is the case in the following KASAN
-report:
-
-  ==================================================================
-  BUG: KASAN: slab-use-after-free in binder_thread_read+0xc40/0x1f30
-  Read of size 8 at addr ffff4faf037cfc58 by task poc/474
-
-  CPU: 6 PID: 474 Comm: poc Not tainted 6.3.0-12570-g7df047b3f0aa #5
-  Hardware name: linux,dummy-virt (DT)
-  Call trace:
-   dump_backtrace+0x94/0xec
-   show_stack+0x18/0x24
-   dump_stack_lvl+0x48/0x60
-   print_report+0xf8/0x5b8
-   kasan_report+0xb8/0xfc
-   __asan_load8+0x9c/0xb8
-   binder_thread_read+0xc40/0x1f30
-   binder_ioctl+0xd9c/0x1768
-   __arm64_sys_ioctl+0xd4/0x118
-   invoke_syscall+0x60/0x188
-  [...]
-
-  Allocated by task 474:
-   kasan_save_stack+0x3c/0x64
-   kasan_set_track+0x2c/0x40
-   kasan_save_alloc_info+0x24/0x34
-   __kasan_kmalloc+0xb8/0xbc
-   kmalloc_trace+0x48/0x5c
-   binder_new_node+0x3c/0x3a4
-   binder_transaction+0x2b58/0x36f0
-   binder_thread_write+0x8e0/0x1b78
-   binder_ioctl+0x14a0/0x1768
-   __arm64_sys_ioctl+0xd4/0x118
-   invoke_syscall+0x60/0x188
-  [...]
-
-  Freed by task 475:
-   kasan_save_stack+0x3c/0x64
-   kasan_set_track+0x2c/0x40
-   kasan_save_free_info+0x38/0x5c
-   __kasan_slab_free+0xe8/0x154
-   __kmem_cache_free+0x128/0x2bc
-   kfree+0x58/0x70
-   binder_dec_node_tmpref+0x178/0x1fc
-   binder_transaction_buffer_release+0x430/0x628
-   binder_transaction+0x1954/0x36f0
-   binder_thread_write+0x8e0/0x1b78
-   binder_ioctl+0x14a0/0x1768
-   __arm64_sys_ioctl+0xd4/0x118
-   invoke_syscall+0x60/0x188
-  [...]
-  ==================================================================
-
-In order to avoid these issues, let's always calculate the intended
-'failed_at' offset beforehand. This is renamed and wrapped in a helper
-function to make it clear and convenient.
-
-Fixes: 32e9f56a96d8 ("binder: don't detect sender/target during buffer cleanup")
-Reported-by: Zi Fan Tan <zifantan@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Acked-by: Todd Kjos <tkjos@google.com>
-Link: https://lore.kernel.org/r/20230505203020.4101154-1-cmllamas@google.com
-[cmllamas: resolve trivial conflict due to missing commit 9864bb4801331]
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Mika Kahola <mika.kahola@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230323142035.1432621-28-imre.deak@intel.com
+Stable-dep-of: 45dfbd992923 ("drm/i915: Fix PIPEDMC disabling for a bigjoiner configuration")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder.c |   26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/i915/display/intel_ddi.c     | 15 ++++++++++++---
+ drivers/gpu/drm/i915/display/intel_display.c |  2 ++
+ drivers/gpu/drm/i915/display/intel_dp_mst.c  | 15 +++++++++++++++
+ 3 files changed, 29 insertions(+), 3 deletions(-)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -2267,24 +2267,23 @@ static void binder_deferred_fd_close(int
- static void binder_transaction_buffer_release(struct binder_proc *proc,
- 					      struct binder_thread *thread,
- 					      struct binder_buffer *buffer,
--					      binder_size_t failed_at,
-+					      binder_size_t off_end_offset,
- 					      bool is_failure)
+diff --git a/drivers/gpu/drm/i915/display/intel_ddi.c b/drivers/gpu/drm/i915/display/intel_ddi.c
+index 254559abedfba..379050d228941 100644
+--- a/drivers/gpu/drm/i915/display/intel_ddi.c
++++ b/drivers/gpu/drm/i915/display/intel_ddi.c
+@@ -2731,9 +2731,6 @@ static void intel_ddi_post_disable(struct intel_atomic_state *state,
+ 				   const struct drm_connector_state *old_conn_state)
  {
- 	int debug_id = buffer->debug_id;
--	binder_size_t off_start_offset, buffer_offset, off_end_offset;
-+	binder_size_t off_start_offset, buffer_offset;
+ 	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
+-	struct intel_digital_port *dig_port = enc_to_dig_port(encoder);
+-	enum phy phy = intel_port_to_phy(dev_priv, encoder->port);
+-	bool is_tc_port = intel_phy_is_tc(dev_priv, phy);
+ 	struct intel_crtc *slave_crtc;
  
- 	binder_debug(BINDER_DEBUG_TRANSACTION,
- 		     "%d buffer release %d, size %zd-%zd, failed at %llx\n",
- 		     proc->pid, buffer->debug_id,
- 		     buffer->data_size, buffer->offsets_size,
--		     (unsigned long long)failed_at);
-+		     (unsigned long long)off_end_offset);
- 
- 	if (buffer->target_node)
- 		binder_dec_node(buffer->target_node, 1, 0);
- 
- 	off_start_offset = ALIGN(buffer->data_size, sizeof(void *));
--	off_end_offset = is_failure && failed_at ? failed_at :
--				off_start_offset + buffer->offsets_size;
-+
- 	for (buffer_offset = off_start_offset; buffer_offset < off_end_offset;
- 	     buffer_offset += sizeof(binder_size_t)) {
- 		struct binder_object_header *hdr;
-@@ -2444,6 +2443,21 @@ static void binder_transaction_buffer_re
- 	}
- }
- 
-+/* Clean up all the objects in the buffer */
-+static inline void binder_release_entire_buffer(struct binder_proc *proc,
-+						struct binder_thread *thread,
-+						struct binder_buffer *buffer,
-+						bool is_failure)
-+{
-+	binder_size_t off_end_offset;
-+
-+	off_end_offset = ALIGN(buffer->data_size, sizeof(void *));
-+	off_end_offset += buffer->offsets_size;
-+
-+	binder_transaction_buffer_release(proc, thread, buffer,
-+					  off_end_offset, is_failure);
+ 	if (!intel_crtc_has_type(old_crtc_state, INTEL_OUTPUT_DP_MST)) {
+@@ -2783,6 +2780,17 @@ static void intel_ddi_post_disable(struct intel_atomic_state *state,
+ 	else
+ 		intel_ddi_post_disable_dp(state, encoder, old_crtc_state,
+ 					  old_conn_state);
 +}
 +
- static int binder_translate_binder(struct flat_binder_object *fp,
- 				   struct binder_transaction *t,
- 				   struct binder_thread *thread)
-@@ -3926,7 +3940,7 @@ binder_free_buf(struct binder_proc *proc
- 		binder_node_inner_unlock(buf_node);
- 	}
- 	trace_binder_transaction_buffer_release(buffer);
--	binder_transaction_buffer_release(proc, thread, buffer, 0, is_failure);
-+	binder_release_entire_buffer(proc, thread, buffer, is_failure);
- 	binder_alloc_free_buf(&proc->alloc, buffer);
++static void intel_ddi_post_pll_disable(struct intel_atomic_state *state,
++				       struct intel_encoder *encoder,
++				       const struct intel_crtc_state *old_crtc_state,
++				       const struct drm_connector_state *old_conn_state)
++{
++	struct drm_i915_private *i915 = to_i915(encoder->base.dev);
++	struct intel_digital_port *dig_port = enc_to_dig_port(encoder);
++	enum phy phy = intel_port_to_phy(i915, encoder->port);
++	bool is_tc_port = intel_phy_is_tc(i915, phy);
+ 
+ 	main_link_aux_power_domain_put(dig_port, old_crtc_state);
+ 
+@@ -4381,6 +4389,7 @@ void intel_ddi_init(struct drm_i915_private *dev_priv, enum port port)
+ 	encoder->pre_pll_enable = intel_ddi_pre_pll_enable;
+ 	encoder->pre_enable = intel_ddi_pre_enable;
+ 	encoder->disable = intel_disable_ddi;
++	encoder->post_pll_disable = intel_ddi_post_pll_disable;
+ 	encoder->post_disable = intel_ddi_post_disable;
+ 	encoder->update_pipe = intel_ddi_update_pipe;
+ 	encoder->get_hw_state = intel_ddi_get_hw_state;
+diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
+index df4c6e000961c..963680ea6fedd 100644
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -2022,6 +2022,8 @@ static void hsw_crtc_disable(struct intel_atomic_state *state,
+ 
+ 	intel_disable_shared_dpll(old_crtc_state);
+ 
++	intel_encoders_post_pll_disable(state, crtc);
++
+ 	intel_dmc_disable_pipe(i915, crtc->pipe);
  }
  
+diff --git a/drivers/gpu/drm/i915/display/intel_dp_mst.c b/drivers/gpu/drm/i915/display/intel_dp_mst.c
+index 7c9b328bc2d73..a93018ce0e312 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp_mst.c
++++ b/drivers/gpu/drm/i915/display/intel_dp_mst.c
+@@ -623,6 +623,20 @@ static void intel_mst_post_disable_dp(struct intel_atomic_state *state,
+ 		    intel_dp->active_mst_links);
+ }
+ 
++static void intel_mst_post_pll_disable_dp(struct intel_atomic_state *state,
++					  struct intel_encoder *encoder,
++					  const struct intel_crtc_state *old_crtc_state,
++					  const struct drm_connector_state *old_conn_state)
++{
++	struct intel_dp_mst_encoder *intel_mst = enc_to_mst(encoder);
++	struct intel_digital_port *dig_port = intel_mst->primary;
++	struct intel_dp *intel_dp = &dig_port->dp;
++
++	if (intel_dp->active_mst_links == 0 &&
++	    dig_port->base.post_pll_disable)
++		dig_port->base.post_pll_disable(state, encoder, old_crtc_state, old_conn_state);
++}
++
+ static void intel_mst_pre_pll_enable_dp(struct intel_atomic_state *state,
+ 					struct intel_encoder *encoder,
+ 					const struct intel_crtc_state *pipe_config,
+@@ -1146,6 +1160,7 @@ intel_dp_create_fake_mst_encoder(struct intel_digital_port *dig_port, enum pipe
+ 	intel_encoder->compute_config_late = intel_dp_mst_compute_config_late;
+ 	intel_encoder->disable = intel_mst_disable_dp;
+ 	intel_encoder->post_disable = intel_mst_post_disable_dp;
++	intel_encoder->post_pll_disable = intel_mst_post_pll_disable_dp;
+ 	intel_encoder->update_pipe = intel_ddi_update_pipe;
+ 	intel_encoder->pre_pll_enable = intel_mst_pre_pll_enable_dp;
+ 	intel_encoder->pre_enable = intel_mst_pre_enable_dp;
+-- 
+2.39.2
+
 
 
