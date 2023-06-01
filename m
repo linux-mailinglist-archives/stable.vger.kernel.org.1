@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65260719E33
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:30:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91C57719DDB
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:27:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233874AbjFANaH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:30:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35830 "EHLO
+        id S233780AbjFAN1F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:27:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234217AbjFAN3z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:29:55 -0400
+        with ESMTP id S233784AbjFAN0v (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:26:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B2C41BE
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:29:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EEBF1BE
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:26:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 77237644E9
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:28:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91672C433D2;
-        Thu,  1 Jun 2023 13:28:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A6863644C0
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:26:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE8EC433EF;
+        Thu,  1 Jun 2023 13:26:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685626134;
-        bh=ZygP9RLRz5Dumf7czzZlKzvTWETKIdGWqRL74UhU8wo=;
+        s=korg; t=1685625990;
+        bh=Aej7ov0tkQnGKaVZqIbhVxFud2wzFHpjq5K1nAOCA6c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B3z6OEQ0UkIPW/vc3jS8KJol8Y3HwuW+PI+P5olMS7qA0huYEtf29z+Hc9qvSrHG6
-         2wy8dSSqsQDlE+1uj6/FSxH3/dnRBR8rejJuplKLGQmWzQj3/aNSqdi1Ba3RiWIwJk
-         GYOBRWh3eTdPtw9jkHuSVWTjgj6oJMPDb8EcG4K8=
+        b=DGljvrfS+1KOFji/SlTGY6drB2Ai4E+6iGXiR06gMGw3DZURp5V+J0Umz+o2EGegY
+         4XpCKjspX6LTMnjjvSjzHSRiIRjmyDflXrnJMXcTwoezJds8Ot6PPTZR9LnLL35ur5
+         q1hQa0UIb1dJf52eVffzMxZM3jf+Dt7P446rVchw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John Fastabend <john.fastabend@gmail.com>,
+        patches@lists.linux.dev, Jakub Sitnicki <jakub@cloudflare.com>,
+        John Fastabend <john.fastabend@gmail.com>,
         Daniel Borkmann <daniel@iogearbox.net>,
         William Findlay <will@isovalent.com>,
-        Jakub Sitnicki <jakub@cloudflare.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 18/42] bpf, sockmap: Handle fin correctly
-Date:   Thu,  1 Jun 2023 14:21:27 +0100
-Message-Id: <20230601131939.858129530@linuxfoundation.org>
+Subject: [PATCH 6.3 32/45] bpf, sockmap: Improved check for empty queue
+Date:   Thu,  1 Jun 2023 14:21:28 +0100
+Message-Id: <20230601131940.134702774@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131939.051934720@linuxfoundation.org>
-References: <20230601131939.051934720@linuxfoundation.org>
+In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
+References: <20230601131938.702671708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,79 +58,174 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: John Fastabend <john.fastabend@gmail.com>
 
-[ Upstream commit 901546fd8f9ca4b5c481ce00928ab425ce9aacc0 ]
+[ Upstream commit 405df89dd52cbcd69a3cd7d9a10d64de38f854b2 ]
 
-The sockmap code is returning EAGAIN after a FIN packet is received and no
-more data is on the receive queue. Correct behavior is to return 0 to the
-user and the user can then close the socket. The EAGAIN causes many apps
-to retry which masks the problem. Eventually the socket is evicted from
-the sockmap because its released from sockmap sock free handling. The
-issue creates a delay and can cause some errors on application side.
+We noticed some rare sk_buffs were stepping past the queue when system was
+under memory pressure. The general theory is to skip enqueueing
+sk_buffs when its not necessary which is the normal case with a system
+that is properly provisioned for the task, no memory pressure and enough
+cpu assigned.
 
-To fix this check on sk_msg_recvmsg side if length is zero and FIN flag
-is set then set return to zero. A selftest will be added to check this
-condition.
+But, if we can't allocate memory due to an ENOMEM error when enqueueing
+the sk_buff into the sockmap receive queue we push it onto a delayed
+workqueue to retry later. When a new sk_buff is received we then check
+if that queue is empty. However, there is a problem with simply checking
+the queue length. When a sk_buff is being processed from the ingress queue
+but not yet on the sockmap msg receive queue its possible to also recv
+a sk_buff through normal path. It will check the ingress queue which is
+zero and then skip ahead of the pkt being processed.
+
+Previously we used sock lock from both contexts which made the problem
+harder to hit, but not impossible.
+
+To fix instead of popping the skb from the queue entirely we peek the
+skb from the queue and do the copy there. This ensures checks to the
+queue length are non-zero while skb is being processed. Then finally
+when the entire skb has been copied to user space queue or another
+socket we pop it off the queue. This way the queue length check allows
+bypassing the queue only after the list has been completely processed.
+
+To reproduce issue we run NGINX compliance test with sockmap running and
+observe some flakes in our testing that we attributed to this issue.
 
 Fixes: 04919bed948dc ("tcp: Introduce tcp_read_skb()")
+Suggested-by: Jakub Sitnicki <jakub@cloudflare.com>
 Signed-off-by: John Fastabend <john.fastabend@gmail.com>
 Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
 Tested-by: William Findlay <will@isovalent.com>
 Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Link: https://lore.kernel.org/bpf/20230523025618.113937-6-john.fastabend@gmail.com
+Link: https://lore.kernel.org/bpf/20230523025618.113937-5-john.fastabend@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_bpf.c | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ include/linux/skmsg.h |  1 -
+ net/core/skmsg.c      | 32 ++++++++------------------------
+ 2 files changed, 8 insertions(+), 25 deletions(-)
 
-diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-index 2e9547467edbe..73c13642d47f6 100644
---- a/net/ipv4/tcp_bpf.c
-+++ b/net/ipv4/tcp_bpf.c
-@@ -174,6 +174,24 @@ static int tcp_msg_wait_data(struct sock *sk, struct sk_psock *psock,
- 	return ret;
+diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
+index 904ff9a32ad61..054d7911bfc9f 100644
+--- a/include/linux/skmsg.h
++++ b/include/linux/skmsg.h
+@@ -71,7 +71,6 @@ struct sk_psock_link {
+ };
+ 
+ struct sk_psock_work_state {
+-	struct sk_buff			*skb;
+ 	u32				len;
+ 	u32				off;
+ };
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 76ff15f8bb06e..bcd45a99a3db3 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -622,16 +622,12 @@ static int sk_psock_handle_skb(struct sk_psock *psock, struct sk_buff *skb,
+ 
+ static void sk_psock_skb_state(struct sk_psock *psock,
+ 			       struct sk_psock_work_state *state,
+-			       struct sk_buff *skb,
+ 			       int len, int off)
+ {
+ 	spin_lock_bh(&psock->ingress_lock);
+ 	if (sk_psock_test_state(psock, SK_PSOCK_TX_ENABLED)) {
+-		state->skb = skb;
+ 		state->len = len;
+ 		state->off = off;
+-	} else {
+-		sock_drop(psock->sk, skb);
+ 	}
+ 	spin_unlock_bh(&psock->ingress_lock);
+ }
+@@ -642,23 +638,17 @@ static void sk_psock_backlog(struct work_struct *work)
+ 	struct sk_psock *psock = container_of(dwork, struct sk_psock, work);
+ 	struct sk_psock_work_state *state = &psock->work_state;
+ 	struct sk_buff *skb = NULL;
++	u32 len = 0, off = 0;
+ 	bool ingress;
+-	u32 len, off;
+ 	int ret;
+ 
+ 	mutex_lock(&psock->work_mutex);
+-	if (unlikely(state->skb)) {
+-		spin_lock_bh(&psock->ingress_lock);
+-		skb = state->skb;
++	if (unlikely(state->len)) {
+ 		len = state->len;
+ 		off = state->off;
+-		state->skb = NULL;
+-		spin_unlock_bh(&psock->ingress_lock);
+ 	}
+-	if (skb)
+-		goto start;
+ 
+-	while ((skb = skb_dequeue(&psock->ingress_skb))) {
++	while ((skb = skb_peek(&psock->ingress_skb))) {
+ 		len = skb->len;
+ 		off = 0;
+ 		if (skb_bpf_strparser(skb)) {
+@@ -667,7 +657,6 @@ static void sk_psock_backlog(struct work_struct *work)
+ 			off = stm->offset;
+ 			len = stm->full_len;
+ 		}
+-start:
+ 		ingress = skb_bpf_ingress(skb);
+ 		skb_bpf_redirect_clear(skb);
+ 		do {
+@@ -677,8 +666,7 @@ static void sk_psock_backlog(struct work_struct *work)
+ 							  len, ingress);
+ 			if (ret <= 0) {
+ 				if (ret == -EAGAIN) {
+-					sk_psock_skb_state(psock, state, skb,
+-							   len, off);
++					sk_psock_skb_state(psock, state, len, off);
+ 
+ 					/* Delay slightly to prioritize any
+ 					 * other work that might be here.
+@@ -690,15 +678,16 @@ static void sk_psock_backlog(struct work_struct *work)
+ 				/* Hard errors break pipe and stop xmit. */
+ 				sk_psock_report_error(psock, ret ? -ret : EPIPE);
+ 				sk_psock_clear_state(psock, SK_PSOCK_TX_ENABLED);
+-				sock_drop(psock->sk, skb);
+ 				goto end;
+ 			}
+ 			off += ret;
+ 			len -= ret;
+ 		} while (len);
+ 
+-		if (!ingress)
++		skb = skb_dequeue(&psock->ingress_skb);
++		if (!ingress) {
+ 			kfree_skb(skb);
++		}
+ 	}
+ end:
+ 	mutex_unlock(&psock->work_mutex);
+@@ -791,11 +780,6 @@ static void __sk_psock_zap_ingress(struct sk_psock *psock)
+ 		skb_bpf_redirect_clear(skb);
+ 		sock_drop(psock->sk, skb);
+ 	}
+-	kfree_skb(psock->work_state.skb);
+-	/* We null the skb here to ensure that calls to sk_psock_backlog
+-	 * do not pick up the free'd skb.
+-	 */
+-	psock->work_state.skb = NULL;
+ 	__sk_psock_purge_ingress_msg(psock);
  }
  
-+static bool is_next_msg_fin(struct sk_psock *psock)
-+{
-+	struct scatterlist *sge;
-+	struct sk_msg *msg_rx;
-+	int i;
-+
-+	msg_rx = sk_psock_peek_msg(psock);
-+	i = msg_rx->sg.start;
-+	sge = sk_msg_elem(msg_rx, i);
-+	if (!sge->length) {
-+		struct sk_buff *skb = msg_rx->skb;
-+
-+		if (skb && TCP_SKB_CB(skb)->tcp_flags & TCPHDR_FIN)
-+			return true;
-+	}
-+	return false;
-+}
-+
- static int tcp_bpf_recvmsg_parser(struct sock *sk,
- 				  struct msghdr *msg,
- 				  size_t len,
-@@ -196,6 +214,19 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
- 	lock_sock(sk);
- msg_bytes_ready:
- 	copied = sk_msg_recvmsg(sk, psock, msg, len, flags);
-+	/* The typical case for EFAULT is the socket was gracefully
-+	 * shutdown with a FIN pkt. So check here the other case is
-+	 * some error on copy_page_to_iter which would be unexpected.
-+	 * On fin return correct return code to zero.
-+	 */
-+	if (copied == -EFAULT) {
-+		bool is_fin = is_next_msg_fin(psock);
-+
-+		if (is_fin) {
-+			copied = 0;
-+			goto out;
-+		}
-+	}
- 	if (!copied) {
- 		long timeo;
- 		int data;
+@@ -814,7 +798,6 @@ void sk_psock_stop(struct sk_psock *psock)
+ 	spin_lock_bh(&psock->ingress_lock);
+ 	sk_psock_clear_state(psock, SK_PSOCK_TX_ENABLED);
+ 	sk_psock_cork_free(psock);
+-	__sk_psock_zap_ingress(psock);
+ 	spin_unlock_bh(&psock->ingress_lock);
+ }
+ 
+@@ -829,6 +812,7 @@ static void sk_psock_destroy(struct work_struct *work)
+ 	sk_psock_done_strp(psock);
+ 
+ 	cancel_delayed_work_sync(&psock->work);
++	__sk_psock_zap_ingress(psock);
+ 	mutex_destroy(&psock->work_mutex);
+ 
+ 	psock_progs_drop(&psock->progs);
 -- 
 2.39.2
 
