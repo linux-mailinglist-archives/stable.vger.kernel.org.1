@@ -2,48 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCF28719DAB
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:25:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEF60719D6A
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:23:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233718AbjFANZh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:25:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33964 "EHLO
+        id S233551AbjFANWv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:22:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233721AbjFANZY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:25:24 -0400
+        with ESMTP id S233560AbjFANWu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:22:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1AB1199
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:24:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F161139;
+        Thu,  1 Jun 2023 06:22:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9022D64477
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:24:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF038C433EF;
-        Thu,  1 Jun 2023 13:24:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C05FC64450;
+        Thu,  1 Jun 2023 13:22:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C05C433D2;
+        Thu,  1 Jun 2023 13:22:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625892;
-        bh=Zd2jA4L3U9/zqpvf2P2wxL/fkV9XremJKIIbapeu5pU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A+sy/TV/s5ZsHAsWXHGo3SI6jGz2iFzasZdbY4iqgWFBaSQSgcnK/efgmB+aIdnex
-         yY7HFZMRi/IEq+uHEdg7NheKFWkY4g47AVDtV2fBgh0nyErsA4c6FyLbhZYlUEdazi
-         woRP0WntTc5GAEbtg8QkLSBBomOkCcTRFE8cM7vM=
+        s=korg; t=1685625768;
+        bh=J/f6faeRfVz1/CP022sJVxdUHJWxvOp4f5UITT+pH50=;
+        h=From:To:Cc:Subject:Date:From;
+        b=aBeBDQi/x5QNE3GQR2ZcI2hDvWk78IkjIwQm02ThJDHWzyroQpfZWYVBswg/xc5Ll
+         kHqEuxSNvzbVvuD0RnNVKeCYLhW/OWiebb9vpptUqm0JGXqtIif2lE5IvPHGelez5v
+         oz9TkiRZccrqoD/u9z/a4xqy7pAoZbUKbMZM0yaM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Bloch <mbloch@nvidia.com>,
-        Maor Gottlieb <maorg@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 08/42] net/mlx5: devcom only supports 2 ports
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de
+Subject: [PATCH 5.4 00/16] 5.4.245-rc1 review
 Date:   Thu,  1 Jun 2023 14:20:55 +0100
-Message-Id: <20230601131937.067948452@linuxfoundation.org>
+Message-Id: <20230601131931.947241286@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131936.699199833@linuxfoundation.org>
-References: <20230601131936.699199833@linuxfoundation.org>
-User-Agent: quilt/0.67
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.245-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-5.4.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 5.4.245-rc1
+X-KernelTest-Deadline: 2023-06-03T13:19+00:00
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -55,109 +62,103 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Bloch <mbloch@nvidia.com>
+This is the start of the stable review cycle for the 5.4.245 release.
+There are 16 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-[ Upstream commit 8a6e75e5f57e9ac82268d9bfca3403598d9d0292 ]
+Responses should be made by Sat, 03 Jun 2023 13:19:19 +0000.
+Anything received after that time might be too late.
 
-Devcom API is intended to be used between 2 devices only add this
-implied assumption into the code and check when it's no true.
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.245-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+and the diffstat can be found below.
 
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Stable-dep-of: 691c041bf208 ("net/mlx5e: Fix deadlock in tc route query code")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- .../net/ethernet/mellanox/mlx5/core/lib/devcom.c | 16 +++++++++-------
- .../net/ethernet/mellanox/mlx5/core/lib/devcom.h |  2 ++
- 2 files changed, 11 insertions(+), 7 deletions(-)
+thanks,
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-index abd066e952286..617eea1b1701b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-@@ -14,7 +14,7 @@ static LIST_HEAD(devcom_list);
- struct mlx5_devcom_component {
- 	struct {
- 		void *data;
--	} device[MLX5_MAX_PORTS];
-+	} device[MLX5_DEVCOM_PORTS_SUPPORTED];
- 
- 	mlx5_devcom_event_handler_t handler;
- 	struct rw_semaphore sem;
-@@ -25,7 +25,7 @@ struct mlx5_devcom_list {
- 	struct list_head list;
- 
- 	struct mlx5_devcom_component components[MLX5_DEVCOM_NUM_COMPONENTS];
--	struct mlx5_core_dev *devs[MLX5_MAX_PORTS];
-+	struct mlx5_core_dev *devs[MLX5_DEVCOM_PORTS_SUPPORTED];
- };
- 
- struct mlx5_devcom {
-@@ -74,13 +74,15 @@ struct mlx5_devcom *mlx5_devcom_register_device(struct mlx5_core_dev *dev)
- 
- 	if (!mlx5_core_is_pf(dev))
- 		return NULL;
-+	if (MLX5_CAP_GEN(dev, num_lag_ports) != MLX5_DEVCOM_PORTS_SUPPORTED)
-+		return NULL;
- 
- 	sguid0 = mlx5_query_nic_system_image_guid(dev);
- 	list_for_each_entry(iter, &devcom_list, list) {
- 		struct mlx5_core_dev *tmp_dev = NULL;
- 
- 		idx = -1;
--		for (i = 0; i < MLX5_MAX_PORTS; i++) {
-+		for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++) {
- 			if (iter->devs[i])
- 				tmp_dev = iter->devs[i];
- 			else
-@@ -135,11 +137,11 @@ void mlx5_devcom_unregister_device(struct mlx5_devcom *devcom)
- 
- 	kfree(devcom);
- 
--	for (i = 0; i < MLX5_MAX_PORTS; i++)
-+	for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++)
- 		if (priv->devs[i])
- 			break;
- 
--	if (i != MLX5_MAX_PORTS)
-+	if (i != MLX5_DEVCOM_PORTS_SUPPORTED)
- 		return;
- 
- 	list_del(&priv->list);
-@@ -192,7 +194,7 @@ int mlx5_devcom_send_event(struct mlx5_devcom *devcom,
- 
- 	comp = &devcom->priv->components[id];
- 	down_write(&comp->sem);
--	for (i = 0; i < MLX5_MAX_PORTS; i++)
-+	for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++)
- 		if (i != devcom->idx && comp->device[i].data) {
- 			err = comp->handler(event, comp->device[i].data,
- 					    event_data);
-@@ -240,7 +242,7 @@ void *mlx5_devcom_get_peer_data(struct mlx5_devcom *devcom,
- 		return NULL;
- 	}
- 
--	for (i = 0; i < MLX5_MAX_PORTS; i++)
-+	for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++)
- 		if (i != devcom->idx)
- 			break;
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
-index 939d5bf1581b5..94313c18bb647 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
-@@ -6,6 +6,8 @@
- 
- #include <linux/mlx5/driver.h>
- 
-+#define MLX5_DEVCOM_PORTS_SUPPORTED 2
-+
- enum mlx5_devcom_components {
- 	MLX5_DEVCOM_ESW_OFFLOADS,
- 
--- 
-2.39.2
+greg k-h
 
+-------------
+Pseudo-Shortlog of commits:
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 5.4.245-rc1
+
+Paul Blakey <paulb@nvidia.com>
+    netfilter: ctnetlink: Support offloaded conntrack entry deletion
+
+Nicolas Dichtel <nicolas.dichtel@6wind.com>
+    ipv{4,6}/raw: fix output xfrm lookup wrt protocol
+
+Carlos Llamas <cmllamas@google.com>
+    binder: fix UAF caused by faulty buffer cleanup
+
+Ruihan Li <lrh2000@pku.edu.cn>
+    bluetooth: Add cmd validity checks at the start of hci_sock_ioctl()
+
+Jens Axboe <axboe@kernel.dk>
+    io_uring: have io_kill_timeout() honor the request references
+
+Jens Axboe <axboe@kernel.dk>
+    io_uring: don't drop completion lock before timer is fully initialized
+
+Jens Axboe <axboe@kernel.dk>
+    io_uring: always grab lock in io_cancel_async_work()
+
+Alexander Bersenev <bay@hackerdom.ru>
+    cdc_ncm: Fix the build warning
+
+Shay Drory <shayd@nvidia.com>
+    net/mlx5: Devcom, serialize devcom registration
+
+Mark Bloch <mbloch@nvidia.com>
+    net/mlx5: devcom only supports 2 ports
+
+Hao Ge <gehao@kylinos.cn>
+    fs: fix undefined behavior in bit shift for SB_NOUSER
+
+Hans de Goede <hdegoede@redhat.com>
+    power: supply: bq24190: Call power_supply_changed() after updating input current
+
+Hans de Goede <hdegoede@redhat.com>
+    power: supply: core: Refactor power_supply_set_input_current_limit_from_supplier()
+
+Hans de Goede <hdegoede@redhat.com>
+    power: supply: bq27xxx: After charger plug in/out wait 0.5s for things to stabilize
+
+Tudor Ambarus <tudor.ambarus@linaro.org>
+    net: cdc_ncm: Deal with too low values of dwNtbOutMaxSize
+
+Alexander Bersenev <bay@hackerdom.ru>
+    cdc_ncm: Implement the 32-bit version of NCM Transfer Block
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                           |   4 +-
+ drivers/android/binder.c                           |  26 +-
+ .../net/ethernet/mellanox/mlx5/core/lib/devcom.c   |  35 +-
+ .../net/ethernet/mellanox/mlx5/core/lib/devcom.h   |   2 +
+ drivers/net/usb/cdc_ncm.c                          | 435 ++++++++++++++++-----
+ drivers/net/usb/huawei_cdc_ncm.c                   |   8 +-
+ drivers/power/supply/bq24190_charger.c             |  13 +-
+ drivers/power/supply/bq27xxx_battery.c             |   4 +-
+ drivers/power/supply/power_supply_core.c           |  57 +--
+ fs/io_uring.c                                      |   8 +-
+ include/linux/fs.h                                 |  40 +-
+ include/linux/power_supply.h                       |   5 +-
+ include/linux/usb/cdc_ncm.h                        |  15 +-
+ include/net/ip.h                                   |   2 +
+ include/uapi/linux/in.h                            |   2 +
+ net/bluetooth/hci_sock.c                           |  28 ++
+ net/ipv4/ip_sockglue.c                             |  12 +-
+ net/ipv4/raw.c                                     |   5 +-
+ net/ipv6/raw.c                                     |   3 +-
+ net/netfilter/nf_conntrack_netlink.c               |   8 -
+ 20 files changed, 521 insertions(+), 191 deletions(-)
 
 
