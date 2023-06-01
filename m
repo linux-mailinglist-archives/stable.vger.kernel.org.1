@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E0CE719DC7
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1BB1719DFE
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:28:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233753AbjFAN0Y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:26:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33964 "EHLO
+        id S233904AbjFAN2O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:28:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233815AbjFAN0I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:26:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BB46E42
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:25:54 -0700 (PDT)
+        with ESMTP id S233908AbjFAN17 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:27:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 542F2E44
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:27:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DDB52644A6
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:25:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07624C433EF;
-        Thu,  1 Jun 2023 13:25:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BE786644E1
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:27:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7E59C4339B;
+        Thu,  1 Jun 2023 13:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625953;
-        bh=fSJy66onBRiH8t3WkCjjcRMMUitvkv0d5aGzpau7ARs=;
+        s=korg; t=1685626056;
+        bh=ulvRY/7XrCE9eSQfr8Le5Vqa2oCCxGHbfF6+wbput/0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uxUvCsm18X3GzY/xtOhEqqZ0EvPq/3ZYx9jXsGmJVGkzRFQIfmw4yxZ5/HGr3QIoC
-         Wx4lX/ztD08myDZr2c4OSPM/V3B3aQUzRmV4d82Ed0aJTIXxcasLZm+enTdYXeQQ6E
-         9spYJrgnEo4RF0TsS/UNqCTOV4tgb9pExEvvec+g=
+        b=aqeRGLXdrxjbeZ+W9HyTcZ6WNf79UKEl2QE5xZ3fPM39GLeafnDBEMdqevBQUPao1
+         A7CKlnjTFmfGnfPkkydlM2d4XwirF1CJZLnxGfFBTIydaN1Q/w/ZY/EMZN9caiTi5a
+         FsSGuJq318zud6JYft2+/vcoEy5KdLs54vTJddlU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shai Amiram <samiram@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Jeremy Sowden <jeremy@azazel.net>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 17/45] tls: rx: strp: dont use GFP_KERNEL in softirq context
+Subject: [PATCH 6.1 04/42] selftests/bpf: Fix pkg-config call building sign-file
 Date:   Thu,  1 Jun 2023 14:21:13 +0100
-Message-Id: <20230601131939.495437952@linuxfoundation.org>
+Message-Id: <20230601131939.253578766@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
-References: <20230601131938.702671708@linuxfoundation.org>
+In-Reply-To: <20230601131939.051934720@linuxfoundation.org>
+References: <20230601131939.051934720@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,50 +56,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Jeremy Sowden <jeremy@azazel.net>
 
-[ Upstream commit 74836ec828fe17b63f2006fdbf53311d691396bf ]
+[ Upstream commit 5f5486b620cd43b16a1787ef92b9bc21bd72ef2e ]
 
-When receive buffer is small, or the TCP rx queue looks too
-complicated to bother using it directly - we allocate a new
-skb and copy data into it.
+When building sign-file, the call to get the CFLAGS for libcrypto is
+missing white-space between `pkg-config` and `--cflags`:
 
-We already use sk->sk_allocation... but nothing actually
-sets it to GFP_ATOMIC on the ->sk_data_ready() path.
+  $(shell $(HOSTPKG_CONFIG)--cflags libcrypto 2> /dev/null)
 
-Users of HW offload are far more likely to experience problems
-due to scheduling while atomic. "Copy mode" is very rarely
-triggered with SW crypto.
+Removing the redirection of stderr, we see:
 
-Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
-Tested-by: Shai Amiram <samiram@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+  $ make -C tools/testing/selftests/bpf sign-file
+  make: Entering directory '[...]/tools/testing/selftests/bpf'
+  make: pkg-config--cflags: No such file or directory
+    SIGN-FILE sign-file
+  make: Leaving directory '[...]/tools/testing/selftests/bpf'
+
+Add the missing space.
+
+Fixes: fc97590668ae ("selftests/bpf: Add test for bpf_verify_pkcs7_signature() kfunc")
+Signed-off-by: Jeremy Sowden <jeremy@azazel.net>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
+Link: https://lore.kernel.org/bpf/20230426215032.415792-1-jeremy@azazel.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/bpf/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 635b8bf6b937c..6e6a7c37d685c 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -2304,10 +2304,14 @@ static void tls_data_ready(struct sock *sk)
- 	struct tls_context *tls_ctx = tls_get_ctx(sk);
- 	struct tls_sw_context_rx *ctx = tls_sw_ctx_rx(tls_ctx);
- 	struct sk_psock *psock;
-+	gfp_t alloc_save;
+diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
+index 687249d99b5f1..0465ddc81f352 100644
+--- a/tools/testing/selftests/bpf/Makefile
++++ b/tools/testing/selftests/bpf/Makefile
+@@ -193,7 +193,7 @@ $(OUTPUT)/urandom_read: urandom_read.c urandom_read_aux.c $(OUTPUT)/liburandom_r
  
- 	trace_sk_data_ready(sk);
+ $(OUTPUT)/sign-file: ../../../../scripts/sign-file.c
+ 	$(call msg,SIGN-FILE,,$@)
+-	$(Q)$(CC) $(shell $(HOSTPKG_CONFIG)--cflags libcrypto 2> /dev/null) \
++	$(Q)$(CC) $(shell $(HOSTPKG_CONFIG) --cflags libcrypto 2> /dev/null) \
+ 		  $< -o $@ \
+ 		  $(shell $(HOSTPKG_CONFIG) --libs libcrypto 2> /dev/null || echo -lcrypto)
  
-+	alloc_save = sk->sk_allocation;
-+	sk->sk_allocation = GFP_ATOMIC;
- 	tls_strp_data_ready(&ctx->strp);
-+	sk->sk_allocation = alloc_save;
- 
- 	psock = sk_psock_get(sk);
- 	if (psock) {
 -- 
 2.39.2
 
