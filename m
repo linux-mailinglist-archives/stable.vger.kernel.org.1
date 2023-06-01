@@ -2,49 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A309719D58
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:22:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B8E8719DC1
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:26:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233406AbjFANW0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:22:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58964 "EHLO
+        id S233834AbjFAN0S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:26:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233562AbjFANWV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:22:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6B4D124
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:22:13 -0700 (PDT)
+        with ESMTP id S233836AbjFANZ5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:25:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C747E43
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:25:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A85D961627
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:22:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E9A0C433EF;
-        Thu,  1 Jun 2023 13:22:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A44564480
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:25:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 480B5C433EF;
+        Thu,  1 Jun 2023 13:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625733;
-        bh=7gAUeDBuAEwBbWXLfgD4+4tlWntu2cygakOOQJajQvc=;
+        s=korg; t=1685625938;
+        bh=Q66oGo6YHunqdLXo+Uqi03t/BOE+7faoNHZDZl5VWLA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2B2Geh9VcL25y9U2/bn22PtHc8hjgjiki7SPuwFAFoTfbxyUZrAHdYJSnqxDUspnn
-         nP5LUJYpIzEV/hEzHu1WQFjLSGG9bMJeOwZzJNsTuPo/N/QtU0pJOSsFhjB/E9of13
-         8kQz+JmSanIYt91yGJeM6zDErvzJEdN/pc5PONQI=
+        b=MBKRACMn2YJ8LSgXiI6LPknVvQkmqqLv3JT9IhZh0IUaCrHj+/osGIxx4BHO8r503
+         r7KJ6mLRwTvi2FACECzivRGOxsEPeogoGt8Vnxl7b3WN3p+KXWSyejHfXtYS2T78di
+         arwVm93hFq1Y98WW34Ni3yAn0S/LPGntlZ6kii44=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
-        Lee Jones <lee@kernel.org>
-Subject: [PATCH 5.4 12/16] io_uring: have io_kill_timeout() honor the request references
+        patches@lists.linux.dev, Tariq Toukan <tariqt@nvidia.com>,
+        Shai Amiram <samiram@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 11/45] tls: rx: device: fix checking decryption status
 Date:   Thu,  1 Jun 2023 14:21:07 +0100
-Message-Id: <20230601131932.526569560@linuxfoundation.org>
+Message-Id: <20230601131939.226042884@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131931.947241286@linuxfoundation.org>
-References: <20230601131931.947241286@linuxfoundation.org>
+In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
+References: <20230601131938.702671708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,31 +57,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Jakub Kicinski <kuba@kernel.org>
 
-No upstream commit exists for this patch.
+[ Upstream commit b3a03b540e3cf62a255213d084d76d71c02793d5 ]
 
-Don't free the request unconditionally, if the request is issued async
-then someone else may be holding a submit reference to it.
+skb->len covers the entire skb, including the frag_list.
+In fact we're guaranteed that rxm->full_len <= skb->len,
+so since the change under Fixes we were not checking decrypt
+status of any skb but the first.
 
-Reported-and-tested-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note that the skb_pagelen() added here may feel a bit costly,
+but it's removed by subsequent fixes, anyway.
+
+Reported-by: Tariq Toukan <tariqt@nvidia.com>
+Fixes: 86b259f6f888 ("tls: rx: device: bound the frag walk")
+Tested-by: Shai Amiram <samiram@nvidia.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/io_uring.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/tls/tls_device.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/io_uring.c
-+++ b/fs/io_uring.c
-@@ -551,7 +551,8 @@ static void io_kill_timeout(struct io_ki
- 		atomic_inc(&req->ctx->cq_timeouts);
- 		list_del(&req->list);
- 		io_cqring_fill_event(req->ctx, req->user_data, 0);
--		__io_free_req(req);
-+		if (refcount_dec_and_test(&req->refs))
-+			__io_free_req(req);
- 	}
- }
+diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+index a7cc4f9faac28..3b87c7b04ac87 100644
+--- a/net/tls/tls_device.c
++++ b/net/tls/tls_device.c
+@@ -1012,7 +1012,7 @@ int tls_device_decrypted(struct sock *sk, struct tls_context *tls_ctx)
+ 	struct sk_buff *skb_iter;
+ 	int left;
  
+-	left = rxm->full_len - skb->len;
++	left = rxm->full_len + rxm->offset - skb_pagelen(skb);
+ 	/* Check if all the data is decrypted already */
+ 	skb_iter = skb_shinfo(skb)->frag_list;
+ 	while (skb_iter && left > 0) {
+-- 
+2.39.2
+
 
 
