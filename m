@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B8E8719DC1
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:26:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A240D719D85
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:24:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233834AbjFAN0S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:26:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34726 "EHLO
+        id S233662AbjFANXv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:23:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233836AbjFANZ5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:25:57 -0400
+        with ESMTP id S233595AbjFANXl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:23:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C747E43
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:25:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7490519B
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:23:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A44564480
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:25:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 480B5C433EF;
-        Thu,  1 Jun 2023 13:25:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F006964461
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:23:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD9BC4339E;
+        Thu,  1 Jun 2023 13:23:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625938;
-        bh=Q66oGo6YHunqdLXo+Uqi03t/BOE+7faoNHZDZl5VWLA=;
+        s=korg; t=1685625818;
+        bh=6buz5UZK3whBTQE1CHIHhLx8/M4ktO98hSQspIxTSh8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MBKRACMn2YJ8LSgXiI6LPknVvQkmqqLv3JT9IhZh0IUaCrHj+/osGIxx4BHO8r503
-         r7KJ6mLRwTvi2FACECzivRGOxsEPeogoGt8Vnxl7b3WN3p+KXWSyejHfXtYS2T78di
-         arwVm93hFq1Y98WW34Ni3yAn0S/LPGntlZ6kii44=
+        b=Xs4xyQQhT1snYVgScaEL+nntlJeUwDmvewy700mY5pVcxZ9AKACqUP0V5GXtTqYrR
+         xI2uQsRY4xapp5khkXLbO8QrCLZtRbAKHOoYeV2MNzMEPIVYqIHeTGnMYfwNdq3/kD
+         +dpN4JGWTGisX0xPL10z9vtEXqgOvO4bnhNkyi6c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tariq Toukan <tariqt@nvidia.com>,
-        Shai Amiram <samiram@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 11/45] tls: rx: device: fix checking decryption status
+Subject: [PATCH 5.10 09/22] power: supply: bq27xxx: Ensure power_supply_changed() is called on current sign changes
 Date:   Thu,  1 Jun 2023 14:21:07 +0100
-Message-Id: <20230601131939.226042884@linuxfoundation.org>
+Message-Id: <20230601131934.167894989@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
-References: <20230601131938.702671708@linuxfoundation.org>
+In-Reply-To: <20230601131933.727832920@linuxfoundation.org>
+References: <20230601131933.727832920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,42 +54,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit b3a03b540e3cf62a255213d084d76d71c02793d5 ]
+[ Upstream commit 939a116142012926e25de0ea6b7e2f8d86a5f1b6 ]
 
-skb->len covers the entire skb, including the frag_list.
-In fact we're guaranteed that rxm->full_len <= skb->len,
-so since the change under Fixes we were not checking decrypt
-status of any skb but the first.
+On gauges where the current register is signed, there is no charging
+flag in the flags register. So only checking flags will not result
+in power_supply_changed() getting called when e.g. a charger is plugged
+in and the current sign changes from negative (discharging) to
+positive (charging).
 
-Note that the skb_pagelen() added here may feel a bit costly,
-but it's removed by subsequent fixes, anyway.
+This causes userspace's notion of the status to lag until userspace
+does a poll.
 
-Reported-by: Tariq Toukan <tariqt@nvidia.com>
-Fixes: 86b259f6f888 ("tls: rx: device: bound the frag walk")
-Tested-by: Shai Amiram <samiram@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+And when a power_supply_leds.c LED trigger is used to indicate charging
+status with a LED, this LED will lag until the capacity percentage
+changes, which may take many minutes (because the LED trigger only is
+updated on power_supply_changed() calls).
+
+Fix this by calling bq27xxx_battery_current_and_status() on gauges with
+a signed current register and checking if the status has changed.
+
+Fixes: 297a533b3e62 ("bq27x00: Cache battery registers")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_device.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/supply/bq27xxx_battery.c | 13 ++++++++++++-
+ include/linux/power/bq27xxx_battery.h  |  3 +++
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
-index a7cc4f9faac28..3b87c7b04ac87 100644
---- a/net/tls/tls_device.c
-+++ b/net/tls/tls_device.c
-@@ -1012,7 +1012,7 @@ int tls_device_decrypted(struct sock *sk, struct tls_context *tls_ctx)
- 	struct sk_buff *skb_iter;
- 	int left;
+diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
+index 160ab53065f8e..8984f66bd2bc3 100644
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -1762,6 +1762,7 @@ static int bq27xxx_battery_current_and_status(
  
--	left = rxm->full_len - skb->len;
-+	left = rxm->full_len + rxm->offset - skb_pagelen(skb);
- 	/* Check if all the data is decrypted already */
- 	skb_iter = skb_shinfo(skb)->frag_list;
- 	while (skb_iter && left > 0) {
+ static void bq27xxx_battery_update_unlocked(struct bq27xxx_device_info *di)
+ {
++	union power_supply_propval status = di->last_status;
+ 	struct bq27xxx_reg_cache cache = {0, };
+ 	bool has_singe_flag = di->opts & BQ27XXX_O_ZERO;
+ 
+@@ -1786,14 +1787,24 @@ static void bq27xxx_battery_update_unlocked(struct bq27xxx_device_info *di)
+ 		if (di->regs[BQ27XXX_REG_CYCT] != INVALID_REG_ADDR)
+ 			cache.cycle_count = bq27xxx_battery_read_cyct(di);
+ 
++		/*
++		 * On gauges with signed current reporting the current must be
++		 * checked to detect charging <-> discharging status changes.
++		 */
++		if (!(di->opts & BQ27XXX_O_ZERO))
++			bq27xxx_battery_current_and_status(di, NULL, &status, &cache);
++
+ 		/* We only have to read charge design full once */
+ 		if (di->charge_design_full <= 0)
+ 			di->charge_design_full = bq27xxx_battery_read_dcap(di);
+ 	}
+ 
+ 	if ((di->cache.capacity != cache.capacity) ||
+-	    (di->cache.flags != cache.flags))
++	    (di->cache.flags != cache.flags) ||
++	    (di->last_status.intval != status.intval)) {
++		di->last_status.intval = status.intval;
+ 		power_supply_changed(di->bat);
++	}
+ 
+ 	if (memcmp(&di->cache, &cache, sizeof(cache)) != 0)
+ 		di->cache = cache;
+diff --git a/include/linux/power/bq27xxx_battery.h b/include/linux/power/bq27xxx_battery.h
+index 705b94bd091e3..63964196a436e 100644
+--- a/include/linux/power/bq27xxx_battery.h
++++ b/include/linux/power/bq27xxx_battery.h
+@@ -2,6 +2,8 @@
+ #ifndef __LINUX_BQ27X00_BATTERY_H__
+ #define __LINUX_BQ27X00_BATTERY_H__
+ 
++#include <linux/power_supply.h>
++
+ enum bq27xxx_chip {
+ 	BQ27000 = 1, /* bq27000, bq27200 */
+ 	BQ27010, /* bq27010, bq27210 */
+@@ -69,6 +71,7 @@ struct bq27xxx_device_info {
+ 	int charge_design_full;
+ 	bool removed;
+ 	unsigned long last_update;
++	union power_supply_propval last_status;
+ 	struct delayed_work work;
+ 	struct power_supply *bat;
+ 	struct list_head list;
 -- 
 2.39.2
 
