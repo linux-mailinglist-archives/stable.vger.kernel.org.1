@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91C57719DDB
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:27:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F14B2719DB8
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:26:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233780AbjFAN1F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:27:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35266 "EHLO
+        id S233819AbjFAN0I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:26:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233784AbjFAN0v (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:26:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EEBF1BE
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:26:31 -0700 (PDT)
+        with ESMTP id S233765AbjFANZp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:25:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB1FB10CE
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:25:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A6863644C0
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:26:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE8EC433EF;
-        Thu,  1 Jun 2023 13:26:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CB65A644A0
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:25:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFB79C43444;
+        Thu,  1 Jun 2023 13:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625990;
-        bh=Aej7ov0tkQnGKaVZqIbhVxFud2wzFHpjq5K1nAOCA6c=;
+        s=korg; t=1685625926;
+        bh=DkBxdDW6+VzUY3ta3ik2N2ZSDmm42F2GBWuM6uT4AeA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DGljvrfS+1KOFji/SlTGY6drB2Ai4E+6iGXiR06gMGw3DZURp5V+J0Umz+o2EGegY
-         4XpCKjspX6LTMnjjvSjzHSRiIRjmyDflXrnJMXcTwoezJds8Ot6PPTZR9LnLL35ur5
-         q1hQa0UIb1dJf52eVffzMxZM3jf+Dt7P446rVchw=
+        b=Bkq1Rv46DhmT8c3emFN1+bFlBCoMyDiKXstWnOa93VqosXiMFhT6VYfR3HS6qIoaO
+         LvqfDeJ6doubCNktkeidvMHORufYPO6XrU3wM/rGaoQbtpF7zgdjA+X4nxaG0Pw9Kc
+         JtqWmd7qG1ZeiPUixFExRzlKeABdn8GTTBxsYsoQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jakub Sitnicki <jakub@cloudflare.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        William Findlay <will@isovalent.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 32/45] bpf, sockmap: Improved check for empty queue
+        patches@lists.linux.dev,
+        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+        Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 41/42] ipv{4,6}/raw: fix output xfrm lookup wrt protocol
 Date:   Thu,  1 Jun 2023 14:21:28 +0100
-Message-Id: <20230601131940.134702774@linuxfoundation.org>
+Message-Id: <20230601131938.548524003@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
-References: <20230601131938.702671708@linuxfoundation.org>
+In-Reply-To: <20230601131936.699199833@linuxfoundation.org>
+References: <20230601131936.699199833@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,178 +54,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: John Fastabend <john.fastabend@gmail.com>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 
-[ Upstream commit 405df89dd52cbcd69a3cd7d9a10d64de38f854b2 ]
+commit 3632679d9e4f879f49949bb5b050e0de553e4739 upstream.
 
-We noticed some rare sk_buffs were stepping past the queue when system was
-under memory pressure. The general theory is to skip enqueueing
-sk_buffs when its not necessary which is the normal case with a system
-that is properly provisioned for the task, no memory pressure and enough
-cpu assigned.
+With a raw socket bound to IPPROTO_RAW (ie with hdrincl enabled), the
+protocol field of the flow structure, build by raw_sendmsg() /
+rawv6_sendmsg()),  is set to IPPROTO_RAW. This breaks the ipsec policy
+lookup when some policies are defined with a protocol in the selector.
 
-But, if we can't allocate memory due to an ENOMEM error when enqueueing
-the sk_buff into the sockmap receive queue we push it onto a delayed
-workqueue to retry later. When a new sk_buff is received we then check
-if that queue is empty. However, there is a problem with simply checking
-the queue length. When a sk_buff is being processed from the ingress queue
-but not yet on the sockmap msg receive queue its possible to also recv
-a sk_buff through normal path. It will check the ingress queue which is
-zero and then skip ahead of the pkt being processed.
+For ipv6, the sin6_port field from 'struct sockaddr_in6' could be used to
+specify the protocol. Just accept all values for IPPROTO_RAW socket.
 
-Previously we used sock lock from both contexts which made the problem
-harder to hit, but not impossible.
+For ipv4, the sin_port field of 'struct sockaddr_in' could not be used
+without breaking backward compatibility (the value of this field was never
+checked). Let's add a new kind of control message, so that the userland
+could specify which protocol is used.
 
-To fix instead of popping the skb from the queue entirely we peek the
-skb from the queue and do the copy there. This ensures checks to the
-queue length are non-zero while skb is being processed. Then finally
-when the entire skb has been copied to user space queue or another
-socket we pop it off the queue. This way the queue length check allows
-bypassing the queue only after the list has been completely processed.
-
-To reproduce issue we run NGINX compliance test with sockmap running and
-observe some flakes in our testing that we attributed to this issue.
-
-Fixes: 04919bed948dc ("tcp: Introduce tcp_read_skb()")
-Suggested-by: Jakub Sitnicki <jakub@cloudflare.com>
-Signed-off-by: John Fastabend <john.fastabend@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: William Findlay <will@isovalent.com>
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Link: https://lore.kernel.org/bpf/20230523025618.113937-5-john.fastabend@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+CC: stable@vger.kernel.org
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Link: https://lore.kernel.org/r/20230522120820.1319391-1-nicolas.dichtel@6wind.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/skmsg.h |  1 -
- net/core/skmsg.c      | 32 ++++++++------------------------
- 2 files changed, 8 insertions(+), 25 deletions(-)
+ include/net/ip.h        |    2 ++
+ include/uapi/linux/in.h |    2 ++
+ net/ipv4/ip_sockglue.c  |   12 +++++++++++-
+ net/ipv4/raw.c          |    5 ++++-
+ net/ipv6/raw.c          |    3 ++-
+ 5 files changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
-index 904ff9a32ad61..054d7911bfc9f 100644
---- a/include/linux/skmsg.h
-+++ b/include/linux/skmsg.h
-@@ -71,7 +71,6 @@ struct sk_psock_link {
- };
- 
- struct sk_psock_work_state {
--	struct sk_buff			*skb;
- 	u32				len;
- 	u32				off;
- };
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index 76ff15f8bb06e..bcd45a99a3db3 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -622,16 +622,12 @@ static int sk_psock_handle_skb(struct sk_psock *psock, struct sk_buff *skb,
- 
- static void sk_psock_skb_state(struct sk_psock *psock,
- 			       struct sk_psock_work_state *state,
--			       struct sk_buff *skb,
- 			       int len, int off)
- {
- 	spin_lock_bh(&psock->ingress_lock);
- 	if (sk_psock_test_state(psock, SK_PSOCK_TX_ENABLED)) {
--		state->skb = skb;
- 		state->len = len;
- 		state->off = off;
--	} else {
--		sock_drop(psock->sk, skb);
- 	}
- 	spin_unlock_bh(&psock->ingress_lock);
+--- a/include/net/ip.h
++++ b/include/net/ip.h
+@@ -75,6 +75,7 @@ struct ipcm_cookie {
+ 	__be32			addr;
+ 	int			oif;
+ 	struct ip_options_rcu	*opt;
++	__u8			protocol;
+ 	__u8			ttl;
+ 	__s16			tos;
+ 	char			priority;
+@@ -95,6 +96,7 @@ static inline void ipcm_init_sk(struct i
+ 	ipcm->sockc.tsflags = inet->sk.sk_tsflags;
+ 	ipcm->oif = inet->sk.sk_bound_dev_if;
+ 	ipcm->addr = inet->inet_saddr;
++	ipcm->protocol = inet->inet_num;
  }
-@@ -642,23 +638,17 @@ static void sk_psock_backlog(struct work_struct *work)
- 	struct sk_psock *psock = container_of(dwork, struct sk_psock, work);
- 	struct sk_psock_work_state *state = &psock->work_state;
- 	struct sk_buff *skb = NULL;
-+	u32 len = 0, off = 0;
- 	bool ingress;
--	u32 len, off;
- 	int ret;
  
- 	mutex_lock(&psock->work_mutex);
--	if (unlikely(state->skb)) {
--		spin_lock_bh(&psock->ingress_lock);
--		skb = state->skb;
-+	if (unlikely(state->len)) {
- 		len = state->len;
- 		off = state->off;
--		state->skb = NULL;
--		spin_unlock_bh(&psock->ingress_lock);
- 	}
--	if (skb)
--		goto start;
+ #define IPCB(skb) ((struct inet_skb_parm*)((skb)->cb))
+--- a/include/uapi/linux/in.h
++++ b/include/uapi/linux/in.h
+@@ -159,6 +159,8 @@ struct in_addr {
+ #define MCAST_MSFILTER			48
+ #define IP_MULTICAST_ALL		49
+ #define IP_UNICAST_IF			50
++#define IP_LOCAL_PORT_RANGE		51
++#define IP_PROTOCOL			52
  
--	while ((skb = skb_dequeue(&psock->ingress_skb))) {
-+	while ((skb = skb_peek(&psock->ingress_skb))) {
- 		len = skb->len;
- 		off = 0;
- 		if (skb_bpf_strparser(skb)) {
-@@ -667,7 +657,6 @@ static void sk_psock_backlog(struct work_struct *work)
- 			off = stm->offset;
- 			len = stm->full_len;
+ #define MCAST_EXCLUDE	0
+ #define MCAST_INCLUDE	1
+--- a/net/ipv4/ip_sockglue.c
++++ b/net/ipv4/ip_sockglue.c
+@@ -317,7 +317,14 @@ int ip_cmsg_send(struct sock *sk, struct
+ 			ipc->tos = val;
+ 			ipc->priority = rt_tos2priority(ipc->tos);
+ 			break;
+-
++		case IP_PROTOCOL:
++			if (cmsg->cmsg_len != CMSG_LEN(sizeof(int)))
++				return -EINVAL;
++			val = *(int *)CMSG_DATA(cmsg);
++			if (val < 1 || val > 255)
++				return -EINVAL;
++			ipc->protocol = val;
++			break;
+ 		default:
+ 			return -EINVAL;
  		}
--start:
- 		ingress = skb_bpf_ingress(skb);
- 		skb_bpf_redirect_clear(skb);
- 		do {
-@@ -677,8 +666,7 @@ static void sk_psock_backlog(struct work_struct *work)
- 							  len, ingress);
- 			if (ret <= 0) {
- 				if (ret == -EAGAIN) {
--					sk_psock_skb_state(psock, state, skb,
--							   len, off);
-+					sk_psock_skb_state(psock, state, len, off);
- 
- 					/* Delay slightly to prioritize any
- 					 * other work that might be here.
-@@ -690,15 +678,16 @@ static void sk_psock_backlog(struct work_struct *work)
- 				/* Hard errors break pipe and stop xmit. */
- 				sk_psock_report_error(psock, ret ? -ret : EPIPE);
- 				sk_psock_clear_state(psock, SK_PSOCK_TX_ENABLED);
--				sock_drop(psock->sk, skb);
- 				goto end;
- 			}
- 			off += ret;
- 			len -= ret;
- 		} while (len);
- 
--		if (!ingress)
-+		skb = skb_dequeue(&psock->ingress_skb);
-+		if (!ingress) {
- 			kfree_skb(skb);
-+		}
+@@ -1724,6 +1731,9 @@ static int do_ip_getsockopt(struct sock
+ 	case IP_MINTTL:
+ 		val = inet->min_ttl;
+ 		break;
++	case IP_PROTOCOL:
++		val = inet_sk(sk)->inet_num;
++		break;
+ 	default:
+ 		release_sock(sk);
+ 		return -ENOPROTOOPT;
+--- a/net/ipv4/raw.c
++++ b/net/ipv4/raw.c
+@@ -559,6 +559,9 @@ static int raw_sendmsg(struct sock *sk,
  	}
- end:
- 	mutex_unlock(&psock->work_mutex);
-@@ -791,11 +780,6 @@ static void __sk_psock_zap_ingress(struct sk_psock *psock)
- 		skb_bpf_redirect_clear(skb);
- 		sock_drop(psock->sk, skb);
- 	}
--	kfree_skb(psock->work_state.skb);
--	/* We null the skb here to ensure that calls to sk_psock_backlog
--	 * do not pick up the free'd skb.
--	 */
--	psock->work_state.skb = NULL;
- 	__sk_psock_purge_ingress_msg(psock);
- }
  
-@@ -814,7 +798,6 @@ void sk_psock_stop(struct sk_psock *psock)
- 	spin_lock_bh(&psock->ingress_lock);
- 	sk_psock_clear_state(psock, SK_PSOCK_TX_ENABLED);
- 	sk_psock_cork_free(psock);
--	__sk_psock_zap_ingress(psock);
- 	spin_unlock_bh(&psock->ingress_lock);
- }
+ 	ipcm_init_sk(&ipc, inet);
++	/* Keep backward compat */
++	if (hdrincl)
++		ipc.protocol = IPPROTO_RAW;
  
-@@ -829,6 +812,7 @@ static void sk_psock_destroy(struct work_struct *work)
- 	sk_psock_done_strp(psock);
+ 	if (msg->msg_controllen) {
+ 		err = ip_cmsg_send(sk, msg, &ipc, false);
+@@ -626,7 +629,7 @@ static int raw_sendmsg(struct sock *sk,
  
- 	cancel_delayed_work_sync(&psock->work);
-+	__sk_psock_zap_ingress(psock);
- 	mutex_destroy(&psock->work_mutex);
+ 	flowi4_init_output(&fl4, ipc.oif, ipc.sockc.mark, tos,
+ 			   RT_SCOPE_UNIVERSE,
+-			   hdrincl ? IPPROTO_RAW : sk->sk_protocol,
++			   hdrincl ? ipc.protocol : sk->sk_protocol,
+ 			   inet_sk_flowi_flags(sk) |
+ 			    (hdrincl ? FLOWI_FLAG_KNOWN_NH : 0),
+ 			   daddr, saddr, 0, 0, sk->sk_uid);
+--- a/net/ipv6/raw.c
++++ b/net/ipv6/raw.c
+@@ -828,7 +828,8 @@ static int rawv6_sendmsg(struct sock *sk
  
- 	psock_progs_drop(&psock->progs);
--- 
-2.39.2
-
+ 		if (!proto)
+ 			proto = inet->inet_num;
+-		else if (proto != inet->inet_num)
++		else if (proto != inet->inet_num &&
++			 inet->inet_num != IPPROTO_RAW)
+ 			return -EINVAL;
+ 
+ 		if (proto > 255)
 
 
