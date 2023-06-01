@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 331A1719DD0
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:26:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4362719D97
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:24:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233746AbjFAN0n (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:26:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35268 "EHLO
+        id S233671AbjFANYe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:24:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233784AbjFAN0f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:26:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 936BE10D8
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:26:11 -0700 (PDT)
+        with ESMTP id S233706AbjFANY0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:24:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D7181B8
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:24:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EDCC4644A6
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:26:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 145D3C433EF;
-        Thu,  1 Jun 2023 13:26:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D4AFE64476
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:24:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD43C433D2;
+        Thu,  1 Jun 2023 13:24:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625970;
-        bh=z7WCTmD4fDz35QUruiaMPQauvoIyXOgnvS8RGV3SJQg=;
+        s=korg; t=1685625848;
+        bh=P2Vc7+Jml4TjKBe7412GNyCTpCjW/ExWH516o+VVZUE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W6sYvIfp68GbLXcZNlSTodX3bspkUpFZbuBIyr6+EHP0+gse/nIyjAi4O/Xz/TP/o
-         g2cKTekyexo39y8gRnltwwjLKE+gmnqNIPkR+j3XcxiJ8D3/6r0t1+iZHqyqRfFL/Y
-         xP+xiCZ7rGzKLuBBvAoupCbVEEJHX0qySkc6BuF0=
+        b=lo+DS1VqfSfWNm+VLy5l93KTN/nk5kUiUcF6bUU6FzUm/2uuXUoHJefxHu37+yusQ
+         U5gIESf/3z2TlTXkHGFeYmPysOcDBuyoUkU+G5DJ/FXJtotoFb4b0Jhrkxjcx0ckpC
+         iD7DS4sCCuSB+O4ABOcpXF27Su+ATR2kcB00Z5Jk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 08/45] platform/x86/amd/pmf: Fix CnQF and auto-mode after resume
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 17/42] dmaengine: at_xdmac: do not resume channels paused by consumers
 Date:   Thu,  1 Jun 2023 14:21:04 +0100
-Message-Id: <20230601131939.081050313@linuxfoundation.org>
+Message-Id: <20230601131937.504417842@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
-References: <20230601131938.702671708@linuxfoundation.org>
+In-Reply-To: <20230601131936.699199833@linuxfoundation.org>
+References: <20230601131936.699199833@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,101 +54,132 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-[ Upstream commit b54147fa374dbeadcb01b1762db1a793e06e37de ]
+[ Upstream commit 44fe8440bda545b5d167329df88c47609a645168 ]
 
-After suspend/resume cycle there is an error message and auto-mode
-or CnQF stops working.
+In case there are DMA channels not paused by consumers in suspend
+process (valid on AT91 SoCs for serial driver when no_console_suspend) the
+driver pauses them (using at_xdmac_device_pause() which is also the same
+function called by dmaengine_pause()) and then in the resume process the
+driver resumes them calling at_xdmac_device_resume() which is the same
+function called by dmaengine_resume()). This is good for DMA channels
+not paused by consumers but for drivers that calls
+dmaengine_pause()/dmaegine_resume() on suspend/resume path this may lead to
+DMA channel being enabled before the IP is enabled. For IPs that needs
+strict ordering with regards to DMA channel enablement this will lead to
+wrong behavior. To fix this add a new set of functions
+at_xdmac_device_pause_internal()/at_xdmac_device_resume_internal() to be
+called only on suspend/resume.
 
-[ 5741.447511] amd-pmf AMDI0100:00: SMU cmd failed. err: 0xff
-[ 5741.447523] amd-pmf AMDI0100:00: AMD_PMF_REGISTER_RESPONSE:ff
-[ 5741.447527] amd-pmf AMDI0100:00: AMD_PMF_REGISTER_ARGUMENT:7
-[ 5741.447531] amd-pmf AMDI0100:00: AMD_PMF_REGISTER_MESSAGE:16
-[ 5741.447540] amd-pmf AMDI0100:00: [AUTO_MODE] avg power: 0 mW mode: QUIET
-
-This is because the DRAM address used for accessing metrics table
-needs to be refreshed after a suspend resume cycle. Add a resume
-callback to reset this again.
-
-Fixes: 1a409b35c995 ("platform/x86/amd/pmf: Get performance metrics from PMFW")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20230513011408.958-1-mario.limonciello@amd.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: e1f7c9eee707 ("dmaengine: at_xdmac: creation of the atmel eXtended DMA Controller driver")
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Link: https://lore.kernel.org/r/20230214151827.1050280-4-claudiu.beznea@microchip.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmf/core.c | 32 ++++++++++++++++++++++-------
- 1 file changed, 25 insertions(+), 7 deletions(-)
+ drivers/dma/at_xdmac.c | 48 ++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 42 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/pmf/core.c b/drivers/platform/x86/amd/pmf/core.c
-index 0acc0b6221290..dc9803e1a4b9b 100644
---- a/drivers/platform/x86/amd/pmf/core.c
-+++ b/drivers/platform/x86/amd/pmf/core.c
-@@ -245,24 +245,29 @@ static const struct pci_device_id pmf_pci_ids[] = {
- 	{ }
+diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
+index af52429af9172..4965961f55aa2 100644
+--- a/drivers/dma/at_xdmac.c
++++ b/drivers/dma/at_xdmac.c
+@@ -186,6 +186,7 @@
+ enum atc_status {
+ 	AT_XDMAC_CHAN_IS_CYCLIC = 0,
+ 	AT_XDMAC_CHAN_IS_PAUSED,
++	AT_XDMAC_CHAN_IS_PAUSED_INTERNAL,
  };
  
--int amd_pmf_init_metrics_table(struct amd_pmf_dev *dev)
-+static void amd_pmf_set_dram_addr(struct amd_pmf_dev *dev)
- {
- 	u64 phys_addr;
- 	u32 hi, low;
+ struct at_xdmac_layout {
+@@ -346,6 +347,11 @@ static inline int at_xdmac_chan_is_paused(struct at_xdmac_chan *atchan)
+ 	return test_bit(AT_XDMAC_CHAN_IS_PAUSED, &atchan->status);
+ }
  
--	INIT_DELAYED_WORK(&dev->work_buffer, amd_pmf_get_metrics);
-+	phys_addr = virt_to_phys(dev->buf);
-+	hi = phys_addr >> 32;
-+	low = phys_addr & GENMASK(31, 0);
-+
-+	amd_pmf_send_cmd(dev, SET_DRAM_ADDR_HIGH, 0, hi, NULL);
-+	amd_pmf_send_cmd(dev, SET_DRAM_ADDR_LOW, 0, low, NULL);
-+}
- 
-+int amd_pmf_init_metrics_table(struct amd_pmf_dev *dev)
++static inline int at_xdmac_chan_is_paused_internal(struct at_xdmac_chan *atchan)
 +{
- 	/* Get Metrics Table Address */
- 	dev->buf = kzalloc(sizeof(dev->m_table), GFP_KERNEL);
- 	if (!dev->buf)
- 		return -ENOMEM;
++	return test_bit(AT_XDMAC_CHAN_IS_PAUSED_INTERNAL, &atchan->status);
++}
++
+ static inline bool at_xdmac_chan_is_peripheral_xfer(u32 cfg)
+ {
+ 	return cfg & AT_XDMAC_CC_TYPE_PER_TRAN;
+@@ -1801,6 +1807,26 @@ static int at_xdmac_device_config(struct dma_chan *chan,
+ 	return ret;
+ }
  
--	phys_addr = virt_to_phys(dev->buf);
--	hi = phys_addr >> 32;
--	low = phys_addr & GENMASK(31, 0);
-+	INIT_DELAYED_WORK(&dev->work_buffer, amd_pmf_get_metrics);
++static void at_xdmac_device_pause_set(struct at_xdmac *atxdmac,
++				      struct at_xdmac_chan *atchan)
++{
++	at_xdmac_write(atxdmac, atxdmac->layout->grws, atchan->mask);
++	while (at_xdmac_chan_read(atchan, AT_XDMAC_CC) &
++	       (AT_XDMAC_CC_WRIP | AT_XDMAC_CC_RDIP))
++		cpu_relax();
++}
++
++static void at_xdmac_device_pause_internal(struct at_xdmac_chan *atchan)
++{
++	struct at_xdmac		*atxdmac = to_at_xdmac(atchan->chan.device);
++	unsigned long		flags;
++
++	spin_lock_irqsave(&atchan->lock, flags);
++	set_bit(AT_XDMAC_CHAN_IS_PAUSED_INTERNAL, &atchan->status);
++	at_xdmac_device_pause_set(atxdmac, atchan);
++	spin_unlock_irqrestore(&atchan->lock, flags);
++}
++
+ static int at_xdmac_device_pause(struct dma_chan *chan)
+ {
+ 	struct at_xdmac_chan	*atchan = to_at_xdmac_chan(chan);
+@@ -1813,15 +1839,25 @@ static int at_xdmac_device_pause(struct dma_chan *chan)
+ 		return 0;
  
--	amd_pmf_send_cmd(dev, SET_DRAM_ADDR_HIGH, 0, hi, NULL);
--	amd_pmf_send_cmd(dev, SET_DRAM_ADDR_LOW, 0, low, NULL);
-+	amd_pmf_set_dram_addr(dev);
+ 	spin_lock_irqsave(&atchan->lock, flags);
+-	at_xdmac_write(atxdmac, atxdmac->layout->grws, atchan->mask);
+-	while (at_xdmac_chan_read(atchan, AT_XDMAC_CC)
+-	       & (AT_XDMAC_CC_WRIP | AT_XDMAC_CC_RDIP))
+-		cpu_relax();
++
++	at_xdmac_device_pause_set(atxdmac, atchan);
++	/* Decrement runtime PM ref counter for each active descriptor. */
+ 	spin_unlock_irqrestore(&atchan->lock, flags);
  
- 	/*
- 	 * Start collecting the metrics data after a small delay
-@@ -273,6 +278,18 @@ int amd_pmf_init_metrics_table(struct amd_pmf_dev *dev)
  	return 0;
  }
  
-+static int amd_pmf_resume_handler(struct device *dev)
++static void at_xdmac_device_resume_internal(struct at_xdmac_chan *atchan)
 +{
-+	struct amd_pmf_dev *pdev = dev_get_drvdata(dev);
++	struct at_xdmac		*atxdmac = to_at_xdmac(atchan->chan.device);
++	unsigned long		flags;
 +
-+	if (pdev->buf)
-+		amd_pmf_set_dram_addr(pdev);
-+
-+	return 0;
++	spin_lock_irqsave(&atchan->lock, flags);
++	at_xdmac_write(atxdmac, atxdmac->layout->grwr, atchan->mask);
++	clear_bit(AT_XDMAC_CHAN_IS_PAUSED_INTERNAL, &atchan->status);
++	spin_unlock_irqrestore(&atchan->lock, flags);
 +}
 +
-+static DEFINE_SIMPLE_DEV_PM_OPS(amd_pmf_pm, NULL, amd_pmf_resume_handler);
-+
- static void amd_pmf_init_features(struct amd_pmf_dev *dev)
+ static int at_xdmac_device_resume(struct dma_chan *chan)
  {
- 	int ret;
-@@ -414,6 +431,7 @@ static struct platform_driver amd_pmf_driver = {
- 		.name = "amd-pmf",
- 		.acpi_match_table = amd_pmf_acpi_ids,
- 		.dev_groups = amd_pmf_driver_groups,
-+		.pm = pm_sleep_ptr(&amd_pmf_pm),
- 	},
- 	.probe = amd_pmf_probe,
- 	.remove = amd_pmf_remove,
+ 	struct at_xdmac_chan	*atchan = to_at_xdmac_chan(chan);
+@@ -1981,7 +2017,7 @@ static int atmel_xdmac_suspend(struct device *dev)
+ 		atchan->save_cc = at_xdmac_chan_read(atchan, AT_XDMAC_CC);
+ 		if (at_xdmac_chan_is_cyclic(atchan)) {
+ 			if (!at_xdmac_chan_is_paused(atchan))
+-				at_xdmac_device_pause(chan);
++				at_xdmac_device_pause_internal(atchan);
+ 			atchan->save_cim = at_xdmac_chan_read(atchan, AT_XDMAC_CIM);
+ 			atchan->save_cnda = at_xdmac_chan_read(atchan, AT_XDMAC_CNDA);
+ 			atchan->save_cndc = at_xdmac_chan_read(atchan, AT_XDMAC_CNDC);
+@@ -2026,7 +2062,7 @@ static int atmel_xdmac_resume(struct device *dev)
+ 		at_xdmac_chan_write(atchan, AT_XDMAC_CC, atchan->save_cc);
+ 		if (at_xdmac_chan_is_cyclic(atchan)) {
+ 			if (at_xdmac_chan_is_paused(atchan))
+-				at_xdmac_device_resume(chan);
++				at_xdmac_device_resume_internal(atchan);
+ 			at_xdmac_chan_write(atchan, AT_XDMAC_CNDA, atchan->save_cnda);
+ 			at_xdmac_chan_write(atchan, AT_XDMAC_CNDC, atchan->save_cndc);
+ 			at_xdmac_chan_write(atchan, AT_XDMAC_CIE, atchan->save_cim);
 -- 
 2.39.2
 
