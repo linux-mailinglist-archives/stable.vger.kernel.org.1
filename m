@@ -2,104 +2,80 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C53E71A07E
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 16:41:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D279271A103
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 16:53:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233786AbjFAOkm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 10:40:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54780 "EHLO
+        id S233990AbjFAOw7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 10:52:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229589AbjFAOkl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 10:40:41 -0400
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52C2E123;
-        Thu,  1 Jun 2023 07:40:40 -0700 (PDT)
-Received: from fpc.intra.ispras.ru (unknown [10.10.165.6])
-        by mail.ispras.ru (Postfix) with ESMTPSA id B17374076277;
-        Thu,  1 Jun 2023 14:40:38 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru B17374076277
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-        s=default; t=1685630438;
-        bh=r9sMHMiXrbhy7C+21akEGSbG3LyQKzFWYpKX8g3KZvA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VaYHgFvPhdR0AuoOlH2kxWpO5TvNt0Bc8jC7ZOQ16/N3Df/ZL+v5JR2HWcNFg4m1b
-         NJ4p/9tituVcqzVUVkYqdX3yqkqeS4le4oRhtuZJqH7Rc8xEE41wZgKKMl6jw9AE85
-         5L+W+iUwluA3s5AIa7K8XY2gNstWS5biG6v9VVtc=
-From:   Fedor Pchelkin <pchelkin@ispras.ru>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        with ESMTP id S234196AbjFAOw4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 10:52:56 -0400
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A4C2132
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 07:52:55 -0700 (PDT)
+Received: from cwcc.thunk.org (pool-173-48-119-27.bstnma.fios.verizon.net [173.48.119.27])
+        (authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 351EqMka013065
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 1 Jun 2023 10:52:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+        t=1685631145; bh=ocmgG3AwXqD+xUhaoXDH/qEJqT72EouO1rvjHBr6Htk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=VM8/Uu97seftS0qeq+6Ysp9BXkNhjUcaVl9U89FzKjVHN95D2/9uD9/Z0stw6GayT
+         TLelYRPi4d2jWT53MdX2oZUfk1PoQcJx+Iz594HiUAahSJ9pKzl9apyvKB/+MjiztU
+         bM2Ot+kBWhdNFklD0RSdcbI299bbFE+U8JB76uo6iEoCt4Ql/BS6rmFognIzCNnLq+
+         qexrwfUTKnCX32iQ9Da7QywUgvoU0558ckrfhgFf92/Sv7BzpVcMYqbv+yOze6k/Fl
+         6vE0tJLu/1VlEkWol5ckl73dRDgvmHCHXBgfYZlYhDQP/K7RMQlgIh7fIpwMQeSXj8
+         Is7CFhO77tRDA==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+        id 4753A15C02EE; Thu,  1 Jun 2023 10:52:22 -0400 (EDT)
+Date:   Thu, 1 Jun 2023 10:52:22 -0400
+From:   "Theodore Ts'o" <tytso@mit.edu>
+To:     Jan Kara <jack@suse.cz>
+Cc:     Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
+        Christian Brauner <brauner@kernel.org>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        "Darrick J. Wong" <djwong@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>, linux-ext4@vger.kernel.org,
+        linux-xfs@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
         stable@vger.kernel.org
-Cc:     Fedor Pchelkin <pchelkin@ispras.ru>, fuyufan <fuyufan@huawei.com>,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        lvc-project@linuxtesting.org, Maxime Ripard <maxime@cerno.tech>
-Subject: [PATCH 5.4/5.10 1/1] drm/atomic: Don't pollute crtc_state->mode_blob with error pointers
-Date:   Thu,  1 Jun 2023 17:40:16 +0300
-Message-Id: <20230601144016.475176-2-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230601144016.475176-1-pchelkin@ispras.ru>
-References: <20230601144016.475176-1-pchelkin@ispras.ru>
+Subject: Re: [PATCH v2 1/6] ext4: Remove ext4 locking of moved directory
+Message-ID: <20230601145222.GB1069561@mit.edu>
+References: <20230601104525.27897-1-jack@suse.cz>
+ <20230601105830.13168-1-jack@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_FILL_THIS_FORM_SHORT,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230601105830.13168-1-jack@suse.cz>
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+On Thu, Jun 01, 2023 at 12:58:21PM +0200, Jan Kara wrote:
+> Remove locking of moved directory in ext4_rename2(). We will take care
+> of it in VFS instead. This effectively reverts commit 0813299c586b
+> ("ext4: Fix possible corruption when moving a directory") and followup
+> fixes.
 
-commit 439cf34c8e0a8a33d8c15a31be1b7423426bc765 upstream.
+Remind me --- commit 0813299c586b is not actually causing any
+problems; it's just not fully effective at solving the problem.  Is
+that correct?
 
-Make sure we don't assign an error pointer to crtc_state->mode_blob
-as that will break all kinds of places that assume either NULL or a
-valid pointer (eg. drm_property_blob_put()).
+In other words, is there a rush in trying to get this revert to Linus
+during this cycle as a regression fix?
 
-Cc: stable@vger.kernel.org
-Reported-by: fuyufan <fuyufan@huawei.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20220209091928.14766-1-ville.syrjala@linux.intel.com
-Acked-by: Maxime Ripard <maxime@cerno.tech>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
- drivers/gpu/drm/drm_atomic_uapi.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+I think the answer is no, and we can just let this full patch series
+go in via the vfs branch during the next merge window, but I just
+wanted to make sure.
 
-diff --git a/drivers/gpu/drm/drm_atomic_uapi.c b/drivers/gpu/drm/drm_atomic_uapi.c
-index 25c269bc4681..b6062833370f 100644
---- a/drivers/gpu/drm/drm_atomic_uapi.c
-+++ b/drivers/gpu/drm/drm_atomic_uapi.c
-@@ -75,15 +75,17 @@ int drm_atomic_set_mode_for_crtc(struct drm_crtc_state *state,
- 	state->mode_blob = NULL;
- 
- 	if (mode) {
-+		struct drm_property_blob *blob;
-+
- 		drm_mode_convert_to_umode(&umode, mode);
--		state->mode_blob =
--			drm_property_create_blob(state->crtc->dev,
--		                                 sizeof(umode),
--		                                 &umode);
--		if (IS_ERR(state->mode_blob))
--			return PTR_ERR(state->mode_blob);
-+		blob = drm_property_create_blob(crtc->dev,
-+						sizeof(umode), &umode);
-+		if (IS_ERR(blob))
-+			return PTR_ERR(blob);
- 
- 		drm_mode_copy(&state->mode, mode);
-+
-+		state->mode_blob = blob;
- 		state->enable = true;
- 		DRM_DEBUG_ATOMIC("Set [MODE:%s] for [CRTC:%d:%s] state %p\n",
- 				 mode->name, crtc->base.id, crtc->name, state);
--- 
-2.34.1
+Thanks!
 
+					- Ted
