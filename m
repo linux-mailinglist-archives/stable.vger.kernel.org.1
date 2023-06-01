@@ -2,158 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4818071A205
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 17:09:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF0E971A21C
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 17:12:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233251AbjFAPFl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 11:05:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42146 "EHLO
+        id S234048AbjFAPM1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 11:12:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234940AbjFAPEw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 11:04:52 -0400
-Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39E50E78
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 08:03:37 -0700 (PDT)
+        with ESMTP id S234299AbjFAPMY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 11:12:24 -0400
+Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 643641B3
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 08:12:04 -0700 (PDT)
+Received: by mail-io1-xd29.google.com with SMTP id ca18e2360f4ac-77479a531abso8650539f.1
+        for <stable@vger.kernel.org>; Thu, 01 Jun 2023 08:12:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1685631818; x=1717167818;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to;
-  bh=LtgF94wf1BMCPPv4cb6zN2B4LoyO1uoIYo/l+Wb0reU=;
-  b=WntIwnHUhzGkZeRNJ8B1B4TsSVWmRoaYsZMBN0+Xr62GD9rOtbMRfXWe
-   ftfXHU9s7MXZEN5gROZhjEbBjoyZLyp4OHif1rBU3rAMA1cMP3fUc5V8L
-   XgrHzbFrGfZxjCjpPKQZEfeNdTMrvf7CRYa2Y2IBgNLnPpiZQQOnb17jF
-   E=;
-X-Amazon-filename: paul.patch
-X-IronPort-AV: E=Sophos;i="6.00,210,1681171200"; 
-   d="scan'208";a="335835448"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-iad-1a-m6i4x-b5bd57cf.us-east-1.amazon.com) ([10.43.8.6])
-  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 15:03:06 +0000
-Received: from EX19MTAUEB001.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan3.iad.amazon.com [10.40.163.38])
-        by email-inbound-relay-iad-1a-m6i4x-b5bd57cf.us-east-1.amazon.com (Postfix) with ESMTPS id 626484619E;
-        Thu,  1 Jun 2023 15:03:05 +0000 (UTC)
-Received: from EX19D028UEC003.ant.amazon.com (10.252.137.159) by
- EX19MTAUEB001.ant.amazon.com (10.252.135.108) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Thu, 1 Jun 2023 15:03:02 +0000
-Received: from [192.168.209.155] (10.106.239.22) by
- EX19D028UEC003.ant.amazon.com (10.252.137.159) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Thu, 1 Jun 2023 15:03:00 +0000
-Content-Type: multipart/mixed;
-        boundary="------------jPrayy37WFHIX2ldYhSs7hPV"
-Message-ID: <bb1e18f8-9d31-1ec7-d69a-2d1f5af31310@amazon.com>
-Date:   Thu, 1 Jun 2023 11:02:57 -0400
+        d=kernel-dk.20221208.gappssmtp.com; s=20221208; t=1685632323; x=1688224323;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RsYXXGDyqBZCWJC5E3tRN6Rs8Hr9gCvKGJf7AlzG4dg=;
+        b=KtqxDH80Vo9nP2JpaBA8/3Pj3xnFCfKCYvtyNWyNDXwPboQ2W/uCevlX0L3KUzMIEo
+         AH7OgDTb39OSNjQBVv7FJKbAPcB3RTOSnw81mXJm2FJkZU12o7idtdCxQ/M/3Tj1S5MS
+         RDdhKxqs/2ZVr+ELQyPEbcdALerYYgpGAuFdvstE9+s/C6Z5UxfkIrTCJNwXWy5bEpAR
+         PFsO0ftSRXkWAOyaw2d6LBuaIlZBORmW1/wvnfYfjhFjUjmZ1JKqEWPZbevCz9x26ni/
+         ENFcJhbFmeBSosbPgNqPT9jM2gjOk7b9DP+RbLEtuyn6XqvLhBw23EtHQPFEFhE+Aama
+         mE4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685632323; x=1688224323;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RsYXXGDyqBZCWJC5E3tRN6Rs8Hr9gCvKGJf7AlzG4dg=;
+        b=ZAA1n1i7HVrhn04mmBY51wT4rHMT8o5C2BOL3guFHp5vGItaHn8dui/jucUTQWvvbi
+         eUdY+ZXa+ubsiAzzWcs7xB5bW7RSvLMRbOFDqOAlZ2/pFKXb4nyQDtwGyAGS/xTZgrT5
+         VNkUNWgDM8nTbsYVEa6TDTwbGTLOA99yYVby5FKU53JLlMr3skGY+3SXBMaL9lqiXuaN
+         9gz2Eyr2Du0htvCCHPrx8/mS+kBIX72mYCFjgfL4JmgoJYPl0kLUfRoMTuK+nZSr0Yy+
+         9z1mWn0whgS+o5QFfK6EMjq1cA+QG2mDFFzv/YdcF22ytY89kFcv044x8LW8JL/21GsQ
+         qaLA==
+X-Gm-Message-State: AC+VfDx7wso5GZKQM0hleU4ojCWZ3q7PAk2xGaIiNUHZCg2pj/6Jcjx7
+        2A2QGN3kXLpczvZzc4rHGl6Mk6Kvd3duOP6yevg=
+X-Google-Smtp-Source: ACHHUZ7IJudNJSnQPcEXFrV29G89BOj3+hF+YiHXvwpSwDPdY7m5sOSeF9mcBC65tA7hf9Z2dGWyhg==
+X-Received: by 2002:a6b:5a0a:0:b0:774:931e:c20c with SMTP id o10-20020a6b5a0a000000b00774931ec20cmr3917230iob.1.1685632323395;
+        Thu, 01 Jun 2023 08:12:03 -0700 (PDT)
+Received: from [192.168.1.94] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id n34-20020a027122000000b00411a1373aa5sm2172706jac.155.2023.06.01.08.11.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Jun 2023 08:11:56 -0700 (PDT)
+Message-ID: <76598d1c-f1df-6d8f-dee9-83f2a0510b1c@kernel.dk>
+Date:   Thu, 1 Jun 2023 09:11:55 -0600
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: Possible build time regression affecting stable kernels
+Subject: Re: 5.4-stable patches
 Content-Language: en-US
-To:     Paul Moore <paul@paul-moore.com>
-CC:     <sashal@kernel.org>, Greg KH <gregkh@linuxfoundation.org>,
-        <stable@vger.kernel.org>
-References: <8892cb92-0f30-db36-e9db-4bec5e7eb46e@amazon.com>
- <CAHC9VhTmKbQFx-7UtZgg8D+-vtFOar0dMqULYccWQ2x7zJqT-Q@mail.gmail.com>
-From:   Luiz Capitulino <luizcap@amazon.com>
-In-Reply-To: <CAHC9VhTmKbQFx-7UtZgg8D+-vtFOar0dMqULYccWQ2x7zJqT-Q@mail.gmail.com>
-X-Originating-IP: [10.106.239.22]
-X-ClientProxiedBy: EX19D040UWB002.ant.amazon.com (10.13.138.89) To
- EX19D028UEC003.ant.amazon.com (10.252.137.159)
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+To:     Lee Jones <lee@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable <stable@vger.kernel.org>
+References: <6a5172c0-de90-d582-baae-37b8c4de1d91@kernel.dk>
+ <2023060121-activity-phoniness-3113@gregkh>
+ <20230601134453.GE449117@google.com>
+From:   Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <20230601134453.GE449117@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---------------jPrayy37WFHIX2ldYhSs7hPV
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-
-
-
-On 2023-06-01 10:27, Paul Moore wrote:
-
+On 6/1/23 7:44 AM, Lee Jones wrote:
+> On Thu, 01 Jun 2023, Greg Kroah-Hartman wrote:
 > 
+>> On Wed, May 31, 2023 at 10:00:39AM -0600, Jens Axboe wrote:
+>>> Hi,
+>>>
+>>> Greg, can you include these in the 5.4-stable batch for the next
+>>> release? Lee reported and issue that really ended up being two
+>>> separate bugs, I fixed these last week and Lee has tested them
+>>> as good. No real upstream commits exists for these, as we fixed
+>>> them separately with refactoring and cleanup of this code.
+>>
+>> All now queued up, thanks.
 > 
-> 
-> On Wed, May 31, 2023 at 10:13 PM Luiz Capitulino <luizcap@amazon.com> wrote:
->>
->> Hi Paul,
->>
->> A number of stable kernels recently backported this upstream commit:
->>
->> """
->> commit 4ce1f694eb5d8ca607fed8542d32a33b4f1217a5
->> Author: Paul Moore <paul@paul-moore.com>
->> Date:   Wed Apr 12 13:29:11 2023 -0400
->>
->>       selinux: ensure av_permissions.h is built when needed
->> """
->>
->> We're seeing a build issue with this commit where the "crash" tool will fail
->> to start, it complains that the vmlinux image and /proc/version don't match.
->>
->> A minimum reproducer would be having "make" version before 4.3 and building
->> the kernel with:
->>
->> $ make bzImages
->> $ make modules
-> 
-> ...
-> 
->> This only happens with commit 4ce1f694eb5 applied and older "make", in my case I
->> have "make" version 3.82.
->>
->> If I revert 4ce1f694eb5 or use "make" version 4.3 I get identical strings (except
->> for the "Linux version" part):
-> 
-> Thanks Luiz, this is a fun one :/
+> Super job!  Thanks for this Jens.
 
-It was a fun to debug TBH :-)
+Thanks for reporting and testing!
 
-> Based on a quick search, it looks like the grouped target may be the
-> cause, especially for older (pre-4.3) versions of make.  Looking
-> through the rest of the kernel I don't see any other grouped targets,
-> and in fact the top level Makefile even mentions holding off on using
-> grouped targets until make v4.3 is common/required.
+-- 
+Jens Axboe
 
-Exactly.
-  
-> I don't have an older userspace immediately available, would you mind
-> trying the fix/patch below to see if it resolves the problem on your
-> system?  It's a cut-n-paste so the patch may not apply directly, but
-> it basically just removes the '&' from the make rule, turning it into
-> an old-fashioned non-grouped target.
 
-I tried the attached patch on top of latest Linus tree (ac2263b588dffd),
-but unfortunately I got the same issue which is puzzling. Reverting
-4ce1f694eb5d8ca607fed8542d32a33b4f1217a5 does solve the issue though.
-
-I have no problem trying patches or helping debug, but if you want to
-give it a try on reproducing you could try with make-3.82 from:
-
-https://ftp.gnu.org/gnu/make/make-3.82.tar.bz2
-
-- Luiz
---------------jPrayy37WFHIX2ldYhSs7hPV
-Content-Type: text/x-patch; charset="UTF-8"; name="paul.patch"
-Content-Disposition: attachment; filename="paul.patch"
-Content-Transfer-Encoding: base64
-
-ZGlmZiAtLWdpdCBhL3NlY3VyaXR5L3NlbGludXgvTWFrZWZpbGUgYi9zZWN1cml0eS9zZWxp
-bnV4L01ha2VmaWxlCmluZGV4IDBhZWNmOTMzNGVjMy4uZGYzNWQ0ZWM0NmYwIDEwMDY0NAot
-LS0gYS9zZWN1cml0eS9zZWxpbnV4L01ha2VmaWxlCisrKyBiL3NlY3VyaXR5L3NlbGludXgv
-TWFrZWZpbGUKQEAgLTI2LDUgKzI2LDUgQEAgcXVpZXRfY21kX2ZsYXNrID0gR0VOICAgICAk
-KG9iaikvZmxhc2suaCAkKG9iaikvYXZfcGVybWlzc2lvbnMuaAogICAgICAgY21kX2ZsYXNr
-ID0gJDwgJChvYmopL2ZsYXNrLmggJChvYmopL2F2X3Blcm1pc3Npb25zLmgKIAogdGFyZ2V0
-cyArPSBmbGFzay5oIGF2X3Blcm1pc3Npb25zLmgKLSQob2JqKS9mbGFzay5oICQob2JqKS9h
-dl9wZXJtaXNzaW9ucy5oICY6IHNjcmlwdHMvc2VsaW51eC9nZW5oZWFkZXJzL2dlbmhlYWRl
-cnMgRk9SQ0UKKyQob2JqKS9mbGFzay5oICQob2JqKS9hdl9wZXJtaXNzaW9ucy5oOiBzY3Jp
-cHRzL3NlbGludXgvZ2VuaGVhZGVycy9nZW5oZWFkZXJzIEZPUkNFCiAJJChjYWxsIGlmX2No
-YW5nZWQsZmxhc2spCg==
-
---------------jPrayy37WFHIX2ldYhSs7hPV--
