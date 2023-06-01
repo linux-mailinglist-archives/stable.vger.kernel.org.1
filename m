@@ -2,202 +2,167 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FC00719A58
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 12:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04808719A72
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 13:02:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232055AbjFAK6n (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 06:58:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52988 "EHLO
+        id S232332AbjFALB4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 07:01:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233128AbjFAK6f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 06:58:35 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73FE2129;
-        Thu,  1 Jun 2023 03:58:32 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 180AF2197E;
-        Thu,  1 Jun 2023 10:58:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1685617111; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WVCS2NXBW5ZH4HJiDG94f7/my/nZc/t1gaXommKhNSs=;
-        b=sk8CUrc5W8W+ATmUeBoPtRVc2tLcmAeBXR1SKEKOL49RIImPQ2l8GCKekmntDiWQ1S01Ol
-        x54+S6D7tJs6K+3+W/W78Wk95ZdRxqQncjP7g1bn9yzeOCmRmxmlDEh757NsaZ7VdX9tVa
-        +5BBgseIuW58hljimTAc28c8g2lt1nc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1685617111;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=WVCS2NXBW5ZH4HJiDG94f7/my/nZc/t1gaXommKhNSs=;
-        b=s2Ncj+jC+LWCSSYtcD2/hbX1MZeKwUEnf5kIdxKy9neWgXvER8vXh4BvHoC7nLPnGfbPsT
-        G09K2PkXlnZg9vDg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 0A35613441;
-        Thu,  1 Jun 2023 10:58:31 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id BpuIAtd5eGSAWAAAMHmgww
-        (envelope-from <jack@suse.cz>); Thu, 01 Jun 2023 10:58:31 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-        id 27813A0763; Thu,  1 Jun 2023 12:58:30 +0200 (CEST)
-From:   Jan Kara <jack@suse.cz>
-To:     Al Viro <viro@ZenIV.linux.org.uk>
-Cc:     <linux-fsdevel@vger.kernel.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        "Darrick J. Wong" <djwong@kernel.org>, Ted Tso <tytso@mit.edu>,
-        Jaegeuk Kim <jaegeuk@kernel.org>, <linux-ext4@vger.kernel.org>,
-        <linux-xfs@vger.kernel.org>,
-        linux-f2fs-devel@lists.sourceforge.net, Jan Kara <jack@suse.cz>,
-        stable@vger.kernel.org
-Subject: [PATCH v2 5/6] fs: Lock moved directories
-Date:   Thu,  1 Jun 2023 12:58:25 +0200
-Message-Id: <20230601105830.13168-5-jack@suse.cz>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20230601104525.27897-1-jack@suse.cz>
-References: <20230601104525.27897-1-jack@suse.cz>
+        with ESMTP id S232408AbjFALBo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 07:01:44 -0400
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2077.outbound.protection.outlook.com [40.107.93.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66B2E128;
+        Thu,  1 Jun 2023 04:01:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bayxSJTlnE604mXtn51MapUBlv7SmvxUUoz8TMZOmnOLryYcMtYfxFn5OTXvJqQUlSfw/R8vTMuSO58VLa7ZHLdfuaJ04Z7aH4KgFtYQZSQSFQV60J0beMF3RZU9o1zJw7fBjJie0b4UeTbSogjjRTN/SzWu4cLA//GiizzRrNlzYwX5hfqrt/un/q4nKmMloG5oytk9t/JzH72kajP/tN/rKLkx3oiXMizuecRSfIBpIgBLyIzeMWQ5gfE1HMGd27TmvhkXptYbYTa6kGWTAMIBQBVMffLluZZ0utXLUQdrGvLoZ7WEoi6BupNPtLOtcdvdaj5YdZDkqphWn6kfuA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+Q2PtWE7cqpL1/tHHT8h+6n6I/sHzBmw/rTopN7DgFc=;
+ b=PqAmiJs5iFItkEiWXzBDn7XFhnu1V8yGkZqUbRxh84BbMEuEY5xYn1MS1x5bo1iHq8mkrCnla0hz58qHdsRV9rz9gTdm58yKpl4I31CnntP3ku8eiWzDl1iPR0W1+vMxWrbnpX7tsA2NJmqp8N0JBxyH4BWcVK+GzBy+RudOe5NjIXtdXqgdaWGrahNDWBuyFsdj6c9VLHx9rejLTecyYC1usw5DIEQA1f7GIY8TWiRIPqszPUAa5cyBssDDgENUl2EwreErcjHOtsiGNEc7bDVOensX1572QwGbXfaxCimvbTRNAqac5gnnS7VqQRb2IE/2x5uj9E/H1O+orpY/PA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=infinera.com; dmarc=pass action=none header.from=infinera.com;
+ dkim=pass header.d=infinera.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infinera.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+Q2PtWE7cqpL1/tHHT8h+6n6I/sHzBmw/rTopN7DgFc=;
+ b=Vswon7wZhjGoUUmeU5dNVSseBumlBgFJn3z1jLfouB+jus82t6cs3KtZ/RYOJofm32sl0bIG/DGxfLljbBdp9v8LiJXAG8/WyWkLNVZvKtLozRoCtRAryMtpof8pHI9vwyAm8LxiqAgSaKgVcBEx6u6yQ2iJ447RRBs5Jss6MoUWdkIRt1Ke/izjFgdzQky9aQxgggXVhzOZoy/R2ET1X2RWR7UkZLuYzkNBcVUR5yI2oT70LHyS8uZ/Fb4HKmWpHwqOy9H5T1kgZNd6O0UO80oIVDMQ+t8JE9zU8RGB7Ao7uqVZ5J+TAKku0XKV1jNXxlZnJcHekC2Iv6YktyOQhQ==
+Received: from PH0PR10MB4615.namprd10.prod.outlook.com (2603:10b6:510:36::24)
+ by SA1PR10MB5733.namprd10.prod.outlook.com (2603:10b6:806:231::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.24; Thu, 1 Jun
+ 2023 11:01:40 +0000
+Received: from PH0PR10MB4615.namprd10.prod.outlook.com
+ ([fe80::f01a:585:8d6:3d3c]) by PH0PR10MB4615.namprd10.prod.outlook.com
+ ([fe80::f01a:585:8d6:3d3c%6]) with mapi id 15.20.6455.020; Thu, 1 Jun 2023
+ 11:01:39 +0000
+From:   Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
+To:     "perex@perex.cz" <perex@perex.cz>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "tiwai@suse.com" <tiwai@suse.com>
+CC:     "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] ALSA: usb-audio: Logitech P710e: Add quirk to fix setting
+ sample rate.
+Thread-Topic: [PATCH] ALSA: usb-audio: Logitech P710e: Add quirk to fix
+ setting sample rate.
+Thread-Index: AQHZk76tOTrERb/qZ064LfUyAGXe4691wx+AgAAGQwA=
+Date:   Thu, 1 Jun 2023 11:01:39 +0000
+Message-ID: <4c0d3476f554530e61a7c41580997e021056cce9.camel@infinera.com>
+References: <20230531125148.892100-1-joakim.tjernlund@infinera.com>
+         <bef94a3bbcb933e0c9128b602a973b7996ba337e.camel@infinera.com>
+In-Reply-To: <bef94a3bbcb933e0c9128b602a973b7996ba337e.camel@infinera.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.48.2 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=infinera.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH0PR10MB4615:EE_|SA1PR10MB5733:EE_
+x-ms-office365-filtering-correlation-id: 74954b38-a82e-4cf3-f042-08db628f9379
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: pexXtAFGsE2twvcuunEYmjbneR2unR56xcKha8P9iazAVUag+iVpR8nJRnGWB72f8r0Zs4hOKBifagqL9QU14IsZ8UxHOilWAcUk4niJ3rCgZ50SFWMmNMvT5T18Uviy2vIzWcjN14iU9Jnfe2APW03L4b/x4iP/n7Z+TCsPabeJl35cxx2q7qLkhutmQGvkAA6Zybkkl+V5xoCKOjFZNnoGQKruPBWyXAORX279o28ycLCSij+HXrP1ddFPu3xrnTBmbDqvQ0PglB5ZrsolY2oV0NsCvUujmhTZ+S5l0SayIBzARfsB2U6C5gZaJhVSikw3cVKHpEBtryRu9FneE6iur13GJjflFZYrgZ0c5LOU2A/fSRncxejdpiDDhxRWjZdcuCNKbuebTr+Lg12G1BYKRBPW0vO8ozZaArJXu9pBzPTYx1at3TY4aATt8XnyoMvQDB01DYFJksDF/CeRrKojRMbm7n1BDz4MMhPg8iyD/hZNmYgZXyQUpLRQ2JOrxJn0ntJAL02CoesO2NXmJWXT1g7LQczbSyPfCigA9+CLTBMcTKAbr8aJ2Z+Fn8EDYRIgyHBI/pTtlTmlDxtISHomTmlqsqWTit1wvbpD6xnXBYE+clhn1ZcUKh3CVhLu
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB4615.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(346002)(396003)(366004)(136003)(376002)(451199021)(86362001)(36756003)(122000001)(38100700002)(38070700005)(71200400001)(478600001)(110136005)(64756008)(6486002)(8936002)(5660300002)(66446008)(2906002)(91956017)(66476007)(66946007)(66556008)(316002)(76116006)(41300700001)(8676002)(4326008)(6506007)(2616005)(186003)(6512007);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TG1ESHlqa0h3QmZpazU3V3lWNURLNWpSdDBmeFpGd3hHakNHSGs4NGxzNWI3?=
+ =?utf-8?B?VHlUNCsrZmJ4UXpzOFc4b0lHSVYzUU9KQ2l3NG0vbDN4KzNtYnpJMVE5Q0Rl?=
+ =?utf-8?B?WEtFRHovYTJaYmt5a0w3S0tadDhndTdZdlRtODAwUkJ1bXp0dk50UXU1dXh1?=
+ =?utf-8?B?N1NJVU5Za3d6dVc1NmIyYWVYN0tOL2w3czNsclNDWDFGTkdvL2J1Tkg0dmdl?=
+ =?utf-8?B?eVVPM3BFeHRpbEF2YTJpWWNrN3pYK21xUFZUTjk1TnJMWmZDNUNyVTIxalNH?=
+ =?utf-8?B?cG5PeHFPbVErVWQ5TW5Sa1JyS0JLYTRGNFFOSFhwNWNSQjhGZW03RzlZbmNI?=
+ =?utf-8?B?OUFwUW1Xby9vV1VySnpmSG5RZDl5bVdoRk83aGp3UUtHL3JwMWxaUHVnNlhX?=
+ =?utf-8?B?aHoxb2c3U3VmMXIwUWhjMHNzMjM3R08rZ0pOTEtxcnlLbG1PdDRXSE9QZUxm?=
+ =?utf-8?B?eFJaUGd2eVRCdk1wV1pEdG92NlhtaXpBZ0JBT3pkdTFlOUlpc3lxZXZWblRK?=
+ =?utf-8?B?U2x4cG1QUmUxbVZNZ3c3aDFtbC9HUkY4eitxTjBuM1pLdnFpUTJLdldGVXc2?=
+ =?utf-8?B?UWFpQmZzejlvaFRoWE1pRklNZThSeld5d3Nmb1R5ejRQSDJCWE1uTDRIcW8v?=
+ =?utf-8?B?azZTcHkrZnhSM2c5dndZcHdKSGVDaWxOd2poZkFrOVQxdHdNMERPR2FqMXJN?=
+ =?utf-8?B?TGZUUFlaK1pNc2dGc1N5cnpWWm81T0lwM3JqTkpkQnQ1YUhYbUEyWkUrcGtN?=
+ =?utf-8?B?Tkk2emFHQzhLK01sV215VE1QRkxuVXNvODdFeXZFUVdxUmI2SkdLUDNlZDhm?=
+ =?utf-8?B?VjhiT0hwTGNwZTZ2RzIveE5Id0NVMENSclhRVkRuUnhjSkRqR1BOQzdMWkcw?=
+ =?utf-8?B?OXEyRVFJWGdQRHNsRUdNWlZlTlZ2Y0J1TUpNT0dnTmc4SWtPbmxvK1ZxdCtz?=
+ =?utf-8?B?THpBTHBXb3R0b0JKS2hMUlVuMmd6dzVtU1piVnhyTU5mT0NxbU5OOEU2dkt3?=
+ =?utf-8?B?ZlZmc3c2U0x1SktxL1gwei8wM0tjL3RiVGRJdHhRR0NmV3VTZjVBQ2o4L09q?=
+ =?utf-8?B?clBETHcyQ09aUWlPbHZGMnJVNjQ3ckVPLytDM21zMm9hd044aE4xY2lLN2No?=
+ =?utf-8?B?d3dCTDRObkpHV3k5ZEFhakM4b1ZOeXJWU0Iva0JmMVU3eE1tazFoS1hDS1VZ?=
+ =?utf-8?B?OEZzVjZlMkc1ZzRpbXgyZXhweEtSTkRUb3B3UytnTldtbjBoNEExbW9IY3Y5?=
+ =?utf-8?B?Sm9QeXVOd2pMRnpjV2E5b1hJakFLOW5naGxkVUY5T29kRk1TKzROWW9OQm1R?=
+ =?utf-8?B?V0R6Ukp1NFBQVHhSeG44ay9vMVV1SHY5Tm05RS9Vc2hoMVNXYnRBTkw1M24z?=
+ =?utf-8?B?S3Y3bFpIQUl4UUFTU0Z2Szh1bVRCZjdwTU83dFFpZjRmTjZaa09LdU5aSU81?=
+ =?utf-8?B?dnU0L2p4aWhPeUUvNzVFd2hhbXhvU1h6Wlpya29mY09DWFFsOEptVm9aVlBT?=
+ =?utf-8?B?N3pSK1IxeFJiOWllbEtaVnUxbm56UFFybFhlMExPNDRuK1o1VUV3dS9JbTJY?=
+ =?utf-8?B?dUNjVWRMQXZrdkVPekw5L3k5WkN0cVUwQkE3aHhnY3kyZ1FnUnYrR0x2aGUr?=
+ =?utf-8?B?VEVGU2dpSmdwbTN3V2dzdzBIWTczNFM4TUI0VVVGeG9ZWExYbE4wSlZ4MWdL?=
+ =?utf-8?B?Q3k0RHc4dkpRZEh1ZHkrRHQ3bGYvZDg1WVdyV2ovZllJb1JSOXc1cldjeEZv?=
+ =?utf-8?B?L0M0TFVhM3lBK2FFUW9FSldFK0dRNXNlbXI1ajZ5STZLL0ZJdlNGM1hJSllD?=
+ =?utf-8?B?TitDUTd6UW91MnJyRVB2dHI3cTJhMVA0YXY5aVNTMnlkY3oyOWl4S0t3QjUx?=
+ =?utf-8?B?dGdscG5xZGMvRXQ4TWJERTJhQVBFZ3J6TmFiK0Jja2tyb3lvNmVicEJ0dzg5?=
+ =?utf-8?B?NVBYdmlHMUJyS205MFUzQWhSOVdUemlaNWhyTHhRd2VXR1llT05OLy9RZHFv?=
+ =?utf-8?B?T2R4NE80MWZTRlh1RnVLWERWZnRUbkszdGZtYTRnTjY0ZjY4UlRiUDl6Z3Ay?=
+ =?utf-8?B?WUwwbXpZQ0xMZkdXVXc0aFpYZExUZU5lMHRsemRMREw2cUloYnY5S0lxM0Ey?=
+ =?utf-8?B?M0JmYzdRZGdCcmJudE4ySGpqUkYxMlZPSHpYZjQvdlEvREVLcDFBeTBaVFIr?=
+ =?utf-8?Q?W41QzME3yTtSinqGt7jgwBBHRtwRlJIfR0zIbgnGDlez?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <5F037939D4339B438BA323C711386532@namprd10.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5467; i=jack@suse.cz; h=from:subject; bh=x4FZJj19EKHfl9vXc7blu9EGaRK3J4g/IYXgMMiRgsg=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBkeHnQOagY8JFtxmxrH4yOG15iOHj85ARzmW1mO6z6 m4CoTtqJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCZHh50AAKCRCcnaoHP2RA2fOmCA CGZ/60qBrc6mq5kJuPlRk9zqrA938OweaDejgjB5rj/+wPTCG423XQxEjq785RwCe9imbIcJywyI89 A0pan5qcfnH3LTQfSvu8g6Jnn/hUJIc/ZMpljEw2EQVWXfo3gjmfNtu2Nv80yeCWEt+RhRaifk2PpA FLUIaavbPKYMxQ68HJ0IAdihcEEjPMCnTBQNJYwjkR9+2RDhPtxB05Dxbx7SoLrQG4CyCnR0UNvBFu VouTBcwwyqv4irtxgwlnroN7k242fLUWgmWkRIlxkPK3MjdN2wTxLC4YYJ1BQ6HnnVZewXTrQEWlUP Sx2kjy7KuoAPi36BlrAAF2PUdusf8G
-X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-OriginatorOrg: infinera.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4615.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 74954b38-a82e-4cf3-f042-08db628f9379
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Jun 2023 11:01:39.6602
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 285643de-5f5b-4b03-a153-0ae2dc8aaf77
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: X6Z1jaIgEDBhsv9QkqzG2+qy5UbEurZtLdufvUXGUe262k3zXtXPOFkDot3q+/eGD0O4BHy6YKSgYkJ0j0jgbw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB5733
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When a directory is moved to a different directory, some filesystems
-(udf, ext4, ocfs2, f2fs, and likely gfs2, reiserfs, and others) need to
-update their pointer to the parent and this must not race with other
-operations on the directory. Lock the directories when they are moved.
-Although not all filesystems need this locking, we perform it in
-vfs_rename() because getting the lock ordering right is really difficult
-and we don't want to expose these locking details to filesystems.
-
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
----
- .../filesystems/directory-locking.rst         | 26 ++++++++++---------
- fs/namei.c                                    | 22 ++++++++++------
- 2 files changed, 28 insertions(+), 20 deletions(-)
-
-diff --git a/Documentation/filesystems/directory-locking.rst b/Documentation/filesystems/directory-locking.rst
-index 504ba940c36c..dccd61c7c5c3 100644
---- a/Documentation/filesystems/directory-locking.rst
-+++ b/Documentation/filesystems/directory-locking.rst
-@@ -22,12 +22,11 @@ exclusive.
- 3) object removal.  Locking rules: caller locks parent, finds victim,
- locks victim and calls the method.  Locks are exclusive.
- 
--4) rename() that is _not_ cross-directory.  Locking rules: caller locks
--the parent and finds source and target.  In case of exchange (with
--RENAME_EXCHANGE in flags argument) lock both.  In any case,
--if the target already exists, lock it.  If the source is a non-directory,
--lock it.  If we need to lock both, lock them in inode pointer order.
--Then call the method.  All locks are exclusive.
-+4) rename() that is _not_ cross-directory.  Locking rules: caller locks the
-+parent and finds source and target.  We lock both (provided they exist).  If we
-+need to lock two inodes of different type (dir vs non-dir), we lock directory
-+first.  If we need to lock two inodes of the same type, lock them in inode
-+pointer order.  Then call the method.  All locks are exclusive.
- NB: we might get away with locking the source (and target in exchange
- case) shared.
- 
-@@ -44,15 +43,17 @@ All locks are exclusive.
- rules:
- 
- 	* lock the filesystem
--	* lock parents in "ancestors first" order.
-+	* lock parents in "ancestors first" order. If one is not ancestor of
-+	  the other, lock them in inode pointer order.
- 	* find source and target.
- 	* if old parent is equal to or is a descendent of target
- 	  fail with -ENOTEMPTY
- 	* if new parent is equal to or is a descendent of source
- 	  fail with -ELOOP
--	* If it's an exchange, lock both the source and the target.
--	* If the target exists, lock it.  If the source is a non-directory,
--	  lock it.  If we need to lock both, do so in inode pointer order.
-+	* Lock both the source and the target provided they exist. If we
-+	  need to lock two inodes of different type (dir vs non-dir), we lock
-+	  the directory first. If we need to lock two inodes of the same type,
-+	  lock them in inode pointer order.
- 	* call the method.
- 
- All ->i_rwsem are taken exclusive.  Again, we might get away with locking
-@@ -66,8 +67,9 @@ If no directory is its own ancestor, the scheme above is deadlock-free.
- 
- Proof:
- 
--	First of all, at any moment we have a partial ordering of the
--	objects - A < B iff A is an ancestor of B.
-+	First of all, at any moment we have a linear ordering of the
-+	objects - A < B iff (A is an ancestor of B) or (B is not an ancestor
-+        of A and ptr(A) < ptr(B)).
- 
- 	That ordering can change.  However, the following is true:
- 
-diff --git a/fs/namei.c b/fs/namei.c
-index 148570aabe74..6a5e26a529e1 100644
---- a/fs/namei.c
-+++ b/fs/namei.c
-@@ -4731,7 +4731,7 @@ SYSCALL_DEFINE2(link, const char __user *, oldname, const char __user *, newname
-  *	   sb->s_vfs_rename_mutex. We might be more accurate, but that's another
-  *	   story.
-  *	c) we have to lock _four_ objects - parents and victim (if it exists),
-- *	   and source (if it is not a directory).
-+ *	   and source.
-  *	   And that - after we got ->i_mutex on parents (until then we don't know
-  *	   whether the target exists).  Solution: try to be smart with locking
-  *	   order for inodes.  We rely on the fact that tree topology may change
-@@ -4815,10 +4815,16 @@ int vfs_rename(struct renamedata *rd)
- 
- 	take_dentry_name_snapshot(&old_name, old_dentry);
- 	dget(new_dentry);
--	if (!is_dir || (flags & RENAME_EXCHANGE))
--		lock_two_nondirectories(source, target);
--	else if (target)
--		inode_lock(target);
-+	/*
-+	 * Lock all moved children. Moved directories may need to change parent
-+	 * pointer so they need the lock to prevent against concurrent
-+	 * directory changes moving parent pointer. For regular files we've
-+	 * historically always done this. The lockdep locking subclasses are
-+	 * somewhat arbitrary but RENAME_EXCHANGE in particular can swap
-+	 * regular files and directories so it's difficult to tell which
-+	 * subclasses to use.
-+	 */
-+	lock_two_inodes(source, target, I_MUTEX_NORMAL, I_MUTEX_NONDIR2);
- 
- 	error = -EPERM;
- 	if (IS_SWAPFILE(source) || (target && IS_SWAPFILE(target)))
-@@ -4866,9 +4872,9 @@ int vfs_rename(struct renamedata *rd)
- 			d_exchange(old_dentry, new_dentry);
- 	}
- out:
--	if (!is_dir || (flags & RENAME_EXCHANGE))
--		unlock_two_nondirectories(source, target);
--	else if (target)
-+	if (source)
-+		inode_unlock(source);
-+	if (target)
- 		inode_unlock(target);
- 	dput(new_dentry);
- 	if (!error) {
--- 
-2.35.3
-
+T24gVGh1LCAyMDIzLTA2LTAxIGF0IDEyOjM5ICswMjAwLCBKb2FraW0gVGplcm5sdW5kIHdyb3Rl
+Og0KPiBPbiBXZWQsIDIwMjMtMDUtMzEgYXQgMTQ6NTEgKzAyMDAsIEpvYWtpbSBUamVybmx1bmQg
+d3JvdGU6DQo+ID4gUDcxMGUsIHdpbGwgdGhyb3cgYW4gImNhbm5vdCBzZXQgZnJlcSA0ODAwMCB0
+byBlcCAweDMiIGVycm9yLCBubw0KPiA+IG1hdHRlciBhZGRpbmcgbWRlbGF5cyBhcm91bmQgc2V0
+dGluZyBzYW1wbGUgcmF0ZS4NCj4gDQo+IFBsZWFzZSBpZ25vcmUgdGhpcyBwYXRjaCwgdGhlICJj
+YW5ub3Qgc2V0IGZyZXEgNDgwMDAgdG8gZXAgMHgzIiBvbmx5IGhhcHBlbnMgd2hlbg0KPiBrZXJu
+ZWwoNi4xLjMxKSBpbml0aWFsbHkgcHJvYmVzIHRoZSBkZXZpY2U6DQo+IA0KPiBbICA1NTUuMjAw
+MTY2XSB1c2IgMy0xOiBVU0IgZGlzY29ubmVjdCwgZGV2aWNlIG51bWJlciAxNA0KPiBbICA1NjAu
+OTA2NTUzXSB1c2IgMy0xOiBuZXcgZnVsbC1zcGVlZCBVU0IgZGV2aWNlIG51bWJlciAxNSB1c2lu
+ZyB4aGNpX2hjZA0KPiBbICA1NjEuMTA0MzQwXSB1c2IgMy0xOiAyOjE6IGNhbm5vdCBzZXQgZnJl
+cSA0ODAwMCB0byBlcCAweDMNCj4gWyAgNTY2LjM0MjQyMF0gdXNiIDMtMTogMjoxOiBjYW5ub3Qg
+Z2V0IGZyZXEgYXQgZXAgMHgzDQo+IFsgIDU2Ni40OTcwNTZdIGlucHV0OiBMb2dpdGVjaCBTcGVh
+a2VycGhvbmUgUDcxMGUgQ29uc3VtZXIgQ29udHJvbCBhcyAvZGV2aWNlcy9wY2kwMDAwOjAwLzAw
+MDA6MDA6MTQuMC91c2IzLzMtMS8zLTE6MS4zLzAwMDM6MDQ2RDowQTRFLjAwMDgvaW5wdXQvaW5w
+dXQyOQ0KPiBbICA1NjYuNTQ4ODI4XSBpbnB1dDogTG9naXRlY2ggU3BlYWtlcnBob25lIFA3MTBl
+IGFzIC9kZXZpY2VzL3BjaTAwMDA6MDAvMDAwMDowMDoxNC4wL3VzYjMvMy0xLzMtMToxLjMvMDAw
+MzowNDZEOjBBNEUuMDAwOC9pbnB1dC9pbnB1dDMwDQo+IFsgIDU2Ni41NDkwODZdIGhpZC1nZW5l
+cmljIDAwMDM6MDQ2RDowQTRFLjAwMDg6IGlucHV0LGhpZGRldjk3LGhpZHJhdzU6IFVTQiBISUQg
+djEuMTEgRGV2aWNlIFtMb2dpdGVjaCBTcGVha2VycGhvbmUgUDcxMGVdIG9uIHVzYi0wMDAwOjAw
+OjE0LjAtMS9pbnB1dDMNCj4gDQo+IEkgaGF2ZSBhIEphYnJhIFNQRUFLIDUxMCB3aGljaCBiZWhh
+dmVzIHRoZSBzYW1lLg0KPiBPbmNlIGF0dGFjaGVkIHNldHRpbmcgc2FtcGxlIHJhdGUgd29ya3Mu
+DQo+ICANCj4gU2VlbXMgbGlrZSB0aGUgZGV2aWNlcyBhcmUgbm90IHJlYWR5IHRvIGhhbmRsZSBz
+YW1wbGUgcmF0ZQ0KPiB0aGlzIGVhcmx5IHdoZW4gZGV2aWNlIGlzIGJlZWluZyBhdHRhY2hlZC4g
+RG9lcyB0aGUga2VybmVsIG5lZWQgdG8gbWFuYWdlDQo+IHNhbXBsZSByYXRlIGJlZm9yZSBkZXZp
+Y2UgaXMgZnVsbHkgYXR0YWNoZWQ/DQoNClRoaXMgc3dhcCBhcHBlYXJzIHRvIG1ha2UgdGhlIGlu
+aXRpYWwgZXJyb3IgZ28gYXdheToNCmRpZmYgLXUgc3RyZWFtLmMub3JnIHN0cmVhbS5jDQotLS0g
+c3RyZWFtLmMub3JnCTIwMjMtMDYtMDEgMTI6NTQ6NDEuMjI5MTQ1OTg5ICswMjAwDQorKysgc3Ry
+ZWFtLmMJMjAyMy0wNi0wMSAxMjo1Nzo0Ni40Mjc1MTQ2MzggKzAyMDANCkBAIC0xMjI2LDggKzEy
+MjYsOCBAQA0KIAkJLyogdHJ5IHRvIHNldCB0aGUgaW50ZXJmYWNlLi4uICovDQogCQl1c2Jfc2V0
+X2ludGVyZmFjZShjaGlwLT5kZXYsIGlmYWNlX25vLCAwKTsNCiAJCXNuZF91c2JfaW5pdF9waXRj
+aChjaGlwLCBmcCk7DQotCQlzbmRfdXNiX2luaXRfc2FtcGxlX3JhdGUoY2hpcCwgZnAsIGZwLT5y
+YXRlX21heCk7DQogCQl1c2Jfc2V0X2ludGVyZmFjZShjaGlwLT5kZXYsIGlmYWNlX25vLCBhbHRu
+byk7DQorCQlzbmRfdXNiX2luaXRfc2FtcGxlX3JhdGUoY2hpcCwgZnAsIGZwLT5yYXRlX21heCk7
+DQogCX0NCiAJcmV0dXJuIDA7DQogfQ0KDQpCdXQgSSBkb24ndCByZWFsbHkgbm93IHdoYXQgSSBh
+bSBkb2luZyB3LnIudCBVU0IvQXVkaW8gDQoNCiBKb2NrZQ0KDQo=
