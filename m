@@ -2,81 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACA2D719ED6
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:51:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A7A5719EEE
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:59:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233240AbjFANvu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:51:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49446 "EHLO
+        id S232769AbjFAN7H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:59:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233349AbjFANvp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:51:45 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C3B719A;
-        Thu,  1 Jun 2023 06:51:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1685627501; x=1686232301; i=rwarsow@gmx.de;
- bh=qdt3zIQljNt9e8T6xnjmFvcTLHpoJzo70fKVHVhfYw8=;
- h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
- b=TVZ/qmFjSWfoTtqT5OsIGOc0LEbtvCnLkSaC7JgTJFHGYnnyA7yHw2AtucDIjuMQoYrW/0H
- gvZnwoovWpzTrI7WuWkP7t3KJWv08P8dj+i6cH4ROJzU03IV6Rd50dm63/IQYpZkChVZZsTjX
- Z+9vdj8mbkGfGU4GSrrTs+NKSKviODmy3qRUgXbbspZiuZo7/myeSeYk6ML0DoPNP7skBgydB
- jq6G8QYtL9htu/9rpy4uXjE347qq3AofXh96gK0KsBIbOfIOlHUKiJQOwuwW1ZqOS27uwpTAr
- g1VLnTBoXGS25Z5KkV/Terq2iYfhhicU9V/RNjuSxSYS4e1XwXTg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.100.20] ([94.134.13.125]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MKsnP-1pmNXs1VO9-00LBBM; Thu, 01
- Jun 2023 15:51:41 +0200
-Message-ID: <24e1f34e-8d35-ef58-bb21-7e8787f010e8@gmx.de>
-Date:   Thu, 1 Jun 2023 15:51:40 +0200
+        with ESMTP id S229880AbjFAN7G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:59:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F523FC;
+        Thu,  1 Jun 2023 06:59:05 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B53A617EA;
+        Thu,  1 Jun 2023 13:59:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA843C433D2;
+        Thu,  1 Jun 2023 13:59:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685627944;
+        bh=hrvO0WffTuYX0l8xl6Ve6qY34By3qmMdYk7DH/2LqV4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=RSKNSdL1EwbgZ3EVAsPXSCUcGmPXrtGiZ7K/mcXuispwQXsqu4hHi1HU0/cfChTLi
+         FQHMIEttwLeBHGVThYBwKqodAMzYKLybFe/dsKnlmr8pUS8XikF8TzqxZ4WLw/4vd2
+         Bu7Ra/G6Fr0QhIZ+J7sOiFYzuSObtGZ+4gKtaCoW1oyIaUGmHuR7vvQeb3pqdyxNuL
+         WOG2hgBVDtBfNi2JCBHf8fNlyZmgqz4zF1H/e+Dw9ghxjjnWNs7roFT4qRlFRoQXGy
+         SC+pdwA/NUF6kJm0TcyB2A6vZJnbbT+waoLD1pNjxbIIIkcg7KXeRvZguOFip43Qhq
+         Usx4NRM/X1d6Q==
+Date:   Thu, 1 Jun 2023 15:58:58 +0200
+From:   Christian Brauner <brauner@kernel.org>
+To:     Jan Kara <jack@suse.cz>
+Cc:     Al Viro <viro@ZenIV.linux.org.uk>, linux-fsdevel@vger.kernel.org,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        "Darrick J. Wong" <djwong@kernel.org>, Ted Tso <tytso@mit.edu>,
+        Jaegeuk Kim <jaegeuk@kernel.org>, linux-ext4@vger.kernel.org,
+        linux-xfs@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2 4/6] fs: Establish locking order for unrelated
+ directories
+Message-ID: <20230601-gebracht-gesehen-c779a56b3bf3@brauner>
+References: <20230601104525.27897-1-jack@suse.cz>
+ <20230601105830.13168-4-jack@suse.cz>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-From:   Ronald Warsow <rwarsow@gmx.de>
-To:     linux-kernel@vger.kernel.org
-Cc:     stable@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.3 00/45] 6.3.6-rc1 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:l3Z6RUIpo62wKhlp5unJ+1gzU6XaNhUTBdBBTzNSou67n3cnoym
- ClhDEv0mJpAAtmiQVGRQEkp6JSlyrJOQah7BpPz42mywSo/rpOF3eIW4L7qTkPKiOGOQND/
- H+skWLOGMvxwOPEefRcabHRDtPDl4EMzdAI6n2IE4xsbPFghbxwzYoGAe06zfUDCmuZiWaz
- iC+SsESaKXfQI8nqyF5pQ==
-UI-OutboundReport: notjunk:1;M01:P0:lW2wuyrV31Y=;bO9iLFkeDElVS33U4qTm94cD9SI
- zO9EXYWciJPyiJvLdIP4NPSZ5PKWCEVpLgefwPqsrOMR0oSa3m1FVoNoSVpB/v9jAlv38pyT1
- BKu5hGdLq0+tMQX7wtjeC4KtrdZRVPerZOcy6rUTaCoWwOp7kFSrx1WxZZO7a0DngIemYJOoB
- SpXavCeNcIgKpiBgBjVHlzKsMAQZy7PYC2Bhmrd6pzxWw6zeEABLtzKeQ300kEZoLbkzFuDK5
- tdA1QeCGkKsOqF7fH8QTRFsZ4/p82oRx67H0YIpAHWHaKaEsdYVRsML5Tzx9ozY7rcHEalYlS
- X4c+llhjhjpXuuFG6LgkCTzt4BoqwQyVvBwLAf225d9WafR0xEPA5ZQcJBEZp5er4ekZR9joB
- 3HFDbUkY1R4fASg67jA8PvjEP8JARm56SDieCpeIcXVBapzqrN5zLbkBmEpX4L13Nf2TEAWr6
- s37FIV36N7BgnfkasY1HucO5xCop7N7W2MfmBnDzOZaNStF0E2XzSzPtfLEknsXUJhGPKU4a5
- Y2wRrzzQl0Op+HTpOyUTnehti35k9dv+zUJZFD8fVyyi7+pEZVzxXnU0r1SD49Co6hQoiGmfR
- 85tbM6yXKQnnhT0M5rA5ia6LDS2XI57+xqkfZIF3fkitCUfGASTuD9ZsdtCzCGhXzAbzwdina
- 5uqr6uUq+B6OlsJM9c89BB0BXJBpH5wp8iRcFM6tCJ4uAW6ExtJsrGWJMT0E1oQYYWsX/lPc1
- 7NXfBgUhypBeG0erdxZx4a9JQwK1FbOrQM59B09wmWgIMAYW4yeD39Sc6dscc0ep+khpNdzSV
- mwAp1z7QwB2UxoVQxabl7DNG5oPizoBw2lReQIOLi+ZJ4+Ji3cYwReM2TZqX6iEwdKfWcf8ic
- JUL8NG+/DwEJxxk8w1+RPDVda47EERRUxAeQlmeJSQr6GZSB1+tKkcB8RyykyV7brrvUGMZl1
- l+P2Yg==
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FAKE_REPLY_A1,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230601105830.13168-4-jack@suse.cz>
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
+On Thu, Jun 01, 2023 at 12:58:24PM +0200, Jan Kara wrote:
+> Currently the locking order of inode locks for directories that are not
+> in ancestor relationship is not defined because all operations that
+> needed to lock two directories like this were serialized by
+> sb->s_vfs_rename_mutex. However some filesystems need to lock two
+> subdirectories for RENAME_EXCHANGE operations and for this we need the
+> locking order established even for two tree-unrelated directories.
+> Provide a helper function lock_two_inodes() that establishes lock
+> ordering for any two inodes and use it in lock_two_directories().
+> 
+> CC: stable@vger.kernel.org
+> Signed-off-by: Jan Kara <jack@suse.cz>
+> ---
+>  fs/inode.c    | 42 ++++++++++++++++++++++++++++++++++++++++++
+>  fs/internal.h |  2 ++
+>  fs/namei.c    |  4 ++--
+>  3 files changed, 46 insertions(+), 2 deletions(-)
+> 
+> diff --git a/fs/inode.c b/fs/inode.c
+> index 577799b7855f..4000ab08bbc0 100644
+> --- a/fs/inode.c
+> +++ b/fs/inode.c
+> @@ -1103,6 +1103,48 @@ void discard_new_inode(struct inode *inode)
+>  }
+>  EXPORT_SYMBOL(discard_new_inode);
+>  
+> +/**
+> + * lock_two_inodes - lock two inodes (may be regular files but also dirs)
+> + *
+> + * Lock any non-NULL argument. The caller must make sure that if he is passing
+> + * in two directories, one is not ancestor of the other.  Zero, one or two
+> + * objects may be locked by this function.
+> + *
+> + * @inode1: first inode to lock
+> + * @inode2: second inode to lock
+> + * @subclass1: inode lock subclass for the first lock obtained
+> + * @subclass2: inode lock subclass for the second lock obtained
+> + */
+> +void lock_two_inodes(struct inode *inode1, struct inode *inode2,
+> +		     unsigned subclass1, unsigned subclass2)
+> +{
+> +	if (!inode1 || !inode2)
 
-6.3.6-rc1
+I think you forgot the opening bracket...
+I can just fix this up for you though.
 
-compiles, boots and runs here on x86_64
-(Intel Rocket Lake)
-
-Thanks
-
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
-
+> +		/*
+> +		 * Make sure @subclass1 will be used for the acquired lock.
+> +		 * This is not strictly necessary (no current caller cares) but
+> +		 * let's keep things consistent.
+> +		 */
+> +		if (!inode1)
+> +			swap(inode1, inode2);
+> +		goto lock;
+> +	}
