@@ -2,51 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C49347197D4
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 11:55:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD1147199A4
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 12:26:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231726AbjFAJzz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 05:55:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36846 "EHLO
+        id S233506AbjFAK0J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 06:26:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233245AbjFAJyw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 05:54:52 -0400
+        with ESMTP id S234478AbjFAKZw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 06:25:52 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42D35E53;
-        Thu,  1 Jun 2023 02:54:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A4BD212B
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 03:23:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C70F5642AA;
-        Thu,  1 Jun 2023 09:54:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1341EC433A1;
-        Thu,  1 Jun 2023 09:54:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685613270;
-        bh=LBqHWjOXWHLVP7NmjizqJrn/SFhLwC0EcVXIWfRrzzg=;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 554F0615F6
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 10:22:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33B32C433D2;
+        Thu,  1 Jun 2023 10:22:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1685614969;
+        bh=Pl36m8O7NZUiAFB/DYxKXlXqTkdSUlzmEFIS8eUFlas=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=U8qkzq8ezNBbLMhO9LpawjTYIaqNQh0SCLdz5SaKDrPvhpL2zgR7715KEN+2T1vFb
-         k2x8QauBDIfHsGNLsEio1PmSNZhQTJd/VAJylkO99Is6feBHTh7zMibzPgPGZsOQ1L
-         834yZXO3LiDdVIuNTUboop9qwM2GBC9ghdToFJcy5hJ1tlg56L6qydc/kv0SOcNfpK
-         Gpua8g0mQMBWSgOPLYJBkukReICp5WS6WyohrajcbuFyFS46HTT4HuJW/+iUKhdAAE
-         LX7TrBQshW+fH3Fpl2cfEzv/9CMBey0wg1ZgS8JaFOwBJdtwnUl5IyKDONb6IGq62N
-         kAEz1i3wIidFw==
-Date:   Thu, 1 Jun 2023 05:54:28 -0400
-From:   Sasha Levin <sashal@kernel.org>
-To:     Conor Dooley <conor@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Lucas Tanure <tanure@linux.com>, Rob Herring <robh@kernel.org>,
-        robh+dt@kernel.org, frowand.list@gmail.com,
-        devicetree@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.3 06/11] of: fdt: Scan /memreserve/ last
-Message-ID: <ZHhq1DKT1CBSTQlz@sashalap>
-References: <20230511193757.623114-1-sashal@kernel.org>
- <20230511193757.623114-6-sashal@kernel.org>
- <20230515-headroom-swirl-a0a845584a58@spud>
+        b=KH0h/ljL4DAjfawVkhsLKy4cv+vcF4LnPkvNAyy2mnfH8hl7FNT0OAMgwhqvbKK23
+         bDIzKD5tZ43txvK2EpmOWo/59MfkyAfcJcNiwEnIyyJAddnCquFS/ab0BiHxwIVhh4
+         8D7sZJJV18y63WKz1bpB6p66+/oOaJLva5YRU5G8=
+Date:   Thu, 1 Jun 2023 11:22:46 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Wyes Karny <wyes.karny@amd.com>
+Cc:     stable@vger.kernel.org,
+        "Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH 6.3.y] cpufreq: amd-pstate: Add ->fast_switch() callback
+Message-ID: <2023060137-mating-bucked-6b32@gregkh>
+References: <2023052858-danger-kilowatt-29cc@gregkh>
+ <20230530115503.3702-1-wyes.karny@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230515-headroom-swirl-a0a845584a58@spud>
+In-Reply-To: <20230530115503.3702-1-wyes.karny@amd.com>
 X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -57,46 +52,27 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, May 15, 2023 at 09:21:04PM +0100, Conor Dooley wrote:
->Hey Sasha,
->
->On Thu, May 11, 2023 at 03:37:49PM -0400, Sasha Levin wrote:
->> From: Lucas Tanure <tanure@linux.com>
->>
->> [ Upstream commit b413281876292de44ae84e9a9ce9d62e47f266e9 ]
->>
->> Change the scanning /memreserve/ and /reserved-memory node order to fix
->> Kernel panic on Khadas Vim3 Board.
->>
->> If /memreserve/ goes first, the memory is reserved, but nomap can't be
->> applied to the region. So the memory won't be used by Linux, but it is
->> still present in the linear map as normal memory, which allows
->> speculation. Legitimate access to adjacent pages will cause the CPU
->> to end up prefetching into them leading to Kernel panic.
->>
->> So /reserved-memory node should go first, as it has a more updated
->> description of the memory regions and can apply flags, like nomap.
->>
->> Link: https://lore.kernel.org/all/CAJX_Q+1Tjc+-TjZ6JW9X0NxEdFe=82a9626yL63j7uVD4LpxEA@mail.gmail.com/
->> Signed-off-by: Lucas Tanure <tanure@linux.com>
->> Link: https://lore.kernel.org/r/20230424113846.46382-1-tanure@linux.com
->> Signed-off-by: Rob Herring <robh@kernel.org>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->
->Rob requested that this patch (and it's bretheren in other AUTOSEL
->series) not be backported immediately:
->| Going to let this sit in linux-next for a bit. I also didn't tag for
->| stable kernels. I want it to get some exposure in mainline at least for
->| a few -rc releases rather than getting backported right away. Please
->| help ensure that happens if you see stable review emails. I'm going to
->| be offline most of the next month.
->https://lore.kernel.org/linux-devicetree/168262872454.3491083.6407810340850053636.robh@kernel.org/
->
->Perhaps delaying it for another couple of weeks, since we have only just
->had -rc2, is a good idead?
+On Tue, May 30, 2023 at 11:55:03AM +0000, Wyes Karny wrote:
+> From: "Gautham R. Shenoy" <gautham.shenoy@amd.com>
+> 
+> [ Upstream commit 4badf2eb1e986bdbf34dd2f5d4c979553a86fe54 ]
+> 
+> Schedutil normally calls the adjust_perf callback for drivers with
+> adjust_perf callback available and fast_switch_possible flag set.
+> However, when frequency invariance is disabled and schedutil tries to
+> invoke fast_switch. So, there is a chance of kernel crash if this
+> function pointer is not set. To protect against this scenario add
+> fast_switch callback to amd_pstate driver.
+> 
+> Fixes: 1d215f0319c2 ("cpufreq: amd-pstate: Add fast switch function for AMD P-State")
+> Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+> Signed-off-by: Wyes Karny <wyes.karny@amd.com>
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> (cherry picked from commit 4badf2eb1e986bdbf34dd2f5d4c979553a86fe54)
+> ---
+>  drivers/cpufreq/amd-pstate.c | 37 +++++++++++++++++++++++++++++-------
+>  1 file changed, 30 insertions(+), 7 deletions(-)
 
-I'll drop it, let me know when you want it included back. Thanks!
+All now queued up, thanks.
 
--- 
-Thanks,
-Sasha
+greg k-h
