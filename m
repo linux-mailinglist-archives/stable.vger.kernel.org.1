@@ -2,108 +2,146 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0D90718F97
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 02:43:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 460C9719003
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 03:27:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229851AbjFAAnR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 31 May 2023 20:43:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56364 "EHLO
+        id S230000AbjFAB1z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 31 May 2023 21:27:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229536AbjFAAnQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 20:43:16 -0400
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B9F7123;
-        Wed, 31 May 2023 17:43:15 -0700 (PDT)
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34VJpt0B027834;
-        Thu, 1 Jun 2023 00:43:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2023-03-30;
- bh=Ips1jBAXiHfKVpI/1xTGaQn2pdf449cCEABytqFx1Tk=;
- b=VdJ0//G6rO5K/bp3m3I+pY8tZ/pYYZZu9+IYiilnu37gtENfQZDOldQuldRtYrKTHbCP
- rEQAQORRR0yQGiYRUqsRu7DVPHXV/FvtlsrlggKO+Vq55XL3EY98EaAkgXdgYW8UkAvd
- tQ5ep8EtVcHL8EYz3vn1bznvckJIhnNtbAHdgtkdx1DXblJ/Ut86gAGFUWYEZjHXl0p8
- jG9JlQZ4iHqLeE+jChV/gsFEmxCCjv8dJDqAxviNxWWcMLsFm1N6o6WCAZ6zdewv3FZW
- XfBOL69z8LTX5o8Tw2Mw6N2yaq6RFrTQDgfpMTniehiQiF69gJ+prnnBWszoGTCkUO6O Vg== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3qvhwwfagc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 01 Jun 2023 00:43:06 +0000
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 34VMItKT026123;
-        Thu, 1 Jun 2023 00:43:06 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3qu8ad024x-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 01 Jun 2023 00:43:06 +0000
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3510cuYe000727;
-        Thu, 1 Jun 2023 00:43:05 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 3qu8ad024q-1;
-        Thu, 01 Jun 2023 00:43:05 +0000
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     Bart Van Assche <bvanassche@acm.org>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, stable@vger.kernel.org,
-        Randy Dunlap <rdunlap@infradead.org>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>
-Subject: Re: [PATCH] scsi: stex: Fix gcc 13 warnings
-Date:   Wed, 31 May 2023 20:43:01 -0400
-Message-Id: <168557998048.2461145.1627682048369491421.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230529195034.3077-1-bvanassche@acm.org>
-References: <20230529195034.3077-1-bvanassche@acm.org>
+        with ESMTP id S229536AbjFAB1x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 31 May 2023 21:27:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0501B121
+        for <stable@vger.kernel.org>; Wed, 31 May 2023 18:27:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1685582828;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=LQdQSnx/rlaXnVn9lu0zbQvQz9m8jGMKPxDj8CsPUow=;
+        b=ZYngr59IeixLVJzkBtQHJuYGtDESkR2MeqYygBVPLx4kspsBFiKBapmk2I0pES7VekF3o1
+        w+nXySyeS8MPzo+nkaIDGvs1h5nxkmsOmKbEuIYy+4YNnJ0wfStqt0bL09uFpZaS96ryf4
+        ljAmGfmWgAvhAMaSINemdnubEnNom30=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-454-6D654ibmNVmKeSklYGPSrg-1; Wed, 31 May 2023 21:27:06 -0400
+X-MC-Unique: 6D654ibmNVmKeSklYGPSrg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8A31C811E7F;
+        Thu,  1 Jun 2023 01:27:06 +0000 (UTC)
+Received: from li-a71a4dcc-35d1-11b2-a85c-951838863c8d.ibm.com.com (ovpn-12-188.pek2.redhat.com [10.72.12.188])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id A8994140E95D;
+        Thu,  1 Jun 2023 01:27:01 +0000 (UTC)
+From:   xiubli@redhat.com
+To:     idryomov@gmail.com, ceph-devel@vger.kernel.org
+Cc:     jlayton@kernel.org, vshankar@redhat.com, mchangir@redhat.com,
+        Xiubo Li <xiubli@redhat.com>, stable@vger.kernel.org
+Subject: [PATCH v2] ceph: fix use-after-free bug for inodes when flushing capsnaps
+Date:   Thu,  1 Jun 2023 09:24:44 +0800
+Message-Id: <20230601012444.851749-1-xiubli@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-05-31_18,2023-05-31_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 phishscore=0 spamscore=0
- adultscore=0 mlxlogscore=812 bulkscore=0 malwarescore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2304280000
- definitions=main-2306010002
-X-Proofpoint-ORIG-GUID: Osla6yPD2r9ojDsAbnGi9H6AxUATctMM
-X-Proofpoint-GUID: Osla6yPD2r9ojDsAbnGi9H6AxUATctMM
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 29 May 2023 12:50:34 -0700, Bart Van Assche wrote:
+From: Xiubo Li <xiubli@redhat.com>
 
-> gcc 13 may assign another type to enumeration constants than gcc 12. Split
-> the large enum at the top of source file stex.c such that the type of the
-> constants used in time expressions is changed back to the same type chosen
-> by gcc 12. This patch suppresses compiler warnings like this one:
-> 
-> In file included from ./include/linux/bitops.h:7,
->                  from ./include/linux/kernel.h:22,
->                  from drivers/scsi/stex.c:13:
-> drivers/scsi/stex.c: In function ‘stex_common_handshake’:
-> ./include/linux/typecheck.h:12:25: error: comparison of distinct pointer types lacks a cast [-Werror]
->    12 |         (void)(&__dummy == &__dummy2); \
->       |                         ^~
-> ./include/linux/jiffies.h:106:10: note: in expansion of macro ‘typecheck’
->   106 |          typecheck(unsigned long, b) && \
->       |          ^~~~~~~~~
-> drivers/scsi/stex.c:1035:29: note: in expansion of macro ‘time_after’
->  1035 |                         if (time_after(jiffies, before + MU_MAX_DELAY * HZ)) {
->       |                             ^~~~~~~~~~
-> 
-> [...]
+There is racy between capsnaps flush and removing the inode from
+'mdsc->snap_flush_list' list:
 
-Applied to 6.4/scsi-fixes, thanks!
+   == Thread A ==                     == Thread B ==
+ceph_queue_cap_snap()
+ -> allocate 'capsnapA'
+ ->ihold('&ci->vfs_inode')
+ ->add 'capsnapA' to 'ci->i_cap_snaps'
+ ->add 'ci' to 'mdsc->snap_flush_list'
+    ...
+   == Thread C ==
+ceph_flush_snaps()
+ ->__ceph_flush_snaps()
+  ->__send_flush_snap()
+                                handle_cap_flushsnap_ack()
+                                 ->iput('&ci->vfs_inode')
+                                   this also will release 'ci'
+                                    ...
+				      == Thread D ==
+                                ceph_handle_snap()
+                                 ->flush_snaps()
+                                  ->iterate 'mdsc->snap_flush_list'
+                                   ->get the stale 'ci'
+ ->remove 'ci' from                ->ihold(&ci->vfs_inode) this
+   'mdsc->snap_flush_list'           will WARNING
 
-[1/1] scsi: stex: Fix gcc 13 warnings
-      https://git.kernel.org/mkp/scsi/c/6d074ce23177
+To fix this we will increase the ihold the inode when adding 'ci'
+to the 'mdsc->snap_flush_list' list.
 
+Cc: stable@vger.kernel.org
+URL: https://bugzilla.redhat.com/show_bug.cgi?id=2209299
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+---
+
+V2:
+- Increase the i_count reference instead to fix this issue
+
+
+ fs/ceph/caps.c | 6 ++++++
+ fs/ceph/snap.c | 4 +++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
+index feabf4cc0c4f..7c2cb813aba4 100644
+--- a/fs/ceph/caps.c
++++ b/fs/ceph/caps.c
+@@ -1684,6 +1684,7 @@ void ceph_flush_snaps(struct ceph_inode_info *ci,
+ 	struct inode *inode = &ci->netfs.inode;
+ 	struct ceph_mds_client *mdsc = ceph_inode_to_client(inode)->mdsc;
+ 	struct ceph_mds_session *session = NULL;
++	int put = 0;
+ 	int mds;
+ 
+ 	dout("ceph_flush_snaps %p\n", inode);
+@@ -1728,8 +1729,13 @@ void ceph_flush_snaps(struct ceph_inode_info *ci,
+ 		ceph_put_mds_session(session);
+ 	/* we flushed them all; remove this inode from the queue */
+ 	spin_lock(&mdsc->snap_flush_lock);
++	if (!list_empty(&ci->i_snap_flush_item))
++		put++;
+ 	list_del_init(&ci->i_snap_flush_item);
+ 	spin_unlock(&mdsc->snap_flush_lock);
++
++	if (put)
++		iput(inode);
+ }
+ 
+ /*
+diff --git a/fs/ceph/snap.c b/fs/ceph/snap.c
+index 5a4bf0201737..d5ad10d94424 100644
+--- a/fs/ceph/snap.c
++++ b/fs/ceph/snap.c
+@@ -697,8 +697,10 @@ int __ceph_finish_cap_snap(struct ceph_inode_info *ci,
+ 	     capsnap->size);
+ 
+ 	spin_lock(&mdsc->snap_flush_lock);
+-	if (list_empty(&ci->i_snap_flush_item))
++	if (list_empty(&ci->i_snap_flush_item)) {
++		ihold(inode);
+ 		list_add_tail(&ci->i_snap_flush_item, &mdsc->snap_flush_list);
++	}
+ 	spin_unlock(&mdsc->snap_flush_lock);
+ 	return 1;  /* caller may want to ceph_flush_snaps */
+ }
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+2.40.1
+
