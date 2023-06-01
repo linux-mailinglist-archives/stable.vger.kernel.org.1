@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E99C719D96
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:24:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03224719D83
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:24:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233664AbjFANYj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:24:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33288 "EHLO
+        id S233616AbjFANXu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:23:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233722AbjFANYc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:24:32 -0400
+        with ESMTP id S233585AbjFANXi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:23:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38B6618C
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:24:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3734189
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:23:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A3BE16446B
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:24:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3556C433EF;
-        Thu,  1 Jun 2023 13:24:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 72E7C64468
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:23:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF32C433D2;
+        Thu,  1 Jun 2023 13:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625853;
-        bh=HrSnKsT0CEKtiGz96gQ3ZubLQ7pkKN6ZHueH0n0A2YM=;
+        s=korg; t=1685625815;
+        bh=mabcARVR8cjTjoGG5LssnMeM+z06fokD5gW/GGCCxNU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TtMt4HuF2eW8uXjcDBPPWwmI/liFlXJZ7pIHQ++hMGtiMYA/f1ajJR4a/XDD+UkUM
-         FCwS+QJeyeHcLUjdOUv5Tb+2bG0XVhOp7YSsmF4xRZHIwIFSCFm0POlScQC25D1ClK
-         Cn9V3bUVCzF5NLH5KjaxNx0fXF6yxmiNCxGDAvTY=
+        b=dHcDUAwpyOSCS3jk82gAaxh1Fr0eTIUUChYGcRQjqTa/jyGD88vifAPSb4mwrLvvH
+         4y6Cnu8GzvmJFuKRO7XFOG11JWuFBodowmwjrN4xsCbpomQCzT9Fab3hguEVizEXRV
+         7ixLZMIKgNnrPJMgs/ConLPXAg+zjHVjBSDsU7M8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 19/42] KVM: s390: pv: add export before import
+Subject: [PATCH 5.10 08/22] power: supply: bq27xxx: Move bq27xxx_battery_update() down
 Date:   Thu,  1 Jun 2023 14:21:06 +0100
-Message-Id: <20230601131937.588176314@linuxfoundation.org>
+Message-Id: <20230601131934.121686229@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131936.699199833@linuxfoundation.org>
-References: <20230601131936.699199833@linuxfoundation.org>
+In-Reply-To: <20230601131933.727832920@linuxfoundation.org>
+References: <20230601131933.727832920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,79 +54,166 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 72b1daff2671cef2c8cccc6c4e52f8d5ce4ebe58 ]
+[ Upstream commit ff4c4a2a4437a6d03787c7aafb2617f20c3ef45f ]
 
-Due to upcoming changes, it will be possible to temporarily have
-multiple protected VMs in the same address space, although only one
-will be actually active.
+Move the bq27xxx_battery_update() functions to below
+the bq27xxx_battery_current_and_status() function.
 
-In that scenario, it is necessary to perform an export of every page
-that is to be imported, since the hardware does not allow a page
-belonging to a protected guest to be imported into a different
-protected guest.
+This is just moving a block of text, no functional changes.
 
-This also applies to pages that are shared, and thus accessible by the
-host.
+This is a preparation patch for making bq27xxx_battery_update() check
+the status and have it call power_supply_changed() on status changes.
 
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
-Link: https://lore.kernel.org/r/20220628135619.32410-7-imbrenda@linux.ibm.com
-Message-Id: <20220628135619.32410-7-imbrenda@linux.ibm.com>
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Stable-dep-of: c148dc8e2fa4 ("KVM: s390: fix race in gmap_make_secure()")
+Fixes: 297a533b3e62 ("bq27x00: Cache battery registers")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/uv.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/power/supply/bq27xxx_battery.c | 122 ++++++++++++-------------
+ 1 file changed, 61 insertions(+), 61 deletions(-)
 
-diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
-index f95ccbd396925..7d7961c7b1281 100644
---- a/arch/s390/kernel/uv.c
-+++ b/arch/s390/kernel/uv.c
-@@ -189,6 +189,32 @@ static int make_secure_pte(pte_t *ptep, unsigned long addr,
- 	return rc;
+diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
+index bd6e53525065d..160ab53065f8e 100644
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -1687,67 +1687,6 @@ static int bq27xxx_battery_read_health(struct bq27xxx_device_info *di)
+ 	return POWER_SUPPLY_HEALTH_GOOD;
  }
  
-+/**
-+ * should_export_before_import - Determine whether an export is needed
-+ * before an import-like operation
-+ * @uvcb: the Ultravisor control block of the UVC to be performed
-+ * @mm: the mm of the process
-+ *
-+ * Returns whether an export is needed before every import-like operation.
-+ * This is needed for shared pages, which don't trigger a secure storage
-+ * exception when accessed from a different guest.
-+ *
-+ * Although considered as one, the Unpin Page UVC is not an actual import,
-+ * so it is not affected.
-+ *
-+ * No export is needed also when there is only one protected VM, because the
-+ * page cannot belong to the wrong VM in that case (there is no "other VM"
-+ * it can belong to).
-+ *
-+ * Return: true if an export is needed before every import, otherwise false.
-+ */
-+static bool should_export_before_import(struct uv_cb_header *uvcb, struct mm_struct *mm)
+-static void bq27xxx_battery_update_unlocked(struct bq27xxx_device_info *di)
+-{
+-	struct bq27xxx_reg_cache cache = {0, };
+-	bool has_singe_flag = di->opts & BQ27XXX_O_ZERO;
+-
+-	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
+-	if ((cache.flags & 0xff) == 0xff)
+-		cache.flags = -1; /* read error */
+-	if (cache.flags >= 0) {
+-		cache.temperature = bq27xxx_battery_read_temperature(di);
+-		if (di->regs[BQ27XXX_REG_TTE] != INVALID_REG_ADDR)
+-			cache.time_to_empty = bq27xxx_battery_read_time(di, BQ27XXX_REG_TTE);
+-		if (di->regs[BQ27XXX_REG_TTECP] != INVALID_REG_ADDR)
+-			cache.time_to_empty_avg = bq27xxx_battery_read_time(di, BQ27XXX_REG_TTECP);
+-		if (di->regs[BQ27XXX_REG_TTF] != INVALID_REG_ADDR)
+-			cache.time_to_full = bq27xxx_battery_read_time(di, BQ27XXX_REG_TTF);
+-
+-		cache.charge_full = bq27xxx_battery_read_fcc(di);
+-		cache.capacity = bq27xxx_battery_read_soc(di);
+-		if (di->regs[BQ27XXX_REG_AE] != INVALID_REG_ADDR)
+-			cache.energy = bq27xxx_battery_read_energy(di);
+-		di->cache.flags = cache.flags;
+-		cache.health = bq27xxx_battery_read_health(di);
+-		if (di->regs[BQ27XXX_REG_CYCT] != INVALID_REG_ADDR)
+-			cache.cycle_count = bq27xxx_battery_read_cyct(di);
+-
+-		/* We only have to read charge design full once */
+-		if (di->charge_design_full <= 0)
+-			di->charge_design_full = bq27xxx_battery_read_dcap(di);
+-	}
+-
+-	if ((di->cache.capacity != cache.capacity) ||
+-	    (di->cache.flags != cache.flags))
+-		power_supply_changed(di->bat);
+-
+-	if (memcmp(&di->cache, &cache, sizeof(cache)) != 0)
+-		di->cache = cache;
+-
+-	di->last_update = jiffies;
+-
+-	if (!di->removed && poll_interval > 0)
+-		mod_delayed_work(system_wq, &di->work, poll_interval * HZ);
+-}
+-
+-void bq27xxx_battery_update(struct bq27xxx_device_info *di)
+-{
+-	mutex_lock(&di->lock);
+-	bq27xxx_battery_update_unlocked(di);
+-	mutex_unlock(&di->lock);
+-}
+-EXPORT_SYMBOL_GPL(bq27xxx_battery_update);
+-
+-static void bq27xxx_battery_poll(struct work_struct *work)
+-{
+-	struct bq27xxx_device_info *di =
+-			container_of(work, struct bq27xxx_device_info,
+-				     work.work);
+-
+-	bq27xxx_battery_update(di);
+-}
+-
+ static bool bq27xxx_battery_is_full(struct bq27xxx_device_info *di, int flags)
+ {
+ 	if (di->opts & BQ27XXX_O_ZERO)
+@@ -1821,6 +1760,67 @@ static int bq27xxx_battery_current_and_status(
+ 	return 0;
+ }
+ 
++static void bq27xxx_battery_update_unlocked(struct bq27xxx_device_info *di)
 +{
-+	if (uvcb->cmd == UVC_CMD_UNPIN_PAGE_SHARED)
-+		return false;
-+	return atomic_read(&mm->context.protected_count) > 1;
++	struct bq27xxx_reg_cache cache = {0, };
++	bool has_singe_flag = di->opts & BQ27XXX_O_ZERO;
++
++	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
++	if ((cache.flags & 0xff) == 0xff)
++		cache.flags = -1; /* read error */
++	if (cache.flags >= 0) {
++		cache.temperature = bq27xxx_battery_read_temperature(di);
++		if (di->regs[BQ27XXX_REG_TTE] != INVALID_REG_ADDR)
++			cache.time_to_empty = bq27xxx_battery_read_time(di, BQ27XXX_REG_TTE);
++		if (di->regs[BQ27XXX_REG_TTECP] != INVALID_REG_ADDR)
++			cache.time_to_empty_avg = bq27xxx_battery_read_time(di, BQ27XXX_REG_TTECP);
++		if (di->regs[BQ27XXX_REG_TTF] != INVALID_REG_ADDR)
++			cache.time_to_full = bq27xxx_battery_read_time(di, BQ27XXX_REG_TTF);
++
++		cache.charge_full = bq27xxx_battery_read_fcc(di);
++		cache.capacity = bq27xxx_battery_read_soc(di);
++		if (di->regs[BQ27XXX_REG_AE] != INVALID_REG_ADDR)
++			cache.energy = bq27xxx_battery_read_energy(di);
++		di->cache.flags = cache.flags;
++		cache.health = bq27xxx_battery_read_health(di);
++		if (di->regs[BQ27XXX_REG_CYCT] != INVALID_REG_ADDR)
++			cache.cycle_count = bq27xxx_battery_read_cyct(di);
++
++		/* We only have to read charge design full once */
++		if (di->charge_design_full <= 0)
++			di->charge_design_full = bq27xxx_battery_read_dcap(di);
++	}
++
++	if ((di->cache.capacity != cache.capacity) ||
++	    (di->cache.flags != cache.flags))
++		power_supply_changed(di->bat);
++
++	if (memcmp(&di->cache, &cache, sizeof(cache)) != 0)
++		di->cache = cache;
++
++	di->last_update = jiffies;
++
++	if (!di->removed && poll_interval > 0)
++		mod_delayed_work(system_wq, &di->work, poll_interval * HZ);
++}
++
++void bq27xxx_battery_update(struct bq27xxx_device_info *di)
++{
++	mutex_lock(&di->lock);
++	bq27xxx_battery_update_unlocked(di);
++	mutex_unlock(&di->lock);
++}
++EXPORT_SYMBOL_GPL(bq27xxx_battery_update);
++
++static void bq27xxx_battery_poll(struct work_struct *work)
++{
++	struct bq27xxx_device_info *di =
++			container_of(work, struct bq27xxx_device_info,
++				     work.work);
++
++	bq27xxx_battery_update(di);
 +}
 +
  /*
-  * Requests the Ultravisor to make a page accessible to a guest.
-  * If it's brought in the first time, it will be cleared. If
-@@ -232,6 +258,8 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
- 
- 	lock_page(page);
- 	ptep = get_locked_pte(gmap->mm, uaddr, &ptelock);
-+	if (should_export_before_import(uvcb, gmap->mm))
-+		uv_convert_from_secure(page_to_phys(page));
- 	rc = make_secure_pte(ptep, uaddr, page, uvcb);
- 	pte_unmap_unlock(ptep, ptelock);
- 	unlock_page(page);
+  * Get the average power in µW
+  * Return < 0 if something fails.
 -- 
 2.39.2
 
