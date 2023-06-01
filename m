@@ -2,68 +2,87 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB74971F088
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 19:21:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9DB171F21E
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 20:38:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232058AbjFARU6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 13:20:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56288 "EHLO
+        id S231458AbjFAS3j (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 14:29:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231947AbjFARU5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 13:20:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0973B136;
-        Thu,  1 Jun 2023 10:20:57 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B96664835;
-        Thu,  1 Jun 2023 17:20:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81995C433D2;
-        Thu,  1 Jun 2023 17:20:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685640056;
-        bh=9EaqC1DnJMuk4AMWEh9JBON4F0FRodQtCo6RrSC2wsc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lZdpfz5JapOz2Y0YELeTlVq+OU8fVjl+6hfGwZNBz3pxMSdwsyuN1PoPIxtCi6WhT
-         Nq9efP1eCyxIOXD3HPrwhWWvJiIOlgH6Sqk4XYk5YEaEmSXVpz6CenikE5KiEmiP89
-         6SYgjpMPdkF9aCLQsMnNr/htH5TflxeDBbVKGAOo=
-Date:   Thu, 1 Jun 2023 18:20:53 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Danila Chernetsov <listdansp@mail.ru>
-Cc:     stable@vger.kernel.org, Amir Goldstein <amir73il@gmail.com>,
-        "Darrick J. Wong" <djwong@kernel.org>, linux-xfs@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Dave Chinner <dchinner@redhat.com>,
-        Dave Chinner <david@fromorbit.com>
-Subject: Re: [PATCH 5.10 1/1] xfs: verify buffer contents when we skip log
- replay
-Message-ID: <2023060127-flick-velcro-ca45@gregkh>
-References: <20230601164439.15404-1-listdansp@mail.ru>
- <20230601164439.15404-2-listdansp@mail.ru>
+        with ESMTP id S232490AbjFAS3g (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 14:29:36 -0400
+X-Greylist: delayed 1851 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 01 Jun 2023 11:29:11 PDT
+Received: from connect.vanmierlo.com (fieber.vanmierlo.com [84.243.197.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C94EDE42
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 11:29:11 -0700 (PDT)
+X-Footer: dmFubWllcmxvLmNvbQ==
+Received: from roundcube.vanmierlo.com ([192.168.37.37])
+        (authenticated user m.brock@vanmierlo.com)
+        by connect.vanmierlo.com (Kerio Connect 9.4.2) with ESMTPA;
+        Thu, 1 Jun 2023 19:28:01 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230601164439.15404-2-listdansp@mail.ru>
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Date:   Thu, 01 Jun 2023 19:28:01 +0200
+From:   m.brock@vanmierlo.com
+To:     Hugo Villeneuve <hugo@hugovil.com>
+Cc:     gregkh@linuxfoundation.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        jirislaby@kernel.org, jringle@gridpoint.com,
+        l.perczak@camlintechnologies.com, tomasz.mon@camlingroup.com,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        stable@vger.kernel.org, Lech Perczak <lech.perczak@camlingroup.com>
+Subject: Re: [PATCH v5 3/9] serial: sc16is7xx: refactor GPIO controller
+ registration
+In-Reply-To: <20230601163113.2785657-4-hugo@hugovil.com>
+References: <20230601163113.2785657-1-hugo@hugovil.com>
+ <20230601163113.2785657-4-hugo@hugovil.com>
+Message-ID: <c5c2879e55102a6d517245e6d251290d@vanmierlo.com>
+X-Sender: m.brock@vanmierlo.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 01, 2023 at 04:44:39PM +0000, Danila Chernetsov wrote:
-> From: "Darrick J. Wong" <djwong@kernel.org>
+Hugo Villeneuve schreef op 2023-06-01 18:31:
+> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 > 
-> commit 22ed903eee23a5b174e240f1cdfa9acf393a5210 upstream.
+> In preparation for upcoming patch "fix regression with GPIO
+> configuration". To facilitate review and make code more modular.
 > 
-> syzbot detected a crash during log recovery:
+> Cc: <stable@vger.kernel.org> # 6.1.x
+> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
+> Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
+> ---
+>  drivers/tty/serial/sc16is7xx.c | 39 ++++++++++++++++++++--------------
+>  1 file changed, 23 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/tty/serial/sc16is7xx.c 
+> b/drivers/tty/serial/sc16is7xx.c
+> index 0c903d44429c..279d7dcb1447 100644
+> --- a/drivers/tty/serial/sc16is7xx.c
+> +++ b/drivers/tty/serial/sc16is7xx.c
+> @@ -1349,6 +1349,26 @@ static int
+> sc16is7xx_gpio_direction_output(struct gpio_chip *chip,
+> 
+>  	return 0;
+>  }
+> +
+> +static int sc16is7xx_setup_gpio_chip(struct device *dev)
 
-XFS patches for stable come from the XFS maintainers, so please work
-with them if you feel any specific patch is missing from a stable tree.
+Only one parameter, but...
 
-thanks,
+> +	ret = sc16is7xx_setup_gpio_chip(dev, mctrl_mask);
 
-greg k-h
+called with two.
+
+Maarten
+
