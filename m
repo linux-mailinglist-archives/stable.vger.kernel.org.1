@@ -2,41 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26DAC719DE0
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:27:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3558C719DE4
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:27:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233836AbjFAN1J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:27:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35644 "EHLO
+        id S233890AbjFAN1X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:27:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233844AbjFAN05 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:26:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37925E54
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:26:43 -0700 (PDT)
+        with ESMTP id S233891AbjFAN1D (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:27:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E02CCE6A
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:26:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DB94B644B1
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:26:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C72C433D2;
-        Thu,  1 Jun 2023 13:26:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C1673644A6
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:26:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF90C433EF;
+        Thu,  1 Jun 2023 13:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685626002;
-        bh=kp4NH6kuTfoajtNRN44vB2bn8bHkMuohEdDR+u0O1Rw=;
+        s=korg; t=1685626007;
+        bh=aqVK/aFHene3fMXpiV9PVreukKsTMhLtTjmZeC3NWww=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=secnZF2lAK5umyLNip3wd7zVZBaBTNpDkTf9t5iK2yPy3KOSqXxP3HC3YvdbXxmoL
-         /p6ij2hRcbUo5rowK/8Fhco3jAem564B00oippYyBC/x4lMpZmuARMVMoibBdHUkef
-         qV84KYkg41T3jE3pR8Tku2u8hytEC5XP0fDCVaeI=
+        b=Y4EeeyeRedhU8xAvTDADMh0sNAsxMFNrhi2hwlH5GTVVaMnPc26/qinYcHlXD3fgs
+         m40nqUlK5auf5J9pMF2UhUKxIl+DBzD1VFeGRds3ZyNaOCrcJkGkKD8IzODIEreUyR
+         c9u0lzfuGIGlCLo3R017JYFni0RNPj6EoYZ5a3kg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Yu Kuai <yukuai3@huawei.com>, Christoph Hellwig <hch@lst.de>,
+        patches@lists.linux.dev, Tian Lan <tian.lan@twosigma.com>,
+        Ming Lei <ming.lei@redhat.com>,
+        Damien Le Moal <dlemoal@kernel.org>,
+        John Garry <john.g.garry@oracle.com>,
         Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 37/45] blk-wbt: fix that wbt cant be disabled by default
-Date:   Thu,  1 Jun 2023 14:21:33 +0100
-Message-Id: <20230601131940.390074247@linuxfoundation.org>
+Subject: [PATCH 6.3 38/45] blk-mq: fix race condition in active queue accounting
+Date:   Thu,  1 Jun 2023 14:21:34 +0100
+Message-Id: <20230601131940.443054353@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
 References: <20230601131938.702671708@linuxfoundation.org>
@@ -44,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,63 +56,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Tian Lan <tian.lan@twosigma.com>
 
-[ Upstream commit 8a2b20a997a3779ae9fcae268f2959eb82ec05a1 ]
+[ Upstream commit 3e94d54e83cafd2b562bb6d15bb2f72d76200fb5 ]
 
-commit b11d31ae01e6 ("blk-wbt: remove unnecessary check in
-wbt_enable_default()") removes the checking of CONFIG_BLK_WBT_MQ by
-mistake, which is used to control enable or disable wbt by default.
+If multiple CPUs are sharing the same hardware queue, it can
+cause leak in the active queue counter tracking when __blk_mq_tag_busy()
+is executed simultaneously.
 
-Fix the problem by adding back the checking. This patch also do a litter
-cleanup to make related code more readable.
-
-Fixes: b11d31ae01e6 ("blk-wbt: remove unnecessary check in wbt_enable_default()")
-Reported-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Link: https://lore.kernel.org/lkml/CAKXUXMzfKq_J9nKHGyr5P5rvUETY4B-fxoQD4sO+NYjFOfVtZA@mail.gmail.com/t/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230522121854.2928880-1-yukuai1@huaweicloud.com
+Fixes: ee78ec1077d3 ("blk-mq: blk_mq_tag_busy is no need to return a value")
+Signed-off-by: Tian Lan <tian.lan@twosigma.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Link: https://lore.kernel.org/r/20230522210555.794134-1-tilan7663@gmail.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-wbt.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ block/blk-mq-tag.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/block/blk-wbt.c b/block/blk-wbt.c
-index e49a486845327..9ec2a2f1eda38 100644
---- a/block/blk-wbt.c
-+++ b/block/blk-wbt.c
-@@ -730,14 +730,16 @@ void wbt_enable_default(struct gendisk *disk)
+diff --git a/block/blk-mq-tag.c b/block/blk-mq-tag.c
+index 9eb968e14d31f..a80d7c62bdfe6 100644
+--- a/block/blk-mq-tag.c
++++ b/block/blk-mq-tag.c
+@@ -41,16 +41,20 @@ void __blk_mq_tag_busy(struct blk_mq_hw_ctx *hctx)
  {
- 	struct request_queue *q = disk->queue;
- 	struct rq_qos *rqos;
--	bool disable_flag = q->elevator &&
--		    test_bit(ELEVATOR_FLAG_DISABLE_WBT, &q->elevator->flags);
-+	bool enable = IS_ENABLED(CONFIG_BLK_WBT_MQ);
-+
-+	if (q->elevator &&
-+	    test_bit(ELEVATOR_FLAG_DISABLE_WBT, &q->elevator->flags))
-+		enable = false;
+ 	unsigned int users;
  
- 	/* Throttling already enabled? */
- 	rqos = wbt_rq_qos(q);
- 	if (rqos) {
--		if (!disable_flag &&
--		    RQWB(rqos)->enable_state == WBT_STATE_OFF_DEFAULT)
-+		if (enable && RQWB(rqos)->enable_state == WBT_STATE_OFF_DEFAULT)
- 			RQWB(rqos)->enable_state = WBT_STATE_ON_DEFAULT;
- 		return;
++	/*
++	 * calling test_bit() prior to test_and_set_bit() is intentional,
++	 * it avoids dirtying the cacheline if the queue is already active.
++	 */
+ 	if (blk_mq_is_shared_tags(hctx->flags)) {
+ 		struct request_queue *q = hctx->queue;
+ 
+-		if (test_bit(QUEUE_FLAG_HCTX_ACTIVE, &q->queue_flags))
++		if (test_bit(QUEUE_FLAG_HCTX_ACTIVE, &q->queue_flags) ||
++		    test_and_set_bit(QUEUE_FLAG_HCTX_ACTIVE, &q->queue_flags))
+ 			return;
+-		set_bit(QUEUE_FLAG_HCTX_ACTIVE, &q->queue_flags);
+ 	} else {
+-		if (test_bit(BLK_MQ_S_TAG_ACTIVE, &hctx->state))
++		if (test_bit(BLK_MQ_S_TAG_ACTIVE, &hctx->state) ||
++		    test_and_set_bit(BLK_MQ_S_TAG_ACTIVE, &hctx->state))
+ 			return;
+-		set_bit(BLK_MQ_S_TAG_ACTIVE, &hctx->state);
  	}
-@@ -746,7 +748,7 @@ void wbt_enable_default(struct gendisk *disk)
- 	if (!blk_queue_registered(q))
- 		return;
  
--	if (queue_is_mq(q) && !disable_flag)
-+	if (queue_is_mq(q) && enable)
- 		wbt_init(disk);
- }
- EXPORT_SYMBOL_GPL(wbt_enable_default);
+ 	users = atomic_inc_return(&hctx->tags->active_queues);
 -- 
 2.39.2
 
