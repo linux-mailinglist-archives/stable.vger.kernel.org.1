@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CCE9719DAC
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:25:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B013F719D5D
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:22:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233676AbjFANZo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:25:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34356 "EHLO
+        id S233486AbjFANWk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:22:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233722AbjFANZh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:25:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6F511BD
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:25:04 -0700 (PDT)
+        with ESMTP id S233506AbjFANWk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:22:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49857184
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:22:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C476963958
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:25:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E292CC433EF;
-        Thu,  1 Jun 2023 13:25:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AE16864451
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:22:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C465DC433D2;
+        Thu,  1 Jun 2023 13:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625904;
-        bh=y/zMLJXNXb8QNTNU1dGgSGQaqgpmOv3kIhBt1bZGcq8=;
+        s=korg; t=1685625756;
+        bh=TI4PNR+UVruWcX77McejNTxnAM0oR+sH1Hdkf4AWF7w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LD3Xek2HplnysJE5LnrgOSK0Dhs86hekrm3WtXfZ6AvNP74uliEbXM0ZuBoMjkD4z
-         mV3t3H+cF3t54oGVUC5ENmTYleWfC0fNs9sL+GH/jTQbrPnTwvoiKQ3vQ4d2MfceGa
-         4NVV/KKTS6MhrbT/SwYxFv47NXri3OwHDr0tI29k=
+        b=K9pXeHBhnkhWAcCtIzMEZ6bpHAgMXmLz4hr2iSmluGxo4ccpHl7c+bLPJr8vH3zk/
+         533E7FBtF7zbXeDyUU5D6hvmftyV7slFEfelwXj8qrYjcklheK+DH92KH+dCMt7K7j
+         Alh7Q+F8cyISo901s/iVzugVQNQ6uaP3QViVoTJg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        David Epping <david.epping@missinglinkelectronics.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Vladimir Oltean <olteanv@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 13/42] net: phy: mscc: enable VSC8501/2 RGMII RX clock
+Subject: [PATCH 5.4 05/16] power: supply: bq24190: Call power_supply_changed() after updating input current
 Date:   Thu,  1 Jun 2023 14:21:00 +0100
-Message-Id: <20230601131937.313310246@linuxfoundation.org>
+Message-Id: <20230601131932.193783465@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131936.699199833@linuxfoundation.org>
-References: <20230601131936.699199833@linuxfoundation.org>
+In-Reply-To: <20230601131931.947241286@linuxfoundation.org>
+References: <20230601131931.947241286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,132 +54,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Epping <david.epping@missinglinkelectronics.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 71460c9ec5c743e9ffffca3c874d66267c36345e ]
+[ Upstream commit 77c2a3097d7029441e8a91aa0de1b4e5464593da ]
 
-By default the VSC8501 and VSC8502 RGMII/GMII/MII RX_CLK output is
-disabled. To allow packet forwarding towards the MAC it needs to be
-enabled.
+The bq24192 model relies on external charger-type detection and once
+that is done the bq24190_charger code will update the input current.
 
-For other PHYs supported by this driver the clock output is enabled
-by default.
+In this case, when the initial power_supply_changed() call is made
+from the interrupt handler, the input settings are 5V/0.5A which
+on many devices is not enough power to charge (while the device is on).
 
-Fixes: d3169863310d ("net: phy: mscc: add support for VSC8502")
-Signed-off-by: David Epping <david.epping@missinglinkelectronics.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+On many devices the fuel-gauge relies in its external_power_changed
+callback to timely signal userspace about charging <-> discharging
+status changes. Add a power_supply_changed() call after updating
+the input current. This allows the fuel-gauge driver to timely recheck
+if the battery is charging after the new input current has been applied
+and then it can immediately notify userspace about this.
+
+Fixes: 18f8e6f695ac ("power: supply: bq24190_charger: Get input_current_limit from our supplier")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mscc/mscc.h      |  1 +
- drivers/net/phy/mscc/mscc_main.c | 54 +++++++++++++++++---------------
- 2 files changed, 29 insertions(+), 26 deletions(-)
+ drivers/power/supply/bq24190_charger.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/phy/mscc/mscc.h b/drivers/net/phy/mscc/mscc.h
-index a50235fdf7d99..055e4ca5b3b5c 100644
---- a/drivers/net/phy/mscc/mscc.h
-+++ b/drivers/net/phy/mscc/mscc.h
-@@ -179,6 +179,7 @@ enum rgmii_clock_delay {
- #define VSC8502_RGMII_CNTL		  20
- #define VSC8502_RGMII_RX_DELAY_MASK	  0x0070
- #define VSC8502_RGMII_TX_DELAY_MASK	  0x0007
-+#define VSC8502_RGMII_RX_CLK_DISABLE	  0x0800
- 
- #define MSCC_PHY_WOL_LOWER_MAC_ADDR	  21
- #define MSCC_PHY_WOL_MID_MAC_ADDR	  22
-diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
-index 74f3aa752724f..cef43b1344a94 100644
---- a/drivers/net/phy/mscc/mscc_main.c
-+++ b/drivers/net/phy/mscc/mscc_main.c
-@@ -527,14 +527,27 @@ static int vsc85xx_mac_if_set(struct phy_device *phydev,
-  *  * 2.0 ns (which causes the data to be sampled at exactly half way between
-  *    clock transitions at 1000 Mbps) if delays should be enabled
-  */
--static int vsc85xx_rgmii_set_skews(struct phy_device *phydev, u32 rgmii_cntl,
--				   u16 rgmii_rx_delay_mask,
--				   u16 rgmii_tx_delay_mask)
-+static int vsc85xx_update_rgmii_cntl(struct phy_device *phydev, u32 rgmii_cntl,
-+				     u16 rgmii_rx_delay_mask,
-+				     u16 rgmii_tx_delay_mask)
- {
- 	u16 rgmii_rx_delay_pos = ffs(rgmii_rx_delay_mask) - 1;
- 	u16 rgmii_tx_delay_pos = ffs(rgmii_tx_delay_mask) - 1;
- 	u16 reg_val = 0;
--	int rc;
-+	u16 mask = 0;
-+	int rc = 0;
-+
-+	/* For traffic to pass, the VSC8502 family needs the RX_CLK disable bit
-+	 * to be unset for all PHY modes, so do that as part of the paged
-+	 * register modification.
-+	 * For some family members (like VSC8530/31/40/41) this bit is reserved
-+	 * and read-only, and the RX clock is enabled by default.
-+	 */
-+	if (rgmii_cntl == VSC8502_RGMII_CNTL)
-+		mask |= VSC8502_RGMII_RX_CLK_DISABLE;
-+
-+	if (phy_interface_is_rgmii(phydev))
-+		mask |= rgmii_rx_delay_mask | rgmii_tx_delay_mask;
- 
- 	mutex_lock(&phydev->lock);
- 
-@@ -545,10 +558,9 @@ static int vsc85xx_rgmii_set_skews(struct phy_device *phydev, u32 rgmii_cntl,
- 	    phydev->interface == PHY_INTERFACE_MODE_RGMII_ID)
- 		reg_val |= RGMII_CLK_DELAY_2_0_NS << rgmii_tx_delay_pos;
- 
--	rc = phy_modify_paged(phydev, MSCC_PHY_PAGE_EXTENDED_2,
--			      rgmii_cntl,
--			      rgmii_rx_delay_mask | rgmii_tx_delay_mask,
--			      reg_val);
-+	if (mask)
-+		rc = phy_modify_paged(phydev, MSCC_PHY_PAGE_EXTENDED_2,
-+				      rgmii_cntl, mask, reg_val);
- 
- 	mutex_unlock(&phydev->lock);
- 
-@@ -557,19 +569,11 @@ static int vsc85xx_rgmii_set_skews(struct phy_device *phydev, u32 rgmii_cntl,
- 
- static int vsc85xx_default_config(struct phy_device *phydev)
- {
--	int rc;
--
- 	phydev->mdix_ctrl = ETH_TP_MDI_AUTO;
- 
--	if (phy_interface_mode_is_rgmii(phydev->interface)) {
--		rc = vsc85xx_rgmii_set_skews(phydev, VSC8502_RGMII_CNTL,
--					     VSC8502_RGMII_RX_DELAY_MASK,
--					     VSC8502_RGMII_TX_DELAY_MASK);
--		if (rc)
--			return rc;
--	}
--
--	return 0;
-+	return vsc85xx_update_rgmii_cntl(phydev, VSC8502_RGMII_CNTL,
-+					 VSC8502_RGMII_RX_DELAY_MASK,
-+					 VSC8502_RGMII_TX_DELAY_MASK);
+diff --git a/drivers/power/supply/bq24190_charger.c b/drivers/power/supply/bq24190_charger.c
+index da0d047d4c8fe..f912284b2e551 100644
+--- a/drivers/power/supply/bq24190_charger.c
++++ b/drivers/power/supply/bq24190_charger.c
+@@ -1223,6 +1223,7 @@ static void bq24190_input_current_limit_work(struct work_struct *work)
+ 	bq24190_charger_set_property(bdi->charger,
+ 				     POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
+ 				     &val);
++	power_supply_changed(bdi->charger);
  }
  
- static int vsc85xx_get_tunable(struct phy_device *phydev,
-@@ -1766,13 +1770,11 @@ static int vsc8584_config_init(struct phy_device *phydev)
- 	if (ret)
- 		return ret;
- 
--	if (phy_interface_is_rgmii(phydev)) {
--		ret = vsc85xx_rgmii_set_skews(phydev, VSC8572_RGMII_CNTL,
--					      VSC8572_RGMII_RX_DELAY_MASK,
--					      VSC8572_RGMII_TX_DELAY_MASK);
--		if (ret)
--			return ret;
--	}
-+	ret = vsc85xx_update_rgmii_cntl(phydev, VSC8572_RGMII_CNTL,
-+					VSC8572_RGMII_RX_DELAY_MASK,
-+					VSC8572_RGMII_TX_DELAY_MASK);
-+	if (ret)
-+		return ret;
- 
- 	ret = genphy_soft_reset(phydev);
- 	if (ret)
+ /* Sync the input-current-limit with our parent supply (if we have one) */
 -- 
 2.39.2
 
