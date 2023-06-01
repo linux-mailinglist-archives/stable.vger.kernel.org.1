@@ -2,115 +2,147 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBB7A71EFA1
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 18:51:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3778571EF29
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 18:35:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232693AbjFAQuJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 12:50:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60854 "EHLO
+        id S231784AbjFAQe1 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Thu, 1 Jun 2023 12:34:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231439AbjFAQti (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 12:49:38 -0400
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E3D8E53;
-        Thu,  1 Jun 2023 09:49:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-        ; s=x; h=Subject:Content-Transfer-Encoding:MIME-Version:References:
-        In-Reply-To:Message-Id:Date:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=ZiPCnMO76qB2BYRsvuFD+LhH0HMktcgnm3k8GmGktA0=; b=U5b5/XIstKLYENZYR/TX71aRRf
-        yLZ88yJnyKOS44fQJk5ChaDOxrFOnoOecHd+RIThmu1uhGE90VkqltF1RnZYehWDijnkNrRWLTBwZ
-        qGpOii/hQG14HeciG6hJgphqBTP8OWbB8F7RbE4eAzepIOyqyeX4QoBXc04l5NavNfVc=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:53588 helo=pettiford.lan)
-        by mail.hugovil.com with esmtpa (Exim 4.92)
-        (envelope-from <hugo@hugovil.com>)
-        id 1q4lCw-0003BU-P0; Thu, 01 Jun 2023 12:31:27 -0400
-From:   Hugo Villeneuve <hugo@hugovil.com>
-To:     gregkh@linuxfoundation.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        jirislaby@kernel.org, jringle@gridpoint.com,
-        l.perczak@camlintechnologies.com, tomasz.mon@camlingroup.com
-Cc:     linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, hugo@hugovil.com,
-        linux-gpio@vger.kernel.org,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        stable@vger.kernel.org, Lech Perczak <lech.perczak@camlingroup.com>
-Date:   Thu,  1 Jun 2023 12:31:10 -0400
-Message-Id: <20230601163113.2785657-7-hugo@hugovil.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230601163113.2785657-1-hugo@hugovil.com>
-References: <20230601163113.2785657-1-hugo@hugovil.com>
+        with ESMTP id S231718AbjFAQe0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 12:34:26 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFBBE1BC
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 09:34:05 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-118-HGYaWkwuPHeTz2fi0dWn6Q-1; Thu, 01 Jun 2023 17:34:02 +0100
+X-MC-Unique: HGYaWkwuPHeTz2fi0dWn6Q-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Thu, 1 Jun
+ 2023 17:33:58 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Thu, 1 Jun 2023 17:33:58 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     'Jan Kara' <jack@suse.cz>
+CC:     Christian Brauner <brauner@kernel.org>,
+        Al Viro <viro@ZenIV.linux.org.uk>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "Miklos Szeredi" <miklos@szeredi.hu>,
+        "Darrick J. Wong" <djwong@kernel.org>, Ted Tso <tytso@mit.edu>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        "linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>,
+        "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>,
+        "linux-f2fs-devel@lists.sourceforge.net" 
+        <linux-f2fs-devel@lists.sourceforge.net>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH v2 4/6] fs: Establish locking order for unrelated
+ directories
+Thread-Topic: [PATCH v2 4/6] fs: Establish locking order for unrelated
+ directories
+Thread-Index: AQHZlJ1FZufsO2GDRE+EhxV9kbhF9692EqgQ///7d4CAABPFwA==
+Date:   Thu, 1 Jun 2023 16:33:58 +0000
+Message-ID: <eb70760399ae4222904c62c64dc529b6@AcuMS.aculab.com>
+References: <20230601104525.27897-1-jack@suse.cz>
+ <20230601105830.13168-4-jack@suse.cz>
+ <20230601-gebracht-gesehen-c779a56b3bf3@brauner>
+ <20230601152449.h4ur5zrfqjqygujd@quack3>
+ <c5f209a6263b4f039c5eafcafddf90ca@AcuMS.aculab.com>
+ <20230601161353.4o6but7hb7i7qfki@quack3>
+In-Reply-To: <20230601161353.4o6but7hb7i7qfki@quack3>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
-Subject: [PATCH v5 6/9] serial: sc16is7xx: fix bug when first setting GPIO direction
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Jan Kara <jack@suse.cz>
+> Sent: 01 June 2023 17:14
+> 
+> On Thu 01-06-23 15:37:32, David Laight wrote:
+> > ...
+> > > > > + * Lock any non-NULL argument. The caller must make sure that if he is passing
+> > > > > + * in two directories, one is not ancestor of the other
+> >
+> > Not directly relevant to this change but is the 'not an ancestor'
+> > check actually robust?
+> >
+> > I found a condition in which the kernel 'pwd' code (which follows
+> > the inode chain) failed to stop at the base of a chroot.
+> >
+> > I suspect that the ancestor check would fail the same way.
+> 
+> Honestly, I'm not sure how this could be the case but I'm not a dcache
+> expert. d_ancestor() works on dentries and the whole dcache code pretty
+> much relies on the fact that there always is at most one dentry for any
+> directory. Also in case we call d_ancestor() from this code, we have the
+> whole filesystem locked from any other directory moves so the ancestor
+> relationship of two dirs cannot change (which is different from pwd code
+> AFAIK). So IMHO no failure is possible in our case.
 
-When configuring a pin as an output pin with a value of logic 0, we
-end up as having a value of logic 1 on the output pin. Setting a
-logic 0 a second time (or more) after that will correctly output a
-logic 0 on the output pin.
+I've found the test program.
+This uses readlinkat() to get the full path /proc/self/fd/0.
+It should be inside the chroot, but the comparison done
+to detect the 'root' fails.
 
-By default, all GPIO pins are configured as inputs. When we enter
-sc16is7xx_gpio_direction_output() for the first time, we first set the
-desired value in IOSTATE, and then we configure the pin as an output.
-The datasheet states that writing to IOSTATE register will trigger a
-transfer of the value to the I/O pin configured as output, so if the
-pin is configured as an input, nothing will be transferred.
+Now maybe any rename that would hit this is invalid
+for other reasons.
+But something is awry somewhere.
 
-Therefore, set the direction first in IODIR, and then set the desired
-value in IOSTATE.
+	David
 
-This is what is done in NXP application note AN10587.
+The program below reproduces this when run with stdin
+redirected to a file in the current directory.
 
-Fixes: dfeae619d781 ("serial: sc16is7xx")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
-Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
----
- drivers/tty/serial/sc16is7xx.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+This sequence is used by 'ip netns exec' so isn't actually
+that unusual.
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index ad6b9d613b33..2fa09baf28e3 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1340,9 +1340,18 @@ static int sc16is7xx_gpio_direction_output(struct gpio_chip *chip,
- 		state |= BIT(offset);
- 	else
- 		state &= ~BIT(offset);
--	sc16is7xx_port_write(port, SC16IS7XX_IOSTATE_REG, state);
-+
-+	/*
-+	 * If we write IOSTATE first, and then IODIR, the output value is not
-+	 * transferred to the corresponding I/O pin.
-+	 * The datasheet states that each register bit will be transferred to
-+	 * the corresponding I/O pin programmed as output when writing to
-+	 * IOSTATE. Therefore, configure direction first with IODIR, and then
-+	 * set value after with IOSTATE.
-+	 */
- 	sc16is7xx_port_update(port, SC16IS7XX_IODIR_REG, BIT(offset),
- 			      BIT(offset));
-+	sc16is7xx_port_write(port, SC16IS7XX_IOSTATE_REG, state);
- 
- 	return 0;
- }
--- 
-2.30.2
+	David
+
+#define _GNU_SOURCE
+#include <unistd.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <sched.h>
+
+static void print_link(const char *where, int fd)
+{
+        char buf[256];
+
+        printf("%s: %.*s\n", where, (int)readlinkat(fd, "", buf, sizeof buf), buf);
+}
+
+int main(int argc, char **argv)
+{
+        int link_fd = open("/proc/self/fd/0", O_PATH | O_NOFOLLOW);
+
+        print_link("initial", link_fd);
+        if (chroot("."))
+                return 1;
+        print_link("after chroot", link_fd);
+        if (unshare(CLONE_NEWNS))
+                return 2;
+        print_link("after unshare", link_fd);
+        return 0;
+}
+
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
+Registration No: 1397386 (Wales)
 
