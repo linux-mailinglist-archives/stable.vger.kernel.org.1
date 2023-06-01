@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB6AF719D70
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:23:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0EB2719DC5
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:26:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233606AbjFANXL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:23:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59774 "EHLO
+        id S233806AbjFAN0X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:26:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233577AbjFANXE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:23:04 -0400
+        with ESMTP id S233811AbjFAN0F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:26:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FA45184
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:23:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 642A5125
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:25:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8128964468
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:23:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68293C433D2;
-        Thu,  1 Jun 2023 13:23:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F18A664435
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:25:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14BB7C433EF;
+        Thu,  1 Jun 2023 13:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625781;
-        bh=sNBINE4f3wI4nfZWemx6M4fze2KkEIZy6Ii9i/SbOok=;
+        s=korg; t=1685625948;
+        bh=LOj8PO2IKk4isEWSiuS7dpvXhrsKiGN/aU7Iwv3lRpY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JaeIqDVQg/P4sMiETdSG1GZgc72Kde/w/5auRjx6+p5Np7fwzcNYGYdbiLzj9O2fE
-         91tMxb+C+lqoYhZ9GpZXrH7mdNnx/5Ac4Omu9JYrZEJFB13Cck8iaWur9dCJerrqyV
-         t4hSzfdrAImDag+aY6aS61HMosMy2jpinKgB3rK4=
+        b=RgYObuu2flOMxK9AGcx5pDJhDgjAyKxG6ZGM7bgE8ASeL8aWQN7pbDUAcAViz2DO4
+         7cAFkw5lD6xo72SqlGY+/XoRhrYp2Mf/haEK7zNnH3kP51Fyyq3muMIvuWMfgEEb93
+         d1//geJm4grcMosa/dayKbe4hSOj8NiBCSXcbTMQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Shai Amiram <samiram@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 13/22] regulator: Add regmap helper for ramp-delay setting
+Subject: [PATCH 6.3 15/45] tls: rx: strp: factor out copying skb data
 Date:   Thu,  1 Jun 2023 14:21:11 +0100
-Message-Id: <20230601131934.359763608@linuxfoundation.org>
+Message-Id: <20230601131939.406712918@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131933.727832920@linuxfoundation.org>
-References: <20230601131933.727832920@linuxfoundation.org>
+In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
+References: <20230601131938.702671708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,121 +56,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit fb8fee9efdcf084d9e31ba14cc4734d97e5dd972 ]
+[ Upstream commit c1c607b1e5d5477d82ca6a86a05a4f10907b33ee ]
 
-Quite a few regulator ICs do support setting ramp-delay by writing a value
-matching the delay to a ramp-delay register.
+We'll need to copy input skbs individually in the next patch.
+Factor that code out (without assuming we're copying a full record).
 
-Provide a simple helper for table-based delay setting.
-
-Signed-off-by: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
-Link: https://lore.kernel.org/r/f101f1db564cf32cb58719c77af0b00d7236bb89.1617020713.git.matti.vaittinen@fi.rohmeurope.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: d67dada3e252 ("regulator: pca9450: Fix BUCK2 enable_mask")
+Tested-by: Shai Amiram <samiram@nvidia.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: eca9bfafee3a ("tls: rx: strp: preserve decryption status of skbs when needed")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/helpers.c      | 65 ++++++++++++++++++++++++++++++++
- include/linux/regulator/driver.h |  5 +++
- 2 files changed, 70 insertions(+)
+ net/tls/tls_strp.c | 33 +++++++++++++++++++++++----------
+ 1 file changed, 23 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/regulator/helpers.c b/drivers/regulator/helpers.c
-index e4bb09bbd3fa6..a356f84b1285b 100644
---- a/drivers/regulator/helpers.c
-+++ b/drivers/regulator/helpers.c
-@@ -879,3 +879,68 @@ bool regulator_is_equal(struct regulator *reg1, struct regulator *reg2)
- 	return reg1->rdev == reg2->rdev;
+diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
+index e2e48217e7ac9..61fbf84baf9e0 100644
+--- a/net/tls/tls_strp.c
++++ b/net/tls/tls_strp.c
+@@ -34,31 +34,44 @@ static void tls_strp_anchor_free(struct tls_strparser *strp)
+ 	strp->anchor = NULL;
  }
- EXPORT_SYMBOL_GPL(regulator_is_equal);
-+
-+static int find_closest_bigger(unsigned int target, const unsigned int *table,
-+			       unsigned int num_sel, unsigned int *sel)
-+{
-+	unsigned int s, tmp, max, maxsel = 0;
-+	bool found = false;
-+
-+	max = table[0];
-+
-+	for (s = 0; s < num_sel; s++) {
-+		if (table[s] > max) {
-+			max = table[s];
-+			maxsel = s;
-+		}
-+		if (table[s] >= target) {
-+			if (!found || table[s] - target < tmp - target) {
-+				tmp = table[s];
-+				*sel = s;
-+				found = true;
-+				if (tmp == target)
-+					break;
-+			}
-+		}
-+	}
-+
-+	if (!found) {
-+		*sel = maxsel;
-+		return -EINVAL;
-+	}
-+
-+	return 0;
+ 
+-/* Create a new skb with the contents of input copied to its page frags */
+-static struct sk_buff *tls_strp_msg_make_copy(struct tls_strparser *strp)
++static struct sk_buff *
++tls_strp_skb_copy(struct tls_strparser *strp, struct sk_buff *in_skb,
++		  int offset, int len)
+ {
+-	struct strp_msg *rxm;
+ 	struct sk_buff *skb;
+-	int i, err, offset;
++	int i, err;
+ 
+-	skb = alloc_skb_with_frags(0, strp->stm.full_len, TLS_PAGE_ORDER,
++	skb = alloc_skb_with_frags(0, len, TLS_PAGE_ORDER,
+ 				   &err, strp->sk->sk_allocation);
+ 	if (!skb)
+ 		return NULL;
+ 
+-	offset = strp->stm.offset;
+ 	for (i = 0; i < skb_shinfo(skb)->nr_frags; i++) {
+ 		skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
+ 
+-		WARN_ON_ONCE(skb_copy_bits(strp->anchor, offset,
++		WARN_ON_ONCE(skb_copy_bits(in_skb, offset,
+ 					   skb_frag_address(frag),
+ 					   skb_frag_size(frag)));
+ 		offset += skb_frag_size(frag);
+ 	}
+ 
+-	skb->len = strp->stm.full_len;
+-	skb->data_len = strp->stm.full_len;
+-	skb_copy_header(skb, strp->anchor);
++	skb->len = len;
++	skb->data_len = len;
++	skb_copy_header(skb, in_skb);
++	return skb;
 +}
 +
-+/**
-+ * regulator_set_ramp_delay_regmap - set_ramp_delay() helper
-+ *
-+ * @rdev: regulator to operate on
-+ *
-+ * Regulators that use regmap for their register I/O can set the ramp_reg
-+ * and ramp_mask fields in their descriptor and then use this as their
-+ * set_ramp_delay operation, saving some code.
-+ */
-+int regulator_set_ramp_delay_regmap(struct regulator_dev *rdev, int ramp_delay)
++/* Create a new skb with the contents of input copied to its page frags */
++static struct sk_buff *tls_strp_msg_make_copy(struct tls_strparser *strp)
 +{
-+	int ret;
-+	unsigned int sel;
++	struct strp_msg *rxm;
++	struct sk_buff *skb;
 +
-+	if (!rdev->desc->n_ramp_values)
-+		return -EINVAL;
++	skb = tls_strp_skb_copy(strp, strp->anchor, strp->stm.offset,
++				strp->stm.full_len);
++	if (!skb)
++		return NULL;
 +
-+	ret = find_closest_bigger(ramp_delay, rdev->desc->ramp_delay_table,
-+				  rdev->desc->n_ramp_values, &sel);
-+
-+	if (ret) {
-+		dev_warn(rdev_get_dev(rdev),
-+			 "Can't set ramp-delay %u, setting %u\n", ramp_delay,
-+			 rdev->desc->ramp_delay_table[sel]);
-+	}
-+
-+	sel <<= ffs(rdev->desc->ramp_mask) - 1;
-+
-+	return regmap_update_bits(rdev->regmap, rdev->desc->ramp_reg,
-+				  rdev->desc->ramp_mask, sel);
-+}
-+EXPORT_SYMBOL_GPL(regulator_set_ramp_delay_regmap);
-diff --git a/include/linux/regulator/driver.h b/include/linux/regulator/driver.h
-index 11cade73726ce..633e7a2ab01d0 100644
---- a/include/linux/regulator/driver.h
-+++ b/include/linux/regulator/driver.h
-@@ -370,6 +370,10 @@ struct regulator_desc {
- 	unsigned int pull_down_reg;
- 	unsigned int pull_down_mask;
- 	unsigned int pull_down_val_on;
-+	unsigned int ramp_reg;
-+	unsigned int ramp_mask;
-+	const unsigned int *ramp_delay_table;
-+	unsigned int n_ramp_values;
- 
- 	unsigned int enable_time;
- 
-@@ -532,6 +536,7 @@ int regulator_set_current_limit_regmap(struct regulator_dev *rdev,
- 				       int min_uA, int max_uA);
- int regulator_get_current_limit_regmap(struct regulator_dev *rdev);
- void *regulator_get_init_drvdata(struct regulator_init_data *reg_init_data);
-+int regulator_set_ramp_delay_regmap(struct regulator_dev *rdev, int ramp_delay);
- 
- /*
-  * Helper functions intended to be used by regulator drivers prior registering
+ 	rxm = strp_msg(skb);
+ 	rxm->offset = 0;
+ 	return skb;
 -- 
 2.39.2
 
