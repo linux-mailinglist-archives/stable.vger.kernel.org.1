@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7E92719D60
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD6D1719DB0
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:25:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232558AbjFANWh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:22:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59412 "EHLO
+        id S233750AbjFANZn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:25:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233236AbjFANWh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:22:37 -0400
+        with ESMTP id S233753AbjFANZh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:25:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A86188
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:22:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA7941B9
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:25:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A0D664442
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:22:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D43C433EF;
-        Thu,  1 Jun 2023 13:22:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E4816447E
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:25:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79456C4339B;
+        Thu,  1 Jun 2023 13:25:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625753;
-        bh=q0rX5MMk6R8OLayC0swB2kjGJUSDgkc/fnA3scppQoo=;
+        s=korg; t=1685625901;
+        bh=nhyMnnQgX7jpXljlgHLHbEzNS4uQQWL+pnAbSlL+Gfk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s4I6ONZaR5ko2S2yRXDGnCvtep4p9C/GRia384rQoqkuhqBb6Aqbo1idfK5VI1mve
-         EmdQBWlSNyNg0XW43DWbFRS7t2XhG6yCezlrjNWC+ologTpJ0F3AK68Wu4gsiJVyW8
-         b3tbWlMp6Q+kLQCTPRdDubFr/EhWfSqy8N8NYHYQ=
+        b=2pN7IdPrauS0Au9h4YlBaRfRSMXbXc35XBuYYk+V9/WRswq00ifwR8Pzn25Nripar
+         ifZGuKCHZp03ngcCcong9r+EDPgv04Exh1UxS/wlUIdEnc7FKZpBG6ClIP2OM1VPE6
+         FOcFlzLw9MthLyBCBEJMkmZhDfjymvHm67U5N8H0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        patches@lists.linux.dev, Steve Wahl <steve.wahl@hpe.com>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
         Hans de Goede <hdegoede@redhat.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 04/16] power: supply: core: Refactor power_supply_set_input_current_limit_from_supplier()
+Subject: [PATCH 5.15 12/42] platform/x86: ISST: Remove 8 socket limit
 Date:   Thu,  1 Jun 2023 14:20:59 +0100
-Message-Id: <20230601131932.152959123@linuxfoundation.org>
+Message-Id: <20230601131937.265279817@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131931.947241286@linuxfoundation.org>
-References: <20230601131931.947241286@linuxfoundation.org>
+In-Reply-To: <20230601131936.699199833@linuxfoundation.org>
+References: <20230601131936.699199833@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,168 +55,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Steve Wahl <steve.wahl@hpe.com>
 
-[ Upstream commit 2220af8ca61ae67de4ec3deec1c6395a2f65b9fd ]
+[ Upstream commit bbb320bfe2c3e9740fe89cfa0a7089b4e8bfc4ff ]
 
-Some (USB) charger ICs have variants with USB D+ and D- pins to do their
-own builtin charger-type detection, like e.g. the bq24190 and bq25890 and
-also variants which lack this functionality, e.g. the bq24192 and bq25892.
+Stop restricting the PCI search to a range of PCI domains fed to
+pci_get_domain_bus_and_slot().  Instead, use for_each_pci_dev() and
+look at all PCI domains in one pass.
 
-In case the charger-type; and thus the input-current-limit detection is
-done outside the charger IC then we need some way to communicate this to
-the charger IC. In the past extcon was used for this, but if the external
-detection does e.g. full USB PD negotiation then the extcon cable-types do
-not convey enough information.
+On systems with more than 8 sockets, this avoids error messages like
+"Information: Invalid level, Can't get TDP control information at
+specified levels on cpu 480" from the intel speed select utility.
 
-For these setups it was decided to model the external charging "brick"
-and the parameters negotiated with it as a power_supply class-device
-itself; and power_supply_set_input_current_limit_from_supplier() was
-introduced to allow drivers to get the input-current-limit this way.
-
-But in some cases psy drivers may want to know other properties, e.g. the
-bq25892 can do "quick-charge" negotiation by pulsing its current draw,
-but this should only be done if the usb_type psy-property of its supplier
-is set to DCP (and device-properties indicate the board allows higher
-voltages).
-
-Instead of adding extra helper functions for each property which
-a psy-driver wants to query from its supplier, refactor
-power_supply_set_input_current_limit_from_supplier() into a
-more generic power_supply_get_property_from_supplier() function.
-
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Fixes: aa2ddd242572 ("platform/x86: ISST: Use numa node id for cpu pci dev mapping")
+Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20230519160420.2588475-1-steve.wahl@hpe.com
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Stable-dep-of: 77c2a3097d70 ("power: supply: bq24190: Call power_supply_changed() after updating input current")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/bq24190_charger.c   | 12 ++++-
- drivers/power/supply/power_supply_core.c | 57 +++++++++++++-----------
- include/linux/power_supply.h             |  5 ++-
- 3 files changed, 44 insertions(+), 30 deletions(-)
+ .../x86/intel/speed_select_if/isst_if_common.c       | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/power/supply/bq24190_charger.c b/drivers/power/supply/bq24190_charger.c
-index 64d87dccea82c..da0d047d4c8fe 100644
---- a/drivers/power/supply/bq24190_charger.c
-+++ b/drivers/power/supply/bq24190_charger.c
-@@ -1211,8 +1211,18 @@ static void bq24190_input_current_limit_work(struct work_struct *work)
- 	struct bq24190_dev_info *bdi =
- 		container_of(work, struct bq24190_dev_info,
- 			     input_current_limit_work.work);
-+	union power_supply_propval val;
-+	int ret;
-+
-+	ret = power_supply_get_property_from_supplier(bdi->charger,
-+						      POWER_SUPPLY_PROP_CURRENT_MAX,
-+						      &val);
-+	if (ret)
-+		return;
+diff --git a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
+index fd102678c75f6..f6b32d31c5110 100644
+--- a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
++++ b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
+@@ -294,14 +294,13 @@ struct isst_if_pkg_info {
+ static struct isst_if_cpu_info *isst_cpu_info;
+ static struct isst_if_pkg_info *isst_pkg_info;
  
--	power_supply_set_input_current_limit_from_supplier(bdi->charger);
-+	bq24190_charger_set_property(bdi->charger,
-+				     POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
-+				     &val);
- }
- 
- /* Sync the input-current-limit with our parent supply (if we have one) */
-diff --git a/drivers/power/supply/power_supply_core.c b/drivers/power/supply/power_supply_core.c
-index fd24254d90142..3fdc988595b3a 100644
---- a/drivers/power/supply/power_supply_core.c
-+++ b/drivers/power/supply/power_supply_core.c
-@@ -375,46 +375,49 @@ int power_supply_is_system_supplied(void)
- }
- EXPORT_SYMBOL_GPL(power_supply_is_system_supplied);
- 
--static int __power_supply_get_supplier_max_current(struct device *dev,
--						   void *data)
-+struct psy_get_supplier_prop_data {
-+	struct power_supply *psy;
-+	enum power_supply_property psp;
-+	union power_supply_propval *val;
-+};
-+
-+static int __power_supply_get_supplier_property(struct device *dev, void *_data)
- {
--	union power_supply_propval ret = {0,};
- 	struct power_supply *epsy = dev_get_drvdata(dev);
--	struct power_supply *psy = data;
-+	struct psy_get_supplier_prop_data *data = _data;
- 
--	if (__power_supply_is_supplied_by(epsy, psy))
--		if (!epsy->desc->get_property(epsy,
--					      POWER_SUPPLY_PROP_CURRENT_MAX,
--					      &ret))
--			return ret.intval;
-+	if (__power_supply_is_supplied_by(epsy, data->psy))
-+		if (!epsy->desc->get_property(epsy, data->psp, data->val))
-+			return 1; /* Success */
- 
--	return 0;
-+	return 0; /* Continue iterating */
- }
- 
--int power_supply_set_input_current_limit_from_supplier(struct power_supply *psy)
-+int power_supply_get_property_from_supplier(struct power_supply *psy,
-+					    enum power_supply_property psp,
-+					    union power_supply_propval *val)
- {
--	union power_supply_propval val = {0,};
--	int curr;
+-#define ISST_MAX_PCI_DOMAINS	8
 -
--	if (!psy->desc->set_property)
--		return -EINVAL;
-+	struct psy_get_supplier_prop_data data = {
-+		.psy = psy,
-+		.psp = psp,
-+		.val = val,
-+	};
-+	int ret;
- 
- 	/*
- 	 * This function is not intended for use with a supply with multiple
--	 * suppliers, we simply pick the first supply to report a non 0
--	 * max-current.
-+	 * suppliers, we simply pick the first supply to report the psp.
- 	 */
--	curr = class_for_each_device(power_supply_class, NULL, psy,
--				      __power_supply_get_supplier_max_current);
--	if (curr <= 0)
--		return (curr == 0) ? -ENODEV : curr;
--
--	val.intval = curr;
-+	ret = class_for_each_device(power_supply_class, NULL, &data,
-+				    __power_supply_get_supplier_property);
-+	if (ret < 0)
-+		return ret;
-+	if (ret == 0)
-+		return -ENODEV;
- 
--	return psy->desc->set_property(psy,
--				POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT, &val);
-+	return 0;
- }
--EXPORT_SYMBOL_GPL(power_supply_set_input_current_limit_from_supplier);
-+EXPORT_SYMBOL_GPL(power_supply_get_property_from_supplier);
- 
- int power_supply_set_battery_charged(struct power_supply *psy)
+ static struct pci_dev *_isst_if_get_pci_dev(int cpu, int bus_no, int dev, int fn)
  {
-diff --git a/include/linux/power_supply.h b/include/linux/power_supply.h
-index 28413f737e7d0..f4aad9554de2e 100644
---- a/include/linux/power_supply.h
-+++ b/include/linux/power_supply.h
-@@ -383,8 +383,9 @@ extern int power_supply_batinfo_ocv2cap(struct power_supply_battery_info *info,
- 					int ocv, int temp);
- extern void power_supply_changed(struct power_supply *psy);
- extern int power_supply_am_i_supplied(struct power_supply *psy);
--extern int power_supply_set_input_current_limit_from_supplier(
--					 struct power_supply *psy);
-+int power_supply_get_property_from_supplier(struct power_supply *psy,
-+					    enum power_supply_property psp,
-+					    union power_supply_propval *val);
- extern int power_supply_set_battery_charged(struct power_supply *psy);
+ 	struct pci_dev *matched_pci_dev = NULL;
+ 	struct pci_dev *pci_dev = NULL;
++	struct pci_dev *_pci_dev = NULL;
+ 	int no_matches = 0, pkg_id;
+-	int i, bus_number;
++	int bus_number;
  
- #ifdef CONFIG_POWER_SUPPLY
+ 	if (bus_no < 0 || bus_no >= ISST_MAX_BUS_NUMBER || cpu < 0 ||
+ 	    cpu >= nr_cpu_ids || cpu >= num_possible_cpus())
+@@ -313,12 +312,11 @@ static struct pci_dev *_isst_if_get_pci_dev(int cpu, int bus_no, int dev, int fn
+ 	if (bus_number < 0)
+ 		return NULL;
+ 
+-	for (i = 0; i < ISST_MAX_PCI_DOMAINS; ++i) {
+-		struct pci_dev *_pci_dev;
++	for_each_pci_dev(_pci_dev) {
+ 		int node;
+ 
+-		_pci_dev = pci_get_domain_bus_and_slot(i, bus_number, PCI_DEVFN(dev, fn));
+-		if (!_pci_dev)
++		if (_pci_dev->bus->number != bus_number ||
++		    _pci_dev->devfn != PCI_DEVFN(dev, fn))
+ 			continue;
+ 
+ 		++no_matches;
 -- 
 2.39.2
 
