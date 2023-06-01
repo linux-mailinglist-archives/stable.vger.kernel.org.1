@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DBF0719DCD
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:26:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 908AB719D6F
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:23:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233754AbjFAN0j (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:26:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34290 "EHLO
+        id S233300AbjFANWs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:22:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233722AbjFAN0X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:26:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54872E7E
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:26:06 -0700 (PDT)
+        with ESMTP id S233506AbjFANWq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:22:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DDFF184
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:22:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F821644A3
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:26:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B648C433D2;
-        Thu,  1 Jun 2023 13:26:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E4D9761627
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:22:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 090C4C4339B;
+        Thu,  1 Jun 2023 13:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625965;
-        bh=K/xKNoIuzB7rDEgRy7eOXxRaaUq/nom7QM8tG9venyI=;
+        s=korg; t=1685625763;
+        bh=csGBHSLMTywrf+G5mxuLNvCLcQ3JOfYfd77tWemtpQA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cqJNPhz/lC1aJRZ0F0N91Q3TeaceS346ANdqEaLPoSUMGc9pKgc6okxgXwEqy0X1D
-         vE5O7JTcwZMgZ0ie20QHVO8rk6Thqnwz+nRUwjL27KgR6M0u3jlJAzsC4oSxj4nn6X
-         9rK+dJ1nPK7t1GUkR+rvTgw8Ze080AdIRQpPZM88=
+        b=d4mlShwBVgLM0a6CeViJdFKLhr9QUq/w2LUsIrnXgqmVGW3pArx76O3M45rVyfPZA
+         OhSheqBtZG14O6Y3VR+ORsHF7NdJeBvsxvU3egm5YQez8/fivOzeqMNdbnmZ7y5Ysv
+         Agz/LLH9Gag5B/UJ3TbCK6Db0KRpwriXbmVgJB7A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeremy Sowden <jeremy@azazel.net>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Alexei Starovoitov <ast@kernel.org>,
+        patches@lists.linux.dev, Shay Drory <shayd@nvidia.com>,
+        Mark Bloch <mbloch@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 06/45] selftests/bpf: Fix pkg-config call building sign-file
-Date:   Thu,  1 Jun 2023 14:21:02 +0100
-Message-Id: <20230601131938.994669081@linuxfoundation.org>
+Subject: [PATCH 5.4 08/16] net/mlx5: Devcom, serialize devcom registration
+Date:   Thu,  1 Jun 2023 14:21:03 +0100
+Message-Id: <20230601131932.337498337@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
-References: <20230601131938.702671708@linuxfoundation.org>
+In-Reply-To: <20230601131931.947241286@linuxfoundation.org>
+References: <20230601131931.947241286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,49 +55,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jeremy Sowden <jeremy@azazel.net>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit 5f5486b620cd43b16a1787ef92b9bc21bd72ef2e ]
+[ Upstream commit 1f893f57a3bf9fe1f4bcb25b55aea7f7f9712fe7 ]
 
-When building sign-file, the call to get the CFLAGS for libcrypto is
-missing white-space between `pkg-config` and `--cflags`:
+>From one hand, mlx5 driver is allowing to probe PFs in parallel.
+>From the other hand, devcom, which is a share resource between PFs, is
+registered without any lock. This might resulted in memory problems.
 
-  $(shell $(HOSTPKG_CONFIG)--cflags libcrypto 2> /dev/null)
+Hence, use the global mlx5_dev_list_lock in order to serialize devcom
+registration.
 
-Removing the redirection of stderr, we see:
-
-  $ make -C tools/testing/selftests/bpf sign-file
-  make: Entering directory '[...]/tools/testing/selftests/bpf'
-  make: pkg-config--cflags: No such file or directory
-    SIGN-FILE sign-file
-  make: Leaving directory '[...]/tools/testing/selftests/bpf'
-
-Add the missing space.
-
-Fixes: fc97590668ae ("selftests/bpf: Add test for bpf_verify_pkcs7_signature() kfunc")
-Signed-off-by: Jeremy Sowden <jeremy@azazel.net>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
-Link: https://lore.kernel.org/bpf/20230426215032.415792-1-jeremy@azazel.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: fadd59fc50d0 ("net/mlx5: Introduce inter-device communication mechanism")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../ethernet/mellanox/mlx5/core/lib/devcom.c  | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/Makefile b/tools/testing/selftests/bpf/Makefile
-index b677dcd0b77af..ad01c9e1ff12b 100644
---- a/tools/testing/selftests/bpf/Makefile
-+++ b/tools/testing/selftests/bpf/Makefile
-@@ -197,7 +197,7 @@ $(OUTPUT)/urandom_read: urandom_read.c urandom_read_aux.c $(OUTPUT)/liburandom_r
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
+index 617eea1b1701b..438be215bbd45 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
+@@ -3,6 +3,7 @@
  
- $(OUTPUT)/sign-file: ../../../../scripts/sign-file.c
- 	$(call msg,SIGN-FILE,,$@)
--	$(Q)$(CC) $(shell $(HOSTPKG_CONFIG)--cflags libcrypto 2> /dev/null) \
-+	$(Q)$(CC) $(shell $(HOSTPKG_CONFIG) --cflags libcrypto 2> /dev/null) \
- 		  $< -o $@ \
- 		  $(shell $(HOSTPKG_CONFIG) --libs libcrypto 2> /dev/null || echo -lcrypto)
+ #include <linux/mlx5/vport.h>
+ #include "lib/devcom.h"
++#include "mlx5_core.h"
  
+ static LIST_HEAD(devcom_list);
+ 
+@@ -77,6 +78,7 @@ struct mlx5_devcom *mlx5_devcom_register_device(struct mlx5_core_dev *dev)
+ 	if (MLX5_CAP_GEN(dev, num_lag_ports) != MLX5_DEVCOM_PORTS_SUPPORTED)
+ 		return NULL;
+ 
++	mlx5_dev_list_lock();
+ 	sguid0 = mlx5_query_nic_system_image_guid(dev);
+ 	list_for_each_entry(iter, &devcom_list, list) {
+ 		struct mlx5_core_dev *tmp_dev = NULL;
+@@ -102,8 +104,10 @@ struct mlx5_devcom *mlx5_devcom_register_device(struct mlx5_core_dev *dev)
+ 
+ 	if (!priv) {
+ 		priv = mlx5_devcom_list_alloc();
+-		if (!priv)
+-			return ERR_PTR(-ENOMEM);
++		if (!priv) {
++			devcom = ERR_PTR(-ENOMEM);
++			goto out;
++		}
+ 
+ 		idx = 0;
+ 		new_priv = true;
+@@ -114,12 +118,14 @@ struct mlx5_devcom *mlx5_devcom_register_device(struct mlx5_core_dev *dev)
+ 	if (!devcom) {
+ 		if (new_priv)
+ 			kfree(priv);
+-		return ERR_PTR(-ENOMEM);
++		devcom = ERR_PTR(-ENOMEM);
++		goto out;
+ 	}
+ 
+ 	if (new_priv)
+ 		list_add(&priv->list, &devcom_list);
+-
++out:
++	mlx5_dev_list_unlock();
+ 	return devcom;
+ }
+ 
+@@ -132,6 +138,7 @@ void mlx5_devcom_unregister_device(struct mlx5_devcom *devcom)
+ 	if (IS_ERR_OR_NULL(devcom))
+ 		return;
+ 
++	mlx5_dev_list_lock();
+ 	priv = devcom->priv;
+ 	priv->devs[devcom->idx] = NULL;
+ 
+@@ -142,10 +149,12 @@ void mlx5_devcom_unregister_device(struct mlx5_devcom *devcom)
+ 			break;
+ 
+ 	if (i != MLX5_DEVCOM_PORTS_SUPPORTED)
+-		return;
++		goto out;
+ 
+ 	list_del(&priv->list);
+ 	kfree(priv);
++out:
++	mlx5_dev_list_unlock();
+ }
+ 
+ void mlx5_devcom_register_component(struct mlx5_devcom *devcom,
 -- 
 2.39.2
 
