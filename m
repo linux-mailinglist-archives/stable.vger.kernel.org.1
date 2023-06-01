@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FFDF719D6B
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:23:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7E92719D60
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:22:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233568AbjFANWy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:22:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59646 "EHLO
+        id S232558AbjFANWh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:22:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233567AbjFANWx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:22:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9943AE7
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:22:51 -0700 (PDT)
+        with ESMTP id S233236AbjFANWh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:22:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A86188
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:22:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C02364456
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:22:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F34C433EF;
-        Thu,  1 Jun 2023 13:22:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A0D664442
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:22:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D43C433EF;
+        Thu,  1 Jun 2023 13:22:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625770;
-        bh=D4MTCTpjvm7IxHqwydvDGEjfVeHiLOxANXVHVdYa/fE=;
+        s=korg; t=1685625753;
+        bh=q0rX5MMk6R8OLayC0swB2kjGJUSDgkc/fnA3scppQoo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TOR0WIf15/3/yIkvCo+8VHjIQkpflRU+GKfmSSsN49JSdL0jN+GFkprqqr9KyBECT
-         WQnwOXujzjrj12lDRnazYdKp20L8DNVf+XYDLorvjLmyQ1B59XPHHFEqZJjpUSO2Jj
-         OCkZj+O6uSNSmedhU4SSYbz4HIJx0988z/L/MIvs=
+        b=s4I6ONZaR5ko2S2yRXDGnCvtep4p9C/GRia384rQoqkuhqBb6Aqbo1idfK5VI1mve
+         EmdQBWlSNyNg0XW43DWbFRS7t2XhG6yCezlrjNWC+ologTpJ0F3AK68Wu4gsiJVyW8
+         b3tbWlMp6Q+kLQCTPRdDubFr/EhWfSqy8N8NYHYQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tony Luck <tony.luck@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
+        patches@lists.linux.dev,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 01/22] x86/cpu: Add Raptor Lake to Intel family
+Subject: [PATCH 5.4 04/16] power: supply: core: Refactor power_supply_set_input_current_limit_from_supplier()
 Date:   Thu,  1 Jun 2023 14:20:59 +0100
-Message-Id: <20230601131933.793055249@linuxfoundation.org>
+Message-Id: <20230601131932.152959123@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131933.727832920@linuxfoundation.org>
-References: <20230601131933.727832920@linuxfoundation.org>
+In-Reply-To: <20230601131931.947241286@linuxfoundation.org>
+References: <20230601131931.947241286@linuxfoundation.org>
 User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,37 +56,168 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tony Luck <tony.luck@intel.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit fbdb5e8f2926ae9636c9fa6f42c7426132ddeeb2 ]
+[ Upstream commit 2220af8ca61ae67de4ec3deec1c6395a2f65b9fd ]
 
-Add model ID for Raptor Lake.
+Some (USB) charger ICs have variants with USB D+ and D- pins to do their
+own builtin charger-type detection, like e.g. the bq24190 and bq25890 and
+also variants which lack this functionality, e.g. the bq24192 and bq25892.
 
-[ dhansen: These get added as soon as possible so that folks doing
-  development can leverage them. ]
+In case the charger-type; and thus the input-current-limit detection is
+done outside the charger IC then we need some way to communicate this to
+the charger IC. In the past extcon was used for this, but if the external
+detection does e.g. full USB PD negotiation then the extcon cable-types do
+not convey enough information.
 
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lkml.kernel.org/r/20211112182835.924977-1-tony.luck@intel.com
-Stable-dep-of: ce0b15d11ad8 ("x86/mm: Avoid incomplete Global INVLPG flushes")
+For these setups it was decided to model the external charging "brick"
+and the parameters negotiated with it as a power_supply class-device
+itself; and power_supply_set_input_current_limit_from_supplier() was
+introduced to allow drivers to get the input-current-limit this way.
+
+But in some cases psy drivers may want to know other properties, e.g. the
+bq25892 can do "quick-charge" negotiation by pulsing its current draw,
+but this should only be done if the usb_type psy-property of its supplier
+is set to DCP (and device-properties indicate the board allows higher
+voltages).
+
+Instead of adding extra helper functions for each property which
+a psy-driver wants to query from its supplier, refactor
+power_supply_set_input_current_limit_from_supplier() into a
+more generic power_supply_get_property_from_supplier() function.
+
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Stable-dep-of: 77c2a3097d70 ("power: supply: bq24190: Call power_supply_changed() after updating input current")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/intel-family.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/power/supply/bq24190_charger.c   | 12 ++++-
+ drivers/power/supply/power_supply_core.c | 57 +++++++++++++-----------
+ include/linux/power_supply.h             |  5 ++-
+ 3 files changed, 44 insertions(+), 30 deletions(-)
 
-diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
-index 14b52718917f6..7a602d79bc38d 100644
---- a/arch/x86/include/asm/intel-family.h
-+++ b/arch/x86/include/asm/intel-family.h
-@@ -104,6 +104,8 @@
- #define INTEL_FAM6_RAPTORLAKE_P		0xBA
- #define INTEL_FAM6_RAPTORLAKE_S		0xBF
- 
-+#define INTEL_FAM6_RAPTOR_LAKE		0xB7
+diff --git a/drivers/power/supply/bq24190_charger.c b/drivers/power/supply/bq24190_charger.c
+index 64d87dccea82c..da0d047d4c8fe 100644
+--- a/drivers/power/supply/bq24190_charger.c
++++ b/drivers/power/supply/bq24190_charger.c
+@@ -1211,8 +1211,18 @@ static void bq24190_input_current_limit_work(struct work_struct *work)
+ 	struct bq24190_dev_info *bdi =
+ 		container_of(work, struct bq24190_dev_info,
+ 			     input_current_limit_work.work);
++	union power_supply_propval val;
++	int ret;
 +
- /* "Small Core" Processors (Atom) */
++	ret = power_supply_get_property_from_supplier(bdi->charger,
++						      POWER_SUPPLY_PROP_CURRENT_MAX,
++						      &val);
++	if (ret)
++		return;
  
- #define INTEL_FAM6_ATOM_BONNELL		0x1C /* Diamondville, Pineview */
+-	power_supply_set_input_current_limit_from_supplier(bdi->charger);
++	bq24190_charger_set_property(bdi->charger,
++				     POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
++				     &val);
+ }
+ 
+ /* Sync the input-current-limit with our parent supply (if we have one) */
+diff --git a/drivers/power/supply/power_supply_core.c b/drivers/power/supply/power_supply_core.c
+index fd24254d90142..3fdc988595b3a 100644
+--- a/drivers/power/supply/power_supply_core.c
++++ b/drivers/power/supply/power_supply_core.c
+@@ -375,46 +375,49 @@ int power_supply_is_system_supplied(void)
+ }
+ EXPORT_SYMBOL_GPL(power_supply_is_system_supplied);
+ 
+-static int __power_supply_get_supplier_max_current(struct device *dev,
+-						   void *data)
++struct psy_get_supplier_prop_data {
++	struct power_supply *psy;
++	enum power_supply_property psp;
++	union power_supply_propval *val;
++};
++
++static int __power_supply_get_supplier_property(struct device *dev, void *_data)
+ {
+-	union power_supply_propval ret = {0,};
+ 	struct power_supply *epsy = dev_get_drvdata(dev);
+-	struct power_supply *psy = data;
++	struct psy_get_supplier_prop_data *data = _data;
+ 
+-	if (__power_supply_is_supplied_by(epsy, psy))
+-		if (!epsy->desc->get_property(epsy,
+-					      POWER_SUPPLY_PROP_CURRENT_MAX,
+-					      &ret))
+-			return ret.intval;
++	if (__power_supply_is_supplied_by(epsy, data->psy))
++		if (!epsy->desc->get_property(epsy, data->psp, data->val))
++			return 1; /* Success */
+ 
+-	return 0;
++	return 0; /* Continue iterating */
+ }
+ 
+-int power_supply_set_input_current_limit_from_supplier(struct power_supply *psy)
++int power_supply_get_property_from_supplier(struct power_supply *psy,
++					    enum power_supply_property psp,
++					    union power_supply_propval *val)
+ {
+-	union power_supply_propval val = {0,};
+-	int curr;
+-
+-	if (!psy->desc->set_property)
+-		return -EINVAL;
++	struct psy_get_supplier_prop_data data = {
++		.psy = psy,
++		.psp = psp,
++		.val = val,
++	};
++	int ret;
+ 
+ 	/*
+ 	 * This function is not intended for use with a supply with multiple
+-	 * suppliers, we simply pick the first supply to report a non 0
+-	 * max-current.
++	 * suppliers, we simply pick the first supply to report the psp.
+ 	 */
+-	curr = class_for_each_device(power_supply_class, NULL, psy,
+-				      __power_supply_get_supplier_max_current);
+-	if (curr <= 0)
+-		return (curr == 0) ? -ENODEV : curr;
+-
+-	val.intval = curr;
++	ret = class_for_each_device(power_supply_class, NULL, &data,
++				    __power_supply_get_supplier_property);
++	if (ret < 0)
++		return ret;
++	if (ret == 0)
++		return -ENODEV;
+ 
+-	return psy->desc->set_property(psy,
+-				POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT, &val);
++	return 0;
+ }
+-EXPORT_SYMBOL_GPL(power_supply_set_input_current_limit_from_supplier);
++EXPORT_SYMBOL_GPL(power_supply_get_property_from_supplier);
+ 
+ int power_supply_set_battery_charged(struct power_supply *psy)
+ {
+diff --git a/include/linux/power_supply.h b/include/linux/power_supply.h
+index 28413f737e7d0..f4aad9554de2e 100644
+--- a/include/linux/power_supply.h
++++ b/include/linux/power_supply.h
+@@ -383,8 +383,9 @@ extern int power_supply_batinfo_ocv2cap(struct power_supply_battery_info *info,
+ 					int ocv, int temp);
+ extern void power_supply_changed(struct power_supply *psy);
+ extern int power_supply_am_i_supplied(struct power_supply *psy);
+-extern int power_supply_set_input_current_limit_from_supplier(
+-					 struct power_supply *psy);
++int power_supply_get_property_from_supplier(struct power_supply *psy,
++					    enum power_supply_property psp,
++					    union power_supply_propval *val);
+ extern int power_supply_set_battery_charged(struct power_supply *psy);
+ 
+ #ifdef CONFIG_POWER_SUPPLY
 -- 
 2.39.2
 
