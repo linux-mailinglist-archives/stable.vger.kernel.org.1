@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA4B3719E12
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:29:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F7A8719E17
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:29:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234062AbjFAN3F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:29:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36708 "EHLO
+        id S233992AbjFAN3H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:29:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233873AbjFAN2k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:28:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A042124
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:28:20 -0700 (PDT)
+        with ESMTP id S233887AbjFAN2q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:28:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F40E1E57
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:28:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EFC06644D3
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:28:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AAC0C433EF;
-        Thu,  1 Jun 2023 13:28:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C7C35644E0
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:28:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5831C433EF;
+        Thu,  1 Jun 2023 13:28:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685626098;
-        bh=359lv94pmb18SsYPMqNMczWp4yRjNEf8ZrhqBQWceck=;
+        s=korg; t=1685626103;
+        bh=uJ8L7AO4wzVHur2033HwHSDDb6sceRbhHHm6R832R2c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Rbb62urZgYM8STwFcZZRZ1KrlNlk81l1M+fnywJyzvvv4kliNvR4k+W82uIXjNfYE
-         mq04l+6i+2DxBooDjSg4vWwGDcfCMR9lFZb+VuorZytLXI8yUO8MFfAmtcoZmXMHow
-         uG224dr1LkWDiCtdNYuYZkasGMfW/LkehRlb+QTc=
+        b=O5dhTmtHhhyMF7sCtN4B+eh6h9aKf0uSKqnGRnM/XoQ/z9s/icFCAorLTrFHFSD2j
+         a2avTrZEkK4Is5h+dnNBv6HXmChKP4Ir7YjEUN8yTh8Hj4dec0GWrEbQ+P6nEEJ/iW
+         kQZ1r37XuRsQ6CTmMeTur0v3BGE8/BMrkyIBgZ+M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        syzbot+cfcc1a3c85be15a40cba@syzkaller.appspotmail.com,
-        Zhu Yanjun <yanjun.zhu@linux.dev>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 30/42] RDMA/rxe: Fix the error "trying to register non-static key in rxe_cleanup_task"
-Date:   Thu,  1 Jun 2023 14:21:39 +0100
-Message-Id: <20230601131940.387734306@linuxfoundation.org>
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 31/42] dmaengine: at_xdmac: disable/enable clock directly on suspend/resume
+Date:   Thu,  1 Jun 2023 14:21:40 +0100
+Message-Id: <20230601131940.438303233@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230601131939.051934720@linuxfoundation.org>
 References: <20230601131939.051934720@linuxfoundation.org>
@@ -46,8 +44,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,50 +54,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-[ Upstream commit b2b1ddc457458fecd1c6f385baa9fbda5f0c63ad ]
+[ Upstream commit 2de5ddb5e68c94b781b3789bca1ce52000d7d0e0 ]
 
-In the function rxe_create_qp(), rxe_qp_from_init() is called to
-initialize qp, internally things like rxe_init_task are not setup until
-rxe_qp_init_req().
+Runtime PM APIs for at_xdmac just plays with clk_enable()/clk_disable()
+letting aside the clk_prepare()/clk_unprepare() that needs to be
+executed as the clock is also prepared on probe. Thus instead of using
+runtime PM force suspend/resume APIs use
+clk_disable_unprepare() + pm_runtime_put_noidle() on suspend and
+clk_prepare_enable() + pm_runtime_get_noresume() on resume. This
+approach as been chosen instead of using runtime PM force suspend/resume
+with clk_unprepare()/clk_prepare() as it looks simpler and the final
+code is better.
 
-If an error occurred before this point then the unwind will call
-rxe_cleanup() and eventually to rxe_qp_do_cleanup()/rxe_cleanup_task()
-which will oops when trying to access the uninitialized spinlock.
+While at it added the missing pm_runtime_mark_last_busy() on suspend before
+decrementing the reference counter.
 
-If rxe_init_task is not executed, rxe_cleanup_task will not be called.
-
-Reported-by: syzbot+cfcc1a3c85be15a40cba@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?id=fd85757b74b3eb59f904138486f755f71e090df8
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Fixes: 2d4b21e0a291 ("IB/rxe: Prevent from completer to operate on non valid QP")
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Link: https://lore.kernel.org/r/20230413101115.1366068-1-yanjun.zhu@intel.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 650b0e990cbd ("dmaengine: at_xdmac: add runtime pm support")
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Link: https://lore.kernel.org/r/20230214151827.1050280-2-claudiu.beznea@microchip.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: 44fe8440bda5 ("dmaengine: at_xdmac: do not resume channels paused by consumers")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_qp.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/dma/at_xdmac.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
-index e459fb542b83a..1f6e006c51c4a 100644
---- a/drivers/infiniband/sw/rxe/rxe_qp.c
-+++ b/drivers/infiniband/sw/rxe/rxe_qp.c
-@@ -792,8 +792,11 @@ static void rxe_qp_do_cleanup(struct work_struct *work)
- 		del_timer_sync(&qp->rnr_nak_timer);
- 	}
+diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
+index bfc8ae2143957..7f7557e4c31d7 100644
+--- a/drivers/dma/at_xdmac.c
++++ b/drivers/dma/at_xdmac.c
+@@ -1993,6 +1993,7 @@ static int __maybe_unused atmel_xdmac_suspend(struct device *dev)
  
--	rxe_cleanup_task(&qp->req.task);
--	rxe_cleanup_task(&qp->comp.task);
-+	if (qp->req.task.func)
-+		rxe_cleanup_task(&qp->req.task);
+ 	at_xdmac_off(atxdmac);
+ 	clk_disable_unprepare(atxdmac->clk);
 +
-+	if (qp->comp.task.func)
-+		rxe_cleanup_task(&qp->comp.task);
+ 	return 0;
+ }
  
- 	/* flush out any receive wr's or pending requests */
- 	if (qp->req.task.func)
+@@ -2009,6 +2010,8 @@ static int __maybe_unused atmel_xdmac_resume(struct device *dev)
+ 	if (ret)
+ 		return ret;
+ 
++	pm_runtime_get_noresume(atxdmac->dev);
++
+ 	at_xdmac_axi_config(pdev);
+ 
+ 	/* Clear pending interrupts. */
 -- 
 2.39.2
 
