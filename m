@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 470C5719DDA
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:27:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38049719E00
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:28:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233811AbjFAN1H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:27:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35608 "EHLO
+        id S233840AbjFAN21 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:28:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233814AbjFAN04 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:26:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A243FE49
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:26:35 -0700 (PDT)
+        with ESMTP id S233910AbjFAN2R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:28:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F02291B1
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:27:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 80F9B644C1
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:26:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B4EFC433D2;
-        Thu,  1 Jun 2023 13:26:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CF719644DD
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:27:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E990CC433EF;
+        Thu,  1 Jun 2023 13:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625994;
-        bh=m0T6xrzFocfdT22P6mJhxRtBYH05CZ6TETTJvxe7+bs=;
+        s=korg; t=1685626078;
+        bh=aqVK/aFHene3fMXpiV9PVreukKsTMhLtTjmZeC3NWww=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gE208K/W2xsOEIckAVsxhfwgQJLlc2/1vfNo7n0siYEYpc2+/PzZMalPKc0ic1Gc2
-         H55P4Xp6yaWVf0djQbJ2ayQ8j32M1p/Bl3RWKK7yrfenQ4UVS22okTygs3ZH7CgyX7
-         sgMfCrhtFLRDtNgy5qOUdW+kQdS4MAdgUTcX0D+4=
+        b=KuBkTmw4SAU7X77C0xQK7rjdUztwncOgE22Z7dpMiotAwAVkl7PPiPABiUQyw+Rbw
+         NpiQ/y/uMGhQV0wzRdzx8D9ddga4GyU6ekHorLnfPvzDNQ8tSGsEXs+bIpN4uh7QQf
+         uaA7M2hzHsqLwwm+tivxrFoCHIfbKU4yAgTpja40=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John Fastabend <john.fastabend@gmail.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jakub Sitnicki <jakub@cloudflare.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 34/45] bpf, sockmap: TCP data stall on recv before accept
-Date:   Thu,  1 Jun 2023 14:21:30 +0100
-Message-Id: <20230601131940.215812256@linuxfoundation.org>
+        patches@lists.linux.dev, Tian Lan <tian.lan@twosigma.com>,
+        Ming Lei <ming.lei@redhat.com>,
+        Damien Le Moal <dlemoal@kernel.org>,
+        John Garry <john.g.garry@oracle.com>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 22/42] blk-mq: fix race condition in active queue accounting
+Date:   Thu,  1 Jun 2023 14:21:31 +0100
+Message-Id: <20230601131940.022103252@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
-References: <20230601131938.702671708@linuxfoundation.org>
+In-Reply-To: <20230601131939.051934720@linuxfoundation.org>
+References: <20230601131939.051934720@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,94 +56,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: John Fastabend <john.fastabend@gmail.com>
+From: Tian Lan <tian.lan@twosigma.com>
 
-[ Upstream commit ea444185a6bf7da4dd0df1598ee953e4f7174858 ]
+[ Upstream commit 3e94d54e83cafd2b562bb6d15bb2f72d76200fb5 ]
 
-A common mechanism to put a TCP socket into the sockmap is to hook the
-BPF_SOCK_OPS_{ACTIVE_PASSIVE}_ESTABLISHED_CB event with a BPF program
-that can map the socket info to the correct BPF verdict parser. When
-the user adds the socket to the map the psock is created and the new
-ops are assigned to ensure the verdict program will 'see' the sk_buffs
-as they arrive.
+If multiple CPUs are sharing the same hardware queue, it can
+cause leak in the active queue counter tracking when __blk_mq_tag_busy()
+is executed simultaneously.
 
-Part of this process hooks the sk_data_ready op with a BPF specific
-handler to wake up the BPF verdict program when data is ready to read.
-The logic is simple enough (posted here for easy reading)
-
- static void sk_psock_verdict_data_ready(struct sock *sk)
- {
-	struct socket *sock = sk->sk_socket;
-
-	if (unlikely(!sock || !sock->ops || !sock->ops->read_skb))
-		return;
-	sock->ops->read_skb(sk, sk_psock_verdict_recv);
- }
-
-The oversight here is sk->sk_socket is not assigned until the application
-accepts() the new socket. However, its entirely ok for the peer application
-to do a connect() followed immediately by sends. The socket on the receiver
-is sitting on the backlog queue of the listening socket until its accepted
-and the data is queued up. If the peer never accepts the socket or is slow
-it will eventually hit data limits and rate limit the session. But,
-important for BPF sockmap hooks when this data is received TCP stack does
-the sk_data_ready() call but the read_skb() for this data is never called
-because sk_socket is missing. The data sits on the sk_receive_queue.
-
-Then once the socket is accepted if we never receive more data from the
-peer there will be no further sk_data_ready calls and all the data
-is still on the sk_receive_queue(). Then user calls recvmsg after accept()
-and for TCP sockets in sockmap we use the tcp_bpf_recvmsg_parser() handler.
-The handler checks for data in the sk_msg ingress queue expecting that
-the BPF program has already run from the sk_data_ready hook and enqueued
-the data as needed. So we are stuck.
-
-To fix do an unlikely check in recvmsg handler for data on the
-sk_receive_queue and if it exists wake up data_ready. We have the sock
-locked in both read_skb and recvmsg so should avoid having multiple
-runners.
-
-Fixes: 04919bed948dc ("tcp: Introduce tcp_read_skb()")
-Signed-off-by: John Fastabend <john.fastabend@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Link: https://lore.kernel.org/bpf/20230523025618.113937-7-john.fastabend@gmail.com
+Fixes: ee78ec1077d3 ("blk-mq: blk_mq_tag_busy is no need to return a value")
+Signed-off-by: Tian Lan <tian.lan@twosigma.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Link: https://lore.kernel.org/r/20230522210555.794134-1-tilan7663@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_bpf.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ block/blk-mq-tag.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-index 73c13642d47f6..01dd76be1a584 100644
---- a/net/ipv4/tcp_bpf.c
-+++ b/net/ipv4/tcp_bpf.c
-@@ -212,6 +212,26 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
- 		return tcp_recvmsg(sk, msg, len, flags, addr_len);
+diff --git a/block/blk-mq-tag.c b/block/blk-mq-tag.c
+index 9eb968e14d31f..a80d7c62bdfe6 100644
+--- a/block/blk-mq-tag.c
++++ b/block/blk-mq-tag.c
+@@ -41,16 +41,20 @@ void __blk_mq_tag_busy(struct blk_mq_hw_ctx *hctx)
+ {
+ 	unsigned int users;
  
- 	lock_sock(sk);
-+
-+	/* We may have received data on the sk_receive_queue pre-accept and
-+	 * then we can not use read_skb in this context because we haven't
-+	 * assigned a sk_socket yet so have no link to the ops. The work-around
-+	 * is to check the sk_receive_queue and in these cases read skbs off
-+	 * queue again. The read_skb hook is not running at this point because
-+	 * of lock_sock so we avoid having multiple runners in read_skb.
++	/*
++	 * calling test_bit() prior to test_and_set_bit() is intentional,
++	 * it avoids dirtying the cacheline if the queue is already active.
 +	 */
-+	if (unlikely(!skb_queue_empty(&sk->sk_receive_queue))) {
-+		tcp_data_ready(sk);
-+		/* This handles the ENOMEM errors if we both receive data
-+		 * pre accept and are already under memory pressure. At least
-+		 * let user know to retry.
-+		 */
-+		if (unlikely(!skb_queue_empty(&sk->sk_receive_queue))) {
-+			copied = -EAGAIN;
-+			goto out;
-+		}
-+	}
-+
- msg_bytes_ready:
- 	copied = sk_msg_recvmsg(sk, psock, msg, len, flags);
- 	/* The typical case for EFAULT is the socket was gracefully
+ 	if (blk_mq_is_shared_tags(hctx->flags)) {
+ 		struct request_queue *q = hctx->queue;
+ 
+-		if (test_bit(QUEUE_FLAG_HCTX_ACTIVE, &q->queue_flags))
++		if (test_bit(QUEUE_FLAG_HCTX_ACTIVE, &q->queue_flags) ||
++		    test_and_set_bit(QUEUE_FLAG_HCTX_ACTIVE, &q->queue_flags))
+ 			return;
+-		set_bit(QUEUE_FLAG_HCTX_ACTIVE, &q->queue_flags);
+ 	} else {
+-		if (test_bit(BLK_MQ_S_TAG_ACTIVE, &hctx->state))
++		if (test_bit(BLK_MQ_S_TAG_ACTIVE, &hctx->state) ||
++		    test_and_set_bit(BLK_MQ_S_TAG_ACTIVE, &hctx->state))
+ 			return;
+-		set_bit(BLK_MQ_S_TAG_ACTIVE, &hctx->state);
+ 	}
+ 
+ 	users = atomic_inc_return(&hctx->tags->active_queues);
 -- 
 2.39.2
 
