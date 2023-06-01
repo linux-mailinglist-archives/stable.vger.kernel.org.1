@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88060719DA3
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:25:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07280719D76
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:23:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233693AbjFANZU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:25:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33000 "EHLO
+        id S233567AbjFANXR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:23:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233747AbjFANY5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:24:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B22C11B3
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:24:35 -0700 (PDT)
+        with ESMTP id S233351AbjFANXO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:23:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 827E9191
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:23:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 920786446B
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:24:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD316C433EF;
-        Thu,  1 Jun 2023 13:24:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B66B61AF5
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:23:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35997C433EF;
+        Thu,  1 Jun 2023 13:23:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625875;
-        bh=BhWiK7EPq2okNiz29dPWI15pHGrSenDuRHN4yJe8cDc=;
+        s=korg; t=1685625788;
+        bh=9ncxuGZ7Ir1eotIA07rbA7WU38lufl/G11GctjpIRYc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p+YlL6f5Br/D2M2yAWUve9jP4QJ8JD1AVZM2CLw4BqL2nq5NjK3Kzm6hvpmX99br2
-         30ed7Fehf6UY58mK8PhXaWh5DIpMqzDlXEttygzgKLwGd93Qf8APEB1BJ9Dmitno2U
-         UnM9JarP9wDlthiy8hbykN6wdUT5dEzPqLKShMZE=
+        b=tVj7/t23rAg7BkqwLmMr+f+1Pkr6Uuaoi2oCerFtcvUgxHsHxZfIY8MQbt+YSYltr
+         LLVUGZAFuZYTWkcZLjZrtfpxk5bCdiIhF2rg4WSWGcN6L6Dtss8ky9N7PKdOeObGxK
+         WPtfjvjXPclASnJxa9P/+XJxPPasOLLMqDd6UwnM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zi Fan Tan <zifantan@google.com>,
-        Carlos Llamas <cmllamas@google.com>,
-        Todd Kjos <tkjos@google.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 27/42] binder: fix UAF caused by faulty buffer cleanup
+        patches@lists.linux.dev, Mark Bloch <mbloch@nvidia.com>,
+        Maor Gottlieb <maorg@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 16/22] net/mlx5: devcom only supports 2 ports
 Date:   Thu,  1 Jun 2023 14:21:14 +0100
-Message-Id: <20230601131937.929315190@linuxfoundation.org>
+Message-Id: <20230601131934.502939883@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131936.699199833@linuxfoundation.org>
-References: <20230601131936.699199833@linuxfoundation.org>
+In-Reply-To: <20230601131933.727832920@linuxfoundation.org>
+References: <20230601131933.727832920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,152 +55,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Mark Bloch <mbloch@nvidia.com>
 
-[ Upstream commit bdc1c5fac982845a58d28690cdb56db8c88a530d ]
+[ Upstream commit 8a6e75e5f57e9ac82268d9bfca3403598d9d0292 ]
 
-In binder_transaction_buffer_release() the 'failed_at' offset indicates
-the number of objects to clean up. However, this function was changed by
-commit 44d8047f1d87 ("binder: use standard functions to allocate fds"),
-to release all the objects in the buffer when 'failed_at' is zero.
+Devcom API is intended to be used between 2 devices only add this
+implied assumption into the code and check when it's no true.
 
-This introduced an issue when a transaction buffer is released without
-any objects having been processed so far. In this case, 'failed_at' is
-indeed zero yet it is misinterpreted as releasing the entire buffer.
-
-This leads to use-after-free errors where nodes are incorrectly freed
-and subsequently accessed. Such is the case in the following KASAN
-report:
-
-  ==================================================================
-  BUG: KASAN: slab-use-after-free in binder_thread_read+0xc40/0x1f30
-  Read of size 8 at addr ffff4faf037cfc58 by task poc/474
-
-  CPU: 6 PID: 474 Comm: poc Not tainted 6.3.0-12570-g7df047b3f0aa #5
-  Hardware name: linux,dummy-virt (DT)
-  Call trace:
-   dump_backtrace+0x94/0xec
-   show_stack+0x18/0x24
-   dump_stack_lvl+0x48/0x60
-   print_report+0xf8/0x5b8
-   kasan_report+0xb8/0xfc
-   __asan_load8+0x9c/0xb8
-   binder_thread_read+0xc40/0x1f30
-   binder_ioctl+0xd9c/0x1768
-   __arm64_sys_ioctl+0xd4/0x118
-   invoke_syscall+0x60/0x188
-  [...]
-
-  Allocated by task 474:
-   kasan_save_stack+0x3c/0x64
-   kasan_set_track+0x2c/0x40
-   kasan_save_alloc_info+0x24/0x34
-   __kasan_kmalloc+0xb8/0xbc
-   kmalloc_trace+0x48/0x5c
-   binder_new_node+0x3c/0x3a4
-   binder_transaction+0x2b58/0x36f0
-   binder_thread_write+0x8e0/0x1b78
-   binder_ioctl+0x14a0/0x1768
-   __arm64_sys_ioctl+0xd4/0x118
-   invoke_syscall+0x60/0x188
-  [...]
-
-  Freed by task 475:
-   kasan_save_stack+0x3c/0x64
-   kasan_set_track+0x2c/0x40
-   kasan_save_free_info+0x38/0x5c
-   __kasan_slab_free+0xe8/0x154
-   __kmem_cache_free+0x128/0x2bc
-   kfree+0x58/0x70
-   binder_dec_node_tmpref+0x178/0x1fc
-   binder_transaction_buffer_release+0x430/0x628
-   binder_transaction+0x1954/0x36f0
-   binder_thread_write+0x8e0/0x1b78
-   binder_ioctl+0x14a0/0x1768
-   __arm64_sys_ioctl+0xd4/0x118
-   invoke_syscall+0x60/0x188
-  [...]
-  ==================================================================
-
-In order to avoid these issues, let's always calculate the intended
-'failed_at' offset beforehand. This is renamed and wrapped in a helper
-function to make it clear and convenient.
-
-Fixes: 32e9f56a96d8 ("binder: don't detect sender/target during buffer cleanup")
-Reported-by: Zi Fan Tan <zifantan@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Acked-by: Todd Kjos <tkjos@google.com>
-Link: https://lore.kernel.org/r/20230505203020.4101154-1-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Stable-dep-of: 1f893f57a3bf ("net/mlx5: Devcom, serialize devcom registration")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder.c | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/lib/devcom.c | 16 +++++++++-------
+ .../net/ethernet/mellanox/mlx5/core/lib/devcom.h |  2 ++
+ 2 files changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-index c8d33c5dbe295..a4749b6c3d730 100644
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -1903,24 +1903,23 @@ static void binder_deferred_fd_close(int fd)
- static void binder_transaction_buffer_release(struct binder_proc *proc,
- 					      struct binder_thread *thread,
- 					      struct binder_buffer *buffer,
--					      binder_size_t failed_at,
-+					      binder_size_t off_end_offset,
- 					      bool is_failure)
- {
- 	int debug_id = buffer->debug_id;
--	binder_size_t off_start_offset, buffer_offset, off_end_offset;
-+	binder_size_t off_start_offset, buffer_offset;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
+index abd066e952286..617eea1b1701b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
+@@ -14,7 +14,7 @@ static LIST_HEAD(devcom_list);
+ struct mlx5_devcom_component {
+ 	struct {
+ 		void *data;
+-	} device[MLX5_MAX_PORTS];
++	} device[MLX5_DEVCOM_PORTS_SUPPORTED];
  
- 	binder_debug(BINDER_DEBUG_TRANSACTION,
- 		     "%d buffer release %d, size %zd-%zd, failed at %llx\n",
- 		     proc->pid, buffer->debug_id,
- 		     buffer->data_size, buffer->offsets_size,
--		     (unsigned long long)failed_at);
-+		     (unsigned long long)off_end_offset);
+ 	mlx5_devcom_event_handler_t handler;
+ 	struct rw_semaphore sem;
+@@ -25,7 +25,7 @@ struct mlx5_devcom_list {
+ 	struct list_head list;
  
- 	if (buffer->target_node)
- 		binder_dec_node(buffer->target_node, 1, 0);
+ 	struct mlx5_devcom_component components[MLX5_DEVCOM_NUM_COMPONENTS];
+-	struct mlx5_core_dev *devs[MLX5_MAX_PORTS];
++	struct mlx5_core_dev *devs[MLX5_DEVCOM_PORTS_SUPPORTED];
+ };
  
- 	off_start_offset = ALIGN(buffer->data_size, sizeof(void *));
--	off_end_offset = is_failure && failed_at ? failed_at :
--				off_start_offset + buffer->offsets_size;
-+
- 	for (buffer_offset = off_start_offset; buffer_offset < off_end_offset;
- 	     buffer_offset += sizeof(binder_size_t)) {
- 		struct binder_object_header *hdr;
-@@ -2080,6 +2079,21 @@ static void binder_transaction_buffer_release(struct binder_proc *proc,
+ struct mlx5_devcom {
+@@ -74,13 +74,15 @@ struct mlx5_devcom *mlx5_devcom_register_device(struct mlx5_core_dev *dev)
+ 
+ 	if (!mlx5_core_is_pf(dev))
+ 		return NULL;
++	if (MLX5_CAP_GEN(dev, num_lag_ports) != MLX5_DEVCOM_PORTS_SUPPORTED)
++		return NULL;
+ 
+ 	sguid0 = mlx5_query_nic_system_image_guid(dev);
+ 	list_for_each_entry(iter, &devcom_list, list) {
+ 		struct mlx5_core_dev *tmp_dev = NULL;
+ 
+ 		idx = -1;
+-		for (i = 0; i < MLX5_MAX_PORTS; i++) {
++		for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++) {
+ 			if (iter->devs[i])
+ 				tmp_dev = iter->devs[i];
+ 			else
+@@ -135,11 +137,11 @@ void mlx5_devcom_unregister_device(struct mlx5_devcom *devcom)
+ 
+ 	kfree(devcom);
+ 
+-	for (i = 0; i < MLX5_MAX_PORTS; i++)
++	for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++)
+ 		if (priv->devs[i])
+ 			break;
+ 
+-	if (i != MLX5_MAX_PORTS)
++	if (i != MLX5_DEVCOM_PORTS_SUPPORTED)
+ 		return;
+ 
+ 	list_del(&priv->list);
+@@ -192,7 +194,7 @@ int mlx5_devcom_send_event(struct mlx5_devcom *devcom,
+ 
+ 	comp = &devcom->priv->components[id];
+ 	down_write(&comp->sem);
+-	for (i = 0; i < MLX5_MAX_PORTS; i++)
++	for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++)
+ 		if (i != devcom->idx && comp->device[i].data) {
+ 			err = comp->handler(event, comp->device[i].data,
+ 					    event_data);
+@@ -240,7 +242,7 @@ void *mlx5_devcom_get_peer_data(struct mlx5_devcom *devcom,
+ 		return NULL;
  	}
- }
  
-+/* Clean up all the objects in the buffer */
-+static inline void binder_release_entire_buffer(struct binder_proc *proc,
-+						struct binder_thread *thread,
-+						struct binder_buffer *buffer,
-+						bool is_failure)
-+{
-+	binder_size_t off_end_offset;
+-	for (i = 0; i < MLX5_MAX_PORTS; i++)
++	for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++)
+ 		if (i != devcom->idx)
+ 			break;
+ 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
+index 939d5bf1581b5..94313c18bb647 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
+@@ -6,6 +6,8 @@
+ 
+ #include <linux/mlx5/driver.h>
+ 
++#define MLX5_DEVCOM_PORTS_SUPPORTED 2
 +
-+	off_end_offset = ALIGN(buffer->data_size, sizeof(void *));
-+	off_end_offset += buffer->offsets_size;
-+
-+	binder_transaction_buffer_release(proc, thread, buffer,
-+					  off_end_offset, is_failure);
-+}
-+
- static int binder_translate_binder(struct flat_binder_object *fp,
- 				   struct binder_transaction *t,
- 				   struct binder_thread *thread)
-@@ -3578,7 +3592,7 @@ binder_free_buf(struct binder_proc *proc,
- 		binder_node_inner_unlock(buf_node);
- 	}
- 	trace_binder_transaction_buffer_release(buffer);
--	binder_transaction_buffer_release(proc, thread, buffer, 0, is_failure);
-+	binder_release_entire_buffer(proc, thread, buffer, is_failure);
- 	binder_alloc_free_buf(&proc->alloc, buffer);
- }
+ enum mlx5_devcom_components {
+ 	MLX5_DEVCOM_ESW_OFFLOADS,
  
 -- 
 2.39.2
