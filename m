@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FD92719DBF
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:26:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A367A719D98
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:24:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233781AbjFAN0O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:26:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33992 "EHLO
+        id S233705AbjFANYm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:24:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233789AbjFANZz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:25:55 -0400
+        with ESMTP id S233680AbjFANYf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:24:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B879198
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:25:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F7ECE74
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:24:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B4FE26447B
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:25:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B005CC433D2;
-        Thu,  1 Jun 2023 13:25:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D79C64481
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:24:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36ED2C4339C;
+        Thu,  1 Jun 2023 13:24:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625936;
-        bh=kfCji33tP3engLPwCPTMoQkxImsQ/d3ZtMKTiTCcSrk=;
+        s=korg; t=1685625855;
+        bh=ZSvC1kB0VU9E5dBB6PvCczUyuXalCIGudJdlx9Pzttc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qrspXRjOPx6xlJrdFsLCb89M9cCQYDKvup3BEitNokiw0zzk/lyDhy8T6bqPGTtJI
-         vyCbsRZUoIweYsOzAw7uGmvqWTGqb/y3H/o0AVauvjI8PcYWEUrHGNzdyVHw2e2MDQ
-         ArlvbS2FSIELfxn+a8B3464Ol9aesZiRl07JaUxU=
+        b=JZmDPwyIUyQ0DMkCZoHfwEQr5u8DoaTPb2VEprMWIm04HZ7kLsavgV3r++qjmvjre
+         dYjZlNwJ0KY4MX8kyDvAdJHaBm/R6jdou2NpqLnLDjNWdjhnKMoa1SVQauWV4tfsK1
+         C9ShR3vI4RI36vMgaKPUBhWuTO6GXvuOAVqPkxQk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andreas Kemnade <andreas@kemnade.info>,
-        christophe.leroy@csgroup.eu,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        patches@lists.linux.dev, Jason Gunthorpe <jgg@nvidia.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 10/45] gpiolib: fix allocation of mixed dynamic/static GPIOs
-Date:   Thu,  1 Jun 2023 14:21:06 +0100
-Message-Id: <20230601131939.179196890@linuxfoundation.org>
+Subject: [PATCH 5.15 20/42] KVM: s390: fix race in gmap_make_secure()
+Date:   Thu,  1 Jun 2023 14:21:07 +0100
+Message-Id: <20230601131937.629922352@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
-References: <20230601131938.702671708@linuxfoundation.org>
+In-Reply-To: <20230601131936.699199833@linuxfoundation.org>
+References: <20230601131936.699199833@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,63 +54,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andreas Kemnade <andreas@kemnade.info>
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-[ Upstream commit 7dd3d9bd873f138675cb727eaa51a498d99f0e89 ]
+[ Upstream commit c148dc8e2fa403be501612ee409db866eeed35c0 ]
 
-If static allocation and dynamic allocation GPIOs are present,
-dynamic allocation pollutes the numberspace for static allocation,
-causing static allocation to fail.
-Enforce dynamic allocation above GPIO_DYNAMIC_BASE.
+Fix a potential race in gmap_make_secure() and remove the last user of
+follow_page() without FOLL_GET.
 
-Seen on a GTA04 when omap-gpio (static) and twl-gpio (dynamic)
-raced:
-[some successful registrations of omap_gpio instances]
-[    2.553833] twl4030_gpio twl4030-gpio: gpio (irq 145) chaining IRQs 161..178
-[    2.561401] gpiochip_find_base: found new base at 160
-[    2.564392] gpio gpiochip5: (twl4030): added GPIO chardev (254:5)
-[    2.564544] gpio gpiochip5: registered GPIOs 160 to 177 on twl4030
-[...]
-[    2.692169] omap-gpmc 6e000000.gpmc: GPMC revision 5.0
-[    2.697357] gpmc_mem_init: disabling cs 0 mapped at 0x0-0x1000000
-[    2.703643] gpiochip_find_base: found new base at 178
-[    2.704376] gpio gpiochip6: (omap-gpmc): added GPIO chardev (254:6)
-[    2.704589] gpio gpiochip6: registered GPIOs 178 to 181 on omap-gpmc
-[...]
-[    2.840393] gpio gpiochip7: Static allocation of GPIO base is deprecated, use dynamic allocation.
-[    2.849365] gpio gpiochip7: (gpio-160-191): GPIO integer space overlap, cannot add chip
-[    2.857513] gpiochip_add_data_with_key: GPIOs 160..191 (gpio-160-191) failed to register, -16
-[    2.866149] omap_gpio 48310000.gpio: error -EBUSY: Could not register gpio chip
+The old code is locking something it doesn't have a reference to, and
+as explained by Jason and David in this discussion:
+https://lore.kernel.org/linux-mm/Y9J4P%2FRNvY1Ztn0Q@nvidia.com/
+it can lead to all kind of bad things, including the page getting
+unmapped (MADV_DONTNEED), freed, reallocated as a larger folio and the
+unlock_page() would target the wrong bit.
+There is also another race with the FOLL_WRITE, which could race
+between the follow_page() and the get_locked_pte().
 
-On that device it is fixed invasively by
-commit 92bf78b33b0b4 ("gpio: omap: use dynamic allocation of base")
-but let's also fix that for devices where there is still
-a mixture of static and dynamic allocation.
+The main point is to remove the last use of follow_page() without
+FOLL_GET or FOLL_PIN, removing the races can be considered a nice
+bonus.
 
-Fixes: 7b61212f2a07 ("gpiolib: Get rid of ARCH_NR_GPIOS")
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Reviewed-by: <christophe.leroy@csgroup.eu>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lore.kernel.org/linux-mm/Y9J4P%2FRNvY1Ztn0Q@nvidia.com/
+Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 214d9bbcd3a6 ("s390/mm: provide memory management functions for protected KVM guests")
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Message-Id: <20230428092753.27913-2-imbrenda@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/s390/kernel/uv.c | 32 +++++++++++---------------------
+ 1 file changed, 11 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 19bd23044b017..4472214fcd43a 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -193,6 +193,8 @@ static int gpiochip_find_base(int ngpio)
- 			break;
- 		/* nope, check the space right after the chip */
- 		base = gdev->base + gdev->ngpio;
-+		if (base < GPIO_DYNAMIC_BASE)
-+			base = GPIO_DYNAMIC_BASE;
- 	}
+diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
+index 7d7961c7b1281..66d1248c8c923 100644
+--- a/arch/s390/kernel/uv.c
++++ b/arch/s390/kernel/uv.c
+@@ -160,21 +160,10 @@ static int expected_page_refs(struct page *page)
+ 	return res;
+ }
  
- 	if (gpio_is_valid(base)) {
+-static int make_secure_pte(pte_t *ptep, unsigned long addr,
+-			   struct page *exp_page, struct uv_cb_header *uvcb)
++static int make_page_secure(struct page *page, struct uv_cb_header *uvcb)
+ {
+-	pte_t entry = READ_ONCE(*ptep);
+-	struct page *page;
+ 	int expected, rc = 0;
+ 
+-	if (!pte_present(entry))
+-		return -ENXIO;
+-	if (pte_val(entry) & _PAGE_INVALID)
+-		return -ENXIO;
+-
+-	page = pte_page(entry);
+-	if (page != exp_page)
+-		return -ENXIO;
+ 	if (PageWriteback(page))
+ 		return -EAGAIN;
+ 	expected = expected_page_refs(page);
+@@ -252,17 +241,18 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
+ 		goto out;
+ 
+ 	rc = -ENXIO;
+-	page = follow_page(vma, uaddr, FOLL_WRITE);
+-	if (IS_ERR_OR_NULL(page))
+-		goto out;
+-
+-	lock_page(page);
+ 	ptep = get_locked_pte(gmap->mm, uaddr, &ptelock);
+-	if (should_export_before_import(uvcb, gmap->mm))
+-		uv_convert_from_secure(page_to_phys(page));
+-	rc = make_secure_pte(ptep, uaddr, page, uvcb);
++	if (pte_present(*ptep) && !(pte_val(*ptep) & _PAGE_INVALID) && pte_write(*ptep)) {
++		page = pte_page(*ptep);
++		rc = -EAGAIN;
++		if (trylock_page(page)) {
++			if (should_export_before_import(uvcb, gmap->mm))
++				uv_convert_from_secure(page_to_phys(page));
++			rc = make_page_secure(page, uvcb);
++			unlock_page(page);
++		}
++	}
+ 	pte_unmap_unlock(ptep, ptelock);
+-	unlock_page(page);
+ out:
+ 	mmap_read_unlock(gmap->mm);
+ 
 -- 
 2.39.2
 
