@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C7C1719D5F
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B82BF719DAD
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:25:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232517AbjFANWd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:22:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58986 "EHLO
+        id S233797AbjFANZm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:25:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233485AbjFANWb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:22:31 -0400
+        with ESMTP id S233743AbjFANZg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:25:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EDE218C
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:22:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 661BBE62
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:25:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DCA40611B6
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:22:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A8DC433EF;
-        Thu,  1 Jun 2023 13:22:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E60E96446B
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:24:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB93C433EF;
+        Thu,  1 Jun 2023 13:24:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625748;
-        bh=5FstkzQePsqqw9vODII2qGx9xoeqIV6MtLeGszhJDAA=;
+        s=korg; t=1685625899;
+        bh=+FuEXp2CrXa7JRb6HVnkawtf9eBceJOwfEgaYneRn1c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2OIU/DkgQxnyLByvx347+XgFo4Q2gXCXAF/cN8psgGaawBZPABztanNzy9SF1kTP2
-         8pPBPhQeXaN31N9NtVo48uF3hwT98DI9M8C1fsBh3MyPvHuGCqUry+7YCuz/qjSfPV
-         wnWe09RmPZzyVqNQJQeqlbzU4vDelbJzhDYF94kU=
+        b=eRO1KxvZrJ8Y2eSZCuSGS+elBTkRLBlr6+xbKPp6DrV4qwjWlznm/nMnP4id6LzL9
+         crulpwlaYoPh9pk0dqR/BOdyJ5ZUUu0IL1+5HrbKCSKFzpHZQNgW6aB1RzsiIu7yFH
+         Bf8FUmwk+639ZBTWzAkOpaxy/vkp/xW3l1xRlx7Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        syzbot+9f575a1f15fc0c01ed69@syzkaller.appspotmail.com,
-        Tudor Ambarus <tudor.ambarus@linaro.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 02/16] net: cdc_ncm: Deal with too low values of dwNtbOutMaxSize
-Date:   Thu,  1 Jun 2023 14:20:57 +0100
-Message-Id: <20230601131932.064785665@linuxfoundation.org>
+Subject: [PATCH 5.15 11/42] platform/x86: ISST: PUNIT device mapping with Sub-NUMA clustering
+Date:   Thu,  1 Jun 2023 14:20:58 +0100
+Message-Id: <20230601131937.210474739@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131931.947241286@linuxfoundation.org>
-References: <20230601131931.947241286@linuxfoundation.org>
+In-Reply-To: <20230601131936.699199833@linuxfoundation.org>
+References: <20230601131936.699199833@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,130 +55,148 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 7e01c7f7046efc2c7c192c3619db43292b98e997 ]
+[ Upstream commit 9a1aac8a96dc014bec49806a7a964bf2fdbd315f ]
 
-Currently in cdc_ncm_check_tx_max(), if dwNtbOutMaxSize is lower than
-the calculated "min" value, but greater than zero, the logic sets
-tx_max to dwNtbOutMaxSize. This is then used to allocate a new SKB in
-cdc_ncm_fill_tx_frame() where all the data is handled.
+On a multiple package system using Sub-NUMA clustering, there is an issue
+in mapping Linux CPU number to PUNIT PCI device when manufacturer decided
+to reuse the PCI bus number across packages. Bus number can be reused as
+long as they are in different domain or segment. In this case some CPU
+will fail to find a PCI device to issue SST requests.
 
-For small values of dwNtbOutMaxSize the memory allocated during
-alloc_skb(dwNtbOutMaxSize, GFP_ATOMIC) will have the same size, due to
-how size is aligned at alloc time:
-	size = SKB_DATA_ALIGN(size);
-        size += SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-Thus we hit the same bug that we tried to squash with
-commit 2be6d4d16a084 ("net: cdc_ncm: Allow for dwNtbOutMaxSize to be unset or zero")
+When bus numbers are reused across CPU packages, we are using proximity
+information by matching CPU numa node id to PUNIT PCI device numa node
+id. But on a package there can be only one PUNIT PCI device, but multiple
+numa nodes (one for each sub cluster). So, the numa node ID of the PUNIT
+PCI device can only match with one numa node id of CPUs in a sub cluster
+in the package.
 
-Low values of dwNtbOutMaxSize do not cause an issue presently because at
-alloc_skb() time more memory (512b) is allocated than required for the
-SKB headers alone (320b), leaving some space (512b - 320b = 192b)
-for CDC data (172b).
+Since there can be only one PUNIT PCI device per package, if we match
+with numa node id of any sub cluster in that package, we can use that
+mapping for any CPU in that package. So, store the match information
+in a per package data structure and return the information when there
+is no match.
 
-However, if more elements (for example 3 x u64 = [24b]) were added to
-one of the SKB header structs, say 'struct skb_shared_info',
-increasing its original size (320b [320b aligned]) to something larger
-(344b [384b aligned]), then suddenly the CDC data (172b) no longer
-fits in the spare SKB data area (512b - 384b = 128b).
+While here, use defines for max bus number instead of hardcoding.
 
-Consequently the SKB bounds checking semantics fails and panics:
-
-skbuff: skb_over_panic: text:ffffffff831f755b len:184 put:172 head:ffff88811f1c6c00 data:ffff88811f1c6c00 tail:0xb8 end:0x80 dev:<NULL>
-------------[ cut here ]------------
-kernel BUG at net/core/skbuff.c:113!
-invalid opcode: 0000 [#1] PREEMPT SMP KASAN
-CPU: 0 PID: 57 Comm: kworker/0:2 Not tainted 5.15.106-syzkaller-00249-g19c0ed55a470 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/14/2023
-Workqueue: mld mld_ifc_work
-RIP: 0010:skb_panic net/core/skbuff.c:113 [inline]
-RIP: 0010:skb_over_panic+0x14c/0x150 net/core/skbuff.c:118
-[snip]
-Call Trace:
- <TASK>
- skb_put+0x151/0x210 net/core/skbuff.c:2047
- skb_put_zero include/linux/skbuff.h:2422 [inline]
- cdc_ncm_ndp16 drivers/net/usb/cdc_ncm.c:1131 [inline]
- cdc_ncm_fill_tx_frame+0x11ab/0x3da0 drivers/net/usb/cdc_ncm.c:1308
- cdc_ncm_tx_fixup+0xa3/0x100
-
-Deal with too low values of dwNtbOutMaxSize, clamp it in the range
-[USB_CDC_NCM_NTB_MIN_OUT_SIZE, CDC_NCM_NTB_MAX_SIZE_TX]. We ensure
-enough data space is allocated to handle CDC data by making sure
-dwNtbOutMaxSize is not smaller than USB_CDC_NCM_NTB_MIN_OUT_SIZE.
-
-Fixes: 289507d3364f ("net: cdc_ncm: use sysfs for rx/tx aggregation tuning")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+9f575a1f15fc0c01ed69@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=b982f1059506db48409d
-Link: https://lore.kernel.org/all/20211202143437.1411410-1-lee.jones@linaro.org/
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230517133808.1873695-2-tudor.ambarus@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://lore.kernel.org/r/20220629194817.2418240-1-srinivas.pandruvada@linux.intel.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Stable-dep-of: bbb320bfe2c3 ("platform/x86: ISST: Remove 8 socket limit")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/cdc_ncm.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ .../intel/speed_select_if/isst_if_common.c    | 39 +++++++++++++++----
+ 1 file changed, 32 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-index 28e306e3ee8d9..5fb4f74c26efd 100644
---- a/drivers/net/usb/cdc_ncm.c
-+++ b/drivers/net/usb/cdc_ncm.c
-@@ -180,9 +180,12 @@ static u32 cdc_ncm_check_tx_max(struct usbnet *dev, u32 new_tx)
- 	else
- 		min = ctx->max_datagram_size + ctx->max_ndp_size + sizeof(struct usb_cdc_ncm_nth32);
+diff --git a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
+index e8424e70d81d2..fd102678c75f6 100644
+--- a/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
++++ b/drivers/platform/x86/intel/speed_select_if/isst_if_common.c
+@@ -277,29 +277,38 @@ static int isst_if_get_platform_info(void __user *argp)
+ 	return 0;
+ }
  
--	max = min_t(u32, CDC_NCM_NTB_MAX_SIZE_TX, le32_to_cpu(ctx->ncm_parm.dwNtbOutMaxSize));
--	if (max == 0)
-+	if (le32_to_cpu(ctx->ncm_parm.dwNtbOutMaxSize) == 0)
- 		max = CDC_NCM_NTB_MAX_SIZE_TX; /* dwNtbOutMaxSize not set */
-+	else
-+		max = clamp_t(u32, le32_to_cpu(ctx->ncm_parm.dwNtbOutMaxSize),
-+			      USB_CDC_NCM_NTB_MIN_OUT_SIZE,
-+			      CDC_NCM_NTB_MAX_SIZE_TX);
++#define ISST_MAX_BUS_NUMBER	2
  
- 	/* some devices set dwNtbOutMaxSize too low for the above default */
- 	min = min(min, max);
-@@ -1229,6 +1232,9 @@ cdc_ncm_fill_tx_frame(struct usbnet *dev, struct sk_buff *skb, __le32 sign)
- 			 * further.
- 			 */
- 			if (skb_out == NULL) {
-+				/* If even the smallest allocation fails, abort. */
-+				if (ctx->tx_curr_size == USB_CDC_NCM_NTB_MIN_OUT_SIZE)
-+					goto alloc_failed;
- 				ctx->tx_low_mem_max_cnt = min(ctx->tx_low_mem_max_cnt + 1,
- 							      (unsigned)CDC_NCM_LOW_MEM_MAX_CNT);
- 				ctx->tx_low_mem_val = ctx->tx_low_mem_max_cnt;
-@@ -1247,13 +1253,8 @@ cdc_ncm_fill_tx_frame(struct usbnet *dev, struct sk_buff *skb, __le32 sign)
- 			skb_out = alloc_skb(ctx->tx_curr_size, GFP_ATOMIC);
+ struct isst_if_cpu_info {
+ 	/* For BUS 0 and BUS 1 only, which we need for PUNIT interface */
+-	int bus_info[2];
+-	struct pci_dev *pci_dev[2];
++	int bus_info[ISST_MAX_BUS_NUMBER];
++	struct pci_dev *pci_dev[ISST_MAX_BUS_NUMBER];
+ 	int punit_cpu_id;
+ 	int numa_node;
+ };
  
- 			/* No allocation possible so we will abort */
--			if (skb_out == NULL) {
--				if (skb != NULL) {
--					dev_kfree_skb_any(skb);
--					dev->net->stats.tx_dropped++;
--				}
--				goto exit_no_skb;
--			}
-+			if (!skb_out)
-+				goto alloc_failed;
- 			ctx->tx_low_mem_val--;
++struct isst_if_pkg_info {
++	struct pci_dev *pci_dev[ISST_MAX_BUS_NUMBER];
++};
++
+ static struct isst_if_cpu_info *isst_cpu_info;
++static struct isst_if_pkg_info *isst_pkg_info;
++
+ #define ISST_MAX_PCI_DOMAINS	8
+ 
+ static struct pci_dev *_isst_if_get_pci_dev(int cpu, int bus_no, int dev, int fn)
+ {
+ 	struct pci_dev *matched_pci_dev = NULL;
+ 	struct pci_dev *pci_dev = NULL;
+-	int no_matches = 0;
++	int no_matches = 0, pkg_id;
+ 	int i, bus_number;
+ 
+-	if (bus_no < 0 || bus_no > 1 || cpu < 0 || cpu >= nr_cpu_ids ||
+-	    cpu >= num_possible_cpus())
++	if (bus_no < 0 || bus_no >= ISST_MAX_BUS_NUMBER || cpu < 0 ||
++	    cpu >= nr_cpu_ids || cpu >= num_possible_cpus())
+ 		return NULL;
+ 
++	pkg_id = topology_physical_package_id(cpu);
++
+ 	bus_number = isst_cpu_info[cpu].bus_info[bus_no];
+ 	if (bus_number < 0)
+ 		return NULL;
+@@ -324,6 +333,8 @@ static struct pci_dev *_isst_if_get_pci_dev(int cpu, int bus_no, int dev, int fn
  		}
- 		if (ctx->is_ndp16) {
-@@ -1446,6 +1447,11 @@ cdc_ncm_fill_tx_frame(struct usbnet *dev, struct sk_buff *skb, __le32 sign)
  
- 	return skb_out;
+ 		if (node == isst_cpu_info[cpu].numa_node) {
++			isst_pkg_info[pkg_id].pci_dev[bus_no] = _pci_dev;
++
+ 			pci_dev = _pci_dev;
+ 			break;
+ 		}
+@@ -342,6 +353,10 @@ static struct pci_dev *_isst_if_get_pci_dev(int cpu, int bus_no, int dev, int fn
+ 	if (!pci_dev && no_matches == 1)
+ 		pci_dev = matched_pci_dev;
  
-+alloc_failed:
-+	if (skb) {
-+		dev_kfree_skb_any(skb);
-+		dev->net->stats.tx_dropped++;
++	/* Return pci_dev pointer for any matched CPU in the package */
++	if (!pci_dev)
++		pci_dev = isst_pkg_info[pkg_id].pci_dev[bus_no];
++
+ 	return pci_dev;
+ }
+ 
+@@ -361,8 +376,8 @@ struct pci_dev *isst_if_get_pci_dev(int cpu, int bus_no, int dev, int fn)
+ {
+ 	struct pci_dev *pci_dev;
+ 
+-	if (bus_no < 0 || bus_no > 1 || cpu < 0 || cpu >= nr_cpu_ids ||
+-	    cpu >= num_possible_cpus())
++	if (bus_no < 0 || bus_no >= ISST_MAX_BUS_NUMBER  || cpu < 0 ||
++	    cpu >= nr_cpu_ids || cpu >= num_possible_cpus())
+ 		return NULL;
+ 
+ 	pci_dev = isst_cpu_info[cpu].pci_dev[bus_no];
+@@ -417,10 +432,19 @@ static int isst_if_cpu_info_init(void)
+ 	if (!isst_cpu_info)
+ 		return -ENOMEM;
+ 
++	isst_pkg_info = kcalloc(topology_max_packages(),
++				sizeof(*isst_pkg_info),
++				GFP_KERNEL);
++	if (!isst_pkg_info) {
++		kfree(isst_cpu_info);
++		return -ENOMEM;
 +	}
- exit_no_skb:
- 	/* Start timer, if there is a remaining non-empty skb */
- 	if (ctx->tx_curr_skb != NULL && n > 0)
++
+ 	ret = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN,
+ 				"platform/x86/isst-if:online",
+ 				isst_if_cpu_online, NULL);
+ 	if (ret < 0) {
++		kfree(isst_pkg_info);
+ 		kfree(isst_cpu_info);
+ 		return ret;
+ 	}
+@@ -433,6 +457,7 @@ static int isst_if_cpu_info_init(void)
+ static void isst_if_cpu_info_exit(void)
+ {
+ 	cpuhp_remove_state(isst_if_online_id);
++	kfree(isst_pkg_info);
+ 	kfree(isst_cpu_info);
+ };
+ 
 -- 
 2.39.2
 
