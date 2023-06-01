@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B73D719DEA
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:27:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECE4B719E1C
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:29:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233869AbjFAN1e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:27:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35762 "EHLO
+        id S234093AbjFAN3O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:29:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233873AbjFAN1U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:27:20 -0400
+        with ESMTP id S233894AbjFAN25 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:28:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D20D010CB
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:27:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 036D31A8
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:28:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8EDC4644AF
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:27:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9DE1C433EF;
-        Thu,  1 Jun 2023 13:27:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A984644FC
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:28:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FBEC433D2;
+        Thu,  1 Jun 2023 13:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685626022;
-        bh=osR7rBX8ufijqtFI3rPO0uTo4VmPXjXtgMGpM3n7/LA=;
+        s=korg; t=1685626105;
+        bh=8fVECFHP9ZvZXtQY/+6EpwYdAyXQaQ0UHP9UK1tzG88=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t4S7RyTj/r8cvYGBHLVTymj3DOlTgpgraV+66h2MWtjtfEAy8lm2IYHse8nV28xTg
-         vCRmjjYswh6KEjApk+nnDmGtgvo9USJl8klNua+75Y/5vFKtmu05+/oz/CTikMG2fx
-         USieQg/wfUDzmxcjVgRgyx7HCAA9iBTatgWs+Hgs=
+        b=hUF+VqbmzruWnOpgFYtfvyQMmlJJmDdqFwbZ1mNkPLoNfxEsDMl6O1Hh+vp5JmNPf
+         VTgN9YbDGK9RzClHKnRmXkqF+BUzIiS4DfNh+lKHiGaxXsmk7eEcA7mE4lGb+L6A/+
+         ZJEoj+Jk0l28tmjU42GuDn0NCOhTs/NdnefMBgYU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-        Wyes Karny <wyes.karny@amd.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.3 44/45] cpufreq: amd-pstate: Add ->fast_switch() callback
-Date:   Thu,  1 Jun 2023 14:21:40 +0100
-Message-Id: <20230601131940.731365582@linuxfoundation.org>
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 32/42] dmaengine: at_xdmac: do not resume channels paused by consumers
+Date:   Thu,  1 Jun 2023 14:21:41 +0100
+Message-Id: <20230601131940.479423088@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
-References: <20230601131938.702671708@linuxfoundation.org>
+In-Reply-To: <20230601131939.051934720@linuxfoundation.org>
+References: <20230601131939.051934720@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,96 +54,134 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-commit 4badf2eb1e986bdbf34dd2f5d4c979553a86fe54 upstream.
+[ Upstream commit 44fe8440bda545b5d167329df88c47609a645168 ]
 
-Schedutil normally calls the adjust_perf callback for drivers with
-adjust_perf callback available and fast_switch_possible flag set.
-However, when frequency invariance is disabled and schedutil tries to
-invoke fast_switch. So, there is a chance of kernel crash if this
-function pointer is not set. To protect against this scenario add
-fast_switch callback to amd_pstate driver.
+In case there are DMA channels not paused by consumers in suspend
+process (valid on AT91 SoCs for serial driver when no_console_suspend) the
+driver pauses them (using at_xdmac_device_pause() which is also the same
+function called by dmaengine_pause()) and then in the resume process the
+driver resumes them calling at_xdmac_device_resume() which is the same
+function called by dmaengine_resume()). This is good for DMA channels
+not paused by consumers but for drivers that calls
+dmaengine_pause()/dmaegine_resume() on suspend/resume path this may lead to
+DMA channel being enabled before the IP is enabled. For IPs that needs
+strict ordering with regards to DMA channel enablement this will lead to
+wrong behavior. To fix this add a new set of functions
+at_xdmac_device_pause_internal()/at_xdmac_device_resume_internal() to be
+called only on suspend/resume.
 
-Fixes: 1d215f0319c2 ("cpufreq: amd-pstate: Add fast switch function for AMD P-State")
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Signed-off-by: Wyes Karny <wyes.karny@amd.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e1f7c9eee707 ("dmaengine: at_xdmac: creation of the atmel eXtended DMA Controller driver")
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Link: https://lore.kernel.org/r/20230214151827.1050280-4-claudiu.beznea@microchip.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/amd-pstate.c |   37 ++++++++++++++++++++++++++++++-------
- 1 file changed, 30 insertions(+), 7 deletions(-)
+ drivers/dma/at_xdmac.c | 48 ++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 42 insertions(+), 6 deletions(-)
 
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -422,9 +422,8 @@ static int amd_pstate_verify(struct cpuf
- 	return 0;
+diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
+index 7f7557e4c31d7..cb1374b161291 100644
+--- a/drivers/dma/at_xdmac.c
++++ b/drivers/dma/at_xdmac.c
+@@ -186,6 +186,7 @@
+ enum atc_status {
+ 	AT_XDMAC_CHAN_IS_CYCLIC = 0,
+ 	AT_XDMAC_CHAN_IS_PAUSED,
++	AT_XDMAC_CHAN_IS_PAUSED_INTERNAL,
+ };
+ 
+ struct at_xdmac_layout {
+@@ -346,6 +347,11 @@ static inline int at_xdmac_chan_is_paused(struct at_xdmac_chan *atchan)
+ 	return test_bit(AT_XDMAC_CHAN_IS_PAUSED, &atchan->status);
  }
  
--static int amd_pstate_target(struct cpufreq_policy *policy,
--			     unsigned int target_freq,
--			     unsigned int relation)
-+static int amd_pstate_update_freq(struct cpufreq_policy *policy,
-+				  unsigned int target_freq, bool fast_switch)
++static inline int at_xdmac_chan_is_paused_internal(struct at_xdmac_chan *atchan)
++{
++	return test_bit(AT_XDMAC_CHAN_IS_PAUSED_INTERNAL, &atchan->status);
++}
++
+ static inline bool at_xdmac_chan_is_peripheral_xfer(u32 cfg)
  {
- 	struct cpufreq_freqs freqs;
- 	struct amd_cpudata *cpudata = policy->driver_data;
-@@ -443,14 +442,36 @@ static int amd_pstate_target(struct cpuf
- 	des_perf = DIV_ROUND_CLOSEST(target_freq * cap_perf,
- 				     cpudata->max_freq);
+ 	return cfg & AT_XDMAC_CC_TYPE_PER_TRAN;
+@@ -1807,6 +1813,26 @@ static int at_xdmac_device_config(struct dma_chan *chan,
+ 	return ret;
+ }
  
--	cpufreq_freq_transition_begin(policy, &freqs);
--	amd_pstate_update(cpudata, min_perf, des_perf,
--			  max_perf, false);
--	cpufreq_freq_transition_end(policy, &freqs, false);
-+	WARN_ON(fast_switch && !policy->fast_switch_enabled);
-+	/*
-+	 * If fast_switch is desired, then there aren't any registered
-+	 * transition notifiers. See comment for
-+	 * cpufreq_enable_fast_switch().
-+	 */
-+	if (!fast_switch)
-+		cpufreq_freq_transition_begin(policy, &freqs);
++static void at_xdmac_device_pause_set(struct at_xdmac *atxdmac,
++				      struct at_xdmac_chan *atchan)
++{
++	at_xdmac_write(atxdmac, atxdmac->layout->grws, atchan->mask);
++	while (at_xdmac_chan_read(atchan, AT_XDMAC_CC) &
++	       (AT_XDMAC_CC_WRIP | AT_XDMAC_CC_RDIP))
++		cpu_relax();
++}
 +
-+	amd_pstate_update(cpudata, min_perf, des_perf, max_perf, fast_switch);
++static void at_xdmac_device_pause_internal(struct at_xdmac_chan *atchan)
++{
++	struct at_xdmac		*atxdmac = to_at_xdmac(atchan->chan.device);
++	unsigned long		flags;
 +
-+	if (!fast_switch)
-+		cpufreq_freq_transition_end(policy, &freqs, false);
++	spin_lock_irqsave(&atchan->lock, flags);
++	set_bit(AT_XDMAC_CHAN_IS_PAUSED_INTERNAL, &atchan->status);
++	at_xdmac_device_pause_set(atxdmac, atchan);
++	spin_unlock_irqrestore(&atchan->lock, flags);
++}
++
+ static int at_xdmac_device_pause(struct dma_chan *chan)
+ {
+ 	struct at_xdmac_chan	*atchan = to_at_xdmac_chan(chan);
+@@ -1819,15 +1845,25 @@ static int at_xdmac_device_pause(struct dma_chan *chan)
+ 		return 0;
+ 
+ 	spin_lock_irqsave(&atchan->lock, flags);
+-	at_xdmac_write(atxdmac, atxdmac->layout->grws, atchan->mask);
+-	while (at_xdmac_chan_read(atchan, AT_XDMAC_CC)
+-	       & (AT_XDMAC_CC_WRIP | AT_XDMAC_CC_RDIP))
+-		cpu_relax();
++
++	at_xdmac_device_pause_set(atxdmac, atchan);
++	/* Decrement runtime PM ref counter for each active descriptor. */
+ 	spin_unlock_irqrestore(&atchan->lock, flags);
  
  	return 0;
  }
  
-+static int amd_pstate_target(struct cpufreq_policy *policy,
-+			     unsigned int target_freq,
-+			     unsigned int relation)
++static void at_xdmac_device_resume_internal(struct at_xdmac_chan *atchan)
 +{
-+	return amd_pstate_update_freq(policy, target_freq, false);
++	struct at_xdmac		*atxdmac = to_at_xdmac(atchan->chan.device);
++	unsigned long		flags;
++
++	spin_lock_irqsave(&atchan->lock, flags);
++	at_xdmac_write(atxdmac, atxdmac->layout->grwr, atchan->mask);
++	clear_bit(AT_XDMAC_CHAN_IS_PAUSED_INTERNAL, &atchan->status);
++	spin_unlock_irqrestore(&atchan->lock, flags);
 +}
 +
-+static unsigned int amd_pstate_fast_switch(struct cpufreq_policy *policy,
-+				  unsigned int target_freq)
-+{
-+	return amd_pstate_update_freq(policy, target_freq, true);
-+}
-+
- static void amd_pstate_adjust_perf(unsigned int cpu,
- 				   unsigned long _min_perf,
- 				   unsigned long target_perf,
-@@ -698,6 +719,7 @@ static int amd_pstate_cpu_exit(struct cp
- 
- 	freq_qos_remove_request(&cpudata->req[1]);
- 	freq_qos_remove_request(&cpudata->req[0]);
-+	policy->fast_switch_possible = false;
- 	kfree(cpudata);
- 
- 	return 0;
-@@ -1230,6 +1252,7 @@ static struct cpufreq_driver amd_pstate_
- 	.flags		= CPUFREQ_CONST_LOOPS | CPUFREQ_NEED_UPDATE_LIMITS,
- 	.verify		= amd_pstate_verify,
- 	.target		= amd_pstate_target,
-+	.fast_switch    = amd_pstate_fast_switch,
- 	.init		= amd_pstate_cpu_init,
- 	.exit		= amd_pstate_cpu_exit,
- 	.suspend	= amd_pstate_cpu_suspend,
+ static int at_xdmac_device_resume(struct dma_chan *chan)
+ {
+ 	struct at_xdmac_chan	*atchan = to_at_xdmac_chan(chan);
+@@ -1982,7 +2018,7 @@ static int __maybe_unused atmel_xdmac_suspend(struct device *dev)
+ 		atchan->save_cc = at_xdmac_chan_read(atchan, AT_XDMAC_CC);
+ 		if (at_xdmac_chan_is_cyclic(atchan)) {
+ 			if (!at_xdmac_chan_is_paused(atchan))
+-				at_xdmac_device_pause(chan);
++				at_xdmac_device_pause_internal(atchan);
+ 			atchan->save_cim = at_xdmac_chan_read(atchan, AT_XDMAC_CIM);
+ 			atchan->save_cnda = at_xdmac_chan_read(atchan, AT_XDMAC_CNDA);
+ 			atchan->save_cndc = at_xdmac_chan_read(atchan, AT_XDMAC_CNDC);
+@@ -2027,7 +2063,7 @@ static int __maybe_unused atmel_xdmac_resume(struct device *dev)
+ 		at_xdmac_chan_write(atchan, AT_XDMAC_CC, atchan->save_cc);
+ 		if (at_xdmac_chan_is_cyclic(atchan)) {
+ 			if (at_xdmac_chan_is_paused(atchan))
+-				at_xdmac_device_resume(chan);
++				at_xdmac_device_resume_internal(atchan);
+ 			at_xdmac_chan_write(atchan, AT_XDMAC_CNDA, atchan->save_cnda);
+ 			at_xdmac_chan_write(atchan, AT_XDMAC_CNDC, atchan->save_cndc);
+ 			at_xdmac_chan_write(atchan, AT_XDMAC_CIE, atchan->save_cim);
+-- 
+2.39.2
+
 
 
