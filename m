@@ -2,52 +2,61 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87D8A7197C2
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 11:52:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A4687197D3
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 11:55:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233088AbjFAJwj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 05:52:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36168 "EHLO
+        id S231463AbjFAJzz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 05:55:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233111AbjFAJwe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 05:52:34 -0400
+        with ESMTP id S233159AbjFAJya (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 05:54:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A5D5136;
-        Thu,  1 Jun 2023 02:52:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E0EDE5B;
+        Thu,  1 Jun 2023 02:53:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E9C3A642AA;
-        Thu,  1 Jun 2023 09:52:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 301C8C433EF;
-        Thu,  1 Jun 2023 09:52:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D45A76092A;
+        Thu,  1 Jun 2023 09:53:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B5CC433EF;
+        Thu,  1 Jun 2023 09:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685613146;
-        bh=+C6KoTnzYoqe2NGMblFrRlx+vs7d7T9fhqlO/pPMxd0=;
+        s=k20201202; t=1685613227;
+        bh=fm7sw9sNJNxay74Yt8jfMtjyjVMmd/+OYcZxUbraMcA=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=c1DAIlN8riwWFivON4JTRO9vAukPRUemXUBiab1A2/KrRKpBjGcyVU5PxkzRgnUjK
-         0QffO/tpTWBgTzgAvw4pS+y7dYHxbMjUQplLlCsfySwbb52i3p2GnYpfHLOhu1gS7h
-         fG2G4igdRuBzVq5NxAbJkmE4AUeB/rbaRKsRVzOSMntJSLulAEIwpQj9RjyUXRwX3s
-         Kk5DFVNfq9FSQZa8Pi2balNYZVq6P2+tmkCoyEZnfBG5qCchDRZ+E1pex4MWlAIeLr
-         bik+WrBZ1JnUzbWQ/aBion9cej695aexz7tXM7JtibW/GLFQbC/zpih9BwxY9OWyBg
-         dq/CSd9UJvEdw==
-Date:   Thu, 1 Jun 2023 05:52:24 -0400
+        b=irmlnJdfZQqDpJHR+4hazW/0EFkoY7IbZnEvNqggTskj/EsMDRu54dYy/j77NVYso
+         nlz0GS4Z3EQBpgLv1uXFxwFqv/9slQiO0f8oDSZWcoxfkufh+yyJRF31Xp3jd9pSFe
+         pcPccoQrYfDSDmgY4Mn26q87m60AsIG618tpvtAgcPrQzStQawG879bjNgcYSc8YjT
+         mJDEswbxaVNwAnZfniJaovR7UkIr40m5FABshB3WmZ6MPY3tDG0uhs7CTGik5zypq2
+         cPx+W9+RSOM2XyYB7kK31CI/0mGqxqRmjanRVDQDgvOSISIYtg4ZcraJdbgHaQiDeE
+         QTYGTzeGm/WyA==
+Date:   Thu, 1 Jun 2023 05:53:46 -0400
 From:   Sasha Levin <sashal@kernel.org>
-To:     Eric Biggers <ebiggers@kernel.org>
+To:     Michel =?iso-8859-1?Q?D=E4nzer?= <michel.daenzer@mailbox.org>
 Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Andrey God <andreygod83@protonmail.com>,
-        Christoph Hellwig <hch@lst.de>, kbusch@kernel.org,
-        linux-nvme@lists.infradead.org
-Subject: Re: [PATCH AUTOSEL 6.3 01/67] nvme-pci: add NVME_QUIRK_BOGUS_NID for
- HS-SSD-FUTURE 2048G
-Message-ID: <ZHhqWIU/YrJwzyYl@sashalap>
-References: <20230525183144.1717540-1-sashal@kernel.org>
- <20230525190201.GA1266801@google.com>
+        felipe.clark@amd.com, Aric.Cyr@amd.com, wenjing.liu@amd.com,
+        dri-devel@lists.freedesktop.org, Jun.Lei@amd.com,
+        airlied@gmail.com, jiapeng.chong@linux.alibaba.com,
+        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+        amd-gfx@lists.freedesktop.org, aurabindo.pillai@amd.com,
+        Alvin.Lee2@amd.com, harry.wentland@amd.com, sunpeng.li@amd.com,
+        mwen@igalia.com, Daniel Wheeler <daniel.wheeler@amd.com>,
+        Dillon.Varone@amd.com, Wesley Chalmers <Wesley.Chalmers@amd.com>,
+        qingqing.zhuo@amd.com, Xinhui.Pan@amd.com, daniel@ffwll.ch,
+        Alex Deucher <alexander.deucher@amd.com>,
+        christian.koenig@amd.com
+Subject: Re: [PATCH AUTOSEL 6.1 4/9] drm/amd/display: Do not set drr on pipe
+ commit
+Message-ID: <ZHhqqkF8FCSqMi81@sashalap>
+References: <20230511193945.623476-1-sashal@kernel.org>
+ <20230511193945.623476-4-sashal@kernel.org>
+ <bc4d10f2-6ded-bed3-1d81-7e09292adf6f@mailbox.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20230525190201.GA1266801@google.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <bc4d10f2-6ded-bed3-1d81-7e09292adf6f@mailbox.org>
 X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -58,34 +67,26 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, May 25, 2023 at 07:02:01PM +0000, Eric Biggers wrote:
->Hi Sasha,
+On Mon, May 15, 2023 at 03:04:43PM +0200, Michel Dänzer wrote:
+>On 5/11/23 21:39, Sasha Levin wrote:
+>> From: Wesley Chalmers <Wesley.Chalmers@amd.com>
+>>
+>> [ Upstream commit 474f01015ffdb74e01c2eb3584a2822c64e7b2be ]
+>>
+>> [WHY]
+>> Writing to DRR registers such as OTG_V_TOTAL_MIN on the same frame as a
+>> pipe commit can cause underflow.
+>>
+>> [HOW]
+>> Move DMUB p-state delegate into optimze_bandwidth; enabling FAMS sets
+>> optimized_required.
+>>
+>> This change expects that Freesync requests are blocked when
+>> optimized_required is true.
 >
->This feedback is on the whole 67-patch series.  I'm replying to patch 1 because
->this series lacks a cover letter.  Please include a cover letter next time.
->
->This series doesn't apply because the following error happens on patch 35:
->
->    Applying: tipc: add tipc_bearer_min_mtu to calculate min mtu
->    error: patch failed: net/tipc/bearer.h:146
->    error: net/tipc/bearer.h: patch does not apply
->    error: patch failed: net/tipc/udp_media.c:738
->    error: net/tipc/udp_media.c: patch does not apply
->    Patch failed at 0035 tipc: add tipc_bearer_min_mtu to calculate min mtu
->
->For the base commit I tried the latest linux-6.3.y, both with and without the
->latest queue-6.3 applied.
+>This change caused a regression, see https://patchwork.freedesktop.org/patch/532240/?series=116487&rev=1#comment_972234 / 9deeb132-a317-7419-e9da-cbc0a379c0eb@daenzer.net .
 
-Yup, it was based on the prior release, and the conflict you see here is
-because the patch in question was brought in to the stable tree via a
-different route.
-
->As with any kernel patch series, please make it clear what the base commit is.
->Otherwise the series is unreviewable and untestable.
-
-Ack, I can add annotation of the base. In general - if an AUTOSEL patch
-fails to apply/build when brought to a newer release, it'll simply get
-dropped.
+Dropped, thanks!
 
 -- 
 Thanks,
