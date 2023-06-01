@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A36BF719DA1
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:25:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99754719DF3
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:27:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233686AbjFANZR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:25:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33450 "EHLO
+        id S233842AbjFAN1u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:27:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233739AbjFANYz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:24:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D09E10C1
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:24:33 -0700 (PDT)
+        with ESMTP id S233734AbjFAN1q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:27:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 378051AB
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:27:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2DF6C64483
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:24:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44CBBC433D2;
-        Thu,  1 Jun 2023 13:24:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 687E1644C9
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:27:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8726CC433EF;
+        Thu,  1 Jun 2023 13:27:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625872;
-        bh=kL/7YVwNXKNZSDU9ufknGWAWzer1ICGv/CRpvKg2Kts=;
+        s=korg; t=1685626043;
+        bh=l1+wkJBql6UtkIYpV7h81XObR2QkUArtaDh2lgwwvy0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pfCPok6FxFu+JBjmfedM5wX5bo3HzPn/2aqWy2fz4iV7BLk6CNAfdo32pOLTLuBeu
-         BBXWFPCNwemEFjenGik2PaUKU/2FxL6W1lQANaFhFx+TsREu5cd22ailXx6pTTc+nr
-         Lfut3Wv3veSHGKLMWYR3vOaAhkAi6MKNF0aQrpM8=
+        b=z3DprAeuHwSweg2vojZsOetFL8gXUzKpv5ecYYvb8z07SJ072vuDrFRn050yWa33D
+         JsK9+zsdApxIdWCrUkxHTOn4AX2ISOxEkE85w2F0UzmUo9EX3kgjpzASzi+hEITbXK
+         QXTUfrHajF8tScN1T/DUzC7qpVO3PMoAgqCxHXcQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liang Li <liali@redhat.com>,
-        Hangbin Liu <liuhangbin@gmail.com>,
+        patches@lists.linux.dev, Shenwei Wang <shenwei.wang@nxp.com>,
+        Wei Fang <wei.fang@nxp.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 26/42] bonding: fix send_peer_notif overflow
-Date:   Thu,  1 Jun 2023 14:21:13 +0100
-Message-Id: <20230601131937.887030491@linuxfoundation.org>
+Subject: [PATCH 6.3 18/45] net: fec: add dma_wmb to ensure correct descriptor values
+Date:   Thu,  1 Jun 2023 14:21:14 +0100
+Message-Id: <20230601131939.544331582@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131936.699199833@linuxfoundation.org>
-References: <20230601131936.699199833@linuxfoundation.org>
+In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
+References: <20230601131938.702671708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,97 +55,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Shenwei Wang <shenwei.wang@nxp.com>
 
-[ Upstream commit 9949e2efb54eb3001cb2f6512ff3166dddbfb75d ]
+[ Upstream commit 9025944fddfed5966c8f102f1fe921ab3aee2c12 ]
 
-Bonding send_peer_notif was defined as u8. Since commit 07a4ddec3ce9
-("bonding: add an option to specify a delay between peer notifications").
-the bond->send_peer_notif will be num_peer_notif multiplied by
-peer_notif_delay, which is u8 * u32. This would cause the send_peer_notif
-overflow easily. e.g.
+Two dma_wmb() are added in the XDP TX path to ensure proper ordering of
+descriptor and buffer updates:
+1. A dma_wmb() is added after updating the last BD to make sure
+   the updates to rest of the descriptor are visible before
+   transferring ownership to FEC.
+2. A dma_wmb() is also added after updating the bdp to ensure these
+   updates are visible before updating txq->bd.cur.
+3. Start the xmit of the frame immediately right after configuring the
+   tx descriptor.
 
-  ip link add bond0 type bond mode 1 miimon 100 num_grat_arp 30 peer_notify_delay 1000
-
-To fix the overflow, let's set the send_peer_notif to u32 and limit
-peer_notif_delay to 300s.
-
-Reported-by: Liang Li <liali@redhat.com>
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2090053
-Fixes: 07a4ddec3ce9 ("bonding: add an option to specify a delay between peer notifications")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Fixes: 6d6b39f180b8 ("net: fec: add initial XDP support")
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_netlink.c | 7 ++++++-
- drivers/net/bonding/bond_options.c | 8 +++++++-
- include/net/bonding.h              | 2 +-
- 3 files changed, 14 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_netlink.c b/drivers/net/bonding/bond_netlink.c
-index 1007bf6d385d4..7398accd46805 100644
---- a/drivers/net/bonding/bond_netlink.c
-+++ b/drivers/net/bonding/bond_netlink.c
-@@ -79,6 +79,11 @@ static int bond_fill_slave_info(struct sk_buff *skb,
- 	return -EMSGSIZE;
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 577d94821b3e7..38e5b5abe067c 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -3834,6 +3834,11 @@ static int fec_enet_txq_xmit_frame(struct fec_enet_private *fep,
+ 	index = fec_enet_get_bd_index(last_bdp, &txq->bd);
+ 	txq->tx_skbuff[index] = NULL;
+ 
++	/* Make sure the updates to rest of the descriptor are performed before
++	 * transferring ownership.
++	 */
++	dma_wmb();
++
+ 	/* Send it on its way.  Tell FEC it's ready, interrupt when done,
+ 	 * it's the last BD of the frame, and to put the CRC on the end.
+ 	 */
+@@ -3843,8 +3848,14 @@ static int fec_enet_txq_xmit_frame(struct fec_enet_private *fep,
+ 	/* If this was the last BD in the ring, start at the beginning again. */
+ 	bdp = fec_enet_get_nextdesc(last_bdp, &txq->bd);
+ 
++	/* Make sure the update to bdp are performed before txq->bd.cur. */
++	dma_wmb();
++
+ 	txq->bd.cur = bdp;
+ 
++	/* Trigger transmission start */
++	writel(0, txq->bd.reg_desc_active);
++
+ 	return 0;
  }
  
-+/* Limit the max delay range to 300s */
-+static struct netlink_range_validation delay_range = {
-+	.max = 300000,
-+};
-+
- static const struct nla_policy bond_policy[IFLA_BOND_MAX + 1] = {
- 	[IFLA_BOND_MODE]		= { .type = NLA_U8 },
- 	[IFLA_BOND_ACTIVE_SLAVE]	= { .type = NLA_U32 },
-@@ -109,7 +114,7 @@ static const struct nla_policy bond_policy[IFLA_BOND_MAX + 1] = {
- 	[IFLA_BOND_AD_ACTOR_SYSTEM]	= { .type = NLA_BINARY,
- 					    .len  = ETH_ALEN },
- 	[IFLA_BOND_TLB_DYNAMIC_LB]	= { .type = NLA_U8 },
--	[IFLA_BOND_PEER_NOTIF_DELAY]    = { .type = NLA_U32 },
-+	[IFLA_BOND_PEER_NOTIF_DELAY]    = NLA_POLICY_FULL_RANGE(NLA_U32, &delay_range),
- 	[IFLA_BOND_MISSED_MAX]		= { .type = NLA_U8 },
- };
- 
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index 2e8484a91a0e7..5f883a18bbabd 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -165,6 +165,12 @@ static const struct bond_opt_value bond_num_peer_notif_tbl[] = {
- 	{ NULL,      -1,  0}
- };
- 
-+static const struct bond_opt_value bond_peer_notif_delay_tbl[] = {
-+	{ "off",     0,   0},
-+	{ "maxval",  300000, BOND_VALFLAG_MAX},
-+	{ NULL,      -1,  0}
-+};
-+
- static const struct bond_opt_value bond_primary_reselect_tbl[] = {
- 	{ "always",  BOND_PRI_RESELECT_ALWAYS,  BOND_VALFLAG_DEFAULT},
- 	{ "better",  BOND_PRI_RESELECT_BETTER,  0},
-@@ -467,7 +473,7 @@ static const struct bond_option bond_opts[BOND_OPT_LAST] = {
- 		.id = BOND_OPT_PEER_NOTIF_DELAY,
- 		.name = "peer_notif_delay",
- 		.desc = "Delay between each peer notification on failover event, in milliseconds",
--		.values = bond_intmax_tbl,
-+		.values = bond_peer_notif_delay_tbl,
- 		.set = bond_option_peer_notif_delay_set
+@@ -3873,12 +3884,6 @@ static int fec_enet_xdp_xmit(struct net_device *dev,
+ 		sent_frames++;
  	}
- };
-diff --git a/include/net/bonding.h b/include/net/bonding.h
-index 0db3c5f36868b..e4453cf4f0171 100644
---- a/include/net/bonding.h
-+++ b/include/net/bonding.h
-@@ -228,7 +228,7 @@ struct bonding {
- 	 */
- 	spinlock_t mode_lock;
- 	spinlock_t stats_lock;
--	u8	 send_peer_notif;
-+	u32	 send_peer_notif;
- 	u8       igmp_retrans;
- #ifdef CONFIG_PROC_FS
- 	struct   proc_dir_entry *proc_entry;
+ 
+-	/* Make sure the update to bdp and tx_skbuff are performed. */
+-	wmb();
+-
+-	/* Trigger transmission start */
+-	writel(0, txq->bd.reg_desc_active);
+-
+ 	__netif_tx_unlock(nq);
+ 
+ 	return sent_frames;
 -- 
 2.39.2
 
