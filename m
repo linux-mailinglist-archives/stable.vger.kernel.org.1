@@ -2,95 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84AF871EEAC
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 18:22:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 815EE71EEB3
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 18:22:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231366AbjFAQVQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 12:21:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43510 "EHLO
+        id S229840AbjFAQWj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 12:22:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231334AbjFAQVH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 12:21:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 170F312C;
-        Thu,  1 Jun 2023 09:21:07 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A7EC16475A;
-        Thu,  1 Jun 2023 16:21:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45044C433EF;
-        Thu,  1 Jun 2023 16:21:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685636466;
-        bh=J9x2GSgcCuBZSk1uZOf/tNoS5CtNSbRyWQ2pfrQq7M4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ZZCqqQC0a9i9hGh1DZzervY8TO67e/jssn6MiOym0PkWTyCcyWpfLV+nzn/KctYrE
-         JmIfAZQkiWDITUxLX3S0cHZd21Ufpix0t56Pt2OHQRvZHXQkCcBLhl9D/y85/SxXNk
-         yI8GCS0Sym3IJxaE5pBG64Azm8xrd5iMdGu8WvDS40fu8DPjGmWji6boJV4tmXMv8U
-         phMlnOqSSvBA0I4rm6Su2mcfaT4sLPUKsyLrNmGplbNqgEQ/xOVeEGTUSTxcj99tja
-         YNqJQEBVbEb5Wm7RmYNxO9Bpk3zIXOfDGWvc1N7nneMMdNOWCT1ER/auVu2jvRbMkH
-         3pdzyWUkOfaVg==
-Date:   Thu, 1 Jun 2023 18:21:00 +0200
-From:   Christian Brauner <brauner@kernel.org>
-To:     Jan Kara <jack@suse.cz>
-Cc:     David Laight <David.Laight@ACULAB.COM>,
-        Al Viro <viro@ZenIV.linux.org.uk>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        "Darrick J. Wong" <djwong@kernel.org>, Ted Tso <tytso@mit.edu>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        "linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>,
-        "linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>,
-        "linux-f2fs-devel@lists.sourceforge.net" 
-        <linux-f2fs-devel@lists.sourceforge.net>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v2 4/6] fs: Establish locking order for unrelated
- directories
-Message-ID: <20230601-flora-hemmung-31a1e66b5179@brauner>
-References: <20230601104525.27897-1-jack@suse.cz>
- <20230601105830.13168-4-jack@suse.cz>
- <20230601-gebracht-gesehen-c779a56b3bf3@brauner>
- <20230601152449.h4ur5zrfqjqygujd@quack3>
- <c5f209a6263b4f039c5eafcafddf90ca@AcuMS.aculab.com>
- <20230601161353.4o6but7hb7i7qfki@quack3>
+        with ESMTP id S229630AbjFAQWi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 12:22:38 -0400
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6C74133;
+        Thu,  1 Jun 2023 09:22:37 -0700 (PDT)
+Received: by mail-pj1-x1033.google.com with SMTP id 98e67ed59e1d1-2566e60cc5aso758365a91.3;
+        Thu, 01 Jun 2023 09:22:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685636557; x=1688228557;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FFU/5Iv9owlTTt86pLJPmhqgSRLxIfPlWHSZUPcuZc4=;
+        b=d+NEA05T2No89c3k15b1IHVESm59uCdSRC8Juyn95Dz+Bnd9r7QpSoj/JLeMofTquf
+         0/M8aU+N7lfs37n0z+ecYD64QED2a0ezIizANK2jaAaz6RWUnTQnzfH8HGQJA5duLh2N
+         kc4PAGywyZGT053Oez0OooMP3+y7uPDPFY4bAFBV41aa/2nglCzVZpjQqFiXwWgxIBmW
+         oRwTcBLIcFHQ1iqhYBu9EudNL5IDVGn63BZqtv3oCp1Y84uUY7Fb0DjGO4WAORHcoN6W
+         ieVhnA+cY10zWZHpvl2VXJC54+Xvl89pXS7sWKQ1E+SsXPUw0lkZ6ALm754k7xGHDZOn
+         TpvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685636557; x=1688228557;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FFU/5Iv9owlTTt86pLJPmhqgSRLxIfPlWHSZUPcuZc4=;
+        b=RyHiv1PR3JvQw5bfr39+wK90e5BoWO6AwnQBCpR0G8Qxm+CdXbKm1pDrxBkV1tznKW
+         XenmT7vzM5NVNJvEO/GwaFM65J9V6O86es54dhlZze5mFxNnIoZzZDfJ2ji9lBlcMmhd
+         gcs4LThlrTd1aJGa5SdWaOLejCL1iZcZ010jac9z5DNKIrk7WJxoJabt6lsqKwz1LrtX
+         KCVewdgebnA0iLqJy+iwoCmgLKnbCSvhEktyQKg5/NXweK4bBjQWMmQIEnibDjBKxccI
+         W28Y5Y+t6Yy3ejIm+b8Jb94UwgTkg1u886SsHOBF/n4aQpv+b0Q2b+1yXJhHoLquej2J
+         8mfQ==
+X-Gm-Message-State: AC+VfDyxssVXb7IEp09kX8SiX76bhCgJSdpi4WZB/xuR9NRM/t242GtH
+        UWl4wuY5EXy6yKtAzB+GiE/dVcbqFaqxuw==
+X-Google-Smtp-Source: ACHHUZ5MxBd74DfWqf5JtmxcE4FhjBn6koOuiM99hOW3cotRFG8LyaW/sttp/jZrwO8St8jDqZMkgA==
+X-Received: by 2002:a17:90a:ee8c:b0:256:959f:3443 with SMTP id i12-20020a17090aee8c00b00256959f3443mr9903062pjz.25.1685636557273;
+        Thu, 01 Jun 2023 09:22:37 -0700 (PDT)
+Received: from [192.168.1.3] (ip72-194-116-95.oc.oc.cox.net. [72.194.116.95])
+        by smtp.gmail.com with ESMTPSA id fa2-20020a17090af0c200b00256353eb8f2sm1651166pjb.5.2023.06.01.09.22.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Jun 2023 09:22:36 -0700 (PDT)
+Message-ID: <2c22b77b-3f35-0810-ab40-595c07451973@gmail.com>
+Date:   Thu, 1 Jun 2023 09:22:34 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230601161353.4o6but7hb7i7qfki@quack3>
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Subject: Re: [PATCH 5.10 00/22] 5.10.182-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+References: <20230601131933.727832920@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20230601131933.727832920@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 01, 2023 at 06:13:53PM +0200, Jan Kara wrote:
-> On Thu 01-06-23 15:37:32, David Laight wrote:
-> > ...
-> > > > > + * Lock any non-NULL argument. The caller must make sure that if he is passing
-> > > > > + * in two directories, one is not ancestor of the other
-> > 
-> > Not directly relevant to this change but is the 'not an ancestor'
-> > check actually robust?
-> > 
-> > I found a condition in which the kernel 'pwd' code (which follows
-> > the inode chain) failed to stop at the base of a chroot.
-> > 
-> > I suspect that the ancestor check would fail the same way.
-> 
-> Honestly, I'm not sure how this could be the case but I'm not a dcache
-> expert. d_ancestor() works on dentries and the whole dcache code pretty
-> much relies on the fact that there always is at most one dentry for any
-> directory. Also in case we call d_ancestor() from this code, we have the
-> whole filesystem locked from any other directory moves so the ancestor
-> relationship of two dirs cannot change (which is different from pwd code
-> AFAIK). So IMHO no failure is possible in our case.
 
-Yes, this is a red herring. What matters is that the tree topology can't
-change which is up to the caller to guarantee. And where it's called
-we're under s_vfs_rename_mutex. It's also literally mentioned in the
-directory locking documentation.
+
+On 6/1/2023 6:20 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.182 release.
+> There are 22 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 03 Jun 2023 13:19:19 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.182-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
+
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
