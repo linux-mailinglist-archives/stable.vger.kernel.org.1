@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FDB2719D78
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:23:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77395719DEF
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:27:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233590AbjFANXd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:23:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60266 "EHLO
+        id S233765AbjFAN1p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:27:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233588AbjFANX1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:23:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95D7818D
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:23:21 -0700 (PDT)
+        with ESMTP id S233894AbjFAN1h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:27:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA055E5E
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:27:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7662C61AF5
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:23:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9651AC433D2;
-        Thu,  1 Jun 2023 13:23:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4CDD5644D1
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:27:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6428DC433D2;
+        Thu,  1 Jun 2023 13:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625800;
-        bh=DkBxdDW6+VzUY3ta3ik2N2ZSDmm42F2GBWuM6uT4AeA=;
+        s=korg; t=1685626031;
+        bh=WOs93kXykVaacUYA1ZnyRnPSg86coQKN0xmVM7ZBFzg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ef62kq7Mr5mnuSRtlQbdYx0Nvj6G6YDXl1mY73u36sviOH9DA6wWAV/gZEvqhYCAF
-         XG73beHGJuP4hYSqXRM93zlV7sjkL2FvXzRVUtFOKTOsi241yXzuAC1TP4TPAAb0EF
-         WsnUyEYUi4eTwOxm+PFgfKo+DYfY/DuJvFXjZREw=
+        b=ZSdC/V+6XJx3/BdvMZQnlUD/pZSLuN7YPLoQIDR4wMdxp/u3ycYHG/ojH5IXPXh0D
+         xOz1CsoQlr2Oy+lJ8z6rzO0VnG4l8tmgeOpD1YewcTD0M+AVZcI+t+X+fo0p6D/h2H
+         jXnZRwGGeZh4VVKOKX0mV0m4012juRDAyoSSwes0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10 21/22] ipv{4,6}/raw: fix output xfrm lookup wrt protocol
+        patches@lists.linux.dev, Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>, Imre Deak <imre.deak@intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 23/45] drm/i915: Fix PIPEDMC disabling for a bigjoiner configuration
 Date:   Thu,  1 Jun 2023 14:21:19 +0100
-Message-Id: <20230601131934.725913577@linuxfoundation.org>
+Message-Id: <20230601131939.760754008@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131933.727832920@linuxfoundation.org>
-References: <20230601131933.727832920@linuxfoundation.org>
+In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
+References: <20230601131938.702671708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,127 +56,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+From: Imre Deak <imre.deak@intel.com>
 
-commit 3632679d9e4f879f49949bb5b050e0de553e4739 upstream.
+[ Upstream commit 45dfbd992923f4df174db4e23b96fca7e30d73e2 ]
 
-With a raw socket bound to IPPROTO_RAW (ie with hdrincl enabled), the
-protocol field of the flow structure, build by raw_sendmsg() /
-rawv6_sendmsg()),  is set to IPPROTO_RAW. This breaks the ipsec policy
-lookup when some policies are defined with a protocol in the selector.
+For a bigjoiner configuration display->crtc_disable() will be called
+first for the slave CRTCs and then for the master CRTC. However slave
+CRTCs will be actually disabled only after the master CRTC is disabled
+(from the encoder disable hooks called with the master CRTC state).
+Hence the slave PIPEDMCs can be disabled only after the master CRTC is
+disabled, make this so.
 
-For ipv6, the sin6_port field from 'struct sockaddr_in6' could be used to
-specify the protocol. Just accept all values for IPPROTO_RAW socket.
+intel_encoders_post_pll_disable() must be called only for the master
+CRTC, as for the other two encoder disable hooks. While at it fix this
+up as well. This didn't cause a problem, since
+intel_encoders_post_pll_disable() will call the corresponding hook only
+for an encoder/connector connected to the given CRTC, however slave
+CRTCs will have no associated encoder/connector.
 
-For ipv4, the sin_port field of 'struct sockaddr_in' could not be used
-without breaking backward compatibility (the value of this field was never
-checked). Let's add a new kind of control message, so that the userland
-could specify which protocol is used.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-CC: stable@vger.kernel.org
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Link: https://lore.kernel.org/r/20230522120820.1319391-1-nicolas.dichtel@6wind.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3af2ff0840be ("drm/i915: Enable a PIPEDMC whenever its corresponding pipe is enabled")
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230510103131.1618266-2-imre.deak@intel.com
+(cherry picked from commit 7eeef32719f6af935a1554813e6bc206446339cd)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip.h        |    2 ++
- include/uapi/linux/in.h |    2 ++
- net/ipv4/ip_sockglue.c  |   12 +++++++++++-
- net/ipv4/raw.c          |    5 ++++-
- net/ipv6/raw.c          |    3 ++-
- 5 files changed, 21 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/display/intel_display.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -75,6 +75,7 @@ struct ipcm_cookie {
- 	__be32			addr;
- 	int			oif;
- 	struct ip_options_rcu	*opt;
-+	__u8			protocol;
- 	__u8			ttl;
- 	__s16			tos;
- 	char			priority;
-@@ -95,6 +96,7 @@ static inline void ipcm_init_sk(struct i
- 	ipcm->sockc.tsflags = inet->sk.sk_tsflags;
- 	ipcm->oif = inet->sk.sk_bound_dev_if;
- 	ipcm->addr = inet->inet_saddr;
-+	ipcm->protocol = inet->inet_num;
+diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
+index 963680ea6fedd..c84b581c61c6b 100644
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -2022,9 +2022,17 @@ static void hsw_crtc_disable(struct intel_atomic_state *state,
+ 
+ 	intel_disable_shared_dpll(old_crtc_state);
+ 
+-	intel_encoders_post_pll_disable(state, crtc);
++	if (!intel_crtc_is_bigjoiner_slave(old_crtc_state)) {
++		struct intel_crtc *slave_crtc;
++
++		intel_encoders_post_pll_disable(state, crtc);
+ 
+-	intel_dmc_disable_pipe(i915, crtc->pipe);
++		intel_dmc_disable_pipe(i915, crtc->pipe);
++
++		for_each_intel_crtc_in_pipe_mask(&i915->drm, slave_crtc,
++						 intel_crtc_bigjoiner_slave_pipes(old_crtc_state))
++			intel_dmc_disable_pipe(i915, slave_crtc->pipe);
++	}
  }
  
- #define IPCB(skb) ((struct inet_skb_parm*)((skb)->cb))
---- a/include/uapi/linux/in.h
-+++ b/include/uapi/linux/in.h
-@@ -159,6 +159,8 @@ struct in_addr {
- #define MCAST_MSFILTER			48
- #define IP_MULTICAST_ALL		49
- #define IP_UNICAST_IF			50
-+#define IP_LOCAL_PORT_RANGE		51
-+#define IP_PROTOCOL			52
- 
- #define MCAST_EXCLUDE	0
- #define MCAST_INCLUDE	1
---- a/net/ipv4/ip_sockglue.c
-+++ b/net/ipv4/ip_sockglue.c
-@@ -317,7 +317,14 @@ int ip_cmsg_send(struct sock *sk, struct
- 			ipc->tos = val;
- 			ipc->priority = rt_tos2priority(ipc->tos);
- 			break;
--
-+		case IP_PROTOCOL:
-+			if (cmsg->cmsg_len != CMSG_LEN(sizeof(int)))
-+				return -EINVAL;
-+			val = *(int *)CMSG_DATA(cmsg);
-+			if (val < 1 || val > 255)
-+				return -EINVAL;
-+			ipc->protocol = val;
-+			break;
- 		default:
- 			return -EINVAL;
- 		}
-@@ -1724,6 +1731,9 @@ static int do_ip_getsockopt(struct sock
- 	case IP_MINTTL:
- 		val = inet->min_ttl;
- 		break;
-+	case IP_PROTOCOL:
-+		val = inet_sk(sk)->inet_num;
-+		break;
- 	default:
- 		release_sock(sk);
- 		return -ENOPROTOOPT;
---- a/net/ipv4/raw.c
-+++ b/net/ipv4/raw.c
-@@ -559,6 +559,9 @@ static int raw_sendmsg(struct sock *sk,
- 	}
- 
- 	ipcm_init_sk(&ipc, inet);
-+	/* Keep backward compat */
-+	if (hdrincl)
-+		ipc.protocol = IPPROTO_RAW;
- 
- 	if (msg->msg_controllen) {
- 		err = ip_cmsg_send(sk, msg, &ipc, false);
-@@ -626,7 +629,7 @@ static int raw_sendmsg(struct sock *sk,
- 
- 	flowi4_init_output(&fl4, ipc.oif, ipc.sockc.mark, tos,
- 			   RT_SCOPE_UNIVERSE,
--			   hdrincl ? IPPROTO_RAW : sk->sk_protocol,
-+			   hdrincl ? ipc.protocol : sk->sk_protocol,
- 			   inet_sk_flowi_flags(sk) |
- 			    (hdrincl ? FLOWI_FLAG_KNOWN_NH : 0),
- 			   daddr, saddr, 0, 0, sk->sk_uid);
---- a/net/ipv6/raw.c
-+++ b/net/ipv6/raw.c
-@@ -828,7 +828,8 @@ static int rawv6_sendmsg(struct sock *sk
- 
- 		if (!proto)
- 			proto = inet->inet_num;
--		else if (proto != inet->inet_num)
-+		else if (proto != inet->inet_num &&
-+			 inet->inet_num != IPPROTO_RAW)
- 			return -EINVAL;
- 
- 		if (proto > 255)
+ static void i9xx_pfit_enable(const struct intel_crtc_state *crtc_state)
+-- 
+2.39.2
+
 
 
