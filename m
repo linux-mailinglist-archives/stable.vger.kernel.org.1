@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5055719E2E
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:30:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95619719DBD
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:26:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234047AbjFAN3i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:29:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38236 "EHLO
+        id S233633AbjFAN0L (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:26:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234099AbjFAN3W (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:29:22 -0400
+        with ESMTP id S233772AbjFANZr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:25:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFF781BD
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:29:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB8F210DB
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:25:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D757D64506
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:29:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F06FAC433D2;
-        Thu,  1 Jun 2023 13:29:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ACFAE63958
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:25:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C673DC433D2;
+        Thu,  1 Jun 2023 13:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685626142;
-        bh=d8+VB8xeYHoLU6AYiD+PlHXIKgd9dY8l+NNlNPqUBKc=;
+        s=korg; t=1685625931;
+        bh=n9wKVvgjmRvm7T9ORA2GZ7A1N9b7N+FFTYEMoCPslB0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l78uYXQpblXz5rX8WmNxRBDux4oNygxZN1sVeI6sVsWUOrWo57T1Cgej/rvWS3LdH
-         zv9q3lQwOyj6UZ23+AuseHEi+WD0ACv75BNQce2iXrs22JwDOWB7pHt+t1v6hvlJuW
-         Lyb3hRCCAB8YQlDLwIQ/rLZjIPCPzP69w9ClUrpk=
+        b=EDPC3RqTBA2+la2qCXQcHturqanvWaG0/gVOmDvzfoSp6f67GancgcKKNjWl4ZswH
+         4Sx2Dcb4SCmP503Y7DxG8pHLdcjDWE0WDFY1MnFufLr3mmeTuvEfhsfeHm4yrLmRo6
+         rX6+lekVMpbxMvooTTbIkkJwyqPhxpQqEjjeZVhs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shai Amiram <samiram@nvidia.com>,
+        patches@lists.linux.dev, Yunsheng Lin <linyunsheng@huawei.com>,
+        Jesper Dangaard Brouer <brouer@redhat.com>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
         Jakub Kicinski <kuba@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 11/42] tls: rx: strp: preserve decryption status of skbs when needed
+Subject: [PATCH 5.15 33/42] page_pool: fix inconsistency for page_pool_ring_[un]lock()
 Date:   Thu,  1 Jun 2023 14:21:20 +0100
-Message-Id: <20230601131939.560170765@linuxfoundation.org>
+Message-Id: <20230601131938.197126297@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131939.051934720@linuxfoundation.org>
-References: <20230601131939.051934720@linuxfoundation.org>
+In-Reply-To: <20230601131936.699199833@linuxfoundation.org>
+References: <20230601131936.699199833@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,260 +56,124 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Yunsheng Lin <linyunsheng@huawei.com>
 
-[ Upstream commit eca9bfafee3a0487e59c59201ae14c7594ba940a ]
+[ Upstream commit 368d3cb406cdd074d1df2ad9ec06d1bfcb664882 ]
 
-When receive buffer is small we try to copy out the data from
-TCP into a skb maintained by TLS to prevent connection from
-stalling. Unfortunately if a single record is made up of a mix
-of decrypted and non-decrypted skbs combining them into a single
-skb leads to loss of decryption status, resulting in decryption
-errors or data corruption.
+page_pool_ring_[un]lock() use in_softirq() to decide which
+spin lock variant to use, and when they are called in the
+context with in_softirq() being false, spin_lock_bh() is
+called in page_pool_ring_lock() while spin_unlock() is
+called in page_pool_ring_unlock(), because spin_lock_bh()
+has disabled the softirq in page_pool_ring_lock(), which
+causes inconsistency for spin lock pair calling.
 
-Similarly when trying to use TCP receive queue directly we need
-to make sure that all the skbs within the record have the same
-status. If we don't the mixed status will be detected correctly
-but we'll CoW the anchor, again collapsing it into a single paged
-skb without decrypted status preserved. So the "fixup" code will
-not know which parts of skb to re-encrypt.
+This patch fixes it by returning in_softirq state from
+page_pool_producer_lock(), and use it to decide which
+spin lock variant to use in page_pool_producer_unlock().
 
-Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
-Tested-by: Shai Amiram <samiram@nvidia.com>
+As pool->ring has both producer and consumer lock, so
+rename it to page_pool_producer_[un]lock() to reflect
+the actual usage. Also move them to page_pool.c as they
+are only used there, and remove the 'inline' as the
+compiler may have better idea to do inlining or not.
+
+Fixes: 7886244736a4 ("net: page_pool: Add bulk support for ptr_ring")
+Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
+Acked-by: Jesper Dangaard Brouer <brouer@redhat.com>
+Acked-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Link: https://lore.kernel.org/r/20230522031714.5089-1-linyunsheng@huawei.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tls.h    |   1 +
- net/tls/tls.h        |   5 ++
- net/tls/tls_device.c |  22 +++-----
- net/tls/tls_strp.c   | 117 ++++++++++++++++++++++++++++++++++++-------
- 4 files changed, 114 insertions(+), 31 deletions(-)
+ include/net/page_pool.h | 18 ------------------
+ net/core/page_pool.c    | 28 ++++++++++++++++++++++++++--
+ 2 files changed, 26 insertions(+), 20 deletions(-)
 
-diff --git a/include/net/tls.h b/include/net/tls.h
-index 154949c7b0c88..c36bf4c50027e 100644
---- a/include/net/tls.h
-+++ b/include/net/tls.h
-@@ -124,6 +124,7 @@ struct tls_strparser {
- 	u32 mark : 8;
- 	u32 stopped : 1;
- 	u32 copy_mode : 1;
-+	u32 mixed_decrypted : 1;
- 	u32 msg_ready : 1;
- 
- 	struct strp_msg stm;
-diff --git a/net/tls/tls.h b/net/tls/tls.h
-index 0e840a0c3437b..17737a65c643a 100644
---- a/net/tls/tls.h
-+++ b/net/tls/tls.h
-@@ -165,6 +165,11 @@ static inline bool tls_strp_msg_ready(struct tls_sw_context_rx *ctx)
- 	return ctx->strp.msg_ready;
+diff --git a/include/net/page_pool.h b/include/net/page_pool.h
+index 80d987419436e..edcc22605842e 100644
+--- a/include/net/page_pool.h
++++ b/include/net/page_pool.h
+@@ -282,22 +282,4 @@ static inline void page_pool_nid_changed(struct page_pool *pool, int new_nid)
+ 		page_pool_update_nid(pool, new_nid);
  }
  
-+static inline bool tls_strp_msg_mixed_decrypted(struct tls_sw_context_rx *ctx)
+-static inline void page_pool_ring_lock(struct page_pool *pool)
+-	__acquires(&pool->ring.producer_lock)
+-{
+-	if (in_softirq())
+-		spin_lock(&pool->ring.producer_lock);
+-	else
+-		spin_lock_bh(&pool->ring.producer_lock);
+-}
+-
+-static inline void page_pool_ring_unlock(struct page_pool *pool)
+-	__releases(&pool->ring.producer_lock)
+-{
+-	if (in_softirq())
+-		spin_unlock(&pool->ring.producer_lock);
+-	else
+-		spin_unlock_bh(&pool->ring.producer_lock);
+-}
+-
+ #endif /* _NET_PAGE_POOL_H */
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 1d520fa1b98a8..069d6ba0e33fb 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -26,6 +26,29 @@
+ 
+ #define BIAS_MAX	LONG_MAX
+ 
++static bool page_pool_producer_lock(struct page_pool *pool)
++	__acquires(&pool->ring.producer_lock)
 +{
-+	return ctx->strp.mixed_decrypted;
++	bool in_softirq = in_softirq();
++
++	if (in_softirq)
++		spin_lock(&pool->ring.producer_lock);
++	else
++		spin_lock_bh(&pool->ring.producer_lock);
++
++	return in_softirq;
 +}
 +
- #ifdef CONFIG_TLS_DEVICE
- int tls_device_init(void);
- void tls_device_cleanup(void);
-diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
-index 3b87c7b04ac87..bf69c9d6d06c0 100644
---- a/net/tls/tls_device.c
-+++ b/net/tls/tls_device.c
-@@ -1007,20 +1007,14 @@ int tls_device_decrypted(struct sock *sk, struct tls_context *tls_ctx)
- 	struct tls_sw_context_rx *sw_ctx = tls_sw_ctx_rx(tls_ctx);
- 	struct sk_buff *skb = tls_strp_msg(sw_ctx);
- 	struct strp_msg *rxm = strp_msg(skb);
--	int is_decrypted = skb->decrypted;
--	int is_encrypted = !is_decrypted;
--	struct sk_buff *skb_iter;
--	int left;
--
--	left = rxm->full_len + rxm->offset - skb_pagelen(skb);
--	/* Check if all the data is decrypted already */
--	skb_iter = skb_shinfo(skb)->frag_list;
--	while (skb_iter && left > 0) {
--		is_decrypted &= skb_iter->decrypted;
--		is_encrypted &= !skb_iter->decrypted;
--
--		left -= skb_iter->len;
--		skb_iter = skb_iter->next;
-+	int is_decrypted, is_encrypted;
++static void page_pool_producer_unlock(struct page_pool *pool,
++				      bool in_softirq)
++	__releases(&pool->ring.producer_lock)
++{
++	if (in_softirq)
++		spin_unlock(&pool->ring.producer_lock);
++	else
++		spin_unlock_bh(&pool->ring.producer_lock);
++}
 +
-+	if (!tls_strp_msg_mixed_decrypted(sw_ctx)) {
-+		is_decrypted = skb->decrypted;
-+		is_encrypted = !is_decrypted;
-+	} else {
-+		is_decrypted = 0;
-+		is_encrypted = 0;
- 	}
- 
- 	trace_tls_device_decrypted(sk, tcp_sk(sk)->copied_seq - rxm->full_len,
-diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
-index 61fbf84baf9e0..da95abbb7ea32 100644
---- a/net/tls/tls_strp.c
-+++ b/net/tls/tls_strp.c
-@@ -29,7 +29,8 @@ static void tls_strp_anchor_free(struct tls_strparser *strp)
- 	struct skb_shared_info *shinfo = skb_shinfo(strp->anchor);
- 
- 	DEBUG_NET_WARN_ON_ONCE(atomic_read(&shinfo->dataref) != 1);
--	shinfo->frag_list = NULL;
-+	if (!strp->copy_mode)
-+		shinfo->frag_list = NULL;
- 	consume_skb(strp->anchor);
- 	strp->anchor = NULL;
- }
-@@ -195,22 +196,22 @@ static void tls_strp_flush_anchor_copy(struct tls_strparser *strp)
- 	for (i = 0; i < shinfo->nr_frags; i++)
- 		__skb_frag_unref(&shinfo->frags[i], false);
- 	shinfo->nr_frags = 0;
-+	if (strp->copy_mode) {
-+		kfree_skb_list(shinfo->frag_list);
-+		shinfo->frag_list = NULL;
-+	}
- 	strp->copy_mode = 0;
-+	strp->mixed_decrypted = 0;
- }
- 
--static int tls_strp_copyin(read_descriptor_t *desc, struct sk_buff *in_skb,
--			   unsigned int offset, size_t in_len)
-+static int tls_strp_copyin_frag(struct tls_strparser *strp, struct sk_buff *skb,
-+				struct sk_buff *in_skb, unsigned int offset,
-+				size_t in_len)
+ static int page_pool_init(struct page_pool *pool,
+ 			  const struct page_pool_params *params)
  {
--	struct tls_strparser *strp = (struct tls_strparser *)desc->arg.data;
--	struct sk_buff *skb;
--	skb_frag_t *frag;
- 	size_t len, chunk;
-+	skb_frag_t *frag;
- 	int sz;
+@@ -489,6 +512,7 @@ void page_pool_put_page_bulk(struct page_pool *pool, void **data,
+ 			     int count)
+ {
+ 	int i, bulk_len = 0;
++	bool in_softirq;
  
--	if (strp->msg_ready)
--		return 0;
--
--	skb = strp->anchor;
- 	frag = &skb_shinfo(skb)->frags[skb->len / PAGE_SIZE];
+ 	for (i = 0; i < count; i++) {
+ 		struct page *page = virt_to_head_page(data[i]);
+@@ -503,12 +527,12 @@ void page_pool_put_page_bulk(struct page_pool *pool, void **data,
+ 		return;
  
- 	len = in_len;
-@@ -228,10 +229,8 @@ static int tls_strp_copyin(read_descriptor_t *desc, struct sk_buff *in_skb,
- 		skb_frag_size_add(frag, chunk);
- 
- 		sz = tls_rx_msg_size(strp, skb);
--		if (sz < 0) {
--			desc->error = sz;
--			return 0;
--		}
-+		if (sz < 0)
-+			return sz;
- 
- 		/* We may have over-read, sz == 0 is guaranteed under-read */
- 		if (unlikely(sz && sz < skb->len)) {
-@@ -271,15 +270,99 @@ static int tls_strp_copyin(read_descriptor_t *desc, struct sk_buff *in_skb,
- 		offset += chunk;
+ 	/* Bulk producer into ptr_ring page_pool cache */
+-	page_pool_ring_lock(pool);
++	in_softirq = page_pool_producer_lock(pool);
+ 	for (i = 0; i < bulk_len; i++) {
+ 		if (__ptr_ring_produce(&pool->ring, data[i]))
+ 			break; /* ring full */
  	}
+-	page_pool_ring_unlock(pool);
++	page_pool_producer_unlock(pool, in_softirq);
  
--	if (strp->stm.full_len == skb->len) {
-+read_done:
-+	return in_len - len;
-+}
-+
-+static int tls_strp_copyin_skb(struct tls_strparser *strp, struct sk_buff *skb,
-+			       struct sk_buff *in_skb, unsigned int offset,
-+			       size_t in_len)
-+{
-+	struct sk_buff *nskb, *first, *last;
-+	struct skb_shared_info *shinfo;
-+	size_t chunk;
-+	int sz;
-+
-+	if (strp->stm.full_len)
-+		chunk = strp->stm.full_len - skb->len;
-+	else
-+		chunk = TLS_MAX_PAYLOAD_SIZE + PAGE_SIZE;
-+	chunk = min(chunk, in_len);
-+
-+	nskb = tls_strp_skb_copy(strp, in_skb, offset, chunk);
-+	if (!nskb)
-+		return -ENOMEM;
-+
-+	shinfo = skb_shinfo(skb);
-+	if (!shinfo->frag_list) {
-+		shinfo->frag_list = nskb;
-+		nskb->prev = nskb;
-+	} else {
-+		first = shinfo->frag_list;
-+		last = first->prev;
-+		last->next = nskb;
-+		first->prev = nskb;
-+	}
-+
-+	skb->len += chunk;
-+	skb->data_len += chunk;
-+
-+	if (!strp->stm.full_len) {
-+		sz = tls_rx_msg_size(strp, skb);
-+		if (sz < 0)
-+			return sz;
-+
-+		/* We may have over-read, sz == 0 is guaranteed under-read */
-+		if (unlikely(sz && sz < skb->len)) {
-+			int over = skb->len - sz;
-+
-+			WARN_ON_ONCE(over > chunk);
-+			skb->len -= over;
-+			skb->data_len -= over;
-+			__pskb_trim(nskb, nskb->len - over);
-+
-+			chunk -= over;
-+		}
-+
-+		strp->stm.full_len = sz;
-+	}
-+
-+	return chunk;
-+}
-+
-+static int tls_strp_copyin(read_descriptor_t *desc, struct sk_buff *in_skb,
-+			   unsigned int offset, size_t in_len)
-+{
-+	struct tls_strparser *strp = (struct tls_strparser *)desc->arg.data;
-+	struct sk_buff *skb;
-+	int ret;
-+
-+	if (strp->msg_ready)
-+		return 0;
-+
-+	skb = strp->anchor;
-+	if (!skb->len)
-+		skb_copy_decrypted(skb, in_skb);
-+	else
-+		strp->mixed_decrypted |= !!skb_cmp_decrypted(skb, in_skb);
-+
-+	if (IS_ENABLED(CONFIG_TLS_DEVICE) && strp->mixed_decrypted)
-+		ret = tls_strp_copyin_skb(strp, skb, in_skb, offset, in_len);
-+	else
-+		ret = tls_strp_copyin_frag(strp, skb, in_skb, offset, in_len);
-+	if (ret < 0) {
-+		desc->error = ret;
-+		ret = 0;
-+	}
-+
-+	if (strp->stm.full_len && strp->stm.full_len == skb->len) {
- 		desc->count = 0;
- 
- 		strp->msg_ready = 1;
- 		tls_rx_msg_ready(strp);
- 	}
- 
--read_done:
--	return in_len - len;
-+	return ret;
- }
- 
- static int tls_strp_read_copyin(struct tls_strparser *strp)
+ 	/* Hopefully all pages was return into ptr_ring */
+ 	if (likely(i == bulk_len))
 -- 
 2.39.2
 
