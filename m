@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8BBB719DC2
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:26:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E5A5719D54
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:22:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233637AbjFAN0U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:26:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34750 "EHLO
+        id S233523AbjFANW1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:22:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233842AbjFANZ6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:25:58 -0400
+        with ESMTP id S232517AbjFANWV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:22:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3F9C1AE
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:25:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E5B6184
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:22:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9484064487
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:25:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD607C433EF;
-        Thu,  1 Jun 2023 13:25:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AA4D260BFA
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:22:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9AB2C433D2;
+        Thu,  1 Jun 2023 13:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625941;
-        bh=HvYB3sTj+zEtPV5oF6dRSGstJrS4nBdZFsPZM6m4bRM=;
+        s=korg; t=1685625736;
+        bh=Mv6eH4au86RE4EEj9ZBOMkAGKp3d0wHJP7lgPQc/fC4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eCGs/MRU7L/xGNhFNTDwjDGOBPgYkBIMKvYk2ffZqm2oYxsjIIz8tf/7CiDb9IVWG
-         1PURiWVquJV7I+Mgww8ytsbgVgzHZ00Aa6SxTGiZWSjuLUIXFFXdzhK3Lonj5I5jN5
-         +w2g57xbeGiLr4cX2jze94myT9+Pz03f2xKMFnE0=
+        b=Mr1XcavYRBQ2utLdWC0bmqMXOOMvBqqLVfZvkjJqoUHfEf+uanGl6kFuzvC2/y3jW
+         mQIhTI3Krzy5ghLpKEDRjqYmE2q88GR/L7deN0kR0uAn55OIHAuaIeuCkq9D6ht5QO
+         mXqJQPrl+1YJYSeU6cOgstWOSFfCZ6W0mqHYv9gE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shai Amiram <samiram@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 12/45] tls: rx: strp: set the skb->len of detached / CoWed skbs
+        patches@lists.linux.dev, Ruihan Li <lrh2000@pku.edu.cn>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Dragos-Marian Panait <dragos.panait@windriver.com>
+Subject: [PATCH 5.4 13/16] bluetooth: Add cmd validity checks at the start of hci_sock_ioctl()
 Date:   Thu,  1 Jun 2023 14:21:08 +0100
-Message-Id: <20230601131939.270419067@linuxfoundation.org>
+Message-Id: <20230601131932.569462318@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
-References: <20230601131938.702671708@linuxfoundation.org>
+In-Reply-To: <20230601131931.947241286@linuxfoundation.org>
+References: <20230601131931.947241286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,40 +55,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Ruihan Li <lrh2000@pku.edu.cn>
 
-[ Upstream commit 210620ae44a83f25220450bbfcc22e6fe986b25f ]
+commit 000c2fa2c144c499c881a101819cf1936a1f7cf2 upstream.
 
-alloc_skb_with_frags() fills in page frag sizes but does not
-set skb->len and skb->data_len. Set those correctly otherwise
-device offload will most likely generate an empty skb and
-hit the BUG() at the end of __skb_nsg().
+Previously, channel open messages were always sent to monitors on the first
+ioctl() call for unbound HCI sockets, even if the command and arguments
+were completely invalid. This can leave an exploitable hole with the abuse
+of invalid ioctl calls.
 
-Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
-Tested-by: Shai Amiram <samiram@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This commit hardens the ioctl processing logic by first checking if the
+command is valid, and immediately returning with an ENOIOCTLCMD error code
+if it is not. This ensures that ioctl calls with invalid commands are free
+of side effects, and increases the difficulty of further exploitation by
+forcing exploitation to find a way to pass a valid command first.
+
+Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
+Co-developed-by: Marcel Holtmann <marcel@holtmann.org>
+Signed-off-by: Marcel Holtmann <marcel@holtmann.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Dragos-Marian Panait <dragos.panait@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tls/tls_strp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/bluetooth/hci_sock.c |   28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
-index 955ac3e0bf4d3..24016c865e004 100644
---- a/net/tls/tls_strp.c
-+++ b/net/tls/tls_strp.c
-@@ -56,6 +56,8 @@ static struct sk_buff *tls_strp_msg_make_copy(struct tls_strparser *strp)
- 		offset += skb_frag_size(frag);
- 	}
+--- a/net/bluetooth/hci_sock.c
++++ b/net/bluetooth/hci_sock.c
+@@ -973,6 +973,34 @@ static int hci_sock_ioctl(struct socket
  
-+	skb->len = strp->stm.full_len;
-+	skb->data_len = strp->stm.full_len;
- 	skb_copy_header(skb, strp->anchor);
- 	rxm = strp_msg(skb);
- 	rxm->offset = 0;
--- 
-2.39.2
-
+ 	BT_DBG("cmd %x arg %lx", cmd, arg);
+ 
++	/* Make sure the cmd is valid before doing anything */
++	switch (cmd) {
++	case HCIGETDEVLIST:
++	case HCIGETDEVINFO:
++	case HCIGETCONNLIST:
++	case HCIDEVUP:
++	case HCIDEVDOWN:
++	case HCIDEVRESET:
++	case HCIDEVRESTAT:
++	case HCISETSCAN:
++	case HCISETAUTH:
++	case HCISETENCRYPT:
++	case HCISETPTYPE:
++	case HCISETLINKPOL:
++	case HCISETLINKMODE:
++	case HCISETACLMTU:
++	case HCISETSCOMTU:
++	case HCIINQUIRY:
++	case HCISETRAW:
++	case HCIGETCONNINFO:
++	case HCIGETAUTHINFO:
++	case HCIBLOCKADDR:
++	case HCIUNBLOCKADDR:
++		break;
++	default:
++		return -ENOIOCTLCMD;
++	}
++
+ 	lock_sock(sk);
+ 
+ 	if (hci_pi(sk)->channel != HCI_CHANNEL_RAW) {
 
 
