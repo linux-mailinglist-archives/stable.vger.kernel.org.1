@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7563719E02
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:28:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF855719DD3
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:26:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233906AbjFAN2Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:28:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36882 "EHLO
+        id S233715AbjFAN0u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:26:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233840AbjFAN2D (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:28:03 -0400
+        with ESMTP id S233741AbjFAN0l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:26:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 499D2E50
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:27:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFEAC19D
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:26:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 96631644E4
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:27:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B63DAC433D2;
-        Thu,  1 Jun 2023 13:27:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 55EB6644AB
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:26:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 752DCC4339B;
+        Thu,  1 Jun 2023 13:26:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685626061;
-        bh=Q66oGo6YHunqdLXo+Uqi03t/BOE+7faoNHZDZl5VWLA=;
+        s=korg; t=1685625977;
+        bh=fplDzVp6B3/ORRrKudlbN0BsEAEHoivu2HIEGJvfbaY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p69Fv0y77m4xwgVbzgQ1RiQFaEeR8HeNme//4BLLdW61wmToOX0ciAeRqh86EoQCQ
-         1TcE3mzDCUoyozsPtUFOTVnV25juMtDJLp1bkFmy4dU3L2Gbg/6a0Bvw/sgrEWEKs5
-         RDHQBk/bYX+HKsVHVIgSxYoL7JiiD9eCfWUfnSgE=
+        b=LU4TZxJGj7WYA7uANWYXvQxYwJ6nuzotT+Ud4GOfPPwhb6C0WB5KycQeqN4Jes8aQ
+         CKQALuhKT50+MWTFLvciXEgMtsk2r+QhTjZ9t9Xy81TOUn8TmLwErUieiAA8Nnan0t
+         iX3SNvBlpLsvKEY8VY+NtXLgOJ39ew7ZuLANsGjU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tariq Toukan <tariqt@nvidia.com>,
-        Shai Amiram <samiram@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Robert Richter <rrichter@amd.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 06/42] tls: rx: device: fix checking decryption status
+Subject: [PATCH 6.3 19/45] cxl/port: Fix NULL pointer access in devm_cxl_add_port()
 Date:   Thu,  1 Jun 2023 14:21:15 +0100
-Message-Id: <20230601131939.338500118@linuxfoundation.org>
+Message-Id: <20230601131939.595852162@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131939.051934720@linuxfoundation.org>
-References: <20230601131939.051934720@linuxfoundation.org>
+In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
+References: <20230601131938.702671708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,42 +55,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Robert Richter <rrichter@amd.com>
 
-[ Upstream commit b3a03b540e3cf62a255213d084d76d71c02793d5 ]
+[ Upstream commit a70fc4ed20a6118837b0aecbbf789074935f473b ]
 
-skb->len covers the entire skb, including the frag_list.
-In fact we're guaranteed that rxm->full_len <= skb->len,
-so since the change under Fixes we were not checking decrypt
-status of any skb but the first.
+In devm_cxl_add_port() the port creation may fail and its associated
+pointer does not contain a valid address. During error message
+generation this invalid port address is used. Fix that wrong address
+access.
 
-Note that the skb_pagelen() added here may feel a bit costly,
-but it's removed by subsequent fixes, anyway.
-
-Reported-by: Tariq Toukan <tariqt@nvidia.com>
-Fixes: 86b259f6f888 ("tls: rx: device: bound the frag walk")
-Tested-by: Shai Amiram <samiram@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: f3cd264c4ec1 ("cxl: Unify debug messages when calling devm_cxl_add_port()")
+Signed-off-by: Robert Richter <rrichter@amd.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20230519215436.3394532-1-rrichter@amd.com
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_device.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cxl/core/port.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
-index a7cc4f9faac28..3b87c7b04ac87 100644
---- a/net/tls/tls_device.c
-+++ b/net/tls/tls_device.c
-@@ -1012,7 +1012,7 @@ int tls_device_decrypted(struct sock *sk, struct tls_context *tls_ctx)
- 	struct sk_buff *skb_iter;
- 	int left;
+diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+index 4d1f9c5b5029a..27cbf457416d2 100644
+--- a/drivers/cxl/core/port.c
++++ b/drivers/cxl/core/port.c
+@@ -751,11 +751,10 @@ struct cxl_port *devm_cxl_add_port(struct device *host, struct device *uport,
  
--	left = rxm->full_len - skb->len;
-+	left = rxm->full_len + rxm->offset - skb_pagelen(skb);
- 	/* Check if all the data is decrypted already */
- 	skb_iter = skb_shinfo(skb)->frag_list;
- 	while (skb_iter && left > 0) {
+ 	parent_port = parent_dport ? parent_dport->port : NULL;
+ 	if (IS_ERR(port)) {
+-		dev_dbg(uport, "Failed to add %s%s%s%s: %ld\n",
+-			dev_name(&port->dev),
+-			parent_port ? " to " : "",
++		dev_dbg(uport, "Failed to add%s%s%s: %ld\n",
++			parent_port ? " port to " : "",
+ 			parent_port ? dev_name(&parent_port->dev) : "",
+-			parent_port ? "" : " (root port)",
++			parent_port ? "" : " root port",
+ 			PTR_ERR(port));
+ 	} else {
+ 		dev_dbg(uport, "%s added%s%s%s\n",
 -- 
 2.39.2
 
