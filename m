@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89F38719DD1
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:26:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33DAC719D57
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:22:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233757AbjFAN0q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:26:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34520 "EHLO
+        id S231585AbjFANWZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:22:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233745AbjFAN0i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:26:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC5B018F
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:26:13 -0700 (PDT)
+        with ESMTP id S233240AbjFANWV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:22:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16BFF1A8
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:22:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 62AA7644AD
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:26:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F14BC433EF;
-        Thu,  1 Jun 2023 13:26:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A853261AF5
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:22:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6AE0C4339B;
+        Thu,  1 Jun 2023 13:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625972;
-        bh=DHbeZIlCJD/8jt1CjNFc6VqW0nOJJ4BR9ZXicu9RwkI=;
+        s=korg; t=1685625727;
+        bh=tRLvT91wGfWp24uirKSMXa5dwGy+OpqTKJw8sdTaS84=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SpQjnqVAoOMX786E1yeDt6otAGPz6NcJe1yad3Yom0bIPLKpTU4VvPGHm5tsJHtJt
-         6xnU/Dcf9Mlx8wH+n3WfGwY6Y2/of3KSyK7+cJAUAZkf/XDbwNRlCSjVE3Ho0gi9O0
-         K7gtMfpqoVhhFF3HFY7hza//NbNfsyMqE1Mj0iso=
+        b=QMuyDH++hMQ7YG7CLTHUYQqXT+ZK3pBrDydhqOMUTCHHCyp+2NyJnNttqU/r7pKYH
+         rbZh97MH6sM2aMbfxnZxpqS0AgMoLNiXnNIAVYca0w+DLfD5lHdDs2gJLFjodJIJKH
+         GWyXQ67dq2jGwRa0yMmddM1g8Ghm2tJkHLEiPZZM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-        Stanislav Fomichev <sdf@google.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 09/45] bpf: netdev: init the offload table earlier
+        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
+        Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.4 10/16] io_uring: always grab lock in io_cancel_async_work()
 Date:   Thu,  1 Jun 2023 14:21:05 +0100
-Message-Id: <20230601131939.130808037@linuxfoundation.org>
+Message-Id: <20230601131932.434586757@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
-References: <20230601131938.702671708@linuxfoundation.org>
+In-Reply-To: <20230601131931.947241286@linuxfoundation.org>
+References: <20230601131931.947241286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,36 +53,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit e1505c1cc8d527fcc5bcaf9c1ad82eed817e3e10 ]
+No upstream commit exists for this patch.
 
-Some netdevices may get unregistered before late_initcall(),
-we have to move the hashtable init earlier.
+It's not necessarily safe to check the task_list locklessly, remove
+this micro optimization and always grab task_lock before deeming it
+empty.
 
-Fixes: f1fc43d03946 ("bpf: Move offload initialization into late_initcall")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217399
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Acked-by: Stanislav Fomichev <sdf@google.com>
-Link: https://lore.kernel.org/r/20230505215836.491485-1-kuba@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-and-tested-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/offload.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/io_uring.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/kernel/bpf/offload.c b/kernel/bpf/offload.c
-index 0c85e06f7ea7f..ee146430d9984 100644
---- a/kernel/bpf/offload.c
-+++ b/kernel/bpf/offload.c
-@@ -853,4 +853,4 @@ static int __init bpf_offload_init(void)
- 	return rhashtable_init(&offdevs, &offdevs_params);
- }
+--- a/fs/io_uring.c
++++ b/fs/io_uring.c
+@@ -3738,9 +3738,6 @@ static void io_cancel_async_work(struct
+ {
+ 	struct io_kiocb *req;
  
--late_initcall(bpf_offload_init);
-+core_initcall(bpf_offload_init);
--- 
-2.39.2
-
+-	if (list_empty(&ctx->task_list))
+-		return;
+-
+ 	spin_lock_irq(&ctx->task_lock);
+ 
+ 	list_for_each_entry(req, &ctx->task_list, task_list) {
 
 
