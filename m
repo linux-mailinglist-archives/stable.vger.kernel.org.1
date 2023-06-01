@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58BC4719D87
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:24:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 331A1719DD0
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:26:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233682AbjFANXs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:23:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60366 "EHLO
+        id S233746AbjFAN0n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:26:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233632AbjFANXd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:23:33 -0400
+        with ESMTP id S233784AbjFAN0f (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:26:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07D451AD
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:23:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 936BE10D8
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:26:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 511FE61AF5
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:23:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDC7C433EF;
-        Thu,  1 Jun 2023 13:23:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EDCC4644A6
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:26:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 145D3C433EF;
+        Thu,  1 Jun 2023 13:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625810;
-        bh=2U97B8zRhkqNLuQvTLDR1rSrT5PFQctU0d15Je/k/fM=;
+        s=korg; t=1685625970;
+        bh=z7WCTmD4fDz35QUruiaMPQauvoIyXOgnvS8RGV3SJQg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZJkNDpRa7BMsejoT1Q/GlO+zcz1N+RAclSDsmDZ8pzhrXYxxh8Ulw+JeYhdE0v0nt
-         JgS3OOBv0s2Gpn9PTiai1O4fUbPN5aFvyxgAyfMcaODG4w10QeyqjhXbJr3ejPZXOu
-         f5RlswCZgTcFS7BPxoFAiQSEKfDESgQEBciSbUGg=
+        b=W6sYvIfp68GbLXcZNlSTodX3bspkUpFZbuBIyr6+EHP0+gse/nIyjAi4O/Xz/TP/o
+         g2cKTekyexo39y8gRnltwwjLKE+gmnqNIPkR+j3XcxiJ8D3/6r0t1+iZHqyqRfFL/Y
+         xP+xiCZ7rGzKLuBBvAoupCbVEEJHX0qySkc6BuF0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 06/22] power: supply: bq27xxx: Add cache parameter to bq27xxx_battery_current_and_status()
+Subject: [PATCH 6.3 08/45] platform/x86/amd/pmf: Fix CnQF and auto-mode after resume
 Date:   Thu,  1 Jun 2023 14:21:04 +0100
-Message-Id: <20230601131934.015925500@linuxfoundation.org>
+Message-Id: <20230601131939.081050313@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131933.727832920@linuxfoundation.org>
-References: <20230601131933.727832920@linuxfoundation.org>
+In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
+References: <20230601131938.702671708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,75 +55,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 35092c5819f8c5acc7bafe3fdbb13d6307c4f5e1 ]
+[ Upstream commit b54147fa374dbeadcb01b1762db1a793e06e37de ]
 
-Add a cache parameter to bq27xxx_battery_current_and_status() so that
-it can optionally use cached flags instead of re-reading them itself.
+After suspend/resume cycle there is an error message and auto-mode
+or CnQF stops working.
 
-This is a preparation patch for making bq27xxx_battery_update() check
-the status and have it call power_supply_changed() on status changes.
+[ 5741.447511] amd-pmf AMDI0100:00: SMU cmd failed. err: 0xff
+[ 5741.447523] amd-pmf AMDI0100:00: AMD_PMF_REGISTER_RESPONSE:ff
+[ 5741.447527] amd-pmf AMDI0100:00: AMD_PMF_REGISTER_ARGUMENT:7
+[ 5741.447531] amd-pmf AMDI0100:00: AMD_PMF_REGISTER_MESSAGE:16
+[ 5741.447540] amd-pmf AMDI0100:00: [AUTO_MODE] avg power: 0 mW mode: QUIET
 
-Fixes: 297a533b3e62 ("bq27x00: Cache battery registers")
+This is because the DRAM address used for accessing metrics table
+needs to be refreshed after a suspend resume cycle. Add a resume
+callback to reset this again.
+
+Fixes: 1a409b35c995 ("platform/x86/amd/pmf: Get performance metrics from PMFW")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20230513011408.958-1-mario.limonciello@amd.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/bq27xxx_battery.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/platform/x86/amd/pmf/core.c | 32 ++++++++++++++++++++++-------
+ 1 file changed, 25 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
-index 681fa81f4dbde..d09ce7d6351d9 100644
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -1772,7 +1772,8 @@ static bool bq27xxx_battery_is_full(struct bq27xxx_device_info *di, int flags)
- static int bq27xxx_battery_current_and_status(
- 	struct bq27xxx_device_info *di,
- 	union power_supply_propval *val_curr,
--	union power_supply_propval *val_status)
-+	union power_supply_propval *val_status,
-+	struct bq27xxx_reg_cache *cache)
+diff --git a/drivers/platform/x86/amd/pmf/core.c b/drivers/platform/x86/amd/pmf/core.c
+index 0acc0b6221290..dc9803e1a4b9b 100644
+--- a/drivers/platform/x86/amd/pmf/core.c
++++ b/drivers/platform/x86/amd/pmf/core.c
+@@ -245,24 +245,29 @@ static const struct pci_device_id pmf_pci_ids[] = {
+ 	{ }
+ };
+ 
+-int amd_pmf_init_metrics_table(struct amd_pmf_dev *dev)
++static void amd_pmf_set_dram_addr(struct amd_pmf_dev *dev)
  {
- 	bool single_flags = (di->opts & BQ27XXX_O_ZERO);
- 	int curr;
-@@ -1784,10 +1785,14 @@ static int bq27xxx_battery_current_and_status(
- 		return curr;
- 	}
+ 	u64 phys_addr;
+ 	u32 hi, low;
  
--	flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, single_flags);
--	if (flags < 0) {
--		dev_err(di->dev, "error reading flags\n");
--		return flags;
-+	if (cache) {
-+		flags = cache->flags;
-+	} else {
-+		flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, single_flags);
-+		if (flags < 0) {
-+			dev_err(di->dev, "error reading flags\n");
-+			return flags;
-+		}
- 	}
+-	INIT_DELAYED_WORK(&dev->work_buffer, amd_pmf_get_metrics);
++	phys_addr = virt_to_phys(dev->buf);
++	hi = phys_addr >> 32;
++	low = phys_addr & GENMASK(31, 0);
++
++	amd_pmf_send_cmd(dev, SET_DRAM_ADDR_HIGH, 0, hi, NULL);
++	amd_pmf_send_cmd(dev, SET_DRAM_ADDR_LOW, 0, low, NULL);
++}
  
- 	if (di->opts & BQ27XXX_O_ZERO) {
-@@ -1933,7 +1938,7 @@ static int bq27xxx_battery_get_property(struct power_supply *psy,
++int amd_pmf_init_metrics_table(struct amd_pmf_dev *dev)
++{
+ 	/* Get Metrics Table Address */
+ 	dev->buf = kzalloc(sizeof(dev->m_table), GFP_KERNEL);
+ 	if (!dev->buf)
+ 		return -ENOMEM;
  
- 	switch (psp) {
- 	case POWER_SUPPLY_PROP_STATUS:
--		ret = bq27xxx_battery_current_and_status(di, NULL, val);
-+		ret = bq27xxx_battery_current_and_status(di, NULL, val, NULL);
- 		break;
- 	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
- 		ret = bq27xxx_battery_voltage(di, val);
-@@ -1942,7 +1947,7 @@ static int bq27xxx_battery_get_property(struct power_supply *psy,
- 		val->intval = di->cache.flags < 0 ? 0 : 1;
- 		break;
- 	case POWER_SUPPLY_PROP_CURRENT_NOW:
--		ret = bq27xxx_battery_current_and_status(di, val, NULL);
-+		ret = bq27xxx_battery_current_and_status(di, val, NULL, NULL);
- 		break;
- 	case POWER_SUPPLY_PROP_CAPACITY:
- 		ret = bq27xxx_simple_value(di->cache.capacity, val);
+-	phys_addr = virt_to_phys(dev->buf);
+-	hi = phys_addr >> 32;
+-	low = phys_addr & GENMASK(31, 0);
++	INIT_DELAYED_WORK(&dev->work_buffer, amd_pmf_get_metrics);
+ 
+-	amd_pmf_send_cmd(dev, SET_DRAM_ADDR_HIGH, 0, hi, NULL);
+-	amd_pmf_send_cmd(dev, SET_DRAM_ADDR_LOW, 0, low, NULL);
++	amd_pmf_set_dram_addr(dev);
+ 
+ 	/*
+ 	 * Start collecting the metrics data after a small delay
+@@ -273,6 +278,18 @@ int amd_pmf_init_metrics_table(struct amd_pmf_dev *dev)
+ 	return 0;
+ }
+ 
++static int amd_pmf_resume_handler(struct device *dev)
++{
++	struct amd_pmf_dev *pdev = dev_get_drvdata(dev);
++
++	if (pdev->buf)
++		amd_pmf_set_dram_addr(pdev);
++
++	return 0;
++}
++
++static DEFINE_SIMPLE_DEV_PM_OPS(amd_pmf_pm, NULL, amd_pmf_resume_handler);
++
+ static void amd_pmf_init_features(struct amd_pmf_dev *dev)
+ {
+ 	int ret;
+@@ -414,6 +431,7 @@ static struct platform_driver amd_pmf_driver = {
+ 		.name = "amd-pmf",
+ 		.acpi_match_table = amd_pmf_acpi_ids,
+ 		.dev_groups = amd_pmf_driver_groups,
++		.pm = pm_sleep_ptr(&amd_pmf_pm),
+ 	},
+ 	.probe = amd_pmf_probe,
+ 	.remove = amd_pmf_remove,
 -- 
 2.39.2
 
