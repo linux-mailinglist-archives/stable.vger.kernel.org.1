@@ -2,56 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A8A871F086
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 19:20:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB74971F088
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 19:21:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231379AbjFARUZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 13:20:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56032 "EHLO
+        id S232058AbjFARU6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 13:20:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231304AbjFARUY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 13:20:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C540132
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 10:20:23 -0700 (PDT)
+        with ESMTP id S231947AbjFARU5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 13:20:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0973B136;
+        Thu,  1 Jun 2023 10:20:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3029264835
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 17:20:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 82847C433D2;
-        Thu,  1 Jun 2023 17:20:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685640022;
-        bh=LZFteKwaGN0IDeCXiUlxd+NIaIwWRgoKYWH/vjTXTio=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=BVWVMTPudVpDaPw4X96jAGLIhzOHYpeug6yifgZOK2KDVZj2rHX4V5eb6R4xNnceE
-         NG8y6eIvB7vebbavw546ZTeu8hoYzKxbRLyGKt1yk0h3F+80OHoGzMZMH28tO3trDa
-         EosODlG+JzpzdQyY8M7BcnM5GCmqGS9jBjrbMVfYv8HmiPEBH5wndet1wrlPG93hgU
-         UOpBH6CMR38SNziy6EQyo0dHozQLS8oUpE1CyOlY7O7zpeY/qeJpZR1MPiBygkEoxG
-         n2ddBH5n8vhY5ANkJOLn3vBZ+tBhiUbcW1GV9vjz4ZCkmPfyw+w0tCowcvy/u9+RnK
-         S3uFuCLJtlB1w==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 613CBC395F0;
-        Thu,  1 Jun 2023 17:20:22 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B96664835;
+        Thu,  1 Jun 2023 17:20:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81995C433D2;
+        Thu,  1 Jun 2023 17:20:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1685640056;
+        bh=9EaqC1DnJMuk4AMWEh9JBON4F0FRodQtCo6RrSC2wsc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=lZdpfz5JapOz2Y0YELeTlVq+OU8fVjl+6hfGwZNBz3pxMSdwsyuN1PoPIxtCi6WhT
+         Nq9efP1eCyxIOXD3HPrwhWWvJiIOlgH6Sqk4XYk5YEaEmSXVpz6CenikE5KiEmiP89
+         6SYgjpMPdkF9aCLQsMnNr/htH5TflxeDBbVKGAOo=
+Date:   Thu, 1 Jun 2023 18:20:53 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Danila Chernetsov <listdansp@mail.ru>
+Cc:     stable@vger.kernel.org, Amir Goldstein <amir73il@gmail.com>,
+        "Darrick J. Wong" <djwong@kernel.org>, linux-xfs@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Dave Chinner <dchinner@redhat.com>,
+        Dave Chinner <david@fromorbit.com>
+Subject: Re: [PATCH 5.10 1/1] xfs: verify buffer contents when we skip log
+ replay
+Message-ID: <2023060127-flick-velcro-ca45@gregkh>
+References: <20230601164439.15404-1-listdansp@mail.ru>
+ <20230601164439.15404-2-listdansp@mail.ru>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/6] mptcp: Fixes for connect timeout, access
- annotations, and subflow init
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <168564002239.14862.18397323108950816840.git-patchwork-notify@kernel.org>
-Date:   Thu, 01 Jun 2023 17:20:22 +0000
-References: <20230531-send-net-20230531-v1-0-47750c420571@kernel.org>
-In-Reply-To: <20230531-send-net-20230531-v1-0-47750c420571@kernel.org>
-To:     Mat Martineau <martineau@kernel.org>
-Cc:     matthieu.baerts@tessares.net, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        geliang.tang@suse.com, netdev@vger.kernel.org,
-        mptcp@lists.linux.dev, omosnace@redhat.com, stable@vger.kernel.org,
-        cpaasch@apple.com
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230601164439.15404-2-listdansp@mail.ru>
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -60,38 +54,16 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed, 31 May 2023 12:37:02 -0700 you wrote:
-> Patch 1 allows the SO_SNDTIMEO sockopt to correctly change the connect
-> timeout on MPTCP sockets.
+On Thu, Jun 01, 2023 at 04:44:39PM +0000, Danila Chernetsov wrote:
+> From: "Darrick J. Wong" <djwong@kernel.org>
 > 
-> Patches 2-5 add READ_ONCE()/WRITE_ONCE() annotations to fix KCSAN issues.
+> commit 22ed903eee23a5b174e240f1cdfa9acf393a5210 upstream.
 > 
-> Patch 6 correctly initializes some subflow fields on outgoing connections.
-> 
-> [...]
+> syzbot detected a crash during log recovery:
 
-Here is the summary with links:
-  - [net,1/6] mptcp: fix connect timeout handling
-    https://git.kernel.org/netdev/net/c/786fc1245726
-  - [net,2/6] mptcp: add annotations around msk->subflow accesses
-    https://git.kernel.org/netdev/net/c/5b825727d087
-  - [net,3/6] mptcp: consolidate passive msk socket initialization
-    https://git.kernel.org/netdev/net/c/7e8b88ec35ee
-  - [net,4/6] mptcp: fix data race around msk->first access
-    https://git.kernel.org/netdev/net/c/1b1b43ee7a20
-  - [net,5/6] mptcp: add annotations around sk->sk_shutdown accesses
-    https://git.kernel.org/netdev/net/c/6b9831bfd932
-  - [net,6/6] mptcp: fix active subflow finalization
-    https://git.kernel.org/netdev/net/c/55b47ca7d808
+XFS patches for stable come from the XFS maintainers, so please work
+with them if you feel any specific patch is missing from a stable tree.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+thanks,
 
-
+greg k-h
