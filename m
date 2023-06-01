@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5404719D5A
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:22:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65778719DC4
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:26:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233490AbjFANW3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:22:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59120 "EHLO
+        id S233798AbjFAN0U (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:26:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232311AbjFANWW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:22:22 -0400
+        with ESMTP id S233851AbjFAN0C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:26:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4550B18C
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:22:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75E841A8
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:25:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C260861ABD
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:22:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE6EC433EF;
-        Thu,  1 Jun 2023 13:22:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E3D764492
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:25:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D4F1C433D2;
+        Thu,  1 Jun 2023 13:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625739;
-        bh=fa+mz/dusZOTb9qJbIsK2l0sCwDp0waJr7QG2PF4OJI=;
+        s=korg; t=1685625943;
+        bh=8PxLH7uMhGIjLOjtRkRgDRDt/MoTg6Gwa1niyUtXc3Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1csBKQzFhaP8HTCfdmNdAf2IqHuNBQ0INpvr7wxrocLdI6Cl5HRQmG4/IbnnpNIlZ
-         ijaFCZHAHg2iFvVi2Kbx0wzRUubpcXNSY8QA3fy/df7Y+AGhEOb/C2hED6dW51E6XS
-         1h77BcwEHnM/grZ5eSsi+Cwqnvz6nsbepOXQIVlU=
+        b=h7SXHZyPDL69LFVeIu7PNAt7takixMH993nXbDJd91uzwCKCgH3rHGjFiOYcG2AVD
+         RjcdCe5GH7neglOXbGvrzZN+dHMDJ/Qan25sR/qMpKn71ZJh4IKJ4F6jjpWVDlitkB
+         YzlbI+KYYClXDZsxVb/tqURIoDiyHpCWSfezq0js=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zi Fan Tan <zifantan@google.com>,
-        Carlos Llamas <cmllamas@google.com>,
-        Todd Kjos <tkjos@google.com>
-Subject: [PATCH 5.4 14/16] binder: fix UAF caused by faulty buffer cleanup
+        patches@lists.linux.dev, Shai Amiram <samiram@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 13/45] tls: rx: strp: fix determining record length in copy mode
 Date:   Thu,  1 Jun 2023 14:21:09 +0100
-Message-Id: <20230601131932.611327463@linuxfoundation.org>
+Message-Id: <20230601131939.318781693@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131931.947241286@linuxfoundation.org>
-References: <20230601131931.947241286@linuxfoundation.org>
+In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
+References: <20230601131938.702671708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,151 +56,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit bdc1c5fac982845a58d28690cdb56db8c88a530d upstream.
+[ Upstream commit 8b0c0dc9fbbd01e58a573a41c38885f9e4c17696 ]
 
-In binder_transaction_buffer_release() the 'failed_at' offset indicates
-the number of objects to clean up. However, this function was changed by
-commit 44d8047f1d87 ("binder: use standard functions to allocate fds"),
-to release all the objects in the buffer when 'failed_at' is zero.
+We call tls_rx_msg_size(skb) before doing skb->len += chunk.
+So the tls_rx_msg_size() code will see old skb->len, most
+likely leading to an over-read.
 
-This introduced an issue when a transaction buffer is released without
-any objects having been processed so far. In this case, 'failed_at' is
-indeed zero yet it is misinterpreted as releasing the entire buffer.
+Worst case we will over read an entire record, next iteration
+will try to trim the skb but may end up turning frag len negative
+or discarding the subsequent record (since we already told TCP
+we've read it during previous read but now we'll trim it out of
+the skb).
 
-This leads to use-after-free errors where nodes are incorrectly freed
-and subsequently accessed. Such is the case in the following KASAN
-report:
-
-  ==================================================================
-  BUG: KASAN: slab-use-after-free in binder_thread_read+0xc40/0x1f30
-  Read of size 8 at addr ffff4faf037cfc58 by task poc/474
-
-  CPU: 6 PID: 474 Comm: poc Not tainted 6.3.0-12570-g7df047b3f0aa #5
-  Hardware name: linux,dummy-virt (DT)
-  Call trace:
-   dump_backtrace+0x94/0xec
-   show_stack+0x18/0x24
-   dump_stack_lvl+0x48/0x60
-   print_report+0xf8/0x5b8
-   kasan_report+0xb8/0xfc
-   __asan_load8+0x9c/0xb8
-   binder_thread_read+0xc40/0x1f30
-   binder_ioctl+0xd9c/0x1768
-   __arm64_sys_ioctl+0xd4/0x118
-   invoke_syscall+0x60/0x188
-  [...]
-
-  Allocated by task 474:
-   kasan_save_stack+0x3c/0x64
-   kasan_set_track+0x2c/0x40
-   kasan_save_alloc_info+0x24/0x34
-   __kasan_kmalloc+0xb8/0xbc
-   kmalloc_trace+0x48/0x5c
-   binder_new_node+0x3c/0x3a4
-   binder_transaction+0x2b58/0x36f0
-   binder_thread_write+0x8e0/0x1b78
-   binder_ioctl+0x14a0/0x1768
-   __arm64_sys_ioctl+0xd4/0x118
-   invoke_syscall+0x60/0x188
-  [...]
-
-  Freed by task 475:
-   kasan_save_stack+0x3c/0x64
-   kasan_set_track+0x2c/0x40
-   kasan_save_free_info+0x38/0x5c
-   __kasan_slab_free+0xe8/0x154
-   __kmem_cache_free+0x128/0x2bc
-   kfree+0x58/0x70
-   binder_dec_node_tmpref+0x178/0x1fc
-   binder_transaction_buffer_release+0x430/0x628
-   binder_transaction+0x1954/0x36f0
-   binder_thread_write+0x8e0/0x1b78
-   binder_ioctl+0x14a0/0x1768
-   __arm64_sys_ioctl+0xd4/0x118
-   invoke_syscall+0x60/0x188
-  [...]
-  ==================================================================
-
-In order to avoid these issues, let's always calculate the intended
-'failed_at' offset beforehand. This is renamed and wrapped in a helper
-function to make it clear and convenient.
-
-Fixes: 32e9f56a96d8 ("binder: don't detect sender/target during buffer cleanup")
-Reported-by: Zi Fan Tan <zifantan@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Acked-by: Todd Kjos <tkjos@google.com>
-Link: https://lore.kernel.org/r/20230505203020.4101154-1-cmllamas@google.com
-[cmllamas: resolve trivial conflict due to missing commit 9864bb4801331]
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
+Tested-by: Shai Amiram <samiram@nvidia.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder.c |   26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+ net/tls/tls_strp.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -2270,24 +2270,23 @@ static void binder_deferred_fd_close(int
- static void binder_transaction_buffer_release(struct binder_proc *proc,
- 					      struct binder_thread *thread,
- 					      struct binder_buffer *buffer,
--					      binder_size_t failed_at,
-+					      binder_size_t off_end_offset,
- 					      bool is_failure)
- {
- 	int debug_id = buffer->debug_id;
--	binder_size_t off_start_offset, buffer_offset, off_end_offset;
-+	binder_size_t off_start_offset, buffer_offset;
+diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
+index 24016c865e004..9889df5ce0660 100644
+--- a/net/tls/tls_strp.c
++++ b/net/tls/tls_strp.c
+@@ -210,19 +210,28 @@ static int tls_strp_copyin(read_descriptor_t *desc, struct sk_buff *in_skb,
+ 					   skb_frag_size(frag),
+ 					   chunk));
  
- 	binder_debug(BINDER_DEBUG_TRANSACTION,
- 		     "%d buffer release %d, size %zd-%zd, failed at %llx\n",
- 		     proc->pid, buffer->debug_id,
- 		     buffer->data_size, buffer->offsets_size,
--		     (unsigned long long)failed_at);
-+		     (unsigned long long)off_end_offset);
- 
- 	if (buffer->target_node)
- 		binder_dec_node(buffer->target_node, 1, 0);
- 
- 	off_start_offset = ALIGN(buffer->data_size, sizeof(void *));
--	off_end_offset = is_failure && failed_at ? failed_at :
--				off_start_offset + buffer->offsets_size;
+-		sz = tls_rx_msg_size(strp, strp->anchor);
++		skb->len += chunk;
++		skb->data_len += chunk;
++		skb_frag_size_add(frag, chunk);
 +
- 	for (buffer_offset = off_start_offset; buffer_offset < off_end_offset;
- 	     buffer_offset += sizeof(binder_size_t)) {
- 		struct binder_object_header *hdr;
-@@ -2447,6 +2446,21 @@ static void binder_transaction_buffer_re
- 	}
- }
++		sz = tls_rx_msg_size(strp, skb);
+ 		if (sz < 0) {
+ 			desc->error = sz;
+ 			return 0;
+ 		}
  
-+/* Clean up all the objects in the buffer */
-+static inline void binder_release_entire_buffer(struct binder_proc *proc,
-+						struct binder_thread *thread,
-+						struct binder_buffer *buffer,
-+						bool is_failure)
-+{
-+	binder_size_t off_end_offset;
+ 		/* We may have over-read, sz == 0 is guaranteed under-read */
+-		if (sz > 0)
+-			chunk =	min_t(size_t, chunk, sz - skb->len);
++		if (unlikely(sz && sz < skb->len)) {
++			int over = skb->len - sz;
 +
-+	off_end_offset = ALIGN(buffer->data_size, sizeof(void *));
-+	off_end_offset += buffer->offsets_size;
++			WARN_ON_ONCE(over > chunk);
++			skb->len -= over;
++			skb->data_len -= over;
++			skb_frag_size_add(frag, -over);
 +
-+	binder_transaction_buffer_release(proc, thread, buffer,
-+					  off_end_offset, is_failure);
-+}
-+
- static int binder_translate_binder(struct flat_binder_object *fp,
- 				   struct binder_transaction *t,
- 				   struct binder_thread *thread)
-@@ -3930,7 +3944,7 @@ binder_free_buf(struct binder_proc *proc
- 		binder_node_inner_unlock(buf_node);
- 	}
- 	trace_binder_transaction_buffer_release(buffer);
--	binder_transaction_buffer_release(proc, thread, buffer, 0, is_failure);
-+	binder_release_entire_buffer(proc, thread, buffer, is_failure);
- 	binder_alloc_free_buf(&proc->alloc, buffer);
- }
++			chunk -= over;
++		}
  
+-		skb->len += chunk;
+-		skb->data_len += chunk;
+-		skb_frag_size_add(frag, chunk);
+ 		frag++;
+ 		len -= chunk;
+ 		offset += chunk;
+-- 
+2.39.2
+
 
 
