@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07280719D76
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:23:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08F8B719DFF
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:28:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233567AbjFANXR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:23:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59746 "EHLO
+        id S233837AbjFAN2P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:28:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233351AbjFANXO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:23:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 827E9191
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:23:09 -0700 (PDT)
+        with ESMTP id S233921AbjFAN2D (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:28:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46C72E4C
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:27:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B66B61AF5
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:23:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35997C433EF;
-        Thu,  1 Jun 2023 13:23:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 28A79644E0
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:27:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4513BC433EF;
+        Thu,  1 Jun 2023 13:27:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625788;
-        bh=9ncxuGZ7Ir1eotIA07rbA7WU38lufl/G11GctjpIRYc=;
+        s=korg; t=1685626058;
+        bh=z7WCTmD4fDz35QUruiaMPQauvoIyXOgnvS8RGV3SJQg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tVj7/t23rAg7BkqwLmMr+f+1Pkr6Uuaoi2oCerFtcvUgxHsHxZfIY8MQbt+YSYltr
-         LLVUGZAFuZYTWkcZLjZrtfpxk5bCdiIhF2rg4WSWGcN6L6Dtss8ky9N7PKdOeObGxK
-         WPtfjvjXPclASnJxa9P/+XJxPPasOLLMqDd6UwnM=
+        b=uLPrlCVuCNm/EP7E79tXBMYVSVWqb3daeh57+Gw3HroSDtrnecVwAvak3B0nJZ+uz
+         3R1AkGfnDw5PjxdJFrg2LOxoGivHiqqD164T4HCthmAZgDUjPL6G4jvwBZGw0FDdag
+         BF+bkqXsjmd17G2BM+XFvcdbZoKX7leHV+R7rCgc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Bloch <mbloch@nvidia.com>,
-        Maor Gottlieb <maorg@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 16/22] net/mlx5: devcom only supports 2 ports
+Subject: [PATCH 6.1 05/42] platform/x86/amd/pmf: Fix CnQF and auto-mode after resume
 Date:   Thu,  1 Jun 2023 14:21:14 +0100
-Message-Id: <20230601131934.502939883@linuxfoundation.org>
+Message-Id: <20230601131939.296909185@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131933.727832920@linuxfoundation.org>
-References: <20230601131933.727832920@linuxfoundation.org>
+In-Reply-To: <20230601131939.051934720@linuxfoundation.org>
+References: <20230601131939.051934720@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,107 +55,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Bloch <mbloch@nvidia.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 8a6e75e5f57e9ac82268d9bfca3403598d9d0292 ]
+[ Upstream commit b54147fa374dbeadcb01b1762db1a793e06e37de ]
 
-Devcom API is intended to be used between 2 devices only add this
-implied assumption into the code and check when it's no true.
+After suspend/resume cycle there is an error message and auto-mode
+or CnQF stops working.
 
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Stable-dep-of: 1f893f57a3bf ("net/mlx5: Devcom, serialize devcom registration")
+[ 5741.447511] amd-pmf AMDI0100:00: SMU cmd failed. err: 0xff
+[ 5741.447523] amd-pmf AMDI0100:00: AMD_PMF_REGISTER_RESPONSE:ff
+[ 5741.447527] amd-pmf AMDI0100:00: AMD_PMF_REGISTER_ARGUMENT:7
+[ 5741.447531] amd-pmf AMDI0100:00: AMD_PMF_REGISTER_MESSAGE:16
+[ 5741.447540] amd-pmf AMDI0100:00: [AUTO_MODE] avg power: 0 mW mode: QUIET
+
+This is because the DRAM address used for accessing metrics table
+needs to be refreshed after a suspend resume cycle. Add a resume
+callback to reset this again.
+
+Fixes: 1a409b35c995 ("platform/x86/amd/pmf: Get performance metrics from PMFW")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20230513011408.958-1-mario.limonciello@amd.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/lib/devcom.c | 16 +++++++++-------
- .../net/ethernet/mellanox/mlx5/core/lib/devcom.h |  2 ++
- 2 files changed, 11 insertions(+), 7 deletions(-)
+ drivers/platform/x86/amd/pmf/core.c | 32 ++++++++++++++++++++++-------
+ 1 file changed, 25 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-index abd066e952286..617eea1b1701b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-@@ -14,7 +14,7 @@ static LIST_HEAD(devcom_list);
- struct mlx5_devcom_component {
- 	struct {
- 		void *data;
--	} device[MLX5_MAX_PORTS];
-+	} device[MLX5_DEVCOM_PORTS_SUPPORTED];
- 
- 	mlx5_devcom_event_handler_t handler;
- 	struct rw_semaphore sem;
-@@ -25,7 +25,7 @@ struct mlx5_devcom_list {
- 	struct list_head list;
- 
- 	struct mlx5_devcom_component components[MLX5_DEVCOM_NUM_COMPONENTS];
--	struct mlx5_core_dev *devs[MLX5_MAX_PORTS];
-+	struct mlx5_core_dev *devs[MLX5_DEVCOM_PORTS_SUPPORTED];
+diff --git a/drivers/platform/x86/amd/pmf/core.c b/drivers/platform/x86/amd/pmf/core.c
+index 0acc0b6221290..dc9803e1a4b9b 100644
+--- a/drivers/platform/x86/amd/pmf/core.c
++++ b/drivers/platform/x86/amd/pmf/core.c
+@@ -245,24 +245,29 @@ static const struct pci_device_id pmf_pci_ids[] = {
+ 	{ }
  };
  
- struct mlx5_devcom {
-@@ -74,13 +74,15 @@ struct mlx5_devcom *mlx5_devcom_register_device(struct mlx5_core_dev *dev)
+-int amd_pmf_init_metrics_table(struct amd_pmf_dev *dev)
++static void amd_pmf_set_dram_addr(struct amd_pmf_dev *dev)
+ {
+ 	u64 phys_addr;
+ 	u32 hi, low;
  
- 	if (!mlx5_core_is_pf(dev))
- 		return NULL;
-+	if (MLX5_CAP_GEN(dev, num_lag_ports) != MLX5_DEVCOM_PORTS_SUPPORTED)
-+		return NULL;
- 
- 	sguid0 = mlx5_query_nic_system_image_guid(dev);
- 	list_for_each_entry(iter, &devcom_list, list) {
- 		struct mlx5_core_dev *tmp_dev = NULL;
- 
- 		idx = -1;
--		for (i = 0; i < MLX5_MAX_PORTS; i++) {
-+		for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++) {
- 			if (iter->devs[i])
- 				tmp_dev = iter->devs[i];
- 			else
-@@ -135,11 +137,11 @@ void mlx5_devcom_unregister_device(struct mlx5_devcom *devcom)
- 
- 	kfree(devcom);
- 
--	for (i = 0; i < MLX5_MAX_PORTS; i++)
-+	for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++)
- 		if (priv->devs[i])
- 			break;
- 
--	if (i != MLX5_MAX_PORTS)
-+	if (i != MLX5_DEVCOM_PORTS_SUPPORTED)
- 		return;
- 
- 	list_del(&priv->list);
-@@ -192,7 +194,7 @@ int mlx5_devcom_send_event(struct mlx5_devcom *devcom,
- 
- 	comp = &devcom->priv->components[id];
- 	down_write(&comp->sem);
--	for (i = 0; i < MLX5_MAX_PORTS; i++)
-+	for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++)
- 		if (i != devcom->idx && comp->device[i].data) {
- 			err = comp->handler(event, comp->device[i].data,
- 					    event_data);
-@@ -240,7 +242,7 @@ void *mlx5_devcom_get_peer_data(struct mlx5_devcom *devcom,
- 		return NULL;
- 	}
- 
--	for (i = 0; i < MLX5_MAX_PORTS; i++)
-+	for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++)
- 		if (i != devcom->idx)
- 			break;
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
-index 939d5bf1581b5..94313c18bb647 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
-@@ -6,6 +6,8 @@
- 
- #include <linux/mlx5/driver.h>
- 
-+#define MLX5_DEVCOM_PORTS_SUPPORTED 2
+-	INIT_DELAYED_WORK(&dev->work_buffer, amd_pmf_get_metrics);
++	phys_addr = virt_to_phys(dev->buf);
++	hi = phys_addr >> 32;
++	low = phys_addr & GENMASK(31, 0);
 +
- enum mlx5_devcom_components {
- 	MLX5_DEVCOM_ESW_OFFLOADS,
++	amd_pmf_send_cmd(dev, SET_DRAM_ADDR_HIGH, 0, hi, NULL);
++	amd_pmf_send_cmd(dev, SET_DRAM_ADDR_LOW, 0, low, NULL);
++}
  
++int amd_pmf_init_metrics_table(struct amd_pmf_dev *dev)
++{
+ 	/* Get Metrics Table Address */
+ 	dev->buf = kzalloc(sizeof(dev->m_table), GFP_KERNEL);
+ 	if (!dev->buf)
+ 		return -ENOMEM;
+ 
+-	phys_addr = virt_to_phys(dev->buf);
+-	hi = phys_addr >> 32;
+-	low = phys_addr & GENMASK(31, 0);
++	INIT_DELAYED_WORK(&dev->work_buffer, amd_pmf_get_metrics);
+ 
+-	amd_pmf_send_cmd(dev, SET_DRAM_ADDR_HIGH, 0, hi, NULL);
+-	amd_pmf_send_cmd(dev, SET_DRAM_ADDR_LOW, 0, low, NULL);
++	amd_pmf_set_dram_addr(dev);
+ 
+ 	/*
+ 	 * Start collecting the metrics data after a small delay
+@@ -273,6 +278,18 @@ int amd_pmf_init_metrics_table(struct amd_pmf_dev *dev)
+ 	return 0;
+ }
+ 
++static int amd_pmf_resume_handler(struct device *dev)
++{
++	struct amd_pmf_dev *pdev = dev_get_drvdata(dev);
++
++	if (pdev->buf)
++		amd_pmf_set_dram_addr(pdev);
++
++	return 0;
++}
++
++static DEFINE_SIMPLE_DEV_PM_OPS(amd_pmf_pm, NULL, amd_pmf_resume_handler);
++
+ static void amd_pmf_init_features(struct amd_pmf_dev *dev)
+ {
+ 	int ret;
+@@ -414,6 +431,7 @@ static struct platform_driver amd_pmf_driver = {
+ 		.name = "amd-pmf",
+ 		.acpi_match_table = amd_pmf_acpi_ids,
+ 		.dev_groups = amd_pmf_driver_groups,
++		.pm = pm_sleep_ptr(&amd_pmf_pm),
+ 	},
+ 	.probe = amd_pmf_probe,
+ 	.remove = amd_pmf_remove,
 -- 
 2.39.2
 
