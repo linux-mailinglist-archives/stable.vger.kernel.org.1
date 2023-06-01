@@ -2,61 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 387AC71F4A0
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 23:27:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F04671F4B8
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 23:31:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230174AbjFAV1U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 17:27:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47620 "EHLO
+        id S229651AbjFAVb2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 17:31:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231700AbjFAV1T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 17:27:19 -0400
-X-Greylist: delayed 288 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 01 Jun 2023 14:26:54 PDT
-Received: from pb-smtp2.pobox.com (pb-smtp2.pobox.com [64.147.108.71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A4FCE65
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 14:26:53 -0700 (PDT)
-Received: from pb-smtp2.pobox.com (unknown [127.0.0.1])
-        by pb-smtp2.pobox.com (Postfix) with ESMTP id 4A4FD19D770;
-        Thu,  1 Jun 2023 17:26:16 -0400 (EDT)
-        (envelope-from nico@fluxnic.net)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=pobox.com; h=date:from
-        :to:cc:subject:in-reply-to:message-id:references:mime-version
-        :content-type; s=sasl; bh=c+xVhYzwvyTdddEAvj3Ta44sMzWSuxSlAKibsl
-        iig/Y=; b=tiZ48WxKLhdp+Z7teVj8pxcJMpWfTgBk9CTKr/WWwVFFhVLucDz5iU
-        zEzkQ1yngbTi1NzCZqg6VWO9aOM77css3QlFekRm8zZUoR1r0KIbt8oNoxgpS2sc
-        76YtSJuliQnnB9CgKYsv6dEARgWAJt3PNppA0HHVrkx8JC/YkBgNg=
-Received: from pb-smtp2.nyi.icgroup.com (unknown [127.0.0.1])
-        by pb-smtp2.pobox.com (Postfix) with ESMTP id 3035B19D76E;
-        Thu,  1 Jun 2023 17:26:16 -0400 (EDT)
-        (envelope-from nico@fluxnic.net)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=fluxnic.net;
- h=date:from:to:cc:subject:in-reply-to:message-id:references:mime-version:content-type; s=2016-12.pbsmtp; bh=c+xVhYzwvyTdddEAvj3Ta44sMzWSuxSlAKibsliig/Y=; b=rzwk8C2G5AeUOh+Qpf576lqKEwm75iz3AmJWp0/b9g/RnUhcAqvdRbIrgYIVz/lbH5RB02TYV/P/XjBu6pVkhv7iHDL1n5gUL5cB8HMLVFr32GaIzNwnJknx6+lZHnh3e3a0+rO4fbCUwXFUIU3jhxIkcvX7ko55P7FXYHLb/NA=
-Received: from yoda.home (unknown [184.162.17.228])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by pb-smtp2.pobox.com (Postfix) with ESMTPSA id 90ECD19D76C;
-        Thu,  1 Jun 2023 17:26:15 -0400 (EDT)
-        (envelope-from nico@fluxnic.net)
-Received: from xanadu.home (xanadu [10.0.0.101])
-        by yoda.home (Postfix) with ESMTPSA id 8B60B7CCC9D;
-        Thu,  1 Jun 2023 17:26:14 -0400 (EDT)
-Date:   Thu, 1 Jun 2023 17:26:14 -0400 (EDT)
-From:   Nicolas Pitre <nico@fluxnic.net>
-To:     Linus Walleij <linus.walleij@linaro.org>
-cc:     Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-mtd@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] mtd: cfi_cmdset_0001: Byte swap OTP info
-In-Reply-To: <66r393r4-5qnn-0nns-9q0q-3o41n27300n6@syhkavp.arg>
-Message-ID: <78q06989-243s-p557-2nn1-323p6400pqn9@syhkavp.arg>
-References: <20230601194123.3408902-1-linus.walleij@linaro.org> <66r393r4-5qnn-0nns-9q0q-3o41n27300n6@syhkavp.arg>
+        with ESMTP id S232402AbjFAVb1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 17:31:27 -0400
+X-Greylist: delayed 61 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 01 Jun 2023 14:31:25 PDT
+Received: from fgw21-7.mail.saunalahti.fi (fgw21-7.mail.saunalahti.fi [62.142.5.82])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3A49195
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 14:31:25 -0700 (PDT)
+Received: from localhost (88-113-26-95.elisa-laajakaista.fi [88.113.26.95])
+        by fgw21.mail.saunalahti.fi (Halon) with ESMTP
+        id 7eea1b78-00c3-11ee-abf4-005056bdd08f;
+        Fri, 02 Jun 2023 00:30:15 +0300 (EEST)
+From:   andy.shevchenko@gmail.com
+Date:   Fri, 2 Jun 2023 00:30:14 +0300
+To:     Hugo Villeneuve <hugo@hugovil.com>
+Cc:     gregkh@linuxfoundation.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        jirislaby@kernel.org, jringle@gridpoint.com,
+        tomasz.mon@camlingroup.com, l.perczak@camlintechnologies.com,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v6 5/9] serial: sc16is7xx: fix regression with GPIO
+ configuration
+Message-ID: <ZHkN5kEa6yqHdDeL@surfacebook>
+References: <20230601201844.3739926-1-hugo@hugovil.com>
+ <20230601201844.3739926-6-hugo@hugovil.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Pobox-Relay-ID: F0A62A0E-00C2-11EE-9EEA-307A8E0A682E-78420484!pb-smtp2.pobox.com
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230601201844.3739926-6-hugo@hugovil.com>
+X-Spam-Status: No, score=0.7 required=5.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
+        FORGED_GMAIL_RCVD,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,SPF_HELO_NONE,
+        SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,75 +49,128 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 1 Jun 2023, Nicolas Pitre wrote:
+Thu, Jun 01, 2023 at 04:18:40PM -0400, Hugo Villeneuve kirjoitti:
+> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> 
+> Commit 679875d1d880 ("sc16is7xx: Separate GPIOs from modem control lines")
+> and commit 21144bab4f11 ("sc16is7xx: Handle modem status lines")
+> changed the function of the GPIOs pins to act as modem control
+> lines without any possibility of selecting GPIO function.
+> 
+> As a consequence, applications that depends on GPIO lines configured
+> by default as GPIO pins no longer work as expected.
+> 
+> Also, the change to select modem control lines function was done only
+> for channel A of dual UART variants (752/762). This was not documented
+> in the log message.
+> 
+> Allow to specify GPIO or modem control line function in the device
+> tree, and for each of the ports (A or B).
+> 
+> Do so by using the new device-tree property named
+> "modem-control-line-ports" (property added in separate patch).
+> 
+> When registering GPIO chip controller, mask-out GPIO pins declared as
+> modem control lines according to this new "modem-control-line-ports"
+> DT property.
+> 
+> Boards that need to have GPIOS configured as modem control lines
+> should add that property to their device tree. Here is a list of
+> boards using the sc16is7xx driver in their device tree and that may
+> need to be modified:
+>     arm64/boot/dts/freescale/fsl-ls1012a-frdm.dts
+>     mips/boot/dts/ingenic/cu1830-neo.dts
+>     mips/boot/dts/ingenic/cu1000-neo.dts
 
-> On Thu, 1 Jun 2023, Linus Walleij wrote:
-> 
-> > Currently the offset into the device when looking for OTP
-> > bits can go outside of the address of the MTD NOR devices,
-> > and if that memory isn't readable, bad things happen
-> > on the IXP4xx (added prints that illustrate the problem before
-> > the crash):
-> > 
-> > cfi_intelext_otp_walk walk OTP on chip 0 start at reg_prot_offset 0x00000100
-> > ixp4xx_copy_from copy from 0x00000100 to 0xc880dd78
-> > cfi_intelext_otp_walk walk OTP on chip 0 start at reg_prot_offset 0x12000000
-> > ixp4xx_copy_from copy from 0x12000000 to 0xc880dd78
-> > 8<--- cut here ---
-> > Unable to handle kernel paging request at virtual address db000000
-> > [db000000] *pgd=00000000
-> > (...)
-> > 
-> > This happens in this case because the IXP4xx is big endian and
-> > the 32- and 16-bit fields in the struct cfi_intelext_otpinfo are not
-> > properly byteswapped. Compare to how the code in read_pri_intelext()
-> > byteswaps the fields in struct cfi_pri_intelext.
-> 
-> DOH!
-> 
-> And to confirm, in include/linux/mtd/cfi.h we can see:
-> 
-> /* NB: We keep these structures in memory in HOST byteorder, except
->  * where individually noted.
->  */
-> 
-> > Adding some byte swapping after casting the &extp->extra[0] into
-> > a struct cfi_intelext_otpinfo * pointer, and the crash goes away.
-> 
-> But this is wrong to do so in cfi_intelext_otp_walk(). That function is 
-> a helper applying given operation callback on given range. Each time it 
-> is called those values will be swapped back and forth. You want to do 
-> the swap only once during init in read_pri_intelext().
-> 
-> Something like this (completely untested):
-> 
-> diff --git a/drivers/mtd/chips/cfi_cmdset_0001.c b/drivers/mtd/chips/cfi_cmdset_0001.c
-> index 54f92d09d9..723dd6473c 100644
-> --- a/drivers/mtd/chips/cfi_cmdset_0001.c
-> +++ b/drivers/mtd/chips/cfi_cmdset_0001.c
-> @@ -421,9 +421,20 @@ read_pri_intelext(struct map_info *map, __u16 adr)
->  		extra_size = 0;
->  
->  		/* Protection Register info */
-> -		if (extp->NumProtectionFields)
-> +		if (extp->NumProtectionFields) {
-> +			struct cfi_intelext_otpinfo *otp =
-> +				(struct cfi_intelext_otpinfo *)&extp->extra[0]; 
+Almost good, a few remarks and if addressed as suggested,
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+
+Thank you!
+
+...
+
+> +	if (!s->gpio_valid_mask)
+
+I would use == 0, but it's up to you. Both will work equally.
+
+> +		return 0;
+
+...
+
+> +static int sc16is7xx_setup_mctrl_ports(struct device *dev)
+
+Not sure why int if you always return an unsigned value.
+Otherwise return an error code when it's no defined mask
+and check it in the caller.
+
+> +{
+> +	struct sc16is7xx_port *s = dev_get_drvdata(dev);
+> +	int i;
+> +	int ret;
+> +	int count;
+> +	u32 mctrl_port[2];
+> +	u8 mctrl_mask = 0;
+
+I would return 0 directly in the first two cases and split an assignment closer
+to the first user.
+
+> +	count = device_property_count_u32(dev, "nxp,modem-control-line-ports");
+> +	if (count < 0 || count > ARRAY_SIZE(mctrl_port))
+> +		return mctrl_mask;
+
+		return 0;
+
+> +	ret = device_property_read_u32_array(dev, "nxp,modem-control-line-ports",
+> +					     mctrl_port, count);
+> +	if (ret)
+> +		return mctrl_mask;
+
+		return 0;
+
+
+	mctrl_mask = 0;
+
+> +	for (i = 0; i < count; i++) {
+> +		/* Use GPIO lines as modem control lines */
+> +		if (mctrl_port[i] == 0)
+> +			mctrl_mask |= SC16IS7XX_IOCONTROL_MODEM_A_BIT;
+> +		else if (mctrl_port[i] == 1)
+> +			mctrl_mask |= SC16IS7XX_IOCONTROL_MODEM_B_BIT;
+> +	}
+
+> +	if (!mctrl_mask)
+> +		return mctrl_mask;
+
+Maybe positive one?
+
+	if (mctrl_mask)
+		regmap_update_bits(...);
+
+> +	regmap_update_bits(s->regmap,
+> +			   SC16IS7XX_IOCONTROL_REG << SC16IS7XX_REG_SHIFT,
+> +			   SC16IS7XX_IOCONTROL_MODEM_A_BIT |
+> +			   SC16IS7XX_IOCONTROL_MODEM_B_BIT, mctrl_mask);
 > +
->  			extra_size += (extp->NumProtectionFields - 1) *
->  				      sizeof(struct cfi_intelext_otpinfo);
-> +			if (extp_size >= sizeof(*extp) + extra_size) {
-> +				for (i = 0; i < extp->NumProtectionFields - 1; i++) {
-> +					otp->ProtRegAddr = le32_to_cpu(otp->ProtRegAddr);
-> +					otp->FactGroups = le16_to_cpu(otp->FactGroups);
-> +					otp->UserGroups = le16_to_cpu(otp->UserGroups);
+> +	return mctrl_mask;
+> +}
 
----> plus the missing otp++ here;
+...
 
-> +				}
-> +			}
-> +		}
->  	}
->  
->  	if (extp->MinorVersion >= '1') {
-> 
+>  	unsigned long freq = 0, *pfreq = dev_get_platdata(dev);
+>  	unsigned int val;
+> +	u8 mctrl_mask = 0;
+
+This assignment is redundant, so you simply can define it
+
+>  	u32 uartclk = 0;
+
+	u8 mctrl_mask;
+
+>  	int i, ret;
+>  	struct sc16is7xx_port *s;
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
