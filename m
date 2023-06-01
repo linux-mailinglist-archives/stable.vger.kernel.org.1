@@ -2,83 +2,61 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A8C071F499
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 23:25:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 387AC71F4A0
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 23:27:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231584AbjFAVZX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 17:25:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45688 "EHLO
+        id S230174AbjFAV1U (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 17:27:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231555AbjFAVZV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 17:25:21 -0400
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7F85184;
-        Thu,  1 Jun 2023 14:25:20 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id 51B315C01D4;
-        Thu,  1 Jun 2023 17:25:20 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Thu, 01 Jun 2023 17:25:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        invisiblethingslab.com; h=cc:cc:content-transfer-encoding
-        :content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm1; t=1685654720; x=1685741120; bh=vjypfpPRoU
-        7xNHCTk2Gztx5IGWJumVDp62oiO1y8MH4=; b=QS6kbn1lVsQPDjeMFPYE/Nfixp
-        fCec3RGDWj6Zx5E0RTWRDq9aZpHhu181d4dpYWzyYWJkyS68BUpOBwWq9DhhATO8
-        +ZyBhwwLPCBa+DtOU5kHp2eKiyWC2Oecwar73chh2Mtx+xjBFcKIKA2khgz1rVeV
-        dqolwNaATMsXQ1BpanFenABNHzXkYvKkVtEwHLQvT2qi7i/TzkBlH0Du9gu8Cb6q
-        +xHgEyKWJM55WSAp9bmt3ilgAAwWbrBWRsCW+/NnfyBKVRpzG97LN/nVzPZ3VCBA
-        RmlCK+QFDK/qWevsJMvnWVW5MPgUVXArM3gYHEelsbECGNCROp/bQaBKBN2A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:date:date:feedback-id:feedback-id:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1685654720; x=
-        1685741120; bh=vjypfpPRoU7xNHCTk2Gztx5IGWJumVDp62oiO1y8MH4=; b=W
-        Tz8zIWLRlgVtvoDLu1mw4rwdnZkCAMXL782bpRiHn9mJ1e/HL6qrZ8PEDx9FODhn
-        6e3xsfUl+zdXAH57zyhQkqqlEDtqt81pCD/UmXnJ/BWgtQ5vvUn6Voicq3dVGEZG
-        RYReNPna7FeinAC4Tblf1qkgk19vioYsk02MBisIZuqiiPCiTy+Bu6/tBnlnsNym
-        gYgHTt6CYZgEAaSfaRovs3FKiAcrd/My1ThqoCXxRmVszwtuWWhn8Y5YjyoXOhiq
-        OPt8Ix7lDNWHhNv1gwkal4GgI/FBiSG7IauAlSD09+ap6f/XohvCXb5+oHFmBkat
-        zB53v6zhxe+Tb+GWDW7KQ==
-X-ME-Sender: <xms:wAx5ZCop7mZ0sTHJh6aoixbkmxXE2hpeBBeaZkvdf0fWSbsehwCnGw>
-    <xme:wAx5ZApfEXNvHSO10vsufNin_SAdjUB3gVaNzAkdWzjJShuQG0v7xXjdTTDuL3PbQ
-    AuwmDJkN4i0a7k>
-X-ME-Received: <xmr:wAx5ZHPLYNpMCuEbyVrjrHzrxcFisklaeh4Xortc_jx63i9ls9tcqnqszl1clo4EzXEbzPztBOU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeeluddgudeiudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeffvghm
-    ihcuofgrrhhivgcuqfgsvghnohhurhcuoeguvghmihesihhnvhhishhisghlvghthhhinh
-    hgshhlrggsrdgtohhmqeenucggtffrrghtthgvrhhnpeejffejgffgueegudevvdejkefg
-    hefghffhffejteekleeufeffteffhfdtudehteenucevlhhushhtvghrufhiiigvpedune
-    curfgrrhgrmhepmhgrihhlfhhrohhmpeguvghmihesihhnvhhishhisghlvghthhhinhhg
-    shhlrggsrdgtohhm
-X-ME-Proxy: <xmx:wAx5ZB5e536P_TRuBejVQt_cQiplNTKjKAzNptqLpQPP2iATdXDspQ>
-    <xmx:wAx5ZB7L_eqEFw3Ns9k1frl4_L1CH2Jr5jaUtLU9OLBdKUU3u_eVBg>
-    <xmx:wAx5ZBgMG9dI4j10NYs_2vLlWxLRnHWZqQBkNLxmHhAXvYdKoRsUqw>
-    <xmx:wAx5ZLncHxR2y9IyXXRcNarRGZph6zvk8iAelJKk8lHREVjQGLCDAw>
-Feedback-ID: iac594737:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 1 Jun 2023 17:25:19 -0400 (EDT)
-From:   Demi Marie Obenour <demi@invisiblethingslab.com>
-To:     Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@kernel.org>, dm-devel@redhat.com
-Cc:     Demi Marie Obenour <demi@invisiblethingslab.com>,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH 4/6] device-mapper: Avoid double-fetch of version
-Date:   Thu,  1 Jun 2023 17:24:53 -0400
-Message-Id: <20230601212456.1533-5-demi@invisiblethingslab.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601212456.1533-1-demi@invisiblethingslab.com>
-References: <20230601212456.1533-1-demi@invisiblethingslab.com>
+        with ESMTP id S231700AbjFAV1T (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 17:27:19 -0400
+X-Greylist: delayed 288 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 01 Jun 2023 14:26:54 PDT
+Received: from pb-smtp2.pobox.com (pb-smtp2.pobox.com [64.147.108.71])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A4FCE65
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 14:26:53 -0700 (PDT)
+Received: from pb-smtp2.pobox.com (unknown [127.0.0.1])
+        by pb-smtp2.pobox.com (Postfix) with ESMTP id 4A4FD19D770;
+        Thu,  1 Jun 2023 17:26:16 -0400 (EDT)
+        (envelope-from nico@fluxnic.net)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=pobox.com; h=date:from
+        :to:cc:subject:in-reply-to:message-id:references:mime-version
+        :content-type; s=sasl; bh=c+xVhYzwvyTdddEAvj3Ta44sMzWSuxSlAKibsl
+        iig/Y=; b=tiZ48WxKLhdp+Z7teVj8pxcJMpWfTgBk9CTKr/WWwVFFhVLucDz5iU
+        zEzkQ1yngbTi1NzCZqg6VWO9aOM77css3QlFekRm8zZUoR1r0KIbt8oNoxgpS2sc
+        76YtSJuliQnnB9CgKYsv6dEARgWAJt3PNppA0HHVrkx8JC/YkBgNg=
+Received: from pb-smtp2.nyi.icgroup.com (unknown [127.0.0.1])
+        by pb-smtp2.pobox.com (Postfix) with ESMTP id 3035B19D76E;
+        Thu,  1 Jun 2023 17:26:16 -0400 (EDT)
+        (envelope-from nico@fluxnic.net)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=fluxnic.net;
+ h=date:from:to:cc:subject:in-reply-to:message-id:references:mime-version:content-type; s=2016-12.pbsmtp; bh=c+xVhYzwvyTdddEAvj3Ta44sMzWSuxSlAKibsliig/Y=; b=rzwk8C2G5AeUOh+Qpf576lqKEwm75iz3AmJWp0/b9g/RnUhcAqvdRbIrgYIVz/lbH5RB02TYV/P/XjBu6pVkhv7iHDL1n5gUL5cB8HMLVFr32GaIzNwnJknx6+lZHnh3e3a0+rO4fbCUwXFUIU3jhxIkcvX7ko55P7FXYHLb/NA=
+Received: from yoda.home (unknown [184.162.17.228])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by pb-smtp2.pobox.com (Postfix) with ESMTPSA id 90ECD19D76C;
+        Thu,  1 Jun 2023 17:26:15 -0400 (EDT)
+        (envelope-from nico@fluxnic.net)
+Received: from xanadu.home (xanadu [10.0.0.101])
+        by yoda.home (Postfix) with ESMTPSA id 8B60B7CCC9D;
+        Thu,  1 Jun 2023 17:26:14 -0400 (EDT)
+Date:   Thu, 1 Jun 2023 17:26:14 -0400 (EDT)
+From:   Nicolas Pitre <nico@fluxnic.net>
+To:     Linus Walleij <linus.walleij@linaro.org>
+cc:     Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-mtd@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] mtd: cfi_cmdset_0001: Byte swap OTP info
+In-Reply-To: <66r393r4-5qnn-0nns-9q0q-3o41n27300n6@syhkavp.arg>
+Message-ID: <78q06989-243s-p557-2nn1-323p6400pqn9@syhkavp.arg>
+References: <20230601194123.3408902-1-linus.walleij@linaro.org> <66r393r4-5qnn-0nns-9q0q-3o41n27300n6@syhkavp.arg>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+X-Pobox-Relay-ID: F0A62A0E-00C2-11EE-9EEA-307A8E0A682E-78420484!pb-smtp2.pobox.com
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -86,69 +64,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The version is fetched once in check_version(), which then does some
-validation and then overwrites the version in userspace with the API
-version supported by the kernel.  copy_params() then fetches the version
-from userspace *again*, and this time no validation is done.  The result
-is that the kernel's version number is completely controllable by
-userspace, provided that userspace can win a race condition.
+On Thu, 1 Jun 2023, Nicolas Pitre wrote:
 
-Fix this flaw by not copying the version back to the kernel the second
-time.  This is not exploitable as the version is not further used in the
-kernel.  However, it could become a problem if future patches start
-relying on the version field.
+> On Thu, 1 Jun 2023, Linus Walleij wrote:
+> 
+> > Currently the offset into the device when looking for OTP
+> > bits can go outside of the address of the MTD NOR devices,
+> > and if that memory isn't readable, bad things happen
+> > on the IXP4xx (added prints that illustrate the problem before
+> > the crash):
+> > 
+> > cfi_intelext_otp_walk walk OTP on chip 0 start at reg_prot_offset 0x00000100
+> > ixp4xx_copy_from copy from 0x00000100 to 0xc880dd78
+> > cfi_intelext_otp_walk walk OTP on chip 0 start at reg_prot_offset 0x12000000
+> > ixp4xx_copy_from copy from 0x12000000 to 0xc880dd78
+> > 8<--- cut here ---
+> > Unable to handle kernel paging request at virtual address db000000
+> > [db000000] *pgd=00000000
+> > (...)
+> > 
+> > This happens in this case because the IXP4xx is big endian and
+> > the 32- and 16-bit fields in the struct cfi_intelext_otpinfo are not
+> > properly byteswapped. Compare to how the code in read_pri_intelext()
+> > byteswaps the fields in struct cfi_pri_intelext.
+> 
+> DOH!
+> 
+> And to confirm, in include/linux/mtd/cfi.h we can see:
+> 
+> /* NB: We keep these structures in memory in HOST byteorder, except
+>  * where individually noted.
+>  */
+> 
+> > Adding some byte swapping after casting the &extp->extra[0] into
+> > a struct cfi_intelext_otpinfo * pointer, and the crash goes away.
+> 
+> But this is wrong to do so in cfi_intelext_otp_walk(). That function is 
+> a helper applying given operation callback on given range. Each time it 
+> is called those values will be swapped back and forth. You want to do 
+> the swap only once during init in read_pri_intelext().
+> 
+> Something like this (completely untested):
+> 
+> diff --git a/drivers/mtd/chips/cfi_cmdset_0001.c b/drivers/mtd/chips/cfi_cmdset_0001.c
+> index 54f92d09d9..723dd6473c 100644
+> --- a/drivers/mtd/chips/cfi_cmdset_0001.c
+> +++ b/drivers/mtd/chips/cfi_cmdset_0001.c
+> @@ -421,9 +421,20 @@ read_pri_intelext(struct map_info *map, __u16 adr)
+>  		extra_size = 0;
+>  
+>  		/* Protection Register info */
+> -		if (extp->NumProtectionFields)
+> +		if (extp->NumProtectionFields) {
+> +			struct cfi_intelext_otpinfo *otp =
+> +				(struct cfi_intelext_otpinfo *)&extp->extra[0]; 
+> +
+>  			extra_size += (extp->NumProtectionFields - 1) *
+>  				      sizeof(struct cfi_intelext_otpinfo);
+> +			if (extp_size >= sizeof(*extp) + extra_size) {
+> +				for (i = 0; i < extp->NumProtectionFields - 1; i++) {
+> +					otp->ProtRegAddr = le32_to_cpu(otp->ProtRegAddr);
+> +					otp->FactGroups = le16_to_cpu(otp->FactGroups);
+> +					otp->UserGroups = le16_to_cpu(otp->UserGroups);
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
----
- drivers/md/dm-ioctl.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+---> plus the missing otp++ here;
 
-diff --git a/drivers/md/dm-ioctl.c b/drivers/md/dm-ioctl.c
-index da6ca26b51d0953df380582bb3a51c2ec22c27cb..fd46b249f6f856c49752063fc49d720e95df0525 100644
---- a/drivers/md/dm-ioctl.c
-+++ b/drivers/md/dm-ioctl.c
-@@ -1873,12 +1873,13 @@ static ioctl_fn lookup_ioctl(unsigned int cmd, int *ioctl_flags)
-  * As well as checking the version compatibility this always
-  * copies the kernel interface version out.
-  */
--static int check_version(unsigned int cmd, struct dm_ioctl __user *user)
-+static int check_version(unsigned int cmd, struct dm_ioctl __user *user,
-+			 struct dm_ioctl *kernel_params)
- {
--	uint32_t version[3];
- 	int r = 0;
-+	uint32_t *version = kernel_params->version;
- 
--	if (copy_from_user(version, user->version, sizeof(version)))
-+	if (copy_from_user(version, user->version, sizeof(user->version)))
- 		return -EFAULT;
- 
- 	if ((version[0] != DM_VERSION_MAJOR) ||
-@@ -1922,7 +1923,10 @@ static int copy_params(struct dm_ioctl __user *user, struct dm_ioctl *param_kern
- 	const size_t minimum_data_size = offsetof(struct dm_ioctl, data);
- 	unsigned int noio_flag;
- 
--	if (copy_from_user(param_kernel, user, minimum_data_size))
-+	/* Version has been copied from userspace already, avoid TOCTOU */
-+	if (copy_from_user((char *)param_kernel + sizeof(param_kernel->version),
-+			   (char __user *)user + sizeof(param_kernel->version),
-+			   minimum_data_size - sizeof(param_kernel->version)))
- 		return -EFAULT;
- 
- 	if (param_kernel->data_size < minimum_data_size) {
-@@ -2034,7 +2038,7 @@ static int ctl_ioctl(struct file *file, uint command, struct dm_ioctl __user *us
- 	 * Check the interface version passed in.  This also
- 	 * writes out the kernel's interface version.
- 	 */
--	r = check_version(cmd, user);
-+	r = check_version(cmd, user, &param_kernel);
- 	if (r)
- 		return r;
- 
--- 
-Sincerely,
-Demi Marie Obenour (she/her/hers)
-Invisible Things Lab
-
+> +				}
+> +			}
+> +		}
+>  	}
+>  
+>  	if (extp->MinorVersion >= '1') {
+> 
