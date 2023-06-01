@@ -2,45 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C07D719D3E
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:20:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE5BE719D8A
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:24:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230268AbjFANUl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:20:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58402 "EHLO
+        id S233505AbjFANYL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:24:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233300AbjFANUk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:20:40 -0400
+        with ESMTP id S233640AbjFANYE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:24:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91A9C189
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:20:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DBA11AE;
+        Thu,  1 Jun 2023 06:23:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EDE1764432
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:20:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE36AC433D2;
-        Thu,  1 Jun 2023 13:20:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7405261627;
+        Thu,  1 Jun 2023 13:23:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D490C433D2;
+        Thu,  1 Jun 2023 13:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625636;
-        bh=2ivYBxUrMu5ya+HhXrzj768w3Nbdhpc6riw/0/sCCig=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=uaJanA2vaSI2c8u3brixoSmmVMQz/GywFF8NW4OOQHMu8JOkzucgxeIiqP9QBk3nc
-         AF+2apUUSixpkl1Mr+W9fvA9nfYL2YsP/q6Q0rcRnsmngGZoCygtTiKkNQjaCAk8S6
-         OOrfWSnUtCZH83uBW5gI9xgRnbWJEQ5pzQGY+Vf0=
-Date:   Thu, 1 Jun 2023 14:20:32 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Luiz Capitulino <luizcap@amazon.com>
-Cc:     paul@paul-moore.com, sashal@kernel.org, stable@vger.kernel.org
-Subject: Re: Possible build time regression affecting stable kernels
-Message-ID: <2023060148-levers-freight-5b11@gregkh>
-References: <8892cb92-0f30-db36-e9db-4bec5e7eb46e@amazon.com>
- <2023060156-precision-prorate-ce46@gregkh>
- <20259cf7-d50d-4eca-482b-3a89cc94df7b@amazon.com>
+        s=korg; t=1685625835;
+        bh=BIkV3D1VQf/JQIllKsX4ajtAa8sp67rS2uataATbJGU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=FUs3o9b9vBruQPKG/NyNfyO+Q0vgOcmOafvPD4vacZXRshwyVKcRKX9aGCsrTnGeo
+         p/Wx/g+Eq1pNuF7FrerORYjIJZtk6OYadWkDP2q5SbGdiXDkLN6trfUfVRK3NuZTUW
+         NzxbOYsBULevLjQVcN4VT6zyGyJGriUx6eToEgKg=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     stable@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de
+Subject: [PATCH 5.15 00/42] 5.15.115-rc1 review
+Date:   Thu,  1 Jun 2023 14:20:47 +0100
+Message-Id: <20230601131936.699199833@linuxfoundation.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20259cf7-d50d-4eca-482b-3a89cc94df7b@amazon.com>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.115-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-5.15.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 5.15.115-rc1
+X-KernelTest-Deadline: 2023-06-03T13:19+00:00
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -51,78 +63,207 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 01, 2023 at 09:13:21AM -0400, Luiz Capitulino wrote:
-> 
-> 
-> On 2023-06-01 02:06, Greg KH wrote:
-> 
-> > 
-> > 
-> > 
-> > On Wed, May 31, 2023 at 10:12:40PM -0400, Luiz Capitulino wrote:
-> > > Hi Paul,
-> > > 
-> > > A number of stable kernels recently backported this upstream commit:
-> > > 
-> > > """
-> > > commit 4ce1f694eb5d8ca607fed8542d32a33b4f1217a5
-> > > Author: Paul Moore <paul@paul-moore.com>
-> > > Date:   Wed Apr 12 13:29:11 2023 -0400
-> > > 
-> > >      selinux: ensure av_permissions.h is built when needed
-> > > """
-> > > 
-> > > We're seeing a build issue with this commit where the "crash" tool will fail
-> > > to start, it complains that the vmlinux image and /proc/version don't match.
-> > > 
-> > > A minimum reproducer would be having "make" version before 4.3 and building
-> > > the kernel with:
-> > > 
-> > > $ make bzImages
-> > > $ make modules
-> > > 
-> > > Then compare the version strings in the bzImage and vmlinux images,
-> > > we can use "strings" for this. For example, in the 5.10.181 kernel I get:
-> > > 
-> > > $ strings vmlinux | egrep '^Linux version'
-> > > Linux version 5.10.181 (ec2-user@ip-172-31-79-134.ec2.internal) (gcc (GCC) 7.3.1 20180712 (Red Hat 7.3.1-15), GNU ld version 2.29.1-31.amzn2) #2 SMP Thu Jun 1 01:26:38 UTC 2023
-> > > 
-> > > $ strings ./arch/x86_64/boot/bzImage | egrep 'ld version'
-> > > 5.10.181 (ec2-user@ip-172-31-79-134.ec2.internal) (gcc (GCC) 7.3.1 20180712 (Red Hat 7.3.1-15), GNU ld version 2.29.1-31.amzn2) #1 SMP Thu Jun 1 01:23:59 UTC 2023
-> > > 
-> > > The version string in the bzImage doesn't have the "Linux version" part, but
-> > > I think this is added by the kernel when printing. If you compare the strings,
-> > > you'll see that they have a different build date and the "#1" and "#2" are
-> > > different.
-> > > 
-> > > This only happens with commit 4ce1f694eb5 applied and older "make", in my case I
-> > > have "make" version 3.82.
-> > > 
-> > > If I revert 4ce1f694eb5 or use "make" version 4.3 I get identical strings (except
-> > > for the "Linux version" part):
-> > > 
-> > > $ strings vmlinux | egrep '^Linux version'
-> > > Linux version 5.10.181+ (ec2-user@ip-172-31-79-134.ec2.internal) (gcc (GCC) 7.3.1 20180712 (Red Hat 7.3.1-15), GNU ld version 2.29.1-31.amzn2) #1 SMP Thu Jun 1 01:29:11 UTC 2023
-> > > 
-> > > $ strings ./arch/x86_64/boot/bzImage | egrep 'ld version'
-> > > 5.10.181+ (ec2-user@ip-172-31-79-134.ec2.internal) (gcc (GCC) 7.3.1 20180712 (Red Hat 7.3.1-15), GNU ld version 2.29.1-31.amzn2) #1 SMP Thu Jun 1 01:29:11 UTC 2023
-> > > 
-> > > Maybe the grouped target usage in 4ce1f694eb5 with older "make" is causing a
-> > > rebuild of the vmlinux image in "make modules"? If yes, is this expected?
-> > > 
-> > > I'm afraid this issue could be high impact for distros with older user-space.
-> > 
-> > Is this issue also in 6.4-rc1 where this change came from?
-> 
-> Yes. I'm reporting this here because I'm more concerned with -stable kernels since
-> they're more likely to be running on older user-space.
+This is the start of the stable review cycle for the 5.15.115 release.
+There are 42 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-Yeah, we are bug-compatible!  :)
+Responses should be made by Sat, 03 Jun 2023 13:19:19 +0000.
+Anything received after that time might be too late.
 
-When this gets fixed in Linus's tree, I'll be glad to backport the
-changes to the other kernels.  Please work with the developers to get
-that fixed there.
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.115-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+and the diffstat can be found below.
 
 thanks,
 
 greg k-h
+
+-------------
+Pseudo-Shortlog of commits:
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 5.15.115-rc1
+
+Paul Blakey <paulb@nvidia.com>
+    netfilter: ctnetlink: Support offloaded conntrack entry deletion
+
+Nicolas Dichtel <nicolas.dichtel@6wind.com>
+    ipv{4,6}/raw: fix output xfrm lookup wrt protocol
+
+Carlos Llamas <cmllamas@google.com>
+    binder: fix UAF of alloc->vma in race with munmap()
+
+Carlos Llamas <cmllamas@google.com>
+    binder: add lockless binder_alloc_(set|get)_vma()
+
+Carlos Llamas <cmllamas@google.com>
+    Revert "android: binder: stop saving a pointer to the VMA"
+
+Carlos Llamas <cmllamas@google.com>
+    Revert "binder_alloc: add missing mmap_lock calls when using the VMA"
+
+Ruihan Li <lrh2000@pku.edu.cn>
+    bluetooth: Add cmd validity checks at the start of hci_sock_ioctl()
+
+Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+    xdp: xdp_mem_allocator can be NULL in trace_mem_connect().
+
+Jiaxun Yang <jiaxun.yang@flygoat.com>
+    irqchip/mips-gic: Don't touch vl_map if a local interrupt is not routable
+
+Yunsheng Lin <linyunsheng@huawei.com>
+    page_pool: fix inconsistency for page_pool_ring_[un]lock()
+
+Qingfang DENG <qingfang.deng@siflower.com.cn>
+    net: page_pool: use in_softirq() instead
+
+Toke Høiland-Jørgensen <toke@redhat.com>
+    xdp: Allow registering memory model without rxq reference
+
+Rahul Rameshbabu <rrameshbabu@nvidia.com>
+    net/mlx5e: Fix SQ wake logic in ptp napi_poll context
+
+Jiaxun Yang <jiaxun.yang@flygoat.com>
+    irqchip/mips-gic: Use raw spinlock for gic_lock
+
+Marc Zyngier <maz@kernel.org>
+    irqchip/mips-gic: Get rid of the reliance on irq_cpu_online()
+
+Carlos Llamas <cmllamas@google.com>
+    binder: fix UAF caused by faulty buffer cleanup
+
+Hangbin Liu <liuhangbin@gmail.com>
+    bonding: fix send_peer_notif overflow
+
+Hangbin Liu <liuhangbin@gmail.com>
+    Bonding: add arp_missed_max option
+
+Arınç ÜNAL <arinc.unal@arinc9.com>
+    net: dsa: mt7530: fix network connectivity with multiple CPU ports
+
+Daniel Golle <daniel@makrotopia.org>
+    net: dsa: mt7530: split-off common parts from mt7531_setup
+
+Frank Wunderlich <frank-w@public-files.de>
+    net: dsa: mt7530: rework mt753[01]_setup
+
+Vladimir Oltean <vladimir.oltean@nxp.com>
+    net: dsa: introduce helpers for iterating through ports using dp
+
+Claudio Imbrenda <imbrenda@linux.ibm.com>
+    KVM: s390: fix race in gmap_make_secure()
+
+Claudio Imbrenda <imbrenda@linux.ibm.com>
+    KVM: s390: pv: add export before import
+
+Claudiu Beznea <claudiu.beznea@microchip.com>
+    dmaengine: at_xdmac: restore the content of grws register
+
+Claudiu Beznea <claudiu.beznea@microchip.com>
+    dmaengine: at_xdmac: do not resume channels paused by consumers
+
+Claudiu Beznea <claudiu.beznea@microchip.com>
+    dmaengine: at_xdmac: disable/enable clock directly on suspend/resume
+
+Tudor Ambarus <tudor.ambarus@microchip.com>
+    dmaengine: at_xdmac: Remove a level of indentation in at_xdmac_tasklet()
+
+Tudor Ambarus <tudor.ambarus@microchip.com>
+    dmaengine: at_xdmac: Move the free desc to the tail of the desc list
+
+David Epping <david.epping@missinglinkelectronics.com>
+    net: phy: mscc: enable VSC8501/2 RGMII RX clock
+
+Steve Wahl <steve.wahl@hpe.com>
+    platform/x86: ISST: Remove 8 socket limit
+
+Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+    platform/x86: ISST: PUNIT device mapping with Sub-NUMA clustering
+
+Shay Drory <shayd@nvidia.com>
+    net/mlx5: Devcom, serialize devcom registration
+
+Vlad Buslov <vladbu@nvidia.com>
+    net/mlx5e: Fix deadlock in tc route query code
+
+Mark Bloch <mbloch@nvidia.com>
+    net/mlx5: devcom only supports 2 ports
+
+Anton Protopopov <aspsk@isovalent.com>
+    bpf: fix a memory leak in the LRU and LRU_PERCPU hash maps
+
+Hans de Goede <hdegoede@redhat.com>
+    power: supply: bq24190: Call power_supply_changed() after updating input current
+
+Hans de Goede <hdegoede@redhat.com>
+    power: supply: core: Refactor power_supply_set_input_current_limit_from_supplier()
+
+Hans de Goede <hdegoede@redhat.com>
+    power: supply: bq27xxx: After charger plug in/out wait 0.5s for things to stabilize
+
+Hans de Goede <hdegoede@redhat.com>
+    power: supply: bq27xxx: Ensure power_supply_changed() is called on current sign changes
+
+Hans de Goede <hdegoede@redhat.com>
+    power: supply: bq27xxx: Move bq27xxx_battery_update() down
+
+Sicelo A. Mhlongo <absicsz@gmail.com>
+    power: supply: bq27xxx: expose battery data when CI=1
+
+
+-------------
+
+Diffstat:
+
+ Documentation/networking/bonding.rst               |  11 ++
+ Makefile                                           |   4 +-
+ arch/s390/kernel/uv.c                              |  56 ++++---
+ drivers/android/binder.c                           |  26 +++-
+ drivers/android/binder_alloc.c                     |  64 +++-----
+ drivers/android/binder_alloc.h                     |   2 +-
+ drivers/android/binder_alloc_selftest.c            |   2 +-
+ drivers/dma/at_xdmac.c                             | 145 +++++++++++------
+ drivers/irqchip/irq-mips-gic.c                     |  65 +++++---
+ drivers/net/bonding/bond_main.c                    |  17 +-
+ drivers/net/bonding/bond_netlink.c                 |  22 ++-
+ drivers/net/bonding/bond_options.c                 |  36 ++++-
+ drivers/net/bonding/bond_procfs.c                  |   2 +
+ drivers/net/bonding/bond_sysfs.c                   |  13 ++
+ drivers/net/dsa/mt7530.c                           | 124 +++++++++------
+ drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c   |   2 +
+ drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h  |   2 +
+ drivers/net/ethernet/mellanox/mlx5/core/en_tc.c    |  19 +--
+ drivers/net/ethernet/mellanox/mlx5/core/en_tx.c    |  19 ++-
+ .../net/ethernet/mellanox/mlx5/core/lib/devcom.c   |  81 +++++++---
+ .../net/ethernet/mellanox/mlx5/core/lib/devcom.h   |   3 +
+ drivers/net/phy/mscc/mscc.h                        |   1 +
+ drivers/net/phy/mscc/mscc_main.c                   |  54 +++----
+ .../x86/intel/speed_select_if/isst_if_common.c     |  49 ++++--
+ drivers/power/supply/bq24190_charger.c             |  13 +-
+ drivers/power/supply/bq27xxx_battery.c             | 171 +++++++++++----------
+ drivers/power/supply/power_supply_core.c           |  57 +++----
+ include/linux/power/bq27xxx_battery.h              |   3 +
+ include/linux/power_supply.h                       |   5 +-
+ include/net/bond_options.h                         |   1 +
+ include/net/bonding.h                              |   3 +-
+ include/net/dsa.h                                  |  28 ++++
+ include/net/ip.h                                   |   2 +
+ include/net/page_pool.h                            |  18 ---
+ include/net/xdp.h                                  |   3 +
+ include/uapi/linux/if_link.h                       |   1 +
+ include/uapi/linux/in.h                            |   2 +
+ kernel/bpf/hashtab.c                               |   6 +-
+ net/bluetooth/hci_sock.c                           |  28 ++++
+ net/core/page_pool.c                               |  34 +++-
+ net/core/xdp.c                                     |  93 +++++++----
+ net/ipv4/ip_sockglue.c                             |  12 +-
+ net/ipv4/raw.c                                     |   5 +-
+ net/ipv6/raw.c                                     |   3 +-
+ net/netfilter/nf_conntrack_netlink.c               |   8 -
+ tools/include/uapi/linux/if_link.h                 |   1 +
+ 46 files changed, 861 insertions(+), 455 deletions(-)
+
+
