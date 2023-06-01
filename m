@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03224719D83
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:24:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FD92719DBF
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:26:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233616AbjFANXu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:23:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60414 "EHLO
+        id S233781AbjFAN0O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:26:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233585AbjFANXi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:23:38 -0400
+        with ESMTP id S233789AbjFANZz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:25:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3734189
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:23:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B879198
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:25:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 72E7C64468
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:23:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF32C433D2;
-        Thu,  1 Jun 2023 13:23:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B4FE26447B
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:25:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B005CC433D2;
+        Thu,  1 Jun 2023 13:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625815;
-        bh=mabcARVR8cjTjoGG5LssnMeM+z06fokD5gW/GGCCxNU=;
+        s=korg; t=1685625936;
+        bh=kfCji33tP3engLPwCPTMoQkxImsQ/d3ZtMKTiTCcSrk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dHcDUAwpyOSCS3jk82gAaxh1Fr0eTIUUChYGcRQjqTa/jyGD88vifAPSb4mwrLvvH
-         4y6Cnu8GzvmJFuKRO7XFOG11JWuFBodowmwjrN4xsCbpomQCzT9Fab3hguEVizEXRV
-         7ixLZMIKgNnrPJMgs/ConLPXAg+zjHVjBSDsU7M8=
+        b=qrspXRjOPx6xlJrdFsLCb89M9cCQYDKvup3BEitNokiw0zzk/lyDhy8T6bqPGTtJI
+         vyCbsRZUoIweYsOzAw7uGmvqWTGqb/y3H/o0AVauvjI8PcYWEUrHGNzdyVHw2e2MDQ
+         ArlvbS2FSIELfxn+a8B3464Ol9aesZiRl07JaUxU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        patches@lists.linux.dev, Andreas Kemnade <andreas@kemnade.info>,
+        christophe.leroy@csgroup.eu,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 08/22] power: supply: bq27xxx: Move bq27xxx_battery_update() down
+Subject: [PATCH 6.3 10/45] gpiolib: fix allocation of mixed dynamic/static GPIOs
 Date:   Thu,  1 Jun 2023 14:21:06 +0100
-Message-Id: <20230601131934.121686229@linuxfoundation.org>
+Message-Id: <20230601131939.179196890@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131933.727832920@linuxfoundation.org>
-References: <20230601131933.727832920@linuxfoundation.org>
+In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
+References: <20230601131938.702671708@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,166 +57,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Andreas Kemnade <andreas@kemnade.info>
 
-[ Upstream commit ff4c4a2a4437a6d03787c7aafb2617f20c3ef45f ]
+[ Upstream commit 7dd3d9bd873f138675cb727eaa51a498d99f0e89 ]
 
-Move the bq27xxx_battery_update() functions to below
-the bq27xxx_battery_current_and_status() function.
+If static allocation and dynamic allocation GPIOs are present,
+dynamic allocation pollutes the numberspace for static allocation,
+causing static allocation to fail.
+Enforce dynamic allocation above GPIO_DYNAMIC_BASE.
 
-This is just moving a block of text, no functional changes.
+Seen on a GTA04 when omap-gpio (static) and twl-gpio (dynamic)
+raced:
+[some successful registrations of omap_gpio instances]
+[    2.553833] twl4030_gpio twl4030-gpio: gpio (irq 145) chaining IRQs 161..178
+[    2.561401] gpiochip_find_base: found new base at 160
+[    2.564392] gpio gpiochip5: (twl4030): added GPIO chardev (254:5)
+[    2.564544] gpio gpiochip5: registered GPIOs 160 to 177 on twl4030
+[...]
+[    2.692169] omap-gpmc 6e000000.gpmc: GPMC revision 5.0
+[    2.697357] gpmc_mem_init: disabling cs 0 mapped at 0x0-0x1000000
+[    2.703643] gpiochip_find_base: found new base at 178
+[    2.704376] gpio gpiochip6: (omap-gpmc): added GPIO chardev (254:6)
+[    2.704589] gpio gpiochip6: registered GPIOs 178 to 181 on omap-gpmc
+[...]
+[    2.840393] gpio gpiochip7: Static allocation of GPIO base is deprecated, use dynamic allocation.
+[    2.849365] gpio gpiochip7: (gpio-160-191): GPIO integer space overlap, cannot add chip
+[    2.857513] gpiochip_add_data_with_key: GPIOs 160..191 (gpio-160-191) failed to register, -16
+[    2.866149] omap_gpio 48310000.gpio: error -EBUSY: Could not register gpio chip
 
-This is a preparation patch for making bq27xxx_battery_update() check
-the status and have it call power_supply_changed() on status changes.
+On that device it is fixed invasively by
+commit 92bf78b33b0b4 ("gpio: omap: use dynamic allocation of base")
+but let's also fix that for devices where there is still
+a mixture of static and dynamic allocation.
 
-Fixes: 297a533b3e62 ("bq27x00: Cache battery registers")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 7b61212f2a07 ("gpiolib: Get rid of ARCH_NR_GPIOS")
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Reviewed-by: <christophe.leroy@csgroup.eu>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/bq27xxx_battery.c | 122 ++++++++++++-------------
- 1 file changed, 61 insertions(+), 61 deletions(-)
+ drivers/gpio/gpiolib.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
-index bd6e53525065d..160ab53065f8e 100644
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -1687,67 +1687,6 @@ static int bq27xxx_battery_read_health(struct bq27xxx_device_info *di)
- 	return POWER_SUPPLY_HEALTH_GOOD;
- }
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 19bd23044b017..4472214fcd43a 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -193,6 +193,8 @@ static int gpiochip_find_base(int ngpio)
+ 			break;
+ 		/* nope, check the space right after the chip */
+ 		base = gdev->base + gdev->ngpio;
++		if (base < GPIO_DYNAMIC_BASE)
++			base = GPIO_DYNAMIC_BASE;
+ 	}
  
--static void bq27xxx_battery_update_unlocked(struct bq27xxx_device_info *di)
--{
--	struct bq27xxx_reg_cache cache = {0, };
--	bool has_singe_flag = di->opts & BQ27XXX_O_ZERO;
--
--	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
--	if ((cache.flags & 0xff) == 0xff)
--		cache.flags = -1; /* read error */
--	if (cache.flags >= 0) {
--		cache.temperature = bq27xxx_battery_read_temperature(di);
--		if (di->regs[BQ27XXX_REG_TTE] != INVALID_REG_ADDR)
--			cache.time_to_empty = bq27xxx_battery_read_time(di, BQ27XXX_REG_TTE);
--		if (di->regs[BQ27XXX_REG_TTECP] != INVALID_REG_ADDR)
--			cache.time_to_empty_avg = bq27xxx_battery_read_time(di, BQ27XXX_REG_TTECP);
--		if (di->regs[BQ27XXX_REG_TTF] != INVALID_REG_ADDR)
--			cache.time_to_full = bq27xxx_battery_read_time(di, BQ27XXX_REG_TTF);
--
--		cache.charge_full = bq27xxx_battery_read_fcc(di);
--		cache.capacity = bq27xxx_battery_read_soc(di);
--		if (di->regs[BQ27XXX_REG_AE] != INVALID_REG_ADDR)
--			cache.energy = bq27xxx_battery_read_energy(di);
--		di->cache.flags = cache.flags;
--		cache.health = bq27xxx_battery_read_health(di);
--		if (di->regs[BQ27XXX_REG_CYCT] != INVALID_REG_ADDR)
--			cache.cycle_count = bq27xxx_battery_read_cyct(di);
--
--		/* We only have to read charge design full once */
--		if (di->charge_design_full <= 0)
--			di->charge_design_full = bq27xxx_battery_read_dcap(di);
--	}
--
--	if ((di->cache.capacity != cache.capacity) ||
--	    (di->cache.flags != cache.flags))
--		power_supply_changed(di->bat);
--
--	if (memcmp(&di->cache, &cache, sizeof(cache)) != 0)
--		di->cache = cache;
--
--	di->last_update = jiffies;
--
--	if (!di->removed && poll_interval > 0)
--		mod_delayed_work(system_wq, &di->work, poll_interval * HZ);
--}
--
--void bq27xxx_battery_update(struct bq27xxx_device_info *di)
--{
--	mutex_lock(&di->lock);
--	bq27xxx_battery_update_unlocked(di);
--	mutex_unlock(&di->lock);
--}
--EXPORT_SYMBOL_GPL(bq27xxx_battery_update);
--
--static void bq27xxx_battery_poll(struct work_struct *work)
--{
--	struct bq27xxx_device_info *di =
--			container_of(work, struct bq27xxx_device_info,
--				     work.work);
--
--	bq27xxx_battery_update(di);
--}
--
- static bool bq27xxx_battery_is_full(struct bq27xxx_device_info *di, int flags)
- {
- 	if (di->opts & BQ27XXX_O_ZERO)
-@@ -1821,6 +1760,67 @@ static int bq27xxx_battery_current_and_status(
- 	return 0;
- }
- 
-+static void bq27xxx_battery_update_unlocked(struct bq27xxx_device_info *di)
-+{
-+	struct bq27xxx_reg_cache cache = {0, };
-+	bool has_singe_flag = di->opts & BQ27XXX_O_ZERO;
-+
-+	cache.flags = bq27xxx_read(di, BQ27XXX_REG_FLAGS, has_singe_flag);
-+	if ((cache.flags & 0xff) == 0xff)
-+		cache.flags = -1; /* read error */
-+	if (cache.flags >= 0) {
-+		cache.temperature = bq27xxx_battery_read_temperature(di);
-+		if (di->regs[BQ27XXX_REG_TTE] != INVALID_REG_ADDR)
-+			cache.time_to_empty = bq27xxx_battery_read_time(di, BQ27XXX_REG_TTE);
-+		if (di->regs[BQ27XXX_REG_TTECP] != INVALID_REG_ADDR)
-+			cache.time_to_empty_avg = bq27xxx_battery_read_time(di, BQ27XXX_REG_TTECP);
-+		if (di->regs[BQ27XXX_REG_TTF] != INVALID_REG_ADDR)
-+			cache.time_to_full = bq27xxx_battery_read_time(di, BQ27XXX_REG_TTF);
-+
-+		cache.charge_full = bq27xxx_battery_read_fcc(di);
-+		cache.capacity = bq27xxx_battery_read_soc(di);
-+		if (di->regs[BQ27XXX_REG_AE] != INVALID_REG_ADDR)
-+			cache.energy = bq27xxx_battery_read_energy(di);
-+		di->cache.flags = cache.flags;
-+		cache.health = bq27xxx_battery_read_health(di);
-+		if (di->regs[BQ27XXX_REG_CYCT] != INVALID_REG_ADDR)
-+			cache.cycle_count = bq27xxx_battery_read_cyct(di);
-+
-+		/* We only have to read charge design full once */
-+		if (di->charge_design_full <= 0)
-+			di->charge_design_full = bq27xxx_battery_read_dcap(di);
-+	}
-+
-+	if ((di->cache.capacity != cache.capacity) ||
-+	    (di->cache.flags != cache.flags))
-+		power_supply_changed(di->bat);
-+
-+	if (memcmp(&di->cache, &cache, sizeof(cache)) != 0)
-+		di->cache = cache;
-+
-+	di->last_update = jiffies;
-+
-+	if (!di->removed && poll_interval > 0)
-+		mod_delayed_work(system_wq, &di->work, poll_interval * HZ);
-+}
-+
-+void bq27xxx_battery_update(struct bq27xxx_device_info *di)
-+{
-+	mutex_lock(&di->lock);
-+	bq27xxx_battery_update_unlocked(di);
-+	mutex_unlock(&di->lock);
-+}
-+EXPORT_SYMBOL_GPL(bq27xxx_battery_update);
-+
-+static void bq27xxx_battery_poll(struct work_struct *work)
-+{
-+	struct bq27xxx_device_info *di =
-+			container_of(work, struct bq27xxx_device_info,
-+				     work.work);
-+
-+	bq27xxx_battery_update(di);
-+}
-+
- /*
-  * Get the average power in µW
-  * Return < 0 if something fails.
+ 	if (gpio_is_valid(base)) {
 -- 
 2.39.2
 
