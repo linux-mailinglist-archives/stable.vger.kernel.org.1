@@ -2,51 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 862DD71A341
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 17:52:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EADB71A374
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 17:58:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233356AbjFAPvx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 11:51:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52674 "EHLO
+        id S232990AbjFAP62 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 11:58:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234989AbjFAPvu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 11:51:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85A0519F
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 08:51:44 -0700 (PDT)
+        with ESMTP id S233840AbjFAP61 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 11:58:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AEA9F2;
+        Thu,  1 Jun 2023 08:58:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 19AD961D7C
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 15:51:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09112C433D2;
-        Thu,  1 Jun 2023 15:51:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685634703;
-        bh=m+FWme3UjVBxLiDYdjrBDDB0C/dE7nxFE0pe4teS3Hk=;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CBC77646FD;
+        Thu,  1 Jun 2023 15:58:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D793BC433EF;
+        Thu,  1 Jun 2023 15:58:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685635104;
+        bh=rZsvgn1Qz1sIejmC3hSShN/kjvw/1Nvi8CJxyMdm+rU=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=E4XS+klwcv4st1BK+sZ+j5b+qzcjIag6d+zSgcTRT5/HHBjzoLsk/EXCRIb14OKGG
-         CrY6wIwkZ5OJ4ni9cwnX6ImMy4ofjvsFChx29SUUay3Fw4arGFhMXBR4ZNfNZR9V5Y
-         H5Sq7WFKkeBG1Ejwo7Zw6hZ8S+7ShW3oUCpdY8EY=
-Date:   Thu, 1 Jun 2023 16:51:40 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Paul Moore <paul@paul-moore.com>
-Cc:     Luiz Capitulino <luizcap@amazon.com>, sashal@kernel.org,
+        b=OKFjPM3GRqsFoMtAphV5b3w+6Ukw1CPPdPjxWeAQrNM0Xq0CFz80Gk0mTIojcvU5T
+         bRazzIM7imebgUXIhGIrlDyzOHUShEW5oCorlhef21BB1TtVF+BaWr0Yd2hXtIVGRD
+         9e/k7dBLuSenTg9JueHbx5yD6eF7eYuos18oOcTkWydmA56+1yrhfbIMS86N7pEnCc
+         v13XFx70ScOnsBiRZW6jzxB407Qxz0M4D5b6ouBX5cNfpc4iR1b7/+P66GBwKMZylQ
+         h1ZaKLV5ecKChVtkTwtJ7snZygngGuSjuygt0v1L8wTuaHCDBUvhw/dNfPP2xhxSgY
+         wSVfI4xxC3a2g==
+Date:   Thu, 1 Jun 2023 17:58:19 +0200
+From:   Christian Brauner <brauner@kernel.org>
+To:     Jan Kara <jack@suse.cz>
+Cc:     Theodore Ts'o <tytso@mit.edu>, Al Viro <viro@zeniv.linux.org.uk>,
+        linux-fsdevel@vger.kernel.org, Miklos Szeredi <miklos@szeredi.hu>,
+        "Darrick J. Wong" <djwong@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>, linux-ext4@vger.kernel.org,
+        linux-xfs@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
         stable@vger.kernel.org
-Subject: Re: Possible build time regression affecting stable kernels
-Message-ID: <2023060102-chatter-happening-f7a5@gregkh>
-References: <8892cb92-0f30-db36-e9db-4bec5e7eb46e@amazon.com>
- <2023060156-precision-prorate-ce46@gregkh>
- <20259cf7-d50d-4eca-482b-3a89cc94df7b@amazon.com>
- <2023060148-levers-freight-5b11@gregkh>
- <CAHC9VhQ6W4hq3B122BxcrD6h6_-Q1AguFYYLjAbB6ALCbmzDoQ@mail.gmail.com>
+Subject: Re: [PATCH v2 1/6] ext4: Remove ext4 locking of moved directory
+Message-ID: <20230601-vierhundert-fuhrpark-1d29c6cc1ed7@brauner>
+References: <20230601104525.27897-1-jack@suse.cz>
+ <20230601105830.13168-1-jack@suse.cz>
+ <20230601145222.GB1069561@mit.edu>
+ <20230601152746.kqykcztndxvxbbf7@quack3>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHC9VhQ6W4hq3B122BxcrD6h6_-Q1AguFYYLjAbB6ALCbmzDoQ@mail.gmail.com>
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+In-Reply-To: <20230601152746.kqykcztndxvxbbf7@quack3>
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,57 +60,28 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 01, 2023 at 10:56:24AM -0400, Paul Moore wrote:
-> On Thu, Jun 1, 2023 at 9:20 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> > On Thu, Jun 01, 2023 at 09:13:21AM -0400, Luiz Capitulino wrote:
+On Thu, Jun 01, 2023 at 05:27:46PM +0200, Jan Kara wrote:
+> On Thu 01-06-23 10:52:22, Theodore Ts'o wrote:
+> > On Thu, Jun 01, 2023 at 12:58:21PM +0200, Jan Kara wrote:
+> > > Remove locking of moved directory in ext4_rename2(). We will take care
+> > > of it in VFS instead. This effectively reverts commit 0813299c586b
+> > > ("ext4: Fix possible corruption when moving a directory") and followup
+> > > fixes.
+> > 
+> > Remind me --- commit 0813299c586b is not actually causing any
+> > problems; it's just not fully effective at solving the problem.  Is
+> > that correct?
 > 
-> ...
+> Yes, correct.
 > 
-> > > Yes. I'm reporting this here because I'm more concerned with -stable kernels since
-> > > they're more likely to be running on older user-space.
-> >
-> > Yeah, we are bug-compatible!  :)
+> > In other words, is there a rush in trying to get this revert to Linus
+> > during this cycle as a regression fix?
+> > 
+> > I think the answer is no, and we can just let this full patch series
+> > go in via the vfs branch during the next merge window, but I just
+> > wanted to make sure.
 > 
-> While I really don't want to go back into the old arguments about what
-> does, and does not, get backported to -stable, I do want to ask if
-> there is some way to signal to the -stable maintainers that a patch
-> should not be backported?  Anything coming from the LSM, SELinux, or
-> audit trees that I believe should be backported is explicitly marked
-> with a stable@vger CC, as documented in stable-kernel-rules.rst,
-> however it is generally my experience that patches with a 'Fixes:' tag
-> are generally pulled into the -stable releases as well.
+> Exactly, that's my plan as well.
 
-Really?  Right now we HAVE to pick up the Fixes: tagged commits in those
-subsystems as you are missing lots of real fixes.  I just quick looked
-and noticed 8cf0a1bc1287 ("capabilities: fix potential memleak on error
-path from vfs_getxattr_alloc()") which you should have tagged, right?
-
-In fact, I've considered most of the LSM code as a "we never tag
-anything for stable so we rely on the Fixes: pickup to clean up after
-us" subsystem.  We have many of those in the kernel, so you are in good
-company :)
-
-> I could start dropping the 'Fixes:' tag from non-stable tagged
-> commits, but that's a step backwards in my opinion.
-
-If a commit has fixes: why wouldn't it be ok for stable trees?  That
-feels very odd to me.
-
-Anyway, if you really want, yes, we can add you to the "list of
-subsystems we do not pick anything for except by explicit cc: stable
-marking" that we have, but note, that feels wrong to me based on the
-very low number of patches being tagged for these directories over time.
-
-> I could start replying to every -stable backport email notice, but
-> that seems like a lot of unnecessary work for something that was never
-> marked for -stable in the first place.  I'm guessing it would also add
-> some additional management/testing burden to the -stable folks as
-> well.
-
-We have a list, so if you really want it, we can add you to it.  But can
-you point out any Fixes: commits that we backported that we shouldn't
-have?  If so, why was a Fixes: tag on it?
-
-thanks,
-
-greg k-h
+Yeah, we'll have time and ideally this should soak in -next for a good
+while also gives others time to take a look.
