@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63246719DAF
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:25:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80EE8719D59
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:22:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231608AbjFANZi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:25:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33966 "EHLO
+        id S231861AbjFANWY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:22:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233730AbjFANZf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:25:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B8C9E47
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:24:55 -0700 (PDT)
+        with ESMTP id S231585AbjFANWS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:22:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3425F19D
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:22:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 06C32643C9
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:24:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D47C433EF;
-        Thu,  1 Jun 2023 13:24:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B6C036442C
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:22:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E28DC433D2;
+        Thu,  1 Jun 2023 13:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625894;
-        bh=RIkXkGrZq5OWHw0Pkk90YmRMC394hevYk9G1IHTBO7M=;
+        s=korg; t=1685625724;
+        bh=A/O8jTvGvMHj3aNFZLPE359iCxXuHB06rtDAD1+9jIY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lyF8CXEoMdvfhPco+T8DjltfMwc3jvve9kLN4KS+KEFVW40i0bWM9spq4DuxlGnve
-         3l3dw+UH/x1mxpz18dskHyEWl9RqIPcxabDMrQnPtMjUGKfcTXFY0bxG9b0eIWMzr6
-         clnci71A+A2b10Q3zdRhq+7LKzb0FGPd/o1rGuGk=
+        b=XDDaX/TgfeKGrqoOG2l7rya69Tk4aSr1yjzVJS+bl4y6ROD+I6otufD5o66Twaiy+
+         Rel6P47RbUlODc0M4d998VgSEdH/RSsZsk5CwERNhRnO2P2kfZ1vxReRZeZaVc4vL1
+         8NALnZ9No9DhkTBuwMJpFMPkpx69DxO3feAwp2vk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vlad Buslov <vladbu@nvidia.com>,
-        Roi Dayan <roid@nvidia.com>, Shay Drory <shayd@nvidia.com>,
-        Tariq Toukan <tariqt@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
+        patches@lists.linux.dev, Alexander Bersenev <bay@hackerdom.ru>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 09/42] net/mlx5e: Fix deadlock in tc route query code
+Subject: [PATCH 5.4 01/16] cdc_ncm: Implement the 32-bit version of NCM Transfer Block
 Date:   Thu,  1 Jun 2023 14:20:56 +0100
-Message-Id: <20230601131937.111660963@linuxfoundation.org>
+Message-Id: <20230601131932.013270381@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131936.699199833@linuxfoundation.org>
-References: <20230601131936.699199833@linuxfoundation.org>
+In-Reply-To: <20230601131931.947241286@linuxfoundation.org>
+References: <20230601131931.947241286@linuxfoundation.org>
 User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,361 +56,694 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vlad Buslov <vladbu@nvidia.com>
+From: Alexander Bersenev <bay@hackerdom.ru>
 
-[ Upstream commit 691c041bf20899fc13c793f92ba61ab660fa3a30 ]
+[ Upstream commit 0fa81b304a7973a499f844176ca031109487dd31 ]
 
-Cited commit causes ABBA deadlock[0] when peer flows are created while
-holding the devcom rw semaphore. Due to peer flows offload implementation
-the lock is taken much higher up the call chain and there is no obvious way
-to easily fix the deadlock. Instead, since tc route query code needs the
-peer eswitch structure only to perform a lookup in xarray and doesn't
-perform any sleeping operations with it, refactor the code for lockless
-execution in following ways:
+The NCM specification defines two formats of transfer blocks: with 16-bit
+fields (NTB-16) and with 32-bit fields (NTB-32). Currently only NTB-16 is
+implemented.
 
-- RCUify the devcom 'data' pointer. When resetting the pointer
-synchronously wait for RCU grace period before returning. This is fine
-since devcom is currently only used for synchronization of
-pairing/unpairing of eswitches which is rare and already expensive as-is.
+This patch adds the support of NTB-32. The motivation behind this is that
+some devices such as E5785 or E5885 from the current generation of Huawei
+LTE routers do not support NTB-16. The previous generations of Huawei
+devices are also use NTB-32 by default.
 
-- Wrap all usages of 'paired' boolean in {READ|WRITE}_ONCE(). The flag has
-already been used in some unlocked contexts without proper
-annotations (e.g. users of mlx5_devcom_is_paired() function), but it wasn't
-an issue since all relevant code paths checked it again after obtaining the
-devcom semaphore. Now it is also used by mlx5_devcom_get_peer_data_rcu() as
-"best effort" check to return NULL when devcom is being unpaired. Note that
-while RCU read lock doesn't prevent the unpaired flag from being changed
-concurrently it still guarantees that reader can continue to use 'data'.
+Also this patch enables NTB-32 by default for Huawei devices.
 
-- Refactor mlx5e_tc_query_route_vport() function to use new
-mlx5_devcom_get_peer_data_rcu() API which fixes the deadlock.
+During the 2019 ValdikSS made five attempts to contact Huawei to add the
+NTB-16 support to their router firmware, but they were unsuccessful.
 
-[0]:
-
-[  164.599612] ======================================================
-[  164.600142] WARNING: possible circular locking dependency detected
-[  164.600667] 6.3.0-rc3+ #1 Not tainted
-[  164.601021] ------------------------------------------------------
-[  164.601557] handler1/3456 is trying to acquire lock:
-[  164.601998] ffff88811f1714b0 (&esw->offloads.encap_tbl_lock){+.+.}-{3:3}, at: mlx5e_attach_encap+0xd8/0x8b0 [mlx5_core]
-[  164.603078]
-               but task is already holding lock:
-[  164.603617] ffff88810137fc98 (&comp->sem){++++}-{3:3}, at: mlx5_devcom_get_peer_data+0x37/0x80 [mlx5_core]
-[  164.604459]
-               which lock already depends on the new lock.
-
-[  164.605190]
-               the existing dependency chain (in reverse order) is:
-[  164.605848]
-               -> #1 (&comp->sem){++++}-{3:3}:
-[  164.606380]        down_read+0x39/0x50
-[  164.606772]        mlx5_devcom_get_peer_data+0x37/0x80 [mlx5_core]
-[  164.607336]        mlx5e_tc_query_route_vport+0x86/0xc0 [mlx5_core]
-[  164.607914]        mlx5e_tc_tun_route_lookup+0x1a4/0x1d0 [mlx5_core]
-[  164.608495]        mlx5e_attach_decap_route+0xc6/0x1e0 [mlx5_core]
-[  164.609063]        mlx5e_tc_add_fdb_flow+0x1ea/0x360 [mlx5_core]
-[  164.609627]        __mlx5e_add_fdb_flow+0x2d2/0x430 [mlx5_core]
-[  164.610175]        mlx5e_configure_flower+0x952/0x1a20 [mlx5_core]
-[  164.610741]        tc_setup_cb_add+0xd4/0x200
-[  164.611146]        fl_hw_replace_filter+0x14c/0x1f0 [cls_flower]
-[  164.611661]        fl_change+0xc95/0x18a0 [cls_flower]
-[  164.612116]        tc_new_tfilter+0x3fc/0xd20
-[  164.612516]        rtnetlink_rcv_msg+0x418/0x5b0
-[  164.612936]        netlink_rcv_skb+0x54/0x100
-[  164.613339]        netlink_unicast+0x190/0x250
-[  164.613746]        netlink_sendmsg+0x245/0x4a0
-[  164.614150]        sock_sendmsg+0x38/0x60
-[  164.614522]        ____sys_sendmsg+0x1d0/0x1e0
-[  164.614934]        ___sys_sendmsg+0x80/0xc0
-[  164.615320]        __sys_sendmsg+0x51/0x90
-[  164.615701]        do_syscall_64+0x3d/0x90
-[  164.616083]        entry_SYSCALL_64_after_hwframe+0x46/0xb0
-[  164.616568]
-               -> #0 (&esw->offloads.encap_tbl_lock){+.+.}-{3:3}:
-[  164.617210]        __lock_acquire+0x159e/0x26e0
-[  164.617638]        lock_acquire+0xc2/0x2a0
-[  164.618018]        __mutex_lock+0x92/0xcd0
-[  164.618401]        mlx5e_attach_encap+0xd8/0x8b0 [mlx5_core]
-[  164.618943]        post_process_attr+0x153/0x2d0 [mlx5_core]
-[  164.619471]        mlx5e_tc_add_fdb_flow+0x164/0x360 [mlx5_core]
-[  164.620021]        __mlx5e_add_fdb_flow+0x2d2/0x430 [mlx5_core]
-[  164.620564]        mlx5e_configure_flower+0xe33/0x1a20 [mlx5_core]
-[  164.621125]        tc_setup_cb_add+0xd4/0x200
-[  164.621531]        fl_hw_replace_filter+0x14c/0x1f0 [cls_flower]
-[  164.622047]        fl_change+0xc95/0x18a0 [cls_flower]
-[  164.622500]        tc_new_tfilter+0x3fc/0xd20
-[  164.622906]        rtnetlink_rcv_msg+0x418/0x5b0
-[  164.623324]        netlink_rcv_skb+0x54/0x100
-[  164.623727]        netlink_unicast+0x190/0x250
-[  164.624138]        netlink_sendmsg+0x245/0x4a0
-[  164.624544]        sock_sendmsg+0x38/0x60
-[  164.624919]        ____sys_sendmsg+0x1d0/0x1e0
-[  164.625340]        ___sys_sendmsg+0x80/0xc0
-[  164.625731]        __sys_sendmsg+0x51/0x90
-[  164.626117]        do_syscall_64+0x3d/0x90
-[  164.626502]        entry_SYSCALL_64_after_hwframe+0x46/0xb0
-[  164.626995]
-               other info that might help us debug this:
-
-[  164.627725]  Possible unsafe locking scenario:
-
-[  164.628268]        CPU0                    CPU1
-[  164.628683]        ----                    ----
-[  164.629098]   lock(&comp->sem);
-[  164.629421]                                lock(&esw->offloads.encap_tbl_lock);
-[  164.630066]                                lock(&comp->sem);
-[  164.630555]   lock(&esw->offloads.encap_tbl_lock);
-[  164.630993]
-                *** DEADLOCK ***
-
-[  164.631575] 3 locks held by handler1/3456:
-[  164.631962]  #0: ffff888124b75130 (&block->cb_lock){++++}-{3:3}, at: tc_setup_cb_add+0x5b/0x200
-[  164.632703]  #1: ffff888116e512b8 (&esw->mode_lock){++++}-{3:3}, at: mlx5_esw_hold+0x39/0x50 [mlx5_core]
-[  164.633552]  #2: ffff88810137fc98 (&comp->sem){++++}-{3:3}, at: mlx5_devcom_get_peer_data+0x37/0x80 [mlx5_core]
-[  164.634435]
-               stack backtrace:
-[  164.634883] CPU: 17 PID: 3456 Comm: handler1 Not tainted 6.3.0-rc3+ #1
-[  164.635431] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-[  164.636340] Call Trace:
-[  164.636616]  <TASK>
-[  164.636863]  dump_stack_lvl+0x47/0x70
-[  164.637217]  check_noncircular+0xfe/0x110
-[  164.637601]  __lock_acquire+0x159e/0x26e0
-[  164.637977]  ? mlx5_cmd_set_fte+0x5b0/0x830 [mlx5_core]
-[  164.638472]  lock_acquire+0xc2/0x2a0
-[  164.638828]  ? mlx5e_attach_encap+0xd8/0x8b0 [mlx5_core]
-[  164.639339]  ? lock_is_held_type+0x98/0x110
-[  164.639728]  __mutex_lock+0x92/0xcd0
-[  164.640074]  ? mlx5e_attach_encap+0xd8/0x8b0 [mlx5_core]
-[  164.640576]  ? __lock_acquire+0x382/0x26e0
-[  164.640958]  ? mlx5e_attach_encap+0xd8/0x8b0 [mlx5_core]
-[  164.641468]  ? mlx5e_attach_encap+0xd8/0x8b0 [mlx5_core]
-[  164.641965]  mlx5e_attach_encap+0xd8/0x8b0 [mlx5_core]
-[  164.642454]  ? lock_release+0xbf/0x240
-[  164.642819]  post_process_attr+0x153/0x2d0 [mlx5_core]
-[  164.643318]  mlx5e_tc_add_fdb_flow+0x164/0x360 [mlx5_core]
-[  164.643835]  __mlx5e_add_fdb_flow+0x2d2/0x430 [mlx5_core]
-[  164.644340]  mlx5e_configure_flower+0xe33/0x1a20 [mlx5_core]
-[  164.644862]  ? lock_acquire+0xc2/0x2a0
-[  164.645219]  tc_setup_cb_add+0xd4/0x200
-[  164.645588]  fl_hw_replace_filter+0x14c/0x1f0 [cls_flower]
-[  164.646067]  fl_change+0xc95/0x18a0 [cls_flower]
-[  164.646488]  tc_new_tfilter+0x3fc/0xd20
-[  164.646861]  ? tc_del_tfilter+0x810/0x810
-[  164.647236]  rtnetlink_rcv_msg+0x418/0x5b0
-[  164.647621]  ? rtnl_setlink+0x160/0x160
-[  164.647982]  netlink_rcv_skb+0x54/0x100
-[  164.648348]  netlink_unicast+0x190/0x250
-[  164.648722]  netlink_sendmsg+0x245/0x4a0
-[  164.649090]  sock_sendmsg+0x38/0x60
-[  164.649434]  ____sys_sendmsg+0x1d0/0x1e0
-[  164.649804]  ? copy_msghdr_from_user+0x6d/0xa0
-[  164.650213]  ___sys_sendmsg+0x80/0xc0
-[  164.650563]  ? lock_acquire+0xc2/0x2a0
-[  164.650926]  ? lock_acquire+0xc2/0x2a0
-[  164.651286]  ? __fget_files+0x5/0x190
-[  164.651644]  ? find_held_lock+0x2b/0x80
-[  164.652006]  ? __fget_files+0xb9/0x190
-[  164.652365]  ? lock_release+0xbf/0x240
-[  164.652723]  ? __fget_files+0xd3/0x190
-[  164.653079]  __sys_sendmsg+0x51/0x90
-[  164.653435]  do_syscall_64+0x3d/0x90
-[  164.653784]  entry_SYSCALL_64_after_hwframe+0x46/0xb0
-[  164.654229] RIP: 0033:0x7f378054f8bd
-[  164.654577] Code: 28 89 54 24 1c 48 89 74 24 10 89 7c 24 08 e8 6a c3 f4 ff 8b 54 24 1c 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 33 44 89 c7 48 89 44 24 08 e8 be c3 f4 ff 48
-[  164.656041] RSP: 002b:00007f377fa114b0 EFLAGS: 00000293 ORIG_RAX: 000000000000002e
-[  164.656701] RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007f378054f8bd
-[  164.657297] RDX: 0000000000000000 RSI: 00007f377fa11540 RDI: 0000000000000014
-[  164.657885] RBP: 00007f377fa12278 R08: 0000000000000000 R09: 000000000000015c
-[  164.658472] R10: 00007f377fa123d0 R11: 0000000000000293 R12: 0000560962d99bd0
-[  164.665317] R13: 0000000000000000 R14: 0000560962d99bd0 R15: 00007f377fa11540
-
-Fixes: f9d196bd632b ("net/mlx5e: Use correct eswitch for stack devices with lag")
-Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
-Reviewed-by: Roi Dayan <roid@nvidia.com>
-Reviewed-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Alexander Bersenev <bay@hackerdom.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 7e01c7f7046e ("net: cdc_ncm: Deal with too low values of dwNtbOutMaxSize")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_tc.c   | 19 ++++----
- .../ethernet/mellanox/mlx5/core/lib/devcom.c  | 48 ++++++++++++++-----
- .../ethernet/mellanox/mlx5/core/lib/devcom.h  |  1 +
- 3 files changed, 48 insertions(+), 20 deletions(-)
+ drivers/net/usb/cdc_ncm.c        | 411 ++++++++++++++++++++++++-------
+ drivers/net/usb/huawei_cdc_ncm.c |   8 +-
+ include/linux/usb/cdc_ncm.h      |  15 +-
+ 3 files changed, 340 insertions(+), 94 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-index 9ea4281a55b81..5cef556223e2c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-@@ -1308,11 +1308,9 @@ bool mlx5e_tc_is_vf_tunnel(struct net_device *out_dev, struct net_device *route_
- int mlx5e_tc_query_route_vport(struct net_device *out_dev, struct net_device *route_dev, u16 *vport)
- {
- 	struct mlx5e_priv *out_priv, *route_priv;
--	struct mlx5_devcom *devcom = NULL;
- 	struct mlx5_core_dev *route_mdev;
- 	struct mlx5_eswitch *esw;
- 	u16 vhca_id;
+diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
+index 1c9a1b94f6e28..28e306e3ee8d9 100644
+--- a/drivers/net/usb/cdc_ncm.c
++++ b/drivers/net/usb/cdc_ncm.c
+@@ -175,7 +175,11 @@ static u32 cdc_ncm_check_tx_max(struct usbnet *dev, u32 new_tx)
+ 	u32 val, max, min;
+ 
+ 	/* clamp new_tx to sane values */
+-	min = ctx->max_datagram_size + ctx->max_ndp_size + sizeof(struct usb_cdc_ncm_nth16);
++	if (ctx->is_ndp16)
++		min = ctx->max_datagram_size + ctx->max_ndp_size + sizeof(struct usb_cdc_ncm_nth16);
++	else
++		min = ctx->max_datagram_size + ctx->max_ndp_size + sizeof(struct usb_cdc_ncm_nth32);
++
+ 	max = min_t(u32, CDC_NCM_NTB_MAX_SIZE_TX, le32_to_cpu(ctx->ncm_parm.dwNtbOutMaxSize));
+ 	if (max == 0)
+ 		max = CDC_NCM_NTB_MAX_SIZE_TX; /* dwNtbOutMaxSize not set */
+@@ -309,10 +313,17 @@ static ssize_t ndp_to_end_store(struct device *d,  struct device_attribute *attr
+ 	if (enable == (ctx->drvflags & CDC_NCM_FLAG_NDP_TO_END))
+ 		return len;
+ 
+-	if (enable && !ctx->delayed_ndp16) {
+-		ctx->delayed_ndp16 = kzalloc(ctx->max_ndp_size, GFP_KERNEL);
+-		if (!ctx->delayed_ndp16)
+-			return -ENOMEM;
++	if (enable) {
++		if (ctx->is_ndp16 && !ctx->delayed_ndp16) {
++			ctx->delayed_ndp16 = kzalloc(ctx->max_ndp_size, GFP_KERNEL);
++			if (!ctx->delayed_ndp16)
++				return -ENOMEM;
++		}
++		if (!ctx->is_ndp16 && !ctx->delayed_ndp32) {
++			ctx->delayed_ndp32 = kzalloc(ctx->max_ndp_size, GFP_KERNEL);
++			if (!ctx->delayed_ndp32)
++				return -ENOMEM;
++		}
+ 	}
+ 
+ 	/* flush pending data before changing flag */
+@@ -514,6 +525,9 @@ static int cdc_ncm_init(struct usbnet *dev)
+ 			dev_err(&dev->intf->dev, "SET_CRC_MODE failed\n");
+ 	}
+ 
++	/* use ndp16 by default */
++	ctx->is_ndp16 = 1;
++
+ 	/* set NTB format, if both formats are supported.
+ 	 *
+ 	 * "The host shall only send this command while the NCM Data
+@@ -521,14 +535,27 @@ static int cdc_ncm_init(struct usbnet *dev)
+ 	 */
+ 	if (le16_to_cpu(ctx->ncm_parm.bmNtbFormatsSupported) &
+ 						USB_CDC_NCM_NTB32_SUPPORTED) {
+-		dev_dbg(&dev->intf->dev, "Setting NTB format to 16-bit\n");
+-		err = usbnet_write_cmd(dev, USB_CDC_SET_NTB_FORMAT,
+-				       USB_TYPE_CLASS | USB_DIR_OUT
+-				       | USB_RECIP_INTERFACE,
+-				       USB_CDC_NCM_NTB16_FORMAT,
+-				       iface_no, NULL, 0);
+-		if (err < 0)
++		if (ctx->drvflags & CDC_NCM_FLAG_PREFER_NTB32) {
++			ctx->is_ndp16 = 0;
++			dev_dbg(&dev->intf->dev, "Setting NTB format to 32-bit\n");
++			err = usbnet_write_cmd(dev, USB_CDC_SET_NTB_FORMAT,
++					       USB_TYPE_CLASS | USB_DIR_OUT
++					       | USB_RECIP_INTERFACE,
++					       USB_CDC_NCM_NTB32_FORMAT,
++					       iface_no, NULL, 0);
++		} else {
++			ctx->is_ndp16 = 1;
++			dev_dbg(&dev->intf->dev, "Setting NTB format to 16-bit\n");
++			err = usbnet_write_cmd(dev, USB_CDC_SET_NTB_FORMAT,
++					       USB_TYPE_CLASS | USB_DIR_OUT
++					       | USB_RECIP_INTERFACE,
++					       USB_CDC_NCM_NTB16_FORMAT,
++					       iface_no, NULL, 0);
++		}
++		if (err < 0) {
++			ctx->is_ndp16 = 1;
+ 			dev_err(&dev->intf->dev, "SET_NTB_FORMAT failed\n");
++		}
+ 	}
+ 
+ 	/* set initial device values */
+@@ -551,7 +578,10 @@ static int cdc_ncm_init(struct usbnet *dev)
+ 		ctx->tx_max_datagrams = CDC_NCM_DPT_DATAGRAMS_MAX;
+ 
+ 	/* set up maximum NDP size */
+-	ctx->max_ndp_size = sizeof(struct usb_cdc_ncm_ndp16) + (ctx->tx_max_datagrams + 1) * sizeof(struct usb_cdc_ncm_dpe16);
++	if (ctx->is_ndp16)
++		ctx->max_ndp_size = sizeof(struct usb_cdc_ncm_ndp16) + (ctx->tx_max_datagrams + 1) * sizeof(struct usb_cdc_ncm_dpe16);
++	else
++		ctx->max_ndp_size = sizeof(struct usb_cdc_ncm_ndp32) + (ctx->tx_max_datagrams + 1) * sizeof(struct usb_cdc_ncm_dpe32);
+ 
+ 	/* initial coalescing timer interval */
+ 	ctx->timer_interval = CDC_NCM_TIMER_INTERVAL_USEC * NSEC_PER_USEC;
+@@ -736,7 +766,10 @@ static void cdc_ncm_free(struct cdc_ncm_ctx *ctx)
+ 		ctx->tx_curr_skb = NULL;
+ 	}
+ 
+-	kfree(ctx->delayed_ndp16);
++	if (ctx->is_ndp16)
++		kfree(ctx->delayed_ndp16);
++	else
++		kfree(ctx->delayed_ndp32);
+ 
+ 	kfree(ctx);
+ }
+@@ -774,10 +807,8 @@ int cdc_ncm_bind_common(struct usbnet *dev, struct usb_interface *intf, u8 data_
+ 	u8 *buf;
+ 	int len;
+ 	int temp;
 -	int err;
+ 	u8 iface_no;
+ 	struct usb_cdc_parsed_header hdr;
+-	__le16 curr_ntb_format;
  
- 	out_priv = netdev_priv(out_dev);
- 	esw = out_priv->mdev->priv.eswitch;
-@@ -1321,6 +1319,9 @@ int mlx5e_tc_query_route_vport(struct net_device *out_dev, struct net_device *ro
- 
- 	vhca_id = MLX5_CAP_GEN(route_mdev, vhca_id);
- 	if (mlx5_lag_is_active(out_priv->mdev)) {
-+		struct mlx5_devcom *devcom;
-+		int err;
-+
- 		/* In lag case we may get devices from different eswitch instances.
- 		 * If we failed to get vport num, it means, mostly, that we on the wrong
- 		 * eswitch.
-@@ -1329,16 +1330,16 @@ int mlx5e_tc_query_route_vport(struct net_device *out_dev, struct net_device *ro
- 		if (err != -ENOENT)
- 			return err;
- 
-+		rcu_read_lock();
- 		devcom = out_priv->mdev->priv.devcom;
--		esw = mlx5_devcom_get_peer_data(devcom, MLX5_DEVCOM_ESW_OFFLOADS);
--		if (!esw)
--			return -ENODEV;
-+		esw = mlx5_devcom_get_peer_data_rcu(devcom, MLX5_DEVCOM_ESW_OFFLOADS);
-+		err = esw ? mlx5_eswitch_vhca_id_to_vport(esw, vhca_id, vport) : -ENODEV;
-+		rcu_read_unlock();
-+
-+		return err;
+ 	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
+ 	if (!ctx)
+@@ -881,32 +912,6 @@ int cdc_ncm_bind_common(struct usbnet *dev, struct usb_interface *intf, u8 data_
+ 		goto error2;
  	}
  
--	err = mlx5_eswitch_vhca_id_to_vport(esw, vhca_id, vport);
--	if (devcom)
--		mlx5_devcom_release_peer_data(devcom, MLX5_DEVCOM_ESW_OFFLOADS);
--	return err;
-+	return mlx5_eswitch_vhca_id_to_vport(esw, vhca_id, vport);
+-	/*
+-	 * Some Huawei devices have been observed to come out of reset in NDP32 mode.
+-	 * Let's check if this is the case, and set the device to NDP16 mode again if
+-	 * needed.
+-	*/
+-	if (ctx->drvflags & CDC_NCM_FLAG_RESET_NTB16) {
+-		err = usbnet_read_cmd(dev, USB_CDC_GET_NTB_FORMAT,
+-				      USB_TYPE_CLASS | USB_DIR_IN | USB_RECIP_INTERFACE,
+-				      0, iface_no, &curr_ntb_format, 2);
+-		if (err < 0) {
+-			goto error2;
+-		}
+-
+-		if (curr_ntb_format == cpu_to_le16(USB_CDC_NCM_NTB32_FORMAT)) {
+-			dev_info(&intf->dev, "resetting NTB format to 16-bit");
+-			err = usbnet_write_cmd(dev, USB_CDC_SET_NTB_FORMAT,
+-					       USB_TYPE_CLASS | USB_DIR_OUT
+-					       | USB_RECIP_INTERFACE,
+-					       USB_CDC_NCM_NTB16_FORMAT,
+-					       iface_no, NULL, 0);
+-
+-			if (err < 0)
+-				goto error2;
+-		}
+-	}
+-
+ 	cdc_ncm_find_endpoints(dev, ctx->data);
+ 	cdc_ncm_find_endpoints(dev, ctx->control);
+ 	if (!dev->in || !dev->out || !dev->status) {
+@@ -931,9 +936,15 @@ int cdc_ncm_bind_common(struct usbnet *dev, struct usb_interface *intf, u8 data_
+ 
+ 	/* Allocate the delayed NDP if needed. */
+ 	if (ctx->drvflags & CDC_NCM_FLAG_NDP_TO_END) {
+-		ctx->delayed_ndp16 = kzalloc(ctx->max_ndp_size, GFP_KERNEL);
+-		if (!ctx->delayed_ndp16)
+-			goto error2;
++		if (ctx->is_ndp16) {
++			ctx->delayed_ndp16 = kzalloc(ctx->max_ndp_size, GFP_KERNEL);
++			if (!ctx->delayed_ndp16)
++				goto error2;
++		} else {
++			ctx->delayed_ndp32 = kzalloc(ctx->max_ndp_size, GFP_KERNEL);
++			if (!ctx->delayed_ndp32)
++				goto error2;
++		}
+ 		dev_info(&intf->dev, "NDP will be placed at end of frame for this device.");
+ 	}
+ 
+@@ -1057,7 +1068,7 @@ static void cdc_ncm_align_tail(struct sk_buff *skb, size_t modulus, size_t remai
+ /* return a pointer to a valid struct usb_cdc_ncm_ndp16 of type sign, possibly
+  * allocating a new one within skb
+  */
+-static struct usb_cdc_ncm_ndp16 *cdc_ncm_ndp(struct cdc_ncm_ctx *ctx, struct sk_buff *skb, __le32 sign, size_t reserve)
++static struct usb_cdc_ncm_ndp16 *cdc_ncm_ndp16(struct cdc_ncm_ctx *ctx, struct sk_buff *skb, __le32 sign, size_t reserve)
+ {
+ 	struct usb_cdc_ncm_ndp16 *ndp16 = NULL;
+ 	struct usb_cdc_ncm_nth16 *nth16 = (void *)skb->data;
+@@ -1112,12 +1123,73 @@ static struct usb_cdc_ncm_ndp16 *cdc_ncm_ndp(struct cdc_ncm_ctx *ctx, struct sk_
+ 	return ndp16;
  }
  
- int mlx5e_tc_add_flow_mod_hdr(struct mlx5e_priv *priv,
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-index 617eea1b1701b..8f978491dd32f 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c
-@@ -13,7 +13,7 @@ static LIST_HEAD(devcom_list);
- 
- struct mlx5_devcom_component {
- 	struct {
--		void *data;
-+		void __rcu *data;
- 	} device[MLX5_DEVCOM_PORTS_SUPPORTED];
- 
- 	mlx5_devcom_event_handler_t handler;
-@@ -163,7 +163,7 @@ void mlx5_devcom_register_component(struct mlx5_devcom *devcom,
- 	comp = &devcom->priv->components[id];
- 	down_write(&comp->sem);
- 	comp->handler = handler;
--	comp->device[devcom->idx].data = data;
-+	rcu_assign_pointer(comp->device[devcom->idx].data, data);
- 	up_write(&comp->sem);
- }
- 
-@@ -177,8 +177,9 @@ void mlx5_devcom_unregister_component(struct mlx5_devcom *devcom,
- 
- 	comp = &devcom->priv->components[id];
- 	down_write(&comp->sem);
--	comp->device[devcom->idx].data = NULL;
-+	RCU_INIT_POINTER(comp->device[devcom->idx].data, NULL);
- 	up_write(&comp->sem);
-+	synchronize_rcu();
- }
- 
- int mlx5_devcom_send_event(struct mlx5_devcom *devcom,
-@@ -194,12 +195,15 @@ int mlx5_devcom_send_event(struct mlx5_devcom *devcom,
- 
- 	comp = &devcom->priv->components[id];
- 	down_write(&comp->sem);
--	for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++)
--		if (i != devcom->idx && comp->device[i].data) {
--			err = comp->handler(event, comp->device[i].data,
--					    event_data);
-+	for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++) {
-+		void *data = rcu_dereference_protected(comp->device[i].data,
-+						       lockdep_is_held(&comp->sem));
++static struct usb_cdc_ncm_ndp32 *cdc_ncm_ndp32(struct cdc_ncm_ctx *ctx, struct sk_buff *skb, __le32 sign, size_t reserve)
++{
++	struct usb_cdc_ncm_ndp32 *ndp32 = NULL;
++	struct usb_cdc_ncm_nth32 *nth32 = (void *)skb->data;
++	size_t ndpoffset = le32_to_cpu(nth32->dwNdpIndex);
 +
-+		if (i != devcom->idx && data) {
-+			err = comp->handler(event, data, event_data);
- 			break;
- 		}
++	/* If NDP should be moved to the end of the NCM package, we can't follow the
++	 * NTH32 header as we would normally do. NDP isn't written to the SKB yet, and
++	 * the wNdpIndex field in the header is actually not consistent with reality. It will be later.
++	 */
++	if (ctx->drvflags & CDC_NCM_FLAG_NDP_TO_END) {
++		if (ctx->delayed_ndp32->dwSignature == sign)
++			return ctx->delayed_ndp32;
++
++		/* We can only push a single NDP to the end. Return
++		 * NULL to send what we've already got and queue this
++		 * skb for later.
++		 */
++		else if (ctx->delayed_ndp32->dwSignature)
++			return NULL;
 +	}
- 
- 	up_write(&comp->sem);
- 	return err;
-@@ -214,7 +218,7 @@ void mlx5_devcom_set_paired(struct mlx5_devcom *devcom,
- 	comp = &devcom->priv->components[id];
- 	WARN_ON(!rwsem_is_locked(&comp->sem));
- 
--	comp->paired = paired;
-+	WRITE_ONCE(comp->paired, paired);
- }
- 
- bool mlx5_devcom_is_paired(struct mlx5_devcom *devcom,
-@@ -223,7 +227,7 @@ bool mlx5_devcom_is_paired(struct mlx5_devcom *devcom,
- 	if (IS_ERR_OR_NULL(devcom))
- 		return false;
- 
--	return devcom->priv->components[id].paired;
-+	return READ_ONCE(devcom->priv->components[id].paired);
- }
- 
- void *mlx5_devcom_get_peer_data(struct mlx5_devcom *devcom,
-@@ -237,7 +241,7 @@ void *mlx5_devcom_get_peer_data(struct mlx5_devcom *devcom,
- 
- 	comp = &devcom->priv->components[id];
- 	down_read(&comp->sem);
--	if (!comp->paired) {
-+	if (!READ_ONCE(comp->paired)) {
- 		up_read(&comp->sem);
- 		return NULL;
- 	}
-@@ -246,7 +250,29 @@ void *mlx5_devcom_get_peer_data(struct mlx5_devcom *devcom,
- 		if (i != devcom->idx)
- 			break;
- 
--	return comp->device[i].data;
-+	return rcu_dereference_protected(comp->device[i].data, lockdep_is_held(&comp->sem));
++
++	/* follow the chain of NDPs, looking for a match */
++	while (ndpoffset) {
++		ndp32 = (struct usb_cdc_ncm_ndp32 *)(skb->data + ndpoffset);
++		if  (ndp32->dwSignature == sign)
++			return ndp32;
++		ndpoffset = le32_to_cpu(ndp32->dwNextNdpIndex);
++	}
++
++	/* align new NDP */
++	if (!(ctx->drvflags & CDC_NCM_FLAG_NDP_TO_END))
++		cdc_ncm_align_tail(skb, ctx->tx_ndp_modulus, 0, ctx->tx_curr_size);
++
++	/* verify that there is room for the NDP and the datagram (reserve) */
++	if ((ctx->tx_curr_size - skb->len - reserve) < ctx->max_ndp_size)
++		return NULL;
++
++	/* link to it */
++	if (ndp32)
++		ndp32->dwNextNdpIndex = cpu_to_le32(skb->len);
++	else
++		nth32->dwNdpIndex = cpu_to_le32(skb->len);
++
++	/* push a new empty NDP */
++	if (!(ctx->drvflags & CDC_NCM_FLAG_NDP_TO_END))
++		ndp32 = skb_put_zero(skb, ctx->max_ndp_size);
++	else
++		ndp32 = ctx->delayed_ndp32;
++
++	ndp32->dwSignature = sign;
++	ndp32->wLength = cpu_to_le32(sizeof(struct usb_cdc_ncm_ndp32) + sizeof(struct usb_cdc_ncm_dpe32));
++	return ndp32;
 +}
 +
-+void *mlx5_devcom_get_peer_data_rcu(struct mlx5_devcom *devcom, enum mlx5_devcom_components id)
-+{
-+	struct mlx5_devcom_component *comp;
-+	int i;
+ struct sk_buff *
+ cdc_ncm_fill_tx_frame(struct usbnet *dev, struct sk_buff *skb, __le32 sign)
+ {
+ 	struct cdc_ncm_ctx *ctx = (struct cdc_ncm_ctx *)dev->data[0];
+-	struct usb_cdc_ncm_nth16 *nth16;
+-	struct usb_cdc_ncm_ndp16 *ndp16;
++	union {
++		struct usb_cdc_ncm_nth16 *nth16;
++		struct usb_cdc_ncm_nth32 *nth32;
++	} nth;
++	union {
++		struct usb_cdc_ncm_ndp16 *ndp16;
++		struct usb_cdc_ncm_ndp32 *ndp32;
++	} ndp;
+ 	struct sk_buff *skb_out;
+ 	u16 n = 0, index, ndplen;
+ 	u8 ready2send = 0;
+@@ -1184,11 +1256,19 @@ cdc_ncm_fill_tx_frame(struct usbnet *dev, struct sk_buff *skb, __le32 sign)
+ 			}
+ 			ctx->tx_low_mem_val--;
+ 		}
+-		/* fill out the initial 16-bit NTB header */
+-		nth16 = skb_put_zero(skb_out, sizeof(struct usb_cdc_ncm_nth16));
+-		nth16->dwSignature = cpu_to_le32(USB_CDC_NCM_NTH16_SIGN);
+-		nth16->wHeaderLength = cpu_to_le16(sizeof(struct usb_cdc_ncm_nth16));
+-		nth16->wSequence = cpu_to_le16(ctx->tx_seq++);
++		if (ctx->is_ndp16) {
++			/* fill out the initial 16-bit NTB header */
++			nth.nth16 = skb_put_zero(skb_out, sizeof(struct usb_cdc_ncm_nth16));
++			nth.nth16->dwSignature = cpu_to_le32(USB_CDC_NCM_NTH16_SIGN);
++			nth.nth16->wHeaderLength = cpu_to_le16(sizeof(struct usb_cdc_ncm_nth16));
++			nth.nth16->wSequence = cpu_to_le16(ctx->tx_seq++);
++		} else {
++			/* fill out the initial 32-bit NTB header */
++			nth.nth32 = skb_put_zero(skb_out, sizeof(struct usb_cdc_ncm_nth32));
++			nth.nth32->dwSignature = cpu_to_le32(USB_CDC_NCM_NTH32_SIGN);
++			nth.nth32->wHeaderLength = cpu_to_le16(sizeof(struct usb_cdc_ncm_nth32));
++			nth.nth32->wSequence = cpu_to_le16(ctx->tx_seq++);
++		}
+ 
+ 		/* count total number of frames in this NTB */
+ 		ctx->tx_curr_frame_num = 0;
+@@ -1210,13 +1290,17 @@ cdc_ncm_fill_tx_frame(struct usbnet *dev, struct sk_buff *skb, __le32 sign)
+ 		}
+ 
+ 		/* get the appropriate NDP for this skb */
+-		ndp16 = cdc_ncm_ndp(ctx, skb_out, sign, skb->len + ctx->tx_modulus + ctx->tx_remainder);
++		if (ctx->is_ndp16)
++			ndp.ndp16 = cdc_ncm_ndp16(ctx, skb_out, sign, skb->len + ctx->tx_modulus + ctx->tx_remainder);
++		else
++			ndp.ndp32 = cdc_ncm_ndp32(ctx, skb_out, sign, skb->len + ctx->tx_modulus + ctx->tx_remainder);
+ 
+ 		/* align beginning of next frame */
+ 		cdc_ncm_align_tail(skb_out,  ctx->tx_modulus, ctx->tx_remainder, ctx->tx_curr_size);
+ 
+ 		/* check if we had enough room left for both NDP and frame */
+-		if (!ndp16 || skb_out->len + skb->len + delayed_ndp_size > ctx->tx_curr_size) {
++		if ((ctx->is_ndp16 && !ndp.ndp16) || (!ctx->is_ndp16 && !ndp.ndp32) ||
++		    skb_out->len + skb->len + delayed_ndp_size > ctx->tx_curr_size) {
+ 			if (n == 0) {
+ 				/* won't fit, MTU problem? */
+ 				dev_kfree_skb_any(skb);
+@@ -1238,13 +1322,22 @@ cdc_ncm_fill_tx_frame(struct usbnet *dev, struct sk_buff *skb, __le32 sign)
+ 		}
+ 
+ 		/* calculate frame number withing this NDP */
+-		ndplen = le16_to_cpu(ndp16->wLength);
+-		index = (ndplen - sizeof(struct usb_cdc_ncm_ndp16)) / sizeof(struct usb_cdc_ncm_dpe16) - 1;
++		if (ctx->is_ndp16) {
++			ndplen = le16_to_cpu(ndp.ndp16->wLength);
++			index = (ndplen - sizeof(struct usb_cdc_ncm_ndp16)) / sizeof(struct usb_cdc_ncm_dpe16) - 1;
 +
-+	if (IS_ERR_OR_NULL(devcom))
-+		return NULL;
++			/* OK, add this skb */
++			ndp.ndp16->dpe16[index].wDatagramLength = cpu_to_le16(skb->len);
++			ndp.ndp16->dpe16[index].wDatagramIndex = cpu_to_le16(skb_out->len);
++			ndp.ndp16->wLength = cpu_to_le16(ndplen + sizeof(struct usb_cdc_ncm_dpe16));
++		} else {
++			ndplen = le16_to_cpu(ndp.ndp32->wLength);
++			index = (ndplen - sizeof(struct usb_cdc_ncm_ndp32)) / sizeof(struct usb_cdc_ncm_dpe32) - 1;
+ 
+-		/* OK, add this skb */
+-		ndp16->dpe16[index].wDatagramLength = cpu_to_le16(skb->len);
+-		ndp16->dpe16[index].wDatagramIndex = cpu_to_le16(skb_out->len);
+-		ndp16->wLength = cpu_to_le16(ndplen + sizeof(struct usb_cdc_ncm_dpe16));
++			ndp.ndp32->dpe32[index].dwDatagramLength = cpu_to_le32(skb->len);
++			ndp.ndp32->dpe32[index].dwDatagramIndex = cpu_to_le32(skb_out->len);
++			ndp.ndp32->wLength = cpu_to_le16(ndplen + sizeof(struct usb_cdc_ncm_dpe32));
++		}
+ 		skb_put_data(skb_out, skb->data, skb->len);
+ 		ctx->tx_curr_frame_payload += skb->len;	/* count real tx payload data */
+ 		dev_kfree_skb_any(skb);
+@@ -1291,13 +1384,22 @@ cdc_ncm_fill_tx_frame(struct usbnet *dev, struct sk_buff *skb, __le32 sign)
+ 
+ 	/* If requested, put NDP at end of frame. */
+ 	if (ctx->drvflags & CDC_NCM_FLAG_NDP_TO_END) {
+-		nth16 = (struct usb_cdc_ncm_nth16 *)skb_out->data;
+-		cdc_ncm_align_tail(skb_out, ctx->tx_ndp_modulus, 0, ctx->tx_curr_size - ctx->max_ndp_size);
+-		nth16->wNdpIndex = cpu_to_le16(skb_out->len);
+-		skb_put_data(skb_out, ctx->delayed_ndp16, ctx->max_ndp_size);
++		if (ctx->is_ndp16) {
++			nth.nth16 = (struct usb_cdc_ncm_nth16 *)skb_out->data;
++			cdc_ncm_align_tail(skb_out, ctx->tx_ndp_modulus, 0, ctx->tx_curr_size - ctx->max_ndp_size);
++			nth.nth16->wNdpIndex = cpu_to_le16(skb_out->len);
++			skb_put_data(skb_out, ctx->delayed_ndp16, ctx->max_ndp_size);
 +
-+	for (i = 0; i < MLX5_DEVCOM_PORTS_SUPPORTED; i++)
-+		if (i != devcom->idx)
-+			break;
++			/* Zero out delayed NDP - signature checking will naturally fail. */
++			ndp.ndp16 = memset(ctx->delayed_ndp16, 0, ctx->max_ndp_size);
++		} else {
++			nth.nth32 = (struct usb_cdc_ncm_nth32 *)skb_out->data;
++			cdc_ncm_align_tail(skb_out, ctx->tx_ndp_modulus, 0, ctx->tx_curr_size - ctx->max_ndp_size);
++			nth.nth32->dwNdpIndex = cpu_to_le32(skb_out->len);
++			skb_put_data(skb_out, ctx->delayed_ndp32, ctx->max_ndp_size);
+ 
+-		/* Zero out delayed NDP - signature checking will naturally fail. */
+-		ndp16 = memset(ctx->delayed_ndp16, 0, ctx->max_ndp_size);
++			ndp.ndp32 = memset(ctx->delayed_ndp32, 0, ctx->max_ndp_size);
++		}
+ 	}
+ 
+ 	/* If collected data size is less or equal ctx->min_tx_pkt
+@@ -1320,8 +1422,13 @@ cdc_ncm_fill_tx_frame(struct usbnet *dev, struct sk_buff *skb, __le32 sign)
+ 	}
+ 
+ 	/* set final frame length */
+-	nth16 = (struct usb_cdc_ncm_nth16 *)skb_out->data;
+-	nth16->wBlockLength = cpu_to_le16(skb_out->len);
++	if (ctx->is_ndp16) {
++		nth.nth16 = (struct usb_cdc_ncm_nth16 *)skb_out->data;
++		nth.nth16->wBlockLength = cpu_to_le16(skb_out->len);
++	} else {
++		nth.nth32 = (struct usb_cdc_ncm_nth32 *)skb_out->data;
++		nth.nth32->dwBlockLength = cpu_to_le32(skb_out->len);
++	}
+ 
+ 	/* return skb */
+ 	ctx->tx_curr_skb = NULL;
+@@ -1404,7 +1511,12 @@ cdc_ncm_tx_fixup(struct usbnet *dev, struct sk_buff *skb, gfp_t flags)
+ 		goto error;
+ 
+ 	spin_lock_bh(&ctx->mtx);
+-	skb_out = cdc_ncm_fill_tx_frame(dev, skb, cpu_to_le32(USB_CDC_NCM_NDP16_NOCRC_SIGN));
 +
-+	comp = &devcom->priv->components[id];
-+	/* This can change concurrently, however 'data' pointer will remain
-+	 * valid for the duration of RCU read section.
-+	 */
-+	if (!READ_ONCE(comp->paired))
-+		return NULL;
++	if (ctx->is_ndp16)
++		skb_out = cdc_ncm_fill_tx_frame(dev, skb, cpu_to_le32(USB_CDC_NCM_NDP16_NOCRC_SIGN));
++	else
++		skb_out = cdc_ncm_fill_tx_frame(dev, skb, cpu_to_le32(USB_CDC_NCM_NDP32_NOCRC_SIGN));
 +
-+	return rcu_dereference(comp->device[i].data);
+ 	spin_unlock_bh(&ctx->mtx);
+ 	return skb_out;
+ 
+@@ -1465,6 +1577,54 @@ int cdc_ncm_rx_verify_nth16(struct cdc_ncm_ctx *ctx, struct sk_buff *skb_in)
  }
+ EXPORT_SYMBOL_GPL(cdc_ncm_rx_verify_nth16);
  
- void mlx5_devcom_release_peer_data(struct mlx5_devcom *devcom,
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
-index 94313c18bb647..9a496f4722dad 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.h
-@@ -41,6 +41,7 @@ bool mlx5_devcom_is_paired(struct mlx5_devcom *devcom,
++int cdc_ncm_rx_verify_nth32(struct cdc_ncm_ctx *ctx, struct sk_buff *skb_in)
++{
++	struct usbnet *dev = netdev_priv(skb_in->dev);
++	struct usb_cdc_ncm_nth32 *nth32;
++	int len;
++	int ret = -EINVAL;
++
++	if (ctx == NULL)
++		goto error;
++
++	if (skb_in->len < (sizeof(struct usb_cdc_ncm_nth32) +
++					sizeof(struct usb_cdc_ncm_ndp32))) {
++		netif_dbg(dev, rx_err, dev->net, "frame too short\n");
++		goto error;
++	}
++
++	nth32 = (struct usb_cdc_ncm_nth32 *)skb_in->data;
++
++	if (nth32->dwSignature != cpu_to_le32(USB_CDC_NCM_NTH32_SIGN)) {
++		netif_dbg(dev, rx_err, dev->net,
++			  "invalid NTH32 signature <%#010x>\n",
++			  le32_to_cpu(nth32->dwSignature));
++		goto error;
++	}
++
++	len = le32_to_cpu(nth32->dwBlockLength);
++	if (len > ctx->rx_max) {
++		netif_dbg(dev, rx_err, dev->net,
++			  "unsupported NTB block length %u/%u\n", len,
++			  ctx->rx_max);
++		goto error;
++	}
++
++	if ((ctx->rx_seq + 1) != le16_to_cpu(nth32->wSequence) &&
++	    (ctx->rx_seq || le16_to_cpu(nth32->wSequence)) &&
++	    !((ctx->rx_seq == 0xffff) && !le16_to_cpu(nth32->wSequence))) {
++		netif_dbg(dev, rx_err, dev->net,
++			  "sequence number glitch prev=%d curr=%d\n",
++			  ctx->rx_seq, le16_to_cpu(nth32->wSequence));
++	}
++	ctx->rx_seq = le16_to_cpu(nth32->wSequence);
++
++	ret = le32_to_cpu(nth32->dwNdpIndex);
++error:
++	return ret;
++}
++EXPORT_SYMBOL_GPL(cdc_ncm_rx_verify_nth32);
++
+ /* verify NDP header and return number of datagrams, or negative error */
+ int cdc_ncm_rx_verify_ndp16(struct sk_buff *skb_in, int ndpoffset)
+ {
+@@ -1501,6 +1661,42 @@ int cdc_ncm_rx_verify_ndp16(struct sk_buff *skb_in, int ndpoffset)
+ }
+ EXPORT_SYMBOL_GPL(cdc_ncm_rx_verify_ndp16);
  
- void *mlx5_devcom_get_peer_data(struct mlx5_devcom *devcom,
- 				enum mlx5_devcom_components id);
-+void *mlx5_devcom_get_peer_data_rcu(struct mlx5_devcom *devcom, enum mlx5_devcom_components id);
- void mlx5_devcom_release_peer_data(struct mlx5_devcom *devcom,
- 				   enum mlx5_devcom_components id);
++/* verify NDP header and return number of datagrams, or negative error */
++int cdc_ncm_rx_verify_ndp32(struct sk_buff *skb_in, int ndpoffset)
++{
++	struct usbnet *dev = netdev_priv(skb_in->dev);
++	struct usb_cdc_ncm_ndp32 *ndp32;
++	int ret = -EINVAL;
++
++	if ((ndpoffset + sizeof(struct usb_cdc_ncm_ndp32)) > skb_in->len) {
++		netif_dbg(dev, rx_err, dev->net, "invalid NDP offset  <%u>\n",
++			  ndpoffset);
++		goto error;
++	}
++	ndp32 = (struct usb_cdc_ncm_ndp32 *)(skb_in->data + ndpoffset);
++
++	if (le16_to_cpu(ndp32->wLength) < USB_CDC_NCM_NDP32_LENGTH_MIN) {
++		netif_dbg(dev, rx_err, dev->net, "invalid DPT32 length <%u>\n",
++			  le16_to_cpu(ndp32->wLength));
++		goto error;
++	}
++
++	ret = ((le16_to_cpu(ndp32->wLength) -
++					sizeof(struct usb_cdc_ncm_ndp32)) /
++					sizeof(struct usb_cdc_ncm_dpe32));
++	ret--; /* we process NDP entries except for the last one */
++
++	if ((sizeof(struct usb_cdc_ncm_ndp32) +
++	     ret * (sizeof(struct usb_cdc_ncm_dpe32))) > skb_in->len) {
++		netif_dbg(dev, rx_err, dev->net, "Invalid nframes = %d\n", ret);
++		ret = -EINVAL;
++	}
++
++error:
++	return ret;
++}
++EXPORT_SYMBOL_GPL(cdc_ncm_rx_verify_ndp32);
++
+ int cdc_ncm_rx_fixup(struct usbnet *dev, struct sk_buff *skb_in)
+ {
+ 	struct sk_buff *skb;
+@@ -1509,34 +1705,66 @@ int cdc_ncm_rx_fixup(struct usbnet *dev, struct sk_buff *skb_in)
+ 	int nframes;
+ 	int x;
+ 	int offset;
+-	struct usb_cdc_ncm_ndp16 *ndp16;
+-	struct usb_cdc_ncm_dpe16 *dpe16;
++	union {
++		struct usb_cdc_ncm_ndp16 *ndp16;
++		struct usb_cdc_ncm_ndp32 *ndp32;
++	} ndp;
++	union {
++		struct usb_cdc_ncm_dpe16 *dpe16;
++		struct usb_cdc_ncm_dpe32 *dpe32;
++	} dpe;
++
+ 	int ndpoffset;
+ 	int loopcount = 50; /* arbitrary max preventing infinite loop */
+ 	u32 payload = 0;
  
+-	ndpoffset = cdc_ncm_rx_verify_nth16(ctx, skb_in);
++	if (ctx->is_ndp16)
++		ndpoffset = cdc_ncm_rx_verify_nth16(ctx, skb_in);
++	else
++		ndpoffset = cdc_ncm_rx_verify_nth32(ctx, skb_in);
++
+ 	if (ndpoffset < 0)
+ 		goto error;
+ 
+ next_ndp:
+-	nframes = cdc_ncm_rx_verify_ndp16(skb_in, ndpoffset);
+-	if (nframes < 0)
+-		goto error;
++	if (ctx->is_ndp16) {
++		nframes = cdc_ncm_rx_verify_ndp16(skb_in, ndpoffset);
++		if (nframes < 0)
++			goto error;
+ 
+-	ndp16 = (struct usb_cdc_ncm_ndp16 *)(skb_in->data + ndpoffset);
++		ndp.ndp16 = (struct usb_cdc_ncm_ndp16 *)(skb_in->data + ndpoffset);
+ 
+-	if (ndp16->dwSignature != cpu_to_le32(USB_CDC_NCM_NDP16_NOCRC_SIGN)) {
+-		netif_dbg(dev, rx_err, dev->net,
+-			  "invalid DPT16 signature <%#010x>\n",
+-			  le32_to_cpu(ndp16->dwSignature));
+-		goto err_ndp;
++		if (ndp.ndp16->dwSignature != cpu_to_le32(USB_CDC_NCM_NDP16_NOCRC_SIGN)) {
++			netif_dbg(dev, rx_err, dev->net,
++				  "invalid DPT16 signature <%#010x>\n",
++				  le32_to_cpu(ndp.ndp16->dwSignature));
++			goto err_ndp;
++		}
++		dpe.dpe16 = ndp.ndp16->dpe16;
++	} else {
++		nframes = cdc_ncm_rx_verify_ndp32(skb_in, ndpoffset);
++		if (nframes < 0)
++			goto error;
++
++		ndp.ndp32 = (struct usb_cdc_ncm_ndp32 *)(skb_in->data + ndpoffset);
++
++		if (ndp.ndp32->dwSignature != cpu_to_le32(USB_CDC_NCM_NDP32_NOCRC_SIGN)) {
++			netif_dbg(dev, rx_err, dev->net,
++				  "invalid DPT32 signature <%#010x>\n",
++				  le32_to_cpu(ndp.ndp32->dwSignature));
++			goto err_ndp;
++		}
++		dpe.dpe32 = ndp.ndp32->dpe32;
+ 	}
+-	dpe16 = ndp16->dpe16;
+ 
+-	for (x = 0; x < nframes; x++, dpe16++) {
+-		offset = le16_to_cpu(dpe16->wDatagramIndex);
+-		len = le16_to_cpu(dpe16->wDatagramLength);
++	for (x = 0; x < nframes; x++) {
++		if (ctx->is_ndp16) {
++			offset = le16_to_cpu(dpe.dpe16->wDatagramIndex);
++			len = le16_to_cpu(dpe.dpe16->wDatagramLength);
++		} else {
++			offset = le32_to_cpu(dpe.dpe32->dwDatagramIndex);
++			len = le32_to_cpu(dpe.dpe32->dwDatagramLength);
++		}
+ 
+ 		/*
+ 		 * CDC NCM ch. 3.7
+@@ -1567,10 +1795,19 @@ int cdc_ncm_rx_fixup(struct usbnet *dev, struct sk_buff *skb_in)
+ 			usbnet_skb_return(dev, skb);
+ 			payload += len;	/* count payload bytes in this NTB */
+ 		}
++
++		if (ctx->is_ndp16)
++			dpe.dpe16++;
++		else
++			dpe.dpe32++;
+ 	}
+ err_ndp:
+ 	/* are there more NDPs to process? */
+-	ndpoffset = le16_to_cpu(ndp16->wNextNdpIndex);
++	if (ctx->is_ndp16)
++		ndpoffset = le16_to_cpu(ndp.ndp16->wNextNdpIndex);
++	else
++		ndpoffset = le32_to_cpu(ndp.ndp32->dwNextNdpIndex);
++
+ 	if (ndpoffset && loopcount--)
+ 		goto next_ndp;
+ 
+diff --git a/drivers/net/usb/huawei_cdc_ncm.c b/drivers/net/usb/huawei_cdc_ncm.c
+index e15a472c6a54c..099d848270042 100644
+--- a/drivers/net/usb/huawei_cdc_ncm.c
++++ b/drivers/net/usb/huawei_cdc_ncm.c
+@@ -77,11 +77,11 @@ static int huawei_cdc_ncm_bind(struct usbnet *usbnet_dev,
+ 	 */
+ 	drvflags |= CDC_NCM_FLAG_NDP_TO_END;
+ 
+-	/* Additionally, it has been reported that some Huawei E3372H devices, with
+-	 * firmware version 21.318.01.00.541, come out of reset in NTB32 format mode, hence
+-	 * needing to be set to the NTB16 one again.
++	/* For many Huawei devices the NTB32 mode is the default and the best mode
++	 * they work with. Huawei E5785 and E5885 devices refuse to work in NTB16 mode at all.
+ 	 */
+-	drvflags |= CDC_NCM_FLAG_RESET_NTB16;
++	drvflags |= CDC_NCM_FLAG_PREFER_NTB32;
++
+ 	ret = cdc_ncm_bind_common(usbnet_dev, intf, 1, drvflags);
+ 	if (ret)
+ 		goto err;
+diff --git a/include/linux/usb/cdc_ncm.h b/include/linux/usb/cdc_ncm.h
+index 1646c06989df7..0ce4377545f82 100644
+--- a/include/linux/usb/cdc_ncm.h
++++ b/include/linux/usb/cdc_ncm.h
+@@ -46,9 +46,12 @@
+ #define CDC_NCM_DATA_ALTSETTING_NCM		1
+ #define CDC_NCM_DATA_ALTSETTING_MBIM		2
+ 
+-/* CDC NCM subclass 3.2.1 */
++/* CDC NCM subclass 3.3.1 */
+ #define USB_CDC_NCM_NDP16_LENGTH_MIN		0x10
+ 
++/* CDC NCM subclass 3.3.2 */
++#define USB_CDC_NCM_NDP32_LENGTH_MIN		0x20
++
+ /* Maximum NTB length */
+ #define	CDC_NCM_NTB_MAX_SIZE_TX			32768	/* bytes */
+ #define	CDC_NCM_NTB_MAX_SIZE_RX			32768	/* bytes */
+@@ -84,7 +87,7 @@
+ /* Driver flags */
+ #define CDC_NCM_FLAG_NDP_TO_END			0x02	/* NDP is placed at end of frame */
+ #define CDC_MBIM_FLAG_AVOID_ALTSETTING_TOGGLE	0x04	/* Avoid altsetting toggle during init */
+-#define CDC_NCM_FLAG_RESET_NTB16 0x08	/* set NDP16 one more time after altsetting switch */
++#define CDC_NCM_FLAG_PREFER_NTB32 0x08	/* prefer NDP32 over NDP16 */
+ 
+ #define cdc_ncm_comm_intf_is_mbim(x)  ((x)->desc.bInterfaceSubClass == USB_CDC_SUBCLASS_MBIM && \
+ 				       (x)->desc.bInterfaceProtocol == USB_CDC_PROTO_NONE)
+@@ -113,7 +116,11 @@ struct cdc_ncm_ctx {
+ 
+ 	u32 timer_interval;
+ 	u32 max_ndp_size;
+-	struct usb_cdc_ncm_ndp16 *delayed_ndp16;
++	u8 is_ndp16;
++	union {
++		struct usb_cdc_ncm_ndp16 *delayed_ndp16;
++		struct usb_cdc_ncm_ndp32 *delayed_ndp32;
++	};
+ 
+ 	u32 tx_timer_pending;
+ 	u32 tx_curr_frame_num;
+@@ -150,6 +157,8 @@ void cdc_ncm_unbind(struct usbnet *dev, struct usb_interface *intf);
+ struct sk_buff *cdc_ncm_fill_tx_frame(struct usbnet *dev, struct sk_buff *skb, __le32 sign);
+ int cdc_ncm_rx_verify_nth16(struct cdc_ncm_ctx *ctx, struct sk_buff *skb_in);
+ int cdc_ncm_rx_verify_ndp16(struct sk_buff *skb_in, int ndpoffset);
++int cdc_ncm_rx_verify_nth32(struct cdc_ncm_ctx *ctx, struct sk_buff *skb_in);
++int cdc_ncm_rx_verify_ndp32(struct sk_buff *skb_in, int ndpoffset);
+ struct sk_buff *
+ cdc_ncm_tx_fixup(struct usbnet *dev, struct sk_buff *skb, gfp_t flags);
+ int cdc_ncm_rx_fixup(struct usbnet *dev, struct sk_buff *skb_in);
 -- 
 2.39.2
 
