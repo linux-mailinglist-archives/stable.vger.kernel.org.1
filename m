@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCC87719DCF
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:26:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A08DC719D63
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:22:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233740AbjFAN03 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:26:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34348 "EHLO
+        id S233553AbjFANWp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:22:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233715AbjFAN0O (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:26:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB8A2189
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:26:03 -0700 (PDT)
+        with ESMTP id S233520AbjFANWo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:22:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8928D124
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:22:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C4F16447B
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:26:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6E7C433EF;
-        Thu,  1 Jun 2023 13:26:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1BAAD64442
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:22:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ACF8C433EF;
+        Thu,  1 Jun 2023 13:22:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625963;
-        bh=NUoxTZV/5qM4RbvWUWzC5OiA5G9fSYk9x5tSBkQQipk=;
+        s=korg; t=1685625758;
+        bh=RJuucqiWL1Zf/L+MKVyyoDF/pz2i0eusp1BuxLxG7qY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZDTPdfZBAeDlV/Kd2dZVsHfQS6ZZ1RQOfeAPDLjVCNkyZTOijLwI4SJeC7GxcO5bn
-         F0eY3/KboNSp3VNXNcrE57j7LYreRsR/FZxaO1PugjxcYxqg1iIUAmPIfu+EMbPbs4
-         FCZ+gDCXK3y+LbNzQgh71FYxdXLKhfolz+TSCQy4=
+        b=XoQBaOZMwIX3kZvdkVi0tpjF/mFjpdMTzPerEa0IWwqwvxLrQqxalED05ZL91ew65
+         c1SlaWv3FHSbSeqC/Ki/dw8e7U/d4anur6iILW57SJrpDuLkDBd6ncQt+bhvV/I/vK
+         a6qVe1WWpNMyctxfllpC1WO5O28Z1mO8KhJoAOE0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-        Marek Vasut <marex@denx.de>, Shawn Guo <shawnguo@kernel.org>,
+        patches@lists.linux.dev, Hao Ge <gehao@kylinos.cn>,
+        Christian Brauner <brauner@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 05/45] ARM: dts: imx6ull-dhcor: Set and limit the mode for PMIC buck 1, 2 and 3
+Subject: [PATCH 5.4 06/16] fs: fix undefined behavior in bit shift for SB_NOUSER
 Date:   Thu,  1 Jun 2023 14:21:01 +0100
-Message-Id: <20230601131938.944127083@linuxfoundation.org>
+Message-Id: <20230601131932.243233878@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
-References: <20230601131938.702671708@linuxfoundation.org>
+In-Reply-To: <20230601131931.947241286@linuxfoundation.org>
+References: <20230601131931.947241286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,69 +54,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+From: Hao Ge <gehao@kylinos.cn>
 
-[ Upstream commit 892943d7729bbfb2edeed9e323eba9a5cec21c49 ]
+[ Upstream commit f15afbd34d8fadbd375f1212e97837e32bc170cc ]
 
-According to Renesas Electronics (formerly Dialog Semiconductor), the
-standard AUTO mode of the PMIC DA9061 can lead to stability problems
-depending on the hardware revision. It is recommended to set a defined
-mode such as PFM or PWM permanently. So set and limit the mode for
-buck 1, 2 and 3 to a fixed one.
+Shifting signed 32-bit value by 31 bits is undefined, so changing
+significant bit to unsigned. It was spotted by UBSAN.
 
-Fixes: 611b6c891e40 ("ARM: dts: imx6ull-dhcom: Add DH electronics DHCOM i.MX6ULL SoM and PDK2 board")
-Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Reviewed-by: Marek Vasut <marex@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+So let's just fix this by using the BIT() helper for all SB_* flags.
+
+Fixes: e462ec50cb5f ("VFS: Differentiate mount flags (MS_*) from internal superblock flags")
+Signed-off-by: Hao Ge <gehao@kylinos.cn>
+Message-Id: <20230424051835.374204-1-gehao@kylinos.cn>
+[brauner@kernel.org: use BIT() for all SB_* flags]
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx6ull-dhcor-som.dtsi | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/linux/fs.h | 40 ++++++++++++++++++++--------------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx6ull-dhcor-som.dtsi b/arch/arm/boot/dts/imx6ull-dhcor-som.dtsi
-index 5882c7565f649..32a6022625d97 100644
---- a/arch/arm/boot/dts/imx6ull-dhcor-som.dtsi
-+++ b/arch/arm/boot/dts/imx6ull-dhcor-som.dtsi
-@@ -8,6 +8,7 @@
- #include <dt-bindings/input/input.h>
- #include <dt-bindings/leds/common.h>
- #include <dt-bindings/pwm/pwm.h>
-+#include <dt-bindings/regulator/dlg,da9063-regulator.h>
- #include "imx6ull.dtsi"
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index e003afcea3f3e..4b1553f570f2c 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -1360,28 +1360,28 @@ extern int send_sigurg(struct fown_struct *fown);
+  * sb->s_flags.  Note that these mirror the equivalent MS_* flags where
+  * represented in both.
+  */
+-#define SB_RDONLY	 1	/* Mount read-only */
+-#define SB_NOSUID	 2	/* Ignore suid and sgid bits */
+-#define SB_NODEV	 4	/* Disallow access to device special files */
+-#define SB_NOEXEC	 8	/* Disallow program execution */
+-#define SB_SYNCHRONOUS	16	/* Writes are synced at once */
+-#define SB_MANDLOCK	64	/* Allow mandatory locks on an FS */
+-#define SB_DIRSYNC	128	/* Directory modifications are synchronous */
+-#define SB_NOATIME	1024	/* Do not update access times. */
+-#define SB_NODIRATIME	2048	/* Do not update directory access times */
+-#define SB_SILENT	32768
+-#define SB_POSIXACL	(1<<16)	/* VFS does not apply the umask */
+-#define SB_KERNMOUNT	(1<<22) /* this is a kern_mount call */
+-#define SB_I_VERSION	(1<<23) /* Update inode I_version field */
+-#define SB_LAZYTIME	(1<<25) /* Update the on-disk [acm]times lazily */
++#define SB_RDONLY       BIT(0)	/* Mount read-only */
++#define SB_NOSUID       BIT(1)	/* Ignore suid and sgid bits */
++#define SB_NODEV        BIT(2)	/* Disallow access to device special files */
++#define SB_NOEXEC       BIT(3)	/* Disallow program execution */
++#define SB_SYNCHRONOUS  BIT(4)	/* Writes are synced at once */
++#define SB_MANDLOCK     BIT(6)	/* Allow mandatory locks on an FS */
++#define SB_DIRSYNC      BIT(7)	/* Directory modifications are synchronous */
++#define SB_NOATIME      BIT(10)	/* Do not update access times. */
++#define SB_NODIRATIME   BIT(11)	/* Do not update directory access times */
++#define SB_SILENT       BIT(15)
++#define SB_POSIXACL     BIT(16)	/* VFS does not apply the umask */
++#define SB_KERNMOUNT    BIT(22)	/* this is a kern_mount call */
++#define SB_I_VERSION    BIT(23)	/* Update inode I_version field */
++#define SB_LAZYTIME     BIT(25)	/* Update the on-disk [acm]times lazily */
  
- / {
-@@ -84,16 +85,20 @@ onkey {
+ /* These sb flags are internal to the kernel */
+-#define SB_SUBMOUNT     (1<<26)
+-#define SB_FORCE    	(1<<27)
+-#define SB_NOSEC	(1<<28)
+-#define SB_BORN		(1<<29)
+-#define SB_ACTIVE	(1<<30)
+-#define SB_NOUSER	(1<<31)
++#define SB_SUBMOUNT     BIT(26)
++#define SB_FORCE        BIT(27)
++#define SB_NOSEC        BIT(28)
++#define SB_BORN         BIT(29)
++#define SB_ACTIVE       BIT(30)
++#define SB_NOUSER       BIT(31)
  
- 		regulators {
- 			vdd_soc_in_1v4: buck1 {
-+				regulator-allowed-modes = <DA9063_BUCK_MODE_SLEEP>; /* PFM */
- 				regulator-always-on;
- 				regulator-boot-on;
-+				regulator-initial-mode = <DA9063_BUCK_MODE_SLEEP>;
- 				regulator-max-microvolt = <1400000>;
- 				regulator-min-microvolt = <1400000>;
- 				regulator-name = "vdd_soc_in_1v4";
- 			};
- 
- 			vcc_3v3: buck2 {
-+				regulator-allowed-modes = <DA9063_BUCK_MODE_SYNC>; /* PWM */
- 				regulator-always-on;
- 				regulator-boot-on;
-+				regulator-initial-mode = <DA9063_BUCK_MODE_SYNC>;
- 				regulator-max-microvolt = <3300000>;
- 				regulator-min-microvolt = <3300000>;
- 				regulator-name = "vcc_3v3";
-@@ -106,8 +111,10 @@ vcc_3v3: buck2 {
- 			 * the voltage is set to 1.5V.
- 			 */
- 			vcc_ddr_1v35: buck3 {
-+				regulator-allowed-modes = <DA9063_BUCK_MODE_SYNC>; /* PWM */
- 				regulator-always-on;
- 				regulator-boot-on;
-+				regulator-initial-mode = <DA9063_BUCK_MODE_SYNC>;
- 				regulator-max-microvolt = <1500000>;
- 				regulator-min-microvolt = <1500000>;
- 				regulator-name = "vcc_ddr_1v35";
+ /*
+  *	Umount options
 -- 
 2.39.2
 
