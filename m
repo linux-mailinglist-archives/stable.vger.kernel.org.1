@@ -2,123 +2,144 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1990D71A06E
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 16:39:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10F5671A073
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 16:40:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233423AbjFAOjd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 10:39:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53932 "EHLO
+        id S232769AbjFAOkG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 10:40:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233532AbjFAOj3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 10:39:29 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A02AEE45
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 07:39:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685630363; x=1717166363;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=kN660c8NFUyOdJrkLu+dYkEvaszRGd9qNNXBXk/WuAU=;
-  b=l9jWTMgd6SevfcswDEWsHYY98b5kfu87yWII75ZpCOTNW89duNY5jwuo
-   Zsg8MF6xHeUP6oQxyHtvjJnNUJtzq5k062HIQec4JOgT1N2ifFN4nYW3z
-   veQMqAD6LXCsCy8DTCy1YBM4v8nkszs3W4M1sEvhm3e1P9TdPXWMQu/4H
-   Np1TB7It927utkWglL48/ujQIjiJTcq6aprHnk9NF1MnemdE0v5w6WAPH
-   tyxalgBwc4HXrzB+bjfu3Cw+rlDoOcYbM2StvQJJ5lQibdC0CXt7Nk5Np
-   Ii6qlPEo9Wv+oecQnVsrzS5er43MKVp/7vQksxfY/FbbwSAPBmh/aX2Nf
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="441936187"
-X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="441936187"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 07:38:11 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="684867629"
-X-IronPort-AV: E=Sophos;i="6.00,210,1681196400"; 
-   d="scan'208";a="684867629"
-Received: from mborsali-mobl.amr.corp.intel.com (HELO intel.com) ([10.251.208.75])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 07:38:05 -0700
-Date:   Thu, 1 Jun 2023 16:38:02 +0200
-From:   Andi Shyti <andi.shyti@linux.intel.com>
-To:     "Upadhyay, Tejas" <tejas.upadhyay@intel.com>
-Cc:     "Hajda, Andrzej" <andrzej.hajda@intel.com>,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        Intel GFX <intel-gfx@lists.freedesktop.org>,
-        DRI Devel <dri-devel@lists.freedesktop.org>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Andi Shyti <andi.shyti@kernel.org>
-Subject: Re: [Intel-gfx] [PATCH] drm/i915/gt: Use the correct error value
- when kernel_context() fails
-Message-ID: <ZHitSozwyB69h8kU@ashyti-mobl2.lan>
-References: <20230526124138.2006110-1-andi.shyti@linux.intel.com>
- <6897a425-8217-8fca-d0a0-fc02073f6b45@intel.com>
- <SJ1PR11MB620427ACD1EB3B717FDFA1BF81499@SJ1PR11MB6204.namprd11.prod.outlook.com>
+        with ESMTP id S234337AbjFAOj6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 10:39:58 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9078DD1;
+        Thu,  1 Jun 2023 07:39:57 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-65131e85be4so415477b3a.1;
+        Thu, 01 Jun 2023 07:39:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685630397; x=1688222397;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=vAtDJ4UZJBm7+uLnpiZVzFRiwuCQbc5zdoMX8rHHbbU=;
+        b=qt7Q1bUpshWH93RKlnxUNBqecIEtKUcuPoKkhnCZxE2gPC4w/HAKWUFxEhX0tLVXUe
+         S8jOYv048Br31vztTF78G6zqhLr8ZEPx5/MKGpurvWErugkg8dzfAeAbWdJ76CQksWXA
+         CU9Tv319FOi24XK7aa4QW3qGckz/P6VC3W1qVM3iwms5RpwRVU63bVis1PVsnpvXKrem
+         edL1YH8fqp3jMwPd8JW7/49rfG68WADIhR6IW6rdnueZ6RtHH4sV2CrJH8ytApV6AGtg
+         sHaN2TVVIq71aSbOvo6wPhcghG2/LZyY8TkSYspa7TsfklM65Mrm3PEcsA9ZbAsaX336
+         Orxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685630397; x=1688222397;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vAtDJ4UZJBm7+uLnpiZVzFRiwuCQbc5zdoMX8rHHbbU=;
+        b=JBBkWnyyDwnYqU0zZeXM4m3ASW4WWfOsTVfTbug3gYCBpzJI1udRyOq32BrHMafjcF
+         xRNFzTHGCGvSavH5eXZTpB5xTNNf+RnDir1iqF0db2IHN/v1Huzwtc+G4AznKnxD6VCA
+         5blPxKRpJry0krf6PiCetvx5DFIEa79vveZd4VWTxEtrn4idx0+vRGwROHUyjwcoVDxU
+         wqhfWTI2+IRWm1wfBfEqX7Uk8FcHX2MHGu/s5UdVW3PbZqR/ARpc2S5qvxbmuz12KZfm
+         lZdG9j9I7BnkCSI2xh4Tn/UB/akGbW36F3N/hYIM/KkyNOWi3jSBaQ/SNs//n5QG6Z3A
+         llCw==
+X-Gm-Message-State: AC+VfDxYifO1nLVyAjcn8NSsF2dqgi7HZAOabaFg3iXvx7VwIWmMxfz3
+        aX4I81dypsGtk03LvhrTm2U=
+X-Google-Smtp-Source: ACHHUZ6Jv02LlEGCNcPy0HmfO3xCPRrdohvyHO41n2g1iUckmlF9UBgI5AF/WMluGfIiSqOD4lOFXQ==
+X-Received: by 2002:a05:6a20:604:b0:110:9210:f6b8 with SMTP id 4-20020a056a20060400b001109210f6b8mr7456893pzl.35.1685630396922;
+        Thu, 01 Jun 2023 07:39:56 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id m15-20020aa7900f000000b0064d6b6aac5dsm5143732pfo.73.2023.06.01.07.39.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Jun 2023 07:39:56 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <e7f9cbd1-f19d-2f08-8876-45163910ad93@roeck-us.net>
+Date:   Thu, 1 Jun 2023 07:39:54 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SJ1PR11MB620427ACD1EB3B717FDFA1BF81499@SJ1PR11MB6204.namprd11.prod.outlook.com>
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH 6.1 00/42] 6.1.32-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de
+References: <20230601131939.051934720@linuxfoundation.org>
+ <CA+G9fYuHjNhe-5TboAbrOeZrL3xL-CYYSaEnL=8onebLUqDt8g@mail.gmail.com>
+ <2023060101-coconut-smugness-4c7a@gregkh>
+From:   Guenter Roeck <linux@roeck-us.net>
+In-Reply-To: <2023060101-coconut-smugness-4c7a@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Tejas,
-
-> > > @@ -1530,8 +1530,8 @@ static int live_busywait_preempt(void *arg)
-> > >   	struct drm_i915_gem_object *obj;
-> > >   	struct i915_vma *vma;
-> > >   	enum intel_engine_id id;
-> > > -	int err = -ENOMEM;
-> > >   	u32 *map;
-> > > +	int err;
+On 6/1/23 07:26, Greg Kroah-Hartman wrote:
+> On Thu, Jun 01, 2023 at 07:41:08PM +0530, Naresh Kamboju wrote:
+>> On Thu, 1 Jun 2023 at 18:57, Greg Kroah-Hartman
+>> <gregkh@linuxfoundation.org> wrote:
+>>>
+>>> This is the start of the stable review cycle for the 6.1.32 release.
+>>> There are 42 patches in this series, all will be posted as a response
+>>> to this one.  If anyone has any issues with these being applied, please
+>>> let me know.
+>>>
+>>> Responses should be made by Sat, 03 Jun 2023 13:19:19 +0000.
+>>> Anything received after that time might be too late.
+>>>
+>>> The whole patch series can be found in one patch at:
+>>>          https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.32-rc1.gz
+>>> or in the git tree and branch at:
+>>>          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+>>> and the diffstat can be found below.
+>>>
+>>> thanks,
+>>>
+>>> greg k-h
+>>
+>>
+>> Following build errors noticed on 6.1 and 5.15.
+>>
+>> drivers/dma/at_xdmac.c: In function 'atmel_xdmac_resume':
+>> drivers/dma/at_xdmac.c:2049:9: error: implicit declaration of function
+>> 'pm_runtime_get_noresume' [-Werror=implicit-function-declaration]
+>>   2049 |         pm_runtime_get_noresume(atxdmac->dev);
+>>        |         ^~~~~~~~~~~~~~~~~~~~~~~
+>> drivers/dma/at_xdmac.c:2049:40: error: 'struct at_xdmac' has no member
+>> named 'dev'
+>>   2049 |         pm_runtime_get_noresume(atxdmac->dev);
+>>        |                                        ^~
+>> cc1: some warnings being treated as errors
+>>
+>> reported link:
+>> https://lore.kernel.org/stable/CA+G9fYswtPyrYJbwcGFhc5o7mkRmWZEWCCeSjmR64M+N-odQhQ@mail.gmail.com/
+>>
+>> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 > 
-> We could initialize err with 0 and remove err = 0 assignment below but leaving up to you. 
+> Ah, the .h file was added by 650b0e990cbd ("dmaengine: at_xdmac: add
+> runtime pm support"), which isn't needed here.  I'll go add it by hand
 
-that assignement must be a leftover from previous patches because
-err is already initialized here:
+Really ? Some of the dma patches seem to fix runtime pm support, and
+"dmaengine: at_xdmac: disable/enable clock directly on suspend/resume"
+is even tagged with
 
-	err = i915_vma_pin(vma, 0, 0, PIN_GLOBAL);
+Fixes: 650b0e990cbd ("dmaengine: at_xdmac: add runtime pm support")
 
-will remove it. Thanks!
+Why do we need to fix code which isn't present in 6.1.y ?
 
-> > >
-> > >   	/*
-> > >   	 * Verify that even without HAS_LOGICAL_RING_PREEMPTION, we
-> > can @@
-> > > -1539,13 +1539,17 @@ static int live_busywait_preempt(void *arg)
-> > >   	 */
-> > >
-> > >   	ctx_hi = kernel_context(gt->i915, NULL);
-> > > -	if (!ctx_hi)
-> > > -		return -ENOMEM;
-> > > +	if (IS_ERR(ctx_hi))
-> > > +		return PTR_ERR(ctx_hi);
-> > > +
-> > >   	ctx_hi->sched.priority = I915_CONTEXT_MAX_USER_PRIORITY;
-> > >
-> > >   	ctx_lo = kernel_context(gt->i915, NULL);
-> > > -	if (!ctx_lo)
-> > > +	if (IS_ERR(ctx_lo)) {
-> > > +		err = PTR_ERR(ctx_lo);
-> > >   		goto err_ctx_hi;
-> > > +	}
-> > > +
+Guenter
+
+> and push out some -rc2 releases for this and 5.15.y, thanks!
 > 
-> Looks fine,
-> Acked-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+> greg k-h
 
-Thank you!
-Andi
-
-> 
-> > >   	ctx_lo->sched.priority = I915_CONTEXT_MIN_USER_PRIORITY;
-> > >
-> > >   	obj = i915_gem_object_create_internal(gt->i915, PAGE_SIZE);
-> 
