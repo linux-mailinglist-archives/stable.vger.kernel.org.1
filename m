@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F745719E2C
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:30:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 696B7719DB4
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:25:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234055AbjFAN3k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:29:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36918 "EHLO
+        id S233721AbjFANZu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:25:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234080AbjFAN3a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:29:30 -0400
+        with ESMTP id S233730AbjFANZk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:25:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCF7519B
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:29:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E70FE124
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:25:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 982DE64507
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:28:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CA3C433EF;
-        Thu,  1 Jun 2023 13:28:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 755346447B
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:25:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92928C433EF;
+        Thu,  1 Jun 2023 13:25:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685626125;
-        bh=JARYz9SM1UOeuEx0fqLtV0MCdgCdlpyZFz4bWic7OTs=;
+        s=korg; t=1685625913;
+        bh=dyh7eDVXQaHPxIf+FjWQdQJSJNX5hYG0lxIPjoj8Pr0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fhieG0jDkFOgTMfCiQw733PJUy+fQVcEeBAEuJnCCv7JLyvzT/mfftSpXZJ/lfDHK
-         /nVj1GvTci6yoPknlnTqdIhPVQ3Rp5APxRLd9ETmY3deThRz/6JALN63408le0m2m/
-         47PiF/qXN51nCLsWDYb3M269szO/rBjZM10jGqZg=
+        b=JwkioQtTIvMfeOU61JEDMvwKwewkywTDAuxx9f8BLpnJ8RfpZ2KT+Hhho7zvV40dQ
+         ARos+PzUx3emg7DpolDrmPPMxKVUDFeEsyLhWK7CRwVwV0628B8Axl6HcxZBv5+0ZA
+         yU7G1TZqonK2kv0Tj8ULyPp61yidIjjbeYG9O0Js=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, William Findlay <will@isovalent.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jakub Sitnicki <jakub@cloudflare.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 14/42] bpf, sockmap: Pass skb ownership through read_skb
+        patches@lists.linux.dev, Ruihan Li <lrh2000@pku.edu.cn>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Dragos-Marian Panait <dragos.panait@windriver.com>
+Subject: [PATCH 5.15 36/42] bluetooth: Add cmd validity checks at the start of hci_sock_ioctl()
 Date:   Thu,  1 Jun 2023 14:21:23 +0100
-Message-Id: <20230601131939.690379328@linuxfoundation.org>
+Message-Id: <20230601131938.326035589@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131939.051934720@linuxfoundation.org>
-References: <20230601131939.051934720@linuxfoundation.org>
+In-Reply-To: <20230601131936.699199833@linuxfoundation.org>
+References: <20230601131936.699199833@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,159 +55,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: John Fastabend <john.fastabend@gmail.com>
+From: Ruihan Li <lrh2000@pku.edu.cn>
 
-[ Upstream commit 78fa0d61d97a728d306b0c23d353c0e340756437 ]
+commit 000c2fa2c144c499c881a101819cf1936a1f7cf2 upstream.
 
-The read_skb hook calls consume_skb() now, but this means that if the
-recv_actor program wants to use the skb it needs to inc the ref cnt
-so that the consume_skb() doesn't kfree the sk_buff.
+Previously, channel open messages were always sent to monitors on the first
+ioctl() call for unbound HCI sockets, even if the command and arguments
+were completely invalid. This can leave an exploitable hole with the abuse
+of invalid ioctl calls.
 
-This is problematic because in some error cases under memory pressure
-we may need to linearize the sk_buff from sk_psock_skb_ingress_enqueue().
-Then we get this,
+This commit hardens the ioctl processing logic by first checking if the
+command is valid, and immediately returning with an ENOIOCTLCMD error code
+if it is not. This ensures that ioctl calls with invalid commands are free
+of side effects, and increases the difficulty of further exploitation by
+forcing exploitation to find a way to pass a valid command first.
 
- skb_linearize()
-   __pskb_pull_tail()
-     pskb_expand_head()
-       BUG_ON(skb_shared(skb))
-
-Because we incremented users refcnt from sk_psock_verdict_recv() we
-hit the bug on with refcnt > 1 and trip it.
-
-To fix lets simply pass ownership of the sk_buff through the skb_read
-call. Then we can drop the consume from read_skb handlers and assume
-the verdict recv does any required kfree.
-
-Bug found while testing in our CI which runs in VMs that hit memory
-constraints rather regularly. William tested TCP read_skb handlers.
-
-[  106.536188] ------------[ cut here ]------------
-[  106.536197] kernel BUG at net/core/skbuff.c:1693!
-[  106.536479] invalid opcode: 0000 [#1] PREEMPT SMP PTI
-[  106.536726] CPU: 3 PID: 1495 Comm: curl Not tainted 5.19.0-rc5 #1
-[  106.537023] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS ArchLinux 1.16.0-1 04/01/2014
-[  106.537467] RIP: 0010:pskb_expand_head+0x269/0x330
-[  106.538585] RSP: 0018:ffffc90000138b68 EFLAGS: 00010202
-[  106.538839] RAX: 000000000000003f RBX: ffff8881048940e8 RCX: 0000000000000a20
-[  106.539186] RDX: 0000000000000002 RSI: 0000000000000000 RDI: ffff8881048940e8
-[  106.539529] RBP: ffffc90000138be8 R08: 00000000e161fd1a R09: 0000000000000000
-[  106.539877] R10: 0000000000000018 R11: 0000000000000000 R12: ffff8881048940e8
-[  106.540222] R13: 0000000000000003 R14: 0000000000000000 R15: ffff8881048940e8
-[  106.540568] FS:  00007f277dde9f00(0000) GS:ffff88813bd80000(0000) knlGS:0000000000000000
-[  106.540954] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  106.541227] CR2: 00007f277eeede64 CR3: 000000000ad3e000 CR4: 00000000000006e0
-[  106.541569] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[  106.541915] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[  106.542255] Call Trace:
-[  106.542383]  <IRQ>
-[  106.542487]  __pskb_pull_tail+0x4b/0x3e0
-[  106.542681]  skb_ensure_writable+0x85/0xa0
-[  106.542882]  sk_skb_pull_data+0x18/0x20
-[  106.543084]  bpf_prog_b517a65a242018b0_bpf_skskb_http_verdict+0x3a9/0x4aa9
-[  106.543536]  ? migrate_disable+0x66/0x80
-[  106.543871]  sk_psock_verdict_recv+0xe2/0x310
-[  106.544258]  ? sk_psock_write_space+0x1f0/0x1f0
-[  106.544561]  tcp_read_skb+0x7b/0x120
-[  106.544740]  tcp_data_queue+0x904/0xee0
-[  106.544931]  tcp_rcv_established+0x212/0x7c0
-[  106.545142]  tcp_v4_do_rcv+0x174/0x2a0
-[  106.545326]  tcp_v4_rcv+0xe70/0xf60
-[  106.545500]  ip_protocol_deliver_rcu+0x48/0x290
-[  106.545744]  ip_local_deliver_finish+0xa7/0x150
-
-Fixes: 04919bed948dc ("tcp: Introduce tcp_read_skb()")
-Reported-by: William Findlay <will@isovalent.com>
-Signed-off-by: John Fastabend <john.fastabend@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: William Findlay <will@isovalent.com>
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Link: https://lore.kernel.org/bpf/20230523025618.113937-2-john.fastabend@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
+Co-developed-by: Marcel Holtmann <marcel@holtmann.org>
+Signed-off-by: Marcel Holtmann <marcel@holtmann.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Dragos-Marian Panait <dragos.panait@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/skmsg.c   | 2 --
- net/ipv4/tcp.c     | 1 -
- net/ipv4/udp.c     | 7 ++-----
- net/unix/af_unix.c | 7 ++-----
- 4 files changed, 4 insertions(+), 13 deletions(-)
+ net/bluetooth/hci_sock.c |   28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index 53d0251788aa2..2b6d9519ff29c 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -1180,8 +1180,6 @@ static int sk_psock_verdict_recv(struct sock *sk, struct sk_buff *skb)
- 	int ret = __SK_DROP;
- 	int len = skb->len;
+--- a/net/bluetooth/hci_sock.c
++++ b/net/bluetooth/hci_sock.c
+@@ -980,6 +980,34 @@ static int hci_sock_ioctl(struct socket
  
--	skb_get(skb);
--
- 	rcu_read_lock();
- 	psock = sk_psock(sk);
- 	if (unlikely(!psock)) {
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 1fb67f819de49..31156ebb759c0 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -1772,7 +1772,6 @@ int tcp_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
- 		WARN_ON_ONCE(!skb_set_owner_sk_safe(skb, sk));
- 		tcp_flags = TCP_SKB_CB(skb)->tcp_flags;
- 		used = recv_actor(sk, skb);
--		consume_skb(skb);
- 		if (used < 0) {
- 			if (!copied)
- 				copied = used;
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index 3ffa30c37293e..956d6797c76f3 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -1806,7 +1806,7 @@ EXPORT_SYMBOL(__skb_recv_udp);
- int udp_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
- {
- 	struct sk_buff *skb;
--	int err, copied;
-+	int err;
+ 	BT_DBG("cmd %x arg %lx", cmd, arg);
  
- try_again:
- 	skb = skb_recv_udp(sk, MSG_DONTWAIT, &err);
-@@ -1825,10 +1825,7 @@ int udp_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
- 	}
++	/* Make sure the cmd is valid before doing anything */
++	switch (cmd) {
++	case HCIGETDEVLIST:
++	case HCIGETDEVINFO:
++	case HCIGETCONNLIST:
++	case HCIDEVUP:
++	case HCIDEVDOWN:
++	case HCIDEVRESET:
++	case HCIDEVRESTAT:
++	case HCISETSCAN:
++	case HCISETAUTH:
++	case HCISETENCRYPT:
++	case HCISETPTYPE:
++	case HCISETLINKPOL:
++	case HCISETLINKMODE:
++	case HCISETACLMTU:
++	case HCISETSCOMTU:
++	case HCIINQUIRY:
++	case HCISETRAW:
++	case HCIGETCONNINFO:
++	case HCIGETAUTHINFO:
++	case HCIBLOCKADDR:
++	case HCIUNBLOCKADDR:
++		break;
++	default:
++		return -ENOIOCTLCMD;
++	}
++
+ 	lock_sock(sk);
  
- 	WARN_ON_ONCE(!skb_set_owner_sk_safe(skb, sk));
--	copied = recv_actor(sk, skb);
--	kfree_skb(skb);
--
--	return copied;
-+	return recv_actor(sk, skb);
- }
- EXPORT_SYMBOL(udp_read_skb);
- 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 70eb3bc67126d..5b19b6c53a2cb 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2552,7 +2552,7 @@ static int unix_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
- {
- 	struct unix_sock *u = unix_sk(sk);
- 	struct sk_buff *skb;
--	int err, copied;
-+	int err;
- 
- 	mutex_lock(&u->iolock);
- 	skb = skb_recv_datagram(sk, MSG_DONTWAIT, &err);
-@@ -2560,10 +2560,7 @@ static int unix_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
- 	if (!skb)
- 		return err;
- 
--	copied = recv_actor(sk, skb);
--	kfree_skb(skb);
--
--	return copied;
-+	return recv_actor(sk, skb);
- }
- 
- /*
--- 
-2.39.2
-
+ 	if (hci_pi(sk)->channel != HCI_CHANNEL_RAW) {
 
 
