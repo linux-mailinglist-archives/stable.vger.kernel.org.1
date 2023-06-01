@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A08DC719D63
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:22:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19698719D8D
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:24:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233553AbjFANWp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:22:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59540 "EHLO
+        id S233694AbjFANYW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:24:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233520AbjFANWo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:22:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8928D124
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:22:39 -0700 (PDT)
+        with ESMTP id S233671AbjFANYU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:24:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BE3513E
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:24:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1BAAD64442
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:22:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ACF8C433EF;
-        Thu,  1 Jun 2023 13:22:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 87CF66446E
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:24:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B15C433EF;
+        Thu,  1 Jun 2023 13:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685625758;
-        bh=RJuucqiWL1Zf/L+MKVyyoDF/pz2i0eusp1BuxLxG7qY=;
+        s=korg; t=1685625841;
+        bh=QnE435xznLLcqTTswvht5s7v04+a+DYWWd36gUVuwGI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XoQBaOZMwIX3kZvdkVi0tpjF/mFjpdMTzPerEa0IWwqwvxLrQqxalED05ZL91ew65
-         c1SlaWv3FHSbSeqC/Ki/dw8e7U/d4anur6iILW57SJrpDuLkDBd6ncQt+bhvV/I/vK
-         a6qVe1WWpNMyctxfllpC1WO5O28Z1mO8KhJoAOE0=
+        b=KUUy5RiLvTyCTfwI40zOz1gwaB1AaIe9zf71UCt8pBkRG/TTlcEiKZtkxk1C+re2o
+         ctVqPQvycn0aHmo5xxedmtO94VHqBh0+jgMQO5cqxWS8QTH3HTv81IXw35bZXi/Y92
+         fy6v/d5hDJFh1hAEo1KhzoMng2ShpM48Tw+4ejbw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hao Ge <gehao@kylinos.cn>,
-        Christian Brauner <brauner@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 06/16] fs: fix undefined behavior in bit shift for SB_NOUSER
+        patches@lists.linux.dev,
+        Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 14/42] dmaengine: at_xdmac: Move the free desc to the tail of the desc list
 Date:   Thu,  1 Jun 2023 14:21:01 +0100
-Message-Id: <20230601131932.243233878@linuxfoundation.org>
+Message-Id: <20230601131937.362210344@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131931.947241286@linuxfoundation.org>
-References: <20230601131931.947241286@linuxfoundation.org>
+In-Reply-To: <20230601131936.699199833@linuxfoundation.org>
+References: <20230601131936.699199833@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,78 +54,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hao Ge <gehao@kylinos.cn>
+From: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-[ Upstream commit f15afbd34d8fadbd375f1212e97837e32bc170cc ]
+[ Upstream commit 801db90bf294f647b967e8d99b9ae121bea63d0d ]
 
-Shifting signed 32-bit value by 31 bits is undefined, so changing
-significant bit to unsigned. It was spotted by UBSAN.
+Move the free desc to the tail of the list, so that the sequence of
+descriptors is more track-able in case of debug. One would know which
+descriptor should come next and could easier catch concurrency over
+descriptors for example. virt-dma uses list_splice_tail_init() as well,
+follow the core driver.
 
-So let's just fix this by using the BIT() helper for all SB_* flags.
-
-Fixes: e462ec50cb5f ("VFS: Differentiate mount flags (MS_*) from internal superblock flags")
-Signed-off-by: Hao Ge <gehao@kylinos.cn>
-Message-Id: <20230424051835.374204-1-gehao@kylinos.cn>
-[brauner@kernel.org: use BIT() for all SB_* flags]
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+Link: https://lore.kernel.org/r/20211215110115.191749-7-tudor.ambarus@microchip.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: 44fe8440bda5 ("dmaengine: at_xdmac: do not resume channels paused by consumers")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/fs.h | 40 ++++++++++++++++++++--------------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+ drivers/dma/at_xdmac.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index e003afcea3f3e..4b1553f570f2c 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -1360,28 +1360,28 @@ extern int send_sigurg(struct fown_struct *fown);
-  * sb->s_flags.  Note that these mirror the equivalent MS_* flags where
-  * represented in both.
-  */
--#define SB_RDONLY	 1	/* Mount read-only */
--#define SB_NOSUID	 2	/* Ignore suid and sgid bits */
--#define SB_NODEV	 4	/* Disallow access to device special files */
--#define SB_NOEXEC	 8	/* Disallow program execution */
--#define SB_SYNCHRONOUS	16	/* Writes are synced at once */
--#define SB_MANDLOCK	64	/* Allow mandatory locks on an FS */
--#define SB_DIRSYNC	128	/* Directory modifications are synchronous */
--#define SB_NOATIME	1024	/* Do not update access times. */
--#define SB_NODIRATIME	2048	/* Do not update directory access times */
--#define SB_SILENT	32768
--#define SB_POSIXACL	(1<<16)	/* VFS does not apply the umask */
--#define SB_KERNMOUNT	(1<<22) /* this is a kern_mount call */
--#define SB_I_VERSION	(1<<23) /* Update inode I_version field */
--#define SB_LAZYTIME	(1<<25) /* Update the on-disk [acm]times lazily */
-+#define SB_RDONLY       BIT(0)	/* Mount read-only */
-+#define SB_NOSUID       BIT(1)	/* Ignore suid and sgid bits */
-+#define SB_NODEV        BIT(2)	/* Disallow access to device special files */
-+#define SB_NOEXEC       BIT(3)	/* Disallow program execution */
-+#define SB_SYNCHRONOUS  BIT(4)	/* Writes are synced at once */
-+#define SB_MANDLOCK     BIT(6)	/* Allow mandatory locks on an FS */
-+#define SB_DIRSYNC      BIT(7)	/* Directory modifications are synchronous */
-+#define SB_NOATIME      BIT(10)	/* Do not update access times. */
-+#define SB_NODIRATIME   BIT(11)	/* Do not update directory access times */
-+#define SB_SILENT       BIT(15)
-+#define SB_POSIXACL     BIT(16)	/* VFS does not apply the umask */
-+#define SB_KERNMOUNT    BIT(22)	/* this is a kern_mount call */
-+#define SB_I_VERSION    BIT(23)	/* Update inode I_version field */
-+#define SB_LAZYTIME     BIT(25)	/* Update the on-disk [acm]times lazily */
+diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
+index 80c609aa2a91c..b45437aab1434 100644
+--- a/drivers/dma/at_xdmac.c
++++ b/drivers/dma/at_xdmac.c
+@@ -732,7 +732,8 @@ at_xdmac_prep_slave_sg(struct dma_chan *chan, struct scatterlist *sgl,
+ 		if (!desc) {
+ 			dev_err(chan2dev(chan), "can't get descriptor\n");
+ 			if (first)
+-				list_splice_init(&first->descs_list, &atchan->free_descs_list);
++				list_splice_tail_init(&first->descs_list,
++						      &atchan->free_descs_list);
+ 			goto spin_unlock;
+ 		}
  
- /* These sb flags are internal to the kernel */
--#define SB_SUBMOUNT     (1<<26)
--#define SB_FORCE    	(1<<27)
--#define SB_NOSEC	(1<<28)
--#define SB_BORN		(1<<29)
--#define SB_ACTIVE	(1<<30)
--#define SB_NOUSER	(1<<31)
-+#define SB_SUBMOUNT     BIT(26)
-+#define SB_FORCE        BIT(27)
-+#define SB_NOSEC        BIT(28)
-+#define SB_BORN         BIT(29)
-+#define SB_ACTIVE       BIT(30)
-+#define SB_NOUSER       BIT(31)
+@@ -820,7 +821,8 @@ at_xdmac_prep_dma_cyclic(struct dma_chan *chan, dma_addr_t buf_addr,
+ 		if (!desc) {
+ 			dev_err(chan2dev(chan), "can't get descriptor\n");
+ 			if (first)
+-				list_splice_init(&first->descs_list, &atchan->free_descs_list);
++				list_splice_tail_init(&first->descs_list,
++						      &atchan->free_descs_list);
+ 			spin_unlock_irqrestore(&atchan->lock, irqflags);
+ 			return NULL;
+ 		}
+@@ -1054,8 +1056,8 @@ at_xdmac_prep_interleaved(struct dma_chan *chan,
+ 							       src_addr, dst_addr,
+ 							       xt, chunk);
+ 			if (!desc) {
+-				list_splice_init(&first->descs_list,
+-						 &atchan->free_descs_list);
++				list_splice_tail_init(&first->descs_list,
++						      &atchan->free_descs_list);
+ 				return NULL;
+ 			}
  
- /*
-  *	Umount options
+@@ -1135,7 +1137,8 @@ at_xdmac_prep_dma_memcpy(struct dma_chan *chan, dma_addr_t dest, dma_addr_t src,
+ 		if (!desc) {
+ 			dev_err(chan2dev(chan), "can't get descriptor\n");
+ 			if (first)
+-				list_splice_init(&first->descs_list, &atchan->free_descs_list);
++				list_splice_tail_init(&first->descs_list,
++						      &atchan->free_descs_list);
+ 			return NULL;
+ 		}
+ 
+@@ -1311,8 +1314,8 @@ at_xdmac_prep_dma_memset_sg(struct dma_chan *chan, struct scatterlist *sgl,
+ 						   sg_dma_len(sg),
+ 						   value);
+ 		if (!desc && first)
+-			list_splice_init(&first->descs_list,
+-					 &atchan->free_descs_list);
++			list_splice_tail_init(&first->descs_list,
++					      &atchan->free_descs_list);
+ 
+ 		if (!first)
+ 			first = desc;
+@@ -1709,7 +1712,8 @@ static void at_xdmac_tasklet(struct tasklet_struct *t)
+ 
+ 		spin_lock_irq(&atchan->lock);
+ 		/* Move the xfer descriptors into the free descriptors list. */
+-		list_splice_init(&desc->descs_list, &atchan->free_descs_list);
++		list_splice_tail_init(&desc->descs_list,
++				      &atchan->free_descs_list);
+ 		at_xdmac_advance_work(atchan);
+ 		spin_unlock_irq(&atchan->lock);
+ 	}
+@@ -1858,7 +1862,8 @@ static int at_xdmac_device_terminate_all(struct dma_chan *chan)
+ 	/* Cancel all pending transfers. */
+ 	list_for_each_entry_safe(desc, _desc, &atchan->xfers_list, xfer_node) {
+ 		list_del(&desc->xfer_node);
+-		list_splice_init(&desc->descs_list, &atchan->free_descs_list);
++		list_splice_tail_init(&desc->descs_list,
++				      &atchan->free_descs_list);
+ 	}
+ 
+ 	clear_bit(AT_XDMAC_CHAN_IS_PAUSED, &atchan->status);
 -- 
 2.39.2
 
