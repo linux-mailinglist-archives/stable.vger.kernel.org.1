@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77395719DEF
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:27:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1527A719DAA
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:25:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233765AbjFAN1p (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:27:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34524 "EHLO
+        id S233491AbjFANZd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:25:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233894AbjFAN1h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:27:37 -0400
+        with ESMTP id S233676AbjFANZR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:25:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA055E5E
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:27:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DC65188
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:24:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4CDD5644D1
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:27:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6428DC433D2;
-        Thu,  1 Jun 2023 13:27:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BD54F6448A
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:24:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8F34C433D2;
+        Thu,  1 Jun 2023 13:24:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685626031;
-        bh=WOs93kXykVaacUYA1ZnyRnPSg86coQKN0xmVM7ZBFzg=;
+        s=korg; t=1685625887;
+        bh=8N0MHEFgnhJt6rB7dl2xdWtXJ5dtl4GVX2AQ6iZGt0U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZSdC/V+6XJx3/BdvMZQnlUD/pZSLuN7YPLoQIDR4wMdxp/u3ycYHG/ojH5IXPXh0D
-         xOz1CsoQlr2Oy+lJ8z6rzO0VnG4l8tmgeOpD1YewcTD0M+AVZcI+t+X+fo0p6D/h2H
-         jXnZRwGGeZh4VVKOKX0mV0m4012juRDAyoSSwes0=
+        b=F5iH4UH/1HFBPvDmVmh9tjd5t8T2i3R5f4cPuhlrRDrv500Kv2sz0CE8tSXjB1vv5
+         niXPDdDnLAjMHh/k//eruflk/V9uIE/IquKZ/4PKGv6W8WpSDsXyjtc42WMPBgS23S
+         5TNCkxJ5h5SG4M89W7/GcIbicZ5kVssxWwg40mzo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>, Imre Deak <imre.deak@intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        patches@lists.linux.dev,
+        Qingfang DENG <qingfang.deng@siflower.com.cn>,
+        Felix Fietkau <nbd@nbd.name>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 23/45] drm/i915: Fix PIPEDMC disabling for a bigjoiner configuration
+Subject: [PATCH 5.15 32/42] net: page_pool: use in_softirq() instead
 Date:   Thu,  1 Jun 2023 14:21:19 +0100
-Message-Id: <20230601131939.760754008@linuxfoundation.org>
+Message-Id: <20230601131938.155562715@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
-References: <20230601131938.702671708@linuxfoundation.org>
+In-Reply-To: <20230601131936.699199833@linuxfoundation.org>
+References: <20230601131936.699199833@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,61 +56,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Imre Deak <imre.deak@intel.com>
+From: Qingfang DENG <qingfang.deng@siflower.com.cn>
 
-[ Upstream commit 45dfbd992923f4df174db4e23b96fca7e30d73e2 ]
+[ Upstream commit 542bcea4be866b14b3a5c8e90773329066656c43 ]
 
-For a bigjoiner configuration display->crtc_disable() will be called
-first for the slave CRTCs and then for the master CRTC. However slave
-CRTCs will be actually disabled only after the master CRTC is disabled
-(from the encoder disable hooks called with the master CRTC state).
-Hence the slave PIPEDMCs can be disabled only after the master CRTC is
-disabled, make this so.
+We use BH context only for synchronization, so we don't care if it's
+actually serving softirq or not.
 
-intel_encoders_post_pll_disable() must be called only for the master
-CRTC, as for the other two encoder disable hooks. While at it fix this
-up as well. This didn't cause a problem, since
-intel_encoders_post_pll_disable() will call the corresponding hook only
-for an encoder/connector connected to the given CRTC, however slave
-CRTCs will have no associated encoder/connector.
+As a side node, in case of threaded NAPI, in_serving_softirq() will
+return false because it's in process context with BH off, making
+page_pool_recycle_in_cache() unreachable.
 
-Fixes: 3af2ff0840be ("drm/i915: Enable a PIPEDMC whenever its corresponding pipe is enabled")
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230510103131.1618266-2-imre.deak@intel.com
-(cherry picked from commit 7eeef32719f6af935a1554813e6bc206446339cd)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Qingfang DENG <qingfang.deng@siflower.com.cn>
+Tested-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 368d3cb406cd ("page_pool: fix inconsistency for page_pool_ring_[un]lock()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_display.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ include/net/page_pool.h | 4 ++--
+ net/core/page_pool.c    | 6 +++---
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
-index 963680ea6fedd..c84b581c61c6b 100644
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -2022,9 +2022,17 @@ static void hsw_crtc_disable(struct intel_atomic_state *state,
+diff --git a/include/net/page_pool.h b/include/net/page_pool.h
+index a4082406a0039..80d987419436e 100644
+--- a/include/net/page_pool.h
++++ b/include/net/page_pool.h
+@@ -285,7 +285,7 @@ static inline void page_pool_nid_changed(struct page_pool *pool, int new_nid)
+ static inline void page_pool_ring_lock(struct page_pool *pool)
+ 	__acquires(&pool->ring.producer_lock)
+ {
+-	if (in_serving_softirq())
++	if (in_softirq())
+ 		spin_lock(&pool->ring.producer_lock);
+ 	else
+ 		spin_lock_bh(&pool->ring.producer_lock);
+@@ -294,7 +294,7 @@ static inline void page_pool_ring_lock(struct page_pool *pool)
+ static inline void page_pool_ring_unlock(struct page_pool *pool)
+ 	__releases(&pool->ring.producer_lock)
+ {
+-	if (in_serving_softirq())
++	if (in_softirq())
+ 		spin_unlock(&pool->ring.producer_lock);
+ 	else
+ 		spin_unlock_bh(&pool->ring.producer_lock);
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 1a6978427d6c8..1d520fa1b98a8 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -390,8 +390,8 @@ static void page_pool_return_page(struct page_pool *pool, struct page *page)
+ static bool page_pool_recycle_in_ring(struct page_pool *pool, struct page *page)
+ {
+ 	int ret;
+-	/* BH protection not needed if current is serving softirq */
+-	if (in_serving_softirq())
++	/* BH protection not needed if current is softirq */
++	if (in_softirq())
+ 		ret = ptr_ring_produce(&pool->ring, page);
+ 	else
+ 		ret = ptr_ring_produce_bh(&pool->ring, page);
+@@ -446,7 +446,7 @@ __page_pool_put_page(struct page_pool *pool, struct page *page,
+ 			page_pool_dma_sync_for_device(pool, page,
+ 						      dma_sync_size);
  
- 	intel_disable_shared_dpll(old_crtc_state);
+-		if (allow_direct && in_serving_softirq() &&
++		if (allow_direct && in_softirq() &&
+ 		    page_pool_recycle_in_cache(page, pool))
+ 			return NULL;
  
--	intel_encoders_post_pll_disable(state, crtc);
-+	if (!intel_crtc_is_bigjoiner_slave(old_crtc_state)) {
-+		struct intel_crtc *slave_crtc;
-+
-+		intel_encoders_post_pll_disable(state, crtc);
- 
--	intel_dmc_disable_pipe(i915, crtc->pipe);
-+		intel_dmc_disable_pipe(i915, crtc->pipe);
-+
-+		for_each_intel_crtc_in_pipe_mask(&i915->drm, slave_crtc,
-+						 intel_crtc_bigjoiner_slave_pipes(old_crtc_state))
-+			intel_dmc_disable_pipe(i915, slave_crtc->pipe);
-+	}
- }
- 
- static void i9xx_pfit_enable(const struct intel_crtc_state *crtc_state)
 -- 
 2.39.2
 
