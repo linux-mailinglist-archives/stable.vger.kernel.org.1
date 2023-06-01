@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23B4C719E06
-	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:28:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FDB2719D78
+	for <lists+stable@lfdr.de>; Thu,  1 Jun 2023 15:23:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233953AbjFAN2U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 09:28:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35752 "EHLO
+        id S233590AbjFANXd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 09:23:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233772AbjFAN2I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:28:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 684C9124
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:27:49 -0700 (PDT)
+        with ESMTP id S233588AbjFANX1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 09:23:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95D7818D
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 06:23:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 06125644E7
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:27:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EEDFC433EF;
-        Thu,  1 Jun 2023 13:27:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7662C61AF5
+        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 13:23:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9651AC433D2;
+        Thu,  1 Jun 2023 13:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685626068;
-        bh=h7brEaEErk4CsyUsRprIFvNjmJxAk1AfGOfeCsZLpck=;
+        s=korg; t=1685625800;
+        bh=DkBxdDW6+VzUY3ta3ik2N2ZSDmm42F2GBWuM6uT4AeA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uVYgkc5V2FKutsU0ZlpQBOYIMCr33pn7MeRYH/aC7mbIBRi5aImsQhf+eXmmLNkB6
-         BDQK20z9KvHeDTRoA5JHUlcA5X5rK3IyW3Nkwktnr6zU9761kZ6luLBJRD5MPm0In0
-         /H1R0a4ObI1xvxvDWpjF+ZLoM/4iwuSGx4wUq8cA=
+        b=Ef62kq7Mr5mnuSRtlQbdYx0Nvj6G6YDXl1mY73u36sviOH9DA6wWAV/gZEvqhYCAF
+         XG73beHGJuP4hYSqXRM93zlV7sjkL2FvXzRVUtFOKTOsi241yXzuAC1TP4TPAAb0EF
+         WsnUyEYUi4eTwOxm+PFgfKo+DYfY/DuJvFXjZREw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shai Amiram <samiram@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 09/42] tls: rx: strp: force mixed decrypted records into copy mode
-Date:   Thu,  1 Jun 2023 14:21:18 +0100
-Message-Id: <20230601131939.474518851@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+        Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10 21/22] ipv{4,6}/raw: fix output xfrm lookup wrt protocol
+Date:   Thu,  1 Jun 2023 14:21:19 +0100
+Message-Id: <20230601131934.725913577@linuxfoundation.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230601131939.051934720@linuxfoundation.org>
-References: <20230601131939.051934720@linuxfoundation.org>
+In-Reply-To: <20230601131933.727832920@linuxfoundation.org>
+References: <20230601131933.727832920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,97 +54,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 
-[ Upstream commit 14c4be92ebb3e36e392aa9dd8f314038a9f96f3c ]
+commit 3632679d9e4f879f49949bb5b050e0de553e4739 upstream.
 
-If a record is partially decrypted we'll have to CoW it, anyway,
-so go into copy mode and allocate a writable skb right away.
+With a raw socket bound to IPPROTO_RAW (ie with hdrincl enabled), the
+protocol field of the flow structure, build by raw_sendmsg() /
+rawv6_sendmsg()),  is set to IPPROTO_RAW. This breaks the ipsec policy
+lookup when some policies are defined with a protocol in the selector.
 
-This will make subsequent fix simpler because we won't have to
-teach tls_strp_msg_make_copy() how to copy skbs while preserving
-decrypt status.
+For ipv6, the sin6_port field from 'struct sockaddr_in6' could be used to
+specify the protocol. Just accept all values for IPPROTO_RAW socket.
 
-Tested-by: Shai Amiram <samiram@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: eca9bfafee3a ("tls: rx: strp: preserve decryption status of skbs when needed")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For ipv4, the sin_port field of 'struct sockaddr_in' could not be used
+without breaking backward compatibility (the value of this field was never
+checked). Let's add a new kind of control message, so that the userland
+could specify which protocol is used.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+CC: stable@vger.kernel.org
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Link: https://lore.kernel.org/r/20230522120820.1319391-1-nicolas.dichtel@6wind.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/skbuff.h | 10 ++++++++++
- net/tls/tls_strp.c     | 16 +++++++++++-----
- 2 files changed, 21 insertions(+), 5 deletions(-)
+ include/net/ip.h        |    2 ++
+ include/uapi/linux/in.h |    2 ++
+ net/ipv4/ip_sockglue.c  |   12 +++++++++++-
+ net/ipv4/raw.c          |    5 ++++-
+ net/ipv6/raw.c          |    3 ++-
+ 5 files changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index 20ca1613f2e3e..cc5ed2cf25f65 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -1567,6 +1567,16 @@ static inline void skb_copy_hash(struct sk_buff *to, const struct sk_buff *from)
- 	to->l4_hash = from->l4_hash;
- };
- 
-+static inline int skb_cmp_decrypted(const struct sk_buff *skb1,
-+				    const struct sk_buff *skb2)
-+{
-+#ifdef CONFIG_TLS_DEVICE
-+	return skb2->decrypted - skb1->decrypted;
-+#else
-+	return 0;
-+#endif
-+}
-+
- static inline void skb_copy_decrypted(struct sk_buff *to,
- 				      const struct sk_buff *from)
- {
-diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
-index 9889df5ce0660..e2e48217e7ac9 100644
---- a/net/tls/tls_strp.c
-+++ b/net/tls/tls_strp.c
-@@ -326,15 +326,19 @@ static int tls_strp_read_copy(struct tls_strparser *strp, bool qshort)
- 	return 0;
+--- a/include/net/ip.h
++++ b/include/net/ip.h
+@@ -75,6 +75,7 @@ struct ipcm_cookie {
+ 	__be32			addr;
+ 	int			oif;
+ 	struct ip_options_rcu	*opt;
++	__u8			protocol;
+ 	__u8			ttl;
+ 	__s16			tos;
+ 	char			priority;
+@@ -95,6 +96,7 @@ static inline void ipcm_init_sk(struct i
+ 	ipcm->sockc.tsflags = inet->sk.sk_tsflags;
+ 	ipcm->oif = inet->sk.sk_bound_dev_if;
+ 	ipcm->addr = inet->inet_saddr;
++	ipcm->protocol = inet->inet_num;
  }
  
--static bool tls_strp_check_no_dup(struct tls_strparser *strp)
-+static bool tls_strp_check_queue_ok(struct tls_strparser *strp)
- {
- 	unsigned int len = strp->stm.offset + strp->stm.full_len;
--	struct sk_buff *skb;
-+	struct sk_buff *first, *skb;
- 	u32 seq;
+ #define IPCB(skb) ((struct inet_skb_parm*)((skb)->cb))
+--- a/include/uapi/linux/in.h
++++ b/include/uapi/linux/in.h
+@@ -159,6 +159,8 @@ struct in_addr {
+ #define MCAST_MSFILTER			48
+ #define IP_MULTICAST_ALL		49
+ #define IP_UNICAST_IF			50
++#define IP_LOCAL_PORT_RANGE		51
++#define IP_PROTOCOL			52
  
--	skb = skb_shinfo(strp->anchor)->frag_list;
--	seq = TCP_SKB_CB(skb)->seq;
-+	first = skb_shinfo(strp->anchor)->frag_list;
-+	skb = first;
-+	seq = TCP_SKB_CB(first)->seq;
- 
-+	/* Make sure there's no duplicate data in the queue,
-+	 * and the decrypted status matches.
-+	 */
- 	while (skb->len < len) {
- 		seq += skb->len;
- 		len -= skb->len;
-@@ -342,6 +346,8 @@ static bool tls_strp_check_no_dup(struct tls_strparser *strp)
- 
- 		if (TCP_SKB_CB(skb)->seq != seq)
- 			return false;
-+		if (skb_cmp_decrypted(first, skb))
-+			return false;
+ #define MCAST_EXCLUDE	0
+ #define MCAST_INCLUDE	1
+--- a/net/ipv4/ip_sockglue.c
++++ b/net/ipv4/ip_sockglue.c
+@@ -317,7 +317,14 @@ int ip_cmsg_send(struct sock *sk, struct
+ 			ipc->tos = val;
+ 			ipc->priority = rt_tos2priority(ipc->tos);
+ 			break;
+-
++		case IP_PROTOCOL:
++			if (cmsg->cmsg_len != CMSG_LEN(sizeof(int)))
++				return -EINVAL;
++			val = *(int *)CMSG_DATA(cmsg);
++			if (val < 1 || val > 255)
++				return -EINVAL;
++			ipc->protocol = val;
++			break;
+ 		default:
+ 			return -EINVAL;
+ 		}
+@@ -1724,6 +1731,9 @@ static int do_ip_getsockopt(struct sock
+ 	case IP_MINTTL:
+ 		val = inet->min_ttl;
+ 		break;
++	case IP_PROTOCOL:
++		val = inet_sk(sk)->inet_num;
++		break;
+ 	default:
+ 		release_sock(sk);
+ 		return -ENOPROTOOPT;
+--- a/net/ipv4/raw.c
++++ b/net/ipv4/raw.c
+@@ -559,6 +559,9 @@ static int raw_sendmsg(struct sock *sk,
  	}
  
- 	return true;
-@@ -422,7 +428,7 @@ static int tls_strp_read_sock(struct tls_strparser *strp)
- 			return tls_strp_read_copy(strp, true);
- 	}
+ 	ipcm_init_sk(&ipc, inet);
++	/* Keep backward compat */
++	if (hdrincl)
++		ipc.protocol = IPPROTO_RAW;
  
--	if (!tls_strp_check_no_dup(strp))
-+	if (!tls_strp_check_queue_ok(strp))
- 		return tls_strp_read_copy(strp, false);
+ 	if (msg->msg_controllen) {
+ 		err = ip_cmsg_send(sk, msg, &ipc, false);
+@@ -626,7 +629,7 @@ static int raw_sendmsg(struct sock *sk,
  
- 	strp->msg_ready = 1;
--- 
-2.39.2
-
+ 	flowi4_init_output(&fl4, ipc.oif, ipc.sockc.mark, tos,
+ 			   RT_SCOPE_UNIVERSE,
+-			   hdrincl ? IPPROTO_RAW : sk->sk_protocol,
++			   hdrincl ? ipc.protocol : sk->sk_protocol,
+ 			   inet_sk_flowi_flags(sk) |
+ 			    (hdrincl ? FLOWI_FLAG_KNOWN_NH : 0),
+ 			   daddr, saddr, 0, 0, sk->sk_uid);
+--- a/net/ipv6/raw.c
++++ b/net/ipv6/raw.c
+@@ -828,7 +828,8 @@ static int rawv6_sendmsg(struct sock *sk
+ 
+ 		if (!proto)
+ 			proto = inet->inet_num;
+-		else if (proto != inet->inet_num)
++		else if (proto != inet->inet_num &&
++			 inet->inet_num != IPPROTO_RAW)
+ 			return -EINVAL;
+ 
+ 		if (proto > 255)
 
 
