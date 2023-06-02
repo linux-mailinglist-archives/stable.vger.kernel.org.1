@@ -2,121 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40B5071F9EB
-	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 08:15:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88D1B71FA7C
+	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 09:01:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233273AbjFBGPv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 2 Jun 2023 02:15:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35584 "EHLO
+        id S234152AbjFBHBY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 2 Jun 2023 03:01:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232674AbjFBGPu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 02:15:50 -0400
-Received: from qproxy6-pub.mail.unifiedlayer.com (qproxy6-pub.mail.unifiedlayer.com [69.89.23.12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11C91196
-        for <stable@vger.kernel.org>; Thu,  1 Jun 2023 23:15:48 -0700 (PDT)
-Received: from gproxy2-pub.mail.unifiedlayer.com (unknown [69.89.18.3])
-        by qproxy6.mail.unifiedlayer.com (Postfix) with ESMTP id 968E5802805B
-        for <stable@vger.kernel.org>; Fri,  2 Jun 2023 06:15:48 +0000 (UTC)
-Received: from cmgw12.mail.unifiedlayer.com (unknown [10.0.90.127])
-        by progateway4.mail.pro1.eigbox.com (Postfix) with ESMTP id 329FC10047E23
-        for <stable@vger.kernel.org>; Fri,  2 Jun 2023 06:15:48 +0000 (UTC)
-Received: from box5620.bluehost.com ([162.241.219.59])
-        by cmsmtp with ESMTP
-        id 4y4iqjz2X0K9w4y4iqjM5c; Fri, 02 Jun 2023 06:15:48 +0000
-X-Authority-Reason: nr=8
-X-Authority-Analysis: v=2.4 cv=Xf5McK15 c=1 sm=1 tr=0 ts=64798914
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=IkcTkHD0fZMA:10:nop_charset_1
- a=of4jigFt-DYA:10:nop_rcvd_month_year
- a=-Ou01B_BuAIA:10:endurance_base64_authed_username_1 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=tq3W9Zwk1ITRXLIn4wcA:9 a=QEXdDO2ut3YA:10:nop_charset_2
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Z9YACtn3APw63uNJMrXQcH1Znn82RQampwROBRfCZhg=; b=afI5Xlr8U0JgoiP3z4jpnUHeLY
-        kTKS79kAK20W07hq+aIiIEEHwgoBCcV26e6AX9m4KTo8LVP5eTG4ZWYbzQGcFWIjSucqTs0y4h5OD
-        7642CIZAUEeZtcPRpDTXL+zyi8d4wm3FhPU4Z6Y3HRVA7AbpEULkXQ3G5/ReLlGfbe//Mc9tDuAOd
-        NGuTp8tBSTWegYP+6b8EMYcghLYVALl+A/ejmLI3PwxmEjccuU94kSNEUvrz9kSRxv6qWJ8/focF8
-        nPc4WVG3Kb4747Phyd6z3r19w8jVuiLIOeAGSWU2vpOb03zMrfUH2KH0dpNKbjIhaHfc5s+/gJiMZ
-        sxgaBJ1A==;
-Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:42506 helo=[10.0.1.47])
-        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.95)
-        (envelope-from <re@w6rz.net>)
-        id 1q4y4h-001JeX-2U;
-        Fri, 02 Jun 2023 00:15:47 -0600
-Subject: Re: [PATCH 6.3 00/45] 6.3.6-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de
-References: <20230601131938.702671708@linuxfoundation.org>
-In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
-From:   Ron Economos <re@w6rz.net>
-Message-ID: <153fa9ca-776b-088c-b4ba-49e143f0e59e@w6rz.net>
-Date:   Thu, 1 Jun 2023 23:15:45 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        with ESMTP id S234159AbjFBHA7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 03:00:59 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44365E40;
+        Fri,  2 Jun 2023 00:00:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1685689248; x=1717225248;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=d4JG/BkDFywtb3I5VV9TtSjO2u/0Kdo7FRtTZx9miGQ=;
+  b=kpiWySxAYeKmqYLt8k6k7LKL8EkWVczWMAiiFf9BpYbE+7YxWTxbGzWt
+   qcYi8d+rw7OZtdY1Dw4Qldmz2xudQgKNAgec0Iylu8RGBIOA3d1rGLeVX
+   mTlxdSjjEwqnhAsCKouNl8pnzydnS1gbL5Drm2LJOpZXFrDy2xPZxj+sn
+   EL7AC4vM3zRoh584AjApObj6ygIpBKrdQiM8jVr2CDAgM1w6uGDiIYaee
+   49HLFqw25f4uEeO6uvjsVQ5Tn07CyksyYQU8SisoxONFwHTgLn9IurpqG
+   DsJHyqdFeew1IccYKuYrGSGpfp7MwUSm64yWAPEt177RbwGrMd+Oxut7c
+   g==;
+X-IronPort-AV: E=Sophos;i="6.00,212,1681196400"; 
+   d="asc'?scan'208";a="218514510"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 02 Jun 2023 00:00:46 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Fri, 2 Jun 2023 00:00:46 -0700
+Received: from wendy (10.10.115.15) by chn-vm-ex02.mchp-main.com
+ (10.10.85.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
+ Transport; Fri, 2 Jun 2023 00:00:44 -0700
+Date:   Fri, 2 Jun 2023 08:00:20 +0100
+From:   Conor Dooley <conor.dooley@microchip.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     <stable@vger.kernel.org>, <patches@lists.linux.dev>,
+        <linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
+        <akpm@linux-foundation.org>, <linux@roeck-us.net>,
+        <shuah@kernel.org>, <patches@kernelci.org>,
+        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
+        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
+        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+        <rwarsow@gmx.de>
+Subject: Re: [PATCH 6.1 00/39] 6.1.32-rc2 review
+Message-ID: <20230602-unweave-entire-fc3f63a18162@wendy>
+References: <20230601143327.479886832@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.232.9
-X-Source-L: No
-X-Exim-ID: 1q4y4h-001JeX-2U
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:42506
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="nWrFjptjSZE3Ob8K"
+Content-Disposition: inline
+In-Reply-To: <20230601143327.479886832@linuxfoundation.org>
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 6/1/23 6:20 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.3.6 release.
-> There are 45 patches in this series, all will be posted as a response
+--nWrFjptjSZE3Ob8K
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Thu, Jun 01, 2023 at 03:35:57PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.32 release.
+> There are 39 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
->
-> Responses should be made by Sat, 03 Jun 2023 13:19:19 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.3.6-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.3.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
 
-Tested-by: Ron Economos <re@w6rz.net>
+Thanks,
+Conor.
 
+--nWrFjptjSZE3Ob8K
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZHmTgQAKCRB4tDGHoIJi
+0tgLAQCKu1JzuYbRLUmLKfB/0HiulyP6YLm+03/RAEhoeCt1EAD9GbMVAFp9KQoJ
+40lt9L+TbD13NE+cK4I44jwxnbSCeAk=
+=o8d/
+-----END PGP SIGNATURE-----
+
+--nWrFjptjSZE3Ob8K--
