@@ -2,43 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1914720A99
-	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 22:55:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36547720ADD
+	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 23:11:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236313AbjFBUzO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 2 Jun 2023 16:55:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33080 "EHLO
+        id S236010AbjFBVL3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 2 Jun 2023 17:11:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236299AbjFBUzM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 16:55:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE452E43;
-        Fri,  2 Jun 2023 13:55:10 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S234300AbjFBVL2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 17:11:28 -0400
+Received: from pb-smtp2.pobox.com (pb-smtp2.pobox.com [64.147.108.71])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B8CB1A1
+        for <stable@vger.kernel.org>; Fri,  2 Jun 2023 14:11:27 -0700 (PDT)
+Received: from pb-smtp2.pobox.com (unknown [127.0.0.1])
+        by pb-smtp2.pobox.com (Postfix) with ESMTP id 9755A18640D;
+        Fri,  2 Jun 2023 17:11:26 -0400 (EDT)
+        (envelope-from nico@fluxnic.net)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=pobox.com; h=date:from
+        :to:cc:subject:in-reply-to:message-id:references:mime-version
+        :content-type; s=sasl; bh=f8ShItLV8CgghuGuwOojfc7jC2wXuOhPcJdUrt
+        uYthc=; b=i2a/7j0RFUPfdHun3yYctOWxM3IPxNuh0kYkSPfYUwcOTzbciZg6/l
+        sxMeuF5wO50gvvK/4qQZcgZ/dYFWG3vcD9DeWJvLZyiz+SifjACHe8EZJ4DwT0N+
+        EDihUHmGMjw2dZNPT+vraLKQsNKWOndGKK2qYRRQj3Rn1sjm/dL5k=
+Received: from pb-smtp2.nyi.icgroup.com (unknown [127.0.0.1])
+        by pb-smtp2.pobox.com (Postfix) with ESMTP id 8E42418640C;
+        Fri,  2 Jun 2023 17:11:26 -0400 (EDT)
+        (envelope-from nico@fluxnic.net)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=fluxnic.net;
+ h=date:from:to:cc:subject:in-reply-to:message-id:references:mime-version:content-type; s=2016-12.pbsmtp; bh=f8ShItLV8CgghuGuwOojfc7jC2wXuOhPcJdUrtuYthc=; b=Z0kC22iHVruWmbGvcO7AF/5+zSBH27jOjNdFasgRVZ5ktnLP3AkcFYW20fJKHuwV1FWBVP20hRQbLhUbNqny2Lu3x1tAol1ZunYmi5DPDCcq44IXCg4FKS0XI5MJ3I3qxMEjIDkk5pqXi2vaO3pp6oxliHaAM8FfCEN5YQLvt18=
+Received: from yoda.home (unknown [184.162.17.228])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4512261770;
-        Fri,  2 Jun 2023 20:55:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DFBDC433D2;
-        Fri,  2 Jun 2023 20:55:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1685739309;
-        bh=Nzq/BuOYIQNUUb6G2pp3sjalDbiX/ZSQYUQpzzkpMQw=;
-        h=Date:To:From:Subject:From;
-        b=BxA7A7ZOdEOHS3OUGvY8tlfd/niNIEZXEd0tU8fH0RC6LL+xrSfsrLvjjGSsMsSnO
-         JMJxAj6MrlqnG97ikPs8DDhw2Rl2DKG4sFRG/0gFkP3P1pWGY7MhHkb7ncdduE3AG/
-         dBkMKLnd2MHZj0UzglTEHp3BWVV+T13zLRptpnt4=
-Date:   Fri, 02 Jun 2023 13:55:08 -0700
-To:     mm-commits@vger.kernel.org, ziy@nvidia.com, yuzhao@google.com,
-        willy@infradead.org, urezki@gmail.com, stable@vger.kernel.org,
-        sj@kernel.org, rppt@kernel.org, lstoakes@gmail.com,
-        kirill.shutemov@linux.intel.com, hch@lst.de, hch@infradead.org,
-        ryan.roberts@arm.com, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-ops-common-atomically-test-and-clear-young-on-ptes-and-pmds.patch added to mm-unstable branch
-Message-Id: <20230602205509.9DFBDC433D2@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        by pb-smtp2.pobox.com (Postfix) with ESMTPSA id 03FA818640B;
+        Fri,  2 Jun 2023 17:11:26 -0400 (EDT)
+        (envelope-from nico@fluxnic.net)
+Received: from xanadu.home (xanadu [10.0.0.101])
+        by yoda.home (Postfix) with ESMTPSA id B3F3C7CF1F3;
+        Fri,  2 Jun 2023 17:11:24 -0400 (EDT)
+Date:   Fri, 2 Jun 2023 17:11:24 -0400 (EDT)
+From:   Nicolas Pitre <nico@fluxnic.net>
+To:     Linus Walleij <linus.walleij@linaro.org>
+cc:     Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-mtd@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3] mtd: cfi_cmdset_0001: Byte swap OTP info
+In-Reply-To: <20230602204359.3493320-1-linus.walleij@linaro.org>
+Message-ID: <1nqsp3n7-n82r-698p-sn82-0231n75p7216@syhkavp.arg>
+References: <20230602204359.3493320-1-linus.walleij@linaro.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+X-Pobox-Relay-ID: 08D51708-018A-11EE-96D9-307A8E0A682E-78420484!pb-smtp2.pobox.com
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -47,171 +63,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Fri, 2 Jun 2023, Linus Walleij wrote:
 
-The patch titled
-     Subject: mm/damon/ops-common: atomically test and clear young on ptes and pmds
-has been added to the -mm mm-unstable branch.  Its filename is
-     mm-damon-ops-common-atomically-test-and-clear-young-on-ptes-and-pmds.patch
+> Currently the offset into the device when looking for OTP
+> bits can go outside of the address of the MTD NOR devices,
+> and if that memory isn't readable, bad things happen
+> on the IXP4xx (added prints that illustrate the problem before
+> the crash):
+> 
+> cfi_intelext_otp_walk walk OTP on chip 0 start at reg_prot_offset 0x00000100
+> ixp4xx_copy_from copy from 0x00000100 to 0xc880dd78
+> cfi_intelext_otp_walk walk OTP on chip 0 start at reg_prot_offset 0x12000000
+> ixp4xx_copy_from copy from 0x12000000 to 0xc880dd78
+> 8<--- cut here ---
+> Unable to handle kernel paging request at virtual address db000000
+> [db000000] *pgd=00000000
+> (...)
+> 
+> This happens in this case because the IXP4xx is big endian and
+> the 32- and 16-bit fields in the struct cfi_intelext_otpinfo are not
+> properly byteswapped. Compare to how the code in read_pri_intelext()
+> byteswaps the fields in struct cfi_pri_intelext.
+> 
+> Adding a small byte swapping loop for the OTP in read_pri_intelext()
+> and the crash goes away.
+> 
+> The problem went unnoticed for many years until I enabled
+> CONFIG_MTD_OTP on the IXP4xx as well, triggering the bug.
+> 
+> Cc: Nicolas Pitre <npitre@baylibre.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-ops-common-atomically-test-and-clear-young-on-ptes-and-pmds.patch
+Reviewed-by: Nicolas Pitre <nico@fluxnic.net>
 
-This patch will later appear in the mm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Ryan Roberts <ryan.roberts@arm.com>
-Subject: mm/damon/ops-common: atomically test and clear young on ptes and pmds
-Date: Fri, 2 Jun 2023 10:29:47 +0100
-
-It is racy to non-atomically read a pte, then clear the young bit, then
-write it back as this could discard dirty information.  Further, it is bad
-practice to directly set a pte entry within a table.  Instead clearing
-young must go through the arch-provided helper,
-ptep_test_and_clear_young() to ensure it is modified atomically and to
-give the arch code visibility and allow it to check (and potentially
-modify) the operation.
-
-Link: https://lkml.kernel.org/r/20230602092949.545577-3-ryan.roberts@arm.com
-Fixes: 3f49584b262c ("mm/damon: implement primitives for the virtual memory address spaces").
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: Lorenzo Stoakes <lstoakes@gmail.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/damon/ops-common.c |   16 ++++++----------
- mm/damon/ops-common.h |    4 ++--
- mm/damon/paddr.c      |    4 ++--
- mm/damon/vaddr.c      |    4 ++--
- 4 files changed, 12 insertions(+), 16 deletions(-)
-
---- a/mm/damon/ops-common.c~mm-damon-ops-common-atomically-test-and-clear-young-on-ptes-and-pmds
-+++ a/mm/damon/ops-common.c
-@@ -37,7 +37,7 @@ struct folio *damon_get_folio(unsigned l
- 	return folio;
- }
- 
--void damon_ptep_mkold(pte_t *pte, struct mm_struct *mm, unsigned long addr)
-+void damon_ptep_mkold(pte_t *pte, struct vm_area_struct *vma, unsigned long addr)
- {
- 	bool referenced = false;
- 	struct folio *folio = damon_get_folio(pte_pfn(*pte));
-@@ -45,13 +45,11 @@ void damon_ptep_mkold(pte_t *pte, struct
- 	if (!folio)
- 		return;
- 
--	if (pte_young(*pte)) {
-+	if (ptep_test_and_clear_young(vma, addr, pte))
- 		referenced = true;
--		*pte = pte_mkold(*pte);
--	}
- 
- #ifdef CONFIG_MMU_NOTIFIER
--	if (mmu_notifier_clear_young(mm, addr, addr + PAGE_SIZE))
-+	if (mmu_notifier_clear_young(vma->vm_mm, addr, addr + PAGE_SIZE))
- 		referenced = true;
- #endif /* CONFIG_MMU_NOTIFIER */
- 
-@@ -62,7 +60,7 @@ void damon_ptep_mkold(pte_t *pte, struct
- 	folio_put(folio);
- }
- 
--void damon_pmdp_mkold(pmd_t *pmd, struct mm_struct *mm, unsigned long addr)
-+void damon_pmdp_mkold(pmd_t *pmd, struct vm_area_struct *vma, unsigned long addr)
- {
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- 	bool referenced = false;
-@@ -71,13 +69,11 @@ void damon_pmdp_mkold(pmd_t *pmd, struct
- 	if (!folio)
- 		return;
- 
--	if (pmd_young(*pmd)) {
-+	if (pmdp_test_and_clear_young(vma, addr, pmd))
- 		referenced = true;
--		*pmd = pmd_mkold(*pmd);
--	}
- 
- #ifdef CONFIG_MMU_NOTIFIER
--	if (mmu_notifier_clear_young(mm, addr, addr + HPAGE_PMD_SIZE))
-+	if (mmu_notifier_clear_young(vma->vm_mm, addr, addr + HPAGE_PMD_SIZE))
- 		referenced = true;
- #endif /* CONFIG_MMU_NOTIFIER */
- 
---- a/mm/damon/ops-common.h~mm-damon-ops-common-atomically-test-and-clear-young-on-ptes-and-pmds
-+++ a/mm/damon/ops-common.h
-@@ -9,8 +9,8 @@
- 
- struct folio *damon_get_folio(unsigned long pfn);
- 
--void damon_ptep_mkold(pte_t *pte, struct mm_struct *mm, unsigned long addr);
--void damon_pmdp_mkold(pmd_t *pmd, struct mm_struct *mm, unsigned long addr);
-+void damon_ptep_mkold(pte_t *pte, struct vm_area_struct *vma, unsigned long addr);
-+void damon_pmdp_mkold(pmd_t *pmd, struct vm_area_struct *vma, unsigned long addr);
- 
- int damon_cold_score(struct damon_ctx *c, struct damon_region *r,
- 			struct damos *s);
---- a/mm/damon/paddr.c~mm-damon-ops-common-atomically-test-and-clear-young-on-ptes-and-pmds
-+++ a/mm/damon/paddr.c
-@@ -24,9 +24,9 @@ static bool __damon_pa_mkold(struct foli
- 	while (page_vma_mapped_walk(&pvmw)) {
- 		addr = pvmw.address;
- 		if (pvmw.pte)
--			damon_ptep_mkold(pvmw.pte, vma->vm_mm, addr);
-+			damon_ptep_mkold(pvmw.pte, vma, addr);
- 		else
--			damon_pmdp_mkold(pvmw.pmd, vma->vm_mm, addr);
-+			damon_pmdp_mkold(pvmw.pmd, vma, addr);
- 	}
- 	return true;
- }
---- a/mm/damon/vaddr.c~mm-damon-ops-common-atomically-test-and-clear-young-on-ptes-and-pmds
-+++ a/mm/damon/vaddr.c
-@@ -311,7 +311,7 @@ static int damon_mkold_pmd_entry(pmd_t *
- 		}
- 
- 		if (pmd_trans_huge(*pmd)) {
--			damon_pmdp_mkold(pmd, walk->mm, addr);
-+			damon_pmdp_mkold(pmd, walk->vma, addr);
- 			spin_unlock(ptl);
- 			return 0;
- 		}
-@@ -323,7 +323,7 @@ static int damon_mkold_pmd_entry(pmd_t *
- 	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
- 	if (!pte_present(*pte))
- 		goto out;
--	damon_ptep_mkold(pte, walk->mm, addr);
-+	damon_ptep_mkold(pte, walk->vma, addr);
- out:
- 	pte_unmap_unlock(pte, ptl);
- 	return 0;
-_
-
-Patches currently in -mm which might be from ryan.roberts@arm.com are
-
-mm-vmalloc-must-set-pte-via-arch-code.patch
-mm-damon-ops-common-atomically-test-and-clear-young-on-ptes-and-pmds.patch
-mm-damon-ops-common-refactor-to-use-ptepmdp_clear_young_notify.patch
-mm-fix-failure-to-unmap-pte-on-highmem-systems.patch
-
+> ---
+> ChangeLog v2->v3:
+> - Move the byte swapping to a small loop in read_pri_intelext()
+>   so all bytes are swapped as we reach cfi_intelext_otp_walk().
+> ChangeLog v1->v2:
+> - Drill deeper and discover a big endian compatibility issue.
+> ---
+>  drivers/mtd/chips/cfi_cmdset_0001.c | 20 ++++++++++++++++++--
+>  1 file changed, 18 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/mtd/chips/cfi_cmdset_0001.c b/drivers/mtd/chips/cfi_cmdset_0001.c
+> index 54f92d09d9cf..02aaf09d6f5c 100644
+> --- a/drivers/mtd/chips/cfi_cmdset_0001.c
+> +++ b/drivers/mtd/chips/cfi_cmdset_0001.c
+> @@ -421,9 +421,25 @@ read_pri_intelext(struct map_info *map, __u16 adr)
+>  		extra_size = 0;
+>  
+>  		/* Protection Register info */
+> -		if (extp->NumProtectionFields)
+> +		if (extp->NumProtectionFields) {
+> +			struct cfi_intelext_otpinfo *otp =
+> +				(struct cfi_intelext_otpinfo *)&extp->extra[0];
+> +
+>  			extra_size += (extp->NumProtectionFields - 1) *
+> -				      sizeof(struct cfi_intelext_otpinfo);
+> +				sizeof(struct cfi_intelext_otpinfo);
+> +
+> +			if (extp_size >= sizeof(*extp) + extra_size) {
+> +				int i;
+> +
+> +				/* Do some byteswapping if necessary */
+> +				for (i = 0; i < extp->NumProtectionFields - 1; i++) {
+> +					otp->ProtRegAddr = le32_to_cpu(otp->ProtRegAddr);
+> +					otp->FactGroups = le16_to_cpu(otp->FactGroups);
+> +					otp->UserGroups = le16_to_cpu(otp->UserGroups);
+> +					otp++;
+> +				}
+> +			}
+> +		}
+>  	}
+>  
+>  	if (extp->MinorVersion >= '1') {
+> -- 
+> 2.40.1
+> 
+> 
