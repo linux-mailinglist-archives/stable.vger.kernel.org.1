@@ -2,401 +2,227 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 417E07206CB
-	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 18:05:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D09B72072C
+	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 18:13:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236329AbjFBQF1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 2 Jun 2023 12:05:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32768 "EHLO
+        id S236571AbjFBQNY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 2 Jun 2023 12:13:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236283AbjFBQFZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 12:05:25 -0400
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2076.outbound.protection.outlook.com [40.107.21.76])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FDC5E2
-        for <stable@vger.kernel.org>; Fri,  2 Jun 2023 09:05:23 -0700 (PDT)
+        with ESMTP id S236416AbjFBQNT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 12:13:19 -0400
+Received: from BN3PR00CU001.outbound.protection.outlook.com (mail-eastus2azon11020024.outbound.protection.outlook.com [52.101.56.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B54BAE5D;
+        Fri,  2 Jun 2023 09:12:57 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EQyqzAdkt0qVsPptkXm8lVYbrevTCOfVmYxK1g94573QI52UwoayDaOJYZWdtcwKsAX1rpfsz3JBC4owY30Gz+ABYMFkSLTgS+EsTQM5Bn0sF3EkqABzhVIjbizcWi5Br/SCbmBBp2nrINIf/MQe5NEVtV+3BBkd/6nOvxbaVzDJZ0GOJaAliEzK0ZU8KXOAaimPrxEs+QSAuazpEveY53FEfiEYgUj2Pqsm3z/1jIHGMEc2Yk0TSIXB+3zYW4D+vDfLXwL+T6PhaLqfH7OoaAHRfmfPLd8SwgTT2oLvHZy9xTdQQR+Laxrn9HHkhsErpaTzffAeSutNUTw/wef+Ag==
+ b=HmeYgvTfjOByOEPSp2ijMGazjERL2SeGUejUCAR/E5AyCPuXy90rtDN05Gde+1/v2XJfk7VbDz5YEBF9sHXZ2xR4o84sMA1wH/l9Te7OX7Zwurw5p7VY2fjbaOpqBsQHoSG1uER0Z5S47ndjdBwiTtp3OrjuZkJ98Am+H0rVXMk0bQy76K9Ig6LuE3VPtntpY6im5kuR/d6ss9YghMQRqcAU+EtZbRNhv3vENMEwa1CO4NJ5xtks4M/YMmzTCsjBXrPFSzfLnxxpM4v6vZzWaDxoe9Cj1BQ1SVrQ8ZOgA01cEL9goddQJTEifRLzHJPLahD2wNefPodoFJ4x2ax54Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ao2xWJjcMb2jd8+W/La8pKDKX1jsjqIW83mxK97LgRE=;
- b=ImBZyLVnfGKGmMvZK20jYyVZNDKWRYBz58flopB/mArSgN1mFkraYZCDpASE0yBxpeB/bGkBVTCsH3wXhLJTyz8ylPmdTCSaMGZnjldg09iSM5SVcuEbNeJwikqXoBxLf89H1cu0QE2qb3l9nNU9Px8yPHyWGUmlLcnOm/xpjuaZtgg9nGbLg4E6IMbMiHdXlg2Fpw+2uHLGqdiKGAdWER5tC68zSVAq1PHNoozqooKhS42EiANj7csJYVJuUJJkrxRdJe6hk7FQ+dC73caOebIm6RNL5rXtHuMp6/DYd45keu7TA8P9EtEtlwcKaxhfTW0I2KNRHvZ7ZLfMCbeDVw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 194.138.21.74) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=siemens.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=siemens.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=siemens.com;
+ bh=h6WI+q8rX8CbNZksZGrApt4PE2oRCz/7sw75A7Xuewk=;
+ b=eMunujDtokJ3JHE2meL0dlgZ2Jk3yrGNcUlP9dAyR+6cMoGRDmBladuQzFw+2YAyws7HeK23xFHtpML7FzLnMt9+DkU21a95ogJXPw+udSu7YB6HKV/BjiL4lYsa+KUK+i2mbVuyPs245qhsuKuUAL0QWTjlaHHptlEhMr8oPxn3y/32sjX1diRlOz4LzAUrwsiKqDUTOg3KHZQU8207U+80wiuFBJ2J03H7PottDv506gDcFMFoCgZvzWW25twRYz+JQ6LD3zCn8i3aSBJMuH1dgaInfN1PMVgtTdfraURgYPISz2B/h79hWCP5mIqp2RhqS2KH5HX+XMknKRwM/g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ao2xWJjcMb2jd8+W/La8pKDKX1jsjqIW83mxK97LgRE=;
- b=buhiIARoSfYWHRPfjN02/8yAZBDZFAgI9129AM1QgHvhsLI/0So0ddI0Vg3oGpVuZk8lTPbiKdO5imn6TB5G3iO8ujFLUe4vS+Wkl8Bcm3ZKEtpVlFad4No98pY5KbXSxrfr3WGUVEaNPM86pPWr1Utz59hku87PUxPiw1wpNpbiVRq1gNZi8bZkunwCPlXf1TA0vDosp8Gj+NIXM4NtwS1Oa7W3uorbddVcbAUvKRwkrrfO3i+/5+szq4KKVJVqnnAvnYRilw2TYknPn3TB5Dp0v4DSJOKLILeZAbtJEQdrLvxnrM5wh6B9BKthQYiHtToloi/VGw+5fvtHiJufkw==
-Received: from DB6P192CA0008.EURP192.PROD.OUTLOOK.COM (2603:10a6:4:b8::18) by
- DU0PR10MB5386.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:328::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6455.22; Fri, 2 Jun 2023 16:05:20 +0000
-Received: from DB5EUR01FT023.eop-EUR01.prod.protection.outlook.com
- (2603:10a6:4:b8:cafe::37) by DB6P192CA0008.outlook.office365.com
- (2603:10a6:4:b8::18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.22 via Frontend
- Transport; Fri, 2 Jun 2023 16:05:20 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 194.138.21.74)
- smtp.mailfrom=siemens.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=siemens.com;
-Received-SPF: Pass (protection.outlook.com: domain of siemens.com designates
- 194.138.21.74 as permitted sender) receiver=protection.outlook.com;
- client-ip=194.138.21.74; helo=hybrid.siemens.com; pr=C
-Received: from hybrid.siemens.com (194.138.21.74) by
- DB5EUR01FT023.mail.protection.outlook.com (10.152.4.233) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6455.23 via Frontend Transport; Fri, 2 Jun 2023 16:05:19 +0000
-Received: from DEMCHDC8WAA.ad011.siemens.net (139.25.226.104) by
- DEMCHDC8VQA.ad011.siemens.net (194.138.21.74) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.25; Fri, 2 Jun 2023 18:05:18 +0200
-Received: from md1za8fc.ppmd.siemens.net (139.25.69.177) by
- DEMCHDC8WAA.ad011.siemens.net (139.25.226.104) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.25; Fri, 2 Jun 2023 18:05:18 +0200
-From:   Henning Schild <henning.schild@siemens.com>
-To:     <stable@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     <holger.philipps@siemens.com>, <wagner.dominik@siemens.com>,
-        =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
-        "Lucas De Marchi" <lucas.demarchi@intel.com>
-Subject: [PATCH 5.10 2/2] drm/i915/gen11+: Only load DRAM information from pcode
-Date:   Fri, 2 Jun 2023 18:05:07 +0200
-Message-ID: <20230602160507.2057-3-henning.schild@siemens.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20230602160507.2057-1-henning.schild@siemens.com>
-References: <20230602160507.2057-1-henning.schild@siemens.com>
+ bh=h6WI+q8rX8CbNZksZGrApt4PE2oRCz/7sw75A7Xuewk=;
+ b=T1WEvMJOzmtnDfplQoio1220Q14D3lOymFGAzoZTYXLfEXgsbO4z3s9+0yLNuMj10QirhaogxG1We7cT/rez4CQWU328/DH5ZBrUwTZxx/4m4McZdpRQvB0ooCeSi/KGhQLcYy25K0YBGJP3zPOUHEwne3tehAvRJqUbd/3AB60=
+Received: from BYAPR21MB1688.namprd21.prod.outlook.com (2603:10b6:a02:bf::26)
+ by SA0PR21MB1994.namprd21.prod.outlook.com (2603:10b6:806:e2::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.6; Fri, 2 Jun
+ 2023 16:11:40 +0000
+Received: from BYAPR21MB1688.namprd21.prod.outlook.com
+ ([fe80::5fb5:15a9:511d:21c9]) by BYAPR21MB1688.namprd21.prod.outlook.com
+ ([fe80::5fb5:15a9:511d:21c9%4]) with mapi id 15.20.6477.012; Fri, 2 Jun 2023
+ 16:11:40 +0000
+From:   "Michael Kelley (LINUX)" <mikelley@microsoft.com>
+To:     Tom Lendacky <thomas.lendacky@amd.com>,
+        Sathyanarayanan Kuppuswamy 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "Kirill A. Shutemov" <kirill@shutemov.name>
+CC:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        "dave.hansen@intel.com" <dave.hansen@intel.com>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "bp@alien8.de" <bp@alien8.de>, Dexuan Cui <decui@microsoft.com>,
+        "rick.p.edgecombe@intel.com" <rick.p.edgecombe@intel.com>,
+        "seanjc@google.com" <seanjc@google.com>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCHv2 2/3] x86/tdx: Fix race between set_memory_encrypted()
+ and load_unaligned_zeropad()
+Thread-Topic: [PATCHv2 2/3] x86/tdx: Fix race between set_memory_encrypted()
+ and load_unaligned_zeropad()
+Thread-Index: AQHZj8oTFjnlsJ7BHk+B/hII3JAaOq9tHk4AgATlkACAAMkCAIAABw6AgAHJXiCAAa5QgIABaKXw
+Date:   Fri, 2 Jun 2023 16:11:40 +0000
+Message-ID: <BYAPR21MB168826D6C870542E5BD3372BD74EA@BYAPR21MB1688.namprd21.prod.outlook.com>
+References: <20230526120225.31936-1-kirill.shutemov@linux.intel.com>
+ <20230526120225.31936-3-kirill.shutemov@linux.intel.com>
+ <19d9977f-bf07-2948-1b45-456af9c09e2f@linux.intel.com>
+ <20230530005736.ndwza2i5n7wrki5h@box.shutemov.name>
+ <9d679d3f-8db9-80ef-292a-9ca5b860579b@amd.com>
+ <2d8ae093-dd9e-ea49-d6f9-3fdb2fb84e4d@linux.intel.com>
+ <BYAPR21MB1688EF2A57E90FCE02B82F84D748A@BYAPR21MB1688.namprd21.prod.outlook.com>
+ <9fbc3760-7239-2323-ed90-210a0de9e286@amd.com>
+In-Reply-To: <9fbc3760-7239-2323-ed90-210a0de9e286@amd.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=4be6cfcb-5381-4371-b899-0167b70fcf6a;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2023-06-02T15:50:12Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BYAPR21MB1688:EE_|SA0PR21MB1994:EE_
+x-ms-office365-filtering-correlation-id: eabfeb73-dd2d-401f-c684-08db63840cce
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: ejpUGOa/bdQUjEm8ro2gDYdTqzRZPdkCEahf8nShhUv+/JUEHsgQYXOJtJvz32DJDVXcdOSDLQDEQOAEnYicFIh8KzDLyAM98KlrcbYZjTNPwNoHolDCk0f2XW+yFBpvOHyHtq0TZ5/uQ6j9FSUdD1X894CA4idFXyWPoAvloagYL237+boVBHgXY+asrfDLmyBg+wCsO0gnnXuJr3PseCuPKHoPzjmYORbQdUyQLLKi2V1+nxDtg7risBusQFntpktTSu44TiCaN6trOyYSlDO2JO14GWzumXUPzgJBJKnbO/3FFe7pgBvrQRvWO9+bGYdPsGyFJBZimshqYYvvjdVIg7TxxCo/BLZpNy8FRMjXCh/0Y5IzYZVTTXCoabTEZI+7fIfv+7+wT4lUpLIf0Am6CBVNWr2BoO0XmzsmGSGUWFRKjxQ5ECG51hR3fIm39TzgQ5K8LK8ZKL8fTie8R2mZb9sqwzTqY1+ApaLyN6G+sMkfMH0QO5dzK+9LupTX/vKK89NCIhE7PwmfwThO8rj/7L5UJHCtdniudWovWWD4ONwzehTeGebfUzjoGGUT2vbhaJIeRq7iRSBtPYL5vPfvJzQ3mPRN+Q1rLl8+0vkQ+maV1h1RoI7skkn0YBWQ
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR21MB1688.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(39860400002)(396003)(376002)(136003)(366004)(451199021)(83380400001)(2906002)(186003)(38070700005)(82960400001)(82950400001)(38100700002)(122000001)(8990500004)(55016003)(41300700001)(786003)(7696005)(316002)(71200400001)(5660300002)(86362001)(478600001)(8936002)(8676002)(52536014)(54906003)(110136005)(33656002)(10290500003)(53546011)(76116006)(66476007)(64756008)(4326008)(66946007)(26005)(66446008)(9686003)(6506007)(66556008)(7416002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?cUhhS1JicVRub1VreUx0aWhhOGtSL1pCY3g0WGNIcE9rTHVlU09aVTJnaVMr?=
+ =?utf-8?B?MWZINDh3SllNYzNFTFlYMFEzb29YbFVkb1ZDNzhDZER1NTFvRzk3blJTUTV2?=
+ =?utf-8?B?UW9LQXZ1bGJLVHlwcUFQZ0pHblplaWlXRU9zdXJtUDVDMlRJK2hIbVZiZ1dH?=
+ =?utf-8?B?dGRIcTZyaDdVY2JoR0Z2SEdJbGxobDlvSGQ5RkMzWkJqUXFlN0JVMXZBbitE?=
+ =?utf-8?B?cUZQbEZrR3I0dFp6VEhYYUQ3Y2pSNXUzaWc2VkNRN3FFeDE2TjRFcnMxQW95?=
+ =?utf-8?B?UXAvdmIxa21KYXhIb2N3dGw3UStKQlNPbDZsTUFraWFvZy95SHRBSmNXTWhu?=
+ =?utf-8?B?dUR3STFQaURJODU2NmNCalRPVm1EcjJuQmh1K2NpY1RaTTFLY25iRW9ZRjEz?=
+ =?utf-8?B?dUJLQkN6ZGhkWTRQYVhVeDZRM2hZaWMrRjA3SnVpamdKTDRTMXBSdVRHTVNi?=
+ =?utf-8?B?MG1ocGRwNUNIb3FoVjcxbXJVN1l1WGgwdlAxNjZRb1l1WUpYeXpUN1BHaHNZ?=
+ =?utf-8?B?elZ5WlZIS25MeFJ0OGtIU3pOSDJHTzB2TmVybDQvZlE0NnluZy9UUFZTb25X?=
+ =?utf-8?B?dUErOXhqRGxTTUxjSE9ma3AvYTJOdzVHeFVYV2xuaC9meXFwOElwYkdIOEpV?=
+ =?utf-8?B?T1RnbGYwaFRmc2YyajMwb2N1b3V0U0pvRTVrRk1RRFpRL2k0N2tpVTVYMDNP?=
+ =?utf-8?B?bUdBUjF4MXZDaU1VbCtrVkhLZ0lkblhCTkw5WlM3M1paWW1OOFg2ZVhsQnhB?=
+ =?utf-8?B?RkQ0dzJ4SENrY2dqUldFWUUydUlqYzh2MjVOU1RnNUJlWVo5ZHNnOVhPdjRt?=
+ =?utf-8?B?d0tkWUN4aXZqM3A2czhkMGdlQkI2dy81MjlSd21oWjlLc2c0RWFVa1hEY3U3?=
+ =?utf-8?B?NkprUnVJQ3V1U0pFWXZ4NTVXK2VjcWpRa3lvOEQwU1djaEdTTkdkcUdaV0R5?=
+ =?utf-8?B?Qng5bHFCdmtaL1NmMmM4TmFXV3dTeFF0L0VMTWQ5NjVKZEhQWHU0OUZWSHRq?=
+ =?utf-8?B?djNqaisxbTNkUU9zaWt0ZmxSeWRrOUhnalg4dWpsZVNwbWZvUGpDMG55dGxR?=
+ =?utf-8?B?ZXBDTEwyQnVtWW1CSVkwUXRsUEY3SlJtc1FiSTl3RldmMzQydXVXQVZNNWMv?=
+ =?utf-8?B?aTVlWFlpK2hWb2VLZXB6SmQ4LzQvNDIvMWZsZHZ1aFFQRlJ6enRINVJ5MUF2?=
+ =?utf-8?B?QlpwbzZrYmxCSk1hZFgwSkZhckJrUFprL2ZuZ0JBd1BsaW44dmcvMjVXdUd6?=
+ =?utf-8?B?NUQ0OGdGcEk5bEQ0YjV6RStWSGFjdVZIUUZOeU5VYW5VZ1k4a0hLWnZQbnBS?=
+ =?utf-8?B?Tzc3VTVCWWIvNUxhWG4vV1czS3lqcXNNWFJLQk5IVXBNN3BtQVpLK04vMEhD?=
+ =?utf-8?B?OEJpeTRRVlhtbkw5RGJGYkVpbDZoZTg1YzZybTVGTXdsa1JCMUZsWHNOdjJp?=
+ =?utf-8?B?S0pQSWxVYTJ2S0Q5VzhFaW9JU2Y0b082bkgrc3FCQzR5VEs2d1ZWUG9OeDdp?=
+ =?utf-8?B?Q2VQOUx4aFdhM3VSYWhPU1R1TmVpbEVLclNETzBqaHVCRXhLaXdSbmNlSFdZ?=
+ =?utf-8?B?WjZDTTQ4MERRRnd5ckpTL0lMNThBUUFtTGFyZVdHUWxVb1lsUVI1c25Qd1F6?=
+ =?utf-8?B?aVJqdmpsV1dDQWhEOW1tYkZ1VWR6bEJQS2ZERFo1QWkvem9aYWpZN1hQU0kz?=
+ =?utf-8?B?b1ZiQUd0eXlKc2RrTkdONi9iei9xTXdqQ3NZUzI5V3o3WTV3eHJzOUwreFpI?=
+ =?utf-8?B?MWx6eTZHUlh4S2d5TXpBVkZ3endkbHRicFNTaDR6ZHZlOEFzelFydVRvMUM0?=
+ =?utf-8?B?VDZ0TFQreGQ0VldhOHVtOFNiV2ZlV1IveW5kOFh2UGVHaXJtaFUzd05RL2Vx?=
+ =?utf-8?B?TGlqVS9aRTF3ZjdYU0J4NDU3dk0ySExBY25MNG5PZVd0QVJYZG42YXNPNUxK?=
+ =?utf-8?B?Q2pNYk9iQkpDZ0FwbTlPektLNmxUUmVZZTJrcHR0QXFkU2I3cjRnYkZTVDUz?=
+ =?utf-8?B?ZDAxTmxTa2h6WlQ1SHA2dE00NUpiQ2kzSjdVVVhTeUpvbDBneS84MzNocTJQ?=
+ =?utf-8?B?alJQdTlYLzNXK1hYb2dCLzFZVnNaaHdjaWlHNVdqS0ZXSkZqRHEzWHQ1U1I3?=
+ =?utf-8?B?Z1BiZzBOYUpPc1ZhTURpQUJnS3FQR1ZHbTFNTmd4MDljUTU5SGM4amJaMGh1?=
+ =?utf-8?B?NUE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [139.25.69.177]
-X-ClientProxiedBy: DEMCHDC8WBA.ad011.siemens.net (139.25.226.105) To
- DEMCHDC8WAA.ad011.siemens.net (139.25.226.104)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB5EUR01FT023:EE_|DU0PR10MB5386:EE_
-X-MS-Office365-Filtering-Correlation-Id: 17ab8e55-6263-4105-1d4d-08db6383298c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: WU44h93jbgyRcphxpZEQA683GaDcPr2lnsa8nJ8y55EL7c/d/Tk8OXSr0W3XGrcyfdvGrAuzvYl/tSP1UozCvPaBAqOTuuuDzEmvU/kLEQUK0pHdTif0eqAVCmEcGbQpLDSvI2We/dhfIGFWwZdJqi0XiPkzbqRFCdzL4cVf6ZsTCUnvLBS7EgftkZDHBQttWhI6XYaDRIrWqHTOECwT4yZm/QVeusTQaVBhYAsRR9fXoptQ5V13MmpbZXOx1pd5xjlFl9/C1eSbVgqvEmwXQbQnZgWkIXIQ815wu9Hg3f5P1n12EBYGyb/JBsUXRbXmvtpNAjfPBFa5u9aaJRjr7Gckfyb8pG2xVx4N5bkhuLXKDnzZRjjBpmC1jf6g01yJjQJ/+rlxfaWOWdztWQ65UHv0/kwnmUIWc5P6evPDB3DS/OJauB6QYEfwUT+tkVng+jqsQOsRYPjtpBkHC5JwYPZH+5GxFaL2ZetiVSoh70QOXEJvR4xRdFqgB9/3ewi6RGgammeYllAyfqA3l7koNGT1ZUM0N6MJVgb6orowuK1v0Y1+jMLBvHUg7fA1OFOxoitQHImaWG6fISbUwUgIVcwr2iXTrcTx0tW6cUty1yBoLX+CQAOgsRMgGrdnPuxm433b5Mcs63uLO75xYw30AdwdLekxEjTaSQ9JvS9tHBBkiQZH063KFt7M0nJ9vESp
-X-Forefront-Antispam-Report: CIP:194.138.21.74;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:hybrid.siemens.com;PTR:hybrid.siemens.com;CAT:NONE;SFS:(13230028)(4636009)(136003)(396003)(39860400002)(346002)(376002)(451199021)(40470700004)(46966006)(36840700001)(54906003)(44832011)(6666004)(316002)(2616005)(110136005)(478600001)(82960400001)(4326008)(70206006)(956004)(26005)(1076003)(41300700001)(5660300002)(8936002)(2906002)(336012)(8676002)(16526019)(186003)(70586007)(47076005)(83380400001)(36860700001)(356005)(82310400005)(7596003)(7636003)(82740400003)(40480700001)(36756003)(966005)(40460700003)(86362001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: siemens.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2023 16:05:19.1222
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR21MB1688.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: eabfeb73-dd2d-401f-c684-08db63840cce
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jun 2023 16:11:40.4173
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 17ab8e55-6263-4105-1d4d-08db6383298c
-X-MS-Exchange-CrossTenant-Id: 38ae3bcd-9579-4fd4-adda-b42e1495d55a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=38ae3bcd-9579-4fd4-adda-b42e1495d55a;Ip=[194.138.21.74];Helo=[hybrid.siemens.com]
-X-MS-Exchange-CrossTenant-AuthSource: DB5EUR01FT023.eop-EUR01.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR10MB5386
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: m7FRPC95BMgC/neua/I0+DPjyRGccWWD2NimpCBhtZugEd4u0cNZQElATd90ts01SHFTf1MaSEO7BVKPx2phb46A4x0Tca0IuW5jlqmdiqY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR21MB1994
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: José Roberto de Souza <jose.souza@intel.com>
-
-From: José Roberto de Souza <jose.souza@intel.com>
-
-[ Upstream commit 5d0c938ec9cc96fc7b8abcff0ca8b2a084e9c90c ]
-
-Up to now we were reading some DRAM information from MCHBAR register
-and from pcode what is already not good but some GEN12(TGL-H and ADL-S)
-platforms have MCHBAR DRAM information in different offsets.
-
-This was notified to HW team that decided that the best alternative is
-always apply the 16gb_dimm watermark adjustment for GEN12+ platforms
-and read the remaning DRAM information needed to other display
-programming from pcode.
-
-So here moving the DRAM pcode function to intel_dram.c, removing
-the duplicated fields from intel_qgv_info, setting and using
-information from dram_info.
-
-v2:
-- bring back num_points to intel_qgv_info as num_qgv_point can be
-overwritten in icl_get_qgv_points()
-- add gen12_get_dram_info() and simplify gen11_get_dram_info()
-
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20210128164312.91160-2-jose.souza@intel.com
----
- drivers/gpu/drm/i915/display/intel_bw.c | 80 +++---------------------
- drivers/gpu/drm/i915/i915_drv.c         |  5 +-
- drivers/gpu/drm/i915/i915_drv.h         |  1 +
- drivers/gpu/drm/i915/intel_dram.c       | 82 ++++++++++++++++++++++++-
- 4 files changed, 93 insertions(+), 75 deletions(-)
-
-diff --git a/drivers/gpu/drm/i915/display/intel_bw.c b/drivers/gpu/drm/i915/display/intel_bw.c
-index bd060404d249..4b5a30ac84bc 100644
---- a/drivers/gpu/drm/i915/display/intel_bw.c
-+++ b/drivers/gpu/drm/i915/display/intel_bw.c
-@@ -20,76 +20,9 @@ struct intel_qgv_point {
- struct intel_qgv_info {
- 	struct intel_qgv_point points[I915_NUM_QGV_POINTS];
- 	u8 num_points;
--	u8 num_channels;
- 	u8 t_bl;
--	enum intel_dram_type dram_type;
- };
- 
--static int icl_pcode_read_mem_global_info(struct drm_i915_private *dev_priv,
--					  struct intel_qgv_info *qi)
--{
--	u32 val = 0;
--	int ret;
--
--	ret = sandybridge_pcode_read(dev_priv,
--				     ICL_PCODE_MEM_SUBSYSYSTEM_INFO |
--				     ICL_PCODE_MEM_SS_READ_GLOBAL_INFO,
--				     &val, NULL);
--	if (ret)
--		return ret;
--
--	if (IS_GEN(dev_priv, 12)) {
--		switch (val & 0xf) {
--		case 0:
--			qi->dram_type = INTEL_DRAM_DDR4;
--			break;
--		case 3:
--			qi->dram_type = INTEL_DRAM_LPDDR4;
--			break;
--		case 4:
--			qi->dram_type = INTEL_DRAM_DDR3;
--			break;
--		case 5:
--			qi->dram_type = INTEL_DRAM_LPDDR3;
--			break;
--		default:
--			MISSING_CASE(val & 0xf);
--			break;
--		}
--	} else if (IS_GEN(dev_priv, 11)) {
--		switch (val & 0xf) {
--		case 0:
--			qi->dram_type = INTEL_DRAM_DDR4;
--			break;
--		case 1:
--			qi->dram_type = INTEL_DRAM_DDR3;
--			break;
--		case 2:
--			qi->dram_type = INTEL_DRAM_LPDDR3;
--			break;
--		case 3:
--			qi->dram_type = INTEL_DRAM_LPDDR4;
--			break;
--		default:
--			MISSING_CASE(val & 0xf);
--			break;
--		}
--	} else {
--		MISSING_CASE(INTEL_GEN(dev_priv));
--		qi->dram_type = INTEL_DRAM_LPDDR3; /* Conservative default */
--	}
--
--	qi->num_channels = (val & 0xf0) >> 4;
--	qi->num_points = (val & 0xf00) >> 8;
--
--	if (IS_GEN(dev_priv, 12))
--		qi->t_bl = qi->dram_type == INTEL_DRAM_DDR4 ? 4 : 16;
--	else if (IS_GEN(dev_priv, 11))
--		qi->t_bl = qi->dram_type == INTEL_DRAM_DDR4 ? 4 : 8;
--
--	return 0;
--}
--
- static int icl_pcode_read_qgv_point_info(struct drm_i915_private *dev_priv,
- 					 struct intel_qgv_point *sp,
- 					 int point)
-@@ -139,11 +72,15 @@ int icl_pcode_restrict_qgv_points(struct drm_i915_private *dev_priv,
- static int icl_get_qgv_points(struct drm_i915_private *dev_priv,
- 			      struct intel_qgv_info *qi)
- {
-+	const struct dram_info *dram_info = &dev_priv->dram_info;
- 	int i, ret;
- 
--	ret = icl_pcode_read_mem_global_info(dev_priv, qi);
--	if (ret)
--		return ret;
-+	qi->num_points = dram_info->num_qgv_points;
-+
-+	if (IS_GEN(dev_priv, 12))
-+		qi->t_bl = dev_priv->dram_info.type == INTEL_DRAM_DDR4 ? 4 : 16;
-+	else if (IS_GEN(dev_priv, 11))
-+		qi->t_bl = dev_priv->dram_info.type == INTEL_DRAM_DDR4 ? 4 : 8;
- 
- 	if (drm_WARN_ON(&dev_priv->drm,
- 			qi->num_points > ARRAY_SIZE(qi->points)))
-@@ -209,7 +146,7 @@ static int icl_get_bw_info(struct drm_i915_private *dev_priv, const struct intel
- {
- 	struct intel_qgv_info qi = {};
- 	bool is_y_tile = true; /* assume y tile may be used */
--	int num_channels;
-+	int num_channels = dev_priv->dram_info.num_channels;
- 	int deinterleave;
- 	int ipqdepth, ipqdepthpch;
- 	int dclk_max;
-@@ -222,7 +159,6 @@ static int icl_get_bw_info(struct drm_i915_private *dev_priv, const struct intel
- 			    "Failed to get memory subsystem information, ignoring bandwidth limits");
- 		return ret;
- 	}
--	num_channels = qi.num_channels;
- 
- 	deinterleave = DIV_ROUND_UP(num_channels, is_y_tile ? 4 : 2);
- 	dclk_max = icl_sagv_max_dclk(&qi);
-diff --git a/drivers/gpu/drm/i915/i915_drv.c b/drivers/gpu/drm/i915/i915_drv.c
-index f72e3bb4ee9a..c72a26af181c 100644
---- a/drivers/gpu/drm/i915/i915_drv.c
-+++ b/drivers/gpu/drm/i915/i915_drv.c
-@@ -609,14 +609,15 @@ static int i915_driver_hw_probe(struct drm_i915_private *dev_priv)
- 		goto err_msi;
- 
- 	intel_opregion_setup(dev_priv);
-+
-+	intel_pcode_init(dev_priv);
-+
- 	/*
- 	 * Fill the dram structure to get the system raw bandwidth and
- 	 * dram info. This will be used for memory latency calculation.
- 	 */
- 	intel_dram_detect(dev_priv);
- 
--	intel_pcode_init(dev_priv);
--
- 	intel_bw_init_hw(dev_priv);
- 
- 	return 0;
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index 6909901b3551..a8b65bab82c8 100644
---- a/drivers/gpu/drm/i915/i915_drv.h
-+++ b/drivers/gpu/drm/i915/i915_drv.h
-@@ -1148,6 +1148,7 @@ struct drm_i915_private {
- 			INTEL_DRAM_LPDDR3,
- 			INTEL_DRAM_LPDDR4
- 		} type;
-+		u8 num_qgv_points;
- 	} dram_info;
- 
- 	struct intel_bw_info {
-diff --git a/drivers/gpu/drm/i915/intel_dram.c b/drivers/gpu/drm/i915/intel_dram.c
-index 8aa12cad93ce..26e109c64984 100644
---- a/drivers/gpu/drm/i915/intel_dram.c
-+++ b/drivers/gpu/drm/i915/intel_dram.c
-@@ -5,6 +5,7 @@
- 
- #include "i915_drv.h"
- #include "intel_dram.h"
-+#include "intel_sideband.h"
- 
- struct dram_dimm_info {
- 	u8 size, width, ranks;
-@@ -433,6 +434,81 @@ static int bxt_get_dram_info(struct drm_i915_private *i915)
- 	return 0;
- }
- 
-+static int icl_pcode_read_mem_global_info(struct drm_i915_private *dev_priv)
-+{
-+	struct dram_info *dram_info = &dev_priv->dram_info;
-+	u32 val = 0;
-+	int ret;
-+
-+	ret = sandybridge_pcode_read(dev_priv,
-+				     ICL_PCODE_MEM_SUBSYSYSTEM_INFO |
-+				     ICL_PCODE_MEM_SS_READ_GLOBAL_INFO,
-+				     &val, NULL);
-+	if (ret)
-+		return ret;
-+
-+	if (IS_GEN(dev_priv, 12)) {
-+		switch (val & 0xf) {
-+		case 0:
-+			dram_info->type = INTEL_DRAM_DDR4;
-+			break;
-+		case 3:
-+			dram_info->type = INTEL_DRAM_LPDDR4;
-+			break;
-+		case 4:
-+			dram_info->type = INTEL_DRAM_DDR3;
-+			break;
-+		case 5:
-+			dram_info->type = INTEL_DRAM_LPDDR3;
-+			break;
-+		default:
-+			MISSING_CASE(val & 0xf);
-+			return -1;
-+		}
-+	} else {
-+		switch (val & 0xf) {
-+		case 0:
-+			dram_info->type = INTEL_DRAM_DDR4;
-+			break;
-+		case 1:
-+			dram_info->type = INTEL_DRAM_DDR3;
-+			break;
-+		case 2:
-+			dram_info->type = INTEL_DRAM_LPDDR3;
-+			break;
-+		case 3:
-+			dram_info->type = INTEL_DRAM_LPDDR4;
-+			break;
-+		default:
-+			MISSING_CASE(val & 0xf);
-+			return -1;
-+		}
-+	}
-+
-+	dram_info->num_channels = (val & 0xf0) >> 4;
-+	dram_info->num_qgv_points = (val & 0xf00) >> 8;
-+
-+	return 0;
-+}
-+
-+static int gen11_get_dram_info(struct drm_i915_private *i915)
-+{
-+	int ret = skl_get_dram_info(i915);
-+
-+	if (ret)
-+		return ret;
-+
-+	return icl_pcode_read_mem_global_info(i915);
-+}
-+
-+static int gen12_get_dram_info(struct drm_i915_private *i915)
-+{
-+	/* Always needed for GEN12+ */
-+	i915->dram_info.is_16gb_dimm = true;
-+
-+	return icl_pcode_read_mem_global_info(i915);
-+}
-+
- void intel_dram_detect(struct drm_i915_private *i915)
- {
- 	struct dram_info *dram_info = &i915->dram_info;
-@@ -448,7 +524,11 @@ void intel_dram_detect(struct drm_i915_private *i915)
- 	if (INTEL_GEN(i915) < 9 || !HAS_DISPLAY(i915))
- 		return;
- 
--	if (IS_GEN9_LP(i915))
-+	if (INTEL_GEN(i915) >= 12)
-+		ret = gen12_get_dram_info(i915);
-+	else if (INTEL_GEN(i915) >= 11)
-+		ret = gen11_get_dram_info(i915);
-+	else if (IS_GEN9_LP(i915))
- 		ret = bxt_get_dram_info(i915);
- 	else
- 		ret = skl_get_dram_info(i915);
--- 
-2.39.3
-
+RnJvbTogVG9tIExlbmRhY2t5IDx0aG9tYXMubGVuZGFja3lAYW1kLmNvbT4gU2VudDogVGh1cnNk
+YXksIEp1bmUgMSwgMjAyMyAxMToxOSBBTQ0KPiANCj4gT24gNS8zMS8yMyAxNTowMCwgTWljaGFl
+bCBLZWxsZXkgKExJTlVYKSB3cm90ZToNCj4gPiBGcm9tOiBTYXRoeWFuYXJheWFuYW4gS3VwcHVz
+d2FteQ0KPiA8c2F0aHlhbmFyYXlhbmFuLmt1cHB1c3dhbXlAbGludXguaW50ZWwuY29tPg0KPiA+
+IFNlbnQ6IFR1ZXNkYXksIE1heSAzMCwgMjAyMyA2OjIyIEFNDQo+ID4+DQo+ID4+IEhpLA0KPiA+
+Pg0KPiA+PiBPbiA1LzMwLzIzIDU6NTcgQU0sIFRvbSBMZW5kYWNreSB3cm90ZToNCj4gPj4+IE9u
+IDUvMjkvMjMgMTk6NTcsIEtpcmlsbCBBLiBTaHV0ZW1vdiB3cm90ZToNCj4gPj4+PiBPbiBGcmks
+IE1heSAyNiwgMjAyMyBhdCAwMzoxMDo1NlBNIC0wNzAwLCBTYXRoeWFuYXJheWFuYW4gS3VwcHVz
+d2FteQ0KPiB3cm90ZToNCj4gPj4+Pj4NCj4gPj4+Pj4NCj4gPj4+Pj4gT24gNS8yNi8yMyA1OjAy
+IEFNLCBLaXJpbGwgQS4gU2h1dGVtb3Ygd3JvdGU6DQo+ID4+Pj4+PiBUb3VjaGluZyBwcml2YXRl
+bHkgbWFwcGVkIEdQQSB0aGF0IGlzIG5vdCBwcm9wZXJseSBjb252ZXJ0ZWQgdG8gcHJpdmF0ZQ0K
+PiA+Pj4+Pj4gd2l0aCBNYXBHUEEgYW5kIGFjY2VwdGVkIGxlYWRzIHRvIHVucmVjb3ZlcmFibGUg
+ZXhpdCB0byBWTU0uDQo+ID4+Pj4+Pg0KPiA+Pj4+Pj4gbG9hZF91bmFsaWduZWRfemVyb3BhZCgp
+IGNhbiB0b3VjaCBtZW1vcnkgdGhhdCBpcyBub3Qgb3duZWQgYnkgdGhlDQo+ID4+Pj4+PiBjYWxs
+ZXIsIGJ1dCBqdXN0IGhhcHBlbmVkIHRvIG5leHQgYWZ0ZXIgdGhlIG93bmVkIG1lbW9yeS4NCj4g
+Pj4+Pj4NCj4gPj4+Pj4gL3MvdG8vdG8gYmUgPw0KPiA+Pj4+DQo+ID4+Pj4gWWVwLCBteSBiYWQu
+DQo+ID4+Pj4NCj4gPj4+Pj4+IFRoaXMgbG9hZF91bmFsaWduZWRfemVyb3BhZCgpIGJlaGF2aW91
+ciBtYWtlcyBpdCBpbXBvcnRhbnQgd2hlbiBrZXJuZWwNCj4gPj4+Pj4+IGFza3MgVk1NIHRvIGNv
+bnZlcnQgYSBHUEEgZnJvbSBzaGFyZWQgdG8gcHJpdmF0ZSBvciBiYWNrLiBLZXJuZWwgbXVzdA0K
+PiA+Pj4+Pj4gbmV2ZXIgaGF2ZSBhIHBhZ2UgbWFwcGVkIGludG8gZGlyZWN0IG1hcHBpbmcgKGFu
+ZCBhbGlhc2VzKSBhcyBwcml2YXRlDQo+ID4+Pj4+PiB3aGVuIHRoZSBHUEEgaXMgYWxyZWFkeSBj
+b252ZXJ0ZWQgdG8gc2hhcmVkIG9yIHdoZW4gR1BBIGlzIG5vdCB5ZXQNCj4gPj4+Pj4+IGNvbnZl
+cnRlZCB0byBwcml2YXRlLg0KPiA+Pj4+Pg0KPiA+Pj4+PiBJIGFtIHdvbmRlcmluZyB3aGV0aGVy
+IHRoaXMgaXNzdWUgZXhpc3QgaW4gdGhlIEFNRCBjb2RlPw0KPiA+Pj4+Pg0KPiA+Pj4+PiBJTU8s
+IHlvdSBjYW4gYWRkIHNvbWUgaW5mbyBvbiB0aGUgd2luZG93IGluIHNldF9tZW1vcnlfZW5jcnlw
+dGVkKCkNCj4gPj4+Pj4gd2hlcmUgdGhpcyByYWNlIGV4aXN0cy4NCj4gPj4+Pg0KPiA+Pj4+IEkg
+ZG9uJ3QgdGhpbmsgQU1EIGFmZmVjdGVkIGJ5IGxvYWRfdW5hbGlnbmVkX3plcm9wYWQoKSB0aGUg
+c2FtZSB3YXkgYXMNCj4gPj4+PiBJbnRlbCBkb2VzLiBCdXQgSSdtIG5vdCBzdXJlLg0KPiA+Pj4+
+DQo+ID4+Pj4gVG9tLCBkbyB5b3UgaGF2ZSBhbnkgY29tbWVudHM/DQo+ID4+Pg0KPiA+Pj4gUmln
+aHQsIHNob3VsZG4ndCBiZSBhbiBpc3N1ZSBmb3IgU05QLg0KPiA+Pg0KPiA+PiBUaGFua3MgZm9y
+IGNvbmZpcm1pbmcuDQo+ID4+DQo+ID4NCj4gPiBUb20gLS0gRm9yIG15IGVkdWNhdGlvbiwgY291
+bGQgeW91IGVsYWJvcmF0ZSBvbiB3aHkgdGhpcyBwcm9ibGVtIGNhbid0DQo+ID4gb2NjdXIgaW4g
+YW4gU0VWLVNOUCBndWVzdD8gIFRoZXJlJ3Mgc3RpbGwgYSB3aW5kb3cgd2hlcmUgdGhlIGRpcmVj
+dCBtYXANCj4gPiBQVEUgYW5kIHRoZSBSTVAgYXMgbWFpbnRhaW5lZCBieSB0aGUgaHlwZXJ2aXNv
+ciBhcmUgb3V0LW9mLXN5bmMuICBJZg0KPiA+IGxvYWRfdW5hbGlnbmVkX3plcm9wYWQoKSBkb2Vz
+IGEgcmVhZCB1c2luZyB0aGUgZGlyZWN0IG1hcCBQVEUgZHVyaW5nDQo+ID4gdGhpcyBvdXQtb2Yt
+c3luYyB3aW5kb3csIGlzbid0IHRoYXQgZ29pbmcgdG8gdHJhcCB0byB0aGUgaHlwZXJ2aXNvcj8g
+IEhvdw0KPiA+IGlzIHRoZSBzY2VuYXJpbyBpcyBoYW5kbGVkIGZyb20gdGhlcmUgdG8gcHJvdmlk
+ZSB0aGUgemVyb3MgdG8NCj4gPiBsb2FkX3VuYWxpZ25lZF96ZXJvcGFkKCk/ICBJIG5lZWQgdG8g
+bWFrZSBzdXJlIEh5cGVyLVYgaXMgZG9pbmcgd2hhdGV2ZXINCj4gPiBpcyBuZWVkZWQuIDotKQ0K
+PiANCj4gQWgsIEkgdGhpbmsgSSBtaXN1bmRlcnN0b29kIHRoaXMgd2hlbiBpdCB3YXMgYmVpbmcg
+dGFsa2VkIGFib3V0LiBUaGUgaXNzdWUNCj4gU05QIHdvdWxkIGhhdmUgd291bGQgYmUgYmV0d2Vl
+biBzZXR0aW5nIHRoZSBjLWJpdCBidXQgYmVmb3JlIHRoZSBQVkFMSURBVEUNCj4gaXMgaXNzdWVk
+LiBQcmlvciB0byB0aGUgUk1QIGJlaW5nIHVwZGF0ZWQsIHJlZmVyZW5jaW5nIHRoZSBwYWdlIHdp
+bGwNCj4gZ2VuZXJhdGUgYW4gI05QRiBhbmQgYXV0b21hdGljYWxseSBjaGFuZ2UgdGhlIFJNUCBv
+dmVyIHRvIHByaXZhdGUgKGluDQo+IEtWTSkuIEhvd2V2ZXIsIGFmdGVyIHRoZSBndWVzdCBpcyBy
+ZXN1bWVkLCB0aGUgcGFnZSB3aWxsIG5vdCBoYXZlIGJlZW4NCj4gdmFsaWRhdGVkIHJlc3VsdGlu
+ZyBpbiBhICNWQyB3aXRoIGVycm9yIGNvZGUgMHg0MDQgYmVpbmcgZ2VuZXJhdGVkLA0KPiBjYXVz
+aW5nIHRoZSBndWVzdCB0byB0ZXJtaW5hdGUgaXRzZWxmLg0KPiANCj4gSSBzdXBwb3NlLCB3aGVu
+IGEgMHg0MDQgZXJyb3IgY29kZSBpcyBlbmNvdW50ZXJlZCBieSB0aGUgI1ZDIGhhbmRsZXIsIGl0
+DQo+IGNvdWxkIGNhbGwgc2VhcmNoX2V4Y2VwdGlvbl90YWJsZXMoKSBhbmQgY2FsbCBleF9oYW5k
+bGVyX3plcm9wYWQoKSBmb3IgdGhlDQo+IEVYX1RZUEVfWkVST1BBRCB0eXBlIChleF9oYW5kbGVy
+X3plcm9wYWQgaXMgY3VycmVudGx5IHN0YXRpYywgdGhvdWdoKS4NCj4gDQoNClRvbSAtLSBEb2Vz
+IHRoZSBhYm92ZSBzZXF1ZW5jZSAqZGVwZW5kKiBvbiB0aGUgaHlwZXJ2aXNvciBkb2luZyBhbnl0
+aGluZw0KdG8gbWFrZSBpdCB3b3JrPyAgSSdtIG5vdCBjbGVhciBvbiB3aHkgS1ZNIHdvdWxkIGF1
+dG9tYXRpY2FsbHkgY2hhbmdlIHRoZQ0KcGFnZSBvdmVyIHRvIHByaXZhdGUuICBJZiB0aGVyZSdz
+IGEgZGVwZW5kZW5jeSBvbiB0aGUgaHlwZXJ2aXNvciBkb2luZw0Kc29tZXRoaW5nLCB0aGVuIGl0
+IHNlZW1zIGxpa2Ugd2UnbGwgbmVlZCB0byBzdGFuZGFyZGl6ZSB0aGF0ICJzb21ldGhpbmciDQph
+Y3Jvc3MgaHlwZXJ2aXNvcnMsIGxlc3Qgd2UgZW5kIHVwIHdpdGggcGVyLWh5cGVydmlzb3IgY29k
+ZSBpbiBMaW51eCB0byBoYW5kbGUNCnRoaXMgc2NlbmFyaW8uICBBbmQgcnVubmluZyBTRVYtU05Q
+IHdpdGggbXVsdGlwbGUgVk1QTHMgcHJvYmFibHkgbWFrZXMgaXQNCmV2ZW4gbW9yZSBjb21wbGlj
+YXRlZC4NCg0KS2lyaWxsIC0tIFNhbWUgcXVlc3Rpb24gYWJvdXQgVERYLiAgRG9lcyBtYWtpbmcg
+bG9hZF91bmFsaWduZWRfemVyb3BhZCgpDQp3b3JrIGluIGEgVERYIFZNIGRlcGVuZCBvbiB0aGUg
+aHlwZXJ2aXNvciBkb2luZyBhbnl0aGluZz8gIE9yIGlzIHRoZQ0KYmVoYXZpb3Igc2VlbiBieSB0
+aGUgZ3Vlc3QgZGVwZW5kZW50IG9ubHkgb24gYXJjaGl0ZWN0ZWQgYmVoYXZpb3Igb2YNCnRoZSBU
+RFggcHJvY2Vzc29yPw0KDQpMb29raW5nIGF0IHRoaXMgcHJvYmxlbSBmcm9tIGEgc2xpZ2h0bHkg
+aGlnaGVyIGxldmVsLCBhbmQgdGhpbmtpbmcgb3V0IGxvdWQNCmEgYml0LCBsb2FkX3VuYWxpZ25l
+ZF96ZXJvcGFkKCkgZnVuY3Rpb25hbGl0eSBpcyBwcm92aWRlZCBvbmx5IGZvciBjZXJ0YWluDQph
+cmNoaXRlY3R1cmVzOiAgeDg2LzY0LCBhcm0sIGFybTY0LCBhbmQgUG93ZXJQQyA2NCAobGl0dGxl
+IGVuZGlhbikuICBUaGVyZSBhcmUNCmZhbGxiYWNrcyBmb3IgYXJjaGl0ZWN0dXJlcyB0aGF0IGRv
+bid0IHN1cHBvcnQgaXQuICBXaXRoIHR3byBtaW5vciB0d2Vha3MgdG8NCktjb25maWcgZmlsZXMs
+IEkndmUgYnVpbHQgeDg2IHdpdGggbG9hZF91bmFsaWduZWRfemVyb3BhZCgpIGRpc2FibGVkLiBN
+YXliZQ0Kd2l0aCB0b2RheSdzIHByb2Nlc3NvcnMgdGhlIHBlcmZvcm1hbmNlIGJlbmVmaXRzIGFy
+ZSBwYXN0IHRoZWlyIHByaW1lLA0KYW5kIHJ1bm5pbmcgd2l0aCBpdCBkaXNhYmxlZCBpbiBDb0Nv
+IFZNcyBpcyB0aGUgYmV0dGVyIHNvbHV0aW9uLiAgRG9lcw0KYW55b25lIGhhdmUgYSBzZW5zZSBv
+ZiB3aGV0aGVyIHRoZSBwZXJmIGltcGFjdCB3b3VsZCBiZSBtZWFzdXJlYWJsZT8NCg0KSWYgZG9p
+bmcgdGhlIGxvYWRfdW5hbGlnbmVkX3plcm9wYWQoKSBlbmFibGUvZGlzYWJsZSBhdCBidWlsZCB0
+aW1lIGlzIHRvbw0KbGltaXRpbmcsIG1heWJlIGl0IGNvdWxkIGJlIHJ1bnRpbWUgYmFzZWQgb24g
+d2hldGhlciBwYWdlIHByaXZhdGUvc2hhcmVkDQpzdGF0ZSBpcyBiZWluZyBlbmZvcmNlZC4gIEkg
+aGF2ZW4ndCBsb29rZWQgYXQgdGhlIGRldGFpbHMuDQoNClRob3VnaHRzPw0KDQpNaWNoYWVsDQo=
