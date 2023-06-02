@@ -2,65 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 750DD72084F
-	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 19:24:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4549D720858
+	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 19:27:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236852AbjFBRYA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 2 Jun 2023 13:24:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46422 "EHLO
+        id S235938AbjFBR1M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 2 Jun 2023 13:27:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236480AbjFBRX7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 13:23:59 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A46EF1A8
-        for <stable@vger.kernel.org>; Fri,  2 Jun 2023 10:23:57 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1b021cddb74so12359805ad.0
-        for <stable@vger.kernel.org>; Fri, 02 Jun 2023 10:23:57 -0700 (PDT)
+        with ESMTP id S235563AbjFBR1L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 13:27:11 -0400
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B50671B7
+        for <stable@vger.kernel.org>; Fri,  2 Jun 2023 10:27:09 -0700 (PDT)
+Received: by mail-pg1-x529.google.com with SMTP id 41be03b00d2f7-53482b44007so1366545a12.2
+        for <stable@vger.kernel.org>; Fri, 02 Jun 2023 10:27:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1685726637; x=1688318637;
+        d=google.com; s=20221208; t=1685726829; x=1688318829;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qwbDkzUy6Qk5difaDNXua1bNRo0UZZqSnu/ErFEprlc=;
-        b=d8jByJ1PZJmeuk8EagYsF/DqAjxrBWU4gad8vpYvXne/vNgX/IDf4GWwHXV6NiU/hu
-         kkl8cuQ5vsvBNhHEsnJFV267CUwy0EBs/SFk1CKiKB53AIdaP+WFl94gixrDvxoyJWxu
-         nwndksvlaDuULMjSRkPvUccpmrKiSOGoP2gw47O+pTKx515bSSgUjtlUMorLrQTD81nk
-         w5gz6ow21AE4zZ+/oyFgcJyf6zafnE+3lmdTYTjg5L85jjRhHKQ1KdM3lbktGK2rycW/
-         o38TUh2fJL13aUVnb/BWDEP7AhkiqGchaHjNnq4Psf1o5AQeadf43KXgJWWy2b4VuKoF
-         X9cA==
+        bh=/fpfD6dSFPjERb3WSgrjh+MlljhJF3jc9HlZXFqTSTA=;
+        b=IUYCIK0xCiZAsHdUed3fVFD9d2pU/AGUMVw+P+9vFpQNMuHGrNqRMJeh64m1Sp7pIO
+         MD2zmNJp3z6ZahsUMLi6/QAwDGhzSf3E/7YaP119dRU+v++QAArwa4+6/14QKQA4k5JP
+         +hG76DefeDovrp+9BjVsO4kLdK62pGu10DQw8S6a7pCaaISGq4JM3kz2AUUyfWwrJT/l
+         wWvpWhO8U1E6S39/DUfJq6S6h/OGB/oza3IYDgYkRPIz6SDpdwEV0fBxQ2cXh3cNw7Vh
+         QCckRy2fjhzB7O0+DJm3DNAR4ZC/WjFfcDO7k1T+PiBB1tbSK+IVMJ/+vQZHwRdoo+Uu
+         wFFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685726637; x=1688318637;
+        d=1e100.net; s=20221208; t=1685726829; x=1688318829;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qwbDkzUy6Qk5difaDNXua1bNRo0UZZqSnu/ErFEprlc=;
-        b=iJokEB1ph1+TyB8Y7jMe1KHEoXhE7+8Ri8fwt6KGgs2jou6mH3bpPtwMP9kyKZ6oBB
-         NmgIpPSSFEa6T+nv3JmoEZY94bNIXC6pK+2KCjDizbyvNf6aycXN/L+uI/NhzRLu+Qok
-         4Wz7WxKQi+Ac9YwFkiL+DYk21G1QTlmTnkmD9yUF1Sw7moy4g9vm96M+VOrM8SX0CP94
-         WX2NWAajwB16y3CQeIT6OfBCImtgrtFLJIhbx3JQzvVqxKer286u1ezNh0/9+O+d5LvO
-         m5HM8ZhiLHOgFK51ktmN0mouNexWK3W/nw6LLOBYntXHCccoVomoyPtwVSQmJ0A20iu2
-         zBQw==
-X-Gm-Message-State: AC+VfDzJgvfHzNKvPsrSjDvkpzHdbBs5rM7F7laoc41af+C6cPqCx+bN
-        XJAVbJz/rb8af94QK8FKLXRRW4vM/sB7M+THzI/5YQ==
-X-Google-Smtp-Source: ACHHUZ762nQgYgkGSGWGzTCG2EpeYIDrgmi0VEHYv1zz0QMPuLPlSiCuR3LC8MK9kEu0VQD18Frfb4iLdUYdkTlXw5U=
-X-Received: by 2002:a17:902:f7cc:b0:1b1:a4e2:a2ce with SMTP id
- h12-20020a170902f7cc00b001b1a4e2a2cemr571077plw.20.1685726636958; Fri, 02 Jun
- 2023 10:23:56 -0700 (PDT)
+        bh=/fpfD6dSFPjERb3WSgrjh+MlljhJF3jc9HlZXFqTSTA=;
+        b=jmEvI1meoeGXKcyh3RRFhz11bgUyaxZNM1g4dBYUD9cPqCzf0vZ1MORSI/Xbgc9wBz
+         7/pgeGbP6ftF8Bd/+bWD+e9YKQ+U78huecNyK034YoJUtA3MraTx8YA8jKPo98wzRo0U
+         LkgHn7DdrQsOqTgd75cIqlDaGhkydAEX4/vGj9Xzon82G4zGa77n2Ah5HyHkEC+yLUte
+         3Zb3MsA/63qUWeedoOnIlDgflpnd0zbbNeRXrjvxqQLhje0AR2aGO9k7wXIkPfATAR07
+         yic1L/9bwPanJuiVGuJ9N3UeW4bKCDsmf18Bl4vUrCe4RBmxEtDL1herAfuhLX1TzGHP
+         i2wA==
+X-Gm-Message-State: AC+VfDxECsc0y9hxhP1UHc/4uBEX5gkfwlRcQuWIOA1V5QnB5QHxrd5Y
+        ADByT+FmQuaJJ3kP2ZjCJ5Zmc83gv2hJ8BfoJhKsew==
+X-Google-Smtp-Source: ACHHUZ6pbtpmtxeGMwVLq/moV1D3Cnb1zlxmbi5HjShJFr7DrN+ZJEzotj3K+E/kxA08p6Tci8y8rDbIc4fOwa/gegI=
+X-Received: by 2002:a17:90a:48:b0:254:ce9e:53 with SMTP id 8-20020a17090a004800b00254ce9e0053mr492441pjb.23.1685726828997;
+ Fri, 02 Jun 2023 10:27:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230531040203.19295-1-badhri@google.com> <65dd300b-b967-41ab-b174-a7dc13ec2e19@rowland.harvard.edu>
-In-Reply-To: <65dd300b-b967-41ab-b174-a7dc13ec2e19@rowland.harvard.edu>
+References: <20230531040203.19295-1-badhri@google.com> <20230531040203.19295-3-badhri@google.com>
+ <9a537d74-28be-48fb-85e0-628f3385de7e@rowland.harvard.edu>
+In-Reply-To: <9a537d74-28be-48fb-85e0-628f3385de7e@rowland.harvard.edu>
 From:   Badhri Jagan Sridharan <badhri@google.com>
-Date:   Fri, 2 Jun 2023 10:23:20 -0700
-Message-ID: <CAPTae5LV0jhLq10zj+dmg_d2oJmwx+Xe7gJGk-w27woEgz+c4A@mail.gmail.com>
-Subject: Re: [PATCH v5 1/3] usb: gadget: udc: core: Offload
- usb_udc_vbus_handler processing
+Date:   Fri, 2 Jun 2023 10:26:32 -0700
+Message-ID: <CAPTae5K08+voWZ0gwrP7aNpuWr4x7OoaT-FboGr7fuFUbADsyA@mail.gmail.com>
+Subject: Re: [PATCH v5 3/3] usb: gadget: udc: core: Prevent UDC from starting
+ when unbound
 To:     Alan Stern <stern@rowland.harvard.edu>
 Cc:     gregkh@linuxfoundation.org, colin.i.king@gmail.com,
         xuetao09@huawei.com, quic_eserrao@quicinc.com,
-        water.zhangjiantao@huawei.com, francesco@dolcini.it,
-        alistair@alistair23.me, stephan@gerhold.net, bagasdotme@gmail.com,
-        luca@z3ntu.xyz, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+        water.zhangjiantao@huawei.com, peter.chen@freescale.com,
+        balbi@ti.com, francesco@dolcini.it, alistair@alistair23.me,
+        stephan@gerhold.net, bagasdotme@gmail.com, luca@z3ntu.xyz,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, stable <stable@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
@@ -74,153 +75,114 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, May 31, 2023 at 10:29=E2=80=AFAM Alan Stern <stern@rowland.harvard.=
+On Wed, May 31, 2023 at 10:40=E2=80=AFAM Alan Stern <stern@rowland.harvard.=
 edu> wrote:
 >
-> On Wed, May 31, 2023 at 04:02:01AM +0000, Badhri Jagan Sridharan wrote:
-> > usb_udc_vbus_handler() can be invoked from interrupt context by irq
-> > handlers of the gadget drivers, however, usb_udc_connect_control() has
-> > to run in non-atomic context due to the following:
-> > a. Some of the gadget driver implementations expect the ->pullup
-> >    callback to be invoked in non-atomic context.
-> > b. usb_gadget_disconnect() acquires udc_lock which is a mutex.
-> >
-> > Hence offload invocation of usb_udc_connect_control()
-> > to workqueue.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: 1016fc0c096c ("USB: gadget: Fix obscure lockdep violation for ud=
-c_mutex")
+> On Wed, May 31, 2023 at 04:02:03AM +0000, Badhri Jagan Sridharan wrote:
+> > UDC should neither be started nor pulled up unless the gadget driver is
+> > bound. The new flag "allow_start" is now set by gadget_bind_driver()
+> > and cleared by gadget_unbind_driver(). usb_gadget_udc_start_locked()
+> > now checks whether allow_start is set before starting the UDC by
+> > invoking the ->udc_start() callback.
+>
+> "allow_start" isn't quite the right name either, because there is a
+> short time interval during which the UDC is started but we don't want
+> to allow it to connect to the host (this occurs in
+> gadget_unbind_driver() between the disconnect call and the
+> usb_gadge_udc_stop call).  A more accurate name would be "allow_connect"
+> or "allow_pullup".
+
+Sure, Have renamed the flag to "allow_connect".
+
+>
+> > Fixes: fc274c1e9973 ("USB: gadget: Add a new bus for gadgets")
+> > Cc: stable <stable@kernel.org>
 > > Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
 > > ---
-> > Changes since v1:
-> > - Address Alan Stern's comment on usb_udc_vbus_handler invocation from
-> >   atomic context:
-> > * vbus_events_lock is now a spinlock and allocations in
-> > * usb_udc_vbus_handler are atomic now.
-> >
-> > Changes since v2:
-> > - Addressing Alan Stern's comments:
-> > ** connect_lock is now held by callers of
-> > * usb_gadget_pullup_update_locked() and gadget_(un)bind_driver() does
-> > * notdirectly hold the lock.
-> >
-> > ** Both usb_gadget_(dis)connect() and usb_udc_vbus_handler() would
-> > * set/clear udc->vbus and invoke usb_gadget_pullup_update_locked.
-> >
-> > ** Add "unbinding" to prevent new connections after the gadget is being
-> > * unbound.
-> >
-> > Changes since v3:
-> > ** Made a minor cleanup which I missed to do in v3 in
-> > * usb_udc_vbus_handler().
-> >
-> > Changes since v4:
-> > - Addressing Alan Stern's comments:
-> > ** usb_udc_vbus_handler() now offloads invocation of usb_udc_connect_co=
-ntrol()
-> > * from workqueue.
-> >
-> > ** Dropped vbus_events list as this was redundant. Updating to the
-> > * latest value is suffice
+> > v5 is the first version in this series.
 > > ---
-> >  drivers/usb/gadget/udc/core.c | 19 ++++++++++++++++++-
-> >  1 file changed, 18 insertions(+), 1 deletion(-)
+> >  drivers/usb/gadget/udc/core.c | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
 > >
 > > diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/cor=
 e.c
-> > index 52e6d2e84e35..44a9f32679b5 100644
+> > index 6ffe5fda8bb7..ac9d6186815d 100644
 > > --- a/drivers/usb/gadget/udc/core.c
 > > +++ b/drivers/usb/gadget/udc/core.c
-> > @@ -48,6 +48,7 @@ struct usb_udc {
-> >       struct list_head                list;
-> >       bool                            vbus;
-> >       bool                            started;
-> > +     struct work_struct              vbus_work;
-> >  };
-> >
-> >  static struct class *udc_class;
-> > @@ -1086,6 +1087,13 @@ static void usb_udc_connect_control(struct usb_u=
-dc *udc)
-> >               usb_gadget_disconnect(udc->gadget);
-> >  }
-> >
-> > +static void vbus_event_work(struct work_struct *work)
-> > +{
-> > +     struct usb_udc *udc =3D container_of(work, struct usb_udc, vbus_w=
-ork);
-> > +
-> > +     usb_udc_connect_control(udc);
-> > +}
-> > +
-> >  /**
-> >   * usb_udc_vbus_handler - updates the udc core vbus status, and try to
-> >   * connect or disconnect gadget
-> > @@ -1094,6 +1102,13 @@ static void usb_udc_connect_control(struct usb_u=
-dc *udc)
-> >   *
-> >   * The udc driver calls it when it wants to connect or disconnect gadg=
-et
-> >   * according to vbus status.
-> > + *
-> > + * This function can be invoked from interrupt context by irq handlers=
- of the gadget drivers,
-> > + * however, usb_udc_connect_control() has to run in non-atomic context=
- due to the following:
-> > + * a. Some of the gadget driver implementations expect the ->pullup ca=
-llback to be invoked in
-> > + * non-atomic context.
-> > + * b. usb_gadget_disconnect() acquires udc_lock which is a mutex.
-> > + * Hence offload invocation of usb_udc_connect_control() to workqueue.
+> > @@ -37,6 +37,8 @@ static const struct bus_type gadget_bus_type;
+> >   * @vbus: for udcs who care about vbus status, this value is real vbus=
+ status;
+> >   * for udcs who do not care about vbus status, this value is always tr=
+ue
+> >   * @started: the UDC's started state. True if the UDC had started.
+> > + * @allow_start: Indicates whether UDC is allowed to start. Set/cleare=
+d by gadget_(un)bind_driver()
+> > + * after gadget driver is bound or unbound.
+> >   * @connect_lock: protects udc->vbus, udc->started, gadget->connect, g=
+adget->deactivate related
+> >   * functions. usb_gadget_connect_locked, usb_gadget_disconnect_locked,
+> >   * usb_udc_connect_control_locked, usb_gadget_udc_start_locked, usb_ga=
+dget_udc_stop_locked are
 >
-> Comments should be wrapped after about 76 columns (unless there is some
-> very good reason not to).
+> As before, wrap the comments around column 76.
 
 Sounds good ! Have addressed this in v6. Wrapping comments at 76.
 
 >
-> >   */
-> >  void usb_udc_vbus_handler(struct usb_gadget *gadget, bool status)
-> >  {
-> > @@ -1101,7 +1116,7 @@ void usb_udc_vbus_handler(struct usb_gadget *gadg=
-et, bool status)
-> >
-> >       if (udc) {
-> >               udc->vbus =3D status;
-> > -             usb_udc_connect_control(udc);
-> > +             schedule_work(&udc->vbus_work);
+> > @@ -52,6 +54,7 @@ struct usb_udc {
+> >       struct list_head                list;
+> >       bool                            vbus;
+> >       bool                            started;
+> > +     bool                            allow_start;
+> >       struct work_struct              vbus_work;
+> >       struct mutex                    connect_lock;
+> >  };
+> > @@ -1204,6 +1207,9 @@ static inline int usb_gadget_udc_start_locked(str=
+uct usb_udc *udc)
+> >       if (udc->started) {
+> >               dev_err(&udc->dev, "UDC had already started\n");
+> >               return -EBUSY;
+> > +     } else if (!udc->allow_start) {
+> > +             dev_err(&udc->dev, "UDC not allowed to start. Is gadget d=
+river bound ?\n");
+> > +             return -EIO;
 > >       }
-> >  }
-> >  EXPORT_SYMBOL_GPL(usb_udc_vbus_handler);
-> > @@ -1328,6 +1343,7 @@ int usb_add_gadget(struct usb_gadget *gadget)
-> >       mutex_lock(&udc_lock);
-> >       list_add_tail(&udc->list, &udc_list);
-> >       mutex_unlock(&udc_lock);
-> > +     INIT_WORK(&udc->vbus_work, vbus_event_work);
+>
+> This isn't the right test or the right place.  We want to prevent the
+> UDC from connecting to the host, not prevent it from starting.
+>
 > >
-> >       ret =3D device_add(&udc->dev);
-> >       if (ret)
-> > @@ -1558,6 +1574,7 @@ static void gadget_unbind_driver(struct device *d=
+> >       ret =3D udc->gadget->ops->udc_start(udc->gadget, udc->driver);
+> > @@ -1590,6 +1596,7 @@ static int gadget_bind_driver(struct device *dev)
+> >               goto err_bind;
+> >
+> >       mutex_lock(&udc->connect_lock);
+> > +     udc->allow_start =3D true;
+> >       ret =3D usb_gadget_udc_start_locked(udc);
+> >       if (ret) {
+> >               mutex_unlock(&udc->connect_lock);
+> > @@ -1630,6 +1637,7 @@ static void gadget_unbind_driver(struct device *d=
 ev)
 > >
-> >       kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
-> >
-> > +     cancel_work_sync(&udc->vbus_work);
-> >       usb_gadget_disconnect(gadget);
+> >       cancel_work_sync(&udc->vbus_work);
+> >       mutex_lock(&udc->connect_lock);
+> > +     udc->allow_start =3D false;
+> >       usb_gadget_disconnect_locked(gadget);
 > >       usb_gadget_disable_async_callbacks(udc);
 > >       if (gadget->irq)
 >
-> I'm not in love with this, because there's nothing here to prevent the
-> work item from being queued again right after it is cancelled.  Patch
-> 3/3 in the series will fix this, but in the meantime this window will
-> exist.
+> Here is where the problem about the vbus work item getting requeued can
+> be fixed.  Clear the allow_connect flag before the call to
+> cancel_work_sync().  That way, even if the vbus work item gets queued
+> again after it is cancelled, when it does run it won't do anything.
 >
-> Maybe it would be better to merge the 3/3 patch with this one.  They are
-> very closely related, after all, since the other patch addresses the
-> matter of not allowing the work item to do anything bad at the wrong
-> time.
+> Although, come to think of it, there is still the problem of making sure
+> that the work item doesn't run after the udc has been deallocated.  It
+> looks like you will also need to cancel the work item at the end of
+> usb_del_gadget().  At that point the UDC has already been stopped, so it
+> won't call usb_hcd_vbus_handler() again.
 
-Done ! v6. now squashes 1/3 with 3/3.
+Sure, Have made these changes in V6.
 
 Thanks a lot,
 Badhri
