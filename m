@@ -2,60 +2,65 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BBF07204A0
-	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 16:39:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DDD67204B7
+	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 16:41:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236071AbjFBOjb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 2 Jun 2023 10:39:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40962 "EHLO
+        id S235775AbjFBOlr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 2 Jun 2023 10:41:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236047AbjFBOj3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 10:39:29 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCAEC1BD;
-        Fri,  2 Jun 2023 07:39:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685716767; x=1717252767;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Fg1OmSdDSXyTznxFIFbqh97jb21+zgWkwkHKMj3mhK8=;
-  b=kJvlcj2dED33zPeJ0nLS94LgXNma7f+8wjD4DntWBpjHnJaGeSUGZRF8
-   EBGhHDfc0yKC3ogrIxmfVwh6QAAmIXQlr6RVPVXX1xQIKVSX2VxcP91SJ
-   PfYoTV4zgZ8kBUbnCm930aM8bh6qOGibZCFwTDT/gkPKBG71waxR6Ki9q
-   mP7NDj2P126v6qo0QE4c3WYvPb5dIFzhLI855WtwHeeqm1d3yNYDV2U+X
-   q/vbOWrX2FufiCylmMVyq2OlwwwoC6Xk2Wbl5Czplc/sLByp/hdemfwNT
-   aPfwwusgHylmp9DcT92FTrvIVGEnrb+RAhpP2Yv6bbe4jhcFbWPE5qMsC
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="358311317"
-X-IronPort-AV: E=Sophos;i="6.00,213,1681196400"; 
-   d="scan'208";a="358311317"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2023 07:39:11 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="707877466"
-X-IronPort-AV: E=Sophos;i="6.00,213,1681196400"; 
-   d="scan'208";a="707877466"
-Received: from mattu-haswell.fi.intel.com ([10.237.72.199])
-  by orsmga002.jf.intel.com with ESMTP; 02 Jun 2023 07:39:08 -0700
-From:   Mathias Nyman <mathias.nyman@linux.intel.com>
-To:     <gregkh@linuxfoundation.org>
-Cc:     <linux-usb@vger.kernel.org>,
-        Weitao Wang <WeitaoWang-oc@zhaoxin.com>,
-        Mathias Nyman <mathias.nyman@linux.intel.com>,
+        with ESMTP id S234629AbjFBOlq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 10:41:46 -0400
+Received: from frasgout12.his.huawei.com (unknown [14.137.139.154])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D502BC;
+        Fri,  2 Jun 2023 07:41:44 -0700 (PDT)
+Received: from mail02.huawei.com (unknown [172.18.147.227])
+        by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4QXll85lk2z9xtRv;
+        Fri,  2 Jun 2023 22:29:56 +0800 (CST)
+Received: from roberto-ThinkStation-P620 (unknown [10.204.63.22])
+        by APP2 (Coremail) with SMTP id GxC2BwCHUlmE_3lkXXL8Ag--.3617S2;
+        Fri, 02 Jun 2023 15:41:19 +0100 (CET)
+Message-ID: <4d7e38ff5bbc496cb794b50e1c5c83bcd2317e69.camel@huaweicloud.com>
+Subject: [GIT PULL] Asymmetric keys fix for v6.4-rc5
+From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Stefan Berger <stefanb@linux.ibm.com>, dhowells@redhat.com,
+        herbert@gondor.apana.org.au, davem@davemloft.net,
+        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
+        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
         stable@vger.kernel.org
-Subject: [PATCH 10/11] xhci: Show ZHAOXIN xHCI root hub speed correctly
-Date:   Fri,  2 Jun 2023 17:40:08 +0300
-Message-Id: <20230602144009.1225632-11-mathias.nyman@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230602144009.1225632-1-mathias.nyman@linux.intel.com>
-References: <20230602144009.1225632-1-mathias.nyman@linux.intel.com>
+Date:   Fri, 02 Jun 2023 16:41:04 +0200
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: GxC2BwCHUlmE_3lkXXL8Ag--.3617S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tw4DCr1Dur1DGw4DGF17Jrb_yoW8XFWrp3
+        yfKr13Kr4Utr17tw13Jr47Cw15JrWvyr13Ja17Aw1rAF1DZr15tr4Igr4rWryrJr97Ww13
+        tr48Jr1UWr1DJw7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUk0b4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+        xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
+        AFwI0_Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+        6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+        Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI
+        7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxV
+        Cjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY
+        6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6x
+        AIw20EY4v20xvaj40_WFyUJVCq3wCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv
+        6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUFDGOUUUUU
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAQBF1jj4oNfAABsd
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,PDS_RDNS_DYNAMIC_FP,
+        RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L3,RDNS_DYNAMIC,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,129 +68,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
+Hi Linus
 
-Some ZHAOXIN xHCI controllers follow usb3.1 spec, but only support
-gen1 speed 5Gbps. While in Linux kernel, if xHCI suspport usb3.1,
-root hub speed will show on 10Gbps.
-To fix this issue of ZHAOXIN xHCI platforms, read usb speed ID
-supported by xHCI to determine root hub speed. And add a quirk
-XHCI_ZHAOXIN_HOST for this issue.
+sorry for this unusual procedure of me requesting a patch to be pulled.
+I asked for several months the maintainers (David: asymmetric keys,
+Jarkko: key subsystem) to pick my patch but without any luck.
 
-[fix warning about uninitialized symbol -Mathias]
+I signed the tag, but probably it would not matter, since my key is not
+among your trusted keys.
 
-Suggested-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
----
- drivers/usb/host/xhci-mem.c | 31 ++++++++++++++++++++++++-------
- drivers/usb/host/xhci-pci.c |  2 ++
- drivers/usb/host/xhci.h     |  1 +
- 3 files changed, 27 insertions(+), 7 deletions(-)
+The following changes since commit 921bdc72a0d68977092d6a64855a1b8967acc1d9:
 
-diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-index c4170421bc9c..19a402123de0 100644
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -1961,7 +1961,7 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
- {
- 	u32 temp, port_offset, port_count;
- 	int i;
--	u8 major_revision, minor_revision;
-+	u8 major_revision, minor_revision, tmp_minor_revision;
- 	struct xhci_hub *rhub;
- 	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
- 	struct xhci_port_cap *port_cap;
-@@ -1981,6 +1981,15 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
- 		 */
- 		if (minor_revision > 0x00 && minor_revision < 0x10)
- 			minor_revision <<= 4;
-+		/*
-+		 * Some zhaoxin's xHCI controller that follow usb3.1 spec
-+		 * but only support Gen1.
-+		 */
-+		if (xhci->quirks & XHCI_ZHAOXIN_HOST) {
-+			tmp_minor_revision = minor_revision;
-+			minor_revision = 0;
-+		}
-+
- 	} else if (major_revision <= 0x02) {
- 		rhub = &xhci->usb2_rhub;
- 	} else {
-@@ -1989,10 +1998,6 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
- 		/* Ignoring port protocol we can't understand. FIXME */
- 		return;
- 	}
--	rhub->maj_rev = XHCI_EXT_PORT_MAJOR(temp);
--
--	if (rhub->min_rev < minor_revision)
--		rhub->min_rev = minor_revision;
- 
- 	/* Port offset and count in the third dword, see section 7.2 */
- 	temp = readl(addr + 2);
-@@ -2010,8 +2015,6 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
- 	if (xhci->num_port_caps > max_caps)
- 		return;
- 
--	port_cap->maj_rev = major_revision;
--	port_cap->min_rev = minor_revision;
- 	port_cap->psi_count = XHCI_EXT_PORT_PSIC(temp);
- 
- 	if (port_cap->psi_count) {
-@@ -2032,6 +2035,11 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
- 				  XHCI_EXT_PORT_PSIV(port_cap->psi[i - 1])))
- 				port_cap->psi_uid_count++;
- 
-+			if (xhci->quirks & XHCI_ZHAOXIN_HOST &&
-+			    major_revision == 0x03 &&
-+			    XHCI_EXT_PORT_PSIV(port_cap->psi[i]) >= 5)
-+				minor_revision = tmp_minor_revision;
-+
- 			xhci_dbg(xhci, "PSIV:%d PSIE:%d PLT:%d PFD:%d LP:%d PSIM:%d\n",
- 				  XHCI_EXT_PORT_PSIV(port_cap->psi[i]),
- 				  XHCI_EXT_PORT_PSIE(port_cap->psi[i]),
-@@ -2041,6 +2049,15 @@ static void xhci_add_in_port(struct xhci_hcd *xhci, unsigned int num_ports,
- 				  XHCI_EXT_PORT_PSIM(port_cap->psi[i]));
- 		}
- 	}
-+
-+	rhub->maj_rev = major_revision;
-+
-+	if (rhub->min_rev < minor_revision)
-+		rhub->min_rev = minor_revision;
-+
-+	port_cap->maj_rev = major_revision;
-+	port_cap->min_rev = minor_revision;
-+
- 	/* cache usb2 port capabilities */
- 	if (major_revision < 0x03 && xhci->num_ext_caps < max_caps)
- 		xhci->ext_caps[xhci->num_ext_caps++] = temp;
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index 3aad946bab68..88c16d91fb69 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -522,6 +522,8 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
- 		xhci->quirks |= XHCI_NO_SOFT_RETRY;
- 
- 	if (pdev->vendor == PCI_VENDOR_ID_ZHAOXIN) {
-+		xhci->quirks |= XHCI_ZHAOXIN_HOST;
-+
- 		if (pdev->device == 0x9202) {
- 			xhci->quirks |= XHCI_RESET_ON_RESUME;
- 			xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 5a495126c8ba..7e282b4522c0 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1905,6 +1905,7 @@ struct xhci_hcd {
- #define XHCI_SUSPEND_RESUME_CLKS	BIT_ULL(43)
- #define XHCI_RESET_TO_DEFAULT	BIT_ULL(44)
- #define XHCI_ZHAOXIN_TRB_FETCH	BIT_ULL(45)
-+#define XHCI_ZHAOXIN_HOST	BIT_ULL(46)
- 
- 	unsigned int		num_active_eps;
- 	unsigned int		limit_active_eps;
--- 
-2.25.1
+  Merge tag 'mmc-v6.4-rc1-2' of git://git.kernel.org/pub/scm/linux/kernel/git/ulfh/mmc (2023-06-02 08:35:13 -0400)
+
+are available in the Git repository at:
+
+  https://github.com/robertosassu/linux.git tags/asym-keys-fix-for-linus-v6.4-rc5
+
+for you to fetch changes up to c3d03e8e35e005e1a614e51bb59053eeb5857f76:
+
+  KEYS: asymmetric: Copy sig and digest in public_key_verify_signature() (2023-06-02 15:36:23 +0200)
+
+----------------------------------------------------------------
+Asymmetric keys fix for v6.4-rc5
+
+Here is a small fix to make an unconditional copy of the buffer passed
+to crypto operations, to take into account the case of the stack not in
+the linear mapping area.
+
+It has been tested and verified to fix the bug.
+
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+
+----------------------------------------------------------------
+Roberto Sassu (1):
+      KEYS: asymmetric: Copy sig and digest in public_key_verify_signature()
+
+ crypto/asymmetric_keys/public_key.c | 38 +++++++++++++++++++++-----------------
+ 1 file changed, 21 insertions(+), 17 deletions(-)
+
 
