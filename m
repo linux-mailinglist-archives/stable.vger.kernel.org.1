@@ -2,98 +2,177 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F907720122
-	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 14:08:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D9037201E9
+	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 14:20:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234217AbjFBMIm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 2 Jun 2023 08:08:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50960 "EHLO
+        id S235991AbjFBMUp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 2 Jun 2023 08:20:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234988AbjFBMI1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 08:08:27 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C6B21AD;
-        Fri,  2 Jun 2023 05:08:26 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-5148f299105so4276478a12.1;
-        Fri, 02 Jun 2023 05:08:26 -0700 (PDT)
+        with ESMTP id S235890AbjFBMUi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 08:20:38 -0400
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94E7D1B8
+        for <stable@vger.kernel.org>; Fri,  2 Jun 2023 05:20:24 -0700 (PDT)
+Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-256422ad25dso916341a91.0
+        for <stable@vger.kernel.org>; Fri, 02 Jun 2023 05:20:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685707705; x=1688299705;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=NX4MckBz+kMOWWfYXwQZwvt4Wo7nQreetEG9P/8etNY=;
-        b=MDzogKGgpQt2NfKjKR2ABAnQ6PSNWZBvu0fv2J7+xfF5C41DC4RF+q3E1HGzB0ZMhV
-         vHzp6MfzR3ujs2eivp/hgH73nCaEqHdwBbmjp+BzD+PFpzlXJJd62OaE0jrWUq2cCcbm
-         gAaPwxRgLE1xCK+PlxIQXar26PrNut/5fYWOfALJs+aBTHb5TQ8uzlPaG15A4rqEJprO
-         +KxRj8cRVm2tzTFShQp47ZqeyOr6Sb5mgGoLwlLlaBUEZP6ZVD1uEY0EX7Rmw0n4S8di
-         sH37RgFaWRfkAfUwA15nmc9k2lLP2JDou/XXZTtg9KKBQZYPR9d2GMFLyR4vj8bpO4EJ
-         Mzcg==
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1685708424; x=1688300424;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=E3z4yYu5MQKmObl/1RnZjuhuMALza0z7XMPaboPf+Os=;
+        b=zDQgr6/5DXcYOmK+yjVn0EH7gfsg5trfeAEgBycU9hKUcIBcsfASFJLKWJ53GDjqVY
+         /OYRH7slLn8Qf+PX4mGpdFs3RvMSDwpCuuM0HbHrCtUoDdBufDemIUqt7qAGQetzrMa6
+         SPQnFOXbZdTvjxUbtfN3ZmCyd0I6xMVybzlaCY3tli5uDCmxR54bltmmXsybh8212Dhy
+         Ei0rZD/1Mr/ygJk/OM7bUXmm1WfQYPRSV8Rvaq+/Yv6OQ94jv2dnKxdOc73Bm7gqeDoC
+         5D8MTUXR4uk4P4PqdBR5FEO4lRm52fB355d+UwcFkJ0mT90ozS1gAkNy/gfHLZRnup26
+         61hw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685707705; x=1688299705;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20221208; t=1685708424; x=1688300424;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NX4MckBz+kMOWWfYXwQZwvt4Wo7nQreetEG9P/8etNY=;
-        b=jrw4DU+kvwEaWUKq6ZJ2263aJ0AExk9b8yV0l3C76wu6m5K3WZFdGFvlggokPCpvRF
-         95+bL/4l2mtBHjrajS46eLwONKiufcc4OTw6tylhg0bhWa6SlBL6xRMsjCkrBn7t/wNo
-         UyyERL/TnLkVgZfxjwccX7bsCgkJZBx4jqUnxoJ5YjlGwxL+Nj+UAXAabrKPXwB5jiiN
-         XdyVnZaqsFFf4cNcq+GFMCwrn17ECuJdvfx6haw9FK3ypGvjb8kpQPjiV9lAutIrO/PE
-         K5htmEotSKrjXUd0JAJUfWoYMlzDpPHKFaxJKdtKdhqcUrmfarBjBdtH2kgjziV9eQyR
-         DQfA==
-X-Gm-Message-State: AC+VfDxmOZ0Wchw8HOM/qi5P9QSzBTlEXazkRxfzM2DJRWKj0xoEWE0A
-        k7tslmN7njU7hl8xRCG/SL+Tj5WyVMCOHafY+zUCNJjMOVY=
-X-Google-Smtp-Source: ACHHUZ7gwc/jkjRlVjHpwzT1u4y5IMyFOHYEnDBUueOVz04IhMv9WNJUyTIVgu1hKV5sLIk5Pcee5Br2y+E0OQbis5Y=
-X-Received: by 2002:a05:6402:5252:b0:514:9e81:6185 with SMTP id
- t18-20020a056402525200b005149e816185mr2701109edd.16.1685707704786; Fri, 02
- Jun 2023 05:08:24 -0700 (PDT)
+        bh=E3z4yYu5MQKmObl/1RnZjuhuMALza0z7XMPaboPf+Os=;
+        b=CTtwPwLcY61OoHYbfJKE/iNMY/1eGnpd/En+MG4+zJNj6y5Hii3pnEpMCTHtP5kn5K
+         gm3d2dDvEpHjIlI2MYnowoWtmf9G6/Fn4U7WsqZairsP6gvyoJnUHXAo/9d2luAOal6V
+         Hh7UxLR/HkyjshtFP6e8aQmfj4n/jvomVIj5HKOywAlHDbBxVOkKMcOTTW13pcGb3ATY
+         1x17siRRiUq1aEAiv9cwi8w1zut5FEFyAjTUdk5E0DARsZw9zaYtiRDnXrW/3ysHacXL
+         WKiT5GW6A54zhrDHT+y5U1FXOTuV5r8uPML47kUzdT7/1QcIKRD8P1+HXAiAAASNqYjc
+         h0gQ==
+X-Gm-Message-State: AC+VfDz/lWGKQiPNLDxd+RMIKHmkjyk8PJbEx9mHQ6dU9xovuYgiTFVK
+        8JyScETBC4c0kmZTesqGpKNBcZMhdLk/ubNxpayMgg==
+X-Google-Smtp-Source: ACHHUZ6+I4U2HWxkw0k6olcWxTwQuaT7dj6VCiAhnl2r05zcTb8isQycgdcbvxfeNrYiUbzmxGGgog==
+X-Received: by 2002:a17:90b:128f:b0:256:8825:d48f with SMTP id fw15-20020a17090b128f00b002568825d48fmr999970pjb.29.1685708423715;
+        Fri, 02 Jun 2023 05:20:23 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([52.250.1.28])
+        by smtp.gmail.com with ESMTPSA id e63-20020a17090a6fc500b0024de5227d1fsm1174134pjk.40.2023.06.02.05.20.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Jun 2023 05:20:23 -0700 (PDT)
+Message-ID: <6479de87.170a0220.aea85.1e76@mx.google.com>
+Date:   Fri, 02 Jun 2023 05:20:23 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20230601143331.405588582@linuxfoundation.org>
-In-Reply-To: <20230601143331.405588582@linuxfoundation.org>
-From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Date:   Fri, 2 Jun 2023 13:07:48 +0100
-Message-ID: <CADVatmPDwobeqntQ5+LQibMSHK86FmwUpN+E3JUd+GMs3bWpDQ@mail.gmail.com>
-Subject: Re: [PATCH 5.15 00/37] 5.15.115-rc2 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com, srw@sladewatkins.net,
-        rwarsow@gmx.de
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v6.3.5-46-gb8c049753f7c
+X-Kernelci-Report-Type: test
+X-Kernelci-Branch: linux-6.3.y
+X-Kernelci-Tree: stable-rc
+Subject: stable-rc/linux-6.3.y baseline: 176 runs,
+ 2 regressions (v6.3.5-46-gb8c049753f7c)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
+stable-rc/linux-6.3.y baseline: 176 runs, 2 regressions (v6.3.5-46-gb8c0497=
+53f7c)
 
-On Thu, 1 Jun 2023 at 15:36, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.15.115 release.
-> There are 37 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Regressions Summary
+-------------------
 
-s390 allmodconfig build fails with the error:
+platform                     | arch  | lab             | compiler | defconf=
+ig                  | regressions
+-----------------------------+-------+-----------------+----------+--------=
+--------------------+------------
+imx8mm-innocomm-wb15-evk     | arm64 | lab-pengutronix | gcc-10   | defconf=
+ig                  | 1          =
 
-arch/s390/kernel/uv.c: In function 'should_export_before_import':
-arch/s390/kernel/uv.c:204:40: error: 'mm_context_t' has no member
-named 'protected_count'
-  204 |         return atomic_read(&mm->context.protected_count) > 1;
-      |                                        ^
-arch/s390/kernel/uv.c:205:1: error: control reaches end of non-void
-function [-Werror=return-type]
-  205 | }
-      | ^
+mt8183-kukui-...uniper-sku16 | arm64 | lab-collabora   | gcc-10   | defconf=
+ig+arm64-chromebook | 1          =
 
 
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-6.3.y/kern=
+el/v6.3.5-46-gb8c049753f7c/plan/baseline/
 
--- 
-Regards
-Sudip
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   linux-6.3.y
+  Describe: v6.3.5-46-gb8c049753f7c
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      b8c049753f7cf6804abcd8bbd0abf46baf4bff5e =
+
+
+
+Test Regressions
+---------------- =
+
+
+
+platform                     | arch  | lab             | compiler | defconf=
+ig                  | regressions
+-----------------------------+-------+-----------------+----------+--------=
+--------------------+------------
+imx8mm-innocomm-wb15-evk     | arm64 | lab-pengutronix | gcc-10   | defconf=
+ig                  | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6479a6984981e920a6f5de2c
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.5-4=
+6-gb8c049753f7c/arm64/defconfig/gcc-10/lab-pengutronix/baseline-imx8mm-inno=
+comm-wb15-evk.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.5-4=
+6-gb8c049753f7c/arm64/defconfig/gcc-10/lab-pengutronix/baseline-imx8mm-inno=
+comm-wb15-evk.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230527.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/6479a6984981e920a6f5d=
+e2d
+        new failure (last pass: v6.3.5) =
+
+ =
+
+
+
+platform                     | arch  | lab             | compiler | defconf=
+ig                  | regressions
+-----------------------------+-------+-----------------+----------+--------=
+--------------------+------------
+mt8183-kukui-...uniper-sku16 | arm64 | lab-collabora   | gcc-10   | defconf=
+ig+arm64-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6479add855a19e1f08f5df22
+
+  Results:     164 PASS, 8 FAIL, 0 SKIP
+  Full config: defconfig+arm64-chromebook
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.5-4=
+6-gb8c049753f7c/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/basel=
+ine-mt8183-kukui-jacuzzi-juniper-sku16.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.5-4=
+6-gb8c049753f7c/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/basel=
+ine-mt8183-kukui-jacuzzi-juniper-sku16.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230527.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.mtk-thermal-probed: https://kernelci.org/test/case/id/6=
+479add855a19e1f08f5df3f
+        new failure (last pass: v6.3.5)
+
+    2023-06-02T08:52:21.651652  /lava-10561393/1/../bin/lava-test-case
+
+    2023-06-02T08:52:21.658260  <8>[   28.516314] <LAVA_SIGNAL_TESTCASE TES=
+T_CASE_ID=3Dmtk-thermal-probed RESULT=3Dfail>
+   =
+
+ =20
