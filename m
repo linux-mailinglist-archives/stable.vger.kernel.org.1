@@ -2,103 +2,136 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44DA6720887
-	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 19:42:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D132F7208A2
+	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 19:53:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236139AbjFBRmg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 2 Jun 2023 13:42:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52390 "EHLO
+        id S236504AbjFBRxO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 2 Jun 2023 13:53:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235274AbjFBRmf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 13:42:35 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD502133;
-        Fri,  2 Jun 2023 10:42:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685727754; x=1717263754;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=pKlkspNOzWL1+VLdgFmqTg/cLWhdIZxOrJGpOZ10YD0=;
-  b=hWUr5qDOkbD3nEl3i/8qitoQI4jdHYAOqZv4dx2hYsFNZ4VDBgULKYUx
-   sCIFk6Y0R1ZHvOOgqnUYXL9BcVMNIV7YEfgLSfjw0Hx6Lkn5inbB1fsK5
-   HMOYovmlQt5PkifP8zBZPVGAOtELkPNrA7c0UACa+65l+eWeI/R77EdPb
-   NnRVjyyymylz1oPhoV3gYeRpfowEE+H4cd6QCrqtwbUj8qw9zc8mlLKXR
-   NONxT8kA68TCTnEKOpLdOFeHk5D5HntUgJqmCayuNTIbxXOjlo2DTZOYC
-   DzCDM4aPaFvaj+DAvUPA15O+poF5TMkOgFIuG18H418zAn/7L+KzGmj6I
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="336289400"
-X-IronPort-AV: E=Sophos;i="6.00,213,1681196400"; 
-   d="scan'208";a="336289400"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2023 10:42:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="702030729"
-X-IronPort-AV: E=Sophos;i="6.00,213,1681196400"; 
-   d="scan'208";a="702030729"
-Received: from pingshi-mobl.amr.corp.intel.com (HELO [10.251.23.169]) ([10.251.23.169])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2023 10:42:34 -0700
-Message-ID: <d73d41cc-0578-7bf3-46a2-b47eea44bdd0@intel.com>
-Date:   Fri, 2 Jun 2023 10:42:33 -0700
+        with ESMTP id S235208AbjFBRxM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 13:53:12 -0400
+Received: from frasgout13.his.huawei.com (unknown [14.137.139.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44A829F;
+        Fri,  2 Jun 2023 10:53:11 -0700 (PDT)
+Received: from mail02.huawei.com (unknown [172.18.147.227])
+        by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4QXr1k29Bfz9y3D6;
+        Sat,  3 Jun 2023 01:42:50 +0800 (CST)
+Received: from roberto-ThinkStation-P620 (unknown [10.204.63.22])
+        by APP1 (Coremail) with SMTP id LxC2BwCX8NthLHpkNl4EAw--.3454S2;
+        Fri, 02 Jun 2023 18:52:46 +0100 (CET)
+Message-ID: <f097e95715f0ff43929a4cb56b1ad29c2f2b1c44.camel@huaweicloud.com>
+Subject: Re: [GIT PULL] Asymmetric keys fix for v6.4-rc5
+From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Stefan Berger <stefanb@linux.ibm.com>, davem@davemloft.net,
+        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
+        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Date:   Fri, 02 Jun 2023 19:52:29 +0200
+In-Reply-To: <CAHk-=wj4S0t5RnJQmF_wYwv+oMTKggwdLnrA9D1uMNKq4H4byw@mail.gmail.com>
+References: <4d7e38ff5bbc496cb794b50e1c5c83bcd2317e69.camel@huaweicloud.com>
+         <CAHk-=wj4S0t5RnJQmF_wYwv+oMTKggwdLnrA9D1uMNKq4H4byw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCHv2 2/3] x86/tdx: Fix race between set_memory_encrypted()
- and load_unaligned_zeropad()
-Content-Language: en-US
-To:     "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Sathyanarayanan Kuppuswamy 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "bp@alien8.de" <bp@alien8.de>, Dexuan Cui <decui@microsoft.com>,
-        "rick.p.edgecombe@intel.com" <rick.p.edgecombe@intel.com>,
-        "seanjc@google.com" <seanjc@google.com>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20230526120225.31936-1-kirill.shutemov@linux.intel.com>
- <20230526120225.31936-3-kirill.shutemov@linux.intel.com>
- <19d9977f-bf07-2948-1b45-456af9c09e2f@linux.intel.com>
- <20230530005736.ndwza2i5n7wrki5h@box.shutemov.name>
- <9d679d3f-8db9-80ef-292a-9ca5b860579b@amd.com>
- <2d8ae093-dd9e-ea49-d6f9-3fdb2fb84e4d@linux.intel.com>
- <BYAPR21MB1688EF2A57E90FCE02B82F84D748A@BYAPR21MB1688.namprd21.prod.outlook.com>
- <9fbc3760-7239-2323-ed90-210a0de9e286@amd.com>
- <BYAPR21MB168826D6C870542E5BD3372BD74EA@BYAPR21MB1688.namprd21.prod.outlook.com>
-From:   Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <BYAPR21MB168826D6C870542E5BD3372BD74EA@BYAPR21MB1688.namprd21.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: LxC2BwCX8NthLHpkNl4EAw--.3454S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Ww4Dtw4UJFW7Gr1DuF18Grg_yoW8uF45p3
+        yrKw4fKr1qgrZ2y34xGw4Uuay5Jws5JryUGrsxG34fu3Z8Xr9xCa4I9F43WFyakr4vga43
+        KrW0gws8CrW5Aa7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUkYb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+        xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
+        AFwI0_Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+        6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+        Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI
+        7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxV
+        Cjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY
+        6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6x
+        AIw20EY4v20xvaj40_WFyUJVCq3wCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv
+        6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7IU13rcDUUUUU==
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAQBF1jj4oO0gACsz
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,PDS_RDNS_DYNAMIC_FP,
+        RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L3,RDNS_DYNAMIC,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 6/2/23 09:11, Michael Kelley (LINUX) wrote:
-> Tom -- Does the above sequence *depend* on the hypervisor doing anything
-> to make it work?  I'm not clear on why KVM would automatically change the
-> page over to private.  If there's a dependency on the hypervisor doing
-> something, then it seems like we'll need to standardize that "something"
-> across hypervisors, lest we end up with per-hypervisor code in Linux to handle
-> this scenario.  And running SEV-SNP with multiple VMPLs probably makes it
-> even more complicated.
+On Fri, 2023-06-02 at 13:38 -0400, Linus Torvalds wrote:
+> On Fri, Jun 2, 2023 at 10:41 AM Roberto Sassu
+> <roberto.sassu@huaweicloud.com> wrote:
+> > sorry for this unusual procedure of me requesting a patch to be pulled.
+> > I asked for several months the maintainers (David: asymmetric keys,
+> > Jarkko: key subsystem) to pick my patch but without any luck.
 > 
-> Kirill -- Same question about TDX.  Does making load_unaligned_zeropad()
-> work in a TDX VM depend on the hypervisor doing anything?  Or is the
-> behavior seen by the guest dependent only on architected behavior of
-> the TDX processor?
+> Hmm.
+> 
+> The patch behind that tag looks sane to me, but this is not code I am
+> hugely familiar with.
+> 
+> Who is the caller that passes in the public_key_signature data on the
+> stack to public_key_verify_signature()? This may well be the right
+> point to move it away from the stack in order to have a valid sg-list,
+> but even if this patch is all good, it would be nice to have the call
+> chain documented as part of the commit message.
 
-No, there's no active help from the hypervisor here.
+Oh, it seems it was only in the first version of the patch:
 
-Also, fwiw, the "architected behavior" here is really just the TDX
-module policy and _arguably_ the hardware Secure-EPT controlled by the
-TDX module.
+https://lore.kernel.org/linux-kernel/20221104122023.1750333-1-roberto.sassu@huaweicloud.com/
+
+Originally, the kernel panic was due to EVM, but I later found that IMA
+Appraisal could have caused the same.
+
+> > I signed the tag, but probably it would not matter, since my key is not
+> > among your trusted keys.
+> 
+> It does matter - I do pull from people even without full chains, I
+> just end up being a lot more careful, and I still want to see the
+> signature for any future reference...
+
+Ok, then it makes sense to push my key to a key server.
+
+Thanks
+
+Roberto
+
+> DavidH, Herbert, please comment:
+> 
+> >   https://github.com/robertosassu/linux.git tags/asym-keys-fix-for-linus-v6.4-rc5
+> 
+> basically public_key_verify_signature() is passed that
+> 
+>      const struct public_key_signature *sig
+> 
+> as an argument, and currently does
+> 
+>         sg_init_table(src_sg, 2);
+>         sg_set_buf(&src_sg[0], sig->s, sig->s_size);
+>         sg_set_buf(&src_sg[1], sig->digest, sig->digest_size);
+> 
+> 
+> on it which is *not* ok if the s->s and s->digest points to stack data
+> that ends up not dma'able because of a virtually mapped stack.
+> 
+> The patch re-uses the allocation it already does for the key data, and
+> it seems sane.
+> 
+> But again, this is not code I look at normally, so...
+> 
+>                Linus
+
