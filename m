@@ -2,68 +2,79 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D12572034C
-	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 15:30:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65DCC72036A
+	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 15:31:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236160AbjFBN32 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 2 Jun 2023 09:29:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40878 "EHLO
+        id S235097AbjFBNb0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 2 Jun 2023 09:31:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235156AbjFBN31 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 09:29:27 -0400
-Received: from mail.antaris-organics.com (mail.antaris-organics.com [91.227.220.155])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8E0A132;
-        Fri,  2 Jun 2023 06:29:24 -0700 (PDT)
-Date:   Fri, 2 Jun 2023 15:29:23 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mareichelt.com;
-        s=202107; t=1685712563;
-        bh=4787LJ2VuL0rYRVNluNPv38MyhEmOaVnk99lgawkRZU=;
-        h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-         Content-Type:In-Reply-To:Cc:Cc:content-type:content-type:date:date:
-         From:from:in-reply-to:in-reply-to:message-id:mime-version:
-         references:reply-to:Sender:Subject:Subject:To:To;
-        b=ayLlMSI/LcdF3WmPRr4h8VKLo1148Qr509s6mMuEpYx0k0fcXOLKIDwrRj3cy/WAQ
-         zMrS/u1dSqXrY/En1AWLKJW69mIuupA4fwWSdyQlFi14zE4+sI3CX73G5dl2TF5/Dd
-         YgXuB7JyksZEk11fqjsI6ViXhSUhUblIncCzZtnDQRrnn+mF9CVdHyY1GFp28NgCZi
-         bQ+LKyVAkdB6roHno4UUAOb/MsOQyHC+sDV6rCAyCJEy8jRhekfIrhz2CLD7LYcG5g
-         IzDS/AW+sCC0uQmUTvK6aMYPqfqLd99Ym61gVyNoHXqUtLdj7bLDTDwpTIdHStLH3M
-         TA1q24WESWCOQ==
-From:   Markus Reichelt <lkt+2023@mareichelt.com>
-To:     stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.3 00/45] 6.3.6-rc1 review
-Message-ID: <20230602132923.GA19139@pc21.mareichelt.com>
-Mail-Followup-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230601131938.702671708@linuxfoundation.org>
+        with ESMTP id S234614AbjFBNbC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 09:31:02 -0400
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 175D1E6B;
+        Fri,  2 Jun 2023 06:30:49 -0700 (PDT)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4QXkQr3j0wz9sZS;
+        Fri,  2 Jun 2023 15:30:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bernhard-seibold.de;
+        s=MBO0001; t=1685712644;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=pxR9asucUbPnHQ2rd0x8odzYWEoyPJpGshrHAYKT8gg=;
+        b=WpcOU4pzPb3QdfSG7kEkwTgflk0rwNkXKP0qR87pCOYwaiiqz+z7TQWEuExvPPfu0Mwi31
+        QUw7OEMZKVeIuyN/V+A0lWr7KFUAiwOF+Md3An9384lDPe/Qnc12vVK6j92PCeeVHuiobe
+        YhHT3sPYRCay6mCjGBhDbALqB2jNGGA2kZryXDYTyABuOua4yJERHTaq/lmNj1bUu4jj4D
+        haApex67hkJV9GmARwLgpeuUcJnNHKmbrfidhzElYhUQ09jaUoZwO5PbeIx0K2hF0y4abx
+        Z5xj+8jNopze4F7te+WaqZ0vhr/2Ii2b2x3S9nA1PozjF5krIMd5v7833AbZUQ==
+From:   Bernhard Seibold <mail@bernhard-seibold.de>
+To:     linux-serial@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bernhard Seibold <mail@bernhard-seibold.de>,
+        stable@vger.kernel.org
+Subject: [PATCH] serial: lantiq: add missing interrupt ack
+Date:   Fri,  2 Jun 2023 15:30:29 +0200
+Message-Id: <20230602133029.546-1-mail@bernhard-seibold.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
-Organization: still stuck in reorganization mode
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4QXkQr3j0wz9sZS
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-* Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+Currently, the error interrupt is never acknowledged, so once active it
+will stay active indefinitely, causing the handler to be called in an
+infinite loop.
 
-> This is the start of the stable review cycle for the 6.3.6 release.
-> There are 45 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 03 Jun 2023 13:19:19 +0000.
-> Anything received after that time might be too late.
+Fixes: 2f0fc4159a6a ("SERIAL: Lantiq: Add driver for MIPS Lantiq SOCs.")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Bernhard Seibold <mail@bernhard-seibold.de>
+---
+ drivers/tty/serial/lantiq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Hi Greg
+diff --git a/drivers/tty/serial/lantiq.c b/drivers/tty/serial/lantiq.c
+index a58e9277dfad..f1387f1024db 100644
+--- a/drivers/tty/serial/lantiq.c
++++ b/drivers/tty/serial/lantiq.c
+@@ -250,6 +250,7 @@ lqasc_err_int(int irq, void *_port)
+ 	struct ltq_uart_port *ltq_port = to_ltq_uart_port(port);
+ 
+ 	spin_lock_irqsave(&ltq_port->lock, flags);
++	__raw_writel(ASC_IRNCR_EIR, port->membase + LTQ_ASC_IRNCR);
+ 	/* clear any pending interrupts */
+ 	asc_update_bits(0, ASCWHBSTATE_CLRPE | ASCWHBSTATE_CLRFE |
+ 		ASCWHBSTATE_CLRROE, port->membase + LTQ_ASC_WHBSTATE);
+-- 
+2.34.1
 
-6.3.6-rc1
-
-compiles, boots and runs here on x86_64
-(AMD Ryzen 5 PRO 4650G, Slackware64-15.0)
-
-Tested-by: Markus Reichelt <lkt+2023@mareichelt.com>
