@@ -2,94 +2,144 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39E057208C0
-	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 20:03:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02E9772093B
+	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 20:35:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236288AbjFBSDj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 2 Jun 2023 14:03:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32918 "EHLO
+        id S236348AbjFBSfr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 2 Jun 2023 14:35:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235780AbjFBSDi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 14:03:38 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6867AA3
-        for <stable@vger.kernel.org>; Fri,  2 Jun 2023 11:03:37 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-5147dce372eso3494218a12.0
-        for <stable@vger.kernel.org>; Fri, 02 Jun 2023 11:03:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1685729015; x=1688321015;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=rJ7KGRkSjfrW3o2ovQOUnSAv/55k6jXIbw1yHmYF3m4=;
-        b=xVg4g6xlSyTKzMyZJ3xJJf6uON5LE8yHps2P0cyS9B4DImDBUE+mZW5NsKMZV9Icz5
-         i2Qv7ZKSl6LN88LElijg5Z/IIxsnpi1THMVYnpdhOa6dlt2xYVLlh3nTsa3wbQVvX1w6
-         ZsLaCPfR/uL4wAOE9uMQYfNbY7T8YcKwP6nZHa7cbCjb6OsBY3+f3eQcceNTc9RbwUK6
-         ELa0JflNOTj2YSIN+InWHXlxG28gqljtPrMNqNOJs+/Q9fNbPfOzdTDlxsJljWahNaDx
-         BLicDBBVXBT9MUo+Itanuvs5bK/VEHgz7bAUP7lHJAf5+IU0yM9UJeI5aBOjYs0GHAjc
-         so2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685729015; x=1688321015;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rJ7KGRkSjfrW3o2ovQOUnSAv/55k6jXIbw1yHmYF3m4=;
-        b=GkaVzQBolJNQrifMSjxdq36Gu9jMWQOi/9ycx3IqdaC5IuZIisxqUhAcwmTf4k6sdr
-         c5KS69Yzihw7aK+LztNwnim0WAH9LdTkwTOKIM4UISTtVLnNn6D4RuKyU7n9PD/oLd24
-         Sww52Hpv8/0H8qLfe2kRuxb87QrSX+laQCAq2FG+xYfLa5hYZh4OsngYOoQn4RQcSHQ0
-         Ukwfvt1PFmSStEFsYE+VTCwDcQNMFh9J1vo7nBR9BxP3eY3+DP46+IK0SX059azFLGZs
-         S26zB6BD2ILpveFNMuWZlEd6VAWaqexMd2h40fGCnNegTLtd8R3s6D8A6eg7PFDt4Mkw
-         avOg==
-X-Gm-Message-State: AC+VfDyf2XV30D3REVQNaftG0SMVeqZNZRnIagnv7cqgO0Ped7OrLRq8
-        XHCGwFICb5fBrtdXAt8pEPxfx7Gw+TMY+PFxFVehHvmYfa6uWj3Momgn3g==
-X-Google-Smtp-Source: ACHHUZ76CACkTBk71DRJtcZLizyuphsgTufPFem8oIRwb9CJTKqFXw6MVj2p3Hdq93RAcEF8yp1Rqhe8gRFiymjYe+w=
-X-Received: by 2002:a17:907:d89:b0:973:dd61:d420 with SMTP id
- go9-20020a1709070d8900b00973dd61d420mr11712675ejc.74.1685729015128; Fri, 02
- Jun 2023 11:03:35 -0700 (PDT)
+        with ESMTP id S236976AbjFBSfq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 14:35:46 -0400
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [95.217.213.242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 420091B8
+        for <stable@vger.kernel.org>; Fri,  2 Jun 2023 11:35:44 -0700 (PDT)
+Received: from [213.219.167.32] (helo=deadeye)
+        by maynard with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1q59ck-0004vW-GI; Fri, 02 Jun 2023 20:35:42 +0200
+Received: from ben by deadeye with local (Exim 4.96)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1q59ck-001Cf5-00;
+        Fri, 02 Jun 2023 20:35:42 +0200
+Message-ID: <aa0d401a7f63448cd4c2fe4a2d7e8495d9aa123e.camel@decadent.org.uk>
+Subject: Re: [PATCH 6.3 145/364] staging: rtl8192e: Replace macro
+ RTL_PCI_DEVICE with PCI_DEVICE
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev,
+        Philipp Hortmann <philipp.g.hortmann@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Date:   Fri, 02 Jun 2023 20:35:31 +0200
+In-Reply-To: <20230522190416.389735437@linuxfoundation.org>
+References: <20230522190412.801391872@linuxfoundation.org>
+         <20230522190416.389735437@linuxfoundation.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-HWqfuX877mXofA46aiW+"
+User-Agent: Evolution 3.46.4-2 
 MIME-Version: 1.0
-From:   Jim Wylder <jwylder@google.com>
-Date:   Fri, 2 Jun 2023 13:03:24 -0500
-Message-ID: <CAEP57O8D-73=CS_6=s=2pvVjt=sQEv_60TpuppxwnxyN6v4pQg@mail.gmail.com>
-Subject: regmap: Account for register length when chunking
-To:     stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+X-SA-Exim-Connect-IP: 213.219.167.32
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Requesting that this regmap fix be cherry picked into the active
-stable releases 5.15 and later (5.15 being the earliest I was able
-to test).
 
-Commit 3981514180c987a79ea98f0ae06a7cbf58a9ac0f fixes a error in
-_regmap_raw_write() when chunking a transmission larger than the
-maximum write size for the bus and when bus writes the address
-and any padding along with the data.
+--=-HWqfuX877mXofA46aiW+
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Jim
+On Mon, 2023-05-22 at 20:07 +0100, Greg Kroah-Hartman wrote:
+> From: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+>=20
+> [ Upstream commit fda2093860df4812d69052a8cf4997e53853a340 ]
+>=20
+> Replace macro RTL_PCI_DEVICE with PCI_DEVICE to get rid of rtl819xp_ops
+> which is empty.
 
-The original commit message is:
+It is not empty (except in 6.4).
 
-------
-commit 3981514180c987a79ea98f0ae06a7cbf58a9ac0f
-Author: Jim Wylder <jwylder@google.com>
-Date:   Wed May 17 10:20:11 2023 -0500
+This needs to be reverted from all stable branches.
 
-    regmap: Account for register length when chunking
+Ben.
 
-    Currently, when regmap_raw_write() splits the data, it uses the
-    max_raw_write value defined for the bus.  For any bus that includes
-    the target register address in the max_raw_write value, the chunked
-    transmission will always exceed the maximum transmission length.
-    To avoid this problem, subtract the length of the register and the
-    padding from the maximum transmission.
+> Signed-off-by: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+> Link: https://lore.kernel.org/r/8b45ee783fa91196b7c9d6fc840a189496afd2f4.=
+1677133271.git.philipp.g.hortmann@gmail.com
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/staging/rtl8192e/rtl8192e/rtl_core.c | 6 +++---
+>  drivers/staging/rtl8192e/rtl8192e/rtl_core.h | 5 -----
+>  2 files changed, 3 insertions(+), 8 deletions(-)
+>=20
+> diff --git a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c b/drivers/stagi=
+ng/rtl8192e/rtl8192e/rtl_core.c
+> index 72d76dc7df781..92552ce30cd58 100644
+> --- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
+> +++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
+> @@ -48,9 +48,9 @@ static const struct rtl819x_ops rtl819xp_ops =3D {
+>  };
+> =20
+>  static struct pci_device_id rtl8192_pci_id_tbl[] =3D {
+> -	{RTL_PCI_DEVICE(0x10ec, 0x8192, rtl819xp_ops)},
+> -	{RTL_PCI_DEVICE(0x07aa, 0x0044, rtl819xp_ops)},
+> -	{RTL_PCI_DEVICE(0x07aa, 0x0047, rtl819xp_ops)},
+> +	{PCI_DEVICE(0x10ec, 0x8192)},
+> +	{PCI_DEVICE(0x07aa, 0x0044)},
+> +	{PCI_DEVICE(0x07aa, 0x0047)},
+>  	{}
+>  };
+> =20
+> diff --git a/drivers/staging/rtl8192e/rtl8192e/rtl_core.h b/drivers/stagi=
+ng/rtl8192e/rtl8192e/rtl_core.h
+> index fd96eef90c7fa..bbc1c4bac3588 100644
+> --- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.h
+> +++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.h
+> @@ -55,11 +55,6 @@
+>  #define IS_HARDWARE_TYPE_8192SE(_priv)		\
+>  	(((struct r8192_priv *)rtllib_priv(dev))->card_8192 =3D=3D NIC_8192SE)
+> =20
+> -#define RTL_PCI_DEVICE(vend, dev, cfg) \
+> -	.vendor =3D (vend), .device =3D (dev), \
+> -	.subvendor =3D PCI_ANY_ID, .subdevice =3D PCI_ANY_ID, \
+> -	.driver_data =3D (kernel_ulong_t)&(cfg)
+> -
+>  #define TOTAL_CAM_ENTRY		32
+>  #define CAM_CONTENT_COUNT	8
+> =20
 
-    Signed-off-by: Jim Wylder <jwylder@google.com
-    Link: https://lore.kernel.org/r/20230517152444.3690870-2-jwylder@google.com
-    Signed-off-by: Mark Brown <broonie@kernel.org
-------
+--=20
+Ben Hutchings
+When in doubt, use brute force. - Ken Thompson
+
+--=-HWqfuX877mXofA46aiW+
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmR6NnMACgkQ57/I7JWG
+EQmi/BAAo8VfvkBsasngSs798y39jSoxXwGKNiYYO7rl0IHbai2E5w816Xah6dxg
+pGaGnN3qQNuoVgXKDUGCKtqCHQ8M1e2mIeD55shL/0gjKHNHkIHlsSJ9MB1Bfn1d
+BkZeD0jUv/hg9qkUrzBQyKrSesVK3dlJg12CXo/Q1JrojLELZ9DIfxQUk4mUdNc7
+ebfLz55X9SvW3J0t9CkeEEO+2mxWOZ8EYyrPimmJ4IxNS4aEqLzXLJcTIKPsgymn
+M9Rjc0mKRAw4AUww7pF5ZT4JYklgLCIwY3QHhCbwQTZN+D4GWfXrFAIv6W0q2iUS
+YbAaiCyugnTqM0Bg2UOp3YQ8jxhxj4KJDBadUFhzUb89X0w6cLJUFnNZyuWifYkk
+nlba6/wVi8jCMPtyRYrvQb2SCvnTl/7ABsnrmSkU1KgQfLdYF+vDPiCpSu7jTVTP
+u0TY8GP5cd9BNc4jpYBjYzEW6EZMT+tj04liufJlEl74qqFo1fM7ampVhZZ14uN8
+sTW6BS5cDaelmlJJkcYnyJTPUfvsLUL0sRXXN4iiWRAnD6lqNEpb65vs6bJ3N6Xw
+PJWclX8nKGY00aKChdiD0JVkwql7UWUT9N0fWIQ4B8cFbsiRSvWk1oS9pqOsG1UD
+yxNGH4gSD4EhsQ2e/c/MRtbUh5iT7NyTnnG+1gCFTK3yaAwdp2Q=
+=kUmH
+-----END PGP SIGNATURE-----
+
+--=-HWqfuX877mXofA46aiW+--
