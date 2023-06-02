@@ -2,213 +2,194 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7ED571F7D1
-	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 03:25:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8BBA71F817
+	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 03:38:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233459AbjFBBZ2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 1 Jun 2023 21:25:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50442 "EHLO
+        id S233754AbjFBBi4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 1 Jun 2023 21:38:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232583AbjFBBZZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 21:25:25 -0400
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 428D5128;
-        Thu,  1 Jun 2023 18:25:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-        ; s=x; h=Subject:Content-Transfer-Encoding:Content-Type:Mime-Version:
-        References:In-Reply-To:Message-Id:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=P+9xx+lxqjJqqH4Qc1R78OLgrho1+Lwvhwigj9XgAQo=; b=FrNHW+8tenbCqVS+f9KbjiK4YP
-        nXZYdoUv4hnWhq959/PsMspnctRjUFZLwxAP72Nbs73i5uY7e7yxg7eoVapO4l4s3T/1aE0oz8yh/
-        abiuFG61hhOXF3CQLGB//p8bB5hN9TYXbRU1hM87wtz8DGssv2q7fLO8juKlPM+06ihE=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:46512 helo=pettiford)
-        by mail.hugovil.com with esmtpa (Exim 4.92)
-        (envelope-from <hugo@hugovil.com>)
-        id 1q4tXX-0000RT-DK; Thu, 01 Jun 2023 21:25:16 -0400
-Date:   Thu, 1 Jun 2023 21:25:14 -0400
-From:   Hugo Villeneuve <hugo@hugovil.com>
-To:     Hugo Villeneuve <hugo@hugovil.com>
-Cc:     andy.shevchenko@gmail.com, gregkh@linuxfoundation.org,
-        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        conor+dt@kernel.org, jirislaby@kernel.org, jringle@gridpoint.com,
-        tomasz.mon@camlingroup.com, l.perczak@camlintechnologies.com,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        stable@vger.kernel.org
-Message-Id: <20230601212514.28914aee77ae9a513904ee6b@hugovil.com>
-In-Reply-To: <20230601204140.3b45c9b97efb36431d058ba7@hugovil.com>
-References: <20230601201844.3739926-1-hugo@hugovil.com>
-        <20230601201844.3739926-6-hugo@hugovil.com>
-        <ZHkN5kEa6yqHdDeL@surfacebook>
-        <20230601204140.3b45c9b97efb36431d058ba7@hugovil.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
+        with ESMTP id S233727AbjFBBiz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 1 Jun 2023 21:38:55 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8AD6E6F;
+        Thu,  1 Jun 2023 18:38:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685669913; x=1717205913;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=01GCcuu0HghGwWeCZNHmm9Tq8ORhR7z4ILt07iIC0l8=;
+  b=BC/plNyzbbVKycKY7bnJX70W/j4iJ4Rnya6ncF8PBVYBV5KuWgFDfVF2
+   fZlALNJ6VVKJnUUzVy8KPY5E4z0Lfajmjm5J0BZovc25OhBk860nTpz7C
+   wnyTgIEthCQh0zxDk8GwXjMXCApxfXuaLTnf9DYaqGZM/g8RjYqz2D4jb
+   D2RFd0tBJ7WIfHHcBUx4cMKaM2OLWpMTvq2wQktBHkZSCHa0kmf76d1gL
+   uw+qcH/ejplQ06WCeXX4fu3NYxX9bj3Brz7M3xF2JXYrEonn6o/0ig6CM
+   he+P9nfi81awxLp/EEfrVuIfO3il+6mHjrGl9Ut8P02SEjnKYAd3SaGT1
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="336103236"
+X-IronPort-AV: E=Sophos;i="6.00,211,1681196400"; 
+   d="scan'208";a="336103236"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 18:36:57 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="772677288"
+X-IronPort-AV: E=Sophos;i="6.00,211,1681196400"; 
+   d="scan'208";a="772677288"
+Received: from lkp-server01.sh.intel.com (HELO fb1ced2c09fb) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 01 Jun 2023 18:36:54 -0700
+Received: from kbuild by fb1ced2c09fb with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1q4tin-0002t2-1u;
+        Fri, 02 Jun 2023 01:36:53 +0000
+Date:   Fri, 2 Jun 2023 09:36:30 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Jan Kara <jack@suse.cz>, Al Viro <viro@zeniv.linux.org.uk>
+Cc:     oe-kbuild-all@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+        Christian Brauner <brauner@kernel.org>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        "Darrick J. Wong" <djwong@kernel.org>, Ted Tso <tytso@mit.edu>,
+        Jaegeuk Kim <jaegeuk@kernel.org>, linux-ext4@vger.kernel.org,
+        linux-xfs@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+        Jan Kara <jack@suse.cz>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 4/6] fs: Establish locking order for unrelated
+ directories
+Message-ID: <202306020948.TBmCxtVw-lkp@intel.com>
+References: <20230601105830.13168-4-jack@suse.cz>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230601105830.13168-4-jack@suse.cz>
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
-Subject: Re: [PATCH v6 5/9] serial: sc16is7xx: fix regression with GPIO
- configuration
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 1 Jun 2023 20:41:40 -0400
-Hugo Villeneuve <hugo@hugovil.com> wrote:
+Hi Jan,
 
-> On Fri, 2 Jun 2023 00:30:14 +0300
-> andy.shevchenko@gmail.com wrote:
-> 
-> > Thu, Jun 01, 2023 at 04:18:40PM -0400, Hugo Villeneuve kirjoitti:
-> > > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> > > 
-> > > Commit 679875d1d880 ("sc16is7xx: Separate GPIOs from modem control lines")
-> > > and commit 21144bab4f11 ("sc16is7xx: Handle modem status lines")
-> > > changed the function of the GPIOs pins to act as modem control
-> > > lines without any possibility of selecting GPIO function.
-> > > 
-> > > As a consequence, applications that depends on GPIO lines configured
-> > > by default as GPIO pins no longer work as expected.
-> > > 
-> > > Also, the change to select modem control lines function was done only
-> > > for channel A of dual UART variants (752/762). This was not documented
-> > > in the log message.
-> > > 
-> > > Allow to specify GPIO or modem control line function in the device
-> > > tree, and for each of the ports (A or B).
-> > > 
-> > > Do so by using the new device-tree property named
-> > > "modem-control-line-ports" (property added in separate patch).
-> > > 
-> > > When registering GPIO chip controller, mask-out GPIO pins declared as
-> > > modem control lines according to this new "modem-control-line-ports"
-> > > DT property.
-> > > 
-> > > Boards that need to have GPIOS configured as modem control lines
-> > > should add that property to their device tree. Here is a list of
-> > > boards using the sc16is7xx driver in their device tree and that may
-> > > need to be modified:
-> > >     arm64/boot/dts/freescale/fsl-ls1012a-frdm.dts
-> > >     mips/boot/dts/ingenic/cu1830-neo.dts
-> > >     mips/boot/dts/ingenic/cu1000-neo.dts
-> > 
-> > Almost good, a few remarks and if addressed as suggested,
-> > Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > 
-> > Thank you!
-> > 
-> > ...
-> > 
-> > > +	if (!s->gpio_valid_mask)
-> > 
-> > I would use == 0, but it's up to you. Both will work equally.
-> 
-> Hi,
-> done.
-> 
-> > > +		return 0;
-> > 
-> > ...
-> > 
-> > > +static int sc16is7xx_setup_mctrl_ports(struct device *dev)
-> > 
-> > Not sure why int if you always return an unsigned value.
-> > Otherwise return an error code when it's no defined mask
-> > and check it in the caller.
-> 
-> Changed return type to u8.
-> 
->  
-> > > +{
-> > > +	struct sc16is7xx_port *s = dev_get_drvdata(dev);
-> > > +	int i;
-> > > +	int ret;
-> > > +	int count;
-> > > +	u32 mctrl_port[2];
-> > > +	u8 mctrl_mask = 0;
-> > 
-> > I would return 0 directly in the first two cases and split an assignment closer
-> > to the first user.
-> > 
-> > > +	count = device_property_count_u32(dev, "nxp,modem-control-line-ports");
-> > > +	if (count < 0 || count > ARRAY_SIZE(mctrl_port))
-> > > +		return mctrl_mask;
-> > 
-> > 		return 0;
-> 
-> Done.
-> 
-> 
-> > > +	ret = device_property_read_u32_array(dev, "nxp,modem-control-line-ports",
-> > > +					     mctrl_port, count);
-> > > +	if (ret)
-> > > +		return mctrl_mask;
-> > 
-> > 		return 0;
-> 
-> Done.
-> 
-> 
-> > 	mctrl_mask = 0;
-> 
-> Done.
-> 
->  
-> > > +	for (i = 0; i < count; i++) {
-> > > +		/* Use GPIO lines as modem control lines */
-> > > +		if (mctrl_port[i] == 0)
-> > > +			mctrl_mask |= SC16IS7XX_IOCONTROL_MODEM_A_BIT;
-> > > +		else if (mctrl_port[i] == 1)
-> > > +			mctrl_mask |= SC16IS7XX_IOCONTROL_MODEM_B_BIT;
-> > > +	}
-> > 
-> > > +	if (!mctrl_mask)
-> > > +		return mctrl_mask;
-> > 
-> > Maybe positive one?
-> > 	if (mctrl_mask)
-> > 		regmap_update_bits(...);
-> 
-> I used negative to save on indentation, but it also fits by converting it to positive, so done.
-> 
->  
-> > > +	regmap_update_bits(s->regmap,
-> > > +			   SC16IS7XX_IOCONTROL_REG << SC16IS7XX_REG_SHIFT,
-> > > +			   SC16IS7XX_IOCONTROL_MODEM_A_BIT |
-> > > +			   SC16IS7XX_IOCONTROL_MODEM_B_BIT, mctrl_mask);
-> > > +
-> > > +	return mctrl_mask;
-> > > +}
-> > 
-> > ...
-> > 
-> > >  	unsigned long freq = 0, *pfreq = dev_get_platdata(dev);
-> > >  	unsigned int val;
-> > > +	u8 mctrl_mask = 0;
-> > 
-> > This assignment is redundant, so you simply can define it
-> > 
-> > >  	u32 uartclk = 0;
-> > 
-> > 	u8 mctrl_mask;
-> 
-> Done.
-> 
-> I will send a V7 soon with your Reviewed-by tag.
+kernel test robot noticed the following build errors:
 
-Hi Andy,
-Greg did not yet respond to my email about the proposed tags, but if the new order of the patches and the stable tags I added seems ok to you, I will resend V7. It will then probably easier for Greg to comment directly on V7 for the stable tags (Cc:).
+[auto build test ERROR on tytso-ext4/dev]
+[also build test ERROR on jaegeuk-f2fs/dev-test jaegeuk-f2fs/dev linus/master v6.4-rc4 next-20230601]
+[cannot apply to vfs-idmapping/for-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Hugo.
+url:    https://github.com/intel-lab-lkp/linux/commits/Jan-Kara/ext4-Remove-ext4-locking-of-moved-directory/20230601-225100
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/tytso/ext4.git dev
+patch link:    https://lore.kernel.org/r/20230601105830.13168-4-jack%40suse.cz
+patch subject: [PATCH v2 4/6] fs: Establish locking order for unrelated directories
+config: um-i386_defconfig (https://download.01.org/0day-ci/archive/20230602/202306020948.TBmCxtVw-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build):
+        # https://github.com/intel-lab-lkp/linux/commit/234d970a1de0d79e372cc04d6a8112d2aec56c44
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Jan-Kara/ext4-Remove-ext4-locking-of-moved-directory/20230601-225100
+        git checkout 234d970a1de0d79e372cc04d6a8112d2aec56c44
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        make W=1 O=build_dir ARCH=um SUBARCH=i386 olddefconfig
+        make W=1 O=build_dir ARCH=um SUBARCH=i386 SHELL=/bin/bash
+
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202306020948.TBmCxtVw-lkp@intel.com/
+
+All error/warnings (new ones prefixed by >>):
+
+   fs/inode.c: In function 'lock_two_inodes':
+>> fs/inode.c:1121:9: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
+    1121 |         if (!inode1 || !inode2)
+         |         ^~
+   fs/inode.c:1129:17: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+    1129 |                 goto lock;
+         |                 ^~~~
+>> fs/inode.c:1129:17: error: label 'lock' used but not defined
+   fs/inode.c: At top level:
+>> fs/inode.c:1136:9: error: expected identifier or '(' before 'if'
+    1136 |         if (S_ISDIR(inode2->i_mode) == S_ISDIR(inode1->i_mode)) {
+         |         ^~
+>> fs/inode.c:1139:11: error: expected identifier or '(' before 'else'
+    1139 |         } else if (!S_ISDIR(inode1->i_mode))
+         |           ^~~~
+   In file included from include/linux/kernel.h:27,
+                    from include/linux/cpumask.h:10,
+                    from include/linux/smp.h:13,
+                    from include/linux/lockdep.h:14,
+                    from include/linux/spinlock.h:63,
+                    from include/linux/wait.h:9,
+                    from include/linux/wait_bit.h:8,
+                    from include/linux/fs.h:6,
+                    from fs/inode.c:7:
+>> include/linux/minmax.h:167:63: error: expected identifier or '(' before 'while'
+     167 |         do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
+         |                                                               ^~~~~
+   fs/inode.c:1140:17: note: in expansion of macro 'swap'
+    1140 |                 swap(inode1, inode2);
+         |                 ^~~~
+>> fs/inode.c:1141:5: error: expected '=', ',', ';', 'asm' or '__attribute__' before ':' token
+    1141 | lock:
+         |     ^
+   fs/inode.c:1144:9: error: expected identifier or '(' before 'if'
+    1144 |         if (inode2 && inode2 != inode1)
+         |         ^~
+>> fs/inode.c:1146:1: error: expected identifier or '(' before '}' token
+    1146 | }
+         | ^
+
+
+vim +/lock +1129 fs/inode.c
+
+  1105	
+  1106	/**
+  1107	 * lock_two_inodes - lock two inodes (may be regular files but also dirs)
+  1108	 *
+  1109	 * Lock any non-NULL argument. The caller must make sure that if he is passing
+  1110	 * in two directories, one is not ancestor of the other.  Zero, one or two
+  1111	 * objects may be locked by this function.
+  1112	 *
+  1113	 * @inode1: first inode to lock
+  1114	 * @inode2: second inode to lock
+  1115	 * @subclass1: inode lock subclass for the first lock obtained
+  1116	 * @subclass2: inode lock subclass for the second lock obtained
+  1117	 */
+  1118	void lock_two_inodes(struct inode *inode1, struct inode *inode2,
+  1119			     unsigned subclass1, unsigned subclass2)
+  1120	{
+> 1121		if (!inode1 || !inode2)
+  1122			/*
+  1123			 * Make sure @subclass1 will be used for the acquired lock.
+  1124			 * This is not strictly necessary (no current caller cares) but
+  1125			 * let's keep things consistent.
+  1126			 */
+  1127			if (!inode1)
+  1128				swap(inode1, inode2);
+> 1129			goto lock;
+  1130		}
+  1131	
+  1132		/*
+  1133		 * If one object is directory and the other is not, we must make sure
+  1134		 * to lock directory first as the other object may be its child.
+  1135		 */
+> 1136		if (S_ISDIR(inode2->i_mode) == S_ISDIR(inode1->i_mode)) {
+  1137			if (inode1 > inode2)
+  1138				swap(inode1, inode2);
+> 1139		} else if (!S_ISDIR(inode1->i_mode))
+  1140			swap(inode1, inode2);
+> 1141	lock:
+  1142		if (inode1)
+  1143			inode_lock_nested(inode1, subclass1);
+  1144		if (inode2 && inode2 != inode1)
+  1145			inode_lock_nested(inode2, subclass2);
+> 1146	}
+  1147	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
