@@ -2,136 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 927F872087E
-	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 19:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44DA6720887
+	for <lists+stable@lfdr.de>; Fri,  2 Jun 2023 19:42:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236372AbjFBRit (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 2 Jun 2023 13:38:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50750 "EHLO
+        id S236139AbjFBRmg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 2 Jun 2023 13:42:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236865AbjFBRis (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 13:38:48 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 052B51BD
-        for <stable@vger.kernel.org>; Fri,  2 Jun 2023 10:38:47 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-974638ed5c5so161325966b.1
-        for <stable@vger.kernel.org>; Fri, 02 Jun 2023 10:38:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1685727525; x=1688319525;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qPpIUifsrj3WhrOLcjmDKG+n28eYiyTfgghRaS6XkRs=;
-        b=IKRPxJ3A0yf2tZl1cV/0w2dtc7OEvW1uj1qqlfdLfH6hbUUfGsHB0M83XAWUkuZEXI
-         rWQypeGHOLw7lhGuspNtOMw+mlk1AUWdqj9drpaGt/SxaZqMXLcZmWXcx7uu71+974KQ
-         YfOQSvOhd6kPyAndsrGpN35sfO/7fnRVnWxG4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685727525; x=1688319525;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qPpIUifsrj3WhrOLcjmDKG+n28eYiyTfgghRaS6XkRs=;
-        b=gLjECiBSsbiFH0NoEvBLKqyg1HqsusR99TZF+jqXNPlftUMS9glV4khaHvj2GtmVH9
-         Q/dHVwMIId/PB4hM1QswZHaN6oZYssWp7TTZxEfYYuMK98+K+ecY6ByyDT8ubggwUe6k
-         b64iSi0+arSU+5oJVUSYAZkSLaPNF6feXYRWHETUGEnYHBwOHiFzl/5qQzeMpvgHq402
-         Pc0czf3hb09vxT+03yGMq74jRaDzwVqVRma8dS1W8sSLh9Ff9wx9pkeHViOY+b8BKEJI
-         lyvzC8i2KVsDzTmYvkschDGriCz4Jbj4XXfvZuU6+qv02Z22t3vt3UuiYrcHKrYWq6zp
-         SJUA==
-X-Gm-Message-State: AC+VfDxcOY0cnnouXz4BTt8OHuFWFCb/7pDhiU7aea7DmquCkeutXtYq
-        fKAJHun/3nAA7tXER6VNAM5LsaDVzgx7GUbkTpEiJeDv
-X-Google-Smtp-Source: ACHHUZ4KKUGcHnHhdzRWMsX/1irX0SpHU8bmYJIwzU3As13iZvxW6aHRqBeuDRWHUuHIZWKoB5D4xQ==
-X-Received: by 2002:a17:907:e87:b0:974:5e8b:fc28 with SMTP id ho7-20020a1709070e8700b009745e8bfc28mr2919094ejc.9.1685727525422;
-        Fri, 02 Jun 2023 10:38:45 -0700 (PDT)
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com. [209.85.208.45])
-        by smtp.gmail.com with ESMTPSA id r6-20020a170906350600b00970f0e2dab2sm991638eja.112.2023.06.02.10.38.43
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Jun 2023 10:38:44 -0700 (PDT)
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5147e441c33so5050880a12.0
-        for <stable@vger.kernel.org>; Fri, 02 Jun 2023 10:38:43 -0700 (PDT)
-X-Received: by 2002:a05:6402:202e:b0:505:d16:9374 with SMTP id
- ay14-20020a056402202e00b005050d169374mr3588912edb.9.1685727523436; Fri, 02
- Jun 2023 10:38:43 -0700 (PDT)
+        with ESMTP id S235274AbjFBRmf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 13:42:35 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD502133;
+        Fri,  2 Jun 2023 10:42:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685727754; x=1717263754;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=pKlkspNOzWL1+VLdgFmqTg/cLWhdIZxOrJGpOZ10YD0=;
+  b=hWUr5qDOkbD3nEl3i/8qitoQI4jdHYAOqZv4dx2hYsFNZ4VDBgULKYUx
+   sCIFk6Y0R1ZHvOOgqnUYXL9BcVMNIV7YEfgLSfjw0Hx6Lkn5inbB1fsK5
+   HMOYovmlQt5PkifP8zBZPVGAOtELkPNrA7c0UACa+65l+eWeI/R77EdPb
+   NnRVjyyymylz1oPhoV3gYeRpfowEE+H4cd6QCrqtwbUj8qw9zc8mlLKXR
+   NONxT8kA68TCTnEKOpLdOFeHk5D5HntUgJqmCayuNTIbxXOjlo2DTZOYC
+   DzCDM4aPaFvaj+DAvUPA15O+poF5TMkOgFIuG18H418zAn/7L+KzGmj6I
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="336289400"
+X-IronPort-AV: E=Sophos;i="6.00,213,1681196400"; 
+   d="scan'208";a="336289400"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2023 10:42:34 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10729"; a="702030729"
+X-IronPort-AV: E=Sophos;i="6.00,213,1681196400"; 
+   d="scan'208";a="702030729"
+Received: from pingshi-mobl.amr.corp.intel.com (HELO [10.251.23.169]) ([10.251.23.169])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jun 2023 10:42:34 -0700
+Message-ID: <d73d41cc-0578-7bf3-46a2-b47eea44bdd0@intel.com>
+Date:   Fri, 2 Jun 2023 10:42:33 -0700
 MIME-Version: 1.0
-References: <4d7e38ff5bbc496cb794b50e1c5c83bcd2317e69.camel@huaweicloud.com>
-In-Reply-To: <4d7e38ff5bbc496cb794b50e1c5c83bcd2317e69.camel@huaweicloud.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Fri, 2 Jun 2023 13:38:26 -0400
-X-Gmail-Original-Message-ID: <CAHk-=wj4S0t5RnJQmF_wYwv+oMTKggwdLnrA9D1uMNKq4H4byw@mail.gmail.com>
-Message-ID: <CAHk-=wj4S0t5RnJQmF_wYwv+oMTKggwdLnrA9D1uMNKq4H4byw@mail.gmail.com>
-Subject: Re: [GIT PULL] Asymmetric keys fix for v6.4-rc5
-To:     Roberto Sassu <roberto.sassu@huaweicloud.com>,
-        David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Eric Biggers <ebiggers@kernel.org>,
-        Stefan Berger <stefanb@linux.ibm.com>, davem@davemloft.net,
-        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
-        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCHv2 2/3] x86/tdx: Fix race between set_memory_encrypted()
+ and load_unaligned_zeropad()
+Content-Language: en-US
+To:     "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Sathyanarayanan Kuppuswamy 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "Kirill A. Shutemov" <kirill@shutemov.name>
+Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "bp@alien8.de" <bp@alien8.de>, Dexuan Cui <decui@microsoft.com>,
+        "rick.p.edgecombe@intel.com" <rick.p.edgecombe@intel.com>,
+        "seanjc@google.com" <seanjc@google.com>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20230526120225.31936-1-kirill.shutemov@linux.intel.com>
+ <20230526120225.31936-3-kirill.shutemov@linux.intel.com>
+ <19d9977f-bf07-2948-1b45-456af9c09e2f@linux.intel.com>
+ <20230530005736.ndwza2i5n7wrki5h@box.shutemov.name>
+ <9d679d3f-8db9-80ef-292a-9ca5b860579b@amd.com>
+ <2d8ae093-dd9e-ea49-d6f9-3fdb2fb84e4d@linux.intel.com>
+ <BYAPR21MB1688EF2A57E90FCE02B82F84D748A@BYAPR21MB1688.namprd21.prod.outlook.com>
+ <9fbc3760-7239-2323-ed90-210a0de9e286@amd.com>
+ <BYAPR21MB168826D6C870542E5BD3372BD74EA@BYAPR21MB1688.namprd21.prod.outlook.com>
+From:   Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <BYAPR21MB168826D6C870542E5BD3372BD74EA@BYAPR21MB1688.namprd21.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Jun 2, 2023 at 10:41=E2=80=AFAM Roberto Sassu
-<roberto.sassu@huaweicloud.com> wrote:
->
-> sorry for this unusual procedure of me requesting a patch to be pulled.
-> I asked for several months the maintainers (David: asymmetric keys,
-> Jarkko: key subsystem) to pick my patch but without any luck.
+On 6/2/23 09:11, Michael Kelley (LINUX) wrote:
+> Tom -- Does the above sequence *depend* on the hypervisor doing anything
+> to make it work?  I'm not clear on why KVM would automatically change the
+> page over to private.  If there's a dependency on the hypervisor doing
+> something, then it seems like we'll need to standardize that "something"
+> across hypervisors, lest we end up with per-hypervisor code in Linux to handle
+> this scenario.  And running SEV-SNP with multiple VMPLs probably makes it
+> even more complicated.
+> 
+> Kirill -- Same question about TDX.  Does making load_unaligned_zeropad()
+> work in a TDX VM depend on the hypervisor doing anything?  Or is the
+> behavior seen by the guest dependent only on architected behavior of
+> the TDX processor?
 
-Hmm.
+No, there's no active help from the hypervisor here.
 
-The patch behind that tag looks sane to me, but this is not code I am
-hugely familiar with.
-
-Who is the caller that passes in the public_key_signature data on the
-stack to public_key_verify_signature()? This may well be the right
-point to move it away from the stack in order to have a valid sg-list,
-but even if this patch is all good, it would be nice to have the call
-chain documented as part of the commit message.
-
-> I signed the tag, but probably it would not matter, since my key is not
-> among your trusted keys.
-
-It does matter - I do pull from people even without full chains, I
-just end up being a lot more careful, and I still want to see the
-signature for any future reference...
-
-DavidH, Herbert, please comment:
-
->   https://github.com/robertosassu/linux.git tags/asym-keys-fix-for-linus-=
-v6.4-rc5
-
-basically public_key_verify_signature() is passed that
-
-     const struct public_key_signature *sig
-
-as an argument, and currently does
-
-        sg_init_table(src_sg, 2);
-        sg_set_buf(&src_sg[0], sig->s, sig->s_size);
-        sg_set_buf(&src_sg[1], sig->digest, sig->digest_size);
-
-
-on it which is *not* ok if the s->s and s->digest points to stack data
-that ends up not dma'able because of a virtually mapped stack.
-
-The patch re-uses the allocation it already does for the key data, and
-it seems sane.
-
-But again, this is not code I look at normally, so...
-
-               Linus
+Also, fwiw, the "architected behavior" here is really just the TDX
+module policy and _arguably_ the hardware Secure-EPT controlled by the
+TDX module.
