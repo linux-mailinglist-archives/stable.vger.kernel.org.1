@@ -2,96 +2,124 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E8A9720BFF
-	for <lists+stable@lfdr.de>; Sat,  3 Jun 2023 00:36:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B8B2720C79
+	for <lists+stable@lfdr.de>; Sat,  3 Jun 2023 02:02:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236563AbjFBWgR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 2 Jun 2023 18:36:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36850 "EHLO
+        id S236526AbjFCACr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 2 Jun 2023 20:02:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235994AbjFBWgQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 18:36:16 -0400
-Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EC741A2;
-        Fri,  2 Jun 2023 15:36:16 -0700 (PDT)
-Received: by mail-oi1-x22d.google.com with SMTP id 5614622812f47-38e04d1b2b4so2121968b6e.3;
-        Fri, 02 Jun 2023 15:36:16 -0700 (PDT)
+        with ESMTP id S236190AbjFCACq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 20:02:46 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C89B71BF
+        for <stable@vger.kernel.org>; Fri,  2 Jun 2023 17:02:44 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-4f3edc05aa5so3578828e87.3
+        for <stable@vger.kernel.org>; Fri, 02 Jun 2023 17:02:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685745375; x=1688337375;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=of674XRvlx3/FzSHdFSRdMppyBXBB7Firiv2U8wT/bU=;
-        b=cYOr6LStbQ3rQIrtdbTdHjzgR5m6u66Bo5p+KO8lEDSsdK8HUE0hUIuzQhYafkDwix
-         xPzTdY14ks52OKikb5o2jLwC48FeqNWi1t/OK84cHM+EcKQLvrtlqZVRaj+5LuJoFdQu
-         72uoCT0nbZlxTA6co0a9D6H+nB2Jdu4BEsoxCz8DBJzk2FZzN4RTHtP+hxo1Xhe1pjBm
-         hfTHp4S4rxZ5uzvR0FY+BXZoAzdHEJHh8mjm1naOlRZ0day1BL9FwysO+cefR0O6JRNO
-         1KsBRF91rqOg9a/CFBEXzkiwarjUl0FNrnp8vy1eZD1xo2bmcqH2ZpUzaAw76bhITfJD
-         xPPw==
+        d=linux-foundation.org; s=google; t=1685750563; x=1688342563;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UIfddwJGgEUnwUCFA5IlnKSK6V7h4JvROQevxAQzNhk=;
+        b=Xc3AyBTCKjaXrHR7Xn+gWHTG8qM31jMYo97046Wrqhe1Py0EkfgorGVdl7O+h8+E9L
+         PaAZsESnLNkgwnMUxef6YPVRCpRivyvhVZ9fm2NvVOB11vXsyRO5P1OwgQUU1H/h8ieT
+         aWMFYcJc91CVBIsodU5Pk+AT3AzlbRWZyKPhA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685745375; x=1688337375;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1685750563; x=1688342563;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=of674XRvlx3/FzSHdFSRdMppyBXBB7Firiv2U8wT/bU=;
-        b=iM6Lw3LD2Yj3fAvH8rDUUqJyaxngzgTZeotSD3c2DMJxY1Uq0GOe/Pd1KBVUMtVyeN
-         xflWM6jRg0m508SAeJwOB0Fb/0DKFzrwPn6K+4HrHb1U0RUme3/BEVd1bb4s5txFMMKJ
-         jy8OaQ1s5nZVI4OGWKigACUId5MWvGau7aTA8fOeW1qz+hOeU8YrlTQMpGqodweGBNTo
-         yUiEuzEriqFeda05ox8EYmizd5Q8LOd+g4m1Y/1464KZeQjxhWvUPaVx2jxbWe6c5jEM
-         +qW/3rD65j7NPEq5gd6SVU0HAJPLadBSRjKF7CvaKex776nyrj+wt7fd7xSV8XuKp2jp
-         SRKg==
-X-Gm-Message-State: AC+VfDwVGTrPzv8+aaN3aAdNS/q6/0/N5X6Xqcb/TiNNe61DqbkePdTC
-        IoRX+poQwl/w1rPTqZ0yyok=
-X-Google-Smtp-Source: ACHHUZ7lSmvU5fH9/0RO8nspGwMqr/NGHrSuB7aPRrWM4oGtYd3eyKrAsG/6f17WVxdltdL/VQJFYA==
-X-Received: by 2002:a05:6808:8c5:b0:398:59fe:6ee3 with SMTP id k5-20020a05680808c500b0039859fe6ee3mr1106424oij.54.1685745375577;
-        Fri, 02 Jun 2023 15:36:15 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id x4-20020a170902ea8400b001a2104d706fsm1835249plb.225.2023.06.02.15.36.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Jun 2023 15:36:15 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Fri, 2 Jun 2023 15:36:14 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de
-Subject: Re: [PATCH 6.3 00/45] 6.3.6-rc1 review
-Message-ID: <f3c90f5e-696f-4458-9fef-ff82f5d41e1c@roeck-us.net>
-References: <20230601131938.702671708@linuxfoundation.org>
+        bh=UIfddwJGgEUnwUCFA5IlnKSK6V7h4JvROQevxAQzNhk=;
+        b=CqgZKN7U533To2KhjuYEMy0Q7PDs4npHw9Xc7U2aTsm9tsJ0Re5r2Yj+AaNxlGxtVt
+         178glzO4PO8gYR2Z+1otVJMW+iWGI9vXC4HX1FyOK4a5YUUEnpMwfm3i/J4LReOv7kBX
+         pfuCdW/ijZDQkqKcCuQB+WHS5lQ48WUhckcHFT5IoFBNrcrVZGfSL1hXT92s6DcEq0H0
+         DLcfkTeKFOJ3SEYFA2jv2EjKHueuWIrFroa4/3EMbuug/1enClqwGuRxN+vDmSg3miem
+         idLtCmE72+Du6FTJdyruFkUBRImYtuhkTgTjcbNWH6wiar8IpcDorxSglf+jtfuHUZ6s
+         vphA==
+X-Gm-Message-State: AC+VfDyXHY0YtSTn++3mgereD6bAy+Mrvw4f6m51dnE+2I7QIKwTGWUq
+        RbLMiHKw6PmdYOcUCKbe8Z47bgTeuRwLSwK4cjsRMQJW
+X-Google-Smtp-Source: ACHHUZ7MeZXYHnBthQxpUDRFsQY33BUbtLyXq5oAyhOE5iLj0p+WCobfXsu3QG5FqIrjI9+mu0TNhw==
+X-Received: by 2002:ac2:47e4:0:b0:4f1:3eca:76a0 with SMTP id b4-20020ac247e4000000b004f13eca76a0mr448129lfp.66.1685750562904;
+        Fri, 02 Jun 2023 17:02:42 -0700 (PDT)
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com. [209.85.167.49])
+        by smtp.gmail.com with ESMTPSA id y8-20020ac255a8000000b004efee46249fsm312951lfg.243.2023.06.02.17.02.40
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 02 Jun 2023 17:02:41 -0700 (PDT)
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-4f3edc05aa5so3578787e87.3
+        for <stable@vger.kernel.org>; Fri, 02 Jun 2023 17:02:40 -0700 (PDT)
+X-Received: by 2002:ac2:52ba:0:b0:4f2:7b65:baeb with SMTP id
+ r26-20020ac252ba000000b004f27b65baebmr2458573lfm.53.1685750560415; Fri, 02
+ Jun 2023 17:02:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230601131938.702671708@linuxfoundation.org>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+References: <4d7e38ff5bbc496cb794b50e1c5c83bcd2317e69.camel@huaweicloud.com> <CAHk-=wj4S0t5RnJQmF_wYwv+oMTKggwdLnrA9D1uMNKq4H4byw@mail.gmail.com>
+In-Reply-To: <CAHk-=wj4S0t5RnJQmF_wYwv+oMTKggwdLnrA9D1uMNKq4H4byw@mail.gmail.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Fri, 2 Jun 2023 20:02:23 -0400
+X-Gmail-Original-Message-ID: <CAHk-=wgCUzRNTg4fC8DF=UFnznK0M=mNUBDcsnLt7D4+HP2_1Q@mail.gmail.com>
+Message-ID: <CAHk-=wgCUzRNTg4fC8DF=UFnznK0M=mNUBDcsnLt7D4+HP2_1Q@mail.gmail.com>
+Subject: Re: [GIT PULL] Asymmetric keys fix for v6.4-rc5
+To:     Roberto Sassu <roberto.sassu@huaweicloud.com>,
+        David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Stefan Berger <stefanb@linux.ibm.com>, davem@davemloft.net,
+        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
+        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 01, 2023 at 02:20:56PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.3.6 release.
-> There are 45 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 03 Jun 2023 13:19:19 +0000.
-> Anything received after that time might be too late.
-> 
+On Fri, Jun 2, 2023 at 1:38=E2=80=AFPM Linus Torvalds
+<torvalds@linux-foundation.org> wrote:
+>
+> The patch re-uses the allocation it already does for the key data, and
+> it seems sane.
 
-Build results:
-	total: 153 pass: 153 fail: 0
-Qemu test results:
-	total: 520 pass: 520 fail: 0
+Ugh. I had to check that it was ok to re-use the key buffer, but it
+does seem to be the case that you can just re-use the buffer after
+you've done that crypto_akcipher_set_priv/pub_key() call, and the
+crypto layer has to copy it into its own data structures.
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+I absolutely abhor the crypto interfaces. They all seem designed for
+that "external DMA engine" case that seems so horrendously pointless
+and slow.  In practice so few of them are that, and we have all those
+optimized routines for doing it all on the CPU - but have in the
+meantime wasted all that time and effort into copying everything,
+turning simple buffers into sg-bufs etc etc. The amount of indirection
+and "set this state in the state machine" is just nasty, and this
+seems to all be a prime example of it all. With some of it then
+randomly going through some kthread too.
 
-Guenter
+I still think that patch is probably fine, but was also going "maybe
+the real problem is in that library helper function
+(asymmetric_verify(), in this case), which takes those (sig, siglen,
+digest, digestlen) arguments and turns it into a 'struct
+public_key_signature' without marshalling them.
+
+Just looking at this mess of indirection and different "helper"
+functions makes me second-guess myself about where the actual
+conversion should be - while also feeling like it should never have
+been done as a scatter-gather entry in the first place.
+
+Anyway, I don't feel competent to decide if that pull request is the
+right fix or not.
+
+But it clearly is *a* fix.
+
+            Linus
