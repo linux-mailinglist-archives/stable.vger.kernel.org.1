@@ -2,245 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4BD772109B
-	for <lists+stable@lfdr.de>; Sat,  3 Jun 2023 16:52:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE10E72109F
+	for <lists+stable@lfdr.de>; Sat,  3 Jun 2023 16:53:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230170AbjFCOwS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 3 Jun 2023 10:52:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60302 "EHLO
+        id S229666AbjFCOxR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 3 Jun 2023 10:53:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229529AbjFCOwR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 3 Jun 2023 10:52:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60979CE;
-        Sat,  3 Jun 2023 07:52:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E8B3060F9C;
-        Sat,  3 Jun 2023 14:52:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D720EC433D2;
-        Sat,  3 Jun 2023 14:52:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685803935;
-        bh=JCjTcm63FamFuQRUalVRDuxrZE0ntO/Hy0kgWETTGXk=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ntzEd2NyRisJ9EHqJ5IzHi/wae0QQDeq9+IjOmyw/gR4JuodhFunG0+sJjOW7Xioy
-         qn28nHHO1RKCAdLlsrueUAMOsJZH8qdXslo1hbhST24sVMCmTZQauxMGYjuxm3InMp
-         UPQjGzd8mYT6z+ZF1/9NnrN8P7V/owqhIP3WZRl0=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de
-Subject: [PATCH 5.15 00/35] 5.15.115-rc3 review
-Date:   Sat,  3 Jun 2023 16:37:18 +0200
-Message-ID: <20230603143543.855276091@linuxfoundation.org>
-X-Mailer: git-send-email 2.41.0
+        with ESMTP id S229606AbjFCOxO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 3 Jun 2023 10:53:14 -0400
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A602CE;
+        Sat,  3 Jun 2023 07:53:13 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.nyi.internal (Postfix) with ESMTP id C76425C00C8;
+        Sat,  3 Jun 2023 10:53:12 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Sat, 03 Jun 2023 10:53:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        invisiblethingslab.com; h=cc:cc:content-transfer-encoding
+        :content-type:date:date:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to; s=fm1; t=1685803992; x=1685890392; bh=YCzACzClxG
+        a/ktYTHwJaaNWjaN7phPISbw1cPfpWZUo=; b=pXYzXv05o9CAdFMXpOMdKmLWi2
+        Q5Vuiijm/ua1tXFFnVVd1Mmlyx0n3sJG7LkVHlrx2skKiWiQsHJ5s+xH+jgC0xsU
+        qnJCUnbr2+RZTznR9n9hba8/it5Hsqve8eNGpy0QG3q8nhb0B1fZMwII5oAYzLwz
+        7Ltro9/nIYFdvObT9L7XkEt3SEUT1fRvXKLzRUcRu0DWmp6C+ElO/93OT/zM8Aot
+        qc/ZHGerpZ5NcMYIvFiQjfF3K6k3pdwGiI/q5Yhhb1BqGoXcKRrTEpbGWzp8Uf33
+        8phGyAwsIKivy40tWpDXpekYtqYOqbnwMX//S+yA+45b5TOkqsaxN67UJOtg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:date:date:feedback-id:feedback-id:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1685803992; x=
+        1685890392; bh=YCzACzClxGa/ktYTHwJaaNWjaN7phPISbw1cPfpWZUo=; b=v
+        CBsWyth29tlIlptRZtIJNH+muWrQmiT0Lbs0SbsNteRgKmQXQX+J7Vt5gror77e1
+        Ta3vwUGl8KlKj4yUjlg7SEmhjxAyAHA/3/GEaOcpKHbkZjqfeFUPzqGPayw4ppWt
+        SY1iURtwhnQk12abr1qwqjnpnn2UOFpHOvFzRcNgap4XiFbgm/vJ8QcL2+l9m6nc
+        yRf9hwoR8sxcEZqlk3scrn+CmX8utRGnawc1t1vP3GSe+0k5uAIC6suw46l5mpJr
+        TYSOPN8JdKHQwvpvEoqy2l0jGPvAv+Wmyju1pHSFcnfe6O/TuNQJHDcwQFJvn/ez
+        wcDzQsQBeOHQnAI6qxI+g==
+X-ME-Sender: <xms:2FN7ZE2h5QeLfbrohaX27qRqTPUK48kyBgm3-afbOaLUJukdgBM0-w>
+    <xme:2FN7ZPH3omy1JSPsoxKOshmcJiJW3thxamhbYkN0FNFZAHg9LcV-H52-S7u4Ng0Nb
+    n6Lg1u8Kx4mK7I>
+X-ME-Received: <xmr:2FN7ZM5vsjOKkKbG5RSuNkEV7oUWyz5n7GZ-mv36HQIUpYTZPZzD2_PiclAIGT-dSZBzc91_hsY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeelhedgkedvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepffgvmhhi
+    ucforghrihgvucfqsggvnhhouhhruceouggvmhhisehinhhvihhsihgslhgvthhhihhngh
+    hslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepjeffjefggfeugeduvedvjeekgfeh
+    gffhhfffjeetkeelueefffetfffhtdduheetnecuvehluhhsthgvrhfuihiivgepudenuc
+    frrghrrghmpehmrghilhhfrhhomhepuggvmhhisehinhhvihhsihgslhgvthhhihhnghhs
+    lhgrsgdrtghomh
+X-ME-Proxy: <xmx:2FN7ZN0aOE4E4YhBrqF_xSyYQvn7SEcA-3yA5oHdNLWbpQSybaNF5Q>
+    <xmx:2FN7ZHHCBVyVBX_loHW3pTFfQ6nennJbkyE4OHWJQicqH5itNUuEHw>
+    <xmx:2FN7ZG_sNxo5GyxjtyLo1SVHeVmznrWI33qrIRRElaWXj51-P9LM5Q>
+    <xmx:2FN7ZPDQwR-wycjhdOYZuCyv0fuuk_LPMaDvLTD8z-1uvyfBRl2U7g>
+Feedback-ID: iac594737:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 3 Jun 2023 10:53:12 -0400 (EDT)
+From:   Demi Marie Obenour <demi@invisiblethingslab.com>
+To:     Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@kernel.org>, dm-devel@redhat.com
+Cc:     Demi Marie Obenour <demi@invisiblethingslab.com>,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: [PATCH v2 1/6] device-mapper: Check that target specs are sufficiently aligned
+Date:   Sat,  3 Jun 2023 10:52:39 -0400
+Message-Id: <20230603145244.1538-2-demi@invisiblethingslab.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230603145244.1538-1-demi@invisiblethingslab.com>
+References: <20230601212456.1533-1-demi@invisiblethingslab.com>
+ <20230603145244.1538-1-demi@invisiblethingslab.com>
 MIME-Version: 1.0
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.115-rc3.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-5.15.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 5.15.115-rc3
-X-KernelTest-Deadline: 2023-06-05T14:35+00:00
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is the start of the stable review cycle for the 5.15.115 release.
-There are 35 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+Otherwise subsequent code will dereference a misaligned
+`struct dm_target_spec *`, which is undefined behavior.
 
-Responses should be made by Mon, 05 Jun 2023 14:35:25 +0000.
-Anything received after that time might be too late.
+Signed-off-by: Demi Marie Obenour <demi@invisiblethingslab.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+---
+ drivers/md/dm-ioctl.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.115-rc3.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-and the diffstat can be found below.
-
-thanks,
-
-greg k-h
-
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 5.15.115-rc3
-
-Paul Blakey <paulb@nvidia.com>
-    netfilter: ctnetlink: Support offloaded conntrack entry deletion
-
-Nicolas Dichtel <nicolas.dichtel@6wind.com>
-    ipv{4,6}/raw: fix output xfrm lookup wrt protocol
-
-Carlos Llamas <cmllamas@google.com>
-    binder: fix UAF of alloc->vma in race with munmap()
-
-Carlos Llamas <cmllamas@google.com>
-    binder: add lockless binder_alloc_(set|get)_vma()
-
-Carlos Llamas <cmllamas@google.com>
-    Revert "android: binder: stop saving a pointer to the VMA"
-
-Carlos Llamas <cmllamas@google.com>
-    Revert "binder_alloc: add missing mmap_lock calls when using the VMA"
-
-Ruihan Li <lrh2000@pku.edu.cn>
-    bluetooth: Add cmd validity checks at the start of hci_sock_ioctl()
-
-Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-    xdp: xdp_mem_allocator can be NULL in trace_mem_connect().
-
-Jiaxun Yang <jiaxun.yang@flygoat.com>
-    irqchip/mips-gic: Don't touch vl_map if a local interrupt is not routable
-
-Yunsheng Lin <linyunsheng@huawei.com>
-    page_pool: fix inconsistency for page_pool_ring_[un]lock()
-
-Qingfang DENG <qingfang.deng@siflower.com.cn>
-    net: page_pool: use in_softirq() instead
-
-Toke Høiland-Jørgensen <toke@redhat.com>
-    xdp: Allow registering memory model without rxq reference
-
-Rahul Rameshbabu <rrameshbabu@nvidia.com>
-    net/mlx5e: Fix SQ wake logic in ptp napi_poll context
-
-Jiaxun Yang <jiaxun.yang@flygoat.com>
-    irqchip/mips-gic: Use raw spinlock for gic_lock
-
-Marc Zyngier <maz@kernel.org>
-    irqchip/mips-gic: Get rid of the reliance on irq_cpu_online()
-
-Carlos Llamas <cmllamas@google.com>
-    binder: fix UAF caused by faulty buffer cleanup
-
-Hangbin Liu <liuhangbin@gmail.com>
-    bonding: fix send_peer_notif overflow
-
-Hangbin Liu <liuhangbin@gmail.com>
-    Bonding: add arp_missed_max option
-
-Arınç ÜNAL <arinc.unal@arinc9.com>
-    net: dsa: mt7530: fix network connectivity with multiple CPU ports
-
-Daniel Golle <daniel@makrotopia.org>
-    net: dsa: mt7530: split-off common parts from mt7531_setup
-
-Frank Wunderlich <frank-w@public-files.de>
-    net: dsa: mt7530: rework mt753[01]_setup
-
-Vladimir Oltean <vladimir.oltean@nxp.com>
-    net: dsa: introduce helpers for iterating through ports using dp
-
-David Epping <david.epping@missinglinkelectronics.com>
-    net: phy: mscc: enable VSC8501/2 RGMII RX clock
-
-Steve Wahl <steve.wahl@hpe.com>
-    platform/x86: ISST: Remove 8 socket limit
-
-Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-    platform/x86: ISST: PUNIT device mapping with Sub-NUMA clustering
-
-Shay Drory <shayd@nvidia.com>
-    net/mlx5: Devcom, serialize devcom registration
-
-Vlad Buslov <vladbu@nvidia.com>
-    net/mlx5e: Fix deadlock in tc route query code
-
-Mark Bloch <mbloch@nvidia.com>
-    net/mlx5: devcom only supports 2 ports
-
-Anton Protopopov <aspsk@isovalent.com>
-    bpf: fix a memory leak in the LRU and LRU_PERCPU hash maps
-
-Hans de Goede <hdegoede@redhat.com>
-    power: supply: bq24190: Call power_supply_changed() after updating input current
-
-Hans de Goede <hdegoede@redhat.com>
-    power: supply: core: Refactor power_supply_set_input_current_limit_from_supplier()
-
-Hans de Goede <hdegoede@redhat.com>
-    power: supply: bq27xxx: After charger plug in/out wait 0.5s for things to stabilize
-
-Hans de Goede <hdegoede@redhat.com>
-    power: supply: bq27xxx: Ensure power_supply_changed() is called on current sign changes
-
-Hans de Goede <hdegoede@redhat.com>
-    power: supply: bq27xxx: Move bq27xxx_battery_update() down
-
-Sicelo A. Mhlongo <absicsz@gmail.com>
-    power: supply: bq27xxx: expose battery data when CI=1
-
-
--------------
-
-Diffstat:
-
- Documentation/networking/bonding.rst               |  11 ++
- Makefile                                           |   4 +-
- drivers/android/binder.c                           |  26 +++-
- drivers/android/binder_alloc.c                     |  64 +++-----
- drivers/android/binder_alloc.h                     |   2 +-
- drivers/android/binder_alloc_selftest.c            |   2 +-
- drivers/irqchip/irq-mips-gic.c                     |  65 +++++---
- drivers/net/bonding/bond_main.c                    |  17 +-
- drivers/net/bonding/bond_netlink.c                 |  22 ++-
- drivers/net/bonding/bond_options.c                 |  36 ++++-
- drivers/net/bonding/bond_procfs.c                  |   2 +
- drivers/net/bonding/bond_sysfs.c                   |  13 ++
- drivers/net/dsa/mt7530.c                           | 124 +++++++++------
- drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c   |   2 +
- drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h  |   2 +
- drivers/net/ethernet/mellanox/mlx5/core/en_tc.c    |  19 +--
- drivers/net/ethernet/mellanox/mlx5/core/en_tx.c    |  19 ++-
- .../net/ethernet/mellanox/mlx5/core/lib/devcom.c   |  81 +++++++---
- .../net/ethernet/mellanox/mlx5/core/lib/devcom.h   |   3 +
- drivers/net/phy/mscc/mscc.h                        |   1 +
- drivers/net/phy/mscc/mscc_main.c                   |  54 +++----
- .../x86/intel/speed_select_if/isst_if_common.c     |  49 ++++--
- drivers/power/supply/bq24190_charger.c             |  13 +-
- drivers/power/supply/bq27xxx_battery.c             | 171 +++++++++++----------
- drivers/power/supply/power_supply_core.c           |  57 +++----
- include/linux/power/bq27xxx_battery.h              |   3 +
- include/linux/power_supply.h                       |   5 +-
- include/net/bond_options.h                         |   1 +
- include/net/bonding.h                              |   3 +-
- include/net/dsa.h                                  |  28 ++++
- include/net/ip.h                                   |   2 +
- include/net/page_pool.h                            |  18 ---
- include/net/xdp.h                                  |   3 +
- include/uapi/linux/if_link.h                       |   1 +
- include/uapi/linux/in.h                            |   2 +
- kernel/bpf/hashtab.c                               |   6 +-
- net/bluetooth/hci_sock.c                           |  28 ++++
- net/core/page_pool.c                               |  34 +++-
- net/core/xdp.c                                     |  93 +++++++----
- net/ipv4/ip_sockglue.c                             |  12 +-
- net/ipv4/raw.c                                     |   5 +-
- net/ipv6/raw.c                                     |   3 +-
- net/netfilter/nf_conntrack_netlink.c               |   8 -
- tools/include/uapi/linux/if_link.h                 |   1 +
- 44 files changed, 726 insertions(+), 389 deletions(-)
-
+diff --git a/drivers/md/dm-ioctl.c b/drivers/md/dm-ioctl.c
+index cc77cf3d410921432eb0c62cdede7d55b9aa674a..34fa74c6a70db8aa67aaba3f6a2fc4f38ef736bc 100644
+--- a/drivers/md/dm-ioctl.c
++++ b/drivers/md/dm-ioctl.c
+@@ -1394,6 +1394,13 @@ static inline fmode_t get_mode(struct dm_ioctl *param)
+ static int next_target(struct dm_target_spec *last, uint32_t next, void *end,
+ 		       struct dm_target_spec **spec, char **target_params)
+ {
++	static_assert(_Alignof(struct dm_target_spec) <= 8,
++		      "struct dm_target_spec has excessive alignment requirements");
++	if (next % 8) {
++		DMERR("Next target spec (offset %u) is not 8-byte aligned", next);
++		return -EINVAL;
++	}
++
+ 	*spec = (struct dm_target_spec *) ((unsigned char *) last + next);
+ 	*target_params = (char *) (*spec + 1);
+ 
+-- 
+Sincerely,
+Demi Marie Obenour (she/her/hers)
+Invisible Things Lab
 
