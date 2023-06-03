@@ -2,124 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B8B2720C79
-	for <lists+stable@lfdr.de>; Sat,  3 Jun 2023 02:02:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ABCF720CC1
+	for <lists+stable@lfdr.de>; Sat,  3 Jun 2023 02:55:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236526AbjFCACr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 2 Jun 2023 20:02:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54762 "EHLO
+        id S236891AbjFCAz4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 2 Jun 2023 20:55:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236190AbjFCACq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 20:02:46 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C89B71BF
-        for <stable@vger.kernel.org>; Fri,  2 Jun 2023 17:02:44 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-4f3edc05aa5so3578828e87.3
-        for <stable@vger.kernel.org>; Fri, 02 Jun 2023 17:02:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1685750563; x=1688342563;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UIfddwJGgEUnwUCFA5IlnKSK6V7h4JvROQevxAQzNhk=;
-        b=Xc3AyBTCKjaXrHR7Xn+gWHTG8qM31jMYo97046Wrqhe1Py0EkfgorGVdl7O+h8+E9L
-         PaAZsESnLNkgwnMUxef6YPVRCpRivyvhVZ9fm2NvVOB11vXsyRO5P1OwgQUU1H/h8ieT
-         aWMFYcJc91CVBIsodU5Pk+AT3AzlbRWZyKPhA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685750563; x=1688342563;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UIfddwJGgEUnwUCFA5IlnKSK6V7h4JvROQevxAQzNhk=;
-        b=CqgZKN7U533To2KhjuYEMy0Q7PDs4npHw9Xc7U2aTsm9tsJ0Re5r2Yj+AaNxlGxtVt
-         178glzO4PO8gYR2Z+1otVJMW+iWGI9vXC4HX1FyOK4a5YUUEnpMwfm3i/J4LReOv7kBX
-         pfuCdW/ijZDQkqKcCuQB+WHS5lQ48WUhckcHFT5IoFBNrcrVZGfSL1hXT92s6DcEq0H0
-         DLcfkTeKFOJ3SEYFA2jv2EjKHueuWIrFroa4/3EMbuug/1enClqwGuRxN+vDmSg3miem
-         idLtCmE72+Du6FTJdyruFkUBRImYtuhkTgTjcbNWH6wiar8IpcDorxSglf+jtfuHUZ6s
-         vphA==
-X-Gm-Message-State: AC+VfDyXHY0YtSTn++3mgereD6bAy+Mrvw4f6m51dnE+2I7QIKwTGWUq
-        RbLMiHKw6PmdYOcUCKbe8Z47bgTeuRwLSwK4cjsRMQJW
-X-Google-Smtp-Source: ACHHUZ7MeZXYHnBthQxpUDRFsQY33BUbtLyXq5oAyhOE5iLj0p+WCobfXsu3QG5FqIrjI9+mu0TNhw==
-X-Received: by 2002:ac2:47e4:0:b0:4f1:3eca:76a0 with SMTP id b4-20020ac247e4000000b004f13eca76a0mr448129lfp.66.1685750562904;
-        Fri, 02 Jun 2023 17:02:42 -0700 (PDT)
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com. [209.85.167.49])
-        by smtp.gmail.com with ESMTPSA id y8-20020ac255a8000000b004efee46249fsm312951lfg.243.2023.06.02.17.02.40
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 02 Jun 2023 17:02:41 -0700 (PDT)
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-4f3edc05aa5so3578787e87.3
-        for <stable@vger.kernel.org>; Fri, 02 Jun 2023 17:02:40 -0700 (PDT)
-X-Received: by 2002:ac2:52ba:0:b0:4f2:7b65:baeb with SMTP id
- r26-20020ac252ba000000b004f27b65baebmr2458573lfm.53.1685750560415; Fri, 02
- Jun 2023 17:02:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <4d7e38ff5bbc496cb794b50e1c5c83bcd2317e69.camel@huaweicloud.com> <CAHk-=wj4S0t5RnJQmF_wYwv+oMTKggwdLnrA9D1uMNKq4H4byw@mail.gmail.com>
-In-Reply-To: <CAHk-=wj4S0t5RnJQmF_wYwv+oMTKggwdLnrA9D1uMNKq4H4byw@mail.gmail.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Fri, 2 Jun 2023 20:02:23 -0400
-X-Gmail-Original-Message-ID: <CAHk-=wgCUzRNTg4fC8DF=UFnznK0M=mNUBDcsnLt7D4+HP2_1Q@mail.gmail.com>
-Message-ID: <CAHk-=wgCUzRNTg4fC8DF=UFnznK0M=mNUBDcsnLt7D4+HP2_1Q@mail.gmail.com>
-Subject: Re: [GIT PULL] Asymmetric keys fix for v6.4-rc5
-To:     Roberto Sassu <roberto.sassu@huaweicloud.com>,
-        David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Eric Biggers <ebiggers@kernel.org>,
-        Stefan Berger <stefanb@linux.ibm.com>, davem@davemloft.net,
-        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
-        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S237011AbjFCAzz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 2 Jun 2023 20:55:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0852E62;
+        Fri,  2 Jun 2023 17:55:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2030C60FC6;
+        Sat,  3 Jun 2023 00:55:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246A0C433D2;
+        Sat,  3 Jun 2023 00:55:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1685753748;
+        bh=Xubkvl6o/dMjh0W2gs6rjN5eA+h0WSm7E9vZ1z6roSE=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=Ckdb5p4PjYQ2h0tguVeop9ZOh+CNCjMk4ZQS8TtIbeq1ACOe7Hp9tfmWK3rgzPfgd
+         u/08F1YFM4P9P9YNGu9hXZBBpraG979oH2iY8h9V0WowMpD5+x8ChFXswpJBhMdHhw
+         eWk+w9/CsGr7KZWGWop98gLyPrQgbPKWXY0FTPxI=
+Date:   Fri, 2 Jun 2023 17:55:47 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Mike Kravetz <mike.kravetz@oracle.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-fsdevel@vger.kernel.org,
+        Matthew Wilcox <willy@infradead.org>,
+        Ackerley Tng <ackerleytng@google.com>,
+        Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+        Muchun Song <songmuchun@bytedance.com>, vannapurve@google.com,
+        erdemaktas@google.com, stable <stable@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH 0/1] RESEND fix page_cache_next/prev_miss off by one
+ error
+Message-Id: <20230602175547.dba09bb3ef7eb0bc508b3a5a@linux-foundation.org>
+In-Reply-To: <20230602225747.103865-1-mike.kravetz@oracle.com>
+References: <20230602225747.103865-1-mike.kravetz@oracle.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Jun 2, 2023 at 1:38=E2=80=AFPM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> The patch re-uses the allocation it already does for the key data, and
-> it seems sane.
+On Fri,  2 Jun 2023 15:57:46 -0700 Mike Kravetz <mike.kravetz@oracle.com> wrote:
 
-Ugh. I had to check that it was ok to re-use the key buffer, but it
-does seem to be the case that you can just re-use the buffer after
-you've done that crypto_akcipher_set_priv/pub_key() call, and the
-crypto layer has to copy it into its own data structures.
+> In commits d0ce0e47b323 and 91a2fb956ad99, hugetlb code was changed to
+> use page_cache_next_miss to determine if a page was present in the page
+> cache.  However, the current implementation of page_cache_next_miss will
+> always return the passed index if max_scan is 1 as in the hugetlb code.
+> As a result, hugetlb code will always thing a page is present in the
+> cache, even if that is not the case.
+> 
+> The patch which follows addresses the issue by changing the implementation
+> of page_cache_next_miss and for consistency page_cache_prev_miss.  Since
+> such a patch also impacts the readahead code, I would suggest using the
+> patch by Sidhartha Kumar [1] to fix the issue in 6.3 and this patch moving
+> forward.
 
-I absolutely abhor the crypto interfaces. They all seem designed for
-that "external DMA engine" case that seems so horrendously pointless
-and slow.  In practice so few of them are that, and we have all those
-optimized routines for doing it all on the CPU - but have in the
-meantime wasted all that time and effort into copying everything,
-turning simple buffers into sg-bufs etc etc. The amount of indirection
-and "set this state in the state machine" is just nasty, and this
-seems to all be a prime example of it all. With some of it then
-randomly going through some kthread too.
+Well this is tricky.
 
-I still think that patch is probably fine, but was also going "maybe
-the real problem is in that library helper function
-(asymmetric_verify(), in this case), which takes those (sig, siglen,
-digest, digestlen) arguments and turns it into a 'struct
-public_key_signature' without marshalling them.
+This patch applies cleanly to 6.3, so if we add cc:stable to this
+patch, it will get backported, against your suggestion.
 
-Just looking at this mess of indirection and different "helper"
-functions makes me second-guess myself about where the actual
-conversion should be - while also feeling like it should never have
-been done as a scatter-gather entry in the first place.
+Sidhartha's patch [1] (which you recommend for -stable) is quite
+different from this patch.  And Sidhartha's patch has no route to being
+tested in linux-next nor to being merged by Linus.
 
-Anyway, I don't feel competent to decide if that pull request is the
-right fix or not.
+So problems.  The preferable approach is to just backport this patch
+into -stable in the usual fashion.  What are the risks in doing this?
 
-But it clearly is *a* fix.
+> If we would rather not modify page_cache_next/prev_miss, then a new
+> interface as suggested by Ackerley Tng [2] could also be used.
+> 
+> Comments on the best way to fix moving forward would be appreciated.
+> 
+> [1] https://lore.kernel.org/linux-mm/20230505185301.534259-1-sidhartha.kumar@oracle.com/
+> [2] https://lore.kernel.org/linux-mm/98624c2f481966492b4eb8272aef747790229b73.1683069252.git.ackerleytng@google.com/
+> 
+> Mike Kravetz (1):
+>   page cache: fix page_cache_next/prev_miss off by one
+> 
+>  mm/filemap.c | 26 ++++++++++++++++----------
+>  1 file changed, 16 insertions(+), 10 deletions(-)
+> 
 
-            Linus
