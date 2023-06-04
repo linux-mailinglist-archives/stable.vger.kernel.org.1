@@ -2,101 +2,243 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19E287214DB
-	for <lists+stable@lfdr.de>; Sun,  4 Jun 2023 07:38:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00DA272155F
+	for <lists+stable@lfdr.de>; Sun,  4 Jun 2023 09:47:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229913AbjFDFig (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 4 Jun 2023 01:38:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33118 "EHLO
+        id S230228AbjFDHru (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 4 Jun 2023 03:47:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbjFDFif (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 4 Jun 2023 01:38:35 -0400
-Received: from mail-vs1-xe2b.google.com (mail-vs1-xe2b.google.com [IPv6:2607:f8b0:4864:20::e2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3142D2;
-        Sat,  3 Jun 2023 22:38:34 -0700 (PDT)
-Received: by mail-vs1-xe2b.google.com with SMTP id ada2fe7eead31-43b2fb0afa6so533444137.1;
-        Sat, 03 Jun 2023 22:38:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685857114; x=1688449114;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8PHXdu5IuMrhkPlZ7jqUlnArsh/HLu2zKdX3eKzfIWU=;
-        b=gLP5T0OQMp3gO9YWCKM6+qd9BnIxh2hbeYrY03B8nb784BwZACjvw+UXid8jx3Yhxl
-         E6HuTYoe8mpvT6UCR0bX+eV1P/xteBXFk584hnZ5XQyP1bD8RTGw58d2Yy6ovymfYoFr
-         KpZ7o2wn+vp+d1x4n8URjw3XX5pWuzUtZNbmyX3jnMFTRgFQPHPSu7qe9OVXWtU9cIWr
-         tVtBWYx08d4/dz5CBNpJzsWG6bo4E7xFsFUowooLsCgWnUQIRJT/q0cq1Xe3GWwt5Nbr
-         L3/QVv0NhHjsmbSJjGmji1ApiDqYx9fYZiVgxOVjy7peas5zpAdNA5z6UIvDG2fwTJ+3
-         Ugvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685857114; x=1688449114;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8PHXdu5IuMrhkPlZ7jqUlnArsh/HLu2zKdX3eKzfIWU=;
-        b=HkWr0WumT0XuhfNBi3dYN7frnPKvSaize+QcuxHP+m/xrhVkMSrwttUa+oV0nF6JvS
-         GtrRq1rpKmcO7EerZF0T4qxMOSLdwUbVn7fLAXTg0/9Z1EB9JzAI2rqz0FYso131ysyU
-         PcRDlflWjG3JBg3FMEUkA02C0lcSIZPJhZ4Zu/OIVu2nu0qtOHjyUsbYQxjL98cHpBQH
-         MWpdSUb6q2zYwJPWKXbkK5/nRk5/c9QRZcbIjJhcsdkVTrPGG5rQVhosAEsdAWg4w8j9
-         3FaDHU7U2t4OaXSGnlLb+KBqzAQ3NugvvnqaOpylB9iLAPiSyDc8ko1/1akn80lHM/ne
-         PP1g==
-X-Gm-Message-State: AC+VfDyQP0uWPmqw5xBCEpvq6brMcaCEnQfw+3zkZPIlw9fB4wifvTKw
-        hgW5aJEc/4Ls+6XdYm3iWjE8F94EkaDONAxLGFs=
-X-Google-Smtp-Source: ACHHUZ7fz05Hg2Epz6uS6kQXNmnGIP8uJfN9ah6Sr67+nSTy5NfAXYjQQF5/447KPRKXfpRbmOsLU3S8MVotWdgKV70=
-X-Received: by 2002:a05:6102:40e:b0:43b:4542:2262 with SMTP id
- d14-20020a056102040e00b0043b45422262mr205508vsq.13.1685857113791; Sat, 03 Jun
- 2023 22:38:33 -0700 (PDT)
+        with ESMTP id S229715AbjFDHrt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 4 Jun 2023 03:47:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB9DDB3;
+        Sun,  4 Jun 2023 00:47:47 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7743560B88;
+        Sun,  4 Jun 2023 07:47:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606D7C433D2;
+        Sun,  4 Jun 2023 07:47:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1685864866;
+        bh=D2OVSrVHiAMgPa24HKPA2T314VF7Y1xFCLg2FDyuZAM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=qbQLNohmRlqyMmX2ftht6Jnyp6p/YX7fbnG5nMW+JLsPziKoDuVunPx1yvt49nIuF
+         f0LH3bn5z0CLkyK1lpmuM6W27YLY082zEcUm9kVu8iFRJOLKDdIICiWqyc+kkDmJB5
+         HL1UHpjSS+ABSW6UcidJT/VlhSsO8EVMhj2GfXBU=
+Date:   Sun, 4 Jun 2023 09:47:44 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Hugo Villeneuve <hugo@hugovil.com>
+Cc:     robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, jirislaby@kernel.org, jringle@gridpoint.com,
+        tomasz.mon@camlingroup.com, l.perczak@camlintechnologies.com,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        stable@vger.kernel.org, Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH v7 5/9] serial: sc16is7xx: fix regression with GPIO
+ configuration
+Message-ID: <2023060454-cotton-paramount-e33e@gregkh>
+References: <20230602152626.284324-1-hugo@hugovil.com>
+ <20230602152626.284324-6-hugo@hugovil.com>
 MIME-Version: 1.0
-References: <20230601164439.15404-1-listdansp@mail.ru> <20230601164439.15404-2-listdansp@mail.ru>
- <2023060127-flick-velcro-ca45@gregkh>
-In-Reply-To: <2023060127-flick-velcro-ca45@gregkh>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Sun, 4 Jun 2023 08:38:22 +0300
-Message-ID: <CAOQ4uxh_Q7o_Ln1YAJdNyoXuid+p+SBAkmXVUfDbd-sZHX-qOA@mail.gmail.com>
-Subject: Re: [PATCH 5.10 1/1] xfs: verify buffer contents when we skip log replay
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Darrick J. Wong" <djwong@kernel.org>
-Cc:     Danila Chernetsov <listdansp@mail.ru>, stable@vger.kernel.org,
-        linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Dave Chinner <dchinner@redhat.com>,
-        Dave Chinner <david@fromorbit.com>,
-        Leah Rumancik <lrumancik@google.com>,
-        Chandan Babu R <chandan.babu@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230602152626.284324-6-hugo@hugovil.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 1, 2023 at 8:20=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Thu, Jun 01, 2023 at 04:44:39PM +0000, Danila Chernetsov wrote:
-> > From: "Darrick J. Wong" <djwong@kernel.org>
-> >
-> > commit 22ed903eee23a5b174e240f1cdfa9acf393a5210 upstream.
-> >
-> > syzbot detected a crash during log recovery:
->
-> XFS patches for stable come from the XFS maintainers, so please work
-> with them if you feel any specific patch is missing from a stable tree.
->
+On Fri, Jun 02, 2023 at 11:26:21AM -0400, Hugo Villeneuve wrote:
+> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> 
+> Commit 679875d1d880 ("sc16is7xx: Separate GPIOs from modem control lines")
+> and commit 21144bab4f11 ("sc16is7xx: Handle modem status lines")
+> changed the function of the GPIOs pins to act as modem control
+> lines without any possibility of selecting GPIO function.
+> 
+> As a consequence, applications that depends on GPIO lines configured
+> by default as GPIO pins no longer work as expected.
+> 
+> Also, the change to select modem control lines function was done only
+> for channel A of dual UART variants (752/762). This was not documented
+> in the log message.
+> 
+> Allow to specify GPIO or modem control line function in the device
+> tree, and for each of the ports (A or B).
+> 
+> Do so by using the new device-tree property named
+> "modem-control-line-ports" (property added in separate patch).
+> 
+> When registering GPIO chip controller, mask-out GPIO pins declared as
+> modem control lines according to this new "modem-control-line-ports"
+> DT property.
+> 
+> Boards that need to have GPIOS configured as modem control lines
+> should add that property to their device tree. Here is a list of
+> boards using the sc16is7xx driver in their device tree and that may
+> need to be modified:
+>     arm64/boot/dts/freescale/fsl-ls1012a-frdm.dts
+>     mips/boot/dts/ingenic/cu1830-neo.dts
+>     mips/boot/dts/ingenic/cu1000-neo.dts
+> 
+> Fixes: 679875d1d880 ("sc16is7xx: Separate GPIOs from modem control lines")
+> Fixes: 21144bab4f11 ("sc16is7xx: Handle modem status lines")
+> Cc: <stable@vger.kernel.org> # 6.1.x: 35210b22 dt-bindings: sc16is7xx: Add property to change GPIO function
+> Cc: <stable@vger.kernel.org> # 6.1.x: 7d61ca47 serial: sc16is7xx: refactor GPIO controller registration
+> Cc: <stable@vger.kernel.org> # 6.1.x: 322470ed serial: sc16is7xx: mark IOCONTROL register as volatile
+> Cc: <stable@vger.kernel.org> # 6.1.x: a0077362 serial: sc16is7xx: fix broken port 0 uart init
+> Cc: <stable@vger.kernel.org> # 6.1.x
+> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> ---
+>  drivers/tty/serial/sc16is7xx.c | 103 ++++++++++++++++++++++++++-------
+>  1 file changed, 82 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+> index 7d50674d2d0e..edc83f5f6340 100644
+> --- a/drivers/tty/serial/sc16is7xx.c
+> +++ b/drivers/tty/serial/sc16is7xx.c
+> @@ -236,7 +236,8 @@
+>  
+>  /* IOControl register bits (Only 750/760) */
+>  #define SC16IS7XX_IOCONTROL_LATCH_BIT	(1 << 0) /* Enable input latching */
+> -#define SC16IS7XX_IOCONTROL_MODEM_BIT	(1 << 1) /* Enable GPIO[7:4] as modem pins */
+> +#define SC16IS7XX_IOCONTROL_MODEM_A_BIT	(1 << 1) /* Enable GPIO[7:4] as modem A pins */
+> +#define SC16IS7XX_IOCONTROL_MODEM_B_BIT	(1 << 2) /* Enable GPIO[3:0] as modem B pins */
+>  #define SC16IS7XX_IOCONTROL_SRESET_BIT	(1 << 3) /* Software Reset */
+>  
+>  /* EFCR register bits */
+> @@ -301,12 +302,12 @@
+>  /* Misc definitions */
+>  #define SC16IS7XX_FIFO_SIZE		(64)
+>  #define SC16IS7XX_REG_SHIFT		2
+> +#define SC16IS7XX_GPIOS_PER_BANK	4
+>  
+>  struct sc16is7xx_devtype {
+>  	char	name[10];
+>  	int	nr_gpio;
+>  	int	nr_uart;
+> -	int	has_mctrl;
+>  };
+>  
+>  #define SC16IS7XX_RECONF_MD		(1 << 0)
+> @@ -336,6 +337,7 @@ struct sc16is7xx_port {
+>  	struct clk			*clk;
+>  #ifdef CONFIG_GPIOLIB
+>  	struct gpio_chip		gpio;
+> +	unsigned long			gpio_valid_mask;
+>  #endif
+>  	unsigned char			buf[SC16IS7XX_FIFO_SIZE];
+>  	struct kthread_worker		kworker;
+> @@ -447,35 +449,30 @@ static const struct sc16is7xx_devtype sc16is74x_devtype = {
+>  	.name		= "SC16IS74X",
+>  	.nr_gpio	= 0,
+>  	.nr_uart	= 1,
+> -	.has_mctrl	= 0,
+>  };
+>  
+>  static const struct sc16is7xx_devtype sc16is750_devtype = {
+>  	.name		= "SC16IS750",
+> -	.nr_gpio	= 4,
+> +	.nr_gpio	= 8,
+>  	.nr_uart	= 1,
+> -	.has_mctrl	= 1,
+>  };
+>  
+>  static const struct sc16is7xx_devtype sc16is752_devtype = {
+>  	.name		= "SC16IS752",
+> -	.nr_gpio	= 0,
+> +	.nr_gpio	= 8,
+>  	.nr_uart	= 2,
+> -	.has_mctrl	= 1,
+>  };
+>  
+>  static const struct sc16is7xx_devtype sc16is760_devtype = {
+>  	.name		= "SC16IS760",
+> -	.nr_gpio	= 4,
+> +	.nr_gpio	= 8,
+>  	.nr_uart	= 1,
+> -	.has_mctrl	= 1,
+>  };
+>  
+>  static const struct sc16is7xx_devtype sc16is762_devtype = {
+>  	.name		= "SC16IS762",
+> -	.nr_gpio	= 0,
+> +	.nr_gpio	= 8,
+>  	.nr_uart	= 2,
+> -	.has_mctrl	= 1,
+>  };
+>  
+>  static bool sc16is7xx_regmap_volatile(struct device *dev, unsigned int reg)
+> @@ -1350,16 +1347,45 @@ static int sc16is7xx_gpio_direction_output(struct gpio_chip *chip,
+>  	return 0;
+>  }
+>  
+> -static int sc16is7xx_setup_gpio_chip(struct device *dev)
+> +static int sc16is7xx_gpio_init_valid_mask(struct gpio_chip *chip,
+> +					  unsigned long *valid_mask,
+> +					  unsigned int ngpios)
+> +{
+> +	struct sc16is7xx_port *s = gpiochip_get_data(chip);
+> +
+> +	*valid_mask = s->gpio_valid_mask;
+> +
+> +	return 0;
+> +}
+> +
+> +static int sc16is7xx_setup_gpio_chip(struct device *dev, u8 mctrl_mask)
+>  {
+>  	struct sc16is7xx_port *s = dev_get_drvdata(dev);
+>  
+>  	if (!s->devtype->nr_gpio)
+>  		return 0;
+>  
+> +	switch (mctrl_mask) {
+> +	case 0:
+> +		s->gpio_valid_mask = GENMASK(7, 0);
+> +		break;
+> +	case SC16IS7XX_IOCONTROL_MODEM_A_BIT:
+> +		s->gpio_valid_mask = GENMASK(3, 0);
+> +		break;
+> +	case SC16IS7XX_IOCONTROL_MODEM_B_BIT:
+> +		s->gpio_valid_mask = GENMASK(7, 4);
+> +		break;
+> +	default:
+> +		break;
+> +	}
+> +
+> +	if (s->gpio_valid_mask == 0)
+> +		return 0;
+> +
+>  	s->gpio.owner		 = THIS_MODULE;
+>  	s->gpio.parent		 = dev;
+>  	s->gpio.label		 = dev_name(dev);
+> +	s->gpio.init_valid_mask	 = sc16is7xx_gpio_init_valid_mask;
+>  	s->gpio.direction_input	 = sc16is7xx_gpio_direction_input;
+>  	s->gpio.get		 = sc16is7xx_gpio_get;
+>  	s->gpio.direction_output = sc16is7xx_gpio_direction_output;
+> @@ -1371,6 +1397,44 @@ static int sc16is7xx_setup_gpio_chip(struct device *dev)
+>  }
+>  #endif
+>  
+> +static u8 sc16is7xx_setup_mctrl_ports(struct device *dev)
 
-Danila,
+This returns what, mctrl?  If so, please document that, it doesn't look
+obvious.  And as the kernel test robot reported, you do nothing with the
+return value so why compute it?
 
-Thanks for bringing this to our attention.
-I've tested this fix for 6.1.y and Leah will test it for 5.15.y
-thereafter I will test and post it for 5.10.y.
+And you have a real port here, no need to pass in a "raw" struct device,
+right?
 
-FYI, the MAINTAINERS file in each LTS kernel has an extra
-xfs maintainer listed for backporting fixes for that LTS, however
-6.1.y is still waiting for an assigned backporting maintainer.
+thanks,
 
-Thanks,
-Amir.
+greg k-h
