@@ -2,96 +2,143 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8614721756
-	for <lists+stable@lfdr.de>; Sun,  4 Jun 2023 15:18:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4A3172178D
+	for <lists+stable@lfdr.de>; Sun,  4 Jun 2023 16:01:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229954AbjFDNSN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 4 Jun 2023 09:18:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38860 "EHLO
+        id S229739AbjFDOBL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 4 Jun 2023 10:01:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231960AbjFDNSM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 4 Jun 2023 09:18:12 -0400
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09F80FD;
-        Sun,  4 Jun 2023 06:18:09 -0700 (PDT)
-Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-653f9c7b3e4so928501b3a.2;
-        Sun, 04 Jun 2023 06:18:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685884688; x=1688476688;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2antYKxvIwNmqy5CZTA/jD5hacvCwsyZLTjfiBAziik=;
-        b=apiWE5SRBAi8uhX66jCjeKU/pAGIqPIf3sx18YKQoluVhZ1rMYOCMkyA44lGq0wu5M
-         GAYpS89unkdusP6Qoy9ECNqoYMYNkiDLIQ2Omg5ZkGQ/UPGVKV9okfmQJ3ha7X204avg
-         8gx807hiZF+r/V9wth0N3OXFnXr06vJcVfY28/jD98FdPfzCNcyB1O9sMN5CoBQP6Ugp
-         aSuPZNfZyI2crv6+4mhh29PLrPef5a30qZQfT5/FKF5gvT+uBjn4ssurD1xMDjyujrK4
-         VGD9wuLck5YZB7Ef2gFi4nUOKJmxNt2gKaeJHRG36oRCJKnfsfWTBlEwHKSJdRF2Nqlo
-         VRxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685884688; x=1688476688;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2antYKxvIwNmqy5CZTA/jD5hacvCwsyZLTjfiBAziik=;
-        b=XE28hSDpICZEcj45sNHEkhvO5ccTKPDvg8sN2WrfLQFNq0Itbl8dJzmXthp7xzfAQ0
-         o9L+sZUrWJlSGxYR52YIqIm68CDI+wwjSFT3ClrXALlo7VMqHtmJdiTM7ikfyoKo7542
-         oEhvG9XQrg5K1CadknK0ol8P5fBYVgT73K0DtKuX1mf52kaR7Bx2TJTt9zDhWWJ08Rfc
-         mNBkEzi0caDyesmhdUZFwkjsWRmGcWKVY1MEXDoK/urBHW9f28BvJNObliwfzOY6vMyc
-         zSoVgp5tnmdFsc3PS2UUPyep8jTfVrHXitU1O9TjMWQenHLP/XMlgVZwbVq5lKer40FI
-         sw8A==
-X-Gm-Message-State: AC+VfDxytX1ylewDcx2tLtt5Rzt0nsYjpNlOvO989B3oa4xAfsN8gRTw
-        ZDT3tYOp6i9VWYzLBHz8+H8=
-X-Google-Smtp-Source: ACHHUZ5tZkKgVKSpfQF4V5GjOlVhutEKUzrn1geCssyoRpjtBxkGmkQwJVBs4pJUDHofdpjPNuRqUQ==
-X-Received: by 2002:a05:6a00:15cf:b0:653:a56:db9 with SMTP id o15-20020a056a0015cf00b006530a560db9mr5688123pfu.7.1685884688369;
-        Sun, 04 Jun 2023 06:18:08 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id w12-20020a63474c000000b005134fc049d7sm4152597pgk.31.2023.06.04.06.18.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Jun 2023 06:18:07 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Sun, 4 Jun 2023 06:18:06 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de
-Subject: Re: [PATCH 5.15 00/35] 5.15.115-rc3 review
-Message-ID: <a298cb13-d3a8-4c2c-a17f-6570698d4e02@roeck-us.net>
-References: <20230603143543.855276091@linuxfoundation.org>
+        with ESMTP id S229635AbjFDOBK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 4 Jun 2023 10:01:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2B9690
+        for <stable@vger.kernel.org>; Sun,  4 Jun 2023 07:01:09 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B17160E86
+        for <stable@vger.kernel.org>; Sun,  4 Jun 2023 14:01:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C92C433D2;
+        Sun,  4 Jun 2023 14:01:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685887268;
+        bh=N4OFkIofJcG4jbiBZuJM/QCykJe9kktreLtBi08BAQU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=jqMaBPppWjwld7hKoaTIAQgPbMaSl19LBnAhB4B1ud4EnbyMZuzkwdsXp2HSn5+iy
+         m/JehzdLvij9nc4i8mO1wt2oWkQrD8yFKhSfkLqxO7Qk2Of0q/Yw3lksQ0Q4V3wt0I
+         XU8iV5jCXxSIfb5u/VfAqrF+UFDsm/n2jf6GVmOuQ8HY08ndA7Sj4X7PxTOc6KhX6m
+         IaOF81WfYVAVyHAgOhwfhd1S8Pkb3xXYi6efQmo2EBM5FwIgOKpTyRtQT2/AWjQUUB
+         NRZ+DVMQzlzFJlQlsi81YUcqUynSwQxbBP4cYiQDnm+udonloqkfGjSPdyC8CYcCIW
+         Y/ZBRPjmeMh3A==
+From:   Jiri Olsa <jolsa@kernel.org>
+To:     Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>
+Cc:     stable@vger.kernel.org,
+        Anastasios Papagiannis <tasos.papagiannnis@gmail.com>,
+        bpf@vger.kernel.org, Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@chromium.org>,
+        Stanislav Fomichev <sdf@google.com>,
+        Hao Luo <haoluo@google.com>
+Subject: [PATCH bpf] bpf: Add extra path pointer check to d_path helper
+Date:   Sun,  4 Jun 2023 16:01:03 +0200
+Message-Id: <20230604140103.3542071-1-jolsa@kernel.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230603143543.855276091@linuxfoundation.org>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, Jun 03, 2023 at 04:37:18PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.115 release.
-> There are 35 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Mon, 05 Jun 2023 14:35:25 +0000.
-> Anything received after that time might be too late.
-> 
+Anastasios reported crash on stable 5.15 kernel with following
+bpf attached to lsm hook:
 
-Build results:
-	total: 155 pass: 155 fail: 0
-Qemu test results:
-	total: 499 pass: 499 fail: 0
+  SEC("lsm.s/bprm_creds_for_exec")
+  int BPF_PROG(bprm_creds_for_exec, struct linux_binprm *bprm)
+  {
+          struct path *path = &bprm->executable->f_path;
+          char p[128] = { 0 };
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+          bpf_d_path(path, p, 128);
+          return 0;
+  }
 
-Guenter
+but bprm->executable can be NULL, so bpf_d_path call will crash:
+
+  BUG: kernel NULL pointer dereference, address: 0000000000000018
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 0 P4D 0
+  Oops: 0000 [#1] PREEMPT SMP DEBUG_PAGEALLOC NOPTI
+  ...
+  RIP: 0010:d_path+0x22/0x280
+  ...
+  Call Trace:
+   <TASK>
+   bpf_d_path+0x21/0x60
+   bpf_prog_db9cf176e84498d9_bprm_creds_for_exec+0x94/0x99
+   bpf_trampoline_6442506293_0+0x55/0x1000
+   bpf_lsm_bprm_creds_for_exec+0x5/0x10
+   security_bprm_creds_for_exec+0x29/0x40
+   bprm_execve+0x1c1/0x900
+   do_execveat_common.isra.0+0x1af/0x260
+   __x64_sys_execve+0x32/0x40
+
+It's problem for all stable trees with bpf_d_path helper, which was
+added in 5.9.
+
+This issue is fixed in current bpf code, where we identify and mark
+trusted pointers, so the above code would fail to load.
+
+For the sake of the stable trees and to workaround potentially broken
+verifier in the future, adding the code that reads the path object from
+the passed pointer and verifies it's valid in kernel space.
+
+Cc: stable@vger.kernel.org # v5.9+
+Fixes: 6e22ab9da793 ("bpf: Add d_path helper")
+Suggested-by: Alexei Starovoitov <ast@kernel.org>
+Reported-by: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+---
+ kernel/trace/bpf_trace.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 9a050e36dc6c..aecd98ee73dc 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -900,12 +900,22 @@ static const struct bpf_func_proto bpf_send_signal_thread_proto = {
+ 
+ BPF_CALL_3(bpf_d_path, struct path *, path, char *, buf, u32, sz)
+ {
++	struct path copy;
+ 	long len;
+ 	char *p;
+ 
+ 	if (!sz)
+ 		return 0;
+ 
++	/*
++	 * The path pointer is verified as trusted and safe to use,
++	 * but let's double check it's valid anyway to workaround
++	 * potentially broken verifier.
++	 */
++	len = copy_from_kernel_nofault(&copy, path, sizeof(*path));
++	if (len < 0)
++		return len;
++
+ 	p = d_path(path, buf, sz);
+ 	if (IS_ERR(p)) {
+ 		len = PTR_ERR(p);
+-- 
+2.40.1
+
