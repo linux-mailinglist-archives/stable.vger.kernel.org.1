@@ -2,113 +2,279 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCE3C72198B
-	for <lists+stable@lfdr.de>; Sun,  4 Jun 2023 21:31:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C82FD721A25
+	for <lists+stable@lfdr.de>; Sun,  4 Jun 2023 23:09:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231167AbjFDTbm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 4 Jun 2023 15:31:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49020 "EHLO
+        id S232351AbjFDVJ0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 4 Jun 2023 17:09:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229670AbjFDTbm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 4 Jun 2023 15:31:42 -0400
-Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com [IPv6:2607:f8b0:4864:20::72f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1525EBD;
-        Sun,  4 Jun 2023 12:31:41 -0700 (PDT)
-Received: by mail-qk1-x72f.google.com with SMTP id af79cd13be357-75d4dd6f012so151999685a.2;
-        Sun, 04 Jun 2023 12:31:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685907100; x=1688499100;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YhHt1Igy5XGokOhDhTq6mJz2pRBSZ6AO9ZY+vSnJL5c=;
-        b=bjReZaID2MFIkZ43YlEG6qrAJCmtsfoggepopslbsdx9KdAg2rtBdb5RaVRMaGuLZp
-         i4ld6ELYnY9l9twnqNvzAIV9jMiphUg0zgIx0NMs1XhwYLP9BURjFysnKIZmEwYQecAY
-         upzxRvvaIhsjhtvi+Xs+iTDSHSCpwhCHY42a1v+g182WMOhOtaeLVD8SUpERWWbR6w4Z
-         WyYnCXf4I3ajvYriMZTuctlU7IcLHWPluALBXQ+N8nJkhOnIghIlzU2Ps/ydfr7RHL+B
-         YbZ8ieT4meKn7qVmsPB7kEivKubzuTx08jhnvqcnM4pG+TJJzgYMSmgL9XqHCv0ho4vV
-         lxTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685907100; x=1688499100;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YhHt1Igy5XGokOhDhTq6mJz2pRBSZ6AO9ZY+vSnJL5c=;
-        b=VWXVT2GFdw3ReTKJRd0B5J/fy+0FfaC8fBjpbmhTjp86Qc/PuwpgqdwIjnzU+t/ivp
-         r+dPT7mv7XeF2D9syVrlnjsVsHF+y4xdh6eNi8z90+Vf5x+EBo+J7qctn7z0JxZYbguq
-         drLSO5uG4e3LMnKqcUxLuPLLecJsYGh9mFKN/v5EgFsOUUHxC99CY47Rr5rdbF4GzkGg
-         W/CoqDRc4Xs3smh/LGkbX4VKj1zh5ZlVZHjdTWvcgX2uXgT6PyL7EE4wJA4S59ZV0/Ez
-         fyA0Ku8GNLJzKjgaaM3gEmT/T6aPxs4DSftUuq9y9mdp+mlD2AOD+vgcM6s4KoAOhvmq
-         IqaA==
-X-Gm-Message-State: AC+VfDxQthQjeujordYYeZ+nMZ6xNVs1HPKP4emC6cFtFpbXyFKc4wS/
-        tRimc1RQhwraXeUxxhN+aPyxTf7FzneDp1WoDDs=
-X-Google-Smtp-Source: ACHHUZ6MlIIw7A2FKKKISZs9OPXU4Dcn/MhmC2rODXVKZdRXKFeyPf6aHG+HT2U7NC3LGgFRVY6xoQFh4CvO2DDHJ0k=
-X-Received: by 2002:a05:620a:19a5:b0:75d:a13:ae74 with SMTP id
- bm37-20020a05620a19a500b0075d0a13ae74mr19736789qkb.36.1685907100148; Sun, 04
- Jun 2023 12:31:40 -0700 (PDT)
+        with ESMTP id S232191AbjFDVJX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 4 Jun 2023 17:09:23 -0400
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1673CB8
+        for <stable@vger.kernel.org>; Sun,  4 Jun 2023 14:09:22 -0700 (PDT)
+Received: from cwcc.thunk.org (pool-173-48-119-27.bstnma.fios.verizon.net [173.48.119.27])
+        (authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 354L8L8M008189
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 4 Jun 2023 17:08:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+        t=1685912905; bh=rBca0syAuOaNVSA4ig8h6e/NHRrUmmr69r+D5gVpD9Q=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=HHmFqZOrRmj/aCBtAwB12otoUxSo7sG4MaGDQNeYCZgzljDZ1hTINLoDASgc4BGEZ
+         ow+AH9baAEF5LO1ETrXQJmRjmdDCewPJ8u8v4iBdqr4tuOu6WkULvYJ+c6HRdRmNKG
+         zgIUuyuZlbTPYVQFJoR6+8d1BGXkI+7Y9yxgBiVUz60GTudN+GqEd17RKasa6jFHfe
+         FiHJVBREmANlQ60rfZxPaBDucHAMrNNnnVwMXvH24H/yMC/AHHyrJT0rGR95Ewc6Qv
+         +Z3oxdHipsBoBqJ6I97m8wrd7eMHj2/cxscr00hKQJyzhIzZP150M4QTFCdGD00sMl
+         QMdqrdB3E0QPA==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+        id 7800915C02EE; Sun,  4 Jun 2023 17:08:21 -0400 (EDT)
+Date:   Sun, 4 Jun 2023 17:08:21 -0400
+From:   "Theodore Ts'o" <tytso@mit.edu>
+To:     Baokun Li <libaokun1@huawei.com>
+Cc:     linux-ext4@vger.kernel.org, adilger.kernel@dilger.ca, jack@suse.cz,
+        ritesh.list@gmail.com, linux-kernel@vger.kernel.org,
+        jun.nie@linaro.org, ebiggers@kernel.org, yi.zhang@huawei.com,
+        yangerkun@huawei.com, yukuai3@huawei.com,
+        syzbot+a158d886ca08a3fecca4@syzkaller.appspotmail.com,
+        Matthew Wilcox <willy@infradead.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] ext4: fix race condition between buffer write and
+ page_mkwrite
+Message-ID: <20230604210821.GA1257572@mit.edu>
+References: <20230530134405.322194-1-libaokun1@huawei.com>
+ <20230604030445.GF1128744@mit.edu>
 MIME-Version: 1.0
-References: <20230602152626.284324-1-hugo@hugovil.com> <20230602152626.284324-6-hugo@hugovil.com>
- <2023060454-cotton-paramount-e33e@gregkh> <CAHp75Ve6W-hcB4YAeKukgv-uOEzBY7Tx5Sdf3doTRYKzNPcVGw@mail.gmail.com>
- <20230604134459.3c3844012e9714fa2a61e642@hugovil.com>
-In-Reply-To: <20230604134459.3c3844012e9714fa2a61e642@hugovil.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Sun, 4 Jun 2023 22:31:04 +0300
-Message-ID: <CAHp75VeWFPBmsD8zsSAaQGNNXtfgLtQuM9AMGfLPk-6p0VW=Pg@mail.gmail.com>
-Subject: Re: [PATCH v7 5/9] serial: sc16is7xx: fix regression with GPIO configuration
-To:     Hugo Villeneuve <hugo@hugovil.com>
-Cc:     Greg KH <gregkh@linuxfoundation.org>, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        jirislaby@kernel.org, jringle@gridpoint.com,
-        tomasz.mon@camlingroup.com, l.perczak@camlintechnologies.com,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230604030445.GF1128744@mit.edu>
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Jun 4, 2023 at 8:45=E2=80=AFPM Hugo Villeneuve <hugo@hugovil.com> w=
-rote:
->
-> On Sun, 4 Jun 2023 14:57:31 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
->
-> > On Sun, Jun 4, 2023 at 10:47=E2=80=AFAM Greg KH <gregkh@linuxfoundation=
-.org> wrote:
-> > > On Fri, Jun 02, 2023 at 11:26:21AM -0400, Hugo Villeneuve wrote:
-> >
-> > ...
-> >
-> > > > +static u8 sc16is7xx_setup_mctrl_ports(struct device *dev)
-> > >
-> > > This returns what, mctrl?  If so, please document that, it doesn't lo=
-ok
-> > > obvious.
-> >
-> > Good suggestion. Because I also stumbled over the returned type.
-> >
-> > >  And as the kernel test robot reported, you do nothing with the
-> > > return value so why compute it?
-> >
-> > It seems that the entire function and respective call has to be moved
-> > under #ifdef CONFIG_GPIOLIB.
->
-> Hi,
-> it cannot. See my explanations in response to Greg's comments.
+On Sat, Jun 03, 2023 at 11:04:45PM -0400, Theodore Ts'o wrote:
+> I tried testing to see if this fixed [1], and it appears to be
+> triggering a lockdep warning[2] at this line in the patch:
+> 
+> [1] https://syzkaller.appspot.com/bug?extid=f4582777a19ec422b517
+> [2] https://syzkaller.appspot.com/x/report.txt?x=17260843280000
 
-Then as Greg suggested, store in the structure and make this function
-to return an error code (with int), with this amendment you don't need
-to add a comment about the returned variable anymore.
+Looking at this more closely, the fundamental problem is by the time
+ext4_file_mmap() is called, the mm layer has already taken
+current->mm->mmap_lock, and when we try to take the inode_lock, this
+causes locking ordering problems with how buffered write path works,
+which take the inode_lock first, and then in some cases, may end up
+taking the mmap_lock if there is a page fault for the buffer used for
+the buffered write.
 
---=20
-With Best Regards,
-Andy Shevchenko
+If we're going to stick with the approach in this patch, I think what
+we would need is to add a pre_mmap() function to file_operations
+struct, which would get called by the mmap path *before* taking
+current->mm->mmap_lock, so we can do the inline conversion before we
+take the mmap_lock.
+
+I'm not sure how the mm folks would react to such a proposal, though.
+I could be seen as a bit hacky, and it's not clear that any file
+system other than ext4 would need something like this.  Willy, as
+someone who does a lot of work in both mm and fs worlds --- I'm
+curious what you think about this idea?
+
+Thanks,
+
+    	     	     	      	    	  - Ted
+
+> > diff --git a/fs/ext4/file.c b/fs/ext4/file.c
+> > index d101b3b0c7da..9df82d72eb90 100644
+> > --- a/fs/ext4/file.c
+> > +++ b/fs/ext4/file.c
+> > @@ -808,6 +809,27 @@ static int ext4_file_mmap(struct file *file, struct vm_area_struct *vma)
+> >  	if (!daxdev_mapping_supported(vma, dax_dev))
+> >  		return -EOPNOTSUPP;
+> >  
+> > +	/*
+> > +	 * Writing via mmap has no logic to handle inline data, so we
+> > +	 * need to call ext4_convert_inline_data() to convert the inode
+> > +	 * to normal format before doing so, otherwise a BUG_ON will be
+> > +	 * triggered in ext4_writepages() due to the
+> > +	 * EXT4_STATE_MAY_INLINE_DATA flag. Moreover, we need to grab
+> > +	 * i_rwsem during conversion, since clearing and setting the
+> > +	 * inline data flag may race with ext4_buffered_write_iter()
+> > +	 * to trigger a BUG_ON.
+> > +	 */
+> > +	if (ext4_has_feature_inline_data(sb) &&
+> > +	    vma->vm_flags & VM_SHARED && vma->vm_flags & VM_MAYWRITE) {
+> > +		int err;
+> > +
+> > +		inode_lock(inode); <=================== LOCKDEP warning
+> > +		err = ext4_convert_inline_data(inode);
+> > +		inode_unlock(inode);
+> > +		if (err)
+> > +			return err;
+> > +	}
+> 
+> 
+> The details of the lockdep warning from [2], which appears to be a
+> mmap(2) racing with a buffered write(2) are below.  Could you take a
+> look?
+> 
+> Thanks!
+> 
+> 					- Ted
+> 
+> ======================================================
+> WARNING: possible circular locking dependency detected
+> 6.4.0-rc4-syzkaller-geb1f822c76be-dirty #0 Not tainted
+> ------------------------------------------------------
+> syz-executor.4/5589 is trying to acquire lock:
+> ffff888024228168 (&mm->mmap_lock){++++}-{3:3}, at: mmap_read_lock include/linux/mmap_lock.h:142 [inline]
+> ffff888024228168 (&mm->mmap_lock){++++}-{3:3}, at: do_user_addr_fault+0xb3d/0x1210 arch/x86/mm/fault.c:1391
+> 
+> but task is already holding lock:
+> ffff88806a066800 (&sb->s_type->i_mutex_key#8){++++}-{3:3}, at: inode_lock include/linux/fs.h:775 [inline]
+> ffff88806a066800 (&sb->s_type->i_mutex_key#8){++++}-{3:3}, at: ext4_buffered_write_iter+0xb0/0x460 fs/ext4/file.c:283
+> 
+> which lock already depends on the new lock.
+> 
+> 
+> the existing dependency chain (in reverse order) is:
+> 
+> -> #1 (&sb->s_type->i_mutex_key#8){++++}-{3:3}:
+>        down_write+0x92/0x200 kernel/locking/rwsem.c:1573
+>        inode_lock include/linux/fs.h:775 [inline]
+>        ext4_file_mmap+0x62e/0x800 fs/ext4/file.c:826
+>        call_mmap include/linux/fs.h:1873 [inline]
+>        mmap_region+0x694/0x28d0 mm/mmap.c:2652
+>        do_mmap+0x831/0xf60 mm/mmap.c:1394
+>        vm_mmap_pgoff+0x1a2/0x3b0 mm/util.c:543
+>        ksys_mmap_pgoff+0x41f/0x5a0 mm/mmap.c:1440
+>        do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+>        do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
+>        entry_SYSCALL_64_after_hwframe+0x63/0xcd
+> 
+> -> #0 (&mm->mmap_lock){++++}-{3:3}:
+>        check_prev_add kernel/locking/lockdep.c:3113 [inline]
+>        check_prevs_add kernel/locking/lockdep.c:3232 [inline]
+>        validate_chain kernel/locking/lockdep.c:3847 [inline]
+>        __lock_acquire+0x2fcd/0x5f30 kernel/locking/lockdep.c:5088
+>        lock_acquire kernel/locking/lockdep.c:5705 [inline]
+>        lock_acquire+0x1b1/0x520 kernel/locking/lockdep.c:5670
+>        down_read+0x9c/0x480 kernel/locking/rwsem.c:1520
+>        mmap_read_lock include/linux/mmap_lock.h:142 [inline]
+>        do_user_addr_fault+0xb3d/0x1210 arch/x86/mm/fault.c:1391
+>        handle_page_fault arch/x86/mm/fault.c:1534 [inline]
+>        exc_page_fault+0x98/0x170 arch/x86/mm/fault.c:1590
+>        asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:570
+>        fault_in_readable+0x1a5/0x210 mm/gup.c:1856
+>        fault_in_iov_iter_readable+0x252/0x2c0 lib/iov_iter.c:362
+>        generic_perform_write+0x1ae/0x570 mm/filemap.c:3913
+>        ext4_buffered_write_iter+0x15b/0x460 fs/ext4/file.c:289
+>        ext4_file_write_iter+0xbe0/0x1740 fs/ext4/file.c:710
+>        call_write_iter include/linux/fs.h:1868 [inline]
+>        new_sync_write fs/read_write.c:491 [inline]
+>        vfs_write+0x945/0xd50 fs/read_write.c:584
+>        ksys_write+0x12b/0x250 fs/read_write.c:637
+>        do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+>        do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
+>        entry_SYSCALL_64_after_hwframe+0x63/0xcd
+> 
+> other info that might help us debug this:
+> 
+>  Possible unsafe locking scenario:
+> 
+>        CPU0                    CPU1
+>        ----                    ----
+>   lock(&sb->s_type->i_mutex_key#8);
+>                                lock(&mm->mmap_lock);
+>                                lock(&sb->s_type->i_mutex_key#8);
+>   rlock(&mm->mmap_lock);
+> 
+>  *** DEADLOCK ***
+> 
+> 3 locks held by syz-executor.4/5589:
+>  #0: ffff88802a7fe0e8 (&f->f_pos_lock){+.+.}-{3:3}, at: __fdget_pos+0xe7/0x100 fs/file.c:1047
+>  #1: ffff888021fe0460 (sb_writers#4){.+.+}-{0:0}, at: ksys_write+0x12b/0x250 fs/read_write.c:637
+>  #2: ffff88806a066800 (&sb->s_type->i_mutex_key#8){++++}-{3:3}, at: inode_lock include/linux/fs.h:775 [inline]
+>  #2: ffff88806a066800 (&sb->s_type->i_mutex_key#8){++++}-{3:3}, at: ext4_buffered_write_iter+0xb0/0x460 fs/ext4/file.c:283
+> 
+> stack backtrace:
+> CPU: 0 PID: 5589 Comm: syz-executor.4 Not tainted 6.4.0-rc4-syzkaller-geb1f822c76be-dirty #0
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/25/2023
+> Call Trace:
+>  <TASK>
+>  __dump_stack lib/dump_stack.c:88 [inline]
+>  dump_stack_lvl+0xd9/0x150 lib/dump_stack.c:106
+>  check_noncircular+0x25f/0x2e0 kernel/locking/lockdep.c:2188
+>  check_prev_add kernel/locking/lockdep.c:3113 [inline]
+>  check_prevs_add kernel/locking/lockdep.c:3232 [inline]
+>  validate_chain kernel/locking/lockdep.c:3847 [inline]
+>  __lock_acquire+0x2fcd/0x5f30 kernel/locking/lockdep.c:5088
+>  lock_acquire kernel/locking/lockdep.c:5705 [inline]
+>  lock_acquire+0x1b1/0x520 kernel/locking/lockdep.c:5670
+>  down_read+0x9c/0x480 kernel/locking/rwsem.c:1520
+>  mmap_read_lock include/linux/mmap_lock.h:142 [inline]
+>  do_user_addr_fault+0xb3d/0x1210 arch/x86/mm/fault.c:1391
+>  handle_page_fault arch/x86/mm/fault.c:1534 [inline]
+>  exc_page_fault+0x98/0x170 arch/x86/mm/fault.c:1590
+>  asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:570
+> RIP: 0010:fault_in_readable+0x1a5/0x210 mm/gup.c:1856
+> Code: fc ff df 48 c7 04 02 00 00 00 00 48 83 c4 48 4c 89 e0 5b 5d 41 5c 41 5d 41 5e 41 5f c3 45 31 e4 eb ce e8 ae 51 c4 ff 45 31 f6 <41> 8a 45 00 31 ff 44 89 f6 88 44 24 28 e8 b9 4d c4 ff 45 85 f6 75
+> RSP: 0018:ffffc90006187a38 EFLAGS: 00050246
+> RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+> RDX: ffff888026905940 RSI: ffffffff81bff672 RDI: 0000000000000007
+> RBP: 00000000200002cc R08: 0000000000000007 R09: 0000000000000000
+> R10: 00000000000002c0 R11: 1ffffffff219cbe3 R12: 000000000000000c
+> R13: 00000000200002c0 R14: 0000000000000000 R15: 1ffff92000c30f48
+>  fault_in_iov_iter_readable+0x252/0x2c0 lib/iov_iter.c:362
+>  generic_perform_write+0x1ae/0x570 mm/filemap.c:3913
+>  ext4_buffered_write_iter+0x15b/0x460 fs/ext4/file.c:289
+>  ext4_file_write_iter+0xbe0/0x1740 fs/ext4/file.c:710
+>  call_write_iter include/linux/fs.h:1868 [inline]
+>  new_sync_write fs/read_write.c:491 [inline]
+>  vfs_write+0x945/0xd50 fs/read_write.c:584
+>  ksys_write+0x12b/0x250 fs/read_write.c:637
+>  do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+>  do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
+>  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+> RIP: 0033:0x7f2359a8c169
+> Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007f235a721168 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+> RAX: ffffffffffffffda RBX: 00007f2359bac050 RCX: 00007f2359a8c169
+> RDX: 000000000000000c RSI: 00000000200002c0 RDI: 0000000000000004
+> RBP: 00007f2359ae7ca1 R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> R13: 00007ffea89659df R14: 00007f235a721300 R15: 0000000000022000
+>  </TASK>
+> ----------------
+> Code disassembly (best guess), 2 bytes skipped:
+>    0:	df 48 c7             	fisttps -0x39(%rax)
+>    3:	04 02                	add    $0x2,%al
+>    5:	00 00                	add    %al,(%rax)
+>    7:	00 00                	add    %al,(%rax)
+>    9:	48 83 c4 48          	add    $0x48,%rsp
+>    d:	4c 89 e0             	mov    %r12,%rax
+>   10:	5b                   	pop    %rbx
+>   11:	5d                   	pop    %rbp
+>   12:	41 5c                	pop    %r12
+>   14:	41 5d                	pop    %r13
+>   16:	41 5e                	pop    %r14
+>   18:	41 5f                	pop    %r15
+>   1a:	c3                   	retq
+>   1b:	45 31 e4             	xor    %r12d,%r12d
+>   1e:	eb ce                	jmp    0xffffffee
+>   20:	e8 ae 51 c4 ff       	callq  0xffc451d3
+>   25:	45 31 f6             	xor    %r14d,%r14d
+> * 28:	41 8a 45 00          	mov    0x0(%r13),%al <-- trapping instruction
+>   2c:	31 ff                	xor    %edi,%edi
+>   2e:	44 89 f6             	mov    %r14d,%esi
+>   31:	88 44 24 28          	mov    %al,0x28(%rsp)
+>   35:	e8 b9 4d c4 ff       	callq  0xffc44df3
+>   3a:	45 85 f6             	test   %r14d,%r14d
+>   3d:	75                   	.byte 0x75
+>   
