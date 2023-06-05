@@ -2,119 +2,96 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BA6472320E
-	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 23:16:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBC76723213
+	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 23:17:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233037AbjFEVPc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 5 Jun 2023 17:15:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39366 "EHLO
+        id S230374AbjFEVQg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 5 Jun 2023 17:16:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233220AbjFEVPW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 17:15:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7326BF2
-        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 14:15:21 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 10018623D3
-        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 21:15:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE844C433D2;
-        Mon,  5 Jun 2023 21:15:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685999720;
-        bh=WpgQiMJgnt6HBcNQNIb/5Xa2UnrztLQBfn1ZUDQLobI=;
-        h=From:Date:Subject:To:Cc:From;
-        b=OGbUcy8KpJRebsXetgYi9snsvx0EUtJyXpxRM2HAsn0xfwrkOv76KEPjcUIQIf7VN
-         jXZpmuP+Y+MUdft1KftTa0XRRv45DH9itbYVEgxqhyuAt7ZVXg5wKTS9jZuNI6w3Vn
-         VTx67iJpp2NdCwpcDPESGusAw9UuJGeVCFSqjmFxBm+FKARvs/GCxWRNeQ1xPxcLQL
-         C4sGthQsGiGBBwiEoyacAbT8JRh0kSGId3Z3jZrV34QsJ/88ittkXEvEaviffrH2mD
-         jDzaWf3AxnlSOzVJSxqumz16JhPPeXSKEv28SNTx856g6xNS+Mg79shDntPN82p0s0
-         7AaAeQRZ1vw5w==
-From:   Nathan Chancellor <nathan@kernel.org>
-Date:   Mon, 05 Jun 2023 14:15:08 -0700
-Subject: [PATCH 6.3] riscv: vmlinux.lds.S: Explicitly handle '.got' section
+        with ESMTP id S233248AbjFEVQW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 17:16:22 -0400
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7112B10B;
+        Mon,  5 Jun 2023 14:16:11 -0700 (PDT)
+Received: by mail-pj1-x102d.google.com with SMTP id 98e67ed59e1d1-256422ad25dso2412552a91.0;
+        Mon, 05 Jun 2023 14:16:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685999770; x=1688591770;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=pgABzOJPJ5VIj4UQYjPtZhIHLv/LvJQylDwcub2S5pU=;
+        b=NDEefdGqTeKN0VC0nVdBRObxZBclc8lfeYbbNMC5GVI5QfRrLVsk2VstFZXB6x9Qax
+         1tfj5Tc7k067Ym30bUuSAL9cTG9J6DGO/XG28pO0o6sU+zE3gfmgfAOFZFAR0HtfTPxe
+         WkMARgoT1VI7LgZDdRlHTb9Fw9rL39+GWvpsK/qH6rsNcF7v/QEA48HsPQ8oLeq54aD+
+         PTEYEuOWBYxz1dDHA2XQwfwgETw2P/OzhLpHiNgyUZvWE/2bhseAupxSLPZLSHMD2jfb
+         Uo/se/6iBxktgiORd8b/+wienQArE0DMPsRF5xP3PoXkU71PL95E0/y684Jg6Df6SBOv
+         zqMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685999770; x=1688591770;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pgABzOJPJ5VIj4UQYjPtZhIHLv/LvJQylDwcub2S5pU=;
+        b=DoTef/Q838Zw0MnTc1WPW4x8LtgU1HYV9uxGTZ6rpwNitnHI7mYsNiBvirnLfq3/PP
+         qh+w8Fdsy9KZdyhiKNYwe64bnibPofC8ALisyPhTDhZz40EzA8x7H+Be8IwqXOWrVGFq
+         ux3kAcZ9QNx+6YHAwTgNH790JUomMLX3iBZKWZrFg4aRP0HCdnsG0om9iBqS6q6qefG6
+         JYBTIHX6YDhzNFnrmyFje6vMVELVgaKPX9HB0SWQpIJCGHrn3WPOxQ0BAUJdu0mIBi6v
+         wUsdtQcNWkBu5cUmbAEFWbFOsiYmymlEJkc8/1t41YsUZthNOdw/LeGRFAIwVQSVioef
+         WO0A==
+X-Gm-Message-State: AC+VfDyqTmu+3imQYi+LQ11WrVhf6hsnzxHkZjWHQOINvTBtl3XrOcOB
+        mgTplSOeJvfUrs1oeiKhwv0riYE5oauXp5k6HYw=
+X-Google-Smtp-Source: ACHHUZ4gRcnOB7eeFTHK9+AFV1iotvVJC3lxKfkE/D67ktnXzZGsaN6ap1I2IvSB3gRUYgCA8JtK9+wDW9pXTlLj57k=
+X-Received: by 2002:a17:90a:f98f:b0:24b:2fc1:8a9c with SMTP id
+ cq15-20020a17090af98f00b0024b2fc18a9cmr3824386pjb.11.1685999770620; Mon, 05
+ Jun 2023 14:16:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230605-6-3-riscv-got-orphan-warning-llvm-17-v1-1-72c4f11e020f@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAFtQfmQC/yVO3Q6CIBR+lXauO6Vo6nqV1hwg4lkIDIzanO8e2
- uX3/60QVSAV4X5aIahEkZzNoDyfQE7caoU0ZAysYFXRFDdssMJAUSbUbkEXfHbhhwdLVqMxaca
- yxU7WohAtYx3jkKsEjwpF4FZOe5mory/xJjPg7JJCafJQPxquIy4O/1IvvT+oPe+DGul73HxAc
- 6nguW0/1XED9LsAAAA=
-To:     gregkh@linuxfoundation.org, sashal@kernel.org, palmer@dabbelt.com,
-        conor@kernel.org
-Cc:     paul.walmsley@sifive.com, aou@eecs.berkeley.edu,
-        ndesaulniers@google.com, trix@redhat.com, stable@vger.kernel.org,
-        linux-riscv@lists.infradead.org, llvm@lists.linux.dev,
-        patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.13-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1875; i=nathan@kernel.org;
- h=from:subject:message-id; bh=WpgQiMJgnt6HBcNQNIb/5Xa2UnrztLQBfn1ZUDQLobI=;
- b=owGbwMvMwCEmm602sfCA1DTG02pJDCl1Ael//Pbt0ClzWZLUfrM5KVHtae8Hx4yT9pMTOv97d
- xXM9XzZUcrCIMbBICumyFL9WPW4oeGcs4w3Tk2CmcPKBDKEgYtTACYy6zrDP92NC6ZkOu7zMTiz
- 4VDiIs859RZbpd2P7lSVunjq3MOrouUM/wx0gxTzpec8E7z//3CT5Z6pEhYd9yMf5F0RnhX181x
- IJjsA
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230603143543.855276091@linuxfoundation.org>
+In-Reply-To: <20230603143543.855276091@linuxfoundation.org>
+From:   Allen Pais <stable.kernel.dev@gmail.com>
+Date:   Mon, 5 Jun 2023 14:15:59 -0700
+Message-ID: <CAJq+SaC3jGqmM1k2FbpSoe=3uZC5BaO=SPgHW2JuAhxqeLk7ug@mail.gmail.com>
+Subject: Re: [PATCH 5.15 00/35] 5.15.115-rc3 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This patch is for linux-6.3.y only, it has no direct mainline
-equivalent.
+> This is the start of the stable review cycle for the 5.15.115 release.
+> There are 35 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Mon, 05 Jun 2023 14:35:25 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.115-rc3.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-LLVM 17 will now use the GOT for extern weak symbols when using the
-medany model, which causes a linker orphan section warning on
-linux-6.3.y:
+Compiled and booted on my x86_64 and ARM64 test systems. No errors or
+regressions.
 
-  ld.lld: warning: <internal>:(.got) is being placed in '.got'
+Tested-by: Allen Pais <apais@linux.microsoft.com>
 
-This is not an issue in mainline because handling of the .got section
-was added by commit 39b33072941f ("riscv: Introduce CONFIG_RELOCATABLE")
-and further extended by commit 26e7aacb83df ("riscv: Allow to downgrade
-paging mode from the command line") in 6.4-rc1. Neither of these changes
-are suitable for stable, so add explicit handling of the .got section in
-a standalone change to align 6.3 and mainline, which addresses the
-warning.
-
-This is only an issue for 6.3 because commit f4b71bff8d85 ("riscv:
-select ARCH_WANT_LD_ORPHAN_WARN for !XIP_KERNEL") landed in 6.3-rc1, so
-earlier releases will not see this warning because it will not be
-enabled.
-
-Closes: https://github.com/ClangBuiltLinux/linux/issues/1865
-Link: https://github.com/llvm/llvm-project/commit/a178ba9fbd0a27057dc2fa4cb53c76caa013caac
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- arch/riscv/kernel/vmlinux.lds.S | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/riscv/kernel/vmlinux.lds.S b/arch/riscv/kernel/vmlinux.lds.S
-index 53a8ad65b255..db56c38f0e19 100644
---- a/arch/riscv/kernel/vmlinux.lds.S
-+++ b/arch/riscv/kernel/vmlinux.lds.S
-@@ -129,6 +129,8 @@ SECTIONS
- 		*(.sdata*)
- 	}
- 
-+	.got : { *(.got*) }
-+
- #ifdef CONFIG_EFI
- 	.pecoff_edata_padding : { BYTE(0); . = ALIGN(PECOFF_FILE_ALIGNMENT); }
- 	__pecoff_data_raw_size = ABSOLUTE(. - __pecoff_text_end);
-
----
-base-commit: abfd9cf1c3d4d143a889b76af835078897e46c55
-change-id: 20230605-6-3-riscv-got-orphan-warning-llvm-17-8c4b0b72282a
-
-Best regards,
--- 
-Nathan Chancellor <nathan@kernel.org>
-
+Thanks.
