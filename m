@@ -2,126 +2,128 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3884D721FA6
-	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 09:34:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE749721FC2
+	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 09:39:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229584AbjFEHeo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 5 Jun 2023 03:34:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58620 "EHLO
+        id S230223AbjFEHjP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 5 Jun 2023 03:39:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229729AbjFEHen (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 03:34:43 -0400
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4CF983;
-        Mon,  5 Jun 2023 00:34:41 -0700 (PDT)
-Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-4f620583bc2so1628929e87.1;
-        Mon, 05 Jun 2023 00:34:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685950480; x=1688542480;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=DAgRq2EXmiJlw5QVvMbHQppFdqv5pzza5dzmoTwBNQ8=;
-        b=GOPR4d+/UEzaru7bfg0RdVmwWCfzmOk0IQA91sr3KwRMPXT30HCwHUn05o8osUkDpD
-         MsA7L94HI7gZfq3ALkgV3RippOJKS26pkN/bdoRJPCCwr7GkxE4BELQdzz+/jiFCzj47
-         LutkrzD710untVOO5vy2jWpN3/4HCZv99+yPalk8MvgtcRMziJfLxNsR4GIugdW83XaK
-         u8oLh5kpyiDr1n44SQIuGNyMUQvqnSeddlU6ij+6RtpodwOZ7ENHZiUkGCL7qydhznuI
-         6RNnLnHKr8Qzd4ibaeAcm/tw0ObHcTOAA7muPFpKY/VxTLR7Y6kU0cV6lDEK+5JOB94w
-         vMGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685950480; x=1688542480;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DAgRq2EXmiJlw5QVvMbHQppFdqv5pzza5dzmoTwBNQ8=;
-        b=k0lRy8pwJNHGZ1uB79EjaMci6ErxKFg+Rv+epu00WLPDMLcaaztyD1AzRCZLXSZy0K
-         jsfUC25onuWcnClnZB4WeJ6Q1zX7a4NItR1bRn+Hyjs8DFi9jjETGugNQO/u6IUu7x4H
-         9FBkX8HyyiuzOJ3z7nZd13Mdi1fttNc0LNcLs23iECBBEmqxsTUAQwq9o0rJN+YSLOfn
-         dpG0BuxjIRykslmaV0CXcaxo9nnxG5g+crXuizPzyBzBJrVzbxMUHOyilgEn96wk/nLv
-         NXLKhrzdWMSbuqpVz/PrAusLhN3BsRD34OgD/KJ+AVuVD2Y7BIJsNj/AvvYEZd+GZlyD
-         N3sg==
-X-Gm-Message-State: AC+VfDyfILKOPeiVemfAXGBCDpDmRJe/W9fak6T5ascArkT11sDoK/2x
-        QYU+8fZ8BkaxNYjSSfR+EwOQnIGlQjIn0A==
-X-Google-Smtp-Source: ACHHUZ5IEYPCmzkGOJfS9ic1+YXKE8YtO6DZakUgS6piCmgDsgm+OHr8VSg70fHzplr4P2NyIUY0Sw==
-X-Received: by 2002:ac2:4281:0:b0:4f1:3d6c:d89b with SMTP id m1-20020ac24281000000b004f13d6cd89bmr4850910lfh.42.1685950479796;
-        Mon, 05 Jun 2023 00:34:39 -0700 (PDT)
-Received: from home.paul.comp (paulfertser.info. [2001:470:26:54b:226:9eff:fe70:80c2])
-        by smtp.gmail.com with ESMTPSA id w12-20020ac2598c000000b004f62225ffb6sm564382lfn.105.2023.06.05.00.34.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jun 2023 00:34:39 -0700 (PDT)
-Received: from home.paul.comp (home.paul.comp [IPv6:0:0:0:0:0:0:0:1])
-        by home.paul.comp (8.15.2/8.15.2/Debian-22) with ESMTP id 3557YZcg008744;
-        Mon, 5 Jun 2023 10:34:36 +0300
-Received: (from paul@localhost)
-        by home.paul.comp (8.15.2/8.15.2/Submit) id 3557YXaZ008743;
-        Mon, 5 Jun 2023 10:34:33 +0300
-From:   Paul Fertser <fercerpav@gmail.com>
-To:     linux-wireless@vger.kernel.org
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Paul Fertser <fercerpav@gmail.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, Rani Hod <rani.hod@gmail.com>,
-        stable@vger.kernel.org
-Subject: [PATCH] mt76: mt7615: do not advertise 5 GHz on first phy of MT7615D (DBDC)
-Date:   Mon,  5 Jun 2023 10:34:07 +0300
-Message-Id: <20230605073408.8699-1-fercerpav@gmail.com>
-X-Mailer: git-send-email 2.30.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229905AbjFEHjP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 03:39:15 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22286AD;
+        Mon,  5 Jun 2023 00:39:14 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id D2DC121AF9;
+        Mon,  5 Jun 2023 07:39:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1685950752; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Jo1q+EVjn19uDq4zjiSV84GIoMoRkmgfMQr5y8Y0sh4=;
+        b=Ljr/3IJfvzKGbcl04cpIA/S5nywdRuAjIc/pvUU0xLFFw2jLIHkleajo3IbzBWKOzh/+5p
+        SXnF7bnTtn2EoxxNu9BNaJ6FVCa5hPpHEWfYHtfrnq/m6Y7SogBURuKw1TiqmMIs77eX7u
+        9jPjGrKjtpoBBZ+k95zypyxYTxEnyj8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1685950752;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Jo1q+EVjn19uDq4zjiSV84GIoMoRkmgfMQr5y8Y0sh4=;
+        b=LIduBt30SdkWJwxcgODlfTdahkIDG7jqbF+O1BH3nWgma9i/L46CLyjujoL+WcVUitJ8Wk
+        hFDcca92QFuM1bCA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A11B3139C7;
+        Mon,  5 Jun 2023 07:39:12 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id egd0JiCRfWT7cAAAMHmgww
+        (envelope-from <tiwai@suse.de>); Mon, 05 Jun 2023 07:39:12 +0000
+Date:   Mon, 05 Jun 2023 09:39:12 +0200
+Message-ID: <87pm6aicin.wl-tiwai@suse.de>
+From:   Takashi Iwai <tiwai@suse.de>
+To:     Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
+Cc:     "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "perex@perex.cz" <perex@perex.cz>,
+        "michael@ralston.id.au" <michael@ralston.id.au>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "tiwai@suse.com" <tiwai@suse.com>,
+        "alsa-devel@alsa-project.org" <alsa-devel@alsa-project.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] ALSA: usb-audio: Fix "cannot set freq 48000 to ep 0x3" msgs
+In-Reply-To: <202bbbc0f51522e8545783c4c5577d12a8e2d56d.camel@infinera.com>
+References: <20230601131116.1014250-1-joakim.tjernlund@infinera.com>
+        <202bbbc0f51522e8545783c4c5577d12a8e2d56d.camel@infinera.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On DBDC devices the first (internal) phy is only capable of using
-2.4 GHz band, and the 5 GHz band is exposed via a separate phy object,
-so avoid the false advertising.
+On Thu, 01 Jun 2023 16:28:05 +0200,
+Joakim Tjernlund wrote:
+> 
+> Adding Michael Ralston <michael@ralston.id.au>
+> 
+> He did have problems with his behringer UMC404HD device when this whole seq. was removed.
+> Ralston, can you try if the below change affects your device?
 
-Reported-by: Rani Hod <rani.hod@gmail.com>
-Closes: https://github.com/openwrt/openwrt/pull/12361
-Fixes: 7660a1bd0c22 ("mt76: mt7615: register ext_phy if DBDC is detected")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paul Fertser <fercerpav@gmail.com>
----
- drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Sorry for the late reaction, as I've been off in the last weeks.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
-index 68e88224b8b1..ccedea7e8a50 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
-@@ -128,12 +128,12 @@ mt7615_eeprom_parse_hw_band_cap(struct mt7615_dev *dev)
- 	case MT_EE_5GHZ:
- 		dev->mphy.cap.has_5ghz = true;
- 		break;
--	case MT_EE_2GHZ:
--		dev->mphy.cap.has_2ghz = true;
--		break;
- 	case MT_EE_DBDC:
- 		dev->dbdc_support = true;
- 		fallthrough;
-+	case MT_EE_2GHZ:
-+		dev->mphy.cap.has_2ghz = true;
-+		break;
- 	default:
- 		dev->mphy.cap.has_2ghz = true;
- 		dev->mphy.cap.has_5ghz = true;
--- 
-2.34.1
+The code sequence there seems pretty sensitive, and swapping or
+dropping the call might break things easily on certain devices,
+unfortunately.  So, I guess we can't take the patch as is.  If any, we
+need to fiddle the call order depending on the device quirk or such.
+I guess we may try to fit with the existing quirk flag.  Let me check
+it later.
 
+
+thanks,
+
+Takashi
+
+
+>  Jocke
+> 
+> On Thu, 2023-06-01 at 15:11 +0200, Joakim Tjernlund wrote:
+> > On some USB speaker devices(Jabra/Logitech) we see above error
+> > msg when connecting device to computer and kernel is probing the device.
+> > 
+> > Moving the snd_usb_init_sample_rate() to after usb_set_interface() makes
+> > the error go away.
+> > 
+> > Signed-off-by: Joakim Tjernlund <joakim.tjernlund@infinera.com>
+> > Cc: stable@vger.kernel.org
+> > ---
+> >  sound/usb/stream.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/sound/usb/stream.c b/sound/usb/stream.c
+> > index f10f4e6d3fb8..d9ac8663a48b 100644
+> > --- a/sound/usb/stream.c
+> > +++ b/sound/usb/stream.c
+> > @@ -1226,8 +1226,8 @@ static int __snd_usb_parse_audio_interface(struct snd_usb_audio *chip,
+> >  		/* try to set the interface... */
+> >  		usb_set_interface(chip->dev, iface_no, 0);
+> >  		snd_usb_init_pitch(chip, fp);
+> > -		snd_usb_init_sample_rate(chip, fp, fp->rate_max);
+> >  		usb_set_interface(chip->dev, iface_no, altno);
+> > +		snd_usb_init_sample_rate(chip, fp, fp->rate_max);
+> >  	}
+> >  	return 0;
+> >  }
+> 
