@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD568723045
-	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 21:50:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C87772306F
+	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 21:51:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235842AbjFETt6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 5 Jun 2023 15:49:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57640 "EHLO
+        id S236099AbjFETvs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 5 Jun 2023 15:51:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236094AbjFETtY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 15:49:24 -0400
+        with ESMTP id S236213AbjFETvV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 15:51:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00600123
-        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 12:49:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D93E7E5C
+        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 12:50:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C76F629E9
-        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 19:48:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D670C433D2;
-        Mon,  5 Jun 2023 19:48:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 05D9C62A13
+        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 19:50:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 176D5C4331D;
+        Mon,  5 Jun 2023 19:50:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685994511;
-        bh=HF4SvIJsbwlda0Sb64fA20GYLcAQev/LfnXDvCgy9UU=;
+        s=korg; t=1685994603;
+        bh=zDdAsvvsg1qUtwnccHAkNGoM8TJHqL8zGc+p2rxxG0E=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=KOBhlH+fXLlQVtHRVVWg3E0ctC1M/MQ9u506IjyfJCmP+ndHDFvWKC5/EHbAWeNEA
-         T5rp4v7purbnx9HCSEqURjENeUMmUBo+rwOG1+05OF4LyFbpK33nC03O2w1DiogebY
-         wEEWuYDmhybgrtsM7aNOxOr4yRMOOxKdJzLD2bIE=
-Date:   Mon, 5 Jun 2023 21:48:23 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Jason Andryuk <jandryuk@gmail.com>
-Cc:     stable@vger.kernel.org, Juergen Gross <jgross@suse.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Christian Kujau <lists@nerdbynature.de>
-Subject: Re: Request: x86/mtrr: Revert 90b926e68f50 ("x86/pat: Fix
- pat_x_mtrr_type() for MTRR disabled case")
-Message-ID: <2023060513-self-ditch-57f5@gregkh>
-References: <CAKf6xptzGSq5xUhbFDVB-vR0WfhDWnqXRY3UYYG4DvUakNR1AQ@mail.gmail.com>
+        b=hP0BdsApE6bOSx9/xD4rb6NSfIwd/Q/n67ibC1b7FCo0Na2U4CYsQzLBEFIYnm+Li
+         UiZcjszZ8aGcL5OMcaNsvZCoQf1QBVnNwxePdHHGI6qPTGTCchIZALcdFp70qZqcpf
+         r50NorGc3iE/7OSBoGnw7YaYwxbKMkIPUSmQCfNE=
+Date:   Mon, 5 Jun 2023 21:50:01 +0200
+From:   "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To:     Christian Loehle <CLoehle@hyperstone.com>
+Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] mmc: block: ensure error propagation for non-blk
+Message-ID: <2023060547-wildfowl-courier-9373@gregkh>
+References: <a70f433fd7754c83a7f5eda86d1cc31d@hyperstone.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAKf6xptzGSq5xUhbFDVB-vR0WfhDWnqXRY3UYYG4DvUakNR1AQ@mail.gmail.com>
+In-Reply-To: <a70f433fd7754c83a7f5eda86d1cc31d@hyperstone.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -52,26 +49,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jun 05, 2023 at 09:56:24AM -0400, Jason Andryuk wrote:
-> x86/mtrr: Revert 90b926e68f50 ("x86/pat: Fix pat_x_mtrr_type() for
-> MTRR disabled case")
+On Mon, Jun 05, 2023 at 01:46:16PM +0000, Christian Loehle wrote:
+> commit 003fb0a51162d940f25fc35e70b0996a12c9e08a upstream.
 > 
-> commit f9f57da2c2d119dbf109e3f6e1ceab7659294046 upstream
+> Requests to the mmc layer usually come through a block device IO.
+> The exceptions are the ioctl interface, RPMB chardev ioctl
+> and debugfs, which issue their own blk_mq requests through
+> blk_execute_rq and do not query the BLK_STS error but the
+> mmcblk-internal drv_op_result. This patch ensures that drv_op_result
+> defaults to an error and has to be overwritten by the operation
+> to be considered successful.
 > 
-> The requested patch fixes ioremap for certain devices when running as
-> a Xen Dom0.  Without the patch, one example is TPM device probing
-> failing with:
-> tpm_tis IFX:00: ioremap failed for resource
+> The behavior leads to a bug where the request never propagates
+> the error, e.g. by directly erroring out at mmc_blk_mq_issue_rq if
+> mmc_blk_part_switch fails. The ioctl caller of the rpmb chardev then
+> can never see an error (BLK_STS_IOERR, but drv_op_result is unchanged)
+> and thus may assume that their call executed successfully when it did not.
 > 
-> The requested patch did not include a Fixes tag, but it was intended
-> as a fix to upstream 90b926e68f500844dff16b5bcea178dc55cf580a, which
-> was subsequently backported to 6.1 as
-> c1c59538337ab6d45700cb4a1c9725e67f59bc6e.  The requested patch being a
-> fix can be seen in the thread here:
-> https://lore.kernel.org/lkml/167636735608.4906.4788207020350311572.tip-bot2@tip-bot2/
+> While always checking the blk_execute_rq return value would be
+> advised, let's eliminate the error by always setting
+> drv_op_result as -EIO to be overwritten on success (or other error)
 > 
-> I think it's only applicable to 6.1
+> Fixes: 614f0388f580 ("mmc: block: move single ioctl() commands to block requests")
+> Signed-off-by: Christian Loehle <cloehle@hyperstone.com>
+> ---
+>  drivers/mmc/core/block.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 
-Now queued up, thanks.
+What stable tree(s) do you want this applied to?
+
+thanks,
 
 greg k-h
