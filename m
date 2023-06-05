@@ -2,100 +2,143 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93127722590
-	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 14:24:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B01AE722657
+	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 14:50:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233341AbjFEMYR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 5 Jun 2023 08:24:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51802 "EHLO
+        id S233705AbjFEMui (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 5 Jun 2023 08:50:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232789AbjFEMYK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 08:24:10 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D976DBD
-        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 05:24:08 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-4f004cc54f4so5937529e87.3
-        for <stable@vger.kernel.org>; Mon, 05 Jun 2023 05:24:08 -0700 (PDT)
+        with ESMTP id S233879AbjFEMuU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 08:50:20 -0400
+Received: from mail-oo1-xc31.google.com (mail-oo1-xc31.google.com [IPv6:2607:f8b0:4864:20::c31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0750DC7
+        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 05:50:01 -0700 (PDT)
+Received: by mail-oo1-xc31.google.com with SMTP id 006d021491bc7-559b0ddcd4aso432194eaf.0
+        for <stable@vger.kernel.org>; Mon, 05 Jun 2023 05:50:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1685967847; x=1688559847;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=v1oCugcv9e8PDCZgVOtz+CT0CGXVq0farPi5ZReqnSU=;
-        b=XKn9Ja/VrCnXmb+vPU7OaaQtn8AhPwWenq/sc3Ett7vrne1fOPRiPKHQY7cRxzF+of
-         7zNM5WPmxSuTGerSEQIsY5wNAfJE99bGT9oUVjB5QDMeUDFIkiShbktiYeN9vAqm0XDp
-         Pg91H7+XBDePc7WkKIyxU1vEl4dEuH8tbUEt1W/Gu8blfhWzmI/7vhvcpKaCQIixHXa4
-         FYifubRKMkj8pcV69CRERexZxY/NGrttXK3AHdM3uZu/rQ/MMBL04g0sN/aXmRTXkqyf
-         RKhZSi7fvS6WVu2WoVe3awIFaFBvTuHsSqgE+W1NbTBzR5dBaK//i+/L/ph333k/Yjyk
-         hN2w==
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1685969400; x=1688561400;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=d+TjSMNj/D/pSTRYkkM1rDcHDPEv65xKX1YV27XdGhg=;
+        b=o90ztXEhxJHPpXzu6rEtWJHd4GY6y2c5+cgO+25XWoWIe9gPHZ7jNJuLA+wPD4zcaw
+         dA2I8LewwxK4kuBwX8O8yDRh7sGKi1H02ElCxfNYxpsD5OWRQ2x+2pD/3crF4DNvAdPA
+         rwO4EWMv1lVhCv/VjwqyWqzO4dejBVSpelI1TI0uHRoG2re/Iav9HBkkO1xhi3TxXAiv
+         K30oPoBa7UoJjS+SiQEKBy7cVZHjRHIGs9Dmsq++jn+v/7g0qbdqpZCP3hNJBxR8d98B
+         Zi+YyprzEe5v2MN1S2sMgkUp2hoJDI3Nv3AmrxS3RMH3SAXCFavCQ3zVfFnDOB2+rPOL
+         Lc0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685967847; x=1688559847;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=v1oCugcv9e8PDCZgVOtz+CT0CGXVq0farPi5ZReqnSU=;
-        b=Hwjmdb5TFKfgqdArce4qccdlGheQG9fLB0a1GLhZyVLE2bCSy2Qf8MgVfwt921ozCA
-         C/aLkULmrdQhnTC4i0+m1CbtDvItXqURXXiZvl9dgLjXl4UOKcQVDn4DCa049a+h+jUb
-         9MYPWQTVndJ4Isr8iRXAEohDLjSdDoqzeYamVUz5UjHpIampr2AiMnUmul56fX0+rYdW
-         g4ll0+l1qfknIRRVpRU7nEqmtOVxP33YJ/ytC8mKFZSkVn4fqJYRgdDFbroUdxaIaR27
-         z0VEeZ69MNWoGn8V/rhfh0U371GgoMHdF2abBNoruqXtzDMt4VfapVKKavnljCcSaP6I
-         qStw==
-X-Gm-Message-State: AC+VfDwdxzJJSAadiRuLss1DMOOuUFoX7TXbfCAy5Go3d8xKn6tj2RTK
-        M94Mfj9b2Kql8/4DMw92f9juwg==
-X-Google-Smtp-Source: ACHHUZ5mIXxubACaNX3T1qugmzFiFiORbjeTKZQpU6qO+lnYpYsYcyBwBi914ZyUighJAI5A6WLI6Q==
-X-Received: by 2002:ac2:5222:0:b0:4f6:2593:b75c with SMTP id i2-20020ac25222000000b004f62593b75cmr1816329lfl.52.1685967847177;
-        Mon, 05 Jun 2023 05:24:07 -0700 (PDT)
-Received: from [192.168.0.107] ([79.115.63.206])
-        by smtp.gmail.com with ESMTPSA id h9-20020a056000000900b002f9e04459desm9746915wrx.109.2023.06.05.05.24.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Jun 2023 05:24:06 -0700 (PDT)
-Message-ID: <9e2f734c-8b71-27ce-16f4-302f77138133@linaro.org>
-Date:   Mon, 5 Jun 2023 13:24:05 +0100
+        d=1e100.net; s=20221208; t=1685969400; x=1688561400;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=d+TjSMNj/D/pSTRYkkM1rDcHDPEv65xKX1YV27XdGhg=;
+        b=J90+frc11bVVABCQoG6N5sCNT6zHfXA222Qbg0lzz5clP9NJtNtDj3PsMXo7O656k4
+         1p153cVsFPCY3OBNy6sBS2bcLwfBB5JX6r5RwH6SvC6lz2V/ZHQvBYnHnB8/UJ8ttfKO
+         KetNH5Ur3YVHwh/vdbeys3YkUJtQJFCr6NXPly46cK//OyFnU2pdkrsX9noJUd5slFpb
+         bnMaL44WKSUZR4JGgLoB+xYRhZtjY4L8LKmyasQq50b84yXZ2DNkHxBWk0DcQPkXTcQ9
+         /KNAyZNGzxBD78b1cgJtXKwCdBA7zvGnSBq8cpuTogE6VH0AopNLrO0Tw03LZiKWvitS
+         2T/A==
+X-Gm-Message-State: AC+VfDwW5KNyPgvPyGbz2JR9ktitLNKNqGdzwIm6SIkpvFRJyxPCJiwV
+        2STj1FQIO9HtXxMRQuTRkzZqxX1iwbrfA9aHqABplg==
+X-Google-Smtp-Source: ACHHUZ5eJ3IsZSE/E8b8l3sFauKdDH6pDdUlxjUG+DSNAOXbZU00j2xMxKetQV+KwhlRkVmPF/NfsQ==
+X-Received: by 2002:a05:6358:9f82:b0:129:6079:14fe with SMTP id fy2-20020a0563589f8200b00129607914femr2277474rwb.14.1685969399758;
+        Mon, 05 Jun 2023 05:49:59 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([52.250.1.28])
+        by smtp.gmail.com with ESMTPSA id d3-20020a17090a498300b00252b3328ad8sm5786444pjh.0.2023.06.05.05.49.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jun 2023 05:49:59 -0700 (PDT)
+Message-ID: <647dd9f7.170a0220.9a814.9675@mx.google.com>
+Date:   Mon, 05 Jun 2023 05:49:59 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: FAILED: patch "[PATCH] net: cdc_ncm: Deal with too low values of
- dwNtbOutMaxSize" failed to apply to 4.14-stable tree
-Content-Language: en-US
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     kuba@kernel.org, simon.horman@corigine.com, stable@vger.kernel.org,
-        Lee Jones <joneslee@google.com>
-References: <2023052625-mutual-punch-5c0b@gregkh>
- <4f0cac8d-ef9b-5c97-3076-8a6a78e11137@linaro.org>
- <2023060524-pluck-undermost-a9e1@gregkh>
-From:   Tudor Ambarus <tudor.ambarus@linaro.org>
-In-Reply-To: <2023060524-pluck-undermost-a9e1@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v6.3.6
+X-Kernelci-Report-Type: test
+X-Kernelci-Branch: linux-6.3.y
+X-Kernelci-Tree: stable
+Subject: stable/linux-6.3.y baseline: 175 runs, 2 regressions (v6.3.6)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+stable/linux-6.3.y baseline: 175 runs, 2 regressions (v6.3.6)
+
+Regressions Summary
+-------------------
+
+platform    | arch | lab         | compiler | defconfig           | regress=
+ions
+------------+------+-------------+----------+---------------------+--------=
+----
+imx6dl-udoo | arm  | lab-broonie | gcc-10   | imx_v6_v7_defconfig | 2      =
+    =
 
 
-On 6/5/23 12:19, Greg KH wrote:
-> On Mon, Jun 05, 2023 at 12:07:20PM +0100, Tudor Ambarus wrote:
->> Hi!
->>
->> In order to apply this without conflicts to 4.14-stable, one needs to
->> apply a dependency, thus the sequence is:
->>
->> 7e01c7f7046e ("net: cdc_ncm: Deal with too low values of dwNtbOutMaxSize")
->> 0fa81b304a79 ("cdc_ncm: Implement the 32-bit version of NCM Transfer Block")
->>
->> Let me know if you want me to send the patches explicitly.
-> 
-> Please do, as 7e01c7f7046e does not apply at all either.
-> 
+  Details:  https://kernelci.org/test/job/stable/branch/linux-6.3.y/kernel/=
+v6.3.6/plan/baseline/
 
-It was the other way around. Sent the patches at:
-https://lore.kernel.org/all/20230605122045.2455888-1-tudor.ambarus@linaro.org/
+  Test:     baseline
+  Tree:     stable
+  Branch:   linux-6.3.y
+  Describe: v6.3.6
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able.git
+  SHA:      abfd9cf1c3d4d143a889b76af835078897e46c55 =
 
-Thanks,
-ta
+
+
+Test Regressions
+---------------- =
+
+
+
+platform    | arch | lab         | compiler | defconfig           | regress=
+ions
+------------+------+-------------+----------+---------------------+--------=
+----
+imx6dl-udoo | arm  | lab-broonie | gcc-10   | imx_v6_v7_defconfig | 2      =
+    =
+
+
+  Details:     https://kernelci.org/test/plan/id/647da605fbf642cb0bf5de41
+
+  Results:     29 PASS, 4 FAIL, 1 SKIP
+  Full config: imx_v6_v7_defconfig
+  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
+10110)
+  Plain log:   https://storage.kernelci.org//stable/linux-6.3.y/v6.3.6/arm/=
+imx_v6_v7_defconfig/gcc-10/lab-broonie/baseline-imx6dl-udoo.txt
+  HTML log:    https://storage.kernelci.org//stable/linux-6.3.y/v6.3.6/arm/=
+imx_v6_v7_defconfig/gcc-10/lab-broonie/baseline-imx6dl-udoo.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230527.0/armel/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.sound-card: https://kernelci.org/test/case/id/647da605f=
+bf642cb0bf5de4e
+        new failure (last pass: v6.3.5)
+
+    2023-06-05T09:08:04.159663  /lava-561726/1/../bin/lava-test-case
+    2023-06-05T09:08:04.181732  <8>[   17.965782] <LAVA_SIGNAL_TESTCASE TES=
+T_CASE_ID=3Dsound-card RESULT=3Dfail>   =
+
+
+  * baseline.bootrr.sound-card-probed: https://kernelci.org/test/case/id/64=
+7da605fbf642cb0bf5de4f
+        new failure (last pass: v6.3.5)
+
+    2023-06-05T09:08:03.109193  /lava-561726/1/../bin/lava-test-case
+    2023-06-05T09:08:03.137273  <8>[   16.920110] <LAVA_SIGNAL_TESTCASE TES=
+T_CASE_ID=3Dsound-card-probed RESULT=3Dfail>   =
+
+ =20
