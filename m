@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16D06721C7D
+	by mail.lfdr.de (Postfix) with ESMTP id B7FA4721C7F
 	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 05:25:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231342AbjFEDZe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 4 Jun 2023 23:25:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34018 "EHLO
+        id S231868AbjFEDZf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 4 Jun 2023 23:25:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231280AbjFEDZc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 4 Jun 2023 23:25:32 -0400
+        with ESMTP id S232487AbjFEDZd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 4 Jun 2023 23:25:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35461DA
-        for <stable@vger.kernel.org>; Sun,  4 Jun 2023 20:25:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 231C6CA
+        for <stable@vger.kernel.org>; Sun,  4 Jun 2023 20:25:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AABBF61DD3
-        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 03:25:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B30C4339B;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 80E1161142
+        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 03:25:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CC64C433AA;
         Mon,  5 Jun 2023 03:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
         s=k20201202; t=1685935530;
-        bh=YUyzdA7qU9iJt56KPySyZzECEj2SmbL6D5w4307jOiQ=;
+        bh=BMOzYlJrGMhscXXovu7hjA/5a0KG42M+rDSsK0KVzaI=;
         h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-        b=UwL8LFvw3KFZWf8+jR1+sKRJiG9Nx36ieuplhhpXqVDA6AmYIPbr417MJwhaGwCQk
-         7nch5K1NMngPTcg+nm9tGjxnzLhosrd31lPQ+lZMIUkAzKQZRUq+L4ahz1TTSeMpUs
-         ydLHIa/XFeaecJmgBP3kwPLDmMM9knJqNjCpIYYYRw+RyTE94RU/q/SRJy4BrQ4y8S
-         CwgHbfVPX1bar+DeGr3MUrt3aEez7DZwYNIWDoMRIGH8R8tFUTNRgX2clCkYkIZHSq
-         Zq98ndYIsw1RnmT26FAKSmP7xTQKCgW0RLAoTgVzA6IuGBhTxitrQyxD2NHGYk3kYe
-         mUl0hx/Gu5GVQ==
+        b=UXr72ugBXTv9mNpuOvno+4kgHZkDTUEpoE4+yK36KeIApVC15tFbFwc2RWUoUq1CV
+         7J7jk+rdd5612znNX/KvTIYWa0LGhacPFuxfaND1NDFbqOH9SoT0WFkrhNwbHqvLxZ
+         ZkTpi6Sm9yndrYPjeP17RPdCpAASykxJGkJp+M2cUH4tHXsG1qPhZLBLhA0mXXgfyb
+         wprgRcby1RATyMXxVFgmwCN5t4d597xbnHQ+/xZi4ca7vU+roHgN5QUHRuGeHdSWb3
+         bnkjBwRWiqTMwxoX83wIbJH8+PLAfJMtveKFnXc6M2bzt+2T1hkb44EZt2lvrMdD44
+         FSdBHXmizWGTA==
 From:   Mat Martineau <martineau@kernel.org>
-Date:   Sun, 04 Jun 2023 20:25:20 -0700
-Subject: [PATCH net 4/5] selftests: mptcp: update userspace pm subflow
- tests
+Date:   Sun, 04 Jun 2023 20:25:21 -0700
+Subject: [PATCH net 5/5] mptcp: update userspace pm infos
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230602-send-net-20230602-v1-4-fe011dfa859d@kernel.org>
+Message-Id: <20230602-send-net-20230602-v1-5-fe011dfa859d@kernel.org>
 References: <20230602-send-net-20230602-v1-0-fe011dfa859d@kernel.org>
 In-Reply-To: <20230602-send-net-20230602-v1-0-fe011dfa859d@kernel.org>
 To:     Matthieu Baerts <matthieu.baerts@tessares.net>,
@@ -64,43 +63,106 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Geliang Tang <geliang.tang@suse.com>
 
-To align with what is done by the in-kernel PM, update userspace pm
-subflow selftests, by sending the a remove_addrs command together
-before the remove_subflows command. This will get a RM_ADDR in
-chk_rm_nr().
+Increase pm subflows counter on both server side and client side when
+userspace pm creates a new subflow, and decrease the counter when it
+closes a subflow.
 
-Fixes: d9a4594edabf ("mptcp: netlink: Add MPTCP_PM_CMD_REMOVE")
-Fixes: 5e986ec46874 ("selftests: mptcp: userspace pm subflow tests")
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/379
+Increase add_addr_signaled counter in mptcp_nl_cmd_announce() when the
+address is announced by userspace PM.
+
+This modification is similar to how the in-kernel PM is updating the
+counter: when additional subflows are created/removed.
+
+Fixes: 9ab4807c84a4 ("mptcp: netlink: Add MPTCP_PM_CMD_ANNOUNCE")
+Fixes: 702c2f646d42 ("mptcp: netlink: allow userspace-driven subflow establishment")
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/329
 Cc: stable@vger.kernel.org
 Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
 Signed-off-by: Geliang Tang <geliang.tang@suse.com>
 Signed-off-by: Mat Martineau <martineau@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mptcp/pm.c           | 23 +++++++++++++++++++----
+ net/mptcp/pm_userspace.c |  5 +++++
+ 2 files changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 651740a656f0..29f0c99d9a46 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -936,6 +936,7 @@ do_transfer()
- 				sleep 1
- 				sp=$(grep "type:10" "$evts_ns2" |
- 				     sed -n 's/.*\(sport:\)\([[:digit:]]*\).*$/\2/p;q')
-+				ip netns exec ${connector_ns} ./pm_nl_ctl rem token $tk id $id
- 				ip netns exec ${connector_ns} ./pm_nl_ctl dsf lip $addr lport $sp \
- 									rip $da rport $dp token $tk
- 			fi
-@@ -3150,7 +3151,7 @@ userspace_tests()
- 		pm_nl_set_limits $ns1 0 1
- 		run_tests $ns1 $ns2 10.0.1.1 0 0 userspace_1 slow
- 		chk_join_nr 1 1 1
--		chk_rm_nr 0 1
-+		chk_rm_nr 1 1
- 		kill_events_pids
- 	fi
- }
+diff --git a/net/mptcp/pm.c b/net/mptcp/pm.c
+index 78c924506e83..76612bca275a 100644
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -87,8 +87,15 @@ bool mptcp_pm_allow_new_subflow(struct mptcp_sock *msk)
+ 	unsigned int subflows_max;
+ 	int ret = 0;
+ 
+-	if (mptcp_pm_is_userspace(msk))
+-		return mptcp_userspace_pm_active(msk);
++	if (mptcp_pm_is_userspace(msk)) {
++		if (mptcp_userspace_pm_active(msk)) {
++			spin_lock_bh(&pm->lock);
++			pm->subflows++;
++			spin_unlock_bh(&pm->lock);
++			return true;
++		}
++		return false;
++	}
+ 
+ 	subflows_max = mptcp_pm_get_subflows_max(msk);
+ 
+@@ -181,8 +188,16 @@ void mptcp_pm_subflow_check_next(struct mptcp_sock *msk, const struct sock *ssk,
+ 	struct mptcp_pm_data *pm = &msk->pm;
+ 	bool update_subflows;
+ 
+-	update_subflows = (subflow->request_join || subflow->mp_join) &&
+-			  mptcp_pm_is_kernel(msk);
++	update_subflows = subflow->request_join || subflow->mp_join;
++	if (mptcp_pm_is_userspace(msk)) {
++		if (update_subflows) {
++			spin_lock_bh(&pm->lock);
++			pm->subflows--;
++			spin_unlock_bh(&pm->lock);
++		}
++		return;
++	}
++
+ 	if (!READ_ONCE(pm->work_pending) && !update_subflows)
+ 		return;
+ 
+diff --git a/net/mptcp/pm_userspace.c b/net/mptcp/pm_userspace.c
+index 114548b09f47..b06aa58dfcf2 100644
+--- a/net/mptcp/pm_userspace.c
++++ b/net/mptcp/pm_userspace.c
+@@ -69,6 +69,7 @@ static int mptcp_userspace_pm_append_new_local_addr(struct mptcp_sock *msk,
+ 							MPTCP_PM_MAX_ADDR_ID + 1,
+ 							1);
+ 		list_add_tail_rcu(&e->list, &msk->pm.userspace_pm_local_addr_list);
++		msk->pm.local_addr_used++;
+ 		ret = e->addr.id;
+ 	} else if (match) {
+ 		ret = entry->addr.id;
+@@ -96,6 +97,7 @@ static int mptcp_userspace_pm_delete_local_addr(struct mptcp_sock *msk,
+ 			 */
+ 			list_del_rcu(&entry->list);
+ 			kfree(entry);
++			msk->pm.local_addr_used--;
+ 			return 0;
+ 		}
+ 	}
+@@ -195,6 +197,7 @@ int mptcp_nl_cmd_announce(struct sk_buff *skb, struct genl_info *info)
+ 	spin_lock_bh(&msk->pm.lock);
+ 
+ 	if (mptcp_pm_alloc_anno_list(msk, &addr_val)) {
++		msk->pm.add_addr_signaled++;
+ 		mptcp_pm_announce_addr(msk, &addr_val.addr, false);
+ 		mptcp_pm_nl_addr_send_ack(msk);
+ 	}
+@@ -343,6 +346,8 @@ int mptcp_nl_cmd_sf_create(struct sk_buff *skb, struct genl_info *info)
+ 	spin_lock_bh(&msk->pm.lock);
+ 	if (err)
+ 		mptcp_userspace_pm_delete_local_addr(msk, &local);
++	else
++		msk->pm.subflows++;
+ 	spin_unlock_bh(&msk->pm.lock);
+ 
+  create_err:
 
 -- 
 2.40.1
