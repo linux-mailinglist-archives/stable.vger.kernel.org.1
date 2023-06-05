@@ -2,134 +2,96 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29E35721BE3
-	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 04:17:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C4F1721C7E
+	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 05:25:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232554AbjFECRf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 4 Jun 2023 22:17:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50244 "EHLO
+        id S231968AbjFEDZb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 4 Jun 2023 23:25:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231263AbjFECRf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 4 Jun 2023 22:17:35 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3808AB4;
-        Sun,  4 Jun 2023 19:17:33 -0700 (PDT)
-Received: from dggpeml500021.china.huawei.com (unknown [172.30.72.57])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4QZHFB2xPbz18LVd;
-        Mon,  5 Jun 2023 10:12:46 +0800 (CST)
-Received: from [10.174.177.174] (10.174.177.174) by
- dggpeml500021.china.huawei.com (7.185.36.21) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Mon, 5 Jun 2023 10:17:30 +0800
-Message-ID: <c20befb7-cd2e-019a-57d4-35da70e0f534@huawei.com>
-Date:   Mon, 5 Jun 2023 10:17:29 +0800
+        with ESMTP id S231280AbjFEDZa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 4 Jun 2023 23:25:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE474CA
+        for <stable@vger.kernel.org>; Sun,  4 Jun 2023 20:25:29 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 74B0661142
+        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 03:25:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80613C433EF;
+        Mon,  5 Jun 2023 03:25:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685935528;
+        bh=ykcDhIkIKHonAYObMsjSf4+ZeFZ33xoCZovgTPucXpM=;
+        h=From:Subject:Date:To:Cc:From;
+        b=BGJ/ZPIbDyls/WgfdWnuJgS1o0PIuSCUvYDizjU+DlBBf0kis1peUHd2jc4gwhcWP
+         UQ+qHedLhdPc6WYFMsungWipORdopstDDaDnBBrWNl/6cmVW1SKEKCRiiN4Y2oJ4rd
+         aHXYGWWaT3u0fiX8eUOoCK5NckJn1RvAAAWdzsbVGV3e6Iv66t+wCW1J1MhHjvgV8b
+         sAYHma8RhBkz+3y6lAgDJumWyStrxYVmg6GQsCZrkbrzV0z9q6IHpeoX8n53mYMqAO
+         ONnZVqAr+YtiXY30j9sbtDGk5J0zxAh0IfTYi+mMn8X3FvCQnTmSgNgFmzIBECzmdb
+         ibsrNtnbNdSbQ==
+From:   Mat Martineau <martineau@kernel.org>
+Subject: [PATCH net 0/5] mptcp: Fixes for address advertisement
+Date:   Sun, 04 Jun 2023 20:25:16 -0700
+Message-Id: <20230602-send-net-20230602-v1-0-fe011dfa859d@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.2
-Subject: Re: [PATCH v2] ext4: fix race condition between buffer write and
- page_mkwrite
-Content-Language: en-US
-To:     Theodore Ts'o <tytso@mit.edu>
-CC:     <linux-ext4@vger.kernel.org>, <adilger.kernel@dilger.ca>,
-        <jack@suse.cz>, <ritesh.list@gmail.com>,
-        <linux-kernel@vger.kernel.org>, <jun.nie@linaro.org>,
-        <ebiggers@kernel.org>, <yi.zhang@huawei.com>,
-        <yangerkun@huawei.com>, <yukuai3@huawei.com>,
-        <syzbot+a158d886ca08a3fecca4@syzkaller.appspotmail.com>,
-        <stable@vger.kernel.org>, Baokun Li <libaokun1@huawei.com>
-References: <20230530134405.322194-1-libaokun1@huawei.com>
- <20230604030445.GF1128744@mit.edu>
-From:   Baokun Li <libaokun1@huawei.com>
-In-Reply-To: <20230604030445.GF1128744@mit.edu>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.174]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpeml500021.china.huawei.com (7.185.36.21)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJxVfWQC/z2NSw6DMAxEr4K8rqUQ/r1K1UUS3OIFBsWoqoS4O
+ wkLlvNmnmYHpcik8Cx2iPRj5UVSKB8FhMnJl5DHlMEaW5nWWFSSEYU2vMngbOu7JtTG95A875T
+ QRydhyuY2r3mfmzXSh//X2wsyex/HCV7GQX6CAAAA
+To:     Matthieu Baerts <matthieu.baerts@tessares.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Kishen Maloor <kishen.maloor@intel.com>,
+        Geliang Tang <geliang.tang@suse.com>,
+        Florian Westphal <fw@strlen.de>
+Cc:     netdev@vger.kernel.org, mptcp@lists.linux.dev,
+        Mat Martineau <martineau@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.12.2
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 2023/6/4 11:04, Theodore Ts'o wrote:
-> I tried testing to see if this fixed [1], and it appears to be
-> triggering a lockdep warning[2] at this line in the patch:
->
-> [1] https://syzkaller.appspot.com/bug?extid=f4582777a19ec422b517
-> [2] https://syzkaller.appspot.com/x/report.txt?x=17260843280000
->
->> diff --git a/fs/ext4/file.c b/fs/ext4/file.c
->> index d101b3b0c7da..9df82d72eb90 100644
->> --- a/fs/ext4/file.c
->> +++ b/fs/ext4/file.c
->> @@ -808,6 +809,27 @@ static int ext4_file_mmap(struct file *file, struct vm_area_struct *vma)
->>   	if (!daxdev_mapping_supported(vma, dax_dev))
->>   		return -EOPNOTSUPP;
->>   
->> +	/*
->> +	 * Writing via mmap has no logic to handle inline data, so we
->> +	 * need to call ext4_convert_inline_data() to convert the inode
->> +	 * to normal format before doing so, otherwise a BUG_ON will be
->> +	 * triggered in ext4_writepages() due to the
->> +	 * EXT4_STATE_MAY_INLINE_DATA flag. Moreover, we need to grab
->> +	 * i_rwsem during conversion, since clearing and setting the
->> +	 * inline data flag may race with ext4_buffered_write_iter()
->> +	 * to trigger a BUG_ON.
->> +	 */
->> +	if (ext4_has_feature_inline_data(sb) &&
->> +	    vma->vm_flags & VM_SHARED && vma->vm_flags & VM_MAYWRITE) {
->> +		int err;
->> +
->> +		inode_lock(inode); <=================== LOCKDEP warning
->> +		err = ext4_convert_inline_data(inode);
->> +		inode_unlock(inode);
->> +		if (err)
->> +			return err;
->> +	}
->
-> The details of the lockdep warning from [2], which appears to be a
-> mmap(2) racing with a buffered write(2) are below.  Could you take a
-> look?
->
-> Thanks!
->
-> 					- Ted
+Patches 1 and 2 allow address advertisements to be removed without
+affecting current connected subflows, and updates associated self tests.
 
-Sorry for the late reply!
+Patches 3 and 4 correctly track (and allow removal of) addresses that
+were implicitly announced as part of subflow creation. Also updates
+associated self tests.
 
-Had a look at this question which is similar to the one Honza mentioned 
-earlier.
-Concurrency between write and mmap as follows can lead to ABBA deadlocks:
+Patch 5 makes subflow and address announcement counters work consistently
+between the userspace and in-kernel path managers.
 
-     CPU0                   CPU1
-   write(2)                mmap(2)
-ext4_file_write_iter
-  ext4_buffered_write_iter
-   inode_lock(inode)  ---> LOCK A
-   generic_perform_write
-                          ksys_mmap_pgoff
-                           vm_mmap_pgoff
-                            mmap_write_lock_killable(mm) ---> LOCK B
-                            do_mmap
-                             mmap_region
-                              call_mmap
-                               ext4_file_mmap
-                                inode_lock(inode)  ---> try LOCK A again
-    fault_in_iov_iter_readable              |
-     fault_in_readable                      |
-      asm_exc_page_fault                ABBA deadlock
-       handle_page_fault                    |
-        do_user_addr_fault                  |
-         mmap_read_lock(mm) ---> try LOCK B again
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+---
+Geliang Tang (5):
+      mptcp: only send RM_ADDR in nl_cmd_remove
+      selftests: mptcp: update userspace pm addr tests
+      mptcp: add address into userspace pm list
+      selftests: mptcp: update userspace pm subflow tests
+      mptcp: update userspace pm infos
 
+ net/mptcp/pm.c                                  | 23 +++++++++---
+ net/mptcp/pm_netlink.c                          | 18 ++++++++++
+ net/mptcp/pm_userspace.c                        | 48 ++++++++++++++++++++++++-
+ net/mptcp/protocol.h                            |  1 +
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 11 +++++-
+ 5 files changed, 95 insertions(+), 6 deletions(-)
+---
+base-commit: 37a826d86ff746c4eac8bd3415af19f3c9598206
+change-id: 20230602-send-net-20230602-9a26b75c40b8
 
-Thanks!
+Best regards,
 -- 
-With Best Regards,
-Baokun Li
-.
+Mat Martineau <martineau@kernel.org>
+
