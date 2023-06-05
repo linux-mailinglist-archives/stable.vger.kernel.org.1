@@ -2,58 +2,67 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 306D072289F
-	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 16:18:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BABB72282B
+	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 16:06:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231868AbjFEOSn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 5 Jun 2023 10:18:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46890 "EHLO
+        id S231213AbjFEOGS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 5 Jun 2023 10:06:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232977AbjFEOSk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 10:18:40 -0400
-X-Greylist: delayed 909 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 05 Jun 2023 07:18:37 PDT
-Received: from sender-of-o51.zoho.in (sender-of-o51.zoho.in [103.117.158.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 953349B;
-        Mon,  5 Jun 2023 07:18:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1685973765; cv=none; 
-        d=zohomail.in; s=zohoarc; 
-        b=UEjRH8X+EQPCqNC4TrenHe7UT7DcPjTYAl6zPzWlWo1g81Cw4KiQh1T2LoI8R1bUZiTPlJgwQy0Z6w4RoVYViBt1Z07OcXigTAOfsPUBwjuxKHmLZUJN+ExjzRK2TQrZiTKM4hLQiyPCKLNWkkF/qM+WIEVxx/Fud6rHycoLOTs=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-        t=1685973765; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
-        bh=+o71O1pYRWmOO9H0o1rqpmBm9jZwIdAhrIJOrg/czBU=; 
-        b=N/ZmxwD6165BXU4zhP4ipTcF/VzkXeXa3LRN9WhvuStU2S9RlHZ7v9eihIpGgmyX4mcAwESK0KTqUCMh5jVhJiPzQZvD1sC1coxBJai8M1pT1wbVqTcf/VD/rZW0ccEJh7vAN9gMe2nT3snbH+WX2aRp1cmGdEnQqkNkLcreMIM=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-        dkim=pass  header.i=siddh.me;
-        spf=pass  smtp.mailfrom=code@siddh.me;
-        dmarc=pass header.from=<code@siddh.me>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1685973765;
-        s=zmail; d=siddh.me; i=code@siddh.me;
-        h=From:From:To:To:Cc:Cc:Message-ID:Subject:Subject:Date:Date:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
-        bh=+o71O1pYRWmOO9H0o1rqpmBm9jZwIdAhrIJOrg/czBU=;
-        b=cPs99wbzw9VM349ypot/e1Z/NVpS6rPpcETAKTyMARht2bZHfLZ1ugqSzrDNx6Ef
-        fHxfE05xrB5XAxGFj1eJM3LG+KpUNGVak/vUemR8BTRR4OOfd6CAtoWO7dyAcWyIwl5
-        3kEPnsDVCmMY8nCFjL0Mr3365nH6V8esLdRVjY2g=
-Received: from kampyooter.. (223.236.126.120 [223.236.126.120]) by mx.zoho.in
-        with SMTPS id 1685973763050332.8195646780821; Mon, 5 Jun 2023 19:32:43 +0530 (IST)
-From:   Siddh Raman Pant <code@siddh.me>
-To:     Dave Kleikamp <shaggy@kernel.org>,
-        Dongliang Mu <mudongliangabcd@gmail.com>,
-        Liu Shixin <liushixin2@huawei.com>,
-        Hoi Pok Wu <wuhoipok@gmail.com>
-Cc:     jfs-discussion@lists.sourceforge.net, linux-kernel@vger.kernel.org,
-        Anup Sharma <anupnewsmail@gmail.com>,
-        syzbot+d2cd27dcf8e04b232eb2@syzkaller.appspotmail.com,
+        with ESMTP id S233771AbjFEOGI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 10:06:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97EEB122;
+        Mon,  5 Jun 2023 07:06:02 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1377261671;
+        Mon,  5 Jun 2023 14:06:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F84C433D2;
+        Mon,  5 Jun 2023 14:05:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685973961;
+        bh=owgJ2JpHb0soEawFXmtTH142XPFNTNcm+kX8RwdJzrw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=P8rvPmfMPFhkA/+lwOFdVC7Dj9vKBHQCUCXWNlRg6AGoa0sWtr23aAYTfZ0dO7QXO
+         8wyrfhiG3fzyG0GE2T+vqkK+fk0TYzo2EJTd/6Vp6SC95GdqAwx7c0WuWH/BvqcPRU
+         jRYGNKaYaOzPuo2mdMYiLrd61NFpdya35mhm4Eekt7TIEObXLc5Jvu9RIrvgLjCmNf
+         YJLO3z3vOXI3Ft78f4n1ydPpUFv8r8jdoDz/TqDJxB7B0xv9xCVISxNn+2rWv4Ck6W
+         3mhwWc35qxqJlJK5NhVpOiWtvkBEP/YGHKvgPNzRhZTuXZIElg8qL1+egPddVLcZLY
+         fwyA0nVldOaYQ==
+Date:   Mon, 5 Jun 2023 15:05:54 +0100
+From:   Will Deacon <will@kernel.org>
+To:     Peter Collingbourne <pcc@google.com>, akpm@linux-foundation.org
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        Qun-wei Lin =?utf-8?B?KOael+e+pOW0tCk=?= 
+        <Qun-wei.Lin@mediatek.com>, linux-arm-kernel@lists.infradead.org,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        "surenb@google.com" <surenb@google.com>,
+        "david@redhat.com" <david@redhat.com>,
+        Chinwen Chang =?utf-8?B?KOW8temMpuaWhyk=?= 
+        <chinwen.chang@mediatek.com>,
+        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
+        Kuan-Ying Lee =?utf-8?B?KOadjuWGoOepjik=?= 
+        <Kuan-Ying.Lee@mediatek.com>,
+        Casper Li =?utf-8?B?KOadjuS4reamrik=?= <casper.li@mediatek.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        vincenzo.frascino@arm.com,
+        Alexandru Elisei <alexandru.elisei@arm.com>,
+        eugenis@google.com, Steven Price <steven.price@arm.com>,
         stable@vger.kernel.org
-Message-ID: <20230605140151.635604-1-code@siddh.me>
-Subject: [PATCH] jfs: jfs_dmap: Validate db_l2nbperpage while mounting
-Date:   Mon,  5 Jun 2023 19:31:51 +0530
-X-Mailer: git-send-email 2.39.2
+Subject: Re: [PATCH v4 1/3] mm: Call arch_swap_restore() from do_swap_page()
+Message-ID: <20230605140554.GC21212@willie-the-truck>
+References: <20230523004312.1807357-1-pcc@google.com>
+ <20230523004312.1807357-2-pcc@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
-Content-Type: text/plain; charset=utf8
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230523004312.1807357-2-pcc@google.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -62,46 +71,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-In jfs_dmap.c at line 381, BLKTODMAP is used to get a logical block
-number inside dbFree(). db_l2nbperpage, which is the log2 number of
-blocks per page, is passed as an argument to BLKTODMAP which uses it
-for shifting.
+Hi Peter,
 
-Syzbot reported a shift out-of-bounds crash because db_l2nbperpage is
-too big. This happens because the large value is set without any
-validation in dbMount() at line 181.
+On Mon, May 22, 2023 at 05:43:08PM -0700, Peter Collingbourne wrote:
+> Commit c145e0b47c77 ("mm: streamline COW logic in do_swap_page()") moved
+> the call to swap_free() before the call to set_pte_at(), which meant that
+> the MTE tags could end up being freed before set_pte_at() had a chance
+> to restore them. Fix it by adding a call to the arch_swap_restore() hook
+> before the call to swap_free().
+> 
+> Signed-off-by: Peter Collingbourne <pcc@google.com>
+> Link: https://linux-review.googlesource.com/id/I6470efa669e8bd2f841049b8c61020c510678965
+> Cc: <stable@vger.kernel.org> # 6.1
+> Fixes: c145e0b47c77 ("mm: streamline COW logic in do_swap_page()")
+> Reported-by: Qun-wei Lin (林群崴) <Qun-wei.Lin@mediatek.com>
+> Closes: https://lore.kernel.org/all/5050805753ac469e8d727c797c2218a9d780d434.camel@mediatek.com/
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Acked-by: "Huang, Ying" <ying.huang@intel.com>
+> Reviewed-by: Steven Price <steven.price@arm.com>
+> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+> ---
+> v2:
+> - Call arch_swap_restore() directly instead of via arch_do_swap_page()
+> 
+>  mm/memory.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index f69fbc251198..fc25764016b3 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -3932,6 +3932,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>  		}
+>  	}
+>  
+> +	/*
+> +	 * Some architectures may have to restore extra metadata to the page
+> +	 * when reading from swap. This metadata may be indexed by swap entry
+> +	 * so this must be called before swap_free().
+> +	 */
+> +	arch_swap_restore(entry, folio);
+> +
+>  	/*
+>  	 * Remove the swap entry and conditionally try to free up the swapcache.
+>  	 * We're already holding a reference on the page but haven't mapped it
 
-Thus, make sure that db_l2nbperpage is correct while mounting.
+It looks like the intention is for this patch to land in 6.4, whereas the
+other two in the series could go in later, right? If so, I was expecting
+Andrew to pick this one up but he's not actually on CC. I've added him now,
+but you may want to send this as a separate fix so it's obvious what needs
+picking up for this cycle.
 
-Reported-and-tested-by: syzbot+d2cd27dcf8e04b232eb2@syzkaller.appspotmail.c=
-om
-Link: https://syzkaller.appspot.com/bug?id=3D2a70a453331db32ed491f5cbb07e81=
-bf2d225715
-Cc: stable@vger.kernel.org
-Signed-off-by: Siddh Raman Pant <code@siddh.me>
----
- fs/jfs/jfs_dmap.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Cheers,
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index a3eb1e826947..62f058822a3a 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -178,7 +178,13 @@ int dbMount(struct inode *ipbmap)
- =09dbmp_le =3D (struct dbmap_disk *) mp->data;
- =09bmp->db_mapsize =3D le64_to_cpu(dbmp_le->dn_mapsize);
- =09bmp->db_nfree =3D le64_to_cpu(dbmp_le->dn_nfree);
-+
- =09bmp->db_l2nbperpage =3D le32_to_cpu(dbmp_le->dn_l2nbperpage);
-+=09if (bmp->db_l2nbperpage > L2MAXL0SIZE) {
-+=09=09err =3D -EINVAL;
-+=09=09goto err_release_metapage;
-+=09}
-+
- =09bmp->db_numag =3D le32_to_cpu(dbmp_le->dn_numag);
- =09if (!bmp->db_numag) {
- =09=09err =3D -EINVAL;
---=20
-2.39.2
-
-
+Will
