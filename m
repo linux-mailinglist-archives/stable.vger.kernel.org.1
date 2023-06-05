@@ -2,56 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AFEE7228A8
-	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 16:20:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F089B7228F0
+	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 16:37:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231596AbjFEOUY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 5 Jun 2023 10:20:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47958 "EHLO
+        id S234274AbjFEOhW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 5 Jun 2023 10:37:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231161AbjFEOUX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 10:20:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B9399B
-        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 07:20:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C50B62411
-        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 14:20:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0138BC4339B;
-        Mon,  5 Jun 2023 14:20:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685974821;
-        bh=I1+oJjUANT/Go9zAX7BnObBZrLAw1r0c46VWOubGrDI=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=bG6HNIbsIjbaQ358M+LHCDYy47TG36629a0zzGZaeFLKHEXhu4MyKzpXTJ54w4Aea
-         N5qPFaCXQI1vTj6YMiAIz3oMmZCVegokRsyjRTKteeU4xH8Wo7Rube6ebpO5rvHKXB
-         iGn6rH3iTD0wdd+GIKZ34Tca1qocrx8N5RsB8yRbgjNoxceLgSnPNzK1Mh0xceJnCc
-         2kvyhHHD54CV0a0lXWsoC68M6fAcbry3mAQOJinjbatzv2DstaAwYrZpk30zwB4WYI
-         GbFjyDLRMGdhVF9gRGm4dJymuBkZdRO9TAv2h6GD4gV/E5gsRcFfCs3K3g7/gBz5bR
-         PMAaztZ5Jim/A==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id D4DE9E87231;
-        Mon,  5 Jun 2023 14:20:20 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/5] mptcp: Fixes for address advertisement
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <168597482086.20055.17589676099574037923.git-patchwork-notify@kernel.org>
-Date:   Mon, 05 Jun 2023 14:20:20 +0000
-References: <20230602-send-net-20230602-v1-0-fe011dfa859d@kernel.org>
-In-Reply-To: <20230602-send-net-20230602-v1-0-fe011dfa859d@kernel.org>
-To:     Mat Martineau <martineau@kernel.org>
-Cc:     matthieu.baerts@tessares.net, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        kishen.maloor@intel.com, geliang.tang@suse.com, fw@strlen.de,
-        netdev@vger.kernel.org, mptcp@lists.linux.dev,
+        with ESMTP id S232301AbjFEOhU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 10:37:20 -0400
+Received: from sender-of-o51.zoho.in (sender-of-o51.zoho.in [103.117.158.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0401699
+        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 07:37:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1685975788; cv=none; 
+        d=zohomail.in; s=zohoarc; 
+        b=I/MNviWllcoNociBuVMUjvf/4cmNOBv9CinXXyuEx+o6nHyIiQ8Py93j7m8Kxh3cWZjebJEB7xL3kxliRbd9aZzuWq/DKZArO+Az5y4lKHHXQy0ZHS+glVJ0Q2dPlkq+d20FgEvB/tXhWJQKfjxZP/SfdRoB6XHIHgtohJqyq6w=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
+        t=1685975788; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=G+0R5+PtzmbZTJMOunHX+jthOd0HYHJjkvOrxJuEthU=; 
+        b=Kmk8/MmpJEkq7zU+IzPdRlBCfPT++h6bCISBTviNggIch3cqZ6QnD96dR+hcwlQKOydFc7n7hvxsFOPrx7oOHD22RzOMuxmHuruexKMPOuh9/X9smyhciEwC34mUx56PgKYEuf6g0QNHBkcBygLEzT6S75Yz91QUkmEYwKBay3w=
+ARC-Authentication-Results: i=1; mx.zohomail.in;
+        dkim=pass  header.i=siddh.me;
+        spf=pass  smtp.mailfrom=code@siddh.me;
+        dmarc=pass header.from=<code@siddh.me>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1685975788;
+        s=zmail; d=siddh.me; i=code@siddh.me;
+        h=From:From:To:To:Cc:Cc:Message-ID:Subject:Subject:Date:Date:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
+        bh=G+0R5+PtzmbZTJMOunHX+jthOd0HYHJjkvOrxJuEthU=;
+        b=fxlRRdswQBmxRF8xMd/GGaY3HureaR+7e07JxHb2WC5TrZubv6SIm3gcLB56JTeY
+        PUEWzqkhLbkcGl9Tz/O5XsHMf4vhgwMrGFpx2usInVRDbmol16aCi+qkdUokSWcYDcy
+        vE3Qar9kp9n9+JF05paK312kGguNAXwsd4X66YiI=
+Received: from kampyooter.. (223.236.126.120 [223.236.126.120]) by mx.zoho.in
+        with SMTPS id 16859757868871021.8385417806124; Mon, 5 Jun 2023 20:06:26 +0530 (IST)
+From:   Siddh Raman Pant <code@siddh.me>
+To:     David Howells <dhowells@redhat.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        David Disseldorp <ddiss@suse.de>,
+        Nick Alcock <nick.alcock@oracle.com>
+Cc:     linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
         stable@vger.kernel.org
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+Message-ID: <20230605143616.640517-1-code@siddh.me>
+Subject: [PATCH v5] kernel/watch_queue: NULL the dangling *pipe, and use it for clear check
+Date:   Mon,  5 Jun 2023 20:06:16 +0530
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-ZohoMailClient: External
+Content-Type: text/plain; charset=utf8
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,36 +62,109 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
+NULL the dangling pipe reference while clearing watch_queue.
 
-This series was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
+If not done, a reference to a freed pipe remains in the watch_queue,
+as this function is called before freeing a pipe in free_pipe_info()
+(see line 834 of fs/pipe.c).
 
-On Sun, 04 Jun 2023 20:25:16 -0700 you wrote:
-> Patches 1 and 2 allow address advertisements to be removed without
-> affecting current connected subflows, and updates associated self tests.
-> 
-> Patches 3 and 4 correctly track (and allow removal of) addresses that
-> were implicitly announced as part of subflow creation. Also updates
-> associated self tests.
-> 
-> [...]
+The sole use of wqueue->defunct is for checking if the watch queue has
+been cleared, but wqueue->pipe is also NULLed while clearing.
 
-Here is the summary with links:
-  - [net,1/5] mptcp: only send RM_ADDR in nl_cmd_remove
-    https://git.kernel.org/netdev/net/c/8b1c94da1e48
-  - [net,2/5] selftests: mptcp: update userspace pm addr tests
-    https://git.kernel.org/netdev/net/c/48d73f609dcc
-  - [net,3/5] mptcp: add address into userspace pm list
-    https://git.kernel.org/netdev/net/c/24430f8bf516
-  - [net,4/5] selftests: mptcp: update userspace pm subflow tests
-    https://git.kernel.org/netdev/net/c/6c160b636c91
-  - [net,5/5] mptcp: update userspace pm infos
-    https://git.kernel.org/netdev/net/c/77e4b94a3de6
+Thus, wqueue->defunct is superfluous, as wqueue->pipe can be checked
+for NULL. Hence, the former can be removed.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Tested with keyutils testsuite.
+
+Cc: stable@vger.kernel.org # 6.1
+Signed-off-by: Siddh Raman Pant <code@siddh.me>
+---
+Changes in v5:
+- Rebased to latest mainline.
+- Added Cc to stable.
+- Specify tests passing. Note that all tests in the keyutils testsuite
+  passed, except tests/features/builtin_trusted, which we should not
+  worry about as it requires some kernel preparation according to
+  David Howells in v4 discussion.
+
+Changes in v4 (11 Jan 2023):
+- Drop preceeding kerneldoc-changes patch and change appropriately.
+
+Changes in v3 (8 Jan 2023):
+- Minor rephrase of comment before NULLing in watch_queue_clear().
+
+Changes in v2 (6 Aug 2022):
+- Merged the NULLing and removing defunct patches.
+- Removed READ_ONCE barrier in lock_wqueue().
+- Better commit messages.
+
+ include/linux/watch_queue.h |  3 +--
+ kernel/watch_queue.c        | 12 ++++++------
+ 2 files changed, 7 insertions(+), 8 deletions(-)
+
+diff --git a/include/linux/watch_queue.h b/include/linux/watch_queue.h
+index fc6bba20273b..45cd42f55d49 100644
+--- a/include/linux/watch_queue.h
++++ b/include/linux/watch_queue.h
+@@ -38,7 +38,7 @@ struct watch_filter {
+ struct watch_queue {
+ =09struct rcu_head=09=09rcu;
+ =09struct watch_filter __rcu *filter;
+-=09struct pipe_inode_info=09*pipe;=09=09/* The pipe we're using as a buffe=
+r */
++=09struct pipe_inode_info=09*pipe;=09=09/* Pipe we use as a buffer, NULL i=
+f queue closed */
+ =09struct hlist_head=09watches;=09/* Contributory watches */
+ =09struct page=09=09**notes;=09/* Preallocated notifications */
+ =09unsigned long=09=09*notes_bitmap;=09/* Allocation bitmap for notes */
+@@ -46,7 +46,6 @@ struct watch_queue {
+ =09spinlock_t=09=09lock;
+ =09unsigned int=09=09nr_notes;=09/* Number of notes */
+ =09unsigned int=09=09nr_pages;=09/* Number of pages in notes[] */
+-=09bool=09=09=09defunct;=09/* T when queues closed */
+ };
+=20
+ /*
+diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
+index e91cb4c2833f..d0b6b390ee42 100644
+--- a/kernel/watch_queue.c
++++ b/kernel/watch_queue.c
+@@ -42,7 +42,7 @@ MODULE_AUTHOR("Red Hat, Inc.");
+ static inline bool lock_wqueue(struct watch_queue *wqueue)
+ {
+ =09spin_lock_bh(&wqueue->lock);
+-=09if (unlikely(wqueue->defunct)) {
++=09if (unlikely(!wqueue->pipe)) {
+ =09=09spin_unlock_bh(&wqueue->lock);
+ =09=09return false;
+ =09}
+@@ -104,9 +104,6 @@ static bool post_one_notification(struct watch_queue *w=
+queue,
+ =09unsigned int head, tail, mask, note, offset, len;
+ =09bool done =3D false;
+=20
+-=09if (!pipe)
+-=09=09return false;
+-
+ =09spin_lock_irq(&pipe->rd_wait.lock);
+=20
+ =09mask =3D pipe->ring_size - 1;
+@@ -603,8 +600,11 @@ void watch_queue_clear(struct watch_queue *wqueue)
+ =09rcu_read_lock();
+ =09spin_lock_bh(&wqueue->lock);
+=20
+-=09/* Prevent new notifications from being stored. */
+-=09wqueue->defunct =3D true;
++=09/*
++=09 * This pipe can be freed by callers like free_pipe_info().
++=09 * Removing this reference also prevents new notifications.
++=09 */
++=09wqueue->pipe =3D NULL;
+=20
+ =09while (!hlist_empty(&wqueue->watches)) {
+ =09=09watch =3D hlist_entry(wqueue->watches.first, struct watch, queue_nod=
+e);
+--=20
+2.39.2
 
 
