@@ -2,103 +2,213 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F7C9721EF2
-	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 09:07:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FCAA721F63
+	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 09:19:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230219AbjFEHH6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 5 Jun 2023 03:07:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40470 "EHLO
+        id S231287AbjFEHTJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 5 Jun 2023 03:19:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230233AbjFEHH5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 03:07:57 -0400
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4097B100;
-        Mon,  5 Jun 2023 00:07:24 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.nyi.internal (Postfix) with ESMTP id 2DCD45C0657;
-        Mon,  5 Jun 2023 03:05:22 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Mon, 05 Jun 2023 03:05:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm1; t=1685948722; x=1686035122; bh=gs
-        KN8dIcfggLrGiSRwQVvzTjCP6B3J5Ixb0bZBrlg+0=; b=MPaEU2cKz91/xCyCUT
-        sM+QSVlQJOSE7vBaGjzNvFGY3SJTsXotuLd/3MIKxfI5ORmaxlWwgJc7Trrj9Rtx
-        QM8bQguiUIt9K2yDhd8hxY8ult49MTYG2PfAEhtghBdFBdth3GFZHc70Lw5x9u9v
-        Eq5VLOfe9u0+lAaiVGAZwaOEN/4Hvum5OD+c0FfQfTbjVoOQoTCQCZ/kizUhjHl5
-        Y2ISX2zhbgPHwzIIgje8dLXxoV/EEz4jXpfsLhFq66Uhc2dMIVMpudVU/u/9RUnc
-        3OZWub2Gh45QTbUEOCRl49zPHRO0pArT0JnRI4C2eDhUHemKIAIyrtg8tkAGSmJW
-        ncXQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; t=1685948722; x=1686035122; bh=gsKN8dIcfggLr
-        GiSRwQVvzTjCP6B3J5Ixb0bZBrlg+0=; b=df1wPh9bY/YVM/75YiQ5JJFe8Cv1q
-        4bV/lL7S18+aIE1EAcx6FUCIOpsJGn1i0RxoyiWHJ5IEBi5o6qtq6rWVGxqiE9cS
-        AvrSyKp0bI3EsejQshoILUlmvckyt4oW6hCAa942fDGJtCH0mmTz5HXMRT7y9gjf
-        CBfAdB5SD1MZDeaEE7ganhcuq4d0+rD5RFpFf25AFbVZQAoc+w3NSa72D8Gd2bD4
-        wpvuAaVaFcFAyerX0XR46GnoBgA4/ZvojIZoQphsQdkmsv5UI5+0qMUw0mwclO5D
-        pXMjYR485Ey0BpX3zwEAhCdmoh0qG02mFQ1swkZuXubWZ/RkoRck5hXXA==
-X-ME-Sender: <xms:MYl9ZCmvmOyWiCUy3GIRxw167ZbhhM-ZjEBX_x4Oa0EfaVXAciVslw>
-    <xme:MYl9ZJ2GIzo7AzhqEuFkDSbt-IbBHqGM3ASk2erq6nGKQMKvYPoRuRfNLifmN7ML3
-    Yu2B7oPy_p1rQ>
-X-ME-Received: <xmr:MYl9ZAq3LeIyUWQUQQ0i5nW3ewvaZjvAHLrauVw_W4HGtctLjhrBdZw9q_6CEtZDTrfoAaIo2rjIYVrndugGdwAAD2ws609cbwvQTQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfeelkedgudduhecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgv
-    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehge
-    dvvedvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhu
-    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhroh
-    grhhdrtghomh
-X-ME-Proxy: <xmx:MYl9ZGlXBQ4Q9kjJrSqzVVbwQe9a6LKIPjokpF_kQvG8pPNBcB4cNA>
-    <xmx:MYl9ZA1S3qPQJlGRD6557P9Jb7OMXGjMULi82Sj-ThB3w6EcWxXD3w>
-    <xmx:MYl9ZNs5Q-6OmrQEmHHoimNEKzmu34mnSHSYeBA45kQZCuwrhEmjTw>
-    <xmx:Mol9ZLU5Hl1MOQ2CsyFxFg6HF9_nTw-fpx4gTukmQzBIdMqiieANzw>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 5 Jun 2023 03:05:20 -0400 (EDT)
-Date:   Mon, 5 Jun 2023 09:05:18 +0200
-From:   Greg KH <greg@kroah.com>
-To:     Arseniy Krasnov <AVKrasnov@sberdevices.ru>
-Cc:     Liang Yang <liang.yang@amlogic.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        Yixun Lan <yixun.lan@amlogic.com>,
-        Jianxin Pan <jianxin.pan@amlogic.com>, oxffffaa@gmail.com,
-        kernel@sberdevices.ru, stable@vger.kernel.org,
-        linux-mtd@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] mtd: rawnand: meson: fix ready/busy command
-Message-ID: <2023060556-monetary-browsing-536b@gregkh>
-References: <20230605061048.485622-1-AVKrasnov@sberdevices.ru>
+        with ESMTP id S231346AbjFEHTH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 03:19:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8517ECA
+        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 00:18:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1685949496;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=7F656ugRgdTn+ecAEtEyIDUabqlEKXFiaPRs71udAPE=;
+        b=J3jgSDVLaYRQquZSrmGx0dyQ/Hb96FNU0fA/RkdrUxaW9E9kcqOYyoFI8Bd6I9ZITSxpFo
+        nODFfCzTO9ooudc2Cu+x7zLfLM8DBYUDW0fp8TwwwZIqmjlpfmfVbI0J5ZhhCrVDv3OgQ/
+        xkQRB2+js8giFBEaviG8NitisABrJMI=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-517-jaJj5zpWM9iz0pE315Vr-g-1; Mon, 05 Jun 2023 03:18:15 -0400
+X-MC-Unique: jaJj5zpWM9iz0pE315Vr-g-1
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-2568fd3f360so1451161a91.2
+        for <stable@vger.kernel.org>; Mon, 05 Jun 2023 00:18:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685949494; x=1688541494;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7F656ugRgdTn+ecAEtEyIDUabqlEKXFiaPRs71udAPE=;
+        b=VKvjwd7g9x/5RgI8WR290m28uzAEn3vBkGHBVtMzViiYZGltg0KuyJcTFN3SB+/NsC
+         d0oSqch3RxVttCzLz05IChy8q1hAaBzOCdMfQ42ZgVN6NghyiYBmrxIMyGiMTwoJXk2l
+         4LTHDOjeAAMQbWEL3BCxi5kf5ykCGfsAZQXCPx0+1XV85V8yBSIV+WZl5rbeyP4qWdIV
+         vXAzjrCJhgvEfBzipCOUSbfUdnLlk7uDxf93HOyFl87gjHNwaG7kRqK9H6C0ip3ANP5L
+         fpwr8COZt5g1NGAPwfCHKuoSGcyCyqWAZ2FQGs2gT40/0mB1e24ITaUhldtrcDc5pzhO
+         m8lQ==
+X-Gm-Message-State: AC+VfDz4MyP8v+cNf/a9wTwK/W6o2gRHF0m+W5A8SB0PvqwE4kRim29I
+        9rQl+tNH/oE5/0/vtCmnfnwA+32FZ+vJyQeSFndOyvptRJ0Nr41NhNlA577ze/V96yVKSvwxd3P
+        DDXhyC6WunvkkU7/3
+X-Received: by 2002:a17:90a:4bcc:b0:256:2518:fb26 with SMTP id u12-20020a17090a4bcc00b002562518fb26mr3314000pjl.27.1685949494024;
+        Mon, 05 Jun 2023 00:18:14 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ6SOfti4BCpWK8MDo/yD36CdBBMZOnawtgCVLwM6GL2s7QY3iKk+Z+OwB/G63NuehfLkRuGwQ==
+X-Received: by 2002:a17:90a:4bcc:b0:256:2518:fb26 with SMTP id u12-20020a17090a4bcc00b002562518fb26mr3313989pjl.27.1685949493662;
+        Mon, 05 Jun 2023 00:18:13 -0700 (PDT)
+Received: from [10.72.12.216] ([43.228.180.230])
+        by smtp.gmail.com with ESMTPSA id c13-20020a17090a674d00b0024dee5cbe29sm5210364pjm.27.2023.06.05.00.18.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Jun 2023 00:18:13 -0700 (PDT)
+Message-ID: <622cae19-a856-ef9f-d272-22e80ce53d56@redhat.com>
+Date:   Mon, 5 Jun 2023 15:18:06 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230605061048.485622-1-AVKrasnov@sberdevices.ru>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v6 2/2] ceph: fix blindly expanding the readahead windows
+Content-Language: en-US
+To:     =?UTF-8?B?6IOh546u5paH?= <huww98@outlook.com>
+Cc:     idryomov@gmail.com, ceph-devel@vger.kernel.org, jlayton@kernel.org,
+        vshankar@redhat.com, sehuww@mail.scut.edu.cn,
+        stable@vger.kernel.org
+References: <20230515012044.98096-1-xiubli@redhat.com>
+ <20230515012044.98096-3-xiubli@redhat.com>
+ <TYCP286MB206692566DDEE50F7AD00A49C04DA@TYCP286MB2066.JPNP286.PROD.OUTLOOK.COM>
+From:   Xiubo Li <xiubli@redhat.com>
+In-Reply-To: <TYCP286MB206692566DDEE50F7AD00A49C04DA@TYCP286MB2066.JPNP286.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jun 05, 2023 at 09:10:48AM +0300, Arseniy Krasnov wrote:
-> Fix the ready/busy command value.
 
-"Fix" it in what way?  Please provide more information, this does not
-explain what is happening here at all.
+On 6/5/23 14:56, 胡玮文 wrote:
+> On Mon, May 15, 2023 at 09:20:44AM +0800, xiubli@redhat.com wrote:
+>> From: Xiubo Li <xiubli@redhat.com>
+>>
+>> Blindly expanding the readahead windows will cause unneccessary
+>> pagecache thrashing and also will introdue the network workload.
+> s/introdue/introduce/
 
-greg k-h
+Will fix it.
+
+
+>> We should disable expanding the windows if the readahead is disabled
+>> and also shouldn't expand the windows too much.
+>>
+>> Expanding forward firstly instead of expanding backward for possible
+>> sequential reads.
+>>
+>> Bound `rreq->len` to the actual file size to restore the previous page
+>> cache usage.
+>>
+>> The posix_fadvise may change the maximum size of a file readahead.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 49870056005c ("ceph: convert ceph_readpages to ceph_readahead")
+>> URL: https://lore.kernel.org/ceph-devel/20230504082510.247-1-sehuww@mail.scut.edu.cn
+>> URL: https://www.spinics.net/lists/ceph-users/msg76183.html
+>> Cc: Hu Weiwen <sehuww@mail.scut.edu.cn>
+>> Signed-off-by: Xiubo Li <xiubli@redhat.com>
+>> ---
+>>   fs/ceph/addr.c | 40 +++++++++++++++++++++++++++++++++-------
+>>   1 file changed, 33 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+>> index 93fff1a7373f..4b29777c01d7 100644
+>> --- a/fs/ceph/addr.c
+>> +++ b/fs/ceph/addr.c
+>> @@ -188,16 +188,42 @@ static void ceph_netfs_expand_readahead(struct netfs_io_request *rreq)
+>>   	struct inode *inode = rreq->inode;
+>>   	struct ceph_inode_info *ci = ceph_inode(inode);
+>>   	struct ceph_file_layout *lo = &ci->i_layout;
+>> +	unsigned long max_pages = inode->i_sb->s_bdi->ra_pages;
+>> +	loff_t end = rreq->start + rreq->len, new_end;
+>> +	struct ceph_netfs_request_data *priv = rreq->netfs_priv;
+>> +	unsigned long max_len;
+>>   	u32 blockoff;
+>> -	u64 blockno;
+>>   
+>> -	/* Expand the start downward */
+>> -	blockno = div_u64_rem(rreq->start, lo->stripe_unit, &blockoff);
+>> -	rreq->start = blockno * lo->stripe_unit;
+>> -	rreq->len += blockoff;
+>> +	if (priv) {
+>> +		/* Readahead is disabled by posix_fadvise POSIX_FADV_RANDOM */
+>> +		if (priv->file_ra_disabled)
+>> +			max_pages = 0;
+>> +		else
+>> +			max_pages = priv->file_ra_pages;
+>> +
+>> +	}
+>> +
+>> +	/* Readahead is disabled */
+>> +	if (!max_pages)
+>> +		return;
+>>   
+>> -	/* Now, round up the length to the next block */
+>> -	rreq->len = roundup(rreq->len, lo->stripe_unit);
+>> +	max_len = max_pages << PAGE_SHIFT;
+>> +
+>> +	/*
+>> +	 * Try to expand the length forward by rounding  up it to the next
+> An extra space between "rounding  up".
+
+Will fix it.
+
+
+> Apart from above two typo, LGTM.
+>
+> Reviewed-by: Hu Weiwen <sehuww@mail.scut.edu.cn>
+>
+> I also tested this patch with our workload. Reading the first 16k images
+> from ImageNet dataset (1.69GiB) takes about 1.8Gi page cache (as
+> reported by `free -h'). This is expected.
+>
+> For the fadvise use-case, I use `fio' to do the test:
+> $ fio --name=rand --size=32M --fadvise_hint=1 --ioengine=libaio --iodepth=128 --rw=randread --bs=4k --filesize=2G
+>
+> after the test, page cache increased by about 35Mi, which is expected.
+> So if appropriate:
+>
+> Tested-by: Hu Weiwen <sehuww@mail.scut.edu.cn>
+
+Thanks for your tests and reviewing.
+
+> However, also note random reading to a large file without fadvise still
+> suffers from degradation. e.g., this test:
+> $ fio --name=rand --size=32M --fadvise_hint=0 --ioengine=libaio --iodepth=128 --rw=randread --bs=4k --filesize=2G
+>
+> will load nearly every page of the 2Gi test file into page cache,
+> although I only need 32Mi of them.
+
+This is another issue since this patch just to fix blindly expanding 
+readahead windows, please send one following patch to fix it.
+
+Thanks
+
+- Xiubo
+
+
+>> +	 * block, but do not exceed the file size, unless the original
+>> +	 * request already exceeds it.
+>> +	 */
+>> +	new_end = min(round_up(end, lo->stripe_unit), rreq->i_size);
+>> +	if (new_end > end && new_end <= rreq->start + max_len)
+>> +		rreq->len = new_end - rreq->start;
+>> +
+>> +	/* Try to expand the start downward */
+>> +	div_u64_rem(rreq->start, lo->stripe_unit, &blockoff);
+>> +	if (rreq->len + blockoff <= max_len) {
+>> +		rreq->start -= blockoff;
+>> +		rreq->len += blockoff;
+>> +	}
+>>   }
+>>   
+>>   static bool ceph_netfs_clamp_length(struct netfs_io_subrequest *subreq)
+>> -- 
+>> 2.40.1
+>>
+
