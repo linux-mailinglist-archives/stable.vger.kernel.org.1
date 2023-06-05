@@ -2,155 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8A00722A05
-	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 16:57:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30B35722A7A
+	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 17:10:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233103AbjFEO5g (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 5 Jun 2023 10:57:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42974 "EHLO
+        id S231451AbjFEPJN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 5 Jun 2023 11:09:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232827AbjFEO5f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 10:57:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1866CA7
-        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 07:57:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S232874AbjFEPJA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 11:09:00 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2BCAEA;
+        Mon,  5 Jun 2023 08:08:57 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A27C162097
-        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 14:57:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8591C433EF;
-        Mon,  5 Jun 2023 14:57:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1685977053;
-        bh=1ITATg7vmjEyGSJ95e5qomb+ruUDKWR9x6VvWtf7Fvg=;
-        h=Subject:To:Cc:From:Date:From;
-        b=cX/oKleG+ZBoX/OTNXifz3LDFYLuaol3IN8yeL0afacZNUmC5rYx8z6IcU/sVdqjS
-         XAypPfm2yHVRqWbK5dIVHfuzc2AIP8ziXJd/VrSLCDT14zEm2pG9lcGA2hkj7fS2ty
-         0DxSTBzMRBJ9wgcsMXVY8kdr3iLXdE1lZTaR/kpY=
-Subject: FAILED: patch "[PATCH] misc: fastrpc: Pass proper scm arguments for secure map" failed to apply to 6.3-stable tree
-To:     quic_ekangupt@quicinc.com, gregkh@linuxfoundation.org,
-        srinivas.kandagatla@linaro.org, stable@kernel.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 05 Jun 2023 16:57:30 +0200
-Message-ID: <2023060530-stammer-kitten-446d@gregkh>
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 5F4F821B77;
+        Mon,  5 Jun 2023 15:08:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1685977736; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=g6Fpv18tPkZl3njhXBvdawu8JHw6otAv8L2MKSyYslo=;
+        b=zirSbKRWhfhtvxOs7QBUaHa9zQLlEc1gyBvl4SlcmMPoIXaYRFedTk2Ld7zq6EJHO6r+FZ
+        AfvxJUGs4+GeP2Fs9rAAUFEbv8t2GOJmYexdw/dDiVpioOMdLGySXojNygfq/xIGslEgqK
+        ju6S2u/3/ypu9NbMgGld5W6GBeKV+4E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1685977736;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=g6Fpv18tPkZl3njhXBvdawu8JHw6otAv8L2MKSyYslo=;
+        b=zhdG6TkIMVNl1iVrLLr0DVEvvNEQdqEzR7hOX5p1HLtF2gXg4ukoU5VZh7D/RS8jG0gPgm
+        BL3LSYipgRoJ4dAw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4B0ED139C8;
+        Mon,  5 Jun 2023 15:08:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id 6dBCEoj6fWTvagAAMHmgww
+        (envelope-from <jack@suse.cz>); Mon, 05 Jun 2023 15:08:56 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+        id C14D1A0754; Mon,  5 Jun 2023 17:08:55 +0200 (CEST)
+Date:   Mon, 5 Jun 2023 17:08:55 +0200
+From:   Jan Kara <jack@suse.cz>
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     Jan Kara <jack@suse.cz>, Theodore Ts'o <tytso@mit.edu>,
+        Baokun Li <libaokun1@huawei.com>, linux-ext4@vger.kernel.org,
+        adilger.kernel@dilger.ca, ritesh.list@gmail.com,
+        linux-kernel@vger.kernel.org, jun.nie@linaro.org,
+        ebiggers@kernel.org, yi.zhang@huawei.com, yangerkun@huawei.com,
+        yukuai3@huawei.com,
+        syzbot+a158d886ca08a3fecca4@syzkaller.appspotmail.com,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2] ext4: fix race condition between buffer write and
+ page_mkwrite
+Message-ID: <20230605150855.7oaiplp7r57dcww3@quack3>
+References: <20230530134405.322194-1-libaokun1@huawei.com>
+ <20230604030445.GF1128744@mit.edu>
+ <20230604210821.GA1257572@mit.edu>
+ <ZH1BN+H1/Sa4eLQ4@casper.infradead.org>
+ <20230605091655.24vl5fjesfskt3o5@quack3>
+ <20230605122141.4njwwx3mrapqhvt4@quack3>
+ <ZH33ZzwyLFY48tfA@casper.infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZH33ZzwyLFY48tfA@casper.infradead.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Mon 05-06-23 15:55:35, Matthew Wilcox wrote:
+> On Mon, Jun 05, 2023 at 02:21:41PM +0200, Jan Kara wrote:
+> > On Mon 05-06-23 11:16:55, Jan Kara wrote:
+> > > Yeah, I agree, that is also the conclusion I have arrived at when thinking
+> > > about this problem now. We should be able to just remove the conversion
+> > > from ext4_page_mkwrite() and rely on write(2) or truncate(2) doing it when
+> > > growing i_size.
+> > 
+> > OK, thinking more about this and searching through the history, I've
+> > realized why the conversion is originally in ext4_page_mkwrite(). The
+> > problem is described in commit 7b4cc9787fe35b ("ext4: evict inline data
+> > when writing to memory map") but essentially it boils down to the fact that
+> > ext4 writeback code does not expect dirty page for a file with inline data
+> > because ext4_write_inline_data_end() should have copied the data into the
+> > inode and cleared the folio's dirty flag.
+> > 
+> > Indeed messing with xattrs from the writeback path to copy page contents
+> > into inline data xattr would be ... interesting. Hum, out of good ideas for
+> > now :-|.
+> 
+> Is it so bad?  Now that we don't have writepage in ext4, only
+> writepages, it seems like we have a considerably more benign locking
+> environment to work in.
 
-The patch below does not apply to the 6.3-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Well, yes, without ->writepage() it might be *possible*. But still rather
+ugly. The problem is that in ->writepages() i_size is not stable. Thus also
+whether the inode data is inline or not is not stable. We'd need inode_lock
+for that but that is not easily doable in the writeback path - inode lock
+would then become fs_reclaim unsafe...
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
-git checkout FETCH_HEAD
-git cherry-pick -x a6e766dea0a22918735176e4af862d535962f11e
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023060530-stammer-kitten-446d@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From a6e766dea0a22918735176e4af862d535962f11e Mon Sep 17 00:00:00 2001
-From: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Date: Tue, 23 May 2023 16:25:47 +0100
-Subject: [PATCH] misc: fastrpc: Pass proper scm arguments for secure map
- request
-
-If a map request is made with securemap attribute, the memory
-ownership needs to be reassigned to new VMID to allow access
-from protection domain. Currently only DSP VMID is passed to
-the reassign call which is incorrect as only a combination of
-HLOS and DSP VMID is allowed for memory ownership reassignment
-and passing only DSP VMID will cause assign call failure.
-
-Also pass proper restoring permissions to HLOS as the source
-permission will now carry both HLOS and DSP VMID permission.
-
-Change is also made to get valid physical address from
-scatter/gather for this allocation request.
-
-Fixes: e90d91190619 ("misc: fastrpc: Add support to secure memory map")
-Cc: stable <stable@kernel.org>
-Tested-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20230523152550.438363-2-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
-index f48466960f1b..32a5415624bf 100644
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -316,12 +316,14 @@ static void fastrpc_free_map(struct kref *ref)
- 	if (map->table) {
- 		if (map->attr & FASTRPC_ATTR_SECUREMAP) {
- 			struct qcom_scm_vmperm perm;
-+			int vmid = map->fl->cctx->vmperms[0].vmid;
-+			u64 src_perms = BIT(QCOM_SCM_VMID_HLOS) | BIT(vmid);
- 			int err = 0;
- 
- 			perm.vmid = QCOM_SCM_VMID_HLOS;
- 			perm.perm = QCOM_SCM_PERM_RWX;
- 			err = qcom_scm_assign_mem(map->phys, map->size,
--				&map->fl->cctx->perms, &perm, 1);
-+				&src_perms, &perm, 1);
- 			if (err) {
- 				dev_err(map->fl->sctx->dev, "Failed to assign memory phys 0x%llx size 0x%llx err %d",
- 						map->phys, map->size, err);
-@@ -787,8 +789,12 @@ static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
- 		goto map_err;
- 	}
- 
--	map->phys = sg_dma_address(map->table->sgl);
--	map->phys += ((u64)fl->sctx->sid << 32);
-+	if (attr & FASTRPC_ATTR_SECUREMAP) {
-+		map->phys = sg_phys(map->table->sgl);
-+	} else {
-+		map->phys = sg_dma_address(map->table->sgl);
-+		map->phys += ((u64)fl->sctx->sid << 32);
-+	}
- 	map->size = len;
- 	map->va = sg_virt(map->table->sgl);
- 	map->len = len;
-@@ -798,9 +804,15 @@ static int fastrpc_map_create(struct fastrpc_user *fl, int fd,
- 		 * If subsystem VMIDs are defined in DTSI, then do
- 		 * hyp_assign from HLOS to those VM(s)
- 		 */
-+		u64 src_perms = BIT(QCOM_SCM_VMID_HLOS);
-+		struct qcom_scm_vmperm dst_perms[2] = {0};
-+
-+		dst_perms[0].vmid = QCOM_SCM_VMID_HLOS;
-+		dst_perms[0].perm = QCOM_SCM_PERM_RW;
-+		dst_perms[1].vmid = fl->cctx->vmperms[0].vmid;
-+		dst_perms[1].perm = QCOM_SCM_PERM_RWX;
- 		map->attr = attr;
--		err = qcom_scm_assign_mem(map->phys, (u64)map->size, &fl->cctx->perms,
--				fl->cctx->vmperms, fl->cctx->vmcount);
-+		err = qcom_scm_assign_mem(map->phys, (u64)map->size, &src_perms, dst_perms, 2);
- 		if (err) {
- 			dev_err(sess->dev, "Failed to assign memory with phys 0x%llx size 0x%llx err %d",
- 					map->phys, map->size, err);
-
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
