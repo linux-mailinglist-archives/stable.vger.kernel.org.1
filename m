@@ -2,146 +2,152 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECB10722C02
-	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 17:56:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79B82722C79
+	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 18:29:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231425AbjFEP4T (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 5 Jun 2023 11:56:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57398 "EHLO
+        id S231254AbjFEQ3d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 5 Jun 2023 12:29:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231281AbjFEP4S (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 11:56:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BADC798;
-        Mon,  5 Jun 2023 08:56:10 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B630627C4;
-        Mon,  5 Jun 2023 15:56:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B1D7C433EF;
-        Mon,  5 Jun 2023 15:56:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685980569;
-        bh=IpNtFuVuKEDwemMdS4OmFiuCWO+xommx26o3j8UmfWs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=jSqX0XiK8oho4aB/cWScg8BnPfw3W9jVHW+yAsqniIg8EmYcq7uUYyAZZrr9v9NE/
-         S97rjd5OFP9KpJTapeBpC+J6IQ0l2/Cmdr9DZGCpNE/S9i/3TEpbBsHcSO+q4dnlM8
-         82VhuyaBYs+arx8abzKe0tssPSYVuO6pG0QeHmUxDW5rDDYANFd4i2ou3NDcUNZnq1
-         FVjQvir6uRbkg3H0pfRDCRkyHqm7XcdPlSv3qHZLOYPLabheChsUIqjIhsC7F5xuTT
-         lcErf3nn/mj4diPiiJBtoE2VkHSpPXGnD6U/CVtHGv3LY2vT+DeAyD0Qu22LBgvNs9
-         HS9QkmjXaBWGw==
-Date:   Mon, 5 Jun 2023 16:56:05 +0100
-From:   Lee Jones <lee@kernel.org>
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Jassi Brar <jaswinder.singh@linaro.org>,
-        jassisinghbrar@gmail.com
-Subject: Re: [PATCH AUTOSEL 6.3] mailbox: mailbox-test: Fix potential
- double-free in mbox_test_message_write()
-Message-ID: <20230605155605.GA2357572@google.com>
-References: <20230519161348.2750641-1-sashal@kernel.org>
+        with ESMTP id S230326AbjFEQ3b (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 12:29:31 -0400
+Received: from domac.alu.hr (domac.alu.unizg.hr [IPv6:2001:b68:2:2800::3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58332CD;
+        Mon,  5 Jun 2023 09:29:30 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by domac.alu.hr (Postfix) with ESMTP id 8A6FB60246;
+        Mon,  5 Jun 2023 18:29:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1685982567; bh=WOFBObb7fNZ6dNK1wt7KbaxyzDpH4Lj4Oddwsx60Ejk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=FLpxxZB53bNHq4SmNCdFWGEkxdJX1NQ50mpTZRKeWauPZ6pswEiGn0p/6bAdqPqiU
+         t2nwo4qNbc4LcdUEKIqir53/lNH3u3XrrqXSwUzYnvoMt4WC4nK1XYUm1iHVoL2Gfy
+         mofUB9PRRYLSi66v7bJBJjCzkQQ/8ynzEx0MpN+R8IZ6SIS0sioOlLT6uYGHuR9aj2
+         hpBsP6aEnG7D1KpOMGwmxGCgbfobhQXXlohRRWQeN9DZ8x8owcTfVHtN9zoJzFdJo+
+         TmO9XUBy3cTiq8REPKh+/dl+pW30bAGreoBIZCQxqUIJjtHz6bfi3j2urR0Mmn/YW3
+         ZEXD5pGaCoKAw==
+X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
+Received: from domac.alu.hr ([127.0.0.1])
+        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id kdB2rX-AJi90; Mon,  5 Jun 2023 18:29:25 +0200 (CEST)
+Received: from defiant.. (unknown [77.237.113.62])
+        by domac.alu.hr (Postfix) with ESMTPSA id 5603A6023F;
+        Mon,  5 Jun 2023 18:29:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1685982565; bh=WOFBObb7fNZ6dNK1wt7KbaxyzDpH4Lj4Oddwsx60Ejk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=h9RrNejkayeLnip/IpcM2zC44UDnsI6CHA7owAxW79J1v7lS5ycQW4jiC4M06mlX9
+         xJjJGURGqcQ5UQo+DWKvkZSNoegmzlPuIIx1C4yR24vWzec382gyz7osHS7EhVJhG4
+         tOuOeN5Aa6DXavZAMXWzMoLT4QJGe0BkYaceN/QDFPVpQWgNU8MAejQkQO14M0rx26
+         pdHvFK/4JN24nPiqsWpfja+sYJ2K3XHMEEGtqTG7z9i1GTdGje8qKDDoDb5rCwXzQe
+         KSAQgZ5A6TP6/cFQzT4ZMb9wTy6KCtYAMVLnhS6paXmHs4xtNlJu1qGVrTZ9EEdZUD
+         LDXiX5Y49M0uQ==
+From:   Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        linux-kernel@vger.kernel.org
+Cc:     Dan Carpenter <error27@gmail.com>, Takashi Iwai <tiwai@suse.de>,
+        Kees Cook <keescook@chromium.org>, stable@vger.kernel.org
+Subject: [PATCH v1 1/1] test_firmware: return ENOMEM instead of ENOSPC on failed allocation
+Date:   Mon,  5 Jun 2023 18:27:47 +0200
+Message-Id: <20230605162746.614423-1-mirsad.todorovac@alu.unizg.hr>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230519161348.2750641-1-sashal@kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,FILL_THIS_FORM,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, 19 May 2023, Sasha Levin wrote:
+In a couple of situations like:
 
-> From: Lee Jones <lee@kernel.org>
-> 
-> [ Upstream commit 2d1e952a2b8e5e92d8d55ac88a7cf7ca5ea591ad ]
-> 
-> If a user can make copy_from_user() fail, there is a potential for
-> UAF/DF due to a lack of locking around the allocation, use and freeing
-> of the data buffers.
-> 
-> This issue is not theoretical.  I managed to author a POC for it:
-> 
->     BUG: KASAN: double-free in kfree+0x5c/0xac
->     Free of addr ffff29280be5de00 by task poc/356
->     CPU: 1 PID: 356 Comm: poc Not tainted 6.1.0-00001-g961aa6552c04-dirty #20
->     Hardware name: linux,dummy-virt (DT)
->     Call trace:
->      dump_backtrace.part.0+0xe0/0xf0
->      show_stack+0x18/0x40
->      dump_stack_lvl+0x64/0x80
->      print_report+0x188/0x48c
->      kasan_report_invalid_free+0xa0/0xc0
->      ____kasan_slab_free+0x174/0x1b0
->      __kasan_slab_free+0x18/0x24
->      __kmem_cache_free+0x130/0x2e0
->      kfree+0x5c/0xac
->      mbox_test_message_write+0x208/0x29c
->      full_proxy_write+0x90/0xf0
->      vfs_write+0x154/0x440
->      ksys_write+0xcc/0x180
->      __arm64_sys_write+0x44/0x60
->      invoke_syscall+0x60/0x190
->      el0_svc_common.constprop.0+0x7c/0x160
->      do_el0_svc+0x40/0xf0
->      el0_svc+0x2c/0x6c
->      el0t_64_sync_handler+0xf4/0x120
->      el0t_64_sync+0x18c/0x190
-> 
->     Allocated by task 356:
->      kasan_save_stack+0x3c/0x70
->      kasan_set_track+0x2c/0x40
->      kasan_save_alloc_info+0x24/0x34
->      __kasan_kmalloc+0xb8/0xc0
->      kmalloc_trace+0x58/0x70
->      mbox_test_message_write+0x6c/0x29c
->      full_proxy_write+0x90/0xf0
->      vfs_write+0x154/0x440
->      ksys_write+0xcc/0x180
->      __arm64_sys_write+0x44/0x60
->      invoke_syscall+0x60/0x190
->      el0_svc_common.constprop.0+0x7c/0x160
->      do_el0_svc+0x40/0xf0
->      el0_svc+0x2c/0x6c
->      el0t_64_sync_handler+0xf4/0x120
->      el0t_64_sync+0x18c/0x190
-> 
->     Freed by task 357:
->      kasan_save_stack+0x3c/0x70
->      kasan_set_track+0x2c/0x40
->      kasan_save_free_info+0x38/0x5c
->      ____kasan_slab_free+0x13c/0x1b0
->      __kasan_slab_free+0x18/0x24
->      __kmem_cache_free+0x130/0x2e0
->      kfree+0x5c/0xac
->      mbox_test_message_write+0x208/0x29c
->      full_proxy_write+0x90/0xf0
->      vfs_write+0x154/0x440
->      ksys_write+0xcc/0x180
->      __arm64_sys_write+0x44/0x60
->      invoke_syscall+0x60/0x190
->      el0_svc_common.constprop.0+0x7c/0x160
->      do_el0_svc+0x40/0xf0
->      el0_svc+0x2c/0x6c
->      el0t_64_sync_handler+0xf4/0x120
->      el0t_64_sync+0x18c/0x190
-> 
-> Signed-off-by: Lee Jones <lee@kernel.org>
-> Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  drivers/mailbox/mailbox-test.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+	name = kstrndup(buf, count, GFP_KERNEL);
+	if (!name)
+		return -ENOSPC;
 
-Could you ensure the follow-up patch is also applied to all branches please?
+the error is not actually "No space left on device", but "Out of memory".
 
-  8fe72b76db79d mailbox: mailbox-test: fix a locking issue in mbox_test_message_write()
+So, it is semantically correct to return -ENOMEM in all failed kstrndup()
+and kzalloc() cases in this driver, as it is not a problem with disk
+space, but with kernel memory allocator.
 
+The semantically correct should be:
+
+        name = kstrndup(buf, count, GFP_KERNEL);
+        if (!name)
+                return -ENOMEM;
+
+Cc: Dan Carpenter <error27@gmail.com>
+Cc: Takashi Iwai <tiwai@suse.de>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+---
+ lib/test_firmware.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/lib/test_firmware.c b/lib/test_firmware.c
+index 1d7d480b8eeb..add4699fc6cd 100644
+--- a/lib/test_firmware.c
++++ b/lib/test_firmware.c
+@@ -214,7 +214,7 @@ static int __kstrncpy(char **dst, const char *name, size_t count, gfp_t gfp)
+ {
+ 	*dst = kstrndup(name, count, gfp);
+ 	if (!*dst)
+-		return -ENOSPC;
++		return -ENOMEM;
+ 	return count;
+ }
+ 
+@@ -671,7 +671,7 @@ static ssize_t trigger_request_store(struct device *dev,
+ 
+ 	name = kstrndup(buf, count, GFP_KERNEL);
+ 	if (!name)
+-		return -ENOSPC;
++		return -ENOMEM;
+ 
+ 	pr_info("loading '%s'\n", name);
+ 
+@@ -719,7 +719,7 @@ static ssize_t trigger_request_platform_store(struct device *dev,
+ 
+ 	name = kstrndup(buf, count, GFP_KERNEL);
+ 	if (!name)
+-		return -ENOSPC;
++		return -ENOMEM;
+ 
+ 	pr_info("inserting test platform fw '%s'\n", name);
+ 	efi_embedded_fw.name = name;
+@@ -772,7 +772,7 @@ static ssize_t trigger_async_request_store(struct device *dev,
+ 
+ 	name = kstrndup(buf, count, GFP_KERNEL);
+ 	if (!name)
+-		return -ENOSPC;
++		return -ENOMEM;
+ 
+ 	pr_info("loading '%s'\n", name);
+ 
+@@ -817,7 +817,7 @@ static ssize_t trigger_custom_fallback_store(struct device *dev,
+ 
+ 	name = kstrndup(buf, count, GFP_KERNEL);
+ 	if (!name)
+-		return -ENOSPC;
++		return -ENOMEM;
+ 
+ 	pr_info("loading '%s' using custom fallback mechanism\n", name);
+ 
+@@ -868,7 +868,7 @@ static int test_fw_run_batch_request(void *data)
+ 
+ 		test_buf = kzalloc(TEST_FIRMWARE_BUF_SIZE, GFP_KERNEL);
+ 		if (!test_buf)
+-			return -ENOSPC;
++			return -ENOMEM;
+ 
+ 		if (test_fw_config->partial)
+ 			req->rc = request_partial_firmware_into_buf
 -- 
-Lee Jones [李琼斯]
+2.34.1
+
