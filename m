@@ -2,160 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 733A4722DC5
-	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 19:41:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E08D2722DE9
+	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 19:53:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235439AbjFERl0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 5 Jun 2023 13:41:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52812 "EHLO
+        id S234879AbjFERxU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 5 Jun 2023 13:53:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230150AbjFERl0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 13:41:26 -0400
-Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85FA5B0
-        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 10:41:24 -0700 (PDT)
-Received: by mail-il1-x130.google.com with SMTP id e9e14a558f8ab-33b7f217dd0so16195ab.0
-        for <stable@vger.kernel.org>; Mon, 05 Jun 2023 10:41:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1685986884; x=1688578884;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yUlwMMqaluEB3AWNinGyHM3bHJ/UF1t/FsSOYIiiPMM=;
-        b=M6gD9hlJsy3+TJwcnLpILZwULtc7C1TqflT7Pfga0o4ESzlP4U391BoeSYsksDGN/F
-         B341ZnREgnGmTxL4nLBS5y9cRF59PrUGmX6zAIN/8zAF+vM1ZfOegutHOv58msDYo3nv
-         jAAAZGZC1h5A//CG5E5uSvOVc/wvZSdIyorxF861vF5y1zQUqgiN6LZF9MqKUuO7pHqv
-         jXnPoSUCP+nWJDq2oWoRlieK23UQWzrbpBTJf6k1TFtNE8zG67gLxIasBlZBN1lFtu33
-         wY7vQJeCi0o30FvN5KwY3cXG/WW+pWWgiIGGAEtH/a5NydsxnoL261n8TB6+wirghPZ6
-         R4JQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685986884; x=1688578884;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yUlwMMqaluEB3AWNinGyHM3bHJ/UF1t/FsSOYIiiPMM=;
-        b=i9qYfQJrtXzO0vShLPqzfkAQ7HtIg1HxWSAWsDD1Eer1QtiuyKyQTRRfKULk1F/pay
-         9kQ/nqEXlLW3lNr9cSCqnrzd7U3v0SgcP2Iq+ilbyBM2QCiWvpimUYOqW/OFDe4LJeVW
-         9cL13HVZUKoyKZy9oWLuIWBEpOCKztgCCXU0RJyaGJL1vT2J0dFAP3SXtNg3UmCXX3CG
-         voIgX8TnjqUb8Owc1HZRuUBHh6ucMgauPxPgG9CHN/VPfFP10Z92kk/F4t6CZf4IBM1a
-         sUzNgDy/FuAvBljmNUD6ZqcJ0gNr9VI0wwLz5dnYWlt0h5D5S/hWWOT/AWgy47qC5e4q
-         iiYA==
-X-Gm-Message-State: AC+VfDyybNQrQbeOz8CEXpBQ17AlBylThaAOITUROxU9jINmcSbvQ1Hh
-        xkdFdkJD4sAiGB/w71ywtRx2mBhsFH+53+H6wiWy0w==
-X-Google-Smtp-Source: ACHHUZ5jQ3NkEGZGgoRgSUZ30SK3gCea2rTDuwmDigyULPEYu5r1QJOzgSbCpHM+v84nEvBwcShhVLR4ODOmDNQcQHI=
-X-Received: by 2002:a05:6e02:20e4:b0:33d:4e7a:3dac with SMTP id
- q4-20020a056e0220e400b0033d4e7a3dacmr19385ilv.3.1685986883754; Mon, 05 Jun
- 2023 10:41:23 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230523004312.1807357-1-pcc@google.com> <20230523004312.1807357-2-pcc@google.com>
- <20230605140554.GC21212@willie-the-truck>
-In-Reply-To: <20230605140554.GC21212@willie-the-truck>
-From:   Peter Collingbourne <pcc@google.com>
-Date:   Mon, 5 Jun 2023 10:41:12 -0700
-Message-ID: <CAMn1gO4k=rg96GVsPW6Aaz12c7hS0TYcgVR7y38x7pUsbfwg5A@mail.gmail.com>
-Subject: Re: [PATCH v4 1/3] mm: Call arch_swap_restore() from do_swap_page()
-To:     Will Deacon <will@kernel.org>
-Cc:     akpm@linux-foundation.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        =?UTF-8?B?UXVuLXdlaSBMaW4gKOael+e+pOW0tCk=?= 
-        <Qun-wei.Lin@mediatek.com>, linux-arm-kernel@lists.infradead.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        "surenb@google.com" <surenb@google.com>,
-        "david@redhat.com" <david@redhat.com>,
-        =?UTF-8?B?Q2hpbndlbiBDaGFuZyAo5by16Yym5paHKQ==?= 
-        <chinwen.chang@mediatek.com>,
-        "kasan-dev@googlegroups.com" <kasan-dev@googlegroups.com>,
-        =?UTF-8?B?S3Vhbi1ZaW5nIExlZSAo5p2O5Yag56mOKQ==?= 
-        <Kuan-Ying.Lee@mediatek.com>,
-        =?UTF-8?B?Q2FzcGVyIExpICjmnY7kuK3mpq4p?= <casper.li@mediatek.com>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        vincenzo.frascino@arm.com,
-        Alexandru Elisei <alexandru.elisei@arm.com>,
-        eugenis@google.com, Steven Price <steven.price@arm.com>,
+        with ESMTP id S231991AbjFERxT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 13:53:19 -0400
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C36CD3;
+        Mon,  5 Jun 2023 10:53:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+        ; s=x; h=Subject:Content-Transfer-Encoding:Content-Type:Mime-Version:
+        References:In-Reply-To:Message-Id:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=5wQ79+3ie9B5Wrf6oahpgoNv8SQzC2LUU6mondumang=; b=bXDrMcbEpmir14t0N38XT0dSXa
+        ZS/kN+n+usAnHqQbCP7yZ799X4vnucRbXKhw5Dv/J8oaB5mLRqrvxeqU7st7Sh6AOdehTEwz6QFaz
+        Yj355uOAGg1LjUCYJ5twy3gf8jTLvUtxEXZePBJ1RQvY4gc86ckTL1q8Ow9RjIMvabRQ=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:41322 helo=pettiford)
+        by mail.hugovil.com with esmtpa (Exim 4.92)
+        (envelope-from <hugo@hugovil.com>)
+        id 1q6EOA-0001lv-Ku; Mon, 05 Jun 2023 13:53:07 -0400
+Date:   Mon, 5 Jun 2023 13:53:05 -0400
+From:   Hugo Villeneuve <hugo@hugovil.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        jirislaby@kernel.org, jringle@gridpoint.com,
+        tomasz.mon@camlingroup.com, l.perczak@camlintechnologies.com,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
         stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Message-Id: <20230605135305.918dd2b2a88912fbb28e8fbb@hugovil.com>
+In-Reply-To: <CAHp75VeWFPBmsD8zsSAaQGNNXtfgLtQuM9AMGfLPk-6p0VW=Pg@mail.gmail.com>
+References: <20230602152626.284324-1-hugo@hugovil.com>
+        <20230602152626.284324-6-hugo@hugovil.com>
+        <2023060454-cotton-paramount-e33e@gregkh>
+        <CAHp75Ve6W-hcB4YAeKukgv-uOEzBY7Tx5Sdf3doTRYKzNPcVGw@mail.gmail.com>
+        <20230604134459.3c3844012e9714fa2a61e642@hugovil.com>
+        <CAHp75VeWFPBmsD8zsSAaQGNNXtfgLtQuM9AMGfLPk-6p0VW=Pg@mail.gmail.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 70.80.174.168
+X-SA-Exim-Mail-From: hugo@hugovil.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
+Subject: Re: [PATCH v7 5/9] serial: sc16is7xx: fix regression with GPIO
+ configuration
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jun 5, 2023 at 7:06=E2=80=AFAM Will Deacon <will@kernel.org> wrote:
->
-> Hi Peter,
->
-> On Mon, May 22, 2023 at 05:43:08PM -0700, Peter Collingbourne wrote:
-> > Commit c145e0b47c77 ("mm: streamline COW logic in do_swap_page()") move=
-d
-> > the call to swap_free() before the call to set_pte_at(), which meant th=
-at
-> > the MTE tags could end up being freed before set_pte_at() had a chance
-> > to restore them. Fix it by adding a call to the arch_swap_restore() hoo=
-k
-> > before the call to swap_free().
-> >
-> > Signed-off-by: Peter Collingbourne <pcc@google.com>
-> > Link: https://linux-review.googlesource.com/id/I6470efa669e8bd2f841049b=
-8c61020c510678965
-> > Cc: <stable@vger.kernel.org> # 6.1
-> > Fixes: c145e0b47c77 ("mm: streamline COW logic in do_swap_page()")
-> > Reported-by: Qun-wei Lin (=E6=9E=97=E7=BE=A4=E5=B4=B4) <Qun-wei.Lin@med=
-iatek.com>
-> > Closes: https://lore.kernel.org/all/5050805753ac469e8d727c797c2218a9d78=
-0d434.camel@mediatek.com/
-> > Acked-by: David Hildenbrand <david@redhat.com>
-> > Acked-by: "Huang, Ying" <ying.huang@intel.com>
-> > Reviewed-by: Steven Price <steven.price@arm.com>
-> > Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-> > ---
-> > v2:
-> > - Call arch_swap_restore() directly instead of via arch_do_swap_page()
-> >
-> >  mm/memory.c | 7 +++++++
-> >  1 file changed, 7 insertions(+)
-> >
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index f69fbc251198..fc25764016b3 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -3932,6 +3932,13 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >               }
-> >       }
-> >
-> > +     /*
-> > +      * Some architectures may have to restore extra metadata to the p=
-age
-> > +      * when reading from swap. This metadata may be indexed by swap e=
-ntry
-> > +      * so this must be called before swap_free().
-> > +      */
-> > +     arch_swap_restore(entry, folio);
-> > +
-> >       /*
-> >        * Remove the swap entry and conditionally try to free up the swa=
-pcache.
-> >        * We're already holding a reference on the page but haven't mapp=
-ed it
->
-> It looks like the intention is for this patch to land in 6.4, whereas the
-> other two in the series could go in later, right? If so, I was expecting
-> Andrew to pick this one up but he's not actually on CC. I've added him no=
-w,
-> but you may want to send this as a separate fix so it's obvious what need=
-s
-> picking up for this cycle.
+On Sun, 4 Jun 2023 22:31:04 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-I was expecting that this whole series could be picked up in mm. There
-was a previous attempt to apply v3 of this series to mm, but that
-failed because a dependent patch (commit c4c597f1b367 ("arm64: mte: Do
-not set PG_mte_tagged if tags were not initialized")) hadn't been
-merged into Linus's master branch yet. The series should be good to go
-in now that that patch has been merged.
+> On Sun, Jun 4, 2023 at 8:45 PM Hugo Villeneuve <hugo@hugovil.com> wrote:
+> >
+> > On Sun, 4 Jun 2023 14:57:31 +0300
+> > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> >
+> > > On Sun, Jun 4, 2023 at 10:47 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+> > > > On Fri, Jun 02, 2023 at 11:26:21AM -0400, Hugo Villeneuve wrote:
+> > >
+> > > ...
+> > >
+> > > > > +static u8 sc16is7xx_setup_mctrl_ports(struct device *dev)
+> > > >
+> > > > This returns what, mctrl?  If so, please document that, it doesn't look
+> > > > obvious.
+> > >
+> > > Good suggestion. Because I also stumbled over the returned type.
+> > >
+> > > >  And as the kernel test robot reported, you do nothing with the
+> > > > return value so why compute it?
+> > >
+> > > It seems that the entire function and respective call has to be moved
+> > > under #ifdef CONFIG_GPIOLIB.
+> >
+> > Hi,
+> > it cannot. See my explanations in response to Greg's comments.
+> 
+> Then as Greg suggested, store in the structure and make this function
+> to return an error code (with int), with this amendment you don't need
+> to add a comment about the returned variable anymore.
 
-Peter
+Hi,
+Yes, that is what I have done for V8. Simplifies/clean things a lot.
+
+Hugo.
