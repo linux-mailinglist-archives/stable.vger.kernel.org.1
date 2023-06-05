@@ -2,93 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C34E723392
-	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 01:13:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73D42723394
+	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 01:13:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232989AbjFEXNt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 5 Jun 2023 19:13:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49860 "EHLO
+        id S232919AbjFEXNz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 5 Jun 2023 19:13:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230324AbjFEXNs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 19:13:48 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE486BE;
-        Mon,  5 Jun 2023 16:13:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686006827; x=1717542827;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=1Rs36xHdJOPkeYTMg5ogikCQYXM31lyqn0jteQ1r2C4=;
-  b=SFWhDDJAcb3DXGq/xa/JkXYKOAbKPn/UlJ8iiJGorMYmexu6f9vSu0WQ
-   DYnG05WKii32xp55i/V/oBC7ocyUysOjY754R3ZWlxmuAckRRNnH9TSKE
-   9+Rf2Snt4WuX377oAyWOhb2ZAKO0O6ojp2zgp8/dI224G/E1oZGr4Tjcn
-   bZi7vrJhfCnf50IziHrKarw9l+VZL925T3XXdoer13RsLLemAFi68GKqk
-   QQR/wCfltd7CIa5yKjqRwIXQUQYn0YmDj7IYfhHgtAnYpw721rDWOn+Ix
-   JHMVY25tYBI2/PRKPz9tKD7mdnrjkG8g8x1aCoZJKl9j7AiIbRXoQrKh/
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="359822747"
-X-IronPort-AV: E=Sophos;i="6.00,218,1681196400"; 
-   d="scan'208";a="359822747"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2023 16:13:47 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10732"; a="711975756"
-X-IronPort-AV: E=Sophos;i="6.00,218,1681196400"; 
-   d="scan'208";a="711975756"
-Received: from pmudgal-mobl1.amr.corp.intel.com (HELO [10.209.41.254]) ([10.209.41.254])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2023 16:13:46 -0700
-Message-ID: <7e0e7074-4bc7-3f39-27df-623448044c72@intel.com>
-Date:   Mon, 5 Jun 2023 16:13:45 -0700
+        with ESMTP id S230324AbjFEXNw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 19:13:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B78FA7
+        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 16:13:51 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 16F0E622DE
+        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 23:13:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 383B7C433EF
+        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 23:13:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686006830;
+        bh=PdUZWL4nl3Ce++5+Titv8pBvh678L57VRg8u9FLqXaQ=;
+        h=From:To:Subject:Date:In-Reply-To:References:From;
+        b=Yw/032WNqs8++M/WWmNj+JFHnzHDtrTneindoo6r2EHAOKTSaOMX2mywcTdmjjjZl
+         /Dy3I0H3q3h3fiZDMfWxkWRn0RsS5AQ465G04ZmS/qoDdE19GyIZtIXU/mCfQMER1W
+         yp+t8j4o3/hOGiIWlR/VNcZHxF7orwIREjVIU6vNJpZriVgG8Sd8gyFi4iMDLjlnlo
+         INyMm7mJuNXg0LLuoaJMjYUkWV7OgAiz+gNhpcNqZTQ6NW84Ca7F2Ck3zEwk00Jgwx
+         q5ngVxLYELWeCgEHDWZ/2urdZK3aqJG1KUu6BvpQwU8dUPrUyYneKsKdlVBDiQU8t0
+         U8xSZyRdC+7XQ==
+From:   Damien Le Moal <dlemoal@kernel.org>
+To:     stable@vger.kernel.org
+Subject: [PATCH 5.15.y] block: fix revalidate performance regression
+Date:   Tue,  6 Jun 2023 08:13:49 +0900
+Message-Id: <20230605231349.1326266-1-dlemoal@kernel.org>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <2023060549-smolder-human-a813@gregkh>
+References: <2023060549-smolder-human-a813@gregkh>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCHv2 2/3] x86/tdx: Fix race between set_memory_encrypted()
- and load_unaligned_zeropad()
-Content-Language: en-US
-To:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de
-Cc:     decui@microsoft.com, rick.p.edgecombe@intel.com,
-        sathyanarayanan.kuppuswamy@linux.intel.com, seanjc@google.com,
-        thomas.lendacky@amd.com, x86@kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20230526120225.31936-1-kirill.shutemov@linux.intel.com>
- <20230526120225.31936-3-kirill.shutemov@linux.intel.com>
-From:   Dave Hansen <dave.hansen@intel.com>
-In-Reply-To: <20230526120225.31936-3-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 5/26/23 05:02, Kirill A. Shutemov wrote:
-> Touching privately mapped GPA that is not properly converted to private
-> with MapGPA and accepted leads to unrecoverable exit to VMM.
-> 
-> load_unaligned_zeropad() can touch memory that is not owned by the
-> caller, but just happened to next after the owned memory.
-> This load_unaligned_zeropad() behaviour makes it important when kernel
-> asks VMM to convert a GPA from shared to private or back. Kernel must
-> never have a page mapped into direct mapping (and aliases) as private
-> when the GPA is already converted to shared or when GPA is not yet
-> converted to private.
-> 
-> guest.enc_status_change_prepare() called before adjusting direct mapping
-> and therefore it is responsible for converting the memory to private.
-> 
-> guest.enc_status_change_finish() called after adjusting direct mapping
-> and it converts the memory to shared.
-> 
-> It is okay to have a shared mapping of memory that is not converted
-> properly. handle_mmio() knows how to deal with load_unaligned_zeropad()
-> stepping on it.
+commit 47fe1c3064c6bc1bfa3c032ff78e603e5dd6e5bc upstream.
 
-Yeah, as other said, the changelog grammar here is a bit funky.  Can you
-fix it up and resend, please?
+The scsi driver function sd_read_block_characteristics() always calls
+blk_queue_set_zoned() to set a disk zoned model correctly, in case the
+device model changed. This is done even for regular disks to set the
+zoned model to BLK_ZONED_NONE and free any zone related resources if the
+drive previously was zoned.
+
+This behavior significantly impact the time it takes to revalidate disks
+on a large system as the call to blk_queue_clear_zone_settings() done
+from blk_queue_set_zoned() for the BLK_ZONED_NONE case results in the
+device request queued to be frozen, even if there are no zone resources
+to free.
+
+Avoid this overhead for non-zoned devices by not calling
+blk_queue_clear_zone_settings() in blk_queue_set_zoned() if the device
+model was already set to BLK_ZONED_NONE, which is always the case for
+regular devices.
+
+Reported by: Brian Bunker <brian@purestorage.com>
+Fixes: 508aebb80527 ("block: introduce blk_queue_clear_zone_settings()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20230529073237.1339862-1-dlemoal@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+---
+ block/blk-settings.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/block/blk-settings.c b/block/blk-settings.c
+index b880c70e22e4..73a80895e3ae 100644
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -875,6 +875,7 @@ static bool disk_has_partitions(struct gendisk *disk)
+ void blk_queue_set_zoned(struct gendisk *disk, enum blk_zoned_model model)
+ {
+ 	struct request_queue *q = disk->queue;
++	unsigned int old_model = q->limits.zoned;
+ 
+ 	switch (model) {
+ 	case BLK_ZONED_HM:
+@@ -912,7 +913,7 @@ void blk_queue_set_zoned(struct gendisk *disk, enum blk_zoned_model model)
+ 		 */
+ 		blk_queue_zone_write_granularity(q,
+ 						queue_logical_block_size(q));
+-	} else {
++	} else if (old_model != BLK_ZONED_NONE) {
+ 		blk_queue_clear_zone_settings(q);
+ 	}
+ }
+-- 
+2.40.1
+
