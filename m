@@ -2,112 +2,143 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CAC17224AE
-	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 13:35:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A33027224BA
+	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 13:37:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230034AbjFELfV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 5 Jun 2023 07:35:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52556 "EHLO
+        id S232553AbjFELh3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 5 Jun 2023 07:37:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232447AbjFELfT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 07:35:19 -0400
-X-Greylist: delayed 144 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 05 Jun 2023 04:35:08 PDT
-Received: from mailout.blnma.de (mailout.blnma.de [116.203.12.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2DE31B4;
-        Mon,  5 Jun 2023 04:35:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=starostik.de; s=dkim210803; h=Content-Type:Content-Transfer-Encoding:
-        MIME-Version:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:References:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=Q9kK4FWpujilN7N4KgicC38GOFmjovQF+Cg7lFXJo9s=; t=1685964909; x=1686828909; 
-        b=mIm3mtKmWcTuJfqW/ecAVt8OkMD/YqueYAo8Y1qURP9nYkpPXhBJFD3ocU0VV8C/wOK9wsVwafR
-        2htn/Diaks36Z4QB0hvtNtGodOpcwSrQRmNB/uklxZJQXSJcWxn6kUrgyqnSvZ1LANNy8TQhFmdc7
-        GjRDYoUNYEGJxqnh0MqsWmYbDd5cjloiwB4V6lQcWqHjJeoRwBOSNSDWu0cX8Jnch3SZZJRtQQ6HO
-        tSGe2FHhS4tPmYsezsaUBU8iBGDXZmbMbMQLT0/9WJAXlk9q2isSPz1NydI2Cp4F1isPPTqfWgbn1
-        50nm/bqb+Cr5HDDaLBCy3zAEmTONXMDyNGHQ==;
-Received: from dovecot-0.dovecot.mail.svc.cluster.local ([10.244.6.208] helo=mail.blnma.de)
-        by mail.blnma.de with esmtp (Exim 4.96)
-        (envelope-from <malte@starostik.de>)
-        id 1q68K2-000D3H-2j;
-        Mon, 05 Jun 2023 11:24:26 +0000
-Received: from zen.localnet ([62.214.179.90])
-        by mail.blnma.de with ESMTPSA
-        id hgEtK+nFfWQPPwAA399c4A
-        (envelope-from <malte@starostik.de>); Mon, 05 Jun 2023 11:24:25 +0000
-From:   Malte Starostik <malte@starostik.de>
-To:     bagasdotme@gmail.com
-Cc:     basavaraj.natikar@amd.com, linux-input@vger.kernel.org,
-        linux@hexchain.org, regressions@lists.linux.dev,
-        stable@vger.kernel.org
-Subject: Re: amd_sfh driver causes kernel oops during boot
-Date:   Mon, 05 Jun 2023 13:24:25 +0200
-Message-ID: <3250319.ancTxkQ2z5@zen>
-In-Reply-To: <ZG3ipauL9FTnQJiC@debian.me>
+        with ESMTP id S232554AbjFELh2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 07:37:28 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89192135;
+        Mon,  5 Jun 2023 04:37:22 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1q68WU-00039q-Q1; Mon, 05 Jun 2023 13:37:18 +0200
+Message-ID: <929ca032-9988-39b7-3a00-eb402996f7f0@leemhuis.info>
+Date:   Mon, 5 Jun 2023 13:37:18 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: kernel error at led trigger "phy0tpt"
+Content-Language: en-US, de-DE
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+To:     AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Tobias Dahms <dahms.tobias@web.de>,
+        Sean Wang <sean.wang@mediatek.com>
+Cc:     stable@vger.kernel.org, Pavel Machek <pavel@ucw.cz>,
+        Lee Jones <lee@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>, linux-leds@vger.kernel.org,
+        linux-wireless@vger.kernel.org,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        Matthias Brugger <matthias.bgg@gmail.com>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+References: <91feceb2-0df4-19b9-5ffa-d37e3d344fdf@web.de>
+ <3fcc707b-f757-e74b-2800-3b6314217868@leemhuis.info>
+ <fcecf6fc-bf18-73a0-9fc1-6850e183323a@web.de>
+ <d14fb08c-70e3-4cc7-caf9-87e73eab9194@gmail.com>
+ <8b07ead5-f105-da86-e7da-ee49616f7c1d@collabora.com>
+ <69602f1b-4afa-d864-b6d3-d8237f81a51d@leemhuis.info>
+ <d78088d6-7989-7538-c4e1-7976a21cf680@leemhuis.info>
+In-Reply-To: <d78088d6-7989-7538-c4e1-7976a21cf680@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1685965042;50d05423;
+X-HE-SMSGID: 1q68WU-00039q-Q1
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello,
-
-chiming in here as I'm experiencing what looks like the exact same issue, also 
-on a Lenovo Z13 notebook, also on Arch:
-Oops during startup in task udev-worker followed by udev-worker blocking all 
-attempts to suspend or cleanly shutdown/reboot the machine - in fact I first 
-noticed because the machine surprised with repeatedly running out of battery 
-after it had supposedly been in standby but couldn't. Only then I noticed the 
-error on boot.
-
-bisect result:
-904e28c6de083fa4834cdbd0026470ddc30676fc is the first bad commit
-commit 904e28c6de083fa4834cdbd0026470ddc30676fc
-Merge: a738688177dc 2f7f4efb9411
-Author: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Date:   Wed Feb 22 10:44:31 2023 +0100
-
-    Merge branch 'for-6.3/hid-bpf' into for-linus
-    
-    Initial support of HID-BPF (Benjamin Tissoires)
-    
-    The history is a little long for this series, as it was intended to be
-    sent for v6.2. However some last minute issues forced us to postpone it
-    to v6.3.
-    
-    Conflicts:
-    * drivers/hid/i2c-hid/Kconfig:
-      commit bf7660dab30d ("HID: stop drivers from selecting CONFIG_HID")
-      conflicts with commit 2afac81dd165 ("HID: fix I2C_HID not selected
-      when I2C_HID_OF_ELAN is")
-      the resolution is simple enough: just drop the "default" and "select"
-      lines as the new commit from Arnd is doing
-
-
-BR Malte
-
-> On Wed, May 24, 2023 at 02:10:31PM +0800, Haochen Tong wrote:
-> > > What last kernel version before this regression occurs? Do you mean
-> > > v6.2?
-> > > 
-> > 
-> > I was using 6.2.12 (Arch Linux distro kernel) before seeing this 
-regression.
+On 22.05.23 10:17, Thorsten Leemhuis wrote:
+> On 17.04.23 13:25, Linux regression tracking (Thorsten Leemhuis) wrote:
+>> [adding Matthias to the list of recipients, who back then applied to
+>> culprit]
+>>
+>> Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
+>> for once, to make this easily accessible to everyone.
+>>
+>> AngeloGioacchino, Has any progress been made to fix below regression? It
+>> doesn't look like it from here, hence I wondered if it fall through the
+>> cracks.
 > 
-> Can you perform bisection to find the culprit that introduces the
-> regression? Since you're on Arch Linux, see its wiki article [1] for
-> instructions.
+> Hmmm, nobody replied. Does nobody (including the reporters!) care
+> anymore for valid reasons? Then I'd drop this from the tracking.
+
+#regzbot inconclusive: it seems nobody (including the reporters) does
+care anymore
+#regzbot ignore-activity
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
+
+> Or was progress made and I just missed it?
 > 
-> Thanks.
-> 
-> [1]: https://wiki.archlinux.org/title/Bisecting_bugs_with_Git
-
-
-
+> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+>
+>> On 27.03.23 10:23, AngeloGioacchino Del Regno wrote:
+>>> Il 26/03/23 15:23, Bagas Sanjaya ha scritto:
+>>>> On 3/26/23 02:20, Tobias Dahms wrote:
+>>>>> Hello,
+>>>>>
+>>>>> the bisection gives following result:
+>>>>> --------------------------------------------------------------------
+>>>>> 18c7deca2b812537aa4d928900e208710f1300aa is the first bad commit
+>>>>> commit 18c7deca2b812537aa4d928900e208710f1300aa
+>>>>> Author: AngeloGioacchino Del Regno
+>>>>> <angelogioacchino.delregno@collabora.com>
+>>>>> Date:   Tue May 17 12:47:08 2022 +0200
+>>>>>
+>>>>>      soc: mediatek: pwrap: Use readx_poll_timeout() instead of custom
+>>>>> function
+>>>>>
+>>>>>      Function pwrap_wait_for_state() is a function that polls an address
+>>>>>      through a helper function, but this is the very same operation that
+>>>>>      the readx_poll_timeout macro means to do.
+>>>>>      Convert all instances of calling pwrap_wait_for_state() to instead
+>>>>>      use the read_poll_timeout macro.
+>>>>>
+>>>>>      Signed-off-by: AngeloGioacchino Del Regno
+>>>>> <angelogioacchino.delregno@collabora.com>
+>>>>>      Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+>>>>>      Tested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+>>>>>      Link:
+>>>>> https://lore.kernel.org/r/20220517104712.24579-2-angelogioacchino.delregno@collabora.com
+>>>>>      Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
+>>>>>
+>>>>>   drivers/soc/mediatek/mtk-pmic-wrap.c | 60
+>>>>> ++++++++++++++++++++----------------
+>>>>>   1 file changed, 33 insertions(+), 27 deletions(-)
+>>>>> --------------------------------------------------------------------
+>>>>>
+>>>>
+>>>> OK, I'm updating the regression status:
+>>>>
+>>>> #regzbot introduced: 18c7deca2b8125
+>>>>
+>>>> And for replying, don't top-post, but rather reply inline with
+>>>> appropriate context instead; hence I cut the replied context.
+>>>>
+>>>
+>>> There are two possible solutions to that, specifically, either:
+>>>  1. Change readx_poll_timeout() to readx_poll_timeout_atomic(); or
+>>>  2. Fix the mt6323-led driver so that this operation gets done
+>>>     out of atomic context, which is IMO the option to prefer.
+>>>
+>>> Ideas?
+>>>
+>>> Regards,
+>>> Angelo
+>>>
+>>>
