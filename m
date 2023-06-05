@@ -2,66 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94911722B3F
-	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 17:36:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECB10722C02
+	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 17:56:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234004AbjFEPgd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 5 Jun 2023 11:36:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40792 "EHLO
+        id S231425AbjFEP4T (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 5 Jun 2023 11:56:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234322AbjFEPgb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 11:36:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C641F7;
-        Mon,  5 Jun 2023 08:36:25 -0700 (PDT)
+        with ESMTP id S231281AbjFEP4S (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 11:56:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BADC798;
+        Mon,  5 Jun 2023 08:56:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 25B0462720;
-        Mon,  5 Jun 2023 15:36:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 68998C4339B;
-        Mon,  5 Jun 2023 15:36:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B630627C4;
+        Mon,  5 Jun 2023 15:56:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B1D7C433EF;
+        Mon,  5 Jun 2023 15:56:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685979384;
-        bh=YdamecFINNCEd7qN4wE3PtBR9T5k9xrbpuFxPFkqLHI=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=RMPY3LwpOCY/mrT9wYDvGsqbAzDaHm7CJni6fiO+keKHR+t1lU3wddmZo3zJE88N0
-         f37FVWCFdUAd4d6YyVWvelhsHEuCKBgwwh+LN8Ypu1rB8MTWfwX8Ow5IMA+NqcvmXR
-         4NqzTgdu2D8lS7AJ1cywCNZ+0CEbicumUnHhniMgThBlyKTgf0FiymizXeHS4co4GU
-         5emHEBNnyZSSDHiBISOAo3iKJ7PvcqNxFjiKO55Fu1Ku94gWzDgoNvg3PHqTio8DY4
-         V2486cTNYseo3PYmVQVDD/8ku/Pg4TzLoYqlEq/xnGGKAR95ALxt/+hgm1H+/LS1sg
-         JBlJnorf5jHeQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 4C461E87231;
-        Mon,  5 Jun 2023 15:36:24 +0000 (UTC)
-Subject: Re: [GIT PULL] Asymmetric keys fix for v6.4-rc5
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <4d7e38ff5bbc496cb794b50e1c5c83bcd2317e69.camel@huaweicloud.com>
-References: <4d7e38ff5bbc496cb794b50e1c5c83bcd2317e69.camel@huaweicloud.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <4d7e38ff5bbc496cb794b50e1c5c83bcd2317e69.camel@huaweicloud.com>
-X-PR-Tracked-Remote: https://github.com/robertosassu/linux.git tags/asym-keys-fix-for-linus-v6.4-rc5
-X-PR-Tracked-Commit-Id: c3d03e8e35e005e1a614e51bb59053eeb5857f76
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: f8dba31b0a826e691949cd4fdfa5c30defaac8c5
-Message-Id: <168597938430.2179.8103170042142681716.pr-tracker-bot@kernel.org>
-Date:   Mon, 05 Jun 2023 15:36:24 +0000
-To:     Roberto Sassu <roberto.sassu@huaweicloud.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Eric Biggers <ebiggers@kernel.org>,
-        Stefan Berger <stefanb@linux.ibm.com>, dhowells@redhat.com,
-        herbert@gondor.apana.org.au, davem@davemloft.net,
-        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
-        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        s=k20201202; t=1685980569;
+        bh=IpNtFuVuKEDwemMdS4OmFiuCWO+xommx26o3j8UmfWs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=jSqX0XiK8oho4aB/cWScg8BnPfw3W9jVHW+yAsqniIg8EmYcq7uUYyAZZrr9v9NE/
+         S97rjd5OFP9KpJTapeBpC+J6IQ0l2/Cmdr9DZGCpNE/S9i/3TEpbBsHcSO+q4dnlM8
+         82VhuyaBYs+arx8abzKe0tssPSYVuO6pG0QeHmUxDW5rDDYANFd4i2ou3NDcUNZnq1
+         FVjQvir6uRbkg3H0pfRDCRkyHqm7XcdPlSv3qHZLOYPLabheChsUIqjIhsC7F5xuTT
+         lcErf3nn/mj4diPiiJBtoE2VkHSpPXGnD6U/CVtHGv3LY2vT+DeAyD0Qu22LBgvNs9
+         HS9QkmjXaBWGw==
+Date:   Mon, 5 Jun 2023 16:56:05 +0100
+From:   Lee Jones <lee@kernel.org>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Jassi Brar <jaswinder.singh@linaro.org>,
+        jassisinghbrar@gmail.com
+Subject: Re: [PATCH AUTOSEL 6.3] mailbox: mailbox-test: Fix potential
+ double-free in mbox_test_message_write()
+Message-ID: <20230605155605.GA2357572@google.com>
+References: <20230519161348.2750641-1-sashal@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230519161348.2750641-1-sashal@kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -70,15 +56,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The pull request you sent on Fri, 02 Jun 2023 16:41:04 +0200:
+On Fri, 19 May 2023, Sasha Levin wrote:
 
-> https://github.com/robertosassu/linux.git tags/asym-keys-fix-for-linus-v6.4-rc5
+> From: Lee Jones <lee@kernel.org>
+> 
+> [ Upstream commit 2d1e952a2b8e5e92d8d55ac88a7cf7ca5ea591ad ]
+> 
+> If a user can make copy_from_user() fail, there is a potential for
+> UAF/DF due to a lack of locking around the allocation, use and freeing
+> of the data buffers.
+> 
+> This issue is not theoretical.  I managed to author a POC for it:
+> 
+>     BUG: KASAN: double-free in kfree+0x5c/0xac
+>     Free of addr ffff29280be5de00 by task poc/356
+>     CPU: 1 PID: 356 Comm: poc Not tainted 6.1.0-00001-g961aa6552c04-dirty #20
+>     Hardware name: linux,dummy-virt (DT)
+>     Call trace:
+>      dump_backtrace.part.0+0xe0/0xf0
+>      show_stack+0x18/0x40
+>      dump_stack_lvl+0x64/0x80
+>      print_report+0x188/0x48c
+>      kasan_report_invalid_free+0xa0/0xc0
+>      ____kasan_slab_free+0x174/0x1b0
+>      __kasan_slab_free+0x18/0x24
+>      __kmem_cache_free+0x130/0x2e0
+>      kfree+0x5c/0xac
+>      mbox_test_message_write+0x208/0x29c
+>      full_proxy_write+0x90/0xf0
+>      vfs_write+0x154/0x440
+>      ksys_write+0xcc/0x180
+>      __arm64_sys_write+0x44/0x60
+>      invoke_syscall+0x60/0x190
+>      el0_svc_common.constprop.0+0x7c/0x160
+>      do_el0_svc+0x40/0xf0
+>      el0_svc+0x2c/0x6c
+>      el0t_64_sync_handler+0xf4/0x120
+>      el0t_64_sync+0x18c/0x190
+> 
+>     Allocated by task 356:
+>      kasan_save_stack+0x3c/0x70
+>      kasan_set_track+0x2c/0x40
+>      kasan_save_alloc_info+0x24/0x34
+>      __kasan_kmalloc+0xb8/0xc0
+>      kmalloc_trace+0x58/0x70
+>      mbox_test_message_write+0x6c/0x29c
+>      full_proxy_write+0x90/0xf0
+>      vfs_write+0x154/0x440
+>      ksys_write+0xcc/0x180
+>      __arm64_sys_write+0x44/0x60
+>      invoke_syscall+0x60/0x190
+>      el0_svc_common.constprop.0+0x7c/0x160
+>      do_el0_svc+0x40/0xf0
+>      el0_svc+0x2c/0x6c
+>      el0t_64_sync_handler+0xf4/0x120
+>      el0t_64_sync+0x18c/0x190
+> 
+>     Freed by task 357:
+>      kasan_save_stack+0x3c/0x70
+>      kasan_set_track+0x2c/0x40
+>      kasan_save_free_info+0x38/0x5c
+>      ____kasan_slab_free+0x13c/0x1b0
+>      __kasan_slab_free+0x18/0x24
+>      __kmem_cache_free+0x130/0x2e0
+>      kfree+0x5c/0xac
+>      mbox_test_message_write+0x208/0x29c
+>      full_proxy_write+0x90/0xf0
+>      vfs_write+0x154/0x440
+>      ksys_write+0xcc/0x180
+>      __arm64_sys_write+0x44/0x60
+>      invoke_syscall+0x60/0x190
+>      el0_svc_common.constprop.0+0x7c/0x160
+>      do_el0_svc+0x40/0xf0
+>      el0_svc+0x2c/0x6c
+>      el0t_64_sync_handler+0xf4/0x120
+>      el0t_64_sync+0x18c/0x190
+> 
+> Signed-off-by: Lee Jones <lee@kernel.org>
+> Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/mailbox/mailbox-test.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/f8dba31b0a826e691949cd4fdfa5c30defaac8c5
+Could you ensure the follow-up patch is also applied to all branches please?
 
-Thank you!
+  8fe72b76db79d mailbox: mailbox-test: fix a locking issue in mbox_test_message_write()
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Lee Jones [李琼斯]
