@@ -2,145 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6298E721F72
-	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 09:24:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3884D721FA6
+	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 09:34:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229991AbjFEHY0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 5 Jun 2023 03:24:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52332 "EHLO
+        id S229584AbjFEHeo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 5 Jun 2023 03:34:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230196AbjFEHYZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 03:24:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5C6ACA
-        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 00:23:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1685949819;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=SnBMSPHKP+boD1bWckV80nXuHthCrAcDK5QjkEir6bM=;
-        b=hpa7v0tZrE/W+S8N+UHYH1zuiyzbdri91lG7tgRE38N1iXwgzazEvx+p/WsTkV2n0IyynH
-        w6trLN4NRtoH+nQnN6psnc1JUdumYPVGM4gBlskHZ3+KEVze2fr9quz39tIA67YPw0YxVh
-        skOTwrbvWSt8bA+GUfJOUSfjgJ/pFoc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-306-HYDeVOyAPSCFQj7zkuWOGA-1; Mon, 05 Jun 2023 03:23:36 -0400
-X-MC-Unique: HYDeVOyAPSCFQj7zkuWOGA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 886B6185A78F;
-        Mon,  5 Jun 2023 07:23:35 +0000 (UTC)
-Received: from li-a71a4dcc-35d1-11b2-a85c-951838863c8d.ibm.com.com (ovpn-12-216.pek2.redhat.com [10.72.12.216])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A8CC51121314;
-        Mon,  5 Jun 2023 07:23:31 +0000 (UTC)
-From:   xiubli@redhat.com
-To:     idryomov@gmail.com, ceph-devel@vger.kernel.org
-Cc:     jlayton@kernel.org, vshankar@redhat.com, mchangir@redhat.com,
-        sehuww@mail.scut.edu.cn, Xiubo Li <xiubli@redhat.com>,
+        with ESMTP id S229729AbjFEHen (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 03:34:43 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4CF983;
+        Mon,  5 Jun 2023 00:34:41 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-4f620583bc2so1628929e87.1;
+        Mon, 05 Jun 2023 00:34:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685950480; x=1688542480;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DAgRq2EXmiJlw5QVvMbHQppFdqv5pzza5dzmoTwBNQ8=;
+        b=GOPR4d+/UEzaru7bfg0RdVmwWCfzmOk0IQA91sr3KwRMPXT30HCwHUn05o8osUkDpD
+         MsA7L94HI7gZfq3ALkgV3RippOJKS26pkN/bdoRJPCCwr7GkxE4BELQdzz+/jiFCzj47
+         LutkrzD710untVOO5vy2jWpN3/4HCZv99+yPalk8MvgtcRMziJfLxNsR4GIugdW83XaK
+         u8oLh5kpyiDr1n44SQIuGNyMUQvqnSeddlU6ij+6RtpodwOZ7ENHZiUkGCL7qydhznuI
+         6RNnLnHKr8Qzd4ibaeAcm/tw0ObHcTOAA7muPFpKY/VxTLR7Y6kU0cV6lDEK+5JOB94w
+         vMGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685950480; x=1688542480;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DAgRq2EXmiJlw5QVvMbHQppFdqv5pzza5dzmoTwBNQ8=;
+        b=k0lRy8pwJNHGZ1uB79EjaMci6ErxKFg+Rv+epu00WLPDMLcaaztyD1AzRCZLXSZy0K
+         jsfUC25onuWcnClnZB4WeJ6Q1zX7a4NItR1bRn+Hyjs8DFi9jjETGugNQO/u6IUu7x4H
+         9FBkX8HyyiuzOJ3z7nZd13Mdi1fttNc0LNcLs23iECBBEmqxsTUAQwq9o0rJN+YSLOfn
+         dpG0BuxjIRykslmaV0CXcaxo9nnxG5g+crXuizPzyBzBJrVzbxMUHOyilgEn96wk/nLv
+         NXLKhrzdWMSbuqpVz/PrAusLhN3BsRD34OgD/KJ+AVuVD2Y7BIJsNj/AvvYEZd+GZlyD
+         N3sg==
+X-Gm-Message-State: AC+VfDyfILKOPeiVemfAXGBCDpDmRJe/W9fak6T5ascArkT11sDoK/2x
+        QYU+8fZ8BkaxNYjSSfR+EwOQnIGlQjIn0A==
+X-Google-Smtp-Source: ACHHUZ5IEYPCmzkGOJfS9ic1+YXKE8YtO6DZakUgS6piCmgDsgm+OHr8VSg70fHzplr4P2NyIUY0Sw==
+X-Received: by 2002:ac2:4281:0:b0:4f1:3d6c:d89b with SMTP id m1-20020ac24281000000b004f13d6cd89bmr4850910lfh.42.1685950479796;
+        Mon, 05 Jun 2023 00:34:39 -0700 (PDT)
+Received: from home.paul.comp (paulfertser.info. [2001:470:26:54b:226:9eff:fe70:80c2])
+        by smtp.gmail.com with ESMTPSA id w12-20020ac2598c000000b004f62225ffb6sm564382lfn.105.2023.06.05.00.34.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jun 2023 00:34:39 -0700 (PDT)
+Received: from home.paul.comp (home.paul.comp [IPv6:0:0:0:0:0:0:0:1])
+        by home.paul.comp (8.15.2/8.15.2/Debian-22) with ESMTP id 3557YZcg008744;
+        Mon, 5 Jun 2023 10:34:36 +0300
+Received: (from paul@localhost)
+        by home.paul.comp (8.15.2/8.15.2/Submit) id 3557YXaZ008743;
+        Mon, 5 Jun 2023 10:34:33 +0300
+From:   Paul Fertser <fercerpav@gmail.com>
+To:     linux-wireless@vger.kernel.org
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Paul Fertser <fercerpav@gmail.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, Rani Hod <rani.hod@gmail.com>,
         stable@vger.kernel.org
-Subject: [PATCH v7 2/2] ceph: fix blindly expanding the readahead windows
-Date:   Mon,  5 Jun 2023 15:21:09 +0800
-Message-Id: <20230605072109.1027246-3-xiubli@redhat.com>
-In-Reply-To: <20230605072109.1027246-1-xiubli@redhat.com>
-References: <20230605072109.1027246-1-xiubli@redhat.com>
+Subject: [PATCH] mt76: mt7615: do not advertise 5 GHz on first phy of MT7615D (DBDC)
+Date:   Mon,  5 Jun 2023 10:34:07 +0300
+Message-Id: <20230605073408.8699-1-fercerpav@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xiubo Li <xiubli@redhat.com>
+On DBDC devices the first (internal) phy is only capable of using
+2.4 GHz band, and the 5 GHz band is exposed via a separate phy object,
+so avoid the false advertising.
 
-Blindly expanding the readahead windows will cause unneccessary
-pagecache thrashing and also will introduce the network workload.
-We should disable expanding the windows if the readahead is disabled
-and also shouldn't expand the windows too much.
-
-Expanding forward firstly instead of expanding backward for possible
-sequential reads.
-
-Bound `rreq->len` to the actual file size to restore the previous page
-cache usage.
-
-The posix_fadvise may change the maximum size of a file readahead.
-
+Reported-by: Rani Hod <rani.hod@gmail.com>
+Closes: https://github.com/openwrt/openwrt/pull/12361
+Fixes: 7660a1bd0c22 ("mt76: mt7615: register ext_phy if DBDC is detected")
 Cc: stable@vger.kernel.org
-Fixes: 49870056005c ("ceph: convert ceph_readpages to ceph_readahead")
-URL: https://lore.kernel.org/ceph-devel/20230504082510.247-1-sehuww@mail.scut.edu.cn
-URL: https://www.spinics.net/lists/ceph-users/msg76183.html
-Cc: Hu Weiwen <sehuww@mail.scut.edu.cn>
-Reviewed-by: Hu Weiwen <sehuww@mail.scut.edu.cn>
-Tested-by: Hu Weiwen <sehuww@mail.scut.edu.cn>
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Signed-off-by: Paul Fertser <fercerpav@gmail.com>
 ---
- fs/ceph/addr.c | 40 +++++++++++++++++++++++++++++++++-------
- 1 file changed, 33 insertions(+), 7 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-index 93fff1a7373f..0c4fb3d23078 100644
---- a/fs/ceph/addr.c
-+++ b/fs/ceph/addr.c
-@@ -188,16 +188,42 @@ static void ceph_netfs_expand_readahead(struct netfs_io_request *rreq)
- 	struct inode *inode = rreq->inode;
- 	struct ceph_inode_info *ci = ceph_inode(inode);
- 	struct ceph_file_layout *lo = &ci->i_layout;
-+	unsigned long max_pages = inode->i_sb->s_bdi->ra_pages;
-+	loff_t end = rreq->start + rreq->len, new_end;
-+	struct ceph_netfs_request_data *priv = rreq->netfs_priv;
-+	unsigned long max_len;
- 	u32 blockoff;
--	u64 blockno;
- 
--	/* Expand the start downward */
--	blockno = div_u64_rem(rreq->start, lo->stripe_unit, &blockoff);
--	rreq->start = blockno * lo->stripe_unit;
--	rreq->len += blockoff;
-+	if (priv) {
-+		/* Readahead is disabled by posix_fadvise POSIX_FADV_RANDOM */
-+		if (priv->file_ra_disabled)
-+			max_pages = 0;
-+		else
-+			max_pages = priv->file_ra_pages;
-+
-+	}
-+
-+	/* Readahead is disabled */
-+	if (!max_pages)
-+		return;
- 
--	/* Now, round up the length to the next block */
--	rreq->len = roundup(rreq->len, lo->stripe_unit);
-+	max_len = max_pages << PAGE_SHIFT;
-+
-+	/*
-+	 * Try to expand the length forward by rounding up it to the next
-+	 * block, but do not exceed the file size, unless the original
-+	 * request already exceeds it.
-+	 */
-+	new_end = min(round_up(end, lo->stripe_unit), rreq->i_size);
-+	if (new_end > end && new_end <= rreq->start + max_len)
-+		rreq->len = new_end - rreq->start;
-+
-+	/* Try to expand the start downward */
-+	div_u64_rem(rreq->start, lo->stripe_unit, &blockoff);
-+	if (rreq->len + blockoff <= max_len) {
-+		rreq->start -= blockoff;
-+		rreq->len += blockoff;
-+	}
- }
- 
- static bool ceph_netfs_clamp_length(struct netfs_io_subrequest *subreq)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
+index 68e88224b8b1..ccedea7e8a50 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/eeprom.c
+@@ -128,12 +128,12 @@ mt7615_eeprom_parse_hw_band_cap(struct mt7615_dev *dev)
+ 	case MT_EE_5GHZ:
+ 		dev->mphy.cap.has_5ghz = true;
+ 		break;
+-	case MT_EE_2GHZ:
+-		dev->mphy.cap.has_2ghz = true;
+-		break;
+ 	case MT_EE_DBDC:
+ 		dev->dbdc_support = true;
+ 		fallthrough;
++	case MT_EE_2GHZ:
++		dev->mphy.cap.has_2ghz = true;
++		break;
+ 	default:
+ 		dev->mphy.cap.has_2ghz = true;
+ 		dev->mphy.cap.has_5ghz = true;
 -- 
-2.40.1
+2.34.1
 
