@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8088721C81
-	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 05:25:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF63B721C7C
+	for <lists+stable@lfdr.de>; Mon,  5 Jun 2023 05:25:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232487AbjFEDZh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 4 Jun 2023 23:25:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34046 "EHLO
+        id S232361AbjFEDZd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 4 Jun 2023 23:25:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232600AbjFEDZf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 4 Jun 2023 23:25:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F7A3CC
+        with ESMTP id S231342AbjFEDZb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 4 Jun 2023 23:25:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEEB6CD
         for <stable@vger.kernel.org>; Sun,  4 Jun 2023 20:25:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D673161BDD
-        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 03:25:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE04C4339E;
-        Mon,  5 Jun 2023 03:25:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C6C160C8C
+        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 03:25:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F219C433A0;
+        Mon,  5 Jun 2023 03:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
         s=k20201202; t=1685935529;
-        bh=AGqoc6MGv157ddatPMumKQShAqmAKC6YxPGxXVLm1sU=;
+        bh=vCS+0O+llNRhLjcqsTnAJiVXReGH+K2zHMbKF1jlOBc=;
         h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-        b=Ld+UXdP8iey+MyrFTdAZ1kVI5TPrUGa+hhPxp+YL+t6A2tYuYg46BVLyi+ARbnIFk
-         JRIap+zTdNhpY7ZRSTSisZeqNUk5h1cmuP3ac9jlET2Tl/38M8EYJCsG8DUC7u/8FG
-         cxgMB/57rQHbTCHmLId+x9TB+nrRdg8SzHnjmSybu275YZZ+07oDrhlFNSwevnd6PA
-         FwpgX/uNgDCep1a80F4NkMSY0ZAJ+Ni59CwqhRwIVfAfRWYqgFrHc499z73+jw+b7d
-         3GhxvdrMQZ2KAOyaTJFcLXyIhuxaSiS13GGt5R3XKsg5dp1HGsh7G93gBindr/GbiZ
-         IlQtts3ewp1eg==
+        b=u9JkjjhpBuiI/wY6qZTXlttG13d/h1RcrVbqAbBfauQK1XJJLgOlmTCOHIbHbrEO4
+         0TE8eu1OJQ7HCWVtuHuTWL2bA5hC5+mVowI6XMdcD32kzURVb5fsFRxoKkjDky/tOH
+         uTnGiAHT54lqTPbIObf+VQygIWjYmxUFKYnU5o6YEQY6UDbHjUd1pB6+8Xz2gLLQyY
+         zhlI6ZJ7Q61FsiZBAxSXbI7V1BOPS4vbAUU9sYxDxKjmcosU472weRZTzzoUsi/wPD
+         i4K+y8c1lGW86ORL6ks/36JG3f7scNPPUGld4XFVAhfJFeXrKPnKeJqKUfhkO0ZxRS
+         2fKAB8jbxLXIQ==
 From:   Mat Martineau <martineau@kernel.org>
-Date:   Sun, 04 Jun 2023 20:25:17 -0700
-Subject: [PATCH net 1/5] mptcp: only send RM_ADDR in nl_cmd_remove
+Date:   Sun, 04 Jun 2023 20:25:18 -0700
+Subject: [PATCH net 2/5] selftests: mptcp: update userspace pm addr tests
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230602-send-net-20230602-v1-1-fe011dfa859d@kernel.org>
+Message-Id: <20230602-send-net-20230602-v1-2-fe011dfa859d@kernel.org>
 References: <20230602-send-net-20230602-v1-0-fe011dfa859d@kernel.org>
 In-Reply-To: <20230602-send-net-20230602-v1-0-fe011dfa859d@kernel.org>
 To:     Matthieu Baerts <matthieu.baerts@tessares.net>,
@@ -51,8 +51,8 @@ To:     Matthieu Baerts <matthieu.baerts@tessares.net>,
 Cc:     netdev@vger.kernel.org, mptcp@lists.linux.dev,
         Mat Martineau <martineau@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.12.2
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -63,86 +63,43 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Geliang Tang <geliang.tang@suse.com>
 
-The specifications from [1] about the "REMOVE" command say:
+This patch is linked to the previous commit ("mptcp: only send RM_ADDR in
+nl_cmd_remove").
 
-    Announce that an address has been lost to the peer
-
-It was then only supposed to send a RM_ADDR and not trying to delete
-associated subflows.
-
-A new helper mptcp_pm_remove_addrs() is then introduced to do just
-that, compared to mptcp_pm_remove_addrs_and_subflows() also removing
-subflows.
-
-To delete a subflow, the userspace daemon can use the "SUB_DESTROY"
-command, see mptcp_nl_cmd_sf_destroy().
+To align with what is done by the in-kernel PM, update userspace pm addr
+selftests, by sending a remove_subflows command together after the
+remove_addrs command.
 
 Fixes: d9a4594edabf ("mptcp: netlink: Add MPTCP_PM_CMD_REMOVE")
-Link: https://github.com/multipath-tcp/mptcp/blob/mptcp_v0.96/include/uapi/linux/mptcp.h [1]
+Fixes: 97040cf9806e ("selftests: mptcp: userspace pm address tests")
 Cc: stable@vger.kernel.org
 Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
 Signed-off-by: Geliang Tang <geliang.tang@suse.com>
 Signed-off-by: Mat Martineau <martineau@kernel.org>
 ---
- net/mptcp/pm_netlink.c   | 18 ++++++++++++++++++
- net/mptcp/pm_userspace.c |  2 +-
- net/mptcp/protocol.h     |  1 +
- 3 files changed, 20 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index bc343dab5e3f..59f8f3124855 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1558,6 +1558,24 @@ static int mptcp_nl_cmd_del_addr(struct sk_buff *skb, struct genl_info *info)
- 	return ret;
- }
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index 96f63172b8fe..651740a656f0 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -862,7 +862,15 @@ do_transfer()
+ 				     sed -n 's/.*\(token:\)\([[:digit:]]*\).*$/\2/p;q')
+ 				ip netns exec ${listener_ns} ./pm_nl_ctl ann $addr token $tk id $id
+ 				sleep 1
++				sp=$(grep "type:10" "$evts_ns1" |
++				     sed -n 's/.*\(sport:\)\([[:digit:]]*\).*$/\2/p;q')
++				da=$(grep "type:10" "$evts_ns1" |
++				     sed -n 's/.*\(daddr6:\)\([0-9a-f:.]*\).*$/\2/p;q')
++				dp=$(grep "type:10" "$evts_ns1" |
++				     sed -n 's/.*\(dport:\)\([[:digit:]]*\).*$/\2/p;q')
+ 				ip netns exec ${listener_ns} ./pm_nl_ctl rem token $tk id $id
++				ip netns exec ${listener_ns} ./pm_nl_ctl dsf lip "::ffff:$addr" \
++							lport $sp rip $da rport $dp token $tk
+ 			fi
  
-+void mptcp_pm_remove_addrs(struct mptcp_sock *msk, struct list_head *rm_list)
-+{
-+	struct mptcp_rm_list alist = { .nr = 0 };
-+	struct mptcp_pm_addr_entry *entry;
-+
-+	list_for_each_entry(entry, rm_list, list) {
-+		remove_anno_list_by_saddr(msk, &entry->addr);
-+		if (alist.nr < MPTCP_RM_IDS_MAX)
-+			alist.ids[alist.nr++] = entry->addr.id;
-+	}
-+
-+	if (alist.nr) {
-+		spin_lock_bh(&msk->pm.lock);
-+		mptcp_pm_remove_addr(msk, &alist);
-+		spin_unlock_bh(&msk->pm.lock);
-+	}
-+}
-+
- void mptcp_pm_remove_addrs_and_subflows(struct mptcp_sock *msk,
- 					struct list_head *rm_list)
- {
-diff --git a/net/mptcp/pm_userspace.c b/net/mptcp/pm_userspace.c
-index 27a275805c06..6beadea8c67d 100644
---- a/net/mptcp/pm_userspace.c
-+++ b/net/mptcp/pm_userspace.c
-@@ -232,7 +232,7 @@ int mptcp_nl_cmd_remove(struct sk_buff *skb, struct genl_info *info)
- 
- 	list_move(&match->list, &free_list);
- 
--	mptcp_pm_remove_addrs_and_subflows(msk, &free_list);
-+	mptcp_pm_remove_addrs(msk, &free_list);
- 
- 	release_sock((struct sock *)msk);
- 
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index c5255258bfb3..70c957bc56a8 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -832,6 +832,7 @@ int mptcp_pm_announce_addr(struct mptcp_sock *msk,
- 			   bool echo);
- int mptcp_pm_remove_addr(struct mptcp_sock *msk, const struct mptcp_rm_list *rm_list);
- int mptcp_pm_remove_subflow(struct mptcp_sock *msk, const struct mptcp_rm_list *rm_list);
-+void mptcp_pm_remove_addrs(struct mptcp_sock *msk, struct list_head *rm_list);
- void mptcp_pm_remove_addrs_and_subflows(struct mptcp_sock *msk,
- 					struct list_head *rm_list);
- 
+ 			counter=$((counter + 1))
 
 -- 
 2.40.1
