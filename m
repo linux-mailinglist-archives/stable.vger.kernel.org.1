@@ -2,221 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 772B37236D8
-	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 07:31:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F25157236E5
+	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 07:37:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234048AbjFFFbl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 6 Jun 2023 01:31:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46498 "EHLO
+        id S233303AbjFFFhf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 6 Jun 2023 01:37:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232883AbjFFFbd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 6 Jun 2023 01:31:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93ECE1A7
-        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 22:30:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686029445;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=HEyEhQgDNbn3E/7NaesifK+8xcSCLl9EWHOYd6uKSfc=;
-        b=OEf42j7H1gpOnSGoAy06n85V7mvACGIkjyOUToBeJ8psAUVXRZUK36llVyiALYN5b8wx0H
-        sEk2QGLDk+feaxk9cPDp3bJwUwOugG6dCeJCihby3WziRAZaGAU82FHYDp+9tJwbz/fKdz
-        SJk6BW8aUA9mxN3iLvNUhxzZZxgeAgY=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-110-YB3Cy2VWOH2px_i0hhKiBg-1; Tue, 06 Jun 2023 01:30:44 -0400
-X-MC-Unique: YB3Cy2VWOH2px_i0hhKiBg-1
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-97463348446so343846766b.2
-        for <stable@vger.kernel.org>; Mon, 05 Jun 2023 22:30:44 -0700 (PDT)
+        with ESMTP id S229596AbjFFFhc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 6 Jun 2023 01:37:32 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EFAF1B1
+        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 22:37:31 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-3f6d3f83d0cso57114965e9.2
+        for <stable@vger.kernel.org>; Mon, 05 Jun 2023 22:37:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686029849; x=1688621849;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=eoUHwD8w+kKjmc3avPKcsVA5n30zqUm3b1LqVb2lcwc=;
+        b=dK9j3rwdrIHmwA5gzUDL5tH/UX7eWEGDGTMUOJCFNTHKhcP5R0HdKS9IUGpFse1lv8
+         KJ3AfqXHuQ+WvMWLg99j9dClHk4jKXoHxorPmmuSaNCXeQIIEvT2SpQ26+iFqXaSHaUW
+         krY967MPnTBvOoj94NgY5pJpeO4WSTG6M1L3fYjQrUH05h4poYwZIPct0CMYGPUEUZy8
+         aWOhSC1uQgTpxctdjDlXZBiuBQzCZ+kLHxfSu3QccNWiLLjdrDawl2xk0nqsomoW6mkW
+         YA3MEBDMcp/OKI2iLH3X3iQj9x0sSg3dIYKmJAX68FlAbpdPdseUXJU8Y4bS7TqNRhZ1
+         5nYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686029443; x=1688621443;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HEyEhQgDNbn3E/7NaesifK+8xcSCLl9EWHOYd6uKSfc=;
-        b=dvGHiKznTL/3aKqxWJh4mKNa3YQVTbCilVwHzrmSGG3x565hzbrtRTtXPJgr802n5c
-         e2LvpiXa35N6lPSPQ0BE/TG/C9pEK75/qj5ogrFmWN9tITPgE2XhZ+H3yhExOR0tF6u1
-         9sJusQbNv3X2EfdMNuFbP9bFeNF7bVgYfleYsq0aKNdS+xCR3OWAiogj4lB178nowSkP
-         36fpNJN3hP/o1BYu6lOh5KJWbfyZkq9Z2jDPLAo9uqnyb3MoH5XSeZ1lvz+tzLES/k1P
-         cl6V6EXuQboQleUauHO2aYKSDvKbg7ud4LWuRO+bzApuxHhfSx3Ua5BvHVGCXqCHCZzC
-         OGcA==
-X-Gm-Message-State: AC+VfDxViVoteHN6jOiTencuTLwLNWaclrf5ggY9g16pd1vWIHogkpQG
-        +dpkqzLlkD8U+7tcPrCoL6mPJWiQyloo6wqAGV6UZCGJdSyNJx1SiV5lKK/sy7qiB3I699u4ZrD
-        I9u0PgIg042FjRdpB5kLVn413/L9vpyJJ
-X-Received: by 2002:a17:907:86aa:b0:96f:b8a0:6cfe with SMTP id qa42-20020a17090786aa00b0096fb8a06cfemr1283960ejc.54.1686029443411;
-        Mon, 05 Jun 2023 22:30:43 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ6IJdOXd4JMKHtDl6YWTc07g5keiYte7Q5dSCEJPxPQA+oyRiDuFBKir1Z7wn9IgCgthfB/9MqR80s5lz2W1/c=
-X-Received: by 2002:a17:907:86aa:b0:96f:b8a0:6cfe with SMTP id
- qa42-20020a17090786aa00b0096fb8a06cfemr1283942ejc.54.1686029443087; Mon, 05
- Jun 2023 22:30:43 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1686029849; x=1688621849;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eoUHwD8w+kKjmc3avPKcsVA5n30zqUm3b1LqVb2lcwc=;
+        b=PVSPMDQm/sZyMcO77pXByoT0jDHjBtJSeEdQeJEcefaE1WPE0Iw4YytlRNO3NQpzfK
+         sM6upN8I7P9AGm7qGQIQCrUCJvWh4nHkQ2ulk8t0EJ254V4+Yv7GoSG6JUxgOh8EImHh
+         crAWVV5nU/3cFYIWDRXyIp+78IYHKqBHaNKuEtPCN4aJjSkJzk9FX3lsgvUKOLSpE6hl
+         zicL5KbzRqA0WgY+p3FEe2yYkf15xGIM3tfS6DoMf0MSZXUaw+LhOz4QZ/1AewlgniB8
+         ZS7SPpZSNsGlVfBpoaWhVftwtnGTPPRnwrhnQpjd3vtwJU8YkeEHZ1pY0v4A1TlbICm/
+         KY3Q==
+X-Gm-Message-State: AC+VfDwY9eW+wnmMQ0e53wiT8lJQa+RGQWYZS5ATsnn1VRADJWM9+KA7
+        zLvemUVJ8+KJlKtgeS6kw8OwjqF2LMwo1CveIF8=
+X-Google-Smtp-Source: ACHHUZ6U649U7QVSiO3bf0E60yABocDdMYxGRGsy804/SnOF2M6fkFXKSFC+Gcz14TGKbJXkkGMB7g==
+X-Received: by 2002:a05:600c:c1:b0:3f5:fbd0:94ab with SMTP id u1-20020a05600c00c100b003f5fbd094abmr1242919wmm.3.1686029849543;
+        Mon, 05 Jun 2023 22:37:29 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id k21-20020a7bc415000000b003f7381af5besm7133235wmi.25.2023.06.05.22.37.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jun 2023 22:37:28 -0700 (PDT)
+Date:   Tue, 6 Jun 2023 08:37:24 +0300
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org, Dan Carpenter <error27@gmail.com>,
+        Takashi Iwai <tiwai@suse.de>,
+        Kees Cook <keescook@chromium.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v1 1/1] test_firmware: return ENOMEM instead of ENOSPC on
+ failed allocation
+Message-ID: <8ab7c6f1-7572-49f4-9781-46f4935ea7bf@kadam.mountain>
+References: <20230605162746.614423-1-mirsad.todorovac@alu.unizg.hr>
 MIME-Version: 1.0
-References: <20230605072109.1027246-1-xiubli@redhat.com> <20230605072109.1027246-2-xiubli@redhat.com>
-In-Reply-To: <20230605072109.1027246-2-xiubli@redhat.com>
-From:   Milind Changire <mchangir@redhat.com>
-Date:   Tue, 6 Jun 2023 11:00:07 +0530
-Message-ID: <CAED=hWBeB4oUHPzyVWSfTBQ81ofg5zTq5SOSEMQQ-=s+G3MueQ@mail.gmail.com>
-Subject: Re: [PATCH v7 1/2] ceph: add a dedicated private data for netfs rreq
-To:     xiubli@redhat.com
-Cc:     idryomov@gmail.com, ceph-devel@vger.kernel.org, jlayton@kernel.org,
-        vshankar@redhat.com, sehuww@mail.scut.edu.cn,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230605162746.614423-1-mirsad.todorovac@alu.unizg.hr>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Looks good to me.
-
-Reviewed-by: Milind Changire <mchangir@redhat.com>
-
-On Mon, Jun 5, 2023 at 12:53=E2=80=AFPM <xiubli@redhat.com> wrote:
->
-> From: Xiubo Li <xiubli@redhat.com>
->
-> We need to save the 'f_ra.ra_pages' to expand the readahead window
-> later.
->
+On Mon, Jun 05, 2023 at 06:27:47PM +0200, Mirsad Goran Todorovac wrote:
+> In a couple of situations like:
+> 
+> 	name = kstrndup(buf, count, GFP_KERNEL);
+> 	if (!name)
+> 		return -ENOSPC;
+> 
+> the error is not actually "No space left on device", but "Out of memory".
+> 
+> So, it is semantically correct to return -ENOMEM in all failed kstrndup()
+> and kzalloc() cases in this driver, as it is not a problem with disk
+> space, but with kernel memory allocator.
+> 
+> The semantically correct should be:
+> 
+>         name = kstrndup(buf, count, GFP_KERNEL);
+>         if (!name)
+>                 return -ENOMEM;
+> 
+> Cc: Dan Carpenter <error27@gmail.com>
+> Cc: Takashi Iwai <tiwai@suse.de>
+> Cc: Kees Cook <keescook@chromium.org>
 > Cc: stable@vger.kernel.org
-> Fixes: 49870056005c ("ceph: convert ceph_readpages to ceph_readahead")
-> URL: https://lore.kernel.org/ceph-devel/20230504082510.247-1-sehuww@mail.=
-scut.edu.cn
-> URL: https://www.spinics.net/lists/ceph-users/msg76183.html
-> Cc: Hu Weiwen <sehuww@mail.scut.edu.cn>
-> Reviewed-by: Hu Weiwen <sehuww@mail.scut.edu.cn>
-> Tested-by: Hu Weiwen <sehuww@mail.scut.edu.cn>
-> Signed-off-by: Xiubo Li <xiubli@redhat.com>
+> Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
 > ---
->  fs/ceph/addr.c  | 45 ++++++++++++++++++++++++++++++++++-----------
->  fs/ceph/super.h | 13 +++++++++++++
->  2 files changed, 47 insertions(+), 11 deletions(-)
->
-> diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-> index 3b20873733af..93fff1a7373f 100644
-> --- a/fs/ceph/addr.c
-> +++ b/fs/ceph/addr.c
-> @@ -404,18 +404,28 @@ static int ceph_init_request(struct netfs_io_reques=
-t *rreq, struct file *file)
->  {
->         struct inode *inode =3D rreq->inode;
->         int got =3D 0, want =3D CEPH_CAP_FILE_CACHE;
-> +       struct ceph_netfs_request_data *priv;
->         int ret =3D 0;
->
->         if (rreq->origin !=3D NETFS_READAHEAD)
->                 return 0;
->
-> +       priv =3D kzalloc(sizeof(*priv), GFP_NOFS);
-> +       if (!priv)
-> +               return -ENOMEM;
-> +
->         if (file) {
->                 struct ceph_rw_context *rw_ctx;
->                 struct ceph_file_info *fi =3D file->private_data;
->
-> +               priv->file_ra_pages =3D file->f_ra.ra_pages;
-> +               priv->file_ra_disabled =3D file->f_mode & FMODE_RANDOM;
-> +
->                 rw_ctx =3D ceph_find_rw_context(fi);
-> -               if (rw_ctx)
-> +               if (rw_ctx) {
-> +                       rreq->netfs_priv =3D priv;
->                         return 0;
-> +               }
->         }
->
->         /*
-> @@ -425,27 +435,40 @@ static int ceph_init_request(struct netfs_io_reques=
-t *rreq, struct file *file)
->         ret =3D ceph_try_get_caps(inode, CEPH_CAP_FILE_RD, want, true, &g=
-ot);
->         if (ret < 0) {
->                 dout("start_read %p, error getting cap\n", inode);
-> -               return ret;
-> +               goto out;
->         }
->
->         if (!(got & want)) {
->                 dout("start_read %p, no cache cap\n", inode);
-> -               return -EACCES;
-> +               ret =3D -EACCES;
-> +               goto out;
-> +       }
-> +       if (ret =3D=3D 0) {
-> +               ret =3D -EACCES;
-> +               goto out;
->         }
-> -       if (ret =3D=3D 0)
-> -               return -EACCES;
->
-> -       rreq->netfs_priv =3D (void *)(uintptr_t)got;
-> -       return 0;
-> +       priv->caps =3D got;
-> +       rreq->netfs_priv =3D priv;
-> +
-> +out:
-> +       if (ret < 0)
-> +               kfree(priv);
-> +
-> +       return ret;
->  }
->
->  static void ceph_netfs_free_request(struct netfs_io_request *rreq)
->  {
-> -       struct ceph_inode_info *ci =3D ceph_inode(rreq->inode);
-> -       int got =3D (uintptr_t)rreq->netfs_priv;
-> +       struct ceph_netfs_request_data *priv =3D rreq->netfs_priv;
-> +
-> +       if (!priv)
-> +               return;
->
-> -       if (got)
-> -               ceph_put_cap_refs(ci, got);
-> +       if (priv->caps)
-> +               ceph_put_cap_refs(ceph_inode(rreq->inode), priv->caps);
-> +       kfree(priv);
-> +       rreq->netfs_priv =3D NULL;
->  }
->
->  const struct netfs_request_ops ceph_netfs_ops =3D {
-> diff --git a/fs/ceph/super.h b/fs/ceph/super.h
-> index a226d36b3ecb..3a24b7974d46 100644
-> --- a/fs/ceph/super.h
-> +++ b/fs/ceph/super.h
-> @@ -470,6 +470,19 @@ struct ceph_inode_info {
->  #endif
->  };
->
-> +struct ceph_netfs_request_data {
-> +       int caps;
-> +
-> +       /*
-> +        * Maximum size of a file readahead request.
-> +        * The fadvise could update the bdi's default ra_pages.
-> +        */
-> +       unsigned int file_ra_pages;
-> +
-> +       /* Set it if fadvise disables file readahead entirely */
-> +       bool file_ra_disabled;
-> +};
-> +
->  static inline struct ceph_inode_info *
->  ceph_inode(const struct inode *inode)
->  {
-> --
-> 2.40.1
->
 
+The Cc stable might be a little bit much...  No Fixes tag either.  But
+otherwise it looks fine.
 
---=20
-Milind
+regards,
+dan carpenter
 
