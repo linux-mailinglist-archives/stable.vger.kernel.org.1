@@ -2,78 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E0D4723C92
-	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 11:09:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E8B7723CB7
+	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 11:13:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230354AbjFFJJV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 6 Jun 2023 05:09:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53026 "EHLO
+        id S236562AbjFFJNl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 6 Jun 2023 05:13:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230208AbjFFJJT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 6 Jun 2023 05:09:19 -0400
-Received: from sender-of-o51.zoho.in (sender-of-o51.zoho.in [103.117.158.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01671100;
-        Tue,  6 Jun 2023 02:09:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1686042506; cv=none; 
-        d=zohomail.in; s=zohoarc; 
-        b=YtpdOb/AzYZrYY3GpszrkqzLl0bfDd9HahfTMQCufVTElUpLJnoB0d2tp34gduW59lNYm1Ws6jrB0qGhovEkywGHlxwuMf5s9kYrIGkUJMYsVz9/mpJCMAuTVgum+zswcsJyjXgN+UvKQSdGQbb0Hbv388uW7H+Z8QuQEfZikxA=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-        t=1686042506; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
-        bh=wxe0GhnNp19oT1s2yGlZCmuUW7SIjjh4ZIOmxejbeuU=; 
-        b=R/RMZwuD/5aBWoNCbMu6Np/n+EoL33pJ5gNwTLunPlhhv3OAAHqFRFcejZAdeUn5hBHssGHK8X7BmbdtO2nvLrFCfYK1hxkEm0yJUIEMnDCPAeDozImOqzgmXHMX8KuHYLyTNQXHJawMDUEzohYl12PWtqYa1OgIR71RD9iXjew=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-        dkim=pass  header.i=siddh.me;
-        spf=pass  smtp.mailfrom=code@siddh.me;
-        dmarc=pass header.from=<code@siddh.me>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1686042506;
-        s=zmail; d=siddh.me; i=code@siddh.me;
-        h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-        bh=wxe0GhnNp19oT1s2yGlZCmuUW7SIjjh4ZIOmxejbeuU=;
-        b=QCnKJAgafRpGLe0HKNNopHvk0tMxdBrhp1Q9u2fr5O40qI5ssScT8gkjgRLtH6BB
-        5Qztp/wX7W0sUWRSk4j9u6qTS1zii33rBA1OOTTsQrGItQ2NJ5MqGLpiUgcXYnV+OMq
-        Wgkro9qNw2bwvtCnVXKEOxEEecUn+z393imBo4rs=
-Received: from mail.zoho.in by mx.zoho.in
-        with SMTP id 1686042494469601.5259406750127; Tue, 6 Jun 2023 14:38:14 +0530 (IST)
-Date:   Tue, 06 Jun 2023 14:38:14 +0530
-From:   Siddh Raman Pant <code@siddh.me>
-To:     "Christian Brauner" <brauner@kernel.org>
-Cc:     "linux-fsdevel" <linux-fsdevel@vger.kernel.org>,
-        "linux-kernel" <linux-kernel@vger.kernel.org>,
-        "stable" <stable@vger.kernel.org>,
-        "Randy Dunlap" <rdunlap@infradead.org>,
-        "Jonathan Corbet" <corbet@lwn.net>,
-        "Mauro Carvalho Chehab" <mchehab@kernel.org>,
-        "David Disseldorp" <ddiss@suse.de>,
-        "Nick Alcock" <nick.alcock@oracle.com>,
-        "David Howells" <dhowells@redhat.com>
-Message-ID: <1888ff6c5f5.42ebd67876277.4429544209877292620@siddh.me>
-In-Reply-To: <20230606-getaucht-groschen-b2f1be714351@brauner>
-References: <20230605143616.640517-1-code@siddh.me> <20230606-getaucht-groschen-b2f1be714351@brauner>
-Subject: Re: [PATCH v5] kernel/watch_queue: NULL the dangling *pipe, and use
- it for clear check
+        with ESMTP id S236669AbjFFJNI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 6 Jun 2023 05:13:08 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C1F410CA;
+        Tue,  6 Jun 2023 02:13:01 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-4f624daccd1so3089254e87.0;
+        Tue, 06 Jun 2023 02:13:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686042779; x=1688634779;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NJ4Rlr1BwW/VlJIKDrxqTk8ExusP1b+351Bo/DAekLI=;
+        b=rJCxYoqFxhnln+7uwfKhrIfVeudKadx6t+qWSNl/mO36w181J5vx75LfWV5i11vLFs
+         bFP+a/t+PuKp8nlle+2pdSjfXhhXmTzfwi9fMz69Hp/s+kud9IjGZbBWjacaQPRa37sI
+         jhOndXcXfrKpC7FphTyHg0sSzIKfsxC6yuK9J3DTGk96Ec177oUC5xocA138xe1ztiO0
+         zlnuQk8oblN0AN22Kw41Y1ubN4pMbkXzIopu9zIVxoz+fRNQftLLQqEvb45Q5+ytxwFP
+         Uey5DHh5UR7+F1rWtp0oabiNpu9RCA2sUe+Jf7rhD8GvtIHn+smy3Qo8xN03Uoqt4nSr
+         y9iA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686042779; x=1688634779;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NJ4Rlr1BwW/VlJIKDrxqTk8ExusP1b+351Bo/DAekLI=;
+        b=ke7tnHSNNyKCLihYOEXm+g/aDh9ewcmdVY4tHd9zodIftOXlthGcO2oSPTsV82V9Zv
+         zpCIlVoscd+HFGqTcQw82Gi0wTD3tb6/E59nvvRDnJG4Zpbz3vgosTrlXBaeaMOL73Ca
+         wdbXYVvcIgmt8eeGZMWx8NHmhvBWwh74pQF/eGLQM6e7hFi+tlsnOkLZ2zretzHY5dZQ
+         bkTAsLTWMe/5+L8edUoLp+5tzs0Enjt8u4v5mWrrhHIZ6zj71e4o0RICdJUDWT9KJ0LC
+         RplXk0mKWKKZqW2TJ62fp/pH+9UyAIq1utPqrded+w4oDv6Q489dhCqxDvavazqo0A48
+         va9A==
+X-Gm-Message-State: AC+VfDzzxvfWUDw3Ad3O4dUUx7phaFJPMcBYyL6am5ZroPOtECDrJLn+
+        jTGOoZcWVw1sJ8VAFmhaHNvlPtC5DHbemg==
+X-Google-Smtp-Source: ACHHUZ7NOlr9n+v7CD7+fCfytrUJRp+qlf8uQdrt9vuAMOBv8yz+ldjbrWuK96cVSTlsMrHia9ccFg==
+X-Received: by 2002:ac2:5455:0:b0:4eb:18d:91de with SMTP id d21-20020ac25455000000b004eb018d91demr853152lfn.43.1686042779293;
+        Tue, 06 Jun 2023 02:12:59 -0700 (PDT)
+Received: from home.paul.comp (paulfertser.info. [2001:470:26:54b:226:9eff:fe70:80c2])
+        by smtp.gmail.com with ESMTPSA id a24-20020ac25218000000b004f6337508afsm203558lfl.222.2023.06.06.02.12.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jun 2023 02:12:59 -0700 (PDT)
+Received: from home.paul.comp (home.paul.comp [IPv6:0:0:0:0:0:0:0:1])
+        by home.paul.comp (8.15.2/8.15.2/Debian-22) with ESMTP id 3569CslI011312;
+        Tue, 6 Jun 2023 12:12:55 +0300
+Received: (from paul@localhost)
+        by home.paul.comp (8.15.2/8.15.2/Submit) id 3569CqTk011311;
+        Tue, 6 Jun 2023 12:12:52 +0300
+Date:   Tue, 6 Jun 2023 12:12:51 +0300
+From:   Paul Fertser <fercerpav@gmail.com>
+To:     Simon Horman <simon.horman@corigine.com>
+Cc:     linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, Rani Hod <rani.hod@gmail.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] mt76: mt7615: do not advertise 5 GHz on first phy of
+ MT7615D (DBDC)
+Message-ID: <ZH74kw4M15qjDbTz@home.paul.comp>
+References: <20230605073408.8699-1-fercerpav@gmail.com>
+ <ZH72YwgpywPNxbd2@corigine.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZH72YwgpywPNxbd2@corigine.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 06 Jun 2023 14:22:49 +0530, Christian Brauner wrote:
-> Massaged the commit message a bit and applied David's Ack as requested.
-> 
-> ---
-> 
-> Applied to the vfs.misc branch of the vfs/vfs.git tree.
-> Patches in the vfs.misc branch should appear in linux-next soon.
+Hi Simon,
 
-Thank you!
--- Siddh
+On Tue, Jun 06, 2023 at 11:03:31AM +0200, Simon Horman wrote:
+> On Mon, Jun 05, 2023 at 10:34:07AM +0300, Paul Fertser wrote:
+> > On DBDC devices the first (internal) phy is only capable of using
+> > 2.4 GHz band, and the 5 GHz band is exposed via a separate phy object,
+> > so avoid the false advertising.
+> 
+> Can I clarify that the second object won't hit the logic change
+> below and thus be limited to 2GHz?
+
+The second object (external 5 GHz phy) doesn't have an EEPROM of its
+own, and is created explicitly with just this band enabled:
+
+https://elixir.bootlin.com/linux/latest/source/drivers/net/wireless/mediatek/mt76/mt7615/pci_init.c#L104
+https://elixir.bootlin.com/linux/latest/source/drivers/net/wireless/mediatek/mt76/mt7615/init.c#L573
+
+So it won't hit the logic change and it will be limited to 5 GHz.
+
+-- 
+Be free, use free (http://www.gnu.org/philosophy/free-sw.html) software!
+mailto:fercerpav@gmail.com
