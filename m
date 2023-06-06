@@ -2,136 +2,147 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C28B1725052
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 00:57:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 376F37250DB
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 01:38:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239733AbjFFW5a (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 6 Jun 2023 18:57:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43502 "EHLO
+        id S239847AbjFFXiM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 6 Jun 2023 19:38:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237868AbjFFW53 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 6 Jun 2023 18:57:29 -0400
-Received: from mailout.blnma.de (mailout.blnma.de [116.203.12.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6C6AE70;
-        Tue,  6 Jun 2023 15:57:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=starostik.de; s=dkim210803; h=Content-Type:Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=3GMQJPr3wLU/UltjLZBO4G3VQB7dUs9gh+yxdJxZDCM=; t=1686092245; x=1686956245; 
-        b=IZUznDsn7NiHZXezCwKABLmyDehvNeokHWBqzIHLE4RG1P+OmRRgj5XHDCGtifBUyAap/KRW5x3
-        PGBF5jnwrIzFNIH4yxkYXfpXoqXuX9Re7SaYIxubRQS3VyYExvQno6yOA0EknU2Ku4VCV/Tu9+xyG
-        p+mZ7W02uijeF0bfaNFba8+8gtZZ31xAYyH6rpwK5FE8JIZmtXnOWdorXP7AKcHbKuNspKFMhquhB
-        P1okkFoMfxPjBIH1eywEl2PfOS5vkQKvxXxmiuL2fYbLATuqPGKf34QIx2no1sWFq+Y5BAdBfL78T
-        gRbc4cVeGxwct+00yh2sibvsfkt5HJlgiHaQ==;
-Received: from dovecot-0.dovecot.mail.svc.cluster.local ([10.244.6.208] helo=mail.blnma.de)
-        by mail.blnma.de with esmtp (Exim 4.96)
-        (envelope-from <malte@starostik.de>)
-        id 1q6fbx-000Ead-1z;
-        Tue, 06 Jun 2023 22:57:09 +0000
-Received: from zen.localnet ([85.183.148.49])
-        by mail.blnma.de with ESMTPSA
-        id Hn0FDMS5f2SSVQAA399c4A
-        (envelope-from <malte@starostik.de>); Tue, 06 Jun 2023 22:57:08 +0000
-From:   Malte Starostik <malte@starostik.de>
-To:     Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     Bagas Sanjaya <bagasdotme@gmail.com>, basavaraj.natikar@amd.com,
-        linux-input@vger.kernel.org, linux@hexchain.org,
-        stable@vger.kernel.org
-Subject: Re: amd_sfh driver causes kernel oops during boot
-Date:   Wed, 07 Jun 2023 00:57:07 +0200
-Message-ID: <5980752.YW5z2jdOID@zen>
-In-Reply-To: <79bd270e-4a0d-b4be-992b-73c65d085624@amd.com>
-References: <ZG3ipauL9FTnQJiC@debian.me>
- <aci7a4jnosozypn6sffsdoaezg4p42zgjy5dwnjyvnbav7chdm@wettfjwb4enw>
- <79bd270e-4a0d-b4be-992b-73c65d085624@amd.com>
+        with ESMTP id S239891AbjFFXiL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 6 Jun 2023 19:38:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6F0210F1
+        for <stable@vger.kernel.org>; Tue,  6 Jun 2023 16:37:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1686094646;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=j899oAscb6cex41LPnjVmfNp2o1cfXB+0VQl+ebVWlM=;
+        b=KSZ93sM0ib1d4GMOyjFBrGStdrQI/eqQEsa0S/NQNpXuNujINHRwZ9+3270xtqxl1oJI0n
+        G6xH209lCQqKfZtFBHZEW22i0cUfiBve3sLa3FTqDSz6KC3uZL1qykqq2AgeItqwAgA7Q2
+        nttPLu6x6PsRQv4V//MYRFfGXlOgqYc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-21-2SyWs4g3OyWkn5jowNs9ig-1; Tue, 06 Jun 2023 19:37:23 -0400
+X-MC-Unique: 2SyWs4g3OyWkn5jowNs9ig-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8F9D280120A;
+        Tue,  6 Jun 2023 23:37:22 +0000 (UTC)
+Received: from optiplex-lnx.redhat.com (unknown [10.22.17.159])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id D6C8A40CFD46;
+        Tue,  6 Jun 2023 23:37:13 +0000 (UTC)
+From:   Rafael Aquini <aquini@redhat.com>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        Yafang Shao <laoar.shao@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        linux-mm@kvack.org, stable@vger.kernel.org,
+        Aristeu Rozanski <aris@redhat.com>,
+        Rafael Aquini <aquini@redhat.com>
+Subject: [PATCH] writeback: fix dereferencing NULL mapping->host on writeback_page_template
+Date:   Tue,  6 Jun 2023 19:36:13 -0400
+Message-Id: <20230606233613.1290819-1-aquini@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Am Dienstag, 6. Juni 2023, 17:25:13 CEST schrieb Limonciello, Mario:
-> On 6/6/2023 3:08 AM, Benjamin Tissoires wrote:
-> > On Jun 06 2023, Linux regression tracking (Thorsten Leemhuis) wrote:
-> >>> On Mon, Jun 05, 2023 at 01:24:25PM +0200, Malte Starostik wrote:
-> >>>> Hello,
-> >>>> 
-> >>>> chiming in here as I'm experiencing what looks like the exact same
-> >>>> issue, also on a Lenovo Z13 notebook, also on Arch:
-> >>>> Oops during startup in task udev-worker followed by udev-worker
-> >>>> blocking all attempts to suspend or cleanly shutdown/reboot the
-> >>>> machine
+When commit 19343b5bdd16 ("mm/page-writeback: introduce tracepoint for
+wait_on_page_writeback()") repurposed the writeback_dirty_page trace event
+as a template to create its new wait_on_page_writeback trace event, it
+ended up opening a window to NULL pointer dereference crashes due to
+the (infrequent) occurrence of a race where an access to a page in the
+swap-cache happens concurrently with the moment this page is being
+written to disk and the tracepoint is enabled:
 
-> > I have a suspicion on commit 7bcfdab3f0c6 ("HID: amd_sfh: if no sensors
-> > are enabled, clean up") because the stack trace says that there is a bad
-> > list_add, which could happen if the object is not correctly initialized.
-> > 
-> > However, that commit was present in v6.2, so it might not be that one.
-> > 
-> If I'm not mistaken the Z13 doesn't actually have any
-> sensors connected to SFH.  So I think the suspicion on
-> 7bcfdab3f0c6 and theory this is triggered by HID init makes
-> a lot of sense.
-> 
-> Can you try this patch?
-> 
-> diff --git a/drivers/hid/amd-sfh-hid/amd_sfh_client.c
-> b/drivers/hid/amd-sfh-hid/amd_sfh_client.c
-> index d9b7b01900b5..fa693a5224c6 100644
-> --- a/drivers/hid/amd-sfh-hid/amd_sfh_client.c
-> +++ b/drivers/hid/amd-sfh-hid/amd_sfh_client.c
-> @@ -324,6 +324,7 @@ int amd_sfh_hid_client_init(struct amd_mp2_dev
-> *privdata)
->                          devm_kfree(dev, cl_data->report_descr[i]);
->                  }
->                  dev_warn(dev, "Failed to discover, sensors not enabled
-> is %d\n", cl_data->is_any_sensor_enabled);
-> +               cl_data->num_hid_devices = 0;
->                  return -EOPNOTSUPP;
->          }
->          schedule_delayed_work(&cl_data->work_buffer,
-> msecs_to_jiffies(AMD_SFH_IDLE_LOOP));
+    BUG: kernel NULL pointer dereference, address: 0000000000000040
+    #PF: supervisor read access in kernel mode
+    #PF: error_code(0x0000) - not-present page
+    PGD 800000010ec0a067 P4D 800000010ec0a067 PUD 102353067 PMD 0
+    Oops: 0000 [#1] PREEMPT SMP PTI
+    CPU: 1 PID: 1320 Comm: shmem-worker Kdump: loaded Not tainted 6.4.0-rc5+ #13
+    Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230301gitf80f052277c8-1.fc37 03/01/2023
+    RIP: 0010:trace_event_raw_event_writeback_folio_template+0x76/0xf0
+    Code: 4d 85 e4 74 5c 49 8b 3c 24 e8 06 98 ee ff 48 89 c7 e8 9e 8b ee ff ba 20 00 00 00 48 89 ef 48 89 c6 e8 fe d4 1a 00 49 8b 04 24 <48> 8b 40 40 48 89 43 28 49 8b 45 20 48 89 e7 48 89 43 30 e8 a2 4d
+    RSP: 0000:ffffaad580b6fb60 EFLAGS: 00010246
+    RAX: 0000000000000000 RBX: ffff90e38035c01c RCX: 0000000000000000
+    RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff90e38035c044
+    RBP: ffff90e38035c024 R08: 0000000000000002 R09: 0000000000000006
+    R10: ffff90e38035c02e R11: 0000000000000020 R12: ffff90e380bac000
+    R13: ffffe3a7456d9200 R14: 0000000000001b81 R15: ffffe3a7456d9200
+    FS:  00007f2e4e8a15c0(0000) GS:ffff90e3fbc80000(0000) knlGS:0000000000000000
+    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+    CR2: 0000000000000040 CR3: 00000001150c6003 CR4: 0000000000170ee0
+    Call Trace:
+     <TASK>
+     ? __die+0x20/0x70
+     ? page_fault_oops+0x76/0x170
+     ? kernelmode_fixup_or_oops+0x84/0x110
+     ? exc_page_fault+0x65/0x150
+     ? asm_exc_page_fault+0x22/0x30
+     ? trace_event_raw_event_writeback_folio_template+0x76/0xf0
+     folio_wait_writeback+0x6b/0x80
+     shmem_swapin_folio+0x24a/0x500
+     ? filemap_get_entry+0xe3/0x140
+     shmem_get_folio_gfp+0x36e/0x7c0
+     ? find_busiest_group+0x43/0x1a0
+     shmem_fault+0x76/0x2a0
+     ? __update_load_avg_cfs_rq+0x281/0x2f0
+     __do_fault+0x33/0x130
+     do_read_fault+0x118/0x160
+     do_pte_missing+0x1ed/0x2a0
+     __handle_mm_fault+0x566/0x630
+     handle_mm_fault+0x91/0x210
+     do_user_addr_fault+0x22c/0x740
+     exc_page_fault+0x65/0x150
+     asm_exc_page_fault+0x22/0x30
 
-I applied this to 9e87b63ed37e202c77aa17d4112da6ae0c7c097c now, which was the 
-origin when I started the whole bisection. Clean rebuild, issue still 
-persists.
+This problem arises from the fact that the repurposed writeback_dirty_page
+trace event code was written assuming that every pointer to mapping
+(struct address_space) would come from a file-mapped page-cache object,
+thus mapping->host would always be populated, and that was a valid case
+before commit 19343b5bdd16. The swap-cache address space (swapper_spaces),
+however, doesn't populate its ->host (struct inode) pointer, thus leading
+to the crashes in the corner-case aforementioned.
 
-Out of 50 boots, I got:
+commit 19343b5bdd16 ended up breaking the assignment of __entry->name and
+__entry->ino for the wait_on_page_writeback tracepoint -- both dependent
+on mapping->host carrying a pointer to a valid inode. The assignment of
+__entry->name was fixed by commit 68f23b89067f ("memcg: fix a crash in
+wb_workfn when a device disappears"), and this commit fixes the remaining
+case, for __entry->ino.
 
-25 clean
-22 Oops as posted by the OP
-1 same Oops, followed by a panic
-1 lockup [1]
-1 hanging with just a blank screen
+Fixes: 19343b5bdd16 ("mm/page-writeback: introduce tracepoint for wait_on_page_writeback()")
+Signed-off-by: Rafael Aquini <aquini@redhat.com>
+---
+ include/trace/events/writeback.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Not sure whether the lockups are related, but [1] mentions modprobe and udev-
-worker as well and all problems including the blank screen one appear roughly 
-at the same time during boot. As this is before a graphics mode switch, I 
-suspect the last mentioned case may be like [1] while the screen was blanked.
-To support the timing correlation: the UVC error for the IR cam shown in the 
-photo (normal boot noise) also appears right before the BUG in the non-lockup 
-bad case.
-
-I do see the dev_warn in dmesg, so the code path modified in your patch is 
-indeed hit:
-[   10.897521] pcie_mp2_amd 0000:63:00.7: Failed to discover, sensors not 
-enabled is 1
-[   10.897533] pcie_mp2_amd: probe of 0000:63:00.7 failed with error -95
-
-BR Malte
-
-[1] https://photos.app.goo.gl/2FAvQ7DqBsHEF6Bd8
-
+diff --git a/include/trace/events/writeback.h b/include/trace/events/writeback.h
+index 86b2a82da546..54e353c9f919 100644
+--- a/include/trace/events/writeback.h
++++ b/include/trace/events/writeback.h
+@@ -68,7 +68,7 @@ DECLARE_EVENT_CLASS(writeback_folio_template,
+ 		strscpy_pad(__entry->name,
+ 			    bdi_dev_name(mapping ? inode_to_bdi(mapping->host) :
+ 					 NULL), 32);
+-		__entry->ino = mapping ? mapping->host->i_ino : 0;
++		__entry->ino = (mapping && mapping->host) ? mapping->host->i_ino : 0;
+ 		__entry->index = folio->index;
+ 	),
+ 
+-- 
+2.39.2
 
