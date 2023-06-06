@@ -2,148 +2,138 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8F5D724B08
-	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 20:17:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC3E9724B66
+	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 20:29:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231429AbjFFSRS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 6 Jun 2023 14:17:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36496 "EHLO
+        id S238720AbjFFS3Q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 6 Jun 2023 14:29:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229682AbjFFSRR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 6 Jun 2023 14:17:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE271139
-        for <stable@vger.kernel.org>; Tue,  6 Jun 2023 11:17:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6203A62CDE
-        for <stable@vger.kernel.org>; Tue,  6 Jun 2023 18:17:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27886C433EF;
-        Tue,  6 Jun 2023 18:17:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686075435;
-        bh=NRAwuCnQ/k1zoOM/FoA7z14DKwkPpVT9rfhGHnp4WB4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=GlzWBQuGtTIkgWxSm6conpdPlDg8lnSzJ1UeYGXhs8CP5rAaEDZT6p6HCJSEBdMds
-         vQv1KfZ91Jf57pLZoHXJFWCnw/2zJshlFBa2E32dGBgZVZq5R5z8DYeZRWXvJiHEGx
-         AdOPlW2YtPlukl9/M9ue/dmbKLNvWE2xajxRcBK3wcrHIaYdLFtPVkL+J2NBq7CDqC
-         E73XUtARSL8rZZCqwDHhydkzdCgJ3outWO6SlV89GM9ezIl7Dv5mMlYR3mDcHY67wC
-         xrfdR/DQsUAQFYAlH18mlVtSTZV3wxmPznsqHCwVEURMhKZj4WOuQlfk+NbMF5nIcQ
-         Z7icNA5byfK+Q==
-From:   Jiri Olsa <jolsa@kernel.org>
-To:     Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>
-Cc:     stable@vger.kernel.org, Stanislav Fomichev <sdf@google.com>,
-        Anastasios Papagiannis <tasos.papagiannnis@gmail.com>,
-        bpf@vger.kernel.org, Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@chromium.org>, Hao Luo <haoluo@google.com>
-Subject: [PATCHv2 bpf] bpf: Add extra path pointer check to d_path helper
-Date:   Tue,  6 Jun 2023 11:17:14 -0700
-Message-Id: <20230606181714.532998-1-jolsa@kernel.org>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S238143AbjFFS3P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 6 Jun 2023 14:29:15 -0400
+Received: from smtp-fw-80008.amazon.com (smtp-fw-80008.amazon.com [99.78.197.219])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F402E1717
+        for <stable@vger.kernel.org>; Tue,  6 Jun 2023 11:29:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1686076151; x=1717612151;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=T4dR+NvpUQW1qLO92IlfMXeunBKtGHfm6bCXDqAxQkk=;
+  b=oVzEoBS0zDzl55zpz6U5gsztdc+isa7UTBaveiWhcIhFj+ar3mbASlAm
+   t2EH+i5CXJuOdPID08ir6O0xfXeWdw5eV1vGKekLn8oRNQWpm3vkZ+iyW
+   6FZnfhGSclp5eaZI6BCxsL90KDmJ+ITRk29cdB1ru/Tf7zpfgqscTNuIB
+   M=;
+X-IronPort-AV: E=Sophos;i="6.00,221,1681171200"; 
+   d="scan'208";a="8555200"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO email-inbound-relay-iad-1d-m6i4x-e651a362.us-east-1.amazon.com) ([10.25.36.210])
+  by smtp-border-fw-80008.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Jun 2023 18:29:10 +0000
+Received: from EX19MTAUWB001.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan3.iad.amazon.com [10.40.163.38])
+        by email-inbound-relay-iad-1d-m6i4x-e651a362.us-east-1.amazon.com (Postfix) with ESMTPS id 3842080652;
+        Tue,  6 Jun 2023 18:29:07 +0000 (UTC)
+Received: from EX19D001UWA002.ant.amazon.com (10.13.138.236) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Tue, 6 Jun 2023 18:29:06 +0000
+Received: from u46989501580c5c.ant.amazon.com (10.111.86.65) by
+ EX19D001UWA002.ant.amazon.com (10.13.138.236) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Tue, 6 Jun 2023 18:29:06 +0000
+From:   Samuel Mendoza-Jonas <samjonas@amazon.com>
+To:     <stable@vger.kernel.org>
+CC:     <benh@amazon.com>, Al Viro <viro@zeniv.linux.org.uk>,
+        <stable@kernel.org>, "Michael S . Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Samuel Mendoza-Jonas <samjonas@amazon.com>
+Subject: [PATCH 4.14] Fix double fget() in vhost_net_set_backend()
+Date:   Tue, 6 Jun 2023 11:28:31 -0700
+Message-ID: <20230606182831.639358-1-samjonas@amazon.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.111.86.65]
+X-ClientProxiedBy: EX19D033UWC003.ant.amazon.com (10.13.139.217) To
+ EX19D001UWA002.ant.amazon.com (10.13.138.236)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Anastasios reported crash on stable 5.15 kernel with following
-bpf attached to lsm hook:
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-  SEC("lsm.s/bprm_creds_for_exec")
-  int BPF_PROG(bprm_creds_for_exec, struct linux_binprm *bprm)
-  {
-          struct path *path = &bprm->executable->f_path;
-          char p[128] = { 0 };
+commit fb4554c2232e44d595920f4d5c66cf8f7d13f9bc upstream.
 
-          bpf_d_path(path, p, 128);
-          return 0;
-  }
+Descriptor table is a shared resource; two fget() on the same descriptor
+may return different struct file references.  get_tap_ptr_ring() is
+called after we'd found (and pinned) the socket we'll be using and it
+tries to find the private tun/tap data structures associated with it.
+Redoing the lookup by the same file descriptor we'd used to get the
+socket is racy - we need to same struct file.
 
-but bprm->executable can be NULL, so bpf_d_path call will crash:
+Thanks to Jason for spotting a braino in the original variant of patch -
+I'd missed the use of fd == -1 for disabling backend, and in that case
+we can end up with sock == NULL and sock != oldsock.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000018
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: 0000 [#1] PREEMPT SMP DEBUG_PAGEALLOC NOPTI
-  ...
-  RIP: 0010:d_path+0x22/0x280
-  ...
-  Call Trace:
-   <TASK>
-   bpf_d_path+0x21/0x60
-   bpf_prog_db9cf176e84498d9_bprm_creds_for_exec+0x94/0x99
-   bpf_trampoline_6442506293_0+0x55/0x1000
-   bpf_lsm_bprm_creds_for_exec+0x5/0x10
-   security_bprm_creds_for_exec+0x29/0x40
-   bprm_execve+0x1c1/0x900
-   do_execveat_common.isra.0+0x1af/0x260
-   __x64_sys_execve+0x32/0x40
-
-It's problem for all stable trees with bpf_d_path helper, which was
-added in 5.9.
-
-This issue is fixed in current bpf code, where we identify and mark
-trusted pointers, so the above code would fail even to load.
-
-For the sake of the stable trees and to workaround potentially broken
-verifier in the future, adding the code that reads the path object from
-the passed pointer and verifies it's valid in kernel space.
-
-Cc: stable@vger.kernel.org # v5.9+
-Fixes: 6e22ab9da793 ("bpf: Add d_path helper")
-Acked-by: Stanislav Fomichev <sdf@google.com>
-Suggested-by: Alexei Starovoitov <ast@kernel.org>
-Reported-by: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Cc: stable@kernel.org
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[4.14: Account for get_tap_skb_array() instead of get_tap_ptr_ring()]
+Signed-off-by: Samuel Mendoza-Jonas <samjonas@amazon.com>
 ---
- kernel/trace/bpf_trace.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/vhost/net.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-v2 changes:
-  - used copied path object pointer for d_path call [Alexei]
-  - added ack [Stanislav]
-
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index 9a050e36dc6c..1f4b07da327a 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -900,13 +900,23 @@ static const struct bpf_func_proto bpf_send_signal_thread_proto = {
+diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
+index 66212ba07cbc..c41197402d81 100644
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -1047,13 +1047,9 @@ static struct socket *get_raw_socket(int fd)
+ 	return ERR_PTR(r);
+ }
  
- BPF_CALL_3(bpf_d_path, struct path *, path, char *, buf, u32, sz)
+-static struct skb_array *get_tap_skb_array(int fd)
++static struct skb_array *get_tap_skb_array(struct file *file)
  {
-+	struct path copy;
- 	long len;
- 	char *p;
+ 	struct skb_array *array;
+-	struct file *file = fget(fd);
+-
+-	if (!file)
+-		return NULL;
+ 	array = tun_get_skb_array(file);
+ 	if (!IS_ERR(array))
+ 		goto out;
+@@ -1062,7 +1058,6 @@ static struct skb_array *get_tap_skb_array(int fd)
+ 		goto out;
+ 	array = NULL;
+ out:
+-	fput(file);
+ 	return array;
+ }
  
- 	if (!sz)
- 		return 0;
- 
--	p = d_path(path, buf, sz);
-+	/*
-+	 * The path pointer is verified as trusted and safe to use,
-+	 * but let's double check it's valid anyway to workaround
-+	 * potentially broken verifier.
-+	 */
-+	len = copy_from_kernel_nofault(&copy, path, sizeof(*path));
-+	if (len < 0)
-+		return len;
-+
-+	p = d_path(&copy, buf, sz);
- 	if (IS_ERR(p)) {
- 		len = PTR_ERR(p);
- 	} else {
+@@ -1143,8 +1138,12 @@ static long vhost_net_set_backend(struct vhost_net *n, unsigned index, int fd)
+ 		vhost_net_disable_vq(n, vq);
+ 		vq->private_data = sock;
+ 		vhost_net_buf_unproduce(nvq);
+-		if (index == VHOST_NET_VQ_RX)
+-			nvq->rx_array = get_tap_skb_array(fd);
++		if (index == VHOST_NET_VQ_RX) {
++			if (sock)
++				nvq->rx_array = get_tap_skb_array(sock->file);
++			else
++				nvq->rx_array = NULL;
++		}
+ 		r = vhost_vq_init_access(vq);
+ 		if (r)
+ 			goto err_used;
 -- 
-2.40.1
+2.25.1
 
