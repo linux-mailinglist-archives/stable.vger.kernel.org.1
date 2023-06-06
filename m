@@ -2,148 +2,204 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4684723431
-	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 02:56:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EA99723483
+	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 03:32:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233187AbjFFA4E (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 5 Jun 2023 20:56:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45898 "EHLO
+        id S229667AbjFFBcO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 5 Jun 2023 21:32:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232455AbjFFA4C (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 20:56:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 480F7102
-        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 17:55:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686012920;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=zKmbotbT5NBUGpUZX7EShj5DBNRxB44I4D0cqqrumc0=;
-        b=HgahB4pnhS3cbh7pxV36/JgwF9zY2yOP7GCUdglVpY4aagO68crT5//qxU0bAAUPtePZFw
-        XS2m5t/1en0y0Iq9DWvDFdTeBCq5GDqGMAnC4Uf1hMPUki5WtBR4qWAMZ4XLuWa/nbxDzV
-        CXM0KtzmFD/PhPkTlq/5IepVDqXnRSo=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-112-UNmpkB8gO1C4clp-gjKhGg-1; Mon, 05 Jun 2023 20:55:15 -0400
-X-MC-Unique: UNmpkB8gO1C4clp-gjKhGg-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B71262801A44;
-        Tue,  6 Jun 2023 00:55:14 +0000 (UTC)
-Received: from li-a71a4dcc-35d1-11b2-a85c-951838863c8d.ibm.com.com (ovpn-12-128.pek2.redhat.com [10.72.12.128])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 271A27AE4;
-        Tue,  6 Jun 2023 00:55:04 +0000 (UTC)
-From:   xiubli@redhat.com
-To:     idryomov@gmail.com, ceph-devel@vger.kernel.org
-Cc:     jlayton@kernel.org, vshankar@redhat.com, mchangir@redhat.com,
-        Xiubo Li <xiubli@redhat.com>, stable@vger.kernel.org
-Subject: [PATCH v3] ceph: fix use-after-free bug for inodes when flushing capsnaps
-Date:   Tue,  6 Jun 2023 08:52:53 +0800
-Message-Id: <20230606005253.1055933-1-xiubli@redhat.com>
+        with ESMTP id S230349AbjFFBcM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 21:32:12 -0400
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B070DC;
+        Mon,  5 Jun 2023 18:32:10 -0700 (PDT)
+Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-4f624daccd1so2742078e87.0;
+        Mon, 05 Jun 2023 18:32:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686015129; x=1688607129;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nKXeYLBgNZsLD/+IxPwyyN63h/BVDg7LwOnNrEDBze0=;
+        b=seM8DoJuA+l2/qluDMFHOqVY2TU0LJEsce5E3zY3BfHXHqYaAoQIn0CcRJVxEiYkeX
+         ueig2x+BcON7b3hxf82SBc6l8PbMtq4dUUcKED2ECulGGEw8YTmbReZY5raJxynbLWYH
+         J9JeYjQuOEvrKBuDThQR39KCrrrmOCQSwS492duLcJ/KfwdyKnVK2MqZaLe2qCpWlreh
+         ATkJkwBLHbj51yPzGh1iKBuit1jUH4WrNFzJ8d/tHdPVOvbrSvBkuBk5fBD/5hjx7tZB
+         hvNmbxkl4kAJgOqDogjNztOz6Dw1NyYjYumFZpe26RxkMpJWsTkFj25n9Bjoa3LU72b6
+         okpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686015129; x=1688607129;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nKXeYLBgNZsLD/+IxPwyyN63h/BVDg7LwOnNrEDBze0=;
+        b=kjLxcs+WiVJ4dyorV4B7lzSHbAoY6fRqHbjjxckuXrK3oQp8eSok6pW0Uz3uGe9mtP
+         qjN5+QApp/K+6WPTbmLM7momAYHvtiKgKIfNisiZmjC3Go4BejfiBsdSeiKqV1LLULEM
+         Q0c1wzqMr+RZfFHYemargTdqZFNLjK3g8YlGrxoL+MIqTZA+9DEExhrMZicH9rcLaIi7
+         bbfd0kAAauhXG9PjKKoCO5TYEAEBTdWDDcobBOWZvkIQswzRZoyHpxc2ESKh8WHnadJ8
+         qk1JugnZyhauyKwihYzy5J14WSFmXHwB1bntLqGUJuNLn8+DXgqI9T0uM8CEQ4HrDK21
+         +cqg==
+X-Gm-Message-State: AC+VfDwj9PTr0O+75yhITU9cfaaaxNeKZUi0mmFGMsUxpdYTpN4DgCyJ
+        b8MQskKdrJx69XC502zxX+j2ROPEBbAyCip10b4=
+X-Google-Smtp-Source: ACHHUZ4CSyaN+1CA8HNujlJTstB9XfEYJXvLicNt50Ql/A2r+8dDz8Zj9rIXpCiTUQYHEpEA2sDAUBbj+rGoJvM5mI4=
+X-Received: by 2002:a2e:7219:0:b0:2b1:c389:c424 with SMTP id
+ n25-20020a2e7219000000b002b1c389c424mr648772ljc.12.1686015128552; Mon, 05 Jun
+ 2023 18:32:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+References: <20230605164955.GA1977@templeofstupid.com> <CAADnVQK7PQxj5jjfUu9sO524yLMPqE6vmzcipno1WYoeu0q-Gw@mail.gmail.com>
+ <20230606004139.GE1977@templeofstupid.com>
+In-Reply-To: <20230606004139.GE1977@templeofstupid.com>
+From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date:   Mon, 5 Jun 2023 18:31:57 -0700
+Message-ID: <CAADnVQLhqCVRcPuJ8JEZfd5ii+-TsSs4+AsJC0sbjwPMv7LX_Q@mail.gmail.com>
+Subject: Re: [PATCH bpf] bpf: search_bpf_extables should search subprogram extables
+To:     Krister Johansen <kjlx@templeofstupid.com>
+Cc:     bpf <bpf@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Song Liu <song@kernel.org>, Yonghong Song <yhs@fb.com>,
+        KP Singh <kpsingh@kernel.org>,
+        Stanislav Fomichev <sdf@google.com>,
+        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
+        Network Development <netdev@vger.kernel.org>,
+        clang-built-linux <llvm@lists.linux.dev>,
+        stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xiubo Li <xiubli@redhat.com>
+On Mon, Jun 5, 2023 at 5:46=E2=80=AFPM Krister Johansen <kjlx@templeofstupi=
+d.com> wrote:
+>
+> On Mon, Jun 05, 2023 at 04:30:29PM -0700, Alexei Starovoitov wrote:
+> > On Mon, Jun 5, 2023 at 9:50=E2=80=AFAM Krister Johansen <kjlx@templeofs=
+tupid.com> wrote:
+> > > +                       if (!aux->func[i]->aux->num_exentries ||
+> > > +                           aux->func[i]->aux->extable =3D=3D NULL)
+> > > +                               continue;
+> > > +                       e =3D search_extable(aux->func[i]->aux->extab=
+le,
+> > > +                           aux->func[i]->aux->num_exentries, addr);
+> > > +               }
+> > > +       }
+> >
+> > something odd here.
+> > We do bpf_prog_kallsyms_add(func[i]); for each subprog.
+> > So bpf_prog_ksym_find() in search_bpf_extables()
+> > should be finding ksym and extable of the subprog
+> > and not the main prog.
+> > The bug is probably elsewhere.
+>
+> I have a kdump (or more) of this bug so if there's additional state
+> you'd like me to share, let me know.
 
-There is a race between capsnaps flush and removing the inode from
-'mdsc->snap_flush_list' list:
+Please convert the test into selftest.
+Then everyone will be able to reproduce easily
+and it will serve us later to make sure we don't regress.
 
-   == Thread A ==                     == Thread B ==
-ceph_queue_cap_snap()
- -> allocate 'capsnapA'
- ->ihold('&ci->vfs_inode')
- ->add 'capsnapA' to 'ci->i_cap_snaps'
- ->add 'ci' to 'mdsc->snap_flush_list'
-    ...
-   == Thread C ==
-ceph_flush_snaps()
- ->__ceph_flush_snaps()
-  ->__send_flush_snap()
-                                handle_cap_flushsnap_ack()
-                                 ->iput('&ci->vfs_inode')
-                                   this also will release 'ci'
-                                    ...
-				      == Thread D ==
-                                ceph_handle_snap()
-                                 ->flush_snaps()
-                                  ->iterate 'mdsc->snap_flush_list'
-                                   ->get the stale 'ci'
- ->remove 'ci' from                ->ihold(&ci->vfs_inode) this
-   'mdsc->snap_flush_list'           will WARNING
+> With your comments in mind, I took
+> another look at the ksym fields in the aux structs.  I have this in the
+> main program:
+>
+>   ksym =3D {
+>     start =3D 18446744072638420852,
+>     end =3D 18446744072638423040,
+>     name =3D <...>
+>     lnode =3D {
+>       next =3D 0xffff88d9c1065168,
+>       prev =3D 0xffff88da91609168
+>     },
+>     tnode =3D {
+>       node =3D {{
+>           __rb_parent_color =3D 18446613068361611640,
+>           rb_right =3D 0xffff88da91609178,
+>           rb_left =3D 0xffff88d9f0c5a578
+>         }, {
+>           __rb_parent_color =3D 18446613068361611664,
+>           rb_right =3D 0xffff88da91609190,
+>           rb_left =3D 0xffff88d9f0c5a590
+>         }}
+>     },
+>     prog =3D true
+>   },
+>
+> and this in the func[0] subprogram:
+>
+>   ksym =3D {
+>     start =3D 18446744072638420852,
+>     end =3D 18446744072638423040,
+>     name =3D <...>
+>     lnode =3D {
+>       next =3D 0xffff88da91609168,
+>       prev =3D 0xffffffff981f8990 <bpf_kallsyms>
+>     },
+>     tnode =3D {
+>       node =3D {{
+>           __rb_parent_color =3D 18446613068361606520,
+>           rb_right =3D 0x0,
+>           rb_left =3D 0x0
+>         }, {
+>           __rb_parent_color =3D 18446613068361606544,
+>           rb_right =3D 0x0,
+>           rb_left =3D 0x0
+>         }}
+>     },
+>     prog =3D true
+>   },
+>
+> That sure looks like func[0] is a leaf in the rbtree and the main
+> program is an intermediate node with leaves.  If that's the case, then
+> bpf_prog_ksym_find may have found the main program instead of the
+> subprogram.  In that case, do you think it's better to skip the main
+> program's call to bpf_prog_ksym_set_addr() if it has subprograms instead
+> of searching for subprograms if the main program is found?
 
-To fix this we will increase the inode's i_count ref when adding 'ci'
-to the 'mdsc->snap_flush_list' list.
+I see.
+Looks like we're doing double bpf_prog_kallsyms_add().
+First in in jit_subprogs():
+        for (i =3D 0; i < env->subprog_cnt; i++) {
+                bpf_prog_lock_ro(func[i]);
+                bpf_prog_kallsyms_add(func[i]);
+        }
+and then again:
+bpf_prog_kallsyms_add(prog);
+in bpf_prog_load().
 
-Cc: stable@vger.kernel.org
-URL: https://bugzilla.redhat.com/show_bug.cgi?id=2209299
-Reviewed-by: Milind Changire <mchangir@redhat.com>
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
----
+because func[0] is the main prog.
 
-V3:
-- Fix two minor typo in commit comments.
+We are also doing double bpf_prog_lock_ro() for main prog,
+but that's not causing harm.
 
+The fix is probably just this:
 
-
- fs/ceph/caps.c | 6 ++++++
- fs/ceph/snap.c | 4 +++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
-index feabf4cc0c4f..7c2cb813aba4 100644
---- a/fs/ceph/caps.c
-+++ b/fs/ceph/caps.c
-@@ -1684,6 +1684,7 @@ void ceph_flush_snaps(struct ceph_inode_info *ci,
- 	struct inode *inode = &ci->netfs.inode;
- 	struct ceph_mds_client *mdsc = ceph_inode_to_client(inode)->mdsc;
- 	struct ceph_mds_session *session = NULL;
-+	int put = 0;
- 	int mds;
- 
- 	dout("ceph_flush_snaps %p\n", inode);
-@@ -1728,8 +1729,13 @@ void ceph_flush_snaps(struct ceph_inode_info *ci,
- 		ceph_put_mds_session(session);
- 	/* we flushed them all; remove this inode from the queue */
- 	spin_lock(&mdsc->snap_flush_lock);
-+	if (!list_empty(&ci->i_snap_flush_item))
-+		put++;
- 	list_del_init(&ci->i_snap_flush_item);
- 	spin_unlock(&mdsc->snap_flush_lock);
-+
-+	if (put)
-+		iput(inode);
- }
- 
- /*
-diff --git a/fs/ceph/snap.c b/fs/ceph/snap.c
-index 5a4bf0201737..d5ad10d94424 100644
---- a/fs/ceph/snap.c
-+++ b/fs/ceph/snap.c
-@@ -697,8 +697,10 @@ int __ceph_finish_cap_snap(struct ceph_inode_info *ci,
- 	     capsnap->size);
- 
- 	spin_lock(&mdsc->snap_flush_lock);
--	if (list_empty(&ci->i_snap_flush_item))
-+	if (list_empty(&ci->i_snap_flush_item)) {
-+		ihold(inode);
- 		list_add_tail(&ci->i_snap_flush_item, &mdsc->snap_flush_list);
-+	}
- 	spin_unlock(&mdsc->snap_flush_lock);
- 	return 1;  /* caller may want to ceph_flush_snaps */
- }
--- 
-2.40.1
-
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 1e38584d497c..89266dac9c12 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -17633,7 +17633,7 @@ static int jit_subprogs(struct bpf_verifier_env *en=
+v)
+        /* finally lock prog and jit images for all functions and
+         * populate kallsysm
+         */
+-       for (i =3D 0; i < env->subprog_cnt; i++) {
++       for (i =3D 1; i < env->subprog_cnt; i++) {
+                bpf_prog_lock_ro(func[i]);
+                bpf_prog_kallsyms_add(func[i]);
+        }
