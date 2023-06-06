@@ -2,163 +2,181 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA13972384A
-	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 09:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EB61723862
+	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 09:08:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235823AbjFFHAC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 6 Jun 2023 03:00:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55354 "EHLO
+        id S232852AbjFFHIM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 6 Jun 2023 03:08:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235732AbjFFG74 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 6 Jun 2023 02:59:56 -0400
-Received: from first.geanix.com (first.geanix.com [116.203.34.67])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AB81E43;
-        Mon,  5 Jun 2023 23:59:52 -0700 (PDT)
-Received: from xps.geanix.com (unknown [87.54.11.140])
-        by first.geanix.com (Postfix) with ESMTPSA id D467D4E2838;
-        Tue,  6 Jun 2023 06:59:49 +0000 (UTC)
-Authentication-Results: ORIGINATING;
-        auth=pass smtp.auth=martin@geanix.com smtp.mailfrom=martin@geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1686034790; bh=PWNQ09ijoe1DVvYJBNyrmhSiGQflwUabh55Y0/h4L1c=;
-        h=From:To:Cc:Subject:Date;
-        b=f8lJ5bAdZwyI7auhIQ7ItkEZ4qysN5Dl+emu2B7RywGiKcr3FFMQWPvER1ZA6ScK7
-         2tnmbKnDC4/vRbcWkRmz6ShT3zFghuRUp/vVvrlQieZz53HFdVO/U5IodZsBQHxaeS
-         QMdeEw4GhEDmKcLejFIS3OK7LVxg/Ktc/i/6uqiMK7J4eSK+Eucv8TVLBuKuOyhGLW
-         XhI/n7LDvTcC0xsV/OGLZfJE6gAd3BZ+g0Q6oSJEyo9yDsSaaxmxzQWvv5BVHb3u2A
-         qMKeQEPbvZaUoXKmzN1nWqrbZQqztvBhga7Z+jgyaTuKRbIDVMUJkMOi6sw+V2ctXI
-         6DUSHPVs5Naeg==
-From:   =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc:     =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <mhu@rtx.dk>,
-        stable@vger.kernel.org,
-        =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>,
-        linux-mmc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mmc: meson: move mmc_request_done() call to irq thread
-Date:   Tue,  6 Jun 2023 08:59:17 +0200
-Message-Id: <20230606065918.460866-1-martin@geanix.com>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S235822AbjFFHIL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 6 Jun 2023 03:08:11 -0400
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5AB8E54;
+        Tue,  6 Jun 2023 00:08:10 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1b18474cbb6so33638955ad.1;
+        Tue, 06 Jun 2023 00:08:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686035290; x=1688627290;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/LhXymuWC+f+sPDNwhPKQiZ8Tb/Ag8jByJPD2n4/Y4I=;
+        b=csRVS2fMJzqm1iLmbMabQmsP+XtGQ3nrDubRg49dQRJx6oJe0DDhcqu6iZt2svFpES
+         5e8JxKUMHlYhSf+qbONWYFLmz3j3wnT1r1/86kjijP59Q1ARtgXUolfMw49M9IrYbR/f
+         sy2o6+3C0ZxUmLea7/vLaR04AObQckp8ZxOCZu4ww452nMhlAuKswBVi8CZ9pIB05gd/
+         UR3xtS4YzbRtwFUrBcWpQ/DhJZYryA7+0NkueFaTouu9brGeS5k7V+WmlNnDV225Aawx
+         ubJOg2AcNeuXYuJRSMvxUy4fhx5erRX3TZV87e9ysL6u77xmBkmEgXFUhAMaPoSHFu3z
+         GmSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686035290; x=1688627290;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/LhXymuWC+f+sPDNwhPKQiZ8Tb/Ag8jByJPD2n4/Y4I=;
+        b=Zmdn2rE7DEhW/42F8ioahT/CeA9sESU6ExDK/x2gbErwIMbNACxPqXfLt4rrWXGtiS
+         L9NTa6ZMEcdSPY+XQ5qKiqowr18HXNc4y7jbL5BvHqu4GpYiaamKPnMFFjbS98gr1oac
+         DQey3lv51pfVkrKaih+y6olyCWWS3IGGCpllDisHnr1xxEk+irfelHwCQ/gQHADyhphx
+         nBCTK827PBlHkqEcG8GRXsY/UMwT01MVM03T4mdMMLvda56gc9YQdz/iDYllv6hCnxBH
+         3NQJCQjuuTFMwzZxEmtbgOZ0+d0qS8yXb3oiHdjMzUd2xaXOB0Fz6H5vZZlwBtee5RnZ
+         RF4A==
+X-Gm-Message-State: AC+VfDwxiyB0kyEXX2gFFgUwnfWlLsk8WgOZFNsHuFadrOeSIFAMHJL/
+        Hc7nNYgA399ATolISkW8utU=
+X-Google-Smtp-Source: ACHHUZ4kMVsEc679u9q+ncoI5iFUFbK+T2pL/n0kIVjgR+5qshZPDmipMUvF6WQr0QoIXaAjhZdrkQ==
+X-Received: by 2002:a17:903:2312:b0:1b0:28a9:fa78 with SMTP id d18-20020a170903231200b001b028a9fa78mr1109122plh.34.1686035289970;
+        Tue, 06 Jun 2023 00:08:09 -0700 (PDT)
+Received: from krava ([216.198.76.36])
+        by smtp.gmail.com with ESMTPSA id c11-20020a170902d48b00b0019e60c645b1sm7658311plg.305.2023.06.06.00.08.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jun 2023 00:08:09 -0700 (PDT)
+From:   Jiri Olsa <olsajiri@gmail.com>
+X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
+Date:   Tue, 6 Jun 2023 09:08:05 +0200
+To:     Stanislav Fomichev <sdf@google.com>
+Cc:     Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>, stable@vger.kernel.org,
+        Anastasios Papagiannis <tasos.papagiannnis@gmail.com>,
+        bpf@vger.kernel.org, Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@chromium.org>, Hao Luo <haoluo@google.com>
+Subject: Re: [PATCH bpf] bpf: Add extra path pointer check to d_path helper
+Message-ID: <ZH7bVR8nTma/faed@krava>
+References: <20230604140103.3542071-1-jolsa@kernel.org>
+ <ZH4aTA0qV0YkoXaA@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZH4aTA0qV0YkoXaA@google.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin Hundebøll <mhu@rtx.dk>
+On Mon, Jun 05, 2023 at 10:24:28AM -0700, Stanislav Fomichev wrote:
+> On 06/04, Jiri Olsa wrote:
+> > Anastasios reported crash on stable 5.15 kernel with following
+> > bpf attached to lsm hook:
+> > 
+> >   SEC("lsm.s/bprm_creds_for_exec")
+> >   int BPF_PROG(bprm_creds_for_exec, struct linux_binprm *bprm)
+> >   {
+> >           struct path *path = &bprm->executable->f_path;
+> >           char p[128] = { 0 };
+> > 
+> >           bpf_d_path(path, p, 128);
+> >           return 0;
+> >   }
+> > 
+> > but bprm->executable can be NULL, so bpf_d_path call will crash:
+> > 
+> >   BUG: kernel NULL pointer dereference, address: 0000000000000018
+> >   #PF: supervisor read access in kernel mode
+> >   #PF: error_code(0x0000) - not-present page
+> >   PGD 0 P4D 0
+> >   Oops: 0000 [#1] PREEMPT SMP DEBUG_PAGEALLOC NOPTI
+> >   ...
+> >   RIP: 0010:d_path+0x22/0x280
+> >   ...
+> >   Call Trace:
+> >    <TASK>
+> >    bpf_d_path+0x21/0x60
+> >    bpf_prog_db9cf176e84498d9_bprm_creds_for_exec+0x94/0x99
+> >    bpf_trampoline_6442506293_0+0x55/0x1000
+> >    bpf_lsm_bprm_creds_for_exec+0x5/0x10
+> >    security_bprm_creds_for_exec+0x29/0x40
+> >    bprm_execve+0x1c1/0x900
+> >    do_execveat_common.isra.0+0x1af/0x260
+> >    __x64_sys_execve+0x32/0x40
+> > 
+> > It's problem for all stable trees with bpf_d_path helper, which was
+> > added in 5.9.
+> > 
+> > This issue is fixed in current bpf code, where we identify and mark
+> > trusted pointers, so the above code would fail to load.
+> > 
+> > For the sake of the stable trees and to workaround potentially broken
+> > verifier in the future, adding the code that reads the path object from
+> > the passed pointer and verifies it's valid in kernel space.
+> > 
+> > Cc: stable@vger.kernel.org # v5.9+
+> > Fixes: 6e22ab9da793 ("bpf: Add d_path helper")
+> > Suggested-by: Alexei Starovoitov <ast@kernel.org>
+> > Reported-by: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
+> > Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+> 
+> Acked-by: Stanislav Fomichev <sdf@google.com>
+> 
+> One question though: does it really have to go via bpf tree? Can it
+> be a stable-only fix? Otherwise it's not really clear why we
+> need to double-check anything if the pointer is trusted..
 
-The call to mmc_request_done() can schedule, so it cannot be called from
-irq context. Wake the irq thread if it needs to be called, and call it
-from there instead.
+so at the moment we consider linux_binprm->file as trusted and
+always != NULL for lsm/iter and few other trampoline hooks
 
-Fixes the following kernel bug, which appears when running an RT patched
-kernel on the AmLogic Meson AXG A113X SoC:
-[   11.111407] BUG: scheduling while atomic: kworker/0:1H/75/0x00010001
-[   11.111438] Modules linked in:
-[   11.111451] CPU: 0 PID: 75 Comm: kworker/0:1H Not tainted 6.4.0-rc3-rt2-rtx-00081-gfd07f41ed6b4-dirty #1
-[   11.111461] Hardware name: RTX AXG A113X Linux Platform Board (DT)
-[   11.111469] Workqueue: kblockd blk_mq_run_work_fn
-[   11.111492] Call trace:
-[   11.111497]  dump_backtrace+0xac/0xe8
-[   11.111510]  show_stack+0x18/0x28
-[   11.111518]  dump_stack_lvl+0x48/0x60
-[   11.111530]  dump_stack+0x18/0x24
-[   11.111537]  __schedule_bug+0x4c/0x68
-[   11.111548]  __schedule+0x80/0x574
-[   11.111558]  schedule_loop+0x2c/0x50
-[   11.111567]  schedule_rtlock+0x14/0x20
-[   11.111576]  rtlock_slowlock_locked+0x468/0x730
-[   11.111587]  rt_spin_lock+0x40/0x64
-[   11.111596]  __wake_up_common_lock+0x5c/0xc4
-[   11.111610]  __wake_up+0x18/0x24
-[   11.111620]  mmc_blk_mq_req_done+0x68/0x138
-[   11.111633]  mmc_request_done+0x104/0x118
-[   11.111644]  meson_mmc_request_done+0x38/0x48
-[   11.111654]  meson_mmc_irq+0x128/0x1f0
-[   11.111663]  __handle_irq_event_percpu+0x70/0x114
-[   11.111674]  handle_irq_event_percpu+0x18/0x4c
-[   11.111683]  handle_irq_event+0x80/0xb8
-[   11.111691]  handle_fasteoi_irq+0xa4/0x120
-[   11.111704]  handle_irq_desc+0x20/0x38
-[   11.111712]  generic_handle_domain_irq+0x1c/0x28
-[   11.111721]  gic_handle_irq+0x8c/0xa8
-[   11.111735]  call_on_irq_stack+0x24/0x4c
-[   11.111746]  do_interrupt_handler+0x88/0x94
-[   11.111757]  el1_interrupt+0x34/0x64
-[   11.111769]  el1h_64_irq_handler+0x18/0x24
-[   11.111779]  el1h_64_irq+0x64/0x68
-[   11.111786]  __add_wait_queue+0x0/0x4c
-[   11.111795]  mmc_blk_rw_wait+0x84/0x118
-[   11.111804]  mmc_blk_mq_issue_rq+0x5c4/0x654
-[   11.111814]  mmc_mq_queue_rq+0x194/0x214
-[   11.111822]  blk_mq_dispatch_rq_list+0x3ac/0x528
-[   11.111834]  __blk_mq_sched_dispatch_requests+0x340/0x4d0
-[   11.111847]  blk_mq_sched_dispatch_requests+0x38/0x70
-[   11.111858]  blk_mq_run_work_fn+0x3c/0x70
-[   11.111865]  process_one_work+0x17c/0x1f0
-[   11.111876]  worker_thread+0x1d4/0x26c
-[   11.111885]  kthread+0xe4/0xf4
-[   11.111894]  ret_from_fork+0x10/0x20
+if that changes for some reason and linux_binprm->file will be NULL
+for some reason, we might be notified just by crash first, so it
+makes sense to me to have that check also in upstream 
 
-Fixes: 51c5d8447bd71b ("MMC: meson: initial support for GX platforms")
-Cc: stable@vger.kernel.org
-Signed-off-by: Martin Hundebøll <martin@geanix.com>
----
- drivers/mmc/host/meson-gx-mmc.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+jirka
 
-diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
-index b8514d9d5e736..77b2c23084566 100644
---- a/drivers/mmc/host/meson-gx-mmc.c
-+++ b/drivers/mmc/host/meson-gx-mmc.c
-@@ -991,11 +991,8 @@ static irqreturn_t meson_mmc_irq(int irq, void *dev_id)
- 
- 		if (data && !cmd->error)
- 			data->bytes_xfered = data->blksz * data->blocks;
--		if (meson_mmc_bounce_buf_read(data) ||
--		    meson_mmc_get_next_command(cmd))
--			ret = IRQ_WAKE_THREAD;
--		else
--			ret = IRQ_HANDLED;
-+
-+		ret = IRQ_WAKE_THREAD;
- 	}
- 
- out:
-@@ -1007,9 +1004,6 @@ static irqreturn_t meson_mmc_irq(int irq, void *dev_id)
- 		writel(start, host->regs + SD_EMMC_START);
- 	}
- 
--	if (ret == IRQ_HANDLED)
--		meson_mmc_request_done(host->mmc, cmd->mrq);
--
- 	return ret;
- }
- 
-@@ -1040,6 +1034,13 @@ static irqreturn_t meson_mmc_irq_thread(int irq, void *dev_id)
- 	if (WARN_ON(!cmd))
- 		return IRQ_NONE;
- 
-+	if (!meson_mmc_bounce_buf_read(cmd->data) &&
-+	    !meson_mmc_get_next_command(cmd)) {
-+		meson_mmc_request_done(host->mmc, cmd->mrq);
-+
-+		return IRQ_HANDLED;
-+	}
-+
- 	if (cmd->error) {
- 		meson_mmc_wait_desc_stop(host);
- 		meson_mmc_request_done(host->mmc, cmd->mrq);
--- 
-2.40.1
-
+> 
+> > ---
+> >  kernel/trace/bpf_trace.c | 10 ++++++++++
+> >  1 file changed, 10 insertions(+)
+> > 
+> > diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+> > index 9a050e36dc6c..aecd98ee73dc 100644
+> > --- a/kernel/trace/bpf_trace.c
+> > +++ b/kernel/trace/bpf_trace.c
+> > @@ -900,12 +900,22 @@ static const struct bpf_func_proto bpf_send_signal_thread_proto = {
+> >  
+> >  BPF_CALL_3(bpf_d_path, struct path *, path, char *, buf, u32, sz)
+> >  {
+> > +	struct path copy;
+> >  	long len;
+> >  	char *p;
+> >  
+> >  	if (!sz)
+> >  		return 0;
+> >  
+> > +	/*
+> > +	 * The path pointer is verified as trusted and safe to use,
+> > +	 * but let's double check it's valid anyway to workaround
+> > +	 * potentially broken verifier.
+> > +	 */
+> > +	len = copy_from_kernel_nofault(&copy, path, sizeof(*path));
+> > +	if (len < 0)
+> > +		return len;
+> > +
+> >  	p = d_path(path, buf, sz);
+> >  	if (IS_ERR(p)) {
+> >  		len = PTR_ERR(p);
+> > -- 
+> > 2.40.1
+> > 
