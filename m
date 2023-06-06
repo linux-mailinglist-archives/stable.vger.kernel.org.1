@@ -2,93 +2,175 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D056F72366B
-	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 06:42:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26EA87236B4
+	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 07:13:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232392AbjFFEmp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 6 Jun 2023 00:42:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35270 "EHLO
+        id S229880AbjFFFNU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 6 Jun 2023 01:13:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231424AbjFFEmo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 6 Jun 2023 00:42:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C499619C
-        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 21:42:43 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 470D960FB2
-        for <stable@vger.kernel.org>; Tue,  6 Jun 2023 04:42:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69DABC433EF;
-        Tue,  6 Jun 2023 04:42:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686026562;
-        bh=1CnCxiGLwqYsaGLRUYtITSmAPKTUl51Wc4ayYPpICNc=;
-        h=From:To:Cc:Subject:Date:From;
-        b=qJTlHp0+0+7HXMOlvPPTQ9oH96kZIMubZW8jsAGLM4gcp78d3moYcR3U2Nqn/lIVY
-         uPF5QqgH57MSkCrRM/6unv100+1ZmPb4XI5CDMXMsyn53PEX+XoNXizX2RrHcc8XaY
-         Q3PwdqD43lwXNAuEESeEgYrts7N2EJEl5tclqMZGVy28QHu3IrEONxEaMleZTzl3sa
-         CCNvp7XyxZF5Dv1CKplyp4lVzpVF4EFRgW+JVGqrof7H2UnSqo57bHovxJ/05xfdNb
-         czXjMH0m1kQdz4SYEt/9iEnEbzRIRl8s04rlIpnXTgQMC3aOOPkkU7X/8gtGfChLWb
-         uJkUXD5IVESkQ==
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     stable@vger.kernel.org
-Cc:     gregkh@linuxfoundation.org, kuba@kernel.org
-Subject: [PATCH 6.1] tls: rx: strp: don't use GFP_KERNEL in softirq context
-Date:   Mon,  5 Jun 2023 21:42:41 -0700
-Message-Id: <20230606044241.877280-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S233769AbjFFFNT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 6 Jun 2023 01:13:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4A9AE41
+        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 22:12:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1686028344;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=aHWuDHPcb+CURgwg+AxyCKtXBjgnmHqau+Ztc7w6EXM=;
+        b=WSJmwGrDKXDmeJcqnByIseQrCjwmO/69bcyP0xlQcH67eI4cbulg/vU7mgchIc9uTZqvFu
+        bhw4bm2oWxC3FYBmv3vzdMuFZTuYYoStnQO5mwS3razIdBqa96yn/tibZjevbVZ+M/a7jy
+        rxolPood+nDJOjI/zjsoOL1c1Du/c8c=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-224-u-mFPcPpMfC8YbA9asp64w-1; Tue, 06 Jun 2023 01:12:22 -0400
+X-MC-Unique: u-mFPcPpMfC8YbA9asp64w-1
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-94a34d3e5ebso386096266b.3
+        for <stable@vger.kernel.org>; Mon, 05 Jun 2023 22:12:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686028341; x=1688620341;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aHWuDHPcb+CURgwg+AxyCKtXBjgnmHqau+Ztc7w6EXM=;
+        b=YzDDVUlMqjegvwlvOzIasLwPoWnm1DTWwlwzzKJQx2EMHSAy+AGBlCYpfFml8gkCz2
+         lUAgY8B3XlwV77SFiA+YJRvvNbeSY1Hukr+PQhZjMTcQsgA+cC5i7saCHhIPUN8ZuOHR
+         kHnd1SfPgO//yvag8x7WiJ/QA++gTeYdZWFs+SZC8Z7IfR6LMAY+eF0SuIbzEH/g8aOZ
+         Nb3WwxKiKemfG/zl0A7Dlfo6MR1fLkqfrL6TyDGuz2Hx7ppAw+kjg0c3EaB20rP10okL
+         joJWdsXXLnnOozxk+j+SODlr1gORj+RN1EH6tT5Y4utP8jH08Q3VfdifJnM9HIG955cl
+         gwmg==
+X-Gm-Message-State: AC+VfDynnhgSwIJ370D09NCWmA2O3vSb6WX1x5T8SCxklaCzU4q2xanz
+        hybMlhCdhN1Vc7FEL8m8g1iXUtfP3ZopruZ5ahzE75ZAhz3u/BvedHWnt4vwV6l3NCOR8dBzEw5
+        4CN57koXWyS5eaR3skUosUEEsbDXNVTJz
+X-Received: by 2002:a17:907:97cd:b0:96f:6c70:c012 with SMTP id js13-20020a17090797cd00b0096f6c70c012mr1175669ejc.45.1686028341201;
+        Mon, 05 Jun 2023 22:12:21 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ55mv66aU924++9o1qjWfijZypI/AGA/rvoms9sZk0xJgvRDqhICR4VDQ2aMdDto/qV7h0A2rQZZFp4ERMSu0E=
+X-Received: by 2002:a17:907:97cd:b0:96f:6c70:c012 with SMTP id
+ js13-20020a17090797cd00b0096f6c70c012mr1175650ejc.45.1686028340911; Mon, 05
+ Jun 2023 22:12:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230605072109.1027246-1-xiubli@redhat.com> <20230605072109.1027246-3-xiubli@redhat.com>
+In-Reply-To: <20230605072109.1027246-3-xiubli@redhat.com>
+From:   Milind Changire <mchangir@redhat.com>
+Date:   Tue, 6 Jun 2023 10:41:45 +0530
+Message-ID: <CAED=hWBxUHR=SC3fwHPcmDKhhKjBrHeVDZ_JnfdAY=f-ip7Msg@mail.gmail.com>
+Subject: Re: [PATCH v7 2/2] ceph: fix blindly expanding the readahead windows
+To:     xiubli@redhat.com
+Cc:     idryomov@gmail.com, ceph-devel@vger.kernel.org, jlayton@kernel.org,
+        vshankar@redhat.com, sehuww@mail.scut.edu.cn,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Upstream commit 74836ec828fe17b63f2006fdbf53311d691396bf ]
+Looks good to me.
 
-When receive buffer is small, or the TCP rx queue looks too
-complicated to bother using it directly - we allocate a new
-skb and copy data into it.
+Reviewed-by: Milind Changire <mchangir@redhat.com>
 
-We already use sk->sk_allocation... but nothing actually
-sets it to GFP_ATOMIC on the ->sk_data_ready() path.
 
-Users of HW offload are far more likely to experience problems
-due to scheduling while atomic. "Copy mode" is very rarely
-triggered with SW crypto.
+On Mon, Jun 5, 2023 at 12:53=E2=80=AFPM <xiubli@redhat.com> wrote:
+>
+> From: Xiubo Li <xiubli@redhat.com>
+>
+> Blindly expanding the readahead windows will cause unneccessary
+> pagecache thrashing and also will introduce the network workload.
+> We should disable expanding the windows if the readahead is disabled
+> and also shouldn't expand the windows too much.
+>
+> Expanding forward firstly instead of expanding backward for possible
+> sequential reads.
+>
+> Bound `rreq->len` to the actual file size to restore the previous page
+> cache usage.
+>
+> The posix_fadvise may change the maximum size of a file readahead.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 49870056005c ("ceph: convert ceph_readpages to ceph_readahead")
+> URL: https://lore.kernel.org/ceph-devel/20230504082510.247-1-sehuww@mail.=
+scut.edu.cn
+> URL: https://www.spinics.net/lists/ceph-users/msg76183.html
+> Cc: Hu Weiwen <sehuww@mail.scut.edu.cn>
+> Reviewed-by: Hu Weiwen <sehuww@mail.scut.edu.cn>
+> Tested-by: Hu Weiwen <sehuww@mail.scut.edu.cn>
+> Signed-off-by: Xiubo Li <xiubli@redhat.com>
+> ---
+>  fs/ceph/addr.c | 40 +++++++++++++++++++++++++++++++++-------
+>  1 file changed, 33 insertions(+), 7 deletions(-)
+>
+> diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+> index 93fff1a7373f..0c4fb3d23078 100644
+> --- a/fs/ceph/addr.c
+> +++ b/fs/ceph/addr.c
+> @@ -188,16 +188,42 @@ static void ceph_netfs_expand_readahead(struct netf=
+s_io_request *rreq)
+>         struct inode *inode =3D rreq->inode;
+>         struct ceph_inode_info *ci =3D ceph_inode(inode);
+>         struct ceph_file_layout *lo =3D &ci->i_layout;
+> +       unsigned long max_pages =3D inode->i_sb->s_bdi->ra_pages;
+> +       loff_t end =3D rreq->start + rreq->len, new_end;
+> +       struct ceph_netfs_request_data *priv =3D rreq->netfs_priv;
+> +       unsigned long max_len;
+>         u32 blockoff;
+> -       u64 blockno;
+>
+> -       /* Expand the start downward */
+> -       blockno =3D div_u64_rem(rreq->start, lo->stripe_unit, &blockoff);
+> -       rreq->start =3D blockno * lo->stripe_unit;
+> -       rreq->len +=3D blockoff;
+> +       if (priv) {
+> +               /* Readahead is disabled by posix_fadvise POSIX_FADV_RAND=
+OM */
+> +               if (priv->file_ra_disabled)
+> +                       max_pages =3D 0;
+> +               else
+> +                       max_pages =3D priv->file_ra_pages;
+> +
+> +       }
+> +
+> +       /* Readahead is disabled */
+> +       if (!max_pages)
+> +               return;
+>
+> -       /* Now, round up the length to the next block */
+> -       rreq->len =3D roundup(rreq->len, lo->stripe_unit);
+> +       max_len =3D max_pages << PAGE_SHIFT;
+> +
+> +       /*
+> +        * Try to expand the length forward by rounding up it to the next
+> +        * block, but do not exceed the file size, unless the original
+> +        * request already exceeds it.
+> +        */
+> +       new_end =3D min(round_up(end, lo->stripe_unit), rreq->i_size);
+> +       if (new_end > end && new_end <=3D rreq->start + max_len)
+> +               rreq->len =3D new_end - rreq->start;
+> +
+> +       /* Try to expand the start downward */
+> +       div_u64_rem(rreq->start, lo->stripe_unit, &blockoff);
+> +       if (rreq->len + blockoff <=3D max_len) {
+> +               rreq->start -=3D blockoff;
+> +               rreq->len +=3D blockoff;
+> +       }
+>  }
+>
+>  static bool ceph_netfs_clamp_length(struct netfs_io_subrequest *subreq)
+> --
+> 2.40.1
+>
 
-Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
-Tested-by: Shai Amiram <samiram@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
----
- net/tls/tls_sw.c | 4 ++++
- 1 file changed, 4 insertions(+)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 992092aeebad..3a08cf1258b5 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -2287,8 +2287,12 @@ static void tls_data_ready(struct sock *sk)
- 	struct tls_context *tls_ctx = tls_get_ctx(sk);
- 	struct tls_sw_context_rx *ctx = tls_sw_ctx_rx(tls_ctx);
- 	struct sk_psock *psock;
-+	gfp_t alloc_save;
- 
-+	alloc_save = sk->sk_allocation;
-+	sk->sk_allocation = GFP_ATOMIC;
- 	tls_strp_data_ready(&ctx->strp);
-+	sk->sk_allocation = alloc_save;
- 
- 	psock = sk_psock_get(sk);
- 	if (psock) {
--- 
-2.34.1
+--=20
+Milind
 
