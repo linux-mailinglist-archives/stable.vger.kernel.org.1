@@ -2,204 +2,149 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EA99723483
-	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 03:32:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AC1A72355A
+	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 04:36:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229667AbjFFBcO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 5 Jun 2023 21:32:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55762 "EHLO
+        id S231853AbjFFCgr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 5 Jun 2023 22:36:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230349AbjFFBcM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 21:32:12 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B070DC;
-        Mon,  5 Jun 2023 18:32:10 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-4f624daccd1so2742078e87.0;
-        Mon, 05 Jun 2023 18:32:10 -0700 (PDT)
+        with ESMTP id S230491AbjFFCgq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 22:36:46 -0400
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECA1910F;
+        Mon,  5 Jun 2023 19:36:45 -0700 (PDT)
+Received: by mail-pj1-x102c.google.com with SMTP id 98e67ed59e1d1-2566ed9328eso4766770a91.2;
+        Mon, 05 Jun 2023 19:36:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686015129; x=1688607129;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nKXeYLBgNZsLD/+IxPwyyN63h/BVDg7LwOnNrEDBze0=;
-        b=seM8DoJuA+l2/qluDMFHOqVY2TU0LJEsce5E3zY3BfHXHqYaAoQIn0CcRJVxEiYkeX
-         ueig2x+BcON7b3hxf82SBc6l8PbMtq4dUUcKED2ECulGGEw8YTmbReZY5raJxynbLWYH
-         J9JeYjQuOEvrKBuDThQR39KCrrrmOCQSwS492duLcJ/KfwdyKnVK2MqZaLe2qCpWlreh
-         ATkJkwBLHbj51yPzGh1iKBuit1jUH4WrNFzJ8d/tHdPVOvbrSvBkuBk5fBD/5hjx7tZB
-         hvNmbxkl4kAJgOqDogjNztOz6Dw1NyYjYumFZpe26RxkMpJWsTkFj25n9Bjoa3LU72b6
-         okpw==
+        d=gmail.com; s=20221208; t=1686019005; x=1688611005;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=forzF7x9ap1s3sdBeXdIPn+wCjalJOzafD/pj6NI2Fw=;
+        b=kOMx0UElNi84z3O0qQZ2mHwe8w7eb7/owU5M5V5n0lu66ExmjY8u66ku+lSaux59Mq
+         wXP9OxaAFfdD5tPl544z6U+7FL+nWwHmE0jdYSI9JngVF3P4fqCGrJB//zE43cfLAhNt
+         e9WQJkxjuw+ip5g54xJLKNdzi7TtjD7zOu2p+73t7JcphCUTxB3rmRk9BNVj1KGcTnvy
+         60tYRexKPckhPU0gWkk91jw9yOQpQkDG3ItR+mvEdCcBdiiQLle4BLW5vKApXl6Qd0U1
+         gdruDyKsVvgNRPQiDsZoN8x/WXz/gpdLMaYtQMgvzMUkvKXmr1986FbOV02ysJmElWzz
+         skJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686015129; x=1688607129;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nKXeYLBgNZsLD/+IxPwyyN63h/BVDg7LwOnNrEDBze0=;
-        b=kjLxcs+WiVJ4dyorV4B7lzSHbAoY6fRqHbjjxckuXrK3oQp8eSok6pW0Uz3uGe9mtP
-         qjN5+QApp/K+6WPTbmLM7momAYHvtiKgKIfNisiZmjC3Go4BejfiBsdSeiKqV1LLULEM
-         Q0c1wzqMr+RZfFHYemargTdqZFNLjK3g8YlGrxoL+MIqTZA+9DEExhrMZicH9rcLaIi7
-         bbfd0kAAauhXG9PjKKoCO5TYEAEBTdWDDcobBOWZvkIQswzRZoyHpxc2ESKh8WHnadJ8
-         qk1JugnZyhauyKwihYzy5J14WSFmXHwB1bntLqGUJuNLn8+DXgqI9T0uM8CEQ4HrDK21
-         +cqg==
-X-Gm-Message-State: AC+VfDwj9PTr0O+75yhITU9cfaaaxNeKZUi0mmFGMsUxpdYTpN4DgCyJ
-        b8MQskKdrJx69XC502zxX+j2ROPEBbAyCip10b4=
-X-Google-Smtp-Source: ACHHUZ4CSyaN+1CA8HNujlJTstB9XfEYJXvLicNt50Ql/A2r+8dDz8Zj9rIXpCiTUQYHEpEA2sDAUBbj+rGoJvM5mI4=
-X-Received: by 2002:a2e:7219:0:b0:2b1:c389:c424 with SMTP id
- n25-20020a2e7219000000b002b1c389c424mr648772ljc.12.1686015128552; Mon, 05 Jun
- 2023 18:32:08 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1686019005; x=1688611005;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=forzF7x9ap1s3sdBeXdIPn+wCjalJOzafD/pj6NI2Fw=;
+        b=VklIWjSp4FELwcriO0JUZxJinziclVf7A8enH+otUIL5iMvxdjmxol8exZy78jQ7a7
+         YrFQ39hNA2XwIVFMkehTQyC5HbfmdgY6bB5nAE5t3/D2d8ljyp9e0dbJYZDrxffZBo8r
+         cPoj4hujuT4puQ46/XO6EmAsbwSLseAxp8da2bUhs/TjEWSEhdx8KxnpyeXuwoRztHBW
+         rN//KWBV7tZ6ICHNbq7RAqDFVUoifbIRTVXF2OiCBcb1Yc7CDJyRR9yK44uZBDCW+Zoe
+         7c19yFPk0ZYvTLa6IHIFvthwUtbhfKtHX4mJPrd7LEJK2MjtjiHzdDXdP2ZQcn/Ga7OK
+         uS5Q==
+X-Gm-Message-State: AC+VfDz56t7m6Kc2Af8xmtgbvZCB/P2XQGvLtmWd0BuPCkp8/4WG+311
+        llKXtabfw3RWeLwsntfeOGHM7I8wreI=
+X-Google-Smtp-Source: ACHHUZ4SZCnx+FzAyFclv7fZhrBmmdhun7a2MFnH6JMBAalLr543sknoipxj2SMTfTz/A8xx6IW17A==
+X-Received: by 2002:a17:90b:788:b0:256:544a:74c9 with SMTP id l8-20020a17090b078800b00256544a74c9mr535481pjz.25.1686019005262;
+        Mon, 05 Jun 2023 19:36:45 -0700 (PDT)
+Received: from debian.me (subs32-116-206-28-36.three.co.id. [116.206.28.36])
+        by smtp.gmail.com with ESMTPSA id m6-20020a17090a34c600b00256471db12bsm6893567pjf.8.2023.06.05.19.36.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Jun 2023 19:36:44 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id 101AB1069FD; Tue,  6 Jun 2023 09:36:40 +0700 (WIB)
+Date:   Tue, 6 Jun 2023 09:36:40 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Malte Starostik <malte@starostik.de>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Cc:     basavaraj.natikar@amd.com, linux-input@vger.kernel.org,
+        linux@hexchain.org, regressions@lists.linux.dev,
+        stable@vger.kernel.org
+Subject: Re: amd_sfh driver causes kernel oops during boot
+Message-ID: <ZH6buB8TcMd5aT_1@debian.me>
+References: <ZG3ipauL9FTnQJiC@debian.me>
+ <3250319.ancTxkQ2z5@zen>
 MIME-Version: 1.0
-References: <20230605164955.GA1977@templeofstupid.com> <CAADnVQK7PQxj5jjfUu9sO524yLMPqE6vmzcipno1WYoeu0q-Gw@mail.gmail.com>
- <20230606004139.GE1977@templeofstupid.com>
-In-Reply-To: <20230606004139.GE1977@templeofstupid.com>
-From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date:   Mon, 5 Jun 2023 18:31:57 -0700
-Message-ID: <CAADnVQLhqCVRcPuJ8JEZfd5ii+-TsSs4+AsJC0sbjwPMv7LX_Q@mail.gmail.com>
-Subject: Re: [PATCH bpf] bpf: search_bpf_extables should search subprogram extables
-To:     Krister Johansen <kjlx@templeofstupid.com>
-Cc:     bpf <bpf@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Martin KaFai Lau <martin.lau@linux.dev>,
-        Song Liu <song@kernel.org>, Yonghong Song <yhs@fb.com>,
-        KP Singh <kpsingh@kernel.org>,
-        Stanislav Fomichev <sdf@google.com>,
-        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
-        Network Development <netdev@vger.kernel.org>,
-        clang-built-linux <llvm@lists.linux.dev>,
-        stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="CUrTcfzVaW+dVdl5"
+Content-Disposition: inline
+In-Reply-To: <3250319.ancTxkQ2z5@zen>
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jun 5, 2023 at 5:46=E2=80=AFPM Krister Johansen <kjlx@templeofstupi=
-d.com> wrote:
->
-> On Mon, Jun 05, 2023 at 04:30:29PM -0700, Alexei Starovoitov wrote:
-> > On Mon, Jun 5, 2023 at 9:50=E2=80=AFAM Krister Johansen <kjlx@templeofs=
-tupid.com> wrote:
-> > > +                       if (!aux->func[i]->aux->num_exentries ||
-> > > +                           aux->func[i]->aux->extable =3D=3D NULL)
-> > > +                               continue;
-> > > +                       e =3D search_extable(aux->func[i]->aux->extab=
-le,
-> > > +                           aux->func[i]->aux->num_exentries, addr);
-> > > +               }
-> > > +       }
-> >
-> > something odd here.
-> > We do bpf_prog_kallsyms_add(func[i]); for each subprog.
-> > So bpf_prog_ksym_find() in search_bpf_extables()
-> > should be finding ksym and extable of the subprog
-> > and not the main prog.
-> > The bug is probably elsewhere.
->
-> I have a kdump (or more) of this bug so if there's additional state
-> you'd like me to share, let me know.
 
-Please convert the test into selftest.
-Then everyone will be able to reproduce easily
-and it will serve us later to make sure we don't regress.
+--CUrTcfzVaW+dVdl5
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> With your comments in mind, I took
-> another look at the ksym fields in the aux structs.  I have this in the
-> main program:
->
->   ksym =3D {
->     start =3D 18446744072638420852,
->     end =3D 18446744072638423040,
->     name =3D <...>
->     lnode =3D {
->       next =3D 0xffff88d9c1065168,
->       prev =3D 0xffff88da91609168
->     },
->     tnode =3D {
->       node =3D {{
->           __rb_parent_color =3D 18446613068361611640,
->           rb_right =3D 0xffff88da91609178,
->           rb_left =3D 0xffff88d9f0c5a578
->         }, {
->           __rb_parent_color =3D 18446613068361611664,
->           rb_right =3D 0xffff88da91609190,
->           rb_left =3D 0xffff88d9f0c5a590
->         }}
->     },
->     prog =3D true
->   },
->
-> and this in the func[0] subprogram:
->
->   ksym =3D {
->     start =3D 18446744072638420852,
->     end =3D 18446744072638423040,
->     name =3D <...>
->     lnode =3D {
->       next =3D 0xffff88da91609168,
->       prev =3D 0xffffffff981f8990 <bpf_kallsyms>
->     },
->     tnode =3D {
->       node =3D {{
->           __rb_parent_color =3D 18446613068361606520,
->           rb_right =3D 0x0,
->           rb_left =3D 0x0
->         }, {
->           __rb_parent_color =3D 18446613068361606544,
->           rb_right =3D 0x0,
->           rb_left =3D 0x0
->         }}
->     },
->     prog =3D true
->   },
->
-> That sure looks like func[0] is a leaf in the rbtree and the main
-> program is an intermediate node with leaves.  If that's the case, then
-> bpf_prog_ksym_find may have found the main program instead of the
-> subprogram.  In that case, do you think it's better to skip the main
-> program's call to bpf_prog_ksym_set_addr() if it has subprograms instead
-> of searching for subprograms if the main program is found?
+On Mon, Jun 05, 2023 at 01:24:25PM +0200, Malte Starostik wrote:
+> Hello,
+>=20
+> chiming in here as I'm experiencing what looks like the exact same issue,=
+ also=20
+> on a Lenovo Z13 notebook, also on Arch:
+> Oops during startup in task udev-worker followed by udev-worker blocking =
+all=20
+> attempts to suspend or cleanly shutdown/reboot the machine - in fact I fi=
+rst=20
+> noticed because the machine surprised with repeatedly running out of batt=
+ery=20
+> after it had supposedly been in standby but couldn't. Only then I noticed=
+ the=20
+> error on boot.
+>=20
+> bisect result:
+> 904e28c6de083fa4834cdbd0026470ddc30676fc is the first bad commit
+> commit 904e28c6de083fa4834cdbd0026470ddc30676fc
+> Merge: a738688177dc 2f7f4efb9411
+> Author: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+> Date:   Wed Feb 22 10:44:31 2023 +0100
+>=20
+>     Merge branch 'for-6.3/hid-bpf' into for-linus
 
-I see.
-Looks like we're doing double bpf_prog_kallsyms_add().
-First in in jit_subprogs():
-        for (i =3D 0; i < env->subprog_cnt; i++) {
-                bpf_prog_lock_ro(func[i]);
-                bpf_prog_kallsyms_add(func[i]);
-        }
-and then again:
-bpf_prog_kallsyms_add(prog);
-in bpf_prog_load().
+Hmm, seems like bad bisect (bisected to HID-BPF which IMO isn't related
+to amd_sfh). Can you repeat the bisection?
 
-because func[0] is the main prog.
+Anyway, tl;dr:
 
-We are also doing double bpf_prog_lock_ro() for main prog,
-but that's not causing harm.
+> A: http://en.wikipedia.org/wiki/Top_post
+> Q: Were do I find info about this thing called top-posting?
+> A: Because it messes up the order in which people normally read text.
+> Q: Why is top-posting such a bad thing?
+> A: Top-posting.
+> Q: What is the most annoying thing in e-mail?
+>=20
+> A: No.
+> Q: Should I include quotations after my reply?
+>=20
+> http://daringfireball.net/2007/07/on_top
 
-The fix is probably just this:
+And telling regzbot:
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 1e38584d497c..89266dac9c12 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -17633,7 +17633,7 @@ static int jit_subprogs(struct bpf_verifier_env *en=
-v)
-        /* finally lock prog and jit images for all functions and
-         * populate kallsysm
-         */
--       for (i =3D 0; i < env->subprog_cnt; i++) {
-+       for (i =3D 1; i < env->subprog_cnt; i++) {
-                bpf_prog_lock_ro(func[i]);
-                bpf_prog_kallsyms_add(func[i]);
-        }
+#regzbot introduced: 904e28c6de083f
+#regzbot title: HID-BPF feature causes amd_sfh kernel oops during boot and =
+suspend/reboot
+
+Thanks.
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--CUrTcfzVaW+dVdl5
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZH6bswAKCRD2uYlJVVFO
+o2xDAP9An3ggMkqbJ3oROKgX0EvakxIZ71rfdE5jiwCJL0qbkQD/UOdP+fyrj4hL
+jjftmyl+chnthfoPbYDIWG8939UFqgc=
+=3GF2
+-----END PGP SIGNATURE-----
+
+--CUrTcfzVaW+dVdl5--
