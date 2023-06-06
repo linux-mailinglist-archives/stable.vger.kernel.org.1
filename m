@@ -2,55 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E95137235E2
-	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 05:46:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F88B7235E5
+	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 05:50:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229681AbjFFDqu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 5 Jun 2023 23:46:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47902 "EHLO
+        id S231670AbjFFDuZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 5 Jun 2023 23:50:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231670AbjFFDqq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 23:46:46 -0400
-X-Greylist: delayed 302 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 05 Jun 2023 20:46:45 PDT
-Received: from so254-18.mailgun.net (so254-18.mailgun.net [198.61.254.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8955612D
-        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 20:46:45 -0700 (PDT)
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=hexchain.org;
- q=dns/txt; s=smtp; t=1686023204; x=1686030404; h=Content-Transfer-Encoding:
- Content-Type: In-Reply-To: From: From: References: Cc: To: To: Subject:
- Subject: MIME-Version: Date: Message-ID: Sender: Sender;
- bh=u1pvXUWtIwz2eD+X69oV/OSCEU6o+DhbuWvUQQ5s1ZI=;
- b=aSPCMs+hGCLMEd099pkGXka1Lg46BiykGSLWVWrWHWwndOG6R1/TjqAeNrGOw3VqT0ZCdevuVXiAAeWBy8aR/k38fv0SxvhMUO7U2ohrr37kAKvaA9AiAjSRxZH3Zq55bVT9v8HTZDTQbXnGt7Fc84QI++ioZ6SVzXoFaw6+PNV8LlYMedopzSnk7b9K0fKTou/yd74LPyrky59rSDl0ojy1Lxf2tpXKrqls6H7iZkwyCkgCg/jslREyKSUjqQCV9fCcY39BgigELXmRdoVHB2LRr4hHzrCvlm0girndQZspuDQqsb38wcckGmM5iM35b3VvUlJQzRfStadEPry1Ow==
-X-Mailgun-Sending-Ip: 198.61.254.18
-X-Mailgun-Sid: WyI2Y2ZiNSIsInN0YWJsZUB2Z2VyLmtlcm5lbC5vcmciLCIxOTI1MTgiXQ==
-Received: from [10.22.69.162] (122.11.166-8.unknown.starhub.net.sg [122.11.166.8]) by
- 84706ca86aed with SMTP id 647eaaf68b2ac595faf0cd69; Tue, 06 Jun 2023 03:41:42
- GMT
-Sender: linux@hexchain.org
-Message-ID: <d354c90c-03cb-1919-e587-a2cfd0511add@hexchain.org>
-Date:   Tue, 6 Jun 2023 11:41:39 +0800
+        with ESMTP id S230526AbjFFDuY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 23:50:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E68A512A
+        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 20:49:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1686023380;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=hSOOdxHtG5JNYtrYEawXhmXi7iZRU3vUw/vcz97F7Yk=;
+        b=V3JTpS31CbvmH0MwgvLE37gZGhX9O1agMynTntHPcJlMyVZYCLVRY7AVjECrTZSBX+RF93
+        sc7RgxVnkDFuo3D/1XIpma6dNaQWw6tOjKvWWJ4+vNU5G7p27ncRGPnOlUfRdZEsGP6xmg
+        xUWvUMJQSTb8lWFjQ17B1RWJEl8cQQU=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-591-ge9Rnm9qPamtMCdLHIoeYg-1; Mon, 05 Jun 2023 23:49:37 -0400
+X-MC-Unique: ge9Rnm9qPamtMCdLHIoeYg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9B5F71C03388;
+        Tue,  6 Jun 2023 03:49:36 +0000 (UTC)
+Received: from ovpn-8-17.pek2.redhat.com (ovpn-8-17.pek2.redhat.com [10.72.8.17])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 7DB191121314;
+        Tue,  6 Jun 2023 03:49:18 +0000 (UTC)
+Date:   Tue, 6 Jun 2023 11:49:13 +0800
+From:   Ming Lei <ming.lei@redhat.com>
+To:     Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>
+Cc:     linux-block@vger.kernel.org, stable@vger.kernel.org,
+        Jay Shin <jaeshin@redhat.com>,
+        Waiman Long <longman@redhat.com>, mkoutny@suse.com,
+        Yosry Ahmed <yosryahmed@google.com>, ming.lei@redhat.com
+Subject: Re: [PATCH V3] blk-cgroup: Flush stats before releasing blkcg_gq
+Message-ID: <ZH6suXYDNbIZjQyp@ovpn-8-17.pek2.redhat.com>
+References: <20230525043518.831721-1-ming.lei@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Subject: Re: amd_sfh driver causes kernel oops during boot
-To:     Bagas Sanjaya <bagasdotme@gmail.com>, stable@vger.kernel.org,
-        "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Cc:     regressions@lists.linux.dev, linux-input@vger.kernel.org,
-        Basavaraj Natikar <basavaraj.natikar@amd.com>
-References: <f40e3897-76f1-2cd0-2d83-e48d87130eab@hexchain.org>
- <ZG2LXN2+Sa2PWJqz@debian.me>
- <ee2c30a5-3927-d892-2a66-00cd513c3899@hexchain.org>
- <ZG3ipauL9FTnQJiC@debian.me> <ZH6cd6_8EUrRY0W0@debian.me>
-Content-Language: en-US
-From:   Haochen Tong <linux@hexchain.org>
-In-Reply-To: <ZH6cd6_8EUrRY0W0@debian.me>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230525043518.831721-1-ming.lei@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,43 +61,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 6/6/23 10:39, Bagas Sanjaya wrote:
-> On Wed, May 24, 2023 at 05:10:45PM +0700, Bagas Sanjaya wrote:
->> On Wed, May 24, 2023 at 02:10:31PM +0800, Haochen Tong wrote:
->>>> What last kernel version before this regression occurs? Do you mean
->>>> v6.2?
->>>>
->>>
->>> I was using 6.2.12 (Arch Linux distro kernel) before seeing this regression.
->>
->> Can you perform bisection to find the culprit that introduces the
->> regression? Since you're on Arch Linux, see its wiki article [1] for
->> instructions.
->>
+On Thu, May 25, 2023 at 12:35:18PM +0800, Ming Lei wrote:
+> As noted by Michal, the blkg_iostat_set's in the lockless list hold
+> reference to blkg's to protect against their removal. Those blkg's
+> hold reference to blkcg. When a cgroup is being destroyed,
+> cgroup_rstat_flush() is only called at css_release_work_fn() which
+> is called when the blkcg reference count reaches 0. This circular
+> dependency will prevent blkcg and some blkgs from being freed after
+> they are made offline.
 > 
-> Haochen, any news on this? Has the bisection been done and any result?
-> Another reporter had concluded possibly bad bisect [1].
+> It is less a problem if the cgroup to be destroyed also has other
+> controllers like memory that will call cgroup_rstat_flush() which will
+> clean up the reference count. If block is the only controller that uses
+> rstat, these offline blkcg and blkgs may never be freed leaking more
+> and more memory over time.
 > 
-> Thanks.
+> To prevent this potential memory leak:
 > 
-> [1]: https://lore.kernel.org/regressions/3250319.ancTxkQ2z5@zen/
+> - flush blkcg per-cpu stats list in __blkg_release(), when no new stat
+> can be added
 > 
+> - add global blkg_stat_lock for covering concurrent parent blkg stat
+> update
+> 
+> - don't grab bio->bi_blkg reference when adding the stats into blkcg's
+> per-cpu stat list since all stats are guaranteed to be consumed before
+> releasing blkg instance, and grabbing blkg reference for stats was the
+> most fragile part of original patch
+> 
+> Based on Waiman's patch:
+> 
+> https://lore.kernel.org/linux-block/20221215033132.230023-3-longman@redhat.com/
+> 
+> Fixes: 3b8cc6298724 ("blk-cgroup: Optimize blkcg_rstat_flush()")
+> Cc: stable@vger.kernel.org
+> Reported-by: Jay Shin <jaeshin@redhat.com>
+> Cc: Waiman Long <longman@redhat.com>
+> Cc: Tejun Heo <tj@kernel.org>
+> Cc: mkoutny@suse.com
+> Cc: Yosry Ahmed <yosryahmed@google.com>
+> Signed-off-by: Ming Lei <ming.lei@redhat.com>
+> ---
+> V3:
+> 	- add one global blkg_stat_lock for avoiding concurrent update on
+> 	blkg stat; this way is easier for backport, also won't cause contention;
 
-Hi,
+Hello Jens and Tejun,
 
-Sorry for the late reply. I haven't gotten enough time for it yet.
+Can we move on with this patch or Waiman's version[1]?
 
-I took a look at the git logs, and it doesn't look like the modules 
-involved in the original stack trace (amd_sfh, hid_sensor_hub, 
-hid_sensor_iio_common, hid_sensor_gyro_3d) has received any significant 
-changes between v6.2 and v6.3. IMHO, the bisect done by Malte might 
-indicate that the issue could be a problem outside of these modules.
+I am fine with either one.
 
-Also, I've upgrade from 6.3.3 to 6.3.5 a week ago and this issue hasn't 
-happened so far in 4 reboots. However, there still doesn't seem to be 
-any changes regarding these modules, so I'm not sure if it's fixed 
-elsewhere or I'm just being lucky. It would be nice if someone can 
-confirm or disprove this.
+[1] https://lore.kernel.org/linux-block/20230525160105.1968749-1-longman@redhat.com/
 
+Thanks, 
+Ming
 
-Thanks,
