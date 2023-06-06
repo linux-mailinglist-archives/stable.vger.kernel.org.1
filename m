@@ -2,120 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F968723E75
-	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 11:54:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EA2F723E89
+	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 11:57:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237262AbjFFJyF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 6 Jun 2023 05:54:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57388 "EHLO
+        id S237517AbjFFJ5B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 6 Jun 2023 05:57:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236624AbjFFJyB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 6 Jun 2023 05:54:01 -0400
-Received: from mailout.blnma.de (mailout.blnma.de [116.203.12.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0565C10D2;
-        Tue,  6 Jun 2023 02:53:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=starostik.de; s=dkim210803; h=Content-Type:Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=pTeb9LbTMrna13GViWC3h4XpyHzIp37dyOLsWSuYVME=; t=1686045238; x=1686909238; 
-        b=fozQ2v6b4D3ZjPUnWiY1Y/wsy09VlXfIb0azApNfp2FVoEvlh/xvC8KqsYoEseC5zR5H4KnS/+l
-        XPn6lT+3pxPXAxX5LbNAbCV6qsYwHx3aUz/tFbEQKbsY8OOH54AS7EHyzJ0eYtUQO9XZT5FdxbYzj
-        hlqczKZ70ROlNwTkKKqhh0I4QvxfB/Z9zQe6sQExtVrI3C3bGYvLhLeRfq/tEVDLZm33VkowvdGdG
-        NxW/F75s/NZ5Sc2pNZIv9s60c9WoM21rOm1AZ5xqwWhhJWQ/eKCPFpyh6IPqI+m1WqkBRjKpasAei
-        NIiq+LbcK2wSw+Ek6zH62eDi3mcHGAqu5qZg==;
-Received: from dovecot-0.dovecot.mail.svc.cluster.local ([10.244.6.208] helo=mail.blnma.de)
-        by mail.blnma.de with esmtp (Exim 4.96)
-        (envelope-from <malte@starostik.de>)
-        id 1q6TNs-000EMX-0d;
-        Tue, 06 Jun 2023 09:53:48 +0000
-Received: from zen.localnet ([62.214.179.90])
-        by mail.blnma.de with ESMTPSA
-        id PbH6LCoCf2TpSwAA399c4A
-        (envelope-from <malte@starostik.de>); Tue, 06 Jun 2023 09:53:46 +0000
-From:   Malte Starostik <malte@starostik.de>
-To:     Bagas Sanjaya <bagasdotme@gmail.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        regressions@lists.linux.dev
-Cc:     basavaraj.natikar@amd.com, linux-input@vger.kernel.org,
-        linux@hexchain.org
-Subject: Re: amd_sfh driver causes kernel oops during boot
-Date:   Tue, 06 Jun 2023 11:53:32 +0200
-Message-ID: <2784681.mvXUDI8C0e@zen>
-In-Reply-To: <46d5acd2-5961-a496-4c1a-68e5c47021fb@leemhuis.info>
-References: <ZG3ipauL9FTnQJiC@debian.me> <ZH6buB8TcMd5aT_1@debian.me>
- <46d5acd2-5961-a496-4c1a-68e5c47021fb@leemhuis.info>
+        with ESMTP id S237438AbjFFJ4t (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Tue, 6 Jun 2023 05:56:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B610E55
+        for <Stable@vger.kernel.org>; Tue,  6 Jun 2023 02:56:45 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D8DDD62FE5
+        for <Stable@vger.kernel.org>; Tue,  6 Jun 2023 09:56:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60FDC433EF;
+        Tue,  6 Jun 2023 09:56:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1686045404;
+        bh=WV9cFxNG+MfsOlL3M5I032Kzw7wL2kNvcilFif6XVsg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Hx1BxtHef5gUICF+wBk4PIst+R3X8K8jSuS5r31yH/3MEiwSFQhw7Fr5MXqEkADOy
+         eBt+pWH31ev2aeH2BNCZKp58zrlcDtpt/M2TeuiTggUWY9mnU5iNjLM3/E1qsaFp0K
+         ohZt1dFiOIGNUJdtl3117YarqxLlXpA5ZLdUEY54=
+Date:   Tue, 6 Jun 2023 11:56:41 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Jerry Snitselaar <jsnitsel@redhat.com>
+Cc:     vasant.hegde@amd.com, Stable@vger.kernel.org, jroedel@suse.de,
+        suravee.suthikulpanit@amd.com
+Subject: Re: FAILED: patch "[PATCH] iommu/amd/pgtbl_v2: Fix domain max
+ address" failed to apply to 6.3-stable tree
+Message-ID: <2023060606-stalemate-stoneware-292c@gregkh>
+References: <2023060548-rake-strongman-fdbe@gregkh>
+ <qlookcllwfzobdymwx3vsx4r3nn6sk5y4glqkxiyczxrjtkn7t@owslivpdbc6t>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <qlookcllwfzobdymwx3vsx4r3nn6sk5y4glqkxiyczxrjtkn7t@owslivpdbc6t>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Am Dienstag, 6. Juni 2023, 08:56:16 CEST schrieb Linux regression tracking 
-(Thorsten Leemhuis):
-> On 06.06.23 04:36, Bagas Sanjaya wrote:
-> > On Mon, Jun 05, 2023 at 01:24:25PM +0200, Malte Starostik wrote:
-> >> chiming in here as I'm experiencing what looks like the exact same issue,
-> >> also on a Lenovo Z13 notebook, also on Arch:
-
-> >> bisect result:
-> >> 904e28c6de083fa4834cdbd0026470ddc30676fc is the first bad commit
-> >> commit 904e28c6de083fa4834cdbd0026470ddc30676fc
-> >> Merge: a738688177dc 2f7f4efb9411
-> >> Author: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-> >> Date:   Wed Feb 22 10:44:31 2023 +0100
-> >> 
-> >>     Merge branch 'for-6.3/hid-bpf' into for-linus
+On Mon, Jun 05, 2023 at 03:43:19PM -0700, Jerry Snitselaar wrote:
+> On Mon, Jun 05, 2023 at 10:38:48PM +0200, gregkh@linuxfoundation.org wrote:
 > > 
-> > Hmm, seems like bad bisect (bisected to HID-BPF which IMO isn't related
-> > to amd_sfh). Can you repeat the bisection?
-
-I'm digging further. That merge is what git bisect ended at, but admittedly my 
-git skills and especially with a large codebase aren't too advanced.
-While at 904e28c6de083fa4834cdbd0026470ddc30676fc, git show only shows the diff 
-for tools/testing/selftests/Makefile which can't really be the culprit. 
-However, git diff @~..@ has changes in drivers/hid/amd-sfh-hid/Kconfig (seems 
-innocuous, too), but also some changes to drivers/hid/hid-core.c. Nothing 
-obvious either, but at least it's not too far from the trace.
-
-> Well, amd_sfh afaics apparently interacts with HID (see trace earlier in
-> the thread), so it's not that far away. But it's a merge commit, which
-> is possible, but doesn't happen every day. So a recheck might really be
-> a good idea.
-
-I will recheck some more, the Oops only happens with roughly 30 % chance 
-during boot. When it doesn't, there seem to be no other issues until the next 
-boot either. I made sure to reboot a few times after each bisect step, will 
-look deeper into the area.
-
-> > Anyway, tl;dr:
-> >> A: http://en.wikipedia.org/wiki/Top_post
-> >> Q: Were do I find info about this thing called top-posting?
+> > The patch below does not apply to the 6.3-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
 > > 
-> > [...]
+> > To reproduce the conflict and resubmit, you may use the following commands:
+> > 
+> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
+> > git checkout FETCH_HEAD
+> > git cherry-pick -x 11c439a19466e7feaccdbce148a75372fddaf4e9
+> > # <resolve conflicts, build, test, etc.>
+> > git commit -s
+> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023060548-rake-strongman-fdbe@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
+> > 
+> > Possible dependencies:
+> > 
+> > 
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> > 
 > 
-> BTW, I'm not sure if this really is helpful. Teaching this to upcoming
-> kernel developers is definitely worth it, but I wonder if pushing this
-> on all reporters might do more harm than good. I also wonder if asking
-> them a bit more kindly might be wiser (e.g. instead of "Anyway, tl;dr:"
-> something like "BTW, please do not top-post:" or something like that maybe).
+> I'm not sure what happened, but it works for me:
 
-Thanks, and I agree in general. However, my case was in fact even worse :-) 
-I'm totally aware of the badness of top-posting. It happened because I had a 
-draft of the reply. Set In-Reply-To from the link in the wev archive and 
-pasted the previous message from there. Couple days later, I just pasted the 
-result on top and disregarded the existing text.
+I think you skipped the line above that said:
 
-BR Malte
+> > # <resolve conflicts, build, test, etc.>
 
+Did you test-build this?
 
+thanks,
+
+greg k-h
