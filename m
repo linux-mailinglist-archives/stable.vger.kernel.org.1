@@ -2,138 +2,203 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CA9772357B
-	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 04:51:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CACDE723596
+	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 05:09:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229544AbjFFCvM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 5 Jun 2023 22:51:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59486 "EHLO
+        id S230215AbjFFDIu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 5 Jun 2023 23:08:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231670AbjFFCvL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 22:51:11 -0400
-Received: from mail-yw1-x1141.google.com (mail-yw1-x1141.google.com [IPv6:2607:f8b0:4864:20::1141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B92F58F
-        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 19:51:10 -0700 (PDT)
-Received: by mail-yw1-x1141.google.com with SMTP id 00721157ae682-565d354b59fso63056407b3.0
-        for <stable@vger.kernel.org>; Mon, 05 Jun 2023 19:51:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686019870; x=1688611870;
-        h=to:subject:message-id:date:from:sender:reply-to:mime-version:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=l5WgoTOOy3LfvpyQK2mDprd493OAdAU1mq1QegQCXwQ=;
-        b=GV5JjTj+6A53qRGbeyMqY0btqQ9bnZfGcDnIju6OM7TLTyQdgIziOFpf8oYIcrUc/R
-         FHygE1TK6u8BvUxn3U9Wv0Z3IIbp+yF8OfEG4yi1kRpn8hKBRHXAKb/ZrZ/Lqk3dSs9P
-         UQdWZgGSXD3P72ZvDzjw0emCBCDCy6nfq2Z8dH+C+oJM/kCNgR17t0c2Gn9VfT36Omz5
-         vYvghiYJcPN/vLnJgUWoPOcYN57ntB8ajG7k4kZdosPPd8BX86GpSuX/B8M9XjwKyLi/
-         n7XyKuJfB0N+ClkNL9aacIr8YAKeOkS2/EdN0W8WSkwGipUvFuEf9pzIldw7tFp4xVCo
-         hgdw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686019870; x=1688611870;
-        h=to:subject:message-id:date:from:sender:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=l5WgoTOOy3LfvpyQK2mDprd493OAdAU1mq1QegQCXwQ=;
-        b=lJSZyFMR3o5RNYJman8Ly8FgdDImkjTKqCjMntR0LGGs2ksRcL+jKrZvTHX/zhe6lN
-         n9lCe4tAeec3E806zlPw2O0HvWJ+SAGvw6uQWhszMTDicgxypdyq1wgtNqvCF9ElCaHe
-         WncimHWmvrd9y8w/morAFQT35SQ3gPbzezKM0G+FfJx7mvaINCWDZ1eaDQ9vDYrb8We+
-         FUxshXP/k5f5l2oAgsDBF5MhqhoEkJcUsRwPMR4JWMbZmKFuEpxieqHtAtr0pXjVb+x/
-         lp5yVdF+mvPLiu4xlEUzarmeosrRFSxIbNMahFcDQ/TyUiVJT7RQI/x102u42Z6/ED5H
-         tl4Q==
-X-Gm-Message-State: AC+VfDz1mRFFPxMVrj9nHXCq/YXkRg7cFfr+SUAN+znyhr7HDT3bGO+6
-        7CYFrco7MLJDVT6gjohQEZBFzAGyp1M81n6hsmw=
-X-Google-Smtp-Source: ACHHUZ4B3szK2OHTjyIo7ay8QA72v4J2QbghrtWIwUDnJuW5cA1LDbzQTC4Luhf74V5TuIy4PLiO6mbxMibmCLEl4lI=
-X-Received: by 2002:a81:494f:0:b0:565:df97:4439 with SMTP id
- w76-20020a81494f000000b00565df974439mr492900ywa.37.1686019869551; Mon, 05 Jun
- 2023 19:51:09 -0700 (PDT)
+        with ESMTP id S230112AbjFFDIt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 23:08:49 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BE82118
+        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 20:08:48 -0700 (PDT)
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3562GsUm028022;
+        Tue, 6 Jun 2023 03:08:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : content-transfer-encoding
+ : mime-version; s=pp1; bh=9wghKrnvpG4esy/1e+NGLL00NxVRt9GUyQX9qLZY5HI=;
+ b=aw573kDuYsrrZk+EjoEe+iWiDHKqzvY1boCC/luuGweDOe9yVpthlDvpqxWtEI4zSxkZ
+ +AeC/jRYgvjmI9pLtpbWTziIO85eQXuNtyeko/SF4NvjZgo22edEmh7Jh/+ARgmFlsIU
+ d82cEamzDIrcB0Iqb7RryrYhVNr6Cuguq95nm2kZGYX/JuRYz2II4kk+j5kA5j8U/0T+
+ NndSBoYmznqh7Pa1G68YUBn2jMrdzvaQ1TAYKrmHlSCUDKAKkFJhO2DtzAcmcy1nGQpQ
+ mimTyOH34zSQ8ZuIZ+iesdXPR3pCOz/aKsorL03MbPkmuS/hdp8/QJ/UgeaqucICf+0Q cA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r1uvks1b5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 06 Jun 2023 03:08:36 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3562qFqX029467;
+        Tue, 6 Jun 2023 03:08:36 GMT
+Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r1uvks1av-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 06 Jun 2023 03:08:36 +0000
+Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
+        by ppma04wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3560s4LB026536;
+        Tue, 6 Jun 2023 03:08:35 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([9.208.130.100])
+        by ppma04wdc.us.ibm.com (PPS) with ESMTPS id 3qyxfs4u60-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 06 Jun 2023 03:08:35 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+        by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35638W2V8258244
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 6 Jun 2023 03:08:32 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 0444558052;
+        Tue,  6 Jun 2023 03:08:32 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 3FE0558050;
+        Tue,  6 Jun 2023 03:08:31 +0000 (GMT)
+Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
+        by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+        Tue,  6 Jun 2023 03:08:31 +0000 (GMT)
+From:   Stefan Berger <stefanb@linux.ibm.com>
+To:     openbmc@lists.ozlabs.org
+Cc:     andrewrj@au1.ibm.com, jmstanle@au1.ibm.com,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        stable@vger.kernel.org, Eric Biggers <ebiggers@kernel.org>,
+        Eric Biggers <ebiggers@google.com>,
+        Stefan Berger <stefanb@linux.ibm.com>
+Subject: [PATCH 1/1] KEYS: asymmetric: Copy sig and digest in public_key_verify_signature()
+Date:   Mon,  5 Jun 2023 23:08:15 -0400
+Message-Id: <20230606030815.101280-2-stefanb@linux.ibm.com>
+X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20230606030815.101280-1-stefanb@linux.ibm.com>
+References: <20230606030815.101280-1-stefanb@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 6U5kILcJhuM2ifG1K-GdhukSsRdFOQkj
+X-Proofpoint-ORIG-GUID: AaxVggCjwnwdRIY-8mtfZrnVY8ozRz3k
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Reply-To: michelmrssonia@gmail.com
-Sender: jkfltd121@gmail.com
-Received: by 2002:a05:7010:330c:b0:357:ee2f:ae12 with HTTP; Mon, 5 Jun 2023
- 19:51:08 -0700 (PDT)
-From:   Mrs Sonia Michel <michelmrssonia@gmail.com>
-Date:   Tue, 6 Jun 2023 03:51:08 +0100
-X-Google-Sender-Auth: mxCB-eMMYiMrlN3_j3aKnNTGPzU
-Message-ID: <CAFJa1AeCHC8-gRXgecEr0vkKmx0h+VTGV1VPkXKF=j94Mb0svA@mail.gmail.com>
-Subject: Happy new week
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.7 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
-        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,HK_RANDOM_ENVFROM,
-        LOTS_OF_MONEY,MILLION_HUNDRED,MONEY_FRAUD_8,MONEY_FREEMAIL_REPTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 HK_RANDOM_ENVFROM Envelope sender username looks random
-        * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:1141 listed in]
-        [list.dnswl.org]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [michelmrssonia[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [jkfltd121[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.9 MILLION_HUNDRED BODY: Million "One to Nine" Hundred
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  0.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  0.5 MONEY_FRAUD_8 Lots of money and very many fraud phrases
-        *  3.0 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
-        *  1.5 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-05_35,2023-06-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ mlxlogscore=999 mlxscore=0 bulkscore=0 spamscore=0 priorityscore=1501
+ adultscore=0 clxscore=1015 phishscore=0 malwarescore=0 suspectscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2306060026
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
- My Greetings and I need your prayers,
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-This letter might be a surprise to you, But I believe that you will be
-honest to  my final wish. I bring peace and love to you. It is by the
-grace of God, I had no choice than to do what is lawful and right in
-the sight of God for eternal life and in the sight of man to witness
-God's mercy and glory upon met life. My dear, I sent this mail praying
-it will find you in a good condition, since I myself am in a very
-critical health condition in which I sleep every night without knowing
-if I may be alive to see the next day. I am Mrs Sonia Michel, a widow
-suffering from a long illness. I have some funds I inherited from my
-late husband, the sum of US$ 8.5m (Eight Million Five hundred Thousand
-Dollars) my Doctor told me recently that I have serious sickness which
-is a cancer problem. What disturbs me most is my stroke sickness.
-Having known my condition, I decided to donate this fund to a good
-person that will utilize it the way I am going to instruct herein. I
-need a very honest and God fearing person  who can claim this money
-and use it for Charity works, for orphanages and gives justice and
-help to the poor, needy and widows and also build schools for less
-privilege that will be named after my late husband if possible and to
-promote the word of God and the effort that the house of god is
-maintained.
+Commit ac4e97abce9b8 ("scatterlist: sg_set_buf() argument must be in linear
+mapping") checks that both the signature and the digest reside in the
+linear mapping area.
 
-I do not want the bank to sit on the money. I also don't want a
-situation where this money will be used in an ungodly manner. That's
-why I'm making this decision. I'm not afraid of death, so I know where
-I'm going. I accept this decision because I do not have any child who
-will inherit this money after I die. Please I want your sincere and
-urgent answer to know if you will be able to execute this project, and
-I will give you more information on how the fund will be transferred
-to your bank account. May the grace, peace, love and the truth in the
-Word of God be with you and all those that you love and  care for, I
-am waiting for your reply to my email via
+However, more recently commit ba14a194a434c ("fork: Add generic vmalloced
+stack support") made it possible to move the stack in the vmalloc area,
+which is not contiguous, and thus not suitable for sg_set_buf() which needs
+adjacent pages.
 
-Regards,
-Mrs Sonia Michel
+Always make a copy of the signature and digest in the same buffer used to
+store the key and its parameters, and pass them to sg_init_one(). Prefer it
+to conditionally doing the copy if necessary, to keep the code simple. The
+buffer allocated with kmalloc() is in the linear mapping area.
+
+Cc: stable@vger.kernel.org # 4.9.x
+Fixes: ba14a194a434 ("fork: Add generic vmalloced stack support")
+Link: https://lore.kernel.org/linux-integrity/Y4pIpxbjBdajymBJ@sol.localdomain/
+Suggested-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Reviewed-by: Eric Biggers <ebiggers@google.com>
+Tested-by: Stefan Berger <stefanb@linux.ibm.com>
+---
+ crypto/asymmetric_keys/public_key.c | 38 ++++++++++++++++-------------
+ 1 file changed, 21 insertions(+), 17 deletions(-)
+
+diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
+index eca5671ad3f2..50c933f86b21 100644
+--- a/crypto/asymmetric_keys/public_key.c
++++ b/crypto/asymmetric_keys/public_key.c
+@@ -380,9 +380,10 @@ int public_key_verify_signature(const struct public_key *pkey,
+ 	struct crypto_wait cwait;
+ 	struct crypto_akcipher *tfm;
+ 	struct akcipher_request *req;
+-	struct scatterlist src_sg[2];
++	struct scatterlist src_sg;
+ 	char alg_name[CRYPTO_MAX_ALG_NAME];
+-	char *key, *ptr;
++	char *buf, *ptr;
++	size_t buf_len;
+ 	int ret;
+ 
+ 	pr_devel("==>%s()\n", __func__);
+@@ -420,34 +421,37 @@ int public_key_verify_signature(const struct public_key *pkey,
+ 	if (!req)
+ 		goto error_free_tfm;
+ 
+-	key = kmalloc(pkey->keylen + sizeof(u32) * 2 + pkey->paramlen,
+-		      GFP_KERNEL);
+-	if (!key)
++	buf_len = max_t(size_t, pkey->keylen + sizeof(u32) * 2 + pkey->paramlen,
++			sig->s_size + sig->digest_size);
++
++	buf = kmalloc(buf_len, GFP_KERNEL);
++	if (!buf)
+ 		goto error_free_req;
+ 
+-	memcpy(key, pkey->key, pkey->keylen);
+-	ptr = key + pkey->keylen;
++	memcpy(buf, pkey->key, pkey->keylen);
++	ptr = buf + pkey->keylen;
+ 	ptr = pkey_pack_u32(ptr, pkey->algo);
+ 	ptr = pkey_pack_u32(ptr, pkey->paramlen);
+ 	memcpy(ptr, pkey->params, pkey->paramlen);
+ 
+ 	if (pkey->key_is_private)
+-		ret = crypto_akcipher_set_priv_key(tfm, key, pkey->keylen);
++		ret = crypto_akcipher_set_priv_key(tfm, buf, pkey->keylen);
+ 	else
+-		ret = crypto_akcipher_set_pub_key(tfm, key, pkey->keylen);
++		ret = crypto_akcipher_set_pub_key(tfm, buf, pkey->keylen);
+ 	if (ret)
+-		goto error_free_key;
++		goto error_free_buf;
+ 
+ 	if (strcmp(pkey->pkey_algo, "sm2") == 0 && sig->data_size) {
+ 		ret = cert_sig_digest_update(sig, tfm);
+ 		if (ret)
+-			goto error_free_key;
++			goto error_free_buf;
+ 	}
+ 
+-	sg_init_table(src_sg, 2);
+-	sg_set_buf(&src_sg[0], sig->s, sig->s_size);
+-	sg_set_buf(&src_sg[1], sig->digest, sig->digest_size);
+-	akcipher_request_set_crypt(req, src_sg, NULL, sig->s_size,
++	memcpy(buf, sig->s, sig->s_size);
++	memcpy(buf + sig->s_size, sig->digest, sig->digest_size);
++
++	sg_init_one(&src_sg, buf, sig->s_size + sig->digest_size);
++	akcipher_request_set_crypt(req, &src_sg, NULL, sig->s_size,
+ 				   sig->digest_size);
+ 	crypto_init_wait(&cwait);
+ 	akcipher_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
+@@ -455,8 +459,8 @@ int public_key_verify_signature(const struct public_key *pkey,
+ 				      crypto_req_done, &cwait);
+ 	ret = crypto_wait_req(crypto_akcipher_verify(req), &cwait);
+ 
+-error_free_key:
+-	kfree(key);
++error_free_buf:
++	kfree(buf);
+ error_free_req:
+ 	akcipher_request_free(req);
+ error_free_tfm:
+-- 
+2.37.3
+
