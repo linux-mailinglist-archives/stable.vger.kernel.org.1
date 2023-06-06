@@ -2,159 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C070C72463B
-	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 16:34:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D5B67246C2
+	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 16:49:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238041AbjFFOej (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 6 Jun 2023 10:34:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39138 "EHLO
+        id S233143AbjFFOtn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 6 Jun 2023 10:49:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237348AbjFFOef (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 6 Jun 2023 10:34:35 -0400
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2064.outbound.protection.outlook.com [40.107.220.64])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77AB310C3
-        for <stable@vger.kernel.org>; Tue,  6 Jun 2023 07:33:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=h5yV31MlbeVpzPDmuOmYdN5/aowHzz5X3Ak22RDxeWLSxuxnjkCBQzjrVvcqzH94xV/TkSsZr5vtX0iukMQscLXTJNsQyQvu74EGvjB1q94s22Y/TbaK65nxZq/ur7XoTmE5jRsLCCpm4lN3jSXs7g1gACWLJDbTi5/8vRzQ0xPnthXz+M8bqNyn/+6mhROJ8EUHKtApBzotnqFQLD6VOyDBG+4l6EydE53goy48+r3nT15SSpqytqaQhtVn8PMExg8Ap+oZXzqw4wt5WUFbTWmDn4DkPkDlTGY4Hjp9ZuAi44tKRQm4iWA96OeCjAN4zfIykCeyv7Hi06Z/PTbA2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DdY8snO39ljpN314w97AVxjBLZZLH0UjQcgbU8n7LA0=;
- b=HUHcarKjg8wgaqd3E2mGFCnUmenGVEIRyLV1DapU9c7OCo17Lld+m4TmCzBstIvS8j6yruxy/dAFddn5qVnKAg7n8n3VTtYN7ffE8a9DkK8QyfsWvaJcAK9AFzTDiV248Y1Dchqh8GKZzl6XspYjMh909hzErvgwYZQpDfeTCN1giPIk55eQwsZpCNy1dInfHhUyh0h4JAFo1V0NUFaNpbLC/jahCU5NchpcSmWQ16Tt5veRT/2vSWoSKlhvGhywjaiCIpP2Z8YXlU/S8l16YDTfRq8JmOB4Gg5He0KvSsuNDexSW35plu7biGhD0TotNjRgcad3lG/DXJCKkWu6mw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DdY8snO39ljpN314w97AVxjBLZZLH0UjQcgbU8n7LA0=;
- b=17NGBT93Y9gMmgzw/ARqvq4dk2iJCWZuukQcYUAql1r5FwPXw6TC3ERXZgsWyPrtgdilU6WZQ5OC8tcAkfh7Vu7wSfk/i3XXjl5oLNlupE7RKQkZAhppuZfSWusS1kp/L1nYP8rIhTTj4ytlwkqvaaFYBCSJsLS37DmKL+ukBHM=
-Received: from CY5PR19CA0126.namprd19.prod.outlook.com (2603:10b6:930:64::15)
- by MW4PR12MB6899.namprd12.prod.outlook.com (2603:10b6:303:208::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.33; Tue, 6 Jun
- 2023 14:33:53 +0000
-Received: from CY4PEPF0000EE3E.namprd03.prod.outlook.com
- (2603:10b6:930:64:cafe::90) by CY5PR19CA0126.outlook.office365.com
- (2603:10b6:930:64::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.19 via Frontend
- Transport; Tue, 6 Jun 2023 14:33:53 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000EE3E.mail.protection.outlook.com (10.167.242.18) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6477.13 via Frontend Transport; Tue, 6 Jun 2023 14:33:53 +0000
-Received: from kali.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Tue, 6 Jun
- 2023 09:33:51 -0500
-From:   Vasant Hegde <vasant.hegde@amd.com>
-To:     <stable@vger.kernel.org>
-CC:     Vasant Hegde <vasant.hegde@amd.com>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        <Stable@vger.kernel.org>,
-        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-        Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.3.y] iommu/amd/pgtbl_v2: Fix domain max address
-Date:   Tue, 6 Jun 2023 14:33:38 +0000
-Message-ID: <20230606143338.5730-1-vasant.hegde@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2023060548-rake-strongman-fdbe@gregkh>
-References: <2023060548-rake-strongman-fdbe@gregkh>
+        with ESMTP id S237575AbjFFOtS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 6 Jun 2023 10:49:18 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9C91E10C3;
+        Tue,  6 Jun 2023 07:48:27 -0700 (PDT)
+Received: by linux.microsoft.com (Postfix, from userid 1112)
+        id E1A7D20BE465; Tue,  6 Jun 2023 07:47:52 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E1A7D20BE465
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1686062872;
+        bh=qLHYhKuYBtuXRBJvoSPy62jmKZ/caVCPu3WR3egdbeo=;
+        h=Date:From:To:Cc:Subject:From;
+        b=pd1OoyGSpJhSYfZjTwSkeYoGKh1BrP7UaODyLArUdmvTYCb+WvxLCUxOMvio+P2hC
+         /8jdD+KeT9aF85+OO4YYvSZIW3kh4TQuLSTjHXsk+nyQDSNph2Dh7ccKnYX/cL13rt
+         JZua3R4taITDoPEgZIcAwfIcAXkHvkIvCGCdEoOo=
+Date:   Tue, 6 Jun 2023 07:47:52 -0700
+From:   Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     dpark@linux.microsoft.com, t-lo@linux.microsoft.com,
+        stable@vger.kernel.org
+Subject: soft lockup on Ampere Altra on v6.1.30
+Message-ID: <20230606144752.GA31904@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE3E:EE_|MW4PR12MB6899:EE_
-X-MS-Office365-Filtering-Correlation-Id: d6c9aa7e-20e2-4b06-c000-08db669b0d7c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 85ADp9b9fCXi/o1+O7CWQUKqazRonpU93UfPc9ERYHjJ90t1Y1syUr6tAgjXKeYWuGr1DnAOVmw0E3wfHC9AuEeQmjxhf91D9UYVQq8sDZr4lXa6TLJGZlTvRCyGWpMhmRk4m6sm+GO5e/KsYqZnhAfQYZFs4Gcr3ECbdB4tIW89/+dYoPh0HQEoZaIgdumToo+96qozzONLJ3UQCkXe1cXDCa/+5v+k+hDQP+dQ7m6zQKd4meCKZYohKATqzLPDV3pE598R2KK7UGaRNG1PxFA/SJhMaWCidIJ7E/5mtayWQ1070PH9FZYx76TatcZflbIWqfrOgYlKke+dLX81wi5Y5IjgkjLub/IE4WeqSHlS8nBTkDQAkynqmPF7Uas+XbhRJKt0sT8ECN0pV+xLCId6nhRnjZrlxFge6dQTLSYMIch0uM+ntCnFjbMhgrqSK/hy9kqyqjreVX+qyRA2CQSZvM2bFCh5ItGfqA+OAopZwwx9mJB1C2FabOtz1q2HwpZD/1PEHl+0KJSQU2Dgvsw7O91VYiZ6J4HRHDtcGVqhwLRsnRkxI57bFyGBWFpFTImq28zgvKI4hbV5TNhrkjg1iKas+YP5m721FgfyqMtXUPWu6C19iD8ZNsdqXg11ft2JjP7dlOIS8IXVu23w9gsQkGezyHEwgcYR1sZuTS5COmlt7DLnadplvQFccFsfgB08TiZTDhXj8oZNGMH7tm9EhjDeWcfFhoB9waEjJagaT0HDj/m9f1oyJrGLapMm/oCAQ6oVBOHPyJhByVpVMA==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(376002)(136003)(396003)(346002)(451199021)(40470700004)(36840700001)(46966006)(83380400001)(40460700003)(47076005)(426003)(336012)(2906002)(2616005)(36756003)(86362001)(82310400005)(356005)(81166007)(82740400003)(36860700001)(40480700001)(41300700001)(316002)(6666004)(5660300002)(966005)(8676002)(8936002)(7696005)(478600001)(54906003)(6916009)(70586007)(70206006)(4326008)(26005)(1076003)(16526019)(186003)(44832011)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jun 2023 14:33:53.4363
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d6c9aa7e-20e2-4b06-c000-08db669b0d7c
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE3E.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6899
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Spam-Status: No, score=-19.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Upstream commit 11c439a19466e7feaccdbce148a75372fddaf4e9 ]
+We're currently trying to update the kernel in our distro (Flatcar) from
+v5.15.x to v6.1.x. When testing on Equinix Metal Ampere instances
+(c3.large.arm64) we now get a soft lockup about a minute after boot.
 
-IOMMU v2 page table supports 4 level (47 bit) or 5 level (56 bit) virtual
-address space. Current code assumes it can support 64bit IOVA address
-space. If IOVA allocator allocates virtual address > 47/56 bit (depending
-on page table level) then it will do wrong mapping and cause invalid
-translation.
+Has anyone else seen this? The splat looks like this, full dmesg is at [1]
+(trying without the attachement this time as LKML detects my mail as spam :/)
 
-Hence adjust aperture size to use max address supported by the page table.
+[   84.297829] watchdog: BUG: soft lockup - CPU#45 stuck for 26s! [kworker/45:1:474]
+[   84.297834] Modules linked in: veth xt_conntrack nft_chain_nat xt_MASQUERADE nf_nat nf_conntrack_netlink nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 xfrm_user xfrm_algo xt_addrtype nft_compat nf_tables nfnetlink bonding mlx5_ib ipmi_ssif ipmi_devintf ib_core ipmi_msghandler evdev sch_fq_codel fuse configfs dmi_sysfs nls_ascii nls_cp437 vfat fat ext4 crc16 mbcache jbd2 dm_verity dm_bufio nvme nvme_core xhci_pci t10_pi xhci_hcd crc64_rocksoft_generic crc64_rocksoft igb crc_t10dif i2c_algo_bit crct10dif_generic mlx5_core usbcore i2c_core crc64 crct10dif_common usb_common hwmon pci_hyperv_intf btrfs blake2b_generic xor xor_neon lzo_compress zlib_deflate raid6_pq zstd_compress libcrc32c crc32c_generic dm_mirror dm_region_hash dm_log qla4xxx iscsi_boot_sysfs iscsi_tcp libiscsi_tcp libiscsi scsi_transport_iscsi dm_multipath dm_mod scsi_mod scsi_common br_netfilter bridge stp llc overlay
+[   84.435381] CPU: 45 PID: 474 Comm: kworker/45:1 Not tainted 6.1.30-flatcar #1
+[   84.447678] Hardware name: GIGABYTE R272-P30-JG/MP32-AR0-JG, BIOS F17a (SCP: 1.07.20210713) 07/22/2021
+[   84.467226] Workqueue: rcu_par_gp sync_rcu_exp_select_node_cpus
+[   84.478239] pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   84.490336] pc : smp_call_function_single+0xe4/0x1d0
+[   84.500287] lr : __sync_rcu_exp_select_node_cpus+0x278/0x480
+[   84.510869] sp : ffff80000b99bcc0
+[   84.518979] x29: ffff80000b99bcc0 x28: 0000000000000200 x27: ffffab5be3134080
+[   84.530897] x26: ffffab5be302d6a8 x25: ffff07ff89f01f40 x24: ffff083e5fba8540
+[   84.542751] x23: ffffab5be2e43ab0 x22: 0000000000000a00 x21: ffffab5be2e47540
+[   84.554510] x20: 000000000000f5ff x19: ffff80000b99bce0 x18: ffff80002be3bc58
+[   84.566213] x17: 0000000000000000 x16: ffffab5be06cdfc0 x15: 0000000000000001
+[   84.577841] x14: 0000000000000000 x13: 0000000000000010 x12: ffffab5be2e43ab0
+[   84.589361] x11: 0000000000000001 x10: 0000000000000040 x9 : ffffab5be312c270
+[   84.600832] x8 : ffffab5be2e34008 x7 : 0000000000028fb0 x6 : ffffab5bdfd0ef20
+[   84.612285] x5 : 0000000000000000 x4 : ffff083e5fc1c748 x3 : 0000000000000001
+[   84.623812] x2 : 0000000000000000 x1 : ffff083e5fc1c740 x0 : 0000000000000029
+[   84.635277] Call trace:
+[   84.641994]  smp_call_function_single+0xe4/0x1d0
+[   84.650957]  __sync_rcu_exp_select_node_cpus+0x278/0x480
+[   84.660664]  sync_rcu_exp_select_node_cpus+0x14/0x20
+[   84.669988]  process_one_work+0x214/0x490
+[   84.678313]  worker_thread+0x6c/0x430
+[   84.686206]  kthread+0x108/0x10c
+[   84.693668]  ret_from_fork+0x10/0x20
+[   84.701417] Kernel panic - not syncing: softlockup: hung tasks
+[   84.711437] CPU: 45 PID: 474 Comm: kworker/45:1 Tainted: G             L     6.1.30-flatcar #1
+[   84.724261] Hardware name: GIGABYTE R272-P30-JG/MP32-AR0-JG, BIOS F17a (SCP: 1.07.20210713) 07/22/2021
+[   84.741870] Workqueue: rcu_par_gp sync_rcu_exp_select_node_cpus
+[   84.751900] Call trace:
+[   84.758325]  dump_backtrace+0xe0/0x140
+[   84.765958]  show_stack+0x18/0x30
+[   84.773057]  dump_stack_lvl+0x64/0x80
+[   84.780384]  dump_stack+0x18/0x34
+[   84.787220]  panic+0x180/0x358
+[   84.793698]  watchdog_nmi_enable+0x0/0x10
+[   84.801040]  __hrtimer_run_queues+0x17c/0x340
+[   84.808624]  hrtimer_interrupt+0xe8/0x244
+[   84.815807]  arch_timer_handler_phys+0x2c/0x44
+[   84.823388]  handle_percpu_devid_irq+0x88/0x230
+[   84.830995]  generic_handle_domain_irq+0x2c/0x44
+[   84.838682]  gic_handle_irq+0x50/0x140
+[   84.845468]  call_on_irq_stack+0x24/0x4c
+[   84.852402]  do_interrupt_handler+0x80/0x84
+[   84.859569]  el1_interrupt+0x34/0x6c
+[   84.866100]  el1h_64_irq_handler+0x18/0x2c
+[   84.873134]  el1h_64_irq+0x64/0x68
+[   84.879415]  smp_call_function_single+0xe4/0x1d0
+[   84.886933]  __sync_rcu_exp_select_node_cpus+0x278/0x480
+[   84.895205]  sync_rcu_exp_select_node_cpus+0x14/0x20
+[   84.903118]  process_one_work+0x214/0x490
+[   84.910040]  worker_thread+0x6c/0x430
+[   84.916645]  kthread+0x108/0x10c
+[   84.922733]  ret_from_fork+0x10/0x20
 
-Reported-by: Jerry Snitselaar <jsnitsel@redhat.com>
-Fixes: aaac38f61487 ("iommu/amd: Initial support for AMD IOMMU v2 page table")
-Cc: <Stable@vger.kernel.org>  # v6.0+
-Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
-Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
-Link: https://lore.kernel.org/r/20230518054351.9626-1-vasant.hegde@amd.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-[ Modified to work with "V2 with 4 level page table" only - Vasant ]
-Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
----
- drivers/iommu/amd/iommu.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+Thanks,
+Jeremi
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 167da5b1a5e3..7fe62558d24f 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -2107,6 +2107,15 @@ static struct protection_domain *protection_domain_alloc(unsigned int type)
- 	return NULL;
- }
- 
-+static inline u64 dma_max_address(void)
-+{
-+	if (amd_iommu_pgtable == AMD_IOMMU_V1)
-+		return ~0ULL;
-+
-+	/* V2 with 4 level page table */
-+	return ((1ULL << PM_LEVEL_SHIFT(PAGE_MODE_4_LEVEL)) - 1);
-+}
-+
- static struct iommu_domain *amd_iommu_domain_alloc(unsigned type)
- {
- 	struct protection_domain *domain;
-@@ -2123,7 +2132,7 @@ static struct iommu_domain *amd_iommu_domain_alloc(unsigned type)
- 		return NULL;
- 
- 	domain->domain.geometry.aperture_start = 0;
--	domain->domain.geometry.aperture_end   = ~0ULL;
-+	domain->domain.geometry.aperture_end   = dma_max_address();
- 	domain->domain.geometry.force_aperture = true;
- 
- 	return &domain->domain;
--- 
-2.31.1
-
+[1]: https://gist.githubusercontent.com/dongsupark/3ab5fc464a995623a14542edd9b193ac/raw/db7c0216dcb260603a4ec0052015f86d82d4de30/kernel-6.1-softlockup-EM-arm64.txt
