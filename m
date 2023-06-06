@@ -2,59 +2,86 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 663637233AB
-	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 01:30:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74EE9723444
+	for <lists+stable@lfdr.de>; Tue,  6 Jun 2023 03:02:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232218AbjFEXap (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 5 Jun 2023 19:30:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54268 "EHLO
+        id S233306AbjFFBCK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 5 Jun 2023 21:02:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229740AbjFEXap (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 19:30:45 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ACB8D2;
-        Mon,  5 Jun 2023 16:30:43 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2b1b6865c7cso44218241fa.3;
-        Mon, 05 Jun 2023 16:30:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686007841; x=1688599841;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DlmpFDEmcxHsnSAtrkjHRWbVNt7ra8EBiqAvJ7+G6UM=;
-        b=M9aMrRskDsFPhGK6WdTxx38xeN3fozVsmcEN4p+M/mSfcQKDicvDjSlD/Txrui2oPf
-         HDnYaCqBswhWa2BctIRcAzcB/zYAKd0NNn+RSl2MZWj1JHxoVSnB8E9GdTH9VPVpwnwI
-         XnLyWNEfKB20R+MC2rQeStvaJUQf9gPeFCzxCxUDKcdHHnDLl0mg87AHBG4e+NjtzOrp
-         XK9RrkyJUfHA5BI3xZhOoQ3NoHBW3pMjT5m3a4zPblYljagPOGXDpfxt4Zu/qxkyKRjK
-         cXyVQLZxTv0ImYIdztULa2AeozuQOXdzh8rkbmtzBWVCQ/8wCjXXUXNSQ/M2Ibgx3yBm
-         Tylg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686007841; x=1688599841;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DlmpFDEmcxHsnSAtrkjHRWbVNt7ra8EBiqAvJ7+G6UM=;
-        b=LsrK3UU/zuBgjwrNzBFFy9eJ7XyBaTPuqupAXV7Z/GBGMZPuJPbudQjP2R8RYqoyWQ
-         c0Q0KCN6/mq4FywVXlSMbSlHRD9ygUXSXVnxNKu6vkmnSTEevLKUkDVyWRJ+qpThgSCf
-         b/GEHeqyMmbqCeDXU4xk8pP6wBOuQSSIRQMPlnGOf/c369mNnHr6H72gt9bPjFdcnBjG
-         OjnotwaRVhpZ0Ag79s12w7ryDMF8hvj80wHXnEyNKo3fuAeFfaiUGxdD0FoSFezb9cfl
-         5Jyi6sc0Ncn/Eg6dayQPIGwz2/SIQreGe2UO7Nq5rWqERf1UCw6t+jCYPygcSP3zyD7H
-         fhfA==
-X-Gm-Message-State: AC+VfDzEr1coI+3KyORFYKRqSnZ4isXyt7Aw/anbKYLax5tzsCxE6Kne
-        FAvVMyQ6ddKxPEGLDi7CUohIDPGO+f6d1H1mSvI=
-X-Google-Smtp-Source: ACHHUZ4sj1ih+CkariNV5M0zDhUe1cFYW5PMBvQD/6OiIGS0ztojmDNTuxZ39lQbKupwhtGzz7S79/zGfzxVm4QiD5w=
-X-Received: by 2002:a2e:380b:0:b0:2af:2231:94ba with SMTP id
- f11-20020a2e380b000000b002af223194bamr403224lja.3.1686007841409; Mon, 05 Jun
- 2023 16:30:41 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230605164955.GA1977@templeofstupid.com>
-In-Reply-To: <20230605164955.GA1977@templeofstupid.com>
-From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date:   Mon, 5 Jun 2023 16:30:29 -0700
-Message-ID: <CAADnVQK7PQxj5jjfUu9sO524yLMPqE6vmzcipno1WYoeu0q-Gw@mail.gmail.com>
-Subject: Re: [PATCH bpf] bpf: search_bpf_extables should search subprogram extables
-To:     Krister Johansen <kjlx@templeofstupid.com>
-Cc:     bpf <bpf@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+        with ESMTP id S233247AbjFFBCJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 5 Jun 2023 21:02:09 -0400
+X-Greylist: delayed 601 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 05 Jun 2023 18:02:08 PDT
+Received: from cheetah.elm.relay.mailchannels.net (cheetah.elm.relay.mailchannels.net [23.83.212.34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D0CEEC
+        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 18:02:07 -0700 (PDT)
+X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+        by relay.mailchannels.net (Postfix) with ESMTP id 07BC7342776
+        for <stable@vger.kernel.org>; Tue,  6 Jun 2023 00:46:42 +0000 (UTC)
+Received: from pdx1-sub0-mail-a232.dreamhost.com (unknown [127.0.0.6])
+        (Authenticated sender: dreamhost)
+        by relay.mailchannels.net (Postfix) with ESMTPA id 88983342842
+        for <stable@vger.kernel.org>; Tue,  6 Jun 2023 00:46:41 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1686012401; a=rsa-sha256;
+        cv=none;
+        b=ChP6cSb5BwG2v8MEf1jZoiqT2TYhftIOHbF6RcfUTPLARv9ewDGzLzzUG9TXD2oRkpAKCB
+        4Cv37U/CSTfhxNqm5kmIg5CsnTqa6u7mP15EreYTcdWWV3591naozouBr8gUJBBAPckKMp
+        xp/EOyNDHP+VS27UnBRC/+9ATkWKVR5ccYUP9ULgh2pZ0eRzx1qijnFrlIBgHey0UzyGHf
+        tbr0SP/B/mnkTvIRWyXGw91HEn5WLydK5AWukGYgcUazUPeeFf0/0eF/ql4SOAOQg62Alr
+        Fe2BheX2nso8uBmJGvZyz2U0bP97iN7qGPYDas5cgQzrSqkyHnSnK48SNissvw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+        s=arc-2022; t=1686012401;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references:dkim-signature;
+        bh=30Pm4xz1UlaCRE7iqpDJat0fxdm1zNEZBrIPg1VFjPA=;
+        b=HCXg9gw6tP83DcvIG7CHlaEBtzIru9t+UAnGUV4/vus7Bb3G4CneIZtHD2Uu7/7YO7armk
+        tqQ+ZtnPARZYdZyP9XdT69+k3S6m7l9DdLLboUmytVkvYT+jFvQAVEr9hWQU1s8gQXi9xs
+        R978uDRlr37+X/60tHYhyhr6mhBZo78SMh3Xbnk0uH+yKESuaofXOFzAAL6J6a8E3T+nNz
+        aO5c+9XMy2d1QRNgBJh+BzorEJ7gSF0jza49KA1V18WDInn/JY/kmBLPsz+7nd0p+gmJaZ
+        uM7QHrfJJ9RS7lamxLiplymG69J+MABLx/c95KTYT2pLneiIJTDEv3mGKZOl8w==
+ARC-Authentication-Results: i=1;
+        rspamd-56648fb6f9-fqmnr;
+        auth=pass smtp.auth=dreamhost smtp.mailfrom=kjlx@templeofstupid.com
+X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
+X-MC-Relay: Good
+X-MailChannels-SenderId: dreamhost|x-authsender|kjlx@templeofstupid.com
+X-MailChannels-Auth-Id: dreamhost
+X-Whimsical-Whistle: 34d28b11066e8e62_1686012401774_3870771067
+X-MC-Loop-Signature: 1686012401774:2985127050
+X-MC-Ingress-Time: 1686012401773
+Received: from pdx1-sub0-mail-a232.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+        by 100.126.30.49 (trex/6.8.1);
+        Tue, 06 Jun 2023 00:46:41 +0000
+Received: from kmjvbox (c-73-93-64-36.hsd1.ca.comcast.net [73.93.64.36])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: kjlx@templeofstupid.com)
+        by pdx1-sub0-mail-a232.dreamhost.com (Postfix) with ESMTPSA id 4QZsHN5bDPzvK
+        for <stable@vger.kernel.org>; Mon,  5 Jun 2023 17:46:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=templeofstupid.com;
+        s=dreamhost; t=1686012400;
+        bh=30Pm4xz1UlaCRE7iqpDJat0fxdm1zNEZBrIPg1VFjPA=;
+        h=Date:From:To:Cc:Subject:Content-Type:Content-Transfer-Encoding;
+        b=r3U3/n3Udn+774UyOUt2mmHnvq5ReXmfwZD6PALez0allvnBn1UEjLG2p0YjqHoj8
+         SZ0UaWb6wehWoeW7IXFQRhlHGXkWnWyNc2DFcFnE+khJ5Jh3T44nvEvt/i4zJSVyDa
+         oeoxwkvByhPj7S5lRAypnCykFibWxPCz5hGWNCzU=
+Received: from johansen (uid 1000)
+        (envelope-from kjlx@templeofstupid.com)
+        id e0062
+        by kmjvbox (DragonFly Mail Agent v0.12);
+        Mon, 05 Jun 2023 17:41:39 -0700
+Date:   Mon, 5 Jun 2023 17:41:39 -0700
+From:   Krister Johansen <kjlx@templeofstupid.com>
+To:     Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc:     Krister Johansen <kjlx@templeofstupid.com>,
+        bpf <bpf@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>,
         Daniel Borkmann <daniel@iogearbox.net>,
         John Fastabend <john.fastabend@gmail.com>,
         Andrii Nakryiko <andrii@kernel.org>,
@@ -72,195 +99,99 @@ Cc:     bpf <bpf@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>,
         Network Development <netdev@vger.kernel.org>,
         clang-built-linux <llvm@lists.linux.dev>,
         stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [PATCH bpf] bpf: search_bpf_extables should search subprogram
+ extables
+Message-ID: <20230606004139.GE1977@templeofstupid.com>
+References: <20230605164955.GA1977@templeofstupid.com>
+ <CAADnVQK7PQxj5jjfUu9sO524yLMPqE6vmzcipno1WYoeu0q-Gw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAADnVQK7PQxj5jjfUu9sO524yLMPqE6vmzcipno1WYoeu0q-Gw@mail.gmail.com>
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jun 5, 2023 at 9:50=E2=80=AFAM Krister Johansen <kjlx@templeofstupi=
-d.com> wrote:
->
-> JIT'd bpf programs that have subprograms can have a postive value for
-> num_extentries but a NULL value for extable.  This is problematic if one =
-of
-> these bpf programs encounters a fault during its execution.  The fault
-> handlers correctly identify that the faulting IP belongs to a bpf program=
-.
-> However, performing a search_extable call on a NULL extable leads to a
-> second fault.
->
-> Fix up by refusing to search a NULL extable, and by checking the
-> subprograms' extables if the umbrella program has subprograms configured.
->
-> Once I realized what was going on, I was able to use the following bpf
-> program to get an oops from this failure:
->
->    #include "vmlinux.h"
->    #include <bpf/bpf_helpers.h>
->    #include <bpf/bpf_tracing.h>
->
->    char LICENSE[] SEC("license") =3D "Dual BSD/GPL";
->
->    #define PATH_MAX 4096
->
->    struct callback_ctx {
->            u8 match;
->    };
->
->    struct filter_value {
->            char prefix[PATH_MAX];
->    };
->    struct {
->            __uint(type, BPF_MAP_TYPE_ARRAY);
->            __uint(max_entries, 256);
->            __type(key, int);
->            __type(value, struct filter_value);
->    } test_filter SEC(".maps");
->
->    static __u64 test_filter_cb(struct bpf_map *map, __u32 *key,
->                                struct filter_value *val,
->                                struct callback_ctx *data)
->    {
->        return 1;
->    }
->
->    SEC("fentry/__sys_bind")
->    int BPF_PROG(__sys_bind, int fd, struct sockaddr *umyaddr, int addrlen=
-)
->    {
->      pid_t pid;
->
->      struct callback_ctx cx =3D { .match =3D 0 };
->      pid =3D bpf_get_current_pid_tgid() >> 32;
->      bpf_for_each_map_elem(&test_filter, test_filter_cb, &cx, 0);
->      bpf_printk("fentry: pid =3D %d, family =3D %llx\n", pid, umyaddr->sa=
-_family);
+On Mon, Jun 05, 2023 at 04:30:29PM -0700, Alexei Starovoitov wrote:
+> On Mon, Jun 5, 2023 at 9:50 AM Krister Johansen <kjlx@templeofstupid.com> wrote:
+> > +                       if (!aux->func[i]->aux->num_exentries ||
+> > +                           aux->func[i]->aux->extable == NULL)
+> > +                               continue;
+> > +                       e = search_extable(aux->func[i]->aux->extable,
+> > +                           aux->func[i]->aux->num_exentries, addr);
+> > +               }
+> > +       }
+> 
+> something odd here.
+> We do bpf_prog_kallsyms_add(func[i]); for each subprog.
+> So bpf_prog_ksym_find() in search_bpf_extables()
+> should be finding ksym and extable of the subprog
+> and not the main prog.
+> The bug is probably elsewhere.
 
-Instead of printk please do a volatile read of umyaddr->sa_family.
+I have a kdump (or more) of this bug so if there's additional state
+you'd like me to share, let me know.  With your comments in mind, I took
+another look at the ksym fields in the aux structs.  I have this in the
+main program:
 
-Please convert this commit log to a test in selftest/bpf/
-and resubmit as two patches.
+  ksym = {
+    start = 18446744072638420852,
+    end = 18446744072638423040,
+    name = <...>
+    lnode = {
+      next = 0xffff88d9c1065168,
+      prev = 0xffff88da91609168
+    },
+    tnode = {
+      node = {{
+          __rb_parent_color = 18446613068361611640,
+          rb_right = 0xffff88da91609178,
+          rb_left = 0xffff88d9f0c5a578
+        }, {
+          __rb_parent_color = 18446613068361611664,
+          rb_right = 0xffff88da91609190,
+          rb_left = 0xffff88d9f0c5a590
+        }}
+    },
+    prog = true
+  },
 
-Also see bpf_testmod_return_ptr() and
-SEC("fexit/bpf_testmod_return_ptr") in progs/test_module_attach.c.
+and this in the func[0] subprogram:
 
-Probably easier to tweak that test for subprogs instead
-of adding your own SEC("fentry/__sys_bind") test and triggering bind()
-from user space.
+  ksym = {
+    start = 18446744072638420852,
+    end = 18446744072638423040,
+    name = <...>
+    lnode = {
+      next = 0xffff88da91609168,
+      prev = 0xffffffff981f8990 <bpf_kallsyms>
+    },
+    tnode = {
+      node = {{
+          __rb_parent_color = 18446613068361606520,
+          rb_right = 0x0,
+          rb_left = 0x0
+        }, {
+          __rb_parent_color = 18446613068361606544,
+          rb_right = 0x0,
+          rb_left = 0x0
+        }}
+    },
+    prog = true
+  },
 
+That sure looks like func[0] is a leaf in the rbtree and the main
+program is an intermediate node with leaves.  If that's the case, then
+bpf_prog_ksym_find may have found the main program instead of the
+subprogram.  In that case, do you think it's better to skip the main
+program's call to bpf_prog_ksym_set_addr() if it has subprograms instead
+of searching for subprograms if the main program is found?
 
->      return 0;
->    }
->
-> And then the following code to actually trigger a failure:
->
->   #include <stdio.h>
->   #include <stdlib.h>
->   #include <unistd.h>
->   #include <sys/socket.h>
->   #include <netinet/in.h>
->   #include <netinet/ip.h>
->
->   int
->   main(int argc, char *argv[])
->   {
->     int sfd, rc;
->     struct sockaddr *sockptr =3D (struct sockaddr *)0x900000000000;
->
->     sfd =3D socket(AF_INET, SOCK_STREAM, 0);
->     if (sfd < 0) {
->       perror("socket");
->       exit(EXIT_FAILURE);
->     }
->
->     while (1) {
->       rc =3D bind(sfd, (struct sockaddr *) sockptr, sizeof(struct sockadd=
-r_in));
->       if (rc < 0) {
->         perror("bind");
->         sleep(5);
->       } else {
->         break;
->       }
->     }
->
->     return 0;
->   }
->
-> I was able to validate that this problem does not occur when subprograms
-> are not in use, or when the direct pointer accesses are replaced with
-> bpf_probe_read calls.  I further validated that this did not break the
-> extable handling in existing bpf programs.  The same program caused no
-> failures when subprograms were removed, but the exception was still
-> injected.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 1c2a088a6626 ("bpf: x64: add JIT support for multi-function progra=
-ms")
-> Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
-> ---
->  kernel/bpf/core.c | 22 ++++++++++++++++++++--
->  1 file changed, 20 insertions(+), 2 deletions(-)
->
-> diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-> index 7421487422d4..0e12238e4340 100644
-> --- a/kernel/bpf/core.c
-> +++ b/kernel/bpf/core.c
-> @@ -736,15 +736,33 @@ const struct exception_table_entry *search_bpf_exta=
-bles(unsigned long addr)
->  {
->         const struct exception_table_entry *e =3D NULL;
->         struct bpf_prog *prog;
-> +       struct bpf_prog_aux *aux;
-> +       int i;
->
->         rcu_read_lock();
->         prog =3D bpf_prog_ksym_find(addr);
->         if (!prog)
->                 goto out;
-> -       if (!prog->aux->num_exentries)
-> +       aux =3D prog->aux;
-> +       if (!aux->num_exentries)
->                 goto out;
->
-> -       e =3D search_extable(prog->aux->extable, prog->aux->num_exentries=
-, addr);
-> +       /* prog->aux->extable can be NULL if subprograms are in use. In t=
-hat
-> +        * case, check each sub-function's aux->extables to see if it has=
- a
-> +        * matching entry.
-> +        */
-> +       if (aux->extable !=3D NULL) {
-> +               e =3D search_extable(prog->aux->extable,
-> +                   prog->aux->num_exentries, addr);
-> +       } else {
-> +               for (i =3D 0; (i < aux->func_cnt) && (e =3D=3D NULL); i++=
-) {
-
-() are redundant.
-!e is preferred over e =3D=3D NULL
-
-> +                       if (!aux->func[i]->aux->num_exentries ||
-> +                           aux->func[i]->aux->extable =3D=3D NULL)
-> +                               continue;
-> +                       e =3D search_extable(aux->func[i]->aux->extable,
-> +                           aux->func[i]->aux->num_exentries, addr);
-> +               }
-> +       }
-
-something odd here.
-We do bpf_prog_kallsyms_add(func[i]); for each subprog.
-So bpf_prog_ksym_find() in search_bpf_extables()
-should be finding ksym and extable of the subprog
-and not the main prog.
-The bug is probably elsewhere.
-
-Once you respin with a selftest we can help debugging.
+-K
