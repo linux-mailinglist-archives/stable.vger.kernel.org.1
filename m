@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 312CC726CA6
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:35:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52F4B726DA9
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:44:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234024AbjFGUfQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:35:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33864 "EHLO
+        id S234634AbjFGUoe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:44:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234114AbjFGUfD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:35:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F02C72709
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:34:56 -0700 (PDT)
+        with ESMTP id S234661AbjFGUod (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 972321BEA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:44:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D16D56452B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:34:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2935C433D2;
-        Wed,  7 Jun 2023 20:34:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C0DA64668
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:44:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E5C6C433A7;
+        Wed,  7 Jun 2023 20:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170096;
-        bh=TYKqWagi7LEsfJh+w9eDLA4+KzVotDdmn8BCjg7m8pE=;
+        s=korg; t=1686170653;
+        bh=S1Er6tAk46+EiTlGcl6Te+QtUjIMiIoQspoSNzceCOQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R2PX6mb+EUCPcW3q6VX9O45HGO+yq9qidT361QG+B/IPQV13p9JfczpUfUwpstSZK
-         4UF5yyvKeZsOKQoT8IywNBdRYENguJoRhaxuKnK6/HZi/Z1b5nXdC2ofQ+FOj2f//h
-         nAtpSaJAEr5pC+uM8RD99G7tPZ9MLGFvt9VxX3BY=
+        b=O1l9z6hGRIh8MGO3ABsD7R24m2BopQsZengsCwUZQLC4B6Gs1w6NlGqal1u8HcbE6
+         ZSpQAFQHv2PJZytWecdoxCzKWTQq9v4Obr1/CJGaFLaASID62gY5P+DurpaoCkaXcW
+         gTbikxcjTF13Ozc69+Vka/1N+WYtdPJd4lQTKZcs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 43/88] media: dvb-usb: digitv: fix null-ptr-deref in digitv_i2c_xfer()
+        patches@lists.linux.dev, Zhenneng Li <lizhenneng@kylinos.cn>,
+        Guchun Chen <guchun.chen@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 167/225] drm/amd/pm: resolve reboot exception for si oland
 Date:   Wed,  7 Jun 2023 22:16:00 +0200
-Message-ID: <20230607200900.574998345@linuxfoundation.org>
+Message-ID: <20230607200919.859865499@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,44 +54,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wei Chen <harperchen1110@gmail.com>
+From: Guchun Chen <guchun.chen@amd.com>
 
-[ Upstream commit 9ded5bd2a49ce3015b7c936743eec0a0e6e11f0c ]
+commit e490d60a2f76bff636c68ce4fe34c1b6c34bbd86 upstream.
 
-In digitv_i2c_xfer, msg is controlled by user. When msg[i].buf
-is null and msg[i].len is zero, former checks on msg[i].buf would be
-passed. Malicious data finally reach digitv_i2c_xfer. If accessing
-msg[i].buf[0] without sanity check, null ptr deref would happen. We add
-check on msg[i].len to prevent crash.
+During reboot test on arm64 platform, it may failure on boot.
 
-Similar commit:
-commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+The error message are as follows:
+[    1.706570][ 3] [  T273] [drm:si_thermal_enable_alert [amdgpu]] *ERROR* Could not enable thermal interrupts.
+[    1.716547][ 3] [  T273] [drm:amdgpu_device_ip_late_init [amdgpu]] *ERROR* late_init of IP block <si_dpm> failed -22
+[    1.727064][ 3] [  T273] amdgpu 0000:02:00.0: amdgpu_device_ip_late_init failed
+[    1.734367][ 3] [  T273] amdgpu 0000:02:00.0: Fatal error during GPU init
 
-Link: https://lore.kernel.org/linux-media/20230313095008.1039689-1-harperchen1110@gmail.com
-Signed-off-by: Wei Chen <harperchen1110@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+v2: squash in built warning fix (Alex)
+
+Signed-off-by: Zhenneng Li <lizhenneng@kylinos.cn>
+Reviewed-by: Guchun Chen <guchun.chen@amd.com>
+Signed-off-by: Guchun Chen <guchun.chen@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/dvb-usb/digitv.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c |   29 -----------------------------
+ 1 file changed, 29 deletions(-)
 
-diff --git a/drivers/media/usb/dvb-usb/digitv.c b/drivers/media/usb/dvb-usb/digitv.c
-index e66df4fd1a296..6e556a2a74103 100644
---- a/drivers/media/usb/dvb-usb/digitv.c
-+++ b/drivers/media/usb/dvb-usb/digitv.c
-@@ -66,6 +66,10 @@ static int digitv_i2c_xfer(struct i2c_adapter *adap,struct i2c_msg msg[],int num
- 		warn("more than 2 i2c messages at a time is not handled yet. TODO.");
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -6925,23 +6925,6 @@ static int si_dpm_enable(struct amdgpu_d
+ 	return 0;
+ }
  
- 	for (i = 0; i < num; i++) {
-+		if (msg[i].len < 1) {
-+			i = -EOPNOTSUPP;
-+			break;
-+		}
- 		/* write/read request */
- 		if (i+1 < num && (msg[i+1].flags & I2C_M_RD)) {
- 			if (digitv_ctrl_msg(d, USB_READ_COFDM, msg[i].buf[0], NULL, 0,
--- 
-2.39.2
-
+-static int si_set_temperature_range(struct amdgpu_device *adev)
+-{
+-	int ret;
+-
+-	ret = si_thermal_enable_alert(adev, false);
+-	if (ret)
+-		return ret;
+-	ret = si_thermal_set_temperature_range(adev, R600_TEMP_RANGE_MIN, R600_TEMP_RANGE_MAX);
+-	if (ret)
+-		return ret;
+-	ret = si_thermal_enable_alert(adev, true);
+-	if (ret)
+-		return ret;
+-
+-	return ret;
+-}
+-
+ static void si_dpm_disable(struct amdgpu_device *adev)
+ {
+ 	struct rv7xx_power_info *pi = rv770_get_pi(adev);
+@@ -7626,18 +7609,6 @@ static int si_dpm_process_interrupt(stru
+ 
+ static int si_dpm_late_init(void *handle)
+ {
+-	int ret;
+-	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+-
+-	if (!adev->pm.dpm_enabled)
+-		return 0;
+-
+-	ret = si_set_temperature_range(adev);
+-	if (ret)
+-		return ret;
+-#if 0 //TODO ?
+-	si_dpm_powergate_uvd(adev, true);
+-#endif
+ 	return 0;
+ }
+ 
 
 
