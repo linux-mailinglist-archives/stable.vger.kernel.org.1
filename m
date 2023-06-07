@@ -2,44 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA655726F1D
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F5BB726DE4
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:46:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235388AbjFGUzh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:55:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56548 "EHLO
+        id S234889AbjFGUq3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:46:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235439AbjFGUz3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:55:29 -0400
+        with ESMTP id S234893AbjFGUqO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:46:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 607DDE79
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:55:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81AF826A5;
+        Wed,  7 Jun 2023 13:45:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D0549647F7
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:55:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC1FC433EF;
-        Wed,  7 Jun 2023 20:55:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0429764640;
+        Wed,  7 Jun 2023 20:45:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E387BC4339B;
+        Wed,  7 Jun 2023 20:45:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171327;
-        bh=x0Icv/g0xIcvXRY8wx2l/wzuElB+eyDB7Lf2/sfWWEM=;
+        s=korg; t=1686170755;
+        bh=b4oGrHUU4PlZn58yeBa1vTwhXg4J0f1XcSHjsV6FHiY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D21IzsffVLh0jO1K2B+025wdqHvsMpI5Q80TwNeHWVKas9kl/xcGls68XLVcQfSQB
-         3KO3E7ugO0BhHfn5e0fjcmmI5WL/GEwUoEuMyiBIn3v2ySTJDNV6qEdh4D+q3pSIzh
-         QkkNA/gww34mzbMWjxEYfABHJp1eulaEvyv/1TfI=
+        b=OanPyMD4jNvQqWbXRJsI/VPVTsUKqz/Db4UmpAZjNWIy7grP8EuiN1Btoz77lwYQ5
+         Q0NRcHP2vNYoiREuNIY38Pp+v8kzXnZyF/C3u3sEzLXxPuZ1KRjKzERgIhmSQB1zSh
+         Wq/eXElGlNhGXTHfMYpcnafvAgRUezitrXHu+OKo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, YongSu Yoo <yongsuyoo0215@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 46/99] media: dvb_ca_en50221: fix a size write bug
+        patches@lists.linux.dev,
+        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Dan Carpenter <error27@gmail.com>,
+        Takashi Iwai <tiwai@suse.de>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Russ Weight <russell.h.weight@intel.com>,
+        Tianfei zhang <tianfei.zhang@intel.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Zhengchao Shao <shaozhengchao@huawei.com>,
+        Colin Ian King <colin.i.king@gmail.com>,
+        linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+        Scott Branden <sbranden@broadcom.com>,
+        linux-kselftest@vger.kernel.org
+Subject: [PATCH 6.1 205/225] test_firmware: fix the memory leak of the allocated firmware buffer
 Date:   Wed,  7 Jun 2023 22:16:38 +0200
-Message-ID: <20230607200901.692897322@linuxfoundation.org>
+Message-ID: <20230607200921.070241596@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,118 +64,181 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: YongSu Yoo <yongsuyoo0215@gmail.com>
+From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
 
-[ Upstream commit a4315e5be7020aac9b24a8151caf4bb85224cd0e ]
+commit 48e156023059e57a8fc68b498439832f7600ffff upstream.
 
-The function of "dvb_ca_en50221_write_data" at source/drivers/media
-/dvb-core/dvb_ca_en50221.c is used for two cases.
-The first case is for writing APDU data in the function of
-"dvb_ca_en50221_io_write" at source/drivers/media/dvb-core/
-dvb_ca_en50221.c.
-The second case is for writing the host link buf size on the
-Command Register in the function of "dvb_ca_en50221_link_init"
-at source/drivers/media/dvb-core/dvb_ca_en50221.c.
-In the second case, there exists a bug like following.
-In the function of the "dvb_ca_en50221_link_init",
-after a TV host calculates the host link buf_size,
-the TV host writes the calculated host link buf_size on the
-Size Register.
-Accroding to the en50221 Spec (the page 60 of
-https://dvb.org/wp-content/uploads/2020/02/En50221.V1.pdf),
-before this writing operation, the "SW(CMDREG_SW)" flag in the
-Command Register should be set. We can see this setting operation
-in the function of the "dvb_ca_en50221_link_init" like below.
-...
-	if ((ret = ca->pub->write_cam_control(ca->pub, slot,
-CTRLIF_COMMAND, IRQEN | CMDREG_SW)) != 0)
-		return ret;
-...
-But, after that, the real writing operation is implemented using
-the function of the "dvb_ca_en50221_write_data" in the function of
-"dvb_ca_en50221_link_init", and the "dvb_ca_en50221_write_data"
-includes the function of "ca->pub->write_cam_control",
-and the function of the "ca->pub->write_cam_control" in the
-function of the "dvb_ca_en50221_wrte_data" does not include
-"CMDREG_SW" flag like below.
-...
-	if ((status = ca->pub->write_cam_control(ca->pub, slot,
-CTRLIF_COMMAND, IRQEN | CMDREG_HC)) != 0)
-...
-In the above source code, we can see only the "IRQEN | CMDREG_HC",
-but we cannot see the "CMDREG_SW".
-The "CMDREG_SW" flag which was set in the function of the
-"dvb_ca_en50221_link_init" was rollbacked by the follwoing function
-of the "dvb_ca_en50221_write_data".
-This is a bug. and this bug causes that the calculated host link buf_size
-is not properly written in the CI module.
-Through this patch, we fix this bug.
+The following kernel memory leak was noticed after running
+tools/testing/selftests/firmware/fw_run_tests.sh:
 
-Link: https://lore.kernel.org/linux-media/20220818125027.1131-1-yongsuyoo0215@gmail.com
-Signed-off-by: YongSu Yoo <yongsuyoo0215@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[root@pc-mtodorov firmware]# cat /sys/kernel/debug/kmemleak
+.
+.
+.
+unreferenced object 0xffff955389bc3400 (size 1024):
+  comm "test_firmware-0", pid 5451, jiffies 4294944822 (age 65.652s)
+  hex dump (first 32 bytes):
+    47 48 34 35 36 37 0a 00 00 00 00 00 00 00 00 00  GH4567..........
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff962f5dec>] slab_post_alloc_hook+0x8c/0x3c0
+    [<ffffffff962fcca4>] __kmem_cache_alloc_node+0x184/0x240
+    [<ffffffff962704de>] kmalloc_trace+0x2e/0xc0
+    [<ffffffff9665b42d>] test_fw_run_batch_request+0x9d/0x180
+    [<ffffffff95fd813b>] kthread+0x10b/0x140
+    [<ffffffff95e033e9>] ret_from_fork+0x29/0x50
+unreferenced object 0xffff9553c334b400 (size 1024):
+  comm "test_firmware-1", pid 5452, jiffies 4294944822 (age 65.652s)
+  hex dump (first 32 bytes):
+    47 48 34 35 36 37 0a 00 00 00 00 00 00 00 00 00  GH4567..........
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff962f5dec>] slab_post_alloc_hook+0x8c/0x3c0
+    [<ffffffff962fcca4>] __kmem_cache_alloc_node+0x184/0x240
+    [<ffffffff962704de>] kmalloc_trace+0x2e/0xc0
+    [<ffffffff9665b42d>] test_fw_run_batch_request+0x9d/0x180
+    [<ffffffff95fd813b>] kthread+0x10b/0x140
+    [<ffffffff95e033e9>] ret_from_fork+0x29/0x50
+unreferenced object 0xffff9553c334f000 (size 1024):
+  comm "test_firmware-2", pid 5453, jiffies 4294944822 (age 65.652s)
+  hex dump (first 32 bytes):
+    47 48 34 35 36 37 0a 00 00 00 00 00 00 00 00 00  GH4567..........
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff962f5dec>] slab_post_alloc_hook+0x8c/0x3c0
+    [<ffffffff962fcca4>] __kmem_cache_alloc_node+0x184/0x240
+    [<ffffffff962704de>] kmalloc_trace+0x2e/0xc0
+    [<ffffffff9665b42d>] test_fw_run_batch_request+0x9d/0x180
+    [<ffffffff95fd813b>] kthread+0x10b/0x140
+    [<ffffffff95e033e9>] ret_from_fork+0x29/0x50
+unreferenced object 0xffff9553c3348400 (size 1024):
+  comm "test_firmware-3", pid 5454, jiffies 4294944822 (age 65.652s)
+  hex dump (first 32 bytes):
+    47 48 34 35 36 37 0a 00 00 00 00 00 00 00 00 00  GH4567..........
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff962f5dec>] slab_post_alloc_hook+0x8c/0x3c0
+    [<ffffffff962fcca4>] __kmem_cache_alloc_node+0x184/0x240
+    [<ffffffff962704de>] kmalloc_trace+0x2e/0xc0
+    [<ffffffff9665b42d>] test_fw_run_batch_request+0x9d/0x180
+    [<ffffffff95fd813b>] kthread+0x10b/0x140
+    [<ffffffff95e033e9>] ret_from_fork+0x29/0x50
+[root@pc-mtodorov firmware]#
+
+Note that the size 1024 corresponds to the size of the test firmware
+buffer. The actual number of the buffers leaked is around 70-110,
+depending on the test run.
+
+The cause of the leak is the following:
+
+request_partial_firmware_into_buf() and request_firmware_into_buf()
+provided firmware buffer isn't released on release_firmware(), we
+have allocated it and we are responsible for deallocating it manually.
+This is introduced in a number of context where previously only
+release_firmware() was called, which was insufficient.
+
+Reported-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+Fixes: 7feebfa487b92 ("test_firmware: add support for request_firmware_into_buf")
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Dan Carpenter <error27@gmail.com>
+Cc: Takashi Iwai <tiwai@suse.de>
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Russ Weight <russell.h.weight@intel.com>
+Cc: Tianfei zhang <tianfei.zhang@intel.com>
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Zhengchao Shao <shaozhengchao@huawei.com>
+Cc: Colin Ian King <colin.i.king@gmail.com>
+Cc: linux-kernel@vger.kernel.org
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Scott Branden <sbranden@broadcom.com>
+Cc: Luis R. Rodriguez <mcgrof@kernel.org>
+Cc: linux-kselftest@vger.kernel.org
+Cc: stable@vger.kernel.org # v5.4
+Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+Link: https://lore.kernel.org/r/20230509084746.48259-3-mirsad.todorovac@alu.unizg.hr
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dvb_ca_en50221.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ lib/test_firmware.c |   19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-core/dvb_ca_en50221.c b/drivers/media/dvb-core/dvb_ca_en50221.c
-index fd476536d32ed..b1a7b5f8b9aa4 100644
---- a/drivers/media/dvb-core/dvb_ca_en50221.c
-+++ b/drivers/media/dvb-core/dvb_ca_en50221.c
-@@ -187,7 +187,7 @@ static void dvb_ca_en50221_thread_wakeup(struct dvb_ca_private *ca);
- static int dvb_ca_en50221_read_data(struct dvb_ca_private *ca, int slot,
- 				    u8 *ebuf, int ecount);
- static int dvb_ca_en50221_write_data(struct dvb_ca_private *ca, int slot,
--				     u8 *ebuf, int ecount);
-+				     u8 *ebuf, int ecount, int size_write_flag);
+--- a/lib/test_firmware.c
++++ b/lib/test_firmware.c
+@@ -44,6 +44,7 @@ struct test_batched_req {
+ 	bool sent;
+ 	const struct firmware *fw;
+ 	const char *name;
++	const char *fw_buf;
+ 	struct completion completion;
+ 	struct task_struct *task;
+ 	struct device *dev;
+@@ -174,8 +175,14 @@ static void __test_release_all_firmware(
  
- /**
-  * Safely find needle in haystack.
-@@ -370,7 +370,7 @@ static int dvb_ca_en50221_link_init(struct dvb_ca_private *ca, int slot)
- 	ret = dvb_ca_en50221_wait_if_status(ca, slot, STATUSREG_FR, HZ / 10);
- 	if (ret)
- 		return ret;
--	ret = dvb_ca_en50221_write_data(ca, slot, buf, 2);
-+	ret = dvb_ca_en50221_write_data(ca, slot, buf, 2, CMDREG_SW);
- 	if (ret != 2)
- 		return -EIO;
- 	ret = ca->pub->write_cam_control(ca->pub, slot, CTRLIF_COMMAND, IRQEN);
-@@ -778,11 +778,13 @@ static int dvb_ca_en50221_read_data(struct dvb_ca_private *ca, int slot,
-  * @buf: The data in this buffer is treated as a complete link-level packet to
-  *	 be written.
-  * @bytes_write: Size of ebuf.
-+ * @size_write_flag: A flag on Command Register which says whether the link size
-+ * information will be writen or not.
-  *
-  * return: Number of bytes written, or < 0 on error.
-  */
- static int dvb_ca_en50221_write_data(struct dvb_ca_private *ca, int slot,
--				     u8 *buf, int bytes_write)
-+				     u8 *buf, int bytes_write, int size_write_flag)
- {
- 	struct dvb_ca_slot *sl = &ca->slot_info[slot];
- 	int status;
-@@ -817,7 +819,7 @@ static int dvb_ca_en50221_write_data(struct dvb_ca_private *ca, int slot,
+ 	for (i = 0; i < test_fw_config->num_requests; i++) {
+ 		req = &test_fw_config->reqs[i];
+-		if (req->fw)
++		if (req->fw) {
++			if (req->fw_buf) {
++				kfree_const(req->fw_buf);
++				req->fw_buf = NULL;
++			}
+ 			release_firmware(req->fw);
++			req->fw = NULL;
++		}
+ 	}
  
- 	/* OK, set HC bit */
- 	status = ca->pub->write_cam_control(ca->pub, slot, CTRLIF_COMMAND,
--					    IRQEN | CMDREG_HC);
-+					    IRQEN | CMDREG_HC | size_write_flag);
- 	if (status)
- 		goto exit;
+ 	vfree(test_fw_config->reqs);
+@@ -651,6 +658,8 @@ static ssize_t trigger_request_store(str
  
-@@ -1505,7 +1507,7 @@ static ssize_t dvb_ca_en50221_io_write(struct file *file,
+ 	mutex_lock(&test_fw_mutex);
+ 	release_firmware(test_firmware);
++	if (test_fw_config->reqs)
++		__test_release_all_firmware();
+ 	test_firmware = NULL;
+ 	rc = request_firmware(&test_firmware, name, dev);
+ 	if (rc) {
+@@ -751,6 +760,8 @@ static ssize_t trigger_async_request_sto
+ 	mutex_lock(&test_fw_mutex);
+ 	release_firmware(test_firmware);
+ 	test_firmware = NULL;
++	if (test_fw_config->reqs)
++		__test_release_all_firmware();
+ 	rc = request_firmware_nowait(THIS_MODULE, 1, name, dev, GFP_KERNEL,
+ 				     NULL, trigger_async_request_cb);
+ 	if (rc) {
+@@ -793,6 +804,8 @@ static ssize_t trigger_custom_fallback_s
  
- 			mutex_lock(&sl->slot_lock);
- 			status = dvb_ca_en50221_write_data(ca, slot, fragbuf,
--							   fraglen + 2);
-+							   fraglen + 2, 0);
- 			mutex_unlock(&sl->slot_lock);
- 			if (status == (fraglen + 2)) {
- 				written = 1;
--- 
-2.39.2
-
+ 	mutex_lock(&test_fw_mutex);
+ 	release_firmware(test_firmware);
++	if (test_fw_config->reqs)
++		__test_release_all_firmware();
+ 	test_firmware = NULL;
+ 	rc = request_firmware_nowait(THIS_MODULE, FW_ACTION_NOUEVENT, name,
+ 				     dev, GFP_KERNEL, NULL,
+@@ -855,6 +868,8 @@ static int test_fw_run_batch_request(voi
+ 						 test_fw_config->buf_size);
+ 		if (!req->fw)
+ 			kfree(test_buf);
++		else
++			req->fw_buf = test_buf;
+ 	} else {
+ 		req->rc = test_fw_config->req_firmware(&req->fw,
+ 						       req->name,
+@@ -915,6 +930,7 @@ static ssize_t trigger_batched_requests_
+ 		req->fw = NULL;
+ 		req->idx = i;
+ 		req->name = test_fw_config->name;
++		req->fw_buf = NULL;
+ 		req->dev = dev;
+ 		init_completion(&req->completion);
+ 		req->task = kthread_run(test_fw_run_batch_request, req,
+@@ -1019,6 +1035,7 @@ ssize_t trigger_batched_requests_async_s
+ 	for (i = 0; i < test_fw_config->num_requests; i++) {
+ 		req = &test_fw_config->reqs[i];
+ 		req->name = test_fw_config->name;
++		req->fw_buf = NULL;
+ 		req->fw = NULL;
+ 		req->idx = i;
+ 		init_completion(&req->completion);
 
 
