@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42AD5726DFD
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:47:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FEFE726F12
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235013AbjFGUrP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:47:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45792 "EHLO
+        id S235460AbjFGUz3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:55:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235017AbjFGUqp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:46:45 -0400
+        with ESMTP id S235736AbjFGUzD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:55:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F7C32700
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:46:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5302DD1
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:54:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8899963C18
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:46:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95892C433D2;
-        Wed,  7 Jun 2023 20:46:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 32824647CB
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:54:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C0CC433EF;
+        Wed,  7 Jun 2023 20:54:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170800;
-        bh=Gyq2qIfsvefN5AMcVEW3NDZHGKcoqUe5neH7vv0olCc=;
+        s=korg; t=1686171298;
+        bh=+S96KXUuZRYiirsXrHe1YzXZhgwKZfcsFCX6sz2X0n8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=py9QaVEfcpdiqSoitKDAUE184vpcwu06CrgF1RQkzXnaxhllRRta3CyF/hdjH18Lr
-         7ajWfOFiDTLEHzGnLvy0YS3hYUF3UnMQvinUoBs11+nSwh5pmE61FBIwbQprWftE0l
-         N4ovi3jCrslCX0J9j28YpWg4O5L0FBBrLn2wNusk=
+        b=JVZeCPW++Pm/rssIaMJiSw1Vbg8/emxQREIXbbgjR0Fgp6OTflfiQI/ORJ9/xD/+A
+         8VUvSmnrXngmzufj2OpitHiWp3tk/QdvGrVWBOGwDqhk70TIvzULeKjyMldNgG/x2Q
+         Wmo8q8LE7bMa6QvwkNS5i6w6fyE7vPu85PODSc5M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>
-Subject: [PATCH 6.1 223/225] selftests: mptcp: simult flows: skip if MPTCP is not supported
+        patches@lists.linux.dev, Frank Li <Frank.Li@nxp.com>,
+        Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.4 64/99] iio: light: vcnl4035: fixed chip ID check
 Date:   Wed,  7 Jun 2023 22:16:56 +0200
-Message-ID: <20230607200921.676337387@linuxfoundation.org>
+Message-ID: <20230607200902.245996601@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,46 +54,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 9161f21c74a1a0e7bb39eb84ea0c86b23c92fc87 upstream.
+commit a551c26e8e568fad42120843521529241b9bceec upstream.
 
-Selftests are supposed to run on any kernels, including the old ones not
-supporting MPTCP.
+VCNL4035 register(0xE) ID_L and ID_M define as:
 
-A new check is then added to make sure MPTCP is supported. If not, the
-test stops and is marked as "skipped".
+ ID_L: 0x80
+ ID_H: 7:6 (0:0)
+       5:4 (0:0) slave address = 0x60 (7-bit)
+           (0:1) slave address = 0x51 (7-bit)
+           (1:0) slave address = 0x40 (7-bit)
+           (1:0) slave address = 0x41 (7-bit)
+       3:0 Version code default	(0:0:0:0)
 
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
-Fixes: 1a418cb8e888 ("mptcp: simult flow self-tests")
-Cc: stable@vger.kernel.org
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+So just check ID_L.
+
+Fixes: 55707294c4eb ("iio: light: Add support for vishay vcnl4035")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20230501143605.1615549-1-Frank.Li@nxp.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/simult_flows.sh |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/iio/light/vcnl4035.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/tools/testing/selftests/net/mptcp/simult_flows.sh
-+++ b/tools/testing/selftests/net/mptcp/simult_flows.sh
-@@ -1,6 +1,8 @@
- #!/bin/bash
- # SPDX-License-Identifier: GPL-2.0
+--- a/drivers/iio/light/vcnl4035.c
++++ b/drivers/iio/light/vcnl4035.c
+@@ -8,6 +8,7 @@
+  * TODO: Proximity
+  */
+ #include <linux/bitops.h>
++#include <linux/bitfield.h>
+ #include <linux/i2c.h>
+ #include <linux/module.h>
+ #include <linux/pm_runtime.h>
+@@ -42,6 +43,7 @@
+ #define VCNL4035_ALS_PERS_MASK		GENMASK(3, 2)
+ #define VCNL4035_INT_ALS_IF_H_MASK	BIT(12)
+ #define VCNL4035_INT_ALS_IF_L_MASK	BIT(13)
++#define VCNL4035_DEV_ID_MASK		GENMASK(7, 0)
  
-+. "$(dirname "${0}")/mptcp_lib.sh"
-+
- rndh=$(printf %x $sec)-$(mktemp -u XXXXXX)
- ns1="ns1-$rndh"
- ns2="ns2-$rndh"
-@@ -33,6 +35,8 @@ cleanup()
- 	done
- }
+ /* Default values */
+ #define VCNL4035_MODE_ALS_ENABLE	BIT(0)
+@@ -415,6 +417,7 @@ static int vcnl4035_init(struct vcnl4035
+ 		return ret;
+ 	}
  
-+mptcp_lib_check_mptcp
-+
- ip -Version > /dev/null 2>&1
- if [ $? -ne 0 ];then
- 	echo "SKIP: Could not run test without ip tool"
++	id = FIELD_GET(VCNL4035_DEV_ID_MASK, id);
+ 	if (id != VCNL4035_DEV_ID_VAL) {
+ 		dev_err(&data->client->dev, "Wrong id, got %x, expected %x\n",
+ 			id, VCNL4035_DEV_ID_VAL);
 
 
