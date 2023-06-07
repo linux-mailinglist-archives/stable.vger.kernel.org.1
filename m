@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9B4E726C8D
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:34:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF931726D8F
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:43:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233885AbjFGUe1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:34:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32994 "EHLO
+        id S234475AbjFGUnb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:43:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233870AbjFGUe0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:34:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5940E2688
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:34:12 -0700 (PDT)
+        with ESMTP id S234497AbjFGUnZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:43:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF0A62128
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:43:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D9E076454B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:34:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA19DC433EF;
-        Wed,  7 Jun 2023 20:34:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC5D66463C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:42:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB692C433D2;
+        Wed,  7 Jun 2023 20:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170051;
-        bh=4mtC1ymSh+21vAY85ey59lHCFmzdZQwDtcY7C54vKe4=;
+        s=korg; t=1686170558;
+        bh=YWmMkh8l0UbNdG6QgZ4XM8b+KLeWJUU4FDAk16KjKIg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B38OnuGasPfQ+fRJpz4UISeHVsQDqWYSWnNjCCbS6Qx9dZBj3xYiHf8ulEUxSE+xQ
-         q6HHIUtX85IyrnBIFHtNrsdUvhjZO3ViQjPn4VIqXe+7hzpW9UZBuZp4zrxaJkwFpH
-         U8c/MvpD825J/pbz3AzpWuVM9wBVibTUboK7VqKY=
+        b=Dr77B+JNb73cqAZAdpqXzHxos031h6q+qh8KWioJo4DSrg7vG/FD9c3unXAX9lCmw
+         cP+H/J+UXQ4KbiIuy4BQh3sGSevyvqFccyu6aGevEVJqGJTM9M7DcgLLSAuYL4+u1P
+         wdy54xxiDaJMjXFATuAOChDaIgiICA06/+QXQg+Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexander Bersenev <bay@hackerdom.ru>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+        Ziyang Zhang <ZiyangZhang@linux.alibaba.com>,
+        Ming Lei <ming.lei@redhat.com>, Jens Axboe <axboe@kernel.dk>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 06/88] cdc_ncm: Fix the build warning
-Date:   Wed,  7 Jun 2023 22:15:23 +0200
-Message-ID: <20230607200856.283517971@linuxfoundation.org>
+Subject: [PATCH 6.1 131/225] ublk: fix AB-BA lockdep warning
+Date:   Wed,  7 Jun 2023 22:15:24 +0200
+Message-ID: <20230607200918.657885013@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,33 +56,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexander Bersenev <bay@hackerdom.ru>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 5d0ab06b63fc9c727a7bb72c81321c0114be540b ]
+[ Upstream commit ac5902f84bb546c64aea02c439c2579cbf40318f ]
 
-The ndp32->wLength is two bytes long, so replace cpu_to_le32 with cpu_to_le16.
+When handling UBLK_IO_FETCH_REQ, ctx->uring_lock is grabbed first, then
+ub->mutex is acquired.
 
-Fixes: 0fa81b304a79 ("cdc_ncm: Implement the 32-bit version of NCM Transfer Block")
-Signed-off-by: Alexander Bersenev <bay@hackerdom.ru>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+When handling UBLK_CMD_STOP_DEV or UBLK_CMD_DEL_DEV, ub->mutex is
+grabbed first, then calling io_uring_cmd_done() for canceling uring
+command, in which ctx->uring_lock may be required.
+
+Real deadlock only happens when all the above commands are issued from
+same uring context, and in reality different uring contexts are often used
+for handing control command and IO command.
+
+Fix the issue by using io_uring_cmd_complete_in_task() to cancel command
+in ublk_cancel_dev(ublk_cancel_queue).
+
+Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Closes: https://lore.kernel.org/linux-block/becol2g7sawl4rsjq2dztsbc7mqypfqko6wzsyoyazqydoasml@rcxarzwidrhk
+Cc: Ziyang Zhang <ZiyangZhang@linux.alibaba.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Tested-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Link: https://lore.kernel.org/r/20230517133408.210944-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/cdc_ncm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/ublk_drv.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-index e89a1a4333d55..65dac36d8d4ff 100644
---- a/drivers/net/usb/cdc_ncm.c
-+++ b/drivers/net/usb/cdc_ncm.c
-@@ -1178,7 +1178,7 @@ static struct usb_cdc_ncm_ndp32 *cdc_ncm_ndp32(struct cdc_ncm_ctx *ctx, struct s
- 		ndp32 = ctx->delayed_ndp32;
- 
- 	ndp32->dwSignature = sign;
--	ndp32->wLength = cpu_to_le32(sizeof(struct usb_cdc_ncm_ndp32) + sizeof(struct usb_cdc_ncm_dpe32));
-+	ndp32->wLength = cpu_to_le16(sizeof(struct usb_cdc_ncm_ndp32) + sizeof(struct usb_cdc_ncm_dpe32));
- 	return ndp32;
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index c0cbc5f3eb266..c56d1c6d8e58d 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -1045,6 +1045,11 @@ static inline bool ublk_queue_ready(struct ublk_queue *ubq)
+ 	return ubq->nr_io_ready == ubq->q_depth;
  }
  
++static void ublk_cmd_cancel_cb(struct io_uring_cmd *cmd, unsigned issue_flags)
++{
++	io_uring_cmd_done(cmd, UBLK_IO_RES_ABORT, 0, issue_flags);
++}
++
+ static void ublk_cancel_queue(struct ublk_queue *ubq)
+ {
+ 	int i;
+@@ -1056,8 +1061,8 @@ static void ublk_cancel_queue(struct ublk_queue *ubq)
+ 		struct ublk_io *io = &ubq->ios[i];
+ 
+ 		if (io->flags & UBLK_IO_FLAG_ACTIVE)
+-			io_uring_cmd_done(io->cmd, UBLK_IO_RES_ABORT, 0,
+-						IO_URING_F_UNLOCKED);
++			io_uring_cmd_complete_in_task(io->cmd,
++						      ublk_cmd_cancel_cb);
+ 	}
+ 
+ 	/* all io commands are canceled */
 -- 
 2.39.2
 
