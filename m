@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A942726E51
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:49:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02A39726C66
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:33:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235193AbjFGUtp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:49:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49336 "EHLO
+        id S233771AbjFGUdY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:33:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235068AbjFGUt0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:49:26 -0400
+        with ESMTP id S233741AbjFGUdX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:33:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8D35271B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:48:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 598201BD4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:33:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5DDF4646C1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:48:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F04C433D2;
-        Wed,  7 Jun 2023 20:48:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A2D8644CE
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:33:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F513C433D2;
+        Wed,  7 Jun 2023 20:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170934;
-        bh=/aQHJrkPZV+ML/j/omdPFfLwhiWitT9bbB2gtn71rlc=;
+        s=korg; t=1686169995;
+        bh=lPkjKh3VSeD7zFOib0sRqqqhSihnZ3Mqhs4DaI2r1xU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B3a48lLSpHyPWQcW7byH/gf3gQy5cU8EFy6TskzeICVF6BvUmBq2KCuDnwIOkH156
-         yulDcgzZBUfmf/8F1PT/kJexilfOEeuUoWO18xqhaG1lhcK4iV9W+DRI1nAlKHkq4b
-         6hcjw7sf2YgnPLV6TVZS/DNOeA7g7yLqQ3eqYVjc=
+        b=eVBVyzCucoTKg6jQu3CDMwcs9ZIIuu1DiYwJdGnystRDTWg0ASiSxGYRBwVs4Looh
+         i5LUBL3rmUcKCsiHd9VAFi6asu/zz45h4P8blYitaAEaZCd4ahf033ALa6XM7Cv/iL
+         S+gNcS7ViOzoCiRTFCnLsffvD56duIhM8CClybHg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, YongSu Yoo <yongsuyoo0215@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 048/120] media: dvb_demux: fix a bug for the continuity counter
+        patches@lists.linux.dev, Herve Codina <herve.codina@bootlin.com>,
+        kernel test robot <lkp@intel.com>, stable <stable@kernel.org>
+Subject: [PATCH 6.3 265/286] serial: cpm_uart: Fix a COMPILE_TEST dependency
 Date:   Wed,  7 Jun 2023 22:16:04 +0200
-Message-ID: <20230607200902.418421581@linuxfoundation.org>
+Message-ID: <20230607200931.965665292@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,65 +53,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: YongSu Yoo <yongsuyoo0215@gmail.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit 7efb10d8dc70ea3000cc70dca53407c52488acd1 ]
+commit 7183c37fd53eee1e795206e625da12a5d7ec1e1a upstream.
 
-In dvb_demux.c, some logics exist which compare the expected
-continuity counter and the real continuity counter. If they
-are not matched each other, both of the expected continuity
-counter and the real continuity counter should be printed.
-But there exists a bug that the expected continuity counter
-is not correctly printed. The expected continuity counter is
-replaced with the real countinuity counter + 1 so that
-the epected continuity counter is not correclty printed.
-This is wrong. This bug is fixed.
+In a COMPILE_TEST configuration, the cpm_uart driver uses symbols from
+the cpm_uart_cpm2.c file. This file is compiled only when CONFIG_CPM2 is
+set.
 
-Link: https://lore.kernel.org/linux-media/20230305212519.499-1-yongsuyoo0215@gmail.com
+Without this dependency, the linker fails with some missing symbols for
+COMPILE_TEST configuration that needs SERIAL_CPM without enabling CPM2.
 
-Signed-off-by: YongSu Yoo <yongsuyoo0215@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This lead to:
+  depends on CPM2 || CPM1 || (PPC32 && CPM2 && COMPILE_TEST)
+
+This dependency does not make sense anymore and can be simplified
+removing all the COMPILE_TEST part.
+
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/oe-kbuild-all/202305160221.9XgweObz-lkp@intel.com/
+Fixes: e3e7b13bffae ("serial: allow COMPILE_TEST for some drivers")
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20230523085902.75837-3-herve.codina@bootlin.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dvb_demux.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/serial/Kconfig             |    2 +-
+ drivers/tty/serial/cpm_uart/cpm_uart.h |    2 --
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/media/dvb-core/dvb_demux.c b/drivers/media/dvb-core/dvb_demux.c
-index 5fde1d38b3e34..80b495982f63c 100644
---- a/drivers/media/dvb-core/dvb_demux.c
-+++ b/drivers/media/dvb-core/dvb_demux.c
-@@ -125,12 +125,12 @@ static inline int dvb_dmx_swfilter_payload(struct dvb_demux_feed *feed,
+--- a/drivers/tty/serial/Kconfig
++++ b/drivers/tty/serial/Kconfig
+@@ -769,7 +769,7 @@ config SERIAL_PMACZILOG_CONSOLE
  
- 	cc = buf[3] & 0x0f;
- 	ccok = ((feed->cc + 1) & 0x0f) == cc;
--	feed->cc = cc;
- 	if (!ccok) {
- 		set_buf_flags(feed, DMX_BUFFER_FLAG_DISCONTINUITY_DETECTED);
- 		dprintk_sect_loss("missed packet: %d instead of %d!\n",
- 				  cc, (feed->cc + 1) & 0x0f);
- 	}
-+	feed->cc = cc;
+ config SERIAL_CPM
+ 	tristate "CPM SCC/SMC serial port support"
+-	depends on CPM2 || CPM1 || (PPC32 && COMPILE_TEST)
++	depends on CPM2 || CPM1
+ 	select SERIAL_CORE
+ 	help
+ 	  This driver supports the SCC and SMC serial ports on Motorola 
+--- a/drivers/tty/serial/cpm_uart/cpm_uart.h
++++ b/drivers/tty/serial/cpm_uart/cpm_uart.h
+@@ -19,8 +19,6 @@ struct gpio_desc;
+ #include "cpm_uart_cpm2.h"
+ #elif defined(CONFIG_CPM1)
+ #include "cpm_uart_cpm1.h"
+-#elif defined(CONFIG_COMPILE_TEST)
+-#include "cpm_uart_cpm2.h"
+ #endif
  
- 	if (buf[1] & 0x40)	// PUSI ?
- 		feed->peslen = 0xfffa;
-@@ -310,7 +310,6 @@ static int dvb_dmx_swfilter_section_packet(struct dvb_demux_feed *feed,
- 
- 	cc = buf[3] & 0x0f;
- 	ccok = ((feed->cc + 1) & 0x0f) == cc;
--	feed->cc = cc;
- 
- 	if (buf[3] & 0x20) {
- 		/* adaption field present, check for discontinuity_indicator */
-@@ -346,6 +345,7 @@ static int dvb_dmx_swfilter_section_packet(struct dvb_demux_feed *feed,
- 		feed->pusi_seen = false;
- 		dvb_dmx_swfilter_section_new(feed);
- 	}
-+	feed->cc = cc;
- 
- 	if (buf[1] & 0x40) {
- 		/* PUSI=1 (is set), section boundary is here */
--- 
-2.39.2
-
+ #define SERIAL_CPM_MAJOR	204
 
 
