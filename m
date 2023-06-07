@@ -2,210 +2,156 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 513017256C0
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 10:04:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F035725790
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 10:27:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238426AbjFGIEF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 04:04:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50180 "EHLO
+        id S239351AbjFGI11 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 04:27:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235556AbjFGIEE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 04:04:04 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59EDE8E;
-        Wed,  7 Jun 2023 01:04:03 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-977d7bdde43so69031066b.0;
-        Wed, 07 Jun 2023 01:04:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686125042; x=1688717042;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TQeSGI2ehCtt28cMSM0j/8JROdCQpNtOuBUEPEk+izY=;
-        b=UaZce0kdJ253KPmQD/Ug89rbzWmVLaMH9Uw8fzPkFB0Dh0Kwo8QyFNpK7p9PS1JmLU
-         Be9J3f/eDXvZJutlE03eVc92GG2Us5qwSa01vbgbia1wa/NyVA+i5Ew0XkwTmyaV08AI
-         NrMzJ8UlfZrmK3rZ55nRF1uZDBeZp+9FM+5eV23k7lGntAUOZkZgHY59UXBliwi91oFV
-         7eZ/HVRj8MwvLfaEoxFQW7m/tnvIdvQxEurGleeIfm29iUKwMfRaOn16dIcgUBpooY/e
-         V3K4T4Zf2nJU56ghZD2+lthmHP3KRwM4weimVQd1yjiNQhkHyVmhMX9KXOUWpsZs7X8H
-         Rmaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686125042; x=1688717042;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TQeSGI2ehCtt28cMSM0j/8JROdCQpNtOuBUEPEk+izY=;
-        b=lj7MWFekee/XvARCadnYc9z3clJXlKHXbiKREwU8yi0MgVWdTDx/wzrLFr8XCAqJtc
-         XCAD8O3mj6AhIdmDkc6FSbmzFSw5y1ZYmRki/wbd2FnTVGKNC3kNkErzfxJhJKv03qOL
-         nljcQ0Qi+kk1Bw3HsaGwbSVHf062cEXljDKEPRbReSCtFMWySziO9bFHjN3UTdmlh73D
-         xT9l4ScIoZY33JR7Acn8d8j+6weGbLwTmUnL8pHVVLPFZP90wg2iDPjqtDr0L7unvDQG
-         BKbf2fXSe/0xjpbxfvcWioJ3sWxAWWwgiDkwtOKsgZdxrOylOkKwh0/pSYUzZ2WMFQ0W
-         jrXg==
-X-Gm-Message-State: AC+VfDzwHDTigplIYe23X1tKGCfvisR6szy5dQQzKtt9DmZtr4GR0a6z
-        dRves0Gstm3RmMFQvKqPYYs5NPNq2G5uelPEXOg=
-X-Google-Smtp-Source: ACHHUZ6hlpNALNNDFT3bLhUI6jxaeSMa8EzFbhiXQB/Ccb0P7i6a5Pqcv5GUZqWM9UetdMcSpiI9+GdxFHIbp9garWc=
-X-Received: by 2002:a17:907:1c93:b0:977:d27e:dd5f with SMTP id
- nb19-20020a1709071c9300b00977d27edd5fmr5270843ejc.28.1686125041474; Wed, 07
- Jun 2023 01:04:01 -0700 (PDT)
+        with ESMTP id S239401AbjFGI10 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 04:27:26 -0400
+Received: from first.geanix.com (first.geanix.com [116.203.34.67])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04DE6E60;
+        Wed,  7 Jun 2023 01:27:22 -0700 (PDT)
+Received: from xps.skovby (85.184.138.13.dynamic.dhcp.aura-net.dk [85.184.138.13])
+        by first.geanix.com (Postfix) with ESMTPSA id 9FB794E5FAC;
+        Wed,  7 Jun 2023 08:27:19 +0000 (UTC)
+Authentication-Results: ORIGINATING;
+        auth=pass smtp.auth=martin@geanix.com smtp.mailfrom=martin@geanix.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
+        t=1686126439; bh=2eMiQLgQD/9nKKzqJMDwHwcTU9X0x8fIp1G9yAWOOlg=;
+        h=From:To:Cc:Subject:Date;
+        b=TtGoA9zU9lpibDRIM3aDNFNrxRnIwkOrgdkO2k2gc8vtM9pTKpROaI5bO8gBJvGvk
+         92sdMMzipGbcBN1RzvCRsHEkbZmE5AG3EpimE5KZcEuMYU6thfOcSTNVuTGOTfC4ap
+         iNl2WronG7BsYKsReUdimBavtb1Jer9Pkqkk3ebJV2LKz3qUZH7g4atFevGpgMgZhs
+         BVwP3YI8F2CEIVuAgu74UbRakxSH5kuJPX0hyKWW6Og93Cb9hFL7P8xZpQrpl4JlJo
+         c0+taRo/VeIBnzsd/ExOWecFl6EBlkZbB+cF2pdIhkkqM6ES+LC7QjdDCwkpxO8vkb
+         5qzoTVU7kBxLg==
+From:   =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc:     =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>,
+        stable@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCHv2] mmc: meson: remove redundant mmc_request_done() call from irq context
+Date:   Wed,  7 Jun 2023 10:27:12 +0200
+Message-Id: <20230607082713.517157-1-martin@geanix.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-References: <20230606005253.1055933-1-xiubli@redhat.com> <CAOi1vP_Xr6iMgjo7RKtc4-oZdF_FX7_U3Wx4Y=REdpa4Gj7Oig@mail.gmail.com>
- <b0ec84e4-1999-8284-dc90-307831f1e04b@redhat.com>
-In-Reply-To: <b0ec84e4-1999-8284-dc90-307831f1e04b@redhat.com>
-From:   Ilya Dryomov <idryomov@gmail.com>
-Date:   Wed, 7 Jun 2023 10:03:49 +0200
-Message-ID: <CAOi1vP_ma6pQ35FpG6wEYBhwxRXYB73vP-B1Jziji7zDodDpGQ@mail.gmail.com>
-Subject: Re: [PATCH v3] ceph: fix use-after-free bug for inodes when flushing capsnaps
-To:     Xiubo Li <xiubli@redhat.com>
-Cc:     ceph-devel@vger.kernel.org, jlayton@kernel.org,
-        vshankar@redhat.com, mchangir@redhat.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Jun 6, 2023 at 3:30=E2=80=AFPM Xiubo Li <xiubli@redhat.com> wrote:
->
->
-> On 6/6/23 18:21, Ilya Dryomov wrote:
-> > On Tue, Jun 6, 2023 at 2:55=E2=80=AFAM <xiubli@redhat.com> wrote:
-> >> From: Xiubo Li <xiubli@redhat.com>
-> >>
-> >> There is a race between capsnaps flush and removing the inode from
-> >> 'mdsc->snap_flush_list' list:
-> >>
-> >>     =3D=3D Thread A =3D=3D                     =3D=3D Thread B =3D=3D
-> >> ceph_queue_cap_snap()
-> >>   -> allocate 'capsnapA'
-> >>   ->ihold('&ci->vfs_inode')
-> >>   ->add 'capsnapA' to 'ci->i_cap_snaps'
-> >>   ->add 'ci' to 'mdsc->snap_flush_list'
-> >>      ...
-> >>     =3D=3D Thread C =3D=3D
-> >> ceph_flush_snaps()
-> >>   ->__ceph_flush_snaps()
-> >>    ->__send_flush_snap()
-> >>                                  handle_cap_flushsnap_ack()
-> >>                                   ->iput('&ci->vfs_inode')
-> >>                                     this also will release 'ci'
-> >>                                      ...
-> >>                                        =3D=3D Thread D =3D=3D
-> >>                                  ceph_handle_snap()
-> >>                                   ->flush_snaps()
-> >>                                    ->iterate 'mdsc->snap_flush_list'
-> >>                                     ->get the stale 'ci'
-> >>   ->remove 'ci' from                ->ihold(&ci->vfs_inode) this
-> >>     'mdsc->snap_flush_list'           will WARNING
-> >>
-> >> To fix this we will increase the inode's i_count ref when adding 'ci'
-> >> to the 'mdsc->snap_flush_list' list.
-> >>
-> >> Cc: stable@vger.kernel.org
-> >> URL: https://bugzilla.redhat.com/show_bug.cgi?id=3D2209299
-> >> Reviewed-by: Milind Changire <mchangir@redhat.com>
-> >> Signed-off-by: Xiubo Li <xiubli@redhat.com>
-> >> ---
-> >>
-> >> V3:
-> >> - Fix two minor typo in commit comments.
-> >>
-> >>
-> >>
-> >>   fs/ceph/caps.c | 6 ++++++
-> >>   fs/ceph/snap.c | 4 +++-
-> >>   2 files changed, 9 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
-> >> index feabf4cc0c4f..7c2cb813aba4 100644
-> >> --- a/fs/ceph/caps.c
-> >> +++ b/fs/ceph/caps.c
-> >> @@ -1684,6 +1684,7 @@ void ceph_flush_snaps(struct ceph_inode_info *ci=
-,
-> >>          struct inode *inode =3D &ci->netfs.inode;
-> >>          struct ceph_mds_client *mdsc =3D ceph_inode_to_client(inode)-=
->mdsc;
-> >>          struct ceph_mds_session *session =3D NULL;
-> >> +       int put =3D 0;
-> > Hi Xiubo,
-> >
-> > Nit: renaming this variable to need_put and making it a bool would
-> > communicate the intent better.
->
-> Hi Ilya
->
-> Sure, will update it.
->
-> >>          int mds;
-> >>
-> >>          dout("ceph_flush_snaps %p\n", inode);
-> >> @@ -1728,8 +1729,13 @@ void ceph_flush_snaps(struct ceph_inode_info *c=
-i,
-> >>                  ceph_put_mds_session(session);
-> >>          /* we flushed them all; remove this inode from the queue */
-> >>          spin_lock(&mdsc->snap_flush_lock);
-> >> +       if (!list_empty(&ci->i_snap_flush_item))
-> >> +               put++;
-> > What are the cases when ci is expected to not be on snap_flush_list
-> > list (and therefore there is no corresponding reference to put)?
-> >
-> > The reason I'm asking is that ceph_flush_snaps() is called from two
-> > other places directly (i.e. without iterating snap_flush_list list) and
-> > then __ceph_flush_snaps() is called from two yet other places.  The
-> > problem that we are presented with here is that __ceph_flush_snaps()
-> > effectively consumes a reference on ci.  Is ci protected from being
-> > freed by handle_cap_flushsnap_ack() very soon after __send_flush_snap()
-> > returns in all these other places?
->
-> There are 4 places will call the 'ceph_flush_snaps()':
->
-> Cscope tag: ceph_flush_snaps
->     #   line  filename / context / line
->     1   3221  fs/ceph/caps.c <<__ceph_put_cap_refs>>
->               ceph_flush_snaps(ci, NULL);
->     2   3336  fs/ceph/caps.c <<ceph_put_wrbuffer_cap_refs>>
->               ceph_flush_snaps(ci, NULL);
->     3   2243  fs/ceph/inode.c <<ceph_inode_work>>
->               ceph_flush_snaps(ci, NULL);
->     4    941  fs/ceph/snap.c <<flush_snaps>>
->               ceph_flush_snaps(ci, &session);
-> Type number and <Enter> (q or empty cancels):
->
-> For #1 it will add the 'ci' to the 'mdsc->snap_flush_list' list by
-> calling '__ceph_finish_cap_snap()' and then call the
-> 'ceph_flush_snaps()' directly or defer call it in the queue work in #3.
->
-> The #3 is the reason why we need the 'mdsc->snap_flush_list' list.
->
-> For #2 it won't add the 'ci' to the list because it will always call the
-> 'ceph_flush_snaps()' directly.
->
-> For #4 it will call 'ceph_flush_snaps()' by iterating the
-> 'mdsc->snap_flush_list' list just before the #3 being triggered.
->
-> The problem only exists in case of #1 --> #4, which will make the stale
-> 'ci' to be held in the 'mdsc->snap_flush_list' list after 'capsnap' and
-> 'ci' being freed. All the other cases are okay because the 'ci' will be
-> protected by increasing the ref when allocating the 'capsnap' and will
-> decrease the ref in 'handle_cap_flushsnap_ack()' when freeing the 'capsna=
-p'.
->
-> Note: the '__ceph_flush_snaps()' won't increase the ref. The
-> 'handle_cap_flushsnap_ack()' will just try to decrease the ref and only
-> in case the ref reaches to '0' will the 'ci' be freed.
+The call to mmc_request_done() can schedule, so it must not be called
+from irq context. Wake the irq thread if it needs to be called, and let
+its existing logic do its work.
 
-So my question is: are all __ceph_flush_snaps() callers guaranteed to
-hold an extra (i.e. one that is not tied to capsnap) reference on ci so
-that when handle_cap_flushsnap_ack() drops one that is tied to capsnap
-the reference count doesn't reach 0?  It sounds like you are confident
-that there is no issue with ceph_flush_snaps() callers, but it would be
-nice if you could confirm the same for bare __ceph_flush_snaps() call
-sites in caps.c.
+Fixes the following kernel bug, which appears when running an RT patched
+kernel on the AmLogic Meson AXG A113X SoC:
+[   11.111407] BUG: scheduling while atomic: kworker/0:1H/75/0x00010001
+[   11.111438] Modules linked in:
+[   11.111451] CPU: 0 PID: 75 Comm: kworker/0:1H Not tainted 6.4.0-rc3-rt2-rtx-00081-gfd07f41ed6b4-dirty #1
+[   11.111461] Hardware name: RTX AXG A113X Linux Platform Board (DT)
+[   11.111469] Workqueue: kblockd blk_mq_run_work_fn
+[   11.111492] Call trace:
+[   11.111497]  dump_backtrace+0xac/0xe8
+[   11.111510]  show_stack+0x18/0x28
+[   11.111518]  dump_stack_lvl+0x48/0x60
+[   11.111530]  dump_stack+0x18/0x24
+[   11.111537]  __schedule_bug+0x4c/0x68
+[   11.111548]  __schedule+0x80/0x574
+[   11.111558]  schedule_loop+0x2c/0x50
+[   11.111567]  schedule_rtlock+0x14/0x20
+[   11.111576]  rtlock_slowlock_locked+0x468/0x730
+[   11.111587]  rt_spin_lock+0x40/0x64
+[   11.111596]  __wake_up_common_lock+0x5c/0xc4
+[   11.111610]  __wake_up+0x18/0x24
+[   11.111620]  mmc_blk_mq_req_done+0x68/0x138
+[   11.111633]  mmc_request_done+0x104/0x118
+[   11.111644]  meson_mmc_request_done+0x38/0x48
+[   11.111654]  meson_mmc_irq+0x128/0x1f0
+[   11.111663]  __handle_irq_event_percpu+0x70/0x114
+[   11.111674]  handle_irq_event_percpu+0x18/0x4c
+[   11.111683]  handle_irq_event+0x80/0xb8
+[   11.111691]  handle_fasteoi_irq+0xa4/0x120
+[   11.111704]  handle_irq_desc+0x20/0x38
+[   11.111712]  generic_handle_domain_irq+0x1c/0x28
+[   11.111721]  gic_handle_irq+0x8c/0xa8
+[   11.111735]  call_on_irq_stack+0x24/0x4c
+[   11.111746]  do_interrupt_handler+0x88/0x94
+[   11.111757]  el1_interrupt+0x34/0x64
+[   11.111769]  el1h_64_irq_handler+0x18/0x24
+[   11.111779]  el1h_64_irq+0x64/0x68
+[   11.111786]  __add_wait_queue+0x0/0x4c
+[   11.111795]  mmc_blk_rw_wait+0x84/0x118
+[   11.111804]  mmc_blk_mq_issue_rq+0x5c4/0x654
+[   11.111814]  mmc_mq_queue_rq+0x194/0x214
+[   11.111822]  blk_mq_dispatch_rq_list+0x3ac/0x528
+[   11.111834]  __blk_mq_sched_dispatch_requests+0x340/0x4d0
+[   11.111847]  blk_mq_sched_dispatch_requests+0x38/0x70
+[   11.111858]  blk_mq_run_work_fn+0x3c/0x70
+[   11.111865]  process_one_work+0x17c/0x1f0
+[   11.111876]  worker_thread+0x1d4/0x26c
+[   11.111885]  kthread+0xe4/0xf4
+[   11.111894]  ret_from_fork+0x10/0x20
 
-Thanks,
+Fixes: 51c5d8447bd7 ("MMC: meson: initial support for GX platforms")
+Cc: stable@vger.kernel.org
+Signed-off-by: Martin Hundebøll <martin@geanix.com>
+---
+Version 1 of this patch:
+https://lore.kernel.org/linux-amlogic/20230606065918.460866-1-martin@geanix.com/
 
-                Ilya
+Changes since v1:
+ * remove redundant change to meson_mmc_irq_thread(), as per Martin's
+   review
+ * return early instead of assigning to "ret" variable
+ * change commit short-log to reflect code removal instead of it being
+   moved. (Was: "mmc: meson: move mmc_request_done() call to irq thread")
+
+ drivers/mmc/host/meson-gx-mmc.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
+index b8514d9d5e736..f90b0fd8d8b00 100644
+--- a/drivers/mmc/host/meson-gx-mmc.c
++++ b/drivers/mmc/host/meson-gx-mmc.c
+@@ -991,11 +991,8 @@ static irqreturn_t meson_mmc_irq(int irq, void *dev_id)
+ 
+ 		if (data && !cmd->error)
+ 			data->bytes_xfered = data->blksz * data->blocks;
+-		if (meson_mmc_bounce_buf_read(data) ||
+-		    meson_mmc_get_next_command(cmd))
+-			ret = IRQ_WAKE_THREAD;
+-		else
+-			ret = IRQ_HANDLED;
++
++		return IRQ_WAKE_THREAD;
+ 	}
+ 
+ out:
+@@ -1007,9 +1004,6 @@ static irqreturn_t meson_mmc_irq(int irq, void *dev_id)
+ 		writel(start, host->regs + SD_EMMC_START);
+ 	}
+ 
+-	if (ret == IRQ_HANDLED)
+-		meson_mmc_request_done(host->mmc, cmd->mrq);
+-
+ 	return ret;
+ }
+ 
+-- 
+2.40.1
+
