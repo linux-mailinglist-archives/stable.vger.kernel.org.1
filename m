@@ -2,49 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B89CF726C40
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E437726E12
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:48:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233631AbjFGUby (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:31:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58106 "EHLO
+        id S235074AbjFGUsH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:48:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233158AbjFGUbx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:31:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DF071B0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:31:52 -0700 (PDT)
+        with ESMTP id S235079AbjFGUru (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:47:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAB7B26B2
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:47:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BF44764505
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:31:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B38C4339E;
-        Wed,  7 Jun 2023 20:31:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CD28A646A3
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:47:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C1EC433EF;
+        Wed,  7 Jun 2023 20:47:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169911;
-        bh=LVDIOCGk25WOl94S4a518Q4prx8wwmV4NspVmMTbKGY=;
+        s=korg; t=1686170845;
+        bh=wXSSdQyJmNc1+zAqIpCgTXO4z+1cRBkB4VzOjiIEOew=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EmPD2oOS3TElY0oQUEg4P6da+ecYpMZttBCB+d8pgZwSa6MeLsUpuWAP8mzG1uofd
-         ZcOg6jDpkZCVHG1tFNB6fDmZOzoXWOn6avMtl3/ifjkcBCQZDHNTL9/ml66LgRnOTW
-         +zAekcuhpvW6qtyDctQFb1vCThwVdB6h8aToWBtE=
+        b=wdGGnZ5YpwI8JpYEQ8kJYtPLkOPLeG5KfMGt771ZGMDtxf6ZC9umiiNN6Dm/o0E5I
+         /TCymVfzDkD8gvaGkP/7Mn6nRWxuYUL8v1e2QYUnkrrgcfJYZmCrz9AGN1vy6eMskb
+         xmpiNWCrxqFR86IzHQptvJXxnmNYoCuPj3rFctfw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Ming Lei <ming.lei@redhat.com>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.3 231/286] block: fix revalidate performance regression
+        patches@lists.linux.dev, Simon Kapadia <szymon@kapadia.pl>,
+        Eric Dumazet <edumazet@google.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 014/120] netrom: fix info-leak in nr_write_internal()
 Date:   Wed,  7 Jun 2023 22:15:30 +0200
-Message-ID: <20230607200930.841361270@linuxfoundation.org>
+Message-ID: <20230607200901.365256272@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,58 +56,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 47fe1c3064c6bc1bfa3c032ff78e603e5dd6e5bc upstream.
+[ Upstream commit 31642e7089df8fd3f54ca7843f7ee2952978cad1 ]
 
-The scsi driver function sd_read_block_characteristics() always calls
-disk_set_zoned() to a disk zoned model correctly, in case the device
-model changed. This is done even for regular disks to set the zoned
-model to BLK_ZONED_NONE and free any zone related resources if the drive
-previously was zoned.
+Simon Kapadia reported the following issue:
 
-This behavior significantly impact the time it takes to revalidate disks
-on a large system as the call to disk_clear_zone_settings() done from
-disk_set_zoned() for the BLK_ZONED_NONE case results in the device
-request queued to be frozen, even if there are no zone resources to
-free.
+<quote>
 
-Avoid this overhead for non-zoned devices by not calling
-disk_clear_zone_settings() in disk_set_zoned() if the device model
-was already set to BLK_ZONED_NONE, which is always the case for regular
-devices.
+The Online Amateur Radio Community (OARC) has recently been experimenting
+with building a nationwide packet network in the UK.
+As part of our experimentation, we have been testing out packet on 300bps HF,
+and playing with net/rom.  For HF packet at this baud rate you really need
+to make sure that your MTU is relatively low; AX.25 suggests a PACLEN of 60,
+and a net/rom PACLEN of 40 to go with that.
+However the Linux net/rom support didn't work with a low PACLEN;
+the mkiss module would truncate packets if you set the PACLEN below about 200 or so, e.g.:
 
-Reported by: Brian Bunker <brian@purestorage.com>
+Apr 19 14:00:51 radio kernel: [12985.747310] mkiss: ax1: truncating oversized transmit packet!
 
-Fixes: 508aebb80527 ("block: introduce blk_queue_clear_zone_settings()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20230529073237.1339862-1-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This didn't make any sense to me (if the packets are smaller why would they
+be truncated?) so I started investigating.
+I looked at the packets using ethereal, and found that many were just huge
+compared to what I would expect.
+A simple net/rom connection request packet had the request and then a bunch
+of what appeared to be random data following it:
+
+</quote>
+
+Simon provided a patch that I slightly revised:
+Not only we must not use skb_tailroom(), we also do
+not want to count NR_NETWORK_LEN twice.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Co-Developed-by: Simon Kapadia <szymon@kapadia.pl>
+Signed-off-by: Simon Kapadia <szymon@kapadia.pl>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Tested-by: Simon Kapadia <szymon@kapadia.pl>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/20230524141456.1045467-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-settings.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/netrom/nr_subr.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -915,6 +915,7 @@ static bool disk_has_partitions(struct g
- void disk_set_zoned(struct gendisk *disk, enum blk_zoned_model model)
- {
- 	struct request_queue *q = disk->queue;
-+	unsigned int old_model = q->limits.zoned;
+diff --git a/net/netrom/nr_subr.c b/net/netrom/nr_subr.c
+index 3f99b432ea707..e2d2af924cff4 100644
+--- a/net/netrom/nr_subr.c
++++ b/net/netrom/nr_subr.c
+@@ -123,7 +123,7 @@ void nr_write_internal(struct sock *sk, int frametype)
+ 	unsigned char  *dptr;
+ 	int len, timeout;
  
- 	switch (model) {
- 	case BLK_ZONED_HM:
-@@ -952,7 +953,7 @@ void disk_set_zoned(struct gendisk *disk
- 		 */
- 		blk_queue_zone_write_granularity(q,
- 						queue_logical_block_size(q));
--	} else {
-+	} else if (old_model != BLK_ZONED_NONE) {
- 		disk_clear_zone_settings(disk);
+-	len = NR_NETWORK_LEN + NR_TRANSPORT_LEN;
++	len = NR_TRANSPORT_LEN;
+ 
+ 	switch (frametype & 0x0F) {
+ 	case NR_CONNREQ:
+@@ -141,7 +141,8 @@ void nr_write_internal(struct sock *sk, int frametype)
+ 		return;
  	}
- }
+ 
+-	if ((skb = alloc_skb(len, GFP_ATOMIC)) == NULL)
++	skb = alloc_skb(NR_NETWORK_LEN + len, GFP_ATOMIC);
++	if (!skb)
+ 		return;
+ 
+ 	/*
+@@ -149,7 +150,7 @@ void nr_write_internal(struct sock *sk, int frametype)
+ 	 */
+ 	skb_reserve(skb, NR_NETWORK_LEN);
+ 
+-	dptr = skb_put(skb, skb_tailroom(skb));
++	dptr = skb_put(skb, len);
+ 
+ 	switch (frametype & 0x0F) {
+ 	case NR_CONNREQ:
+-- 
+2.39.2
+
 
 
