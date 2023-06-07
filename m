@@ -2,45 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9BB6726BCF
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:28:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0169D726D4B
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:41:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233424AbjFGU2b (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:28:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54678 "EHLO
+        id S234333AbjFGUlE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:41:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233441AbjFGU2b (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:28:31 -0400
+        with ESMTP id S234369AbjFGUk6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:40:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EAA92130
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:28:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C28FD26A9
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:40:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D4402644A7
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:28:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6579C433EF;
-        Wed,  7 Jun 2023 20:28:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A3E8664608
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:40:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D09EC433EF;
+        Wed,  7 Jun 2023 20:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169690;
-        bh=DxuCZLxNKZOGFkbLW1z7lpppJgobYKFNPo00ELiykPw=;
+        s=korg; t=1686170438;
+        bh=AYDdix689I2vU8jOnY205uFQHxEJIW8WzC6bopMeBTM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DYN0hXh1tMEekGSh0MpPVrmo8b5f1DfDCx91ThS0B7ZaWVElo4esEEm/Nnf733BAa
-         OZq2LcOmZqWHSXRy6Y/1wY+d+y/1ICRQf/TDVBHTR1e+WBx6ZhgDyGgQewwNNdmJhl
-         Su1FOQPgjaDoL/+XH7lMqJzs46wIfBk19cYLL+ek=
+        b=IOTYoj3V6OtbrvyWb9C90W9XudxJ5ga+5Qk49H+CcjNLWhgQTePl7dqy1kkHbUsV2
+         JYO4wFpRWiWvTNEA7kkfRWgY6GHqWX9IXMeq0Q1bsUZw9mCF+fzHW4iDWABJR4j4Zu
+         gRBq3BL53byZZc0WwpH3MB4n7v7EV70hUPdVK+QM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        Oliver Upton <oliver.upton@linux.dev>,
-        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 177/286] KVM: arm64: vgic: Fix locking comment
+        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 083/225] ASoC: amd: yc: Add DMI entry to support System76 Pangolin 12
 Date:   Wed,  7 Jun 2023 22:14:36 +0200
-Message-ID: <20230607200929.039849965@linuxfoundation.org>
+Message-ID: <20230607200917.090135828@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,43 +52,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+From: Jeremy Soller <jeremy@system76.com>
 
-[ Upstream commit c38b8400aef99d63be2b1ff131bb993465dcafe1 ]
+[ Upstream commit 7b9891ad25246b18b5ccc19518da7abc7763aa0a ]
 
-It is now config_lock that must be held, not kvm lock. Replace the
-comment with a lockdep annotation.
+Add pang12 quirk to enable the internal microphone.
 
-Fixes: f00327731131 ("KVM: arm64: Use config_lock to protect vgic state")
-Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230518100914.2837292-4-jean-philippe@linaro.org
+Signed-off-by: Jeremy Soller <jeremy@system76.com
+Signed-off-by: Tim Crawford <tcrawford@system76.com
+Link: https://lore.kernel.org/r/20230505161458.19676-1-tcrawford@system76.com
+Signed-off-by: Mark Brown <broonie@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/vgic/vgic-v4.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/arm64/kvm/vgic/vgic-v4.c b/arch/arm64/kvm/vgic/vgic-v4.c
-index 3bb0034780605..c1c28fe680ba3 100644
---- a/arch/arm64/kvm/vgic/vgic-v4.c
-+++ b/arch/arm64/kvm/vgic/vgic-v4.c
-@@ -184,13 +184,14 @@ static void vgic_v4_disable_vsgis(struct kvm_vcpu *vcpu)
- 	}
- }
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index b9958e5553674..84b401b685f7f 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -297,6 +297,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "8A22"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "System76"),
++			DMI_MATCH(DMI_PRODUCT_VERSION, "pang12"),
++		}
++	},
+ 	{}
+ };
  
--/* Must be called with the kvm lock held */
- void vgic_v4_configure_vsgis(struct kvm *kvm)
- {
- 	struct vgic_dist *dist = &kvm->arch.vgic;
- 	struct kvm_vcpu *vcpu;
- 	unsigned long i;
- 
-+	lockdep_assert_held(&kvm->arch.config_lock);
-+
- 	kvm_arm_halt_guest(kvm);
- 
- 	kvm_for_each_vcpu(i, vcpu, kvm) {
 -- 
 2.39.2
 
