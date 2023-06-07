@@ -2,44 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1864726AAA
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:19:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED108726E3D
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:49:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231901AbjFGUTI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:19:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43810 "EHLO
+        id S235143AbjFGUtG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:49:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232367AbjFGUSo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:18:44 -0400
+        with ESMTP id S235145AbjFGUsm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:48:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC8C61FDB
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:18:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7194810EA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:48:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4FFEE63C2A
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:18:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E538C433EF;
-        Wed,  7 Jun 2023 20:18:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 19401646B2
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:48:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28849C433D2;
+        Wed,  7 Jun 2023 20:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169089;
-        bh=TwVB5CNSXyBVdSL/6LkxFooRKToo+KuulE1fK+6TWiU=;
+        s=korg; t=1686170903;
+        bh=0GUAsxossW2/ifeIIFxjnS7AQuYoW38Ib0Q2Gzs16z0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vF81oW/+kL/OOUG9tqjGknfCp488+Z6c4B9Guk/2WZsQ0GW/bQr376lGfILPEyHuA
-         rINlYivYL48CSmUk857cYO4hCO3F0NqNKjyIg2f8KyZUgTmt+YaH0owdCeLpwJwMiq
-         eCeUSgzInADSvH9Tz4MAFluy2NLqHD6UR1EcBaBo=
+        b=C1fGgC3M5zPUc/A0iseT13klGryQ2/EaPNQ3X36Bn3DSnmEw6Rkp8C/UgbGAyXsEH
+         Zf8SGCJiBzaN4uEYoYquqv9OjeU4N7J+JQxmUffC4go9myZ2rYMh9MBdxyFpyD5fyI
+         013Li30LyKKS00yKb4xABMTs+k+IedUwHz1Bmfpk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lee Jones <lee@kernel.org>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
+        patches@lists.linux.dev,
+        Hongguang Gao <hongguang.gao@broadcom.com>,
+        Ajit Khaparde <ajit.khaparde@broadcom.com>,
+        Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 11/61] mailbox: mailbox-test: Fix potential double-free in mbox_test_message_write()
+Subject: [PATCH 5.10 009/120] RDMA/bnxt_re: Fix return value of bnxt_re_process_raw_qp_pkt_rx
 Date:   Wed,  7 Jun 2023 22:15:25 +0200
-Message-ID: <20230607200838.987256629@linuxfoundation.org>
+Message-ID: <20230607200901.211950046@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-References: <20230607200835.310274198@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,133 +58,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lee Jones <lee@kernel.org>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit 2d1e952a2b8e5e92d8d55ac88a7cf7ca5ea591ad ]
+[ Upstream commit 0fa0d520e2a878cb4c94c4dc84395905d3f14f54 ]
 
-If a user can make copy_from_user() fail, there is a potential for
-UAF/DF due to a lack of locking around the allocation, use and freeing
-of the data buffers.
+bnxt_re_process_raw_qp_pkt_rx() always return 0 and ignores the return
+value of bnxt_re_post_send_shadow_qp().
 
-This issue is not theoretical.  I managed to author a POC for it:
-
-    BUG: KASAN: double-free in kfree+0x5c/0xac
-    Free of addr ffff29280be5de00 by task poc/356
-    CPU: 1 PID: 356 Comm: poc Not tainted 6.1.0-00001-g961aa6552c04-dirty #20
-    Hardware name: linux,dummy-virt (DT)
-    Call trace:
-     dump_backtrace.part.0+0xe0/0xf0
-     show_stack+0x18/0x40
-     dump_stack_lvl+0x64/0x80
-     print_report+0x188/0x48c
-     kasan_report_invalid_free+0xa0/0xc0
-     ____kasan_slab_free+0x174/0x1b0
-     __kasan_slab_free+0x18/0x24
-     __kmem_cache_free+0x130/0x2e0
-     kfree+0x5c/0xac
-     mbox_test_message_write+0x208/0x29c
-     full_proxy_write+0x90/0xf0
-     vfs_write+0x154/0x440
-     ksys_write+0xcc/0x180
-     __arm64_sys_write+0x44/0x60
-     invoke_syscall+0x60/0x190
-     el0_svc_common.constprop.0+0x7c/0x160
-     do_el0_svc+0x40/0xf0
-     el0_svc+0x2c/0x6c
-     el0t_64_sync_handler+0xf4/0x120
-     el0t_64_sync+0x18c/0x190
-
-    Allocated by task 356:
-     kasan_save_stack+0x3c/0x70
-     kasan_set_track+0x2c/0x40
-     kasan_save_alloc_info+0x24/0x34
-     __kasan_kmalloc+0xb8/0xc0
-     kmalloc_trace+0x58/0x70
-     mbox_test_message_write+0x6c/0x29c
-     full_proxy_write+0x90/0xf0
-     vfs_write+0x154/0x440
-     ksys_write+0xcc/0x180
-     __arm64_sys_write+0x44/0x60
-     invoke_syscall+0x60/0x190
-     el0_svc_common.constprop.0+0x7c/0x160
-     do_el0_svc+0x40/0xf0
-     el0_svc+0x2c/0x6c
-     el0t_64_sync_handler+0xf4/0x120
-     el0t_64_sync+0x18c/0x190
-
-    Freed by task 357:
-     kasan_save_stack+0x3c/0x70
-     kasan_set_track+0x2c/0x40
-     kasan_save_free_info+0x38/0x5c
-     ____kasan_slab_free+0x13c/0x1b0
-     __kasan_slab_free+0x18/0x24
-     __kmem_cache_free+0x130/0x2e0
-     kfree+0x5c/0xac
-     mbox_test_message_write+0x208/0x29c
-     full_proxy_write+0x90/0xf0
-     vfs_write+0x154/0x440
-     ksys_write+0xcc/0x180
-     __arm64_sys_write+0x44/0x60
-     invoke_syscall+0x60/0x190
-     el0_svc_common.constprop.0+0x7c/0x160
-     do_el0_svc+0x40/0xf0
-     el0_svc+0x2c/0x6c
-     el0t_64_sync_handler+0xf4/0x120
-     el0t_64_sync+0x18c/0x190
-
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Link: https://lore.kernel.org/r/1684397461-23082-3-git-send-email-selvin.xavier@broadcom.com
+Reviewed-by: Hongguang Gao <hongguang.gao@broadcom.com>
+Reviewed-by: Ajit Khaparde <ajit.khaparde@broadcom.com>
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox-test.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
-index 546ba140f83d2..c23acd994d783 100644
---- a/drivers/mailbox/mailbox-test.c
-+++ b/drivers/mailbox/mailbox-test.c
-@@ -16,6 +16,7 @@
- #include <linux/kernel.h>
- #include <linux/mailbox_client.h>
- #include <linux/module.h>
-+#include <linux/mutex.h>
- #include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/poll.h>
-@@ -43,6 +44,7 @@ struct mbox_test_device {
- 	char			*signal;
- 	char			*message;
- 	spinlock_t		lock;
-+	struct mutex		mutex;
- 	wait_queue_head_t	waitq;
- 	struct fasync_struct	*async_queue;
- };
-@@ -114,6 +116,8 @@ static ssize_t mbox_test_message_write(struct file *filp,
- 		return -EINVAL;
- 	}
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index 85fecb432aa00..2a973a1390a4a 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -3247,9 +3247,7 @@ static int bnxt_re_process_raw_qp_pkt_rx(struct bnxt_re_qp *gsi_qp,
+ 	udwr.remote_qkey = gsi_sqp->qplib_qp.qkey;
  
-+	mutex_lock(&tdev->mutex);
-+
- 	tdev->message = kzalloc(MBOX_MAX_MSG_LEN, GFP_KERNEL);
- 	if (!tdev->message)
- 		return -ENOMEM;
-@@ -148,6 +152,8 @@ static ssize_t mbox_test_message_write(struct file *filp,
- 	kfree(tdev->message);
- 	tdev->signal = NULL;
- 
-+	mutex_unlock(&tdev->mutex);
-+
- 	return ret < 0 ? ret : count;
+ 	/* post data received  in the send queue */
+-	rc = bnxt_re_post_send_shadow_qp(rdev, gsi_sqp, swr);
+-
+-	return 0;
++	return bnxt_re_post_send_shadow_qp(rdev, gsi_sqp, swr);
  }
  
-@@ -396,6 +402,7 @@ static int mbox_test_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, tdev);
- 
- 	spin_lock_init(&tdev->lock);
-+	mutex_init(&tdev->mutex);
- 
- 	if (tdev->rx_channel) {
- 		tdev->rx_buffer = devm_kzalloc(&pdev->dev,
+ static void bnxt_re_process_res_rawqp1_wc(struct ib_wc *wc,
 -- 
 2.39.2
 
