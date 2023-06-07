@@ -2,138 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0760772709C
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:40:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82B5D7268CC
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 20:33:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231238AbjFGVkN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:40:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49722 "EHLO
+        id S232208AbjFGSdP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 14:33:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230043AbjFGVkM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:40:12 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43D251BD6;
-        Wed,  7 Jun 2023 14:40:11 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-3f6dfc4e01fso78635595e9.0;
-        Wed, 07 Jun 2023 14:40:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686174009; x=1688766009;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=lmy4XW07oKHOzK9aUKxDjGz102EX0NciX9ngG/h5Op8=;
-        b=sMjiF6MA5LBXfcs4yX28hE18P801iKcAwW0xcFksygw4rnvT+zL5KGzA3oLFviaKul
-         SXLDKHuPAh1qrChJafS0iNwbqEs068eawutnLQI9B/sZFGEHB7CfiAzmx7UbtXm+EQQP
-         l5JlHfR3Zugj5hGqVy5FH/hchB+NE/DoeKYNvYT/g1yR20BIIcF/mshlFGni7hiYnaCt
-         dSalA2wX/xqm1OYrmsDZ73HEArh8+lGWNSn2xQ1IE+5Lt+R/hRhMJR8ZSkphENy/MHva
-         jPC81a3SamB5Cb5qUMc0Rskal2S2GA7+lI1E6DQlweIk36WfS4hHnAJOyqoTPLrnmemC
-         Yn9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686174009; x=1688766009;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lmy4XW07oKHOzK9aUKxDjGz102EX0NciX9ngG/h5Op8=;
-        b=i7lpRewUnFuZ7fUAGHxTFkpHnYrVnrxmE9GUlKVjXHwxoYCW58l3BuPEzID8GksOVn
-         DQabZdLCJKgbbaVEm9hw5oQXLIykNbyQxvYBtkSSS5lce57j/m6zR6GlNSfi5ZgJoxUQ
-         dIPrTbjE9ktkNaQ/5JU+cySY7qeAqmNprhZsMNolCUNgnwpEEhuJOtNCj9R4nk8l9wHx
-         CvLIC7JCWwwM1aNpxsyAwRduykFqC4Mtz7urBLt/XcIwnXTNSwVjOSbLvVUDfsXnJKYq
-         gqQmxCQty1FqCQcvrqCVaCVa8G7VhX+MhkhAUEpf3fVZKLza/QlTwHfPmUsCWlRcPQMh
-         GO5A==
-X-Gm-Message-State: AC+VfDwSGgRzYjMVvpVRrBo6q/3x7QQAsUejxqt85AUTgdyJxU5F7BME
-        KYTFQxgwP5bafkS1KUv+B+C+S5tykNM=
-X-Google-Smtp-Source: ACHHUZ4PWSrnMRmLSHjyewoXrXzTcg5ud1vYOcwQKJA99JC8o6Ria7mVmbfERcv5Q9z5T0bzHgQATg==
-X-Received: by 2002:a05:600c:28d0:b0:3f6:143:7c4b with SMTP id h16-20020a05600c28d000b003f601437c4bmr8370899wmd.6.1686174009205;
-        Wed, 07 Jun 2023 14:40:09 -0700 (PDT)
-Received: from Ansuel-xps. (93-34-93-173.ip49.fastwebnet.it. [93.34.93.173])
-        by smtp.gmail.com with ESMTPSA id p23-20020a1c7417000000b003f6f6a6e769sm3230521wmc.17.2023.06.07.14.40.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jun 2023 14:40:08 -0700 (PDT)
-Message-ID: <6480f938.1c0a0220.17a3a.0e1e@mx.google.com>
-X-Google-Original-Message-ID: <ZIDNHjVEoSh8gtOh@Ansuel-xps.>
-Date:   Wed, 7 Jun 2023 20:31:58 +0200
-From:   Christian Marangi <ansuelsmth@gmail.com>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Mark Brown <broonie@kernel.org>,
-        Dave Martin <Dave.Martin@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] binfmt_elf: dynamically allocate note.data in
- parse_elf_properties
-References: <20230607144227.8956-1-ansuelsmth@gmail.com>
- <202306071417.79F70AC@keescook>
+        with ESMTP id S232262AbjFGSdM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 14:33:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 900BF1BD0
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 11:33:02 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E4ED063BEF
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 18:33:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B2CC433D2;
+        Wed,  7 Jun 2023 18:33:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1686162781;
+        bh=R3ANen+nYxN6y2OhJU+Wqoin5M/3/8ATRMK3ROqeqcA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=NzNRu7ISd5l4UK3JJuIXR252/aenULzsrVwMXDBzfZFCivBgNQSd3bjhhzuabBrVJ
+         sO2VDTaqp77COxkZ81fy9UxOiy6V00xDgngTb/PO7ZRp6JrFoce7cGKPFzLtUccBy6
+         NdfAAaJnv/tbhPeR7IpAyOQ9bW7XHmtRzm2VeSJc=
+Date:   Wed, 7 Jun 2023 20:32:58 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Conor Dooley <conor.dooley@microchip.com>
+Cc:     Nathan Chancellor <nathan@kernel.org>, sashal@kernel.org,
+        palmer@dabbelt.com, conor@kernel.org, paul.walmsley@sifive.com,
+        aou@eecs.berkeley.edu, ndesaulniers@google.com, trix@redhat.com,
+        stable@vger.kernel.org, linux-riscv@lists.infradead.org,
+        llvm@lists.linux.dev, patches@lists.linux.dev
+Subject: Re: [PATCH 6.3] riscv: vmlinux.lds.S: Explicitly handle '.got'
+ section
+Message-ID: <2023060752-chaffing-unable-8b26@gregkh>
+References: <20230605-6-3-riscv-got-orphan-warning-llvm-17-v1-1-72c4f11e020f@kernel.org>
+ <20230606-exploit-refill-b9311f2378f3@wendy>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <202306071417.79F70AC@keescook>
-X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <20230606-exploit-refill-b9311f2378f3@wendy>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jun 07, 2023 at 02:19:51PM -0700, Kees Cook wrote:
-> On Wed, Jun 07, 2023 at 04:42:27PM +0200, Christian Marangi wrote:
-> > Dynamically allocate note.data in parse_elf_properties to fix
-> > compilation warning on some arch.
+On Tue, Jun 06, 2023 at 11:40:35AM +0100, Conor Dooley wrote:
+> On Mon, Jun 05, 2023 at 02:15:08PM -0700, Nathan Chancellor wrote:
+> > This patch is for linux-6.3.y only, it has no direct mainline
+> > equivalent.
+> > 
+> > LLVM 17 will now use the GOT for extern weak symbols when using the
+> > medany model, which causes a linker orphan section warning on
+> > linux-6.3.y:
+> > 
+> >   ld.lld: warning: <internal>:(.got) is being placed in '.got'
+> > 
+> > This is not an issue in mainline because handling of the .got section
+> > was added by commit 39b33072941f ("riscv: Introduce CONFIG_RELOCATABLE")
+> > and further extended by commit 26e7aacb83df ("riscv: Allow to downgrade
+> > paging mode from the command line") in 6.4-rc1. Neither of these changes
+> > are suitable for stable, so add explicit handling of the .got section in
+> > a standalone change to align 6.3 and mainline, which addresses the
+> > warning.
+> > 
+> > This is only an issue for 6.3 because commit f4b71bff8d85 ("riscv:
+> > select ARCH_WANT_LD_ORPHAN_WARN for !XIP_KERNEL") landed in 6.3-rc1, so
+> > earlier releases will not see this warning because it will not be
+> > enabled.
+> > 
+> > Closes: https://github.com/ClangBuiltLinux/linux/issues/1865
+> > Link: https://github.com/llvm/llvm-project/commit/a178ba9fbd0a27057dc2fa4cb53c76caa013caac
+> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 > 
-> I'd rather avoid dynamic allocation as much as possible in the exec
-> path, but we can balance it against how much it may happen.
->
+> Seems reasonable to me chief.
+> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
-I guess there isn't a good way to handle this other than static global
-variables and kmalloc. But check the arch question for additional info
-on the case.
+Now queued up,t hanks.
 
-> > On some arch note.data exceed the stack limit for a single function and
-> > this cause the following compilation warning:
-> > fs/binfmt_elf.c: In function 'parse_elf_properties.isra':
-> > fs/binfmt_elf.c:821:1: error: the frame size of 1040 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
-> >   821 | }
-> >       | ^
-> > cc1: all warnings being treated as errors
-> 
-> Which architectures see this warning?
-> 
-
-This is funny. On OpenWRT we are enforcing WERROR and we had FRAME_WARN
-hardcoded to 1024. (the option is set to 2048 on 64bit arch)
-
-ARCH_USE_GNU_PROPERTY is set only on arm64 that have a FRAME_WARN set to
-2048.
-
-So this was triggered by building arm64 with FRAME_WARN set to 1024.
-
-Now with the configuration of 2048 the stack warn is not triggered, but
-I wonder if it may happen to have a 32bit system with
-ARCH_USE_GNU_PROPERTY. That would effectively trigger the warning.
-
-So this is effectively a patch that fix a currently not possible
-configuration, since:
-
-!IS_ENABLED(CONFIG_ARCH_USE_GNU_PROPERTY) will result in node.data
-effectively never allocated by the compiler are the function will return
-0 on everything that doesn't have CONFIG_ARCH_USE_GNU_PROPERTY.
-
-> > Fix this by dynamically allocating the array.
-> > Update the sizeof of the union to the biggest element allocated.
-> 
-> How common are these notes? I assume they're very common; I see them
-> even in /bin/true:
-> 
-> $ readelf -lW /bin/true | grep PROP
->   GNU_PROPERTY   0x000338 0x0000000000000338 0x0000000000000338 0x000030 0x000030 R   0x8
-> 
-> -- 
-
-Is there a way to check if this kmalloc actually cause perf regression?
-
--- 
-	Ansuel
+greg k-h
