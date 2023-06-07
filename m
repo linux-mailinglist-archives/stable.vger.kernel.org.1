@@ -2,49 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A993D726BA1
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5A7D726CEB
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:37:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233382AbjFGU0m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:26:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52018 "EHLO
+        id S234086AbjFGUhs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:37:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233348AbjFGU0k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C9902132
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:26:25 -0700 (PDT)
+        with ESMTP id S234049AbjFGUhp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:37:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D733F2136
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:37:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 08BA764449
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:25:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 196A5C433D2;
-        Wed,  7 Jun 2023 20:25:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B5AA061D5F
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:37:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4EE4C433D2;
+        Wed,  7 Jun 2023 20:37:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169506;
-        bh=t0DvZ7heiAOR2gaainKo1OXYll/0QkH8RC6nJ4z0lZ0=;
+        s=korg; t=1686170248;
+        bh=R/3dDBsTQVMSJNSLM49EAIqVkmO7MrgKF61TN9pBRrc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wQ5Ry37Hj/rsmJNLT6x4bVnVnETQZVhDHTRme72sJ0pA67Gvo9nXAC/NaOoDWlgJb
-         EGdKx5mLcBauMtISWXukW/Z0Ernpq0Jop5gsu2q2WiLnNjQBJKl/Jy9Dl+YJGKUhu+
-         s9FVyRvxTrFvisrjR+T5M2SXcaLqyXSAcXhXgqmQ=
+        b=UVL3hl+RP3fbQYuHXpXAHigdcyInYSDpMqGweY1Q/aqr2KIJK2AO3JtVIKqrfAdVm
+         ISfA1qbUwIInFpPMDh3SA+08XF9K2CQBb8OrEZCHg2YyiBhcBoTWqF1Qty1fiAnWRw
+         lbBrbQ9xwuUjEP8hq7EC3FT3pscruDkm2lolZLws=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
-        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 107/286] fbdev: imsttfb: Fix use after free bug in imsttfb_probe
+        patches@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
+        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+        Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Vasant Hegde <vasant.hegde@amd.com>,
+        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 013/225] iommu/amd: Fix up merge conflict resolution
 Date:   Wed,  7 Jun 2023 22:13:26 +0200
-Message-ID: <20230607200926.584630898@linuxfoundation.org>
+Message-ID: <20230607200913.772728388@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,78 +58,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Jerry Snitselaar <jsnitsel@redhat.com>
 
-[ Upstream commit c75f5a55061091030a13fef71b9995b89bc86213 ]
+[ Upstream commit 8ec4e2befef10c7679cd59251956a428e783c0b5 ]
 
-A use-after-free bug may occur if init_imstt invokes framebuffer_release
-and free the info ptr. The caller, imsttfb_probe didn't notice that and
-still keep the ptr as private data in pdev.
+Merge commit e17c6debd4b2 ("Merge branches 'arm/mediatek', 'arm/msm', 'arm/renesas', 'arm/rockchip', 'arm/smmu', 'x86/vt-d' and 'x86/amd' into next")
+added amd_iommu_init_devices, amd_iommu_uninit_devices,
+and amd_iommu_init_notifier back to drivers/iommu/amd/amd_iommu.h.
+The only references to them are here, so clean them up.
 
-If we remove the driver which will call imsttfb_remove to make cleanup,
-UAF happens.
-
-Fix it by return error code if bad case happens in init_imstt.
-
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: e17c6debd4b2 ("Merge branches 'arm/mediatek', 'arm/msm', 'arm/renesas', 'arm/rockchip', 'arm/smmu', 'x86/vt-d' and 'x86/amd' into next")
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Link: https://lore.kernel.org/r/20230420192013.733331-1-jsnitsel@redhat.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/imsttfb.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/iommu/amd/amd_iommu.h | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/imsttfb.c b/drivers/video/fbdev/imsttfb.c
-index bea45647184e1..975dd682fae4b 100644
---- a/drivers/video/fbdev/imsttfb.c
-+++ b/drivers/video/fbdev/imsttfb.c
-@@ -1347,7 +1347,7 @@ static const struct fb_ops imsttfb_ops = {
- 	.fb_ioctl 	= imsttfb_ioctl,
- };
+diff --git a/drivers/iommu/amd/amd_iommu.h b/drivers/iommu/amd/amd_iommu.h
+index 24c7e6c6c0de9..471f40351f4c8 100644
+--- a/drivers/iommu/amd/amd_iommu.h
++++ b/drivers/iommu/amd/amd_iommu.h
+@@ -16,9 +16,6 @@ extern irqreturn_t amd_iommu_int_handler(int irq, void *data);
+ extern void amd_iommu_apply_erratum_63(struct amd_iommu *iommu, u16 devid);
+ extern void amd_iommu_restart_event_logging(struct amd_iommu *iommu);
+ extern void amd_iommu_restart_ga_log(struct amd_iommu *iommu);
+-extern int amd_iommu_init_devices(void);
+-extern void amd_iommu_uninit_devices(void);
+-extern void amd_iommu_init_notifier(void);
+ extern void amd_iommu_set_rlookup_table(struct amd_iommu *iommu, u16 devid);
  
--static void init_imstt(struct fb_info *info)
-+static int init_imstt(struct fb_info *info)
- {
- 	struct imstt_par *par = info->par;
- 	__u32 i, tmp, *ip, *end;
-@@ -1420,7 +1420,7 @@ static void init_imstt(struct fb_info *info)
- 	    || !(compute_imstt_regvals(par, info->var.xres, info->var.yres))) {
- 		printk("imsttfb: %ux%ux%u not supported\n", info->var.xres, info->var.yres, info->var.bits_per_pixel);
- 		framebuffer_release(info);
--		return;
-+		return -ENODEV;
- 	}
- 
- 	sprintf(info->fix.id, "IMS TT (%s)", par->ramdac == IBM ? "IBM" : "TVP");
-@@ -1456,12 +1456,13 @@ static void init_imstt(struct fb_info *info)
- 
- 	if (register_framebuffer(info) < 0) {
- 		framebuffer_release(info);
--		return;
-+		return -ENODEV;
- 	}
- 
- 	tmp = (read_reg_le32(par->dc_regs, SSTATUS) & 0x0f00) >> 8;
- 	fb_info(info, "%s frame buffer; %uMB vram; chip version %u\n",
- 		info->fix.id, info->fix.smem_len >> 20, tmp);
-+	return 0;
- }
- 
- static int imsttfb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
-@@ -1529,10 +1530,10 @@ static int imsttfb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	if (!par->cmap_regs)
- 		goto error;
- 	info->pseudo_palette = par->palette;
--	init_imstt(info);
--
--	pci_set_drvdata(pdev, info);
--	return 0;
-+	ret = init_imstt(info);
-+	if (!ret)
-+		pci_set_drvdata(pdev, info);
-+	return ret;
- 
- error:
- 	if (par->dc_regs)
+ #ifdef CONFIG_AMD_IOMMU_DEBUGFS
 -- 
 2.39.2
 
