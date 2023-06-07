@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 812CB726E0B
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:48:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD7C2726C39
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234992AbjFGUsE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:48:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48502 "EHLO
+        id S232684AbjFGUbk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:31:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235057AbjFGUrr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:47:47 -0400
+        with ESMTP id S232195AbjFGUbk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:31:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C0A72682
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:47:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49D71FC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:31:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3140F61DFC
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:47:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4404BC4339B;
-        Wed,  7 Jun 2023 20:47:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D938A64505
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:31:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C44DCC433EF;
+        Wed,  7 Jun 2023 20:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170834;
-        bh=6XaOLygLUabPbtq0Db4TnlSWXwnhnrZecsyakNRsOzw=;
+        s=korg; t=1686169898;
+        bh=R6ZREAQmfVXLiAaCeaUoSgdL0RyPA/Zp7rW4wxAagXo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h+kY9fLcVWBCUWTwWZEt9+soJv20dlhBzBINWxpNPLjTS5FqZbX1IpPeMgko/p724
-         LzYj5Q+bagb42I/4+q6Yy4BX22ojV3ea9cgZpzl+WB6zJs7V/cxDQSTsf4gvuaOL/q
-         8kkS+eIyOrWiYo+VKwSD8o2jMxT0bo4MFLl8Ky9I=
+        b=lO84TnVjAGLNog5jhAe2LsT8XFah8P78AJ0BDw+fkgW6t23h0ePO3A2+RbxX2GlCX
+         /isiNJhlXgCj94qgIYWZCUupgDboJXC33H2t7185bIJ6HVYYRxrlzEHTK+4yFrzrtr
+         uHZeQFLzagIBmw0CvUteCZf5wE5y3lxv+6+ZoIyY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Wang <D202280639@hust.edu.cn>,
-        Dongliang Mu <dzm91@hust.edu.cn>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 010/120] iommu/rockchip: Fix unwind goto issue
-Date:   Wed,  7 Jun 2023 22:15:26 +0200
-Message-ID: <20230607200901.243463871@linuxfoundation.org>
+        patches@lists.linux.dev, pengfuyuan <pengfuyuan@kylinos.cn>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.3 228/286] btrfs: fix csum_tree_block page iteration to avoid tripping on -Werror=array-bounds
+Date:   Wed,  7 Jun 2023 22:15:27 +0200
+Message-ID: <20230607200930.738597904@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,65 +53,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chao Wang <D202280639@hust.edu.cn>
+From: pengfuyuan <pengfuyuan@kylinos.cn>
 
-[ Upstream commit ec014683c564fb74fc68e8f5e84691d3b3839d24 ]
+commit 5ad9b4719fc9bc4715c7e19875a962095b0577e7 upstream.
 
-Smatch complains that
-drivers/iommu/rockchip-iommu.c:1306 rk_iommu_probe() warn: missing unwind goto?
+When compiling on a MIPS 64-bit machine we get these warnings:
 
-The rk_iommu_probe function, after obtaining the irq value through
-platform_get_irq, directly returns an error if the returned value
-is negative, without releasing any resources.
+    In file included from ./arch/mips/include/asm/cacheflush.h:13,
+	             from ./include/linux/cacheflush.h:5,
+	             from ./include/linux/highmem.h:8,
+		     from ./include/linux/bvec.h:10,
+		     from ./include/linux/blk_types.h:10,
+                     from ./include/linux/blkdev.h:9,
+	             from fs/btrfs/disk-io.c:7:
+    fs/btrfs/disk-io.c: In function ‘csum_tree_block’:
+    fs/btrfs/disk-io.c:100:34: error: array subscript 1 is above array bounds of ‘struct page *[1]’ [-Werror=array-bounds]
+      100 |   kaddr = page_address(buf->pages[i]);
+          |                        ~~~~~~~~~~^~~
+    ./include/linux/mm.h:2135:48: note: in definition of macro ‘page_address’
+     2135 | #define page_address(page) lowmem_page_address(page)
+          |                                                ^~~~
+    cc1: all warnings being treated as errors
 
-Fix this by adding a new error handling label "err_pm_disable" and
-use a goto statement to redirect to the error handling process. In
-order to preserve the original semantics, set err to the value of irq.
+We can check if i overflows to solve the problem. However, this doesn't make
+much sense, since i == 1 and num_pages == 1 doesn't execute the body of the loop.
+In addition, i < num_pages can also ensure that buf->pages[i] will not cross
+the boundary. Unfortunately, this doesn't help with the problem observed here:
+gcc still complains.
 
-Fixes: 1aa55ca9b14a ("iommu/rockchip: Move irq request past pm_runtime_enable")
-Signed-off-by: Chao Wang <D202280639@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20230417030421.2777-1-D202280639@hust.edu.cn
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To fix this add a compile-time condition for the extent buffer page
+array size limit, which would eventually lead to eliminating the whole
+for loop.
+
+CC: stable@vger.kernel.org # 5.10+
+Signed-off-by: pengfuyuan <pengfuyuan@kylinos.cn>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/rockchip-iommu.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ fs/btrfs/disk-io.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/rockchip-iommu.c b/drivers/iommu/rockchip-iommu.c
-index e5d86b7177dec..12551dc117148 100644
---- a/drivers/iommu/rockchip-iommu.c
-+++ b/drivers/iommu/rockchip-iommu.c
-@@ -1218,18 +1218,20 @@ static int rk_iommu_probe(struct platform_device *pdev)
- 	for (i = 0; i < iommu->num_irq; i++) {
- 		int irq = platform_get_irq(pdev, i);
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -96,7 +96,7 @@ static void csum_tree_block(struct exten
+ 	crypto_shash_update(shash, kaddr + BTRFS_CSUM_SIZE,
+ 			    first_page_part - BTRFS_CSUM_SIZE);
  
--		if (irq < 0)
--			return irq;
-+		if (irq < 0) {
-+			err = irq;
-+			goto err_pm_disable;
-+		}
- 
- 		err = devm_request_irq(iommu->dev, irq, rk_iommu_irq,
- 				       IRQF_SHARED, dev_name(dev), iommu);
--		if (err) {
--			pm_runtime_disable(dev);
--			goto err_remove_sysfs;
--		}
-+		if (err)
-+			goto err_pm_disable;
+-	for (i = 1; i < num_pages; i++) {
++	for (i = 1; i < num_pages && INLINE_EXTENT_BUFFER_PAGES > 1; i++) {
+ 		kaddr = page_address(buf->pages[i]);
+ 		crypto_shash_update(shash, kaddr, PAGE_SIZE);
  	}
- 
- 	return 0;
-+err_pm_disable:
-+	pm_runtime_disable(dev);
- err_remove_sysfs:
- 	iommu_device_sysfs_remove(&iommu->iommu);
- err_put_group:
--- 
-2.39.2
-
 
 
