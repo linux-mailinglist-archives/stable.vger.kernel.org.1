@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D342726C36
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02E46726C98
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:35:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231883AbjFGUbc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:31:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57842 "EHLO
+        id S233906AbjFGUe7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:34:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232195AbjFGUbb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:31:31 -0400
+        with ESMTP id S233949AbjFGUeq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:34:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E21C10DE
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:31:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A914FC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:34:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 18B8164500
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:31:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC7AC433EF;
-        Wed,  7 Jun 2023 20:31:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B9C86454B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:34:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CCF5C433D2;
+        Wed,  7 Jun 2023 20:34:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169889;
-        bh=cJNZW3y4KQrgGYOH1nA2m7rIEm9fA38ASKJxmzPFkFQ=;
+        s=korg; t=1686170069;
+        bh=GBeSLJIX8UIkYb9sZu6S8yqG1JK98fV0232YBA07j4c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qYj/4P2pPBp8b8M32TApSIlv/iqm7OA0P3wYxhmQqcGTVeW+ut/1qE9Y044EbVAts
-         +3a3UB1jKbm/jT5fh+bmfdtyM9dar/Sb6/kK13s5hxPFFXJTL+JkfIBB69Fcr7E4hR
-         oZG2n+OGoYmbzFTFIoaYsGR8Sv0Bei/6emXhMJLE=
+        b=eBTa4gR9mEyoJm4hlO46WKKDVDjnYdqnvTI6THMynhtGpZtpMQ2zpc9jrLiDl19ll
+         1ozhuxB5XLQlU1yfVU+dMO1H5dnbZEat7+WvG2mVR8f4R+HSv0UIQHMeZHag77/aHK
+         Y9Vl9ld4xWb7CK7l552yRDouit6O0dJtIa2kJPQ8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
-        Mat Martineau <martineau@kernel.org>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>
-Subject: [PATCH 6.3 252/286] selftests: mptcp: join: avoid using cmp --bytes
+        patches@lists.linux.dev, Ivan Orlov <ivan.orlov0322@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 34/88] nbd: Fix debugfs_create_dir error checking
 Date:   Wed,  7 Jun 2023 22:15:51 +0200
-Message-ID: <20230607200931.539973442@linuxfoundation.org>
+Message-ID: <20230607200900.263302780@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,75 +53,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Ivan Orlov <ivan.orlov0322@gmail.com>
 
-commit d328fe87067480cf2bd0b58dab428a98d31dbb7e upstream.
+[ Upstream commit 4913cfcf014c95f0437db2df1734472fd3e15098 ]
 
-BusyBox's 'cmp' command doesn't support the '--bytes' parameter.
+The debugfs_create_dir function returns ERR_PTR in case of error, and the
+only correct way to check if an error occurred is 'IS_ERR' inline function.
+This patch will replace the null-comparison with IS_ERR.
 
-Some CIs -- i.e. LKFT -- use BusyBox and have the mptcp_join.sh test
-failing [1] because their 'cmp' command doesn't support this '--bytes'
-option:
-
-    cmp: unrecognized option '--bytes=1024'
-    BusyBox v1.35.0 () multi-call binary.
-
-    Usage: cmp [-ls] [-n NUM] FILE1 [FILE2]
-
-Instead, 'head --bytes' can be used as this option is supported by
-BusyBox. A temporary file is needed for this operation.
-
-Because it is apparently quite common to use BusyBox, it is certainly
-better to backport this fix to impacted kernels.
-
-Fixes: 6bf41020b72b ("selftests: mptcp: update and extend fastclose test-cases")
-Cc: stable@vger.kernel.org
-Link: https://qa-reports.linaro.org/lkft/linux-mainline-master/build/v6.3-rc5-5-g148341f0a2f5/testrun/16088933/suite/kselftest-net-mptcp/test/net_mptcp_userspace_pm_sh/log [1]
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ivan Orlov <ivan.orlov0322@gmail.com>
+Link: https://lore.kernel.org/r/20230512130533.98709-1-ivan.orlov0322@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/block/nbd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -15,6 +15,7 @@ sout=""
- cin=""
- cinfail=""
- cinsent=""
-+tmpfile=""
- cout=""
- capout=""
- ns1=""
-@@ -175,6 +176,7 @@ cleanup()
- {
- 	rm -f "$cin" "$cout" "$sinfail"
- 	rm -f "$sin" "$sout" "$cinsent" "$cinfail"
-+	rm -f "$tmpfile"
- 	rm -rf $evts_ns1 $evts_ns2
- 	cleanup_partial
- }
-@@ -382,9 +384,16 @@ check_transfer()
- 			fail_test
- 			return 1
- 		fi
--		bytes="--bytes=${bytes}"
-+
-+		# note: BusyBox's "cmp" command doesn't support --bytes
-+		tmpfile=$(mktemp)
-+		head --bytes="$bytes" "$in" > "$tmpfile"
-+		mv "$tmpfile" "$in"
-+		head --bytes="$bytes" "$out" > "$tmpfile"
-+		mv "$tmpfile" "$out"
-+		tmpfile=""
- 	fi
--	cmp -l "$in" "$out" ${bytes} | while read -r i a b; do
-+	cmp -l "$in" "$out" | while read -r i a b; do
- 		local sum=$((0${a} + 0${b}))
- 		if [ $check_invert -eq 0 ] || [ $sum -ne $((0xff)) ]; then
- 			echo "[ FAIL ] $what does not match (in, out):"
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index cc66983e8b6ab..28024248a7b53 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -1547,7 +1547,7 @@ static int nbd_dev_dbg_init(struct nbd_device *nbd)
+ 		return -EIO;
+ 
+ 	dir = debugfs_create_dir(nbd_name(nbd), nbd_dbg_dir);
+-	if (!dir) {
++	if (IS_ERR(dir)) {
+ 		dev_err(nbd_to_dev(nbd), "Failed to create debugfs dir for '%s'\n",
+ 			nbd_name(nbd));
+ 		return -EIO;
+@@ -1573,7 +1573,7 @@ static int nbd_dbg_init(void)
+ 	struct dentry *dbg_dir;
+ 
+ 	dbg_dir = debugfs_create_dir("nbd", NULL);
+-	if (!dbg_dir)
++	if (IS_ERR(dbg_dir))
+ 		return -EIO;
+ 
+ 	nbd_dbg_dir = dbg_dir;
+-- 
+2.39.2
+
 
 
