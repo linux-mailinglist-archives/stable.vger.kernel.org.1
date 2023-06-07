@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB0AE726C26
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FC50726E23
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:48:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233583AbjFGUbD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:31:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57244 "EHLO
+        id S234795AbjFGUsX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:48:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233613AbjFGUay (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D5052132
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:30:53 -0700 (PDT)
+        with ESMTP id S235097AbjFGUsM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:48:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C27D82D56
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:47:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 10E47644E6
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:30:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F25C433D2;
-        Wed,  7 Jun 2023 20:30:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A2A88646A3
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:47:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2675C433EF;
+        Wed,  7 Jun 2023 20:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169852;
-        bh=MKy8W4TcMGirM56Harss8Og5lfgLTlOGam4pi4oZM5c=;
+        s=korg; t=1686170872;
+        bh=xF/DBzvWGn5h67Xz6nYpi8GHrzhWxjHqacTqprvA3D0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yBbq5ud6NWdhKkYD38k9H4DWGmy+ge37I29XDwbJ7t/d87HOCa3wQk8Bdkn3GoBoJ
-         fW2TOx00byZUCQf5gCvuYArrms+mDH0RzHzWvb7SeRN153bhsal8dgJFyl4ijLlJVr
-         yLEjIpjHiscbyItKPFAKBayNXUk+x04Z8V64cPjU=
+        b=bEePMs+d8cxwEj8X5m0zlWd8JzwAR89H0RKuBxFY9wTaBRJ9rihovQQtzY7LzeE/5
+         9fyZVgIIEX6JZW435r3XELWHfAyXDZaqoLVQ2duc0rWqjASsCGo+0zWYZYgQ9ABKp1
+         R9NUuhnLJaFX8nli926RJ3rY3GfpYA4eQgeUxTWo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Lord <mlord@pobox.com>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Jiri Kosina <jkosina@suse.cz>
-Subject: [PATCH 6.3 239/286] HID: hidpp: terminate retry loop on success
-Date:   Wed,  7 Jun 2023 22:15:38 +0200
-Message-ID: <20230607200931.101345364@linuxfoundation.org>
+        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Vlad Buslov <vladbu@nvidia.com>,
+        Peilin Ye <peilin.ye@bytedance.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 023/120] net/sched: Reserve TC_H_INGRESS (TC_H_CLSACT) for ingress (clsact) Qdiscs
+Date:   Wed,  7 Jun 2023 22:15:39 +0200
+Message-ID: <20230607200901.644435847@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,84 +57,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+From: Peilin Ye <peilin.ye@bytedance.com>
 
-commit 7c28afd5512e371773dbb2bf95a31ed5625651d9 upstream.
+[ Upstream commit f85fa45d4a9408d98c46c8fa45ba2e3b2f4bf219 ]
 
-It seems we forgot the normal case to terminate the retry loop,
-making us asking 3 times each command, which is probably a little bit
-too much.
+Currently it is possible to add e.g. an HTB Qdisc under ffff:fff1
+(TC_H_INGRESS, TC_H_CLSACT):
 
-And remove the ugly "goto exit" that can be replaced by a simpler "break"
+  $ ip link add name ifb0 type ifb
+  $ tc qdisc add dev ifb0 parent ffff:fff1 htb
+  $ tc qdisc add dev ifb0 clsact
+  Error: Exclusivity flag on, cannot modify.
+  $ drgn
+  ...
+  >>> ifb0 = netdev_get_by_name(prog, "ifb0")
+  >>> qdisc = ifb0.ingress_queue.qdisc_sleeping
+  >>> print(qdisc.ops.id.string_().decode())
+  htb
+  >>> qdisc.flags.value_() # TCQ_F_INGRESS
+  2
 
-Fixes: 586e8fede795 ("HID: logitech-hidpp: Retry commands when device is busy")
-Suggested-by: Mark Lord <mlord@pobox.com>
-Tested-by: Mark Lord <mlord@pobox.com>
-Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Only allow ingress and clsact Qdiscs under ffff:fff1.  Return -EINVAL
+for everything else.  Make TCQ_F_INGRESS a static flag of ingress and
+clsact Qdiscs.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 1f211a1b929c ("net, sched: add clsact qdisc")
+Tested-by: Pedro Tammela <pctammela@mojatatu.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
+Signed-off-by: Peilin Ye <peilin.ye@bytedance.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-logitech-hidpp.c |   13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ net/sched/sch_api.c     | 7 ++++++-
+ net/sched/sch_ingress.c | 4 ++--
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
---- a/drivers/hid/hid-logitech-hidpp.c
-+++ b/drivers/hid/hid-logitech-hidpp.c
-@@ -283,7 +283,7 @@ static int hidpp_send_message_sync(struc
- 	struct hidpp_report *message,
- 	struct hidpp_report *response)
- {
--	int ret;
-+	int ret = -1;
- 	int max_retries = 3;
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index 54e2309315eb5..b665f4ff49a60 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -1223,7 +1223,12 @@ static struct Qdisc *qdisc_create(struct net_device *dev,
+ 	sch->parent = parent;
  
- 	mutex_lock(&hidpp->send_mutex);
-@@ -297,13 +297,13 @@ static int hidpp_send_message_sync(struc
- 	 */
- 	*response = *message;
- 
--	for (; max_retries != 0; max_retries--) {
-+	for (; max_retries != 0 && ret; max_retries--) {
- 		ret = __hidpp_send_report(hidpp->hid_dev, message);
- 
- 		if (ret) {
- 			dbg_hid("__hidpp_send_report returned err: %d\n", ret);
- 			memset(response, 0, sizeof(struct hidpp_report));
--			goto exit;
-+			break;
- 		}
- 
- 		if (!wait_event_timeout(hidpp->wait, hidpp->answer_available,
-@@ -311,14 +311,14 @@ static int hidpp_send_message_sync(struc
- 			dbg_hid("%s:timeout waiting for response\n", __func__);
- 			memset(response, 0, sizeof(struct hidpp_report));
- 			ret = -ETIMEDOUT;
--			goto exit;
-+			break;
- 		}
- 
- 		if (response->report_id == REPORT_ID_HIDPP_SHORT &&
- 		    response->rap.sub_id == HIDPP_ERROR) {
- 			ret = response->rap.params[1];
- 			dbg_hid("%s:got hidpp error %02X\n", __func__, ret);
--			goto exit;
-+			break;
- 		}
- 
- 		if ((response->report_id == REPORT_ID_HIDPP_LONG ||
-@@ -327,13 +327,12 @@ static int hidpp_send_message_sync(struc
- 			ret = response->fap.params[1];
- 			if (ret != HIDPP20_ERROR_BUSY) {
- 				dbg_hid("%s:got hidpp 2.0 error %02X\n", __func__, ret);
--				goto exit;
-+				break;
- 			}
- 			dbg_hid("%s:got busy hidpp 2.0 error %02X, retrying\n", __func__, ret);
- 		}
- 	}
- 
--exit:
- 	mutex_unlock(&hidpp->send_mutex);
- 	return ret;
- 
+ 	if (handle == TC_H_INGRESS) {
+-		sch->flags |= TCQ_F_INGRESS;
++		if (!(sch->flags & TCQ_F_INGRESS)) {
++			NL_SET_ERR_MSG(extack,
++				       "Specified parent ID is reserved for ingress and clsact Qdiscs");
++			err = -EINVAL;
++			goto err_out3;
++		}
+ 		handle = TC_H_MAKE(TC_H_INGRESS, 0);
+ 	} else {
+ 		if (handle == 0) {
+diff --git a/net/sched/sch_ingress.c b/net/sched/sch_ingress.c
+index 35963929e1178..e43a454993723 100644
+--- a/net/sched/sch_ingress.c
++++ b/net/sched/sch_ingress.c
+@@ -140,7 +140,7 @@ static struct Qdisc_ops ingress_qdisc_ops __read_mostly = {
+ 	.cl_ops			=	&ingress_class_ops,
+ 	.id			=	"ingress",
+ 	.priv_size		=	sizeof(struct ingress_sched_data),
+-	.static_flags		=	TCQ_F_CPUSTATS,
++	.static_flags		=	TCQ_F_INGRESS | TCQ_F_CPUSTATS,
+ 	.init			=	ingress_init,
+ 	.destroy		=	ingress_destroy,
+ 	.dump			=	ingress_dump,
+@@ -281,7 +281,7 @@ static struct Qdisc_ops clsact_qdisc_ops __read_mostly = {
+ 	.cl_ops			=	&clsact_class_ops,
+ 	.id			=	"clsact",
+ 	.priv_size		=	sizeof(struct clsact_sched_data),
+-	.static_flags		=	TCQ_F_CPUSTATS,
++	.static_flags		=	TCQ_F_INGRESS | TCQ_F_CPUSTATS,
+ 	.init			=	clsact_init,
+ 	.destroy		=	clsact_destroy,
+ 	.dump			=	ingress_dump,
+-- 
+2.39.2
+
 
 
