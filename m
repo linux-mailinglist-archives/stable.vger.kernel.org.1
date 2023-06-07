@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33F27726EBB
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:52:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44401726E08
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:47:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234934AbjFGUwP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:52:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53464 "EHLO
+        id S235090AbjFGUry (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:47:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235244AbjFGUwO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:52:14 -0400
+        with ESMTP id S234734AbjFGUra (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:47:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4524FC
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:52:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6E272694
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:47:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 495D664765
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:52:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B298C433EF;
-        Wed,  7 Jun 2023 20:52:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C8B2961DC5
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:47:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2959C433D2;
+        Wed,  7 Jun 2023 20:47:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171131;
-        bh=6ri9iwB3uEjGVFBrRzRDvSASBlTpUCRn+vV4iMquzfI=;
+        s=korg; t=1686170821;
+        bh=NWh9iomevTyAz+Wgof1LH6MiHyLp1oRY6rLLI3mDTgA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MdWLvc/qCiGRJ4q3yWEk/mPu8sg5ET2BRXM12tE6RvwesWyHx9l8Zl+XMqN9RYtot
-         aBib3TbkM6RzqU82sIVi63SQbHEodArWJ8tvQvMbERUgT2p1OZpHeDqsnoX/88QoZw
-         /cGauMcBmY54WFrU3Ix1O2NEfML1mtL0ks+T9hu0=
+        b=eD/7zASH3AiASMFkYPGD5iIQskhy0DYgbZO7Faf/4oPZpToNWL6Fi6CHkY/P+Vk7p
+         K0vfzR67ARKGz3tB1YhYpD8mYdA1tEeBsjg/e82k8RbfkEw0lClsh/gXsdY8fqyhIQ
+         tQQeFm9E9RyQ2WioNI89l55Qlmsz7Ic231IqENDc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>
-Subject: [PATCH 5.10 097/120] selftests: mptcp: connect: skip if MPTCP is not supported
+        patches@lists.linux.dev, Shai Amiram <samiram@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 220/225] tls: rx: strp: dont use GFP_KERNEL in softirq context
 Date:   Wed,  7 Jun 2023 22:16:53 +0200
-Message-ID: <20230607200903.966639074@linuxfoundation.org>
+Message-ID: <20230607200921.563449284@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,109 +55,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit d83013bdf90a7994a474b0e650a7fc94b0d4ded6 upstream.
+commit 74836ec828fe17b63f2006fdbf53311d691396bf upstream.
 
-Selftests are supposed to run on any kernels, including the old ones not
-supporting MPTCP.
+When receive buffer is small, or the TCP rx queue looks too
+complicated to bother using it directly - we allocate a new
+skb and copy data into it.
 
-A new check is then added to make sure MPTCP is supported. If not, the
-test stops and is marked as "skipped". Note that this check can also
-mark the test as failed if 'SELFTESTS_MPTCP_LIB_EXPECT_ALL_FEATURES' env
-var is set to 1: by doing that, we can make sure a test is not being
-skipped by mistake.
+We already use sk->sk_allocation... but nothing actually
+sets it to GFP_ATOMIC on the ->sk_data_ready() path.
 
-A new shared file is added here to be able to re-used the same check in
-the different selftests we have.
+Users of HW offload are far more likely to experience problems
+due to scheduling while atomic. "Copy mode" is very rarely
+triggered with SW crypto.
 
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
-Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
-Cc: stable@vger.kernel.org
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
+Tested-by: Shai Amiram <samiram@nvidia.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/Makefile         |    2 -
- tools/testing/selftests/net/mptcp/mptcp_connect.sh |    4 ++
- tools/testing/selftests/net/mptcp/mptcp_lib.sh     |   40 +++++++++++++++++++++
- 3 files changed, 45 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/net/mptcp/mptcp_lib.sh
+ net/tls/tls_sw.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/tools/testing/selftests/net/mptcp/Makefile
-+++ b/tools/testing/selftests/net/mptcp/Makefile
-@@ -10,7 +10,7 @@ TEST_PROGS := mptcp_connect.sh pm_netlin
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -2289,8 +2289,12 @@ static void tls_data_ready(struct sock *
+ 	struct tls_context *tls_ctx = tls_get_ctx(sk);
+ 	struct tls_sw_context_rx *ctx = tls_sw_ctx_rx(tls_ctx);
+ 	struct sk_psock *psock;
++	gfp_t alloc_save;
  
- TEST_GEN_FILES = mptcp_connect pm_nl_ctl
++	alloc_save = sk->sk_allocation;
++	sk->sk_allocation = GFP_ATOMIC;
+ 	tls_strp_data_ready(&ctx->strp);
++	sk->sk_allocation = alloc_save;
  
--TEST_FILES := settings
-+TEST_FILES := mptcp_lib.sh settings
- 
- EXTRA_CLEAN := *.pcap
- 
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-@@ -1,6 +1,8 @@
- #!/bin/bash
- # SPDX-License-Identifier: GPL-2.0
- 
-+. "$(dirname "${0}")/mptcp_lib.sh"
-+
- time_start=$(date +%s)
- 
- optstring="S:R:d:e:l:r:h4cm:f:t"
-@@ -131,6 +133,8 @@ cleanup()
- 	done
- }
- 
-+mptcp_lib_check_mptcp
-+
- ip -Version > /dev/null 2>&1
- if [ $? -ne 0 ];then
- 	echo "SKIP: Could not run test without ip tool"
---- /dev/null
-+++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-@@ -0,0 +1,40 @@
-+#! /bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+readonly KSFT_FAIL=1
-+readonly KSFT_SKIP=4
-+
-+# SELFTESTS_MPTCP_LIB_EXPECT_ALL_FEATURES env var can be set when validating all
-+# features using the last version of the kernel and the selftests to make sure
-+# a test is not being skipped by mistake.
-+mptcp_lib_expect_all_features() {
-+	[ "${SELFTESTS_MPTCP_LIB_EXPECT_ALL_FEATURES:-}" = "1" ]
-+}
-+
-+# $1: msg
-+mptcp_lib_fail_if_expected_feature() {
-+	if mptcp_lib_expect_all_features; then
-+		echo "ERROR: missing feature: ${*}"
-+		exit ${KSFT_FAIL}
-+	fi
-+
-+	return 1
-+}
-+
-+# $1: file
-+mptcp_lib_has_file() {
-+	local f="${1}"
-+
-+	if [ -f "${f}" ]; then
-+		return 0
-+	fi
-+
-+	mptcp_lib_fail_if_expected_feature "${f} file not found"
-+}
-+
-+mptcp_lib_check_mptcp() {
-+	if ! mptcp_lib_has_file "/proc/sys/net/mptcp/enabled"; then
-+		echo "SKIP: MPTCP support is not available"
-+		exit ${KSFT_SKIP}
-+	fi
-+}
+ 	psock = sk_psock_get(sk);
+ 	if (psock) {
 
 
