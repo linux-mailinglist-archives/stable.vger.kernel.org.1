@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E46FD726FAD
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:01:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94938726E6F
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235800AbjFGVA6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:00:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33762 "EHLO
+        id S235328AbjFGUuj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:50:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236221AbjFGVA3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:29 -0400
+        with ESMTP id S235501AbjFGUuE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:50:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFFE72130
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:00:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC4CC272B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:49:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 787D8648DA
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:00:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9C2C433D2;
-        Wed,  7 Jun 2023 21:00:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C2D8646D4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:49:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE900C4339B;
+        Wed,  7 Jun 2023 20:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171605;
-        bh=MXBwLQEQOJtadl16Ls1/ngTPum3Dxv2eQBBbIQ4NJMM=;
+        s=korg; t=1686170987;
+        bh=nBR+ZTXbOkda34DbC4KgZEMyrRRAzRbO4Aeh7LI5JeI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ur9yyqB8HyFTMKBNkacBKVBnQyxHK4/jSdKq2ZyaxJKuUQnTE+v41aZeHSZZPbtpk
-         DHekKOnXxcmoA+TciboO6vLD0xQhsNzx7IQ/oxhMNxbUdhvAwFgtpSairShOEx7J0f
-         kgILkFfzqg0MvusFw9f2BQC3z511uKSxReayVhMA=
+        b=Mc5JyQAFLwJ44FY79Xtj1qr3FRXyCXN5IG+hzlkBPUXYE1Xi6i436ISavGLDuAQoX
+         T/GEAdUIwKdX1sBVtcnExbSym08/T9hy5Oi6UjxYRCZMVna73Dk26YSH/sjLSe0pyg
+         hZzb06LVxP8TbppQYI0tDs7Dt0qzPvAN5pjIeXfo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
-        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 051/159] fbdev: imsttfb: Fix use after free bug in imsttfb_probe
+        patches@lists.linux.dev,
+        =?UTF-8?q?Niklas=20S=C3=B6derlund?= 
+        <niklas.soderlund+renesas@ragnatech.se>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 038/120] media: rcar-vin: Select correct interrupt mode for V4L2_FIELD_ALTERNATE
 Date:   Wed,  7 Jun 2023 22:15:54 +0200
-Message-ID: <20230607200905.357028846@linuxfoundation.org>
+Message-ID: <20230607200902.105622785@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,78 +56,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-[ Upstream commit c75f5a55061091030a13fef71b9995b89bc86213 ]
+[ Upstream commit e10707d5865c90d3dfe4ef589ce02ff4287fef85 ]
 
-A use-after-free bug may occur if init_imstt invokes framebuffer_release
-and free the info ptr. The caller, imsttfb_probe didn't notice that and
-still keep the ptr as private data in pdev.
+When adding proper support for V4L2_FIELD_ALTERNATE it was missed that
+this field format should trigger an interrupt for each field, not just
+for the whole frame. Fix this by marking it as progressive in the
+capture setup, which will then select the correct interrupt mode.
 
-If we remove the driver which will call imsttfb_remove to make cleanup,
-UAF happens.
+Tested on both Gen2 and Gen3 with the result of a doubling of the frame
+rate for V4L2_FIELD_ALTERNATE. From a PAL video source the frame rate is
+now 50, which is expected for alternate field capture.
 
-Fix it by return error code if bad case happens in init_imstt.
-
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/imsttfb.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/media/platform/rcar-vin/rcar-dma.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/imsttfb.c b/drivers/video/fbdev/imsttfb.c
-index 16f272a508112..1b2fb8ed76237 100644
---- a/drivers/video/fbdev/imsttfb.c
-+++ b/drivers/video/fbdev/imsttfb.c
-@@ -1346,7 +1346,7 @@ static const struct fb_ops imsttfb_ops = {
- 	.fb_ioctl 	= imsttfb_ioctl,
- };
- 
--static void init_imstt(struct fb_info *info)
-+static int init_imstt(struct fb_info *info)
- {
- 	struct imstt_par *par = info->par;
- 	__u32 i, tmp, *ip, *end;
-@@ -1419,7 +1419,7 @@ static void init_imstt(struct fb_info *info)
- 	    || !(compute_imstt_regvals(par, info->var.xres, info->var.yres))) {
- 		printk("imsttfb: %ux%ux%u not supported\n", info->var.xres, info->var.yres, info->var.bits_per_pixel);
- 		framebuffer_release(info);
--		return;
-+		return -ENODEV;
- 	}
- 
- 	sprintf(info->fix.id, "IMS TT (%s)", par->ramdac == IBM ? "IBM" : "TVP");
-@@ -1455,12 +1455,13 @@ static void init_imstt(struct fb_info *info)
- 
- 	if (register_framebuffer(info) < 0) {
- 		framebuffer_release(info);
--		return;
-+		return -ENODEV;
- 	}
- 
- 	tmp = (read_reg_le32(par->dc_regs, SSTATUS) & 0x0f00) >> 8;
- 	fb_info(info, "%s frame buffer; %uMB vram; chip version %u\n",
- 		info->fix.id, info->fix.smem_len >> 20, tmp);
-+	return 0;
- }
- 
- static int imsttfb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
-@@ -1523,10 +1524,10 @@ static int imsttfb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	if (!par->cmap_regs)
- 		goto error;
- 	info->pseudo_palette = par->palette;
--	init_imstt(info);
--
--	pci_set_drvdata(pdev, info);
--	return 0;
-+	ret = init_imstt(info);
-+	if (!ret)
-+		pci_set_drvdata(pdev, info);
-+	return ret;
- 
- error:
- 	if (par->dc_regs)
+diff --git a/drivers/media/platform/rcar-vin/rcar-dma.c b/drivers/media/platform/rcar-vin/rcar-dma.c
+index 692dea300b0de..63c61c704446b 100644
+--- a/drivers/media/platform/rcar-vin/rcar-dma.c
++++ b/drivers/media/platform/rcar-vin/rcar-dma.c
+@@ -645,11 +645,9 @@ static int rvin_setup(struct rvin_dev *vin)
+ 	case V4L2_FIELD_SEQ_TB:
+ 	case V4L2_FIELD_SEQ_BT:
+ 	case V4L2_FIELD_NONE:
+-		vnmc = VNMC_IM_ODD_EVEN;
+-		progressive = true;
+-		break;
+ 	case V4L2_FIELD_ALTERNATE:
+ 		vnmc = VNMC_IM_ODD_EVEN;
++		progressive = true;
+ 		break;
+ 	default:
+ 		vnmc = VNMC_IM_ODD;
 -- 
 2.39.2
 
