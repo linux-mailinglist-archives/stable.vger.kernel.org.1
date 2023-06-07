@@ -2,82 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE903726769
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 19:32:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE1FC726777
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 19:33:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231415AbjFGRcW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 13:32:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36256 "EHLO
+        id S231996AbjFGRdZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 13:33:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230299AbjFGRcU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 13:32:20 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7EED1FE6
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 10:32:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686159126; x=1717695126;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=EKLBh5452rTrtnSW4hcfYbaevBvLnjIuyMkRY6643bo=;
-  b=mZDGfwKGJ2g7RMN+glGmwJMIN+oMY34snf6pqAgJCSgCyiQA1PvSTXXY
-   1OmKPtPYwrcenWDi0yTN5tG97VFX/8X/HZ/3uC/0FsECT8S2VI6EZWTft
-   NNzZF/oxHob92d0m0gKnOSkQ8aOBakKpWmFW+GQNLmKNZFinJ6P4chMQB
-   wTRnDiO0l+TkjQIcPIxfYYPShJSD6lsVglGwpOg9XE9Fobji47SA85t7k
-   ReColzLhh0n3tLHJ+oWi9+42y03jSgmP2ugH4WM7G2MjYzqMLnBXfluMN
-   nKRQcpdsJyWifSh/EFy958v+l6GT0tpcghiJuFxDoISF17of1ePLolsrX
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="337417454"
-X-IronPort-AV: E=Sophos;i="6.00,224,1681196400"; 
-   d="scan'208";a="337417454"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2023 10:32:06 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="709637597"
-X-IronPort-AV: E=Sophos;i="6.00,224,1681196400"; 
-   d="scan'208";a="709637597"
-Received: from lkp-server01.sh.intel.com (HELO 15ab08e44a81) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 07 Jun 2023 10:32:04 -0700
-Received: from kbuild by 15ab08e44a81 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1q6x0t-0006m7-2n;
-        Wed, 07 Jun 2023 17:32:03 +0000
-Date:   Thu, 8 Jun 2023 01:31:24 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] fs: avoid empty option when generating legacy mount
- string
-Message-ID: <ZIC+7BpKkZQIs6hT@a93e062a6cea>
+        with ESMTP id S231991AbjFGRdV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 13:33:21 -0400
+Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id DCB902118
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 10:32:56 -0700 (PDT)
+Received: (qmail 233960 invoked by uid 1000); 7 Jun 2023 13:32:55 -0400
+Date:   Wed, 7 Jun 2023 13:32:55 -0400
+From:   Alan Stern <stern@rowland.harvard.edu>
+To:     Badhri Jagan Sridharan <badhri@google.com>
+Cc:     gregkh@linuxfoundation.org, colin.i.king@gmail.com,
+        xuetao09@huawei.com, quic_eserrao@quicinc.com,
+        water.zhangjiantao@huawei.com, francesco@dolcini.it,
+        alistair@alistair23.me, stephan@gerhold.net, bagasdotme@gmail.com,
+        luca@z3ntu.xyz, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v6 1/2] usb: gadget: udc: core: Offload
+ usb_udc_vbus_handler processing
+Message-ID: <65faa454-c822-4163-be3d-940fb4a647c7@rowland.harvard.edu>
+References: <20230601031028.544244-1-badhri@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230607-fs-empty-option-v1-1-20c8dbf4671b@weissschuh.net>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230601031028.544244-1-badhri@google.com>
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Thu, Jun 01, 2023 at 03:10:27AM +0000, Badhri Jagan Sridharan wrote:
+> usb_udc_vbus_handler() can be invoked from interrupt context by irq
+> handlers of the gadget drivers, however, usb_udc_connect_control() has
+> to run in non-atomic context due to the following:
+> a. Some of the gadget driver implementations expect the ->pullup
+>    callback to be invoked in non-atomic context.
+> b. usb_gadget_disconnect() acquires udc_lock which is a mutex.
+> 
+> Hence offload invocation of usb_udc_connect_control()
+> to workqueue.
+> 
+> UDC should not be pulled up unless gadget driver is bound. The new flag
+> "allow_connect" is now set by gadget_bind_driver() and cleared by
+> gadget_unbind_driver(). This prevents work item to pull up the gadget
+> even if queued when the gadget driver is already unbound.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 1016fc0c096c ("USB: gadget: Fix obscure lockdep violation for udc_mutex")
+> Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+> ---
+> Changes since v1:
+> - Address Alan Stern's comment on usb_udc_vbus_handler invocation from
+>   atomic context:
+> * vbus_events_lock is now a spinlock and allocations in
+> * usb_udc_vbus_handler are atomic now.
+> 
+> Changes since v2:
+> - Addressing Alan Stern's comments:
+> ** connect_lock is now held by callers of
+> * usb_gadget_pullup_update_locked() and gadget_(un)bind_driver() does
+> * notdirectly hold the lock.
+> 
+> ** Both usb_gadget_(dis)connect() and usb_udc_vbus_handler() would
+> * set/clear udc->vbus and invoke usb_gadget_pullup_update_locked.
+> 
+> ** Add "unbinding" to prevent new connections after the gadget is being
+> * unbound.
+> 
+> Changes since v3:
+> ** Made a minor cleanup which I missed to do in v3 in
+> * usb_udc_vbus_handler().
+> 
+> Changes since v4:
+> - Addressing Alan Stern's comments:
+> ** usb_udc_vbus_handler() now offloads invocation of usb_udc_connect_control()
+> * from workqueue.
+> 
+> ** Dropped vbus_events list as this was redundant. Updating to the
+> * latest value is suffice
+> 
+> Changes since v5:
+> - Addressing Alan Stern's comments:
+> ** Squashed allow_connect logic to this patch.
+> ** Fixed comment length to wrap at 76
+> ** Cancelling vbus_work in del_gadget()
 
-Thanks for your patch.
-
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
-Subject: [PATCH] fs: avoid empty option when generating legacy mount string
-Link: https://lore.kernel.org/stable/20230607-fs-empty-option-v1-1-20c8dbf4671b%40weissschuh.net
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
