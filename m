@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44891726BC6
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:28:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45842726D1D
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:39:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233408AbjFGU2M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:28:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53938 "EHLO
+        id S234371AbjFGUjR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:39:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233525AbjFGU2G (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:28:06 -0400
+        with ESMTP id S234320AbjFGUjH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:39:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9568F2685
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:27:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9167B2706
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:38:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D5CB64499
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:27:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D75BC433D2;
-        Wed,  7 Jun 2023 20:27:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8277C645CF
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:38:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E9BC433EF;
+        Wed,  7 Jun 2023 20:38:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169645;
-        bh=rzrtfBVWQ59Rixl20Y/EdbmL+NuVPpxEIjl4pKv+dt8=;
+        s=korg; t=1686170317;
+        bh=aw+Afq7dAv+ZX3UiHFSFBZ/fmG/w4QqvKQburD5VRts=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Onh7mYUtBi9NVZ8A4W4BMRVO0+a6H9cRTeYtHbPK7OFN1IeRCmvqg5TUYw998kZ/2
-         iODZ6qYbTI67jDizfPyY17eJboCfYPyp6wYFMShXHB70BiMFTY0SD4SYa/yunLdRHC
-         hNH5LD51x5HCo5Z+a8eiG3nZFi8xJ3VXhQ/2t7bs=
+        b=VJrh/FVLe2uMEE/tKoRE8XuDLqhnn84dXZjLBl21CJ93nBtQfn2w+mVWRSgX8oBvR
+         mY4BReRWFu1qMA0Et0+8h5R0wgFF3lvwTkD+y1r2tp2otr4zmD2GQXwZquhT6LGoG4
+         8ISSgEH6Y/9E4eW+7TcIM9zS/IxV/Auy5QePYo9M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Zhengchao Shao <shaozhengchao@huawei.com>,
+        Peilin Ye <peilin.ye@bytedance.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 132/286] media: netup_unidvb: fix irq init by register it at the end of probe
-Date:   Wed,  7 Jun 2023 22:13:51 +0200
-Message-ID: <20230607200927.405508516@linuxfoundation.org>
+Subject: [PATCH 6.1 039/225] net: sched: fix NULL pointer dereference in mq_attach
+Date:   Wed,  7 Jun 2023 22:13:52 +0200
+Message-ID: <20230607200915.627019916@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,68 +56,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wei Chen <harperchen1110@gmail.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-[ Upstream commit e6ad6233592593079db5c8fa592c298e51bc1356 ]
+[ Upstream commit 36eec020fab668719b541f34d97f44e232ffa165 ]
 
-IRQ handler netup_spi_interrupt() takes spinlock spi->lock. The lock
-is initialized in netup_spi_init(). However, irq handler is registered
-before initializing the lock.
+When use the following command to test:
+1)ip link add bond0 type bond
+2)ip link set bond0 up
+3)tc qdisc add dev bond0 root handle ffff: mq
+4)tc qdisc replace dev bond0 parent ffff:fff1 handle ffff: mq
 
-Spinlock dma->lock and i2c->lock suffer from the same problem.
+The kernel reports NULL pointer dereference issue. The stack information
+is as follows:
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+Internal error: Oops: 0000000096000006 [#1] SMP
+Modules linked in:
+pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : mq_attach+0x44/0xa0
+lr : qdisc_graft+0x20c/0x5cc
+sp : ffff80000e2236a0
+x29: ffff80000e2236a0 x28: ffff0000c0e59d80 x27: ffff0000c0be19c0
+x26: ffff0000cae3e800 x25: 0000000000000010 x24: 00000000fffffff1
+x23: 0000000000000000 x22: ffff0000cae3e800 x21: ffff0000c9df4000
+x20: ffff0000c9df4000 x19: 0000000000000000 x18: ffff80000a934000
+x17: ffff8000f5b56000 x16: ffff80000bb08000 x15: 0000000000000000
+x14: 0000000000000000 x13: 6b6b6b6b6b6b6b6b x12: 6b6b6b6b00000001
+x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
+x8 : ffff0000c0be0730 x7 : bbbbbbbbbbbbbbbb x6 : 0000000000000008
+x5 : ffff0000cae3e864 x4 : 0000000000000000 x3 : 0000000000000001
+x2 : 0000000000000001 x1 : ffff8000090bc23c x0 : 0000000000000000
+Call trace:
+mq_attach+0x44/0xa0
+qdisc_graft+0x20c/0x5cc
+tc_modify_qdisc+0x1c4/0x664
+rtnetlink_rcv_msg+0x354/0x440
+netlink_rcv_skb+0x64/0x144
+rtnetlink_rcv+0x28/0x34
+netlink_unicast+0x1e8/0x2a4
+netlink_sendmsg+0x308/0x4a0
+sock_sendmsg+0x64/0xac
+____sys_sendmsg+0x29c/0x358
+___sys_sendmsg+0x90/0xd0
+__sys_sendmsg+0x7c/0xd0
+__arm64_sys_sendmsg+0x2c/0x38
+invoke_syscall+0x54/0x114
+el0_svc_common.constprop.1+0x90/0x174
+do_el0_svc+0x3c/0xb0
+el0_svc+0x24/0xec
+el0t_64_sync_handler+0x90/0xb4
+el0t_64_sync+0x174/0x178
 
-Fix this by registering the irq at the end of probe.
+This is because when mq is added for the first time, qdiscs in mq is set
+to NULL in mq_attach(). Therefore, when replacing mq after adding mq, we
+need to initialize qdiscs in the mq before continuing to graft. Otherwise,
+it will couse NULL pointer dereference issue in mq_attach(). And the same
+issue will occur in the attach functions of mqprio, taprio and htb.
+ffff:fff1 means that the repalce qdisc is ingress. Ingress does not allow
+any qdisc to be attached. Therefore, ffff:fff1 is incorrectly used, and
+the command should be dropped.
 
-Link: https://lore.kernel.org/linux-media/20230315134518.1074497-1-harperchen1110@gmail.com
-Signed-off-by: Wei Chen <harperchen1110@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 6ec1c69a8f64 ("net_sched: add classful multiqueue dummy scheduler")
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Tested-by: Peilin Ye <peilin.ye@bytedance.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://lore.kernel.org/r/20230527093747.3583502-1-shaozhengchao@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../media/pci/netup_unidvb/netup_unidvb_core.c  | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ net/sched/sch_api.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/media/pci/netup_unidvb/netup_unidvb_core.c b/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
-index aaa1d2dedebdd..d85bfbb77a250 100644
---- a/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
-+++ b/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
-@@ -887,12 +887,7 @@ static int netup_unidvb_initdev(struct pci_dev *pci_dev,
- 		ndev->lmmio0, (u32)pci_resource_len(pci_dev, 0),
- 		ndev->lmmio1, (u32)pci_resource_len(pci_dev, 1),
- 		pci_dev->irq);
--	if (request_irq(pci_dev->irq, netup_unidvb_isr, IRQF_SHARED,
--			"netup_unidvb", pci_dev) < 0) {
--		dev_err(&pci_dev->dev,
--			"%s(): can't get IRQ %d\n", __func__, pci_dev->irq);
--		goto irq_request_err;
--	}
-+
- 	ndev->dma_size = 2 * 188 *
- 		NETUP_DMA_BLOCKS_COUNT * NETUP_DMA_PACKETS_COUNT;
- 	ndev->dma_virt = dma_alloc_coherent(&pci_dev->dev,
-@@ -933,6 +928,14 @@ static int netup_unidvb_initdev(struct pci_dev *pci_dev,
- 		dev_err(&pci_dev->dev, "netup_unidvb: DMA setup failed\n");
- 		goto dma_setup_err;
- 	}
-+
-+	if (request_irq(pci_dev->irq, netup_unidvb_isr, IRQF_SHARED,
-+			"netup_unidvb", pci_dev) < 0) {
-+		dev_err(&pci_dev->dev,
-+			"%s(): can't get IRQ %d\n", __func__, pci_dev->irq);
-+		goto dma_setup_err;
-+	}
-+
- 	dev_info(&pci_dev->dev,
- 		"netup_unidvb: device has been initialized\n");
- 	return 0;
-@@ -951,8 +954,6 @@ static int netup_unidvb_initdev(struct pci_dev *pci_dev,
- 	dma_free_coherent(&pci_dev->dev, ndev->dma_size,
- 			ndev->dma_virt, ndev->dma_phys);
- dma_alloc_err:
--	free_irq(pci_dev->irq, pci_dev);
--irq_request_err:
- 	iounmap(ndev->lmmio1);
- pci_bar1_error:
- 	iounmap(ndev->lmmio0);
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index 95f38595b0f7f..f6a7b876d5954 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -1601,6 +1601,10 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 					NL_SET_ERR_MSG(extack, "Qdisc parent/child loop detected");
+ 					return -ELOOP;
+ 				}
++				if (clid == TC_H_INGRESS) {
++					NL_SET_ERR_MSG(extack, "Ingress cannot graft directly");
++					return -EINVAL;
++				}
+ 				qdisc_refcount_inc(q);
+ 				goto graft;
+ 			} else {
 -- 
 2.39.2
 
