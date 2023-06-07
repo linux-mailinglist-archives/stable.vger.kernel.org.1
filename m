@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45842726D1D
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:39:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A092726BC3
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:28:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234371AbjFGUjR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:39:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37862 "EHLO
+        id S233439AbjFGU2E (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:28:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234320AbjFGUjH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:39:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9167B2706
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:38:41 -0700 (PDT)
+        with ESMTP id S233438AbjFGU1z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:27:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FCB12701
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:27:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8277C645CF
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:38:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E9BC433EF;
-        Wed,  7 Jun 2023 20:38:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2EA716448D
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:27:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E65C433D2;
+        Wed,  7 Jun 2023 20:27:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170317;
-        bh=aw+Afq7dAv+ZX3UiHFSFBZ/fmG/w4QqvKQburD5VRts=;
+        s=korg; t=1686169653;
+        bh=NLbtYEUPqZoLxLnhDP21dMK82i6yMcn38kWWqw7IRY0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VJrh/FVLe2uMEE/tKoRE8XuDLqhnn84dXZjLBl21CJ93nBtQfn2w+mVWRSgX8oBvR
-         mY4BReRWFu1qMA0Et0+8h5R0wgFF3lvwTkD+y1r2tp2otr4zmD2GQXwZquhT6LGoG4
-         8ISSgEH6Y/9E4eW+7TcIM9zS/IxV/Auy5QePYo9M=
+        b=O/yGRaBtacooqatoF/0U6m1gOtgaNbKo2WmLsG8Bbf+8dTQ2XNR06LhL50eeJoVuA
+         BI2zQPbqiytnyVs1VUNTAW2k/p6m/Z2QiWIWPaHkk7UofIEAM70YXR0twmQk/10DQh
+         jJRVGM/SM989jXnnn9t28C9AiYF2SxtWyfSURVP0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhengchao Shao <shaozhengchao@huawei.com>,
-        Peilin Ye <peilin.ye@bytedance.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, YongSu Yoo <yongsuyoo0215@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/225] net: sched: fix NULL pointer dereference in mq_attach
+Subject: [PATCH 6.3 133/286] media: dvb_ca_en50221: fix a size write bug
 Date:   Wed,  7 Jun 2023 22:13:52 +0200
-Message-ID: <20230607200915.627019916@linuxfoundation.org>
+Message-ID: <20230607200927.436844202@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,91 +54,116 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: YongSu Yoo <yongsuyoo0215@gmail.com>
 
-[ Upstream commit 36eec020fab668719b541f34d97f44e232ffa165 ]
+[ Upstream commit a4315e5be7020aac9b24a8151caf4bb85224cd0e ]
 
-When use the following command to test:
-1)ip link add bond0 type bond
-2)ip link set bond0 up
-3)tc qdisc add dev bond0 root handle ffff: mq
-4)tc qdisc replace dev bond0 parent ffff:fff1 handle ffff: mq
+The function of "dvb_ca_en50221_write_data" at source/drivers/media
+/dvb-core/dvb_ca_en50221.c is used for two cases.
+The first case is for writing APDU data in the function of
+"dvb_ca_en50221_io_write" at source/drivers/media/dvb-core/
+dvb_ca_en50221.c.
+The second case is for writing the host link buf size on the
+Command Register in the function of "dvb_ca_en50221_link_init"
+at source/drivers/media/dvb-core/dvb_ca_en50221.c.
+In the second case, there exists a bug like following.
+In the function of the "dvb_ca_en50221_link_init",
+after a TV host calculates the host link buf_size,
+the TV host writes the calculated host link buf_size on the
+Size Register.
+Accroding to the en50221 Spec (the page 60 of
+https://dvb.org/wp-content/uploads/2020/02/En50221.V1.pdf),
+before this writing operation, the "SW(CMDREG_SW)" flag in the
+Command Register should be set. We can see this setting operation
+in the function of the "dvb_ca_en50221_link_init" like below.
+...
+	if ((ret = ca->pub->write_cam_control(ca->pub, slot,
+CTRLIF_COMMAND, IRQEN | CMDREG_SW)) != 0)
+		return ret;
+...
+But, after that, the real writing operation is implemented using
+the function of the "dvb_ca_en50221_write_data" in the function of
+"dvb_ca_en50221_link_init", and the "dvb_ca_en50221_write_data"
+includes the function of "ca->pub->write_cam_control",
+and the function of the "ca->pub->write_cam_control" in the
+function of the "dvb_ca_en50221_wrte_data" does not include
+"CMDREG_SW" flag like below.
+...
+	if ((status = ca->pub->write_cam_control(ca->pub, slot,
+CTRLIF_COMMAND, IRQEN | CMDREG_HC)) != 0)
+...
+In the above source code, we can see only the "IRQEN | CMDREG_HC",
+but we cannot see the "CMDREG_SW".
+The "CMDREG_SW" flag which was set in the function of the
+"dvb_ca_en50221_link_init" was rollbacked by the follwoing function
+of the "dvb_ca_en50221_write_data".
+This is a bug. and this bug causes that the calculated host link buf_size
+is not properly written in the CI module.
+Through this patch, we fix this bug.
 
-The kernel reports NULL pointer dereference issue. The stack information
-is as follows:
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-Internal error: Oops: 0000000096000006 [#1] SMP
-Modules linked in:
-pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : mq_attach+0x44/0xa0
-lr : qdisc_graft+0x20c/0x5cc
-sp : ffff80000e2236a0
-x29: ffff80000e2236a0 x28: ffff0000c0e59d80 x27: ffff0000c0be19c0
-x26: ffff0000cae3e800 x25: 0000000000000010 x24: 00000000fffffff1
-x23: 0000000000000000 x22: ffff0000cae3e800 x21: ffff0000c9df4000
-x20: ffff0000c9df4000 x19: 0000000000000000 x18: ffff80000a934000
-x17: ffff8000f5b56000 x16: ffff80000bb08000 x15: 0000000000000000
-x14: 0000000000000000 x13: 6b6b6b6b6b6b6b6b x12: 6b6b6b6b00000001
-x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
-x8 : ffff0000c0be0730 x7 : bbbbbbbbbbbbbbbb x6 : 0000000000000008
-x5 : ffff0000cae3e864 x4 : 0000000000000000 x3 : 0000000000000001
-x2 : 0000000000000001 x1 : ffff8000090bc23c x0 : 0000000000000000
-Call trace:
-mq_attach+0x44/0xa0
-qdisc_graft+0x20c/0x5cc
-tc_modify_qdisc+0x1c4/0x664
-rtnetlink_rcv_msg+0x354/0x440
-netlink_rcv_skb+0x64/0x144
-rtnetlink_rcv+0x28/0x34
-netlink_unicast+0x1e8/0x2a4
-netlink_sendmsg+0x308/0x4a0
-sock_sendmsg+0x64/0xac
-____sys_sendmsg+0x29c/0x358
-___sys_sendmsg+0x90/0xd0
-__sys_sendmsg+0x7c/0xd0
-__arm64_sys_sendmsg+0x2c/0x38
-invoke_syscall+0x54/0x114
-el0_svc_common.constprop.1+0x90/0x174
-do_el0_svc+0x3c/0xb0
-el0_svc+0x24/0xec
-el0t_64_sync_handler+0x90/0xb4
-el0t_64_sync+0x174/0x178
-
-This is because when mq is added for the first time, qdiscs in mq is set
-to NULL in mq_attach(). Therefore, when replacing mq after adding mq, we
-need to initialize qdiscs in the mq before continuing to graft. Otherwise,
-it will couse NULL pointer dereference issue in mq_attach(). And the same
-issue will occur in the attach functions of mqprio, taprio and htb.
-ffff:fff1 means that the repalce qdisc is ingress. Ingress does not allow
-any qdisc to be attached. Therefore, ffff:fff1 is incorrectly used, and
-the command should be dropped.
-
-Fixes: 6ec1c69a8f64 ("net_sched: add classful multiqueue dummy scheduler")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Tested-by: Peilin Ye <peilin.ye@bytedance.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20230527093747.3583502-1-shaozhengchao@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/linux-media/20220818125027.1131-1-yongsuyoo0215@gmail.com
+Signed-off-by: YongSu Yoo <yongsuyoo0215@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_api.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/media/dvb-core/dvb_ca_en50221.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index 95f38595b0f7f..f6a7b876d5954 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -1601,6 +1601,10 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
- 					NL_SET_ERR_MSG(extack, "Qdisc parent/child loop detected");
- 					return -ELOOP;
- 				}
-+				if (clid == TC_H_INGRESS) {
-+					NL_SET_ERR_MSG(extack, "Ingress cannot graft directly");
-+					return -EINVAL;
-+				}
- 				qdisc_refcount_inc(q);
- 				goto graft;
- 			} else {
+diff --git a/drivers/media/dvb-core/dvb_ca_en50221.c b/drivers/media/dvb-core/dvb_ca_en50221.c
+index c2d2792227f86..b6ca29dfb184a 100644
+--- a/drivers/media/dvb-core/dvb_ca_en50221.c
++++ b/drivers/media/dvb-core/dvb_ca_en50221.c
+@@ -187,7 +187,7 @@ static void dvb_ca_en50221_thread_wakeup(struct dvb_ca_private *ca);
+ static int dvb_ca_en50221_read_data(struct dvb_ca_private *ca, int slot,
+ 				    u8 *ebuf, int ecount);
+ static int dvb_ca_en50221_write_data(struct dvb_ca_private *ca, int slot,
+-				     u8 *ebuf, int ecount);
++				     u8 *ebuf, int ecount, int size_write_flag);
+ 
+ /**
+  * findstr - Safely find needle in haystack.
+@@ -370,7 +370,7 @@ static int dvb_ca_en50221_link_init(struct dvb_ca_private *ca, int slot)
+ 	ret = dvb_ca_en50221_wait_if_status(ca, slot, STATUSREG_FR, HZ / 10);
+ 	if (ret)
+ 		return ret;
+-	ret = dvb_ca_en50221_write_data(ca, slot, buf, 2);
++	ret = dvb_ca_en50221_write_data(ca, slot, buf, 2, CMDREG_SW);
+ 	if (ret != 2)
+ 		return -EIO;
+ 	ret = ca->pub->write_cam_control(ca->pub, slot, CTRLIF_COMMAND, IRQEN);
+@@ -778,11 +778,13 @@ static int dvb_ca_en50221_read_data(struct dvb_ca_private *ca, int slot,
+  * @buf: The data in this buffer is treated as a complete link-level packet to
+  *	 be written.
+  * @bytes_write: Size of ebuf.
++ * @size_write_flag: A flag on Command Register which says whether the link size
++ * information will be writen or not.
+  *
+  * return: Number of bytes written, or < 0 on error.
+  */
+ static int dvb_ca_en50221_write_data(struct dvb_ca_private *ca, int slot,
+-				     u8 *buf, int bytes_write)
++				     u8 *buf, int bytes_write, int size_write_flag)
+ {
+ 	struct dvb_ca_slot *sl = &ca->slot_info[slot];
+ 	int status;
+@@ -817,7 +819,7 @@ static int dvb_ca_en50221_write_data(struct dvb_ca_private *ca, int slot,
+ 
+ 	/* OK, set HC bit */
+ 	status = ca->pub->write_cam_control(ca->pub, slot, CTRLIF_COMMAND,
+-					    IRQEN | CMDREG_HC);
++					    IRQEN | CMDREG_HC | size_write_flag);
+ 	if (status)
+ 		goto exit;
+ 
+@@ -1508,7 +1510,7 @@ static ssize_t dvb_ca_en50221_io_write(struct file *file,
+ 
+ 			mutex_lock(&sl->slot_lock);
+ 			status = dvb_ca_en50221_write_data(ca, slot, fragbuf,
+-							   fraglen + 2);
++							   fraglen + 2, 0);
+ 			mutex_unlock(&sl->slot_lock);
+ 			if (status == (fraglen + 2)) {
+ 				written = 1;
 -- 
 2.39.2
 
