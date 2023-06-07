@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D48D3726F78
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:58:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38B8F726E43
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:49:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235721AbjFGU6h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:58:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59340 "EHLO
+        id S235108AbjFGUtV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:49:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235753AbjFGU6a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:58:30 -0400
+        with ESMTP id S235182AbjFGUs4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:48:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A85492D4F
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:58:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 464B31FE6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:48:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 763CD64899
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:58:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AEFC433D2;
-        Wed,  7 Jun 2023 20:58:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4001B63BDA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:47:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50005C433EF;
+        Wed,  7 Jun 2023 20:47:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171489;
-        bh=qoYXB0WWUWOXzC0J4B6JDi69xCcw48i6OeYjX9B32Lk=;
+        s=korg; t=1686170874;
+        bh=san8NWTAUfBY0AAKfScIUyRBtu2EY7vUrB/EcC2pAXU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JE7PyFFoI8PkovW0MeJXRjOwt6AJPlNed/Pe9TJNenwjV3Q0VW0SD2ojxHXaEJHgS
-         XaKM0O+2ZsqBJx0T62zo+BWTb1I1VbQodVzSpUUqBGdaWtoEM27DA8hZdQ8kxHLt/4
-         cyczsCP3RzWK7BPlXA5fnKm0/dQHScC5K9bFkyD8=
+        b=JlUfwZLitTBXqVu8wCfIeGP+5GIRbGGJk3CkdsIiQeyuRIwCdv5lOyAyJ+jzD3t4j
+         1dhLJY8sRl/lTs5wtnz4HGApGCVIaYo4ZL0jYADscwLmD2XItGDATRNgufCWKVtgEP
+         1t9KyaG2lyT+q6D/LN+/3KoxatEsbeWvkyiBC8H8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Miquel Raynal <miquel.raynal@bootlin.com>,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>,
+        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Vlad Buslov <vladbu@nvidia.com>,
+        Peilin Ye <peilin.ye@bytedance.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 037/159] mtd: rawnand: marvell: ensure timing values are written
+Subject: [PATCH 5.10 024/120] net/sched: Prohibit regrafting ingress or clsact Qdiscs
 Date:   Wed,  7 Jun 2023 22:15:40 +0200
-Message-ID: <20230607200904.885509543@linuxfoundation.org>
+Message-ID: <20230607200901.676041872@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,41 +57,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+From: Peilin Ye <peilin.ye@bytedance.com>
 
-[ Upstream commit 8a6f4d346f3bad9c68b4a87701eb3f7978542d57 ]
+[ Upstream commit 9de95df5d15baa956c2b70b9e794842e790a8a13 ]
 
-When new timing values are calculated in marvell_nfc_setup_interface()
-ensure that they will be applied in marvell_nfc_select_target() by
-clearing the selected_chip pointer.
+Currently, after creating an ingress (or clsact) Qdisc and grafting it
+under TC_H_INGRESS (TC_H_CLSACT), it is possible to graft it again under
+e.g. a TBF Qdisc:
 
-Fixes: b25251414f6e ("mtd: rawnand: marvell: Stop implementing ->select_chip()")
-Suggested-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230525003154.2303012-1-chris.packham@alliedtelesis.co.nz
+  $ ip link add ifb0 type ifb
+  $ tc qdisc add dev ifb0 handle 1: root tbf rate 20kbit buffer 1600 limit 3000
+  $ tc qdisc add dev ifb0 clsact
+  $ tc qdisc link dev ifb0 handle ffff: parent 1:1
+  $ tc qdisc show dev ifb0
+  qdisc tbf 1: root refcnt 2 rate 20Kbit burst 1600b lat 560.0ms
+  qdisc clsact ffff: parent ffff:fff1 refcnt 2
+                                      ^^^^^^^^
+
+clsact's refcount has increased: it is now grafted under both
+TC_H_CLSACT and 1:1.
+
+ingress and clsact Qdiscs should only be used under TC_H_INGRESS
+(TC_H_CLSACT).  Prohibit regrafting them.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 1f211a1b929c ("net, sched: add clsact qdisc")
+Tested-by: Pedro Tammela <pctammela@mojatatu.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
+Signed-off-by: Peilin Ye <peilin.ye@bytedance.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/marvell_nand.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/sched/sch_api.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/mtd/nand/raw/marvell_nand.c b/drivers/mtd/nand/raw/marvell_nand.c
-index b248c5f657d56..95dee54fe079c 100644
---- a/drivers/mtd/nand/raw/marvell_nand.c
-+++ b/drivers/mtd/nand/raw/marvell_nand.c
-@@ -2443,6 +2443,12 @@ static int marvell_nfc_setup_interface(struct nand_chip *chip, int chipnr,
- 			NDTR1_WAIT_MODE;
- 	}
- 
-+	/*
-+	 * Reset nfc->selected_chip so the next command will cause the timing
-+	 * registers to be updated in marvell_nfc_select_target().
-+	 */
-+	nfc->selected_chip = NULL;
-+
- 	return 0;
- }
- 
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index b665f4ff49a60..b330f1192cf8d 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -1589,6 +1589,11 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 					NL_SET_ERR_MSG(extack, "Invalid qdisc name");
+ 					return -EINVAL;
+ 				}
++				if (q->flags & TCQ_F_INGRESS) {
++					NL_SET_ERR_MSG(extack,
++						       "Cannot regraft ingress or clsact Qdiscs");
++					return -EINVAL;
++				}
+ 				if (q == p ||
+ 				    (p && check_loop(q, p, 0))) {
+ 					NL_SET_ERR_MSG(extack, "Qdisc parent/child loop detected");
 -- 
 2.39.2
 
