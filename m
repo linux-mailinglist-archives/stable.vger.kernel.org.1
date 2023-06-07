@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0AF6726FA4
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:00:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D78C726DFB
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:47:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235834AbjFGVAs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:00:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33420 "EHLO
+        id S234962AbjFGUrL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:47:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236075AbjFGVAT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 071A21BE4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:59:57 -0700 (PDT)
+        with ESMTP id S234992AbjFGUqi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:46:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAACE26A1
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:46:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C8877648DE
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:59:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D777DC433D2;
-        Wed,  7 Jun 2023 20:59:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4625C6468C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:46:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB97C433EF;
+        Wed,  7 Jun 2023 20:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171579;
-        bh=NLbtYEUPqZoLxLnhDP21dMK82i6yMcn38kWWqw7IRY0=;
+        s=korg; t=1686170794;
+        bh=hiekQ6/qtAXAzA6Hjve+wJbq3GliBwKXy/buQqrRT8w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YujIVaVsfx81sMW2TA/SkM0K/oaZuasmAxTdpZAQMI2duuWIW/f41BeJT4b8HNUol
-         n4KMQwSrFj0BCJD/wTDoptb1D6U8Gb7ksUKfEg3HQZjPs+x2ljhS0SKT+SZ2GieXTp
-         aGTPjhPd+hkKTQME5+a5Pr+47zDMp3Meww1zqY7A=
+        b=tiwvcUKT3LYkw11bSbSjDEoLXGFzXZZNMGyY7Oz+bomX89dib+Xm8/J9iq4cFdd5I
+         2F+gOX2Bp61T3ndbJwMUIKfGW3p/aIFPuAa8aSgJVDQyg4Xi2FzxTcGP0enP8lzvZy
+         42GmTIPdeoKrAHPA0oMiJhmE38lbUWgAttUy2EPU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, YongSu Yoo <yongsuyoo0215@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 071/159] media: dvb_ca_en50221: fix a size write bug
+        patches@lists.linux.dev, Pavel Machek <pavel@denx.de>,
+        Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.1 181/225] tpm, tpm_tis: correct tpm_tis_flags enumeration values
 Date:   Wed,  7 Jun 2023 22:16:14 +0200
-Message-ID: <20230607200906.006222959@linuxfoundation.org>
+Message-ID: <20230607200920.310769639@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,118 +54,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: YongSu Yoo <yongsuyoo0215@gmail.com>
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 
-[ Upstream commit a4315e5be7020aac9b24a8151caf4bb85224cd0e ]
+commit 4ecd704a4c51fd95973fcc3a60444e0e24eb9439 upstream.
 
-The function of "dvb_ca_en50221_write_data" at source/drivers/media
-/dvb-core/dvb_ca_en50221.c is used for two cases.
-The first case is for writing APDU data in the function of
-"dvb_ca_en50221_io_write" at source/drivers/media/dvb-core/
-dvb_ca_en50221.c.
-The second case is for writing the host link buf size on the
-Command Register in the function of "dvb_ca_en50221_link_init"
-at source/drivers/media/dvb-core/dvb_ca_en50221.c.
-In the second case, there exists a bug like following.
-In the function of the "dvb_ca_en50221_link_init",
-after a TV host calculates the host link buf_size,
-the TV host writes the calculated host link buf_size on the
-Size Register.
-Accroding to the en50221 Spec (the page 60 of
-https://dvb.org/wp-content/uploads/2020/02/En50221.V1.pdf),
-before this writing operation, the "SW(CMDREG_SW)" flag in the
-Command Register should be set. We can see this setting operation
-in the function of the "dvb_ca_en50221_link_init" like below.
-...
-	if ((ret = ca->pub->write_cam_control(ca->pub, slot,
-CTRLIF_COMMAND, IRQEN | CMDREG_SW)) != 0)
-		return ret;
-...
-But, after that, the real writing operation is implemented using
-the function of the "dvb_ca_en50221_write_data" in the function of
-"dvb_ca_en50221_link_init", and the "dvb_ca_en50221_write_data"
-includes the function of "ca->pub->write_cam_control",
-and the function of the "ca->pub->write_cam_control" in the
-function of the "dvb_ca_en50221_wrte_data" does not include
-"CMDREG_SW" flag like below.
-...
-	if ((status = ca->pub->write_cam_control(ca->pub, slot,
-CTRLIF_COMMAND, IRQEN | CMDREG_HC)) != 0)
-...
-In the above source code, we can see only the "IRQEN | CMDREG_HC",
-but we cannot see the "CMDREG_SW".
-The "CMDREG_SW" flag which was set in the function of the
-"dvb_ca_en50221_link_init" was rollbacked by the follwoing function
-of the "dvb_ca_en50221_write_data".
-This is a bug. and this bug causes that the calculated host link buf_size
-is not properly written in the CI module.
-Through this patch, we fix this bug.
+With commit 858e8b792d06 ("tpm, tpm_tis: Avoid cache incoherency in test
+for interrupts") bit accessor functions are used to access flags in
+tpm_tis_data->flags.
 
-Link: https://lore.kernel.org/linux-media/20220818125027.1131-1-yongsuyoo0215@gmail.com
-Signed-off-by: YongSu Yoo <yongsuyoo0215@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However these functions expect bit numbers, while the flags are defined
+as bit masks in enum tpm_tis_flag.
+
+Fix this inconsistency by using numbers instead of masks also for the
+flags in the enum.
+
+Reported-by: Pavel Machek <pavel@denx.de>
+Fixes: 858e8b792d06 ("tpm, tpm_tis: Avoid cache incoherency in test for interrupts")
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Pavel Machek <pavel@denx.de>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dvb_ca_en50221.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/char/tpm/tpm_tis_core.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/dvb-core/dvb_ca_en50221.c b/drivers/media/dvb-core/dvb_ca_en50221.c
-index c2d2792227f86..b6ca29dfb184a 100644
---- a/drivers/media/dvb-core/dvb_ca_en50221.c
-+++ b/drivers/media/dvb-core/dvb_ca_en50221.c
-@@ -187,7 +187,7 @@ static void dvb_ca_en50221_thread_wakeup(struct dvb_ca_private *ca);
- static int dvb_ca_en50221_read_data(struct dvb_ca_private *ca, int slot,
- 				    u8 *ebuf, int ecount);
- static int dvb_ca_en50221_write_data(struct dvb_ca_private *ca, int slot,
--				     u8 *ebuf, int ecount);
-+				     u8 *ebuf, int ecount, int size_write_flag);
+diff --git a/drivers/char/tpm/tpm_tis_core.h b/drivers/char/tpm/tpm_tis_core.h
+index e978f457fd4d..610bfadb6acf 100644
+--- a/drivers/char/tpm/tpm_tis_core.h
++++ b/drivers/char/tpm/tpm_tis_core.h
+@@ -84,10 +84,10 @@ enum tis_defaults {
+ #define ILB_REMAP_SIZE			0x100
  
- /**
-  * findstr - Safely find needle in haystack.
-@@ -370,7 +370,7 @@ static int dvb_ca_en50221_link_init(struct dvb_ca_private *ca, int slot)
- 	ret = dvb_ca_en50221_wait_if_status(ca, slot, STATUSREG_FR, HZ / 10);
- 	if (ret)
- 		return ret;
--	ret = dvb_ca_en50221_write_data(ca, slot, buf, 2);
-+	ret = dvb_ca_en50221_write_data(ca, slot, buf, 2, CMDREG_SW);
- 	if (ret != 2)
- 		return -EIO;
- 	ret = ca->pub->write_cam_control(ca->pub, slot, CTRLIF_COMMAND, IRQEN);
-@@ -778,11 +778,13 @@ static int dvb_ca_en50221_read_data(struct dvb_ca_private *ca, int slot,
-  * @buf: The data in this buffer is treated as a complete link-level packet to
-  *	 be written.
-  * @bytes_write: Size of ebuf.
-+ * @size_write_flag: A flag on Command Register which says whether the link size
-+ * information will be writen or not.
-  *
-  * return: Number of bytes written, or < 0 on error.
-  */
- static int dvb_ca_en50221_write_data(struct dvb_ca_private *ca, int slot,
--				     u8 *buf, int bytes_write)
-+				     u8 *buf, int bytes_write, int size_write_flag)
- {
- 	struct dvb_ca_slot *sl = &ca->slot_info[slot];
- 	int status;
-@@ -817,7 +819,7 @@ static int dvb_ca_en50221_write_data(struct dvb_ca_private *ca, int slot,
+ enum tpm_tis_flags {
+-	TPM_TIS_ITPM_WORKAROUND		= BIT(0),
+-	TPM_TIS_INVALID_STATUS		= BIT(1),
+-	TPM_TIS_DEFAULT_CANCELLATION	= BIT(2),
+-	TPM_TIS_IRQ_TESTED		= BIT(3),
++	TPM_TIS_ITPM_WORKAROUND		= 0,
++	TPM_TIS_INVALID_STATUS		= 1,
++	TPM_TIS_DEFAULT_CANCELLATION	= 2,
++	TPM_TIS_IRQ_TESTED		= 3,
+ };
  
- 	/* OK, set HC bit */
- 	status = ca->pub->write_cam_control(ca->pub, slot, CTRLIF_COMMAND,
--					    IRQEN | CMDREG_HC);
-+					    IRQEN | CMDREG_HC | size_write_flag);
- 	if (status)
- 		goto exit;
- 
-@@ -1508,7 +1510,7 @@ static ssize_t dvb_ca_en50221_io_write(struct file *file,
- 
- 			mutex_lock(&sl->slot_lock);
- 			status = dvb_ca_en50221_write_data(ca, slot, fragbuf,
--							   fraglen + 2);
-+							   fraglen + 2, 0);
- 			mutex_unlock(&sl->slot_lock);
- 			if (status == (fraglen + 2)) {
- 				written = 1;
+ struct tpm_tis_data {
 -- 
-2.39.2
+2.41.0
 
 
 
