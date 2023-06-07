@@ -2,217 +2,261 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16E57725F4D
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 14:26:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A353B725F76
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 14:30:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240847AbjFGM03 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 08:26:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39270 "EHLO
+        id S240902AbjFGMaR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 08:30:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240848AbjFGM02 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 08:26:28 -0400
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0A9E71FD6
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 05:26:12 -0700 (PDT)
-Received: by linux.microsoft.com (Postfix, from userid 1112)
-        id 3D2AA20BE4B5; Wed,  7 Jun 2023 05:26:12 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3D2AA20BE4B5
-Date:   Wed, 7 Jun 2023 05:26:12 -0700
-From:   Ard Biesheuvel <ardb@kernel.org>
-To:     stable@vger.kernel.org
-Cc:     dpark@linux.microsoft.com, t-lo@linux.microsoft.com,
-        Sasha Levin <sashal@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>, gregkh@linuxfoundation.org
-Subject: [PATCH 6.1] arm64: efi: Use SMBIOS processor version to key off
- Ampere quirk
-Message-ID: <20230607122612.GA846@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+        with ESMTP id S240966AbjFGM3y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 08:29:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C32F1735
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 05:29:53 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EAFA463674
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 12:29:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F4ADC433D2;
+        Wed,  7 Jun 2023 12:29:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1686140992;
+        bh=B9DeGHcwrPtXOKqQCBKA1fYu8skIOj/qttbqgeg+AaE=;
+        h=Subject:To:Cc:From:Date:From;
+        b=QTgkyDIO92CVaSPvW40KJDIiNbuvF0rNU0aRMe4o3yFqHvQm0DQx9Uhkg46sEG0Id
+         uHFw4ntNkiz+UrgKV9MyEIQ4H1Zs6bljszuENROaDKsFgHNimqROIOq+jNf8p4pupZ
+         uBf4w6GLBr/vAoTJg/rK6gWuiGWxuwxDZQIUyvi4=
+Subject: FAILED: patch "[PATCH] ksmbd: fix UAF issue from opinfo->conn" failed to apply to 5.15-stable tree
+To:     linkinjeon@kernel.org, per.forlin@axis.com, stfrench@microsoft.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Wed, 07 Jun 2023 14:29:49 +0200
+Message-ID: <2023060749-salvaging-brittle-11cc@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2023060606-shininess-rosy-7533@gregkh>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Spam-Status: No, score=-11.5 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[ Upstream commit eb684408f3ea4856639675d6465f0024e498e4b1 ]
 
-Instead of using the SMBIOS type 1 record 'family' field, which is often
-modified by OEMs, use the type 4 'processor ID' and 'processor version'
-fields, which are set to a small set of probe-able values on all known
-Ampere EFI systems in the field.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Fixes: 550b33cfd4452968 ("arm64: efi: Force the use of ...")
-Tested-by: Andrea Righi <andrea.righi@canonical.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
----
- drivers/firmware/efi/libstub/arm64-stub.c | 39 ++++++++++++++++-----
- drivers/firmware/efi/libstub/efistub.h    | 41 +++++++++++++++++++++--
- drivers/firmware/efi/libstub/smbios.c     | 13 +++++--
- 3 files changed, 80 insertions(+), 13 deletions(-)
+To reproduce the conflict and resubmit, you may use the following commands:
 
-diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
-index 42282c5c3fe6..e2f90566b291 100644
---- a/drivers/firmware/efi/libstub/arm64-stub.c
-+++ b/drivers/firmware/efi/libstub/arm64-stub.c
-@@ -17,20 +17,43 @@
- 
- static bool system_needs_vamap(void)
- {
--	const u8 *type1_family = efi_get_smbios_string(1, family);
-+	const struct efi_smbios_type4_record *record;
-+	const u32 __aligned(1) *socid;
-+	const u8 *version;
- 
- 	/*
- 	 * Ampere eMAG, Altra, and Altra Max machines crash in SetTime() if
--	 * SetVirtualAddressMap() has not been called prior.
-+	 * SetVirtualAddressMap() has not been called prior. Most Altra systems
-+	 * can be identified by the SMCCC soc ID, which is conveniently exposed
-+	 * via the type 4 SMBIOS records. Otherwise, test the processor version
-+	 * field. eMAG systems all appear to have the processor version field
-+	 * set to "eMAG".
- 	 */
--	if (!type1_family || (
--	    strcmp(type1_family, "eMAG") &&
--	    strcmp(type1_family, "Altra") &&
--	    strcmp(type1_family, "Altra Max")))
-+	record = (struct efi_smbios_type4_record *)efi_get_smbios_record(4);
-+	if (!record)
- 		return false;
- 
--	efi_warn("Working around broken SetVirtualAddressMap()\n");
--	return true;
-+	socid = (u32 *)record->processor_id;
-+	switch (*socid & 0xffff000f) {
-+		static char const altra[] = "Ampere(TM) Altra(TM) Processor";
-+		static char const emag[] = "eMAG";
-+
-+	default:
-+		version = efi_get_smbios_string(&record->header, 4,
-+						processor_version);
-+		if (!version || (strncmp(version, altra, sizeof(altra) - 1) &&
-+				 strncmp(version, emag, sizeof(emag) - 1)))
-+			break;
-+
-+		fallthrough;
-+
-+	case 0x0a160001:	// Altra
-+	case 0x0a160002:	// Altra Max
-+		efi_warn("Working around broken SetVirtualAddressMap()\n");
-+		return true;
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 36322523dddb11107e9f7f528675a0dec2536103
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023060749-salvaging-brittle-11cc@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 36322523dddb11107e9f7f528675a0dec2536103 Mon Sep 17 00:00:00 2001
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Fri, 19 May 2023 23:09:48 +0900
+Subject: [PATCH] ksmbd: fix UAF issue from opinfo->conn
+
+If opinfo->conn is another connection and while ksmbd send oplock break
+request to cient on current connection, The connection for opinfo->conn
+can be disconnect and conn could be freed. When sending oplock break
+request, this ksmbd_conn can be used and cause user-after-free issue.
+When getting opinfo from the list, ksmbd check connection is being
+released. If it is not released, Increase ->r_count to wait that connection
+is freed.
+
+Cc: stable@vger.kernel.org
+Reported-by: Per Forlin <per.forlin@axis.com>
+Tested-by: Per Forlin <per.forlin@axis.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+
+diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
+index 6d1ccb999893..db181bdad73a 100644
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -157,13 +157,42 @@ static struct oplock_info *opinfo_get_list(struct ksmbd_inode *ci)
+ 	rcu_read_lock();
+ 	opinfo = list_first_or_null_rcu(&ci->m_op_list, struct oplock_info,
+ 					op_entry);
+-	if (opinfo && !atomic_inc_not_zero(&opinfo->refcount))
+-		opinfo = NULL;
++	if (opinfo) {
++		if (!atomic_inc_not_zero(&opinfo->refcount))
++			opinfo = NULL;
++		else {
++			atomic_inc(&opinfo->conn->r_count);
++			if (ksmbd_conn_releasing(opinfo->conn)) {
++				atomic_dec(&opinfo->conn->r_count);
++				atomic_dec(&opinfo->refcount);
++				opinfo = NULL;
++			}
++		}
 +	}
 +
-+	return false;
+ 	rcu_read_unlock();
+ 
+ 	return opinfo;
  }
  
- efi_status_t check_platform_features(void)
-diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
-index 900df67a2078..970e86e3aab0 100644
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -983,6 +983,8 @@ struct efi_smbios_record {
- 	u16	handle;
- };
- 
-+const struct efi_smbios_record *efi_get_smbios_record(u8 type);
++static void opinfo_conn_put(struct oplock_info *opinfo)
++{
++	struct ksmbd_conn *conn;
 +
- struct efi_smbios_type1_record {
- 	struct efi_smbios_record	header;
- 
-@@ -996,13 +998,46 @@ struct efi_smbios_type1_record {
- 	u8				family;
- };
- 
--#define efi_get_smbios_string(__type, __name) ({			\
-+struct efi_smbios_type4_record {
-+	struct efi_smbios_record	header;
++	if (!opinfo)
++		return;
 +
-+	u8				socket;
-+	u8				processor_type;
-+	u8				processor_family;
-+	u8				processor_manufacturer;
-+	u8				processor_id[8];
-+	u8				processor_version;
-+	u8				voltage;
-+	u16				external_clock;
-+	u16				max_speed;
-+	u16				current_speed;
-+	u8				status;
-+	u8				processor_upgrade;
-+	u16				l1_cache_handle;
-+	u16				l2_cache_handle;
-+	u16				l3_cache_handle;
-+	u8				serial_number;
-+	u8				asset_tag;
-+	u8				part_number;
-+	u8				core_count;
-+	u8				enabled_core_count;
-+	u8				thread_count;
-+	u16				processor_characteristics;
-+	u16				processor_family2;
-+	u16				core_count2;
-+	u16				enabled_core_count2;
-+	u16				thread_count2;
-+	u16				thread_enabled;
-+};
-+
-+#define efi_get_smbios_string(__record, __type, __name) ({		\
- 	int size = sizeof(struct efi_smbios_type ## __type ## _record);	\
- 	int off = offsetof(struct efi_smbios_type ## __type ## _record,	\
- 			   __name);					\
--	__efi_get_smbios_string(__type, off, size);			\
-+	__efi_get_smbios_string((__record), __type, off, size);		\
- })
- 
--const u8 *__efi_get_smbios_string(u8 type, int offset, int recsize);
-+const u8 *__efi_get_smbios_string(const struct efi_smbios_record *record,
-+				  u8 type, int offset, int recsize);
- 
- #endif
-diff --git a/drivers/firmware/efi/libstub/smbios.c b/drivers/firmware/efi/libstub/smbios.c
-index aadb422b9637..f9c159c28f46 100644
---- a/drivers/firmware/efi/libstub/smbios.c
-+++ b/drivers/firmware/efi/libstub/smbios.c
-@@ -22,19 +22,28 @@ struct efi_smbios_protocol {
- 	u8 minor_version;
- };
- 
--const u8 *__efi_get_smbios_string(u8 type, int offset, int recsize)
-+const struct efi_smbios_record *efi_get_smbios_record(u8 type)
- {
- 	struct efi_smbios_record *record;
- 	efi_smbios_protocol_t *smbios;
- 	efi_status_t status;
- 	u16 handle = 0xfffe;
--	const u8 *strtable;
- 
- 	status = efi_bs_call(locate_protocol, &EFI_SMBIOS_PROTOCOL_GUID, NULL,
- 			     (void **)&smbios) ?:
- 		 efi_call_proto(smbios, get_next, &handle, &type, &record, NULL);
- 	if (status != EFI_SUCCESS)
- 		return NULL;
-+	return record;
++	conn = opinfo->conn;
++	/*
++	 * Checking waitqueue to dropping pending requests on
++	 * disconnection. waitqueue_active is safe because it
++	 * uses atomic operation for condition.
++	 */
++	if (!atomic_dec_return(&conn->r_count) && waitqueue_active(&conn->r_count_q))
++		wake_up(&conn->r_count_q);
++	opinfo_put(opinfo);
 +}
 +
-+const u8 *__efi_get_smbios_string(const struct efi_smbios_record *record,
-+				  u8 type, int offset, int recsize)
-+{
-+	const u8 *strtable;
-+
-+	if (!record)
-+		return NULL;
+ void opinfo_put(struct oplock_info *opinfo)
+ {
+ 	if (!atomic_dec_and_test(&opinfo->refcount))
+@@ -666,13 +695,6 @@ static void __smb2_oplock_break_noti(struct work_struct *wk)
  
- 	strtable = (u8 *)record + record->length;
- 	for (int i = 1; i < ((u8 *)record)[offset]; i++) {
--- 
-2.30.2
+ out:
+ 	ksmbd_free_work_struct(work);
+-	/*
+-	 * Checking waitqueue to dropping pending requests on
+-	 * disconnection. waitqueue_active is safe because it
+-	 * uses atomic operation for condition.
+-	 */
+-	if (!atomic_dec_return(&conn->r_count) && waitqueue_active(&conn->r_count_q))
+-		wake_up(&conn->r_count_q);
+ }
+ 
+ /**
+@@ -706,7 +728,6 @@ static int smb2_oplock_break_noti(struct oplock_info *opinfo)
+ 	work->conn = conn;
+ 	work->sess = opinfo->sess;
+ 
+-	atomic_inc(&conn->r_count);
+ 	if (opinfo->op_state == OPLOCK_ACK_WAIT) {
+ 		INIT_WORK(&work->work, __smb2_oplock_break_noti);
+ 		ksmbd_queue_work(work);
+@@ -776,13 +797,6 @@ static void __smb2_lease_break_noti(struct work_struct *wk)
+ 
+ out:
+ 	ksmbd_free_work_struct(work);
+-	/*
+-	 * Checking waitqueue to dropping pending requests on
+-	 * disconnection. waitqueue_active is safe because it
+-	 * uses atomic operation for condition.
+-	 */
+-	if (!atomic_dec_return(&conn->r_count) && waitqueue_active(&conn->r_count_q))
+-		wake_up(&conn->r_count_q);
+ }
+ 
+ /**
+@@ -822,7 +836,6 @@ static int smb2_lease_break_noti(struct oplock_info *opinfo)
+ 	work->conn = conn;
+ 	work->sess = opinfo->sess;
+ 
+-	atomic_inc(&conn->r_count);
+ 	if (opinfo->op_state == OPLOCK_ACK_WAIT) {
+ 		list_for_each_safe(tmp, t, &opinfo->interim_list) {
+ 			struct ksmbd_work *in_work;
+@@ -1144,8 +1157,10 @@ int smb_grant_oplock(struct ksmbd_work *work, int req_op_level, u64 pid,
+ 	}
+ 	prev_opinfo = opinfo_get_list(ci);
+ 	if (!prev_opinfo ||
+-	    (prev_opinfo->level == SMB2_OPLOCK_LEVEL_NONE && lctx))
++	    (prev_opinfo->level == SMB2_OPLOCK_LEVEL_NONE && lctx)) {
++		opinfo_conn_put(prev_opinfo);
+ 		goto set_lev;
++	}
+ 	prev_op_has_lease = prev_opinfo->is_lease;
+ 	if (prev_op_has_lease)
+ 		prev_op_state = prev_opinfo->o_lease->state;
+@@ -1153,19 +1168,19 @@ int smb_grant_oplock(struct ksmbd_work *work, int req_op_level, u64 pid,
+ 	if (share_ret < 0 &&
+ 	    prev_opinfo->level == SMB2_OPLOCK_LEVEL_EXCLUSIVE) {
+ 		err = share_ret;
+-		opinfo_put(prev_opinfo);
++		opinfo_conn_put(prev_opinfo);
+ 		goto err_out;
+ 	}
+ 
+ 	if (prev_opinfo->level != SMB2_OPLOCK_LEVEL_BATCH &&
+ 	    prev_opinfo->level != SMB2_OPLOCK_LEVEL_EXCLUSIVE) {
+-		opinfo_put(prev_opinfo);
++		opinfo_conn_put(prev_opinfo);
+ 		goto op_break_not_needed;
+ 	}
+ 
+ 	list_add(&work->interim_entry, &prev_opinfo->interim_list);
+ 	err = oplock_break(prev_opinfo, SMB2_OPLOCK_LEVEL_II);
+-	opinfo_put(prev_opinfo);
++	opinfo_conn_put(prev_opinfo);
+ 	if (err == -ENOENT)
+ 		goto set_lev;
+ 	/* Check all oplock was freed by close */
+@@ -1228,14 +1243,14 @@ static void smb_break_all_write_oplock(struct ksmbd_work *work,
+ 		return;
+ 	if (brk_opinfo->level != SMB2_OPLOCK_LEVEL_BATCH &&
+ 	    brk_opinfo->level != SMB2_OPLOCK_LEVEL_EXCLUSIVE) {
+-		opinfo_put(brk_opinfo);
++		opinfo_conn_put(brk_opinfo);
+ 		return;
+ 	}
+ 
+ 	brk_opinfo->open_trunc = is_trunc;
+ 	list_add(&work->interim_entry, &brk_opinfo->interim_list);
+ 	oplock_break(brk_opinfo, SMB2_OPLOCK_LEVEL_II);
+-	opinfo_put(brk_opinfo);
++	opinfo_conn_put(brk_opinfo);
+ }
+ 
+ /**
+@@ -1263,6 +1278,13 @@ void smb_break_all_levII_oplock(struct ksmbd_work *work, struct ksmbd_file *fp,
+ 	list_for_each_entry_rcu(brk_op, &ci->m_op_list, op_entry) {
+ 		if (!atomic_inc_not_zero(&brk_op->refcount))
+ 			continue;
++
++		atomic_inc(&brk_op->conn->r_count);
++		if (ksmbd_conn_releasing(brk_op->conn)) {
++			atomic_dec(&brk_op->conn->r_count);
++			continue;
++		}
++
+ 		rcu_read_unlock();
+ 		if (brk_op->is_lease && (brk_op->o_lease->state &
+ 		    (~(SMB2_LEASE_READ_CACHING_LE |
+@@ -1292,7 +1314,7 @@ void smb_break_all_levII_oplock(struct ksmbd_work *work, struct ksmbd_file *fp,
+ 		brk_op->open_trunc = is_trunc;
+ 		oplock_break(brk_op, SMB2_OPLOCK_LEVEL_NONE);
+ next:
+-		opinfo_put(brk_op);
++		opinfo_conn_put(brk_op);
+ 		rcu_read_lock();
+ 	}
+ 	rcu_read_unlock();
 
