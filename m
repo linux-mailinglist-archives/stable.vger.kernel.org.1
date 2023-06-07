@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA897726DD9
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:46:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E72C9726E7B
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234747AbjFGUqT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:46:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45328 "EHLO
+        id S234815AbjFGUuu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:50:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234762AbjFGUqC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:46:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B5882721
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:45:40 -0700 (PDT)
+        with ESMTP id S235674AbjFGUuS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:50:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A20F1FE5
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:50:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 63A866468C
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:45:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A41C433D2;
-        Wed,  7 Jun 2023 20:45:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1974D646E7
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:50:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2928CC433EF;
+        Wed,  7 Jun 2023 20:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170739;
-        bh=7P1ovuxvTzFYSu+1MIAyr3QGwChR4p2MrkuhM2fNbD0=;
+        s=korg; t=1686171010;
+        bh=+S96KXUuZRYiirsXrHe1YzXZhgwKZfcsFCX6sz2X0n8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l4optaVtRP+W4OrXSeYffkG3VAGHk+/4nNKaxS6RuOqjiZHkrVOXREMu++2cddnoA
-         xzWU+Kbtspb3NOsIrmPeEg0oqMONmGn9PCDv3K/kKnK8ydS0PhT5ZVvB9n6Eq0HUHw
-         7r0K+QFAQiJt+/QVEMWt2P4GdWSB1lpAAu7WAv+U=
+        b=mqGkxTLPF1K3834AM0rzFzJc2CekyPIPx1KaeplQZJ4BorPhi5j1WViU+/2QGOKL8
+         nkKWtq3dy/ZHfaN/RXKE5ygKmVV3erHXxc46t1VZwNyARcHnNMLCL/G0G2TQoEVBXH
+         v4yjKO8tslFvmRITX/2ijJ8HeWh91g784vI/NXOQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
-        syzbot+d910bd780e6efac35869@syzkaller.appspotmail.com,
-        Sam Ravnborg <sam@ravnborg.org>, stable@kernel.org
-Subject: [PATCH 6.1 200/225] fbcon: Fix null-ptr-deref in soft_cursor
+        patches@lists.linux.dev, Frank Li <Frank.Li@nxp.com>,
+        Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 077/120] iio: light: vcnl4035: fixed chip ID check
 Date:   Wed,  7 Jun 2023 22:16:33 +0200
-Message-ID: <20230607200920.911014963@linuxfoundation.org>
+Message-ID: <20230607200903.328483382@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,58 +54,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit d78bd6cc68276bd57f766f7cb98bfe32c23ab327 upstream.
+commit a551c26e8e568fad42120843521529241b9bceec upstream.
 
-syzbot repored this bug in the softcursor code:
+VCNL4035 register(0xE) ID_L and ID_M define as:
 
-BUG: KASAN: null-ptr-deref in soft_cursor+0x384/0x6b4 drivers/video/fbdev/core/softcursor.c:70
-Read of size 16 at addr 0000000000000200 by task kworker/u4:1/12
+ ID_L: 0x80
+ ID_H: 7:6 (0:0)
+       5:4 (0:0) slave address = 0x60 (7-bit)
+           (0:1) slave address = 0x51 (7-bit)
+           (1:0) slave address = 0x40 (7-bit)
+           (1:0) slave address = 0x41 (7-bit)
+       3:0 Version code default	(0:0:0:0)
 
-CPU: 0 PID: 12 Comm: kworker/u4:1 Not tainted 6.4.0-rc3-syzkaller-geb0f1697d729 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/28/2023
-Workqueue: events_power_efficient fb_flashcursor
-Call trace:
- dump_backtrace+0x1b8/0x1e4 arch/arm64/kernel/stacktrace.c:233
- show_stack+0x2c/0x44 arch/arm64/kernel/stacktrace.c:240
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0xd0/0x124 lib/dump_stack.c:106
- print_report+0xe4/0x514 mm/kasan/report.c:465
- kasan_report+0xd4/0x130 mm/kasan/report.c:572
- kasan_check_range+0x264/0x2a4 mm/kasan/generic.c:187
- __asan_memcpy+0x3c/0x84 mm/kasan/shadow.c:105
- soft_cursor+0x384/0x6b4 drivers/video/fbdev/core/softcursor.c:70
- bit_cursor+0x113c/0x1a64 drivers/video/fbdev/core/bitblit.c:377
- fb_flashcursor+0x35c/0x54c drivers/video/fbdev/core/fbcon.c:380
- process_one_work+0x788/0x12d4 kernel/workqueue.c:2405
- worker_thread+0x8e0/0xfe8 kernel/workqueue.c:2552
- kthread+0x288/0x310 kernel/kthread.c:379
- ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:853
+So just check ID_L.
 
-This fix let bit_cursor() bail out early when a font bitmap
-isn't available yet.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reported-by: syzbot+d910bd780e6efac35869@syzkaller.appspotmail.com
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
-Cc: stable@kernel.org
+Fixes: 55707294c4eb ("iio: light: Add support for vishay vcnl4035")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20230501143605.1615549-1-Frank.Li@nxp.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/bitblit.c |    3 +++
+ drivers/iio/light/vcnl4035.c |    3 +++
  1 file changed, 3 insertions(+)
 
---- a/drivers/video/fbdev/core/bitblit.c
-+++ b/drivers/video/fbdev/core/bitblit.c
-@@ -247,6 +247,9 @@ static void bit_cursor(struct vc_data *v
+--- a/drivers/iio/light/vcnl4035.c
++++ b/drivers/iio/light/vcnl4035.c
+@@ -8,6 +8,7 @@
+  * TODO: Proximity
+  */
+ #include <linux/bitops.h>
++#include <linux/bitfield.h>
+ #include <linux/i2c.h>
+ #include <linux/module.h>
+ #include <linux/pm_runtime.h>
+@@ -42,6 +43,7 @@
+ #define VCNL4035_ALS_PERS_MASK		GENMASK(3, 2)
+ #define VCNL4035_INT_ALS_IF_H_MASK	BIT(12)
+ #define VCNL4035_INT_ALS_IF_L_MASK	BIT(13)
++#define VCNL4035_DEV_ID_MASK		GENMASK(7, 0)
  
- 	cursor.set = 0;
+ /* Default values */
+ #define VCNL4035_MODE_ALS_ENABLE	BIT(0)
+@@ -415,6 +417,7 @@ static int vcnl4035_init(struct vcnl4035
+ 		return ret;
+ 	}
  
-+	if (!vc->vc_font.data)
-+		return;
-+
-  	c = scr_readw((u16 *) vc->vc_pos);
- 	attribute = get_attribute(info, c);
- 	src = vc->vc_font.data + ((c & charmask) * (w * vc->vc_font.height));
++	id = FIELD_GET(VCNL4035_DEV_ID_MASK, id);
+ 	if (id != VCNL4035_DEV_ID_VAL) {
+ 		dev_err(&data->client->dev, "Wrong id, got %x, expected %x\n",
+ 			id, VCNL4035_DEV_ID_VAL);
 
 
