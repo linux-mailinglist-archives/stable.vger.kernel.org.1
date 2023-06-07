@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98573726CBD
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:36:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C062726DB1
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:44:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234154AbjFGUf6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:35:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34452 "EHLO
+        id S234650AbjFGUoo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:44:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233947AbjFGUfs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:35:48 -0400
+        with ESMTP id S234709AbjFGUok (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD0AA26AA
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:35:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9A4F26A6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:44:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ABD646456E
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:35:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0370C433EF;
-        Wed,  7 Jun 2023 20:35:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 02ED26465D
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:44:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18CD9C4339B;
+        Wed,  7 Jun 2023 20:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170133;
-        bh=yKGcdrssA11YUCE5AUIKpueGETZlG7QwlPbKBiFbRT4=;
+        s=korg; t=1686170661;
+        bh=/f62AiZafCxzs0GM7Jz39TrKx5zO6boPsFlgNHPfD3s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=i1N6yjAClU299VE+id5UrG2WGzLTE1dTgK8auRJ6mVvho89/dM2vABlnRTsclu3Sa
-         StNU5jRUqlwNIqY1q0pb9sLWb2oe37TMkdVxdZ0v8FiAS32I4R9HmaXn+uCPE952AN
-         /sUYJ6BRddN9WHb/Ct6/hcv0MjDpWnoRExhG0jzI=
+        b=zxzxDyBpIceIG2M4D2ykdk+f28BSQEw6ia193Oxo3Y0l76IXF6wjBxgtV5WK5VHCc
+         iImfB7UPn4fgSOflSIcGe7M8QnGUoVk5HYd3xqMHeg7ucL8vCBuPK2MSkgX2V2JUSj
+         uECcTqWpQLEK9JJZH7z7vyXZ61W8QQ3uiDGmtLCs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Thumshirn <jth@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 28/88] watchdog: menz069_wdt: fix watchdog initialisation
+        patches@lists.linux.dev, Paul Cercueil <paul@crapouillou.net>,
+        Alisa Roman <alisa.roman@analog.com>,
+        Nuno Sa <nuno.sa@analog.com>, Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 152/225] iio: adc: ad7192: Change "shorted" channels to differential
 Date:   Wed,  7 Jun 2023 22:15:45 +0200
-Message-ID: <20230607200900.013517314@linuxfoundation.org>
+Message-ID: <20230607200919.383004164@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,71 +55,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Thumshirn <jth@kernel.org>
+From: Paul Cercueil <paul@crapouillou.net>
 
-[ Upstream commit 87b22656ca6a896d0378e9e60ffccb0c82f48b08 ]
+commit e55245d115bb9054cb72cdd5dda5660f4484873a upstream.
 
-Doing a 'cat /dev/watchdog0' with menz069_wdt as watchdog0 will result in
-a NULL pointer dereference.
+The AD7192 provides a specific channel configuration where both negative
+and positive inputs are connected to AIN2. This was represented in the
+ad7192 driver as a IIO channel with .channel = 2 and .extended_name set
+to "shorted".
 
-This happens because we're passing the wrong pointer to
-watchdog_register_device(). Fix this by getting rid of the static
-watchdog_device structure and use the one embedded into the driver's
-per-instance private data.
+The problem with this approach, is that the driver provided two IIO
+channels with the identifier .channel = 2; one "shorted" and the other
+not. This goes against the IIO ABI, as a channel identifier should be
+unique.
 
-Signed-off-by: Johannes Thumshirn <jth@kernel.org>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20230418172531.177349-2-jth@kernel.org
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Address this issue by changing "shorted" channels to being differential
+instead, with channel 2 vs. itself, as we're actually measuring AIN2 vs.
+itself.
+
+Note that the fix tag is for the commit that moved the driver out of
+staging. The bug existed before that, but backporting would become very
+complex further down and unlikely to happen.
+
+Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Co-developed-by: Alisa Roman <alisa.roman@analog.com>
+Signed-off-by: Alisa Roman <alisa.roman@analog.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20230330102100.17590-1-paul@crapouillou.net
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/watchdog/menz69_wdt.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ drivers/iio/adc/ad7192.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/watchdog/menz69_wdt.c b/drivers/watchdog/menz69_wdt.c
-index ed18238c54074..96a25d18ab643 100644
---- a/drivers/watchdog/menz69_wdt.c
-+++ b/drivers/watchdog/menz69_wdt.c
-@@ -98,14 +98,6 @@ static const struct watchdog_ops men_z069_ops = {
- 	.set_timeout = men_z069_wdt_set_timeout,
- };
+--- a/drivers/iio/adc/ad7192.c
++++ b/drivers/iio/adc/ad7192.c
+@@ -898,10 +898,6 @@ static const struct iio_info ad7195_info
+ 	__AD719x_CHANNEL(_si, _channel1, -1, _address, NULL, IIO_VOLTAGE, \
+ 		BIT(IIO_CHAN_INFO_SCALE), ad7192_calibsys_ext_info)
  
--static struct watchdog_device men_z069_wdt = {
--	.info = &men_z069_info,
--	.ops = &men_z069_ops,
--	.timeout = MEN_Z069_DEFAULT_TIMEOUT,
--	.min_timeout = 1,
--	.max_timeout = MEN_Z069_WDT_COUNTER_MAX / MEN_Z069_TIMER_FREQ,
--};
+-#define AD719x_SHORTED_CHANNEL(_si, _channel1, _address) \
+-	__AD719x_CHANNEL(_si, _channel1, -1, _address, "shorted", IIO_VOLTAGE, \
+-		BIT(IIO_CHAN_INFO_SCALE), ad7192_calibsys_ext_info)
 -
- static int men_z069_probe(struct mcb_device *dev,
- 			  const struct mcb_device_id *id)
- {
-@@ -125,15 +117,19 @@ static int men_z069_probe(struct mcb_device *dev,
- 		goto release_mem;
+ #define AD719x_TEMP_CHANNEL(_si, _address) \
+ 	__AD719x_CHANNEL(_si, 0, -1, _address, NULL, IIO_TEMP, 0, NULL)
  
- 	drv->mem = mem;
-+	drv->wdt.info = &men_z069_info;
-+	drv->wdt.ops = &men_z069_ops;
-+	drv->wdt.timeout = MEN_Z069_DEFAULT_TIMEOUT;
-+	drv->wdt.min_timeout = 1;
-+	drv->wdt.max_timeout = MEN_Z069_WDT_COUNTER_MAX / MEN_Z069_TIMER_FREQ;
- 
--	drv->wdt = men_z069_wdt;
- 	watchdog_init_timeout(&drv->wdt, 0, &dev->dev);
- 	watchdog_set_nowayout(&drv->wdt, nowayout);
- 	watchdog_set_drvdata(&drv->wdt, drv);
- 	drv->wdt.parent = &dev->dev;
- 	mcb_set_drvdata(dev, drv);
- 
--	return watchdog_register_device(&men_z069_wdt);
-+	return watchdog_register_device(&drv->wdt);
- 
- release_mem:
- 	mcb_release_mem(mem);
--- 
-2.39.2
-
+@@ -909,7 +905,7 @@ static const struct iio_chan_spec ad7192
+ 	AD719x_DIFF_CHANNEL(0, 1, 2, AD7192_CH_AIN1P_AIN2M),
+ 	AD719x_DIFF_CHANNEL(1, 3, 4, AD7192_CH_AIN3P_AIN4M),
+ 	AD719x_TEMP_CHANNEL(2, AD7192_CH_TEMP),
+-	AD719x_SHORTED_CHANNEL(3, 2, AD7192_CH_AIN2P_AIN2M),
++	AD719x_DIFF_CHANNEL(3, 2, 2, AD7192_CH_AIN2P_AIN2M),
+ 	AD719x_CHANNEL(4, 1, AD7192_CH_AIN1),
+ 	AD719x_CHANNEL(5, 2, AD7192_CH_AIN2),
+ 	AD719x_CHANNEL(6, 3, AD7192_CH_AIN3),
+@@ -923,7 +919,7 @@ static const struct iio_chan_spec ad7193
+ 	AD719x_DIFF_CHANNEL(2, 5, 6, AD7193_CH_AIN5P_AIN6M),
+ 	AD719x_DIFF_CHANNEL(3, 7, 8, AD7193_CH_AIN7P_AIN8M),
+ 	AD719x_TEMP_CHANNEL(4, AD7193_CH_TEMP),
+-	AD719x_SHORTED_CHANNEL(5, 2, AD7193_CH_AIN2P_AIN2M),
++	AD719x_DIFF_CHANNEL(5, 2, 2, AD7193_CH_AIN2P_AIN2M),
+ 	AD719x_CHANNEL(6, 1, AD7193_CH_AIN1),
+ 	AD719x_CHANNEL(7, 2, AD7193_CH_AIN2),
+ 	AD719x_CHANNEL(8, 3, AD7193_CH_AIN3),
 
 
