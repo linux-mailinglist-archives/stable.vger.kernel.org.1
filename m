@@ -2,48 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE6BD726C52
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:32:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CB0B726CE4
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:37:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233717AbjFGUc3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:32:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58704 "EHLO
+        id S234060AbjFGUhj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:37:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233726AbjFGUc2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:32:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF7B31BD3
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:32:23 -0700 (PDT)
+        with ESMTP id S234121AbjFGUhg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:37:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 738B926B6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:37:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 34AC564510
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:32:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42CCAC433EF;
-        Wed,  7 Jun 2023 20:32:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E1F8460FFF
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:37:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D91C433D2;
+        Wed,  7 Jun 2023 20:37:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169942;
-        bh=mQojfCeB84exQ9wFosFHRjVFWEOgQd4jSIPKj2Eg8zY=;
+        s=korg; t=1686170232;
+        bh=JZCit1xpHd8E5VM4UE6ZB2UjCs13e8xrKdywqYVZ8t0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Pqa/d0LIisg19btlznSiJV4irsg/apmAKvOv8gfIK/jkeQw/+I3A3oWIQOxC7uT35
-         T1m2mYSTxs9Qx1D7IU+1lZShEspsqGqKfoNLemuVutpcJeEGcGAJL9Ek/SziTKpYvS
-         No9eS0kRF+0AmKMiR6mBYToYiv5rz3x37DWsQCms=
+        b=Z+zqln35WPUkoUg4ddyzCQTXpB93VZj6kHtrrc6x076Ijx4gu8v/Ml+RwU3i67CTx
+         MlfZSoGERDvhfMkja/rdZX9wQ57d+mdAwygF35svhwhwz5f3jKQgzYICNu8w7xHmDz
+         nqVtNxkLuw2SEdszs3G9u4nRN8n+0oQj4VXpkYkk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.3 273/286] KVM: x86: Account fastpath-only VM-Exits in vCPU stats
+        patches@lists.linux.dev, Wenchao Hao <haowenchao2@huawei.com>,
+        Ming Lei <ming.lei@redhat.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 55/88] scsi: core: Decrease scsi_devices iorequest_cnt if dispatch failed
 Date:   Wed,  7 Jun 2023 22:16:12 +0200
-Message-ID: <20230607200932.215068351@linuxfoundation.org>
+Message-ID: <20230607200900.962757395@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,35 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sean Christopherson <seanjc@google.com>
+From: Wenchao Hao <haowenchao2@huawei.com>
 
-commit 8b703a49c9df5e74870381ad7ba9c85d8a74ed2c upstream.
+[ Upstream commit 09e797c8641f6ad435c33ae24c223351197ea29a ]
 
-Increment vcpu->stat.exits when handling a fastpath VM-Exit without
-going through any part of the "slow" path.  Not bumping the exits stat
-can result in wildly misleading exit counts, e.g. if the primary reason
-the guest is exiting is to program the TSC deadline timer.
+If scsi_dispatch_cmd() failed, the SCSI command was not sent to the target,
+scsi_queue_rq() would return BLK_STS_RESOURCE and the related request would
+be requeued. The timeout of this request would not fire, no one would
+increase iodone_cnt.
 
-Fixes: 404d5d7bff0d ("KVM: X86: Introduce more exit_fastpath_completion enum values")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230602011920.787844-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The above flow would result the iodone_cnt smaller than iorequest_cnt.  So
+decrease the iorequest_cnt if dispatch failed to workaround the issue.
+
+Signed-off-by: Wenchao Hao <haowenchao2@huawei.com>
+Reported-by: Ming Lei <ming.lei@redhat.com>
+Closes: https://lore.kernel.org/r/ZF+zB+bB7iqe0wGd@ovpn-8-17.pek2.redhat.com
+Link: https://lore.kernel.org/r/20230515070156.1790181-3-haowenchao2@huawei.com
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/x86.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/scsi_lib.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10682,6 +10682,9 @@ static int vcpu_enter_guest(struct kvm_v
- 			exit_fastpath = EXIT_FASTPATH_EXIT_HANDLED;
- 			break;
- 		}
-+
-+		/* Note, VM-Exits that go down the "slow" path are accounted below. */
-+		++vcpu->stat.exits;
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index ace4a7230bcf2..c8a8c6c62c9c2 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -1804,6 +1804,7 @@ static int scsi_dispatch_cmd(struct scsi_cmnd *cmd)
+ 		 */
+ 		SCSI_LOG_MLQUEUE(3, scmd_printk(KERN_INFO, cmd,
+ 			"queuecommand : device blocked\n"));
++		atomic_dec(&cmd->device->iorequest_cnt);
+ 		return SCSI_MLQUEUE_DEVICE_BUSY;
  	}
  
- 	/*
+@@ -1836,6 +1837,7 @@ static int scsi_dispatch_cmd(struct scsi_cmnd *cmd)
+ 	trace_scsi_dispatch_cmd_start(cmd);
+ 	rtn = host->hostt->queuecommand(host, cmd);
+ 	if (rtn) {
++		atomic_dec(&cmd->device->iorequest_cnt);
+ 		trace_scsi_dispatch_cmd_error(cmd, rtn);
+ 		if (rtn != SCSI_MLQUEUE_DEVICE_BUSY &&
+ 		    rtn != SCSI_MLQUEUE_TARGET_BUSY)
+-- 
+2.39.2
+
 
 
