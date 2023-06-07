@@ -2,105 +2,145 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D941A725CD4
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 13:17:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6299725E52
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 14:14:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238955AbjFGLRG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 07:17:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52118 "EHLO
+        id S240282AbjFGMO1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 08:14:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239471AbjFGLRF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 07:17:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A42641702;
-        Wed,  7 Jun 2023 04:17:04 -0700 (PDT)
+        with ESMTP id S238985AbjFGMOZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 08:14:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97EB91BD4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 05:14:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3FB5263DBD;
-        Wed,  7 Jun 2023 11:17:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90665C43442;
-        Wed,  7 Jun 2023 11:17:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686136623;
-        bh=PqT7b3LTt1IrPaGyiAZXtxPqgt4zXro8Gw7CXf+6hyg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hcwjIfmEFTIUXuUtcgpBMJ4jzU5AmLI03k+n5e24wAmMp/W1YkBJLXXTTEK2axz/9
-         T5RVxoff/v2jBz79Uir+LB8uZkFWRyks6Q+F30CwBDcQJgIdEyNWW3cIDPa2R4P5RS
-         J6MUJGfI6Q5HqyfmcIrRIak5MNt6+Gi2BtNAXDLaMvzT52dS4jt9jvEjC1v37a5E9e
-         zTdlZJPWBugDtMCH7X3aNaLw8VUD97ukmGLTWHyKuF/02Zq/Zhyl2QX0IQrQjqcdpb
-         euJakyPqO/MwXQV5UurRMzyB6zDzRIo/gm81awExyAXteEMiR11fFc+lkCITXenblb
-         05+boh6s8h1Bg==
-Received: from johan by xi.lan with local (Exim 4.94.2)
-        (envelope-from <johan+linaro@kernel.org>)
-        id 1q6rAM-0008LU-Gz; Wed, 07 Jun 2023 13:17:26 +0200
-From:   Johan Hovold <johan+linaro@kernel.org>
-To:     Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Krishna Kurapati <quic_kriskura@quicinc.com>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        linux-usb@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org,
-        Li Jun <jun.li@nxp.com>,
-        Sandeep Maheswaram <quic_c_sanm@quicinc.com>
-Subject: [PATCH 2/2] USB: dwc3: fix use-after-free on core driver unbind
-Date:   Wed,  7 Jun 2023 12:05:40 +0200
-Message-Id: <20230607100540.31045-3-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20230607100540.31045-1-johan+linaro@kernel.org>
-References: <20230607100540.31045-1-johan+linaro@kernel.org>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2DB4D63E15
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 12:14:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42416C433A0;
+        Wed,  7 Jun 2023 12:14:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1686140063;
+        bh=T/yV9pOmen0JVp6gBh1EfFJakjWOMN/zbDmC0kNSr3w=;
+        h=Subject:To:Cc:From:Date:From;
+        b=vugjrNOJF7ff0nIwgIXd8FFIqVRPG38BRbD/DWk7W24jPNEJhaxcSAo16KfSCSqs6
+         iXbqDUEPWpXy4+kluWpETBzExM2IqYcd+LEH8lccd9nD7AvF/ufJBfxxF3R79KA79y
+         ofbmN+NKaMEsXH0DPTjJZA37Hmrifl/AIShUwdho=
+Subject: FAILED: patch "[PATCH] riscv: perf: Fix callchain parse error with kernel tracepoint" failed to apply to 5.15-stable tree
+To:     ism.hong@gmail.com, palmer@rivosinc.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Wed, 07 Jun 2023 14:14:20 +0200
+Message-ID: <2023060720-marina-oasis-235c@gregkh>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Some dwc3 glue drivers are currently accessing the driver data of the
-child core device directly, which is clearly a bad idea as the child may
-not have probed yet or may have been unbound from its driver.
 
-As a workaround until the glue drivers have been fixed, clear the driver
-data pointer before allowing the glue parent device to runtime suspend
-to prevent its driver from accessing data that has been freed during
-unbind.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Fixes: 6dd2565989b4 ("usb: dwc3: add imx8mp dwc3 glue layer driver")
-Fixes: 6895ea55c385 ("usb: dwc3: qcom: Configure wakeup interrupts during suspend")
-Cc: stable@vger.kernel.org      # 5.12
-Cc: Li Jun <jun.li@nxp.com>
-Cc: Sandeep Maheswaram <quic_c_sanm@quicinc.com>
-Cc: Krishna Kurapati <quic_kriskura@quicinc.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- drivers/usb/dwc3/core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+To reproduce the conflict and resubmit, you may use the following commands:
 
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index 7b2ce013cc5b..d68958e151a7 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1929,6 +1929,11 @@ static int dwc3_remove(struct platform_device *pdev)
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
- 	pm_runtime_put_noidle(&pdev->dev);
-+	/*
-+	 * HACK: Clear the driver data, which is currently accessed by parent
-+	 * glue drivers, before allowing the parent to suspend.
-+	 */
-+	platform_set_drvdata(pdev, NULL);
- 	pm_runtime_set_suspended(&pdev->dev);
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 9a7e8ec0d4cc64870ea449b4fce5779b77496cbb
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023060720-marina-oasis-235c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 9a7e8ec0d4cc64870ea449b4fce5779b77496cbb Mon Sep 17 00:00:00 2001
+From: Ism Hong <ism.hong@gmail.com>
+Date: Thu, 1 Jun 2023 17:53:55 +0800
+Subject: [PATCH] riscv: perf: Fix callchain parse error with kernel tracepoint
+ events
+
+For RISC-V, when tracing with tracepoint events, the IP and status are
+set to 0, preventing the perf code parsing the callchain and resolving
+the symbols correctly.
+
+ ./ply 'tracepoint:kmem/kmem_cache_alloc { @[stack]=count(); }'
+ @:
+ { <STACKID4294967282> }: 1
+
+The fix is to implement perf_arch_fetch_caller_regs for riscv, which
+fills several necessary registers used for callchain unwinding,
+including epc, sp, s0 and status. It's similar to commit b3eac0265bf6
+("arm: perf: Fix callchain parse error with kernel tracepoint events")
+and commit 5b09a094f2fb ("arm64: perf: Fix callchain parse error with
+kernel tracepoint events").
+
+With this patch, callchain can be parsed correctly as:
+
+ ./ply 'tracepoint:kmem/kmem_cache_alloc { @[stack]=count(); }'
+ @:
+ {
+         __traceiter_kmem_cache_alloc+68
+         __traceiter_kmem_cache_alloc+68
+         kmem_cache_alloc+354
+         __sigqueue_alloc+94
+         __send_signal_locked+646
+         send_signal_locked+154
+         do_send_sig_info+84
+         __kill_pgrp_info+130
+         kill_pgrp+60
+         isig+150
+         n_tty_receive_signal_char+36
+         n_tty_receive_buf_standard+2214
+         n_tty_receive_buf_common+280
+         n_tty_receive_buf2+26
+         tty_ldisc_receive_buf+34
+         tty_port_default_receive_buf+62
+         flush_to_ldisc+158
+         process_one_work+458
+         worker_thread+138
+         kthread+178
+         riscv_cpufeature_patch_func+832
+  }: 1
+
+Signed-off-by: Ism Hong <ism.hong@gmail.com>
+Link: https://lore.kernel.org/r/20230601095355.1168910-1-ism.hong@gmail.com
+Fixes: 178e9fc47aae ("perf: riscv: preliminary RISC-V support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+
+diff --git a/arch/riscv/include/asm/perf_event.h b/arch/riscv/include/asm/perf_event.h
+index d42c901f9a97..665bbc9b2f84 100644
+--- a/arch/riscv/include/asm/perf_event.h
++++ b/arch/riscv/include/asm/perf_event.h
+@@ -10,4 +10,11 @@
  
- 	dwc3_free_event_buffers(dwc);
--- 
-2.39.3
+ #include <linux/perf_event.h>
+ #define perf_arch_bpf_user_pt_regs(regs) (struct user_regs_struct *)regs
++
++#define perf_arch_fetch_caller_regs(regs, __ip) { \
++	(regs)->epc = (__ip); \
++	(regs)->s0 = (unsigned long) __builtin_frame_address(0); \
++	(regs)->sp = current_stack_pointer; \
++	(regs)->status = SR_PP; \
++}
+ #endif /* _ASM_RISCV_PERF_EVENT_H */
 
