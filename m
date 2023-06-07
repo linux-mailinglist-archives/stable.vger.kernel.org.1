@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FFF6726E39
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:49:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E78C726D83
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:43:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235046AbjFGUtC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:49:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49320 "EHLO
+        id S234512AbjFGUm6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:42:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235089AbjFGUs3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:48:29 -0400
+        with ESMTP id S234536AbjFGUmv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:42:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B01722702
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:48:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A10610EA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:42:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D73861DFC
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:48:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E55C4339B;
-        Wed,  7 Jun 2023 20:48:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2084B6463B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:42:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35CDDC4339B;
+        Wed,  7 Jun 2023 20:42:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170893;
-        bh=u0qXUGL0qPRkJQ4JWahp3TpyY/2idPVSjs3Gceo+KPY=;
+        s=korg; t=1686170550;
+        bh=awLwyRpuLvxzkYp1+BuQee70cH6x2ekPPiLJGmfacb0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nQfLIIj/pEnEnN/EpOmU2akOTp/NHZRSFfXiEwBnPKntaJV/cmtqah+Uk5m8dnZIs
-         Cxs4+gp1sBu72GBGGOth/VktdQtglLWat8oA3Y/OOMv5TFrjeIpex8CaxMIZXqZVMl
-         T90BibC/cSCG9TBw6eoPdsZixUS8hNFbbE2wtA68=
+        b=vqk02clzkKElsqKjSyI4eXqAGFVADQu+gB06Phmo5LYmJlCaMOa+cOdlCHBCS9GRc
+         ruqaFoebBU84+8P/X1ycmxfU2bqs7NkF/FAqE2G2ggiwb9KG4JR8e2DErOBO+2zGHk
+         x8X6LF2j0lyD2bvnz9iGUN4jKi6KDaSw9FJpIkdQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 005/120] dmaengine: at_xdmac: Fix race for the tx desc callback
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 128/225] atm: hide unused procfs functions
 Date:   Wed,  7 Jun 2023 22:15:21 +0200
-Message-ID: <20230607200901.089145892@linuxfoundation.org>
+Message-ID: <20230607200918.564746918@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,84 +54,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tudor Ambarus <tudor.ambarus@microchip.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit b63e5cb94ad6947ab5fe38b5a9417dcfd0bc6122 ]
+[ Upstream commit fb1b7be9b16c1f4626969ba4e95a97da2a452b41 ]
 
-The transfer descriptors were wrongly moved to the free descriptors list
-before calling the tx desc callback. As the DMA engine drivers drop any
-locks before calling the callback function, txd could be taken again,
-resulting in its callback called prematurely. Fix the race for the tx desc
-callback by moving the xfer desc into the free desc list after the
-callback is invoked.
+When CONFIG_PROC_FS is disabled, the function declarations for some
+procfs functions are hidden, but the definitions are still build,
+as shown by this compiler warning:
 
-Fixes: e1f7c9eee707 ("dmaengine: at_xdmac: creation of the atmel eXtended DMA Controller driver")
-Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
-Link: https://lore.kernel.org/r/20211215110115.191749-6-tudor.ambarus@microchip.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 4d43acb145c3 ("dmaengine: at_xdmac: fix potential Oops in at_xdmac_prep_interleaved()")
+net/atm/resources.c:403:7: error: no previous prototype for 'atm_dev_seq_start' [-Werror=missing-prototypes]
+net/atm/resources.c:409:6: error: no previous prototype for 'atm_dev_seq_stop' [-Werror=missing-prototypes]
+net/atm/resources.c:414:7: error: no previous prototype for 'atm_dev_seq_next' [-Werror=missing-prototypes]
+
+Add another #ifdef to leave these out of the build.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20230516194625.549249-2-arnd@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/at_xdmac.c | 25 ++++++++-----------------
- 1 file changed, 8 insertions(+), 17 deletions(-)
+ net/atm/resources.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
-index 501196d8c4881..8af1c0fd3a736 100644
---- a/drivers/dma/at_xdmac.c
-+++ b/drivers/dma/at_xdmac.c
-@@ -1527,20 +1527,6 @@ at_xdmac_tx_status(struct dma_chan *chan, dma_cookie_t cookie,
- 	return ret;
+diff --git a/net/atm/resources.c b/net/atm/resources.c
+index 2b2d33eeaf200..995d29e7fb138 100644
+--- a/net/atm/resources.c
++++ b/net/atm/resources.c
+@@ -400,6 +400,7 @@ int atm_dev_ioctl(unsigned int cmd, void __user *buf, int __user *sioc_len,
+ 	return error;
  }
  
--/* Call must be protected by lock. */
--static void at_xdmac_remove_xfer(struct at_xdmac_chan *atchan,
--				    struct at_xdmac_desc *desc)
--{
--	dev_dbg(chan2dev(&atchan->chan), "%s: desc 0x%p\n", __func__, desc);
--
--	/*
--	 * Remove the transfer from the transfer list then move the transfer
--	 * descriptors into the free descriptors list.
--	 */
--	list_del(&desc->xfer_node);
--	list_splice_init(&desc->descs_list, &atchan->free_descs_list);
--}
--
- static void at_xdmac_advance_work(struct at_xdmac_chan *atchan)
++#ifdef CONFIG_PROC_FS
+ void *atm_dev_seq_start(struct seq_file *seq, loff_t *pos)
  {
- 	struct at_xdmac_desc	*desc;
-@@ -1652,7 +1638,8 @@ static void at_xdmac_tasklet(struct tasklet_struct *t)
- 
- 		txd = &desc->tx_dma_desc;
- 		dma_cookie_complete(txd);
--		at_xdmac_remove_xfer(atchan, desc);
-+		/* Remove the transfer from the transfer list. */
-+		list_del(&desc->xfer_node);
- 		spin_unlock_irq(&atchan->lock);
- 
- 		if (txd->flags & DMA_PREP_INTERRUPT)
-@@ -1661,6 +1648,8 @@ static void at_xdmac_tasklet(struct tasklet_struct *t)
- 		dma_run_dependencies(txd);
- 
- 		spin_lock_irq(&atchan->lock);
-+		/* Move the xfer descriptors into the free descriptors list. */
-+		list_splice_init(&desc->descs_list, &atchan->free_descs_list);
- 		at_xdmac_advance_work(atchan);
- 		spin_unlock_irq(&atchan->lock);
- 	}
-@@ -1807,8 +1796,10 @@ static int at_xdmac_device_terminate_all(struct dma_chan *chan)
- 		cpu_relax();
- 
- 	/* Cancel all pending transfers. */
--	list_for_each_entry_safe(desc, _desc, &atchan->xfers_list, xfer_node)
--		at_xdmac_remove_xfer(atchan, desc);
-+	list_for_each_entry_safe(desc, _desc, &atchan->xfers_list, xfer_node) {
-+		list_del(&desc->xfer_node);
-+		list_splice_init(&desc->descs_list, &atchan->free_descs_list);
-+	}
- 
- 	clear_bit(AT_XDMAC_CHAN_IS_PAUSED, &atchan->status);
- 	clear_bit(AT_XDMAC_CHAN_IS_CYCLIC, &atchan->status);
+ 	mutex_lock(&atm_dev_mutex);
+@@ -415,3 +416,4 @@ void *atm_dev_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+ {
+ 	return seq_list_next(v, &atm_devs, pos);
+ }
++#endif
 -- 
 2.39.2
 
