@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1ED4D726BEC
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AB7F726C20
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233549AbjFGU3T (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:29:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55556 "EHLO
+        id S233652AbjFGUa6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:30:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233550AbjFGU3O (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:29:14 -0400
+        with ESMTP id S233696AbjFGUam (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5779B1FEE
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:28:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEE4C212E
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:30:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C50A644C3
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:28:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C91C433EF;
-        Wed,  7 Jun 2023 20:28:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 413E1644D5
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:30:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 547C7C433D2;
+        Wed,  7 Jun 2023 20:30:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169734;
-        bh=gSbcBNbOwZfJxOexHtXFEOBQ4Ysueu2dROvycjVgz5s=;
+        s=korg; t=1686169836;
+        bh=Vf5bpZvMGHudPznYQxYqkJMqr00OB0bh8RaNt5HJTtQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t09u2iIQ4lVEzO9afu/ywSmRqfo+3cxMV40oiyvRsSqRNrrMvEikAARaLB0O1sobq
-         7YpxUCYtiSq5PG743cKLn9nwsjjcGVADzG6J5P3dApt+fDKKaFKicv3JFeZC+bkzPy
-         BeiMtKdgq4vL9Rl6dNKs9mgDBz+73jpVahHMZTv8=
+        b=uNPzEkBojo3Horo3bxZCvND4NYF9Y59mMEuP/ogEYv8qbLX23/rYNxrTOCogMFP2m
+         N+MnlUhLldtWzDTRcjUExQpTtC3Ko6R6VzteTDR6YhEqRTmnaLMfY25wchS3cmExSH
+         cJwzPx18EPOYoVf7peSvVIipzIoWCPp6ilM3ZqCE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Lars-Peter Clausen <lars@metafoo.de>,
-        Gerald Loacker <gerald.loacker@wolfvision.net>,
-        Nuno Sa <nuno.sa@analog.com>, Stable@vger.kernel.org,
+        Stable@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.3 192/286] iio: tmag5273: Fix runtime PM leak on measurement error
-Date:   Wed,  7 Jun 2023 22:14:51 +0200
-Message-ID: <20230607200929.537809289@linuxfoundation.org>
+Subject: [PATCH 6.3 193/286] iio: ad4130: Make sure clock provider gets removed
+Date:   Wed,  7 Jun 2023 22:14:52 +0200
+Message-ID: <20230607200929.568029773@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
 References: <20230607200922.978677727@linuxfoundation.org>
@@ -57,43 +56,59 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Lars-Peter Clausen <lars@metafoo.de>
 
-commit 265c82ea8b172129cb6d4eff41af856c3aff6168 upstream.
+commit 28f73ded19d403697f87473c9b85a27eb8ed9cf2 upstream.
 
-The tmag5273 gets a runtime PM reference before reading a measurement and
-releases it when done. But if the measurement fails the tmag5273_read_raw()
-function exits before releasing the reference.
+The ad4130 driver registers a clock provider, but never removes it. This
+leaves a stale clock provider behind that references freed clocks when the
+device is unbound.
 
-Make sure that this error path also releases the runtime PM reference.
+Register a managed action to remove the clock provider when the device is
+removed.
 
-Fixes: 866a1389174b ("iio: magnetometer: add ti tmag5273 driver")
+Fixes: 62094060cf3a ("iio: adc: ad4130: add AD4130 driver")
 Signed-off-by: Lars-Peter Clausen <lars@metafoo.de>
-Acked-by: Gerald Loacker <gerald.loacker@wolfvision.net>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20230414013752.498767-1-lars@metafoo.de
+Link: https://lore.kernel.org/r/20230414150702.518441-1-lars@metafoo.de
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/magnetometer/tmag5273.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/iio/adc/ad4130.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/magnetometer/tmag5273.c
-+++ b/drivers/iio/magnetometer/tmag5273.c
-@@ -296,12 +296,13 @@ static int tmag5273_read_raw(struct iio_
- 			return ret;
+--- a/drivers/iio/adc/ad4130.c
++++ b/drivers/iio/adc/ad4130.c
+@@ -1817,6 +1817,11 @@ static const struct clk_ops ad4130_int_c
+ 	.unprepare = ad4130_int_clk_unprepare,
+ };
  
- 		ret = tmag5273_get_measure(data, &t, &x, &y, &z, &angle, &magnitude);
--		if (ret)
--			return ret;
- 
- 		pm_runtime_mark_last_busy(data->dev);
- 		pm_runtime_put_autosuspend(data->dev);
- 
-+		if (ret)
-+			return ret;
++static void ad4130_clk_del_provider(void *of_node)
++{
++	of_clk_del_provider(of_node);
++}
 +
- 		switch (chan->address) {
- 		case TEMPERATURE:
- 			*val = t;
+ static int ad4130_setup_int_clk(struct ad4130_state *st)
+ {
+ 	struct device *dev = &st->spi->dev;
+@@ -1824,6 +1829,7 @@ static int ad4130_setup_int_clk(struct a
+ 	struct clk_init_data init;
+ 	const char *clk_name;
+ 	struct clk *clk;
++	int ret;
+ 
+ 	if (st->int_pin_sel == AD4130_INT_PIN_CLK ||
+ 	    st->mclk_sel != AD4130_MCLK_76_8KHZ)
+@@ -1843,7 +1849,11 @@ static int ad4130_setup_int_clk(struct a
+ 	if (IS_ERR(clk))
+ 		return PTR_ERR(clk);
+ 
+-	return of_clk_add_provider(of_node, of_clk_src_simple_get, clk);
++	ret = of_clk_add_provider(of_node, of_clk_src_simple_get, clk);
++	if (ret)
++		return ret;
++
++	return devm_add_action_or_reset(dev, ad4130_clk_del_provider, of_node);
+ }
+ 
+ static int ad4130_setup(struct iio_dev *indio_dev)
 
 
