@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52F4B726DA9
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:44:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 180F5726ECF
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:52:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234634AbjFGUoe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:44:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44878 "EHLO
+        id S235091AbjFGUwx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:52:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234661AbjFGUod (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 972321BEA
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:44:14 -0700 (PDT)
+        with ESMTP id S235339AbjFGUww (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:52:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 511D5FC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:52:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C0DA64668
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:44:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E5C6C433A7;
-        Wed,  7 Jun 2023 20:44:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C4D3A64786
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:52:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6963C433D2;
+        Wed,  7 Jun 2023 20:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170653;
-        bh=S1Er6tAk46+EiTlGcl6Te+QtUjIMiIoQspoSNzceCOQ=;
+        s=korg; t=1686171169;
+        bh=IEE0Llr9bhgiB4JuAeh271n5QZ5LX/dzmD0fLTKPDf4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O1l9z6hGRIh8MGO3ABsD7R24m2BopQsZengsCwUZQLC4B6Gs1w6NlGqal1u8HcbE6
-         ZSpQAFQHv2PJZytWecdoxCzKWTQq9v4Obr1/CJGaFLaASID62gY5P+DurpaoCkaXcW
-         gTbikxcjTF13Ozc69+Vka/1N+WYtdPJd4lQTKZcs=
+        b=R1E3IfZXTc/oUlwMxJIaYI4G4NCT8arHGblZm0bTUU/MeN/92Zlrf1zQ3cSgcqJNA
+         zsfs0Sy84uU0sm8bYe4uu4ioD7NAle+VwrCvEo9MSLpUEOXU117tl52AYT9daL6H47
+         EzaZAkwhwtqmMkSIzUIeAfzeKkn+0TdbUdgD3Bc4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhenneng Li <lizhenneng@kylinos.cn>,
-        Guchun Chen <guchun.chen@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 167/225] drm/amd/pm: resolve reboot exception for si oland
+        patches@lists.linux.dev, Shay Drory <shayd@nvidia.com>,
+        Moshe Shemesh <moshe@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 08/99] net/mlx5: fw_tracer, Fix event handling
 Date:   Wed,  7 Jun 2023 22:16:00 +0200
-Message-ID: <20230607200919.859865499@linuxfoundation.org>
+Message-ID: <20230607200900.496626465@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,74 +55,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Guchun Chen <guchun.chen@amd.com>
+From: Shay Drory <shayd@nvidia.com>
 
-commit e490d60a2f76bff636c68ce4fe34c1b6c34bbd86 upstream.
+[ Upstream commit 341a80de2468f481b1f771683709b5649cbfe513 ]
 
-During reboot test on arm64 platform, it may failure on boot.
+mlx5 driver needs to parse traces with event_id inside the range of
+first_string_trace and num_string_trace. However, mlx5 is parsing all
+events with event_id >= first_string_trace.
 
-The error message are as follows:
-[    1.706570][ 3] [  T273] [drm:si_thermal_enable_alert [amdgpu]] *ERROR* Could not enable thermal interrupts.
-[    1.716547][ 3] [  T273] [drm:amdgpu_device_ip_late_init [amdgpu]] *ERROR* late_init of IP block <si_dpm> failed -22
-[    1.727064][ 3] [  T273] amdgpu 0000:02:00.0: amdgpu_device_ip_late_init failed
-[    1.734367][ 3] [  T273] amdgpu 0000:02:00.0: Fatal error during GPU init
+Fix it by checking for the correct range.
 
-v2: squash in built warning fix (Alex)
-
-Signed-off-by: Zhenneng Li <lizhenneng@kylinos.cn>
-Reviewed-by: Guchun Chen <guchun.chen@amd.com>
-Signed-off-by: Guchun Chen <guchun.chen@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c71ad41ccb0c ("net/mlx5: FW tracer, events handling")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c |   29 -----------------------------
- 1 file changed, 29 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -6925,23 +6925,6 @@ static int si_dpm_enable(struct amdgpu_d
- 	return 0;
- }
- 
--static int si_set_temperature_range(struct amdgpu_device *adev)
--{
--	int ret;
--
--	ret = si_thermal_enable_alert(adev, false);
--	if (ret)
--		return ret;
--	ret = si_thermal_set_temperature_range(adev, R600_TEMP_RANGE_MIN, R600_TEMP_RANGE_MAX);
--	if (ret)
--		return ret;
--	ret = si_thermal_enable_alert(adev, true);
--	if (ret)
--		return ret;
--
--	return ret;
--}
--
- static void si_dpm_disable(struct amdgpu_device *adev)
- {
- 	struct rv7xx_power_info *pi = rv770_get_pi(adev);
-@@ -7626,18 +7609,6 @@ static int si_dpm_process_interrupt(stru
- 
- static int si_dpm_late_init(void *handle)
- {
--	int ret;
--	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
--
--	if (!adev->pm.dpm_enabled)
--		return 0;
--
--	ret = si_set_temperature_range(adev);
--	if (ret)
--		return ret;
--#if 0 //TODO ?
--	si_dpm_powergate_uvd(adev, true);
--#endif
- 	return 0;
- }
- 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+index fcf5fef7c195d..58d48d76c1b8a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+@@ -480,7 +480,7 @@ static void poll_trace(struct mlx5_fw_tracer *tracer,
+ 				(u64)timestamp_low;
+ 		break;
+ 	default:
+-		if (tracer_event->event_id >= tracer->str_db.first_string_trace ||
++		if (tracer_event->event_id >= tracer->str_db.first_string_trace &&
+ 		    tracer_event->event_id <= tracer->str_db.first_string_trace +
+ 					      tracer->str_db.num_string_trace) {
+ 			tracer_event->type = TRACER_EVENT_TYPE_STRING;
+-- 
+2.39.2
+
 
 
