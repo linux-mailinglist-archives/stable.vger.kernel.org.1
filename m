@@ -2,32 +2,32 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4660A726ADA
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DBD7726F7D
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:58:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232689AbjFGUUl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:20:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45720 "EHLO
+        id S235638AbjFGU6v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:58:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232745AbjFGUUd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D43F26B0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:20:06 -0700 (PDT)
+        with ESMTP id S235687AbjFGU6u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:58:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 566F8271B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:58:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D6DA064398
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:19:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E679EC4339B;
-        Wed,  7 Jun 2023 20:19:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3611E6488F
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:58:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 479C3C433D2;
+        Wed,  7 Jun 2023 20:58:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169148;
-        bh=iZ1Iuai7yOiMu0ROljRsnMO9s4UfD+onOErjGiXt9ac=;
+        s=korg; t=1686171505;
+        bh=wXSSdQyJmNc1+zAqIpCgTXO4z+1cRBkB4VzOjiIEOew=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pD7l57j4X8m++Vr8hP5X1VO/K0NNE+Fis9vVSMbV6Mie5tCVjFIupWcNZOIjjWh9v
-         cm9sxGREwO5II+J75sLfBOcNYlxVS9H2PkQ3+9MxvvKjAGKPgafUx3LEqCBPbkDXVC
-         ItiPHiskLLn9n4Pb1D7qwVNbXEPqRjrEC5cOBjmI=
+        b=zEPR03uBRfg4alXcJfy1iGyz/b3If4SHvo+rog2BjCgkU39MWSGSurkkUMzAUDP3a
+         zyPt12KNc7Ikx0vmwb5ATnqS6PDO2fWp1TZCnkCUS47uyR+YSZcWvYMwa5LmAI4s9A
+         jVTy61a99LPf1M6NdKPBekdU0QGy3EzVJcgekz5s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,20 +36,20 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Simon Horman <simon.horman@corigine.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 05/61] netrom: fix info-leak in nr_write_internal()
+Subject: [PATCH 5.15 016/159] netrom: fix info-leak in nr_write_internal()
 Date:   Wed,  7 Jun 2023 22:15:19 +0200
-Message-ID: <20230607200837.023057166@linuxfoundation.org>
+Message-ID: <20230607200904.204604215@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-References: <20230607200835.310274198@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -102,10 +102,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/net/netrom/nr_subr.c b/net/netrom/nr_subr.c
-index 029c8bb90f4c3..a7d3a265befb9 100644
+index 3f99b432ea707..e2d2af924cff4 100644
 --- a/net/netrom/nr_subr.c
 +++ b/net/netrom/nr_subr.c
-@@ -126,7 +126,7 @@ void nr_write_internal(struct sock *sk, int frametype)
+@@ -123,7 +123,7 @@ void nr_write_internal(struct sock *sk, int frametype)
  	unsigned char  *dptr;
  	int len, timeout;
  
@@ -114,7 +114,7 @@ index 029c8bb90f4c3..a7d3a265befb9 100644
  
  	switch (frametype & 0x0F) {
  	case NR_CONNREQ:
-@@ -144,7 +144,8 @@ void nr_write_internal(struct sock *sk, int frametype)
+@@ -141,7 +141,8 @@ void nr_write_internal(struct sock *sk, int frametype)
  		return;
  	}
  
@@ -124,7 +124,7 @@ index 029c8bb90f4c3..a7d3a265befb9 100644
  		return;
  
  	/*
-@@ -152,7 +153,7 @@ void nr_write_internal(struct sock *sk, int frametype)
+@@ -149,7 +150,7 @@ void nr_write_internal(struct sock *sk, int frametype)
  	 */
  	skb_reserve(skb, NR_NETWORK_LEN);
  
