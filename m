@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62050726D92
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:43:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AED7726C86
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:34:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234424AbjFGUnk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:43:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43274 "EHLO
+        id S233922AbjFGUeL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:34:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234431AbjFGUni (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:43:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B12702720
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:43:16 -0700 (PDT)
+        with ESMTP id S233925AbjFGUeB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:34:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E13C1BD4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:33:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 719D664645
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:43:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8EAC433EF;
-        Wed,  7 Jun 2023 20:43:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B81E6454A
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:33:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23076C433EF;
+        Wed,  7 Jun 2023 20:33:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170595;
-        bh=QWiGn4+uyRT5Su6tn3kK91F8JGkWoJURUH5VhteoyOg=;
+        s=korg; t=1686170035;
+        bh=owOQLC3vysDMNq0Z0TmQmBUfaroyWlW8a5SPKvKZTPU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NaMbfzF2ct+R7TIOXXX40JLpYBESp7mAdoEsX9i+HVTU1tMcdulx+7nxnIOCaoS+C
-         IGd5cVdNXrtgZXxWMI/ZEGo3YggK4POx17VNydFy+BcrHMqgRtRbC+7MCb/xng1X7N
-         G/mAHhi7uv8MAZEIzKvn/bz2HEfCf9Uoo6UVyN3c=
+        b=o8rl+mzqwRf5jlA90a0A7j+VaKpCEnDS/vP+V6Se5jIWZ2FRjOiMbRBSNJEgv6Jil
+         hK0qwVe3kT/faAfHN29e6t6TGAQ+hcmwFUVEoTHGC/YZ/8jsvSMzXvtDdmlmK8dmfX
+         LeB61HTEGtg+8tqaYJSAfcypPxNggFZS/Io25/NY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-        Ping Cheng <ping.cheng@wacom.com>,
-        Jiri Kosina <jkosina@suse.cz>
-Subject: [PATCH 6.1 144/225] HID: wacom: avoid integer overflow in wacom_intuos_inout()
+        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Vlad Buslov <vladbu@nvidia.com>,
+        Peilin Ye <peilin.ye@bytedance.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 20/88] net/sched: Reserve TC_H_INGRESS (TC_H_CLSACT) for ingress (clsact) Qdiscs
 Date:   Wed,  7 Jun 2023 22:15:37 +0200
-Message-ID: <20230607200919.102366869@linuxfoundation.org>
+Message-ID: <20230607200859.572925090@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,39 +57,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Peilin Ye <peilin.ye@bytedance.com>
 
-commit bd249b91977b768ea02bf84d04625d2690ad2b98 upstream.
+[ Upstream commit f85fa45d4a9408d98c46c8fa45ba2e3b2f4bf219 ]
 
-If high bit is set to 1 in ((data[3] & 0x0f << 28), after all arithmetic
-operations and integer promotions are done, high bits in
-wacom->serial[idx] will be filled with 1s as well.
-Avoid this, albeit unlikely, issue by specifying left operand's __u64
-type for the right operand.
+Currently it is possible to add e.g. an HTB Qdisc under ffff:fff1
+(TC_H_INGRESS, TC_H_CLSACT):
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
+  $ ip link add name ifb0 type ifb
+  $ tc qdisc add dev ifb0 parent ffff:fff1 htb
+  $ tc qdisc add dev ifb0 clsact
+  Error: Exclusivity flag on, cannot modify.
+  $ drgn
+  ...
+  >>> ifb0 = netdev_get_by_name(prog, "ifb0")
+  >>> qdisc = ifb0.ingress_queue.qdisc_sleeping
+  >>> print(qdisc.ops.id.string_().decode())
+  htb
+  >>> qdisc.flags.value_() # TCQ_F_INGRESS
+  2
 
-Fixes: 3bea733ab212 ("USB: wacom tablet driver reorganization")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Only allow ingress and clsact Qdiscs under ffff:fff1.  Return -EINVAL
+for everything else.  Make TCQ_F_INGRESS a static flag of ingress and
+clsact Qdiscs.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 1f211a1b929c ("net, sched: add clsact qdisc")
+Tested-by: Pedro Tammela <pctammela@mojatatu.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
+Signed-off-by: Peilin Ye <peilin.ye@bytedance.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_api.c     | 7 ++++++-
+ net/sched/sch_ingress.c | 4 ++--
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -826,7 +826,7 @@ static int wacom_intuos_inout(struct wac
- 	/* Enter report */
- 	if ((data[1] & 0xfc) == 0xc0) {
- 		/* serial number of the tool */
--		wacom->serial[idx] = ((data[3] & 0x0f) << 28) +
-+		wacom->serial[idx] = ((__u64)(data[3] & 0x0f) << 28) +
- 			(data[4] << 20) + (data[5] << 12) +
- 			(data[6] << 4) + (data[7] >> 4);
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index 41c67cfd264fb..d6b4710aa69d3 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -1148,7 +1148,12 @@ static struct Qdisc *qdisc_create(struct net_device *dev,
+ 	sch->parent = parent;
  
+ 	if (handle == TC_H_INGRESS) {
+-		sch->flags |= TCQ_F_INGRESS;
++		if (!(sch->flags & TCQ_F_INGRESS)) {
++			NL_SET_ERR_MSG(extack,
++				       "Specified parent ID is reserved for ingress and clsact Qdiscs");
++			err = -EINVAL;
++			goto err_out3;
++		}
+ 		handle = TC_H_MAKE(TC_H_INGRESS, 0);
+ 		lockdep_set_class(qdisc_lock(sch), &qdisc_rx_lock);
+ 	} else {
+diff --git a/net/sched/sch_ingress.c b/net/sched/sch_ingress.c
+index e120dadc259a9..834960cc755e2 100644
+--- a/net/sched/sch_ingress.c
++++ b/net/sched/sch_ingress.c
+@@ -136,7 +136,7 @@ static struct Qdisc_ops ingress_qdisc_ops __read_mostly = {
+ 	.cl_ops			=	&ingress_class_ops,
+ 	.id			=	"ingress",
+ 	.priv_size		=	sizeof(struct ingress_sched_data),
+-	.static_flags		=	TCQ_F_CPUSTATS,
++	.static_flags		=	TCQ_F_INGRESS | TCQ_F_CPUSTATS,
+ 	.init			=	ingress_init,
+ 	.destroy		=	ingress_destroy,
+ 	.dump			=	ingress_dump,
+@@ -274,7 +274,7 @@ static struct Qdisc_ops clsact_qdisc_ops __read_mostly = {
+ 	.cl_ops			=	&clsact_class_ops,
+ 	.id			=	"clsact",
+ 	.priv_size		=	sizeof(struct clsact_sched_data),
+-	.static_flags		=	TCQ_F_CPUSTATS,
++	.static_flags		=	TCQ_F_INGRESS | TCQ_F_CPUSTATS,
+ 	.init			=	clsact_init,
+ 	.destroy		=	clsact_destroy,
+ 	.dump			=	ingress_dump,
+-- 
+2.39.2
+
 
 
