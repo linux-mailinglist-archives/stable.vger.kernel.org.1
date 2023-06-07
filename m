@@ -2,177 +2,131 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C01E6726261
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 16:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 276937262D3
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 16:30:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240982AbjFGOJX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 10:09:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44152 "EHLO
+        id S241060AbjFGOaf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 10:30:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234318AbjFGOJV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 10:09:21 -0400
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 292F81BF1;
-        Wed,  7 Jun 2023 07:08:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-        ; s=x; h=Subject:Content-Transfer-Encoding:Content-Type:Mime-Version:
-        References:In-Reply-To:Message-Id:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=rkWjMt2GNbfEvT17R5tH+mVMzIISMovCHFDUfGIB0Q0=; b=cGUk3O6ZxNQwpJgwqnWwggUeTk
-        9GJroCwjndZbfuvkGkexFcMpvCyq1TErIJs7Bd7PLSLHH6/vCTLHZ5PU9BaOTqHnGVxXENnSPa1NN
-        xzrU1kfKCZ1WBCaHvlJIc3opEzWfk2arBxiIq9Hcu0duPhdGhXh9FrSFXZ2hBF8/ZG84=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:37910 helo=pettiford)
-        by mail.hugovil.com with esmtpa (Exim 4.92)
-        (envelope-from <hugo@hugovil.com>)
-        id 1q6tpO-0005jo-UK; Wed, 07 Jun 2023 10:08:00 -0400
-Date:   Wed, 7 Jun 2023 10:07:58 -0400
-From:   Hugo Villeneuve <hugo@hugovil.com>
-To:     Hugo Villeneuve <hugo@hugovil.com>
-Cc:     Greg KH <gregkh@linuxfoundation.org>, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        jirislaby@kernel.org, jringle@gridpoint.com,
-        tomasz.mon@camlingroup.com, l.perczak@camlintechnologies.com,
-        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        with ESMTP id S240850AbjFGOae (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 10:30:34 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C457F1FC4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 07:30:30 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-97460240863so990767366b.0
+        for <stable@vger.kernel.org>; Wed, 07 Jun 2023 07:30:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686148229; x=1688740229;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=09wjGjuF8BafJz5/rIk0zFD7cGTqxzAdsPZzNoJir4A=;
+        b=jiBTqH/2bFljhkZ7rYTVEpCajh27br6re37VyXRZTW9S37k25kAA4ZR8ammFIMoW6z
+         Y8c1BLeMn6Ja1k1Pum02IMIYZvZJxxea7eow4BGwgU8waPsX5kowUv2h75q+JjHzcFqq
+         xi78YUQG3JDJRYmU9gDbqgaZ/7ZqvI6cIy1AMM1xgiZkCOByVJOs6ryYRaWgjSHKCsUr
+         669Sblqe5xRuA0NtMwj23K5giYHQSztjsADFhit7IwjYzwyIUMw+lidPK0H2oeaP/PMp
+         q7Qv4f4fB0GDfZS3uxvYn3YWD5W8CnyhJ/nqSVlFpMDoDi31LwtSc2JY5W5lAcFUgLxo
+         m7dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686148229; x=1688740229;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=09wjGjuF8BafJz5/rIk0zFD7cGTqxzAdsPZzNoJir4A=;
+        b=MiKeB+DwZH+VhhL2uj7Lcz5QAgpqYk4MJBL38BkY0nsDZWRaN4Pk67tkHdPGXw1hxQ
+         p6HNZhc41SjyFmHhcVYrXw6hmlMlmkGPgYvGnbeDRykmzKUMJB4uSB8VP1AWxBQBe2t1
+         ykuuu9nnbSr3N5OJWV4sV9jHfpCTdpnSpbnTbziOI1WjD1Voh3E5gjGkX7wSGHS5ylqb
+         rtN9P/hyRuhwyNPP6lnfkeBXQFKJQhFsk2pVG6tLDYBExh8TXmM1tlYXe9yyekFmm2c8
+         EUTPmbDMSfj1MzAZGywxElR4qUYZqaarxgqR3IPUHb59INw0bE1o0fqpKiRlCqCGCu6j
+         Resw==
+X-Gm-Message-State: AC+VfDwzAzzu2vwIpr7D9SM7l71sy0l3MkTyCgeAuOCyrKcIqwOAUlGg
+        wFfo5mU94cL4WDp5xt1u/TD0wQ==
+X-Google-Smtp-Source: ACHHUZ6ID42MXAI0o8qCiY3ZLSzc3b/0MU2uU/cmT4za4Yi4tFXGx9q6fR/OHY0td5MgGgpabMriYg==
+X-Received: by 2002:a17:907:98e:b0:970:553:272c with SMTP id bf14-20020a170907098e00b009700553272cmr6066260ejc.27.1686148228914;
+        Wed, 07 Jun 2023 07:30:28 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.219.26])
+        by smtp.gmail.com with ESMTPSA id w22-20020a170906185600b00977d02973e8sm4759226eje.0.2023.06.07.07.30.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Jun 2023 07:30:28 -0700 (PDT)
+Message-ID: <f5cfc81d-d8ae-d270-f29a-c2b45b07a651@linaro.org>
+Date:   Wed, 7 Jun 2023 16:30:26 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [PATCH v8 05/10] dt-bindings: sc16is7xx: Add property to change
+ GPIO function
+Content-Language: en-US
+To:     Hugo Villeneuve <hugo@hugovil.com>, gregkh@linuxfoundation.org,
+        robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+        conor+dt@kernel.org, jirislaby@kernel.org, jringle@gridpoint.com,
+        jesse.sung@canonical.com, isaac.true@canonical.com,
+        l.perczak@camlintechnologies.com, tomasz.mon@camlingroup.com
+Cc:     linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
         Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        stable@vger.kernel.org, Andy Shevchenko <andy.shevchenko@gmail.com>
-Message-Id: <20230607100758.705c82abae71de6a675cbe96@hugovil.com>
-In-Reply-To: <20230604191613.ea95fa9a1bc508525fe3bbd5@hugovil.com>
-References: <20230602152626.284324-1-hugo@hugovil.com>
-        <20230602152626.284324-6-hugo@hugovil.com>
-        <2023060454-cotton-paramount-e33e@gregkh>
-        <20230604134344.73dc3cbb57d335d4a0b4b33a@hugovil.com>
-        <2023060406-scarcity-clear-cc56@gregkh>
-        <20230604191613.ea95fa9a1bc508525fe3bbd5@hugovil.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        stable@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>,
+        Lech Perczak <lech.perczak@camlingroup.com>
+References: <20230607140525.833982-1-hugo@hugovil.com>
+ <20230607140525.833982-6-hugo@hugovil.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230607140525.833982-6-hugo@hugovil.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
-Subject: Re: [PATCH v7 5/9] serial: sc16is7xx: fix regression with GPIO
- configuration
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, 4 Jun 2023 19:16:13 -0400
-Hugo Villeneuve <hugo@hugovil.com> wrote:
+On 07/06/2023 16:05, Hugo Villeneuve wrote:
+> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> 
+> Some variants in this series of UART controllers have GPIO pins that
+> are shared between GPIO and modem control lines.
+> 
+> The pin mux mode (GPIO or modem control lines) can be set for each
+> ports (channels) supported by the variant.
+> 
+> This adds a property to the device tree to set the GPIO pin mux to
+> modem control lines on selected ports if needed.
+> 
+> Cc: <stable@vger.kernel.org> # 6.1.x
+> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
+> ---
+>  .../bindings/serial/nxp,sc16is7xx.txt         | 46 +++++++++++++++++++
+>  1 file changed, 46 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt b/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt
+> index 0fa8e3e43bf8..1a7e4bff0456 100644
+> --- a/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt
+> +++ b/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt
+> @@ -23,6 +23,9 @@ Optional properties:
+>      1 = active low.
+>  - irda-mode-ports: An array that lists the indices of the port that
+>  		   should operate in IrDA mode.
+> +- nxp,modem-control-line-ports: An array that lists the indices of the port that
+> +				should have shared GPIO lines configured as
+> +				modem control lines.
+>  
+>  Example:
+>          sc16is750: sc16is750@51 {
+> @@ -35,6 +38,26 @@ Example:
+>                  #gpio-cells = <2>;
+>          };
+>  
+> +	sc16is752: sc16is752@53 {
 
-> On Sun, 4 Jun 2023 20:29:58 +0200
-> Greg KH <gregkh@linuxfoundation.org> wrote:
-> 
-> > On Sun, Jun 04, 2023 at 01:43:44PM -0400, Hugo Villeneuve wrote:
-> > > Here is what I suggest to silence the warning:
-> > > 
-> > > 	mctrl_mask = sc16is7xx_setup_mctrl_ports(dev);
-> > > 
-> > > #ifdef CONFIG_GPIOLIB
-> > > 	ret = sc16is7xx_setup_gpio_chip(dev, mctrl_mask);
-> > > 	if (ret)
-> > > 		goto out_thread;
-> > > #else
-> > > 	(void) mctrl_mask;
-> > > #endif
-> > 
-> > Eeek,  no, please no...
-> > 
-> > First off, please don't put #ifdef in .c files if at all possible.
-> 
-> Hi Greg,
-> Andy also made a similar comment, but couldn't suggest a valid
-> alternative when I asked him what to do about that.
-> 
-> Just as a sidenote, I didn't add those #ifdef, they were already
-> present in the driver in multiple places.
-> 
-> What would be your suggestion to get rid of those #ifdef, simply delete
-> them all?
-> 
-> If you suggest me what to do, I will be happy to submit a
-> future patch after this series is finalized to clean that aspect.
+Since you keep sending new versions, fix the names. nNode names should
+be generic. See also explanation and list of examples in DT specification:
+https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
 
-Hi Greg,
-altough I just send a new V8, I am still curious to hear your point of
-view about those #ifdef...
+Best regards,
+Krzysztof
 
-Hugo.
-
-
-> > Secondly, that (void) craziness is just that.  Rework this to not be an
-> > issue some other way please.
-> > 
-> > > I could also store (define new variable) mctrl_mask directly inside struct sc16is7xx_port...
-> > 
-> > Sure, that sounds best.
-> 
-> Ok, I will do that.
-> 
-> 
-> > > > And you have a real port here, no need to pass in a "raw" struct device,
-> > > > right?
-> > > 
-> > > The function operates globally on both ports (or nr_uart), not just a single port. That is why I pass the "raw" struct device, in order to extract the 
-> > > struct sc16is7xx_port from it:
-> > > 
-> > >     struct sc16is7xx_port *s = dev_get_drvdata(dev);
-> > > 
-> > > Inside the function, I also need the "raw" struc device. If we pass a struct sc16is7xx_port to the function, then I can get the "raw" struc device with this:
-> > > 
-> > > static u8 sc16is7xx_setup_mctrl_ports(struct sc16is7xx_port *s)
-> > > {
-> > > 	struct device *dev = &s->p[0].port.dev;
-> > > 
-> > > But I find this more obfuscated and hard to understand than to simply pass a "raw" struct device...
-> > 
-> > You should never need a "raw" struct device for stuff (if so, something
-> > is really odd).  Except for error messages, but that's not really a big
-> > deal, right?
-> 
-> > Don't pass around struct device in a driver, use the real types as you
-> > know you have it and it saves odd casting around and it just doesn't
-> > look safe at all to do so.
-> 
-> If you look at the patch, you will see that I need "struct device *dev"
-> at two places in the sc16is7xx_setup_mctrl_ports() function to read the
-> device properties:
-> 
-> ...
-> +static u8 sc16is7xx_setup_mctrl_ports(struct device *dev)
-> ...
-> +	count = device_property_count_u32(dev,...
-> ...
-> +	ret = device_property_read_u32_array(dev,
-> ...
-> 
-> I do not understand why this is odd?
-> 
-> 
-> > And if you have that crazy s->p.... stuff in multiple places, the
-> > perhaps you might want to rethink the structure somehow?  Or at the very
-> > least, write an inline function to get it when needed.
-> 
-> I am not sure what you mean by that, since again that "crazy" stuff is
-> already used everywhere in this driver?
-> 
-> 
-> > Also, meta comment, you might want to use some \n characters in your
-> > emails, your lines are really long :)
-> 
-> Strange, I use sylpheed as a mail client, and the option "Wrap lines at
-> 72 characters" is enabled by default, but somehow you must also check
-> the box "Wrap on input" for it to work, not very intuitive :) Thanks for
-> pointing that to me.
-> 
-> Hugo.
