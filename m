@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2D36726D27
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:39:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E77FE726BA4
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234285AbjFGUjr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:39:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38270 "EHLO
+        id S233366AbjFGU0v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:26:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231690AbjFGUjd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:39:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B46042139
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:39:11 -0700 (PDT)
+        with ESMTP id S233416AbjFGU0t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 142F8213F
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:26:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AA846645CD
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:38:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD40AC433EF;
-        Wed,  7 Jun 2023 20:38:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E81D964424
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:26:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06709C4339B;
+        Wed,  7 Jun 2023 20:26:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170336;
-        bh=CybE0iE6rgEoeRVhthStPKm5oBpVm2M9EK7ca0vsVug=;
+        s=korg; t=1686169590;
+        bh=A+Hynh3CdV7lpD2fMx+QXee0P7pmxcEzRTRBTvCz7/k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1TB8Cot4gn2u2u1siuTgR9P0I2D6ic5iBIvvk7aELWe97h1HeqWuNAPEfWSoAq2+K
-         68Us/STgkjkzT9SBALGvCKQe1BcgjYsYXqbpRabyZUIu+B51pteLt3nVnM4+L5RmjR
-         pUMA+T14NyLVZ4MMQmKbekW4ksVdC3o9Y5WDiCaI=
+        b=XO2PAROnF0OjFsxt7JR/9oENniTT+BCupGWkoYDqNyP2mHu6q7eC7iCiWv5ZTH7Uv
+         quMdOt5z15WbRZVq77rj/XCGS0U04Z2f0Sewze7VR3eyQ/WoYtuZVB5RnveuH1zFbY
+         Z3gxoDV957bm/g0/FpbYx0yw/vOo96080TI4skcQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Moshe Shemesh <moshe@nvidia.com>,
-        Shay Drory <shayd@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
+        patches@lists.linux.dev, Yu Hao <yhao016@ucr.edu>,
+        Takashi Iwai <tiwai@suse.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 045/225] net/mlx5: Read embedded cpu after init bit cleared
+Subject: [PATCH 6.3 139/286] media: dvb-core: Fix kernel WARNING for blocking operation in wait_event*()
 Date:   Wed,  7 Jun 2023 22:13:58 +0200
-Message-ID: <20230607200915.829801958@linuxfoundation.org>
+Message-ID: <20230607200927.626031270@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,46 +55,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit bbfa4b58997e3d38ba629c9f6fc0bd1c163aaf43 ]
+[ Upstream commit b8c75e4a1b325ea0a9433fa8834be97b5836b946 ]
 
-During driver load it reads embedded_cpu bit from initialization
-segment, but the initialization segment is readable only after
-initialization bit is cleared.
+Using a semaphore in the wait_event*() condition is no good idea.
+It hits a kernel WARN_ON() at prepare_to_wait_event() like:
+  do not call blocking ops when !TASK_RUNNING; state=1 set at
+  prepare_to_wait_event+0x6d/0x690
 
-Move the call to mlx5_read_embedded_cpu() right after initialization bit
-cleared.
+For avoiding the potential deadlock, rewrite to an open-coded loop
+instead.  Unlike the loop in wait_event*(), this uses wait_woken()
+after the condition check, hence the task state stays consistent.
 
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Fixes: 591905ba9679 ("net/mlx5: Introduce Mellanox SmartNIC and modify page management logic")
-Reviewed-by: Shay Drory <shayd@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+CVE-2023-31084 was assigned to this bug.
+
+Link: https://lore.kernel.org/r/CA+UBctCu7fXn4q41O_3=id1+OdyQ85tZY1x+TkT-6OVBL6KAUw@mail.gmail.com/
+
+Link: https://lore.kernel.org/linux-media/20230512151800.1874-1-tiwai@suse.de
+Reported-by: Yu Hao <yhao016@ucr.edu>
+Closes: https://nvd.nist.gov/vuln/detail/CVE-2023-31084
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/dvb-core/dvb_frontend.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-index 1a06493da4121..077204929fe4a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -896,7 +896,6 @@ static int mlx5_pci_init(struct mlx5_core_dev *dev, struct pci_dev *pdev,
+diff --git a/drivers/media/dvb-core/dvb_frontend.c b/drivers/media/dvb-core/dvb_frontend.c
+index 947b61959b2b8..bc6950a5740f6 100644
+--- a/drivers/media/dvb-core/dvb_frontend.c
++++ b/drivers/media/dvb-core/dvb_frontend.c
+@@ -293,14 +293,22 @@ static int dvb_frontend_get_event(struct dvb_frontend *fe,
  	}
  
- 	mlx5_pci_vsc_init(dev);
--	dev->caps.embedded_cpu = mlx5_read_embedded_cpu(dev);
- 	return 0;
+ 	if (events->eventw == events->eventr) {
+-		int ret;
++		struct wait_queue_entry wait;
++		int ret = 0;
  
- err_clr_master:
-@@ -1130,6 +1129,7 @@ static int mlx5_function_setup(struct mlx5_core_dev *dev, bool boot, u64 timeout
- 		goto err_cmd_cleanup;
+ 		if (flags & O_NONBLOCK)
+ 			return -EWOULDBLOCK;
+ 
+-		ret = wait_event_interruptible(events->wait_queue,
+-					       dvb_frontend_test_event(fepriv, events));
+-
++		init_waitqueue_entry(&wait, current);
++		add_wait_queue(&events->wait_queue, &wait);
++		while (!dvb_frontend_test_event(fepriv, events)) {
++			wait_woken(&wait, TASK_INTERRUPTIBLE, 0);
++			if (signal_pending(current)) {
++				ret = -ERESTARTSYS;
++				break;
++			}
++		}
++		remove_wait_queue(&events->wait_queue, &wait);
+ 		if (ret < 0)
+ 			return ret;
  	}
- 
-+	dev->caps.embedded_cpu = mlx5_read_embedded_cpu(dev);
- 	mlx5_cmd_set_state(dev, MLX5_CMDIF_STATE_UP);
- 
- 	mlx5_start_health_poll(dev);
 -- 
 2.39.2
 
