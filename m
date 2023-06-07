@@ -2,145 +2,136 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3919E725E56
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 14:14:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59A41725E79
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 14:16:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235549AbjFGMOm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 08:14:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58446 "EHLO
+        id S240545AbjFGMQg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 08:16:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240288AbjFGMOl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 08:14:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 700F81BE2
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 05:14:36 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E602163987
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 12:14:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 074F5C433D2;
-        Wed,  7 Jun 2023 12:14:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686140075;
-        bh=GzTRefH3m/TJ6Lvud4vmCHc8x1nbGA5iKO0lEVpCTnU=;
-        h=Subject:To:Cc:From:Date:From;
-        b=tgxC26yYQ7g5e/Qm5lm+SdXnILTIbRRSRqUA1s0/nmxfYIkvCKFA9o3UYgvDfKgsz
-         mcmHMRcqgqRE+DkhydSK0kvFpDTIbAag9qacfuiF6Btm4mypEZavjjX6qyZqKD/sjo
-         nTJyt007iUvi2YPIK3HIH0yA9yZhvyTJZ0RTZTks=
-Subject: FAILED: patch "[PATCH] riscv: perf: Fix callchain parse error with kernel tracepoint" failed to apply to 4.19-stable tree
-To:     ism.hong@gmail.com, palmer@rivosinc.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 07 Jun 2023 14:14:27 +0200
-Message-ID: <2023060726-revolver-cone-2a9c@gregkh>
+        with ESMTP id S240343AbjFGMQe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 08:16:34 -0400
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44F871FDC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 05:16:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IcRpEqUABXxWtWVk6OWjPtVa1ZdD0/lDtSfHbaewBtY=;
+ b=io1bRltwwNCBmuLWSElJLxJDmYwas3XhyEmqvK+6m0BUHJozNOZEa/WvqBEMQxmxwKbdQ4j2dlrf0BI0Zs8qiLzvnhjwz0S/4P3lhLcrdPKZ2MZ1Fzn1LipC8YaKSch5fBema8qKZSfzFy/qw0BOemJNn/bHDVZ2fRVwVmiFOa0=
+Received: from CY8PR02CA0003.namprd02.prod.outlook.com (2603:10b6:930:4d::10)
+ by DM6PR12MB4957.namprd12.prod.outlook.com (2603:10b6:5:20d::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.28; Wed, 7 Jun
+ 2023 12:16:16 +0000
+Received: from CY4PEPF0000EE30.namprd05.prod.outlook.com
+ (2603:10b6:930:4d:cafe::75) by CY8PR02CA0003.outlook.office365.com
+ (2603:10b6:930:4d::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.19 via Frontend
+ Transport; Wed, 7 Jun 2023 12:16:16 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000EE30.mail.protection.outlook.com (10.167.242.36) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6477.13 via Frontend Transport; Wed, 7 Jun 2023 12:16:15 +0000
+Received: from stylon-rog.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Wed, 7 Jun
+ 2023 07:16:11 -0500
+From:   Stylon Wang <stylon.wang@amd.com>
+To:     <amd-gfx@lists.freedesktop.org>
+CC:     <Harry.Wentland@amd.com>, <Sunpeng.Li@amd.com>,
+        <Bhawanpreet.Lakha@amd.com>, <Rodrigo.Siqueira@amd.com>,
+        <Aurabindo.Pillai@amd.com>, <qingqing.zhuo@amd.com>,
+        <roman.li@amd.com>, <wayne.lin@amd.com>, <stylon.wang@amd.com>,
+        <solomon.chiu@amd.com>, <pavle.kotarac@amd.com>,
+        <agustin.gutierrez@amd.com>, Hersen Wu <hersenxs.wu@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        "Alex Deucher" <alexander.deucher@amd.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH 01/20] drm/amd/display: edp do not add non-edid timings
+Date:   Wed, 7 Jun 2023 20:15:29 +0800
+Message-ID: <20230607121548.1479290-2-stylon.wang@amd.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230607121548.1479290-1-stylon.wang@amd.com>
+References: <20230607121548.1479290-1-stylon.wang@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE30:EE_|DM6PR12MB4957:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7646ae8f-f907-4fb9-3c75-08db6750fe06
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ltNWDa07qUZB2LMmQIiuWlD7jxTEValuxKSZCkwaf1jtdcfZNwubt1NKI379LP57HykOtGhNdyrkNoTlYLQ0vWvF2DwgTAm21GCUA9oIjEeHdSNjm9DWQOl2DmV8kctbfLklx0mnzO999R61ofKrLoAS8WucZYUvoTwCN0fkj1ElSLXERunj3RqREJlO3c/LA1Fpq4JDNAd+N6MiUV3ryrivjRG/ZuVVNY/2EIZftSkYQkMdjHDmiHhPL5Vj7Ac0/kAI5YcFuJTy7CNBJdAkkEzJl11h0crvEBQi3M9p8R6R2BFaHRhojYj54xKwtLheAaUXSgAShZvZtOdRcIxFqoD4fTFCmCfNQSq7Tv4HwkDdxzqsiIJZkWOEnd7V25o2cZ18vDXkVG1KTrpIYPIDr6FQFpyqYPp6bciilNhd83pFo/WpqcvzApaiAIfHIjHwaS1+6Z4x752CV4xNe1u2/5/QHZjN9M7euLlBJ0rwuWvqWipIthwoa7iZp8Cw60/WvpWd4fgyl2AKmtncS9lh7oh+y4Ev9xYxXsetS0cBQEvwMn92FGR4crC0yDdDbqR9i91myVdJdr0ScDtDBvhzZgxm3c/2cqdVMItw2fSJlZGaTKM2+415vAE2CrYKWYghqrcEmETXwXtvZxQ850CXlEcj7OPg2gadY0UNM/TEqi2hI1N/yFYu0Hd7t0K6G62vLRBPiNHV+xjjeCOPE54mFEIlsl9NBIdbxiYm5+wfkrROe8eygKrMnc6V0X2R1JRXZf+HRg4auZ8erkPi+vVA9g==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(396003)(346002)(136003)(39860400002)(376002)(451199021)(36840700001)(40470700004)(46966006)(44832011)(5660300002)(8936002)(2906002)(316002)(41300700001)(6916009)(8676002)(70206006)(70586007)(4326008)(54906003)(7696005)(6666004)(426003)(1076003)(336012)(26005)(186003)(36756003)(16526019)(2616005)(47076005)(83380400001)(36860700001)(82740400003)(81166007)(356005)(478600001)(40460700003)(82310400005)(40480700001)(86362001)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2023 12:16:15.8985
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7646ae8f-f907-4fb9-3c75-08db6750fe06
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE30.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4957
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+[Why] most edp support only timings from edid. applying
+non-edid timings, especially those timings out of edp
+bandwidth, may damage edp.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+[How] do not add non-edid timings for edp.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 9a7e8ec0d4cc64870ea449b4fce5779b77496cbb
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023060726-revolver-cone-2a9c@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 9a7e8ec0d4cc64870ea449b4fce5779b77496cbb Mon Sep 17 00:00:00 2001
-From: Ism Hong <ism.hong@gmail.com>
-Date: Thu, 1 Jun 2023 17:53:55 +0800
-Subject: [PATCH] riscv: perf: Fix callchain parse error with kernel tracepoint
- events
-
-For RISC-V, when tracing with tracepoint events, the IP and status are
-set to 0, preventing the perf code parsing the callchain and resolving
-the symbols correctly.
-
- ./ply 'tracepoint:kmem/kmem_cache_alloc { @[stack]=count(); }'
- @:
- { <STACKID4294967282> }: 1
-
-The fix is to implement perf_arch_fetch_caller_regs for riscv, which
-fills several necessary registers used for callchain unwinding,
-including epc, sp, s0 and status. It's similar to commit b3eac0265bf6
-("arm: perf: Fix callchain parse error with kernel tracepoint events")
-and commit 5b09a094f2fb ("arm64: perf: Fix callchain parse error with
-kernel tracepoint events").
-
-With this patch, callchain can be parsed correctly as:
-
- ./ply 'tracepoint:kmem/kmem_cache_alloc { @[stack]=count(); }'
- @:
- {
-         __traceiter_kmem_cache_alloc+68
-         __traceiter_kmem_cache_alloc+68
-         kmem_cache_alloc+354
-         __sigqueue_alloc+94
-         __send_signal_locked+646
-         send_signal_locked+154
-         do_send_sig_info+84
-         __kill_pgrp_info+130
-         kill_pgrp+60
-         isig+150
-         n_tty_receive_signal_char+36
-         n_tty_receive_buf_standard+2214
-         n_tty_receive_buf_common+280
-         n_tty_receive_buf2+26
-         tty_ldisc_receive_buf+34
-         tty_port_default_receive_buf+62
-         flush_to_ldisc+158
-         process_one_work+458
-         worker_thread+138
-         kthread+178
-         riscv_cpufeature_patch_func+832
-  }: 1
-
-Signed-off-by: Ism Hong <ism.hong@gmail.com>
-Link: https://lore.kernel.org/r/20230601095355.1168910-1-ism.hong@gmail.com
-Fixes: 178e9fc47aae ("perf: riscv: preliminary RISC-V support")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Acked-by: Stylon Wang <stylon.wang@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Reviewed-by: Roman Li <roman.li@amd.com>
+---
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/include/asm/perf_event.h b/arch/riscv/include/asm/perf_event.h
-index d42c901f9a97..665bbc9b2f84 100644
---- a/arch/riscv/include/asm/perf_event.h
-+++ b/arch/riscv/include/asm/perf_event.h
-@@ -10,4 +10,11 @@
- 
- #include <linux/perf_event.h>
- #define perf_arch_bpf_user_pt_regs(regs) (struct user_regs_struct *)regs
-+
-+#define perf_arch_fetch_caller_regs(regs, __ip) { \
-+	(regs)->epc = (__ip); \
-+	(regs)->s0 = (unsigned long) __builtin_frame_address(0); \
-+	(regs)->sp = current_stack_pointer; \
-+	(regs)->status = SR_PP; \
-+}
- #endif /* _ASM_RISCV_PERF_EVENT_H */
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 59badb125736..9279c1d474f2 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -7236,7 +7236,13 @@ static int amdgpu_dm_connector_get_modes(struct drm_connector *connector)
+ 				drm_add_modes_noedid(connector, 1920, 1080);
+ 	} else {
+ 		amdgpu_dm_connector_ddc_get_modes(connector, edid);
+-		amdgpu_dm_connector_add_common_modes(encoder, connector);
++		/* most eDP supports only timings from its edid,
++		 * usually only detailed timings are available
++		 * from eDP edid. timings which are not from edid
++		 * may damage eDP
++		 */
++		if (connector->connector_type != DRM_MODE_CONNECTOR_eDP)
++			amdgpu_dm_connector_add_common_modes(encoder, connector);
+ 		amdgpu_dm_connector_add_freesync_modes(connector, edid);
+ 	}
+ 	amdgpu_dm_fbc_init(connector);
+-- 
+2.40.1
 
