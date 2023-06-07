@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6727726EFD
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:54:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E2E2726FBE
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:01:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235365AbjFGUye (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:54:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55376 "EHLO
+        id S235925AbjFGVBH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:01:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235486AbjFGUyY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EAF6269A
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:54:20 -0700 (PDT)
+        with ESMTP id S235812AbjFGVAq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 193F02120
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:00:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DCEC9647C3
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:54:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF208C433EF;
-        Wed,  7 Jun 2023 20:54:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EBEBA648C4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:00:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CDFDC433EF;
+        Wed,  7 Jun 2023 21:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171259;
-        bh=7cAly7DcdgfqYX85ezVGq42ONFyTzMCckcBCyWirnak=;
+        s=korg; t=1686171629;
+        bh=W7cDmmMskAmQKOeAEBTMMtSUHQeSM063tf6xjoDLGpQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hFT8RIT+Xm+sPQ8lyjSv2Vg8SWDRjqOtDPp9UvlUDvhViTLKMg73PgXbhfwzvQr2N
-         R58B865Y+k4o0cl1zBqPncZyN2AWayX4lqaAkBhe8LjPjjcAQQpdXrFgA8IiHBSWW8
-         DGKz48wtsijWIvE1V/d1lSRL6LLs8X/t2VPwuxrU=
+        b=SSutqo7GI0ITxH8Vfso1z294Y+z+Fkl63VroElgrIrOYUtkFDRdTqIdLbY3Yg2C2g
+         /V8XcIxMam0NbdmOHF94MVhv2acqeDWD1UQkfZWYiWCFIaKsfvPgITAGGIsrbV2/B1
+         8mHa146SqieJS0Q8saA5yQ0ae6ja9y9ulme6oH9Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Rob Clark <robdclark@chromium.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 42/99] media: dvb-usb-v2: rtl28xxu: fix null-ptr-deref in rtl28xxu_i2c_xfer
+Subject: [PATCH 5.15 091/159] drm/msm: Be more shouty if per-process pgtables arent working
 Date:   Wed,  7 Jun 2023 22:16:34 +0200
-Message-ID: <20230607200901.570484836@linuxfoundation.org>
+Message-ID: <20230607200906.674981193@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,82 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit aa4a447b81b84f69c1a89ad899df157f386d7636 ]
+[ Upstream commit 5c054db54c43a5fcb5cc81012361f5e3fac37637 ]
 
-In rtl28xxu_i2c_xfer, msg is controlled by user. When msg[i].buf
-is null and msg[i].len is zero, former checks on msg[i].buf would be
-passed. Malicious data finally reach rtl28xxu_i2c_xfer. If accessing
-msg[i].buf[0] without sanity check, null ptr deref would happen.
-We add check on msg[i].len to prevent crash.
+Otherwise it is not always obvious if a dt or iommu change is causing us
+to fall back to global pgtable.
 
-Similar commit:
-commit 0ed554fd769a
-("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
-
-Link: https://lore.kernel.org/linux-media/tencent_3623572106754AC2F266B316798B0F6CCA05@qq.com
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/537359/
+Link: https://lore.kernel.org/r/20230516222039.907690-2-robdclark@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb-v2/rtl28xxu.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/gpu/drm/msm/msm_iommu.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/dvb-usb-v2/rtl28xxu.c b/drivers/media/usb/dvb-usb-v2/rtl28xxu.c
-index 0fe71437601e7..ec9bbd8c89ad3 100644
---- a/drivers/media/usb/dvb-usb-v2/rtl28xxu.c
-+++ b/drivers/media/usb/dvb-usb-v2/rtl28xxu.c
-@@ -176,6 +176,10 @@ static int rtl28xxu_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 			ret = -EOPNOTSUPP;
- 			goto err_mutex_unlock;
- 		} else if (msg[0].addr == 0x10) {
-+			if (msg[0].len < 1 || msg[1].len < 1) {
-+				ret = -EOPNOTSUPP;
-+				goto err_mutex_unlock;
-+			}
- 			/* method 1 - integrated demod */
- 			if (msg[0].buf[0] == 0x00) {
- 				/* return demod page from driver cache */
-@@ -189,6 +193,10 @@ static int rtl28xxu_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 				ret = rtl28xxu_ctrl_msg(d, &req);
- 			}
- 		} else if (msg[0].len < 2) {
-+			if (msg[0].len < 1) {
-+				ret = -EOPNOTSUPP;
-+				goto err_mutex_unlock;
-+			}
- 			/* method 2 - old I2C */
- 			req.value = (msg[0].buf[0] << 8) | (msg[0].addr << 1);
- 			req.index = CMD_I2C_RD;
-@@ -217,8 +225,16 @@ static int rtl28xxu_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 			ret = -EOPNOTSUPP;
- 			goto err_mutex_unlock;
- 		} else if (msg[0].addr == 0x10) {
-+			if (msg[0].len < 1) {
-+				ret = -EOPNOTSUPP;
-+				goto err_mutex_unlock;
-+			}
- 			/* method 1 - integrated demod */
- 			if (msg[0].buf[0] == 0x00) {
-+				if (msg[0].len < 2) {
-+					ret = -EOPNOTSUPP;
-+					goto err_mutex_unlock;
-+				}
- 				/* save demod page for later demod access */
- 				dev->page = msg[0].buf[1];
- 				ret = 0;
-@@ -231,6 +247,10 @@ static int rtl28xxu_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 				ret = rtl28xxu_ctrl_msg(d, &req);
- 			}
- 		} else if ((msg[0].len < 23) && (!dev->new_i2c_write)) {
-+			if (msg[0].len < 1) {
-+				ret = -EOPNOTSUPP;
-+				goto err_mutex_unlock;
-+			}
- 			/* method 2 - old I2C */
- 			req.value = (msg[0].buf[0] << 8) | (msg[0].addr << 1);
- 			req.index = CMD_I2C_WR;
+diff --git a/drivers/gpu/drm/msm/msm_iommu.c b/drivers/gpu/drm/msm/msm_iommu.c
+index a54ed354578b5..ef4da3f0cd22d 100644
+--- a/drivers/gpu/drm/msm/msm_iommu.c
++++ b/drivers/gpu/drm/msm/msm_iommu.c
+@@ -157,7 +157,12 @@ struct msm_mmu *msm_iommu_pagetable_create(struct msm_mmu *parent)
+ 	/* Get the pagetable configuration from the domain */
+ 	if (adreno_smmu->cookie)
+ 		ttbr1_cfg = adreno_smmu->get_ttbr1_cfg(adreno_smmu->cookie);
+-	if (!ttbr1_cfg)
++
++	/*
++	 * If you hit this WARN_ONCE() you are probably missing an entry in
++	 * qcom_smmu_impl_of_match[] in arm-smmu-qcom.c
++	 */
++	if (WARN_ONCE(!ttbr1_cfg, "No per-process page tables"))
+ 		return ERR_PTR(-ENODEV);
+ 
+ 	/*
 -- 
 2.39.2
 
