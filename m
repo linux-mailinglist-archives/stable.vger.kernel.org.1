@@ -2,48 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41CD3726B92
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D27C726D2E
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:40:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233341AbjFGU03 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:26:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51664 "EHLO
+        id S234267AbjFGUkE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:40:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233263AbjFGU0X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A8961FDE
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:26:01 -0700 (PDT)
+        with ESMTP id S234257AbjFGUjs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:39:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAE36271F
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:39:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3ED4A64450
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:25:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4CCC433D2;
-        Wed,  7 Jun 2023 20:25:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B0CB645DE
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:39:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB00C433EF;
+        Wed,  7 Jun 2023 20:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169548;
-        bh=ff1S6i4jLOfLLDr5CzWF6ooM3A4D2S7c6EccFUBVNa0=;
+        s=korg; t=1686170370;
+        bh=tCXL7zAIGi097rPkbp7jZa8lojezmzatik4LM6vXLFo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wgnTpGUz28LY+5GSzXtWCwfh4/nWoAQToGUgHUPTm4dnuZM2mQJ98Zou9v1gZEgnG
-         h4rVIqCyfz/FU82zfgahGwUHTxD/ljVCG2DHKaq46DUsHz0RRcaWuwH4ueyuGQoqYi
-         SB1Vr391OWek9RKWnPQ3510MIkqVjEV+lSfzDodU=
+        b=rA69qi4E6El77JiluVQ1p5ZWSmnek6kmgl8qu/9V9ueNTqDrSfENCQ6J35uyCPkaY
+         oDuJI1JF9fjm46NBGpJfZo5N+3YtksfHwIloVlpHGAvAoYSGDKavGXvW81dJqpDzJl
+         igDMMqWH9KdTTgW9ZPnZ+LSziOeej8HRhX2bSUl0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 122/286] ASoC: dt-bindings: Adjust #sound-dai-cells on TIs single-DAI codecs
-Date:   Wed,  7 Jun 2023 22:13:41 +0200
-Message-ID: <20230607200927.067033112@linuxfoundation.org>
+        patches@lists.linux.dev, Mustafa Ismail <mustafa.ismail@intel.com>,
+        Shiraz Saleem <shiraz.saleem@intel.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 029/225] RDMA/irdma: Fix Local Invalidate fencing
+Date:   Wed,  7 Jun 2023 22:13:42 +0200
+Message-ID: <20230607200915.273326122@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,96 +55,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin Povišer <povik+lin@cutebit.org>
+From: Mustafa Ismail <mustafa.ismail@intel.com>
 
-[ Upstream commit efb2bfd7b3d210c479b9361c176d7426e5eb8663 ]
+[ Upstream commit 5842d1d9c1b0d17e0c29eae65ae1f245f83682dd ]
 
-A bunch of TI's codecs have binding schemas which force #sound-dai-cells
-to one despite those codecs only having a single DAI. Allow for bindings
-with zero DAI cells and deprecate the former non-zero value.
+If the local invalidate fence is indicated in the WR, only the read fence
+is currently being set in WQE. Fix this to set both the read and local
+fence in the WQE.
 
-Signed-off-by: Martin Povišer <povik+lin@cutebit.org
-Link: https://lore.kernel.org/r/20230509153412.62847-1-povik+lin@cutebit.org
-Signed-off-by: Mark Brown <broonie@kernel.org
+Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
+Link: https://lore.kernel.org/r/20230522155654.1309-4-shiraz.saleem@intel.com
+Signed-off-by: Mustafa Ismail <mustafa.ismail@intel.com>
+Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/sound/tas2562.yaml | 6 ++++--
- Documentation/devicetree/bindings/sound/tas2770.yaml | 6 ++++--
- Documentation/devicetree/bindings/sound/tas27xx.yaml | 6 ++++--
- 3 files changed, 12 insertions(+), 6 deletions(-)
+ drivers/infiniband/hw/irdma/verbs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/devicetree/bindings/sound/tas2562.yaml b/Documentation/devicetree/bindings/sound/tas2562.yaml
-index 1085592cefccc..81218c07079a8 100644
---- a/Documentation/devicetree/bindings/sound/tas2562.yaml
-+++ b/Documentation/devicetree/bindings/sound/tas2562.yaml
-@@ -55,7 +55,9 @@ properties:
-     description: TDM TX current sense time slot.
- 
-   '#sound-dai-cells':
--    const: 1
-+    # The codec has a single DAI, the #sound-dai-cells=<1>; case is left in for backward
-+    # compatibility but is deprecated.
-+    enum: [0, 1]
- 
- required:
-   - compatible
-@@ -72,7 +74,7 @@ examples:
-      codec: codec@4c {
-        compatible = "ti,tas2562";
-        reg = <0x4c>;
--       #sound-dai-cells = <1>;
-+       #sound-dai-cells = <0>;
-        interrupt-parent = <&gpio1>;
-        interrupts = <14>;
-        shutdown-gpios = <&gpio1 15 0>;
-diff --git a/Documentation/devicetree/bindings/sound/tas2770.yaml b/Documentation/devicetree/bindings/sound/tas2770.yaml
-index 982949ba8a4be..cdb493db47f9b 100644
---- a/Documentation/devicetree/bindings/sound/tas2770.yaml
-+++ b/Documentation/devicetree/bindings/sound/tas2770.yaml
-@@ -57,7 +57,9 @@ properties:
-       - 1 # Falling edge
- 
-   '#sound-dai-cells':
--    const: 1
-+    # The codec has a single DAI, the #sound-dai-cells=<1>; case is left in for backward
-+    # compatibility but is deprecated.
-+    enum: [0, 1]
- 
- required:
-   - compatible
-@@ -74,7 +76,7 @@ examples:
-      codec: codec@41 {
-        compatible = "ti,tas2770";
-        reg = <0x41>;
--       #sound-dai-cells = <1>;
-+       #sound-dai-cells = <0>;
-        interrupt-parent = <&gpio1>;
-        interrupts = <14>;
-        reset-gpio = <&gpio1 15 0>;
-diff --git a/Documentation/devicetree/bindings/sound/tas27xx.yaml b/Documentation/devicetree/bindings/sound/tas27xx.yaml
-index 0957dd435bb4b..2ef05aacc167a 100644
---- a/Documentation/devicetree/bindings/sound/tas27xx.yaml
-+++ b/Documentation/devicetree/bindings/sound/tas27xx.yaml
-@@ -50,7 +50,9 @@ properties:
-     description: TDM TX voltage sense time slot.
- 
-   '#sound-dai-cells':
--    const: 1
-+    # The codec has a single DAI, the #sound-dai-cells=<1>; case is left in for backward
-+    # compatibility but is deprecated.
-+    enum: [0, 1]
- 
- required:
-   - compatible
-@@ -67,7 +69,7 @@ examples:
-      codec: codec@38 {
-        compatible = "ti,tas2764";
-        reg = <0x38>;
--       #sound-dai-cells = <1>;
-+       #sound-dai-cells = <0>;
-        interrupt-parent = <&gpio1>;
-        interrupts = <14>;
-        reset-gpios = <&gpio1 15 0>;
+diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
+index 1c5a61f51a67a..6a8bb6ed4bf43 100644
+--- a/drivers/infiniband/hw/irdma/verbs.c
++++ b/drivers/infiniband/hw/irdma/verbs.c
+@@ -3191,6 +3191,7 @@ static int irdma_post_send(struct ib_qp *ibqp,
+ 			break;
+ 		case IB_WR_LOCAL_INV:
+ 			info.op_type = IRDMA_OP_TYPE_INV_STAG;
++			info.local_fence = info.read_fence;
+ 			info.op.inv_local_stag.target_stag = ib_wr->ex.invalidate_rkey;
+ 			err = irdma_uk_stag_local_invalidate(ukqp, &info, true);
+ 			break;
 -- 
 2.39.2
 
