@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50A6A726F2A
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:56:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5396A726FF7
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:03:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235480AbjFGU4C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:56:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57100 "EHLO
+        id S235787AbjFGVDg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:03:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235519AbjFGU4B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:56:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D352FD1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:55:59 -0700 (PDT)
+        with ESMTP id S235870AbjFGVDK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:03:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C47A3270F
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:02:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6699464831
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:55:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 768B5C433EF;
-        Wed,  7 Jun 2023 20:55:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5EDFF648DA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:02:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BFA8C433EF;
+        Wed,  7 Jun 2023 21:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171358;
-        bh=PlPKPfesOf3M/ZL//zmQnpWYBeJ5YOqN7WPjeoXQ1Cw=;
+        s=korg; t=1686171759;
+        bh=nimzWmEZFrQvdetXqNVc1L3824RtmvJAgokIqJRobA8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PlJ5xhTB/5a+ltrMv3O6U2e7ZksoFWIVgi6LRNLyuyYBDQhHpetzyMre43jw9ssF6
-         raIFyckSaNB4sSL866rhYE0Xgwc5iZ0HO5arByerITjxwR+/nD03agJPYKbMAnnriK
-         IXFHRP4ki7qo/L83z6E+nwsRz2DakZg3d8FQV1Ms=
+        b=jm/a1003dhzeWz2QpJWTZ0gX6wBloiyC4RE4LNrvrlfJ97MmFtH2uYWJHMFxxK03X
+         4S4HvqKxNxAD+EDNbLZQx4VZoYPOSdu+PEKv1Qs1i3N7HcmD/Yvt6KOvIdOdLOFh/E
+         QvQ0SoGIeCCKGMAX5PlhAn7hAbX+VQpVocpmrY3A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, stable@kernel.org,
         syzbot+e44749b6ba4d0434cd47@syzkaller.appspotmail.com,
         Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.4 88/99] ext4: disallow ea_inodes with extended attributes
-Date:   Wed,  7 Jun 2023 22:17:20 +0200
-Message-ID: <20230607200902.989395103@linuxfoundation.org>
+Subject: [PATCH 5.15 138/159] ext4: disallow ea_inodes with extended attributes
+Date:   Wed,  7 Jun 2023 22:17:21 +0200
+Message-ID: <20230607200908.184727212@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -74,7 +74,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/fs/ext4/inode.c
 +++ b/fs/ext4/inode.c
-@@ -4909,6 +4909,9 @@ static const char *check_igot_inode(stru
+@@ -4598,6 +4598,9 @@ static const char *check_igot_inode(stru
  	if (flags & EXT4_IGET_EA_INODE) {
  		if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL))
  			return "missing EA_INODE flag";
