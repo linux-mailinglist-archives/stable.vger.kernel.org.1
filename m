@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0C33726DD4
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:46:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27CA5726EEB
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:54:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234894AbjFGUqA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:46:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45976 "EHLO
+        id S235394AbjFGUyN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:54:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234723AbjFGUpd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:45:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7E20FC
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:45:27 -0700 (PDT)
+        with ESMTP id S235392AbjFGUyC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E908F26AB
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:53:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 500FF6467D
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:45:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C1CC4339B;
-        Wed,  7 Jun 2023 20:45:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C8AAA647A5
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:53:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBD76C433EF;
+        Wed,  7 Jun 2023 20:53:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170726;
-        bh=g9LGI75BIM5SX5ze7eo+NTRTv7UipykGKXBL4tNzLgg=;
+        s=korg; t=1686171225;
+        bh=UW0bjrj+djKa8PiNccOOz0mhX2Prxc3KJ8yUZrQeR3Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sYBoOQsth0R08juIS+ZEPPsKXwEEIK0wPDUhGW3btODRhdt6bw6ifoiky0iuagOEM
-         P11+70Wdx3ildFJbbpnfE8ORDJQFicTop4bYrGi5sQAMfeq9tRN+BnugR13LsQe9mX
-         fmFRjObXr0DHsFOqXTbtCJnuWac6ldLTJuKxHX80=
+        b=NeGfpsxLU6MTS9CNjmJznao3yC+S1wzK3vK0etQjD39uG1ot1KHRA8834gDWSoal9
+         QKYpj010R8oSfU9YUfFSmu1hoPaYprykat6tp+P1tVObru8mNuNWQhwUDydTa9u3WO
+         4BcSUdpHgnxL0HYgo8bYUWdT2z/f8lfh6mpKTrWU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 195/225] mptcp: fix active subflow finalization
+        patches@lists.linux.dev, Benedict Wong <benedictwong@google.com>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 36/99] xfrm: Check if_id in inbound policy/secpath match
 Date:   Wed,  7 Jun 2023 22:16:28 +0200
-Message-ID: <20230607200920.752005378@linuxfoundation.org>
+Message-ID: <20230607200901.384605684@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,90 +54,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Benedict Wong <benedictwong@google.com>
 
-commit 55b47ca7d80814ceb63d64e032e96cd6777811e5 upstream.
+[ Upstream commit 8680407b6f8f5fba59e8f1d63c869abc280f04df ]
 
-Active subflow are inserted into the connection list at creation time.
-When the MPJ handshake completes successfully, a new subflow creation
-netlink event is generated correctly, but the current code wrongly
-avoid initializing a couple of subflow data.
+This change ensures that if configured in the policy, the if_id set in
+the policy and secpath states match during the inbound policy check.
+Without this, there is potential for ambiguity where entries in the
+secpath differing by only the if_id could be mismatched.
 
-The above will cause misbehavior on a few exceptional events: unneeded
-mptcp-level retransmission on msk-level sequence wrap-around and infinite
-mapping fallback even when a MPJ socket is present.
+Notably, this is checked in the outbound direction when resolving
+templates to SAs, but not on the inbound path when matching SAs and
+policies.
 
-Address the issue factoring out the needed initialization in a new helper
-and invoking the latter from __mptcp_finish_join() time for passive
-subflow and from mptcp_finish_join() for active ones.
-
-Fixes: 0530020a7c8f ("mptcp: track and update contiguous data status")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Test: Tested against Android kernel unit tests & CTS
+Signed-off-by: Benedict Wong <benedictwong@google.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |   23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ net/xfrm/xfrm_policy.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -821,6 +821,13 @@ void mptcp_data_ready(struct sock *sk, s
- 	mptcp_data_unlock(sk);
- }
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index 6f58be5a17711..9d4b405659058 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -3223,7 +3223,7 @@ xfrm_secpath_reject(int idx, struct sk_buff *skb, const struct flowi *fl)
  
-+static void mptcp_subflow_joined(struct mptcp_sock *msk, struct sock *ssk)
-+{
-+	mptcp_subflow_ctx(ssk)->map_seq = READ_ONCE(msk->ack_seq);
-+	WRITE_ONCE(msk->allow_infinite_fallback, false);
-+	mptcp_event(MPTCP_EVENT_SUB_ESTABLISHED, msk, ssk, GFP_ATOMIC);
-+}
-+
- static bool __mptcp_finish_join(struct mptcp_sock *msk, struct sock *ssk)
+ static inline int
+ xfrm_state_ok(const struct xfrm_tmpl *tmpl, const struct xfrm_state *x,
+-	      unsigned short family)
++	      unsigned short family, u32 if_id)
  {
- 	struct sock *sk = (struct sock *)msk;
-@@ -835,6 +842,7 @@ static bool __mptcp_finish_join(struct m
- 		mptcp_sock_graft(ssk, sk->sk_socket);
- 
- 	mptcp_sockopt_sync_locked(msk, ssk);
-+	mptcp_subflow_joined(msk, ssk);
- 	return true;
+ 	if (xfrm_state_kern(x))
+ 		return tmpl->optional && !xfrm_state_addr_cmp(tmpl, x, tmpl->encap_family);
+@@ -3234,7 +3234,8 @@ xfrm_state_ok(const struct xfrm_tmpl *tmpl, const struct xfrm_state *x,
+ 		(tmpl->allalgs || (tmpl->aalgos & (1<<x->props.aalgo)) ||
+ 		 !(xfrm_id_proto_match(tmpl->id.proto, IPSEC_PROTO_ANY))) &&
+ 		!(x->props.mode != XFRM_MODE_TRANSPORT &&
+-		  xfrm_state_addr_cmp(tmpl, x, family));
++		  xfrm_state_addr_cmp(tmpl, x, family)) &&
++		(if_id == 0 || if_id == x->if_id);
  }
  
-@@ -3485,14 +3493,16 @@ bool mptcp_finish_join(struct sock *ssk)
- 		return false;
- 	}
+ /*
+@@ -3246,7 +3247,7 @@ xfrm_state_ok(const struct xfrm_tmpl *tmpl, const struct xfrm_state *x,
+  */
+ static inline int
+ xfrm_policy_ok(const struct xfrm_tmpl *tmpl, const struct sec_path *sp, int start,
+-	       unsigned short family)
++	       unsigned short family, u32 if_id)
+ {
+ 	int idx = start;
  
--	if (!list_empty(&subflow->node))
--		goto out;
-+	/* active subflow, already present inside the conn_list */
-+	if (!list_empty(&subflow->node)) {
-+		mptcp_subflow_joined(msk, ssk);
-+		return true;
-+	}
- 
- 	if (!mptcp_pm_allow_new_subflow(msk))
- 		goto err_prohibited;
- 
--	/* active connections are already on conn_list.
--	 * If we can't acquire msk socket lock here, let the release callback
-+	/* If we can't acquire msk socket lock here, let the release callback
- 	 * handle it
- 	 */
- 	mptcp_data_lock(parent);
-@@ -3515,11 +3525,6 @@ err_prohibited:
- 		return false;
- 	}
- 
--	subflow->map_seq = READ_ONCE(msk->ack_seq);
--	WRITE_ONCE(msk->allow_infinite_fallback, false);
--
--out:
--	mptcp_event(MPTCP_EVENT_SUB_ESTABLISHED, msk, ssk, GFP_ATOMIC);
- 	return true;
- }
- 
+@@ -3256,7 +3257,7 @@ xfrm_policy_ok(const struct xfrm_tmpl *tmpl, const struct sec_path *sp, int star
+ 	} else
+ 		start = -1;
+ 	for (; idx < sp->len; idx++) {
+-		if (xfrm_state_ok(tmpl, sp->xvec[idx], family))
++		if (xfrm_state_ok(tmpl, sp->xvec[idx], family, if_id))
+ 			return ++idx;
+ 		if (sp->xvec[idx]->props.mode != XFRM_MODE_TRANSPORT) {
+ 			if (start == -1)
+@@ -3666,7 +3667,7 @@ int __xfrm_policy_check(struct sock *sk, int dir, struct sk_buff *skb,
+ 		 * are implied between each two transformations.
+ 		 */
+ 		for (i = xfrm_nr-1, k = 0; i >= 0; i--) {
+-			k = xfrm_policy_ok(tpp[i], sp, k, family);
++			k = xfrm_policy_ok(tpp[i], sp, k, family, if_id);
+ 			if (k < 0) {
+ 				if (k < -1)
+ 					/* "-2 - errored_index" returned */
+-- 
+2.39.2
+
 
 
