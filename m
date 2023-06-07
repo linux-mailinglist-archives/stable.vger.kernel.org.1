@@ -2,42 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13E42726B94
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57C43726D14
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:39:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233333AbjFGU0b (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:26:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51786 "EHLO
+        id S234182AbjFGUjD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:39:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232820AbjFGU00 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:26 -0400
+        with ESMTP id S234286AbjFGUik (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:38:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF5A42706
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:26:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4B5D1BFF
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:38:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 70CEA64424
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:25:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837F1C433D2;
-        Wed,  7 Jun 2023 20:25:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7AA4C645C8
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:38:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F274C4339B;
+        Wed,  7 Jun 2023 20:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169553;
-        bh=Ia5yIrHma2Z+l6uTvw7SQJwrOjKMLXKh1gYs3ErSs6E=;
+        s=korg; t=1686170296;
+        bh=XgGT1RhOIbHc/BwyTPCU45CIOJXtvObBXncZGAJLuvE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xCxAMB2GRdVc0O48T++lvB7lKcYAk3bzez+0ruRMndUKQBecdI5QD0p+QY4J3U+Fj
-         aq0dBFdmS9nTpW1Seuzijbuz1EEHYbhaGWTpVIW5ogiL7Oqq4NWdke3cBftkBPPZt+
-         dwRI0gkWgXYMdVcbFf/RNQH+XDpt+6EpR73d4O7w=
+        b=wMHCTgQYZu2lOMVgyj4HAh8KuSfgMZL9pIeiJQkzi9TqyuvIRzKP45EWJYjMw6caP
+         9gSUky/W89WBOBGYSmO5khhHigDB51QWMOxGbTYmKMHnlpQ1OA8QTtzEZsneW0tWA7
+         Zwg28bFpxG4CR+oj64KqIXExYxYXpdO44CIKJM6U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 124/286] ASoC: ssm2602: Add workaround for playback distortions
-Date:   Wed,  7 Jun 2023 22:13:43 +0200
-Message-ID: <20230607200927.140316170@linuxfoundation.org>
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 031/225] tcp: deny tcp_disconnect() when threads are waiting
+Date:   Wed,  7 Jun 2023 22:13:44 +0200
+Message-ID: <20230607200915.335818645@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,135 +56,184 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paweł Anikiel <pan@semihalf.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit f63550e2b165208a2f382afcaf5551df9569e1d4 ]
+[ Upstream commit 4faeee0cf8a5d88d63cdbc3bab124fb0e6aed08c ]
 
-Apply a workaround for what appears to be a hardware quirk.
+Historically connect(AF_UNSPEC) has been abused by syzkaller
+and other fuzzers to trigger various bugs.
 
-The problem seems to happen when enabling "whole chip power" (bit D7
-register R6) for the very first time after the chip receives power. If
-either "output" (D4) or "DAC" (D3) aren't powered on at that time,
-playback becomes very distorted later on.
+A recent one triggers a divide-by-zero [1], and Paolo Abeni
+was able to diagnose the issue.
 
-This happens on the Google Chameleon v3, as well as on a ZYBO Z7-10:
-https://ez.analog.com/audio/f/q-a/543726/solved-ssm2603-right-output-offset-issue/480229
-I suspect this happens only when using an external MCLK signal (which
-is the case for both of these boards).
+tcp_recvmsg_locked() has tests about sk_state being not TCP_LISTEN
+and TCP REPAIR mode being not used.
 
-Here are some experiments run on a Google Chameleon v3. These were run
-in userspace using a wrapper around the i2cset utility:
-ssmset() {
-        i2cset -y 0 0x1a $(($1*2)) $2
-}
+Then later if socket lock is released in sk_wait_data(),
+another thread can call connect(AF_UNSPEC), then make this
+socket a TCP listener.
 
-For each of the following sequences, we apply power to the ssm2603
-chip, set the configuration registers R0-R5 and R7-R8, run the selected
-sequence, and check for distortions on playback.
+When recvmsg() is resumed, it can eventually call tcp_cleanup_rbuf()
+and attempt a divide by 0 in tcp_rcv_space_adjust() [1]
 
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x07 # chip, out, dac
-  OK
+This patch adds a new socket field, counting number of threads
+blocked in sk_wait_event() and inet_wait_for_connect().
 
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x87 # out, dac
-  ssmset 0x06 0x07 # chip
-  OK
+If this counter is not zero, tcp_disconnect() returns an error.
 
-  (disable MCLK)
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x1f # chip
-  ssmset 0x06 0x07 # out, dac
-  (enable MCLK)
-  OK
+This patch adds code in blocking socket system calls, thus should
+not hurt performance of non blocking ones.
 
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x1f # chip
-  ssmset 0x06 0x07 # out, dac
-  NOT OK
+Note that we probably could revert commit 499350a5a6e7 ("tcp:
+initialize rcv_mss to TCP_MIN_MSS instead of 0") to restore
+original tcpi_rcv_mss meaning (was 0 if no payload was ever
+received on a socket)
 
-  ssmset 0x06 0x1f # chip
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x07 # out, dac
-  NOT OK
+[1]
+divide error: 0000 [#1] PREEMPT SMP KASAN
+CPU: 0 PID: 13832 Comm: syz-executor.5 Not tainted 6.3.0-rc4-syzkaller-00224-g00c7b5f4ddc5 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/02/2023
+RIP: 0010:tcp_rcv_space_adjust+0x36e/0x9d0 net/ipv4/tcp_input.c:740
+Code: 00 00 00 00 fc ff df 4c 89 64 24 48 8b 44 24 04 44 89 f9 41 81 c7 80 03 00 00 c1 e1 04 44 29 f0 48 63 c9 48 01 e9 48 0f af c1 <49> f7 f6 48 8d 04 41 48 89 44 24 40 48 8b 44 24 30 48 c1 e8 03 48
+RSP: 0018:ffffc900033af660 EFLAGS: 00010206
+RAX: 4a66b76cbade2c48 RBX: ffff888076640cc0 RCX: 00000000c334e4ac
+RDX: 0000000000000000 RSI: dffffc0000000000 RDI: 0000000000000001
+RBP: 00000000c324e86c R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: ffff8880766417f8
+R13: ffff888028fbb980 R14: 0000000000000000 R15: 0000000000010344
+FS: 00007f5bffbfe700(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b32f25000 CR3: 000000007ced0000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<TASK>
+tcp_recvmsg_locked+0x100e/0x22e0 net/ipv4/tcp.c:2616
+tcp_recvmsg+0x117/0x620 net/ipv4/tcp.c:2681
+inet6_recvmsg+0x114/0x640 net/ipv6/af_inet6.c:670
+sock_recvmsg_nosec net/socket.c:1017 [inline]
+sock_recvmsg+0xe2/0x160 net/socket.c:1038
+____sys_recvmsg+0x210/0x5a0 net/socket.c:2720
+___sys_recvmsg+0xf2/0x180 net/socket.c:2762
+do_recvmmsg+0x25e/0x6e0 net/socket.c:2856
+__sys_recvmmsg net/socket.c:2935 [inline]
+__do_sys_recvmmsg net/socket.c:2958 [inline]
+__se_sys_recvmmsg net/socket.c:2951 [inline]
+__x64_sys_recvmmsg+0x20f/0x260 net/socket.c:2951
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f5c0108c0f9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f5bffbfe168 EFLAGS: 00000246 ORIG_RAX: 000000000000012b
+RAX: ffffffffffffffda RBX: 00007f5c011ac050 RCX: 00007f5c0108c0f9
+RDX: 0000000000000001 RSI: 0000000020000bc0 RDI: 0000000000000003
+RBP: 00007f5c010e7b39 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000122 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f5c012cfb1f R14: 00007f5bffbfe300 R15: 0000000000022000
+</TASK>
 
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x0f # chip, out
-  ssmset 0x06 0x07 # dac
-  NOT OK
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x17 # chip, dac
-  ssmset 0x06 0x07 # out
-  NOT OK
-
-For each of the following sequences, we apply power to the ssm2603
-chip, run the selected sequence, issue a reset with R15, configure
-R0-R5 and R7-R8, run one of the NOT OK sequences from above, and check
-for distortions.
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x07 # chip, out, dac
-  OK
-
-  (disable MCLK)
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x07 # chip, out, dac
-  (enable MCLK after reset)
-  NOT OK
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x17 # chip, dac
-  NOT OK
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x0f # chip, out
-  NOT OK
-
-  ssmset 0x06 0x07 # chip, out, dac
-  NOT OK
-
-Signed-off-by: Paweł Anikiel <pan@semihalf.com
-Link: https://lore.kernel.org/r/20230508113037.137627-8-pan@semihalf.com
-Signed-off-by: Mark Brown <broonie@kernel.org
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Reported-by: Paolo Abeni <pabeni@redhat.com>
+Diagnosed-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Tested-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20230526163458.2880232-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/ssm2602.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ include/net/sock.h              | 4 ++++
+ net/ipv4/af_inet.c              | 2 ++
+ net/ipv4/inet_connection_sock.c | 1 +
+ net/ipv4/tcp.c                  | 6 ++++++
+ 4 files changed, 13 insertions(+)
 
-diff --git a/sound/soc/codecs/ssm2602.c b/sound/soc/codecs/ssm2602.c
-index cbbe83b85adaf..cf7927222be15 100644
---- a/sound/soc/codecs/ssm2602.c
-+++ b/sound/soc/codecs/ssm2602.c
-@@ -53,6 +53,18 @@ static const struct reg_default ssm2602_reg[SSM2602_CACHEREGNUM] = {
- 	{ .reg = 0x09, .def = 0x0000 }
- };
+diff --git a/include/net/sock.h b/include/net/sock.h
+index beb1b747fb09d..f11b98bd0244c 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -333,6 +333,7 @@ struct sk_filter;
+   *	@sk_cgrp_data: cgroup data for this cgroup
+   *	@sk_memcg: this socket's memory cgroup association
+   *	@sk_write_pending: a write to stream socket waits to start
++  *	@sk_wait_pending: number of threads blocked on this socket
+   *	@sk_state_change: callback to indicate change in the state of the sock
+   *	@sk_data_ready: callback to indicate there is data to be processed
+   *	@sk_write_space: callback to indicate there is bf sending space available
+@@ -425,6 +426,7 @@ struct sock {
+ 	unsigned int		sk_napi_id;
+ #endif
+ 	int			sk_rcvbuf;
++	int			sk_wait_pending;
  
-+/*
-+ * ssm2602 register patch
-+ * Workaround for playback distortions after power up: activates digital
-+ * core, and then powers on output, DAC, and whole chip at the same time
-+ */
-+
-+static const struct reg_sequence ssm2602_patch[] = {
-+	{ SSM2602_ACTIVE, 0x01 },
-+	{ SSM2602_PWR,    0x07 },
-+	{ SSM2602_RESET,  0x00 },
-+};
-+
+ 	struct sk_filter __rcu	*sk_filter;
+ 	union {
+@@ -1170,6 +1172,7 @@ static inline void sock_rps_reset_rxhash(struct sock *sk)
  
- /*Appending several "None"s just for OSS mixer use*/
- static const char *ssm2602_input_select[] = {
-@@ -589,6 +601,9 @@ static int ssm260x_component_probe(struct snd_soc_component *component)
- 		return ret;
+ #define sk_wait_event(__sk, __timeo, __condition, __wait)		\
+ 	({	int __rc;						\
++		__sk->sk_wait_pending++;				\
+ 		release_sock(__sk);					\
+ 		__rc = __condition;					\
+ 		if (!__rc) {						\
+@@ -1179,6 +1182,7 @@ static inline void sock_rps_reset_rxhash(struct sock *sk)
+ 		}							\
+ 		sched_annotate_sleep();					\
+ 		lock_sock(__sk);					\
++		__sk->sk_wait_pending--;				\
+ 		__rc = __condition;					\
+ 		__rc;							\
+ 	})
+diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+index 5fd0ff5734e36..ebb737ac9e894 100644
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -589,6 +589,7 @@ static long inet_wait_for_connect(struct sock *sk, long timeo, int writebias)
+ 
+ 	add_wait_queue(sk_sleep(sk), &wait);
+ 	sk->sk_write_pending += writebias;
++	sk->sk_wait_pending++;
+ 
+ 	/* Basic assumption: if someone sets sk->sk_err, he _must_
+ 	 * change state of the socket from TCP_SYN_*.
+@@ -604,6 +605,7 @@ static long inet_wait_for_connect(struct sock *sk, long timeo, int writebias)
  	}
+ 	remove_wait_queue(sk_sleep(sk), &wait);
+ 	sk->sk_write_pending -= writebias;
++	sk->sk_wait_pending--;
+ 	return timeo;
+ }
  
-+	regmap_register_patch(ssm2602->regmap, ssm2602_patch,
-+			      ARRAY_SIZE(ssm2602_patch));
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index 916075e00d066..8e35ea66d930a 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -1143,6 +1143,7 @@ struct sock *inet_csk_clone_lock(const struct sock *sk,
+ 	if (newsk) {
+ 		struct inet_connection_sock *newicsk = inet_csk(newsk);
+ 
++		newsk->sk_wait_pending = 0;
+ 		inet_sk_set_state(newsk, TCP_SYN_RECV);
+ 		newicsk->icsk_bind_hash = NULL;
+ 		newicsk->icsk_bind2_hash = NULL;
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 021a8bf6a1898..c77b57d4a832a 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3079,6 +3079,12 @@ int tcp_disconnect(struct sock *sk, int flags)
+ 	int old_state = sk->sk_state;
+ 	u32 seq;
+ 
++	/* Deny disconnect if other threads are blocked in sk_wait_event()
++	 * or inet_wait_for_connect().
++	 */
++	if (sk->sk_wait_pending)
++		return -EBUSY;
 +
- 	/* set the update bits */
- 	regmap_update_bits(ssm2602->regmap, SSM2602_LINVOL,
- 			    LINVOL_LRIN_BOTH, LINVOL_LRIN_BOTH);
+ 	if (old_state != TCP_CLOSE)
+ 		tcp_set_state(sk, TCP_CLOSE);
+ 
 -- 
 2.39.2
 
