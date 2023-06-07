@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6E46726DAE
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:44:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1AD6726CA8
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:35:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234678AbjFGUom (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:44:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45092 "EHLO
+        id S233919AbjFGUfU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:35:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234691AbjFGUok (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:40 -0400
+        with ESMTP id S234144AbjFGUfF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:35:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AA7B2688
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:44:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABDD81FF0
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:35:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 62C9C64640
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:44:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6ADC4339B;
-        Wed,  7 Jun 2023 20:44:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 13E1E6455C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:35:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232B5C433D2;
+        Wed,  7 Jun 2023 20:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170658;
-        bh=qJYWbFs031S9YRto7y5Vk//A1evh4fxskVfSmDMNcpA=;
+        s=korg; t=1686170101;
+        bh=CDZB/t6pi6xUTvEoKeHpll+2pMHXBDDwzB+QhamVD0o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mce1aOQn/8W65h/fGFde3vHic7xbY9B7HzG+fKTQ/2NgNaa9lpr/XRp1W7xeQ0Ka3
-         fUKaYMu+BcF3B5FWetdG4xti970fzKfxKjTwFcPCAm1LVR6RsA7pik5F40aKLnpuEX
-         0BpRy0T9ilN+67VvRJvjjWKc8SKdNJ5EbF9AN/AQ=
+        b=SutGpHDHycwRX6brfnitj5TBWq4Yh3VAPN0buoPgATuaefvj200bFTJtOkT3BQMNI
+         98xH5J7jqZdZ/ctRsCORTWa7wwlpuzP+FzI7Yd2BVkBc6HJFQMuyYeKh21jECJRINd
+         enUIvu0HZa718w0Oazzr0YsVpFZ8s3c7toIl2OVg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tim Huang <Tim.Huang@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 169/225] drm/amd/pm: reverse mclk and fclk clocks levels for yellow carp
+        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 45/88] media: netup_unidvb: fix irq init by register it at the end of probe
 Date:   Wed,  7 Jun 2023 22:16:02 +0200
-Message-ID: <20230607200919.922245833@linuxfoundation.org>
+Message-ID: <20230607200900.641586919@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,54 +54,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: Wei Chen <harperchen1110@gmail.com>
 
-commit f1373a97a41f429e0095d4be388092ffa3c1a157 upstream.
+[ Upstream commit e6ad6233592593079db5c8fa592c298e51bc1356 ]
 
-This patch reverses the DPM clocks levels output of pp_dpm_mclk
-and pp_dpm_fclk.
+IRQ handler netup_spi_interrupt() takes spinlock spi->lock. The lock
+is initialized in netup_spi_init(). However, irq handler is registered
+before initializing the lock.
 
-On dGPUs and older APUs we expose the levels from lowest clocks
-to highest clocks. But for some APUs, the clocks levels that from
-the DFPstateTable are given the reversed orders by PMFW. Like the
-memory DPM clocks that are exposed by pp_dpm_mclk.
+Spinlock dma->lock and i2c->lock suffer from the same problem.
 
-It's not intuitive that they are reversed on these APUs. All tools
-and software that talks to the driver then has to know different ways
-to interpret the data depending on the asic.
+Fix this by registering the irq at the end of probe.
 
-So we need to reverse them to expose the clocks levels from the
-driver consistently.
-
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-media/20230315134518.1074497-1-harperchen1110@gmail.com
+Signed-off-by: Wei Chen <harperchen1110@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/yellow_carp_ppt.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ .../media/pci/netup_unidvb/netup_unidvb_core.c  | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/yellow_carp_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/yellow_carp_ppt.c
-@@ -1000,7 +1000,7 @@ out:
- static int yellow_carp_print_clk_levels(struct smu_context *smu,
- 				enum smu_clk_type clk_type, char *buf)
- {
--	int i, size = 0, ret = 0;
-+	int i, idx, size = 0, ret = 0;
- 	uint32_t cur_value = 0, value = 0, count = 0;
- 	uint32_t min, max;
- 
-@@ -1033,7 +1033,8 @@ static int yellow_carp_print_clk_levels(
- 			goto print_clk_out;
- 
- 		for (i = 0; i < count; i++) {
--			ret = yellow_carp_get_dpm_freq_by_index(smu, clk_type, i, &value);
-+			idx = (clk_type == SMU_FCLK || clk_type == SMU_MCLK) ? (count - i - 1) : i;
-+			ret = yellow_carp_get_dpm_freq_by_index(smu, clk_type, idx, &value);
- 			if (ret)
- 				goto print_clk_out;
- 
+diff --git a/drivers/media/pci/netup_unidvb/netup_unidvb_core.c b/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
+index 0ead74c40a7b7..28381698f2e16 100644
+--- a/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
++++ b/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
+@@ -896,12 +896,7 @@ static int netup_unidvb_initdev(struct pci_dev *pci_dev,
+ 		ndev->lmmio0, (u32)pci_resource_len(pci_dev, 0),
+ 		ndev->lmmio1, (u32)pci_resource_len(pci_dev, 1),
+ 		pci_dev->irq);
+-	if (request_irq(pci_dev->irq, netup_unidvb_isr, IRQF_SHARED,
+-			"netup_unidvb", pci_dev) < 0) {
+-		dev_err(&pci_dev->dev,
+-			"%s(): can't get IRQ %d\n", __func__, pci_dev->irq);
+-		goto irq_request_err;
+-	}
++
+ 	ndev->dma_size = 2 * 188 *
+ 		NETUP_DMA_BLOCKS_COUNT * NETUP_DMA_PACKETS_COUNT;
+ 	ndev->dma_virt = dma_alloc_coherent(&pci_dev->dev,
+@@ -942,6 +937,14 @@ static int netup_unidvb_initdev(struct pci_dev *pci_dev,
+ 		dev_err(&pci_dev->dev, "netup_unidvb: DMA setup failed\n");
+ 		goto dma_setup_err;
+ 	}
++
++	if (request_irq(pci_dev->irq, netup_unidvb_isr, IRQF_SHARED,
++			"netup_unidvb", pci_dev) < 0) {
++		dev_err(&pci_dev->dev,
++			"%s(): can't get IRQ %d\n", __func__, pci_dev->irq);
++		goto dma_setup_err;
++	}
++
+ 	dev_info(&pci_dev->dev,
+ 		"netup_unidvb: device has been initialized\n");
+ 	return 0;
+@@ -960,8 +963,6 @@ static int netup_unidvb_initdev(struct pci_dev *pci_dev,
+ 	dma_free_coherent(&pci_dev->dev, ndev->dma_size,
+ 			ndev->dma_virt, ndev->dma_phys);
+ dma_alloc_err:
+-	free_irq(pci_dev->irq, pci_dev);
+-irq_request_err:
+ 	iounmap(ndev->lmmio1);
+ pci_bar1_error:
+ 	iounmap(ndev->lmmio0);
+-- 
+2.39.2
+
 
 
