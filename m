@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E490726F66
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:58:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B89CF726C40
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235643AbjFGU6D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:58:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59216 "EHLO
+        id S233631AbjFGUby (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:31:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235696AbjFGU54 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:57:56 -0400
+        with ESMTP id S233158AbjFGUbx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:31:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3E342139
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:57:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DF071B0
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:31:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BDBD66487A
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:57:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4387C4339B;
-        Wed,  7 Jun 2023 20:57:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BF44764505
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:31:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B38C4339E;
+        Wed,  7 Jun 2023 20:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171461;
-        bh=kyrc/XHDSZosk9v1+2FHBi4+fWoqY29VSI4ufrww5FM=;
+        s=korg; t=1686169911;
+        bh=LVDIOCGk25WOl94S4a518Q4prx8wwmV4NspVmMTbKGY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RlOSfbr23P1bQOhTCuMKtWXpET8gbAIJLtKSrz66xZqX+deGT1ZbTvh4hOkiLtN9v
-         K7JXhmtu/dgYdEoWdeh0i4/nY+h8HGWGnz3XdW2BE5TI6au8QQENPIxft+SnwwR/jB
-         ZQ7ZqUgNN9XjZjUV3ZXrHMlzovFwOLaRF9PMI/Dc=
+        b=EmPD2oOS3TElY0oQUEg4P6da+ecYpMZttBCB+d8pgZwSa6MeLsUpuWAP8mzG1uofd
+         ZcOg6jDpkZCVHG1tFNB6fDmZOzoXWOn6avMtl3/ifjkcBCQZDHNTL9/ml66LgRnOTW
+         +zAekcuhpvW6qtyDctQFb1vCThwVdB6h8aToWBtE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Vlad Buslov <vladbu@nvidia.com>,
-        Peilin Ye <peilin.ye@bytedance.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 027/159] net/sched: sch_clsact: Only create under TC_H_CLSACT
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Ming Lei <ming.lei@redhat.com>, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.3 231/286] block: fix revalidate performance regression
 Date:   Wed,  7 Jun 2023 22:15:30 +0200
-Message-ID: <20230607200904.560626082@linuxfoundation.org>
+Message-ID: <20230607200930.841361270@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,52 +53,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peilin Ye <peilin.ye@bytedance.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 5eeebfe6c493192b10d516abfd72742900f2a162 ]
+commit 47fe1c3064c6bc1bfa3c032ff78e603e5dd6e5bc upstream.
 
-clsact Qdiscs are only supposed to be created under TC_H_CLSACT (which
-equals TC_H_INGRESS).  Return -EOPNOTSUPP if 'parent' is not
-TC_H_CLSACT.
+The scsi driver function sd_read_block_characteristics() always calls
+disk_set_zoned() to a disk zoned model correctly, in case the device
+model changed. This is done even for regular disks to set the zoned
+model to BLK_ZONED_NONE and free any zone related resources if the drive
+previously was zoned.
 
-Fixes: 1f211a1b929c ("net, sched: add clsact qdisc")
-Tested-by: Pedro Tammela <pctammela@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
-Signed-off-by: Peilin Ye <peilin.ye@bytedance.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This behavior significantly impact the time it takes to revalidate disks
+on a large system as the call to disk_clear_zone_settings() done from
+disk_set_zoned() for the BLK_ZONED_NONE case results in the device
+request queued to be frozen, even if there are no zone resources to
+free.
+
+Avoid this overhead for non-zoned devices by not calling
+disk_clear_zone_settings() in disk_set_zoned() if the device model
+was already set to BLK_ZONED_NONE, which is always the case for regular
+devices.
+
+Reported by: Brian Bunker <brian@purestorage.com>
+
+Fixes: 508aebb80527 ("block: introduce blk_queue_clear_zone_settings()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20230529073237.1339862-1-dlemoal@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_ingress.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ block/blk-settings.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_ingress.c b/net/sched/sch_ingress.c
-index f9ef6deb27709..35963929e1178 100644
---- a/net/sched/sch_ingress.c
-+++ b/net/sched/sch_ingress.c
-@@ -225,6 +225,9 @@ static int clsact_init(struct Qdisc *sch, struct nlattr *opt,
- 	struct net_device *dev = qdisc_dev(sch);
- 	int err;
- 
-+	if (sch->parent != TC_H_CLSACT)
-+		return -EOPNOTSUPP;
-+
- 	net_inc_ingress_queue();
- 	net_inc_egress_queue();
- 
-@@ -254,6 +257,9 @@ static void clsact_destroy(struct Qdisc *sch)
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -915,6 +915,7 @@ static bool disk_has_partitions(struct g
+ void disk_set_zoned(struct gendisk *disk, enum blk_zoned_model model)
  {
- 	struct clsact_sched_data *q = qdisc_priv(sch);
+ 	struct request_queue *q = disk->queue;
++	unsigned int old_model = q->limits.zoned;
  
-+	if (sch->parent != TC_H_CLSACT)
-+		return;
-+
- 	tcf_block_put_ext(q->egress_block, sch, &q->egress_block_info);
- 	tcf_block_put_ext(q->ingress_block, sch, &q->ingress_block_info);
- 
--- 
-2.39.2
-
+ 	switch (model) {
+ 	case BLK_ZONED_HM:
+@@ -952,7 +953,7 @@ void disk_set_zoned(struct gendisk *disk
+ 		 */
+ 		blk_queue_zone_write_granularity(q,
+ 						queue_logical_block_size(q));
+-	} else {
++	} else if (old_model != BLK_ZONED_NONE) {
+ 		disk_clear_zone_settings(disk);
+ 	}
+ }
 
 
