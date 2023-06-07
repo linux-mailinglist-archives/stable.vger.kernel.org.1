@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23AFA726F6C
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:58:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04687726AB5
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235748AbjFGU6Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:58:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59210 "EHLO
+        id S232281AbjFGUUB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:20:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235765AbjFGU6B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:58:01 -0400
+        with ESMTP id S231940AbjFGUT3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:19:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71E5C26BD
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:57:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2AB82D4E
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:19:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC5DC64882
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:57:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 093D0C4339B;
-        Wed,  7 Jun 2023 20:57:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E7C764386
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:18:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE75C433D2;
+        Wed,  7 Jun 2023 20:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171466;
-        bh=2hSWNVdqhWdpgR8q8qITrpXf1oLsUwJHYG1clYo0dyA=;
+        s=korg; t=1686169110;
+        bh=I2fEuViLv0iCPYHPncitlmI2TWtLE4P2wiIBqFAKqNA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jxPr2ct8aavQIrMIpf2k7CXjVZThZk8wr2mAMQdfCtjQX7mEasPqXxYlAQBVam16Q
-         u9XCOa+rw/p15LYlhOfGmsamx0XGDRSbf73m6gtaonObXg2JWynA+ZfW2uYnH4fs+W
-         H1grMMw/tJjiT4pORFuB5TkGFcvxcQsetU+MePaM=
+        b=IYQ6haP3nAV3Z0jTbcgMRB03nZRsR1fETy8HBeAEROrQXr39qQlpOufbz4DELwduO
+         OxObjQ01x2Jy0qzq2u2nBxZjOyNqpAw54s4AeRbslNt0DsyC5o9Pc09ttcgIiMa9J4
+         OurUjPy3y6/XGrmpzFAiIPg9f53FHCw/3ZS90pl0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Vlad Buslov <vladbu@nvidia.com>,
-        Peilin Ye <peilin.ye@bytedance.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 029/159] net/sched: Prohibit regrafting ingress or clsact Qdiscs
-Date:   Wed,  7 Jun 2023 22:15:32 +0200
-Message-ID: <20230607200904.624104289@linuxfoundation.org>
+Subject: [PATCH 4.14 19/61] media: dvb-usb-v2: ec168: fix null-ptr-deref in ec168_i2c_xfer()
+Date:   Wed,  7 Jun 2023 22:15:33 +0200
+Message-ID: <20230607200841.810544657@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
+References: <20230607200835.310274198@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,58 +54,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peilin Ye <peilin.ye@bytedance.com>
+From: Wei Chen <harperchen1110@gmail.com>
 
-[ Upstream commit 9de95df5d15baa956c2b70b9e794842e790a8a13 ]
+[ Upstream commit a6dcefcc08eca1bf4e3d213c97c3cfb75f377935 ]
 
-Currently, after creating an ingress (or clsact) Qdisc and grafting it
-under TC_H_INGRESS (TC_H_CLSACT), it is possible to graft it again under
-e.g. a TBF Qdisc:
+In ec168_i2c_xfer, msg is controlled by user. When msg[i].buf is null
+and msg[i].len is zero, former checks on msg[i].buf would be passed.
+If accessing msg[i].buf[0] without sanity check, null pointer deref
+would happen. We add check on msg[i].len to prevent crash.
 
-  $ ip link add ifb0 type ifb
-  $ tc qdisc add dev ifb0 handle 1: root tbf rate 20kbit buffer 1600 limit 3000
-  $ tc qdisc add dev ifb0 clsact
-  $ tc qdisc link dev ifb0 handle ffff: parent 1:1
-  $ tc qdisc show dev ifb0
-  qdisc tbf 1: root refcnt 2 rate 20Kbit burst 1600b lat 560.0ms
-  qdisc clsact ffff: parent ffff:fff1 refcnt 2
-                                      ^^^^^^^^
+Similar commit:
+commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
 
-clsact's refcount has increased: it is now grafted under both
-TC_H_CLSACT and 1:1.
-
-ingress and clsact Qdiscs should only be used under TC_H_INGRESS
-(TC_H_CLSACT).  Prohibit regrafting them.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Fixes: 1f211a1b929c ("net, sched: add clsact qdisc")
-Tested-by: Pedro Tammela <pctammela@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
-Signed-off-by: Peilin Ye <peilin.ye@bytedance.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/linux-media/20230313085853.3252349-1-harperchen1110@gmail.com
+Signed-off-by: Wei Chen <harperchen1110@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_api.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/media/usb/dvb-usb-v2/ec168.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index c3f89547d48b0..651dbcfeada62 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -1589,6 +1589,11 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
- 					NL_SET_ERR_MSG(extack, "Invalid qdisc name");
- 					return -EINVAL;
- 				}
-+				if (q->flags & TCQ_F_INGRESS) {
-+					NL_SET_ERR_MSG(extack,
-+						       "Cannot regraft ingress or clsact Qdiscs");
-+					return -EINVAL;
+diff --git a/drivers/media/usb/dvb-usb-v2/ec168.c b/drivers/media/usb/dvb-usb-v2/ec168.c
+index 1db8aeef36553..19605958501e1 100644
+--- a/drivers/media/usb/dvb-usb-v2/ec168.c
++++ b/drivers/media/usb/dvb-usb-v2/ec168.c
+@@ -125,6 +125,10 @@ static int ec168_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 	while (i < num) {
+ 		if (num > i + 1 && (msg[i+1].flags & I2C_M_RD)) {
+ 			if (msg[i].addr == ec168_ec100_config.demod_address) {
++				if (msg[i].len < 1) {
++					i = -EOPNOTSUPP;
++					break;
 +				}
- 				if (q == p ||
- 				    (p && check_loop(q, p, 0))) {
- 					NL_SET_ERR_MSG(extack, "Qdisc parent/child loop detected");
+ 				req.cmd = READ_DEMOD;
+ 				req.value = 0;
+ 				req.index = 0xff00 + msg[i].buf[0]; /* reg */
+@@ -141,6 +145,10 @@ static int ec168_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 			}
+ 		} else {
+ 			if (msg[i].addr == ec168_ec100_config.demod_address) {
++				if (msg[i].len < 1) {
++					i = -EOPNOTSUPP;
++					break;
++				}
+ 				req.cmd = WRITE_DEMOD;
+ 				req.value = msg[i].buf[1]; /* val */
+ 				req.index = 0xff00 + msg[i].buf[0]; /* reg */
+@@ -149,6 +157,10 @@ static int ec168_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 				ret = ec168_ctrl_msg(d, &req);
+ 				i += 1;
+ 			} else {
++				if (msg[i].len < 1) {
++					i = -EOPNOTSUPP;
++					break;
++				}
+ 				req.cmd = WRITE_I2C;
+ 				req.value = msg[i].buf[0]; /* val */
+ 				req.index = 0x0100 + msg[i].addr; /* I2C addr */
 -- 
 2.39.2
 
