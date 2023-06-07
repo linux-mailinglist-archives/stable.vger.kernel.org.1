@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76E4B726DEB
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:46:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 187C9726E86
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:51:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234929AbjFGUqq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:46:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45714 "EHLO
+        id S235158AbjFGUvJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:51:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234934AbjFGUqT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:46:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36A6826A9
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:46:09 -0700 (PDT)
+        with ESMTP id S235224AbjFGUuv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:50:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9049FFC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:50:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1815F6456B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:46:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F859C433EF;
-        Wed,  7 Jun 2023 20:46:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DCE7F64714
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:50:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA6FEC433EF;
+        Wed,  7 Jun 2023 20:50:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170768;
-        bh=pfFDq9o+mlgqI6Msl6y/7VW2vYq5k3kUda8ngRPPIPo=;
+        s=korg; t=1686171039;
+        bh=k87Tmf5cJh/XYC2LnSDfEVGEMXUyn4fGbV50Ai0gCqI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hEamERlzWRm725rWlOpU0qqV5ZbnSimM+Z/V4egv97qVYZ6Jp3bxoN4tPTJFIticP
-         IvF89ae04OzFPidwX8ZeAHA/5OC6cYWD3aqrVfjBX04f//Yrm8+SVi6C3+C8kBcT+/
-         O9xarC8G8gFoA2p04nZhFZP8BFSSB93hmpx51em0=
+        b=x1Sf7kNGZTiYeZMNzEtdwUEo3vSBklVdEgwghIBKJJ6f2I1iwvsbNT97XUraAhA/6
+         x5dcfsnHUCiqCx/kQXbU0XYySjL+qgx9IRVD3O8TECH6cnfugXzGcY9FTag6JSIx52
+         4IGkcYS3rZmWKAmjCRwp7ufAi8jGdEt/r4++cW0I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 210/225] ksmbd: fix incorrect AllocationSize set in smb2_get_info
+        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>,
+        Borislav Petkov <bp@suse.de>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.10 087/120] x86/boot: Wrap literal addresses in absolute_pointer()
 Date:   Wed,  7 Jun 2023 22:16:43 +0200
-Message-ID: <20230607200921.232351909@linuxfoundation.org>
+Message-ID: <20230607200903.636612591@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,71 +54,141 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Kees Cook <keescook@chromium.org>
 
-commit 6cc2268f5647cbfde3d4fc2e4ee005070ea3a8d2 upstream.
+commit aeb84412037b89e06f45e382f044da6f200e12f8 upstream.
 
-If filesystem support sparse file, ksmbd should return allocated size
-using ->i_blocks instead of stat->size. This fix generic/694 xfstests.
+GCC 11 (incorrectly[1]) assumes that literal values cast to (void *)
+should be treated like a NULL pointer with an offset, and raises
+diagnostics when doing bounds checking under -Warray-bounds. GCC 12
+got "smarter" about finding these:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+  In function 'rdfs8',
+      inlined from 'vga_recalc_vertical' at /srv/code/arch/x86/boot/video-mode.c:124:29,
+      inlined from 'set_mode' at /srv/code/arch/x86/boot/video-mode.c:163:3:
+  /srv/code/arch/x86/boot/boot.h:114:9: warning: array subscript 0 is outside array bounds of 'u8[0]' {aka 'unsigned char[]'} [-Warray-bounds]
+    114 |         asm volatile("movb %%fs:%1,%0" : "=q" (v) : "m" (*(u8 *)addr));
+        |         ^~~
+
+This has been solved in other places[2] already by using the recently
+added absolute_pointer() macro. Do the same here.
+
+  [1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99578
+  [2] https://lore.kernel.org/all/20210912160149.2227137-1-linux@roeck-us.net/
+
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20220227195918.705219-1-keescook@chromium.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/smb2pdu.c |   21 +++------------------
- 1 file changed, 3 insertions(+), 18 deletions(-)
+ arch/x86/boot/boot.h |   36 ++++++++++++++++++++++++------------
+ arch/x86/boot/main.c |    2 +-
+ 2 files changed, 25 insertions(+), 13 deletions(-)
 
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -4367,21 +4367,6 @@ static int get_file_basic_info(struct sm
- 	return 0;
+--- a/arch/x86/boot/boot.h
++++ b/arch/x86/boot/boot.h
+@@ -110,66 +110,78 @@ typedef unsigned int addr_t;
+ 
+ static inline u8 rdfs8(addr_t addr)
+ {
++	u8 *ptr = (u8 *)absolute_pointer(addr);
+ 	u8 v;
+-	asm volatile("movb %%fs:%1,%0" : "=q" (v) : "m" (*(u8 *)addr));
++	asm volatile("movb %%fs:%1,%0" : "=q" (v) : "m" (*ptr));
+ 	return v;
+ }
+ static inline u16 rdfs16(addr_t addr)
+ {
++	u16 *ptr = (u16 *)absolute_pointer(addr);
+ 	u16 v;
+-	asm volatile("movw %%fs:%1,%0" : "=r" (v) : "m" (*(u16 *)addr));
++	asm volatile("movw %%fs:%1,%0" : "=r" (v) : "m" (*ptr));
+ 	return v;
+ }
+ static inline u32 rdfs32(addr_t addr)
+ {
++	u32 *ptr = (u32 *)absolute_pointer(addr);
+ 	u32 v;
+-	asm volatile("movl %%fs:%1,%0" : "=r" (v) : "m" (*(u32 *)addr));
++	asm volatile("movl %%fs:%1,%0" : "=r" (v) : "m" (*ptr));
+ 	return v;
  }
  
--static unsigned long long get_allocation_size(struct inode *inode,
--					      struct kstat *stat)
--{
--	unsigned long long alloc_size = 0;
--
--	if (!S_ISDIR(stat->mode)) {
--		if ((inode->i_blocks << 9) <= stat->size)
--			alloc_size = stat->size;
--		else
--			alloc_size = inode->i_blocks << 9;
--	}
--
--	return alloc_size;
--}
--
- static void get_file_standard_info(struct smb2_query_info_rsp *rsp,
- 				   struct ksmbd_file *fp, void *rsp_org)
+ static inline void wrfs8(u8 v, addr_t addr)
  {
-@@ -4396,7 +4381,7 @@ static void get_file_standard_info(struc
- 	sinfo = (struct smb2_file_standard_info *)rsp->Buffer;
- 	delete_pending = ksmbd_inode_pending_delete(fp);
+-	asm volatile("movb %1,%%fs:%0" : "+m" (*(u8 *)addr) : "qi" (v));
++	u8 *ptr = (u8 *)absolute_pointer(addr);
++	asm volatile("movb %1,%%fs:%0" : "+m" (*ptr) : "qi" (v));
+ }
+ static inline void wrfs16(u16 v, addr_t addr)
+ {
+-	asm volatile("movw %1,%%fs:%0" : "+m" (*(u16 *)addr) : "ri" (v));
++	u16 *ptr = (u16 *)absolute_pointer(addr);
++	asm volatile("movw %1,%%fs:%0" : "+m" (*ptr) : "ri" (v));
+ }
+ static inline void wrfs32(u32 v, addr_t addr)
+ {
+-	asm volatile("movl %1,%%fs:%0" : "+m" (*(u32 *)addr) : "ri" (v));
++	u32 *ptr = (u32 *)absolute_pointer(addr);
++	asm volatile("movl %1,%%fs:%0" : "+m" (*ptr) : "ri" (v));
+ }
  
--	sinfo->AllocationSize = cpu_to_le64(get_allocation_size(inode, &stat));
-+	sinfo->AllocationSize = cpu_to_le64(inode->i_blocks << 9);
- 	sinfo->EndOfFile = S_ISDIR(stat.mode) ? 0 : cpu_to_le64(stat.size);
- 	sinfo->NumberOfLinks = cpu_to_le32(get_nlink(&stat) - delete_pending);
- 	sinfo->DeletePending = delete_pending;
-@@ -4461,7 +4446,7 @@ static int get_file_all_info(struct ksmb
- 	file_info->Attributes = fp->f_ci->m_fattr;
- 	file_info->Pad1 = 0;
- 	file_info->AllocationSize =
--		cpu_to_le64(get_allocation_size(inode, &stat));
-+		cpu_to_le64(inode->i_blocks << 9);
- 	file_info->EndOfFile = S_ISDIR(stat.mode) ? 0 : cpu_to_le64(stat.size);
- 	file_info->NumberOfLinks =
- 			cpu_to_le32(get_nlink(&stat) - delete_pending);
-@@ -4650,7 +4635,7 @@ static int get_file_network_open_info(st
- 	file_info->ChangeTime = cpu_to_le64(time);
- 	file_info->Attributes = fp->f_ci->m_fattr;
- 	file_info->AllocationSize =
--		cpu_to_le64(get_allocation_size(inode, &stat));
-+		cpu_to_le64(inode->i_blocks << 9);
- 	file_info->EndOfFile = S_ISDIR(stat.mode) ? 0 : cpu_to_le64(stat.size);
- 	file_info->Reserved = cpu_to_le32(0);
- 	rsp->OutputBufferLength =
+ static inline u8 rdgs8(addr_t addr)
+ {
++	u8 *ptr = (u8 *)absolute_pointer(addr);
+ 	u8 v;
+-	asm volatile("movb %%gs:%1,%0" : "=q" (v) : "m" (*(u8 *)addr));
++	asm volatile("movb %%gs:%1,%0" : "=q" (v) : "m" (*ptr));
+ 	return v;
+ }
+ static inline u16 rdgs16(addr_t addr)
+ {
++	u16 *ptr = (u16 *)absolute_pointer(addr);
+ 	u16 v;
+-	asm volatile("movw %%gs:%1,%0" : "=r" (v) : "m" (*(u16 *)addr));
++	asm volatile("movw %%gs:%1,%0" : "=r" (v) : "m" (*ptr));
+ 	return v;
+ }
+ static inline u32 rdgs32(addr_t addr)
+ {
++	u32 *ptr = (u32 *)absolute_pointer(addr);
+ 	u32 v;
+-	asm volatile("movl %%gs:%1,%0" : "=r" (v) : "m" (*(u32 *)addr));
++	asm volatile("movl %%gs:%1,%0" : "=r" (v) : "m" (*ptr));
+ 	return v;
+ }
+ 
+ static inline void wrgs8(u8 v, addr_t addr)
+ {
+-	asm volatile("movb %1,%%gs:%0" : "+m" (*(u8 *)addr) : "qi" (v));
++	u8 *ptr = (u8 *)absolute_pointer(addr);
++	asm volatile("movb %1,%%gs:%0" : "+m" (*ptr) : "qi" (v));
+ }
+ static inline void wrgs16(u16 v, addr_t addr)
+ {
+-	asm volatile("movw %1,%%gs:%0" : "+m" (*(u16 *)addr) : "ri" (v));
++	u16 *ptr = (u16 *)absolute_pointer(addr);
++	asm volatile("movw %1,%%gs:%0" : "+m" (*ptr) : "ri" (v));
+ }
+ static inline void wrgs32(u32 v, addr_t addr)
+ {
+-	asm volatile("movl %1,%%gs:%0" : "+m" (*(u32 *)addr) : "ri" (v));
++	u32 *ptr = (u32 *)absolute_pointer(addr);
++	asm volatile("movl %1,%%gs:%0" : "+m" (*ptr) : "ri" (v));
+ }
+ 
+ /* Note: these only return true/false, not a signed return value! */
+--- a/arch/x86/boot/main.c
++++ b/arch/x86/boot/main.c
+@@ -33,7 +33,7 @@ static void copy_boot_params(void)
+ 		u16 cl_offset;
+ 	};
+ 	const struct old_cmdline * const oldcmd =
+-		(const struct old_cmdline *)OLD_CL_ADDRESS;
++		absolute_pointer(OLD_CL_ADDRESS);
+ 
+ 	BUILD_BUG_ON(sizeof(boot_params) != 4096);
+ 	memcpy(&boot_params.hdr, &hdr, sizeof(hdr));
 
 
