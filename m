@@ -2,60 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54A7B726C4D
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:32:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28134726CB1
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:35:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233685AbjFGUcQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:32:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58448 "EHLO
+        id S234078AbjFGUfp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:35:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233682AbjFGUcO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:32:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC1941721;
-        Wed,  7 Jun 2023 13:32:12 -0700 (PDT)
+        with ESMTP id S233985AbjFGUf2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:35:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B57026BD
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:35:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7612C64519;
-        Wed,  7 Jun 2023 20:32:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BD02C433D2;
-        Wed,  7 Jun 2023 20:32:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0046D6456E
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:35:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15992C433EF;
+        Wed,  7 Jun 2023 20:35:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169931;
-        bh=6W+cWqRRagSIMqsMb0SfvwZDPU+e0buSrjJ5tvkQUw4=;
+        s=korg; t=1686170117;
+        bh=UCqqfrK5kBGkFOadn1dCKSSwzIi+36D6UffuMhQOcFc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rEmbFyum+al78+jpDLbgm9RbVOpG6Zdbc+lVRWNWOHFfnFacZcu8v3tH7TLFNfaSY
-         3zkpapXwouAqe07BgZuHUHLDZ6x82deW9nDVm1vlXxHmIClKG8j3GzzXQBm1nBVGyp
-         bSVx0vsYyePCd1VZrdOxlzgodtddxOfce4+na1bQ=
+        b=n/0HqxveO5Q/f4wpiVmALeNfHSftda9LXR0HylfG4XbHHMwIF/stnK44z4O9FtOw8
+         LaHklTiW1f+qLHpAWFNOo+fVBDgnBpVv8sxtt8E8HWyiyxFDl1eUWvp6dupBdvRNUE
+         9Cry8fnxxcjWNuV3pirB60a/69IwpNw7CPeqNlAU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Dan Carpenter <error27@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Russ Weight <russell.h.weight@intel.com>,
-        Tianfei zhang <tianfei.zhang@intel.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Zhengchao Shao <shaozhengchao@huawei.com>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
-        Scott Branden <sbranden@broadcom.com>,
-        linux-kselftest@vger.kernel.org
-Subject: [PATCH 6.3 269/286] test_firmware: fix the memory leak of the allocated firmware buffer
+        patches@lists.linux.dev, Hyunwoo Kim <v4bel@theori.io>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 51/88] media: dvb-core: Fix use-after-free due to race condition at dvb_ca_en50221
 Date:   Wed,  7 Jun 2023 22:16:08 +0200
-Message-ID: <20230607200932.087838440@linuxfoundation.org>
+Message-ID: <20230607200900.838957339@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -64,181 +54,128 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-commit 48e156023059e57a8fc68b498439832f7600ffff upstream.
+[ Upstream commit 280a8ab81733da8bc442253c700a52c4c0886ffd ]
 
-The following kernel memory leak was noticed after running
-tools/testing/selftests/firmware/fw_run_tests.sh:
+If the device node of dvb_ca_en50221 is open() and the
+device is disconnected, a UAF may occur when calling
+close() on the device node.
 
-[root@pc-mtodorov firmware]# cat /sys/kernel/debug/kmemleak
-.
-.
-.
-unreferenced object 0xffff955389bc3400 (size 1024):
-  comm "test_firmware-0", pid 5451, jiffies 4294944822 (age 65.652s)
-  hex dump (first 32 bytes):
-    47 48 34 35 36 37 0a 00 00 00 00 00 00 00 00 00  GH4567..........
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<ffffffff962f5dec>] slab_post_alloc_hook+0x8c/0x3c0
-    [<ffffffff962fcca4>] __kmem_cache_alloc_node+0x184/0x240
-    [<ffffffff962704de>] kmalloc_trace+0x2e/0xc0
-    [<ffffffff9665b42d>] test_fw_run_batch_request+0x9d/0x180
-    [<ffffffff95fd813b>] kthread+0x10b/0x140
-    [<ffffffff95e033e9>] ret_from_fork+0x29/0x50
-unreferenced object 0xffff9553c334b400 (size 1024):
-  comm "test_firmware-1", pid 5452, jiffies 4294944822 (age 65.652s)
-  hex dump (first 32 bytes):
-    47 48 34 35 36 37 0a 00 00 00 00 00 00 00 00 00  GH4567..........
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<ffffffff962f5dec>] slab_post_alloc_hook+0x8c/0x3c0
-    [<ffffffff962fcca4>] __kmem_cache_alloc_node+0x184/0x240
-    [<ffffffff962704de>] kmalloc_trace+0x2e/0xc0
-    [<ffffffff9665b42d>] test_fw_run_batch_request+0x9d/0x180
-    [<ffffffff95fd813b>] kthread+0x10b/0x140
-    [<ffffffff95e033e9>] ret_from_fork+0x29/0x50
-unreferenced object 0xffff9553c334f000 (size 1024):
-  comm "test_firmware-2", pid 5453, jiffies 4294944822 (age 65.652s)
-  hex dump (first 32 bytes):
-    47 48 34 35 36 37 0a 00 00 00 00 00 00 00 00 00  GH4567..........
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<ffffffff962f5dec>] slab_post_alloc_hook+0x8c/0x3c0
-    [<ffffffff962fcca4>] __kmem_cache_alloc_node+0x184/0x240
-    [<ffffffff962704de>] kmalloc_trace+0x2e/0xc0
-    [<ffffffff9665b42d>] test_fw_run_batch_request+0x9d/0x180
-    [<ffffffff95fd813b>] kthread+0x10b/0x140
-    [<ffffffff95e033e9>] ret_from_fork+0x29/0x50
-unreferenced object 0xffff9553c3348400 (size 1024):
-  comm "test_firmware-3", pid 5454, jiffies 4294944822 (age 65.652s)
-  hex dump (first 32 bytes):
-    47 48 34 35 36 37 0a 00 00 00 00 00 00 00 00 00  GH4567..........
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<ffffffff962f5dec>] slab_post_alloc_hook+0x8c/0x3c0
-    [<ffffffff962fcca4>] __kmem_cache_alloc_node+0x184/0x240
-    [<ffffffff962704de>] kmalloc_trace+0x2e/0xc0
-    [<ffffffff9665b42d>] test_fw_run_batch_request+0x9d/0x180
-    [<ffffffff95fd813b>] kthread+0x10b/0x140
-    [<ffffffff95e033e9>] ret_from_fork+0x29/0x50
-[root@pc-mtodorov firmware]#
+The root cause is that wake_up() and wait_event() for
+dvbdev->wait_queue are not implemented.
 
-Note that the size 1024 corresponds to the size of the test firmware
-buffer. The actual number of the buffers leaked is around 70-110,
-depending on the test run.
+So implement wait_event() function in dvb_ca_en50221_release()
+and add 'remove_mutex' which prevents race condition
+for 'ca->exit'.
 
-The cause of the leak is the following:
+[mchehab: fix a checkpatch warning]
 
-request_partial_firmware_into_buf() and request_firmware_into_buf()
-provided firmware buffer isn't released on release_firmware(), we
-have allocated it and we are responsible for deallocating it manually.
-This is introduced in a number of context where previously only
-release_firmware() was called, which was insufficient.
-
-Reported-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-Fixes: 7feebfa487b92 ("test_firmware: add support for request_firmware_into_buf")
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Dan Carpenter <error27@gmail.com>
-Cc: Takashi Iwai <tiwai@suse.de>
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Russ Weight <russell.h.weight@intel.com>
-Cc: Tianfei zhang <tianfei.zhang@intel.com>
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Zhengchao Shao <shaozhengchao@huawei.com>
-Cc: Colin Ian King <colin.i.king@gmail.com>
-Cc: linux-kernel@vger.kernel.org
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Scott Branden <sbranden@broadcom.com>
-Cc: Luis R. Rodriguez <mcgrof@kernel.org>
-Cc: linux-kselftest@vger.kernel.org
-Cc: stable@vger.kernel.org # v5.4
-Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-Link: https://lore.kernel.org/r/20230509084746.48259-3-mirsad.todorovac@alu.unizg.hr
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-media/20221121063308.GA33821@ubuntu
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/test_firmware.c |   19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ drivers/media/dvb-core/dvb_ca_en50221.c | 37 ++++++++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
 
---- a/lib/test_firmware.c
-+++ b/lib/test_firmware.c
-@@ -45,6 +45,7 @@ struct test_batched_req {
- 	bool sent;
- 	const struct firmware *fw;
- 	const char *name;
-+	const char *fw_buf;
- 	struct completion completion;
- 	struct task_struct *task;
- 	struct device *dev;
-@@ -175,8 +176,14 @@ static void __test_release_all_firmware(
+diff --git a/drivers/media/dvb-core/dvb_ca_en50221.c b/drivers/media/dvb-core/dvb_ca_en50221.c
+index 1e08466ba0c6c..3647196c2f519 100644
+--- a/drivers/media/dvb-core/dvb_ca_en50221.c
++++ b/drivers/media/dvb-core/dvb_ca_en50221.c
+@@ -162,6 +162,12 @@ struct dvb_ca_private {
  
- 	for (i = 0; i < test_fw_config->num_requests; i++) {
- 		req = &test_fw_config->reqs[i];
--		if (req->fw)
-+		if (req->fw) {
-+			if (req->fw_buf) {
-+				kfree_const(req->fw_buf);
-+				req->fw_buf = NULL;
-+			}
- 			release_firmware(req->fw);
-+			req->fw = NULL;
-+		}
+ 	/* mutex serializing ioctls */
+ 	struct mutex ioctl_mutex;
++
++	/* A mutex used when a device is disconnected */
++	struct mutex remove_mutex;
++
++	/* Whether the device is disconnected */
++	int exit;
+ };
+ 
+ static void dvb_ca_private_free(struct dvb_ca_private *ca)
+@@ -1719,12 +1725,22 @@ static int dvb_ca_en50221_io_open(struct inode *inode, struct file *file)
+ 
+ 	dprintk("%s\n", __func__);
+ 
+-	if (!try_module_get(ca->pub->owner))
++	mutex_lock(&ca->remove_mutex);
++
++	if (ca->exit) {
++		mutex_unlock(&ca->remove_mutex);
++		return -ENODEV;
++	}
++
++	if (!try_module_get(ca->pub->owner)) {
++		mutex_unlock(&ca->remove_mutex);
+ 		return -EIO;
++	}
+ 
+ 	err = dvb_generic_open(inode, file);
+ 	if (err < 0) {
+ 		module_put(ca->pub->owner);
++		mutex_unlock(&ca->remove_mutex);
+ 		return err;
  	}
  
- 	vfree(test_fw_config->reqs);
-@@ -670,6 +677,8 @@ static ssize_t trigger_request_store(str
+@@ -1749,6 +1765,7 @@ static int dvb_ca_en50221_io_open(struct inode *inode, struct file *file)
  
- 	mutex_lock(&test_fw_mutex);
- 	release_firmware(test_firmware);
-+	if (test_fw_config->reqs)
-+		__test_release_all_firmware();
- 	test_firmware = NULL;
- 	rc = request_firmware(&test_firmware, name, dev);
- 	if (rc) {
-@@ -770,6 +779,8 @@ static ssize_t trigger_async_request_sto
- 	mutex_lock(&test_fw_mutex);
- 	release_firmware(test_firmware);
- 	test_firmware = NULL;
-+	if (test_fw_config->reqs)
-+		__test_release_all_firmware();
- 	rc = request_firmware_nowait(THIS_MODULE, 1, name, dev, GFP_KERNEL,
- 				     NULL, trigger_async_request_cb);
- 	if (rc) {
-@@ -812,6 +823,8 @@ static ssize_t trigger_custom_fallback_s
+ 	dvb_ca_private_get(ca);
  
- 	mutex_lock(&test_fw_mutex);
- 	release_firmware(test_firmware);
-+	if (test_fw_config->reqs)
-+		__test_release_all_firmware();
- 	test_firmware = NULL;
- 	rc = request_firmware_nowait(THIS_MODULE, FW_ACTION_NOUEVENT, name,
- 				     dev, GFP_KERNEL, NULL,
-@@ -874,6 +887,8 @@ static int test_fw_run_batch_request(voi
- 						 test_fw_config->buf_size);
- 		if (!req->fw)
- 			kfree(test_buf);
-+		else
-+			req->fw_buf = test_buf;
- 	} else {
- 		req->rc = test_fw_config->req_firmware(&req->fw,
- 						       req->name,
-@@ -934,6 +949,7 @@ static ssize_t trigger_batched_requests_
- 		req->fw = NULL;
- 		req->idx = i;
- 		req->name = test_fw_config->name;
-+		req->fw_buf = NULL;
- 		req->dev = dev;
- 		init_completion(&req->completion);
- 		req->task = kthread_run(test_fw_run_batch_request, req,
-@@ -1038,6 +1054,7 @@ ssize_t trigger_batched_requests_async_s
- 	for (i = 0; i < test_fw_config->num_requests; i++) {
- 		req = &test_fw_config->reqs[i];
- 		req->name = test_fw_config->name;
-+		req->fw_buf = NULL;
- 		req->fw = NULL;
- 		req->idx = i;
- 		init_completion(&req->completion);
++	mutex_unlock(&ca->remove_mutex);
+ 	return 0;
+ }
+ 
+@@ -1768,6 +1785,8 @@ static int dvb_ca_en50221_io_release(struct inode *inode, struct file *file)
+ 
+ 	dprintk("%s\n", __func__);
+ 
++	mutex_lock(&ca->remove_mutex);
++
+ 	/* mark the CA device as closed */
+ 	ca->open = 0;
+ 	dvb_ca_en50221_thread_update_delay(ca);
+@@ -1778,6 +1797,13 @@ static int dvb_ca_en50221_io_release(struct inode *inode, struct file *file)
+ 
+ 	dvb_ca_private_put(ca);
+ 
++	if (dvbdev->users == 1 && ca->exit == 1) {
++		mutex_unlock(&ca->remove_mutex);
++		wake_up(&dvbdev->wait_queue);
++	} else {
++		mutex_unlock(&ca->remove_mutex);
++	}
++
+ 	return err;
+ }
+ 
+@@ -1902,6 +1928,7 @@ int dvb_ca_en50221_init(struct dvb_adapter *dvb_adapter,
+ 	}
+ 
+ 	mutex_init(&ca->ioctl_mutex);
++	mutex_init(&ca->remove_mutex);
+ 
+ 	if (signal_pending(current)) {
+ 		ret = -EINTR;
+@@ -1944,6 +1971,14 @@ void dvb_ca_en50221_release(struct dvb_ca_en50221 *pubca)
+ 
+ 	dprintk("%s\n", __func__);
+ 
++	mutex_lock(&ca->remove_mutex);
++	ca->exit = 1;
++	mutex_unlock(&ca->remove_mutex);
++
++	if (ca->dvbdev->users < 1)
++		wait_event(ca->dvbdev->wait_queue,
++				ca->dvbdev->users == 1);
++
+ 	/* shutdown the thread if there was one */
+ 	kthread_stop(ca->thread);
+ 
+-- 
+2.39.2
+
 
 
