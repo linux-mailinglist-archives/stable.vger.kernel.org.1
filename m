@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC041726C4F
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:32:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64733726AE8
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233682AbjFGUcX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:32:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58494 "EHLO
+        id S232471AbjFGUUw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:20:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233695AbjFGUcS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:32:18 -0400
+        with ESMTP id S232854AbjFGUUo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FE141B0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:32:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DFDF2723
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:20:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0DF396450A
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:32:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2241EC4339B;
-        Wed,  7 Jun 2023 20:32:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A849664386
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:20:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA79C433EF;
+        Wed,  7 Jun 2023 20:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169934;
-        bh=egqMW5JWLZ9ExfwvPYLIZNZRm+NkVGcYZXJ0MT2kE64=;
+        s=korg; t=1686169211;
+        bh=AGdFKM+aPJQvYlx2mK3yLpKN+vHrAjQ0ANWT2/LEmpE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PeU/nMo5vfsBc+soE0UFVrhNHXM9l9haIKrzFvbNa2ckN1ej5pHaLo6bQUV5O94bk
-         QjNa6j+WFpM6/HfKV2Vof48CYjrt61DvrbFn5nEaegrngYOW34B1mn3E2z9EesxQnF
-         E+h/FFCPEEeyS/KA+f3ixf2cE8JkZpAQ/MwE1LZ0=
+        b=p3xd0F4LldmezVNZ67+k+y5zh+TYZK+kzw8HK48qjigSRdyMUJ2NFoGIa4YiG9eD2
+         M7hgy4OW0lPrZGB4Vel/3SgQSuwNwgk+zp1VVi/7kbW7zLkA37EO0i1acbcqR5dFry
+         G4mMdDHsXNmTMgoTlEb928I3rZ+2TkDDGX+HPFaI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
-        Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 6.3 270/286] KVM: arm64: Populate fault info for watchpoint
-Date:   Wed,  7 Jun 2023 22:16:09 +0200
-Message-ID: <20230607200932.120600515@linuxfoundation.org>
+        patches@lists.linux.dev, Ben Hutchings <benh@debian.org>
+Subject: [PATCH 4.14 56/61] scsi: dpt_i2o: Do not process completions with invalid addresses
+Date:   Wed,  7 Jun 2023 22:16:10 +0200
+Message-ID: <20230607200854.517010396@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
+References: <20230607200835.310274198@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,82 +52,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Ben Hutchings <benh@debian.org>
 
-commit 811154e234db72f0a11557a84ba9640f8b3bc823 upstream.
+adpt_isr() reads reply addresses from a hardware register, which
+should always be within the DMA address range of the device's pool of
+reply address buffers.  In case the address is out of range, it tries
+to muddle on, converting to a virtual address using bus_to_virt().
 
-When handling ESR_ELx_EC_WATCHPT_LOW, far_el2 member of struct
-kvm_vcpu_fault_info will be copied to far member of struct
-kvm_debug_exit_arch and exposed to the userspace. The userspace will
-see stale values from older faults if the fault info does not get
-populated.
+bus_to_virt() does not take DMA addresses, and it doesn't make sense
+to try to handle the completion in this case.  Ignore it and continue
+looping to service the interrupt.  If a completion has been lost then
+the SCSI core should eventually time-out and trigger a reset.
 
-Fixes: 8fb2046180a0 ("KVM: arm64: Move early handlers to per-EC handlers")
-Suggested-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230530024651.10014-1-akihiko.odaki@daynix.com
-Cc: stable@vger.kernel.org
+There is no corresponding upstream commit, because this driver was
+removed upstream.
+
+Fixes: 67af2b060e02 ("[SCSI] dpt_i2o: move from virt_to_bus/bus_to_virt ...")
+Signed-off-by: Ben Hutchings <benh@debian.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/hyp/include/hyp/switch.h |    8 ++++++--
- arch/arm64/kvm/hyp/nvhe/switch.c        |    2 ++
- arch/arm64/kvm/hyp/vhe/switch.c         |    1 +
- 3 files changed, 9 insertions(+), 2 deletions(-)
+ drivers/scsi/Kconfig   |    2 +-
+ drivers/scsi/dpt_i2o.c |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/kvm/hyp/include/hyp/switch.h
-+++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
-@@ -351,17 +351,21 @@ static bool kvm_hyp_handle_cp15_32(struc
- 	return false;
- }
+--- a/drivers/scsi/Kconfig
++++ b/drivers/scsi/Kconfig
+@@ -480,7 +480,7 @@ config SCSI_MVUMI
  
--static bool kvm_hyp_handle_iabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
-+static bool kvm_hyp_handle_memory_fault(struct kvm_vcpu *vcpu, u64 *exit_code)
- {
- 	if (!__populate_fault_info(vcpu))
- 		return true;
+ config SCSI_DPT_I2O
+ 	tristate "Adaptec I2O RAID support "
+-	depends on SCSI && PCI && VIRT_TO_BUS
++	depends on SCSI && PCI
+ 	help
+ 	  This driver supports all of Adaptec's I2O based RAID controllers as 
+ 	  well as the DPT SmartRaid V cards.  This is an Adaptec maintained
+--- a/drivers/scsi/dpt_i2o.c
++++ b/drivers/scsi/dpt_i2o.c
+@@ -59,7 +59,7 @@ MODULE_DESCRIPTION("Adaptec I2O RAID Dri
  
- 	return false;
- }
-+static bool kvm_hyp_handle_iabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
-+	__alias(kvm_hyp_handle_memory_fault);
-+static bool kvm_hyp_handle_watchpt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
-+	__alias(kvm_hyp_handle_memory_fault);
+ #include <asm/processor.h>	/* for boot_cpu_data */
+ #include <asm/pgtable.h>
+-#include <asm/io.h>		/* for virt_to_bus, etc. */
++#include <asm/io.h>
  
- static bool kvm_hyp_handle_dabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
- {
--	if (!__populate_fault_info(vcpu))
-+	if (kvm_hyp_handle_memory_fault(vcpu, exit_code))
- 		return true;
+ #include <scsi/scsi.h>
+ #include <scsi/scsi_cmnd.h>
+@@ -1912,7 +1912,7 @@ static irqreturn_t adpt_isr(int irq, voi
+ 		} else {
+ 			/* Ick, we should *never* be here */
+ 			printk(KERN_ERR "dpti: reply frame not from pool\n");
+-			reply = (u8 *)bus_to_virt(m);
++			continue;
+ 		}
  
- 	if (static_branch_unlikely(&vgic_v2_cpuif_trap)) {
---- a/arch/arm64/kvm/hyp/nvhe/switch.c
-+++ b/arch/arm64/kvm/hyp/nvhe/switch.c
-@@ -186,6 +186,7 @@ static const exit_handler_fn hyp_exit_ha
- 	[ESR_ELx_EC_FP_ASIMD]		= kvm_hyp_handle_fpsimd,
- 	[ESR_ELx_EC_IABT_LOW]		= kvm_hyp_handle_iabt_low,
- 	[ESR_ELx_EC_DABT_LOW]		= kvm_hyp_handle_dabt_low,
-+	[ESR_ELx_EC_WATCHPT_LOW]	= kvm_hyp_handle_watchpt_low,
- 	[ESR_ELx_EC_PAC]		= kvm_hyp_handle_ptrauth,
- };
- 
-@@ -196,6 +197,7 @@ static const exit_handler_fn pvm_exit_ha
- 	[ESR_ELx_EC_FP_ASIMD]		= kvm_hyp_handle_fpsimd,
- 	[ESR_ELx_EC_IABT_LOW]		= kvm_hyp_handle_iabt_low,
- 	[ESR_ELx_EC_DABT_LOW]		= kvm_hyp_handle_dabt_low,
-+	[ESR_ELx_EC_WATCHPT_LOW]	= kvm_hyp_handle_watchpt_low,
- 	[ESR_ELx_EC_PAC]		= kvm_hyp_handle_ptrauth,
- };
- 
---- a/arch/arm64/kvm/hyp/vhe/switch.c
-+++ b/arch/arm64/kvm/hyp/vhe/switch.c
-@@ -110,6 +110,7 @@ static const exit_handler_fn hyp_exit_ha
- 	[ESR_ELx_EC_FP_ASIMD]		= kvm_hyp_handle_fpsimd,
- 	[ESR_ELx_EC_IABT_LOW]		= kvm_hyp_handle_iabt_low,
- 	[ESR_ELx_EC_DABT_LOW]		= kvm_hyp_handle_dabt_low,
-+	[ESR_ELx_EC_WATCHPT_LOW]	= kvm_hyp_handle_watchpt_low,
- 	[ESR_ELx_EC_PAC]		= kvm_hyp_handle_ptrauth,
- };
- 
+ 		if (readl(reply) & MSG_FAIL) {
 
 
