@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DA97726ACA
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2466726C15
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:30:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232728AbjFGUUT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:20:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45322 "EHLO
+        id S233647AbjFGUal (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:30:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232504AbjFGUUJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8A17273F
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:19:47 -0700 (PDT)
+        with ESMTP id S233663AbjFGUaY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13646213D
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:30:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8188664390
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:19:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91406C433EF;
-        Wed,  7 Jun 2023 20:19:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A5FE644C9
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:30:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D3FC433EF;
+        Wed,  7 Jun 2023 20:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169150;
-        bh=sOINqL/SuA3HCGBVDuzc/Sug6GomzrLTGZwcsG3xUtw=;
+        s=korg; t=1686169808;
+        bh=S1Er6tAk46+EiTlGcl6Te+QtUjIMiIoQspoSNzceCOQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aFLQ0M5l0cN9mvfLXj2MerZ01p8QXuaLzXYCxL+ZCHK8BeCNtwK6+jcsgexvEtksj
-         M2YzPKQJBLj16Wg8d6n4gdv6t/dtJvdiiY4wqiRxa2PxLQWeD0JQ6wALIIDD4nPNah
-         ZagrGXbfgzXdam0Tof0f1nIrHczl/EIIHR6rziqY=
+        b=IsgBimUAKOfwyRzWj2zbKD2iIZ+wrs5/80u2Z1SXq1SBZ7NUvSZOE7yHNz0CJEz7Y
+         FVJ1xk/PdtkVaLWsPsk4a6xmlly3WgyXP8jIF+RtlZI0bcmDidLtfAfPzjcYOu0aPv
+         QeX5jnqfAOY5Mq6hB5UpiVpTA1w7PnM1o3AHjiIg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 06/61] af_packet: Fix data-races of pkt_sk(sk)->num.
+        patches@lists.linux.dev, Zhenneng Li <lizhenneng@kylinos.cn>,
+        Guchun Chen <guchun.chen@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.3 221/286] drm/amd/pm: resolve reboot exception for si oland
 Date:   Wed,  7 Jun 2023 22:15:20 +0200
-Message-ID: <20230607200837.377327256@linuxfoundation.org>
+Message-ID: <20230607200930.496900441@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-References: <20230607200835.310274198@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,98 +54,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Guchun Chen <guchun.chen@amd.com>
 
-[ Upstream commit 822b5a1c17df7e338b9f05d1cfe5764e37c7f74f ]
+commit e490d60a2f76bff636c68ce4fe34c1b6c34bbd86 upstream.
 
-syzkaller found a data race of pkt_sk(sk)->num.
+During reboot test on arm64 platform, it may failure on boot.
 
-The value is changed under lock_sock() and po->bind_lock, so we
-need READ_ONCE() to access pkt_sk(sk)->num without these locks in
-packet_bind_spkt(), packet_bind(), and sk_diag_fill().
+The error message are as follows:
+[    1.706570][ 3] [  T273] [drm:si_thermal_enable_alert [amdgpu]] *ERROR* Could not enable thermal interrupts.
+[    1.716547][ 3] [  T273] [drm:amdgpu_device_ip_late_init [amdgpu]] *ERROR* late_init of IP block <si_dpm> failed -22
+[    1.727064][ 3] [  T273] amdgpu 0000:02:00.0: amdgpu_device_ip_late_init failed
+[    1.734367][ 3] [  T273] amdgpu 0000:02:00.0: Fatal error during GPU init
 
-Note that WRITE_ONCE() is already added by commit c7d2ef5dd4b0
-("net/packet: annotate accesses to po->bind").
+v2: squash in built warning fix (Alex)
 
-BUG: KCSAN: data-race in packet_bind / packet_do_bind
-
-write (marked) to 0xffff88802ffd1cee of 2 bytes by task 7322 on cpu 0:
- packet_do_bind+0x446/0x640 net/packet/af_packet.c:3236
- packet_bind+0x99/0xe0 net/packet/af_packet.c:3321
- __sys_bind+0x19b/0x1e0 net/socket.c:1803
- __do_sys_bind net/socket.c:1814 [inline]
- __se_sys_bind net/socket.c:1812 [inline]
- __x64_sys_bind+0x40/0x50 net/socket.c:1812
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-read to 0xffff88802ffd1cee of 2 bytes by task 7318 on cpu 1:
- packet_bind+0xbf/0xe0 net/packet/af_packet.c:3322
- __sys_bind+0x19b/0x1e0 net/socket.c:1803
- __do_sys_bind net/socket.c:1814 [inline]
- __se_sys_bind net/socket.c:1812 [inline]
- __x64_sys_bind+0x40/0x50 net/socket.c:1812
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-value changed: 0x0300 -> 0x0000
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 7318 Comm: syz-executor.4 Not tainted 6.3.0-13380-g7fddb5b5300c #4
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-
-Fixes: 96ec6327144e ("packet: Diag core and basic socket info dumping")
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20230524232934.50950-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Zhenneng Li <lizhenneng@kylinos.cn>
+Reviewed-by: Guchun Chen <guchun.chen@amd.com>
+Signed-off-by: Guchun Chen <guchun.chen@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/packet/af_packet.c | 4 ++--
- net/packet/diag.c      | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c |   29 -----------------------------
+ 1 file changed, 29 deletions(-)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 2089da69da103..131c347bba56b 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -3255,7 +3255,7 @@ static int packet_bind_spkt(struct socket *sock, struct sockaddr *uaddr,
- 	memcpy(name, uaddr->sa_data, sizeof(uaddr->sa_data));
- 	name[sizeof(uaddr->sa_data)] = 0;
- 
--	return packet_do_bind(sk, name, 0, pkt_sk(sk)->num);
-+	return packet_do_bind(sk, name, 0, READ_ONCE(pkt_sk(sk)->num));
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -6925,23 +6925,6 @@ static int si_dpm_enable(struct amdgpu_d
+ 	return 0;
  }
  
- static int packet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
-@@ -3273,7 +3273,7 @@ static int packet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len
- 		return -EINVAL;
+-static int si_set_temperature_range(struct amdgpu_device *adev)
+-{
+-	int ret;
+-
+-	ret = si_thermal_enable_alert(adev, false);
+-	if (ret)
+-		return ret;
+-	ret = si_thermal_set_temperature_range(adev, R600_TEMP_RANGE_MIN, R600_TEMP_RANGE_MAX);
+-	if (ret)
+-		return ret;
+-	ret = si_thermal_enable_alert(adev, true);
+-	if (ret)
+-		return ret;
+-
+-	return ret;
+-}
+-
+ static void si_dpm_disable(struct amdgpu_device *adev)
+ {
+ 	struct rv7xx_power_info *pi = rv770_get_pi(adev);
+@@ -7626,18 +7609,6 @@ static int si_dpm_process_interrupt(stru
  
- 	return packet_do_bind(sk, NULL, sll->sll_ifindex,
--			      sll->sll_protocol ? : pkt_sk(sk)->num);
-+			      sll->sll_protocol ? : READ_ONCE(pkt_sk(sk)->num));
+ static int si_dpm_late_init(void *handle)
+ {
+-	int ret;
+-	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+-
+-	if (!adev->pm.dpm_enabled)
+-		return 0;
+-
+-	ret = si_set_temperature_range(adev);
+-	if (ret)
+-		return ret;
+-#if 0 //TODO ?
+-	si_dpm_powergate_uvd(adev, true);
+-#endif
+ 	return 0;
  }
  
- static struct proto packet_proto = {
-diff --git a/net/packet/diag.c b/net/packet/diag.c
-index d9f912ad23dfa..ecabf78d29b8e 100644
---- a/net/packet/diag.c
-+++ b/net/packet/diag.c
-@@ -142,7 +142,7 @@ static int sk_diag_fill(struct sock *sk, struct sk_buff *skb,
- 	rp = nlmsg_data(nlh);
- 	rp->pdiag_family = AF_PACKET;
- 	rp->pdiag_type = sk->sk_type;
--	rp->pdiag_num = ntohs(po->num);
-+	rp->pdiag_num = ntohs(READ_ONCE(po->num));
- 	rp->pdiag_ino = sk_ino;
- 	sock_diag_save_cookie(sk, rp->pdiag_cookie);
- 
--- 
-2.39.2
-
 
 
