@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81380726F4F
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:57:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B7E7726D81
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:42:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235491AbjFGU5Y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:57:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58368 "EHLO
+        id S234458AbjFGUmu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:42:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235527AbjFGU5T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:57:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 761A71BC2
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:57:18 -0700 (PDT)
+        with ESMTP id S234536AbjFGUmk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:42:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B74A6106
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:42:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1295261E88
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:57:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22363C433D2;
-        Wed,  7 Jun 2023 20:57:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F36DB6462B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:42:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13773C433D2;
+        Wed,  7 Jun 2023 20:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171437;
-        bh=i0rd4nVJDokctFOFg+ktg8f7fSJOs+UZYoR3Sm6RhFk=;
+        s=korg; t=1686170545;
+        bh=EA7EnyBO8cmCNPcf02dhIWL9dadcEv0qdxkRF7doZKc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IUJFe43qcwKVhTNMmc9UF96/sJoeiu3pzeghw9Nl/xHNAXciQDTzeD4rnsRLQvbuE
-         Vh/JCXRBlaxtO+eY92/Sb1b0vXLnZTw6Kfb2Dn4JnCiYIOGgucGFyn/3fn7/RZ36yb
-         7ySHsOn3x5v/hjB1jRO+eiWoFki5BsU1N0SD+jHs=
+        b=DkniWLPrD7ctAOd9SbeuXX0Dg4WFokb2mEvceS2/Gse9wQ3Zhy2K5I4/Ux71ZgLwL
+         yeIUF54GDxjdgPIapE58gfpkk1s8hhN1sEA9LZ7xpZPshNwukdzxasSMNLTw4JCEoS
+         mqfv192hBt0C8ujQPjCn1ovaoh4ReS7ojEkpTOnk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kashyap Desai <kashyap.desai@broadcom.com>,
-        Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 007/159] RDMA/bnxt_re: Fix a possible memory leak
-Date:   Wed,  7 Jun 2023 22:15:10 +0200
-Message-ID: <20230607200903.915018113@linuxfoundation.org>
+Subject: [PATCH 6.1 118/225] wifi: mac80211: recalc chanctx mindef before assigning
+Date:   Wed,  7 Jun 2023 22:15:11 +0200
+Message-ID: <20230607200918.238865515@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,57 +54,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 349e3c0cf239cc01d58a1e6c749e171de014cd6a ]
+[ Upstream commit 04312de4ced4b152749614e8179f3978a20a992f ]
 
-Inside bnxt_qplib_create_cq(), when the check for NULL DPI fails, driver
-returns directly without freeing the memory allocated inside
-bnxt_qplib_alloc_init_hwq() routine.
+When we allocate a new channel context, or find an existing one
+that is compatible, we currently assign it to a link before its
+mindef is updated. This leads to strange situations, especially
+in link switching where you switch to an 80 MHz link and expect
+it to be active immediately, but the mindef is still configured
+to 20 MHz while assigning.  Also, it's strange that the chandef
+passed to the assign method's argument is wider than the one in
+the context.
 
-Fixed this by moving the check for NULL DPI before invoking
-bnxt_qplib_alloc_init_hwq().
+Fix this by calculating the mindef with the new link considered
+before calling the driver.
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Link: https://lore.kernel.org/r/1684397461-23082-2-git-send-email-selvin.xavier@broadcom.com
-Reviewed-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+In particular, this fixes an iwlwifi problem during link switch
+where the firmware would assert because the (link) station that
+was added for the AP is configured to transmit at a bandwidth
+that's wider than the channel context that it's configured on.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230504134511.828474-5-gregory.greenman@intel.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ net/mac80211/chan.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index bd153aa7e9ab3..b26a89187a192 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -2041,6 +2041,12 @@ int bnxt_qplib_create_cq(struct bnxt_qplib_res *res, struct bnxt_qplib_cq *cq)
- 	u32 pg_sz_lvl;
- 	int rc;
+diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
+index c5d345e53056a..f07e34bed8f3a 100644
+--- a/net/mac80211/chan.c
++++ b/net/mac80211/chan.c
+@@ -871,6 +871,9 @@ static int ieee80211_assign_link_chanctx(struct ieee80211_link_data *link,
+ 	}
  
-+	if (!cq->dpi) {
-+		dev_err(&rcfw->pdev->dev,
-+			"FP: CREATE_CQ failed due to NULL DPI\n");
-+		return -EINVAL;
-+	}
+ 	if (new_ctx) {
++		/* recalc considering the link we'll use it for now */
++		ieee80211_recalc_chanctx_min_def(local, new_ctx, link);
 +
- 	hwq_attr.res = res;
- 	hwq_attr.depth = cq->max_wqe;
- 	hwq_attr.stride = sizeof(struct cq_base);
-@@ -2052,11 +2058,6 @@ int bnxt_qplib_create_cq(struct bnxt_qplib_res *res, struct bnxt_qplib_cq *cq)
- 
- 	RCFW_CMD_PREP(req, CREATE_CQ, cmd_flags);
- 
--	if (!cq->dpi) {
--		dev_err(&rcfw->pdev->dev,
--			"FP: CREATE_CQ failed due to NULL DPI\n");
--		return -EINVAL;
--	}
- 	req.dpi = cpu_to_le32(cq->dpi->dpi);
- 	req.cq_handle = cpu_to_le64(cq->cq_handle);
- 	req.cq_size = cpu_to_le32(cq->hwq.max_elements);
+ 		ret = drv_assign_vif_chanctx(local, sdata, link->conf, new_ctx);
+ 		if (ret)
+ 			goto out;
 -- 
 2.39.2
 
