@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D710726B8B
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 545EB726D2C
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:40:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233242AbjFGU0Z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:26:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51724 "EHLO
+        id S234295AbjFGUkC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:40:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233315AbjFGU0S (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:18 -0400
+        with ESMTP id S234404AbjFGUjn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:39:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFDB726A1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:25:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ABF02706
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:39:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0AA3C64472
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:25:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18BF4C433D2;
-        Wed,  7 Jun 2023 20:25:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 29F9E6456B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:39:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 429B2C433EF;
+        Wed,  7 Jun 2023 20:39:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169543;
-        bh=ps677ttjb7Czy2fVFQJOKMEN3a3IKVMPOKNX6OlBfQA=;
+        s=korg; t=1686170364;
+        bh=lQba0g0GOwP76HL9SmwXCE8zweSnZUAXBFtML6Vl5wM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=riMDau56htAxiHvtouZAYdbfh/LDxglQ7N31sk1ZREqwSq1n7a3PimL9yp/qXjoWD
-         zsGed2pkD9pCw0Micn9Lzy3lgnyUtZgDnMM1wdx2pKNDBFfNj76Vj6bze0hYDF3n3c
-         hVH8ViR6FcqgLfW3soi/ZrH11yWu4YA94yF/l+YM=
+        b=SBk0dwQKaQ8snuJ7lSKfWTU0kYzhFVzPukonXyrFj4QNBNqwnVfmY9G185pJMRNJq
+         HeJ7l62v6dC72BBkQUisXOJ7IRFiSrVjpKfkKSjpBCgFqkaiQS8DSvDN45/4WKDEQ8
+         kgdl0i9JtXMeNAW2F6KoddGHp7CkPO8W9WHoJAeg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benedict Wong <benedictwong@google.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Paul Cercueil <paul@crapouillou.net>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 120/286] xfrm: Check if_id in inbound policy/secpath match
-Date:   Wed,  7 Jun 2023 22:13:39 +0200
-Message-ID: <20230607200927.002511993@linuxfoundation.org>
+Subject: [PATCH 6.1 027/225] mtd: rawnand: ingenic: fix empty stub helper definitions
+Date:   Wed,  7 Jun 2023 22:13:40 +0200
+Message-ID: <20230607200915.210114153@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,77 +55,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Benedict Wong <benedictwong@google.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 8680407b6f8f5fba59e8f1d63c869abc280f04df ]
+[ Upstream commit 650a8884a364ff2568b51cde9009cfd43cdae6ad ]
 
-This change ensures that if configured in the policy, the if_id set in
-the policy and secpath states match during the inbound policy check.
-Without this, there is potential for ambiguity where entries in the
-secpath differing by only the if_id could be mismatched.
+A few functions provide an empty interface definition when
+CONFIG_MTD_NAND_INGENIC_ECC is disabled, but they are accidentally
+defined as global functions in the header:
 
-Notably, this is checked in the outbound direction when resolving
-templates to SAs, but not on the inbound path when matching SAs and
-policies.
+drivers/mtd/nand/raw/ingenic/ingenic_ecc.h:39:5: error: no previous prototype for 'ingenic_ecc_calculate'
+drivers/mtd/nand/raw/ingenic/ingenic_ecc.h:46:5: error: no previous prototype for 'ingenic_ecc_correct'
+drivers/mtd/nand/raw/ingenic/ingenic_ecc.h:53:6: error: no previous prototype for 'ingenic_ecc_release'
+drivers/mtd/nand/raw/ingenic/ingenic_ecc.h:57:21: error: no previous prototype for 'of_ingenic_ecc_get'
 
-Test: Tested against Android kernel unit tests & CTS
-Signed-off-by: Benedict Wong <benedictwong@google.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Turn them into 'static inline' definitions instead.
+
+Fixes: 15de8c6efd0e ("mtd: rawnand: ingenic: Separate top-level and SoC specific code")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Paul Cercueil <paul@crapouillou.net>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230516202133.559488-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_policy.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/mtd/nand/raw/ingenic/ingenic_ecc.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index 21a3a1cd3d6de..6d15788b51231 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -3312,7 +3312,7 @@ xfrm_secpath_reject(int idx, struct sk_buff *skb, const struct flowi *fl)
- 
- static inline int
- xfrm_state_ok(const struct xfrm_tmpl *tmpl, const struct xfrm_state *x,
--	      unsigned short family)
-+	      unsigned short family, u32 if_id)
+diff --git a/drivers/mtd/nand/raw/ingenic/ingenic_ecc.h b/drivers/mtd/nand/raw/ingenic/ingenic_ecc.h
+index 2cda439b5e11b..017868f59f222 100644
+--- a/drivers/mtd/nand/raw/ingenic/ingenic_ecc.h
++++ b/drivers/mtd/nand/raw/ingenic/ingenic_ecc.h
+@@ -36,25 +36,25 @@ int ingenic_ecc_correct(struct ingenic_ecc *ecc,
+ void ingenic_ecc_release(struct ingenic_ecc *ecc);
+ struct ingenic_ecc *of_ingenic_ecc_get(struct device_node *np);
+ #else /* CONFIG_MTD_NAND_INGENIC_ECC */
+-int ingenic_ecc_calculate(struct ingenic_ecc *ecc,
++static inline int ingenic_ecc_calculate(struct ingenic_ecc *ecc,
+ 			  struct ingenic_ecc_params *params,
+ 			  const u8 *buf, u8 *ecc_code)
  {
- 	if (xfrm_state_kern(x))
- 		return tmpl->optional && !xfrm_state_addr_cmp(tmpl, x, tmpl->encap_family);
-@@ -3323,7 +3323,8 @@ xfrm_state_ok(const struct xfrm_tmpl *tmpl, const struct xfrm_state *x,
- 		(tmpl->allalgs || (tmpl->aalgos & (1<<x->props.aalgo)) ||
- 		 !(xfrm_id_proto_match(tmpl->id.proto, IPSEC_PROTO_ANY))) &&
- 		!(x->props.mode != XFRM_MODE_TRANSPORT &&
--		  xfrm_state_addr_cmp(tmpl, x, family));
-+		  xfrm_state_addr_cmp(tmpl, x, family)) &&
-+		(if_id == 0 || if_id == x->if_id);
+ 	return -ENODEV;
  }
  
- /*
-@@ -3335,7 +3336,7 @@ xfrm_state_ok(const struct xfrm_tmpl *tmpl, const struct xfrm_state *x,
-  */
- static inline int
- xfrm_policy_ok(const struct xfrm_tmpl *tmpl, const struct sec_path *sp, int start,
--	       unsigned short family)
-+	       unsigned short family, u32 if_id)
+-int ingenic_ecc_correct(struct ingenic_ecc *ecc,
++static inline int ingenic_ecc_correct(struct ingenic_ecc *ecc,
+ 			struct ingenic_ecc_params *params, u8 *buf,
+ 			u8 *ecc_code)
  {
- 	int idx = start;
+ 	return -ENODEV;
+ }
  
-@@ -3345,7 +3346,7 @@ xfrm_policy_ok(const struct xfrm_tmpl *tmpl, const struct sec_path *sp, int star
- 	} else
- 		start = -1;
- 	for (; idx < sp->len; idx++) {
--		if (xfrm_state_ok(tmpl, sp->xvec[idx], family))
-+		if (xfrm_state_ok(tmpl, sp->xvec[idx], family, if_id))
- 			return ++idx;
- 		if (sp->xvec[idx]->props.mode != XFRM_MODE_TRANSPORT) {
- 			if (start == -1)
-@@ -3724,7 +3725,7 @@ int __xfrm_policy_check(struct sock *sk, int dir, struct sk_buff *skb,
- 		 * are implied between each two transformations.
- 		 */
- 		for (i = xfrm_nr-1, k = 0; i >= 0; i--) {
--			k = xfrm_policy_ok(tpp[i], sp, k, family);
-+			k = xfrm_policy_ok(tpp[i], sp, k, family, if_id);
- 			if (k < 0) {
- 				if (k < -1)
- 					/* "-2 - errored_index" returned */
+-void ingenic_ecc_release(struct ingenic_ecc *ecc)
++static inline void ingenic_ecc_release(struct ingenic_ecc *ecc)
+ {
+ }
+ 
+-struct ingenic_ecc *of_ingenic_ecc_get(struct device_node *np)
++static inline struct ingenic_ecc *of_ingenic_ecc_get(struct device_node *np)
+ {
+ 	return ERR_PTR(-ENODEV);
+ }
 -- 
 2.39.2
 
