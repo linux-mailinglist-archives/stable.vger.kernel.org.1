@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31DD9726BFD
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:29:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60FB6726D68
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:41:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233591AbjFGU3k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:29:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56250 "EHLO
+        id S234407AbjFGUlu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:41:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233583AbjFGU3h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:29:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F4671706
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:29:21 -0700 (PDT)
+        with ESMTP id S234420AbjFGUlt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:41:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C32D1706
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:41:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5059D6448C
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:29:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62946C4339B;
-        Wed,  7 Jun 2023 20:29:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C42264606
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:41:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0EDC433EF;
+        Wed,  7 Jun 2023 20:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169760;
-        bh=0pcqTTqlR3Qj/f34cBU6JnVRvGQ3xgIzQ3rAh732/FI=;
+        s=korg; t=1686170505;
+        bh=FLZX+UK/82eRVORB7fraCDojcz+FqC8P5JdFgT7Lx34=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rpHQWYPOuUhUVchjPI1MwJ4gMVyC9TrViA3Qk8qw9H8SfLQFe+9K54QaUisDNMj8E
-         Tv8j98DX8ZB1qHd+nQuWtzTG0CGrAmmdFa1MUfNEaPuNZKDfmZlOQL5/OW0AGLiunU
-         6mFJT23irxPhvBmYESmwaGmMWsKeNCaq8sOaRzI4=
+        b=ny41H07HHb/eEbB/b6YoxGSrvIhiXevCDYYOUm/z6ba2MHhOst4pSFh8o1DVYewsI
+         jFMqBQs50P9tWTz+wnYU5Mo+JAc6oYY8C2w8kp0zreiqQfAimfDEZyk+AMtiGFsoyu
+         dmanAtESdQllUCtFKRzLQqRuNbMCMR5DfsiYwn7g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Nuno Sa <nuno.sa@analog.com>, Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.3 204/286] iio: addac: ad74413: fix resistance input processing
+        patches@lists.linux.dev, Heiko Carstens <hca@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 110/225] s390/topology: honour nr_cpu_ids when adding CPUs
 Date:   Wed,  7 Jun 2023 22:15:03 +0200
-Message-ID: <20230607200929.920400068@linuxfoundation.org>
+Message-ID: <20230607200917.978460544@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,39 +54,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+From: Alexander Gordeev <agordeev@linux.ibm.com>
 
-commit 24febc99ca725dcf42d57168a2f4e8a75a5ade92 upstream.
+[ Upstream commit a33239be2d38ff5a44427db1707c08787508d34a ]
 
-On success, ad74413r_get_single_adc_result() returns IIO_VAL_INT aka
-1. So currently, the IIO_CHAN_INFO_PROCESSED case is effectively
-equivalent to the IIO_CHAN_INFO_RAW case, and we never call
-ad74413r_adc_to_resistance_result() to convert the adc measurement to
-ohms.
+When SMT thread CPUs are added to CPU masks the nr_cpu_ids
+limit is not checked and could be exceeded. This leads to
+a warning for example if CONFIG_DEBUG_PER_CPU_MAPS is set
+and the command line parameter nr_cpus is set to 1.
 
-Check ret for being negative rather than non-zero.
-
-Fixes: fea251b6a5dbd (iio: addac: add AD74413R driver)
-Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20230503095817.452551-1-linux@rasmusvillemoes.dk
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/addac/ad74413r.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/kernel/topology.c | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
---- a/drivers/iio/addac/ad74413r.c
-+++ b/drivers/iio/addac/ad74413r.c
-@@ -981,7 +981,7 @@ static int ad74413r_read_raw(struct iio_
+diff --git a/arch/s390/kernel/topology.c b/arch/s390/kernel/topology.c
+index c6eecd4a5302d..10b20aeb27d3b 100644
+--- a/arch/s390/kernel/topology.c
++++ b/arch/s390/kernel/topology.c
+@@ -95,7 +95,7 @@ static void cpu_group_map(cpumask_t *dst, struct mask_info *info, unsigned int c
+ static void cpu_thread_map(cpumask_t *dst, unsigned int cpu)
+ {
+ 	static cpumask_t mask;
+-	int i;
++	unsigned int max_cpu;
  
- 		ret = ad74413r_get_single_adc_result(indio_dev, chan->channel,
- 						     val);
--		if (ret)
-+		if (ret < 0)
- 			return ret;
+ 	cpumask_clear(&mask);
+ 	if (!cpumask_test_cpu(cpu, &cpu_setup_mask))
+@@ -104,9 +104,10 @@ static void cpu_thread_map(cpumask_t *dst, unsigned int cpu)
+ 	if (topology_mode != TOPOLOGY_MODE_HW)
+ 		goto out;
+ 	cpu -= cpu % (smp_cpu_mtid + 1);
+-	for (i = 0; i <= smp_cpu_mtid; i++) {
+-		if (cpumask_test_cpu(cpu + i, &cpu_setup_mask))
+-			cpumask_set_cpu(cpu + i, &mask);
++	max_cpu = min(cpu + smp_cpu_mtid, nr_cpu_ids - 1);
++	for (; cpu <= max_cpu; cpu++) {
++		if (cpumask_test_cpu(cpu, &cpu_setup_mask))
++			cpumask_set_cpu(cpu, &mask);
+ 	}
+ out:
+ 	cpumask_copy(dst, &mask);
+@@ -123,25 +124,26 @@ static void add_cpus_to_mask(struct topology_core *tl_core,
+ 	unsigned int core;
  
- 		ad74413r_adc_to_resistance_result(*val, val);
+ 	for_each_set_bit(core, &tl_core->mask, TOPOLOGY_CORE_BITS) {
+-		unsigned int rcore;
+-		int lcpu, i;
++		unsigned int max_cpu, rcore;
++		int cpu;
+ 
+ 		rcore = TOPOLOGY_CORE_BITS - 1 - core + tl_core->origin;
+-		lcpu = smp_find_processor_id(rcore << smp_cpu_mt_shift);
+-		if (lcpu < 0)
++		cpu = smp_find_processor_id(rcore << smp_cpu_mt_shift);
++		if (cpu < 0)
+ 			continue;
+-		for (i = 0; i <= smp_cpu_mtid; i++) {
+-			topo = &cpu_topology[lcpu + i];
++		max_cpu = min(cpu + smp_cpu_mtid, nr_cpu_ids - 1);
++		for (; cpu <= max_cpu; cpu++) {
++			topo = &cpu_topology[cpu];
+ 			topo->drawer_id = drawer->id;
+ 			topo->book_id = book->id;
+ 			topo->socket_id = socket->id;
+ 			topo->core_id = rcore;
+-			topo->thread_id = lcpu + i;
++			topo->thread_id = cpu;
+ 			topo->dedicated = tl_core->d;
+-			cpumask_set_cpu(lcpu + i, &drawer->mask);
+-			cpumask_set_cpu(lcpu + i, &book->mask);
+-			cpumask_set_cpu(lcpu + i, &socket->mask);
+-			smp_cpu_set_polarization(lcpu + i, tl_core->pp);
++			cpumask_set_cpu(cpu, &drawer->mask);
++			cpumask_set_cpu(cpu, &book->mask);
++			cpumask_set_cpu(cpu, &socket->mask);
++			smp_cpu_set_polarization(cpu, tl_core->pp);
+ 		}
+ 	}
+ }
+-- 
+2.39.2
+
 
 
