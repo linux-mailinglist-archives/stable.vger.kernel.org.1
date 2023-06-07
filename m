@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F677726F01
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48AF6726DEF
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:46:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235352AbjFGUyo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:54:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55554 "EHLO
+        id S234831AbjFGUqr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:46:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235439AbjFGUyc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:32 -0400
+        with ESMTP id S234817AbjFGUqV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:46:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91E991FD5
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:54:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A77A71BE2
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:46:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 26AA1647CC
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:54:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F7BC433EF;
-        Wed,  7 Jun 2023 20:54:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 85E7D6469D
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:46:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C5E3C433EF;
+        Wed,  7 Jun 2023 20:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171264;
-        bh=vGusgwOX6Umpfa6plaVkDQjKp9M4Jvnt/hMZudB1+rY=;
+        s=korg; t=1686170773;
+        bh=dCmjU8a/pA3kz0P+cb32Va/IOaqV9yVU+2AyM1JKAkA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iQ0DkarLzFmm9g9I0ohUylInysFU767RzOO5BvGqb+oIIeuKhGoJDKiVekusy5D0e
-         oNkRcaFSZoSf/lnlHYWFbeVLuCok7o1VmF5dGzkT080vI1uPpfs7t4H9n+b2KcTYoB
-         py2SaXDEh5OPzivFjEEKXsSxuRd2is8T8e0zlgWM=
+        b=DITBmcw1m9g+4aQjZSfHw9eAkeRgjT7S8aX1r8ruYD2k8JCFJ9iGJj/pd06CzHyQX
+         NUrSjRTfsr8tLTJ7lZCcIZOm6OklPE6G9X4f2Jxym82kivFyAlYH4skR1rvo/sfMxb
+         7SZROCiGVEfqimouMmQfgKOIS/CsdlDFxsFZP7OI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yun Lu <luyun@kylinos.cn>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 52/99] wifi: rtl8xxxu: fix authentication timeout due to incorrect RCR value
+        patches@lists.linux.dev, Kuan-Ting Chen <h3xrabbit@gmail.com>,
+        Namjae Jeon <linkinjeon@kernel.org>,
+        Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 211/225] ksmbd: fix slab-out-of-bounds read in smb2_handle_negotiate
 Date:   Wed,  7 Jun 2023 22:16:44 +0200
-Message-ID: <20230607200901.876893187@linuxfoundation.org>
+Message-ID: <20230607200921.270154809@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,73 +54,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yun Lu <luyun@kylinos.cn>
+From: Kuan-Ting Chen <h3xrabbit@gmail.com>
 
-[ Upstream commit 20429444e653ee8242dfbf815c0c37866beb371b ]
+commit d738950f112c8f40f0515fe967db998e8235a175 upstream.
 
-When using rtl8192cu with rtl8xxxu driver to connect wifi, there is a
-probability of failure, which shows "authentication with ... timed out".
-Through debugging, it was found that the RCR register has been inexplicably
-modified to an incorrect value, resulting in the nic not being able to
-receive authenticated frames.
+Check request_buf length first to avoid out-of-bounds read by
+req->DialectCount.
 
-To fix this problem, add regrcr in rtl8xxxu_priv struct, and store
-the RCR value every time the register is written, and use it the next
-time the register need to be modified.
+[ 3350.990282] BUG: KASAN: slab-out-of-bounds in smb2_handle_negotiate+0x35d7/0x3e60
+[ 3350.990282] Read of size 2 at addr ffff88810ad61346 by task kworker/5:0/276
+[ 3351.000406] Workqueue: ksmbd-io handle_ksmbd_work
+[ 3351.003499] Call Trace:
+[ 3351.006473]  <TASK>
+[ 3351.006473]  dump_stack_lvl+0x8d/0xe0
+[ 3351.006473]  print_report+0xcc/0x620
+[ 3351.006473]  kasan_report+0x92/0xc0
+[ 3351.006473]  smb2_handle_negotiate+0x35d7/0x3e60
+[ 3351.014760]  ksmbd_smb_negotiate_common+0x7a7/0xf00
+[ 3351.014760]  handle_ksmbd_work+0x3f7/0x12d0
+[ 3351.014760]  process_one_work+0xa85/0x1780
 
-Signed-off-by: Yun Lu <luyun@kylinos.cn>
-Link: https://lore.kernel.org/all/20230427020512.1221062-1-luyun_611@163.com
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230512012055.2990472-1-luyun_611@163.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuan-Ting Chen <h3xrabbit@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h      | 1 +
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 4 +++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ fs/ksmbd/smb2pdu.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index 2a02d4d72dec9..b7da89ba1e7d5 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -1255,6 +1255,7 @@ struct rtl8xxxu_priv {
- 	u32 rege9c;
- 	u32 regeb4;
- 	u32 regebc;
-+	u32 regrcr;
- 	int next_mbox;
- 	int nr_out_eps;
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -1069,16 +1069,16 @@ int smb2_handle_negotiate(struct ksmbd_w
+ 		return rc;
+ 	}
  
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index bdccc84278d85..2648b30aab76a 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -4048,6 +4048,7 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
- 		RCR_ACCEPT_MGMT_FRAME | RCR_HTC_LOC_CTRL |
- 		RCR_APPEND_PHYSTAT | RCR_APPEND_ICV | RCR_APPEND_MIC;
- 	rtl8xxxu_write32(priv, REG_RCR, val32);
-+	priv->regrcr = val32;
+-	if (req->DialectCount == 0) {
+-		pr_err("malformed packet\n");
++	smb2_buf_len = get_rfc1002_len(work->request_buf);
++	smb2_neg_size = offsetof(struct smb2_negotiate_req, Dialects);
++	if (smb2_neg_size > smb2_buf_len) {
+ 		rsp->hdr.Status = STATUS_INVALID_PARAMETER;
+ 		rc = -EINVAL;
+ 		goto err_out;
+ 	}
  
- 	/*
- 	 * Accept all multicast
-@@ -5585,7 +5586,7 @@ static void rtl8xxxu_configure_filter(struct ieee80211_hw *hw,
- 				      unsigned int *total_flags, u64 multicast)
- {
- 	struct rtl8xxxu_priv *priv = hw->priv;
--	u32 rcr = rtl8xxxu_read32(priv, REG_RCR);
-+	u32 rcr = priv->regrcr;
- 
- 	dev_dbg(&priv->udev->dev, "%s: changed_flags %08x, total_flags %08x\n",
- 		__func__, changed_flags, *total_flags);
-@@ -5631,6 +5632,7 @@ static void rtl8xxxu_configure_filter(struct ieee80211_hw *hw,
- 	 */
- 
- 	rtl8xxxu_write32(priv, REG_RCR, rcr);
-+	priv->regrcr = rcr;
- 
- 	*total_flags &= (FIF_ALLMULTI | FIF_FCSFAIL | FIF_BCN_PRBRESP_PROMISC |
- 			 FIF_CONTROL | FIF_OTHER_BSS | FIF_PSPOLL |
--- 
-2.39.2
-
+-	smb2_buf_len = get_rfc1002_len(work->request_buf);
+-	smb2_neg_size = offsetof(struct smb2_negotiate_req, Dialects);
+-	if (smb2_neg_size > smb2_buf_len) {
++	if (req->DialectCount == 0) {
++		pr_err("malformed packet\n");
+ 		rsp->hdr.Status = STATUS_INVALID_PARAMETER;
+ 		rc = -EINVAL;
+ 		goto err_out;
 
 
