@@ -2,118 +2,94 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82734726726
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 19:23:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6364C726746
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 19:29:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231659AbjFGRX2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 13:23:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56504 "EHLO
+        id S229917AbjFGR26 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 13:28:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230057AbjFGRXX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 13:23:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 756A71BF3;
-        Wed,  7 Jun 2023 10:23:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 126D363BCC;
-        Wed,  7 Jun 2023 17:23:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 604D4C433EF;
-        Wed,  7 Jun 2023 17:23:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1686158601;
-        bh=1m0Tk+ctM0cE1KOrvLtrPd6EwtDWeQa+7BFaRexity0=;
-        h=Date:To:From:Subject:From;
-        b=ww465uNtw9I8tTLBJ/9YenVuX5bJHp+pFrVU9a+NgbclD6QmeMDeOE4I+9dnqbRwt
-         fKytA3cB4RM6gUcdLPLfhCfVJ+LP9KnnuSqPBybsh4Cu4wwk/lMv5ehPQce2CsayGZ
-         dhwXvVDSHJh3PJamS1yDdItm+L8Pe9vTe6zBScP4=
-Date:   Wed, 07 Jun 2023 10:23:20 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        mike.kravetz@oracle.com, marcandre.lureau@redhat.com,
-        roberto.sassu@huawei.com, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + memfd-check-for-non-null-file_seals-in-memfd_create-syscall.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230607172321.604D4C433EF@smtp.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229504AbjFGR24 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 13:28:56 -0400
+Received: from todd.t-8ch.de (todd.t-8ch.de [IPv6:2a01:4f8:c010:41de::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7F1A128;
+        Wed,  7 Jun 2023 10:28:54 -0700 (PDT)
+From:   =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+        s=mail; t=1686158932;
+        bh=vGUG5+5oObmVUMabCNgsKcKkHQm2lWjGYzZ1M+89FSk=;
+        h=From:Date:Subject:To:Cc:From;
+        b=REuygNSSwrT5jIxKvsN28vuZ/cs8XfMn+12DSgMfY5RxhC+sWXCL9vc0tEytMCjQb
+         05pt0RsH6dJanwO3393YuAXrE1zqO2ney6umLmXj3kDGfwVqlFC/RHjg0RNyCrbwdU
+         eHtFD9DbByXTIhE8zIJxwvMM0Z0LZFEu3kmHU+5c=
+Date:   Wed, 07 Jun 2023 19:28:48 +0200
+Subject: [PATCH] fs: avoid empty option when generating legacy mount string
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20230607-fs-empty-option-v1-1-20c8dbf4671b@weissschuh.net>
+X-B4-Tracking: v=1; b=H4sIAE++gGQC/x2N0QqDMAxFf0XybKBGVmG/MnxoNc6Aq6VR2RD/3
+ bDHczmHe4JyEVZ4VicUPkRlTQZNXcEwh/RmlNEYyFHrvOtwUuRP3n645s1cJP/wRG3XmABWxaC
+ MsYQ0zNalfVlszIUn+f5vXv113XtkcZx2AAAA
+To:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>
+Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        David Howells <dhowells@redhat.com>,
+        Karel Zak <kzag@redhat.com>, stable@vger.kernel.org,
+        =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1686158931; l=1248;
+ i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
+ bh=vGUG5+5oObmVUMabCNgsKcKkHQm2lWjGYzZ1M+89FSk=;
+ b=xhti7ZhwZRPSH3Hgfw1or7/06qz18rCyqWGpAlyNjvbuso7uaeCsOL0oGQ/kvzetFYV78p9r5
+ vOP30ikcCPeC3hE7I9eZEjC4UjhTsX05D9hBZJk67VLhQwwASbWhNsn
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+As each option string fragment is always prepended with a comma it would
+happen that the whole string always starts with a comma.
+This could be interpreted by filesystem drivers as an empty option and
+may produce errors.
 
-The patch titled
-     Subject: memfd: check for non-NULL file_seals in memfd_create() syscall
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     memfd-check-for-non-null-file_seals-in-memfd_create-syscall.patch
+For example the NTFS driver from ntfs.ko behaves like this and fails when
+mounted via the new API.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/memfd-check-for-non-null-file_seals-in-memfd_create-syscall.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Roberto Sassu <roberto.sassu@huawei.com>
-Subject: memfd: check for non-NULL file_seals in memfd_create() syscall
-Date: Wed, 7 Jun 2023 15:24:27 +0200
-
-Ensure that file_seals is non-NULL before using it in the memfd_create()
-syscall.  One situation in which memfd_file_seals_ptr() could return a
-NULL pointer is when CONFIG_SHMEM=n.
-
-Link: https://lkml.kernel.org/r/20230607132427.2867435-1-roberto.sassu@huaweicloud.com
-Fixes: 47b9012ecdc7 ("shmem: add sealing support to hugetlb-backed memfd")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Cc: Marc-Andr Lureau <marcandre.lureau@redhat.com>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://github.com/util-linux/util-linux/issues/2298
+Fixes: 3e1aeb00e6d1 ("vfs: Implement a filesystem superblock creation/configuration context")
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
+ fs/fs_context.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- mm/memfd.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
---- a/mm/memfd.c~memfd-check-for-non-null-file_seals-in-memfd_create-syscall
-+++ a/mm/memfd.c
-@@ -371,12 +371,15 @@ SYSCALL_DEFINE2(memfd_create,
- 
- 		inode->i_mode &= ~0111;
- 		file_seals = memfd_file_seals_ptr(file);
--		*file_seals &= ~F_SEAL_SEAL;
--		*file_seals |= F_SEAL_EXEC;
-+		if (file_seals) {
-+			*file_seals &= ~F_SEAL_SEAL;
-+			*file_seals |= F_SEAL_EXEC;
-+		}
- 	} else if (flags & MFD_ALLOW_SEALING) {
- 		/* MFD_EXEC and MFD_ALLOW_SEALING are set */
- 		file_seals = memfd_file_seals_ptr(file);
--		*file_seals &= ~F_SEAL_SEAL;
-+		if (file_seals)
-+			*file_seals &= ~F_SEAL_SEAL;
+diff --git a/fs/fs_context.c b/fs/fs_context.c
+index 24ce12f0db32..851214d1d013 100644
+--- a/fs/fs_context.c
++++ b/fs/fs_context.c
+@@ -561,7 +561,8 @@ static int legacy_parse_param(struct fs_context *fc, struct fs_parameter *param)
+ 			return -ENOMEM;
  	}
  
- 	fd_install(fd, file);
-_
+-	ctx->legacy_data[size++] = ',';
++	if (size)
++		ctx->legacy_data[size++] = ',';
+ 	len = strlen(param->key);
+ 	memcpy(ctx->legacy_data + size, param->key, len);
+ 	size += len;
 
-Patches currently in -mm which might be from roberto.sassu@huawei.com are
+---
+base-commit: 9561de3a55bed6bdd44a12820ba81ec416e705a7
+change-id: 20230607-fs-empty-option-265622371023
 
-memfd-check-for-non-null-file_seals-in-memfd_create-syscall.patch
+Best regards,
+-- 
+Thomas Weißschuh <linux@weissschuh.net>
 
