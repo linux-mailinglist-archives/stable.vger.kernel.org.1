@@ -2,40 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65416726A41
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:00:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 524A8726A42
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:00:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231302AbjFGUAC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:00:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34120 "EHLO
+        id S232255AbjFGUAM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:00:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230401AbjFGUAA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:00:00 -0400
+        with ESMTP id S232161AbjFGUAJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:00:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F89711A;
-        Wed,  7 Jun 2023 12:59:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CA6211A;
+        Wed,  7 Jun 2023 13:00:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C691964159;
-        Wed,  7 Jun 2023 19:59:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24CF5C433AC;
-        Wed,  7 Jun 2023 19:59:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EA7F26429C;
+        Wed,  7 Jun 2023 20:00:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3959AC433D2;
+        Wed,  7 Jun 2023 20:00:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1686167998;
-        bh=W79/IzWqA3ukax+fdrTdeAvI7S//uclzElUouPajlGw=;
+        s=korg; t=1686168001;
+        bh=qSyurgfGqGR53timKwIWUHrFdgbphMtlMmOm8EvZQ8k=;
         h=Date:To:From:Subject:From;
-        b=r8tia2YmtarVvEh7mqEhBli5x8F2enpRyCh9IrEokjrFhgeHUlJb/aJxNRJB/Wsnj
-         hN8zCE3A+VHcCTaib/IWH+Dy5lDyQ7y2HgzbbiZW9uDc/4+VBilqVvQn8J/8nNOZAC
-         QQ/ELitecZU0ZdlmdHABm/chyAVbQdUlMwZ0RzQo=
-Date:   Wed, 07 Jun 2023 12:59:57 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        rppt@kernel.org, mark.rutland@arm.com, lstoakes@gmail.com,
-        Liam.Howlett@oracle.com, peterx@redhat.com,
+        b=giOVGua3kzZxjGW3zJAP2KLGLRObjbiv7xade2pxoXKsHRO+o4H2JfZac4CIk9Hqr
+         RI9+3kLmiUuRGqZS66BMFTzYz2GwcmCsqVkPStMMn08IIW0Ec3ISftt0G/gVZzYWIu
+         nYtTc6zSInrMwOE28IhJRNaBaejpVO3EfWIR9n+c=
+Date:   Wed, 07 Jun 2023 13:00:00 -0700
+To:     mm-commits@vger.kernel.org, zwisler@google.com, trix@redhat.com,
+        tglx@linutronix.de, stable@vger.kernel.org, rostedt@goodmis.org,
+        prudo@redhat.com, paul.walmsley@sifive.com, palmer@rivosinc.com,
+        palmer@dabbelt.com, npiggin@gmail.com, ndesaulniers@google.com,
+        nathan@kernel.org, mpe@ellerman.id.au, mingo@redhat.com,
+        hpa@zytor.com, horms@kernel.org, ebiederm@xmission.com,
+        dyoung@redhat.com, dave.hansen@linux.intel.com,
+        christophe.leroy@csgroup.eu, bp@alien8.de, bhe@redhat.com,
+        aou@eecs.berkeley.edu, ribalda@chromium.org,
         akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-uffd-fix-vma-operation-where-start-addr-cuts-part-of-vma.patch removed from -mm tree
-Message-Id: <20230607195958.24CF5C433AC@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] kexec-support-purgatories-with-texthot-sections.patch removed from -mm tree
+Message-Id: <20230607200001.3959AC433D2@smtp.kernel.org>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
@@ -48,103 +54,113 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: mm/uffd: fix vma operation where start addr cuts part of vma
+     Subject: kexec: support purgatories with .text.hot sections
 has been removed from the -mm tree.  Its filename was
-     mm-uffd-fix-vma-operation-where-start-addr-cuts-part-of-vma.patch
+     kexec-support-purgatories-with-texthot-sections.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Peter Xu <peterx@redhat.com>
-Subject: mm/uffd: fix vma operation where start addr cuts part of vma
-Date: Wed, 17 May 2023 15:09:15 -0400
+From: Ricardo Ribalda <ribalda@chromium.org>
+Subject: kexec: support purgatories with .text.hot sections
+Date: Fri, 19 May 2023 16:47:36 +0200
 
-Patch series "mm/uffd: Fix vma merge/split", v2.
+Patch series "kexec: Fix kexec_file_load for llvm16 with PGO", v7.
 
-This series contains two patches that fix vma merge/split for userfaultfd
-on two separate issues.
+When upreving llvm I realised that kexec stopped working on my test
+platform.
 
-Patch 1 fixes a regression since 6.1+ due to something we overlooked when
-converting to maple tree apis.  The plan is we use patch 1 to replace the
-commit "2f628010799e (mm: userfaultfd: avoid passing an invalid range to
-vma_merge())" in mm-hostfixes-unstable tree if possible, so as to bring
-uffd vma operations back aligned with the rest code again.
-
-Patch 2 fixes a long standing issue that vma can be left unmerged even if
-we can for either uffd register or unregister.
-
-Many thanks to Lorenzo on either noticing this issue from the assert
-movement patch, looking at this problem, and also provided a reproducer on
-the unmerged vma issue [1].
-
-[1] https://gist.github.com/lorenzo-stoakes/a11a10f5f479e7a977fc456331266e0e
+The reason seems to be that due to PGO there are multiple .text sections
+on the purgatory, and kexec does not supports that.
 
 
-This patch (of 2):
+This patch (of 4):
 
-It seems vma merging with uffd paths is broken with either
-register/unregister, where right now we can feed wrong parameters to
-vma_merge() and it's found by recent patch which moved asserts upwards in
-vma_merge() by Lorenzo Stoakes:
+Clang16 links the purgatory text in two sections when PGO is in use:
 
-https://lore.kernel.org/all/ZFunF7DmMdK05MoF@FVFF77S0Q05N.cambridge.arm.com/
+  [ 1] .text             PROGBITS         0000000000000000  00000040
+       00000000000011a1  0000000000000000  AX       0     0     16
+  [ 2] .rela.text        RELA             0000000000000000  00003498
+       0000000000000648  0000000000000018   I      24     1     8
+  ...
+  [17] .text.hot.        PROGBITS         0000000000000000  00003220
+       000000000000020b  0000000000000000  AX       0     0     1
+  [18] .rela.text.hot.   RELA             0000000000000000  00004428
+       0000000000000078  0000000000000018   I      24    17     8
 
-It's possible that "start" is contained within vma but not clamped to its
-start.  We need to convert this into either "cannot merge" case or "can
-merge" case 4 which permits subdivision of prev by assigning vma to prev. 
-As we loop, each subsequent VMA will be clamped to the start.
+And both of them have their range [sh_addr ... sh_addr+sh_size] on the
+area pointed by `e_entry`.
 
-This patch will eliminate the report and make sure vma_merge() calls will
-become legal again.
+This causes that image->start is calculated twice, once for .text and
+another time for .text.hot. The second calculation leaves image->start
+in a random location.
 
-One thing to mention is that the "Fixes: 29417d292bd0" below is there only
-to help explain where the warning can start to trigger, the real commit to
-fix should be 69dbe6daf104.  Commit 29417d292bd0 helps us to identify the
-issue, but unfortunately we may want to keep it in Fixes too just to ease
-kernel backporters for easier tracking.
+Because of this, the system crashes immediately after:
 
-Link: https://lkml.kernel.org/r/20230517190916.3429499-1-peterx@redhat.com
-Link: https://lkml.kernel.org/r/20230517190916.3429499-2-peterx@redhat.com
-Fixes: 69dbe6daf104 ("userfaultfd: use maple tree iterator to iterate VMAs")
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Reported-by: Mark Rutland <mark.rutland@arm.com>
-Reviewed-by: Lorenzo Stoakes <lstoakes@gmail.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Closes: https://lore.kernel.org/all/ZFunF7DmMdK05MoF@FVFF77S0Q05N.cambridge.arm.com/
-Cc: Lorenzo Stoakes <lstoakes@gmail.com>
-Cc: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+kexec_core: Starting new kernel
+
+Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-0-b05c520b7296@chromium.org
+Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-1-b05c520b7296@chromium.org
+Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Ross Zwisler <zwisler@google.com>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reviewed-by: Philipp Rudo <prudo@redhat.com>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Tom Rix <trix@redhat.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/userfaultfd.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/kexec_file.c |   14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
---- a/fs/userfaultfd.c~mm-uffd-fix-vma-operation-where-start-addr-cuts-part-of-vma
-+++ a/fs/userfaultfd.c
-@@ -1459,6 +1459,8 @@ static int userfaultfd_register(struct u
+--- a/kernel/kexec_file.c~kexec-support-purgatories-with-texthot-sections
++++ a/kernel/kexec_file.c
+@@ -901,10 +901,22 @@ static int kexec_purgatory_setup_sechdrs
+ 		}
  
- 	vma_iter_set(&vmi, start);
- 	prev = vma_prev(&vmi);
-+	if (vma->vm_start < start)
-+		prev = vma;
- 
- 	ret = 0;
- 	for_each_vma_range(vmi, vma, end) {
-@@ -1625,6 +1627,9 @@ static int userfaultfd_unregister(struct
- 
- 	vma_iter_set(&vmi, start);
- 	prev = vma_prev(&vmi);
-+	if (vma->vm_start < start)
-+		prev = vma;
+ 		offset = ALIGN(offset, align);
 +
- 	ret = 0;
- 	for_each_vma_range(vmi, vma, end) {
- 		cond_resched();
++		/*
++		 * Check if the segment contains the entry point, if so,
++		 * calculate the value of image->start based on it.
++		 * If the compiler has produced more than one .text section
++		 * (Eg: .text.hot), they are generally after the main .text
++		 * section, and they shall not be used to calculate
++		 * image->start. So do not re-calculate image->start if it
++		 * is not set to the initial value, and warn the user so they
++		 * have a chance to fix their purgatory's linker script.
++		 */
+ 		if (sechdrs[i].sh_flags & SHF_EXECINSTR &&
+ 		    pi->ehdr->e_entry >= sechdrs[i].sh_addr &&
+ 		    pi->ehdr->e_entry < (sechdrs[i].sh_addr
+-					 + sechdrs[i].sh_size)) {
++					 + sechdrs[i].sh_size) &&
++		    !WARN_ON(kbuf->image->start != pi->ehdr->e_entry)) {
+ 			kbuf->image->start -= sechdrs[i].sh_addr;
+ 			kbuf->image->start += kbuf->mem + offset;
+ 		}
 _
 
-Patches currently in -mm which might be from peterx@redhat.com are
+Patches currently in -mm which might be from ribalda@chromium.org are
 
 
