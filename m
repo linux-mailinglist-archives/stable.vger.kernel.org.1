@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D981E726D12
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:39:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1802726B96
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234248AbjFGUjD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:39:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37884 "EHLO
+        id S233310AbjFGU0d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:26:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234282AbjFGUij (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:38:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A5CB26AD
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:38:20 -0700 (PDT)
+        with ESMTP id S233315AbjFGU03 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8428270C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:26:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B57C645CD
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:38:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D06C433EF;
-        Wed,  7 Jun 2023 20:38:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AC36C64476
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:25:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF5E4C433D2;
+        Wed,  7 Jun 2023 20:25:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170299;
-        bh=5mbiQWu118GaL6wAnCCz6huGQSNfDjrDG3Qn2ggDCzU=;
+        s=korg; t=1686169559;
+        bh=r/6fecBU06f8kGCswx/Qa+Cl/y1woDWpYc+7gapLdcs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0zh1HdUVIfNaIlAWVlAeLcnACicnspq1iT6AMUV6hBhMeEJtsLmKlRX4NY9zWKBpi
-         RBg4sKS71owAsTBwgduBMepwsd1It5Tkm1mrDEytrwq48oTFEKhiJ+TN7/bFA12nO2
-         L33+mmkekukwJL+hccWNkHoEoiNXGNQZFmpdynXI=
+        b=tQvxqeQqDbWs87T3yv4w4z2WtMbi6ocLg2mUHtn753YnEswrb5WeuuovwJ9gH1n0s
+         MtR5TM6j76CorLJED623EEtWW33yVR1QDAhTlqOLZ2txugm0S1X6Hyal5tNZ2u76GF
+         s6P0dh9i5R+nUiYkiKUkwqDiSXPiI3kRIGJm7mMM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jack Yang <mingliang@linux.alibaba.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Cambda Zhu <cambda@linux.alibaba.com>,
-        Jason Xing <kerneljasonxing@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 032/225] tcp: Return user_mss for TCP_MAXSEG in CLOSE/LISTEN state if user_mss set
+Subject: [PATCH 6.3 126/286] media: dvb-usb: az6027: fix three null-ptr-deref in az6027_i2c_xfer()
 Date:   Wed,  7 Jun 2023 22:13:45 +0200
-Message-ID: <20230607200915.368055916@linuxfoundation.org>
+Message-ID: <20230607200927.208050416@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,47 +54,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Cambda Zhu <cambda@linux.alibaba.com>
+From: Wei Chen <harperchen1110@gmail.com>
 
-[ Upstream commit 34dfde4ad87b84d21278a7e19d92b5b2c68e6c4d ]
+[ Upstream commit 858e97d7956d17a2cb56a9413468704a4d5abfe1 ]
 
-This patch replaces the tp->mss_cache check in getting TCP_MAXSEG
-with tp->rx_opt.user_mss check for CLOSE/LISTEN sock. Since
-tp->mss_cache is initialized with TCP_MSS_DEFAULT, checking if
-it's zero is probably a bug.
+In az6027_i2c_xfer, msg is controlled by user. When msg[i].buf is null,
+commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in
+az6027_i2c_xfer()") fix the null-ptr-deref bug when msg[i].addr is 0x99.
+However, null-ptr-deref also happens when msg[i].addr is 0xd0 and 0xc0.
+We add check on msg[i].len to prevent null-ptr-deref.
 
-With this change, getting TCP_MAXSEG before connecting will return
-default MSS normally, and return user_mss if user_mss is set.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Jack Yang <mingliang@linux.alibaba.com>
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/netdev/CANn89i+3kL9pYtkxkwxwNMzvC_w3LNUum_2=3u+UyLBmGmifHA@mail.gmail.com/#t
-Signed-off-by: Cambda Zhu <cambda@linux.alibaba.com>
-Link: https://lore.kernel.org/netdev/14D45862-36EA-4076-974C-EA67513C92F6@linux.alibaba.com/
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230527040317.68247-1-cambda@linux.alibaba.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/linux-media/20230310165604.3093483-1-harperchen1110@gmail.com
+Signed-off-by: Wei Chen <harperchen1110@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/usb/dvb-usb/az6027.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index c77b57d4a832a..0bd0be3c63d22 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -4071,7 +4071,8 @@ int do_tcp_getsockopt(struct sock *sk, int level,
- 	switch (optname) {
- 	case TCP_MAXSEG:
- 		val = tp->mss_cache;
--		if (!val && ((1 << sk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)))
-+		if (tp->rx_opt.user_mss &&
-+		    ((1 << sk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)))
- 			val = tp->rx_opt.user_mss;
- 		if (tp->repair)
- 			val = tp->rx_opt.mss_clamp;
+diff --git a/drivers/media/usb/dvb-usb/az6027.c b/drivers/media/usb/dvb-usb/az6027.c
+index 7d78ee09be5e1..a31c6f82f4e90 100644
+--- a/drivers/media/usb/dvb-usb/az6027.c
++++ b/drivers/media/usb/dvb-usb/az6027.c
+@@ -988,6 +988,10 @@ static int az6027_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[], int n
+ 			/* write/read request */
+ 			if (i + 1 < num && (msg[i + 1].flags & I2C_M_RD)) {
+ 				req = 0xB9;
++				if (msg[i].len < 1) {
++					i = -EOPNOTSUPP;
++					break;
++				}
+ 				index = (((msg[i].buf[0] << 8) & 0xff00) | (msg[i].buf[1] & 0x00ff));
+ 				value = msg[i].addr + (msg[i].len << 8);
+ 				length = msg[i + 1].len + 6;
+@@ -1001,6 +1005,10 @@ static int az6027_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[], int n
+ 
+ 				/* demod 16bit addr */
+ 				req = 0xBD;
++				if (msg[i].len < 1) {
++					i = -EOPNOTSUPP;
++					break;
++				}
+ 				index = (((msg[i].buf[0] << 8) & 0xff00) | (msg[i].buf[1] & 0x00ff));
+ 				value = msg[i].addr + (2 << 8);
+ 				length = msg[i].len - 2;
+@@ -1026,6 +1034,10 @@ static int az6027_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[], int n
+ 			} else {
+ 
+ 				req = 0xBD;
++				if (msg[i].len < 1) {
++					i = -EOPNOTSUPP;
++					break;
++				}
+ 				index = msg[i].buf[0] & 0x00FF;
+ 				value = msg[i].addr + (1 << 8);
+ 				length = msg[i].len - 1;
 -- 
 2.39.2
 
