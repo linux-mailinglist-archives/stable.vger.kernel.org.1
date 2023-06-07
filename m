@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DB3E726E83
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:51:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63D95726CDC
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:37:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235272AbjFGUu5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:50:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50994 "EHLO
+        id S233991AbjFGUhQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:37:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235335AbjFGUuj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:50:39 -0400
+        with ESMTP id S234018AbjFGUhP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:37:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAF3626B0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:50:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FE941721
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:36:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 14CF164708
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:50:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28742C4339B;
-        Wed,  7 Jun 2023 20:50:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C42166459F
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:36:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D697BC433D2;
+        Wed,  7 Jun 2023 20:36:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171031;
-        bh=+wMV/2QnJjGPeJV5uuxqr/Hp5qbBlMgraKerOYvZyq4=;
+        s=korg; t=1686170201;
+        bh=W7w3/jmrMIhLDOQyYgpXvQJSrKw6lHZsADF8iVzwpLU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BZgQYyAguNY6xkjMqK7w4QhVj02OTlI/ecior2DtUfYe1b31ERcQVK1RyWpfXq8wD
-         11xLFsQGS75f1H6zWZ0VXHRzK56BHQ2+p99RvQBXbNLTyZA18VN47Rjw6O6s6VFmcN
-         7hc9Vi4YjA641tKW9kywYXJlOulnexzGvgzVlaYc=
+        b=OVssyi0K4hIe3VVxRp3ClyHqIigUoTPERFedv7pE7uje5bN6HN3iy+cnkUm9K0UZK
+         EQ2U8o48NVS5t1SA41KOzGMq9IFXp2a+tEiF+GqQI0FCKbt9Pj1E0IGqh8SUX2tRcS
+         vsOx8zK6CLNpuHaBm3A6miiQRLOQX9R8a7R8tl8k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Richard Acayan <mailingradian@gmail.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 5.10 084/120] misc: fastrpc: reject new invocations during device removal
+        patches@lists.linux.dev, stable@kernel.org,
+        syzbot+298c5d8fb4a128bc27b0@syzkaller.appspotmail.com,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 4.19 83/88] ext4: add lockdep annotations for i_data_sem for ea_inodes
 Date:   Wed,  7 Jun 2023 22:16:40 +0200
-Message-ID: <20230607200903.541118643@linuxfoundation.org>
+Message-ID: <20230607200901.818514365@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,50 +54,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Richard Acayan <mailingradian@gmail.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit 46248400d81e2aa0b65cd659d6f40188192a58b6 upstream.
+commit aff3bea95388299eec63440389b4545c8041b357 upstream.
 
-The channel's rpmsg object allows new invocations to be made. After old
-invocations are already interrupted, the driver shouldn't try to invoke
-anymore. Invalidating the rpmsg at the end of the driver removal
-function makes it easy to cause a race condition in userspace. Even
-closing a file descriptor before the driver finishes its cleanup can
-cause an invocation via fastrpc_release_current_dsp_process() and
-subsequent timeout.
+Treat i_data_sem for ea_inodes as being in their own lockdep class to
+avoid lockdep complaints about ext4_setattr's use of inode_lock() on
+normal inodes potentially causing lock ordering with i_data_sem on
+ea_inodes in ext4_xattr_inode_write().  However, ea_inodes will be
+operated on by ext4_setattr(), so this isn't a problem.
 
-Invalidate the channel before the invocations are interrupted to make
-sure that no invocations can be created to hang after the device closes.
-
-Fixes: c68cfb718c8f ("misc: fastrpc: Add support for context Invoke method")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Richard Acayan <mailingradian@gmail.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20230523152550.438363-5-srinivas.kandagatla@linaro.org
+Cc: stable@kernel.org
+Link: https://syzkaller.appspot.com/bug?extid=298c5d8fb4a128bc27b0
+Reported-by: syzbot+298c5d8fb4a128bc27b0@syzkaller.appspotmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://lore.kernel.org/r/20230524034951.779531-5-tytso@mit.edu
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ext4/ext4.h  |    2 ++
+ fs/ext4/xattr.c |    4 ++++
+ 2 files changed, 6 insertions(+)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -1688,7 +1688,9 @@ static void fastrpc_rpmsg_remove(struct
- 	struct fastrpc_user *user;
- 	unsigned long flags;
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -929,11 +929,13 @@ do {									       \
+  *			  where the second inode has larger inode number
+  *			  than the first
+  *  I_DATA_SEM_QUOTA  - Used for quota inodes only
++ *  I_DATA_SEM_EA     - Used for ea_inodes only
+  */
+ enum {
+ 	I_DATA_SEM_NORMAL = 0,
+ 	I_DATA_SEM_OTHER,
+ 	I_DATA_SEM_QUOTA,
++	I_DATA_SEM_EA
+ };
  
-+	/* No invocations past this point */
- 	spin_lock_irqsave(&cctx->lock, flags);
-+	cctx->rpdev = NULL;
- 	list_for_each_entry(user, &cctx->users, user)
- 		fastrpc_notify_users(user);
- 	spin_unlock_irqrestore(&cctx->lock, flags);
-@@ -1696,7 +1698,6 @@ static void fastrpc_rpmsg_remove(struct
- 	misc_deregister(&cctx->miscdev);
- 	of_platform_depopulate(&rpdev->dev);
  
--	cctx->rpdev = NULL;
- 	fastrpc_channel_ctx_put(cctx);
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -121,7 +121,11 @@ ext4_expand_inode_array(struct ext4_xatt
+ #ifdef CONFIG_LOCKDEP
+ void ext4_xattr_inode_set_class(struct inode *ea_inode)
+ {
++	struct ext4_inode_info *ei = EXT4_I(ea_inode);
++
+ 	lockdep_set_subclass(&ea_inode->i_rwsem, 1);
++	(void) ei;	/* shut up clang warning if !CONFIG_LOCKDEP */
++	lockdep_set_subclass(&ei->i_data_sem, I_DATA_SEM_EA);
  }
+ #endif
  
 
 
