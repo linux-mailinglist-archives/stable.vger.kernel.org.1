@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 420CD726E6A
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD39F726CDF
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:37:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235084AbjFGUub (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:50:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48186 "EHLO
+        id S233994AbjFGUhX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:37:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235063AbjFGUtq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:49:46 -0400
+        with ESMTP id S234031AbjFGUhV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:37:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F45A2134
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:49:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69BD7211C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:36:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5ECBB646EA
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:49:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DE6CC433D2;
-        Wed,  7 Jun 2023 20:49:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ECEDB64586
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:36:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0830CC433EF;
+        Wed,  7 Jun 2023 20:36:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170968;
-        bh=R6SybSXv5P06H23W6QQCuXpAXaaLj3YimdPktbViVRs=;
+        s=korg; t=1686170206;
+        bh=+KXX0pkDVrwxls1xANPzrragmwSQkYYEJj7K5lltQSE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1sSNkYK0C92P2xTlZORHSU+6chb4udwvEdacK7ZG7F0k25m9GrQDE4V4kRan9ec0r
-         /SLB74iU3jXg9JfbMY8PSPKBsJGzpi6QZu2NNcxCgHJkqSVYLEsTbf0zY+SxrBh0Dk
-         SKW4tEtSY5dlK6GIu3iQd8UKQxtMUhDmfw2Nuv5M=
+        b=Jbyaif1RI7ui0EbAqm8oPuB2ad6X7cxnd7GFDZV2U59Px7VQYn2SL+xm49TVDQIp7
+         Vn0soBUI+FUv9PPEd6xIBZdjgUg+rsibsycXukCXi+RH73fgltLreb95zvu8f/R6Un
+         WOzHVH4YUtr1vG5/src+bKVN4WlFrThQXfwflLAA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hyunwoo Kim <imv4bel@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 059/120] media: dvb-core: Fix use-after-free due on race condition at dvb_net
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 58/88] ALSA: oss: avoid missing-prototype warnings
 Date:   Wed,  7 Jun 2023 22:16:15 +0200
-Message-ID: <20230607200902.748181576@linuxfoundation.org>
+Message-ID: <20230607200901.055584583@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,136 +53,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 4172385b0c9ac366dcab78eda48c26814b87ed1a ]
+[ Upstream commit 040b5a046a9e18098580d3ccd029e2318fca7859 ]
 
-A race condition may occur between the .disconnect function, which
-is called when the device is disconnected, and the dvb_device_open()
-function, which is called when the device node is open()ed.
-This results in several types of UAFs.
+Two functions are defined and used in pcm_oss.c but also optionally
+used from io.c, with an optional prototype. If CONFIG_SND_PCM_OSS_PLUGINS
+is disabled, this causes a warning as the functions are not static
+and have no prototype:
 
-The root cause of this is that you use the dvb_device_open() function,
-which does not implement a conditional statement
-that checks 'dvbnet->exit'.
+sound/core/oss/pcm_oss.c:1235:19: error: no previous prototype for 'snd_pcm_oss_write3' [-Werror=missing-prototypes]
+sound/core/oss/pcm_oss.c:1266:19: error: no previous prototype for 'snd_pcm_oss_read3' [-Werror=missing-prototypes]
 
-So, add 'remove_mutex` to protect 'dvbnet->exit' and use
-locked_dvb_net_open() function to check 'dvbnet->exit'.
+Avoid this by making the prototypes unconditional.
 
-[mchehab: fix a checkpatch warning]
-
-Link: https://lore.kernel.org/linux-media/20221117045925.14297-3-imv4bel@gmail.com
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20230516195046.550584-2-arnd@kernel.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-core/dvb_net.c | 38 +++++++++++++++++++++++++++++---
- include/media/dvb_net.h          |  4 ++++
- 2 files changed, 39 insertions(+), 3 deletions(-)
+ sound/core/oss/pcm_plugin.h | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/media/dvb-core/dvb_net.c b/drivers/media/dvb-core/dvb_net.c
-index dddebea644bb8..c594b1bdfcaa5 100644
---- a/drivers/media/dvb-core/dvb_net.c
-+++ b/drivers/media/dvb-core/dvb_net.c
-@@ -1564,15 +1564,43 @@ static long dvb_net_ioctl(struct file *file,
- 	return dvb_usercopy(file, cmd, arg, dvb_net_do_ioctl);
- }
+diff --git a/sound/core/oss/pcm_plugin.h b/sound/core/oss/pcm_plugin.h
+index c9cd29d86efda..64a2057aa0610 100644
+--- a/sound/core/oss/pcm_plugin.h
++++ b/sound/core/oss/pcm_plugin.h
+@@ -156,6 +156,14 @@ int snd_pcm_area_copy(const struct snd_pcm_channel_area *src_channel,
  
-+static int locked_dvb_net_open(struct inode *inode, struct file *file)
-+{
-+	struct dvb_device *dvbdev = file->private_data;
-+	struct dvb_net *dvbnet = dvbdev->priv;
-+	int ret;
+ void *snd_pcm_plug_buf_alloc(struct snd_pcm_substream *plug, snd_pcm_uframes_t size);
+ void snd_pcm_plug_buf_unlock(struct snd_pcm_substream *plug, void *ptr);
++#else
 +
-+	if (mutex_lock_interruptible(&dvbnet->remove_mutex))
-+		return -ERESTARTSYS;
++static inline snd_pcm_sframes_t snd_pcm_plug_client_size(struct snd_pcm_substream *handle, snd_pcm_uframes_t drv_size) { return drv_size; }
++static inline snd_pcm_sframes_t snd_pcm_plug_slave_size(struct snd_pcm_substream *handle, snd_pcm_uframes_t clt_size) { return clt_size; }
++static inline int snd_pcm_plug_slave_format(int format, const struct snd_mask *format_mask) { return format; }
 +
-+	if (dvbnet->exit) {
-+		mutex_unlock(&dvbnet->remove_mutex);
-+		return -ENODEV;
-+	}
++#endif
 +
-+	ret = dvb_generic_open(inode, file);
-+
-+	mutex_unlock(&dvbnet->remove_mutex);
-+
-+	return ret;
-+}
-+
- static int dvb_net_close(struct inode *inode, struct file *file)
- {
- 	struct dvb_device *dvbdev = file->private_data;
- 	struct dvb_net *dvbnet = dvbdev->priv;
+ snd_pcm_sframes_t snd_pcm_oss_write3(struct snd_pcm_substream *substream,
+ 				     const char *ptr, snd_pcm_uframes_t size,
+ 				     int in_kernel);
+@@ -166,14 +174,6 @@ snd_pcm_sframes_t snd_pcm_oss_writev3(struct snd_pcm_substream *substream,
+ snd_pcm_sframes_t snd_pcm_oss_readv3(struct snd_pcm_substream *substream,
+ 				     void **bufs, snd_pcm_uframes_t frames);
  
-+	mutex_lock(&dvbnet->remove_mutex);
-+
- 	dvb_generic_release(inode, file);
- 
--	if(dvbdev->users == 1 && dvbnet->exit == 1)
-+	if (dvbdev->users == 1 && dvbnet->exit == 1) {
-+		mutex_unlock(&dvbnet->remove_mutex);
- 		wake_up(&dvbdev->wait_queue);
-+	} else {
-+		mutex_unlock(&dvbnet->remove_mutex);
-+	}
-+
- 	return 0;
- }
- 
-@@ -1580,7 +1608,7 @@ static int dvb_net_close(struct inode *inode, struct file *file)
- static const struct file_operations dvb_net_fops = {
- 	.owner = THIS_MODULE,
- 	.unlocked_ioctl = dvb_net_ioctl,
--	.open =	dvb_generic_open,
-+	.open =	locked_dvb_net_open,
- 	.release = dvb_net_close,
- 	.llseek = noop_llseek,
- };
-@@ -1599,10 +1627,13 @@ void dvb_net_release (struct dvb_net *dvbnet)
- {
- 	int i;
- 
-+	mutex_lock(&dvbnet->remove_mutex);
- 	dvbnet->exit = 1;
-+	mutex_unlock(&dvbnet->remove_mutex);
-+
- 	if (dvbnet->dvbdev->users < 1)
- 		wait_event(dvbnet->dvbdev->wait_queue,
--				dvbnet->dvbdev->users==1);
-+				dvbnet->dvbdev->users == 1);
- 
- 	dvb_unregister_device(dvbnet->dvbdev);
- 
-@@ -1621,6 +1652,7 @@ int dvb_net_init (struct dvb_adapter *adap, struct dvb_net *dvbnet,
- 	int i;
- 
- 	mutex_init(&dvbnet->ioctl_mutex);
-+	mutex_init(&dvbnet->remove_mutex);
- 	dvbnet->demux = dmx;
- 
- 	for (i=0; i<DVB_NET_DEVICES_MAX; i++)
-diff --git a/include/media/dvb_net.h b/include/media/dvb_net.h
-index 5e31d37f25fac..cc01dffcc9f35 100644
---- a/include/media/dvb_net.h
-+++ b/include/media/dvb_net.h
-@@ -41,6 +41,9 @@
-  * @exit:		flag to indicate when the device is being removed.
-  * @demux:		pointer to &struct dmx_demux.
-  * @ioctl_mutex:	protect access to this struct.
-+ * @remove_mutex:	mutex that avoids a race condition between a callback
-+ *			called when the hardware is disconnected and the
-+ *			file_operations of dvb_net.
-  *
-  * Currently, the core supports up to %DVB_NET_DEVICES_MAX (10) network
-  * devices.
-@@ -53,6 +56,7 @@ struct dvb_net {
- 	unsigned int exit:1;
- 	struct dmx_demux *demux;
- 	struct mutex ioctl_mutex;
-+	struct mutex remove_mutex;
- };
- 
- /**
+-#else
+-
+-static inline snd_pcm_sframes_t snd_pcm_plug_client_size(struct snd_pcm_substream *handle, snd_pcm_uframes_t drv_size) { return drv_size; }
+-static inline snd_pcm_sframes_t snd_pcm_plug_slave_size(struct snd_pcm_substream *handle, snd_pcm_uframes_t clt_size) { return clt_size; }
+-static inline int snd_pcm_plug_slave_format(int format, const struct snd_mask *format_mask) { return format; }
+-
+-#endif
+-
+ #ifdef PLUGIN_DEBUG
+ #define pdprintf(fmt, args...) printk(KERN_DEBUG "plugin: " fmt, ##args)
+ #else
 -- 
 2.39.2
 
