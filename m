@@ -2,52 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7196726EDC
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:53:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAB08726DDA
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:46:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235359AbjFGUxV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:53:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54556 "EHLO
+        id S234806AbjFGUqU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:46:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235358AbjFGUxS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:53:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87D6226A0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:53:11 -0700 (PDT)
+        with ESMTP id S234810AbjFGUqE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:46:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60035272D
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:45:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EE5466478E
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:53:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBDCC433EF;
-        Wed,  7 Jun 2023 20:53:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E867C645CD
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:45:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09BD8C433D2;
+        Wed,  7 Jun 2023 20:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171190;
-        bh=hvtka51qQqWYzKpNmIVu97ChXQ9dW5VYkV80zS1Tc+I=;
+        s=korg; t=1686170742;
+        bh=bx1fSDwKup6zzm0PIgqOfVIQpFp7kiXiD60zkhg5pUo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MgxrNiD5vYmVctCM2H1mVI0pSNJd3XUWsWTuzvaARvjiRmRkzPY+tamHsVxcwV+Cx
-         f+Ygv8YEBRQHZOPodk/w0t9AFS78hpIamcO2uYFRR6LxYO80Kc8SSL/e2J5t5ioztM
-         b1E+hiP6tpxm8q7VJ6hcd85jfpoxWh9Jjl7gc97o=
+        b=qSGb7qwqdA4oZj6T5XBfyYuPhk1j3GyenGiFjxvvq/r/L4VNsi+Ez4DOHj8YfaEI7
+         vjlaD6UgbHatVdkB6yqlY1CAkv3Ki5XzSHXfMKHlhY1F7iSODGyjYS4d9ykWpUciqq
+         aCeUaVVZH0lSt0TKO5EOh4f/YXNSsH0Yzt9DASVM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hangyu Hua <hbh25y@gmail.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 24/99] net/sched: flower: fix possible OOB write in fl_set_geneve_opt()
+        patches@lists.linux.dev, Ben Noordhuis <info@bnoordhuis.nl>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 183/225] io_uring: undeprecate epoll_ctl support
 Date:   Wed,  7 Jun 2023 22:16:16 +0200
-Message-ID: <20230607200901.015336010@linuxfoundation.org>
+Message-ID: <20230607200920.374677703@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,43 +53,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hangyu Hua <hbh25y@gmail.com>
+From: Ben Noordhuis <info@bnoordhuis.nl>
 
-[ Upstream commit 4d56304e5827c8cc8cc18c75343d283af7c4825c ]
+commit 4ea0bf4b98d66a7a790abb285539f395596bae92 upstream.
 
-If we send two TCA_FLOWER_KEY_ENC_OPTS_GENEVE packets and their total
-size is 252 bytes(key->enc_opts.len = 252) then
-key->enc_opts.len = opt->length = data_len / 4 = 0 when the third
-TCA_FLOWER_KEY_ENC_OPTS_GENEVE packet enters fl_set_geneve_opt. This
-bypasses the next bounds check and results in an out-of-bounds.
+Libuv recently started using it so there is at least one consumer now.
 
-Fixes: 0a6e77784f49 ("net/sched: allow flower to match tunnel options")
-Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Reviewed-by: Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>
-Link: https://lore.kernel.org/r/20230531102805.27090-1-hbh25y@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 61a2732af4b0 ("io_uring: deprecate epoll_ctl support")
+Link: https://github.com/libuv/libuv/pull/3979
+Signed-off-by: Ben Noordhuis <info@bnoordhuis.nl>
+Link: https://lore.kernel.org/r/20230506095502.13401-1-info@bnoordhuis.nl
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/cls_flower.c | 3 +++
- 1 file changed, 3 insertions(+)
+ io_uring/epoll.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
-index 007fbc1993522..63f53aa8460a2 100644
---- a/net/sched/cls_flower.c
-+++ b/net/sched/cls_flower.c
-@@ -870,6 +870,9 @@ static int fl_set_geneve_opt(const struct nlattr *nla, struct fl_flow_key *key,
- 	if (option_len > sizeof(struct geneve_opt))
- 		data_len = option_len - sizeof(struct geneve_opt);
+diff --git a/io_uring/epoll.c b/io_uring/epoll.c
+index 9aa74d2c80bc..89bff2068a19 100644
+--- a/io_uring/epoll.c
++++ b/io_uring/epoll.c
+@@ -25,10 +25,6 @@ int io_epoll_ctl_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+ {
+ 	struct io_epoll *epoll = io_kiocb_to_cmd(req, struct io_epoll);
  
-+	if (key->enc_opts.len > FLOW_DIS_TUN_OPTS_MAX - 4)
-+		return -ERANGE;
-+
- 	opt = (struct geneve_opt *)&key->enc_opts.data[key->enc_opts.len];
- 	memset(opt, 0xff, option_len);
- 	opt->length = data_len / 4;
+-	pr_warn_once("%s: epoll_ctl support in io_uring is deprecated and will "
+-		     "be removed in a future Linux kernel version.\n",
+-		     current->comm);
+-
+ 	if (sqe->buf_index || sqe->splice_fd_in)
+ 		return -EINVAL;
+ 
 -- 
-2.39.2
+2.41.0
 
 
 
