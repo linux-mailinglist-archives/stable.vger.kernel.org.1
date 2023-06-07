@@ -2,41 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D37C4726BF8
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:29:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75174726BCA
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:28:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233491AbjFGU30 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:29:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55558 "EHLO
+        id S233468AbjFGU2S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:28:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233594AbjFGU3X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:29:23 -0400
+        with ESMTP id S233438AbjFGU2P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:28:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E27B92700
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:29:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F0EF1FE6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:27:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C221B644B1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:29:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8EF7C433EF;
-        Wed,  7 Jun 2023 20:29:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E158644A5
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:27:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD08C433D2;
+        Wed,  7 Jun 2023 20:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169750;
-        bh=/ZQtRsJbOg2XX00OHxi8ngZFPwAIM6l/UIvEwv3Ew/A=;
+        s=korg; t=1686169674;
+        bh=6JCHwVKxkQsQPrUJDGy2mxc74mHzyJx+YWHEXdPHPCs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qO4bIZpCVnySueD2e0TxqJdrveH/DexQktFeZvghoPgWW2uG2p2sVhAHVQCY3f71X
-         S2Pecv9m2b7Dp9ZI0FOGM0uAP+b9JDSOilufXPKmCnksXQZCcPBJuRaCpB6L6UhbIK
-         g/bH082Qaz1J6Cyyrex4ljnDeEOaFJdJm22zVKgw=
+        b=aOYyIHe3Z3S4Da6qXOGfjGGqW8PpABpBld05StxsXT7wiSHy+9B2/upr2UQEciMCg
+         YRdBYmofxZFmWqB3kI+SbMziRh8oyunWH/joM2Arpa9dpS293slNNsZgU5Q3xz2lgC
+         ml5YxGjHT/Pofe2UQXRq9BQ9Mt7lufJJLVZMhvDA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guchun Chen <guchun.chen@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev,
+        Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+        Ziyang Zhang <ZiyangZhang@linux.alibaba.com>,
+        Ming Lei <ming.lei@redhat.com>, Jens Axboe <axboe@kernel.dk>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 170/286] drm/amdgpu: skip disabling fence driver src_irqs when device is unplugged
-Date:   Wed,  7 Jun 2023 22:14:29 +0200
-Message-ID: <20230607200928.668722455@linuxfoundation.org>
+Subject: [PATCH 6.3 171/286] ublk: fix AB-BA lockdep warning
+Date:   Wed,  7 Jun 2023 22:14:30 +0200
+Message-ID: <20230607200928.711055203@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
 References: <20230607200922.978677727@linuxfoundation.org>
@@ -54,49 +56,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Guchun Chen <guchun.chen@amd.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit c1a322a7a4a96cd0a3dde32ce37af437a78bf8cd ]
+[ Upstream commit ac5902f84bb546c64aea02c439c2579cbf40318f ]
 
-When performing device unbind or halt, we have disabled all irqs at the
-very begining like amdgpu_pci_remove or amdgpu_device_halt. So
-amdgpu_irq_put for irqs stored in fence driver should not be called
-any more, otherwise, below calltrace will arrive.
+When handling UBLK_IO_FETCH_REQ, ctx->uring_lock is grabbed first, then
+ub->mutex is acquired.
 
-[  139.114088] WARNING: CPU: 2 PID: 1550 at drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c:616 amdgpu_irq_put+0xf6/0x110 [amdgpu]
-[  139.114655] Call Trace:
-[  139.114655]  <TASK>
-[  139.114657]  amdgpu_fence_driver_hw_fini+0x93/0x130 [amdgpu]
-[  139.114836]  amdgpu_device_fini_hw+0xb6/0x350 [amdgpu]
-[  139.114955]  amdgpu_driver_unload_kms+0x51/0x70 [amdgpu]
-[  139.115075]  amdgpu_pci_remove+0x63/0x160 [amdgpu]
-[  139.115193]  ? __pm_runtime_resume+0x64/0x90
-[  139.115195]  pci_device_remove+0x3a/0xb0
-[  139.115197]  device_remove+0x43/0x70
-[  139.115198]  device_release_driver_internal+0xbd/0x140
+When handling UBLK_CMD_STOP_DEV or UBLK_CMD_DEL_DEV, ub->mutex is
+grabbed first, then calling io_uring_cmd_done() for canceling uring
+command, in which ctx->uring_lock may be required.
 
-Signed-off-by: Guchun Chen <guchun.chen@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Real deadlock only happens when all the above commands are issued from
+same uring context, and in reality different uring contexts are often used
+for handing control command and IO command.
+
+Fix the issue by using io_uring_cmd_complete_in_task() to cancel command
+in ublk_cancel_dev(ublk_cancel_queue).
+
+Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Closes: https://lore.kernel.org/linux-block/becol2g7sawl4rsjq2dztsbc7mqypfqko6wzsyoyazqydoasml@rcxarzwidrhk
+Cc: Ziyang Zhang <ZiyangZhang@linux.alibaba.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Tested-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Link: https://lore.kernel.org/r/20230517133408.210944-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/block/ublk_drv.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
-index f52d0ba91a770..a7d250809da99 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
-@@ -582,7 +582,8 @@ void amdgpu_fence_driver_hw_fini(struct amdgpu_device *adev)
- 		if (r)
- 			amdgpu_fence_driver_force_completion(ring);
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index 41c35ab2c25a1..4db5f1bcac44a 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -1122,6 +1122,11 @@ static inline bool ublk_queue_ready(struct ublk_queue *ubq)
+ 	return ubq->nr_io_ready == ubq->q_depth;
+ }
  
--		if (ring->fence_drv.irq_src)
-+		if (!drm_dev_is_unplugged(adev_to_drm(adev)) &&
-+		    ring->fence_drv.irq_src)
- 			amdgpu_irq_put(adev, ring->fence_drv.irq_src,
- 				       ring->fence_drv.irq_type);
++static void ublk_cmd_cancel_cb(struct io_uring_cmd *cmd, unsigned issue_flags)
++{
++	io_uring_cmd_done(cmd, UBLK_IO_RES_ABORT, 0, issue_flags);
++}
++
+ static void ublk_cancel_queue(struct ublk_queue *ubq)
+ {
+ 	int i;
+@@ -1133,8 +1138,8 @@ static void ublk_cancel_queue(struct ublk_queue *ubq)
+ 		struct ublk_io *io = &ubq->ios[i];
  
+ 		if (io->flags & UBLK_IO_FLAG_ACTIVE)
+-			io_uring_cmd_done(io->cmd, UBLK_IO_RES_ABORT, 0,
+-						IO_URING_F_UNLOCKED);
++			io_uring_cmd_complete_in_task(io->cmd,
++						      ublk_cmd_cancel_cb);
+ 	}
+ 
+ 	/* all io commands are canceled */
 -- 
 2.39.2
 
