@@ -2,43 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3638726C08
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:30:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C82A3726F50
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:57:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233683AbjFGUaZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:30:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56410 "EHLO
+        id S235530AbjFGU50 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:57:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233874AbjFGUaL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:11 -0400
+        with ESMTP id S235550AbjFGU5Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:57:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60B89270C
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:29:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AF281FFA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:57:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D9FE644BE
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:29:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30EFBC433EF;
-        Wed,  7 Jun 2023 20:29:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C05261E86
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:57:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB521C433EF;
+        Wed,  7 Jun 2023 20:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169781;
-        bh=ccY9kNcRCwAvdcz5NUVxfEw3Gr/8eP2fXagni27mMW4=;
+        s=korg; t=1686171440;
+        bh=g/k3/xa50eUB7cKbnq15wWfLD+z3aw64q5I0jj27InQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VMJv/ZFX9Zklf/r/k50LM6dvZ3DNNPMXhw0qfNMIccq7DZPtliqttJEhe8BAF7qhM
-         6g2zX4xYhcUE18zhzgKd0wJlHM9SFnWNV60kZUNmn4sBH3mziwc2rR9gbf4TPshov4
-         9h5gzLtyraj6OVWOs2h4/8ExqDDVGTf+ooJZWi90=
+        b=kk9XRPGsP1k8Bg5xMzrJSIrSXJC723UdOqUN1xcQi/Yt07va48940BoqTt5kutLnB
+         ET7qHejDLFC2Imb7P0OVkWl7SAVMBMIA6ZxcAsU4sKp/yIls+5wu+tMb5ZrL4Jj0/g
+         +SIaIbexQHBUS9D1kwbiwqhRRMtDfe69j2bDi9KQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Christoph Hellwig <hch@lst.de>, Song Liu <song@kernel.org>
-Subject: [PATCH 6.3 212/286] md/raid5: fix miscalculation of end_sector in raid5_read_one_chunk()
+        patches@lists.linux.dev,
+        Hongguang Gao <hongguang.gao@broadcom.com>,
+        Ajit Khaparde <ajit.khaparde@broadcom.com>,
+        Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 008/159] RDMA/bnxt_re: Fix return value of bnxt_re_process_raw_qp_pkt_rx
 Date:   Wed,  7 Jun 2023 22:15:11 +0200
-Message-ID: <20230607200930.177576450@linuxfoundation.org>
+Message-ID: <20230607200903.946784306@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,36 +58,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-commit 8557dc27126949c702bd3aafe8a7e0b7e4fcb44c upstream.
+[ Upstream commit 0fa0d520e2a878cb4c94c4dc84395905d3f14f54 ]
 
-'end_sector' is compared to 'rdev->recovery_offset', which is offset to
-rdev, however, commit e82ed3a4fbb5 ("md/raid6: refactor
-raid5_read_one_chunk") changes the calculation of 'end_sector' to offset
-to the array. Fix this miscalculation.
+bnxt_re_process_raw_qp_pkt_rx() always return 0 and ignores the return
+value of bnxt_re_post_send_shadow_qp().
 
-Fixes: e82ed3a4fbb5 ("md/raid6: refactor raid5_read_one_chunk")
-Cc: stable@vger.kernel.org # v5.12+
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230524014118.3172781-1-yukuai1@huaweicloud.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Link: https://lore.kernel.org/r/1684397461-23082-3-git-send-email-selvin.xavier@broadcom.com
+Reviewed-by: Hongguang Gao <hongguang.gao@broadcom.com>
+Reviewed-by: Ajit Khaparde <ajit.khaparde@broadcom.com>
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -5516,7 +5516,7 @@ static int raid5_read_one_chunk(struct m
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index b7ec3a3926785..843d0b5d99acd 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -3235,9 +3235,7 @@ static int bnxt_re_process_raw_qp_pkt_rx(struct bnxt_re_qp *gsi_qp,
+ 	udwr.remote_qkey = gsi_sqp->qplib_qp.qkey;
  
- 	sector = raid5_compute_sector(conf, raid_bio->bi_iter.bi_sector, 0,
- 				      &dd_idx, NULL);
--	end_sector = bio_end_sector(raid_bio);
-+	end_sector = sector + bio_sectors(raid_bio);
+ 	/* post data received  in the send queue */
+-	rc = bnxt_re_post_send_shadow_qp(rdev, gsi_sqp, swr);
+-
+-	return 0;
++	return bnxt_re_post_send_shadow_qp(rdev, gsi_sqp, swr);
+ }
  
- 	rcu_read_lock();
- 	if (r5c_big_stripe_cached(conf, sector))
+ static void bnxt_re_process_res_rawqp1_wc(struct ib_wc *wc,
+-- 
+2.39.2
+
 
 
