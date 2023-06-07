@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E2E9726D8E
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23AFA726F6C
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:58:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234463AbjFGUnb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:43:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41866 "EHLO
+        id S235748AbjFGU6Q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:58:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234461AbjFGUnZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:43:25 -0400
+        with ESMTP id S235765AbjFGU6B (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:58:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8243B2113
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:43:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71E5C26BD
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:57:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 61F256463D
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:43:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71060C433EF;
-        Wed,  7 Jun 2023 20:43:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EC5DC64882
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:57:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 093D0C4339B;
+        Wed,  7 Jun 2023 20:57:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170581;
-        bh=7sG7haTvVEzVa+BnCYVQqgrIkGoGAZP/MATkpIOM87c=;
+        s=korg; t=1686171466;
+        bh=2hSWNVdqhWdpgR8q8qITrpXf1oLsUwJHYG1clYo0dyA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X6Ifgx9+iD08KCKgdRMQnikdYleC2+VYRmLjJYk+twe2O8DVA8yPn4yPD/LZHn27j
-         9N5O/arUEahC0raN3QjBjNnvQfMwYdH0ERwQ3qCO3fnpVN18FBgppC38oHdSJOecV+
-         YJ/eJCGuVgWKAeNIOifCNOQxK4PnNoDLZjFrVS4w=
+        b=jxPr2ct8aavQIrMIpf2k7CXjVZThZk8wr2mAMQdfCtjQX7mEasPqXxYlAQBVam16Q
+         u9XCOa+rw/p15LYlhOfGmsamx0XGDRSbf73m6gtaonObXg2JWynA+ZfW2uYnH4fs+W
+         H1grMMw/tJjiT4pORFuB5TkGFcvxcQsetU+MePaM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, K Prateek Nayak <kprateek.nayak@amd.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
+        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Vlad Buslov <vladbu@nvidia.com>,
+        Peilin Ye <peilin.ye@bytedance.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 139/225] drivers: base: cacheinfo: Fix shared_cpu_map changes in event of CPU hotplug
+Subject: [PATCH 5.15 029/159] net/sched: Prohibit regrafting ingress or clsact Qdiscs
 Date:   Wed,  7 Jun 2023 22:15:32 +0200
-Message-ID: <20230607200918.931234320@linuxfoundation.org>
+Message-ID: <20230607200904.624104289@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,118 +57,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: K Prateek Nayak <kprateek.nayak@amd.com>
+From: Peilin Ye <peilin.ye@bytedance.com>
 
-[ Upstream commit 126310c9f669c9a8c875a3e5c2292299ca90225d ]
+[ Upstream commit 9de95df5d15baa956c2b70b9e794842e790a8a13 ]
 
-While building the shared_cpu_map, check if the cache level and cache
-type matches. On certain systems that build the cache topology based on
-the instance ID, there are cases where the same ID may repeat across
-multiple cache levels, leading inaccurate topology.
+Currently, after creating an ingress (or clsact) Qdisc and grafting it
+under TC_H_INGRESS (TC_H_CLSACT), it is possible to graft it again under
+e.g. a TBF Qdisc:
 
-In event of CPU offlining, the cache_shared_cpu_map_remove() does not
-consider if IDs at same level are being compared. As a result, when same
-IDs repeat across different cache levels, the CPU going offline is not
-removed from all the shared_cpu_map.
+  $ ip link add ifb0 type ifb
+  $ tc qdisc add dev ifb0 handle 1: root tbf rate 20kbit buffer 1600 limit 3000
+  $ tc qdisc add dev ifb0 clsact
+  $ tc qdisc link dev ifb0 handle ffff: parent 1:1
+  $ tc qdisc show dev ifb0
+  qdisc tbf 1: root refcnt 2 rate 20Kbit burst 1600b lat 560.0ms
+  qdisc clsact ffff: parent ffff:fff1 refcnt 2
+                                      ^^^^^^^^
 
-Below is the output of cache topology of CPU8 and it's SMT sibling after
-CPU8 is offlined on a dual socket 3rd Generation AMD EPYC processor
-(2 x 64C/128T) running kernel release v6.3:
+clsact's refcount has increased: it is now grafted under both
+TC_H_CLSACT and 1:1.
 
-  # for i in /sys/devices/system/cpu/cpu8/cache/index*/shared_cpu_list; do echo -n "$i: "; cat $i; done
-    /sys/devices/system/cpu/cpu8/cache/index0/shared_cpu_list: 8,136
-    /sys/devices/system/cpu/cpu8/cache/index1/shared_cpu_list: 8,136
-    /sys/devices/system/cpu/cpu8/cache/index2/shared_cpu_list: 8,136
-    /sys/devices/system/cpu/cpu8/cache/index3/shared_cpu_list: 8-15,136-143
+ingress and clsact Qdiscs should only be used under TC_H_INGRESS
+(TC_H_CLSACT).  Prohibit regrafting them.
 
-  # echo 0 > /sys/devices/system/cpu/cpu8/online
-
-  # for i in /sys/devices/system/cpu/cpu136/cache/index*/shared_cpu_list; do echo -n "$i: "; cat $i; done
-    /sys/devices/system/cpu/cpu136/cache/index0/shared_cpu_list: 136
-    /sys/devices/system/cpu/cpu136/cache/index1/shared_cpu_list: 8,136
-    /sys/devices/system/cpu/cpu136/cache/index2/shared_cpu_list: 8,136
-    /sys/devices/system/cpu/cpu136/cache/index3/shared_cpu_list: 9-15,136-143
-
-CPU8 is removed from index0 (L1i) but remains in the shared_cpu_list of
-index1 (L1d) and index2 (L2). Since L1i, L1d, and L2 are shared by the
-SMT siblings, and they have the same cache instance ID, CPU 2 is only
-removed from the first index with matching ID which is index1 (L1i) in
-this case. With this fix, the results are as expected when performing
-the same experiment on the same system:
-
-  # for i in /sys/devices/system/cpu/cpu8/cache/index*/shared_cpu_list; do echo -n "$i: "; cat $i; done
-    /sys/devices/system/cpu/cpu8/cache/index0/shared_cpu_list: 8,136
-    /sys/devices/system/cpu/cpu8/cache/index1/shared_cpu_list: 8,136
-    /sys/devices/system/cpu/cpu8/cache/index2/shared_cpu_list: 8,136
-    /sys/devices/system/cpu/cpu8/cache/index3/shared_cpu_list: 8-15,136-143
-
-  # echo 0 > /sys/devices/system/cpu/cpu8/online
-
-  # for i in /sys/devices/system/cpu/cpu136/cache/index*/shared_cpu_list; do echo -n "$i: "; cat $i; done
-    /sys/devices/system/cpu/cpu136/cache/index0/shared_cpu_list: 136
-    /sys/devices/system/cpu/cpu136/cache/index1/shared_cpu_list: 136
-    /sys/devices/system/cpu/cpu136/cache/index2/shared_cpu_list: 136
-    /sys/devices/system/cpu/cpu136/cache/index3/shared_cpu_list: 9-15,136-143
-
-When rebuilding topology, the same problem appears as
-cache_shared_cpu_map_setup() implements a similar logic. Consider the
-same 3rd Generation EPYC processor: CPUs in Core 1, that share the L1
-and L2 caches, have L1 and L2 instance ID as 1. For all the CPUs on
-the second chiplet, the L3 ID is also 1 leading to grouping on CPUs from
-Core 1 (1, 17) and the entire second chiplet (8-15, 24-31) as CPUs
-sharing one cache domain. This went undetected since x86 processors
-depended on arch specific populate_cache_leaves() method to repopulate
-the shared_cpus_map when CPU came back online until kernel release
-v6.3-rc5.
-
-Fixes: 198102c9103f ("cacheinfo: Fix shared_cpu_map to handle shared caches at different levels")
-Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Link: https://lore.kernel.org/r/20230508084115.1157-2-kprateek.nayak@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 1f211a1b929c ("net, sched: add clsact qdisc")
+Tested-by: Pedro Tammela <pctammela@mojatatu.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
+Signed-off-by: Peilin Ye <peilin.ye@bytedance.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/cacheinfo.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ net/sched/sch_api.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/base/cacheinfo.c b/drivers/base/cacheinfo.c
-index c440d1af197a4..26e13887aba46 100644
---- a/drivers/base/cacheinfo.c
-+++ b/drivers/base/cacheinfo.c
-@@ -280,6 +280,16 @@ static int cache_shared_cpu_map_setup(unsigned int cpu)
- 				continue;/* skip if itself or no cacheinfo */
- 			for (sib_index = 0; sib_index < cache_leaves(i); sib_index++) {
- 				sib_leaf = per_cpu_cacheinfo_idx(i, sib_index);
-+
-+				/*
-+				 * Comparing cache IDs only makes sense if the leaves
-+				 * belong to the same cache level of same type. Skip
-+				 * the check if level and type do not match.
-+				 */
-+				if (sib_leaf->level != this_leaf->level ||
-+				    sib_leaf->type != this_leaf->type)
-+					continue;
-+
- 				if (cache_leaves_are_shared(this_leaf, sib_leaf)) {
- 					cpumask_set_cpu(cpu, &sib_leaf->shared_cpu_map);
- 					cpumask_set_cpu(i, &this_leaf->shared_cpu_map);
-@@ -311,6 +321,16 @@ static void cache_shared_cpu_map_remove(unsigned int cpu)
- 
- 			for (sib_index = 0; sib_index < cache_leaves(sibling); sib_index++) {
- 				sib_leaf = per_cpu_cacheinfo_idx(sibling, sib_index);
-+
-+				/*
-+				 * Comparing cache IDs only makes sense if the leaves
-+				 * belong to the same cache level of same type. Skip
-+				 * the check if level and type do not match.
-+				 */
-+				if (sib_leaf->level != this_leaf->level ||
-+				    sib_leaf->type != this_leaf->type)
-+					continue;
-+
- 				if (cache_leaves_are_shared(this_leaf, sib_leaf)) {
- 					cpumask_clear_cpu(cpu, &sib_leaf->shared_cpu_map);
- 					cpumask_clear_cpu(sibling, &this_leaf->shared_cpu_map);
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index c3f89547d48b0..651dbcfeada62 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -1589,6 +1589,11 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 					NL_SET_ERR_MSG(extack, "Invalid qdisc name");
+ 					return -EINVAL;
+ 				}
++				if (q->flags & TCQ_F_INGRESS) {
++					NL_SET_ERR_MSG(extack,
++						       "Cannot regraft ingress or clsact Qdiscs");
++					return -EINVAL;
++				}
+ 				if (q == p ||
+ 				    (p && check_loop(q, p, 0))) {
+ 					NL_SET_ERR_MSG(extack, "Qdisc parent/child loop detected");
 -- 
 2.39.2
 
