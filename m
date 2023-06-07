@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFE4D726B6B
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:25:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D6B7726B6F
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:25:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233192AbjFGUZS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:25:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48542 "EHLO
+        id S233258AbjFGUZU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:25:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233488AbjFGUYz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:24:55 -0400
+        with ESMTP id S233607AbjFGUZB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:25:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E317F2717
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:24:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04B8C2128
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:24:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C2EB76442A
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:24:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1914C433D2;
-        Wed,  7 Jun 2023 20:24:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D49F64419
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:24:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 750EAC433EF;
+        Wed,  7 Jun 2023 20:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169467;
-        bh=zpV5SE+b+pNWUY2xCtVHyDVz/RSQi2tKBoj7a2cWFUE=;
+        s=korg; t=1686169469;
+        bh=DMdxAIZ3QQI7IlNKXGDSiFSRo8X9u/j0URNZEUqbExs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D1JHH/CXAILrjzU2emOtEP3u1cPEDLBc4HhDX9VShYjPHAdkrslktK1Per8LJYQ7U
-         dGes/5dMQY0ikPynYLGDIWyhRxXpy2P7HuE4Y4WunXt8meXS7TFeDovix5O1pblKdk
-         2ZfuwfAh4ZMh38mXu2N9BoofYWRtLQhraZmgQwVc=
+        b=yueFCzqrHtrLFsNLwWsV5ZyA/zqNG9LvRz8luTjmlCXNBSWy+tPcjTZCD5UTRlfx/
+         A1H0tau1TiF/tfX9/g6XLTrdaGQ2EKrgxSygx4KDzo27oPqVcwxS5RA4+jYBMFyrCO
+         TRwJe/Zh7Z5J/xEKGinEeaWhBsCrOX8Rt/pq2/i4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, lyndonli <Lyndon.Li@amd.com>,
+        Yunxiang Li <Yunxiang.Li@amd.com>,
+        Feifei Xu <Feifei.Xu@amd.com>,
+        Kenneth Feng <kenneth.feng@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 091/286] ASoC: Intel: soc-acpi-cht: Add quirk for Nextbook Ares 8A tablet
-Date:   Wed,  7 Jun 2023 22:13:10 +0200
-Message-ID: <20230607200926.037940022@linuxfoundation.org>
+Subject: [PATCH 6.3 092/286] drm/amdgpu: Use the default reset when loading or reloading the driver
+Date:   Wed,  7 Jun 2023 22:13:11 +0200
+Message-ID: <20230607200926.069979903@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
 References: <20230607200922.978677727@linuxfoundation.org>
@@ -55,70 +57,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: lyndonli <Lyndon.Li@amd.com>
 
-[ Upstream commit ec6f82b4c63cc68f8dc03316e725106d242706be ]
+[ Upstream commit 4eea7fb980dc44545a32eec92e2662053b34cd9d ]
 
-The Nextbook Ares 8A tablet which has Android as factory OS, has a buggy
-DSDT with both ESSX8316 and 10EC5651 ACPI devices.
+Below call trace and errors are observed when reloading
+amdgpu driver with the module parameter reset_method=3.
 
-This tablet actually uses an rt5651 codec, but the matching code ends up
-picking the ESSX8316 device, add a quirk to ignote the ESSX8316 device
-on this tablet.
+It should do a default reset when loading or reloading the
+driver, regardless of the module parameter reset_method.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Message-Id: <20230429104721.7176-1-hdegoede@redhat.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+v2: add comments inside and modify commit messages.
+
+[  +2.180243] [drm] psp gfx command ID_LOAD_TOC(0x20) failed
+and response status is (0x0)
+[  +0.000011] [drm:psp_hw_start [amdgpu]] *ERROR* Failed to load toc
+[  +0.000890] [drm:psp_hw_start [amdgpu]] *ERROR* PSP tmr init failed!
+[  +0.020683] [drm:amdgpu_fill_buffer [amdgpu]] *ERROR* Trying to
+clear memory with ring turned off.
+[  +0.000003] RIP: 0010:amdgpu_bo_release_notify+0x1ef/0x210 [amdgpu]
+[  +0.000004] Call Trace:
+[  +0.000003]  <TASK>
+[  +0.000008]  ttm_bo_release+0x2c4/0x330 [amdttm]
+[  +0.000026]  amdttm_bo_put+0x3c/0x70 [amdttm]
+[  +0.000020]  amdgpu_bo_free_kernel+0xe6/0x140 [amdgpu]
+[  +0.000728]  psp_v11_0_ring_destroy+0x34/0x60 [amdgpu]
+[  +0.000826]  psp_hw_init+0xe7/0x2f0 [amdgpu]
+[  +0.000813]  amdgpu_device_fw_loading+0x1ad/0x2d0 [amdgpu]
+[  +0.000731]  amdgpu_device_init.cold+0x108e/0x2002 [amdgpu]
+[  +0.001071]  ? do_pci_enable_device+0xe1/0x110
+[  +0.000011]  amdgpu_driver_load_kms+0x1a/0x160 [amdgpu]
+[  +0.000729]  amdgpu_pci_probe+0x179/0x3a0 [amdgpu]
+
+Signed-off-by: lyndonli <Lyndon.Li@amd.com>
+Signed-off-by: Yunxiang Li <Yunxiang.Li@amd.com>
+Reviewed-by: Feifei Xu <Feifei.Xu@amd.com>
+Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../intel/common/soc-acpi-intel-cht-match.c   | 26 +++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/sound/soc/intel/common/soc-acpi-intel-cht-match.c b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
-index 6beb00858c33f..cdcbf04b8832f 100644
---- a/sound/soc/intel/common/soc-acpi-intel-cht-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
-@@ -50,6 +50,31 @@ static struct snd_soc_acpi_mach *cht_quirk(void *arg)
- 		return mach;
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 464f0abc855e6..412cb3f1f8826 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -3558,6 +3558,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ 	int r, i;
+ 	bool px = false;
+ 	u32 max_MBps;
++	int tmp;
  
-+/*
-+ * Some tablets with Android factory OS have buggy DSDTs with an ESSX8316 device
-+ * in the ACPI tables. While they are not using an ESS8316 codec. These DSDTs
-+ * also have an ACPI device for the correct codec, ignore the ESSX8316.
-+ */
-+static const struct dmi_system_id cht_ess8316_not_present_table[] = {
-+	{
-+		/* Nextbook Ares 8A */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "CherryTrail"),
-+			DMI_MATCH(DMI_BIOS_VERSION, "M882"),
-+		},
-+	},
-+	{ }
-+};
-+
-+static struct snd_soc_acpi_mach *cht_ess8316_quirk(void *arg)
-+{
-+	if (dmi_check_system(cht_ess8316_not_present_table))
-+		return NULL;
-+
-+	return arg;
-+}
-+
- static const struct snd_soc_acpi_codecs rt5640_comp_ids = {
- 	.num_codecs = 2,
- 	.codecs = { "10EC5640", "10EC3276" },
-@@ -113,6 +138,7 @@ struct snd_soc_acpi_mach  snd_soc_acpi_intel_cherrytrail_machines[] = {
- 		.drv_name = "bytcht_es8316",
- 		.fw_filename = "intel/fw_sst_22a8.bin",
- 		.board = "bytcht_es8316",
-+		.machine_quirk = cht_ess8316_quirk,
- 		.sof_tplg_filename = "sof-cht-es8316.tplg",
- 	},
- 	/* some CHT-T platforms rely on RT5640, use Baytrail machine driver */
+ 	adev->shutdown = false;
+ 	adev->flags = flags;
+@@ -3779,7 +3780,13 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ 				}
+ 			}
+ 		} else {
++			tmp = amdgpu_reset_method;
++			/* It should do a default reset when loading or reloading the driver,
++			 * regardless of the module parameter reset_method.
++			 */
++			amdgpu_reset_method = AMD_RESET_METHOD_NONE;
+ 			r = amdgpu_asic_reset(adev);
++			amdgpu_reset_method = tmp;
+ 			if (r) {
+ 				dev_err(adev->dev, "asic reset on init failed\n");
+ 				goto failed;
 -- 
 2.39.2
 
