@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3CFA726F1B
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B93FC726F44
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:57:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235493AbjFGUzf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:55:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56488 "EHLO
+        id S235554AbjFGU5C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:57:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235400AbjFGUzY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:55:24 -0400
+        with ESMTP id S235548AbjFGU5A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:57:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02921E46
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:55:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D7B6211C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:56:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D212647E5
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:55:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 992E4C433D2;
-        Wed,  7 Jun 2023 20:55:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0CDF864813
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:56:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21166C433D2;
+        Wed,  7 Jun 2023 20:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171322;
-        bh=jQ2SRfdaLHEDz9/dvzphaiak2Xs0Yu6lZfQaTT2Vups=;
+        s=korg; t=1686171411;
+        bh=kCfysWGPr0GW7224XhZOKoTWBEDNsdA5cXnN6vUQLJc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WYrICApSMNgbetNKfzwPzBcdbNvFkWJPaN3MdnmTTKj+Gay4nctUa0XsX26+lqfQB
-         mucCWn4w9ByvDXP0LePbHG8RxKSj+na+NRSVEWjW0snpbklxZc13MTdmDCZH7bOBg7
-         QWXXFnKAoG7EY/FaeNqaFzB/SwDF5JsJ9Si+2q/g=
+        b=n4/oqpnLJ+pn2fQUfIvlVu3mF502ZHDFrMtYHn9J2yQ/1MF83/3wD9UGhCujeLJZP
+         7Td2x1MBEIybkc7Yyq0EXdFuvOJ6WW3Ekwh0evffbdmf9OJzrUyVtdp4frPlBq7qmH
+         Iyec6HjgG+975v9PkAoXEdVSHLP3kB0LmsyFEzGw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xingui Yang <yangxingui@huawei.com>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Jason Yan <yanaijie@huawei.com>
-Subject: [PATCH 5.4 72/99] ata: libata-scsi: Use correct device no in ata_find_dev()
-Date:   Wed,  7 Jun 2023 22:17:04 +0200
-Message-ID: <20230607200902.487002571@linuxfoundation.org>
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Cong Wang <xiyou.wangcong@gmail.com>,
+        Guillaume Nault <gnault@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.4 73/99] flow_dissector: work around stack frame size warning
+Date:   Wed,  7 Jun 2023 22:17:05 +0200
+Message-ID: <20230607200902.517691022@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
 References: <20230607200900.195572674@linuxfoundation.org>
@@ -54,96 +55,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 7f875850f20a42f488840c9df7af91ef7db2d576 upstream.
+commit 0af413bd3e2de73bcf0742ed556be4af83c71964 upstream.
 
-For devices not attached to a port multiplier and managed directly by
-libata, the device number passed to ata_find_dev() must always be lower
-than the maximum number of devices returned by ata_link_max_devices().
-That is 1 for SATA devices or 2 for an IDE link with master+slave
-devices. This device number is the SCSI device ID which matches these
-constraints as the IDs are generated per port and so never exceed the
-maximum number of devices for the link being used.
+The fl_flow_key structure is around 500 bytes, so having two of them
+on the stack in one function now exceeds the warning limit after an
+otherwise correct change:
 
-However, for libsas managed devices, SCSI device IDs are assigned per
-struct scsi_host, leading to device IDs for SATA devices that can be
-well in excess of libata per-link maximum number of devices. This
-results in ata_find_dev() to always return NULL for libsas managed
-devices except for the first device of the target scsi_host with ID
-(device number) equal to 0. This issue is visible by executing the
-hdparm utility, which fails. E.g.:
+net/sched/cls_flower.c:298:12: error: stack frame size of 1056 bytes in function 'fl_classify' [-Werror,-Wframe-larger-than=]
 
-hdparm -i /dev/sdX
-/dev/sdX:
-  HDIO_GET_IDENTITY failed: No message of desired type
+I suspect the fl_classify function could be reworked to only have one
+of them on the stack and modify it in place, but I could not work out
+how to do that.
 
-Fix this by rewriting ata_find_dev() to ignore the device number for
-non-PMP attached devices with a link with at most 1 device, that is SATA
-devices. For these, the device number 0 is always used to
-return the correct pointer to the struct ata_device of the port link.
-This change excludes IDE master/slave setups (maximum number of devices
-per link is 2) and port-multiplier attached devices. Also, to be
-consistant with the fact that SCSI device IDs and channel numbers used
-as device numbers are both unsigned int, change the devno argument of
-ata_find_dev() to unsigned int.
+As a somewhat hacky workaround, move one of them into an out-of-line
+function to reduce its scope. This does not necessarily reduce the stack
+usage of the outer function, but at least the second copy is removed
+from the stack during most of it and does not add up to whatever is
+called from there.
 
-Reported-by: Xingui Yang <yangxingui@huawei.com>
-Fixes: 41bda9c98035 ("libata-link: update hotplug to handle PMP links")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Jason Yan <yanaijie@huawei.com>
+I now see 552 bytes of stack usage for fl_classify(), plus 528 bytes
+for fl_mask_lookup().
+
+Fixes: 58cff782cc55 ("flow_dissector: Parse multiple MPLS Label Stack Entries")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
+Acked-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-scsi.c |   34 ++++++++++++++++++++++++++--------
- 1 file changed, 26 insertions(+), 8 deletions(-)
+ net/sched/cls_flower.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -3036,18 +3036,36 @@ static unsigned int atapi_xlat(struct at
- 	return 0;
- }
- 
--static struct ata_device *ata_find_dev(struct ata_port *ap, int devno)
-+static struct ata_device *ata_find_dev(struct ata_port *ap, unsigned int devno)
- {
--	if (!sata_pmp_attached(ap)) {
--		if (likely(devno >= 0 &&
--			   devno < ata_link_max_devices(&ap->link)))
-+	/*
-+	 * For the non-PMP case, ata_link_max_devices() returns 1 (SATA case),
-+	 * or 2 (IDE master + slave case). However, the former case includes
-+	 * libsas hosted devices which are numbered per scsi host, leading
-+	 * to devno potentially being larger than 0 but with each struct
-+	 * ata_device having its own struct ata_port and struct ata_link.
-+	 * To accommodate these, ignore devno and always use device number 0.
-+	 */
-+	if (likely(!sata_pmp_attached(ap))) {
-+		int link_max_devices = ata_link_max_devices(&ap->link);
-+
-+		if (link_max_devices == 1)
-+			return &ap->link.device[0];
-+
-+		if (devno < link_max_devices)
- 			return &ap->link.device[devno];
--	} else {
--		if (likely(devno >= 0 &&
--			   devno < ap->nr_pmp_links))
--			return &ap->pmp_link[devno].device[0];
-+
-+		return NULL;
- 	}
- 
-+	/*
-+	 * For PMP-attached devices, the device number corresponds to C
-+	 * (channel) of SCSI [H:C:I:L], indicating the port pmp link
-+	 * for the device.
-+	 */
-+	if (devno < ap->nr_pmp_links)
-+		return &ap->pmp_link[devno].device[0];
-+
+--- a/net/sched/cls_flower.c
++++ b/net/sched/cls_flower.c
+@@ -270,14 +270,16 @@ static struct cls_fl_filter *fl_lookup_r
  	return NULL;
  }
  
+-static struct cls_fl_filter *fl_lookup(struct fl_flow_mask *mask,
+-				       struct fl_flow_key *mkey,
+-				       struct fl_flow_key *key)
++static noinline_for_stack
++struct cls_fl_filter *fl_mask_lookup(struct fl_flow_mask *mask, struct fl_flow_key *key)
+ {
++	struct fl_flow_key mkey;
++
++	fl_set_masked_key(&mkey, key, mask);
+ 	if ((mask->flags & TCA_FLOWER_MASK_FLAGS_RANGE))
+-		return fl_lookup_range(mask, mkey, key);
++		return fl_lookup_range(mask, &mkey, key);
+ 
+-	return __fl_lookup(mask, mkey);
++	return __fl_lookup(mask, &mkey);
+ }
+ 
+ static u16 fl_ct_info_to_flower_map[] = {
+@@ -297,7 +299,6 @@ static int fl_classify(struct sk_buff *s
+ 		       struct tcf_result *res)
+ {
+ 	struct cls_fl_head *head = rcu_dereference_bh(tp->root);
+-	struct fl_flow_key skb_mkey;
+ 	struct fl_flow_key skb_key;
+ 	struct fl_flow_mask *mask;
+ 	struct cls_fl_filter *f;
+@@ -317,9 +318,7 @@ static int fl_classify(struct sk_buff *s
+ 				    ARRAY_SIZE(fl_ct_info_to_flower_map));
+ 		skb_flow_dissect(skb, &mask->dissector, &skb_key, 0);
+ 
+-		fl_set_masked_key(&skb_mkey, &skb_key, mask);
+-
+-		f = fl_lookup(mask, &skb_mkey, &skb_key);
++		f = fl_mask_lookup(mask, &skb_key);
+ 		if (f && !tc_skip_sw(f->flags)) {
+ 			*res = f->res;
+ 			return tcf_exts_exec(skb, &f->exts, res);
 
 
