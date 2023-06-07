@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7467726C33
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C85FE726CC3
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:36:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231214AbjFGUbZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:31:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57700 "EHLO
+        id S234284AbjFGUgO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:36:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233631AbjFGUbX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:31:23 -0400
+        with ESMTP id S234049AbjFGUfz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:35:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAC461BF0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:31:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E1E12685
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:35:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4BF18644FE
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:31:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E064C433D2;
-        Wed,  7 Jun 2023 20:31:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E09B6457D
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:35:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD51C433D2;
+        Wed,  7 Jun 2023 20:35:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169881;
-        bh=1i9jaTnwUyi8DytjI/0hb0xtZDSZBWDudKxVi72+USA=;
+        s=korg; t=1686170141;
+        bh=dW1NgTsNOzopuYcGNJ5kIrt/3hgndm+ge9v3hE0088I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yRQaPwsH3LmiLKBn18VxTCXTKzGB8Gggye1stwlDonKKnlui8D743zb4Fd5EfZUZQ
-         Admv1XqXuQ6qQCJFMLNVGQ6k6It3+kFxFLHQzJvi/PR5GRRAPCp0tWAxkTkd47MuCy
-         enEo4jAFTq47fvs7yliGS4YN5fNPK9sHHxqjlgu0=
+        b=IYgrqgA0bGJeBRcPBUw6oTNbmwqN7IuCk+24yfsuJ6+TTNoeR9g/hztXoq1Dbe7YB
+         NnBx0OTR8JG2ecPdOsEe+fufDXSt0N3EViSFIqRjrBhp5DPFyJwdx4kC9F6iM/fBVk
+         wKl2ynffflcQNvoJmIXhlQ1+KZzNRbec1xSj2zO8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>
-Subject: [PATCH 6.3 249/286] selftests: mptcp: connect: skip if MPTCP is not supported
+        patches@lists.linux.dev,
+        =?UTF-8?q?Niklas=20S=C3=B6derlund?= 
+        <niklas.soderlund+renesas@ragnatech.se>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 31/88] media: rcar-vin: Select correct interrupt mode for V4L2_FIELD_ALTERNATE
 Date:   Wed,  7 Jun 2023 22:15:48 +0200
-Message-ID: <20230607200931.428927425@linuxfoundation.org>
+Message-ID: <20230607200900.148536350@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,109 +56,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-commit d83013bdf90a7994a474b0e650a7fc94b0d4ded6 upstream.
+[ Upstream commit e10707d5865c90d3dfe4ef589ce02ff4287fef85 ]
 
-Selftests are supposed to run on any kernels, including the old ones not
-supporting MPTCP.
+When adding proper support for V4L2_FIELD_ALTERNATE it was missed that
+this field format should trigger an interrupt for each field, not just
+for the whole frame. Fix this by marking it as progressive in the
+capture setup, which will then select the correct interrupt mode.
 
-A new check is then added to make sure MPTCP is supported. If not, the
-test stops and is marked as "skipped". Note that this check can also
-mark the test as failed if 'SELFTESTS_MPTCP_LIB_EXPECT_ALL_FEATURES' env
-var is set to 1: by doing that, we can make sure a test is not being
-skipped by mistake.
+Tested on both Gen2 and Gen3 with the result of a doubling of the frame
+rate for V4L2_FIELD_ALTERNATE. From a PAL video source the frame rate is
+now 50, which is expected for alternate field capture.
 
-A new shared file is added here to be able to re-used the same check in
-the different selftests we have.
-
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
-Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
-Cc: stable@vger.kernel.org
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/Makefile         |    2 -
- tools/testing/selftests/net/mptcp/mptcp_connect.sh |    4 ++
- tools/testing/selftests/net/mptcp/mptcp_lib.sh     |   40 +++++++++++++++++++++
- 3 files changed, 45 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/net/mptcp/mptcp_lib.sh
+ drivers/media/platform/rcar-vin/rcar-dma.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/tools/testing/selftests/net/mptcp/Makefile
-+++ b/tools/testing/selftests/net/mptcp/Makefile
-@@ -9,7 +9,7 @@ TEST_PROGS := mptcp_connect.sh pm_netlin
- 
- TEST_GEN_FILES = mptcp_connect pm_nl_ctl mptcp_sockopt mptcp_inq
- 
--TEST_FILES := settings
-+TEST_FILES := mptcp_lib.sh settings
- 
- EXTRA_CLEAN := *.pcap
- 
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-@@ -1,6 +1,8 @@
- #!/bin/bash
- # SPDX-License-Identifier: GPL-2.0
- 
-+. "$(dirname "${0}")/mptcp_lib.sh"
-+
- time_start=$(date +%s)
- 
- optstring="S:R:d:e:l:r:h4cm:f:tC"
-@@ -141,6 +143,8 @@ cleanup()
- 	done
- }
- 
-+mptcp_lib_check_mptcp
-+
- ip -Version > /dev/null 2>&1
- if [ $? -ne 0 ];then
- 	echo "SKIP: Could not run test without ip tool"
---- /dev/null
-+++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-@@ -0,0 +1,40 @@
-+#! /bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+readonly KSFT_FAIL=1
-+readonly KSFT_SKIP=4
-+
-+# SELFTESTS_MPTCP_LIB_EXPECT_ALL_FEATURES env var can be set when validating all
-+# features using the last version of the kernel and the selftests to make sure
-+# a test is not being skipped by mistake.
-+mptcp_lib_expect_all_features() {
-+	[ "${SELFTESTS_MPTCP_LIB_EXPECT_ALL_FEATURES:-}" = "1" ]
-+}
-+
-+# $1: msg
-+mptcp_lib_fail_if_expected_feature() {
-+	if mptcp_lib_expect_all_features; then
-+		echo "ERROR: missing feature: ${*}"
-+		exit ${KSFT_FAIL}
-+	fi
-+
-+	return 1
-+}
-+
-+# $1: file
-+mptcp_lib_has_file() {
-+	local f="${1}"
-+
-+	if [ -f "${f}" ]; then
-+		return 0
-+	fi
-+
-+	mptcp_lib_fail_if_expected_feature "${f} file not found"
-+}
-+
-+mptcp_lib_check_mptcp() {
-+	if ! mptcp_lib_has_file "/proc/sys/net/mptcp/enabled"; then
-+		echo "SKIP: MPTCP support is not available"
-+		exit ${KSFT_SKIP}
-+	fi
-+}
+diff --git a/drivers/media/platform/rcar-vin/rcar-dma.c b/drivers/media/platform/rcar-vin/rcar-dma.c
+index 70a8cc433a03f..cc28e2cb23f11 100644
+--- a/drivers/media/platform/rcar-vin/rcar-dma.c
++++ b/drivers/media/platform/rcar-vin/rcar-dma.c
+@@ -633,6 +633,7 @@ static int rvin_setup(struct rvin_dev *vin)
+ 		vnmc = VNMC_IM_FULL | VNMC_FOC;
+ 		break;
+ 	case V4L2_FIELD_NONE:
++	case V4L2_FIELD_ALTERNATE:
+ 		vnmc = VNMC_IM_ODD_EVEN;
+ 		progressive = true;
+ 		break;
+-- 
+2.39.2
+
 
 
