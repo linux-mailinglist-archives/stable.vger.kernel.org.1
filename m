@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 523F4726AAC
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:19:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD9E8726C11
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:30:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232542AbjFGUTP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:19:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44192 "EHLO
+        id S233607AbjFGUai (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:30:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232361AbjFGUTF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:19:05 -0400
+        with ESMTP id S233595AbjFGUaV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4370326A1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:18:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F07D1BF0
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:29:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 15B8860F15
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:18:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A56C433EF;
-        Wed,  7 Jun 2023 20:18:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 39029644D2
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:29:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A50BC433EF;
+        Wed,  7 Jun 2023 20:29:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169084;
-        bh=SftzRtwTEFPiZgJQTcW27XiDG/Ojd+U3IFwd4o4KdNY=;
+        s=korg; t=1686169794;
+        bh=i+z53TWJk40cu7KVEGwfln1kPQX+XtUYvQiEwjPukBg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wpvJAZYrzt/UoWkFryYvC4XbfJVoH1deQy+2G0rA/4sitd8JtXBbxGaQIjuaRfNiC
-         0WXFkbCMUPRwl5JIRbyRGddOQqHLSbMiPZfiLCFyVdZcYXNfvlsEoFt/IZut3v2z70
-         SNFS2v1Cd3WStCzQPrKnNQTjhXFYc3bK3o8DBRpA=
+        b=Ub4/8VsrnhtvESj8Wh595jaMKA2rbtZoaswcY9lNLQILzFW7+pfmICZ5hVpsuoyrp
+         YtX/zkaP06byZe2eHZb4M2CwOwYAXdd2/my+owV6xX/AKJWTGR3VYTbHQSbZqY0vAO
+         uHoS/zULngrDOrspNxQQyG4m2EAvImPQ02w5u6Sw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 01/61] power: supply: bq27xxx: After charger plug in/out wait 0.5s for things to stabilize
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Bart Van Assche <bvanassche@acm.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.3 216/286] scsi: stex: Fix gcc 13 warnings
 Date:   Wed,  7 Jun 2023 22:15:15 +0200
-Message-ID: <20230607200835.697886180@linuxfoundation.org>
+Message-ID: <20230607200930.315374817@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-References: <20230607200835.310274198@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -56,40 +54,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 59a99cd462fbdf71f4e845e09f37783035088b4f ]
+commit 6d074ce231772c66e648a61f6bd2245e7129d1f5 upstream.
 
-bq27xxx_external_power_changed() gets called when the charger is plugged
-in or out. Rather then immediately scheduling an update wait 0.5 seconds
-for things to stabilize, so that e.g. the (dis)charge current is stable
-when bq27xxx_battery_update() runs.
+gcc 13 may assign another type to enumeration constants than gcc 12. Split
+the large enum at the top of source file stex.c such that the type of the
+constants used in time expressions is changed back to the same type chosen
+by gcc 12. This patch suppresses compiler warnings like this one:
 
-Fixes: 740b755a3b34 ("bq27x00: Poll battery state")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In file included from ./include/linux/bitops.h:7,
+                 from ./include/linux/kernel.h:22,
+                 from drivers/scsi/stex.c:13:
+drivers/scsi/stex.c: In function ‘stex_common_handshake’:
+./include/linux/typecheck.h:12:25: error: comparison of distinct pointer types lacks a cast [-Werror]
+   12 |         (void)(&__dummy == &__dummy2); \
+      |                         ^~
+./include/linux/jiffies.h:106:10: note: in expansion of macro ‘typecheck’
+  106 |          typecheck(unsigned long, b) && \
+      |          ^~~~~~~~~
+drivers/scsi/stex.c:1035:29: note: in expansion of macro ‘time_after’
+ 1035 |                         if (time_after(jiffies, before + MU_MAX_DELAY * HZ)) {
+      |                             ^~~~~~~~~~
+
+See also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107405.
+
+Cc: stable@vger.kernel.org
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20230529195034.3077-1-bvanassche@acm.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/bq27xxx_battery.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/stex.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
-index 37b5743ce35e4..49d351027d0e8 100644
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -1817,8 +1817,8 @@ static void bq27xxx_external_power_changed(struct power_supply *psy)
- {
- 	struct bq27xxx_device_info *di = power_supply_get_drvdata(psy);
+--- a/drivers/scsi/stex.c
++++ b/drivers/scsi/stex.c
+@@ -109,7 +109,9 @@ enum {
+ 	TASK_ATTRIBUTE_HEADOFQUEUE		= 0x1,
+ 	TASK_ATTRIBUTE_ORDERED			= 0x2,
+ 	TASK_ATTRIBUTE_ACA			= 0x4,
++};
  
--	cancel_delayed_work_sync(&di->work);
--	schedule_delayed_work(&di->work, 0);
-+	/* After charger plug in/out wait 0.5s for things to stabilize */
-+	mod_delayed_work(system_wq, &di->work, HZ / 2);
- }
++enum {
+ 	SS_STS_NORMAL				= 0x80000000,
+ 	SS_STS_DONE				= 0x40000000,
+ 	SS_STS_HANDSHAKE			= 0x20000000,
+@@ -121,7 +123,9 @@ enum {
+ 	SS_I2H_REQUEST_RESET			= 0x2000,
  
- int bq27xxx_battery_setup(struct bq27xxx_device_info *di)
--- 
-2.39.2
-
+ 	SS_MU_OPERATIONAL			= 0x80000000,
++};
+ 
++enum {
+ 	STEX_CDB_LENGTH				= 16,
+ 	STATUS_VAR_LEN				= 128,
+ 
 
 
