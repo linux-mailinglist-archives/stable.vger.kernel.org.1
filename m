@@ -2,48 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7288726AAE
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:19:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26A24726D88
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:43:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231843AbjFGUTV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:19:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44258 "EHLO
+        id S234524AbjFGUnQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:43:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231577AbjFGUTH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:19:07 -0400
+        with ESMTP id S234440AbjFGUnJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:43:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD3D0270F
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:18:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5052B2733
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:42:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DB6286130B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:18:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1657C433D2;
-        Wed,  7 Jun 2023 20:18:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B2E76462E
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:42:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D97AC433EF;
+        Wed,  7 Jun 2023 20:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169092;
-        bh=PsdLhYUW2/2yOHPd/tsa7m1zstJtfVAA7v3QvF6juMM=;
+        s=korg; t=1686170563;
+        bh=P12QkZF3C6C16RHWjPfDDVPk4kIX+N03V18889yx9TE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RufZpLL/+mktY8GyFXEZAtrq+uPz4tnizSWOpe/I/y4UptWIf35HpmmXcwPbEB5Yh
-         W4bczyfAtenL4p3nAj8SeLlc/dv6CyHZi4s36PSNnrusgxC8qrJNlgPVqhIwF/BiSj
-         vK+rJnt3KXM4dCnNUKu/ZxOvAEDHCfh7wB1kGrtY=
+        b=jLjk8QxUHE4bZcC5T52plUIMHea/aIzhu2z1ZlDFpOFjBd2O6czqWjDFZt4o0cMXl
+         nO09yZycsi8pZDleLMT7oYXtTCIbrMuODAzcb3Kgvx/Mo5MLOBh74ZBihTV3KxeZtq
+         KuaT9EeoZ+0g4W8y/Tiusjw8Fw5eodq9+RezMUHo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Haibo Li <haibo.li@mediatek.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        patches@lists.linux.dev, Loic Poulain <loic.poulain@linaro.org>,
+        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 12/61] ARM: 9295/1: unwind:fix unwind abort for uleb128 case
+Subject: [PATCH 6.1 133/225] block: Deny writable memory mapping if block is read-only
 Date:   Wed,  7 Jun 2023 22:15:26 +0200
-Message-ID: <20230607200839.367241955@linuxfoundation.org>
+Message-ID: <20230607200918.720994292@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-References: <20230607200835.310274198@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,91 +54,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Haibo Li <haibo.li@mediatek.com>
+From: Loic Poulain <loic.poulain@linaro.org>
 
-[ Upstream commit fa3eeb638de0c1a9d2d860e5b48259facdd65176 ]
+[ Upstream commit 69baa3a623fd2e58624f24f2f23d46f87b817c93 ]
 
-When unwind instruction is 0xb2,the subsequent instructions
-are uleb128 bytes.
-For now,it uses only the first uleb128 byte in code.
+User should not be able to write block device if it is read-only at
+block level (e.g force_ro attribute). This is ensured in the regular
+fops write operation (blkdev_write_iter) but not when writing via
+user mapping (mmap), allowing user to actually write a read-only
+block device via a PROT_WRITE mapping.
 
-For vsp increments of 0x204~0x400,use one uleb128 byte like below:
-0xc06a00e4 <unwind_test_work>: 0x80b27fac
-  Compact model index: 0
-  0xb2 0x7f vsp = vsp + 1024
-  0xac      pop {r4, r5, r6, r7, r8, r14}
+Example: This can lead to integrity issue of eMMC boot partition
+(e.g mmcblk0boot0) which is read-only by default.
 
-For vsp increments larger than 0x400,use two uleb128 bytes like below:
-0xc06a00e4 <unwind_test_work>: @0xc0cc9e0c
-  Compact model index: 1
-  0xb2 0x81 0x01 vsp = vsp + 1032
-  0xac      pop {r4, r5, r6, r7, r8, r14}
-The unwind works well since the decoded uleb128 byte is also 0x81.
+To fix this issue, simply deny shared writable mapping if the block
+is readonly.
 
-For vsp increments larger than 0x600,use two uleb128 bytes like below:
-0xc06a00e4 <unwind_test_work>: @0xc0cc9e0c
-  Compact model index: 1
-  0xb2 0x81 0x02 vsp = vsp + 1544
-  0xac      pop {r4, r5, r6, r7, r8, r14}
-In this case,the decoded uleb128 result is 0x101(vsp=0x204+(0x101<<2)).
-While the uleb128 used in code is 0x81(vsp=0x204+(0x81<<2)).
-The unwind aborts at this frame since it gets incorrect vsp.
+Note: Block remains writable if switch to read-only is performed
+after the initial mapping, but this is expected behavior according
+to commit a32e236eb93e ("Partially revert "block: fail op_is_write()
+requests to read-only partitions"")'.
 
-To fix this,add uleb128 decode to cover all the above case.
-
-Signed-off-by: Haibo Li <haibo.li@mediatek.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20230510074223.991297-1-loic.poulain@linaro.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/kernel/unwind.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ block/fops.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/kernel/unwind.c b/arch/arm/kernel/unwind.c
-index 314cfb232a635..f2bb090373c67 100644
---- a/arch/arm/kernel/unwind.c
-+++ b/arch/arm/kernel/unwind.c
-@@ -313,6 +313,29 @@ static int unwind_exec_pop_subset_r0_to_r3(struct unwind_ctrl_block *ctrl,
- 	return URC_OK;
+diff --git a/block/fops.c b/block/fops.c
+index e406aa605327e..6197d1c41652d 100644
+--- a/block/fops.c
++++ b/block/fops.c
+@@ -685,6 +685,16 @@ static long blkdev_fallocate(struct file *file, int mode, loff_t start,
+ 	return error;
  }
  
-+static unsigned long unwind_decode_uleb128(struct unwind_ctrl_block *ctrl)
++static int blkdev_mmap(struct file *file, struct vm_area_struct *vma)
 +{
-+	unsigned long bytes = 0;
-+	unsigned long insn;
-+	unsigned long result = 0;
++	struct inode *bd_inode = bdev_file_inode(file);
 +
-+	/*
-+	 * unwind_get_byte() will advance `ctrl` one instruction at a time, so
-+	 * loop until we get an instruction byte where bit 7 is not set.
-+	 *
-+	 * Note: This decodes a maximum of 4 bytes to output 28 bits data where
-+	 * max is 0xfffffff: that will cover a vsp increment of 1073742336, hence
-+	 * it is sufficient for unwinding the stack.
-+	 */
-+	do {
-+		insn = unwind_get_byte(ctrl);
-+		result |= (insn & 0x7f) << (bytes * 7);
-+		bytes++;
-+	} while (!!(insn & 0x80) && (bytes != sizeof(result)));
++	if (bdev_read_only(I_BDEV(bd_inode)))
++		return generic_file_readonly_mmap(file, vma);
 +
-+	return result;
++	return generic_file_mmap(file, vma);
 +}
 +
- /*
-  * Execute the current unwind instruction.
-  */
-@@ -366,7 +389,7 @@ static int unwind_exec_insn(struct unwind_ctrl_block *ctrl)
- 		if (ret)
- 			goto error;
- 	} else if (insn == 0xb2) {
--		unsigned long uleb128 = unwind_get_byte(ctrl);
-+		unsigned long uleb128 = unwind_decode_uleb128(ctrl);
- 
- 		ctrl->vrs[SP] += 0x204 + (uleb128 << 2);
- 	} else {
+ const struct file_operations def_blk_fops = {
+ 	.open		= blkdev_open,
+ 	.release	= blkdev_close,
+@@ -692,7 +702,7 @@ const struct file_operations def_blk_fops = {
+ 	.read_iter	= blkdev_read_iter,
+ 	.write_iter	= blkdev_write_iter,
+ 	.iopoll		= iocb_bio_iopoll,
+-	.mmap		= generic_file_mmap,
++	.mmap		= blkdev_mmap,
+ 	.fsync		= blkdev_fsync,
+ 	.unlocked_ioctl	= blkdev_ioctl,
+ #ifdef CONFIG_COMPAT
 -- 
 2.39.2
 
