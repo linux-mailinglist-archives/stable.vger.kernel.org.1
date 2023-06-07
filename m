@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B773A726CB6
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1301726EFB
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:54:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233962AbjFGUfv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:35:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34564 "EHLO
+        id S235396AbjFGUyc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:54:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234042AbjFGUfj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:35:39 -0400
+        with ESMTP id S235460AbjFGUyR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 300832688
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:35:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 466EF2132
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:54:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ECA4564572
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:35:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 004D4C433EF;
-        Wed,  7 Jun 2023 20:35:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A709C647C2
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:54:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4DEC4339B;
+        Wed,  7 Jun 2023 20:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170125;
-        bh=3SbaqRbH2oSNUkTcwM2/rB6CqOh2rl8SqM/zl4acoxM=;
+        s=korg; t=1686171254;
+        bh=/rBeYQlibcqn5fzQSak2topt9pj/KiQJNTyVZ/Oqy+8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2M92iFFa/OvvQO0xCTYNArYKAtszszleP3V9zbhDmsy3MIqU+uJKkL1DZWz/IafdT
-         f9iNx6FWYl6GwEqjrli0LV3h3cyerIugaHTMfgDY8KjoPNdhjYxsa2sLnQjYYwwuF7
-         EUYtN5aRLaYsqli4+8VB2NWFzYbpAHmaCqJI8QLk=
+        b=BZB/Si9dEfoHTUsu9l1qP2oZP8IfEkI1y5IIJnSpD7G/b8HeZblEZCRyDzGdNasS6
+         CO2OgQBDUxH1ho7vNBOreXzUuPDdQ+SZhZmncPUQmEGixxxuHjCummLkqkr6UNUbFJ
+         arOFu9a2uHntAnln9jKqiyyRRZgoCw8RuCEGGP2I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
+        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Vlad Buslov <vladbu@nvidia.com>,
+        Peilin Ye <peilin.ye@bytedance.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 53/88] ARM: dts: stm32: add pin map for CAN controller on stm32f7
+Subject: [PATCH 5.4 18/99] net/sched: Reserve TC_H_INGRESS (TC_H_CLSACT) for ingress (clsact) Qdiscs
 Date:   Wed,  7 Jun 2023 22:16:10 +0200
-Message-ID: <20230607200900.900466040@linuxfoundation.org>
+Message-ID: <20230607200900.826926556@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,113 +57,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Peilin Ye <peilin.ye@bytedance.com>
 
-[ Upstream commit 011644249686f2675e142519cd59e81e04cfc231 ]
+[ Upstream commit f85fa45d4a9408d98c46c8fa45ba2e3b2f4bf219 ]
 
-Add pin configurations for using CAN controller on stm32f7.
+Currently it is possible to add e.g. an HTB Qdisc under ffff:fff1
+(TC_H_INGRESS, TC_H_CLSACT):
 
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Link: https://lore.kernel.org/all/20230427204540.3126234-4-dario.binacchi@amarulasolutions.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+  $ ip link add name ifb0 type ifb
+  $ tc qdisc add dev ifb0 parent ffff:fff1 htb
+  $ tc qdisc add dev ifb0 clsact
+  Error: Exclusivity flag on, cannot modify.
+  $ drgn
+  ...
+  >>> ifb0 = netdev_get_by_name(prog, "ifb0")
+  >>> qdisc = ifb0.ingress_queue.qdisc_sleeping
+  >>> print(qdisc.ops.id.string_().decode())
+  htb
+  >>> qdisc.flags.value_() # TCQ_F_INGRESS
+  2
+
+Only allow ingress and clsact Qdiscs under ffff:fff1.  Return -EINVAL
+for everything else.  Make TCQ_F_INGRESS a static flag of ingress and
+clsact Qdiscs.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 1f211a1b929c ("net, sched: add clsact qdisc")
+Tested-by: Pedro Tammela <pctammela@mojatatu.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
+Signed-off-by: Peilin Ye <peilin.ye@bytedance.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/stm32f7-pinctrl.dtsi | 82 ++++++++++++++++++++++++++
- 1 file changed, 82 insertions(+)
+ net/sched/sch_api.c     | 7 ++++++-
+ net/sched/sch_ingress.c | 4 ++--
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/stm32f7-pinctrl.dtsi b/arch/arm/boot/dts/stm32f7-pinctrl.dtsi
-index 9314128df1859..639a6b65749f2 100644
---- a/arch/arm/boot/dts/stm32f7-pinctrl.dtsi
-+++ b/arch/arm/boot/dts/stm32f7-pinctrl.dtsi
-@@ -284,6 +284,88 @@
- 					slew-rate = <2>;
- 				};
- 			};
-+
-+			can1_pins_a: can1-0 {
-+				pins1 {
-+					pinmux = <STM32_PINMUX('A', 12, AF9)>; /* CAN1_TX */
-+				};
-+				pins2 {
-+					pinmux = <STM32_PINMUX('A', 11, AF9)>; /* CAN1_RX */
-+					bias-pull-up;
-+				};
-+			};
-+
-+			can1_pins_b: can1-1 {
-+				pins1 {
-+					pinmux = <STM32_PINMUX('B', 9, AF9)>; /* CAN1_TX */
-+				};
-+				pins2 {
-+					pinmux = <STM32_PINMUX('B', 8, AF9)>; /* CAN1_RX */
-+					bias-pull-up;
-+				};
-+			};
-+
-+			can1_pins_c: can1-2 {
-+				pins1 {
-+					pinmux = <STM32_PINMUX('D', 1, AF9)>; /* CAN1_TX */
-+				};
-+				pins2 {
-+					pinmux = <STM32_PINMUX('D', 0, AF9)>; /* CAN1_RX */
-+					bias-pull-up;
-+
-+				};
-+			};
-+
-+			can1_pins_d: can1-3 {
-+				pins1 {
-+					pinmux = <STM32_PINMUX('H', 13, AF9)>; /* CAN1_TX */
-+				};
-+				pins2 {
-+					pinmux = <STM32_PINMUX('H', 14, AF9)>; /* CAN1_RX */
-+					bias-pull-up;
-+
-+				};
-+			};
-+
-+			can2_pins_a: can2-0 {
-+				pins1 {
-+					pinmux = <STM32_PINMUX('B', 6, AF9)>; /* CAN2_TX */
-+				};
-+				pins2 {
-+					pinmux = <STM32_PINMUX('B', 5, AF9)>; /* CAN2_RX */
-+					bias-pull-up;
-+				};
-+			};
-+
-+			can2_pins_b: can2-1 {
-+				pins1 {
-+					pinmux = <STM32_PINMUX('B', 13, AF9)>; /* CAN2_TX */
-+				};
-+				pins2 {
-+					pinmux = <STM32_PINMUX('B', 12, AF9)>; /* CAN2_RX */
-+					bias-pull-up;
-+				};
-+			};
-+
-+			can3_pins_a: can3-0 {
-+				pins1 {
-+					pinmux = <STM32_PINMUX('A', 15, AF11)>; /* CAN3_TX */
-+				};
-+				pins2 {
-+					pinmux = <STM32_PINMUX('A', 8, AF11)>; /* CAN3_RX */
-+					bias-pull-up;
-+				};
-+			};
-+
-+			can3_pins_b: can3-1 {
-+				pins1 {
-+					pinmux = <STM32_PINMUX('B', 4, AF11)>;  /* CAN3_TX */
-+				};
-+				pins2 {
-+					pinmux = <STM32_PINMUX('B', 3, AF11)>; /* CAN3_RX */
-+					bias-pull-up;
-+				};
-+			};
- 		};
- 	};
- };
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index 67d6bc97e5fe9..cd6af51bd9ff2 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -1214,7 +1214,12 @@ static struct Qdisc *qdisc_create(struct net_device *dev,
+ 	sch->parent = parent;
+ 
+ 	if (handle == TC_H_INGRESS) {
+-		sch->flags |= TCQ_F_INGRESS;
++		if (!(sch->flags & TCQ_F_INGRESS)) {
++			NL_SET_ERR_MSG(extack,
++				       "Specified parent ID is reserved for ingress and clsact Qdiscs");
++			err = -EINVAL;
++			goto err_out3;
++		}
+ 		handle = TC_H_MAKE(TC_H_INGRESS, 0);
+ 	} else {
+ 		if (handle == 0) {
+diff --git a/net/sched/sch_ingress.c b/net/sched/sch_ingress.c
+index 9f1ed810b7b89..28168799ca1b8 100644
+--- a/net/sched/sch_ingress.c
++++ b/net/sched/sch_ingress.c
+@@ -133,7 +133,7 @@ static struct Qdisc_ops ingress_qdisc_ops __read_mostly = {
+ 	.cl_ops			=	&ingress_class_ops,
+ 	.id			=	"ingress",
+ 	.priv_size		=	sizeof(struct ingress_sched_data),
+-	.static_flags		=	TCQ_F_CPUSTATS,
++	.static_flags		=	TCQ_F_INGRESS | TCQ_F_CPUSTATS,
+ 	.init			=	ingress_init,
+ 	.destroy		=	ingress_destroy,
+ 	.dump			=	ingress_dump,
+@@ -272,7 +272,7 @@ static struct Qdisc_ops clsact_qdisc_ops __read_mostly = {
+ 	.cl_ops			=	&clsact_class_ops,
+ 	.id			=	"clsact",
+ 	.priv_size		=	sizeof(struct clsact_sched_data),
+-	.static_flags		=	TCQ_F_CPUSTATS,
++	.static_flags		=	TCQ_F_INGRESS | TCQ_F_CPUSTATS,
+ 	.init			=	clsact_init,
+ 	.destroy		=	clsact_destroy,
+ 	.dump			=	ingress_dump,
 -- 
 2.39.2
 
