@@ -2,44 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F424726DA6
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:44:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48D22726EC5
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:52:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234616AbjFGUoZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:44:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44742 "EHLO
+        id S235295AbjFGUwl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:52:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234637AbjFGUoY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:24 -0400
+        with ESMTP id S235305AbjFGUwj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:52:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B64B026B9
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:44:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16975FC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:52:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7970664653
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:44:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6634DC433D2;
-        Wed,  7 Jun 2023 20:44:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DEF0964773
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:52:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22E8C433EF;
+        Wed,  7 Jun 2023 20:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170642;
-        bh=zzZSSmB0wH02HYcv+hmS5GyQAgmheHLUAxCU+Ie+iuM=;
+        s=korg; t=1686171158;
+        bh=gp+VZ8i6KYmCDTuTEW/Nl3brvb4biazYO7VaJZ3s4OQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sNobdfjqiSELF9+yb4GR/qJJO4yPslmuCgTqZNT/k1/AYHtpZpnKk4TAFho45METk
-         uUdh4k8z9xyEtBMT8BoVxVkwlz/PYg7NdPtAMjXcx/8sAvIfhrGFWir409FqV32BQD
-         7OajzQ006JphEHxeQ2r3m8lDONpisfpTGibDt+Jc=
+        b=zmScsBoupIHED1QVUbkmJrEUVA+WBn7gmivyB6Ov2aTiAevfVrRF5XSdFfFSWdAiX
+         9N9Oby6D8AaYLXIVqz1upmOKPw87W5e3Jor+8+T/CZyegDNTr0FScMnMzdAV7iIAqm
+         qFeSeusuBuk/xQGtkk+e29jiAGR/uHxcqanOtxjk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xingui Yang <yangxingui@huawei.com>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Jason Yan <yanaijie@huawei.com>
-Subject: [PATCH 6.1 163/225] ata: libata-scsi: Use correct device no in ata_find_dev()
+        patches@lists.linux.dev,
+        Hongguang Gao <hongguang.gao@broadcom.com>,
+        Ajit Khaparde <ajit.khaparde@broadcom.com>,
+        Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 04/99] RDMA/bnxt_re: Fix return value of bnxt_re_process_raw_qp_pkt_rx
 Date:   Wed,  7 Jun 2023 22:15:56 +0200
-Message-ID: <20230607200919.731407747@linuxfoundation.org>
+Message-ID: <20230607200900.360790564@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,96 +58,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-commit 7f875850f20a42f488840c9df7af91ef7db2d576 upstream.
+[ Upstream commit 0fa0d520e2a878cb4c94c4dc84395905d3f14f54 ]
 
-For devices not attached to a port multiplier and managed directly by
-libata, the device number passed to ata_find_dev() must always be lower
-than the maximum number of devices returned by ata_link_max_devices().
-That is 1 for SATA devices or 2 for an IDE link with master+slave
-devices. This device number is the SCSI device ID which matches these
-constraints as the IDs are generated per port and so never exceed the
-maximum number of devices for the link being used.
+bnxt_re_process_raw_qp_pkt_rx() always return 0 and ignores the return
+value of bnxt_re_post_send_shadow_qp().
 
-However, for libsas managed devices, SCSI device IDs are assigned per
-struct scsi_host, leading to device IDs for SATA devices that can be
-well in excess of libata per-link maximum number of devices. This
-results in ata_find_dev() to always return NULL for libsas managed
-devices except for the first device of the target scsi_host with ID
-(device number) equal to 0. This issue is visible by executing the
-hdparm utility, which fails. E.g.:
-
-hdparm -i /dev/sdX
-/dev/sdX:
-  HDIO_GET_IDENTITY failed: No message of desired type
-
-Fix this by rewriting ata_find_dev() to ignore the device number for
-non-PMP attached devices with a link with at most 1 device, that is SATA
-devices. For these, the device number 0 is always used to
-return the correct pointer to the struct ata_device of the port link.
-This change excludes IDE master/slave setups (maximum number of devices
-per link is 2) and port-multiplier attached devices. Also, to be
-consistant with the fact that SCSI device IDs and channel numbers used
-as device numbers are both unsigned int, change the devno argument of
-ata_find_dev() to unsigned int.
-
-Reported-by: Xingui Yang <yangxingui@huawei.com>
-Fixes: 41bda9c98035 ("libata-link: update hotplug to handle PMP links")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Jason Yan <yanaijie@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Link: https://lore.kernel.org/r/1684397461-23082-3-git-send-email-selvin.xavier@broadcom.com
+Reviewed-by: Hongguang Gao <hongguang.gao@broadcom.com>
+Reviewed-by: Ajit Khaparde <ajit.khaparde@broadcom.com>
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-scsi.c |   34 ++++++++++++++++++++++++++--------
- 1 file changed, 26 insertions(+), 8 deletions(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -2699,18 +2699,36 @@ static unsigned int atapi_xlat(struct at
- 	return 0;
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index e3e1ea0c7666a..f0e96639850eb 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -3165,9 +3165,7 @@ static int bnxt_re_process_raw_qp_pkt_rx(struct bnxt_re_qp *gsi_qp,
+ 	udwr.remote_qkey = gsi_sqp->qplib_qp.qkey;
+ 
+ 	/* post data received  in the send queue */
+-	rc = bnxt_re_post_send_shadow_qp(rdev, gsi_sqp, swr);
+-
+-	return 0;
++	return bnxt_re_post_send_shadow_qp(rdev, gsi_sqp, swr);
  }
  
--static struct ata_device *ata_find_dev(struct ata_port *ap, int devno)
-+static struct ata_device *ata_find_dev(struct ata_port *ap, unsigned int devno)
- {
--	if (!sata_pmp_attached(ap)) {
--		if (likely(devno >= 0 &&
--			   devno < ata_link_max_devices(&ap->link)))
-+	/*
-+	 * For the non-PMP case, ata_link_max_devices() returns 1 (SATA case),
-+	 * or 2 (IDE master + slave case). However, the former case includes
-+	 * libsas hosted devices which are numbered per scsi host, leading
-+	 * to devno potentially being larger than 0 but with each struct
-+	 * ata_device having its own struct ata_port and struct ata_link.
-+	 * To accommodate these, ignore devno and always use device number 0.
-+	 */
-+	if (likely(!sata_pmp_attached(ap))) {
-+		int link_max_devices = ata_link_max_devices(&ap->link);
-+
-+		if (link_max_devices == 1)
-+			return &ap->link.device[0];
-+
-+		if (devno < link_max_devices)
- 			return &ap->link.device[devno];
--	} else {
--		if (likely(devno >= 0 &&
--			   devno < ap->nr_pmp_links))
--			return &ap->pmp_link[devno].device[0];
-+
-+		return NULL;
- 	}
- 
-+	/*
-+	 * For PMP-attached devices, the device number corresponds to C
-+	 * (channel) of SCSI [H:C:I:L], indicating the port pmp link
-+	 * for the device.
-+	 */
-+	if (devno < ap->nr_pmp_links)
-+		return &ap->pmp_link[devno].device[0];
-+
- 	return NULL;
- }
- 
+ static void bnxt_re_process_res_rawqp1_wc(struct ib_wc *wc,
+-- 
+2.39.2
+
 
 
