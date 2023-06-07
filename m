@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDD45726D1A
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:39:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51BF4726BBF
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:27:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234351AbjFGUjM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:39:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38546 "EHLO
+        id S233418AbjFGU1m (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:27:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234378AbjFGUjD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:39:03 -0400
+        with ESMTP id S233424AbjFGU1l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:27:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A61726B1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:38:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15AA9212E
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:27:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 319E5645CC
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:38:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45000C433D2;
-        Wed,  7 Jun 2023 20:38:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2EF6A6448F
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:26:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D841C433D2;
+        Wed,  7 Jun 2023 20:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170312;
-        bh=vdFxz29FGfNgWMxA7pXiiA5JCmRlL/kbgsjaGJJ1G0g=;
+        s=korg; t=1686169616;
+        bh=NTj2dnuzZlrai10DandPf5T/CG0CTRvG2Jxpu7+VtRs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sDgMetowJFP3yyG7ts1qXx9KTTVr5iLmI/Loj7LReIIIVa7oze+BvPvZD89qAtVK+
-         08CNYqX8gW5GBVJhH0w+IbC84cBELvuy4ClXWcGpApEKFmgkTxa/7BMXCRwB3deeEM
-         XoriJQakwQd4wfhiA/jgZHYIeH4iYe38Q+pZUcJI=
+        b=GkgPOA6y560sQdavqXNsTRtZpwwNRJK/Ovn6XzjQw98CNots8Gvj06LcEWoqNFssG
+         CjSyLEZvpX5biUFHxOeSYyWiQB4eO+buusrkXzD0iXbVOWyVLZtHh0NyEr/2GQyCUL
+         8wUXo4jqkJllPkS02ffn6xQOFKvtIvL3PmKLfTKc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Vlad Buslov <vladbu@nvidia.com>,
-        Peilin Ye <peilin.ye@bytedance.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 037/225] net/sched: Reserve TC_H_INGRESS (TC_H_CLSACT) for ingress (clsact) Qdiscs
+Subject: [PATCH 6.3 131/286] media: dvb-usb: dw2102: fix uninit-value in su3000_read_mac_address
 Date:   Wed,  7 Jun 2023 22:13:50 +0200
-Message-ID: <20230607200915.553148804@linuxfoundation.org>
+Message-ID: <20230607200927.374262489@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,84 +54,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peilin Ye <peilin.ye@bytedance.com>
+From: Wei Chen <harperchen1110@gmail.com>
 
-[ Upstream commit f85fa45d4a9408d98c46c8fa45ba2e3b2f4bf219 ]
+[ Upstream commit a3fd1ef27aa686d871cefe207bd6168c4b0cd29e ]
 
-Currently it is possible to add e.g. an HTB Qdisc under ffff:fff1
-(TC_H_INGRESS, TC_H_CLSACT):
+In su3000_read_mac_address, if i2c_transfer fails to execute two
+messages, array mac address will not be initialized. Without handling
+such error, later in function dvb_usb_adapter_dvb_init, proposed_mac
+is accessed before initialization.
 
-  $ ip link add name ifb0 type ifb
-  $ tc qdisc add dev ifb0 parent ffff:fff1 htb
-  $ tc qdisc add dev ifb0 clsact
-  Error: Exclusivity flag on, cannot modify.
-  $ drgn
-  ...
-  >>> ifb0 = netdev_get_by_name(prog, "ifb0")
-  >>> qdisc = ifb0.ingress_queue.qdisc_sleeping
-  >>> print(qdisc.ops.id.string_().decode())
-  htb
-  >>> qdisc.flags.value_() # TCQ_F_INGRESS
-  2
+Fix this error by returning a negative value if message execution fails.
 
-Only allow ingress and clsact Qdiscs under ffff:fff1.  Return -EINVAL
-for everything else.  Make TCQ_F_INGRESS a static flag of ingress and
-clsact Qdiscs.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Fixes: 1f211a1b929c ("net, sched: add clsact qdisc")
-Tested-by: Pedro Tammela <pctammela@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
-Signed-off-by: Peilin Ye <peilin.ye@bytedance.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/linux-media/20230328124416.560889-1-harperchen1110@gmail.com
+Signed-off-by: Wei Chen <harperchen1110@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_api.c     | 7 ++++++-
- net/sched/sch_ingress.c | 4 ++--
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/media/usb/dvb-usb/dw2102.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index c82532e206992..2244e00ea9a10 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -1241,7 +1241,12 @@ static struct Qdisc *qdisc_create(struct net_device *dev,
- 	sch->parent = parent;
- 
- 	if (handle == TC_H_INGRESS) {
--		sch->flags |= TCQ_F_INGRESS;
-+		if (!(sch->flags & TCQ_F_INGRESS)) {
-+			NL_SET_ERR_MSG(extack,
-+				       "Specified parent ID is reserved for ingress and clsact Qdiscs");
-+			err = -EINVAL;
-+			goto err_out3;
-+		}
- 		handle = TC_H_MAKE(TC_H_INGRESS, 0);
- 	} else {
- 		if (handle == 0) {
-diff --git a/net/sched/sch_ingress.c b/net/sched/sch_ingress.c
-index 35963929e1178..e43a454993723 100644
---- a/net/sched/sch_ingress.c
-+++ b/net/sched/sch_ingress.c
-@@ -140,7 +140,7 @@ static struct Qdisc_ops ingress_qdisc_ops __read_mostly = {
- 	.cl_ops			=	&ingress_class_ops,
- 	.id			=	"ingress",
- 	.priv_size		=	sizeof(struct ingress_sched_data),
--	.static_flags		=	TCQ_F_CPUSTATS,
-+	.static_flags		=	TCQ_F_INGRESS | TCQ_F_CPUSTATS,
- 	.init			=	ingress_init,
- 	.destroy		=	ingress_destroy,
- 	.dump			=	ingress_dump,
-@@ -281,7 +281,7 @@ static struct Qdisc_ops clsact_qdisc_ops __read_mostly = {
- 	.cl_ops			=	&clsact_class_ops,
- 	.id			=	"clsact",
- 	.priv_size		=	sizeof(struct clsact_sched_data),
--	.static_flags		=	TCQ_F_CPUSTATS,
-+	.static_flags		=	TCQ_F_INGRESS | TCQ_F_CPUSTATS,
- 	.init			=	clsact_init,
- 	.destroy		=	clsact_destroy,
- 	.dump			=	ingress_dump,
+diff --git a/drivers/media/usb/dvb-usb/dw2102.c b/drivers/media/usb/dvb-usb/dw2102.c
+index 0ca764282c767..8747960e61461 100644
+--- a/drivers/media/usb/dvb-usb/dw2102.c
++++ b/drivers/media/usb/dvb-usb/dw2102.c
+@@ -946,7 +946,7 @@ static int su3000_read_mac_address(struct dvb_usb_device *d, u8 mac[6])
+ 	for (i = 0; i < 6; i++) {
+ 		obuf[1] = 0xf0 + i;
+ 		if (i2c_transfer(&d->i2c_adap, msg, 2) != 2)
+-			break;
++			return -1;
+ 		else
+ 			mac[i] = ibuf[0];
+ 	}
 -- 
 2.39.2
 
