@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D27C726D2E
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:40:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 386B3726B93
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234267AbjFGUkE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:40:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38090 "EHLO
+        id S233263AbjFGU0a (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:26:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234257AbjFGUjs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:39:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAE36271F
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:39:30 -0700 (PDT)
+        with ESMTP id S233355AbjFGU0Y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0704526B1
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:26:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B0CB645DE
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:39:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABB00C433EF;
-        Wed,  7 Jun 2023 20:39:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C70C264462
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:25:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1556C433EF;
+        Wed,  7 Jun 2023 20:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170370;
-        bh=tCXL7zAIGi097rPkbp7jZa8lojezmzatik4LM6vXLFo=;
+        s=korg; t=1686169551;
+        bh=DX3bztbjPlBfBo2b5SmQ6Ry+qJp+X9ph1HSpTHP9eZ8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rA69qi4E6El77JiluVQ1p5ZWSmnek6kmgl8qu/9V9ueNTqDrSfENCQ6J35uyCPkaY
-         oDuJI1JF9fjm46NBGpJfZo5N+3YtksfHwIloVlpHGAvAoYSGDKavGXvW81dJqpDzJl
-         igDMMqWH9KdTTgW9ZPnZ+LSziOeej8HRhX2bSUl0=
+        b=ZOc2J6npZnVR/03HZy/aoMf+MAmb7TEC8P7Q43karSc9GU9BMHyjMLlWnjGLf9nfX
+         GvDvJ18+0wH/EjojWWwsxKnBoi/Mc6BzsOGpMrpcTGvbnxJwePad+ljwSF07iCvsyx
+         l2JFqbVXFdDQCttl3yX5F3IhIPtdxN4rQ/WSV5Hw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mustafa Ismail <mustafa.ismail@intel.com>,
-        Shiraz Saleem <shiraz.saleem@intel.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 029/225] RDMA/irdma: Fix Local Invalidate fencing
+        patches@lists.linux.dev, Alexandru Sorodoc <ealex95@gmail.com>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 123/286] ALSA: hda/realtek: Add quirks for ASUS GU604V and GU603V
 Date:   Wed,  7 Jun 2023 22:13:42 +0200
-Message-ID: <20230607200915.273326122@linuxfoundation.org>
+Message-ID: <20230607200927.100157316@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,36 +53,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mustafa Ismail <mustafa.ismail@intel.com>
+From: Alexandru Sorodoc <ealex95@gmail.com>
 
-[ Upstream commit 5842d1d9c1b0d17e0c29eae65ae1f245f83682dd ]
+[ Upstream commit 4b963ae1df6426f0e51de64133d379d9bde50c48 ]
 
-If the local invalidate fence is indicated in the WR, only the read fence
-is currently being set in WQE. Fix this to set both the read and local
-fence in the WQE.
+These models use 2 CS35L41 amplifiers using SPI for down-facing
+speakers.
 
-Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
-Link: https://lore.kernel.org/r/20230522155654.1309-4-shiraz.saleem@intel.com
-Signed-off-by: Mustafa Ismail <mustafa.ismail@intel.com>
-Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+alc285_fixup_speaker2_to_dac1 is needed to fix volume control of the
+down-facing speakers.
+
+Pin configs are needed to enable headset mic detection.
+
+Note that these models lack the ACPI _DSD properties needed to
+initialize the amplifiers. They can be added during boot to get working
+sound out of the speakers:
+  https://gist.github.com/lamperez/862763881c0e1c812392b5574727f6ff
+
+Signed-off-by: Alexandru Sorodoc <ealex95@gmail.com>
+Link: https://lore.kernel.org/r/20230511161510.315170-1-ealex95@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/verbs.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/pci/hda/patch_realtek.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index 1c5a61f51a67a..6a8bb6ed4bf43 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -3191,6 +3191,7 @@ static int irdma_post_send(struct ib_qp *ibqp,
- 			break;
- 		case IB_WR_LOCAL_INV:
- 			info.op_type = IRDMA_OP_TYPE_INV_STAG;
-+			info.local_fence = info.read_fence;
- 			info.op.inv_local_stag.target_stag = ib_wr->ex.invalidate_rkey;
- 			err = irdma_uk_stag_local_invalidate(ukqp, &info, true);
- 			break;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 379f216158ab4..7b5f194513c7b 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7063,6 +7063,8 @@ enum {
+ 	ALC225_FIXUP_DELL1_MIC_NO_PRESENCE,
+ 	ALC295_FIXUP_DISABLE_DAC3,
+ 	ALC285_FIXUP_SPEAKER2_TO_DAC1,
++	ALC285_FIXUP_ASUS_SPEAKER2_TO_DAC1,
++	ALC285_FIXUP_ASUS_HEADSET_MIC,
+ 	ALC280_FIXUP_HP_HEADSET_MIC,
+ 	ALC221_FIXUP_HP_FRONT_MIC,
+ 	ALC292_FIXUP_TPT460,
+@@ -8033,6 +8035,22 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.chained = true,
+ 		.chain_id = ALC269_FIXUP_THINKPAD_ACPI
+ 	},
++	[ALC285_FIXUP_ASUS_SPEAKER2_TO_DAC1] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc285_fixup_speaker2_to_dac1,
++		.chained = true,
++		.chain_id = ALC245_FIXUP_CS35L41_SPI_2
++	},
++	[ALC285_FIXUP_ASUS_HEADSET_MIC] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x19, 0x03a11050 },
++			{ 0x1b, 0x03a11c30 },
++			{ }
++		},
++		.chained = true,
++		.chain_id = ALC285_FIXUP_ASUS_SPEAKER2_TO_DAC1
++	},
+ 	[ALC256_FIXUP_DELL_INSPIRON_7559_SUBWOOFER] = {
+ 		.type = HDA_FIXUP_PINS,
+ 		.v.pins = (const struct hda_pintbl[]) {
+@@ -9507,6 +9525,8 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1313, "Asus K42JZ", ALC269VB_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x13b0, "ASUS Z550SA", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1427, "Asus Zenbook UX31E", ALC269VB_FIXUP_ASUS_ZENBOOK),
++	SND_PCI_QUIRK(0x1043, 0x1473, "ASUS GU604V", ALC285_FIXUP_ASUS_HEADSET_MIC),
++	SND_PCI_QUIRK(0x1043, 0x1483, "ASUS GU603V", ALC285_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1517, "Asus Zenbook UX31A", ALC269VB_FIXUP_ASUS_ZENBOOK_UX31A),
+ 	SND_PCI_QUIRK(0x1043, 0x1662, "ASUS GV301QH", ALC294_FIXUP_ASUS_DUAL_SPK),
+ 	SND_PCI_QUIRK(0x1043, 0x1683, "ASUS UM3402YAR", ALC287_FIXUP_CS35L41_I2C_2),
 -- 
 2.39.2
 
