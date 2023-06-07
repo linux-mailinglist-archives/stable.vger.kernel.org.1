@@ -2,54 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19C11726EC3
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:52:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4872B726E6E
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235245AbjFGUwf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:52:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53778 "EHLO
+        id S235315AbjFGUui (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:50:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235244AbjFGUwd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:52:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 712DF1BFF
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:52:31 -0700 (PDT)
+        with ESMTP id S235445AbjFGUuA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:50:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A206E270D
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:49:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E35716476C
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:52:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02CBCC433EF;
-        Wed,  7 Jun 2023 20:52:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 12D3E646CA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:49:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 272A6C433EF;
+        Wed,  7 Jun 2023 20:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171150;
-        bh=BYnSv2QC37kiaGqNnSUEOotBrUT8SY7ijmBFxx0UUzk=;
+        s=korg; t=1686170984;
+        bh=auaGeaBwz8L26rrzrRzAYcmZpDsNlUnPVMLvemv5yfA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Mzj0AbfyRFqjtx5WY/UNRpTFGUDqarN+pQF6vOySW4mn2Jti3TM+2eC/+YW6AcacN
-         WboT8AR4LCNDqwxEXZSzTKlcRYs10OWFftulLUt9VCHHTx1K3lDcsKGjAzikHzna5z
-         LnpwekfR64PGAdo2Ru0oaWX++6pqXTRJxHB6G8qQ=
+        b=p2ySKpxy0r4aL0eOjMv+ikI9TdtbqPyYwFMgfb9BENur71xxgFdu8YFN08/oGk8Kq
+         m76byXe6jHzRQoMidz3V3Bqgtaf7l1aX7RB12YFYTx0s8sxvQOg9P/GoyUeHW+mmSf
+         kQZeG+MxFC1v71Ds/nq91M1G5URSfVnqsFJ6Jkrc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Firas Jahjah <firasj@amazon.com>,
-        Michael Margolin <mrgolin@amazon.com>,
-        Yonatan Nachum <ynachum@amazon.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
+        patches@lists.linux.dev, Haibo Li <haibo.li@mediatek.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexandre Mergnat <amergnat@baylibre.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 01/99] RDMA/efa: Fix unsupported page sizes in device
+Subject: [PATCH 5.10 037/120] ARM: 9295/1: unwind:fix unwind abort for uleb128 case
 Date:   Wed,  7 Jun 2023 22:15:53 +0200
-Message-ID: <20230607200900.250302694@linuxfoundation.org>
+Message-ID: <20230607200902.075855817@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,40 +58,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yonatan Nachum <ynachum@amazon.com>
+From: Haibo Li <haibo.li@mediatek.com>
 
-[ Upstream commit 866422cdddcdf59d8c68e9472d49ba1be29b5fcf ]
+[ Upstream commit fa3eeb638de0c1a9d2d860e5b48259facdd65176 ]
 
-Device uses 4KB size blocks for user pages indirect list while the
-driver creates those blocks with the size of PAGE_SIZE of the kernel. On
-kernels with PAGE_SIZE different than 4KB (ARM RHEL), this leads to a
-failure on register MR with indirect list because of the miss
-communication between driver and device.
+When unwind instruction is 0xb2,the subsequent instructions
+are uleb128 bytes.
+For now,it uses only the first uleb128 byte in code.
 
-Fixes: 40909f664d27 ("RDMA/efa: Add EFA verbs implementation")
-Link: https://lore.kernel.org/r/20230511115103.13876-1-ynachum@amazon.com
-Reviewed-by: Firas Jahjah <firasj@amazon.com>
-Reviewed-by: Michael Margolin <mrgolin@amazon.com>
-Signed-off-by: Yonatan Nachum <ynachum@amazon.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+For vsp increments of 0x204~0x400,use one uleb128 byte like below:
+0xc06a00e4 <unwind_test_work>: 0x80b27fac
+  Compact model index: 0
+  0xb2 0x7f vsp = vsp + 1024
+  0xac      pop {r4, r5, r6, r7, r8, r14}
+
+For vsp increments larger than 0x400,use two uleb128 bytes like below:
+0xc06a00e4 <unwind_test_work>: @0xc0cc9e0c
+  Compact model index: 1
+  0xb2 0x81 0x01 vsp = vsp + 1032
+  0xac      pop {r4, r5, r6, r7, r8, r14}
+The unwind works well since the decoded uleb128 byte is also 0x81.
+
+For vsp increments larger than 0x600,use two uleb128 bytes like below:
+0xc06a00e4 <unwind_test_work>: @0xc0cc9e0c
+  Compact model index: 1
+  0xb2 0x81 0x02 vsp = vsp + 1544
+  0xac      pop {r4, r5, r6, r7, r8, r14}
+In this case,the decoded uleb128 result is 0x101(vsp=0x204+(0x101<<2)).
+While the uleb128 used in code is 0x81(vsp=0x204+(0x81<<2)).
+The unwind aborts at this frame since it gets incorrect vsp.
+
+To fix this,add uleb128 decode to cover all the above case.
+
+Signed-off-by: Haibo Li <haibo.li@mediatek.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/efa/efa_verbs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/kernel/unwind.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/efa/efa_verbs.c b/drivers/infiniband/hw/efa/efa_verbs.c
-index 17f1e59ab12ee..559b24ca52050 100644
---- a/drivers/infiniband/hw/efa/efa_verbs.c
-+++ b/drivers/infiniband/hw/efa/efa_verbs.c
-@@ -1231,7 +1231,7 @@ static int pbl_continuous_initialize(struct efa_dev *dev,
-  */
- static int pbl_indirect_initialize(struct efa_dev *dev, struct pbl_context *pbl)
- {
--	u32 size_in_pages = DIV_ROUND_UP(pbl->pbl_buf_size_in_bytes, PAGE_SIZE);
-+	u32 size_in_pages = DIV_ROUND_UP(pbl->pbl_buf_size_in_bytes, EFA_CHUNK_PAYLOAD_SIZE);
- 	struct scatterlist *sgl;
- 	int sg_dma_cnt, err;
+diff --git a/arch/arm/kernel/unwind.c b/arch/arm/kernel/unwind.c
+index d2bd0df2318d6..7e90f17a0676c 100644
+--- a/arch/arm/kernel/unwind.c
++++ b/arch/arm/kernel/unwind.c
+@@ -300,6 +300,29 @@ static int unwind_exec_pop_subset_r0_to_r3(struct unwind_ctrl_block *ctrl,
+ 	return URC_OK;
+ }
  
++static unsigned long unwind_decode_uleb128(struct unwind_ctrl_block *ctrl)
++{
++	unsigned long bytes = 0;
++	unsigned long insn;
++	unsigned long result = 0;
++
++	/*
++	 * unwind_get_byte() will advance `ctrl` one instruction at a time, so
++	 * loop until we get an instruction byte where bit 7 is not set.
++	 *
++	 * Note: This decodes a maximum of 4 bytes to output 28 bits data where
++	 * max is 0xfffffff: that will cover a vsp increment of 1073742336, hence
++	 * it is sufficient for unwinding the stack.
++	 */
++	do {
++		insn = unwind_get_byte(ctrl);
++		result |= (insn & 0x7f) << (bytes * 7);
++		bytes++;
++	} while (!!(insn & 0x80) && (bytes != sizeof(result)));
++
++	return result;
++}
++
+ /*
+  * Execute the current unwind instruction.
+  */
+@@ -353,7 +376,7 @@ static int unwind_exec_insn(struct unwind_ctrl_block *ctrl)
+ 		if (ret)
+ 			goto error;
+ 	} else if (insn == 0xb2) {
+-		unsigned long uleb128 = unwind_get_byte(ctrl);
++		unsigned long uleb128 = unwind_decode_uleb128(ctrl);
+ 
+ 		ctrl->vrs[SP] += 0x204 + (uleb128 << 2);
+ 	} else {
 -- 
 2.39.2
 
