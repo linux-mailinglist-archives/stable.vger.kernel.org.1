@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2830B726FA2
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:00:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5253726CFE
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:38:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235761AbjFGVAs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:00:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33534 "EHLO
+        id S234190AbjFGUiV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:38:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236080AbjFGVAT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C7A926AB
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:59:57 -0700 (PDT)
+        with ESMTP id S234170AbjFGUiT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:38:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1D0926AF
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:38:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CB055648EA
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:59:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63F5C433EF;
-        Wed,  7 Jun 2023 20:59:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B9E60639BC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:37:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD49C433D2;
+        Wed,  7 Jun 2023 20:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171595;
-        bh=MTeMm/00dl6GcC+szTUjiyco7o/tEkA6zATOo5g29Rk=;
+        s=korg; t=1686170227;
+        bh=K6XDrCjId0MI42df+y4zJ6d3LFizzgee48/3855eNvo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IXv4S3eLTG27RXkmvOnhdOx+90PlaCFwMl4uN1+yowQNwzDOC+kskaGyZHWEaPv6D
-         zICltduAmraCDdxslxQtSuSgkNOKduNcej1RqlrTj9gbO7fDaMjYdT+tVhOkbeJE97
-         BQpnVVpH8c+xPwhM519PlVfBnFlAAiSCnp8n9t/w=
+        b=LelpHotOOOAw9wgbACW72unhTpMS6of/FaGgk63cgiKXIp6OP+b6hNaKAq2mir5dQ
+         nycv2IGDjzvQP14aGEk2pfHgKshcdqZ6FEd/3nqI25c7wVFWRE2pcvWIrroQywOdb9
+         ct+K7P4FUoDE1YmAYH2dElBNFw/yWuCBr6PWqeAY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Hao <yhao016@ucr.edu>,
-        Takashi Iwai <tiwai@suse.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 076/159] media: dvb-core: Fix kernel WARNING for blocking operation in wait_event*()
-Date:   Wed,  7 Jun 2023 22:16:19 +0200
-Message-ID: <20230607200906.167435908@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+        Ping Cheng <ping.cheng@wacom.com>,
+        Jiri Kosina <jkosina@suse.cz>
+Subject: [PATCH 4.19 63/88] HID: wacom: avoid integer overflow in wacom_intuos_inout()
+Date:   Wed,  7 Jun 2023 22:16:20 +0200
+Message-ID: <20230607200901.206895482@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,66 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit b8c75e4a1b325ea0a9433fa8834be97b5836b946 ]
+commit bd249b91977b768ea02bf84d04625d2690ad2b98 upstream.
 
-Using a semaphore in the wait_event*() condition is no good idea.
-It hits a kernel WARN_ON() at prepare_to_wait_event() like:
-  do not call blocking ops when !TASK_RUNNING; state=1 set at
-  prepare_to_wait_event+0x6d/0x690
+If high bit is set to 1 in ((data[3] & 0x0f << 28), after all arithmetic
+operations and integer promotions are done, high bits in
+wacom->serial[idx] will be filled with 1s as well.
+Avoid this, albeit unlikely, issue by specifying left operand's __u64
+type for the right operand.
 
-For avoiding the potential deadlock, rewrite to an open-coded loop
-instead.  Unlike the loop in wait_event*(), this uses wait_woken()
-after the condition check, hence the task state stays consistent.
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
 
-CVE-2023-31084 was assigned to this bug.
-
-Link: https://lore.kernel.org/r/CA+UBctCu7fXn4q41O_3=id1+OdyQ85tZY1x+TkT-6OVBL6KAUw@mail.gmail.com/
-
-Link: https://lore.kernel.org/linux-media/20230512151800.1874-1-tiwai@suse.de
-Reported-by: Yu Hao <yhao016@ucr.edu>
-Closes: https://nvd.nist.gov/vuln/detail/CVE-2023-31084
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3bea733ab212 ("USB: wacom tablet driver reorganization")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dvb_frontend.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/hid/wacom_wac.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-core/dvb_frontend.c b/drivers/media/dvb-core/dvb_frontend.c
-index 09facc78d88aa..fea62bce97468 100644
---- a/drivers/media/dvb-core/dvb_frontend.c
-+++ b/drivers/media/dvb-core/dvb_frontend.c
-@@ -293,14 +293,22 @@ static int dvb_frontend_get_event(struct dvb_frontend *fe,
- 	}
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -781,7 +781,7 @@ static int wacom_intuos_inout(struct wac
+ 	/* Enter report */
+ 	if ((data[1] & 0xfc) == 0xc0) {
+ 		/* serial number of the tool */
+-		wacom->serial[idx] = ((data[3] & 0x0f) << 28) +
++		wacom->serial[idx] = ((__u64)(data[3] & 0x0f) << 28) +
+ 			(data[4] << 20) + (data[5] << 12) +
+ 			(data[6] << 4) + (data[7] >> 4);
  
- 	if (events->eventw == events->eventr) {
--		int ret;
-+		struct wait_queue_entry wait;
-+		int ret = 0;
- 
- 		if (flags & O_NONBLOCK)
- 			return -EWOULDBLOCK;
- 
--		ret = wait_event_interruptible(events->wait_queue,
--					       dvb_frontend_test_event(fepriv, events));
--
-+		init_waitqueue_entry(&wait, current);
-+		add_wait_queue(&events->wait_queue, &wait);
-+		while (!dvb_frontend_test_event(fepriv, events)) {
-+			wait_woken(&wait, TASK_INTERRUPTIBLE, 0);
-+			if (signal_pending(current)) {
-+				ret = -ERESTARTSYS;
-+				break;
-+			}
-+		}
-+		remove_wait_queue(&events->wait_queue, &wait);
- 		if (ret < 0)
- 			return ret;
- 	}
--- 
-2.39.2
-
 
 
