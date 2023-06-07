@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76897726D02
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:38:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67C50726B9C
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234175AbjFGUi2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:38:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37862 "EHLO
+        id S233316AbjFGU0i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:26:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234135AbjFGUiZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:38:25 -0400
+        with ESMTP id S233385AbjFGU0f (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BD762132
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:38:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04ACF26A3
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:26:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8BD09645BF
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:38:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E399C433EF;
-        Wed,  7 Jun 2023 20:38:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AF0F064466
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:26:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C22A8C433D2;
+        Wed,  7 Jun 2023 20:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170283;
-        bh=BiGCMNhMw41EXWmKbjiVcXk2i27aCFe7JMZIed8+vQ0=;
+        s=korg; t=1686169572;
+        bh=cWB1dZy+1AbY9jcNQa0xPC8wJXDRMfc8M7uaWfwUlok=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DU8skG+CRs6os2/0fuAcYNgD0zQJA2FZRusM79FWzEJckSU1b+8zX35vl2jJhtud6
-         vEqClxx6DI3HX4+gZ4K9aqW8HvQl/k/oCcQUaKtg3LhkhQ/lUtabEx+XV/gnC4Vlm8
-         rAgzuWteAF9dswUeV6W0bXAhuFBSU7Bg2gIlBco0=
+        b=DGz4VfOdsUWyFSMiilv3smlSRKwnQ4OVqq9ICxpXuDVKWAbMXGn6dnDNrZV9VJ2kJ
+         xMznpUv6DnbLDKmkYnzsJ3W3HPzAfWOTxFHlOHeCtXnzVmBsrSrFJGPejLl4EQGx49
+         FbTKUdyKcl1obU709nW44MroZ/AqSNWIageHkm/8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Tudor Ambarus <tudor.ambarus@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 007/225] dmaengine: at_xdmac: fix potential Oops in at_xdmac_prep_interleaved()
-Date:   Wed,  7 Jun 2023 22:13:20 +0200
-Message-ID: <20230607200913.578993091@linuxfoundation.org>
+        patches@lists.linux.dev, Julian Winkler <julian.winkler1@web.de>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 102/286] platform/x86: intel_scu_pcidrv: Add back PCI ID for Medfield
+Date:   Wed,  7 Jun 2023 22:13:21 +0200
+Message-ID: <20230607200926.398224129@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,53 +54,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Julian Winkler <julian.winkler1@web.de>
 
-[ Upstream commit 4d43acb145c363626d76f49febb4240c488cd1cf ]
+[ Upstream commit 4a9b6850c794e4394cad99e2b863d75f5bc8e92f ]
 
-There are two place if the at_xdmac_interleaved_queue_desc() fails which
-could lead to a NULL dereference where "first" is NULL and we call
-list_add_tail(&first->desc_node, ...).  In the first caller, the return
-is not checked so add a check for that.  In the next caller, the return
-is checked but if it fails on the first iteration through the loop then
-it will lead to a NULL pointer dereference.
+This id was removed in commit b47018a778c1 ("platform/x86: intel_scu_ipc:
+Remove Lincroft support"), saying it is only used on Moorestown,
+but apparently the same id is also used on Medfield.
 
-Fixes: 4e5385784e69 ("dmaengine: at_xdmac: handle numf > 1")
-Fixes: 62b5cb757f1d ("dmaengine: at_xdmac: fix memory leak in interleaved mode")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://lore.kernel.org/r/21282b66-9860-410a-83df-39c17fcf2f1b@kili.mountain
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Tested on the Medfield based Motorola RAZR i smartphone.
+
+Signed-off-by: Julian Winkler <julian.winkler1@web.de>
+Link: https://lore.kernel.org/r/20230416154932.6579-1-julian.winkler1@web.de
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/at_xdmac.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/platform/x86/intel_scu_pcidrv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
-index bfc8ae2143957..7919906b02e74 100644
---- a/drivers/dma/at_xdmac.c
-+++ b/drivers/dma/at_xdmac.c
-@@ -1026,6 +1026,8 @@ at_xdmac_prep_interleaved(struct dma_chan *chan,
- 							NULL,
- 							src_addr, dst_addr,
- 							xt, xt->sgl);
-+		if (!first)
-+			return NULL;
+diff --git a/drivers/platform/x86/intel_scu_pcidrv.c b/drivers/platform/x86/intel_scu_pcidrv.c
+index 80abc708e4f2f..d904fad499aa5 100644
+--- a/drivers/platform/x86/intel_scu_pcidrv.c
++++ b/drivers/platform/x86/intel_scu_pcidrv.c
+@@ -34,6 +34,7 @@ static int intel_scu_pci_probe(struct pci_dev *pdev,
  
- 		/* Length of the block is (BLEN+1) microblocks. */
- 		for (i = 0; i < xt->numf - 1; i++)
-@@ -1056,8 +1058,9 @@ at_xdmac_prep_interleaved(struct dma_chan *chan,
- 							       src_addr, dst_addr,
- 							       xt, chunk);
- 			if (!desc) {
--				list_splice_tail_init(&first->descs_list,
--						      &atchan->free_descs_list);
-+				if (first)
-+					list_splice_tail_init(&first->descs_list,
-+							      &atchan->free_descs_list);
- 				return NULL;
- 			}
- 
+ static const struct pci_device_id pci_ids[] = {
+ 	{ PCI_VDEVICE(INTEL, 0x080e) },
++	{ PCI_VDEVICE(INTEL, 0x082a) },
+ 	{ PCI_VDEVICE(INTEL, 0x08ea) },
+ 	{ PCI_VDEVICE(INTEL, 0x0a94) },
+ 	{ PCI_VDEVICE(INTEL, 0x11a0) },
 -- 
 2.39.2
 
