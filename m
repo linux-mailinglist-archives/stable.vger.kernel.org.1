@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE743726D8D
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:43:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54A2F726F5D
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:57:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234610AbjFGUn2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:43:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43176 "EHLO
+        id S235651AbjFGU5z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:57:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59080 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234655AbjFGUnX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:43:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B8431BFF
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:43:00 -0700 (PDT)
+        with ESMTP id S235650AbjFGU5w (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:57:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F22CE79
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:57:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A564A64614
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:42:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B61DAC433EF;
-        Wed,  7 Jun 2023 20:42:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D0DC64877
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:57:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECB7C4339B;
+        Wed,  7 Jun 2023 20:57:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170566;
-        bh=sB73139ifqMFRDXtCpo4lhQAnq+REnodEt1saxtvvWQ=;
+        s=korg; t=1686171453;
+        bh=fRoJEf6UNWfFrHGjmxsIWYNEdzHFDpdBL8n4eq+Zqgo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jzy1rocJLxVe5/97FcvkN4BdJjQ25EBeNZYq49LMao6f81O6Dgpa6UyTbB25/Wcov
-         yQfgit6ZsY3t3A6aLY6HUG4A6qjTV8p0CqP1RAlJFvW776767jdA7CUGKV7Y81wbar
-         ipmt3dKzvMurGWAaUCxjDllKVoF+9RWmhMNMsGDw=
+        b=ULJ1tL1OH2obHt/hEFQNxNUygHCcbkyKMEKFjDCCkXEPx2w/yIouPGNA+L0JPAwvw
+         P1e12vE33hkE4QHSAuyJdDSiHR448M4A1RXX0Lye4rKxtyKOvKPRIOu/T+BOs0dWOe
+         RR26zzyS6hLog85hZce9ixHhDpthR1PN7WTamJNo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        Oliver Upton <oliver.upton@linux.dev>,
-        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 134/225] KVM: arm64: vgic: Fix a circular locking issue
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 024/159] tcp: deny tcp_disconnect() when threads are waiting
 Date:   Wed,  7 Jun 2023 22:15:27 +0200
-Message-ID: <20230607200918.752001001@linuxfoundation.org>
+Message-ID: <20230607200904.463891713@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,345 +56,183 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 59112e9c390be595224e427827475a6cd3726021 ]
+[ Upstream commit 4faeee0cf8a5d88d63cdbc3bab124fb0e6aed08c ]
 
-Lockdep reports a circular lock dependency between the srcu and the
-config_lock:
+Historically connect(AF_UNSPEC) has been abused by syzkaller
+and other fuzzers to trigger various bugs.
 
-[  262.179917] -> #1 (&kvm->srcu){.+.+}-{0:0}:
-[  262.182010]        __synchronize_srcu+0xb0/0x224
-[  262.183422]        synchronize_srcu_expedited+0x24/0x34
-[  262.184554]        kvm_io_bus_register_dev+0x324/0x50c
-[  262.185650]        vgic_register_redist_iodev+0x254/0x398
-[  262.186740]        vgic_v3_set_redist_base+0x3b0/0x724
-[  262.188087]        kvm_vgic_addr+0x364/0x600
-[  262.189189]        vgic_set_common_attr+0x90/0x544
-[  262.190278]        vgic_v3_set_attr+0x74/0x9c
-[  262.191432]        kvm_device_ioctl+0x2a0/0x4e4
-[  262.192515]        __arm64_sys_ioctl+0x7ac/0x1ba8
-[  262.193612]        invoke_syscall.constprop.0+0x70/0x1e0
-[  262.195006]        do_el0_svc+0xe4/0x2d4
-[  262.195929]        el0_svc+0x44/0x8c
-[  262.196917]        el0t_64_sync_handler+0xf4/0x120
-[  262.198238]        el0t_64_sync+0x190/0x194
-[  262.199224]
-[  262.199224] -> #0 (&kvm->arch.config_lock){+.+.}-{3:3}:
-[  262.201094]        __lock_acquire+0x2b70/0x626c
-[  262.202245]        lock_acquire+0x454/0x778
-[  262.203132]        __mutex_lock+0x190/0x8b4
-[  262.204023]        mutex_lock_nested+0x24/0x30
-[  262.205100]        vgic_mmio_write_v3_misc+0x5c/0x2a0
-[  262.206178]        dispatch_mmio_write+0xd8/0x258
-[  262.207498]        __kvm_io_bus_write+0x1e0/0x350
-[  262.208582]        kvm_io_bus_write+0xe0/0x1cc
-[  262.209653]        io_mem_abort+0x2ac/0x6d8
-[  262.210569]        kvm_handle_guest_abort+0x9b8/0x1f88
-[  262.211937]        handle_exit+0xc4/0x39c
-[  262.212971]        kvm_arch_vcpu_ioctl_run+0x90c/0x1c04
-[  262.214154]        kvm_vcpu_ioctl+0x450/0x12f8
-[  262.215233]        __arm64_sys_ioctl+0x7ac/0x1ba8
-[  262.216402]        invoke_syscall.constprop.0+0x70/0x1e0
-[  262.217774]        do_el0_svc+0xe4/0x2d4
-[  262.218758]        el0_svc+0x44/0x8c
-[  262.219941]        el0t_64_sync_handler+0xf4/0x120
-[  262.221110]        el0t_64_sync+0x190/0x194
+A recent one triggers a divide-by-zero [1], and Paolo Abeni
+was able to diagnose the issue.
 
-Note that the current report, which can be triggered by the vgic_irq
-kselftest, is a triple chain that includes slots_lock, but after
-inverting the slots_lock/config_lock dependency, the actual problem
-reported above remains.
+tcp_recvmsg_locked() has tests about sk_state being not TCP_LISTEN
+and TCP REPAIR mode being not used.
 
-In several places, the vgic code calls kvm_io_bus_register_dev(), which
-synchronizes the srcu, while holding config_lock (#1). And the MMIO
-handler takes the config_lock while holding the srcu read lock (#0).
+Then later if socket lock is released in sk_wait_data(),
+another thread can call connect(AF_UNSPEC), then make this
+socket a TCP listener.
 
-Break dependency #1, by registering the distributor and redistributors
-without holding config_lock. The ITS also uses kvm_io_bus_register_dev()
-but already relies on slots_lock to serialize calls.
+When recvmsg() is resumed, it can eventually call tcp_cleanup_rbuf()
+and attempt a divide by 0 in tcp_rcv_space_adjust() [1]
 
-The distributor iodev is created on the first KVM_RUN call. Multiple
-threads will race for vgic initialization, and only the first one will
-see !vgic_ready() under the lock. To serialize those threads, rely on
-slots_lock rather than config_lock.
+This patch adds a new socket field, counting number of threads
+blocked in sk_wait_event() and inet_wait_for_connect().
 
-Redistributors are created earlier, through KVM_DEV_ARM_VGIC_GRP_ADDR
-ioctls and vCPU creation. Similarly, serialize the iodev creation with
-slots_lock, and the rest with config_lock.
+If this counter is not zero, tcp_disconnect() returns an error.
 
-Fixes: f00327731131 ("KVM: arm64: Use config_lock to protect vgic state")
-Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230518100914.2837292-2-jean-philippe@linaro.org
+This patch adds code in blocking socket system calls, thus should
+not hurt performance of non blocking ones.
+
+Note that we probably could revert commit 499350a5a6e7 ("tcp:
+initialize rcv_mss to TCP_MIN_MSS instead of 0") to restore
+original tcpi_rcv_mss meaning (was 0 if no payload was ever
+received on a socket)
+
+[1]
+divide error: 0000 [#1] PREEMPT SMP KASAN
+CPU: 0 PID: 13832 Comm: syz-executor.5 Not tainted 6.3.0-rc4-syzkaller-00224-g00c7b5f4ddc5 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/02/2023
+RIP: 0010:tcp_rcv_space_adjust+0x36e/0x9d0 net/ipv4/tcp_input.c:740
+Code: 00 00 00 00 fc ff df 4c 89 64 24 48 8b 44 24 04 44 89 f9 41 81 c7 80 03 00 00 c1 e1 04 44 29 f0 48 63 c9 48 01 e9 48 0f af c1 <49> f7 f6 48 8d 04 41 48 89 44 24 40 48 8b 44 24 30 48 c1 e8 03 48
+RSP: 0018:ffffc900033af660 EFLAGS: 00010206
+RAX: 4a66b76cbade2c48 RBX: ffff888076640cc0 RCX: 00000000c334e4ac
+RDX: 0000000000000000 RSI: dffffc0000000000 RDI: 0000000000000001
+RBP: 00000000c324e86c R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: ffff8880766417f8
+R13: ffff888028fbb980 R14: 0000000000000000 R15: 0000000000010344
+FS: 00007f5bffbfe700(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b32f25000 CR3: 000000007ced0000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<TASK>
+tcp_recvmsg_locked+0x100e/0x22e0 net/ipv4/tcp.c:2616
+tcp_recvmsg+0x117/0x620 net/ipv4/tcp.c:2681
+inet6_recvmsg+0x114/0x640 net/ipv6/af_inet6.c:670
+sock_recvmsg_nosec net/socket.c:1017 [inline]
+sock_recvmsg+0xe2/0x160 net/socket.c:1038
+____sys_recvmsg+0x210/0x5a0 net/socket.c:2720
+___sys_recvmsg+0xf2/0x180 net/socket.c:2762
+do_recvmmsg+0x25e/0x6e0 net/socket.c:2856
+__sys_recvmmsg net/socket.c:2935 [inline]
+__do_sys_recvmmsg net/socket.c:2958 [inline]
+__se_sys_recvmmsg net/socket.c:2951 [inline]
+__x64_sys_recvmmsg+0x20f/0x260 net/socket.c:2951
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f5c0108c0f9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f5bffbfe168 EFLAGS: 00000246 ORIG_RAX: 000000000000012b
+RAX: ffffffffffffffda RBX: 00007f5c011ac050 RCX: 00007f5c0108c0f9
+RDX: 0000000000000001 RSI: 0000000020000bc0 RDI: 0000000000000003
+RBP: 00007f5c010e7b39 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000122 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f5c012cfb1f R14: 00007f5bffbfe300 R15: 0000000000022000
+</TASK>
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Reported-by: Paolo Abeni <pabeni@redhat.com>
+Diagnosed-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Tested-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20230526163458.2880232-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/vgic/vgic-init.c       | 25 ++++++++++++++++-----
- arch/arm64/kvm/vgic/vgic-kvm-device.c | 10 +++++++--
- arch/arm64/kvm/vgic/vgic-mmio-v3.c    | 31 ++++++++++++++++++---------
- arch/arm64/kvm/vgic/vgic-mmio.c       |  9 ++------
- arch/arm64/kvm/vgic/vgic-v2.c         |  6 ------
- arch/arm64/kvm/vgic/vgic-v3.c         |  7 ------
- 6 files changed, 51 insertions(+), 37 deletions(-)
+ include/net/sock.h              | 4 ++++
+ net/ipv4/af_inet.c              | 2 ++
+ net/ipv4/inet_connection_sock.c | 1 +
+ net/ipv4/tcp.c                  | 6 ++++++
+ 4 files changed, 13 insertions(+)
 
-diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
-index 8c1d2d7128db6..37e74ca4dad85 100644
---- a/arch/arm64/kvm/vgic/vgic-init.c
-+++ b/arch/arm64/kvm/vgic/vgic-init.c
-@@ -235,9 +235,9 @@ int kvm_vgic_vcpu_init(struct kvm_vcpu *vcpu)
- 	 * KVM io device for the redistributor that belongs to this VCPU.
- 	 */
- 	if (dist->vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3) {
--		mutex_lock(&vcpu->kvm->arch.config_lock);
-+		mutex_lock(&vcpu->kvm->slots_lock);
- 		ret = vgic_register_redist_iodev(vcpu);
--		mutex_unlock(&vcpu->kvm->arch.config_lock);
-+		mutex_unlock(&vcpu->kvm->slots_lock);
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 0309d2311487d..104d80d850e41 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -334,6 +334,7 @@ struct bpf_local_storage;
+   *	@sk_cgrp_data: cgroup data for this cgroup
+   *	@sk_memcg: this socket's memory cgroup association
+   *	@sk_write_pending: a write to stream socket waits to start
++  *	@sk_wait_pending: number of threads blocked on this socket
+   *	@sk_state_change: callback to indicate change in the state of the sock
+   *	@sk_data_ready: callback to indicate there is data to be processed
+   *	@sk_write_space: callback to indicate there is bf sending space available
+@@ -418,6 +419,7 @@ struct sock {
+ 	unsigned int		sk_napi_id;
+ #endif
+ 	int			sk_rcvbuf;
++	int			sk_wait_pending;
+ 
+ 	struct sk_filter __rcu	*sk_filter;
+ 	union {
+@@ -1115,6 +1117,7 @@ static inline void sock_rps_reset_rxhash(struct sock *sk)
+ 
+ #define sk_wait_event(__sk, __timeo, __condition, __wait)		\
+ 	({	int __rc;						\
++		__sk->sk_wait_pending++;				\
+ 		release_sock(__sk);					\
+ 		__rc = __condition;					\
+ 		if (!__rc) {						\
+@@ -1124,6 +1127,7 @@ static inline void sock_rps_reset_rxhash(struct sock *sk)
+ 		}							\
+ 		sched_annotate_sleep();					\
+ 		lock_sock(__sk);					\
++		__sk->sk_wait_pending--;				\
+ 		__rc = __condition;					\
+ 		__rc;							\
+ 	})
+diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+index 7fa1b0a45176f..e46b11507edc2 100644
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -587,6 +587,7 @@ static long inet_wait_for_connect(struct sock *sk, long timeo, int writebias)
+ 
+ 	add_wait_queue(sk_sleep(sk), &wait);
+ 	sk->sk_write_pending += writebias;
++	sk->sk_wait_pending++;
+ 
+ 	/* Basic assumption: if someone sets sk->sk_err, he _must_
+ 	 * change state of the socket from TCP_SYN_*.
+@@ -602,6 +603,7 @@ static long inet_wait_for_connect(struct sock *sk, long timeo, int writebias)
  	}
- 	return ret;
- }
-@@ -446,11 +446,13 @@ int vgic_lazy_init(struct kvm *kvm)
- int kvm_vgic_map_resources(struct kvm *kvm)
- {
- 	struct vgic_dist *dist = &kvm->arch.vgic;
-+	gpa_t dist_base;
- 	int ret = 0;
- 
- 	if (likely(vgic_ready(kvm)))
- 		return 0;
- 
-+	mutex_lock(&kvm->slots_lock);
- 	mutex_lock(&kvm->arch.config_lock);
- 	if (vgic_ready(kvm))
- 		goto out;
-@@ -463,13 +465,26 @@ int kvm_vgic_map_resources(struct kvm *kvm)
- 	else
- 		ret = vgic_v3_map_resources(kvm);
- 
--	if (ret)
-+	if (ret) {
- 		__kvm_vgic_destroy(kvm);
--	else
--		dist->ready = true;
-+		goto out;
-+	}
-+	dist->ready = true;
-+	dist_base = dist->vgic_dist_base;
-+	mutex_unlock(&kvm->arch.config_lock);
-+
-+	ret = vgic_register_dist_iodev(kvm, dist_base,
-+				       kvm_vgic_global_state.type);
-+	if (ret) {
-+		kvm_err("Unable to register VGIC dist MMIO regions\n");
-+		kvm_vgic_destroy(kvm);
-+	}
-+	mutex_unlock(&kvm->slots_lock);
-+	return ret;
- 
- out:
- 	mutex_unlock(&kvm->arch.config_lock);
-+	mutex_unlock(&kvm->slots_lock);
- 	return ret;
+ 	remove_wait_queue(sk_sleep(sk), &wait);
+ 	sk->sk_write_pending -= writebias;
++	sk->sk_wait_pending--;
+ 	return timeo;
  }
  
-diff --git a/arch/arm64/kvm/vgic/vgic-kvm-device.c b/arch/arm64/kvm/vgic/vgic-kvm-device.c
-index 07e727023deb7..bf4b3d9631ce1 100644
---- a/arch/arm64/kvm/vgic/vgic-kvm-device.c
-+++ b/arch/arm64/kvm/vgic/vgic-kvm-device.c
-@@ -102,7 +102,11 @@ static int kvm_vgic_addr(struct kvm *kvm, struct kvm_device_attr *attr, bool wri
- 		if (get_user(addr, uaddr))
- 			return -EFAULT;
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index 29ec42c1f5d09..4fb0506430774 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -963,6 +963,7 @@ struct sock *inet_csk_clone_lock(const struct sock *sk,
+ 	if (newsk) {
+ 		struct inet_connection_sock *newicsk = inet_csk(newsk);
  
--	mutex_lock(&kvm->arch.config_lock);
-+	/*
-+	 * Since we can't hold config_lock while registering the redistributor
-+	 * iodevs, take the slots_lock immediately.
++		newsk->sk_wait_pending = 0;
+ 		inet_sk_set_state(newsk, TCP_SYN_RECV);
+ 		newicsk->icsk_bind_hash = NULL;
+ 
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index b91ddd2a2f96d..682503227effe 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2972,6 +2972,12 @@ int tcp_disconnect(struct sock *sk, int flags)
+ 	int old_state = sk->sk_state;
+ 	u32 seq;
+ 
++	/* Deny disconnect if other threads are blocked in sk_wait_event()
++	 * or inet_wait_for_connect().
 +	 */
-+	mutex_lock(&kvm->slots_lock);
- 	switch (attr->attr) {
- 	case KVM_VGIC_V2_ADDR_TYPE_DIST:
- 		r = vgic_check_type(kvm, KVM_DEV_TYPE_ARM_VGIC_V2);
-@@ -182,6 +186,7 @@ static int kvm_vgic_addr(struct kvm *kvm, struct kvm_device_attr *attr, bool wri
- 	if (r)
- 		goto out;
- 
-+	mutex_lock(&kvm->arch.config_lock);
- 	if (write) {
- 		r = vgic_check_iorange(kvm, *addr_ptr, addr, alignment, size);
- 		if (!r)
-@@ -189,9 +194,10 @@ static int kvm_vgic_addr(struct kvm *kvm, struct kvm_device_attr *attr, bool wri
- 	} else {
- 		addr = *addr_ptr;
- 	}
-+	mutex_unlock(&kvm->arch.config_lock);
- 
- out:
--	mutex_unlock(&kvm->arch.config_lock);
-+	mutex_unlock(&kvm->slots_lock);
- 
- 	if (!r && !write)
- 		r =  put_user(addr, uaddr);
-diff --git a/arch/arm64/kvm/vgic/vgic-mmio-v3.c b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-index 472b18ac92a24..188d2187eede9 100644
---- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-+++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-@@ -769,10 +769,13 @@ int vgic_register_redist_iodev(struct kvm_vcpu *vcpu)
- 	struct vgic_io_device *rd_dev = &vcpu->arch.vgic_cpu.rd_iodev;
- 	struct vgic_redist_region *rdreg;
- 	gpa_t rd_base;
--	int ret;
-+	int ret = 0;
++	if (sk->sk_wait_pending)
++		return -EBUSY;
 +
-+	lockdep_assert_held(&kvm->slots_lock);
-+	mutex_lock(&kvm->arch.config_lock);
- 
- 	if (!IS_VGIC_ADDR_UNDEF(vgic_cpu->rd_iodev.base_addr))
--		return 0;
-+		goto out_unlock;
- 
- 	/*
- 	 * We may be creating VCPUs before having set the base address for the
-@@ -782,10 +785,12 @@ int vgic_register_redist_iodev(struct kvm_vcpu *vcpu)
- 	 */
- 	rdreg = vgic_v3_rdist_free_slot(&vgic->rd_regions);
- 	if (!rdreg)
--		return 0;
-+		goto out_unlock;
- 
--	if (!vgic_v3_check_base(kvm))
--		return -EINVAL;
-+	if (!vgic_v3_check_base(kvm)) {
-+		ret = -EINVAL;
-+		goto out_unlock;
-+	}
- 
- 	vgic_cpu->rdreg = rdreg;
- 	vgic_cpu->rdreg_index = rdreg->free_index;
-@@ -799,16 +804,20 @@ int vgic_register_redist_iodev(struct kvm_vcpu *vcpu)
- 	rd_dev->nr_regions = ARRAY_SIZE(vgic_v3_rd_registers);
- 	rd_dev->redist_vcpu = vcpu;
- 
--	mutex_lock(&kvm->slots_lock);
-+	mutex_unlock(&kvm->arch.config_lock);
-+
- 	ret = kvm_io_bus_register_dev(kvm, KVM_MMIO_BUS, rd_base,
- 				      2 * SZ_64K, &rd_dev->dev);
--	mutex_unlock(&kvm->slots_lock);
--
- 	if (ret)
- 		return ret;
- 
-+	/* Protected by slots_lock */
- 	rdreg->free_index++;
- 	return 0;
-+
-+out_unlock:
-+	mutex_unlock(&kvm->arch.config_lock);
-+	return ret;
- }
- 
- static void vgic_unregister_redist_iodev(struct kvm_vcpu *vcpu)
-@@ -834,12 +843,10 @@ static int vgic_register_all_redist_iodevs(struct kvm *kvm)
- 		/* The current c failed, so iterate over the previous ones. */
- 		int i;
- 
--		mutex_lock(&kvm->slots_lock);
- 		for (i = 0; i < c; i++) {
- 			vcpu = kvm_get_vcpu(kvm, i);
- 			vgic_unregister_redist_iodev(vcpu);
- 		}
--		mutex_unlock(&kvm->slots_lock);
- 	}
- 
- 	return ret;
-@@ -938,7 +945,9 @@ int vgic_v3_set_redist_base(struct kvm *kvm, u32 index, u64 addr, u32 count)
- {
- 	int ret;
- 
-+	mutex_lock(&kvm->arch.config_lock);
- 	ret = vgic_v3_alloc_redist_region(kvm, index, addr, count);
-+	mutex_unlock(&kvm->arch.config_lock);
- 	if (ret)
- 		return ret;
- 
-@@ -950,8 +959,10 @@ int vgic_v3_set_redist_base(struct kvm *kvm, u32 index, u64 addr, u32 count)
- 	if (ret) {
- 		struct vgic_redist_region *rdreg;
- 
-+		mutex_lock(&kvm->arch.config_lock);
- 		rdreg = vgic_v3_rdist_region_from_index(kvm, index);
- 		vgic_v3_free_redist_region(rdreg);
-+		mutex_unlock(&kvm->arch.config_lock);
- 		return ret;
- 	}
- 
-diff --git a/arch/arm64/kvm/vgic/vgic-mmio.c b/arch/arm64/kvm/vgic/vgic-mmio.c
-index a95f99b93dd68..eb5c58d785b99 100644
---- a/arch/arm64/kvm/vgic/vgic-mmio.c
-+++ b/arch/arm64/kvm/vgic/vgic-mmio.c
-@@ -1093,7 +1093,6 @@ int vgic_register_dist_iodev(struct kvm *kvm, gpa_t dist_base_address,
- 			     enum vgic_type type)
- {
- 	struct vgic_io_device *io_device = &kvm->arch.vgic.dist_iodev;
--	int ret = 0;
- 	unsigned int len;
- 
- 	switch (type) {
-@@ -1111,10 +1110,6 @@ int vgic_register_dist_iodev(struct kvm *kvm, gpa_t dist_base_address,
- 	io_device->iodev_type = IODEV_DIST;
- 	io_device->redist_vcpu = NULL;
- 
--	mutex_lock(&kvm->slots_lock);
--	ret = kvm_io_bus_register_dev(kvm, KVM_MMIO_BUS, dist_base_address,
--				      len, &io_device->dev);
--	mutex_unlock(&kvm->slots_lock);
--
--	return ret;
-+	return kvm_io_bus_register_dev(kvm, KVM_MMIO_BUS, dist_base_address,
-+				       len, &io_device->dev);
- }
-diff --git a/arch/arm64/kvm/vgic/vgic-v2.c b/arch/arm64/kvm/vgic/vgic-v2.c
-index 645648349c99b..7e9cdb78f7ce8 100644
---- a/arch/arm64/kvm/vgic/vgic-v2.c
-+++ b/arch/arm64/kvm/vgic/vgic-v2.c
-@@ -312,12 +312,6 @@ int vgic_v2_map_resources(struct kvm *kvm)
- 		return ret;
- 	}
- 
--	ret = vgic_register_dist_iodev(kvm, dist->vgic_dist_base, VGIC_V2);
--	if (ret) {
--		kvm_err("Unable to register VGIC MMIO regions\n");
--		return ret;
--	}
--
- 	if (!static_branch_unlikely(&vgic_v2_cpuif_trap)) {
- 		ret = kvm_phys_addr_ioremap(kvm, dist->vgic_cpu_base,
- 					    kvm_vgic_global_state.vcpu_base,
-diff --git a/arch/arm64/kvm/vgic/vgic-v3.c b/arch/arm64/kvm/vgic/vgic-v3.c
-index 5bdada3137287..f86c3007a319c 100644
---- a/arch/arm64/kvm/vgic/vgic-v3.c
-+++ b/arch/arm64/kvm/vgic/vgic-v3.c
-@@ -538,7 +538,6 @@ int vgic_v3_map_resources(struct kvm *kvm)
- {
- 	struct vgic_dist *dist = &kvm->arch.vgic;
- 	struct kvm_vcpu *vcpu;
--	int ret = 0;
- 	unsigned long c;
- 
- 	kvm_for_each_vcpu(c, vcpu, kvm) {
-@@ -568,12 +567,6 @@ int vgic_v3_map_resources(struct kvm *kvm)
- 		return -EBUSY;
- 	}
- 
--	ret = vgic_register_dist_iodev(kvm, dist->vgic_dist_base, VGIC_V3);
--	if (ret) {
--		kvm_err("Unable to register VGICv3 dist MMIO regions\n");
--		return ret;
--	}
--
- 	if (kvm_vgic_global_state.has_gicv4_1)
- 		vgic_v4_configure_vsgis(kvm);
+ 	if (old_state != TCP_CLOSE)
+ 		tcp_set_state(sk, TCP_CLOSE);
  
 -- 
 2.39.2
