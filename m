@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B25D726AC2
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F15EA726D98
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:44:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232505AbjFGUUJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:20:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44818 "EHLO
+        id S234558AbjFGUoC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:44:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233025AbjFGUTy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:19:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2C252702
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:19:33 -0700 (PDT)
+        with ESMTP id S234452AbjFGUoB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 632772700
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:43:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A42EE6438D
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:18:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3114C433D2;
-        Wed,  7 Jun 2023 20:18:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D6E764653
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:43:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AF4C433EF;
+        Wed,  7 Jun 2023 20:43:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169135;
-        bh=rDBsBfUDYAlno5PU2UyKATVQtqlS35qV+l0vqdkbj6M=;
+        s=korg; t=1686170609;
+        bh=EOZ+3mKw9Dbp9ofImuacVyl7gE4qGUEQZCC1dXn+a3E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QyZLtm5xiWb2hNniHCoB5G8ykeeEg6ot+sqdIyK7MSRuH01b4ZD7/7SyRNqHNWbSj
-         BT+igt0wnkDFJpJyHvkTg8yiX71V2g7ojq9wuZuCdwy+lx8w+nrmvUKLF3KnNk70r7
-         D7RJDHENpVb2JYY+k0d0/KsYJDlk/ctS+obChozc=
+        b=2RaY4FIT1cWTWy2t/w4+tAeQaAx4jSzWTJ6qVrupbC4od+TGrkaDNfn3o7b/HrtRv
+         DBFzOQ1Fq6oNoY2sNO7UDUMlo4Hy5dChjsxK5gQcqwnwZgCNg2+CSNt8B14qJqe40k
+         X9IkR1ion+RprY09hnFbSR5SjlNlPotlsRLYa7uQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hyunwoo Kim <v4bel@theori.io>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 27/61] media: dvb-core: Fix use-after-free due to race condition at dvb_ca_en50221
+        patches@lists.linux.dev, Sean Nyekjaer <sean@geanix.com>,
+        Olivier Moysan <olivier.moysan@foss.st.com>,
+        Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 148/225] iio: adc: stm32-adc: skip adc-channels setup if none is present
 Date:   Wed,  7 Jun 2023 22:15:41 +0200
-Message-ID: <20230607200844.696814634@linuxfoundation.org>
+Message-ID: <20230607200919.259617955@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-References: <20230607200835.310274198@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,128 +55,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Sean Nyekjaer <sean@geanix.com>
 
-[ Upstream commit 280a8ab81733da8bc442253c700a52c4c0886ffd ]
+commit 3e27ef0ced49f8ae7883c25fadf76a2086e99025 upstream.
 
-If the device node of dvb_ca_en50221 is open() and the
-device is disconnected, a UAF may occur when calling
-close() on the device node.
+If only adc differential channels are defined driver will fail with
+stm32-adc: probe of 48003000.adc:adc@0 failed with error -22
 
-The root cause is that wake_up() and wait_event() for
-dvbdev->wait_queue are not implemented.
+Fix this by skipping the initialization if no channels are defined.
 
-So implement wait_event() function in dvb_ca_en50221_release()
-and add 'remove_mutex' which prevents race condition
-for 'ca->exit'.
+This applies only to the legacy way of initializing adc channels.
 
-[mchehab: fix a checkpatch warning]
-
-Link: https://lore.kernel.org/linux-media/20221121063308.GA33821@ubuntu
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d7705f35448a ("iio: adc: stm32-adc: convert to device properties")
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Reviewed-by: Olivier Moysan <olivier.moysan@foss.st.com>
+Link: https://lore.kernel.org/r/20230503162029.3654093-2-sean@geanix.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dvb_ca_en50221.c | 37 ++++++++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+ drivers/iio/adc/stm32-adc.c |   42 +++++++++++++++++++++++-------------------
+ 1 file changed, 23 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/media/dvb-core/dvb_ca_en50221.c b/drivers/media/dvb-core/dvb_ca_en50221.c
-index 56114d85510f5..5dc8b2d143520 100644
---- a/drivers/media/dvb-core/dvb_ca_en50221.c
-+++ b/drivers/media/dvb-core/dvb_ca_en50221.c
-@@ -161,6 +161,12 @@ struct dvb_ca_private {
+--- a/drivers/iio/adc/stm32-adc.c
++++ b/drivers/iio/adc/stm32-adc.c
+@@ -1913,6 +1913,7 @@ static int stm32_adc_legacy_chan_init(st
+ 	struct stm32_adc_diff_channel diff[STM32_ADC_CH_MAX];
+ 	struct device *dev = &indio_dev->dev;
+ 	u32 num_diff = adc->num_diff;
++	int num_se = nchans - num_diff;
+ 	int size = num_diff * sizeof(*diff) / sizeof(u32);
+ 	int scan_index = 0, ret, i, c;
+ 	u32 smp = 0, smps[STM32_ADC_CH_MAX], chans[STM32_ADC_CH_MAX];
+@@ -1939,29 +1940,32 @@ static int stm32_adc_legacy_chan_init(st
+ 			scan_index++;
+ 		}
+ 	}
+-
+-	ret = device_property_read_u32_array(dev, "st,adc-channels", chans,
+-					     nchans);
+-	if (ret)
+-		return ret;
+-
+-	for (c = 0; c < nchans; c++) {
+-		if (chans[c] >= adc_info->max_channels) {
+-			dev_err(&indio_dev->dev, "Invalid channel %d\n",
+-				chans[c]);
+-			return -EINVAL;
++	if (num_se > 0) {
++		ret = device_property_read_u32_array(dev, "st,adc-channels", chans, num_se);
++		if (ret) {
++			dev_err(&indio_dev->dev, "Failed to get st,adc-channels %d\n", ret);
++			return ret;
+ 		}
  
- 	/* mutex serializing ioctls */
- 	struct mutex ioctl_mutex;
+-		/* Channel can't be configured both as single-ended & diff */
+-		for (i = 0; i < num_diff; i++) {
+-			if (chans[c] == diff[i].vinp) {
+-				dev_err(&indio_dev->dev, "channel %d misconfigured\n",	chans[c]);
++		for (c = 0; c < num_se; c++) {
++			if (chans[c] >= adc_info->max_channels) {
++				dev_err(&indio_dev->dev, "Invalid channel %d\n",
++					chans[c]);
+ 				return -EINVAL;
+ 			}
 +
-+	/* A mutex used when a device is disconnected */
-+	struct mutex remove_mutex;
-+
-+	/* Whether the device is disconnected */
-+	int exit;
- };
- 
- static void dvb_ca_private_free(struct dvb_ca_private *ca)
-@@ -1713,12 +1719,22 @@ static int dvb_ca_en50221_io_open(struct inode *inode, struct file *file)
- 
- 	dprintk("%s\n", __func__);
- 
--	if (!try_module_get(ca->pub->owner))
-+	mutex_lock(&ca->remove_mutex);
-+
-+	if (ca->exit) {
-+		mutex_unlock(&ca->remove_mutex);
-+		return -ENODEV;
-+	}
-+
-+	if (!try_module_get(ca->pub->owner)) {
-+		mutex_unlock(&ca->remove_mutex);
- 		return -EIO;
-+	}
- 
- 	err = dvb_generic_open(inode, file);
- 	if (err < 0) {
- 		module_put(ca->pub->owner);
-+		mutex_unlock(&ca->remove_mutex);
- 		return err;
++			/* Channel can't be configured both as single-ended & diff */
++			for (i = 0; i < num_diff; i++) {
++				if (chans[c] == diff[i].vinp) {
++					dev_err(&indio_dev->dev, "channel %d misconfigured\n",
++						chans[c]);
++					return -EINVAL;
++				}
++			}
++			stm32_adc_chan_init_one(indio_dev, &channels[scan_index],
++						chans[c], 0, scan_index, false);
++			scan_index++;
+ 		}
+-		stm32_adc_chan_init_one(indio_dev, &channels[scan_index],
+-					chans[c], 0, scan_index, false);
+-		scan_index++;
  	}
  
-@@ -1743,6 +1759,7 @@ static int dvb_ca_en50221_io_open(struct inode *inode, struct file *file)
+ 	if (adc->nsmps > 0) {
+@@ -2153,7 +2157,7 @@ static int stm32_adc_chan_fw_init(struct
  
- 	dvb_ca_private_get(ca);
- 
-+	mutex_unlock(&ca->remove_mutex);
- 	return 0;
- }
- 
-@@ -1762,6 +1779,8 @@ static int dvb_ca_en50221_io_release(struct inode *inode, struct file *file)
- 
- 	dprintk("%s\n", __func__);
- 
-+	mutex_lock(&ca->remove_mutex);
-+
- 	/* mark the CA device as closed */
- 	ca->open = 0;
- 	dvb_ca_en50221_thread_update_delay(ca);
-@@ -1772,6 +1791,13 @@ static int dvb_ca_en50221_io_release(struct inode *inode, struct file *file)
- 
- 	dvb_ca_private_put(ca);
- 
-+	if (dvbdev->users == 1 && ca->exit == 1) {
-+		mutex_unlock(&ca->remove_mutex);
-+		wake_up(&dvbdev->wait_queue);
-+	} else {
-+		mutex_unlock(&ca->remove_mutex);
-+	}
-+
- 	return err;
- }
- 
-@@ -1896,6 +1922,7 @@ int dvb_ca_en50221_init(struct dvb_adapter *dvb_adapter,
- 	}
- 
- 	mutex_init(&ca->ioctl_mutex);
-+	mutex_init(&ca->remove_mutex);
- 
- 	if (signal_pending(current)) {
- 		ret = -EINTR;
-@@ -1939,6 +1966,14 @@ void dvb_ca_en50221_release(struct dvb_ca_en50221 *pubca)
- 
- 	dprintk("%s\n", __func__);
- 
-+	mutex_lock(&ca->remove_mutex);
-+	ca->exit = 1;
-+	mutex_unlock(&ca->remove_mutex);
-+
-+	if (ca->dvbdev->users < 1)
-+		wait_event(ca->dvbdev->wait_queue,
-+				ca->dvbdev->users == 1);
-+
- 	/* shutdown the thread if there was one */
- 	kthread_stop(ca->thread);
- 
--- 
-2.39.2
-
+ 	if (legacy)
+ 		ret = stm32_adc_legacy_chan_init(indio_dev, adc, channels,
+-						 num_channels);
++						 timestamping ? num_channels - 1 : num_channels);
+ 	else
+ 		ret = stm32_adc_generic_chan_init(indio_dev, adc, channels);
+ 	if (ret < 0)
 
 
