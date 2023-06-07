@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C078726EA0
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:51:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20F65726F15
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235184AbjFGUvq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:51:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52182 "EHLO
+        id S235442AbjFGUzb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:55:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235174AbjFGUvh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:51:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6FD12139
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:51:23 -0700 (PDT)
+        with ESMTP id S235793AbjFGUzI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:55:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BDDB95
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:55:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7738C63192
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:51:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630DEC4339C;
-        Wed,  7 Jun 2023 20:51:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 08D43647D1
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:55:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C03BC433D2;
+        Wed,  7 Jun 2023 20:55:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171078;
-        bh=7P1ovuxvTzFYSu+1MIAyr3QGwChR4p2MrkuhM2fNbD0=;
+        s=korg; t=1686171306;
+        bh=dUePTNR+/lmT5WMp9B07MmHSlzvUB6vleBK+OqK+mvM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j5Qz9DpYN62/ACOEDfBoU//W6dYGttiuWPFxbUF4pPzydnwghD/nlMiKm+cRbFBnu
-         NrVCXEl3bUeblHjkuwORmGPqgIo7JQyi0Kir6irCfjOG0v3Fa+dUJjor/cltt4mBEG
-         UOdCa72q89392TL77VX4r722ESM06Jb44T9B1RVY=
+        b=YsXRLpUEARvaJJmohNLidnbLv023ghwVA9R5HdFfCvY7yJ6oWZRi8plY5l3MU3mEF
+         CevccD4mKakac+PyuGDSlgNJZQpvzixvWPFyNddyQjLm1A3mgx8cjrDUl1XbLfaDqM
+         4T6muLJZmqNbdWJrLXmAyiZnr56Xb9qK9GAVHBGs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
-        syzbot+d910bd780e6efac35869@syzkaller.appspotmail.com,
-        Sam Ravnborg <sam@ravnborg.org>, stable@kernel.org
-Subject: [PATCH 5.10 103/120] fbcon: Fix null-ptr-deref in soft_cursor
+        patches@lists.linux.dev,
+        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+        =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 67/99] net: usb: qmi_wwan: Set DTR quirk for BroadMobi BM818
 Date:   Wed,  7 Jun 2023 22:16:59 +0200
-Message-ID: <20230607200904.161870940@linuxfoundation.org>
+Message-ID: <20230607200902.335839521@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,58 +55,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
+From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
 
-commit d78bd6cc68276bd57f766f7cb98bfe32c23ab327 upstream.
+commit 36936a56e1814f6c526fe71fbf980beab4f5577a upstream.
 
-syzbot repored this bug in the softcursor code:
+BM818 is based on Qualcomm MDM9607 chipset.
 
-BUG: KASAN: null-ptr-deref in soft_cursor+0x384/0x6b4 drivers/video/fbdev/core/softcursor.c:70
-Read of size 16 at addr 0000000000000200 by task kworker/u4:1/12
-
-CPU: 0 PID: 12 Comm: kworker/u4:1 Not tainted 6.4.0-rc3-syzkaller-geb0f1697d729 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/28/2023
-Workqueue: events_power_efficient fb_flashcursor
-Call trace:
- dump_backtrace+0x1b8/0x1e4 arch/arm64/kernel/stacktrace.c:233
- show_stack+0x2c/0x44 arch/arm64/kernel/stacktrace.c:240
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0xd0/0x124 lib/dump_stack.c:106
- print_report+0xe4/0x514 mm/kasan/report.c:465
- kasan_report+0xd4/0x130 mm/kasan/report.c:572
- kasan_check_range+0x264/0x2a4 mm/kasan/generic.c:187
- __asan_memcpy+0x3c/0x84 mm/kasan/shadow.c:105
- soft_cursor+0x384/0x6b4 drivers/video/fbdev/core/softcursor.c:70
- bit_cursor+0x113c/0x1a64 drivers/video/fbdev/core/bitblit.c:377
- fb_flashcursor+0x35c/0x54c drivers/video/fbdev/core/fbcon.c:380
- process_one_work+0x788/0x12d4 kernel/workqueue.c:2405
- worker_thread+0x8e0/0xfe8 kernel/workqueue.c:2552
- kthread+0x288/0x310 kernel/kthread.c:379
- ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:853
-
-This fix let bit_cursor() bail out early when a font bitmap
-isn't available yet.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reported-by: syzbot+d910bd780e6efac35869@syzkaller.appspotmail.com
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
-Cc: stable@kernel.org
+Fixes: 9a07406b00cd ("net: usb: qmi_wwan: Add the BroadMobi BM818 card")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Acked-by: Bjørn Mork <bjorn@mork.no>
+Link: https://lore.kernel.org/r/20230526-bm818-dtr-v1-1-64bbfa6ba8af@puri.sm
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/bitblit.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/usb/qmi_wwan.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/video/fbdev/core/bitblit.c
-+++ b/drivers/video/fbdev/core/bitblit.c
-@@ -247,6 +247,9 @@ static void bit_cursor(struct vc_data *v
- 
- 	cursor.set = 0;
- 
-+	if (!vc->vc_font.data)
-+		return;
-+
-  	c = scr_readw((u16 *) vc->vc_pos);
- 	attribute = get_attribute(info, c);
- 	src = vc->vc_font.data + ((c & charmask) * (w * vc->vc_font.height));
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1282,7 +1282,7 @@ static const struct usb_device_id produc
+ 	{QMI_FIXED_INTF(0x2001, 0x7e3d, 4)},	/* D-Link DWM-222 A2 */
+ 	{QMI_FIXED_INTF(0x2020, 0x2031, 4)},	/* Olicard 600 */
+ 	{QMI_FIXED_INTF(0x2020, 0x2033, 4)},	/* BroadMobi BM806U */
+-	{QMI_FIXED_INTF(0x2020, 0x2060, 4)},	/* BroadMobi BM818 */
++	{QMI_QUIRK_SET_DTR(0x2020, 0x2060, 4)},	/* BroadMobi BM818 */
+ 	{QMI_FIXED_INTF(0x0f3d, 0x68a2, 8)},    /* Sierra Wireless MC7700 */
+ 	{QMI_FIXED_INTF(0x114f, 0x68a2, 8)},    /* Sierra Wireless MC7750 */
+ 	{QMI_FIXED_INTF(0x1199, 0x68a2, 8)},	/* Sierra Wireless MC7710 in QMI mode */
 
 
