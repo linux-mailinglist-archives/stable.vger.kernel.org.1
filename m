@@ -2,50 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE69B726CCC
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:36:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 818EC726C60
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:33:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234186AbjFGUge (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:36:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34652 "EHLO
+        id S233740AbjFGUdN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:33:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234241AbjFGUgM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:36:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A2652701
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:36:00 -0700 (PDT)
+        with ESMTP id S233756AbjFGUdM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:33:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 954B9213C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:33:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DED4B64581
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:35:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0200BC433EF;
-        Wed,  7 Jun 2023 20:35:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3243264530
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:33:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459FEC4339B;
+        Wed,  7 Jun 2023 20:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170159;
-        bh=k1Wdy5HiceOrL4Jp5EksUTPQuP7HKsxxnSx9Ib5bA7M=;
+        s=korg; t=1686169979;
+        bh=0PXeqC3u0+kVE7f0CJA2KJp0JnDrHVG3L/MzfSXx7/E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e2fj6dfAWsO74gq6y4ueeg5Zha8qOj5Mjh8xItE5ydgOZgsnudvmHJiigzPiG3Oh5
-         XXiiJkvSIAWb8tUTN+rWZYpM27UbF0P/a8fakptOoDNWZmRNOUaF8qs8RFEZSCT+qU
-         HM2wEcmGGIraKaQ37R1mwZUFX5XLMZZDsFYcgTwo=
+        b=TocM6r+F4IhSdRDznxQNK95R2KxhSbXuD3p4CmZemCUO/SroisZ6Nhv3NJMMcB/BZ
+         sXkcYWNznOtYOJP0P9WffVT0kAKX4zaDq9KrGI2TL8yzkjfP7GKxSVdlHqC3OBSFGz
+         m7jyy3ltyMSsTs1HmzuUq9Qic4coiWTBJV/6F/Ag=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Bart Van Assche <bvanassche@acm.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 4.19 68/88] scsi: stex: Fix gcc 13 warnings
+        patches@lists.linux.dev, Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.3 286/286] ext4: enable the lazy init thread when remounting read/write
 Date:   Wed,  7 Jun 2023 22:16:25 +0200
-Message-ID: <20230607200901.360129108@linuxfoundation.org>
+Message-ID: <20230607200932.622964889@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,63 +52,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit 6d074ce231772c66e648a61f6bd2245e7129d1f5 upstream.
+commit eb1f822c76beeaa76ab8b6737ab9dc9f9798408c upstream.
 
-gcc 13 may assign another type to enumeration constants than gcc 12. Split
-the large enum at the top of source file stex.c such that the type of the
-constants used in time expressions is changed back to the same type chosen
-by gcc 12. This patch suppresses compiler warnings like this one:
+In commit a44be64bbecb ("ext4: don't clear SB_RDONLY when remounting
+r/w until quota is re-enabled") we defer clearing tyhe SB_RDONLY flag
+in struct super.  However, we didn't defer when we checked sb_rdonly()
+to determine the lazy itable init thread should be enabled, with the
+next result that the lazy inode table initialization would not be
+properly started.  This can cause generic/231 to fail in ext4's
+nojournal mode.
 
-In file included from ./include/linux/bitops.h:7,
-                 from ./include/linux/kernel.h:22,
-                 from drivers/scsi/stex.c:13:
-drivers/scsi/stex.c: In function ‘stex_common_handshake’:
-./include/linux/typecheck.h:12:25: error: comparison of distinct pointer types lacks a cast [-Werror]
-   12 |         (void)(&__dummy == &__dummy2); \
-      |                         ^~
-./include/linux/jiffies.h:106:10: note: in expansion of macro ‘typecheck’
-  106 |          typecheck(unsigned long, b) && \
-      |          ^~~~~~~~~
-drivers/scsi/stex.c:1035:29: note: in expansion of macro ‘time_after’
- 1035 |                         if (time_after(jiffies, before + MU_MAX_DELAY * HZ)) {
-      |                             ^~~~~~~~~~
+Fix this by moving when we decide to start or stop the lazy itable
+init thread to after we clear the SB_RDONLY flag when we are
+remounting the file system read/write.
 
-See also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107405.
+Fixes a44be64bbecb ("ext4: don't clear SB_RDONLY when remounting r/w until...")
 
-Cc: stable@vger.kernel.org
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20230529195034.3077-1-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://lore.kernel.org/r/20230527035729.1001605-1-tytso@mit.edu
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/stex.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/ext4/super.c |   24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
---- a/drivers/scsi/stex.c
-+++ b/drivers/scsi/stex.c
-@@ -114,7 +114,9 @@ enum {
- 	TASK_ATTRIBUTE_HEADOFQUEUE		= 0x1,
- 	TASK_ATTRIBUTE_ORDERED			= 0x2,
- 	TASK_ATTRIBUTE_ACA			= 0x4,
-+};
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -6555,18 +6555,6 @@ static int __ext4_remount(struct fs_cont
+ 	}
  
-+enum {
- 	SS_STS_NORMAL				= 0x80000000,
- 	SS_STS_DONE				= 0x40000000,
- 	SS_STS_HANDSHAKE			= 0x20000000,
-@@ -126,7 +128,9 @@ enum {
- 	SS_I2H_REQUEST_RESET			= 0x2000,
+ 	/*
+-	 * Reinitialize lazy itable initialization thread based on
+-	 * current settings
+-	 */
+-	if (sb_rdonly(sb) || !test_opt(sb, INIT_INODE_TABLE))
+-		ext4_unregister_li_request(sb);
+-	else {
+-		ext4_group_t first_not_zeroed;
+-		first_not_zeroed = ext4_has_uninit_itable(sb);
+-		ext4_register_li_request(sb, first_not_zeroed);
+-	}
+-
+-	/*
+ 	 * Handle creation of system zone data early because it can fail.
+ 	 * Releasing of existing data is done when we are sure remount will
+ 	 * succeed.
+@@ -6603,6 +6591,18 @@ static int __ext4_remount(struct fs_cont
+ 	if (enable_rw)
+ 		sb->s_flags &= ~SB_RDONLY;
  
- 	SS_MU_OPERATIONAL			= 0x80000000,
-+};
- 
-+enum {
- 	STEX_CDB_LENGTH				= 16,
- 	STATUS_VAR_LEN				= 128,
++	/*
++	 * Reinitialize lazy itable initialization thread based on
++	 * current settings
++	 */
++	if (sb_rdonly(sb) || !test_opt(sb, INIT_INODE_TABLE))
++		ext4_unregister_li_request(sb);
++	else {
++		ext4_group_t first_not_zeroed;
++		first_not_zeroed = ext4_has_uninit_itable(sb);
++		ext4_register_li_request(sb, first_not_zeroed);
++	}
++
+ 	if (!ext4_has_feature_mmp(sb) || sb_rdonly(sb))
+ 		ext4_stop_mmpd(sbi);
  
 
 
