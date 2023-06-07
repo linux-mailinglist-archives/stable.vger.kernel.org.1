@@ -2,44 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C5C3726E52
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05C95726CC2
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:36:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234864AbjFGUtq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:49:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49340 "EHLO
+        id S234105AbjFGUgN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:36:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235198AbjFGUt0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:49:26 -0400
+        with ESMTP id S234061AbjFGUfx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:35:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17A372728
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:48:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 678FB270A
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:35:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E40B161CC6
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:48:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F0BC433D2;
-        Wed,  7 Jun 2023 20:48:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E73556457C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:35:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07EC4C433EF;
+        Wed,  7 Jun 2023 20:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170937;
-        bh=jtwyEquz+vRZlXWsvGK61uOfEpuctsKJWHmbm/a0TXU=;
+        s=korg; t=1686170138;
+        bh=PsdLhYUW2/2yOHPd/tsa7m1zstJtfVAA7v3QvF6juMM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o9ndYafyntg7sMepDsi9OUTXRxVGsOS/KMtR2nwOM8zRM5PvO1t1eI0JsgOLsezOg
-         2OlbO9K5um8lV9EkCZY2aneFTwNGEJ7FRo+A/cuti+Tj7+AcwiCkdjd6QicXH1Au0b
-         oogS1xQV/b5eftN0oaCSt++HEBSkClqCN+/TwJBU=
+        b=rfbe7UXNha/qHBp5moxPrDXJlyAf3AqotFV3pRthEKjOea20vSX3OaWRfhOlDmFIm
+         dB1ASnBylaOiCFkG0YB57Q7forNm4hvKmSHIlZqFSM+cLT1zGo3MPYRHtJAgCodCzd
+         sOUfzfwL+6NlVTj+Vvv36M2EPyw4PgAPOa/HsZ8c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Miquel Raynal <miquel.raynal@bootlin.com>,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>,
+        patches@lists.linux.dev, Haibo Li <haibo.li@mediatek.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexandre Mergnat <amergnat@baylibre.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 031/120] mtd: rawnand: marvell: ensure timing values are written
+Subject: [PATCH 4.19 30/88] ARM: 9295/1: unwind:fix unwind abort for uleb128 case
 Date:   Wed,  7 Jun 2023 22:15:47 +0200
-Message-ID: <20230607200901.891320844@linuxfoundation.org>
+Message-ID: <20230607200900.107417704@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,41 +58,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+From: Haibo Li <haibo.li@mediatek.com>
 
-[ Upstream commit 8a6f4d346f3bad9c68b4a87701eb3f7978542d57 ]
+[ Upstream commit fa3eeb638de0c1a9d2d860e5b48259facdd65176 ]
 
-When new timing values are calculated in marvell_nfc_setup_interface()
-ensure that they will be applied in marvell_nfc_select_target() by
-clearing the selected_chip pointer.
+When unwind instruction is 0xb2,the subsequent instructions
+are uleb128 bytes.
+For now,it uses only the first uleb128 byte in code.
 
-Fixes: b25251414f6e ("mtd: rawnand: marvell: Stop implementing ->select_chip()")
-Suggested-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230525003154.2303012-1-chris.packham@alliedtelesis.co.nz
+For vsp increments of 0x204~0x400,use one uleb128 byte like below:
+0xc06a00e4 <unwind_test_work>: 0x80b27fac
+  Compact model index: 0
+  0xb2 0x7f vsp = vsp + 1024
+  0xac      pop {r4, r5, r6, r7, r8, r14}
+
+For vsp increments larger than 0x400,use two uleb128 bytes like below:
+0xc06a00e4 <unwind_test_work>: @0xc0cc9e0c
+  Compact model index: 1
+  0xb2 0x81 0x01 vsp = vsp + 1032
+  0xac      pop {r4, r5, r6, r7, r8, r14}
+The unwind works well since the decoded uleb128 byte is also 0x81.
+
+For vsp increments larger than 0x600,use two uleb128 bytes like below:
+0xc06a00e4 <unwind_test_work>: @0xc0cc9e0c
+  Compact model index: 1
+  0xb2 0x81 0x02 vsp = vsp + 1544
+  0xac      pop {r4, r5, r6, r7, r8, r14}
+In this case,the decoded uleb128 result is 0x101(vsp=0x204+(0x101<<2)).
+While the uleb128 used in code is 0x81(vsp=0x204+(0x81<<2)).
+The unwind aborts at this frame since it gets incorrect vsp.
+
+To fix this,add uleb128 decode to cover all the above case.
+
+Signed-off-by: Haibo Li <haibo.li@mediatek.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/marvell_nand.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm/kernel/unwind.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/marvell_nand.c b/drivers/mtd/nand/raw/marvell_nand.c
-index dce35f81e0a55..9d437f1566ed5 100644
---- a/drivers/mtd/nand/raw/marvell_nand.c
-+++ b/drivers/mtd/nand/raw/marvell_nand.c
-@@ -2443,6 +2443,12 @@ static int marvell_nfc_setup_interface(struct nand_chip *chip, int chipnr,
- 			NDTR1_WAIT_MODE;
- 	}
- 
-+	/*
-+	 * Reset nfc->selected_chip so the next command will cause the timing
-+	 * registers to be updated in marvell_nfc_select_target().
-+	 */
-+	nfc->selected_chip = NULL;
-+
- 	return 0;
+diff --git a/arch/arm/kernel/unwind.c b/arch/arm/kernel/unwind.c
+index 314cfb232a635..f2bb090373c67 100644
+--- a/arch/arm/kernel/unwind.c
++++ b/arch/arm/kernel/unwind.c
+@@ -313,6 +313,29 @@ static int unwind_exec_pop_subset_r0_to_r3(struct unwind_ctrl_block *ctrl,
+ 	return URC_OK;
  }
  
++static unsigned long unwind_decode_uleb128(struct unwind_ctrl_block *ctrl)
++{
++	unsigned long bytes = 0;
++	unsigned long insn;
++	unsigned long result = 0;
++
++	/*
++	 * unwind_get_byte() will advance `ctrl` one instruction at a time, so
++	 * loop until we get an instruction byte where bit 7 is not set.
++	 *
++	 * Note: This decodes a maximum of 4 bytes to output 28 bits data where
++	 * max is 0xfffffff: that will cover a vsp increment of 1073742336, hence
++	 * it is sufficient for unwinding the stack.
++	 */
++	do {
++		insn = unwind_get_byte(ctrl);
++		result |= (insn & 0x7f) << (bytes * 7);
++		bytes++;
++	} while (!!(insn & 0x80) && (bytes != sizeof(result)));
++
++	return result;
++}
++
+ /*
+  * Execute the current unwind instruction.
+  */
+@@ -366,7 +389,7 @@ static int unwind_exec_insn(struct unwind_ctrl_block *ctrl)
+ 		if (ret)
+ 			goto error;
+ 	} else if (insn == 0xb2) {
+-		unsigned long uleb128 = unwind_get_byte(ctrl);
++		unsigned long uleb128 = unwind_decode_uleb128(ctrl);
+ 
+ 		ctrl->vrs[SP] += 0x204 + (uleb128 << 2);
+ 	} else {
 -- 
 2.39.2
 
