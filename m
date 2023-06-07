@@ -2,45 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91602726B8C
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD795726D2D
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:40:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233253AbjFGU0Z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:26:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51726 "EHLO
+        id S234319AbjFGUkD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:40:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232820AbjFGU0S (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:18 -0400
+        with ESMTP id S234411AbjFGUjp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:39:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1106269D
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:25:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1F912710
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:39:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 600A26446E
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:25:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764DBC433EF;
-        Wed,  7 Jun 2023 20:25:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9696C645DF
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:39:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 859E9C433D2;
+        Wed,  7 Jun 2023 20:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169540;
-        bh=wQH+bHDKIaIv8BJZfoN3z8fGy9rKt8U+rcC4iVrJx0Q=;
+        s=korg; t=1686170362;
+        bh=ToFbkCMOZEpK+4wwufmFmEGqsbFhKgV1sbz08FRgmSo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H1jAq3BXsbAJd4HtNXVYGa8hhVcTL2oYldyIiFIIoK8skxwuof7tuqdIRxslz4HwF
-         lqdy8D/il/pqH6WhDbTOtXTXcDsywpuWrl3tyIkvzpBSxo10tsMySneB4DO//GPI4B
-         UQ0Fu/Nn0CltdBnTtpP3XVbP65QTEdBBJ8T+7Ds0=
+        b=XDklBd49KrWcOKtfQ4X52pbtaqrWWcDQv93NgfS2pMzNZOa0bhO5EZua12LKTf5aa
+         7Kpl8iKkYxooMwVItyzJrZro5MnerGvT4CeF7yOeizbxXfWEvcqQxXtu2yNT0kVMXS
+         ZJB/DEHTJRQMwQc3WsdSfH1t+G8FR7NV0wNbCOFQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Richard Weinberger <richard@nod.at>,
+        patches@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Changbin Du <changbin.du@huawei.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 119/286] um: harddog: fix modular build
-Date:   Wed,  7 Jun 2023 22:13:38 +0200
-Message-ID: <20230607200926.970560862@linuxfoundation.org>
+Subject: [PATCH 6.1 026/225] perf ftrace latency: Remove unnecessary "--" from --use-nsec option
+Date:   Wed,  7 Jun 2023 22:13:39 +0200
+Message-ID: <20230607200915.177713965@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,132 +59,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 73a23d7710331a530e972903318528b75e5a5f58 ]
+[ Upstream commit 8d73259ef23f449329294dc187932f7470268126 ]
 
-Since we no longer (want to) export any libc symbols the
-_user portions of any drivers need to be built into image
-rather than the module. I missed this for the watchdog.
-Fix the watchdog accordingly.
+The option name should not have the dashes.  Current version shows four
+dashes for the option.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+  $ perf ftrace latency -h
+
+   Usage: perf ftrace [<options>] [<command>]
+      or: perf ftrace [<options>] -- [<command>] [<options>]
+      or: perf ftrace {trace|latency} [<options>] [<command>]
+      or: perf ftrace {trace|latency} [<options>] -- [<command>] [<options>]
+
+      -b, --use-bpf         Use BPF to measure function latency
+      -n, ----use-nsec      Use nano-second histogram
+      -T, --trace-funcs <func>
+                            Show latency of given function
+
+Fixes: 84005bb6148618cc ("perf ftrace latency: Add -n/--use-nsec option")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Changbin Du <changbin.du@huawei.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20230525212038.3535851-1-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/Makefile           | 4 +++-
- arch/um/drivers/harddog.h          | 9 +++++++++
- arch/um/drivers/harddog_kern.c     | 7 +------
- arch/um/drivers/harddog_user.c     | 1 +
- arch/um/drivers/harddog_user_exp.c | 9 +++++++++
- 5 files changed, 23 insertions(+), 7 deletions(-)
- create mode 100644 arch/um/drivers/harddog.h
- create mode 100644 arch/um/drivers/harddog_user_exp.c
+ tools/perf/builtin-ftrace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/um/drivers/Makefile b/arch/um/drivers/Makefile
-index dee6f66353b33..a461a950f0518 100644
---- a/arch/um/drivers/Makefile
-+++ b/arch/um/drivers/Makefile
-@@ -16,7 +16,8 @@ mconsole-objs := mconsole_kern.o mconsole_user.o
- hostaudio-objs := hostaudio_kern.o
- ubd-objs := ubd_kern.o ubd_user.o
- port-objs := port_kern.o port_user.o
--harddog-objs := harddog_kern.o harddog_user.o
-+harddog-objs := harddog_kern.o
-+harddog-builtin-$(CONFIG_UML_WATCHDOG) := harddog_user.o harddog_user_exp.o
- rtc-objs := rtc_kern.o rtc_user.o
- 
- LDFLAGS_pcap.o = $(shell $(CC) $(KBUILD_CFLAGS) -print-file-name=libpcap.a)
-@@ -60,6 +61,7 @@ obj-$(CONFIG_PTY_CHAN) += pty.o
- obj-$(CONFIG_TTY_CHAN) += tty.o 
- obj-$(CONFIG_XTERM_CHAN) += xterm.o xterm_kern.o
- obj-$(CONFIG_UML_WATCHDOG) += harddog.o
-+obj-y += $(harddog-builtin-y) $(harddog-builtin-m)
- obj-$(CONFIG_BLK_DEV_COW_COMMON) += cow_user.o
- obj-$(CONFIG_UML_RANDOM) += random.o
- obj-$(CONFIG_VIRTIO_UML) += virtio_uml.o
-diff --git a/arch/um/drivers/harddog.h b/arch/um/drivers/harddog.h
-new file mode 100644
-index 0000000000000..6d9ea60e7133e
---- /dev/null
-+++ b/arch/um/drivers/harddog.h
-@@ -0,0 +1,9 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef UM_WATCHDOG_H
-+#define UM_WATCHDOG_H
-+
-+int start_watchdog(int *in_fd_ret, int *out_fd_ret, char *sock);
-+void stop_watchdog(int in_fd, int out_fd);
-+int ping_watchdog(int fd);
-+
-+#endif /* UM_WATCHDOG_H */
-diff --git a/arch/um/drivers/harddog_kern.c b/arch/um/drivers/harddog_kern.c
-index e6d4f43deba82..60d1c6cab8a95 100644
---- a/arch/um/drivers/harddog_kern.c
-+++ b/arch/um/drivers/harddog_kern.c
-@@ -47,6 +47,7 @@
- #include <linux/spinlock.h>
- #include <linux/uaccess.h>
- #include "mconsole.h"
-+#include "harddog.h"
- 
- MODULE_LICENSE("GPL");
- 
-@@ -60,8 +61,6 @@ static int harddog_out_fd = -1;
-  *	Allow only one person to hold it open
-  */
- 
--extern int start_watchdog(int *in_fd_ret, int *out_fd_ret, char *sock);
--
- static int harddog_open(struct inode *inode, struct file *file)
- {
- 	int err = -EBUSY;
-@@ -92,8 +91,6 @@ static int harddog_open(struct inode *inode, struct file *file)
- 	return err;
- }
- 
--extern void stop_watchdog(int in_fd, int out_fd);
--
- static int harddog_release(struct inode *inode, struct file *file)
- {
- 	/*
-@@ -112,8 +109,6 @@ static int harddog_release(struct inode *inode, struct file *file)
- 	return 0;
- }
- 
--extern int ping_watchdog(int fd);
--
- static ssize_t harddog_write(struct file *file, const char __user *data, size_t len,
- 			     loff_t *ppos)
- {
-diff --git a/arch/um/drivers/harddog_user.c b/arch/um/drivers/harddog_user.c
-index 070468d22e394..9ed89304975ed 100644
---- a/arch/um/drivers/harddog_user.c
-+++ b/arch/um/drivers/harddog_user.c
-@@ -7,6 +7,7 @@
- #include <unistd.h>
- #include <errno.h>
- #include <os.h>
-+#include "harddog.h"
- 
- struct dog_data {
- 	int stdin_fd;
-diff --git a/arch/um/drivers/harddog_user_exp.c b/arch/um/drivers/harddog_user_exp.c
-new file mode 100644
-index 0000000000000..c74d4b815d143
---- /dev/null
-+++ b/arch/um/drivers/harddog_user_exp.c
-@@ -0,0 +1,9 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <linux/export.h>
-+#include "harddog.h"
-+
-+#if IS_MODULE(CONFIG_UML_WATCHDOG)
-+EXPORT_SYMBOL(start_watchdog);
-+EXPORT_SYMBOL(stop_watchdog);
-+EXPORT_SYMBOL(ping_watchdog);
-+#endif
+diff --git a/tools/perf/builtin-ftrace.c b/tools/perf/builtin-ftrace.c
+index 4bc5b7cf3e04b..1d40f9bcb63bc 100644
+--- a/tools/perf/builtin-ftrace.c
++++ b/tools/perf/builtin-ftrace.c
+@@ -1175,7 +1175,7 @@ int cmd_ftrace(int argc, const char **argv)
+ 	OPT_BOOLEAN('b', "use-bpf", &ftrace.target.use_bpf,
+ 		    "Use BPF to measure function latency"),
+ #endif
+-	OPT_BOOLEAN('n', "--use-nsec", &ftrace.use_nsec,
++	OPT_BOOLEAN('n', "use-nsec", &ftrace.use_nsec,
+ 		    "Use nano-second histogram"),
+ 	OPT_PARENT(common_options),
+ 	};
 -- 
 2.39.2
 
