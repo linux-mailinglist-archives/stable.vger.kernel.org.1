@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FA81726CAE
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:35:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77540726EF6
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:54:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233997AbjFGUf2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:35:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33698 "EHLO
+        id S235380AbjFGUy0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:54:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234051AbjFGUfP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:35:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8774026A2
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:35:10 -0700 (PDT)
+        with ESMTP id S235399AbjFGUyE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 229091BE2
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:54:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F286564564
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:35:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 128C1C433D2;
-        Wed,  7 Jun 2023 20:35:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A9A5647A9
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:54:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC711C433D2;
+        Wed,  7 Jun 2023 20:54:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170109;
-        bh=NbX/+bpQFDnpPT67aMJd80TM1GVTx3BsKIpo5GTwgt8=;
+        s=korg; t=1686171241;
+        bh=LICTnqcDswLiZfS7rj3K17nYASLOIDj1OWIT5Ow/ekY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UvhXxpu8VXpqpbJLzSIEGvt86h/Uz7Ym3e9aIQNVeCv4oyE84DSjgi2GyKLv/204I
-         WHlsiYowlxCIOZu/q0rbG3rS8Bc9BezmXQeGb+iADfy+nHNR+Lm9gRhoQ2t8PMDtyD
-         4EIgeKN8t6q5ENyqFEXEOTLBgyBBaNG/jzQc0Qko=
+        b=GwwPJ3jxwmbtMpt4grKf2ndff7HUCShLUWhjYRN3kk08TKJYm1SnBzW2ceSdXoFXs
+         aHXTFzDTWvyPGArQn+Cdyk7GL7EgKRE5XVmU9YCEjGWs0WrvRA7/2jp0VLrcUyuaFP
+         fciDw5jRjhV2jVrVu6kJaVGdafk9RR3qfBUBT4lQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Jiri Pirko <jiri@nvidia.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 48/88] media: mn88443x: fix !CONFIG_OF error by drop of_match_ptr from ID table
+Subject: [PATCH 5.4 13/99] af_packet: do not use READ_ONCE() in packet_bind()
 Date:   Wed,  7 Jun 2023 22:16:05 +0200
-Message-ID: <20230607200900.744127107@linuxfoundation.org>
+Message-ID: <20230607200900.662980577@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,38 +57,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit ae11c0efaec32fb45130ee9886689f467232eebc ]
+[ Upstream commit 6ffc57ea004234d9373c57b204fd10370a69f392 ]
 
-The driver will match mostly by DT table (even thought there is regular
-ID table) so there is little benefit in of_match_ptr (this also allows
-ACPI matching via PRP0001, even though it might not be relevant here).
-This also fixes !CONFIG_OF error:
+A recent patch added READ_ONCE() in packet_bind() and packet_bind_spkt()
 
-  drivers/media/dvb-frontends/mn88443x.c:782:34: error: ‘mn88443x_of_match’ defined but not used [-Werror=unused-const-variable=]
+This is better handled by reading pkt_sk(sk)->num later
+in packet_do_bind() while appropriate lock is held.
 
-Link: https://lore.kernel.org/linux-media/20230312131318.351173-28-krzysztof.kozlowski@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+READ_ONCE() in writers are often an evidence of something being wrong.
+
+Fixes: 822b5a1c17df ("af_packet: Fix data-races of pkt_sk(sk)->num.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230526154342.2533026-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/mn88443x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/packet/af_packet.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/dvb-frontends/mn88443x.c b/drivers/media/dvb-frontends/mn88443x.c
-index 53981ff9422e0..2b6732d40b917 100644
---- a/drivers/media/dvb-frontends/mn88443x.c
-+++ b/drivers/media/dvb-frontends/mn88443x.c
-@@ -800,7 +800,7 @@ MODULE_DEVICE_TABLE(i2c, mn88443x_i2c_id);
- static struct i2c_driver mn88443x_driver = {
- 	.driver = {
- 		.name = "mn88443x",
--		.of_match_table = of_match_ptr(mn88443x_of_match),
-+		.of_match_table = mn88443x_of_match,
- 	},
- 	.probe    = mn88443x_probe,
- 	.remove   = mn88443x_remove,
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 2d4cc53180a1c..fbe3434dcdc1e 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -3128,6 +3128,9 @@ static int packet_do_bind(struct sock *sk, const char *name, int ifindex,
+ 
+ 	lock_sock(sk);
+ 	spin_lock(&po->bind_lock);
++	if (!proto)
++		proto = po->num;
++
+ 	rcu_read_lock();
+ 
+ 	if (po->fanout) {
+@@ -3230,7 +3233,7 @@ static int packet_bind_spkt(struct socket *sock, struct sockaddr *uaddr,
+ 	memcpy(name, uaddr->sa_data, sizeof(uaddr->sa_data));
+ 	name[sizeof(uaddr->sa_data)] = 0;
+ 
+-	return packet_do_bind(sk, name, 0, READ_ONCE(pkt_sk(sk)->num));
++	return packet_do_bind(sk, name, 0, 0);
+ }
+ 
+ static int packet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
+@@ -3247,8 +3250,7 @@ static int packet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len
+ 	if (sll->sll_family != AF_PACKET)
+ 		return -EINVAL;
+ 
+-	return packet_do_bind(sk, NULL, sll->sll_ifindex,
+-			      sll->sll_protocol ? : READ_ONCE(pkt_sk(sk)->num));
++	return packet_do_bind(sk, NULL, sll->sll_ifindex, sll->sll_protocol);
+ }
+ 
+ static struct proto packet_proto = {
 -- 
 2.39.2
 
