@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42BBF726ADE
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02A23726F95
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:00:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232646AbjFGUUs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:20:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45736 "EHLO
+        id S235766AbjFGVAn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:00:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232724AbjFGUUm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A78F2715
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:20:18 -0700 (PDT)
+        with ESMTP id S235963AbjFGVAI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 777C9213B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:59:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CCB1064367
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:20:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2C2C433EF;
-        Wed,  7 Jun 2023 20:20:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E11BE648D3
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:59:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7346C433D2;
+        Wed,  7 Jun 2023 20:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169203;
-        bh=OpFoQomk0Xd+FdnFhiTvGzDQOZ0c5ekgtsgOCzVkqQQ=;
+        s=korg; t=1686171558;
+        bh=x/V/RBeJcyDiQDXAtSSZoqmN131WiEOgV7eiYgyexhk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TciwnuGyI4plaXCwPuM3PZLHW/QbiP7wLhpQY98WGl2xsfzplqwGw50dGqU1b0eaa
-         HnDLzpmMo+aagk4La2zARW6LHaaDe7UF4isdeftg7g/vzIP6CMOTK+7TDKoPy5ygvd
-         Ag7gV5lSEpYe7t4uPmp0P+xMXjkOZMyOJ9RlxmgA=
+        b=hjrtrswXUkaB+jMjNgE2MeW0kFh/YmHmRHOVLZXS9VEWguxvjR3TxmR0IAIJ9gPM5
+         T2Y/bZLNFX5/hfLVL5hQSoO6gHNHa2AnvsniesLC+QUkNk/1xlJdQgXJIVcwOQF3jI
+         gWqJr+Tq4C/6prXSpPLmmjAgTJ15DjOOlaIq2l3M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        syzbot+298c5d8fb4a128bc27b0@syzkaller.appspotmail.com,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 4.14 53/61] ext4: add lockdep annotations for i_data_sem for ea_inodes
+        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 064/159] media: dvb-usb: az6027: fix three null-ptr-deref in az6027_i2c_xfer()
 Date:   Wed,  7 Jun 2023 22:16:07 +0200
-Message-ID: <20230607200853.470801877@linuxfoundation.org>
+Message-ID: <20230607200905.782430367@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-References: <20230607200835.310274198@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,57 +54,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Wei Chen <harperchen1110@gmail.com>
 
-commit aff3bea95388299eec63440389b4545c8041b357 upstream.
+[ Upstream commit 858e97d7956d17a2cb56a9413468704a4d5abfe1 ]
 
-Treat i_data_sem for ea_inodes as being in their own lockdep class to
-avoid lockdep complaints about ext4_setattr's use of inode_lock() on
-normal inodes potentially causing lock ordering with i_data_sem on
-ea_inodes in ext4_xattr_inode_write().  However, ea_inodes will be
-operated on by ext4_setattr(), so this isn't a problem.
+In az6027_i2c_xfer, msg is controlled by user. When msg[i].buf is null,
+commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in
+az6027_i2c_xfer()") fix the null-ptr-deref bug when msg[i].addr is 0x99.
+However, null-ptr-deref also happens when msg[i].addr is 0xd0 and 0xc0.
+We add check on msg[i].len to prevent null-ptr-deref.
 
-Cc: stable@kernel.org
-Link: https://syzkaller.appspot.com/bug?extid=298c5d8fb4a128bc27b0
-Reported-by: syzbot+298c5d8fb4a128bc27b0@syzkaller.appspotmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Link: https://lore.kernel.org/r/20230524034951.779531-5-tytso@mit.edu
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-media/20230310165604.3093483-1-harperchen1110@gmail.com
+Signed-off-by: Wei Chen <harperchen1110@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/ext4.h  |    2 ++
- fs/ext4/xattr.c |    4 ++++
- 2 files changed, 6 insertions(+)
+ drivers/media/usb/dvb-usb/az6027.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -947,11 +947,13 @@ do {									       \
-  *			  where the second inode has larger inode number
-  *			  than the first
-  *  I_DATA_SEM_QUOTA  - Used for quota inodes only
-+ *  I_DATA_SEM_EA     - Used for ea_inodes only
-  */
- enum {
- 	I_DATA_SEM_NORMAL = 0,
- 	I_DATA_SEM_OTHER,
- 	I_DATA_SEM_QUOTA,
-+	I_DATA_SEM_EA
- };
+diff --git a/drivers/media/usb/dvb-usb/az6027.c b/drivers/media/usb/dvb-usb/az6027.c
+index 32b4ee65c2802..991f4510aaebb 100644
+--- a/drivers/media/usb/dvb-usb/az6027.c
++++ b/drivers/media/usb/dvb-usb/az6027.c
+@@ -988,6 +988,10 @@ static int az6027_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[], int n
+ 			/* write/read request */
+ 			if (i + 1 < num && (msg[i + 1].flags & I2C_M_RD)) {
+ 				req = 0xB9;
++				if (msg[i].len < 1) {
++					i = -EOPNOTSUPP;
++					break;
++				}
+ 				index = (((msg[i].buf[0] << 8) & 0xff00) | (msg[i].buf[1] & 0x00ff));
+ 				value = msg[i].addr + (msg[i].len << 8);
+ 				length = msg[i + 1].len + 6;
+@@ -1001,6 +1005,10 @@ static int az6027_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[], int n
  
+ 				/* demod 16bit addr */
+ 				req = 0xBD;
++				if (msg[i].len < 1) {
++					i = -EOPNOTSUPP;
++					break;
++				}
+ 				index = (((msg[i].buf[0] << 8) & 0xff00) | (msg[i].buf[1] & 0x00ff));
+ 				value = msg[i].addr + (2 << 8);
+ 				length = msg[i].len - 2;
+@@ -1026,6 +1034,10 @@ static int az6027_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[], int n
+ 			} else {
  
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -120,7 +120,11 @@ ext4_expand_inode_array(struct ext4_xatt
- #ifdef CONFIG_LOCKDEP
- void ext4_xattr_inode_set_class(struct inode *ea_inode)
- {
-+	struct ext4_inode_info *ei = EXT4_I(ea_inode);
-+
- 	lockdep_set_subclass(&ea_inode->i_rwsem, 1);
-+	(void) ei;	/* shut up clang warning if !CONFIG_LOCKDEP */
-+	lockdep_set_subclass(&ei->i_data_sem, I_DATA_SEM_EA);
- }
- #endif
- 
+ 				req = 0xBD;
++				if (msg[i].len < 1) {
++					i = -EOPNOTSUPP;
++					break;
++				}
+ 				index = msg[i].buf[0] & 0x00FF;
+ 				value = msg[i].addr + (1 << 8);
+ 				length = msg[i].len - 1;
+-- 
+2.39.2
+
 
 
