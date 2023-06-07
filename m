@@ -2,48 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67F1E726C05
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:30:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DE64726D75
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:42:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233645AbjFGUaX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:30:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56442 "EHLO
+        id S234613AbjFGUmP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:42:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233771AbjFGUaE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 887EF211C
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:29:38 -0700 (PDT)
+        with ESMTP id S234566AbjFGUmI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:42:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7FD01BD4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:42:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E551564385
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:29:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B92C4339B;
-        Wed,  7 Jun 2023 20:29:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A9FD61CC6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:42:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D248C433D2;
+        Wed,  7 Jun 2023 20:42:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169776;
-        bh=HFAGcyiANbnYvYGR1FPwgmgi6OT3xsle0vWG9+fNWsk=;
+        s=korg; t=1686170524;
+        bh=W/6Qg65vvP61F0aFPDgy3bGh/YjgdCuTLST4/q/WBH4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mzjLnV1BtL9MeW3nD9E8B3nm2kiBL6yGyGAOQ/MHtOJG7MnW8cD2pC5Y3gve9O0ak
-         +dohhOhEePiYesW5RAZsHqoRH6uPSIgIv/95TUS+X4eAZu137B8OG9hdiwDvWjRd8G
-         aWoipfX9S7njKRIQBwnUe+0fa0nH0mDbqmxHPatU=
+        b=TVhvNESLQuUJ9XK2CFCJe+OU+Pjb4J9m9LKGo7CAX4e/rCIbEhMS2M/IRDst3nDcp
+         HULfTusX+c+tz2dacfA3JnCdL1BXhGaS6FswPknDTZAy/7F977d1JFFgNij3op7cht
+         qM6YU+ExzehJCNsmjMpTtIbsua6ursJNcFx2QH1E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.3 210/286] usb: cdns3: fix NCM gadget RX speed 20x slow than expection at iMX8QM
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 116/225] wifi: mac80211: simplify chanctx allocation
 Date:   Wed,  7 Jun 2023 22:15:09 +0200
-Message-ID: <20230607200930.112617795@linuxfoundation.org>
+Message-ID: <20230607200918.164170878@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,57 +54,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit dbe678f6192f27879ac9ff6bc7a1036aad85aae9 upstream.
+[ Upstream commit 860e1b43da94551cd1e73adc36b3c64cc3e5dc01 ]
 
-At iMX8QM platform, enable NCM gadget and run 'iperf3 -s'.
-At host, run 'iperf3 -V -c fe80::6863:98ff:feef:3e0%enxc6e147509498'
+There's no need to call ieee80211_recalc_chanctx_min_def()
+since it cannot and won't call the driver anyway; just use
+_ieee80211_recalc_chanctx_min_def() instead.
 
-[  5]   0.00-1.00   sec  1.55 MBytes  13.0 Mbits/sec   90   4.18 KBytes
-[  5]   1.00-2.00   sec  1.44 MBytes  12.0 Mbits/sec   75   4.18 KBytes
-[  5]   2.00-3.00   sec  1.48 MBytes  12.4 Mbits/sec   75   4.18 KBytes
-
-Expected speed should be bigger than 300Mbits/sec.
-
-The root cause of this performance drop was found to be data corruption
-happening at 4K borders in some Ethernet packets, leading to TCP
-checksum errors. This corruption occurs from the position
-(4K - (address & 0x7F)) to 4K. The u_ether function's allocation of
-skb_buff reserves 64B, meaning all RX addresses resemble 0xXXXX0040.
-
-Force trb_burst_size to 16 can fix this problem.
-
-Cc: stable@vger.kernel.org
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20230518154946.3666662-1-Frank.Li@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230504134511.828474-3-gregory.greenman@intel.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/cdns3-gadget.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ net/mac80211/chan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/cdns3/cdns3-gadget.c
-+++ b/drivers/usb/cdns3/cdns3-gadget.c
-@@ -2097,6 +2097,19 @@ int cdns3_ep_config(struct cdns3_endpoin
- 	else
- 		priv_ep->trb_burst_size = 16;
+diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
+index e72cf0749d492..76c6decb0762c 100644
+--- a/net/mac80211/chan.c
++++ b/net/mac80211/chan.c
+@@ -638,7 +638,7 @@ ieee80211_alloc_chanctx(struct ieee80211_local *local,
+ 	ctx->conf.rx_chains_dynamic = 1;
+ 	ctx->mode = mode;
+ 	ctx->conf.radar_enabled = false;
+-	ieee80211_recalc_chanctx_min_def(local, ctx);
++	_ieee80211_recalc_chanctx_min_def(local, ctx);
  
-+	/*
-+	 * In versions preceding DEV_VER_V2, for example, iMX8QM, there exit the bugs
-+	 * in the DMA. These bugs occur when the trb_burst_size exceeds 16 and the
-+	 * address is not aligned to 128 Bytes (which is a product of the 64-bit AXI
-+	 * and AXI maximum burst length of 16 or 0xF+1, dma_axi_ctrl0[3:0]). This
-+	 * results in data corruption when it crosses the 4K border. The corruption
-+	 * specifically occurs from the position (4K - (address & 0x7F)) to 4K.
-+	 *
-+	 * So force trb_burst_size to 16 at such platform.
-+	 */
-+	if (priv_dev->dev_ver < DEV_VER_V2)
-+		priv_ep->trb_burst_size = 16;
-+
- 	mult = min_t(u8, mult, EP_CFG_MULT_MAX);
- 	buffering = min_t(u8, buffering, EP_CFG_BUFFERING_MAX);
- 	maxburst = min_t(u8, maxburst, EP_CFG_MAXBURST_MAX);
+ 	return ctx;
+ }
+-- 
+2.39.2
+
 
 
