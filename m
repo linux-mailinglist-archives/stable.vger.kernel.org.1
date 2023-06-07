@@ -2,54 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED108726E3D
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:49:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05D86726C2D
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235143AbjFGUtG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:49:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49606 "EHLO
+        id S233608AbjFGUbM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:31:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235145AbjFGUsm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:48:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7194810EA
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:48:25 -0700 (PDT)
+        with ESMTP id S233613AbjFGUbL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:31:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACC10137
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:31:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 19401646B2
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:48:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28849C433D2;
-        Wed,  7 Jun 2023 20:48:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4904B644F9
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:31:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5708EC433EF;
+        Wed,  7 Jun 2023 20:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170903;
-        bh=0GUAsxossW2/ifeIIFxjnS7AQuYoW38Ib0Q2Gzs16z0=;
+        s=korg; t=1686169868;
+        bh=rW0YwDgq3ZgQP0BS4c50aWuZLQv3qUkX4OPbOU6JKH8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C1fGgC3M5zPUc/A0iseT13klGryQ2/EaPNQ3X36Bn3DSnmEw6Rkp8C/UgbGAyXsEH
-         Zf8SGCJiBzaN4uEYoYquqv9OjeU4N7J+JQxmUffC4go9myZ2rYMh9MBdxyFpyD5fyI
-         013Li30LyKKS00yKb4xABMTs+k+IedUwHz1Bmfpk=
+        b=qlY0j5yaPiNPocIYmAHx03puBAzsRYDVtFNvIZYvE7Wmcy5HLG7Z8YJ8QnfZ6eoV3
+         VsR97g7AZx/YLR91U9DrnzbqA3pAkUuIeLtIMEsoFYORLS8BvdOzOKcmvaayWzvXLh
+         Q1F9LBFsHjYqEn3yn1JYL/9Emv+KYtmb2JImw9Rg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Hongguang Gao <hongguang.gao@broadcom.com>,
-        Ajit Khaparde <ajit.khaparde@broadcom.com>,
-        Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 009/120] RDMA/bnxt_re: Fix return value of bnxt_re_process_raw_qp_pkt_rx
-Date:   Wed,  7 Jun 2023 22:15:25 +0200
-Message-ID: <20230607200901.211950046@linuxfoundation.org>
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Sherry Sun <sherry.sun@nxp.com>
+Subject: [PATCH 6.3 227/286] tty: serial: fsl_lpuart: use UARTCTRL_TXINV to send break instead of UARTCTRL_SBK
+Date:   Wed,  7 Jun 2023 22:15:26 +0200
+Message-ID: <20230607200930.703861473@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,42 +53,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-[ Upstream commit 0fa0d520e2a878cb4c94c4dc84395905d3f14f54 ]
+commit 2474e05467c00f7d51af3039b664de6886325257 upstream.
 
-bnxt_re_process_raw_qp_pkt_rx() always return 0 and ignores the return
-value of bnxt_re_post_send_shadow_qp().
+LPUART IP now has two known bugs, one is that CTS has higher priority
+than the break signal, which causes the break signal sending through
+UARTCTRL_SBK may impacted by the CTS input if the HW flow control is
+enabled. It exists on all platforms we support in this driver.
+So we add a workaround patch for this issue: commit c4c81db5cf8b
+("tty: serial: fsl_lpuart: disable the CTS when send break signal").
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Link: https://lore.kernel.org/r/1684397461-23082-3-git-send-email-selvin.xavier@broadcom.com
-Reviewed-by: Hongguang Gao <hongguang.gao@broadcom.com>
-Reviewed-by: Ajit Khaparde <ajit.khaparde@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Another IP bug is i.MX8QM LPUART may have an additional break character
+being sent after SBK was cleared. It may need to add some delay between
+clearing SBK and re-enabling CTS to ensure that the SBK latch are
+completely cleared.
+
+But we found that during the delay period before CTS is enabled, there
+is still a risk that Bluetooth data in TX FIFO may be sent out during
+this period because of break off and CTS disabled(even if BT sets CTS
+line deasserted, data is still sent to BT).
+
+Due to this risk, we have to drop the CTS-disabling workaround for SBK
+bugs, use TXINV seems to be a better way to replace SBK feature and
+avoid above risk. Also need to disable the transmitter to prevent any
+data from being sent out during break, then invert the TX line to send
+break. Then disable the TXINV when turn off break and re-enable
+transmitter.
+
+Fixes: c4c81db5cf8b ("tty: serial: fsl_lpuart: disable the CTS when send break signal")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+Link: https://lore.kernel.org/r/20230519094751.28948-1-sherry.sun@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/tty/serial/fsl_lpuart.c | 44 +++++++++++++++++----------------
+ 1 file changed, 23 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index 85fecb432aa00..2a973a1390a4a 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -3247,9 +3247,7 @@ static int bnxt_re_process_raw_qp_pkt_rx(struct bnxt_re_qp *gsi_qp,
- 	udwr.remote_qkey = gsi_sqp->qplib_qp.qkey;
+diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
+index c91916e13648..7486a2b8556c 100644
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -1495,34 +1495,36 @@ static void lpuart_break_ctl(struct uart_port *port, int break_state)
  
- 	/* post data received  in the send queue */
--	rc = bnxt_re_post_send_shadow_qp(rdev, gsi_sqp, swr);
+ static void lpuart32_break_ctl(struct uart_port *port, int break_state)
+ {
+-	unsigned long temp, modem;
+-	struct tty_struct *tty;
+-	unsigned int cflag = 0;
++	unsigned long temp;
+ 
+-	tty = tty_port_tty_get(&port->state->port);
+-	if (tty) {
+-		cflag = tty->termios.c_cflag;
+-		tty_kref_put(tty);
+-	}
 -
--	return 0;
-+	return bnxt_re_post_send_shadow_qp(rdev, gsi_sqp, swr);
+-	temp = lpuart32_read(port, UARTCTRL) & ~UARTCTRL_SBK;
+-	modem = lpuart32_read(port, UARTMODIR);
++	temp = lpuart32_read(port, UARTCTRL);
+ 
++	/*
++	 * LPUART IP now has two known bugs, one is CTS has higher priority than the
++	 * break signal, which causes the break signal sending through UARTCTRL_SBK
++	 * may impacted by the CTS input if the HW flow control is enabled. It
++	 * exists on all platforms we support in this driver.
++	 * Another bug is i.MX8QM LPUART may have an additional break character
++	 * being sent after SBK was cleared.
++	 * To avoid above two bugs, we use Transmit Data Inversion function to send
++	 * the break signal instead of UARTCTRL_SBK.
++	 */
+ 	if (break_state != 0) {
+-		temp |= UARTCTRL_SBK;
+ 		/*
+-		 * LPUART CTS has higher priority than SBK, need to disable CTS before
+-		 * asserting SBK to avoid any interference if flow control is enabled.
++		 * Disable the transmitter to prevent any data from being sent out
++		 * during break, then invert the TX line to send break.
+ 		 */
+-		if (cflag & CRTSCTS && modem & UARTMODIR_TXCTSE)
+-			lpuart32_write(port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
++		temp &= ~UARTCTRL_TE;
++		lpuart32_write(port, temp, UARTCTRL);
++		temp |= UARTCTRL_TXINV;
++		lpuart32_write(port, temp, UARTCTRL);
+ 	} else {
+-		/* Re-enable the CTS when break off. */
+-		if (cflag & CRTSCTS && !(modem & UARTMODIR_TXCTSE))
+-			lpuart32_write(port, modem | UARTMODIR_TXCTSE, UARTMODIR);
++		/* Disable the TXINV to turn off break and re-enable transmitter. */
++		temp &= ~UARTCTRL_TXINV;
++		lpuart32_write(port, temp, UARTCTRL);
++		temp |= UARTCTRL_TE;
++		lpuart32_write(port, temp, UARTCTRL);
+ 	}
+-
+-	lpuart32_write(port, temp, UARTCTRL);
  }
  
- static void bnxt_re_process_res_rawqp1_wc(struct ib_wc *wc,
+ static void lpuart_setup_watermark(struct lpuart_port *sport)
 -- 
-2.39.2
+2.41.0
 
 
 
