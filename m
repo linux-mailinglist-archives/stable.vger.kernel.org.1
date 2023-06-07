@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D96D726ABE
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D48D3726F78
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:58:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232478AbjFGUUI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:20:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44806 "EHLO
+        id S235721AbjFGU6h (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:58:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233018AbjFGUTy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:19:54 -0400
+        with ESMTP id S235753AbjFGU6a (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:58:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63CA226BF
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:19:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A85492D4F
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:58:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0626264391
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:18:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19549C4339E;
-        Wed,  7 Jun 2023 20:18:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 763CD64899
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:58:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AEFC433D2;
+        Wed,  7 Jun 2023 20:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169132;
-        bh=qMRcSdvdlL7u0cXsG0jvEgWnyTSYqEfuDBXqGxxxQhI=;
+        s=korg; t=1686171489;
+        bh=qoYXB0WWUWOXzC0J4B6JDi69xCcw48i6OeYjX9B32Lk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TDj488eiAxbqxx89/tM9NZWApO0sJ3qQ75qJCXLUldITk368K/5eixfv2+y1rOZFi
-         L4SvJ7/NUBmifUi7vh4enV1otOfHgadLUPckZNKdzeHCxq7a72jE7vjh4UaL4sKeCz
-         NqA7xeTATPQVkvyu54iIzl+8X7S0AJlZ9+IGYXLY=
+        b=JE7PyFFoI8PkovW0MeJXRjOwt6AJPlNed/Pe9TJNenwjV3Q0VW0SD2ojxHXaEJHgS
+         XaKM0O+2ZsqBJx0T62zo+BWTb1I1VbQodVzSpUUqBGdaWtoEM27DA8hZdQ8kxHLt/4
+         cyczsCP3RzWK7BPlXA5fnKm0/dQHScC5K9bFkyD8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Hao <yhao016@ucr.edu>,
-        Takashi Iwai <tiwai@suse.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Miquel Raynal <miquel.raynal@bootlin.com>,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 26/61] media: dvb-core: Fix kernel WARNING for blocking operation in wait_event*()
+Subject: [PATCH 5.15 037/159] mtd: rawnand: marvell: ensure timing values are written
 Date:   Wed,  7 Jun 2023 22:15:40 +0200
-Message-ID: <20230607200844.313577762@linuxfoundation.org>
+Message-ID: <20230607200904.885509543@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-References: <20230607200835.310274198@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,64 +54,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
 
-[ Upstream commit b8c75e4a1b325ea0a9433fa8834be97b5836b946 ]
+[ Upstream commit 8a6f4d346f3bad9c68b4a87701eb3f7978542d57 ]
 
-Using a semaphore in the wait_event*() condition is no good idea.
-It hits a kernel WARN_ON() at prepare_to_wait_event() like:
-  do not call blocking ops when !TASK_RUNNING; state=1 set at
-  prepare_to_wait_event+0x6d/0x690
+When new timing values are calculated in marvell_nfc_setup_interface()
+ensure that they will be applied in marvell_nfc_select_target() by
+clearing the selected_chip pointer.
 
-For avoiding the potential deadlock, rewrite to an open-coded loop
-instead.  Unlike the loop in wait_event*(), this uses wait_woken()
-after the condition check, hence the task state stays consistent.
-
-CVE-2023-31084 was assigned to this bug.
-
-Link: https://lore.kernel.org/r/CA+UBctCu7fXn4q41O_3=id1+OdyQ85tZY1x+TkT-6OVBL6KAUw@mail.gmail.com/
-
-Link: https://lore.kernel.org/linux-media/20230512151800.1874-1-tiwai@suse.de
-Reported-by: Yu Hao <yhao016@ucr.edu>
-Closes: https://nvd.nist.gov/vuln/detail/CVE-2023-31084
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: b25251414f6e ("mtd: rawnand: marvell: Stop implementing ->select_chip()")
+Suggested-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230525003154.2303012-1-chris.packham@alliedtelesis.co.nz
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-core/dvb_frontend.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/mtd/nand/raw/marvell_nand.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/media/dvb-core/dvb_frontend.c b/drivers/media/dvb-core/dvb_frontend.c
-index e3a4a4688c2ec..651234584eb2c 100644
---- a/drivers/media/dvb-core/dvb_frontend.c
-+++ b/drivers/media/dvb-core/dvb_frontend.c
-@@ -301,14 +301,22 @@ static int dvb_frontend_get_event(struct dvb_frontend *fe,
+diff --git a/drivers/mtd/nand/raw/marvell_nand.c b/drivers/mtd/nand/raw/marvell_nand.c
+index b248c5f657d56..95dee54fe079c 100644
+--- a/drivers/mtd/nand/raw/marvell_nand.c
++++ b/drivers/mtd/nand/raw/marvell_nand.c
+@@ -2443,6 +2443,12 @@ static int marvell_nfc_setup_interface(struct nand_chip *chip, int chipnr,
+ 			NDTR1_WAIT_MODE;
  	}
  
- 	if (events->eventw == events->eventr) {
--		int ret;
-+		struct wait_queue_entry wait;
-+		int ret = 0;
++	/*
++	 * Reset nfc->selected_chip so the next command will cause the timing
++	 * registers to be updated in marvell_nfc_select_target().
++	 */
++	nfc->selected_chip = NULL;
++
+ 	return 0;
+ }
  
- 		if (flags & O_NONBLOCK)
- 			return -EWOULDBLOCK;
- 
--		ret = wait_event_interruptible(events->wait_queue,
--					       dvb_frontend_test_event(fepriv, events));
--
-+		init_waitqueue_entry(&wait, current);
-+		add_wait_queue(&events->wait_queue, &wait);
-+		while (!dvb_frontend_test_event(fepriv, events)) {
-+			wait_woken(&wait, TASK_INTERRUPTIBLE, 0);
-+			if (signal_pending(current)) {
-+				ret = -ERESTARTSYS;
-+				break;
-+			}
-+		}
-+		remove_wait_queue(&events->wait_queue, &wait);
- 		if (ret < 0)
- 			return ret;
- 	}
 -- 
 2.39.2
 
