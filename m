@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39F54726B9D
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65CB2726CE8
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:37:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233351AbjFGU0j (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:26:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51664 "EHLO
+        id S233985AbjFGUho (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:37:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233366AbjFGU0g (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE735210B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:26:19 -0700 (PDT)
+        with ESMTP id S234020AbjFGUhj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:37:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C834D1FF0
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:37:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E1D1764444
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:26:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00C42C4339B;
-        Wed,  7 Jun 2023 20:26:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E4CDA645AE
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:37:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE69DC433EF;
+        Wed,  7 Jun 2023 20:37:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169577;
-        bh=I2aKf92ofZGQYb/AYxQ9lo3Bh+uB9VlLXMhpvn1d/tQ=;
+        s=korg; t=1686170240;
+        bh=i3YLo5f0VEPgDE1NfO7JSCLM91WAMc+8Myv8hRN5/Ck=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wsNPxaW7ADpa49qD8JgITeSOgt4GVTwSA1M/qKp52cusQ0dl43HcbEDRVAJLB9hqo
-         rpegtlQrJ8LE1cgJMPjm38bL7FT8hwUmtFM9r6AdksG5Qr6Y+l12SxojZTrFbmiZSo
-         4L5C6MhqZeozn9Iy241nFvdW8EB5D7aeVQ/s+1hw=
+        b=p1+Xec+0Ry6WKKyzyunbFswkO8nVvojV9xoJcAFdycZDmtU686IgykhwLpCjTh1fA
+         aQlZSZju22D/YQP3YYCOUh3IGbprgntvSdUw5rK3LuT3K7BgM+JhNwhz1lKGtrmLx8
+         CtKYgZeuQv5fL3BkupZpjuYHTaFCBbbdcn7AWtu0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yang Lan <lanyang0908@gmail.com>,
-        Bob Peterson <rpeterso@redhat.com>,
-        Andreas Gruenbacher <agruenba@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 104/286] gfs2: Dont deref jdesc in evict
+        patches@lists.linux.dev, Chao Wang <D202280639@hust.edu.cn>,
+        Dongliang Mu <dzm91@hust.edu.cn>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 010/225] iommu/rockchip: Fix unwind goto issue
 Date:   Wed,  7 Jun 2023 22:13:23 +0200
-Message-ID: <20230607200926.464794423@linuxfoundation.org>
+Message-ID: <20230607200913.680855564@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,64 +55,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bob Peterson <rpeterso@redhat.com>
+From: Chao Wang <D202280639@hust.edu.cn>
 
-[ Upstream commit 504a10d9e46bc37b23d0a1ae2f28973c8516e636 ]
+[ Upstream commit ec014683c564fb74fc68e8f5e84691d3b3839d24 ]
 
-On corrupt gfs2 file systems the evict code can try to reference the
-journal descriptor structure, jdesc, after it has been freed and set to
-NULL. The sequence of events is:
+Smatch complains that
+drivers/iommu/rockchip-iommu.c:1306 rk_iommu_probe() warn: missing unwind goto?
 
-init_journal()
-...
-fail_jindex:
-   gfs2_jindex_free(sdp); <------frees journals, sets jdesc = NULL
-      if (gfs2_holder_initialized(&ji_gh))
-         gfs2_glock_dq_uninit(&ji_gh);
-fail:
-   iput(sdp->sd_jindex); <--references jdesc in evict_linked_inode
-      evict()
-         gfs2_evict_inode()
-            evict_linked_inode()
-               ret = gfs2_trans_begin(sdp, 0, sdp->sd_jdesc->jd_blocks);
-<------references the now freed/zeroed sd_jdesc pointer.
+The rk_iommu_probe function, after obtaining the irq value through
+platform_get_irq, directly returns an error if the returned value
+is negative, without releasing any resources.
 
-The call to gfs2_trans_begin is done because the truncate_inode_pages
-call can cause gfs2 events that require a transaction, such as removing
-journaled data (jdata) blocks from the journal.
+Fix this by adding a new error handling label "err_pm_disable" and
+use a goto statement to redirect to the error handling process. In
+order to preserve the original semantics, set err to the value of irq.
 
-This patch fixes the problem by adding a check for sdp->sd_jdesc to
-function gfs2_evict_inode. In theory, this should only happen to corrupt
-gfs2 file systems, when gfs2 detects the problem, reports it, then tries
-to evict all the system inodes it has read in up to that point.
-
-Reported-by: Yang Lan <lanyang0908@gmail.com>
-Signed-off-by: Bob Peterson <rpeterso@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Fixes: 1aa55ca9b14a ("iommu/rockchip: Move irq request past pm_runtime_enable")
+Signed-off-by: Chao Wang <D202280639@hust.edu.cn>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20230417030421.2777-1-D202280639@hust.edu.cn
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/super.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/iommu/rockchip-iommu.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index a83fa62106f0e..7891f331082aa 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -1410,6 +1410,14 @@ static void gfs2_evict_inode(struct inode *inode)
- 	if (inode->i_nlink || sb_rdonly(sb) || !ip->i_no_addr)
- 		goto out;
+diff --git a/drivers/iommu/rockchip-iommu.c b/drivers/iommu/rockchip-iommu.c
+index a68eadd64f38d..f7e9b56be174f 100644
+--- a/drivers/iommu/rockchip-iommu.c
++++ b/drivers/iommu/rockchip-iommu.c
+@@ -1303,20 +1303,22 @@ static int rk_iommu_probe(struct platform_device *pdev)
+ 	for (i = 0; i < iommu->num_irq; i++) {
+ 		int irq = platform_get_irq(pdev, i);
  
-+	/*
-+	 * In case of an incomplete mount, gfs2_evict_inode() may be called for
-+	 * system files without having an active journal to write to.  In that
-+	 * case, skip the filesystem evict.
-+	 */
-+	if (!sdp->sd_jdesc)
-+		goto out;
-+
- 	gfs2_holder_mark_uninitialized(&gh);
- 	ret = evict_should_delete(inode, &gh);
- 	if (ret == SHOULD_DEFER_EVICTION)
+-		if (irq < 0)
+-			return irq;
++		if (irq < 0) {
++			err = irq;
++			goto err_pm_disable;
++		}
+ 
+ 		err = devm_request_irq(iommu->dev, irq, rk_iommu_irq,
+ 				       IRQF_SHARED, dev_name(dev), iommu);
+-		if (err) {
+-			pm_runtime_disable(dev);
+-			goto err_remove_sysfs;
+-		}
++		if (err)
++			goto err_pm_disable;
+ 	}
+ 
+ 	dma_set_mask_and_coherent(dev, rk_ops->dma_bit_mask);
+ 
+ 	return 0;
++err_pm_disable:
++	pm_runtime_disable(dev);
+ err_remove_sysfs:
+ 	iommu_device_sysfs_remove(&iommu->iommu);
+ err_put_group:
 -- 
 2.39.2
 
