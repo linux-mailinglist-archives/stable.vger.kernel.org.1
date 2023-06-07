@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4419726DA5
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:44:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AF9D726C38
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234646AbjFGUoR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:44:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44588 "EHLO
+        id S229968AbjFGUbh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:31:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234616AbjFGUoQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:16 -0400
+        with ESMTP id S232195AbjFGUbg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:31:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96B1C2121
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:43:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF2F7137
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:31:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 777A564647
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:43:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F8FAC433EF;
-        Wed,  7 Jun 2023 20:43:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B2CF644FF
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:31:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B8D0C433D2;
+        Wed,  7 Jun 2023 20:31:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170634;
-        bh=xguGYtrYFQqynReCB7SGBJJtA9VBenBMo5u+lfjAKq8=;
+        s=korg; t=1686169894;
+        bh=FNOP4Rekp7RCgl468zfQ+MlxH7Ob7fPYdwzMYPgj3CU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zlq01O/U8urI0UsVK46vcfDyUpM0TqvoPl+jb3kKYH1/KZPf5GWC0JCRwh0R9sBjr
-         JJFSgUe3hG0HZSjacLnqYgSS1w0gVuyDhV/GceA8NvXK6t5NfMOILhrrHT5TUO+ShS
-         HRCaXXbUlPWDxNONZC4UHHgbuJG6Oq0X3yZweksw=
+        b=gzsvxtc2tDNO7w4CcG95pKTssiqqStaXWjNmY50rtO6U9KYPH1FF85iM7tC6m9BYa
+         19/RdmcqsGWtfrJS0TN8bJV3HoMBSjkMgLb++jMCn1Gm/xap4YPx6RUAQ5SkZzUAaC
+         iPWP9uEuyYv1WfvFCKUa23cQK81T11HIKRBccE+0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Richard Acayan <mailingradian@gmail.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.1 160/225] misc: fastrpc: return -EPIPE to invocations on device removal
+        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>
+Subject: [PATCH 6.3 254/286] selftests: mptcp: simult flows: skip if MPTCP is not supported
 Date:   Wed,  7 Jun 2023 22:15:53 +0200
-Message-ID: <20230607200919.636209306@linuxfoundation.org>
+Message-ID: <20230607200931.604264462@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,41 +53,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Richard Acayan <mailingradian@gmail.com>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-commit b6a062853ddf6b4f653af2d8b75ba45bb9a036ad upstream.
+commit 9161f21c74a1a0e7bb39eb84ea0c86b23c92fc87 upstream.
 
-The return value is initialized as -1, or -EPERM. The completion of an
-invocation implies that the return value is set appropriately, but
-"Permission denied" does not accurately describe the outcome of the
-invocation. Set the invocation's return value to a more appropriate
-"Broken pipe", as the cleanup breaks the driver's connection with rpmsg.
+Selftests are supposed to run on any kernels, including the old ones not
+supporting MPTCP.
 
-Fixes: c68cfb718c8f ("misc: fastrpc: Add support for context Invoke method")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Richard Acayan <mailingradian@gmail.com>
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20230523152550.438363-4-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+A new check is then added to make sure MPTCP is supported. If not, the
+test stops and is marked as "skipped".
+
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: 1a418cb8e888 ("mptcp: simult flow self-tests")
+Cc: stable@vger.kernel.org
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/simult_flows.sh |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -2149,8 +2149,10 @@ static void fastrpc_notify_users(struct
- 	struct fastrpc_invoke_ctx *ctx;
+--- a/tools/testing/selftests/net/mptcp/simult_flows.sh
++++ b/tools/testing/selftests/net/mptcp/simult_flows.sh
+@@ -1,6 +1,8 @@
+ #!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
  
- 	spin_lock(&user->lock);
--	list_for_each_entry(ctx, &user->pending, node)
-+	list_for_each_entry(ctx, &user->pending, node) {
-+		ctx->retval = -EPIPE;
- 		complete(&ctx->work);
-+	}
- 	spin_unlock(&user->lock);
++. "$(dirname "${0}")/mptcp_lib.sh"
++
+ sec=$(date +%s)
+ rndh=$(printf %x $sec)-$(mktemp -u XXXXXX)
+ ns1="ns1-$rndh"
+@@ -34,6 +36,8 @@ cleanup()
+ 	done
  }
  
++mptcp_lib_check_mptcp
++
+ ip -Version > /dev/null 2>&1
+ if [ $? -ne 0 ];then
+ 	echo "SKIP: Could not run test without ip tool"
 
 
