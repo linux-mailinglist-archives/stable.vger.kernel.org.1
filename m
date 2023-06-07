@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 251D7726DD2
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:45:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DD75726CCD
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:36:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234818AbjFGUph (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:45:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45792 "EHLO
+        id S234120AbjFGUgh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:36:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234860AbjFGUpZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:45:25 -0400
+        with ESMTP id S234268AbjFGUgN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:36:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E80E62114
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:45:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF223272B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:36:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 13DBE64667
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:45:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29597C433D2;
-        Wed,  7 Jun 2023 20:45:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8898964580
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:36:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2D7C433EF;
+        Wed,  7 Jun 2023 20:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170721;
-        bh=R8ekxwRF6Gzl+hPQUuXBlb6lVhKemx0J0o+fpXRtopo=;
+        s=korg; t=1686170162;
+        bh=DXs0dfOnrmqBuqRsDp76abDSI0exg6ap0k9rhbVcUx8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ti6M75OnWPM90lzLcFxgqTtzOgivvbK5Pjalo8gxU5QtlFMhLj32nb/EI9C3BjaXl
-         iiRqx7yS5PNW8d2it9SyV63M9WSmNbEq3Q+Y1yuqU0Bw4UtOCKDfkM9FEpVD9qwR5m
-         37kIaT0uGIHDfWaLTberdCiG3jnEcW/87p0t9iNU=
+        b=NHYvZ6nsJThBaWwsgrc66EqDYyTAoEK44+BYF+GZlyNeoW03pLcwowkTC+l+zBBba
+         SCVNEr9bQ6OfyUYjjfDJ89WQ/oqhnEmbSNBmXVofvyrWZtnuv3S1tbhgGtCqdByFcY
+         i23nw7rlT/+6+gPXWHDaiUGuE3RCxv3hsKwxpcDE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>
-Subject: [PATCH 6.1 193/225] selftests: mptcp: userspace pm: skip if MPTCP is not supported
+        patches@lists.linux.dev, Xingui Yang <yangxingui@huawei.com>,
+        Damien Le Moal <dlemoal@kernel.org>,
+        Jason Yan <yanaijie@huawei.com>
+Subject: [PATCH 4.19 69/88] ata: libata-scsi: Use correct device no in ata_find_dev()
 Date:   Wed,  7 Jun 2023 22:16:26 +0200
-Message-ID: <20230607200920.688461372@linuxfoundation.org>
+Message-ID: <20230607200901.392280798@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,39 +54,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 63212608a92a1ff10ae56dbb14e9fb685f7e4ffa upstream.
+commit 7f875850f20a42f488840c9df7af91ef7db2d576 upstream.
 
-Selftests are supposed to run on any kernels, including the old ones not
-supporting MPTCP.
+For devices not attached to a port multiplier and managed directly by
+libata, the device number passed to ata_find_dev() must always be lower
+than the maximum number of devices returned by ata_link_max_devices().
+That is 1 for SATA devices or 2 for an IDE link with master+slave
+devices. This device number is the SCSI device ID which matches these
+constraints as the IDs are generated per port and so never exceed the
+maximum number of devices for the link being used.
 
-A new check is then added to make sure MPTCP is supported. If not, the
-test stops and is marked as "skipped".
+However, for libsas managed devices, SCSI device IDs are assigned per
+struct scsi_host, leading to device IDs for SATA devices that can be
+well in excess of libata per-link maximum number of devices. This
+results in ata_find_dev() to always return NULL for libsas managed
+devices except for the first device of the target scsi_host with ID
+(device number) equal to 0. This issue is visible by executing the
+hdparm utility, which fails. E.g.:
 
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
-Fixes: 259a834fadda ("selftests: mptcp: functional tests for the userspace PM type")
+hdparm -i /dev/sdX
+/dev/sdX:
+  HDIO_GET_IDENTITY failed: No message of desired type
+
+Fix this by rewriting ata_find_dev() to ignore the device number for
+non-PMP attached devices with a link with at most 1 device, that is SATA
+devices. For these, the device number 0 is always used to
+return the correct pointer to the struct ata_device of the port link.
+This change excludes IDE master/slave setups (maximum number of devices
+per link is 2) and port-multiplier attached devices. Also, to be
+consistant with the fact that SCSI device IDs and channel numbers used
+as device numbers are both unsigned int, change the devno argument of
+ata_find_dev() to unsigned int.
+
+Reported-by: Xingui Yang <yangxingui@huawei.com>
+Fixes: 41bda9c98035 ("libata-link: update hotplug to handle PMP links")
 Cc: stable@vger.kernel.org
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Jason Yan <yanaijie@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/userspace_pm.sh |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/ata/libata-scsi.c |   34 ++++++++++++++++++++++++++--------
+ 1 file changed, 26 insertions(+), 8 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/userspace_pm.sh
-+++ b/tools/testing/selftests/net/mptcp/userspace_pm.sh
-@@ -1,6 +1,10 @@
- #!/bin/bash
- # SPDX-License-Identifier: GPL-2.0
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -3053,18 +3053,36 @@ static unsigned int atapi_xlat(struct at
+ 	return 0;
+ }
  
-+. "$(dirname "${0}")/mptcp_lib.sh"
+-static struct ata_device *ata_find_dev(struct ata_port *ap, int devno)
++static struct ata_device *ata_find_dev(struct ata_port *ap, unsigned int devno)
+ {
+-	if (!sata_pmp_attached(ap)) {
+-		if (likely(devno >= 0 &&
+-			   devno < ata_link_max_devices(&ap->link)))
++	/*
++	 * For the non-PMP case, ata_link_max_devices() returns 1 (SATA case),
++	 * or 2 (IDE master + slave case). However, the former case includes
++	 * libsas hosted devices which are numbered per scsi host, leading
++	 * to devno potentially being larger than 0 but with each struct
++	 * ata_device having its own struct ata_port and struct ata_link.
++	 * To accommodate these, ignore devno and always use device number 0.
++	 */
++	if (likely(!sata_pmp_attached(ap))) {
++		int link_max_devices = ata_link_max_devices(&ap->link);
 +
-+mptcp_lib_check_mptcp
++		if (link_max_devices == 1)
++			return &ap->link.device[0];
 +
- ip -Version > /dev/null 2>&1
- if [ $? -ne 0 ];then
- 	echo "SKIP: Cannot not run test without ip tool"
++		if (devno < link_max_devices)
+ 			return &ap->link.device[devno];
+-	} else {
+-		if (likely(devno >= 0 &&
+-			   devno < ap->nr_pmp_links))
+-			return &ap->pmp_link[devno].device[0];
++
++		return NULL;
+ 	}
+ 
++	/*
++	 * For PMP-attached devices, the device number corresponds to C
++	 * (channel) of SCSI [H:C:I:L], indicating the port pmp link
++	 * for the device.
++	 */
++	if (devno < ap->nr_pmp_links)
++		return &ap->pmp_link[devno].device[0];
++
+ 	return NULL;
+ }
+ 
 
 
