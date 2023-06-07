@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69B3E726AE9
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C5C3726E52
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:49:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232123AbjFGUUz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:20:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45322 "EHLO
+        id S234864AbjFGUtq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:49:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232554AbjFGUUq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9051C2111
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:20:22 -0700 (PDT)
+        with ESMTP id S235198AbjFGUt0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:49:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17A372728
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:48:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6FDC064380
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:20:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82975C433D2;
-        Wed,  7 Jun 2023 20:20:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E40B161CC6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:48:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F0BC433D2;
+        Wed,  7 Jun 2023 20:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169221;
-        bh=R2szygw8FMPBznQfFFea6pkYnXE8rPymtXIxPAxltKY=;
+        s=korg; t=1686170937;
+        bh=jtwyEquz+vRZlXWsvGK61uOfEpuctsKJWHmbm/a0TXU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dUjAr6nIyC0ND+DWYi+TNswperv3hlVPeO2qQTd4BVki5jqz5gBrkx6JkA7yYywES
-         6tu3inVyYp8rbi8tZULKIeGOverti4fPFwMGvnvQf3ZDXYC5kApk8EkLScG9sOhNO1
-         G/cyS9Eafv2WQ2MPJHCQ3bvl+pCbf3Hr8WCD3Tu8=
+        b=o9ndYafyntg7sMepDsi9OUTXRxVGsOS/KMtR2nwOM8zRM5PvO1t1eI0JsgOLsezOg
+         2OlbO9K5um8lV9EkCZY2aneFTwNGEJ7FRo+A/cuti+Tj7+AcwiCkdjd6QicXH1Au0b
+         oogS1xQV/b5eftN0oaCSt++HEBSkClqCN+/TwJBU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Miquel Raynal <miquel.raynal@bootlin.com>,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 33/61] atm: hide unused procfs functions
+Subject: [PATCH 5.10 031/120] mtd: rawnand: marvell: ensure timing values are written
 Date:   Wed,  7 Jun 2023 22:15:47 +0200
-Message-ID: <20230607200846.860506114@linuxfoundation.org>
+Message-ID: <20230607200901.891320844@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-References: <20230607200835.310274198@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,45 +54,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
 
-[ Upstream commit fb1b7be9b16c1f4626969ba4e95a97da2a452b41 ]
+[ Upstream commit 8a6f4d346f3bad9c68b4a87701eb3f7978542d57 ]
 
-When CONFIG_PROC_FS is disabled, the function declarations for some
-procfs functions are hidden, but the definitions are still build,
-as shown by this compiler warning:
+When new timing values are calculated in marvell_nfc_setup_interface()
+ensure that they will be applied in marvell_nfc_select_target() by
+clearing the selected_chip pointer.
 
-net/atm/resources.c:403:7: error: no previous prototype for 'atm_dev_seq_start' [-Werror=missing-prototypes]
-net/atm/resources.c:409:6: error: no previous prototype for 'atm_dev_seq_stop' [-Werror=missing-prototypes]
-net/atm/resources.c:414:7: error: no previous prototype for 'atm_dev_seq_next' [-Werror=missing-prototypes]
-
-Add another #ifdef to leave these out of the build.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20230516194625.549249-2-arnd@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: b25251414f6e ("mtd: rawnand: marvell: Stop implementing ->select_chip()")
+Suggested-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230525003154.2303012-1-chris.packham@alliedtelesis.co.nz
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/resources.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mtd/nand/raw/marvell_nand.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/atm/resources.c b/net/atm/resources.c
-index bada395ecdb18..9389080224f87 100644
---- a/net/atm/resources.c
-+++ b/net/atm/resources.c
-@@ -447,6 +447,7 @@ int atm_dev_ioctl(unsigned int cmd, void __user *arg, int compat)
- 	return error;
+diff --git a/drivers/mtd/nand/raw/marvell_nand.c b/drivers/mtd/nand/raw/marvell_nand.c
+index dce35f81e0a55..9d437f1566ed5 100644
+--- a/drivers/mtd/nand/raw/marvell_nand.c
++++ b/drivers/mtd/nand/raw/marvell_nand.c
+@@ -2443,6 +2443,12 @@ static int marvell_nfc_setup_interface(struct nand_chip *chip, int chipnr,
+ 			NDTR1_WAIT_MODE;
+ 	}
+ 
++	/*
++	 * Reset nfc->selected_chip so the next command will cause the timing
++	 * registers to be updated in marvell_nfc_select_target().
++	 */
++	nfc->selected_chip = NULL;
++
+ 	return 0;
  }
  
-+#ifdef CONFIG_PROC_FS
- void *atm_dev_seq_start(struct seq_file *seq, loff_t *pos)
- {
- 	mutex_lock(&atm_dev_mutex);
-@@ -462,3 +463,4 @@ void *atm_dev_seq_next(struct seq_file *seq, void *v, loff_t *pos)
- {
- 	return seq_list_next(v, &atm_devs, pos);
- }
-+#endif
 -- 
 2.39.2
 
