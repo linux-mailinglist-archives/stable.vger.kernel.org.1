@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5ABA726A40
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:00:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65416726A41
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:00:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232101AbjFGT77 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 15:59:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34074 "EHLO
+        id S231302AbjFGUAC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:00:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229614AbjFGT75 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 15:59:57 -0400
+        with ESMTP id S230401AbjFGUAA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:00:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31F3911A;
-        Wed,  7 Jun 2023 12:59:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F89711A;
+        Wed,  7 Jun 2023 12:59:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C0C3C63446;
-        Wed,  7 Jun 2023 19:59:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170B1C433EF;
-        Wed,  7 Jun 2023 19:59:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C691964159;
+        Wed,  7 Jun 2023 19:59:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24CF5C433AC;
+        Wed,  7 Jun 2023 19:59:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1686167995;
-        bh=3cHSfqz5v73r1gxVwTYTxD+h7U+eXJc+UvgDsdBub0k=;
+        s=korg; t=1686167998;
+        bh=W79/IzWqA3ukax+fdrTdeAvI7S//uclzElUouPajlGw=;
         h=Date:To:From:Subject:From;
-        b=p8xCZdiRtT6+r7Z1QAH2MWW2/CgDT86V+vrzz5iw7nGkgaFIJvbKdYHHBY4Tkgr2N
-         abMFjehA2XErT3RNM7IRIW1H8sZU8fbaP1er8Xvpv7UrysBfSX/WnyQhc90GdTRgIU
-         zu+adjHcL7f4PdsvNOtJZi/mPoY2Iu1xN3mX4r5Y=
-Date:   Wed, 07 Jun 2023 12:59:54 -0700
+        b=r8tia2YmtarVvEh7mqEhBli5x8F2enpRyCh9IrEokjrFhgeHUlJb/aJxNRJB/Wsnj
+         hN8zCE3A+VHcCTaib/IWH+Dy5lDyQ7y2HgzbbiZW9uDc/4+VBilqVvQn8J/8nNOZAC
+         QQ/ELitecZU0ZdlmdHABm/chyAVbQdUlMwZ0RzQo=
+Date:   Wed, 07 Jun 2023 12:59:57 -0700
 To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        konishi.ryusuke@gmail.com, akpm@linux-foundation.org
+        rppt@kernel.org, mark.rutland@arm.com, lstoakes@gmail.com,
+        Liam.Howlett@oracle.com, peterx@redhat.com,
+        akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] nilfs2-fix-incomplete-buffer-cleanup-in-nilfs_btnode_abort_change_key.patch removed from -mm tree
-Message-Id: <20230607195955.170B1C433EF@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-uffd-fix-vma-operation-where-start-addr-cuts-part-of-vma.patch removed from -mm tree
+Message-Id: <20230607195958.24CF5C433AC@smtp.kernel.org>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
@@ -46,64 +48,103 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: nilfs2: fix incomplete buffer cleanup in nilfs_btnode_abort_change_key()
+     Subject: mm/uffd: fix vma operation where start addr cuts part of vma
 has been removed from the -mm tree.  Its filename was
-     nilfs2-fix-incomplete-buffer-cleanup-in-nilfs_btnode_abort_change_key.patch
+     mm-uffd-fix-vma-operation-where-start-addr-cuts-part-of-vma.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: nilfs2: fix incomplete buffer cleanup in nilfs_btnode_abort_change_key()
-Date: Sat, 13 May 2023 19:24:28 +0900
+From: Peter Xu <peterx@redhat.com>
+Subject: mm/uffd: fix vma operation where start addr cuts part of vma
+Date: Wed, 17 May 2023 15:09:15 -0400
 
-A syzbot fault injection test reported that nilfs_btnode_create_block, a
-helper function that allocates a new node block for b-trees, causes a
-kernel BUG for disk images where the file system block size is smaller
-than the page size.
+Patch series "mm/uffd: Fix vma merge/split", v2.
 
-This was due to unexpected flags on the newly allocated buffer head, and
-it turned out to be because the buffer flags were not cleared by
-nilfs_btnode_abort_change_key() after an error occurred during a b-tree
-update operation and the buffer was later reused in that state.
+This series contains two patches that fix vma merge/split for userfaultfd
+on two separate issues.
 
-Fix this issue by using nilfs_btnode_delete() to abandon the unused
-preallocated buffer in nilfs_btnode_abort_change_key().
+Patch 1 fixes a regression since 6.1+ due to something we overlooked when
+converting to maple tree apis.  The plan is we use patch 1 to replace the
+commit "2f628010799e (mm: userfaultfd: avoid passing an invalid range to
+vma_merge())" in mm-hostfixes-unstable tree if possible, so as to bring
+uffd vma operations back aligned with the rest code again.
 
-Link: https://lkml.kernel.org/r/20230513102428.10223-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+b0a35a5c1f7e846d3b09@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/000000000000d1d6c205ebc4d512@google.com
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Patch 2 fixes a long standing issue that vma can be left unmerged even if
+we can for either uffd register or unregister.
+
+Many thanks to Lorenzo on either noticing this issue from the assert
+movement patch, looking at this problem, and also provided a reproducer on
+the unmerged vma issue [1].
+
+[1] https://gist.github.com/lorenzo-stoakes/a11a10f5f479e7a977fc456331266e0e
+
+
+This patch (of 2):
+
+It seems vma merging with uffd paths is broken with either
+register/unregister, where right now we can feed wrong parameters to
+vma_merge() and it's found by recent patch which moved asserts upwards in
+vma_merge() by Lorenzo Stoakes:
+
+https://lore.kernel.org/all/ZFunF7DmMdK05MoF@FVFF77S0Q05N.cambridge.arm.com/
+
+It's possible that "start" is contained within vma but not clamped to its
+start.  We need to convert this into either "cannot merge" case or "can
+merge" case 4 which permits subdivision of prev by assigning vma to prev. 
+As we loop, each subsequent VMA will be clamped to the start.
+
+This patch will eliminate the report and make sure vma_merge() calls will
+become legal again.
+
+One thing to mention is that the "Fixes: 29417d292bd0" below is there only
+to help explain where the warning can start to trigger, the real commit to
+fix should be 69dbe6daf104.  Commit 29417d292bd0 helps us to identify the
+issue, but unfortunately we may want to keep it in Fixes too just to ease
+kernel backporters for easier tracking.
+
+Link: https://lkml.kernel.org/r/20230517190916.3429499-1-peterx@redhat.com
+Link: https://lkml.kernel.org/r/20230517190916.3429499-2-peterx@redhat.com
+Fixes: 69dbe6daf104 ("userfaultfd: use maple tree iterator to iterate VMAs")
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Reported-by: Mark Rutland <mark.rutland@arm.com>
+Reviewed-by: Lorenzo Stoakes <lstoakes@gmail.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Closes: https://lore.kernel.org/all/ZFunF7DmMdK05MoF@FVFF77S0Q05N.cambridge.arm.com/
+Cc: Lorenzo Stoakes <lstoakes@gmail.com>
+Cc: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/nilfs2/btnode.c |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ fs/userfaultfd.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/nilfs2/btnode.c~nilfs2-fix-incomplete-buffer-cleanup-in-nilfs_btnode_abort_change_key
-+++ a/fs/nilfs2/btnode.c
-@@ -285,6 +285,14 @@ void nilfs_btnode_abort_change_key(struc
- 	if (nbh == NULL) {	/* blocksize == pagesize */
- 		xa_erase_irq(&btnc->i_pages, newkey);
- 		unlock_page(ctxt->bh->b_page);
--	} else
--		brelse(nbh);
-+	} else {
-+		/*
-+		 * When canceling a buffer that a prepare operation has
-+		 * allocated to copy a node block to another location, use
-+		 * nilfs_btnode_delete() to initialize and release the buffer
-+		 * so that the buffer flags will not be in an inconsistent
-+		 * state when it is reallocated.
-+		 */
-+		nilfs_btnode_delete(nbh);
-+	}
- }
+--- a/fs/userfaultfd.c~mm-uffd-fix-vma-operation-where-start-addr-cuts-part-of-vma
++++ a/fs/userfaultfd.c
+@@ -1459,6 +1459,8 @@ static int userfaultfd_register(struct u
+ 
+ 	vma_iter_set(&vmi, start);
+ 	prev = vma_prev(&vmi);
++	if (vma->vm_start < start)
++		prev = vma;
+ 
+ 	ret = 0;
+ 	for_each_vma_range(vmi, vma, end) {
+@@ -1625,6 +1627,9 @@ static int userfaultfd_unregister(struct
+ 
+ 	vma_iter_set(&vmi, start);
+ 	prev = vma_prev(&vmi);
++	if (vma->vm_start < start)
++		prev = vma;
++
+ 	ret = 0;
+ 	for_each_vma_range(vmi, vma, end) {
+ 		cond_resched();
 _
 
-Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
+Patches currently in -mm which might be from peterx@redhat.com are
 
 
