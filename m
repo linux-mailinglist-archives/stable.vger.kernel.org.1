@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D02DD726C19
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:30:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65F85726AE2
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233766AbjFGUar (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:30:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57172 "EHLO
+        id S232745AbjFGUUu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:20:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233770AbjFGUag (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AB34268F
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:30:19 -0700 (PDT)
+        with ESMTP id S232874AbjFGUUo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D3B7271C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:20:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0675864385
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:30:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2BAC433D2;
-        Wed,  7 Jun 2023 20:30:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 617C96130B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:19:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FA26C433D2;
+        Wed,  7 Jun 2023 20:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169818;
-        bh=Jie0xV3jJ4nif6u99ulOYa+bH3Us8mV21cmJQw4yb+g=;
+        s=korg; t=1686169158;
+        bh=F+37OWn/aF06unqjJdiGyCrnhZaT+gr/cP0zbl+gsrI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0aRmxW8zbTYKboTqWjFkqnq/QfeLMHb3JU9SDCQrnpCBn1bqkc1bzyrcigLiQKGzB
-         YzNMbM8FncxcAuYimcV1WLDNswi7GB2KyW8L2WdGixZxuNl30nkfpd9QXpPQWkmpLQ
-         M4yq9b2JRD1Qy9Va8sVLiCvF4EU6dPY+cPxnvIjU=
+        b=2Q1j8kuWeNP2a24bYkRuQkmOi4EhDfR+FiIvrXpmigXDiLlbqIBkVEMfQ6k3ti+5j
+         /JM3GZ+5wkhwkrEoYE23wxoUaa0dAjOZ+rog6GyRyzkDYFQSpy/26D+V1f9YTrruJ6
+         Y4cEQUUQuSmS7xnEe9uYRrifXs+cjes7ZkuwG/bs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tim Huang <Tim.Huang@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.3 224/286] drm/amd/pm: reverse mclk and fclk clocks levels for renoir
+        patches@lists.linux.dev, Vladislav Efanov <VEfanov@ispras.ru>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 09/61] udp6: Fix race condition in udp6_sendmsg & connect
 Date:   Wed,  7 Jun 2023 22:15:23 +0200
-Message-ID: <20230607200930.595452526@linuxfoundation.org>
+Message-ID: <20230607200838.436922289@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
+References: <20230607200835.310274198@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,54 +55,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: Vladislav Efanov <VEfanov@ispras.ru>
 
-commit 55e02c14f9b5fd973ba32a16a715baa42617f9c6 upstream.
+[ Upstream commit 448a5ce1120c5bdbce1f1ccdabcd31c7d029f328 ]
 
-This patch reverses the DPM clocks levels output of pp_dpm_mclk
-and pp_dpm_fclk for renoir.
+Syzkaller got the following report:
+BUG: KASAN: use-after-free in sk_setup_caps+0x621/0x690 net/core/sock.c:2018
+Read of size 8 at addr ffff888027f82780 by task syz-executor276/3255
 
-On dGPUs and older APUs we expose the levels from lowest clocks
-to highest clocks. But for some APUs, the clocks levels are
-given the reversed orders by PMFW. Like the memory DPM clocks
-that are exposed by pp_dpm_mclk.
+The function sk_setup_caps (called by ip6_sk_dst_store_flow->
+ip6_dst_store) referenced already freed memory as this memory was
+freed by parallel task in udpv6_sendmsg->ip6_sk_dst_lookup_flow->
+sk_dst_check.
 
-It's not intuitive that they are reversed on these APUs. All tools
-and software that talks to the driver then has to know different ways
-to interpret the data depending on the asic.
+          task1 (connect)              task2 (udp6_sendmsg)
+        sk_setup_caps->sk_dst_set |
+                                  |  sk_dst_check->
+                                  |      sk_dst_set
+                                  |      dst_release
+        sk_setup_caps references  |
+        to already freed dst_entry|
 
-So we need to reverse them to expose the clocks levels from the
-driver consistently.
+The reason for this race condition is: sk_setup_caps() keeps using
+the dst after transferring the ownership to the dst cache.
 
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with syzkaller.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Vladislav Efanov <VEfanov@ispras.ru>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu12/renoir_ppt.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/core/sock.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu12/renoir_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu12/renoir_ppt.c
-@@ -494,7 +494,7 @@ static int renoir_set_fine_grain_gfx_fre
- static int renoir_print_clk_levels(struct smu_context *smu,
- 			enum smu_clk_type clk_type, char *buf)
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 002c91dd7191f..b05296d79f621 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -1788,7 +1788,6 @@ void sk_setup_caps(struct sock *sk, struct dst_entry *dst)
  {
--	int i, size = 0, ret = 0;
-+	int i, idx, size = 0, ret = 0;
- 	uint32_t cur_value = 0, value = 0, count = 0, min = 0, max = 0;
- 	SmuMetrics_t metrics;
- 	struct smu_dpm_context *smu_dpm_ctx = &(smu->smu_dpm);
-@@ -594,7 +594,8 @@ static int renoir_print_clk_levels(struc
- 	case SMU_VCLK:
- 	case SMU_DCLK:
- 		for (i = 0; i < count; i++) {
--			ret = renoir_get_dpm_clk_limited(smu, clk_type, i, &value);
-+			idx = (clk_type == SMU_FCLK || clk_type == SMU_MCLK) ? (count - i - 1) : i;
-+			ret = renoir_get_dpm_clk_limited(smu, clk_type, idx, &value);
- 			if (ret)
- 				return ret;
- 			if (!value)
+ 	u32 max_segs = 1;
+ 
+-	sk_dst_set(sk, dst);
+ 	sk->sk_route_caps = dst->dev->features;
+ 	if (sk->sk_route_caps & NETIF_F_GSO)
+ 		sk->sk_route_caps |= NETIF_F_GSO_SOFTWARE;
+@@ -1803,6 +1802,7 @@ void sk_setup_caps(struct sock *sk, struct dst_entry *dst)
+ 		}
+ 	}
+ 	sk->sk_gso_max_segs = max_segs;
++	sk_dst_set(sk, dst);
+ }
+ EXPORT_SYMBOL_GPL(sk_setup_caps);
+ 
+-- 
+2.39.2
+
 
 
