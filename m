@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BA2A726FB8
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:01:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3494726DC8
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:45:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235910AbjFGVBJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:01:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34044 "EHLO
+        id S234685AbjFGUp1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:45:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235807AbjFGVAp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 471851FEE
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:00:29 -0700 (PDT)
+        with ESMTP id S235088AbjFGUpN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:45:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFC07210E
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:44:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CB51D648A5
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:00:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9F7C433D2;
-        Wed,  7 Jun 2023 21:00:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6BEE964606
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:44:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B136C433D2;
+        Wed,  7 Jun 2023 20:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171616;
-        bh=QXOmpFfrX6WqPjEMMraE5Lk9ZwBNgRHBGUmGtOqvR3Y=;
+        s=korg; t=1686170697;
+        bh=mztivEPOQeLmOj6B3dXfjhhzjSa0YErj1r36X1VdstI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F8ZI2YuHN61kPKrkyAg89lUxbNRyMTikjpfnifC/mMQl0A1+yJLzi26hYeHGfQY0M
-         Az5YMkZkViBMEyzyYr8h37bOTpDRIDgDbrHHvoPepscGbYEJlfTUUJNpNj710TfFPS
-         V9ba8l4bELDYmMr+bdke+0V2FXQNw8SByzBUKHqo=
+        b=Xo54QuAnUnQPeRrxeohrpG5L+30+Kifk44NGTVGRM7v9cYyD7vF084opLTzAipOuv
+         1mu7WdW08UvyVxt3A2AQA8KXwcc5jzs2sTjgBtutR+9Gy19LYa4PejJGLwoKxE4Epi
+         /kw5nQX1PDyeyDlbGMCE6m7awIr1DMGk6Ihaq2iU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jammy Huang <jammy_huang@aspeedtech.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 045/159] drm/ast: Fix ARM compatibility
+        patches@lists.linux.dev,
+        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+        =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 155/225] net: usb: qmi_wwan: Set DTR quirk for BroadMobi BM818
 Date:   Wed,  7 Jun 2023 22:15:48 +0200
-Message-ID: <20230607200905.162455675@linuxfoundation.org>
+Message-ID: <20230607200919.478084316@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,45 +55,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jammy Huang <jammy_huang@aspeedtech.com>
+From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
 
-[ Upstream commit 4327a6137ed43a091d900b1ac833345d60f32228 ]
+commit 36936a56e1814f6c526fe71fbf980beab4f5577a upstream.
 
-ARM architecture only has 'memory', so all devices are accessed by
-MMIO if possible.
+BM818 is based on Qualcomm MDM9607 chipset.
 
-Signed-off-by: Jammy Huang <jammy_huang@aspeedtech.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230421003354.27767-1-jammy_huang@aspeedtech.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9a07406b00cd ("net: usb: qmi_wwan: Add the BroadMobi BM818 card")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Acked-by: Bjørn Mork <bjorn@mork.no>
+Link: https://lore.kernel.org/r/20230526-bm818-dtr-v1-1-64bbfa6ba8af@puri.sm
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ast/ast_main.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/usb/qmi_wwan.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/ast/ast_main.c b/drivers/gpu/drm/ast/ast_main.c
-index 79a3618679554..754a08c92d3d1 100644
---- a/drivers/gpu/drm/ast/ast_main.c
-+++ b/drivers/gpu/drm/ast/ast_main.c
-@@ -423,11 +423,12 @@ struct ast_private *ast_device_create(const struct drm_driver *drv,
- 		return ERR_PTR(-EIO);
- 
- 	/*
--	 * If we don't have IO space at all, use MMIO now and
--	 * assume the chip has MMIO enabled by default (rev 0x20
--	 * and higher).
-+	 * After AST2500, MMIO is enabled by default, and it should be adopted
-+	 * to be compatible with Arm.
- 	 */
--	if (!(pci_resource_flags(pdev, 2) & IORESOURCE_IO)) {
-+	if (pdev->revision >= 0x40) {
-+		ast->ioregs = ast->regs + AST_IO_MM_OFFSET;
-+	} else if (!(pci_resource_flags(pdev, 2) & IORESOURCE_IO)) {
- 		drm_info(dev, "platform has no IO space, trying MMIO\n");
- 		ast->ioregs = ast->regs + AST_IO_MM_OFFSET;
- 	}
--- 
-2.39.2
-
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1324,7 +1324,7 @@ static const struct usb_device_id produc
+ 	{QMI_FIXED_INTF(0x2001, 0x7e3d, 4)},	/* D-Link DWM-222 A2 */
+ 	{QMI_FIXED_INTF(0x2020, 0x2031, 4)},	/* Olicard 600 */
+ 	{QMI_FIXED_INTF(0x2020, 0x2033, 4)},	/* BroadMobi BM806U */
+-	{QMI_FIXED_INTF(0x2020, 0x2060, 4)},	/* BroadMobi BM818 */
++	{QMI_QUIRK_SET_DTR(0x2020, 0x2060, 4)},	/* BroadMobi BM818 */
+ 	{QMI_FIXED_INTF(0x0f3d, 0x68a2, 8)},    /* Sierra Wireless MC7700 */
+ 	{QMI_FIXED_INTF(0x114f, 0x68a2, 8)},    /* Sierra Wireless MC7750 */
+ 	{QMI_FIXED_INTF(0x1199, 0x68a2, 8)},	/* Sierra Wireless MC7710 in QMI mode */
 
 
