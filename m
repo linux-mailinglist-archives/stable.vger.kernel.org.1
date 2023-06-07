@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 320C0726DDC
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:46:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32492726F0E
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234696AbjFGUqZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:46:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46566 "EHLO
+        id S235409AbjFGUz0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:55:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234872AbjFGUqI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:46:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B23722D40
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:45:48 -0700 (PDT)
+        with ESMTP id S235674AbjFGUy6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FAA91BEA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:54:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4AC406467D
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:45:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389A4C433EF;
-        Wed,  7 Jun 2023 20:45:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A4AA0647E6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:54:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B45B6C433EF;
+        Wed,  7 Jun 2023 20:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170747;
-        bh=lPkjKh3VSeD7zFOib0sRqqqhSihnZ3Mqhs4DaI2r1xU=;
+        s=korg; t=1686171288;
+        bh=fupUgCgMyGgQWt8kjawwhx7r2Ri4PBAcQWn15sZhscM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iAyk3qlW4muu56q4tNpJuWpuxmEEdpvYM0svwJqXv6H8fha3wcgHiaqKWF38o27Uo
-         NRIRafAe1QnfnkmSokG4XFn7TCJ3k0RKrI+RFgRth3/ZXqLNIXSTePdNoevONdIprp
-         1dz7Y5OgG8tpSQ6IeU5pybyh3hB+tA26UtMW61VA=
+        b=DampbjkPPmXoD++oiOuvqACjaSBe7iOJgt6xf+8gHnbzKL59qBwLFbu2YVFo1l6I7
+         vMtBcNhtYWtiujoj8lv/ff2D4mivKGq4vZA1/V5R6jSByUelui11u/hpy4BGurJWdV
+         t4FvdUkIpLddsec0qmtE2qL5U0v5VPnNPVoGw4Ck=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Herve Codina <herve.codina@bootlin.com>,
-        kernel test robot <lkp@intel.com>, stable <stable@kernel.org>
-Subject: [PATCH 6.1 202/225] serial: cpm_uart: Fix a COMPILE_TEST dependency
+        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 43/99] media: dvb-usb: digitv: fix null-ptr-deref in digitv_i2c_xfer()
 Date:   Wed,  7 Jun 2023 22:16:35 +0200
-Message-ID: <20230607200920.973708695@linuxfoundation.org>
+Message-ID: <20230607200901.600867719@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,56 +54,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Wei Chen <harperchen1110@gmail.com>
 
-commit 7183c37fd53eee1e795206e625da12a5d7ec1e1a upstream.
+[ Upstream commit 9ded5bd2a49ce3015b7c936743eec0a0e6e11f0c ]
 
-In a COMPILE_TEST configuration, the cpm_uart driver uses symbols from
-the cpm_uart_cpm2.c file. This file is compiled only when CONFIG_CPM2 is
-set.
+In digitv_i2c_xfer, msg is controlled by user. When msg[i].buf
+is null and msg[i].len is zero, former checks on msg[i].buf would be
+passed. Malicious data finally reach digitv_i2c_xfer. If accessing
+msg[i].buf[0] without sanity check, null ptr deref would happen. We add
+check on msg[i].len to prevent crash.
 
-Without this dependency, the linker fails with some missing symbols for
-COMPILE_TEST configuration that needs SERIAL_CPM without enabling CPM2.
+Similar commit:
+commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
 
-This lead to:
-  depends on CPM2 || CPM1 || (PPC32 && CPM2 && COMPILE_TEST)
-
-This dependency does not make sense anymore and can be simplified
-removing all the COMPILE_TEST part.
-
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/oe-kbuild-all/202305160221.9XgweObz-lkp@intel.com/
-Fixes: e3e7b13bffae ("serial: allow COMPILE_TEST for some drivers")
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20230523085902.75837-3-herve.codina@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-media/20230313095008.1039689-1-harperchen1110@gmail.com
+Signed-off-by: Wei Chen <harperchen1110@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/Kconfig             |    2 +-
- drivers/tty/serial/cpm_uart/cpm_uart.h |    2 --
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ drivers/media/usb/dvb-usb/digitv.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/tty/serial/Kconfig
-+++ b/drivers/tty/serial/Kconfig
-@@ -769,7 +769,7 @@ config SERIAL_PMACZILOG_CONSOLE
+diff --git a/drivers/media/usb/dvb-usb/digitv.c b/drivers/media/usb/dvb-usb/digitv.c
+index 99a39339d45d5..cf5ec8c1f6773 100644
+--- a/drivers/media/usb/dvb-usb/digitv.c
++++ b/drivers/media/usb/dvb-usb/digitv.c
+@@ -63,6 +63,10 @@ static int digitv_i2c_xfer(struct i2c_adapter *adap,struct i2c_msg msg[],int num
+ 		warn("more than 2 i2c messages at a time is not handled yet. TODO.");
  
- config SERIAL_CPM
- 	tristate "CPM SCC/SMC serial port support"
--	depends on CPM2 || CPM1 || (PPC32 && COMPILE_TEST)
-+	depends on CPM2 || CPM1
- 	select SERIAL_CORE
- 	help
- 	  This driver supports the SCC and SMC serial ports on Motorola 
---- a/drivers/tty/serial/cpm_uart/cpm_uart.h
-+++ b/drivers/tty/serial/cpm_uart/cpm_uart.h
-@@ -19,8 +19,6 @@ struct gpio_desc;
- #include "cpm_uart_cpm2.h"
- #elif defined(CONFIG_CPM1)
- #include "cpm_uart_cpm1.h"
--#elif defined(CONFIG_COMPILE_TEST)
--#include "cpm_uart_cpm2.h"
- #endif
- 
- #define SERIAL_CPM_MAJOR	204
+ 	for (i = 0; i < num; i++) {
++		if (msg[i].len < 1) {
++			i = -EOPNOTSUPP;
++			break;
++		}
+ 		/* write/read request */
+ 		if (i+1 < num && (msg[i+1].flags & I2C_M_RD)) {
+ 			if (digitv_ctrl_msg(d, USB_READ_COFDM, msg[i].buf[0], NULL, 0,
+-- 
+2.39.2
+
 
 
