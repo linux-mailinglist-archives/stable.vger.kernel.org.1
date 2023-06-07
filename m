@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02D46726BB9
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:27:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66EDB726D54
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:41:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233379AbjFGU1f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:27:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53406 "EHLO
+        id S234394AbjFGUlK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:41:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233391AbjFGU1e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:27:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D97C2115
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:27:17 -0700 (PDT)
+        with ESMTP id S234409AbjFGUlG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:41:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C4612126
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:40:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B913464495
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:27:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC283C433D2;
-        Wed,  7 Jun 2023 20:27:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5971E645FF
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:40:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E4D9C433D2;
+        Wed,  7 Jun 2023 20:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169635;
-        bh=EVL78Ns4lTPHqkzujyH14kgCSqILNOTIj3vn96MbkNU=;
+        s=korg; t=1686170453;
+        bh=eUyy4o0ZFlQgxEmoGpUGIqucDH7lEIHYip0rJcopiEI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IeWgUsXoeDkTt4ea0ct3KhNEDjMw/hIMvAYfj/l605zyOb3yHG9rMagdu271Hxj+x
-         g8ZKvxj+cnQoos/VZt92+WVWjJ0WsucTYn6S/5LwNeN2zE6rVxsH/dVRboLb0Gm/xY
-         XPHlJKCeKVPT/FYc1dyN3ltgJ9WxsM/iyDHCpqyI=
+        b=P8cjd2t8zvEuqwwy0q/kROavD+now5CBbtYgsa0YFxIkURX1N9VjE0mnqA9aOjfln
+         9YAz6Re6TlxTaP9PKNjxexCNM6mzaqVJrQAMJYfoKVFKC7mV4SlCXmywTrJSsnhml/
+         hpumEhmxUvK00QnsZUPHWk+gylVNmwShf5eOHXtw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
+        patches@lists.linux.dev, Johannes Thumshirn <jth@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 155/286] wifi: mac80211: recalc chanctx mindef before assigning
+Subject: [PATCH 6.1 061/225] watchdog: menz069_wdt: fix watchdog initialisation
 Date:   Wed,  7 Jun 2023 22:14:14 +0200
-Message-ID: <20230607200928.189149300@linuxfoundation.org>
+Message-ID: <20230607200916.350728428@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,50 +55,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Johannes Thumshirn <jth@kernel.org>
 
-[ Upstream commit 04312de4ced4b152749614e8179f3978a20a992f ]
+[ Upstream commit 87b22656ca6a896d0378e9e60ffccb0c82f48b08 ]
 
-When we allocate a new channel context, or find an existing one
-that is compatible, we currently assign it to a link before its
-mindef is updated. This leads to strange situations, especially
-in link switching where you switch to an 80 MHz link and expect
-it to be active immediately, but the mindef is still configured
-to 20 MHz while assigning.  Also, it's strange that the chandef
-passed to the assign method's argument is wider than the one in
-the context.
+Doing a 'cat /dev/watchdog0' with menz069_wdt as watchdog0 will result in
+a NULL pointer dereference.
 
-Fix this by calculating the mindef with the new link considered
-before calling the driver.
+This happens because we're passing the wrong pointer to
+watchdog_register_device(). Fix this by getting rid of the static
+watchdog_device structure and use the one embedded into the driver's
+per-instance private data.
 
-In particular, this fixes an iwlwifi problem during link switch
-where the firmware would assert because the (link) station that
-was added for the AP is configured to transmit at a bandwidth
-that's wider than the channel context that it's configured on.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230504134511.828474-5-gregory.greenman@intel.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Johannes Thumshirn <jth@kernel.org>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20230418172531.177349-2-jth@kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/chan.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/watchdog/menz69_wdt.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index 1b182cf9d6610..77c90ed8f5d7d 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -871,6 +871,9 @@ static int ieee80211_assign_link_chanctx(struct ieee80211_link_data *link,
- 	}
+diff --git a/drivers/watchdog/menz69_wdt.c b/drivers/watchdog/menz69_wdt.c
+index 8973f98bc6a56..bca0938f3429f 100644
+--- a/drivers/watchdog/menz69_wdt.c
++++ b/drivers/watchdog/menz69_wdt.c
+@@ -98,14 +98,6 @@ static const struct watchdog_ops men_z069_ops = {
+ 	.set_timeout = men_z069_wdt_set_timeout,
+ };
  
- 	if (new_ctx) {
-+		/* recalc considering the link we'll use it for now */
-+		ieee80211_recalc_chanctx_min_def(local, new_ctx, link);
-+
- 		ret = drv_assign_vif_chanctx(local, sdata, link->conf, new_ctx);
- 		if (ret)
- 			goto out;
+-static struct watchdog_device men_z069_wdt = {
+-	.info = &men_z069_info,
+-	.ops = &men_z069_ops,
+-	.timeout = MEN_Z069_DEFAULT_TIMEOUT,
+-	.min_timeout = 1,
+-	.max_timeout = MEN_Z069_WDT_COUNTER_MAX / MEN_Z069_TIMER_FREQ,
+-};
+-
+ static int men_z069_probe(struct mcb_device *dev,
+ 			  const struct mcb_device_id *id)
+ {
+@@ -125,15 +117,19 @@ static int men_z069_probe(struct mcb_device *dev,
+ 		goto release_mem;
+ 
+ 	drv->mem = mem;
++	drv->wdt.info = &men_z069_info;
++	drv->wdt.ops = &men_z069_ops;
++	drv->wdt.timeout = MEN_Z069_DEFAULT_TIMEOUT;
++	drv->wdt.min_timeout = 1;
++	drv->wdt.max_timeout = MEN_Z069_WDT_COUNTER_MAX / MEN_Z069_TIMER_FREQ;
+ 
+-	drv->wdt = men_z069_wdt;
+ 	watchdog_init_timeout(&drv->wdt, 0, &dev->dev);
+ 	watchdog_set_nowayout(&drv->wdt, nowayout);
+ 	watchdog_set_drvdata(&drv->wdt, drv);
+ 	drv->wdt.parent = &dev->dev;
+ 	mcb_set_drvdata(dev, drv);
+ 
+-	return watchdog_register_device(&men_z069_wdt);
++	return watchdog_register_device(&drv->wdt);
+ 
+ release_mem:
+ 	mcb_release_mem(mem);
 -- 
 2.39.2
 
