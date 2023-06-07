@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1893726AEC
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:21:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89428726E68
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232920AbjFGUVB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:21:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45796 "EHLO
+        id S235172AbjFGUua (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:50:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232198AbjFGUUv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:51 -0400
+        with ESMTP id S235084AbjFGUtp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:49:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57A302129
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:20:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F02DD213C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:49:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 37F2B643A7
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:20:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB10C433D2;
-        Wed,  7 Jun 2023 20:20:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BFF0D646D4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:49:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2DC5C433EF;
+        Wed,  7 Jun 2023 20:49:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169229;
-        bh=t5kX8PXAa11pa+Ztrpq+oh0UE6PY8s4hoc0cdrP9YvE=;
+        s=korg; t=1686170966;
+        bh=bvUJX6zol3W4Jldbjlq7JZpJ0EH3cfP/GH4aQtUG12o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X98/srykS2qmbFyGVAIWCqRuZuT4hXqP1kC8xuX3/s9HCD8UZNHAgPPMM7pg00Uge
-         P7H073bVdgCuZXSrxl1sc5FYs4fMU/xusZ+R8xLIu+bxWKDU0c/RbZPvEGHN7AF3mV
-         ZRTuujVEqFxQJn/HaKMbQZ/XmhdbzRYF5u83evE4=
+        b=YzyKnwH4uq1uHTozo2Zlp2ApCaSCTz176EYxCl41t3WKCq6wjh+fLtff9W8jKQ5be
+         i7akGEogdDMRdC/TKJ3V8p79L9PHhgHcNJQby+HK1cL1LHNdikY1Bq28SgqrPpH8gy
+         VpIU2jsl6S4uaRE5W1OqQTdO+VhkUOpvXqXE29Is=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Lee Jones <lee@kernel.org>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
+        patches@lists.linux.dev,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 34/61] mailbox: mailbox-test: fix a locking issue in mbox_test_message_write()
+Subject: [PATCH 5.10 032/120] mtd: rawnand: marvell: dont set the NAND frequency select
 Date:   Wed,  7 Jun 2023 22:15:48 +0200
-Message-ID: <20230607200847.208350969@linuxfoundation.org>
+Message-ID: <20230607200901.921615889@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-References: <20230607200835.310274198@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,53 +55,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
 
-[ Upstream commit 8fe72b76db79d694858e872370df49676bc3be8c ]
+[ Upstream commit c4d28e30a8d0b979e4029465ab8f312ab6ce2644 ]
 
-There was a bug where this code forgot to unlock the tdev->mutex if the
-kzalloc() failed.  Fix this issue, by moving the allocation outside the
-lock.
+marvell_nfc_setup_interface() uses the frequency retrieved from the
+clock associated with the nand interface to determine the timings that
+will be used. By changing the NAND frequency select without reflecting
+this in the clock configuration this means that the timings calculated
+don't correctly meet the requirements of the NAND chip. This hasn't been
+an issue up to now because of a different bug that was stopping the
+timings being updated after they were initially set.
 
-Fixes: 2d1e952a2b8e ("mailbox: mailbox-test: Fix potential double-free in mbox_test_message_write()")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
+Fixes: b25251414f6e ("mtd: rawnand: marvell: Stop implementing ->select_chip()")
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230525003154.2303012-2-chris.packham@alliedtelesis.co.nz
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox-test.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/mtd/nand/raw/marvell_nand.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
-index c23acd994d783..1dbbc9036bb8e 100644
---- a/drivers/mailbox/mailbox-test.c
-+++ b/drivers/mailbox/mailbox-test.c
-@@ -101,6 +101,7 @@ static ssize_t mbox_test_message_write(struct file *filp,
- 				       size_t count, loff_t *ppos)
- {
- 	struct mbox_test_device *tdev = filp->private_data;
-+	char *message;
- 	void *data;
- 	int ret;
- 
-@@ -116,12 +117,13 @@ static ssize_t mbox_test_message_write(struct file *filp,
- 		return -EINVAL;
+diff --git a/drivers/mtd/nand/raw/marvell_nand.c b/drivers/mtd/nand/raw/marvell_nand.c
+index 9d437f1566ed5..2ef1a5adfcfc1 100644
+--- a/drivers/mtd/nand/raw/marvell_nand.c
++++ b/drivers/mtd/nand/raw/marvell_nand.c
+@@ -2891,10 +2891,6 @@ static int marvell_nfc_init(struct marvell_nfc *nfc)
+ 		regmap_update_bits(sysctrl_base, GENCONF_CLK_GATING_CTRL,
+ 				   GENCONF_CLK_GATING_CTRL_ND_GATE,
+ 				   GENCONF_CLK_GATING_CTRL_ND_GATE);
+-
+-		regmap_update_bits(sysctrl_base, GENCONF_ND_CLK_CTRL,
+-				   GENCONF_ND_CLK_CTRL_EN,
+-				   GENCONF_ND_CLK_CTRL_EN);
  	}
  
--	mutex_lock(&tdev->mutex);
--
--	tdev->message = kzalloc(MBOX_MAX_MSG_LEN, GFP_KERNEL);
--	if (!tdev->message)
-+	message = kzalloc(MBOX_MAX_MSG_LEN, GFP_KERNEL);
-+	if (!message)
- 		return -ENOMEM;
- 
-+	mutex_lock(&tdev->mutex);
-+
-+	tdev->message = message;
- 	ret = copy_from_user(tdev->message, userbuf, count);
- 	if (ret) {
- 		ret = -EFAULT;
+ 	/* Configure the DMA if appropriate */
 -- 
 2.39.2
 
