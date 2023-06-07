@@ -2,49 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 664FB726F39
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:56:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36105727012
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:04:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235569AbjFGU4f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:56:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57572 "EHLO
+        id S236198AbjFGVEY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:04:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235598AbjFGU4c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:56:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E01091FEE
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:56:28 -0700 (PDT)
+        with ESMTP id S236207AbjFGVEB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:04:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF2D62D4B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:03:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E2EC64843
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:56:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3A2C433EF;
-        Wed,  7 Jun 2023 20:56:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 68D9E649AA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:03:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79CD8C4339B;
+        Wed,  7 Jun 2023 21:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171387;
-        bh=JV23PZ/gtcMCbhCQGxTQkdUxehKQ8XbLKvqQ4OT+cdE=;
+        s=korg; t=1686171822;
+        bh=HccEVkc71L24XRVNnjSdTNZh+v4QUcTlpyhwjoMsJFU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vz8ehFgMXHGxLswdFG1s7oVQMaxybIGfyiBuK35eaJoB2FHAnN5yNb1whIBt6j4iW
-         3Tv6BRvELmlHcZq/v3X60+znpZ/uonyzBN72pMey/jycL65nJOP0HBFjF8YZCNOtUq
-         GoMAkDfxxC4AILDgrKlPlDznv5iPeX7Hv8PVWr2E=
+        b=ylNV/RW87PcmS99IRaqSpSUjL9Fi8NW8XQxFbpCXJEb8ZIplAURwNFMm4mBm3s7ir
+         cPEBB2UiRMUtWaBAr1ZQgaE6U7fKyvY9a4OFaBxDL3w4z3XVwFkuw3Ui8jTRRtAKhS
+         kRR30uddFEr1PSLSQ88T90S06D6ZZf5CaGGz/PI0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 5.4 98/99] wifi: rtlwifi: 8192de: correct checking of IQK reload
+        patches@lists.linux.dev
+Subject: [PATCH 5.15 147/159] regmap: Account for register length when chunking
 Date:   Wed,  7 Jun 2023 22:17:30 +0200
-Message-ID: <20230607200903.318245895@linuxfoundation.org>
+Message-ID: <20230607200908.477080514@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,47 +52,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Jim Wylder <jwylder@google.com>
 
-commit 93fbc1ebd978cf408ef5765e9c1630fce9a8621b upstream.
+commit 3981514180c987a79ea98f0ae06a7cbf58a9ac0f upstream.
 
-Since IQK could spend time, we make a cache of IQK result matrix that looks
-like iqk_matrix[channel_idx].val[x][y], and we can reload the matrix if we
-have made a cache. To determine a cache is made, we check
-iqk_matrix[channel_idx].val[0][0].
+Currently, when regmap_raw_write() splits the data, it uses the
+max_raw_write value defined for the bus.  For any bus that includes
+the target register address in the max_raw_write value, the chunked
+transmission will always exceed the maximum transmission length.
+To avoid this problem, subtract the length of the register and the
+padding from the maximum transmission.
 
-The initial commit 7274a8c22980 ("rtlwifi: rtl8192de: Merge phy routines")
-make a mistake that checks incorrect iqk_matrix[channel_idx].val[0] that
-is always true, and this mistake is found by commit ee3db469dd31
-("wifi: rtlwifi: remove always-true condition pointed out by GCC 12"), so
-I recall the vendor driver to find fix and apply the correctness.
-
-Fixes: 7274a8c22980 ("rtlwifi: rtl8192de: Merge phy routines")
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20220801113345.42016-1-pkshih@realtek.com
+Signed-off-by: Jim Wylder <jwylder@google.com
+Link: https://lore.kernel.org/r/20230517152444.3690870-2-jwylder@google.com
+Signed-off-by: Mark Brown <broonie@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/base/regmap/regmap.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-@@ -2392,11 +2392,10 @@ void rtl92d_phy_reload_iqk_setting(struc
- 			RT_TRACE(rtlpriv, COMP_SCAN, DBG_LOUD,
- 				 "Just Read IQK Matrix reg for channel:%d....\n",
- 				 channel);
--			_rtl92d_phy_patha_fill_iqk_matrix(hw, true,
--					rtlphy->iqk_matrix[
--					indexforchannel].value,	0,
--					(rtlphy->iqk_matrix[
--					indexforchannel].value[0][2] == 0));
-+			if (rtlphy->iqk_matrix[indexforchannel].value[0][0] != 0)
-+				_rtl92d_phy_patha_fill_iqk_matrix(hw, true,
-+					rtlphy->iqk_matrix[indexforchannel].value, 0,
-+					rtlphy->iqk_matrix[indexforchannel].value[0][2] == 0);
- 			if (IS_92D_SINGLEPHY(rtlhal->version)) {
- 				if ((rtlphy->iqk_matrix[
- 					indexforchannel].value[0][4] != 0)
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -2041,6 +2041,8 @@ int _regmap_raw_write(struct regmap *map
+ 	size_t val_count = val_len / val_bytes;
+ 	size_t chunk_count, chunk_bytes;
+ 	size_t chunk_regs = val_count;
++	size_t max_data = map->max_raw_write - map->format.reg_bytes -
++			map->format.pad_bytes;
+ 	int ret, i;
+ 
+ 	if (!val_count)
+@@ -2048,8 +2050,8 @@ int _regmap_raw_write(struct regmap *map
+ 
+ 	if (map->use_single_write)
+ 		chunk_regs = 1;
+-	else if (map->max_raw_write && val_len > map->max_raw_write)
+-		chunk_regs = map->max_raw_write / val_bytes;
++	else if (map->max_raw_write && val_len > max_data)
++		chunk_regs = max_data / val_bytes;
+ 
+ 	chunk_count = val_count / chunk_regs;
+ 	chunk_bytes = chunk_regs * val_bytes;
 
 
