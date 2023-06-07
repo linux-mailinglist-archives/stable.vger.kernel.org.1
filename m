@@ -2,45 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88E07726FC1
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ACB1726DE8
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:46:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235901AbjFGVBR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:01:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34282 "EHLO
+        id S234950AbjFGUqc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:46:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235930AbjFGVBC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:01:02 -0400
+        with ESMTP id S234915AbjFGUqQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:46:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D085F213D
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:00:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57569106
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:46:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A2282648F0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:00:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B59E4C433D2;
-        Wed,  7 Jun 2023 21:00:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 35EB364683
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:46:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4437AC433EF;
+        Wed,  7 Jun 2023 20:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171645;
-        bh=Yc+fw8dJSwWtziIzALiOg5ckIQKauQRx4Tf7K/v+xbU=;
+        s=korg; t=1686170760;
+        bh=US4ranrBZyjrZe4QjZJdpJOSEUmZgg1M+chw8EStXtE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NhqHYib6mS+n6wRADbKQJzmJT/a3p7gY+CEwlOaUhtoxDsIXefSv+jqcbwH2UQeYI
-         CiJHAjTRO17MOlUZAk79nen6kKO3SVsLnaUWXNKfRrzNqkq+4fmZjI0U81D5hwFIAs
-         PkiOFp/ORx501ba8fMEgiiKa/HEZgFgm/h9rGWhA=
+        b=JfIFPKwQmKlazm9xA9GXWz9zJLo7X75GGy9jDv8Rb0jkgaxYN80Q3EekjELfjJlKI
+         +eiNicxLmgrJ3opQfvx7vqViNmDjCq5Mx7lIGcFpZEc4KZ7QJgsDZWQhjK62Y8zIs4
+         a2bT8qe+zV09SA3RkfyAkYcvKF8IDxA30usATYck=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Marius Hoch <mail@mariushoch.de>, Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 097/159] iio: accel: st_accel: Fix invalid mount_matrix on devices without ACPI _ONT method
+        patches@lists.linux.dev, Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1 207/225] KVM: x86: Account fastpath-only VM-Exits in vCPU stats
 Date:   Wed,  7 Jun 2023 22:16:40 +0200
-Message-ID: <20230607200906.865466434@linuxfoundation.org>
+Message-ID: <20230607200921.135048263@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,53 +52,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 79b8ded9d9c595db9bd5b2f62f5f738b36de1e22 upstream.
+commit 8b703a49c9df5e74870381ad7ba9c85d8a74ed2c upstream.
 
-When apply_acpi_orientation() fails, st_accel_common_probe() will fall back
-to iio_read_mount_matrix(), which checks for a mount-matrix device property
-and if that is not set falls back to the identity matrix.
+Increment vcpu->stat.exits when handling a fastpath VM-Exit without
+going through any part of the "slow" path.  Not bumping the exits stat
+can result in wildly misleading exit counts, e.g. if the primary reason
+the guest is exiting is to program the TSC deadline timer.
 
-But when a sensor has no ACPI companion fwnode, or when the ACPI fwnode
-does not have a "_ONT" method apply_acpi_orientation() was returning 0,
-causing iio_read_mount_matrix() to never get called resulting in an
-invalid mount_matrix:
-
-[root@fedora ~]# cat /sys/bus/iio/devices/iio\:device0/mount_matrix
-(null), (null), (null); (null), (null), (null); (null), (null), (null)
-
-Fix this by making apply_acpi_orientation() always return an error when
-it did not set the mount_matrix.
-
-Fixes: 3d8ad94bb175 ("iio: accel: st_sensors: Support generic mounting matrix")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Tested-by: Marius Hoch <mail@mariushoch.de>
-Link: https://lore.kernel.org/r/20230416212409.310936-1-hdegoede@redhat.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 404d5d7bff0d ("KVM: X86: Introduce more exit_fastpath_completion enum values")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230602011920.787844-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/st_accel_core.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kvm/x86.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iio/accel/st_accel_core.c
-+++ b/drivers/iio/accel/st_accel_core.c
-@@ -1212,12 +1212,12 @@ static int apply_acpi_orientation(struct
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10829,6 +10829,9 @@ static int vcpu_enter_guest(struct kvm_v
+ 			exit_fastpath = EXIT_FASTPATH_EXIT_HANDLED;
+ 			break;
+ 		}
++
++		/* Note, VM-Exits that go down the "slow" path are accounted below. */
++		++vcpu->stat.exits;
+ 	}
  
- 	adev = ACPI_COMPANION(adata->dev);
- 	if (!adev)
--		return 0;
-+		return -ENXIO;
- 
- 	/* Read _ONT data, which should be a package of 6 integers. */
- 	status = acpi_evaluate_object(adev->handle, "_ONT", NULL, &buffer);
- 	if (status == AE_NOT_FOUND) {
--		return 0;
-+		return -ENXIO;
- 	} else if (ACPI_FAILURE(status)) {
- 		dev_warn(&indio_dev->dev, "failed to execute _ONT: %d\n",
- 			 status);
+ 	/*
 
 
