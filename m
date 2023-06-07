@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5429726E96
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:51:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B50D726F08
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235107AbjFGUve (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:51:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52094 "EHLO
+        id S235392AbjFGUzZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:55:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235098AbjFGUvc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:51:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B852E1BD3
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:51:16 -0700 (PDT)
+        with ESMTP id S235626AbjFGUyz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 479A21FCC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:54:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9853563187
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:51:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8869C433EF;
-        Wed,  7 Jun 2023 20:51:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D0D0B647D1
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:54:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E454CC433EF;
+        Wed,  7 Jun 2023 20:54:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171076;
-        bh=p42ugG0UDv7iJGC1P06JukrmbTVMV9Fewjur9T8/c3A=;
+        s=korg; t=1686171280;
+        bh=aITDxaXfjnHA6ppXc/Ks65rfqWo1xEXjI/MDQ0VzuqY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v/SIMzPEI+axxc/W39dshNwPgq6IPv/h6wTCnA6KkkPb7Qcu5vAGrX7s8GJarIqQ9
-         hNZWws1Uaxf8SuaLd5/zxgcnqNTPrrEgru255kuv32CSqQQu1IUgqkp570Td/ScH7W
-         lcSeUcYaBxxaJ67GiXwF/AEb0/OOXoeG+vFU0xhY=
+        b=g+4Ga3M/q3rjVEnKoBoTovt8iF1f7swv3BdftoRJ+cI0S2qikbKfU3VVibQnAqi0M
+         F0lFtv7UOGlP12rg66vdzPqXLMZAknFNbZ99pDyvfAsFLp9LFVt3oPk5lKBFtpEwxL
+         GY8UUq3eL2NKC8tOK8GfsWlIEruqWI1eMKi6e6p0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, pengfuyuan <pengfuyuan@kylinos.cn>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.10 094/120] btrfs: fix csum_tree_block page iteration to avoid tripping on -Werror=array-bounds
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 58/99] ALSA: oss: avoid missing-prototype warnings
 Date:   Wed,  7 Jun 2023 22:16:50 +0200
-Message-ID: <20230607200903.866908067@linuxfoundation.org>
+Message-ID: <20230607200902.064144030@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,57 +53,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: pengfuyuan <pengfuyuan@kylinos.cn>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 5ad9b4719fc9bc4715c7e19875a962095b0577e7 upstream.
+[ Upstream commit 040b5a046a9e18098580d3ccd029e2318fca7859 ]
 
-When compiling on a MIPS 64-bit machine we get these warnings:
+Two functions are defined and used in pcm_oss.c but also optionally
+used from io.c, with an optional prototype. If CONFIG_SND_PCM_OSS_PLUGINS
+is disabled, this causes a warning as the functions are not static
+and have no prototype:
 
-    In file included from ./arch/mips/include/asm/cacheflush.h:13,
-	             from ./include/linux/cacheflush.h:5,
-	             from ./include/linux/highmem.h:8,
-		     from ./include/linux/bvec.h:10,
-		     from ./include/linux/blk_types.h:10,
-                     from ./include/linux/blkdev.h:9,
-	             from fs/btrfs/disk-io.c:7:
-    fs/btrfs/disk-io.c: In function ‘csum_tree_block’:
-    fs/btrfs/disk-io.c:100:34: error: array subscript 1 is above array bounds of ‘struct page *[1]’ [-Werror=array-bounds]
-      100 |   kaddr = page_address(buf->pages[i]);
-          |                        ~~~~~~~~~~^~~
-    ./include/linux/mm.h:2135:48: note: in definition of macro ‘page_address’
-     2135 | #define page_address(page) lowmem_page_address(page)
-          |                                                ^~~~
-    cc1: all warnings being treated as errors
+sound/core/oss/pcm_oss.c:1235:19: error: no previous prototype for 'snd_pcm_oss_write3' [-Werror=missing-prototypes]
+sound/core/oss/pcm_oss.c:1266:19: error: no previous prototype for 'snd_pcm_oss_read3' [-Werror=missing-prototypes]
 
-We can check if i overflows to solve the problem. However, this doesn't make
-much sense, since i == 1 and num_pages == 1 doesn't execute the body of the loop.
-In addition, i < num_pages can also ensure that buf->pages[i] will not cross
-the boundary. Unfortunately, this doesn't help with the problem observed here:
-gcc still complains.
+Avoid this by making the prototypes unconditional.
 
-To fix this add a compile-time condition for the extent buffer page
-array size limit, which would eventually lead to eliminating the whole
-for loop.
-
-CC: stable@vger.kernel.org # 5.10+
-Signed-off-by: pengfuyuan <pengfuyuan@kylinos.cn>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20230516195046.550584-2-arnd@kernel.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/core/oss/pcm_plugin.h | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -220,7 +220,7 @@ static void csum_tree_block(struct exten
- 	crypto_shash_update(shash, kaddr + BTRFS_CSUM_SIZE,
- 			    PAGE_SIZE - BTRFS_CSUM_SIZE);
+diff --git a/sound/core/oss/pcm_plugin.h b/sound/core/oss/pcm_plugin.h
+index 8d2f7a4e3ab67..0e1c8cae6c5bd 100644
+--- a/sound/core/oss/pcm_plugin.h
++++ b/sound/core/oss/pcm_plugin.h
+@@ -141,6 +141,14 @@ int snd_pcm_area_copy(const struct snd_pcm_channel_area *src_channel,
  
--	for (i = 1; i < num_pages; i++) {
-+	for (i = 1; i < num_pages && INLINE_EXTENT_BUFFER_PAGES > 1; i++) {
- 		kaddr = page_address(buf->pages[i]);
- 		crypto_shash_update(shash, kaddr, PAGE_SIZE);
- 	}
+ void *snd_pcm_plug_buf_alloc(struct snd_pcm_substream *plug, snd_pcm_uframes_t size);
+ void snd_pcm_plug_buf_unlock(struct snd_pcm_substream *plug, void *ptr);
++#else
++
++static inline snd_pcm_sframes_t snd_pcm_plug_client_size(struct snd_pcm_substream *handle, snd_pcm_uframes_t drv_size) { return drv_size; }
++static inline snd_pcm_sframes_t snd_pcm_plug_slave_size(struct snd_pcm_substream *handle, snd_pcm_uframes_t clt_size) { return clt_size; }
++static inline int snd_pcm_plug_slave_format(int format, const struct snd_mask *format_mask) { return format; }
++
++#endif
++
+ snd_pcm_sframes_t snd_pcm_oss_write3(struct snd_pcm_substream *substream,
+ 				     const char *ptr, snd_pcm_uframes_t size,
+ 				     int in_kernel);
+@@ -151,14 +159,6 @@ snd_pcm_sframes_t snd_pcm_oss_writev3(struct snd_pcm_substream *substream,
+ snd_pcm_sframes_t snd_pcm_oss_readv3(struct snd_pcm_substream *substream,
+ 				     void **bufs, snd_pcm_uframes_t frames);
+ 
+-#else
+-
+-static inline snd_pcm_sframes_t snd_pcm_plug_client_size(struct snd_pcm_substream *handle, snd_pcm_uframes_t drv_size) { return drv_size; }
+-static inline snd_pcm_sframes_t snd_pcm_plug_slave_size(struct snd_pcm_substream *handle, snd_pcm_uframes_t clt_size) { return clt_size; }
+-static inline int snd_pcm_plug_slave_format(int format, const struct snd_mask *format_mask) { return format; }
+-
+-#endif
+-
+ #ifdef PLUGIN_DEBUG
+ #define pdprintf(fmt, args...) printk(KERN_DEBUG "plugin: " fmt, ##args)
+ #else
+-- 
+2.39.2
+
 
 
