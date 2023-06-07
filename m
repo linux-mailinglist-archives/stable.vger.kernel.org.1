@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1892A726FA8
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:00:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0781726DF7
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:47:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235859AbjFGVAy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:00:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33504 "EHLO
+        id S234847AbjFGUrF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:47:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236111AbjFGVAV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93B8A26B2
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:59:58 -0700 (PDT)
+        with ESMTP id S234703AbjFGUq0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:46:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5050F2126
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:46:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E4EE648CF
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:59:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D454C433EF;
-        Wed,  7 Jun 2023 20:59:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E136B64697
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:46:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A91C433D2;
+        Wed,  7 Jun 2023 20:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171597;
-        bh=Ob3qJWVV0UzBiL0Q4d/OmDcvpBKUL55xRXXAWm7zHZg=;
+        s=korg; t=1686170784;
+        bh=HQip4JU2ufGbBFmngswCvZNg0p8jcFaaxwD0tcaw8/Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e1Q22CW+4mgyjh/ySow3ZHgL1WY7lwdAa97lPJCTaIn6CvjFWzkjwOnSS/u8u0Z9M
-         8Pi/2T4q6wEJCBEDUr6ZUBerM5CAqayymVhsTpJNKMXKyeLy7P08azhW2Nhny4J0MP
-         F34haiBsU6e6znMKe3NhS67XHuNEZyswGOxyDqKE=
+        b=kZIbua1oCTqeCDI2tyojhtE/IfE24C2+ef2jP63w4+jlyBPeqNJxJxooY856SmtWN
+         SKqxwBAmZnssvyP7SBXqA/bTj5sKMCM6uuExo6z2g4xRBxj9Vlv3m9Mq6T2MEWBw0V
+         6CPbNb2yVm25Z0Y71XGtyaeaCTj2f3TjbI8qFaao=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hyunwoo Kim <v4bel@theori.io>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 077/159] media: dvb-core: Fix use-after-free due to race condition at dvb_ca_en50221
+        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+        Tom Zanussi <zanussi@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 187/225] tracing/histograms: Allow variables to have some modifiers
 Date:   Wed,  7 Jun 2023 22:16:20 +0200
-Message-ID: <20230607200906.200266793@linuxfoundation.org>
+Message-ID: <20230607200920.500955751@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,128 +55,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 280a8ab81733da8bc442253c700a52c4c0886ffd ]
+commit e30fbc618e97b38dbb49f1d44dcd0778d3f23b8c upstream.
 
-If the device node of dvb_ca_en50221 is open() and the
-device is disconnected, a UAF may occur when calling
-close() on the device node.
+Modifiers are used to change the behavior of keys. For instance, they
+can grouped into buckets, converted to syscall names (from the syscall
+identifier), show task->comm of the current pid, be an array of longs
+that represent a stacktrace, and more.
 
-The root cause is that wake_up() and wait_event() for
-dvbdev->wait_queue are not implemented.
+It was found that nothing stopped a value from taking a modifier. As
+values are simple counters. If this happened, it would call code that
+was not expecting a modifier and crash the kernel. This was fixed by
+having the ___create_val_field() function test if a modifier was present
+and fail if one was. This fixed the crash.
 
-So implement wait_event() function in dvb_ca_en50221_release()
-and add 'remove_mutex' which prevents race condition
-for 'ca->exit'.
+Now there's a problem with variables. Variables are used to pass fields
+from one event to another. Variables are allowed to have some modifiers,
+as the processing may need to happen at the time of the event (like
+stacktraces and comm names of the current pid). The issue is that it too
+uses __create_val_field(). Now that fails on modifiers, variables can no
+longer use them (this is a regression).
 
-[mchehab: fix a checkpatch warning]
+As not all modifiers are for variables, have them use a separate check.
 
-Link: https://lore.kernel.org/linux-media/20221121063308.GA33821@ubuntu
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/linux-trace-kernel/20230523221108.064a5d82@rorschach.local.home
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Tom Zanussi <zanussi@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Fixes: e0213434fe3e4 ("tracing: Do not let histogram values have some modifiers")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dvb_ca_en50221.c | 37 ++++++++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+ kernel/trace/trace_events_hist.c |   23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/media/dvb-core/dvb_ca_en50221.c b/drivers/media/dvb-core/dvb_ca_en50221.c
-index b6ca29dfb184a..baf64540dc00a 100644
---- a/drivers/media/dvb-core/dvb_ca_en50221.c
-+++ b/drivers/media/dvb-core/dvb_ca_en50221.c
-@@ -151,6 +151,12 @@ struct dvb_ca_private {
- 
- 	/* mutex serializing ioctls */
- 	struct mutex ioctl_mutex;
-+
-+	/* A mutex used when a device is disconnected */
-+	struct mutex remove_mutex;
-+
-+	/* Whether the device is disconnected */
-+	int exit;
- };
- 
- static void dvb_ca_private_free(struct dvb_ca_private *ca)
-@@ -1711,12 +1717,22 @@ static int dvb_ca_en50221_io_open(struct inode *inode, struct file *file)
- 
- 	dprintk("%s\n", __func__);
- 
--	if (!try_module_get(ca->pub->owner))
-+	mutex_lock(&ca->remove_mutex);
-+
-+	if (ca->exit) {
-+		mutex_unlock(&ca->remove_mutex);
-+		return -ENODEV;
-+	}
-+
-+	if (!try_module_get(ca->pub->owner)) {
-+		mutex_unlock(&ca->remove_mutex);
- 		return -EIO;
-+	}
- 
- 	err = dvb_generic_open(inode, file);
- 	if (err < 0) {
- 		module_put(ca->pub->owner);
-+		mutex_unlock(&ca->remove_mutex);
- 		return err;
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -4193,13 +4193,19 @@ static int __create_val_field(struct his
+ 		goto out;
  	}
  
-@@ -1741,6 +1757,7 @@ static int dvb_ca_en50221_io_open(struct inode *inode, struct file *file)
- 
- 	dvb_ca_private_get(ca);
- 
-+	mutex_unlock(&ca->remove_mutex);
- 	return 0;
- }
- 
-@@ -1760,6 +1777,8 @@ static int dvb_ca_en50221_io_release(struct inode *inode, struct file *file)
- 
- 	dprintk("%s\n", __func__);
- 
-+	mutex_lock(&ca->remove_mutex);
-+
- 	/* mark the CA device as closed */
- 	ca->open = 0;
- 	dvb_ca_en50221_thread_update_delay(ca);
-@@ -1770,6 +1789,13 @@ static int dvb_ca_en50221_io_release(struct inode *inode, struct file *file)
- 
- 	dvb_ca_private_put(ca);
- 
-+	if (dvbdev->users == 1 && ca->exit == 1) {
-+		mutex_unlock(&ca->remove_mutex);
-+		wake_up(&dvbdev->wait_queue);
+-	/* Some types cannot be a value */
+-	if (hist_field->flags & (HIST_FIELD_FL_GRAPH | HIST_FIELD_FL_PERCENT |
+-				 HIST_FIELD_FL_BUCKET | HIST_FIELD_FL_LOG2 |
+-				 HIST_FIELD_FL_SYM | HIST_FIELD_FL_SYM_OFFSET |
+-				 HIST_FIELD_FL_SYSCALL | HIST_FIELD_FL_STACKTRACE)) {
+-		hist_err(file->tr, HIST_ERR_BAD_FIELD_MODIFIER, errpos(field_str));
+-		ret = -EINVAL;
++	/* values and variables should not have some modifiers */
++	if (hist_field->flags & HIST_FIELD_FL_VAR) {
++		/* Variable */
++		if (hist_field->flags & (HIST_FIELD_FL_GRAPH | HIST_FIELD_FL_PERCENT |
++					 HIST_FIELD_FL_BUCKET | HIST_FIELD_FL_LOG2))
++			goto err;
 +	} else {
-+		mutex_unlock(&ca->remove_mutex);
-+	}
-+
- 	return err;
- }
- 
-@@ -1893,6 +1919,7 @@ int dvb_ca_en50221_init(struct dvb_adapter *dvb_adapter,
++		/* Value */
++		if (hist_field->flags & (HIST_FIELD_FL_GRAPH | HIST_FIELD_FL_PERCENT |
++					 HIST_FIELD_FL_BUCKET | HIST_FIELD_FL_LOG2 |
++					 HIST_FIELD_FL_SYM | HIST_FIELD_FL_SYM_OFFSET |
++					 HIST_FIELD_FL_SYSCALL | HIST_FIELD_FL_STACKTRACE))
++			goto err;
  	}
  
- 	mutex_init(&ca->ioctl_mutex);
-+	mutex_init(&ca->remove_mutex);
+ 	hist_data->fields[val_idx] = hist_field;
+@@ -4211,6 +4217,9 @@ static int __create_val_field(struct his
+ 		ret = -EINVAL;
+  out:
+ 	return ret;
++ err:
++	hist_err(file->tr, HIST_ERR_BAD_FIELD_MODIFIER, errpos(field_str));
++	return -EINVAL;
+ }
  
- 	if (signal_pending(current)) {
- 		ret = -EINTR;
-@@ -1935,6 +1962,14 @@ void dvb_ca_en50221_release(struct dvb_ca_en50221 *pubca)
- 
- 	dprintk("%s\n", __func__);
- 
-+	mutex_lock(&ca->remove_mutex);
-+	ca->exit = 1;
-+	mutex_unlock(&ca->remove_mutex);
-+
-+	if (ca->dvbdev->users < 1)
-+		wait_event(ca->dvbdev->wait_queue,
-+				ca->dvbdev->users == 1);
-+
- 	/* shutdown the thread if there was one */
- 	kthread_stop(ca->thread);
- 
--- 
-2.39.2
-
+ static int create_val_field(struct hist_trigger_data *hist_data,
 
 
