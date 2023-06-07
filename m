@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFEC3726E7D
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D6C3726E7F
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235230AbjFGUuw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:50:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47336 "EHLO
+        id S235231AbjFGUux (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:50:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234817AbjFGUuZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:50:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F051426A0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:50:18 -0700 (PDT)
+        with ESMTP id S235057AbjFGUu0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:50:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C614E4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:50:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D19DA646E1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:50:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4510C433D2;
-        Wed,  7 Jun 2023 20:50:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1AEB5643B1
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:50:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E2D8C433D2;
+        Wed,  7 Jun 2023 20:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171018;
-        bh=odvwcAggtHNcPTfm+IXLPgezGhU2JT22FXQI+zmUYtA=;
+        s=korg; t=1686171023;
+        bh=zEyjRQI1qoFKXOycfGpB7g2Y9dBGj/laBbooJQIUKvM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G00lE3nAmkbW666/DWgx37iQ21+pV8etEUVqqn0jr3GsE2KQJ05i5f9YSsYEpJEeW
-         xmfg2mC7o/vde9yunY5CQUF12JFvUGwCo5JFvK5Ob/9KysvoEm7SlummEt9zgY2Wjv
-         WJYEWdRJhRriGyWlgUeHReSux3A4vk55O+sbqK+s=
+        b=yM49phdCvX3pMJotk658Kj08OjZL2WKBxBL3lOYuDVVRaGbccNrdPtEQoXpEz+iPz
+         Y0DFkgWhwcVnwpxHjlLb84jEeLruiOuIdk2uvrgMfYrzZpx/NKce0TOhS4Md3PCzwj
+         BqiqQRYw2BzHYbS25coxSLzwDzoEyIJ6hF8CmOx4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 080/120] iio: dac: build ad5758 driver when AD5758 is selected
-Date:   Wed,  7 Jun 2023 22:16:36 +0200
-Message-ID: <20230607200903.419579131@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+        =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 081/120] net: usb: qmi_wwan: Set DTR quirk for BroadMobi BM818
+Date:   Wed,  7 Jun 2023 22:16:37 +0200
+Message-ID: <20230607200903.450683159@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
 References: <20230607200900.915613242@linuxfoundation.org>
@@ -44,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,39 +55,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
 
-commit a146eccb68be161ae9eab5f3f68bb0ed7c0fbaa8 upstream.
+commit 36936a56e1814f6c526fe71fbf980beab4f5577a upstream.
 
-Commit 28d1a7ac2a0d ("iio: dac: Add AD5758 support") adds the config AD5758
-and the corresponding driver ad5758.c. In the Makefile, the ad5758 driver
-is however included when AD5755 is selected, not when AD5758 is selected.
+BM818 is based on Qualcomm MDM9607 chipset.
 
-Probably, this was simply a mistake that happened by copy-and-paste and
-forgetting to adjust the actual line. Surprisingly, no one has ever noticed
-that this driver is actually only included when AD5755 is selected and that
-the config AD5758 has actually no effect on the build.
-
-Fixes: 28d1a7ac2a0d ("iio: dac: Add AD5758 support")
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Link: https://lore.kernel.org/r/20230508040208.12033-1-lukas.bulwahn@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 9a07406b00cd ("net: usb: qmi_wwan: Add the BroadMobi BM818 card")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Acked-by: Bjørn Mork <bjorn@mork.no>
+Link: https://lore.kernel.org/r/20230526-bm818-dtr-v1-1-64bbfa6ba8af@puri.sm
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/Makefile |    2 +-
+ drivers/net/usb/qmi_wwan.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/dac/Makefile
-+++ b/drivers/iio/dac/Makefile
-@@ -16,7 +16,7 @@ obj-$(CONFIG_AD5592R_BASE) += ad5592r-ba
- obj-$(CONFIG_AD5592R) += ad5592r.o
- obj-$(CONFIG_AD5593R) += ad5593r.o
- obj-$(CONFIG_AD5755) += ad5755.o
--obj-$(CONFIG_AD5755) += ad5758.o
-+obj-$(CONFIG_AD5758) += ad5758.o
- obj-$(CONFIG_AD5761) += ad5761.o
- obj-$(CONFIG_AD5764) += ad5764.o
- obj-$(CONFIG_AD5770R) += ad5770r.o
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1260,7 +1260,7 @@ static const struct usb_device_id produc
+ 	{QMI_FIXED_INTF(0x2001, 0x7e3d, 4)},	/* D-Link DWM-222 A2 */
+ 	{QMI_FIXED_INTF(0x2020, 0x2031, 4)},	/* Olicard 600 */
+ 	{QMI_FIXED_INTF(0x2020, 0x2033, 4)},	/* BroadMobi BM806U */
+-	{QMI_FIXED_INTF(0x2020, 0x2060, 4)},	/* BroadMobi BM818 */
++	{QMI_QUIRK_SET_DTR(0x2020, 0x2060, 4)},	/* BroadMobi BM818 */
+ 	{QMI_FIXED_INTF(0x0f3d, 0x68a2, 8)},    /* Sierra Wireless MC7700 */
+ 	{QMI_FIXED_INTF(0x114f, 0x68a2, 8)},    /* Sierra Wireless MC7750 */
+ 	{QMI_FIXED_INTF(0x1199, 0x68a2, 8)},	/* Sierra Wireless MC7710 in QMI mode */
 
 
