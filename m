@@ -2,48 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC5C4726C1A
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:30:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F218D726D63
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:41:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233783AbjFGUav (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:30:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56878 "EHLO
+        id S234444AbjFGUll (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:41:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233816AbjFGUah (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:37 -0400
+        with ESMTP id S234423AbjFGUlj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:41:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 669B2269A
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:30:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6EC219BB
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:41:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 46AF1644D2
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:30:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA0BC4339B;
-        Wed,  7 Jun 2023 20:30:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E1AD6461C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:41:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E34BC433EF;
+        Wed,  7 Jun 2023 20:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169823;
-        bh=F1IG6M+ByKOpBxEAtlUr2+CtScqMVcGuygu6gm48aT4=;
+        s=korg; t=1686170492;
+        bh=mfi9pA8TtpQSlQKzzbalZaPXkKkmtsGD+l1SjdXJ0yA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1HvMWODhOIFjuqEx4Q4FsGHt5/H/3c9gCvLSL6HmT7I1o1NOSjLsLKt/4JKM16quI
-         X213u8FbRoslpxwONF1d2Z5tntezXyR+fn+Nt+rg+soQWnnxqsYtgxWc14OUPRehtJ
-         p/T1pEtvdmLvl2OYs52XxKg4yBHiFPnh5VUbUfN0=
+        b=cyEQJ6aRHnjZVVkdxmUG5VH2EFxg0RhqQ+n/xXua8OAUqTRkphce3+2g0yE7WnEom
+         P8MEn9dZpJu7FTCQRGm258Mfpi69g1st6MBJZQMEaQlyYDafn+zp2ca3v+26NYL4fy
+         0gtsaYqg/d+XsX/RuRNG73RUl8rtYQpKZte0X3pg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Marek Vasut <marek.vasut+renesas@mailbox.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.3 198/286] dt-bindings: iio: adc: renesas,rcar-gyroadc: Fix adi,ad7476 compatible value
-Date:   Wed,  7 Jun 2023 22:14:57 +0200
-Message-ID: <20230607200929.725895826@linuxfoundation.org>
+        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 105/225] ASoC: SOF: debug: conditionally bump runtime_pm counter on exceptions
+Date:   Wed,  7 Jun 2023 22:14:58 +0200
+Message-ID: <20230607200917.810775102@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,36 +52,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-commit 55720d242052e860b9fde445e302e0425722e7f1 upstream.
+[ Upstream commit 3de975862f985f1c9e225a0d13aa3d501373f7c3 ]
 
-The conversion to json-schema accidentally dropped the "ad" part prefix
-from the compatible value.
+When a firmware IPC error happens during a pm_runtime suspend, we
+ignore the error and suspend anyways. However, the code
+unconditionally increases the runtime_pm counter. This results in a
+confusing configuration where the code will suspend, resume but never
+suspend again due to the use of pm_runtime_get_noresume().
 
-Fixes: 8c41245872e2 ("dt-bindings:iio:adc:renesas,rcar-gyroadc: txt to yaml conversion.")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Link: https://lore.kernel.org/r/6b328a3f52657c20759f3a5bb2fe033d47644ba8.1683635404.git.geert+renesas@glider.be
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The intent of the counter increase was to prevent entry in D3, but if
+that transition to D3 is already started it cannot be stopped. In
+addition, there's no point in that case in trying to prevent anything,
+the firmware error is handled and the next resume will re-initialize
+the firmware completely.
+
+This patch changes the logic to prevent suspend when the device is
+pm_runtime active and has a use_count > 0.
+
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com
+Link: https://lore.kernel.org/r/20230512103315.8921-2-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sof/debug.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/Documentation/devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml
-@@ -86,7 +86,7 @@ patternProperties:
-             of the MAX chips to the GyroADC, while MISO line of each Maxim
-             ADC connects to a shared input pin of the GyroADC.
-         enum:
--          - adi,7476
-+          - adi,ad7476
-           - fujitsu,mb88101a
-           - maxim,max1162
-           - maxim,max11100
+diff --git a/sound/soc/sof/debug.c b/sound/soc/sof/debug.c
+index ade0507328af4..5042312b1b98d 100644
+--- a/sound/soc/sof/debug.c
++++ b/sound/soc/sof/debug.c
+@@ -437,8 +437,8 @@ void snd_sof_handle_fw_exception(struct snd_sof_dev *sdev, const char *msg)
+ 		/* should we prevent DSP entering D3 ? */
+ 		if (!sdev->ipc_dump_printed)
+ 			dev_info(sdev->dev,
+-				 "preventing DSP entering D3 state to preserve context\n");
+-		pm_runtime_get_noresume(sdev->dev);
++				 "Attempting to prevent DSP from entering D3 state to preserve context\n");
++		pm_runtime_get_if_in_use(sdev->dev);
+ 	}
+ 
+ 	/* dump vital information to the logs */
+-- 
+2.39.2
+
 
 
