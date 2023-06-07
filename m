@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7EA8726E4F
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:49:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE2BD726F8A
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:59:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235164AbjFGUtl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:49:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49516 "EHLO
+        id S235723AbjFGU7k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:59:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235182AbjFGUtX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:49:23 -0400
+        with ESMTP id S235725AbjFGU7h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:59:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1B742D63
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:48:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F73A2685
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:59:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BCD1D646C9
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:48:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF75BC433D2;
-        Wed,  7 Jun 2023 20:48:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E0F81648CE
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:59:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3AA3C433EF;
+        Wed,  7 Jun 2023 20:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170932;
-        bh=eA+9yHmN3wSShGX3RypHpIJHV1WOHQD9yheP0r0Qd8o=;
+        s=korg; t=1686171550;
+        bh=VAAY/+MJFj1XrcKHKiMSRG7NQwjKRBVFLOzOLTJ3UcE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DCsayw+DIVCC6toecr2iF5dx9DvIjgxgWAM5cV2pXKgZtcLjXdmyB4gGDWqOPlxMU
-         zQZRaHIXYPsJKSH0Om+86wlusVisYXmYTTV8md+YNYruvEyGIhhzac2iPX9O4QCVPm
-         2eov0LoPcOySnrpG1P3hDILk6gOYduWvOif2s+3Q=
+        b=1LfO6m3TUN9Js85/5OB8/OkSisTPVpMUBcCJePlBxELrWoORQQhKKA91a7CjN9fGf
+         AsiCt5MfNtU7AVRBToRxab7OK35sWrLQHWTd80tb72Lkt5D0FkzspAOGDIsW6yLnQo
+         AYWjblPIRx8fqteUiqly+IGvR955K7Nigu09Mu7k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 047/120] ASoC: ssm2602: Add workaround for playback distortions
-Date:   Wed,  7 Jun 2023 22:16:03 +0200
-Message-ID: <20230607200902.388110037@linuxfoundation.org>
+Subject: [PATCH 5.15 061/159] ASoC: dt-bindings: Adjust #sound-dai-cells on TIs single-DAI codecs
+Date:   Wed,  7 Jun 2023 22:16:04 +0200
+Message-ID: <20230607200905.684358218@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,135 +52,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paweł Anikiel <pan@semihalf.com>
+From: Martin Povišer <povik+lin@cutebit.org>
 
-[ Upstream commit f63550e2b165208a2f382afcaf5551df9569e1d4 ]
+[ Upstream commit efb2bfd7b3d210c479b9361c176d7426e5eb8663 ]
 
-Apply a workaround for what appears to be a hardware quirk.
+A bunch of TI's codecs have binding schemas which force #sound-dai-cells
+to one despite those codecs only having a single DAI. Allow for bindings
+with zero DAI cells and deprecate the former non-zero value.
 
-The problem seems to happen when enabling "whole chip power" (bit D7
-register R6) for the very first time after the chip receives power. If
-either "output" (D4) or "DAC" (D3) aren't powered on at that time,
-playback becomes very distorted later on.
-
-This happens on the Google Chameleon v3, as well as on a ZYBO Z7-10:
-https://ez.analog.com/audio/f/q-a/543726/solved-ssm2603-right-output-offset-issue/480229
-I suspect this happens only when using an external MCLK signal (which
-is the case for both of these boards).
-
-Here are some experiments run on a Google Chameleon v3. These were run
-in userspace using a wrapper around the i2cset utility:
-ssmset() {
-        i2cset -y 0 0x1a $(($1*2)) $2
-}
-
-For each of the following sequences, we apply power to the ssm2603
-chip, set the configuration registers R0-R5 and R7-R8, run the selected
-sequence, and check for distortions on playback.
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x07 # chip, out, dac
-  OK
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x87 # out, dac
-  ssmset 0x06 0x07 # chip
-  OK
-
-  (disable MCLK)
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x1f # chip
-  ssmset 0x06 0x07 # out, dac
-  (enable MCLK)
-  OK
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x1f # chip
-  ssmset 0x06 0x07 # out, dac
-  NOT OK
-
-  ssmset 0x06 0x1f # chip
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x07 # out, dac
-  NOT OK
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x0f # chip, out
-  ssmset 0x06 0x07 # dac
-  NOT OK
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x17 # chip, dac
-  ssmset 0x06 0x07 # out
-  NOT OK
-
-For each of the following sequences, we apply power to the ssm2603
-chip, run the selected sequence, issue a reset with R15, configure
-R0-R5 and R7-R8, run one of the NOT OK sequences from above, and check
-for distortions.
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x07 # chip, out, dac
-  OK
-
-  (disable MCLK)
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x07 # chip, out, dac
-  (enable MCLK after reset)
-  NOT OK
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x17 # chip, dac
-  NOT OK
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x0f # chip, out
-  NOT OK
-
-  ssmset 0x06 0x07 # chip, out, dac
-  NOT OK
-
-Signed-off-by: Paweł Anikiel <pan@semihalf.com
-Link: https://lore.kernel.org/r/20230508113037.137627-8-pan@semihalf.com
+Signed-off-by: Martin Povišer <povik+lin@cutebit.org
+Link: https://lore.kernel.org/r/20230509153412.62847-1-povik+lin@cutebit.org
 Signed-off-by: Mark Brown <broonie@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/ssm2602.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ Documentation/devicetree/bindings/sound/tas2562.yaml | 6 ++++--
+ Documentation/devicetree/bindings/sound/tas2764.yaml | 6 ++++--
+ Documentation/devicetree/bindings/sound/tas2770.yaml | 6 ++++--
+ 3 files changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/codecs/ssm2602.c b/sound/soc/codecs/ssm2602.c
-index 9051602466146..c7a90c34d8f08 100644
---- a/sound/soc/codecs/ssm2602.c
-+++ b/sound/soc/codecs/ssm2602.c
-@@ -53,6 +53,18 @@ static const struct reg_default ssm2602_reg[SSM2602_CACHEREGNUM] = {
- 	{ .reg = 0x09, .def = 0x0000 }
- };
+diff --git a/Documentation/devicetree/bindings/sound/tas2562.yaml b/Documentation/devicetree/bindings/sound/tas2562.yaml
+index acd4bbe697315..4adaf92233c8e 100644
+--- a/Documentation/devicetree/bindings/sound/tas2562.yaml
++++ b/Documentation/devicetree/bindings/sound/tas2562.yaml
+@@ -52,7 +52,9 @@ properties:
+     description: TDM TX current sense time slot.
  
-+/*
-+ * ssm2602 register patch
-+ * Workaround for playback distortions after power up: activates digital
-+ * core, and then powers on output, DAC, and whole chip at the same time
-+ */
-+
-+static const struct reg_sequence ssm2602_patch[] = {
-+	{ SSM2602_ACTIVE, 0x01 },
-+	{ SSM2602_PWR,    0x07 },
-+	{ SSM2602_RESET,  0x00 },
-+};
-+
+   '#sound-dai-cells':
+-    const: 1
++    # The codec has a single DAI, the #sound-dai-cells=<1>; case is left in for backward
++    # compatibility but is deprecated.
++    enum: [0, 1]
  
- /*Appending several "None"s just for OSS mixer use*/
- static const char *ssm2602_input_select[] = {
-@@ -589,6 +601,9 @@ static int ssm260x_component_probe(struct snd_soc_component *component)
- 		return ret;
- 	}
+ required:
+   - compatible
+@@ -69,7 +71,7 @@ examples:
+      codec: codec@4c {
+        compatible = "ti,tas2562";
+        reg = <0x4c>;
+-       #sound-dai-cells = <1>;
++       #sound-dai-cells = <0>;
+        interrupt-parent = <&gpio1>;
+        interrupts = <14>;
+        shutdown-gpios = <&gpio1 15 0>;
+diff --git a/Documentation/devicetree/bindings/sound/tas2764.yaml b/Documentation/devicetree/bindings/sound/tas2764.yaml
+index 5bf8c76ecda11..1ffe1a01668fe 100644
+--- a/Documentation/devicetree/bindings/sound/tas2764.yaml
++++ b/Documentation/devicetree/bindings/sound/tas2764.yaml
+@@ -46,7 +46,9 @@ properties:
+     description: TDM TX voltage sense time slot.
  
-+	regmap_register_patch(ssm2602->regmap, ssm2602_patch,
-+			      ARRAY_SIZE(ssm2602_patch));
-+
- 	/* set the update bits */
- 	regmap_update_bits(ssm2602->regmap, SSM2602_LINVOL,
- 			    LINVOL_LRIN_BOTH, LINVOL_LRIN_BOTH);
+   '#sound-dai-cells':
+-    const: 1
++    # The codec has a single DAI, the #sound-dai-cells=<1>; case is left in for backward
++    # compatibility but is deprecated.
++    enum: [0, 1]
+ 
+ required:
+   - compatible
+@@ -63,7 +65,7 @@ examples:
+      codec: codec@38 {
+        compatible = "ti,tas2764";
+        reg = <0x38>;
+-       #sound-dai-cells = <1>;
++       #sound-dai-cells = <0>;
+        interrupt-parent = <&gpio1>;
+        interrupts = <14>;
+        reset-gpios = <&gpio1 15 0>;
+diff --git a/Documentation/devicetree/bindings/sound/tas2770.yaml b/Documentation/devicetree/bindings/sound/tas2770.yaml
+index 027bebf4e8cf5..aceba9ed813ef 100644
+--- a/Documentation/devicetree/bindings/sound/tas2770.yaml
++++ b/Documentation/devicetree/bindings/sound/tas2770.yaml
+@@ -54,7 +54,9 @@ properties:
+       - 1 # Falling edge
+ 
+   '#sound-dai-cells':
+-    const: 1
++    # The codec has a single DAI, the #sound-dai-cells=<1>; case is left in for backward
++    # compatibility but is deprecated.
++    enum: [0, 1]
+ 
+ required:
+   - compatible
+@@ -71,7 +73,7 @@ examples:
+      codec: codec@41 {
+        compatible = "ti,tas2770";
+        reg = <0x41>;
+-       #sound-dai-cells = <1>;
++       #sound-dai-cells = <0>;
+        interrupt-parent = <&gpio1>;
+        interrupts = <14>;
+        reset-gpio = <&gpio1 15 0>;
 -- 
 2.39.2
 
