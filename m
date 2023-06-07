@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0C3A726E92
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:51:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BA38726CC4
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:36:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235100AbjFGUv2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:51:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51146 "EHLO
+        id S233988AbjFGUgQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:36:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235156AbjFGUvY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:51:24 -0400
+        with ESMTP id S234156AbjFGUf7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:35:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C3762D56
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:51:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6059B1FE6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:35:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DD4FE61E23
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:51:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F004BC433EF;
-        Wed,  7 Jun 2023 20:50:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EE93664583
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:35:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D217C433EF;
+        Wed,  7 Jun 2023 20:35:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171060;
-        bh=A26bl6n8M+GBGCuAhppbt1BjGA3qsnwVaz0FvlrNgqg=;
+        s=korg; t=1686170151;
+        bh=mn6yOpLnmVB/8eVl4VbTg1sHCzJnF0mm0n/P58yMxF4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0C+SBcj9nd7oGmkMptiFw+decP0Keo2k7xfvPf9PX5Kk8q75yXmHo8yHzXyBW/L/W
-         C4BKEDvY5OMtiYvWAcS45bCr/jtABPgT0xJuVcxNkTsuC6HHVE76AXvjIBcP1+Mhj3
-         KPM80Jfa9OLpUuEgi5cQ1nWGVvIvE5xrpUdKUdjQ=
+        b=z8IEfzOR0oMBIAf60Avxc6Fc9tyugckQsD9M4unN+LS7aUWuNHZeO+o0cWd0aRjei
+         fqnOIECDMHtFfUrOD7woaICSx5CHmkWt9TJ85DTCUirBFQY+WTqvljMwn9DLKbE8/G
+         BJ+EEzT18B6yib4/UcwY0PyFQFvlozTcx6bP3834=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wenchao Hao <haowenchao2@huawei.com>,
-        Ming Lei <ming.lei@redhat.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 066/120] scsi: core: Decrease scsi_devices iorequest_cnt if dispatch failed
+        patches@lists.linux.dev, Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 4.19 65/88] iio: dac: build ad5758 driver when AD5758 is selected
 Date:   Wed,  7 Jun 2023 22:16:22 +0200
-Message-ID: <20230607200902.959348198@linuxfoundation.org>
+Message-ID: <20230607200901.268462912@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,51 +54,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wenchao Hao <haowenchao2@huawei.com>
+From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-[ Upstream commit 09e797c8641f6ad435c33ae24c223351197ea29a ]
+commit a146eccb68be161ae9eab5f3f68bb0ed7c0fbaa8 upstream.
 
-If scsi_dispatch_cmd() failed, the SCSI command was not sent to the target,
-scsi_queue_rq() would return BLK_STS_RESOURCE and the related request would
-be requeued. The timeout of this request would not fire, no one would
-increase iodone_cnt.
+Commit 28d1a7ac2a0d ("iio: dac: Add AD5758 support") adds the config AD5758
+and the corresponding driver ad5758.c. In the Makefile, the ad5758 driver
+is however included when AD5755 is selected, not when AD5758 is selected.
 
-The above flow would result the iodone_cnt smaller than iorequest_cnt.  So
-decrease the iorequest_cnt if dispatch failed to workaround the issue.
+Probably, this was simply a mistake that happened by copy-and-paste and
+forgetting to adjust the actual line. Surprisingly, no one has ever noticed
+that this driver is actually only included when AD5755 is selected and that
+the config AD5758 has actually no effect on the build.
 
-Signed-off-by: Wenchao Hao <haowenchao2@huawei.com>
-Reported-by: Ming Lei <ming.lei@redhat.com>
-Closes: https://lore.kernel.org/r/ZF+zB+bB7iqe0wGd@ovpn-8-17.pek2.redhat.com
-Link: https://lore.kernel.org/r/20230515070156.1790181-3-haowenchao2@huawei.com
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 28d1a7ac2a0d ("iio: dac: Add AD5758 support")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Link: https://lore.kernel.org/r/20230508040208.12033-1-lukas.bulwahn@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/scsi_lib.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/dac/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index 6f3d29d16d1f4..99b90031500b2 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -1490,6 +1490,7 @@ static int scsi_dispatch_cmd(struct scsi_cmnd *cmd)
- 		 */
- 		SCSI_LOG_MLQUEUE(3, scmd_printk(KERN_INFO, cmd,
- 			"queuecommand : device blocked\n"));
-+		atomic_dec(&cmd->device->iorequest_cnt);
- 		return SCSI_MLQUEUE_DEVICE_BUSY;
- 	}
- 
-@@ -1522,6 +1523,7 @@ static int scsi_dispatch_cmd(struct scsi_cmnd *cmd)
- 	trace_scsi_dispatch_cmd_start(cmd);
- 	rtn = host->hostt->queuecommand(host, cmd);
- 	if (rtn) {
-+		atomic_dec(&cmd->device->iorequest_cnt);
- 		trace_scsi_dispatch_cmd_error(cmd, rtn);
- 		if (rtn != SCSI_MLQUEUE_DEVICE_BUSY &&
- 		    rtn != SCSI_MLQUEUE_TARGET_BUSY)
--- 
-2.39.2
-
+--- a/drivers/iio/dac/Makefile
++++ b/drivers/iio/dac/Makefile
+@@ -16,7 +16,7 @@ obj-$(CONFIG_AD5592R_BASE) += ad5592r-ba
+ obj-$(CONFIG_AD5592R) += ad5592r.o
+ obj-$(CONFIG_AD5593R) += ad5593r.o
+ obj-$(CONFIG_AD5755) += ad5755.o
+-obj-$(CONFIG_AD5755) += ad5758.o
++obj-$(CONFIG_AD5758) += ad5758.o
+ obj-$(CONFIG_AD5761) += ad5761.o
+ obj-$(CONFIG_AD5764) += ad5764.o
+ obj-$(CONFIG_AD5791) += ad5791.o
 
 
