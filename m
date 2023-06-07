@@ -2,44 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1633F726E5F
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9CA0726C4B
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:32:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234810AbjFGUu1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:50:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48494 "EHLO
+        id S233670AbjFGUcN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:32:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235219AbjFGUt3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:49:29 -0400
+        with ESMTP id S233684AbjFGUcM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:32:12 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E574719BB
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:49:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11AA01730;
+        Wed,  7 Jun 2023 13:32:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C14FE646C6
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:49:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5CA6C433D2;
-        Wed,  7 Jun 2023 20:49:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DBC7D64510;
+        Wed,  7 Jun 2023 20:32:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A67C433D2;
+        Wed,  7 Jun 2023 20:32:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170945;
-        bh=kc8dK8eSTr3oTZLfhzc/3knnXlYIiv3+5tNUAtKPIFg=;
+        s=korg; t=1686169929;
+        bh=OoDVi5EpId5THQ845JIEZEVEziAC+HIbRaPxu/7d7+Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g2AjmFlwsGG7ENZiiD9XrID8JDgrBlo1kbGiC6o1flTqkRYo1sw7MeaPiS8TsB72g
-         Hgaul64INWbQLh7mjI4lpHeTiRnDtk5IK0MSJgQ717rYH7XLXlgiOb9w+SwEx6acKT
-         5PedleOxSKYjqmrPXpE9FkU7E7d4zhyxcc2kEkdI=
+        b=uMuccxPWdOm1cyMViygoUzUzpJ/pO89KM61EgdA+Mutweam1rLFuos2JTTdd8Zx9h
+         ZjjGgWw3Nh5/dVqxaDCcTOfoDa9g8mkzIuc+3g2rs2XUwiJp+jMjbdXnNyHv5i8Nea
+         Zn8izyAFp/sM6GxPD2HpROZOwjFaoY6vSztbKdlw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 051/120] media: dvb-usb-v2: ce6230: fix null-ptr-deref in ce6230_i2c_master_xfer()
+        patches@lists.linux.dev, Luis Chamberlain <mcgrof@kernel.org>,
+        Russ Weight <russell.h.weight@intel.com>,
+        Tianfei Zhang <tianfei.zhang@intel.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Colin Ian King <colin.i.king@gmail.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        linux-kselftest@vger.kernel.org, Dan Carpenter <error27@gmail.com>,
+        Takashi Iwai <tiwai@suse.de>,
+        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH 6.3 268/286] test_firmware: fix a memory leak with reqs buffer
 Date:   Wed,  7 Jun 2023 22:16:07 +0200
-Message-ID: <20230607200902.508540007@linuxfoundation.org>
+Message-ID: <20230607200932.057293097@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,55 +61,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wei Chen <harperchen1110@gmail.com>
+From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
 
-[ Upstream commit dff919090155fb22679869e8469168f270dcd97f ]
+commit be37bed754ed90b2655382f93f9724b3c1aae847 upstream.
 
-In ce6230_i2c_master_xfer, msg is controlled by user. When msg[i].buf
-is null and msg[i].len is zero, former checks on msg[i].buf would be
-passed. Malicious data finally reach ce6230_i2c_master_xfer. If accessing
-msg[i].buf[0] without sanity check, null ptr deref would happen. We add
-check on msg[i].len to prevent crash.
+Dan Carpenter spotted that test_fw_config->reqs will be leaked if
+trigger_batched_requests_store() is called two or more times.
+The same appears with trigger_batched_requests_async_store().
 
-Similar commit:
-commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+This bug wasn't trigger by the tests, but observed by Dan's visual
+inspection of the code.
 
-Link: https://lore.kernel.org/linux-media/20230313092751.209496-1-harperchen1110@gmail.com
-Signed-off-by: Wei Chen <harperchen1110@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The recommended workaround was to return -EBUSY if test_fw_config->reqs
+is already allocated.
+
+Fixes: 7feebfa487b92 ("test_firmware: add support for request_firmware_into_buf")
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Russ Weight <russell.h.weight@intel.com>
+Cc: Tianfei Zhang <tianfei.zhang@intel.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Colin Ian King <colin.i.king@gmail.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kselftest@vger.kernel.org
+Cc: stable@vger.kernel.org # v5.4
+Suggested-by: Dan Carpenter <error27@gmail.com>
+Suggested-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Luis Chamberlain <mcgrof@kernel.org>
+Link: https://lore.kernel.org/r/20230509084746.48259-2-mirsad.todorovac@alu.unizg.hr
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/dvb-usb-v2/ce6230.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ lib/test_firmware.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/media/usb/dvb-usb-v2/ce6230.c b/drivers/media/usb/dvb-usb-v2/ce6230.c
-index 44540de1a2066..d3b5cb4a24daf 100644
---- a/drivers/media/usb/dvb-usb-v2/ce6230.c
-+++ b/drivers/media/usb/dvb-usb-v2/ce6230.c
-@@ -101,6 +101,10 @@ static int ce6230_i2c_master_xfer(struct i2c_adapter *adap,
- 		if (num > i + 1 && (msg[i+1].flags & I2C_M_RD)) {
- 			if (msg[i].addr ==
- 				ce6230_zl10353_config.demod_address) {
-+				if (msg[i].len < 1) {
-+					i = -EOPNOTSUPP;
-+					break;
-+				}
- 				req.cmd = DEMOD_READ;
- 				req.value = msg[i].addr >> 1;
- 				req.index = msg[i].buf[0];
-@@ -117,6 +121,10 @@ static int ce6230_i2c_master_xfer(struct i2c_adapter *adap,
- 		} else {
- 			if (msg[i].addr ==
- 				ce6230_zl10353_config.demod_address) {
-+				if (msg[i].len < 1) {
-+					i = -EOPNOTSUPP;
-+					break;
-+				}
- 				req.cmd = DEMOD_WRITE;
- 				req.value = msg[i].addr >> 1;
- 				req.index = msg[i].buf[0];
--- 
-2.39.2
-
+--- a/lib/test_firmware.c
++++ b/lib/test_firmware.c
+@@ -913,6 +913,11 @@ static ssize_t trigger_batched_requests_
+ 
+ 	mutex_lock(&test_fw_mutex);
+ 
++	if (test_fw_config->reqs) {
++		rc = -EBUSY;
++		goto out_bail;
++	}
++
+ 	test_fw_config->reqs =
+ 		vzalloc(array3_size(sizeof(struct test_batched_req),
+ 				    test_fw_config->num_requests, 2));
+@@ -1011,6 +1016,11 @@ ssize_t trigger_batched_requests_async_s
+ 
+ 	mutex_lock(&test_fw_mutex);
+ 
++	if (test_fw_config->reqs) {
++		rc = -EBUSY;
++		goto out_bail;
++	}
++
+ 	test_fw_config->reqs =
+ 		vzalloc(array3_size(sizeof(struct test_batched_req),
+ 				    test_fw_config->num_requests, 2));
 
 
