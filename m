@@ -2,66 +2,116 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4BA2726FEA
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:03:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4149872701F
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:04:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236114AbjFGVDQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:03:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34778 "EHLO
+        id S236095AbjFGVEr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:04:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235994AbjFGVC5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:02:57 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E7BD30E8;
-        Wed,  7 Jun 2023 14:02:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1686171744; x=1686776544; i=rwarsow@gmx.de;
- bh=Er+zwqPxJ4eaj5y+E4fNQt8BY1zyZtWqItiyEDxWS68=;
- h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
- b=tS8K+Ui0lqMiJt3cMgAv6a5KvYhsrDvBbZpAS9k6PGlO37gws3I94KrXH37+NRWAbpak/VQ
- nUt5a+UrrN10H8MA+VJZj2vmbQ0RXcXE8H33boCt4zY54AfnKi4gwSR3alwdzAY9xcAPvU6Jc
- krpfqMIRJjEbJFYhz0E0GDnWsbzlex/tfrx1iB6AxZCJ1OHD7RRGtw1xHVHS2QqMR+SspnYcL
- esG+zXi+W63VtNWDr7CU4KMvGl23UArRpvAGVwNDkl8k+2D5XYEqF8GRB40VjV6BUrBIq2lu3
- FCejc9NrS3bN/CsdRzGCfITpnXopOu4BCaT/lwdEyVV9bPyQAT1A==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.100.20] ([94.134.2.93]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MdebB-1pXwf03ydt-00ZdlG; Wed, 07
- Jun 2023 23:02:24 +0200
-Message-ID: <3a07aeb3-a6e5-6ee6-7806-ba6363707d37@gmx.de>
-Date:   Wed, 7 Jun 2023 23:02:23 +0200
+        with ESMTP id S236084AbjFGVE0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:04:26 -0400
+Received: from crane.ash.relay.mailchannels.net (crane.ash.relay.mailchannels.net [23.83.222.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6954F270E
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:04:07 -0700 (PDT)
+X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+        by relay.mailchannels.net (Postfix) with ESMTP id 20A4D501FC7
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:04:04 +0000 (UTC)
+Received: from pdx1-sub0-mail-a233.dreamhost.com (unknown [127.0.0.6])
+        (Authenticated sender: dreamhost)
+        by relay.mailchannels.net (Postfix) with ESMTPA id B2A88501D54
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:04:03 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1686171843; a=rsa-sha256;
+        cv=none;
+        b=OhDDtxvx2Ew2D8Be5P0cVY+BkQ4SQDY1C2CY58mgKkmIouy8dm1Hh2xmgDri+mHFAKT4e9
+        Zow+Cp4jd5G5Q0kK10snn3V4rp/kW1Igp5yhxOrmUPsiwhercVHKat9qf+SC3N+9PaF5ak
+        n4ypQAqnUDsR9pmVX9csKHfiTo3EEX56fkjq6brCTeqnmixaogRPJ/iSXLVu6MTWLTdaz1
+        ePj5TYjVZ7KAnPh5Ia70gzrUKpI9KOf91gMvvQgCFsxEH7yIfLDXfxOA2XrZyXl426nQxc
+        c0TO5KDkBVsCMcO1zxlZnt3t1VQRvhF5bZ9yRbPGGFS8ovbD8TLVgGpRClgQxQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+        s=arc-2022; t=1686171843;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references:dkim-signature;
+        bh=VgEDVaD96PpiQVvSuuPolddYls8rHIqf3JryVYxh20Q=;
+        b=n+Y6tEvJcehfkF8g02ESIPiF2PdFTM6xWdo17HhQ5XPhi0JIlHx2hAcPjnm/s4oG6M43a+
+        U8f6F4O8Tq+NhTQEkR4WPCtgmQ+o2IIuUXt635j5it2USnfnHcR53/1acb9ybq/Wu145kY
+        p9ipe+rdt4kzB/5d892SVAwXPxtsfFm8C2I7Bow7B5oMg0mEBT+FXJcfBSmO4KqjmtAW8o
+        hQPDMvK1QlpafaKi0R43qdBWQSs3MYiIUycP10935BsDwStmKFxF0iRTb4OgYnskns16nX
+        OpCAz6hXDCWAuLg7XmSp0SA1V1HR3aksa8l9xgDge/y5Yxu/WHmf+a3VXZAslA==
+ARC-Authentication-Results: i=1;
+        rspamd-fcb9f4dcf-ng2pk;
+        auth=pass smtp.auth=dreamhost smtp.mailfrom=kjlx@templeofstupid.com
+X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|kjlx@templeofstupid.com
+X-MailChannels-Auth-Id: dreamhost
+X-Interest-Little: 02b8c01f78e259f9_1686171843964_3040940627
+X-MC-Loop-Signature: 1686171843964:2832153479
+X-MC-Ingress-Time: 1686171843964
+Received: from pdx1-sub0-mail-a233.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+        by 100.104.253.241 (trex/6.8.1);
+        Wed, 07 Jun 2023 21:04:03 +0000
+Received: from kmjvbox (c-73-93-64-36.hsd1.ca.comcast.net [73.93.64.36])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: kjlx@templeofstupid.com)
+        by pdx1-sub0-mail-a233.dreamhost.com (Postfix) with ESMTPSA id 4Qc0FZ3rKzzvW
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:04:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=templeofstupid.com;
+        s=dreamhost; t=1686171842;
+        bh=VgEDVaD96PpiQVvSuuPolddYls8rHIqf3JryVYxh20Q=;
+        h=Date:From:To:Cc:Subject:Content-Type:Content-Transfer-Encoding;
+        b=hu3WDKEe0rcjosyx/zlIvFagh5mtaQx+6schtl4mekrXSgPd7bOSiVY8mAh8QOBBf
+         Nm0foHzaCpmM55Q/5IlJM8lEc8qkSkfHHxXjZTGvtIgVd5W3ui+YnPY2vYxXKyE+is
+         I0qPQf7eBPKlSSw/xU32dSqIGhvdqG0CptDTp8TA=
+Received: from johansen (uid 1000)
+        (envelope-from kjlx@templeofstupid.com)
+        id e005f
+        by kmjvbox (DragonFly Mail Agent v0.12);
+        Wed, 07 Jun 2023 14:04:01 -0700
+Date:   Wed, 7 Jun 2023 14:04:01 -0700
+From:   Krister Johansen <kjlx@templeofstupid.com>
+To:     Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc:     bpf <bpf@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Song Liu <song@kernel.org>, Yonghong Song <yhs@fb.com>,
+        KP Singh <kpsingh@kernel.org>,
+        Stanislav Fomichev <sdf@google.com>,
+        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
+        Network Development <netdev@vger.kernel.org>,
+        clang-built-linux <llvm@lists.linux.dev>,
+        stable <stable@vger.kernel.org>
+Subject: Re: [PATCH bpf] bpf: search_bpf_extables should search subprogram
+ extables
+Message-ID: <20230607210401.GB2023@templeofstupid.com>
+References: <20230605164955.GA1977@templeofstupid.com>
+ <CAADnVQK7PQxj5jjfUu9sO524yLMPqE6vmzcipno1WYoeu0q-Gw@mail.gmail.com>
+ <20230606004139.GE1977@templeofstupid.com>
+ <CAADnVQLhqCVRcPuJ8JEZfd5ii+-TsSs4+AsJC0sbjwPMv7LX_Q@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-From:   Ronald Warsow <rwarsow@gmx.de>
-To:     linux-kernel@vger.kernel.org
-Cc:     stable@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.3 000/286] 6.3.7-rc1 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:RV4U3bkDOL+JAzDZ8PHKHuoQCkMLgZ21gzwK2CC6DQis7osTM0M
- SPYIoFXd/YvkDP/ykt/9g1utQoAdGbdWUU//kuyW6RtlJOVQ5+If48HnzeJNfYUzitqdUbc
- 7yL8qFDzHWqfHLv3pI4WM+mtqofCKJWMyoXI3QuAKu45R1paIqdEEEqHVcDr8roPWJVEb4m
- kEdHdzLfB3L4k7P6H6lng==
-UI-OutboundReport: notjunk:1;M01:P0:IwDKWaRE1RE=;IEIn4IVZF81Z5whseX9K3EJ2Zmr
- 9D88AFfVst75OhQpXdWlZt+QjxdNjozMwYt19wfRqTG3zVsMiB0tAQInpl61m6pPI6HrX0QBM
- Q9tBXezyDy+8dwft6f7Ahfk66P7tFoN6vm+ifh3Olxcu3XPSVfNeNROHHI+BSWaeg00aGCL0i
- MNxvVjmzDOp4ntLyENhzIZuVpwg8LlhhF9wP/H0o1Go92bq2xr6SVI0KCSiTpki/Q+Nj2qKnw
- 1UbiGXt+NnsBRz5H1Nf4o8tD5S95J1oUpnL75+5mlwPSXtAlGFrto+cj12PDF2EghEbW8r7/p
- Bk83SqHVhUzmQbcTmZeFeGLEUBl2ehl+saKx8s+xaxufl94TGXZMtyll09K6pTuE8x2d5gq8P
- rqWR0c6KmYF1YD0J53FFR6LCVs2PJLFBz4/Qos8h0YZDrLINMWbu8vAw0GrqlQ+fst2IOfe+2
- PLqjdE08wxnXPBuhwMz2DC0KCnpIW8VFRBKgjtF6BR1cW2S//34bzmDKLdsuR1TmHaCqc6DGA
- QXr9W1G17kS8xAwBIXMRAxYMNtogxOD5pQH3+Kw+LNTX0F5h+8au4PZfi9LOLQdLFZm8ZNJSv
- MXDKyAZsPEO6jLF/tyy1xRYLK8fzeb7Z+BpQUFcDoj28e/alB8ieydCVCxi4MfzQSTqcdDqeN
- NCOK3E1G9G9ByEu5mpG8vP/nqbKxXlozWc8erVv+UBl84Xtsl9NSKXwqFW6OXlzD696qwpMBu
- 5ONWktYvdIEebzQ3DOojr7emYiOTOjaZAXWYWco4euk3pjyb701PoB0ooGjg4C8OSA3mHM320
- r0Cr0af8EF1F7HWr/NgA7rHot5WnNHHBiEeoAu0za8lBnF3aujDZrfbCLhISiTBwhcH2XORwK
- emoSkOjZwI2Lb7Ip2kT5IhJziRVlWPxDKMZzZJzaghsanJkR6HgTbbiYKa8eradgtzSQWYdZ/
- DtaUeQ==
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FAKE_REPLY_A1,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAADnVQLhqCVRcPuJ8JEZfd5ii+-TsSs4+AsJC0sbjwPMv7LX_Q@mail.gmail.com>
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,URIBL_BLOCKED autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,14 +119,115 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
+On Mon, Jun 05, 2023 at 06:31:57PM -0700, Alexei Starovoitov wrote:
+> On Mon, Jun 5, 2023 at 5:46 PM Krister Johansen <kjlx@templeofstupid.com> wrote:
+> > With your comments in mind, I took
+> > another look at the ksym fields in the aux structs.  I have this in the
+> > main program:
+> >
+> >   ksym = {
+> >     start = 18446744072638420852,
+> >     end = 18446744072638423040,
+> >     name = <...>
+> >     lnode = {
+> >       next = 0xffff88d9c1065168,
+> >       prev = 0xffff88da91609168
+> >     },
+> >     tnode = {
+> >       node = {{
+> >           __rb_parent_color = 18446613068361611640,
+> >           rb_right = 0xffff88da91609178,
+> >           rb_left = 0xffff88d9f0c5a578
+> >         }, {
+> >           __rb_parent_color = 18446613068361611664,
+> >           rb_right = 0xffff88da91609190,
+> >           rb_left = 0xffff88d9f0c5a590
+> >         }}
+> >     },
+> >     prog = true
+> >   },
+> >
+> > and this in the func[0] subprogram:
+> >
+> >   ksym = {
+> >     start = 18446744072638420852,
+> >     end = 18446744072638423040,
+> >     name = <...>
+> >     lnode = {
+> >       next = 0xffff88da91609168,
+> >       prev = 0xffffffff981f8990 <bpf_kallsyms>
+> >     },
+> >     tnode = {
+> >       node = {{
+> >           __rb_parent_color = 18446613068361606520,
+> >           rb_right = 0x0,
+> >           rb_left = 0x0
+> >         }, {
+> >           __rb_parent_color = 18446613068361606544,
+> >           rb_right = 0x0,
+> >           rb_left = 0x0
+> >         }}
+> >     },
+> >     prog = true
+> >   },
+> >
+> > That sure looks like func[0] is a leaf in the rbtree and the main
+> > program is an intermediate node with leaves.  If that's the case, then
+> > bpf_prog_ksym_find may have found the main program instead of the
+> > subprogram.  In that case, do you think it's better to skip the main
+> > program's call to bpf_prog_ksym_set_addr() if it has subprograms instead
+> > of searching for subprograms if the main program is found?
+> 
+> I see.
+> Looks like we're doing double bpf_prog_kallsyms_add().
+> First in in jit_subprogs():
+>         for (i = 0; i < env->subprog_cnt; i++) {
+>                 bpf_prog_lock_ro(func[i]);
+>                 bpf_prog_kallsyms_add(func[i]);
+>         }
+> and then again:
+> bpf_prog_kallsyms_add(prog);
+> in bpf_prog_load().
+> 
+> because func[0] is the main prog.
+> 
+> We are also doing double bpf_prog_lock_ro() for main prog,
+> but that's not causing harm.
+> 
+> The fix is probably just this:
+> 
+> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+> index 1e38584d497c..89266dac9c12 100644
+> --- a/kernel/bpf/verifier.c
+> +++ b/kernel/bpf/verifier.c
+> @@ -17633,7 +17633,7 @@ static int jit_subprogs(struct bpf_verifier_env *env)
+>         /* finally lock prog and jit images for all functions and
+>          * populate kallsysm
+>          */
+> -       for (i = 0; i < env->subprog_cnt; i++) {
+> +       for (i = 1; i < env->subprog_cnt; i++) {
+>                 bpf_prog_lock_ro(func[i]);
+>                 bpf_prog_kallsyms_add(func[i]);
+>         }
 
-6.3.7-rc1
+This will cause the oops to always occur, because func[0] has a extable
+entry when jit_subporgs() completes, but prog->aux doesn't.
+jit_subprogs also sets prog->bpf_func which prevents the other copy of
+the main program from getting jit'd, and consequently getting an extable
+assigned.
 
-compiles, boots and runs here on x86_64
-(Intel Rocket Lake)
+There are probably a few options to fix:
 
-Thanks
+1. skip the bpf_prog_kallsyms_add in bpf_prog_load if the program being
+loaded has subprograms
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+2. check extables when searching to see if they're NULL and if the
+subprogram has one instead
+
+3. copy the main program's extable back to prog->aux
+
+I'll send out a v2 here shortly that includes the selftest you
+requested.  It takes approach #3, which is also a 1-line change.
+
+-K
 
