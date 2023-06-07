@@ -2,44 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5766726C5C
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:33:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1930726EE4
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:54:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233746AbjFGUdG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:33:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59490 "EHLO
+        id S235068AbjFGUyE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:54:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233748AbjFGUdF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:33:05 -0400
+        with ESMTP id S235397AbjFGUxl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:53:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 325FA210B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:32:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93CBD212B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:53:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BFE436452D
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:32:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2652C433EF;
-        Wed,  7 Jun 2023 20:32:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 17FE1647A8
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:53:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A215C433EF;
+        Wed,  7 Jun 2023 20:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169969;
-        bh=Rfc8FVa3EmDZrkjVY98z7BNwarxJsKCcOvt1SKfKOCE=;
+        s=korg; t=1686171208;
+        bh=PrAnEKQM8ba/kaH3fVF6IzMwaMifVuJ1DuyslPXnVho=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LrSfRwTVu6gAOHF4bERMHkumfCVvvmDe2QZoBy1YHYozLRsDAhp0b5VuiUq3A7sfJ
-         uUeUGjYS9mOAHv/oKu1RGV+UBe+15jld/5eI3bjdya/lga+2iy/2obhBE0Ms0VTeSL
-         Tp95UvLspGZ4zK7cOVaE0+YOCrgD+M3FoUZA/bfw=
+        b=qHL8v/uexbOo7K9FBIqXxvEstaYCGJhcK1iNl+jV1BGnvgOhy8HRChqu4iK5baxLh
+         ZcRG2TH615heVmExsf0VXnDB1FCCnq+3qxOX9YVsmk9TGbYpB22H0X661JDWkH/ez8
+         EpCk7ryZtxltlNMTZu7Tvgieq1PCC56b+IVCy6T4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-        =?UTF-8?q?Michael=20Niew=C3=B6hner?= <linux@mniewoehner.de>,
-        Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.3 282/286] tpm, tpm_tis: Request threaded interrupt handler
-Date:   Wed,  7 Jun 2023 22:16:21 +0200
-Message-ID: <20230607200932.493840520@linuxfoundation.org>
+        patches@lists.linux.dev, Haibo Li <haibo.li@mediatek.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Alexandre Mergnat <amergnat@baylibre.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 30/99] ARM: 9295/1: unwind:fix unwind abort for uleb128 case
+Date:   Wed,  7 Jun 2023 22:16:22 +0200
+Message-ID: <20230607200901.203913414@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,42 +58,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Haibo Li <haibo.li@mediatek.com>
 
-commit 0c7e66e5fd69bf21034c9a9b081d7de7c3eb2cea upstream.
+[ Upstream commit fa3eeb638de0c1a9d2d860e5b48259facdd65176 ]
 
-The TIS interrupt handler at least has to read and write the interrupt
-status register. In case of SPI both operations result in a call to
-tpm_tis_spi_transfer() which uses the bus_lock_mutex of the spi device
-and thus must only be called from a sleepable context.
+When unwind instruction is 0xb2,the subsequent instructions
+are uleb128 bytes.
+For now,it uses only the first uleb128 byte in code.
 
-To ensure this request a threaded interrupt handler.
+For vsp increments of 0x204~0x400,use one uleb128 byte like below:
+0xc06a00e4 <unwind_test_work>: 0x80b27fac
+  Compact model index: 0
+  0xb2 0x7f vsp = vsp + 1024
+  0xac      pop {r4, r5, r6, r7, r8, r14}
 
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Tested-by: Michael Niewöhner <linux@mniewoehner.de>
-Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For vsp increments larger than 0x400,use two uleb128 bytes like below:
+0xc06a00e4 <unwind_test_work>: @0xc0cc9e0c
+  Compact model index: 1
+  0xb2 0x81 0x01 vsp = vsp + 1032
+  0xac      pop {r4, r5, r6, r7, r8, r14}
+The unwind works well since the decoded uleb128 byte is also 0x81.
+
+For vsp increments larger than 0x600,use two uleb128 bytes like below:
+0xc06a00e4 <unwind_test_work>: @0xc0cc9e0c
+  Compact model index: 1
+  0xb2 0x81 0x02 vsp = vsp + 1544
+  0xac      pop {r4, r5, r6, r7, r8, r14}
+In this case,the decoded uleb128 result is 0x101(vsp=0x204+(0x101<<2)).
+While the uleb128 used in code is 0x81(vsp=0x204+(0x81<<2)).
+The unwind aborts at this frame since it gets incorrect vsp.
+
+To fix this,add uleb128 decode to cover all the above case.
+
+Signed-off-by: Haibo Li <haibo.li@mediatek.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm_tis_core.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/arm/kernel/unwind.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -805,8 +805,11 @@ static int tpm_tis_probe_irq_single(stru
- 	int rc;
- 	u32 int_status;
+diff --git a/arch/arm/kernel/unwind.c b/arch/arm/kernel/unwind.c
+index 4574e6aea0a52..f321c2aa94e1c 100644
+--- a/arch/arm/kernel/unwind.c
++++ b/arch/arm/kernel/unwind.c
+@@ -300,6 +300,29 @@ static int unwind_exec_pop_subset_r0_to_r3(struct unwind_ctrl_block *ctrl,
+ 	return URC_OK;
+ }
  
--	if (devm_request_irq(chip->dev.parent, irq, tis_int_handler, flags,
--			     dev_name(&chip->dev), chip) != 0) {
++static unsigned long unwind_decode_uleb128(struct unwind_ctrl_block *ctrl)
++{
++	unsigned long bytes = 0;
++	unsigned long insn;
++	unsigned long result = 0;
 +
-+	rc = devm_request_threaded_irq(chip->dev.parent, irq, NULL,
-+				       tis_int_handler, IRQF_ONESHOT | flags,
-+				       dev_name(&chip->dev), chip);
-+	if (rc) {
- 		dev_info(&chip->dev, "Unable to request irq: %d for probe\n",
- 			 irq);
- 		return -1;
++	/*
++	 * unwind_get_byte() will advance `ctrl` one instruction at a time, so
++	 * loop until we get an instruction byte where bit 7 is not set.
++	 *
++	 * Note: This decodes a maximum of 4 bytes to output 28 bits data where
++	 * max is 0xfffffff: that will cover a vsp increment of 1073742336, hence
++	 * it is sufficient for unwinding the stack.
++	 */
++	do {
++		insn = unwind_get_byte(ctrl);
++		result |= (insn & 0x7f) << (bytes * 7);
++		bytes++;
++	} while (!!(insn & 0x80) && (bytes != sizeof(result)));
++
++	return result;
++}
++
+ /*
+  * Execute the current unwind instruction.
+  */
+@@ -353,7 +376,7 @@ static int unwind_exec_insn(struct unwind_ctrl_block *ctrl)
+ 		if (ret)
+ 			goto error;
+ 	} else if (insn == 0xb2) {
+-		unsigned long uleb128 = unwind_get_byte(ctrl);
++		unsigned long uleb128 = unwind_decode_uleb128(ctrl);
+ 
+ 		ctrl->vrs[SP] += 0x204 + (uleb128 << 2);
+ 	} else {
+-- 
+2.39.2
+
 
 
