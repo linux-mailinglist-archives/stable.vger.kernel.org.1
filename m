@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79145726EE1
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:53:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99187726AD3
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235417AbjFGUxu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:53:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55016 "EHLO
+        id S232723AbjFGUUb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:20:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235369AbjFGUxg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:53:36 -0400
+        with ESMTP id S232805AbjFGUUV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7004D1BC2
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:53:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1C47269F
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:19:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EE4D764781
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:53:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1274CC433D2;
-        Wed,  7 Jun 2023 20:53:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C155E6439E
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:19:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D985EC433D2;
+        Wed,  7 Jun 2023 20:19:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171203;
-        bh=ujIK6V72KN1rQCcV57pQH8yqh4iKj6O7zao9BFn6Ig0=;
+        s=korg; t=1686169190;
+        bh=6pgBzRyY6zxM5N/5wd8n8ptxAtgtPYjCtkr+Lx3NBPc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Zd6Mi39G3XDgSNV4TjDDCVCfGjdeO35nlHw/AjHGD7Sy+mFq7nnOps2EE5rpwXPLw
-         e7hWg98Od341yvDcqWqqL+iISslQOGIHQiOTPPPDsdyyLSt83jwOm1PD2YGSIARpbX
-         i3KN/k/XiOxrB63bAb4/kV/BqTeMs+UX7kwtIXXk=
+        b=xUQltHeQCya5JR3NHvmcsnvUpCvGPEpnmYf/7bN9hLO+TTooATja39+i+YvGhUYlU
+         KcGpYzNAc+Fp3TS0DTegTCeEXZ5gAGuir1/Q6kpvl/tPMPLZEc2MYaf6nKF0A+uaAZ
+         fa2oPZXsnIvvbbpFBvlClJsY6QGuZ3z7GtZhJAO0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sudheesh Mavila <sudheesh.mavila@amd.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Raju Rangoju <Raju.Rangoju@amd.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 11/99] amd-xgbe: fix the false linkup in xgbe_phy_status
+        patches@lists.linux.dev,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 4.14 49/61] regulator: da905{2,5}: Remove unnecessary array check
 Date:   Wed,  7 Jun 2023 22:16:03 +0200
-Message-ID: <20230607200900.596089075@linuxfoundation.org>
+Message-ID: <20230607200852.083543445@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
+References: <20230607200835.310274198@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,71 +54,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Nathan Chancellor <natechancellor@gmail.com>
 
-[ Upstream commit dc362e20cd6ab7a93d1b09669730c406f0910c35 ]
+commit 5a7d7d0f9f791b1e13f26dbbb07c86482912ad62 upstream.
 
-In the event of a change in XGBE mode, the current auto-negotiation
-needs to be reset and the AN cycle needs to be re-triggerred. However,
-the current code ignores the return value of xgbe_set_mode(), leading to
-false information as the link is declared without checking the status
-register.
+Clang warns that the address of a pointer will always evaluated as true
+in a boolean context:
 
-Fix this by propagating the mode switch status information to
-xgbe_phy_status().
+drivers/regulator/da9052-regulator.c:423:22: warning: address of array
+'pdata->regulators' will always evaluate to 'true'
+[-Wpointer-bool-conversion]
+        if (pdata && pdata->regulators) {
+                  ~~ ~~~~~~~^~~~~~~~~~
+drivers/regulator/da9055-regulator.c:615:22: warning: address of array
+'pdata->regulators' will always evaluate to 'true'
+[-Wpointer-bool-conversion]
+        if (pdata && pdata->regulators) {
+                  ~~ ~~~~~~~^~~~~~~~~~
 
-Fixes: e57f7a3feaef ("amd-xgbe: Prepare for working with more than one type of phy")
-Co-developed-by: Sudheesh Mavila <sudheesh.mavila@amd.com>
-Signed-off-by: Sudheesh Mavila <sudheesh.mavila@amd.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://github.com/ClangBuiltLinux/linux/issues/142
+Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-mdio.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/regulator/da9052-regulator.c |    2 +-
+ drivers/regulator/da9055-regulator.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-index 7840eb4cdb8da..d291976d8b761 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-@@ -1312,7 +1312,7 @@ static enum xgbe_mode xgbe_phy_status_aneg(struct xgbe_prv_data *pdata)
- 	return pdata->phy_if.phy_impl.an_outcome(pdata);
- }
+--- a/drivers/regulator/da9052-regulator.c
++++ b/drivers/regulator/da9052-regulator.c
+@@ -421,7 +421,7 @@ static int da9052_regulator_probe(struct
+ 	config.dev = &pdev->dev;
+ 	config.driver_data = regulator;
+ 	config.regmap = da9052->regmap;
+-	if (pdata && pdata->regulators) {
++	if (pdata) {
+ 		config.init_data = pdata->regulators[cell->id];
+ 	} else {
+ #ifdef CONFIG_OF
+--- a/drivers/regulator/da9055-regulator.c
++++ b/drivers/regulator/da9055-regulator.c
+@@ -612,7 +612,7 @@ static int da9055_regulator_probe(struct
+ 	config.driver_data = regulator;
+ 	config.regmap = da9055->regmap;
  
--static void xgbe_phy_status_result(struct xgbe_prv_data *pdata)
-+static bool xgbe_phy_status_result(struct xgbe_prv_data *pdata)
- {
- 	struct ethtool_link_ksettings *lks = &pdata->phy.lks;
- 	enum xgbe_mode mode;
-@@ -1347,8 +1347,13 @@ static void xgbe_phy_status_result(struct xgbe_prv_data *pdata)
- 
- 	pdata->phy.duplex = DUPLEX_FULL;
- 
--	if (xgbe_set_mode(pdata, mode) && pdata->an_again)
-+	if (!xgbe_set_mode(pdata, mode))
-+		return false;
-+
-+	if (pdata->an_again)
- 		xgbe_phy_reconfig_aneg(pdata);
-+
-+	return true;
- }
- 
- static void xgbe_phy_status(struct xgbe_prv_data *pdata)
-@@ -1378,7 +1383,8 @@ static void xgbe_phy_status(struct xgbe_prv_data *pdata)
- 			return;
- 		}
- 
--		xgbe_phy_status_result(pdata);
-+		if (xgbe_phy_status_result(pdata))
-+			return;
- 
- 		if (test_bit(XGBE_LINK_INIT, &pdata->dev_state))
- 			clear_bit(XGBE_LINK_INIT, &pdata->dev_state);
--- 
-2.39.2
-
+-	if (pdata && pdata->regulators) {
++	if (pdata) {
+ 		config.init_data = pdata->regulators[pdev->id];
+ 	} else {
+ 		ret = da9055_regulator_dt_init(pdev, regulator, &config,
 
 
