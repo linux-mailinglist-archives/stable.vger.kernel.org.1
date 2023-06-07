@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FE30726E29
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:48:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA64F726E70
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234989AbjFGUse (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:48:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48208 "EHLO
+        id S235341AbjFGUuk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:50:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235011AbjFGUsT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:48:19 -0400
+        with ESMTP id S235548AbjFGUuI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:50:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC7F72128
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:48:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A906D1BD4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:49:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C6042646CD
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:48:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6925C433EF;
-        Wed,  7 Jun 2023 20:48:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D9A5646E7
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:49:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 503BBC433D2;
+        Wed,  7 Jun 2023 20:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170885;
-        bh=cnZqmU6XKQ1LnKjYxGZbF5tNLBpeh4utC7RkstxFJBA=;
+        s=korg; t=1686170989;
+        bh=cYw5xiQhdAyhby74aswruUYEMHUUQJALesOIoKysMTM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=07CtFiBYIxPvgnJbHT1YRvGcmURJVudmzPSZiwjdsSezoThyvPs5bNZk+OSgfLtMA
-         f4JkK7fy2sTiodngR+6OhTz/iO6klVzIVyqq3gN1mp5BaD1h++wxLCC19jjNv7gQUt
-         Mx3KQZeVk4+gqZTO6UmkbgltyYWfZssGU2l8a+N8=
+        b=mhEyRAqBzGJOE0i3pGEyKQy2/L+nSjnbcHu3BVW0E/L7HQlrtwiyxOQE13Pb2HDvq
+         /agVO/05rkJXVWZAJuQc29pVirhY4Cr5VbNBQI5AXdoq8sx3msAvl0BBYBdVgmpXiK
+         1w+zxGM+xHUS35iHIPjYPN+miP1bWjwyCpCRFSnw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Moshe Shemesh <moshe@nvidia.com>,
-        Shay Drory <shayd@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
+        patches@lists.linux.dev, Hangyu Hua <hbh25y@gmail.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 028/120] net/mlx5: Read embedded cpu after init bit cleared
-Date:   Wed,  7 Jun 2023 22:15:44 +0200
-Message-ID: <20230607200901.799748549@linuxfoundation.org>
+Subject: [PATCH 5.10 029/120] net/sched: flower: fix possible OOB write in fl_set_geneve_opt()
+Date:   Wed,  7 Jun 2023 22:15:45 +0200
+Message-ID: <20230607200901.830517098@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
 References: <20230607200900.915613242@linuxfoundation.org>
@@ -55,46 +56,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: Hangyu Hua <hbh25y@gmail.com>
 
-[ Upstream commit bbfa4b58997e3d38ba629c9f6fc0bd1c163aaf43 ]
+[ Upstream commit 4d56304e5827c8cc8cc18c75343d283af7c4825c ]
 
-During driver load it reads embedded_cpu bit from initialization
-segment, but the initialization segment is readable only after
-initialization bit is cleared.
+If we send two TCA_FLOWER_KEY_ENC_OPTS_GENEVE packets and their total
+size is 252 bytes(key->enc_opts.len = 252) then
+key->enc_opts.len = opt->length = data_len / 4 = 0 when the third
+TCA_FLOWER_KEY_ENC_OPTS_GENEVE packet enters fl_set_geneve_opt. This
+bypasses the next bounds check and results in an out-of-bounds.
 
-Move the call to mlx5_read_embedded_cpu() right after initialization bit
-cleared.
-
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Fixes: 591905ba9679 ("net/mlx5: Introduce Mellanox SmartNIC and modify page management logic")
-Reviewed-by: Shay Drory <shayd@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Fixes: 0a6e77784f49 ("net/sched: allow flower to match tunnel options")
+Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Reviewed-by: Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>
+Link: https://lore.kernel.org/r/20230531102805.27090-1-hbh25y@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/cls_flower.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-index da4ca0f67e9ce..22907f6364f54 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -783,7 +783,6 @@ static int mlx5_pci_init(struct mlx5_core_dev *dev, struct pci_dev *pdev,
- 	}
+diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
+index 35ee6d8226e61..caf1a05bfbde4 100644
+--- a/net/sched/cls_flower.c
++++ b/net/sched/cls_flower.c
+@@ -1086,6 +1086,9 @@ static int fl_set_geneve_opt(const struct nlattr *nla, struct fl_flow_key *key,
+ 	if (option_len > sizeof(struct geneve_opt))
+ 		data_len = option_len - sizeof(struct geneve_opt);
  
- 	mlx5_pci_vsc_init(dev);
--	dev->caps.embedded_cpu = mlx5_read_embedded_cpu(dev);
- 	return 0;
- 
- err_clr_master:
-@@ -978,6 +977,7 @@ static int mlx5_function_setup(struct mlx5_core_dev *dev, bool boot)
- 		goto err_cmd_cleanup;
- 	}
- 
-+	dev->caps.embedded_cpu = mlx5_read_embedded_cpu(dev);
- 	mlx5_cmd_set_state(dev, MLX5_CMDIF_STATE_UP);
- 
- 	err = mlx5_core_enable_hca(dev, 0);
++	if (key->enc_opts.len > FLOW_DIS_TUN_OPTS_MAX - 4)
++		return -ERANGE;
++
+ 	opt = (struct geneve_opt *)&key->enc_opts.data[key->enc_opts.len];
+ 	memset(opt, 0xff, option_len);
+ 	opt->length = data_len / 4;
 -- 
 2.39.2
 
