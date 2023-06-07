@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAF11726EC1
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:52:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27E6E726DFF
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:47:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235160AbjFGUwa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:52:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53588 "EHLO
+        id S235052AbjFGUrS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:47:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235241AbjFGUw2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:52:28 -0400
+        with ESMTP id S234560AbjFGUqu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:46:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7AE81BFF
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:52:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8D261BE2
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:46:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A460C64763
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:52:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3697C433D2;
-        Wed,  7 Jun 2023 20:52:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1660E6456B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:46:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BACFC433EF;
+        Wed,  7 Jun 2023 20:46:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171145;
-        bh=iMrw7UTqM+qQ+0oFHVPW1g0o6T0cmEbmzkHIE2Kq2aI=;
+        s=korg; t=1686170805;
+        bh=QApk/VwEIbliCQ9MVsAlFv86NncCUVR+bpsIv9j5IT0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IG+0zld5SPJfF+TjX3doBgCh2RsdqA/m3e8SL+2B+1CYPhvO4OwSCReSMFrESPbmo
-         1pd36O3//XYkF8vxcUd8Nxcett1SDIJS3gi48QedgyHJS4mrbdSgsZ0kp4sw+VwPVR
-         TbYiIY3pNKj0/o9OuC6PdlnNBTtLadVCxplfMe3Y=
+        b=1y1PuwAvzWkwmYcDiZRsspcqgrKi2mupJC+nPOruEOApVz88jwc1si8l4mQ6VYGws
+         zX2/ktPk+MD5LgA4+FmYC56deqwnNaG1O0Bvm1+BoGGLuqpiH91DzUrHrGNPNsVEru
+         hStQIZK4hon2krzpRpp5aR/yocTZvm7n7CMZXsxk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        syzbot+298c5d8fb4a128bc27b0@syzkaller.appspotmail.com,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.10 102/120] ext4: add lockdep annotations for i_data_sem for ea_inodes
+        patches@lists.linux.dev, Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 225/225] ext4: enable the lazy init thread when remounting read/write
 Date:   Wed,  7 Jun 2023 22:16:58 +0200
-Message-ID: <20230607200904.129295442@linuxfoundation.org>
+Message-ID: <20230607200921.743978335@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,55 +54,69 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Theodore Ts'o <tytso@mit.edu>
 
-commit aff3bea95388299eec63440389b4545c8041b357 upstream.
+commit eb1f822c76beeaa76ab8b6737ab9dc9f9798408c upstream.
 
-Treat i_data_sem for ea_inodes as being in their own lockdep class to
-avoid lockdep complaints about ext4_setattr's use of inode_lock() on
-normal inodes potentially causing lock ordering with i_data_sem on
-ea_inodes in ext4_xattr_inode_write().  However, ea_inodes will be
-operated on by ext4_setattr(), so this isn't a problem.
+In commit a44be64bbecb ("ext4: don't clear SB_RDONLY when remounting
+r/w until quota is re-enabled") we defer clearing tyhe SB_RDONLY flag
+in struct super.  However, we didn't defer when we checked sb_rdonly()
+to determine the lazy itable init thread should be enabled, with the
+next result that the lazy inode table initialization would not be
+properly started.  This can cause generic/231 to fail in ext4's
+nojournal mode.
 
-Cc: stable@kernel.org
-Link: https://syzkaller.appspot.com/bug?extid=298c5d8fb4a128bc27b0
-Reported-by: syzbot+298c5d8fb4a128bc27b0@syzkaller.appspotmail.com
+Fix this by moving when we decide to start or stop the lazy itable
+init thread to after we clear the SB_RDONLY flag when we are
+remounting the file system read/write.
+
+Fixes a44be64bbecb ("ext4: don't clear SB_RDONLY when remounting r/w until...")
+
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Link: https://lore.kernel.org/r/20230524034951.779531-5-tytso@mit.edu
+Link: https://lore.kernel.org/r/20230527035729.1001605-1-tytso@mit.edu
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/ext4.h  |    2 ++
- fs/ext4/xattr.c |    4 ++++
- 2 files changed, 6 insertions(+)
+ fs/ext4/super.c |   24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -980,11 +980,13 @@ do {									       \
-  *			  where the second inode has larger inode number
-  *			  than the first
-  *  I_DATA_SEM_QUOTA  - Used for quota inodes only
-+ *  I_DATA_SEM_EA     - Used for ea_inodes only
-  */
- enum {
- 	I_DATA_SEM_NORMAL = 0,
- 	I_DATA_SEM_OTHER,
- 	I_DATA_SEM_QUOTA,
-+	I_DATA_SEM_EA
- };
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -6542,18 +6542,6 @@ static int __ext4_remount(struct fs_cont
+ 	}
  
+ 	/*
+-	 * Reinitialize lazy itable initialization thread based on
+-	 * current settings
+-	 */
+-	if (sb_rdonly(sb) || !test_opt(sb, INIT_INODE_TABLE))
+-		ext4_unregister_li_request(sb);
+-	else {
+-		ext4_group_t first_not_zeroed;
+-		first_not_zeroed = ext4_has_uninit_itable(sb);
+-		ext4_register_li_request(sb, first_not_zeroed);
+-	}
+-
+-	/*
+ 	 * Handle creation of system zone data early because it can fail.
+ 	 * Releasing of existing data is done when we are sure remount will
+ 	 * succeed.
+@@ -6590,6 +6578,18 @@ static int __ext4_remount(struct fs_cont
+ 	if (enable_rw)
+ 		sb->s_flags &= ~SB_RDONLY;
  
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -123,7 +123,11 @@ ext4_expand_inode_array(struct ext4_xatt
- #ifdef CONFIG_LOCKDEP
- void ext4_xattr_inode_set_class(struct inode *ea_inode)
- {
-+	struct ext4_inode_info *ei = EXT4_I(ea_inode);
++	/*
++	 * Reinitialize lazy itable initialization thread based on
++	 * current settings
++	 */
++	if (sb_rdonly(sb) || !test_opt(sb, INIT_INODE_TABLE))
++		ext4_unregister_li_request(sb);
++	else {
++		ext4_group_t first_not_zeroed;
++		first_not_zeroed = ext4_has_uninit_itable(sb);
++		ext4_register_li_request(sb, first_not_zeroed);
++	}
 +
- 	lockdep_set_subclass(&ea_inode->i_rwsem, 1);
-+	(void) ei;	/* shut up clang warning if !CONFIG_LOCKDEP */
-+	lockdep_set_subclass(&ei->i_data_sem, I_DATA_SEM_EA);
- }
- #endif
+ 	if (!ext4_has_feature_mmp(sb) || sb_rdonly(sb))
+ 		ext4_stop_mmpd(sbi);
  
 
 
