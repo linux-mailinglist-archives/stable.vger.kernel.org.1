@@ -2,54 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0120F727017
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:04:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8756726F35
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:56:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236224AbjFGVEd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:04:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34482 "EHLO
+        id S235553AbjFGU4V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:56:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233843AbjFGVEQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:04:16 -0400
+        with ESMTP id S235606AbjFGU4S (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:56:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12E3826AB;
-        Wed,  7 Jun 2023 14:03:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BC291BFF
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:56:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B094649BE;
-        Wed,  7 Jun 2023 21:03:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5884CC433D2;
-        Wed,  7 Jun 2023 21:03:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 040EE6482F
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:56:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15F32C433D2;
+        Wed,  7 Jun 2023 20:56:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171835;
-        bh=OAPfoYvjU/klnsLz6YRdgZRV4h8wa4heezpNRlVp7lY=;
+        s=korg; t=1686171374;
+        bh=8td6UOakanPFE8Tm7eX3ShkLTgPAkpnEl+JS85ikjmw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rywPjjY102IPldkwHOuTOujNy61/2EeWDjo+ivj9lBJS78sdiFhJVfQNCx8ryd7PJ
-         aH3B3vDVu7PDc95LenvDt8gUrQHn7BcxsAiYHY3meRkhKpUckk2sabLu8241QoOo9y
-         U60bDTbgzurHJ1C6nHgBrZB2FrQ3v/b0hocmsZHI=
+        b=SMDHe+DHw9IFrsSOMpdCKbRCWKA4eveSJW82pD0SAbY0CNaioAs+tB+rrlc0RgUP/
+         zCYeZPxW8Q6RZTSPn0VI/clS320K1NmZanqqsNJThMiIBJDHuixAtxv4tJZ++M9xwS
+         P6Esc9VuhqmW+sDA5iKeLqaGtDjMqkZrmB86ILeI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Dan Carpenter <error27@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Russ Weight <russell.h.weight@intel.com>,
-        Tianfei zhang <tianfei.zhang@intel.com>,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Zhengchao Shao <shaozhengchao@huawei.com>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
-        Scott Branden <sbranden@broadcom.com>,
-        linux-kselftest@vger.kernel.org
-Subject: [PATCH 5.15 142/159] test_firmware: fix the memory leak of the allocated firmware buffer
+        patches@lists.linux.dev, Ben Hutchings <benh@debian.org>
+Subject: [PATCH 5.4 93/99] scsi: dpt_i2o: Remove broken pass-through ioctl (I2OUSERCMD)
 Date:   Wed,  7 Jun 2023 22:17:25 +0200
-Message-ID: <20230607200908.315678778@linuxfoundation.org>
+Message-ID: <20230607200903.160572860@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -64,181 +52,360 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+From: Ben Hutchings <benh@debian.org>
 
-commit 48e156023059e57a8fc68b498439832f7600ffff upstream.
+adpt_i2o_passthru() takes a user-provided message and passes it
+through to the hardware with appropriate translation of addresses
+and message IDs.  It has a number of bugs:
 
-The following kernel memory leak was noticed after running
-tools/testing/selftests/firmware/fw_run_tests.sh:
+- When a message requires scatter/gather, it doesn't verify that the
+  offset to the scatter/gather list is less than the message size.
+- When a message requires scatter/gather, it overwrites the DMA
+  addresses with the user-space virtual addresses before unmapping the
+  DMA buffers.
+- It reads the message from user memory multiple times.  This allows
+  user-space to change the message and bypass validation.
+- It assumes that the message is at least 4 words long, but doesn't
+  check that.
 
-[root@pc-mtodorov firmware]# cat /sys/kernel/debug/kmemleak
-.
-.
-.
-unreferenced object 0xffff955389bc3400 (size 1024):
-  comm "test_firmware-0", pid 5451, jiffies 4294944822 (age 65.652s)
-  hex dump (first 32 bytes):
-    47 48 34 35 36 37 0a 00 00 00 00 00 00 00 00 00  GH4567..........
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<ffffffff962f5dec>] slab_post_alloc_hook+0x8c/0x3c0
-    [<ffffffff962fcca4>] __kmem_cache_alloc_node+0x184/0x240
-    [<ffffffff962704de>] kmalloc_trace+0x2e/0xc0
-    [<ffffffff9665b42d>] test_fw_run_batch_request+0x9d/0x180
-    [<ffffffff95fd813b>] kthread+0x10b/0x140
-    [<ffffffff95e033e9>] ret_from_fork+0x29/0x50
-unreferenced object 0xffff9553c334b400 (size 1024):
-  comm "test_firmware-1", pid 5452, jiffies 4294944822 (age 65.652s)
-  hex dump (first 32 bytes):
-    47 48 34 35 36 37 0a 00 00 00 00 00 00 00 00 00  GH4567..........
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<ffffffff962f5dec>] slab_post_alloc_hook+0x8c/0x3c0
-    [<ffffffff962fcca4>] __kmem_cache_alloc_node+0x184/0x240
-    [<ffffffff962704de>] kmalloc_trace+0x2e/0xc0
-    [<ffffffff9665b42d>] test_fw_run_batch_request+0x9d/0x180
-    [<ffffffff95fd813b>] kthread+0x10b/0x140
-    [<ffffffff95e033e9>] ret_from_fork+0x29/0x50
-unreferenced object 0xffff9553c334f000 (size 1024):
-  comm "test_firmware-2", pid 5453, jiffies 4294944822 (age 65.652s)
-  hex dump (first 32 bytes):
-    47 48 34 35 36 37 0a 00 00 00 00 00 00 00 00 00  GH4567..........
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<ffffffff962f5dec>] slab_post_alloc_hook+0x8c/0x3c0
-    [<ffffffff962fcca4>] __kmem_cache_alloc_node+0x184/0x240
-    [<ffffffff962704de>] kmalloc_trace+0x2e/0xc0
-    [<ffffffff9665b42d>] test_fw_run_batch_request+0x9d/0x180
-    [<ffffffff95fd813b>] kthread+0x10b/0x140
-    [<ffffffff95e033e9>] ret_from_fork+0x29/0x50
-unreferenced object 0xffff9553c3348400 (size 1024):
-  comm "test_firmware-3", pid 5454, jiffies 4294944822 (age 65.652s)
-  hex dump (first 32 bytes):
-    47 48 34 35 36 37 0a 00 00 00 00 00 00 00 00 00  GH4567..........
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<ffffffff962f5dec>] slab_post_alloc_hook+0x8c/0x3c0
-    [<ffffffff962fcca4>] __kmem_cache_alloc_node+0x184/0x240
-    [<ffffffff962704de>] kmalloc_trace+0x2e/0xc0
-    [<ffffffff9665b42d>] test_fw_run_batch_request+0x9d/0x180
-    [<ffffffff95fd813b>] kthread+0x10b/0x140
-    [<ffffffff95e033e9>] ret_from_fork+0x29/0x50
-[root@pc-mtodorov firmware]#
+I tried fixing these, but even the maintainer of the corresponding
+user-space in Debian doesn't have the hardware any more.
 
-Note that the size 1024 corresponds to the size of the test firmware
-buffer. The actual number of the buffers leaked is around 70-110,
-depending on the test run.
+Instead, remove the pass-through ioctl (I2OUSRCMD) and supporting
+code.
 
-The cause of the leak is the following:
+There is no corresponding upstream commit, because this driver was
+removed upstream.
 
-request_partial_firmware_into_buf() and request_firmware_into_buf()
-provided firmware buffer isn't released on release_firmware(), we
-have allocated it and we are responsible for deallocating it manually.
-This is introduced in a number of context where previously only
-release_firmware() was called, which was insufficient.
-
-Reported-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-Fixes: 7feebfa487b92 ("test_firmware: add support for request_firmware_into_buf")
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Dan Carpenter <error27@gmail.com>
-Cc: Takashi Iwai <tiwai@suse.de>
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Russ Weight <russell.h.weight@intel.com>
-Cc: Tianfei zhang <tianfei.zhang@intel.com>
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Zhengchao Shao <shaozhengchao@huawei.com>
-Cc: Colin Ian King <colin.i.king@gmail.com>
-Cc: linux-kernel@vger.kernel.org
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Scott Branden <sbranden@broadcom.com>
-Cc: Luis R. Rodriguez <mcgrof@kernel.org>
-Cc: linux-kselftest@vger.kernel.org
-Cc: stable@vger.kernel.org # v5.4
-Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-Link: https://lore.kernel.org/r/20230509084746.48259-3-mirsad.todorovac@alu.unizg.hr
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 67af2b060e02 ("[SCSI] dpt_i2o: move from virt_to_bus/bus_to_virt ...")
+Signed-off-by: Ben Hutchings <benh@debian.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/test_firmware.c |   19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ drivers/scsi/dpt_i2o.c |  274 +------------------------------------------------
+ drivers/scsi/dpti.h    |    1 
+ 2 files changed, 8 insertions(+), 267 deletions(-)
 
---- a/lib/test_firmware.c
-+++ b/lib/test_firmware.c
-@@ -41,6 +41,7 @@ struct test_batched_req {
- 	bool sent;
- 	const struct firmware *fw;
- 	const char *name;
-+	const char *fw_buf;
- 	struct completion completion;
- 	struct task_struct *task;
- 	struct device *dev;
-@@ -143,8 +144,14 @@ static void __test_release_all_firmware(
+--- a/drivers/scsi/dpt_i2o.c
++++ b/drivers/scsi/dpt_i2o.c
+@@ -585,51 +585,6 @@ static int adpt_show_info(struct seq_fil
+ 	return 0;
+ }
  
- 	for (i = 0; i < test_fw_config->num_requests; i++) {
- 		req = &test_fw_config->reqs[i];
--		if (req->fw)
-+		if (req->fw) {
-+			if (req->fw_buf) {
-+				kfree_const(req->fw_buf);
-+				req->fw_buf = NULL;
-+			}
- 			release_firmware(req->fw);
-+			req->fw = NULL;
-+		}
- 	}
+-/*
+- *	Turn a pointer to ioctl reply data into an u32 'context'
+- */
+-static u32 adpt_ioctl_to_context(adpt_hba * pHba, void *reply)
+-{
+-#if BITS_PER_LONG == 32
+-	return (u32)(unsigned long)reply;
+-#else
+-	ulong flags = 0;
+-	u32 nr, i;
+-
+-	spin_lock_irqsave(pHba->host->host_lock, flags);
+-	nr = ARRAY_SIZE(pHba->ioctl_reply_context);
+-	for (i = 0; i < nr; i++) {
+-		if (pHba->ioctl_reply_context[i] == NULL) {
+-			pHba->ioctl_reply_context[i] = reply;
+-			break;
+-		}
+-	}
+-	spin_unlock_irqrestore(pHba->host->host_lock, flags);
+-	if (i >= nr) {
+-		printk(KERN_WARNING"%s: Too many outstanding "
+-				"ioctl commands\n", pHba->name);
+-		return (u32)-1;
+-	}
+-
+-	return i;
+-#endif
+-}
+-
+-/*
+- *	Go from an u32 'context' to a pointer to ioctl reply data.
+- */
+-static void *adpt_ioctl_from_context(adpt_hba *pHba, u32 context)
+-{
+-#if BITS_PER_LONG == 32
+-	return (void *)(unsigned long)context;
+-#else
+-	void *p = pHba->ioctl_reply_context[context];
+-	pHba->ioctl_reply_context[context] = NULL;
+-
+-	return p;
+-#endif
+-}
+-
+ /*===========================================================================
+  * Error Handling routines
+  *===========================================================================
+@@ -1652,208 +1607,6 @@ static int adpt_close(struct inode *inod
+ 	return 0;
+ }
  
- 	vfree(test_fw_config->reqs);
-@@ -586,6 +593,8 @@ static ssize_t trigger_request_store(str
+-
+-static int adpt_i2o_passthru(adpt_hba* pHba, u32 __user *arg)
+-{
+-	u32 msg[MAX_MESSAGE_SIZE];
+-	u32* reply = NULL;
+-	u32 size = 0;
+-	u32 reply_size = 0;
+-	u32 __user *user_msg = arg;
+-	u32 __user * user_reply = NULL;
+-	void **sg_list = NULL;
+-	u32 sg_offset = 0;
+-	u32 sg_count = 0;
+-	int sg_index = 0;
+-	u32 i = 0;
+-	u32 rcode = 0;
+-	void *p = NULL;
+-	dma_addr_t addr;
+-	ulong flags = 0;
+-
+-	memset(&msg, 0, MAX_MESSAGE_SIZE*4);
+-	// get user msg size in u32s 
+-	if(get_user(size, &user_msg[0])){
+-		return -EFAULT;
+-	}
+-	size = size>>16;
+-
+-	user_reply = &user_msg[size];
+-	if(size > MAX_MESSAGE_SIZE){
+-		return -EFAULT;
+-	}
+-	size *= 4; // Convert to bytes
+-
+-	/* Copy in the user's I2O command */
+-	if(copy_from_user(msg, user_msg, size)) {
+-		return -EFAULT;
+-	}
+-	get_user(reply_size, &user_reply[0]);
+-	reply_size = reply_size>>16;
+-	if(reply_size > REPLY_FRAME_SIZE){
+-		reply_size = REPLY_FRAME_SIZE;
+-	}
+-	reply_size *= 4;
+-	reply = kzalloc(REPLY_FRAME_SIZE*4, GFP_KERNEL);
+-	if(reply == NULL) {
+-		printk(KERN_WARNING"%s: Could not allocate reply buffer\n",pHba->name);
+-		return -ENOMEM;
+-	}
+-	sg_offset = (msg[0]>>4)&0xf;
+-	msg[2] = 0x40000000; // IOCTL context
+-	msg[3] = adpt_ioctl_to_context(pHba, reply);
+-	if (msg[3] == (u32)-1) {
+-		rcode = -EBUSY;
+-		goto free;
+-	}
+-
+-	sg_list = kcalloc(pHba->sg_tablesize, sizeof(*sg_list), GFP_KERNEL);
+-	if (!sg_list) {
+-		rcode = -ENOMEM;
+-		goto free;
+-	}
+-	if(sg_offset) {
+-		// TODO add 64 bit API
+-		struct sg_simple_element *sg =  (struct sg_simple_element*) (msg+sg_offset);
+-		sg_count = (size - sg_offset*4) / sizeof(struct sg_simple_element);
+-		if (sg_count > pHba->sg_tablesize){
+-			printk(KERN_DEBUG"%s:IOCTL SG List too large (%u)\n", pHba->name,sg_count);
+-			rcode = -EINVAL;
+-			goto free;
+-		}
+-
+-		for(i = 0; i < sg_count; i++) {
+-			int sg_size;
+-
+-			if (!(sg[i].flag_count & 0x10000000 /*I2O_SGL_FLAGS_SIMPLE_ADDRESS_ELEMENT*/)) {
+-				printk(KERN_DEBUG"%s:Bad SG element %d - not simple (%x)\n",pHba->name,i,  sg[i].flag_count);
+-				rcode = -EINVAL;
+-				goto cleanup;
+-			}
+-			sg_size = sg[i].flag_count & 0xffffff;      
+-			/* Allocate memory for the transfer */
+-			p = dma_alloc_coherent(&pHba->pDev->dev, sg_size, &addr, GFP_KERNEL);
+-			if(!p) {
+-				printk(KERN_DEBUG"%s: Could not allocate SG buffer - size = %d buffer number %d of %d\n",
+-						pHba->name,sg_size,i,sg_count);
+-				rcode = -ENOMEM;
+-				goto cleanup;
+-			}
+-			sg_list[sg_index++] = p; // sglist indexed with input frame, not our internal frame.
+-			/* Copy in the user's SG buffer if necessary */
+-			if(sg[i].flag_count & 0x04000000 /*I2O_SGL_FLAGS_DIR*/) {
+-				// sg_simple_element API is 32 bit
+-				if (copy_from_user(p,(void __user *)(ulong)sg[i].addr_bus, sg_size)) {
+-					printk(KERN_DEBUG"%s: Could not copy SG buf %d FROM user\n",pHba->name,i);
+-					rcode = -EFAULT;
+-					goto cleanup;
+-				}
+-			}
+-			/* sg_simple_element API is 32 bit, but addr < 4GB */
+-			sg[i].addr_bus = addr;
+-		}
+-	}
+-
+-	do {
+-		/*
+-		 * Stop any new commands from enterring the
+-		 * controller while processing the ioctl
+-		 */
+-		if (pHba->host) {
+-			scsi_block_requests(pHba->host);
+-			spin_lock_irqsave(pHba->host->host_lock, flags);
+-		}
+-		rcode = adpt_i2o_post_wait(pHba, msg, size, FOREVER);
+-		if (rcode != 0)
+-			printk("adpt_i2o_passthru: post wait failed %d %p\n",
+-					rcode, reply);
+-		if (pHba->host) {
+-			spin_unlock_irqrestore(pHba->host->host_lock, flags);
+-			scsi_unblock_requests(pHba->host);
+-		}
+-	} while (rcode == -ETIMEDOUT);
+-
+-	if(rcode){
+-		goto cleanup;
+-	}
+-
+-	if(sg_offset) {
+-	/* Copy back the Scatter Gather buffers back to user space */
+-		u32 j;
+-		// TODO add 64 bit API
+-		struct sg_simple_element* sg;
+-		int sg_size;
+-
+-		// re-acquire the original message to handle correctly the sg copy operation
+-		memset(&msg, 0, MAX_MESSAGE_SIZE*4); 
+-		// get user msg size in u32s 
+-		if(get_user(size, &user_msg[0])){
+-			rcode = -EFAULT; 
+-			goto cleanup; 
+-		}
+-		size = size>>16;
+-		size *= 4;
+-		if (size > MAX_MESSAGE_SIZE) {
+-			rcode = -EINVAL;
+-			goto cleanup;
+-		}
+-		/* Copy in the user's I2O command */
+-		if (copy_from_user (msg, user_msg, size)) {
+-			rcode = -EFAULT;
+-			goto cleanup;
+-		}
+-		sg_count = (size - sg_offset*4) / sizeof(struct sg_simple_element);
+-
+-		// TODO add 64 bit API
+-		sg 	 = (struct sg_simple_element*)(msg + sg_offset);
+-		for (j = 0; j < sg_count; j++) {
+-			/* Copy out the SG list to user's buffer if necessary */
+-			if(! (sg[j].flag_count & 0x4000000 /*I2O_SGL_FLAGS_DIR*/)) {
+-				sg_size = sg[j].flag_count & 0xffffff; 
+-				// sg_simple_element API is 32 bit
+-				if (copy_to_user((void __user *)(ulong)sg[j].addr_bus,sg_list[j], sg_size)) {
+-					printk(KERN_WARNING"%s: Could not copy %p TO user %x\n",pHba->name, sg_list[j], sg[j].addr_bus);
+-					rcode = -EFAULT;
+-					goto cleanup;
+-				}
+-			}
+-		}
+-	} 
+-
+-	/* Copy back the reply to user space */
+-	if (reply_size) {
+-		// we wrote our own values for context - now restore the user supplied ones
+-		if(copy_from_user(reply+2, user_msg+2, sizeof(u32)*2)) {
+-			printk(KERN_WARNING"%s: Could not copy message context FROM user\n",pHba->name);
+-			rcode = -EFAULT;
+-		}
+-		if(copy_to_user(user_reply, reply, reply_size)) {
+-			printk(KERN_WARNING"%s: Could not copy reply TO user\n",pHba->name);
+-			rcode = -EFAULT;
+-		}
+-	}
+-
+-
+-cleanup:
+-	if (rcode != -ETIME && rcode != -EINTR) {
+-		struct sg_simple_element *sg =
+-				(struct sg_simple_element*) (msg +sg_offset);
+-		while(sg_index) {
+-			if(sg_list[--sg_index]) {
+-				dma_free_coherent(&pHba->pDev->dev,
+-					sg[sg_index].flag_count & 0xffffff,
+-					sg_list[sg_index],
+-					sg[sg_index].addr_bus);
+-			}
+-		}
+-	}
+-
+-free:
+-	kfree(sg_list);
+-	kfree(reply);
+-	return rcode;
+-}
+-
+ #if defined __ia64__ 
+ static void adpt_ia64_info(sysInfo_S* si)
+ {
+@@ -1980,8 +1733,6 @@ static int adpt_ioctl(struct inode *inod
+ 			return -EFAULT;
+ 		}
+ 		break;
+-	case I2OUSRCMD:
+-		return adpt_i2o_passthru(pHba, argp);
  
- 	mutex_lock(&test_fw_mutex);
- 	release_firmware(test_firmware);
-+	if (test_fw_config->reqs)
-+		__test_release_all_firmware();
- 	test_firmware = NULL;
- 	rc = request_firmware(&test_firmware, name, dev);
- 	if (rc) {
-@@ -686,6 +695,8 @@ static ssize_t trigger_async_request_sto
- 	mutex_lock(&test_fw_mutex);
- 	release_firmware(test_firmware);
- 	test_firmware = NULL;
-+	if (test_fw_config->reqs)
-+		__test_release_all_firmware();
- 	rc = request_firmware_nowait(THIS_MODULE, 1, name, dev, GFP_KERNEL,
- 				     NULL, trigger_async_request_cb);
- 	if (rc) {
-@@ -728,6 +739,8 @@ static ssize_t trigger_custom_fallback_s
+ 	case DPT_CTRLINFO:{
+ 		drvrHBAinfo_S HbaInfo;
+@@ -2138,13 +1889,6 @@ static irqreturn_t adpt_isr(int irq, voi
+ 			adpt_send_nop(pHba, old_m);
+ 		} 
+ 		context = readl(reply+8);
+-		if(context & 0x40000000){ // IOCTL
+-			void *p = adpt_ioctl_from_context(pHba, readl(reply+12));
+-			if( p != NULL) {
+-				memcpy_fromio(p, reply, REPLY_FRAME_SIZE * 4);
+-			}
+-			// All IOCTLs will also be post wait
+-		}
+ 		if(context & 0x80000000){ // Post wait message
+ 			status = readl(reply+16);
+ 			if(status  >> 24){
+@@ -2152,16 +1896,14 @@ static irqreturn_t adpt_isr(int irq, voi
+ 			} else {
+ 				status = I2O_POST_WAIT_OK;
+ 			}
+-			if(!(context & 0x40000000)) {
+-				/*
+-				 * The request tag is one less than the command tag
+-				 * as the firmware might treat a 0 tag as invalid
+-				 */
+-				cmd = scsi_host_find_tag(pHba->host,
+-							 readl(reply + 12) - 1);
+-				if(cmd != NULL) {
+-					printk(KERN_WARNING"%s: Apparent SCSI cmd in Post Wait Context - cmd=%p context=%x\n", pHba->name, cmd, context);
+-				}
++			/*
++			 * The request tag is one less than the command tag
++			 * as the firmware might treat a 0 tag as invalid
++			 */
++			cmd = scsi_host_find_tag(pHba->host,
++						 readl(reply + 12) - 1);
++			if(cmd != NULL) {
++				printk(KERN_WARNING"%s: Apparent SCSI cmd in Post Wait Context - cmd=%p context=%x\n", pHba->name, cmd, context);
+ 			}
+ 			adpt_i2o_post_wait_complete(context, status);
+ 		} else { // SCSI message
+--- a/drivers/scsi/dpti.h
++++ b/drivers/scsi/dpti.h
+@@ -248,7 +248,6 @@ typedef struct _adpt_hba {
+ 	void __iomem *FwDebugBLEDflag_P;// Virtual Addr Of FW Debug BLED
+ 	void __iomem *FwDebugBLEDvalue_P;// Virtual Addr Of FW Debug BLED
+ 	u32 FwDebugFlags;
+-	u32 *ioctl_reply_context[4];
+ } adpt_hba;
  
- 	mutex_lock(&test_fw_mutex);
- 	release_firmware(test_firmware);
-+	if (test_fw_config->reqs)
-+		__test_release_all_firmware();
- 	test_firmware = NULL;
- 	rc = request_firmware_nowait(THIS_MODULE, FW_ACTION_NOUEVENT, name,
- 				     dev, GFP_KERNEL, NULL,
-@@ -790,6 +803,8 @@ static int test_fw_run_batch_request(voi
- 						 test_fw_config->buf_size);
- 		if (!req->fw)
- 			kfree(test_buf);
-+		else
-+			req->fw_buf = test_buf;
- 	} else {
- 		req->rc = test_fw_config->req_firmware(&req->fw,
- 						       req->name,
-@@ -845,6 +860,7 @@ static ssize_t trigger_batched_requests_
- 		req->fw = NULL;
- 		req->idx = i;
- 		req->name = test_fw_config->name;
-+		req->fw_buf = NULL;
- 		req->dev = dev;
- 		init_completion(&req->completion);
- 		req->task = kthread_run(test_fw_run_batch_request, req,
-@@ -944,6 +960,7 @@ ssize_t trigger_batched_requests_async_s
- 	for (i = 0; i < test_fw_config->num_requests; i++) {
- 		req = &test_fw_config->reqs[i];
- 		req->name = test_fw_config->name;
-+		req->fw_buf = NULL;
- 		req->fw = NULL;
- 		req->idx = i;
- 		init_completion(&req->completion);
+ struct sg_simple_element {
 
 
