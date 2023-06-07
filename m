@@ -2,51 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19984726EE0
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90CDB726C5B
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:33:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235356AbjFGUxf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:53:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54960 "EHLO
+        id S233742AbjFGUdE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:33:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235343AbjFGUxe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:53:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91F3892
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:53:21 -0700 (PDT)
+        with ESMTP id S233746AbjFGUdD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:33:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94E3E26A4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:32:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 63BB26479B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:53:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765D1C433D2;
-        Wed,  7 Jun 2023 20:53:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A16464524
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:32:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ECF8C433D2;
+        Wed,  7 Jun 2023 20:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171200;
-        bh=yKGcdrssA11YUCE5AUIKpueGETZlG7QwlPbKBiFbRT4=;
+        s=korg; t=1686169966;
+        bh=gy1YcfXCZCoVpWN94lsgygDGYJlbUs/FpJWOvXGJEVI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p2yAoL7XHEa7X6ySuReQfSz+xPTqVYPiPgPSSmNxkB3XS6+mlsi1KeMH7TstNMKMr
-         T9C6MbPfYQvKEmiy5rEDi3zhwrHQE6Jc9jfD13ukKo6UAl2GHgnry0+eQJ2JalRIzT
-         ixBsIKcUx93RgHXRScSynzexk8cM9kLhEed/o/wc=
+        b=FHKK15BAnBDi+Ezc23B84DQS83QxgItITI3kJkOhnD4Qx5zN6UGx/1uM7m1cOr4Wh
+         7IXO1Fr4cE/RmCypbRfpCP/z39fufIWEzszO8+Xm40F+l0o7xwkKV4fxFfDf5p/Ygf
+         WUA0IuDXhp9b0VdNZJL6kkGJoSkSFbx3oddcz5Do=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Thumshirn <jth@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 28/99] watchdog: menz069_wdt: fix watchdog initialisation
+        patches@lists.linux.dev
+Subject: [PATCH 6.3 281/286] regmap: Account for register length when chunking
 Date:   Wed,  7 Jun 2023 22:16:20 +0200
-Message-ID: <20230607200901.141275341@linuxfoundation.org>
+Message-ID: <20230607200932.462477215@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,71 +52,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Thumshirn <jth@kernel.org>
+From: Jim Wylder <jwylder@google.com>
 
-[ Upstream commit 87b22656ca6a896d0378e9e60ffccb0c82f48b08 ]
+commit 3981514180c987a79ea98f0ae06a7cbf58a9ac0f upstream.
 
-Doing a 'cat /dev/watchdog0' with menz069_wdt as watchdog0 will result in
-a NULL pointer dereference.
+Currently, when regmap_raw_write() splits the data, it uses the
+max_raw_write value defined for the bus.  For any bus that includes
+the target register address in the max_raw_write value, the chunked
+transmission will always exceed the maximum transmission length.
+To avoid this problem, subtract the length of the register and the
+padding from the maximum transmission.
 
-This happens because we're passing the wrong pointer to
-watchdog_register_device(). Fix this by getting rid of the static
-watchdog_device structure and use the one embedded into the driver's
-per-instance private data.
-
-Signed-off-by: Johannes Thumshirn <jth@kernel.org>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20230418172531.177349-2-jth@kernel.org
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jim Wylder <jwylder@google.com
+Link: https://lore.kernel.org/r/20230517152444.3690870-2-jwylder@google.com
+Signed-off-by: Mark Brown <broonie@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/watchdog/menz69_wdt.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ drivers/base/regmap/regmap.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/watchdog/menz69_wdt.c b/drivers/watchdog/menz69_wdt.c
-index ed18238c54074..96a25d18ab643 100644
---- a/drivers/watchdog/menz69_wdt.c
-+++ b/drivers/watchdog/menz69_wdt.c
-@@ -98,14 +98,6 @@ static const struct watchdog_ops men_z069_ops = {
- 	.set_timeout = men_z069_wdt_set_timeout,
- };
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -2064,6 +2064,8 @@ int _regmap_raw_write(struct regmap *map
+ 	size_t val_count = val_len / val_bytes;
+ 	size_t chunk_count, chunk_bytes;
+ 	size_t chunk_regs = val_count;
++	size_t max_data = map->max_raw_write - map->format.reg_bytes -
++			map->format.pad_bytes;
+ 	int ret, i;
  
--static struct watchdog_device men_z069_wdt = {
--	.info = &men_z069_info,
--	.ops = &men_z069_ops,
--	.timeout = MEN_Z069_DEFAULT_TIMEOUT,
--	.min_timeout = 1,
--	.max_timeout = MEN_Z069_WDT_COUNTER_MAX / MEN_Z069_TIMER_FREQ,
--};
--
- static int men_z069_probe(struct mcb_device *dev,
- 			  const struct mcb_device_id *id)
- {
-@@ -125,15 +117,19 @@ static int men_z069_probe(struct mcb_device *dev,
- 		goto release_mem;
+ 	if (!val_count)
+@@ -2071,8 +2073,8 @@ int _regmap_raw_write(struct regmap *map
  
- 	drv->mem = mem;
-+	drv->wdt.info = &men_z069_info;
-+	drv->wdt.ops = &men_z069_ops;
-+	drv->wdt.timeout = MEN_Z069_DEFAULT_TIMEOUT;
-+	drv->wdt.min_timeout = 1;
-+	drv->wdt.max_timeout = MEN_Z069_WDT_COUNTER_MAX / MEN_Z069_TIMER_FREQ;
+ 	if (map->use_single_write)
+ 		chunk_regs = 1;
+-	else if (map->max_raw_write && val_len > map->max_raw_write)
+-		chunk_regs = map->max_raw_write / val_bytes;
++	else if (map->max_raw_write && val_len > max_data)
++		chunk_regs = max_data / val_bytes;
  
--	drv->wdt = men_z069_wdt;
- 	watchdog_init_timeout(&drv->wdt, 0, &dev->dev);
- 	watchdog_set_nowayout(&drv->wdt, nowayout);
- 	watchdog_set_drvdata(&drv->wdt, drv);
- 	drv->wdt.parent = &dev->dev;
- 	mcb_set_drvdata(dev, drv);
- 
--	return watchdog_register_device(&men_z069_wdt);
-+	return watchdog_register_device(&drv->wdt);
- 
- release_mem:
- 	mcb_release_mem(mem);
--- 
-2.39.2
-
+ 	chunk_count = val_count / chunk_regs;
+ 	chunk_bytes = chunk_regs * val_bytes;
 
 
