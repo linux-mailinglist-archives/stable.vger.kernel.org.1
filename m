@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6025C726DB8
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:45:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CC53726C3B
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234679AbjFGUor (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:44:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45078 "EHLO
+        id S232195AbjFGUbs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:31:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234667AbjFGUol (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:41 -0400
+        with ESMTP id S233619AbjFGUbq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:31:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39B2526B8
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:44:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 786CA1BFA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:31:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B5BEB64661
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:44:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47C9C433D2;
-        Wed,  7 Jun 2023 20:43:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C08B644C9
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:31:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD23C4339B;
+        Wed,  7 Jun 2023 20:31:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170640;
-        bh=i+z53TWJk40cu7KVEGwfln1kPQX+XtUYvQiEwjPukBg=;
+        s=korg; t=1686169903;
+        bh=R8ekxwRF6Gzl+hPQUuXBlb6lVhKemx0J0o+fpXRtopo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Je9LFfHcdLzfr/1cs8dqHHnQY/68MypyJWGB9Q38M92CR7HPj6KG+RinPaoZ3Ws+3
-         nshaT+i2gchKpd61uazsg0G1P3NBpzOtcFC3cr1JiSW4M0Jy2gKqX5DkrHI7modRok
-         3b5qgAUdi6cLEyFfUhS322iGCje6sFC2pWtNhVGY=
+        b=TqcYNcYPS55hs2eavCZTmkQ0+kGCg8pIgC+8oipuluWOu2hoMidJtf37CK6YpjRlt
+         /HNlSHObLQrBCJUjkInjACxlEYHiXFFK/JSGvpDUdoCRwe8P3dNGB4Vsu1/cL3O3Gl
+         Aa34EOsKJSRxriFvwPJds6yVAjPCvTduVZD7CFKM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Bart Van Assche <bvanassche@acm.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 162/225] scsi: stex: Fix gcc 13 warnings
+        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>
+Subject: [PATCH 6.3 256/286] selftests: mptcp: userspace pm: skip if MPTCP is not supported
 Date:   Wed,  7 Jun 2023 22:15:55 +0200
-Message-ID: <20230607200919.698931398@linuxfoundation.org>
+Message-ID: <20230607200931.678969159@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,63 +53,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-commit 6d074ce231772c66e648a61f6bd2245e7129d1f5 upstream.
+commit 63212608a92a1ff10ae56dbb14e9fb685f7e4ffa upstream.
 
-gcc 13 may assign another type to enumeration constants than gcc 12. Split
-the large enum at the top of source file stex.c such that the type of the
-constants used in time expressions is changed back to the same type chosen
-by gcc 12. This patch suppresses compiler warnings like this one:
+Selftests are supposed to run on any kernels, including the old ones not
+supporting MPTCP.
 
-In file included from ./include/linux/bitops.h:7,
-                 from ./include/linux/kernel.h:22,
-                 from drivers/scsi/stex.c:13:
-drivers/scsi/stex.c: In function ‘stex_common_handshake’:
-./include/linux/typecheck.h:12:25: error: comparison of distinct pointer types lacks a cast [-Werror]
-   12 |         (void)(&__dummy == &__dummy2); \
-      |                         ^~
-./include/linux/jiffies.h:106:10: note: in expansion of macro ‘typecheck’
-  106 |          typecheck(unsigned long, b) && \
-      |          ^~~~~~~~~
-drivers/scsi/stex.c:1035:29: note: in expansion of macro ‘time_after’
- 1035 |                         if (time_after(jiffies, before + MU_MAX_DELAY * HZ)) {
-      |                             ^~~~~~~~~~
+A new check is then added to make sure MPTCP is supported. If not, the
+test stops and is marked as "skipped".
 
-See also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107405.
-
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: 259a834fadda ("selftests: mptcp: functional tests for the userspace PM type")
 Cc: stable@vger.kernel.org
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20230529195034.3077-1-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/stex.c |    4 ++++
+ tools/testing/selftests/net/mptcp/userspace_pm.sh |    4 ++++
  1 file changed, 4 insertions(+)
 
---- a/drivers/scsi/stex.c
-+++ b/drivers/scsi/stex.c
-@@ -109,7 +109,9 @@ enum {
- 	TASK_ATTRIBUTE_HEADOFQUEUE		= 0x1,
- 	TASK_ATTRIBUTE_ORDERED			= 0x2,
- 	TASK_ATTRIBUTE_ACA			= 0x4,
-+};
+--- a/tools/testing/selftests/net/mptcp/userspace_pm.sh
++++ b/tools/testing/selftests/net/mptcp/userspace_pm.sh
+@@ -1,6 +1,10 @@
+ #!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
  
-+enum {
- 	SS_STS_NORMAL				= 0x80000000,
- 	SS_STS_DONE				= 0x40000000,
- 	SS_STS_HANDSHAKE			= 0x20000000,
-@@ -121,7 +123,9 @@ enum {
- 	SS_I2H_REQUEST_RESET			= 0x2000,
- 
- 	SS_MU_OPERATIONAL			= 0x80000000,
-+};
- 
-+enum {
- 	STEX_CDB_LENGTH				= 16,
- 	STATUS_VAR_LEN				= 128,
- 
++. "$(dirname "${0}")/mptcp_lib.sh"
++
++mptcp_lib_check_mptcp
++
+ ip -Version > /dev/null 2>&1
+ if [ $? -ne 0 ];then
+ 	echo "SKIP: Cannot not run test without ip tool"
 
 
