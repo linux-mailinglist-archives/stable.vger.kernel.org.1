@@ -2,51 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D5E8726D28
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:39:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A61A726B87
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234313AbjFGUjr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:39:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38490 "EHLO
+        id S233324AbjFGU0W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:26:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234356AbjFGUje (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:39:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70A14FC
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:39:12 -0700 (PDT)
+        with ESMTP id S233375AbjFGU0S (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B994212B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:25:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 50A28645D9
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:39:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EFC2C433D2;
-        Wed,  7 Jun 2023 20:39:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AC82164461
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:25:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAFE7C433EF;
+        Wed,  7 Jun 2023 20:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170351;
-        bh=yWGy8ZGyrzMYLtP2DLZn6PidiKx2wqyt54dSSwUJnhg=;
+        s=korg; t=1686169538;
+        bh=TgTl3mDlQ6yoJSSu128ki5gVsp6gBpM9OvTuxcF6Iv8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zrYKhnvv9A1JcR1POwdeuu3SeaDZX0Sf2A2mGaE+s3gUiIkFSomYjzR1zr9AQvg3k
-         eyc8GheGxwCIj5aFm4LT1aTUmHDdMzLPsKbWOorqrzhrDmVVVO3A55sF20BPFqc3HF
-         +M8B38Z+785VPo2x1k58a9Ezqsr+Dl63RlE85mqE=
+        b=CMO9R1OCB+VCq10/9BJV6Nu44wAnOgpkvC0620DVNdHtwvLn+wFQ0oIHH41G8G8Z+
+         O9Xr5hRJkhYyRYwvDYOMuc90jzMdzBZZB+9+Pj2+RQMcIMeyw15V7aPio1IC5adhJD
+         pVBCUwQmwYk7kyL93A901wMjVD/9dpn3TapIf2IE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/225] tls: improve lockless access safety of tls_err_abort()
+        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 118/286] ASoC: SOF: amd: Fix NULL pointer crash in acp_sof_ipc_msg_data function
 Date:   Wed,  7 Jun 2023 22:13:37 +0200
-Message-ID: <20230607200915.111773595@linuxfoundation.org>
+Message-ID: <20230607200926.938000734@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,57 +52,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: V sujith kumar Reddy <Vsujithkumar.Reddy@amd.com>
 
-[ Upstream commit 8a0d57df8938e9fd2e99d47a85b7f37d86f91097 ]
+[ Upstream commit 051d71e073614a72ad423d6dacba37a7eeff274d ]
 
-Most protos' poll() methods insert a memory barrier between
-writes to sk_err and sk_error_report(). This dates back to
-commit a4d258036ed9 ("tcp: Fix race in tcp_poll").
+Check substream and runtime variables before assigning.
 
-I guess we should do the same thing in TLS, tcp_poll() does
-not hold the socket lock.
-
-Fixes: 3c4d7559159b ("tls: kernel TLS support")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: V sujith kumar Reddy <Vsujithkumar.Reddy@amd.com
+Link: https://lore.kernel.org/r/20230508070510.6100-1-Vsujithkumar.Reddy@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_strp.c | 4 +++-
- net/tls/tls_sw.c   | 4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ sound/soc/sof/amd/acp-ipc.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
-index da95abbb7ea32..f37f4a0fcd3c2 100644
---- a/net/tls/tls_strp.c
-+++ b/net/tls/tls_strp.c
-@@ -20,7 +20,9 @@ static void tls_strp_abort_strp(struct tls_strparser *strp, int err)
- 	strp->stopped = 1;
+diff --git a/sound/soc/sof/amd/acp-ipc.c b/sound/soc/sof/amd/acp-ipc.c
+index 4e0c48a361599..749e856dc6011 100644
+--- a/sound/soc/sof/amd/acp-ipc.c
++++ b/sound/soc/sof/amd/acp-ipc.c
+@@ -209,7 +209,12 @@ int acp_sof_ipc_msg_data(struct snd_sof_dev *sdev, struct snd_sof_pcm_stream *sp
+ 		acp_mailbox_read(sdev, offset, p, sz);
+ 	} else {
+ 		struct snd_pcm_substream *substream = sps->substream;
+-		struct acp_dsp_stream *stream = substream->runtime->private_data;
++		struct acp_dsp_stream *stream;
++
++		if (!substream || !substream->runtime)
++			return -ESTRPIPE;
++
++		stream = substream->runtime->private_data;
  
- 	/* Report an error on the lower socket */
--	strp->sk->sk_err = -err;
-+	WRITE_ONCE(strp->sk->sk_err, -err);
-+	/* Paired with smp_rmb() in tcp_poll() */
-+	smp_wmb();
- 	sk_error_report(strp->sk);
- }
- 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 992092aeebad9..2e5e7853a6101 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -67,7 +67,9 @@ noinline void tls_err_abort(struct sock *sk, int err)
- {
- 	WARN_ON_ONCE(err >= 0);
- 	/* sk->sk_err should contain a positive error code. */
--	sk->sk_err = -err;
-+	WRITE_ONCE(sk->sk_err, -err);
-+	/* Paired with smp_rmb() in tcp_poll() */
-+	smp_wmb();
- 	sk_error_report(sk);
- }
- 
+ 		if (!stream)
+ 			return -ESTRPIPE;
 -- 
 2.39.2
 
