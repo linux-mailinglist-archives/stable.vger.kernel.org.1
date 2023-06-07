@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01D52727000
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:03:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4418E726F36
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:56:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235889AbjFGVD4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:03:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34792 "EHLO
+        id S235528AbjFGU4X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:56:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236072AbjFGVDb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:03:31 -0400
+        with ESMTP id S235536AbjFGU4W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:56:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E8E726BF
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:03:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A32F6FC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:56:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C379A6497A
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:03:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39F8C433EF;
-        Wed,  7 Jun 2023 21:03:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3459664844
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:56:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D98C433D2;
+        Wed,  7 Jun 2023 20:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171791;
-        bh=o6xNcwoEMn+tF9nBOopia1yYhqZTuKIwQgxKFy34k6c=;
+        s=korg; t=1686171379;
+        bh=7s73vs/YZ8FRztctnfZ4aEM/BYXTrdu1ejkZVUgfaPs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qw8hJwPm4y77ZPMKeuXBTDHj/yfT7c4Nw9w+I59UPX/2qMgYW9S/aXov7UDmDAiBG
-         55r8zQawhHDBz9bLn53arCfRbR14p83G44pPYH1vPeMlkv8uSwYhrpCNKjKpqqH5SQ
-         2a8FdRE/wO8DMevkwlvwoVQ1AEuwie67C5/VewdI=
+        b=LHArfhQgbpn6RiM38ZylopIRRx+g0MteJ+5kiKv2t5Kb0eN7ENvfaYfeVHReCG4d3
+         E0AQCbSl350XXblObzGSSyA8dPFkn4D/LB4x8jRDXWry+71E5uZwNWJslpFVhxFkoK
+         n3wg0EgFw9Uru9mvdKbM2K4cv33h3m/6BDQYg8+A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 5.15 143/159] KVM: x86: Account fastpath-only VM-Exits in vCPU stats
-Date:   Wed,  7 Jun 2023 22:17:26 +0200
-Message-ID: <20230607200908.348782800@linuxfoundation.org>
+        patches@lists.linux.dev, Hulk Robot <hulkci@huawei.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Jason Gunthorpe <jgg@mellanox.com>
+Subject: [PATCH 5.4 95/99] RDMA/bnxt_re: Remove set but not used variable dev_attr
+Date:   Wed,  7 Jun 2023 22:17:27 +0200
+Message-ID: <20230607200903.229887396@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,35 +54,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sean Christopherson <seanjc@google.com>
+From: YueHaibing <yuehaibing@huawei.com>
 
-commit 8b703a49c9df5e74870381ad7ba9c85d8a74ed2c upstream.
+commit a0b404a98e274b5fc0cfb7c108d99127d482e5ff upstream.
 
-Increment vcpu->stat.exits when handling a fastpath VM-Exit without
-going through any part of the "slow" path.  Not bumping the exits stat
-can result in wildly misleading exit counts, e.g. if the primary reason
-the guest is exiting is to program the TSC deadline timer.
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-Fixes: 404d5d7bff0d ("KVM: X86: Introduce more exit_fastpath_completion enum values")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230602011920.787844-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+drivers/infiniband/hw/bnxt_re/ib_verbs.c: In function 'bnxt_re_create_gsi_qp':
+drivers/infiniband/hw/bnxt_re/ib_verbs.c:1283:30: warning:
+ variable 'dev_attr' set but not used [-Wunused-but-set-variable]
+
+commit 8dae419f9ec7 ("RDMA/bnxt_re: Refactor queue pair creation code")
+involved this, but not used, so remove it.
+
+Link: https://lore.kernel.org/r/20200227064542.91205-1-yuehaibing@huawei.com
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Signed-off-by: Jason Gunthorpe <jgg@mellanox.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/x86.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -9946,6 +9946,9 @@ static int vcpu_enter_guest(struct kvm_v
- 			exit_fastpath = EXIT_FASTPATH_EXIT_HANDLED;
- 			break;
- 		}
-+
-+		/* Note, VM-Exits that go down the "slow" path are accounted below. */
-+		++vcpu->stat.exits;
- 	}
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -1286,14 +1286,12 @@ out:
+ static int bnxt_re_create_gsi_qp(struct bnxt_re_qp *qp, struct bnxt_re_pd *pd,
+ 				 struct ib_qp_init_attr *init_attr)
+ {
+-	struct bnxt_qplib_dev_attr *dev_attr;
+ 	struct bnxt_re_dev *rdev;
+ 	struct bnxt_qplib_qp *qplqp;
+ 	int rc = 0;
  
- 	/*
+ 	rdev = qp->rdev;
+ 	qplqp = &qp->qplib_qp;
+-	dev_attr = &rdev->dev_attr;
+ 
+ 	qplqp->rq_hdr_buf_size = BNXT_QPLIB_MAX_QP1_RQ_HDR_SIZE_V2;
+ 	qplqp->sq_hdr_buf_size = BNXT_QPLIB_MAX_QP1_SQ_HDR_SIZE_V2;
 
 
