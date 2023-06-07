@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64F4A726CB0
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:35:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 008D9726AE1
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234033AbjFGUfh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:35:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34300 "EHLO
+        id S232550AbjFGUUt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:20:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233982AbjFGUfZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:35:25 -0400
+        with ESMTP id S232745AbjFGUUn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E057426BA
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:35:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 331282717
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:20:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6432F64561
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:35:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 470CEC433EF;
-        Wed,  7 Jun 2023 20:35:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 65205643AF
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:20:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF60C4339B;
+        Wed,  7 Jun 2023 20:20:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170114;
-        bh=USWvMG6K95bH8Ye3dm5Xgr+N8toc3ooXk0X6kC2Hjl4=;
+        s=korg; t=1686169205;
+        bh=7P1ovuxvTzFYSu+1MIAyr3QGwChR4p2MrkuhM2fNbD0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jiVQme3KGW+V01ToOeGV5amd0yjGHwvichDXEcccHVlm28ywTx6rbxMjQMBrYUpO9
-         bI/R0CLRygRO5ZkHbw6Kxn7UAmhdKW34D3iPbjzJwrgFqzcgsNCPjBGnA7YPLP8q9Z
-         cMh+nBS4TSMPEEOcngrPzlQi4LAyrpsK6fPUkFK0=
+        b=YoWNEZUTmuPE3PQH0PXUG+M7z6dq3C/3uNOTo0MP7g5m0dy3oMg4zgbf+nVpKe8PO
+         RM3mNpu7W+dc04ZX1ZBTirlzDvUsoD3Fj/beQCmdcyMO/fm+3jrnJbh3SqONoobZPV
+         FcSlKMqV3MqoceMEwcMZIOjLJvu6UOxsTrT3Y6ho=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Hao <yhao016@ucr.edu>,
-        Takashi Iwai <tiwai@suse.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 50/88] media: dvb-core: Fix kernel WARNING for blocking operation in wait_event*()
-Date:   Wed,  7 Jun 2023 22:16:07 +0200
-Message-ID: <20230607200900.807512684@linuxfoundation.org>
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
+        syzbot+d910bd780e6efac35869@syzkaller.appspotmail.com,
+        Sam Ravnborg <sam@ravnborg.org>, stable@kernel.org
+Subject: [PATCH 4.14 54/61] fbcon: Fix null-ptr-deref in soft_cursor
+Date:   Wed,  7 Jun 2023 22:16:08 +0200
+Message-ID: <20230607200853.847389328@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
+References: <20230607200835.310274198@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,66 +54,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit b8c75e4a1b325ea0a9433fa8834be97b5836b946 ]
+commit d78bd6cc68276bd57f766f7cb98bfe32c23ab327 upstream.
 
-Using a semaphore in the wait_event*() condition is no good idea.
-It hits a kernel WARN_ON() at prepare_to_wait_event() like:
-  do not call blocking ops when !TASK_RUNNING; state=1 set at
-  prepare_to_wait_event+0x6d/0x690
+syzbot repored this bug in the softcursor code:
 
-For avoiding the potential deadlock, rewrite to an open-coded loop
-instead.  Unlike the loop in wait_event*(), this uses wait_woken()
-after the condition check, hence the task state stays consistent.
+BUG: KASAN: null-ptr-deref in soft_cursor+0x384/0x6b4 drivers/video/fbdev/core/softcursor.c:70
+Read of size 16 at addr 0000000000000200 by task kworker/u4:1/12
 
-CVE-2023-31084 was assigned to this bug.
+CPU: 0 PID: 12 Comm: kworker/u4:1 Not tainted 6.4.0-rc3-syzkaller-geb0f1697d729 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/28/2023
+Workqueue: events_power_efficient fb_flashcursor
+Call trace:
+ dump_backtrace+0x1b8/0x1e4 arch/arm64/kernel/stacktrace.c:233
+ show_stack+0x2c/0x44 arch/arm64/kernel/stacktrace.c:240
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xd0/0x124 lib/dump_stack.c:106
+ print_report+0xe4/0x514 mm/kasan/report.c:465
+ kasan_report+0xd4/0x130 mm/kasan/report.c:572
+ kasan_check_range+0x264/0x2a4 mm/kasan/generic.c:187
+ __asan_memcpy+0x3c/0x84 mm/kasan/shadow.c:105
+ soft_cursor+0x384/0x6b4 drivers/video/fbdev/core/softcursor.c:70
+ bit_cursor+0x113c/0x1a64 drivers/video/fbdev/core/bitblit.c:377
+ fb_flashcursor+0x35c/0x54c drivers/video/fbdev/core/fbcon.c:380
+ process_one_work+0x788/0x12d4 kernel/workqueue.c:2405
+ worker_thread+0x8e0/0xfe8 kernel/workqueue.c:2552
+ kthread+0x288/0x310 kernel/kthread.c:379
+ ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:853
 
-Link: https://lore.kernel.org/r/CA+UBctCu7fXn4q41O_3=id1+OdyQ85tZY1x+TkT-6OVBL6KAUw@mail.gmail.com/
+This fix let bit_cursor() bail out early when a font bitmap
+isn't available yet.
 
-Link: https://lore.kernel.org/linux-media/20230512151800.1874-1-tiwai@suse.de
-Reported-by: Yu Hao <yhao016@ucr.edu>
-Closes: https://nvd.nist.gov/vuln/detail/CVE-2023-31084
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Reported-by: syzbot+d910bd780e6efac35869@syzkaller.appspotmail.com
+Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dvb_frontend.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/video/fbdev/core/bitblit.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/media/dvb-core/dvb_frontend.c b/drivers/media/dvb-core/dvb_frontend.c
-index e0650bc2df613..90acf52cc253c 100644
---- a/drivers/media/dvb-core/dvb_frontend.c
-+++ b/drivers/media/dvb-core/dvb_frontend.c
-@@ -304,14 +304,22 @@ static int dvb_frontend_get_event(struct dvb_frontend *fe,
- 	}
+--- a/drivers/video/fbdev/core/bitblit.c
++++ b/drivers/video/fbdev/core/bitblit.c
+@@ -247,6 +247,9 @@ static void bit_cursor(struct vc_data *v
  
- 	if (events->eventw == events->eventr) {
--		int ret;
-+		struct wait_queue_entry wait;
-+		int ret = 0;
+ 	cursor.set = 0;
  
- 		if (flags & O_NONBLOCK)
- 			return -EWOULDBLOCK;
- 
--		ret = wait_event_interruptible(events->wait_queue,
--					       dvb_frontend_test_event(fepriv, events));
--
-+		init_waitqueue_entry(&wait, current);
-+		add_wait_queue(&events->wait_queue, &wait);
-+		while (!dvb_frontend_test_event(fepriv, events)) {
-+			wait_woken(&wait, TASK_INTERRUPTIBLE, 0);
-+			if (signal_pending(current)) {
-+				ret = -ERESTARTSYS;
-+				break;
-+			}
-+		}
-+		remove_wait_queue(&events->wait_queue, &wait);
- 		if (ret < 0)
- 			return ret;
- 	}
--- 
-2.39.2
-
++	if (!vc->vc_font.data)
++		return;
++
+  	c = scr_readw((u16 *) vc->vc_pos);
+ 	attribute = get_attribute(info, c);
+ 	src = vc->vc_font.data + ((c & charmask) * (w * vc->vc_font.height));
 
 
