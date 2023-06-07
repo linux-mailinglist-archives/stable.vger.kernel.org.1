@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B54A9726CC6
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:36:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4709E726EE6
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:54:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233980AbjFGUgW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:36:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35010 "EHLO
+        id S235362AbjFGUyH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:54:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234174AbjFGUgA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:36:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADE4C2126
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:35:54 -0700 (PDT)
+        with ESMTP id S235420AbjFGUxy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:53:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F37B213B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:53:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 888DD64586
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:35:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B42C433EF;
-        Wed,  7 Jun 2023 20:35:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B72D64799
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:53:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4069AC433EF;
+        Wed,  7 Jun 2023 20:53:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170154;
-        bh=yfYKW2PFBOiohTm+XOA2RVMpRk9AFjrecXaehADLZQQ=;
+        s=korg; t=1686171213;
+        bh=+c/hg+pn6YqJJKirv+KPqU8DGCISXulUy2B44R/iVk8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=odsR+YDQb6DYNMlth7uSunYRPqYkoude+KjPJP8zKOwmtqdcPKdj2fsyKP2qxiw0Q
-         mpgP37+m7q0b7nWnHzz+6L35Ni2Bu3n9wT6iwcbbbYy3brGJwUJ2q9YzH2a7fllrJK
-         UeUe0be964Jhc6F+NBYDUsgqcEiss6lIEWpMMfD8=
+        b=aMK0rzPI3KbarmtuOYX+iviGs2siY+7mvBQSq9cVhI8m4xgIrNll4pWyl0q2CvQHc
+         lat42WHHdLD0cJNUQuMX0PkWVsLhHtD8Cm0P9I7UoSpacieF48Dv+3UliujBthIMH7
+         ja1cnSYFPZsZnsfuUAgsR7RYmL/nBVqHa/gdqkqg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-        =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.19 66/88] net: usb: qmi_wwan: Set DTR quirk for BroadMobi BM818
-Date:   Wed,  7 Jun 2023 22:16:23 +0200
-Message-ID: <20230607200901.300293816@linuxfoundation.org>
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 32/99] fbdev: modedb: Add 1920x1080 at 60 Hz video mode
+Date:   Wed,  7 Jun 2023 22:16:24 +0200
+Message-ID: <20230607200901.265665813@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,33 +53,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+From: Helge Deller <deller@gmx.de>
 
-commit 36936a56e1814f6c526fe71fbf980beab4f5577a upstream.
+[ Upstream commit c8902258b2b8ecaa1b8d88c312853c5b14c2553d ]
 
-BM818 is based on Qualcomm MDM9607 chipset.
+Add typical resolution for Full-HD monitors.
 
-Fixes: 9a07406b00cd ("net: usb: qmi_wwan: Add the BroadMobi BM818 card")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Acked-by: Bjørn Mork <bjorn@mork.no>
-Link: https://lore.kernel.org/r/20230526-bm818-dtr-v1-1-64bbfa6ba8af@puri.sm
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/core/modedb.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1285,7 +1285,7 @@ static const struct usb_device_id produc
- 	{QMI_FIXED_INTF(0x2001, 0x7e3d, 4)},	/* D-Link DWM-222 A2 */
- 	{QMI_FIXED_INTF(0x2020, 0x2031, 4)},	/* Olicard 600 */
- 	{QMI_FIXED_INTF(0x2020, 0x2033, 4)},	/* BroadMobi BM806U */
--	{QMI_FIXED_INTF(0x2020, 0x2060, 4)},	/* BroadMobi BM818 */
-+	{QMI_QUIRK_SET_DTR(0x2020, 0x2060, 4)},	/* BroadMobi BM818 */
- 	{QMI_FIXED_INTF(0x0f3d, 0x68a2, 8)},    /* Sierra Wireless MC7700 */
- 	{QMI_FIXED_INTF(0x114f, 0x68a2, 8)},    /* Sierra Wireless MC7750 */
- 	{QMI_FIXED_INTF(0x1199, 0x68a2, 8)},	/* Sierra Wireless MC7710 in QMI mode */
+diff --git a/drivers/video/fbdev/core/modedb.c b/drivers/video/fbdev/core/modedb.c
+index 6473e0dfe1464..e78ec7f728463 100644
+--- a/drivers/video/fbdev/core/modedb.c
++++ b/drivers/video/fbdev/core/modedb.c
+@@ -257,6 +257,11 @@ static const struct fb_videomode modedb[] = {
+ 	{ NULL, 72, 480, 300, 33386, 40, 24, 11, 19, 80, 3, 0,
+ 		FB_VMODE_DOUBLE },
+ 
++	/* 1920x1080 @ 60 Hz, 67.3 kHz hsync */
++	{ NULL, 60, 1920, 1080, 6734, 148, 88, 36, 4, 44, 5, 0,
++		FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
++		FB_VMODE_NONINTERLACED },
++
+ 	/* 1920x1200 @ 60 Hz, 74.5 Khz hsync */
+ 	{ NULL, 60, 1920, 1200, 5177, 128, 336, 1, 38, 208, 3,
+ 		FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+-- 
+2.39.2
+
 
 
