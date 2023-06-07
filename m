@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD7DC726FC2
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F470726DE7
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:46:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235599AbjFGVBW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:01:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34484 "EHLO
+        id S234721AbjFGUqd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:46:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235881AbjFGVBE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:01:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D58426B0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:00:51 -0700 (PDT)
+        with ESMTP id S234951AbjFGUqQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:46:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 627E510EA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:46:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D1FDB648FA
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:00:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A4EC433EF;
-        Wed,  7 Jun 2023 21:00:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EBCF964697
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:46:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D90D5C433EF;
+        Wed,  7 Jun 2023 20:46:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171650;
-        bh=xjSFqEXFNEEJVpr54YlItuR7Mfdx6sYSsTzNIpCfwQY=;
+        s=korg; t=1686170763;
+        bh=NoXGJDsHf96ZtB8bjoZdgOBpCuSqudCgUPLR+s4g7bU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e7Y9ASPqEIbqVhcS5O7D7O8PvJedUGtP21T7gBrTTmOF05NtFiCxetmdxhFbaL3NI
-         CXjw8dRbhx2gHfGhV2RYtMaJAzm3pwtfLJPnB/R7XIcEEoBP7DeJKip64JQL/8/zRu
-         TZtA1aHtD3CIKLmr9KUTB6pggN/lYDH14+6/5ElQ=
+        b=n8etF77dqnku9X3T9EXdn08rDiepQubKngfr7uK0W+fmFNrvKPTXpq0eswzbFrX3J
+         d9V8LZLfvtF5DBC7l3/rR0JrSoq+PNvo9CekGqigjckBBKkrSdIOVbFlHSeerjCqpy
+         GyG9lmKHddSanHKTYrGiFu7PLi0hNV9usowNP1eA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiakai Luo <jkluo@hust.edu.cn>,
-        Dongliang Mu <dzm91@hust.edu.cn>, Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 098/159] iio: adc: mxs-lradc: fix the order of two cleanup operations
+        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
+        Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 208/225] ksmbd: fix credit count leakage
 Date:   Wed,  7 Jun 2023 22:16:41 +0200
-Message-ID: <20230607200906.897168307@linuxfoundation.org>
+Message-ID: <20230607200921.166816467@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,83 +53,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiakai Luo <jkluo@hust.edu.cn>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 27b2ed5b6d53cd62fc61c3f259ae52f5cac23b66 upstream.
+commit 84c5aa47925a1f40d698b6a6a2bf67e99617433d upstream.
 
-Smatch reports:
-drivers/iio/adc/mxs-lradc-adc.c:766 mxs_lradc_adc_probe() warn:
-missing unwind goto?
+This patch fix the failure from smb2.credits.single_req_credits_granted
+test. When client send 8192 credit request, ksmbd return 8191 credit
+granted. ksmbd should give maximum possible credits that must be granted
+within the range of not exceeding the max credit to client.
 
-the order of three init operation:
-1.mxs_lradc_adc_trigger_init
-2.iio_triggered_buffer_setup
-3.mxs_lradc_adc_hw_init
-
-thus, the order of three cleanup operation should be:
-1.mxs_lradc_adc_hw_stop
-2.iio_triggered_buffer_cleanup
-3.mxs_lradc_adc_trigger_remove
-
-we exchange the order of two cleanup operations,
-introducing the following differences:
-1.if mxs_lradc_adc_trigger_init fails, returns directly;
-2.if trigger_init succeeds but iio_triggered_buffer_setup fails,
-goto err_trig and remove the trigger.
-
-In addition, we also reorder the unwind that goes on in the
-remove() callback to match the new ordering.
-
-Fixes: 6dd112b9f85e ("iio: adc: mxs-lradc: Add support for ADC driver")
-Signed-off-by: Jiakai Luo <jkluo@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Link: https://lore.kernel.org/r/20230422133407.72908-1-jkluo@hust.edu.cn
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/mxs-lradc-adc.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/ksmbd/smb2pdu.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/drivers/iio/adc/mxs-lradc-adc.c
-+++ b/drivers/iio/adc/mxs-lradc-adc.c
-@@ -757,13 +757,13 @@ static int mxs_lradc_adc_probe(struct pl
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -326,13 +326,9 @@ int smb2_set_rsp_credits(struct ksmbd_wo
+ 	if (hdr->Command == SMB2_NEGOTIATE)
+ 		aux_max = 1;
+ 	else
+-		aux_max = conn->vals->max_credits - credit_charge;
++		aux_max = conn->vals->max_credits - conn->total_credits;
+ 	credits_granted = min_t(unsigned short, credits_requested, aux_max);
  
- 	ret = mxs_lradc_adc_trigger_init(iio);
- 	if (ret)
--		goto err_trig;
-+		return ret;
+-	if (conn->vals->max_credits - conn->total_credits < credits_granted)
+-		credits_granted = conn->vals->max_credits -
+-			conn->total_credits;
+-
+ 	conn->total_credits += credits_granted;
+ 	work->credits_granted += credits_granted;
  
- 	ret = iio_triggered_buffer_setup(iio, &iio_pollfunc_store_time,
- 					 &mxs_lradc_adc_trigger_handler,
- 					 &mxs_lradc_adc_buffer_ops);
- 	if (ret)
--		return ret;
-+		goto err_trig;
- 
- 	adc->vref_mv = mxs_lradc_adc_vref_mv[lradc->soc];
- 
-@@ -801,9 +801,9 @@ static int mxs_lradc_adc_probe(struct pl
- 
- err_dev:
- 	mxs_lradc_adc_hw_stop(adc);
--	mxs_lradc_adc_trigger_remove(iio);
--err_trig:
- 	iio_triggered_buffer_cleanup(iio);
-+err_trig:
-+	mxs_lradc_adc_trigger_remove(iio);
- 	return ret;
- }
- 
-@@ -814,8 +814,8 @@ static int mxs_lradc_adc_remove(struct p
- 
- 	iio_device_unregister(iio);
- 	mxs_lradc_adc_hw_stop(adc);
--	mxs_lradc_adc_trigger_remove(iio);
- 	iio_triggered_buffer_cleanup(iio);
-+	mxs_lradc_adc_trigger_remove(iio);
- 
- 	return 0;
- }
 
 
