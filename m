@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28F51726BA0
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A993D726BA1
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233331AbjFGU0l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:26:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51494 "EHLO
+        id S233382AbjFGU0m (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:26:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233344AbjFGU0j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC9932136
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:26:23 -0700 (PDT)
+        with ESMTP id S233348AbjFGU0k (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C9902132
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:26:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 23F1D6447A
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:26:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3723BC4339B;
-        Wed,  7 Jun 2023 20:26:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 08BA764449
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:25:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 196A5C433D2;
+        Wed,  7 Jun 2023 20:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169582;
-        bh=dEZzXGxb0gguHQvSlEdpoI8CXGzm9w4TCGUUf8xYmA4=;
+        s=korg; t=1686169506;
+        bh=t0DvZ7heiAOR2gaainKo1OXYll/0QkH8RC6nJ4z0lZ0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Vy9+6vJLsMaWnyiafIx/5YK1XZK8IR7ugEVpO+uMxCN9kGg53dc+i/7wB5FeJdW0r
-         RIlPPe/zwwUTFvJ7DZX8FZGAzEpNeWHhSv13D844eHmTVrmmMp01KmioVfW+sE9LRd
-         zRtkT26gZ+HCdA5FYlQCla6HKsJRsYrUULD2bh9o=
+        b=wQ5Ry37Hj/rsmJNLT6x4bVnVnETQZVhDHTRme72sJ0pA67Gvo9nXAC/NaOoDWlgJb
+         EGdKx5mLcBauMtISWXukW/Z0Ernpq0Jop5gsu2q2WiLnNjQBJKl/Jy9Dl+YJGKUhu+
+         s9FVyRvxTrFvisrjR+T5M2SXcaLqyXSAcXhXgqmQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yifan Zhang <yifan1.zhang@amd.com>,
-        Lang Yu <lang.yu@amd.com>,
-        Felix Kuehling <Felix.Kuehling@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 106/286] drm/amdgpu: set gfx9 onwards APU atomics support to be true
-Date:   Wed,  7 Jun 2023 22:13:25 +0200
-Message-ID: <20230607200926.549374799@linuxfoundation.org>
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 107/286] fbdev: imsttfb: Fix use after free bug in imsttfb_probe
+Date:   Wed,  7 Jun 2023 22:13:26 +0200
+Message-ID: <20230607200926.584630898@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
 References: <20230607200922.978677727@linuxfoundation.org>
@@ -46,8 +43,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,41 +53,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yifan Zhang <yifan1.zhang@amd.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit af7828fbceed4f9e503034111066a0adef3db383 ]
+[ Upstream commit c75f5a55061091030a13fef71b9995b89bc86213 ]
 
-APUs w/ gfx9 onwards doesn't reply on PCIe atomics, rather
-it is internal path w/ native atomic support. Set have_atomics_support
-to true.
+A use-after-free bug may occur if init_imstt invokes framebuffer_release
+and free the info ptr. The caller, imsttfb_probe didn't notice that and
+still keep the ptr as private data in pdev.
 
-Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
-Reviewed-by: Lang Yu <lang.yu@amd.com>
-Acked-by: Felix Kuehling <Felix.Kuehling@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+If we remove the driver which will call imsttfb_remove to make cleanup,
+UAF happens.
+
+Fix it by return error code if bad case happens in init_imstt.
+
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/video/fbdev/imsttfb.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 412cb3f1f8826..31413a604d0ae 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -3737,6 +3737,12 @@ int amdgpu_device_init(struct amdgpu_device *adev,
- 		adev->have_atomics_support = ((struct amd_sriov_msg_pf2vf_info *)
- 			adev->virt.fw_reserve.p_pf2vf)->pcie_atomic_ops_support_flags ==
- 			(PCI_EXP_DEVCAP2_ATOMIC_COMP32 | PCI_EXP_DEVCAP2_ATOMIC_COMP64);
-+	/* APUs w/ gfx9 onwards doesn't reply on PCIe atomics, rather it is a
-+	 * internal path natively support atomics, set have_atomics_support to true.
-+	 */
-+	else if ((adev->flags & AMD_IS_APU) &&
-+		(adev->ip_versions[GC_HWIP][0] > IP_VERSION(9, 0, 0)))
-+		adev->have_atomics_support = true;
- 	else
- 		adev->have_atomics_support =
- 			!pci_enable_atomic_ops_to_root(adev->pdev,
+diff --git a/drivers/video/fbdev/imsttfb.c b/drivers/video/fbdev/imsttfb.c
+index bea45647184e1..975dd682fae4b 100644
+--- a/drivers/video/fbdev/imsttfb.c
++++ b/drivers/video/fbdev/imsttfb.c
+@@ -1347,7 +1347,7 @@ static const struct fb_ops imsttfb_ops = {
+ 	.fb_ioctl 	= imsttfb_ioctl,
+ };
+ 
+-static void init_imstt(struct fb_info *info)
++static int init_imstt(struct fb_info *info)
+ {
+ 	struct imstt_par *par = info->par;
+ 	__u32 i, tmp, *ip, *end;
+@@ -1420,7 +1420,7 @@ static void init_imstt(struct fb_info *info)
+ 	    || !(compute_imstt_regvals(par, info->var.xres, info->var.yres))) {
+ 		printk("imsttfb: %ux%ux%u not supported\n", info->var.xres, info->var.yres, info->var.bits_per_pixel);
+ 		framebuffer_release(info);
+-		return;
++		return -ENODEV;
+ 	}
+ 
+ 	sprintf(info->fix.id, "IMS TT (%s)", par->ramdac == IBM ? "IBM" : "TVP");
+@@ -1456,12 +1456,13 @@ static void init_imstt(struct fb_info *info)
+ 
+ 	if (register_framebuffer(info) < 0) {
+ 		framebuffer_release(info);
+-		return;
++		return -ENODEV;
+ 	}
+ 
+ 	tmp = (read_reg_le32(par->dc_regs, SSTATUS) & 0x0f00) >> 8;
+ 	fb_info(info, "%s frame buffer; %uMB vram; chip version %u\n",
+ 		info->fix.id, info->fix.smem_len >> 20, tmp);
++	return 0;
+ }
+ 
+ static int imsttfb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+@@ -1529,10 +1530,10 @@ static int imsttfb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	if (!par->cmap_regs)
+ 		goto error;
+ 	info->pseudo_palette = par->palette;
+-	init_imstt(info);
+-
+-	pci_set_drvdata(pdev, info);
+-	return 0;
++	ret = init_imstt(info);
++	if (!ret)
++		pci_set_drvdata(pdev, info);
++	return ret;
+ 
+ error:
+ 	if (par->dc_regs)
 -- 
 2.39.2
 
