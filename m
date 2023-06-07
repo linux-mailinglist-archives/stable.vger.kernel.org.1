@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B27AF727002
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:04:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D094D727005
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:04:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236186AbjFGVD6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:03:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34812 "EHLO
+        id S236001AbjFGVD7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:03:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235870AbjFGVDj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:03:39 -0400
+        with ESMTP id S235979AbjFGVDk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:03:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8CF92705
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:03:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7091D270A
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:03:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E82664981
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:03:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F3CBC433D2;
-        Wed,  7 Jun 2023 21:03:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F31FB64981
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:03:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C87C433D2;
+        Wed,  7 Jun 2023 21:03:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171793;
-        bh=nWRd9A0QqN0dca2ZUipSd+A8s4jl7a7f1n3vUpuk5kY=;
+        s=korg; t=1686171796;
+        bh=u2DF8Lqb7eOoLpxvUaPGE3DcOu42s7NvvOuZUscyk/g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rHVFyYBCePQQOYbvBVhMzsINd0SDxPXBQbSPioxO6/zhBRDD+uXYYDkfQ/vyPiARo
-         A83M/JVW4UqJuAB4ZWfxtdzvAf+vRTembmtKCro/2RPQpAP26ADbmbG2+YgpdtSL0C
-         eqU3Q1ln+JloYKGvLSalO9pJYNz/07NTaWx0BA4E=
+        b=eZtBpYv64bPYq43K1ttLsaAzUR+THLMjIP4PZClwz8nA2JfrgqEcmmVe9OTqUK3cJ
+         f6AsLAgZgR/S4fNdEREHLncsp/i89U8huujMDm+CIpVMPAwnA7i5wWUycoEbu64B1z
+         Far9uB5Dm4CIKSyxM84HoOI/1GkygeKTeqjGButc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 152/159] drm/amdgpu/gfx10: Disable gfxoff before disabling powergating.
-Date:   Wed,  7 Jun 2023 22:17:35 +0200
-Message-ID: <20230607200908.638917788@linuxfoundation.org>
+        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>
+Subject: [PATCH 5.15 153/159] selftests: mptcp: diag: skip if MPTCP is not supported
+Date:   Wed,  7 Jun 2023 22:17:36 +0200
+Message-ID: <20230607200908.671069180@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
 References: <20230607200903.652580797@linuxfoundation.org>
@@ -55,45 +53,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-commit 8173cab3368a13cdc3cad0bd5cf14e9399b0f501 upstream.
+commit 46565acdd29facbf418a11e4a3791b3c8967308d upstream.
 
-Otherwise we get a full system lock (looks like a FW mess).
+Selftests are supposed to run on any kernels, including the old ones not
+supporting MPTCP.
 
-Copied the order from the GFX9 powergating code.
+A new check is then added to make sure MPTCP is supported. If not, the
+test stops and is marked as "skipped".
 
-Fixes: 366468ff6c34 ("drm/amdgpu: Allow GfxOff on Vangogh as default")
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2545
-Signed-off-by: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
-Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: df62f2ec3df6 ("selftests/mptcp: add diag interface tests")
 Cc: stable@vger.kernel.org
-[gpiccoli: adjusted to 5.15, before amdgpu changes from chip names to numbers.]
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/diag.sh |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -8422,8 +8422,14 @@ static int gfx_v10_0_set_powergating_sta
- 		break;
- 	case CHIP_VANGOGH:
- 	case CHIP_YELLOW_CARP:
-+		if (!enable)
-+			amdgpu_gfx_off_ctrl(adev, false);
+--- a/tools/testing/selftests/net/mptcp/diag.sh
++++ b/tools/testing/selftests/net/mptcp/diag.sh
+@@ -1,6 +1,8 @@
+ #!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
+ 
++. "$(dirname "${0}")/mptcp_lib.sh"
 +
- 		gfx_v10_cntl_pg(adev, enable);
--		amdgpu_gfx_off_ctrl(adev, enable);
+ rndh=$(printf %x $sec)-$(mktemp -u XXXXXX)
+ ns="ns1-$rndh"
+ ksft_skip=4
+@@ -25,6 +27,8 @@ cleanup()
+ 	ip netns del $ns
+ }
+ 
++mptcp_lib_check_mptcp
 +
-+		if (enable)
-+			amdgpu_gfx_off_ctrl(adev, true);
-+
- 		break;
- 	default:
- 		break;
+ ip -Version > /dev/null 2>&1
+ if [ $? -ne 0 ];then
+ 	echo "SKIP: Could not run test without ip tool"
 
 
