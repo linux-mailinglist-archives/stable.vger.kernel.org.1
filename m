@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB637726F88
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:59:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D02DD726C19
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:30:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234974AbjFGU7g (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:59:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60942 "EHLO
+        id S233766AbjFGUar (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:30:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235694AbjFGU72 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:59:28 -0400
+        with ESMTP id S233770AbjFGUag (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ADF71FFA
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:59:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AB34268F
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:30:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3030564858
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:58:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C55C433EF;
-        Wed,  7 Jun 2023 20:58:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0675864385
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:30:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2BAC433D2;
+        Wed,  7 Jun 2023 20:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171521;
-        bh=91vLaHtBCQnzHvJ11fomoUisvfcR9fX0CwlvC0mwOYE=;
+        s=korg; t=1686169818;
+        bh=Jie0xV3jJ4nif6u99ulOYa+bH3Us8mV21cmJQw4yb+g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p4Kf19sRRe1LkuCAnnZNwpMpR49fqGrBn4qqEduJPHnBifLOZ/81+2Kkbi3UrRSdE
-         PTPX1LBAfNsX4Q9wCIBwUBq4kLrA5HZYWUDmz4yfshzjjQTXroH3pM5QPawgsRdotN
-         bZfTg7jhZUru7h7WZK6PI6FbBAXFWLQRCD3AD2HU=
+        b=0aRmxW8zbTYKboTqWjFkqnq/QfeLMHb3JU9SDCQrnpCBn1bqkc1bzyrcigLiQKGzB
+         YzNMbM8FncxcAuYimcV1WLDNswi7GB2KyW8L2WdGixZxuNl30nkfpd9QXpPQWkmpLQ
+         M4yq9b2JRD1Qy9Va8sVLiCvF4EU6dPY+cPxnvIjU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mustafa Ismail <mustafa.ismail@intel.com>,
-        Shiraz Saleem <shiraz.saleem@intel.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 020/159] RDMA/irdma: Add SW mechanism to generate completions on error
+        patches@lists.linux.dev, Tim Huang <Tim.Huang@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.3 224/286] drm/amd/pm: reverse mclk and fclk clocks levels for renoir
 Date:   Wed,  7 Jun 2023 22:15:23 +0200
-Message-ID: <20230607200904.334592816@linuxfoundation.org>
+Message-ID: <20230607200930.595452526@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,461 +53,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mustafa Ismail <mustafa.ismail@intel.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-[ Upstream commit 81091d7696ae71627ff80bbf2c6b0986d2c1cce3 ]
+commit 55e02c14f9b5fd973ba32a16a715baa42617f9c6 upstream.
 
-HW flushes after QP in error state is not reliable. This can lead to
-   application hang waiting on a completion for outstanding WRs.  Implement a
-SW mechanism to generate completions for any outstanding WR's after the QP
-is modified to error.
+This patch reverses the DPM clocks levels output of pp_dpm_mclk
+and pp_dpm_fclk for renoir.
 
-This is accomplished by starting a delayed worker after the QP is modified
-to error and the HW flush is performed. The worker will generate
-completions that will be returned to the application when it polls the
-CQ. This mechanism only applies to Kernel applications.
+On dGPUs and older APUs we expose the levels from lowest clocks
+to highest clocks. But for some APUs, the clocks levels are
+given the reversed orders by PMFW. Like the memory DPM clocks
+that are exposed by pp_dpm_mclk.
 
-Link: https://lore.kernel.org/r/20220425181624.1617-1-shiraz.saleem@intel.com
-Signed-off-by: Mustafa Ismail <mustafa.ismail@intel.com>
-Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Stable-dep-of: c8f304d75f6c ("RDMA/irdma: Prevent QP use after free")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It's not intuitive that they are reversed on these APUs. All tools
+and software that talks to the driver then has to know different ways
+to interpret the data depending on the asic.
+
+So we need to reverse them to expose the clocks levels from the
+driver consistently.
+
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/irdma/hw.c    |  31 +++---
- drivers/infiniband/hw/irdma/utils.c | 147 ++++++++++++++++++++++++++++
- drivers/infiniband/hw/irdma/verbs.c |  56 ++++++-----
- drivers/infiniband/hw/irdma/verbs.h |  13 ++-
- 4 files changed, 210 insertions(+), 37 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu12/renoir_ppt.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/hw.c b/drivers/infiniband/hw/irdma/hw.c
-index 3b070cb3c4da7..2159470d7f7f4 100644
---- a/drivers/infiniband/hw/irdma/hw.c
-+++ b/drivers/infiniband/hw/irdma/hw.c
-@@ -62,7 +62,7 @@ static void irdma_iwarp_ce_handler(struct irdma_sc_cq *iwcq)
- 	struct irdma_cq *cq = iwcq->back_cq;
- 
- 	if (!cq->user_mode)
--		cq->armed = false;
-+		atomic_set(&cq->armed, 0);
- 	if (cq->ibcq.comp_handler)
- 		cq->ibcq.comp_handler(&cq->ibcq, cq->ibcq.cq_context);
- }
-@@ -2711,24 +2711,29 @@ void irdma_flush_wqes(struct irdma_qp *iwqp, u32 flush_mask)
- 	info.sq = flush_mask & IRDMA_FLUSH_SQ;
- 	info.rq = flush_mask & IRDMA_FLUSH_RQ;
- 
--	if (flush_mask & IRDMA_REFLUSH) {
--		if (info.sq)
--			iwqp->sc_qp.flush_sq = false;
--		if (info.rq)
--			iwqp->sc_qp.flush_rq = false;
--	}
--
- 	/* Generate userflush errors in CQE */
- 	info.sq_major_code = IRDMA_FLUSH_MAJOR_ERR;
- 	info.sq_minor_code = FLUSH_GENERAL_ERR;
- 	info.rq_major_code = IRDMA_FLUSH_MAJOR_ERR;
- 	info.rq_minor_code = FLUSH_GENERAL_ERR;
- 	info.userflushcode = true;
--	if (flush_code) {
--		if (info.sq && iwqp->sc_qp.sq_flush_code)
--			info.sq_minor_code = flush_code;
--		if (info.rq && iwqp->sc_qp.rq_flush_code)
--			info.rq_minor_code = flush_code;
-+
-+	if (flush_mask & IRDMA_REFLUSH) {
-+		if (info.sq)
-+			iwqp->sc_qp.flush_sq = false;
-+		if (info.rq)
-+			iwqp->sc_qp.flush_rq = false;
-+	} else {
-+		if (flush_code) {
-+			if (info.sq && iwqp->sc_qp.sq_flush_code)
-+				info.sq_minor_code = flush_code;
-+			if (info.rq && iwqp->sc_qp.rq_flush_code)
-+				info.rq_minor_code = flush_code;
-+		}
-+		if (!iwqp->user_mode)
-+			queue_delayed_work(iwqp->iwdev->cleanup_wq,
-+					   &iwqp->dwork_flush,
-+					   msecs_to_jiffies(IRDMA_FLUSH_DELAY_MS));
- 	}
- 
- 	/* Issue flush */
-diff --git a/drivers/infiniband/hw/irdma/utils.c b/drivers/infiniband/hw/irdma/utils.c
-index db7d0a3000699..af4034aabaca5 100644
---- a/drivers/infiniband/hw/irdma/utils.c
-+++ b/drivers/infiniband/hw/irdma/utils.c
-@@ -2558,3 +2558,150 @@ bool irdma_cq_empty(struct irdma_cq *iwcq)
- 
- 	return polarity != ukcq->polarity;
- }
-+
-+void irdma_remove_cmpls_list(struct irdma_cq *iwcq)
-+{
-+	struct irdma_cmpl_gen *cmpl_node;
-+	struct list_head *tmp_node, *list_node;
-+
-+	list_for_each_safe (list_node, tmp_node, &iwcq->cmpl_generated) {
-+		cmpl_node = list_entry(list_node, struct irdma_cmpl_gen, list);
-+		list_del(&cmpl_node->list);
-+		kfree(cmpl_node);
-+	}
-+}
-+
-+int irdma_generated_cmpls(struct irdma_cq *iwcq, struct irdma_cq_poll_info *cq_poll_info)
-+{
-+	struct irdma_cmpl_gen *cmpl;
-+
-+	if (list_empty(&iwcq->cmpl_generated))
-+		return -ENOENT;
-+	cmpl = list_first_entry_or_null(&iwcq->cmpl_generated, struct irdma_cmpl_gen, list);
-+	list_del(&cmpl->list);
-+	memcpy(cq_poll_info, &cmpl->cpi, sizeof(*cq_poll_info));
-+	kfree(cmpl);
-+
-+	ibdev_dbg(iwcq->ibcq.device,
-+		  "VERBS: %s: Poll artificially generated completion for QP 0x%X, op %u, wr_id=0x%llx\n",
-+		  __func__, cq_poll_info->qp_id, cq_poll_info->op_type,
-+		  cq_poll_info->wr_id);
-+
-+	return 0;
-+}
-+
-+/**
-+ * irdma_set_cpi_common_values - fill in values for polling info struct
-+ * @cpi: resulting structure of cq_poll_info type
-+ * @qp: QPair
-+ * @qp_num: id of the QP
-+ */
-+static void irdma_set_cpi_common_values(struct irdma_cq_poll_info *cpi,
-+					struct irdma_qp_uk *qp, u32 qp_num)
-+{
-+	cpi->comp_status = IRDMA_COMPL_STATUS_FLUSHED;
-+	cpi->error = true;
-+	cpi->major_err = IRDMA_FLUSH_MAJOR_ERR;
-+	cpi->minor_err = FLUSH_GENERAL_ERR;
-+	cpi->qp_handle = (irdma_qp_handle)(uintptr_t)qp;
-+	cpi->qp_id = qp_num;
-+}
-+
-+static inline void irdma_comp_handler(struct irdma_cq *cq)
-+{
-+	if (!cq->ibcq.comp_handler)
-+		return;
-+	if (atomic_cmpxchg(&cq->armed, 1, 0))
-+		cq->ibcq.comp_handler(&cq->ibcq, cq->ibcq.cq_context);
-+}
-+
-+void irdma_generate_flush_completions(struct irdma_qp *iwqp)
-+{
-+	struct irdma_qp_uk *qp = &iwqp->sc_qp.qp_uk;
-+	struct irdma_ring *sq_ring = &qp->sq_ring;
-+	struct irdma_ring *rq_ring = &qp->rq_ring;
-+	struct irdma_cmpl_gen *cmpl;
-+	__le64 *sw_wqe;
-+	u64 wqe_qword;
-+	u32 wqe_idx;
-+	bool compl_generated = false;
-+	unsigned long flags1;
-+
-+	spin_lock_irqsave(&iwqp->iwscq->lock, flags1);
-+	if (irdma_cq_empty(iwqp->iwscq)) {
-+		unsigned long flags2;
-+
-+		spin_lock_irqsave(&iwqp->lock, flags2);
-+		while (IRDMA_RING_MORE_WORK(*sq_ring)) {
-+			cmpl = kzalloc(sizeof(*cmpl), GFP_ATOMIC);
-+			if (!cmpl) {
-+				spin_unlock_irqrestore(&iwqp->lock, flags2);
-+				spin_unlock_irqrestore(&iwqp->iwscq->lock, flags1);
-+				return;
-+			}
-+
-+			wqe_idx = sq_ring->tail;
-+			irdma_set_cpi_common_values(&cmpl->cpi, qp, qp->qp_id);
-+
-+			cmpl->cpi.wr_id = qp->sq_wrtrk_array[wqe_idx].wrid;
-+			sw_wqe = qp->sq_base[wqe_idx].elem;
-+			get_64bit_val(sw_wqe, 24, &wqe_qword);
-+			cmpl->cpi.op_type = (u8)FIELD_GET(IRDMAQPSQ_OPCODE, IRDMAQPSQ_OPCODE);
-+			/* remove the SQ WR by moving SQ tail*/
-+			IRDMA_RING_SET_TAIL(*sq_ring,
-+				sq_ring->tail + qp->sq_wrtrk_array[sq_ring->tail].quanta);
-+
-+			ibdev_dbg(iwqp->iwscq->ibcq.device,
-+				  "DEV: %s: adding wr_id = 0x%llx SQ Completion to list qp_id=%d\n",
-+				  __func__, cmpl->cpi.wr_id, qp->qp_id);
-+			list_add_tail(&cmpl->list, &iwqp->iwscq->cmpl_generated);
-+			compl_generated = true;
-+		}
-+		spin_unlock_irqrestore(&iwqp->lock, flags2);
-+		spin_unlock_irqrestore(&iwqp->iwscq->lock, flags1);
-+		if (compl_generated)
-+			irdma_comp_handler(iwqp->iwrcq);
-+	} else {
-+		spin_unlock_irqrestore(&iwqp->iwscq->lock, flags1);
-+		mod_delayed_work(iwqp->iwdev->cleanup_wq, &iwqp->dwork_flush,
-+				 msecs_to_jiffies(IRDMA_FLUSH_DELAY_MS));
-+	}
-+
-+	spin_lock_irqsave(&iwqp->iwrcq->lock, flags1);
-+	if (irdma_cq_empty(iwqp->iwrcq)) {
-+		unsigned long flags2;
-+
-+		spin_lock_irqsave(&iwqp->lock, flags2);
-+		while (IRDMA_RING_MORE_WORK(*rq_ring)) {
-+			cmpl = kzalloc(sizeof(*cmpl), GFP_ATOMIC);
-+			if (!cmpl) {
-+				spin_unlock_irqrestore(&iwqp->lock, flags2);
-+				spin_unlock_irqrestore(&iwqp->iwrcq->lock, flags1);
-+				return;
-+			}
-+
-+			wqe_idx = rq_ring->tail;
-+			irdma_set_cpi_common_values(&cmpl->cpi, qp, qp->qp_id);
-+
-+			cmpl->cpi.wr_id = qp->rq_wrid_array[wqe_idx];
-+			cmpl->cpi.op_type = IRDMA_OP_TYPE_REC;
-+			/* remove the RQ WR by moving RQ tail */
-+			IRDMA_RING_SET_TAIL(*rq_ring, rq_ring->tail + 1);
-+			ibdev_dbg(iwqp->iwrcq->ibcq.device,
-+				  "DEV: %s: adding wr_id = 0x%llx RQ Completion to list qp_id=%d, wqe_idx=%d\n",
-+				  __func__, cmpl->cpi.wr_id, qp->qp_id,
-+				  wqe_idx);
-+			list_add_tail(&cmpl->list, &iwqp->iwrcq->cmpl_generated);
-+
-+			compl_generated = true;
-+		}
-+		spin_unlock_irqrestore(&iwqp->lock, flags2);
-+		spin_unlock_irqrestore(&iwqp->iwrcq->lock, flags1);
-+		if (compl_generated)
-+			irdma_comp_handler(iwqp->iwrcq);
-+	} else {
-+		spin_unlock_irqrestore(&iwqp->iwrcq->lock, flags1);
-+		mod_delayed_work(iwqp->iwdev->cleanup_wq, &iwqp->dwork_flush,
-+				 msecs_to_jiffies(IRDMA_FLUSH_DELAY_MS));
-+	}
-+}
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index 27f22d595a5dc..e4c5fe4aa806a 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -506,6 +506,9 @@ static int irdma_destroy_qp(struct ib_qp *ibqp, struct ib_udata *udata)
- 	if (iwqp->iwarp_state == IRDMA_QP_STATE_RTS)
- 		irdma_modify_qp_to_err(&iwqp->sc_qp);
- 
-+	if (!iwqp->user_mode)
-+		cancel_delayed_work_sync(&iwqp->dwork_flush);
-+
- 	irdma_qp_rem_ref(&iwqp->ibqp);
- 	wait_for_completion(&iwqp->free_qp);
- 	irdma_free_lsmm_rsrc(iwqp);
-@@ -761,6 +764,14 @@ static int irdma_validate_qp_attrs(struct ib_qp_init_attr *init_attr,
- 	return 0;
- }
- 
-+static void irdma_flush_worker(struct work_struct *work)
-+{
-+	struct delayed_work *dwork = to_delayed_work(work);
-+	struct irdma_qp *iwqp = container_of(dwork, struct irdma_qp, dwork_flush);
-+
-+	irdma_generate_flush_completions(iwqp);
-+}
-+
- /**
-  * irdma_create_qp - create qp
-  * @ibqp: ptr of qp
-@@ -882,6 +893,7 @@ static int irdma_create_qp(struct ib_qp *ibqp,
- 		init_info.qp_uk_init_info.abi_ver = iwpd->sc_pd.abi_ver;
- 		irdma_setup_virt_qp(iwdev, iwqp, &init_info);
- 	} else {
-+		INIT_DELAYED_WORK(&iwqp->dwork_flush, irdma_flush_worker);
- 		init_info.qp_uk_init_info.abi_ver = IRDMA_ABI_VER;
- 		err_code = irdma_setup_kmode_qp(iwdev, iwqp, &init_info, init_attr);
- 	}
-@@ -1371,11 +1383,11 @@ int irdma_modify_qp_roce(struct ib_qp *ibqp, struct ib_qp_attr *attr,
- 			}
- 			if (iwqp->ibqp_state > IB_QPS_RTS &&
- 			    !iwqp->flush_issued) {
--				iwqp->flush_issued = 1;
- 				spin_unlock_irqrestore(&iwqp->lock, flags);
- 				irdma_flush_wqes(iwqp, IRDMA_FLUSH_SQ |
- 						       IRDMA_FLUSH_RQ |
- 						       IRDMA_FLUSH_WAIT);
-+				iwqp->flush_issued = 1;
- 			} else {
- 				spin_unlock_irqrestore(&iwqp->lock, flags);
- 			}
-@@ -1728,6 +1740,8 @@ static int irdma_destroy_cq(struct ib_cq *ib_cq, struct ib_udata *udata)
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(&iwcq->lock, flags);
-+	if (!list_empty(&iwcq->cmpl_generated))
-+		irdma_remove_cmpls_list(iwcq);
- 	if (!list_empty(&iwcq->resize_list))
- 		irdma_process_resize_list(iwcq, iwdev, NULL);
- 	spin_unlock_irqrestore(&iwcq->lock, flags);
-@@ -1936,6 +1950,7 @@ static int irdma_create_cq(struct ib_cq *ibcq,
- 	cq->back_cq = iwcq;
- 	spin_lock_init(&iwcq->lock);
- 	INIT_LIST_HEAD(&iwcq->resize_list);
-+	INIT_LIST_HEAD(&iwcq->cmpl_generated);
- 	info.dev = dev;
- 	ukinfo->cq_size = max(entries, 4);
- 	ukinfo->cq_id = cq_num;
-@@ -3046,15 +3061,12 @@ static int irdma_post_send(struct ib_qp *ibqp,
- 	unsigned long flags;
- 	bool inv_stag;
- 	struct irdma_ah *ah;
--	bool reflush = false;
- 
- 	iwqp = to_iwqp(ibqp);
- 	ukqp = &iwqp->sc_qp.qp_uk;
- 	dev = &iwqp->iwdev->rf->sc_dev;
- 
- 	spin_lock_irqsave(&iwqp->lock, flags);
--	if (iwqp->flush_issued && ukqp->sq_flush_complete)
--		reflush = true;
- 	while (ib_wr) {
- 		memset(&info, 0, sizeof(info));
- 		inv_stag = false;
-@@ -3227,15 +3239,14 @@ static int irdma_post_send(struct ib_qp *ibqp,
- 		ib_wr = ib_wr->next;
- 	}
- 
--	if (!iwqp->flush_issued && iwqp->hw_iwarp_state <= IRDMA_QP_STATE_RTS) {
--		irdma_uk_qp_post_wr(ukqp);
-+	if (!iwqp->flush_issued) {
-+		if (iwqp->hw_iwarp_state <= IRDMA_QP_STATE_RTS)
-+			irdma_uk_qp_post_wr(ukqp);
- 		spin_unlock_irqrestore(&iwqp->lock, flags);
--	} else if (reflush) {
--		ukqp->sq_flush_complete = false;
--		spin_unlock_irqrestore(&iwqp->lock, flags);
--		irdma_flush_wqes(iwqp, IRDMA_FLUSH_SQ | IRDMA_REFLUSH);
- 	} else {
- 		spin_unlock_irqrestore(&iwqp->lock, flags);
-+		mod_delayed_work(iwqp->iwdev->cleanup_wq, &iwqp->dwork_flush,
-+				 msecs_to_jiffies(IRDMA_FLUSH_DELAY_MS));
- 	}
- 	if (err)
- 		*bad_wr = ib_wr;
-@@ -3260,14 +3271,11 @@ static int irdma_post_recv(struct ib_qp *ibqp,
- 	enum irdma_status_code ret = 0;
- 	unsigned long flags;
- 	int err = 0;
--	bool reflush = false;
- 
- 	iwqp = to_iwqp(ibqp);
- 	ukqp = &iwqp->sc_qp.qp_uk;
- 
- 	spin_lock_irqsave(&iwqp->lock, flags);
--	if (iwqp->flush_issued && ukqp->rq_flush_complete)
--		reflush = true;
- 	while (ib_wr) {
- 		post_recv.num_sges = ib_wr->num_sge;
- 		post_recv.wr_id = ib_wr->wr_id;
-@@ -3288,13 +3296,10 @@ static int irdma_post_recv(struct ib_qp *ibqp,
- 	}
- 
- out:
--	if (reflush) {
--		ukqp->rq_flush_complete = false;
--		spin_unlock_irqrestore(&iwqp->lock, flags);
--		irdma_flush_wqes(iwqp, IRDMA_FLUSH_RQ | IRDMA_REFLUSH);
--	} else {
--		spin_unlock_irqrestore(&iwqp->lock, flags);
--	}
-+	spin_unlock_irqrestore(&iwqp->lock, flags);
-+	if (iwqp->flush_issued)
-+		mod_delayed_work(iwqp->iwdev->cleanup_wq, &iwqp->dwork_flush,
-+				 msecs_to_jiffies(IRDMA_FLUSH_DELAY_MS));
- 
- 	if (err)
- 		*bad_wr = ib_wr;
-@@ -3508,6 +3513,11 @@ static int __irdma_poll_cq(struct irdma_cq *iwcq, int num_entries, struct ib_wc
- 	/* check the current CQ for new cqes */
- 	while (npolled < num_entries) {
- 		ret = irdma_poll_one(ukcq, cur_cqe, entry + npolled);
-+		if (ret == -ENOENT) {
-+			ret = irdma_generated_cmpls(iwcq, cur_cqe);
-+			if (!ret)
-+				irdma_process_cqe(entry + npolled, cur_cqe);
-+		}
- 		if (!ret) {
- 			++npolled;
- 			cq_new_cqe = true;
-@@ -3589,13 +3599,13 @@ static int irdma_req_notify_cq(struct ib_cq *ibcq,
- 	if (iwcq->last_notify == IRDMA_CQ_COMPL_SOLICITED && notify_flags != IB_CQ_SOLICITED)
- 		promo_event = true;
- 
--	if (!iwcq->armed || promo_event) {
--		iwcq->armed = true;
-+	if (!atomic_cmpxchg(&iwcq->armed, 0, 1) || promo_event) {
- 		iwcq->last_notify = cq_notify;
- 		irdma_uk_cq_request_notification(ukcq, cq_notify);
- 	}
- 
--	if ((notify_flags & IB_CQ_REPORT_MISSED_EVENTS) && !irdma_cq_empty(iwcq))
-+	if ((notify_flags & IB_CQ_REPORT_MISSED_EVENTS) &&
-+	    (!irdma_cq_empty(iwcq) || !list_empty(&iwcq->cmpl_generated)))
- 		ret = 1;
- 	spin_unlock_irqrestore(&iwcq->lock, flags);
- 
-diff --git a/drivers/infiniband/hw/irdma/verbs.h b/drivers/infiniband/hw/irdma/verbs.h
-index d0fdef8d09ead..5af3c8e9b3941 100644
---- a/drivers/infiniband/hw/irdma/verbs.h
-+++ b/drivers/infiniband/hw/irdma/verbs.h
-@@ -4,6 +4,7 @@
- #define IRDMA_VERBS_H
- 
- #define IRDMA_MAX_SAVED_PHY_PGADDR	4
-+#define IRDMA_FLUSH_DELAY_MS		20
- 
- #define IRDMA_PKEY_TBL_SZ		1
- #define IRDMA_DEFAULT_PKEY		0xFFFF
-@@ -110,7 +111,7 @@ struct irdma_cq {
- 	u16 cq_size;
- 	u16 cq_num;
- 	bool user_mode;
--	bool armed;
-+	atomic_t armed;
- 	enum irdma_cmpl_notify last_notify;
- 	u32 polled_cmpls;
- 	u32 cq_mem_size;
-@@ -121,6 +122,12 @@ struct irdma_cq {
- 	struct irdma_pbl *iwpbl_shadow;
- 	struct list_head resize_list;
- 	struct irdma_cq_poll_info cur_cqe;
-+	struct list_head cmpl_generated;
-+};
-+
-+struct irdma_cmpl_gen {
-+	struct list_head list;
-+	struct irdma_cq_poll_info cpi;
- };
- 
- struct disconn_work {
-@@ -161,6 +168,7 @@ struct irdma_qp {
- 	refcount_t refcnt;
- 	struct iw_cm_id *cm_id;
- 	struct irdma_cm_node *cm_node;
-+	struct delayed_work dwork_flush;
- 	struct ib_mr *lsmm_mr;
- 	atomic_t hw_mod_qp_pend;
- 	enum ib_qp_state ibqp_state;
-@@ -224,4 +232,7 @@ int irdma_ib_register_device(struct irdma_device *iwdev);
- void irdma_ib_unregister_device(struct irdma_device *iwdev);
- void irdma_ib_dealloc_device(struct ib_device *ibdev);
- void irdma_ib_qp_event(struct irdma_qp *iwqp, enum irdma_qp_event_type event);
-+void irdma_generate_flush_completions(struct irdma_qp *iwqp);
-+void irdma_remove_cmpls_list(struct irdma_cq *iwcq);
-+int irdma_generated_cmpls(struct irdma_cq *iwcq, struct irdma_cq_poll_info *cq_poll_info);
- #endif /* IRDMA_VERBS_H */
--- 
-2.39.2
-
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu12/renoir_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu12/renoir_ppt.c
+@@ -494,7 +494,7 @@ static int renoir_set_fine_grain_gfx_fre
+ static int renoir_print_clk_levels(struct smu_context *smu,
+ 			enum smu_clk_type clk_type, char *buf)
+ {
+-	int i, size = 0, ret = 0;
++	int i, idx, size = 0, ret = 0;
+ 	uint32_t cur_value = 0, value = 0, count = 0, min = 0, max = 0;
+ 	SmuMetrics_t metrics;
+ 	struct smu_dpm_context *smu_dpm_ctx = &(smu->smu_dpm);
+@@ -594,7 +594,8 @@ static int renoir_print_clk_levels(struc
+ 	case SMU_VCLK:
+ 	case SMU_DCLK:
+ 		for (i = 0; i < count; i++) {
+-			ret = renoir_get_dpm_clk_limited(smu, clk_type, i, &value);
++			idx = (clk_type == SMU_FCLK || clk_type == SMU_MCLK) ? (count - i - 1) : i;
++			ret = renoir_get_dpm_clk_limited(smu, clk_type, idx, &value);
+ 			if (ret)
+ 				return ret;
+ 			if (!value)
 
 
