@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EA39726D6F
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:42:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 620C0726F4B
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:57:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234473AbjFGUmB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:42:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41758 "EHLO
+        id S235579AbjFGU5S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:57:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234429AbjFGUl4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:41:56 -0400
+        with ESMTP id S235617AbjFGU5J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:57:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0F1CFC
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:41:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E62691BE4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:57:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 843316462B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:41:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 865E6C433AE;
-        Wed,  7 Jun 2023 20:41:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7BDAA61E86
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:57:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC07C433D2;
+        Wed,  7 Jun 2023 20:57:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170513;
-        bh=acW1qiHrQqM36W5UXTucE6aUj/+jiS5DlZt1Y0XGrx4=;
+        s=korg; t=1686171426;
+        bh=KOeXA22bMnHuqoAcnMaDevC121E48LyJ6l8G9Qs8GUU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x2CVmf/YSpjKVBCy7puytMgNeJ5HSDgS71IrnYLbign+SnOmjizZ6ufi0ZA33N6sE
-         BWba24MgUICxsPKZ5WYsDmqN4aYP3N4oBkNamr2Pw+UmgmZWQYnmL2Mc+WZc4u4TtD
-         v1pRMSBT4qX7dAPlwxE++Ic5v3/6IRxQEOif2CrY=
+        b=0/mwh4TFu9Zx4Mf7WDuLTJ+1RD5luj3XGrphlQI1+OQFKDimAcK3idQzHX5CnVwMY
+         /RKwEWgLImbjxX764WGchpzMQbCn1ekJWBLi/2M6EBY5oTU0fZM8KEi/GCblAaTguS
+         SBQCPF9z91LNe2LnwPXp2e0s8P/oKb7usTaT2Ky0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
+        Chengchang Tang <tangchengchang@huawei.com>,
+        Junxian Huang <huangjunxian6@hisilicon.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 113/225] ARM: dts: stm32: add pin map for CAN controller on stm32f7
+Subject: [PATCH 5.15 003/159] RDMA/hns: Fix base address table allocation
 Date:   Wed,  7 Jun 2023 22:15:06 +0200
-Message-ID: <20230607200918.070968014@linuxfoundation.org>
+Message-ID: <20230607200903.783226615@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,113 +56,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit 011644249686f2675e142519cd59e81e04cfc231 ]
+[ Upstream commit 7f3969b14f356dd65fa95b3528eb05c32e68bc06 ]
 
-Add pin configurations for using CAN controller on stm32f7.
+For hns, the specification of an entry like resource (E.g. WQE/CQE/EQE)
+depends on BT page size, buf page size and hopnum. For user mode, the buf
+page size depends on UMEM. Therefore, the actual specification is
+controlled by BT page size and hopnum.
 
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Link: https://lore.kernel.org/all/20230427204540.3126234-4-dario.binacchi@amarulasolutions.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+The current BT page size and hopnum are obtained from firmware. This makes
+the driver inflexible and introduces unnecessary constraints.  Resource
+allocation failures occur in many scenarios.
+
+This patch will calculate whether the BT page size set by firmware is
+sufficient before allocating BT, and increase the BT page size if it is
+insufficient.
+
+Fixes: 1133401412a9 ("RDMA/hns: Optimize base address table config flow for qp buffer")
+Link: https://lore.kernel.org/r/20230512092245.344442-3-huangjunxian6@hisilicon.com
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/stm32f7-pinctrl.dtsi | 82 ++++++++++++++++++++++++++
- 1 file changed, 82 insertions(+)
+ drivers/infiniband/hw/hns/hns_roce_mr.c | 43 +++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
-diff --git a/arch/arm/boot/dts/stm32f7-pinctrl.dtsi b/arch/arm/boot/dts/stm32f7-pinctrl.dtsi
-index 8f37aefa73150..000278ec2c58f 100644
---- a/arch/arm/boot/dts/stm32f7-pinctrl.dtsi
-+++ b/arch/arm/boot/dts/stm32f7-pinctrl.dtsi
-@@ -284,6 +284,88 @@
- 					slew-rate = <2>;
- 				};
- 			};
+diff --git a/drivers/infiniband/hw/hns/hns_roce_mr.c b/drivers/infiniband/hw/hns/hns_roce_mr.c
+index a593c142cd6ba..12c482f4a1c48 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_mr.c
++++ b/drivers/infiniband/hw/hns/hns_roce_mr.c
+@@ -34,6 +34,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/vmalloc.h>
+ #include <rdma/ib_umem.h>
++#include <linux/math.h>
+ #include "hns_roce_device.h"
+ #include "hns_roce_cmd.h"
+ #include "hns_roce_hem.h"
+@@ -938,6 +939,44 @@ static int mtr_init_buf_cfg(struct hns_roce_dev *hr_dev,
+ 	return page_cnt;
+ }
+ 
++static u64 cal_pages_per_l1ba(unsigned int ba_per_bt, unsigned int hopnum)
++{
++	return int_pow(ba_per_bt, hopnum - 1);
++}
 +
-+			can1_pins_a: can1-0 {
-+				pins1 {
-+					pinmux = <STM32_PINMUX('A', 12, AF9)>; /* CAN1_TX */
-+				};
-+				pins2 {
-+					pinmux = <STM32_PINMUX('A', 11, AF9)>; /* CAN1_RX */
-+					bias-pull-up;
-+				};
-+			};
++static unsigned int cal_best_bt_pg_sz(struct hns_roce_dev *hr_dev,
++				      struct hns_roce_mtr *mtr,
++				      unsigned int pg_shift)
++{
++	unsigned long cap = hr_dev->caps.page_size_cap;
++	struct hns_roce_buf_region *re;
++	unsigned int pgs_per_l1ba;
++	unsigned int ba_per_bt;
++	unsigned int ba_num;
++	int i;
 +
-+			can1_pins_b: can1-1 {
-+				pins1 {
-+					pinmux = <STM32_PINMUX('B', 9, AF9)>; /* CAN1_TX */
-+				};
-+				pins2 {
-+					pinmux = <STM32_PINMUX('B', 8, AF9)>; /* CAN1_RX */
-+					bias-pull-up;
-+				};
-+			};
++	for_each_set_bit_from(pg_shift, &cap, sizeof(cap) * BITS_PER_BYTE) {
++		if (!(BIT(pg_shift) & cap))
++			continue;
 +
-+			can1_pins_c: can1-2 {
-+				pins1 {
-+					pinmux = <STM32_PINMUX('D', 1, AF9)>; /* CAN1_TX */
-+				};
-+				pins2 {
-+					pinmux = <STM32_PINMUX('D', 0, AF9)>; /* CAN1_RX */
-+					bias-pull-up;
++		ba_per_bt = BIT(pg_shift) / BA_BYTE_LEN;
++		ba_num = 0;
++		for (i = 0; i < mtr->hem_cfg.region_count; i++) {
++			re = &mtr->hem_cfg.region[i];
++			if (re->hopnum == 0)
++				continue;
 +
-+				};
-+			};
++			pgs_per_l1ba = cal_pages_per_l1ba(ba_per_bt, re->hopnum);
++			ba_num += DIV_ROUND_UP(re->count, pgs_per_l1ba);
++		}
 +
-+			can1_pins_d: can1-3 {
-+				pins1 {
-+					pinmux = <STM32_PINMUX('H', 13, AF9)>; /* CAN1_TX */
-+				};
-+				pins2 {
-+					pinmux = <STM32_PINMUX('H', 14, AF9)>; /* CAN1_RX */
-+					bias-pull-up;
++		if (ba_num <= ba_per_bt)
++			return pg_shift;
++	}
 +
-+				};
-+			};
++	return 0;
++}
 +
-+			can2_pins_a: can2-0 {
-+				pins1 {
-+					pinmux = <STM32_PINMUX('B', 6, AF9)>; /* CAN2_TX */
-+				};
-+				pins2 {
-+					pinmux = <STM32_PINMUX('B', 5, AF9)>; /* CAN2_RX */
-+					bias-pull-up;
-+				};
-+			};
+ static int mtr_alloc_mtt(struct hns_roce_dev *hr_dev, struct hns_roce_mtr *mtr,
+ 			 unsigned int ba_page_shift)
+ {
+@@ -946,6 +985,10 @@ static int mtr_alloc_mtt(struct hns_roce_dev *hr_dev, struct hns_roce_mtr *mtr,
+ 
+ 	hns_roce_hem_list_init(&mtr->hem_list);
+ 	if (!cfg->is_direct) {
++		ba_page_shift = cal_best_bt_pg_sz(hr_dev, mtr, ba_page_shift);
++		if (!ba_page_shift)
++			return -ERANGE;
 +
-+			can2_pins_b: can2-1 {
-+				pins1 {
-+					pinmux = <STM32_PINMUX('B', 13, AF9)>; /* CAN2_TX */
-+				};
-+				pins2 {
-+					pinmux = <STM32_PINMUX('B', 12, AF9)>; /* CAN2_RX */
-+					bias-pull-up;
-+				};
-+			};
-+
-+			can3_pins_a: can3-0 {
-+				pins1 {
-+					pinmux = <STM32_PINMUX('A', 15, AF11)>; /* CAN3_TX */
-+				};
-+				pins2 {
-+					pinmux = <STM32_PINMUX('A', 8, AF11)>; /* CAN3_RX */
-+					bias-pull-up;
-+				};
-+			};
-+
-+			can3_pins_b: can3-1 {
-+				pins1 {
-+					pinmux = <STM32_PINMUX('B', 4, AF11)>;  /* CAN3_TX */
-+				};
-+				pins2 {
-+					pinmux = <STM32_PINMUX('B', 3, AF11)>; /* CAN3_RX */
-+					bias-pull-up;
-+				};
-+			};
- 		};
- 	};
- };
+ 		ret = hns_roce_hem_list_request(hr_dev, &mtr->hem_list,
+ 						cfg->region, cfg->region_count,
+ 						ba_page_shift);
 -- 
 2.39.2
 
