@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 187C9726E86
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:51:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4192726FC7
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:01:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235158AbjFGUvJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:51:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51590 "EHLO
+        id S235864AbjFGVBq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:01:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235224AbjFGUuv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:50:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9049FFC
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:50:40 -0700 (PDT)
+        with ESMTP id S235971AbjFGVBT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:01:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E85C2737
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:00:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DCE7F64714
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:50:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA6FEC433EF;
-        Wed,  7 Jun 2023 20:50:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AA41A64901
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:00:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBCA5C433EF;
+        Wed,  7 Jun 2023 21:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171039;
-        bh=k87Tmf5cJh/XYC2LnSDfEVGEMXUyn4fGbV50Ai0gCqI=;
+        s=korg; t=1686171658;
+        bh=/0qqzz2fl+uzc9k5w7xO/pOxZzmLbxq8Uj5Pdx0I/Fs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x1Sf7kNGZTiYeZMNzEtdwUEo3vSBklVdEgwghIBKJJ6f2I1iwvsbNT97XUraAhA/6
-         x5dcfsnHUCiqCx/kQXbU0XYySjL+qgx9IRVD3O8TECH6cnfugXzGcY9FTag6JSIx52
-         4IGkcYS3rZmWKAmjCRwp7ufAi8jGdEt/r4++cW0I=
+        b=ODyo2q+ucCvNu7XX+vZDz/QQA+AGRkt7Gw5K2CutWOrL2ROvjOtUtaDAbeeKYJ4x0
+         q6x1aEO5A8oQeEOISE3hWn2zDMM+C3v4C4Dbq9YMZD+R276i6LiERjevPUDGbb30gL
+         DQCY5QkelyCAtmKjZjJaZBTpLS7LccTkv0dB5Ra0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>,
-        Borislav Petkov <bp@suse.de>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.10 087/120] x86/boot: Wrap literal addresses in absolute_pointer()
-Date:   Wed,  7 Jun 2023 22:16:43 +0200
-Message-ID: <20230607200903.636612591@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 101/159] iio: imu: inv_icm42600: fix timestamp reset
+Date:   Wed,  7 Jun 2023 22:16:44 +0200
+Message-ID: <20230607200906.989130101@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,141 +54,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kees Cook <keescook@chromium.org>
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-commit aeb84412037b89e06f45e382f044da6f200e12f8 upstream.
+commit bbaae0c79ebd49f61ad942a8bf9e12bfc7f821bb upstream.
 
-GCC 11 (incorrectly[1]) assumes that literal values cast to (void *)
-should be treated like a NULL pointer with an offset, and raises
-diagnostics when doing bounds checking under -Warray-bounds. GCC 12
-got "smarter" about finding these:
+Timestamp reset is not done in the correct place. It must be done
+before enabling buffer. The reason is that interrupt timestamping
+is always happening when the chip is on, even if the
+corresponding sensor is off. When the sensor restarts, timestamp
+is wrong if you don't do a reset first.
 
-  In function 'rdfs8',
-      inlined from 'vga_recalc_vertical' at /srv/code/arch/x86/boot/video-mode.c:124:29,
-      inlined from 'set_mode' at /srv/code/arch/x86/boot/video-mode.c:163:3:
-  /srv/code/arch/x86/boot/boot.h:114:9: warning: array subscript 0 is outside array bounds of 'u8[0]' {aka 'unsigned char[]'} [-Warray-bounds]
-    114 |         asm volatile("movb %%fs:%1,%0" : "=q" (v) : "m" (*(u8 *)addr));
-        |         ^~~
-
-This has been solved in other places[2] already by using the recently
-added absolute_pointer() macro. Do the same here.
-
-  [1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99578
-  [2] https://lore.kernel.org/all/20210912160149.2227137-1-linux@roeck-us.net/
-
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20220227195918.705219-1-keescook@chromium.org
+Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230509152202.245444-1-inv.git-commit@tdk.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/boot.h |   36 ++++++++++++++++++++++++------------
- arch/x86/boot/main.c |    2 +-
- 2 files changed, 25 insertions(+), 13 deletions(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/arch/x86/boot/boot.h
-+++ b/arch/x86/boot/boot.h
-@@ -110,66 +110,78 @@ typedef unsigned int addr_t;
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+@@ -275,9 +275,14 @@ static int inv_icm42600_buffer_preenable
+ {
+ 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+ 	struct device *dev = regmap_get_device(st->map);
++	struct inv_icm42600_timestamp *ts = iio_priv(indio_dev);
  
- static inline u8 rdfs8(addr_t addr)
- {
-+	u8 *ptr = (u8 *)absolute_pointer(addr);
- 	u8 v;
--	asm volatile("movb %%fs:%1,%0" : "=q" (v) : "m" (*(u8 *)addr));
-+	asm volatile("movb %%fs:%1,%0" : "=q" (v) : "m" (*ptr));
- 	return v;
- }
- static inline u16 rdfs16(addr_t addr)
- {
-+	u16 *ptr = (u16 *)absolute_pointer(addr);
- 	u16 v;
--	asm volatile("movw %%fs:%1,%0" : "=r" (v) : "m" (*(u16 *)addr));
-+	asm volatile("movw %%fs:%1,%0" : "=r" (v) : "m" (*ptr));
- 	return v;
- }
- static inline u32 rdfs32(addr_t addr)
- {
-+	u32 *ptr = (u32 *)absolute_pointer(addr);
- 	u32 v;
--	asm volatile("movl %%fs:%1,%0" : "=r" (v) : "m" (*(u32 *)addr));
-+	asm volatile("movl %%fs:%1,%0" : "=r" (v) : "m" (*ptr));
- 	return v;
+ 	pm_runtime_get_sync(dev);
+ 
++	mutex_lock(&st->lock);
++	inv_icm42600_timestamp_reset(ts);
++	mutex_unlock(&st->lock);
++
+ 	return 0;
  }
  
- static inline void wrfs8(u8 v, addr_t addr)
- {
--	asm volatile("movb %1,%%fs:%0" : "+m" (*(u8 *)addr) : "qi" (v));
-+	u8 *ptr = (u8 *)absolute_pointer(addr);
-+	asm volatile("movb %1,%%fs:%0" : "+m" (*ptr) : "qi" (v));
- }
- static inline void wrfs16(u16 v, addr_t addr)
- {
--	asm volatile("movw %1,%%fs:%0" : "+m" (*(u16 *)addr) : "ri" (v));
-+	u16 *ptr = (u16 *)absolute_pointer(addr);
-+	asm volatile("movw %1,%%fs:%0" : "+m" (*ptr) : "ri" (v));
- }
- static inline void wrfs32(u32 v, addr_t addr)
- {
--	asm volatile("movl %1,%%fs:%0" : "+m" (*(u32 *)addr) : "ri" (v));
-+	u32 *ptr = (u32 *)absolute_pointer(addr);
-+	asm volatile("movl %1,%%fs:%0" : "+m" (*ptr) : "ri" (v));
- }
+@@ -375,7 +380,6 @@ static int inv_icm42600_buffer_postdisab
+ 	struct device *dev = regmap_get_device(st->map);
+ 	unsigned int sensor;
+ 	unsigned int *watermark;
+-	struct inv_icm42600_timestamp *ts;
+ 	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
+ 	unsigned int sleep_temp = 0;
+ 	unsigned int sleep_sensor = 0;
+@@ -385,11 +389,9 @@ static int inv_icm42600_buffer_postdisab
+ 	if (indio_dev == st->indio_gyro) {
+ 		sensor = INV_ICM42600_SENSOR_GYRO;
+ 		watermark = &st->fifo.watermark.gyro;
+-		ts = iio_priv(st->indio_gyro);
+ 	} else if (indio_dev == st->indio_accel) {
+ 		sensor = INV_ICM42600_SENSOR_ACCEL;
+ 		watermark = &st->fifo.watermark.accel;
+-		ts = iio_priv(st->indio_accel);
+ 	} else {
+ 		return -EINVAL;
+ 	}
+@@ -417,8 +419,6 @@ static int inv_icm42600_buffer_postdisab
+ 	if (!st->fifo.on)
+ 		ret = inv_icm42600_set_temp_conf(st, false, &sleep_temp);
  
- static inline u8 rdgs8(addr_t addr)
- {
-+	u8 *ptr = (u8 *)absolute_pointer(addr);
- 	u8 v;
--	asm volatile("movb %%gs:%1,%0" : "=q" (v) : "m" (*(u8 *)addr));
-+	asm volatile("movb %%gs:%1,%0" : "=q" (v) : "m" (*ptr));
- 	return v;
- }
- static inline u16 rdgs16(addr_t addr)
- {
-+	u16 *ptr = (u16 *)absolute_pointer(addr);
- 	u16 v;
--	asm volatile("movw %%gs:%1,%0" : "=r" (v) : "m" (*(u16 *)addr));
-+	asm volatile("movw %%gs:%1,%0" : "=r" (v) : "m" (*ptr));
- 	return v;
- }
- static inline u32 rdgs32(addr_t addr)
- {
-+	u32 *ptr = (u32 *)absolute_pointer(addr);
- 	u32 v;
--	asm volatile("movl %%gs:%1,%0" : "=r" (v) : "m" (*(u32 *)addr));
-+	asm volatile("movl %%gs:%1,%0" : "=r" (v) : "m" (*ptr));
- 	return v;
- }
+-	inv_icm42600_timestamp_reset(ts);
+-
+ out_unlock:
+ 	mutex_unlock(&st->lock);
  
- static inline void wrgs8(u8 v, addr_t addr)
- {
--	asm volatile("movb %1,%%gs:%0" : "+m" (*(u8 *)addr) : "qi" (v));
-+	u8 *ptr = (u8 *)absolute_pointer(addr);
-+	asm volatile("movb %1,%%gs:%0" : "+m" (*ptr) : "qi" (v));
- }
- static inline void wrgs16(u16 v, addr_t addr)
- {
--	asm volatile("movw %1,%%gs:%0" : "+m" (*(u16 *)addr) : "ri" (v));
-+	u16 *ptr = (u16 *)absolute_pointer(addr);
-+	asm volatile("movw %1,%%gs:%0" : "+m" (*ptr) : "ri" (v));
- }
- static inline void wrgs32(u32 v, addr_t addr)
- {
--	asm volatile("movl %1,%%gs:%0" : "+m" (*(u32 *)addr) : "ri" (v));
-+	u32 *ptr = (u32 *)absolute_pointer(addr);
-+	asm volatile("movl %1,%%gs:%0" : "+m" (*ptr) : "ri" (v));
- }
- 
- /* Note: these only return true/false, not a signed return value! */
---- a/arch/x86/boot/main.c
-+++ b/arch/x86/boot/main.c
-@@ -33,7 +33,7 @@ static void copy_boot_params(void)
- 		u16 cl_offset;
- 	};
- 	const struct old_cmdline * const oldcmd =
--		(const struct old_cmdline *)OLD_CL_ADDRESS;
-+		absolute_pointer(OLD_CL_ADDRESS);
- 
- 	BUILD_BUG_ON(sizeof(boot_params) != 4096);
- 	memcpy(&boot_params.hdr, &hdr, sizeof(hdr));
 
 
