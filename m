@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BBEB726C5D
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:33:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9ED9726FBD
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:01:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233776AbjFGUdJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:33:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59490 "EHLO
+        id S235985AbjFGVBV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:01:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233748AbjFGUdH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:33:07 -0400
+        with ESMTP id S235964AbjFGVBD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:01:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D08B82684
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:32:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B090626A8
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:00:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 637E06452A
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:32:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B657C433D2;
-        Wed,  7 Jun 2023 20:32:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 453B6648A7
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:00:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C85C433D2;
+        Wed,  7 Jun 2023 21:00:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169971;
-        bh=0AnptMnPgD0Rkucy7y1ee+WBecFFC63mR8laDBLeJUk=;
+        s=korg; t=1686171647;
+        bh=x9I+mP7q2Y5v2IAomGu1k9FrDjK3hjenaJlu4HSWBPA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WaUHTxyIx5hiJHm6Yk/V/zPvRbib+/ENAvkwuAE2tW2sMnd1Hq2uId9/2pWRzSWIV
-         TZdAXHlo0KlNBElUl7t2bm2/fVd00iANBvDvsoNYgPh+1dpBnKjMbkS+kiJelH0tdQ
-         BfciiO0LQNim7C76J0efWDihWIKoscKbZnDIFDqk=
+        b=JymAT1IX+P1BgWf42e04mRd3crGtnziIh2M11nsX7DKxkaT3u2jW8NJuqTOdpPbPy
+         vLXF5kCo2Xa90HLNS+1vW0VjcDvlr4qyozWTPiDK+kbwTqQnRhF5LuckKU4aCi6q4l
+         G256tQykIk1zGahPPgVGaoRRFB7+hMDZ0vPZzegk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jerry Snitselaar <jsnitsel@redhat.com>,
-        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-        Vasant Hegde <vasant.hegde@amd.com>,
-        Joerg Roedel <jroedel@suse.de>, Stable@vger.kernel.org
-Subject: [PATCH 6.3 283/286] iommu/amd/pgtbl_v2: Fix domain max address
-Date:   Wed,  7 Jun 2023 22:16:22 +0200
-Message-ID: <20230607200932.525567744@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Rub=C3=A9n=20G=C3=B3mez=20Agudo?= <mrgommer@proton.me>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 080/159] ACPI: resource: Add IRQ override quirk for LG UltraPC 17U70P
+Date:   Wed,  7 Jun 2023 22:16:23 +0200
+Message-ID: <20230607200906.295285335@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,59 +55,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vasant Hegde <vasant.hegde@amd.com>
+From: Rubén Gómez <mrgommer@proton.me>
 
-commit 11c439a19466e7feaccdbce148a75372fddaf4e9 upstream.
+[ Upstream commit 71a485624c4cbb144169852d7bb8ca8c0667d7a3 ]
 
-IOMMU v2 page table supports 4 level (47 bit) or 5 level (56 bit) virtual
-address space. Current code assumes it can support 64bit IOVA address
-space. If IOVA allocator allocates virtual address > 47/56 bit (depending
-on page table level) then it will do wrong mapping and cause invalid
-translation.
+Add an ACPI IRQ override quirk for LG UltraPC 17U70P to address the
+internal keyboard problem on it.
 
-Hence adjust aperture size to use max address supported by the page table.
-
-Reported-by: Jerry Snitselaar <jsnitsel@redhat.com>
-Fixes: aaac38f61487 ("iommu/amd: Initial support for AMD IOMMU v2 page table")
-Cc: <Stable@vger.kernel.org>  # v6.0+
-Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
-Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
-Link: https://lore.kernel.org/r/20230518054351.9626-1-vasant.hegde@amd.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-[ Modified to work with "V2 with 4 level page table" only - Vasant ]
-Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=213031
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216983
+Signed-off-by: Rubén Gómez Agudo <mrgommer@proton.me>
+[ rjw: Subject, changelog, white space damage fixes ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/acpi/resource.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -2118,6 +2118,15 @@ out_err:
- 	return NULL;
- }
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 803dc6afa6d69..b0c7ae50a8d79 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -470,6 +470,17 @@ static const struct dmi_system_id maingear_laptop[] = {
+ 	{ }
+ };
  
-+static inline u64 dma_max_address(void)
-+{
-+	if (amd_iommu_pgtable == AMD_IOMMU_V1)
-+		return ~0ULL;
++static const struct dmi_system_id lg_laptop[] = {
++	{
++		.ident = "LG Electronics 17U70P",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LG Electronics"),
++			DMI_MATCH(DMI_BOARD_NAME, "17U70P"),
++		},
++	},
++	{ }
++};
 +
-+	/* V2 with 4 level page table */
-+	return ((1ULL << PM_LEVEL_SHIFT(PAGE_MODE_4_LEVEL)) - 1);
-+}
-+
- static struct iommu_domain *amd_iommu_domain_alloc(unsigned type)
- {
- 	struct protection_domain *domain;
-@@ -2134,7 +2143,7 @@ static struct iommu_domain *amd_iommu_do
- 		return NULL;
+ struct irq_override_cmp {
+ 	const struct dmi_system_id *system;
+ 	unsigned char irq;
+@@ -486,6 +497,7 @@ static const struct irq_override_cmp override_table[] = {
+ 	{ lenovo_laptop, 10, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, true },
+ 	{ tongfang_gm_rg, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
+ 	{ maingear_laptop, 1, ACPI_EDGE_SENSITIVE, ACPI_ACTIVE_LOW, 1, true },
++	{ lg_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0, false },
+ };
  
- 	domain->domain.geometry.aperture_start = 0;
--	domain->domain.geometry.aperture_end   = ~0ULL;
-+	domain->domain.geometry.aperture_end   = dma_max_address();
- 	domain->domain.geometry.force_aperture = true;
- 
- 	return &domain->domain;
+ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
+-- 
+2.39.2
+
 
 
