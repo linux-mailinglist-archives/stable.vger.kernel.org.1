@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1301726EFB
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:54:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66842726DC0
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:45:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235396AbjFGUyc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:54:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55554 "EHLO
+        id S234774AbjFGUpW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:45:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235460AbjFGUyR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:17 -0400
+        with ESMTP id S234828AbjFGUo4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 466EF2132
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:54:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE4172128
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:44:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A709C647C2
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:54:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4DEC4339B;
-        Wed,  7 Jun 2023 20:54:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BE07F64660
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:44:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A31C433EF;
+        Wed,  7 Jun 2023 20:44:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171254;
-        bh=/rBeYQlibcqn5fzQSak2topt9pj/KiQJNTyVZ/Oqy+8=;
+        s=korg; t=1686170682;
+        bh=O+6FnCMBc0toMCm7AYWINAO4Tv/33jE50aLTPC9FI9s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BZB/Si9dEfoHTUsu9l1qP2oZP8IfEkI1y5IIJnSpD7G/b8HeZblEZCRyDzGdNasS6
-         CO2OgQBDUxH1ho7vNBOreXzUuPDdQ+SZhZmncPUQmEGixxxuHjCummLkqkr6UNUbFJ
-         arOFu9a2uHntAnln9jKqiyyRRZgoCw8RuCEGGP2I=
+        b=CH0cNNav39uXLcKN2mdProg7uk130W2n8CvWWl3aExk8csDGXgdbtYKBb97IxbWP6
+         EyaR7UrXnmSXcEDbdld5CTCInDz0714HF7CLLIDi7u3xJdFnEr428XiTAJoxKUmSHY
+         YnyAk/zz+3h4DxLlgmu9LtsXCdPMt97W4gmIil40=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Vlad Buslov <vladbu@nvidia.com>,
-        Peilin Ye <peilin.ye@bytedance.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 18/99] net/sched: Reserve TC_H_INGRESS (TC_H_CLSACT) for ingress (clsact) Qdiscs
+        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 177/225] phy: qcom-qmp-pcie-msm8996: fix init-count imbalance
 Date:   Wed,  7 Jun 2023 22:16:10 +0200
-Message-ID: <20230607200900.826926556@linuxfoundation.org>
+Message-ID: <20230607200920.178098657@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,86 +54,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peilin Ye <peilin.ye@bytedance.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit f85fa45d4a9408d98c46c8fa45ba2e3b2f4bf219 ]
+commit e42f110700ed7293700c26145e1ed07ea05ac3f6 upstream.
 
-Currently it is possible to add e.g. an HTB Qdisc under ffff:fff1
-(TC_H_INGRESS, TC_H_CLSACT):
+The init counter is not decremented on initialisation errors, which
+prevents retrying initialisation.
 
-  $ ip link add name ifb0 type ifb
-  $ tc qdisc add dev ifb0 parent ffff:fff1 htb
-  $ tc qdisc add dev ifb0 clsact
-  Error: Exclusivity flag on, cannot modify.
-  $ drgn
-  ...
-  >>> ifb0 = netdev_get_by_name(prog, "ifb0")
-  >>> qdisc = ifb0.ingress_queue.qdisc_sleeping
-  >>> print(qdisc.ops.id.string_().decode())
-  htb
-  >>> qdisc.flags.value_() # TCQ_F_INGRESS
-  2
+Add the missing decrement on initialisation errors so that the counter
+reflects the state of the device.
 
-Only allow ingress and clsact Qdiscs under ffff:fff1.  Return -EINVAL
-for everything else.  Make TCQ_F_INGRESS a static flag of ingress and
-clsact Qdiscs.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Fixes: 1f211a1b929c ("net, sched: add clsact qdisc")
-Tested-by: Pedro Tammela <pctammela@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
-Signed-off-by: Peilin Ye <peilin.ye@bytedance.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e78f3d15e115 ("phy: qcom-qmp: new qmp phy driver for qcom-chipsets")
+Cc: stable@vger.kernel.org      # 4.12
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230502103810.12061-3-johan+linaro@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_api.c     | 7 ++++++-
- net/sched/sch_ingress.c | 4 ++--
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/phy/qualcomm/phy-qcom-qmp-pcie-msm8996.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index 67d6bc97e5fe9..cd6af51bd9ff2 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -1214,7 +1214,12 @@ static struct Qdisc *qdisc_create(struct net_device *dev,
- 	sch->parent = parent;
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-pcie-msm8996.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-pcie-msm8996.c
+@@ -425,7 +425,7 @@ static int qmp_pcie_msm8996_com_init(str
+ 	ret = regulator_bulk_enable(cfg->num_vregs, qmp->vregs);
+ 	if (ret) {
+ 		dev_err(qmp->dev, "failed to enable regulators, err=%d\n", ret);
+-		goto err_unlock;
++		goto err_decrement_count;
+ 	}
  
- 	if (handle == TC_H_INGRESS) {
--		sch->flags |= TCQ_F_INGRESS;
-+		if (!(sch->flags & TCQ_F_INGRESS)) {
-+			NL_SET_ERR_MSG(extack,
-+				       "Specified parent ID is reserved for ingress and clsact Qdiscs");
-+			err = -EINVAL;
-+			goto err_out3;
-+		}
- 		handle = TC_H_MAKE(TC_H_INGRESS, 0);
- 	} else {
- 		if (handle == 0) {
-diff --git a/net/sched/sch_ingress.c b/net/sched/sch_ingress.c
-index 9f1ed810b7b89..28168799ca1b8 100644
---- a/net/sched/sch_ingress.c
-+++ b/net/sched/sch_ingress.c
-@@ -133,7 +133,7 @@ static struct Qdisc_ops ingress_qdisc_ops __read_mostly = {
- 	.cl_ops			=	&ingress_class_ops,
- 	.id			=	"ingress",
- 	.priv_size		=	sizeof(struct ingress_sched_data),
--	.static_flags		=	TCQ_F_CPUSTATS,
-+	.static_flags		=	TCQ_F_INGRESS | TCQ_F_CPUSTATS,
- 	.init			=	ingress_init,
- 	.destroy		=	ingress_destroy,
- 	.dump			=	ingress_dump,
-@@ -272,7 +272,7 @@ static struct Qdisc_ops clsact_qdisc_ops __read_mostly = {
- 	.cl_ops			=	&clsact_class_ops,
- 	.id			=	"clsact",
- 	.priv_size		=	sizeof(struct clsact_sched_data),
--	.static_flags		=	TCQ_F_CPUSTATS,
-+	.static_flags		=	TCQ_F_INGRESS | TCQ_F_CPUSTATS,
- 	.init			=	clsact_init,
- 	.destroy		=	clsact_destroy,
- 	.dump			=	ingress_dump,
--- 
-2.39.2
-
+ 	ret = reset_control_bulk_assert(cfg->num_resets, qmp->resets);
+@@ -455,7 +455,8 @@ err_assert_reset:
+ 	reset_control_bulk_assert(cfg->num_resets, qmp->resets);
+ err_disable_regulators:
+ 	regulator_bulk_disable(cfg->num_vregs, qmp->vregs);
+-err_unlock:
++err_decrement_count:
++	qmp->init_count--;
+ 	mutex_unlock(&qmp->phy_mutex);
+ 
+ 	return ret;
 
 
