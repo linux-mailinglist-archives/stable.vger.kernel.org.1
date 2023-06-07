@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D13C5726C55
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:32:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7C45726FA1
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:00:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233690AbjFGUci (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:32:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58948 "EHLO
+        id S235843AbjFGVAv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:00:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233738AbjFGUch (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:32:37 -0400
+        with ESMTP id S236095AbjFGVAU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77E821BD4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:32:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 471D526B0
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:59:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F28FF64516
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:32:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14111C433EF;
-        Wed,  7 Jun 2023 20:32:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5FD7E648E0
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:59:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77BA0C433EF;
+        Wed,  7 Jun 2023 20:59:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169950;
-        bh=auZR0VLZgU55HB/TB056KRVHfWp+WNnYe83xIggsiIs=;
+        s=korg; t=1686171581;
+        bh=hi5dmpvzZ6hPDaZM340f1LPKK0RprWO/fz+DCnQsZiY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mFUiOIP9h6R3fZgHJoTJGtUnnG4K5z6eAVrBSNjAqoGSCiut2tnLLjmaygd5xp7JG
-         POboyY3PfQ7uV3ajcTQF1cZc9gWtvWvXaiQLDhyUBI0vVlu8UqzNYx6Z75d3VfaU3W
-         85XzN/fejOwC2H4lsbxpOr+inc3Ig8/Y+z0UKTnM=
+        b=XBcUbSsvEuyr/Rs0fLRdqxmoKCa01JyCKThAd7e/8RvUUIUXpQf0slgXa8481UpJ2
+         LcEGc3S5a11SWyT7F9uEUWy5ll1LVvqa2wN00UahFVulWslS9VCiwKdNTRe+YVzWIB
+         2Pbu0bO/UxVBHt/8cAD+c43frONxDe2i9y+nClZA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Per Forlin <per.forlin@axis.com>,
-        Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.3 276/286] ksmbd: fix UAF issue from opinfo->conn
+        patches@lists.linux.dev, Hyunwoo Kim <imv4bel@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 072/159] media: ttusb-dec: fix memory leak in ttusb_dec_exit_dvb()
 Date:   Wed,  7 Jun 2023 22:16:15 +0200
-Message-ID: <20230607200932.306842395@linuxfoundation.org>
+Message-ID: <20230607200906.039447683@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,193 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-commit 36322523dddb11107e9f7f528675a0dec2536103 upstream.
+[ Upstream commit 517a281338322ff8293f988771c98aaa7205e457 ]
 
-If opinfo->conn is another connection and while ksmbd send oplock break
-request to cient on current connection, The connection for opinfo->conn
-can be disconnect and conn could be freed. When sending oplock break
-request, this ksmbd_conn can be used and cause user-after-free issue.
-When getting opinfo from the list, ksmbd check connection is being
-released. If it is not released, Increase ->r_count to wait that connection
-is freed.
+Since dvb_frontend_detach() is not called in ttusb_dec_exit_dvb(),
+which is called when the device is disconnected, dvb_frontend_free()
+is not finally called.
 
-Cc: stable@vger.kernel.org
-Reported-by: Per Forlin <per.forlin@axis.com>
-Tested-by: Per Forlin <per.forlin@axis.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This causes a memory leak just by repeatedly plugging and
+unplugging the device.
+
+Fix this issue by adding dvb_frontend_detach() to ttusb_dec_exit_dvb().
+
+Link: https://lore.kernel.org/linux-media/20221117045925.14297-5-imv4bel@gmail.com
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ksmbd/oplock.c |   72 +++++++++++++++++++++++++++++++++++-------------------
- 1 file changed, 47 insertions(+), 25 deletions(-)
+ drivers/media/usb/ttusb-dec/ttusb_dec.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/ksmbd/oplock.c
-+++ b/fs/ksmbd/oplock.c
-@@ -157,13 +157,42 @@ static struct oplock_info *opinfo_get_li
- 	rcu_read_lock();
- 	opinfo = list_first_or_null_rcu(&ci->m_op_list, struct oplock_info,
- 					op_entry);
--	if (opinfo && !atomic_inc_not_zero(&opinfo->refcount))
--		opinfo = NULL;
-+	if (opinfo) {
-+		if (!atomic_inc_not_zero(&opinfo->refcount))
-+			opinfo = NULL;
-+		else {
-+			atomic_inc(&opinfo->conn->r_count);
-+			if (ksmbd_conn_releasing(opinfo->conn)) {
-+				atomic_dec(&opinfo->conn->r_count);
-+				atomic_dec(&opinfo->refcount);
-+				opinfo = NULL;
-+			}
-+		}
-+	}
-+
- 	rcu_read_unlock();
- 
- 	return opinfo;
+diff --git a/drivers/media/usb/ttusb-dec/ttusb_dec.c b/drivers/media/usb/ttusb-dec/ttusb_dec.c
+index 38822cedd93a9..c4474d4c44e28 100644
+--- a/drivers/media/usb/ttusb-dec/ttusb_dec.c
++++ b/drivers/media/usb/ttusb-dec/ttusb_dec.c
+@@ -1544,8 +1544,7 @@ static void ttusb_dec_exit_dvb(struct ttusb_dec *dec)
+ 	dvb_dmx_release(&dec->demux);
+ 	if (dec->fe) {
+ 		dvb_unregister_frontend(dec->fe);
+-		if (dec->fe->ops.release)
+-			dec->fe->ops.release(dec->fe);
++		dvb_frontend_detach(dec->fe);
+ 	}
+ 	dvb_unregister_adapter(&dec->adapter);
  }
- 
-+static void opinfo_conn_put(struct oplock_info *opinfo)
-+{
-+	struct ksmbd_conn *conn;
-+
-+	if (!opinfo)
-+		return;
-+
-+	conn = opinfo->conn;
-+	/*
-+	 * Checking waitqueue to dropping pending requests on
-+	 * disconnection. waitqueue_active is safe because it
-+	 * uses atomic operation for condition.
-+	 */
-+	if (!atomic_dec_return(&conn->r_count) && waitqueue_active(&conn->r_count_q))
-+		wake_up(&conn->r_count_q);
-+	opinfo_put(opinfo);
-+}
-+
- void opinfo_put(struct oplock_info *opinfo)
- {
- 	if (!atomic_dec_and_test(&opinfo->refcount))
-@@ -666,13 +695,6 @@ static void __smb2_oplock_break_noti(str
- 
- out:
- 	ksmbd_free_work_struct(work);
--	/*
--	 * Checking waitqueue to dropping pending requests on
--	 * disconnection. waitqueue_active is safe because it
--	 * uses atomic operation for condition.
--	 */
--	if (!atomic_dec_return(&conn->r_count) && waitqueue_active(&conn->r_count_q))
--		wake_up(&conn->r_count_q);
- }
- 
- /**
-@@ -706,7 +728,6 @@ static int smb2_oplock_break_noti(struct
- 	work->conn = conn;
- 	work->sess = opinfo->sess;
- 
--	atomic_inc(&conn->r_count);
- 	if (opinfo->op_state == OPLOCK_ACK_WAIT) {
- 		INIT_WORK(&work->work, __smb2_oplock_break_noti);
- 		ksmbd_queue_work(work);
-@@ -776,13 +797,6 @@ static void __smb2_lease_break_noti(stru
- 
- out:
- 	ksmbd_free_work_struct(work);
--	/*
--	 * Checking waitqueue to dropping pending requests on
--	 * disconnection. waitqueue_active is safe because it
--	 * uses atomic operation for condition.
--	 */
--	if (!atomic_dec_return(&conn->r_count) && waitqueue_active(&conn->r_count_q))
--		wake_up(&conn->r_count_q);
- }
- 
- /**
-@@ -822,7 +836,6 @@ static int smb2_lease_break_noti(struct
- 	work->conn = conn;
- 	work->sess = opinfo->sess;
- 
--	atomic_inc(&conn->r_count);
- 	if (opinfo->op_state == OPLOCK_ACK_WAIT) {
- 		list_for_each_safe(tmp, t, &opinfo->interim_list) {
- 			struct ksmbd_work *in_work;
-@@ -1144,8 +1157,10 @@ int smb_grant_oplock(struct ksmbd_work *
- 	}
- 	prev_opinfo = opinfo_get_list(ci);
- 	if (!prev_opinfo ||
--	    (prev_opinfo->level == SMB2_OPLOCK_LEVEL_NONE && lctx))
-+	    (prev_opinfo->level == SMB2_OPLOCK_LEVEL_NONE && lctx)) {
-+		opinfo_conn_put(prev_opinfo);
- 		goto set_lev;
-+	}
- 	prev_op_has_lease = prev_opinfo->is_lease;
- 	if (prev_op_has_lease)
- 		prev_op_state = prev_opinfo->o_lease->state;
-@@ -1153,19 +1168,19 @@ int smb_grant_oplock(struct ksmbd_work *
- 	if (share_ret < 0 &&
- 	    prev_opinfo->level == SMB2_OPLOCK_LEVEL_EXCLUSIVE) {
- 		err = share_ret;
--		opinfo_put(prev_opinfo);
-+		opinfo_conn_put(prev_opinfo);
- 		goto err_out;
- 	}
- 
- 	if (prev_opinfo->level != SMB2_OPLOCK_LEVEL_BATCH &&
- 	    prev_opinfo->level != SMB2_OPLOCK_LEVEL_EXCLUSIVE) {
--		opinfo_put(prev_opinfo);
-+		opinfo_conn_put(prev_opinfo);
- 		goto op_break_not_needed;
- 	}
- 
- 	list_add(&work->interim_entry, &prev_opinfo->interim_list);
- 	err = oplock_break(prev_opinfo, SMB2_OPLOCK_LEVEL_II);
--	opinfo_put(prev_opinfo);
-+	opinfo_conn_put(prev_opinfo);
- 	if (err == -ENOENT)
- 		goto set_lev;
- 	/* Check all oplock was freed by close */
-@@ -1228,14 +1243,14 @@ static void smb_break_all_write_oplock(s
- 		return;
- 	if (brk_opinfo->level != SMB2_OPLOCK_LEVEL_BATCH &&
- 	    brk_opinfo->level != SMB2_OPLOCK_LEVEL_EXCLUSIVE) {
--		opinfo_put(brk_opinfo);
-+		opinfo_conn_put(brk_opinfo);
- 		return;
- 	}
- 
- 	brk_opinfo->open_trunc = is_trunc;
- 	list_add(&work->interim_entry, &brk_opinfo->interim_list);
- 	oplock_break(brk_opinfo, SMB2_OPLOCK_LEVEL_II);
--	opinfo_put(brk_opinfo);
-+	opinfo_conn_put(brk_opinfo);
- }
- 
- /**
-@@ -1263,6 +1278,13 @@ void smb_break_all_levII_oplock(struct k
- 	list_for_each_entry_rcu(brk_op, &ci->m_op_list, op_entry) {
- 		if (!atomic_inc_not_zero(&brk_op->refcount))
- 			continue;
-+
-+		atomic_inc(&brk_op->conn->r_count);
-+		if (ksmbd_conn_releasing(brk_op->conn)) {
-+			atomic_dec(&brk_op->conn->r_count);
-+			continue;
-+		}
-+
- 		rcu_read_unlock();
- 		if (brk_op->is_lease && (brk_op->o_lease->state &
- 		    (~(SMB2_LEASE_READ_CACHING_LE |
-@@ -1292,7 +1314,7 @@ void smb_break_all_levII_oplock(struct k
- 		brk_op->open_trunc = is_trunc;
- 		oplock_break(brk_op, SMB2_OPLOCK_LEVEL_NONE);
- next:
--		opinfo_put(brk_op);
-+		opinfo_conn_put(brk_op);
- 		rcu_read_lock();
- 	}
- 	rcu_read_unlock();
+-- 
+2.39.2
+
 
 
