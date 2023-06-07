@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BBBB726F14
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20B71726FFA
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:03:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235446AbjFGUza (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:55:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56316 "EHLO
+        id S236039AbjFGVDq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:03:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235775AbjFGUzG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:55:06 -0400
+        with ESMTP id S236037AbjFGVDY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:03:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3F8A1BEA
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:55:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCD4C2121
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:02:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 69648647D2
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:55:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9FDC433D2;
-        Wed,  7 Jun 2023 20:55:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4818564951
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:02:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2BEC433D2;
+        Wed,  7 Jun 2023 21:02:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171303;
-        bh=mn6yOpLnmVB/8eVl4VbTg1sHCzJnF0mm0n/P58yMxF4=;
+        s=korg; t=1686171775;
+        bh=9dyrd/PCxB4jm43qlFYduQ4AQyx4j0qheM9ocMIiI/0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G3phDXkR8voeZd6wMY30Q2k7bOPG94E3k3kbuIMezDkUfs3RyzNT0zEMigMLdsVkR
-         ADJIqRFZYUqOv2T8oib1Zd9mmUfJknDpQaRwgDyQzuyozLWldpjHS1GNFs6gdrCDs+
-         JQLHmTA68FMbLB45qJKgI2oeP8oaezzkcqothids=
+        b=Tqod9UemBoDGOVHF0oG2f2PVfJ5SuYU06RaAsdIFYn/FbcnIe4Cqs/7mwCPMF//NA
+         UM/Pes5AnTEOgpZwp5ZMAJMC9jOe47g4VDAHp0GYDC2GOHx7+Kj+g5WVstsPqI70qd
+         1Za9uTHb7weJn+V6jFAug9JdvUjSzeDTF/iJ0mdw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.4 66/99] iio: dac: build ad5758 driver when AD5758 is selected
+        patches@lists.linux.dev, Xingui Yang <yangxingui@huawei.com>,
+        Damien Le Moal <dlemoal@kernel.org>,
+        Jason Yan <yanaijie@huawei.com>
+Subject: [PATCH 5.15 115/159] ata: libata-scsi: Use correct device no in ata_find_dev()
 Date:   Wed,  7 Jun 2023 22:16:58 +0200
-Message-ID: <20230607200902.305919284@linuxfoundation.org>
+Message-ID: <20230607200907.439113327@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,39 +54,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit a146eccb68be161ae9eab5f3f68bb0ed7c0fbaa8 upstream.
+commit 7f875850f20a42f488840c9df7af91ef7db2d576 upstream.
 
-Commit 28d1a7ac2a0d ("iio: dac: Add AD5758 support") adds the config AD5758
-and the corresponding driver ad5758.c. In the Makefile, the ad5758 driver
-is however included when AD5755 is selected, not when AD5758 is selected.
+For devices not attached to a port multiplier and managed directly by
+libata, the device number passed to ata_find_dev() must always be lower
+than the maximum number of devices returned by ata_link_max_devices().
+That is 1 for SATA devices or 2 for an IDE link with master+slave
+devices. This device number is the SCSI device ID which matches these
+constraints as the IDs are generated per port and so never exceed the
+maximum number of devices for the link being used.
 
-Probably, this was simply a mistake that happened by copy-and-paste and
-forgetting to adjust the actual line. Surprisingly, no one has ever noticed
-that this driver is actually only included when AD5755 is selected and that
-the config AD5758 has actually no effect on the build.
+However, for libsas managed devices, SCSI device IDs are assigned per
+struct scsi_host, leading to device IDs for SATA devices that can be
+well in excess of libata per-link maximum number of devices. This
+results in ata_find_dev() to always return NULL for libsas managed
+devices except for the first device of the target scsi_host with ID
+(device number) equal to 0. This issue is visible by executing the
+hdparm utility, which fails. E.g.:
 
-Fixes: 28d1a7ac2a0d ("iio: dac: Add AD5758 support")
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Link: https://lore.kernel.org/r/20230508040208.12033-1-lukas.bulwahn@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+hdparm -i /dev/sdX
+/dev/sdX:
+  HDIO_GET_IDENTITY failed: No message of desired type
+
+Fix this by rewriting ata_find_dev() to ignore the device number for
+non-PMP attached devices with a link with at most 1 device, that is SATA
+devices. For these, the device number 0 is always used to
+return the correct pointer to the struct ata_device of the port link.
+This change excludes IDE master/slave setups (maximum number of devices
+per link is 2) and port-multiplier attached devices. Also, to be
+consistant with the fact that SCSI device IDs and channel numbers used
+as device numbers are both unsigned int, change the devno argument of
+ata_find_dev() to unsigned int.
+
+Reported-by: Xingui Yang <yangxingui@huawei.com>
+Fixes: 41bda9c98035 ("libata-link: update hotplug to handle PMP links")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Jason Yan <yanaijie@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/libata-scsi.c |   34 ++++++++++++++++++++++++++--------
+ 1 file changed, 26 insertions(+), 8 deletions(-)
 
---- a/drivers/iio/dac/Makefile
-+++ b/drivers/iio/dac/Makefile
-@@ -16,7 +16,7 @@ obj-$(CONFIG_AD5592R_BASE) += ad5592r-ba
- obj-$(CONFIG_AD5592R) += ad5592r.o
- obj-$(CONFIG_AD5593R) += ad5593r.o
- obj-$(CONFIG_AD5755) += ad5755.o
--obj-$(CONFIG_AD5755) += ad5758.o
-+obj-$(CONFIG_AD5758) += ad5758.o
- obj-$(CONFIG_AD5761) += ad5761.o
- obj-$(CONFIG_AD5764) += ad5764.o
- obj-$(CONFIG_AD5791) += ad5791.o
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -2698,18 +2698,36 @@ static unsigned int atapi_xlat(struct at
+ 	return 0;
+ }
+ 
+-static struct ata_device *ata_find_dev(struct ata_port *ap, int devno)
++static struct ata_device *ata_find_dev(struct ata_port *ap, unsigned int devno)
+ {
+-	if (!sata_pmp_attached(ap)) {
+-		if (likely(devno >= 0 &&
+-			   devno < ata_link_max_devices(&ap->link)))
++	/*
++	 * For the non-PMP case, ata_link_max_devices() returns 1 (SATA case),
++	 * or 2 (IDE master + slave case). However, the former case includes
++	 * libsas hosted devices which are numbered per scsi host, leading
++	 * to devno potentially being larger than 0 but with each struct
++	 * ata_device having its own struct ata_port and struct ata_link.
++	 * To accommodate these, ignore devno and always use device number 0.
++	 */
++	if (likely(!sata_pmp_attached(ap))) {
++		int link_max_devices = ata_link_max_devices(&ap->link);
++
++		if (link_max_devices == 1)
++			return &ap->link.device[0];
++
++		if (devno < link_max_devices)
+ 			return &ap->link.device[devno];
+-	} else {
+-		if (likely(devno >= 0 &&
+-			   devno < ap->nr_pmp_links))
+-			return &ap->pmp_link[devno].device[0];
++
++		return NULL;
+ 	}
+ 
++	/*
++	 * For PMP-attached devices, the device number corresponds to C
++	 * (channel) of SCSI [H:C:I:L], indicating the port pmp link
++	 * for the device.
++	 */
++	if (devno < ap->nr_pmp_links)
++		return &ap->pmp_link[devno].device[0];
++
+ 	return NULL;
+ }
+ 
 
 
