@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05D86726C2D
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA5ED726C92
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:34:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233608AbjFGUbM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:31:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57548 "EHLO
+        id S233896AbjFGUeh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:34:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233613AbjFGUbL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:31:11 -0400
+        with ESMTP id S233894AbjFGUeg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:34:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACC10137
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:31:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02288211B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:34:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4904B644F9
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:31:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5708EC433EF;
-        Wed,  7 Jun 2023 20:31:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D777564555
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:34:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE376C433EF;
+        Wed,  7 Jun 2023 20:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169868;
-        bh=rW0YwDgq3ZgQP0BS4c50aWuZLQv3qUkX4OPbOU6JKH8=;
+        s=korg; t=1686170059;
+        bh=BTitAfmWMoFUwxjYr3Aji1L2znMoFfwcG3nQ3uQ9O04=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qlY0j5yaPiNPocIYmAHx03puBAzsRYDVtFNvIZYvE7Wmcy5HLG7Z8YJ8QnfZ6eoV3
-         VsR97g7AZx/YLR91U9DrnzbqA3pAkUuIeLtIMEsoFYORLS8BvdOzOKcmvaayWzvXLh
-         Q1F9LBFsHjYqEn3yn1JYL/9Emv+KYtmb2JImw9Rg=
+        b=2knZ9bu9xxwkrZRzMBufj4mc+PtG5KFfGUvYTi7B8XTXd5CCaAOmNBL3XLfmrJcpn
+         uWiA9p85YA7OsO/ZI4pxCrPIfpon3PvLfaNAtgWh8jWdJ2HUVgnIgQCJq419MaJmgh
+         r8QvfSxv+tKmi1Jc+cfuOvEJQ++YY89rGMoPDy5Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Sherry Sun <sherry.sun@nxp.com>
-Subject: [PATCH 6.3 227/286] tty: serial: fsl_lpuart: use UARTCTRL_TXINV to send break instead of UARTCTRL_SBK
+        patches@lists.linux.dev, Paul Blakey <paulb@nvidia.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
+        Demi Marie Obenour <demi@invisiblethingslab.com>
+Subject: [PATCH 4.19 09/88] netfilter: ctnetlink: Support offloaded conntrack entry deletion
 Date:   Wed,  7 Jun 2023 22:15:26 +0200
-Message-ID: <20230607200930.703861473@linuxfoundation.org>
+Message-ID: <20230607200857.327416757@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,107 +56,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Paul Blakey <paulb@nvidia.com>
 
-commit 2474e05467c00f7d51af3039b664de6886325257 upstream.
+commit 9b7c68b3911aef84afa4cbfc31bce20f10570d51 upstream.
 
-LPUART IP now has two known bugs, one is that CTS has higher priority
-than the break signal, which causes the break signal sending through
-UARTCTRL_SBK may impacted by the CTS input if the HW flow control is
-enabled. It exists on all platforms we support in this driver.
-So we add a workaround patch for this issue: commit c4c81db5cf8b
-("tty: serial: fsl_lpuart: disable the CTS when send break signal").
+Currently, offloaded conntrack entries (flows) can only be deleted
+after they are removed from offload, which is either by timeout,
+tcp state change or tc ct rule deletion. This can cause issues for
+users wishing to manually delete or flush existing entries.
 
-Another IP bug is i.MX8QM LPUART may have an additional break character
-being sent after SBK was cleared. It may need to add some delay between
-clearing SBK and re-enabling CTS to ensure that the SBK latch are
-completely cleared.
+Support deletion of offloaded conntrack entries.
 
-But we found that during the delay period before CTS is enabled, there
-is still a risk that Bluetooth data in TX FIFO may be sent out during
-this period because of break off and CTS disabled(even if BT sets CTS
-line deasserted, data is still sent to BT).
+Example usage:
+ # Delete all offloaded (and non offloaded) conntrack entries
+ # whose source address is 1.2.3.4
+ $ conntrack -D -s 1.2.3.4
+ # Delete all entries
+ $ conntrack -F
 
-Due to this risk, we have to drop the CTS-disabling workaround for SBK
-bugs, use TXINV seems to be a better way to replace SBK feature and
-avoid above risk. Also need to disable the transmitter to prevent any
-data from being sent out during break, then invert the TX line to send
-break. Then disable the TXINV when turn off break and re-enable
-transmitter.
-
-Fixes: c4c81db5cf8b ("tty: serial: fsl_lpuart: disable the CTS when send break signal")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Link: https://lore.kernel.org/r/20230519094751.28948-1-sherry.sun@nxp.com
+Signed-off-by: Paul Blakey <paulb@nvidia.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Acked-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Cc: Demi Marie Obenour <demi@invisiblethingslab.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/fsl_lpuart.c | 44 +++++++++++++++++----------------
- 1 file changed, 23 insertions(+), 21 deletions(-)
+ net/netfilter/nf_conntrack_netlink.c |    8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
-index c91916e13648..7486a2b8556c 100644
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -1495,34 +1495,36 @@ static void lpuart_break_ctl(struct uart_port *port, int break_state)
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -1216,9 +1216,6 @@ static const struct nla_policy ct_nla_po
  
- static void lpuart32_break_ctl(struct uart_port *port, int break_state)
+ static int ctnetlink_flush_iterate(struct nf_conn *ct, void *data)
  {
--	unsigned long temp, modem;
--	struct tty_struct *tty;
--	unsigned int cflag = 0;
-+	unsigned long temp;
- 
--	tty = tty_port_tty_get(&port->state->port);
--	if (tty) {
--		cflag = tty->termios.c_cflag;
--		tty_kref_put(tty);
--	}
+-	if (test_bit(IPS_OFFLOAD_BIT, &ct->status))
+-		return 0;
 -
--	temp = lpuart32_read(port, UARTCTRL) & ~UARTCTRL_SBK;
--	modem = lpuart32_read(port, UARTMODIR);
-+	temp = lpuart32_read(port, UARTCTRL);
- 
-+	/*
-+	 * LPUART IP now has two known bugs, one is CTS has higher priority than the
-+	 * break signal, which causes the break signal sending through UARTCTRL_SBK
-+	 * may impacted by the CTS input if the HW flow control is enabled. It
-+	 * exists on all platforms we support in this driver.
-+	 * Another bug is i.MX8QM LPUART may have an additional break character
-+	 * being sent after SBK was cleared.
-+	 * To avoid above two bugs, we use Transmit Data Inversion function to send
-+	 * the break signal instead of UARTCTRL_SBK.
-+	 */
- 	if (break_state != 0) {
--		temp |= UARTCTRL_SBK;
- 		/*
--		 * LPUART CTS has higher priority than SBK, need to disable CTS before
--		 * asserting SBK to avoid any interference if flow control is enabled.
-+		 * Disable the transmitter to prevent any data from being sent out
-+		 * during break, then invert the TX line to send break.
- 		 */
--		if (cflag & CRTSCTS && modem & UARTMODIR_TXCTSE)
--			lpuart32_write(port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
-+		temp &= ~UARTCTRL_TE;
-+		lpuart32_write(port, temp, UARTCTRL);
-+		temp |= UARTCTRL_TXINV;
-+		lpuart32_write(port, temp, UARTCTRL);
- 	} else {
--		/* Re-enable the CTS when break off. */
--		if (cflag & CRTSCTS && !(modem & UARTMODIR_TXCTSE))
--			lpuart32_write(port, modem | UARTMODIR_TXCTSE, UARTMODIR);
-+		/* Disable the TXINV to turn off break and re-enable transmitter. */
-+		temp &= ~UARTCTRL_TXINV;
-+		lpuart32_write(port, temp, UARTCTRL);
-+		temp |= UARTCTRL_TE;
-+		lpuart32_write(port, temp, UARTCTRL);
- 	}
--
--	lpuart32_write(port, temp, UARTCTRL);
+ 	return ctnetlink_filter_match(ct, data);
  }
  
- static void lpuart_setup_watermark(struct lpuart_port *sport)
--- 
-2.41.0
-
+@@ -1280,11 +1277,6 @@ static int ctnetlink_del_conntrack(struc
+ 
+ 	ct = nf_ct_tuplehash_to_ctrack(h);
+ 
+-	if (test_bit(IPS_OFFLOAD_BIT, &ct->status)) {
+-		nf_ct_put(ct);
+-		return -EBUSY;
+-	}
+-
+ 	if (cda[CTA_ID]) {
+ 		__be32 id = nla_get_be32(cda[CTA_ID]);
+ 
 
 
