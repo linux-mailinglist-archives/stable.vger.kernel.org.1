@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 650B3726CF2
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:37:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C37CF726B7D
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:25:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234085AbjFGUh5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:37:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37156 "EHLO
+        id S233201AbjFGUZy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:25:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234092AbjFGUh4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:37:56 -0400
+        with ESMTP id S233106AbjFGUZx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:25:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7D4226B6
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:37:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85F3326B0
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:25:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 864F960DCB
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:37:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98741C4339B;
-        Wed,  7 Jun 2023 20:37:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5562764443
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:25:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69014C4339B;
+        Wed,  7 Jun 2023 20:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170261;
-        bh=17L55NsQn/JO1fhwW7Z5oAOkBc/zfFpEmTO+AjjHJ8w=;
+        s=korg; t=1686169519;
+        bh=VFjO42l3luArZ4psdOiK4HwyLgEcsNzr91BCbnzwSXI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AkVG2r3W8bph6BzM3V1Duz7dZUR+Q8HS2f32rpEv2AIObcB9z7OikZVqsoLZLLgVK
-         odKUxrQdUl9VZGJata3XJp+/J7xNDaEfSHUm0IKH5+6vOlVOUL3Dh8VqQCWWOvJBdV
-         uFsta+kHmMS9p70m2Affs3RZNKVc6mIn/2krW4Jc=
+        b=jH/NzojfrsW/C7xupM6dj1niUkAimGDo4mnpOxaMvYw84OFxqXELfmP4S3tIiUjXm
+         K13HBSZNLHdzbobkCndVIV2rw09nVywYEpgNOPXtjTjYrs2qKLdEeQOZALJ2Jx904c
+         8GSZ9Hmkl76tVpqnXpdMCPGqYzGFIprsM/pAFXjk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shay Drory <shayd@nvidia.com>,
-        Moshe Shemesh <moshe@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 018/225] net/mlx5: SF, Drain health before removing device
+        patches@lists.linux.dev, Andrey God <andreygod83@protonmail.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 112/286] nvme-pci: add NVME_QUIRK_BOGUS_NID for HS-SSD-FUTURE 2048G
 Date:   Wed,  7 Jun 2023 22:13:31 +0200
-Message-ID: <20230607200914.855897893@linuxfoundation.org>
+Message-ID: <20230607200926.741831975@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,37 +54,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shay Drory <shayd@nvidia.com>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-[ Upstream commit b4646da0573fae9dfa2b8f1f10936cb6eedd7230 ]
+[ Upstream commit 1616d6c3717bae9041a4240d381ec56ccdaafedc ]
 
-There is no point in recovery during device removal. Also, if health
-work started need to wait for it to avoid races and NULL pointer
-access.
+Add a quirk to fix HS-SSD-FUTURE 2048G SSD drives reporting duplicate
+nsids.
 
-Hence, drain health WQ before removing device.
-
-Fixes: 1958fc2f0712 ("net/mlx5: SF, Add auxiliary device driver")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217384
+Reported-by: Andrey God <andreygod83@protonmail.com>
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvme/host/pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
-index a7377619ba6f2..2424cdf9cca99 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
-@@ -63,6 +63,7 @@ static void mlx5_sf_dev_remove(struct auxiliary_device *adev)
- 	struct mlx5_sf_dev *sf_dev = container_of(adev, struct mlx5_sf_dev, adev);
- 	struct devlink *devlink = priv_to_devlink(sf_dev->mdev);
- 
-+	mlx5_drain_health_wq(sf_dev->mdev);
- 	devlink_unregister(devlink);
- 	mlx5_uninit_one(sf_dev->mdev);
- 	iounmap(sf_dev->mdev->iseg);
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index cd7873de31215..bbf96567365cd 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -3445,6 +3445,8 @@ static const struct pci_device_id nvme_id_table[] = {
+ 				NVME_QUIRK_IGNORE_DEV_SUBNQN, },
+ 	{ PCI_DEVICE(0x10ec, 0x5763), /* TEAMGROUP T-FORCE CARDEA ZERO Z330 SSD */
+ 		.driver_data = NVME_QUIRK_BOGUS_NID, },
++	{ PCI_DEVICE(0x1e4b, 0x1602), /* HS-SSD-FUTURE 2048G  */
++		.driver_data = NVME_QUIRK_BOGUS_NID, },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMAZON, 0x0061),
+ 		.driver_data = NVME_QUIRK_DMA_ADDRESS_BITS_48, },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMAZON, 0x0065),
 -- 
 2.39.2
 
