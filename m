@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6BF6726C2F
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A50DC726F8F
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:00:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233613AbjFGUbO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:31:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57564 "EHLO
+        id S235722AbjFGU7w (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:59:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233619AbjFGUbN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:31:13 -0400
+        with ESMTP id S235599AbjFGU7v (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:59:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47553137
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:31:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBDC22701
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:59:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D4BE8644F8
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:31:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D35C433D2;
-        Wed,  7 Jun 2023 20:31:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EC6D264886
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:58:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 090F5C433EF;
+        Wed,  7 Jun 2023 20:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169871;
-        bh=GwBaXoNiSoSFSpiNL3cErcNCcIVhHLLYcgqU77N4EW0=;
+        s=korg; t=1686171500;
+        bh=eUyy4o0ZFlQgxEmoGpUGIqucDH7lEIHYip0rJcopiEI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FJwWzj5EXXjMggrgEY/eF4mkMGvYRYnJVIGY3ue4us3fuuCTkJjLf+rSjRE9XvppD
-         1y7OCDVe4U2t0l41gc7mxKLSXqIxYAFpL4ukJdBqllrfNHhejCu66HbvBzy9Tf3lrG
-         L9wQ6fzgSqySddDnflyr1voLhgJTgdtBt1IiBvts=
+        b=jka50RxcQtf3fx1FK+z0hc9BRvFUbHxjffPL7iYxx82XVIM24fDA9iMb2Q0/AXWOu
+         j2b1hr7kl1C5ByPaj5y/af/gx7kgnwlo2vnZwluG438lUvkp7dbVnuwuTFcaZzxms8
+         jZoZEnGCd3ubee6E/bcat58ptybLiP8ifKOp3k64=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Richard Weinberger <richard@nod.at>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.3 245/286] mtdchar: mark bits of ioctl handler noinline
+        patches@lists.linux.dev, Johannes Thumshirn <jth@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 041/159] watchdog: menz069_wdt: fix watchdog initialisation
 Date:   Wed,  7 Jun 2023 22:15:44 +0200
-Message-ID: <20230607200931.296822388@linuxfoundation.org>
+Message-ID: <20230607200905.018457033@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,56 +55,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Johannes Thumshirn <jth@kernel.org>
 
-commit 0ea923f443350c8c5cca6eef5b748d52b903f46c upstream.
+[ Upstream commit 87b22656ca6a896d0378e9e60ffccb0c82f48b08 ]
 
-The addition of the mtdchar_read_ioctl() function caused the stack usage
-of mtdchar_ioctl() to grow beyond the warning limit on 32-bit architectures
-with gcc-13:
+Doing a 'cat /dev/watchdog0' with menz069_wdt as watchdog0 will result in
+a NULL pointer dereference.
 
-drivers/mtd/mtdchar.c: In function 'mtdchar_ioctl':
-drivers/mtd/mtdchar.c:1229:1: error: the frame size of 1488 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
+This happens because we're passing the wrong pointer to
+watchdog_register_device(). Fix this by getting rid of the static
+watchdog_device structure and use the one embedded into the driver's
+per-instance private data.
 
-Mark both the read and write portions as noinline_for_stack to ensure
-they don't get inlined and use separate stack slots to reduce the
-maximum usage, both in the mtdchar_ioctl() and combined with any
-of its callees.
-
-Fixes: 095bb6e44eb1 ("mtdchar: add MEMREAD ioctl")
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230417205654.1982368-1-arnd@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johannes Thumshirn <jth@kernel.org>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20230418172531.177349-2-jth@kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/mtdchar.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/watchdog/menz69_wdt.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
---- a/drivers/mtd/mtdchar.c
-+++ b/drivers/mtd/mtdchar.c
-@@ -590,8 +590,8 @@ static void adjust_oob_length(struct mtd
- 			    (end_page - start_page + 1) * oob_per_page);
- }
+diff --git a/drivers/watchdog/menz69_wdt.c b/drivers/watchdog/menz69_wdt.c
+index 8973f98bc6a56..bca0938f3429f 100644
+--- a/drivers/watchdog/menz69_wdt.c
++++ b/drivers/watchdog/menz69_wdt.c
+@@ -98,14 +98,6 @@ static const struct watchdog_ops men_z069_ops = {
+ 	.set_timeout = men_z069_wdt_set_timeout,
+ };
  
--static int mtdchar_write_ioctl(struct mtd_info *mtd,
--		struct mtd_write_req __user *argp)
-+static noinline_for_stack int
-+mtdchar_write_ioctl(struct mtd_info *mtd, struct mtd_write_req __user *argp)
+-static struct watchdog_device men_z069_wdt = {
+-	.info = &men_z069_info,
+-	.ops = &men_z069_ops,
+-	.timeout = MEN_Z069_DEFAULT_TIMEOUT,
+-	.min_timeout = 1,
+-	.max_timeout = MEN_Z069_WDT_COUNTER_MAX / MEN_Z069_TIMER_FREQ,
+-};
+-
+ static int men_z069_probe(struct mcb_device *dev,
+ 			  const struct mcb_device_id *id)
  {
- 	struct mtd_info *master = mtd_get_master(mtd);
- 	struct mtd_write_req req;
-@@ -688,8 +688,8 @@ static int mtdchar_write_ioctl(struct mt
- 	return ret;
- }
+@@ -125,15 +117,19 @@ static int men_z069_probe(struct mcb_device *dev,
+ 		goto release_mem;
  
--static int mtdchar_read_ioctl(struct mtd_info *mtd,
--		struct mtd_read_req __user *argp)
-+static noinline_for_stack int
-+mtdchar_read_ioctl(struct mtd_info *mtd, struct mtd_read_req __user *argp)
- {
- 	struct mtd_info *master = mtd_get_master(mtd);
- 	struct mtd_read_req req;
+ 	drv->mem = mem;
++	drv->wdt.info = &men_z069_info;
++	drv->wdt.ops = &men_z069_ops;
++	drv->wdt.timeout = MEN_Z069_DEFAULT_TIMEOUT;
++	drv->wdt.min_timeout = 1;
++	drv->wdt.max_timeout = MEN_Z069_WDT_COUNTER_MAX / MEN_Z069_TIMER_FREQ;
+ 
+-	drv->wdt = men_z069_wdt;
+ 	watchdog_init_timeout(&drv->wdt, 0, &dev->dev);
+ 	watchdog_set_nowayout(&drv->wdt, nowayout);
+ 	watchdog_set_drvdata(&drv->wdt, drv);
+ 	drv->wdt.parent = &dev->dev;
+ 	mcb_set_drvdata(dev, drv);
+ 
+-	return watchdog_register_device(&men_z069_wdt);
++	return watchdog_register_device(&drv->wdt);
+ 
+ release_mem:
+ 	mcb_release_mem(mem);
+-- 
+2.39.2
+
 
 
