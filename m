@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B677726EDE
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:53:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBDB2726CE2
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:37:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235361AbjFGUx1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:53:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54560 "EHLO
+        id S233968AbjFGUhi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:37:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235362AbjFGUxY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:53:24 -0400
+        with ESMTP id S234097AbjFGUhf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:37:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3DAB2113
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:53:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2582826AE
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:37:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3091E64794
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:53:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4905FC433D2;
-        Wed,  7 Jun 2023 20:53:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A28A645AC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:37:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A71AC433EF;
+        Wed,  7 Jun 2023 20:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171195;
-        bh=JmY8i5tmEGselaARSB0P4+af/A5ZKmZzV3iI9qFN5nU=;
+        s=korg; t=1686170222;
+        bh=WEngQOOCLozJm0grXR3idId6rYa0P2gu28bnA4neVts=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w46OEja2xTTlDeVFcIKUtEDoxX72lgMRuKWIKC+6a1UEoNRwVuaJg8VUakOGpp9jp
-         4nm5Yb37WflKF9GgfLyyqfT4JAeNEwDJyQ4kabPutHoDI4rawo65sJQ2QiY5PPi67Q
-         hWDv69+7rf8bCVTqajbLIRHn769gbi+Rr30+PTz8=
+        b=m3YjowLXiWAoFXWNh3L60Nd8Jq5Qb25ig3F6ja4+Ct6IEqz4gi5F/+xk+gmj7/Tp4
+         dkNLMS1gw3Y6/h/bHTTR8KmvKUg7ycJYpp50Ny+HA6RWlK/SFOv6hazBMyje638tp0
+         eJrdajGZsvd/uDs+LZpsCLIkAk1dVaSe5l58+OQs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Miquel Raynal <miquel.raynal@bootlin.com>,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 26/99] mtd: rawnand: marvell: ensure timing values are written
+        patches@lists.linux.dev, Jiakai Luo <jkluo@hust.edu.cn>,
+        Dongliang Mu <dzm91@hust.edu.cn>, Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 4.19 61/88] iio: adc: mxs-lradc: fix the order of two cleanup operations
 Date:   Wed,  7 Jun 2023 22:16:18 +0200
-Message-ID: <20230607200901.079414363@linuxfoundation.org>
+Message-ID: <20230607200901.146354344@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,43 +54,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+From: Jiakai Luo <jkluo@hust.edu.cn>
 
-[ Upstream commit 8a6f4d346f3bad9c68b4a87701eb3f7978542d57 ]
+commit 27b2ed5b6d53cd62fc61c3f259ae52f5cac23b66 upstream.
 
-When new timing values are calculated in marvell_nfc_setup_interface()
-ensure that they will be applied in marvell_nfc_select_target() by
-clearing the selected_chip pointer.
+Smatch reports:
+drivers/iio/adc/mxs-lradc-adc.c:766 mxs_lradc_adc_probe() warn:
+missing unwind goto?
 
-Fixes: b25251414f6e ("mtd: rawnand: marvell: Stop implementing ->select_chip()")
-Suggested-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230525003154.2303012-1-chris.packham@alliedtelesis.co.nz
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+the order of three init operation:
+1.mxs_lradc_adc_trigger_init
+2.iio_triggered_buffer_setup
+3.mxs_lradc_adc_hw_init
+
+thus, the order of three cleanup operation should be:
+1.mxs_lradc_adc_hw_stop
+2.iio_triggered_buffer_cleanup
+3.mxs_lradc_adc_trigger_remove
+
+we exchange the order of two cleanup operations,
+introducing the following differences:
+1.if mxs_lradc_adc_trigger_init fails, returns directly;
+2.if trigger_init succeeds but iio_triggered_buffer_setup fails,
+goto err_trig and remove the trigger.
+
+In addition, we also reorder the unwind that goes on in the
+remove() callback to match the new ordering.
+
+Fixes: 6dd112b9f85e ("iio: adc: mxs-lradc: Add support for ADC driver")
+Signed-off-by: Jiakai Luo <jkluo@hust.edu.cn>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Link: https://lore.kernel.org/r/20230422133407.72908-1-jkluo@hust.edu.cn
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/marvell_nand.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/iio/adc/mxs-lradc-adc.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/marvell_nand.c b/drivers/mtd/nand/raw/marvell_nand.c
-index 36cb0db02bbb0..7ab9e9920c06e 100644
---- a/drivers/mtd/nand/raw/marvell_nand.c
-+++ b/drivers/mtd/nand/raw/marvell_nand.c
-@@ -2401,6 +2401,12 @@ static int marvell_nfc_setup_data_interface(struct nand_chip *chip, int chipnr,
- 			NDTR1_WAIT_MODE;
- 	}
+--- a/drivers/iio/adc/mxs-lradc-adc.c
++++ b/drivers/iio/adc/mxs-lradc-adc.c
+@@ -767,13 +767,13 @@ static int mxs_lradc_adc_probe(struct pl
  
-+	/*
-+	 * Reset nfc->selected_chip so the next command will cause the timing
-+	 * registers to be updated in marvell_nfc_select_target().
-+	 */
-+	nfc->selected_chip = NULL;
-+
- 	return 0;
+ 	ret = mxs_lradc_adc_trigger_init(iio);
+ 	if (ret)
+-		goto err_trig;
++		return ret;
+ 
+ 	ret = iio_triggered_buffer_setup(iio, &iio_pollfunc_store_time,
+ 					 &mxs_lradc_adc_trigger_handler,
+ 					 &mxs_lradc_adc_buffer_ops);
+ 	if (ret)
+-		return ret;
++		goto err_trig;
+ 
+ 	adc->vref_mv = mxs_lradc_adc_vref_mv[lradc->soc];
+ 
+@@ -811,9 +811,9 @@ static int mxs_lradc_adc_probe(struct pl
+ 
+ err_dev:
+ 	mxs_lradc_adc_hw_stop(adc);
+-	mxs_lradc_adc_trigger_remove(iio);
+-err_trig:
+ 	iio_triggered_buffer_cleanup(iio);
++err_trig:
++	mxs_lradc_adc_trigger_remove(iio);
+ 	return ret;
  }
  
--- 
-2.39.2
-
+@@ -824,8 +824,8 @@ static int mxs_lradc_adc_remove(struct p
+ 
+ 	iio_device_unregister(iio);
+ 	mxs_lradc_adc_hw_stop(adc);
+-	mxs_lradc_adc_trigger_remove(iio);
+ 	iio_triggered_buffer_cleanup(iio);
++	mxs_lradc_adc_trigger_remove(iio);
+ 
+ 	return 0;
+ }
 
 
