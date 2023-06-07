@@ -2,42 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DFDA726BA7
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:27:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9662B726D26
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:39:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233329AbjFGU07 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:26:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52460 "EHLO
+        id S234282AbjFGUjq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:39:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233400AbjFGU05 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:57 -0400
+        with ESMTP id S234283AbjFGUjd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:39:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AC261BFA
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:26:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6BD22682
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:39:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B82064457
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:26:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64CDEC433EF;
-        Wed,  7 Jun 2023 20:26:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 67FA2645CC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:39:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD26C433D2;
+        Wed,  7 Jun 2023 20:39:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169595;
-        bh=mfi9pA8TtpQSlQKzzbalZaPXkKkmtsGD+l1SjdXJ0yA=;
+        s=korg; t=1686170343;
+        bh=cAYpqj3jGG9J/nAauFXpc8b/u6u2kYNqKBCPov9tBj8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xDLDxJDZCY7iEhs1J7VeDAXNNM7I0cNmU0mfpsptBDNlCBXTxXa5qspH5DN9viIbm
-         wUih1rZ6aJblt3PbzXiBJ2wzdukRmQXy+zIE8SoP0PeV7eqHODaO1MwZd9UA0L0qET
-         n22rWRbESYVnXd5iiHIKBOXy3cN1KLqemtEuWWrE=
+        b=ehIll/8NF5/via7zTLIkSlWVOB23Eq/09N1akkD8V0pRI+LOEROtijlR/i/k78Dil
+         9oz89c7Awl3uVHckHlyzg71BctnomhCOae++Jp4bjKsi3n7/NhPwcxVGTbsO/f+zWA
+         UDiGe7TEdTY9/zu59hqE1iHOZT1ihsLNrvPVRBy4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 141/286] ASoC: SOF: debug: conditionally bump runtime_pm counter on exceptions
-Date:   Wed,  7 Jun 2023 22:14:00 +0200
-Message-ID: <20230607200927.689065050@linuxfoundation.org>
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        fuyuanli <fuyuanli@didiglobal.com>,
+        Jason Xing <kerneljasonxing@gmail.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 048/225] tcp: fix mishandling when the sack compression is deferred.
+Date:   Wed,  7 Jun 2023 22:14:01 +0200
+Message-ID: <20230607200915.920644380@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,51 +56,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: fuyuanli <fuyuanli@didiglobal.com>
 
-[ Upstream commit 3de975862f985f1c9e225a0d13aa3d501373f7c3 ]
+[ Upstream commit 30c6f0bf9579debce27e45fac34fdc97e46acacc ]
 
-When a firmware IPC error happens during a pm_runtime suspend, we
-ignore the error and suspend anyways. However, the code
-unconditionally increases the runtime_pm counter. This results in a
-confusing configuration where the code will suspend, resume but never
-suspend again due to the use of pm_runtime_get_noresume().
+In this patch, we mainly try to handle sending a compressed ack
+correctly if it's deferred.
 
-The intent of the counter increase was to prevent entry in D3, but if
-that transition to D3 is already started it cannot be stopped. In
-addition, there's no point in that case in trying to prevent anything,
-the firmware error is handled and the next resume will re-initialize
-the firmware completely.
+Here are more details in the old logic:
+When sack compression is triggered in the tcp_compressed_ack_kick(),
+if the sock is owned by user, it will set TCP_DELACK_TIMER_DEFERRED
+and then defer to the release cb phrase. Later once user releases
+the sock, tcp_delack_timer_handler() should send a ack as expected,
+which, however, cannot happen due to lack of ICSK_ACK_TIMER flag.
+Therefore, the receiver would not sent an ack until the sender's
+retransmission timeout. It definitely increases unnecessary latency.
 
-This patch changes the logic to prevent suspend when the device is
-pm_runtime active and has a use_count > 0.
-
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com
-Link: https://lore.kernel.org/r/20230512103315.8921-2-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org
+Fixes: 5d9f4262b7ea ("tcp: add SACK compression")
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: fuyuanli <fuyuanli@didiglobal.com>
+Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
+Link: https://lore.kernel.org/netdev/20230529113804.GA20300@didi-ThinkCentre-M920t-N000/
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230531080150.GA20424@didi-ThinkCentre-M920t-N000
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/debug.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/net/tcp.h    |  1 +
+ net/ipv4/tcp_input.c |  2 +-
+ net/ipv4/tcp_timer.c | 16 +++++++++++++---
+ 3 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/sof/debug.c b/sound/soc/sof/debug.c
-index ade0507328af4..5042312b1b98d 100644
---- a/sound/soc/sof/debug.c
-+++ b/sound/soc/sof/debug.c
-@@ -437,8 +437,8 @@ void snd_sof_handle_fw_exception(struct snd_sof_dev *sdev, const char *msg)
- 		/* should we prevent DSP entering D3 ? */
- 		if (!sdev->ipc_dump_printed)
- 			dev_info(sdev->dev,
--				 "preventing DSP entering D3 state to preserve context\n");
--		pm_runtime_get_noresume(sdev->dev);
-+				 "Attempting to prevent DSP from entering D3 state to preserve context\n");
-+		pm_runtime_get_if_in_use(sdev->dev);
- 	}
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 0744717f5caa7..5eedd476a38d7 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -632,6 +632,7 @@ void tcp_reset(struct sock *sk, struct sk_buff *skb);
+ void tcp_skb_mark_lost_uncond_verify(struct tcp_sock *tp, struct sk_buff *skb);
+ void tcp_fin(struct sock *sk);
+ void tcp_check_space(struct sock *sk);
++void tcp_sack_compress_send_ack(struct sock *sk);
  
- 	/* dump vital information to the logs */
+ /* tcp_timer.c */
+ void tcp_init_xmit_timers(struct sock *);
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index ac44edd6f52e6..5dabb38b857ff 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -4529,7 +4529,7 @@ static void tcp_sack_maybe_coalesce(struct tcp_sock *tp)
+ 	}
+ }
+ 
+-static void tcp_sack_compress_send_ack(struct sock *sk)
++void tcp_sack_compress_send_ack(struct sock *sk)
+ {
+ 	struct tcp_sock *tp = tcp_sk(sk);
+ 
+diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
+index cb79127f45c34..0b5d0a2867a8c 100644
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -290,9 +290,19 @@ static int tcp_write_timeout(struct sock *sk)
+ void tcp_delack_timer_handler(struct sock *sk)
+ {
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
++	struct tcp_sock *tp = tcp_sk(sk);
+ 
+-	if (((1 << sk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)) ||
+-	    !(icsk->icsk_ack.pending & ICSK_ACK_TIMER))
++	if ((1 << sk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN))
++		return;
++
++	/* Handling the sack compression case */
++	if (tp->compressed_ack) {
++		tcp_mstamp_refresh(tp);
++		tcp_sack_compress_send_ack(sk);
++		return;
++	}
++
++	if (!(icsk->icsk_ack.pending & ICSK_ACK_TIMER))
+ 		return;
+ 
+ 	if (time_after(icsk->icsk_ack.timeout, jiffies)) {
+@@ -312,7 +322,7 @@ void tcp_delack_timer_handler(struct sock *sk)
+ 			inet_csk_exit_pingpong_mode(sk);
+ 			icsk->icsk_ack.ato      = TCP_ATO_MIN;
+ 		}
+-		tcp_mstamp_refresh(tcp_sk(sk));
++		tcp_mstamp_refresh(tp);
+ 		tcp_send_ack(sk);
+ 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_DELAYEDACKS);
+ 	}
 -- 
 2.39.2
 
