@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAA58726D74
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:42:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CC97726C03
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:30:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234602AbjFGUmJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:42:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41892 "EHLO
+        id S233626AbjFGUaV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:30:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234588AbjFGUmF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:42:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BF6C2118
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:42:03 -0700 (PDT)
+        with ESMTP id S233733AbjFGUaB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72C821FEE
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:29:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6FCA661D26
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:42:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80251C4339B;
-        Wed,  7 Jun 2023 20:42:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 53E9F644BC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:29:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64FFAC433D2;
+        Wed,  7 Jun 2023 20:29:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170521;
-        bh=w0rF4n5T+F4b9Rhogag7SPApxLiX1SbXOwP5SgUfXSs=;
+        s=korg; t=1686169773;
+        bh=CBrdSp2n2kHs/ug4HkD2TUoKIySAJZQWTvqqglXS1rU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aH0K1FIRp0cAkf+lsTVPXWvuJyI4gKZK1nSX8//hv1ibG799ekVs4SdczXeEJJakS
-         JkI3spqYxOKkngfB5R4lLealRBZPAE74iCgTxPRsZgtk9CzWSVgjiyP4Mx1tC0NGWO
-         0ESnd3A97Gy48IN8NXQVIad4826Q8vm2ppm0tsKA=
+        b=uhmwsn+j3ILh6mv3KGxk4DBFhTst8taKkxd4Nw7KMmFBpoduDT/lR6FcX9A7GSs5+
+         a9TiVzhk+Go3fdsKnWKtZU6/HU42RFQaBxe9URssps42wnm78wNM1QMI1PvkeIdvYn
+         Hddj584Jd6H6oyD0e7KiX66stFznzZ27YRqRU8hg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 115/225] arm64: vdso: Pass (void *) to virt_to_page()
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Marek Vasut <marex@denx.de>
+Subject: [PATCH 6.3 209/286] dt-bindings: usb: snps,dwc3: Fix "snps,hsphy_interface" type
 Date:   Wed,  7 Jun 2023 22:15:08 +0200
-Message-ID: <20230607200918.132960002@linuxfoundation.org>
+Message-ID: <20230607200930.079298652@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,42 +54,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit b0abde80620f42d1ceb3de5e4c1a49cdd5628229 ]
+commit 7b32040f6d7f885ffc09a6df7c17992d56d2eab8 upstream.
 
-Like the other calls in this function virt_to_page() expects
-a pointer, not an integer.
+The "snps,hsphy_interface" is string, not u8. Fix the type.
 
-However since many architectures implement virt_to_pfn() as
-a macro, this function becomes polymorphic and accepts both a
-(unsigned long) and a (void *).
-
-Fix this up with an explicit cast.
-
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Link: http://lists.infradead.org/pipermail/linux-arm-kernel/2023-May/832583.html
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 389d77658801 ("dt-bindings: usb: Convert DWC USB3 bindings to DT schema")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Link: https://lore.kernel.org/r/20230515172456.179049-1-marex@denx.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/vdso.c | 2 +-
+ Documentation/devicetree/bindings/usb/snps,dwc3.yaml |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kernel/vdso.c b/arch/arm64/kernel/vdso.c
-index 99ae81ab91a74..6ebb8dea5f09e 100644
---- a/arch/arm64/kernel/vdso.c
-+++ b/arch/arm64/kernel/vdso.c
-@@ -312,7 +312,7 @@ static int aarch32_alloc_kuser_vdso_page(void)
+--- a/Documentation/devicetree/bindings/usb/snps,dwc3.yaml
++++ b/Documentation/devicetree/bindings/usb/snps,dwc3.yaml
+@@ -270,7 +270,7 @@ properties:
+     description:
+       High-Speed PHY interface selection between UTMI+ and ULPI when the
+       DWC_USB3_HSPHY_INTERFACE has value 3.
+-    $ref: /schemas/types.yaml#/definitions/uint8
++    $ref: /schemas/types.yaml#/definitions/string
+     enum: [utmi, ulpi]
  
- 	memcpy((void *)(vdso_page + 0x1000 - kuser_sz), __kuser_helper_start,
- 	       kuser_sz);
--	aarch32_vectors_page = virt_to_page(vdso_page);
-+	aarch32_vectors_page = virt_to_page((void *)vdso_page);
- 	return 0;
- }
- 
--- 
-2.39.2
-
+   snps,quirk-frame-length-adjustment:
 
 
