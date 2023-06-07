@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DD75726CCD
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:36:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB48E726EED
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:54:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234120AbjFGUgh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:36:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34868 "EHLO
+        id S235426AbjFGUyK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:54:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234268AbjFGUgN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:36:13 -0400
+        with ESMTP id S235388AbjFGUyB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF223272B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:36:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBD0926A6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:53:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8898964580
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:36:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2D7C433EF;
-        Wed,  7 Jun 2023 20:36:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C889647AA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:53:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1370C433D2;
+        Wed,  7 Jun 2023 20:53:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170162;
-        bh=DXs0dfOnrmqBuqRsDp76abDSI0exg6ap0k9rhbVcUx8=;
+        s=korg; t=1686171219;
+        bh=uqeMKbUWEZLVKRiEYY5Fm2A3dW4g8dNMtC9yu+37mfM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NHYvZ6nsJThBaWwsgrc66EqDYyTAoEK44+BYF+GZlyNeoW03pLcwowkTC+l+zBBba
-         SCVNEr9bQ6OfyUYjjfDJ89WQ/oqhnEmbSNBmXVofvyrWZtnuv3S1tbhgGtCqdByFcY
-         i23nw7rlT/+6+gPXWHDaiUGuE3RCxv3hsKwxpcDE=
+        b=vhgFxz3+Tn8ECts6SpFBiQmG/Lw+mQdYMPGm10+v1Zcjg62LtWtdtUnvA4YFQLVjU
+         uvgWM6ssOare5Tou1zmOY5VJnDgpuhZnLvwHnK1RgyUU3AIUYC3flJQheTOahZ6hEe
+         +4hH84MBukL4bJVWKNnRZuN0fvfCTz8boaxfB564=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xingui Yang <yangxingui@huawei.com>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Jason Yan <yanaijie@huawei.com>
-Subject: [PATCH 4.19 69/88] ata: libata-scsi: Use correct device no in ata_find_dev()
+        patches@lists.linux.dev, Ivan Orlov <ivan.orlov0322@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 34/99] nbd: Fix debugfs_create_dir error checking
 Date:   Wed,  7 Jun 2023 22:16:26 +0200
-Message-ID: <20230607200901.392280798@linuxfoundation.org>
+Message-ID: <20230607200901.324815440@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,96 +53,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Ivan Orlov <ivan.orlov0322@gmail.com>
 
-commit 7f875850f20a42f488840c9df7af91ef7db2d576 upstream.
+[ Upstream commit 4913cfcf014c95f0437db2df1734472fd3e15098 ]
 
-For devices not attached to a port multiplier and managed directly by
-libata, the device number passed to ata_find_dev() must always be lower
-than the maximum number of devices returned by ata_link_max_devices().
-That is 1 for SATA devices or 2 for an IDE link with master+slave
-devices. This device number is the SCSI device ID which matches these
-constraints as the IDs are generated per port and so never exceed the
-maximum number of devices for the link being used.
+The debugfs_create_dir function returns ERR_PTR in case of error, and the
+only correct way to check if an error occurred is 'IS_ERR' inline function.
+This patch will replace the null-comparison with IS_ERR.
 
-However, for libsas managed devices, SCSI device IDs are assigned per
-struct scsi_host, leading to device IDs for SATA devices that can be
-well in excess of libata per-link maximum number of devices. This
-results in ata_find_dev() to always return NULL for libsas managed
-devices except for the first device of the target scsi_host with ID
-(device number) equal to 0. This issue is visible by executing the
-hdparm utility, which fails. E.g.:
-
-hdparm -i /dev/sdX
-/dev/sdX:
-  HDIO_GET_IDENTITY failed: No message of desired type
-
-Fix this by rewriting ata_find_dev() to ignore the device number for
-non-PMP attached devices with a link with at most 1 device, that is SATA
-devices. For these, the device number 0 is always used to
-return the correct pointer to the struct ata_device of the port link.
-This change excludes IDE master/slave setups (maximum number of devices
-per link is 2) and port-multiplier attached devices. Also, to be
-consistant with the fact that SCSI device IDs and channel numbers used
-as device numbers are both unsigned int, change the devno argument of
-ata_find_dev() to unsigned int.
-
-Reported-by: Xingui Yang <yangxingui@huawei.com>
-Fixes: 41bda9c98035 ("libata-link: update hotplug to handle PMP links")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Jason Yan <yanaijie@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ivan Orlov <ivan.orlov0322@gmail.com>
+Link: https://lore.kernel.org/r/20230512130533.98709-1-ivan.orlov0322@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-scsi.c |   34 ++++++++++++++++++++++++++--------
- 1 file changed, 26 insertions(+), 8 deletions(-)
+ drivers/block/nbd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -3053,18 +3053,36 @@ static unsigned int atapi_xlat(struct at
- 	return 0;
- }
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index 610dc6a36a9de..218aa7e419700 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -1609,7 +1609,7 @@ static int nbd_dev_dbg_init(struct nbd_device *nbd)
+ 		return -EIO;
  
--static struct ata_device *ata_find_dev(struct ata_port *ap, int devno)
-+static struct ata_device *ata_find_dev(struct ata_port *ap, unsigned int devno)
- {
--	if (!sata_pmp_attached(ap)) {
--		if (likely(devno >= 0 &&
--			   devno < ata_link_max_devices(&ap->link)))
-+	/*
-+	 * For the non-PMP case, ata_link_max_devices() returns 1 (SATA case),
-+	 * or 2 (IDE master + slave case). However, the former case includes
-+	 * libsas hosted devices which are numbered per scsi host, leading
-+	 * to devno potentially being larger than 0 but with each struct
-+	 * ata_device having its own struct ata_port and struct ata_link.
-+	 * To accommodate these, ignore devno and always use device number 0.
-+	 */
-+	if (likely(!sata_pmp_attached(ap))) {
-+		int link_max_devices = ata_link_max_devices(&ap->link);
-+
-+		if (link_max_devices == 1)
-+			return &ap->link.device[0];
-+
-+		if (devno < link_max_devices)
- 			return &ap->link.device[devno];
--	} else {
--		if (likely(devno >= 0 &&
--			   devno < ap->nr_pmp_links))
--			return &ap->pmp_link[devno].device[0];
-+
-+		return NULL;
- 	}
+ 	dir = debugfs_create_dir(nbd_name(nbd), nbd_dbg_dir);
+-	if (!dir) {
++	if (IS_ERR(dir)) {
+ 		dev_err(nbd_to_dev(nbd), "Failed to create debugfs dir for '%s'\n",
+ 			nbd_name(nbd));
+ 		return -EIO;
+@@ -1635,7 +1635,7 @@ static int nbd_dbg_init(void)
+ 	struct dentry *dbg_dir;
  
-+	/*
-+	 * For PMP-attached devices, the device number corresponds to C
-+	 * (channel) of SCSI [H:C:I:L], indicating the port pmp link
-+	 * for the device.
-+	 */
-+	if (devno < ap->nr_pmp_links)
-+		return &ap->pmp_link[devno].device[0];
-+
- 	return NULL;
- }
+ 	dbg_dir = debugfs_create_dir("nbd", NULL);
+-	if (!dbg_dir)
++	if (IS_ERR(dbg_dir))
+ 		return -EIO;
  
+ 	nbd_dbg_dir = dbg_dir;
+-- 
+2.39.2
+
 
 
