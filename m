@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6897D726FF9
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:03:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAF11726EC1
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:52:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235895AbjFGVDn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:03:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34844 "EHLO
+        id S235160AbjFGUwa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:52:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236134AbjFGVDV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:03:21 -0400
+        with ESMTP id S235241AbjFGUw2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:52:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 206BE1FFF
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:02:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7AE81BFF
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:52:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9FB4463991
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:02:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B445BC433D2;
-        Wed,  7 Jun 2023 21:02:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A460C64763
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:52:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3697C433D2;
+        Wed,  7 Jun 2023 20:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171773;
-        bh=i+z53TWJk40cu7KVEGwfln1kPQX+XtUYvQiEwjPukBg=;
+        s=korg; t=1686171145;
+        bh=iMrw7UTqM+qQ+0oFHVPW1g0o6T0cmEbmzkHIE2Kq2aI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DpBXmXov4tG6KmerFk0Rv5AEMHswN6ntJ15r9bi8NuiTXEjNxJxYIJm4Kb8dukoBP
-         BkKJbijhAWdlI2y7bva7kRFTWwL7ypL6fdaHxPBLT7DUmgQM+mvVmUty9Y/z6IyX+u
-         EoMrptQMMcslgEuB+LGc9Mu+J9mOKGPAI9SoESWs=
+        b=IG+0zld5SPJfF+TjX3doBgCh2RsdqA/m3e8SL+2B+1CYPhvO4OwSCReSMFrESPbmo
+         1pd36O3//XYkF8vxcUd8Nxcett1SDIJS3gi48QedgyHJS4mrbdSgsZ0kp4sw+VwPVR
+         TbYiIY3pNKj0/o9OuC6PdlnNBTtLadVCxplfMe3Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Bart Van Assche <bvanassche@acm.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 114/159] scsi: stex: Fix gcc 13 warnings
-Date:   Wed,  7 Jun 2023 22:16:57 +0200
-Message-ID: <20230607200907.401539586@linuxfoundation.org>
+        patches@lists.linux.dev, stable@kernel.org,
+        syzbot+298c5d8fb4a128bc27b0@syzkaller.appspotmail.com,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.10 102/120] ext4: add lockdep annotations for i_data_sem for ea_inodes
+Date:   Wed,  7 Jun 2023 22:16:58 +0200
+Message-ID: <20230607200904.129295442@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,63 +54,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit 6d074ce231772c66e648a61f6bd2245e7129d1f5 upstream.
+commit aff3bea95388299eec63440389b4545c8041b357 upstream.
 
-gcc 13 may assign another type to enumeration constants than gcc 12. Split
-the large enum at the top of source file stex.c such that the type of the
-constants used in time expressions is changed back to the same type chosen
-by gcc 12. This patch suppresses compiler warnings like this one:
+Treat i_data_sem for ea_inodes as being in their own lockdep class to
+avoid lockdep complaints about ext4_setattr's use of inode_lock() on
+normal inodes potentially causing lock ordering with i_data_sem on
+ea_inodes in ext4_xattr_inode_write().  However, ea_inodes will be
+operated on by ext4_setattr(), so this isn't a problem.
 
-In file included from ./include/linux/bitops.h:7,
-                 from ./include/linux/kernel.h:22,
-                 from drivers/scsi/stex.c:13:
-drivers/scsi/stex.c: In function ‘stex_common_handshake’:
-./include/linux/typecheck.h:12:25: error: comparison of distinct pointer types lacks a cast [-Werror]
-   12 |         (void)(&__dummy == &__dummy2); \
-      |                         ^~
-./include/linux/jiffies.h:106:10: note: in expansion of macro ‘typecheck’
-  106 |          typecheck(unsigned long, b) && \
-      |          ^~~~~~~~~
-drivers/scsi/stex.c:1035:29: note: in expansion of macro ‘time_after’
- 1035 |                         if (time_after(jiffies, before + MU_MAX_DELAY * HZ)) {
-      |                             ^~~~~~~~~~
-
-See also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107405.
-
-Cc: stable@vger.kernel.org
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20230529195034.3077-1-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: stable@kernel.org
+Link: https://syzkaller.appspot.com/bug?extid=298c5d8fb4a128bc27b0
+Reported-by: syzbot+298c5d8fb4a128bc27b0@syzkaller.appspotmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://lore.kernel.org/r/20230524034951.779531-5-tytso@mit.edu
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/stex.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/ext4/ext4.h  |    2 ++
+ fs/ext4/xattr.c |    4 ++++
+ 2 files changed, 6 insertions(+)
 
---- a/drivers/scsi/stex.c
-+++ b/drivers/scsi/stex.c
-@@ -109,7 +109,9 @@ enum {
- 	TASK_ATTRIBUTE_HEADOFQUEUE		= 0x1,
- 	TASK_ATTRIBUTE_ORDERED			= 0x2,
- 	TASK_ATTRIBUTE_ACA			= 0x4,
-+};
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -980,11 +980,13 @@ do {									       \
+  *			  where the second inode has larger inode number
+  *			  than the first
+  *  I_DATA_SEM_QUOTA  - Used for quota inodes only
++ *  I_DATA_SEM_EA     - Used for ea_inodes only
+  */
+ enum {
+ 	I_DATA_SEM_NORMAL = 0,
+ 	I_DATA_SEM_OTHER,
+ 	I_DATA_SEM_QUOTA,
++	I_DATA_SEM_EA
+ };
  
-+enum {
- 	SS_STS_NORMAL				= 0x80000000,
- 	SS_STS_DONE				= 0x40000000,
- 	SS_STS_HANDSHAKE			= 0x20000000,
-@@ -121,7 +123,9 @@ enum {
- 	SS_I2H_REQUEST_RESET			= 0x2000,
  
- 	SS_MU_OPERATIONAL			= 0x80000000,
-+};
- 
-+enum {
- 	STEX_CDB_LENGTH				= 16,
- 	STATUS_VAR_LEN				= 128,
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -123,7 +123,11 @@ ext4_expand_inode_array(struct ext4_xatt
+ #ifdef CONFIG_LOCKDEP
+ void ext4_xattr_inode_set_class(struct inode *ea_inode)
+ {
++	struct ext4_inode_info *ei = EXT4_I(ea_inode);
++
+ 	lockdep_set_subclass(&ea_inode->i_rwsem, 1);
++	(void) ei;	/* shut up clang warning if !CONFIG_LOCKDEP */
++	lockdep_set_subclass(&ei->i_data_sem, I_DATA_SEM_EA);
+ }
+ #endif
  
 
 
