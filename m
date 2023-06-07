@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CF47726C41
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBE42726F6A
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:58:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233158AbjFGUb4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:31:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58126 "EHLO
+        id S235836AbjFGU6O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:58:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233635AbjFGUbz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:31:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C98B6FC
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:31:54 -0700 (PDT)
+        with ESMTP id S235734AbjFGU56 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:57:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83D8E26A6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:57:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 549B764505
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:31:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B14CC433D2;
-        Wed,  7 Jun 2023 20:31:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5FB7E64880
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:57:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF83C433D2;
+        Wed,  7 Jun 2023 20:57:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169913;
-        bh=7L8cY1/FfTpIww6poA0DK9pAvBkFIbJCwCOQD29Wgns=;
+        s=korg; t=1686171463;
+        bh=yth0BPlXCaUwkR+n40bLzWvbe68828l/xkBh9irhTEQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vBQYPSIGVmbNpSaeasqwO0nCiPgP3UdRmZalT2a3WNzqn1/ZjRm6DFzMYouB3cQE6
-         tfsEnzFrNUpOn+chu3jr42BNFLp5zitjMc14TtaMnVB64KwK5EF4oTDIw8V3eMd4Xk
-         IuVTQT4rKPft7gPCgyQ3hD2hel4QwhP1f5eFsz1Y=
+        b=NBDGcRS6Vrmx+NtH335x2ApZM3no6OGwboaVW3dqCmOVtyXUqzTd7x6IY36AWXRgO
+         wSzghUMFxZoN61NJm9EigvPsQtLxrMJKnyBpfDEQIsgu5yfbuwbp/ANvYn67QCSQp/
+         +/gMNvw5pkiu+WyH7UNZ31Ho1DAnt2tvt3reEi0g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gaurav Batra <gbatra@linux.vnet.ibm.com>,
-        Brian King <brking@linux.vnet.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.3 232/286] powerpc/iommu: Limit number of TCEs to 512 for H_STUFF_TCE hcall
+        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Vlad Buslov <vladbu@nvidia.com>,
+        Peilin Ye <peilin.ye@bytedance.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 028/159] net/sched: Reserve TC_H_INGRESS (TC_H_CLSACT) for ingress (clsact) Qdiscs
 Date:   Wed,  7 Jun 2023 22:15:31 +0200
-Message-ID: <20230607200930.873239193@linuxfoundation.org>
+Message-ID: <20230607200904.592646814@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,56 +57,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+From: Peilin Ye <peilin.ye@bytedance.com>
 
-commit 9d2ccf00bddc268045e3d65a8108d61ada0e4b4e upstream.
+[ Upstream commit f85fa45d4a9408d98c46c8fa45ba2e3b2f4bf219 ]
 
-Currently in tce_freemulti_pSeriesLP() there is no limit on how many
-TCEs are passed to the H_STUFF_TCE hcall. This has not caused an issue
-until now, but newer firmware releases have started enforcing a limit of
-512 TCEs per call.
+Currently it is possible to add e.g. an HTB Qdisc under ffff:fff1
+(TC_H_INGRESS, TC_H_CLSACT):
 
-The limit is correct per the specification (PAPR v2.12 § 14.5.4.2.3).
+  $ ip link add name ifb0 type ifb
+  $ tc qdisc add dev ifb0 parent ffff:fff1 htb
+  $ tc qdisc add dev ifb0 clsact
+  Error: Exclusivity flag on, cannot modify.
+  $ drgn
+  ...
+  >>> ifb0 = netdev_get_by_name(prog, "ifb0")
+  >>> qdisc = ifb0.ingress_queue.qdisc_sleeping
+  >>> print(qdisc.ops.id.string_().decode())
+  htb
+  >>> qdisc.flags.value_() # TCQ_F_INGRESS
+  2
 
-The code has been in it's current form since it was initially merged.
+Only allow ingress and clsact Qdiscs under ffff:fff1.  Return -EINVAL
+for everything else.  Make TCQ_F_INGRESS a static flag of ingress and
+clsact Qdiscs.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Gaurav Batra <gbatra@linux.vnet.ibm.com>
-Reviewed-by: Brian King <brking@linux.vnet.ibm.com>
-[mpe: Tweak change log wording & add PAPR reference]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230525143454.56878-1-gbatra@linux.vnet.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 1f211a1b929c ("net, sched: add clsact qdisc")
+Tested-by: Pedro Tammela <pctammela@mojatatu.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
+Signed-off-by: Peilin Ye <peilin.ye@bytedance.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/iommu.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ net/sched/sch_api.c     | 7 ++++++-
+ net/sched/sch_ingress.c | 4 ++--
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -311,13 +311,22 @@ static void tce_free_pSeriesLP(unsigned
- static void tce_freemulti_pSeriesLP(struct iommu_table *tbl, long tcenum, long npages)
- {
- 	u64 rc;
-+	long rpages = npages;
-+	unsigned long limit;
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index 02f62008e468f..c3f89547d48b0 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -1223,7 +1223,12 @@ static struct Qdisc *qdisc_create(struct net_device *dev,
+ 	sch->parent = parent;
  
- 	if (!firmware_has_feature(FW_FEATURE_STUFF_TCE))
- 		return tce_free_pSeriesLP(tbl->it_index, tcenum,
- 					  tbl->it_page_shift, npages);
- 
--	rc = plpar_tce_stuff((u64)tbl->it_index,
--			     (u64)tcenum << tbl->it_page_shift, 0, npages);
-+	do {
-+		limit = min_t(unsigned long, rpages, 512);
-+
-+		rc = plpar_tce_stuff((u64)tbl->it_index,
-+				     (u64)tcenum << tbl->it_page_shift, 0, limit);
-+
-+		rpages -= limit;
-+		tcenum += limit;
-+	} while (rpages > 0 && !rc);
- 
- 	if (rc && printk_ratelimit()) {
- 		printk("tce_freemulti_pSeriesLP: plpar_tce_stuff failed\n");
+ 	if (handle == TC_H_INGRESS) {
+-		sch->flags |= TCQ_F_INGRESS;
++		if (!(sch->flags & TCQ_F_INGRESS)) {
++			NL_SET_ERR_MSG(extack,
++				       "Specified parent ID is reserved for ingress and clsact Qdiscs");
++			err = -EINVAL;
++			goto err_out3;
++		}
+ 		handle = TC_H_MAKE(TC_H_INGRESS, 0);
+ 	} else {
+ 		if (handle == 0) {
+diff --git a/net/sched/sch_ingress.c b/net/sched/sch_ingress.c
+index 35963929e1178..e43a454993723 100644
+--- a/net/sched/sch_ingress.c
++++ b/net/sched/sch_ingress.c
+@@ -140,7 +140,7 @@ static struct Qdisc_ops ingress_qdisc_ops __read_mostly = {
+ 	.cl_ops			=	&ingress_class_ops,
+ 	.id			=	"ingress",
+ 	.priv_size		=	sizeof(struct ingress_sched_data),
+-	.static_flags		=	TCQ_F_CPUSTATS,
++	.static_flags		=	TCQ_F_INGRESS | TCQ_F_CPUSTATS,
+ 	.init			=	ingress_init,
+ 	.destroy		=	ingress_destroy,
+ 	.dump			=	ingress_dump,
+@@ -281,7 +281,7 @@ static struct Qdisc_ops clsact_qdisc_ops __read_mostly = {
+ 	.cl_ops			=	&clsact_class_ops,
+ 	.id			=	"clsact",
+ 	.priv_size		=	sizeof(struct clsact_sched_data),
+-	.static_flags		=	TCQ_F_CPUSTATS,
++	.static_flags		=	TCQ_F_INGRESS | TCQ_F_CPUSTATS,
+ 	.init			=	clsact_init,
+ 	.destroy		=	clsact_destroy,
+ 	.dump			=	ingress_dump,
+-- 
+2.39.2
+
 
 
