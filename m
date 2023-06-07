@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52A62726ED7
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:53:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E0BC726AE7
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235354AbjFGUxM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:53:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54522 "EHLO
+        id S232805AbjFGUUw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:20:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235343AbjFGUxL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:53:11 -0400
+        with ESMTP id S232860AbjFGUUo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17FAEE79
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:53:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A87062729
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:20:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 943496478E
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:53:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E0FC4339C;
-        Wed,  7 Jun 2023 20:52:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 18B23643A0
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:20:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C072C433EF;
+        Wed,  7 Jun 2023 20:20:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171180;
-        bh=CiIboLuGy7TvH0bL8RB8Ctmmu91im++apW1wnmla0Jo=;
+        s=korg; t=1686169216;
+        bh=1un5sfJBGfmPBs+h3oVYtGKR2MzTnQrzWfPkJG4dIuE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a+CbfaLV5+2I3OipIvBlK7WYGS/0gge/fA3SI2V+G8lOFCufeI0Dtvawk8DIWFkc8
-         1+VAzzcSkwFpaQXvy8Ze7CUwf50WAHbUIxh5mSI6BolYe/13iajP5x1NLNk51HODL2
-         WXCQCUCCk67Q8TnylQap6zTG149vCxa+gcL4Cr44=
+        b=qJn6EfQHPwoA9U75NVn3I1hOf+E4BbIpzNLdp9cR+mOyXViDMRHQQHm8OdPR/18Nv
+         P6l+8GeoiDnkcMEYJu47X3EoGUWMLoZM672Nj9sZHdIiAJRkQsdK0sUE/UFH+MTlFo
+         7DwcR1EgOYuW54NkrH4CVPbDqzBBubRfCNLZa8rA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhengchao Shao <shaozhengchao@huawei.com>,
-        Peilin Ye <peilin.ye@bytedance.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 20/99] net: sched: fix NULL pointer dereference in mq_attach
+        patches@lists.linux.dev, Alexander Bersenev <bay@hackerdom.ru>,
+        "David S. Miller" <davem@davemloft.net>,
+        Tudor Ambarus <tudor.ambarus@linaro.org>
+Subject: [PATCH 4.14 58/61] cdc_ncm: Fix the build warning
 Date:   Wed,  7 Jun 2023 22:16:12 +0200
-Message-ID: <20230607200900.888839314@linuxfoundation.org>
+Message-ID: <20230607200855.203667352@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
+References: <20230607200835.310274198@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,93 +54,31 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Alexander Bersenev <bay@hackerdom.ru>
 
-[ Upstream commit 36eec020fab668719b541f34d97f44e232ffa165 ]
+commit 5d0ab06b63fc9c727a7bb72c81321c0114be540b upstream.
 
-When use the following command to test:
-1)ip link add bond0 type bond
-2)ip link set bond0 up
-3)tc qdisc add dev bond0 root handle ffff: mq
-4)tc qdisc replace dev bond0 parent ffff:fff1 handle ffff: mq
+The ndp32->wLength is two bytes long, so replace cpu_to_le32 with cpu_to_le16.
 
-The kernel reports NULL pointer dereference issue. The stack information
-is as follows:
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-Internal error: Oops: 0000000096000006 [#1] SMP
-Modules linked in:
-pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : mq_attach+0x44/0xa0
-lr : qdisc_graft+0x20c/0x5cc
-sp : ffff80000e2236a0
-x29: ffff80000e2236a0 x28: ffff0000c0e59d80 x27: ffff0000c0be19c0
-x26: ffff0000cae3e800 x25: 0000000000000010 x24: 00000000fffffff1
-x23: 0000000000000000 x22: ffff0000cae3e800 x21: ffff0000c9df4000
-x20: ffff0000c9df4000 x19: 0000000000000000 x18: ffff80000a934000
-x17: ffff8000f5b56000 x16: ffff80000bb08000 x15: 0000000000000000
-x14: 0000000000000000 x13: 6b6b6b6b6b6b6b6b x12: 6b6b6b6b00000001
-x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
-x8 : ffff0000c0be0730 x7 : bbbbbbbbbbbbbbbb x6 : 0000000000000008
-x5 : ffff0000cae3e864 x4 : 0000000000000000 x3 : 0000000000000001
-x2 : 0000000000000001 x1 : ffff8000090bc23c x0 : 0000000000000000
-Call trace:
-mq_attach+0x44/0xa0
-qdisc_graft+0x20c/0x5cc
-tc_modify_qdisc+0x1c4/0x664
-rtnetlink_rcv_msg+0x354/0x440
-netlink_rcv_skb+0x64/0x144
-rtnetlink_rcv+0x28/0x34
-netlink_unicast+0x1e8/0x2a4
-netlink_sendmsg+0x308/0x4a0
-sock_sendmsg+0x64/0xac
-____sys_sendmsg+0x29c/0x358
-___sys_sendmsg+0x90/0xd0
-__sys_sendmsg+0x7c/0xd0
-__arm64_sys_sendmsg+0x2c/0x38
-invoke_syscall+0x54/0x114
-el0_svc_common.constprop.1+0x90/0x174
-do_el0_svc+0x3c/0xb0
-el0_svc+0x24/0xec
-el0t_64_sync_handler+0x90/0xb4
-el0t_64_sync+0x174/0x178
-
-This is because when mq is added for the first time, qdiscs in mq is set
-to NULL in mq_attach(). Therefore, when replacing mq after adding mq, we
-need to initialize qdiscs in the mq before continuing to graft. Otherwise,
-it will couse NULL pointer dereference issue in mq_attach(). And the same
-issue will occur in the attach functions of mqprio, taprio and htb.
-ffff:fff1 means that the repalce qdisc is ingress. Ingress does not allow
-any qdisc to be attached. Therefore, ffff:fff1 is incorrectly used, and
-the command should be dropped.
-
-Fixes: 6ec1c69a8f64 ("net_sched: add classful multiqueue dummy scheduler")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Tested-by: Peilin Ye <peilin.ye@bytedance.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20230527093747.3583502-1-shaozhengchao@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0fa81b304a79 ("cdc_ncm: Implement the 32-bit version of NCM Transfer Block")
+Signed-off-by: Alexander Bersenev <bay@hackerdom.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_api.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/usb/cdc_ncm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index 84d371d30d444..6ca0cba8aad16 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -1589,6 +1589,10 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
- 					NL_SET_ERR_MSG(extack, "Qdisc parent/child loop detected");
- 					return -ELOOP;
- 				}
-+				if (clid == TC_H_INGRESS) {
-+					NL_SET_ERR_MSG(extack, "Ingress cannot graft directly");
-+					return -EINVAL;
-+				}
- 				qdisc_refcount_inc(q);
- 				goto graft;
- 			} else {
--- 
-2.39.2
-
+--- a/drivers/net/usb/cdc_ncm.c
++++ b/drivers/net/usb/cdc_ncm.c
+@@ -1176,7 +1176,7 @@ static struct usb_cdc_ncm_ndp32 *cdc_ncm
+ 		ndp32 = ctx->delayed_ndp32;
+ 
+ 	ndp32->dwSignature = sign;
+-	ndp32->wLength = cpu_to_le32(sizeof(struct usb_cdc_ncm_ndp32) + sizeof(struct usb_cdc_ncm_dpe32));
++	ndp32->wLength = cpu_to_le16(sizeof(struct usb_cdc_ncm_ndp32) + sizeof(struct usb_cdc_ncm_dpe32));
+ 	return ndp32;
+ }
+ 
 
 
