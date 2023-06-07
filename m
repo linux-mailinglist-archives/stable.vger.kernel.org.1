@@ -2,60 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D9F0727049
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:08:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD57A727070
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:20:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233926AbjFGVIq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:08:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41874 "EHLO
+        id S229536AbjFGVT7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:19:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231493AbjFGVIp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:08:45 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8776E4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:08:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686172124; x=1717708124;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=UeHpEIaj26GpUP5IYCU1e0+WwoHn/3OuH4lzcnE55yc=;
-  b=Z4cop3J0r3vK9zGgqu42P6thJQM+QcaSMsn10ci8v/axE92O6+t/jhJI
-   Ywsk1p4LQ9szm8nEswWVKiJ3lUySmmfXbzqxV7MphKEQYnXHjvl+412aF
-   czHJp1KvSHgrOPitSEROqbQrQUiRiIe6WpUp3jb2z6AYcmOz65nuzHxwA
-   CRLAPVuws47qe0UR6TVazQ5Xr7O3wrxmYaxY0hoDciUNlKkAyhGNf9iWI
-   C0P3hbX4hkQhtilCOZ7CuHNZ6X8w3be/Dtrfu50kdA8BiteaqmP5O2G3k
-   0LXTaxvPLSpuRaNV4a1yxWTGAEqTFbeO4rhyvF4Mjt3n9HYOz+k7CHDBh
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="354598655"
-X-IronPort-AV: E=Sophos;i="6.00,225,1681196400"; 
-   d="scan'208";a="354598655"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2023 14:08:44 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="712833493"
-X-IronPort-AV: E=Sophos;i="6.00,225,1681196400"; 
-   d="scan'208";a="712833493"
-Received: from lkp-server01.sh.intel.com (HELO 15ab08e44a81) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 07 Jun 2023 14:08:43 -0700
-Received: from kbuild by 15ab08e44a81 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1q70OY-0006uf-2J;
-        Wed, 07 Jun 2023 21:08:42 +0000
-Date:   Thu, 8 Jun 2023 05:07:50 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Krister Johansen <kjlx@templeofstupid.com>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH bpf v2 1/2] selftests/bpf: add a test for subprogram
- extables
-Message-ID: <ZIDxpjpcp7EqWTsH@a93e062a6cea>
+        with ESMTP id S231758AbjFGVTy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:19:54 -0400
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D6141984
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:19:53 -0700 (PDT)
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1b0201d9a9eso8475755ad.0
+        for <stable@vger.kernel.org>; Wed, 07 Jun 2023 14:19:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1686172793; x=1688764793;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2OwwAPTsX0YV3vUdxtjfpz4TiWLtJRU1D8tBxvGSgvM=;
+        b=Dn0wciA0nzHX/RcBPG9bXLiBsfDH0C8i9UN4h19QGoCN+lXz6j0TtaghmiYxiYlatz
+         dUC48YyfCOPEd3NaExvAy2oGXwf0DLKnjOsfdvOMBv9O3c7mgsdTf0l/eZf2dhkvtXNs
+         Tkx8GQi4UFiuncFvzm6eLIaGIDZtFMT/meXs0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686172793; x=1688764793;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2OwwAPTsX0YV3vUdxtjfpz4TiWLtJRU1D8tBxvGSgvM=;
+        b=dWK790UaTOoTqSV6dFAm6fp9X63SgXtWhbJPgXsymQwYVrOooglFl3kL7WiJYwVF7t
+         pG3T3R0Yyc92dFHQ9N6+XQZi/1rLHYHpr2UhEO6OkWZnyV4hxVJVM5Rz6H6788ccvm2D
+         6xSICpYz+6feiQrCSuvTT7H/W+Zp1oguOfoihJMc0r1AuotQjboWGuPWmtJDmE7NtZMx
+         AkNnqqeUjYTq8rR1J7p5JYMwGepwFOt1cRIKuJacuxH7HFbJk4pcQr+SmiDTxbF+oyEB
+         yPPw9+4s9MjqkNk6+ba8boWtqeNN7JKxCBGuRxIMpFInVeaAmpi626OjAWm5HfclgLk+
+         qZ/w==
+X-Gm-Message-State: AC+VfDzKa8wugpIx0+Q8v8buGYhiNV6tiklCQ1vdkp10BgmhTdhaogbJ
+        EnLSiZyxUsVdgTDG+c3nMqfu2Q==
+X-Google-Smtp-Source: ACHHUZ5V9nGQDkdGfxISQMBDH8TRICjsCW5LhXfjuFShBXzhX7gSXaKHOiWW4nMsxpBocxsJSkfahg==
+X-Received: by 2002:a17:903:2350:b0:1af:ac49:e048 with SMTP id c16-20020a170903235000b001afac49e048mr186444plh.25.1686172792827;
+        Wed, 07 Jun 2023 14:19:52 -0700 (PDT)
+Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id f23-20020a170902ab9700b001a922d43779sm10846050plr.27.2023.06.07.14.19.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Jun 2023 14:19:52 -0700 (PDT)
+Date:   Wed, 7 Jun 2023 14:19:51 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Christian Marangi <ansuelsmth@gmail.com>
+Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Mark Brown <broonie@kernel.org>,
+        Dave Martin <Dave.Martin@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] binfmt_elf: dynamically allocate note.data in
+ parse_elf_properties
+Message-ID: <202306071417.79F70AC@keescook>
+References: <20230607144227.8956-1-ansuelsmth@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c3d55cfd8ce7ed989c997d1e3ea2678879227300.1686166633.git.kjlx@templeofstupid.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+In-Reply-To: <20230607144227.8956-1-ansuelsmth@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -63,21 +74,31 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Wed, Jun 07, 2023 at 04:42:27PM +0200, Christian Marangi wrote:
+> Dynamically allocate note.data in parse_elf_properties to fix
+> compilation warning on some arch.
 
-Thanks for your patch.
+I'd rather avoid dynamic allocation as much as possible in the exec
+path, but we can balance it against how much it may happen.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+> On some arch note.data exceed the stack limit for a single function and
+> this cause the following compilation warning:
+> fs/binfmt_elf.c: In function 'parse_elf_properties.isra':
+> fs/binfmt_elf.c:821:1: error: the frame size of 1040 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
+>   821 | }
+>       | ^
+> cc1: all warnings being treated as errors
 
-Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
-Subject: [PATCH bpf v2 1/2] selftests/bpf: add a test for subprogram extables
-Link: https://lore.kernel.org/stable/c3d55cfd8ce7ed989c997d1e3ea2678879227300.1686166633.git.kjlx%40templeofstupid.com
+Which architectures see this warning?
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+> Fix this by dynamically allocating the array.
+> Update the sizeof of the union to the biggest element allocated.
+
+How common are these notes? I assume they're very common; I see them
+even in /bin/true:
+
+$ readelf -lW /bin/true | grep PROP
+  GNU_PROPERTY   0x000338 0x0000000000000338 0x0000000000000338 0x000030 0x000030 R   0x8
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+Kees Cook
