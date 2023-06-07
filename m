@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5DBF726EB1
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:52:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6935C726FE4
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:03:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235162AbjFGUwF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:52:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48574 "EHLO
+        id S236066AbjFGVDK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:03:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235220AbjFGUv6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:51:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E233B1FE6
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:51:56 -0700 (PDT)
+        with ESMTP id S236062AbjFGVCx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:02:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5474C2D45
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:02:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C68F6474F
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:51:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0FDC4339B;
-        Wed,  7 Jun 2023 20:51:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1BFD86495D
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:02:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C036C433D2;
+        Wed,  7 Jun 2023 21:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171115;
-        bh=zJK4Lz5YrZyMtMc6jpR5XpNCZCfD/A+9gpmhZuahO0w=;
+        s=korg; t=1686171733;
+        bh=/irxx8h83nX4xKgvG6yhAlSPKpqxTuMsOfyYIDxvLSU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yLX3sYeC2kSheUV9YPQ9As+1dleXBYW6VU37vn7oGPQnAzM/sPA8RtpkEUJRuzSu5
-         P0/N6aC6OEeuiT6aJiB0zs3J51jqUoBf6aqNBuVTkIAugg6WJGFthFMo6zo8CikahF
-         qYRv+e+xTMAJ4uxUT1T7iM/qL9uO30u1XxQnuB0w=
+        b=UBStQ/0hhQnagDP7oJnLf0lCIWhio5yN/paQCea/cDF6R0I8Uz27pOD06Om6gZ5nV
+         gQPPq8DuwqFLG1vbJ9c528GItSY1fZKfoqqVJl7IVf/IjkbfkR9covYMPCTLS/r+FR
+         KCeaCTrlRbeoilTxHjIRK8B6vc7ZJLb0jZXoCF34=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>
-Subject: [PATCH 5.10 116/120] selftests: mptcp: diag: skip if MPTCP is not supported
+        patches@lists.linux.dev, Frank Li <Frank.Li@nxp.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 129/159] usb: cdns3: fix NCM gadget RX speed 20x slow than expection at iMX8QM
 Date:   Wed,  7 Jun 2023 22:17:12 +0200
-Message-ID: <20230607200904.586168110@linuxfoundation.org>
+Message-ID: <20230607200907.899384351@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,46 +53,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 46565acdd29facbf418a11e4a3791b3c8967308d upstream.
+[ Upstream commit dbe678f6192f27879ac9ff6bc7a1036aad85aae9 ]
 
-Selftests are supposed to run on any kernels, including the old ones not
-supporting MPTCP.
+At iMX8QM platform, enable NCM gadget and run 'iperf3 -s'.
+At host, run 'iperf3 -V -c fe80::6863:98ff:feef:3e0%enxc6e147509498'
 
-A new check is then added to make sure MPTCP is supported. If not, the
-test stops and is marked as "skipped".
+[  5]   0.00-1.00   sec  1.55 MBytes  13.0 Mbits/sec   90   4.18 KBytes
+[  5]   1.00-2.00   sec  1.44 MBytes  12.0 Mbits/sec   75   4.18 KBytes
+[  5]   2.00-3.00   sec  1.48 MBytes  12.4 Mbits/sec   75   4.18 KBytes
 
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
-Fixes: df62f2ec3df6 ("selftests/mptcp: add diag interface tests")
+Expected speed should be bigger than 300Mbits/sec.
+
+The root cause of this performance drop was found to be data corruption
+happening at 4K borders in some Ethernet packets, leading to TCP
+checksum errors. This corruption occurs from the position
+(4K - (address & 0x7F)) to 4K. The u_ether function's allocation of
+skb_buff reserves 64B, meaning all RX addresses resemble 0xXXXX0040.
+
+Force trb_burst_size to 16 can fix this problem.
+
 Cc: stable@vger.kernel.org
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20230518154946.3666662-1-Frank.Li@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/diag.sh |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/cdns3/cdns3-gadget.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/tools/testing/selftests/net/mptcp/diag.sh
-+++ b/tools/testing/selftests/net/mptcp/diag.sh
-@@ -1,6 +1,8 @@
- #!/bin/bash
- # SPDX-License-Identifier: GPL-2.0
+diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-gadget.c
+index ccfaebca6faa7..1dcadef933e3a 100644
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -2097,6 +2097,19 @@ int cdns3_ep_config(struct cdns3_endpoint *priv_ep, bool enable)
+ 	else
+ 		priv_ep->trb_burst_size = 16;
  
-+. "$(dirname "${0}")/mptcp_lib.sh"
++	/*
++	 * In versions preceding DEV_VER_V2, for example, iMX8QM, there exit the bugs
++	 * in the DMA. These bugs occur when the trb_burst_size exceeds 16 and the
++	 * address is not aligned to 128 Bytes (which is a product of the 64-bit AXI
++	 * and AXI maximum burst length of 16 or 0xF+1, dma_axi_ctrl0[3:0]). This
++	 * results in data corruption when it crosses the 4K border. The corruption
++	 * specifically occurs from the position (4K - (address & 0x7F)) to 4K.
++	 *
++	 * So force trb_burst_size to 16 at such platform.
++	 */
++	if (priv_dev->dev_ver < DEV_VER_V2)
++		priv_ep->trb_burst_size = 16;
 +
- rndh=$(printf %x $sec)-$(mktemp -u XXXXXX)
- ns="ns1-$rndh"
- ksft_skip=4
-@@ -28,6 +30,8 @@ cleanup()
- 	done
- }
- 
-+mptcp_lib_check_mptcp
-+
- ip -Version > /dev/null 2>&1
- if [ $? -ne 0 ];then
- 	echo "SKIP: Could not run test without ip tool"
+ 	mult = min_t(u8, mult, EP_CFG_MULT_MAX);
+ 	buffering = min_t(u8, buffering, EP_CFG_BUFFERING_MAX);
+ 	maxburst = min_t(u8, maxburst, EP_CFG_MAXBURST_MAX);
+-- 
+2.39.2
+
 
 
