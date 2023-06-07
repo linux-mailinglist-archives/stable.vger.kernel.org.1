@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44FD4726ECC
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3449726AD2
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235310AbjFGUwu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:52:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54158 "EHLO
+        id S232665AbjFGUUa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:20:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235339AbjFGUwt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:52:49 -0400
+        with ESMTP id S232763AbjFGUUU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E39EE46
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:52:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D2112696
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:19:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9192A64780
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:52:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78498C4339B;
-        Wed,  7 Jun 2023 20:52:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E8C0643A9
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:19:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5DBC433EF;
+        Wed,  7 Jun 2023 20:19:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171164;
-        bh=Bze8mbogLY+vRP2l7mdJ/X1gUaexsQgMF1BZRLya2w4=;
+        s=korg; t=1686169177;
+        bh=huwuyLbBEwY/BuTJsLSs9ftPZ3OdpzGHLAHOkXymJu4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tXdBM7/xR9d/mj5gFY2kbKyIvftwJg0y7H9fVb4fdmVmv1BtlBfadyz/l8l3pTRmx
-         Ps0rjNWBSD4k7GPVz37x4G+9d1Y/d0xxIm8yhV6Q8EWdEUBvGmUvWdZP1LGf1IlXZ2
-         YpMIxyVz4tMabIOLKy0QdObE1ELdVtxBIENNQR7o=
+        b=xDsS3gD1MOrXnbuIC/SBDOuB9wFb7UbQKI8XZZbI9ySctpCs6L/Y6pLXu8aqPP4dA
+         MnaEBdYL9Y06UY9c8XZqnOyZ/V6KfuoHTdZEp7Ql6ZkQ78XCeg9767GRtg6UPuhD1A
+         S8AqHcpmENEa8/VTPFE7yE+BxjW3XbMHqugJmHJI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Joao Martins <joao.m.martins@oracle.com>,
-        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 06/99] iommu/amd: Dont block updates to GATag if guest mode is on
+        patches@lists.linux.dev,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 44/61] gcc-12: disable -Wdangling-pointer warning for now
 Date:   Wed,  7 Jun 2023 22:15:58 +0200
-Message-ID: <20230607200900.425512512@linuxfoundation.org>
+Message-ID: <20230607200850.394221758@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
+References: <20230607200835.310274198@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,76 +54,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Joao Martins <joao.m.martins@oracle.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit ed8a2f4ddef2eaaf864ab1efbbca9788187036ab ]
+commit f7d63b50898172b9eb061b9e2daad61b428792d0 upstream.
 
-On KVM GSI routing table updates, specially those where they have vIOMMUs
-with interrupt remapping enabled (to boot >255vcpus setups without relying
-on KVM_FEATURE_MSI_EXT_DEST_ID), a VMM may update the backing VF MSIs
-with a new VCPU affinity.
+[ Upstream commit 49beadbd47c270a00754c107a837b4f29df4c822 ]
 
-On AMD with AVIC enabled, the new vcpu affinity info is updated via:
-	avic_pi_update_irte()
-		irq_set_vcpu_affinity()
-			amd_ir_set_vcpu_affinity()
-				amd_iommu_{de}activate_guest_mode()
+While the concept of checking for dangling pointers to local variables
+at function exit is really interesting, the gcc-12 implementation is not
+compatible with reality, and results in false positives.
 
-Where the IRTE[GATag] is updated with the new vcpu affinity. The GATag
-contains VM ID and VCPU ID, and is used by IOMMU hardware to signal KVM
-(via GALog) when interrupt cannot be delivered due to vCPU is in
-blocking state.
+For example, gcc sees us putting things on a local list head allocated
+on the stack, which involves exactly those kinds of pointers to the
+local stack entry:
 
-The issue is that amd_iommu_activate_guest_mode() will essentially
-only change IRTE fields on transitions from non-guest-mode to guest-mode
-and otherwise returns *with no changes to IRTE* on already configured
-guest-mode interrupts. To the guest this means that the VF interrupts
-remain affined to the first vCPU they were first configured, and guest
-will be unable to issue VF interrupts and receive messages like this
-from spurious interrupts (e.g. from waking the wrong vCPU in GALog):
+  In function ‘__list_add’,
+      inlined from ‘list_add_tail’ at include/linux/list.h:102:2,
+      inlined from ‘rebuild_snap_realms’ at fs/ceph/snap.c:434:2:
+  include/linux/list.h:74:19: warning: storing the address of local variable ‘realm_queue’ in ‘*&realm_27(D)->rebuild_item.prev’ [-Wdangling-pointer=]
+     74 |         new->prev = prev;
+        |         ~~~~~~~~~~^~~~~~
 
-[  167.759472] __common_interrupt: 3.34 No irq handler for vector
-[  230.680927] mlx5_core 0000:00:02.0: mlx5_cmd_eq_recover:247:(pid
-3122): Recovered 1 EQEs on cmd_eq
-[  230.681799] mlx5_core 0000:00:02.0:
-wait_func_handle_exec_timeout:1113:(pid 3122): cmd[0]: CREATE_CQ(0x400)
-recovered after timeout
-[  230.683266] __common_interrupt: 3.34 No irq handler for vector
+But then gcc - understandably - doesn't really understand the big
+picture how the doubly linked list works, so doesn't see how we then end
+up emptying said list head in a loop and the pointer we added has been
+removed.
 
-Given the fact that amd_ir_set_vcpu_affinity() uses
-amd_iommu_activate_guest_mode() underneath it essentially means that VCPU
-affinity changes of IRTEs are nops. Fix it by dropping the check for
-guest-mode at amd_iommu_activate_guest_mode(). Same thing is applicable to
-amd_iommu_deactivate_guest_mode() although, even if the IRTE doesn't change
-underlying DestID on the host, the VFIO IRQ handler will still be able to
-poke at the right guest-vCPU.
+Gcc also complains about us (intentionally) using this as a way to store
+a kind of fake stack trace, eg
 
-Fixes: b9c6ff94e43a ("iommu/amd: Re-factor guest virtual APIC (de-)activation code")
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Link: https://lore.kernel.org/r/20230419201154.83880-2-joao.m.martins@oracle.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+  drivers/acpi/acpica/utdebug.c:40:38: warning: storing the address of local variable ‘current_sp’ in ‘acpi_gbl_entry_stack_pointer’ [-Wdangling-pointer=]
+     40 |         acpi_gbl_entry_stack_pointer = &current_sp;
+        |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~
+
+which is entirely reasonable from a compiler standpoint, and we may want
+to change those kinds of patterns, but not not.
+
+So this is one of those "it would be lovely if the compiler were to
+complain about us leaving dangling pointers to the stack", but not this
+way.
+
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/amd_iommu.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ Makefile |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/iommu/amd_iommu.c b/drivers/iommu/amd_iommu.c
-index b79309928d786..a30aac41af426 100644
---- a/drivers/iommu/amd_iommu.c
-+++ b/drivers/iommu/amd_iommu.c
-@@ -4420,8 +4420,7 @@ int amd_iommu_activate_guest_mode(void *data)
- 	struct amd_ir_data *ir_data = (struct amd_ir_data *)data;
- 	struct irte_ga *entry = (struct irte_ga *) ir_data->entry;
+--- a/Makefile
++++ b/Makefile
+@@ -731,6 +731,10 @@ endif
+ KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
  
--	if (!AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir) ||
--	    !entry || entry->lo.fields_vapic.guest_mode)
-+	if (!AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir) || !entry)
- 		return 0;
- 
- 	entry->lo.val = 0;
--- 
-2.39.2
-
+ KBUILD_CFLAGS += $(call cc-disable-warning, unused-const-variable)
++
++# These result in bogus false positives
++KBUILD_CFLAGS += $(call cc-disable-warning, dangling-pointer)
++
+ ifdef CONFIG_FRAME_POINTER
+ KBUILD_CFLAGS	+= -fno-omit-frame-pointer -fno-optimize-sibling-calls
+ else
 
 
