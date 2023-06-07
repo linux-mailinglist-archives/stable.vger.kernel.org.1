@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93B21726F3C
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:56:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31D9F726FE2
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:03:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235419AbjFGU4i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:56:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57534 "EHLO
+        id S236050AbjFGVDE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:03:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235611AbjFGU4g (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:56:36 -0400
+        with ESMTP id S236046AbjFGVCu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:02:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F4022D1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:56:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41D0E2703
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:02:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E6A06435A
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:56:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A179CC433D2;
-        Wed,  7 Jun 2023 20:56:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 483F161704
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:02:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF24C433EF;
+        Wed,  7 Jun 2023 21:02:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171393;
-        bh=zZUC8aaFm/jkONN7zs5EB7FITz4Q2JwrL19L7MMvPr0=;
+        s=korg; t=1686171725;
+        bh=7L8cY1/FfTpIww6poA0DK9pAvBkFIbJCwCOQD29Wgns=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dVzQU2lrBbGy5/2FaNyQUrGLvaHils6a87emEzT1oko7p0e6WS/+ekVYMHlwqqvnC
-         VwrZ3juQ+09lYLBWbdP8EIyyA0/DbDu6yk6xDMHtWaEwZQawtPRDfOy/PNYs5TJQz+
-         EuwNyeWBjmPq5JAIgKNlwCqShEzgezT8YKJf7ulE=
+        b=vNVIBCSHsXHbD/VNB5BBaU22b+maLiCivJ5zregDDNslWXBPTaFNotWW1+B067vdu
+         WSYvTQIK397PknK0sgzy4O8zWNs5U7OYqj9w7kxjm8COfMZCFe8MdZZ+iOWGNazDtJ
+         mvBQdN+zj52f+COE/BTUPF+E5rIZ7NhdfIeh1RhA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 76/99] gcc-12: disable -Wdangling-pointer warning for now
-Date:   Wed,  7 Jun 2023 22:17:08 +0200
-Message-ID: <20230607200902.607835578@linuxfoundation.org>
+        patches@lists.linux.dev, Gaurav Batra <gbatra@linux.vnet.ibm.com>,
+        Brian King <brking@linux.vnet.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 5.15 126/159] powerpc/iommu: Limit number of TCEs to 512 for H_STUFF_TCE hcall
+Date:   Wed,  7 Jun 2023 22:17:09 +0200
+Message-ID: <20230607200907.802502332@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,65 +54,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Gaurav Batra <gbatra@linux.vnet.ibm.com>
 
-commit f7d63b50898172b9eb061b9e2daad61b428792d0 upstream.
+commit 9d2ccf00bddc268045e3d65a8108d61ada0e4b4e upstream.
 
-[ Upstream commit 49beadbd47c270a00754c107a837b4f29df4c822 ]
+Currently in tce_freemulti_pSeriesLP() there is no limit on how many
+TCEs are passed to the H_STUFF_TCE hcall. This has not caused an issue
+until now, but newer firmware releases have started enforcing a limit of
+512 TCEs per call.
 
-While the concept of checking for dangling pointers to local variables
-at function exit is really interesting, the gcc-12 implementation is not
-compatible with reality, and results in false positives.
+The limit is correct per the specification (PAPR v2.12 § 14.5.4.2.3).
 
-For example, gcc sees us putting things on a local list head allocated
-on the stack, which involves exactly those kinds of pointers to the
-local stack entry:
+The code has been in it's current form since it was initially merged.
 
-  In function ‘__list_add’,
-      inlined from ‘list_add_tail’ at include/linux/list.h:102:2,
-      inlined from ‘rebuild_snap_realms’ at fs/ceph/snap.c:434:2:
-  include/linux/list.h:74:19: warning: storing the address of local variable ‘realm_queue’ in ‘*&realm_27(D)->rebuild_item.prev’ [-Wdangling-pointer=]
-     74 |         new->prev = prev;
-        |         ~~~~~~~~~~^~~~~~
-
-But then gcc - understandably - doesn't really understand the big
-picture how the doubly linked list works, so doesn't see how we then end
-up emptying said list head in a loop and the pointer we added has been
-removed.
-
-Gcc also complains about us (intentionally) using this as a way to store
-a kind of fake stack trace, eg
-
-  drivers/acpi/acpica/utdebug.c:40:38: warning: storing the address of local variable ‘current_sp’ in ‘acpi_gbl_entry_stack_pointer’ [-Wdangling-pointer=]
-     40 |         acpi_gbl_entry_stack_pointer = &current_sp;
-        |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~
-
-which is entirely reasonable from a compiler standpoint, and we may want
-to change those kinds of patterns, but not not.
-
-So this is one of those "it would be lovely if the compiler were to
-complain about us leaving dangling pointers to the stack", but not this
-way.
-
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+Reviewed-by: Brian King <brking@linux.vnet.ibm.com>
+[mpe: Tweak change log wording & add PAPR reference]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230525143454.56878-1-gbatra@linux.vnet.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Makefile |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/powerpc/platforms/pseries/iommu.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -783,6 +783,10 @@ endif
- KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -311,13 +311,22 @@ static void tce_free_pSeriesLP(unsigned
+ static void tce_freemulti_pSeriesLP(struct iommu_table *tbl, long tcenum, long npages)
+ {
+ 	u64 rc;
++	long rpages = npages;
++	unsigned long limit;
  
- KBUILD_CFLAGS += $(call cc-disable-warning, unused-const-variable)
+ 	if (!firmware_has_feature(FW_FEATURE_STUFF_TCE))
+ 		return tce_free_pSeriesLP(tbl->it_index, tcenum,
+ 					  tbl->it_page_shift, npages);
+ 
+-	rc = plpar_tce_stuff((u64)tbl->it_index,
+-			     (u64)tcenum << tbl->it_page_shift, 0, npages);
++	do {
++		limit = min_t(unsigned long, rpages, 512);
 +
-+# These result in bogus false positives
-+KBUILD_CFLAGS += $(call cc-disable-warning, dangling-pointer)
++		rc = plpar_tce_stuff((u64)tbl->it_index,
++				     (u64)tcenum << tbl->it_page_shift, 0, limit);
 +
- ifdef CONFIG_FRAME_POINTER
- KBUILD_CFLAGS	+= -fno-omit-frame-pointer -fno-optimize-sibling-calls
- else
++		rpages -= limit;
++		tcenum += limit;
++	} while (rpages > 0 && !rc);
+ 
+ 	if (rc && printk_ratelimit()) {
+ 		printk("tce_freemulti_pSeriesLP: plpar_tce_stuff failed\n");
 
 
