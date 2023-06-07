@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D617072700E
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5737F726F37
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:56:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236160AbjFGVER (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:04:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34044 "EHLO
+        id S235607AbjFGU4c (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:56:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236178AbjFGVDz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:03:55 -0400
+        with ESMTP id S235586AbjFGU4Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:56:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0C592680
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:03:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 610A5E46
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:56:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F9D6649A6
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:03:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81DB4C433EF;
-        Wed,  7 Jun 2023 21:03:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D11DC64847
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:56:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E75C433EF;
+        Wed,  7 Jun 2023 20:56:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171814;
-        bh=eL550BBh8IY2byjPiqFShEUDyXJ3Lg1EcgNmyYJtSQk=;
+        s=korg; t=1686171382;
+        bh=DXKYenYdSWxtwyD1QRt1YWy78/9bQJeaHNDT2wi5D/E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hHgQvwBTELBRWei88fZm97PyYC0kCyqdplqHK3TK6GArl6AramCJ7zdue03E+lcRx
-         AMouVE6+V1Z/9S3EhRAkIJVkURoqif1mYl5IYrUJ5S0FDII2EEFGAshQgM3zFBDAsA
-         3J4xcur9bZYYghDhMfjr/bm50F1OH3ncvSFpVlXE=
+        b=Fd6Nlo3eyGCn7tMeG6leW2mbjjCoSYh5pWdLOh+qLB7iGOD4CuKmwAPa4W5KZAC3k
+         +KM2nQADNkRycN/pKHVIz5XKgHEhbMj8nwqowWIZCZmcntLa63oKA56SDt/FuzrBUv
+         ZeqcgpLwPxTCqKqqH2eP+SWhZA1qz0OepSgJqx+I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15 144/159] ksmbd: fix credit count leakage
-Date:   Wed,  7 Jun 2023 22:17:27 +0200
-Message-ID: <20230607200908.381111650@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
+        Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 5.4 96/99] RDMA/bnxt_re: Remove the qp from list only if the qp destroy succeeds
+Date:   Wed,  7 Jun 2023 22:17:28 +0200
+Message-ID: <20230607200903.260142409@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,39 +54,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Selvin Xavier <selvin.xavier@broadcom.com>
 
-commit 84c5aa47925a1f40d698b6a6a2bf67e99617433d upstream.
+commit 097a9d23b7250355b182c5fd47dd4c55b22b1c33 upstream.
 
-This patch fix the failure from smb2.credits.single_req_credits_granted
-test. When client send 8192 credit request, ksmbd return 8191 credit
-granted. ksmbd should give maximum possible credits that must be granted
-within the range of not exceeding the max credit to client.
+Driver crashes when destroy_qp is re-tried because of an error
+returned. This is because the qp entry was removed from the qp list during
+the first call.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Remove qp from the list only if destroy_qp returns success.
+
+The driver will still trigger a WARN_ON due to the memory leaking, but at
+least it isn't corrupting memory too.
+
+Fixes: 8dae419f9ec7 ("RDMA/bnxt_re: Refactor queue pair creation code")
+Link: https://lore.kernel.org/r/1598292876-26529-2-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/smb2pdu.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c |   22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -338,13 +338,9 @@ int smb2_set_rsp_credits(struct ksmbd_wo
- 	if (hdr->Command == SMB2_NEGOTIATE)
- 		aux_max = 1;
- 	else
--		aux_max = conn->vals->max_credits - credit_charge;
-+		aux_max = conn->vals->max_credits - conn->total_credits;
- 	credits_granted = min_t(unsigned short, credits_requested, aux_max);
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -771,12 +771,6 @@ static int bnxt_re_destroy_gsi_sqp(struc
+ 	gsi_sqp = rdev->gsi_ctx.gsi_sqp;
+ 	gsi_sah = rdev->gsi_ctx.gsi_sah;
  
--	if (conn->vals->max_credits - conn->total_credits < credits_granted)
--		credits_granted = conn->vals->max_credits -
--			conn->total_credits;
+-	/* remove from active qp list */
+-	mutex_lock(&rdev->qp_lock);
+-	list_del(&gsi_sqp->list);
+-	mutex_unlock(&rdev->qp_lock);
+-	atomic_dec(&rdev->qp_count);
 -
- 	conn->total_credits += credits_granted;
- 	work->credits_granted += credits_granted;
+ 	dev_dbg(rdev_to_dev(rdev), "Destroy the shadow AH\n");
+ 	bnxt_qplib_destroy_ah(&rdev->qplib_res,
+ 			      &gsi_sah->qplib_ah,
+@@ -791,6 +785,12 @@ static int bnxt_re_destroy_gsi_sqp(struc
+ 	}
+ 	bnxt_qplib_free_qp_res(&rdev->qplib_res, &gsi_sqp->qplib_qp);
+ 
++	/* remove from active qp list */
++	mutex_lock(&rdev->qp_lock);
++	list_del(&gsi_sqp->list);
++	mutex_unlock(&rdev->qp_lock);
++	atomic_dec(&rdev->qp_count);
++
+ 	kfree(rdev->gsi_ctx.sqp_tbl);
+ 	kfree(gsi_sah);
+ 	kfree(gsi_sqp);
+@@ -811,11 +811,6 @@ int bnxt_re_destroy_qp(struct ib_qp *ib_
+ 	unsigned int flags;
+ 	int rc;
+ 
+-	mutex_lock(&rdev->qp_lock);
+-	list_del(&qp->list);
+-	mutex_unlock(&rdev->qp_lock);
+-	atomic_dec(&rdev->qp_count);
+-
+ 	bnxt_qplib_flush_cqn_wq(&qp->qplib_qp);
+ 
+ 	rc = bnxt_qplib_destroy_qp(&rdev->qplib_res, &qp->qplib_qp);
+@@ -838,6 +833,11 @@ int bnxt_re_destroy_qp(struct ib_qp *ib_
+ 			goto sh_fail;
+ 	}
+ 
++	mutex_lock(&rdev->qp_lock);
++	list_del(&qp->list);
++	mutex_unlock(&rdev->qp_lock);
++	atomic_dec(&rdev->qp_count);
++
+ 	ib_umem_release(qp->rumem);
+ 	ib_umem_release(qp->sumem);
  
 
 
