@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 289BF726CDB
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:37:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B45D726DE5
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:46:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233949AbjFGUhP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:37:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36252 "EHLO
+        id S234717AbjFGUqa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:46:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233991AbjFGUhO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:37:14 -0400
+        with ESMTP id S234863AbjFGUqP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:46:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90A20271E
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:36:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B678F212B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:45:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 309F36459E
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:36:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 412F3C4339B;
-        Wed,  7 Jun 2023 20:36:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9482464695
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:45:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A940AC433D2;
+        Wed,  7 Jun 2023 20:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170198;
-        bh=R0DELvf/YMrD0zJkos1kwz8fEahoXM96yNAJdbs+Qls=;
+        s=korg; t=1686170758;
+        bh=egqMW5JWLZ9ExfwvPYLIZNZRm+NkVGcYZXJ0MT2kE64=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p9v68e81TLhf7WGo6AbExF8kLbofH8wDk5zluCShaoVFppZ0RgCHYvZRhGOhwLlPs
-         ltyoO8velR5wKtFIX1KwG6UOv3LFozv2xfqCd/ZQS8LlLCK4J5S9XdeA4HpetSOg46
-         Lq8GBnDxl047wCaW6sbFCIFnJ2VXJNrRwAgXht1A=
+        b=Tut38w3vDqSjr7zU5yZIER2N2dTSdZrm75PtJLZgphpbT3HST3d2f1wo0Qf0zrlx+
+         mZhDc4fKcxMYrhj+TXgrFHk93vNiT/oqEpDIHXTiHPS3GeofiUSI7XaAkznaf9T8D6
+         Ir96MU5awzeAoMxTUArfcYUGkFz22pi49Ue5Cogc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Erwan Velu <e.velu@criteo.com>,
-        Luiz Capitulino <luizcap@amazon.com>,
-        Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 4.19 82/88] selinux: dont use makes grouped targets feature yet
+        patches@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
+        Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH 6.1 206/225] KVM: arm64: Populate fault info for watchpoint
 Date:   Wed,  7 Jun 2023 22:16:39 +0200
-Message-ID: <20230607200901.787498806@linuxfoundation.org>
+Message-ID: <20230607200921.103383989@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,42 +53,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paul Moore <paul@paul-moore.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-commit 42c4e97e06a839b07d834f640a10911ad84ec8b3 upstream.
+commit 811154e234db72f0a11557a84ba9640f8b3bc823 upstream.
 
-The Linux Kernel currently only requires make v3.82 while the grouped
-target functionality requires make v4.3.  Removed the grouped target
-introduced in 4ce1f694eb5d ("selinux: ensure av_permissions.h is
-built when needed") as well as the multiple header file targets in
-the make rule.  This effectively reverts the problem commit.
+When handling ESR_ELx_EC_WATCHPT_LOW, far_el2 member of struct
+kvm_vcpu_fault_info will be copied to far member of struct
+kvm_debug_exit_arch and exposed to the userspace. The userspace will
+see stale values from older faults if the fault info does not get
+populated.
 
-We will revisit this change when make >= 4.3 is required by the rest
-of the kernel.
-
+Fixes: 8fb2046180a0 ("KVM: arm64: Move early handlers to per-EC handlers")
+Suggested-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230530024651.10014-1-akihiko.odaki@daynix.com
 Cc: stable@vger.kernel.org
-Fixes: 4ce1f694eb5d ("selinux: ensure av_permissions.h is built when needed")
-Reported-by: Erwan Velu <e.velu@criteo.com>
-Reported-by: Luiz Capitulino <luizcap@amazon.com>
-Tested-by: Luiz Capitulino <luizcap@amazon.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/selinux/Makefile |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm64/kvm/hyp/include/hyp/switch.h |    8 ++++++--
+ arch/arm64/kvm/hyp/nvhe/switch.c        |    2 ++
+ arch/arm64/kvm/hyp/vhe/switch.c         |    1 +
+ 3 files changed, 9 insertions(+), 2 deletions(-)
 
---- a/security/selinux/Makefile
-+++ b/security/selinux/Makefile
-@@ -22,5 +22,9 @@ quiet_cmd_flask = GEN     $(obj)/flask.h
-       cmd_flask = $< $(obj)/flask.h $(obj)/av_permissions.h
+--- a/arch/arm64/kvm/hyp/include/hyp/switch.h
++++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
+@@ -351,17 +351,21 @@ static bool kvm_hyp_handle_cp15_32(struc
+ 	return false;
+ }
  
- targets += flask.h av_permissions.h
--$(obj)/flask.h $(obj)/av_permissions.h &: scripts/selinux/genheaders/genheaders FORCE
-+# once make >= 4.3 is required, we can use grouped targets in the rule below,
-+# which basically involves adding both headers and a '&' before the colon, see
-+# the example below:
-+#   $(obj)/flask.h $(obj)/av_permissions.h &: scripts/selinux/...
-+$(obj)/flask.h: scripts/selinux/genheaders/genheaders FORCE
- 	$(call if_changed,flask)
+-static bool kvm_hyp_handle_iabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
++static bool kvm_hyp_handle_memory_fault(struct kvm_vcpu *vcpu, u64 *exit_code)
+ {
+ 	if (!__populate_fault_info(vcpu))
+ 		return true;
+ 
+ 	return false;
+ }
++static bool kvm_hyp_handle_iabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
++	__alias(kvm_hyp_handle_memory_fault);
++static bool kvm_hyp_handle_watchpt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
++	__alias(kvm_hyp_handle_memory_fault);
+ 
+ static bool kvm_hyp_handle_dabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
+ {
+-	if (!__populate_fault_info(vcpu))
++	if (kvm_hyp_handle_memory_fault(vcpu, exit_code))
+ 		return true;
+ 
+ 	if (static_branch_unlikely(&vgic_v2_cpuif_trap)) {
+--- a/arch/arm64/kvm/hyp/nvhe/switch.c
++++ b/arch/arm64/kvm/hyp/nvhe/switch.c
+@@ -186,6 +186,7 @@ static const exit_handler_fn hyp_exit_ha
+ 	[ESR_ELx_EC_FP_ASIMD]		= kvm_hyp_handle_fpsimd,
+ 	[ESR_ELx_EC_IABT_LOW]		= kvm_hyp_handle_iabt_low,
+ 	[ESR_ELx_EC_DABT_LOW]		= kvm_hyp_handle_dabt_low,
++	[ESR_ELx_EC_WATCHPT_LOW]	= kvm_hyp_handle_watchpt_low,
+ 	[ESR_ELx_EC_PAC]		= kvm_hyp_handle_ptrauth,
+ };
+ 
+@@ -196,6 +197,7 @@ static const exit_handler_fn pvm_exit_ha
+ 	[ESR_ELx_EC_FP_ASIMD]		= kvm_hyp_handle_fpsimd,
+ 	[ESR_ELx_EC_IABT_LOW]		= kvm_hyp_handle_iabt_low,
+ 	[ESR_ELx_EC_DABT_LOW]		= kvm_hyp_handle_dabt_low,
++	[ESR_ELx_EC_WATCHPT_LOW]	= kvm_hyp_handle_watchpt_low,
+ 	[ESR_ELx_EC_PAC]		= kvm_hyp_handle_ptrauth,
+ };
+ 
+--- a/arch/arm64/kvm/hyp/vhe/switch.c
++++ b/arch/arm64/kvm/hyp/vhe/switch.c
+@@ -110,6 +110,7 @@ static const exit_handler_fn hyp_exit_ha
+ 	[ESR_ELx_EC_FP_ASIMD]		= kvm_hyp_handle_fpsimd,
+ 	[ESR_ELx_EC_IABT_LOW]		= kvm_hyp_handle_iabt_low,
+ 	[ESR_ELx_EC_DABT_LOW]		= kvm_hyp_handle_dabt_low,
++	[ESR_ELx_EC_WATCHPT_LOW]	= kvm_hyp_handle_watchpt_low,
+ 	[ESR_ELx_EC_PAC]		= kvm_hyp_handle_ptrauth,
+ };
+ 
 
 
