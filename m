@@ -2,54 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05C95726CC2
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:36:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8A96726DC5
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:45:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234105AbjFGUgN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:36:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34618 "EHLO
+        id S234673AbjFGUp0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:45:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234061AbjFGUfx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:35:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 678FB270A
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:35:39 -0700 (PDT)
+        with ESMTP id S235051AbjFGUpK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:45:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 075A51BD4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:44:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E73556457C
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:35:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07EC4C433EF;
-        Wed,  7 Jun 2023 20:35:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C5D6B64647
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:44:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C18C433EF;
+        Wed,  7 Jun 2023 20:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170138;
-        bh=PsdLhYUW2/2yOHPd/tsa7m1zstJtfVAA7v3QvF6juMM=;
+        s=korg; t=1686170695;
+        bh=D+fisbQ+ue9yAD0G5uKUaWIOwX31AyO0LjSAjb5DpZI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rfbe7UXNha/qHBp5moxPrDXJlyAf3AqotFV3pRthEKjOea20vSX3OaWRfhOlDmFIm
-         dB1ASnBylaOiCFkG0YB57Q7forNm4hvKmSHIlZqFSM+cLT1zGo3MPYRHtJAgCodCzd
-         sOUfzfwL+6NlVTj+Vvv36M2EPyw4PgAPOa/HsZ8c=
+        b=UTzHzYMIo52bCScu011xhqawdKPOs7M0pdmN9hN5chPWuuRukmDzb0E+ot2SOEpqE
+         kZ8j8twTqxqvpSKIzKRecNECGTJbcomhFL0oOq74++RdD2ZYHmsutgbBmousvpKsIQ
+         KdtR3IkT9Svv8TE/rXyNlme9DgEPX8aYIrNT/rxI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Haibo Li <haibo.li@mediatek.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 30/88] ARM: 9295/1: unwind:fix unwind abort for uleb128 case
+        patches@lists.linux.dev, Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 154/225] iio: dac: build ad5758 driver when AD5758 is selected
 Date:   Wed,  7 Jun 2023 22:15:47 +0200
-Message-ID: <20230607200900.107417704@linuxfoundation.org>
+Message-ID: <20230607200919.445671237@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,93 +54,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Haibo Li <haibo.li@mediatek.com>
+From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-[ Upstream commit fa3eeb638de0c1a9d2d860e5b48259facdd65176 ]
+commit a146eccb68be161ae9eab5f3f68bb0ed7c0fbaa8 upstream.
 
-When unwind instruction is 0xb2,the subsequent instructions
-are uleb128 bytes.
-For now,it uses only the first uleb128 byte in code.
+Commit 28d1a7ac2a0d ("iio: dac: Add AD5758 support") adds the config AD5758
+and the corresponding driver ad5758.c. In the Makefile, the ad5758 driver
+is however included when AD5755 is selected, not when AD5758 is selected.
 
-For vsp increments of 0x204~0x400,use one uleb128 byte like below:
-0xc06a00e4 <unwind_test_work>: 0x80b27fac
-  Compact model index: 0
-  0xb2 0x7f vsp = vsp + 1024
-  0xac      pop {r4, r5, r6, r7, r8, r14}
+Probably, this was simply a mistake that happened by copy-and-paste and
+forgetting to adjust the actual line. Surprisingly, no one has ever noticed
+that this driver is actually only included when AD5755 is selected and that
+the config AD5758 has actually no effect on the build.
 
-For vsp increments larger than 0x400,use two uleb128 bytes like below:
-0xc06a00e4 <unwind_test_work>: @0xc0cc9e0c
-  Compact model index: 1
-  0xb2 0x81 0x01 vsp = vsp + 1032
-  0xac      pop {r4, r5, r6, r7, r8, r14}
-The unwind works well since the decoded uleb128 byte is also 0x81.
-
-For vsp increments larger than 0x600,use two uleb128 bytes like below:
-0xc06a00e4 <unwind_test_work>: @0xc0cc9e0c
-  Compact model index: 1
-  0xb2 0x81 0x02 vsp = vsp + 1544
-  0xac      pop {r4, r5, r6, r7, r8, r14}
-In this case,the decoded uleb128 result is 0x101(vsp=0x204+(0x101<<2)).
-While the uleb128 used in code is 0x81(vsp=0x204+(0x81<<2)).
-The unwind aborts at this frame since it gets incorrect vsp.
-
-To fix this,add uleb128 decode to cover all the above case.
-
-Signed-off-by: Haibo Li <haibo.li@mediatek.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 28d1a7ac2a0d ("iio: dac: Add AD5758 support")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Link: https://lore.kernel.org/r/20230508040208.12033-1-lukas.bulwahn@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/kernel/unwind.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ drivers/iio/dac/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/kernel/unwind.c b/arch/arm/kernel/unwind.c
-index 314cfb232a635..f2bb090373c67 100644
---- a/arch/arm/kernel/unwind.c
-+++ b/arch/arm/kernel/unwind.c
-@@ -313,6 +313,29 @@ static int unwind_exec_pop_subset_r0_to_r3(struct unwind_ctrl_block *ctrl,
- 	return URC_OK;
- }
- 
-+static unsigned long unwind_decode_uleb128(struct unwind_ctrl_block *ctrl)
-+{
-+	unsigned long bytes = 0;
-+	unsigned long insn;
-+	unsigned long result = 0;
-+
-+	/*
-+	 * unwind_get_byte() will advance `ctrl` one instruction at a time, so
-+	 * loop until we get an instruction byte where bit 7 is not set.
-+	 *
-+	 * Note: This decodes a maximum of 4 bytes to output 28 bits data where
-+	 * max is 0xfffffff: that will cover a vsp increment of 1073742336, hence
-+	 * it is sufficient for unwinding the stack.
-+	 */
-+	do {
-+		insn = unwind_get_byte(ctrl);
-+		result |= (insn & 0x7f) << (bytes * 7);
-+		bytes++;
-+	} while (!!(insn & 0x80) && (bytes != sizeof(result)));
-+
-+	return result;
-+}
-+
- /*
-  * Execute the current unwind instruction.
-  */
-@@ -366,7 +389,7 @@ static int unwind_exec_insn(struct unwind_ctrl_block *ctrl)
- 		if (ret)
- 			goto error;
- 	} else if (insn == 0xb2) {
--		unsigned long uleb128 = unwind_get_byte(ctrl);
-+		unsigned long uleb128 = unwind_decode_uleb128(ctrl);
- 
- 		ctrl->vrs[SP] += 0x204 + (uleb128 << 2);
- 	} else {
--- 
-2.39.2
-
+--- a/drivers/iio/dac/Makefile
++++ b/drivers/iio/dac/Makefile
+@@ -17,7 +17,7 @@ obj-$(CONFIG_AD5592R_BASE) += ad5592r-ba
+ obj-$(CONFIG_AD5592R) += ad5592r.o
+ obj-$(CONFIG_AD5593R) += ad5593r.o
+ obj-$(CONFIG_AD5755) += ad5755.o
+-obj-$(CONFIG_AD5755) += ad5758.o
++obj-$(CONFIG_AD5758) += ad5758.o
+ obj-$(CONFIG_AD5761) += ad5761.o
+ obj-$(CONFIG_AD5764) += ad5764.o
+ obj-$(CONFIG_AD5766) += ad5766.o
 
 
