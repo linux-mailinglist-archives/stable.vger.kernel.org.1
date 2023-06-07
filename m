@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C74F726FE5
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:03:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5DBF726EB1
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:52:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235971AbjFGVDL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:03:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34940 "EHLO
+        id S235162AbjFGUwF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:52:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233843AbjFGVCy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:02:54 -0400
+        with ESMTP id S235220AbjFGUv6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:51:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2D1B2D4A
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:02:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E233B1FE6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:51:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 738F664965
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:02:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88191C433EF;
-        Wed,  7 Jun 2023 21:02:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C68F6474F
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:51:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0FDC4339B;
+        Wed,  7 Jun 2023 20:51:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171730;
-        bh=lyBq8zwUknpV7hp5S66pEm/jRE9pbTnQe3/v+3JC90A=;
+        s=korg; t=1686171115;
+        bh=zJK4Lz5YrZyMtMc6jpR5XpNCZCfD/A+9gpmhZuahO0w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=edaIZrjWCtpeiPKC+7IC4uktV9/X0W40wd9u2LcXmKkQxApYjzlLnLhnWc3jNTxuR
-         pvwZVoqlw3BKMlBicPZPeC9zt/9Rtubn/RANdn4j7OvNofv26tuR3BelACG+zbXAxA
-         3SBRR3A+krbwJLuGfV7NlYuQWW+oId7mEP7ss5zg=
+        b=yLX3sYeC2kSheUV9YPQ9As+1dleXBYW6VU37vn7oGPQnAzM/sPA8RtpkEUJRuzSu5
+         P0/N6aC6OEeuiT6aJiB0zs3J51jqUoBf6aqNBuVTkIAugg6WJGFthFMo6zo8CikahF
+         qYRv+e+xTMAJ4uxUT1T7iM/qL9uO30u1XxQnuB0w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peter Chen <peter.chen@kernel.org>,
-        Frank Li <Frank.Li@nxp.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 128/159] usb: cdns3: allocate TX FIFO size according to composite EP number
-Date:   Wed,  7 Jun 2023 22:17:11 +0200
-Message-ID: <20230607200907.867120481@linuxfoundation.org>
+        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>
+Subject: [PATCH 5.10 116/120] selftests: mptcp: diag: skip if MPTCP is not supported
+Date:   Wed,  7 Jun 2023 22:17:12 +0200
+Message-ID: <20230607200904.586168110@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,192 +53,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-[ Upstream commit dce49449e04ff150838a31386ee65917beb9ebb5 ]
+commit 46565acdd29facbf418a11e4a3791b3c8967308d upstream.
 
-Some devices have USB compositions which may require multiple endpoints.
-To get better performance, need bigger CDNS3_EP_BUF_SIZE.
+Selftests are supposed to run on any kernels, including the old ones not
+supporting MPTCP.
 
-But bigger CDNS3_EP_BUF_SIZE may exceed total hardware FIFO size when
-multiple endpoints.
+A new check is then added to make sure MPTCP is supported. If not, the
+test stops and is marked as "skipped".
 
-By introducing the check_config() callback, calculate CDNS3_EP_BUF_SIZE.
-
-Move CDNS3_EP_BUF_SIZE into cnds3_device: ep_buf_size
-Combine CDNS3_EP_ISO_SS_BURST and CDNS3_EP_ISO_HS_MULT into
-cnds3_device:ep_iso_burst
-
-Using a simple algorithm to calculate ep_buf_size.
-ep_buf_size = ep_iso_burst = (onchip_buffers - 2k) / (number of IN EP +
-1).
-
-Test at 8qxp:
-
-	Gadget			ep_buf_size
-
-	RNDIS:				5
-	RNDIS+ACM:			3
-	Mass Storage + NCM + ACM	2
-
-Previous CDNS3_EP_BUF_SIZE is 4, RNDIS + ACM will be failure because
-exceed FIFO memory.
-
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20220509164055.1815081-1-Frank.Li@nxp.com
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: df62f2ec3df6 ("selftests/mptcp: add diag interface tests")
+Cc: stable@vger.kernel.org
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: dbe678f6192f ("usb: cdns3: fix NCM gadget RX speed 20x slow than expection at iMX8QM")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/cdns3-gadget.c | 47 +++++++++++++++++++++++++++++---
- drivers/usb/cdns3/cdns3-gadget.h |  9 ++++--
- 2 files changed, 49 insertions(+), 7 deletions(-)
+ tools/testing/selftests/net/mptcp/diag.sh |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-gadget.c
-index 924c2793c7327..ccfaebca6faa7 100644
---- a/drivers/usb/cdns3/cdns3-gadget.c
-+++ b/drivers/usb/cdns3/cdns3-gadget.c
-@@ -2040,7 +2040,7 @@ int cdns3_ep_config(struct cdns3_endpoint *priv_ep, bool enable)
- 	u8 mult = 0;
- 	int ret;
+--- a/tools/testing/selftests/net/mptcp/diag.sh
++++ b/tools/testing/selftests/net/mptcp/diag.sh
+@@ -1,6 +1,8 @@
+ #!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
  
--	buffering = CDNS3_EP_BUF_SIZE - 1;
-+	buffering = priv_dev->ep_buf_size - 1;
- 
- 	cdns3_configure_dmult(priv_dev, priv_ep);
- 
-@@ -2059,7 +2059,7 @@ int cdns3_ep_config(struct cdns3_endpoint *priv_ep, bool enable)
- 		break;
- 	default:
- 		ep_cfg = EP_CFG_EPTYPE(USB_ENDPOINT_XFER_ISOC);
--		mult = CDNS3_EP_ISO_HS_MULT - 1;
-+		mult = priv_dev->ep_iso_burst - 1;
- 		buffering = mult + 1;
- 	}
- 
-@@ -2075,14 +2075,14 @@ int cdns3_ep_config(struct cdns3_endpoint *priv_ep, bool enable)
- 		mult = 0;
- 		max_packet_size = 1024;
- 		if (priv_ep->type == USB_ENDPOINT_XFER_ISOC) {
--			maxburst = CDNS3_EP_ISO_SS_BURST - 1;
-+			maxburst = priv_dev->ep_iso_burst - 1;
- 			buffering = (mult + 1) *
- 				    (maxburst + 1);
- 
- 			if (priv_ep->interval > 1)
- 				buffering++;
- 		} else {
--			maxburst = CDNS3_EP_BUF_SIZE - 1;
-+			maxburst = priv_dev->ep_buf_size - 1;
- 		}
- 		break;
- 	default:
-@@ -2097,6 +2097,10 @@ int cdns3_ep_config(struct cdns3_endpoint *priv_ep, bool enable)
- 	else
- 		priv_ep->trb_burst_size = 16;
- 
-+	mult = min_t(u8, mult, EP_CFG_MULT_MAX);
-+	buffering = min_t(u8, buffering, EP_CFG_BUFFERING_MAX);
-+	maxburst = min_t(u8, maxburst, EP_CFG_MAXBURST_MAX);
++. "$(dirname "${0}")/mptcp_lib.sh"
 +
- 	/* onchip buffer is only allocated before configuration */
- 	if (!priv_dev->hw_configured_flag) {
- 		ret = cdns3_ep_onchip_buffer_reserve(priv_dev, buffering + 1,
-@@ -2982,6 +2986,40 @@ static int cdns3_gadget_udc_stop(struct usb_gadget *gadget)
- 	return 0;
+ rndh=$(printf %x $sec)-$(mktemp -u XXXXXX)
+ ns="ns1-$rndh"
+ ksft_skip=4
+@@ -28,6 +30,8 @@ cleanup()
+ 	done
  }
  
-+/**
-+ * cdns3_gadget_check_config - ensure cdns3 can support the USB configuration
-+ * @gadget: pointer to the USB gadget
-+ *
-+ * Used to record the maximum number of endpoints being used in a USB composite
-+ * device. (across all configurations)  This is to be used in the calculation
-+ * of the TXFIFO sizes when resizing internal memory for individual endpoints.
-+ * It will help ensured that the resizing logic reserves enough space for at
-+ * least one max packet.
-+ */
-+static int cdns3_gadget_check_config(struct usb_gadget *gadget)
-+{
-+	struct cdns3_device *priv_dev = gadget_to_cdns3_device(gadget);
-+	struct usb_ep *ep;
-+	int n_in = 0;
-+	int total;
++mptcp_lib_check_mptcp
 +
-+	list_for_each_entry(ep, &gadget->ep_list, ep_list) {
-+		if (ep->claimed && (ep->address & USB_DIR_IN))
-+			n_in++;
-+	}
-+
-+	/* 2KB are reserved for EP0, 1KB for out*/
-+	total = 2 + n_in + 1;
-+
-+	if (total > priv_dev->onchip_buffers)
-+		return -ENOMEM;
-+
-+	priv_dev->ep_buf_size = priv_dev->ep_iso_burst =
-+			(priv_dev->onchip_buffers - 2) / (n_in + 1);
-+
-+	return 0;
-+}
-+
- static const struct usb_gadget_ops cdns3_gadget_ops = {
- 	.get_frame = cdns3_gadget_get_frame,
- 	.wakeup = cdns3_gadget_wakeup,
-@@ -2990,6 +3028,7 @@ static const struct usb_gadget_ops cdns3_gadget_ops = {
- 	.udc_start = cdns3_gadget_udc_start,
- 	.udc_stop = cdns3_gadget_udc_stop,
- 	.match_ep = cdns3_gadget_match_ep,
-+	.check_config = cdns3_gadget_check_config,
- };
- 
- static void cdns3_free_all_eps(struct cdns3_device *priv_dev)
-diff --git a/drivers/usb/cdns3/cdns3-gadget.h b/drivers/usb/cdns3/cdns3-gadget.h
-index c5660f2c4293f..fbe4a8e3aa897 100644
---- a/drivers/usb/cdns3/cdns3-gadget.h
-+++ b/drivers/usb/cdns3/cdns3-gadget.h
-@@ -562,15 +562,18 @@ struct cdns3_usb_regs {
- /* Max burst size (used only in SS mode). */
- #define EP_CFG_MAXBURST_MASK	GENMASK(11, 8)
- #define EP_CFG_MAXBURST(p)	(((p) << 8) & EP_CFG_MAXBURST_MASK)
-+#define EP_CFG_MAXBURST_MAX	15
- /* ISO max burst. */
- #define EP_CFG_MULT_MASK	GENMASK(15, 14)
- #define EP_CFG_MULT(p)		(((p) << 14) & EP_CFG_MULT_MASK)
-+#define EP_CFG_MULT_MAX		2
- /* ISO max burst. */
- #define EP_CFG_MAXPKTSIZE_MASK	GENMASK(26, 16)
- #define EP_CFG_MAXPKTSIZE(p)	(((p) << 16) & EP_CFG_MAXPKTSIZE_MASK)
- /* Max number of buffered packets. */
- #define EP_CFG_BUFFERING_MASK	GENMASK(31, 27)
- #define EP_CFG_BUFFERING(p)	(((p) << 27) & EP_CFG_BUFFERING_MASK)
-+#define EP_CFG_BUFFERING_MAX	15
- 
- /* EP_CMD - bitmasks */
- /* Endpoint reset. */
-@@ -1094,9 +1097,6 @@ struct cdns3_trb {
- #define CDNS3_ENDPOINTS_MAX_COUNT	32
- #define CDNS3_EP_ZLP_BUF_SIZE		1024
- 
--#define CDNS3_EP_BUF_SIZE		4	/* KB */
--#define CDNS3_EP_ISO_HS_MULT		3
--#define CDNS3_EP_ISO_SS_BURST		3
- #define CDNS3_MAX_NUM_DESCMISS_BUF	32
- #define CDNS3_DESCMIS_BUF_SIZE		2048	/* Bytes */
- #define CDNS3_WA2_NUM_BUFFERS		128
-@@ -1333,6 +1333,9 @@ struct cdns3_device {
- 	/*in KB */
- 	u16				onchip_buffers;
- 	u16				onchip_used_size;
-+
-+	u16				ep_buf_size;
-+	u16				ep_iso_burst;
- };
- 
- void cdns3_set_register_bit(void __iomem *ptr, u32 mask);
--- 
-2.39.2
-
+ ip -Version > /dev/null 2>&1
+ if [ $? -ne 0 ];then
+ 	echo "SKIP: Could not run test without ip tool"
 
 
