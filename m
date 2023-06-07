@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2917C726B9A
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76897726D02
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:38:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233372AbjFGU0h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:26:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52018 "EHLO
+        id S234175AbjFGUi2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:38:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233257AbjFGU0c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:32 -0400
+        with ESMTP id S234135AbjFGUiZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:38:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D09A82721
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:26:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BD762132
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:38:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 11AC064457
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:26:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ABD6C433D2;
-        Wed,  7 Jun 2023 20:26:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8BD09645BF
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:38:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E399C433EF;
+        Wed,  7 Jun 2023 20:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169569;
-        bh=wUUPDJ7oxjmYaBSkq+fnMwUktitXjVLulGSnwpjis3U=;
+        s=korg; t=1686170283;
+        bh=BiGCMNhMw41EXWmKbjiVcXk2i27aCFe7JMZIed8+vQ0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ACCFK2bsSi7IYP+AIaTlQ5yXv0wJa7N1uoeKIlI5GdDreCxOrVuux7boVXxhtnlnR
-         xhGCkXHvYNCD4UZ36Ie+87vjlU/MUspvE9UnIFeJm9dv/aOcYhs/Fb6aUSsV2umQBj
-         l+GNpfuCiRMf31DbmEaWAqE7Z85ZZGbQguk3nYA8=
+        b=DU8skG+CRs6os2/0fuAcYNgD0zQJA2FZRusM79FWzEJckSU1b+8zX35vl2jJhtud6
+         vEqClxx6DI3HX4+gZ4K9aqW8HvQl/k/oCcQUaKtg3LhkhQ/lUtabEx+XV/gnC4Vlm8
+         rAgzuWteAF9dswUeV6W0bXAhuFBSU7Bg2gIlBco0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Niklas=20S=C3=B6derlund?= 
-        <niklas.soderlund+renesas@ragnatech.se>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 101/286] media: rcar-vin: Select correct interrupt mode for V4L2_FIELD_ALTERNATE
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Tudor Ambarus <tudor.ambarus@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 007/225] dmaengine: at_xdmac: fix potential Oops in at_xdmac_prep_interleaved()
 Date:   Wed,  7 Jun 2023 22:13:20 +0200
-Message-ID: <20230607200926.367387769@linuxfoundation.org>
+Message-ID: <20230607200913.578993091@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,43 +54,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit e10707d5865c90d3dfe4ef589ce02ff4287fef85 ]
+[ Upstream commit 4d43acb145c363626d76f49febb4240c488cd1cf ]
 
-When adding proper support for V4L2_FIELD_ALTERNATE it was missed that
-this field format should trigger an interrupt for each field, not just
-for the whole frame. Fix this by marking it as progressive in the
-capture setup, which will then select the correct interrupt mode.
+There are two place if the at_xdmac_interleaved_queue_desc() fails which
+could lead to a NULL dereference where "first" is NULL and we call
+list_add_tail(&first->desc_node, ...).  In the first caller, the return
+is not checked so add a check for that.  In the next caller, the return
+is checked but if it fails on the first iteration through the loop then
+it will lead to a NULL pointer dereference.
 
-Tested on both Gen2 and Gen3 with the result of a doubling of the frame
-rate for V4L2_FIELD_ALTERNATE. From a PAL video source the frame rate is
-now 50, which is expected for alternate field capture.
-
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 4e5385784e69 ("dmaengine: at_xdmac: handle numf > 1")
+Fixes: 62b5cb757f1d ("dmaengine: at_xdmac: fix memory leak in interleaved mode")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://lore.kernel.org/r/21282b66-9860-410a-83df-39c17fcf2f1b@kili.mountain
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/renesas/rcar-vin/rcar-dma.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/dma/at_xdmac.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/platform/renesas/rcar-vin/rcar-dma.c b/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
-index 23598e22adc72..2a77353f10b59 100644
---- a/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
-+++ b/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
-@@ -728,11 +728,9 @@ static int rvin_setup(struct rvin_dev *vin)
- 	case V4L2_FIELD_SEQ_TB:
- 	case V4L2_FIELD_SEQ_BT:
- 	case V4L2_FIELD_NONE:
--		vnmc = VNMC_IM_ODD_EVEN;
--		progressive = true;
--		break;
- 	case V4L2_FIELD_ALTERNATE:
- 		vnmc = VNMC_IM_ODD_EVEN;
-+		progressive = true;
- 		break;
- 	default:
- 		vnmc = VNMC_IM_ODD;
+diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
+index bfc8ae2143957..7919906b02e74 100644
+--- a/drivers/dma/at_xdmac.c
++++ b/drivers/dma/at_xdmac.c
+@@ -1026,6 +1026,8 @@ at_xdmac_prep_interleaved(struct dma_chan *chan,
+ 							NULL,
+ 							src_addr, dst_addr,
+ 							xt, xt->sgl);
++		if (!first)
++			return NULL;
+ 
+ 		/* Length of the block is (BLEN+1) microblocks. */
+ 		for (i = 0; i < xt->numf - 1; i++)
+@@ -1056,8 +1058,9 @@ at_xdmac_prep_interleaved(struct dma_chan *chan,
+ 							       src_addr, dst_addr,
+ 							       xt, chunk);
+ 			if (!desc) {
+-				list_splice_tail_init(&first->descs_list,
+-						      &atchan->free_descs_list);
++				if (first)
++					list_splice_tail_init(&first->descs_list,
++							      &atchan->free_descs_list);
+ 				return NULL;
+ 			}
+ 
 -- 
 2.39.2
 
