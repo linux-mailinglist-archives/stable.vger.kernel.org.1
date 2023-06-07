@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8DE9726F41
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:56:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7957726EB2
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:52:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235399AbjFGU4x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:56:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57934 "EHLO
+        id S235267AbjFGUwG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:52:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235535AbjFGU4w (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:56:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C58B1FE3
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:56:47 -0700 (PDT)
+        with ESMTP id S235244AbjFGUwA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:52:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94E7F1FD5
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:51:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DAA126485A
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:56:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11E4C4339B;
-        Wed,  7 Jun 2023 20:56:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 23C196474F
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:51:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F56C433D2;
+        Wed,  7 Jun 2023 20:51:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171406;
-        bh=zEgrazDcCfPtDQWqVRHZCNr7MT17in7QkAQ2bTDJKkg=;
+        s=korg; t=1686171118;
+        bh=5X0e6hINHGwPlV2KHVK0N12Ft0kj9AfhnSYfaom3LvU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CpSlUtPJSKvMWLLPvjfnQpV5LK+7+PNU7MVPGRn/pOjmvPFrTUPW4zdD34Y0yqQxt
-         nomttjGCj/D7avbHlT5krslVvMdOEkGmdr0eyZU+378389TXYKXVXWc5xohi800318
-         FPsVRc9cD/EmjO9xq0ZZAqfbtSB7b14/bcoRlmV0=
+        b=fQGhB+EjsjcUObiBnxC1pGNB4nB65lGh9U5bgcTvq4uTTIQRBll7rWzlw0F4kI9dB
+         fG2nYCQiJ5C3WImSvDglCMOVdBegOfG43VLPMT6cfw0/l7Iaj5BtlhLuAwpGRqUxuG
+         OKRzPW4K6dpAUfixkPDPHJy5GvCweowi9vbTQqiE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kalle Valo <kvalo@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 81/99] wifi: rtlwifi: remove always-true condition pointed out by GCC 12
+        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>
+Subject: [PATCH 5.10 117/120] selftests: mptcp: simult flows: skip if MPTCP is not supported
 Date:   Wed,  7 Jun 2023 22:17:13 +0200
-Message-ID: <20230607200902.761419461@linuxfoundation.org>
+Message-ID: <20230607200904.617616966@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,37 +53,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-commit ee3db469dd317e82f57b13aa3bc61be5cb60c2b4 upstream.
+commit 9161f21c74a1a0e7bb39eb84ea0c86b23c92fc87 upstream.
 
-The .value is a two-dim array, not a pointer.
+Selftests are supposed to run on any kernels, including the old ones not
+supporting MPTCP.
 
-struct iqk_matrix_regs {
-	bool iqk_done;
-        long value[1][IQK_MATRIX_REG_NUM];
-};
+A new check is then added to make sure MPTCP is supported. If not, the
+test stops and is marked as "skipped".
 
-Acked-by: Kalle Valo <kvalo@kernel.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: 1a418cb8e888 ("mptcp: simult flow self-tests")
+Cc: stable@vger.kernel.org
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ tools/testing/selftests/net/mptcp/simult_flows.sh |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-@@ -2392,10 +2392,7 @@ void rtl92d_phy_reload_iqk_setting(struc
- 			RT_TRACE(rtlpriv, COMP_SCAN, DBG_LOUD,
- 				 "Just Read IQK Matrix reg for channel:%d....\n",
- 				 channel);
--			if ((rtlphy->iqk_matrix[indexforchannel].
--			     value[0] != NULL)
--				/*&&(regea4 != 0) */)
--				_rtl92d_phy_patha_fill_iqk_matrix(hw, true,
-+			_rtl92d_phy_patha_fill_iqk_matrix(hw, true,
- 					rtlphy->iqk_matrix[
- 					indexforchannel].value,	0,
- 					(rtlphy->iqk_matrix[
+--- a/tools/testing/selftests/net/mptcp/simult_flows.sh
++++ b/tools/testing/selftests/net/mptcp/simult_flows.sh
+@@ -1,6 +1,8 @@
+ #!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
+ 
++. "$(dirname "${0}")/mptcp_lib.sh"
++
+ rndh=$(printf %x $sec)-$(mktemp -u XXXXXX)
+ ns1="ns1-$rndh"
+ ns2="ns2-$rndh"
+@@ -31,6 +33,8 @@ cleanup()
+ 	done
+ }
+ 
++mptcp_lib_check_mptcp
++
+ ip -Version > /dev/null 2>&1
+ if [ $? -ne 0 ];then
+ 	echo "SKIP: Could not run test without ip tool"
 
 
