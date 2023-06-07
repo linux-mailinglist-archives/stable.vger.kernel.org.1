@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF1AF726F79
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:58:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADC24726D9A
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:44:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235644AbjFGU6j (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:58:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59106 "EHLO
+        id S234461AbjFGUoF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:44:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235606AbjFGU6e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:58:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ED3C2693
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:58:13 -0700 (PDT)
+        with ESMTP id S234553AbjFGUoE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 715A926AF
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:43:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B2096489C
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:58:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EDDCC433EF;
-        Wed,  7 Jun 2023 20:58:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 249B264652
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:43:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B727C433EF;
+        Wed,  7 Jun 2023 20:43:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171492;
-        bh=9ad7ZqI0JW+a0d0z29ZE8gLVc6qUfEiBBEvkrZOGYaE=;
+        s=korg; t=1686170611;
+        bh=+/uUPiNKP6XTa6nO7f2KMIkLt3h0LH2qbjEpl6gAL2s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WKsXdXHZNuKyEpxSVQzo3/Umrub+iAsx8m5gsCW73wekgMA/tRcOk3/F8x35qgO73
-         mmVLyeaUSK4ryQLnqimnSSx5UW6T24VUSJT6m/uF1/fI5yaumvpQcUnh+WrdCVGCe0
-         mIvczFXb/OMzYc4u0nry+lpr1VGqEGXwcWtCHuNE=
+        b=JXeROg1dKjZN81/eMt4dURRK519P9WqVZnoy9Gm/memwl6NdF4lXpiJskUjJxHIjp
+         /y3v4NAQmVP0f0aiGAfwomc+LrDJ9kfIWTwRfCr6MWtXBavDWlm5IeOxnw/kHJ4bom
+         a74jhrqsJC1Aa8ZBqfga2atQ2kEhKhdwIiJdSnTE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 038/159] mtd: rawnand: marvell: dont set the NAND frequency select
-Date:   Wed,  7 Jun 2023 22:15:41 +0200
-Message-ID: <20230607200904.915907775@linuxfoundation.org>
+        patches@lists.linux.dev, Masahiro Honda <honda@mechatrax.com>,
+        Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 149/225] iio: adc: ad_sigma_delta: Fix IRQ issue by setting IRQ_DISABLE_UNLAZY flag
+Date:   Wed,  7 Jun 2023 22:15:42 +0200
+Message-ID: <20230607200919.290037359@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,44 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+From: Masahiro Honda <honda@mechatrax.com>
 
-[ Upstream commit c4d28e30a8d0b979e4029465ab8f312ab6ce2644 ]
+commit 626d312028bec44209d0ecd5beaa9b1aa8945f7d upstream.
 
-marvell_nfc_setup_interface() uses the frequency retrieved from the
-clock associated with the nand interface to determine the timings that
-will be used. By changing the NAND frequency select without reflecting
-this in the clock configuration this means that the timings calculated
-don't correctly meet the requirements of the NAND chip. This hasn't been
-an issue up to now because of a different bug that was stopping the
-timings being updated after they were initially set.
+The Sigma-Delta ADCs supported by this driver can use SDO as an interrupt
+line to indicate the completion of a conversion. However, some devices
+cannot properly detect the completion of a conversion by an interrupt.
+This is for the reason mentioned in the following commit.
 
-Fixes: b25251414f6e ("mtd: rawnand: marvell: Stop implementing ->select_chip()")
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230525003154.2303012-2-chris.packham@alliedtelesis.co.nz
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+commit e9849777d0e2 ("genirq: Add flag to force mask in
+                      disable_irq[_nosync]()")
+
+A read operation is performed by an extra interrupt before the completion
+of a conversion. At this time, the value read from the ADC data register
+is the same as the previous conversion result. This patch fixes the issue
+by setting IRQ_DISABLE_UNLAZY flag.
+
+Fixes: 0c6ef985a1fd ("iio: adc: ad7791: fix IRQ flags")
+Fixes: 1a913270e57a ("iio: adc: ad7793: Fix IRQ flag")
+Fixes: e081102f3077 ("iio: adc: ad7780: Fix IRQ flag")
+Fixes: 89a86da5cb8e ("iio: adc: ad7192: Add IRQ flag")
+Fixes: 79ef91493f54 ("iio: adc: ad7124: Set IRQ type to falling")
+Signed-off-by: Masahiro Honda <honda@mechatrax.com>
+Link: https://lore.kernel.org/r/20230518110816.248-1-honda@mechatrax.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/marvell_nand.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/iio/adc/ad_sigma_delta.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/mtd/nand/raw/marvell_nand.c b/drivers/mtd/nand/raw/marvell_nand.c
-index 95dee54fe079c..9f662d5cf7fac 100644
---- a/drivers/mtd/nand/raw/marvell_nand.c
-+++ b/drivers/mtd/nand/raw/marvell_nand.c
-@@ -2885,10 +2885,6 @@ static int marvell_nfc_init(struct marvell_nfc *nfc)
- 		regmap_update_bits(sysctrl_base, GENCONF_CLK_GATING_CTRL,
- 				   GENCONF_CLK_GATING_CTRL_ND_GATE,
- 				   GENCONF_CLK_GATING_CTRL_ND_GATE);
--
--		regmap_update_bits(sysctrl_base, GENCONF_ND_CLK_CTRL,
--				   GENCONF_ND_CLK_CTRL_EN,
--				   GENCONF_ND_CLK_CTRL_EN);
- 	}
+--- a/drivers/iio/adc/ad_sigma_delta.c
++++ b/drivers/iio/adc/ad_sigma_delta.c
+@@ -584,6 +584,10 @@ static int devm_ad_sd_probe_trigger(stru
+ 	init_completion(&sigma_delta->completion);
  
- 	/* Configure the DMA if appropriate */
--- 
-2.39.2
-
+ 	sigma_delta->irq_dis = true;
++
++	/* the IRQ core clears IRQ_DISABLE_UNLAZY flag when freeing an IRQ */
++	irq_set_status_flags(sigma_delta->spi->irq, IRQ_DISABLE_UNLAZY);
++
+ 	ret = devm_request_irq(dev, sigma_delta->spi->irq,
+ 			       ad_sd_data_rdy_trig_poll,
+ 			       sigma_delta->info->irq_flags | IRQF_NO_AUTOEN,
 
 
