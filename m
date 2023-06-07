@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C57C726CD6
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:36:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA897726DD9
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:46:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233925AbjFGUg5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:36:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34636 "EHLO
+        id S234747AbjFGUqT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:46:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233994AbjFGUgx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:36:53 -0400
+        with ESMTP id S234762AbjFGUqC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:46:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF7582D6D
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:36:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B5882721
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:45:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9531864581
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:36:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5DD9C433EF;
-        Wed,  7 Jun 2023 20:36:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 63A866468C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:45:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A41C433D2;
+        Wed,  7 Jun 2023 20:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170183;
-        bh=6gnuX+36rESmbE76q5z0b3ZbXeU+lnG8X+gszrsdztw=;
+        s=korg; t=1686170739;
+        bh=7P1ovuxvTzFYSu+1MIAyr3QGwChR4p2MrkuhM2fNbD0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qcJxjYtk8+3tbIlAZkfZkvVdTWvhYaAKFOAYQYP8Cta0JgYCSTrIB6EkQKmb2qJER
-         l3xEK5WUA+OchcscMBb2fe1dOoilcPFRpJg9LwOcPQpXK3CwPHJ+ErYoI4poP9wZjb
-         WcFNqA62hHJnkQceAIx3+ns1Jx5qhAA1nyse2DZw=
+        b=l4optaVtRP+W4OrXSeYffkG3VAGHk+/4nNKaxS6RuOqjiZHkrVOXREMu++2cddnoA
+         xzWU+Kbtspb3NOsIrmPeEg0oqMONmGn9PCDv3K/kKnK8ydS0PhT5ZVvB9n6Eq0HUHw
+         7r0K+QFAQiJt+/QVEMWt2P4GdWSB1lpAAu7WAv+U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kalle Valo <kvalo@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.19 76/88] wifi: rtlwifi: remove always-true condition pointed out by GCC 12
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
+        syzbot+d910bd780e6efac35869@syzkaller.appspotmail.com,
+        Sam Ravnborg <sam@ravnborg.org>, stable@kernel.org
+Subject: [PATCH 6.1 200/225] fbcon: Fix null-ptr-deref in soft_cursor
 Date:   Wed,  7 Jun 2023 22:16:33 +0200
-Message-ID: <20230607200901.608133037@linuxfoundation.org>
+Message-ID: <20230607200920.911014963@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,37 +54,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Helge Deller <deller@gmx.de>
 
-commit ee3db469dd317e82f57b13aa3bc61be5cb60c2b4 upstream.
+commit d78bd6cc68276bd57f766f7cb98bfe32c23ab327 upstream.
 
-The .value is a two-dim array, not a pointer.
+syzbot repored this bug in the softcursor code:
 
-struct iqk_matrix_regs {
-	bool iqk_done;
-        long value[1][IQK_MATRIX_REG_NUM];
-};
+BUG: KASAN: null-ptr-deref in soft_cursor+0x384/0x6b4 drivers/video/fbdev/core/softcursor.c:70
+Read of size 16 at addr 0000000000000200 by task kworker/u4:1/12
 
-Acked-by: Kalle Valo <kvalo@kernel.org>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+CPU: 0 PID: 12 Comm: kworker/u4:1 Not tainted 6.4.0-rc3-syzkaller-geb0f1697d729 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/28/2023
+Workqueue: events_power_efficient fb_flashcursor
+Call trace:
+ dump_backtrace+0x1b8/0x1e4 arch/arm64/kernel/stacktrace.c:233
+ show_stack+0x2c/0x44 arch/arm64/kernel/stacktrace.c:240
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xd0/0x124 lib/dump_stack.c:106
+ print_report+0xe4/0x514 mm/kasan/report.c:465
+ kasan_report+0xd4/0x130 mm/kasan/report.c:572
+ kasan_check_range+0x264/0x2a4 mm/kasan/generic.c:187
+ __asan_memcpy+0x3c/0x84 mm/kasan/shadow.c:105
+ soft_cursor+0x384/0x6b4 drivers/video/fbdev/core/softcursor.c:70
+ bit_cursor+0x113c/0x1a64 drivers/video/fbdev/core/bitblit.c:377
+ fb_flashcursor+0x35c/0x54c drivers/video/fbdev/core/fbcon.c:380
+ process_one_work+0x788/0x12d4 kernel/workqueue.c:2405
+ worker_thread+0x8e0/0xfe8 kernel/workqueue.c:2552
+ kthread+0x288/0x310 kernel/kthread.c:379
+ ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:853
+
+This fix let bit_cursor() bail out early when a font bitmap
+isn't available yet.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Reported-by: syzbot+d910bd780e6efac35869@syzkaller.appspotmail.com
+Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/video/fbdev/core/bitblit.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-@@ -2414,10 +2414,7 @@ void rtl92d_phy_reload_iqk_setting(struc
- 			RT_TRACE(rtlpriv, COMP_SCAN, DBG_LOUD,
- 				 "Just Read IQK Matrix reg for channel:%d....\n",
- 				 channel);
--			if ((rtlphy->iqk_matrix[indexforchannel].
--			     value[0] != NULL)
--				/*&&(regea4 != 0) */)
--				_rtl92d_phy_patha_fill_iqk_matrix(hw, true,
-+			_rtl92d_phy_patha_fill_iqk_matrix(hw, true,
- 					rtlphy->iqk_matrix[
- 					indexforchannel].value,	0,
- 					(rtlphy->iqk_matrix[
+--- a/drivers/video/fbdev/core/bitblit.c
++++ b/drivers/video/fbdev/core/bitblit.c
+@@ -247,6 +247,9 @@ static void bit_cursor(struct vc_data *v
+ 
+ 	cursor.set = 0;
+ 
++	if (!vc->vc_font.data)
++		return;
++
+  	c = scr_readw((u16 *) vc->vc_pos);
+ 	attribute = get_attribute(info, c);
+ 	src = vc->vc_font.data + ((c & charmask) * (w * vc->vc_font.height));
 
 
