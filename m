@@ -2,32 +2,32 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5114726F28
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0757726FEF
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:03:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235514AbjFGUz4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:55:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57032 "EHLO
+        id S235890AbjFGVDV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:03:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235507AbjFGUz4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:55:56 -0400
+        with ESMTP id S236046AbjFGVDG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:03:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A090ED1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:55:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BD0A2D68
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:02:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3CCC464828
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:55:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD98C433EF;
-        Wed,  7 Jun 2023 20:55:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C1B263993
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:02:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3992AC433D2;
+        Wed,  7 Jun 2023 21:02:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171353;
-        bh=AD9OYEti8HXg8jmKgPhNPTuOmHmcGBs7JxKXFfse19E=;
+        s=korg; t=1686171754;
+        bh=qwAIaSPG4hxVlkNDGzS4OQaoLq+8I8iJIlVY+7lkVLI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qDHO2r4kFMH53fh9zUXdTF180Dc018G5ZOdtDvaXUUas3hHryPr9AhQELo/QZ/MMh
-         6CSeF9dG81Q/Hu+raXtgDefrqVl+GU5oNyV73SV/RhJb3UFWIIaHIPpDZpMGVdgpmr
-         gtRzffF57C8+WnyBMWZ9ufsHW+Bc4ysItzyMVgmU=
+        b=lEu/XZQFSEdEsa4t0ZkZbiN9bpu3Vdj7tqVzCNMNssxD2ZKIdJUJ02xemAR+gthT4
+         81fzwqu8xDtcHCz4mdNcKZmcTWMoeFyrDE2YzyAmVrRARLpwzg5WopAbKQA4AovfrN
+         nSd46k1A9ZxcXHLoplS3y0ji1KDyQTyMYkKaFvqM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,12 +36,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         syzbot+62120febbd1ee3c3c860@syzkaller.appspotmail.com,
         syzbot+edce54daffee36421b4c@syzkaller.appspotmail.com,
         stable@kernel.org, Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.4 86/99] ext4: add EA_INODE checking to ext4_iget()
-Date:   Wed,  7 Jun 2023 22:17:18 +0200
-Message-ID: <20230607200902.920114428@linuxfoundation.org>
+Subject: [PATCH 5.15 136/159] ext4: add EA_INODE checking to ext4_iget()
+Date:   Wed,  7 Jun 2023 22:17:19 +0200
+Message-ID: <20230607200908.121623073@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -86,7 +86,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/fs/ext4/ext4.h
 +++ b/fs/ext4/ext4.h
-@@ -2609,7 +2609,8 @@ typedef enum {
+@@ -2999,7 +2999,8 @@ typedef enum {
  	EXT4_IGET_NORMAL =	0,
  	EXT4_IGET_SPECIAL =	0x0001, /* OK to iget a system inode */
  	EXT4_IGET_HANDLE = 	0x0002,	/* Inode # is from a handle */
@@ -98,7 +98,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  extern struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
 --- a/fs/ext4/inode.c
 +++ b/fs/ext4/inode.c
-@@ -4903,6 +4903,21 @@ static inline u64 ext4_inode_peek_iversi
+@@ -4592,6 +4592,21 @@ static inline u64 ext4_inode_peek_iversi
  		return inode_peek_iversion(inode);
  }
  
@@ -120,15 +120,15 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
  			  ext4_iget_flags flags, const char *function,
  			  unsigned int line)
-@@ -4911,6 +4926,7 @@ struct inode *__ext4_iget(struct super_b
- 	struct ext4_inode *raw_inode;
+@@ -4601,6 +4616,7 @@ struct inode *__ext4_iget(struct super_b
  	struct ext4_inode_info *ei;
+ 	struct ext4_super_block *es = EXT4_SB(sb)->s_es;
  	struct inode *inode;
 +	const char *err_str;
  	journal_t *journal = EXT4_SB(sb)->s_journal;
  	long ret;
  	loff_t size;
-@@ -4934,8 +4950,14 @@ struct inode *__ext4_iget(struct super_b
+@@ -4628,8 +4644,14 @@ struct inode *__ext4_iget(struct super_b
  	inode = iget_locked(sb, ino);
  	if (!inode)
  		return ERR_PTR(-ENOMEM);
@@ -144,7 +144,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	ei = EXT4_I(inode);
  	iloc.bh = NULL;
-@@ -5200,10 +5222,9 @@ struct inode *__ext4_iget(struct super_b
+@@ -4898,10 +4920,9 @@ struct inode *__ext4_iget(struct super_b
  	if (IS_CASEFOLDED(inode) && !ext4_has_feature_casefold(inode->i_sb))
  		ext4_error_inode(inode, function, line, 0,
  				 "casefold flag without casefold feature");
@@ -160,7 +160,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
 --- a/fs/ext4/xattr.c
 +++ b/fs/ext4/xattr.c
-@@ -395,7 +395,7 @@ static int ext4_xattr_inode_iget(struct
+@@ -397,7 +397,7 @@ static int ext4_xattr_inode_iget(struct
  		return -EFSCORRUPTED;
  	}
  
@@ -169,7 +169,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	if (IS_ERR(inode)) {
  		err = PTR_ERR(inode);
  		ext4_error(parent->i_sb,
-@@ -403,23 +403,6 @@ static int ext4_xattr_inode_iget(struct
+@@ -405,23 +405,6 @@ static int ext4_xattr_inode_iget(struct
  			   err);
  		return err;
  	}
@@ -193,7 +193,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	ext4_xattr_inode_set_class(inode);
  
  	/*
-@@ -440,9 +423,6 @@ static int ext4_xattr_inode_iget(struct
+@@ -442,9 +425,6 @@ static int ext4_xattr_inode_iget(struct
  
  	*ea_inode = inode;
  	return 0;
@@ -203,7 +203,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  }
  
  /* Remove entry from mbcache when EA inode is getting evicted */
-@@ -1517,11 +1497,10 @@ ext4_xattr_inode_cache_find(struct inode
+@@ -1507,11 +1487,10 @@ ext4_xattr_inode_cache_find(struct inode
  
  	while (ce) {
  		ea_inode = ext4_iget(inode->i_sb, ce->e_value,
@@ -219,7 +219,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		    !ext4_xattr_inode_read(ea_inode, ea_data, value_len) &&
  		    !ext4_xattr_inode_verify_hashes(ea_inode, NULL, ea_data,
  						    value_len) &&
-@@ -1531,9 +1510,8 @@ ext4_xattr_inode_cache_find(struct inode
+@@ -1521,9 +1500,8 @@ ext4_xattr_inode_cache_find(struct inode
  			kvfree(ea_data);
  			return ea_inode;
  		}
