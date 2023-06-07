@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8126F726BB3
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:27:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD5FF726D39
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:40:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233435AbjFGU1X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:27:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52914 "EHLO
+        id S234314AbjFGUkX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:40:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233367AbjFGU1T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:27:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DACE12118
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:27:02 -0700 (PDT)
+        with ESMTP id S234049AbjFGUkW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:40:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EC1F26B8
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:39:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A559764488
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:26:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABB3C433D2;
-        Wed,  7 Jun 2023 20:26:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A9E0645D7
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:39:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B47AC433D2;
+        Wed,  7 Jun 2023 20:39:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169606;
-        bh=JX+nrVURjyP+KRfBbp1VkQbPd7NZtc4TQcwVsolORiM=;
+        s=korg; t=1686170356;
+        bh=fus6kvoYf66Mlu0H8F9u+qdP27PGHhe707CwuCQQRYY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O0/Dy0JLssXmjkzOo+aKXEfou7oBs2H9DzaoNWlBCHkfY2ZeAPBhzSqoUBg5QFk9R
-         xvdUfn313McC7A1oltBMrSSQMV9rrxlFJxBPp53mzusmeA5R8OakzGkYJtSd5rr8Q0
-         0cnKOy75cgejlB8ZMUpBawTyXzSmbhRdaWEYojlY=
+        b=q/U7Gmz/6Zbu5RwBpyL5w7uICfweQp6cW8c8qsCxZejnhStTNzSPZtEMu7meJzDaO
+         IHHdNC/bmbs6yyqSzCU0jMHAf54KTX552hzwmXSBXtsfgw1Ax0k5+SNJPaVcEhkdOE
+         P8dbLVGDhiBCg9y/wWdLuSKtkwlL6kHhPqSkqE/Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Harald Freudenberger <freude@linux.ibm.com>,
-        Holger Dengler <dengler@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 145/286] s390/pkey: zeroize key blobs
-Date:   Wed,  7 Jun 2023 22:14:04 +0200
-Message-ID: <20230607200927.833046162@linuxfoundation.org>
+        patches@lists.linux.dev, Xin Long <lucien.xin@gmail.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 052/225] rtnetlink: call validate_linkmsg in rtnl_create_link
+Date:   Wed,  7 Jun 2023 22:14:05 +0200
+Message-ID: <20230607200916.062923753@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,52 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Holger Dengler <dengler@linux.ibm.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 844cf829e5f33e00b279230470c8c93b58b8c16f ]
+commit b0ad3c179059089d809b477a1d445c1183a7b8fe upstream.
 
-Key blobs for the IOCTLs PKEY_KBLOB2PROTK[23] may contain clear key
-material. Zeroize the copies of these keys in kernel memory after
-creating the protected key.
+validate_linkmsg() was introduced by commit 1840bb13c22f5b ("[RTNL]:
+Validate hardware and broadcast address attribute for RTM_NEWLINK")
+to validate tb[IFLA_ADDRESS/BROADCAST] for existing links. The same
+check should also be done for newly created links.
 
-Reviewed-by: Harald Freudenberger <freude@linux.ibm.com>
-Signed-off-by: Holger Dengler <dengler@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch adds validate_linkmsg() call in rtnl_create_link(), to
+avoid the invalid address set when creating some devices like:
+
+  # ip link add dummy0 type dummy
+  # ip link add link dummy0 name mac0 address 01:02 type macsec
+
+Fixes: 0e06877c6fdb ("[RTNETLINK]: rtnl_link: allow specifying initial device address")
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/crypto/pkey_api.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/core/rtnetlink.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/s390/crypto/pkey_api.c b/drivers/s390/crypto/pkey_api.c
-index 5a05d1cdfec20..a8def50c149bd 100644
---- a/drivers/s390/crypto/pkey_api.c
-+++ b/drivers/s390/crypto/pkey_api.c
-@@ -1293,6 +1293,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
- 			return PTR_ERR(kkey);
- 		rc = pkey_keyblob2pkey(kkey, ktp.keylen, &ktp.protkey);
- 		DEBUG_DBG("%s pkey_keyblob2pkey()=%d\n", __func__, rc);
-+		memzero_explicit(kkey, ktp.keylen);
- 		kfree(kkey);
- 		if (rc)
- 			break;
-@@ -1426,6 +1427,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
- 					kkey, ktp.keylen, &ktp.protkey);
- 		DEBUG_DBG("%s pkey_keyblob2pkey2()=%d\n", __func__, rc);
- 		kfree(apqns);
-+		memzero_explicit(kkey, ktp.keylen);
- 		kfree(kkey);
- 		if (rc)
- 			break;
-@@ -1552,6 +1554,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
- 					protkey, &protkeylen);
- 		DEBUG_DBG("%s pkey_keyblob2pkey3()=%d\n", __func__, rc);
- 		kfree(apqns);
-+		memzero_explicit(kkey, ktp.keylen);
- 		kfree(kkey);
- 		if (rc) {
- 			kfree(protkey);
--- 
-2.39.2
-
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -3212,6 +3212,7 @@ struct net_device *rtnl_create_link(stru
+ 	struct net_device *dev;
+ 	unsigned int num_tx_queues = 1;
+ 	unsigned int num_rx_queues = 1;
++	int err;
+ 
+ 	if (tb[IFLA_NUM_TX_QUEUES])
+ 		num_tx_queues = nla_get_u32(tb[IFLA_NUM_TX_QUEUES]);
+@@ -3247,13 +3248,18 @@ struct net_device *rtnl_create_link(stru
+ 	if (!dev)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	err = validate_linkmsg(dev, tb, extack);
++	if (err < 0) {
++		free_netdev(dev);
++		return ERR_PTR(err);
++	}
++
+ 	dev_net_set(dev, net);
+ 	dev->rtnl_link_ops = ops;
+ 	dev->rtnl_link_state = RTNL_LINK_INITIALIZING;
+ 
+ 	if (tb[IFLA_MTU]) {
+ 		u32 mtu = nla_get_u32(tb[IFLA_MTU]);
+-		int err;
+ 
+ 		err = dev_validate_mtu(dev, mtu, extack);
+ 		if (err) {
 
 
