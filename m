@@ -2,32 +2,32 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9275726B53
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:24:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45B0D726B55
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:24:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232971AbjFGUY3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:24:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48616 "EHLO
+        id S233227AbjFGUYe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:24:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233046AbjFGUYO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:24:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0AFE2D5B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:23:41 -0700 (PDT)
+        with ESMTP id S233253AbjFGUYR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:24:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 841572719
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:23:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B1CEC643CF
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:23:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24EFC4339B;
-        Wed,  7 Jun 2023 20:23:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6389A60BB8
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:23:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76342C433D2;
+        Wed,  7 Jun 2023 20:23:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169421;
-        bh=s1gTX63/2eY2Hs3kTNTNsK+hdMBfjy05I6UyI/oaRUQ=;
+        s=korg; t=1686169423;
+        bh=bC9R4MfTU9FG5fZ+ZQP+ngeLWkTkxmiis72bO/CRo70=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lc0d8/AYLsZPMz/ZnXH0zEc14rfTrV4/MCusydj16XtEKgF72xmlJ2S3EdpO6N6Ht
-         vsa+wtZGhT+eThd6YkhEBoaiqmPhzje3AlAhWld3iWCn5juMS8UFFaFlDvWFRhhBrl
-         nBWAjN7hxpiuQuM7ZMD7RirVCGtFB/UY6Q9X6ALs=
+        b=sTzF+JOQxlCquwgnLB3wvCiidykT/+gVkxH3Gwey+JRoK6oDqUSkZHMVdwHvg6nXz
+         4CndCiYsbWBGjA9lsTGCx2jsjJ+BDR4M1wJeeTaQ1XqZz9de32XGI93eGedvpp+9ed
+         Z2oDjlNIDxnalooJMM8IeEFDMFVzaxnPFRIUA9MM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -35,9 +35,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Simon Horman <simon.horman@corigine.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 075/286] rtnetlink: call validate_linkmsg in rtnl_create_link
-Date:   Wed,  7 Jun 2023 22:12:54 +0200
-Message-ID: <20230607200925.530464136@linuxfoundation.org>
+Subject: [PATCH 6.3 076/286] rtnetlink: move IFLA_GSO_ tb check to validate_linkmsg
+Date:   Wed,  7 Jun 2023 22:12:55 +0200
+Message-ID: <20230607200925.562457146@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
 References: <20230607200922.978677727@linuxfoundation.org>
@@ -45,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,60 +57,91 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit b0ad3c179059089d809b477a1d445c1183a7b8fe ]
+[ Upstream commit fef5b228dd38378148bc850f7e69a7783f3b95a4 ]
 
-validate_linkmsg() was introduced by commit 1840bb13c22f5b ("[RTNL]:
-Validate hardware and broadcast address attribute for RTM_NEWLINK")
-to validate tb[IFLA_ADDRESS/BROADCAST] for existing links. The same
-check should also be done for newly created links.
+These IFLA_GSO_* tb check should also be done for the new created link,
+otherwise, they can be set to a huge value when creating links:
 
-This patch adds validate_linkmsg() call in rtnl_create_link(), to
-avoid the invalid address set when creating some devices like:
+  # ip link add dummy1 gso_max_size 4294967295 type dummy
+  # ip -d link show dummy1
+    dummy addrgenmode eui64 ... gso_max_size 4294967295
 
-  # ip link add dummy0 type dummy
-  # ip link add link dummy0 name mac0 address 01:02 type macsec
-
-Fixes: 0e06877c6fdb ("[RTNETLINK]: rtnl_link: allow specifying initial device address")
+Fixes: 46e6b992c250 ("rtnetlink: allow GSO maximums to be set on device creation")
+Fixes: 9eefedd58ae1 ("net: add gso_ipv4_max_size and gro_ipv4_max_size per device")
 Signed-off-by: Xin Long <lucien.xin@gmail.com>
 Reviewed-by: Simon Horman <simon.horman@corigine.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/core/rtnetlink.c | 34 +++++++++++++++++++---------------
+ 1 file changed, 19 insertions(+), 15 deletions(-)
 
 diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 6e44e92ebdf5d..f37deb18dd02e 100644
+index f37deb18dd02e..7094569009b14 100644
 --- a/net/core/rtnetlink.c
 +++ b/net/core/rtnetlink.c
-@@ -3282,6 +3282,7 @@ struct net_device *rtnl_create_link(struct net *net, const char *ifname,
- 	struct net_device *dev;
- 	unsigned int num_tx_queues = 1;
- 	unsigned int num_rx_queues = 1;
-+	int err;
- 
- 	if (tb[IFLA_NUM_TX_QUEUES])
- 		num_tx_queues = nla_get_u32(tb[IFLA_NUM_TX_QUEUES]);
-@@ -3317,13 +3318,18 @@ struct net_device *rtnl_create_link(struct net *net, const char *ifname,
- 	if (!dev)
- 		return ERR_PTR(-ENOMEM);
- 
-+	err = validate_linkmsg(dev, tb, extack);
-+	if (err < 0) {
-+		free_netdev(dev);
-+		return ERR_PTR(err);
-+	}
+@@ -2382,6 +2382,25 @@ static int validate_linkmsg(struct net_device *dev, struct nlattr *tb[],
+ 		if (tb[IFLA_BROADCAST] &&
+ 		    nla_len(tb[IFLA_BROADCAST]) < dev->addr_len)
+ 			return -EINVAL;
 +
- 	dev_net_set(dev, net);
- 	dev->rtnl_link_ops = ops;
- 	dev->rtnl_link_state = RTNL_LINK_INITIALIZING;
++		if (tb[IFLA_GSO_MAX_SIZE] &&
++		    nla_get_u32(tb[IFLA_GSO_MAX_SIZE]) > dev->tso_max_size) {
++			NL_SET_ERR_MSG(extack, "too big gso_max_size");
++			return -EINVAL;
++		}
++
++		if (tb[IFLA_GSO_MAX_SEGS] &&
++		    (nla_get_u32(tb[IFLA_GSO_MAX_SEGS]) > GSO_MAX_SEGS ||
++		     nla_get_u32(tb[IFLA_GSO_MAX_SEGS]) > dev->tso_max_segs)) {
++			NL_SET_ERR_MSG(extack, "too big gso_max_segs");
++			return -EINVAL;
++		}
++
++		if (tb[IFLA_GSO_IPV4_MAX_SIZE] &&
++		    nla_get_u32(tb[IFLA_GSO_IPV4_MAX_SIZE]) > dev->tso_max_size) {
++			NL_SET_ERR_MSG(extack, "too big gso_ipv4_max_size");
++			return -EINVAL;
++		}
+ 	}
  
- 	if (tb[IFLA_MTU]) {
- 		u32 mtu = nla_get_u32(tb[IFLA_MTU]);
--		int err;
+ 	if (tb[IFLA_AF_SPEC]) {
+@@ -2855,11 +2874,6 @@ static int do_setlink(const struct sk_buff *skb,
+ 	if (tb[IFLA_GSO_MAX_SIZE]) {
+ 		u32 max_size = nla_get_u32(tb[IFLA_GSO_MAX_SIZE]);
  
- 		err = dev_validate_mtu(dev, mtu, extack);
- 		if (err) {
+-		if (max_size > dev->tso_max_size) {
+-			err = -EINVAL;
+-			goto errout;
+-		}
+-
+ 		if (dev->gso_max_size ^ max_size) {
+ 			netif_set_gso_max_size(dev, max_size);
+ 			status |= DO_SETLINK_MODIFIED;
+@@ -2869,11 +2883,6 @@ static int do_setlink(const struct sk_buff *skb,
+ 	if (tb[IFLA_GSO_MAX_SEGS]) {
+ 		u32 max_segs = nla_get_u32(tb[IFLA_GSO_MAX_SEGS]);
+ 
+-		if (max_segs > GSO_MAX_SEGS || max_segs > dev->tso_max_segs) {
+-			err = -EINVAL;
+-			goto errout;
+-		}
+-
+ 		if (dev->gso_max_segs ^ max_segs) {
+ 			netif_set_gso_max_segs(dev, max_segs);
+ 			status |= DO_SETLINK_MODIFIED;
+@@ -2892,11 +2901,6 @@ static int do_setlink(const struct sk_buff *skb,
+ 	if (tb[IFLA_GSO_IPV4_MAX_SIZE]) {
+ 		u32 max_size = nla_get_u32(tb[IFLA_GSO_IPV4_MAX_SIZE]);
+ 
+-		if (max_size > dev->tso_max_size) {
+-			err = -EINVAL;
+-			goto errout;
+-		}
+-
+ 		if (dev->gso_ipv4_max_size ^ max_size) {
+ 			netif_set_gso_ipv4_max_size(dev, max_size);
+ 			status |= DO_SETLINK_MODIFIED;
 -- 
 2.39.2
 
