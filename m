@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD1CB726C31
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6252A726F7E
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:58:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229517AbjFGUbU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:31:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57636 "EHLO
+        id S235708AbjFGU65 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:58:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231214AbjFGUbT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:31:19 -0400
+        with ESMTP id S235617AbjFGU6y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:58:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E41F184
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:31:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5A9C1721
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:58:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 225A3644FB
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:31:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31BA9C433EF;
-        Wed,  7 Jun 2023 20:31:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 005C8648A7
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:58:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E31E5C433D2;
+        Wed,  7 Jun 2023 20:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169876;
-        bh=rv2GjjLz0EFiXPtcHR/czhXpGMXhLdLRwa9sx8TXDhc=;
+        s=korg; t=1686171508;
+        bh=ufHUNAaXI8Zwpwwg7rS9zsB35IXduj/JQksFGgChIVY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hjLS1kyF3y/BaL5Tngjy05cD0EuzXCXG6PwpBxQaCVLhdjg15p/edJPaR/6eRaXfE
-         GD7gTNZHafVZxxwpZgwG130my/LWrb1by4smzXk8bBQqiIl0fA1uiAwFUeb69dNppZ
-         cbMFlpuik4d4Zmts+P7Y2zyN0sCrZg4QErJaRtbw=
+        b=cCFn6Q4ZrleUNdQoRbRO7dQmSVufZ/Jd+ns75ruVxBzOMgf8MXrJJF3SCpkP1dCZx
+         7Pd1BMWZ5GlkNM/2td/Q76IciOlVG4S+mV0lNM6uYwpPzpqoJLMgjnC0Wx3G6k+5pl
+         7OrBargVWktZIbOO7fnEr6pUXKGYFg7EacDV4DN8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-        Tom Zanussi <zanussi@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.3 247/286] tracing/histograms: Allow variables to have some modifiers
+        patches@lists.linux.dev, lyndonli <Lyndon.Li@amd.com>,
+        Yunxiang Li <Yunxiang.Li@amd.com>,
+        Feifei Xu <Feifei.Xu@amd.com>,
+        Kenneth Feng <kenneth.feng@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 043/159] drm/amdgpu: Use the default reset when loading or reloading the driver
 Date:   Wed,  7 Jun 2023 22:15:46 +0200
-Message-ID: <20230607200931.369289701@linuxfoundation.org>
+Message-ID: <20230607200905.094667469@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,81 +57,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: lyndonli <Lyndon.Li@amd.com>
 
-commit e30fbc618e97b38dbb49f1d44dcd0778d3f23b8c upstream.
+[ Upstream commit 4eea7fb980dc44545a32eec92e2662053b34cd9d ]
 
-Modifiers are used to change the behavior of keys. For instance, they
-can grouped into buckets, converted to syscall names (from the syscall
-identifier), show task->comm of the current pid, be an array of longs
-that represent a stacktrace, and more.
+Below call trace and errors are observed when reloading
+amdgpu driver with the module parameter reset_method=3.
 
-It was found that nothing stopped a value from taking a modifier. As
-values are simple counters. If this happened, it would call code that
-was not expecting a modifier and crash the kernel. This was fixed by
-having the ___create_val_field() function test if a modifier was present
-and fail if one was. This fixed the crash.
+It should do a default reset when loading or reloading the
+driver, regardless of the module parameter reset_method.
 
-Now there's a problem with variables. Variables are used to pass fields
-from one event to another. Variables are allowed to have some modifiers,
-as the processing may need to happen at the time of the event (like
-stacktraces and comm names of the current pid). The issue is that it too
-uses __create_val_field(). Now that fails on modifiers, variables can no
-longer use them (this is a regression).
+v2: add comments inside and modify commit messages.
 
-As not all modifiers are for variables, have them use a separate check.
+[  +2.180243] [drm] psp gfx command ID_LOAD_TOC(0x20) failed
+and response status is (0x0)
+[  +0.000011] [drm:psp_hw_start [amdgpu]] *ERROR* Failed to load toc
+[  +0.000890] [drm:psp_hw_start [amdgpu]] *ERROR* PSP tmr init failed!
+[  +0.020683] [drm:amdgpu_fill_buffer [amdgpu]] *ERROR* Trying to
+clear memory with ring turned off.
+[  +0.000003] RIP: 0010:amdgpu_bo_release_notify+0x1ef/0x210 [amdgpu]
+[  +0.000004] Call Trace:
+[  +0.000003]  <TASK>
+[  +0.000008]  ttm_bo_release+0x2c4/0x330 [amdttm]
+[  +0.000026]  amdttm_bo_put+0x3c/0x70 [amdttm]
+[  +0.000020]  amdgpu_bo_free_kernel+0xe6/0x140 [amdgpu]
+[  +0.000728]  psp_v11_0_ring_destroy+0x34/0x60 [amdgpu]
+[  +0.000826]  psp_hw_init+0xe7/0x2f0 [amdgpu]
+[  +0.000813]  amdgpu_device_fw_loading+0x1ad/0x2d0 [amdgpu]
+[  +0.000731]  amdgpu_device_init.cold+0x108e/0x2002 [amdgpu]
+[  +0.001071]  ? do_pci_enable_device+0xe1/0x110
+[  +0.000011]  amdgpu_driver_load_kms+0x1a/0x160 [amdgpu]
+[  +0.000729]  amdgpu_pci_probe+0x179/0x3a0 [amdgpu]
 
-Link: https://lore.kernel.org/linux-trace-kernel/20230523221108.064a5d82@rorschach.local.home
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Tom Zanussi <zanussi@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Fixes: e0213434fe3e4 ("tracing: Do not let histogram values have some modifiers")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: lyndonli <Lyndon.Li@amd.com>
+Signed-off-by: Yunxiang Li <Yunxiang.Li@amd.com>
+Reviewed-by: Feifei Xu <Feifei.Xu@amd.com>
+Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_hist.c |   23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -4238,13 +4238,19 @@ static int __create_val_field(struct his
- 		goto out;
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 9da85ef711e88..642acfc9f0b1f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -3494,6 +3494,7 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ 	int r, i;
+ 	bool px = false;
+ 	u32 max_MBps;
++	int tmp;
  
--	/* Some types cannot be a value */
--	if (hist_field->flags & (HIST_FIELD_FL_GRAPH | HIST_FIELD_FL_PERCENT |
--				 HIST_FIELD_FL_BUCKET | HIST_FIELD_FL_LOG2 |
--				 HIST_FIELD_FL_SYM | HIST_FIELD_FL_SYM_OFFSET |
--				 HIST_FIELD_FL_SYSCALL | HIST_FIELD_FL_STACKTRACE)) {
--		hist_err(file->tr, HIST_ERR_BAD_FIELD_MODIFIER, errpos(field_str));
--		ret = -EINVAL;
-+	/* values and variables should not have some modifiers */
-+	if (hist_field->flags & HIST_FIELD_FL_VAR) {
-+		/* Variable */
-+		if (hist_field->flags & (HIST_FIELD_FL_GRAPH | HIST_FIELD_FL_PERCENT |
-+					 HIST_FIELD_FL_BUCKET | HIST_FIELD_FL_LOG2))
-+			goto err;
-+	} else {
-+		/* Value */
-+		if (hist_field->flags & (HIST_FIELD_FL_GRAPH | HIST_FIELD_FL_PERCENT |
-+					 HIST_FIELD_FL_BUCKET | HIST_FIELD_FL_LOG2 |
-+					 HIST_FIELD_FL_SYM | HIST_FIELD_FL_SYM_OFFSET |
-+					 HIST_FIELD_FL_SYSCALL | HIST_FIELD_FL_STACKTRACE))
-+			goto err;
- 	}
- 
- 	hist_data->fields[val_idx] = hist_field;
-@@ -4256,6 +4262,9 @@ static int __create_val_field(struct his
- 		ret = -EINVAL;
-  out:
- 	return ret;
-+ err:
-+	hist_err(file->tr, HIST_ERR_BAD_FIELD_MODIFIER, errpos(field_str));
-+	return -EINVAL;
- }
- 
- static int create_val_field(struct hist_trigger_data *hist_data,
+ 	adev->shutdown = false;
+ 	adev->flags = flags;
+@@ -3693,7 +3694,13 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ 				}
+ 			}
+ 		} else {
++			tmp = amdgpu_reset_method;
++			/* It should do a default reset when loading or reloading the driver,
++			 * regardless of the module parameter reset_method.
++			 */
++			amdgpu_reset_method = AMD_RESET_METHOD_NONE;
+ 			r = amdgpu_asic_reset(adev);
++			amdgpu_reset_method = tmp;
+ 			if (r) {
+ 				dev_err(adev->dev, "asic reset on init failed\n");
+ 				goto failed;
+-- 
+2.39.2
+
 
 
