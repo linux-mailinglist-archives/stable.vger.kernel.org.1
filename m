@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7E74726F72
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:58:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9CEA726C22
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235724AbjFGU6Z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:58:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59556 "EHLO
+        id S233659AbjFGUbA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:31:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235821AbjFGU6N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:58:13 -0400
+        with ESMTP id S233913AbjFGUao (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A60812736
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:57:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1C5B1BFA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:30:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2FEA364888
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:57:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BAFEC4339B;
-        Wed,  7 Jun 2023 20:57:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B5EB644DD
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:30:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C826C433D2;
+        Wed,  7 Jun 2023 20:30:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171471;
-        bh=tmlNpHpfwrYx017/9t1PLX6HNcke1rUBoT/Dxi6psME=;
+        s=korg; t=1686169841;
+        bh=bGHS3tOR1qiz/0FkRLD/dcSGoDztp6yKtm9PHrVJ4SY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BX6ljJTH64ekXFYeWw+ASJph7SW41I7w0+pRI9ghMNtFK6wENBJWI/8/L69RlFu/0
-         4vU/eXtuDeBsItzmX00UvmMoxM0Obpryes8gRrhd4MHBaywgewfjX6GybtCu6bg3kr
-         W5CbHcAMfX7BybPZhx1GbtQzDxGSGZ/EodYCZ03s=
+        b=y7Rle1iEHlXr0gnQapGUV8VUkxKiSz3N0b1EsxpQgvJ/erBonvCZljPklacJ95exp
+         j/TIEzJfKk8cM/FRqWXbd1CywuB1GvPK74McZcdyzM3phzPUsHocQmHZVuF/cb5n9c
+         HQZjNz080pTg+2ddfDff7jpRXp/zZuTKsIMn50fQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 031/159] net/netlink: fix NETLINK_LIST_MEMBERSHIPS length report
+        patches@lists.linux.dev, stable@kernel.org,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.3 235/286] module/decompress: Fix error checking on zstd decompression
 Date:   Wed,  7 Jun 2023 22:15:34 +0200
-Message-ID: <20230607200904.688201291@linuxfoundation.org>
+Message-ID: <20230607200930.974276492@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,40 +56,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-[ Upstream commit f4e4534850a9d18c250a93f8d7fbb51310828110 ]
+commit fadb74f9f2f609238070c7ca1b04933dc9400e4a upstream.
 
-The current code for the length calculation wrongly truncates the reported
-length of the groups array, causing an under report of the subscribed
-groups. To fix this, use 'BITS_TO_BYTES()' which rounds up the
-division by 8.
+While implementing support for in-kernel decompression in kmod,
+finit_module() was returning a very suspicious value:
 
-Fixes: b42be38b2778 ("netlink: add API to retrieve all group memberships")
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230529153335.389815-1-pctammela@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	finit_module(3, "", MODULE_INIT_COMPRESSED_FILE) = 18446744072717407296
+
+It turns out the check for module_get_next_page() failing is wrong,
+and hence the decompression was not really taking place. Invert
+the condition to fix it.
+
+Fixes: 169a58ad824d ("module/decompress: Support zstd in-kernel decompression")
+Cc: stable@kernel.org
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netlink/af_netlink.c | 2 +-
+ kernel/module/decompress.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index 998c736d3ae8b..46c4306ddee7e 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -1789,7 +1789,7 @@ static int netlink_getsockopt(struct socket *sock, int level, int optname,
- 				break;
- 			}
+diff --git a/kernel/module/decompress.c b/kernel/module/decompress.c
+index e97232b125eb..8a5d6d63b06c 100644
+--- a/kernel/module/decompress.c
++++ b/kernel/module/decompress.c
+@@ -257,7 +257,7 @@ static ssize_t module_zstd_decompress(struct load_info *info,
+ 	do {
+ 		struct page *page = module_get_next_page(info);
+ 
+-		if (!IS_ERR(page)) {
++		if (IS_ERR(page)) {
+ 			retval = PTR_ERR(page);
+ 			goto out;
  		}
--		if (put_user(ALIGN(nlk->ngroups / 8, sizeof(u32)), optlen))
-+		if (put_user(ALIGN(BITS_TO_BYTES(nlk->ngroups), sizeof(u32)), optlen))
- 			err = -EFAULT;
- 		netlink_unlock_table();
- 		return err;
 -- 
-2.39.2
+2.41.0
 
 
 
