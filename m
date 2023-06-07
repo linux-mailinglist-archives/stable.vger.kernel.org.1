@@ -2,48 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C564726D94
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:43:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4BAE726AD9
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234541AbjFGUno (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:43:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43874 "EHLO
+        id S232584AbjFGUUl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:20:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234349AbjFGUnn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:43:43 -0400
+        with ESMTP id S232690AbjFGUUa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB2F0272C
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:43:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 023E126A5
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:20:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C206760FFF
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:43:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9EFC433D2;
-        Wed,  7 Jun 2023 20:43:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 70D5563BCC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:18:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D696C4339B;
+        Wed,  7 Jun 2023 20:18:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170601;
-        bh=F1IG6M+ByKOpBxEAtlUr2+CtScqMVcGuygu6gm48aT4=;
+        s=korg; t=1686169129;
+        bh=VgJujuEt515rc2+IhSJ0rRHVEVk7DVjTwiT/xFqdMrM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ialAXcTk/gV7X55X+mQK6zjEUUapYDqyUMifHIH2eybA6QI9arpKX6u+KapUhJt7f
-         uLejtBC1GiTVi0BiILU6EAkPFN6u6zMUKQJgXhysET5xcsJ3JfP5iHWHPp0Hbm9Mjf
-         HniqkLiXl04DD/DlyLDvfqesCpI9MK18zfvQwVs4=
+        b=OsybqA8AxFl0iHd0xhGn0TjPapeuqhLV9jJftzJ2Miw/jC7NDjBPAIXlF9VECAAdQ
+         wycGH+xyyoGlkteWCr9M3ca8Ajw9wCe5i2OG6Hkje7/idHQS5dKmB88nlR7jyDvLQO
+         M1Jp++ZAn5Wn3Rjs7FXvnwY9TvOdi1ubvF18KJ4k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Marek Vasut <marek.vasut+renesas@mailbox.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 146/225] dt-bindings: iio: adc: renesas,rcar-gyroadc: Fix adi,ad7476 compatible value
+        patches@lists.linux.dev, Hyunwoo Kim <imv4bel@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 25/61] media: ttusb-dec: fix memory leak in ttusb_dec_exit_dvb()
 Date:   Wed,  7 Jun 2023 22:15:39 +0200
-Message-ID: <20230607200919.191561402@linuxfoundation.org>
+Message-ID: <20230607200843.894114977@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
+References: <20230607200835.310274198@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,36 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-commit 55720d242052e860b9fde445e302e0425722e7f1 upstream.
+[ Upstream commit 517a281338322ff8293f988771c98aaa7205e457 ]
 
-The conversion to json-schema accidentally dropped the "ad" part prefix
-from the compatible value.
+Since dvb_frontend_detach() is not called in ttusb_dec_exit_dvb(),
+which is called when the device is disconnected, dvb_frontend_free()
+is not finally called.
 
-Fixes: 8c41245872e2 ("dt-bindings:iio:adc:renesas,rcar-gyroadc: txt to yaml conversion.")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Link: https://lore.kernel.org/r/6b328a3f52657c20759f3a5bb2fe033d47644ba8.1683635404.git.geert+renesas@glider.be
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This causes a memory leak just by repeatedly plugging and
+unplugging the device.
+
+Fix this issue by adding dvb_frontend_detach() to ttusb_dec_exit_dvb().
+
+Link: https://lore.kernel.org/linux-media/20221117045925.14297-5-imv4bel@gmail.com
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/usb/ttusb-dec/ttusb_dec.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/Documentation/devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml
-@@ -86,7 +86,7 @@ patternProperties:
-             of the MAX chips to the GyroADC, while MISO line of each Maxim
-             ADC connects to a shared input pin of the GyroADC.
-         enum:
--          - adi,7476
-+          - adi,ad7476
-           - fujitsu,mb88101a
-           - maxim,max1162
-           - maxim,max11100
+diff --git a/drivers/media/usb/ttusb-dec/ttusb_dec.c b/drivers/media/usb/ttusb-dec/ttusb_dec.c
+index cad2746158160..d41ba80881759 100644
+--- a/drivers/media/usb/ttusb-dec/ttusb_dec.c
++++ b/drivers/media/usb/ttusb-dec/ttusb_dec.c
+@@ -1571,8 +1571,7 @@ static void ttusb_dec_exit_dvb(struct ttusb_dec *dec)
+ 	dvb_dmx_release(&dec->demux);
+ 	if (dec->fe) {
+ 		dvb_unregister_frontend(dec->fe);
+-		if (dec->fe->ops.release)
+-			dec->fe->ops.release(dec->fe);
++		dvb_frontend_detach(dec->fe);
+ 	}
+ 	dvb_unregister_adapter(&dec->adapter);
+ }
+-- 
+2.39.2
+
 
 
