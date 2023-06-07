@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FFC2726AF4
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:21:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0AF6726FA4
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:00:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231302AbjFGUVU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:21:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45802 "EHLO
+        id S235834AbjFGVAs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:00:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232874AbjFGUVM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:21:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2159D26B8
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:20:49 -0700 (PDT)
+        with ESMTP id S236075AbjFGVAT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 071A21BE4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:59:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FA8964392
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:20:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245ABC4339B;
-        Wed,  7 Jun 2023 20:20:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C8877648DE
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:59:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D777DC433D2;
+        Wed,  7 Jun 2023 20:59:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169224;
-        bh=rOGwzp4wdvUK32NTUppxLuccKbf/zm39VBLfEOvqHA8=;
+        s=korg; t=1686171579;
+        bh=NLbtYEUPqZoLxLnhDP21dMK82i6yMcn38kWWqw7IRY0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UTduEo803bW1HgiW+jJHkCqTyyoCvru9nlyr56v6KGk9g50Wqh3fT1PpeHuhCpFgX
-         Bv5U79XR5nwzdqkAWwyVSy4979RD+g8o64m96xiyBJrtTNVEf4IljHjiLY2n4FXisT
-         8o+T50u9UaxkQTCA/I30a52JW7n3pKMI5gigRG20=
+        b=YujIVaVsfx81sMW2TA/SkM0K/oaZuasmAxTdpZAQMI2duuWIW/f41BeJT4b8HNUol
+         n4KMQwSrFj0BCJD/wTDoptb1D6U8Gb7ksUKfEg3HQZjPs+x2ljhS0SKT+SZ2GieXTp
+         aGTPjhPd+hkKTQME5+a5Pr+47zDMp3Meww1zqY7A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Samuel Mendoza-Jonas <samjonas@amazon.com>
-Subject: [PATCH 4.14 60/61] Fix double fget() in vhost_net_set_backend()
+        patches@lists.linux.dev, YongSu Yoo <yongsuyoo0215@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 071/159] media: dvb_ca_en50221: fix a size write bug
 Date:   Wed,  7 Jun 2023 22:16:14 +0200
-Message-ID: <20230607200855.836993540@linuxfoundation.org>
+Message-ID: <20230607200906.006222959@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-References: <20230607200835.310274198@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,71 +54,118 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: YongSu Yoo <yongsuyoo0215@gmail.com>
 
-commit fb4554c2232e44d595920f4d5c66cf8f7d13f9bc upstream.
+[ Upstream commit a4315e5be7020aac9b24a8151caf4bb85224cd0e ]
 
-Descriptor table is a shared resource; two fget() on the same descriptor
-may return different struct file references.  get_tap_ptr_ring() is
-called after we'd found (and pinned) the socket we'll be using and it
-tries to find the private tun/tap data structures associated with it.
-Redoing the lookup by the same file descriptor we'd used to get the
-socket is racy - we need to same struct file.
+The function of "dvb_ca_en50221_write_data" at source/drivers/media
+/dvb-core/dvb_ca_en50221.c is used for two cases.
+The first case is for writing APDU data in the function of
+"dvb_ca_en50221_io_write" at source/drivers/media/dvb-core/
+dvb_ca_en50221.c.
+The second case is for writing the host link buf size on the
+Command Register in the function of "dvb_ca_en50221_link_init"
+at source/drivers/media/dvb-core/dvb_ca_en50221.c.
+In the second case, there exists a bug like following.
+In the function of the "dvb_ca_en50221_link_init",
+after a TV host calculates the host link buf_size,
+the TV host writes the calculated host link buf_size on the
+Size Register.
+Accroding to the en50221 Spec (the page 60 of
+https://dvb.org/wp-content/uploads/2020/02/En50221.V1.pdf),
+before this writing operation, the "SW(CMDREG_SW)" flag in the
+Command Register should be set. We can see this setting operation
+in the function of the "dvb_ca_en50221_link_init" like below.
+...
+	if ((ret = ca->pub->write_cam_control(ca->pub, slot,
+CTRLIF_COMMAND, IRQEN | CMDREG_SW)) != 0)
+		return ret;
+...
+But, after that, the real writing operation is implemented using
+the function of the "dvb_ca_en50221_write_data" in the function of
+"dvb_ca_en50221_link_init", and the "dvb_ca_en50221_write_data"
+includes the function of "ca->pub->write_cam_control",
+and the function of the "ca->pub->write_cam_control" in the
+function of the "dvb_ca_en50221_wrte_data" does not include
+"CMDREG_SW" flag like below.
+...
+	if ((status = ca->pub->write_cam_control(ca->pub, slot,
+CTRLIF_COMMAND, IRQEN | CMDREG_HC)) != 0)
+...
+In the above source code, we can see only the "IRQEN | CMDREG_HC",
+but we cannot see the "CMDREG_SW".
+The "CMDREG_SW" flag which was set in the function of the
+"dvb_ca_en50221_link_init" was rollbacked by the follwoing function
+of the "dvb_ca_en50221_write_data".
+This is a bug. and this bug causes that the calculated host link buf_size
+is not properly written in the CI module.
+Through this patch, we fix this bug.
 
-Thanks to Jason for spotting a braino in the original variant of patch -
-I'd missed the use of fd == -1 for disabling backend, and in that case
-we can end up with sock == NULL and sock != oldsock.
-
-Cc: stable@kernel.org
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-[4.14: Account for get_tap_skb_array() instead of get_tap_ptr_ring()]
-Signed-off-by: Samuel Mendoza-Jonas <samjonas@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-media/20220818125027.1131-1-yongsuyoo0215@gmail.com
+Signed-off-by: YongSu Yoo <yongsuyoo0215@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/net.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/media/dvb-core/dvb_ca_en50221.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -1047,13 +1047,9 @@ err:
- 	return ERR_PTR(r);
- }
+diff --git a/drivers/media/dvb-core/dvb_ca_en50221.c b/drivers/media/dvb-core/dvb_ca_en50221.c
+index c2d2792227f86..b6ca29dfb184a 100644
+--- a/drivers/media/dvb-core/dvb_ca_en50221.c
++++ b/drivers/media/dvb-core/dvb_ca_en50221.c
+@@ -187,7 +187,7 @@ static void dvb_ca_en50221_thread_wakeup(struct dvb_ca_private *ca);
+ static int dvb_ca_en50221_read_data(struct dvb_ca_private *ca, int slot,
+ 				    u8 *ebuf, int ecount);
+ static int dvb_ca_en50221_write_data(struct dvb_ca_private *ca, int slot,
+-				     u8 *ebuf, int ecount);
++				     u8 *ebuf, int ecount, int size_write_flag);
  
--static struct skb_array *get_tap_skb_array(int fd)
-+static struct skb_array *get_tap_skb_array(struct file *file)
+ /**
+  * findstr - Safely find needle in haystack.
+@@ -370,7 +370,7 @@ static int dvb_ca_en50221_link_init(struct dvb_ca_private *ca, int slot)
+ 	ret = dvb_ca_en50221_wait_if_status(ca, slot, STATUSREG_FR, HZ / 10);
+ 	if (ret)
+ 		return ret;
+-	ret = dvb_ca_en50221_write_data(ca, slot, buf, 2);
++	ret = dvb_ca_en50221_write_data(ca, slot, buf, 2, CMDREG_SW);
+ 	if (ret != 2)
+ 		return -EIO;
+ 	ret = ca->pub->write_cam_control(ca->pub, slot, CTRLIF_COMMAND, IRQEN);
+@@ -778,11 +778,13 @@ static int dvb_ca_en50221_read_data(struct dvb_ca_private *ca, int slot,
+  * @buf: The data in this buffer is treated as a complete link-level packet to
+  *	 be written.
+  * @bytes_write: Size of ebuf.
++ * @size_write_flag: A flag on Command Register which says whether the link size
++ * information will be writen or not.
+  *
+  * return: Number of bytes written, or < 0 on error.
+  */
+ static int dvb_ca_en50221_write_data(struct dvb_ca_private *ca, int slot,
+-				     u8 *buf, int bytes_write)
++				     u8 *buf, int bytes_write, int size_write_flag)
  {
- 	struct skb_array *array;
--	struct file *file = fget(fd);
--
--	if (!file)
--		return NULL;
- 	array = tun_get_skb_array(file);
- 	if (!IS_ERR(array))
- 		goto out;
-@@ -1062,7 +1058,6 @@ static struct skb_array *get_tap_skb_arr
- 		goto out;
- 	array = NULL;
- out:
--	fput(file);
- 	return array;
- }
+ 	struct dvb_ca_slot *sl = &ca->slot_info[slot];
+ 	int status;
+@@ -817,7 +819,7 @@ static int dvb_ca_en50221_write_data(struct dvb_ca_private *ca, int slot,
  
-@@ -1143,8 +1138,12 @@ static long vhost_net_set_backend(struct
- 		vhost_net_disable_vq(n, vq);
- 		vq->private_data = sock;
- 		vhost_net_buf_unproduce(nvq);
--		if (index == VHOST_NET_VQ_RX)
--			nvq->rx_array = get_tap_skb_array(fd);
-+		if (index == VHOST_NET_VQ_RX) {
-+			if (sock)
-+				nvq->rx_array = get_tap_skb_array(sock->file);
-+			else
-+				nvq->rx_array = NULL;
-+		}
- 		r = vhost_vq_init_access(vq);
- 		if (r)
- 			goto err_used;
+ 	/* OK, set HC bit */
+ 	status = ca->pub->write_cam_control(ca->pub, slot, CTRLIF_COMMAND,
+-					    IRQEN | CMDREG_HC);
++					    IRQEN | CMDREG_HC | size_write_flag);
+ 	if (status)
+ 		goto exit;
+ 
+@@ -1508,7 +1510,7 @@ static ssize_t dvb_ca_en50221_io_write(struct file *file,
+ 
+ 			mutex_lock(&sl->slot_lock);
+ 			status = dvb_ca_en50221_write_data(ca, slot, fragbuf,
+-							   fraglen + 2);
++							   fraglen + 2, 0);
+ 			mutex_unlock(&sl->slot_lock);
+ 			if (status == (fraglen + 2)) {
+ 				written = 1;
+-- 
+2.39.2
+
 
 
