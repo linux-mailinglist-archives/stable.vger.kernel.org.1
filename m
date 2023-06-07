@@ -2,48 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9ED4B726F8B
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:59:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58051726DCC
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:45:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235481AbjFGU7t (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:59:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33010 "EHLO
+        id S234718AbjFGUp2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:45:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235695AbjFGU7s (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:59:48 -0400
+        with ESMTP id S235108AbjFGUpP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:45:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADAFB26B9
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:59:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8A4E2136
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:45:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 89010648CF
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:59:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98513C433EF;
-        Wed,  7 Jun 2023 20:59:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A38BB6464F
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:45:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9116C4339B;
+        Wed,  7 Jun 2023 20:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171561;
-        bh=bRDni/zWdUzDGj/JVwPACBzWrhUBgqmYDHZ5B7T2lHw=;
+        s=korg; t=1686170703;
+        bh=HFAGcyiANbnYvYGR1FPwgmgi6OT3xsle0vWG9+fNWsk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CBNdJMaSSGsVwVs7mmQ1x9DDlu738IqwTOi3wFBaM2kTvFXvIFXbW3KCPKE2JvJ5G
-         TbWbKMsADI6VrmOawPmwJyZrsYgj9mGctz6jDZWY4OJ9pepTMXeSayqQXbCd8Ejkv4
-         XGwO1An++waD8yVosbyooUonrcsDhLt9p21lcaCg=
+        b=DkZzttUq5uNNVcWaH0ZoOlLzQcigU+m43AEicGuUay4vvquLvtxi73HlhcOMQ8GZr
+         xkyZoL7BsotfxmOlxA1it3bFdfM8p+8m1nU0UhbLlSJGF36sQ8rN/XiTNpzHgW5i75
+         6Y2n8/3uWkuPgqi11FyaO3Skl7QuS2yZJzRUWomg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Haibo Li <haibo.li@mediatek.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 047/159] ARM: 9295/1: unwind:fix unwind abort for uleb128 case
+        patches@lists.linux.dev, Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.1 157/225] usb: cdns3: fix NCM gadget RX speed 20x slow than expection at iMX8QM
 Date:   Wed,  7 Jun 2023 22:15:50 +0200
-Message-ID: <20230607200905.226880454@linuxfoundation.org>
+Message-ID: <20230607200919.540500290@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,93 +52,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Haibo Li <haibo.li@mediatek.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit fa3eeb638de0c1a9d2d860e5b48259facdd65176 ]
+commit dbe678f6192f27879ac9ff6bc7a1036aad85aae9 upstream.
 
-When unwind instruction is 0xb2,the subsequent instructions
-are uleb128 bytes.
-For now,it uses only the first uleb128 byte in code.
+At iMX8QM platform, enable NCM gadget and run 'iperf3 -s'.
+At host, run 'iperf3 -V -c fe80::6863:98ff:feef:3e0%enxc6e147509498'
 
-For vsp increments of 0x204~0x400,use one uleb128 byte like below:
-0xc06a00e4 <unwind_test_work>: 0x80b27fac
-  Compact model index: 0
-  0xb2 0x7f vsp = vsp + 1024
-  0xac      pop {r4, r5, r6, r7, r8, r14}
+[  5]   0.00-1.00   sec  1.55 MBytes  13.0 Mbits/sec   90   4.18 KBytes
+[  5]   1.00-2.00   sec  1.44 MBytes  12.0 Mbits/sec   75   4.18 KBytes
+[  5]   2.00-3.00   sec  1.48 MBytes  12.4 Mbits/sec   75   4.18 KBytes
 
-For vsp increments larger than 0x400,use two uleb128 bytes like below:
-0xc06a00e4 <unwind_test_work>: @0xc0cc9e0c
-  Compact model index: 1
-  0xb2 0x81 0x01 vsp = vsp + 1032
-  0xac      pop {r4, r5, r6, r7, r8, r14}
-The unwind works well since the decoded uleb128 byte is also 0x81.
+Expected speed should be bigger than 300Mbits/sec.
 
-For vsp increments larger than 0x600,use two uleb128 bytes like below:
-0xc06a00e4 <unwind_test_work>: @0xc0cc9e0c
-  Compact model index: 1
-  0xb2 0x81 0x02 vsp = vsp + 1544
-  0xac      pop {r4, r5, r6, r7, r8, r14}
-In this case,the decoded uleb128 result is 0x101(vsp=0x204+(0x101<<2)).
-While the uleb128 used in code is 0x81(vsp=0x204+(0x81<<2)).
-The unwind aborts at this frame since it gets incorrect vsp.
+The root cause of this performance drop was found to be data corruption
+happening at 4K borders in some Ethernet packets, leading to TCP
+checksum errors. This corruption occurs from the position
+(4K - (address & 0x7F)) to 4K. The u_ether function's allocation of
+skb_buff reserves 64B, meaning all RX addresses resemble 0xXXXX0040.
 
-To fix this,add uleb128 decode to cover all the above case.
+Force trb_burst_size to 16 can fix this problem.
 
-Signed-off-by: Haibo Li <haibo.li@mediatek.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20230518154946.3666662-1-Frank.Li@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/kernel/unwind.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ drivers/usb/cdns3/cdns3-gadget.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/arch/arm/kernel/unwind.c b/arch/arm/kernel/unwind.c
-index 59fdf257bf8be..d91ed8e4310c2 100644
---- a/arch/arm/kernel/unwind.c
-+++ b/arch/arm/kernel/unwind.c
-@@ -301,6 +301,29 @@ static int unwind_exec_pop_subset_r0_to_r3(struct unwind_ctrl_block *ctrl,
- 	return URC_OK;
- }
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -2097,6 +2097,19 @@ int cdns3_ep_config(struct cdns3_endpoin
+ 	else
+ 		priv_ep->trb_burst_size = 16;
  
-+static unsigned long unwind_decode_uleb128(struct unwind_ctrl_block *ctrl)
-+{
-+	unsigned long bytes = 0;
-+	unsigned long insn;
-+	unsigned long result = 0;
-+
 +	/*
-+	 * unwind_get_byte() will advance `ctrl` one instruction at a time, so
-+	 * loop until we get an instruction byte where bit 7 is not set.
++	 * In versions preceding DEV_VER_V2, for example, iMX8QM, there exit the bugs
++	 * in the DMA. These bugs occur when the trb_burst_size exceeds 16 and the
++	 * address is not aligned to 128 Bytes (which is a product of the 64-bit AXI
++	 * and AXI maximum burst length of 16 or 0xF+1, dma_axi_ctrl0[3:0]). This
++	 * results in data corruption when it crosses the 4K border. The corruption
++	 * specifically occurs from the position (4K - (address & 0x7F)) to 4K.
 +	 *
-+	 * Note: This decodes a maximum of 4 bytes to output 28 bits data where
-+	 * max is 0xfffffff: that will cover a vsp increment of 1073742336, hence
-+	 * it is sufficient for unwinding the stack.
++	 * So force trb_burst_size to 16 at such platform.
 +	 */
-+	do {
-+		insn = unwind_get_byte(ctrl);
-+		result |= (insn & 0x7f) << (bytes * 7);
-+		bytes++;
-+	} while (!!(insn & 0x80) && (bytes != sizeof(result)));
++	if (priv_dev->dev_ver < DEV_VER_V2)
++		priv_ep->trb_burst_size = 16;
 +
-+	return result;
-+}
-+
- /*
-  * Execute the current unwind instruction.
-  */
-@@ -354,7 +377,7 @@ static int unwind_exec_insn(struct unwind_ctrl_block *ctrl)
- 		if (ret)
- 			goto error;
- 	} else if (insn == 0xb2) {
--		unsigned long uleb128 = unwind_get_byte(ctrl);
-+		unsigned long uleb128 = unwind_decode_uleb128(ctrl);
- 
- 		ctrl->vrs[SP] += 0x204 + (uleb128 << 2);
- 	} else {
--- 
-2.39.2
-
+ 	mult = min_t(u8, mult, EP_CFG_MULT_MAX);
+ 	buffering = min_t(u8, buffering, EP_CFG_BUFFERING_MAX);
+ 	maxburst = min_t(u8, maxburst, EP_CFG_MAXBURST_MAX);
 
 
