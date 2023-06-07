@@ -2,42 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F2F8726ABA
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74A21726D9F
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:44:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232276AbjFGUUF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:20:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44252 "EHLO
+        id S234628AbjFGUoM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:44:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232466AbjFGUTe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:19:34 -0400
+        with ESMTP id S234634AbjFGUoK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A89E12690
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:19:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 273E32136
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:43:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B4E76437F
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:18:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 894EBC433EF;
-        Wed,  7 Jun 2023 20:18:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C719264637
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:42:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7BACC433D2;
+        Wed,  7 Jun 2023 20:42:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169103;
-        bh=+oO6bpqcYeXO6bktMa0a6PFzXc3pzJxUUHvttW1CPjY=;
+        s=korg; t=1686170579;
+        bh=jXyeWu7J1vpGdlWJwZfkHZ8ILypI0JONqg8icPURwSA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oYPQzmQmGKXG2bmoYFbK4nTfK/L4EAMzkI9xOz6XV9jyPun0kqYC8AInd5touQfem
-         dzwPRJDAIjhjEpYOIxLeVIummuN9dxu5pXf7V1Y0uwd8hpEoI4R8oPpyIk1Gj8OQCe
-         S6SiRTTbRe6d6wDitIDC40ac547sNqdhqdAcl2+o=
+        b=meT0AHoApbf3k8raJi7cmuGs8GNYvoEu7hPaKP6zzOIFreA0Qku86j+tkPSD8yfUz
+         9+2UfbFqdl8vogJjAHBXUp+4nBLEit5L50EhGX5ZkSOjiGKi+AFrLbVeMG8hceXPTa
+         czoLCOxR0RAr4ygQyyRnsg6oPMA09/WDSsfujk7Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 16/61] ASoC: dwc: limit the number of overrun messages
-Date:   Wed,  7 Jun 2023 22:15:30 +0200
-Message-ID: <20230607200840.773447743@linuxfoundation.org>
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Lee Jones <lee@kernel.org>,
+        Jassi Brar <jaswinder.singh@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 138/225] mailbox: mailbox-test: fix a locking issue in mbox_test_message_write()
+Date:   Wed,  7 Jun 2023 22:15:31 +0200
+Message-ID: <20230607200918.898745343@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-References: <20230607200835.310274198@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,42 +55,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Maxim Kochetkov <fido_max@inbox.ru>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit ab6ecfbf40fccf74b6ec2ba7ed6dd2fc024c3af2 ]
+[ Upstream commit 8fe72b76db79d694858e872370df49676bc3be8c ]
 
-On slow CPU (FPGA/QEMU emulated) printing overrun messages from
-interrupt handler to uart console may leads to more overrun errors.
-So use dev_err_ratelimited to limit the number of error messages.
+There was a bug where this code forgot to unlock the tdev->mutex if the
+kzalloc() failed.  Fix this issue, by moving the allocation outside the
+lock.
 
-Signed-off-by: Maxim Kochetkov <fido_max@inbox.ru
-Link: https://lore.kernel.org/r/20230505062820.21840-1-fido_max@inbox.ru
-Signed-off-by: Mark Brown <broonie@kernel.org
+Fixes: 2d1e952a2b8e ("mailbox: mailbox-test: Fix potential double-free in mbox_test_message_write()")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/dwc/dwc-i2s.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mailbox/mailbox-test.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/dwc/dwc-i2s.c b/sound/soc/dwc/dwc-i2s.c
-index e27e21f8569a0..e6a0ec3c0e764 100644
---- a/sound/soc/dwc/dwc-i2s.c
-+++ b/sound/soc/dwc/dwc-i2s.c
-@@ -132,13 +132,13 @@ static irqreturn_t i2s_irq_handler(int irq, void *dev_id)
+diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+index 6dd5b9614452b..abcee58e851c2 100644
+--- a/drivers/mailbox/mailbox-test.c
++++ b/drivers/mailbox/mailbox-test.c
+@@ -97,6 +97,7 @@ static ssize_t mbox_test_message_write(struct file *filp,
+ 				       size_t count, loff_t *ppos)
+ {
+ 	struct mbox_test_device *tdev = filp->private_data;
++	char *message;
+ 	void *data;
+ 	int ret;
  
- 		/* Error Handling: TX */
- 		if (isr[i] & ISR_TXFO) {
--			dev_err(dev->dev, "TX overrun (ch_id=%d)\n", i);
-+			dev_err_ratelimited(dev->dev, "TX overrun (ch_id=%d)\n", i);
- 			irq_valid = true;
- 		}
- 
- 		/* Error Handling: TX */
- 		if (isr[i] & ISR_RXFO) {
--			dev_err(dev->dev, "RX overrun (ch_id=%d)\n", i);
-+			dev_err_ratelimited(dev->dev, "RX overrun (ch_id=%d)\n", i);
- 			irq_valid = true;
- 		}
+@@ -112,12 +113,13 @@ static ssize_t mbox_test_message_write(struct file *filp,
+ 		return -EINVAL;
  	}
+ 
+-	mutex_lock(&tdev->mutex);
+-
+-	tdev->message = kzalloc(MBOX_MAX_MSG_LEN, GFP_KERNEL);
+-	if (!tdev->message)
++	message = kzalloc(MBOX_MAX_MSG_LEN, GFP_KERNEL);
++	if (!message)
+ 		return -ENOMEM;
+ 
++	mutex_lock(&tdev->mutex);
++
++	tdev->message = message;
+ 	ret = copy_from_user(tdev->message, userbuf, count);
+ 	if (ret) {
+ 		ret = -EFAULT;
 -- 
 2.39.2
 
