@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA64F726E70
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2BB8726F7C
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:58:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235341AbjFGUuk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:50:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47608 "EHLO
+        id S235606AbjFGU6u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:58:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235548AbjFGUuI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:50:08 -0400
+        with ESMTP id S235638AbjFGU6s (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:58:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A906D1BD4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:49:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 777C22711
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:58:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D9A5646E7
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:49:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 503BBC433D2;
-        Wed,  7 Jun 2023 20:49:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 89894648A1
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:58:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B921C4339B;
+        Wed,  7 Jun 2023 20:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170989;
-        bh=cYw5xiQhdAyhby74aswruUYEMHUUQJALesOIoKysMTM=;
+        s=korg; t=1686171503;
+        bh=lpl61S+v3ZPoqhG86DBxo7gPGeIdGqeATuWVOyQwG64=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mhEyRAqBzGJOE0i3pGEyKQy2/L+nSjnbcHu3BVW0E/L7HQlrtwiyxOQE13Pb2HDvq
-         /agVO/05rkJXVWZAJuQc29pVirhY4Cr5VbNBQI5AXdoq8sx3msAvl0BBYBdVgmpXiK
-         1w+zxGM+xHUS35iHIPjYPN+miP1bWjwyCpCRFSnw=
+        b=BlSlDX0YyKb6YianEWOvnwvgnFd43gIhI4U6TGq89mhSdLu55SO0fvN3DloothM6a
+         /1JbQUMy49tCXKLmvdxOkMqGkcSG9S1zU2C9NnvcRg3rj3kc3p58WxVOLJV2mZlyQ9
+         ouJet6O3uim9fp6JGq6+v9l/Xjh3MrRbo34RjQbo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hangyu Hua <hbh25y@gmail.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 029/120] net/sched: flower: fix possible OOB write in fl_set_geneve_opt()
+        patches@lists.linux.dev, jasontao <jasontao@glenfly.com>,
+        Reaper Li <reaperlioc@glenfly.com>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 042/159] ALSA: hda: Glenfly: add HD Audio PCI IDs and HDMI Codec Vendor IDs.
 Date:   Wed,  7 Jun 2023 22:15:45 +0200
-Message-ID: <20230607200901.830517098@linuxfoundation.org>
+Message-ID: <20230607200905.051578367@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,41 +54,143 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hangyu Hua <hbh25y@gmail.com>
+From: jasontao <jasontao@glenfly.com>
 
-[ Upstream commit 4d56304e5827c8cc8cc18c75343d283af7c4825c ]
+[ Upstream commit c51e431052e2eacfb23fbf6b39bc6c8770d9827a ]
 
-If we send two TCA_FLOWER_KEY_ENC_OPTS_GENEVE packets and their total
-size is 252 bytes(key->enc_opts.len = 252) then
-key->enc_opts.len = opt->length = data_len / 4 = 0 when the third
-TCA_FLOWER_KEY_ENC_OPTS_GENEVE packet enters fl_set_geneve_opt. This
-bypasses the next bounds check and results in an out-of-bounds.
+Add a set of HD Audio PCI IDS, and the HDMI codec vendor IDs for
+Glenfly Gpus.
 
-Fixes: 0a6e77784f49 ("net/sched: allow flower to match tunnel options")
-Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Reviewed-by: Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>
-Link: https://lore.kernel.org/r/20230531102805.27090-1-hbh25y@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+- In default_bdl_pos_adj, set bdl to 128 as Glenfly Gpus have hardware
+limitation, need to increase hdac interrupt interval.
+- In azx_first_init, enable polling mode for Glenfly Gpu. When the codec
+complete the command, it sends interrupt and writes response entries to
+memory, howerver, the write requests sometimes are not actually
+synchronized to memory when driver handle hdac interrupt on Glenfly Gpus.
+If the RIRB status is not updated in the interrupt handler,
+azx_rirb_get_response keeps trying to recevie a response from rirb until
+1s timeout. Enabling polling mode for Glenfly Gpu can fix the issue.
+- In patch_gf_hdmi, set Glenlfy Gpu Codec's no_sticky_stream as it need
+driver to do actual clean-ups for the linked codec when switch from one
+codec to another.
+
+Signed-off-by: jasontao <jasontao@glenfly.com>
+Signed-off-by: Reaper Li <reaperlioc@glenfly.com>
+Link: https://lore.kernel.org/r/20230426013059.4329-1-reaperlioc@glenfly.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_flower.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/pci/hda/hda_intel.c  | 21 +++++++++++++++++++++
+ sound/pci/hda/patch_hdmi.c | 22 ++++++++++++++++++++++
+ 2 files changed, 43 insertions(+)
 
-diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
-index 35ee6d8226e61..caf1a05bfbde4 100644
---- a/net/sched/cls_flower.c
-+++ b/net/sched/cls_flower.c
-@@ -1086,6 +1086,9 @@ static int fl_set_geneve_opt(const struct nlattr *nla, struct fl_flow_key *key,
- 	if (option_len > sizeof(struct geneve_opt))
- 		data_len = option_len - sizeof(struct geneve_opt);
+diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
+index 5fce1ca8a393a..1379ac07df350 100644
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -230,6 +230,7 @@ enum {
+ 	AZX_DRIVER_ATI,
+ 	AZX_DRIVER_ATIHDMI,
+ 	AZX_DRIVER_ATIHDMI_NS,
++	AZX_DRIVER_GFHDMI,
+ 	AZX_DRIVER_VIA,
+ 	AZX_DRIVER_SIS,
+ 	AZX_DRIVER_ULI,
+@@ -352,6 +353,7 @@ static const char * const driver_short_names[] = {
+ 	[AZX_DRIVER_ATI] = "HDA ATI SB",
+ 	[AZX_DRIVER_ATIHDMI] = "HDA ATI HDMI",
+ 	[AZX_DRIVER_ATIHDMI_NS] = "HDA ATI HDMI",
++	[AZX_DRIVER_GFHDMI] = "HDA GF HDMI",
+ 	[AZX_DRIVER_VIA] = "HDA VIA VT82xx",
+ 	[AZX_DRIVER_SIS] = "HDA SIS966",
+ 	[AZX_DRIVER_ULI] = "HDA ULI M5461",
+@@ -1742,6 +1744,12 @@ static int default_bdl_pos_adj(struct azx *chip)
+ 	}
  
-+	if (key->enc_opts.len > FLOW_DIS_TUN_OPTS_MAX - 4)
-+		return -ERANGE;
+ 	switch (chip->driver_type) {
++	/*
++	 * increase the bdl size for Glenfly Gpus for hardware
++	 * limitation on hdac interrupt interval
++	 */
++	case AZX_DRIVER_GFHDMI:
++		return 128;
+ 	case AZX_DRIVER_ICH:
+ 	case AZX_DRIVER_PCH:
+ 		return 1;
+@@ -1857,6 +1865,12 @@ static int azx_first_init(struct azx *chip)
+ 		pci_write_config_dword(pci, PCI_BASE_ADDRESS_1, 0);
+ 	}
+ #endif
++	/*
++	 * Fix response write request not synced to memory when handle
++	 * hdac interrupt on Glenfly Gpus
++	 */
++	if (chip->driver_type == AZX_DRIVER_GFHDMI)
++		bus->polling_mode = 1;
+ 
+ 	err = pcim_iomap_regions(pci, 1 << 0, "ICH HD audio");
+ 	if (err < 0)
+@@ -1957,6 +1971,7 @@ static int azx_first_init(struct azx *chip)
+ 			chip->playback_streams = ATIHDMI_NUM_PLAYBACK;
+ 			chip->capture_streams = ATIHDMI_NUM_CAPTURE;
+ 			break;
++		case AZX_DRIVER_GFHDMI:
+ 		case AZX_DRIVER_GENERIC:
+ 		default:
+ 			chip->playback_streams = ICH6_NUM_PLAYBACK;
+@@ -2694,6 +2709,12 @@ static const struct pci_device_id azx_ids[] = {
+ 	{ PCI_DEVICE(0x1002, 0xab38),
+ 	  .driver_data = AZX_DRIVER_ATIHDMI_NS | AZX_DCAPS_PRESET_ATI_HDMI_NS |
+ 	  AZX_DCAPS_PM_RUNTIME },
++	/* GLENFLY */
++	{ PCI_DEVICE(0x6766, PCI_ANY_ID),
++	  .class = PCI_CLASS_MULTIMEDIA_HD_AUDIO << 8,
++	  .class_mask = 0xffffff,
++	  .driver_data = AZX_DRIVER_GFHDMI | AZX_DCAPS_POSFIX_LPIB |
++	  AZX_DCAPS_NO_MSI | AZX_DCAPS_NO_64BIT },
+ 	/* VIA VT8251/VT8237A */
+ 	{ PCI_DEVICE(0x1106, 0x3288), .driver_data = AZX_DRIVER_VIA },
+ 	/* VIA GFX VT7122/VX900 */
+diff --git a/sound/pci/hda/patch_hdmi.c b/sound/pci/hda/patch_hdmi.c
+index 8ed5a499af4bb..3cd3b5c49e45e 100644
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -4298,6 +4298,22 @@ static int patch_via_hdmi(struct hda_codec *codec)
+ 	return patch_simple_hdmi(codec, VIAHDMI_CVT_NID, VIAHDMI_PIN_NID);
+ }
+ 
++static int patch_gf_hdmi(struct hda_codec *codec)
++{
++	int err;
 +
- 	opt = (struct geneve_opt *)&key->enc_opts.data[key->enc_opts.len];
- 	memset(opt, 0xff, option_len);
- 	opt->length = data_len / 4;
++	err = patch_generic_hdmi(codec);
++	if (err)
++		return err;
++
++	/*
++	 * Glenfly GPUs have two codecs, stream switches from one codec to
++	 * another, need to do actual clean-ups in codec_cleanup_stream
++	 */
++	codec->no_sticky_stream = 1;
++	return 0;
++}
++
+ /*
+  * patch entries
+  */
+@@ -4392,6 +4408,12 @@ HDA_CODEC_ENTRY(0x10de00a6, "GPU a6 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de00a7, "GPU a7 HDMI/DP",	patch_nvhdmi),
+ HDA_CODEC_ENTRY(0x10de8001, "MCP73 HDMI",	patch_nvhdmi_2ch),
+ HDA_CODEC_ENTRY(0x10de8067, "MCP67/68 HDMI",	patch_nvhdmi_2ch),
++HDA_CODEC_ENTRY(0x67663d82, "Arise 82 HDMI/DP",	patch_gf_hdmi),
++HDA_CODEC_ENTRY(0x67663d83, "Arise 83 HDMI/DP",	patch_gf_hdmi),
++HDA_CODEC_ENTRY(0x67663d84, "Arise 84 HDMI/DP",	patch_gf_hdmi),
++HDA_CODEC_ENTRY(0x67663d85, "Arise 85 HDMI/DP",	patch_gf_hdmi),
++HDA_CODEC_ENTRY(0x67663d86, "Arise 86 HDMI/DP",	patch_gf_hdmi),
++HDA_CODEC_ENTRY(0x67663d87, "Arise 87 HDMI/DP",	patch_gf_hdmi),
+ HDA_CODEC_ENTRY(0x11069f80, "VX900 HDMI/DP",	patch_via_hdmi),
+ HDA_CODEC_ENTRY(0x11069f81, "VX900 HDMI/DP",	patch_via_hdmi),
+ HDA_CODEC_ENTRY(0x11069f84, "VX11 HDMI/DP",	patch_generic_hdmi),
 -- 
 2.39.2
 
