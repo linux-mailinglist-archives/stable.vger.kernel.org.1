@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAF4E726FB3
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:01:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C544726DD8
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:46:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235947AbjFGVBD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:01:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33978 "EHLO
+        id S234908AbjFGUqP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:46:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236437AbjFGVAk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:40 -0400
+        with ESMTP id S234914AbjFGUp6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:45:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43CEE1BE4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:00:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E0512717
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:45:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 219CA64859
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:00:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BCFC433D2;
-        Wed,  7 Jun 2023 21:00:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B7CA664683
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:45:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0DAC433D2;
+        Wed,  7 Jun 2023 20:45:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171621;
-        bh=AbsLBoqssg+sEI8SLybb0raHA5hB0tI1ns3KCAiD0Zs=;
+        s=korg; t=1686170737;
+        bh=LWMC9QA7O3Pd+f0CLjf4JAfaejalELOI6O/VSF33ehk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pEFLLK2PVCoh7BA3iKfFHdznYzgPr32fluC+QkZXRSI6QxvM3QjwxcrR1BAllVbrv
-         fBy8n7PMEKosl6mDfcAV2M4d0G/oEeXqnQUJNYiT8HcEOgQ+G5N/hqhpXmAdCTN2rh
-         VJxjeifV7czW/SDHYPsXrtrAqew9nCh91T1sLUU0=
+        b=JOcXFfFBh+o8ps1Ao6rDT+H0FzeQhhXEx89GcZoE9M0RikoM5HBsZQuI1iRGmMz/W
+         iRS5Lw6h1S8yQ35uHiFq3gx07z09L/6CRLO8LoOoqtRgLW1EAY470nL6Bl3qDeE4r2
+         aw3P5ca8nCNEEA5ld6AA56gu+2zlkYS9QsZKXbHg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tom Rix <trix@redhat.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 088/159] netfilter: conntrack: define variables exp_nat_nla_policy and any_addr with CONFIG_NF_NAT
-Date:   Wed,  7 Jun 2023 22:16:31 +0200
-Message-ID: <20230607200906.578346764@linuxfoundation.org>
+        patches@lists.linux.dev, stable@kernel.org,
+        syzbot+298c5d8fb4a128bc27b0@syzkaller.appspotmail.com,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 199/225] ext4: add lockdep annotations for i_data_sem for ea_inodes
+Date:   Wed,  7 Jun 2023 22:16:32 +0200
+Message-ID: <20230607200920.879256020@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,59 +54,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tom Rix <trix@redhat.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-[ Upstream commit 224a876e37543eee111bf9b6aa4935080e619335 ]
+commit aff3bea95388299eec63440389b4545c8041b357 upstream.
 
-gcc with W=1 and ! CONFIG_NF_NAT
-net/netfilter/nf_conntrack_netlink.c:3463:32: error:
-  ‘exp_nat_nla_policy’ defined but not used [-Werror=unused-const-variable=]
- 3463 | static const struct nla_policy exp_nat_nla_policy[CTA_EXPECT_NAT_MAX+1] = {
-      |                                ^~~~~~~~~~~~~~~~~~
-net/netfilter/nf_conntrack_netlink.c:2979:33: error:
-  ‘any_addr’ defined but not used [-Werror=unused-const-variable=]
- 2979 | static const union nf_inet_addr any_addr;
-      |                                 ^~~~~~~~
+Treat i_data_sem for ea_inodes as being in their own lockdep class to
+avoid lockdep complaints about ext4_setattr's use of inode_lock() on
+normal inodes potentially causing lock ordering with i_data_sem on
+ea_inodes in ext4_xattr_inode_write().  However, ea_inodes will be
+operated on by ext4_setattr(), so this isn't a problem.
 
-These variables use is controlled by CONFIG_NF_NAT, so should their definitions.
-
-Signed-off-by: Tom Rix <trix@redhat.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Link: https://syzkaller.appspot.com/bug?extid=298c5d8fb4a128bc27b0
+Reported-by: syzbot+298c5d8fb4a128bc27b0@syzkaller.appspotmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://lore.kernel.org/r/20230524034951.779531-5-tytso@mit.edu
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_netlink.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/ext4/ext4.h  |    2 ++
+ fs/ext4/xattr.c |    4 ++++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 0b8b8cb42a8ab..c427f7625a3b5 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -2992,7 +2992,9 @@ static int ctnetlink_exp_dump_mask(struct sk_buff *skb,
- 	return -1;
- }
- 
-+#if IS_ENABLED(CONFIG_NF_NAT)
- static const union nf_inet_addr any_addr;
-+#endif
- 
- static __be32 nf_expect_get_id(const struct nf_conntrack_expect *exp)
- {
-@@ -3471,10 +3473,12 @@ ctnetlink_change_expect(struct nf_conntrack_expect *x,
- 	return 0;
- }
- 
-+#if IS_ENABLED(CONFIG_NF_NAT)
- static const struct nla_policy exp_nat_nla_policy[CTA_EXPECT_NAT_MAX+1] = {
- 	[CTA_EXPECT_NAT_DIR]	= { .type = NLA_U32 },
- 	[CTA_EXPECT_NAT_TUPLE]	= { .type = NLA_NESTED },
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -1007,11 +1007,13 @@ do {									       \
+  *			  where the second inode has larger inode number
+  *			  than the first
+  *  I_DATA_SEM_QUOTA  - Used for quota inodes only
++ *  I_DATA_SEM_EA     - Used for ea_inodes only
+  */
+ enum {
+ 	I_DATA_SEM_NORMAL = 0,
+ 	I_DATA_SEM_OTHER,
+ 	I_DATA_SEM_QUOTA,
++	I_DATA_SEM_EA
  };
-+#endif
  
- static int
- ctnetlink_parse_expect_nat(const struct nlattr *attr,
--- 
-2.39.2
-
+ 
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -123,7 +123,11 @@ ext4_expand_inode_array(struct ext4_xatt
+ #ifdef CONFIG_LOCKDEP
+ void ext4_xattr_inode_set_class(struct inode *ea_inode)
+ {
++	struct ext4_inode_info *ei = EXT4_I(ea_inode);
++
+ 	lockdep_set_subclass(&ea_inode->i_rwsem, 1);
++	(void) ei;	/* shut up clang warning if !CONFIG_LOCKDEP */
++	lockdep_set_subclass(&ei->i_data_sem, I_DATA_SEM_EA);
+ }
+ #endif
+ 
 
 
