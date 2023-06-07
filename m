@@ -2,43 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 948F5726E77
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 505BA726FDC
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:03:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235115AbjFGUuq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:50:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49626 "EHLO
+        id S236086AbjFGVC7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:02:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235626AbjFGUuO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:50:14 -0400
+        with ESMTP id S235807AbjFGVCp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:02:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96D1F2132
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:50:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB0982738
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:02:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D36C646E4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:50:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4447CC433D2;
-        Wed,  7 Jun 2023 20:50:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DB9816492C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:01:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF885C433D2;
+        Wed,  7 Jun 2023 21:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171002;
-        bh=Fqk496yh8sAslyHz/5ECcrJnXjk9CsWnKkJs1TIszNQ=;
+        s=korg; t=1686171702;
+        bh=ODzEe5MTMPERDf+zXbuLdOTQOBegDNhuK6ZJ0a/0Ze4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SwNhD5LnhTcon91YABAOQCRW7onfe7b+K1rISIadlRjAPde98DSiVylz7hJdXqPfq
-         NH5iZB1lWd/auuAv9N2KoaSJcROpOdxtpWwJy+3D8faeJ2A3mNXiqckTpBBdkjqcv0
-         VlDH6sYQw3L5BiBST9+5GvC1MuSmHNx7k6ph783k=
+        b=pZz8Pe8I7LcKri/JTb5d5RnEGOwm1mWaaJoLJGNJUkir5DL4mOwCo4tNNLuc1cE+f
+         pRCyA85upucvAW3a3gXGJZ6AFLo1mRn9oQEqqojKqJiceiVmjnAU0GzilsUxvX84kh
+         mqlkwjwYUIl3ga/UaX+Ab4Y9m0r7KRh6t48RFexw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sung-Chi Li <lschyi@chromium.org>,
-        Jiri Kosina <jkosina@suse.cz>
-Subject: [PATCH 5.10 074/120] HID: google: add jewel USB id
+        patches@lists.linux.dev,
+        =?UTF-8?q?Michael=20B=C3=BCsch?= <m@bues.ch>,
+        kernel test robot <lkp@intel.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Arnd Bergmann <arnd@arndb.de>, Kalle Valo <kvalo@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 087/159] wifi: b43: fix incorrect __packed annotation
 Date:   Wed,  7 Jun 2023 22:16:30 +0200
-Message-ID: <20230607200903.209639810@linuxfoundation.org>
+Message-ID: <20230607200906.544466266@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,40 +58,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sung-Chi Li <lschyi@chromium.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit ed84c4517a5bc536e8572a01dfa11bc22a280d06 upstream.
+[ Upstream commit 212457ccbd60dba34f965e4ffbe62f0e4f970538 ]
 
-Add 1 additional hammer-like device.
+clang warns about an unpacked structure inside of a packed one:
 
-Signed-off-by: Sung-Chi Li <lschyi@chromium.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/net/wireless/broadcom/b43/b43.h:654:4: error: field data within 'struct b43_iv' is less aligned than 'union (unnamed union at /home/arnd/arm-soc/drivers/net/wireless/broadcom/b43/b43.h:651:2)' and is usually due to 'struct b43_iv' being packed, which can lead to unaligned accesses [-Werror,-Wunaligned-access]
+
+The problem here is that the anonymous union has the default alignment
+from its members, apparently because the original author mixed up the
+placement of the __packed attribute by placing it next to the struct
+member rather than the union definition. As the struct itself is
+also marked as __packed, there is no need to mark its members, so just
+move the annotation to the inner type instead.
+
+As Michael noted, the same problem is present in b43legacy, so
+change both at the same time.
+
+Acked-by: Michael Büsch <m@bues.ch>
+Reported-by: kernel test robot <lkp@intel.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
+Link: https://lore.kernel.org/oe-kbuild-all/202305160749.ay1HAoyP-lkp@intel.com/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230516183442.536589-1-arnd@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-google-hammer.c |    2 ++
- drivers/hid/hid-ids.h           |    1 +
- 2 files changed, 3 insertions(+)
+ drivers/net/wireless/broadcom/b43/b43.h             | 2 +-
+ drivers/net/wireless/broadcom/b43legacy/b43legacy.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/hid/hid-google-hammer.c
-+++ b/drivers/hid/hid-google-hammer.c
-@@ -533,6 +533,8 @@ static const struct hid_device_id hammer
- 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
- 		     USB_VENDOR_ID_GOOGLE, USB_DEVICE_ID_GOOGLE_HAMMER) },
- 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
-+		     USB_VENDOR_ID_GOOGLE, USB_DEVICE_ID_GOOGLE_JEWEL) },
-+	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
- 		     USB_VENDOR_ID_GOOGLE, USB_DEVICE_ID_GOOGLE_MAGNEMITE) },
- 	{ HID_DEVICE(BUS_USB, HID_GROUP_GENERIC,
- 		     USB_VENDOR_ID_GOOGLE, USB_DEVICE_ID_GOOGLE_MASTERBALL) },
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -491,6 +491,7 @@
- #define USB_DEVICE_ID_GOOGLE_MOONBALL	0x5044
- #define USB_DEVICE_ID_GOOGLE_DON	0x5050
- #define USB_DEVICE_ID_GOOGLE_EEL	0x5057
-+#define USB_DEVICE_ID_GOOGLE_JEWEL	0x5061
+diff --git a/drivers/net/wireless/broadcom/b43/b43.h b/drivers/net/wireless/broadcom/b43/b43.h
+index 9fc7c088a539e..67b4bac048e58 100644
+--- a/drivers/net/wireless/broadcom/b43/b43.h
++++ b/drivers/net/wireless/broadcom/b43/b43.h
+@@ -651,7 +651,7 @@ struct b43_iv {
+ 	union {
+ 		__be16 d16;
+ 		__be32 d32;
+-	} data __packed;
++	} __packed data;
+ } __packed;
  
- #define USB_VENDOR_ID_GOTOP		0x08f2
- #define USB_DEVICE_ID_SUPER_Q2		0x007f
+ 
+diff --git a/drivers/net/wireless/broadcom/b43legacy/b43legacy.h b/drivers/net/wireless/broadcom/b43legacy/b43legacy.h
+index 6b0cec467938f..f49365d14619f 100644
+--- a/drivers/net/wireless/broadcom/b43legacy/b43legacy.h
++++ b/drivers/net/wireless/broadcom/b43legacy/b43legacy.h
+@@ -379,7 +379,7 @@ struct b43legacy_iv {
+ 	union {
+ 		__be16 d16;
+ 		__be32 d32;
+-	} data __packed;
++	} __packed data;
+ } __packed;
+ 
+ #define B43legacy_PHYMODE(phytype)	(1 << (phytype))
+-- 
+2.39.2
+
 
 
