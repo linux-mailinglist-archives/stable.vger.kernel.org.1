@@ -2,52 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52B85726E26
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:48:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66FCB726C29
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234893AbjFGUs0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:48:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49030 "EHLO
+        id S233639AbjFGUbF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:31:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235107AbjFGUsP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:48:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 141E1269A
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:47:58 -0700 (PDT)
+        with ESMTP id S233578AbjFGUbD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:31:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4370F10DE
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:31:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D945F6449D
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:47:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4316C4339B;
-        Wed,  7 Jun 2023 20:47:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A6EC644EC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:31:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F712C433EF;
+        Wed,  7 Jun 2023 20:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170877;
-        bh=pNs844Tw5cj/qdw6bXFKDeu1UfEDRMeH4GKdvn8ycaE=;
+        s=korg; t=1686169860;
+        bh=IDowwYMG4utyLSWdFHM4/mzJo1mH8B/Z44JIle9Izv0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EaT5bE5gNKtGUbR7VMe34e1u/ijG1Cw+k5QL0dXWvvMOhWhc9hbChh643479xeenx
-         MeLME9zIjf2zIj3ZeWXjGjHsd41Lfa8o00+X5pZ+2ZUyz0XCXbqPTe7lhEfk+9M5Jx
-         20aWLceRzy6VeU13EvDs6uR2CTNjw2c+tNK7ZSLM=
+        b=RaCGEYkQrBJDlZDG6NWWu7EqxASodo10BHgZ6z6ZN+qJJTROwXsX73hXAP4H5U509
+         IE8EqYp01idu28TwqhI+GezLrmT5bKy63K0tYLMp0XS/EcXaLo4mWPGxat6LZfsHnT
+         z0ZZfAmmmtsvEhWp8JqGtmumU41y7RccPK1zvx+o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhengchao Shao <shaozhengchao@huawei.com>,
-        Peilin Ye <peilin.ye@bytedance.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 025/120] net: sched: fix NULL pointer dereference in mq_attach
+        patches@lists.linux.dev, Ism Hong <ism.hong@gmail.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.3 242/286] riscv: perf: Fix callchain parse error with kernel tracepoint events
 Date:   Wed,  7 Jun 2023 22:15:41 +0200
-Message-ID: <20230607200901.706224976@linuxfoundation.org>
+Message-ID: <20230607200931.190590306@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,93 +53,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Ism Hong <ism.hong@gmail.com>
 
-[ Upstream commit 36eec020fab668719b541f34d97f44e232ffa165 ]
+commit 9a7e8ec0d4cc64870ea449b4fce5779b77496cbb upstream.
 
-When use the following command to test:
-1)ip link add bond0 type bond
-2)ip link set bond0 up
-3)tc qdisc add dev bond0 root handle ffff: mq
-4)tc qdisc replace dev bond0 parent ffff:fff1 handle ffff: mq
+For RISC-V, when tracing with tracepoint events, the IP and status are
+set to 0, preventing the perf code parsing the callchain and resolving
+the symbols correctly.
 
-The kernel reports NULL pointer dereference issue. The stack information
-is as follows:
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-Internal error: Oops: 0000000096000006 [#1] SMP
-Modules linked in:
-pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : mq_attach+0x44/0xa0
-lr : qdisc_graft+0x20c/0x5cc
-sp : ffff80000e2236a0
-x29: ffff80000e2236a0 x28: ffff0000c0e59d80 x27: ffff0000c0be19c0
-x26: ffff0000cae3e800 x25: 0000000000000010 x24: 00000000fffffff1
-x23: 0000000000000000 x22: ffff0000cae3e800 x21: ffff0000c9df4000
-x20: ffff0000c9df4000 x19: 0000000000000000 x18: ffff80000a934000
-x17: ffff8000f5b56000 x16: ffff80000bb08000 x15: 0000000000000000
-x14: 0000000000000000 x13: 6b6b6b6b6b6b6b6b x12: 6b6b6b6b00000001
-x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
-x8 : ffff0000c0be0730 x7 : bbbbbbbbbbbbbbbb x6 : 0000000000000008
-x5 : ffff0000cae3e864 x4 : 0000000000000000 x3 : 0000000000000001
-x2 : 0000000000000001 x1 : ffff8000090bc23c x0 : 0000000000000000
-Call trace:
-mq_attach+0x44/0xa0
-qdisc_graft+0x20c/0x5cc
-tc_modify_qdisc+0x1c4/0x664
-rtnetlink_rcv_msg+0x354/0x440
-netlink_rcv_skb+0x64/0x144
-rtnetlink_rcv+0x28/0x34
-netlink_unicast+0x1e8/0x2a4
-netlink_sendmsg+0x308/0x4a0
-sock_sendmsg+0x64/0xac
-____sys_sendmsg+0x29c/0x358
-___sys_sendmsg+0x90/0xd0
-__sys_sendmsg+0x7c/0xd0
-__arm64_sys_sendmsg+0x2c/0x38
-invoke_syscall+0x54/0x114
-el0_svc_common.constprop.1+0x90/0x174
-do_el0_svc+0x3c/0xb0
-el0_svc+0x24/0xec
-el0t_64_sync_handler+0x90/0xb4
-el0t_64_sync+0x174/0x178
+ ./ply 'tracepoint:kmem/kmem_cache_alloc { @[stack]=count(); }'
+ @:
+ { <STACKID4294967282> }: 1
 
-This is because when mq is added for the first time, qdiscs in mq is set
-to NULL in mq_attach(). Therefore, when replacing mq after adding mq, we
-need to initialize qdiscs in the mq before continuing to graft. Otherwise,
-it will couse NULL pointer dereference issue in mq_attach(). And the same
-issue will occur in the attach functions of mqprio, taprio and htb.
-ffff:fff1 means that the repalce qdisc is ingress. Ingress does not allow
-any qdisc to be attached. Therefore, ffff:fff1 is incorrectly used, and
-the command should be dropped.
+The fix is to implement perf_arch_fetch_caller_regs for riscv, which
+fills several necessary registers used for callchain unwinding,
+including epc, sp, s0 and status. It's similar to commit b3eac0265bf6
+("arm: perf: Fix callchain parse error with kernel tracepoint events")
+and commit 5b09a094f2fb ("arm64: perf: Fix callchain parse error with
+kernel tracepoint events").
 
-Fixes: 6ec1c69a8f64 ("net_sched: add classful multiqueue dummy scheduler")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Tested-by: Peilin Ye <peilin.ye@bytedance.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20230527093747.3583502-1-shaozhengchao@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+With this patch, callchain can be parsed correctly as:
+
+ ./ply 'tracepoint:kmem/kmem_cache_alloc { @[stack]=count(); }'
+ @:
+ {
+         __traceiter_kmem_cache_alloc+68
+         __traceiter_kmem_cache_alloc+68
+         kmem_cache_alloc+354
+         __sigqueue_alloc+94
+         __send_signal_locked+646
+         send_signal_locked+154
+         do_send_sig_info+84
+         __kill_pgrp_info+130
+         kill_pgrp+60
+         isig+150
+         n_tty_receive_signal_char+36
+         n_tty_receive_buf_standard+2214
+         n_tty_receive_buf_common+280
+         n_tty_receive_buf2+26
+         tty_ldisc_receive_buf+34
+         tty_port_default_receive_buf+62
+         flush_to_ldisc+158
+         process_one_work+458
+         worker_thread+138
+         kthread+178
+         riscv_cpufeature_patch_func+832
+  }: 1
+
+Signed-off-by: Ism Hong <ism.hong@gmail.com>
+Link: https://lore.kernel.org/r/20230601095355.1168910-1-ism.hong@gmail.com
+Fixes: 178e9fc47aae ("perf: riscv: preliminary RISC-V support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_api.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/riscv/include/asm/perf_event.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index b330f1192cf8d..2084724c36ad3 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -1599,6 +1599,10 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
- 					NL_SET_ERR_MSG(extack, "Qdisc parent/child loop detected");
- 					return -ELOOP;
- 				}
-+				if (clid == TC_H_INGRESS) {
-+					NL_SET_ERR_MSG(extack, "Ingress cannot graft directly");
-+					return -EINVAL;
-+				}
- 				qdisc_refcount_inc(q);
- 				goto graft;
- 			} else {
--- 
-2.39.2
-
+--- a/arch/riscv/include/asm/perf_event.h
++++ b/arch/riscv/include/asm/perf_event.h
+@@ -10,4 +10,11 @@
+ 
+ #include <linux/perf_event.h>
+ #define perf_arch_bpf_user_pt_regs(regs) (struct user_regs_struct *)regs
++
++#define perf_arch_fetch_caller_regs(regs, __ip) { \
++	(regs)->epc = (__ip); \
++	(regs)->s0 = (unsigned long) __builtin_frame_address(0); \
++	(regs)->sp = current_stack_pointer; \
++	(regs)->status = SR_PP; \
++}
+ #endif /* _ASM_RISCV_PERF_EVENT_H */
 
 
