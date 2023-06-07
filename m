@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD3C2726E5E
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D046D726F9E
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:00:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234987AbjFGUu0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:50:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48772 "EHLO
+        id S235848AbjFGVAw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:00:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234810AbjFGUtc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:49:32 -0400
+        with ESMTP id S236130AbjFGVAW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 803F01BD4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:49:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D088826BA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:00:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 609A4646E3
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:49:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73583C4339B;
-        Wed,  7 Jun 2023 20:49:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1FD3E648D6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:59:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 329F6C433D2;
+        Wed,  7 Jun 2023 20:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170947;
-        bh=afNQWkfyRZLHDDYKpCIb8B5aaZ7xvXdiYgMDf9I1M2c=;
+        s=korg; t=1686171563;
+        bh=grmV5ECNjfhpFqaQa+XnCtRocR2jGhVqdQsXK4lL7gM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VgmzG8i6qng7RoP0pdL0U5wejhvzY3zCd8VxJT1B0EVcj+BYLC4hv05bVi2m6KB/l
-         mBdL4njsKwyYJIqAQ6d8VZUtRl6RC/S2fnO3bfIPnWAe/1I1OsJjZ4yG9QoLHbQRYu
-         HLVazj4zunJ0nYMNZwrdfJzrE1X5s2EfVv1hc5AA=
+        b=cFZPmDd5QQ5rh3lR7iASgDqY8S8HPXszpGpx/ppMwszIoPZ+cm67r3caLy/Mq1x5g
+         HsO7w5npvu+gNx9bieFUqJlOcM2p7aeSXOt4DjORhSCXknKJu/0zc/l9X1Pd9B0tIQ
+         ZOmcPir1o4m0afH7om0x/pFccjzbIjjrbuLLQc4I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 052/120] media: dvb-usb-v2: rtl28xxu: fix null-ptr-deref in rtl28xxu_i2c_xfer
+Subject: [PATCH 5.15 065/159] media: dvb-usb-v2: ec168: fix null-ptr-deref in ec168_i2c_xfer()
 Date:   Wed,  7 Jun 2023 22:16:08 +0200
-Message-ID: <20230607200902.538030596@linuxfoundation.org>
+Message-ID: <20230607200905.814651888@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,82 +54,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Wei Chen <harperchen1110@gmail.com>
 
-[ Upstream commit aa4a447b81b84f69c1a89ad899df157f386d7636 ]
+[ Upstream commit a6dcefcc08eca1bf4e3d213c97c3cfb75f377935 ]
 
-In rtl28xxu_i2c_xfer, msg is controlled by user. When msg[i].buf
-is null and msg[i].len is zero, former checks on msg[i].buf would be
-passed. Malicious data finally reach rtl28xxu_i2c_xfer. If accessing
-msg[i].buf[0] without sanity check, null ptr deref would happen.
-We add check on msg[i].len to prevent crash.
+In ec168_i2c_xfer, msg is controlled by user. When msg[i].buf is null
+and msg[i].len is zero, former checks on msg[i].buf would be passed.
+If accessing msg[i].buf[0] without sanity check, null pointer deref
+would happen. We add check on msg[i].len to prevent crash.
 
 Similar commit:
-commit 0ed554fd769a
-("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
 
-Link: https://lore.kernel.org/linux-media/tencent_3623572106754AC2F266B316798B0F6CCA05@qq.com
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Link: https://lore.kernel.org/linux-media/20230313085853.3252349-1-harperchen1110@gmail.com
+Signed-off-by: Wei Chen <harperchen1110@gmail.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb-v2/rtl28xxu.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/media/usb/dvb-usb-v2/ec168.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/media/usb/dvb-usb-v2/rtl28xxu.c b/drivers/media/usb/dvb-usb-v2/rtl28xxu.c
-index c278b9b0f1024..70a2f04942164 100644
---- a/drivers/media/usb/dvb-usb-v2/rtl28xxu.c
-+++ b/drivers/media/usb/dvb-usb-v2/rtl28xxu.c
-@@ -176,6 +176,10 @@ static int rtl28xxu_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 			ret = -EOPNOTSUPP;
- 			goto err_mutex_unlock;
- 		} else if (msg[0].addr == 0x10) {
-+			if (msg[0].len < 1 || msg[1].len < 1) {
-+				ret = -EOPNOTSUPP;
-+				goto err_mutex_unlock;
-+			}
- 			/* method 1 - integrated demod */
- 			if (msg[0].buf[0] == 0x00) {
- 				/* return demod page from driver cache */
-@@ -189,6 +193,10 @@ static int rtl28xxu_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 				ret = rtl28xxu_ctrl_msg(d, &req);
- 			}
- 		} else if (msg[0].len < 2) {
-+			if (msg[0].len < 1) {
-+				ret = -EOPNOTSUPP;
-+				goto err_mutex_unlock;
-+			}
- 			/* method 2 - old I2C */
- 			req.value = (msg[0].buf[0] << 8) | (msg[0].addr << 1);
- 			req.index = CMD_I2C_RD;
-@@ -217,8 +225,16 @@ static int rtl28xxu_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 			ret = -EOPNOTSUPP;
- 			goto err_mutex_unlock;
- 		} else if (msg[0].addr == 0x10) {
-+			if (msg[0].len < 1) {
-+				ret = -EOPNOTSUPP;
-+				goto err_mutex_unlock;
-+			}
- 			/* method 1 - integrated demod */
- 			if (msg[0].buf[0] == 0x00) {
-+				if (msg[0].len < 2) {
-+					ret = -EOPNOTSUPP;
-+					goto err_mutex_unlock;
+diff --git a/drivers/media/usb/dvb-usb-v2/ec168.c b/drivers/media/usb/dvb-usb-v2/ec168.c
+index 7ed0ab9e429b1..0e4773fc025c9 100644
+--- a/drivers/media/usb/dvb-usb-v2/ec168.c
++++ b/drivers/media/usb/dvb-usb-v2/ec168.c
+@@ -115,6 +115,10 @@ static int ec168_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 	while (i < num) {
+ 		if (num > i + 1 && (msg[i+1].flags & I2C_M_RD)) {
+ 			if (msg[i].addr == ec168_ec100_config.demod_address) {
++				if (msg[i].len < 1) {
++					i = -EOPNOTSUPP;
++					break;
 +				}
- 				/* save demod page for later demod access */
- 				dev->page = msg[0].buf[1];
- 				ret = 0;
-@@ -231,6 +247,10 @@ static int rtl28xxu_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 				ret = rtl28xxu_ctrl_msg(d, &req);
+ 				req.cmd = READ_DEMOD;
+ 				req.value = 0;
+ 				req.index = 0xff00 + msg[i].buf[0]; /* reg */
+@@ -131,6 +135,10 @@ static int ec168_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
  			}
- 		} else if ((msg[0].len < 23) && (!dev->new_i2c_write)) {
-+			if (msg[0].len < 1) {
-+				ret = -EOPNOTSUPP;
-+				goto err_mutex_unlock;
-+			}
- 			/* method 2 - old I2C */
- 			req.value = (msg[0].buf[0] << 8) | (msg[0].addr << 1);
- 			req.index = CMD_I2C_WR;
+ 		} else {
+ 			if (msg[i].addr == ec168_ec100_config.demod_address) {
++				if (msg[i].len < 1) {
++					i = -EOPNOTSUPP;
++					break;
++				}
+ 				req.cmd = WRITE_DEMOD;
+ 				req.value = msg[i].buf[1]; /* val */
+ 				req.index = 0xff00 + msg[i].buf[0]; /* reg */
+@@ -139,6 +147,10 @@ static int ec168_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 				ret = ec168_ctrl_msg(d, &req);
+ 				i += 1;
+ 			} else {
++				if (msg[i].len < 1) {
++					i = -EOPNOTSUPP;
++					break;
++				}
+ 				req.cmd = WRITE_I2C;
+ 				req.value = msg[i].buf[0]; /* val */
+ 				req.index = 0x0100 + msg[i].addr; /* I2C addr */
 -- 
 2.39.2
 
