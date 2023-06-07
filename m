@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A73E6726FEB
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:03:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 286B2726F25
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236126AbjFGVDR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:03:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34788 "EHLO
+        id S235524AbjFGUzx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:55:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236017AbjFGVC5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:02:57 -0400
+        with ESMTP id S235506AbjFGUzu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:55:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8011230EB
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:02:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 547F3D1
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:55:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5EDA761EA2
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:02:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70391C433EF;
-        Wed,  7 Jun 2023 21:02:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E4CF464827
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:55:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0053FC433D2;
+        Wed,  7 Jun 2023 20:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171746;
-        bh=oJKK9qIShrjckbREnntpRlC5yHfLX2vzMfaH5BMsbqY=;
+        s=korg; t=1686171348;
+        bh=R0DELvf/YMrD0zJkos1kwz8fEahoXM96yNAJdbs+Qls=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QGNV5mqxld8hX5APCIxlZn9RVUwyd796XbFJM386CHS2RlfMmRnNOWN5vW42m3fAC
-         VQWu86762DlUnhuvb4T3wQMGgy9uoVDcvwcvF+9okkRmMz/ksw40HLY+1XWbzF4dSR
-         BqoRYHbDbLzZqaH2ot+dTxbVFexThsua+lTCs1vE=
+        b=QLPPNxpgR85lZQFW3jr9fEJF0acY3i1Kd7A9RNEZx06JlLEKKVz+Hm+N2UMW7CkuS
+         w1jaeSyYMJg7Z+N1fKtRHE/yl3FikG/W0M7C2VfCnpfHbzZcBDPWVof66sjxwwsi78
+         Yp4whGJfe+ubpBVpS72abQJQVZtvMOerEqq1PxS4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>
-Subject: [PATCH 5.15 133/159] selftests: mptcp: connect: skip if MPTCP is not supported
+        patches@lists.linux.dev, Erwan Velu <e.velu@criteo.com>,
+        Luiz Capitulino <luizcap@amazon.com>,
+        Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 5.4 84/99] selinux: dont use makes grouped targets feature yet
 Date:   Wed,  7 Jun 2023 22:17:16 +0200
-Message-ID: <20230607200908.027369227@linuxfoundation.org>
+Message-ID: <20230607200902.860127726@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,109 +54,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Paul Moore <paul@paul-moore.com>
 
-commit d83013bdf90a7994a474b0e650a7fc94b0d4ded6 upstream.
+commit 42c4e97e06a839b07d834f640a10911ad84ec8b3 upstream.
 
-Selftests are supposed to run on any kernels, including the old ones not
-supporting MPTCP.
+The Linux Kernel currently only requires make v3.82 while the grouped
+target functionality requires make v4.3.  Removed the grouped target
+introduced in 4ce1f694eb5d ("selinux: ensure av_permissions.h is
+built when needed") as well as the multiple header file targets in
+the make rule.  This effectively reverts the problem commit.
 
-A new check is then added to make sure MPTCP is supported. If not, the
-test stops and is marked as "skipped". Note that this check can also
-mark the test as failed if 'SELFTESTS_MPTCP_LIB_EXPECT_ALL_FEATURES' env
-var is set to 1: by doing that, we can make sure a test is not being
-skipped by mistake.
+We will revisit this change when make >= 4.3 is required by the rest
+of the kernel.
 
-A new shared file is added here to be able to re-used the same check in
-the different selftests we have.
-
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
-Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
 Cc: stable@vger.kernel.org
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 4ce1f694eb5d ("selinux: ensure av_permissions.h is built when needed")
+Reported-by: Erwan Velu <e.velu@criteo.com>
+Reported-by: Luiz Capitulino <luizcap@amazon.com>
+Tested-by: Luiz Capitulino <luizcap@amazon.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/Makefile         |    2 -
- tools/testing/selftests/net/mptcp/mptcp_connect.sh |    4 ++
- tools/testing/selftests/net/mptcp/mptcp_lib.sh     |   40 +++++++++++++++++++++
- 3 files changed, 45 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/net/mptcp/mptcp_lib.sh
+ security/selinux/Makefile |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/Makefile
-+++ b/tools/testing/selftests/net/mptcp/Makefile
-@@ -10,7 +10,7 @@ TEST_PROGS := mptcp_connect.sh pm_netlin
+--- a/security/selinux/Makefile
++++ b/security/selinux/Makefile
+@@ -22,5 +22,9 @@ quiet_cmd_flask = GEN     $(obj)/flask.h
+       cmd_flask = $< $(obj)/flask.h $(obj)/av_permissions.h
  
- TEST_GEN_FILES = mptcp_connect pm_nl_ctl
- 
--TEST_FILES := settings
-+TEST_FILES := mptcp_lib.sh settings
- 
- EXTRA_CLEAN := *.pcap
- 
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-@@ -1,6 +1,8 @@
- #!/bin/bash
- # SPDX-License-Identifier: GPL-2.0
- 
-+. "$(dirname "${0}")/mptcp_lib.sh"
-+
- time_start=$(date +%s)
- 
- optstring="S:R:d:e:l:r:h4cm:f:tC"
-@@ -138,6 +140,8 @@ cleanup()
- 	done
- }
- 
-+mptcp_lib_check_mptcp
-+
- ip -Version > /dev/null 2>&1
- if [ $? -ne 0 ];then
- 	echo "SKIP: Could not run test without ip tool"
---- /dev/null
-+++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-@@ -0,0 +1,40 @@
-+#! /bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+readonly KSFT_FAIL=1
-+readonly KSFT_SKIP=4
-+
-+# SELFTESTS_MPTCP_LIB_EXPECT_ALL_FEATURES env var can be set when validating all
-+# features using the last version of the kernel and the selftests to make sure
-+# a test is not being skipped by mistake.
-+mptcp_lib_expect_all_features() {
-+	[ "${SELFTESTS_MPTCP_LIB_EXPECT_ALL_FEATURES:-}" = "1" ]
-+}
-+
-+# $1: msg
-+mptcp_lib_fail_if_expected_feature() {
-+	if mptcp_lib_expect_all_features; then
-+		echo "ERROR: missing feature: ${*}"
-+		exit ${KSFT_FAIL}
-+	fi
-+
-+	return 1
-+}
-+
-+# $1: file
-+mptcp_lib_has_file() {
-+	local f="${1}"
-+
-+	if [ -f "${f}" ]; then
-+		return 0
-+	fi
-+
-+	mptcp_lib_fail_if_expected_feature "${f} file not found"
-+}
-+
-+mptcp_lib_check_mptcp() {
-+	if ! mptcp_lib_has_file "/proc/sys/net/mptcp/enabled"; then
-+		echo "SKIP: MPTCP support is not available"
-+		exit ${KSFT_SKIP}
-+	fi
-+}
+ targets += flask.h av_permissions.h
+-$(obj)/flask.h $(obj)/av_permissions.h &: scripts/selinux/genheaders/genheaders FORCE
++# once make >= 4.3 is required, we can use grouped targets in the rule below,
++# which basically involves adding both headers and a '&' before the colon, see
++# the example below:
++#   $(obj)/flask.h $(obj)/av_permissions.h &: scripts/selinux/...
++$(obj)/flask.h: scripts/selinux/genheaders/genheaders FORCE
+ 	$(call if_changed,flask)
 
 
