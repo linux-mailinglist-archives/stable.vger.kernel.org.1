@@ -2,54 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62D07726BBC
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:27:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AF20726D34
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:40:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233405AbjFGU1j (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:27:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53514 "EHLO
+        id S234277AbjFGUkL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:40:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233421AbjFGU1i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:27:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4924326B2
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:27:22 -0700 (PDT)
+        with ESMTP id S234318AbjFGUkF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:40:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31D4126AA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:39:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 03AA264488
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:27:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15043C433EF;
-        Wed,  7 Jun 2023 20:27:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FAD4645D9
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:39:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20AD1C433EF;
+        Wed,  7 Jun 2023 20:39:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169640;
-        bh=x4vYym9XleYrWZ+rU1tI4zgGL2tm62rFrZqtGJF7b30=;
+        s=korg; t=1686170383;
+        bh=zpV5SE+b+pNWUY2xCtVHyDVz/RSQi2tKBoj7a2cWFUE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ux+gDxicog0VReWTujtEfasB7Fh9T1PDzoqRjtqWUczpQKjQOBlrH2EeCYXes6wez
-         W57LdLdMwKE1eEeHbQoQhsDD7Y2hcm8p0zK2hQnDbrWbK/UeNd0lfTyIwJ1g5tSX1D
-         7l6Qi9/mqyX6IlNphubPOPQl7au50RYxa2ZH9pL4=
+        b=GwC/XoMNBttZ2b8HHVZhZ7S6Mm5ynlkZdkMy77uMgPIYKNiIDiPLgecgK6gzrlioU
+         bIDRcKdqe1tH57N0PXSCey3/fnyx9alMC3EBs2Vbpi3QnmeoJHCH4+SD4WzzDj5n/+
+         6HFqJ6A/a+NLsdeWBvWedTLtoVxdhAfOjvfD+fvk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Po-Wen Kao <powen.kao@mediatek.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Stanley Chu <stanley.chu@mediatek.com>,
-        Ziqi Chen <quic_ziqichen@quicinc.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 157/286] scsi: ufs: core: Fix MCQ tag calculation
-Date:   Wed,  7 Jun 2023 22:14:16 +0200
-Message-ID: <20230607200928.251618164@linuxfoundation.org>
+Subject: [PATCH 6.1 064/225] ASoC: Intel: soc-acpi-cht: Add quirk for Nextbook Ares 8A tablet
+Date:   Wed,  7 Jun 2023 22:14:17 +0200
+Message-ID: <20230607200916.456245234@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,57 +55,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Po-Wen Kao <powen.kao@mediatek.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 5149452ca66289ef33d13897ee845a2f6f5b680f ]
+[ Upstream commit ec6f82b4c63cc68f8dc03316e725106d242706be ]
 
-The transfer command descriptor is allocated in ufshcd_memory_alloc() and
-referenced by the transfer request descriptor with stride size
-sizeof_utp_transfer_cmd_desc() instead of sizeof(struct
-utp_transfer_cmd_desc).
+The Nextbook Ares 8A tablet which has Android as factory OS, has a buggy
+DSDT with both ESSX8316 and 10EC5651 ACPI devices.
 
-Consequently, computing tag by address offset should also refer to the
-same stride.
+This tablet actually uses an rt5651 codec, but the matching code ends up
+picking the ESSX8316 device, add a quirk to ignote the ESSX8316 device
+on this tablet.
 
-Signed-off-by: Po-Wen Kao <powen.kao@mediatek.com>
-Link: https://lore.kernel.org/r/20230504154454.26654-2-powen.kao@mediatek.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Stanley Chu <stanley.chu@mediatek.com>
-Reviewed-by: Ziqi Chen <quic_ziqichen@quicinc.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Message-Id: <20230429104721.7176-1-hdegoede@redhat.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufs-mcq.c | 2 +-
- drivers/ufs/core/ufshcd.c  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ .../intel/common/soc-acpi-intel-cht-match.c   | 26 +++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
-index 202ff71e1b582..b7c5f39b50e6d 100644
---- a/drivers/ufs/core/ufs-mcq.c
-+++ b/drivers/ufs/core/ufs-mcq.c
-@@ -265,7 +265,7 @@ static int ufshcd_mcq_get_tag(struct ufs_hba *hba,
- 	addr = (le64_to_cpu(cqe->command_desc_base_addr) & CQE_UCD_BA) -
- 		hba->ucdl_dma_addr;
- 
--	return div_u64(addr, sizeof(struct utp_transfer_cmd_desc));
-+	return div_u64(addr, sizeof_utp_transfer_cmd_desc(hba));
+diff --git a/sound/soc/intel/common/soc-acpi-intel-cht-match.c b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
+index 6beb00858c33f..cdcbf04b8832f 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-cht-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
+@@ -50,6 +50,31 @@ static struct snd_soc_acpi_mach *cht_quirk(void *arg)
+ 		return mach;
  }
  
- static void ufshcd_mcq_process_cqe(struct ufs_hba *hba,
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 8ac2945e849f4..a80eacbb8ef85 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -8422,7 +8422,7 @@ static void ufshcd_release_sdb_queue(struct ufs_hba *hba, int nutrs)
- {
- 	size_t ucdl_size, utrdl_size;
- 
--	ucdl_size = sizeof(struct utp_transfer_cmd_desc) * nutrs;
-+	ucdl_size = sizeof_utp_transfer_cmd_desc(hba) * nutrs;
- 	dmam_free_coherent(hba->dev, ucdl_size, hba->ucdl_base_addr,
- 			   hba->ucdl_dma_addr);
- 
++/*
++ * Some tablets with Android factory OS have buggy DSDTs with an ESSX8316 device
++ * in the ACPI tables. While they are not using an ESS8316 codec. These DSDTs
++ * also have an ACPI device for the correct codec, ignore the ESSX8316.
++ */
++static const struct dmi_system_id cht_ess8316_not_present_table[] = {
++	{
++		/* Nextbook Ares 8A */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "CherryTrail"),
++			DMI_MATCH(DMI_BIOS_VERSION, "M882"),
++		},
++	},
++	{ }
++};
++
++static struct snd_soc_acpi_mach *cht_ess8316_quirk(void *arg)
++{
++	if (dmi_check_system(cht_ess8316_not_present_table))
++		return NULL;
++
++	return arg;
++}
++
+ static const struct snd_soc_acpi_codecs rt5640_comp_ids = {
+ 	.num_codecs = 2,
+ 	.codecs = { "10EC5640", "10EC3276" },
+@@ -113,6 +138,7 @@ struct snd_soc_acpi_mach  snd_soc_acpi_intel_cherrytrail_machines[] = {
+ 		.drv_name = "bytcht_es8316",
+ 		.fw_filename = "intel/fw_sst_22a8.bin",
+ 		.board = "bytcht_es8316",
++		.machine_quirk = cht_ess8316_quirk,
+ 		.sof_tplg_filename = "sof-cht-es8316.tplg",
+ 	},
+ 	/* some CHT-T platforms rely on RT5640, use Baytrail machine driver */
 -- 
 2.39.2
 
