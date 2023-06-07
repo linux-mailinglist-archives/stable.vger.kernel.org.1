@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0C71726BDC
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:28:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43521726D7D
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:42:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233489AbjFGU25 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:28:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55272 "EHLO
+        id S234510AbjFGUmb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:42:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233470AbjFGU24 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:28:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 231D12705
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:28:36 -0700 (PDT)
+        with ESMTP id S234625AbjFGUmW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:42:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC6431BC6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:42:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C001C644B0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:28:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D113FC433D2;
-        Wed,  7 Jun 2023 20:28:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 893CE6462F
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:42:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9922BC433EF;
+        Wed,  7 Jun 2023 20:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169716;
-        bh=6WZj0BXWB1MLar3oj/LZv3PvS5t2OOJL+zBNwsbacYg=;
+        s=korg; t=1686170535;
+        bh=grmV5ECNjfhpFqaQa+XnCtRocR2jGhVqdQsXK4lL7gM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=07eMmch4ZHVumYOZ4dF5yu563RNLZkSG8lo+NIIPGi/YZ7Kk7CS05rZHH1WEBU9d9
-         cCOGXUaN70XepSb0vrQFECpfuh/iZSjExrshFqC0Pv9seox4wTUdwMh1eIgY5wp0cv
-         YukExBsAzWDHdrJU0lz6+4XeRXw22hi64eIqi85I=
+        b=RnrKWcDfYIUNoug505EpxPIPDQWSVKU5pR3y3h6UsoaRyTIfedurCGLf+sK+5Cp4Z
+         3xvwmoaeeHVUCfjHF+0prhMbMpInD8UAXI6Ty3IpXhZ71DUhZGOuD4Av91ei4Vtz7K
+         Qo8z9gWIYrWeaa6PUVr6Kw+dxSEn0p7atPSUkaVw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Francesco Dolcini <francesco.dolcini@toradex.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 186/286] dt-bindings: serial: 8250_omap: add rs485-rts-active-high
+Subject: [PATCH 6.1 092/225] media: dvb-usb-v2: ec168: fix null-ptr-deref in ec168_i2c_xfer()
 Date:   Wed,  7 Jun 2023 22:14:45 +0200
-Message-ID: <20230607200929.349995680@linuxfoundation.org>
+Message-ID: <20230607200917.401492794@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,37 +54,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Wei Chen <harperchen1110@gmail.com>
 
-[ Upstream commit 403e97d6ab2cb6fd0ac1ff968cd7b691771f1613 ]
+[ Upstream commit a6dcefcc08eca1bf4e3d213c97c3cfb75f377935 ]
 
-Add rs485-rts-active-high property, this was removed by mistake.
-In general we just use rs485-rts-active-low property, however the OMAP
-UART for legacy reason uses the -high one.
+In ec168_i2c_xfer, msg is controlled by user. When msg[i].buf is null
+and msg[i].len is zero, former checks on msg[i].buf would be passed.
+If accessing msg[i].buf[0] without sanity check, null pointer deref
+would happen. We add check on msg[i].len to prevent crash.
 
-Fixes: 767d3467eb60 ("dt-bindings: serial: 8250_omap: drop rs485 properties")
-Closes: https://lore.kernel.org/all/ZGefR4mTHHo1iQ7H@francesco-nb.int.toradex.com/
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230531111038.6302-1-francesco@dolcini.it
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Similar commit:
+commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+
+Link: https://lore.kernel.org/linux-media/20230313085853.3252349-1-harperchen1110@gmail.com
+Signed-off-by: Wei Chen <harperchen1110@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/serial/8250_omap.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/usb/dvb-usb-v2/ec168.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/serial/8250_omap.yaml b/Documentation/devicetree/bindings/serial/8250_omap.yaml
-index eb3488d8f9ee6..6a7be42da523c 100644
---- a/Documentation/devicetree/bindings/serial/8250_omap.yaml
-+++ b/Documentation/devicetree/bindings/serial/8250_omap.yaml
-@@ -70,6 +70,7 @@ properties:
-   dsr-gpios: true
-   rng-gpios: true
-   dcd-gpios: true
-+  rs485-rts-active-high: true
-   rts-gpio: true
-   power-domains: true
-   clock-frequency: true
+diff --git a/drivers/media/usb/dvb-usb-v2/ec168.c b/drivers/media/usb/dvb-usb-v2/ec168.c
+index 7ed0ab9e429b1..0e4773fc025c9 100644
+--- a/drivers/media/usb/dvb-usb-v2/ec168.c
++++ b/drivers/media/usb/dvb-usb-v2/ec168.c
+@@ -115,6 +115,10 @@ static int ec168_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 	while (i < num) {
+ 		if (num > i + 1 && (msg[i+1].flags & I2C_M_RD)) {
+ 			if (msg[i].addr == ec168_ec100_config.demod_address) {
++				if (msg[i].len < 1) {
++					i = -EOPNOTSUPP;
++					break;
++				}
+ 				req.cmd = READ_DEMOD;
+ 				req.value = 0;
+ 				req.index = 0xff00 + msg[i].buf[0]; /* reg */
+@@ -131,6 +135,10 @@ static int ec168_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 			}
+ 		} else {
+ 			if (msg[i].addr == ec168_ec100_config.demod_address) {
++				if (msg[i].len < 1) {
++					i = -EOPNOTSUPP;
++					break;
++				}
+ 				req.cmd = WRITE_DEMOD;
+ 				req.value = msg[i].buf[1]; /* val */
+ 				req.index = 0xff00 + msg[i].buf[0]; /* reg */
+@@ -139,6 +147,10 @@ static int ec168_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 				ret = ec168_ctrl_msg(d, &req);
+ 				i += 1;
+ 			} else {
++				if (msg[i].len < 1) {
++					i = -EOPNOTSUPP;
++					break;
++				}
+ 				req.cmd = WRITE_I2C;
+ 				req.value = msg[i].buf[0]; /* val */
+ 				req.index = 0x0100 + msg[i].addr; /* I2C addr */
 -- 
 2.39.2
 
