@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2466726C15
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:30:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5599726D82
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:42:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233647AbjFGUal (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:30:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56936 "EHLO
+        id S234318AbjFGUmx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:42:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233663AbjFGUaY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13646213D
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:30:09 -0700 (PDT)
+        with ESMTP id S234610AbjFGUmo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:42:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 108E32134
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:42:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A5FE644C9
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:30:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D3FC433EF;
-        Wed,  7 Jun 2023 20:30:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A49761CC6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:42:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C3FC433D2;
+        Wed,  7 Jun 2023 20:42:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169808;
-        bh=S1Er6tAk46+EiTlGcl6Te+QtUjIMiIoQspoSNzceCOQ=;
+        s=korg; t=1686170548;
+        bh=M4V4JYAJb7JCpNDh95af6IswKlTV3u8pE33X7dJJco0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IsgBimUAKOfwyRzWj2zbKD2iIZ+wrs5/80u2Z1SXq1SBZ7NUvSZOE7yHNz0CJEz7Y
-         FVJ1xk/PdtkVaLWsPsk4a6xmlly3WgyXP8jIF+RtlZI0bcmDidLtfAfPzjcYOu0aPv
-         QeX5jnqfAOY5Mq6hB5UpiVpTA1w7PnM1o3AHjiIg=
+        b=qsqbn5se1H31LkR4HPj+O0L3LcLVAt0muZQJjSgIkPUrjh35sRGWSjrBb9Hg2rFNF
+         NF5MX6/8mczxjliaOsDOiOLrAW0anJaAcjD71KopN0sb9gXmCHnKMVFvr8y5FGYath
+         rk1WTBaLkZyk79qbM8Uw+MIJCA6zMOrFdv/VE6GE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhenneng Li <lizhenneng@kylinos.cn>,
-        Guchun Chen <guchun.chen@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.3 221/286] drm/amd/pm: resolve reboot exception for si oland
+        patches@lists.linux.dev, Rob Clark <robdclark@chromium.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 127/225] drm/msm: Be more shouty if per-process pgtables arent working
 Date:   Wed,  7 Jun 2023 22:15:20 +0200
-Message-ID: <20230607200930.496900441@linuxfoundation.org>
+Message-ID: <20230607200918.533200843@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,74 +54,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Guchun Chen <guchun.chen@amd.com>
+From: Rob Clark <robdclark@chromium.org>
 
-commit e490d60a2f76bff636c68ce4fe34c1b6c34bbd86 upstream.
+[ Upstream commit 5c054db54c43a5fcb5cc81012361f5e3fac37637 ]
 
-During reboot test on arm64 platform, it may failure on boot.
+Otherwise it is not always obvious if a dt or iommu change is causing us
+to fall back to global pgtable.
 
-The error message are as follows:
-[    1.706570][ 3] [  T273] [drm:si_thermal_enable_alert [amdgpu]] *ERROR* Could not enable thermal interrupts.
-[    1.716547][ 3] [  T273] [drm:amdgpu_device_ip_late_init [amdgpu]] *ERROR* late_init of IP block <si_dpm> failed -22
-[    1.727064][ 3] [  T273] amdgpu 0000:02:00.0: amdgpu_device_ip_late_init failed
-[    1.734367][ 3] [  T273] amdgpu 0000:02:00.0: Fatal error during GPU init
-
-v2: squash in built warning fix (Alex)
-
-Signed-off-by: Zhenneng Li <lizhenneng@kylinos.cn>
-Reviewed-by: Guchun Chen <guchun.chen@amd.com>
-Signed-off-by: Guchun Chen <guchun.chen@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/537359/
+Link: https://lore.kernel.org/r/20230516222039.907690-2-robdclark@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c |   29 -----------------------------
- 1 file changed, 29 deletions(-)
+ drivers/gpu/drm/msm/msm_iommu.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -6925,23 +6925,6 @@ static int si_dpm_enable(struct amdgpu_d
- 	return 0;
- }
+diff --git a/drivers/gpu/drm/msm/msm_iommu.c b/drivers/gpu/drm/msm/msm_iommu.c
+index 5577cea7c0092..d12ba47b37c4f 100644
+--- a/drivers/gpu/drm/msm/msm_iommu.c
++++ b/drivers/gpu/drm/msm/msm_iommu.c
+@@ -227,7 +227,12 @@ struct msm_mmu *msm_iommu_pagetable_create(struct msm_mmu *parent)
+ 	/* Get the pagetable configuration from the domain */
+ 	if (adreno_smmu->cookie)
+ 		ttbr1_cfg = adreno_smmu->get_ttbr1_cfg(adreno_smmu->cookie);
+-	if (!ttbr1_cfg)
++
++	/*
++	 * If you hit this WARN_ONCE() you are probably missing an entry in
++	 * qcom_smmu_impl_of_match[] in arm-smmu-qcom.c
++	 */
++	if (WARN_ONCE(!ttbr1_cfg, "No per-process page tables"))
+ 		return ERR_PTR(-ENODEV);
  
--static int si_set_temperature_range(struct amdgpu_device *adev)
--{
--	int ret;
--
--	ret = si_thermal_enable_alert(adev, false);
--	if (ret)
--		return ret;
--	ret = si_thermal_set_temperature_range(adev, R600_TEMP_RANGE_MIN, R600_TEMP_RANGE_MAX);
--	if (ret)
--		return ret;
--	ret = si_thermal_enable_alert(adev, true);
--	if (ret)
--		return ret;
--
--	return ret;
--}
--
- static void si_dpm_disable(struct amdgpu_device *adev)
- {
- 	struct rv7xx_power_info *pi = rv770_get_pi(adev);
-@@ -7626,18 +7609,6 @@ static int si_dpm_process_interrupt(stru
- 
- static int si_dpm_late_init(void *handle)
- {
--	int ret;
--	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
--
--	if (!adev->pm.dpm_enabled)
--		return 0;
--
--	ret = si_set_temperature_range(adev);
--	if (ret)
--		return ret;
--#if 0 //TODO ?
--	si_dpm_powergate_uvd(adev, true);
--#endif
- 	return 0;
- }
- 
+ 	/*
+-- 
+2.39.2
+
 
 
