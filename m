@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3DBB726C8A
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DA97726ACA
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233779AbjFGUeU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:34:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32822 "EHLO
+        id S232728AbjFGUUT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:20:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233869AbjFGUeT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:34:19 -0400
+        with ESMTP id S232504AbjFGUUJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 934E22125
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:34:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8A17273F
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:19:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 208EA64558
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:34:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 302CAC433D2;
-        Wed,  7 Jun 2023 20:34:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8188664390
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:19:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91406C433EF;
+        Wed,  7 Jun 2023 20:19:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170043;
-        bh=7ImA2J6n1q6A7ayF6YC3jwMmEYzKT8ad2iUtfZMlOzE=;
+        s=korg; t=1686169150;
+        bh=sOINqL/SuA3HCGBVDuzc/Sug6GomzrLTGZwcsG3xUtw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E5dsRcZ9oH1sXt3MvTQfmQ2g3DRWM2thEKjkyuf+rdaTGs5le5D5jyDLf+XFOMDKT
-         gnzlD3rsaKhtIqAiFSHdRE5zVER/UKhwswBNFNw+FL27jYRYZ3hfZ5XfKlNSf77GRh
-         cRYBPAl0TwEDY+2mFPJ+dScon+NUW8u1lHDP5tpE=
+        b=aFLQ0M5l0cN9mvfLXj2MerZ01p8QXuaLzXYCxL+ZCHK8BeCNtwK6+jcsgexvEtksj
+         M2YzPKQJBLj16Wg8d6n4gdv6t/dtJvdiiY4wqiRxa2PxLQWeD0JQ6wALIIDD4nPNah
+         ZagrGXbfgzXdam0Tof0f1nIrHczl/EIIHR6rziqY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 03/88] power: supply: bq27xxx: After charger plug in/out wait 0.5s for things to stabilize
+Subject: [PATCH 4.14 06/61] af_packet: Fix data-races of pkt_sk(sk)->num.
 Date:   Wed,  7 Jun 2023 22:15:20 +0200
-Message-ID: <20230607200855.203642412@linuxfoundation.org>
+Message-ID: <20230607200837.377327256@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
+References: <20230607200835.310274198@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,38 +56,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 59a99cd462fbdf71f4e845e09f37783035088b4f ]
+[ Upstream commit 822b5a1c17df7e338b9f05d1cfe5764e37c7f74f ]
 
-bq27xxx_external_power_changed() gets called when the charger is plugged
-in or out. Rather then immediately scheduling an update wait 0.5 seconds
-for things to stabilize, so that e.g. the (dis)charge current is stable
-when bq27xxx_battery_update() runs.
+syzkaller found a data race of pkt_sk(sk)->num.
 
-Fixes: 740b755a3b34 ("bq27x00: Poll battery state")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+The value is changed under lock_sock() and po->bind_lock, so we
+need READ_ONCE() to access pkt_sk(sk)->num without these locks in
+packet_bind_spkt(), packet_bind(), and sk_diag_fill().
+
+Note that WRITE_ONCE() is already added by commit c7d2ef5dd4b0
+("net/packet: annotate accesses to po->bind").
+
+BUG: KCSAN: data-race in packet_bind / packet_do_bind
+
+write (marked) to 0xffff88802ffd1cee of 2 bytes by task 7322 on cpu 0:
+ packet_do_bind+0x446/0x640 net/packet/af_packet.c:3236
+ packet_bind+0x99/0xe0 net/packet/af_packet.c:3321
+ __sys_bind+0x19b/0x1e0 net/socket.c:1803
+ __do_sys_bind net/socket.c:1814 [inline]
+ __se_sys_bind net/socket.c:1812 [inline]
+ __x64_sys_bind+0x40/0x50 net/socket.c:1812
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+read to 0xffff88802ffd1cee of 2 bytes by task 7318 on cpu 1:
+ packet_bind+0xbf/0xe0 net/packet/af_packet.c:3322
+ __sys_bind+0x19b/0x1e0 net/socket.c:1803
+ __do_sys_bind net/socket.c:1814 [inline]
+ __se_sys_bind net/socket.c:1812 [inline]
+ __x64_sys_bind+0x40/0x50 net/socket.c:1812
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+value changed: 0x0300 -> 0x0000
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 7318 Comm: syz-executor.4 Not tainted 6.3.0-13380-g7fddb5b5300c #4
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+
+Fixes: 96ec6327144e ("packet: Diag core and basic socket info dumping")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20230524232934.50950-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/bq27xxx_battery.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/packet/af_packet.c | 4 ++--
+ net/packet/diag.c      | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
-index b44776bb1da82..725851ca0e757 100644
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -1864,8 +1864,8 @@ static void bq27xxx_external_power_changed(struct power_supply *psy)
- {
- 	struct bq27xxx_device_info *di = power_supply_get_drvdata(psy);
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 2089da69da103..131c347bba56b 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -3255,7 +3255,7 @@ static int packet_bind_spkt(struct socket *sock, struct sockaddr *uaddr,
+ 	memcpy(name, uaddr->sa_data, sizeof(uaddr->sa_data));
+ 	name[sizeof(uaddr->sa_data)] = 0;
  
--	cancel_delayed_work_sync(&di->work);
--	schedule_delayed_work(&di->work, 0);
-+	/* After charger plug in/out wait 0.5s for things to stabilize */
-+	mod_delayed_work(system_wq, &di->work, HZ / 2);
+-	return packet_do_bind(sk, name, 0, pkt_sk(sk)->num);
++	return packet_do_bind(sk, name, 0, READ_ONCE(pkt_sk(sk)->num));
  }
  
- int bq27xxx_battery_setup(struct bq27xxx_device_info *di)
+ static int packet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
+@@ -3273,7 +3273,7 @@ static int packet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len
+ 		return -EINVAL;
+ 
+ 	return packet_do_bind(sk, NULL, sll->sll_ifindex,
+-			      sll->sll_protocol ? : pkt_sk(sk)->num);
++			      sll->sll_protocol ? : READ_ONCE(pkt_sk(sk)->num));
+ }
+ 
+ static struct proto packet_proto = {
+diff --git a/net/packet/diag.c b/net/packet/diag.c
+index d9f912ad23dfa..ecabf78d29b8e 100644
+--- a/net/packet/diag.c
++++ b/net/packet/diag.c
+@@ -142,7 +142,7 @@ static int sk_diag_fill(struct sock *sk, struct sk_buff *skb,
+ 	rp = nlmsg_data(nlh);
+ 	rp->pdiag_family = AF_PACKET;
+ 	rp->pdiag_type = sk->sk_type;
+-	rp->pdiag_num = ntohs(po->num);
++	rp->pdiag_num = ntohs(READ_ONCE(po->num));
+ 	rp->pdiag_ino = sk_ino;
+ 	sock_diag_save_cookie(sk, rp->pdiag_cookie);
+ 
 -- 
 2.39.2
 
