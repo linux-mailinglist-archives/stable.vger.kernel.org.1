@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A67DF726D80
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:42:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 059B1726BD2
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:28:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234432AbjFGUmi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:42:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42418 "EHLO
+        id S233438AbjFGU2h (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:28:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234586AbjFGUmd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:42:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 849622689
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:42:23 -0700 (PDT)
+        with ESMTP id S233470AbjFGU2f (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:28:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FFFF1FEE
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:28:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6572D6462F
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:42:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D24C433EF;
-        Wed,  7 Jun 2023 20:42:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 10695644A8
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:28:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CC7C433D2;
+        Wed,  7 Jun 2023 20:28:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170542;
-        bh=k4xLpc2kDfrZGIzuPUhhZcsIyB570BeLmlOecqYVjjo=;
+        s=korg; t=1686169695;
+        bh=ATjML6lJGwZ9+QGvbyh2iZqPUSl5J3oc8zpo4JAorLk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1BMAWzQQnbrF5RGCCNA15fxHeZCQrYVarWTxXpgyyhcA5pT3srGmnepklY67c4YIi
-         nyX9lIcaWnbVukJ9LvFbgjoIPHFGdsyFGxzaaJvSmQfKAr9fD5/ylBDv/F0qNh98DO
-         agKA5wXptGgaPgyyBc6hQgmgn0k8tAQVmMQ/Rcsk=
+        b=Og3IDMY5rpMT3r+IQcpvz/0lwfS277C/M2rAO+eK7NXEZXQxLunLPAK3MHKK5sxc2
+         4NdQw9EO/mxLIKFuqA9+KsBfV9kxx4qHcPThd4Z6tkPSmh+6pBPyf//6+cQBRVudTv
+         RSh6bkVpXD+tZwJQb1azlIVbvNEo1JKvVRuWncEI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Richard Weinberger <richard@nod.at>,
+        patches@lists.linux.dev, Gleb Chesnokov <gleb.chesnokov@scst.dev>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 085/225] um: harddog: fix modular build
+Subject: [PATCH 6.3 179/286] scsi: qla2xxx: Fix NULL pointer dereference in target mode
 Date:   Wed,  7 Jun 2023 22:14:38 +0200
-Message-ID: <20230607200917.156444944@linuxfoundation.org>
+Message-ID: <20230607200929.119492837@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,132 +55,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Gleb Chesnokov <gleb.chesnokov@scst.dev>
 
-[ Upstream commit 73a23d7710331a530e972903318528b75e5a5f58 ]
+[ Upstream commit d54820b22e404b06b2b65877ff802cc7b31688bc ]
 
-Since we no longer (want to) export any libc symbols the
-_user portions of any drivers need to be built into image
-rather than the module. I missed this for the watchdog.
-Fix the watchdog accordingly.
+When target mode is enabled, the pci_irq_get_affinity() function may return
+a NULL value in qla_mapq_init_qp_cpu_map() due to the qla24xx_enable_msix()
+code that handles IRQ settings for target mode. This leads to a crash due
+to a NULL pointer dereference.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+This patch fixes the issue by adding a check for the NULL value returned by
+pci_irq_get_affinity() and introducing a 'cpu_mapped' boolean flag to the
+qla_qpair structure, ensuring that the qpair's CPU affinity is updated when
+it has not been mapped to a CPU.
+
+Fixes: 1d201c81d4cc ("scsi: qla2xxx: Select qpair depending on which CPU post_cmd() gets called")
+Signed-off-by: Gleb Chesnokov <gleb.chesnokov@scst.dev>
+Link: https://lore.kernel.org/r/56b416f2-4e0f-b6cf-d6d5-b7c372e3c6a2@scst.dev
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/drivers/Makefile           | 4 +++-
- arch/um/drivers/harddog.h          | 9 +++++++++
- arch/um/drivers/harddog_kern.c     | 7 +------
- arch/um/drivers/harddog_user.c     | 1 +
- arch/um/drivers/harddog_user_exp.c | 9 +++++++++
- 5 files changed, 23 insertions(+), 7 deletions(-)
- create mode 100644 arch/um/drivers/harddog.h
- create mode 100644 arch/um/drivers/harddog_user_exp.c
+ drivers/scsi/qla2xxx/qla_def.h    | 1 +
+ drivers/scsi/qla2xxx/qla_init.c   | 3 +++
+ drivers/scsi/qla2xxx/qla_inline.h | 3 +++
+ drivers/scsi/qla2xxx/qla_isr.c    | 3 +++
+ 4 files changed, 10 insertions(+)
 
-diff --git a/arch/um/drivers/Makefile b/arch/um/drivers/Makefile
-index e1dc4292bd22e..65b449c992d2c 100644
---- a/arch/um/drivers/Makefile
-+++ b/arch/um/drivers/Makefile
-@@ -16,7 +16,8 @@ mconsole-objs := mconsole_kern.o mconsole_user.o
- hostaudio-objs := hostaudio_kern.o
- ubd-objs := ubd_kern.o ubd_user.o
- port-objs := port_kern.o port_user.o
--harddog-objs := harddog_kern.o harddog_user.o
-+harddog-objs := harddog_kern.o
-+harddog-builtin-$(CONFIG_UML_WATCHDOG) := harddog_user.o harddog_user_exp.o
- rtc-objs := rtc_kern.o rtc_user.o
+diff --git a/drivers/scsi/qla2xxx/qla_def.h b/drivers/scsi/qla2xxx/qla_def.h
+index ec0e987b71fa5..807ae5ede44c6 100644
+--- a/drivers/scsi/qla2xxx/qla_def.h
++++ b/drivers/scsi/qla2xxx/qla_def.h
+@@ -3797,6 +3797,7 @@ struct qla_qpair {
+ 	uint64_t retry_term_jiff;
+ 	struct qla_tgt_counters tgt_counters;
+ 	uint16_t cpuid;
++	bool cpu_mapped;
+ 	struct qla_fw_resources fwres ____cacheline_aligned;
+ 	struct  qla_buf_pool buf_pool;
+ 	u32	cmd_cnt;
+diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
+index ec0423ec66817..1a955c3ff3d6c 100644
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -9426,6 +9426,9 @@ struct qla_qpair *qla2xxx_create_qpair(struct scsi_qla_host *vha, int qos,
+ 		qpair->rsp->req = qpair->req;
+ 		qpair->rsp->qpair = qpair;
  
- LDFLAGS_pcap.o = $(shell $(CC) $(KBUILD_CFLAGS) -print-file-name=libpcap.a)
-@@ -60,6 +61,7 @@ obj-$(CONFIG_PTY_CHAN) += pty.o
- obj-$(CONFIG_TTY_CHAN) += tty.o 
- obj-$(CONFIG_XTERM_CHAN) += xterm.o xterm_kern.o
- obj-$(CONFIG_UML_WATCHDOG) += harddog.o
-+obj-y += $(harddog-builtin-y) $(harddog-builtin-m)
- obj-$(CONFIG_BLK_DEV_COW_COMMON) += cow_user.o
- obj-$(CONFIG_UML_RANDOM) += random.o
- obj-$(CONFIG_VIRTIO_UML) += virtio_uml.o
-diff --git a/arch/um/drivers/harddog.h b/arch/um/drivers/harddog.h
-new file mode 100644
-index 0000000000000..6d9ea60e7133e
---- /dev/null
-+++ b/arch/um/drivers/harddog.h
-@@ -0,0 +1,9 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef UM_WATCHDOG_H
-+#define UM_WATCHDOG_H
++		if (!qpair->cpu_mapped)
++			qla_cpu_update(qpair, raw_smp_processor_id());
 +
-+int start_watchdog(int *in_fd_ret, int *out_fd_ret, char *sock);
-+void stop_watchdog(int in_fd, int out_fd);
-+int ping_watchdog(int fd);
-+
-+#endif /* UM_WATCHDOG_H */
-diff --git a/arch/um/drivers/harddog_kern.c b/arch/um/drivers/harddog_kern.c
-index e6d4f43deba82..60d1c6cab8a95 100644
---- a/arch/um/drivers/harddog_kern.c
-+++ b/arch/um/drivers/harddog_kern.c
-@@ -47,6 +47,7 @@
- #include <linux/spinlock.h>
- #include <linux/uaccess.h>
- #include "mconsole.h"
-+#include "harddog.h"
- 
- MODULE_LICENSE("GPL");
- 
-@@ -60,8 +61,6 @@ static int harddog_out_fd = -1;
-  *	Allow only one person to hold it open
-  */
- 
--extern int start_watchdog(int *in_fd_ret, int *out_fd_ret, char *sock);
--
- static int harddog_open(struct inode *inode, struct file *file)
- {
- 	int err = -EBUSY;
-@@ -92,8 +91,6 @@ static int harddog_open(struct inode *inode, struct file *file)
- 	return err;
+ 		if (IS_T10_PI_CAPABLE(ha) && ql2xenabledif) {
+ 			if (ha->fw_attributes & BIT_4)
+ 				qpair->difdix_supported = 1;
+diff --git a/drivers/scsi/qla2xxx/qla_inline.h b/drivers/scsi/qla2xxx/qla_inline.h
+index cce6e425c1214..7b42558a8839a 100644
+--- a/drivers/scsi/qla2xxx/qla_inline.h
++++ b/drivers/scsi/qla2xxx/qla_inline.h
+@@ -539,11 +539,14 @@ qla_mapq_init_qp_cpu_map(struct qla_hw_data *ha,
+ 	if (!ha->qp_cpu_map)
+ 		return;
+ 	mask = pci_irq_get_affinity(ha->pdev, msix->vector_base0);
++	if (!mask)
++		return;
+ 	qpair->cpuid = cpumask_first(mask);
+ 	for_each_cpu(cpu, mask) {
+ 		ha->qp_cpu_map[cpu] = qpair;
+ 	}
+ 	msix->cpuid = qpair->cpuid;
++	qpair->cpu_mapped = true;
  }
  
--extern void stop_watchdog(int in_fd, int out_fd);
--
- static int harddog_release(struct inode *inode, struct file *file)
- {
- 	/*
-@@ -112,8 +109,6 @@ static int harddog_release(struct inode *inode, struct file *file)
- 	return 0;
- }
+ static inline void
+diff --git a/drivers/scsi/qla2xxx/qla_isr.c b/drivers/scsi/qla2xxx/qla_isr.c
+index 71feda2cdb630..245e3a5d81fd3 100644
+--- a/drivers/scsi/qla2xxx/qla_isr.c
++++ b/drivers/scsi/qla2xxx/qla_isr.c
+@@ -3770,6 +3770,9 @@ void qla24xx_process_response_queue(struct scsi_qla_host *vha,
  
--extern int ping_watchdog(int fd);
--
- static ssize_t harddog_write(struct file *file, const char __user *data, size_t len,
- 			     loff_t *ppos)
- {
-diff --git a/arch/um/drivers/harddog_user.c b/arch/um/drivers/harddog_user.c
-index 070468d22e394..9ed89304975ed 100644
---- a/arch/um/drivers/harddog_user.c
-+++ b/arch/um/drivers/harddog_user.c
-@@ -7,6 +7,7 @@
- #include <unistd.h>
- #include <errno.h>
- #include <os.h>
-+#include "harddog.h"
- 
- struct dog_data {
- 	int stdin_fd;
-diff --git a/arch/um/drivers/harddog_user_exp.c b/arch/um/drivers/harddog_user_exp.c
-new file mode 100644
-index 0000000000000..c74d4b815d143
---- /dev/null
-+++ b/arch/um/drivers/harddog_user_exp.c
-@@ -0,0 +1,9 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <linux/export.h>
-+#include "harddog.h"
+ 	if (rsp->qpair->cpuid != smp_processor_id() || !rsp->qpair->rcv_intr) {
+ 		rsp->qpair->rcv_intr = 1;
 +
-+#if IS_MODULE(CONFIG_UML_WATCHDOG)
-+EXPORT_SYMBOL(start_watchdog);
-+EXPORT_SYMBOL(stop_watchdog);
-+EXPORT_SYMBOL(ping_watchdog);
-+#endif
++		if (!rsp->qpair->cpu_mapped)
++			qla_cpu_update(rsp->qpair, raw_smp_processor_id());
+ 	}
+ 
+ #define __update_rsp_in(_is_shadow_hba, _rsp, _rsp_in)			\
 -- 
 2.39.2
 
