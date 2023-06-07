@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44401726E08
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:47:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C05C726EBC
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:52:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235090AbjFGUry (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:47:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46428 "EHLO
+        id S235220AbjFGUwR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:52:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234734AbjFGUra (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:47:30 -0400
+        with ESMTP id S235144AbjFGUwQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:52:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6E272694
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:47:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FBB9D1
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:52:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C8B2961DC5
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:47:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2959C433D2;
-        Wed,  7 Jun 2023 20:47:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E8E4864767
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:52:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0319CC433D2;
+        Wed,  7 Jun 2023 20:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170821;
-        bh=NWh9iomevTyAz+Wgof1LH6MiHyLp1oRY6rLLI3mDTgA=;
+        s=korg; t=1686171134;
+        bh=ceu71PuV/Z6a1HJQpNtFi4mV1nhVwlkwKSISn98G9i4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eD/7zASH3AiASMFkYPGD5iIQskhy0DYgbZO7Faf/4oPZpToNWL6Fi6CHkY/P+Vk7p
-         K0vfzR67ARKGz3tB1YhYpD8mYdA1tEeBsjg/e82k8RbfkEw0lClsh/gXsdY8fqyhIQ
-         tQQeFm9E9RyQ2WioNI89l55Qlmsz7Ic231IqENDc=
+        b=y7FgXrP4d6Ax6lbbK17dR1LEn7nQMdzlVNuIgT/1g1l/ZVZakS5W70aDCTltTC+Am
+         GafEPsDM8O40qL7ZTF27lhaE3RZi4snd5jFyiIxfr6j+fDnCWlTzb+sDnqhDOIeSg1
+         nq4ZLrf1dySO37z2KdKTP80GifuQPXAIoIQVuhO0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shai Amiram <samiram@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 220/225] tls: rx: strp: dont use GFP_KERNEL in softirq context
-Date:   Wed,  7 Jun 2023 22:16:53 +0200
-Message-ID: <20230607200921.563449284@linuxfoundation.org>
+        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>
+Subject: [PATCH 5.10 098/120] selftests: mptcp: pm nl: skip if MPTCP is not supported
+Date:   Wed,  7 Jun 2023 22:16:54 +0200
+Message-ID: <20230607200903.999175702@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,45 +53,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-commit 74836ec828fe17b63f2006fdbf53311d691396bf upstream.
+commit 0f4955a40dafe18a1122e3714d8173e4b018e869 upstream.
 
-When receive buffer is small, or the TCP rx queue looks too
-complicated to bother using it directly - we allocate a new
-skb and copy data into it.
+Selftests are supposed to run on any kernels, including the old ones not
+supporting MPTCP.
 
-We already use sk->sk_allocation... but nothing actually
-sets it to GFP_ATOMIC on the ->sk_data_ready() path.
+A new check is then added to make sure MPTCP is supported. If not, the
+test stops and is marked as "skipped".
 
-Users of HW offload are far more likely to experience problems
-due to scheduling while atomic. "Copy mode" is very rarely
-triggered with SW crypto.
-
-Fixes: 84c61fe1a75b ("tls: rx: do not use the standard strparser")
-Tested-by: Shai Amiram <samiram@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: eedbc685321b ("selftests: add PM netlink functional tests")
+Cc: stable@vger.kernel.org
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tls/tls_sw.c |    4 ++++
+ tools/testing/selftests/net/mptcp/pm_netlink.sh |    4 ++++
  1 file changed, 4 insertions(+)
 
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -2289,8 +2289,12 @@ static void tls_data_ready(struct sock *
- 	struct tls_context *tls_ctx = tls_get_ctx(sk);
- 	struct tls_sw_context_rx *ctx = tls_sw_ctx_rx(tls_ctx);
- 	struct sk_psock *psock;
-+	gfp_t alloc_save;
+--- a/tools/testing/selftests/net/mptcp/pm_netlink.sh
++++ b/tools/testing/selftests/net/mptcp/pm_netlink.sh
+@@ -1,6 +1,8 @@
+ #!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
  
-+	alloc_save = sk->sk_allocation;
-+	sk->sk_allocation = GFP_ATOMIC;
- 	tls_strp_data_ready(&ctx->strp);
-+	sk->sk_allocation = alloc_save;
++. "$(dirname "${0}")/mptcp_lib.sh"
++
+ ksft_skip=4
+ ret=0
  
- 	psock = sk_psock_get(sk);
- 	if (psock) {
+@@ -34,6 +36,8 @@ cleanup()
+ 	ip netns del $ns1
+ }
+ 
++mptcp_lib_check_mptcp
++
+ ip -Version > /dev/null 2>&1
+ if [ $? -ne 0 ];then
+ 	echo "SKIP: Could not run test without ip tool"
 
 
