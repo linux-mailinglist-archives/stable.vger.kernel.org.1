@@ -2,156 +2,182 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62473726CF4
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:38:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 021B1726BA9
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:27:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234097AbjFGUiG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:38:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37432 "EHLO
+        id S233381AbjFGU1A (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:27:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234041AbjFGUiF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:38:05 -0400
+        with ESMTP id S232960AbjFGU06 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85B272680
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:37:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABDC119BB
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:26:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DECB645B5
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:37:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EE7EC433EF;
-        Wed,  7 Jun 2023 20:37:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8BE9864467
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:25:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99AA3C4339B;
+        Wed,  7 Jun 2023 20:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170268;
-        bh=QJ1v6E+J2n4TiuZWj8TF8X3xrvx/vpaVZthwk8v0VEo=;
+        s=korg; t=1686169525;
+        bh=qtzyEzDQ4ttmkO3L/rqrL/ykfQSxPIOGbQRfRH8HjBM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VwneQpMB4rYqXgnqJ9gBMaE4x6koxDxKlfK7fqW0qjSzhopqP+GjIh4RlDYnhfUrZ
-         ww71nHSf7cuplf0nOkmqhgZ5D3XX6PhmF92RHReLJVXnYpYP7/KiMkiSJw+X/kl2Jr
-         0ABYIoYEdxst0dmyuJp2zfZ5GzN8Ve4HxGIjDoOY=
+        b=Dk2dZfcsWjkGQ1QtBWfsyXz6xRQHSW3T2bbhAtrvKkl/KGrR/d0nAwMxGpNoOoazd
+         lcBhC17uc/EjnhS8Omh/5wVvoyRYZg+8RtFlsp6nn0vr1waqHKnWHlNgTgUfSHk/5a
+         2QECCR5R9dQTfCg4DlQb0qaz/GftWfNncBpMJxTs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dmytro Linkin <dlinkin@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 020/225] net/mlx5e: Dont attach netdev profile while handling internal error
+        patches@lists.linux.dev, Keith Busch <kbusch@kernel.org>,
+        Adrian Huang <ahuang12@lenovo.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Sasha Levin <sashal@kernel.org>, Jiwei Sun <sunjw10@lenovo.com>
+Subject: [PATCH 6.3 114/286] nvme-pci: clamp max_hw_sectors based on DMA optimized limitation
 Date:   Wed,  7 Jun 2023 22:13:33 +0200
-Message-ID: <20230607200914.969019076@linuxfoundation.org>
+Message-ID: <20230607200926.805511051@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,LOTS_OF_MONEY,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmytro Linkin <dlinkin@nvidia.com>
+From: Adrian Huang <ahuang12@lenovo.com>
 
-[ Upstream commit bdf274750fca17b289404ef03453c4070725302c ]
+[ Upstream commit 3710e2b056cb92ad816e4d79fa54a6a5b6ad8cbd ]
 
-As part of switchdev mode disablement, driver changes port netdevice
-profile from uplink to nic. If this process is triggered by health
-recovery flow (PCI reset, for ex.) profile attach would fail because all
-fw commands aborted when internal error flag is set. As a result, nic
-netdevice profile is not attached and driver fails to rollback to uplink
-profile, which leave driver in broken state and cause crash later.
+When running the fio test on a 448-core AMD server + a NVME disk,
+a soft lockup or a hard lockup call trace is shown:
 
-To handle broken state do netdevice profile initialization only instead
-of full attachment and release mdev resources on driver suspend as
-expected. Actual netdevice attachment is done during driver load.
+[soft lockup]
+watchdog: BUG: soft lockup - CPU#126 stuck for 23s! [swapper/126:0]
+RIP: 0010:_raw_spin_unlock_irqrestore+0x21/0x50
+...
+Call Trace:
+ <IRQ>
+ fq_flush_timeout+0x7d/0xd0
+ ? __pfx_fq_flush_timeout+0x10/0x10
+ call_timer_fn+0x2e/0x150
+ run_timer_softirq+0x48a/0x560
+ ? __pfx_fq_flush_timeout+0x10/0x10
+ ? clockevents_program_event+0xaf/0x130
+ __do_softirq+0xf1/0x335
+ irq_exit_rcu+0x9f/0xd0
+ sysvec_apic_timer_interrupt+0xb4/0xd0
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1f/0x30
+...
 
-Fixes: c4d7eb57687f ("net/mxl5e: Add change profile method")
-Signed-off-by: Dmytro Linkin <dlinkin@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Obvisouly, fq_flush_timeout spends over 20 seconds. Here is ftrace log:
+
+               |  fq_flush_timeout() {
+               |    fq_ring_free() {
+               |      put_pages_list() {
+   0.170 us    |        free_unref_page_list();
+   0.810 us    |      }
+               |      free_iova_fast() {
+               |        free_iova() {
+ * 85622.66 us |          _raw_spin_lock_irqsave();
+   2.860 us    |          remove_iova();
+   0.600 us    |          _raw_spin_unlock_irqrestore();
+   0.470 us    |          lock_info_report();
+   2.420 us    |          free_iova_mem.part.0();
+ * 85638.27 us |        }
+ * 85638.84 us |      }
+               |      put_pages_list() {
+   0.230 us    |        free_unref_page_list();
+   0.470 us    |      }
+   ...            ...
+ $ 31017069 us |  }
+
+Most of cores are under lock contention for acquiring iova_rbtree_lock due
+to the iova flush queue mechanism.
+
+[hard lockup]
+NMI watchdog: Watchdog detected hard LOCKUP on cpu 351
+RIP: 0010:native_queued_spin_lock_slowpath+0x2d8/0x330
+
+Call Trace:
+ <IRQ>
+ _raw_spin_lock_irqsave+0x4f/0x60
+ free_iova+0x27/0xd0
+ free_iova_fast+0x4d/0x1d0
+ fq_ring_free+0x9b/0x150
+ iommu_dma_free_iova+0xb4/0x2e0
+ __iommu_dma_unmap+0x10b/0x140
+ iommu_dma_unmap_sg+0x90/0x110
+ dma_unmap_sg_attrs+0x4a/0x50
+ nvme_unmap_data+0x5d/0x120 [nvme]
+ nvme_pci_complete_batch+0x77/0xc0 [nvme]
+ nvme_irq+0x2ee/0x350 [nvme]
+ ? __pfx_nvme_pci_complete_batch+0x10/0x10 [nvme]
+ __handle_irq_event_percpu+0x53/0x1a0
+ handle_irq_event_percpu+0x19/0x60
+ handle_irq_event+0x3d/0x60
+ handle_edge_irq+0xb3/0x210
+ __common_interrupt+0x7f/0x150
+ common_interrupt+0xc5/0xf0
+ </IRQ>
+ <TASK>
+ asm_common_interrupt+0x2b/0x40
+...
+
+ftrace shows fq_ring_free spends over 10 seconds [1]. Again, most of
+cores are under lock contention for acquiring iova_rbtree_lock due
+to the iova flush queue mechanism.
+
+[Root Cause]
+The root cause is that the max_hw_sectors_kb of nvme disk (mdts=10)
+is 4096kb, which streaming DMA mappings cannot benefit from the
+scalable IOVA mechanism introduced by the commit 9257b4a206fc
+("iommu/iova: introduce per-cpu caching to iova allocation") if
+the length is greater than 128kb.
+
+To fix the lock contention issue, clamp max_hw_sectors based on
+DMA optimized limitation in order to leverage scalable IOVA mechanism.
+
+Note: The issue does not happen with another NVME disk (mdts = 5
+and max_hw_sectors_kb = 128)
+
+[1] https://gist.github.com/AdrianHuang/bf8ec7338204837631fbdaed25d19cc4
+
+Suggested-by: Keith Busch <kbusch@kernel.org>
+Reported-and-tested-by: Jiwei Sun <sunjw10@lenovo.com>
+Signed-off-by: Adrian Huang <ahuang12@lenovo.com>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_main.c | 35 ++++++++++++++++---
- 1 file changed, 31 insertions(+), 4 deletions(-)
+ drivers/nvme/host/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 94d010e2d5efd..4e7daa382bc05 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -5745,8 +5745,8 @@ void mlx5e_detach_netdev(struct mlx5e_priv *priv)
- }
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index a7772c0194d5a..a389f1ea0b151 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2960,7 +2960,7 @@ static struct nvme_dev *nvme_pci_alloc_dev(struct pci_dev *pdev,
+ 	 * over a single page.
+ 	 */
+ 	dev->ctrl.max_hw_sectors = min_t(u32,
+-		NVME_MAX_KB_SZ << 1, dma_max_mapping_size(&pdev->dev) >> 9);
++		NVME_MAX_KB_SZ << 1, dma_opt_mapping_size(&pdev->dev) >> 9);
+ 	dev->ctrl.max_segments = NVME_MAX_SEGS;
  
- static int
--mlx5e_netdev_attach_profile(struct net_device *netdev, struct mlx5_core_dev *mdev,
--			    const struct mlx5e_profile *new_profile, void *new_ppriv)
-+mlx5e_netdev_init_profile(struct net_device *netdev, struct mlx5_core_dev *mdev,
-+			  const struct mlx5e_profile *new_profile, void *new_ppriv)
- {
- 	struct mlx5e_priv *priv = netdev_priv(netdev);
- 	int err;
-@@ -5762,6 +5762,25 @@ mlx5e_netdev_attach_profile(struct net_device *netdev, struct mlx5_core_dev *mde
- 	err = new_profile->init(priv->mdev, priv->netdev);
- 	if (err)
- 		goto priv_cleanup;
-+
-+	return 0;
-+
-+priv_cleanup:
-+	mlx5e_priv_cleanup(priv);
-+	return err;
-+}
-+
-+static int
-+mlx5e_netdev_attach_profile(struct net_device *netdev, struct mlx5_core_dev *mdev,
-+			    const struct mlx5e_profile *new_profile, void *new_ppriv)
-+{
-+	struct mlx5e_priv *priv = netdev_priv(netdev);
-+	int err;
-+
-+	err = mlx5e_netdev_init_profile(netdev, mdev, new_profile, new_ppriv);
-+	if (err)
-+		return err;
-+
- 	err = mlx5e_attach_netdev(priv);
- 	if (err)
- 		goto profile_cleanup;
-@@ -5769,7 +5788,6 @@ mlx5e_netdev_attach_profile(struct net_device *netdev, struct mlx5_core_dev *mde
- 
- profile_cleanup:
- 	new_profile->cleanup(priv);
--priv_cleanup:
- 	mlx5e_priv_cleanup(priv);
- 	return err;
- }
-@@ -5788,6 +5806,12 @@ int mlx5e_netdev_change_profile(struct mlx5e_priv *priv,
- 	priv->profile->cleanup(priv);
- 	mlx5e_priv_cleanup(priv);
- 
-+	if (mdev->state == MLX5_DEVICE_STATE_INTERNAL_ERROR) {
-+		mlx5e_netdev_init_profile(netdev, mdev, new_profile, new_ppriv);
-+		set_bit(MLX5E_STATE_DESTROYING, &priv->state);
-+		return -EIO;
-+	}
-+
- 	err = mlx5e_netdev_attach_profile(netdev, mdev, new_profile, new_ppriv);
- 	if (err) { /* roll back to original profile */
- 		netdev_warn(netdev, "%s: new profile init failed, %d\n", __func__, err);
-@@ -5847,8 +5871,11 @@ static int mlx5e_suspend(struct auxiliary_device *adev, pm_message_t state)
- 	struct net_device *netdev = priv->netdev;
- 	struct mlx5_core_dev *mdev = priv->mdev;
- 
--	if (!netif_device_present(netdev))
-+	if (!netif_device_present(netdev)) {
-+		if (test_bit(MLX5E_STATE_DESTROYING, &priv->state))
-+			mlx5e_destroy_mdev_resources(mdev);
- 		return -ENODEV;
-+	}
- 
- 	mlx5e_detach_netdev(priv);
- 	mlx5e_destroy_mdev_resources(mdev);
+ 	/*
 -- 
 2.39.2
 
