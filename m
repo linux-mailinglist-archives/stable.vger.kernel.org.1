@@ -2,89 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43FA272671B
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 19:21:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82734726726
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 19:23:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230387AbjFGRVg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 13:21:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55076 "EHLO
+        id S231659AbjFGRX2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 13:23:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231626AbjFGRVe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 13:21:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4B6B1BDC;
-        Wed,  7 Jun 2023 10:21:33 -0700 (PDT)
+        with ESMTP id S230057AbjFGRXX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 13:23:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 756A71BF3;
+        Wed,  7 Jun 2023 10:23:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 55467641D4;
-        Wed,  7 Jun 2023 17:21:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80775C433EF;
-        Wed,  7 Jun 2023 17:21:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 126D363BCC;
+        Wed,  7 Jun 2023 17:23:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 604D4C433EF;
+        Wed,  7 Jun 2023 17:23:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1686158492;
-        bh=U9W9skjifzMR1SASCsAyZOl2XG5xWIPHKBISwhY3XZk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=bNOvKpTcSlqDpTfs2mNjtbtHZJ5D0sLzsyZjtfcmcHAQCGIBI3DYGduDABBr0Tugi
-         XjKxovKnEZw3i6Vo16YibT3AXvFpEi8zCDC3FngYDOTLNqYVECsiMPUKBVvdWic0Jr
-         nUUAqsHCJ01UBv+CZsNipshRvjsJJVB/4m2RgNVU=
-Date:   Wed, 7 Jun 2023 10:21:31 -0700
+        s=korg; t=1686158601;
+        bh=1m0Tk+ctM0cE1KOrvLtrPd6EwtDWeQa+7BFaRexity0=;
+        h=Date:To:From:Subject:From;
+        b=ww465uNtw9I8tTLBJ/9YenVuX5bJHp+pFrVU9a+NgbclD6QmeMDeOE4I+9dnqbRwt
+         fKytA3cB4RM6gUcdLPLfhCfVJ+LP9KnnuSqPBybsh4Cu4wwk/lMv5ehPQce2CsayGZ
+         dhwXvVDSHJh3PJamS1yDdItm+L8Pe9vTe6zBScP4=
+Date:   Wed, 07 Jun 2023 10:23:20 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        mike.kravetz@oracle.com, marcandre.lureau@redhat.com,
+        roberto.sassu@huawei.com, akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Roberto Sassu <roberto.sassu@huaweicloud.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        stable@vger.kernel.org,
-        =?ISO-8859-1?Q?Marc-Andr=E9?= Lureau 
-        <marcandre.lureau@redhat.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>
-Subject: Re: [PATCH] memfd: Check for non-NULL file_seals in memfd_create()
- syscall
-Message-Id: <20230607102131.11964c87b1078374c9d4b341@linux-foundation.org>
-In-Reply-To: <20230607132427.2867435-1-roberto.sassu@huaweicloud.com>
-References: <20230607132427.2867435-1-roberto.sassu@huaweicloud.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Subject: + memfd-check-for-non-null-file_seals-in-memfd_create-syscall.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230607172321.604D4C433EF@smtp.kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed,  7 Jun 2023 15:24:27 +0200 Roberto Sassu <roberto.sassu@huaweicloud.com> wrote:
 
-> From: Roberto Sassu <roberto.sassu@huawei.com>
-> 
-> Ensure that file_seals is non-NULL before using it in the memfd_create()
-> syscall. One situation in which memfd_file_seals_ptr() could return a NULL
-> pointer is when CONFIG_SHMEM=n.
+The patch titled
+     Subject: memfd: check for non-NULL file_seals in memfd_create() syscall
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     memfd-check-for-non-null-file_seals-in-memfd_create-syscall.patch
 
-Thanks.  Has thie crash actually been demonstrated?
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/memfd-check-for-non-null-file_seals-in-memfd_create-syscall.patch
 
-> --- a/mm/memfd.c
-> +++ b/mm/memfd.c
-> @@ -371,12 +371,15 @@ SYSCALL_DEFINE2(memfd_create,
->  
->  		inode->i_mode &= ~0111;
->  		file_seals = memfd_file_seals_ptr(file);
-> -		*file_seals &= ~F_SEAL_SEAL;
-> -		*file_seals |= F_SEAL_EXEC;
-> +		if (file_seals) {
-> +			*file_seals &= ~F_SEAL_SEAL;
-> +			*file_seals |= F_SEAL_EXEC;
-> +		}
->  	} else if (flags & MFD_ALLOW_SEALING) {
->  		/* MFD_EXEC and MFD_ALLOW_SEALING are set */
->  		file_seals = memfd_file_seals_ptr(file);
-> -		*file_seals &= ~F_SEAL_SEAL;
-> +		if (file_seals)
-> +			*file_seals &= ~F_SEAL_SEAL;
->  	}
->  
->  	fd_install(fd, file);
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Roberto Sassu <roberto.sassu@huawei.com>
+Subject: memfd: check for non-NULL file_seals in memfd_create() syscall
+Date: Wed, 7 Jun 2023 15:24:27 +0200
+
+Ensure that file_seals is non-NULL before using it in the memfd_create()
+syscall.  One situation in which memfd_file_seals_ptr() could return a
+NULL pointer is when CONFIG_SHMEM=n.
+
+Link: https://lkml.kernel.org/r/20230607132427.2867435-1-roberto.sassu@huaweicloud.com
+Fixes: 47b9012ecdc7 ("shmem: add sealing support to hugetlb-backed memfd")
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Cc: Marc-Andr Lureau <marcandre.lureau@redhat.com>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/memfd.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+--- a/mm/memfd.c~memfd-check-for-non-null-file_seals-in-memfd_create-syscall
++++ a/mm/memfd.c
+@@ -371,12 +371,15 @@ SYSCALL_DEFINE2(memfd_create,
+ 
+ 		inode->i_mode &= ~0111;
+ 		file_seals = memfd_file_seals_ptr(file);
+-		*file_seals &= ~F_SEAL_SEAL;
+-		*file_seals |= F_SEAL_EXEC;
++		if (file_seals) {
++			*file_seals &= ~F_SEAL_SEAL;
++			*file_seals |= F_SEAL_EXEC;
++		}
+ 	} else if (flags & MFD_ALLOW_SEALING) {
+ 		/* MFD_EXEC and MFD_ALLOW_SEALING are set */
+ 		file_seals = memfd_file_seals_ptr(file);
+-		*file_seals &= ~F_SEAL_SEAL;
++		if (file_seals)
++			*file_seals &= ~F_SEAL_SEAL;
+ 	}
+ 
+ 	fd_install(fd, file);
+_
+
+Patches currently in -mm which might be from roberto.sassu@huawei.com are
+
+memfd-check-for-non-null-file_seals-in-memfd_create-syscall.patch
 
