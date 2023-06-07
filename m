@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26A24726D88
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:43:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE647726F57
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:57:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234524AbjFGUnQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:43:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42624 "EHLO
+        id S235614AbjFGU5h (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:57:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234440AbjFGUnJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:43:09 -0400
+        with ESMTP id S235571AbjFGU5g (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:57:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5052B2733
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:42:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE0361BF0
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:57:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B2E76462E
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:42:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D97AC433EF;
-        Wed,  7 Jun 2023 20:42:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B0FE64873
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:57:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F368C433EF;
+        Wed,  7 Jun 2023 20:57:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170563;
-        bh=P12QkZF3C6C16RHWjPfDDVPk4kIX+N03V18889yx9TE=;
+        s=korg; t=1686171450;
+        bh=szlVYix1N6/BxvW8L6ngB0ilvdQCBlX1BXl+fRtmKSE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jLjk8QxUHE4bZcC5T52plUIMHea/aIzhu2z1ZlDFpOFjBd2O6czqWjDFZt4o0cMXl
-         nO09yZycsi8pZDleLMT7oYXtTCIbrMuODAzcb3Kgvx/Mo5MLOBh74ZBihTV3KxeZtq
-         KuaT9EeoZ+0g4W8y/Tiusjw8Fw5eodq9+RezMUHo=
+        b=L+AaAAV5Dr4CvAtjSIiK5V/j/h1pB58mCoXjH46IZV4tjRvawbyexqTJkgzGYx2jL
+         XBetfWujE/V0Vd+eInVtrEKam+BOp5mzAyIJCIPCmCtyLwhWn8g3hKo9q2yY1UflLI
+         1EzNdAW2YvOVRAup9zOvsAMwzXhCtIqI71W5XGto=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Loic Poulain <loic.poulain@linaro.org>,
-        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Jiri Pirko <jiri@nvidia.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 133/225] block: Deny writable memory mapping if block is read-only
+Subject: [PATCH 5.15 023/159] af_packet: do not use READ_ONCE() in packet_bind()
 Date:   Wed,  7 Jun 2023 22:15:26 +0200
-Message-ID: <20230607200918.720994292@linuxfoundation.org>
+Message-ID: <20230607200904.430320593@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,66 +57,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Loic Poulain <loic.poulain@linaro.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 69baa3a623fd2e58624f24f2f23d46f87b817c93 ]
+[ Upstream commit 6ffc57ea004234d9373c57b204fd10370a69f392 ]
 
-User should not be able to write block device if it is read-only at
-block level (e.g force_ro attribute). This is ensured in the regular
-fops write operation (blkdev_write_iter) but not when writing via
-user mapping (mmap), allowing user to actually write a read-only
-block device via a PROT_WRITE mapping.
+A recent patch added READ_ONCE() in packet_bind() and packet_bind_spkt()
 
-Example: This can lead to integrity issue of eMMC boot partition
-(e.g mmcblk0boot0) which is read-only by default.
+This is better handled by reading pkt_sk(sk)->num later
+in packet_do_bind() while appropriate lock is held.
 
-To fix this issue, simply deny shared writable mapping if the block
-is readonly.
+READ_ONCE() in writers are often an evidence of something being wrong.
 
-Note: Block remains writable if switch to read-only is performed
-after the initial mapping, but this is expected behavior according
-to commit a32e236eb93e ("Partially revert "block: fail op_is_write()
-requests to read-only partitions"")'.
-
-Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230510074223.991297-1-loic.poulain@linaro.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 822b5a1c17df ("af_packet: Fix data-races of pkt_sk(sk)->num.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230526154342.2533026-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/fops.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ net/packet/af_packet.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/block/fops.c b/block/fops.c
-index e406aa605327e..6197d1c41652d 100644
---- a/block/fops.c
-+++ b/block/fops.c
-@@ -685,6 +685,16 @@ static long blkdev_fallocate(struct file *file, int mode, loff_t start,
- 	return error;
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 05a0b1d8c3721..ccf84ce41fd71 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -3159,6 +3159,9 @@ static int packet_do_bind(struct sock *sk, const char *name, int ifindex,
+ 
+ 	lock_sock(sk);
+ 	spin_lock(&po->bind_lock);
++	if (!proto)
++		proto = po->num;
++
+ 	rcu_read_lock();
+ 
+ 	if (po->fanout) {
+@@ -3259,7 +3262,7 @@ static int packet_bind_spkt(struct socket *sock, struct sockaddr *uaddr,
+ 	memcpy(name, uaddr->sa_data, sizeof(uaddr->sa_data));
+ 	name[sizeof(uaddr->sa_data)] = 0;
+ 
+-	return packet_do_bind(sk, name, 0, READ_ONCE(pkt_sk(sk)->num));
++	return packet_do_bind(sk, name, 0, 0);
  }
  
-+static int blkdev_mmap(struct file *file, struct vm_area_struct *vma)
-+{
-+	struct inode *bd_inode = bdev_file_inode(file);
-+
-+	if (bdev_read_only(I_BDEV(bd_inode)))
-+		return generic_file_readonly_mmap(file, vma);
-+
-+	return generic_file_mmap(file, vma);
-+}
-+
- const struct file_operations def_blk_fops = {
- 	.open		= blkdev_open,
- 	.release	= blkdev_close,
-@@ -692,7 +702,7 @@ const struct file_operations def_blk_fops = {
- 	.read_iter	= blkdev_read_iter,
- 	.write_iter	= blkdev_write_iter,
- 	.iopoll		= iocb_bio_iopoll,
--	.mmap		= generic_file_mmap,
-+	.mmap		= blkdev_mmap,
- 	.fsync		= blkdev_fsync,
- 	.unlocked_ioctl	= blkdev_ioctl,
- #ifdef CONFIG_COMPAT
+ static int packet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
+@@ -3276,8 +3279,7 @@ static int packet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len
+ 	if (sll->sll_family != AF_PACKET)
+ 		return -EINVAL;
+ 
+-	return packet_do_bind(sk, NULL, sll->sll_ifindex,
+-			      sll->sll_protocol ? : READ_ONCE(pkt_sk(sk)->num));
++	return packet_do_bind(sk, NULL, sll->sll_ifindex, sll->sll_protocol);
+ }
+ 
+ static struct proto packet_proto = {
 -- 
 2.39.2
 
