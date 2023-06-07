@@ -2,42 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE2BD726F8A
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:59:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B08A726DB7
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:45:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235723AbjFGU7k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:59:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32770 "EHLO
+        id S234705AbjFGUos (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:44:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235725AbjFGU7h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:59:37 -0400
+        with ESMTP id S234706AbjFGUoo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F73A2685
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:59:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20F9626BF
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:44:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E0F81648CE
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:59:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3AA3C433EF;
-        Wed,  7 Jun 2023 20:59:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3BD896464F
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:44:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 505C3C433EF;
+        Wed,  7 Jun 2023 20:44:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171550;
-        bh=VAAY/+MJFj1XrcKHKiMSRG7NQwjKRBVFLOzOLTJ3UcE=;
+        s=korg; t=1686170666;
+        bh=5DwqsY8jX3cH76DHY0a72VrqD2LzZ4K6+l06hTIRTzs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1LfO6m3TUN9Js85/5OB8/OkSisTPVpMUBcCJePlBxELrWoORQQhKKA91a7CjN9fGf
-         AsiCt5MfNtU7AVRBToRxab7OK35sWrLQHWTd80tb72Lkt5D0FkzspAOGDIsW6yLnQo
-         AYWjblPIRx8fqteUiqly+IGvR955K7Nigu09Mu7k=
+        b=av6N8iPZcFdDNWZ2HaG/Ai/I9uRps9xElKfvhI9/1NOWobaxcmhBQM92DaSmi5Pmn
+         RUdiD9XPICbKrz2N9SJnN0WjZo3sAZkM5yxIO5e6lCkokxgW4esWHnk6K+iikSDTJ9
+         W8MVEfUMCwO02ucQmtJfzCuXfncZAuzFmsthUk6A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 061/159] ASoC: dt-bindings: Adjust #sound-dai-cells on TIs single-DAI codecs
+        patches@lists.linux.dev, Christian Kujau <lists@nerdbynature.de>,
+        Juergen Gross <jgross@suse.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Jason Andryuk <jandryuk@gmail.com>
+Subject: [PATCH 6.1 171/225] x86/mtrr: Revert 90b926e68f50 ("x86/pat: Fix pat_x_mtrr_type() for MTRR disabled case")
 Date:   Wed,  7 Jun 2023 22:16:04 +0200
-Message-ID: <20230607200905.684358218@linuxfoundation.org>
+Message-ID: <20230607200919.984425789@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,98 +55,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin Povišer <povik+lin@cutebit.org>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit efb2bfd7b3d210c479b9361c176d7426e5eb8663 ]
+commit f9f57da2c2d119dbf109e3f6e1ceab7659294046 upstream.
 
-A bunch of TI's codecs have binding schemas which force #sound-dai-cells
-to one despite those codecs only having a single DAI. Allow for bindings
-with zero DAI cells and deprecate the former non-zero value.
+Commit
 
-Signed-off-by: Martin Povišer <povik+lin@cutebit.org
-Link: https://lore.kernel.org/r/20230509153412.62847-1-povik+lin@cutebit.org
-Signed-off-by: Mark Brown <broonie@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  90b926e68f50 ("x86/pat: Fix pat_x_mtrr_type() for MTRR disabled case")
+
+broke the use case of running Xen dom0 kernels on machines with an
+external disk enclosure attached via USB, see Link tag.
+
+What this commit was originally fixing - SEV-SNP guests on Hyper-V - is
+a more specialized situation which has other issues at the moment anyway
+so reverting this now and addressing the issue properly later is the
+prudent thing to do.
+
+So revert it in time for the 6.2 proper release.
+
+  [ bp: Rewrite commit message. ]
+
+Reported-by: Christian Kujau <lists@nerdbynature.de>
+Tested-by: Christian Kujau <lists@nerdbynature.de>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/4fe9541e-4d4c-2b2a-f8c8-2d34a7284930@nerdbynature.de
+Cc: Jason Andryuk <jandryuk@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/sound/tas2562.yaml | 6 ++++--
- Documentation/devicetree/bindings/sound/tas2764.yaml | 6 ++++--
- Documentation/devicetree/bindings/sound/tas2770.yaml | 6 ++++--
- 3 files changed, 12 insertions(+), 6 deletions(-)
+ arch/x86/mm/pat/memtype.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/sound/tas2562.yaml b/Documentation/devicetree/bindings/sound/tas2562.yaml
-index acd4bbe697315..4adaf92233c8e 100644
---- a/Documentation/devicetree/bindings/sound/tas2562.yaml
-+++ b/Documentation/devicetree/bindings/sound/tas2562.yaml
-@@ -52,7 +52,9 @@ properties:
-     description: TDM TX current sense time slot.
+--- a/arch/x86/mm/pat/memtype.c
++++ b/arch/x86/mm/pat/memtype.c
+@@ -434,8 +434,7 @@ static unsigned long pat_x_mtrr_type(u64
+ 		u8 mtrr_type, uniform;
  
-   '#sound-dai-cells':
--    const: 1
-+    # The codec has a single DAI, the #sound-dai-cells=<1>; case is left in for backward
-+    # compatibility but is deprecated.
-+    enum: [0, 1]
+ 		mtrr_type = mtrr_type_lookup(start, end, &uniform);
+-		if (mtrr_type != MTRR_TYPE_WRBACK &&
+-		    mtrr_type != MTRR_TYPE_INVALID)
++		if (mtrr_type != MTRR_TYPE_WRBACK)
+ 			return _PAGE_CACHE_MODE_UC_MINUS;
  
- required:
-   - compatible
-@@ -69,7 +71,7 @@ examples:
-      codec: codec@4c {
-        compatible = "ti,tas2562";
-        reg = <0x4c>;
--       #sound-dai-cells = <1>;
-+       #sound-dai-cells = <0>;
-        interrupt-parent = <&gpio1>;
-        interrupts = <14>;
-        shutdown-gpios = <&gpio1 15 0>;
-diff --git a/Documentation/devicetree/bindings/sound/tas2764.yaml b/Documentation/devicetree/bindings/sound/tas2764.yaml
-index 5bf8c76ecda11..1ffe1a01668fe 100644
---- a/Documentation/devicetree/bindings/sound/tas2764.yaml
-+++ b/Documentation/devicetree/bindings/sound/tas2764.yaml
-@@ -46,7 +46,9 @@ properties:
-     description: TDM TX voltage sense time slot.
- 
-   '#sound-dai-cells':
--    const: 1
-+    # The codec has a single DAI, the #sound-dai-cells=<1>; case is left in for backward
-+    # compatibility but is deprecated.
-+    enum: [0, 1]
- 
- required:
-   - compatible
-@@ -63,7 +65,7 @@ examples:
-      codec: codec@38 {
-        compatible = "ti,tas2764";
-        reg = <0x38>;
--       #sound-dai-cells = <1>;
-+       #sound-dai-cells = <0>;
-        interrupt-parent = <&gpio1>;
-        interrupts = <14>;
-        reset-gpios = <&gpio1 15 0>;
-diff --git a/Documentation/devicetree/bindings/sound/tas2770.yaml b/Documentation/devicetree/bindings/sound/tas2770.yaml
-index 027bebf4e8cf5..aceba9ed813ef 100644
---- a/Documentation/devicetree/bindings/sound/tas2770.yaml
-+++ b/Documentation/devicetree/bindings/sound/tas2770.yaml
-@@ -54,7 +54,9 @@ properties:
-       - 1 # Falling edge
- 
-   '#sound-dai-cells':
--    const: 1
-+    # The codec has a single DAI, the #sound-dai-cells=<1>; case is left in for backward
-+    # compatibility but is deprecated.
-+    enum: [0, 1]
- 
- required:
-   - compatible
-@@ -71,7 +73,7 @@ examples:
-      codec: codec@41 {
-        compatible = "ti,tas2770";
-        reg = <0x41>;
--       #sound-dai-cells = <1>;
-+       #sound-dai-cells = <0>;
-        interrupt-parent = <&gpio1>;
-        interrupts = <14>;
-        reset-gpio = <&gpio1 15 0>;
--- 
-2.39.2
-
+ 		return _PAGE_CACHE_MODE_WB;
 
 
