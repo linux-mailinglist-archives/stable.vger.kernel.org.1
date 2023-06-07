@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E437726E12
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:48:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFE1C726D8C
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:43:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235074AbjFGUsH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:48:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48564 "EHLO
+        id S234606AbjFGUn1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:43:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235079AbjFGUru (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:47:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAB7B26B2
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:47:27 -0700 (PDT)
+        with ESMTP id S234645AbjFGUnU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:43:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43B3D1BE4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:42:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CD28A646A3
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:47:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C1EC433EF;
-        Wed,  7 Jun 2023 20:47:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 215EA60FFF
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:42:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3484DC433D2;
+        Wed,  7 Jun 2023 20:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170845;
-        bh=wXSSdQyJmNc1+zAqIpCgTXO4z+1cRBkB4VzOjiIEOew=;
+        s=korg; t=1686170576;
+        bh=0v8Pmqr/5nGSIfTDDZwsBt1fsBtIeH8OhGXUdpTmTds=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wdGGnZ5YpwI8JpYEQ8kJYtPLkOPLeG5KfMGt771ZGMDtxf6ZC9umiiNN6Dm/o0E5I
-         /TCymVfzDkD8gvaGkP/7Mn6nRWxuYUL8v1e2QYUnkrrgcfJYZmCrz9AGN1vy6eMskb
-         xmpiNWCrxqFR86IzHQptvJXxnmNYoCuPj3rFctfw=
+        b=BdkfkZpIVRhMciJdJ43J3ElQszevvYxuCfgIup7G8sWG5lT2nLMRwkHguaNeo9J6a
+         H9FBmAQVTbmgFwRNVJOL4Sge/e4xoaXsKVYo0StQDEyArUIRcLHChoLNl0F1+VUlGp
+         +w7m1MPL2YvLvg4JV7J2KCMDkXMGzCTFBRlL1bEE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Simon Kapadia <szymon@kapadia.pl>,
-        Eric Dumazet <edumazet@google.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Pin-yen Lin <treapking@chromium.org>,
+        Chen-Yu Tsai <wenst@chromium.org>,
+        Yunfei Dong <yunfei.dong@mediatek.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 014/120] netrom: fix info-leak in nr_write_internal()
+Subject: [PATCH 6.1 137/225] media: mediatek: vcodec: Only apply 4K frame sizes on decoder formats
 Date:   Wed,  7 Jun 2023 22:15:30 +0200
-Message-ID: <20230607200901.365256272@linuxfoundation.org>
+Message-ID: <20230607200918.855577461@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,83 +57,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Pin-yen Lin <treapking@chromium.org>
 
-[ Upstream commit 31642e7089df8fd3f54ca7843f7ee2952978cad1 ]
+[ Upstream commit ed17f89e9502f03af493e130620a9bb74c07cf28 ]
 
-Simon Kapadia reported the following issue:
+When VCODEC_CAPABILITY_4K_DISABLED is not set in dec_capability, skip
+formats that are not MTK_FMT_DEC so only decoder formats is updated in
+mtk_init_vdec_params.
 
-<quote>
-
-The Online Amateur Radio Community (OARC) has recently been experimenting
-with building a nationwide packet network in the UK.
-As part of our experimentation, we have been testing out packet on 300bps HF,
-and playing with net/rom.  For HF packet at this baud rate you really need
-to make sure that your MTU is relatively low; AX.25 suggests a PACLEN of 60,
-and a net/rom PACLEN of 40 to go with that.
-However the Linux net/rom support didn't work with a low PACLEN;
-the mkiss module would truncate packets if you set the PACLEN below about 200 or so, e.g.:
-
-Apr 19 14:00:51 radio kernel: [12985.747310] mkiss: ax1: truncating oversized transmit packet!
-
-This didn't make any sense to me (if the packets are smaller why would they
-be truncated?) so I started investigating.
-I looked at the packets using ethereal, and found that many were just huge
-compared to what I would expect.
-A simple net/rom connection request packet had the request and then a bunch
-of what appeared to be random data following it:
-
-</quote>
-
-Simon provided a patch that I slightly revised:
-Not only we must not use skb_tailroom(), we also do
-not want to count NR_NETWORK_LEN twice.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Co-Developed-by: Simon Kapadia <szymon@kapadia.pl>
-Signed-off-by: Simon Kapadia <szymon@kapadia.pl>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Tested-by: Simon Kapadia <szymon@kapadia.pl>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230524141456.1045467-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e25528e1dbe5 ("media: mediatek: vcodec: Use 4K frame size when supported by stateful decoder")
+Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Yunfei Dong <yunfei.dong@mediatek.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netrom/nr_subr.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ .../media/platform/mediatek/vcodec/mtk_vcodec_dec_stateful.c   | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/netrom/nr_subr.c b/net/netrom/nr_subr.c
-index 3f99b432ea707..e2d2af924cff4 100644
---- a/net/netrom/nr_subr.c
-+++ b/net/netrom/nr_subr.c
-@@ -123,7 +123,7 @@ void nr_write_internal(struct sock *sk, int frametype)
- 	unsigned char  *dptr;
- 	int len, timeout;
+diff --git a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateful.c b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateful.c
+index 29991551cf614..0fbd030026c72 100644
+--- a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateful.c
++++ b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateful.c
+@@ -584,6 +584,9 @@ static void mtk_init_vdec_params(struct mtk_vcodec_ctx *ctx)
  
--	len = NR_NETWORK_LEN + NR_TRANSPORT_LEN;
-+	len = NR_TRANSPORT_LEN;
- 
- 	switch (frametype & 0x0F) {
- 	case NR_CONNREQ:
-@@ -141,7 +141,8 @@ void nr_write_internal(struct sock *sk, int frametype)
- 		return;
- 	}
- 
--	if ((skb = alloc_skb(len, GFP_ATOMIC)) == NULL)
-+	skb = alloc_skb(NR_NETWORK_LEN + len, GFP_ATOMIC);
-+	if (!skb)
- 		return;
- 
- 	/*
-@@ -149,7 +150,7 @@ void nr_write_internal(struct sock *sk, int frametype)
- 	 */
- 	skb_reserve(skb, NR_NETWORK_LEN);
- 
--	dptr = skb_put(skb, skb_tailroom(skb));
-+	dptr = skb_put(skb, len);
- 
- 	switch (frametype & 0x0F) {
- 	case NR_CONNREQ:
+ 	if (!(ctx->dev->dec_capability & VCODEC_CAPABILITY_4K_DISABLED)) {
+ 		for (i = 0; i < num_supported_formats; i++) {
++			if (mtk_video_formats[i].type != MTK_FMT_DEC)
++				continue;
++
+ 			mtk_video_formats[i].frmsize.max_width =
+ 				VCODEC_DEC_4K_CODED_WIDTH;
+ 			mtk_video_formats[i].frmsize.max_height =
 -- 
 2.39.2
 
