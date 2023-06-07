@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78E12726E75
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 670FB726EF1
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:54:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234995AbjFGUup (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:50:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49030 "EHLO
+        id S235510AbjFGUyW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:54:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235609AbjFGUuM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:50:12 -0400
+        with ESMTP id S235476AbjFGUyD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDB372121
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:50:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D00826AF
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:53:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E191646CA
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:50:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E47C433EF;
-        Wed,  7 Jun 2023 20:49:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D2C864780
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:53:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E11C433EF;
+        Wed,  7 Jun 2023 20:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171000;
-        bh=xjSFqEXFNEEJVpr54YlItuR7Mfdx6sYSsTzNIpCfwQY=;
+        s=korg; t=1686171227;
+        bh=uBKma2Aqhkrx3VqK+20ig6xk1tNDVIK+ji+ozjbFkRw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1nhZLqAodWXO/O8JGz0T7M7bZWmT3VM9TRT57pc5FWQpC8Et2KDXRqOy9oh8Vsgtu
-         gKOAKGEgQ/g3je8UuM1Uc1LgHbGPI1jJwpe9CKw/dyAUNNayMcIN45ZgxzENnMPviv
-         76Zmljyllw9OJMvBVb4ujD7uaPPna1A+QjblWZqM=
+        b=WeupwqODbMbd7DIgfyp5cUS73CAQdiqZuAIPoLiP2NCvLf1bdeObAdn4yNrcilpPW
+         tGAHDg1lso5uAtuz+pdkTxPjCGl4auMjbd5uUlip7MGxdY3Gq52UVWgaevX/XBh6w2
+         Uu0wphera52bHDT1+Cv93sU7mMxWmxVCfIglk0mk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiakai Luo <jkluo@hust.edu.cn>,
-        Dongliang Mu <dzm91@hust.edu.cn>, Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 073/120] iio: adc: mxs-lradc: fix the order of two cleanup operations
+        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 37/99] ASoC: ssm2602: Add workaround for playback distortions
 Date:   Wed,  7 Jun 2023 22:16:29 +0200
-Message-ID: <20230607200903.179623254@linuxfoundation.org>
+Message-ID: <20230607200901.415265504@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,83 +52,137 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiakai Luo <jkluo@hust.edu.cn>
+From: Paweł Anikiel <pan@semihalf.com>
 
-commit 27b2ed5b6d53cd62fc61c3f259ae52f5cac23b66 upstream.
+[ Upstream commit f63550e2b165208a2f382afcaf5551df9569e1d4 ]
 
-Smatch reports:
-drivers/iio/adc/mxs-lradc-adc.c:766 mxs_lradc_adc_probe() warn:
-missing unwind goto?
+Apply a workaround for what appears to be a hardware quirk.
 
-the order of three init operation:
-1.mxs_lradc_adc_trigger_init
-2.iio_triggered_buffer_setup
-3.mxs_lradc_adc_hw_init
+The problem seems to happen when enabling "whole chip power" (bit D7
+register R6) for the very first time after the chip receives power. If
+either "output" (D4) or "DAC" (D3) aren't powered on at that time,
+playback becomes very distorted later on.
 
-thus, the order of three cleanup operation should be:
-1.mxs_lradc_adc_hw_stop
-2.iio_triggered_buffer_cleanup
-3.mxs_lradc_adc_trigger_remove
+This happens on the Google Chameleon v3, as well as on a ZYBO Z7-10:
+https://ez.analog.com/audio/f/q-a/543726/solved-ssm2603-right-output-offset-issue/480229
+I suspect this happens only when using an external MCLK signal (which
+is the case for both of these boards).
 
-we exchange the order of two cleanup operations,
-introducing the following differences:
-1.if mxs_lradc_adc_trigger_init fails, returns directly;
-2.if trigger_init succeeds but iio_triggered_buffer_setup fails,
-goto err_trig and remove the trigger.
+Here are some experiments run on a Google Chameleon v3. These were run
+in userspace using a wrapper around the i2cset utility:
+ssmset() {
+        i2cset -y 0 0x1a $(($1*2)) $2
+}
 
-In addition, we also reorder the unwind that goes on in the
-remove() callback to match the new ordering.
+For each of the following sequences, we apply power to the ssm2603
+chip, set the configuration registers R0-R5 and R7-R8, run the selected
+sequence, and check for distortions on playback.
 
-Fixes: 6dd112b9f85e ("iio: adc: mxs-lradc: Add support for ADC driver")
-Signed-off-by: Jiakai Luo <jkluo@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Link: https://lore.kernel.org/r/20230422133407.72908-1-jkluo@hust.edu.cn
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x07 # chip, out, dac
+  OK
+
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x87 # out, dac
+  ssmset 0x06 0x07 # chip
+  OK
+
+  (disable MCLK)
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x1f # chip
+  ssmset 0x06 0x07 # out, dac
+  (enable MCLK)
+  OK
+
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x1f # chip
+  ssmset 0x06 0x07 # out, dac
+  NOT OK
+
+  ssmset 0x06 0x1f # chip
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x07 # out, dac
+  NOT OK
+
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x0f # chip, out
+  ssmset 0x06 0x07 # dac
+  NOT OK
+
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x17 # chip, dac
+  ssmset 0x06 0x07 # out
+  NOT OK
+
+For each of the following sequences, we apply power to the ssm2603
+chip, run the selected sequence, issue a reset with R15, configure
+R0-R5 and R7-R8, run one of the NOT OK sequences from above, and check
+for distortions.
+
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x07 # chip, out, dac
+  OK
+
+  (disable MCLK)
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x07 # chip, out, dac
+  (enable MCLK after reset)
+  NOT OK
+
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x17 # chip, dac
+  NOT OK
+
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x0f # chip, out
+  NOT OK
+
+  ssmset 0x06 0x07 # chip, out, dac
+  NOT OK
+
+Signed-off-by: Paweł Anikiel <pan@semihalf.com
+Link: https://lore.kernel.org/r/20230508113037.137627-8-pan@semihalf.com
+Signed-off-by: Mark Brown <broonie@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/mxs-lradc-adc.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ sound/soc/codecs/ssm2602.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/drivers/iio/adc/mxs-lradc-adc.c
-+++ b/drivers/iio/adc/mxs-lradc-adc.c
-@@ -757,13 +757,13 @@ static int mxs_lradc_adc_probe(struct pl
+diff --git a/sound/soc/codecs/ssm2602.c b/sound/soc/codecs/ssm2602.c
+index 464a4d7873bba..b797f620e3521 100644
+--- a/sound/soc/codecs/ssm2602.c
++++ b/sound/soc/codecs/ssm2602.c
+@@ -53,6 +53,18 @@ static const struct reg_default ssm2602_reg[SSM2602_CACHEREGNUM] = {
+ 	{ .reg = 0x09, .def = 0x0000 }
+ };
  
- 	ret = mxs_lradc_adc_trigger_init(iio);
- 	if (ret)
--		goto err_trig;
-+		return ret;
++/*
++ * ssm2602 register patch
++ * Workaround for playback distortions after power up: activates digital
++ * core, and then powers on output, DAC, and whole chip at the same time
++ */
++
++static const struct reg_sequence ssm2602_patch[] = {
++	{ SSM2602_ACTIVE, 0x01 },
++	{ SSM2602_PWR,    0x07 },
++	{ SSM2602_RESET,  0x00 },
++};
++
  
- 	ret = iio_triggered_buffer_setup(iio, &iio_pollfunc_store_time,
- 					 &mxs_lradc_adc_trigger_handler,
- 					 &mxs_lradc_adc_buffer_ops);
- 	if (ret)
--		return ret;
-+		goto err_trig;
+ /*Appending several "None"s just for OSS mixer use*/
+ static const char *ssm2602_input_select[] = {
+@@ -588,6 +600,9 @@ static int ssm260x_component_probe(struct snd_soc_component *component)
+ 		return ret;
+ 	}
  
- 	adc->vref_mv = mxs_lradc_adc_vref_mv[lradc->soc];
- 
-@@ -801,9 +801,9 @@ static int mxs_lradc_adc_probe(struct pl
- 
- err_dev:
- 	mxs_lradc_adc_hw_stop(adc);
--	mxs_lradc_adc_trigger_remove(iio);
--err_trig:
- 	iio_triggered_buffer_cleanup(iio);
-+err_trig:
-+	mxs_lradc_adc_trigger_remove(iio);
- 	return ret;
- }
- 
-@@ -814,8 +814,8 @@ static int mxs_lradc_adc_remove(struct p
- 
- 	iio_device_unregister(iio);
- 	mxs_lradc_adc_hw_stop(adc);
--	mxs_lradc_adc_trigger_remove(iio);
- 	iio_triggered_buffer_cleanup(iio);
-+	mxs_lradc_adc_trigger_remove(iio);
- 
- 	return 0;
- }
++	regmap_register_patch(ssm2602->regmap, ssm2602_patch,
++			      ARRAY_SIZE(ssm2602_patch));
++
+ 	/* set the update bits */
+ 	regmap_update_bits(ssm2602->regmap, SSM2602_LINVOL,
+ 			    LINVOL_LRIN_BOTH, LINVOL_LRIN_BOTH);
+-- 
+2.39.2
+
 
 
