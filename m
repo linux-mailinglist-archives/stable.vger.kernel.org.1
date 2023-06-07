@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C85FE726CC3
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:36:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C64E726C34
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234284AbjFGUgO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:36:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33932 "EHLO
+        id S232888AbjFGUb2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:31:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234049AbjFGUfz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:35:55 -0400
+        with ESMTP id S232684AbjFGUb0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:31:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E1E12685
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:35:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60876137
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:31:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E09B6457D
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:35:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD51C433D2;
-        Wed,  7 Jun 2023 20:35:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E0E99644FE
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:31:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0DC7C433D2;
+        Wed,  7 Jun 2023 20:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170141;
-        bh=dW1NgTsNOzopuYcGNJ5kIrt/3hgndm+ge9v3hE0088I=;
+        s=korg; t=1686169884;
+        bh=ceu71PuV/Z6a1HJQpNtFi4mV1nhVwlkwKSISn98G9i4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IYgrqgA0bGJeBRcPBUw6oTNbmwqN7IuCk+24yfsuJ6+TTNoeR9g/hztXoq1Dbe7YB
-         NnBx0OTR8JG2ecPdOsEe+fufDXSt0N3EViSFIqRjrBhp5DPFyJwdx4kC9F6iM/fBVk
-         wKl2ynffflcQNvoJmIXhlQ1+KZzNRbec1xSj2zO8=
+        b=W89ON9xQuOfWkiQva/7dk1v8Mn3z9+lKj/NnjmrZ5U9naMaeZ+R3jqhU41TpU9JX1
+         Pgi4mxZSD6TGqWNFMprvr9GCPkYE8Jmn8x6csd0paFlFLzPvFbJEOKfREFSMJzKpFh
+         IJqgBjXJgOM5MMWicS9TL1Og+c6klX6UYB7gUzOE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Niklas=20S=C3=B6derlund?= 
-        <niklas.soderlund+renesas@ragnatech.se>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 31/88] media: rcar-vin: Select correct interrupt mode for V4L2_FIELD_ALTERNATE
-Date:   Wed,  7 Jun 2023 22:15:48 +0200
-Message-ID: <20230607200900.148536350@linuxfoundation.org>
+        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>
+Subject: [PATCH 6.3 250/286] selftests: mptcp: pm nl: skip if MPTCP is not supported
+Date:   Wed,  7 Jun 2023 22:15:49 +0200
+Message-ID: <20230607200931.465706703@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,40 +53,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-[ Upstream commit e10707d5865c90d3dfe4ef589ce02ff4287fef85 ]
+commit 0f4955a40dafe18a1122e3714d8173e4b018e869 upstream.
 
-When adding proper support for V4L2_FIELD_ALTERNATE it was missed that
-this field format should trigger an interrupt for each field, not just
-for the whole frame. Fix this by marking it as progressive in the
-capture setup, which will then select the correct interrupt mode.
+Selftests are supposed to run on any kernels, including the old ones not
+supporting MPTCP.
 
-Tested on both Gen2 and Gen3 with the result of a doubling of the frame
-rate for V4L2_FIELD_ALTERNATE. From a PAL video source the frame rate is
-now 50, which is expected for alternate field capture.
+A new check is then added to make sure MPTCP is supported. If not, the
+test stops and is marked as "skipped".
 
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: eedbc685321b ("selftests: add PM netlink functional tests")
+Cc: stable@vger.kernel.org
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/rcar-vin/rcar-dma.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/net/mptcp/pm_netlink.sh |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/media/platform/rcar-vin/rcar-dma.c b/drivers/media/platform/rcar-vin/rcar-dma.c
-index 70a8cc433a03f..cc28e2cb23f11 100644
---- a/drivers/media/platform/rcar-vin/rcar-dma.c
-+++ b/drivers/media/platform/rcar-vin/rcar-dma.c
-@@ -633,6 +633,7 @@ static int rvin_setup(struct rvin_dev *vin)
- 		vnmc = VNMC_IM_FULL | VNMC_FOC;
- 		break;
- 	case V4L2_FIELD_NONE:
-+	case V4L2_FIELD_ALTERNATE:
- 		vnmc = VNMC_IM_ODD_EVEN;
- 		progressive = true;
- 		break;
--- 
-2.39.2
-
+--- a/tools/testing/selftests/net/mptcp/pm_netlink.sh
++++ b/tools/testing/selftests/net/mptcp/pm_netlink.sh
+@@ -1,6 +1,8 @@
+ #!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
+ 
++. "$(dirname "${0}")/mptcp_lib.sh"
++
+ ksft_skip=4
+ ret=0
+ 
+@@ -34,6 +36,8 @@ cleanup()
+ 	ip netns del $ns1
+ }
+ 
++mptcp_lib_check_mptcp
++
+ ip -Version > /dev/null 2>&1
+ if [ $? -ne 0 ];then
+ 	echo "SKIP: Could not run test without ip tool"
 
 
