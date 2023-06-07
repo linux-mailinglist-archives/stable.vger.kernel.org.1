@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F2A1726D44
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:40:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45517726BDB
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:28:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234372AbjFGUky (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:40:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40396 "EHLO
+        id S233443AbjFGU2u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:28:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234385AbjFGUkv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:40:51 -0400
+        with ESMTP id S233470AbjFGU2t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:28:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 409F92689
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:40:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3E0526A5
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:28:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 21C2F645BD
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:40:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36089C433D2;
-        Wed,  7 Jun 2023 20:40:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B7A4364490
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:27:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA9C9C433EF;
+        Wed,  7 Jun 2023 20:27:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170422;
-        bh=IxY9yD28x09t6EP3qwL6MxSZUKwa8NFQn8cpurereZI=;
+        s=korg; t=1686169677;
+        bh=8M1QlZJYPuIahW0d56LtS3nUSIIV9445SpQWR8hbXAo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HE5wrF7epF+D9dC9TgzJuCA0N499FzX3Hwn9hUFU6czO/rjNJYsoNrsRPz+kqjAJq
-         glwKngzMvmINOOPj47DS/wuIokv9sqFxs5u6bEvzECMJFb6Y6sx7Vb2Z03T9x/XqZZ
-         vAf8cIOvWIfzaCGZABFaQ9rQSxn8cVkSXzrQzr6Y=
+        b=M0B4uyX/z8c0RNbDY5BMXUIQq3gkHuAMp5dwqoxf0L3nh/VHlswtKE5GrWbmPtE80
+         Aam0oAvnC1PEug05HLF2h0bpeCF5bwrCCRGt4bvMBtj7MFtgNc0zvpoadChrZRXK5e
+         +IS1ybn32s388H68mV4gMd5wDmkaXKEHL4YY2qZ4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
+        patches@lists.linux.dev, Daniel Smith <dansmith@ds.gy>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
+        Keith Busch <kbusch@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 078/225] fbdev: stifb: Fix info entry in sti_struct on error path
+Subject: [PATCH 6.3 172/286] nvme-pci: Add quirk for Teamgroup MP33 SSD
 Date:   Wed,  7 Jun 2023 22:14:31 +0200
-Message-ID: <20230607200916.928434082@linuxfoundation.org>
+Message-ID: <20230607200928.742848897@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,30 +55,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
+From: Daniel Smith <dansmith@ds.gy>
 
-[ Upstream commit 0bdf1ad8d10bd4e50a8b1a2c53d15984165f7fea ]
+[ Upstream commit 0649728123cf6a5518e154b4e1735fc85ea4f55c ]
 
-Minor fix to reset the info field to NULL in case of error.
+Add a quirk for Teamgroup MP33 that reports duplicate ids for disk.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Daniel Smith <dansmith@ds.gy>
+[kch: patch formatting]
+Signed-off-by: Chaitanya Kulkarni <kch@nvidia.com>
+Tested-by: Daniel Smith <dansmith@ds.gy>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/stifb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvme/host/pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/video/fbdev/stifb.c b/drivers/video/fbdev/stifb.c
-index ef8a4c5fc6875..63f51783352dc 100644
---- a/drivers/video/fbdev/stifb.c
-+++ b/drivers/video/fbdev/stifb.c
-@@ -1413,6 +1413,7 @@ static int __init stifb_init_fb(struct sti_struct *sti, int bpp_pref)
- 	iounmap(info->screen_base);
- out_err0:
- 	kfree(fb);
-+	sti->info = NULL;
- 	return -ENXIO;
- }
- 
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index a389f1ea0b151..60f51155a6d20 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -3449,6 +3449,8 @@ static const struct pci_device_id nvme_id_table[] = {
+ 		.driver_data = NVME_QUIRK_BOGUS_NID, },
+ 	{ PCI_DEVICE(0x1e4b, 0x1602), /* HS-SSD-FUTURE 2048G  */
+ 		.driver_data = NVME_QUIRK_BOGUS_NID, },
++	{ PCI_DEVICE(0x10ec, 0x5765), /* TEAMGROUP MP33 2TB SSD */
++		.driver_data = NVME_QUIRK_BOGUS_NID, },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMAZON, 0x0061),
+ 		.driver_data = NVME_QUIRK_DMA_ADDRESS_BITS_48, },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMAZON, 0x0065),
 -- 
 2.39.2
 
