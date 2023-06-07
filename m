@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 286B2726F25
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C18D1726EB7
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:52:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235524AbjFGUzx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:55:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56964 "EHLO
+        id S235189AbjFGUwK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:52:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235506AbjFGUzu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:55:50 -0400
+        with ESMTP id S235153AbjFGUwI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:52:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 547F3D1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:55:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 728B810D7
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:52:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E4CF464827
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:55:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0053FC433D2;
-        Wed,  7 Jun 2023 20:55:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F36C663BDC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:52:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1786DC4339B;
+        Wed,  7 Jun 2023 20:52:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171348;
-        bh=R0DELvf/YMrD0zJkos1kwz8fEahoXM96yNAJdbs+Qls=;
+        s=korg; t=1686171126;
+        bh=/c0/fenHwN8qEYM+t10p1dXzkqRlugPRA5UEX5lMDQY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QLPPNxpgR85lZQFW3jr9fEJF0acY3i1Kd7A9RNEZx06JlLEKKVz+Hm+N2UMW7CkuS
-         w1jaeSyYMJg7Z+N1fKtRHE/yl3FikG/W0M7C2VfCnpfHbzZcBDPWVof66sjxwwsi78
-         Yp4whGJfe+ubpBVpS72abQJQVZtvMOerEqq1PxS4=
+        b=1I41Yq6yh7DTcW8ZG787TW1Wj6CignjmD2D7EKhcjFHyWgp8yagwaWAlUd2mPu5+h
+         rDT/Y9D1w7RyUy6vFxvstRmCYqH9QZppvFz8DEAwtBFhj9Ab21ZpjtjJG205wLvShv
+         z5nYa0M22uUm3yysNDd4GzltENH0uDq2hvd9usvM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Erwan Velu <e.velu@criteo.com>,
-        Luiz Capitulino <luizcap@amazon.com>,
-        Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 5.4 84/99] selinux: dont use makes grouped targets feature yet
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 5.10 120/120] ARM: defconfig: drop CONFIG_DRM_RCAR_LVDS
 Date:   Wed,  7 Jun 2023 22:17:16 +0200
-Message-ID: <20230607200902.860127726@linuxfoundation.org>
+Message-ID: <20230607200904.714151407@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,42 +52,28 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paul Moore <paul@paul-moore.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 42c4e97e06a839b07d834f640a10911ad84ec8b3 upstream.
+commit 1441a15dd49616bd9dd4c25a018b0508cdada576 upstream.
 
-The Linux Kernel currently only requires make v3.82 while the grouped
-target functionality requires make v4.3.  Removed the grouped target
-introduced in 4ce1f694eb5d ("selinux: ensure av_permissions.h is
-built when needed") as well as the multiple header file targets in
-the make rule.  This effectively reverts the problem commit.
+This is now a hidden symbol, so just drop the defconfig line.
 
-We will revisit this change when make >= 4.3 is required by the rest
-of the kernel.
-
-Cc: stable@vger.kernel.org
-Fixes: 4ce1f694eb5d ("selinux: ensure av_permissions.h is built when needed")
-Reported-by: Erwan Velu <e.velu@criteo.com>
-Reported-by: Luiz Capitulino <luizcap@amazon.com>
-Tested-by: Luiz Capitulino <luizcap@amazon.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Fixes: 42d95d1b3a9c ("drm/rcar: stop using 'imply' for dependencies")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/selinux/Makefile |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm/configs/multi_v7_defconfig |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/security/selinux/Makefile
-+++ b/security/selinux/Makefile
-@@ -22,5 +22,9 @@ quiet_cmd_flask = GEN     $(obj)/flask.h
-       cmd_flask = $< $(obj)/flask.h $(obj)/av_permissions.h
- 
- targets += flask.h av_permissions.h
--$(obj)/flask.h $(obj)/av_permissions.h &: scripts/selinux/genheaders/genheaders FORCE
-+# once make >= 4.3 is required, we can use grouped targets in the rule below,
-+# which basically involves adding both headers and a '&' before the colon, see
-+# the example below:
-+#   $(obj)/flask.h $(obj)/av_permissions.h &: scripts/selinux/...
-+$(obj)/flask.h: scripts/selinux/genheaders/genheaders FORCE
- 	$(call if_changed,flask)
+--- a/arch/arm/configs/multi_v7_defconfig
++++ b/arch/arm/configs/multi_v7_defconfig
+@@ -672,7 +672,6 @@ CONFIG_DRM_IMX_LDB=m
+ CONFIG_DRM_IMX_HDMI=m
+ CONFIG_DRM_ATMEL_HLCDC=m
+ CONFIG_DRM_RCAR_DU=m
+-CONFIG_DRM_RCAR_LVDS=y
+ CONFIG_DRM_SUN4I=m
+ CONFIG_DRM_MSM=m
+ CONFIG_DRM_FSL_DCU=m
 
 
