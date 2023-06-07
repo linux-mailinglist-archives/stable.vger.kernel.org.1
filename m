@@ -2,52 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9662B726D26
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:39:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A68B726BAA
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:27:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234282AbjFGUjq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:39:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38208 "EHLO
+        id S233404AbjFGU1C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:27:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234283AbjFGUjd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:39:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6BD22682
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:39:09 -0700 (PDT)
+        with ESMTP id S233222AbjFGU1A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:27:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FD48211B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:26:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 67FA2645CC
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:39:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD26C433D2;
-        Wed,  7 Jun 2023 20:39:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E12D964482
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:26:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000DCC4339B;
+        Wed,  7 Jun 2023 20:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170343;
-        bh=cAYpqj3jGG9J/nAauFXpc8b/u6u2kYNqKBCPov9tBj8=;
+        s=korg; t=1686169598;
+        bh=0mQAkCsUwc7xaj9v83lIYLR/AacKkPZSIJOUfXzWZjY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ehIll/8NF5/via7zTLIkSlWVOB23Eq/09N1akkD8V0pRI+LOEROtijlR/i/k78Dil
-         9oz89c7Awl3uVHckHlyzg71BctnomhCOae++Jp4bjKsi3n7/NhPwcxVGTbsO/f+zWA
-         UDiGe7TEdTY9/zu59hqE1iHOZT1ihsLNrvPVRBy4=
+        b=LoTQlNcu6HX/QGVvFi9obtSqEPh/Z7qgKUaeaWSa6ZMY4qYKeX7YAg/2NIT/E++Wl
+         dwbREIAZFQUJHg69RnDKb5FmF3Im0Y1kb6BlRxTVWiTBJIK+DtuSUrerfeqWjfOSFD
+         hKy4h2ddRkA1y+1+xijGdZYMfWCDXf3ViMjOL9P0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        fuyuanli <fuyuanli@didiglobal.com>,
-        Jason Xing <kerneljasonxing@gmail.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 048/225] tcp: fix mishandling when the sack compression is deferred.
+        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 142/286] ASoC: SOF: pcm: fix pm_runtime imbalance in error handling
 Date:   Wed,  7 Jun 2023 22:14:01 +0200
-Message-ID: <20230607200915.920644380@linuxfoundation.org>
+Message-ID: <20230607200927.721615188@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,97 +52,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: fuyuanli <fuyuanli@didiglobal.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 30c6f0bf9579debce27e45fac34fdc97e46acacc ]
+[ Upstream commit da0fe8fd515a471d373acc3682bfb5522cca4d55 ]
 
-In this patch, we mainly try to handle sending a compressed ack
-correctly if it's deferred.
+When an error occurs, we need to make sure the device can pm_runtime
+suspend instead of keeping it active.
 
-Here are more details in the old logic:
-When sack compression is triggered in the tcp_compressed_ack_kick(),
-if the sock is owned by user, it will set TCP_DELACK_TIMER_DEFERRED
-and then defer to the release cb phrase. Later once user releases
-the sock, tcp_delack_timer_handler() should send a ack as expected,
-which, however, cannot happen due to lack of ICSK_ACK_TIMER flag.
-Therefore, the receiver would not sent an ack until the sender's
-retransmission timeout. It definitely increases unnecessary latency.
-
-Fixes: 5d9f4262b7ea ("tcp: add SACK compression")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: fuyuanli <fuyuanli@didiglobal.com>
-Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
-Link: https://lore.kernel.org/netdev/20230529113804.GA20300@didi-ThinkCentre-M920t-N000/
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230531080150.GA20424@didi-ThinkCentre-M920t-N000
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com
+Link: https://lore.kernel.org/r/20230512103315.8921-3-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tcp.h    |  1 +
- net/ipv4/tcp_input.c |  2 +-
- net/ipv4/tcp_timer.c | 16 +++++++++++++---
- 3 files changed, 15 insertions(+), 4 deletions(-)
+ sound/soc/sof/pcm.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 0744717f5caa7..5eedd476a38d7 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -632,6 +632,7 @@ void tcp_reset(struct sock *sk, struct sk_buff *skb);
- void tcp_skb_mark_lost_uncond_verify(struct tcp_sock *tp, struct sk_buff *skb);
- void tcp_fin(struct sock *sk);
- void tcp_check_space(struct sock *sk);
-+void tcp_sack_compress_send_ack(struct sock *sk);
- 
- /* tcp_timer.c */
- void tcp_init_xmit_timers(struct sock *);
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index ac44edd6f52e6..5dabb38b857ff 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -4529,7 +4529,7 @@ static void tcp_sack_maybe_coalesce(struct tcp_sock *tp)
- 	}
- }
- 
--static void tcp_sack_compress_send_ack(struct sock *sk)
-+void tcp_sack_compress_send_ack(struct sock *sk)
- {
- 	struct tcp_sock *tp = tcp_sk(sk);
- 
-diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
-index cb79127f45c34..0b5d0a2867a8c 100644
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -290,9 +290,19 @@ static int tcp_write_timeout(struct sock *sk)
- void tcp_delack_timer_handler(struct sock *sk)
- {
- 	struct inet_connection_sock *icsk = inet_csk(sk);
-+	struct tcp_sock *tp = tcp_sk(sk);
- 
--	if (((1 << sk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)) ||
--	    !(icsk->icsk_ack.pending & ICSK_ACK_TIMER))
-+	if ((1 << sk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN))
-+		return;
-+
-+	/* Handling the sack compression case */
-+	if (tp->compressed_ack) {
-+		tcp_mstamp_refresh(tp);
-+		tcp_sack_compress_send_ack(sk);
-+		return;
+diff --git a/sound/soc/sof/pcm.c b/sound/soc/sof/pcm.c
+index 445acb5c3a21b..2570f33db9f3e 100644
+--- a/sound/soc/sof/pcm.c
++++ b/sound/soc/sof/pcm.c
+@@ -616,16 +616,17 @@ static int sof_pcm_probe(struct snd_soc_component *component)
+ 				       "%s/%s",
+ 				       plat_data->tplg_filename_prefix,
+ 				       plat_data->tplg_filename);
+-	if (!tplg_filename)
+-		return -ENOMEM;
++	if (!tplg_filename) {
++		ret = -ENOMEM;
++		goto pm_error;
 +	}
-+
-+	if (!(icsk->icsk_ack.pending & ICSK_ACK_TIMER))
- 		return;
  
- 	if (time_after(icsk->icsk_ack.timeout, jiffies)) {
-@@ -312,7 +322,7 @@ void tcp_delack_timer_handler(struct sock *sk)
- 			inet_csk_exit_pingpong_mode(sk);
- 			icsk->icsk_ack.ato      = TCP_ATO_MIN;
- 		}
--		tcp_mstamp_refresh(tcp_sk(sk));
-+		tcp_mstamp_refresh(tp);
- 		tcp_send_ack(sk);
- 		__NET_INC_STATS(sock_net(sk), LINUX_MIB_DELAYEDACKS);
- 	}
+ 	ret = snd_sof_load_topology(component, tplg_filename);
+-	if (ret < 0) {
++	if (ret < 0)
+ 		dev_err(component->dev, "error: failed to load DSP topology %d\n",
+ 			ret);
+-		return ret;
+-	}
+ 
++pm_error:
+ 	pm_runtime_mark_last_busy(component->dev);
+ 	pm_runtime_put_autosuspend(component->dev);
+ 
 -- 
 2.39.2
 
