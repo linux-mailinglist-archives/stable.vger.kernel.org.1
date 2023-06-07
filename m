@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0490726CBA
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:36:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B5AF726DC2
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:45:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233975AbjFGUfy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:35:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33716 "EHLO
+        id S234793AbjFGUpX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:45:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233966AbjFGUfo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:35:44 -0400
+        with ESMTP id S234864AbjFGUo7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B61A72128
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:35:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D00B2685
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:44:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 95A9364573
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:35:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4ED0C433D2;
-        Wed,  7 Jun 2023 20:35:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5BEA564667
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:44:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F64C433EF;
+        Wed,  7 Jun 2023 20:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170128;
-        bh=hD6JmmcmGt9F6GGzY+6zbtcZ7G84QuEkFFvP7ojVP8w=;
+        s=korg; t=1686170684;
+        bh=3xIGrzLPoVjCQoECNhQAV4uJmJ7nRrX/Oj8H3QdWeGQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j42ZGUOHrJjZp0AHs7CGEpgah0bjdFAvryLhA6mKQnqs0XRZ9H1QsuISo3gtGSYb/
-         fvsaUL+/TSjcHWJ6q9g9VeTPxlxmmADkd1oj3bvx1zlZ5BjfoAtgGyoG1uAKKa3lu8
-         mEtRtLIeHGYxdxM27TBtU0lLNmRKePhc18TrGJAM=
+        b=aIrXhu4zKGcWSh1/WZbb0cgJLNNPagjyAB+x3MS48E5AhASbB+vb5WsjMbJRcKuBm
+         iNBJEB2GSd4hfphbFTPnJ5TlNpUI2Qe99CR9kg7kIFSx/++T9TEYONYDUt2OR12T4R
+         1QApXKw8h846IxtRr+h7saxQbzuBkVXG1pQo7aG0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Min-Hua Chen <minhuadotchen@gmail.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 54/88] arm64/mm: mark private VM_FAULT_X defines as vm_fault_t
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Ming Lei <ming.lei@redhat.com>, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 178/225] block: fix revalidate performance regression
 Date:   Wed,  7 Jun 2023 22:16:11 +0200
-Message-ID: <20230607200900.930340957@linuxfoundation.org>
+Message-ID: <20230607200920.210084448@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,54 +53,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Min-Hua Chen <minhuadotchen@gmail.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit d91d580878064b880f3574ac35b98d8b70ee8620 ]
+commit 47fe1c3064c6bc1bfa3c032ff78e603e5dd6e5bc upstream.
 
-This patch fixes several sparse warnings for fault.c:
+The scsi driver function sd_read_block_characteristics() always calls
+disk_set_zoned() to a disk zoned model correctly, in case the device
+model changed. This is done even for regular disks to set the zoned
+model to BLK_ZONED_NONE and free any zone related resources if the drive
+previously was zoned.
 
-arch/arm64/mm/fault.c:493:24: sparse: warning: incorrect type in return expression (different base types)
-arch/arm64/mm/fault.c:493:24: sparse:    expected restricted vm_fault_t
-arch/arm64/mm/fault.c:493:24: sparse:    got int
-arch/arm64/mm/fault.c:501:32: sparse: warning: incorrect type in return expression (different base types)
-arch/arm64/mm/fault.c:501:32: sparse:    expected restricted vm_fault_t
-arch/arm64/mm/fault.c:501:32: sparse:    got int
-arch/arm64/mm/fault.c:503:32: sparse: warning: incorrect type in return expression (different base types)
-arch/arm64/mm/fault.c:503:32: sparse:    expected restricted vm_fault_t
-arch/arm64/mm/fault.c:503:32: sparse:    got int
-arch/arm64/mm/fault.c:511:24: sparse: warning: incorrect type in return expression (different base types)
-arch/arm64/mm/fault.c:511:24: sparse:    expected restricted vm_fault_t
-arch/arm64/mm/fault.c:511:24: sparse:    got int
-arch/arm64/mm/fault.c:670:13: sparse: warning: restricted vm_fault_t degrades to integer
-arch/arm64/mm/fault.c:670:13: sparse: warning: restricted vm_fault_t degrades to integer
-arch/arm64/mm/fault.c:713:39: sparse: warning: restricted vm_fault_t degrades to integer
+This behavior significantly impact the time it takes to revalidate disks
+on a large system as the call to disk_clear_zone_settings() done from
+disk_set_zoned() for the BLK_ZONED_NONE case results in the device
+request queued to be frozen, even if there are no zone resources to
+free.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Min-Hua Chen <minhuadotchen@gmail.com>
-Link: https://lore.kernel.org/r/20230502151909.128810-1-minhuadotchen@gmail.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Avoid this overhead for non-zoned devices by not calling
+disk_clear_zone_settings() in disk_set_zoned() if the device model
+was already set to BLK_ZONED_NONE, which is always the case for regular
+devices.
+
+Reported by: Brian Bunker <brian@purestorage.com>
+
+Fixes: 508aebb80527 ("block: introduce blk_queue_clear_zone_settings()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20230529073237.1339862-1-dlemoal@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/fault.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ block/blk-settings.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index 0d2be8eb87ec8..c9faa5570d245 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -376,8 +376,8 @@ static void do_bad_area(unsigned long addr, unsigned int esr, struct pt_regs *re
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -909,6 +909,7 @@ static bool disk_has_partitions(struct g
+ void disk_set_zoned(struct gendisk *disk, enum blk_zoned_model model)
+ {
+ 	struct request_queue *q = disk->queue;
++	unsigned int old_model = q->limits.zoned;
+ 
+ 	switch (model) {
+ 	case BLK_ZONED_HM:
+@@ -946,7 +947,7 @@ void disk_set_zoned(struct gendisk *disk
+ 		 */
+ 		blk_queue_zone_write_granularity(q,
+ 						queue_logical_block_size(q));
+-	} else {
++	} else if (old_model != BLK_ZONED_NONE) {
+ 		disk_clear_zone_settings(disk);
  	}
  }
- 
--#define VM_FAULT_BADMAP		0x010000
--#define VM_FAULT_BADACCESS	0x020000
-+#define VM_FAULT_BADMAP		((__force vm_fault_t)0x010000)
-+#define VM_FAULT_BADACCESS	((__force vm_fault_t)0x020000)
- 
- static vm_fault_t __do_page_fault(struct mm_struct *mm, unsigned long addr,
- 			   unsigned int mm_flags, unsigned long vm_flags,
--- 
-2.39.2
-
 
 
