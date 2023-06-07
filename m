@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F741726FFF
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:03:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33F27726EBB
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:52:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236154AbjFGVDx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:03:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34616 "EHLO
+        id S234934AbjFGUwP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:52:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236177AbjFGVD3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:03:29 -0400
+        with ESMTP id S235244AbjFGUwO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:52:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A9BC26AA
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:03:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4524FC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:52:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F5E964979
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:03:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D7BC433EF;
-        Wed,  7 Jun 2023 21:03:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 495D664765
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:52:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B298C433EF;
+        Wed,  7 Jun 2023 20:52:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171788;
-        bh=bjs6i7/SpeNe+Tah1sMFbTv70T9Akks00VJ3zX/hwPg=;
+        s=korg; t=1686171131;
+        bh=6ri9iwB3uEjGVFBrRzRDvSASBlTpUCRn+vV4iMquzfI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gYMkiORCUdHVC6daA+/29/icTtneYE1YVhLU5N4UiQISgWZdH2udBS2Jl0Jxyx3fx
-         CAtOfXU2sKRsfgdv9dHJBemSyo5fDbJuBveKcAHxjWwrpqUgT0rG8F4vtd10xO9VcK
-         wHRSoHajMZn1GDVBtumF56jAdVSzzlVuEXrvEg+E=
+        b=MdWLvc/qCiGRJ4q3yWEk/mPu8sg5ET2BRXM12tE6RvwesWyHx9l8Zl+XMqN9RYtot
+         aBib3TbkM6RzqU82sIVi63SQbHEodArWJ8tvQvMbERUgT2p1OZpHeDqsnoX/88QoZw
+         /cGauMcBmY54WFrU3Ix1O2NEfML1mtL0ks+T9hu0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
-Subject: [PATCH 5.15 110/159] usb: gadget: f_fs: Add unbind event before functionfs_unbind
+        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>
+Subject: [PATCH 5.10 097/120] selftests: mptcp: connect: skip if MPTCP is not supported
 Date:   Wed,  7 Jun 2023 22:16:53 +0200
-Message-ID: <20230607200907.277048604@linuxfoundation.org>
+Message-ID: <20230607200903.966639074@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,65 +53,109 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+From: Matthieu Baerts <matthieu.baerts@tessares.net>
 
-commit efb6b535207395a5c7317993602e2503ca8cb4b3 upstream.
+commit d83013bdf90a7994a474b0e650a7fc94b0d4ded6 upstream.
 
-While exercising the unbind path, with the current implementation
-the functionfs_unbind would be calling which waits for the ffs->mutex
-to be available, however within the same time ffs_ep0_read is invoked
-& if no setup packets are pending, it will invoke function
-wait_event_interruptible_exclusive_locked_irq which by definition waits
-for the ev.count to be increased inside the same mutex for which
-functionfs_unbind is waiting.
-This creates deadlock situation because the functionfs_unbind won't
-get the lock until ev.count is increased which can only happen if
-the caller ffs_func_unbind can proceed further.
+Selftests are supposed to run on any kernels, including the old ones not
+supporting MPTCP.
 
-Following is the illustration:
+A new check is then added to make sure MPTCP is supported. If not, the
+test stops and is marked as "skipped". Note that this check can also
+mark the test as failed if 'SELFTESTS_MPTCP_LIB_EXPECT_ALL_FEATURES' env
+var is set to 1: by doing that, we can make sure a test is not being
+skipped by mistake.
 
-	CPU1				CPU2
+A new shared file is added here to be able to re-used the same check in
+the different selftests we have.
 
-ffs_func_unbind()		ffs_ep0_read()
-				mutex_lock(ffs->mutex)
-				wait_event(ffs->ev.count)
-functionfs_unbind()
-  mutex_lock(ffs->mutex)
-  mutex_unlock(ffs->mutex)
-
-ffs_event_add()
-
-<deadlock>
-
-Fix this by moving the event unbind before functionfs_unbind
-to ensure the ev.count is incrased properly.
-
-Fixes: 6a19da111057 ("usb: gadget: f_fs: Prevent race during ffs_ep0_queue_wait")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
-Link: https://lore.kernel.org/r/20230525092854.7992-1-quic_uaggarwa@quicinc.com
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
+Cc: stable@vger.kernel.org
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_fs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/Makefile         |    2 -
+ tools/testing/selftests/net/mptcp/mptcp_connect.sh |    4 ++
+ tools/testing/selftests/net/mptcp/mptcp_lib.sh     |   40 +++++++++++++++++++++
+ 3 files changed, 45 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/net/mptcp/mptcp_lib.sh
 
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -3620,6 +3620,7 @@ static void ffs_func_unbind(struct usb_c
- 	/* Drain any pending AIO completions */
- 	drain_workqueue(ffs->io_completion_wq);
+--- a/tools/testing/selftests/net/mptcp/Makefile
++++ b/tools/testing/selftests/net/mptcp/Makefile
+@@ -10,7 +10,7 @@ TEST_PROGS := mptcp_connect.sh pm_netlin
  
-+	ffs_event_add(ffs, FUNCTIONFS_UNBIND);
- 	if (!--opts->refcnt)
- 		functionfs_unbind(ffs);
+ TEST_GEN_FILES = mptcp_connect pm_nl_ctl
  
-@@ -3644,7 +3645,6 @@ static void ffs_func_unbind(struct usb_c
- 	func->function.ssp_descriptors = NULL;
- 	func->interfaces_nums = NULL;
+-TEST_FILES := settings
++TEST_FILES := mptcp_lib.sh settings
  
--	ffs_event_add(ffs, FUNCTIONFS_UNBIND);
+ EXTRA_CLEAN := *.pcap
+ 
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
+@@ -1,6 +1,8 @@
+ #!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
+ 
++. "$(dirname "${0}")/mptcp_lib.sh"
++
+ time_start=$(date +%s)
+ 
+ optstring="S:R:d:e:l:r:h4cm:f:t"
+@@ -131,6 +133,8 @@ cleanup()
+ 	done
  }
  
- static struct usb_function *ffs_alloc(struct usb_function_instance *fi)
++mptcp_lib_check_mptcp
++
+ ip -Version > /dev/null 2>&1
+ if [ $? -ne 0 ];then
+ 	echo "SKIP: Could not run test without ip tool"
+--- /dev/null
++++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+@@ -0,0 +1,40 @@
++#! /bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++readonly KSFT_FAIL=1
++readonly KSFT_SKIP=4
++
++# SELFTESTS_MPTCP_LIB_EXPECT_ALL_FEATURES env var can be set when validating all
++# features using the last version of the kernel and the selftests to make sure
++# a test is not being skipped by mistake.
++mptcp_lib_expect_all_features() {
++	[ "${SELFTESTS_MPTCP_LIB_EXPECT_ALL_FEATURES:-}" = "1" ]
++}
++
++# $1: msg
++mptcp_lib_fail_if_expected_feature() {
++	if mptcp_lib_expect_all_features; then
++		echo "ERROR: missing feature: ${*}"
++		exit ${KSFT_FAIL}
++	fi
++
++	return 1
++}
++
++# $1: file
++mptcp_lib_has_file() {
++	local f="${1}"
++
++	if [ -f "${f}" ]; then
++		return 0
++	fi
++
++	mptcp_lib_fail_if_expected_feature "${f} file not found"
++}
++
++mptcp_lib_check_mptcp() {
++	if ! mptcp_lib_has_file "/proc/sys/net/mptcp/enabled"; then
++		echo "SKIP: MPTCP support is not available"
++		exit ${KSFT_SKIP}
++	fi
++}
 
 
