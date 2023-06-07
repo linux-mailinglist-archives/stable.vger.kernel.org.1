@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2BB8726F7C
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:58:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 689E5726C30
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235606AbjFGU6u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:58:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60140 "EHLO
+        id S229944AbjFGUbR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:31:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235638AbjFGU6s (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:58:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 777C22711
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:58:24 -0700 (PDT)
+        with ESMTP id S233631AbjFGUbQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:31:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB770FC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:31:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 89894648A1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:58:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B921C4339B;
-        Wed,  7 Jun 2023 20:58:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F4FB644F8
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:31:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84086C433D2;
+        Wed,  7 Jun 2023 20:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171503;
-        bh=lpl61S+v3ZPoqhG86DBxo7gPGeIdGqeATuWVOyQwG64=;
+        s=korg; t=1686169873;
+        bh=idbYBb7zBKSjJP8nvtJsCJqiIzRtKUunuEwsZECJIPI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BlSlDX0YyKb6YianEWOvnwvgnFd43gIhI4U6TGq89mhSdLu55SO0fvN3DloothM6a
-         /1JbQUMy49tCXKLmvdxOkMqGkcSG9S1zU2C9NnvcRg3rj3kc3p58WxVOLJV2mZlyQ9
-         ouJet6O3uim9fp6JGq6+v9l/Xjh3MrRbo34RjQbo=
+        b=fKkeAkMSCW/SiZG/NspfUhrXWpwUc0n5HvCPyBk2D3l5he4wZfqosc97EzG5reiBY
+         OVSljphW6gQ5AzWfAL7m1VAvI8ldhgU7gvPNsgDychlxGY3k8pt1LIGYUdH/9P63+H
+         /GlaruPmSsGh1VbcEc+gpgMNgcQJz4NGQE4heMJY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, jasontao <jasontao@glenfly.com>,
-        Reaper Li <reaperlioc@glenfly.com>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 042/159] ALSA: hda: Glenfly: add HD Audio PCI IDs and HDMI Codec Vendor IDs.
+        patches@lists.linux.dev, Juri Lelli <juri.lelli@redhat.com>,
+        Daniel Bristot de Oliveira <bristot@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.3 246/286] tracing/timerlat: Always wakeup the timerlat thread
 Date:   Wed,  7 Jun 2023 22:15:45 +0200
-Message-ID: <20230607200905.051578367@linuxfoundation.org>
+Message-ID: <20230607200931.338456010@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,145 +54,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: jasontao <jasontao@glenfly.com>
+From: Daniel Bristot de Oliveira <bristot@kernel.org>
 
-[ Upstream commit c51e431052e2eacfb23fbf6b39bc6c8770d9827a ]
+commit 632478a05821bc1c9b55c3a1dd0fb1be7bfa1acc upstream.
 
-Add a set of HD Audio PCI IDS, and the HDMI codec vendor IDs for
-Glenfly Gpus.
+While testing rtla timerlat auto analysis, I reach a condition where
+the interface was not receiving tracing data. I was able to manually
+reproduce the problem with these steps:
 
-- In default_bdl_pos_adj, set bdl to 128 as Glenfly Gpus have hardware
-limitation, need to increase hdac interrupt interval.
-- In azx_first_init, enable polling mode for Glenfly Gpu. When the codec
-complete the command, it sends interrupt and writes response entries to
-memory, howerver, the write requests sometimes are not actually
-synchronized to memory when driver handle hdac interrupt on Glenfly Gpus.
-If the RIRB status is not updated in the interrupt handler,
-azx_rirb_get_response keeps trying to recevie a response from rirb until
-1s timeout. Enabling polling mode for Glenfly Gpu can fix the issue.
-- In patch_gf_hdmi, set Glenlfy Gpu Codec's no_sticky_stream as it need
-driver to do actual clean-ups for the linked codec when switch from one
-codec to another.
+  # echo 0 > tracing_on                 # disable trace
+  # echo 1 > osnoise/stop_tracing_us    # stop trace if timerlat irq > 1 us
+  # echo timerlat > current_tracer      # enable timerlat tracer
+  # sleep 1                             # wait... that is the time when rtla
+                                        # apply configs like prio or cgroup
+  # echo 1 > tracing_on                 # start tracing
+  # cat trace
+  # tracer: timerlat
+  #
+  #                                _-----=> irqs-off
+  #                               / _----=> need-resched
+  #                              | / _---=> hardirq/softirq
+  #                              || / _--=> preempt-depth
+  #                              ||| / _-=> migrate-disable
+  #                              |||| /     delay
+  #                              |||||            ACTIVATION
+  #           TASK-PID      CPU# |||||   TIMESTAMP   ID            CONTEXT                 LATENCY
+  #              | |         |   |||||      |         |                  |                       |
+        NOTHING!
 
-Signed-off-by: jasontao <jasontao@glenfly.com>
-Signed-off-by: Reaper Li <reaperlioc@glenfly.com>
-Link: https://lore.kernel.org/r/20230426013059.4329-1-reaperlioc@glenfly.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Then, trying to enable tracing again with echo 1 > tracing_on resulted
+in no change: the trace was still not tracing.
+
+This problem happens because the timerlat IRQ hits the stop tracing
+condition while tracing is off, and do not wake up the timerlat thread,
+so the timerlat threads are kept sleeping forever, resulting in no
+trace, even after re-enabling the tracer.
+
+Avoid this condition by always waking up the threads, even after stopping
+tracing, allowing the tracer to return to its normal operating after
+a new tracing on.
+
+Link: https://lore.kernel.org/linux-trace-kernel/1ed8f830638b20a39d535d27d908e319a9a3c4e2.1683822622.git.bristot@kernel.org
+
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: a955d7eac177 ("trace: Add timerlat tracer")
+Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/hda_intel.c  | 21 +++++++++++++++++++++
- sound/pci/hda/patch_hdmi.c | 22 ++++++++++++++++++++++
- 2 files changed, 43 insertions(+)
+ kernel/trace/trace_osnoise.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
-index 5fce1ca8a393a..1379ac07df350 100644
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -230,6 +230,7 @@ enum {
- 	AZX_DRIVER_ATI,
- 	AZX_DRIVER_ATIHDMI,
- 	AZX_DRIVER_ATIHDMI_NS,
-+	AZX_DRIVER_GFHDMI,
- 	AZX_DRIVER_VIA,
- 	AZX_DRIVER_SIS,
- 	AZX_DRIVER_ULI,
-@@ -352,6 +353,7 @@ static const char * const driver_short_names[] = {
- 	[AZX_DRIVER_ATI] = "HDA ATI SB",
- 	[AZX_DRIVER_ATIHDMI] = "HDA ATI HDMI",
- 	[AZX_DRIVER_ATIHDMI_NS] = "HDA ATI HDMI",
-+	[AZX_DRIVER_GFHDMI] = "HDA GF HDMI",
- 	[AZX_DRIVER_VIA] = "HDA VIA VT82xx",
- 	[AZX_DRIVER_SIS] = "HDA SIS966",
- 	[AZX_DRIVER_ULI] = "HDA ULI M5461",
-@@ -1742,6 +1744,12 @@ static int default_bdl_pos_adj(struct azx *chip)
+--- a/kernel/trace/trace_osnoise.c
++++ b/kernel/trace/trace_osnoise.c
+@@ -1652,6 +1652,8 @@ static enum hrtimer_restart timerlat_irq
+ 			osnoise_stop_tracing();
+ 			notify_new_max_latency(diff);
+ 
++			wake_up_process(tlat->kthread);
++
+ 			return HRTIMER_NORESTART;
+ 		}
  	}
- 
- 	switch (chip->driver_type) {
-+	/*
-+	 * increase the bdl size for Glenfly Gpus for hardware
-+	 * limitation on hdac interrupt interval
-+	 */
-+	case AZX_DRIVER_GFHDMI:
-+		return 128;
- 	case AZX_DRIVER_ICH:
- 	case AZX_DRIVER_PCH:
- 		return 1;
-@@ -1857,6 +1865,12 @@ static int azx_first_init(struct azx *chip)
- 		pci_write_config_dword(pci, PCI_BASE_ADDRESS_1, 0);
- 	}
- #endif
-+	/*
-+	 * Fix response write request not synced to memory when handle
-+	 * hdac interrupt on Glenfly Gpus
-+	 */
-+	if (chip->driver_type == AZX_DRIVER_GFHDMI)
-+		bus->polling_mode = 1;
- 
- 	err = pcim_iomap_regions(pci, 1 << 0, "ICH HD audio");
- 	if (err < 0)
-@@ -1957,6 +1971,7 @@ static int azx_first_init(struct azx *chip)
- 			chip->playback_streams = ATIHDMI_NUM_PLAYBACK;
- 			chip->capture_streams = ATIHDMI_NUM_CAPTURE;
- 			break;
-+		case AZX_DRIVER_GFHDMI:
- 		case AZX_DRIVER_GENERIC:
- 		default:
- 			chip->playback_streams = ICH6_NUM_PLAYBACK;
-@@ -2694,6 +2709,12 @@ static const struct pci_device_id azx_ids[] = {
- 	{ PCI_DEVICE(0x1002, 0xab38),
- 	  .driver_data = AZX_DRIVER_ATIHDMI_NS | AZX_DCAPS_PRESET_ATI_HDMI_NS |
- 	  AZX_DCAPS_PM_RUNTIME },
-+	/* GLENFLY */
-+	{ PCI_DEVICE(0x6766, PCI_ANY_ID),
-+	  .class = PCI_CLASS_MULTIMEDIA_HD_AUDIO << 8,
-+	  .class_mask = 0xffffff,
-+	  .driver_data = AZX_DRIVER_GFHDMI | AZX_DCAPS_POSFIX_LPIB |
-+	  AZX_DCAPS_NO_MSI | AZX_DCAPS_NO_64BIT },
- 	/* VIA VT8251/VT8237A */
- 	{ PCI_DEVICE(0x1106, 0x3288), .driver_data = AZX_DRIVER_VIA },
- 	/* VIA GFX VT7122/VX900 */
-diff --git a/sound/pci/hda/patch_hdmi.c b/sound/pci/hda/patch_hdmi.c
-index 8ed5a499af4bb..3cd3b5c49e45e 100644
---- a/sound/pci/hda/patch_hdmi.c
-+++ b/sound/pci/hda/patch_hdmi.c
-@@ -4298,6 +4298,22 @@ static int patch_via_hdmi(struct hda_codec *codec)
- 	return patch_simple_hdmi(codec, VIAHDMI_CVT_NID, VIAHDMI_PIN_NID);
- }
- 
-+static int patch_gf_hdmi(struct hda_codec *codec)
-+{
-+	int err;
-+
-+	err = patch_generic_hdmi(codec);
-+	if (err)
-+		return err;
-+
-+	/*
-+	 * Glenfly GPUs have two codecs, stream switches from one codec to
-+	 * another, need to do actual clean-ups in codec_cleanup_stream
-+	 */
-+	codec->no_sticky_stream = 1;
-+	return 0;
-+}
-+
- /*
-  * patch entries
-  */
-@@ -4392,6 +4408,12 @@ HDA_CODEC_ENTRY(0x10de00a6, "GPU a6 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de00a7, "GPU a7 HDMI/DP",	patch_nvhdmi),
- HDA_CODEC_ENTRY(0x10de8001, "MCP73 HDMI",	patch_nvhdmi_2ch),
- HDA_CODEC_ENTRY(0x10de8067, "MCP67/68 HDMI",	patch_nvhdmi_2ch),
-+HDA_CODEC_ENTRY(0x67663d82, "Arise 82 HDMI/DP",	patch_gf_hdmi),
-+HDA_CODEC_ENTRY(0x67663d83, "Arise 83 HDMI/DP",	patch_gf_hdmi),
-+HDA_CODEC_ENTRY(0x67663d84, "Arise 84 HDMI/DP",	patch_gf_hdmi),
-+HDA_CODEC_ENTRY(0x67663d85, "Arise 85 HDMI/DP",	patch_gf_hdmi),
-+HDA_CODEC_ENTRY(0x67663d86, "Arise 86 HDMI/DP",	patch_gf_hdmi),
-+HDA_CODEC_ENTRY(0x67663d87, "Arise 87 HDMI/DP",	patch_gf_hdmi),
- HDA_CODEC_ENTRY(0x11069f80, "VX900 HDMI/DP",	patch_via_hdmi),
- HDA_CODEC_ENTRY(0x11069f81, "VX900 HDMI/DP",	patch_via_hdmi),
- HDA_CODEC_ENTRY(0x11069f84, "VX11 HDMI/DP",	patch_generic_hdmi),
--- 
-2.39.2
-
 
 
