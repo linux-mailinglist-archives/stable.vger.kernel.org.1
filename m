@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 094D8726D21
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:39:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D54A726BC5
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:28:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234329AbjFGUjh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:39:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38834 "EHLO
+        id S233317AbjFGU2K (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:28:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234380AbjFGUjT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:39:19 -0400
+        with ESMTP id S233437AbjFGU2F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:28:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10C312D4C
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:38:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50488212B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:27:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F1D5F645BF
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:38:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB5EC433D2;
-        Wed,  7 Jun 2023 20:38:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0194F6448C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:27:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 136F7C433D2;
+        Wed,  7 Jun 2023 20:27:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170328;
-        bh=PHnqgNc0P3HQrGS4Wi2Aml/lChYxE5y374KIiMqx8sI=;
+        s=korg; t=1686169661;
+        bh=ZgdiypEPt9M4XPZg8uoKvG0ycjYi70CExDzRN4CGuDk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fhcq8wi9ShVGJEtufv9v1Al2R8C5swZuCnpg6c/FqmbIvzp5Wp/GQzlT86KNN4Cf1
-         1/qzGxPWd+tbGPib9Xd/of1NDMn43mCdwQGcYF2PM9vE9J/jlVO/sCSTXQt94HvDDt
-         9v1AGUSx086ugEcBm5zzcDDlyJDabvrJR7gSyGRM=
+        b=N8uu23sBSFfnQDF/qtm/F9VbAgXgoZBUzkp0CpL4G5SuiaQ5Uz0TyL4g/XcIE/4uc
+         a60u7VCByfLGhQr/sAvTNl8bBCVFqZaGNLwt/xj30q7iNzO1pr818LdYvA50FQhtOC
+         6w7ZE0+9dMUD1Nw0nkQRCVXcvuI7NZQx6ietoOfU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        NeilBrown <neilb@suse.com>, Jeff Layton <jlayton@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
+        patches@lists.linux.dev, Hyunwoo Kim <imv4bel@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 042/225] nfsd: fix double fget() bug in __write_ports_addfd()
+Subject: [PATCH 6.3 136/286] media: dvb-core: Fix use-after-free on race condition at dvb_frontend
 Date:   Wed,  7 Jun 2023 22:13:55 +0200
-Message-ID: <20230607200915.725060526@linuxfoundation.org>
+Message-ID: <20230607200927.531074599@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,121 +54,194 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit c034203b6a9dae6751ef4371c18cb77983e30c28 ]
+[ Upstream commit 6769a0b7ee0c3b31e1b22c3fadff2bfb642de23f ]
 
-The bug here is that you cannot rely on getting the same socket
-from multiple calls to fget() because userspace can influence
-that.  This is a kind of double fetch bug.
+If the device node of dvb_frontend is open() and the device is
+disconnected, many kinds of UAFs may occur when calling close()
+on the device node.
 
-The fix is to delete the svc_alien_sock() function and instead do
-the checking inside the svc_addsock() function.
+The root cause of this is that wake_up() for dvbdev->wait_queue
+is implemented in the dvb_frontend_release() function, but
+wait_event() is not implemented in the dvb_frontend_stop() function.
 
-Fixes: 3064639423c4 ("nfsd: check passed socket's net matches NFSd superblock's one")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: NeilBrown <neilb@suse.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+So, implement wait_event() function in dvb_frontend_stop() and
+add 'remove_mutex' which prevents race condition for 'fe->exit'.
+
+[mchehab: fix a couple of checkpatch warnings and some mistakes at the error handling logic]
+
+Link: https://lore.kernel.org/linux-media/20221117045925.14297-2-imv4bel@gmail.com
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfsctl.c               |  7 +------
- include/linux/sunrpc/svcsock.h |  7 +++----
- net/sunrpc/svcsock.c           | 24 ++++++------------------
- 3 files changed, 10 insertions(+), 28 deletions(-)
+ drivers/media/dvb-core/dvb_frontend.c | 53 ++++++++++++++++++++++-----
+ include/media/dvb_frontend.h          |  6 ++-
+ 2 files changed, 49 insertions(+), 10 deletions(-)
 
-diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index dc74a947a440c..573de0d49e172 100644
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -710,16 +710,11 @@ static ssize_t __write_ports_addfd(char *buf, struct net *net, const struct cred
- 	if (err != 0 || fd < 0)
- 		return -EINVAL;
+diff --git a/drivers/media/dvb-core/dvb_frontend.c b/drivers/media/dvb-core/dvb_frontend.c
+index cc0a789f09ae5..947b61959b2b8 100644
+--- a/drivers/media/dvb-core/dvb_frontend.c
++++ b/drivers/media/dvb-core/dvb_frontend.c
+@@ -809,15 +809,26 @@ static void dvb_frontend_stop(struct dvb_frontend *fe)
  
--	if (svc_alien_sock(net, fd)) {
--		printk(KERN_ERR "%s: socket net is different to NFSd's one\n", __func__);
--		return -EINVAL;
--	}
--
- 	err = nfsd_create_serv(net);
- 	if (err != 0)
- 		return err;
+ 	dev_dbg(fe->dvb->device, "%s:\n", __func__);
  
--	err = svc_addsock(nn->nfsd_serv, fd, buf, SIMPLE_TRANSACTION_LIMIT, cred);
-+	err = svc_addsock(nn->nfsd_serv, net, fd, buf, SIMPLE_TRANSACTION_LIMIT, cred);
++	mutex_lock(&fe->remove_mutex);
++
+ 	if (fe->exit != DVB_FE_DEVICE_REMOVED)
+ 		fe->exit = DVB_FE_NORMAL_EXIT;
+ 	mb();
  
- 	if (err >= 0 &&
- 	    !nn->nfsd_serv->sv_nrthreads && !xchg(&nn->keep_active, 1))
-diff --git a/include/linux/sunrpc/svcsock.h b/include/linux/sunrpc/svcsock.h
-index bcc555c7ae9c6..13aff355d5a13 100644
---- a/include/linux/sunrpc/svcsock.h
-+++ b/include/linux/sunrpc/svcsock.h
-@@ -59,10 +59,9 @@ int		svc_recv(struct svc_rqst *, long);
- int		svc_send(struct svc_rqst *);
- void		svc_drop(struct svc_rqst *);
- void		svc_sock_update_bufs(struct svc_serv *serv);
--bool		svc_alien_sock(struct net *net, int fd);
--int		svc_addsock(struct svc_serv *serv, const int fd,
--					char *name_return, const size_t len,
--					const struct cred *cred);
-+int		svc_addsock(struct svc_serv *serv, struct net *net,
-+			    const int fd, char *name_return, const size_t len,
-+			    const struct cred *cred);
- void		svc_init_xprt_sock(void);
- void		svc_cleanup_xprt_sock(void);
- struct svc_xprt *svc_sock_create(struct svc_serv *serv, int prot);
-diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
-index 7107fbcbff343..d808c00cdbac1 100644
---- a/net/sunrpc/svcsock.c
-+++ b/net/sunrpc/svcsock.c
-@@ -1338,25 +1338,10 @@ static struct svc_sock *svc_setup_socket(struct svc_serv *serv,
- 	return svsk;
+-	if (!fepriv->thread)
++	if (!fepriv->thread) {
++		mutex_unlock(&fe->remove_mutex);
+ 		return;
++	}
+ 
+ 	kthread_stop(fepriv->thread);
+ 
++	mutex_unlock(&fe->remove_mutex);
++
++	if (fepriv->dvbdev->users < -1) {
++		wait_event(fepriv->dvbdev->wait_queue,
++			   fepriv->dvbdev->users == -1);
++	}
++
+ 	sema_init(&fepriv->sem, 1);
+ 	fepriv->state = FESTATE_IDLE;
+ 
+@@ -2761,9 +2772,13 @@ static int dvb_frontend_open(struct inode *inode, struct file *file)
+ 	struct dvb_adapter *adapter = fe->dvb;
+ 	int ret;
+ 
++	mutex_lock(&fe->remove_mutex);
++
+ 	dev_dbg(fe->dvb->device, "%s:\n", __func__);
+-	if (fe->exit == DVB_FE_DEVICE_REMOVED)
+-		return -ENODEV;
++	if (fe->exit == DVB_FE_DEVICE_REMOVED) {
++		ret = -ENODEV;
++		goto err_remove_mutex;
++	}
+ 
+ 	if (adapter->mfe_shared == 2) {
+ 		mutex_lock(&adapter->mfe_lock);
+@@ -2771,7 +2786,8 @@ static int dvb_frontend_open(struct inode *inode, struct file *file)
+ 			if (adapter->mfe_dvbdev &&
+ 			    !adapter->mfe_dvbdev->writers) {
+ 				mutex_unlock(&adapter->mfe_lock);
+-				return -EBUSY;
++				ret = -EBUSY;
++				goto err_remove_mutex;
+ 			}
+ 			adapter->mfe_dvbdev = dvbdev;
+ 		}
+@@ -2794,8 +2810,10 @@ static int dvb_frontend_open(struct inode *inode, struct file *file)
+ 			while (mferetry-- && (mfedev->users != -1 ||
+ 					      mfepriv->thread)) {
+ 				if (msleep_interruptible(500)) {
+-					if (signal_pending(current))
+-						return -EINTR;
++					if (signal_pending(current)) {
++						ret = -EINTR;
++						goto err_remove_mutex;
++					}
+ 				}
+ 			}
+ 
+@@ -2807,7 +2825,8 @@ static int dvb_frontend_open(struct inode *inode, struct file *file)
+ 				if (mfedev->users != -1 ||
+ 				    mfepriv->thread) {
+ 					mutex_unlock(&adapter->mfe_lock);
+-					return -EBUSY;
++					ret = -EBUSY;
++					goto err_remove_mutex;
+ 				}
+ 				adapter->mfe_dvbdev = dvbdev;
+ 			}
+@@ -2866,6 +2885,8 @@ static int dvb_frontend_open(struct inode *inode, struct file *file)
+ 
+ 	if (adapter->mfe_shared)
+ 		mutex_unlock(&adapter->mfe_lock);
++
++	mutex_unlock(&fe->remove_mutex);
+ 	return ret;
+ 
+ err3:
+@@ -2887,6 +2908,9 @@ static int dvb_frontend_open(struct inode *inode, struct file *file)
+ err0:
+ 	if (adapter->mfe_shared)
+ 		mutex_unlock(&adapter->mfe_lock);
++
++err_remove_mutex:
++	mutex_unlock(&fe->remove_mutex);
+ 	return ret;
  }
  
--bool svc_alien_sock(struct net *net, int fd)
--{
--	int err;
--	struct socket *sock = sockfd_lookup(fd, &err);
--	bool ret = false;
--
--	if (!sock)
--		goto out;
--	if (sock_net(sock->sk) != net)
--		ret = true;
--	sockfd_put(sock);
--out:
--	return ret;
--}
--EXPORT_SYMBOL_GPL(svc_alien_sock);
--
- /**
-  * svc_addsock - add a listener socket to an RPC service
-  * @serv: pointer to RPC service to which to add a new listener
-+ * @net: caller's network namespace
-  * @fd: file descriptor of the new listener
-  * @name_return: pointer to buffer to fill in with name of listener
-  * @len: size of the buffer
-@@ -1366,8 +1351,8 @@ EXPORT_SYMBOL_GPL(svc_alien_sock);
-  * Name is terminated with '\n'.  On error, returns a negative errno
-  * value.
-  */
--int svc_addsock(struct svc_serv *serv, const int fd, char *name_return,
--		const size_t len, const struct cred *cred)
-+int svc_addsock(struct svc_serv *serv, struct net *net, const int fd,
-+		char *name_return, const size_t len, const struct cred *cred)
- {
- 	int err = 0;
- 	struct socket *so = sockfd_lookup(fd, &err);
-@@ -1378,6 +1363,9 @@ int svc_addsock(struct svc_serv *serv, const int fd, char *name_return,
+@@ -2897,6 +2921,8 @@ static int dvb_frontend_release(struct inode *inode, struct file *file)
+ 	struct dvb_frontend_private *fepriv = fe->frontend_priv;
+ 	int ret;
  
- 	if (!so)
- 		return err;
-+	err = -EINVAL;
-+	if (sock_net(so->sk) != net)
-+		goto out;
- 	err = -EAFNOSUPPORT;
- 	if ((so->sk->sk_family != PF_INET) && (so->sk->sk_family != PF_INET6))
- 		goto out;
++	mutex_lock(&fe->remove_mutex);
++
+ 	dev_dbg(fe->dvb->device, "%s:\n", __func__);
+ 
+ 	if ((file->f_flags & O_ACCMODE) != O_RDONLY) {
+@@ -2918,10 +2944,18 @@ static int dvb_frontend_release(struct inode *inode, struct file *file)
+ 		}
+ 		mutex_unlock(&fe->dvb->mdev_lock);
+ #endif
+-		if (fe->exit != DVB_FE_NO_EXIT)
+-			wake_up(&dvbdev->wait_queue);
+ 		if (fe->ops.ts_bus_ctrl)
+ 			fe->ops.ts_bus_ctrl(fe, 0);
++
++		if (fe->exit != DVB_FE_NO_EXIT) {
++			mutex_unlock(&fe->remove_mutex);
++			wake_up(&dvbdev->wait_queue);
++		} else {
++			mutex_unlock(&fe->remove_mutex);
++		}
++
++	} else {
++		mutex_unlock(&fe->remove_mutex);
+ 	}
+ 
+ 	dvb_frontend_put(fe);
+@@ -3022,6 +3056,7 @@ int dvb_register_frontend(struct dvb_adapter *dvb,
+ 	fepriv = fe->frontend_priv;
+ 
+ 	kref_init(&fe->refcount);
++	mutex_init(&fe->remove_mutex);
+ 
+ 	/*
+ 	 * After initialization, there need to be two references: one
+diff --git a/include/media/dvb_frontend.h b/include/media/dvb_frontend.h
+index e7c44870f20de..367d5381217b5 100644
+--- a/include/media/dvb_frontend.h
++++ b/include/media/dvb_frontend.h
+@@ -686,7 +686,10 @@ struct dtv_frontend_properties {
+  * @id:			Frontend ID
+  * @exit:		Used to inform the DVB core that the frontend
+  *			thread should exit (usually, means that the hardware
+- *			got disconnected.
++ *			got disconnected).
++ * @remove_mutex:	mutex that avoids a race condition between a callback
++ *			called when the hardware is disconnected and the
++ *			file_operations of dvb_frontend.
+  */
+ 
+ struct dvb_frontend {
+@@ -704,6 +707,7 @@ struct dvb_frontend {
+ 	int (*callback)(void *adapter_priv, int component, int cmd, int arg);
+ 	int id;
+ 	unsigned int exit;
++	struct mutex remove_mutex;
+ };
+ 
+ /**
 -- 
 2.39.2
 
