@@ -2,54 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1930726EE4
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:54:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2510E726FB1
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:01:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235068AbjFGUyE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:54:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55116 "EHLO
+        id S235926AbjFGVBC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:01:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235397AbjFGUxl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:53:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93CBD212B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:53:29 -0700 (PDT)
+        with ESMTP id S236400AbjFGVAi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 147441BE2
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:00:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 17FE1647A8
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:53:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A215C433EF;
-        Wed,  7 Jun 2023 20:53:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 73177648EE
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:00:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8294EC433EF;
+        Wed,  7 Jun 2023 21:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171208;
-        bh=PrAnEKQM8ba/kaH3fVF6IzMwaMifVuJ1DuyslPXnVho=;
+        s=korg; t=1686171618;
+        bh=NH8M4Vkw2BQt3LsPuLdH6of9kXMYlZqorUb6IJFapBc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qHL8v/uexbOo7K9FBIqXxvEstaYCGJhcK1iNl+jV1BGnvgOhy8HRChqu4iK5baxLh
-         ZcRG2TH615heVmExsf0VXnDB1FCCnq+3qxOX9YVsmk9TGbYpB22H0X661JDWkH/ez8
-         EpCk7ryZtxltlNMTZu7Tvgieq1PCC56b+IVCy6T4=
+        b=UOOstNooCHQHKywITm8Pr5eWNW1mZl4aCvIcZyQKhOPGsq2gveCBaLuxko1FJnwdF
+         qT3+ccS2gsP6II1TseahjrLaTCP4Qnw66O7wZC1u+pOq+a0A9V37tP4xWj7zmdJMde
+         lYNH1auRXfkUmHNVyBWBaz7p4uT7y2j0AiFwxpMI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Haibo Li <haibo.li@mediatek.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        patches@lists.linux.dev, Heiko Carstens <hca@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 30/99] ARM: 9295/1: unwind:fix unwind abort for uleb128 case
+Subject: [PATCH 5.15 079/159] s390/topology: honour nr_cpu_ids when adding CPUs
 Date:   Wed,  7 Jun 2023 22:16:22 +0200
-Message-ID: <20230607200901.203913414@linuxfoundation.org>
+Message-ID: <20230607200906.262696117@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,91 +54,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Haibo Li <haibo.li@mediatek.com>
+From: Alexander Gordeev <agordeev@linux.ibm.com>
 
-[ Upstream commit fa3eeb638de0c1a9d2d860e5b48259facdd65176 ]
+[ Upstream commit a33239be2d38ff5a44427db1707c08787508d34a ]
 
-When unwind instruction is 0xb2,the subsequent instructions
-are uleb128 bytes.
-For now,it uses only the first uleb128 byte in code.
+When SMT thread CPUs are added to CPU masks the nr_cpu_ids
+limit is not checked and could be exceeded. This leads to
+a warning for example if CONFIG_DEBUG_PER_CPU_MAPS is set
+and the command line parameter nr_cpus is set to 1.
 
-For vsp increments of 0x204~0x400,use one uleb128 byte like below:
-0xc06a00e4 <unwind_test_work>: 0x80b27fac
-  Compact model index: 0
-  0xb2 0x7f vsp = vsp + 1024
-  0xac      pop {r4, r5, r6, r7, r8, r14}
-
-For vsp increments larger than 0x400,use two uleb128 bytes like below:
-0xc06a00e4 <unwind_test_work>: @0xc0cc9e0c
-  Compact model index: 1
-  0xb2 0x81 0x01 vsp = vsp + 1032
-  0xac      pop {r4, r5, r6, r7, r8, r14}
-The unwind works well since the decoded uleb128 byte is also 0x81.
-
-For vsp increments larger than 0x600,use two uleb128 bytes like below:
-0xc06a00e4 <unwind_test_work>: @0xc0cc9e0c
-  Compact model index: 1
-  0xb2 0x81 0x02 vsp = vsp + 1544
-  0xac      pop {r4, r5, r6, r7, r8, r14}
-In this case,the decoded uleb128 result is 0x101(vsp=0x204+(0x101<<2)).
-While the uleb128 used in code is 0x81(vsp=0x204+(0x81<<2)).
-The unwind aborts at this frame since it gets incorrect vsp.
-
-To fix this,add uleb128 decode to cover all the above case.
-
-Signed-off-by: Haibo Li <haibo.li@mediatek.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/kernel/unwind.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ arch/s390/kernel/topology.c | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
-diff --git a/arch/arm/kernel/unwind.c b/arch/arm/kernel/unwind.c
-index 4574e6aea0a52..f321c2aa94e1c 100644
---- a/arch/arm/kernel/unwind.c
-+++ b/arch/arm/kernel/unwind.c
-@@ -300,6 +300,29 @@ static int unwind_exec_pop_subset_r0_to_r3(struct unwind_ctrl_block *ctrl,
- 	return URC_OK;
+diff --git a/arch/s390/kernel/topology.c b/arch/s390/kernel/topology.c
+index 58f8291950cbf..1f4f37a26c26d 100644
+--- a/arch/s390/kernel/topology.c
++++ b/arch/s390/kernel/topology.c
+@@ -96,7 +96,7 @@ static void cpu_group_map(cpumask_t *dst, struct mask_info *info, unsigned int c
+ static void cpu_thread_map(cpumask_t *dst, unsigned int cpu)
+ {
+ 	static cpumask_t mask;
+-	int i;
++	unsigned int max_cpu;
+ 
+ 	cpumask_clear(&mask);
+ 	if (!cpumask_test_cpu(cpu, &cpu_setup_mask))
+@@ -105,9 +105,10 @@ static void cpu_thread_map(cpumask_t *dst, unsigned int cpu)
+ 	if (topology_mode != TOPOLOGY_MODE_HW)
+ 		goto out;
+ 	cpu -= cpu % (smp_cpu_mtid + 1);
+-	for (i = 0; i <= smp_cpu_mtid; i++) {
+-		if (cpumask_test_cpu(cpu + i, &cpu_setup_mask))
+-			cpumask_set_cpu(cpu + i, &mask);
++	max_cpu = min(cpu + smp_cpu_mtid, nr_cpu_ids - 1);
++	for (; cpu <= max_cpu; cpu++) {
++		if (cpumask_test_cpu(cpu, &cpu_setup_mask))
++			cpumask_set_cpu(cpu, &mask);
+ 	}
+ out:
+ 	cpumask_copy(dst, &mask);
+@@ -124,25 +125,26 @@ static void add_cpus_to_mask(struct topology_core *tl_core,
+ 	unsigned int core;
+ 
+ 	for_each_set_bit(core, &tl_core->mask, TOPOLOGY_CORE_BITS) {
+-		unsigned int rcore;
+-		int lcpu, i;
++		unsigned int max_cpu, rcore;
++		int cpu;
+ 
+ 		rcore = TOPOLOGY_CORE_BITS - 1 - core + tl_core->origin;
+-		lcpu = smp_find_processor_id(rcore << smp_cpu_mt_shift);
+-		if (lcpu < 0)
++		cpu = smp_find_processor_id(rcore << smp_cpu_mt_shift);
++		if (cpu < 0)
+ 			continue;
+-		for (i = 0; i <= smp_cpu_mtid; i++) {
+-			topo = &cpu_topology[lcpu + i];
++		max_cpu = min(cpu + smp_cpu_mtid, nr_cpu_ids - 1);
++		for (; cpu <= max_cpu; cpu++) {
++			topo = &cpu_topology[cpu];
+ 			topo->drawer_id = drawer->id;
+ 			topo->book_id = book->id;
+ 			topo->socket_id = socket->id;
+ 			topo->core_id = rcore;
+-			topo->thread_id = lcpu + i;
++			topo->thread_id = cpu;
+ 			topo->dedicated = tl_core->d;
+-			cpumask_set_cpu(lcpu + i, &drawer->mask);
+-			cpumask_set_cpu(lcpu + i, &book->mask);
+-			cpumask_set_cpu(lcpu + i, &socket->mask);
+-			smp_cpu_set_polarization(lcpu + i, tl_core->pp);
++			cpumask_set_cpu(cpu, &drawer->mask);
++			cpumask_set_cpu(cpu, &book->mask);
++			cpumask_set_cpu(cpu, &socket->mask);
++			smp_cpu_set_polarization(cpu, tl_core->pp);
+ 		}
+ 	}
  }
- 
-+static unsigned long unwind_decode_uleb128(struct unwind_ctrl_block *ctrl)
-+{
-+	unsigned long bytes = 0;
-+	unsigned long insn;
-+	unsigned long result = 0;
-+
-+	/*
-+	 * unwind_get_byte() will advance `ctrl` one instruction at a time, so
-+	 * loop until we get an instruction byte where bit 7 is not set.
-+	 *
-+	 * Note: This decodes a maximum of 4 bytes to output 28 bits data where
-+	 * max is 0xfffffff: that will cover a vsp increment of 1073742336, hence
-+	 * it is sufficient for unwinding the stack.
-+	 */
-+	do {
-+		insn = unwind_get_byte(ctrl);
-+		result |= (insn & 0x7f) << (bytes * 7);
-+		bytes++;
-+	} while (!!(insn & 0x80) && (bytes != sizeof(result)));
-+
-+	return result;
-+}
-+
- /*
-  * Execute the current unwind instruction.
-  */
-@@ -353,7 +376,7 @@ static int unwind_exec_insn(struct unwind_ctrl_block *ctrl)
- 		if (ret)
- 			goto error;
- 	} else if (insn == 0xb2) {
--		unsigned long uleb128 = unwind_get_byte(ctrl);
-+		unsigned long uleb128 = unwind_decode_uleb128(ctrl);
- 
- 		ctrl->vrs[SP] += 0x204 + (uleb128 << 2);
- 	} else {
 -- 
 2.39.2
 
