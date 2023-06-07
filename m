@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9B1F726E73
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0E16726F93
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:00:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235089AbjFGUts (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:49:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49650 "EHLO
+        id S235741AbjFGVAl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:00:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235213AbjFGUt2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:49:28 -0400
+        with ESMTP id S235913AbjFGVAE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9B912735
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:49:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6646B2120
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:59:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 88C436468F
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:49:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E870C433D2;
-        Wed,  7 Jun 2023 20:48:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7ADA6648D0
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:59:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8992CC433EF;
+        Wed,  7 Jun 2023 20:59:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170940;
-        bh=x/V/RBeJcyDiQDXAtSSZoqmN131WiEOgV7eiYgyexhk=;
+        s=korg; t=1686171552;
+        bh=5S9NBUo9UX7UvqDms7p77VakqIs61wZCNv5X+vmHGuc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0PlooKwAURoFwpNMM5MusykHbL0YkJQkW35047nhSl+P9WsAPB/3rr8KbawuB4qgt
-         Dy6iEbpLAv9dcPzEdtpr5XkhnHyPRXYFIlWgpvIavNNKNEUZ1z8VyCgj6jFVBrGz6G
-         xurJN7VywijOKe3mQ7OwJVyQFbAmOeNsL3Vl2LHU=
+        b=auKIVAy5+p9brFG/h7vRAH2n7BKoke9YvTyY10BjBGTz488fOAh/PD7OPHcJYfiHG
+         xa9aE8mQnMBscflP5YuUGcZOYyilxU64BHk5NHW1jeOIplZkdNA3js36+bugZNxbDP
+         yJUP1k33r7M6tTCrK6Pu7/e20f/U6IWS+/ZK8LF0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 049/120] media: dvb-usb: az6027: fix three null-ptr-deref in az6027_i2c_xfer()
+        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 062/159] ASoC: ssm2602: Add workaround for playback distortions
 Date:   Wed,  7 Jun 2023 22:16:05 +0200
-Message-ID: <20230607200902.450287213@linuxfoundation.org>
+Message-ID: <20230607200905.717452231@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,61 +52,135 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wei Chen <harperchen1110@gmail.com>
+From: Paweł Anikiel <pan@semihalf.com>
 
-[ Upstream commit 858e97d7956d17a2cb56a9413468704a4d5abfe1 ]
+[ Upstream commit f63550e2b165208a2f382afcaf5551df9569e1d4 ]
 
-In az6027_i2c_xfer, msg is controlled by user. When msg[i].buf is null,
-commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in
-az6027_i2c_xfer()") fix the null-ptr-deref bug when msg[i].addr is 0x99.
-However, null-ptr-deref also happens when msg[i].addr is 0xd0 and 0xc0.
-We add check on msg[i].len to prevent null-ptr-deref.
+Apply a workaround for what appears to be a hardware quirk.
 
-Link: https://lore.kernel.org/linux-media/20230310165604.3093483-1-harperchen1110@gmail.com
-Signed-off-by: Wei Chen <harperchen1110@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+The problem seems to happen when enabling "whole chip power" (bit D7
+register R6) for the very first time after the chip receives power. If
+either "output" (D4) or "DAC" (D3) aren't powered on at that time,
+playback becomes very distorted later on.
+
+This happens on the Google Chameleon v3, as well as on a ZYBO Z7-10:
+https://ez.analog.com/audio/f/q-a/543726/solved-ssm2603-right-output-offset-issue/480229
+I suspect this happens only when using an external MCLK signal (which
+is the case for both of these boards).
+
+Here are some experiments run on a Google Chameleon v3. These were run
+in userspace using a wrapper around the i2cset utility:
+ssmset() {
+        i2cset -y 0 0x1a $(($1*2)) $2
+}
+
+For each of the following sequences, we apply power to the ssm2603
+chip, set the configuration registers R0-R5 and R7-R8, run the selected
+sequence, and check for distortions on playback.
+
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x07 # chip, out, dac
+  OK
+
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x87 # out, dac
+  ssmset 0x06 0x07 # chip
+  OK
+
+  (disable MCLK)
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x1f # chip
+  ssmset 0x06 0x07 # out, dac
+  (enable MCLK)
+  OK
+
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x1f # chip
+  ssmset 0x06 0x07 # out, dac
+  NOT OK
+
+  ssmset 0x06 0x1f # chip
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x07 # out, dac
+  NOT OK
+
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x0f # chip, out
+  ssmset 0x06 0x07 # dac
+  NOT OK
+
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x17 # chip, dac
+  ssmset 0x06 0x07 # out
+  NOT OK
+
+For each of the following sequences, we apply power to the ssm2603
+chip, run the selected sequence, issue a reset with R15, configure
+R0-R5 and R7-R8, run one of the NOT OK sequences from above, and check
+for distortions.
+
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x07 # chip, out, dac
+  OK
+
+  (disable MCLK)
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x07 # chip, out, dac
+  (enable MCLK after reset)
+  NOT OK
+
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x17 # chip, dac
+  NOT OK
+
+  ssmset 0x09 0x01 # core
+  ssmset 0x06 0x0f # chip, out
+  NOT OK
+
+  ssmset 0x06 0x07 # chip, out, dac
+  NOT OK
+
+Signed-off-by: Paweł Anikiel <pan@semihalf.com
+Link: https://lore.kernel.org/r/20230508113037.137627-8-pan@semihalf.com
+Signed-off-by: Mark Brown <broonie@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb/az6027.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ sound/soc/codecs/ssm2602.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/media/usb/dvb-usb/az6027.c b/drivers/media/usb/dvb-usb/az6027.c
-index 32b4ee65c2802..991f4510aaebb 100644
---- a/drivers/media/usb/dvb-usb/az6027.c
-+++ b/drivers/media/usb/dvb-usb/az6027.c
-@@ -988,6 +988,10 @@ static int az6027_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[], int n
- 			/* write/read request */
- 			if (i + 1 < num && (msg[i + 1].flags & I2C_M_RD)) {
- 				req = 0xB9;
-+				if (msg[i].len < 1) {
-+					i = -EOPNOTSUPP;
-+					break;
-+				}
- 				index = (((msg[i].buf[0] << 8) & 0xff00) | (msg[i].buf[1] & 0x00ff));
- 				value = msg[i].addr + (msg[i].len << 8);
- 				length = msg[i + 1].len + 6;
-@@ -1001,6 +1005,10 @@ static int az6027_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[], int n
+diff --git a/sound/soc/codecs/ssm2602.c b/sound/soc/codecs/ssm2602.c
+index 7964e922b07f6..0a3540c5cdb5c 100644
+--- a/sound/soc/codecs/ssm2602.c
++++ b/sound/soc/codecs/ssm2602.c
+@@ -53,6 +53,18 @@ static const struct reg_default ssm2602_reg[SSM2602_CACHEREGNUM] = {
+ 	{ .reg = 0x09, .def = 0x0000 }
+ };
  
- 				/* demod 16bit addr */
- 				req = 0xBD;
-+				if (msg[i].len < 1) {
-+					i = -EOPNOTSUPP;
-+					break;
-+				}
- 				index = (((msg[i].buf[0] << 8) & 0xff00) | (msg[i].buf[1] & 0x00ff));
- 				value = msg[i].addr + (2 << 8);
- 				length = msg[i].len - 2;
-@@ -1026,6 +1034,10 @@ static int az6027_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[], int n
- 			} else {
++/*
++ * ssm2602 register patch
++ * Workaround for playback distortions after power up: activates digital
++ * core, and then powers on output, DAC, and whole chip at the same time
++ */
++
++static const struct reg_sequence ssm2602_patch[] = {
++	{ SSM2602_ACTIVE, 0x01 },
++	{ SSM2602_PWR,    0x07 },
++	{ SSM2602_RESET,  0x00 },
++};
++
  
- 				req = 0xBD;
-+				if (msg[i].len < 1) {
-+					i = -EOPNOTSUPP;
-+					break;
-+				}
- 				index = msg[i].buf[0] & 0x00FF;
- 				value = msg[i].addr + (1 << 8);
- 				length = msg[i].len - 1;
+ /*Appending several "None"s just for OSS mixer use*/
+ static const char *ssm2602_input_select[] = {
+@@ -589,6 +601,9 @@ static int ssm260x_component_probe(struct snd_soc_component *component)
+ 		return ret;
+ 	}
+ 
++	regmap_register_patch(ssm2602->regmap, ssm2602_patch,
++			      ARRAY_SIZE(ssm2602_patch));
++
+ 	/* set the update bits */
+ 	regmap_update_bits(ssm2602->regmap, SSM2602_LINVOL,
+ 			    LINVOL_LRIN_BOTH, LINVOL_LRIN_BOTH);
 -- 
 2.39.2
 
