@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7B2C726F19
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFEC3726E7D
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235477AbjFGUze (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:55:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56440 "EHLO
+        id S235230AbjFGUuw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:50:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235866AbjFGUzS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:55:18 -0400
+        with ESMTP id S234817AbjFGUuZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:50:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C378992
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:55:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F051426A0
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:50:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 607D0647E4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:55:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74AA2C433D2;
-        Wed,  7 Jun 2023 20:55:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D19DA646E1
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:50:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4510C433D2;
+        Wed,  7 Jun 2023 20:50:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171316;
-        bh=v1H9KINHYtMXlscOlXvEON4/t0yKwh97LJqgsXOASCM=;
+        s=korg; t=1686171018;
+        bh=odvwcAggtHNcPTfm+IXLPgezGhU2JT22FXQI+zmUYtA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jiYtnHejwMRDfaylZ4kN9chcURsgveAARz588b2apg5VPAU3G2qm2I+URs2WnUsLO
-         9f+uqvChY5MVMyxNXnBs5vF6DECDBMUEldzMhEPOiyJopqWQb8TZu0hNq9/K6Cz1ft
-         Us36aQk3yZ9rn2kL3jbjeC/GhACv+FyaEli6koco=
+        b=G00lE3nAmkbW666/DWgx37iQ21+pV8etEUVqqn0jr3GsE2KQJ05i5f9YSsYEpJEeW
+         xmfg2mC7o/vde9yunY5CQUF12JFvUGwCo5JFvK5Ob/9KysvoEm7SlummEt9zgY2Wjv
+         WJYEWdRJhRriGyWlgUeHReSux3A4vk55O+sbqK+s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 44/99] media: dvb-usb: dw2102: fix uninit-value in su3000_read_mac_address
+        patches@lists.linux.dev, Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 080/120] iio: dac: build ad5758 driver when AD5758 is selected
 Date:   Wed,  7 Jun 2023 22:16:36 +0200
-Message-ID: <20230607200901.632144446@linuxfoundation.org>
+Message-ID: <20230607200903.419579131@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,40 +54,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wei Chen <harperchen1110@gmail.com>
+From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 
-[ Upstream commit a3fd1ef27aa686d871cefe207bd6168c4b0cd29e ]
+commit a146eccb68be161ae9eab5f3f68bb0ed7c0fbaa8 upstream.
 
-In su3000_read_mac_address, if i2c_transfer fails to execute two
-messages, array mac address will not be initialized. Without handling
-such error, later in function dvb_usb_adapter_dvb_init, proposed_mac
-is accessed before initialization.
+Commit 28d1a7ac2a0d ("iio: dac: Add AD5758 support") adds the config AD5758
+and the corresponding driver ad5758.c. In the Makefile, the ad5758 driver
+is however included when AD5755 is selected, not when AD5758 is selected.
 
-Fix this error by returning a negative value if message execution fails.
+Probably, this was simply a mistake that happened by copy-and-paste and
+forgetting to adjust the actual line. Surprisingly, no one has ever noticed
+that this driver is actually only included when AD5755 is selected and that
+the config AD5758 has actually no effect on the build.
 
-Link: https://lore.kernel.org/linux-media/20230328124416.560889-1-harperchen1110@gmail.com
-Signed-off-by: Wei Chen <harperchen1110@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 28d1a7ac2a0d ("iio: dac: Add AD5758 support")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Link: https://lore.kernel.org/r/20230508040208.12033-1-lukas.bulwahn@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/dvb-usb/dw2102.c | 2 +-
+ drivers/iio/dac/Makefile |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/dvb-usb/dw2102.c b/drivers/media/usb/dvb-usb/dw2102.c
-index 8493ebb377c4d..f8f589ebab74b 100644
---- a/drivers/media/usb/dvb-usb/dw2102.c
-+++ b/drivers/media/usb/dvb-usb/dw2102.c
-@@ -946,7 +946,7 @@ static int su3000_read_mac_address(struct dvb_usb_device *d, u8 mac[6])
- 	for (i = 0; i < 6; i++) {
- 		obuf[1] = 0xf0 + i;
- 		if (i2c_transfer(&d->i2c_adap, msg, 2) != 2)
--			break;
-+			return -1;
- 		else
- 			mac[i] = ibuf[0];
- 	}
--- 
-2.39.2
-
+--- a/drivers/iio/dac/Makefile
++++ b/drivers/iio/dac/Makefile
+@@ -16,7 +16,7 @@ obj-$(CONFIG_AD5592R_BASE) += ad5592r-ba
+ obj-$(CONFIG_AD5592R) += ad5592r.o
+ obj-$(CONFIG_AD5593R) += ad5593r.o
+ obj-$(CONFIG_AD5755) += ad5755.o
+-obj-$(CONFIG_AD5755) += ad5758.o
++obj-$(CONFIG_AD5758) += ad5758.o
+ obj-$(CONFIG_AD5761) += ad5761.o
+ obj-$(CONFIG_AD5764) += ad5764.o
+ obj-$(CONFIG_AD5770R) += ad5770r.o
 
 
