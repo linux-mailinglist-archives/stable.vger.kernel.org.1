@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04736726C1D
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:30:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28E9F726C1E
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:30:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233602AbjFGUax (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:30:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57236 "EHLO
+        id S233603AbjFGUay (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:30:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233835AbjFGUai (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1ACF26A8
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:30:29 -0700 (PDT)
+        with ESMTP id S233854AbjFGUaj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43B842691
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:30:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 81087644DB
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:30:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91842C433EF;
-        Wed,  7 Jun 2023 20:30:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1460B644C9
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:30:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 298BAC433D2;
+        Wed,  7 Jun 2023 20:30:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169828;
-        bh=6VU2zzIwr+RE9Mo8aCwBp2NGZ4D6lf2FlnQQ66bN+3g=;
+        s=korg; t=1686169831;
+        bh=ZKk8Agv45yvVeMQ5bFp0XMVE/4NZq85dTgG1SlV00o4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MbK7EpQdkRHzLcsZM3p2kBbb9uSu4mdGFW0wrpBJ3RdSrxHSJ2+cTwxHFtsOJO50c
-         ZgIiGu2ul7eIReywhaYHNDivovOQaBW6fetbhoZFl9Wr7fM7XG7BrsAOFD3T5ePVJ4
-         GKQYg5jP3/s4eZ6c3J/XmbIFuDpOeuVZUccFc9so=
+        b=rWsFclgzpxPu88pmeI6eFDvGwyfCYLyaIYk7YaxkMrmZm9WjEWkh7o+GVEs4hkGml
+         yGNKAmKaUkkUldxQSY0+WpL9Zqs59DcP4xyugTU8C6P6QbWNKgIhUz6n3BNG82kxWB
+         Z0VchjjghuL82zq2m4zXLM3IqOgovPLo4XJCwJlk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Dan Carpenter <error27@gmail.com>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
+        patches@lists.linux.dev, Sean Nyekjaer <sean@geanix.com>,
+        Olivier Moysan <olivier.moysan@foss.st.com>,
         Stable@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.3 200/286] iio: accel: kx022a fix irq getting
-Date:   Wed,  7 Jun 2023 22:14:59 +0200
-Message-ID: <20230607200929.788653588@linuxfoundation.org>
+Subject: [PATCH 6.3 201/286] iio: adc: stm32-adc: skip adc-channels setup if none is present
+Date:   Wed,  7 Jun 2023 22:15:00 +0200
+Message-ID: <20230607200929.825686803@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
 References: <20230607200922.978677727@linuxfoundation.org>
@@ -46,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,50 +55,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matti Vaittinen <mazziesaccount@gmail.com>
+From: Sean Nyekjaer <sean@geanix.com>
 
-commit 56cd3d1c5c5b073a1a444eafdcf97d4d866d351a upstream.
+commit 3e27ef0ced49f8ae7883c25fadf76a2086e99025 upstream.
 
-The fwnode_irq_get_byname() was returning 0 at device-tree mapping
-error. If this occurred, the KX022A driver did abort the probe but
-errorneously directly returned the return value from
-fwnode_irq_get_byname() from probe. In case of a device-tree mapping
-error this indicated success.
+If only adc differential channels are defined driver will fail with
+stm32-adc: probe of 48003000.adc:adc@0 failed with error -22
 
-The fwnode_irq_get_byname() has since been fixed to not return zero on
-error so the check for fwnode_irq_get_byname() can be relaxed to only
-treat negative values as errors. This will also do decent fix even when
-backported to branches where fwnode_irq_get_byname() can still return
-zero on error because KX022A probe should later fail at IRQ requesting
-and a prober error handling should follow.
+Fix this by skipping the initialization if no channels are defined.
 
-Relax the return value check for fwnode_irq_get_byname() to only treat
-negative values as errors.
+This applies only to the legacy way of initializing adc channels.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202305110245.MFxC9bUj-lkp@intel.com/
-Link: https://lore.kernel.org/r/202305110245.MFxC9bUj-lkp@intel.com/
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Fixes: 7c1d1677b322 ("iio: accel: Support Kionix/ROHM KX022A accelerometer")
-Link: https://lore.kernel.org/r/b45b4b638db109c6078d243252df3a7b0485f7d5.1683875389.git.mazziesaccount@gmail.com
+Fixes: d7705f35448a ("iio: adc: stm32-adc: convert to device properties")
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Reviewed-by: Olivier Moysan <olivier.moysan@foss.st.com>
+Link: https://lore.kernel.org/r/20230503162029.3654093-2-sean@geanix.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/kionix-kx022a.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/stm32-adc.c |   42 +++++++++++++++++++++++-------------------
+ 1 file changed, 23 insertions(+), 19 deletions(-)
 
---- a/drivers/iio/accel/kionix-kx022a.c
-+++ b/drivers/iio/accel/kionix-kx022a.c
-@@ -1049,7 +1049,7 @@ int kx022a_probe_internal(struct device
- 		data->ien_reg = KX022A_REG_INC4;
- 	} else {
- 		irq = fwnode_irq_get_byname(fwnode, "INT2");
--		if (irq <= 0)
-+		if (irq < 0)
- 			return dev_err_probe(dev, irq, "No suitable IRQ\n");
+--- a/drivers/iio/adc/stm32-adc.c
++++ b/drivers/iio/adc/stm32-adc.c
+@@ -2037,6 +2037,7 @@ static int stm32_adc_legacy_chan_init(st
+ 	struct stm32_adc_diff_channel diff[STM32_ADC_CH_MAX];
+ 	struct device *dev = &indio_dev->dev;
+ 	u32 num_diff = adc->num_diff;
++	int num_se = nchans - num_diff;
+ 	int size = num_diff * sizeof(*diff) / sizeof(u32);
+ 	int scan_index = 0, ret, i, c;
+ 	u32 smp = 0, smps[STM32_ADC_CH_MAX], chans[STM32_ADC_CH_MAX];
+@@ -2063,29 +2064,32 @@ static int stm32_adc_legacy_chan_init(st
+ 			scan_index++;
+ 		}
+ 	}
+-
+-	ret = device_property_read_u32_array(dev, "st,adc-channels", chans,
+-					     nchans);
+-	if (ret)
+-		return ret;
+-
+-	for (c = 0; c < nchans; c++) {
+-		if (chans[c] >= adc_info->max_channels) {
+-			dev_err(&indio_dev->dev, "Invalid channel %d\n",
+-				chans[c]);
+-			return -EINVAL;
++	if (num_se > 0) {
++		ret = device_property_read_u32_array(dev, "st,adc-channels", chans, num_se);
++		if (ret) {
++			dev_err(&indio_dev->dev, "Failed to get st,adc-channels %d\n", ret);
++			return ret;
+ 		}
  
- 		data->inc_reg = KX022A_REG_INC5;
+-		/* Channel can't be configured both as single-ended & diff */
+-		for (i = 0; i < num_diff; i++) {
+-			if (chans[c] == diff[i].vinp) {
+-				dev_err(&indio_dev->dev, "channel %d misconfigured\n",	chans[c]);
++		for (c = 0; c < num_se; c++) {
++			if (chans[c] >= adc_info->max_channels) {
++				dev_err(&indio_dev->dev, "Invalid channel %d\n",
++					chans[c]);
+ 				return -EINVAL;
+ 			}
++
++			/* Channel can't be configured both as single-ended & diff */
++			for (i = 0; i < num_diff; i++) {
++				if (chans[c] == diff[i].vinp) {
++					dev_err(&indio_dev->dev, "channel %d misconfigured\n",
++						chans[c]);
++					return -EINVAL;
++				}
++			}
++			stm32_adc_chan_init_one(indio_dev, &channels[scan_index],
++						chans[c], 0, scan_index, false);
++			scan_index++;
+ 		}
+-		stm32_adc_chan_init_one(indio_dev, &channels[scan_index],
+-					chans[c], 0, scan_index, false);
+-		scan_index++;
+ 	}
+ 
+ 	if (adc->nsmps > 0) {
+@@ -2306,7 +2310,7 @@ static int stm32_adc_chan_fw_init(struct
+ 
+ 	if (legacy)
+ 		ret = stm32_adc_legacy_chan_init(indio_dev, adc, channels,
+-						 num_channels);
++						 timestamping ? num_channels - 1 : num_channels);
+ 	else
+ 		ret = stm32_adc_generic_chan_init(indio_dev, adc, channels);
+ 	if (ret < 0)
 
 
