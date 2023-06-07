@@ -2,156 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F035725790
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 10:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8423725CD6
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 13:17:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239351AbjFGI11 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 04:27:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36762 "EHLO
+        id S239706AbjFGLRH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 07:17:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239401AbjFGI10 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 04:27:26 -0400
-Received: from first.geanix.com (first.geanix.com [116.203.34.67])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04DE6E60;
-        Wed,  7 Jun 2023 01:27:22 -0700 (PDT)
-Received: from xps.skovby (85.184.138.13.dynamic.dhcp.aura-net.dk [85.184.138.13])
-        by first.geanix.com (Postfix) with ESMTPSA id 9FB794E5FAC;
-        Wed,  7 Jun 2023 08:27:19 +0000 (UTC)
-Authentication-Results: ORIGINATING;
-        auth=pass smtp.auth=martin@geanix.com smtp.mailfrom=martin@geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=geanix.com; s=first;
-        t=1686126439; bh=2eMiQLgQD/9nKKzqJMDwHwcTU9X0x8fIp1G9yAWOOlg=;
-        h=From:To:Cc:Subject:Date;
-        b=TtGoA9zU9lpibDRIM3aDNFNrxRnIwkOrgdkO2k2gc8vtM9pTKpROaI5bO8gBJvGvk
-         92sdMMzipGbcBN1RzvCRsHEkbZmE5AG3EpimE5KZcEuMYU6thfOcSTNVuTGOTfC4ap
-         iNl2WronG7BsYKsReUdimBavtb1Jer9Pkqkk3ebJV2LKz3qUZH7g4atFevGpgMgZhs
-         BVwP3YI8F2CEIVuAgu74UbRakxSH5kuJPX0hyKWW6Og93Cb9hFL7P8xZpQrpl4JlJo
-         c0+taRo/VeIBnzsd/ExOWecFl6EBlkZbB+cF2pdIhkkqM6ES+LC7QjdDCwkpxO8vkb
-         5qzoTVU7kBxLg==
-From:   =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc:     =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>,
-        stable@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCHv2] mmc: meson: remove redundant mmc_request_done() call from irq context
-Date:   Wed,  7 Jun 2023 10:27:12 +0200
-Message-Id: <20230607082713.517157-1-martin@geanix.com>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S239049AbjFGLRG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 07:17:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2C0D1BD;
+        Wed,  7 Jun 2023 04:17:04 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 36DF763DBA;
+        Wed,  7 Jun 2023 11:17:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 865BFC43444;
+        Wed,  7 Jun 2023 11:17:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686136623;
+        bh=SWgB+GJxunV8+GIcdNuLA2VAu98d93P4jlBSJxTcTc8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=dCocfCn5G6R1dJgV4Mmgd6QmoqMqRFKA44H9gGa/fGqbDWMqfznlnu83eU4rX3cpv
+         2g3YmLmKhzdK4uBPsKEf5RRJy2gDbmp3VzLjfoipyHazynVJbqidDhMtYqzgdoEmdE
+         hAQSBAK6dLwMOUWcB4LV6Fn39BYBcLwNJUr9X4uiMCKDyZ3UG25cqpgZDhiYHCgV1N
+         qEiiv2znG3AMjklFQRR021NlKqKMNAhGwtv7xM71Bn2dkvgxHcTKYuNAmnD9NWk+8V
+         BX9bCPRAjwtMTs4eSxvQ2DD8l0t1+mWji/1z4wHfAqtoNNTCp0uxrnbgg+6xhe4Wan
+         ZW0mkD4+vxNXQ==
+Received: from johan by xi.lan with local (Exim 4.94.2)
+        (envelope-from <johan+linaro@kernel.org>)
+        id 1q6rAM-0008LS-ET; Wed, 07 Jun 2023 13:17:26 +0200
+From:   Johan Hovold <johan+linaro@kernel.org>
+To:     Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Krishna Kurapati <quic_kriskura@quicinc.com>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        linux-usb@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org,
+        Sandeep Maheswaram <quic_c_sanm@quicinc.com>
+Subject: [PATCH 1/2] USB: dwc3: qcom: fix NULL-deref on suspend
+Date:   Wed,  7 Jun 2023 12:05:39 +0200
+Message-Id: <20230607100540.31045-2-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20230607100540.31045-1-johan+linaro@kernel.org>
+References: <20230607100540.31045-1-johan+linaro@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The call to mmc_request_done() can schedule, so it must not be called
-from irq context. Wake the irq thread if it needs to be called, and let
-its existing logic do its work.
+The Qualcomm dwc3 glue driver is currently accessing the driver data of
+the child core device during suspend and on wakeup interrupts. This is
+clearly a bad idea as the child may not have probed yet or could have
+been unbound from its driver.
 
-Fixes the following kernel bug, which appears when running an RT patched
-kernel on the AmLogic Meson AXG A113X SoC:
-[   11.111407] BUG: scheduling while atomic: kworker/0:1H/75/0x00010001
-[   11.111438] Modules linked in:
-[   11.111451] CPU: 0 PID: 75 Comm: kworker/0:1H Not tainted 6.4.0-rc3-rt2-rtx-00081-gfd07f41ed6b4-dirty #1
-[   11.111461] Hardware name: RTX AXG A113X Linux Platform Board (DT)
-[   11.111469] Workqueue: kblockd blk_mq_run_work_fn
-[   11.111492] Call trace:
-[   11.111497]  dump_backtrace+0xac/0xe8
-[   11.111510]  show_stack+0x18/0x28
-[   11.111518]  dump_stack_lvl+0x48/0x60
-[   11.111530]  dump_stack+0x18/0x24
-[   11.111537]  __schedule_bug+0x4c/0x68
-[   11.111548]  __schedule+0x80/0x574
-[   11.111558]  schedule_loop+0x2c/0x50
-[   11.111567]  schedule_rtlock+0x14/0x20
-[   11.111576]  rtlock_slowlock_locked+0x468/0x730
-[   11.111587]  rt_spin_lock+0x40/0x64
-[   11.111596]  __wake_up_common_lock+0x5c/0xc4
-[   11.111610]  __wake_up+0x18/0x24
-[   11.111620]  mmc_blk_mq_req_done+0x68/0x138
-[   11.111633]  mmc_request_done+0x104/0x118
-[   11.111644]  meson_mmc_request_done+0x38/0x48
-[   11.111654]  meson_mmc_irq+0x128/0x1f0
-[   11.111663]  __handle_irq_event_percpu+0x70/0x114
-[   11.111674]  handle_irq_event_percpu+0x18/0x4c
-[   11.111683]  handle_irq_event+0x80/0xb8
-[   11.111691]  handle_fasteoi_irq+0xa4/0x120
-[   11.111704]  handle_irq_desc+0x20/0x38
-[   11.111712]  generic_handle_domain_irq+0x1c/0x28
-[   11.111721]  gic_handle_irq+0x8c/0xa8
-[   11.111735]  call_on_irq_stack+0x24/0x4c
-[   11.111746]  do_interrupt_handler+0x88/0x94
-[   11.111757]  el1_interrupt+0x34/0x64
-[   11.111769]  el1h_64_irq_handler+0x18/0x24
-[   11.111779]  el1h_64_irq+0x64/0x68
-[   11.111786]  __add_wait_queue+0x0/0x4c
-[   11.111795]  mmc_blk_rw_wait+0x84/0x118
-[   11.111804]  mmc_blk_mq_issue_rq+0x5c4/0x654
-[   11.111814]  mmc_mq_queue_rq+0x194/0x214
-[   11.111822]  blk_mq_dispatch_rq_list+0x3ac/0x528
-[   11.111834]  __blk_mq_sched_dispatch_requests+0x340/0x4d0
-[   11.111847]  blk_mq_sched_dispatch_requests+0x38/0x70
-[   11.111858]  blk_mq_run_work_fn+0x3c/0x70
-[   11.111865]  process_one_work+0x17c/0x1f0
-[   11.111876]  worker_thread+0x1d4/0x26c
-[   11.111885]  kthread+0xe4/0xf4
-[   11.111894]  ret_from_fork+0x10/0x20
+The first such layering violation was part of the initial version of the
+driver, but this was later made worse when the hack that accesses the
+driver data of the grand child xhci device to configure the wakeup
+interrupts was added.
 
-Fixes: 51c5d8447bd7 ("MMC: meson: initial support for GX platforms")
-Cc: stable@vger.kernel.org
-Signed-off-by: Martin Hundebøll <martin@geanix.com>
+Fixing this properly is not that easily done, so add a sanity check to
+make sure that the child driver data is non-NULL before dereferencing it
+for now.
+
+Note that this relies on subtleties like the fact that driver core is
+making sure that the parent is not suspended while the child is probing.
+
+Reported-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/all/20230325165217.31069-4-manivannan.sadhasivam@linaro.org/
+Fixes: d9152161b4bf ("usb: dwc3: Add Qualcomm DWC3 glue layer driver")
+Fixes: 6895ea55c385 ("usb: dwc3: qcom: Configure wakeup interrupts during suspend")
+Cc: stable@vger.kernel.org	# 3.18: a872ab303d5d: "usb: dwc3: qcom: fix use-after-free on runtime-PM wakeup"
+Cc: Sandeep Maheswaram <quic_c_sanm@quicinc.com>
+Cc: Krishna Kurapati <quic_kriskura@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 ---
-Version 1 of this patch:
-https://lore.kernel.org/linux-amlogic/20230606065918.460866-1-martin@geanix.com/
+ drivers/usb/dwc3/dwc3-qcom.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-Changes since v1:
- * remove redundant change to meson_mmc_irq_thread(), as per Martin's
-   review
- * return early instead of assigning to "ret" variable
- * change commit short-log to reflect code removal instead of it being
-   moved. (Was: "mmc: meson: move mmc_request_done() call to irq thread")
-
- drivers/mmc/host/meson-gx-mmc.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
-index b8514d9d5e736..f90b0fd8d8b00 100644
---- a/drivers/mmc/host/meson-gx-mmc.c
-+++ b/drivers/mmc/host/meson-gx-mmc.c
-@@ -991,11 +991,8 @@ static irqreturn_t meson_mmc_irq(int irq, void *dev_id)
- 
- 		if (data && !cmd->error)
- 			data->bytes_xfered = data->blksz * data->blocks;
--		if (meson_mmc_bounce_buf_read(data) ||
--		    meson_mmc_get_next_command(cmd))
--			ret = IRQ_WAKE_THREAD;
--		else
--			ret = IRQ_HANDLED;
+diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
+index 959fc925ca7c..79b22abf9727 100644
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -308,7 +308,16 @@ static void dwc3_qcom_interconnect_exit(struct dwc3_qcom *qcom)
+ /* Only usable in contexts where the role can not change. */
+ static bool dwc3_qcom_is_host(struct dwc3_qcom *qcom)
+ {
+-	struct dwc3 *dwc = platform_get_drvdata(qcom->dwc3);
++	struct dwc3 *dwc;
 +
-+		return IRQ_WAKE_THREAD;
- 	}
++	/*
++	 * FIXME: Fix this layering violation.
++	 */
++	dwc = platform_get_drvdata(qcom->dwc3);
++
++	/* Core driver may not have probed yet. */
++	if (!dwc)
++		return false;
  
- out:
-@@ -1007,9 +1004,6 @@ static irqreturn_t meson_mmc_irq(int irq, void *dev_id)
- 		writel(start, host->regs + SD_EMMC_START);
- 	}
- 
--	if (ret == IRQ_HANDLED)
--		meson_mmc_request_done(host->mmc, cmd->mrq);
--
- 	return ret;
+ 	return dwc->xhci;
  }
- 
 -- 
-2.40.1
+2.39.3
 
