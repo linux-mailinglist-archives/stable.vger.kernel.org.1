@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F218D726D63
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:41:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7481726C1C
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:30:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234444AbjFGUll (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:41:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41342 "EHLO
+        id S233621AbjFGUaw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:30:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234423AbjFGUlj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:41:39 -0400
+        with ESMTP id S233602AbjFGUai (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6EC219BB
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:41:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DE932128
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:30:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E1AD6461C
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:41:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E34BC433EF;
-        Wed,  7 Jun 2023 20:41:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E0ACF644D6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:30:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0816C433D2;
+        Wed,  7 Jun 2023 20:30:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170492;
-        bh=mfi9pA8TtpQSlQKzzbalZaPXkKkmtsGD+l1SjdXJ0yA=;
+        s=korg; t=1686169826;
+        bh=FYJR6qWSJWlnYbwYLYW3Kfbp2BqXiYtyYtr+SGGnWy4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cyEQJ6aRHnjZVVkdxmUG5VH2EFxg0RhqQ+n/xXua8OAUqTRkphce3+2g0yE7WnEom
-         P8MEn9dZpJu7FTCQRGm258Mfpi69g1st6MBJZQMEaQlyYDafn+zp2ca3v+26NYL4fy
-         0gtsaYqg/d+XsX/RuRNG73RUl8rtYQpKZte0X3pg=
+        b=2BWUBTgkdZMqi1zqZgCCGT/GAO4uUsyiFJlAHawH3SbXBf2Ya0jHZaR5DrUhQIJ6M
+         0iGE1/yI8eg8vT8xr5XYYt8Va9/zG7MdOWJFaEMzCpAedSRq0FZ5OyeZwzVFfwTcYK
+         f/YsPcTGq5DfZJyljKwpEaxNhFGxcWbhBpJVrCCA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 105/225] ASoC: SOF: debug: conditionally bump runtime_pm counter on exceptions
+        patches@lists.linux.dev, Frank Li <Frank.Li@nxp.com>,
+        Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.3 199/286] iio: light: vcnl4035: fixed chip ID check
 Date:   Wed,  7 Jun 2023 22:14:58 +0200
-Message-ID: <20230607200917.810775102@linuxfoundation.org>
+Message-ID: <20230607200929.757649660@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,53 +54,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 3de975862f985f1c9e225a0d13aa3d501373f7c3 ]
+commit a551c26e8e568fad42120843521529241b9bceec upstream.
 
-When a firmware IPC error happens during a pm_runtime suspend, we
-ignore the error and suspend anyways. However, the code
-unconditionally increases the runtime_pm counter. This results in a
-confusing configuration where the code will suspend, resume but never
-suspend again due to the use of pm_runtime_get_noresume().
+VCNL4035 register(0xE) ID_L and ID_M define as:
 
-The intent of the counter increase was to prevent entry in D3, but if
-that transition to D3 is already started it cannot be stopped. In
-addition, there's no point in that case in trying to prevent anything,
-the firmware error is handled and the next resume will re-initialize
-the firmware completely.
+ ID_L: 0x80
+ ID_H: 7:6 (0:0)
+       5:4 (0:0) slave address = 0x60 (7-bit)
+           (0:1) slave address = 0x51 (7-bit)
+           (1:0) slave address = 0x40 (7-bit)
+           (1:0) slave address = 0x41 (7-bit)
+       3:0 Version code default	(0:0:0:0)
 
-This patch changes the logic to prevent suspend when the device is
-pm_runtime active and has a use_count > 0.
+So just check ID_L.
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com
-Link: https://lore.kernel.org/r/20230512103315.8921-2-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 55707294c4eb ("iio: light: Add support for vishay vcnl4035")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20230501143605.1615549-1-Frank.Li@nxp.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/debug.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/light/vcnl4035.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/soc/sof/debug.c b/sound/soc/sof/debug.c
-index ade0507328af4..5042312b1b98d 100644
---- a/sound/soc/sof/debug.c
-+++ b/sound/soc/sof/debug.c
-@@ -437,8 +437,8 @@ void snd_sof_handle_fw_exception(struct snd_sof_dev *sdev, const char *msg)
- 		/* should we prevent DSP entering D3 ? */
- 		if (!sdev->ipc_dump_printed)
- 			dev_info(sdev->dev,
--				 "preventing DSP entering D3 state to preserve context\n");
--		pm_runtime_get_noresume(sdev->dev);
-+				 "Attempting to prevent DSP from entering D3 state to preserve context\n");
-+		pm_runtime_get_if_in_use(sdev->dev);
+--- a/drivers/iio/light/vcnl4035.c
++++ b/drivers/iio/light/vcnl4035.c
+@@ -8,6 +8,7 @@
+  * TODO: Proximity
+  */
+ #include <linux/bitops.h>
++#include <linux/bitfield.h>
+ #include <linux/i2c.h>
+ #include <linux/module.h>
+ #include <linux/pm_runtime.h>
+@@ -42,6 +43,7 @@
+ #define VCNL4035_ALS_PERS_MASK		GENMASK(3, 2)
+ #define VCNL4035_INT_ALS_IF_H_MASK	BIT(12)
+ #define VCNL4035_INT_ALS_IF_L_MASK	BIT(13)
++#define VCNL4035_DEV_ID_MASK		GENMASK(7, 0)
+ 
+ /* Default values */
+ #define VCNL4035_MODE_ALS_ENABLE	BIT(0)
+@@ -413,6 +415,7 @@ static int vcnl4035_init(struct vcnl4035
+ 		return ret;
  	}
  
- 	/* dump vital information to the logs */
--- 
-2.39.2
-
++	id = FIELD_GET(VCNL4035_DEV_ID_MASK, id);
+ 	if (id != VCNL4035_DEV_ID_VAL) {
+ 		dev_err(&data->client->dev, "Wrong id, got %x, expected %x\n",
+ 			id, VCNL4035_DEV_ID_VAL);
 
 
