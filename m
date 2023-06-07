@@ -2,55 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24695726F45
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:57:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C4F4726BFE
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:29:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235563AbjFGU5C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:57:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58142 "EHLO
+        id S233640AbjFGU3u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:29:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235491AbjFGU5B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:57:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E3691721
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:56:55 -0700 (PDT)
+        with ESMTP id S233608AbjFGU3m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:29:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28A7F2695
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:29:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9AE7E64860
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:56:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E83C433EF;
-        Wed,  7 Jun 2023 20:56:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E98B6644B1
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:29:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A2FC433EF;
+        Wed,  7 Jun 2023 20:29:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171414;
-        bh=Uv8bA0kQy+2cnX7Ytg4uQ9Hv5Sl8d17ax+D6XsFribo=;
+        s=korg; t=1686169763;
+        bh=23DUmPYIkKNST7knuRTUhd6sQBqqZMiGD891iBDqaZA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f/AWsFAHDuN4UwK0n2UdGocPhr80y2XcM3kwBSUQxrexTQAS6ChvhVUHlm7St+ACa
-         he7FaMkOSPqsi4xLhWGWYNXwHL20MA/6Qr3vUSF5GB0J3TlxI4QCVJY1dL69609vYE
-         83ad/29csENJe8yV8rYeBC1TeRemBXsqBZEyICcw=
+        b=r9lhzLbq9uRkycaEr19s+xD3VHGLtYuw6FBTGYgHNiUB7Ko/A/3IJ86QRiGayU26j
+         eeG12Y9zm6NuYpW4vniLGKoCh5HB+nG+HPwnM7utSnzEBSRUiiQT6RMjG1YSQIeT6F
+         BUpsPyQdGTZvdGu1zsHf7FdpD6p4PAMvyIn5uLJE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-        Kashyap Desai <kashyap.desai@broadcom.com>,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 001/159] RDMA/bnxt_re: Fix the page_size used during the MR creation
+        patches@lists.linux.dev, Paul Cercueil <paul@crapouillou.net>,
+        Alisa Roman <alisa.roman@analog.com>,
+        Nuno Sa <nuno.sa@analog.com>, Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.3 205/286] iio: adc: ad7192: Change "shorted" channels to differential
 Date:   Wed,  7 Jun 2023 22:15:04 +0200
-Message-ID: <20230607200903.706359803@linuxfoundation.org>
+Message-ID: <20230607200929.952465058@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,83 +55,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Selvin Xavier <selvin.xavier@broadcom.com>
+From: Paul Cercueil <paul@crapouillou.net>
 
-[ Upstream commit 08c7f09356e45d093d1867c7a3c6ac6526e2f98b ]
+commit e55245d115bb9054cb72cdd5dda5660f4484873a upstream.
 
-Driver populates the list of pages used for Memory region wrongly when
-page size is more than system page size. This is causing a failure when
-some of the applications that creates MR with page size as 2M.  Since HW
-can support multiple page sizes, pass the correct page size while creating
-the MR.
+The AD7192 provides a specific channel configuration where both negative
+and positive inputs are connected to AIN2. This was represented in the
+ad7192 driver as a IIO channel with .channel = 2 and .extended_name set
+to "shorted".
 
-Also, driver need not adjust the number of pages when HW Queues are
-created with user memory. It should work with the number of dma blocks
-returned by ib_umem_num_dma_blocks. Fix this calculation also.
+The problem with this approach, is that the driver provided two IIO
+channels with the identifier .channel = 2; one "shorted" and the other
+not. This goes against the IIO ABI, as a channel identifier should be
+unique.
 
-Fixes: 0c4dcd602817 ("RDMA/bnxt_re: Refactor hardware queue memory allocation")
-Fixes: f6919d56388c ("RDMA/bnxt_re: Code refactor while populating user MRs")
-Link: https://lore.kernel.org/r/1683484169-9539-1-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Address this issue by changing "shorted" channels to being differential
+instead, with channel 2 vs. itself, as we're actually measuring AIN2 vs.
+itself.
+
+Note that the fix tag is for the commit that moved the driver out of
+staging. The bug existed before that, but backporting would become very
+complex further down and unlikely to happen.
+
+Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Co-developed-by: Alisa Roman <alisa.roman@analog.com>
+Signed-off-by: Alisa Roman <alisa.roman@analog.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20230330102100.17590-1-paul@crapouillou.net
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_res.c | 12 ++----------
- drivers/infiniband/hw/bnxt_re/qplib_sp.c  |  7 +++----
- 2 files changed, 5 insertions(+), 14 deletions(-)
+ drivers/iio/adc/ad7192.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-index 44282a8cdd4f2..384d41072c63c 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-@@ -215,17 +215,9 @@ int bnxt_qplib_alloc_init_hwq(struct bnxt_qplib_hwq *hwq,
- 			return -EINVAL;
- 		hwq_attr->sginfo->npages = npages;
- 	} else {
--		unsigned long sginfo_num_pages = ib_umem_num_dma_blocks(
--			hwq_attr->sginfo->umem, hwq_attr->sginfo->pgsize);
--
-+		npages = ib_umem_num_dma_blocks(hwq_attr->sginfo->umem,
-+						hwq_attr->sginfo->pgsize);
- 		hwq->is_user = true;
--		npages = sginfo_num_pages;
--		npages = (npages * PAGE_SIZE) /
--			  BIT_ULL(hwq_attr->sginfo->pgshft);
--		if ((sginfo_num_pages * PAGE_SIZE) %
--		     BIT_ULL(hwq_attr->sginfo->pgshft))
--			if (!npages)
--				npages++;
- 	}
+--- a/drivers/iio/adc/ad7192.c
++++ b/drivers/iio/adc/ad7192.c
+@@ -897,10 +897,6 @@ static const struct iio_info ad7195_info
+ 	__AD719x_CHANNEL(_si, _channel1, -1, _address, NULL, IIO_VOLTAGE, \
+ 		BIT(IIO_CHAN_INFO_SCALE), ad7192_calibsys_ext_info)
  
- 	if (npages == MAX_PBL_LVL_0_PGS) {
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_sp.c b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-index 3d9259632eb3d..a161e0d3cb444 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_sp.c
-@@ -680,16 +680,15 @@ int bnxt_qplib_reg_mr(struct bnxt_qplib_res *res, struct bnxt_qplib_mrw *mr,
- 		/* Free the hwq if it already exist, must be a rereg */
- 		if (mr->hwq.max_elements)
- 			bnxt_qplib_free_hwq(res, &mr->hwq);
--		/* Use system PAGE_SIZE */
- 		hwq_attr.res = res;
- 		hwq_attr.depth = pages;
--		hwq_attr.stride = buf_pg_size;
-+		hwq_attr.stride = sizeof(dma_addr_t);
- 		hwq_attr.type = HWQ_TYPE_MR;
- 		hwq_attr.sginfo = &sginfo;
- 		hwq_attr.sginfo->umem = umem;
- 		hwq_attr.sginfo->npages = pages;
--		hwq_attr.sginfo->pgsize = PAGE_SIZE;
--		hwq_attr.sginfo->pgshft = PAGE_SHIFT;
-+		hwq_attr.sginfo->pgsize = buf_pg_size;
-+		hwq_attr.sginfo->pgshft = ilog2(buf_pg_size);
- 		rc = bnxt_qplib_alloc_init_hwq(&mr->hwq, &hwq_attr);
- 		if (rc) {
- 			dev_err(&res->pdev->dev,
--- 
-2.39.2
-
+-#define AD719x_SHORTED_CHANNEL(_si, _channel1, _address) \
+-	__AD719x_CHANNEL(_si, _channel1, -1, _address, "shorted", IIO_VOLTAGE, \
+-		BIT(IIO_CHAN_INFO_SCALE), ad7192_calibsys_ext_info)
+-
+ #define AD719x_TEMP_CHANNEL(_si, _address) \
+ 	__AD719x_CHANNEL(_si, 0, -1, _address, NULL, IIO_TEMP, 0, NULL)
+ 
+@@ -908,7 +904,7 @@ static const struct iio_chan_spec ad7192
+ 	AD719x_DIFF_CHANNEL(0, 1, 2, AD7192_CH_AIN1P_AIN2M),
+ 	AD719x_DIFF_CHANNEL(1, 3, 4, AD7192_CH_AIN3P_AIN4M),
+ 	AD719x_TEMP_CHANNEL(2, AD7192_CH_TEMP),
+-	AD719x_SHORTED_CHANNEL(3, 2, AD7192_CH_AIN2P_AIN2M),
++	AD719x_DIFF_CHANNEL(3, 2, 2, AD7192_CH_AIN2P_AIN2M),
+ 	AD719x_CHANNEL(4, 1, AD7192_CH_AIN1),
+ 	AD719x_CHANNEL(5, 2, AD7192_CH_AIN2),
+ 	AD719x_CHANNEL(6, 3, AD7192_CH_AIN3),
+@@ -922,7 +918,7 @@ static const struct iio_chan_spec ad7193
+ 	AD719x_DIFF_CHANNEL(2, 5, 6, AD7193_CH_AIN5P_AIN6M),
+ 	AD719x_DIFF_CHANNEL(3, 7, 8, AD7193_CH_AIN7P_AIN8M),
+ 	AD719x_TEMP_CHANNEL(4, AD7193_CH_TEMP),
+-	AD719x_SHORTED_CHANNEL(5, 2, AD7193_CH_AIN2P_AIN2M),
++	AD719x_DIFF_CHANNEL(5, 2, 2, AD7193_CH_AIN2P_AIN2M),
+ 	AD719x_CHANNEL(6, 1, AD7193_CH_AIN1),
+ 	AD719x_CHANNEL(7, 2, AD7193_CH_AIN2),
+ 	AD719x_CHANNEL(8, 3, AD7193_CH_AIN3),
 
 
