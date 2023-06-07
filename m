@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DEF7726C58
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:32:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75A95726FA3
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:00:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233732AbjFGUcv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:32:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59224 "EHLO
+        id S235840AbjFGVAu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:00:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233738AbjFGUcu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:32:50 -0400
+        with ESMTP id S236113AbjFGVAV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9388F211B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:32:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C05861BEA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:59:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E13464527
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:32:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3153DC4339B;
-        Wed,  7 Jun 2023 20:32:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F245A648E1
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:59:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD5FC433EF;
+        Wed,  7 Jun 2023 20:59:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169958;
-        bh=8v6Fac6SZ6ouCapkxCHC4pGmbw5oXxrFrM6Yu0uxpZc=;
+        s=korg; t=1686171587;
+        bh=R6SybSXv5P06H23W6QQCuXpAXaaLj3YimdPktbViVRs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kgaVIgg4cGcqsEuYfWiFCuWtUsgL3h5QUe59BIDZKkTDzvH2AAxg/lPMZI01nDDql
-         /n17TAh9uXkCU8hJYfPdBQ6wd0naonGCvPT/7w4/AfqTZh/7oBO2FPFJLtXOcupT7l
-         3zWQ8eBxzBteWKf5+m/99KD6CQunjGXWuWlBGYd4=
+        b=oIaBQedEhgAvI9WGqy5j9nMIhUA/xtfM7xYh8xgTybCDQdu+mwwOkgf4c8iLcgYy2
+         lj0beVy3QIdm3OqrakQWqtGHr1dJyg1A/QZLAUcGwPSD6yRoUZTymtrRCJZqkM+Lxg
+         7pDkl2w5EBwb8hudmib/quHkgTIkLBY3cmV6OMk4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kuan-Ting Chen <h3xrabbit@gmail.com>,
-        Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.3 278/286] ksmbd: fix slab-out-of-bounds read in smb2_handle_negotiate
+        patches@lists.linux.dev, Hyunwoo Kim <imv4bel@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 074/159] media: dvb-core: Fix use-after-free due on race condition at dvb_net
 Date:   Wed,  7 Jun 2023 22:16:17 +0200
-Message-ID: <20230607200932.367681541@linuxfoundation.org>
+Message-ID: <20230607200906.105484691@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,58 +54,138 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuan-Ting Chen <h3xrabbit@gmail.com>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-commit d738950f112c8f40f0515fe967db998e8235a175 upstream.
+[ Upstream commit 4172385b0c9ac366dcab78eda48c26814b87ed1a ]
 
-Check request_buf length first to avoid out-of-bounds read by
-req->DialectCount.
+A race condition may occur between the .disconnect function, which
+is called when the device is disconnected, and the dvb_device_open()
+function, which is called when the device node is open()ed.
+This results in several types of UAFs.
 
-[ 3350.990282] BUG: KASAN: slab-out-of-bounds in smb2_handle_negotiate+0x35d7/0x3e60
-[ 3350.990282] Read of size 2 at addr ffff88810ad61346 by task kworker/5:0/276
-[ 3351.000406] Workqueue: ksmbd-io handle_ksmbd_work
-[ 3351.003499] Call Trace:
-[ 3351.006473]  <TASK>
-[ 3351.006473]  dump_stack_lvl+0x8d/0xe0
-[ 3351.006473]  print_report+0xcc/0x620
-[ 3351.006473]  kasan_report+0x92/0xc0
-[ 3351.006473]  smb2_handle_negotiate+0x35d7/0x3e60
-[ 3351.014760]  ksmbd_smb_negotiate_common+0x7a7/0xf00
-[ 3351.014760]  handle_ksmbd_work+0x3f7/0x12d0
-[ 3351.014760]  process_one_work+0xa85/0x1780
+The root cause of this is that you use the dvb_device_open() function,
+which does not implement a conditional statement
+that checks 'dvbnet->exit'.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuan-Ting Chen <h3xrabbit@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So, add 'remove_mutex` to protect 'dvbnet->exit' and use
+locked_dvb_net_open() function to check 'dvbnet->exit'.
+
+[mchehab: fix a checkpatch warning]
+
+Link: https://lore.kernel.org/linux-media/20221117045925.14297-3-imv4bel@gmail.com
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ksmbd/smb2pdu.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/media/dvb-core/dvb_net.c | 38 +++++++++++++++++++++++++++++---
+ include/media/dvb_net.h          |  4 ++++
+ 2 files changed, 39 insertions(+), 3 deletions(-)
 
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -1081,16 +1081,16 @@ int smb2_handle_negotiate(struct ksmbd_w
- 		return rc;
- 	}
+diff --git a/drivers/media/dvb-core/dvb_net.c b/drivers/media/dvb-core/dvb_net.c
+index dddebea644bb8..c594b1bdfcaa5 100644
+--- a/drivers/media/dvb-core/dvb_net.c
++++ b/drivers/media/dvb-core/dvb_net.c
+@@ -1564,15 +1564,43 @@ static long dvb_net_ioctl(struct file *file,
+ 	return dvb_usercopy(file, cmd, arg, dvb_net_do_ioctl);
+ }
  
--	if (req->DialectCount == 0) {
--		pr_err("malformed packet\n");
-+	smb2_buf_len = get_rfc1002_len(work->request_buf);
-+	smb2_neg_size = offsetof(struct smb2_negotiate_req, Dialects);
-+	if (smb2_neg_size > smb2_buf_len) {
- 		rsp->hdr.Status = STATUS_INVALID_PARAMETER;
- 		rc = -EINVAL;
- 		goto err_out;
- 	}
++static int locked_dvb_net_open(struct inode *inode, struct file *file)
++{
++	struct dvb_device *dvbdev = file->private_data;
++	struct dvb_net *dvbnet = dvbdev->priv;
++	int ret;
++
++	if (mutex_lock_interruptible(&dvbnet->remove_mutex))
++		return -ERESTARTSYS;
++
++	if (dvbnet->exit) {
++		mutex_unlock(&dvbnet->remove_mutex);
++		return -ENODEV;
++	}
++
++	ret = dvb_generic_open(inode, file);
++
++	mutex_unlock(&dvbnet->remove_mutex);
++
++	return ret;
++}
++
+ static int dvb_net_close(struct inode *inode, struct file *file)
+ {
+ 	struct dvb_device *dvbdev = file->private_data;
+ 	struct dvb_net *dvbnet = dvbdev->priv;
  
--	smb2_buf_len = get_rfc1002_len(work->request_buf);
--	smb2_neg_size = offsetof(struct smb2_negotiate_req, Dialects);
--	if (smb2_neg_size > smb2_buf_len) {
-+	if (req->DialectCount == 0) {
-+		pr_err("malformed packet\n");
- 		rsp->hdr.Status = STATUS_INVALID_PARAMETER;
- 		rc = -EINVAL;
- 		goto err_out;
++	mutex_lock(&dvbnet->remove_mutex);
++
+ 	dvb_generic_release(inode, file);
+ 
+-	if(dvbdev->users == 1 && dvbnet->exit == 1)
++	if (dvbdev->users == 1 && dvbnet->exit == 1) {
++		mutex_unlock(&dvbnet->remove_mutex);
+ 		wake_up(&dvbdev->wait_queue);
++	} else {
++		mutex_unlock(&dvbnet->remove_mutex);
++	}
++
+ 	return 0;
+ }
+ 
+@@ -1580,7 +1608,7 @@ static int dvb_net_close(struct inode *inode, struct file *file)
+ static const struct file_operations dvb_net_fops = {
+ 	.owner = THIS_MODULE,
+ 	.unlocked_ioctl = dvb_net_ioctl,
+-	.open =	dvb_generic_open,
++	.open =	locked_dvb_net_open,
+ 	.release = dvb_net_close,
+ 	.llseek = noop_llseek,
+ };
+@@ -1599,10 +1627,13 @@ void dvb_net_release (struct dvb_net *dvbnet)
+ {
+ 	int i;
+ 
++	mutex_lock(&dvbnet->remove_mutex);
+ 	dvbnet->exit = 1;
++	mutex_unlock(&dvbnet->remove_mutex);
++
+ 	if (dvbnet->dvbdev->users < 1)
+ 		wait_event(dvbnet->dvbdev->wait_queue,
+-				dvbnet->dvbdev->users==1);
++				dvbnet->dvbdev->users == 1);
+ 
+ 	dvb_unregister_device(dvbnet->dvbdev);
+ 
+@@ -1621,6 +1652,7 @@ int dvb_net_init (struct dvb_adapter *adap, struct dvb_net *dvbnet,
+ 	int i;
+ 
+ 	mutex_init(&dvbnet->ioctl_mutex);
++	mutex_init(&dvbnet->remove_mutex);
+ 	dvbnet->demux = dmx;
+ 
+ 	for (i=0; i<DVB_NET_DEVICES_MAX; i++)
+diff --git a/include/media/dvb_net.h b/include/media/dvb_net.h
+index 5e31d37f25fac..cc01dffcc9f35 100644
+--- a/include/media/dvb_net.h
++++ b/include/media/dvb_net.h
+@@ -41,6 +41,9 @@
+  * @exit:		flag to indicate when the device is being removed.
+  * @demux:		pointer to &struct dmx_demux.
+  * @ioctl_mutex:	protect access to this struct.
++ * @remove_mutex:	mutex that avoids a race condition between a callback
++ *			called when the hardware is disconnected and the
++ *			file_operations of dvb_net.
+  *
+  * Currently, the core supports up to %DVB_NET_DEVICES_MAX (10) network
+  * devices.
+@@ -53,6 +56,7 @@ struct dvb_net {
+ 	unsigned int exit:1;
+ 	struct dmx_demux *demux;
+ 	struct mutex ioctl_mutex;
++	struct mutex remove_mutex;
+ };
+ 
+ /**
+-- 
+2.39.2
+
 
 
