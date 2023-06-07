@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31D9F726FE2
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:03:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1824D726EAE
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:52:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236050AbjFGVDE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:03:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34106 "EHLO
+        id S235156AbjFGUwA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:52:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236046AbjFGVCu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:02:50 -0400
+        with ESMTP id S235305AbjFGUvv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:51:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41D0E2703
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:02:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C93081BC6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:51:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 483F161704
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:02:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF24C433EF;
-        Wed,  7 Jun 2023 21:02:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AA307646C6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:51:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF5DC4339B;
+        Wed,  7 Jun 2023 20:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171725;
-        bh=7L8cY1/FfTpIww6poA0DK9pAvBkFIbJCwCOQD29Wgns=;
+        s=korg; t=1686171108;
+        bh=OEd4sc6FG+ouAnkupxem+7o9Tyht6WI5KtGcon8gV/0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vNVIBCSHsXHbD/VNB5BBaU22b+maLiCivJ5zregDDNslWXBPTaFNotWW1+B067vdu
-         WSYvTQIK397PknK0sgzy4O8zWNs5U7OYqj9w7kxjm8COfMZCFe8MdZZ+iOWGNazDtJ
-         mvBQdN+zj52f+COE/BTUPF+E5rIZ7NhdfIeh1RhA=
+        b=eIA1OzBSXRN01NQ6Gxj+ZKFj6+92DB98bvapLm3i5fOWd4BwozTTuBhRUyS80nwY0
+         hk3axGpzZGj9BcE/HsNd8Z76saSItR0zMeFCyhFOfzY9b2iUVc2aJ6k6FzAaF8KWeJ
+         HDW1CazoL3l5rfBEG2U27aJfOrVSVpgb5lJc3mLc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gaurav Batra <gbatra@linux.vnet.ibm.com>,
-        Brian King <brking@linux.vnet.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 5.15 126/159] powerpc/iommu: Limit number of TCEs to 512 for H_STUFF_TCE hcall
+        patches@lists.linux.dev, Ben Hutchings <benh@debian.org>
+Subject: [PATCH 5.10 113/120] scsi: dpt_i2o: Do not process completions with invalid addresses
 Date:   Wed,  7 Jun 2023 22:17:09 +0200
-Message-ID: <20230607200907.802502332@linuxfoundation.org>
+Message-ID: <20230607200904.489036624@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,56 +52,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+From: Ben Hutchings <benh@debian.org>
 
-commit 9d2ccf00bddc268045e3d65a8108d61ada0e4b4e upstream.
+adpt_isr() reads reply addresses from a hardware register, which
+should always be within the DMA address range of the device's pool of
+reply address buffers.  In case the address is out of range, it tries
+to muddle on, converting to a virtual address using bus_to_virt().
 
-Currently in tce_freemulti_pSeriesLP() there is no limit on how many
-TCEs are passed to the H_STUFF_TCE hcall. This has not caused an issue
-until now, but newer firmware releases have started enforcing a limit of
-512 TCEs per call.
+bus_to_virt() does not take DMA addresses, and it doesn't make sense
+to try to handle the completion in this case.  Ignore it and continue
+looping to service the interrupt.  If a completion has been lost then
+the SCSI core should eventually time-out and trigger a reset.
 
-The limit is correct per the specification (PAPR v2.12 § 14.5.4.2.3).
+There is no corresponding upstream commit, because this driver was
+removed upstream.
 
-The code has been in it's current form since it was initially merged.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Gaurav Batra <gbatra@linux.vnet.ibm.com>
-Reviewed-by: Brian King <brking@linux.vnet.ibm.com>
-[mpe: Tweak change log wording & add PAPR reference]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230525143454.56878-1-gbatra@linux.vnet.ibm.com
+Fixes: 67af2b060e02 ("[SCSI] dpt_i2o: move from virt_to_bus/bus_to_virt ...")
+Signed-off-by: Ben Hutchings <benh@debian.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/pseries/iommu.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/scsi/Kconfig   |    2 +-
+ drivers/scsi/dpt_i2o.c |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -311,13 +311,22 @@ static void tce_free_pSeriesLP(unsigned
- static void tce_freemulti_pSeriesLP(struct iommu_table *tbl, long tcenum, long npages)
- {
- 	u64 rc;
-+	long rpages = npages;
-+	unsigned long limit;
+--- a/drivers/scsi/Kconfig
++++ b/drivers/scsi/Kconfig
+@@ -444,7 +444,7 @@ config SCSI_MVUMI
  
- 	if (!firmware_has_feature(FW_FEATURE_STUFF_TCE))
- 		return tce_free_pSeriesLP(tbl->it_index, tcenum,
- 					  tbl->it_page_shift, npages);
+ config SCSI_DPT_I2O
+ 	tristate "Adaptec I2O RAID support "
+-	depends on SCSI && PCI && VIRT_TO_BUS
++	depends on SCSI && PCI
+ 	help
+ 	  This driver supports all of Adaptec's I2O based RAID controllers as 
+ 	  well as the DPT SmartRaid V cards.  This is an Adaptec maintained
+--- a/drivers/scsi/dpt_i2o.c
++++ b/drivers/scsi/dpt_i2o.c
+@@ -56,7 +56,7 @@ MODULE_DESCRIPTION("Adaptec I2O RAID Dri
+ #include <linux/mutex.h>
  
--	rc = plpar_tce_stuff((u64)tbl->it_index,
--			     (u64)tcenum << tbl->it_page_shift, 0, npages);
-+	do {
-+		limit = min_t(unsigned long, rpages, 512);
-+
-+		rc = plpar_tce_stuff((u64)tbl->it_index,
-+				     (u64)tcenum << tbl->it_page_shift, 0, limit);
-+
-+		rpages -= limit;
-+		tcenum += limit;
-+	} while (rpages > 0 && !rc);
+ #include <asm/processor.h>	/* for boot_cpu_data */
+-#include <asm/io.h>		/* for virt_to_bus, etc. */
++#include <asm/io.h>
  
- 	if (rc && printk_ratelimit()) {
- 		printk("tce_freemulti_pSeriesLP: plpar_tce_stuff failed\n");
+ #include <scsi/scsi.h>
+ #include <scsi/scsi_cmnd.h>
+@@ -1865,7 +1865,7 @@ static irqreturn_t adpt_isr(int irq, voi
+ 		} else {
+ 			/* Ick, we should *never* be here */
+ 			printk(KERN_ERR "dpti: reply frame not from pool\n");
+-			reply = (u8 *)bus_to_virt(m);
++			continue;
+ 		}
+ 
+ 		if (readl(reply) & MSG_FAIL) {
 
 
