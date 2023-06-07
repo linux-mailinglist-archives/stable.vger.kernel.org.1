@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FCAA726F20
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD7DC726FC2
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:01:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235440AbjFGUzj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:55:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56720 "EHLO
+        id S235599AbjFGVBW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:01:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235439AbjFGUzi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:55:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 218B6D1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:55:36 -0700 (PDT)
+        with ESMTP id S235881AbjFGVBE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:01:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D58426B0
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:00:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A707B64811
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:55:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B715FC433D2;
-        Wed,  7 Jun 2023 20:55:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D1FDB648FA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:00:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A4EC433EF;
+        Wed,  7 Jun 2023 21:00:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171335;
-        bh=Kas1xQPjBktSRhV2HEOqzlM9qDKpxvz00yIAwJjfYEc=;
+        s=korg; t=1686171650;
+        bh=xjSFqEXFNEEJVpr54YlItuR7Mfdx6sYSsTzNIpCfwQY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JvwI/VkTj86BtiY1hLh/ahRSwAIXbNKFEVMfsKF99sUdbqfKbIYW0+ClJXsOch+a/
-         utxmDKAuS572vT7JlMMpbNAWE9Uy/kYj6aXhf/eVU9evBm9e4krPXyCjhn0JE3ZDyF
-         1eigwbC9keRyyrVeaMAiQ7dbu4F5b0bHOQSLzSgY=
+        b=e7Y9ASPqEIbqVhcS5O7D7O8PvJedUGtP21T7gBrTTmOF05NtFiCxetmdxhFbaL3NI
+         CXjw8dRbhx2gHfGhV2RYtMaJAzm3pwtfLJPnB/R7XIcEEoBP7DeJKip64JQL/8/zRu
+         TZtA1aHtD3CIKLmr9KUTB6pggN/lYDH14+6/5ElQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hyunwoo Kim <imv4bel@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 49/99] media: dvb-core: Fix use-after-free due on race condition at dvb_net
+        patches@lists.linux.dev, Jiakai Luo <jkluo@hust.edu.cn>,
+        Dongliang Mu <dzm91@hust.edu.cn>, Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 098/159] iio: adc: mxs-lradc: fix the order of two cleanup operations
 Date:   Wed,  7 Jun 2023 22:16:41 +0200
-Message-ID: <20230607200901.784971564@linuxfoundation.org>
+Message-ID: <20230607200906.897168307@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,138 +54,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Jiakai Luo <jkluo@hust.edu.cn>
 
-[ Upstream commit 4172385b0c9ac366dcab78eda48c26814b87ed1a ]
+commit 27b2ed5b6d53cd62fc61c3f259ae52f5cac23b66 upstream.
 
-A race condition may occur between the .disconnect function, which
-is called when the device is disconnected, and the dvb_device_open()
-function, which is called when the device node is open()ed.
-This results in several types of UAFs.
+Smatch reports:
+drivers/iio/adc/mxs-lradc-adc.c:766 mxs_lradc_adc_probe() warn:
+missing unwind goto?
 
-The root cause of this is that you use the dvb_device_open() function,
-which does not implement a conditional statement
-that checks 'dvbnet->exit'.
+the order of three init operation:
+1.mxs_lradc_adc_trigger_init
+2.iio_triggered_buffer_setup
+3.mxs_lradc_adc_hw_init
 
-So, add 'remove_mutex` to protect 'dvbnet->exit' and use
-locked_dvb_net_open() function to check 'dvbnet->exit'.
+thus, the order of three cleanup operation should be:
+1.mxs_lradc_adc_hw_stop
+2.iio_triggered_buffer_cleanup
+3.mxs_lradc_adc_trigger_remove
 
-[mchehab: fix a checkpatch warning]
+we exchange the order of two cleanup operations,
+introducing the following differences:
+1.if mxs_lradc_adc_trigger_init fails, returns directly;
+2.if trigger_init succeeds but iio_triggered_buffer_setup fails,
+goto err_trig and remove the trigger.
 
-Link: https://lore.kernel.org/linux-media/20221117045925.14297-3-imv4bel@gmail.com
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In addition, we also reorder the unwind that goes on in the
+remove() callback to match the new ordering.
+
+Fixes: 6dd112b9f85e ("iio: adc: mxs-lradc: Add support for ADC driver")
+Signed-off-by: Jiakai Luo <jkluo@hust.edu.cn>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Link: https://lore.kernel.org/r/20230422133407.72908-1-jkluo@hust.edu.cn
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dvb_net.c | 38 +++++++++++++++++++++++++++++---
- include/media/dvb_net.h          |  4 ++++
- 2 files changed, 39 insertions(+), 3 deletions(-)
+ drivers/iio/adc/mxs-lradc-adc.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/dvb-core/dvb_net.c b/drivers/media/dvb-core/dvb_net.c
-index 9fed06ba88efb..ccaaabaaeb571 100644
---- a/drivers/media/dvb-core/dvb_net.c
-+++ b/drivers/media/dvb-core/dvb_net.c
-@@ -1564,15 +1564,43 @@ static long dvb_net_ioctl(struct file *file,
- 	return dvb_usercopy(file, cmd, arg, dvb_net_do_ioctl);
+--- a/drivers/iio/adc/mxs-lradc-adc.c
++++ b/drivers/iio/adc/mxs-lradc-adc.c
+@@ -757,13 +757,13 @@ static int mxs_lradc_adc_probe(struct pl
+ 
+ 	ret = mxs_lradc_adc_trigger_init(iio);
+ 	if (ret)
+-		goto err_trig;
++		return ret;
+ 
+ 	ret = iio_triggered_buffer_setup(iio, &iio_pollfunc_store_time,
+ 					 &mxs_lradc_adc_trigger_handler,
+ 					 &mxs_lradc_adc_buffer_ops);
+ 	if (ret)
+-		return ret;
++		goto err_trig;
+ 
+ 	adc->vref_mv = mxs_lradc_adc_vref_mv[lradc->soc];
+ 
+@@ -801,9 +801,9 @@ static int mxs_lradc_adc_probe(struct pl
+ 
+ err_dev:
+ 	mxs_lradc_adc_hw_stop(adc);
+-	mxs_lradc_adc_trigger_remove(iio);
+-err_trig:
+ 	iio_triggered_buffer_cleanup(iio);
++err_trig:
++	mxs_lradc_adc_trigger_remove(iio);
+ 	return ret;
  }
  
-+static int locked_dvb_net_open(struct inode *inode, struct file *file)
-+{
-+	struct dvb_device *dvbdev = file->private_data;
-+	struct dvb_net *dvbnet = dvbdev->priv;
-+	int ret;
-+
-+	if (mutex_lock_interruptible(&dvbnet->remove_mutex))
-+		return -ERESTARTSYS;
-+
-+	if (dvbnet->exit) {
-+		mutex_unlock(&dvbnet->remove_mutex);
-+		return -ENODEV;
-+	}
-+
-+	ret = dvb_generic_open(inode, file);
-+
-+	mutex_unlock(&dvbnet->remove_mutex);
-+
-+	return ret;
-+}
-+
- static int dvb_net_close(struct inode *inode, struct file *file)
- {
- 	struct dvb_device *dvbdev = file->private_data;
- 	struct dvb_net *dvbnet = dvbdev->priv;
+@@ -814,8 +814,8 @@ static int mxs_lradc_adc_remove(struct p
  
-+	mutex_lock(&dvbnet->remove_mutex);
-+
- 	dvb_generic_release(inode, file);
+ 	iio_device_unregister(iio);
+ 	mxs_lradc_adc_hw_stop(adc);
+-	mxs_lradc_adc_trigger_remove(iio);
+ 	iio_triggered_buffer_cleanup(iio);
++	mxs_lradc_adc_trigger_remove(iio);
  
--	if(dvbdev->users == 1 && dvbnet->exit == 1)
-+	if (dvbdev->users == 1 && dvbnet->exit == 1) {
-+		mutex_unlock(&dvbnet->remove_mutex);
- 		wake_up(&dvbdev->wait_queue);
-+	} else {
-+		mutex_unlock(&dvbnet->remove_mutex);
-+	}
-+
  	return 0;
  }
- 
-@@ -1580,7 +1608,7 @@ static int dvb_net_close(struct inode *inode, struct file *file)
- static const struct file_operations dvb_net_fops = {
- 	.owner = THIS_MODULE,
- 	.unlocked_ioctl = dvb_net_ioctl,
--	.open =	dvb_generic_open,
-+	.open =	locked_dvb_net_open,
- 	.release = dvb_net_close,
- 	.llseek = noop_llseek,
- };
-@@ -1599,10 +1627,13 @@ void dvb_net_release (struct dvb_net *dvbnet)
- {
- 	int i;
- 
-+	mutex_lock(&dvbnet->remove_mutex);
- 	dvbnet->exit = 1;
-+	mutex_unlock(&dvbnet->remove_mutex);
-+
- 	if (dvbnet->dvbdev->users < 1)
- 		wait_event(dvbnet->dvbdev->wait_queue,
--				dvbnet->dvbdev->users==1);
-+				dvbnet->dvbdev->users == 1);
- 
- 	dvb_unregister_device(dvbnet->dvbdev);
- 
-@@ -1621,6 +1652,7 @@ int dvb_net_init (struct dvb_adapter *adap, struct dvb_net *dvbnet,
- 	int i;
- 
- 	mutex_init(&dvbnet->ioctl_mutex);
-+	mutex_init(&dvbnet->remove_mutex);
- 	dvbnet->demux = dmx;
- 
- 	for (i=0; i<DVB_NET_DEVICES_MAX; i++)
-diff --git a/include/media/dvb_net.h b/include/media/dvb_net.h
-index 5e31d37f25fac..cc01dffcc9f35 100644
---- a/include/media/dvb_net.h
-+++ b/include/media/dvb_net.h
-@@ -41,6 +41,9 @@
-  * @exit:		flag to indicate when the device is being removed.
-  * @demux:		pointer to &struct dmx_demux.
-  * @ioctl_mutex:	protect access to this struct.
-+ * @remove_mutex:	mutex that avoids a race condition between a callback
-+ *			called when the hardware is disconnected and the
-+ *			file_operations of dvb_net.
-  *
-  * Currently, the core supports up to %DVB_NET_DEVICES_MAX (10) network
-  * devices.
-@@ -53,6 +56,7 @@ struct dvb_net {
- 	unsigned int exit:1;
- 	struct dmx_demux *demux;
- 	struct mutex ioctl_mutex;
-+	struct mutex remove_mutex;
- };
- 
- /**
--- 
-2.39.2
-
 
 
