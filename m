@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45E11726D90
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:43:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B061726F71
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:58:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234540AbjFGUnc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:43:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43292 "EHLO
+        id S235793AbjFGU6Z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:58:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234553AbjFGUn0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:43:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 525C0213B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:43:06 -0700 (PDT)
+        with ESMTP id S235721AbjFGU6M (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:58:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0492B2721
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:57:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0AB476463B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:43:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E6F7C433EF;
-        Wed,  7 Jun 2023 20:43:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 88BB76487C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:57:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B214C4339B;
+        Wed,  7 Jun 2023 20:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170584;
-        bh=x26lUxHnVanLeX1OUk1jczm43UA/sWDkOjvMhJqjfYg=;
+        s=korg; t=1686171469;
+        bh=Gm4AWKafbM51w6Oxzq1N/XDWxUGBoa/66HFRl8C9zSA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Tznc++4yErZaNNNe92cqprgBgAE4TJHzz738rf33SjqSej4lb7PdZLVBPu2xc3AOm
-         flwvnw0EJdJBMHE5Wu/35e8MtnqpO68Sc7ryCL0NvzWNWamtMWBqfJOUMK1KXUIeGh
-         kFS1R+/BhopZqCia9rLXd9Fl2jdU6ab8it4fkKdg=
+        b=Su8hoyYDRmvB9b/ml9Vj5idhJzxGxD5/NiXzSwIjoJRQtvhn5ilnlOBcyFIwVzirX
+         olxBvlVQaay3WakUwixHyg1fpuX3zCMpT8rHyE0dnvidT29OMcbTC6WeWjxLWTJ/ZW
+         s5yvY+MyHIOMKMwP79reV+06jM0jQYsDJ1Y77QQg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Ricardo Ribalda <ribalda@chromium.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Zhengchao Shao <shaozhengchao@huawei.com>,
+        Peilin Ye <peilin.ye@bytedance.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 140/225] media: uvcvideo: Dont expose unsupported formats to userspace
+Subject: [PATCH 5.15 030/159] net: sched: fix NULL pointer dereference in mq_attach
 Date:   Wed,  7 Jun 2023 22:15:33 +0200
-Message-ID: <20230607200918.963630740@linuxfoundation.org>
+Message-ID: <20230607200904.656323970@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,79 +56,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-[ Upstream commit 81f3affa19d6ab0c32aef46b053838219eef7e71 ]
+[ Upstream commit 36eec020fab668719b541f34d97f44e232ffa165 ]
 
-When the uvcvideo driver encounters a format descriptor with an unknown
-format GUID, it creates a corresponding struct uvc_format instance with
-the fcc field set to 0. Since commit 50459f103edf ("media: uvcvideo:
-Remove format descriptions"), the driver relies on the V4L2 core to
-provide the format description string, which the V4L2 core can't do
-without a valid 4CC. This triggers a WARN_ON.
+When use the following command to test:
+1)ip link add bond0 type bond
+2)ip link set bond0 up
+3)tc qdisc add dev bond0 root handle ffff: mq
+4)tc qdisc replace dev bond0 parent ffff:fff1 handle ffff: mq
 
-As a format with a zero 4CC can't be selected, it is unusable for
-applications. Ignore the format completely without creating a uvc_format
-instance, which fixes the warning.
+The kernel reports NULL pointer dereference issue. The stack information
+is as follows:
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+Internal error: Oops: 0000000096000006 [#1] SMP
+Modules linked in:
+pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : mq_attach+0x44/0xa0
+lr : qdisc_graft+0x20c/0x5cc
+sp : ffff80000e2236a0
+x29: ffff80000e2236a0 x28: ffff0000c0e59d80 x27: ffff0000c0be19c0
+x26: ffff0000cae3e800 x25: 0000000000000010 x24: 00000000fffffff1
+x23: 0000000000000000 x22: ffff0000cae3e800 x21: ffff0000c9df4000
+x20: ffff0000c9df4000 x19: 0000000000000000 x18: ffff80000a934000
+x17: ffff8000f5b56000 x16: ffff80000bb08000 x15: 0000000000000000
+x14: 0000000000000000 x13: 6b6b6b6b6b6b6b6b x12: 6b6b6b6b00000001
+x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
+x8 : ffff0000c0be0730 x7 : bbbbbbbbbbbbbbbb x6 : 0000000000000008
+x5 : ffff0000cae3e864 x4 : 0000000000000000 x3 : 0000000000000001
+x2 : 0000000000000001 x1 : ffff8000090bc23c x0 : 0000000000000000
+Call trace:
+mq_attach+0x44/0xa0
+qdisc_graft+0x20c/0x5cc
+tc_modify_qdisc+0x1c4/0x664
+rtnetlink_rcv_msg+0x354/0x440
+netlink_rcv_skb+0x64/0x144
+rtnetlink_rcv+0x28/0x34
+netlink_unicast+0x1e8/0x2a4
+netlink_sendmsg+0x308/0x4a0
+sock_sendmsg+0x64/0xac
+____sys_sendmsg+0x29c/0x358
+___sys_sendmsg+0x90/0xd0
+__sys_sendmsg+0x7c/0xd0
+__arm64_sys_sendmsg+0x2c/0x38
+invoke_syscall+0x54/0x114
+el0_svc_common.constprop.1+0x90/0x174
+do_el0_svc+0x3c/0xb0
+el0_svc+0x24/0xec
+el0t_64_sync_handler+0x90/0xb4
+el0t_64_sync+0x174/0x178
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217252
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2180107
+This is because when mq is added for the first time, qdiscs in mq is set
+to NULL in mq_attach(). Therefore, when replacing mq after adding mq, we
+need to initialize qdiscs in the mq before continuing to graft. Otherwise,
+it will couse NULL pointer dereference issue in mq_attach(). And the same
+issue will occur in the attach functions of mqprio, taprio and htb.
+ffff:fff1 means that the repalce qdisc is ingress. Ingress does not allow
+any qdisc to be attached. Therefore, ffff:fff1 is incorrectly used, and
+the command should be dropped.
 
-Fixes: 50459f103edf ("media: uvcvideo: Remove format descriptions")
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 6ec1c69a8f64 ("net_sched: add classful multiqueue dummy scheduler")
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Tested-by: Peilin Ye <peilin.ye@bytedance.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://lore.kernel.org/r/20230527093747.3583502-1-shaozhengchao@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ net/sched/sch_api.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index a9cdef07e6b14..191db831d7606 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -251,14 +251,17 @@ static int uvc_parse_format(struct uvc_device *dev,
- 		/* Find the format descriptor from its GUID. */
- 		fmtdesc = uvc_format_by_guid(&buffer[5]);
- 
--		if (fmtdesc != NULL) {
--			format->fcc = fmtdesc->fcc;
--		} else {
-+		if (!fmtdesc) {
-+			/*
-+			 * Unknown video formats are not fatal errors, the
-+			 * caller will skip this descriptor.
-+			 */
- 			dev_info(&streaming->intf->dev,
- 				 "Unknown video format %pUl\n", &buffer[5]);
--			format->fcc = 0;
-+			return 0;
- 		}
- 
-+		format->fcc = fmtdesc->fcc;
- 		format->bpp = buffer[21];
- 
- 		/*
-@@ -675,7 +678,7 @@ static int uvc_parse_streaming(struct uvc_device *dev,
- 	interval = (u32 *)&frame[nframes];
- 
- 	streaming->format = format;
--	streaming->nformats = nformats;
-+	streaming->nformats = 0;
- 
- 	/* Parse the format descriptors. */
- 	while (buflen > 2 && buffer[1] == USB_DT_CS_INTERFACE) {
-@@ -689,7 +692,10 @@ static int uvc_parse_streaming(struct uvc_device *dev,
- 				&interval, buffer, buflen);
- 			if (ret < 0)
- 				goto error;
-+			if (!ret)
-+				break;
- 
-+			streaming->nformats++;
- 			frame += format->nframes;
- 			format++;
- 
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index 651dbcfeada62..328db5e1b0eaf 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -1599,6 +1599,10 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 					NL_SET_ERR_MSG(extack, "Qdisc parent/child loop detected");
+ 					return -ELOOP;
+ 				}
++				if (clid == TC_H_INGRESS) {
++					NL_SET_ERR_MSG(extack, "Ingress cannot graft directly");
++					return -EINVAL;
++				}
+ 				qdisc_refcount_inc(q);
+ 				goto graft;
+ 			} else {
 -- 
 2.39.2
 
