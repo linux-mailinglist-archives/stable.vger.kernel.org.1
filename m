@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17C13726F51
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:57:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1420726C0B
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:30:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235564AbjFGU5a (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:57:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58582 "EHLO
+        id S233720AbjFGUa2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:30:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235571AbjFGU52 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:57:28 -0400
+        with ESMTP id S233941AbjFGUaR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E85BF10D7
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:57:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43628269E
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:29:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 67EFE646D1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:57:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 676FEC4339B;
-        Wed,  7 Jun 2023 20:57:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5AC5F644AC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:29:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B3FC433D2;
+        Wed,  7 Jun 2023 20:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171442;
-        bh=sCjMVP/jKO30nzqrv9afR4l7prpaMObGxiTjG/xSd2U=;
+        s=korg; t=1686169786;
+        bh=pvKmf3n0fXBvmrXDPWVd8WoBFNnQWRVhKHqqCyBcX20=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VzUkr4T9hfdnYm15KrNFmeIo2bVsl7dGL7RKZpeiQXdlexysXrrMafC0wf4ZufN+x
-         2yQnxy9ZcOHASUOlpRhDfIC8VWAZ00REE5rEaBONGuRiACLEDXPx7yjIvJPWw9bFwV
-         nzBadfjeQC9IOLUeBYN/IUh58xbuQzygZAOtYEA8=
+        b=aLefI3uFZnn1LqGSD60JpIdq0UWQO042j8/xF3Y2l3SlUJj5xj6RZxCBBumGI9gy6
+         6xzw2F8bIbjnvDcVV/T5V9W4E2guTdmYXY1qPgcRYNhcFwLuJzwWfmOdFRgzrek/i/
+         6fK2BC5bm4H4qHG4PgN0AFe3sQ5SxrMHomGfyZSg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Wang <D202280639@hust.edu.cn>,
-        Dongliang Mu <dzm91@hust.edu.cn>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 009/159] iommu/rockchip: Fix unwind goto issue
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Ekansh Gupta <quic_ekangupt@quicinc.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.3 213/286] misc: fastrpc: Reassign memory ownership only for remote heap
 Date:   Wed,  7 Jun 2023 22:15:12 +0200
-Message-ID: <20230607200903.977937144@linuxfoundation.org>
+Message-ID: <20230607200930.210199708@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,67 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chao Wang <D202280639@hust.edu.cn>
+From: Ekansh Gupta <quic_ekangupt@quicinc.com>
 
-[ Upstream commit ec014683c564fb74fc68e8f5e84691d3b3839d24 ]
+commit 3c7d0079a1831118ef232bd9c2f34d058a1f31c2 upstream.
 
-Smatch complains that
-drivers/iommu/rockchip-iommu.c:1306 rk_iommu_probe() warn: missing unwind goto?
+The userspace map request for remote heap allocates CMA memory.
+The ownership of this memory needs to be reassigned to proper
+owners to allow access from the protection domain running on
+DSP. This reassigning of ownership is not correct if done for
+any other supported flags.
 
-The rk_iommu_probe function, after obtaining the irq value through
-platform_get_irq, directly returns an error if the returned value
-is negative, without releasing any resources.
+When any other flag is requested from userspace, fastrpc is
+trying to reassign the ownership of memory and this reassignment
+is getting skipped for remote heap request which is incorrect.
+Add proper flag check to reassign the memory only if remote heap
+is requested.
 
-Fix this by adding a new error handling label "err_pm_disable" and
-use a goto statement to redirect to the error handling process. In
-order to preserve the original semantics, set err to the value of irq.
-
-Fixes: 1aa55ca9b14a ("iommu/rockchip: Move irq request past pm_runtime_enable")
-Signed-off-by: Chao Wang <D202280639@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20230417030421.2777-1-D202280639@hust.edu.cn
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 532ad70c6d44 ("misc: fastrpc: Add mmap request assigning for static PD pool")
+Cc: stable <stable@kernel.org>
+Tested-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230523152550.438363-3-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/rockchip-iommu.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/misc/fastrpc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/rockchip-iommu.c b/drivers/iommu/rockchip-iommu.c
-index 823f1a7d8c6e2..e3557f8dc44ea 100644
---- a/drivers/iommu/rockchip-iommu.c
-+++ b/drivers/iommu/rockchip-iommu.c
-@@ -1303,20 +1303,22 @@ static int rk_iommu_probe(struct platform_device *pdev)
- 	for (i = 0; i < iommu->num_irq; i++) {
- 		int irq = platform_get_irq(pdev, i);
+diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
+index 32a5415624bf..a654dc416480 100644
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -1904,7 +1904,7 @@ static int fastrpc_req_mmap(struct fastrpc_user *fl, char __user *argp)
+ 	req.vaddrout = rsp_msg.vaddr;
  
--		if (irq < 0)
--			return irq;
-+		if (irq < 0) {
-+			err = irq;
-+			goto err_pm_disable;
-+		}
+ 	/* Add memory to static PD pool, protection thru hypervisor */
+-	if (req.flags != ADSP_MMAP_REMOTE_HEAP_ADDR && fl->cctx->vmcount) {
++	if (req.flags == ADSP_MMAP_REMOTE_HEAP_ADDR && fl->cctx->vmcount) {
+ 		struct qcom_scm_vmperm perm;
  
- 		err = devm_request_irq(iommu->dev, irq, rk_iommu_irq,
- 				       IRQF_SHARED, dev_name(dev), iommu);
--		if (err) {
--			pm_runtime_disable(dev);
--			goto err_remove_sysfs;
--		}
-+		if (err)
-+			goto err_pm_disable;
- 	}
- 
- 	dma_set_mask_and_coherent(dev, rk_ops->dma_bit_mask);
- 
- 	return 0;
-+err_pm_disable:
-+	pm_runtime_disable(dev);
- err_remove_sysfs:
- 	iommu_device_sysfs_remove(&iommu->iommu);
- err_put_group:
+ 		perm.vmid = QCOM_SCM_VMID_HLOS;
 -- 
-2.39.2
+2.41.0
 
 
 
