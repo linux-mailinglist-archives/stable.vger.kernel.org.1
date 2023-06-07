@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C062726DB1
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:44:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADF65726CC1
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:36:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234650AbjFGUoo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:44:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45118 "EHLO
+        id S234245AbjFGUgM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:36:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234709AbjFGUok (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9A4F26A6
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:44:24 -0700 (PDT)
+        with ESMTP id S234105AbjFGUfw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:35:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE1B92702
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:35:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 02ED26465D
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:44:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18CD9C4339B;
-        Wed,  7 Jun 2023 20:44:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 55C1D64579
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:35:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B1BC4339B;
+        Wed,  7 Jun 2023 20:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170661;
-        bh=/f62AiZafCxzs0GM7Jz39TrKx5zO6boPsFlgNHPfD3s=;
+        s=korg; t=1686170135;
+        bh=DazjSu0p439CX/aFG0CP+vx6931tX9hLexv94jEHTmo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zxzxDyBpIceIG2M4D2ykdk+f28BSQEw6ia193Oxo3Y0l76IXF6wjBxgtV5WK5VHCc
-         iImfB7UPn4fgSOflSIcGe7M8QnGUoVk5HYd3xqMHeg7ucL8vCBuPK2MSkgX2V2JUSj
-         uECcTqWpQLEK9JJZH7z7vyXZ61W8QQ3uiDGmtLCs=
+        b=QnTczdv8D8LYgr3VXyK7dcApWjni++twWorxkV3j55tzvDDKpGmE8YpV38rd1DXIE
+         PYu/uAVuSkFCEgoFiqeEEy19G+HYnI5rGpECfJHP0vUx7JQEnaL56uJp5QRX3A7JrK
+         yq1lAQW+2H07G7kx7wSjK6WHBvTvdOXn8a0p6G3A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paul Cercueil <paul@crapouillou.net>,
-        Alisa Roman <alisa.roman@analog.com>,
-        Nuno Sa <nuno.sa@analog.com>, Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 152/225] iio: adc: ad7192: Change "shorted" channels to differential
-Date:   Wed,  7 Jun 2023 22:15:45 +0200
-Message-ID: <20230607200919.383004164@linuxfoundation.org>
+        patches@lists.linux.dev, Lee Jones <lee@kernel.org>,
+        Jassi Brar <jaswinder.singh@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 29/88] mailbox: mailbox-test: Fix potential double-free in mbox_test_message_write()
+Date:   Wed,  7 Jun 2023 22:15:46 +0200
+Message-ID: <20230607200900.058364825@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,71 +54,135 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paul Cercueil <paul@crapouillou.net>
+From: Lee Jones <lee@kernel.org>
 
-commit e55245d115bb9054cb72cdd5dda5660f4484873a upstream.
+[ Upstream commit 2d1e952a2b8e5e92d8d55ac88a7cf7ca5ea591ad ]
 
-The AD7192 provides a specific channel configuration where both negative
-and positive inputs are connected to AIN2. This was represented in the
-ad7192 driver as a IIO channel with .channel = 2 and .extended_name set
-to "shorted".
+If a user can make copy_from_user() fail, there is a potential for
+UAF/DF due to a lack of locking around the allocation, use and freeing
+of the data buffers.
 
-The problem with this approach, is that the driver provided two IIO
-channels with the identifier .channel = 2; one "shorted" and the other
-not. This goes against the IIO ABI, as a channel identifier should be
-unique.
+This issue is not theoretical.  I managed to author a POC for it:
 
-Address this issue by changing "shorted" channels to being differential
-instead, with channel 2 vs. itself, as we're actually measuring AIN2 vs.
-itself.
+    BUG: KASAN: double-free in kfree+0x5c/0xac
+    Free of addr ffff29280be5de00 by task poc/356
+    CPU: 1 PID: 356 Comm: poc Not tainted 6.1.0-00001-g961aa6552c04-dirty #20
+    Hardware name: linux,dummy-virt (DT)
+    Call trace:
+     dump_backtrace.part.0+0xe0/0xf0
+     show_stack+0x18/0x40
+     dump_stack_lvl+0x64/0x80
+     print_report+0x188/0x48c
+     kasan_report_invalid_free+0xa0/0xc0
+     ____kasan_slab_free+0x174/0x1b0
+     __kasan_slab_free+0x18/0x24
+     __kmem_cache_free+0x130/0x2e0
+     kfree+0x5c/0xac
+     mbox_test_message_write+0x208/0x29c
+     full_proxy_write+0x90/0xf0
+     vfs_write+0x154/0x440
+     ksys_write+0xcc/0x180
+     __arm64_sys_write+0x44/0x60
+     invoke_syscall+0x60/0x190
+     el0_svc_common.constprop.0+0x7c/0x160
+     do_el0_svc+0x40/0xf0
+     el0_svc+0x2c/0x6c
+     el0t_64_sync_handler+0xf4/0x120
+     el0t_64_sync+0x18c/0x190
 
-Note that the fix tag is for the commit that moved the driver out of
-staging. The bug existed before that, but backporting would become very
-complex further down and unlikely to happen.
+    Allocated by task 356:
+     kasan_save_stack+0x3c/0x70
+     kasan_set_track+0x2c/0x40
+     kasan_save_alloc_info+0x24/0x34
+     __kasan_kmalloc+0xb8/0xc0
+     kmalloc_trace+0x58/0x70
+     mbox_test_message_write+0x6c/0x29c
+     full_proxy_write+0x90/0xf0
+     vfs_write+0x154/0x440
+     ksys_write+0xcc/0x180
+     __arm64_sys_write+0x44/0x60
+     invoke_syscall+0x60/0x190
+     el0_svc_common.constprop.0+0x7c/0x160
+     do_el0_svc+0x40/0xf0
+     el0_svc+0x2c/0x6c
+     el0t_64_sync_handler+0xf4/0x120
+     el0t_64_sync+0x18c/0x190
 
-Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Co-developed-by: Alisa Roman <alisa.roman@analog.com>
-Signed-off-by: Alisa Roman <alisa.roman@analog.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20230330102100.17590-1-paul@crapouillou.net
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Freed by task 357:
+     kasan_save_stack+0x3c/0x70
+     kasan_set_track+0x2c/0x40
+     kasan_save_free_info+0x38/0x5c
+     ____kasan_slab_free+0x13c/0x1b0
+     __kasan_slab_free+0x18/0x24
+     __kmem_cache_free+0x130/0x2e0
+     kfree+0x5c/0xac
+     mbox_test_message_write+0x208/0x29c
+     full_proxy_write+0x90/0xf0
+     vfs_write+0x154/0x440
+     ksys_write+0xcc/0x180
+     __arm64_sys_write+0x44/0x60
+     invoke_syscall+0x60/0x190
+     el0_svc_common.constprop.0+0x7c/0x160
+     do_el0_svc+0x40/0xf0
+     el0_svc+0x2c/0x6c
+     el0t_64_sync_handler+0xf4/0x120
+     el0t_64_sync+0x18c/0x190
+
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7192.c |    8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/mailbox/mailbox-test.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -898,10 +898,6 @@ static const struct iio_info ad7195_info
- 	__AD719x_CHANNEL(_si, _channel1, -1, _address, NULL, IIO_VOLTAGE, \
- 		BIT(IIO_CHAN_INFO_SCALE), ad7192_calibsys_ext_info)
+diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+index 129b3656c453a..c7ff9653223bf 100644
+--- a/drivers/mailbox/mailbox-test.c
++++ b/drivers/mailbox/mailbox-test.c
+@@ -16,6 +16,7 @@
+ #include <linux/kernel.h>
+ #include <linux/mailbox_client.h>
+ #include <linux/module.h>
++#include <linux/mutex.h>
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/poll.h>
+@@ -43,6 +44,7 @@ struct mbox_test_device {
+ 	char			*signal;
+ 	char			*message;
+ 	spinlock_t		lock;
++	struct mutex		mutex;
+ 	wait_queue_head_t	waitq;
+ 	struct fasync_struct	*async_queue;
+ };
+@@ -114,6 +116,8 @@ static ssize_t mbox_test_message_write(struct file *filp,
+ 		return -EINVAL;
+ 	}
  
--#define AD719x_SHORTED_CHANNEL(_si, _channel1, _address) \
--	__AD719x_CHANNEL(_si, _channel1, -1, _address, "shorted", IIO_VOLTAGE, \
--		BIT(IIO_CHAN_INFO_SCALE), ad7192_calibsys_ext_info)
--
- #define AD719x_TEMP_CHANNEL(_si, _address) \
- 	__AD719x_CHANNEL(_si, 0, -1, _address, NULL, IIO_TEMP, 0, NULL)
++	mutex_lock(&tdev->mutex);
++
+ 	tdev->message = kzalloc(MBOX_MAX_MSG_LEN, GFP_KERNEL);
+ 	if (!tdev->message)
+ 		return -ENOMEM;
+@@ -148,6 +152,8 @@ static ssize_t mbox_test_message_write(struct file *filp,
+ 	kfree(tdev->message);
+ 	tdev->signal = NULL;
  
-@@ -909,7 +905,7 @@ static const struct iio_chan_spec ad7192
- 	AD719x_DIFF_CHANNEL(0, 1, 2, AD7192_CH_AIN1P_AIN2M),
- 	AD719x_DIFF_CHANNEL(1, 3, 4, AD7192_CH_AIN3P_AIN4M),
- 	AD719x_TEMP_CHANNEL(2, AD7192_CH_TEMP),
--	AD719x_SHORTED_CHANNEL(3, 2, AD7192_CH_AIN2P_AIN2M),
-+	AD719x_DIFF_CHANNEL(3, 2, 2, AD7192_CH_AIN2P_AIN2M),
- 	AD719x_CHANNEL(4, 1, AD7192_CH_AIN1),
- 	AD719x_CHANNEL(5, 2, AD7192_CH_AIN2),
- 	AD719x_CHANNEL(6, 3, AD7192_CH_AIN3),
-@@ -923,7 +919,7 @@ static const struct iio_chan_spec ad7193
- 	AD719x_DIFF_CHANNEL(2, 5, 6, AD7193_CH_AIN5P_AIN6M),
- 	AD719x_DIFF_CHANNEL(3, 7, 8, AD7193_CH_AIN7P_AIN8M),
- 	AD719x_TEMP_CHANNEL(4, AD7193_CH_TEMP),
--	AD719x_SHORTED_CHANNEL(5, 2, AD7193_CH_AIN2P_AIN2M),
-+	AD719x_DIFF_CHANNEL(5, 2, 2, AD7193_CH_AIN2P_AIN2M),
- 	AD719x_CHANNEL(6, 1, AD7193_CH_AIN1),
- 	AD719x_CHANNEL(7, 2, AD7193_CH_AIN2),
- 	AD719x_CHANNEL(8, 3, AD7193_CH_AIN3),
++	mutex_unlock(&tdev->mutex);
++
+ 	return ret < 0 ? ret : count;
+ }
+ 
+@@ -396,6 +402,7 @@ static int mbox_test_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, tdev);
+ 
+ 	spin_lock_init(&tdev->lock);
++	mutex_init(&tdev->mutex);
+ 
+ 	if (tdev->rx_channel) {
+ 		tdev->rx_buffer = devm_kzalloc(&pdev->dev,
+-- 
+2.39.2
+
 
 
