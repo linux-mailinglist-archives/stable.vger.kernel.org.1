@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90F4E726E22
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:48:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E1E4726D93
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:43:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235071AbjFGUsW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:48:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46582 "EHLO
+        id S234431AbjFGUnl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:43:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235091AbjFGUsK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:48:10 -0400
+        with ESMTP id S234537AbjFGUnk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:43:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EDC02D50
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:47:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F80E2723
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:43:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 02AAF61DFC
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:47:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A240C433D2;
-        Wed,  7 Jun 2023 20:47:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 19F7764606
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:43:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD52C433EF;
+        Wed,  7 Jun 2023 20:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170869;
-        bh=kyrc/XHDSZosk9v1+2FHBi4+fWoqY29VSI4ufrww5FM=;
+        s=korg; t=1686170598;
+        bh=/0qqzz2fl+uzc9k5w7xO/pOxZzmLbxq8Uj5Pdx0I/Fs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mrO2bsPMZJ95Wtqczhohtsexoziqj7IJtFLqwbXNUGO4R7uaqKvLWC0spSwNlc7DV
-         tgbOb4bLcI499svssGPghBegLusJ+Kpvd7Q++0oly4kQEcF+Fmt5RIPx3Xha4H7QtP
-         FJxsVFxKzb47MzSlM7ciN2QKECoox5eEjNzpyKXc=
+        b=g2NuKYmUO7Cyg3h9w1j3Sbc5D+iAJqGKthuVWNmy/G7xuQu00A51knVw0ck/zCoCs
+         Zg0mUa8SCyEHI3cBgG0ElcRKrZUJmrz3ua2urm8dfDHaVtJIITE8FfLRO3Ne2VOrGU
+         AICYFfnoBcFQgH4K0rOSexwUi7Qf3QG+TKPJjFeU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Vlad Buslov <vladbu@nvidia.com>,
-        Peilin Ye <peilin.ye@bytedance.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 022/120] net/sched: sch_clsact: Only create under TC_H_CLSACT
+        patches@lists.linux.dev,
+        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 145/225] iio: imu: inv_icm42600: fix timestamp reset
 Date:   Wed,  7 Jun 2023 22:15:38 +0200
-Message-ID: <20230607200901.615160767@linuxfoundation.org>
+Message-ID: <20230607200919.154056109@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,52 +54,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peilin Ye <peilin.ye@bytedance.com>
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-[ Upstream commit 5eeebfe6c493192b10d516abfd72742900f2a162 ]
+commit bbaae0c79ebd49f61ad942a8bf9e12bfc7f821bb upstream.
 
-clsact Qdiscs are only supposed to be created under TC_H_CLSACT (which
-equals TC_H_INGRESS).  Return -EOPNOTSUPP if 'parent' is not
-TC_H_CLSACT.
+Timestamp reset is not done in the correct place. It must be done
+before enabling buffer. The reason is that interrupt timestamping
+is always happening when the chip is on, even if the
+corresponding sensor is off. When the sensor restarts, timestamp
+is wrong if you don't do a reset first.
 
-Fixes: 1f211a1b929c ("net, sched: add clsact qdisc")
-Tested-by: Pedro Tammela <pctammela@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
-Signed-off-by: Peilin Ye <peilin.ye@bytedance.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230509152202.245444-1-inv.git-commit@tdk.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_ingress.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/sched/sch_ingress.c b/net/sched/sch_ingress.c
-index f9ef6deb27709..35963929e1178 100644
---- a/net/sched/sch_ingress.c
-+++ b/net/sched/sch_ingress.c
-@@ -225,6 +225,9 @@ static int clsact_init(struct Qdisc *sch, struct nlattr *opt,
- 	struct net_device *dev = qdisc_dev(sch);
- 	int err;
- 
-+	if (sch->parent != TC_H_CLSACT)
-+		return -EOPNOTSUPP;
-+
- 	net_inc_ingress_queue();
- 	net_inc_egress_queue();
- 
-@@ -254,6 +257,9 @@ static void clsact_destroy(struct Qdisc *sch)
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
+@@ -275,9 +275,14 @@ static int inv_icm42600_buffer_preenable
  {
- 	struct clsact_sched_data *q = qdisc_priv(sch);
+ 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
+ 	struct device *dev = regmap_get_device(st->map);
++	struct inv_icm42600_timestamp *ts = iio_priv(indio_dev);
  
-+	if (sch->parent != TC_H_CLSACT)
-+		return;
+ 	pm_runtime_get_sync(dev);
+ 
++	mutex_lock(&st->lock);
++	inv_icm42600_timestamp_reset(ts);
++	mutex_unlock(&st->lock);
 +
- 	tcf_block_put_ext(q->egress_block, sch, &q->egress_block_info);
- 	tcf_block_put_ext(q->ingress_block, sch, &q->ingress_block_info);
+ 	return 0;
+ }
  
--- 
-2.39.2
-
+@@ -375,7 +380,6 @@ static int inv_icm42600_buffer_postdisab
+ 	struct device *dev = regmap_get_device(st->map);
+ 	unsigned int sensor;
+ 	unsigned int *watermark;
+-	struct inv_icm42600_timestamp *ts;
+ 	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
+ 	unsigned int sleep_temp = 0;
+ 	unsigned int sleep_sensor = 0;
+@@ -385,11 +389,9 @@ static int inv_icm42600_buffer_postdisab
+ 	if (indio_dev == st->indio_gyro) {
+ 		sensor = INV_ICM42600_SENSOR_GYRO;
+ 		watermark = &st->fifo.watermark.gyro;
+-		ts = iio_priv(st->indio_gyro);
+ 	} else if (indio_dev == st->indio_accel) {
+ 		sensor = INV_ICM42600_SENSOR_ACCEL;
+ 		watermark = &st->fifo.watermark.accel;
+-		ts = iio_priv(st->indio_accel);
+ 	} else {
+ 		return -EINVAL;
+ 	}
+@@ -417,8 +419,6 @@ static int inv_icm42600_buffer_postdisab
+ 	if (!st->fifo.on)
+ 		ret = inv_icm42600_set_temp_conf(st, false, &sleep_temp);
+ 
+-	inv_icm42600_timestamp_reset(ts);
+-
+ out_unlock:
+ 	mutex_unlock(&st->lock);
+ 
 
 
