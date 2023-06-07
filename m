@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4250F726F2C
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:56:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54D98726FF5
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:03:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235544AbjFGU4G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:56:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57134 "EHLO
+        id S235785AbjFGVDb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:03:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235519AbjFGU4G (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:56:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12BDC92
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:56:05 -0700 (PDT)
+        with ESMTP id S235989AbjFGVDN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:03:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18FCE2723
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:02:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C45864836
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:56:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF8E5C433EF;
-        Wed,  7 Jun 2023 20:56:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EE7AF63991
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:02:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B52EC4339B;
+        Wed,  7 Jun 2023 21:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171364;
-        bh=7P1ovuxvTzFYSu+1MIAyr3QGwChR4p2MrkuhM2fNbD0=;
+        s=korg; t=1686171762;
+        bh=ep++cgc0e//koz08NCc2N+nZbUjgQgT3DvwybrGChZ0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RcjcbKGGxtWz7rNklCq5AAKv8YdNqJrWz6ZEyyg593iLQF6Xv84oR5Z2PUFW2SaII
-         6vtq+VDMwPAzciD6ssVjbow/h+Koet+G9o1oqGENfJDPlHwjIlLmRvEDJQ5UbkLzpC
-         tK9q8ROW1IKXDL0MqAqsJW6FDaQj1t2DyAeEQWY0=
+        b=oAIA33hSnUhmHyH6JQxSAEdXXk4NbAT0OkNGJWL29zryLWYocdSZDTlHDFqPwmzpA
+         MiWSgShabwZD0Np1s6eABq8s1GQDqYoBkJm8huGxL8T6RLXFIYmfgoXZ2NgqGdG1hj
+         ZO3ONerXiSdNPd/Lp73+Hgp2EH1dFrnAnMGyewwo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
-        syzbot+d910bd780e6efac35869@syzkaller.appspotmail.com,
-        Sam Ravnborg <sam@ravnborg.org>, stable@kernel.org
-Subject: [PATCH 5.4 90/99] fbcon: Fix null-ptr-deref in soft_cursor
+        patches@lists.linux.dev, stable@kernel.org,
+        syzbot+298c5d8fb4a128bc27b0@syzkaller.appspotmail.com,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.15 139/159] ext4: add lockdep annotations for i_data_sem for ea_inodes
 Date:   Wed,  7 Jun 2023 22:17:22 +0200
-Message-ID: <20230607200903.057927114@linuxfoundation.org>
+Message-ID: <20230607200908.216727394@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,58 +54,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit d78bd6cc68276bd57f766f7cb98bfe32c23ab327 upstream.
+commit aff3bea95388299eec63440389b4545c8041b357 upstream.
 
-syzbot repored this bug in the softcursor code:
+Treat i_data_sem for ea_inodes as being in their own lockdep class to
+avoid lockdep complaints about ext4_setattr's use of inode_lock() on
+normal inodes potentially causing lock ordering with i_data_sem on
+ea_inodes in ext4_xattr_inode_write().  However, ea_inodes will be
+operated on by ext4_setattr(), so this isn't a problem.
 
-BUG: KASAN: null-ptr-deref in soft_cursor+0x384/0x6b4 drivers/video/fbdev/core/softcursor.c:70
-Read of size 16 at addr 0000000000000200 by task kworker/u4:1/12
-
-CPU: 0 PID: 12 Comm: kworker/u4:1 Not tainted 6.4.0-rc3-syzkaller-geb0f1697d729 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/28/2023
-Workqueue: events_power_efficient fb_flashcursor
-Call trace:
- dump_backtrace+0x1b8/0x1e4 arch/arm64/kernel/stacktrace.c:233
- show_stack+0x2c/0x44 arch/arm64/kernel/stacktrace.c:240
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0xd0/0x124 lib/dump_stack.c:106
- print_report+0xe4/0x514 mm/kasan/report.c:465
- kasan_report+0xd4/0x130 mm/kasan/report.c:572
- kasan_check_range+0x264/0x2a4 mm/kasan/generic.c:187
- __asan_memcpy+0x3c/0x84 mm/kasan/shadow.c:105
- soft_cursor+0x384/0x6b4 drivers/video/fbdev/core/softcursor.c:70
- bit_cursor+0x113c/0x1a64 drivers/video/fbdev/core/bitblit.c:377
- fb_flashcursor+0x35c/0x54c drivers/video/fbdev/core/fbcon.c:380
- process_one_work+0x788/0x12d4 kernel/workqueue.c:2405
- worker_thread+0x8e0/0xfe8 kernel/workqueue.c:2552
- kthread+0x288/0x310 kernel/kthread.c:379
- ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:853
-
-This fix let bit_cursor() bail out early when a font bitmap
-isn't available yet.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reported-by: syzbot+d910bd780e6efac35869@syzkaller.appspotmail.com
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
 Cc: stable@kernel.org
+Link: https://syzkaller.appspot.com/bug?extid=298c5d8fb4a128bc27b0
+Reported-by: syzbot+298c5d8fb4a128bc27b0@syzkaller.appspotmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://lore.kernel.org/r/20230524034951.779531-5-tytso@mit.edu
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/bitblit.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/ext4/ext4.h  |    2 ++
+ fs/ext4/xattr.c |    4 ++++
+ 2 files changed, 6 insertions(+)
 
---- a/drivers/video/fbdev/core/bitblit.c
-+++ b/drivers/video/fbdev/core/bitblit.c
-@@ -247,6 +247,9 @@ static void bit_cursor(struct vc_data *v
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -995,11 +995,13 @@ do {									       \
+  *			  where the second inode has larger inode number
+  *			  than the first
+  *  I_DATA_SEM_QUOTA  - Used for quota inodes only
++ *  I_DATA_SEM_EA     - Used for ea_inodes only
+  */
+ enum {
+ 	I_DATA_SEM_NORMAL = 0,
+ 	I_DATA_SEM_OTHER,
+ 	I_DATA_SEM_QUOTA,
++	I_DATA_SEM_EA
+ };
  
- 	cursor.set = 0;
  
-+	if (!vc->vc_font.data)
-+		return;
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -123,7 +123,11 @@ ext4_expand_inode_array(struct ext4_xatt
+ #ifdef CONFIG_LOCKDEP
+ void ext4_xattr_inode_set_class(struct inode *ea_inode)
+ {
++	struct ext4_inode_info *ei = EXT4_I(ea_inode);
 +
-  	c = scr_readw((u16 *) vc->vc_pos);
- 	attribute = get_attribute(info, c);
- 	src = vc->vc_font.data + ((c & charmask) * (w * vc->vc_font.height));
+ 	lockdep_set_subclass(&ea_inode->i_rwsem, 1);
++	(void) ei;	/* shut up clang warning if !CONFIG_LOCKDEP */
++	lockdep_set_subclass(&ei->i_data_sem, I_DATA_SEM_EA);
+ }
+ #endif
+ 
 
 
