@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2BE2726BC4
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:28:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A23B726D1F
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:39:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233453AbjFGU2H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:28:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53892 "EHLO
+        id S234311AbjFGUje (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:39:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233478AbjFGU2E (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:28:04 -0400
+        with ESMTP id S234313AbjFGUjO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:39:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90152210B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:27:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B70EC273D
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:38:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5FFDB6449E
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:27:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B20C433D2;
-        Wed,  7 Jun 2023 20:27:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 56F2A645C8
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:38:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66483C433EF;
+        Wed,  7 Jun 2023 20:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169658;
-        bh=bnFLljnx2cW5hQwv4RQxX8dckHTft4UKaFCHMTLoLe0=;
+        s=korg; t=1686170325;
+        bh=zlS7jTFaits1XcQkhlJmSDn45yZbN/98Lx2XUZc82hg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gugHn4/kOMYOm456CZ8wip3yJ3vmTXFHMCNdxaTP8p1VtbrlE+8zo9kv/eQRD3SqX
-         LNIuxJz4MB4Mn9LE6O/QoteIQwgVI41fqN3Toit2xil7qqRVC5lZUyWjIUpJyD3SnV
-         +FI90X+oiUoNU9T6IYLpAwQbc60rmtjvLYPhs/s8=
+        b=ifXDJUS8wVcLj74s0L0aUmFs8e8J+zYoE9+yNuYdTDh37wzKW9dd3VtgMU80w8Cy0
+         mDmexKb3HvPRpQJ7OnKjYvL3olDP5Rj5TXACc1wLJD5XmCtc2tCmzkXCG/gVaLAiXp
+         /pzN80JFt83gKkRpL4kcQzFaoHd9S2+uf5l13yfQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Vladislav Efanov <VEfanov@ispras.ru>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 135/286] media: mn88443x: fix !CONFIG_OF error by drop of_match_ptr from ID table
+Subject: [PATCH 6.1 041/225] udp6: Fix race condition in udp6_sendmsg & connect
 Date:   Wed,  7 Jun 2023 22:13:54 +0200
-Message-ID: <20230607200927.499917691@linuxfoundation.org>
+Message-ID: <20230607200915.690959860@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,38 +55,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Vladislav Efanov <VEfanov@ispras.ru>
 
-[ Upstream commit ae11c0efaec32fb45130ee9886689f467232eebc ]
+[ Upstream commit 448a5ce1120c5bdbce1f1ccdabcd31c7d029f328 ]
 
-The driver will match mostly by DT table (even thought there is regular
-ID table) so there is little benefit in of_match_ptr (this also allows
-ACPI matching via PRP0001, even though it might not be relevant here).
-This also fixes !CONFIG_OF error:
+Syzkaller got the following report:
+BUG: KASAN: use-after-free in sk_setup_caps+0x621/0x690 net/core/sock.c:2018
+Read of size 8 at addr ffff888027f82780 by task syz-executor276/3255
 
-  drivers/media/dvb-frontends/mn88443x.c:782:34: error: ‘mn88443x_of_match’ defined but not used [-Werror=unused-const-variable=]
+The function sk_setup_caps (called by ip6_sk_dst_store_flow->
+ip6_dst_store) referenced already freed memory as this memory was
+freed by parallel task in udpv6_sendmsg->ip6_sk_dst_lookup_flow->
+sk_dst_check.
 
-Link: https://lore.kernel.org/linux-media/20230312131318.351173-28-krzysztof.kozlowski@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+          task1 (connect)              task2 (udp6_sendmsg)
+        sk_setup_caps->sk_dst_set |
+                                  |  sk_dst_check->
+                                  |      sk_dst_set
+                                  |      dst_release
+        sk_setup_caps references  |
+        to already freed dst_entry|
+
+The reason for this race condition is: sk_setup_caps() keeps using
+the dst after transferring the ownership to the dst cache.
+
+Found by Linux Verification Center (linuxtesting.org) with syzkaller.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Vladislav Efanov <VEfanov@ispras.ru>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/mn88443x.c | 2 +-
+ net/core/sock.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-frontends/mn88443x.c b/drivers/media/dvb-frontends/mn88443x.c
-index 1f1753f2ab1a3..0782f8377eb2f 100644
---- a/drivers/media/dvb-frontends/mn88443x.c
-+++ b/drivers/media/dvb-frontends/mn88443x.c
-@@ -798,7 +798,7 @@ MODULE_DEVICE_TABLE(i2c, mn88443x_i2c_id);
- static struct i2c_driver mn88443x_driver = {
- 	.driver = {
- 		.name = "mn88443x",
--		.of_match_table = of_match_ptr(mn88443x_of_match),
-+		.of_match_table = mn88443x_of_match,
- 	},
- 	.probe_new = mn88443x_probe,
- 	.remove   = mn88443x_remove,
+diff --git a/net/core/sock.c b/net/core/sock.c
+index eb0b76acd9df1..83f590d8d0850 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2370,7 +2370,6 @@ void sk_setup_caps(struct sock *sk, struct dst_entry *dst)
+ {
+ 	u32 max_segs = 1;
+ 
+-	sk_dst_set(sk, dst);
+ 	sk->sk_route_caps = dst->dev->features;
+ 	if (sk_is_tcp(sk))
+ 		sk->sk_route_caps |= NETIF_F_GSO;
+@@ -2392,6 +2391,7 @@ void sk_setup_caps(struct sock *sk, struct dst_entry *dst)
+ 		}
+ 	}
+ 	sk->sk_gso_max_segs = max_segs;
++	sk_dst_set(sk, dst);
+ }
+ EXPORT_SYMBOL_GPL(sk_setup_caps);
+ 
 -- 
 2.39.2
 
