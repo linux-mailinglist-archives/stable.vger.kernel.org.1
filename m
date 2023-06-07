@@ -2,139 +2,217 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E7F4725F24
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 14:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16E57725F4D
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 14:26:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240780AbjFGMXb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 08:23:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37066 "EHLO
+        id S240847AbjFGM03 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 08:26:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240696AbjFGMX3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 08:23:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A556A173B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 05:23:26 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 33E1663EA0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 12:23:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404B6C433A1;
-        Wed,  7 Jun 2023 12:23:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686140605;
-        bh=1qzTpPNsMbg5Vw/kAomej08vM6GFr3WCKJzP1McpA7g=;
-        h=Subject:To:Cc:From:Date:From;
-        b=fK7DM/dtEhXRxvCHuMvKkiSBxNdVtuh8QI9y9/dbxKZhMsYY/hQ97ESv05I/MT4dn
-         VjxykzU9afEGQzCNExkpTw/pMBuV3h0oua+PYFY1YEk1fnTf7JRYDnwy8p4Vju5t7c
-         oYkUTPelTljNdruhiuTZBKabHdRK2blf2eejhXhM=
-Subject: FAILED: patch "[PATCH] test_firmware: fix a memory leak with reqs buffer" failed to apply to 5.4-stable tree
-To:     mirsad.todorovac@alu.unizg.hr, colin.i.king@gmail.com,
-        dan.carpenter@linaro.org, error27@gmail.com,
-        gregkh@linuxfoundation.org, mcgrof@kernel.org,
-        rdunlap@infradead.org, russell.h.weight@intel.com,
-        shuah@kernel.org, tianfei.zhang@intel.com, tiwai@suse.de
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 07 Jun 2023 14:23:13 +0200
-Message-ID: <2023060713-slogan-lucrative-b623@gregkh>
+        with ESMTP id S240848AbjFGM02 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 08:26:28 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0A9E71FD6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 05:26:12 -0700 (PDT)
+Received: by linux.microsoft.com (Postfix, from userid 1112)
+        id 3D2AA20BE4B5; Wed,  7 Jun 2023 05:26:12 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3D2AA20BE4B5
+Date:   Wed, 7 Jun 2023 05:26:12 -0700
+From:   Ard Biesheuvel <ardb@kernel.org>
+To:     stable@vger.kernel.org
+Cc:     dpark@linux.microsoft.com, t-lo@linux.microsoft.com,
+        Sasha Levin <sashal@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>, gregkh@linuxfoundation.org
+Subject: [PATCH 6.1] arm64: efi: Use SMBIOS processor version to key off
+ Ampere quirk
+Message-ID: <20230607122612.GA846@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2023060606-shininess-rosy-7533@gregkh>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Spam-Status: No, score=-11.5 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+[ Upstream commit eb684408f3ea4856639675d6465f0024e498e4b1 ]
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Instead of using the SMBIOS type 1 record 'family' field, which is often
+modified by OEMs, use the type 4 'processor ID' and 'processor version'
+fields, which are set to a small set of probe-able values on all known
+Ampere EFI systems in the field.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Fixes: 550b33cfd4452968 ("arm64: efi: Force the use of ...")
+Tested-by: Andrea Righi <andrea.righi@canonical.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+---
+ drivers/firmware/efi/libstub/arm64-stub.c | 39 ++++++++++++++++-----
+ drivers/firmware/efi/libstub/efistub.h    | 41 +++++++++++++++++++++--
+ drivers/firmware/efi/libstub/smbios.c     | 13 +++++--
+ 3 files changed, 80 insertions(+), 13 deletions(-)
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x be37bed754ed90b2655382f93f9724b3c1aae847
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023060713-slogan-lucrative-b623@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From be37bed754ed90b2655382f93f9724b3c1aae847 Mon Sep 17 00:00:00 2001
-From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-Date: Tue, 9 May 2023 10:47:47 +0200
-Subject: [PATCH] test_firmware: fix a memory leak with reqs buffer
-
-Dan Carpenter spotted that test_fw_config->reqs will be leaked if
-trigger_batched_requests_store() is called two or more times.
-The same appears with trigger_batched_requests_async_store().
-
-This bug wasn't trigger by the tests, but observed by Dan's visual
-inspection of the code.
-
-The recommended workaround was to return -EBUSY if test_fw_config->reqs
-is already allocated.
-
-Fixes: 7feebfa487b92 ("test_firmware: add support for request_firmware_into_buf")
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Russ Weight <russell.h.weight@intel.com>
-Cc: Tianfei Zhang <tianfei.zhang@intel.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Colin Ian King <colin.i.king@gmail.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kselftest@vger.kernel.org
-Cc: stable@vger.kernel.org # v5.4
-Suggested-by: Dan Carpenter <error27@gmail.com>
-Suggested-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Luis Chamberlain <mcgrof@kernel.org>
-Link: https://lore.kernel.org/r/20230509084746.48259-2-mirsad.todorovac@alu.unizg.hr
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/lib/test_firmware.c b/lib/test_firmware.c
-index 35417e0af3f4..91b232ed3161 100644
---- a/lib/test_firmware.c
-+++ b/lib/test_firmware.c
-@@ -913,6 +913,11 @@ static ssize_t trigger_batched_requests_store(struct device *dev,
+diff --git a/drivers/firmware/efi/libstub/arm64-stub.c b/drivers/firmware/efi/libstub/arm64-stub.c
+index 42282c5c3fe6..e2f90566b291 100644
+--- a/drivers/firmware/efi/libstub/arm64-stub.c
++++ b/drivers/firmware/efi/libstub/arm64-stub.c
+@@ -17,20 +17,43 @@
  
- 	mutex_lock(&test_fw_mutex);
+ static bool system_needs_vamap(void)
+ {
+-	const u8 *type1_family = efi_get_smbios_string(1, family);
++	const struct efi_smbios_type4_record *record;
++	const u32 __aligned(1) *socid;
++	const u8 *version;
  
-+	if (test_fw_config->reqs) {
-+		rc = -EBUSY;
-+		goto out_bail;
+ 	/*
+ 	 * Ampere eMAG, Altra, and Altra Max machines crash in SetTime() if
+-	 * SetVirtualAddressMap() has not been called prior.
++	 * SetVirtualAddressMap() has not been called prior. Most Altra systems
++	 * can be identified by the SMCCC soc ID, which is conveniently exposed
++	 * via the type 4 SMBIOS records. Otherwise, test the processor version
++	 * field. eMAG systems all appear to have the processor version field
++	 * set to "eMAG".
+ 	 */
+-	if (!type1_family || (
+-	    strcmp(type1_family, "eMAG") &&
+-	    strcmp(type1_family, "Altra") &&
+-	    strcmp(type1_family, "Altra Max")))
++	record = (struct efi_smbios_type4_record *)efi_get_smbios_record(4);
++	if (!record)
+ 		return false;
+ 
+-	efi_warn("Working around broken SetVirtualAddressMap()\n");
+-	return true;
++	socid = (u32 *)record->processor_id;
++	switch (*socid & 0xffff000f) {
++		static char const altra[] = "Ampere(TM) Altra(TM) Processor";
++		static char const emag[] = "eMAG";
++
++	default:
++		version = efi_get_smbios_string(&record->header, 4,
++						processor_version);
++		if (!version || (strncmp(version, altra, sizeof(altra) - 1) &&
++				 strncmp(version, emag, sizeof(emag) - 1)))
++			break;
++
++		fallthrough;
++
++	case 0x0a160001:	// Altra
++	case 0x0a160002:	// Altra Max
++		efi_warn("Working around broken SetVirtualAddressMap()\n");
++		return true;
 +	}
 +
- 	test_fw_config->reqs =
- 		vzalloc(array3_size(sizeof(struct test_batched_req),
- 				    test_fw_config->num_requests, 2));
-@@ -1011,6 +1016,11 @@ ssize_t trigger_batched_requests_async_store(struct device *dev,
++	return false;
+ }
  
- 	mutex_lock(&test_fw_mutex);
+ efi_status_t check_platform_features(void)
+diff --git a/drivers/firmware/efi/libstub/efistub.h b/drivers/firmware/efi/libstub/efistub.h
+index 900df67a2078..970e86e3aab0 100644
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -983,6 +983,8 @@ struct efi_smbios_record {
+ 	u16	handle;
+ };
  
-+	if (test_fw_config->reqs) {
-+		rc = -EBUSY;
-+		goto out_bail;
-+	}
++const struct efi_smbios_record *efi_get_smbios_record(u8 type);
 +
- 	test_fw_config->reqs =
- 		vzalloc(array3_size(sizeof(struct test_batched_req),
- 				    test_fw_config->num_requests, 2));
+ struct efi_smbios_type1_record {
+ 	struct efi_smbios_record	header;
+ 
+@@ -996,13 +998,46 @@ struct efi_smbios_type1_record {
+ 	u8				family;
+ };
+ 
+-#define efi_get_smbios_string(__type, __name) ({			\
++struct efi_smbios_type4_record {
++	struct efi_smbios_record	header;
++
++	u8				socket;
++	u8				processor_type;
++	u8				processor_family;
++	u8				processor_manufacturer;
++	u8				processor_id[8];
++	u8				processor_version;
++	u8				voltage;
++	u16				external_clock;
++	u16				max_speed;
++	u16				current_speed;
++	u8				status;
++	u8				processor_upgrade;
++	u16				l1_cache_handle;
++	u16				l2_cache_handle;
++	u16				l3_cache_handle;
++	u8				serial_number;
++	u8				asset_tag;
++	u8				part_number;
++	u8				core_count;
++	u8				enabled_core_count;
++	u8				thread_count;
++	u16				processor_characteristics;
++	u16				processor_family2;
++	u16				core_count2;
++	u16				enabled_core_count2;
++	u16				thread_count2;
++	u16				thread_enabled;
++};
++
++#define efi_get_smbios_string(__record, __type, __name) ({		\
+ 	int size = sizeof(struct efi_smbios_type ## __type ## _record);	\
+ 	int off = offsetof(struct efi_smbios_type ## __type ## _record,	\
+ 			   __name);					\
+-	__efi_get_smbios_string(__type, off, size);			\
++	__efi_get_smbios_string((__record), __type, off, size);		\
+ })
+ 
+-const u8 *__efi_get_smbios_string(u8 type, int offset, int recsize);
++const u8 *__efi_get_smbios_string(const struct efi_smbios_record *record,
++				  u8 type, int offset, int recsize);
+ 
+ #endif
+diff --git a/drivers/firmware/efi/libstub/smbios.c b/drivers/firmware/efi/libstub/smbios.c
+index aadb422b9637..f9c159c28f46 100644
+--- a/drivers/firmware/efi/libstub/smbios.c
++++ b/drivers/firmware/efi/libstub/smbios.c
+@@ -22,19 +22,28 @@ struct efi_smbios_protocol {
+ 	u8 minor_version;
+ };
+ 
+-const u8 *__efi_get_smbios_string(u8 type, int offset, int recsize)
++const struct efi_smbios_record *efi_get_smbios_record(u8 type)
+ {
+ 	struct efi_smbios_record *record;
+ 	efi_smbios_protocol_t *smbios;
+ 	efi_status_t status;
+ 	u16 handle = 0xfffe;
+-	const u8 *strtable;
+ 
+ 	status = efi_bs_call(locate_protocol, &EFI_SMBIOS_PROTOCOL_GUID, NULL,
+ 			     (void **)&smbios) ?:
+ 		 efi_call_proto(smbios, get_next, &handle, &type, &record, NULL);
+ 	if (status != EFI_SUCCESS)
+ 		return NULL;
++	return record;
++}
++
++const u8 *__efi_get_smbios_string(const struct efi_smbios_record *record,
++				  u8 type, int offset, int recsize)
++{
++	const u8 *strtable;
++
++	if (!record)
++		return NULL;
+ 
+ 	strtable = (u8 *)record + record->length;
+ 	for (int i = 1; i < ((u8 *)record)[offset]; i++) {
+-- 
+2.30.2
 
