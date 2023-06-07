@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AADA5726DB4
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:44:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20CE4726AE3
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234687AbjFGUoq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:44:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45166 "EHLO
+        id S229980AbjFGUUu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:20:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234712AbjFGUok (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:40 -0400
+        with ESMTP id S232822AbjFGUUo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39FED26B9
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:44:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67840271E
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:20:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 16F5B64660
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:43:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24ABAC433D2;
-        Wed,  7 Jun 2023 20:43:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 39CB260F15
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:19:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D73CC4339B;
+        Wed,  7 Jun 2023 20:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170637;
-        bh=New+Lk9rMHD7GQVrepLkvruOIKxv6AWS/GCZfh7FeLg=;
+        s=korg; t=1686169166;
+        bh=k1Wdy5HiceOrL4Jp5EksUTPQuP7HKsxxnSx9Ib5bA7M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y2HmK/wksBkFChfOLzr2yYSw9+MQo00J7CDGNrWOjMo1RKuzTSV1TgX/Zw7D5H84F
-         nlfdip/1peR7/6TZWprPL1+1y9LvMw/KZXgISc+HGehYBbwt/nzWvo4mKj/zNO7ZdK
-         YSbyMDol+06gu//WUTxHXPMqeK/NgNgdo0lydl3M=
+        b=LUk/Y5ZxlGwHpl0Rcs3EVc/e7nv/enXNdxjBuSrMyvXKdM+TPinLzMSZU42wn8saU
+         6TKaCq0pV10180dpTfXTS5Fh8GV5IznIjPe4+t1YPkGHGE3W2EsXmqtxeWFwlH07HZ
+         XGCJ3dNxMXHEWPfSNxo7tf2a2SYxiXjjQveliiTk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Richard Acayan <mailingradian@gmail.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.1 161/225] misc: fastrpc: reject new invocations during device removal
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Bart Van Assche <bvanassche@acm.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 4.14 40/61] scsi: stex: Fix gcc 13 warnings
 Date:   Wed,  7 Jun 2023 22:15:54 +0200
-Message-ID: <20230607200919.667091976@linuxfoundation.org>
+Message-ID: <20230607200849.154274122@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
+References: <20230607200835.310274198@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,50 +54,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Richard Acayan <mailingradian@gmail.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit 46248400d81e2aa0b65cd659d6f40188192a58b6 upstream.
+commit 6d074ce231772c66e648a61f6bd2245e7129d1f5 upstream.
 
-The channel's rpmsg object allows new invocations to be made. After old
-invocations are already interrupted, the driver shouldn't try to invoke
-anymore. Invalidating the rpmsg at the end of the driver removal
-function makes it easy to cause a race condition in userspace. Even
-closing a file descriptor before the driver finishes its cleanup can
-cause an invocation via fastrpc_release_current_dsp_process() and
-subsequent timeout.
+gcc 13 may assign another type to enumeration constants than gcc 12. Split
+the large enum at the top of source file stex.c such that the type of the
+constants used in time expressions is changed back to the same type chosen
+by gcc 12. This patch suppresses compiler warnings like this one:
 
-Invalidate the channel before the invocations are interrupted to make
-sure that no invocations can be created to hang after the device closes.
+In file included from ./include/linux/bitops.h:7,
+                 from ./include/linux/kernel.h:22,
+                 from drivers/scsi/stex.c:13:
+drivers/scsi/stex.c: In function ‘stex_common_handshake’:
+./include/linux/typecheck.h:12:25: error: comparison of distinct pointer types lacks a cast [-Werror]
+   12 |         (void)(&__dummy == &__dummy2); \
+      |                         ^~
+./include/linux/jiffies.h:106:10: note: in expansion of macro ‘typecheck’
+  106 |          typecheck(unsigned long, b) && \
+      |          ^~~~~~~~~
+drivers/scsi/stex.c:1035:29: note: in expansion of macro ‘time_after’
+ 1035 |                         if (time_after(jiffies, before + MU_MAX_DELAY * HZ)) {
+      |                             ^~~~~~~~~~
 
-Fixes: c68cfb718c8f ("misc: fastrpc: Add support for context Invoke method")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Richard Acayan <mailingradian@gmail.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20230523152550.438363-5-srinivas.kandagatla@linaro.org
+See also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107405.
+
+Cc: stable@vger.kernel.org
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20230529195034.3077-1-bvanassche@acm.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/scsi/stex.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -2162,7 +2162,9 @@ static void fastrpc_rpmsg_remove(struct
- 	struct fastrpc_user *user;
- 	unsigned long flags;
+--- a/drivers/scsi/stex.c
++++ b/drivers/scsi/stex.c
+@@ -114,7 +114,9 @@ enum {
+ 	TASK_ATTRIBUTE_HEADOFQUEUE		= 0x1,
+ 	TASK_ATTRIBUTE_ORDERED			= 0x2,
+ 	TASK_ATTRIBUTE_ACA			= 0x4,
++};
  
-+	/* No invocations past this point */
- 	spin_lock_irqsave(&cctx->lock, flags);
-+	cctx->rpdev = NULL;
- 	list_for_each_entry(user, &cctx->users, user)
- 		fastrpc_notify_users(user);
- 	spin_unlock_irqrestore(&cctx->lock, flags);
-@@ -2175,7 +2177,6 @@ static void fastrpc_rpmsg_remove(struct
++enum {
+ 	SS_STS_NORMAL				= 0x80000000,
+ 	SS_STS_DONE				= 0x40000000,
+ 	SS_STS_HANDSHAKE			= 0x20000000,
+@@ -126,7 +128,9 @@ enum {
+ 	SS_I2H_REQUEST_RESET			= 0x2000,
  
- 	of_platform_depopulate(&rpdev->dev);
+ 	SS_MU_OPERATIONAL			= 0x80000000,
++};
  
--	cctx->rpdev = NULL;
- 	fastrpc_channel_ctx_put(cctx);
- }
++enum {
+ 	STEX_CDB_LENGTH				= 16,
+ 	STATUS_VAR_LEN				= 128,
  
 
 
