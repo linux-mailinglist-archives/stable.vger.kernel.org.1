@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02A39726C66
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:33:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA6F5726ADD
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233771AbjFGUdY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:33:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59978 "EHLO
+        id S232637AbjFGUUr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:20:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233741AbjFGUdX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:33:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 598201BD4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:33:16 -0700 (PDT)
+        with ESMTP id S232670AbjFGUUl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94C47270C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:20:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A2D8644CE
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:33:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F513C433D2;
-        Wed,  7 Jun 2023 20:33:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A456E63B83
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:19:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7D1FC433D2;
+        Wed,  7 Jun 2023 20:19:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169995;
-        bh=lPkjKh3VSeD7zFOib0sRqqqhSihnZ3Mqhs4DaI2r1xU=;
+        s=korg; t=1686169198;
+        bh=c5uKw5XbdyFhy/uTEClZwMgzbIBv5itjhRQi11MeQmg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eVBVyzCucoTKg6jQu3CDMwcs9ZIIuu1DiYwJdGnystRDTWg0ASiSxGYRBwVs4Looh
-         i5LUBL3rmUcKCsiHd9VAFi6asu/zz45h4P8blYitaAEaZCd4ahf033ALa6XM7Cv/iL
-         S+gNcS7ViOzoCiRTFCnLsffvD56duIhM8CClybHg=
+        b=bW7fFIUqkCyvMywixmTGx+hRb0Ox8IxGs37kT2yuTJrKokZzYYKFj2V7bNw712V/v
+         F3UF8wncY1KbNObKXc6QrQCUkzjZ9XdC3t9deF2iTi3fzsQFTOPaa8UbpoRiU1OTvW
+         hcKFpsOtDDxxYLL4iWyzecyprK9vTeMp9ZmjYcGE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Herve Codina <herve.codina@bootlin.com>,
-        kernel test robot <lkp@intel.com>, stable <stable@kernel.org>
-Subject: [PATCH 6.3 265/286] serial: cpm_uart: Fix a COMPILE_TEST dependency
-Date:   Wed,  7 Jun 2023 22:16:04 +0200
-Message-ID: <20230607200931.965665292@linuxfoundation.org>
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Sherry Sun <sherry.sun@nxp.com>
+Subject: [PATCH 4.14 51/61] tty: serial: fsl_lpuart: use UARTCTRL_TXINV to send break instead of UARTCTRL_SBK
+Date:   Wed,  7 Jun 2023 22:16:05 +0200
+Message-ID: <20230607200852.798998535@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
+References: <20230607200835.310274198@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,56 +53,102 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-commit 7183c37fd53eee1e795206e625da12a5d7ec1e1a upstream.
+commit 2474e05467c00f7d51af3039b664de6886325257 upstream.
 
-In a COMPILE_TEST configuration, the cpm_uart driver uses symbols from
-the cpm_uart_cpm2.c file. This file is compiled only when CONFIG_CPM2 is
-set.
+LPUART IP now has two known bugs, one is that CTS has higher priority
+than the break signal, which causes the break signal sending through
+UARTCTRL_SBK may impacted by the CTS input if the HW flow control is
+enabled. It exists on all platforms we support in this driver.
+So we add a workaround patch for this issue: commit c4c81db5cf8b
+("tty: serial: fsl_lpuart: disable the CTS when send break signal").
 
-Without this dependency, the linker fails with some missing symbols for
-COMPILE_TEST configuration that needs SERIAL_CPM without enabling CPM2.
+Another IP bug is i.MX8QM LPUART may have an additional break character
+being sent after SBK was cleared. It may need to add some delay between
+clearing SBK and re-enabling CTS to ensure that the SBK latch are
+completely cleared.
 
-This lead to:
-  depends on CPM2 || CPM1 || (PPC32 && CPM2 && COMPILE_TEST)
+But we found that during the delay period before CTS is enabled, there
+is still a risk that Bluetooth data in TX FIFO may be sent out during
+this period because of break off and CTS disabled(even if BT sets CTS
+line deasserted, data is still sent to BT).
 
-This dependency does not make sense anymore and can be simplified
-removing all the COMPILE_TEST part.
+Due to this risk, we have to drop the CTS-disabling workaround for SBK
+bugs, use TXINV seems to be a better way to replace SBK feature and
+avoid above risk. Also need to disable the transmitter to prevent any
+data from being sent out during break, then invert the TX line to send
+break. Then disable the TXINV when turn off break and re-enable
+transmitter.
 
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/oe-kbuild-all/202305160221.9XgweObz-lkp@intel.com/
-Fixes: e3e7b13bffae ("serial: allow COMPILE_TEST for some drivers")
+Fixes: c4c81db5cf8b ("tty: serial: fsl_lpuart: disable the CTS when send break signal")
 Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20230523085902.75837-3-herve.codina@bootlin.com
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+Link: https://lore.kernel.org/r/20230519094751.28948-1-sherry.sun@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/Kconfig             |    2 +-
- drivers/tty/serial/cpm_uart/cpm_uart.h |    2 --
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ drivers/tty/serial/fsl_lpuart.c |   44 ++++++++++++++++++++--------------------
+ 1 file changed, 23 insertions(+), 21 deletions(-)
 
---- a/drivers/tty/serial/Kconfig
-+++ b/drivers/tty/serial/Kconfig
-@@ -769,7 +769,7 @@ config SERIAL_PMACZILOG_CONSOLE
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -1199,34 +1199,36 @@ static void lpuart_break_ctl(struct uart
  
- config SERIAL_CPM
- 	tristate "CPM SCC/SMC serial port support"
--	depends on CPM2 || CPM1 || (PPC32 && COMPILE_TEST)
-+	depends on CPM2 || CPM1
- 	select SERIAL_CORE
- 	help
- 	  This driver supports the SCC and SMC serial ports on Motorola 
---- a/drivers/tty/serial/cpm_uart/cpm_uart.h
-+++ b/drivers/tty/serial/cpm_uart/cpm_uart.h
-@@ -19,8 +19,6 @@ struct gpio_desc;
- #include "cpm_uart_cpm2.h"
- #elif defined(CONFIG_CPM1)
- #include "cpm_uart_cpm1.h"
--#elif defined(CONFIG_COMPILE_TEST)
--#include "cpm_uart_cpm2.h"
- #endif
+ static void lpuart32_break_ctl(struct uart_port *port, int break_state)
+ {
+-	unsigned long temp, modem;
+-	struct tty_struct *tty;
+-	unsigned int cflag = 0;
++	unsigned long temp;
  
- #define SERIAL_CPM_MAJOR	204
+-	tty = tty_port_tty_get(&port->state->port);
+-	if (tty) {
+-		cflag = tty->termios.c_cflag;
+-		tty_kref_put(tty);
+-	}
+-
+-	temp = lpuart32_read(port, UARTCTRL) & ~UARTCTRL_SBK;
+-	modem = lpuart32_read(port, UARTMODIR);
++	temp = lpuart32_read(port, UARTCTRL);
+ 
++	/*
++	 * LPUART IP now has two known bugs, one is CTS has higher priority than the
++	 * break signal, which causes the break signal sending through UARTCTRL_SBK
++	 * may impacted by the CTS input if the HW flow control is enabled. It
++	 * exists on all platforms we support in this driver.
++	 * Another bug is i.MX8QM LPUART may have an additional break character
++	 * being sent after SBK was cleared.
++	 * To avoid above two bugs, we use Transmit Data Inversion function to send
++	 * the break signal instead of UARTCTRL_SBK.
++	 */
+ 	if (break_state != 0) {
+-		temp |= UARTCTRL_SBK;
+ 		/*
+-		 * LPUART CTS has higher priority than SBK, need to disable CTS before
+-		 * asserting SBK to avoid any interference if flow control is enabled.
++		 * Disable the transmitter to prevent any data from being sent out
++		 * during break, then invert the TX line to send break.
+ 		 */
+-		if (cflag & CRTSCTS && modem & UARTMODIR_TXCTSE)
+-			lpuart32_write(port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
++		temp &= ~UARTCTRL_TE;
++		lpuart32_write(port, temp, UARTCTRL);
++		temp |= UARTCTRL_TXINV;
++		lpuart32_write(port, temp, UARTCTRL);
+ 	} else {
+-		/* Re-enable the CTS when break off. */
+-		if (cflag & CRTSCTS && !(modem & UARTMODIR_TXCTSE))
+-			lpuart32_write(port, modem | UARTMODIR_TXCTSE, UARTMODIR);
++		/* Disable the TXINV to turn off break and re-enable transmitter. */
++		temp &= ~UARTCTRL_TXINV;
++		lpuart32_write(port, temp, UARTCTRL);
++		temp |= UARTCTRL_TE;
++		lpuart32_write(port, temp, UARTCTRL);
+ 	}
+-
+-	lpuart32_write(port, temp, UARTCTRL);
+ }
+ 
+ static void lpuart_setup_watermark(struct lpuart_port *sport)
 
 
