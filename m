@@ -2,81 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AEA9726975
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 21:07:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 061607269F1
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 21:39:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229775AbjFGTHP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 15:07:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38538 "EHLO
+        id S230106AbjFGTjK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 15:39:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229614AbjFGTHN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 15:07:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C73E8E;
-        Wed,  7 Jun 2023 12:07:13 -0700 (PDT)
+        with ESMTP id S231161AbjFGTjI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 15:39:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 284AD1FFA;
+        Wed,  7 Jun 2023 12:39:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ACFB463D85;
-        Wed,  7 Jun 2023 19:07:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F52C433EF;
-        Wed,  7 Jun 2023 19:07:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686164832;
-        bh=G8DEs9I7UH+XGHugDOSGDS8/fXnM7e5FafIGJcFDcTE=;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AB12F61638;
+        Wed,  7 Jun 2023 19:39:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62FA4C433D2;
+        Wed,  7 Jun 2023 19:39:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686166746;
+        bh=lJeVIY8wRq/hgKma1+bBxZkFcZZ5cDlDkWbOyNaXnvc=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=lBuNueS1YZPZOhG8R2S21CP0YB45duJ/rLit1ecL5OOL/6lthveTZJDDRt+YGG0R+
-         N8tICWPYPZ6aQ+X9HB0bBx73k0pt1Rnnc3Ma4vCoP0/OX825dcG81uf+CIO8IBfK+J
-         ex6P+HiEXbvj0+wYhUVHiDTH6CzdlvODwvoRs5yU=
-Date:   Wed, 7 Jun 2023 21:07:09 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Rishabh Bhatnagar <risbhat@amazon.com>
-Cc:     sfrench@samba.org, stable@vger.kernel.org,
-        linux-cifs@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5.4 0/2] Backport few dfs related fixes to cifs
-Message-ID: <2023060750-unpledged-effective-bd95@gregkh>
-References: <20230607185313.11363-1-risbhat@amazon.com>
+        b=Xz4QBOE+GgOXGoIFplwIU3a6LHqreR0Xv5BE+kO/1uA1Rf+jVP/UA6h33xPRokanN
+         mbZnvfTuqd94S5u8WhzI7Er5R69VI+hhEry+yLmvtlpyvOiVvjYciPdXekoJfBsXsO
+         xoUOxxam6HMvk3vLSJTxOjk7qZ8ce+35EcCcHnD5Yx8UMxNjFQTAImfqBbbWPA0Hfa
+         uD8PM9rE6HhE1jyzsMi6ucAUZZ5oaJihxDVUk+/U0OmJMsJQzpXtl5NibPAbVF7mW5
+         UHNyEIJ69TiOrCWJTBPrLaMODZT8jzF5HVMPdRoyhr2dB5enllvlPMzkhlF8YP2yva
+         WpDe4GTMX6jZA==
+Date:   Wed, 7 Jun 2023 21:39:01 +0200
+From:   Christian Brauner <brauner@kernel.org>
+To:     Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        David Howells <dhowells@redhat.com>,
+        Karel Zak <kzag@redhat.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] fs: avoid empty option when generating legacy mount
+ string
+Message-ID: <20230607-rennpferd-stechen-2f645ac78fcc@brauner>
+References: <20230607-fs-empty-option-v1-1-20c8dbf4671b@weissschuh.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230607185313.11363-1-risbhat@amazon.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230607-fs-empty-option-v1-1-20c8dbf4671b@weissschuh.net>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jun 07, 2023 at 06:53:11PM +0000, Rishabh Bhatnagar wrote:
-> Recently we have been seeing kernel panic in cifs_reconnect function
-> while accessing tgt_list. Looks like tgt_list is not initialized
-> correctly. There are fixes already present in 5.10 and later trees.
-> Backporting them to 5.4
+On Wed, Jun 07, 2023 at 07:28:48PM +0200, Thomas Weißschuh wrote:
+> As each option string fragment is always prepended with a comma it would
+> happen that the whole string always starts with a comma.
+> This could be interpreted by filesystem drivers as an empty option and
+> may produce errors.
 > 
->  CIFS VFS: \\172.30.1.14 cifs_reconnect: no target servers for DFS
->  failover
->  BUG: unable to handle page fault for address: fffffffffffffff8
->  #PF: supervisor read access in kernel mode
->  #PF: error_code(0x0000) - not-present page
->  PGD 260e067 P4D 260e067 PUD 2610067 PMD 0
->  Oops: 0000 [#1] SMP PTI
->  RIP: 0010:cifs_reconnect+0x51d/0xef0 [cifs]
->  RSP: 0018:ffffc90000693da0 EFLAGS: 00010282
->  RAX: fffffffffffffff8 RBX: ffff8887fa63b800 RCX: fffffffffffffff8
->  Call Trace:
->  cifs_handle_standard+0x18d/0x1b0 [cifs]
->  cifs_demultiplex_thread+0xa5c/0xc90 [cifs]
->  kthread+0x113/0x130
+> For example the NTFS driver from ntfs.ko behaves like this and fails when
+> mounted via the new API.
 > 
-> *** BLURB HERE ***
+> Link: https://github.com/util-linux/util-linux/issues/2298
 
-No blurb?
+Yeah, the old ntfs driver implements its own option parser. It
+overwrites/splits at ',' returning '\0' and then trips over this.
 
-And this says 5.4, yet your patches say 5.10?
+Contrast with e.g., ovl_next_op() which does the same thing but skips
+over '\0' in ovl_parse_opt().
 
-Totally confused...
+So arguably also a bug in ntfs parsing. But there's no reason we should
+prepend ',' for legacy mount option strings.
 
-greg k-h
+And yeah, I can easily verify this...
+
+Using my custom move-mount tool I originally wrote for another patchset
+but which is handy to pass mount options via the new mount api _system_
+calls and not via mount():
+https://github.com/brauner/move-mount-beneath
+
+I can do:
+
+        sudo ./move-mount -f overlay -olowerdir=/mnt/a:/mnt/b,upperdir=/mnt/upper,workdir=/mnt/work /mnt/merged
+
+and clearly see:
+
+        > sudo bpftrace -e 'kfunc:legacy_get_tree { @m = args->fc; printf("%s\n", str(((struct legacy_fs_context *)@m->fs_private)->legacy_data)); }'
+        Attaching 1 probe...
+        ,lowerdir=/mnt/a:/mnt/b,upperdir=/mnt/upper,workdir=/mnt/work
+
+> Fixes: 3e1aeb00e6d1 ("vfs: Implement a filesystem superblock creation/configuration context")
+
+Should be:
+
+Fixes: commit 3e1aeb00e6d1 ("vfs: Implement a filesystem superblock creation/configuration context")
+
+and misses a:
+
+Cc: stable@vger.kernel.org
+
+I'll fix this up for you though.
