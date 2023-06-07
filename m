@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E2E2726FBE
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:01:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34E07726CD8
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:37:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235925AbjFGVBH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:01:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34096 "EHLO
+        id S233983AbjFGUg7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:36:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235812AbjFGVAq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:46 -0400
+        with ESMTP id S234093AbjFGUgz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:36:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 193F02120
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:00:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 854972683
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:36:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EBEBA648C4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:00:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CDFDC433EF;
-        Wed,  7 Jun 2023 21:00:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2378464599
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:36:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38276C433EF;
+        Wed,  7 Jun 2023 20:36:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171629;
-        bh=W7cDmmMskAmQKOeAEBTMMtSUHQeSM063tf6xjoDLGpQ=;
+        s=korg; t=1686170185;
+        bh=gaIF6HVHoZMppC3ESfbj9bGDzS5MIjuoCPWqnkgNDtk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SSutqo7GI0ITxH8Vfso1z294Y+z+Fkl63VroElgrIrOYUtkFDRdTqIdLbY3Yg2C2g
-         /V8XcIxMam0NbdmOHF94MVhv2acqeDWD1UQkfZWYiWCFIaKsfvPgITAGGIsrbV2/B1
-         8mHa146SqieJS0Q8saA5yQ0ae6ja9y9ulme6oH9Y=
+        b=n7FOJb9YiOjPcEKqxMAShO8fE2updqIW79+FqSIJaglN64huxZNiSI9Nkv5bT/fAs
+         lIHb0pzOZagZX1Hs0zvsZOkhU/oPy1KG9U1JU+EqsJzcLFih7+t98HKnkK3j4BBQIS
+         HlqE0WED2d6Pyl/6HH9f11nd11N/gI54LanEMwKc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rob Clark <robdclark@chromium.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 091/159] drm/msm: Be more shouty if per-process pgtables arent working
+        patches@lists.linux.dev,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 4.19 77/88] hwmon: (scmi) Remove redundant pointer check
 Date:   Wed,  7 Jun 2023 22:16:34 +0200
-Message-ID: <20230607200906.674981193@linuxfoundation.org>
+Message-ID: <20230607200901.638070403@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,42 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rob Clark <robdclark@chromium.org>
+From: Nathan Chancellor <natechancellor@gmail.com>
 
-[ Upstream commit 5c054db54c43a5fcb5cc81012361f5e3fac37637 ]
+commit a31796c30e423f58d266df30a9bbf321fc071b30 upstream.
 
-Otherwise it is not always obvious if a dt or iommu change is causing us
-to fall back to global pgtable.
+Clang warns when the address of a pointer is used in a boolean context
+as it will always return true.
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/537359/
-Link: https://lore.kernel.org/r/20230516222039.907690-2-robdclark@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+drivers/hwmon/scmi-hwmon.c:59:24: warning: address of array
+'sensor->name' will always evaluate to 'true'
+[-Wpointer-bool-conversion]
+        if (sensor && sensor->name)
+                   ~~ ~~~~~~~~^~~~
+1 warning generated.
+
+Remove the check as it isn't doing anything currently; if validation
+of the contents of the data structure was intended by the original
+author (since this line has been present from the first version of
+this driver), it can be added in a follow-up patch.
+
+Reported-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/msm_iommu.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/hwmon/scmi-hwmon.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_iommu.c b/drivers/gpu/drm/msm/msm_iommu.c
-index a54ed354578b5..ef4da3f0cd22d 100644
---- a/drivers/gpu/drm/msm/msm_iommu.c
-+++ b/drivers/gpu/drm/msm/msm_iommu.c
-@@ -157,7 +157,12 @@ struct msm_mmu *msm_iommu_pagetable_create(struct msm_mmu *parent)
- 	/* Get the pagetable configuration from the domain */
- 	if (adreno_smmu->cookie)
- 		ttbr1_cfg = adreno_smmu->get_ttbr1_cfg(adreno_smmu->cookie);
--	if (!ttbr1_cfg)
-+
-+	/*
-+	 * If you hit this WARN_ONCE() you are probably missing an entry in
-+	 * qcom_smmu_impl_of_match[] in arm-smmu-qcom.c
-+	 */
-+	if (WARN_ONCE(!ttbr1_cfg, "No per-process page tables"))
- 		return ERR_PTR(-ENODEV);
+--- a/drivers/hwmon/scmi-hwmon.c
++++ b/drivers/hwmon/scmi-hwmon.c
+@@ -56,7 +56,7 @@ scmi_hwmon_is_visible(const void *drvdat
+ 	const struct scmi_sensors *scmi_sensors = drvdata;
  
- 	/*
--- 
-2.39.2
-
+ 	sensor = *(scmi_sensors->info[type] + channel);
+-	if (sensor && sensor->name)
++	if (sensor)
+ 		return S_IRUGO;
+ 
+ 	return 0;
 
 
