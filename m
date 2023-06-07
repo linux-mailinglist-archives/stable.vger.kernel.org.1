@@ -2,174 +2,158 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E5C0726319
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 16:42:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65133726339
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 16:47:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241162AbjFGOmj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 10:42:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35472 "EHLO
+        id S240673AbjFGOrF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 10:47:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241156AbjFGOmf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 10:42:35 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04CCA1BFB;
-        Wed,  7 Jun 2023 07:42:33 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-30ae141785bso7298823f8f.3;
-        Wed, 07 Jun 2023 07:42:32 -0700 (PDT)
+        with ESMTP id S239742AbjFGOrE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 10:47:04 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 825431BF5
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 07:47:01 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-977d0ee1736so606660866b.0
+        for <stable@vger.kernel.org>; Wed, 07 Jun 2023 07:47:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686148951; x=1688740951;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=bhU8rJcA/NcmdBFZbG66fI16dsKgmepn+1tYIFC8M3Y=;
-        b=bXFeImhQdmhi+fiXTrYziTug2rbzZLXJhrXLvGxWuoZ2j7UukUjIt8sAoeX/RF7xv1
-         UIJtUOm842Gd3oYnQ4uc1hb6B6+MA/hfg9r4H3Hd6U/vNOPgejThO0dav7DufAtYCl6M
-         OXksAOKE/B4XZh3jUtATnWfvmYd1VDBw/RG6ydD8TjwOGxCr0qRJpccgdXxC4PzOkW82
-         C172foUptIBBIPMcXeHlpmSncRBj4r7KkYtmXktu4geGFPXgytJEs/WoCzv66A8gl82e
-         cAzEr8z+geaUgs3Dh6Jpsl6ZP5g8P1kUAtcjHd9ee+vbQVvkFS3oh0pIi4d0mkaXUPkR
-         tPgQ==
+        d=linaro.org; s=google; t=1686149220; x=1688741220;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ROukzxyZ7E77MUkCsxPohsdtun3OnHgSrL1II1lH7wI=;
+        b=WWd2+wszBOuo6lg4yIXaTNk0oGXMLVaJa9XmC04N20cqowFVHqTPTt/1CcEx/8YKfA
+         Vb1V9ZPB1NwCNTAyk8xmZDr6mGbzmRtxhW2fHk2HdNKjNfTy4CzSjoVkq/eNI3Kgtudi
+         pygBRiQSz3k1mBgFVPrC6lqby2Yrbnp1g5Rd2aCwGDAVt92HI4YsrtT7V200O59fSLqz
+         7IFQTf9T95v3cI+OXz15MP6lGDDbqaePaE8Ref0UuTIM6L3nbM34fLJOVANs4fpl1BeM
+         C+JFjI8VPNby1c5TXZsnZ66b96cpEGRG3/FriPQlFPp9JhgS3tONRBnlS8pGXJ0v3pve
+         cdCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686148951; x=1688740951;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bhU8rJcA/NcmdBFZbG66fI16dsKgmepn+1tYIFC8M3Y=;
-        b=crtewVQk8Z8j86s3wql2vppzG2uJfC5QkicP7TLrPlOFkeQgX9qCOGX47zn5R+pbrE
-         M6r9XS76MUOpQ2GR5bLD8PsWbJXyIJ1NPuCQo54y+4BPinACkZzOZ/xZe3NcapolcvLx
-         OL76W8b/4n+PDLJAPCgH3etDlUmqmBz5XLTVXYdY+mP6v0GLRDWY+3xD2K0IgtoidJAS
-         weoy9V5Y+HXRwRNJF6MA4S3/V17IYvgZ81WD1JsftUSW0/0SH8c/tNJqIm6K5dXVGUib
-         ujN7OKRjXQWjlY1xgyIdly1oCflS5VN/iPcMRyORCqI2eZQC8eAqP+rk50x3yqqHUh9B
-         XmtQ==
-X-Gm-Message-State: AC+VfDxYHoPt/b5QbjZZjz41TOl42rfbuEaT/ZjV5rgJKaWPSNqMwGMK
-        aM1Z5t8w05I9OhZtwaW2e5dTEpNg7Ls=
-X-Google-Smtp-Source: ACHHUZ7FmpM3xOpynYg+M/k9K8xzWpLPv+zJIL90yhFnNkyAYSdt5QSHjwTQLv7gvto2a7w0M12KrQ==
-X-Received: by 2002:a5d:408f:0:b0:309:4368:a8a0 with SMTP id o15-20020a5d408f000000b003094368a8a0mr4476903wrp.68.1686148950971;
-        Wed, 07 Jun 2023 07:42:30 -0700 (PDT)
-Received: from localhost.localdomain (93-34-93-173.ip49.fastwebnet.it. [93.34.93.173])
-        by smtp.googlemail.com with ESMTPSA id z12-20020a5d4d0c000000b003068f5cca8csm15731342wrt.94.2023.06.07.07.42.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jun 2023 07:42:30 -0700 (PDT)
-From:   Christian Marangi <ansuelsmth@gmail.com>
-To:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Kees Cook <keescook@chromium.org>,
-        Mark Brown <broonie@kernel.org>,
-        Dave Martin <Dave.Martin@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org
-Cc:     Christian Marangi <ansuelsmth@gmail.com>, stable@vger.kernel.org
-Subject: [PATCH] binfmt_elf: dynamically allocate note.data in parse_elf_properties
-Date:   Wed,  7 Jun 2023 16:42:27 +0200
-Message-Id: <20230607144227.8956-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.39.2
+        d=1e100.net; s=20221208; t=1686149220; x=1688741220;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ROukzxyZ7E77MUkCsxPohsdtun3OnHgSrL1II1lH7wI=;
+        b=UqcYkd+V3E2QUCI4hREN9HUHwALgTFo2fh9dcJ84N75mdPAWORrSc2/lV/sJ+cqh1R
+         /x5dpbF6t+GBxUSI7gQwhZdUqbkwPcxYgEbhhp948GAEQeCQJy6bYa+GWmgy7IJBeubK
+         1ZH8rHbyis1MWAFNIToj9WG/ggZg6+7JjHO3vhyiGwaSYLFqNJak9X9ubqhP+oj+930T
+         DAQkvNk0y9MQHS9o6ghRF5uIePS8gZJ449HOhpbZTN3u6onCspNjYCrUtMjkAVEJA+Cl
+         /ybkC96Qut+RByMTHarMJpn/OEsFiH+ZjOgkm7zcXY8cySXmox8Mzk4P75vgIk6z3dKH
+         A9ew==
+X-Gm-Message-State: AC+VfDwypXcJzFLIxS/Pb0U3ImSss+t91EC9Tq2RAftWTVppRxBRwF7V
+        l9mpRQqGRETD5oDCRmSsCqcy0w==
+X-Google-Smtp-Source: ACHHUZ5YuQYIyKPZdjXVsdWlZb7kj4qqMWl42TOAf1VZDpEWMhMk9NTMS5a2gZeOcREeJ2bXi463Gg==
+X-Received: by 2002:a17:907:3e28:b0:978:8e58:e19f with SMTP id hp40-20020a1709073e2800b009788e58e19fmr555105ejc.16.1686149219926;
+        Wed, 07 Jun 2023 07:46:59 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.219.26])
+        by smtp.gmail.com with ESMTPSA id lh9-20020a170906f8c900b0097812e2b66csm2911059ejb.111.2023.06.07.07.46.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Jun 2023 07:46:59 -0700 (PDT)
+Message-ID: <a6301c0e-b774-8963-8eb1-8e0948b1468c@linaro.org>
+Date:   Wed, 7 Jun 2023 16:46:56 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [PATCH v8 05/10] dt-bindings: sc16is7xx: Add property to change
+ GPIO function
+Content-Language: en-US
+To:     Hugo Villeneuve <hugo@hugovil.com>
+Cc:     gregkh@linuxfoundation.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        jirislaby@kernel.org, jringle@gridpoint.com,
+        jesse.sung@canonical.com, isaac.true@canonical.com,
+        l.perczak@camlintechnologies.com, tomasz.mon@camlingroup.com,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        stable@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>,
+        Lech Perczak <lech.perczak@camlingroup.com>
+References: <20230607140525.833982-1-hugo@hugovil.com>
+ <20230607140525.833982-6-hugo@hugovil.com>
+ <f5cfc81d-d8ae-d270-f29a-c2b45b07a651@linaro.org>
+ <20230607104100.0186b1afc872e583cb9466b8@hugovil.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230607104100.0186b1afc872e583cb9466b8@hugovil.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Dynamically allocate note.data in parse_elf_properties to fix
-compilation warning on some arch.
+On 07/06/2023 16:41, Hugo Villeneuve wrote:
+> On Wed, 7 Jun 2023 16:30:26 +0200
+> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+> 
+>> On 07/06/2023 16:05, Hugo Villeneuve wrote:
+>>> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+>>>
+>>> Some variants in this series of UART controllers have GPIO pins that
+>>> are shared between GPIO and modem control lines.
+>>>
+>>> The pin mux mode (GPIO or modem control lines) can be set for each
+>>> ports (channels) supported by the variant.
+>>>
+>>> This adds a property to the device tree to set the GPIO pin mux to
+>>> modem control lines on selected ports if needed.
+>>>
+>>> Cc: <stable@vger.kernel.org> # 6.1.x
+>>> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+>>> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+>>> Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
+>>> ---
+>>>  .../bindings/serial/nxp,sc16is7xx.txt         | 46 +++++++++++++++++++
+>>>  1 file changed, 46 insertions(+)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt b/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt
+>>> index 0fa8e3e43bf8..1a7e4bff0456 100644
+>>> --- a/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt
+>>> +++ b/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt
+>>> @@ -23,6 +23,9 @@ Optional properties:
+>>>      1 = active low.
+>>>  - irda-mode-ports: An array that lists the indices of the port that
+>>>  		   should operate in IrDA mode.
+>>> +- nxp,modem-control-line-ports: An array that lists the indices of the port that
+>>> +				should have shared GPIO lines configured as
+>>> +				modem control lines.
+>>>  
+>>>  Example:
+>>>          sc16is750: sc16is750@51 {
+>>> @@ -35,6 +38,26 @@ Example:
+>>>                  #gpio-cells = <2>;
+>>>          };
+>>>  
+>>> +	sc16is752: sc16is752@53 {
+>>
+>> Since you keep sending new versions, fix the names. nNode names should
+>> be generic. See also explanation and list of examples in DT specification:
+>> https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+> 
+> Hi,
+> by the way, I do not "keep sending new versions" just for the fun of
+> it...
 
-On some arch note.data exceed the stack limit for a single function and
-this cause the following compilation warning:
-fs/binfmt_elf.c: In function 'parse_elf_properties.isra':
-fs/binfmt_elf.c:821:1: error: the frame size of 1040 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
-  821 | }
-      | ^
-cc1: all warnings being treated as errors
+Sure, I know. So when the next version is necessary to send, fix also this.
 
-Fix this by dynamically allocating the array.
-Update the sizeof of the union to the biggest element allocated.
+>
+> Even after reading your link, I cannot see what is wrong with that
+> name.
 
-Fixes: 00e19ceec80b ("ELF: Add ELF program property parsing support")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Cc: stable@vger.kernel.org # v5.8+
----
- fs/binfmt_elf.c | 36 +++++++++++++++++++++++++-----------
- 1 file changed, 25 insertions(+), 11 deletions(-)
+They are not generic. They are specific.
 
-diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index 44b4c42ab8e8..90daa623ca13 100644
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -768,7 +768,7 @@ static int parse_elf_properties(struct file *f, const struct elf_phdr *phdr,
- {
- 	union {
- 		struct elf_note nhdr;
--		char data[NOTE_DATA_SZ];
-+		char *data;
- 	} note;
- 	loff_t pos;
- 	ssize_t n;
-@@ -785,29 +785,41 @@ static int parse_elf_properties(struct file *f, const struct elf_phdr *phdr,
- 		return -ENOEXEC;
- 
- 	/* If the properties are crazy large, that's too bad (for now): */
--	if (phdr->p_filesz > sizeof(note))
-+	if (phdr->p_filesz > sizeof(*note.data) * NOTE_DATA_SZ)
- 		return -ENOEXEC;
- 
-+	note.data = kcalloc(NOTE_DATA_SZ, sizeof(*note.data), GFP_KERNEL);
-+	if (!note.data)
-+		return -ENOMEM;
-+
- 	pos = phdr->p_offset;
- 	n = kernel_read(f, &note, phdr->p_filesz, &pos);
- 
--	BUILD_BUG_ON(sizeof(note) < sizeof(note.nhdr) + NOTE_NAME_SZ);
--	if (n < 0 || n < sizeof(note.nhdr) + NOTE_NAME_SZ)
--		return -EIO;
-+	BUILD_BUG_ON(sizeof(*note.data) * NOTE_DATA_SZ < sizeof(note.nhdr) + NOTE_NAME_SZ);
-+	if (n < 0 || n < sizeof(note.nhdr) + NOTE_NAME_SZ) {
-+		ret = -EIO;
-+		goto exit;
-+	}
- 
- 	if (note.nhdr.n_type != NT_GNU_PROPERTY_TYPE_0 ||
- 	    note.nhdr.n_namesz != NOTE_NAME_SZ ||
- 	    strncmp(note.data + sizeof(note.nhdr),
--		    GNU_PROPERTY_TYPE_0_NAME, n - sizeof(note.nhdr)))
--		return -ENOEXEC;
-+		    GNU_PROPERTY_TYPE_0_NAME, n - sizeof(note.nhdr))) {
-+		ret = -ENOEXEC;
-+		goto exit;
-+	}
- 
- 	off = round_up(sizeof(note.nhdr) + NOTE_NAME_SZ,
- 		       ELF_GNU_PROPERTY_ALIGN);
--	if (off > n)
--		return -ENOEXEC;
-+	if (off > n) {
-+		ret = -ENOEXEC;
-+		goto exit;
-+	}
- 
--	if (note.nhdr.n_descsz > n - off)
--		return -ENOEXEC;
-+	if (note.nhdr.n_descsz > n - off) {
-+		ret = -ENOEXEC;
-+		goto exit;
-+	}
- 	datasz = off + note.nhdr.n_descsz;
- 
- 	have_prev_type = false;
-@@ -817,6 +829,8 @@ static int parse_elf_properties(struct file *f, const struct elf_phdr *phdr,
- 		have_prev_type = true;
- 	} while (!ret);
- 
-+exit:
-+	kfree(note.data);
- 	return ret == -ENOENT ? 0 : ret;
- }
- 
--- 
-2.39.2
+> 
+> You are the first one since V1 to think it is inappropriate.
+> 
+> Please suggest what the name should be.
+
+Depends what this is. I know nothing about this device, so I cannot
+suggest you. Therefore I gave you link with ideas to choose from.
+
+Best regards,
+Krzysztof
 
