@@ -2,42 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0E16726F93
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:00:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FA81726CAE
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:35:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235741AbjFGVAl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:00:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33300 "EHLO
+        id S233997AbjFGUf2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:35:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235913AbjFGVAE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:04 -0400
+        with ESMTP id S234051AbjFGUfP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:35:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6646B2120
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:59:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8774026A2
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:35:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7ADA6648D0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:59:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8992CC433EF;
-        Wed,  7 Jun 2023 20:59:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F286564564
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:35:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 128C1C433D2;
+        Wed,  7 Jun 2023 20:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171552;
-        bh=5S9NBUo9UX7UvqDms7p77VakqIs61wZCNv5X+vmHGuc=;
+        s=korg; t=1686170109;
+        bh=NbX/+bpQFDnpPT67aMJd80TM1GVTx3BsKIpo5GTwgt8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=auKIVAy5+p9brFG/h7vRAH2n7BKoke9YvTyY10BjBGTz488fOAh/PD7OPHcJYfiHG
-         xa9aE8mQnMBscflP5YuUGcZOYyilxU64BHk5NHW1jeOIplZkdNA3js36+bugZNxbDP
-         yJUP1k33r7M6tTCrK6Pu7/e20f/U6IWS+/ZK8LF0=
+        b=UvhXxpu8VXpqpbJLzSIEGvt86h/Uz7Ym3e9aIQNVeCv4oyE84DSjgi2GyKLv/204I
+         WHlsiYowlxCIOZu/q0rbG3rS8Bc9BezmXQeGb+iADfy+nHNR+Lm9gRhoQ2t8PMDtyD
+         4EIgeKN8t6q5ENyqFEXEOTLBgyBBaNG/jzQc0Qko=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 062/159] ASoC: ssm2602: Add workaround for playback distortions
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 48/88] media: mn88443x: fix !CONFIG_OF error by drop of_match_ptr from ID table
 Date:   Wed,  7 Jun 2023 22:16:05 +0200
-Message-ID: <20230607200905.717452231@linuxfoundation.org>
+Message-ID: <20230607200900.744127107@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,135 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paweł Anikiel <pan@semihalf.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit f63550e2b165208a2f382afcaf5551df9569e1d4 ]
+[ Upstream commit ae11c0efaec32fb45130ee9886689f467232eebc ]
 
-Apply a workaround for what appears to be a hardware quirk.
+The driver will match mostly by DT table (even thought there is regular
+ID table) so there is little benefit in of_match_ptr (this also allows
+ACPI matching via PRP0001, even though it might not be relevant here).
+This also fixes !CONFIG_OF error:
 
-The problem seems to happen when enabling "whole chip power" (bit D7
-register R6) for the very first time after the chip receives power. If
-either "output" (D4) or "DAC" (D3) aren't powered on at that time,
-playback becomes very distorted later on.
+  drivers/media/dvb-frontends/mn88443x.c:782:34: error: ‘mn88443x_of_match’ defined but not used [-Werror=unused-const-variable=]
 
-This happens on the Google Chameleon v3, as well as on a ZYBO Z7-10:
-https://ez.analog.com/audio/f/q-a/543726/solved-ssm2603-right-output-offset-issue/480229
-I suspect this happens only when using an external MCLK signal (which
-is the case for both of these boards).
-
-Here are some experiments run on a Google Chameleon v3. These were run
-in userspace using a wrapper around the i2cset utility:
-ssmset() {
-        i2cset -y 0 0x1a $(($1*2)) $2
-}
-
-For each of the following sequences, we apply power to the ssm2603
-chip, set the configuration registers R0-R5 and R7-R8, run the selected
-sequence, and check for distortions on playback.
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x07 # chip, out, dac
-  OK
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x87 # out, dac
-  ssmset 0x06 0x07 # chip
-  OK
-
-  (disable MCLK)
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x1f # chip
-  ssmset 0x06 0x07 # out, dac
-  (enable MCLK)
-  OK
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x1f # chip
-  ssmset 0x06 0x07 # out, dac
-  NOT OK
-
-  ssmset 0x06 0x1f # chip
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x07 # out, dac
-  NOT OK
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x0f # chip, out
-  ssmset 0x06 0x07 # dac
-  NOT OK
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x17 # chip, dac
-  ssmset 0x06 0x07 # out
-  NOT OK
-
-For each of the following sequences, we apply power to the ssm2603
-chip, run the selected sequence, issue a reset with R15, configure
-R0-R5 and R7-R8, run one of the NOT OK sequences from above, and check
-for distortions.
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x07 # chip, out, dac
-  OK
-
-  (disable MCLK)
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x07 # chip, out, dac
-  (enable MCLK after reset)
-  NOT OK
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x17 # chip, dac
-  NOT OK
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x0f # chip, out
-  NOT OK
-
-  ssmset 0x06 0x07 # chip, out, dac
-  NOT OK
-
-Signed-off-by: Paweł Anikiel <pan@semihalf.com
-Link: https://lore.kernel.org/r/20230508113037.137627-8-pan@semihalf.com
-Signed-off-by: Mark Brown <broonie@kernel.org
+Link: https://lore.kernel.org/linux-media/20230312131318.351173-28-krzysztof.kozlowski@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/ssm2602.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/media/dvb-frontends/mn88443x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/ssm2602.c b/sound/soc/codecs/ssm2602.c
-index 7964e922b07f6..0a3540c5cdb5c 100644
---- a/sound/soc/codecs/ssm2602.c
-+++ b/sound/soc/codecs/ssm2602.c
-@@ -53,6 +53,18 @@ static const struct reg_default ssm2602_reg[SSM2602_CACHEREGNUM] = {
- 	{ .reg = 0x09, .def = 0x0000 }
- };
- 
-+/*
-+ * ssm2602 register patch
-+ * Workaround for playback distortions after power up: activates digital
-+ * core, and then powers on output, DAC, and whole chip at the same time
-+ */
-+
-+static const struct reg_sequence ssm2602_patch[] = {
-+	{ SSM2602_ACTIVE, 0x01 },
-+	{ SSM2602_PWR,    0x07 },
-+	{ SSM2602_RESET,  0x00 },
-+};
-+
- 
- /*Appending several "None"s just for OSS mixer use*/
- static const char *ssm2602_input_select[] = {
-@@ -589,6 +601,9 @@ static int ssm260x_component_probe(struct snd_soc_component *component)
- 		return ret;
- 	}
- 
-+	regmap_register_patch(ssm2602->regmap, ssm2602_patch,
-+			      ARRAY_SIZE(ssm2602_patch));
-+
- 	/* set the update bits */
- 	regmap_update_bits(ssm2602->regmap, SSM2602_LINVOL,
- 			    LINVOL_LRIN_BOTH, LINVOL_LRIN_BOTH);
+diff --git a/drivers/media/dvb-frontends/mn88443x.c b/drivers/media/dvb-frontends/mn88443x.c
+index 53981ff9422e0..2b6732d40b917 100644
+--- a/drivers/media/dvb-frontends/mn88443x.c
++++ b/drivers/media/dvb-frontends/mn88443x.c
+@@ -800,7 +800,7 @@ MODULE_DEVICE_TABLE(i2c, mn88443x_i2c_id);
+ static struct i2c_driver mn88443x_driver = {
+ 	.driver = {
+ 		.name = "mn88443x",
+-		.of_match_table = of_match_ptr(mn88443x_of_match),
++		.of_match_table = mn88443x_of_match,
+ 	},
+ 	.probe    = mn88443x_probe,
+ 	.remove   = mn88443x_remove,
 -- 
 2.39.2
 
