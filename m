@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68894726E1E
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:48:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3B5A726D99
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:44:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234966AbjFGUsS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:48:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48466 "EHLO
+        id S234452AbjFGUoD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:44:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234957AbjFGUsD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:48:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F74F2723
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:47:39 -0700 (PDT)
+        with ESMTP id S234461AbjFGUoC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B43CA26B6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:43:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C4C35646BF
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:47:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D29B6C433EF;
-        Wed,  7 Jun 2023 20:47:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C32964643
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:43:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF97AC433D2;
+        Wed,  7 Jun 2023 20:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170856;
-        bh=UigIrFpwxxjD5z62wWTRedqfnpX3zmyLWXz8HVU/Cb0=;
+        s=korg; t=1686170587;
+        bh=Jrx5AqNyDo6f1DuY6Z3TjzGPoXekA2bWPZ1k1kbP1UU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=02P00wcVhHdrUbqW3nBztDz9GBJFOpCd6FoWlPNjmeugvKfvB1E2w/oGPLtAUXrL1
-         5WdEdnvAWg+oeMZ+36lRYZCJHLaNBPu7GUlXvlLb+fEVjxAI55ZAnBNBVddbQDQSHF
-         INzt1XPSoJdmdNsuhOsZBdsG0jOZhyiuXW+SOLyg=
+        b=uhIEvdbptAxPSHwdABl4lDbD6lgHkbyqq5gAPZ6CbyDCwWYAvc/SMPQ3Akwf8O8D5
+         Tr9gMCvu+6pvtZ2wtSrXjRWX96dmRjdmM4evUcQ/M/dcY7Uxm1qlJ/JvF0lBbLv9R/
+         XZh8+Z1vW0++oQ2DEfI0gWoIHrK2jatDxZk0d/jI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Jiri Pirko <jiri@nvidia.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 018/120] af_packet: do not use READ_ONCE() in packet_bind()
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Marius Hoch <mail@mariushoch.de>, Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 141/225] iio: accel: st_accel: Fix invalid mount_matrix on devices without ACPI _ONT method
 Date:   Wed,  7 Jun 2023 22:15:34 +0200
-Message-ID: <20230607200901.490678656@linuxfoundation.org>
+Message-ID: <20230607200918.998388491@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,64 +55,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 6ffc57ea004234d9373c57b204fd10370a69f392 ]
+commit 79b8ded9d9c595db9bd5b2f62f5f738b36de1e22 upstream.
 
-A recent patch added READ_ONCE() in packet_bind() and packet_bind_spkt()
+When apply_acpi_orientation() fails, st_accel_common_probe() will fall back
+to iio_read_mount_matrix(), which checks for a mount-matrix device property
+and if that is not set falls back to the identity matrix.
 
-This is better handled by reading pkt_sk(sk)->num later
-in packet_do_bind() while appropriate lock is held.
+But when a sensor has no ACPI companion fwnode, or when the ACPI fwnode
+does not have a "_ONT" method apply_acpi_orientation() was returning 0,
+causing iio_read_mount_matrix() to never get called resulting in an
+invalid mount_matrix:
 
-READ_ONCE() in writers are often an evidence of something being wrong.
+[root@fedora ~]# cat /sys/bus/iio/devices/iio\:device0/mount_matrix
+(null), (null), (null); (null), (null), (null); (null), (null), (null)
 
-Fixes: 822b5a1c17df ("af_packet: Fix data-races of pkt_sk(sk)->num.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230526154342.2533026-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by making apply_acpi_orientation() always return an error when
+it did not set the mount_matrix.
+
+Fixes: 3d8ad94bb175 ("iio: accel: st_sensors: Support generic mounting matrix")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Tested-by: Marius Hoch <mail@mariushoch.de>
+Link: https://lore.kernel.org/r/20230416212409.310936-1-hdegoede@redhat.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/packet/af_packet.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/iio/accel/st_accel_core.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 542d5285e99e9..c7129616dd530 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -3157,6 +3157,9 @@ static int packet_do_bind(struct sock *sk, const char *name, int ifindex,
+--- a/drivers/iio/accel/st_accel_core.c
++++ b/drivers/iio/accel/st_accel_core.c
+@@ -1289,12 +1289,12 @@ static int apply_acpi_orientation(struct
  
- 	lock_sock(sk);
- 	spin_lock(&po->bind_lock);
-+	if (!proto)
-+		proto = po->num;
-+
- 	rcu_read_lock();
+ 	adev = ACPI_COMPANION(indio_dev->dev.parent);
+ 	if (!adev)
+-		return 0;
++		return -ENXIO;
  
- 	if (po->fanout) {
-@@ -3259,7 +3262,7 @@ static int packet_bind_spkt(struct socket *sock, struct sockaddr *uaddr,
- 	memcpy(name, uaddr->sa_data, sizeof(uaddr->sa_data));
- 	name[sizeof(uaddr->sa_data)] = 0;
- 
--	return packet_do_bind(sk, name, 0, READ_ONCE(pkt_sk(sk)->num));
-+	return packet_do_bind(sk, name, 0, 0);
- }
- 
- static int packet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
-@@ -3276,8 +3279,7 @@ static int packet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len
- 	if (sll->sll_family != AF_PACKET)
- 		return -EINVAL;
- 
--	return packet_do_bind(sk, NULL, sll->sll_ifindex,
--			      sll->sll_protocol ? : READ_ONCE(pkt_sk(sk)->num));
-+	return packet_do_bind(sk, NULL, sll->sll_ifindex, sll->sll_protocol);
- }
- 
- static struct proto packet_proto = {
--- 
-2.39.2
-
+ 	/* Read _ONT data, which should be a package of 6 integers. */
+ 	status = acpi_evaluate_object(adev->handle, "_ONT", NULL, &buffer);
+ 	if (status == AE_NOT_FOUND) {
+-		return 0;
++		return -ENXIO;
+ 	} else if (ACPI_FAILURE(status)) {
+ 		dev_warn(&indio_dev->dev, "failed to execute _ONT: %d\n",
+ 			 status);
 
 
