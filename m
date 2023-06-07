@@ -2,147 +2,82 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCA31727026
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:05:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D9F0727049
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:08:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235704AbjFGVFi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:05:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34418 "EHLO
+        id S233926AbjFGVIq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:08:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236550AbjFGVFD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:05:03 -0400
-X-Greylist: delayed 159472 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 07 Jun 2023 14:04:34 PDT
-Received: from grey.apple.relay.mailchannels.net (grey.apple.relay.mailchannels.net [23.83.208.78])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1A0626B1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:04:34 -0700 (PDT)
-X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-        by relay.mailchannels.net (Postfix) with ESMTP id 0456F3415B7
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:04:34 +0000 (UTC)
-Received: from pdx1-sub0-mail-a233.dreamhost.com (unknown [127.0.0.6])
-        (Authenticated sender: dreamhost)
-        by relay.mailchannels.net (Postfix) with ESMTPA id 930743419BE
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:04:33 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1686171873; a=rsa-sha256;
-        cv=none;
-        b=jGl+yfP7JigdHE9ANRFYAqOxmI3Aip+3zMP1obhYIKB+Hfrwyp/rfB5BEuhMrR0C4/ChOk
-        Qbb1/XjJ+gH9IwB8DZS+vK55KzKL3IDZeTj79i9ct+iNguu7fR6AIoXpBgp7U36hWtSudN
-        QNpcl4mJr0EJq/i0z74qh+J6hS5Rgz4HN1mDBz3c0/56K/giDBrqhcBfUyfl25nDGMjBEw
-        gjcr7PC03NVROTNg8QGbtebSJTIIWv7p+LrX90dlZqW9h1CKMbvF2thZQBDk4/HLHcp49b
-        HC0QCIxE+s6iM4W0Y4j5Uzhi6iX738TfaagaEoWOphHEjXHOs/l6kG85FfVO8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-        s=arc-2022; t=1686171873;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references:dkim-signature;
-        bh=GNnQmH+wS+zURx3eyS+tueWtQk84sc6MMvTdEAlLPgk=;
-        b=i6d5PtONtLMGQMbAuvpFETAKfGOEEczPydFUlSmgb2G+VN33UAApUHTf0apf7BHnDZpNp1
-        w+AGNVBvivDK8wlLL3sYnq3XcYB9Ed6A5vpiwLylWwWaP+yQbbjzkkBTKQWCvXAMwc9c14
-        Jcn2httvqCwlrgIP+ixsMG7LL7zpyjPRSNeSSPSaeiX/iT8SaYfKDDsYW8OGC1su6fDBF6
-        cKHi6sqtYEcsnW0/KJ+Epnk9e4cbQk5kWQWzqg4OjGdi8seG6g3vGbRar5BfIsrk0Iphr+
-        RwXNbO30mDzpQt3SUvaPnLwxSosDgwTnE2IgevNx2OraZBsqfSDwDyoa2rt6Ig==
-ARC-Authentication-Results: i=1;
-        rspamd-6f5cfd578c-md99n;
-        auth=pass smtp.auth=dreamhost smtp.mailfrom=kjlx@templeofstupid.com
-X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
-X-MC-Relay: Good
-X-MailChannels-SenderId: dreamhost|x-authsender|kjlx@templeofstupid.com
-X-MailChannels-Auth-Id: dreamhost
-X-Suffer-Interest: 45eb0c6457d79d67_1686171873824_1158602974
-X-MC-Loop-Signature: 1686171873824:831032943
-X-MC-Ingress-Time: 1686171873823
-Received: from pdx1-sub0-mail-a233.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-        by 100.120.163.30 (trex/6.8.1);
-        Wed, 07 Jun 2023 21:04:33 +0000
-Received: from kmjvbox (c-73-93-64-36.hsd1.ca.comcast.net [73.93.64.36])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: kjlx@templeofstupid.com)
-        by pdx1-sub0-mail-a233.dreamhost.com (Postfix) with ESMTPSA id 4Qc0G86cK9zvT
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:04:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=templeofstupid.com;
-        s=dreamhost; t=1686171872;
-        bh=GNnQmH+wS+zURx3eyS+tueWtQk84sc6MMvTdEAlLPgk=;
-        h=Date:From:To:Cc:Subject:Content-Type;
-        b=S9bzB4RJPOCOTOBe1eHyTI2ybvqkq7haGr0inpIci+G56RBFJf1PH6YsHOAlTxm0N
-         qB15gt4jUq4eDHjdp9QECico3dubCY4Lmd5qPH20vn8Io3UlzN+0xHouAGzOZy41CS
-         f/BbPxLP8Ea87E2RvSCJ3ehO1sNJ1Tfml7i+ckzM=
-Received: from johansen (uid 1000)
-        (envelope-from kjlx@templeofstupid.com)
-        id e005f
-        by kmjvbox (DragonFly Mail Agent v0.12);
-        Wed, 07 Jun 2023 14:04:31 -0700
-Date:   Wed, 7 Jun 2023 14:04:31 -0700
-From:   Krister Johansen <kjlx@templeofstupid.com>
-To:     bpf@vger.kernel.org
-Cc:     Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Martin KaFai Lau <martin.lau@linux.dev>,
-        Song Liu <song@kernel.org>, Yonghong Song <yhs@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@kernel.org>,
-        Stanislav Fomichev <sdf@google.com>,
-        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Mykola Lysenko <mykolal@fb.com>, Shuah Khan <shuah@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH bpf v2 2/2] bpf: ensure main program has an extable
-Message-ID: <de425e99876dc6c344e1a4254894a3c81e71a2ec.1686166633.git.kjlx@templeofstupid.com>
-References: <cover.1686166633.git.kjlx@templeofstupid.com>
+        with ESMTP id S231493AbjFGVIp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:08:45 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8776E4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:08:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686172124; x=1717708124;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=UeHpEIaj26GpUP5IYCU1e0+WwoHn/3OuH4lzcnE55yc=;
+  b=Z4cop3J0r3vK9zGgqu42P6thJQM+QcaSMsn10ci8v/axE92O6+t/jhJI
+   Ywsk1p4LQ9szm8nEswWVKiJ3lUySmmfXbzqxV7MphKEQYnXHjvl+412aF
+   czHJp1KvSHgrOPitSEROqbQrQUiRiIe6WpUp3jb2z6AYcmOz65nuzHxwA
+   CRLAPVuws47qe0UR6TVazQ5Xr7O3wrxmYaxY0hoDciUNlKkAyhGNf9iWI
+   C0P3hbX4hkQhtilCOZ7CuHNZ6X8w3be/Dtrfu50kdA8BiteaqmP5O2G3k
+   0LXTaxvPLSpuRaNV4a1yxWTGAEqTFbeO4rhyvF4Mjt3n9HYOz+k7CHDBh
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="354598655"
+X-IronPort-AV: E=Sophos;i="6.00,225,1681196400"; 
+   d="scan'208";a="354598655"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2023 14:08:44 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="712833493"
+X-IronPort-AV: E=Sophos;i="6.00,225,1681196400"; 
+   d="scan'208";a="712833493"
+Received: from lkp-server01.sh.intel.com (HELO 15ab08e44a81) ([10.239.97.150])
+  by fmsmga007.fm.intel.com with ESMTP; 07 Jun 2023 14:08:43 -0700
+Received: from kbuild by 15ab08e44a81 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1q70OY-0006uf-2J;
+        Wed, 07 Jun 2023 21:08:42 +0000
+Date:   Thu, 8 Jun 2023 05:07:50 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Krister Johansen <kjlx@templeofstupid.com>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH bpf v2 1/2] selftests/bpf: add a test for subprogram
+ extables
+Message-ID: <ZIDxpjpcp7EqWTsH@a93e062a6cea>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1686166633.git.kjlx@templeofstupid.com>
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
+In-Reply-To: <c3d55cfd8ce7ed989c997d1e3ea2678879227300.1686166633.git.kjlx@templeofstupid.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When bpf subprograms are in use, the main program is not jit'd after the
-subprograms because jit_subprogs sets a value for prog->bpf_func upon
-success.  Subsequent calls to the JIT are bypassed when this value is
-non-NULL.  This leads to a situation where the main program and its
-func[0] counterpart are both in the bpf kallsyms tree, but only func[0]
-has an extable.  Extables are only created during JIT.  Now there are
-two nearly identical program ksym entries in the tree, but only one has
-an extable.  Depending upon how the entries are placed, there's a chance
-that a fault will call search_extable on the aux with the NULL entry.
+Hi,
 
-Since jit_subprogs already copies state from func[0] to the main
-program, include the extable pointer in this state duplication.  The
-alternative is to skip adding the main program to the bpf_kallsyms
-table, but that would mean adding a check for subprograms into the
-middle of bpf_prog_load.
+Thanks for your patch.
 
-Cc: stable@vger.kernel.org
-Fixes: 1c2a088a6626 ("bpf: x64: add JIT support for multi-function programs")
-Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
----
- kernel/bpf/verifier.c | 1 +
- 1 file changed, 1 insertion(+)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 5871aa78d01a..d6939db9fbf9 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -17242,6 +17242,7 @@ static int jit_subprogs(struct bpf_verifier_env *env)
- 	prog->jited = 1;
- 	prog->bpf_func = func[0]->bpf_func;
- 	prog->jited_len = func[0]->jited_len;
-+	prog->aux->extable = func[0]->aux->extable;
- 	prog->aux->func = func;
- 	prog->aux->func_cnt = env->subprog_cnt;
- 	bpf_prog_jit_attempt_done(prog);
+Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
+Subject: [PATCH bpf v2 1/2] selftests/bpf: add a test for subprogram extables
+Link: https://lore.kernel.org/stable/c3d55cfd8ce7ed989c997d1e3ea2678879227300.1686166633.git.kjlx%40templeofstupid.com
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+
 -- 
-2.25.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
