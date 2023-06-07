@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02364726F46
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:57:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8A44726C0A
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:30:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235540AbjFGU5D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:57:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58158 "EHLO
+        id S233703AbjFGUa2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:30:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235571AbjFGU5B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:57:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 959531BE4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:56:57 -0700 (PDT)
+        with ESMTP id S233908AbjFGUaO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 222F8210B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:29:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C0616485B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:56:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43970C433EF;
-        Wed,  7 Jun 2023 20:56:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 027E3644C8
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:29:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 142E3C433EF;
+        Wed,  7 Jun 2023 20:29:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171416;
-        bh=+EPnEaBEo4eT+i/kxebO7oRLxhTOl1+3MKQTixGZGH4=;
+        s=korg; t=1686169789;
+        bh=+GYjT6NVH5CvFWzQZxXjeaEFx7QIGUI3NKsnc9Vmau8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LdkFYSGL0uTydZuO7m1z8xcrrGnbsGl6oxguioUQdjJASo8mLADyrNaJ8iJ/ecG7i
-         y+q/pccTEWuspv/A8M25aKoxnoOWWeO+fUwomeAQ6U2hDqUOFIaQy42Mh2ZGAeJek0
-         dP77zAYy582Mhszli7DZYMC2hyxae8+W9PcmDXlQ=
+        b=FDYEA8tZkz9Z+mfTlFhZRyoDtxxihkCGjqhuSMvcTcGvaemm24zIbUeigkuG3oG/8
+         ZpZ/464XVBRALhHb2Lzc6JpgwfiQ3ReuHUEqvYYVukA+tW+6E6m2qluUddEofC1vwA
+         ed5Wrt6DFowm4LH1hfl4JJ2GU2c3gFweTGUpmaPw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Joao Martins <joao.m.martins@oracle.com>,
-        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 010/159] iommu/amd: Dont block updates to GATag if guest mode is on
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Richard Acayan <mailingradian@gmail.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.3 214/286] misc: fastrpc: return -EPIPE to invocations on device removal
 Date:   Wed,  7 Jun 2023 22:15:13 +0200
-Message-ID: <20230607200904.009171611@linuxfoundation.org>
+Message-ID: <20230607200930.241137666@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,76 +54,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Joao Martins <joao.m.martins@oracle.com>
+From: Richard Acayan <mailingradian@gmail.com>
 
-[ Upstream commit ed8a2f4ddef2eaaf864ab1efbbca9788187036ab ]
+commit b6a062853ddf6b4f653af2d8b75ba45bb9a036ad upstream.
 
-On KVM GSI routing table updates, specially those where they have vIOMMUs
-with interrupt remapping enabled (to boot >255vcpus setups without relying
-on KVM_FEATURE_MSI_EXT_DEST_ID), a VMM may update the backing VF MSIs
-with a new VCPU affinity.
+The return value is initialized as -1, or -EPERM. The completion of an
+invocation implies that the return value is set appropriately, but
+"Permission denied" does not accurately describe the outcome of the
+invocation. Set the invocation's return value to a more appropriate
+"Broken pipe", as the cleanup breaks the driver's connection with rpmsg.
 
-On AMD with AVIC enabled, the new vcpu affinity info is updated via:
-	avic_pi_update_irte()
-		irq_set_vcpu_affinity()
-			amd_ir_set_vcpu_affinity()
-				amd_iommu_{de}activate_guest_mode()
-
-Where the IRTE[GATag] is updated with the new vcpu affinity. The GATag
-contains VM ID and VCPU ID, and is used by IOMMU hardware to signal KVM
-(via GALog) when interrupt cannot be delivered due to vCPU is in
-blocking state.
-
-The issue is that amd_iommu_activate_guest_mode() will essentially
-only change IRTE fields on transitions from non-guest-mode to guest-mode
-and otherwise returns *with no changes to IRTE* on already configured
-guest-mode interrupts. To the guest this means that the VF interrupts
-remain affined to the first vCPU they were first configured, and guest
-will be unable to issue VF interrupts and receive messages like this
-from spurious interrupts (e.g. from waking the wrong vCPU in GALog):
-
-[  167.759472] __common_interrupt: 3.34 No irq handler for vector
-[  230.680927] mlx5_core 0000:00:02.0: mlx5_cmd_eq_recover:247:(pid
-3122): Recovered 1 EQEs on cmd_eq
-[  230.681799] mlx5_core 0000:00:02.0:
-wait_func_handle_exec_timeout:1113:(pid 3122): cmd[0]: CREATE_CQ(0x400)
-recovered after timeout
-[  230.683266] __common_interrupt: 3.34 No irq handler for vector
-
-Given the fact that amd_ir_set_vcpu_affinity() uses
-amd_iommu_activate_guest_mode() underneath it essentially means that VCPU
-affinity changes of IRTEs are nops. Fix it by dropping the check for
-guest-mode at amd_iommu_activate_guest_mode(). Same thing is applicable to
-amd_iommu_deactivate_guest_mode() although, even if the IRTE doesn't change
-underlying DestID on the host, the VFIO IRQ handler will still be able to
-poke at the right guest-vCPU.
-
-Fixes: b9c6ff94e43a ("iommu/amd: Re-factor guest virtual APIC (de-)activation code")
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Link: https://lore.kernel.org/r/20230419201154.83880-2-joao.m.martins@oracle.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c68cfb718c8f ("misc: fastrpc: Add support for context Invoke method")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Richard Acayan <mailingradian@gmail.com>
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230523152550.438363-4-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/amd/iommu.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/misc/fastrpc.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 5ceaaabb4f9da..a91545b9a1cba 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -3316,8 +3316,7 @@ int amd_iommu_activate_guest_mode(void *data)
- 	struct irte_ga *entry = (struct irte_ga *) ir_data->entry;
- 	u64 valid;
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -2337,8 +2337,10 @@ static void fastrpc_notify_users(struct
+ 	struct fastrpc_invoke_ctx *ctx;
  
--	if (!AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir) ||
--	    !entry || entry->lo.fields_vapic.guest_mode)
-+	if (!AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir) || !entry)
- 		return 0;
+ 	spin_lock(&user->lock);
+-	list_for_each_entry(ctx, &user->pending, node)
++	list_for_each_entry(ctx, &user->pending, node) {
++		ctx->retval = -EPIPE;
+ 		complete(&ctx->work);
++	}
+ 	spin_unlock(&user->lock);
+ }
  
- 	valid = entry->lo.fields_vapic.valid;
--- 
-2.39.2
-
 
 
