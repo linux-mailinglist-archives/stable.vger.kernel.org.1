@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6292D726BD3
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B0E1726D3D
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:40:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233441AbjFGU2k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:28:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54822 "EHLO
+        id S234257AbjFGUk2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:40:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233446AbjFGU2j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:28:39 -0400
+        with ESMTP id S234304AbjFGUk1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:40:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3095F26A1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:28:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DED82703
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:40:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3ED9C644AE
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:28:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E19FC4339B;
-        Wed,  7 Jun 2023 20:28:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B79E5645D8
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:39:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A53C4339B;
+        Wed,  7 Jun 2023 20:39:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169700;
-        bh=y08Qjppg5diCdsQMIFdSGOwlAxVj3Of7bhHffPpi7A4=;
+        s=korg; t=1686170399;
+        bh=LEXUqYnFYNBp/lSZwiBu4F7bB23102+sZXyYbD4ZC0Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U1jRQHoX8EbbVW8lpty0nB2JSecFQxd39876B1ZvpmfszrfsDB+9N+GtmgxOI2Son
-         6edyFvVTTPBnAL2rrlmRcX7Z6/6hF0/7ZiZszZDGgh+UnhH6vQ6ITsW1Vn5e3sQjmj
-         87p7dxNBduNjiqW75/axUvm2d4HCs0A1iZ+L9VUM=
+        b=j+wzfnrRoCNMWQrfe10x/83rBtmvNh84NCJDChmJ1xoWHjHTyvzoP2V8vM1RLwtJe
+         iNNxA1w2rDarcV4mHhKrh8OQejcCN+aIyQULKRAY+embZQBkCA7cV+TMBnt61mhNQL
+         PzHeq2WLva/7W1dHH+iRz0H0Os1g5fU/suFVPxgw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tom Rix <trix@redhat.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Florian Westphal <fw@strlen.de>,
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 163/286] netfilter: conntrack: define variables exp_nat_nla_policy and any_addr with CONFIG_NF_NAT
-Date:   Wed,  7 Jun 2023 22:14:22 +0200
-Message-ID: <20230607200928.445926496@linuxfoundation.org>
+Subject: [PATCH 6.1 070/225] hwmon: (k10temp) Add PCI ID for family 19, model 78h
+Date:   Wed,  7 Jun 2023 22:14:23 +0200
+Message-ID: <20230607200916.670301496@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,57 +56,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tom Rix <trix@redhat.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 224a876e37543eee111bf9b6aa4935080e619335 ]
+[ Upstream commit 7d8accfaa0ab65e4282c8e58950f7d688342cd86 ]
 
-gcc with W=1 and ! CONFIG_NF_NAT
-net/netfilter/nf_conntrack_netlink.c:3463:32: error:
-  ‘exp_nat_nla_policy’ defined but not used [-Werror=unused-const-variable=]
- 3463 | static const struct nla_policy exp_nat_nla_policy[CTA_EXPECT_NAT_MAX+1] = {
-      |                                ^~~~~~~~~~~~~~~~~~
-net/netfilter/nf_conntrack_netlink.c:2979:33: error:
-  ‘any_addr’ defined but not used [-Werror=unused-const-variable=]
- 2979 | static const union nf_inet_addr any_addr;
-      |                                 ^~~~~~~~
+Enable k10temp on this system.
 
-These variables use is controlled by CONFIG_NF_NAT, so should their definitions.
+  [ bp: Massage. ]
 
-Signed-off-by: Tom Rix <trix@redhat.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20230427053338.16653-3-mario.limonciello@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_netlink.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/hwmon/k10temp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index d40544cd61a6c..69c8c8c7e9b8e 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -2976,7 +2976,9 @@ static int ctnetlink_exp_dump_mask(struct sk_buff *skb,
- 	return -1;
- }
- 
-+#if IS_ENABLED(CONFIG_NF_NAT)
- static const union nf_inet_addr any_addr;
-+#endif
- 
- static __be32 nf_expect_get_id(const struct nf_conntrack_expect *exp)
- {
-@@ -3460,10 +3462,12 @@ ctnetlink_change_expect(struct nf_conntrack_expect *x,
- 	return 0;
- }
- 
-+#if IS_ENABLED(CONFIG_NF_NAT)
- static const struct nla_policy exp_nat_nla_policy[CTA_EXPECT_NAT_MAX+1] = {
- 	[CTA_EXPECT_NAT_DIR]	= { .type = NLA_U32 },
- 	[CTA_EXPECT_NAT_TUPLE]	= { .type = NLA_NESTED },
+diff --git a/drivers/hwmon/k10temp.c b/drivers/hwmon/k10temp.c
+index be8bbb1c3a02d..823d0ca1d6059 100644
+--- a/drivers/hwmon/k10temp.c
++++ b/drivers/hwmon/k10temp.c
+@@ -507,6 +507,7 @@ static const struct pci_device_id k10temp_id_table[] = {
+ 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_19H_M50H_DF_F3) },
+ 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_19H_M60H_DF_F3) },
+ 	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_19H_M70H_DF_F3) },
++	{ PCI_VDEVICE(AMD, PCI_DEVICE_ID_AMD_19H_M78H_DF_F3) },
+ 	{ PCI_VDEVICE(HYGON, PCI_DEVICE_ID_AMD_17H_DF_F3) },
+ 	{}
  };
-+#endif
- 
- static int
- ctnetlink_parse_expect_nat(const struct nlattr *attr,
 -- 
 2.39.2
 
