@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8AFE726E61
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 589F4726C53
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:32:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235146AbjFGUu2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:50:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49512 "EHLO
+        id S233726AbjFGUce (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:32:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235161AbjFGUtk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:49:40 -0400
+        with ESMTP id S233740AbjFGUcc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:32:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50ED4273E
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:49:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A9FE1FE6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:32:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CCF10646E8
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:49:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB876C433EF;
-        Wed,  7 Jun 2023 20:49:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C55EE6450A
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:32:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D1CC433D2;
+        Wed,  7 Jun 2023 20:32:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170958;
-        bh=x0Icv/g0xIcvXRY8wx2l/wzuElB+eyDB7Lf2/sfWWEM=;
+        s=korg; t=1686169945;
+        bh=jCO4H3cR9wEWkB9Jbpu3LZA+lydgZ+2UOCFygH9YRNo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UF3MNICH1dFHOysW+L8wtd9GsUeJWPMsbYFEYgJ2i9svq9jT8w6Pw1Mug+oqjIqML
-         nP7tR6it0Id4g02OoWyzdccaVurArb16/CkSzuwuU+JKMJf+GtA3V5gS/CnLJPm3jP
-         2u++AhjR6FJhsGrFDhLBYg5/d3ztA9iI5t1+TS9c=
+        b=kexoFA1ZRbHYhYpB75FsfCFxJTffz7o4gsNhD8srXXZGURzqbEa8jBaZt2hc7YBE6
+         iXtAOIdEyF3wQKSpreXHcEgiIv6EYFnPz7CkDMw/UQW+oQKwy2g07p97rWHLtTeiDT
+         gAIb4+K5+gNnCjBRZ8Kqr14PYPT3P7R9ApZt7HRk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, YongSu Yoo <yongsuyoo0215@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 056/120] media: dvb_ca_en50221: fix a size write bug
-Date:   Wed,  7 Jun 2023 22:16:12 +0200
-Message-ID: <20230607200902.658505246@linuxfoundation.org>
+        patches@lists.linux.dev, Michal Luczaj <mhal@rbox.co>,
+        Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.3 274/286] KVM: x86: Bail from kvm_recalculate_phys_map() if x2APIC ID is out-of-bounds
+Date:   Wed,  7 Jun 2023 22:16:13 +0200
+Message-ID: <20230607200932.246044719@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,118 +53,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: YongSu Yoo <yongsuyoo0215@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit a4315e5be7020aac9b24a8151caf4bb85224cd0e ]
+commit 4364b287982bd05bfafa461c80650c732001974b upstream.
 
-The function of "dvb_ca_en50221_write_data" at source/drivers/media
-/dvb-core/dvb_ca_en50221.c is used for two cases.
-The first case is for writing APDU data in the function of
-"dvb_ca_en50221_io_write" at source/drivers/media/dvb-core/
-dvb_ca_en50221.c.
-The second case is for writing the host link buf size on the
-Command Register in the function of "dvb_ca_en50221_link_init"
-at source/drivers/media/dvb-core/dvb_ca_en50221.c.
-In the second case, there exists a bug like following.
-In the function of the "dvb_ca_en50221_link_init",
-after a TV host calculates the host link buf_size,
-the TV host writes the calculated host link buf_size on the
-Size Register.
-Accroding to the en50221 Spec (the page 60 of
-https://dvb.org/wp-content/uploads/2020/02/En50221.V1.pdf),
-before this writing operation, the "SW(CMDREG_SW)" flag in the
-Command Register should be set. We can see this setting operation
-in the function of the "dvb_ca_en50221_link_init" like below.
-...
-	if ((ret = ca->pub->write_cam_control(ca->pub, slot,
-CTRLIF_COMMAND, IRQEN | CMDREG_SW)) != 0)
-		return ret;
-...
-But, after that, the real writing operation is implemented using
-the function of the "dvb_ca_en50221_write_data" in the function of
-"dvb_ca_en50221_link_init", and the "dvb_ca_en50221_write_data"
-includes the function of "ca->pub->write_cam_control",
-and the function of the "ca->pub->write_cam_control" in the
-function of the "dvb_ca_en50221_wrte_data" does not include
-"CMDREG_SW" flag like below.
-...
-	if ((status = ca->pub->write_cam_control(ca->pub, slot,
-CTRLIF_COMMAND, IRQEN | CMDREG_HC)) != 0)
-...
-In the above source code, we can see only the "IRQEN | CMDREG_HC",
-but we cannot see the "CMDREG_SW".
-The "CMDREG_SW" flag which was set in the function of the
-"dvb_ca_en50221_link_init" was rollbacked by the follwoing function
-of the "dvb_ca_en50221_write_data".
-This is a bug. and this bug causes that the calculated host link buf_size
-is not properly written in the CI module.
-Through this patch, we fix this bug.
+Bail from kvm_recalculate_phys_map() and disable the optimized map if the
+target vCPU's x2APIC ID is out-of-bounds, i.e. if the vCPU was added
+and/or enabled its local APIC after the map was allocated.  This fixes an
+out-of-bounds access bug in the !x2apic_format path where KVM would write
+beyond the end of phys_map.
 
-Link: https://lore.kernel.org/linux-media/20220818125027.1131-1-yongsuyoo0215@gmail.com
-Signed-off-by: YongSu Yoo <yongsuyoo0215@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Check the x2APIC ID regardless of whether or not x2APIC is enabled,
+as KVM's hardcodes x2APIC ID to be the vCPU ID, i.e. it can't change, and
+the map allocation in kvm_recalculate_apic_map() doesn't check for x2APIC
+being enabled, i.e. the check won't get false postivies.
+
+Note, this also affects the x2apic_format path, which previously just
+ignored the "x2apic_id > new->max_apic_id" case.  That too is arguably a
+bug fix, as ignoring the vCPU meant that KVM would not send interrupts to
+the vCPU until the next map recalculation.  In practice, that "bug" is
+likely benign as a newly present vCPU/APIC would immediately trigger a
+recalc.  But, there's no functional downside to disabling the map, and
+a future patch will gracefully handle the -E2BIG case by retrying instead
+of simply disabling the optimized map.
+
+Opportunistically add a sanity check on the xAPIC ID size, along with a
+comment explaining why the xAPIC ID is guaranteed to be "good".
+
+Reported-by: Michal Luczaj <mhal@rbox.co>
+Fixes: 5b84b0291702 ("KVM: x86: Honor architectural behavior for aliased 8-bit APIC IDs")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230602233250.1014316-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dvb_ca_en50221.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ arch/x86/kvm/lapic.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/dvb-core/dvb_ca_en50221.c b/drivers/media/dvb-core/dvb_ca_en50221.c
-index fd476536d32ed..b1a7b5f8b9aa4 100644
---- a/drivers/media/dvb-core/dvb_ca_en50221.c
-+++ b/drivers/media/dvb-core/dvb_ca_en50221.c
-@@ -187,7 +187,7 @@ static void dvb_ca_en50221_thread_wakeup(struct dvb_ca_private *ca);
- static int dvb_ca_en50221_read_data(struct dvb_ca_private *ca, int slot,
- 				    u8 *ebuf, int ecount);
- static int dvb_ca_en50221_write_data(struct dvb_ca_private *ca, int slot,
--				     u8 *ebuf, int ecount);
-+				     u8 *ebuf, int ecount, int size_write_flag);
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -229,6 +229,23 @@ static int kvm_recalculate_phys_map(stru
+ 	u32 physical_id;
  
- /**
-  * Safely find needle in haystack.
-@@ -370,7 +370,7 @@ static int dvb_ca_en50221_link_init(struct dvb_ca_private *ca, int slot)
- 	ret = dvb_ca_en50221_wait_if_status(ca, slot, STATUSREG_FR, HZ / 10);
- 	if (ret)
- 		return ret;
--	ret = dvb_ca_en50221_write_data(ca, slot, buf, 2);
-+	ret = dvb_ca_en50221_write_data(ca, slot, buf, 2, CMDREG_SW);
- 	if (ret != 2)
- 		return -EIO;
- 	ret = ca->pub->write_cam_control(ca->pub, slot, CTRLIF_COMMAND, IRQEN);
-@@ -778,11 +778,13 @@ static int dvb_ca_en50221_read_data(struct dvb_ca_private *ca, int slot,
-  * @buf: The data in this buffer is treated as a complete link-level packet to
-  *	 be written.
-  * @bytes_write: Size of ebuf.
-+ * @size_write_flag: A flag on Command Register which says whether the link size
-+ * information will be writen or not.
-  *
-  * return: Number of bytes written, or < 0 on error.
-  */
- static int dvb_ca_en50221_write_data(struct dvb_ca_private *ca, int slot,
--				     u8 *buf, int bytes_write)
-+				     u8 *buf, int bytes_write, int size_write_flag)
- {
- 	struct dvb_ca_slot *sl = &ca->slot_info[slot];
- 	int status;
-@@ -817,7 +819,7 @@ static int dvb_ca_en50221_write_data(struct dvb_ca_private *ca, int slot,
+ 	/*
++	 * For simplicity, KVM always allocates enough space for all possible
++	 * xAPIC IDs.  Yell, but don't kill the VM, as KVM can continue on
++	 * without the optimized map.
++	 */
++	if (WARN_ON_ONCE(xapic_id > new->max_apic_id))
++		return -EINVAL;
++
++	/*
++	 * Bail if a vCPU was added and/or enabled its APIC between allocating
++	 * the map and doing the actual calculations for the map.  Note, KVM
++	 * hardcodes the x2APIC ID to vcpu_id, i.e. there's no TOCTOU bug if
++	 * the compiler decides to reload x2apic_id after this check.
++	 */
++	if (x2apic_id > new->max_apic_id)
++		return -E2BIG;
++
++	/*
+ 	 * Deliberately truncate the vCPU ID when detecting a mismatched APIC
+ 	 * ID to avoid false positives if the vCPU ID, i.e. x2APIC ID, is a
+ 	 * 32-bit value.  Any unwanted aliasing due to truncation results will
+@@ -253,8 +270,7 @@ static int kvm_recalculate_phys_map(stru
+ 	 */
+ 	if (vcpu->kvm->arch.x2apic_format) {
+ 		/* See also kvm_apic_match_physical_addr(). */
+-		if ((apic_x2apic_mode(apic) || x2apic_id > 0xff) &&
+-			x2apic_id <= new->max_apic_id)
++		if (apic_x2apic_mode(apic) || x2apic_id > 0xff)
+ 			new->phys_map[x2apic_id] = apic;
  
- 	/* OK, set HC bit */
- 	status = ca->pub->write_cam_control(ca->pub, slot, CTRLIF_COMMAND,
--					    IRQEN | CMDREG_HC);
-+					    IRQEN | CMDREG_HC | size_write_flag);
- 	if (status)
- 		goto exit;
- 
-@@ -1505,7 +1507,7 @@ static ssize_t dvb_ca_en50221_io_write(struct file *file,
- 
- 			mutex_lock(&sl->slot_lock);
- 			status = dvb_ca_en50221_write_data(ca, slot, fragbuf,
--							   fraglen + 2);
-+							   fraglen + 2, 0);
- 			mutex_unlock(&sl->slot_lock);
- 			if (status == (fraglen + 2)) {
- 				written = 1;
--- 
-2.39.2
-
+ 		if (!apic_x2apic_mode(apic) && !new->phys_map[xapic_id])
 
 
