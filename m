@@ -2,54 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7622D726BF9
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:29:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE5A3726D38
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:40:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233519AbjFGU32 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:29:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55682 "EHLO
+        id S234294AbjFGUkR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:40:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233583AbjFGU3Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:29:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88D0D2130
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:29:13 -0700 (PDT)
+        with ESMTP id S234049AbjFGUkQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:40:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDE6F269A
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:39:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F852644A5
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:29:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FEE5C4339B;
-        Wed,  7 Jun 2023 20:29:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CC62E645BD
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:39:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC8B2C433D2;
+        Wed,  7 Jun 2023 20:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169752;
-        bh=ODzEe5MTMPERDf+zXbuLdOTQOBegDNhuK6ZJ0a/0Ze4=;
+        s=korg; t=1686170391;
+        bh=jFBvxYzGV+XhmFiGqLfid3XokMvdcSX4ovZZYyfbazk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tA6L8ECHvQ1vqkiTSDwpimEIjKlQtefb89QXNT2PzFa6nFJODxclzFjmw0krMYisO
-         BnwIZXDoVDxvB3SAhV4HtjlxIGYDsBIauuYYtgyPBew9/pZWUBzHQ07HBrLayEb+K6
-         glhN9KlDS8XQ+uXcZNx49mowjCCCTtmF8DENtUzw=
+        b=xLUDDso57J/pc9RlFheqmLABCuhhPXNLBvUs9oExXO3wJpXxwJY1UjcfosQ/qMKuo
+         LBJ61xyHGm4X4XSW9uE0MBpMNXG/IlTC2BwR2ZS/uTm011SUdWhZP7EkHz4xiY6US6
+         R88rAH3PtVHr5LmQTwp/6+2C+KDdv51aU13j12+s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Michael=20B=C3=BCsch?= <m@bues.ch>,
-        kernel test robot <lkp@intel.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Arnd Bergmann <arnd@arndb.de>, Kalle Valo <kvalo@kernel.org>,
+        patches@lists.linux.dev, Jammy Huang <jammy_huang@aspeedtech.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 161/286] wifi: b43: fix incorrect __packed annotation
+Subject: [PATCH 6.1 067/225] drm/ast: Fix ARM compatibility
 Date:   Wed,  7 Jun 2023 22:14:20 +0200
-Message-ID: <20230607200928.381581896@linuxfoundation.org>
+Message-ID: <20230607200916.552336728@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,64 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jammy Huang <jammy_huang@aspeedtech.com>
 
-[ Upstream commit 212457ccbd60dba34f965e4ffbe62f0e4f970538 ]
+[ Upstream commit 4327a6137ed43a091d900b1ac833345d60f32228 ]
 
-clang warns about an unpacked structure inside of a packed one:
+ARM architecture only has 'memory', so all devices are accessed by
+MMIO if possible.
 
-drivers/net/wireless/broadcom/b43/b43.h:654:4: error: field data within 'struct b43_iv' is less aligned than 'union (unnamed union at /home/arnd/arm-soc/drivers/net/wireless/broadcom/b43/b43.h:651:2)' and is usually due to 'struct b43_iv' being packed, which can lead to unaligned accesses [-Werror,-Wunaligned-access]
-
-The problem here is that the anonymous union has the default alignment
-from its members, apparently because the original author mixed up the
-placement of the __packed attribute by placing it next to the struct
-member rather than the union definition. As the struct itself is
-also marked as __packed, there is no need to mark its members, so just
-move the annotation to the inner type instead.
-
-As Michael noted, the same problem is present in b43legacy, so
-change both at the same time.
-
-Acked-by: Michael Büsch <m@bues.ch>
-Reported-by: kernel test robot <lkp@intel.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
-Link: https://lore.kernel.org/oe-kbuild-all/202305160749.ay1HAoyP-lkp@intel.com/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230516183442.536589-1-arnd@kernel.org
+Signed-off-by: Jammy Huang <jammy_huang@aspeedtech.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230421003354.27767-1-jammy_huang@aspeedtech.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/b43/b43.h             | 2 +-
- drivers/net/wireless/broadcom/b43legacy/b43legacy.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/ast/ast_main.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/b43/b43.h b/drivers/net/wireless/broadcom/b43/b43.h
-index 9fc7c088a539e..67b4bac048e58 100644
---- a/drivers/net/wireless/broadcom/b43/b43.h
-+++ b/drivers/net/wireless/broadcom/b43/b43.h
-@@ -651,7 +651,7 @@ struct b43_iv {
- 	union {
- 		__be16 d16;
- 		__be32 d32;
--	} data __packed;
-+	} __packed data;
- } __packed;
+diff --git a/drivers/gpu/drm/ast/ast_main.c b/drivers/gpu/drm/ast/ast_main.c
+index 067453266897f..5df527051177a 100644
+--- a/drivers/gpu/drm/ast/ast_main.c
++++ b/drivers/gpu/drm/ast/ast_main.c
+@@ -427,11 +427,12 @@ struct ast_private *ast_device_create(const struct drm_driver *drv,
+ 		return ERR_PTR(-EIO);
  
- 
-diff --git a/drivers/net/wireless/broadcom/b43legacy/b43legacy.h b/drivers/net/wireless/broadcom/b43legacy/b43legacy.h
-index 6b0cec467938f..f49365d14619f 100644
---- a/drivers/net/wireless/broadcom/b43legacy/b43legacy.h
-+++ b/drivers/net/wireless/broadcom/b43legacy/b43legacy.h
-@@ -379,7 +379,7 @@ struct b43legacy_iv {
- 	union {
- 		__be16 d16;
- 		__be32 d32;
--	} data __packed;
-+	} __packed data;
- } __packed;
- 
- #define B43legacy_PHYMODE(phytype)	(1 << (phytype))
+ 	/*
+-	 * If we don't have IO space at all, use MMIO now and
+-	 * assume the chip has MMIO enabled by default (rev 0x20
+-	 * and higher).
++	 * After AST2500, MMIO is enabled by default, and it should be adopted
++	 * to be compatible with Arm.
+ 	 */
+-	if (!(pci_resource_flags(pdev, 2) & IORESOURCE_IO)) {
++	if (pdev->revision >= 0x40) {
++		ast->ioregs = ast->regs + AST_IO_MM_OFFSET;
++	} else if (!(pci_resource_flags(pdev, 2) & IORESOURCE_IO)) {
+ 		drm_info(dev, "platform has no IO space, trying MMIO\n");
+ 		ast->ioregs = ast->regs + AST_IO_MM_OFFSET;
+ 	}
 -- 
 2.39.2
 
