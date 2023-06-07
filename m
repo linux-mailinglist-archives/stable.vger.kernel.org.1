@@ -2,42 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F0B4726A45
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:00:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3564E726A48
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:00:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232208AbjFGUAW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:00:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34386 "EHLO
+        id S232123AbjFGUAh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:00:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232243AbjFGUAL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:00:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A81D213C;
-        Wed,  7 Jun 2023 13:00:07 -0700 (PDT)
+        with ESMTP id S230401AbjFGUAT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:00:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43CB011A;
+        Wed,  7 Jun 2023 13:00:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 27F8D64212;
-        Wed,  7 Jun 2023 20:00:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81345C433EF;
-        Wed,  7 Jun 2023 20:00:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 23BF6617A9;
+        Wed,  7 Jun 2023 20:00:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77350C433EF;
+        Wed,  7 Jun 2023 20:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1686168006;
-        bh=/tI9xtvOXHdkAmavmI2GAMQjDBprkaMZPhxk4MW1OrQ=;
+        s=korg; t=1686168011;
+        bh=SUfIK17SIrwqjc6DhxsxfHxoKVKP+436Nuu3YXC3CII=;
         h=Date:To:From:Subject:From;
-        b=S77wm29MRWok/1FKo88ZsSF7AzPrYGbSFhFsTBf5lgD+UPvlcRDBMrG//X1CMIlF4
-         Uex/Y7i8kgFcr3Ms9wczQ0Ubap97FaZg0h33TZ+UrBHrz2cE3miWgfiHtmT8NwJ4wO
-         d3UZUASJYEGAuEXfn4vuOaqSctdqsk7blY14zKzY=
-Date:   Wed, 07 Jun 2023 13:00:05 -0700
+        b=WzWusXyoHZGTJhs08dWyBOx3ulMCOirLtOtPp+TMqTw+4mMn8fZaU0NsWdi4nt8P9
+         dZB4a0rIGwY9TClg2n6w5hfCm2qL33lWwMUbPswNuxmwSBSHWI7qbwvdMJUIOQKhbj
+         8qnuhXe7zk1SUbMqo1jYt15DXHOQa7ajWtjAF0Pg=
+Date:   Wed, 07 Jun 2023 13:00:10 -0700
 To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        konishi.ryusuke@gmail.com, akpm@linux-foundation.org
+        piaojun@huawei.com, mark@fasheh.com, lhenriques@suse.de,
+        junxiao.bi@oracle.com, joseph.qi@linux.alibaba.com,
+        jlbec@evilplan.org, ghe@suse.com, gechangwei@live.cn,
+        ocfs2-devel@oss.oracle.com, akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] nilfs2-fix-possible-out-of-bounds-segment-allocation-in-resize-ioctl.patch removed from -mm tree
-Message-Id: <20230607200006.81345C433EF@smtp.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Subject: [merged mm-hotfixes-stable] ocfs2-fix-use-after-free-when-unmounting-read-only-filesystem.patch removed from -mm tree
+Message-Id: <20230607200011.77350C433EF@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,PP_MIME_FAKE_ASCII_TEXT,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -46,73 +49,108 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: nilfs2: fix possible out-of-bounds segment allocation in resize ioctl
+     Subject: ocfs2: fix use-after-free when unmounting read-only filesystem
 has been removed from the -mm tree.  Its filename was
-     nilfs2-fix-possible-out-of-bounds-segment-allocation-in-resize-ioctl.patch
+     ocfs2-fix-use-after-free-when-unmounting-read-only-filesystem.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: nilfs2: fix possible out-of-bounds segment allocation in resize ioctl
-Date: Wed, 24 May 2023 18:43:48 +0900
+From: Luís Henriques <ocfs2-devel@oss.oracle.com>
+Subject: ocfs2: fix use-after-free when unmounting read-only filesystem
+Date: Mon, 22 May 2023 11:21:12 +0100
 
-Syzbot reports that in its stress test for resize ioctl, the log writing
-function nilfs_segctor_do_construct hits a WARN_ON in
-nilfs_segctor_truncate_segments().
+It's trivial to trigger a use-after-free bug in the ocfs2 quotas code using
+fstest generic/452.  After a read-only remount, quotas are suspended and
+ocfs2_mem_dqinfo is freed through ->ocfs2_local_free_info().  When unmounting
+the filesystem, an UAF access to the oinfo will eventually cause a crash.
+ 
+BUG: KASAN: slab-use-after-free in timer_delete+0x54/0xc0
+Read of size 8 at addr ffff8880389a8208 by task umount/669
+...
+Call Trace:
+ <TASK>
+ ...
+ timer_delete+0x54/0xc0
+ try_to_grab_pending+0x31/0x230
+ __cancel_work_timer+0x6c/0x270
+ ocfs2_disable_quotas.isra.0+0x3e/0xf0 [ocfs2]
+ ocfs2_dismount_volume+0xdd/0x450 [ocfs2]
+ generic_shutdown_super+0xaa/0x280
+ kill_block_super+0x46/0x70
+ deactivate_locked_super+0x4d/0xb0
+ cleanup_mnt+0x135/0x1f0
+ ...
+ </TASK>
 
-It turned out that there is a problem with the current implementation of
-the resize ioctl, which changes the writable range on the device (the
-range of allocatable segments) at the end of the resize process.
+Allocated by task 632:
+ kasan_save_stack+0x1c/0x40
+ kasan_set_track+0x21/0x30
+ __kasan_kmalloc+0x8b/0x90
+ ocfs2_local_read_info+0xe3/0x9a0 [ocfs2]
+ dquot_load_quota_sb+0x34b/0x680
+ dquot_load_quota_inode+0xfe/0x1a0
+ ocfs2_enable_quotas+0x190/0x2f0 [ocfs2]
+ ocfs2_fill_super+0x14ef/0x2120 [ocfs2]
+ mount_bdev+0x1be/0x200
+ legacy_get_tree+0x6c/0xb0
+ vfs_get_tree+0x3e/0x110
+ path_mount+0xa90/0xe10
+ __x64_sys_mount+0x16f/0x1a0
+ do_syscall_64+0x43/0x90
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
 
-This order is necessary for file system expansion to avoid corrupting the
-superblock at trailing edge.  However, in the case of a file system
-shrink, if log writes occur after truncating out-of-bounds trailing
-segments and before the resize is complete, segments may be allocated from
-the truncated space.
+Freed by task 650:
+ kasan_save_stack+0x1c/0x40
+ kasan_set_track+0x21/0x30
+ kasan_save_free_info+0x2a/0x50
+ __kasan_slab_free+0xf9/0x150
+ __kmem_cache_free+0x89/0x180
+ ocfs2_local_free_info+0x2ba/0x3f0 [ocfs2]
+ dquot_disable+0x35f/0xa70
+ ocfs2_susp_quotas.isra.0+0x159/0x1a0 [ocfs2]
+ ocfs2_remount+0x150/0x580 [ocfs2]
+ reconfigure_super+0x1a5/0x3a0
+ path_mount+0xc8a/0xe10
+ __x64_sys_mount+0x16f/0x1a0
+ do_syscall_64+0x43/0x90
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
 
-The userspace resize tool was fine as it limits the range of allocatable
-segments before performing the resize, but it can run into this issue if
-the resize ioctl is called alone.
-
-Fix this issue by changing nilfs_sufile_resize() to update the range of
-allocatable segments immediately after successful truncation of segment
-space in case of file system shrink.
-
-Link: https://lkml.kernel.org/r/20230524094348.3784-1-konishi.ryusuke@gmail.com
-Fixes: 4e33f9eab07e ("nilfs2: implement resize ioctl")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+33494cd0df2ec2931851@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/0000000000005434c405fbbafdc5@google.com
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Link: https://lkml.kernel.org/r/20230522102112.9031-1-lhenriques@suse.de
+Signed-off-by: Luís Henriques <lhenriques@suse.de>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Tested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/nilfs2/sufile.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/ocfs2/super.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/nilfs2/sufile.c~nilfs2-fix-possible-out-of-bounds-segment-allocation-in-resize-ioctl
-+++ a/fs/nilfs2/sufile.c
-@@ -779,6 +779,15 @@ int nilfs_sufile_resize(struct inode *su
- 			goto out_header;
- 
- 		sui->ncleansegs -= nsegs - newnsegs;
-+
-+		/*
-+		 * If the sufile is successfully truncated, immediately adjust
-+		 * the segment allocation space while locking the semaphore
-+		 * "mi_sem" so that nilfs_sufile_alloc() never allocates
-+		 * segments in the truncated space.
-+		 */
-+		sui->allocmax = newnsegs - 1;
-+		sui->allocmin = 0;
- 	}
- 
- 	kaddr = kmap_atomic(header_bh->b_page);
+--- a/fs/ocfs2/super.c~ocfs2-fix-use-after-free-when-unmounting-read-only-filesystem
++++ a/fs/ocfs2/super.c
+@@ -952,8 +952,10 @@ static void ocfs2_disable_quotas(struct
+ 	for (type = 0; type < OCFS2_MAXQUOTAS; type++) {
+ 		if (!sb_has_quota_loaded(sb, type))
+ 			continue;
+-		oinfo = sb_dqinfo(sb, type)->dqi_priv;
+-		cancel_delayed_work_sync(&oinfo->dqi_sync_work);
++		if (!sb_has_quota_suspended(sb, type)) {
++			oinfo = sb_dqinfo(sb, type)->dqi_priv;
++			cancel_delayed_work_sync(&oinfo->dqi_sync_work);
++		}
+ 		inode = igrab(sb->s_dquot.files[type]);
+ 		/* Turn off quotas. This will remove all dquot structures from
+ 		 * memory and so they will be automatically synced to global
 _
 
-Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
+Patches currently in -mm which might be from ocfs2-devel@oss.oracle.com are
 
 
