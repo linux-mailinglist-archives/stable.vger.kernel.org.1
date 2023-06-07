@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF8EB726BD8
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:28:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61FC6726D3A
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:40:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233482AbjFGU2s (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:28:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55082 "EHLO
+        id S234049AbjFGUkY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:40:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233475AbjFGU2r (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:28:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 911951721
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:28:30 -0700 (PDT)
+        with ESMTP id S234257AbjFGUkW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:40:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCC6426AD
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:39:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 74AC9644A4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:27:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C42EC433D2;
-        Wed,  7 Jun 2023 20:27:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 631D464502
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:39:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 782D4C433D2;
+        Wed,  7 Jun 2023 20:39:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169671;
-        bh=34AFP84eVLDkaMxF9Z7xvIZ4RPxJiWPdsI3myJ2MqGM=;
+        s=korg; t=1686170393;
+        bh=WOWpvSGVcqwyTfThoCVxq6bLDLLJMriEoKmSw2N5Opk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BbKfFaJHP5iM+HaGeRy7emeN/9werlkACiB+ziDFIaO9JT3Cp/V+pD81axHcgt7iA
-         DtuN6DmIDBAS9K/hTFb8vi4Mj1n0ElO+p9q7K0VuslZ8fZtakYnpolKv6pmEMyVxSE
-         0a18yZbzrsFh0yD8wXlnv03Iv1Tmu03b3csxI4Ew=
+        b=Bv9p0UcpLoKUfycG3m6qF1VvCHa3xJGOfOlV8m4pFfZRfTVpO+/G4HR+lPJt8JlHJ
+         nqEwrb04EVBWFSDjPDpSZGOpyMVy3SFUKIcu0/36CPnc2gxuK6AEIOSOmv+eIOL5gN
+         uPhp1Lt4tZyHy9C1EoN2AmO7zTT5nwqhJpzlx79g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
+        Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 162/286] net: wwan: t7xx: Ensure init is completed before system sleep
+Subject: [PATCH 6.1 068/225] btrfs: abort transaction when sibling keys check fails for leaves
 Date:   Wed,  7 Jun 2023 22:14:21 +0200
-Message-ID: <20230607200928.413894756@linuxfoundation.org>
+Message-ID: <20230607200916.584532329@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,98 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit ab87603b251134441a67385ecc9d3371be17b7a7 ]
+[ Upstream commit 9ae5afd02a03d4e22a17a9609b19400b77c36273 ]
 
-When the system attempts to sleep while mtk_t7xx is not ready, the driver
-cannot put the device to sleep:
-[   12.472918] mtk_t7xx 0000:57:00.0: [PM] Exiting suspend, modem in invalid state
-[   12.472936] mtk_t7xx 0000:57:00.0: PM: pci_pm_suspend(): t7xx_pci_pm_suspend+0x0/0x20 [mtk_t7xx] returns -14
-[   12.473678] mtk_t7xx 0000:57:00.0: PM: dpm_run_callback(): pci_pm_suspend+0x0/0x1b0 returns -14
-[   12.473711] mtk_t7xx 0000:57:00.0: PM: failed to suspend async: error -14
-[   12.764776] PM: Some devices failed to suspend, or early wake event detected
+If the sibling keys check fails before we move keys from one sibling
+leaf to another, we are not aborting the transaction - we leave that to
+some higher level caller of btrfs_search_slot() (or anything else that
+uses it to insert items into a b+tree).
 
-Mediatek confirmed the device can take a rather long time to complete
-its initialization, so wait for up to 20 seconds until init is done.
+This means that the transaction abort will provide a stack trace that
+omits the b+tree modification call chain. So change this to immediately
+abort the transaction and therefore get a more useful stack trace that
+shows us the call chain in the bt+tree modification code.
 
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+It's also important to immediately abort the transaction just in case
+some higher level caller is not doing it, as this indicates a very
+serious corruption and we should stop the possibility of doing further
+damage.
+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wwan/t7xx/t7xx_pci.c | 18 ++++++++++++++++++
- drivers/net/wwan/t7xx/t7xx_pci.h |  1 +
- 2 files changed, 19 insertions(+)
+ fs/btrfs/ctree.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wwan/t7xx/t7xx_pci.c b/drivers/net/wwan/t7xx/t7xx_pci.c
-index 226fc1703e90f..91256e005b846 100644
---- a/drivers/net/wwan/t7xx/t7xx_pci.c
-+++ b/drivers/net/wwan/t7xx/t7xx_pci.c
-@@ -45,6 +45,7 @@
- #define T7XX_PCI_IREG_BASE		0
- #define T7XX_PCI_EREG_BASE		2
+diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
+index dbbae92ac23d8..ab9f8d6c4f1b9 100644
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -3118,6 +3118,7 @@ static int push_leaf_right(struct btrfs_trans_handle *trans, struct btrfs_root
  
-+#define T7XX_INIT_TIMEOUT		20
- #define PM_SLEEP_DIS_TIMEOUT_MS		20
- #define PM_ACK_TIMEOUT_MS		1500
- #define PM_AUTOSUSPEND_MS		20000
-@@ -96,6 +97,7 @@ static int t7xx_pci_pm_init(struct t7xx_pci_dev *t7xx_dev)
- 	spin_lock_init(&t7xx_dev->md_pm_lock);
- 	init_completion(&t7xx_dev->sleep_lock_acquire);
- 	init_completion(&t7xx_dev->pm_sr_ack);
-+	init_completion(&t7xx_dev->init_done);
- 	atomic_set(&t7xx_dev->md_pm_state, MTK_PM_INIT);
+ 	if (check_sibling_keys(left, right)) {
+ 		ret = -EUCLEAN;
++		btrfs_abort_transaction(trans, ret);
+ 		btrfs_tree_unlock(right);
+ 		free_extent_buffer(right);
+ 		return ret;
+@@ -3348,6 +3349,7 @@ static int push_leaf_left(struct btrfs_trans_handle *trans, struct btrfs_root
  
- 	device_init_wakeup(&pdev->dev, true);
-@@ -124,6 +126,7 @@ void t7xx_pci_pm_init_late(struct t7xx_pci_dev *t7xx_dev)
- 	pm_runtime_mark_last_busy(&t7xx_dev->pdev->dev);
- 	pm_runtime_allow(&t7xx_dev->pdev->dev);
- 	pm_runtime_put_noidle(&t7xx_dev->pdev->dev);
-+	complete_all(&t7xx_dev->init_done);
- }
- 
- static int t7xx_pci_pm_reinit(struct t7xx_pci_dev *t7xx_dev)
-@@ -529,6 +532,20 @@ static void t7xx_pci_shutdown(struct pci_dev *pdev)
- 	__t7xx_pci_pm_suspend(pdev);
- }
- 
-+static int t7xx_pci_pm_prepare(struct device *dev)
-+{
-+	struct pci_dev *pdev = to_pci_dev(dev);
-+	struct t7xx_pci_dev *t7xx_dev;
-+
-+	t7xx_dev = pci_get_drvdata(pdev);
-+	if (!wait_for_completion_timeout(&t7xx_dev->init_done, T7XX_INIT_TIMEOUT * HZ)) {
-+		dev_warn(dev, "Not ready for system sleep.\n");
-+		return -ETIMEDOUT;
-+	}
-+
-+	return 0;
-+}
-+
- static int t7xx_pci_pm_suspend(struct device *dev)
- {
- 	return __t7xx_pci_pm_suspend(to_pci_dev(dev));
-@@ -555,6 +572,7 @@ static int t7xx_pci_pm_runtime_resume(struct device *dev)
- }
- 
- static const struct dev_pm_ops t7xx_pci_pm_ops = {
-+	.prepare = t7xx_pci_pm_prepare,
- 	.suspend = t7xx_pci_pm_suspend,
- 	.resume = t7xx_pci_pm_resume,
- 	.resume_noirq = t7xx_pci_pm_resume_noirq,
-diff --git a/drivers/net/wwan/t7xx/t7xx_pci.h b/drivers/net/wwan/t7xx/t7xx_pci.h
-index 112efa534eace..f08f1ab744691 100644
---- a/drivers/net/wwan/t7xx/t7xx_pci.h
-+++ b/drivers/net/wwan/t7xx/t7xx_pci.h
-@@ -69,6 +69,7 @@ struct t7xx_pci_dev {
- 	struct t7xx_modem	*md;
- 	struct t7xx_ccmni_ctrl	*ccmni_ctlb;
- 	bool			rgu_pci_irq_en;
-+	struct completion	init_done;
- 
- 	/* Low Power Items */
- 	struct list_head	md_pm_entities;
+ 	if (check_sibling_keys(left, right)) {
+ 		ret = -EUCLEAN;
++		btrfs_abort_transaction(trans, ret);
+ 		goto out;
+ 	}
+ 	return __push_leaf_left(path, min_data_size,
 -- 
 2.39.2
 
