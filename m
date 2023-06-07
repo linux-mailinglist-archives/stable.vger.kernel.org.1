@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AA0F726D57
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:41:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6E5D726BE6
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:29:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234409AbjFGUlO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:41:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40256 "EHLO
+        id S233514AbjFGU3G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:29:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234429AbjFGUlJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:41:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 354B11FF0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:41:02 -0700 (PDT)
+        with ESMTP id S233478AbjFGU3E (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:29:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 165B126B0
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:28:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 153C5645D8
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:41:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274CCC433EF;
-        Wed,  7 Jun 2023 20:41:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A68B7644AC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:28:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5D6FC433EF;
+        Wed,  7 Jun 2023 20:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170461;
-        bh=Yb9O0GIuqb/RZT2O/Laru4YntHjzgflPMImAoXQKA4I=;
+        s=korg; t=1686169698;
+        bh=N3e1CDxXbfz6zHbKy0Kn4qgiWdrGDSIMak7wrkOlfzU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QBzHAwRAvpOrey7ZHU573N2JPYxB6bnQaOfhbEk3vCeYTOSy/EiXkdgSyREzGPm+2
-         du7VDAI3bWEk6/jcA1ki4GPpLHRpVJqE+mVW5LFUwdAS5rQwPdWTakSpErbKGeUYOw
-         BkFCdz6HOzVnCSAHz3nMwxC5FRSa/8Jcojth5Z4k=
+        b=mJDlZVv2avlV1akF02zNbyFuHHn3jt8qOPa3zBauDas53RbT29AEMqLXYFtqn0YUE
+         +p+BxVw7P3wlwzCuiykULWYNPESryolOpvFQ6lmSwtlR1VJKTHet1sHa//SbYOY9mD
+         h1C176IZJWAcSgJLdMT2/iyt1OSp0haBGiogWlDk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benedict Wong <benedictwong@google.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
+        patches@lists.linux.dev, Like Xu <likexu@tencent.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Kan Liang <kan.liang@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 086/225] xfrm: Check if_id in inbound policy/secpath match
+Subject: [PATCH 6.3 180/286] perf/x86/intel: Save/restore cpuc->active_pebs_data_cfg when using guest PEBS
 Date:   Wed,  7 Jun 2023 22:14:39 +0200
-Message-ID: <20230607200917.189321040@linuxfoundation.org>
+Message-ID: <20230607200929.151057550@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,77 +55,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Benedict Wong <benedictwong@google.com>
+From: Like Xu <likexu@tencent.com>
 
-[ Upstream commit 8680407b6f8f5fba59e8f1d63c869abc280f04df ]
+[ Upstream commit 3c845304d2d723f20d5b91fef5d133ff94825d76 ]
 
-This change ensures that if configured in the policy, the if_id set in
-the policy and secpath states match during the inbound policy check.
-Without this, there is potential for ambiguity where entries in the
-secpath differing by only the if_id could be mismatched.
+After commit b752ea0c28e3 ("perf/x86/intel/ds: Flush PEBS DS when changing
+PEBS_DATA_CFG"), the cpuc->pebs_data_cfg may save some bits that are not
+supported by real hardware, such as PEBS_UPDATE_DS_SW. This would cause
+the VMX hardware MSR switching mechanism to save/restore invalid values
+for PEBS_DATA_CFG MSR, thus crashing the host when PEBS is used for guest.
+Fix it by using the active host value from cpuc->active_pebs_data_cfg.
 
-Notably, this is checked in the outbound direction when resolving
-templates to SAs, but not on the inbound path when matching SAs and
-policies.
-
-Test: Tested against Android kernel unit tests & CTS
-Signed-off-by: Benedict Wong <benedictwong@google.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: b752ea0c28e3 ("perf/x86/intel/ds: Flush PEBS DS when changing PEBS_DATA_CFG")
+Signed-off-by: Like Xu <likexu@tencent.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Link: https://lore.kernel.org/r/20230517133808.67885-1-likexu@tencent.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_policy.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ arch/x86/events/intel/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index bc04cb83215f9..e894c269affb1 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -3237,7 +3237,7 @@ xfrm_secpath_reject(int idx, struct sk_buff *skb, const struct flowi *fl)
- 
- static inline int
- xfrm_state_ok(const struct xfrm_tmpl *tmpl, const struct xfrm_state *x,
--	      unsigned short family)
-+	      unsigned short family, u32 if_id)
- {
- 	if (xfrm_state_kern(x))
- 		return tmpl->optional && !xfrm_state_addr_cmp(tmpl, x, tmpl->encap_family);
-@@ -3248,7 +3248,8 @@ xfrm_state_ok(const struct xfrm_tmpl *tmpl, const struct xfrm_state *x,
- 		(tmpl->allalgs || (tmpl->aalgos & (1<<x->props.aalgo)) ||
- 		 !(xfrm_id_proto_match(tmpl->id.proto, IPSEC_PROTO_ANY))) &&
- 		!(x->props.mode != XFRM_MODE_TRANSPORT &&
--		  xfrm_state_addr_cmp(tmpl, x, family));
-+		  xfrm_state_addr_cmp(tmpl, x, family)) &&
-+		(if_id == 0 || if_id == x->if_id);
- }
- 
- /*
-@@ -3260,7 +3261,7 @@ xfrm_state_ok(const struct xfrm_tmpl *tmpl, const struct xfrm_state *x,
-  */
- static inline int
- xfrm_policy_ok(const struct xfrm_tmpl *tmpl, const struct sec_path *sp, int start,
--	       unsigned short family)
-+	       unsigned short family, u32 if_id)
- {
- 	int idx = start;
- 
-@@ -3270,7 +3271,7 @@ xfrm_policy_ok(const struct xfrm_tmpl *tmpl, const struct sec_path *sp, int star
- 	} else
- 		start = -1;
- 	for (; idx < sp->len; idx++) {
--		if (xfrm_state_ok(tmpl, sp->xvec[idx], family))
-+		if (xfrm_state_ok(tmpl, sp->xvec[idx], family, if_id))
- 			return ++idx;
- 		if (sp->xvec[idx]->props.mode != XFRM_MODE_TRANSPORT) {
- 			if (start == -1)
-@@ -3649,7 +3650,7 @@ int __xfrm_policy_check(struct sock *sk, int dir, struct sk_buff *skb,
- 		 * are implied between each two transformations.
- 		 */
- 		for (i = xfrm_nr-1, k = 0; i >= 0; i--) {
--			k = xfrm_policy_ok(tpp[i], sp, k, family);
-+			k = xfrm_policy_ok(tpp[i], sp, k, family, if_id);
- 			if (k < 0) {
- 				if (k < -1)
- 					/* "-2 - errored_index" returned */
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index a3fb996a86a10..161b8f71eb5a7 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -4074,7 +4074,7 @@ static struct perf_guest_switch_msr *intel_guest_get_msrs(int *nr, void *data)
+ 	if (x86_pmu.intel_cap.pebs_baseline) {
+ 		arr[(*nr)++] = (struct perf_guest_switch_msr){
+ 			.msr = MSR_PEBS_DATA_CFG,
+-			.host = cpuc->pebs_data_cfg,
++			.host = cpuc->active_pebs_data_cfg,
+ 			.guest = kvm_pmu->pebs_data_cfg,
+ 		};
+ 	}
 -- 
 2.39.2
 
