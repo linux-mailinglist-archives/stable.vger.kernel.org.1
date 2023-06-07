@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD351726D25
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:39:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D06CA726D35
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:40:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234241AbjFGUjp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:39:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38192 "EHLO
+        id S231330AbjFGUkM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:40:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234429AbjFGUjc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:39:32 -0400
+        with ESMTP id S234352AbjFGUkG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:40:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 265A92121
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:39:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81652213B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:39:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 07D8E645CF
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:39:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC3FC4339B;
-        Wed,  7 Jun 2023 20:39:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B6FA8645D4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:39:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7669C433D2;
+        Wed,  7 Jun 2023 20:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170346;
-        bh=GvXEY/0oIadG7dZH6OoApIpsSynID2NV6XmYuaVTm4Y=;
+        s=korg; t=1686170349;
+        bh=0NaPn0n7paGYnoCX699k1g9XXVtv3i7bvyujp3Itry4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OStLVGIvlA3tSC37gqLqefnURCohMQyuUoI9f3NGzeVUsfK+9U6ZhLchQixkGDY6N
-         KrIRYFb5CvE+3XxDG+QXIja92nOBIHm8fDD8LFhJ8XcceNg63dKUApku7W5M4baqXy
-         XF+itkUxVRbMZTgscr7hNU04rRfSc/ozHaysApgk=
+        b=dYqVIvAqviRZWQsk+mg8V8P4leGNlKAGZpu+0rlxkFYxnMTn5mE4hHCSspstlE2M7
+         /dL45ODDsKlNz7yfgxTibwkk6BrN9Mv8rZMPVe3Oq0yI0XJ0GgPCd0sSBPnlzgDYQK
+         o3oj0c3AxlsbVT2NGE2PGL7Jr8qlf6QMH4nR16pA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Andreas Svensson <andreas.svensson@axis.com>,
-        Andrew Lunn <andrew@lunn.ch>, Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Miquel Raynal <miquel.raynal@bootlin.com>,
+        Chris Packham <chris.packham@alliedtelesis.co.nz>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 049/225] net: dsa: mv88e6xxx: Increase wait after reset deactivation
-Date:   Wed,  7 Jun 2023 22:14:02 +0200
-Message-ID: <20230607200915.965004223@linuxfoundation.org>
+Subject: [PATCH 6.1 050/225] mtd: rawnand: marvell: ensure timing values are written
+Date:   Wed,  7 Jun 2023 22:14:03 +0200
+Message-ID: <20230607200915.998858580@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
 References: <20230607200913.334991024@linuxfoundation.org>
@@ -55,43 +54,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andreas Svensson <andreas.svensson@axis.com>
+From: Chris Packham <chris.packham@alliedtelesis.co.nz>
 
-[ Upstream commit 3c27f3d53d588618d81d30d6712459a3cc9489b8 ]
+[ Upstream commit 8a6f4d346f3bad9c68b4a87701eb3f7978542d57 ]
 
-A switch held in reset by default needs to wait longer until we can
-reliably detect it.
+When new timing values are calculated in marvell_nfc_setup_interface()
+ensure that they will be applied in marvell_nfc_select_target() by
+clearing the selected_chip pointer.
 
-An issue was observed when testing on the Marvell 88E6393X (Link Street).
-The driver failed to detect the switch on some upstarts. Increasing the
-wait time after reset deactivation solves this issue.
-
-The updated wait time is now also the same as the wait time in the
-mv88e6xxx_hardware_reset function.
-
-Fixes: 7b75e49de424 ("net: dsa: mv88e6xxx: wait after reset deactivation")
-Signed-off-by: Andreas Svensson <andreas.svensson@axis.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20230530145223.1223993-1-andreas.svensson@axis.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: b25251414f6e ("mtd: rawnand: marvell: Stop implementing ->select_chip()")
+Suggested-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230525003154.2303012-1-chris.packham@alliedtelesis.co.nz
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/marvell_nand.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index a8ff6ee6d58e6..4db1652015d1d 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -7067,7 +7067,7 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
- 		goto out;
+diff --git a/drivers/mtd/nand/raw/marvell_nand.c b/drivers/mtd/nand/raw/marvell_nand.c
+index b9d1e96e33345..72069a8643563 100644
+--- a/drivers/mtd/nand/raw/marvell_nand.c
++++ b/drivers/mtd/nand/raw/marvell_nand.c
+@@ -2449,6 +2449,12 @@ static int marvell_nfc_setup_interface(struct nand_chip *chip, int chipnr,
+ 			NDTR1_WAIT_MODE;
  	}
- 	if (chip->reset)
--		usleep_range(1000, 2000);
-+		usleep_range(10000, 20000);
  
- 	/* Detect if the device is configured in single chip addressing mode,
- 	 * otherwise continue with address specific smi init/detection.
++	/*
++	 * Reset nfc->selected_chip so the next command will cause the timing
++	 * registers to be updated in marvell_nfc_select_target().
++	 */
++	nfc->selected_chip = NULL;
++
+ 	return 0;
+ }
+ 
 -- 
 2.39.2
 
