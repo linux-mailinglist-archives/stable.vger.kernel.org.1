@@ -2,41 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11398726B08
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:22:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1686F726B0E
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:22:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230424AbjFGUV5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:21:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46792 "EHLO
+        id S233009AbjFGUWN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:22:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232850AbjFGUVu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:21:50 -0400
+        with ESMTP id S233049AbjFGUWB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:22:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B9132122
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:21:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 697CC268C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:21:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B74B643D9
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:21:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA35C433D2;
-        Wed,  7 Jun 2023 20:21:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 338AE643F1
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:21:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43564C433A7;
+        Wed,  7 Jun 2023 20:21:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169276;
-        bh=5EyFGGi44qqO3kvQGy5LGPsVuZDLYemBmcYj8NIYIAI=;
+        s=korg; t=1686169305;
+        bh=GYqQAJOFnLzXwOUzChV2JbNtYmuiS+DJp8V8hjctYnc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UqQDAo/3KEtz3v9NCBRuWp92BQd21Z/qErCODIL9l8tyR9U7Q4FBD3D3svY/0R3rB
-         jx6fnYe6+Fli6b7IQgvwGWy9QSo2jei+Dd1i+MkMRAxAz3+2QRoXWqmA650t0/Bgfz
-         10brL2k9saYRjTOiFS86ou4mZkeRchUa4JS8RIFE=
+        b=B/kh3bEFb1GvViBRrJ+8y3xGYwE2wHqGoiHPhlwkO39fvco7AKSkIOh4POKBkmsm8
+         eDy4REeCN9Fd7cPLgGAcKgdwaUhJ/RW+yBlySLAOfD/qOq24QegFnfvmDP9vEtagxy
+         /CRBwQTVlYqwDUVB1KDwKgiS8vYnkaqyB99WipAQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 002/286] phy: amlogic: phy-meson-g12a-mipi-dphy-analog: fix CNTL2_DIF_TX_CTL0 value
-Date:   Wed,  7 Jun 2023 22:11:41 +0200
-Message-ID: <20230607200923.061917413@linuxfoundation.org>
+        patches@lists.linux.dev, Firas Jahjah <firasj@amazon.com>,
+        Michael Margolin <mrgolin@amazon.com>,
+        Yonatan Nachum <ynachum@amazon.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 003/286] RDMA/efa: Fix unsupported page sizes in device
+Date:   Wed,  7 Jun 2023 22:11:42 +0200
+Message-ID: <20230607200923.101505860@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
 References: <20230607200922.978677727@linuxfoundation.org>
@@ -54,35 +56,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Yonatan Nachum <ynachum@amazon.com>
 
-[ Upstream commit b949193011540bb17cf1da7795ec42af1b875203 ]
+[ Upstream commit 866422cdddcdf59d8c68e9472d49ba1be29b5fcf ]
 
-Use the same CNTL2_DIF_TX_CTL0 value used by the vendor, it was reported
-fixing timings issues.
+Device uses 4KB size blocks for user pages indirect list while the
+driver creates those blocks with the size of PAGE_SIZE of the kernel. On
+kernels with PAGE_SIZE different than 4KB (ARM RHEL), this leads to a
+failure on register MR with indirect list because of the miss
+communication between driver and device.
 
-Fixes: 2a56dc650e54 ("phy: amlogic: Add G12A Analog MIPI D-PHY driver")
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20230512-amlogic-v6-4-upstream-dsi-ccf-vim3-v4-10-2592c29ea263@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 40909f664d27 ("RDMA/efa: Add EFA verbs implementation")
+Link: https://lore.kernel.org/r/20230511115103.13876-1-ynachum@amazon.com
+Reviewed-by: Firas Jahjah <firasj@amazon.com>
+Reviewed-by: Michael Margolin <mrgolin@amazon.com>
+Signed-off-by: Yonatan Nachum <ynachum@amazon.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/amlogic/phy-meson-g12a-mipi-dphy-analog.c | 2 +-
+ drivers/infiniband/hw/efa/efa_verbs.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/amlogic/phy-meson-g12a-mipi-dphy-analog.c b/drivers/phy/amlogic/phy-meson-g12a-mipi-dphy-analog.c
-index c14089fa7db49..cabdddbbabfd7 100644
---- a/drivers/phy/amlogic/phy-meson-g12a-mipi-dphy-analog.c
-+++ b/drivers/phy/amlogic/phy-meson-g12a-mipi-dphy-analog.c
-@@ -70,7 +70,7 @@ static int phy_g12a_mipi_dphy_analog_power_on(struct phy *phy)
- 		     HHI_MIPI_CNTL1_BANDGAP);
+diff --git a/drivers/infiniband/hw/efa/efa_verbs.c b/drivers/infiniband/hw/efa/efa_verbs.c
+index 31454643f8c54..f9526a4c75b26 100644
+--- a/drivers/infiniband/hw/efa/efa_verbs.c
++++ b/drivers/infiniband/hw/efa/efa_verbs.c
+@@ -1397,7 +1397,7 @@ static int pbl_continuous_initialize(struct efa_dev *dev,
+  */
+ static int pbl_indirect_initialize(struct efa_dev *dev, struct pbl_context *pbl)
+ {
+-	u32 size_in_pages = DIV_ROUND_UP(pbl->pbl_buf_size_in_bytes, PAGE_SIZE);
++	u32 size_in_pages = DIV_ROUND_UP(pbl->pbl_buf_size_in_bytes, EFA_CHUNK_PAYLOAD_SIZE);
+ 	struct scatterlist *sgl;
+ 	int sg_dma_cnt, err;
  
- 	regmap_write(priv->regmap, HHI_MIPI_CNTL2,
--		     FIELD_PREP(HHI_MIPI_CNTL2_DIF_TX_CTL0, 0x459) |
-+		     FIELD_PREP(HHI_MIPI_CNTL2_DIF_TX_CTL0, 0x45a) |
- 		     FIELD_PREP(HHI_MIPI_CNTL2_DIF_TX_CTL1, 0x2680));
- 
- 	reg = DSI_LANE_CLK;
 -- 
 2.39.2
 
