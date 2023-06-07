@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D468C726C62
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:33:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 888D8726AD1
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233755AbjFGUdQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:33:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59752 "EHLO
+        id S232631AbjFGUU3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:20:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233741AbjFGUdP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:33:15 -0400
+        with ESMTP id S232792AbjFGUUU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2D672680
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:33:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D4DA2697
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:19:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 93494644CE
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:33:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F406C433D2;
-        Wed,  7 Jun 2023 20:33:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D40F3643AE
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:19:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3A31C433D2;
+        Wed,  7 Jun 2023 20:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169985;
-        bh=gIrpZpxqj2DyurvKFclCP8BFpxcD1gYPzqvWChT/VT8=;
+        s=korg; t=1686169182;
+        bh=HUlFv/W+x4ko/oL9ByNsH7o45ELjEMw1SXJGPdyT2Xk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F7WC5jcJBy1i/2RLc+N/Zb66nAj5lzbun1aV6ohHum26aKDII8BHHgY60Vs4suTOW
-         NSfqHe87ailoi2ZRBO+zJNUp3bnxJrNrLoTDB3IdK48At9ZQ/A2sVlyqnlHBCB9Zhb
-         rIJFelH/V92sjN7o9HFNIa3LPu6pn9xLIySp8aUo=
+        b=ueOaNzj27gnjd3pmbXhzd985ropTr1AGs6Ystd8J1MvQXm1vhi9Mfp2paER5vaw98
+         jjnriKH1bC7l+lILyKxNJHzti6/Mm+Qb8aUMuKDNOdeeEE00uaLaHAHsy2LW4sshQg
+         m4PL4dv1wgb0zPjokwdtkkfXJE2tJ6KnZO+GaDBY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        syzbot+e44749b6ba4d0434cd47@syzkaller.appspotmail.com,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.3 261/286] ext4: disallow ea_inodes with extended attributes
+        patches@lists.linux.dev,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 4.14 46/61] kernel/extable.c: use address-of operator on section symbols
 Date:   Wed,  7 Jun 2023 22:16:00 +0200
-Message-ID: <20230607200931.838530800@linuxfoundation.org>
+Message-ID: <20230607200851.083571855@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
+References: <20230607200835.310274198@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,35 +56,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Nathan Chancellor <natechancellor@gmail.com>
 
-commit 2bc7e7c1a3bc9bd0cbf0f71006f6fe7ef24a00c2 upstream.
+commit 63174f61dfaef58dc0e813eaf6602636794f8942 upstream.
 
-An ea_inode stores the value of an extended attribute; it can not have
-extended attributes itself, or this will cause recursive nightmares.
-Add a check in ext4_iget() to make sure this is the case.
+Clang warns:
 
-Cc: stable@kernel.org
-Reported-by: syzbot+e44749b6ba4d0434cd47@syzkaller.appspotmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Link: https://lore.kernel.org/r/20230524034951.779531-4-tytso@mit.edu
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+../kernel/extable.c:37:52: warning: array comparison always evaluates to
+a constant [-Wtautological-compare]
+        if (main_extable_sort_needed && __stop___ex_table > __start___ex_table) {
+                                                          ^
+1 warning generated.
+
+These are not true arrays, they are linker defined symbols, which are just
+addresses.  Using the address of operator silences the warning and does
+not change the resulting assembly with either clang/ld.lld or gcc/ld
+(tested with diff + objdump -Dr).
+
+Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://github.com/ClangBuiltLinux/linux/issues/892
+Link: http://lkml.kernel.org/r/20200219202036.45702-1-natechancellor@gmail.com
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inode.c |    3 +++
- 1 file changed, 3 insertions(+)
+ kernel/extable.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4841,6 +4841,9 @@ static const char *check_igot_inode(stru
- 	if (flags & EXT4_IGET_EA_INODE) {
- 		if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL))
- 			return "missing EA_INODE flag";
-+		if (ext4_test_inode_state(inode, EXT4_STATE_XATTR) ||
-+		    EXT4_I(inode)->i_file_acl)
-+			return "ea_inode with extended attributes";
- 	} else {
- 		if ((EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL))
- 			return "unexpected EA_INODE flag";
+--- a/kernel/extable.c
++++ b/kernel/extable.c
+@@ -44,7 +44,8 @@ u32 __initdata __visible main_extable_so
+ /* Sort the kernel's built-in exception table */
+ void __init sort_main_extable(void)
+ {
+-	if (main_extable_sort_needed && __stop___ex_table > __start___ex_table) {
++	if (main_extable_sort_needed &&
++	    &__stop___ex_table > &__start___ex_table) {
+ 		pr_notice("Sorting __ex_table...\n");
+ 		sort_extable(__start___ex_table, __stop___ex_table);
+ 	}
 
 
