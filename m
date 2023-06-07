@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFCB2726F03
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F20E726FCA
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:01:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235343AbjFGUzW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:55:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55966 "EHLO
+        id S235999AbjFGVBw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:01:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235496AbjFGUyl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D27032116
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:54:30 -0700 (PDT)
+        with ESMTP id S235812AbjFGVBh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:01:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95FEE2136
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:01:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A06E647D6
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:54:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A36C4339B;
-        Wed,  7 Jun 2023 20:54:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7421064920
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:01:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86BA7C433D2;
+        Wed,  7 Jun 2023 21:01:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171269;
-        bh=lRszj8c8nrCfK5xuDq5S/n49YLwti7gEva5S+XlmNAE=;
+        s=korg; t=1686171665;
+        bh=zwCMlFHOQOHByVgksGmv+EBPDQ2hCSz80fcxQXkKVrA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DiyiRD8nGGXSx0VzkPX/bNtFXamvQr2J7UKhaIyIw+7UjAc3vYd3qcru0GDC48zcj
-         xuXsTIjxAOOg7BCQgeWLxL/KcA3SKnGFpENOophz0+jHKSz3Fgq57blpQ93o0xXF8A
-         sF49kNSOceixcNwEmju+7a4MYSi+fse2IakyEkgg=
+        b=I3qnvRBplGh5Lsl+EqKlUVN9/ZAkXTtKCZQHWHTLdtxTLB/upWEFFX0/tr0cOUVno
+         rKDY/fL01Cy8b3Pg/lY86cir1s48LJyl+AQEBQQclWhJFW21AJBcxGjEz5fgjapMEs
+         SULI8Dz6HM9WgSvDZjdYWCpMQ8wXnUHkz8JDkiFQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Min-Hua Chen <minhuadotchen@gmail.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 54/99] arm64/mm: mark private VM_FAULT_X defines as vm_fault_t
-Date:   Wed,  7 Jun 2023 22:16:46 +0200
-Message-ID: <20230607200901.939956857@linuxfoundation.org>
+        patches@lists.linux.dev, Masahiro Honda <honda@mechatrax.com>,
+        Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 104/159] iio: adc: ad_sigma_delta: Fix IRQ issue by setting IRQ_DISABLE_UNLAZY flag
+Date:   Wed,  7 Jun 2023 22:16:47 +0200
+Message-ID: <20230607200907.085279673@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,54 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Min-Hua Chen <minhuadotchen@gmail.com>
+From: Masahiro Honda <honda@mechatrax.com>
 
-[ Upstream commit d91d580878064b880f3574ac35b98d8b70ee8620 ]
+commit 626d312028bec44209d0ecd5beaa9b1aa8945f7d upstream.
 
-This patch fixes several sparse warnings for fault.c:
+The Sigma-Delta ADCs supported by this driver can use SDO as an interrupt
+line to indicate the completion of a conversion. However, some devices
+cannot properly detect the completion of a conversion by an interrupt.
+This is for the reason mentioned in the following commit.
 
-arch/arm64/mm/fault.c:493:24: sparse: warning: incorrect type in return expression (different base types)
-arch/arm64/mm/fault.c:493:24: sparse:    expected restricted vm_fault_t
-arch/arm64/mm/fault.c:493:24: sparse:    got int
-arch/arm64/mm/fault.c:501:32: sparse: warning: incorrect type in return expression (different base types)
-arch/arm64/mm/fault.c:501:32: sparse:    expected restricted vm_fault_t
-arch/arm64/mm/fault.c:501:32: sparse:    got int
-arch/arm64/mm/fault.c:503:32: sparse: warning: incorrect type in return expression (different base types)
-arch/arm64/mm/fault.c:503:32: sparse:    expected restricted vm_fault_t
-arch/arm64/mm/fault.c:503:32: sparse:    got int
-arch/arm64/mm/fault.c:511:24: sparse: warning: incorrect type in return expression (different base types)
-arch/arm64/mm/fault.c:511:24: sparse:    expected restricted vm_fault_t
-arch/arm64/mm/fault.c:511:24: sparse:    got int
-arch/arm64/mm/fault.c:670:13: sparse: warning: restricted vm_fault_t degrades to integer
-arch/arm64/mm/fault.c:670:13: sparse: warning: restricted vm_fault_t degrades to integer
-arch/arm64/mm/fault.c:713:39: sparse: warning: restricted vm_fault_t degrades to integer
+commit e9849777d0e2 ("genirq: Add flag to force mask in
+                      disable_irq[_nosync]()")
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Min-Hua Chen <minhuadotchen@gmail.com>
-Link: https://lore.kernel.org/r/20230502151909.128810-1-minhuadotchen@gmail.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+A read operation is performed by an extra interrupt before the completion
+of a conversion. At this time, the value read from the ADC data register
+is the same as the previous conversion result. This patch fixes the issue
+by setting IRQ_DISABLE_UNLAZY flag.
+
+Fixes: 0c6ef985a1fd ("iio: adc: ad7791: fix IRQ flags")
+Fixes: 1a913270e57a ("iio: adc: ad7793: Fix IRQ flag")
+Fixes: e081102f3077 ("iio: adc: ad7780: Fix IRQ flag")
+Fixes: 89a86da5cb8e ("iio: adc: ad7192: Add IRQ flag")
+Fixes: 79ef91493f54 ("iio: adc: ad7124: Set IRQ type to falling")
+Signed-off-by: Masahiro Honda <honda@mechatrax.com>
+Link: https://lore.kernel.org/r/20230518110816.248-1-honda@mechatrax.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/fault.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/adc/ad_sigma_delta.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index a8e9c98147a19..af9a6e1fa0d3d 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -403,8 +403,8 @@ static void do_bad_area(unsigned long addr, unsigned int esr, struct pt_regs *re
- 	}
- }
+--- a/drivers/iio/adc/ad_sigma_delta.c
++++ b/drivers/iio/adc/ad_sigma_delta.c
+@@ -490,6 +490,10 @@ static int devm_ad_sd_probe_trigger(stru
+ 	init_completion(&sigma_delta->completion);
  
--#define VM_FAULT_BADMAP		0x010000
--#define VM_FAULT_BADACCESS	0x020000
-+#define VM_FAULT_BADMAP		((__force vm_fault_t)0x010000)
-+#define VM_FAULT_BADACCESS	((__force vm_fault_t)0x020000)
- 
- static vm_fault_t __do_page_fault(struct mm_struct *mm, unsigned long addr,
- 			   unsigned int mm_flags, unsigned long vm_flags)
--- 
-2.39.2
-
+ 	sigma_delta->irq_dis = true;
++
++	/* the IRQ core clears IRQ_DISABLE_UNLAZY flag when freeing an IRQ */
++	irq_set_status_flags(sigma_delta->spi->irq, IRQ_DISABLE_UNLAZY);
++
+ 	ret = devm_request_irq(dev, sigma_delta->spi->irq,
+ 			       ad_sd_data_rdy_trig_poll,
+ 			       sigma_delta->info->irq_flags | IRQF_NO_AUTOEN,
 
 
