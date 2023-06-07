@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4484726C42
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:32:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5E02726C7B
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:33:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233619AbjFGUb7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:31:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58152 "EHLO
+        id S233837AbjFGUdr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:33:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233638AbjFGUb6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:31:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 607701B0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:31:57 -0700 (PDT)
+        with ESMTP id S233833AbjFGUdm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:33:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A22A61BD3
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:33:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E11DD64505
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:31:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04FA3C433EF;
-        Wed,  7 Jun 2023 20:31:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C94A6453B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:33:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22385C433D2;
+        Wed,  7 Jun 2023 20:33:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169916;
-        bh=ec36qRJ+96QD5+UG1onfEI4gozfWtT/oTghPRPgB+vQ=;
+        s=korg; t=1686170019;
+        bh=lj56uvEBkTdpz0a3dm4Q+xGTpevbiGhy8ydLsw84qa4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cp9njp6pktRFNB6myPsRcG/BL0Que/2B6QcV4PMxrY3PQJ16CZFYganYuB+ffNgRS
-         SFzK42xcxzHYMkUfw8sY6NQgwi5SUQhw4Ki4ZywIcMEu6uZjS6DpqjymLOQLF3cZGz
-         yoHi1HhIUMmW8oc2kOn84Vx1XvWiFcVtslK77TwI=
+        b=I3BU8+iLqnqRNei45O6KiWTQtjfggVIAyXBjWnXNQJSlW4WsGbQ2q3cyRgnY2Cs22
+         aJEXtZJFEhE+hd+Js/f75DleAdq5FM/drrlM5eXcK3u2qbqG8jdupNycBUOZegno6m
+         oPIpEilBfFqfwHn5tBrSUhy8wK1Sf9bYPVmLRpKU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jon Pan-Doh <pandoh@google.com>,
-        Sudheer Dantuluri <dantuluris@google.com>,
-        Gary Zibrat <gzibrat@google.com>,
-        Vasant Hegde <vasant.hegde@amd.com>,
-        Nadav Amit <namit@vmware.com>, Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.3 233/286] iommu/amd: Fix domain flush size when syncing iotlb
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Jiri Pirko <jiri@nvidia.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 15/88] af_packet: do not use READ_ONCE() in packet_bind()
 Date:   Wed,  7 Jun 2023 22:15:32 +0200
-Message-ID: <20230607200930.908120514@linuxfoundation.org>
+Message-ID: <20230607200858.585499872@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,44 +57,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jon Pan-Doh <pandoh@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 2212fc2acf3f6ee690ea36506fb882a19d1bfcab upstream.
+[ Upstream commit 6ffc57ea004234d9373c57b204fd10370a69f392 ]
 
-When running on an AMD vIOMMU, we observed multiple invalidations (of
-decreasing power of 2 aligned sizes) when unmapping a single page.
+A recent patch added READ_ONCE() in packet_bind() and packet_bind_spkt()
 
-Domain flush takes gather bounds (end-start) as size param. However,
-gather->end is defined as the last inclusive address (start + size - 1).
-This leads to an off by 1 error.
+This is better handled by reading pkt_sk(sk)->num later
+in packet_do_bind() while appropriate lock is held.
 
-With this patch, verified that 1 invalidation occurs when unmapping a
-single page.
+READ_ONCE() in writers are often an evidence of something being wrong.
 
-Fixes: a270be1b3fdf ("iommu/amd: Use only natural aligned flushes in a VM")
-Cc: stable@vger.kernel.org # >= 5.15
-Signed-off-by: Jon Pan-Doh <pandoh@google.com>
-Tested-by: Sudheer Dantuluri <dantuluris@google.com>
-Suggested-by: Gary Zibrat <gzibrat@google.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Acked-by: Nadav Amit <namit@vmware.com>
-Link: https://lore.kernel.org/r/20230426203256.237116-1-pandoh@google.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 822b5a1c17df ("af_packet: Fix data-races of pkt_sk(sk)->num.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230526154342.2533026-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/packet/af_packet.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -2387,7 +2387,7 @@ static void amd_iommu_iotlb_sync(struct
- 	unsigned long flags;
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 7409e042305d4..fb165286e76dc 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -3117,6 +3117,9 @@ static int packet_do_bind(struct sock *sk, const char *name, int ifindex,
  
- 	spin_lock_irqsave(&dom->lock, flags);
--	domain_flush_pages(dom, gather->start, gather->end - gather->start, 1);
-+	domain_flush_pages(dom, gather->start, gather->end - gather->start + 1, 1);
- 	amd_iommu_domain_flush_complete(dom);
- 	spin_unlock_irqrestore(&dom->lock, flags);
+ 	lock_sock(sk);
+ 	spin_lock(&po->bind_lock);
++	if (!proto)
++		proto = po->num;
++
+ 	rcu_read_lock();
+ 
+ 	if (po->fanout) {
+@@ -3219,7 +3222,7 @@ static int packet_bind_spkt(struct socket *sock, struct sockaddr *uaddr,
+ 	memcpy(name, uaddr->sa_data, sizeof(uaddr->sa_data));
+ 	name[sizeof(uaddr->sa_data)] = 0;
+ 
+-	return packet_do_bind(sk, name, 0, READ_ONCE(pkt_sk(sk)->num));
++	return packet_do_bind(sk, name, 0, 0);
  }
+ 
+ static int packet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
+@@ -3236,8 +3239,7 @@ static int packet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len
+ 	if (sll->sll_family != AF_PACKET)
+ 		return -EINVAL;
+ 
+-	return packet_do_bind(sk, NULL, sll->sll_ifindex,
+-			      sll->sll_protocol ? : READ_ONCE(pkt_sk(sk)->num));
++	return packet_do_bind(sk, NULL, sll->sll_ifindex, sll->sll_protocol);
+ }
+ 
+ static struct proto packet_proto = {
+-- 
+2.39.2
+
 
 
