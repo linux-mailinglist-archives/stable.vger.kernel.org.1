@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52C89726EF0
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A942726E51
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:49:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235466AbjFGUyS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:54:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55144 "EHLO
+        id S235193AbjFGUtp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:49:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235474AbjFGUyD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:03 -0400
+        with ESMTP id S235068AbjFGUt0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:49:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCBF526B3
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:53:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8D35271B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:48:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9BA45647A0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:53:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA084C433EF;
-        Wed,  7 Jun 2023 20:53:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5DDF4646C1
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:48:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F04C433D2;
+        Wed,  7 Jun 2023 20:48:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171233;
-        bh=lQba0g0GOwP76HL9SmwXCE8zweSnZUAXBFtML6Vl5wM=;
+        s=korg; t=1686170934;
+        bh=/aQHJrkPZV+ML/j/omdPFfLwhiWitT9bbB2gtn71rlc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N7ZPl0Qpy662w2WZPgtHKO2aGIws5Fgna37KBkbvDnMYF1pGzJBUyDo1YWWDZdkA0
-         ZIhVQGt8ehu7gX+gwETqi8j1NRO3JFsgPKeM48+AqafLlTfhSggqeuDUDVU1MPJlRu
-         oW3E1d4OZyr0Ka428AARtcgoayDprGq5XokP+kh8=
+        b=B3a48lLSpHyPWQcW7byH/gf3gQy5cU8EFy6TskzeICVF6BvUmBq2KCuDnwIOkH156
+         yulDcgzZBUfmf/8F1PT/kJexilfOEeuUoWO18xqhaG1lhcK4iV9W+DRI1nAlKHkq4b
+         6hcjw7sf2YgnPLV6TVZS/DNOeA7g7yLqQ3eqYVjc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
+        patches@lists.linux.dev, YongSu Yoo <yongsuyoo0215@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 12/99] mtd: rawnand: ingenic: fix empty stub helper definitions
+Subject: [PATCH 5.10 048/120] media: dvb_demux: fix a bug for the continuity counter
 Date:   Wed,  7 Jun 2023 22:16:04 +0200
-Message-ID: <20230607200900.630377639@linuxfoundation.org>
+Message-ID: <20230607200902.418421581@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,65 +54,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: YongSu Yoo <yongsuyoo0215@gmail.com>
 
-[ Upstream commit 650a8884a364ff2568b51cde9009cfd43cdae6ad ]
+[ Upstream commit 7efb10d8dc70ea3000cc70dca53407c52488acd1 ]
 
-A few functions provide an empty interface definition when
-CONFIG_MTD_NAND_INGENIC_ECC is disabled, but they are accidentally
-defined as global functions in the header:
+In dvb_demux.c, some logics exist which compare the expected
+continuity counter and the real continuity counter. If they
+are not matched each other, both of the expected continuity
+counter and the real continuity counter should be printed.
+But there exists a bug that the expected continuity counter
+is not correctly printed. The expected continuity counter is
+replaced with the real countinuity counter + 1 so that
+the epected continuity counter is not correclty printed.
+This is wrong. This bug is fixed.
 
-drivers/mtd/nand/raw/ingenic/ingenic_ecc.h:39:5: error: no previous prototype for 'ingenic_ecc_calculate'
-drivers/mtd/nand/raw/ingenic/ingenic_ecc.h:46:5: error: no previous prototype for 'ingenic_ecc_correct'
-drivers/mtd/nand/raw/ingenic/ingenic_ecc.h:53:6: error: no previous prototype for 'ingenic_ecc_release'
-drivers/mtd/nand/raw/ingenic/ingenic_ecc.h:57:21: error: no previous prototype for 'of_ingenic_ecc_get'
+Link: https://lore.kernel.org/linux-media/20230305212519.499-1-yongsuyoo0215@gmail.com
 
-Turn them into 'static inline' definitions instead.
-
-Fixes: 15de8c6efd0e ("mtd: rawnand: ingenic: Separate top-level and SoC specific code")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Paul Cercueil <paul@crapouillou.net>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230516202133.559488-1-arnd@kernel.org
+Signed-off-by: YongSu Yoo <yongsuyoo0215@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/ingenic/ingenic_ecc.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/media/dvb-core/dvb_demux.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/ingenic/ingenic_ecc.h b/drivers/mtd/nand/raw/ingenic/ingenic_ecc.h
-index 2cda439b5e11b..017868f59f222 100644
---- a/drivers/mtd/nand/raw/ingenic/ingenic_ecc.h
-+++ b/drivers/mtd/nand/raw/ingenic/ingenic_ecc.h
-@@ -36,25 +36,25 @@ int ingenic_ecc_correct(struct ingenic_ecc *ecc,
- void ingenic_ecc_release(struct ingenic_ecc *ecc);
- struct ingenic_ecc *of_ingenic_ecc_get(struct device_node *np);
- #else /* CONFIG_MTD_NAND_INGENIC_ECC */
--int ingenic_ecc_calculate(struct ingenic_ecc *ecc,
-+static inline int ingenic_ecc_calculate(struct ingenic_ecc *ecc,
- 			  struct ingenic_ecc_params *params,
- 			  const u8 *buf, u8 *ecc_code)
- {
- 	return -ENODEV;
- }
+diff --git a/drivers/media/dvb-core/dvb_demux.c b/drivers/media/dvb-core/dvb_demux.c
+index 5fde1d38b3e34..80b495982f63c 100644
+--- a/drivers/media/dvb-core/dvb_demux.c
++++ b/drivers/media/dvb-core/dvb_demux.c
+@@ -125,12 +125,12 @@ static inline int dvb_dmx_swfilter_payload(struct dvb_demux_feed *feed,
  
--int ingenic_ecc_correct(struct ingenic_ecc *ecc,
-+static inline int ingenic_ecc_correct(struct ingenic_ecc *ecc,
- 			struct ingenic_ecc_params *params, u8 *buf,
- 			u8 *ecc_code)
- {
- 	return -ENODEV;
- }
+ 	cc = buf[3] & 0x0f;
+ 	ccok = ((feed->cc + 1) & 0x0f) == cc;
+-	feed->cc = cc;
+ 	if (!ccok) {
+ 		set_buf_flags(feed, DMX_BUFFER_FLAG_DISCONTINUITY_DETECTED);
+ 		dprintk_sect_loss("missed packet: %d instead of %d!\n",
+ 				  cc, (feed->cc + 1) & 0x0f);
+ 	}
++	feed->cc = cc;
  
--void ingenic_ecc_release(struct ingenic_ecc *ecc)
-+static inline void ingenic_ecc_release(struct ingenic_ecc *ecc)
- {
- }
+ 	if (buf[1] & 0x40)	// PUSI ?
+ 		feed->peslen = 0xfffa;
+@@ -310,7 +310,6 @@ static int dvb_dmx_swfilter_section_packet(struct dvb_demux_feed *feed,
  
--struct ingenic_ecc *of_ingenic_ecc_get(struct device_node *np)
-+static inline struct ingenic_ecc *of_ingenic_ecc_get(struct device_node *np)
- {
- 	return ERR_PTR(-ENODEV);
- }
+ 	cc = buf[3] & 0x0f;
+ 	ccok = ((feed->cc + 1) & 0x0f) == cc;
+-	feed->cc = cc;
+ 
+ 	if (buf[3] & 0x20) {
+ 		/* adaption field present, check for discontinuity_indicator */
+@@ -346,6 +345,7 @@ static int dvb_dmx_swfilter_section_packet(struct dvb_demux_feed *feed,
+ 		feed->pusi_seen = false;
+ 		dvb_dmx_swfilter_section_new(feed);
+ 	}
++	feed->cc = cc;
+ 
+ 	if (buf[1] & 0x40) {
+ 		/* PUSI=1 (is set), section boundary is here */
 -- 
 2.39.2
 
