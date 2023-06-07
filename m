@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4B50726B9E
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 558D3726CE9
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:37:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233257AbjFGU0j (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:26:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51706 "EHLO
+        id S234047AbjFGUhp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:37:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233381AbjFGU0g (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:36 -0400
+        with ESMTP id S234075AbjFGUhl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:37:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD61C2117
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:26:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5D122126
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:37:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 89FCE6446E
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:26:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97FB7C433EF;
-        Wed,  7 Jun 2023 20:26:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 83DF8645AF
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:37:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96AEFC433D2;
+        Wed,  7 Jun 2023 20:37:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169580;
-        bh=9XuyVdHschitaFjv1IRmhakUiZ7udiWU8DqDINx/jd4=;
+        s=korg; t=1686170243;
+        bh=qV1oI5nf6sJWEUTCqa/PdGoMsWIu4f3wWwKKGqFH4Dk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uU7Y/1VZNOwO6XvikFjSeTYKpmKwdWLRxd4kl7CQaysrlo9ApJAOHx9I+QKvWSDKV
-         bq5EyTrkJrbba/ESyhqGD7L5R4KFUppsCFykEYvPs1uvGaluDNDTFZjVB9PxfpFjnX
-         xLlYksL/KxO+W/ljS/2XjUc5iPc/mESig7Q2I/kc=
+        b=Z093sHsYoT+6DMBOQPq+w7LX6TGc7m7MvZZbgY3hEqVimkgHPNFTWWsbe0nL9OzV7
+         mKcZh8rjQLNqGV6bEUnqvWxWwSlsxOdZ8FCbVCj9FRkiMVGpmJDrD35kSaXXcQUu21
+         J6z7RJyXRaYx4GpXnTsiULus2QTS5NBGY8dauTqY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thong Thai <thong.thai@amd.com>,
-        Ruijing Dong <ruijing.dong@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 105/286] drm/amdgpu/nv: update VCN 3 max HEVC encoding resolution
+        patches@lists.linux.dev, Joao Martins <joao.m.martins@oracle.com>,
+        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 011/225] iommu/amd: Dont block updates to GATag if guest mode is on
 Date:   Wed,  7 Jun 2023 22:13:24 +0200
-Message-ID: <20230607200926.497971357@linuxfoundation.org>
+Message-ID: <20230607200913.712094641@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,89 +54,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thong Thai <thong.thai@amd.com>
+From: Joao Martins <joao.m.martins@oracle.com>
 
-[ Upstream commit 476ac50fc30540e29191615a26aaf5f9dee91c49 ]
+[ Upstream commit ed8a2f4ddef2eaaf864ab1efbbca9788187036ab ]
 
-Update the maximum resolution reported for HEVC encoding on VCN 3
-devices to reflect its 8K encoding capability.
+On KVM GSI routing table updates, specially those where they have vIOMMUs
+with interrupt remapping enabled (to boot >255vcpus setups without relying
+on KVM_FEATURE_MSI_EXT_DEST_ID), a VMM may update the backing VF MSIs
+with a new VCPU affinity.
 
-v2: Also update the max height for H.264 encoding to match spec.
-(Ruijing)
+On AMD with AVIC enabled, the new vcpu affinity info is updated via:
+	avic_pi_update_irte()
+		irq_set_vcpu_affinity()
+			amd_ir_set_vcpu_affinity()
+				amd_iommu_{de}activate_guest_mode()
 
-Signed-off-by: Thong Thai <thong.thai@amd.com>
-Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Where the IRTE[GATag] is updated with the new vcpu affinity. The GATag
+contains VM ID and VCPU ID, and is used by IOMMU hardware to signal KVM
+(via GALog) when interrupt cannot be delivered due to vCPU is in
+blocking state.
+
+The issue is that amd_iommu_activate_guest_mode() will essentially
+only change IRTE fields on transitions from non-guest-mode to guest-mode
+and otherwise returns *with no changes to IRTE* on already configured
+guest-mode interrupts. To the guest this means that the VF interrupts
+remain affined to the first vCPU they were first configured, and guest
+will be unable to issue VF interrupts and receive messages like this
+from spurious interrupts (e.g. from waking the wrong vCPU in GALog):
+
+[  167.759472] __common_interrupt: 3.34 No irq handler for vector
+[  230.680927] mlx5_core 0000:00:02.0: mlx5_cmd_eq_recover:247:(pid
+3122): Recovered 1 EQEs on cmd_eq
+[  230.681799] mlx5_core 0000:00:02.0:
+wait_func_handle_exec_timeout:1113:(pid 3122): cmd[0]: CREATE_CQ(0x400)
+recovered after timeout
+[  230.683266] __common_interrupt: 3.34 No irq handler for vector
+
+Given the fact that amd_ir_set_vcpu_affinity() uses
+amd_iommu_activate_guest_mode() underneath it essentially means that VCPU
+affinity changes of IRTEs are nops. Fix it by dropping the check for
+guest-mode at amd_iommu_activate_guest_mode(). Same thing is applicable to
+amd_iommu_deactivate_guest_mode() although, even if the IRTE doesn't change
+underlying DestID on the host, the VFIO IRQ handler will still be able to
+poke at the right guest-vCPU.
+
+Fixes: b9c6ff94e43a ("iommu/amd: Re-factor guest virtual APIC (de-)activation code")
+Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Link: https://lore.kernel.org/r/20230419201154.83880-2-joao.m.martins@oracle.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/nv.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ drivers/iommu/amd/iommu.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/nv.c b/drivers/gpu/drm/amd/amdgpu/nv.c
-index ebe0e2d7dbd1b..aa7f82b3fd6a9 100644
---- a/drivers/gpu/drm/amd/amdgpu/nv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/nv.c
-@@ -98,6 +98,16 @@ static const struct amdgpu_video_codecs nv_video_codecs_decode =
- };
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index 26fb78003889f..0ccc6b8319fba 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -3504,8 +3504,7 @@ int amd_iommu_activate_guest_mode(void *data)
+ 	struct irte_ga *entry = (struct irte_ga *) ir_data->entry;
+ 	u64 valid;
  
- /* Sienna Cichlid */
-+static const struct amdgpu_video_codec_info sc_video_codecs_encode_array[] = {
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 2160, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 7680, 4352, 0)},
-+};
-+
-+static const struct amdgpu_video_codecs sc_video_codecs_encode = {
-+	.codec_count = ARRAY_SIZE(sc_video_codecs_encode_array),
-+	.codec_array = sc_video_codecs_encode_array,
-+};
-+
- static const struct amdgpu_video_codec_info sc_video_codecs_decode_array_vcn0[] =
- {
- 	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG2, 4096, 4096, 3)},
-@@ -136,8 +146,8 @@ static const struct amdgpu_video_codecs sc_video_codecs_decode_vcn1 =
- /* SRIOV Sienna Cichlid, not const since data is controlled by host */
- static struct amdgpu_video_codec_info sriov_sc_video_codecs_encode_array[] =
- {
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 2304, 0)},
--	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 4096, 2304, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_MPEG4_AVC, 4096, 2160, 0)},
-+	{codec_info_build(AMDGPU_INFO_VIDEO_CAPS_CODEC_IDX_HEVC, 7680, 4352, 0)},
- };
+-	if (!AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir) ||
+-	    !entry || entry->lo.fields_vapic.guest_mode)
++	if (!AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir) || !entry)
+ 		return 0;
  
- static struct amdgpu_video_codec_info sriov_sc_video_codecs_decode_array_vcn0[] =
-@@ -237,12 +247,12 @@ static int nv_query_video_codecs(struct amdgpu_device *adev, bool encode,
- 		} else {
- 			if (adev->vcn.harvest_config & AMDGPU_VCN_HARVEST_VCN0) {
- 				if (encode)
--					*codecs = &nv_video_codecs_encode;
-+					*codecs = &sc_video_codecs_encode;
- 				else
- 					*codecs = &sc_video_codecs_decode_vcn1;
- 			} else {
- 				if (encode)
--					*codecs = &nv_video_codecs_encode;
-+					*codecs = &sc_video_codecs_encode;
- 				else
- 					*codecs = &sc_video_codecs_decode_vcn0;
- 			}
-@@ -251,14 +261,14 @@ static int nv_query_video_codecs(struct amdgpu_device *adev, bool encode,
- 	case IP_VERSION(3, 0, 16):
- 	case IP_VERSION(3, 0, 2):
- 		if (encode)
--			*codecs = &nv_video_codecs_encode;
-+			*codecs = &sc_video_codecs_encode;
- 		else
- 			*codecs = &sc_video_codecs_decode_vcn0;
- 		return 0;
- 	case IP_VERSION(3, 1, 1):
- 	case IP_VERSION(3, 1, 2):
- 		if (encode)
--			*codecs = &nv_video_codecs_encode;
-+			*codecs = &sc_video_codecs_encode;
- 		else
- 			*codecs = &yc_video_codecs_decode;
- 		return 0;
+ 	valid = entry->lo.fields_vapic.valid;
 -- 
 2.39.2
 
