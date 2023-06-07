@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 399B0726E63
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0490726CBA
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:36:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235157AbjFGUu3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:50:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49480 "EHLO
+        id S233975AbjFGUfy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:35:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235100AbjFGUtf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:49:35 -0400
+        with ESMTP id S233966AbjFGUfo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:35:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD97D2694
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:49:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B61A72128
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:35:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 41BB9646E6
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:49:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F348C433EF;
-        Wed,  7 Jun 2023 20:49:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 95A9364573
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:35:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4ED0C433D2;
+        Wed,  7 Jun 2023 20:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170955;
-        bh=7mcACBqxwvhGtKqgFqkyznWpRqdINBRkKCslYjg/aII=;
+        s=korg; t=1686170128;
+        bh=hD6JmmcmGt9F6GGzY+6zbtcZ7G84QuEkFFvP7ojVP8w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fzuaw0Qc3LaK4AHPY8tCg1aj2QQ8jMZLLqBhiOcV8OYwUA4do69zimLiuPfOlKpCj
-         VWQ5rM7QdmJwD9cGX3MJsspWWFQMkWxpj08Ym1LSqRD1SsYvIwYUzE55X+TKiWrSE/
-         g8UDcssXVL2gH0qq6/j38mVlMIfOIb3hWA7ICp7I=
+        b=j42ZGUOHrJjZp0AHs7CGEpgah0bjdFAvryLhA6mKQnqs0XRZ9H1QsuISo3gtGSYb/
+         fvsaUL+/TSjcHWJ6q9g9VeTPxlxmmADkd1oj3bvx1zlZ5BjfoAtgGyoG1uAKKa3lu8
+         mEtRtLIeHGYxdxM27TBtU0lLNmRKePhc18TrGJAM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 055/120] media: netup_unidvb: fix irq init by register it at the end of probe
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Min-Hua Chen <minhuadotchen@gmail.com>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 54/88] arm64/mm: mark private VM_FAULT_X defines as vm_fault_t
 Date:   Wed,  7 Jun 2023 22:16:11 +0200
-Message-ID: <20230607200902.627415338@linuxfoundation.org>
+Message-ID: <20230607200900.930340957@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,68 +54,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wei Chen <harperchen1110@gmail.com>
+From: Min-Hua Chen <minhuadotchen@gmail.com>
 
-[ Upstream commit e6ad6233592593079db5c8fa592c298e51bc1356 ]
+[ Upstream commit d91d580878064b880f3574ac35b98d8b70ee8620 ]
 
-IRQ handler netup_spi_interrupt() takes spinlock spi->lock. The lock
-is initialized in netup_spi_init(). However, irq handler is registered
-before initializing the lock.
+This patch fixes several sparse warnings for fault.c:
 
-Spinlock dma->lock and i2c->lock suffer from the same problem.
+arch/arm64/mm/fault.c:493:24: sparse: warning: incorrect type in return expression (different base types)
+arch/arm64/mm/fault.c:493:24: sparse:    expected restricted vm_fault_t
+arch/arm64/mm/fault.c:493:24: sparse:    got int
+arch/arm64/mm/fault.c:501:32: sparse: warning: incorrect type in return expression (different base types)
+arch/arm64/mm/fault.c:501:32: sparse:    expected restricted vm_fault_t
+arch/arm64/mm/fault.c:501:32: sparse:    got int
+arch/arm64/mm/fault.c:503:32: sparse: warning: incorrect type in return expression (different base types)
+arch/arm64/mm/fault.c:503:32: sparse:    expected restricted vm_fault_t
+arch/arm64/mm/fault.c:503:32: sparse:    got int
+arch/arm64/mm/fault.c:511:24: sparse: warning: incorrect type in return expression (different base types)
+arch/arm64/mm/fault.c:511:24: sparse:    expected restricted vm_fault_t
+arch/arm64/mm/fault.c:511:24: sparse:    got int
+arch/arm64/mm/fault.c:670:13: sparse: warning: restricted vm_fault_t degrades to integer
+arch/arm64/mm/fault.c:670:13: sparse: warning: restricted vm_fault_t degrades to integer
+arch/arm64/mm/fault.c:713:39: sparse: warning: restricted vm_fault_t degrades to integer
 
-Fix this by registering the irq at the end of probe.
-
-Link: https://lore.kernel.org/linux-media/20230315134518.1074497-1-harperchen1110@gmail.com
-Signed-off-by: Wei Chen <harperchen1110@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Min-Hua Chen <minhuadotchen@gmail.com>
+Link: https://lore.kernel.org/r/20230502151909.128810-1-minhuadotchen@gmail.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../media/pci/netup_unidvb/netup_unidvb_core.c  | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ arch/arm64/mm/fault.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/pci/netup_unidvb/netup_unidvb_core.c b/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
-index a71814e2772d1..7c5061953ee82 100644
---- a/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
-+++ b/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
-@@ -887,12 +887,7 @@ static int netup_unidvb_initdev(struct pci_dev *pci_dev,
- 		ndev->lmmio0, (u32)pci_resource_len(pci_dev, 0),
- 		ndev->lmmio1, (u32)pci_resource_len(pci_dev, 1),
- 		pci_dev->irq);
--	if (request_irq(pci_dev->irq, netup_unidvb_isr, IRQF_SHARED,
--			"netup_unidvb", pci_dev) < 0) {
--		dev_err(&pci_dev->dev,
--			"%s(): can't get IRQ %d\n", __func__, pci_dev->irq);
--		goto irq_request_err;
--	}
-+
- 	ndev->dma_size = 2 * 188 *
- 		NETUP_DMA_BLOCKS_COUNT * NETUP_DMA_PACKETS_COUNT;
- 	ndev->dma_virt = dma_alloc_coherent(&pci_dev->dev,
-@@ -933,6 +928,14 @@ static int netup_unidvb_initdev(struct pci_dev *pci_dev,
- 		dev_err(&pci_dev->dev, "netup_unidvb: DMA setup failed\n");
- 		goto dma_setup_err;
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index 0d2be8eb87ec8..c9faa5570d245 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -376,8 +376,8 @@ static void do_bad_area(unsigned long addr, unsigned int esr, struct pt_regs *re
  	}
-+
-+	if (request_irq(pci_dev->irq, netup_unidvb_isr, IRQF_SHARED,
-+			"netup_unidvb", pci_dev) < 0) {
-+		dev_err(&pci_dev->dev,
-+			"%s(): can't get IRQ %d\n", __func__, pci_dev->irq);
-+		goto dma_setup_err;
-+	}
-+
- 	dev_info(&pci_dev->dev,
- 		"netup_unidvb: device has been initialized\n");
- 	return 0;
-@@ -951,8 +954,6 @@ static int netup_unidvb_initdev(struct pci_dev *pci_dev,
- 	dma_free_coherent(&pci_dev->dev, ndev->dma_size,
- 			ndev->dma_virt, ndev->dma_phys);
- dma_alloc_err:
--	free_irq(pci_dev->irq, pci_dev);
--irq_request_err:
- 	iounmap(ndev->lmmio1);
- pci_bar1_error:
- 	iounmap(ndev->lmmio0);
+ }
+ 
+-#define VM_FAULT_BADMAP		0x010000
+-#define VM_FAULT_BADACCESS	0x020000
++#define VM_FAULT_BADMAP		((__force vm_fault_t)0x010000)
++#define VM_FAULT_BADACCESS	((__force vm_fault_t)0x020000)
+ 
+ static vm_fault_t __do_page_fault(struct mm_struct *mm, unsigned long addr,
+ 			   unsigned int mm_flags, unsigned long vm_flags,
 -- 
 2.39.2
 
