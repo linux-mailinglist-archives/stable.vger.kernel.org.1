@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F140F726B24
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:23:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E29F726AFC
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:21:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233041AbjFGUXH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:23:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48542 "EHLO
+        id S232880AbjFGUVf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:21:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233083AbjFGUXD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:23:03 -0400
+        with ESMTP id S232793AbjFGUV1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:21:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1263626A2
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:22:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32ED62718
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:20:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B82C960BB8
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:22:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98F9C433D2;
-        Wed,  7 Jun 2023 20:22:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F61A643C6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:20:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BFC7C4339B;
+        Wed,  7 Jun 2023 20:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169324;
-        bh=zEpHzCkBJZvMee/q0gH4OxHsHyl3axHnyORjlEU8Pi4=;
+        s=korg; t=1686169250;
+        bh=00iCl4bqdVstjkAl+RaZcwQs98xts3crNbxHDEZdYqY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CGjPvk2pJLdFPbmzA+lHOoJaFR15i50OBCPdc6aFHBYwVaP8fCIbADR/MJeGXUweB
-         QjENm4uZQKKeZWkQ1w6hTK1fPKoYpHCeS7+K6aIsF72KO8Js12qThq4Wy0E2WIpA/Y
-         ffUODD4fnvN9Fkq5RWWl3CuNK4J67gbXMHaU4OlI=
+        b=N6CYzpv4SwBv7wtCsMHoxmI4HXsQx7jDllt56AQomozBfzXGD//94r/hlVwQcGXPj
+         LLaj3BJnl9PAEgLuDV8Qm5rmmOvPbMPxaMn75OumC5vdFHNXT43q0e3DGi0PEUtt2H
+         dDlNd3Wf8pMpdO94DxKbDvWF23GJFAlBCsHctHlA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Hongguang Gao <hongguang.gao@broadcom.com>,
-        Ajit Khaparde <ajit.khaparde@broadcom.com>,
-        Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 009/286] RDMA/bnxt_re: Fix return value of bnxt_re_process_raw_qp_pkt_rx
-Date:   Wed,  7 Jun 2023 22:11:48 +0200
-Message-ID: <20230607200923.301776071@linuxfoundation.org>
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev,
+        Conor Dooley <conor@kernel.org>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 010/286] iommu: Make IPMMU_VMSA dependencies more strict
+Date:   Wed,  7 Jun 2023 22:11:49 +0200
+Message-ID: <20230607200923.333906281@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
 References: <20230607200922.978677727@linuxfoundation.org>
@@ -58,40 +58,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 0fa0d520e2a878cb4c94c4dc84395905d3f14f54 ]
+[ Upstream commit e332003bb216a9f91e08004b9e2de0745f321290 ]
 
-bnxt_re_process_raw_qp_pkt_rx() always return 0 and ignores the return
-value of bnxt_re_post_send_shadow_qp().
+On riscv64, linux-next-20233030 (and for several days earlier),
+there is a kconfig warning:
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Link: https://lore.kernel.org/r/1684397461-23082-3-git-send-email-selvin.xavier@broadcom.com
-Reviewed-by: Hongguang Gao <hongguang.gao@broadcom.com>
-Reviewed-by: Ajit Khaparde <ajit.khaparde@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+WARNING: unmet direct dependencies detected for IOMMU_IO_PGTABLE_LPAE
+  Depends on [n]: IOMMU_SUPPORT [=y] && (ARM || ARM64 || COMPILE_TEST [=n]) && !GENERIC_ATOMIC64 [=n]
+  Selected by [y]:
+  - IPMMU_VMSA [=y] && IOMMU_SUPPORT [=y] && (ARCH_RENESAS [=y] || COMPILE_TEST [=n]) && !GENERIC_ATOMIC64 [=n]
+
+and build errors:
+
+riscv64-linux-ld: drivers/iommu/io-pgtable-arm.o: in function `.L140':
+io-pgtable-arm.c:(.init.text+0x1e8): undefined reference to `alloc_io_pgtable_ops'
+riscv64-linux-ld: drivers/iommu/io-pgtable-arm.o: in function `.L168':
+io-pgtable-arm.c:(.init.text+0xab0): undefined reference to `free_io_pgtable_ops'
+riscv64-linux-ld: drivers/iommu/ipmmu-vmsa.o: in function `.L140':
+ipmmu-vmsa.c:(.text+0xbc4): undefined reference to `free_io_pgtable_ops'
+riscv64-linux-ld: drivers/iommu/ipmmu-vmsa.o: in function `.L0 ':
+ipmmu-vmsa.c:(.text+0x145e): undefined reference to `alloc_io_pgtable_ops'
+
+Add ARM || ARM64 || COMPILE_TEST dependencies to IPMMU_VMSA to prevent
+these issues, i.e., so that ARCH_RENESAS on RISC-V is not allowed.
+
+This makes the ARCH dependencies become:
+	depends on (ARCH_RENESAS && (ARM || ARM64)) || COMPILE_TEST
+but that can be a bit hard to read.
+
+Fixes: 8292493c22c8 ("riscv: Kconfig.socs: Add ARCH_RENESAS kconfig option")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Suggested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Joerg Roedel <joro@8bytes.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: iommu@lists.linux.dev
+Cc: Conor Dooley <conor@kernel.org>
+Cc: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/20230330165817.21920-1-rdunlap@infradead.org
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/iommu/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index 989edc7896338..94222de1d3719 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -3241,9 +3241,7 @@ static int bnxt_re_process_raw_qp_pkt_rx(struct bnxt_re_qp *gsi_qp,
- 	udwr.remote_qkey = gsi_sqp->qplib_qp.qkey;
- 
- 	/* post data received  in the send queue */
--	rc = bnxt_re_post_send_shadow_qp(rdev, gsi_sqp, swr);
--
--	return 0;
-+	return bnxt_re_post_send_shadow_qp(rdev, gsi_sqp, swr);
- }
- 
- static void bnxt_re_process_res_rawqp1_wc(struct ib_wc *wc,
+diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
+index 889c7efd050bc..18e68fbaec884 100644
+--- a/drivers/iommu/Kconfig
++++ b/drivers/iommu/Kconfig
+@@ -287,6 +287,7 @@ config EXYNOS_IOMMU_DEBUG
+ config IPMMU_VMSA
+ 	bool "Renesas VMSA-compatible IPMMU"
+ 	depends on ARCH_RENESAS || COMPILE_TEST
++	depends on ARM || ARM64 || COMPILE_TEST
+ 	depends on !GENERIC_ATOMIC64	# for IOMMU_IO_PGTABLE_LPAE
+ 	select IOMMU_API
+ 	select IOMMU_IO_PGTABLE_LPAE
 -- 
 2.39.2
 
