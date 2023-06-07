@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65FC5726E7C
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F0C3726CD2
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:36:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235218AbjFGUuv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:50:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49366 "EHLO
+        id S233959AbjFGUgv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:36:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235637AbjFGUuO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:50:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBFB7213B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:50:05 -0700 (PDT)
+        with ESMTP id S234006AbjFGUgj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:36:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FFA31FEE
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:36:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CB197646D8
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:50:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDAF3C433EF;
-        Wed,  7 Jun 2023 20:50:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A3A936458D
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:36:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B22B6C433EF;
+        Wed,  7 Jun 2023 20:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171005;
-        bh=eanNpspdREXvQv+ij3ujD+wfsGen9h7aqSk3TCEPUR4=;
+        s=korg; t=1686170175;
+        bh=4jkZ2xxi+B1B6cS2qzqGd7nyREm2GcVkY3+I6IgjGlA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Trrd7hy4t8B5IlbeYIj4iort909x2hL+mmeImfI+ItR/O/IlSZ0RBxtrWRJkRgDK+
-         8k6ePpIysBhI5wwzsSx8hw5/tWZNqPblT63nBdlnnlr9MqncYG0sZCSVhqH9cfQx4O
-         xxOuEMGFG4xVpXQfLxTx2OuVjx39gJScuJ+fM1tE=
+        b=LJ3ST1OczxhcJWyqqyn5J0BxOF0LBQrR10SJEHsF+/pY2tVbdEJ3yccoqb2Q5ICV6
+         4zLKZ0OMAdnoShCMQGpm0U4Vq5GaqtLWvbpzztz+v/Lfsb/gd/EKM3o0iTwXBANwZn
+         hp1RKUlr+fE7opbfDl8IGOwNY3w4ryU8n0k59Ggw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-        Ping Cheng <ping.cheng@wacom.com>,
-        Jiri Kosina <jkosina@suse.cz>
-Subject: [PATCH 5.10 075/120] HID: wacom: avoid integer overflow in wacom_intuos_inout()
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 4.19 74/88] kernel/extable.c: use address-of operator on section symbols
 Date:   Wed,  7 Jun 2023 22:16:31 +0200
-Message-ID: <20230607200903.258674840@linuxfoundation.org>
+Message-ID: <20230607200901.548113796@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,39 +56,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Nathan Chancellor <natechancellor@gmail.com>
 
-commit bd249b91977b768ea02bf84d04625d2690ad2b98 upstream.
+commit 63174f61dfaef58dc0e813eaf6602636794f8942 upstream.
 
-If high bit is set to 1 in ((data[3] & 0x0f << 28), after all arithmetic
-operations and integer promotions are done, high bits in
-wacom->serial[idx] will be filled with 1s as well.
-Avoid this, albeit unlikely, issue by specifying left operand's __u64
-type for the right operand.
+Clang warns:
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
+../kernel/extable.c:37:52: warning: array comparison always evaluates to
+a constant [-Wtautological-compare]
+        if (main_extable_sort_needed && __stop___ex_table > __start___ex_table) {
+                                                          ^
+1 warning generated.
 
-Fixes: 3bea733ab212 ("USB: wacom tablet driver reorganization")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+These are not true arrays, they are linker defined symbols, which are just
+addresses.  Using the address of operator silences the warning and does
+not change the resulting assembly with either clang/ld.lld or gcc/ld
+(tested with diff + objdump -Dr).
+
+Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reviewed-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://github.com/ClangBuiltLinux/linux/issues/892
+Link: http://lkml.kernel.org/r/20200219202036.45702-1-natechancellor@gmail.com
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/wacom_wac.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/extable.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -831,7 +831,7 @@ static int wacom_intuos_inout(struct wac
- 	/* Enter report */
- 	if ((data[1] & 0xfc) == 0xc0) {
- 		/* serial number of the tool */
--		wacom->serial[idx] = ((data[3] & 0x0f) << 28) +
-+		wacom->serial[idx] = ((__u64)(data[3] & 0x0f) << 28) +
- 			(data[4] << 20) + (data[5] << 12) +
- 			(data[6] << 4) + (data[7] >> 4);
- 
+--- a/kernel/extable.c
++++ b/kernel/extable.c
+@@ -46,7 +46,8 @@ u32 __initdata __visible main_extable_so
+ /* Sort the kernel's built-in exception table */
+ void __init sort_main_extable(void)
+ {
+-	if (main_extable_sort_needed && __stop___ex_table > __start___ex_table) {
++	if (main_extable_sort_needed &&
++	    &__stop___ex_table > &__start___ex_table) {
+ 		pr_notice("Sorting __ex_table...\n");
+ 		sort_extable(__start___ex_table, __stop___ex_table);
+ 	}
 
 
