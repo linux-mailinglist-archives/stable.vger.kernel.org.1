@@ -2,48 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5E8B726D77
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:42:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C708726BD7
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:28:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234530AbjFGUmS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:42:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41962 "EHLO
+        id S233454AbjFGU2r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:28:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234512AbjFGUmM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:42:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 464B71FEE
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:42:08 -0700 (PDT)
+        with ESMTP id S233482AbjFGU2q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:28:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 255D4213F
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:28:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C111E61DC1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:42:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D92B1C433D2;
-        Wed,  7 Jun 2023 20:42:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0569D644B2
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:28:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E77C433EF;
+        Wed,  7 Jun 2023 20:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170527;
-        bh=Ia5yIrHma2Z+l6uTvw7SQJwrOjKMLXKh1gYs3ErSs6E=;
+        s=korg; t=1686169708;
+        bh=jXyeWu7J1vpGdlWJwZfkHZ8ILypI0JONqg8icPURwSA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c6AjMHEnDt3GUPOJQipnnC8x68ohth36AoiyTX8pwA532smJKPb9C4gS+08JpDTu5
-         MLE+SyEt0h4VO/COx1DXwHLk+QSMaeK4NHL2wU7SYte9NGF11QjX9NtuK1m61r2IZb
-         +WFhK8z2gP75NvzSMVbyc5lZiW00ArPGsNNOF12o=
+        b=CIlGpuAmyfwWcRoN+/7ink+wD/QEuWArFu2rEyglO2zOFcTMRymJKrpylefWl4RDe
+         5roL2BlVr4O4SzsyaEHfLIOiwxwJF87s3tCcWij/GBu6bgVkEd+n+iZiuUctwu7koN
+         tzUB1TwvVl+7CfApfO90RYyw2J3TaK6gOukYu1Xo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 089/225] ASoC: ssm2602: Add workaround for playback distortions
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Lee Jones <lee@kernel.org>,
+        Jassi Brar <jaswinder.singh@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 183/286] mailbox: mailbox-test: fix a locking issue in mbox_test_message_write()
 Date:   Wed,  7 Jun 2023 22:14:42 +0200
-Message-ID: <20230607200917.280908365@linuxfoundation.org>
+Message-ID: <20230607200929.247186395@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,135 +55,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paweł Anikiel <pan@semihalf.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit f63550e2b165208a2f382afcaf5551df9569e1d4 ]
+[ Upstream commit 8fe72b76db79d694858e872370df49676bc3be8c ]
 
-Apply a workaround for what appears to be a hardware quirk.
+There was a bug where this code forgot to unlock the tdev->mutex if the
+kzalloc() failed.  Fix this issue, by moving the allocation outside the
+lock.
 
-The problem seems to happen when enabling "whole chip power" (bit D7
-register R6) for the very first time after the chip receives power. If
-either "output" (D4) or "DAC" (D3) aren't powered on at that time,
-playback becomes very distorted later on.
-
-This happens on the Google Chameleon v3, as well as on a ZYBO Z7-10:
-https://ez.analog.com/audio/f/q-a/543726/solved-ssm2603-right-output-offset-issue/480229
-I suspect this happens only when using an external MCLK signal (which
-is the case for both of these boards).
-
-Here are some experiments run on a Google Chameleon v3. These were run
-in userspace using a wrapper around the i2cset utility:
-ssmset() {
-        i2cset -y 0 0x1a $(($1*2)) $2
-}
-
-For each of the following sequences, we apply power to the ssm2603
-chip, set the configuration registers R0-R5 and R7-R8, run the selected
-sequence, and check for distortions on playback.
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x07 # chip, out, dac
-  OK
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x87 # out, dac
-  ssmset 0x06 0x07 # chip
-  OK
-
-  (disable MCLK)
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x1f # chip
-  ssmset 0x06 0x07 # out, dac
-  (enable MCLK)
-  OK
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x1f # chip
-  ssmset 0x06 0x07 # out, dac
-  NOT OK
-
-  ssmset 0x06 0x1f # chip
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x07 # out, dac
-  NOT OK
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x0f # chip, out
-  ssmset 0x06 0x07 # dac
-  NOT OK
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x17 # chip, dac
-  ssmset 0x06 0x07 # out
-  NOT OK
-
-For each of the following sequences, we apply power to the ssm2603
-chip, run the selected sequence, issue a reset with R15, configure
-R0-R5 and R7-R8, run one of the NOT OK sequences from above, and check
-for distortions.
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x07 # chip, out, dac
-  OK
-
-  (disable MCLK)
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x07 # chip, out, dac
-  (enable MCLK after reset)
-  NOT OK
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x17 # chip, dac
-  NOT OK
-
-  ssmset 0x09 0x01 # core
-  ssmset 0x06 0x0f # chip, out
-  NOT OK
-
-  ssmset 0x06 0x07 # chip, out, dac
-  NOT OK
-
-Signed-off-by: Paweł Anikiel <pan@semihalf.com
-Link: https://lore.kernel.org/r/20230508113037.137627-8-pan@semihalf.com
-Signed-off-by: Mark Brown <broonie@kernel.org
+Fixes: 2d1e952a2b8e ("mailbox: mailbox-test: Fix potential double-free in mbox_test_message_write()")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/ssm2602.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/mailbox/mailbox-test.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/codecs/ssm2602.c b/sound/soc/codecs/ssm2602.c
-index cbbe83b85adaf..cf7927222be15 100644
---- a/sound/soc/codecs/ssm2602.c
-+++ b/sound/soc/codecs/ssm2602.c
-@@ -53,6 +53,18 @@ static const struct reg_default ssm2602_reg[SSM2602_CACHEREGNUM] = {
- 	{ .reg = 0x09, .def = 0x0000 }
- };
+diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+index 6dd5b9614452b..abcee58e851c2 100644
+--- a/drivers/mailbox/mailbox-test.c
++++ b/drivers/mailbox/mailbox-test.c
+@@ -97,6 +97,7 @@ static ssize_t mbox_test_message_write(struct file *filp,
+ 				       size_t count, loff_t *ppos)
+ {
+ 	struct mbox_test_device *tdev = filp->private_data;
++	char *message;
+ 	void *data;
+ 	int ret;
  
-+/*
-+ * ssm2602 register patch
-+ * Workaround for playback distortions after power up: activates digital
-+ * core, and then powers on output, DAC, and whole chip at the same time
-+ */
-+
-+static const struct reg_sequence ssm2602_patch[] = {
-+	{ SSM2602_ACTIVE, 0x01 },
-+	{ SSM2602_PWR,    0x07 },
-+	{ SSM2602_RESET,  0x00 },
-+};
-+
- 
- /*Appending several "None"s just for OSS mixer use*/
- static const char *ssm2602_input_select[] = {
-@@ -589,6 +601,9 @@ static int ssm260x_component_probe(struct snd_soc_component *component)
- 		return ret;
+@@ -112,12 +113,13 @@ static ssize_t mbox_test_message_write(struct file *filp,
+ 		return -EINVAL;
  	}
  
-+	regmap_register_patch(ssm2602->regmap, ssm2602_patch,
-+			      ARRAY_SIZE(ssm2602_patch));
+-	mutex_lock(&tdev->mutex);
+-
+-	tdev->message = kzalloc(MBOX_MAX_MSG_LEN, GFP_KERNEL);
+-	if (!tdev->message)
++	message = kzalloc(MBOX_MAX_MSG_LEN, GFP_KERNEL);
++	if (!message)
+ 		return -ENOMEM;
+ 
++	mutex_lock(&tdev->mutex);
 +
- 	/* set the update bits */
- 	regmap_update_bits(ssm2602->regmap, SSM2602_LINVOL,
- 			    LINVOL_LRIN_BOTH, LINVOL_LRIN_BOTH);
++	tdev->message = message;
+ 	ret = copy_from_user(tdev->message, userbuf, count);
+ 	if (ret) {
+ 		ret = -EFAULT;
 -- 
 2.39.2
 
