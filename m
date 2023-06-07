@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 320BA726B3B
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99A76726B5A
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:24:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233068AbjFGUYA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:24:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48670 "EHLO
+        id S233193AbjFGUYl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:24:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233324AbjFGUXf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:23:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6C172690
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:23:14 -0700 (PDT)
+        with ESMTP id S233293AbjFGUYX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:24:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 334DF2697
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:23:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3EB9960C3E
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:22:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CCAEC433D2;
-        Wed,  7 Jun 2023 20:22:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CCE3F64407
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:22:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE711C433D2;
+        Wed,  7 Jun 2023 20:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169371;
-        bh=lnOoa22gYi14TzEIPpSLzhUx+sBYPGAUFCUfpRfSAiY=;
+        s=korg; t=1686169374;
+        bh=6VgSV1cmqLNPmSfcOhcsHrkic9HBdBj/A0f1OAvwvUU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XoER5Hk+Q8eUVxijlhtgjE+WoOLMVzXMnaTDf2SJH094Bb33tAZ7ATs8kSPfC3Brx
-         1NFJavuQNPDkbpcj17DuoYHOT8CgI2h1NlBLQKQOKhtbH2SlBbtwxvFwP5vib+ZpDf
-         zLwNYDDxNJg5+9kp8tpf4KjAoJG3UhaAM5JVJ9os=
+        b=L9YWaD1qEQR2jZC90h3IVNokYm7fCtD0tud2jcYny0YvHVHpU1VvZ4G3meDJpa0Ey
+         hEd7WsmZfV7x2ToIgvUuKOs//xGna4cL39iGlatvLKVY0nogI/Qp/rJ0euDW0bFsiR
+         Cm2lr6uCPZfP//xTBNfL4ldDrW9KKDoARrHFQFa4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Vlad Buslov <vladbu@nvidia.com>,
+        patches@lists.linux.dev, Zhengchao Shao <shaozhengchao@huawei.com>,
         Peilin Ye <peilin.ye@bytedance.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 055/286] net/sched: Prohibit regrafting ingress or clsact Qdiscs
-Date:   Wed,  7 Jun 2023 22:12:34 +0200
-Message-ID: <20230607200924.865676643@linuxfoundation.org>
+Subject: [PATCH 6.3 056/286] net: sched: fix NULL pointer dereference in mq_attach
+Date:   Wed,  7 Jun 2023 22:12:35 +0200
+Message-ID: <20230607200924.904316267@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
 References: <20230607200922.978677727@linuxfoundation.org>
@@ -47,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,58 +56,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peilin Ye <peilin.ye@bytedance.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-[ Upstream commit 9de95df5d15baa956c2b70b9e794842e790a8a13 ]
+[ Upstream commit 36eec020fab668719b541f34d97f44e232ffa165 ]
 
-Currently, after creating an ingress (or clsact) Qdisc and grafting it
-under TC_H_INGRESS (TC_H_CLSACT), it is possible to graft it again under
-e.g. a TBF Qdisc:
+When use the following command to test:
+1)ip link add bond0 type bond
+2)ip link set bond0 up
+3)tc qdisc add dev bond0 root handle ffff: mq
+4)tc qdisc replace dev bond0 parent ffff:fff1 handle ffff: mq
 
-  $ ip link add ifb0 type ifb
-  $ tc qdisc add dev ifb0 handle 1: root tbf rate 20kbit buffer 1600 limit 3000
-  $ tc qdisc add dev ifb0 clsact
-  $ tc qdisc link dev ifb0 handle ffff: parent 1:1
-  $ tc qdisc show dev ifb0
-  qdisc tbf 1: root refcnt 2 rate 20Kbit burst 1600b lat 560.0ms
-  qdisc clsact ffff: parent ffff:fff1 refcnt 2
-                                      ^^^^^^^^
+The kernel reports NULL pointer dereference issue. The stack information
+is as follows:
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+Internal error: Oops: 0000000096000006 [#1] SMP
+Modules linked in:
+pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : mq_attach+0x44/0xa0
+lr : qdisc_graft+0x20c/0x5cc
+sp : ffff80000e2236a0
+x29: ffff80000e2236a0 x28: ffff0000c0e59d80 x27: ffff0000c0be19c0
+x26: ffff0000cae3e800 x25: 0000000000000010 x24: 00000000fffffff1
+x23: 0000000000000000 x22: ffff0000cae3e800 x21: ffff0000c9df4000
+x20: ffff0000c9df4000 x19: 0000000000000000 x18: ffff80000a934000
+x17: ffff8000f5b56000 x16: ffff80000bb08000 x15: 0000000000000000
+x14: 0000000000000000 x13: 6b6b6b6b6b6b6b6b x12: 6b6b6b6b00000001
+x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
+x8 : ffff0000c0be0730 x7 : bbbbbbbbbbbbbbbb x6 : 0000000000000008
+x5 : ffff0000cae3e864 x4 : 0000000000000000 x3 : 0000000000000001
+x2 : 0000000000000001 x1 : ffff8000090bc23c x0 : 0000000000000000
+Call trace:
+mq_attach+0x44/0xa0
+qdisc_graft+0x20c/0x5cc
+tc_modify_qdisc+0x1c4/0x664
+rtnetlink_rcv_msg+0x354/0x440
+netlink_rcv_skb+0x64/0x144
+rtnetlink_rcv+0x28/0x34
+netlink_unicast+0x1e8/0x2a4
+netlink_sendmsg+0x308/0x4a0
+sock_sendmsg+0x64/0xac
+____sys_sendmsg+0x29c/0x358
+___sys_sendmsg+0x90/0xd0
+__sys_sendmsg+0x7c/0xd0
+__arm64_sys_sendmsg+0x2c/0x38
+invoke_syscall+0x54/0x114
+el0_svc_common.constprop.1+0x90/0x174
+do_el0_svc+0x3c/0xb0
+el0_svc+0x24/0xec
+el0t_64_sync_handler+0x90/0xb4
+el0t_64_sync+0x174/0x178
 
-clsact's refcount has increased: it is now grafted under both
-TC_H_CLSACT and 1:1.
+This is because when mq is added for the first time, qdiscs in mq is set
+to NULL in mq_attach(). Therefore, when replacing mq after adding mq, we
+need to initialize qdiscs in the mq before continuing to graft. Otherwise,
+it will couse NULL pointer dereference issue in mq_attach(). And the same
+issue will occur in the attach functions of mqprio, taprio and htb.
+ffff:fff1 means that the repalce qdisc is ingress. Ingress does not allow
+any qdisc to be attached. Therefore, ffff:fff1 is incorrectly used, and
+the command should be dropped.
 
-ingress and clsact Qdiscs should only be used under TC_H_INGRESS
-(TC_H_CLSACT).  Prohibit regrafting them.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Fixes: 1f211a1b929c ("net, sched: add clsact qdisc")
-Tested-by: Pedro Tammela <pctammela@mojatatu.com>
+Fixes: 6ec1c69a8f64 ("net_sched: add classful multiqueue dummy scheduler")
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Tested-by: Peilin Ye <peilin.ye@bytedance.com>
 Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
-Signed-off-by: Peilin Ye <peilin.ye@bytedance.com>
+Link: https://lore.kernel.org/r/20230527093747.3583502-1-shaozhengchao@huawei.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_api.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/sched/sch_api.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index b7c230f9c5b19..a686d7cae5130 100644
+index a686d7cae5130..7045b67b5533e 100644
 --- a/net/sched/sch_api.c
 +++ b/net/sched/sch_api.c
-@@ -1594,6 +1594,11 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
- 					NL_SET_ERR_MSG(extack, "Invalid qdisc name");
- 					return -EINVAL;
+@@ -1604,6 +1604,10 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 					NL_SET_ERR_MSG(extack, "Qdisc parent/child loop detected");
+ 					return -ELOOP;
  				}
-+				if (q->flags & TCQ_F_INGRESS) {
-+					NL_SET_ERR_MSG(extack,
-+						       "Cannot regraft ingress or clsact Qdiscs");
++				if (clid == TC_H_INGRESS) {
++					NL_SET_ERR_MSG(extack, "Ingress cannot graft directly");
 +					return -EINVAL;
 +				}
- 				if (q == p ||
- 				    (p && check_loop(q, p, 0))) {
- 					NL_SET_ERR_MSG(extack, "Qdisc parent/child loop detected");
+ 				qdisc_refcount_inc(q);
+ 				goto graft;
+ 			} else {
 -- 
 2.39.2
 
