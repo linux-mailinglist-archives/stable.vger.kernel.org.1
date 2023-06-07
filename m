@@ -2,54 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D07D726F48
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:57:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23C8D726D9B
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:44:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235565AbjFGU5E (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:57:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58120 "EHLO
+        id S234497AbjFGUoH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:44:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235521AbjFGU5D (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:57:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F1401FD5;
-        Wed,  7 Jun 2023 13:57:00 -0700 (PDT)
+        with ESMTP id S234555AbjFGUoG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B30742709
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:43:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BF82B64864;
-        Wed,  7 Jun 2023 20:56:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD84C433D2;
-        Wed,  7 Jun 2023 20:56:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BD82064658
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:43:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC9EC4339B;
+        Wed,  7 Jun 2023 20:43:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171419;
-        bh=HDgUBzjEunBc8EhZGUDA3+maO/LGYlO/MvUdwUN7QMI=;
+        s=korg; t=1686170614;
+        bh=ODzEe5MTMPERDf+zXbuLdOTQOBegDNhuK6ZJ0a/0Ze4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GDnurTQx6gBB9IrZ+tmlFnvTJDxTfnfJijinTKsOyUT76OujGRoF0qKLwcea4xXu9
-         lv/W7+OW4TKM3zIVLpFoD7tn99kJkRonLrIh3tTHOhcxx1Tevcw9PQA7lYKc1cfBig
-         eP8BKnqvy79ksCWBpqsq2DeLbUy+zGke7AKw2y24=
+        b=g33pwPbyogHkFkNhknuKXkgp3w/gT4500RtZREqojB0Lt1k4lR4jPfhNgzNwH6pSl
+         cW6wlc9/WE/IQIaIt5muC69fikVYpmccCnxPSrGgEr+Nci/jveTYcqb9Qs/eXqSut+
+         2+6cVqXgLVliAnsHmTLakTpSQao9oxcvs4P5X5GI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Jaswinder Singh <jassisinghbrar@gmail.com>,
-        Boojin Kim <boojin.kim@samsung.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Russell King <rmk+kernel@arm.linux.org.uk>,
-        Vinod Koul <vkoul@kernel.org>, dmaengine@vger.kernel.org,
-        linux-riscv@lists.infradead.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 011/159] dmaengine: pl330: rename _start to prevent build error
+        patches@lists.linux.dev,
+        =?UTF-8?q?Michael=20B=C3=BCsch?= <m@bues.ch>,
+        kernel test robot <lkp@intel.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Larry Finger <Larry.Finger@lwfinger.net>,
+        Arnd Bergmann <arnd@arndb.de>, Kalle Valo <kvalo@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 121/225] wifi: b43: fix incorrect __packed annotation
 Date:   Wed,  7 Jun 2023 22:15:14 +0200
-Message-ID: <20230607200904.041824517@linuxfoundation.org>
+Message-ID: <20230607200918.332122848@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,83 +58,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit a1a5f2c887252dec161c1e12e04303ca9ba56fa9 ]
+[ Upstream commit 212457ccbd60dba34f965e4ffbe62f0e4f970538 ]
 
-"_start" is used in several arches and proably should be reserved
-for ARCH usage. Using it in a driver for a private symbol can cause
-a build error when it conflicts with ARCH usage of the same symbol.
+clang warns about an unpacked structure inside of a packed one:
 
-Therefore rename pl330's "_start" to "pl330_start_thread" so that there
-is no conflict and no build error.
+drivers/net/wireless/broadcom/b43/b43.h:654:4: error: field data within 'struct b43_iv' is less aligned than 'union (unnamed union at /home/arnd/arm-soc/drivers/net/wireless/broadcom/b43/b43.h:651:2)' and is usually due to 'struct b43_iv' being packed, which can lead to unaligned accesses [-Werror,-Wunaligned-access]
 
-drivers/dma/pl330.c:1053:13: error: '_start' redeclared as different kind of symbol
- 1053 | static bool _start(struct pl330_thread *thrd)
-      |             ^~~~~~
-In file included from ../include/linux/interrupt.h:21,
-                 from ../drivers/dma/pl330.c:18:
-arch/riscv/include/asm/sections.h:11:13: note: previous declaration of '_start' with type 'char[]'
-   11 | extern char _start[];
-      |             ^~~~~~
+The problem here is that the anonymous union has the default alignment
+from its members, apparently because the original author mixed up the
+placement of the __packed attribute by placing it next to the struct
+member rather than the union definition. As the struct itself is
+also marked as __packed, there is no need to mark its members, so just
+move the annotation to the inner type instead.
 
-Fixes: b7d861d93945 ("DMA: PL330: Merge PL330 driver into drivers/dma/")
-Fixes: ae43b3289186 ("ARM: 8202/1: dmaengine: pl330: Add runtime Power Management support v12")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Jaswinder Singh <jassisinghbrar@gmail.com>
-Cc: Boojin Kim <boojin.kim@samsung.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Russell King <rmk+kernel@arm.linux.org.uk>
-Cc: Vinod Koul <vkoul@kernel.org>
-Cc: dmaengine@vger.kernel.org
-Cc: linux-riscv@lists.infradead.org
-Link: https://lore.kernel.org/r/20230524045310.27923-1-rdunlap@infradead.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+As Michael noted, the same problem is present in b43legacy, so
+change both at the same time.
+
+Acked-by: Michael Büsch <m@bues.ch>
+Reported-by: kernel test robot <lkp@intel.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
+Link: https://lore.kernel.org/oe-kbuild-all/202305160749.ay1HAoyP-lkp@intel.com/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230516183442.536589-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/pl330.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/broadcom/b43/b43.h             | 2 +-
+ drivers/net/wireless/broadcom/b43legacy/b43legacy.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/pl330.c b/drivers/dma/pl330.c
-index 4ef68ddff75bc..b9bc82d6a1622 100644
---- a/drivers/dma/pl330.c
-+++ b/drivers/dma/pl330.c
-@@ -1050,7 +1050,7 @@ static bool _trigger(struct pl330_thread *thrd)
- 	return true;
- }
+diff --git a/drivers/net/wireless/broadcom/b43/b43.h b/drivers/net/wireless/broadcom/b43/b43.h
+index 9fc7c088a539e..67b4bac048e58 100644
+--- a/drivers/net/wireless/broadcom/b43/b43.h
++++ b/drivers/net/wireless/broadcom/b43/b43.h
+@@ -651,7 +651,7 @@ struct b43_iv {
+ 	union {
+ 		__be16 d16;
+ 		__be32 d32;
+-	} data __packed;
++	} __packed data;
+ } __packed;
  
--static bool _start(struct pl330_thread *thrd)
-+static bool pl330_start_thread(struct pl330_thread *thrd)
- {
- 	switch (_state(thrd)) {
- 	case PL330_STATE_FAULT_COMPLETING:
-@@ -1702,7 +1702,7 @@ static int pl330_update(struct pl330_dmac *pl330)
- 			thrd->req_running = -1;
  
- 			/* Get going again ASAP */
--			_start(thrd);
-+			pl330_start_thread(thrd);
+diff --git a/drivers/net/wireless/broadcom/b43legacy/b43legacy.h b/drivers/net/wireless/broadcom/b43legacy/b43legacy.h
+index 6b0cec467938f..f49365d14619f 100644
+--- a/drivers/net/wireless/broadcom/b43legacy/b43legacy.h
++++ b/drivers/net/wireless/broadcom/b43legacy/b43legacy.h
+@@ -379,7 +379,7 @@ struct b43legacy_iv {
+ 	union {
+ 		__be16 d16;
+ 		__be32 d32;
+-	} data __packed;
++	} __packed data;
+ } __packed;
  
- 			/* For now, just make a list of callbacks to be done */
- 			list_add_tail(&descdone->rqd, &pl330->req_done);
-@@ -2089,7 +2089,7 @@ static void pl330_tasklet(struct tasklet_struct *t)
- 	} else {
- 		/* Make sure the PL330 Channel thread is active */
- 		spin_lock(&pch->thread->dmac->lock);
--		_start(pch->thread);
-+		pl330_start_thread(pch->thread);
- 		spin_unlock(&pch->thread->dmac->lock);
- 	}
- 
-@@ -2107,7 +2107,7 @@ static void pl330_tasklet(struct tasklet_struct *t)
- 			if (power_down) {
- 				pch->active = true;
- 				spin_lock(&pch->thread->dmac->lock);
--				_start(pch->thread);
-+				pl330_start_thread(pch->thread);
- 				spin_unlock(&pch->thread->dmac->lock);
- 				power_down = false;
- 			}
+ #define B43legacy_PHYMODE(phytype)	(1 << (phytype))
 -- 
 2.39.2
 
