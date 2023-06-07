@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72DED726E42
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:49:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD1CB726C31
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235099AbjFGUtN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:49:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45778 "EHLO
+        id S229517AbjFGUbU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:31:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235181AbjFGUsu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:48:50 -0400
+        with ESMTP id S231214AbjFGUbT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:31:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15A362D4C
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:48:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E41F184
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:31:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4926A646D4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:48:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C235C4339B;
-        Wed,  7 Jun 2023 20:48:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 225A3644FB
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:31:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31BA9C433EF;
+        Wed,  7 Jun 2023 20:31:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170908;
-        bh=7Cz8Dnpu06YjU9uSRurtKxpOQHGwnWz9u2VS9twgqzc=;
+        s=korg; t=1686169876;
+        bh=rv2GjjLz0EFiXPtcHR/czhXpGMXhLdLRwa9sx8TXDhc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jHr0G9W9zeXAFgCVmAhMVWlS1ev8vyXtXObGiRRt295DuS0LD1GoenWGt200XOMyE
-         77nD8T4lqAQt5q33BnNTx5m+Iu43pQKf0TXlQk6lZrlut9kqpvg5UQWFgKn8/0oaUL
-         adJW127bxD1YQ6K7IFchgLczmh6DgDmXvT6lbxtU=
+        b=hjLS1kyF3y/BaL5Tngjy05cD0EuzXCXG6PwpBxQaCVLhdjg15p/edJPaR/6eRaXfE
+         GD7gTNZHafVZxxwpZgwG130my/LWrb1by4smzXk8bBQqiIl0fA1uiAwFUeb69dNppZ
+         cbMFlpuik4d4Zmts+P7Y2zyN0sCrZg4QErJaRtbw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Andreas Svensson <andreas.svensson@axis.com>,
-        Andrew Lunn <andrew@lunn.ch>, Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 030/120] net: dsa: mv88e6xxx: Increase wait after reset deactivation
+        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+        Tom Zanussi <zanussi@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.3 247/286] tracing/histograms: Allow variables to have some modifiers
 Date:   Wed,  7 Jun 2023 22:15:46 +0200
-Message-ID: <20230607200901.861390609@linuxfoundation.org>
+Message-ID: <20230607200931.369289701@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,45 +55,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andreas Svensson <andreas.svensson@axis.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 3c27f3d53d588618d81d30d6712459a3cc9489b8 ]
+commit e30fbc618e97b38dbb49f1d44dcd0778d3f23b8c upstream.
 
-A switch held in reset by default needs to wait longer until we can
-reliably detect it.
+Modifiers are used to change the behavior of keys. For instance, they
+can grouped into buckets, converted to syscall names (from the syscall
+identifier), show task->comm of the current pid, be an array of longs
+that represent a stacktrace, and more.
 
-An issue was observed when testing on the Marvell 88E6393X (Link Street).
-The driver failed to detect the switch on some upstarts. Increasing the
-wait time after reset deactivation solves this issue.
+It was found that nothing stopped a value from taking a modifier. As
+values are simple counters. If this happened, it would call code that
+was not expecting a modifier and crash the kernel. This was fixed by
+having the ___create_val_field() function test if a modifier was present
+and fail if one was. This fixed the crash.
 
-The updated wait time is now also the same as the wait time in the
-mv88e6xxx_hardware_reset function.
+Now there's a problem with variables. Variables are used to pass fields
+from one event to another. Variables are allowed to have some modifiers,
+as the processing may need to happen at the time of the event (like
+stacktraces and comm names of the current pid). The issue is that it too
+uses __create_val_field(). Now that fails on modifiers, variables can no
+longer use them (this is a regression).
 
-Fixes: 7b75e49de424 ("net: dsa: mv88e6xxx: wait after reset deactivation")
-Signed-off-by: Andreas Svensson <andreas.svensson@axis.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20230530145223.1223993-1-andreas.svensson@axis.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As not all modifiers are for variables, have them use a separate check.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20230523221108.064a5d82@rorschach.local.home
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Tom Zanussi <zanussi@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Fixes: e0213434fe3e4 ("tracing: Do not let histogram values have some modifiers")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace_events_hist.c |   23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 321c821876f65..8b2c8546f4c99 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -5547,7 +5547,7 @@ static int mv88e6xxx_probe(struct mdio_device *mdiodev)
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -4238,13 +4238,19 @@ static int __create_val_field(struct his
  		goto out;
  	}
- 	if (chip->reset)
--		usleep_range(1000, 2000);
-+		usleep_range(10000, 20000);
  
- 	err = mv88e6xxx_detect(chip);
- 	if (err)
--- 
-2.39.2
-
+-	/* Some types cannot be a value */
+-	if (hist_field->flags & (HIST_FIELD_FL_GRAPH | HIST_FIELD_FL_PERCENT |
+-				 HIST_FIELD_FL_BUCKET | HIST_FIELD_FL_LOG2 |
+-				 HIST_FIELD_FL_SYM | HIST_FIELD_FL_SYM_OFFSET |
+-				 HIST_FIELD_FL_SYSCALL | HIST_FIELD_FL_STACKTRACE)) {
+-		hist_err(file->tr, HIST_ERR_BAD_FIELD_MODIFIER, errpos(field_str));
+-		ret = -EINVAL;
++	/* values and variables should not have some modifiers */
++	if (hist_field->flags & HIST_FIELD_FL_VAR) {
++		/* Variable */
++		if (hist_field->flags & (HIST_FIELD_FL_GRAPH | HIST_FIELD_FL_PERCENT |
++					 HIST_FIELD_FL_BUCKET | HIST_FIELD_FL_LOG2))
++			goto err;
++	} else {
++		/* Value */
++		if (hist_field->flags & (HIST_FIELD_FL_GRAPH | HIST_FIELD_FL_PERCENT |
++					 HIST_FIELD_FL_BUCKET | HIST_FIELD_FL_LOG2 |
++					 HIST_FIELD_FL_SYM | HIST_FIELD_FL_SYM_OFFSET |
++					 HIST_FIELD_FL_SYSCALL | HIST_FIELD_FL_STACKTRACE))
++			goto err;
+ 	}
+ 
+ 	hist_data->fields[val_idx] = hist_field;
+@@ -4256,6 +4262,9 @@ static int __create_val_field(struct his
+ 		ret = -EINVAL;
+  out:
+ 	return ret;
++ err:
++	hist_err(file->tr, HIST_ERR_BAD_FIELD_MODIFIER, errpos(field_str));
++	return -EINVAL;
+ }
+ 
+ static int create_val_field(struct hist_trigger_data *hist_data,
 
 
