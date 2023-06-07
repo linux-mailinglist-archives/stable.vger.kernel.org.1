@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2B1F726AF1
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:21:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45DC8726FAB
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:01:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232155AbjFGUVO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:21:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45590 "EHLO
+        id S235865AbjFGVA4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:00:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232693AbjFGUVE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:21:04 -0400
+        with ESMTP id S236184AbjFGVA0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82130268F
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:20:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 536C22114
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:00:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 614B664367
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:20:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E3DEC433D2;
-        Wed,  7 Jun 2023 20:20:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D83CB648E6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:00:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0467C433EF;
+        Wed,  7 Jun 2023 21:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169242;
-        bh=AIbABzyTHD7AnBP4JE7Y1/B2zgdqwOA73Bxjgmug+D8=;
+        s=korg; t=1686171603;
+        bh=WMorj8wiuc84S32cDMaEkLXlOmNp6IPJHbVkx+CPt3Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ozL+DX0O0I6m5aBcjI4u/svTCobxQI0dg5wFa7p6PesJJ/qvU26R4yF8GhVp1lkav
-         hcUcpUWmzcqCY3z6ZLBXQUNlA5yn9oeTTdk7p2gNPAYUy+miedIkK1fwmyDH94bymt
-         9mX10gBogC8Pci8GEenssvq2GiAODSb/GNJOYRyo=
+        b=P2kCecf1eOeDysIpRWMRKq/+gA8AmixETHhz+DqPvRpXFx5QecITzh+nEYZteGKDi
+         u07GsEOOIHIq94w1ZeMOWcQb0b8IVOYMkx3m6KGAJcVemcn6XwQlWSLhCwPk5Dd05+
+         LVqIVKDmcOJIQdoRoaYIDdWUvJ+3GPgjaaML1U5w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
-Subject: [PATCH 4.14 39/61] usb: gadget: f_fs: Add unbind event before functionfs_unbind
+        patches@lists.linux.dev, Yang Lan <lanyang0908@gmail.com>,
+        Bob Peterson <rpeterso@redhat.com>,
+        Andreas Gruenbacher <agruenba@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 050/159] gfs2: Dont deref jdesc in evict
 Date:   Wed,  7 Jun 2023 22:15:53 +0200
-Message-ID: <20230607200848.860240752@linuxfoundation.org>
+Message-ID: <20230607200905.323686133@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-References: <20230607200835.310274198@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,65 +55,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+From: Bob Peterson <rpeterso@redhat.com>
 
-commit efb6b535207395a5c7317993602e2503ca8cb4b3 upstream.
+[ Upstream commit 504a10d9e46bc37b23d0a1ae2f28973c8516e636 ]
 
-While exercising the unbind path, with the current implementation
-the functionfs_unbind would be calling which waits for the ffs->mutex
-to be available, however within the same time ffs_ep0_read is invoked
-& if no setup packets are pending, it will invoke function
-wait_event_interruptible_exclusive_locked_irq which by definition waits
-for the ev.count to be increased inside the same mutex for which
-functionfs_unbind is waiting.
-This creates deadlock situation because the functionfs_unbind won't
-get the lock until ev.count is increased which can only happen if
-the caller ffs_func_unbind can proceed further.
+On corrupt gfs2 file systems the evict code can try to reference the
+journal descriptor structure, jdesc, after it has been freed and set to
+NULL. The sequence of events is:
 
-Following is the illustration:
+init_journal()
+...
+fail_jindex:
+   gfs2_jindex_free(sdp); <------frees journals, sets jdesc = NULL
+      if (gfs2_holder_initialized(&ji_gh))
+         gfs2_glock_dq_uninit(&ji_gh);
+fail:
+   iput(sdp->sd_jindex); <--references jdesc in evict_linked_inode
+      evict()
+         gfs2_evict_inode()
+            evict_linked_inode()
+               ret = gfs2_trans_begin(sdp, 0, sdp->sd_jdesc->jd_blocks);
+<------references the now freed/zeroed sd_jdesc pointer.
 
-	CPU1				CPU2
+The call to gfs2_trans_begin is done because the truncate_inode_pages
+call can cause gfs2 events that require a transaction, such as removing
+journaled data (jdata) blocks from the journal.
 
-ffs_func_unbind()		ffs_ep0_read()
-				mutex_lock(ffs->mutex)
-				wait_event(ffs->ev.count)
-functionfs_unbind()
-  mutex_lock(ffs->mutex)
-  mutex_unlock(ffs->mutex)
+This patch fixes the problem by adding a check for sdp->sd_jdesc to
+function gfs2_evict_inode. In theory, this should only happen to corrupt
+gfs2 file systems, when gfs2 detects the problem, reports it, then tries
+to evict all the system inodes it has read in up to that point.
 
-ffs_event_add()
-
-<deadlock>
-
-Fix this by moving the event unbind before functionfs_unbind
-to ensure the ev.count is incrased properly.
-
-Fixes: 6a19da111057 ("usb: gadget: f_fs: Prevent race during ffs_ep0_queue_wait")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
-Link: https://lore.kernel.org/r/20230525092854.7992-1-quic_uaggarwa@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Yang Lan <lanyang0908@gmail.com>
+Signed-off-by: Bob Peterson <rpeterso@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_fs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/super.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -3500,6 +3500,7 @@ static void ffs_func_unbind(struct usb_c
- 	/* Drain any pending AIO completions */
- 	drain_workqueue(ffs->io_completion_wq);
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 775ac3fb10c67..ca6ee1cbccd50 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -1381,6 +1381,14 @@ static void gfs2_evict_inode(struct inode *inode)
+ 	if (inode->i_nlink || sb_rdonly(sb))
+ 		goto out;
  
-+	ffs_event_add(ffs, FUNCTIONFS_UNBIND);
- 	if (!--opts->refcnt)
- 		functionfs_unbind(ffs);
- 
-@@ -3524,7 +3525,6 @@ static void ffs_func_unbind(struct usb_c
- 	func->function.ssp_descriptors = NULL;
- 	func->interfaces_nums = NULL;
- 
--	ffs_event_add(ffs, FUNCTIONFS_UNBIND);
- }
- 
- static struct usb_function *ffs_alloc(struct usb_function_instance *fi)
++	/*
++	 * In case of an incomplete mount, gfs2_evict_inode() may be called for
++	 * system files without having an active journal to write to.  In that
++	 * case, skip the filesystem evict.
++	 */
++	if (!sdp->sd_jdesc)
++		goto out;
++
+ 	gfs2_holder_mark_uninitialized(&gh);
+ 	ret = evict_should_delete(inode, &gh);
+ 	if (ret == SHOULD_DEFER_EVICTION)
+-- 
+2.39.2
+
 
 
