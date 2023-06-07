@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC618726F0F
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F741726FFF
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:03:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235408AbjFGUz1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:55:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56236 "EHLO
+        id S236154AbjFGVDx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:03:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235704AbjFGUzA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:55:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 871651BF0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:54:51 -0700 (PDT)
+        with ESMTP id S236177AbjFGVD3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:03:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A9BC26AA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:03:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 46367647D2
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:54:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558CAC433D2;
-        Wed,  7 Jun 2023 20:54:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F5E964979
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:03:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D7BC433EF;
+        Wed,  7 Jun 2023 21:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171290;
-        bh=qzghPzn5owh9oOXDzKJvjnYDhVsb9PppkdpJMhHF/j8=;
+        s=korg; t=1686171788;
+        bh=bjs6i7/SpeNe+Tah1sMFbTv70T9Akks00VJ3zX/hwPg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mj6Hgj+Eu39WJrjBgUoosKytW42AuRjLTzZq/s9ttvrDVVA4ssrfnGX9VSgUO7/sO
-         hxNyFi3onqhKevkVJ866XzHXy9NLverN9KLsvfm8YF147rJpb5WXTh77/EqdK44tOb
-         j9WrBhTruFixXyHaeJ8ABR+8+OiBc6wVpgpZcjoE=
+        b=gYMkiORCUdHVC6daA+/29/icTtneYE1YVhLU5N4UiQISgWZdH2udBS2Jl0Jxyx3fx
+         CAtOfXU2sKRsfgdv9dHJBemSyo5fDbJuBveKcAHxjWwrpqUgT0rG8F4vtd10xO9VcK
+         wHRSoHajMZn1GDVBtumF56jAdVSzzlVuEXrvEg+E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiakai Luo <jkluo@hust.edu.cn>,
-        Dongliang Mu <dzm91@hust.edu.cn>, Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.4 61/99] iio: adc: mxs-lradc: fix the order of two cleanup operations
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Subject: [PATCH 5.15 110/159] usb: gadget: f_fs: Add unbind event before functionfs_unbind
 Date:   Wed,  7 Jun 2023 22:16:53 +0200
-Message-ID: <20230607200902.154891843@linuxfoundation.org>
+Message-ID: <20230607200907.277048604@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,83 +53,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiakai Luo <jkluo@hust.edu.cn>
+From: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
 
-commit 27b2ed5b6d53cd62fc61c3f259ae52f5cac23b66 upstream.
+commit efb6b535207395a5c7317993602e2503ca8cb4b3 upstream.
 
-Smatch reports:
-drivers/iio/adc/mxs-lradc-adc.c:766 mxs_lradc_adc_probe() warn:
-missing unwind goto?
+While exercising the unbind path, with the current implementation
+the functionfs_unbind would be calling which waits for the ffs->mutex
+to be available, however within the same time ffs_ep0_read is invoked
+& if no setup packets are pending, it will invoke function
+wait_event_interruptible_exclusive_locked_irq which by definition waits
+for the ev.count to be increased inside the same mutex for which
+functionfs_unbind is waiting.
+This creates deadlock situation because the functionfs_unbind won't
+get the lock until ev.count is increased which can only happen if
+the caller ffs_func_unbind can proceed further.
 
-the order of three init operation:
-1.mxs_lradc_adc_trigger_init
-2.iio_triggered_buffer_setup
-3.mxs_lradc_adc_hw_init
+Following is the illustration:
 
-thus, the order of three cleanup operation should be:
-1.mxs_lradc_adc_hw_stop
-2.iio_triggered_buffer_cleanup
-3.mxs_lradc_adc_trigger_remove
+	CPU1				CPU2
 
-we exchange the order of two cleanup operations,
-introducing the following differences:
-1.if mxs_lradc_adc_trigger_init fails, returns directly;
-2.if trigger_init succeeds but iio_triggered_buffer_setup fails,
-goto err_trig and remove the trigger.
+ffs_func_unbind()		ffs_ep0_read()
+				mutex_lock(ffs->mutex)
+				wait_event(ffs->ev.count)
+functionfs_unbind()
+  mutex_lock(ffs->mutex)
+  mutex_unlock(ffs->mutex)
 
-In addition, we also reorder the unwind that goes on in the
-remove() callback to match the new ordering.
+ffs_event_add()
 
-Fixes: 6dd112b9f85e ("iio: adc: mxs-lradc: Add support for ADC driver")
-Signed-off-by: Jiakai Luo <jkluo@hust.edu.cn>
-Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
-Link: https://lore.kernel.org/r/20230422133407.72908-1-jkluo@hust.edu.cn
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+<deadlock>
+
+Fix this by moving the event unbind before functionfs_unbind
+to ensure the ev.count is incrased properly.
+
+Fixes: 6a19da111057 ("usb: gadget: f_fs: Prevent race during ffs_ep0_queue_wait")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Link: https://lore.kernel.org/r/20230525092854.7992-1-quic_uaggarwa@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/mxs-lradc-adc.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/usb/gadget/function/f_fs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/mxs-lradc-adc.c
-+++ b/drivers/iio/adc/mxs-lradc-adc.c
-@@ -760,13 +760,13 @@ static int mxs_lradc_adc_probe(struct pl
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -3620,6 +3620,7 @@ static void ffs_func_unbind(struct usb_c
+ 	/* Drain any pending AIO completions */
+ 	drain_workqueue(ffs->io_completion_wq);
  
- 	ret = mxs_lradc_adc_trigger_init(iio);
- 	if (ret)
--		goto err_trig;
-+		return ret;
++	ffs_event_add(ffs, FUNCTIONFS_UNBIND);
+ 	if (!--opts->refcnt)
+ 		functionfs_unbind(ffs);
  
- 	ret = iio_triggered_buffer_setup(iio, &iio_pollfunc_store_time,
- 					 &mxs_lradc_adc_trigger_handler,
- 					 &mxs_lradc_adc_buffer_ops);
- 	if (ret)
--		return ret;
-+		goto err_trig;
+@@ -3644,7 +3645,6 @@ static void ffs_func_unbind(struct usb_c
+ 	func->function.ssp_descriptors = NULL;
+ 	func->interfaces_nums = NULL;
  
- 	adc->vref_mv = mxs_lradc_adc_vref_mv[lradc->soc];
- 
-@@ -804,9 +804,9 @@ static int mxs_lradc_adc_probe(struct pl
- 
- err_dev:
- 	mxs_lradc_adc_hw_stop(adc);
--	mxs_lradc_adc_trigger_remove(iio);
--err_trig:
- 	iio_triggered_buffer_cleanup(iio);
-+err_trig:
-+	mxs_lradc_adc_trigger_remove(iio);
- 	return ret;
+-	ffs_event_add(ffs, FUNCTIONFS_UNBIND);
  }
  
-@@ -817,8 +817,8 @@ static int mxs_lradc_adc_remove(struct p
- 
- 	iio_device_unregister(iio);
- 	mxs_lradc_adc_hw_stop(adc);
--	mxs_lradc_adc_trigger_remove(iio);
- 	iio_triggered_buffer_cleanup(iio);
-+	mxs_lradc_adc_trigger_remove(iio);
- 
- 	return 0;
- }
+ static struct usb_function *ffs_alloc(struct usb_function_instance *fi)
 
 
