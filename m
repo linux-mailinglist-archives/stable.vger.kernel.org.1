@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B50D726F08
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 568FC726E05
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:47:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235392AbjFGUzZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:55:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56132 "EHLO
+        id S234661AbjFGUra (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:47:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235626AbjFGUyz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 479A21FCC
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:54:41 -0700 (PDT)
+        with ESMTP id S234927AbjFGUrP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:47:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 559DC2737
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:46:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D0D0B647D1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:54:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E454CC433EF;
-        Wed,  7 Jun 2023 20:54:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC32D646A7
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:46:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED622C433D2;
+        Wed,  7 Jun 2023 20:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171280;
-        bh=aITDxaXfjnHA6ppXc/Ks65rfqWo1xEXjI/MDQ0VzuqY=;
+        s=korg; t=1686170813;
+        bh=clTYUuMytkN+dr85e+//wymuxnRRhUaIozyPwxmHaNs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g+4Ga3M/q3rjVEnKoBoTovt8iF1f7swv3BdftoRJ+cI0S2qikbKfU3VVibQnAqi0M
-         F0lFtv7UOGlP12rg66vdzPqXLMZAknFNbZ99pDyvfAsFLp9LFVt3oPk5lKBFtpEwxL
-         GY8UUq3eL2NKC8tOK8GfsWlIEruqWI1eMKi6e6p0=
+        b=ad9+EQFhfey5E2XlKk1TgC+hs8/7Zp6FTXlOdsVh0aXuaZ6mllzvO/5koDrzzwKJ7
+         9tpDQdlxNZgbvWDyXizfNk7tffDqb8EkPPPMQyQLCs/75Gc1dEvPofLNw6dhCCwuBg
+         CsDX4CGUbwWuvFQFhvg1sM25QoKUw/H1cjeAWRkg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 58/99] ALSA: oss: avoid missing-prototype warnings
+        patches@lists.linux.dev, Jerry Snitselaar <jsnitsel@redhat.com>,
+        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+        Vasant Hegde <vasant.hegde@amd.com>,
+        Joerg Roedel <jroedel@suse.de>, Stable@vger.kernel.org
+Subject: [PATCH 6.1 217/225] iommu/amd/pgtbl_v2: Fix domain max address
 Date:   Wed,  7 Jun 2023 22:16:50 +0200
-Message-ID: <20230607200902.064144030@linuxfoundation.org>
+Message-ID: <20230607200921.466349327@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,64 +55,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Vasant Hegde <vasant.hegde@amd.com>
 
-[ Upstream commit 040b5a046a9e18098580d3ccd029e2318fca7859 ]
+commit 11c439a19466e7feaccdbce148a75372fddaf4e9 upstream.
 
-Two functions are defined and used in pcm_oss.c but also optionally
-used from io.c, with an optional prototype. If CONFIG_SND_PCM_OSS_PLUGINS
-is disabled, this causes a warning as the functions are not static
-and have no prototype:
+IOMMU v2 page table supports 4 level (47 bit) or 5 level (56 bit) virtual
+address space. Current code assumes it can support 64bit IOVA address
+space. If IOVA allocator allocates virtual address > 47/56 bit (depending
+on page table level) then it will do wrong mapping and cause invalid
+translation.
 
-sound/core/oss/pcm_oss.c:1235:19: error: no previous prototype for 'snd_pcm_oss_write3' [-Werror=missing-prototypes]
-sound/core/oss/pcm_oss.c:1266:19: error: no previous prototype for 'snd_pcm_oss_read3' [-Werror=missing-prototypes]
+Hence adjust aperture size to use max address supported by the page table.
 
-Avoid this by making the prototypes unconditional.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20230516195046.550584-2-arnd@kernel.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Fixes: aaac38f61487 ("iommu/amd: Initial support for AMD IOMMU v2 page table")
+Cc: <Stable@vger.kernel.org>  # v6.0+
+Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Link: https://lore.kernel.org/r/20230518054351.9626-1-vasant.hegde@amd.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+[ Modified to work with "V2 with 4 level page table" only - Vasant ]
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/oss/pcm_plugin.h | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/iommu/amd/iommu.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/sound/core/oss/pcm_plugin.h b/sound/core/oss/pcm_plugin.h
-index 8d2f7a4e3ab67..0e1c8cae6c5bd 100644
---- a/sound/core/oss/pcm_plugin.h
-+++ b/sound/core/oss/pcm_plugin.h
-@@ -141,6 +141,14 @@ int snd_pcm_area_copy(const struct snd_pcm_channel_area *src_channel,
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -2101,6 +2101,15 @@ out_err:
+ 	return NULL;
+ }
  
- void *snd_pcm_plug_buf_alloc(struct snd_pcm_substream *plug, snd_pcm_uframes_t size);
- void snd_pcm_plug_buf_unlock(struct snd_pcm_substream *plug, void *ptr);
-+#else
++static inline u64 dma_max_address(void)
++{
++	if (amd_iommu_pgtable == AMD_IOMMU_V1)
++		return ~0ULL;
 +
-+static inline snd_pcm_sframes_t snd_pcm_plug_client_size(struct snd_pcm_substream *handle, snd_pcm_uframes_t drv_size) { return drv_size; }
-+static inline snd_pcm_sframes_t snd_pcm_plug_slave_size(struct snd_pcm_substream *handle, snd_pcm_uframes_t clt_size) { return clt_size; }
-+static inline int snd_pcm_plug_slave_format(int format, const struct snd_mask *format_mask) { return format; }
++	/* V2 with 4 level page table */
++	return ((1ULL << PM_LEVEL_SHIFT(PAGE_MODE_4_LEVEL)) - 1);
++}
 +
-+#endif
-+
- snd_pcm_sframes_t snd_pcm_oss_write3(struct snd_pcm_substream *substream,
- 				     const char *ptr, snd_pcm_uframes_t size,
- 				     int in_kernel);
-@@ -151,14 +159,6 @@ snd_pcm_sframes_t snd_pcm_oss_writev3(struct snd_pcm_substream *substream,
- snd_pcm_sframes_t snd_pcm_oss_readv3(struct snd_pcm_substream *substream,
- 				     void **bufs, snd_pcm_uframes_t frames);
+ static struct iommu_domain *amd_iommu_domain_alloc(unsigned type)
+ {
+ 	struct protection_domain *domain;
+@@ -2117,7 +2126,7 @@ static struct iommu_domain *amd_iommu_do
+ 		return NULL;
  
--#else
--
--static inline snd_pcm_sframes_t snd_pcm_plug_client_size(struct snd_pcm_substream *handle, snd_pcm_uframes_t drv_size) { return drv_size; }
--static inline snd_pcm_sframes_t snd_pcm_plug_slave_size(struct snd_pcm_substream *handle, snd_pcm_uframes_t clt_size) { return clt_size; }
--static inline int snd_pcm_plug_slave_format(int format, const struct snd_mask *format_mask) { return format; }
--
--#endif
--
- #ifdef PLUGIN_DEBUG
- #define pdprintf(fmt, args...) printk(KERN_DEBUG "plugin: " fmt, ##args)
- #else
--- 
-2.39.2
-
+ 	domain->domain.geometry.aperture_start = 0;
+-	domain->domain.geometry.aperture_end   = ~0ULL;
++	domain->domain.geometry.aperture_end   = dma_max_address();
+ 	domain->domain.geometry.force_aperture = true;
+ 
+ 	return &domain->domain;
 
 
