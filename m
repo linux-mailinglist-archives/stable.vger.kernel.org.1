@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD5FF726D39
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:40:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5056A726BBD
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:27:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234314AbjFGUkX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:40:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39902 "EHLO
+        id S233391AbjFGU1l (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:27:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234049AbjFGUkW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:40:22 -0400
+        with ESMTP id S233421AbjFGU1j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:27:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EC1F26B8
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:39:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3FC81FF0
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:27:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A9E0645D7
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:39:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B47AC433D2;
-        Wed,  7 Jun 2023 20:39:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 437C66448B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:26:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 507AEC433EF;
+        Wed,  7 Jun 2023 20:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170356;
-        bh=fus6kvoYf66Mlu0H8F9u+qdP27PGHhe707CwuCQQRYY=;
+        s=korg; t=1686169608;
+        bh=FLZX+UK/82eRVORB7fraCDojcz+FqC8P5JdFgT7Lx34=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q/U7Gmz/6Zbu5RwBpyL5w7uICfweQp6cW8c8qsCxZejnhStTNzSPZtEMu7meJzDaO
-         IHHdNC/bmbs6yyqSzCU0jMHAf54KTX552hzwmXSBXtsfgw1Ax0k5+SNJPaVcEhkdOE
-         P8dbLVGDhiBCg9y/wWdLuSKtkwlL6kHhPqSkqE/Y=
+        b=GsIH9p6Qp3BWDQSLZbs2f5DgqEsd/6qJPKky2GQE5uYK4LcHmWLzqyQO+BFupA54y
+         s6fwOtPBl9mm/YAyun+h7ErcuLGFltuFTI+1e0JfCUbA5KDiYOFb2/klRB5Aksq46j
+         MNCEQxyS2WszESYFNBx04DufqK02iQ9i9YTUINJw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xin Long <lucien.xin@gmail.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 052/225] rtnetlink: call validate_linkmsg in rtnl_create_link
+        patches@lists.linux.dev, Heiko Carstens <hca@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 146/286] s390/topology: honour nr_cpu_ids when adding CPUs
 Date:   Wed,  7 Jun 2023 22:14:05 +0200
-Message-ID: <20230607200916.062923753@linuxfoundation.org>
+Message-ID: <20230607200927.869084765@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,59 +54,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Alexander Gordeev <agordeev@linux.ibm.com>
 
-commit b0ad3c179059089d809b477a1d445c1183a7b8fe upstream.
+[ Upstream commit a33239be2d38ff5a44427db1707c08787508d34a ]
 
-validate_linkmsg() was introduced by commit 1840bb13c22f5b ("[RTNL]:
-Validate hardware and broadcast address attribute for RTM_NEWLINK")
-to validate tb[IFLA_ADDRESS/BROADCAST] for existing links. The same
-check should also be done for newly created links.
+When SMT thread CPUs are added to CPU masks the nr_cpu_ids
+limit is not checked and could be exceeded. This leads to
+a warning for example if CONFIG_DEBUG_PER_CPU_MAPS is set
+and the command line parameter nr_cpus is set to 1.
 
-This patch adds validate_linkmsg() call in rtnl_create_link(), to
-avoid the invalid address set when creating some devices like:
-
-  # ip link add dummy0 type dummy
-  # ip link add link dummy0 name mac0 address 01:02 type macsec
-
-Fixes: 0e06877c6fdb ("[RTNETLINK]: rtnl_link: allow specifying initial device address")
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/s390/kernel/topology.c | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -3212,6 +3212,7 @@ struct net_device *rtnl_create_link(stru
- 	struct net_device *dev;
- 	unsigned int num_tx_queues = 1;
- 	unsigned int num_rx_queues = 1;
-+	int err;
+diff --git a/arch/s390/kernel/topology.c b/arch/s390/kernel/topology.c
+index c6eecd4a5302d..10b20aeb27d3b 100644
+--- a/arch/s390/kernel/topology.c
++++ b/arch/s390/kernel/topology.c
+@@ -95,7 +95,7 @@ static void cpu_group_map(cpumask_t *dst, struct mask_info *info, unsigned int c
+ static void cpu_thread_map(cpumask_t *dst, unsigned int cpu)
+ {
+ 	static cpumask_t mask;
+-	int i;
++	unsigned int max_cpu;
  
- 	if (tb[IFLA_NUM_TX_QUEUES])
- 		num_tx_queues = nla_get_u32(tb[IFLA_NUM_TX_QUEUES]);
-@@ -3247,13 +3248,18 @@ struct net_device *rtnl_create_link(stru
- 	if (!dev)
- 		return ERR_PTR(-ENOMEM);
+ 	cpumask_clear(&mask);
+ 	if (!cpumask_test_cpu(cpu, &cpu_setup_mask))
+@@ -104,9 +104,10 @@ static void cpu_thread_map(cpumask_t *dst, unsigned int cpu)
+ 	if (topology_mode != TOPOLOGY_MODE_HW)
+ 		goto out;
+ 	cpu -= cpu % (smp_cpu_mtid + 1);
+-	for (i = 0; i <= smp_cpu_mtid; i++) {
+-		if (cpumask_test_cpu(cpu + i, &cpu_setup_mask))
+-			cpumask_set_cpu(cpu + i, &mask);
++	max_cpu = min(cpu + smp_cpu_mtid, nr_cpu_ids - 1);
++	for (; cpu <= max_cpu; cpu++) {
++		if (cpumask_test_cpu(cpu, &cpu_setup_mask))
++			cpumask_set_cpu(cpu, &mask);
+ 	}
+ out:
+ 	cpumask_copy(dst, &mask);
+@@ -123,25 +124,26 @@ static void add_cpus_to_mask(struct topology_core *tl_core,
+ 	unsigned int core;
  
-+	err = validate_linkmsg(dev, tb, extack);
-+	if (err < 0) {
-+		free_netdev(dev);
-+		return ERR_PTR(err);
-+	}
-+
- 	dev_net_set(dev, net);
- 	dev->rtnl_link_ops = ops;
- 	dev->rtnl_link_state = RTNL_LINK_INITIALIZING;
+ 	for_each_set_bit(core, &tl_core->mask, TOPOLOGY_CORE_BITS) {
+-		unsigned int rcore;
+-		int lcpu, i;
++		unsigned int max_cpu, rcore;
++		int cpu;
  
- 	if (tb[IFLA_MTU]) {
- 		u32 mtu = nla_get_u32(tb[IFLA_MTU]);
--		int err;
- 
- 		err = dev_validate_mtu(dev, mtu, extack);
- 		if (err) {
+ 		rcore = TOPOLOGY_CORE_BITS - 1 - core + tl_core->origin;
+-		lcpu = smp_find_processor_id(rcore << smp_cpu_mt_shift);
+-		if (lcpu < 0)
++		cpu = smp_find_processor_id(rcore << smp_cpu_mt_shift);
++		if (cpu < 0)
+ 			continue;
+-		for (i = 0; i <= smp_cpu_mtid; i++) {
+-			topo = &cpu_topology[lcpu + i];
++		max_cpu = min(cpu + smp_cpu_mtid, nr_cpu_ids - 1);
++		for (; cpu <= max_cpu; cpu++) {
++			topo = &cpu_topology[cpu];
+ 			topo->drawer_id = drawer->id;
+ 			topo->book_id = book->id;
+ 			topo->socket_id = socket->id;
+ 			topo->core_id = rcore;
+-			topo->thread_id = lcpu + i;
++			topo->thread_id = cpu;
+ 			topo->dedicated = tl_core->d;
+-			cpumask_set_cpu(lcpu + i, &drawer->mask);
+-			cpumask_set_cpu(lcpu + i, &book->mask);
+-			cpumask_set_cpu(lcpu + i, &socket->mask);
+-			smp_cpu_set_polarization(lcpu + i, tl_core->pp);
++			cpumask_set_cpu(cpu, &drawer->mask);
++			cpumask_set_cpu(cpu, &book->mask);
++			cpumask_set_cpu(cpu, &socket->mask);
++			smp_cpu_set_polarization(cpu, tl_core->pp);
+ 		}
+ 	}
+ }
+-- 
+2.39.2
+
 
 
