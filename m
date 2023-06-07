@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB33F726CD1
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:36:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F7EE726EEF
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:54:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234053AbjFGUgs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:36:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34414 "EHLO
+        id S235462AbjFGUyR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:54:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234224AbjFGUgg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:36:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F26D82708
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:36:13 -0700 (PDT)
+        with ESMTP id S235473AbjFGUyD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7847C1BE4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:53:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 11F1264580
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:36:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C75C4339B;
-        Wed,  7 Jun 2023 20:36:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 02803647AA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:53:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B2AC433D2;
+        Wed,  7 Jun 2023 20:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170172;
-        bh=1IVIz9XbsewC6jOdqS//AYGIUJoXfZXMohb6vXnYLLo=;
+        s=korg; t=1686171230;
+        bh=TSrvxkW0g7+kGk+o09yxOWdyShj/7aqCd5YMFvMX98Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PPdQIBthGB7SbSly6Q2oIJSCZLyJpQ5s7oQ8w3VxH4su7SWTB9sTk3I+4aAPulsbx
-         HVlEhMn2uoZNbLRp31d2f5/G0rH3pNrgPf6FgQcs+rzPan5S2hliCn2ncEcZ7wTB7Y
-         oYX+f6BhGH6wkJTwiSvOCWTqTGcO7Rcc3ALWbFXA=
+        b=q+JSxQ2/xXxmvbTQ2XT2Fybuex+BS7tWW4VFD7MGEYZ3EME207L4w6MKPjKfsYRWo
+         p/gprrr/8/a55wbtSYYehXW6fR27IC23t+2l7HcPiblZWpvLcefYr5CLK4FmRctWBs
+         zX+vuK1C3605IGJ5Berq+QexD7fu833wX0DxGT3k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Liska <mliska@suse.cz>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 4.19 73/88] eth: sun: cassini: remove dead code
+        patches@lists.linux.dev, YongSu Yoo <yongsuyoo0215@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 38/99] media: dvb_demux: fix a bug for the continuity counter
 Date:   Wed,  7 Jun 2023 22:16:30 +0200
-Message-ID: <20230607200901.517123667@linuxfoundation.org>
+Message-ID: <20230607200901.447073897@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,44 +54,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin Liška <mliska@suse.cz>
+From: YongSu Yoo <yongsuyoo0215@gmail.com>
 
-commit 32329216ca1d6ee29c41215f18b3053bb6158541 upstream.
+[ Upstream commit 7efb10d8dc70ea3000cc70dca53407c52488acd1 ]
 
-Fixes the following GCC warning:
+In dvb_demux.c, some logics exist which compare the expected
+continuity counter and the real continuity counter. If they
+are not matched each other, both of the expected continuity
+counter and the real continuity counter should be printed.
+But there exists a bug that the expected continuity counter
+is not correctly printed. The expected continuity counter is
+replaced with the real countinuity counter + 1 so that
+the epected continuity counter is not correclty printed.
+This is wrong. This bug is fixed.
 
-drivers/net/ethernet/sun/cassini.c:1316:29: error: comparison between two arrays [-Werror=array-compare]
-drivers/net/ethernet/sun/cassini.c:3783:34: error: comparison between two arrays [-Werror=array-compare]
+Link: https://lore.kernel.org/linux-media/20230305212519.499-1-yongsuyoo0215@gmail.com
 
-Note that 2 arrays should be compared by comparing of their addresses:
-note: use ‘&cas_prog_workaroundtab[0] == &cas_prog_null[0]’ to compare the addresses
-
-Signed-off-by: Martin Liska <mliska@suse.cz>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: YongSu Yoo <yongsuyoo0215@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/sun/cassini.c |    4 ++--
+ drivers/media/dvb-core/dvb_demux.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/sun/cassini.c
-+++ b/drivers/net/ethernet/sun/cassini.c
-@@ -1337,7 +1337,7 @@ static void cas_init_rx_dma(struct cas *
- 	writel(val, cp->regs + REG_RX_PAGE_SIZE);
+diff --git a/drivers/media/dvb-core/dvb_demux.c b/drivers/media/dvb-core/dvb_demux.c
+index 39a2c6ccf31d7..9904a170faeff 100644
+--- a/drivers/media/dvb-core/dvb_demux.c
++++ b/drivers/media/dvb-core/dvb_demux.c
+@@ -125,12 +125,12 @@ static inline int dvb_dmx_swfilter_payload(struct dvb_demux_feed *feed,
  
- 	/* enable the header parser if desired */
--	if (CAS_HP_FIRMWARE == cas_prog_null)
-+	if (&CAS_HP_FIRMWARE[0] == &cas_prog_null[0])
- 		return;
+ 	cc = buf[3] & 0x0f;
+ 	ccok = ((feed->cc + 1) & 0x0f) == cc;
+-	feed->cc = cc;
+ 	if (!ccok) {
+ 		set_buf_flags(feed, DMX_BUFFER_FLAG_DISCONTINUITY_DETECTED);
+ 		dprintk_sect_loss("missed packet: %d instead of %d!\n",
+ 				  cc, (feed->cc + 1) & 0x0f);
+ 	}
++	feed->cc = cc;
  
- 	val = CAS_BASE(HP_CFG_NUM_CPU, CAS_NCPUS > 63 ? 0 : CAS_NCPUS);
-@@ -3807,7 +3807,7 @@ static void cas_reset(struct cas *cp, in
+ 	if (buf[1] & 0x40)	// PUSI ?
+ 		feed->peslen = 0xfffa;
+@@ -310,7 +310,6 @@ static int dvb_dmx_swfilter_section_packet(struct dvb_demux_feed *feed,
  
- 	/* program header parser */
- 	if ((cp->cas_flags & CAS_FLAG_TARGET_ABORT) ||
--	    (CAS_HP_ALT_FIRMWARE == cas_prog_null)) {
-+	    (&CAS_HP_ALT_FIRMWARE[0] == &cas_prog_null[0])) {
- 		cas_load_firmware(cp, CAS_HP_FIRMWARE);
- 	} else {
- 		cas_load_firmware(cp, CAS_HP_ALT_FIRMWARE);
+ 	cc = buf[3] & 0x0f;
+ 	ccok = ((feed->cc + 1) & 0x0f) == cc;
+-	feed->cc = cc;
+ 
+ 	if (buf[3] & 0x20) {
+ 		/* adaption field present, check for discontinuity_indicator */
+@@ -346,6 +345,7 @@ static int dvb_dmx_swfilter_section_packet(struct dvb_demux_feed *feed,
+ 		feed->pusi_seen = false;
+ 		dvb_dmx_swfilter_section_new(feed);
+ 	}
++	feed->cc = cc;
+ 
+ 	if (buf[1] & 0x40) {
+ 		/* PUSI=1 (is set), section boundary is here */
+-- 
+2.39.2
+
 
 
