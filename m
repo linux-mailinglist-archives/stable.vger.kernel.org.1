@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A323B726EF8
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:54:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DBFD726DF4
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:46:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235420AbjFGUy3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:54:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55068 "EHLO
+        id S234780AbjFGUqt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:46:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235408AbjFGUyJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:09 -0400
+        with ESMTP id S234732AbjFGUou (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 700691FE5
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:54:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29C8F19BB
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:44:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CE826647B5
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:54:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E7BC4339C;
-        Wed,  7 Jun 2023 20:54:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 09BE96466D
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:44:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E0D9C433EF;
+        Wed,  7 Jun 2023 20:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171246;
-        bh=/eoaW3P9E+ErBYCcLMXMWB0xr1a7FzmUtzq0etIXhCI=;
+        s=korg; t=1686170674;
+        bh=ImA4jrJC3S4xOEeWT9/lqNC5uP0YInyQ2XXcePBwvE8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=itd2MLE6ZxstEpYi9xMURaSHCtCQHwTiQtdXwLHMBv2Pa/0faLge3SOuB0m2+CHnV
-         cZPaIWch1nu02Ew3TB/QbC39P8sHdPdTKMa3R49MYd8psQ3Tg84VilbjKlSKcPxORQ
-         pL6DXXkRxrhYR4Hb8hZVZrF9IpyfDC4ivbAB5/EA=
+        b=BMz1Br/H0R3YdliTU7xDWUuwgSy3rkYKo93ZxsApICNbZ+R7iurxcShYDExjAXvpY
+         beHkN+QDzDtZoyzdM5bCYjYNQRaOMjVAOZ17O1/UjVmGuuvsnsIFHtUZqcUJujgaYx
+         hHETvzE/HEdsxbmGEbpg9a26eMWD6IEq4Eqi0vy0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jack Yang <mingliang@linux.alibaba.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Cambda Zhu <cambda@linux.alibaba.com>,
-        Jason Xing <kerneljasonxing@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 15/99] tcp: Return user_mss for TCP_MAXSEG in CLOSE/LISTEN state if user_mss set
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Sherry Sun <sherry.sun@nxp.com>
+Subject: [PATCH 6.1 174/225] tty: serial: fsl_lpuart: use UARTCTRL_TXINV to send break instead of UARTCTRL_SBK
 Date:   Wed,  7 Jun 2023 22:16:07 +0200
-Message-ID: <20230607200900.731642486@linuxfoundation.org>
+Message-ID: <20230607200920.080772742@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,49 +53,102 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Cambda Zhu <cambda@linux.alibaba.com>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-[ Upstream commit 34dfde4ad87b84d21278a7e19d92b5b2c68e6c4d ]
+commit 2474e05467c00f7d51af3039b664de6886325257 upstream.
 
-This patch replaces the tp->mss_cache check in getting TCP_MAXSEG
-with tp->rx_opt.user_mss check for CLOSE/LISTEN sock. Since
-tp->mss_cache is initialized with TCP_MSS_DEFAULT, checking if
-it's zero is probably a bug.
+LPUART IP now has two known bugs, one is that CTS has higher priority
+than the break signal, which causes the break signal sending through
+UARTCTRL_SBK may impacted by the CTS input if the HW flow control is
+enabled. It exists on all platforms we support in this driver.
+So we add a workaround patch for this issue: commit c4c81db5cf8b
+("tty: serial: fsl_lpuart: disable the CTS when send break signal").
 
-With this change, getting TCP_MAXSEG before connecting will return
-default MSS normally, and return user_mss if user_mss is set.
+Another IP bug is i.MX8QM LPUART may have an additional break character
+being sent after SBK was cleared. It may need to add some delay between
+clearing SBK and re-enabling CTS to ensure that the SBK latch are
+completely cleared.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Jack Yang <mingliang@linux.alibaba.com>
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/netdev/CANn89i+3kL9pYtkxkwxwNMzvC_w3LNUum_2=3u+UyLBmGmifHA@mail.gmail.com/#t
-Signed-off-by: Cambda Zhu <cambda@linux.alibaba.com>
-Link: https://lore.kernel.org/netdev/14D45862-36EA-4076-974C-EA67513C92F6@linux.alibaba.com/
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230527040317.68247-1-cambda@linux.alibaba.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+But we found that during the delay period before CTS is enabled, there
+is still a risk that Bluetooth data in TX FIFO may be sent out during
+this period because of break off and CTS disabled(even if BT sets CTS
+line deasserted, data is still sent to BT).
+
+Due to this risk, we have to drop the CTS-disabling workaround for SBK
+bugs, use TXINV seems to be a better way to replace SBK feature and
+avoid above risk. Also need to disable the transmitter to prevent any
+data from being sent out during break, then invert the TX line to send
+break. Then disable the TXINV when turn off break and re-enable
+transmitter.
+
+Fixes: c4c81db5cf8b ("tty: serial: fsl_lpuart: disable the CTS when send break signal")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+Link: https://lore.kernel.org/r/20230519094751.28948-1-sherry.sun@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/tty/serial/fsl_lpuart.c |   44 ++++++++++++++++++++--------------------
+ 1 file changed, 23 insertions(+), 21 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index e427eabc7f278..fdf2ddc4864df 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -3451,7 +3451,8 @@ static int do_tcp_getsockopt(struct sock *sk, int level,
- 	switch (optname) {
- 	case TCP_MAXSEG:
- 		val = tp->mss_cache;
--		if (!val && ((1 << sk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)))
-+		if (tp->rx_opt.user_mss &&
-+		    ((1 << sk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)))
- 			val = tp->rx_opt.user_mss;
- 		if (tp->repair)
- 			val = tp->rx_opt.mss_clamp;
--- 
-2.39.2
-
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -1475,34 +1475,36 @@ static void lpuart_break_ctl(struct uart
+ 
+ static void lpuart32_break_ctl(struct uart_port *port, int break_state)
+ {
+-	unsigned long temp, modem;
+-	struct tty_struct *tty;
+-	unsigned int cflag = 0;
++	unsigned long temp;
+ 
+-	tty = tty_port_tty_get(&port->state->port);
+-	if (tty) {
+-		cflag = tty->termios.c_cflag;
+-		tty_kref_put(tty);
+-	}
+-
+-	temp = lpuart32_read(port, UARTCTRL) & ~UARTCTRL_SBK;
+-	modem = lpuart32_read(port, UARTMODIR);
++	temp = lpuart32_read(port, UARTCTRL);
+ 
++	/*
++	 * LPUART IP now has two known bugs, one is CTS has higher priority than the
++	 * break signal, which causes the break signal sending through UARTCTRL_SBK
++	 * may impacted by the CTS input if the HW flow control is enabled. It
++	 * exists on all platforms we support in this driver.
++	 * Another bug is i.MX8QM LPUART may have an additional break character
++	 * being sent after SBK was cleared.
++	 * To avoid above two bugs, we use Transmit Data Inversion function to send
++	 * the break signal instead of UARTCTRL_SBK.
++	 */
+ 	if (break_state != 0) {
+-		temp |= UARTCTRL_SBK;
+ 		/*
+-		 * LPUART CTS has higher priority than SBK, need to disable CTS before
+-		 * asserting SBK to avoid any interference if flow control is enabled.
++		 * Disable the transmitter to prevent any data from being sent out
++		 * during break, then invert the TX line to send break.
+ 		 */
+-		if (cflag & CRTSCTS && modem & UARTMODIR_TXCTSE)
+-			lpuart32_write(port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
++		temp &= ~UARTCTRL_TE;
++		lpuart32_write(port, temp, UARTCTRL);
++		temp |= UARTCTRL_TXINV;
++		lpuart32_write(port, temp, UARTCTRL);
+ 	} else {
+-		/* Re-enable the CTS when break off. */
+-		if (cflag & CRTSCTS && !(modem & UARTMODIR_TXCTSE))
+-			lpuart32_write(port, modem | UARTMODIR_TXCTSE, UARTMODIR);
++		/* Disable the TXINV to turn off break and re-enable transmitter. */
++		temp &= ~UARTCTRL_TXINV;
++		lpuart32_write(port, temp, UARTCTRL);
++		temp |= UARTCTRL_TE;
++		lpuart32_write(port, temp, UARTCTRL);
+ 	}
+-
+-	lpuart32_write(port, temp, UARTCTRL);
+ }
+ 
+ static void lpuart_setup_watermark(struct lpuart_port *sport)
 
 
