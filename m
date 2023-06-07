@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C14C726D42
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:40:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58D52726BF4
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:29:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234304AbjFGUkp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:40:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40222 "EHLO
+        id S233592AbjFGU3X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:29:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234333AbjFGUkm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:40:42 -0400
+        with ESMTP id S233613AbjFGU3T (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:29:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52AB52121
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:40:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE61B2126
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:29:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 19758645F4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:40:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E02EC433EF;
-        Wed,  7 Jun 2023 20:40:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 880756448C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:29:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0396C433D2;
+        Wed,  7 Jun 2023 20:29:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170409;
-        bh=CuKgPgV6aZ3NzUMUfu26ivUi3ak9kLb/FiLkOUerykQ=;
+        s=korg; t=1686169745;
+        bh=awLwyRpuLvxzkYp1+BuQee70cH6x2ekPPiLJGmfacb0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jonh4GeyfNIoo8eZpoyt5LwHXXD2AGRNS62n3FtJWE9KdHKCjQ+nbLN7aKeYSJk3O
-         9yhVnUnnKhjidzl7ANw5NeCrke8Yd6lDD/piE81bWqi+n8CS82Vudgd2s0ksndKNr/
-         kazMFnb45Un3zJShmcd1KTnsKoNjhGabVMd4Uykc=
+        b=vXN/UAzZpbTszs/7fo6ngqklL/RfNUUskbDKX2XU3/qoQNbS8NHsTmEwAIpNPT0bG
+         T93XeWbQt3apcuelZsJG2iIsFmoEEzLBNM2tfJv1rBA3sBnMO+YGsC1pX9WobsioS8
+         wXT8x6VwJVu9Zimy8Lg+dZ3D1k9w9D9gHtPWj1Xs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liming Sun <limings@nvidia.com>,
-        Vadim Pasternak <vadimp@nvidia.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/225] platform/mellanox: fix potential race in mlxbf-tmfifo driver
-Date:   Wed,  7 Jun 2023 22:14:26 +0200
-Message-ID: <20230607200916.767379073@linuxfoundation.org>
+Subject: [PATCH 6.3 168/286] atm: hide unused procfs functions
+Date:   Wed,  7 Jun 2023 22:14:27 +0200
+Message-ID: <20230607200928.605425487@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,63 +54,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Liming Sun <limings@nvidia.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 3d43f9f639542fadfb28f40b509bf147a6624d48 ]
+[ Upstream commit fb1b7be9b16c1f4626969ba4e95a97da2a452b41 ]
 
-This commit adds memory barrier for the 'vq' update in function
-mlxbf_tmfifo_virtio_find_vqs() to avoid potential race due to
-out-of-order memory write. It also adds barrier for the 'is_ready'
-flag to make sure the initializations are visible before this flag
-is checked.
+When CONFIG_PROC_FS is disabled, the function declarations for some
+procfs functions are hidden, but the definitions are still build,
+as shown by this compiler warning:
 
-Signed-off-by: Liming Sun <limings@nvidia.com>
-Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
-Link: https://lore.kernel.org/r/b98c0ab61d644ba38fa9b3fd1607b138b0dd820b.1682518748.git.limings@nvidia.com
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+net/atm/resources.c:403:7: error: no previous prototype for 'atm_dev_seq_start' [-Werror=missing-prototypes]
+net/atm/resources.c:409:6: error: no previous prototype for 'atm_dev_seq_stop' [-Werror=missing-prototypes]
+net/atm/resources.c:414:7: error: no previous prototype for 'atm_dev_seq_next' [-Werror=missing-prototypes]
+
+Add another #ifdef to leave these out of the build.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20230516194625.549249-2-arnd@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/mellanox/mlxbf-tmfifo.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ net/atm/resources.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/platform/mellanox/mlxbf-tmfifo.c b/drivers/platform/mellanox/mlxbf-tmfifo.c
-index 1ae3c56b66b09..b2e19f30a928b 100644
---- a/drivers/platform/mellanox/mlxbf-tmfifo.c
-+++ b/drivers/platform/mellanox/mlxbf-tmfifo.c
-@@ -765,7 +765,7 @@ static void mlxbf_tmfifo_rxtx(struct mlxbf_tmfifo_vring *vring, bool is_rx)
- 	fifo = vring->fifo;
+diff --git a/net/atm/resources.c b/net/atm/resources.c
+index 2b2d33eeaf200..995d29e7fb138 100644
+--- a/net/atm/resources.c
++++ b/net/atm/resources.c
+@@ -400,6 +400,7 @@ int atm_dev_ioctl(unsigned int cmd, void __user *buf, int __user *sioc_len,
+ 	return error;
+ }
  
- 	/* Return if vdev is not ready. */
--	if (!fifo->vdev[devid])
-+	if (!fifo || !fifo->vdev[devid])
- 		return;
- 
- 	/* Return if another vring is running. */
-@@ -961,9 +961,13 @@ static int mlxbf_tmfifo_virtio_find_vqs(struct virtio_device *vdev,
- 
- 		vq->num_max = vring->num;
- 
-+		vq->priv = vring;
-+
-+		/* Make vq update visible before using it. */
-+		virtio_mb(false);
-+
- 		vqs[i] = vq;
- 		vring->vq = vq;
--		vq->priv = vring;
- 	}
- 
- 	return 0;
-@@ -1260,6 +1264,9 @@ static int mlxbf_tmfifo_probe(struct platform_device *pdev)
- 
- 	mod_timer(&fifo->timer, jiffies + MLXBF_TMFIFO_TIMER_INTERVAL);
- 
-+	/* Make all updates visible before setting the 'is_ready' flag. */
-+	virtio_mb(false);
-+
- 	fifo->is_ready = true;
- 	return 0;
- 
++#ifdef CONFIG_PROC_FS
+ void *atm_dev_seq_start(struct seq_file *seq, loff_t *pos)
+ {
+ 	mutex_lock(&atm_dev_mutex);
+@@ -415,3 +416,4 @@ void *atm_dev_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+ {
+ 	return seq_list_next(v, &atm_devs, pos);
+ }
++#endif
 -- 
 2.39.2
 
