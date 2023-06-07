@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66842726DC0
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:45:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6215C726E60
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234774AbjFGUpW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:45:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45328 "EHLO
+        id S235142AbjFGUu2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:50:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234828AbjFGUo4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE4172128
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:44:42 -0700 (PDT)
+        with ESMTP id S235151AbjFGUte (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:49:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAEB11FDC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:49:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BE07F64660
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:44:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A31C433EF;
-        Wed,  7 Jun 2023 20:44:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 961C4646D8
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:49:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4BCFC43443;
+        Wed,  7 Jun 2023 20:49:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170682;
-        bh=O+6FnCMBc0toMCm7AYWINAO4Tv/33jE50aLTPC9FI9s=;
+        s=korg; t=1686170953;
+        bh=nA3a2JuaF2tFY3q8pm0uubL+KBlIIxqjxi+8W8mEZOc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CH0cNNav39uXLcKN2mdProg7uk130W2n8CvWWl3aExk8csDGXgdbtYKBb97IxbWP6
-         EyaR7UrXnmSXcEDbdld5CTCInDz0714HF7CLLIDi7u3xJdFnEr428XiTAJoxKUmSHY
-         YnyAk/zz+3h4DxLlgmu9LtsXCdPMt97W4gmIil40=
+        b=qHuY5IQi4ou1vD0XDSH9YurmC7gH3d12aCYLcqDsrSfZqeHiNMwgq86+Aa2zI0Cn7
+         JlgsIpLZxC2DRnANAB1XJ2LinDak9aAAdSkT4ksovfT6zt/Fzenqefj65BiqMxa3bC
+         8ViDsmG4B5wBXf+xtjgmt0T3Axi1Yc66Acvl+m9s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 177/225] phy: qcom-qmp-pcie-msm8996: fix init-count imbalance
+        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 054/120] media: dvb-usb: dw2102: fix uninit-value in su3000_read_mac_address
 Date:   Wed,  7 Jun 2023 22:16:10 +0200
-Message-ID: <20230607200920.178098657@linuxfoundation.org>
+Message-ID: <20230607200902.597813219@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,47 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Wei Chen <harperchen1110@gmail.com>
 
-commit e42f110700ed7293700c26145e1ed07ea05ac3f6 upstream.
+[ Upstream commit a3fd1ef27aa686d871cefe207bd6168c4b0cd29e ]
 
-The init counter is not decremented on initialisation errors, which
-prevents retrying initialisation.
+In su3000_read_mac_address, if i2c_transfer fails to execute two
+messages, array mac address will not be initialized. Without handling
+such error, later in function dvb_usb_adapter_dvb_init, proposed_mac
+is accessed before initialization.
 
-Add the missing decrement on initialisation errors so that the counter
-reflects the state of the device.
+Fix this error by returning a negative value if message execution fails.
 
-Fixes: e78f3d15e115 ("phy: qcom-qmp: new qmp phy driver for qcom-chipsets")
-Cc: stable@vger.kernel.org      # 4.12
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230502103810.12061-3-johan+linaro@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-media/20230328124416.560889-1-harperchen1110@gmail.com
+Signed-off-by: Wei Chen <harperchen1110@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-pcie-msm8996.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/media/usb/dvb-usb/dw2102.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/phy/qualcomm/phy-qcom-qmp-pcie-msm8996.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-pcie-msm8996.c
-@@ -425,7 +425,7 @@ static int qmp_pcie_msm8996_com_init(str
- 	ret = regulator_bulk_enable(cfg->num_vregs, qmp->vregs);
- 	if (ret) {
- 		dev_err(qmp->dev, "failed to enable regulators, err=%d\n", ret);
--		goto err_unlock;
-+		goto err_decrement_count;
+diff --git a/drivers/media/usb/dvb-usb/dw2102.c b/drivers/media/usb/dvb-usb/dw2102.c
+index aa929db56db1f..3c4ac998d040f 100644
+--- a/drivers/media/usb/dvb-usb/dw2102.c
++++ b/drivers/media/usb/dvb-usb/dw2102.c
+@@ -946,7 +946,7 @@ static int su3000_read_mac_address(struct dvb_usb_device *d, u8 mac[6])
+ 	for (i = 0; i < 6; i++) {
+ 		obuf[1] = 0xf0 + i;
+ 		if (i2c_transfer(&d->i2c_adap, msg, 2) != 2)
+-			break;
++			return -1;
+ 		else
+ 			mac[i] = ibuf[0];
  	}
- 
- 	ret = reset_control_bulk_assert(cfg->num_resets, qmp->resets);
-@@ -455,7 +455,8 @@ err_assert_reset:
- 	reset_control_bulk_assert(cfg->num_resets, qmp->resets);
- err_disable_regulators:
- 	regulator_bulk_disable(cfg->num_vregs, qmp->vregs);
--err_unlock:
-+err_decrement_count:
-+	qmp->init_count--;
- 	mutex_unlock(&qmp->phy_mutex);
- 
- 	return ret;
+-- 
+2.39.2
+
 
 
