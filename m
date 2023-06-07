@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B45D726DE5
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:46:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8CE9726F1E
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234717AbjFGUqa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:46:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46790 "EHLO
+        id S235496AbjFGUzh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:55:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234863AbjFGUqP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:46:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B678F212B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:45:58 -0700 (PDT)
+        with ESMTP id S235473AbjFGUzb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:55:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8B52FC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:55:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9482464695
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:45:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A940AC433D2;
-        Wed,  7 Jun 2023 20:45:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7546164801
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:55:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8582BC433D2;
+        Wed,  7 Jun 2023 20:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170758;
-        bh=egqMW5JWLZ9ExfwvPYLIZNZRm+NkVGcYZXJ0MT2kE64=;
+        s=korg; t=1686171329;
+        bh=sAhyqlYuCB+oGx6YX9g5EwECWXRNU1vkB79FUjM+5A8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Tut38w3vDqSjr7zU5yZIER2N2dTSdZrm75PtJLZgphpbT3HST3d2f1wo0Qf0zrlx+
-         mZhDc4fKcxMYrhj+TXgrFHk93vNiT/oqEpDIHXTiHPS3GeofiUSI7XaAkznaf9T8D6
-         Ir96MU5awzeAoMxTUArfcYUGkFz22pi49Ue5Cogc=
+        b=RwEQtX884O9yhAO87A6jvI220BZ2TTkLePRo/7KHRvXo5naVMHZgwCZsl9V+oWOOk
+         ZMbzVrfrBd641n9ececrryTLhtFQM/hgbd3j4XIrmSSrXzE5pGcsuyqIylPun94z0Y
+         uXgxou8o8u9ncW+bZsBysNFbPzKh+s9pLrgFrfc8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
-        Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 6.1 206/225] KVM: arm64: Populate fault info for watchpoint
+        patches@lists.linux.dev, Hyunwoo Kim <imv4bel@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 47/99] media: ttusb-dec: fix memory leak in ttusb_dec_exit_dvb()
 Date:   Wed,  7 Jun 2023 22:16:39 +0200
-Message-ID: <20230607200921.103383989@linuxfoundation.org>
+Message-ID: <20230607200901.723202275@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,82 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-commit 811154e234db72f0a11557a84ba9640f8b3bc823 upstream.
+[ Upstream commit 517a281338322ff8293f988771c98aaa7205e457 ]
 
-When handling ESR_ELx_EC_WATCHPT_LOW, far_el2 member of struct
-kvm_vcpu_fault_info will be copied to far member of struct
-kvm_debug_exit_arch and exposed to the userspace. The userspace will
-see stale values from older faults if the fault info does not get
-populated.
+Since dvb_frontend_detach() is not called in ttusb_dec_exit_dvb(),
+which is called when the device is disconnected, dvb_frontend_free()
+is not finally called.
 
-Fixes: 8fb2046180a0 ("KVM: arm64: Move early handlers to per-EC handlers")
-Suggested-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230530024651.10014-1-akihiko.odaki@daynix.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This causes a memory leak just by repeatedly plugging and
+unplugging the device.
+
+Fix this issue by adding dvb_frontend_detach() to ttusb_dec_exit_dvb().
+
+Link: https://lore.kernel.org/linux-media/20221117045925.14297-5-imv4bel@gmail.com
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/hyp/include/hyp/switch.h |    8 ++++++--
- arch/arm64/kvm/hyp/nvhe/switch.c        |    2 ++
- arch/arm64/kvm/hyp/vhe/switch.c         |    1 +
- 3 files changed, 9 insertions(+), 2 deletions(-)
+ drivers/media/usb/ttusb-dec/ttusb_dec.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/arch/arm64/kvm/hyp/include/hyp/switch.h
-+++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
-@@ -351,17 +351,21 @@ static bool kvm_hyp_handle_cp15_32(struc
- 	return false;
+diff --git a/drivers/media/usb/ttusb-dec/ttusb_dec.c b/drivers/media/usb/ttusb-dec/ttusb_dec.c
+index 3198f9624b7c0..46bb0ccaafc1f 100644
+--- a/drivers/media/usb/ttusb-dec/ttusb_dec.c
++++ b/drivers/media/usb/ttusb-dec/ttusb_dec.c
+@@ -1551,8 +1551,7 @@ static void ttusb_dec_exit_dvb(struct ttusb_dec *dec)
+ 	dvb_dmx_release(&dec->demux);
+ 	if (dec->fe) {
+ 		dvb_unregister_frontend(dec->fe);
+-		if (dec->fe->ops.release)
+-			dec->fe->ops.release(dec->fe);
++		dvb_frontend_detach(dec->fe);
+ 	}
+ 	dvb_unregister_adapter(&dec->adapter);
  }
- 
--static bool kvm_hyp_handle_iabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
-+static bool kvm_hyp_handle_memory_fault(struct kvm_vcpu *vcpu, u64 *exit_code)
- {
- 	if (!__populate_fault_info(vcpu))
- 		return true;
- 
- 	return false;
- }
-+static bool kvm_hyp_handle_iabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
-+	__alias(kvm_hyp_handle_memory_fault);
-+static bool kvm_hyp_handle_watchpt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
-+	__alias(kvm_hyp_handle_memory_fault);
- 
- static bool kvm_hyp_handle_dabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
- {
--	if (!__populate_fault_info(vcpu))
-+	if (kvm_hyp_handle_memory_fault(vcpu, exit_code))
- 		return true;
- 
- 	if (static_branch_unlikely(&vgic_v2_cpuif_trap)) {
---- a/arch/arm64/kvm/hyp/nvhe/switch.c
-+++ b/arch/arm64/kvm/hyp/nvhe/switch.c
-@@ -186,6 +186,7 @@ static const exit_handler_fn hyp_exit_ha
- 	[ESR_ELx_EC_FP_ASIMD]		= kvm_hyp_handle_fpsimd,
- 	[ESR_ELx_EC_IABT_LOW]		= kvm_hyp_handle_iabt_low,
- 	[ESR_ELx_EC_DABT_LOW]		= kvm_hyp_handle_dabt_low,
-+	[ESR_ELx_EC_WATCHPT_LOW]	= kvm_hyp_handle_watchpt_low,
- 	[ESR_ELx_EC_PAC]		= kvm_hyp_handle_ptrauth,
- };
- 
-@@ -196,6 +197,7 @@ static const exit_handler_fn pvm_exit_ha
- 	[ESR_ELx_EC_FP_ASIMD]		= kvm_hyp_handle_fpsimd,
- 	[ESR_ELx_EC_IABT_LOW]		= kvm_hyp_handle_iabt_low,
- 	[ESR_ELx_EC_DABT_LOW]		= kvm_hyp_handle_dabt_low,
-+	[ESR_ELx_EC_WATCHPT_LOW]	= kvm_hyp_handle_watchpt_low,
- 	[ESR_ELx_EC_PAC]		= kvm_hyp_handle_ptrauth,
- };
- 
---- a/arch/arm64/kvm/hyp/vhe/switch.c
-+++ b/arch/arm64/kvm/hyp/vhe/switch.c
-@@ -110,6 +110,7 @@ static const exit_handler_fn hyp_exit_ha
- 	[ESR_ELx_EC_FP_ASIMD]		= kvm_hyp_handle_fpsimd,
- 	[ESR_ELx_EC_IABT_LOW]		= kvm_hyp_handle_iabt_low,
- 	[ESR_ELx_EC_DABT_LOW]		= kvm_hyp_handle_dabt_low,
-+	[ESR_ELx_EC_WATCHPT_LOW]	= kvm_hyp_handle_watchpt_low,
- 	[ESR_ELx_EC_PAC]		= kvm_hyp_handle_ptrauth,
- };
- 
+-- 
+2.39.2
+
 
 
