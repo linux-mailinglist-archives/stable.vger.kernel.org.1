@@ -2,48 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64733726AE8
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73587726F90
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:00:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232471AbjFGUUw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:20:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45796 "EHLO
+        id S236409AbjFGVAj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:00:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232854AbjFGUUo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DFDF2723
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:20:20 -0700 (PDT)
+        with ESMTP id S235834AbjFGU75 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:59:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 884CF270A
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:59:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A849664386
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:20:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA79C433EF;
-        Wed,  7 Jun 2023 20:20:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 62363648DA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:59:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C00C433EF;
+        Wed,  7 Jun 2023 20:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169211;
-        bh=AGdFKM+aPJQvYlx2mK3yLpKN+vHrAjQ0ANWT2/LEmpE=;
+        s=korg; t=1686171568;
+        bh=jKrNuBwFBASeoYEA5DGc1XNcj2STVtp2XXCpYrs7yV0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p3xd0F4LldmezVNZ67+k+y5zh+TYZK+kzw8HK48qjigSRdyMUJ2NFoGIa4YiG9eD2
-         M7hgy4OW0lPrZGB4Vel/3SgQSuwNwgk+zp1VVi/7kbW7zLkA37EO0i1acbcqR5dFry
-         G4mMdDHsXNmTMgoTlEb928I3rZ+2TkDDGX+HPFaI=
+        b=19/kN4wKfBrorbpYlt0lTV6wsiF7rPUPuaNCThP967y4xXIQ/qDhTzKe1TWORn6e3
+         jtbMaDIi+cpc7mae07e9wSGWolYZiWGTGlluAQ9pRWYwkokmsGmAOClSDaM8qznapI
+         CcRKTLcz4PAAo7w99d3hscYSl8aFHcwsE7bkWkCc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ben Hutchings <benh@debian.org>
-Subject: [PATCH 4.14 56/61] scsi: dpt_i2o: Do not process completions with invalid addresses
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 067/159] media: dvb-usb-v2: rtl28xxu: fix null-ptr-deref in rtl28xxu_i2c_xfer
 Date:   Wed,  7 Jun 2023 22:16:10 +0200
-Message-ID: <20230607200854.517010396@linuxfoundation.org>
+Message-ID: <20230607200905.878918059@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-References: <20230607200835.310274198@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,59 +54,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ben Hutchings <benh@debian.org>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-adpt_isr() reads reply addresses from a hardware register, which
-should always be within the DMA address range of the device's pool of
-reply address buffers.  In case the address is out of range, it tries
-to muddle on, converting to a virtual address using bus_to_virt().
+[ Upstream commit aa4a447b81b84f69c1a89ad899df157f386d7636 ]
 
-bus_to_virt() does not take DMA addresses, and it doesn't make sense
-to try to handle the completion in this case.  Ignore it and continue
-looping to service the interrupt.  If a completion has been lost then
-the SCSI core should eventually time-out and trigger a reset.
+In rtl28xxu_i2c_xfer, msg is controlled by user. When msg[i].buf
+is null and msg[i].len is zero, former checks on msg[i].buf would be
+passed. Malicious data finally reach rtl28xxu_i2c_xfer. If accessing
+msg[i].buf[0] without sanity check, null ptr deref would happen.
+We add check on msg[i].len to prevent crash.
 
-There is no corresponding upstream commit, because this driver was
-removed upstream.
+Similar commit:
+commit 0ed554fd769a
+("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
 
-Fixes: 67af2b060e02 ("[SCSI] dpt_i2o: move from virt_to_bus/bus_to_virt ...")
-Signed-off-by: Ben Hutchings <benh@debian.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-media/tencent_3623572106754AC2F266B316798B0F6CCA05@qq.com
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/Kconfig   |    2 +-
- drivers/scsi/dpt_i2o.c |    4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/media/usb/dvb-usb-v2/rtl28xxu.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
---- a/drivers/scsi/Kconfig
-+++ b/drivers/scsi/Kconfig
-@@ -480,7 +480,7 @@ config SCSI_MVUMI
- 
- config SCSI_DPT_I2O
- 	tristate "Adaptec I2O RAID support "
--	depends on SCSI && PCI && VIRT_TO_BUS
-+	depends on SCSI && PCI
- 	help
- 	  This driver supports all of Adaptec's I2O based RAID controllers as 
- 	  well as the DPT SmartRaid V cards.  This is an Adaptec maintained
---- a/drivers/scsi/dpt_i2o.c
-+++ b/drivers/scsi/dpt_i2o.c
-@@ -59,7 +59,7 @@ MODULE_DESCRIPTION("Adaptec I2O RAID Dri
- 
- #include <asm/processor.h>	/* for boot_cpu_data */
- #include <asm/pgtable.h>
--#include <asm/io.h>		/* for virt_to_bus, etc. */
-+#include <asm/io.h>
- 
- #include <scsi/scsi.h>
- #include <scsi/scsi_cmnd.h>
-@@ -1912,7 +1912,7 @@ static irqreturn_t adpt_isr(int irq, voi
- 		} else {
- 			/* Ick, we should *never* be here */
- 			printk(KERN_ERR "dpti: reply frame not from pool\n");
--			reply = (u8 *)bus_to_virt(m);
-+			continue;
- 		}
- 
- 		if (readl(reply) & MSG_FAIL) {
+diff --git a/drivers/media/usb/dvb-usb-v2/rtl28xxu.c b/drivers/media/usb/dvb-usb-v2/rtl28xxu.c
+index 795a012d40200..f7884bb56fccf 100644
+--- a/drivers/media/usb/dvb-usb-v2/rtl28xxu.c
++++ b/drivers/media/usb/dvb-usb-v2/rtl28xxu.c
+@@ -176,6 +176,10 @@ static int rtl28xxu_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 			ret = -EOPNOTSUPP;
+ 			goto err_mutex_unlock;
+ 		} else if (msg[0].addr == 0x10) {
++			if (msg[0].len < 1 || msg[1].len < 1) {
++				ret = -EOPNOTSUPP;
++				goto err_mutex_unlock;
++			}
+ 			/* method 1 - integrated demod */
+ 			if (msg[0].buf[0] == 0x00) {
+ 				/* return demod page from driver cache */
+@@ -189,6 +193,10 @@ static int rtl28xxu_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 				ret = rtl28xxu_ctrl_msg(d, &req);
+ 			}
+ 		} else if (msg[0].len < 2) {
++			if (msg[0].len < 1) {
++				ret = -EOPNOTSUPP;
++				goto err_mutex_unlock;
++			}
+ 			/* method 2 - old I2C */
+ 			req.value = (msg[0].buf[0] << 8) | (msg[0].addr << 1);
+ 			req.index = CMD_I2C_RD;
+@@ -217,8 +225,16 @@ static int rtl28xxu_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 			ret = -EOPNOTSUPP;
+ 			goto err_mutex_unlock;
+ 		} else if (msg[0].addr == 0x10) {
++			if (msg[0].len < 1) {
++				ret = -EOPNOTSUPP;
++				goto err_mutex_unlock;
++			}
+ 			/* method 1 - integrated demod */
+ 			if (msg[0].buf[0] == 0x00) {
++				if (msg[0].len < 2) {
++					ret = -EOPNOTSUPP;
++					goto err_mutex_unlock;
++				}
+ 				/* save demod page for later demod access */
+ 				dev->page = msg[0].buf[1];
+ 				ret = 0;
+@@ -231,6 +247,10 @@ static int rtl28xxu_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
+ 				ret = rtl28xxu_ctrl_msg(d, &req);
+ 			}
+ 		} else if ((msg[0].len < 23) && (!dev->new_i2c_write)) {
++			if (msg[0].len < 1) {
++				ret = -EOPNOTSUPP;
++				goto err_mutex_unlock;
++			}
+ 			/* method 2 - old I2C */
+ 			req.value = (msg[0].buf[0] << 8) | (msg[0].addr << 1);
+ 			req.index = CMD_I2C_WR;
+-- 
+2.39.2
+
 
 
