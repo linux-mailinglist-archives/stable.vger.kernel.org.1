@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF853726CA7
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:35:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5CF8726AD4
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234035AbjFGUfT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:35:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33902 "EHLO
+        id S232710AbjFGUUb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:20:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234031AbjFGUfF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:35:05 -0400
+        with ESMTP id S232793AbjFGUUU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93D321706
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:34:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BC6B2698
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:19:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 74E686455A
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:34:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87EB1C433D2;
-        Wed,  7 Jun 2023 20:34:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 781C263E0B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:19:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A363C433EF;
+        Wed,  7 Jun 2023 20:19:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170098;
-        bh=uj879TXgVdpswPbW4om4D1RVeuUOuKBA4Mz97/6MR98=;
+        s=korg; t=1686169184;
+        bh=utlSGCexOjlkJDFodjWgF90EXrLmh/PXDMpExk9oJbM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZEmTRvZgFymElm90LE+aJOp+LyBETPQnffm+iOYrN+n920UwWoZMJUf036SEtBVrL
-         8JiE8bMSLrqWAEtOtZ7/TQsBDXvcpGY+xc33D9KIh6vgIv7JPtevGQULRWEet8Yy3z
-         hBDpb0dhnMxwiqqK2XIm0WAyV9GpWFR+ycgmoIxc=
+        b=YUDOkagtPh7H8L7t2uIY6tBzAe8hLq3BiRjkhCgfYvlnoSR015y/f+0q0hUjUh4Yj
+         RPbOJHzlzQHbkbNJ7OvHGy5QrF6Z+bJiXlQCwS7GprzYdUsYVZJYtQn9W5hRhReIxT
+         TSUtNoJBP53Nti45bdAzd9ysnzxVAi2V2kJ3ICzA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 44/88] media: dvb-usb: dw2102: fix uninit-value in su3000_read_mac_address
+        patches@lists.linux.dev,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jason Baron <jbaron@akamai.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 4.14 47/61] lib/dynamic_debug.c: use address-of operator on section symbols
 Date:   Wed,  7 Jun 2023 22:16:01 +0200
-Message-ID: <20230607200900.607287844@linuxfoundation.org>
+Message-ID: <20230607200851.460367804@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
+References: <20230607200835.310274198@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,40 +57,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wei Chen <harperchen1110@gmail.com>
+From: Nathan Chancellor <natechancellor@gmail.com>
 
-[ Upstream commit a3fd1ef27aa686d871cefe207bd6168c4b0cd29e ]
+commit 8306b057a85ec07482da5d4b99d5c0b47af69be1 upstream.
 
-In su3000_read_mac_address, if i2c_transfer fails to execute two
-messages, array mac address will not be initialized. Without handling
-such error, later in function dvb_usb_adapter_dvb_init, proposed_mac
-is accessed before initialization.
+Clang warns:
 
-Fix this error by returning a negative value if message execution fails.
+../lib/dynamic_debug.c:1034:24: warning: array comparison always
+evaluates to false [-Wtautological-compare]
+        if (__start___verbose == __stop___verbose) {
+                              ^
+1 warning generated.
 
-Link: https://lore.kernel.org/linux-media/20230328124416.560889-1-harperchen1110@gmail.com
-Signed-off-by: Wei Chen <harperchen1110@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+These are not true arrays, they are linker defined symbols, which are just
+addresses.  Using the address of operator silences the warning and does
+not change the resulting assembly with either clang/ld.lld or gcc/ld
+(tested with diff + objdump -Dr).
+
+Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Acked-by: Jason Baron <jbaron@akamai.com>
+Link: https://github.com/ClangBuiltLinux/linux/issues/894
+Link: http://lkml.kernel.org/r/20200220051320.10739-1-natechancellor@gmail.com
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/dvb-usb/dw2102.c | 2 +-
+ lib/dynamic_debug.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/dvb-usb/dw2102.c b/drivers/media/usb/dvb-usb/dw2102.c
-index ebb0c982a6f21..cd0566c0b3de7 100644
---- a/drivers/media/usb/dvb-usb/dw2102.c
-+++ b/drivers/media/usb/dvb-usb/dw2102.c
-@@ -949,7 +949,7 @@ static int su3000_read_mac_address(struct dvb_usb_device *d, u8 mac[6])
- 	for (i = 0; i < 6; i++) {
- 		obuf[1] = 0xf0 + i;
- 		if (i2c_transfer(&d->i2c_adap, msg, 2) != 2)
--			break;
-+			return -1;
- 		else
- 			mac[i] = ibuf[0];
+--- a/lib/dynamic_debug.c
++++ b/lib/dynamic_debug.c
+@@ -984,7 +984,7 @@ static int __init dynamic_debug_init(voi
+ 	int n = 0, entries = 0, modct = 0;
+ 	int verbose_bytes = 0;
+ 
+-	if (__start___verbose == __stop___verbose) {
++	if (&__start___verbose == &__stop___verbose) {
+ 		pr_warn("_ddebug table is empty in a CONFIG_DYNAMIC_DEBUG build\n");
+ 		return 1;
  	}
--- 
-2.39.2
-
 
 
