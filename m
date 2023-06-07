@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D10BE726CDA
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:37:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E95B726E84
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:51:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233976AbjFGUhN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:37:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36198 "EHLO
+        id S235336AbjFGUvC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:51:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234006AbjFGUhN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:37:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C7BD2707
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:36:44 -0700 (PDT)
+        with ESMTP id S235107AbjFGUun (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:50:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AF962705
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:50:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 61079645A1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:36:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740DCC433D2;
-        Wed,  7 Jun 2023 20:36:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A64D96470A
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:50:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6241C433EF;
+        Wed,  7 Jun 2023 20:50:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170203;
-        bh=7P1ovuxvTzFYSu+1MIAyr3QGwChR4p2MrkuhM2fNbD0=;
+        s=korg; t=1686171034;
+        bh=i+z53TWJk40cu7KVEGwfln1kPQX+XtUYvQiEwjPukBg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xANv4Wop7oDnwyCEIOg8AP6XBIIIT4dAX9w01VgRywKL4NHgNMHjplIJbUCzFB093
-         8cusEvTL4kYclAs9L4MEu6TPa/aWMzDzCxvjwb2+Ih2EBzkEALQpy1eyXd9JWQc8Sm
-         cBM6s19C3sZjulvHFtD22p4omEAhIY+s1bm0vWV8=
+        b=nbXL0fJld4V+UzohUT7ff2pTNmPRxX7GqtDkCtY+MSurLfecNgLjKV98h8az7Jr7L
+         PZC/HC3SEYxr4ONTxFemrSAD8Qxp+ciS8z3pmVQL/TCRViSrxQEq/pYcQnDcmPAW6R
+         XlACaFwZEhpvQfFZ1PzyUh1D0Col/zHUTchjPIw4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
-        syzbot+d910bd780e6efac35869@syzkaller.appspotmail.com,
-        Sam Ravnborg <sam@ravnborg.org>, stable@kernel.org
-Subject: [PATCH 4.19 84/88] fbcon: Fix null-ptr-deref in soft_cursor
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Bart Van Assche <bvanassche@acm.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 085/120] scsi: stex: Fix gcc 13 warnings
 Date:   Wed,  7 Jun 2023 22:16:41 +0200
-Message-ID: <20230607200901.848021414@linuxfoundation.org>
+Message-ID: <20230607200903.571360177@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,58 +54,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit d78bd6cc68276bd57f766f7cb98bfe32c23ab327 upstream.
+commit 6d074ce231772c66e648a61f6bd2245e7129d1f5 upstream.
 
-syzbot repored this bug in the softcursor code:
+gcc 13 may assign another type to enumeration constants than gcc 12. Split
+the large enum at the top of source file stex.c such that the type of the
+constants used in time expressions is changed back to the same type chosen
+by gcc 12. This patch suppresses compiler warnings like this one:
 
-BUG: KASAN: null-ptr-deref in soft_cursor+0x384/0x6b4 drivers/video/fbdev/core/softcursor.c:70
-Read of size 16 at addr 0000000000000200 by task kworker/u4:1/12
+In file included from ./include/linux/bitops.h:7,
+                 from ./include/linux/kernel.h:22,
+                 from drivers/scsi/stex.c:13:
+drivers/scsi/stex.c: In function ‘stex_common_handshake’:
+./include/linux/typecheck.h:12:25: error: comparison of distinct pointer types lacks a cast [-Werror]
+   12 |         (void)(&__dummy == &__dummy2); \
+      |                         ^~
+./include/linux/jiffies.h:106:10: note: in expansion of macro ‘typecheck’
+  106 |          typecheck(unsigned long, b) && \
+      |          ^~~~~~~~~
+drivers/scsi/stex.c:1035:29: note: in expansion of macro ‘time_after’
+ 1035 |                         if (time_after(jiffies, before + MU_MAX_DELAY * HZ)) {
+      |                             ^~~~~~~~~~
 
-CPU: 0 PID: 12 Comm: kworker/u4:1 Not tainted 6.4.0-rc3-syzkaller-geb0f1697d729 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/28/2023
-Workqueue: events_power_efficient fb_flashcursor
-Call trace:
- dump_backtrace+0x1b8/0x1e4 arch/arm64/kernel/stacktrace.c:233
- show_stack+0x2c/0x44 arch/arm64/kernel/stacktrace.c:240
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0xd0/0x124 lib/dump_stack.c:106
- print_report+0xe4/0x514 mm/kasan/report.c:465
- kasan_report+0xd4/0x130 mm/kasan/report.c:572
- kasan_check_range+0x264/0x2a4 mm/kasan/generic.c:187
- __asan_memcpy+0x3c/0x84 mm/kasan/shadow.c:105
- soft_cursor+0x384/0x6b4 drivers/video/fbdev/core/softcursor.c:70
- bit_cursor+0x113c/0x1a64 drivers/video/fbdev/core/bitblit.c:377
- fb_flashcursor+0x35c/0x54c drivers/video/fbdev/core/fbcon.c:380
- process_one_work+0x788/0x12d4 kernel/workqueue.c:2405
- worker_thread+0x8e0/0xfe8 kernel/workqueue.c:2552
- kthread+0x288/0x310 kernel/kthread.c:379
- ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:853
+See also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107405.
 
-This fix let bit_cursor() bail out early when a font bitmap
-isn't available yet.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reported-by: syzbot+d910bd780e6efac35869@syzkaller.appspotmail.com
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
-Cc: stable@kernel.org
+Cc: stable@vger.kernel.org
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20230529195034.3077-1-bvanassche@acm.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/bitblit.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/stex.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/video/fbdev/core/bitblit.c
-+++ b/drivers/video/fbdev/core/bitblit.c
-@@ -247,6 +247,9 @@ static void bit_cursor(struct vc_data *v
+--- a/drivers/scsi/stex.c
++++ b/drivers/scsi/stex.c
+@@ -109,7 +109,9 @@ enum {
+ 	TASK_ATTRIBUTE_HEADOFQUEUE		= 0x1,
+ 	TASK_ATTRIBUTE_ORDERED			= 0x2,
+ 	TASK_ATTRIBUTE_ACA			= 0x4,
++};
  
- 	cursor.set = 0;
++enum {
+ 	SS_STS_NORMAL				= 0x80000000,
+ 	SS_STS_DONE				= 0x40000000,
+ 	SS_STS_HANDSHAKE			= 0x20000000,
+@@ -121,7 +123,9 @@ enum {
+ 	SS_I2H_REQUEST_RESET			= 0x2000,
  
-+	if (!vc->vc_font.data)
-+		return;
-+
-  	c = scr_readw((u16 *) vc->vc_pos);
- 	attribute = get_attribute(info, c);
- 	src = vc->vc_font.data + ((c & charmask) * (w * vc->vc_font.height));
+ 	SS_MU_OPERATIONAL			= 0x80000000,
++};
+ 
++enum {
+ 	STEX_CDB_LENGTH				= 16,
+ 	STATUS_VAR_LEN				= 128,
+ 
 
 
