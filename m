@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA033726C37
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACEC8726DCD
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:45:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232306AbjFGUbe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:31:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57862 "EHLO
+        id S234754AbjFGUpa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:45:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232195AbjFGUbe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:31:34 -0400
+        with ESMTP id S235132AbjFGUpQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:45:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BCBB184
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:31:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ADC12680
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:45:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ACFFB644E4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:31:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFABCC433D2;
-        Wed,  7 Jun 2023 20:31:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DFEE364653
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:45:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F421FC433EF;
+        Wed,  7 Jun 2023 20:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169892;
-        bh=nWqr5TWz5JpUsaCsCSSpZgS2+HkE4DbKk2xbE2P+Tas=;
+        s=korg; t=1686170708;
+        bh=ccY9kNcRCwAvdcz5NUVxfEw3Gr/8eP2fXagni27mMW4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xW0Htk2SUomWdIZ18ERrk57cOJ9uHIwQnDgmtba10CmqQlPSESOPtbnhbA8DmajF1
-         UllBuvToWozBqk8l9IGhSbW4LmwNRYURDUzzFk8Xqfkn9Je7i9JpwAYOOJnA/HCgt0
-         29RMkHDu6ykliBVFE47KCkMw2vjrfgn3A5iKjgOw=
+        b=ypb7jlA0Y/Qh9+78ixWC2DqdfoVfd57uC0EJLYEUDb+zTq/XI2Rp7fwKe+Yh5QzVG
+         v0bq3/Ctpc7Oj7UB0L2xRM+PVhfhnbulYmqSzMeeMnygwcl8rBfyQxmqYpWP/mFgfN
+         v1lpVLmoD+ILbjjQoBgJHKneUll/NF8AF9SIKDww=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>
-Subject: [PATCH 6.3 253/286] selftests: mptcp: diag: skip if MPTCP is not supported
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Christoph Hellwig <hch@lst.de>, Song Liu <song@kernel.org>
+Subject: [PATCH 6.1 159/225] md/raid5: fix miscalculation of end_sector in raid5_read_one_chunk()
 Date:   Wed,  7 Jun 2023 22:15:52 +0200
-Message-ID: <20230607200931.573156245@linuxfoundation.org>
+Message-ID: <20230607200919.603401471@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,46 +53,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit 46565acdd29facbf418a11e4a3791b3c8967308d upstream.
+commit 8557dc27126949c702bd3aafe8a7e0b7e4fcb44c upstream.
 
-Selftests are supposed to run on any kernels, including the old ones not
-supporting MPTCP.
+'end_sector' is compared to 'rdev->recovery_offset', which is offset to
+rdev, however, commit e82ed3a4fbb5 ("md/raid6: refactor
+raid5_read_one_chunk") changes the calculation of 'end_sector' to offset
+to the array. Fix this miscalculation.
 
-A new check is then added to make sure MPTCP is supported. If not, the
-test stops and is marked as "skipped".
-
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
-Fixes: df62f2ec3df6 ("selftests/mptcp: add diag interface tests")
-Cc: stable@vger.kernel.org
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: e82ed3a4fbb5 ("md/raid6: refactor raid5_read_one_chunk")
+Cc: stable@vger.kernel.org # v5.12+
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20230524014118.3172781-1-yukuai1@huaweicloud.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/diag.sh |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/md/raid5.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/diag.sh
-+++ b/tools/testing/selftests/net/mptcp/diag.sh
-@@ -1,6 +1,8 @@
- #!/bin/bash
- # SPDX-License-Identifier: GPL-2.0
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -5516,7 +5516,7 @@ static int raid5_read_one_chunk(struct m
  
-+. "$(dirname "${0}")/mptcp_lib.sh"
-+
- sec=$(date +%s)
- rndh=$(printf %x $sec)-$(mktemp -u XXXXXX)
- ns="ns1-$rndh"
-@@ -31,6 +33,8 @@ cleanup()
- 	ip netns del $ns
- }
+ 	sector = raid5_compute_sector(conf, raid_bio->bi_iter.bi_sector, 0,
+ 				      &dd_idx, NULL);
+-	end_sector = bio_end_sector(raid_bio);
++	end_sector = sector + bio_sectors(raid_bio);
  
-+mptcp_lib_check_mptcp
-+
- ip -Version > /dev/null 2>&1
- if [ $? -ne 0 ];then
- 	echo "SKIP: Could not run test without ip tool"
+ 	rcu_read_lock();
+ 	if (r5c_big_stripe_cached(conf, sector))
 
 
