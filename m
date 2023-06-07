@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB16C726E45
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:49:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6025C726DB8
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:45:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235178AbjFGUtW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:49:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46566 "EHLO
+        id S234679AbjFGUor (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:44:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235190AbjFGUs4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:48:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D20C71FE5
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:48:32 -0700 (PDT)
+        with ESMTP id S234667AbjFGUol (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39B2526B8
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:44:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E78E061DFC
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:48:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E02C433D2;
-        Wed,  7 Jun 2023 20:48:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B5BEB64661
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:44:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47C9C433D2;
+        Wed,  7 Jun 2023 20:43:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170911;
-        bh=aks827XbioErvve/dkNRJXRajnnTOO0WCKzcP5cIXm8=;
+        s=korg; t=1686170640;
+        bh=i+z53TWJk40cu7KVEGwfln1kPQX+XtUYvQiEwjPukBg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cnuBpC8kH83a6mvomR8IXYTbXZWCi2ZbcEtglv2W+iXdl6C/O4p8EbUrTHAVJ0KIw
-         tCJJHa6QZfuPDB1NqPLCsokiIak4vYC6mrBpAHv4CLHB415RIibTJpXH4YMGJWMhvu
-         44DOKtkjUG4LnHAaUcb+JPEG59W5DY7t0ajduQOw=
+        b=Je9LFfHcdLzfr/1cs8dqHHnQY/68MypyJWGB9Q38M92CR7HPj6KG+RinPaoZ3Ws+3
+         nshaT+i2gchKpd61uazsg0G1P3NBpzOtcFC3cr1JiSW4M0Jy2gKqX5DkrHI7modRok
+         3b5qgAUdi6cLEyFfUhS322iGCje6sFC2pWtNhVGY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yang Lan <lanyang0908@gmail.com>,
-        Bob Peterson <rpeterso@redhat.com>,
-        Andreas Gruenbacher <agruenba@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 039/120] gfs2: Dont deref jdesc in evict
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Bart Van Assche <bvanassche@acm.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 162/225] scsi: stex: Fix gcc 13 warnings
 Date:   Wed,  7 Jun 2023 22:15:55 +0200
-Message-ID: <20230607200902.135989147@linuxfoundation.org>
+Message-ID: <20230607200919.698931398@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,66 +54,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bob Peterson <rpeterso@redhat.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 504a10d9e46bc37b23d0a1ae2f28973c8516e636 ]
+commit 6d074ce231772c66e648a61f6bd2245e7129d1f5 upstream.
 
-On corrupt gfs2 file systems the evict code can try to reference the
-journal descriptor structure, jdesc, after it has been freed and set to
-NULL. The sequence of events is:
+gcc 13 may assign another type to enumeration constants than gcc 12. Split
+the large enum at the top of source file stex.c such that the type of the
+constants used in time expressions is changed back to the same type chosen
+by gcc 12. This patch suppresses compiler warnings like this one:
 
-init_journal()
-...
-fail_jindex:
-   gfs2_jindex_free(sdp); <------frees journals, sets jdesc = NULL
-      if (gfs2_holder_initialized(&ji_gh))
-         gfs2_glock_dq_uninit(&ji_gh);
-fail:
-   iput(sdp->sd_jindex); <--references jdesc in evict_linked_inode
-      evict()
-         gfs2_evict_inode()
-            evict_linked_inode()
-               ret = gfs2_trans_begin(sdp, 0, sdp->sd_jdesc->jd_blocks);
-<------references the now freed/zeroed sd_jdesc pointer.
+In file included from ./include/linux/bitops.h:7,
+                 from ./include/linux/kernel.h:22,
+                 from drivers/scsi/stex.c:13:
+drivers/scsi/stex.c: In function ‘stex_common_handshake’:
+./include/linux/typecheck.h:12:25: error: comparison of distinct pointer types lacks a cast [-Werror]
+   12 |         (void)(&__dummy == &__dummy2); \
+      |                         ^~
+./include/linux/jiffies.h:106:10: note: in expansion of macro ‘typecheck’
+  106 |          typecheck(unsigned long, b) && \
+      |          ^~~~~~~~~
+drivers/scsi/stex.c:1035:29: note: in expansion of macro ‘time_after’
+ 1035 |                         if (time_after(jiffies, before + MU_MAX_DELAY * HZ)) {
+      |                             ^~~~~~~~~~
 
-The call to gfs2_trans_begin is done because the truncate_inode_pages
-call can cause gfs2 events that require a transaction, such as removing
-journaled data (jdata) blocks from the journal.
+See also https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107405.
 
-This patch fixes the problem by adding a check for sdp->sd_jdesc to
-function gfs2_evict_inode. In theory, this should only happen to corrupt
-gfs2 file systems, when gfs2 detects the problem, reports it, then tries
-to evict all the system inodes it has read in up to that point.
-
-Reported-by: Yang Lan <lanyang0908@gmail.com>
-Signed-off-by: Bob Peterson <rpeterso@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20230529195034.3077-1-bvanassche@acm.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/super.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/scsi/stex.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index 5cb7e771b57ab..e01b6a2d12d30 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -1416,6 +1416,14 @@ static void gfs2_evict_inode(struct inode *inode)
- 	if (inode->i_nlink || sb_rdonly(sb))
- 		goto out;
+--- a/drivers/scsi/stex.c
++++ b/drivers/scsi/stex.c
+@@ -109,7 +109,9 @@ enum {
+ 	TASK_ATTRIBUTE_HEADOFQUEUE		= 0x1,
+ 	TASK_ATTRIBUTE_ORDERED			= 0x2,
+ 	TASK_ATTRIBUTE_ACA			= 0x4,
++};
  
-+	/*
-+	 * In case of an incomplete mount, gfs2_evict_inode() may be called for
-+	 * system files without having an active journal to write to.  In that
-+	 * case, skip the filesystem evict.
-+	 */
-+	if (!sdp->sd_jdesc)
-+		goto out;
-+
- 	gfs2_holder_mark_uninitialized(&gh);
- 	ret = evict_should_delete(inode, &gh);
- 	if (ret == SHOULD_DEFER_EVICTION)
--- 
-2.39.2
-
++enum {
+ 	SS_STS_NORMAL				= 0x80000000,
+ 	SS_STS_DONE				= 0x40000000,
+ 	SS_STS_HANDSHAKE			= 0x20000000,
+@@ -121,7 +123,9 @@ enum {
+ 	SS_I2H_REQUEST_RESET			= 0x2000,
+ 
+ 	SS_MU_OPERATIONAL			= 0x80000000,
++};
+ 
++enum {
+ 	STEX_CDB_LENGTH				= 16,
+ 	STATUS_VAR_LEN				= 128,
+ 
 
 
