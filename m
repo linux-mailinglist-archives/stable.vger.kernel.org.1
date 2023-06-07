@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0305A726F74
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:58:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42655726D91
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:43:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235690AbjFGU6d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:58:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59524 "EHLO
+        id S234438AbjFGUng (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:43:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235784AbjFGU6Y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:58:24 -0400
+        with ESMTP id S234555AbjFGUnc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:43:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4543D2139
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:58:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B1D0270C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:43:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BC52764876
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:57:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E97C4339C;
-        Wed,  7 Jun 2023 20:57:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 37EB664631
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:43:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45CD5C433D2;
+        Wed,  7 Jun 2023 20:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171474;
-        bh=nUtwn1Z7kC3XfG1P+VdAVP3PCrcftdAWnDBPgsRheEM=;
+        s=korg; t=1686170590;
+        bh=xjSFqEXFNEEJVpr54YlItuR7Mfdx6sYSsTzNIpCfwQY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p0R2c7C0hBzIhwREl+XBF8KzN7fWfkPVGrW0AqXc/AoDmAmHGPOormeYQXelbLxwQ
-         f2FH8oR6koxUQ/Bhqu+X1iQh5i+h0aYbU1iupLdeelPhVAK+YGWIiXl7ZIH+mums84
-         bELOPL852PtAQ0AX20GzeugF5ZR18R4L1xuVRH4E=
+        b=EkP6p4T66SALmKKMiSpfqXlB2mPf/DIEIpYYBlLJlPNTTaHxAOlxjDjeS82JpdKBV
+         FI6TYW2RBhO74zg0602k1mvxRYcaiC4fYv6aIBW6A/l4HdngpyjscgIeZ3YqV4Q5ef
+         nWxic4ynOabAtH6xNiB+g0ExZbvjjZ9HMEs7nwLs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladislav Efanov <VEfanov@ispras.ru>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 032/159] udp6: Fix race condition in udp6_sendmsg & connect
+        patches@lists.linux.dev, Jiakai Luo <jkluo@hust.edu.cn>,
+        Dongliang Mu <dzm91@hust.edu.cn>, Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 142/225] iio: adc: mxs-lradc: fix the order of two cleanup operations
 Date:   Wed,  7 Jun 2023 22:15:35 +0200
-Message-ID: <20230607200904.719735977@linuxfoundation.org>
+Message-ID: <20230607200919.033775478@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,58 +54,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladislav Efanov <VEfanov@ispras.ru>
+From: Jiakai Luo <jkluo@hust.edu.cn>
 
-[ Upstream commit 448a5ce1120c5bdbce1f1ccdabcd31c7d029f328 ]
+commit 27b2ed5b6d53cd62fc61c3f259ae52f5cac23b66 upstream.
 
-Syzkaller got the following report:
-BUG: KASAN: use-after-free in sk_setup_caps+0x621/0x690 net/core/sock.c:2018
-Read of size 8 at addr ffff888027f82780 by task syz-executor276/3255
+Smatch reports:
+drivers/iio/adc/mxs-lradc-adc.c:766 mxs_lradc_adc_probe() warn:
+missing unwind goto?
 
-The function sk_setup_caps (called by ip6_sk_dst_store_flow->
-ip6_dst_store) referenced already freed memory as this memory was
-freed by parallel task in udpv6_sendmsg->ip6_sk_dst_lookup_flow->
-sk_dst_check.
+the order of three init operation:
+1.mxs_lradc_adc_trigger_init
+2.iio_triggered_buffer_setup
+3.mxs_lradc_adc_hw_init
 
-          task1 (connect)              task2 (udp6_sendmsg)
-        sk_setup_caps->sk_dst_set |
-                                  |  sk_dst_check->
-                                  |      sk_dst_set
-                                  |      dst_release
-        sk_setup_caps references  |
-        to already freed dst_entry|
+thus, the order of three cleanup operation should be:
+1.mxs_lradc_adc_hw_stop
+2.iio_triggered_buffer_cleanup
+3.mxs_lradc_adc_trigger_remove
 
-The reason for this race condition is: sk_setup_caps() keeps using
-the dst after transferring the ownership to the dst cache.
+we exchange the order of two cleanup operations,
+introducing the following differences:
+1.if mxs_lradc_adc_trigger_init fails, returns directly;
+2.if trigger_init succeeds but iio_triggered_buffer_setup fails,
+goto err_trig and remove the trigger.
 
-Found by Linux Verification Center (linuxtesting.org) with syzkaller.
+In addition, we also reorder the unwind that goes on in the
+remove() callback to match the new ordering.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Vladislav Efanov <VEfanov@ispras.ru>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6dd112b9f85e ("iio: adc: mxs-lradc: Add support for ADC driver")
+Signed-off-by: Jiakai Luo <jkluo@hust.edu.cn>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Link: https://lore.kernel.org/r/20230422133407.72908-1-jkluo@hust.edu.cn
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/mxs-lradc-adc.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2165,7 +2165,6 @@ void sk_setup_caps(struct sock *sk, stru
- {
- 	u32 max_segs = 1;
+--- a/drivers/iio/adc/mxs-lradc-adc.c
++++ b/drivers/iio/adc/mxs-lradc-adc.c
+@@ -757,13 +757,13 @@ static int mxs_lradc_adc_probe(struct pl
  
--	sk_dst_set(sk, dst);
- 	sk->sk_route_caps = dst->dev->features | sk->sk_route_forced_caps;
- 	if (sk->sk_route_caps & NETIF_F_GSO)
- 		sk->sk_route_caps |= NETIF_F_GSO_SOFTWARE;
-@@ -2180,6 +2179,7 @@ void sk_setup_caps(struct sock *sk, stru
- 		}
- 	}
- 	sk->sk_gso_max_segs = max_segs;
-+	sk_dst_set(sk, dst);
+ 	ret = mxs_lradc_adc_trigger_init(iio);
+ 	if (ret)
+-		goto err_trig;
++		return ret;
+ 
+ 	ret = iio_triggered_buffer_setup(iio, &iio_pollfunc_store_time,
+ 					 &mxs_lradc_adc_trigger_handler,
+ 					 &mxs_lradc_adc_buffer_ops);
+ 	if (ret)
+-		return ret;
++		goto err_trig;
+ 
+ 	adc->vref_mv = mxs_lradc_adc_vref_mv[lradc->soc];
+ 
+@@ -801,9 +801,9 @@ static int mxs_lradc_adc_probe(struct pl
+ 
+ err_dev:
+ 	mxs_lradc_adc_hw_stop(adc);
+-	mxs_lradc_adc_trigger_remove(iio);
+-err_trig:
+ 	iio_triggered_buffer_cleanup(iio);
++err_trig:
++	mxs_lradc_adc_trigger_remove(iio);
+ 	return ret;
  }
- EXPORT_SYMBOL_GPL(sk_setup_caps);
  
+@@ -814,8 +814,8 @@ static int mxs_lradc_adc_remove(struct p
+ 
+ 	iio_device_unregister(iio);
+ 	mxs_lradc_adc_hw_stop(adc);
+-	mxs_lradc_adc_trigger_remove(iio);
+ 	iio_triggered_buffer_cleanup(iio);
++	mxs_lradc_adc_trigger_remove(iio);
+ 
+ 	return 0;
+ }
 
 
