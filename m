@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3DAD726E2E
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:48:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3DBB726C8A
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:34:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234764AbjFGUsl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:48:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47280 "EHLO
+        id S233779AbjFGUeU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:34:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234841AbjFGUsZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:48:25 -0400
+        with ESMTP id S233869AbjFGUeT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:34:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E9DC26B2
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:48:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 934E22125
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:34:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EB75D60C6D
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:48:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08EA9C4339B;
-        Wed,  7 Jun 2023 20:48:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 208EA64558
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:34:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 302CAC433D2;
+        Wed,  7 Jun 2023 20:34:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170890;
-        bh=RnTWit3fIlmdLqZWT+SREnqj6/o9Z0xdnUlpsu4GJtc=;
+        s=korg; t=1686170043;
+        bh=7ImA2J6n1q6A7ayF6YC3jwMmEYzKT8ad2iUtfZMlOzE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OJMuV32W0zsgWoX29HnEpyslb9FmTf+XpSXyDRECuToehJbnoXnpjBQ3Nb2VL3N9N
-         tGp5ofNG9WZWXOOkBJdnmu891Cc0LYDMq878WB+jfaRbUTxEKShch/hgVntwGUOsbq
-         GfotGJ5U/9bH2/5yZ8xu/cg/+30oDO3S5m9V6EVQ=
+        b=E5dsRcZ9oH1sXt3MvTQfmQ2g3DRWM2thEKjkyuf+rdaTGs5le5D5jyDLf+XFOMDKT
+         gnzlD3rsaKhtIqAiFSHdRE5zVER/UKhwswBNFNw+FL27jYRYZ3hfZ5XfKlNSf77GRh
+         cRYBPAl0TwEDY+2mFPJ+dScon+NUW8u1lHDP5tpE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Tudor Ambarus <tudor.ambarus@microchip.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 004/120] dmaengine: at_xdmac: Fix concurrency over chans completed_cookie
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 03/88] power: supply: bq27xxx: After charger plug in/out wait 0.5s for things to stabilize
 Date:   Wed,  7 Jun 2023 22:15:20 +0200
-Message-ID: <20230607200901.057845937@linuxfoundation.org>
+Message-ID: <20230607200855.203642412@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,41 +54,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tudor Ambarus <tudor.ambarus@microchip.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 506875c30fc5bf92246060bc3b4c38799646266b ]
+[ Upstream commit 59a99cd462fbdf71f4e845e09f37783035088b4f ]
 
-Caller of dma_cookie_complete is expected to hold a lock to prevent
-concurrency over the channel's completed cookie marker. Call
-dma_cookie_complete() with the lock held.
+bq27xxx_external_power_changed() gets called when the charger is plugged
+in or out. Rather then immediately scheduling an update wait 0.5 seconds
+for things to stabilize, so that e.g. the (dis)charge current is stable
+when bq27xxx_battery_update() runs.
 
-Fixes: e1f7c9eee707 ("dmaengine: at_xdmac: creation of the atmel eXtended DMA Controller driver")
-Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
-Link: https://lore.kernel.org/r/20211215110115.191749-5-tudor.ambarus@microchip.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 4d43acb145c3 ("dmaengine: at_xdmac: fix potential Oops in at_xdmac_prep_interleaved()")
+Fixes: 740b755a3b34 ("bq27x00: Poll battery state")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/at_xdmac.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/power/supply/bq27xxx_battery.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
-index 1fe006cc643e7..501196d8c4881 100644
---- a/drivers/dma/at_xdmac.c
-+++ b/drivers/dma/at_xdmac.c
-@@ -1651,11 +1651,10 @@ static void at_xdmac_tasklet(struct tasklet_struct *t)
- 		}
+diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
+index b44776bb1da82..725851ca0e757 100644
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -1864,8 +1864,8 @@ static void bq27xxx_external_power_changed(struct power_supply *psy)
+ {
+ 	struct bq27xxx_device_info *di = power_supply_get_drvdata(psy);
  
- 		txd = &desc->tx_dma_desc;
--
-+		dma_cookie_complete(txd);
- 		at_xdmac_remove_xfer(atchan, desc);
- 		spin_unlock_irq(&atchan->lock);
+-	cancel_delayed_work_sync(&di->work);
+-	schedule_delayed_work(&di->work, 0);
++	/* After charger plug in/out wait 0.5s for things to stabilize */
++	mod_delayed_work(system_wq, &di->work, HZ / 2);
+ }
  
--		dma_cookie_complete(txd);
- 		if (txd->flags & DMA_PREP_INTERRUPT)
- 			dmaengine_desc_get_callback_invoke(txd, NULL);
- 
+ int bq27xxx_battery_setup(struct bq27xxx_device_info *di)
 -- 
 2.39.2
 
