@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5E02726C7B
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:33:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E2E9726D8E
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:43:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233837AbjFGUdr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:33:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60294 "EHLO
+        id S234463AbjFGUnb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:43:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233833AbjFGUdm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:33:42 -0400
+        with ESMTP id S234461AbjFGUnZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:43:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A22A61BD3
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:33:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8243B2113
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:43:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C94A6453B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:33:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22385C433D2;
-        Wed,  7 Jun 2023 20:33:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 61F256463D
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:43:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71060C433EF;
+        Wed,  7 Jun 2023 20:43:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170019;
-        bh=lj56uvEBkTdpz0a3dm4Q+xGTpevbiGhy8ydLsw84qa4=;
+        s=korg; t=1686170581;
+        bh=7sG7haTvVEzVa+BnCYVQqgrIkGoGAZP/MATkpIOM87c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I3BU8+iLqnqRNei45O6KiWTQtjfggVIAyXBjWnXNQJSlW4WsGbQ2q3cyRgnY2Cs22
-         aJEXtZJFEhE+hd+Js/f75DleAdq5FM/drrlM5eXcK3u2qbqG8jdupNycBUOZegno6m
-         oPIpEilBfFqfwHn5tBrSUhy8wK1Sf9bYPVmLRpKU=
+        b=X6Ifgx9+iD08KCKgdRMQnikdYleC2+VYRmLjJYk+twe2O8DVA8yPn4yPD/LZHn27j
+         9N5O/arUEahC0raN3QjBjNnvQfMwYdH0ERwQ3qCO3fnpVN18FBgppC38oHdSJOecV+
+         YJ/eJCGuVgWKAeNIOifCNOQxK4PnNoDLZjFrVS4w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Jiri Pirko <jiri@nvidia.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, K Prateek Nayak <kprateek.nayak@amd.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 15/88] af_packet: do not use READ_ONCE() in packet_bind()
+Subject: [PATCH 6.1 139/225] drivers: base: cacheinfo: Fix shared_cpu_map changes in event of CPU hotplug
 Date:   Wed,  7 Jun 2023 22:15:32 +0200
-Message-ID: <20230607200858.585499872@linuxfoundation.org>
+Message-ID: <20230607200918.931234320@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,62 +54,118 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: K Prateek Nayak <kprateek.nayak@amd.com>
 
-[ Upstream commit 6ffc57ea004234d9373c57b204fd10370a69f392 ]
+[ Upstream commit 126310c9f669c9a8c875a3e5c2292299ca90225d ]
 
-A recent patch added READ_ONCE() in packet_bind() and packet_bind_spkt()
+While building the shared_cpu_map, check if the cache level and cache
+type matches. On certain systems that build the cache topology based on
+the instance ID, there are cases where the same ID may repeat across
+multiple cache levels, leading inaccurate topology.
 
-This is better handled by reading pkt_sk(sk)->num later
-in packet_do_bind() while appropriate lock is held.
+In event of CPU offlining, the cache_shared_cpu_map_remove() does not
+consider if IDs at same level are being compared. As a result, when same
+IDs repeat across different cache levels, the CPU going offline is not
+removed from all the shared_cpu_map.
 
-READ_ONCE() in writers are often an evidence of something being wrong.
+Below is the output of cache topology of CPU8 and it's SMT sibling after
+CPU8 is offlined on a dual socket 3rd Generation AMD EPYC processor
+(2 x 64C/128T) running kernel release v6.3:
 
-Fixes: 822b5a1c17df ("af_packet: Fix data-races of pkt_sk(sk)->num.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20230526154342.2533026-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  # for i in /sys/devices/system/cpu/cpu8/cache/index*/shared_cpu_list; do echo -n "$i: "; cat $i; done
+    /sys/devices/system/cpu/cpu8/cache/index0/shared_cpu_list: 8,136
+    /sys/devices/system/cpu/cpu8/cache/index1/shared_cpu_list: 8,136
+    /sys/devices/system/cpu/cpu8/cache/index2/shared_cpu_list: 8,136
+    /sys/devices/system/cpu/cpu8/cache/index3/shared_cpu_list: 8-15,136-143
+
+  # echo 0 > /sys/devices/system/cpu/cpu8/online
+
+  # for i in /sys/devices/system/cpu/cpu136/cache/index*/shared_cpu_list; do echo -n "$i: "; cat $i; done
+    /sys/devices/system/cpu/cpu136/cache/index0/shared_cpu_list: 136
+    /sys/devices/system/cpu/cpu136/cache/index1/shared_cpu_list: 8,136
+    /sys/devices/system/cpu/cpu136/cache/index2/shared_cpu_list: 8,136
+    /sys/devices/system/cpu/cpu136/cache/index3/shared_cpu_list: 9-15,136-143
+
+CPU8 is removed from index0 (L1i) but remains in the shared_cpu_list of
+index1 (L1d) and index2 (L2). Since L1i, L1d, and L2 are shared by the
+SMT siblings, and they have the same cache instance ID, CPU 2 is only
+removed from the first index with matching ID which is index1 (L1i) in
+this case. With this fix, the results are as expected when performing
+the same experiment on the same system:
+
+  # for i in /sys/devices/system/cpu/cpu8/cache/index*/shared_cpu_list; do echo -n "$i: "; cat $i; done
+    /sys/devices/system/cpu/cpu8/cache/index0/shared_cpu_list: 8,136
+    /sys/devices/system/cpu/cpu8/cache/index1/shared_cpu_list: 8,136
+    /sys/devices/system/cpu/cpu8/cache/index2/shared_cpu_list: 8,136
+    /sys/devices/system/cpu/cpu8/cache/index3/shared_cpu_list: 8-15,136-143
+
+  # echo 0 > /sys/devices/system/cpu/cpu8/online
+
+  # for i in /sys/devices/system/cpu/cpu136/cache/index*/shared_cpu_list; do echo -n "$i: "; cat $i; done
+    /sys/devices/system/cpu/cpu136/cache/index0/shared_cpu_list: 136
+    /sys/devices/system/cpu/cpu136/cache/index1/shared_cpu_list: 136
+    /sys/devices/system/cpu/cpu136/cache/index2/shared_cpu_list: 136
+    /sys/devices/system/cpu/cpu136/cache/index3/shared_cpu_list: 9-15,136-143
+
+When rebuilding topology, the same problem appears as
+cache_shared_cpu_map_setup() implements a similar logic. Consider the
+same 3rd Generation EPYC processor: CPUs in Core 1, that share the L1
+and L2 caches, have L1 and L2 instance ID as 1. For all the CPUs on
+the second chiplet, the L3 ID is also 1 leading to grouping on CPUs from
+Core 1 (1, 17) and the entire second chiplet (8-15, 24-31) as CPUs
+sharing one cache domain. This went undetected since x86 processors
+depended on arch specific populate_cache_leaves() method to repopulate
+the shared_cpus_map when CPU came back online until kernel release
+v6.3-rc5.
+
+Fixes: 198102c9103f ("cacheinfo: Fix shared_cpu_map to handle shared caches at different levels")
+Signed-off-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Link: https://lore.kernel.org/r/20230508084115.1157-2-kprateek.nayak@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/base/cacheinfo.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 7409e042305d4..fb165286e76dc 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -3117,6 +3117,9 @@ static int packet_do_bind(struct sock *sk, const char *name, int ifindex,
- 
- 	lock_sock(sk);
- 	spin_lock(&po->bind_lock);
-+	if (!proto)
-+		proto = po->num;
+diff --git a/drivers/base/cacheinfo.c b/drivers/base/cacheinfo.c
+index c440d1af197a4..26e13887aba46 100644
+--- a/drivers/base/cacheinfo.c
++++ b/drivers/base/cacheinfo.c
+@@ -280,6 +280,16 @@ static int cache_shared_cpu_map_setup(unsigned int cpu)
+ 				continue;/* skip if itself or no cacheinfo */
+ 			for (sib_index = 0; sib_index < cache_leaves(i); sib_index++) {
+ 				sib_leaf = per_cpu_cacheinfo_idx(i, sib_index);
 +
- 	rcu_read_lock();
++				/*
++				 * Comparing cache IDs only makes sense if the leaves
++				 * belong to the same cache level of same type. Skip
++				 * the check if level and type do not match.
++				 */
++				if (sib_leaf->level != this_leaf->level ||
++				    sib_leaf->type != this_leaf->type)
++					continue;
++
+ 				if (cache_leaves_are_shared(this_leaf, sib_leaf)) {
+ 					cpumask_set_cpu(cpu, &sib_leaf->shared_cpu_map);
+ 					cpumask_set_cpu(i, &this_leaf->shared_cpu_map);
+@@ -311,6 +321,16 @@ static void cache_shared_cpu_map_remove(unsigned int cpu)
  
- 	if (po->fanout) {
-@@ -3219,7 +3222,7 @@ static int packet_bind_spkt(struct socket *sock, struct sockaddr *uaddr,
- 	memcpy(name, uaddr->sa_data, sizeof(uaddr->sa_data));
- 	name[sizeof(uaddr->sa_data)] = 0;
- 
--	return packet_do_bind(sk, name, 0, READ_ONCE(pkt_sk(sk)->num));
-+	return packet_do_bind(sk, name, 0, 0);
- }
- 
- static int packet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
-@@ -3236,8 +3239,7 @@ static int packet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len
- 	if (sll->sll_family != AF_PACKET)
- 		return -EINVAL;
- 
--	return packet_do_bind(sk, NULL, sll->sll_ifindex,
--			      sll->sll_protocol ? : READ_ONCE(pkt_sk(sk)->num));
-+	return packet_do_bind(sk, NULL, sll->sll_ifindex, sll->sll_protocol);
- }
- 
- static struct proto packet_proto = {
+ 			for (sib_index = 0; sib_index < cache_leaves(sibling); sib_index++) {
+ 				sib_leaf = per_cpu_cacheinfo_idx(sibling, sib_index);
++
++				/*
++				 * Comparing cache IDs only makes sense if the leaves
++				 * belong to the same cache level of same type. Skip
++				 * the check if level and type do not match.
++				 */
++				if (sib_leaf->level != this_leaf->level ||
++				    sib_leaf->type != this_leaf->type)
++					continue;
++
+ 				if (cache_leaves_are_shared(this_leaf, sib_leaf)) {
+ 					cpumask_clear_cpu(cpu, &sib_leaf->shared_cpu_map);
+ 					cpumask_clear_cpu(sibling, &this_leaf->shared_cpu_map);
 -- 
 2.39.2
 
