@@ -2,50 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99826726D31
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:40:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62D07726BBC
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:27:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234196AbjFGUkH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:40:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39064 "EHLO
+        id S233405AbjFGU1j (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:27:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234292AbjFGUkB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:40:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A268F273A
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:39:41 -0700 (PDT)
+        with ESMTP id S233421AbjFGU1i (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:27:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4924326B2
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:27:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 357C0645E3
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:39:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D96C433EF;
-        Wed,  7 Jun 2023 20:39:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 03AA264488
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:27:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15043C433EF;
+        Wed,  7 Jun 2023 20:27:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170380;
-        bh=iBbMJ4OT6Okws+/8Aq4QYIVmJgt6KYB2M66A88XXqus=;
+        s=korg; t=1686169640;
+        bh=x4vYym9XleYrWZ+rU1tI4zgGL2tm62rFrZqtGJF7b30=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LXDKVDvcQTK5HzgTUaUOA68sMobzY9FciUQWi2/kztmI7aTOWETChFzemagYmpAfv
-         mzoYLA57sswZm1SVBXsc672HqnQNtjQTiVBPhOaKjPeYOu3FVOmbqRAh8CtaTy3Lgy
-         tsm6NYNwwzes/2R6nKMfvcVoKV/4vTb8eJxJtdq0=
+        b=ux+gDxicog0VReWTujtEfasB7Fh9T1PDzoqRjtqWUczpQKjQOBlrH2EeCYXes6wez
+         W57LdLdMwKE1eEeHbQoQhsDD7Y2hcm8p0zK2hQnDbrWbK/UeNd0lfTyIwJ1g5tSX1D
+         7l6Qi9/mqyX6IlNphubPOPQl7au50RYxa2ZH9pL4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, WANG Xuerui <git@xen0n.name>,
-        Huacai Chen <chenhuacai@loongson.cn>,
+        patches@lists.linux.dev, Po-Wen Kao <powen.kao@mediatek.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Stanley Chu <stanley.chu@mediatek.com>,
+        Ziqi Chen <quic_ziqichen@quicinc.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 063/225] LoongArch: Relay BCE exceptions to userland as SIGSEGV with si_code=SEGV_BNDERR
+Subject: [PATCH 6.3 157/286] scsi: ufs: core: Fix MCQ tag calculation
 Date:   Wed,  7 Jun 2023 22:14:16 +0200
-Message-ID: <20230607200916.424454372@linuxfoundation.org>
+Message-ID: <20230607200928.251618164@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,238 +58,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: WANG Xuerui <git@xen0n.name>
+From: Po-Wen Kao <powen.kao@mediatek.com>
 
-[ Upstream commit c23e7f01cf621290770069d968ca4c8356a50d00 ]
+[ Upstream commit 5149452ca66289ef33d13897ee845a2f6f5b680f ]
 
-SEGV_BNDERR was introduced initially for supporting the Intel MPX, but
-fell into disuse after the MPX support was removed. The LoongArch
-bounds-checking instructions behave very differently than MPX, but
-overall the interface is still kind of suitable for conveying the
-information to userland when bounds-checking assertions trigger, so we
-wouldn't have to invent more UAPI. Specifically, when the BCE triggers,
-a SEGV_BNDERR is sent to userland, with si_addr set to the out-of-bounds
-address or value (in asrt{gt,le}'s case), and one of si_lower or
-si_upper set to the configured bound depending on the faulting
-instruction. The other bound is set to either 0 or ULONG_MAX to resemble
-a range with both lower and upper bounds.
+The transfer command descriptor is allocated in ufshcd_memory_alloc() and
+referenced by the transfer request descriptor with stride size
+sizeof_utp_transfer_cmd_desc() instead of sizeof(struct
+utp_transfer_cmd_desc).
 
-Note that it is possible to have si_addr == si_lower in case of a
-failing asrtgt or {ld,st}gt, because those instructions test for strict
-greater-than relationship. This should not pose a problem for userland,
-though, because the faulting PC is available for the application to
-associate back to the exact instruction for figuring out the
-expectation.
+Consequently, computing tag by address offset should also refer to the
+same stride.
 
-Example exception context generated by a faulting `asrtgt.d t0, t1`
-(assert t0 > t1 or BCE) with t0=100 and t1=200:
-
-> pc 00005555558206a4 ra 00007ffff2d854fc tp 00007ffff2f2f180 sp 00007ffffbf9fb80
-> a0 0000000000000002 a1 00007ffffbf9fce8 a2 00007ffffbf9fd00 a3 00007ffff2ed4558
-> a4 0000000000000000 a5 00007ffff2f044c8 a6 00007ffffbf9fce0 a7 fffffffffffff000
-> t0 0000000000000064 t1 00000000000000c8 t2 00007ffffbfa2d5e t3 00007ffff2f12aa0
-> t4 00007ffff2ed6158 t5 00007ffff2ed6158 t6 000000000000002e t7 0000000003d8f538
-> t8 0000000000000005 u0 0000000000000000 s9 0000000000000000 s0 00007ffffbf9fce8
-> s1 0000000000000002 s2 0000000000000000 s3 00007ffff2f2c038 s4 0000555555820610
-> s5 00007ffff2ed5000 s6 0000555555827e38 s7 00007ffffbf9fd00 s8 0000555555827e38
->    ra: 00007ffff2d854fc
->   ERA: 00005555558206a4
->  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
->  PRMD: 00000007 (PPLV3 +PIE -PWE)
->  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
->  ECFG: 0007181c (LIE=2-4,11-12 VS=7)
-> ESTAT: 000a0000 [BCE] (IS= ECode=10 EsubCode=0)
->  PRID: 0014c010 (Loongson-64bit, Loongson-3A5000)
-
-Signed-off-by: WANG Xuerui <git@xen0n.name>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Po-Wen Kao <powen.kao@mediatek.com>
+Link: https://lore.kernel.org/r/20230504154454.26654-2-powen.kao@mediatek.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Stanley Chu <stanley.chu@mediatek.com>
+Reviewed-by: Ziqi Chen <quic_ziqichen@quicinc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/inst.h | 26 +++++++++
- arch/loongarch/kernel/genex.S     |  1 +
- arch/loongarch/kernel/traps.c     | 92 +++++++++++++++++++++++++++++++
- 3 files changed, 119 insertions(+)
+ drivers/ufs/core/ufs-mcq.c | 2 +-
+ drivers/ufs/core/ufshcd.c  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/inst.h b/arch/loongarch/include/asm/inst.h
-index fce1843ceebb3..d476a88b9616c 100644
---- a/arch/loongarch/include/asm/inst.h
-+++ b/arch/loongarch/include/asm/inst.h
-@@ -105,6 +105,8 @@ enum reg2bstrd_op {
- };
+diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
+index 202ff71e1b582..b7c5f39b50e6d 100644
+--- a/drivers/ufs/core/ufs-mcq.c
++++ b/drivers/ufs/core/ufs-mcq.c
+@@ -265,7 +265,7 @@ static int ufshcd_mcq_get_tag(struct ufs_hba *hba,
+ 	addr = (le64_to_cpu(cqe->command_desc_base_addr) & CQE_UCD_BA) -
+ 		hba->ucdl_dma_addr;
  
- enum reg3_op {
-+	asrtle_op	= 0x02,
-+	asrtgt_op	= 0x03,
- 	addw_op		= 0x20,
- 	addd_op		= 0x21,
- 	subw_op		= 0x22,
-@@ -156,6 +158,30 @@ enum reg3_op {
- 	amord_op	= 0x70c7,
- 	amxorw_op	= 0x70c8,
- 	amxord_op	= 0x70c9,
-+	fldgts_op	= 0x70e8,
-+	fldgtd_op	= 0x70e9,
-+	fldles_op	= 0x70ea,
-+	fldled_op	= 0x70eb,
-+	fstgts_op	= 0x70ec,
-+	fstgtd_op	= 0x70ed,
-+	fstles_op	= 0x70ee,
-+	fstled_op	= 0x70ef,
-+	ldgtb_op	= 0x70f0,
-+	ldgth_op	= 0x70f1,
-+	ldgtw_op	= 0x70f2,
-+	ldgtd_op	= 0x70f3,
-+	ldleb_op	= 0x70f4,
-+	ldleh_op	= 0x70f5,
-+	ldlew_op	= 0x70f6,
-+	ldled_op	= 0x70f7,
-+	stgtb_op	= 0x70f8,
-+	stgth_op	= 0x70f9,
-+	stgtw_op	= 0x70fa,
-+	stgtd_op	= 0x70fb,
-+	stleb_op	= 0x70fc,
-+	stleh_op	= 0x70fd,
-+	stlew_op	= 0x70fe,
-+	stled_op	= 0x70ff,
- };
- 
- enum reg3sa2_op {
-diff --git a/arch/loongarch/kernel/genex.S b/arch/loongarch/kernel/genex.S
-index 75e5be807a0d5..42ff28eadf04d 100644
---- a/arch/loongarch/kernel/genex.S
-+++ b/arch/loongarch/kernel/genex.S
-@@ -79,6 +79,7 @@ SYM_FUNC_END(except_vec_cex)
- 
- 	BUILD_HANDLER ade ade badv
- 	BUILD_HANDLER ale ale badv
-+	BUILD_HANDLER bce bce none
- 	BUILD_HANDLER bp bp none
- 	BUILD_HANDLER fpe fpe fcsr
- 	BUILD_HANDLER fpu fpu none
-diff --git a/arch/loongarch/kernel/traps.c b/arch/loongarch/kernel/traps.c
-index 1a4dce84ebc60..5d5ae11d9f67e 100644
---- a/arch/loongarch/kernel/traps.c
-+++ b/arch/loongarch/kernel/traps.c
-@@ -35,6 +35,7 @@
- #include <asm/break.h>
- #include <asm/cpu.h>
- #include <asm/fpu.h>
-+#include <asm/inst.h>
- #include <asm/loongarch.h>
- #include <asm/mmu_context.h>
- #include <asm/pgtable.h>
-@@ -50,6 +51,7 @@
- 
- extern asmlinkage void handle_ade(void);
- extern asmlinkage void handle_ale(void);
-+extern asmlinkage void handle_bce(void);
- extern asmlinkage void handle_sys(void);
- extern asmlinkage void handle_bp(void);
- extern asmlinkage void handle_ri(void);
-@@ -401,6 +403,95 @@ static void bug_handler(struct pt_regs *regs)
- 	}
+-	return div_u64(addr, sizeof(struct utp_transfer_cmd_desc));
++	return div_u64(addr, sizeof_utp_transfer_cmd_desc(hba));
  }
  
-+asmlinkage void noinstr do_bce(struct pt_regs *regs)
-+{
-+	bool user = user_mode(regs);
-+	unsigned long era = exception_era(regs);
-+	u64 badv = 0, lower = 0, upper = ULONG_MAX;
-+	union loongarch_instruction insn;
-+	irqentry_state_t state = irqentry_enter(regs);
-+
-+	if (regs->csr_prmd & CSR_PRMD_PIE)
-+		local_irq_enable();
-+
-+	current->thread.trap_nr = read_csr_excode();
-+
-+	die_if_kernel("Bounds check error in kernel code", regs);
-+
-+	/*
-+	 * Pull out the address that failed bounds checking, and the lower /
-+	 * upper bound, by minimally looking at the faulting instruction word
-+	 * and reading from the correct register.
-+	 */
-+	if (__get_inst(&insn.word, (u32 *)era, user))
-+		goto bad_era;
-+
-+	switch (insn.reg3_format.opcode) {
-+	case asrtle_op:
-+		if (insn.reg3_format.rd != 0)
-+			break;	/* not asrtle */
-+		badv = regs->regs[insn.reg3_format.rj];
-+		upper = regs->regs[insn.reg3_format.rk];
-+		break;
-+
-+	case asrtgt_op:
-+		if (insn.reg3_format.rd != 0)
-+			break;	/* not asrtgt */
-+		badv = regs->regs[insn.reg3_format.rj];
-+		lower = regs->regs[insn.reg3_format.rk];
-+		break;
-+
-+	case ldleb_op:
-+	case ldleh_op:
-+	case ldlew_op:
-+	case ldled_op:
-+	case stleb_op:
-+	case stleh_op:
-+	case stlew_op:
-+	case stled_op:
-+	case fldles_op:
-+	case fldled_op:
-+	case fstles_op:
-+	case fstled_op:
-+		badv = regs->regs[insn.reg3_format.rj];
-+		upper = regs->regs[insn.reg3_format.rk];
-+		break;
-+
-+	case ldgtb_op:
-+	case ldgth_op:
-+	case ldgtw_op:
-+	case ldgtd_op:
-+	case stgtb_op:
-+	case stgth_op:
-+	case stgtw_op:
-+	case stgtd_op:
-+	case fldgts_op:
-+	case fldgtd_op:
-+	case fstgts_op:
-+	case fstgtd_op:
-+		badv = regs->regs[insn.reg3_format.rj];
-+		lower = regs->regs[insn.reg3_format.rk];
-+		break;
-+	}
-+
-+	force_sig_bnderr((void __user *)badv, (void __user *)lower, (void __user *)upper);
-+
-+out:
-+	if (regs->csr_prmd & CSR_PRMD_PIE)
-+		local_irq_disable();
-+
-+	irqentry_exit(regs, state);
-+	return;
-+
-+bad_era:
-+	/*
-+	 * Cannot pull out the instruction word, hence cannot provide more
-+	 * info than a regular SIGSEGV in this case.
-+	 */
-+	force_sig(SIGSEGV);
-+	goto out;
-+}
-+
- asmlinkage void noinstr do_bp(struct pt_regs *regs)
+ static void ufshcd_mcq_process_cqe(struct ufs_hba *hba,
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 8ac2945e849f4..a80eacbb8ef85 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -8422,7 +8422,7 @@ static void ufshcd_release_sdb_queue(struct ufs_hba *hba, int nutrs)
  {
- 	bool user = user_mode(regs);
-@@ -721,6 +812,7 @@ void __init trap_init(void)
+ 	size_t ucdl_size, utrdl_size;
  
- 	set_handler(EXCCODE_ADE * VECSIZE, handle_ade, VECSIZE);
- 	set_handler(EXCCODE_ALE * VECSIZE, handle_ale, VECSIZE);
-+	set_handler(EXCCODE_BCE * VECSIZE, handle_bce, VECSIZE);
- 	set_handler(EXCCODE_SYS * VECSIZE, handle_sys, VECSIZE);
- 	set_handler(EXCCODE_BP * VECSIZE, handle_bp, VECSIZE);
- 	set_handler(EXCCODE_INE * VECSIZE, handle_ri, VECSIZE);
+-	ucdl_size = sizeof(struct utp_transfer_cmd_desc) * nutrs;
++	ucdl_size = sizeof_utp_transfer_cmd_desc(hba) * nutrs;
+ 	dmam_free_coherent(hba->dev, ucdl_size, hba->ucdl_base_addr,
+ 			   hba->ucdl_dma_addr);
+ 
 -- 
 2.39.2
 
