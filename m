@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD224726C61
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:33:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33FEF726AD0
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233733AbjFGUdO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:33:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59712 "EHLO
+        id S232606AbjFGUU2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:20:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233749AbjFGUdN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:33:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ED02213D
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:33:03 -0700 (PDT)
+        with ESMTP id S232745AbjFGUUU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D0612695
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:19:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D38B264528
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:33:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3769C433EF;
-        Wed,  7 Jun 2023 20:33:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 408F564382
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:19:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52EDCC433EF;
+        Wed,  7 Jun 2023 20:19:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169982;
-        bh=ryAirADRq97SZESUS9GJ6TB/4LdEQAzaox0+dkbWTXc=;
+        s=korg; t=1686169179;
+        bh=bpiNzH47AFQQYnd9kHBcxczZq2BFDNXC5xPFULCNMGM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zU7yEvP4ClHBy3UAieNcggVBjhq9OP6vxQO2SfZCb4uWfZlEVBVGgzoXiiH8i5fqU
-         u8fcul/mRjyRSW/36+4r82PTuAu6LOrB+qZYjNkv/7FlrCnpY6KwkbtcPvsZEYK4dI
-         zXmFXARh723z3qtY0HnB1gU4TRL1uD0QRJQYX6XA=
+        b=Htq0/tNyIrscRpppmxxS1L4KAF0R4BO09V9lXIaPAqVoLZUDiibhWyJVNd2NVH6Jj
+         I3+SRM+hjCcop61EdRCjZdv0r4l9V00On9oY2Im79DWV4uMZp61lNrgRe5VJsZvdSj
+         r0f8aQIdbHbHSM/PrjmELuOXGGyAeEgjvtjZ8bgw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        syzbot+d4b971e744b1f5439336@syzkaller.appspotmail.com,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.3 260/286] ext4: set lockdep subclass for the ea_inode in ext4_xattr_inode_cache_find()
+        patches@lists.linux.dev, Martin Liska <mliska@suse.cz>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 4.14 45/61] eth: sun: cassini: remove dead code
 Date:   Wed,  7 Jun 2023 22:15:59 +0200
-Message-ID: <20230607200931.806729667@linuxfoundation.org>
+Message-ID: <20230607200850.713694756@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
+References: <20230607200835.310274198@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,34 +53,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Martin Liška <mliska@suse.cz>
 
-commit b928dfdcb27d8fa59917b794cfba53052a2f050f upstream.
+commit 32329216ca1d6ee29c41215f18b3053bb6158541 upstream.
 
-If the ea_inode has been pushed out of the inode cache while there is
-still a reference in the mb_cache, the lockdep subclass will not be
-set on the inode, which can lead to some lockdep false positives.
+Fixes the following GCC warning:
 
-Fixes: 33d201e0277b ("ext4: fix lockdep warning about recursive inode locking")
-Cc: stable@kernel.org
-Reported-by: syzbot+d4b971e744b1f5439336@syzkaller.appspotmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Link: https://lore.kernel.org/r/20230524034951.779531-3-tytso@mit.edu
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+drivers/net/ethernet/sun/cassini.c:1316:29: error: comparison between two arrays [-Werror=array-compare]
+drivers/net/ethernet/sun/cassini.c:3783:34: error: comparison between two arrays [-Werror=array-compare]
+
+Note that 2 arrays should be compared by comparing of their addresses:
+note: use ‘&cas_prog_workaroundtab[0] == &cas_prog_null[0]’ to compare the addresses
+
+Signed-off-by: Martin Liska <mliska@suse.cz>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/xattr.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/sun/cassini.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1540,6 +1540,7 @@ ext4_xattr_inode_cache_find(struct inode
- 				     EXT4_IGET_EA_INODE);
- 		if (IS_ERR(ea_inode))
- 			goto next_entry;
-+		ext4_xattr_inode_set_class(ea_inode);
- 		if (i_size_read(ea_inode) == value_len &&
- 		    !ext4_xattr_inode_read(ea_inode, ea_data, value_len) &&
- 		    !ext4_xattr_inode_verify_hashes(ea_inode, NULL, ea_data,
+--- a/drivers/net/ethernet/sun/cassini.c
++++ b/drivers/net/ethernet/sun/cassini.c
+@@ -1349,7 +1349,7 @@ static void cas_init_rx_dma(struct cas *
+ 	writel(val, cp->regs + REG_RX_PAGE_SIZE);
+ 
+ 	/* enable the header parser if desired */
+-	if (CAS_HP_FIRMWARE == cas_prog_null)
++	if (&CAS_HP_FIRMWARE[0] == &cas_prog_null[0])
+ 		return;
+ 
+ 	val = CAS_BASE(HP_CFG_NUM_CPU, CAS_NCPUS > 63 ? 0 : CAS_NCPUS);
+@@ -3819,7 +3819,7 @@ static void cas_reset(struct cas *cp, in
+ 
+ 	/* program header parser */
+ 	if ((cp->cas_flags & CAS_FLAG_TARGET_ABORT) ||
+-	    (CAS_HP_ALT_FIRMWARE == cas_prog_null)) {
++	    (&CAS_HP_ALT_FIRMWARE[0] == &cas_prog_null[0])) {
+ 		cas_load_firmware(cp, CAS_HP_FIRMWARE);
+ 	} else {
+ 		cas_load_firmware(cp, CAS_HP_ALT_FIRMWARE);
 
 
