@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 641FD726FA9
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:00:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2D30726C9A
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:35:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235862AbjFGVAz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:00:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33334 "EHLO
+        id S233977AbjFGUfA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:35:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236164AbjFGVAZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CF0A2116
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:00:04 -0700 (PDT)
+        with ESMTP id S233921AbjFGUen (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:34:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0479019BB
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:34:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B59B648BE
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:58:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAAAC433EF;
-        Wed,  7 Jun 2023 20:58:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D8D546455C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:34:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2794C433D2;
+        Wed,  7 Jun 2023 20:34:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171532;
-        bh=y5Y1ZMu0vUNhf8febkEcDIU+Jf9TgpuNUDcfQOpSZC0=;
+        s=korg; t=1686170067;
+        bh=aSN0lbtzXMXs/1vWBSvYzOfemNma3YUjOg7pNQEdPKg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CQZPatgrBWGC7jMdqF7P3BNx+WUYfghYdudImhhni9TyLFbQrF9F7KvT6BHSnsXsr
-         iVDGpoGTxiTxbJCBvddO3GK6XxYSQmSExAb7E+IeM46ZX7WthPhFsOL7it1jPU9s/y
-         U1M8kap4tjOd7nUAIc/WoAewvv46oz4VOAKOvjUI=
+        b=oWDw6Leb7snus1YnkwY+8TWZD3IYs8vQJ0CK3lMz3uaw8IGJSYo8IMIAV+0KuhZ5p
+         W4lkTingUC+vYlTCNRJjkNOR7t8mz8EAK5pOrEZ5zIQTg57++0OSWCMN99aenO4fRL
+         nsKuMj3m3wPgU7CDT3EiNxyKnOGbC45zwUk/gcmw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
-        Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>,
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 046/159] btrfs: abort transaction when sibling keys check fails for leaves
-Date:   Wed,  7 Jun 2023 22:15:49 +0200
-Message-ID: <20230607200905.193952380@linuxfoundation.org>
+Subject: [PATCH 4.19 33/88] fbdev: stifb: Fix info entry in sti_struct on error path
+Date:   Wed,  7 Jun 2023 22:15:50 +0200
+Message-ID: <20230607200900.225793579@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,54 +53,30 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 9ae5afd02a03d4e22a17a9609b19400b77c36273 ]
+[ Upstream commit 0bdf1ad8d10bd4e50a8b1a2c53d15984165f7fea ]
 
-If the sibling keys check fails before we move keys from one sibling
-leaf to another, we are not aborting the transaction - we leave that to
-some higher level caller of btrfs_search_slot() (or anything else that
-uses it to insert items into a b+tree).
+Minor fix to reset the info field to NULL in case of error.
 
-This means that the transaction abort will provide a stack trace that
-omits the b+tree modification call chain. So change this to immediately
-abort the transaction and therefore get a more useful stack trace that
-shows us the call chain in the bt+tree modification code.
-
-It's also important to immediately abort the transaction just in case
-some higher level caller is not doing it, as this indicates a very
-serious corruption and we should stop the possibility of doing further
-damage.
-
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ctree.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/video/fbdev/stifb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index a31986ca9224e..1a19354382b2b 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -2907,6 +2907,7 @@ static int push_leaf_right(struct btrfs_trans_handle *trans, struct btrfs_root
+diff --git a/drivers/video/fbdev/stifb.c b/drivers/video/fbdev/stifb.c
+index e606fc7287947..9c2be08026514 100644
+--- a/drivers/video/fbdev/stifb.c
++++ b/drivers/video/fbdev/stifb.c
+@@ -1371,6 +1371,7 @@ static int __init stifb_init_fb(struct sti_struct *sti, int bpp_pref)
+ 	iounmap(info->screen_base);
+ out_err0:
+ 	kfree(fb);
++	sti->info = NULL;
+ 	return -ENXIO;
+ }
  
- 	if (check_sibling_keys(left, right)) {
- 		ret = -EUCLEAN;
-+		btrfs_abort_transaction(trans, ret);
- 		btrfs_tree_unlock(right);
- 		free_extent_buffer(right);
- 		return ret;
-@@ -3150,6 +3151,7 @@ static int push_leaf_left(struct btrfs_trans_handle *trans, struct btrfs_root
- 
- 	if (check_sibling_keys(left, right)) {
- 		ret = -EUCLEAN;
-+		btrfs_abort_transaction(trans, ret);
- 		goto out;
- 	}
- 	return __push_leaf_left(path, min_data_size,
 -- 
 2.39.2
 
