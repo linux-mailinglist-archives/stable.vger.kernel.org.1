@@ -2,52 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 289B9726C89
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:34:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C564726D94
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:43:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233879AbjFGUeR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:34:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60908 "EHLO
+        id S234541AbjFGUno (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:43:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233779AbjFGUeQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:34:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 972F226A6
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:34:02 -0700 (PDT)
+        with ESMTP id S234349AbjFGUnn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:43:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB2F0272C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:43:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 78D0C6455D
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:34:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88628C433D2;
-        Wed,  7 Jun 2023 20:34:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C206760FFF
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:43:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9EFC433D2;
+        Wed,  7 Jun 2023 20:43:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170040;
-        bh=6ykvp5dYFpnt1RuQ2nihBRXfiPncVqZq2mx74QnxL/M=;
+        s=korg; t=1686170601;
+        bh=F1IG6M+ByKOpBxEAtlUr2+CtScqMVcGuygu6gm48aT4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Wf6AvBM2yq8PW9h5JSqqJqsVP3eDMMz5rydrlPRJoEOWfkThddG1uGnsV/WpFWtT0
-         i6HVOLAdj3wWdqZ7UFHQT/0so6txiacjVo31zTJs5PH5YmruwOiPMfNmLLsvg7epqe
-         jmD364dQne9fvUS49Zl5FtwP5YExIYSMzRP4aoR4=
+        b=ialAXcTk/gV7X55X+mQK6zjEUUapYDqyUMifHIH2eybA6QI9arpKX6u+KapUhJt7f
+         uLejtBC1GiTVi0BiILU6EAkPFN6u6zMUKQJgXhysET5xcsJ3JfP5iHWHPp0Hbm9Mjf
+         HniqkLiXl04DD/DlyLDvfqesCpI9MK18zfvQwVs4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhengchao Shao <shaozhengchao@huawei.com>,
-        Peilin Ye <peilin.ye@bytedance.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 22/88] net: sched: fix NULL pointer dereference in mq_attach
+        patches@lists.linux.dev,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Marek Vasut <marek.vasut+renesas@mailbox.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 146/225] dt-bindings: iio: adc: renesas,rcar-gyroadc: Fix adi,ad7476 compatible value
 Date:   Wed,  7 Jun 2023 22:15:39 +0200
-Message-ID: <20230607200859.684077967@linuxfoundation.org>
+Message-ID: <20230607200919.191561402@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,93 +58,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 36eec020fab668719b541f34d97f44e232ffa165 ]
+commit 55720d242052e860b9fde445e302e0425722e7f1 upstream.
 
-When use the following command to test:
-1)ip link add bond0 type bond
-2)ip link set bond0 up
-3)tc qdisc add dev bond0 root handle ffff: mq
-4)tc qdisc replace dev bond0 parent ffff:fff1 handle ffff: mq
+The conversion to json-schema accidentally dropped the "ad" part prefix
+from the compatible value.
 
-The kernel reports NULL pointer dereference issue. The stack information
-is as follows:
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-Internal error: Oops: 0000000096000006 [#1] SMP
-Modules linked in:
-pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : mq_attach+0x44/0xa0
-lr : qdisc_graft+0x20c/0x5cc
-sp : ffff80000e2236a0
-x29: ffff80000e2236a0 x28: ffff0000c0e59d80 x27: ffff0000c0be19c0
-x26: ffff0000cae3e800 x25: 0000000000000010 x24: 00000000fffffff1
-x23: 0000000000000000 x22: ffff0000cae3e800 x21: ffff0000c9df4000
-x20: ffff0000c9df4000 x19: 0000000000000000 x18: ffff80000a934000
-x17: ffff8000f5b56000 x16: ffff80000bb08000 x15: 0000000000000000
-x14: 0000000000000000 x13: 6b6b6b6b6b6b6b6b x12: 6b6b6b6b00000001
-x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
-x8 : ffff0000c0be0730 x7 : bbbbbbbbbbbbbbbb x6 : 0000000000000008
-x5 : ffff0000cae3e864 x4 : 0000000000000000 x3 : 0000000000000001
-x2 : 0000000000000001 x1 : ffff8000090bc23c x0 : 0000000000000000
-Call trace:
-mq_attach+0x44/0xa0
-qdisc_graft+0x20c/0x5cc
-tc_modify_qdisc+0x1c4/0x664
-rtnetlink_rcv_msg+0x354/0x440
-netlink_rcv_skb+0x64/0x144
-rtnetlink_rcv+0x28/0x34
-netlink_unicast+0x1e8/0x2a4
-netlink_sendmsg+0x308/0x4a0
-sock_sendmsg+0x64/0xac
-____sys_sendmsg+0x29c/0x358
-___sys_sendmsg+0x90/0xd0
-__sys_sendmsg+0x7c/0xd0
-__arm64_sys_sendmsg+0x2c/0x38
-invoke_syscall+0x54/0x114
-el0_svc_common.constprop.1+0x90/0x174
-do_el0_svc+0x3c/0xb0
-el0_svc+0x24/0xec
-el0t_64_sync_handler+0x90/0xb4
-el0t_64_sync+0x174/0x178
-
-This is because when mq is added for the first time, qdiscs in mq is set
-to NULL in mq_attach(). Therefore, when replacing mq after adding mq, we
-need to initialize qdiscs in the mq before continuing to graft. Otherwise,
-it will couse NULL pointer dereference issue in mq_attach(). And the same
-issue will occur in the attach functions of mqprio, taprio and htb.
-ffff:fff1 means that the repalce qdisc is ingress. Ingress does not allow
-any qdisc to be attached. Therefore, ffff:fff1 is incorrectly used, and
-the command should be dropped.
-
-Fixes: 6ec1c69a8f64 ("net_sched: add classful multiqueue dummy scheduler")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Tested-by: Peilin Ye <peilin.ye@bytedance.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20230527093747.3583502-1-shaozhengchao@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8c41245872e2 ("dt-bindings:iio:adc:renesas,rcar-gyroadc: txt to yaml conversion.")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Link: https://lore.kernel.org/r/6b328a3f52657c20759f3a5bb2fe033d47644ba8.1683635404.git.geert+renesas@glider.be
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_api.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ Documentation/devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index 8045562011819..5a0e71873e24b 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -1524,6 +1524,10 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
- 					NL_SET_ERR_MSG(extack, "Qdisc parent/child loop detected");
- 					return -ELOOP;
- 				}
-+				if (clid == TC_H_INGRESS) {
-+					NL_SET_ERR_MSG(extack, "Ingress cannot graft directly");
-+					return -EINVAL;
-+				}
- 				qdisc_refcount_inc(q);
- 				goto graft;
- 			} else {
--- 
-2.39.2
-
+--- a/Documentation/devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/renesas,rcar-gyroadc.yaml
+@@ -86,7 +86,7 @@ patternProperties:
+             of the MAX chips to the GyroADC, while MISO line of each Maxim
+             ADC connects to a shared input pin of the GyroADC.
+         enum:
+-          - adi,7476
++          - adi,ad7476
+           - fujitsu,mb88101a
+           - maxim,max1162
+           - maxim,max11100
 
 
