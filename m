@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38B8F726E43
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:49:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B25D726AC2
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235108AbjFGUtV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:49:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48208 "EHLO
+        id S232505AbjFGUUJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:20:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235182AbjFGUs4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:48:56 -0400
+        with ESMTP id S233025AbjFGUTy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:19:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 464B31FE6
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:48:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2C252702
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:19:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4001B63BDA
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:47:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50005C433EF;
-        Wed,  7 Jun 2023 20:47:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A42EE6438D
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:18:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3114C433D2;
+        Wed,  7 Jun 2023 20:18:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170874;
-        bh=san8NWTAUfBY0AAKfScIUyRBtu2EY7vUrB/EcC2pAXU=;
+        s=korg; t=1686169135;
+        bh=rDBsBfUDYAlno5PU2UyKATVQtqlS35qV+l0vqdkbj6M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JlUfwZLitTBXqVu8wCfIeGP+5GIRbGGJk3CkdsIiQeyuRIwCdv5lOyAyJ+jzD3t4j
-         1dhLJY8sRl/lTs5wtnz4HGApGCVIaYo4ZL0jYADscwLmD2XItGDATRNgufCWKVtgEP
-         1t9KyaG2lyT+q6D/LN+/3KoxatEsbeWvkyiBC8H8=
+        b=QyZLtm5xiWb2hNniHCoB5G8ykeeEg6ot+sqdIyK7MSRuH01b4ZD7/7SyRNqHNWbSj
+         BT+igt0wnkDFJpJyHvkTg8yiX71V2g7ojq9wuZuCdwy+lx8w+nrmvUKLF3KnNk70r7
+         D7RJDHENpVb2JYY+k0d0/KsYJDlk/ctS+obChozc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Vlad Buslov <vladbu@nvidia.com>,
-        Peilin Ye <peilin.ye@bytedance.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Hyunwoo Kim <v4bel@theori.io>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 024/120] net/sched: Prohibit regrafting ingress or clsact Qdiscs
-Date:   Wed,  7 Jun 2023 22:15:40 +0200
-Message-ID: <20230607200901.676041872@linuxfoundation.org>
+Subject: [PATCH 4.14 27/61] media: dvb-core: Fix use-after-free due to race condition at dvb_ca_en50221
+Date:   Wed,  7 Jun 2023 22:15:41 +0200
+Message-ID: <20230607200844.696814634@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
+References: <20230607200835.310274198@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,58 +54,126 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peilin Ye <peilin.ye@bytedance.com>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-[ Upstream commit 9de95df5d15baa956c2b70b9e794842e790a8a13 ]
+[ Upstream commit 280a8ab81733da8bc442253c700a52c4c0886ffd ]
 
-Currently, after creating an ingress (or clsact) Qdisc and grafting it
-under TC_H_INGRESS (TC_H_CLSACT), it is possible to graft it again under
-e.g. a TBF Qdisc:
+If the device node of dvb_ca_en50221 is open() and the
+device is disconnected, a UAF may occur when calling
+close() on the device node.
 
-  $ ip link add ifb0 type ifb
-  $ tc qdisc add dev ifb0 handle 1: root tbf rate 20kbit buffer 1600 limit 3000
-  $ tc qdisc add dev ifb0 clsact
-  $ tc qdisc link dev ifb0 handle ffff: parent 1:1
-  $ tc qdisc show dev ifb0
-  qdisc tbf 1: root refcnt 2 rate 20Kbit burst 1600b lat 560.0ms
-  qdisc clsact ffff: parent ffff:fff1 refcnt 2
-                                      ^^^^^^^^
+The root cause is that wake_up() and wait_event() for
+dvbdev->wait_queue are not implemented.
 
-clsact's refcount has increased: it is now grafted under both
-TC_H_CLSACT and 1:1.
+So implement wait_event() function in dvb_ca_en50221_release()
+and add 'remove_mutex' which prevents race condition
+for 'ca->exit'.
 
-ingress and clsact Qdiscs should only be used under TC_H_INGRESS
-(TC_H_CLSACT).  Prohibit regrafting them.
+[mchehab: fix a checkpatch warning]
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Fixes: 1f211a1b929c ("net, sched: add clsact qdisc")
-Tested-by: Pedro Tammela <pctammela@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
-Signed-off-by: Peilin Ye <peilin.ye@bytedance.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/linux-media/20221121063308.GA33821@ubuntu
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_api.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/media/dvb-core/dvb_ca_en50221.c | 37 ++++++++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index b665f4ff49a60..b330f1192cf8d 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -1589,6 +1589,11 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
- 					NL_SET_ERR_MSG(extack, "Invalid qdisc name");
- 					return -EINVAL;
- 				}
-+				if (q->flags & TCQ_F_INGRESS) {
-+					NL_SET_ERR_MSG(extack,
-+						       "Cannot regraft ingress or clsact Qdiscs");
-+					return -EINVAL;
-+				}
- 				if (q == p ||
- 				    (p && check_loop(q, p, 0))) {
- 					NL_SET_ERR_MSG(extack, "Qdisc parent/child loop detected");
+diff --git a/drivers/media/dvb-core/dvb_ca_en50221.c b/drivers/media/dvb-core/dvb_ca_en50221.c
+index 56114d85510f5..5dc8b2d143520 100644
+--- a/drivers/media/dvb-core/dvb_ca_en50221.c
++++ b/drivers/media/dvb-core/dvb_ca_en50221.c
+@@ -161,6 +161,12 @@ struct dvb_ca_private {
+ 
+ 	/* mutex serializing ioctls */
+ 	struct mutex ioctl_mutex;
++
++	/* A mutex used when a device is disconnected */
++	struct mutex remove_mutex;
++
++	/* Whether the device is disconnected */
++	int exit;
+ };
+ 
+ static void dvb_ca_private_free(struct dvb_ca_private *ca)
+@@ -1713,12 +1719,22 @@ static int dvb_ca_en50221_io_open(struct inode *inode, struct file *file)
+ 
+ 	dprintk("%s\n", __func__);
+ 
+-	if (!try_module_get(ca->pub->owner))
++	mutex_lock(&ca->remove_mutex);
++
++	if (ca->exit) {
++		mutex_unlock(&ca->remove_mutex);
++		return -ENODEV;
++	}
++
++	if (!try_module_get(ca->pub->owner)) {
++		mutex_unlock(&ca->remove_mutex);
+ 		return -EIO;
++	}
+ 
+ 	err = dvb_generic_open(inode, file);
+ 	if (err < 0) {
+ 		module_put(ca->pub->owner);
++		mutex_unlock(&ca->remove_mutex);
+ 		return err;
+ 	}
+ 
+@@ -1743,6 +1759,7 @@ static int dvb_ca_en50221_io_open(struct inode *inode, struct file *file)
+ 
+ 	dvb_ca_private_get(ca);
+ 
++	mutex_unlock(&ca->remove_mutex);
+ 	return 0;
+ }
+ 
+@@ -1762,6 +1779,8 @@ static int dvb_ca_en50221_io_release(struct inode *inode, struct file *file)
+ 
+ 	dprintk("%s\n", __func__);
+ 
++	mutex_lock(&ca->remove_mutex);
++
+ 	/* mark the CA device as closed */
+ 	ca->open = 0;
+ 	dvb_ca_en50221_thread_update_delay(ca);
+@@ -1772,6 +1791,13 @@ static int dvb_ca_en50221_io_release(struct inode *inode, struct file *file)
+ 
+ 	dvb_ca_private_put(ca);
+ 
++	if (dvbdev->users == 1 && ca->exit == 1) {
++		mutex_unlock(&ca->remove_mutex);
++		wake_up(&dvbdev->wait_queue);
++	} else {
++		mutex_unlock(&ca->remove_mutex);
++	}
++
+ 	return err;
+ }
+ 
+@@ -1896,6 +1922,7 @@ int dvb_ca_en50221_init(struct dvb_adapter *dvb_adapter,
+ 	}
+ 
+ 	mutex_init(&ca->ioctl_mutex);
++	mutex_init(&ca->remove_mutex);
+ 
+ 	if (signal_pending(current)) {
+ 		ret = -EINTR;
+@@ -1939,6 +1966,14 @@ void dvb_ca_en50221_release(struct dvb_ca_en50221 *pubca)
+ 
+ 	dprintk("%s\n", __func__);
+ 
++	mutex_lock(&ca->remove_mutex);
++	ca->exit = 1;
++	mutex_unlock(&ca->remove_mutex);
++
++	if (ca->dvbdev->users < 1)
++		wait_event(ca->dvbdev->wait_queue,
++				ca->dvbdev->users == 1);
++
+ 	/* shutdown the thread if there was one */
+ 	kthread_stop(ca->thread);
+ 
 -- 
 2.39.2
 
