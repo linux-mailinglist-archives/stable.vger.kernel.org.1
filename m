@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3593726CEA
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:37:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28F51726BA0
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234114AbjFGUhr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:37:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36764 "EHLO
+        id S233331AbjFGU0l (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:26:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234097AbjFGUhp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:37:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 979D42708
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:37:26 -0700 (PDT)
+        with ESMTP id S233344AbjFGU0j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC9932136
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:26:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 265C2645B5
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:37:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34569C433D2;
-        Wed,  7 Jun 2023 20:37:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 23F1D6447A
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:26:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3723BC4339B;
+        Wed,  7 Jun 2023 20:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170245;
-        bh=AcawwOb/0VbtbG8CcLEXU/eITg9SS2Y5A5z5pZK6Wy0=;
+        s=korg; t=1686169582;
+        bh=dEZzXGxb0gguHQvSlEdpoI8CXGzm9w4TCGUUf8xYmA4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YQ+/Iyc3SepNKpd47VAHyBYM25qvpNYmYsGaEKACF8MSfeJASm2ZAZ7UMWG6JR5k7
-         QWZ16ZbWA699y1ysKgVzUcH8IeYgaAwTyNCu7jeAp2f/vFd2S5WXiVx0aempXkWkdb
-         +MSEvd+LVpJ5Xl4YoN3xVzanX9D7DlT+a+C8He8c=
+        b=Vy9+6vJLsMaWnyiafIx/5YK1XZK8IR7ugEVpO+uMxCN9kGg53dc+i/7wB5FeJdW0r
+         RIlPPe/zwwUTFvJ7DZX8FZGAzEpNeWHhSv13D844eHmTVrmmMp01KmioVfW+sE9LRd
+         zRtkT26gZ+HCdA5FYlQCla6HKsJRsYrUULD2bh9o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-        Joao Martins <joao.m.martins@oracle.com>,
-        Vasant Hegde <vasant.hegde@amd.com>,
-        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 012/225] iommu/amd: Handle GALog overflows
+        patches@lists.linux.dev, Yifan Zhang <yifan1.zhang@amd.com>,
+        Lang Yu <lang.yu@amd.com>,
+        Felix Kuehling <Felix.Kuehling@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 106/286] drm/amdgpu: set gfx9 onwards APU atomics support to be true
 Date:   Wed,  7 Jun 2023 22:13:25 +0200
-Message-ID: <20230607200913.743016830@linuxfoundation.org>
+Message-ID: <20230607200926.549374799@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,137 +56,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Joao Martins <joao.m.martins@oracle.com>
+From: Yifan Zhang <yifan1.zhang@amd.com>
 
-[ Upstream commit af47b0a24058e56e983881993752f88288ca6511 ]
+[ Upstream commit af7828fbceed4f9e503034111066a0adef3db383 ]
 
-GALog exists to propagate interrupts into all vCPUs in the system when
-interrupts are marked as non running (e.g. when vCPUs aren't running). A
-GALog overflow happens when there's in no space in the log to record the
-GATag of the interrupt. So when the GALOverflow condition happens, the
-GALog queue is processed and the GALog is restarted, as the IOMMU
-manual indicates in section "2.7.4 Guest Virtual APIC Log Restart
-Procedure":
+APUs w/ gfx9 onwards doesn't reply on PCIe atomics, rather
+it is internal path w/ native atomic support. Set have_atomics_support
+to true.
 
-| * Wait until MMIO Offset 2020h[GALogRun]=0b so that all request
-|   entries are completed as circumstances allow. GALogRun must be 0b to
-|   modify the guest virtual APIC log registers safely.
-| * Write MMIO Offset 0018h[GALogEn]=0b.
-| * As necessary, change the following values (e.g., to relocate or
-| resize the guest virtual APIC event log):
-|   - the Guest Virtual APIC Log Base Address Register
-|      [MMIO Offset 00E0h],
-|   - the Guest Virtual APIC Log Head Pointer Register
-|      [MMIO Offset 2040h][GALogHead], and
-|   - the Guest Virtual APIC Log Tail Pointer Register
-|      [MMIO Offset 2048h][GALogTail].
-| * Write MMIO Offset 2020h[GALOverflow] = 1b to clear the bit (W1C).
-| * Write MMIO Offset 0018h[GALogEn] = 1b, and either set
-|   MMIO Offset 0018h[GAIntEn] to enable the GA log interrupt or clear
-|   the bit to disable it.
-
-Failing to handle the GALog overflow means that none of the VFs (in any
-guest) will work with IOMMU AVIC forcing the user to power cycle the
-host. When handling the event it resumes the GALog without resizing
-much like how it is done in the event handler overflow. The
-[MMIO Offset 2020h][GALOverflow] bit might be set in status register
-without the [MMIO Offset 2020h][GAInt] bit, so when deciding to poll
-for GA events (to clear space in the galog), also check the overflow
-bit.
-
-[suravee: Check for GAOverflow without GAInt, toggle CONTROL_GAINT_EN]
-
-Co-developed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Link: https://lore.kernel.org/r/20230419201154.83880-3-joao.m.martins@oracle.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Stable-dep-of: 8ec4e2befef1 ("iommu/amd: Fix up merge conflict resolution")
+Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
+Reviewed-by: Lang Yu <lang.yu@amd.com>
+Acked-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/amd_iommu.h |  1 +
- drivers/iommu/amd/init.c      | 24 ++++++++++++++++++++++++
- drivers/iommu/amd/iommu.c     |  9 ++++++++-
- 3 files changed, 33 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/iommu/amd/amd_iommu.h b/drivers/iommu/amd/amd_iommu.h
-index c160a332ce339..24c7e6c6c0de9 100644
---- a/drivers/iommu/amd/amd_iommu.h
-+++ b/drivers/iommu/amd/amd_iommu.h
-@@ -15,6 +15,7 @@ extern irqreturn_t amd_iommu_int_thread(int irq, void *data);
- extern irqreturn_t amd_iommu_int_handler(int irq, void *data);
- extern void amd_iommu_apply_erratum_63(struct amd_iommu *iommu, u16 devid);
- extern void amd_iommu_restart_event_logging(struct amd_iommu *iommu);
-+extern void amd_iommu_restart_ga_log(struct amd_iommu *iommu);
- extern int amd_iommu_init_devices(void);
- extern void amd_iommu_uninit_devices(void);
- extern void amd_iommu_init_notifier(void);
-diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
-index 7c14b1d32c8db..b0af8b5967e0d 100644
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -751,6 +751,30 @@ void amd_iommu_restart_event_logging(struct amd_iommu *iommu)
- 	iommu_feature_enable(iommu, CONTROL_EVT_LOG_EN);
- }
- 
-+/*
-+ * This function restarts event logging in case the IOMMU experienced
-+ * an GA log overflow.
-+ */
-+void amd_iommu_restart_ga_log(struct amd_iommu *iommu)
-+{
-+	u32 status;
-+
-+	status = readl(iommu->mmio_base + MMIO_STATUS_OFFSET);
-+	if (status & MMIO_STATUS_GALOG_RUN_MASK)
-+		return;
-+
-+	pr_info_ratelimited("IOMMU GA Log restarting\n");
-+
-+	iommu_feature_disable(iommu, CONTROL_GALOG_EN);
-+	iommu_feature_disable(iommu, CONTROL_GAINT_EN);
-+
-+	writel(MMIO_STATUS_GALOG_OVERFLOW_MASK,
-+	       iommu->mmio_base + MMIO_STATUS_OFFSET);
-+
-+	iommu_feature_enable(iommu, CONTROL_GAINT_EN);
-+	iommu_feature_enable(iommu, CONTROL_GALOG_EN);
-+}
-+
- /*
-  * This function resets the command buffer if the IOMMU stopped fetching
-  * commands from it.
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 0ccc6b8319fba..16c5d1b97b564 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -836,6 +836,7 @@ amd_iommu_set_pci_msi_domain(struct device *dev, struct amd_iommu *iommu) { }
- 	(MMIO_STATUS_EVT_OVERFLOW_INT_MASK | \
- 	 MMIO_STATUS_EVT_INT_MASK | \
- 	 MMIO_STATUS_PPR_INT_MASK | \
-+	 MMIO_STATUS_GALOG_OVERFLOW_MASK | \
- 	 MMIO_STATUS_GALOG_INT_MASK)
- 
- irqreturn_t amd_iommu_int_thread(int irq, void *data)
-@@ -859,10 +860,16 @@ irqreturn_t amd_iommu_int_thread(int irq, void *data)
- 		}
- 
- #ifdef CONFIG_IRQ_REMAP
--		if (status & MMIO_STATUS_GALOG_INT_MASK) {
-+		if (status & (MMIO_STATUS_GALOG_INT_MASK |
-+			      MMIO_STATUS_GALOG_OVERFLOW_MASK)) {
- 			pr_devel("Processing IOMMU GA Log\n");
- 			iommu_poll_ga_log(iommu);
- 		}
-+
-+		if (status & MMIO_STATUS_GALOG_OVERFLOW_MASK) {
-+			pr_info_ratelimited("IOMMU GA Log overflow\n");
-+			amd_iommu_restart_ga_log(iommu);
-+		}
- #endif
- 
- 		if (status & MMIO_STATUS_EVT_OVERFLOW_INT_MASK) {
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 412cb3f1f8826..31413a604d0ae 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -3737,6 +3737,12 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ 		adev->have_atomics_support = ((struct amd_sriov_msg_pf2vf_info *)
+ 			adev->virt.fw_reserve.p_pf2vf)->pcie_atomic_ops_support_flags ==
+ 			(PCI_EXP_DEVCAP2_ATOMIC_COMP32 | PCI_EXP_DEVCAP2_ATOMIC_COMP64);
++	/* APUs w/ gfx9 onwards doesn't reply on PCIe atomics, rather it is a
++	 * internal path natively support atomics, set have_atomics_support to true.
++	 */
++	else if ((adev->flags & AMD_IS_APU) &&
++		(adev->ip_versions[GC_HWIP][0] > IP_VERSION(9, 0, 0)))
++		adev->have_atomics_support = true;
+ 	else
+ 		adev->have_atomics_support =
+ 			!pci_enable_atomic_ops_to_root(adev->pdev,
 -- 
 2.39.2
 
