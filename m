@@ -2,104 +2,80 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B5557260B6
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 15:10:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9968E7260EF
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 15:16:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240460AbjFGNKi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 09:10:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40890 "EHLO
+        id S239848AbjFGNQu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 09:16:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240536AbjFGNKd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 09:10:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF1EB1FE0;
-        Wed,  7 Jun 2023 06:10:25 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A6B460EA1;
-        Wed,  7 Jun 2023 13:10:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1CE6C433D2;
-        Wed,  7 Jun 2023 13:10:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686143424;
-        bh=U6UMlyzDkgPx8am93KGtfw1FlG1r4wUGZioBIzE02VU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=I3GG4+rKWWRdBfGfigs+YiHT2xXEuFwt0VgsL+2Z+ZnR36gPtccfQK1EZNzIuxC4x
-         Pox53+xizN4tytd4XIx2L60j9tBG27xGu77jKFzJTaPmRytthIJy3eOIFmPCIh3Np3
-         q5ft4GzD+8icYvAiZQm+N1TvQV5GRU9exmTDk0+/7AHmvunT+EspnZBBF8vtNHJOgY
-         H0eTgXMJwUuxfEwPPJCZaZxvUq0Km8LA2bK/2OTxIcTrMAS9PG9un4DXuNSMZ97mmd
-         q7qd4KhUPl7Q/ylKPffqow2XHheC6ieZWQK0uhvHwNrLbXmamD/dXjRCyJp0Sbbln9
-         7SEyhTBD+sB5Q==
-Date:   Wed, 7 Jun 2023 18:40:20 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Sanyog Kale <sanyog.r.kale@intel.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        linux-arm-msm@vger.kernel.org, alsa-devel@alsa-project.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        kernel test robot <lkp@intel.com>,
-        Dan Carpenter <error27@gmail.com>
-Subject: Re: [PATCH] soundwire: qcom: fix storing port config out-of-bounds
-Message-ID: <ZICBvP33XyOswWFM@matsya>
-References: <20230601102525.609627-1-krzysztof.kozlowski@linaro.org>
+        with ESMTP id S235659AbjFGNQt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 09:16:49 -0400
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6221395;
+        Wed,  7 Jun 2023 06:16:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+        bh=triKty2eWmiB4fvrBy4Tj5RIpIdluVAjdkSMtzCdvzk=; b=LoUSwzlXy2VYzAne77UBvaxvcV
+        3+vDik5ef8dopUFA6r/1bTGLLVvta6aepG5CwY7J2+2Hsch7eZVFMIjYanDvBATi72t/MeovgRiks
+        aSrE5j+qIeRRi/4M18ZYnPbhDeSYaLqW36oSC08ZmTOFoUJJwjVRIuA2hlyWM4x+AhUUrJgvgel4B
+        Kgii2Kn94oFIb/zWFc5IeM2ycUo8J/BNj4NASiwfNaHbepDuCuZVsYw9260Ek2hLtPVSf2j4ZBWVo
+        bokJ09q7K9tprWrB5Qaqv2baP0IDeM3e7Lkw9p+cVsRnU2VAO3o1ysbYElh2dGb6bJjH4z/6n0L47
+        a7Ji6IEg==;
+Received: from sslproxy02.your-server.de ([78.47.166.47])
+        by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1q6t1o-0008OA-E0; Wed, 07 Jun 2023 15:16:44 +0200
+Received: from [178.197.248.49] (helo=linux.home)
+        by sslproxy02.your-server.de with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1q6t1n-000RWB-TX; Wed, 07 Jun 2023 15:16:43 +0200
+Subject: Re: [PATCHv2 bpf] bpf: Add extra path pointer check to d_path helper
+To:     Jiri Olsa <jolsa@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>
+Cc:     stable@vger.kernel.org, Stanislav Fomichev <sdf@google.com>,
+        Anastasios Papagiannis <tasos.papagiannnis@gmail.com>,
+        bpf@vger.kernel.org, Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@chromium.org>, Hao Luo <haoluo@google.com>
+References: <20230606181714.532998-1-jolsa@kernel.org>
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <b311cea8-a6ee-6d4c-13ad-29bb6adcae63@iogearbox.net>
+Date:   Wed, 7 Jun 2023 15:16:43 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230601102525.609627-1-krzysztof.kozlowski@linaro.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <20230606181714.532998-1-jolsa@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.103.8/26931/Wed Jun  7 09:23:57 2023)
+X-Spam-Status: No, score=1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_SBL_CSS,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 01-06-23, 12:25, Krzysztof Kozlowski wrote:
-> The 'qcom_swrm_ctrl->pconfig' has size of QCOM_SDW_MAX_PORTS (14),
-> however we index it starting from 1, not 0, to match real port numbers.
-> This can lead to writing port config past 'pconfig' bounds and
-> overwriting next member of 'qcom_swrm_ctrl' struct.  Reported also by
-> smatch:
-> 
->   drivers/soundwire/qcom.c:1269 qcom_swrm_get_port_config() error: buffer overflow 'ctrl->pconfig' 14 <= 14
-> 
-> Fixes: 9916c02ccd74 ("soundwire: qcom: cleanup internal port config indexing")
-> Cc: <stable@vger.kernel.org>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Dan Carpenter <error27@gmail.com>
-> Link: https://lore.kernel.org/r/202305201301.sCJ8UDKV-lkp@intel.com/
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
->  drivers/soundwire/qcom.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/soundwire/qcom.c b/drivers/soundwire/qcom.c
-> index 7cb1b7eba814..88a772075907 100644
-> --- a/drivers/soundwire/qcom.c
-> +++ b/drivers/soundwire/qcom.c
-> @@ -202,7 +202,8 @@ struct qcom_swrm_ctrl {
->  	u32 intr_mask;
->  	u8 rcmd_id;
->  	u8 wcmd_id;
-> -	struct qcom_swrm_port_config pconfig[QCOM_SDW_MAX_PORTS];
-> +	/* Port numbers are 1 - 14 */
-> +	struct qcom_swrm_port_config pconfig[QCOM_SDW_MAX_PORTS + 1];
+On 6/6/23 8:17 PM, Jiri Olsa wrote:
+> Anastasios reported crash on stable 5.15 kernel with following
+> bpf attached to lsm hook:
+[...]
+> Fixes: 6e22ab9da793 ("bpf: Add d_path helper")
+> Acked-by: Stanislav Fomichev <sdf@google.com>
+> Suggested-by: Alexei Starovoitov <ast@kernel.org>
+> Reported-by: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
+> Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 
-Better use SDW_MAX_PORTS ?
-
->  	struct sdw_stream_runtime *sruntime[SWRM_MAX_DAIS];
->  	enum sdw_slave_status status[SDW_MAX_DEVICES + 1];
->  	int (*reg_read)(struct qcom_swrm_ctrl *ctrl, int reg, u32 *val);
-> -- 
-> 2.34.1
-
--- 
-~Vinod
+Looks like patchbot is not replying.. applied, thanks!
