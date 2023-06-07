@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C117B726D2A
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:40:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91602726B8C
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234261AbjFGUkA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:40:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37884 "EHLO
+        id S233253AbjFGU0Z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:26:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234385AbjFGUjk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:39:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32C5C26B3
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:39:20 -0700 (PDT)
+        with ESMTP id S232820AbjFGU0S (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1106269D
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:25:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1019561D78
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:39:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B06C433EF;
-        Wed,  7 Jun 2023 20:39:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 600A26446E
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:25:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764DBC433EF;
+        Wed,  7 Jun 2023 20:25:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170359;
-        bh=AkVgsui+DWeBxHipwYBGwMD3ggh3LnnlcYTMXt1bwLk=;
+        s=korg; t=1686169540;
+        bh=wQH+bHDKIaIv8BJZfoN3z8fGy9rKt8U+rcC4iVrJx0Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pwPQOCX0cbvqSkaEwtjeiXHAbUIxzRl+aILoorsI+uHAxABT+SqcmDHiiP6miYS48
-         7wQnfoxv5nKJM05+yJMPGnfBVnRWfXJS2WvxjRxvJpxFfuMHNDs8Xllu6atszzY4fd
-         uo0hZ23tD3qRP2uw4qZ7tKGAm2ncCtJRn0mThpZo=
+        b=H1jAq3BXsbAJd4HtNXVYGa8hhVcTL2oYldyIiFIIoK8skxwuof7tuqdIRxslz4HwF
+         lqdy8D/il/pqH6WhDbTOtXTXcDsywpuWrl3tyIkvzpBSxo10tsMySneB4DO//GPI4B
+         UQ0Fu/Nn0CltdBnTtpP3XVbP65QTEdBBJ8T+7Ds0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sudheesh Mavila <sudheesh.mavila@amd.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-        Raju Rangoju <Raju.Rangoju@amd.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Richard Weinberger <richard@nod.at>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 025/225] amd-xgbe: fix the false linkup in xgbe_phy_status
+Subject: [PATCH 6.3 119/286] um: harddog: fix modular build
 Date:   Wed,  7 Jun 2023 22:13:38 +0200
-Message-ID: <20230607200915.144531092@linuxfoundation.org>
+Message-ID: <20230607200926.970560862@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,69 +55,132 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit dc362e20cd6ab7a93d1b09669730c406f0910c35 ]
+[ Upstream commit 73a23d7710331a530e972903318528b75e5a5f58 ]
 
-In the event of a change in XGBE mode, the current auto-negotiation
-needs to be reset and the AN cycle needs to be re-triggerred. However,
-the current code ignores the return value of xgbe_set_mode(), leading to
-false information as the link is declared without checking the status
-register.
+Since we no longer (want to) export any libc symbols the
+_user portions of any drivers need to be built into image
+rather than the module. I missed this for the watchdog.
+Fix the watchdog accordingly.
 
-Fix this by propagating the mode switch status information to
-xgbe_phy_status().
-
-Fixes: e57f7a3feaef ("amd-xgbe: Prepare for working with more than one type of phy")
-Co-developed-by: Sudheesh Mavila <sudheesh.mavila@amd.com>
-Signed-off-by: Sudheesh Mavila <sudheesh.mavila@amd.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-mdio.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ arch/um/drivers/Makefile           | 4 +++-
+ arch/um/drivers/harddog.h          | 9 +++++++++
+ arch/um/drivers/harddog_kern.c     | 7 +------
+ arch/um/drivers/harddog_user.c     | 1 +
+ arch/um/drivers/harddog_user_exp.c | 9 +++++++++
+ 5 files changed, 23 insertions(+), 7 deletions(-)
+ create mode 100644 arch/um/drivers/harddog.h
+ create mode 100644 arch/um/drivers/harddog_user_exp.c
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-index 43fdd111235a6..ca7372369b3e6 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-@@ -1312,7 +1312,7 @@ static enum xgbe_mode xgbe_phy_status_aneg(struct xgbe_prv_data *pdata)
- 	return pdata->phy_if.phy_impl.an_outcome(pdata);
- }
+diff --git a/arch/um/drivers/Makefile b/arch/um/drivers/Makefile
+index dee6f66353b33..a461a950f0518 100644
+--- a/arch/um/drivers/Makefile
++++ b/arch/um/drivers/Makefile
+@@ -16,7 +16,8 @@ mconsole-objs := mconsole_kern.o mconsole_user.o
+ hostaudio-objs := hostaudio_kern.o
+ ubd-objs := ubd_kern.o ubd_user.o
+ port-objs := port_kern.o port_user.o
+-harddog-objs := harddog_kern.o harddog_user.o
++harddog-objs := harddog_kern.o
++harddog-builtin-$(CONFIG_UML_WATCHDOG) := harddog_user.o harddog_user_exp.o
+ rtc-objs := rtc_kern.o rtc_user.o
  
--static void xgbe_phy_status_result(struct xgbe_prv_data *pdata)
-+static bool xgbe_phy_status_result(struct xgbe_prv_data *pdata)
+ LDFLAGS_pcap.o = $(shell $(CC) $(KBUILD_CFLAGS) -print-file-name=libpcap.a)
+@@ -60,6 +61,7 @@ obj-$(CONFIG_PTY_CHAN) += pty.o
+ obj-$(CONFIG_TTY_CHAN) += tty.o 
+ obj-$(CONFIG_XTERM_CHAN) += xterm.o xterm_kern.o
+ obj-$(CONFIG_UML_WATCHDOG) += harddog.o
++obj-y += $(harddog-builtin-y) $(harddog-builtin-m)
+ obj-$(CONFIG_BLK_DEV_COW_COMMON) += cow_user.o
+ obj-$(CONFIG_UML_RANDOM) += random.o
+ obj-$(CONFIG_VIRTIO_UML) += virtio_uml.o
+diff --git a/arch/um/drivers/harddog.h b/arch/um/drivers/harddog.h
+new file mode 100644
+index 0000000000000..6d9ea60e7133e
+--- /dev/null
++++ b/arch/um/drivers/harddog.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef UM_WATCHDOG_H
++#define UM_WATCHDOG_H
++
++int start_watchdog(int *in_fd_ret, int *out_fd_ret, char *sock);
++void stop_watchdog(int in_fd, int out_fd);
++int ping_watchdog(int fd);
++
++#endif /* UM_WATCHDOG_H */
+diff --git a/arch/um/drivers/harddog_kern.c b/arch/um/drivers/harddog_kern.c
+index e6d4f43deba82..60d1c6cab8a95 100644
+--- a/arch/um/drivers/harddog_kern.c
++++ b/arch/um/drivers/harddog_kern.c
+@@ -47,6 +47,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/uaccess.h>
+ #include "mconsole.h"
++#include "harddog.h"
+ 
+ MODULE_LICENSE("GPL");
+ 
+@@ -60,8 +61,6 @@ static int harddog_out_fd = -1;
+  *	Allow only one person to hold it open
+  */
+ 
+-extern int start_watchdog(int *in_fd_ret, int *out_fd_ret, char *sock);
+-
+ static int harddog_open(struct inode *inode, struct file *file)
  {
- 	struct ethtool_link_ksettings *lks = &pdata->phy.lks;
- 	enum xgbe_mode mode;
-@@ -1347,8 +1347,13 @@ static void xgbe_phy_status_result(struct xgbe_prv_data *pdata)
- 
- 	pdata->phy.duplex = DUPLEX_FULL;
- 
--	if (xgbe_set_mode(pdata, mode) && pdata->an_again)
-+	if (!xgbe_set_mode(pdata, mode))
-+		return false;
-+
-+	if (pdata->an_again)
- 		xgbe_phy_reconfig_aneg(pdata);
-+
-+	return true;
+ 	int err = -EBUSY;
+@@ -92,8 +91,6 @@ static int harddog_open(struct inode *inode, struct file *file)
+ 	return err;
  }
  
- static void xgbe_phy_status(struct xgbe_prv_data *pdata)
-@@ -1378,7 +1383,8 @@ static void xgbe_phy_status(struct xgbe_prv_data *pdata)
- 			return;
- 		}
+-extern void stop_watchdog(int in_fd, int out_fd);
+-
+ static int harddog_release(struct inode *inode, struct file *file)
+ {
+ 	/*
+@@ -112,8 +109,6 @@ static int harddog_release(struct inode *inode, struct file *file)
+ 	return 0;
+ }
  
--		xgbe_phy_status_result(pdata);
-+		if (xgbe_phy_status_result(pdata))
-+			return;
+-extern int ping_watchdog(int fd);
+-
+ static ssize_t harddog_write(struct file *file, const char __user *data, size_t len,
+ 			     loff_t *ppos)
+ {
+diff --git a/arch/um/drivers/harddog_user.c b/arch/um/drivers/harddog_user.c
+index 070468d22e394..9ed89304975ed 100644
+--- a/arch/um/drivers/harddog_user.c
++++ b/arch/um/drivers/harddog_user.c
+@@ -7,6 +7,7 @@
+ #include <unistd.h>
+ #include <errno.h>
+ #include <os.h>
++#include "harddog.h"
  
- 		if (test_bit(XGBE_LINK_INIT, &pdata->dev_state))
- 			clear_bit(XGBE_LINK_INIT, &pdata->dev_state);
+ struct dog_data {
+ 	int stdin_fd;
+diff --git a/arch/um/drivers/harddog_user_exp.c b/arch/um/drivers/harddog_user_exp.c
+new file mode 100644
+index 0000000000000..c74d4b815d143
+--- /dev/null
++++ b/arch/um/drivers/harddog_user_exp.c
+@@ -0,0 +1,9 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <linux/export.h>
++#include "harddog.h"
++
++#if IS_MODULE(CONFIG_UML_WATCHDOG)
++EXPORT_SYMBOL(start_watchdog);
++EXPORT_SYMBOL(stop_watchdog);
++EXPORT_SYMBOL(ping_watchdog);
++#endif
 -- 
 2.39.2
 
