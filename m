@@ -2,54 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48D22726EC5
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:52:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59C44726C68
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:33:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235295AbjFGUwl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:52:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53778 "EHLO
+        id S233835AbjFGUdd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:33:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235305AbjFGUwj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:52:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16975FC
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:52:39 -0700 (PDT)
+        with ESMTP id S233798AbjFGUd0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:33:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E50781FE2
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:33:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DEF0964773
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:52:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22E8C433EF;
-        Wed,  7 Jun 2023 20:52:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6433B64524
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:33:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3FDC4339B;
+        Wed,  7 Jun 2023 20:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171158;
-        bh=gp+VZ8i6KYmCDTuTEW/Nl3brvb4biazYO7VaJZ3s4OQ=;
+        s=korg; t=1686170000;
+        bh=ucAgBZYIJgs4s7Z+IiSF7TVuC0Bxxl74gAkSMWVdndE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zmScsBoupIHED1QVUbkmJrEUVA+WBn7gmivyB6Ov2aTiAevfVrRF5XSdFfFSWdAiX
-         9N9Oby6D8AaYLXIVqz1upmOKPw87W5e3Jor+8+T/CZyegDNTr0FScMnMzdAV7iIAqm
-         qFeSeusuBuk/xQGtkk+e29jiAGR/uHxcqanOtxjk=
+        b=jZwFswGDekFEUvT0GNXCRXGfNK5lgnjP5auFTUFhvrvNzB4OXAR2vnw3Zx2Pbm8jT
+         3O884/VXzeyTtlGVfOUOj2c4V0Y+wXwp1TQ056G364TAVbG6FuUGZS4ASFHUsi86dX
+         Vuf9nvmDFSmC1W5DeEsD1ULud3ROdbec0xfq1rlw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Hongguang Gao <hongguang.gao@broadcom.com>,
-        Ajit Khaparde <ajit.khaparde@broadcom.com>,
-        Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 04/99] RDMA/bnxt_re: Fix return value of bnxt_re_process_raw_qp_pkt_rx
+        patches@lists.linux.dev, Ondrej Mosnacek <omosnace@redhat.com>,
+        Mat Martineau <martineau@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.3 257/286] mptcp: fix connect timeout handling
 Date:   Wed,  7 Jun 2023 22:15:56 +0200
-Message-ID: <20230607200900.360790564@linuxfoundation.org>
+Message-ID: <20230607200931.710505824@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,42 +55,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 0fa0d520e2a878cb4c94c4dc84395905d3f14f54 ]
+commit 786fc12457268cc9b555dde6c22ae7300d4b40e1 upstream.
 
-bnxt_re_process_raw_qp_pkt_rx() always return 0 and ignores the return
-value of bnxt_re_post_send_shadow_qp().
+Ondrej reported a functional issue WRT timeout handling on connect
+with a nice reproducer.
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Link: https://lore.kernel.org/r/1684397461-23082-3-git-send-email-selvin.xavier@broadcom.com
-Reviewed-by: Hongguang Gao <hongguang.gao@broadcom.com>
-Reviewed-by: Ajit Khaparde <ajit.khaparde@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The problem is that the current mptcp connect waits for both the
+MPTCP socket level timeout, and the first subflow socket timeout.
+The latter is not influenced/touched by the exposed setsockopt().
+
+Overall the above makes the SO_SNDTIMEO a no-op on connect.
+
+Since mptcp_connect is invoked via inet_stream_connect and the
+latter properly handle the MPTCP level timeout, we can address the
+issue making the nested subflow level connect always unblocking.
+
+This also allow simplifying a bit the code, dropping an ugly hack
+to handle the fastopen and custom proto_ops connect.
+
+The issues predates the blamed commit below, but the current resolution
+requires the infrastructure introduced there.
+
+Fixes: 54f1944ed6d2 ("mptcp: factor out mptcp_connect()")
+Reported-by: Ondrej Mosnacek <omosnace@redhat.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/399
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/mptcp/protocol.c |   29 +++++++----------------------
+ net/mptcp/protocol.h |    1 -
+ 2 files changed, 7 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index e3e1ea0c7666a..f0e96639850eb 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -3165,9 +3165,7 @@ static int bnxt_re_process_raw_qp_pkt_rx(struct bnxt_re_qp *gsi_qp,
- 	udwr.remote_qkey = gsi_sqp->qplib_qp.qkey;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1671,7 +1671,6 @@ static int mptcp_sendmsg_fastopen(struct
  
- 	/* post data received  in the send queue */
--	rc = bnxt_re_post_send_shadow_qp(rdev, gsi_sqp, swr);
--
--	return 0;
-+	return bnxt_re_post_send_shadow_qp(rdev, gsi_sqp, swr);
+ 	lock_sock(ssk);
+ 	msg->msg_flags |= MSG_DONTWAIT;
+-	msk->connect_flags = O_NONBLOCK;
+ 	msk->fastopening = 1;
+ 	ret = tcp_sendmsg_fastopen(ssk, msg, copied_syn, len, NULL);
+ 	msk->fastopening = 0;
+@@ -3610,9 +3609,9 @@ static int mptcp_connect(struct sock *sk
+ 	 * acquired the subflow socket lock, too.
+ 	 */
+ 	if (msk->fastopening)
+-		err = __inet_stream_connect(ssock, uaddr, addr_len, msk->connect_flags, 1);
++		err = __inet_stream_connect(ssock, uaddr, addr_len, O_NONBLOCK, 1);
+ 	else
+-		err = inet_stream_connect(ssock, uaddr, addr_len, msk->connect_flags);
++		err = inet_stream_connect(ssock, uaddr, addr_len, O_NONBLOCK);
+ 	inet_sk(sk)->defer_connect = inet_sk(ssock->sk)->defer_connect;
+ 
+ 	/* on successful connect, the msk state will be moved to established by
+@@ -3625,12 +3624,10 @@ static int mptcp_connect(struct sock *sk
+ 
+ 	mptcp_copy_inaddrs(sk, ssock->sk);
+ 
+-	/* unblocking connect, mptcp-level inet_stream_connect will error out
+-	 * without changing the socket state, update it here.
++	/* silence EINPROGRESS and let the caller inet_stream_connect
++	 * handle the connection in progress
+ 	 */
+-	if (err == -EINPROGRESS)
+-		sk->sk_socket->state = ssock->state;
+-	return err;
++	return 0;
  }
  
- static void bnxt_re_process_res_rawqp1_wc(struct ib_wc *wc,
--- 
-2.39.2
-
+ static struct proto mptcp_prot = {
+@@ -3689,18 +3686,6 @@ unlock:
+ 	return err;
+ }
+ 
+-static int mptcp_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+-				int addr_len, int flags)
+-{
+-	int ret;
+-
+-	lock_sock(sock->sk);
+-	mptcp_sk(sock->sk)->connect_flags = flags;
+-	ret = __inet_stream_connect(sock, uaddr, addr_len, flags, 0);
+-	release_sock(sock->sk);
+-	return ret;
+-}
+-
+ static int mptcp_listen(struct socket *sock, int backlog)
+ {
+ 	struct mptcp_sock *msk = mptcp_sk(sock->sk);
+@@ -3857,7 +3842,7 @@ static const struct proto_ops mptcp_stre
+ 	.owner		   = THIS_MODULE,
+ 	.release	   = inet_release,
+ 	.bind		   = mptcp_bind,
+-	.connect	   = mptcp_stream_connect,
++	.connect	   = inet_stream_connect,
+ 	.socketpair	   = sock_no_socketpair,
+ 	.accept		   = mptcp_stream_accept,
+ 	.getname	   = inet_getname,
+@@ -3952,7 +3937,7 @@ static const struct proto_ops mptcp_v6_s
+ 	.owner		   = THIS_MODULE,
+ 	.release	   = inet6_release,
+ 	.bind		   = mptcp_bind,
+-	.connect	   = mptcp_stream_connect,
++	.connect	   = inet_stream_connect,
+ 	.socketpair	   = sock_no_socketpair,
+ 	.accept		   = mptcp_stream_accept,
+ 	.getname	   = inet6_getname,
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -297,7 +297,6 @@ struct mptcp_sock {
+ 			nodelay:1,
+ 			fastopening:1,
+ 			in_accept_queue:1;
+-	int		connect_flags;
+ 	struct work_struct work;
+ 	struct sk_buff  *ooo_last_skb;
+ 	struct rb_root  out_of_order_queue;
 
 
