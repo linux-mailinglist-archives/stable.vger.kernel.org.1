@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 407C8726DA1
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:44:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A363A726C10
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:30:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234586AbjFGUoO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:44:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44504 "EHLO
+        id S233790AbjFGUah (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:30:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234646AbjFGUoM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2602E4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:43:49 -0700 (PDT)
+        with ESMTP id S233580AbjFGUaU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECAA22113
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:29:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F17A964649
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:43:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 109E9C433D2;
-        Wed,  7 Jun 2023 20:43:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CC346644CB
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:29:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC17CC433EF;
+        Wed,  7 Jun 2023 20:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170619;
-        bh=/mO6Hn59mS273f7t6/8dc1sr01Ix1LhLUzDABsyfDHk=;
+        s=korg; t=1686169797;
+        bh=D2tyWEtXnqvHukP8JTP8UJrr8VcKqdlYfOf/3gh1/5c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tiMUIpqIpGuNVjiHNZvGKNvK86ZllV/pPNt56ZmFHaf0zNQvvrpgA/kce0A563t3b
-         rbIVNWkktIKjyP75qGQk/NYb/XdaJz9nvy6HfLf+4rhKG1lu67FMhCgnGXp9t/lPqV
-         9ppAP26/sI5lKEQPDgBdvLwZfM/brtaUV9LwfTrI=
+        b=alhywg1iTiCD4X0qKFkvLd9IycnKO17Tfj+gatp+dwIKNgTPd5Gxl6iyCXIo6UYgX
+         ONnSg5tsz6Py3Pncn7GPMt+3V8v6CTcaUTAvvml7dw7dXKWAUbtoT7B4rZvzPMCS7n
+         h/NuZTJ9l/qTPoknyNkHldVgu0f+8HWYWUN7z8ms=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tom Rix <trix@redhat.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 123/225] netfilter: conntrack: define variables exp_nat_nla_policy and any_addr with CONFIG_NF_NAT
+        patches@lists.linux.dev, Xingui Yang <yangxingui@huawei.com>,
+        Damien Le Moal <dlemoal@kernel.org>,
+        Jason Yan <yanaijie@huawei.com>
+Subject: [PATCH 6.3 217/286] ata: libata-scsi: Use correct device no in ata_find_dev()
 Date:   Wed,  7 Jun 2023 22:15:16 +0200
-Message-ID: <20230607200918.404963949@linuxfoundation.org>
+Message-ID: <20230607200930.359004265@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,59 +54,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tom Rix <trix@redhat.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 224a876e37543eee111bf9b6aa4935080e619335 ]
+commit 7f875850f20a42f488840c9df7af91ef7db2d576 upstream.
 
-gcc with W=1 and ! CONFIG_NF_NAT
-net/netfilter/nf_conntrack_netlink.c:3463:32: error:
-  ‘exp_nat_nla_policy’ defined but not used [-Werror=unused-const-variable=]
- 3463 | static const struct nla_policy exp_nat_nla_policy[CTA_EXPECT_NAT_MAX+1] = {
-      |                                ^~~~~~~~~~~~~~~~~~
-net/netfilter/nf_conntrack_netlink.c:2979:33: error:
-  ‘any_addr’ defined but not used [-Werror=unused-const-variable=]
- 2979 | static const union nf_inet_addr any_addr;
-      |                                 ^~~~~~~~
+For devices not attached to a port multiplier and managed directly by
+libata, the device number passed to ata_find_dev() must always be lower
+than the maximum number of devices returned by ata_link_max_devices().
+That is 1 for SATA devices or 2 for an IDE link with master+slave
+devices. This device number is the SCSI device ID which matches these
+constraints as the IDs are generated per port and so never exceed the
+maximum number of devices for the link being used.
 
-These variables use is controlled by CONFIG_NF_NAT, so should their definitions.
+However, for libsas managed devices, SCSI device IDs are assigned per
+struct scsi_host, leading to device IDs for SATA devices that can be
+well in excess of libata per-link maximum number of devices. This
+results in ata_find_dev() to always return NULL for libsas managed
+devices except for the first device of the target scsi_host with ID
+(device number) equal to 0. This issue is visible by executing the
+hdparm utility, which fails. E.g.:
 
-Signed-off-by: Tom Rix <trix@redhat.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+hdparm -i /dev/sdX
+/dev/sdX:
+  HDIO_GET_IDENTITY failed: No message of desired type
+
+Fix this by rewriting ata_find_dev() to ignore the device number for
+non-PMP attached devices with a link with at most 1 device, that is SATA
+devices. For these, the device number 0 is always used to
+return the correct pointer to the struct ata_device of the port link.
+This change excludes IDE master/slave setups (maximum number of devices
+per link is 2) and port-multiplier attached devices. Also, to be
+consistant with the fact that SCSI device IDs and channel numbers used
+as device numbers are both unsigned int, change the devno argument of
+ata_find_dev() to unsigned int.
+
+Reported-by: Xingui Yang <yangxingui@huawei.com>
+Fixes: 41bda9c98035 ("libata-link: update hotplug to handle PMP links")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Jason Yan <yanaijie@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_netlink.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/ata/libata-scsi.c |   34 ++++++++++++++++++++++++++--------
+ 1 file changed, 26 insertions(+), 8 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 857cddd9d82e5..9ee8abd3e4b10 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -2976,7 +2976,9 @@ static int ctnetlink_exp_dump_mask(struct sk_buff *skb,
- 	return -1;
- }
- 
-+#if IS_ENABLED(CONFIG_NF_NAT)
- static const union nf_inet_addr any_addr;
-+#endif
- 
- static __be32 nf_expect_get_id(const struct nf_conntrack_expect *exp)
- {
-@@ -3460,10 +3462,12 @@ ctnetlink_change_expect(struct nf_conntrack_expect *x,
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -2694,18 +2694,36 @@ static unsigned int atapi_xlat(struct at
  	return 0;
  }
  
-+#if IS_ENABLED(CONFIG_NF_NAT)
- static const struct nla_policy exp_nat_nla_policy[CTA_EXPECT_NAT_MAX+1] = {
- 	[CTA_EXPECT_NAT_DIR]	= { .type = NLA_U32 },
- 	[CTA_EXPECT_NAT_TUPLE]	= { .type = NLA_NESTED },
- };
-+#endif
+-static struct ata_device *ata_find_dev(struct ata_port *ap, int devno)
++static struct ata_device *ata_find_dev(struct ata_port *ap, unsigned int devno)
+ {
+-	if (!sata_pmp_attached(ap)) {
+-		if (likely(devno >= 0 &&
+-			   devno < ata_link_max_devices(&ap->link)))
++	/*
++	 * For the non-PMP case, ata_link_max_devices() returns 1 (SATA case),
++	 * or 2 (IDE master + slave case). However, the former case includes
++	 * libsas hosted devices which are numbered per scsi host, leading
++	 * to devno potentially being larger than 0 but with each struct
++	 * ata_device having its own struct ata_port and struct ata_link.
++	 * To accommodate these, ignore devno and always use device number 0.
++	 */
++	if (likely(!sata_pmp_attached(ap))) {
++		int link_max_devices = ata_link_max_devices(&ap->link);
++
++		if (link_max_devices == 1)
++			return &ap->link.device[0];
++
++		if (devno < link_max_devices)
+ 			return &ap->link.device[devno];
+-	} else {
+-		if (likely(devno >= 0 &&
+-			   devno < ap->nr_pmp_links))
+-			return &ap->pmp_link[devno].device[0];
++
++		return NULL;
+ 	}
  
- static int
- ctnetlink_parse_expect_nat(const struct nlattr *attr,
--- 
-2.39.2
-
++	/*
++	 * For PMP-attached devices, the device number corresponds to C
++	 * (channel) of SCSI [H:C:I:L], indicating the port pmp link
++	 * for the device.
++	 */
++	if (devno < ap->nr_pmp_links)
++		return &ap->pmp_link[devno].device[0];
++
+ 	return NULL;
+ }
+ 
 
 
