@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98C51726C5A
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:33:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2830B726FA2
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:00:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233638AbjFGUdD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:33:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59474 "EHLO
+        id S235761AbjFGVAs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:00:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233743AbjFGUdA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:33:00 -0400
+        with ESMTP id S236080AbjFGVAT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 066F91BCC
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:32:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C7A926AB
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:59:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8233A644CE
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:32:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 957AAC433D2;
-        Wed,  7 Jun 2023 20:32:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CB055648EA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:59:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63F5C433EF;
+        Wed,  7 Jun 2023 20:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169963;
-        bh=nvxxCqzQSJniYD7SMvM7DQAEKt9nmhMautvZMiswPdM=;
+        s=korg; t=1686171595;
+        bh=MTeMm/00dl6GcC+szTUjiyco7o/tEkA6zATOo5g29Rk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SdfVz3ebI+EefLY93JkEJ2O1cFVbreuZx00YBdDFdbyuE9B6ymdGpgOk9wB+eD0zS
-         K6a5qhhwrTe91D/PGqFwxU3gnTwMmvpBxigxAGp6o3u9+w6RJcIWtsRMhFH/BBBBO9
-         ZGwKipxFOSvp0SGC1wcLU/c989E71XiLzHY5xPHs=
+        b=IXv4S3eLTG27RXkmvOnhdOx+90PlaCFwMl4uN1+yowQNwzDOC+kskaGyZHWEaPv6D
+         zICltduAmraCDdxslxQtSuSgkNOKduNcej1RqlrTj9gbO7fDaMjYdT+tVhOkbeJE97
+         BQpnVVpH8c+xPwhM519PlVfBnFlAAiSCnp8n9t/w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Biggers <ebiggers@kernel.org>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Eric Biggers <ebiggers@google.com>,
-        Stefan Berger <stefanb@linux.ibm.com>
-Subject: [PATCH 6.3 280/286] KEYS: asymmetric: Copy sig and digest in public_key_verify_signature()
+        patches@lists.linux.dev, Yu Hao <yhao016@ucr.edu>,
+        Takashi Iwai <tiwai@suse.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 076/159] media: dvb-core: Fix kernel WARNING for blocking operation in wait_event*()
 Date:   Wed,  7 Jun 2023 22:16:19 +0200
-Message-ID: <20230607200932.428568936@linuxfoundation.org>
+Message-ID: <20230607200906.167435908@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,112 +55,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit c3d03e8e35e005e1a614e51bb59053eeb5857f76 upstream.
+[ Upstream commit b8c75e4a1b325ea0a9433fa8834be97b5836b946 ]
 
-Commit ac4e97abce9b8 ("scatterlist: sg_set_buf() argument must be in linear
-mapping") checks that both the signature and the digest reside in the
-linear mapping area.
+Using a semaphore in the wait_event*() condition is no good idea.
+It hits a kernel WARN_ON() at prepare_to_wait_event() like:
+  do not call blocking ops when !TASK_RUNNING; state=1 set at
+  prepare_to_wait_event+0x6d/0x690
 
-However, more recently commit ba14a194a434c ("fork: Add generic vmalloced
-stack support") made it possible to move the stack in the vmalloc area,
-which is not contiguous, and thus not suitable for sg_set_buf() which needs
-adjacent pages.
+For avoiding the potential deadlock, rewrite to an open-coded loop
+instead.  Unlike the loop in wait_event*(), this uses wait_woken()
+after the condition check, hence the task state stays consistent.
 
-Always make a copy of the signature and digest in the same buffer used to
-store the key and its parameters, and pass them to sg_init_one(). Prefer it
-to conditionally doing the copy if necessary, to keep the code simple. The
-buffer allocated with kmalloc() is in the linear mapping area.
+CVE-2023-31084 was assigned to this bug.
 
-Cc: stable@vger.kernel.org # 4.9.x
-Fixes: ba14a194a434 ("fork: Add generic vmalloced stack support")
-Link: https://lore.kernel.org/linux-integrity/Y4pIpxbjBdajymBJ@sol.localdomain/
-Suggested-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Reviewed-by: Eric Biggers <ebiggers@google.com>
-Tested-by: Stefan Berger <stefanb@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/CA+UBctCu7fXn4q41O_3=id1+OdyQ85tZY1x+TkT-6OVBL6KAUw@mail.gmail.com/
+
+Link: https://lore.kernel.org/linux-media/20230512151800.1874-1-tiwai@suse.de
+Reported-by: Yu Hao <yhao016@ucr.edu>
+Closes: https://nvd.nist.gov/vuln/detail/CVE-2023-31084
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/asymmetric_keys/public_key.c |   38 +++++++++++++++++++-----------------
- 1 file changed, 21 insertions(+), 17 deletions(-)
+ drivers/media/dvb-core/dvb_frontend.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/crypto/asymmetric_keys/public_key.c
-+++ b/crypto/asymmetric_keys/public_key.c
-@@ -380,9 +380,10 @@ int public_key_verify_signature(const st
- 	struct crypto_wait cwait;
- 	struct crypto_akcipher *tfm;
- 	struct akcipher_request *req;
--	struct scatterlist src_sg[2];
-+	struct scatterlist src_sg;
- 	char alg_name[CRYPTO_MAX_ALG_NAME];
--	char *key, *ptr;
-+	char *buf, *ptr;
-+	size_t buf_len;
- 	int ret;
- 
- 	pr_devel("==>%s()\n", __func__);
-@@ -420,34 +421,37 @@ int public_key_verify_signature(const st
- 	if (!req)
- 		goto error_free_tfm;
- 
--	key = kmalloc(pkey->keylen + sizeof(u32) * 2 + pkey->paramlen,
--		      GFP_KERNEL);
--	if (!key)
-+	buf_len = max_t(size_t, pkey->keylen + sizeof(u32) * 2 + pkey->paramlen,
-+			sig->s_size + sig->digest_size);
-+
-+	buf = kmalloc(buf_len, GFP_KERNEL);
-+	if (!buf)
- 		goto error_free_req;
- 
--	memcpy(key, pkey->key, pkey->keylen);
--	ptr = key + pkey->keylen;
-+	memcpy(buf, pkey->key, pkey->keylen);
-+	ptr = buf + pkey->keylen;
- 	ptr = pkey_pack_u32(ptr, pkey->algo);
- 	ptr = pkey_pack_u32(ptr, pkey->paramlen);
- 	memcpy(ptr, pkey->params, pkey->paramlen);
- 
- 	if (pkey->key_is_private)
--		ret = crypto_akcipher_set_priv_key(tfm, key, pkey->keylen);
-+		ret = crypto_akcipher_set_priv_key(tfm, buf, pkey->keylen);
- 	else
--		ret = crypto_akcipher_set_pub_key(tfm, key, pkey->keylen);
-+		ret = crypto_akcipher_set_pub_key(tfm, buf, pkey->keylen);
- 	if (ret)
--		goto error_free_key;
-+		goto error_free_buf;
- 
- 	if (strcmp(pkey->pkey_algo, "sm2") == 0 && sig->data_size) {
- 		ret = cert_sig_digest_update(sig, tfm);
- 		if (ret)
--			goto error_free_key;
-+			goto error_free_buf;
+diff --git a/drivers/media/dvb-core/dvb_frontend.c b/drivers/media/dvb-core/dvb_frontend.c
+index 09facc78d88aa..fea62bce97468 100644
+--- a/drivers/media/dvb-core/dvb_frontend.c
++++ b/drivers/media/dvb-core/dvb_frontend.c
+@@ -293,14 +293,22 @@ static int dvb_frontend_get_event(struct dvb_frontend *fe,
  	}
  
--	sg_init_table(src_sg, 2);
--	sg_set_buf(&src_sg[0], sig->s, sig->s_size);
--	sg_set_buf(&src_sg[1], sig->digest, sig->digest_size);
--	akcipher_request_set_crypt(req, src_sg, NULL, sig->s_size,
-+	memcpy(buf, sig->s, sig->s_size);
-+	memcpy(buf + sig->s_size, sig->digest, sig->digest_size);
-+
-+	sg_init_one(&src_sg, buf, sig->s_size + sig->digest_size);
-+	akcipher_request_set_crypt(req, &src_sg, NULL, sig->s_size,
- 				   sig->digest_size);
- 	crypto_init_wait(&cwait);
- 	akcipher_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
-@@ -455,8 +459,8 @@ int public_key_verify_signature(const st
- 				      crypto_req_done, &cwait);
- 	ret = crypto_wait_req(crypto_akcipher_verify(req), &cwait);
+ 	if (events->eventw == events->eventr) {
+-		int ret;
++		struct wait_queue_entry wait;
++		int ret = 0;
  
--error_free_key:
--	kfree(key);
-+error_free_buf:
-+	kfree(buf);
- error_free_req:
- 	akcipher_request_free(req);
- error_free_tfm:
+ 		if (flags & O_NONBLOCK)
+ 			return -EWOULDBLOCK;
+ 
+-		ret = wait_event_interruptible(events->wait_queue,
+-					       dvb_frontend_test_event(fepriv, events));
+-
++		init_waitqueue_entry(&wait, current);
++		add_wait_queue(&events->wait_queue, &wait);
++		while (!dvb_frontend_test_event(fepriv, events)) {
++			wait_woken(&wait, TASK_INTERRUPTIBLE, 0);
++			if (signal_pending(current)) {
++				ret = -ERESTARTSYS;
++				break;
++			}
++		}
++		remove_wait_queue(&events->wait_queue, &wait);
+ 		if (ret < 0)
+ 			return ret;
+ 	}
+-- 
+2.39.2
+
 
 
