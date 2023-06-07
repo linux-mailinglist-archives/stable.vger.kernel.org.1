@@ -2,32 +2,32 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42DBB726C88
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:34:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90F4E726E22
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:48:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233873AbjFGUeP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:34:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60758 "EHLO
+        id S235071AbjFGUsW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:48:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233894AbjFGUeI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:34:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF7212691
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:33:59 -0700 (PDT)
+        with ESMTP id S235091AbjFGUsK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:48:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EDC02D50
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:47:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E60FB6454F
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:33:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00D65C433D2;
-        Wed,  7 Jun 2023 20:33:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 02AAF61DFC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:47:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A240C433D2;
+        Wed,  7 Jun 2023 20:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170038;
-        bh=NltjxXFpGHALFprDrAix3+p/tv36uQyr4/6VtsjQSPY=;
+        s=korg; t=1686170869;
+        bh=kyrc/XHDSZosk9v1+2FHBi4+fWoqY29VSI4ufrww5FM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dLzukYHJCBPPI6nbFMV48ZH/KNym0KQXRIJ/agp3MpjmI2qMJV2JH3Tu/rtXuCPO+
-         yQuyoK0PExfbOZuWFtE1LV/h78ruV7MtxR3MT+sBZodaNvT7QnRBGh3l1t1+B6QV6P
-         VrMMOByjbZjBiydHz5nrqUpsrTcEOOChMgUYf1cQ=
+        b=mrO2bsPMZJ95Wtqczhohtsexoziqj7IJtFLqwbXNUGO4R7uaqKvLWC0spSwNlc7DV
+         tgbOb4bLcI499svssGPghBegLusJ+Kpvd7Q++0oly4kQEcF+Fmt5RIPx3Xha4H7QtP
+         FJxsVFxKzb47MzSlM7ciN2QKECoox5eEjNzpyKXc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -37,18 +37,18 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Peilin Ye <peilin.ye@bytedance.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 21/88] net/sched: Prohibit regrafting ingress or clsact Qdiscs
+Subject: [PATCH 5.10 022/120] net/sched: sch_clsact: Only create under TC_H_CLSACT
 Date:   Wed,  7 Jun 2023 22:15:38 +0200
-Message-ID: <20230607200859.626797046@linuxfoundation.org>
+Message-ID: <20230607200901.615160767@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,28 +59,12 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Peilin Ye <peilin.ye@bytedance.com>
 
-[ Upstream commit 9de95df5d15baa956c2b70b9e794842e790a8a13 ]
+[ Upstream commit 5eeebfe6c493192b10d516abfd72742900f2a162 ]
 
-Currently, after creating an ingress (or clsact) Qdisc and grafting it
-under TC_H_INGRESS (TC_H_CLSACT), it is possible to graft it again under
-e.g. a TBF Qdisc:
+clsact Qdiscs are only supposed to be created under TC_H_CLSACT (which
+equals TC_H_INGRESS).  Return -EOPNOTSUPP if 'parent' is not
+TC_H_CLSACT.
 
-  $ ip link add ifb0 type ifb
-  $ tc qdisc add dev ifb0 handle 1: root tbf rate 20kbit buffer 1600 limit 3000
-  $ tc qdisc add dev ifb0 clsact
-  $ tc qdisc link dev ifb0 handle ffff: parent 1:1
-  $ tc qdisc show dev ifb0
-  qdisc tbf 1: root refcnt 2 rate 20Kbit burst 1600b lat 560.0ms
-  qdisc clsact ffff: parent ffff:fff1 refcnt 2
-                                      ^^^^^^^^
-
-clsact's refcount has increased: it is now grafted under both
-TC_H_CLSACT and 1:1.
-
-ingress and clsact Qdiscs should only be used under TC_H_INGRESS
-(TC_H_CLSACT).  Prohibit regrafting them.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Fixes: 1f211a1b929c ("net, sched: add clsact qdisc")
 Tested-by: Pedro Tammela <pctammela@mojatatu.com>
 Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
@@ -90,25 +74,33 @@ Signed-off-by: Peilin Ye <peilin.ye@bytedance.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_api.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/sched/sch_ingress.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index d6b4710aa69d3..8045562011819 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -1514,6 +1514,11 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
- 					NL_SET_ERR_MSG(extack, "Invalid qdisc name");
- 					return -EINVAL;
- 				}
-+				if (q->flags & TCQ_F_INGRESS) {
-+					NL_SET_ERR_MSG(extack,
-+						       "Cannot regraft ingress or clsact Qdiscs");
-+					return -EINVAL;
-+				}
- 				if (q == p ||
- 				    (p && check_loop(q, p, 0))) {
- 					NL_SET_ERR_MSG(extack, "Qdisc parent/child loop detected");
+diff --git a/net/sched/sch_ingress.c b/net/sched/sch_ingress.c
+index f9ef6deb27709..35963929e1178 100644
+--- a/net/sched/sch_ingress.c
++++ b/net/sched/sch_ingress.c
+@@ -225,6 +225,9 @@ static int clsact_init(struct Qdisc *sch, struct nlattr *opt,
+ 	struct net_device *dev = qdisc_dev(sch);
+ 	int err;
+ 
++	if (sch->parent != TC_H_CLSACT)
++		return -EOPNOTSUPP;
++
+ 	net_inc_ingress_queue();
+ 	net_inc_egress_queue();
+ 
+@@ -254,6 +257,9 @@ static void clsact_destroy(struct Qdisc *sch)
+ {
+ 	struct clsact_sched_data *q = qdisc_priv(sch);
+ 
++	if (sch->parent != TC_H_CLSACT)
++		return;
++
+ 	tcf_block_put_ext(q->egress_block, sch, &q->egress_block_info);
+ 	tcf_block_put_ext(q->ingress_block, sch, &q->ingress_block_info);
+ 
 -- 
 2.39.2
 
