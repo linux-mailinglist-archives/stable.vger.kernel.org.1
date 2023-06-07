@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB48E726EED
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:54:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEBB1726DD3
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:45:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235426AbjFGUyK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:54:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55348 "EHLO
+        id S234882AbjFGUpm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:45:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235388AbjFGUyB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBD0926A6
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:53:39 -0700 (PDT)
+        with ESMTP id S234703AbjFGUp1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:45:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 484582684
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:45:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C889647AA
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:53:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1370C433D2;
-        Wed,  7 Jun 2023 20:53:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A39D364647
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:45:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A12C433EF;
+        Wed,  7 Jun 2023 20:45:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171219;
-        bh=uqeMKbUWEZLVKRiEYY5Fm2A3dW4g8dNMtC9yu+37mfM=;
+        s=korg; t=1686170724;
+        bh=8mWfFaGTd2HQt0MumFExFLYYTmF+whtC2DCs74LzCSw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vhgFxz3+Tn8ECts6SpFBiQmG/Lw+mQdYMPGm10+v1Zcjg62LtWtdtUnvA4YFQLVjU
-         uvgWM6ssOare5Tou1zmOY5VJnDgpuhZnLvwHnK1RgyUU3AIUYC3flJQheTOahZ6hEe
-         +4hH84MBukL4bJVWKNnRZuN0fvfCTz8boaxfB564=
+        b=zU4dzAmN0ooCrUPWLV1eRL51kTQYcwlQZByUfSr5rpmDBEEbCjjBz23JSLW2H+rUv
+         yETr51wVFXUZ+BkQvSpz31cKPpiLGr+0jHghjgUKdjxfgQsHm+vdgMBIHBmtOyjQ0S
+         QxmG7bkssnFQ7rMSW7pnZv4ldjeRt+OMjwiNEoP4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ivan Orlov <ivan.orlov0322@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 34/99] nbd: Fix debugfs_create_dir error checking
-Date:   Wed,  7 Jun 2023 22:16:26 +0200
-Message-ID: <20230607200901.324815440@linuxfoundation.org>
+        patches@lists.linux.dev, Ondrej Mosnacek <omosnace@redhat.com>,
+        Mat Martineau <martineau@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 194/225] mptcp: fix connect timeout handling
+Date:   Wed,  7 Jun 2023 22:16:27 +0200
+Message-ID: <20230607200920.720650202@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,46 +55,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ivan Orlov <ivan.orlov0322@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 4913cfcf014c95f0437db2df1734472fd3e15098 ]
+commit 786fc12457268cc9b555dde6c22ae7300d4b40e1 upstream.
 
-The debugfs_create_dir function returns ERR_PTR in case of error, and the
-only correct way to check if an error occurred is 'IS_ERR' inline function.
-This patch will replace the null-comparison with IS_ERR.
+Ondrej reported a functional issue WRT timeout handling on connect
+with a nice reproducer.
 
-Signed-off-by: Ivan Orlov <ivan.orlov0322@gmail.com>
-Link: https://lore.kernel.org/r/20230512130533.98709-1-ivan.orlov0322@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The problem is that the current mptcp connect waits for both the
+MPTCP socket level timeout, and the first subflow socket timeout.
+The latter is not influenced/touched by the exposed setsockopt().
+
+Overall the above makes the SO_SNDTIMEO a no-op on connect.
+
+Since mptcp_connect is invoked via inet_stream_connect and the
+latter properly handle the MPTCP level timeout, we can address the
+issue making the nested subflow level connect always unblocking.
+
+This also allow simplifying a bit the code, dropping an ugly hack
+to handle the fastopen and custom proto_ops connect.
+
+The issues predates the blamed commit below, but the current resolution
+requires the infrastructure introduced there.
+
+Fixes: 54f1944ed6d2 ("mptcp: factor out mptcp_connect()")
+Reported-by: Ondrej Mosnacek <omosnace@redhat.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/399
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/nbd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mptcp/protocol.c |   29 +++++++----------------------
+ net/mptcp/protocol.h |    1 -
+ 2 files changed, 7 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index 610dc6a36a9de..218aa7e419700 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -1609,7 +1609,7 @@ static int nbd_dev_dbg_init(struct nbd_device *nbd)
- 		return -EIO;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1683,7 +1683,6 @@ static int mptcp_sendmsg_fastopen(struct
  
- 	dir = debugfs_create_dir(nbd_name(nbd), nbd_dbg_dir);
--	if (!dir) {
-+	if (IS_ERR(dir)) {
- 		dev_err(nbd_to_dev(nbd), "Failed to create debugfs dir for '%s'\n",
- 			nbd_name(nbd));
- 		return -EIO;
-@@ -1635,7 +1635,7 @@ static int nbd_dbg_init(void)
- 	struct dentry *dbg_dir;
+ 	lock_sock(ssk);
+ 	msg->msg_flags |= MSG_DONTWAIT;
+-	msk->connect_flags = O_NONBLOCK;
+ 	msk->fastopening = 1;
+ 	ret = tcp_sendmsg_fastopen(ssk, msg, copied_syn, len, NULL);
+ 	msk->fastopening = 0;
+@@ -3638,9 +3637,9 @@ static int mptcp_connect(struct sock *sk
+ 	 * acquired the subflow socket lock, too.
+ 	 */
+ 	if (msk->fastopening)
+-		err = __inet_stream_connect(ssock, uaddr, addr_len, msk->connect_flags, 1);
++		err = __inet_stream_connect(ssock, uaddr, addr_len, O_NONBLOCK, 1);
+ 	else
+-		err = inet_stream_connect(ssock, uaddr, addr_len, msk->connect_flags);
++		err = inet_stream_connect(ssock, uaddr, addr_len, O_NONBLOCK);
+ 	inet_sk(sk)->defer_connect = inet_sk(ssock->sk)->defer_connect;
  
- 	dbg_dir = debugfs_create_dir("nbd", NULL);
--	if (!dbg_dir)
-+	if (IS_ERR(dbg_dir))
- 		return -EIO;
+ 	/* on successful connect, the msk state will be moved to established by
+@@ -3653,12 +3652,10 @@ static int mptcp_connect(struct sock *sk
  
- 	nbd_dbg_dir = dbg_dir;
--- 
-2.39.2
-
+ 	mptcp_copy_inaddrs(sk, ssock->sk);
+ 
+-	/* unblocking connect, mptcp-level inet_stream_connect will error out
+-	 * without changing the socket state, update it here.
++	/* silence EINPROGRESS and let the caller inet_stream_connect
++	 * handle the connection in progress
+ 	 */
+-	if (err == -EINPROGRESS)
+-		sk->sk_socket->state = ssock->state;
+-	return err;
++	return 0;
+ }
+ 
+ static struct proto mptcp_prot = {
+@@ -3717,18 +3714,6 @@ unlock:
+ 	return err;
+ }
+ 
+-static int mptcp_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+-				int addr_len, int flags)
+-{
+-	int ret;
+-
+-	lock_sock(sock->sk);
+-	mptcp_sk(sock->sk)->connect_flags = flags;
+-	ret = __inet_stream_connect(sock, uaddr, addr_len, flags, 0);
+-	release_sock(sock->sk);
+-	return ret;
+-}
+-
+ static int mptcp_listen(struct socket *sock, int backlog)
+ {
+ 	struct mptcp_sock *msk = mptcp_sk(sock->sk);
+@@ -3879,7 +3864,7 @@ static const struct proto_ops mptcp_stre
+ 	.owner		   = THIS_MODULE,
+ 	.release	   = inet_release,
+ 	.bind		   = mptcp_bind,
+-	.connect	   = mptcp_stream_connect,
++	.connect	   = inet_stream_connect,
+ 	.socketpair	   = sock_no_socketpair,
+ 	.accept		   = mptcp_stream_accept,
+ 	.getname	   = inet_getname,
+@@ -3974,7 +3959,7 @@ static const struct proto_ops mptcp_v6_s
+ 	.owner		   = THIS_MODULE,
+ 	.release	   = inet6_release,
+ 	.bind		   = mptcp_bind,
+-	.connect	   = mptcp_stream_connect,
++	.connect	   = inet_stream_connect,
+ 	.socketpair	   = sock_no_socketpair,
+ 	.accept		   = mptcp_stream_accept,
+ 	.getname	   = inet6_getname,
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -288,7 +288,6 @@ struct mptcp_sock {
+ 			nodelay:1,
+ 			fastopening:1,
+ 			in_accept_queue:1;
+-	int		connect_flags;
+ 	struct work_struct work;
+ 	struct sk_buff  *ooo_last_skb;
+ 	struct rb_root  out_of_order_queue;
 
 
