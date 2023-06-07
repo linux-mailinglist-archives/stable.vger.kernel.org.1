@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10524726AFB
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:21:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D883726DCB
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:45:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230418AbjFGUV0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:21:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46556 "EHLO
+        id S234932AbjFGUp3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:45:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232499AbjFGUVZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:21:25 -0400
+        with ESMTP id S235130AbjFGUpP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:45:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAF412711
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:20:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C29FF213D
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:45:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F788643C4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:20:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE4CC433D2;
-        Wed,  7 Jun 2023 20:20:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5114D6466D
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:45:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A91C433D2;
+        Wed,  7 Jun 2023 20:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169237;
-        bh=9/IyJn0IgiwHspJi4zQ0p07NCFhdpu98U1555qRM39s=;
+        s=korg; t=1686170705;
+        bh=bjs6i7/SpeNe+Tah1sMFbTv70T9Akks00VJ3zX/hwPg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dINZpWOwZMISkq7zdf1B6yb0qgxEQ2NnPE13hmZPz9jl3b/RaCKJ5/SdiiX9YTIJd
-         wEZSFcQIacpk7cCjZM5jWnaDvvok5s2M17ETieURoAj05pkTcP3Eb1FDVwyKC+69Rd
-         jl2hTDz5PCrx1ZL7pb3ISQwC+GJ0N58HMSQUa3lM=
+        b=YypNdV9pO4HD7dQ1Lknwa9O20ZPZdZYS1MxpDP+Pexh5wht0cK1Y3O8y5DzVO9eaa
+         dvW0O91iAD5ahhxPb94Kwsej5DtYophZy5oeKbFnk6y5wR8NX4YLPV2hqTmGGvR0Rz
+         GgZeZV2qt0zlCj65liMYzXBdvaYQ4Ba/QwGMIyP0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 4.14 37/61] iio: dac: mcp4725: Fix i2c_master_send() return value handling
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Subject: [PATCH 6.1 158/225] usb: gadget: f_fs: Add unbind event before functionfs_unbind
 Date:   Wed,  7 Jun 2023 22:15:51 +0200
-Message-ID: <20230607200848.185338083@linuxfoundation.org>
+Message-ID: <20230607200919.571318459@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-References: <20230607200835.310274198@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,69 +53,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marek Vasut <marex@denx.de>
+From: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
 
-commit 09d3bec7009186bdba77039df01e5834788b3f95 upstream.
+commit efb6b535207395a5c7317993602e2503ca8cb4b3 upstream.
 
-The i2c_master_send() returns number of sent bytes on success,
-or negative on error. The suspend/resume callbacks expect zero
-on success and non-zero on error. Adapt the return value of the
-i2c_master_send() to the expectation of the suspend and resume
-callbacks, including proper validation of the return value.
+While exercising the unbind path, with the current implementation
+the functionfs_unbind would be calling which waits for the ffs->mutex
+to be available, however within the same time ffs_ep0_read is invoked
+& if no setup packets are pending, it will invoke function
+wait_event_interruptible_exclusive_locked_irq which by definition waits
+for the ev.count to be increased inside the same mutex for which
+functionfs_unbind is waiting.
+This creates deadlock situation because the functionfs_unbind won't
+get the lock until ev.count is increased which can only happen if
+the caller ffs_func_unbind can proceed further.
 
-Fixes: cf35ad61aca2 ("iio: add mcp4725 I2C DAC driver")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20230511004330.206942-1-marex@denx.de
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Following is the illustration:
+
+	CPU1				CPU2
+
+ffs_func_unbind()		ffs_ep0_read()
+				mutex_lock(ffs->mutex)
+				wait_event(ffs->ev.count)
+functionfs_unbind()
+  mutex_lock(ffs->mutex)
+  mutex_unlock(ffs->mutex)
+
+ffs_event_add()
+
+<deadlock>
+
+Fix this by moving the event unbind before functionfs_unbind
+to ensure the ev.count is incrased properly.
+
+Fixes: 6a19da111057 ("usb: gadget: f_fs: Prevent race during ffs_ep0_queue_wait")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Link: https://lore.kernel.org/r/20230525092854.7992-1-quic_uaggarwa@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/mcp4725.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/function/f_fs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/dac/mcp4725.c
-+++ b/drivers/iio/dac/mcp4725.c
-@@ -50,12 +50,18 @@ static int mcp4725_suspend(struct device
- 	struct mcp4725_data *data = iio_priv(i2c_get_clientdata(
- 		to_i2c_client(dev)));
- 	u8 outbuf[2];
-+	int ret;
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -3620,6 +3620,7 @@ static void ffs_func_unbind(struct usb_c
+ 	/* Drain any pending AIO completions */
+ 	drain_workqueue(ffs->io_completion_wq);
  
- 	outbuf[0] = (data->powerdown_mode + 1) << 4;
- 	outbuf[1] = 0;
- 	data->powerdown = true;
++	ffs_event_add(ffs, FUNCTIONFS_UNBIND);
+ 	if (!--opts->refcnt)
+ 		functionfs_unbind(ffs);
  
--	return i2c_master_send(data->client, outbuf, 2);
-+	ret = i2c_master_send(data->client, outbuf, 2);
-+	if (ret < 0)
-+		return ret;
-+	else if (ret != 2)
-+		return -EIO;
-+	return 0;
+@@ -3644,7 +3645,6 @@ static void ffs_func_unbind(struct usb_c
+ 	func->function.ssp_descriptors = NULL;
+ 	func->interfaces_nums = NULL;
+ 
+-	ffs_event_add(ffs, FUNCTIONFS_UNBIND);
  }
  
- static int mcp4725_resume(struct device *dev)
-@@ -63,13 +69,19 @@ static int mcp4725_resume(struct device
- 	struct mcp4725_data *data = iio_priv(i2c_get_clientdata(
- 		to_i2c_client(dev)));
- 	u8 outbuf[2];
-+	int ret;
- 
- 	/* restore previous DAC value */
- 	outbuf[0] = (data->dac_value >> 8) & 0xf;
- 	outbuf[1] = data->dac_value & 0xff;
- 	data->powerdown = false;
- 
--	return i2c_master_send(data->client, outbuf, 2);
-+	ret = i2c_master_send(data->client, outbuf, 2);
-+	if (ret < 0)
-+		return ret;
-+	else if (ret != 2)
-+		return -EIO;
-+	return 0;
- }
- 
- #ifdef CONFIG_PM_SLEEP
+ static struct usb_function *ffs_alloc(struct usb_function_instance *fi)
 
 
