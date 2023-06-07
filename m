@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D12CC726F4E
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38430726C06
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:30:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235521AbjFGU5X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:57:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58280 "EHLO
+        id S233654AbjFGUaY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:30:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235586AbjFGU5R (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:57:17 -0400
+        with ESMTP id S233797AbjFGUaF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D835B10D7
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:57:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F74C1706
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:29:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A03A61E8D
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:57:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B329C433D2;
-        Wed,  7 Jun 2023 20:57:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7EBE96448C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:29:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FE0C433EF;
+        Wed,  7 Jun 2023 20:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171434;
-        bh=gNNLB4dAckZ0T8ch/tc42JRLKvMLYEaDNU3+1LPr+Mk=;
+        s=korg; t=1686169778;
+        bh=bjs6i7/SpeNe+Tah1sMFbTv70T9Akks00VJ3zX/hwPg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dcX1Lbv+K58QGbS6v0WDjx07srnEpNhcYLpzkS58F7mfAFhaFlufPh9kjEhhvmxZ3
-         iGLxnG3ax2SPvpayEfXDobLq01bMu3pVuufMdwYxvVvaGLzkDNnaMu6J6rSrxoVoC/
-         cJInwmYPrx6SClYSKJXyIEz5NRPePjgG2STsUvRQ=
+        b=F9w4yFzr8Xyhn7Eq62sJLnYNxMoVsgR6ycH7McltglQi5c1Oo3N9Sj5ssjeHHQwKi
+         NJz4KcaF/iSItxFmshiNAemugPOZG1gR4oVJ3CzsKC7ELriELkfvNkI4p4nCYyfKxy
+         zFuaZRXpsGqRGV0IZUAHe//1fz1qLRI/Imp1V19A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Tudor Ambarus <tudor.ambarus@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 006/159] dmaengine: at_xdmac: fix potential Oops in at_xdmac_prep_interleaved()
-Date:   Wed,  7 Jun 2023 22:15:09 +0200
-Message-ID: <20230607200903.882585644@linuxfoundation.org>
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Subject: [PATCH 6.3 211/286] usb: gadget: f_fs: Add unbind event before functionfs_unbind
+Date:   Wed,  7 Jun 2023 22:15:10 +0200
+Message-ID: <20230607200930.145453500@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,55 +53,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
 
-[ Upstream commit 4d43acb145c363626d76f49febb4240c488cd1cf ]
+commit efb6b535207395a5c7317993602e2503ca8cb4b3 upstream.
 
-There are two place if the at_xdmac_interleaved_queue_desc() fails which
-could lead to a NULL dereference where "first" is NULL and we call
-list_add_tail(&first->desc_node, ...).  In the first caller, the return
-is not checked so add a check for that.  In the next caller, the return
-is checked but if it fails on the first iteration through the loop then
-it will lead to a NULL pointer dereference.
+While exercising the unbind path, with the current implementation
+the functionfs_unbind would be calling which waits for the ffs->mutex
+to be available, however within the same time ffs_ep0_read is invoked
+& if no setup packets are pending, it will invoke function
+wait_event_interruptible_exclusive_locked_irq which by definition waits
+for the ev.count to be increased inside the same mutex for which
+functionfs_unbind is waiting.
+This creates deadlock situation because the functionfs_unbind won't
+get the lock until ev.count is increased which can only happen if
+the caller ffs_func_unbind can proceed further.
 
-Fixes: 4e5385784e69 ("dmaengine: at_xdmac: handle numf > 1")
-Fixes: 62b5cb757f1d ("dmaengine: at_xdmac: fix memory leak in interleaved mode")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://lore.kernel.org/r/21282b66-9860-410a-83df-39c17fcf2f1b@kili.mountain
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Following is the illustration:
+
+	CPU1				CPU2
+
+ffs_func_unbind()		ffs_ep0_read()
+				mutex_lock(ffs->mutex)
+				wait_event(ffs->ev.count)
+functionfs_unbind()
+  mutex_lock(ffs->mutex)
+  mutex_unlock(ffs->mutex)
+
+ffs_event_add()
+
+<deadlock>
+
+Fix this by moving the event unbind before functionfs_unbind
+to ensure the ev.count is incrased properly.
+
+Fixes: 6a19da111057 ("usb: gadget: f_fs: Prevent race during ffs_ep0_queue_wait")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Link: https://lore.kernel.org/r/20230525092854.7992-1-quic_uaggarwa@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/at_xdmac.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/function/f_fs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
-index b45437aab1434..dd34626df1abc 100644
---- a/drivers/dma/at_xdmac.c
-+++ b/drivers/dma/at_xdmac.c
-@@ -1026,6 +1026,8 @@ at_xdmac_prep_interleaved(struct dma_chan *chan,
- 							NULL,
- 							src_addr, dst_addr,
- 							xt, xt->sgl);
-+		if (!first)
-+			return NULL;
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -3620,6 +3620,7 @@ static void ffs_func_unbind(struct usb_c
+ 	/* Drain any pending AIO completions */
+ 	drain_workqueue(ffs->io_completion_wq);
  
- 		/* Length of the block is (BLEN+1) microblocks. */
- 		for (i = 0; i < xt->numf - 1; i++)
-@@ -1056,8 +1058,9 @@ at_xdmac_prep_interleaved(struct dma_chan *chan,
- 							       src_addr, dst_addr,
- 							       xt, chunk);
- 			if (!desc) {
--				list_splice_tail_init(&first->descs_list,
--						      &atchan->free_descs_list);
-+				if (first)
-+					list_splice_tail_init(&first->descs_list,
-+							      &atchan->free_descs_list);
- 				return NULL;
- 			}
++	ffs_event_add(ffs, FUNCTIONFS_UNBIND);
+ 	if (!--opts->refcnt)
+ 		functionfs_unbind(ffs);
  
--- 
-2.39.2
-
+@@ -3644,7 +3645,6 @@ static void ffs_func_unbind(struct usb_c
+ 	func->function.ssp_descriptors = NULL;
+ 	func->interfaces_nums = NULL;
+ 
+-	ffs_event_add(ffs, FUNCTIONFS_UNBIND);
+ }
+ 
+ static struct usb_function *ffs_alloc(struct usb_function_instance *fi)
 
 
