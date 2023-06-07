@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53730726CE1
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:37:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85568726E80
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234031AbjFGUh1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:37:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36544 "EHLO
+        id S235240AbjFGUux (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:50:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234041AbjFGUh0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:37:26 -0400
+        with ESMTP id S235144AbjFGUu2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:50:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ECF2213D
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:37:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C7881BE4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:50:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 943C3645A0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:36:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8FB1C433D2;
-        Wed,  7 Jun 2023 20:36:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BAD3E646C9
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:50:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C87E4C433D2;
+        Wed,  7 Jun 2023 20:50:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170196;
-        bh=jsMRTSyZYC60/gF8UrPjALbznkNsba4N+uwwjamIWJs=;
+        s=korg; t=1686171026;
+        bh=44EqZ70mkParme4a92Z4MXs3ngdzoQJvPzkLE4byYM8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WVSy5ptKmjgRzvApPXXiJJ3dy2y9uWKVyhET9F76Jrqg++yiuWmkVdFVrsePpYesf
-         mW/h11RXHah7OudozKZDjPqI5rTFHIcJ7EG6JTo+y9Oiwlyro8m4Cl4Xmwq4wl0N3a
-         mFTo1G4uvY8DBap0jx12i+zu+Llps7JVIF2ZfGjk=
+        b=cf5CZcJ6iU0inNbzNz76I+nFGdPyOymvYuM85SdjOQhrfwRUuVELtwmlgzqowxF2Y
+         Ymi4tDcJVjMJaQBn4Cpwxl8/gc2wnZS4OfnOKwTHpXzIND55j5LAybP3mbT5nhwk6W
+         nR8BQogBks7Ccm0u+xCtaiK4idtRBnYxXPIXndE0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, stable <stable@kernel.org>,
-        Sherry Sun <sherry.sun@nxp.com>
-Subject: [PATCH 4.19 81/88] tty: serial: fsl_lpuart: use UARTCTRL_TXINV to send break instead of UARTCTRL_SBK
+        Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Subject: [PATCH 5.10 082/120] usb: gadget: f_fs: Add unbind event before functionfs_unbind
 Date:   Wed,  7 Jun 2023 22:16:38 +0200
-Message-ID: <20230607200901.757083324@linuxfoundation.org>
+Message-ID: <20230607200903.481297680@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,102 +53,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
 
-commit 2474e05467c00f7d51af3039b664de6886325257 upstream.
+commit efb6b535207395a5c7317993602e2503ca8cb4b3 upstream.
 
-LPUART IP now has two known bugs, one is that CTS has higher priority
-than the break signal, which causes the break signal sending through
-UARTCTRL_SBK may impacted by the CTS input if the HW flow control is
-enabled. It exists on all platforms we support in this driver.
-So we add a workaround patch for this issue: commit c4c81db5cf8b
-("tty: serial: fsl_lpuart: disable the CTS when send break signal").
+While exercising the unbind path, with the current implementation
+the functionfs_unbind would be calling which waits for the ffs->mutex
+to be available, however within the same time ffs_ep0_read is invoked
+& if no setup packets are pending, it will invoke function
+wait_event_interruptible_exclusive_locked_irq which by definition waits
+for the ev.count to be increased inside the same mutex for which
+functionfs_unbind is waiting.
+This creates deadlock situation because the functionfs_unbind won't
+get the lock until ev.count is increased which can only happen if
+the caller ffs_func_unbind can proceed further.
 
-Another IP bug is i.MX8QM LPUART may have an additional break character
-being sent after SBK was cleared. It may need to add some delay between
-clearing SBK and re-enabling CTS to ensure that the SBK latch are
-completely cleared.
+Following is the illustration:
 
-But we found that during the delay period before CTS is enabled, there
-is still a risk that Bluetooth data in TX FIFO may be sent out during
-this period because of break off and CTS disabled(even if BT sets CTS
-line deasserted, data is still sent to BT).
+	CPU1				CPU2
 
-Due to this risk, we have to drop the CTS-disabling workaround for SBK
-bugs, use TXINV seems to be a better way to replace SBK feature and
-avoid above risk. Also need to disable the transmitter to prevent any
-data from being sent out during break, then invert the TX line to send
-break. Then disable the TXINV when turn off break and re-enable
-transmitter.
+ffs_func_unbind()		ffs_ep0_read()
+				mutex_lock(ffs->mutex)
+				wait_event(ffs->ev.count)
+functionfs_unbind()
+  mutex_lock(ffs->mutex)
+  mutex_unlock(ffs->mutex)
 
-Fixes: c4c81db5cf8b ("tty: serial: fsl_lpuart: disable the CTS when send break signal")
+ffs_event_add()
+
+<deadlock>
+
+Fix this by moving the event unbind before functionfs_unbind
+to ensure the ev.count is incrased properly.
+
+Fixes: 6a19da111057 ("usb: gadget: f_fs: Prevent race during ffs_ep0_queue_wait")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Link: https://lore.kernel.org/r/20230519094751.28948-1-sherry.sun@nxp.com
+Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Link: https://lore.kernel.org/r/20230525092854.7992-1-quic_uaggarwa@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/fsl_lpuart.c |   44 ++++++++++++++++++++--------------------
- 1 file changed, 23 insertions(+), 21 deletions(-)
+ drivers/usb/gadget/function/f_fs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -1195,34 +1195,36 @@ static void lpuart_break_ctl(struct uart
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -3609,6 +3609,7 @@ static void ffs_func_unbind(struct usb_c
+ 	/* Drain any pending AIO completions */
+ 	drain_workqueue(ffs->io_completion_wq);
  
- static void lpuart32_break_ctl(struct uart_port *port, int break_state)
- {
--	unsigned long temp, modem;
--	struct tty_struct *tty;
--	unsigned int cflag = 0;
-+	unsigned long temp;
++	ffs_event_add(ffs, FUNCTIONFS_UNBIND);
+ 	if (!--opts->refcnt)
+ 		functionfs_unbind(ffs);
  
--	tty = tty_port_tty_get(&port->state->port);
--	if (tty) {
--		cflag = tty->termios.c_cflag;
--		tty_kref_put(tty);
--	}
--
--	temp = lpuart32_read(port, UARTCTRL) & ~UARTCTRL_SBK;
--	modem = lpuart32_read(port, UARTMODIR);
-+	temp = lpuart32_read(port, UARTCTRL);
+@@ -3633,7 +3634,6 @@ static void ffs_func_unbind(struct usb_c
+ 	func->function.ssp_descriptors = NULL;
+ 	func->interfaces_nums = NULL;
  
-+	/*
-+	 * LPUART IP now has two known bugs, one is CTS has higher priority than the
-+	 * break signal, which causes the break signal sending through UARTCTRL_SBK
-+	 * may impacted by the CTS input if the HW flow control is enabled. It
-+	 * exists on all platforms we support in this driver.
-+	 * Another bug is i.MX8QM LPUART may have an additional break character
-+	 * being sent after SBK was cleared.
-+	 * To avoid above two bugs, we use Transmit Data Inversion function to send
-+	 * the break signal instead of UARTCTRL_SBK.
-+	 */
- 	if (break_state != 0) {
--		temp |= UARTCTRL_SBK;
- 		/*
--		 * LPUART CTS has higher priority than SBK, need to disable CTS before
--		 * asserting SBK to avoid any interference if flow control is enabled.
-+		 * Disable the transmitter to prevent any data from being sent out
-+		 * during break, then invert the TX line to send break.
- 		 */
--		if (cflag & CRTSCTS && modem & UARTMODIR_TXCTSE)
--			lpuart32_write(port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
-+		temp &= ~UARTCTRL_TE;
-+		lpuart32_write(port, temp, UARTCTRL);
-+		temp |= UARTCTRL_TXINV;
-+		lpuart32_write(port, temp, UARTCTRL);
- 	} else {
--		/* Re-enable the CTS when break off. */
--		if (cflag & CRTSCTS && !(modem & UARTMODIR_TXCTSE))
--			lpuart32_write(port, modem | UARTMODIR_TXCTSE, UARTMODIR);
-+		/* Disable the TXINV to turn off break and re-enable transmitter. */
-+		temp &= ~UARTCTRL_TXINV;
-+		lpuart32_write(port, temp, UARTCTRL);
-+		temp |= UARTCTRL_TE;
-+		lpuart32_write(port, temp, UARTCTRL);
- 	}
--
--	lpuart32_write(port, temp, UARTCTRL);
+-	ffs_event_add(ffs, FUNCTIONFS_UNBIND);
  }
  
- static void lpuart_setup_watermark(struct lpuart_port *sport)
+ static struct usb_function *ffs_alloc(struct usb_function_instance *fi)
 
 
