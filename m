@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD468726CEC
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:37:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08FAA726B9F
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234064AbjFGUhu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:37:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36606 "EHLO
+        id S233355AbjFGU0k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:26:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234097AbjFGUhs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:37:48 -0400
+        with ESMTP id S233331AbjFGU0i (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1632A2710
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:37:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C09032126
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:26:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4FE6E645B4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:37:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6148DC433EF;
-        Wed,  7 Jun 2023 20:37:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A139E6444F
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:25:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B26CCC433D2;
+        Wed,  7 Jun 2023 20:25:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170250;
-        bh=9O52STw91Qes7fHXzPstmLWa9SeUhbccnBvK9mqA6TA=;
+        s=korg; t=1686169509;
+        bh=+c/hg+pn6YqJJKirv+KPqU8DGCISXulUy2B44R/iVk8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NDdFKiSEdhpxbqw+ojbJ6L/TY1ZnsSWMXEsMMKy7BQbJzVHk9uXpsgqGiB25qhU23
-         Y+7h/skHQi7ahMieRlK7xBKyhc/v3uKp3iAj7AK0esYTLQL/OEjsbkJ73zNV5Bptab
-         7l2T8bXVZJxxpcqNlMGxQPDqY9fNKdt9O12xrXKM=
+        b=n03ur6UU+CbPpG1/u36sg8u3VQshMqXOF5getemzGkVuZNyuNqR6wyBgvtnxR4CID
+         o7z2UpHPkPtc5fcLszzAnLAFmwf/BpIyJ8rVqb+D9VJJU56hsYVNunmGLp5/8E+Ioh
+         p3iELB52FcygrEXCgyMMVETPA16OZPvUKI8Iz9mg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhi Li <yieli@redhat.com>,
-        Jeff Layton <jlayton@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 014/225] nfsd: make a copy of struct iattr before calling notify_change
+Subject: [PATCH 6.3 108/286] fbdev: modedb: Add 1920x1080 at 60 Hz video mode
 Date:   Wed,  7 Jun 2023 22:13:27 +0200
-Message-ID: <20230607200913.809096138@linuxfoundation.org>
+Message-ID: <20230607200926.615531866@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,48 +53,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit d53d70084d27f56bcdf5074328f2c9ec861be596 ]
+[ Upstream commit c8902258b2b8ecaa1b8d88c312853c5b14c2553d ]
 
-notify_change can modify the iattr structure. In particular it can
-end up setting ATTR_MODE when ATTR_KILL_SUID is already set, causing
-a BUG() if the same iattr is passed to notify_change more than once.
+Add typical resolution for Full-HD monitors.
 
-Make a copy of the struct iattr before calling notify_change.
-
-Reported-by: Zhi Li <yieli@redhat.com>
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2207969
-Tested-by: Zhi Li <yieli@redhat.com>
-Fixes: 34b91dda7124 ("NFSD: Make nfsd4_setattr() wait before returning NFS4ERR_DELAY")
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/vfs.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/core/modedb.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index dc3ba13546dd6..155b34c4683c2 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -469,7 +469,15 @@ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
+diff --git a/drivers/video/fbdev/core/modedb.c b/drivers/video/fbdev/core/modedb.c
+index 6473e0dfe1464..e78ec7f728463 100644
+--- a/drivers/video/fbdev/core/modedb.c
++++ b/drivers/video/fbdev/core/modedb.c
+@@ -257,6 +257,11 @@ static const struct fb_videomode modedb[] = {
+ 	{ NULL, 72, 480, 300, 33386, 40, 24, 11, 19, 80, 3, 0,
+ 		FB_VMODE_DOUBLE },
  
- 	inode_lock(inode);
- 	for (retries = 1;;) {
--		host_err = __nfsd_setattr(dentry, iap);
-+		struct iattr attrs;
++	/* 1920x1080 @ 60 Hz, 67.3 kHz hsync */
++	{ NULL, 60, 1920, 1080, 6734, 148, 88, 36, 4, 44, 5, 0,
++		FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
++		FB_VMODE_NONINTERLACED },
 +
-+		/*
-+		 * notify_change() can alter its iattr argument, making
-+		 * @iap unsuitable for submission multiple times. Make a
-+		 * copy for every loop iteration.
-+		 */
-+		attrs = *iap;
-+		host_err = __nfsd_setattr(dentry, &attrs);
- 		if (host_err != -EAGAIN || !retries--)
- 			break;
- 		if (!nfsd_wait_for_delegreturn(rqstp, inode))
+ 	/* 1920x1200 @ 60 Hz, 74.5 Khz hsync */
+ 	{ NULL, 60, 1920, 1200, 5177, 128, 336, 1, 38, 208, 3,
+ 		FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
 -- 
 2.39.2
 
