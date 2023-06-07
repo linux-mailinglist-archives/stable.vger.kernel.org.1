@@ -2,51 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28E9F726C1E
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:30:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86CBB726D65
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:41:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233603AbjFGUay (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:30:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57252 "EHLO
+        id S234423AbjFGUln (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:41:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233854AbjFGUaj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43B842691
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:30:32 -0700 (PDT)
+        with ESMTP id S234396AbjFGUll (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:41:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D1F8184
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:41:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1460B644C9
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:30:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 298BAC433D2;
-        Wed,  7 Jun 2023 20:30:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6CCE664620
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:41:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D982C433D2;
+        Wed,  7 Jun 2023 20:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169831;
-        bh=ZKk8Agv45yvVeMQ5bFp0XMVE/4NZq85dTgG1SlV00o4=;
+        s=korg; t=1686170497;
+        bh=JAtkvFZ0/2pDlmSFKy5Da72TvMQtgupm8Xn67ZxEypA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rWsFclgzpxPu88pmeI6eFDvGwyfCYLyaIYk7YaxkMrmZm9WjEWkh7o+GVEs4hkGml
-         yGNKAmKaUkkUldxQSY0+WpL9Zqs59DcP4xyugTU8C6P6QbWNKgIhUz6n3BNG82kxWB
-         Z0VchjjghuL82zq2m4zXLM3IqOgovPLo4XJCwJlk=
+        b=vEjCKPp+N/UipH1iZv94hMO6MczejuxnExYhg9e0TR63vxqyQjkA06022KdTmkL9i
+         mpBzIa/7j8fn2gdneXKGQFb26NToAVwa4w4I1JrsPEWgXrfswR0dIF80pVsNIJcdXZ
+         yeJr8oXzjwdzs9DR4D8cs84GVXKJvfveeupsU0SY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sean Nyekjaer <sean@geanix.com>,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.3 201/286] iio: adc: stm32-adc: skip adc-channels setup if none is present
+        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 107/225] ASoC: SOF: sof-client-probes: fix pm_runtime imbalance in error handling
 Date:   Wed,  7 Jun 2023 22:15:00 +0200
-Message-ID: <20230607200929.825686803@linuxfoundation.org>
+Message-ID: <20230607200917.877218047@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,97 +52,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-commit 3e27ef0ced49f8ae7883c25fadf76a2086e99025 upstream.
+[ Upstream commit bc424273c74c1565c459c8f2a6ed95caee368d0a ]
 
-If only adc differential channels are defined driver will fail with
-stm32-adc: probe of 48003000.adc:adc@0 failed with error -22
+When an error occurs, we need to make sure the device can pm_runtime
+suspend instead of keeping it active.
 
-Fix this by skipping the initialization if no channels are defined.
-
-This applies only to the legacy way of initializing adc channels.
-
-Fixes: d7705f35448a ("iio: adc: stm32-adc: convert to device properties")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Reviewed-by: Olivier Moysan <olivier.moysan@foss.st.com>
-Link: https://lore.kernel.org/r/20230503162029.3654093-2-sean@geanix.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com
+Link: https://lore.kernel.org/r/20230512103315.8921-4-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/stm32-adc.c |   42 +++++++++++++++++++++++-------------------
- 1 file changed, 23 insertions(+), 19 deletions(-)
+ sound/soc/sof/sof-client-probes.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/drivers/iio/adc/stm32-adc.c
-+++ b/drivers/iio/adc/stm32-adc.c
-@@ -2037,6 +2037,7 @@ static int stm32_adc_legacy_chan_init(st
- 	struct stm32_adc_diff_channel diff[STM32_ADC_CH_MAX];
- 	struct device *dev = &indio_dev->dev;
- 	u32 num_diff = adc->num_diff;
-+	int num_se = nchans - num_diff;
- 	int size = num_diff * sizeof(*diff) / sizeof(u32);
- 	int scan_index = 0, ret, i, c;
- 	u32 smp = 0, smps[STM32_ADC_CH_MAX], chans[STM32_ADC_CH_MAX];
-@@ -2063,29 +2064,32 @@ static int stm32_adc_legacy_chan_init(st
- 			scan_index++;
- 		}
- 	}
--
--	ret = device_property_read_u32_array(dev, "st,adc-channels", chans,
--					     nchans);
--	if (ret)
--		return ret;
--
--	for (c = 0; c < nchans; c++) {
--		if (chans[c] >= adc_info->max_channels) {
--			dev_err(&indio_dev->dev, "Invalid channel %d\n",
--				chans[c]);
--			return -EINVAL;
-+	if (num_se > 0) {
-+		ret = device_property_read_u32_array(dev, "st,adc-channels", chans, num_se);
-+		if (ret) {
-+			dev_err(&indio_dev->dev, "Failed to get st,adc-channels %d\n", ret);
-+			return ret;
- 		}
+diff --git a/sound/soc/sof/sof-client-probes.c b/sound/soc/sof/sof-client-probes.c
+index ddeabbb5580e1..1e521a9e34d27 100644
+--- a/sound/soc/sof/sof-client-probes.c
++++ b/sound/soc/sof/sof-client-probes.c
+@@ -441,12 +441,7 @@ static ssize_t sof_probes_dfs_points_read(struct file *file, char __user *to,
  
--		/* Channel can't be configured both as single-ended & diff */
--		for (i = 0; i < num_diff; i++) {
--			if (chans[c] == diff[i].vinp) {
--				dev_err(&indio_dev->dev, "channel %d misconfigured\n",	chans[c]);
-+		for (c = 0; c < num_se; c++) {
-+			if (chans[c] >= adc_info->max_channels) {
-+				dev_err(&indio_dev->dev, "Invalid channel %d\n",
-+					chans[c]);
- 				return -EINVAL;
- 			}
-+
-+			/* Channel can't be configured both as single-ended & diff */
-+			for (i = 0; i < num_diff; i++) {
-+				if (chans[c] == diff[i].vinp) {
-+					dev_err(&indio_dev->dev, "channel %d misconfigured\n",
-+						chans[c]);
-+					return -EINVAL;
-+				}
-+			}
-+			stm32_adc_chan_init_one(indio_dev, &channels[scan_index],
-+						chans[c], 0, scan_index, false);
-+			scan_index++;
- 		}
--		stm32_adc_chan_init_one(indio_dev, &channels[scan_index],
--					chans[c], 0, scan_index, false);
--		scan_index++;
- 	}
- 
- 	if (adc->nsmps > 0) {
-@@ -2306,7 +2310,7 @@ static int stm32_adc_chan_fw_init(struct
- 
- 	if (legacy)
- 		ret = stm32_adc_legacy_chan_init(indio_dev, adc, channels,
--						 num_channels);
-+						 timestamping ? num_channels - 1 : num_channels);
- 	else
- 		ret = stm32_adc_generic_chan_init(indio_dev, adc, channels);
+ 	ret = sof_probes_points_info(cdev, &desc, &num_desc);
  	if (ret < 0)
+-		goto exit;
+-
+-	pm_runtime_mark_last_busy(dev);
+-	err = pm_runtime_put_autosuspend(dev);
+-	if (err < 0)
+-		dev_err_ratelimited(dev, "debugfs read failed to idle %d\n", err);
++		goto pm_error;
+ 
+ 	for (i = 0; i < num_desc; i++) {
+ 		offset = strlen(buf);
+@@ -464,6 +459,13 @@ static ssize_t sof_probes_dfs_points_read(struct file *file, char __user *to,
+ 	ret = simple_read_from_buffer(to, count, ppos, buf, strlen(buf));
+ 
+ 	kfree(desc);
++
++pm_error:
++	pm_runtime_mark_last_busy(dev);
++	err = pm_runtime_put_autosuspend(dev);
++	if (err < 0)
++		dev_err_ratelimited(dev, "debugfs read failed to idle %d\n", err);
++
+ exit:
+ 	kfree(buf);
+ 	return ret;
+-- 
+2.39.2
+
 
 
