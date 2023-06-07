@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73587726F90
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:00:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 532CA726C50
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:32:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236409AbjFGVAj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:00:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33142 "EHLO
+        id S233719AbjFGUcY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:32:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235834AbjFGU75 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:59:57 -0400
+        with ESMTP id S233726AbjFGUcW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:32:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 884CF270A
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:59:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE74F1BD4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:32:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 62363648DA
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:59:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C00C433EF;
-        Wed,  7 Jun 2023 20:59:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C3D8964510
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:32:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7E06C433EF;
+        Wed,  7 Jun 2023 20:32:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171568;
-        bh=jKrNuBwFBASeoYEA5DGc1XNcj2STVtp2XXCpYrs7yV0=;
+        s=korg; t=1686169937;
+        bh=NEaROYcbIPGXtYk3F7lfPK5ONPcQHToMLeBKhLbdS08=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=19/kN4wKfBrorbpYlt0lTV6wsiF7rPUPuaNCThP967y4xXIQ/qDhTzKe1TWORn6e3
-         jtbMaDIi+cpc7mae07e9wSGWolYZiWGTGlluAQ9pRWYwkokmsGmAOClSDaM8qznapI
-         CcRKTLcz4PAAo7w99d3hscYSl8aFHcwsE7bkWkCc=
+        b=DhKWs+WeV2V0FHuMvGD7rypK3Ynx8iYE08aQ7U36uEifxmRWDBxnMTFj7yEvs5plh
+         sZUCbOgagAthqophd2TfgvZFOV36cgmg1CBPORQBZ6mQojYqC9mgbfygbAJCHOrK1L
+         hsrl3u0Cqwnjugrc9f3AVJvlYwqblI+6BTJxFc4I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 067/159] media: dvb-usb-v2: rtl28xxu: fix null-ptr-deref in rtl28xxu_i2c_xfer
+        patches@lists.linux.dev, Yu Zhao <yuzhao@google.com>,
+        Oliver Upton <oliver.upton@linux.dev>,
+        Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.3 271/286] KVM: arm64: Drop last page ref in kvm_pgtable_stage2_free_removed()
 Date:   Wed,  7 Jun 2023 22:16:10 +0200
-Message-ID: <20230607200905.878918059@linuxfoundation.org>
+Message-ID: <20230607200932.152859286@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,84 +54,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-[ Upstream commit aa4a447b81b84f69c1a89ad899df157f386d7636 ]
+commit f6a27d6dc51b288106adaf053cff9c9b9cc12c4e upstream.
 
-In rtl28xxu_i2c_xfer, msg is controlled by user. When msg[i].buf
-is null and msg[i].len is zero, former checks on msg[i].buf would be
-passed. Malicious data finally reach rtl28xxu_i2c_xfer. If accessing
-msg[i].buf[0] without sanity check, null ptr deref would happen.
-We add check on msg[i].len to prevent crash.
+The reference count on page table allocations is increased for every
+'counted' PTE (valid or donated) in the table in addition to the initial
+reference from ->zalloc_page(). kvm_pgtable_stage2_free_removed() fails
+to drop the last reference on the root of the table walk, meaning we
+leak memory.
 
-Similar commit:
-commit 0ed554fd769a
-("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+Fix it by dropping the last reference after the free walker returns,
+at which point all references for 'counted' PTEs have been released.
 
-Link: https://lore.kernel.org/linux-media/tencent_3623572106754AC2F266B316798B0F6CCA05@qq.com
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 5c359cca1faf ("KVM: arm64: Tear down unlinked stage-2 subtree after break-before-make")
+Reported-by: Yu Zhao <yuzhao@google.com>
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Tested-by: Yu Zhao <yuzhao@google.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230530193213.1663411-1-oliver.upton@linux.dev
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/dvb-usb-v2/rtl28xxu.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ arch/arm64/kvm/hyp/pgtable.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/media/usb/dvb-usb-v2/rtl28xxu.c b/drivers/media/usb/dvb-usb-v2/rtl28xxu.c
-index 795a012d40200..f7884bb56fccf 100644
---- a/drivers/media/usb/dvb-usb-v2/rtl28xxu.c
-+++ b/drivers/media/usb/dvb-usb-v2/rtl28xxu.c
-@@ -176,6 +176,10 @@ static int rtl28xxu_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 			ret = -EOPNOTSUPP;
- 			goto err_mutex_unlock;
- 		} else if (msg[0].addr == 0x10) {
-+			if (msg[0].len < 1 || msg[1].len < 1) {
-+				ret = -EOPNOTSUPP;
-+				goto err_mutex_unlock;
-+			}
- 			/* method 1 - integrated demod */
- 			if (msg[0].buf[0] == 0x00) {
- 				/* return demod page from driver cache */
-@@ -189,6 +193,10 @@ static int rtl28xxu_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 				ret = rtl28xxu_ctrl_msg(d, &req);
- 			}
- 		} else if (msg[0].len < 2) {
-+			if (msg[0].len < 1) {
-+				ret = -EOPNOTSUPP;
-+				goto err_mutex_unlock;
-+			}
- 			/* method 2 - old I2C */
- 			req.value = (msg[0].buf[0] << 8) | (msg[0].addr << 1);
- 			req.index = CMD_I2C_RD;
-@@ -217,8 +225,16 @@ static int rtl28xxu_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 			ret = -EOPNOTSUPP;
- 			goto err_mutex_unlock;
- 		} else if (msg[0].addr == 0x10) {
-+			if (msg[0].len < 1) {
-+				ret = -EOPNOTSUPP;
-+				goto err_mutex_unlock;
-+			}
- 			/* method 1 - integrated demod */
- 			if (msg[0].buf[0] == 0x00) {
-+				if (msg[0].len < 2) {
-+					ret = -EOPNOTSUPP;
-+					goto err_mutex_unlock;
-+				}
- 				/* save demod page for later demod access */
- 				dev->page = msg[0].buf[1];
- 				ret = 0;
-@@ -231,6 +247,10 @@ static int rtl28xxu_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 				ret = rtl28xxu_ctrl_msg(d, &req);
- 			}
- 		} else if ((msg[0].len < 23) && (!dev->new_i2c_write)) {
-+			if (msg[0].len < 1) {
-+				ret = -EOPNOTSUPP;
-+				goto err_mutex_unlock;
-+			}
- 			/* method 2 - old I2C */
- 			req.value = (msg[0].buf[0] << 8) | (msg[0].addr << 1);
- 			req.index = CMD_I2C_WR;
--- 
-2.39.2
-
+--- a/arch/arm64/kvm/hyp/pgtable.c
++++ b/arch/arm64/kvm/hyp/pgtable.c
+@@ -1333,4 +1333,7 @@ void kvm_pgtable_stage2_free_removed(str
+ 	};
+ 
+ 	WARN_ON(__kvm_pgtable_walk(&data, mm_ops, ptep, level + 1));
++
++	WARN_ON(mm_ops->page_count(pgtable) != 1);
++	mm_ops->put_page(pgtable);
+ }
 
 
