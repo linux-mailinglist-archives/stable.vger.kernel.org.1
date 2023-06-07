@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EEFA726ACE
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EFFB726FAA
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:01:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232466AbjFGUU1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:20:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45466 "EHLO
+        id S235892AbjFGVA6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:00:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232710AbjFGUUS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:18 -0400
+        with ESMTP id S236253AbjFGVAb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63DA82129
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:19:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF4F2270C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:00:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C740C643AA
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:19:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA894C4339C;
-        Wed,  7 Jun 2023 20:19:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 15EDA648D0
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:00:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28543C433D2;
+        Wed,  7 Jun 2023 21:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169169;
-        bh=hTLx+wLjw+N2B1SzeEhzwnAjDJiuXWZSaMdnaOGcnFw=;
+        s=korg; t=1686171608;
+        bh=+c/hg+pn6YqJJKirv+KPqU8DGCISXulUy2B44R/iVk8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w3vY4k9t9x+S6RyyvtLHWi+Bv5/oG4LHSslWvoE5sFJmgJyuUccEWAv+MO/3mFXBG
-         CWaZMvUTBa6pw6PTbKWsKsiIOgEEFrwfngp0F5IkApqJPhNsBBbVseqm0uZsUf0n0x
-         g8W8IQ89qXpxQoTPeafqxP6LtVB2Cu0Xqpr31C5A=
+        b=If58CWm/lwXQTUBQuw7Uow/XuP6NNRR375xfJ4gFbaSO1v3O5wz/Hlk28aFay41C0
+         NZsarPErUrDgXCBf8veJL2dUfOxDUHv5UtZhFNhyAUG29InIxbc8DVt+jhPM7JVV2c
+         7RIDzS1kVKcuj/ZCd/VuNdZ2arj3imCcII2+VKGI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xingui Yang <yangxingui@huawei.com>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Jason Yan <yanaijie@huawei.com>
-Subject: [PATCH 4.14 41/61] ata: libata-scsi: Use correct device no in ata_find_dev()
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 052/159] fbdev: modedb: Add 1920x1080 at 60 Hz video mode
 Date:   Wed,  7 Jun 2023 22:15:55 +0200
-Message-ID: <20230607200849.530192608@linuxfoundation.org>
+Message-ID: <20230607200905.390518646@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-References: <20230607200835.310274198@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,96 +53,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Helge Deller <deller@gmx.de>
 
-commit 7f875850f20a42f488840c9df7af91ef7db2d576 upstream.
+[ Upstream commit c8902258b2b8ecaa1b8d88c312853c5b14c2553d ]
 
-For devices not attached to a port multiplier and managed directly by
-libata, the device number passed to ata_find_dev() must always be lower
-than the maximum number of devices returned by ata_link_max_devices().
-That is 1 for SATA devices or 2 for an IDE link with master+slave
-devices. This device number is the SCSI device ID which matches these
-constraints as the IDs are generated per port and so never exceed the
-maximum number of devices for the link being used.
+Add typical resolution for Full-HD monitors.
 
-However, for libsas managed devices, SCSI device IDs are assigned per
-struct scsi_host, leading to device IDs for SATA devices that can be
-well in excess of libata per-link maximum number of devices. This
-results in ata_find_dev() to always return NULL for libsas managed
-devices except for the first device of the target scsi_host with ID
-(device number) equal to 0. This issue is visible by executing the
-hdparm utility, which fails. E.g.:
-
-hdparm -i /dev/sdX
-/dev/sdX:
-  HDIO_GET_IDENTITY failed: No message of desired type
-
-Fix this by rewriting ata_find_dev() to ignore the device number for
-non-PMP attached devices with a link with at most 1 device, that is SATA
-devices. For these, the device number 0 is always used to
-return the correct pointer to the struct ata_device of the port link.
-This change excludes IDE master/slave setups (maximum number of devices
-per link is 2) and port-multiplier attached devices. Also, to be
-consistant with the fact that SCSI device IDs and channel numbers used
-as device numbers are both unsigned int, change the devno argument of
-ata_find_dev() to unsigned int.
-
-Reported-by: Xingui Yang <yangxingui@huawei.com>
-Fixes: 41bda9c98035 ("libata-link: update hotplug to handle PMP links")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Jason Yan <yanaijie@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-scsi.c |   34 ++++++++++++++++++++++++++--------
- 1 file changed, 26 insertions(+), 8 deletions(-)
+ drivers/video/fbdev/core/modedb.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -3054,18 +3054,36 @@ static unsigned int atapi_xlat(struct at
- 	return 0;
- }
+diff --git a/drivers/video/fbdev/core/modedb.c b/drivers/video/fbdev/core/modedb.c
+index 6473e0dfe1464..e78ec7f728463 100644
+--- a/drivers/video/fbdev/core/modedb.c
++++ b/drivers/video/fbdev/core/modedb.c
+@@ -257,6 +257,11 @@ static const struct fb_videomode modedb[] = {
+ 	{ NULL, 72, 480, 300, 33386, 40, 24, 11, 19, 80, 3, 0,
+ 		FB_VMODE_DOUBLE },
  
--static struct ata_device *ata_find_dev(struct ata_port *ap, int devno)
-+static struct ata_device *ata_find_dev(struct ata_port *ap, unsigned int devno)
- {
--	if (!sata_pmp_attached(ap)) {
--		if (likely(devno >= 0 &&
--			   devno < ata_link_max_devices(&ap->link)))
-+	/*
-+	 * For the non-PMP case, ata_link_max_devices() returns 1 (SATA case),
-+	 * or 2 (IDE master + slave case). However, the former case includes
-+	 * libsas hosted devices which are numbered per scsi host, leading
-+	 * to devno potentially being larger than 0 but with each struct
-+	 * ata_device having its own struct ata_port and struct ata_link.
-+	 * To accommodate these, ignore devno and always use device number 0.
-+	 */
-+	if (likely(!sata_pmp_attached(ap))) {
-+		int link_max_devices = ata_link_max_devices(&ap->link);
++	/* 1920x1080 @ 60 Hz, 67.3 kHz hsync */
++	{ NULL, 60, 1920, 1080, 6734, 148, 88, 36, 4, 44, 5, 0,
++		FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
++		FB_VMODE_NONINTERLACED },
 +
-+		if (link_max_devices == 1)
-+			return &ap->link.device[0];
-+
-+		if (devno < link_max_devices)
- 			return &ap->link.device[devno];
--	} else {
--		if (likely(devno >= 0 &&
--			   devno < ap->nr_pmp_links))
--			return &ap->pmp_link[devno].device[0];
-+
-+		return NULL;
- 	}
- 
-+	/*
-+	 * For PMP-attached devices, the device number corresponds to C
-+	 * (channel) of SCSI [H:C:I:L], indicating the port pmp link
-+	 * for the device.
-+	 */
-+	if (devno < ap->nr_pmp_links)
-+		return &ap->pmp_link[devno].device[0];
-+
- 	return NULL;
- }
- 
+ 	/* 1920x1200 @ 60 Hz, 74.5 Khz hsync */
+ 	{ NULL, 60, 1920, 1200, 5177, 128, 336, 1, 38, 208, 3,
+ 		FB_SYNC_HOR_HIGH_ACT | FB_SYNC_VERT_HIGH_ACT,
+-- 
+2.39.2
+
 
 
