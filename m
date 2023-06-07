@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2483726E7E
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98C51726C5A
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:33:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234817AbjFGUuw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:50:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49620 "EHLO
+        id S233638AbjFGUdD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:33:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234999AbjFGUu0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:50:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25ADA10EA
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:50:22 -0700 (PDT)
+        with ESMTP id S233743AbjFGUdA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:33:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 066F91BCC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:32:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7559664660
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:50:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D49DC4339B;
-        Wed,  7 Jun 2023 20:50:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8233A644CE
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:32:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 957AAC433D2;
+        Wed,  7 Jun 2023 20:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171020;
-        bh=To+/848u00AfJY53Dp+pSL23SLoi4XLGAx5FUa01JSg=;
+        s=korg; t=1686169963;
+        bh=nvxxCqzQSJniYD7SMvM7DQAEKt9nmhMautvZMiswPdM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=obENoq7gYbGfirAeaR0fkiuVbBlTJnLdfCEX7DMo653l3aXSVV+kkz15MFg0lUmLx
-         tG9sOBtjjzUMniPRhpGFSj6+833d1sI8Oo8ZTEcKjkaoTtdbqNPEumal56TAaJ5FTn
-         vO3TpHrXDOJ6QBseF0StLwdUlT9JY66blufzVOI4=
+        b=SdfVz3ebI+EefLY93JkEJ2O1cFVbreuZx00YBdDFdbyuE9B6ymdGpgOk9wB+eD0zS
+         K6a5qhhwrTe91D/PGqFwxU3gnTwMmvpBxigxAGp6o3u9+w6RJcIWtsRMhFH/BBBBO9
+         ZGwKipxFOSvp0SGC1wcLU/c989E71XiLzHY5xPHs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yun Lu <luyun@kylinos.cn>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 063/120] wifi: rtl8xxxu: fix authentication timeout due to incorrect RCR value
+        patches@lists.linux.dev, Eric Biggers <ebiggers@kernel.org>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Eric Biggers <ebiggers@google.com>,
+        Stefan Berger <stefanb@linux.ibm.com>
+Subject: [PATCH 6.3 280/286] KEYS: asymmetric: Copy sig and digest in public_key_verify_signature()
 Date:   Wed,  7 Jun 2023 22:16:19 +0200
-Message-ID: <20230607200902.867541643@linuxfoundation.org>
+Message-ID: <20230607200932.428568936@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,73 +55,112 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yun Lu <luyun@kylinos.cn>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-[ Upstream commit 20429444e653ee8242dfbf815c0c37866beb371b ]
+commit c3d03e8e35e005e1a614e51bb59053eeb5857f76 upstream.
 
-When using rtl8192cu with rtl8xxxu driver to connect wifi, there is a
-probability of failure, which shows "authentication with ... timed out".
-Through debugging, it was found that the RCR register has been inexplicably
-modified to an incorrect value, resulting in the nic not being able to
-receive authenticated frames.
+Commit ac4e97abce9b8 ("scatterlist: sg_set_buf() argument must be in linear
+mapping") checks that both the signature and the digest reside in the
+linear mapping area.
 
-To fix this problem, add regrcr in rtl8xxxu_priv struct, and store
-the RCR value every time the register is written, and use it the next
-time the register need to be modified.
+However, more recently commit ba14a194a434c ("fork: Add generic vmalloced
+stack support") made it possible to move the stack in the vmalloc area,
+which is not contiguous, and thus not suitable for sg_set_buf() which needs
+adjacent pages.
 
-Signed-off-by: Yun Lu <luyun@kylinos.cn>
-Link: https://lore.kernel.org/all/20230427020512.1221062-1-luyun_611@163.com
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230512012055.2990472-1-luyun_611@163.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Always make a copy of the signature and digest in the same buffer used to
+store the key and its parameters, and pass them to sg_init_one(). Prefer it
+to conditionally doing the copy if necessary, to keep the code simple. The
+buffer allocated with kmalloc() is in the linear mapping area.
+
+Cc: stable@vger.kernel.org # 4.9.x
+Fixes: ba14a194a434 ("fork: Add generic vmalloced stack support")
+Link: https://lore.kernel.org/linux-integrity/Y4pIpxbjBdajymBJ@sol.localdomain/
+Suggested-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Reviewed-by: Eric Biggers <ebiggers@google.com>
+Tested-by: Stefan Berger <stefanb@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h      | 1 +
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 4 +++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ crypto/asymmetric_keys/public_key.c |   38 +++++++++++++++++++-----------------
+ 1 file changed, 21 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index 0ed4d67308d78..fe1e4c4c17c42 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -1346,6 +1346,7 @@ struct rtl8xxxu_priv {
- 	u32 rege9c;
- 	u32 regeb4;
- 	u32 regebc;
-+	u32 regrcr;
- 	int next_mbox;
- 	int nr_out_eps;
+--- a/crypto/asymmetric_keys/public_key.c
++++ b/crypto/asymmetric_keys/public_key.c
+@@ -380,9 +380,10 @@ int public_key_verify_signature(const st
+ 	struct crypto_wait cwait;
+ 	struct crypto_akcipher *tfm;
+ 	struct akcipher_request *req;
+-	struct scatterlist src_sg[2];
++	struct scatterlist src_sg;
+ 	char alg_name[CRYPTO_MAX_ALG_NAME];
+-	char *key, *ptr;
++	char *buf, *ptr;
++	size_t buf_len;
+ 	int ret;
  
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index deef1c09de319..004778faf3d07 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -4045,6 +4045,7 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
- 		RCR_ACCEPT_MGMT_FRAME | RCR_HTC_LOC_CTRL |
- 		RCR_APPEND_PHYSTAT | RCR_APPEND_ICV | RCR_APPEND_MIC;
- 	rtl8xxxu_write32(priv, REG_RCR, val32);
-+	priv->regrcr = val32;
+ 	pr_devel("==>%s()\n", __func__);
+@@ -420,34 +421,37 @@ int public_key_verify_signature(const st
+ 	if (!req)
+ 		goto error_free_tfm;
  
- 	/*
- 	 * Accept all multicast
-@@ -5999,7 +6000,7 @@ static void rtl8xxxu_configure_filter(struct ieee80211_hw *hw,
- 				      unsigned int *total_flags, u64 multicast)
- {
- 	struct rtl8xxxu_priv *priv = hw->priv;
--	u32 rcr = rtl8xxxu_read32(priv, REG_RCR);
-+	u32 rcr = priv->regrcr;
+-	key = kmalloc(pkey->keylen + sizeof(u32) * 2 + pkey->paramlen,
+-		      GFP_KERNEL);
+-	if (!key)
++	buf_len = max_t(size_t, pkey->keylen + sizeof(u32) * 2 + pkey->paramlen,
++			sig->s_size + sig->digest_size);
++
++	buf = kmalloc(buf_len, GFP_KERNEL);
++	if (!buf)
+ 		goto error_free_req;
  
- 	dev_dbg(&priv->udev->dev, "%s: changed_flags %08x, total_flags %08x\n",
- 		__func__, changed_flags, *total_flags);
-@@ -6045,6 +6046,7 @@ static void rtl8xxxu_configure_filter(struct ieee80211_hw *hw,
- 	 */
+-	memcpy(key, pkey->key, pkey->keylen);
+-	ptr = key + pkey->keylen;
++	memcpy(buf, pkey->key, pkey->keylen);
++	ptr = buf + pkey->keylen;
+ 	ptr = pkey_pack_u32(ptr, pkey->algo);
+ 	ptr = pkey_pack_u32(ptr, pkey->paramlen);
+ 	memcpy(ptr, pkey->params, pkey->paramlen);
  
- 	rtl8xxxu_write32(priv, REG_RCR, rcr);
-+	priv->regrcr = rcr;
+ 	if (pkey->key_is_private)
+-		ret = crypto_akcipher_set_priv_key(tfm, key, pkey->keylen);
++		ret = crypto_akcipher_set_priv_key(tfm, buf, pkey->keylen);
+ 	else
+-		ret = crypto_akcipher_set_pub_key(tfm, key, pkey->keylen);
++		ret = crypto_akcipher_set_pub_key(tfm, buf, pkey->keylen);
+ 	if (ret)
+-		goto error_free_key;
++		goto error_free_buf;
  
- 	*total_flags &= (FIF_ALLMULTI | FIF_FCSFAIL | FIF_BCN_PRBRESP_PROMISC |
- 			 FIF_CONTROL | FIF_OTHER_BSS | FIF_PSPOLL |
--- 
-2.39.2
-
+ 	if (strcmp(pkey->pkey_algo, "sm2") == 0 && sig->data_size) {
+ 		ret = cert_sig_digest_update(sig, tfm);
+ 		if (ret)
+-			goto error_free_key;
++			goto error_free_buf;
+ 	}
+ 
+-	sg_init_table(src_sg, 2);
+-	sg_set_buf(&src_sg[0], sig->s, sig->s_size);
+-	sg_set_buf(&src_sg[1], sig->digest, sig->digest_size);
+-	akcipher_request_set_crypt(req, src_sg, NULL, sig->s_size,
++	memcpy(buf, sig->s, sig->s_size);
++	memcpy(buf + sig->s_size, sig->digest, sig->digest_size);
++
++	sg_init_one(&src_sg, buf, sig->s_size + sig->digest_size);
++	akcipher_request_set_crypt(req, &src_sg, NULL, sig->s_size,
+ 				   sig->digest_size);
+ 	crypto_init_wait(&cwait);
+ 	akcipher_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
+@@ -455,8 +459,8 @@ int public_key_verify_signature(const st
+ 				      crypto_req_done, &cwait);
+ 	ret = crypto_wait_req(crypto_akcipher_verify(req), &cwait);
+ 
+-error_free_key:
+-	kfree(key);
++error_free_buf:
++	kfree(buf);
+ error_free_req:
+ 	akcipher_request_free(req);
+ error_free_tfm:
 
 
