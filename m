@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17B58726D7C
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:42:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0C71726BDC
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:28:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234451AbjFGUm3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:42:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41864 "EHLO
+        id S233489AbjFGU25 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:28:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234560AbjFGUmT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:42:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90E132134
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:42:13 -0700 (PDT)
+        with ESMTP id S233470AbjFGU24 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:28:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 231D12705
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:28:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ECA6E64633
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:42:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D4C6C4339B;
-        Wed,  7 Jun 2023 20:42:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C001C644B0
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:28:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D113FC433D2;
+        Wed,  7 Jun 2023 20:28:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170532;
-        bh=r/6fecBU06f8kGCswx/Qa+Cl/y1woDWpYc+7gapLdcs=;
+        s=korg; t=1686169716;
+        bh=6WZj0BXWB1MLar3oj/LZv3PvS5t2OOJL+zBNwsbacYg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ll4STsB4n9fcYL4hqyDSqcFBhyMR4bCoivFCGbI70cbVsMBuggYjfJAtXz1LpGc3e
-         05mQ1HdQ0DiTe98kjBzoS1WlAD6xgOTte3Ck/Lf0VZsp/6RofejeF9Y5Ku7cVug2Cx
-         rq1szb1jzOy3yXA7/onuyDsZ2d+4ObmuD8zcbxww=
+        b=07eMmch4ZHVumYOZ4dF5yu563RNLZkSG8lo+NIIPGi/YZ7Kk7CS05rZHH1WEBU9d9
+         cCOGXUaN70XepSb0vrQFECpfuh/iZSjExrshFqC0Pv9seox4wTUdwMh1eIgY5wp0cv
+         YukExBsAzWDHdrJU0lz6+4XeRXw22hi64eIqi85I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev,
+        Francesco Dolcini <francesco.dolcini@toradex.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 091/225] media: dvb-usb: az6027: fix three null-ptr-deref in az6027_i2c_xfer()
-Date:   Wed,  7 Jun 2023 22:14:44 +0200
-Message-ID: <20230607200917.359727293@linuxfoundation.org>
+Subject: [PATCH 6.3 186/286] dt-bindings: serial: 8250_omap: add rs485-rts-active-high
+Date:   Wed,  7 Jun 2023 22:14:45 +0200
+Message-ID: <20230607200929.349995680@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,61 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wei Chen <harperchen1110@gmail.com>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-[ Upstream commit 858e97d7956d17a2cb56a9413468704a4d5abfe1 ]
+[ Upstream commit 403e97d6ab2cb6fd0ac1ff968cd7b691771f1613 ]
 
-In az6027_i2c_xfer, msg is controlled by user. When msg[i].buf is null,
-commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in
-az6027_i2c_xfer()") fix the null-ptr-deref bug when msg[i].addr is 0x99.
-However, null-ptr-deref also happens when msg[i].addr is 0xd0 and 0xc0.
-We add check on msg[i].len to prevent null-ptr-deref.
+Add rs485-rts-active-high property, this was removed by mistake.
+In general we just use rs485-rts-active-low property, however the OMAP
+UART for legacy reason uses the -high one.
 
-Link: https://lore.kernel.org/linux-media/20230310165604.3093483-1-harperchen1110@gmail.com
-Signed-off-by: Wei Chen <harperchen1110@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 767d3467eb60 ("dt-bindings: serial: 8250_omap: drop rs485 properties")
+Closes: https://lore.kernel.org/all/ZGefR4mTHHo1iQ7H@francesco-nb.int.toradex.com/
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230531111038.6302-1-francesco@dolcini.it
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb/az6027.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ Documentation/devicetree/bindings/serial/8250_omap.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/usb/dvb-usb/az6027.c b/drivers/media/usb/dvb-usb/az6027.c
-index 7d78ee09be5e1..a31c6f82f4e90 100644
---- a/drivers/media/usb/dvb-usb/az6027.c
-+++ b/drivers/media/usb/dvb-usb/az6027.c
-@@ -988,6 +988,10 @@ static int az6027_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[], int n
- 			/* write/read request */
- 			if (i + 1 < num && (msg[i + 1].flags & I2C_M_RD)) {
- 				req = 0xB9;
-+				if (msg[i].len < 1) {
-+					i = -EOPNOTSUPP;
-+					break;
-+				}
- 				index = (((msg[i].buf[0] << 8) & 0xff00) | (msg[i].buf[1] & 0x00ff));
- 				value = msg[i].addr + (msg[i].len << 8);
- 				length = msg[i + 1].len + 6;
-@@ -1001,6 +1005,10 @@ static int az6027_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[], int n
- 
- 				/* demod 16bit addr */
- 				req = 0xBD;
-+				if (msg[i].len < 1) {
-+					i = -EOPNOTSUPP;
-+					break;
-+				}
- 				index = (((msg[i].buf[0] << 8) & 0xff00) | (msg[i].buf[1] & 0x00ff));
- 				value = msg[i].addr + (2 << 8);
- 				length = msg[i].len - 2;
-@@ -1026,6 +1034,10 @@ static int az6027_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[], int n
- 			} else {
- 
- 				req = 0xBD;
-+				if (msg[i].len < 1) {
-+					i = -EOPNOTSUPP;
-+					break;
-+				}
- 				index = msg[i].buf[0] & 0x00FF;
- 				value = msg[i].addr + (1 << 8);
- 				length = msg[i].len - 1;
+diff --git a/Documentation/devicetree/bindings/serial/8250_omap.yaml b/Documentation/devicetree/bindings/serial/8250_omap.yaml
+index eb3488d8f9ee6..6a7be42da523c 100644
+--- a/Documentation/devicetree/bindings/serial/8250_omap.yaml
++++ b/Documentation/devicetree/bindings/serial/8250_omap.yaml
+@@ -70,6 +70,7 @@ properties:
+   dsr-gpios: true
+   rng-gpios: true
+   dcd-gpios: true
++  rs485-rts-active-high: true
+   rts-gpio: true
+   power-domains: true
+   clock-frequency: true
 -- 
 2.39.2
 
