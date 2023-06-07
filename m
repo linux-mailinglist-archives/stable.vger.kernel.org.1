@@ -2,59 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38D30726ED8
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4733726FB0
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:01:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235372AbjFGUxP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:53:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54340 "EHLO
+        id S235899AbjFGVBB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:01:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235367AbjFGUxM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:53:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C6D01BF0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:53:03 -0700 (PDT)
+        with ESMTP id S236378AbjFGVAh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CE0E1FEA
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:00:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 312206478E
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:53:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C1CC433EF;
-        Wed,  7 Jun 2023 20:53:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 22194648D5
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:59:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A70DC433D2;
+        Wed,  7 Jun 2023 20:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171182;
-        bh=EbDUCfIcI8ayaWKuqj29n1zWg94CDS9D/gfbhyIkAGA=;
+        s=korg; t=1686171576;
+        bh=7mcACBqxwvhGtKqgFqkyznWpRqdINBRkKCslYjg/aII=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Uhr5h6xO/iFRCuU4DAiGtPmj9xMfE2pcViNgMurVGV7BpH3Furd2oTOJ6PATm5pHm
-         qxCjU7fPtvNYVmHabc5Zjbvg9/qbwVrPRvGnNL3OIopsc6//fShnOcZ4HlTx8QQ1+z
-         Y1Kb6ipjUzOSFMXqhcHgHFOAz6oARzmOvsXzc7OY=
+        b=UJzq9q7bvSDIf+r/lJZGJdgC/Nm4F2W9djBOnMFLxWbf9pdVgxtX0vJQPvwd1yUe2
+         mG2g1s0S9/f2A9uYEmhfGHMReisjPa1vnR7K8FI6psqXehqFvKWy7zWBj0oH+UyJtJ
+         eb5HU92SBbDAaAqo69WQyoUr+4+vhL822YOr/rHM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Joseph Qi <joseph.qi@linux.alibaba.com>,
-        Sudarsana Reddy Kalluru <skalluru@marvell.com>,
-        Mark Fasheh <mark@fasheh.com>,
-        Joel Becker <jlbec@evilplan.org>,
-        Junxiao Bi <junxiao.bi@oracle.com>,
-        Changwei Ge <gechangwei@live.cn>, Gang He <ghe@suse.com>,
-        Jun Piao <piaojun@huawei.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 21/99] ocfs2/dlm: move BITS_TO_BYTES() to bitops.h for wider use
+Subject: [PATCH 5.15 070/159] media: netup_unidvb: fix irq init by register it at the end of probe
 Date:   Wed,  7 Jun 2023 22:16:13 +0200
-Message-ID: <20230607200900.919850912@linuxfoundation.org>
+Message-ID: <20230607200905.974533956@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -63,88 +54,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Wei Chen <harperchen1110@gmail.com>
 
-[ Upstream commit dd3e7cba16274831f5a69f071ed3cf13ffb352ea ]
+[ Upstream commit e6ad6233592593079db5c8fa592c298e51bc1356 ]
 
-There are users already and will be more of BITS_TO_BYTES() macro.  Move
-it to bitops.h for wider use.
+IRQ handler netup_spi_interrupt() takes spinlock spi->lock. The lock
+is initialized in netup_spi_init(). However, irq handler is registered
+before initializing the lock.
 
-In the case of ocfs2 the replacement is identical.
+Spinlock dma->lock and i2c->lock suffer from the same problem.
 
-As for bnx2x, there are two places where floor version is used.  In the
-first case to calculate the amount of structures that can fit one memory
-page.  In this case obviously the ceiling variant is correct and
-original code might have a potential bug, if amount of bits % 8 is not
-0.  In the second case the macro is used to calculate bytes transmitted
-in one microsecond.  This will work for all speeds which is multiply of
-1Gbps without any change, for the rest new code will give ceiling value,
-for instance 100Mbps will give 13 bytes, while old code gives 12 bytes
-and the arithmetically correct one is 12.5 bytes.  Further the value is
-used to setup timer threshold which in any case has its own margins due
-to certain resolution.  I don't see here an issue with slightly shifting
-thresholds for low speed connections, the card is supposed to utilize
-highest available rate, which is usually 10Gbps.
+Fix this by registering the irq at the end of probe.
 
-Link: http://lkml.kernel.org/r/20200108121316.22411-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Acked-by: Sudarsana Reddy Kalluru <skalluru@marvell.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: f4e4534850a9 ("net/netlink: fix NETLINK_LIST_MEMBERSHIPS length report")
+Link: https://lore.kernel.org/linux-media/20230315134518.1074497-1-harperchen1110@gmail.com
+Signed-off-by: Wei Chen <harperchen1110@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnx2x/bnx2x_init.h | 1 -
- fs/ocfs2/dlm/dlmcommon.h                         | 4 ----
- include/linux/bitops.h                           | 1 +
- 3 files changed, 1 insertion(+), 5 deletions(-)
+ .../media/pci/netup_unidvb/netup_unidvb_core.c  | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_init.h b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_init.h
-index 066765fbef069..0a59a09ef82f4 100644
---- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_init.h
-+++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_init.h
-@@ -296,7 +296,6 @@ static inline void bnx2x_dcb_config_qm(struct bnx2x *bp, enum cos_mode mode,
-  *    possible, the driver should only write the valid vnics into the internal
-  *    ram according to the appropriate port mode.
-  */
--#define BITS_TO_BYTES(x) ((x)/8)
- 
- /* CMNG constants, as derived from system spec calculations */
- 
-diff --git a/fs/ocfs2/dlm/dlmcommon.h b/fs/ocfs2/dlm/dlmcommon.h
-index aaf24548b02a1..0463dce65bb22 100644
---- a/fs/ocfs2/dlm/dlmcommon.h
-+++ b/fs/ocfs2/dlm/dlmcommon.h
-@@ -688,10 +688,6 @@ struct dlm_begin_reco
- 	__be32 pad2;
- };
- 
--
--#define BITS_PER_BYTE 8
--#define BITS_TO_BYTES(bits) (((bits)+BITS_PER_BYTE-1)/BITS_PER_BYTE)
--
- struct dlm_query_join_request
- {
- 	u8 node_idx;
-diff --git a/include/linux/bitops.h b/include/linux/bitops.h
-index 4f0e62cbf2ffe..e9e74af163fab 100644
---- a/include/linux/bitops.h
-+++ b/include/linux/bitops.h
-@@ -13,6 +13,7 @@
- 
- #define BITS_PER_TYPE(type) (sizeof(type) * BITS_PER_BYTE)
- #define BITS_TO_LONGS(nr)	DIV_ROUND_UP(nr, BITS_PER_TYPE(long))
-+#define BITS_TO_BYTES(nr)	DIV_ROUND_UP(nr, BITS_PER_TYPE(char))
- 
- extern unsigned int __sw_hweight8(unsigned int w);
- extern unsigned int __sw_hweight16(unsigned int w);
+diff --git a/drivers/media/pci/netup_unidvb/netup_unidvb_core.c b/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
+index a71814e2772d1..7c5061953ee82 100644
+--- a/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
++++ b/drivers/media/pci/netup_unidvb/netup_unidvb_core.c
+@@ -887,12 +887,7 @@ static int netup_unidvb_initdev(struct pci_dev *pci_dev,
+ 		ndev->lmmio0, (u32)pci_resource_len(pci_dev, 0),
+ 		ndev->lmmio1, (u32)pci_resource_len(pci_dev, 1),
+ 		pci_dev->irq);
+-	if (request_irq(pci_dev->irq, netup_unidvb_isr, IRQF_SHARED,
+-			"netup_unidvb", pci_dev) < 0) {
+-		dev_err(&pci_dev->dev,
+-			"%s(): can't get IRQ %d\n", __func__, pci_dev->irq);
+-		goto irq_request_err;
+-	}
++
+ 	ndev->dma_size = 2 * 188 *
+ 		NETUP_DMA_BLOCKS_COUNT * NETUP_DMA_PACKETS_COUNT;
+ 	ndev->dma_virt = dma_alloc_coherent(&pci_dev->dev,
+@@ -933,6 +928,14 @@ static int netup_unidvb_initdev(struct pci_dev *pci_dev,
+ 		dev_err(&pci_dev->dev, "netup_unidvb: DMA setup failed\n");
+ 		goto dma_setup_err;
+ 	}
++
++	if (request_irq(pci_dev->irq, netup_unidvb_isr, IRQF_SHARED,
++			"netup_unidvb", pci_dev) < 0) {
++		dev_err(&pci_dev->dev,
++			"%s(): can't get IRQ %d\n", __func__, pci_dev->irq);
++		goto dma_setup_err;
++	}
++
+ 	dev_info(&pci_dev->dev,
+ 		"netup_unidvb: device has been initialized\n");
+ 	return 0;
+@@ -951,8 +954,6 @@ static int netup_unidvb_initdev(struct pci_dev *pci_dev,
+ 	dma_free_coherent(&pci_dev->dev, ndev->dma_size,
+ 			ndev->dma_virt, ndev->dma_phys);
+ dma_alloc_err:
+-	free_irq(pci_dev->irq, pci_dev);
+-irq_request_err:
+ 	iounmap(ndev->lmmio1);
+ pci_bar1_error:
+ 	iounmap(ndev->lmmio0);
 -- 
 2.39.2
 
