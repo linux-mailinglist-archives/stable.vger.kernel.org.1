@@ -2,46 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 529D0726D32
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:40:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3ADAF726B82
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234292AbjFGUkI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:40:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39276 "EHLO
+        id S232166AbjFGU0D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:26:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234304AbjFGUkC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:40:02 -0400
+        with ESMTP id S233242AbjFGU0C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECC6A26A9
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:39:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9E43270C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:25:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D9B73645E2
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:39:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89FFC4339C;
-        Wed,  7 Jun 2023 20:39:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B92446446A
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:25:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8FE0C4339B;
+        Wed,  7 Jun 2023 20:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170375;
-        bh=AQZkEWPJZCOmrKCeBaK/NgPxSZBRArXcG/4wa1Lksfc=;
+        s=korg; t=1686169530;
+        bh=TQ11Nxh2OcO48SMDrGUoUDr9OLdFd43bQOf6sBAJnKo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HMN/5NSrj2YWmzkCYHEtEngWtPOLTohNNA+ARMRCSyOt8QrGZlG7ih2rcwA/k8tJO
-         GQmFNPkCzE771j9Z87YGeDY6WStl6OG2vKXEnBXuezpnP29AJ/Shcnfi85e7D2JAwn
-         /Mbgha+XZVzk4lnHBYbqfCm4OKOvSvukqe25niww=
+        b=Y+t5bBW6sLNLy9x0EY7NUaFK+VWCYVH3DxwRwegbz5LLU6MXPQMsrcKtLDYCQTnp+
+         RGrwbsVvlPu4RDGm60gtJcu+VpwGOdf0gRdvZbPSiYTeigUUU6Z0xIongRH0avXNBO
+         JuWWiFNcEwo3XWZVvjd0/0/QUKclT+l6KclGGECg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 021/225] net: mellanox: mlxbf_gige: Fix skb_panic splat under memory pressure
-Date:   Wed,  7 Jun 2023 22:13:34 +0200
-Message-ID: <20230607200915.009400166@linuxfoundation.org>
+        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 116/286] ASoC: dwc: limit the number of overrun messages
+Date:   Wed,  7 Jun 2023 22:13:35 +0200
+Message-ID: <20230607200926.868355602@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,54 +52,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+From: Maxim Kochetkov <fido_max@inbox.ru>
 
-[ Upstream commit d68cb7cf1fd0ef4287bc0ecd1ed0b6ae8e05fc70 ]
+[ Upstream commit ab6ecfbf40fccf74b6ec2ba7ed6dd2fc024c3af2 ]
 
-Do skb_put() after a new skb has been successfully allocated otherwise
-the reused skb leads to skb_panics or incorrect packet sizes.
+On slow CPU (FPGA/QEMU emulated) printing overrun messages from
+interrupt handler to uart console may leads to more overrun errors.
+So use dev_err_ratelimited to limit the number of error messages.
 
-Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
-Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230524194908.147145-1-tbogendoerfer@suse.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Maxim Kochetkov <fido_max@inbox.ru
+Link: https://lore.kernel.org/r/20230505062820.21840-1-fido_max@inbox.ru
+Signed-off-by: Mark Brown <broonie@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c    | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ sound/soc/dwc/dwc-i2s.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
-index afa3b92a6905f..0d5a41a2ae010 100644
---- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
-@@ -245,12 +245,6 @@ static bool mlxbf_gige_rx_packet(struct mlxbf_gige *priv, int *rx_pkts)
+diff --git a/sound/soc/dwc/dwc-i2s.c b/sound/soc/dwc/dwc-i2s.c
+index 7f7dd07c63b2f..3496301582b22 100644
+--- a/sound/soc/dwc/dwc-i2s.c
++++ b/sound/soc/dwc/dwc-i2s.c
+@@ -132,13 +132,13 @@ static irqreturn_t i2s_irq_handler(int irq, void *dev_id)
  
- 		skb = priv->rx_skb[rx_pi_rem];
+ 		/* Error Handling: TX */
+ 		if (isr[i] & ISR_TXFO) {
+-			dev_err(dev->dev, "TX overrun (ch_id=%d)\n", i);
++			dev_err_ratelimited(dev->dev, "TX overrun (ch_id=%d)\n", i);
+ 			irq_valid = true;
+ 		}
  
--		skb_put(skb, datalen);
--
--		skb->ip_summed = CHECKSUM_NONE; /* device did not checksum packet */
--
--		skb->protocol = eth_type_trans(skb, netdev);
--
- 		/* Alloc another RX SKB for this same index */
- 		rx_skb = mlxbf_gige_alloc_skb(priv, MLXBF_GIGE_DEFAULT_BUF_SZ,
- 					      &rx_buf_dma, DMA_FROM_DEVICE);
-@@ -259,6 +253,13 @@ static bool mlxbf_gige_rx_packet(struct mlxbf_gige *priv, int *rx_pkts)
- 		priv->rx_skb[rx_pi_rem] = rx_skb;
- 		dma_unmap_single(priv->dev, *rx_wqe_addr,
- 				 MLXBF_GIGE_DEFAULT_BUF_SZ, DMA_FROM_DEVICE);
-+
-+		skb_put(skb, datalen);
-+
-+		skb->ip_summed = CHECKSUM_NONE; /* device did not checksum packet */
-+
-+		skb->protocol = eth_type_trans(skb, netdev);
-+
- 		*rx_wqe_addr = rx_buf_dma;
- 	} else if (rx_cqe & MLXBF_GIGE_RX_CQE_PKT_STATUS_MAC_ERR) {
- 		priv->stats.rx_mac_errors++;
+ 		/* Error Handling: TX */
+ 		if (isr[i] & ISR_RXFO) {
+-			dev_err(dev->dev, "RX overrun (ch_id=%d)\n", i);
++			dev_err_ratelimited(dev->dev, "RX overrun (ch_id=%d)\n", i);
+ 			irq_valid = true;
+ 		}
+ 	}
 -- 
 2.39.2
 
