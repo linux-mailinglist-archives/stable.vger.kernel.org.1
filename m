@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AEB0726CE5
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:37:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DEF7726C58
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:32:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234122AbjFGUhk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:37:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36712 "EHLO
+        id S233732AbjFGUcv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:32:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234126AbjFGUhg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:37:36 -0400
+        with ESMTP id S233738AbjFGUcu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:32:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF11626BF
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:37:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9388F211B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:32:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E71B4645A9
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:36:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D15C433EF;
-        Wed,  7 Jun 2023 20:36:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E13464527
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:32:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3153DC4339B;
+        Wed,  7 Jun 2023 20:32:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170219;
-        bh=YAYQv6MPqbm8AS7ckdgWJyUbgYSp6SMU/oUh5J/bMVo=;
+        s=korg; t=1686169958;
+        bh=8v6Fac6SZ6ouCapkxCHC4pGmbw5oXxrFrM6Yu0uxpZc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a3DnIVzsybx8NdH3BisU0rrJOYyj2D1etseNcnQguP6qK2oxS9C0hyMBTDf6kbQXF
-         gWiyoJPFVUIg3NRdsXQoGaTTBdqOa2iLRIIh1I/KHXu77ijdrkrTEoLRyKJKzC6Zlv
-         FMT5Fj5Dss2FFDD0ExdXVKtWo7Q63eECRHdEsaTE=
+        b=kgaVIgg4cGcqsEuYfWiFCuWtUsgL3h5QUe59BIDZKkTDzvH2AAxg/lPMZI01nDDql
+         /n17TAh9uXkCU8hJYfPdBQ6wd0naonGCvPT/7w4/AfqTZh/7oBO2FPFJLtXOcupT7l
+         3zWQ8eBxzBteWKf5+m/99KD6CQunjGXWuWlBGYd4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Lee Jones <lee@kernel.org>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 60/88] mailbox: mailbox-test: fix a locking issue in mbox_test_message_write()
+        patches@lists.linux.dev, Kuan-Ting Chen <h3xrabbit@gmail.com>,
+        Namjae Jeon <linkinjeon@kernel.org>,
+        Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.3 278/286] ksmbd: fix slab-out-of-bounds read in smb2_handle_negotiate
 Date:   Wed,  7 Jun 2023 22:16:17 +0200
-Message-ID: <20230607200901.115560455@linuxfoundation.org>
+Message-ID: <20230607200932.367681541@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,55 +54,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Kuan-Ting Chen <h3xrabbit@gmail.com>
 
-[ Upstream commit 8fe72b76db79d694858e872370df49676bc3be8c ]
+commit d738950f112c8f40f0515fe967db998e8235a175 upstream.
 
-There was a bug where this code forgot to unlock the tdev->mutex if the
-kzalloc() failed.  Fix this issue, by moving the allocation outside the
-lock.
+Check request_buf length first to avoid out-of-bounds read by
+req->DialectCount.
 
-Fixes: 2d1e952a2b8e ("mailbox: mailbox-test: Fix potential double-free in mbox_test_message_write()")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ 3350.990282] BUG: KASAN: slab-out-of-bounds in smb2_handle_negotiate+0x35d7/0x3e60
+[ 3350.990282] Read of size 2 at addr ffff88810ad61346 by task kworker/5:0/276
+[ 3351.000406] Workqueue: ksmbd-io handle_ksmbd_work
+[ 3351.003499] Call Trace:
+[ 3351.006473]  <TASK>
+[ 3351.006473]  dump_stack_lvl+0x8d/0xe0
+[ 3351.006473]  print_report+0xcc/0x620
+[ 3351.006473]  kasan_report+0x92/0xc0
+[ 3351.006473]  smb2_handle_negotiate+0x35d7/0x3e60
+[ 3351.014760]  ksmbd_smb_negotiate_common+0x7a7/0xf00
+[ 3351.014760]  handle_ksmbd_work+0x3f7/0x12d0
+[ 3351.014760]  process_one_work+0xa85/0x1780
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuan-Ting Chen <h3xrabbit@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mailbox/mailbox-test.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ fs/ksmbd/smb2pdu.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
-index c7ff9653223bf..39236030079e0 100644
---- a/drivers/mailbox/mailbox-test.c
-+++ b/drivers/mailbox/mailbox-test.c
-@@ -101,6 +101,7 @@ static ssize_t mbox_test_message_write(struct file *filp,
- 				       size_t count, loff_t *ppos)
- {
- 	struct mbox_test_device *tdev = filp->private_data;
-+	char *message;
- 	void *data;
- 	int ret;
- 
-@@ -116,12 +117,13 @@ static ssize_t mbox_test_message_write(struct file *filp,
- 		return -EINVAL;
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -1081,16 +1081,16 @@ int smb2_handle_negotiate(struct ksmbd_w
+ 		return rc;
  	}
  
--	mutex_lock(&tdev->mutex);
--
--	tdev->message = kzalloc(MBOX_MAX_MSG_LEN, GFP_KERNEL);
--	if (!tdev->message)
-+	message = kzalloc(MBOX_MAX_MSG_LEN, GFP_KERNEL);
-+	if (!message)
- 		return -ENOMEM;
+-	if (req->DialectCount == 0) {
+-		pr_err("malformed packet\n");
++	smb2_buf_len = get_rfc1002_len(work->request_buf);
++	smb2_neg_size = offsetof(struct smb2_negotiate_req, Dialects);
++	if (smb2_neg_size > smb2_buf_len) {
+ 		rsp->hdr.Status = STATUS_INVALID_PARAMETER;
+ 		rc = -EINVAL;
+ 		goto err_out;
+ 	}
  
-+	mutex_lock(&tdev->mutex);
-+
-+	tdev->message = message;
- 	ret = copy_from_user(tdev->message, userbuf, count);
- 	if (ret) {
- 		ret = -EFAULT;
--- 
-2.39.2
-
+-	smb2_buf_len = get_rfc1002_len(work->request_buf);
+-	smb2_neg_size = offsetof(struct smb2_negotiate_req, Dialects);
+-	if (smb2_neg_size > smb2_buf_len) {
++	if (req->DialectCount == 0) {
++		pr_err("malformed packet\n");
+ 		rsp->hdr.Status = STATUS_INVALID_PARAMETER;
+ 		rc = -EINVAL;
+ 		goto err_out;
 
 
