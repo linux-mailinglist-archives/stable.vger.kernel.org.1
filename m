@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46AB9726DBA
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:45:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDFE4726C67
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:33:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234667AbjFGUpS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:45:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45322 "EHLO
+        id S233815AbjFGUdb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:33:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234666AbjFGUos (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:48 -0400
+        with ESMTP id S233780AbjFGUdZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:33:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 007EB270E
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:44:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB7141735
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:33:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CC9F06466C
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:44:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E265AC433EF;
-        Wed,  7 Jun 2023 20:44:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CB6F164537
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:33:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFA8AC433EF;
+        Wed,  7 Jun 2023 20:33:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170669;
-        bh=B3HOxQ6SeThlfptbPHq7i7PovKLToKNVPFQGrFGC9rA=;
+        s=korg; t=1686169998;
+        bh=0IiHo2pEf/jXnNyOwlaN7LKVEaegHPvsZa2Bx/oLh3g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y2jKT0IFcAvmWi7NEuiTPNM4EdpNZDTBH9i7TMbj0I2TgV7GJfa2uFgGE0KyipC9p
-         z512zPT+Et/JxRxGaAYTxc9eHbialLEn5WxW+F9Px8qEXfxw5Hj8pFD+TJE5d4nTzz
-         lKsv9FWoY+qIoo9FWrpmbiwkxFL9pDMirQbcACEM=
+        b=faZ0K83hZHH99WA/uvnWqX0xAD/Gdok1JN31MvDDoMRvUNv8TSd4uRVpwoL+IaCbH
+         IyfUlwhPiU8JpCA7LLXJb8UhRGgy8hTMrK1WVrfw0hzKEqt94r37xXHNwKzdh2F4jz
+         gCml5qDSbsXc+fePm7X5ZPEgksrSddTnXUQr6EeQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Deren Wu <deren.wu@mediatek.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 172/225] mmc: vub300: fix invalid response handling
+        patches@lists.linux.dev, Onkarnath <onkarnath.1@samsung.com>,
+        Maninder Singh <maninder1.s@samsung.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.3 266/286] powerpc/xmon: Use KSYM_NAME_LEN in array size
 Date:   Wed,  7 Jun 2023 22:16:05 +0200
-Message-ID: <20230607200920.016619920@linuxfoundation.org>
+Message-ID: <20230607200931.995691857@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,64 +54,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Deren Wu <deren.wu@mediatek.com>
+From: Maninder Singh <maninder1.s@samsung.com>
 
-commit a99d21cefd351c8aaa20b83a3c942340e5789d45 upstream.
+commit 719dfd5925e186e09a2a6f23016936ac436f3d78 upstream.
 
-We may get an empty response with zero length at the beginning of
-the driver start and get following UBSAN error. Since there is no
-content(SDRT_NONE) for the response, just return and skip the response
-handling to avoid this problem.
+kallsyms_lookup() which in turn calls kallsyms_lookup_buildid() writes
+to index "KSYM_NAME_LEN - 1".
 
-Test pass : SDIO wifi throughput test with this patch
+Thus the array passed as namebuf to kallsyms_lookup() should be
+KSYM_NAME_LEN in size.
 
-[  126.980684] UBSAN: array-index-out-of-bounds in drivers/mmc/host/vub300.c:1719:12
-[  126.980709] index -1 is out of range for type 'u32 [4]'
-[  126.980729] CPU: 4 PID: 9 Comm: kworker/u16:0 Tainted: G            E      6.3.0-rc4-mtk-local-202304272142 #1
-[  126.980754] Hardware name: Intel(R) Client Systems NUC8i7BEH/NUC8BEB, BIOS BECFL357.86A.0081.2020.0504.1834 05/04/2020
-[  126.980770] Workqueue: kvub300c vub300_cmndwork_thread [vub300]
-[  126.980833] Call Trace:
-[  126.980845]  <TASK>
-[  126.980860]  dump_stack_lvl+0x48/0x70
-[  126.980895]  dump_stack+0x10/0x20
-[  126.980916]  ubsan_epilogue+0x9/0x40
-[  126.980944]  __ubsan_handle_out_of_bounds+0x70/0x90
-[  126.980979]  vub300_cmndwork_thread+0x58e7/0x5e10 [vub300]
-[  126.981018]  ? _raw_spin_unlock+0x18/0x40
-[  126.981042]  ? finish_task_switch+0x175/0x6f0
-[  126.981070]  ? __switch_to+0x42e/0xda0
-[  126.981089]  ? __switch_to_asm+0x3a/0x80
-[  126.981129]  ? __pfx_vub300_cmndwork_thread+0x10/0x10 [vub300]
-[  126.981174]  ? __kasan_check_read+0x11/0x20
-[  126.981204]  process_one_work+0x7ee/0x13d0
-[  126.981246]  worker_thread+0x53c/0x1240
-[  126.981291]  kthread+0x2b8/0x370
-[  126.981312]  ? __pfx_worker_thread+0x10/0x10
-[  126.981336]  ? __pfx_kthread+0x10/0x10
-[  126.981359]  ret_from_fork+0x29/0x50
-[  126.981400]  </TASK>
+In xmon.c the array was defined to be "128" bytes directly, without
+using KSYM_NAME_LEN. Commit b8a94bfb3395 ("kallsyms: increase maximum
+kernel symbol length to 512") changed the value to 512, but missed
+updating the xmon code.
 
-Fixes: 88095e7b473a ("mmc: Add new VUB300 USB-to-SD/SDIO/MMC driver")
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/048cd6972c50c33c2e8f81d5228fed928519918b.1683987673.git.deren.wu@mediatek.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: b8a94bfb3395 ("kallsyms: increase maximum kernel symbol length to 512")
+Cc: stable@vger.kernel.org # v6.1+
+Co-developed-by: Onkarnath <onkarnath.1@samsung.com>
+Signed-off-by: Onkarnath <onkarnath.1@samsung.com>
+Signed-off-by: Maninder Singh <maninder1.s@samsung.com>
+[mpe: Tweak change log wording and fix commit reference]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230529111337.352990-2-maninder1.s@samsung.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/vub300.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/xmon/xmon.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/host/vub300.c
-+++ b/drivers/mmc/host/vub300.c
-@@ -1715,6 +1715,9 @@ static void construct_request_response(s
- 	int bytes = 3 & less_cmd;
- 	int words = less_cmd >> 2;
- 	u8 *r = vub300->resp.response.command_response;
-+
-+	if (!resp_len)
-+		return;
- 	if (bytes == 3) {
- 		cmd->resp[words] = (r[1 + (words << 2)] << 24)
- 			| (r[2 + (words << 2)] << 16)
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -88,7 +88,7 @@ static unsigned long ndump = 64;
+ static unsigned long nidump = 16;
+ static unsigned long ncsum = 4096;
+ static int termch;
+-static char tmpstr[128];
++static char tmpstr[KSYM_NAME_LEN];
+ static int tracing_enabled;
+ 
+ static long bus_error_jmp[JMP_BUF_LEN];
 
 
