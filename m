@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53508726AC6
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 407C8726DA1
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:44:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232594AbjFGUUL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:20:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44524 "EHLO
+        id S234586AbjFGUoO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:44:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233058AbjFGUT4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:19:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0534270C
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:19:35 -0700 (PDT)
+        with ESMTP id S234646AbjFGUoM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2602E4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:43:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E50B64383
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:18:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2578EC433EF;
-        Wed,  7 Jun 2023 20:18:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F17A964649
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:43:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 109E9C433D2;
+        Wed,  7 Jun 2023 20:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169113;
-        bh=4xPzOmRkhGmtPa9ZWXEut/C5fMiZ2ltKJVVjuvwo7BE=;
+        s=korg; t=1686170619;
+        bh=/mO6Hn59mS273f7t6/8dc1sr01Ix1LhLUzDABsyfDHk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Lrb7XwCYeVBpGaocJjXEB5D6o65oQek2Ciyd6SJTNMmtk6T7gY9T721m2KzftsbIt
-         HqNR77LzJgrSyl0p36avFgXeI+EoJnOMoIL0n0zs2YQapfqX35JLVSxuaH4/EJYPgD
-         i9PJVXn53pQxLwTGVu6Hl0St+Wb3cpLpkKJq0vOM=
+        b=tiMUIpqIpGuNVjiHNZvGKNvK86ZllV/pPNt56ZmFHaf0zNQvvrpgA/kce0A563t3b
+         rbIVNWkktIKjyP75qGQk/NYb/XdaJz9nvy6HfLf+4rhKG1lu67FMhCgnGXp9t/lPqV
+         9ppAP26/sI5lKEQPDgBdvLwZfM/brtaUV9LwfTrI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= 
-        <amadeuszx.slawinski@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Tom Rix <trix@redhat.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 02/61] ASoC: Intel: Skylake: Fix declaration of enum skl_ch_cfg
+Subject: [PATCH 6.1 123/225] netfilter: conntrack: define variables exp_nat_nla_policy and any_addr with CONFIG_NF_NAT
 Date:   Wed,  7 Jun 2023 22:15:16 +0200
-Message-ID: <20230607200836.062248528@linuxfoundation.org>
+Message-ID: <20230607200918.404963949@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-References: <20230607200835.310274198@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,37 +55,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Tom Rix <trix@redhat.com>
 
-[ Upstream commit 95109657471311601b98e71f03d0244f48dc61bb ]
+[ Upstream commit 224a876e37543eee111bf9b6aa4935080e619335 ]
 
-Constant 'C4_CHANNEL' does not exist on the firmware side. Value 0xC is
-reserved for 'C7_1' instead.
+gcc with W=1 and ! CONFIG_NF_NAT
+net/netfilter/nf_conntrack_netlink.c:3463:32: error:
+  ‘exp_nat_nla_policy’ defined but not used [-Werror=unused-const-variable=]
+ 3463 | static const struct nla_policy exp_nat_nla_policy[CTA_EXPECT_NAT_MAX+1] = {
+      |                                ^~~~~~~~~~~~~~~~~~
+net/netfilter/nf_conntrack_netlink.c:2979:33: error:
+  ‘any_addr’ defined but not used [-Werror=unused-const-variable=]
+ 2979 | static const union nf_inet_addr any_addr;
+      |                                 ^~~~~~~~
 
-Fixes: 04afbbbb1cba ("ASoC: Intel: Skylake: Update the topology interface structure")
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://lore.kernel.org/r/20230519201711.4073845-4-amadeuszx.slawinski@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+These variables use is controlled by CONFIG_NF_NAT, so should their definitions.
+
+Signed-off-by: Tom Rix <trix@redhat.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/skylake/skl-tplg-interface.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/netfilter/nf_conntrack_netlink.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/sound/soc/intel/skylake/skl-tplg-interface.h b/sound/soc/intel/skylake/skl-tplg-interface.h
-index f8d1749a2e0c8..2fab55e6537c4 100644
---- a/sound/soc/intel/skylake/skl-tplg-interface.h
-+++ b/sound/soc/intel/skylake/skl-tplg-interface.h
-@@ -71,7 +71,8 @@ enum skl_ch_cfg {
- 	SKL_CH_CFG_DUAL_MONO = 9,
- 	SKL_CH_CFG_I2S_DUAL_STEREO_0 = 10,
- 	SKL_CH_CFG_I2S_DUAL_STEREO_1 = 11,
--	SKL_CH_CFG_4_CHANNEL = 12,
-+	SKL_CH_CFG_7_1 = 12,
-+	SKL_CH_CFG_4_CHANNEL = SKL_CH_CFG_7_1,
- 	SKL_CH_CFG_INVALID
- };
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index 857cddd9d82e5..9ee8abd3e4b10 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -2976,7 +2976,9 @@ static int ctnetlink_exp_dump_mask(struct sk_buff *skb,
+ 	return -1;
+ }
  
++#if IS_ENABLED(CONFIG_NF_NAT)
+ static const union nf_inet_addr any_addr;
++#endif
+ 
+ static __be32 nf_expect_get_id(const struct nf_conntrack_expect *exp)
+ {
+@@ -3460,10 +3462,12 @@ ctnetlink_change_expect(struct nf_conntrack_expect *x,
+ 	return 0;
+ }
+ 
++#if IS_ENABLED(CONFIG_NF_NAT)
+ static const struct nla_policy exp_nat_nla_policy[CTA_EXPECT_NAT_MAX+1] = {
+ 	[CTA_EXPECT_NAT_DIR]	= { .type = NLA_U32 },
+ 	[CTA_EXPECT_NAT_TUPLE]	= { .type = NLA_NESTED },
+ };
++#endif
+ 
+ static int
+ ctnetlink_parse_expect_nat(const struct nlattr *attr,
 -- 
 2.39.2
 
