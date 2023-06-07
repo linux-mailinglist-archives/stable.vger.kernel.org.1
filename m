@@ -2,49 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E748726CD9
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:37:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CBC2726DDF
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:46:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233971AbjFGUhE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:37:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36066 "EHLO
+        id S234484AbjFGUq1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:46:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233985AbjFGUhD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:37:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1763326A5
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:36:34 -0700 (PDT)
+        with ESMTP id S234712AbjFGUqL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:46:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6D1C26A3;
+        Wed,  7 Jun 2023 13:45:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E6C9C64580
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:36:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1C1C4339B;
-        Wed,  7 Jun 2023 20:36:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 715A864696;
+        Wed,  7 Jun 2023 20:45:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 581CFC433EF;
+        Wed,  7 Jun 2023 20:45:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170193;
-        bh=YLc9GN0GSM/O54+XZ6nwsLy2ta3P/IFHFq20s1AvMxA=;
+        s=korg; t=1686170752;
+        bh=ZB6M39BeMbXHSEc2iHAHssPsPmPBgdQZVXezDDSODgM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QraJImrWopUQSQnKL/NNz4bbQltzYr7888rqMLucthBc6VuLcV/x7mLH1bb0gmyiz
-         i67G9SWl+z37VuB2floMUhkchB6U9V5I3ac1juXOVrFtgO8dOy76LQyr7QjmA/BYML
-         I49bO7I1gz30fySvc2wnMznLR+7Ex7ftk2uMaFWw=
+        b=LnbcHsaztEYpes20dQS64ixdoAdOSe6QSEf9xPja1mcuwN58lEMvYysZfptjK02oe
+         e7cWGLasdVa7JN9KD0okhl/iKiYK5eRBJgg3r5n9lFRyEdIrZNSI+t924a7w5qvaAE
+         hvlx1gsFFzE2b3mgoInQ7ceEd5dPgvY1dFNibfNs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Deren Wu <deren.wu@mediatek.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 4.19 80/88] mmc: vub300: fix invalid response handling
+        patches@lists.linux.dev, Luis Chamberlain <mcgrof@kernel.org>,
+        Russ Weight <russell.h.weight@intel.com>,
+        Tianfei Zhang <tianfei.zhang@intel.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Colin Ian King <colin.i.king@gmail.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        linux-kselftest@vger.kernel.org, Dan Carpenter <error27@gmail.com>,
+        Takashi Iwai <tiwai@suse.de>,
+        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH 6.1 204/225] test_firmware: fix a memory leak with reqs buffer
 Date:   Wed,  7 Jun 2023 22:16:37 +0200
-Message-ID: <20230607200901.725999615@linuxfoundation.org>
+Message-ID: <20230607200921.037409650@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,64 +61,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Deren Wu <deren.wu@mediatek.com>
+From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
 
-commit a99d21cefd351c8aaa20b83a3c942340e5789d45 upstream.
+commit be37bed754ed90b2655382f93f9724b3c1aae847 upstream.
 
-We may get an empty response with zero length at the beginning of
-the driver start and get following UBSAN error. Since there is no
-content(SDRT_NONE) for the response, just return and skip the response
-handling to avoid this problem.
+Dan Carpenter spotted that test_fw_config->reqs will be leaked if
+trigger_batched_requests_store() is called two or more times.
+The same appears with trigger_batched_requests_async_store().
 
-Test pass : SDIO wifi throughput test with this patch
+This bug wasn't trigger by the tests, but observed by Dan's visual
+inspection of the code.
 
-[  126.980684] UBSAN: array-index-out-of-bounds in drivers/mmc/host/vub300.c:1719:12
-[  126.980709] index -1 is out of range for type 'u32 [4]'
-[  126.980729] CPU: 4 PID: 9 Comm: kworker/u16:0 Tainted: G            E      6.3.0-rc4-mtk-local-202304272142 #1
-[  126.980754] Hardware name: Intel(R) Client Systems NUC8i7BEH/NUC8BEB, BIOS BECFL357.86A.0081.2020.0504.1834 05/04/2020
-[  126.980770] Workqueue: kvub300c vub300_cmndwork_thread [vub300]
-[  126.980833] Call Trace:
-[  126.980845]  <TASK>
-[  126.980860]  dump_stack_lvl+0x48/0x70
-[  126.980895]  dump_stack+0x10/0x20
-[  126.980916]  ubsan_epilogue+0x9/0x40
-[  126.980944]  __ubsan_handle_out_of_bounds+0x70/0x90
-[  126.980979]  vub300_cmndwork_thread+0x58e7/0x5e10 [vub300]
-[  126.981018]  ? _raw_spin_unlock+0x18/0x40
-[  126.981042]  ? finish_task_switch+0x175/0x6f0
-[  126.981070]  ? __switch_to+0x42e/0xda0
-[  126.981089]  ? __switch_to_asm+0x3a/0x80
-[  126.981129]  ? __pfx_vub300_cmndwork_thread+0x10/0x10 [vub300]
-[  126.981174]  ? __kasan_check_read+0x11/0x20
-[  126.981204]  process_one_work+0x7ee/0x13d0
-[  126.981246]  worker_thread+0x53c/0x1240
-[  126.981291]  kthread+0x2b8/0x370
-[  126.981312]  ? __pfx_worker_thread+0x10/0x10
-[  126.981336]  ? __pfx_kthread+0x10/0x10
-[  126.981359]  ret_from_fork+0x29/0x50
-[  126.981400]  </TASK>
+The recommended workaround was to return -EBUSY if test_fw_config->reqs
+is already allocated.
 
-Fixes: 88095e7b473a ("mmc: Add new VUB300 USB-to-SD/SDIO/MMC driver")
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/048cd6972c50c33c2e8f81d5228fed928519918b.1683987673.git.deren.wu@mediatek.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 7feebfa487b92 ("test_firmware: add support for request_firmware_into_buf")
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Russ Weight <russell.h.weight@intel.com>
+Cc: Tianfei Zhang <tianfei.zhang@intel.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Colin Ian King <colin.i.king@gmail.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kselftest@vger.kernel.org
+Cc: stable@vger.kernel.org # v5.4
+Suggested-by: Dan Carpenter <error27@gmail.com>
+Suggested-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Luis Chamberlain <mcgrof@kernel.org>
+Link: https://lore.kernel.org/r/20230509084746.48259-2-mirsad.todorovac@alu.unizg.hr
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/vub300.c |    3 +++
- 1 file changed, 3 insertions(+)
+ lib/test_firmware.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/mmc/host/vub300.c
-+++ b/drivers/mmc/host/vub300.c
-@@ -1718,6 +1718,9 @@ static void construct_request_response(s
- 	int bytes = 3 & less_cmd;
- 	int words = less_cmd >> 2;
- 	u8 *r = vub300->resp.response.command_response;
+--- a/lib/test_firmware.c
++++ b/lib/test_firmware.c
+@@ -894,6 +894,11 @@ static ssize_t trigger_batched_requests_
+ 
+ 	mutex_lock(&test_fw_mutex);
+ 
++	if (test_fw_config->reqs) {
++		rc = -EBUSY;
++		goto out_bail;
++	}
 +
-+	if (!resp_len)
-+		return;
- 	if (bytes == 3) {
- 		cmd->resp[words] = (r[1 + (words << 2)] << 24)
- 			| (r[2 + (words << 2)] << 16)
+ 	test_fw_config->reqs =
+ 		vzalloc(array3_size(sizeof(struct test_batched_req),
+ 				    test_fw_config->num_requests, 2));
+@@ -992,6 +997,11 @@ ssize_t trigger_batched_requests_async_s
+ 
+ 	mutex_lock(&test_fw_mutex);
+ 
++	if (test_fw_config->reqs) {
++		rc = -EBUSY;
++		goto out_bail;
++	}
++
+ 	test_fw_config->reqs =
+ 		vzalloc(array3_size(sizeof(struct test_batched_req),
+ 				    test_fw_config->num_requests, 2));
 
 
