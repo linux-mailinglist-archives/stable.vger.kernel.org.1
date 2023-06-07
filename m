@@ -2,54 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42EBF726D08
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:38:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7397726B9B
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234222AbjFGUid (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:38:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37734 "EHLO
+        id S232873AbjFGU0h (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:26:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234218AbjFGUia (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:38:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FA392709
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:38:10 -0700 (PDT)
+        with ESMTP id S233382AbjFGU0f (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D89326A6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:26:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 879F9645BD
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:38:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D87BC433D2;
-        Wed,  7 Jun 2023 20:38:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 538B56443A
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:26:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A5DC433EF;
+        Wed,  7 Jun 2023 20:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170289;
-        bh=zEpHzCkBJZvMee/q0gH4OxHsHyl3axHnyORjlEU8Pi4=;
+        s=korg; t=1686169574;
+        bh=OXkMsN4v3FFJULQWV4/kyARqFXtJzpyCewzKLaeiJl8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eGH5l3G75sspY0Cwe/evztOGuoAI7BjIu9wjhWm0QeWHbuuJTjniAK4mETmdBlQIV
-         M/qSliajENqBs/h+nJhnpzTgCHYNZMKtlCOKuPSgBlO02OwpWEDJQgmuSOfDyme1BP
-         0l0h0didpGsTyq2PJTzXZ71pVJtV9HMaFbi5BmgM=
+        b=ryub4uwxfyWi9Rf4BhQBGK7OWapQ+xsNWwn8UwGnMpaOqByIzZpUwaZvEo8RW18Xb
+         F0hg0kOC6zld0JIMGUoPrj/TrlsxtW2/bmZLjj2PiBNHoWgquWIDjzrUjj7SIH4sA+
+         4AjyMZ089LiKK+alhfxfEOW2VeJDDgkjma1zo6I4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Hongguang Gao <hongguang.gao@broadcom.com>,
-        Ajit Khaparde <ajit.khaparde@broadcom.com>,
-        Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
+        patches@lists.linux.dev, Liming Sun <limings@nvidia.com>,
+        Vadim Pasternak <vadimp@nvidia.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 009/225] RDMA/bnxt_re: Fix return value of bnxt_re_process_raw_qp_pkt_rx
+Subject: [PATCH 6.3 103/286] platform/mellanox: fix potential race in mlxbf-tmfifo driver
 Date:   Wed,  7 Jun 2023 22:13:22 +0200
-Message-ID: <20230607200913.640533202@linuxfoundation.org>
+Message-ID: <20230607200926.432451885@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,40 +55,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Liming Sun <limings@nvidia.com>
 
-[ Upstream commit 0fa0d520e2a878cb4c94c4dc84395905d3f14f54 ]
+[ Upstream commit 3d43f9f639542fadfb28f40b509bf147a6624d48 ]
 
-bnxt_re_process_raw_qp_pkt_rx() always return 0 and ignores the return
-value of bnxt_re_post_send_shadow_qp().
+This commit adds memory barrier for the 'vq' update in function
+mlxbf_tmfifo_virtio_find_vqs() to avoid potential race due to
+out-of-order memory write. It also adds barrier for the 'is_ready'
+flag to make sure the initializations are visible before this flag
+is checked.
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Link: https://lore.kernel.org/r/1684397461-23082-3-git-send-email-selvin.xavier@broadcom.com
-Reviewed-by: Hongguang Gao <hongguang.gao@broadcom.com>
-Reviewed-by: Ajit Khaparde <ajit.khaparde@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Liming Sun <limings@nvidia.com>
+Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
+Link: https://lore.kernel.org/r/b98c0ab61d644ba38fa9b3fd1607b138b0dd820b.1682518748.git.limings@nvidia.com
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/platform/mellanox/mlxbf-tmfifo.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index 989edc7896338..94222de1d3719 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -3241,9 +3241,7 @@ static int bnxt_re_process_raw_qp_pkt_rx(struct bnxt_re_qp *gsi_qp,
- 	udwr.remote_qkey = gsi_sqp->qplib_qp.qkey;
+diff --git a/drivers/platform/mellanox/mlxbf-tmfifo.c b/drivers/platform/mellanox/mlxbf-tmfifo.c
+index 91a077c35b8b8..a79318e90a139 100644
+--- a/drivers/platform/mellanox/mlxbf-tmfifo.c
++++ b/drivers/platform/mellanox/mlxbf-tmfifo.c
+@@ -784,7 +784,7 @@ static void mlxbf_tmfifo_rxtx(struct mlxbf_tmfifo_vring *vring, bool is_rx)
+ 	fifo = vring->fifo;
  
- 	/* post data received  in the send queue */
--	rc = bnxt_re_post_send_shadow_qp(rdev, gsi_sqp, swr);
--
--	return 0;
-+	return bnxt_re_post_send_shadow_qp(rdev, gsi_sqp, swr);
- }
+ 	/* Return if vdev is not ready. */
+-	if (!fifo->vdev[devid])
++	if (!fifo || !fifo->vdev[devid])
+ 		return;
  
- static void bnxt_re_process_res_rawqp1_wc(struct ib_wc *wc,
+ 	/* Return if another vring is running. */
+@@ -980,9 +980,13 @@ static int mlxbf_tmfifo_virtio_find_vqs(struct virtio_device *vdev,
+ 
+ 		vq->num_max = vring->num;
+ 
++		vq->priv = vring;
++
++		/* Make vq update visible before using it. */
++		virtio_mb(false);
++
+ 		vqs[i] = vq;
+ 		vring->vq = vq;
+-		vq->priv = vring;
+ 	}
+ 
+ 	return 0;
+@@ -1302,6 +1306,9 @@ static int mlxbf_tmfifo_probe(struct platform_device *pdev)
+ 
+ 	mod_timer(&fifo->timer, jiffies + MLXBF_TMFIFO_TIMER_INTERVAL);
+ 
++	/* Make all updates visible before setting the 'is_ready' flag. */
++	virtio_mb(false);
++
+ 	fifo->is_ready = true;
+ 	return 0;
+ 
 -- 
 2.39.2
 
