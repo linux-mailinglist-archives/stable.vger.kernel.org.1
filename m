@@ -2,47 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFE1C726D8C
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:43:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F2F8726ABA
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234606AbjFGUn1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:43:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43456 "EHLO
+        id S232276AbjFGUUF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:20:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234645AbjFGUnU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:43:20 -0400
+        with ESMTP id S232466AbjFGUTe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:19:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43B3D1BE4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:42:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A89E12690
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:19:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 215EA60FFF
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:42:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3484DC433D2;
-        Wed,  7 Jun 2023 20:42:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B4E76437F
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:18:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 894EBC433EF;
+        Wed,  7 Jun 2023 20:18:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170576;
-        bh=0v8Pmqr/5nGSIfTDDZwsBt1fsBtIeH8OhGXUdpTmTds=;
+        s=korg; t=1686169103;
+        bh=+oO6bpqcYeXO6bktMa0a6PFzXc3pzJxUUHvttW1CPjY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BdkfkZpIVRhMciJdJ43J3ElQszevvYxuCfgIup7G8sWG5lT2nLMRwkHguaNeo9J6a
-         H9FBmAQVTbmgFwRNVJOL4Sge/e4xoaXsKVYo0StQDEyArUIRcLHChoLNl0F1+VUlGp
-         +w7m1MPL2YvLvg4JV7J2KCMDkXMGzCTFBRlL1bEE=
+        b=oYPQzmQmGKXG2bmoYFbK4nTfK/L4EAMzkI9xOz6XV9jyPun0kqYC8AInd5touQfem
+         dzwPRJDAIjhjEpYOIxLeVIummuN9dxu5pXf7V1Y0uwd8hpEoI4R8oPpyIk1Gj8OQCe
+         S6SiRTTbRe6d6wDitIDC40ac547sNqdhqdAcl2+o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pin-yen Lin <treapking@chromium.org>,
-        Chen-Yu Tsai <wenst@chromium.org>,
-        Yunfei Dong <yunfei.dong@mediatek.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 137/225] media: mediatek: vcodec: Only apply 4K frame sizes on decoder formats
+        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 16/61] ASoC: dwc: limit the number of overrun messages
 Date:   Wed,  7 Jun 2023 22:15:30 +0200
-Message-ID: <20230607200918.855577461@linuxfoundation.org>
+Message-ID: <20230607200840.773447743@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
+References: <20230607200835.310274198@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,39 +52,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pin-yen Lin <treapking@chromium.org>
+From: Maxim Kochetkov <fido_max@inbox.ru>
 
-[ Upstream commit ed17f89e9502f03af493e130620a9bb74c07cf28 ]
+[ Upstream commit ab6ecfbf40fccf74b6ec2ba7ed6dd2fc024c3af2 ]
 
-When VCODEC_CAPABILITY_4K_DISABLED is not set in dec_capability, skip
-formats that are not MTK_FMT_DEC so only decoder formats is updated in
-mtk_init_vdec_params.
+On slow CPU (FPGA/QEMU emulated) printing overrun messages from
+interrupt handler to uart console may leads to more overrun errors.
+So use dev_err_ratelimited to limit the number of error messages.
 
-Fixes: e25528e1dbe5 ("media: mediatek: vcodec: Use 4K frame size when supported by stateful decoder")
-Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Yunfei Dong <yunfei.dong@mediatek.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Maxim Kochetkov <fido_max@inbox.ru
+Link: https://lore.kernel.org/r/20230505062820.21840-1-fido_max@inbox.ru
+Signed-off-by: Mark Brown <broonie@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../media/platform/mediatek/vcodec/mtk_vcodec_dec_stateful.c   | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/dwc/dwc-i2s.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateful.c b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateful.c
-index 29991551cf614..0fbd030026c72 100644
---- a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateful.c
-+++ b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateful.c
-@@ -584,6 +584,9 @@ static void mtk_init_vdec_params(struct mtk_vcodec_ctx *ctx)
+diff --git a/sound/soc/dwc/dwc-i2s.c b/sound/soc/dwc/dwc-i2s.c
+index e27e21f8569a0..e6a0ec3c0e764 100644
+--- a/sound/soc/dwc/dwc-i2s.c
++++ b/sound/soc/dwc/dwc-i2s.c
+@@ -132,13 +132,13 @@ static irqreturn_t i2s_irq_handler(int irq, void *dev_id)
  
- 	if (!(ctx->dev->dec_capability & VCODEC_CAPABILITY_4K_DISABLED)) {
- 		for (i = 0; i < num_supported_formats; i++) {
-+			if (mtk_video_formats[i].type != MTK_FMT_DEC)
-+				continue;
-+
- 			mtk_video_formats[i].frmsize.max_width =
- 				VCODEC_DEC_4K_CODED_WIDTH;
- 			mtk_video_formats[i].frmsize.max_height =
+ 		/* Error Handling: TX */
+ 		if (isr[i] & ISR_TXFO) {
+-			dev_err(dev->dev, "TX overrun (ch_id=%d)\n", i);
++			dev_err_ratelimited(dev->dev, "TX overrun (ch_id=%d)\n", i);
+ 			irq_valid = true;
+ 		}
+ 
+ 		/* Error Handling: TX */
+ 		if (isr[i] & ISR_RXFO) {
+-			dev_err(dev->dev, "RX overrun (ch_id=%d)\n", i);
++			dev_err_ratelimited(dev->dev, "RX overrun (ch_id=%d)\n", i);
+ 			irq_valid = true;
+ 		}
+ 	}
 -- 
 2.39.2
 
