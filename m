@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5599726D82
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:42:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4800A726AD5
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234318AbjFGUmx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:42:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42832 "EHLO
+        id S232792AbjFGUUe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:20:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234610AbjFGUmo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:42:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 108E32134
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:42:28 -0700 (PDT)
+        with ESMTP id S232508AbjFGUUU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5632E269D
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:19:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A49761CC6
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:42:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C3FC433D2;
-        Wed,  7 Jun 2023 20:42:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 26F0564392
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:19:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31BE2C4339E;
+        Wed,  7 Jun 2023 20:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170548;
-        bh=M4V4JYAJb7JCpNDh95af6IswKlTV3u8pE33X7dJJco0=;
+        s=korg; t=1686169153;
+        bh=tEsTukFHQLFd8DSby2chfJvEXFterkO2HBI8YMxWcmw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qsqbn5se1H31LkR4HPj+O0L3LcLVAt0muZQJjSgIkPUrjh35sRGWSjrBb9Hg2rFNF
-         NF5MX6/8mczxjliaOsDOiOLrAW0anJaAcjD71KopN0sb9gXmCHnKMVFvr8y5FGYath
-         rk1WTBaLkZyk79qbM8Uw+MIJCA6zMOrFdv/VE6GE=
+        b=rlm6vG9OlWpVoiiJQM8nVnRTwAMd2tCLFtga9jai4M7d5asmZ9UttjLzR5Mrm6cOG
+         3kTV6QnFlLpl/8wQMb4qgU1J34jNkxQviN+7Cr7KX+B9UJyk/6yUero9isDJ8C6etK
+         vz0t7wZLXMLwLYW8D7j4wqmLjCujLLY71IpM7A4I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rob Clark <robdclark@chromium.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Jiri Pirko <jiri@nvidia.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 127/225] drm/msm: Be more shouty if per-process pgtables arent working
-Date:   Wed,  7 Jun 2023 22:15:20 +0200
-Message-ID: <20230607200918.533200843@linuxfoundation.org>
+Subject: [PATCH 4.14 07/61] af_packet: do not use READ_ONCE() in packet_bind()
+Date:   Wed,  7 Jun 2023 22:15:21 +0200
+Message-ID: <20230607200837.740802140@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
+References: <20230607200835.310274198@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,40 +57,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rob Clark <robdclark@chromium.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 5c054db54c43a5fcb5cc81012361f5e3fac37637 ]
+[ Upstream commit 6ffc57ea004234d9373c57b204fd10370a69f392 ]
 
-Otherwise it is not always obvious if a dt or iommu change is causing us
-to fall back to global pgtable.
+A recent patch added READ_ONCE() in packet_bind() and packet_bind_spkt()
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/537359/
-Link: https://lore.kernel.org/r/20230516222039.907690-2-robdclark@gmail.com
+This is better handled by reading pkt_sk(sk)->num later
+in packet_do_bind() while appropriate lock is held.
+
+READ_ONCE() in writers are often an evidence of something being wrong.
+
+Fixes: 822b5a1c17df ("af_packet: Fix data-races of pkt_sk(sk)->num.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230526154342.2533026-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_iommu.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/packet/af_packet.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_iommu.c b/drivers/gpu/drm/msm/msm_iommu.c
-index 5577cea7c0092..d12ba47b37c4f 100644
---- a/drivers/gpu/drm/msm/msm_iommu.c
-+++ b/drivers/gpu/drm/msm/msm_iommu.c
-@@ -227,7 +227,12 @@ struct msm_mmu *msm_iommu_pagetable_create(struct msm_mmu *parent)
- 	/* Get the pagetable configuration from the domain */
- 	if (adreno_smmu->cookie)
- 		ttbr1_cfg = adreno_smmu->get_ttbr1_cfg(adreno_smmu->cookie);
--	if (!ttbr1_cfg)
-+
-+	/*
-+	 * If you hit this WARN_ONCE() you are probably missing an entry in
-+	 * qcom_smmu_impl_of_match[] in arm-smmu-qcom.c
-+	 */
-+	if (WARN_ONCE(!ttbr1_cfg, "No per-process page tables"))
- 		return ERR_PTR(-ENODEV);
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 131c347bba56b..228a409eb92da 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -3153,6 +3153,9 @@ static int packet_do_bind(struct sock *sk, const char *name, int ifindex,
  
- 	/*
+ 	lock_sock(sk);
+ 	spin_lock(&po->bind_lock);
++	if (!proto)
++		proto = po->num;
++
+ 	rcu_read_lock();
+ 
+ 	if (po->fanout) {
+@@ -3255,7 +3258,7 @@ static int packet_bind_spkt(struct socket *sock, struct sockaddr *uaddr,
+ 	memcpy(name, uaddr->sa_data, sizeof(uaddr->sa_data));
+ 	name[sizeof(uaddr->sa_data)] = 0;
+ 
+-	return packet_do_bind(sk, name, 0, READ_ONCE(pkt_sk(sk)->num));
++	return packet_do_bind(sk, name, 0, 0);
+ }
+ 
+ static int packet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
+@@ -3272,8 +3275,7 @@ static int packet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len
+ 	if (sll->sll_family != AF_PACKET)
+ 		return -EINVAL;
+ 
+-	return packet_do_bind(sk, NULL, sll->sll_ifindex,
+-			      sll->sll_protocol ? : READ_ONCE(pkt_sk(sk)->num));
++	return packet_do_bind(sk, NULL, sll->sll_ifindex, sll->sll_protocol);
+ }
+ 
+ static struct proto packet_proto = {
 -- 
 2.39.2
 
