@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75A95726FA3
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:00:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC904726E98
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:51:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235840AbjFGVAu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:00:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33478 "EHLO
+        id S235096AbjFGUvf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:51:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236113AbjFGVAV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C05861BEA
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:59:59 -0700 (PDT)
+        with ESMTP id S234999AbjFGUvc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:51:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B912F1BE2
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:51:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F245A648E1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:59:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD5FC433EF;
-        Wed,  7 Jun 2023 20:59:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F02B063184
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:51:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3841C433D2;
+        Wed,  7 Jun 2023 20:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171587;
-        bh=R6SybSXv5P06H23W6QQCuXpAXaaLj3YimdPktbViVRs=;
+        s=korg; t=1686171073;
+        bh=KBnscMsejoRYf6J9D5eLrZtkWwh27ql5DYTQZ+a1Hbs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oIaBQedEhgAvI9WGqy5j9nMIhUA/xtfM7xYh8xgTybCDQdu+mwwOkgf4c8iLcgYy2
-         lj0beVy3QIdm3OqrakQWqtGHr1dJyg1A/QZLAUcGwPSD6yRoUZTymtrRCJZqkM+Lxg
-         7pDkl2w5EBwb8hudmib/quHkgTIkLBY3cmV6OMk4=
+        b=Sbt65BcPAez83lyBdb98nXbKcZY0R2UeoqtS5TE8c65MrF3zm0EauIpVDYtipGadG
+         UJMbLar/8FGf6gtyUFzEZGVTwq76ECv5nKDU/1ndmjzbr5oNMkA5X0DtE4G3472T61
+         6+cJj3bYERF8/kiqtOSrLYP0t76w0daWH8ARIA+4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hyunwoo Kim <imv4bel@gmail.com>,
+        patches@lists.linux.dev, Hyunwoo Kim <v4bel@theori.io>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 074/159] media: dvb-core: Fix use-after-free due on race condition at dvb_net
+Subject: [PATCH 5.10 061/120] media: dvb-core: Fix use-after-free due to race condition at dvb_ca_en50221
 Date:   Wed,  7 Jun 2023 22:16:17 +0200
-Message-ID: <20230607200906.105484691@linuxfoundation.org>
+Message-ID: <20230607200902.807428462@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,136 +54,126 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-[ Upstream commit 4172385b0c9ac366dcab78eda48c26814b87ed1a ]
+[ Upstream commit 280a8ab81733da8bc442253c700a52c4c0886ffd ]
 
-A race condition may occur between the .disconnect function, which
-is called when the device is disconnected, and the dvb_device_open()
-function, which is called when the device node is open()ed.
-This results in several types of UAFs.
+If the device node of dvb_ca_en50221 is open() and the
+device is disconnected, a UAF may occur when calling
+close() on the device node.
 
-The root cause of this is that you use the dvb_device_open() function,
-which does not implement a conditional statement
-that checks 'dvbnet->exit'.
+The root cause is that wake_up() and wait_event() for
+dvbdev->wait_queue are not implemented.
 
-So, add 'remove_mutex` to protect 'dvbnet->exit' and use
-locked_dvb_net_open() function to check 'dvbnet->exit'.
+So implement wait_event() function in dvb_ca_en50221_release()
+and add 'remove_mutex' which prevents race condition
+for 'ca->exit'.
 
 [mchehab: fix a checkpatch warning]
 
-Link: https://lore.kernel.org/linux-media/20221117045925.14297-3-imv4bel@gmail.com
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Link: https://lore.kernel.org/linux-media/20221121063308.GA33821@ubuntu
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-core/dvb_net.c | 38 +++++++++++++++++++++++++++++---
- include/media/dvb_net.h          |  4 ++++
- 2 files changed, 39 insertions(+), 3 deletions(-)
+ drivers/media/dvb-core/dvb_ca_en50221.c | 37 ++++++++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-core/dvb_net.c b/drivers/media/dvb-core/dvb_net.c
-index dddebea644bb8..c594b1bdfcaa5 100644
---- a/drivers/media/dvb-core/dvb_net.c
-+++ b/drivers/media/dvb-core/dvb_net.c
-@@ -1564,15 +1564,43 @@ static long dvb_net_ioctl(struct file *file,
- 	return dvb_usercopy(file, cmd, arg, dvb_net_do_ioctl);
- }
+diff --git a/drivers/media/dvb-core/dvb_ca_en50221.c b/drivers/media/dvb-core/dvb_ca_en50221.c
+index b1a7b5f8b9aa4..dec036e0336cb 100644
+--- a/drivers/media/dvb-core/dvb_ca_en50221.c
++++ b/drivers/media/dvb-core/dvb_ca_en50221.c
+@@ -151,6 +151,12 @@ struct dvb_ca_private {
  
-+static int locked_dvb_net_open(struct inode *inode, struct file *file)
-+{
-+	struct dvb_device *dvbdev = file->private_data;
-+	struct dvb_net *dvbnet = dvbdev->priv;
-+	int ret;
+ 	/* mutex serializing ioctls */
+ 	struct mutex ioctl_mutex;
 +
-+	if (mutex_lock_interruptible(&dvbnet->remove_mutex))
-+		return -ERESTARTSYS;
++	/* A mutex used when a device is disconnected */
++	struct mutex remove_mutex;
 +
-+	if (dvbnet->exit) {
-+		mutex_unlock(&dvbnet->remove_mutex);
++	/* Whether the device is disconnected */
++	int exit;
+ };
+ 
+ static void dvb_ca_private_free(struct dvb_ca_private *ca)
+@@ -1708,12 +1714,22 @@ static int dvb_ca_en50221_io_open(struct inode *inode, struct file *file)
+ 
+ 	dprintk("%s\n", __func__);
+ 
+-	if (!try_module_get(ca->pub->owner))
++	mutex_lock(&ca->remove_mutex);
++
++	if (ca->exit) {
++		mutex_unlock(&ca->remove_mutex);
 +		return -ENODEV;
 +	}
 +
-+	ret = dvb_generic_open(inode, file);
-+
-+	mutex_unlock(&dvbnet->remove_mutex);
-+
-+	return ret;
-+}
-+
- static int dvb_net_close(struct inode *inode, struct file *file)
- {
- 	struct dvb_device *dvbdev = file->private_data;
- 	struct dvb_net *dvbnet = dvbdev->priv;
- 
-+	mutex_lock(&dvbnet->remove_mutex);
-+
- 	dvb_generic_release(inode, file);
- 
--	if(dvbdev->users == 1 && dvbnet->exit == 1)
-+	if (dvbdev->users == 1 && dvbnet->exit == 1) {
-+		mutex_unlock(&dvbnet->remove_mutex);
- 		wake_up(&dvbdev->wait_queue);
-+	} else {
-+		mutex_unlock(&dvbnet->remove_mutex);
++	if (!try_module_get(ca->pub->owner)) {
++		mutex_unlock(&ca->remove_mutex);
+ 		return -EIO;
 +	}
-+
+ 
+ 	err = dvb_generic_open(inode, file);
+ 	if (err < 0) {
+ 		module_put(ca->pub->owner);
++		mutex_unlock(&ca->remove_mutex);
+ 		return err;
+ 	}
+ 
+@@ -1738,6 +1754,7 @@ static int dvb_ca_en50221_io_open(struct inode *inode, struct file *file)
+ 
+ 	dvb_ca_private_get(ca);
+ 
++	mutex_unlock(&ca->remove_mutex);
  	return 0;
  }
  
-@@ -1580,7 +1608,7 @@ static int dvb_net_close(struct inode *inode, struct file *file)
- static const struct file_operations dvb_net_fops = {
- 	.owner = THIS_MODULE,
- 	.unlocked_ioctl = dvb_net_ioctl,
--	.open =	dvb_generic_open,
-+	.open =	locked_dvb_net_open,
- 	.release = dvb_net_close,
- 	.llseek = noop_llseek,
- };
-@@ -1599,10 +1627,13 @@ void dvb_net_release (struct dvb_net *dvbnet)
- {
- 	int i;
+@@ -1757,6 +1774,8 @@ static int dvb_ca_en50221_io_release(struct inode *inode, struct file *file)
  
-+	mutex_lock(&dvbnet->remove_mutex);
- 	dvbnet->exit = 1;
-+	mutex_unlock(&dvbnet->remove_mutex);
+ 	dprintk("%s\n", __func__);
+ 
++	mutex_lock(&ca->remove_mutex);
 +
- 	if (dvbnet->dvbdev->users < 1)
- 		wait_event(dvbnet->dvbdev->wait_queue,
--				dvbnet->dvbdev->users==1);
-+				dvbnet->dvbdev->users == 1);
+ 	/* mark the CA device as closed */
+ 	ca->open = 0;
+ 	dvb_ca_en50221_thread_update_delay(ca);
+@@ -1767,6 +1786,13 @@ static int dvb_ca_en50221_io_release(struct inode *inode, struct file *file)
  
- 	dvb_unregister_device(dvbnet->dvbdev);
+ 	dvb_ca_private_put(ca);
  
-@@ -1621,6 +1652,7 @@ int dvb_net_init (struct dvb_adapter *adap, struct dvb_net *dvbnet,
- 	int i;
++	if (dvbdev->users == 1 && ca->exit == 1) {
++		mutex_unlock(&ca->remove_mutex);
++		wake_up(&dvbdev->wait_queue);
++	} else {
++		mutex_unlock(&ca->remove_mutex);
++	}
++
+ 	return err;
+ }
  
- 	mutex_init(&dvbnet->ioctl_mutex);
-+	mutex_init(&dvbnet->remove_mutex);
- 	dvbnet->demux = dmx;
+@@ -1890,6 +1916,7 @@ int dvb_ca_en50221_init(struct dvb_adapter *dvb_adapter,
+ 	}
  
- 	for (i=0; i<DVB_NET_DEVICES_MAX; i++)
-diff --git a/include/media/dvb_net.h b/include/media/dvb_net.h
-index 5e31d37f25fac..cc01dffcc9f35 100644
---- a/include/media/dvb_net.h
-+++ b/include/media/dvb_net.h
-@@ -41,6 +41,9 @@
-  * @exit:		flag to indicate when the device is being removed.
-  * @demux:		pointer to &struct dmx_demux.
-  * @ioctl_mutex:	protect access to this struct.
-+ * @remove_mutex:	mutex that avoids a race condition between a callback
-+ *			called when the hardware is disconnected and the
-+ *			file_operations of dvb_net.
-  *
-  * Currently, the core supports up to %DVB_NET_DEVICES_MAX (10) network
-  * devices.
-@@ -53,6 +56,7 @@ struct dvb_net {
- 	unsigned int exit:1;
- 	struct dmx_demux *demux;
- 	struct mutex ioctl_mutex;
-+	struct mutex remove_mutex;
- };
+ 	mutex_init(&ca->ioctl_mutex);
++	mutex_init(&ca->remove_mutex);
  
- /**
+ 	if (signal_pending(current)) {
+ 		ret = -EINTR;
+@@ -1932,6 +1959,14 @@ void dvb_ca_en50221_release(struct dvb_ca_en50221 *pubca)
+ 
+ 	dprintk("%s\n", __func__);
+ 
++	mutex_lock(&ca->remove_mutex);
++	ca->exit = 1;
++	mutex_unlock(&ca->remove_mutex);
++
++	if (ca->dvbdev->users < 1)
++		wait_event(ca->dvbdev->wait_queue,
++				ca->dvbdev->users == 1);
++
+ 	/* shutdown the thread if there was one */
+ 	kthread_stop(ca->thread);
+ 
 -- 
 2.39.2
 
