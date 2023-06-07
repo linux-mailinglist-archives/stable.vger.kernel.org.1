@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F946726E31
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0E0F726D89
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:43:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234957AbjFGUs5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:48:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49464 "EHLO
+        id S234445AbjFGUnR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:43:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235011AbjFGUsh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:48:37 -0400
+        with ESMTP id S234539AbjFGUnK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:43:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3FD7272B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:48:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B53326A4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:42:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CF44A6436B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:48:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E56D5C4339C;
-        Wed,  7 Jun 2023 20:48:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F28864606
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:42:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6741CC433EF;
+        Wed,  7 Jun 2023 20:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170898;
-        bh=lFnLa+lFea0xfypeewzUtt1fvRUSOmjE8qVH/6loqJc=;
+        s=korg; t=1686170555;
+        bh=86r+xkKIRhYgUF7Bq+La4YvxxcG5eH8HiqlRcq7Fy5c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nKYwyfO64GbgZMY4wD0ewjQB82yWkKpjj+BeFDwnNpeBEUXGPoaarg3niGVjzhYNM
-         Da9mVHBRtyZtGihwRpaMu9lZ1m/tEwKfQKRMiJN6n0pa9xHLvq6ILRWaB2QmU25j94
-         PWwO6lrNOhHNDbFr1Zq3ZpF0Mr9jpTFUg3gqgzag=
+        b=fZKTEemmyka3IEy+khnnJRLCEuLJSX3m4WGKhoniBjsBXoVXXbmAhB0R1AycSFE0S
+         UGmseEehgiSw9WxnpKpt0kn4HpmBtGERAyz4cdxEeuCIHrlqGUiN7VEo67a8t+sfhF
+         8JqbL1COV2/qqcbZxJlgvt+hSioNxGv4a8Qak+Iw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Tudor Ambarus <tudor.ambarus@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 007/120] dmaengine: at_xdmac: fix potential Oops in at_xdmac_prep_interleaved()
+        patches@lists.linux.dev, Guchun Chen <guchun.chen@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 130/225] drm/amdgpu: skip disabling fence driver src_irqs when device is unplugged
 Date:   Wed,  7 Jun 2023 22:15:23 +0200
-Message-ID: <20230607200901.151144050@linuxfoundation.org>
+Message-ID: <20230607200918.626270969@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,52 +54,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Guchun Chen <guchun.chen@amd.com>
 
-[ Upstream commit 4d43acb145c363626d76f49febb4240c488cd1cf ]
+[ Upstream commit c1a322a7a4a96cd0a3dde32ce37af437a78bf8cd ]
 
-There are two place if the at_xdmac_interleaved_queue_desc() fails which
-could lead to a NULL dereference where "first" is NULL and we call
-list_add_tail(&first->desc_node, ...).  In the first caller, the return
-is not checked so add a check for that.  In the next caller, the return
-is checked but if it fails on the first iteration through the loop then
-it will lead to a NULL pointer dereference.
+When performing device unbind or halt, we have disabled all irqs at the
+very begining like amdgpu_pci_remove or amdgpu_device_halt. So
+amdgpu_irq_put for irqs stored in fence driver should not be called
+any more, otherwise, below calltrace will arrive.
 
-Fixes: 4e5385784e69 ("dmaengine: at_xdmac: handle numf > 1")
-Fixes: 62b5cb757f1d ("dmaengine: at_xdmac: fix memory leak in interleaved mode")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Link: https://lore.kernel.org/r/21282b66-9860-410a-83df-39c17fcf2f1b@kili.mountain
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+[  139.114088] WARNING: CPU: 2 PID: 1550 at drivers/gpu/drm/amd/amdgpu/amdgpu_irq.c:616 amdgpu_irq_put+0xf6/0x110 [amdgpu]
+[  139.114655] Call Trace:
+[  139.114655]  <TASK>
+[  139.114657]  amdgpu_fence_driver_hw_fini+0x93/0x130 [amdgpu]
+[  139.114836]  amdgpu_device_fini_hw+0xb6/0x350 [amdgpu]
+[  139.114955]  amdgpu_driver_unload_kms+0x51/0x70 [amdgpu]
+[  139.115075]  amdgpu_pci_remove+0x63/0x160 [amdgpu]
+[  139.115193]  ? __pm_runtime_resume+0x64/0x90
+[  139.115195]  pci_device_remove+0x3a/0xb0
+[  139.115197]  device_remove+0x43/0x70
+[  139.115198]  device_release_driver_internal+0xbd/0x140
+
+Signed-off-by: Guchun Chen <guchun.chen@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/at_xdmac.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
-index 96559c5df944d..861be862a775a 100644
---- a/drivers/dma/at_xdmac.c
-+++ b/drivers/dma/at_xdmac.c
-@@ -970,6 +970,8 @@ at_xdmac_prep_interleaved(struct dma_chan *chan,
- 							NULL,
- 							src_addr, dst_addr,
- 							xt, xt->sgl);
-+		if (!first)
-+			return NULL;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
+index 3cc1929285fc0..ed6878d5b3ce3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
+@@ -528,7 +528,8 @@ void amdgpu_fence_driver_hw_fini(struct amdgpu_device *adev)
+ 		if (r)
+ 			amdgpu_fence_driver_force_completion(ring);
  
- 		/* Length of the block is (BLEN+1) microblocks. */
- 		for (i = 0; i < xt->numf - 1; i++)
-@@ -1000,8 +1002,9 @@ at_xdmac_prep_interleaved(struct dma_chan *chan,
- 							       src_addr, dst_addr,
- 							       xt, chunk);
- 			if (!desc) {
--				list_splice_tail_init(&first->descs_list,
--						      &atchan->free_descs_list);
-+				if (first)
-+					list_splice_tail_init(&first->descs_list,
-+							      &atchan->free_descs_list);
- 				return NULL;
- 			}
+-		if (ring->fence_drv.irq_src)
++		if (!drm_dev_is_unplugged(adev_to_drm(adev)) &&
++		    ring->fence_drv.irq_src)
+ 			amdgpu_irq_put(adev, ring->fence_drv.irq_src,
+ 				       ring->fence_drv.irq_type);
  
 -- 
 2.39.2
