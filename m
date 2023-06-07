@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D542726D29
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:40:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8126F726BB3
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:27:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234419AbjFGUjt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:39:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37862 "EHLO
+        id S233435AbjFGU1X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:27:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234318AbjFGUjf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:39:35 -0400
+        with ESMTP id S233367AbjFGU1T (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:27:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CBD31FCC
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:39:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DACE12118
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:27:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EE9B6645D8
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:39:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E77C433D2;
-        Wed,  7 Jun 2023 20:39:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A559764488
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:26:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABB3C433D2;
+        Wed,  7 Jun 2023 20:26:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170354;
-        bh=me8iuoyE+47HxjMGBnmJBeTDeafKAHglTnZkuVShbxM=;
+        s=korg; t=1686169606;
+        bh=JX+nrVURjyP+KRfBbp1VkQbPd7NZtc4TQcwVsolORiM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Gw7ok9dJhcZynxvUuYUuxKW7f8VSXLbFFFS85B9g39wFocnTsv8KyZT2PykBZjuni
-         0DXuLUnrk6Gymt9PMwQPKTfOTBI+4voXCkixfuqPKMT34wEsAa2goyzFslHONI/8Oc
-         +sGilrY1gVjYwlyZVa+/lOqAFAuCmod303Rui2Lo=
+        b=O0/Dy0JLssXmjkzOo+aKXEfou7oBs2H9DzaoNWlBCHkfY2ZeAPBhzSqoUBg5QFk9R
+         xvdUfn313McC7A1oltBMrSSQMV9rrxlFJxBPp53mzusmeA5R8OakzGkYJtSd5rr8Q0
+         0cnKOy75cgejlB8ZMUpBawTyXzSmbhRdaWEYojlY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Chris Packham <chris.packham@alliedtelesis.co.nz>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Harald Freudenberger <freude@linux.ibm.com>,
+        Holger Dengler <dengler@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 051/225] mtd: rawnand: marvell: dont set the NAND frequency select
+Subject: [PATCH 6.3 145/286] s390/pkey: zeroize key blobs
 Date:   Wed,  7 Jun 2023 22:14:04 +0200
-Message-ID: <20230607200916.031951475@linuxfoundation.org>
+Message-ID: <20230607200927.833046162@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,42 +56,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chris Packham <chris.packham@alliedtelesis.co.nz>
+From: Holger Dengler <dengler@linux.ibm.com>
 
-[ Upstream commit c4d28e30a8d0b979e4029465ab8f312ab6ce2644 ]
+[ Upstream commit 844cf829e5f33e00b279230470c8c93b58b8c16f ]
 
-marvell_nfc_setup_interface() uses the frequency retrieved from the
-clock associated with the nand interface to determine the timings that
-will be used. By changing the NAND frequency select without reflecting
-this in the clock configuration this means that the timings calculated
-don't correctly meet the requirements of the NAND chip. This hasn't been
-an issue up to now because of a different bug that was stopping the
-timings being updated after they were initially set.
+Key blobs for the IOCTLs PKEY_KBLOB2PROTK[23] may contain clear key
+material. Zeroize the copies of these keys in kernel memory after
+creating the protected key.
 
-Fixes: b25251414f6e ("mtd: rawnand: marvell: Stop implementing ->select_chip()")
-Signed-off-by: Chris Packham <chris.packham@alliedtelesis.co.nz>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230525003154.2303012-2-chris.packham@alliedtelesis.co.nz
+Reviewed-by: Harald Freudenberger <freude@linux.ibm.com>
+Signed-off-by: Holger Dengler <dengler@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/marvell_nand.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/s390/crypto/pkey_api.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/mtd/nand/raw/marvell_nand.c b/drivers/mtd/nand/raw/marvell_nand.c
-index 72069a8643563..a57a1501449aa 100644
---- a/drivers/mtd/nand/raw/marvell_nand.c
-+++ b/drivers/mtd/nand/raw/marvell_nand.c
-@@ -2891,10 +2891,6 @@ static int marvell_nfc_init(struct marvell_nfc *nfc)
- 		regmap_update_bits(sysctrl_base, GENCONF_CLK_GATING_CTRL,
- 				   GENCONF_CLK_GATING_CTRL_ND_GATE,
- 				   GENCONF_CLK_GATING_CTRL_ND_GATE);
--
--		regmap_update_bits(sysctrl_base, GENCONF_ND_CLK_CTRL,
--				   GENCONF_ND_CLK_CTRL_EN,
--				   GENCONF_ND_CLK_CTRL_EN);
- 	}
- 
- 	/* Configure the DMA if appropriate */
+diff --git a/drivers/s390/crypto/pkey_api.c b/drivers/s390/crypto/pkey_api.c
+index 5a05d1cdfec20..a8def50c149bd 100644
+--- a/drivers/s390/crypto/pkey_api.c
++++ b/drivers/s390/crypto/pkey_api.c
+@@ -1293,6 +1293,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
+ 			return PTR_ERR(kkey);
+ 		rc = pkey_keyblob2pkey(kkey, ktp.keylen, &ktp.protkey);
+ 		DEBUG_DBG("%s pkey_keyblob2pkey()=%d\n", __func__, rc);
++		memzero_explicit(kkey, ktp.keylen);
+ 		kfree(kkey);
+ 		if (rc)
+ 			break;
+@@ -1426,6 +1427,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
+ 					kkey, ktp.keylen, &ktp.protkey);
+ 		DEBUG_DBG("%s pkey_keyblob2pkey2()=%d\n", __func__, rc);
+ 		kfree(apqns);
++		memzero_explicit(kkey, ktp.keylen);
+ 		kfree(kkey);
+ 		if (rc)
+ 			break;
+@@ -1552,6 +1554,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
+ 					protkey, &protkeylen);
+ 		DEBUG_DBG("%s pkey_keyblob2pkey3()=%d\n", __func__, rc);
+ 		kfree(apqns);
++		memzero_explicit(kkey, ktp.keylen);
+ 		kfree(kkey);
+ 		if (rc) {
+ 			kfree(protkey);
 -- 
 2.39.2
 
