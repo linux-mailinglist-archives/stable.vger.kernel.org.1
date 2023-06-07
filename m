@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7012726ADF
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DA08726EF7
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:54:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232690AbjFGUUs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:20:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45734 "EHLO
+        id S235520AbjFGUy1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:54:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232721AbjFGUUm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2242270E
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:20:16 -0700 (PDT)
+        with ESMTP id S235343AbjFGUyG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A35D71FD5
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:54:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3DA7960F16
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:20:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B1DC433EF;
-        Wed,  7 Jun 2023 20:20:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3EA72647A9
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:54:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F7E0C4339B;
+        Wed,  7 Jun 2023 20:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169200;
-        bh=R0DELvf/YMrD0zJkos1kwz8fEahoXM96yNAJdbs+Qls=;
+        s=korg; t=1686171243;
+        bh=C9nZh/gM1FRAbVwEYpWufJ/Jyi04eUBwc/R5RfV26VY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ep2Gz8R4GP0sryhFtmE0T6WMhDwEikLXruY3VrzU02XBvInmBTNk6+Si+LRjZAnPB
-         Oh0fH7niDNo/v3wo2dpbNiD+/CMVjZyNlOyzbJkIGGn0YKbmdW+3JVbH7NNJiNwlLK
-         v27eckq2xNytEeFlC81BOUg8vo/0fT5nPYBTYpdQ=
+        b=cuo8N+gQNpsAEtAkvOut9LamIBY3wPUVd13DyIyNWLUM6j1uetS0lG2YXBUEUk/B2
+         zvNDPl9Ju84ikjhGGPaQ6N/BqCoUfB/BQPREgezpyszgX5zb2BByey8jedmUNJ+T54
+         SgO44DKeh+9BQD7F+2BK0XDN6HSERgNRSXoNfaSY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Erwan Velu <e.velu@criteo.com>,
-        Luiz Capitulino <luizcap@amazon.com>,
-        Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 4.14 52/61] selinux: dont use makes grouped targets feature yet
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 14/99] tcp: deny tcp_disconnect() when threads are waiting
 Date:   Wed,  7 Jun 2023 22:16:06 +0200
-Message-ID: <20230607200853.130655586@linuxfoundation.org>
+Message-ID: <20230607200900.699684545@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-References: <20230607200835.310274198@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,42 +56,186 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paul Moore <paul@paul-moore.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 42c4e97e06a839b07d834f640a10911ad84ec8b3 upstream.
+[ Upstream commit 4faeee0cf8a5d88d63cdbc3bab124fb0e6aed08c ]
 
-The Linux Kernel currently only requires make v3.82 while the grouped
-target functionality requires make v4.3.  Removed the grouped target
-introduced in 4ce1f694eb5d ("selinux: ensure av_permissions.h is
-built when needed") as well as the multiple header file targets in
-the make rule.  This effectively reverts the problem commit.
+Historically connect(AF_UNSPEC) has been abused by syzkaller
+and other fuzzers to trigger various bugs.
 
-We will revisit this change when make >= 4.3 is required by the rest
-of the kernel.
+A recent one triggers a divide-by-zero [1], and Paolo Abeni
+was able to diagnose the issue.
 
-Cc: stable@vger.kernel.org
-Fixes: 4ce1f694eb5d ("selinux: ensure av_permissions.h is built when needed")
-Reported-by: Erwan Velu <e.velu@criteo.com>
-Reported-by: Luiz Capitulino <luizcap@amazon.com>
-Tested-by: Luiz Capitulino <luizcap@amazon.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+tcp_recvmsg_locked() has tests about sk_state being not TCP_LISTEN
+and TCP REPAIR mode being not used.
+
+Then later if socket lock is released in sk_wait_data(),
+another thread can call connect(AF_UNSPEC), then make this
+socket a TCP listener.
+
+When recvmsg() is resumed, it can eventually call tcp_cleanup_rbuf()
+and attempt a divide by 0 in tcp_rcv_space_adjust() [1]
+
+This patch adds a new socket field, counting number of threads
+blocked in sk_wait_event() and inet_wait_for_connect().
+
+If this counter is not zero, tcp_disconnect() returns an error.
+
+This patch adds code in blocking socket system calls, thus should
+not hurt performance of non blocking ones.
+
+Note that we probably could revert commit 499350a5a6e7 ("tcp:
+initialize rcv_mss to TCP_MIN_MSS instead of 0") to restore
+original tcpi_rcv_mss meaning (was 0 if no payload was ever
+received on a socket)
+
+[1]
+divide error: 0000 [#1] PREEMPT SMP KASAN
+CPU: 0 PID: 13832 Comm: syz-executor.5 Not tainted 6.3.0-rc4-syzkaller-00224-g00c7b5f4ddc5 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/02/2023
+RIP: 0010:tcp_rcv_space_adjust+0x36e/0x9d0 net/ipv4/tcp_input.c:740
+Code: 00 00 00 00 fc ff df 4c 89 64 24 48 8b 44 24 04 44 89 f9 41 81 c7 80 03 00 00 c1 e1 04 44 29 f0 48 63 c9 48 01 e9 48 0f af c1 <49> f7 f6 48 8d 04 41 48 89 44 24 40 48 8b 44 24 30 48 c1 e8 03 48
+RSP: 0018:ffffc900033af660 EFLAGS: 00010206
+RAX: 4a66b76cbade2c48 RBX: ffff888076640cc0 RCX: 00000000c334e4ac
+RDX: 0000000000000000 RSI: dffffc0000000000 RDI: 0000000000000001
+RBP: 00000000c324e86c R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: ffff8880766417f8
+R13: ffff888028fbb980 R14: 0000000000000000 R15: 0000000000010344
+FS: 00007f5bffbfe700(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b32f25000 CR3: 000000007ced0000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<TASK>
+tcp_recvmsg_locked+0x100e/0x22e0 net/ipv4/tcp.c:2616
+tcp_recvmsg+0x117/0x620 net/ipv4/tcp.c:2681
+inet6_recvmsg+0x114/0x640 net/ipv6/af_inet6.c:670
+sock_recvmsg_nosec net/socket.c:1017 [inline]
+sock_recvmsg+0xe2/0x160 net/socket.c:1038
+____sys_recvmsg+0x210/0x5a0 net/socket.c:2720
+___sys_recvmsg+0xf2/0x180 net/socket.c:2762
+do_recvmmsg+0x25e/0x6e0 net/socket.c:2856
+__sys_recvmmsg net/socket.c:2935 [inline]
+__do_sys_recvmmsg net/socket.c:2958 [inline]
+__se_sys_recvmmsg net/socket.c:2951 [inline]
+__x64_sys_recvmmsg+0x20f/0x260 net/socket.c:2951
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f5c0108c0f9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f5bffbfe168 EFLAGS: 00000246 ORIG_RAX: 000000000000012b
+RAX: ffffffffffffffda RBX: 00007f5c011ac050 RCX: 00007f5c0108c0f9
+RDX: 0000000000000001 RSI: 0000000020000bc0 RDI: 0000000000000003
+RBP: 00007f5c010e7b39 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000122 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f5c012cfb1f R14: 00007f5bffbfe300 R15: 0000000000022000
+</TASK>
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Reported-by: Paolo Abeni <pabeni@redhat.com>
+Diagnosed-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Tested-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20230526163458.2880232-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/selinux/Makefile |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ include/net/sock.h              | 4 ++++
+ net/ipv4/af_inet.c              | 2 ++
+ net/ipv4/inet_connection_sock.c | 1 +
+ net/ipv4/tcp.c                  | 6 ++++++
+ 4 files changed, 13 insertions(+)
 
---- a/security/selinux/Makefile
-+++ b/security/selinux/Makefile
-@@ -22,5 +22,9 @@ quiet_cmd_flask = GEN     $(obj)/flask.h
-       cmd_flask = $< $(obj)/flask.h $(obj)/av_permissions.h
+diff --git a/include/net/sock.h b/include/net/sock.h
+index fa19c6ba24441..06fdb8f207b69 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -309,6 +309,7 @@ struct bpf_sk_storage;
+   *	@sk_cgrp_data: cgroup data for this cgroup
+   *	@sk_memcg: this socket's memory cgroup association
+   *	@sk_write_pending: a write to stream socket waits to start
++  *	@sk_wait_pending: number of threads blocked on this socket
+   *	@sk_state_change: callback to indicate change in the state of the sock
+   *	@sk_data_ready: callback to indicate there is data to be processed
+   *	@sk_write_space: callback to indicate there is bf sending space available
+@@ -390,6 +391,7 @@ struct sock {
+ 	unsigned int		sk_napi_id;
+ #endif
+ 	int			sk_rcvbuf;
++	int			sk_wait_pending;
  
- targets += flask.h av_permissions.h
--$(obj)/flask.h $(obj)/av_permissions.h &: scripts/selinux/genheaders/genheaders FORCE
-+# once make >= 4.3 is required, we can use grouped targets in the rule below,
-+# which basically involves adding both headers and a '&' before the colon, see
-+# the example below:
-+#   $(obj)/flask.h $(obj)/av_permissions.h &: scripts/selinux/...
-+$(obj)/flask.h: scripts/selinux/genheaders/genheaders FORCE
- 	$(call if_changed,flask)
+ 	struct sk_filter __rcu	*sk_filter;
+ 	union {
+@@ -1019,6 +1021,7 @@ static inline void sock_rps_reset_rxhash(struct sock *sk)
+ 
+ #define sk_wait_event(__sk, __timeo, __condition, __wait)		\
+ 	({	int __rc;						\
++		__sk->sk_wait_pending++;				\
+ 		release_sock(__sk);					\
+ 		__rc = __condition;					\
+ 		if (!__rc) {						\
+@@ -1028,6 +1031,7 @@ static inline void sock_rps_reset_rxhash(struct sock *sk)
+ 		}							\
+ 		sched_annotate_sleep();					\
+ 		lock_sock(__sk);					\
++		__sk->sk_wait_pending--;				\
+ 		__rc = __condition;					\
+ 		__rc;							\
+ 	})
+diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+index 3c6412cb4b486..a3f77ac173b53 100644
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -578,6 +578,7 @@ static long inet_wait_for_connect(struct sock *sk, long timeo, int writebias)
+ 
+ 	add_wait_queue(sk_sleep(sk), &wait);
+ 	sk->sk_write_pending += writebias;
++	sk->sk_wait_pending++;
+ 
+ 	/* Basic assumption: if someone sets sk->sk_err, he _must_
+ 	 * change state of the socket from TCP_SYN_*.
+@@ -593,6 +594,7 @@ static long inet_wait_for_connect(struct sock *sk, long timeo, int writebias)
+ 	}
+ 	remove_wait_queue(sk_sleep(sk), &wait);
+ 	sk->sk_write_pending -= writebias;
++	sk->sk_wait_pending--;
+ 	return timeo;
+ }
+ 
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index 04593893e0c63..374a0c3f39cc1 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -824,6 +824,7 @@ struct sock *inet_csk_clone_lock(const struct sock *sk,
+ 	if (newsk) {
+ 		struct inet_connection_sock *newicsk = inet_csk(newsk);
+ 
++		newsk->sk_wait_pending = 0;
+ 		inet_sk_set_state(newsk, TCP_SYN_RECV);
+ 		newicsk->icsk_bind_hash = NULL;
+ 
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index a74965a6a54f4..e427eabc7f278 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2581,6 +2581,12 @@ int tcp_disconnect(struct sock *sk, int flags)
+ 	int old_state = sk->sk_state;
+ 	u32 seq;
+ 
++	/* Deny disconnect if other threads are blocked in sk_wait_event()
++	 * or inet_wait_for_connect().
++	 */
++	if (sk->sk_wait_pending)
++		return -EBUSY;
++
+ 	if (old_state != TCP_CLOSE)
+ 		tcp_set_state(sk, TCP_CLOSE);
+ 
+-- 
+2.39.2
+
 
 
