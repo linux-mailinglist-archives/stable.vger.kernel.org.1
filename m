@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40C1B725E86
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 14:17:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80F45725E94
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 14:17:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240447AbjFGMRL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 08:17:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59790 "EHLO
+        id S235179AbjFGMR2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 08:17:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240536AbjFGMRG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 08:17:06 -0400
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on20613.outbound.protection.outlook.com [IPv6:2a01:111:f400:7eb2::613])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADF6C1BD6
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 05:17:02 -0700 (PDT)
+        with ESMTP id S235218AbjFGMR1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 08:17:27 -0400
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on20607.outbound.protection.outlook.com [IPv6:2a01:111:f400:7eaa::607])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 365581BD7
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 05:17:26 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oKpo/wT4SuJpp+OHSQN4wfSEhsYInB938jvF3twNUC09xm6LPJZKnbDJuzib6ZojS923FiuKOEaycWdEJ/d6AW5/Z2O36kahRFW62sF33b1l3Q4MbYdisSODtavOJoGqM4uVuG6HvIblfEEpf/Cn89iCYyvcmSZgRizll38Q8hwqeZKeLyYywWCxuAVnhNAUF0ul5jWH0ocvTk5YBh8I1vpqjQaynCejNAdMBcwr11W748YQiVbOyNEPwVEydG5HZOwuplsmC/779GogmYS2xmyAHcxlGc3E5l7yzmdIsk+i559KB33hxhd2jfidGm51F6lvjNUCk4TBUWQuIuT+Eg==
+ b=bIG/KMQe35O2rZJNsnlAL+z1K7E/fh81y1ujmYFsuwpzyK9KmRHXekVBonLH/gQOA6meRU/j4EkSIKqTLaUzfTZTUYWA1vFrDaANPIkEdJWnuHfXLBu3lSdJF8kqhphdhkm8snyILoNG+VgE6uUj+Gifkby6V4JAYT80ruaUlP7eVoiWDM3f6LoiPrMB84L3aN0TUORL4gg6Bx7zvB9PflwhAg5+yZKFHTKf36JeSWddyxu0AYTP9DMcuH/jDuuoKJ8zLTXU4CbrfzCc99WCmzrWrvFAS/FrxW4orM/NMBk7nffOmj4qMBFoJ6dvO1fh10mhg0bzX37iAqHgryIiwg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MK7NZgpd/B4vtC8uanOWeSC08Yr1GNVLdejgP3c9+qs=;
- b=mI97/olgM4HS/Bdpop+UZtaxWV+CUp7jW6ECvSzmdJhWNQGWLi/2kc0WXTk/zzeKO4ahnEY9AcD7EJ2eqXzWkGV72GC4McQqhfpKTjbBG05EZ+oYWNfWcXXxqQqJVB7MecA/xYnEc52yXCxIgt4k8LJxHwyCcq9rqejC6Qy9KLgw3YZ1tlyWRf5EMKWNj7nNBp6t9BWDe5nURo4utioP7etbFxzTv1/SDDLzErfHJlKz5sjtnppI2I0koeDL69+CuvRwMFYV+p/ujS9j7DIj7PyQsO5Xn5r5wa3dYuKsVBCWTYXnUq7LMEsdGwHgb90EPcOz5+xD05sHrLUlUfFXeg==
+ bh=6NU4rk+StqgNdU+q87/iMPxuXHtWf/Qz25peQrbko/4=;
+ b=i5cEqSLJDbc4AoAnQBoDZ7+p1gUzk/lVbSwunNZjGF2VDZF4/EfbFa4+6Sikc7FdNbs2+cM7yuL8RD72cTBJRGolfyYZMt4CQO4SCNn/yvljkkHT2HLjwq+5YIN4fZLBqIgyVgPRW2fM4MetPXFdXEtUH72zyddCM8RQm95kkGjY994LcdfqEMPwGJOYI1KHuSFOlobaHInz5GboUJcW2tYwgp148S3cEksdecemfQ+bdZpl/Mep2nA9LZ3poIQagGndy7ZLEqU/NZ7xYCbI2UoV3heZHzbDfppnMrax0WvOR35H/0dvDNAzLZ3ZWOgoKfBpKOYRuozydQIL1I8wKw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MK7NZgpd/B4vtC8uanOWeSC08Yr1GNVLdejgP3c9+qs=;
- b=fImMWQCy2QzA7b5Zes078zjYsRlCrbBsRCquLSbWi7Rp+jep6tisQrlex3HVlhfoiu8r6OIe4oJBaLKVBYAH1mZfMZ29trdlky4u0oTMA5H6zsMqLLtKSiRziAJs42FpD0zMJjJ22FHGwSRCK8PlpFlgKnlx/pV9niiYgMECc6g=
-Received: from CY5PR13CA0021.namprd13.prod.outlook.com (2603:10b6:930::21) by
- IA1PR12MB8287.namprd12.prod.outlook.com (2603:10b6:208:3f5::14) with
+ bh=6NU4rk+StqgNdU+q87/iMPxuXHtWf/Qz25peQrbko/4=;
+ b=qtTzlxTYSciSCJfGbUYiPB4UGrkBNiRMRIAHzlUeSPh2e3NA9FZvd12e6yVKE8bux3N8rhV9KJFb3xEH+5pw+FEO+JNHKbfoKTLr4pXp9gLRMGmIX4TPRI96lyIjOlq0zEsQi+L7LPj8B0/R0Sim09vXZEKeArSK8yZL/Chh52I=
+Received: from DS7P222CA0016.NAMP222.PROD.OUTLOOK.COM (2603:10b6:8:2e::8) by
+ BL3PR12MB6594.namprd12.prod.outlook.com (2603:10b6:208:38d::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.19; Wed, 7 Jun
- 2023 12:16:59 +0000
-Received: from CY4PEPF0000EE33.namprd05.prod.outlook.com
- (2603:10b6:930:0:cafe::c6) by CY5PR13CA0021.outlook.office365.com
- (2603:10b6:930::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.19 via Frontend
- Transport; Wed, 7 Jun 2023 12:16:58 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.33; Wed, 7 Jun
+ 2023 12:17:20 +0000
+Received: from CY4PEPF0000EE30.namprd05.prod.outlook.com
+ (2603:10b6:8:2e:cafe::84) by DS7P222CA0016.outlook.office365.com
+ (2603:10b6:8:2e::8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.33 via Frontend
+ Transport; Wed, 7 Jun 2023 12:17:20 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -46,13 +46,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000EE33.mail.protection.outlook.com (10.167.242.39) with Microsoft
+ CY4PEPF0000EE30.mail.protection.outlook.com (10.167.242.36) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6477.13 via Frontend Transport; Wed, 7 Jun 2023 12:16:58 +0000
+ 15.20.6477.13 via Frontend Transport; Wed, 7 Jun 2023 12:17:19 +0000
 Received: from stylon-rog.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Wed, 7 Jun
- 2023 07:16:51 -0500
+ 2023 07:17:15 -0500
 From:   Stylon Wang <stylon.wang@amd.com>
 To:     <amd-gfx@lists.freedesktop.org>
 CC:     <Harry.Wentland@amd.com>, <Sunpeng.Li@amd.com>,
@@ -60,13 +60,14 @@ CC:     <Harry.Wentland@amd.com>, <Sunpeng.Li@amd.com>,
         <Aurabindo.Pillai@amd.com>, <qingqing.zhuo@amd.com>,
         <roman.li@amd.com>, <wayne.lin@amd.com>, <stylon.wang@amd.com>,
         <solomon.chiu@amd.com>, <pavle.kotarac@amd.com>,
-        <agustin.gutierrez@amd.com>, Saaem Rizvi <syedsaaem.rizvi@amd.com>,
+        <agustin.gutierrez@amd.com>, Peichen Huang <peichen.huang@amd.com>,
         Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        <stable@vger.kernel.org>, Alvin Lee <Alvin.Lee2@amd.com>
-Subject: [PATCH 11/20] drm/amd/display: Do not disable phantom pipes in driver
-Date:   Wed, 7 Jun 2023 20:15:39 +0800
-Message-ID: <20230607121548.1479290-12-stylon.wang@amd.com>
+        "Alex Deucher" <alexander.deucher@amd.com>,
+        <stable@vger.kernel.org>,
+        "Mustapha Ghaddar" <Mustapha.Ghaddar@amd.com>
+Subject: [PATCH 17/20] drm/amd/display: limit DPIA link rate to HBR3
+Date:   Wed, 7 Jun 2023 20:15:45 +0800
+Message-ID: <20230607121548.1479290-18-stylon.wang@amd.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230607121548.1479290-1-stylon.wang@amd.com>
 References: <20230607121548.1479290-1-stylon.wang@amd.com>
@@ -78,23 +79,23 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE33:EE_|IA1PR12MB8287:EE_
-X-MS-Office365-Filtering-Correlation-Id: 136726b9-ec6a-4468-4b96-08db67511759
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE30:EE_|BL3PR12MB6594:EE_
+X-MS-Office365-Filtering-Correlation-Id: eba5a271-5825-492d-612c-08db67512422
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: c3tp/MEJ8c6IcVWRvq/yoJyZTbTkcpnNe9InGlx10Gak1OyuJn87ca+aIUebU7Im/qv43NLDK7u9XhVRb3Uvh7DMqXEDjZYaJ1TdGGEjrn/mwLQfamVGPv9xyh/xXMrHDV1sala7/BGLKdJQgjb9BquwNxJqsmVag8sX/x9z0eXSRiHmj8LGGhDTCIUCkTNx40ZhysdHP7Cyno8IDAzx19BGVK83HvHLrz9E004CmvV4n2YCjef6+qqDzt7ZXMUtaYQHF1lEoauT7qEV2wZzgjauBjt5/8DEcS2vUSBnTHnnCzYenkn3R1PiEaumW7gxvnV/4Snrkk2pQCH3LNIjrHXFeUpe4A2YCJGm1gpvRuYSSeA3or7UI9GCoD9uLcKxFpUFw039smE7lVTTRfNaNTFHv1bHJcG0tkRfIxRWRDtSmIzCccjj5tmk5R7fQOm5n5Oz6hzHVRry2N53OjI0gBnPF2wmQmNQvcvmjuoEqP03Jvk6jVumD1Mqa4fdmpaPb8GZd0bRjx8rQx+FCqvKRlC1ZUIIhuJqgxGJ1mMPQBx/z7rVSBmkR09C0z+rzejeQsF2c827tfu7FLZr3AHCLsgELgRKLG2QZ/cnL61Uf9hd82dZaB6DCo46/kjO0zEHosPbAOT4JBIEHRlBEqBu6EmEOk4fI4aeT4s6JU3WvbedgErgqDO6o7nNmWcr1SV+yZHieuOuH7816KPv7IrHlRltkWfPj27RPjPFBaa5ESDexQlZwQZwkICawKDzagLFqrN8DeCtkOznPgMGoMN35w==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(136003)(39860400002)(346002)(396003)(376002)(451199021)(36840700001)(40470700004)(46966006)(7696005)(40480700001)(40460700003)(6916009)(36756003)(81166007)(70206006)(82740400003)(356005)(54906003)(4326008)(2906002)(44832011)(5660300002)(70586007)(86362001)(82310400005)(41300700001)(316002)(8936002)(8676002)(478600001)(186003)(16526019)(426003)(336012)(36860700001)(83380400001)(2616005)(47076005)(6666004)(1076003)(26005)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: wOoNjx7L9isQT8n0C8IL6kf1kfJUVME6x23G61aUQGMX7Oo+qoI/h9Z+pHh/HFmBixQ1Fpg8BnUNb/E14TFVewZP8N4IpFrynzP8vbwxodk4k6Fg+ZAEi42e2gilBDz9uC9fT7h6q0h6Al/We3nMC7kBWY/juu9E3vaZL8TF6RP49PjXsCN+fDrd2zFAWjMBPEWJ3W1FqnRMwOfjaHb+VWjRjH+Ek9sjiT0uxPMW3ylg7z9UOqUCl6SV5PxCYZDi9CG2l9SuBuYD5XhSe5OoMlyS/IzTPEz2cYaUNkxWD3VDqmEY2SfyC13wxB08+I/kDtTG/qn9QhMyZbt1e3dYebHkSJcsynxjfaapSM635ngOKhXsr3FJB3W/2s5GF16I2C1thNpLlX5zyWU11STgvhR61dP5XZ3saVNxeCvnmKSD7KfkIY90gSLJ4qokVocvODgpLfJOH9UHFqtOxmGBhLR51QnfoNpZDmYMedggkcGklzuwOsAioEc960zXXvk3L+UymInKaZomjbSEybgk7uT6+gEN/1YItsM7OYnBgPVY8YBv+c8Yo21O+8WWzY5XLUo3X2Rdvth1edIkdCTFaaaczLKof5bLQThnD8mA+BTYx2fbdU+h+/QUENcqM7KjC+ZJNNCQ4HwOPkBgUROJZxfci868M+qU8lkZHsGhenOqJCDZ1PJvG+HeXDsQmFM64enbMiujSwQPeeVUYAQOEeLrtR/WaTRxCE+bniBNsKH7rSNiqweV5OX4CYE5uJTF8+eoNA7EtTWtuOwG58PIgQ==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(136003)(396003)(346002)(39860400002)(376002)(451199021)(40470700004)(36840700001)(46966006)(1076003)(40460700003)(26005)(36860700001)(36756003)(81166007)(426003)(83380400001)(47076005)(82310400005)(86362001)(336012)(82740400003)(356005)(186003)(16526019)(40480700001)(2616005)(8676002)(41300700001)(44832011)(54906003)(5660300002)(4326008)(6916009)(478600001)(70586007)(2906002)(316002)(8936002)(70206006)(7696005)(6666004)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2023 12:16:58.3703
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2023 12:17:19.8208
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 136726b9-ec6a-4468-4b96-08db67511759
+X-MS-Exchange-CrossTenant-Network-Message-Id: eba5a271-5825-492d-612c-08db67512422
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE33.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE30.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8287
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6594
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,SPF_HELO_PASS,
         SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
@@ -105,38 +106,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Saaem Rizvi <syedsaaem.rizvi@amd.com>
+From: Peichen Huang <peichen.huang@amd.com>
 
-[Why and How]
-We should not disable phantom pipes in this sequence, as this should be
-controlled by FW. Furthermore, the previous programming sequence would
-have enabled the phantom pipe in driver as well, causing corruption.
-This change should avoid this from occuring.
+[Why]
+DPIA doesn't support UHBR, driver should not enable UHBR
+for dp tunneling
+
+[How]
+limit DPIA link rate to HBR3
 
 Cc: Mario Limonciello <mario.limonciello@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
 Acked-by: Stylon Wang <stylon.wang@amd.com>
-Signed-off-by: Saaem Rizvi <syedsaaem.rizvi@amd.com>
-Reviewed-by: Alvin Lee <Alvin.Lee2@amd.com>
+Signed-off-by: Peichen Huang <peichen.huang@amd.com>
+Reviewed-by: Mustapha Ghaddar <Mustapha.Ghaddar@amd.com>
 ---
- drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/link/link_detection.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
-index 00f32ffe0079..e5bd76c6b1d3 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
-@@ -1211,7 +1211,8 @@ void dcn32_resync_fifo_dccg_dio(struct dce_hwseq *hws, struct dc *dc, struct dc_
- 		if (pipe->top_pipe || pipe->prev_odm_pipe)
- 			continue;
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_detection.c b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
+index 17904de4f155..8041b8369e45 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_detection.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
+@@ -984,6 +984,11 @@ static bool detect_link_and_local_sink(struct dc_link *link,
+ 					(link->dpcd_caps.dongle_type !=
+ 							DISPLAY_DONGLE_DP_HDMI_CONVERTER))
+ 				converter_disable_audio = true;
++
++			/* limited link rate to HBR3 for DPIA until we implement USB4 V2 */
++			if (link->ep_type == DISPLAY_ENDPOINT_USB4_DPIA &&
++					link->reported_link_cap.link_rate > LINK_RATE_HIGH3)
++				link->reported_link_cap.link_rate = LINK_RATE_HIGH3;
+ 			break;
+ 		}
  
--		if (pipe->stream && (pipe->stream->dpms_off || dc_is_virtual_signal(pipe->stream->signal))) {
-+		if (pipe->stream && (pipe->stream->dpms_off || dc_is_virtual_signal(pipe->stream->signal))
-+			&& pipe->stream->mall_stream_config.type != SUBVP_PHANTOM) {
- 			pipe->stream_res.tg->funcs->disable_crtc(pipe->stream_res.tg);
- 			reset_sync_context_for_pipe(dc, context, i);
- 			otg_disabled[i] = true;
 -- 
 2.40.1
 
