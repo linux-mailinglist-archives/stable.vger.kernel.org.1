@@ -2,48 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 885AF726AF3
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:21:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6BF6726C2F
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232898AbjFGUVS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:21:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46322 "EHLO
+        id S233613AbjFGUbO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:31:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232876AbjFGUVG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:21:06 -0400
+        with ESMTP id S233619AbjFGUbN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:31:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C30226AA
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:20:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47553137
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:31:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F10B26130B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:20:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EB66C433D2;
-        Wed,  7 Jun 2023 20:20:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D4BE8644F8
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:31:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D35C433D2;
+        Wed,  7 Jun 2023 20:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169245;
-        bh=aql5NXzheAYQGdrzLD5fzib1YS8adfuPpeMQmFo/SR4=;
+        s=korg; t=1686169871;
+        bh=GwBaXoNiSoSFSpiNL3cErcNCcIVhHLLYcgqU77N4EW0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=J0wB8GdG/mPjJby7j5m4ykhZj8M/ubLXQODh06POfyOBz21TR2XXxWmpvvsLzgojY
-         wGVc+Qo/uSkvc7nhMUnYUdohKNWlzOBtO6VCdAILfYQK4GKX8i3ad42Rs7j5xr25Nw
-         0PCTDz3yv1mPdhwGpE4yFM1pJlgXaq+97bWuV/kQ=
+        b=FJwWzj5EXXjMggrgEY/eF4mkMGvYRYnJVIGY3ue4us3fuuCTkJjLf+rSjRE9XvppD
+         1y7OCDVe4U2t0l41gc7mxKLSXqIxYAFpL4ukJdBqllrfNHhejCu66HbvBzy9Tf3lrG
+         L9wQ6fzgSqySddDnflyr1voLhgJTgdtBt1IiBvts=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Michael=20B=C3=BCsch?= <m@bues.ch>,
-        kernel test robot <lkp@intel.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Larry Finger <Larry.Finger@lwfinger.net>,
-        Arnd Bergmann <arnd@arndb.de>, Kalle Valo <kvalo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 30/61] wifi: b43: fix incorrect __packed annotation
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Richard Weinberger <richard@nod.at>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.3 245/286] mtdchar: mark bits of ioctl handler noinline
 Date:   Wed,  7 Jun 2023 22:15:44 +0200
-Message-ID: <20230607200845.757362161@linuxfoundation.org>
+Message-ID: <20230607200931.296822388@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-References: <20230607200835.310274198@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,64 +56,54 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 212457ccbd60dba34f965e4ffbe62f0e4f970538 ]
+commit 0ea923f443350c8c5cca6eef5b748d52b903f46c upstream.
 
-clang warns about an unpacked structure inside of a packed one:
+The addition of the mtdchar_read_ioctl() function caused the stack usage
+of mtdchar_ioctl() to grow beyond the warning limit on 32-bit architectures
+with gcc-13:
 
-drivers/net/wireless/broadcom/b43/b43.h:654:4: error: field data within 'struct b43_iv' is less aligned than 'union (unnamed union at /home/arnd/arm-soc/drivers/net/wireless/broadcom/b43/b43.h:651:2)' and is usually due to 'struct b43_iv' being packed, which can lead to unaligned accesses [-Werror,-Wunaligned-access]
+drivers/mtd/mtdchar.c: In function 'mtdchar_ioctl':
+drivers/mtd/mtdchar.c:1229:1: error: the frame size of 1488 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
 
-The problem here is that the anonymous union has the default alignment
-from its members, apparently because the original author mixed up the
-placement of the __packed attribute by placing it next to the struct
-member rather than the union definition. As the struct itself is
-also marked as __packed, there is no need to mark its members, so just
-move the annotation to the inner type instead.
+Mark both the read and write portions as noinline_for_stack to ensure
+they don't get inlined and use separate stack slots to reduce the
+maximum usage, both in the mtdchar_ioctl() and combined with any
+of its callees.
 
-As Michael noted, the same problem is present in b43legacy, so
-change both at the same time.
-
-Acked-by: Michael Büsch <m@bues.ch>
-Reported-by: kernel test robot <lkp@intel.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Tested-by: Larry Finger <Larry.Finger@lwfinger.net>
-Link: https://lore.kernel.org/oe-kbuild-all/202305160749.ay1HAoyP-lkp@intel.com/
+Fixes: 095bb6e44eb1 ("mtdchar: add MEMREAD ioctl")
+Cc: stable@vger.kernel.org
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230516183442.536589-1-arnd@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230417205654.1982368-1-arnd@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/broadcom/b43/b43.h             | 2 +-
- drivers/net/wireless/broadcom/b43legacy/b43legacy.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/mtdchar.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/b43/b43.h b/drivers/net/wireless/broadcom/b43/b43.h
-index b77d1a904f7e6..a449561fccf28 100644
---- a/drivers/net/wireless/broadcom/b43/b43.h
-+++ b/drivers/net/wireless/broadcom/b43/b43.h
-@@ -651,7 +651,7 @@ struct b43_iv {
- 	union {
- 		__be16 d16;
- 		__be32 d32;
--	} data __packed;
-+	} __packed data;
- } __packed;
+--- a/drivers/mtd/mtdchar.c
++++ b/drivers/mtd/mtdchar.c
+@@ -590,8 +590,8 @@ static void adjust_oob_length(struct mtd
+ 			    (end_page - start_page + 1) * oob_per_page);
+ }
  
+-static int mtdchar_write_ioctl(struct mtd_info *mtd,
+-		struct mtd_write_req __user *argp)
++static noinline_for_stack int
++mtdchar_write_ioctl(struct mtd_info *mtd, struct mtd_write_req __user *argp)
+ {
+ 	struct mtd_info *master = mtd_get_master(mtd);
+ 	struct mtd_write_req req;
+@@ -688,8 +688,8 @@ static int mtdchar_write_ioctl(struct mt
+ 	return ret;
+ }
  
-diff --git a/drivers/net/wireless/broadcom/b43legacy/b43legacy.h b/drivers/net/wireless/broadcom/b43legacy/b43legacy.h
-index 6b0cec467938f..f49365d14619f 100644
---- a/drivers/net/wireless/broadcom/b43legacy/b43legacy.h
-+++ b/drivers/net/wireless/broadcom/b43legacy/b43legacy.h
-@@ -379,7 +379,7 @@ struct b43legacy_iv {
- 	union {
- 		__be16 d16;
- 		__be32 d32;
--	} data __packed;
-+	} __packed data;
- } __packed;
- 
- #define B43legacy_PHYMODE(phytype)	(1 << (phytype))
--- 
-2.39.2
-
+-static int mtdchar_read_ioctl(struct mtd_info *mtd,
+-		struct mtd_read_req __user *argp)
++static noinline_for_stack int
++mtdchar_read_ioctl(struct mtd_info *mtd, struct mtd_read_req __user *argp)
+ {
+ 	struct mtd_info *master = mtd_get_master(mtd);
+ 	struct mtd_read_req req;
 
 
