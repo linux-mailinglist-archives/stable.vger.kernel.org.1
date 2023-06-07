@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 017F7726AF5
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:21:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E81EC726CFA
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:38:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232434AbjFGUVV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:21:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45800 "EHLO
+        id S234041AbjFGUiP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:38:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232198AbjFGUVN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:21:13 -0400
+        with ESMTP id S234075AbjFGUiL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:38:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FAB026BE
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:20:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5DBF10FB
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:37:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D939643A1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:20:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0196C4339B;
-        Wed,  7 Jun 2023 20:20:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 59A6F645A8
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:36:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEEDC433D2;
+        Wed,  7 Jun 2023 20:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169227;
-        bh=pQ/5k1AQ+zLaXa874EIKPhb50W9/u7lSf26AGbJiuDw=;
+        s=korg; t=1686170216;
+        bh=R2szygw8FMPBznQfFFea6pkYnXE8rPymtXIxPAxltKY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QbytxvJpAACsYAZhNrCr6xDHrdD/eic1CX1on0VvPC0//iM77HyJqjce02KZWq3Mh
-         ILVkXQASpO5xGyC8+ZViNhW5cNLIcwvVsXYTuewr2uL4u33kJvpzOWSpZsA1nw6TTr
-         2lCR/NWPPNrMd948dmhGdvpx77qVX6TntwJXlsmk=
+        b=RCCS4rSjSolMNnQ82JonxkPk3TmKwpvIZ73hs/yN1+aCHecQmUpX6qWBfEzlfPYvb
+         syP4BXY4leqO+45m+3Oluo3JQ5SB8a5iwJu8HmC5a5oAKCwIpjQf9unEPJmJ2LiVAQ
+         nq+fOu/EUkfLZqcKJr0rjq3wwwAusg7rSmEWR2h8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 4.14 61/61] wifi: rtlwifi: 8192de: correct checking of IQK reload
-Date:   Wed,  7 Jun 2023 22:16:15 +0200
-Message-ID: <20230607200856.233687007@linuxfoundation.org>
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 59/88] atm: hide unused procfs functions
+Date:   Wed,  7 Jun 2023 22:16:16 +0200
+Message-ID: <20230607200901.085511979@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-References: <20230607200835.310274198@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,47 +54,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 93fbc1ebd978cf408ef5765e9c1630fce9a8621b upstream.
+[ Upstream commit fb1b7be9b16c1f4626969ba4e95a97da2a452b41 ]
 
-Since IQK could spend time, we make a cache of IQK result matrix that looks
-like iqk_matrix[channel_idx].val[x][y], and we can reload the matrix if we
-have made a cache. To determine a cache is made, we check
-iqk_matrix[channel_idx].val[0][0].
+When CONFIG_PROC_FS is disabled, the function declarations for some
+procfs functions are hidden, but the definitions are still build,
+as shown by this compiler warning:
 
-The initial commit 7274a8c22980 ("rtlwifi: rtl8192de: Merge phy routines")
-make a mistake that checks incorrect iqk_matrix[channel_idx].val[0] that
-is always true, and this mistake is found by commit ee3db469dd31
-("wifi: rtlwifi: remove always-true condition pointed out by GCC 12"), so
-I recall the vendor driver to find fix and apply the correctness.
+net/atm/resources.c:403:7: error: no previous prototype for 'atm_dev_seq_start' [-Werror=missing-prototypes]
+net/atm/resources.c:409:6: error: no previous prototype for 'atm_dev_seq_stop' [-Werror=missing-prototypes]
+net/atm/resources.c:414:7: error: no previous prototype for 'atm_dev_seq_next' [-Werror=missing-prototypes]
 
-Fixes: 7274a8c22980 ("rtlwifi: rtl8192de: Merge phy routines")
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20220801113345.42016-1-pkshih@realtek.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add another #ifdef to leave these out of the build.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20230516194625.549249-2-arnd@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ net/atm/resources.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-@@ -2414,11 +2414,10 @@ void rtl92d_phy_reload_iqk_setting(struc
- 			RT_TRACE(rtlpriv, COMP_SCAN, DBG_LOUD,
- 				 "Just Read IQK Matrix reg for channel:%d....\n",
- 				 channel);
--			_rtl92d_phy_patha_fill_iqk_matrix(hw, true,
--					rtlphy->iqk_matrix[
--					indexforchannel].value,	0,
--					(rtlphy->iqk_matrix[
--					indexforchannel].value[0][2] == 0));
-+			if (rtlphy->iqk_matrix[indexforchannel].value[0][0] != 0)
-+				_rtl92d_phy_patha_fill_iqk_matrix(hw, true,
-+					rtlphy->iqk_matrix[indexforchannel].value, 0,
-+					rtlphy->iqk_matrix[indexforchannel].value[0][2] == 0);
- 			if (IS_92D_SINGLEPHY(rtlhal->version)) {
- 				if ((rtlphy->iqk_matrix[
- 					indexforchannel].value[0][4] != 0)
+diff --git a/net/atm/resources.c b/net/atm/resources.c
+index bada395ecdb18..9389080224f87 100644
+--- a/net/atm/resources.c
++++ b/net/atm/resources.c
+@@ -447,6 +447,7 @@ int atm_dev_ioctl(unsigned int cmd, void __user *arg, int compat)
+ 	return error;
+ }
+ 
++#ifdef CONFIG_PROC_FS
+ void *atm_dev_seq_start(struct seq_file *seq, loff_t *pos)
+ {
+ 	mutex_lock(&atm_dev_mutex);
+@@ -462,3 +463,4 @@ void *atm_dev_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+ {
+ 	return seq_list_next(v, &atm_devs, pos);
+ }
++#endif
+-- 
+2.39.2
+
 
 
