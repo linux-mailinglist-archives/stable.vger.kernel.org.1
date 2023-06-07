@@ -2,50 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5ED3726EFE
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:54:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 428D3726CF7
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:38:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235501AbjFGUym (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:54:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55072 "EHLO
+        id S234155AbjFGUiI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:38:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235493AbjFGUy1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2AE41FCC
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:54:22 -0700 (PDT)
+        with ESMTP id S234092AbjFGUiH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:38:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C06462689
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:37:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 870DE647D1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:54:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993F2C433D2;
-        Wed,  7 Jun 2023 20:54:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 346DA645A3
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:36:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41CCCC433EF;
+        Wed,  7 Jun 2023 20:36:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171262;
-        bh=KBnscMsejoRYf6J9D5eLrZtkWwh27ql5DYTQZ+a1Hbs=;
+        s=korg; t=1686170211;
+        bh=dEbteCaL/su4bJcFyM7txE9zJHlUFmVnqugyDDnG2YI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bRmn+oD3+F+/h4z9OIfTEkUOw4EBB1sFH62krCfbb48BMvth+UZox5JttrQ1tUAM3
-         Dh1HOadG98TdQzWdlC8/i5G8sx1hYhaxaBFa6VOaSMQzgOaqj9Ulk1KUlP3o2RGa96
-         4ofUCvK4phrVDZu3EivmVltMfUnBJ4kKsRcB7INw=
+        b=Pfx6Hs/6/61A87QfdhDeZHr3QJmjhgaeDCHnUrY35PxOxWweu916R+Kc7Pc8pPkL5
+         g6dN+QMgvU/PlWNCReKUl8gB2+H065msYi6utQec485DOzHV5KDXkT9N2xC2aUFzUu
+         M0RBWM8QhTJBaC96d4YwuSMjNHNBSqB2uU58Kllo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hyunwoo Kim <v4bel@theori.io>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 51/99] media: dvb-core: Fix use-after-free due to race condition at dvb_ca_en50221
+        patches@lists.linux.dev, Ben Hutchings <benh@debian.org>
+Subject: [PATCH 4.19 86/88] scsi: dpt_i2o: Remove broken pass-through ioctl (I2OUSERCMD)
 Date:   Wed,  7 Jun 2023 22:16:43 +0200
-Message-ID: <20230607200901.846665193@linuxfoundation.org>
+Message-ID: <20230607200901.908401023@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,128 +52,351 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Ben Hutchings <benh@debian.org>
 
-[ Upstream commit 280a8ab81733da8bc442253c700a52c4c0886ffd ]
+adpt_i2o_passthru() takes a user-provided message and passes it
+through to the hardware with appropriate translation of addresses
+and message IDs.  It has a number of bugs:
 
-If the device node of dvb_ca_en50221 is open() and the
-device is disconnected, a UAF may occur when calling
-close() on the device node.
+- When a message requires scatter/gather, it doesn't verify that the
+  offset to the scatter/gather list is less than the message size.
+- When a message requires scatter/gather, it overwrites the DMA
+  addresses with the user-space virtual addresses before unmapping the
+  DMA buffers.
+- It reads the message from user memory multiple times.  This allows
+  user-space to change the message and bypass validation.
+- It assumes that the message is at least 4 words long, but doesn't
+  check that.
 
-The root cause is that wake_up() and wait_event() for
-dvbdev->wait_queue are not implemented.
+I tried fixing these, but even the maintainer of the corresponding
+user-space in Debian doesn't have the hardware any more.
 
-So implement wait_event() function in dvb_ca_en50221_release()
-and add 'remove_mutex' which prevents race condition
-for 'ca->exit'.
+Instead, remove the pass-through ioctl (I2OUSRCMD) and supporting
+code.
 
-[mchehab: fix a checkpatch warning]
+There is no corresponding upstream commit, because this driver was
+removed upstream.
 
-Link: https://lore.kernel.org/linux-media/20221121063308.GA33821@ubuntu
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 67af2b060e02 ("[SCSI] dpt_i2o: move from virt_to_bus/bus_to_virt ...")
+Signed-off-by: Ben Hutchings <benh@debian.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dvb_ca_en50221.c | 37 ++++++++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+ drivers/scsi/dpt_i2o.c |  265 -------------------------------------------------
+ drivers/scsi/dpti.h    |    1 
+ 2 files changed, 3 insertions(+), 263 deletions(-)
 
-diff --git a/drivers/media/dvb-core/dvb_ca_en50221.c b/drivers/media/dvb-core/dvb_ca_en50221.c
-index b1a7b5f8b9aa4..dec036e0336cb 100644
---- a/drivers/media/dvb-core/dvb_ca_en50221.c
-+++ b/drivers/media/dvb-core/dvb_ca_en50221.c
-@@ -151,6 +151,12 @@ struct dvb_ca_private {
+--- a/drivers/scsi/dpt_i2o.c
++++ b/drivers/scsi/dpt_i2o.c
+@@ -628,51 +628,6 @@ static struct scsi_cmnd *
+ 	return NULL;
+ }
  
- 	/* mutex serializing ioctls */
- 	struct mutex ioctl_mutex;
-+
-+	/* A mutex used when a device is disconnected */
-+	struct mutex remove_mutex;
-+
-+	/* Whether the device is disconnected */
-+	int exit;
- };
- 
- static void dvb_ca_private_free(struct dvb_ca_private *ca)
-@@ -1708,12 +1714,22 @@ static int dvb_ca_en50221_io_open(struct inode *inode, struct file *file)
- 
- 	dprintk("%s\n", __func__);
- 
--	if (!try_module_get(ca->pub->owner))
-+	mutex_lock(&ca->remove_mutex);
-+
-+	if (ca->exit) {
-+		mutex_unlock(&ca->remove_mutex);
-+		return -ENODEV;
-+	}
-+
-+	if (!try_module_get(ca->pub->owner)) {
-+		mutex_unlock(&ca->remove_mutex);
- 		return -EIO;
-+	}
- 
- 	err = dvb_generic_open(inode, file);
- 	if (err < 0) {
- 		module_put(ca->pub->owner);
-+		mutex_unlock(&ca->remove_mutex);
- 		return err;
- 	}
- 
-@@ -1738,6 +1754,7 @@ static int dvb_ca_en50221_io_open(struct inode *inode, struct file *file)
- 
- 	dvb_ca_private_get(ca);
- 
-+	mutex_unlock(&ca->remove_mutex);
+-/*
+- *	Turn a pointer to ioctl reply data into an u32 'context'
+- */
+-static u32 adpt_ioctl_to_context(adpt_hba * pHba, void *reply)
+-{
+-#if BITS_PER_LONG == 32
+-	return (u32)(unsigned long)reply;
+-#else
+-	ulong flags = 0;
+-	u32 nr, i;
+-
+-	spin_lock_irqsave(pHba->host->host_lock, flags);
+-	nr = ARRAY_SIZE(pHba->ioctl_reply_context);
+-	for (i = 0; i < nr; i++) {
+-		if (pHba->ioctl_reply_context[i] == NULL) {
+-			pHba->ioctl_reply_context[i] = reply;
+-			break;
+-		}
+-	}
+-	spin_unlock_irqrestore(pHba->host->host_lock, flags);
+-	if (i >= nr) {
+-		printk(KERN_WARNING"%s: Too many outstanding "
+-				"ioctl commands\n", pHba->name);
+-		return (u32)-1;
+-	}
+-
+-	return i;
+-#endif
+-}
+-
+-/*
+- *	Go from an u32 'context' to a pointer to ioctl reply data.
+- */
+-static void *adpt_ioctl_from_context(adpt_hba *pHba, u32 context)
+-{
+-#if BITS_PER_LONG == 32
+-	return (void *)(unsigned long)context;
+-#else
+-	void *p = pHba->ioctl_reply_context[context];
+-	pHba->ioctl_reply_context[context] = NULL;
+-
+-	return p;
+-#endif
+-}
+-
+ /*===========================================================================
+  * Error Handling routines
+  *===========================================================================
+@@ -1697,208 +1652,6 @@ static int adpt_close(struct inode *inod
  	return 0;
  }
  
-@@ -1757,6 +1774,8 @@ static int dvb_ca_en50221_io_release(struct inode *inode, struct file *file)
+-
+-static int adpt_i2o_passthru(adpt_hba* pHba, u32 __user *arg)
+-{
+-	u32 msg[MAX_MESSAGE_SIZE];
+-	u32* reply = NULL;
+-	u32 size = 0;
+-	u32 reply_size = 0;
+-	u32 __user *user_msg = arg;
+-	u32 __user * user_reply = NULL;
+-	void **sg_list = NULL;
+-	u32 sg_offset = 0;
+-	u32 sg_count = 0;
+-	int sg_index = 0;
+-	u32 i = 0;
+-	u32 rcode = 0;
+-	void *p = NULL;
+-	dma_addr_t addr;
+-	ulong flags = 0;
+-
+-	memset(&msg, 0, MAX_MESSAGE_SIZE*4);
+-	// get user msg size in u32s 
+-	if(get_user(size, &user_msg[0])){
+-		return -EFAULT;
+-	}
+-	size = size>>16;
+-
+-	user_reply = &user_msg[size];
+-	if(size > MAX_MESSAGE_SIZE){
+-		return -EFAULT;
+-	}
+-	size *= 4; // Convert to bytes
+-
+-	/* Copy in the user's I2O command */
+-	if(copy_from_user(msg, user_msg, size)) {
+-		return -EFAULT;
+-	}
+-	get_user(reply_size, &user_reply[0]);
+-	reply_size = reply_size>>16;
+-	if(reply_size > REPLY_FRAME_SIZE){
+-		reply_size = REPLY_FRAME_SIZE;
+-	}
+-	reply_size *= 4;
+-	reply = kzalloc(REPLY_FRAME_SIZE*4, GFP_KERNEL);
+-	if(reply == NULL) {
+-		printk(KERN_WARNING"%s: Could not allocate reply buffer\n",pHba->name);
+-		return -ENOMEM;
+-	}
+-	sg_offset = (msg[0]>>4)&0xf;
+-	msg[2] = 0x40000000; // IOCTL context
+-	msg[3] = adpt_ioctl_to_context(pHba, reply);
+-	if (msg[3] == (u32)-1) {
+-		rcode = -EBUSY;
+-		goto free;
+-	}
+-
+-	sg_list = kcalloc(pHba->sg_tablesize, sizeof(*sg_list), GFP_KERNEL);
+-	if (!sg_list) {
+-		rcode = -ENOMEM;
+-		goto free;
+-	}
+-	if(sg_offset) {
+-		// TODO add 64 bit API
+-		struct sg_simple_element *sg =  (struct sg_simple_element*) (msg+sg_offset);
+-		sg_count = (size - sg_offset*4) / sizeof(struct sg_simple_element);
+-		if (sg_count > pHba->sg_tablesize){
+-			printk(KERN_DEBUG"%s:IOCTL SG List too large (%u)\n", pHba->name,sg_count);
+-			rcode = -EINVAL;
+-			goto free;
+-		}
+-
+-		for(i = 0; i < sg_count; i++) {
+-			int sg_size;
+-
+-			if (!(sg[i].flag_count & 0x10000000 /*I2O_SGL_FLAGS_SIMPLE_ADDRESS_ELEMENT*/)) {
+-				printk(KERN_DEBUG"%s:Bad SG element %d - not simple (%x)\n",pHba->name,i,  sg[i].flag_count);
+-				rcode = -EINVAL;
+-				goto cleanup;
+-			}
+-			sg_size = sg[i].flag_count & 0xffffff;      
+-			/* Allocate memory for the transfer */
+-			p = dma_alloc_coherent(&pHba->pDev->dev, sg_size, &addr, GFP_KERNEL);
+-			if(!p) {
+-				printk(KERN_DEBUG"%s: Could not allocate SG buffer - size = %d buffer number %d of %d\n",
+-						pHba->name,sg_size,i,sg_count);
+-				rcode = -ENOMEM;
+-				goto cleanup;
+-			}
+-			sg_list[sg_index++] = p; // sglist indexed with input frame, not our internal frame.
+-			/* Copy in the user's SG buffer if necessary */
+-			if(sg[i].flag_count & 0x04000000 /*I2O_SGL_FLAGS_DIR*/) {
+-				// sg_simple_element API is 32 bit
+-				if (copy_from_user(p,(void __user *)(ulong)sg[i].addr_bus, sg_size)) {
+-					printk(KERN_DEBUG"%s: Could not copy SG buf %d FROM user\n",pHba->name,i);
+-					rcode = -EFAULT;
+-					goto cleanup;
+-				}
+-			}
+-			/* sg_simple_element API is 32 bit, but addr < 4GB */
+-			sg[i].addr_bus = addr;
+-		}
+-	}
+-
+-	do {
+-		/*
+-		 * Stop any new commands from enterring the
+-		 * controller while processing the ioctl
+-		 */
+-		if (pHba->host) {
+-			scsi_block_requests(pHba->host);
+-			spin_lock_irqsave(pHba->host->host_lock, flags);
+-		}
+-		rcode = adpt_i2o_post_wait(pHba, msg, size, FOREVER);
+-		if (rcode != 0)
+-			printk("adpt_i2o_passthru: post wait failed %d %p\n",
+-					rcode, reply);
+-		if (pHba->host) {
+-			spin_unlock_irqrestore(pHba->host->host_lock, flags);
+-			scsi_unblock_requests(pHba->host);
+-		}
+-	} while (rcode == -ETIMEDOUT);
+-
+-	if(rcode){
+-		goto cleanup;
+-	}
+-
+-	if(sg_offset) {
+-	/* Copy back the Scatter Gather buffers back to user space */
+-		u32 j;
+-		// TODO add 64 bit API
+-		struct sg_simple_element* sg;
+-		int sg_size;
+-
+-		// re-acquire the original message to handle correctly the sg copy operation
+-		memset(&msg, 0, MAX_MESSAGE_SIZE*4); 
+-		// get user msg size in u32s 
+-		if(get_user(size, &user_msg[0])){
+-			rcode = -EFAULT; 
+-			goto cleanup; 
+-		}
+-		size = size>>16;
+-		size *= 4;
+-		if (size > MAX_MESSAGE_SIZE) {
+-			rcode = -EINVAL;
+-			goto cleanup;
+-		}
+-		/* Copy in the user's I2O command */
+-		if (copy_from_user (msg, user_msg, size)) {
+-			rcode = -EFAULT;
+-			goto cleanup;
+-		}
+-		sg_count = (size - sg_offset*4) / sizeof(struct sg_simple_element);
+-
+-		// TODO add 64 bit API
+-		sg 	 = (struct sg_simple_element*)(msg + sg_offset);
+-		for (j = 0; j < sg_count; j++) {
+-			/* Copy out the SG list to user's buffer if necessary */
+-			if(! (sg[j].flag_count & 0x4000000 /*I2O_SGL_FLAGS_DIR*/)) {
+-				sg_size = sg[j].flag_count & 0xffffff; 
+-				// sg_simple_element API is 32 bit
+-				if (copy_to_user((void __user *)(ulong)sg[j].addr_bus,sg_list[j], sg_size)) {
+-					printk(KERN_WARNING"%s: Could not copy %p TO user %x\n",pHba->name, sg_list[j], sg[j].addr_bus);
+-					rcode = -EFAULT;
+-					goto cleanup;
+-				}
+-			}
+-		}
+-	} 
+-
+-	/* Copy back the reply to user space */
+-	if (reply_size) {
+-		// we wrote our own values for context - now restore the user supplied ones
+-		if(copy_from_user(reply+2, user_msg+2, sizeof(u32)*2)) {
+-			printk(KERN_WARNING"%s: Could not copy message context FROM user\n",pHba->name);
+-			rcode = -EFAULT;
+-		}
+-		if(copy_to_user(user_reply, reply, reply_size)) {
+-			printk(KERN_WARNING"%s: Could not copy reply TO user\n",pHba->name);
+-			rcode = -EFAULT;
+-		}
+-	}
+-
+-
+-cleanup:
+-	if (rcode != -ETIME && rcode != -EINTR) {
+-		struct sg_simple_element *sg =
+-				(struct sg_simple_element*) (msg +sg_offset);
+-		while(sg_index) {
+-			if(sg_list[--sg_index]) {
+-				dma_free_coherent(&pHba->pDev->dev,
+-					sg[sg_index].flag_count & 0xffffff,
+-					sg_list[sg_index],
+-					sg[sg_index].addr_bus);
+-			}
+-		}
+-	}
+-
+-free:
+-	kfree(sg_list);
+-	kfree(reply);
+-	return rcode;
+-}
+-
+ #if defined __ia64__ 
+ static void adpt_ia64_info(sysInfo_S* si)
+ {
+@@ -2025,8 +1778,6 @@ static int adpt_ioctl(struct inode *inod
+ 			return -EFAULT;
+ 		}
+ 		break;
+-	case I2OUSRCMD:
+-		return adpt_i2o_passthru(pHba, argp);
  
- 	dprintk("%s\n", __func__);
+ 	case DPT_CTRLINFO:{
+ 		drvrHBAinfo_S HbaInfo;
+@@ -2183,13 +1934,6 @@ static irqreturn_t adpt_isr(int irq, voi
+ 			adpt_send_nop(pHba, old_m);
+ 		} 
+ 		context = readl(reply+8);
+-		if(context & 0x40000000){ // IOCTL
+-			void *p = adpt_ioctl_from_context(pHba, readl(reply+12));
+-			if( p != NULL) {
+-				memcpy_fromio(p, reply, REPLY_FRAME_SIZE * 4);
+-			}
+-			// All IOCTLs will also be post wait
+-		}
+ 		if(context & 0x80000000){ // Post wait message
+ 			status = readl(reply+16);
+ 			if(status  >> 24){
+@@ -2197,12 +1941,9 @@ static irqreturn_t adpt_isr(int irq, voi
+ 			} else {
+ 				status = I2O_POST_WAIT_OK;
+ 			}
+-			if(!(context & 0x40000000)) {
+-				cmd = adpt_cmd_from_context(pHba,
+-							readl(reply+12));
+-				if(cmd != NULL) {
+-					printk(KERN_WARNING"%s: Apparent SCSI cmd in Post Wait Context - cmd=%p context=%x\n", pHba->name, cmd, context);
+-				}
++			cmd = adpt_cmd_from_context(pHba, readl(reply+12));
++			if(cmd != NULL) {
++				printk(KERN_WARNING"%s: Apparent SCSI cmd in Post Wait Context - cmd=%p context=%x\n", pHba->name, cmd, context);
+ 			}
+ 			adpt_i2o_post_wait_complete(context, status);
+ 		} else { // SCSI message
+--- a/drivers/scsi/dpti.h
++++ b/drivers/scsi/dpti.h
+@@ -251,7 +251,6 @@ typedef struct _adpt_hba {
+ 	void __iomem *FwDebugBLEDflag_P;// Virtual Addr Of FW Debug BLED
+ 	void __iomem *FwDebugBLEDvalue_P;// Virtual Addr Of FW Debug BLED
+ 	u32 FwDebugFlags;
+-	u32 *ioctl_reply_context[4];
+ } adpt_hba;
  
-+	mutex_lock(&ca->remove_mutex);
-+
- 	/* mark the CA device as closed */
- 	ca->open = 0;
- 	dvb_ca_en50221_thread_update_delay(ca);
-@@ -1767,6 +1786,13 @@ static int dvb_ca_en50221_io_release(struct inode *inode, struct file *file)
- 
- 	dvb_ca_private_put(ca);
- 
-+	if (dvbdev->users == 1 && ca->exit == 1) {
-+		mutex_unlock(&ca->remove_mutex);
-+		wake_up(&dvbdev->wait_queue);
-+	} else {
-+		mutex_unlock(&ca->remove_mutex);
-+	}
-+
- 	return err;
- }
- 
-@@ -1890,6 +1916,7 @@ int dvb_ca_en50221_init(struct dvb_adapter *dvb_adapter,
- 	}
- 
- 	mutex_init(&ca->ioctl_mutex);
-+	mutex_init(&ca->remove_mutex);
- 
- 	if (signal_pending(current)) {
- 		ret = -EINTR;
-@@ -1932,6 +1959,14 @@ void dvb_ca_en50221_release(struct dvb_ca_en50221 *pubca)
- 
- 	dprintk("%s\n", __func__);
- 
-+	mutex_lock(&ca->remove_mutex);
-+	ca->exit = 1;
-+	mutex_unlock(&ca->remove_mutex);
-+
-+	if (ca->dvbdev->users < 1)
-+		wait_event(ca->dvbdev->wait_queue,
-+				ca->dvbdev->users == 1);
-+
- 	/* shutdown the thread if there was one */
- 	kthread_stop(ca->thread);
- 
--- 
-2.39.2
-
+ struct sg_simple_element {
 
 
