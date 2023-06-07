@@ -2,94 +2,82 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6364C726746
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 19:29:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE903726769
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 19:32:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229917AbjFGR26 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 13:28:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33456 "EHLO
+        id S231415AbjFGRcW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 13:32:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229504AbjFGR24 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 13:28:56 -0400
-Received: from todd.t-8ch.de (todd.t-8ch.de [IPv6:2a01:4f8:c010:41de::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7F1A128;
-        Wed,  7 Jun 2023 10:28:54 -0700 (PDT)
-From:   =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-        s=mail; t=1686158932;
-        bh=vGUG5+5oObmVUMabCNgsKcKkHQm2lWjGYzZ1M+89FSk=;
-        h=From:Date:Subject:To:Cc:From;
-        b=REuygNSSwrT5jIxKvsN28vuZ/cs8XfMn+12DSgMfY5RxhC+sWXCL9vc0tEytMCjQb
-         05pt0RsH6dJanwO3393YuAXrE1zqO2ney6umLmXj3kDGfwVqlFC/RHjg0RNyCrbwdU
-         eHtFD9DbByXTIhE8zIJxwvMM0Z0LZFEu3kmHU+5c=
-Date:   Wed, 07 Jun 2023 19:28:48 +0200
-Subject: [PATCH] fs: avoid empty option when generating legacy mount string
+        with ESMTP id S230299AbjFGRcU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 13:32:20 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7EED1FE6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 10:32:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686159126; x=1717695126;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=EKLBh5452rTrtnSW4hcfYbaevBvLnjIuyMkRY6643bo=;
+  b=mZDGfwKGJ2g7RMN+glGmwJMIN+oMY34snf6pqAgJCSgCyiQA1PvSTXXY
+   1OmKPtPYwrcenWDi0yTN5tG97VFX/8X/HZ/3uC/0FsECT8S2VI6EZWTft
+   NNzZF/oxHob92d0m0gKnOSkQ8aOBakKpWmFW+GQNLmKNZFinJ6P4chMQB
+   wTRnDiO0l+TkjQIcPIxfYYPShJSD6lsVglGwpOg9XE9Fobji47SA85t7k
+   ReColzLhh0n3tLHJ+oWi9+42y03jSgmP2ugH4WM7G2MjYzqMLnBXfluMN
+   nKRQcpdsJyWifSh/EFy958v+l6GT0tpcghiJuFxDoISF17of1ePLolsrX
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="337417454"
+X-IronPort-AV: E=Sophos;i="6.00,224,1681196400"; 
+   d="scan'208";a="337417454"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2023 10:32:06 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="709637597"
+X-IronPort-AV: E=Sophos;i="6.00,224,1681196400"; 
+   d="scan'208";a="709637597"
+Received: from lkp-server01.sh.intel.com (HELO 15ab08e44a81) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 07 Jun 2023 10:32:04 -0700
+Received: from kbuild by 15ab08e44a81 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1q6x0t-0006m7-2n;
+        Wed, 07 Jun 2023 17:32:03 +0000
+Date:   Thu, 8 Jun 2023 01:31:24 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] fs: avoid empty option when generating legacy mount
+ string
+Message-ID: <ZIC+7BpKkZQIs6hT@a93e062a6cea>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20230607-fs-empty-option-v1-1-20c8dbf4671b@weissschuh.net>
-X-B4-Tracking: v=1; b=H4sIAE++gGQC/x2N0QqDMAxFf0XybKBGVmG/MnxoNc6Aq6VR2RD/3
- bDHczmHe4JyEVZ4VicUPkRlTQZNXcEwh/RmlNEYyFHrvOtwUuRP3n645s1cJP/wRG3XmABWxaC
- MsYQ0zNalfVlszIUn+f5vXv113XtkcZx2AAAA
-To:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>
-Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        David Howells <dhowells@redhat.com>,
-        Karel Zak <kzag@redhat.com>, stable@vger.kernel.org,
-        =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1686158931; l=1248;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=vGUG5+5oObmVUMabCNgsKcKkHQm2lWjGYzZ1M+89FSk=;
- b=xhti7ZhwZRPSH3Hgfw1or7/06qz18rCyqWGpAlyNjvbuso7uaeCsOL0oGQ/kvzetFYV78p9r5
- vOP30ikcCPeC3hE7I9eZEjC4UjhTsX05D9hBZJk67VLhQwwASbWhNsn
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230607-fs-empty-option-v1-1-20c8dbf4671b@weissschuh.net>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-As each option string fragment is always prepended with a comma it would
-happen that the whole string always starts with a comma.
-This could be interpreted by filesystem drivers as an empty option and
-may produce errors.
+Hi,
 
-For example the NTFS driver from ntfs.ko behaves like this and fails when
-mounted via the new API.
+Thanks for your patch.
 
-Link: https://github.com/util-linux/util-linux/issues/2298
-Fixes: 3e1aeb00e6d1 ("vfs: Implement a filesystem superblock creation/configuration context")
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
- fs/fs_context.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/fs/fs_context.c b/fs/fs_context.c
-index 24ce12f0db32..851214d1d013 100644
---- a/fs/fs_context.c
-+++ b/fs/fs_context.c
-@@ -561,7 +561,8 @@ static int legacy_parse_param(struct fs_context *fc, struct fs_parameter *param)
- 			return -ENOMEM;
- 	}
- 
--	ctx->legacy_data[size++] = ',';
-+	if (size)
-+		ctx->legacy_data[size++] = ',';
- 	len = strlen(param->key);
- 	memcpy(ctx->legacy_data + size, param->key, len);
- 	size += len;
+Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
+Subject: [PATCH] fs: avoid empty option when generating legacy mount string
+Link: https://lore.kernel.org/stable/20230607-fs-empty-option-v1-1-20c8dbf4671b%40weissschuh.net
 
----
-base-commit: 9561de3a55bed6bdd44a12820ba81ec416e705a7
-change-id: 20230607-fs-empty-option-265622371023
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
 
-Best regards,
 -- 
-Thomas Weißschuh <linux@weissschuh.net>
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
