@@ -2,51 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9CA0726C4B
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:32:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A323B726EF8
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:54:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233670AbjFGUcN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:32:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58362 "EHLO
+        id S235420AbjFGUy3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:54:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233684AbjFGUcM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:32:12 -0400
+        with ESMTP id S235408AbjFGUyJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11AA01730;
-        Wed,  7 Jun 2023 13:32:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 700691FE5
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:54:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DBC7D64510;
-        Wed,  7 Jun 2023 20:32:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A67C433D2;
-        Wed,  7 Jun 2023 20:32:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE826647B5
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:54:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E7BC4339C;
+        Wed,  7 Jun 2023 20:54:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169929;
-        bh=OoDVi5EpId5THQ845JIEZEVEziAC+HIbRaPxu/7d7+Q=;
+        s=korg; t=1686171246;
+        bh=/eoaW3P9E+ErBYCcLMXMWB0xr1a7FzmUtzq0etIXhCI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uMuccxPWdOm1cyMViygoUzUzpJ/pO89KM61EgdA+Mutweam1rLFuos2JTTdd8Zx9h
-         ZjjGgWw3Nh5/dVqxaDCcTOfoDa9g8mkzIuc+3g2rs2XUwiJp+jMjbdXnNyHv5i8Nea
-         Zn8izyAFp/sM6GxPD2HpROZOwjFaoY6vSztbKdlw=
+        b=itd2MLE6ZxstEpYi9xMURaSHCtCQHwTiQtdXwLHMBv2Pa/0faLge3SOuB0m2+CHnV
+         cZPaIWch1nu02Ew3TB/QbC39P8sHdPdTKMa3R49MYd8psQ3Tg84VilbjKlSKcPxORQ
+         pL6DXXkRxrhYR4Hb8hZVZrF9IpyfDC4ivbAB5/EA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Luis Chamberlain <mcgrof@kernel.org>,
-        Russ Weight <russell.h.weight@intel.com>,
-        Tianfei Zhang <tianfei.zhang@intel.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-kselftest@vger.kernel.org, Dan Carpenter <error27@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>,
-        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH 6.3 268/286] test_firmware: fix a memory leak with reqs buffer
+        patches@lists.linux.dev, Jack Yang <mingliang@linux.alibaba.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Cambda Zhu <cambda@linux.alibaba.com>,
+        Jason Xing <kerneljasonxing@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 15/99] tcp: Return user_mss for TCP_MAXSEG in CLOSE/LISTEN state if user_mss set
 Date:   Wed,  7 Jun 2023 22:16:07 +0200
-Message-ID: <20230607200932.057293097@linuxfoundation.org>
+Message-ID: <20230607200900.731642486@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -61,67 +57,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+From: Cambda Zhu <cambda@linux.alibaba.com>
 
-commit be37bed754ed90b2655382f93f9724b3c1aae847 upstream.
+[ Upstream commit 34dfde4ad87b84d21278a7e19d92b5b2c68e6c4d ]
 
-Dan Carpenter spotted that test_fw_config->reqs will be leaked if
-trigger_batched_requests_store() is called two or more times.
-The same appears with trigger_batched_requests_async_store().
+This patch replaces the tp->mss_cache check in getting TCP_MAXSEG
+with tp->rx_opt.user_mss check for CLOSE/LISTEN sock. Since
+tp->mss_cache is initialized with TCP_MSS_DEFAULT, checking if
+it's zero is probably a bug.
 
-This bug wasn't trigger by the tests, but observed by Dan's visual
-inspection of the code.
+With this change, getting TCP_MAXSEG before connecting will return
+default MSS normally, and return user_mss if user_mss is set.
 
-The recommended workaround was to return -EBUSY if test_fw_config->reqs
-is already allocated.
-
-Fixes: 7feebfa487b92 ("test_firmware: add support for request_firmware_into_buf")
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Russ Weight <russell.h.weight@intel.com>
-Cc: Tianfei Zhang <tianfei.zhang@intel.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Colin Ian King <colin.i.king@gmail.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kselftest@vger.kernel.org
-Cc: stable@vger.kernel.org # v5.4
-Suggested-by: Dan Carpenter <error27@gmail.com>
-Suggested-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Luis Chamberlain <mcgrof@kernel.org>
-Link: https://lore.kernel.org/r/20230509084746.48259-2-mirsad.todorovac@alu.unizg.hr
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Jack Yang <mingliang@linux.alibaba.com>
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/netdev/CANn89i+3kL9pYtkxkwxwNMzvC_w3LNUum_2=3u+UyLBmGmifHA@mail.gmail.com/#t
+Signed-off-by: Cambda Zhu <cambda@linux.alibaba.com>
+Link: https://lore.kernel.org/netdev/14D45862-36EA-4076-974C-EA67513C92F6@linux.alibaba.com/
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230527040317.68247-1-cambda@linux.alibaba.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/test_firmware.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/ipv4/tcp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/lib/test_firmware.c
-+++ b/lib/test_firmware.c
-@@ -913,6 +913,11 @@ static ssize_t trigger_batched_requests_
- 
- 	mutex_lock(&test_fw_mutex);
- 
-+	if (test_fw_config->reqs) {
-+		rc = -EBUSY;
-+		goto out_bail;
-+	}
-+
- 	test_fw_config->reqs =
- 		vzalloc(array3_size(sizeof(struct test_batched_req),
- 				    test_fw_config->num_requests, 2));
-@@ -1011,6 +1016,11 @@ ssize_t trigger_batched_requests_async_s
- 
- 	mutex_lock(&test_fw_mutex);
- 
-+	if (test_fw_config->reqs) {
-+		rc = -EBUSY;
-+		goto out_bail;
-+	}
-+
- 	test_fw_config->reqs =
- 		vzalloc(array3_size(sizeof(struct test_batched_req),
- 				    test_fw_config->num_requests, 2));
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index e427eabc7f278..fdf2ddc4864df 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3451,7 +3451,8 @@ static int do_tcp_getsockopt(struct sock *sk, int level,
+ 	switch (optname) {
+ 	case TCP_MAXSEG:
+ 		val = tp->mss_cache;
+-		if (!val && ((1 << sk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)))
++		if (tp->rx_opt.user_mss &&
++		    ((1 << sk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)))
+ 			val = tp->rx_opt.user_mss;
+ 		if (tp->repair)
+ 			val = tp->rx_opt.mss_clamp;
+-- 
+2.39.2
+
 
 
