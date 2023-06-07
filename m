@@ -2,49 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8865726F24
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DB87726EB6
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:52:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235439AbjFGUzt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:55:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56816 "EHLO
+        id S235225AbjFGUwJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:52:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235507AbjFGUzs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:55:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6CFED1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:55:46 -0700 (PDT)
+        with ESMTP id S235277AbjFGUwG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:52:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E194B1BC2
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:52:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4FE2D64828
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:55:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421A9C433A7;
-        Wed,  7 Jun 2023 20:55:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 664BE612D1
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:52:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76DADC433EF;
+        Wed,  7 Jun 2023 20:52:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171345;
-        bh=uM9ExhmDY/6M0YpIBn/PE1GBoRalYvxJRjnVcGFjLrk=;
+        s=korg; t=1686171123;
+        bh=2K8KYba4H7nGeXOqTQ5VhoGg1+ohPaKucxqJTziIA9s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PB0yb2ySEwBCC6t76WEjlVVeYPrrDZHqw4r0SNYCbYLwryNef8YQQnaqdmM+MYC0B
-         MoNEtYpmcV2B5ThriSJgp4/lwrHO9jgz3gVUYX9D4vLAW/Pni5xkoAPic9SOfc0WjH
-         moFL7v69BXUVBHqixOBz1UFn1H8vcRyRV6R9jU4Q=
+        b=T7nbDgPRx1aTOrBaUt85qyEPjRq1/431FE1r8Tko3IJCZKP6+R49DpxW1Y5Ck8C4/
+         9aQKrYbtTMFEq7WyaQweW9lesN84TIYZFzmfVHz6MhuzIHdR+ckrxB5B/y42PXy9lI
+         SNTyzkJdM5zL2pT+iFXMFKWl2uznglX/TnMa9lBg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Sherry Sun <sherry.sun@nxp.com>
-Subject: [PATCH 5.4 83/99] tty: serial: fsl_lpuart: use UARTCTRL_TXINV to send break instead of UARTCTRL_SBK
+        patches@lists.linux.dev, Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.10 119/120] ext4: enable the lazy init thread when remounting read/write
 Date:   Wed,  7 Jun 2023 22:17:15 +0200
-Message-ID: <20230607200902.821173194@linuxfoundation.org>
+Message-ID: <20230607200904.682521712@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,102 +52,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit 2474e05467c00f7d51af3039b664de6886325257 upstream.
+commit eb1f822c76beeaa76ab8b6737ab9dc9f9798408c upstream.
 
-LPUART IP now has two known bugs, one is that CTS has higher priority
-than the break signal, which causes the break signal sending through
-UARTCTRL_SBK may impacted by the CTS input if the HW flow control is
-enabled. It exists on all platforms we support in this driver.
-So we add a workaround patch for this issue: commit c4c81db5cf8b
-("tty: serial: fsl_lpuart: disable the CTS when send break signal").
+In commit a44be64bbecb ("ext4: don't clear SB_RDONLY when remounting
+r/w until quota is re-enabled") we defer clearing tyhe SB_RDONLY flag
+in struct super.  However, we didn't defer when we checked sb_rdonly()
+to determine the lazy itable init thread should be enabled, with the
+next result that the lazy inode table initialization would not be
+properly started.  This can cause generic/231 to fail in ext4's
+nojournal mode.
 
-Another IP bug is i.MX8QM LPUART may have an additional break character
-being sent after SBK was cleared. It may need to add some delay between
-clearing SBK and re-enabling CTS to ensure that the SBK latch are
-completely cleared.
+Fix this by moving when we decide to start or stop the lazy itable
+init thread to after we clear the SB_RDONLY flag when we are
+remounting the file system read/write.
 
-But we found that during the delay period before CTS is enabled, there
-is still a risk that Bluetooth data in TX FIFO may be sent out during
-this period because of break off and CTS disabled(even if BT sets CTS
-line deasserted, data is still sent to BT).
+Fixes a44be64bbecb ("ext4: don't clear SB_RDONLY when remounting r/w until...")
 
-Due to this risk, we have to drop the CTS-disabling workaround for SBK
-bugs, use TXINV seems to be a better way to replace SBK feature and
-avoid above risk. Also need to disable the transmitter to prevent any
-data from being sent out during break, then invert the TX line to send
-break. Then disable the TXINV when turn off break and re-enable
-transmitter.
-
-Fixes: c4c81db5cf8b ("tty: serial: fsl_lpuart: disable the CTS when send break signal")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Link: https://lore.kernel.org/r/20230519094751.28948-1-sherry.sun@nxp.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://lore.kernel.org/r/20230527035729.1001605-1-tytso@mit.edu
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/fsl_lpuart.c |   44 ++++++++++++++++++++--------------------
- 1 file changed, 23 insertions(+), 21 deletions(-)
+ fs/ext4/super.c |   24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -1376,34 +1376,36 @@ static void lpuart_break_ctl(struct uart
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -6006,18 +6006,6 @@ static int ext4_remount(struct super_blo
+ 	}
  
- static void lpuart32_break_ctl(struct uart_port *port, int break_state)
- {
--	unsigned long temp, modem;
--	struct tty_struct *tty;
--	unsigned int cflag = 0;
-+	unsigned long temp;
- 
--	tty = tty_port_tty_get(&port->state->port);
--	if (tty) {
--		cflag = tty->termios.c_cflag;
--		tty_kref_put(tty);
+ 	/*
+-	 * Reinitialize lazy itable initialization thread based on
+-	 * current settings
+-	 */
+-	if (sb_rdonly(sb) || !test_opt(sb, INIT_INODE_TABLE))
+-		ext4_unregister_li_request(sb);
+-	else {
+-		ext4_group_t first_not_zeroed;
+-		first_not_zeroed = ext4_has_uninit_itable(sb);
+-		ext4_register_li_request(sb, first_not_zeroed);
 -	}
 -
--	temp = lpuart32_read(port, UARTCTRL) & ~UARTCTRL_SBK;
--	modem = lpuart32_read(port, UARTMODIR);
-+	temp = lpuart32_read(port, UARTCTRL);
+-	/*
+ 	 * Handle creation of system zone data early because it can fail.
+ 	 * Releasing of existing data is done when we are sure remount will
+ 	 * succeed.
+@@ -6054,6 +6042,18 @@ static int ext4_remount(struct super_blo
+ 	if (enable_rw)
+ 		sb->s_flags &= ~SB_RDONLY;
  
 +	/*
-+	 * LPUART IP now has two known bugs, one is CTS has higher priority than the
-+	 * break signal, which causes the break signal sending through UARTCTRL_SBK
-+	 * may impacted by the CTS input if the HW flow control is enabled. It
-+	 * exists on all platforms we support in this driver.
-+	 * Another bug is i.MX8QM LPUART may have an additional break character
-+	 * being sent after SBK was cleared.
-+	 * To avoid above two bugs, we use Transmit Data Inversion function to send
-+	 * the break signal instead of UARTCTRL_SBK.
++	 * Reinitialize lazy itable initialization thread based on
++	 * current settings
 +	 */
- 	if (break_state != 0) {
--		temp |= UARTCTRL_SBK;
- 		/*
--		 * LPUART CTS has higher priority than SBK, need to disable CTS before
--		 * asserting SBK to avoid any interference if flow control is enabled.
-+		 * Disable the transmitter to prevent any data from being sent out
-+		 * during break, then invert the TX line to send break.
- 		 */
--		if (cflag & CRTSCTS && modem & UARTMODIR_TXCTSE)
--			lpuart32_write(port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
-+		temp &= ~UARTCTRL_TE;
-+		lpuart32_write(port, temp, UARTCTRL);
-+		temp |= UARTCTRL_TXINV;
-+		lpuart32_write(port, temp, UARTCTRL);
- 	} else {
--		/* Re-enable the CTS when break off. */
--		if (cflag & CRTSCTS && !(modem & UARTMODIR_TXCTSE))
--			lpuart32_write(port, modem | UARTMODIR_TXCTSE, UARTMODIR);
-+		/* Disable the TXINV to turn off break and re-enable transmitter. */
-+		temp &= ~UARTCTRL_TXINV;
-+		lpuart32_write(port, temp, UARTCTRL);
-+		temp |= UARTCTRL_TE;
-+		lpuart32_write(port, temp, UARTCTRL);
- 	}
--
--	lpuart32_write(port, temp, UARTCTRL);
- }
++	if (sb_rdonly(sb) || !test_opt(sb, INIT_INODE_TABLE))
++		ext4_unregister_li_request(sb);
++	else {
++		ext4_group_t first_not_zeroed;
++		first_not_zeroed = ext4_has_uninit_itable(sb);
++		ext4_register_li_request(sb, first_not_zeroed);
++	}
++
+ 	if (!ext4_has_feature_mmp(sb) || sb_rdonly(sb))
+ 		ext4_stop_mmpd(sbi);
  
- static void lpuart_setup_watermark(struct lpuart_port *sport)
 
 
