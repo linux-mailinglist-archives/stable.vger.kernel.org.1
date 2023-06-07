@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60BF0726DD6
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:46:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65FC5726E7C
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:50:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234843AbjFGUqH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:46:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46148 "EHLO
+        id S235218AbjFGUuv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:50:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234696AbjFGUpk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:45:40 -0400
+        with ESMTP id S235637AbjFGUuO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:50:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6431E270A
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:45:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBFB7213B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:50:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 868CC6467D
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:45:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9947BC433D2;
-        Wed,  7 Jun 2023 20:45:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CB197646D8
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:50:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDAF3C433EF;
+        Wed,  7 Jun 2023 20:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170732;
-        bh=E/dEAXxrfbv8BVxEW/QkPa1yO6paHAzqy4MKjBPtG9c=;
+        s=korg; t=1686171005;
+        bh=eanNpspdREXvQv+ij3ujD+wfsGen9h7aqSk3TCEPUR4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nQYOEbKdbhrXFKZPsEb0iE9H7dmJqgXyp0asP3D0m2cpfZTNiW15yPyJisNm1WURk
-         0Q4QBPnt2ttTfRLROT+w7+LmNNida9tAXbKHya/WX03PgmrtjOADMEuDiXy5rvJmsQ
-         lGSDA0gUhpU68fzjNjW7L0e2YL6eaUSLbhGn0lwI=
+        b=Trrd7hy4t8B5IlbeYIj4iort909x2hL+mmeImfI+ItR/O/IlSZ0RBxtrWRJkRgDK+
+         8k6ePpIysBhI5wwzsSx8hw5/tWZNqPblT63nBdlnnlr9MqncYG0sZCSVhqH9cfQx4O
+         xxOuEMGFG4xVpXQfLxTx2OuVjx39gJScuJ+fM1tE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        syzbot+d4b971e744b1f5439336@syzkaller.appspotmail.com,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 197/225] ext4: set lockdep subclass for the ea_inode in ext4_xattr_inode_cache_find()
-Date:   Wed,  7 Jun 2023 22:16:30 +0200
-Message-ID: <20230607200920.815903523@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+        Ping Cheng <ping.cheng@wacom.com>,
+        Jiri Kosina <jkosina@suse.cz>
+Subject: [PATCH 5.10 075/120] HID: wacom: avoid integer overflow in wacom_intuos_inout()
+Date:   Wed,  7 Jun 2023 22:16:31 +0200
+Message-ID: <20230607200903.258674840@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,34 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit b928dfdcb27d8fa59917b794cfba53052a2f050f upstream.
+commit bd249b91977b768ea02bf84d04625d2690ad2b98 upstream.
 
-If the ea_inode has been pushed out of the inode cache while there is
-still a reference in the mb_cache, the lockdep subclass will not be
-set on the inode, which can lead to some lockdep false positives.
+If high bit is set to 1 in ((data[3] & 0x0f << 28), after all arithmetic
+operations and integer promotions are done, high bits in
+wacom->serial[idx] will be filled with 1s as well.
+Avoid this, albeit unlikely, issue by specifying left operand's __u64
+type for the right operand.
 
-Fixes: 33d201e0277b ("ext4: fix lockdep warning about recursive inode locking")
-Cc: stable@kernel.org
-Reported-by: syzbot+d4b971e744b1f5439336@syzkaller.appspotmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Link: https://lore.kernel.org/r/20230524034951.779531-3-tytso@mit.edu
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: 3bea733ab212 ("USB: wacom tablet driver reorganization")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/xattr.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/wacom_wac.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1490,6 +1490,7 @@ ext4_xattr_inode_cache_find(struct inode
- 				     EXT4_IGET_EA_INODE);
- 		if (IS_ERR(ea_inode))
- 			goto next_entry;
-+		ext4_xattr_inode_set_class(ea_inode);
- 		if (i_size_read(ea_inode) == value_len &&
- 		    !ext4_xattr_inode_read(ea_inode, ea_data, value_len) &&
- 		    !ext4_xattr_inode_verify_hashes(ea_inode, NULL, ea_data,
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -831,7 +831,7 @@ static int wacom_intuos_inout(struct wac
+ 	/* Enter report */
+ 	if ((data[1] & 0xfc) == 0xc0) {
+ 		/* serial number of the tool */
+-		wacom->serial[idx] = ((data[3] & 0x0f) << 28) +
++		wacom->serial[idx] = ((__u64)(data[3] & 0x0f) << 28) +
+ 			(data[4] << 20) + (data[5] << 12) +
+ 			(data[6] << 4) + (data[7] >> 4);
+ 
 
 
