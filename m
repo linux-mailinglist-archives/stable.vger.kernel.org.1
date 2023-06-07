@@ -2,144 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4407B727326
-	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 01:38:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C48AC72737D
+	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 01:56:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233418AbjFGXi0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 19:38:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46684 "EHLO
+        id S233288AbjFGX4A (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 19:56:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233416AbjFGXiV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 19:38:21 -0400
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9655F270D
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 16:37:56 -0700 (PDT)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-652328c18d5so3923044b3a.1
-        for <stable@vger.kernel.org>; Wed, 07 Jun 2023 16:37:56 -0700 (PDT)
+        with ESMTP id S233343AbjFGX4A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 19:56:00 -0400
+Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00C962682;
+        Wed,  7 Jun 2023 16:55:55 -0700 (PDT)
+Received: by mail-qk1-x736.google.com with SMTP id af79cd13be357-75d54faa03eso572998485a.1;
+        Wed, 07 Jun 2023 16:55:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1686181076; x=1688773076;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=q85ALpObps5sc/UCVblmdlmcE0aIZmHRuMxmvi7ZvV4=;
-        b=lV8syWtj43Ff/kNItqdKE8y9KFBRtz3T741CER394a4RMHngbFtuX1OVIX0rOLruXT
-         XkH5dqkCV3iSkoPeFmEZh8PwJCU/4Cdt3mBMneFJ3QGZyUUe1hEbZi9eVOiiXIZz4LRQ
-         ymAYcwB9baokNEZhdcnTBgqOSyGwxz97Y5k6k=
+        d=gmail.com; s=20221208; t=1686182155; x=1688774155;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SYhFANAzyXu9CA9iibCEU+U1cngp0/OUke1pKcFWOtc=;
+        b=heQ4IDcAnFQZvPRwgvKliopuoKlTnUvSTXrz7RNjydYPzgKZqCQUW+bwrPVWwSIVd6
+         tpv/Kr5ROkPrkvhov3E/oYNeHtyBxZsxu2iRCokTHNHz9lRxnAbYS441rC/sttU6BTC6
+         kemG8+mwqfqyYhrU0N0ofrXBFT+OTrau4MRoT5PZSs851LCA3RjjAgjHxLjB1GgVQgHv
+         NYmCjr1UkDsCF4D1BvAO/Gl/6pvCV5MXWgVRGabPZeesFnS092eTwkxA2ihxX0dpoJUd
+         oer0i377g+OurlGjGv/GvdMvY8QrTyXTJn+iyNgteJxVL9SOrucseeJibMCmwZdAUIwA
+         /w/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686181076; x=1688773076;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q85ALpObps5sc/UCVblmdlmcE0aIZmHRuMxmvi7ZvV4=;
-        b=e1olApegLbSBLmj9CszBQfWETu6DXOe69ygnd8xiOZVCqYrKLh26qPfZpJHYREOsV6
-         F9gJiZk1YTkfh/sxBZ/Rxe1tMmidqVzB/kNoVRjpW7Ti59v/qC3KaUc1tJVvfxK/18eJ
-         +zfT4E0oTxAynuakMg4wsX28Bp/4e5kvvjTLh34H6ou6pm+3EVLRpgTeoJDq1Xcym8NP
-         lz8TSEEuvIS3a75ooebQDyko8ZLd7n32W/KpDXpKvrfwo8MPnaqxJbPrC27w/eS7b1P8
-         cN6WbLillbwILHNylVlwrL0usxjpVHLVrV7J2pb2JQVIk5pZ4vJEu+/Hi9UgXyZcID5/
-         OWoA==
-X-Gm-Message-State: AC+VfDwMMaSNooqyyXLV4OvW4tfyJ7hllRzU8mhcs1MkcUmNtNEKmcLw
-        Qo4WeO43RrP4Vc7agAqTnHLHlQ==
-X-Google-Smtp-Source: ACHHUZ6ZXC7p4DKrsltkZH4GRsEhK/UFVuZ7UJv1bOQaR6JO3aYQPtnsPqCAKXnWT3JJJ9X0TBo+zA==
-X-Received: by 2002:a05:6a20:394a:b0:117:51fe:9b4c with SMTP id r10-20020a056a20394a00b0011751fe9b4cmr2792096pzg.7.1686181076046;
-        Wed, 07 Jun 2023 16:37:56 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id p19-20020aa78613000000b006414b2c9efasm8859392pfn.123.2023.06.07.16.37.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jun 2023 16:37:55 -0700 (PDT)
-Date:   Wed, 7 Jun 2023 16:37:55 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Christian Marangi <ansuelsmth@gmail.com>
-Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Mark Brown <broonie@kernel.org>,
-        Dave Martin <Dave.Martin@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] binfmt_elf: dynamically allocate note.data in
- parse_elf_properties
-Message-ID: <202306071636.1C35171CC@keescook>
-References: <20230607144227.8956-1-ansuelsmth@gmail.com>
- <202306071417.79F70AC@keescook>
- <6480f938.1c0a0220.17a3a.0e1e@mx.google.com>
+        d=1e100.net; s=20221208; t=1686182155; x=1688774155;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SYhFANAzyXu9CA9iibCEU+U1cngp0/OUke1pKcFWOtc=;
+        b=LA+lzFCt+yQ7Ua9TTh/Zau5K0tnZQgw5beuKNf8j9FZYOhof1K3xgl15ZkvhSncKZ/
+         /ipNOnebUmsfuk95woa6VdmGx/jHuxXx/AslxJS1J/c2yxQxEYLea7+QTj0c6KiiBOQx
+         tS0dZhkegge2lnEJa9inI4+GZifdafbUUyhMNo+Vr1W07pDwMJVZAeLmRYZ58f5Swr/y
+         VScVHySAhCZ81z+tGMHNP79YxQnT/xOV2rH0mGh8SCvGFKgz58wyNnkUprTumg+WLTSl
+         pF2s/bCo8Ba/Nobp3ea2rTKlfQC7MseOCp1Vh2iflCYHUxAAWlD7BnM3YKox81ZzLryJ
+         lM8w==
+X-Gm-Message-State: AC+VfDyWxgVfxKawQhNF9kAvldwmlXXLbb9BRQ52eGZblZjJryxEzMi1
+        u4j61iRm8P+HEcmGJqvzxApYlfnhj2Ok4Q==
+X-Google-Smtp-Source: ACHHUZ4qwuDixFk4U1d7Gyrg9n/EKGFw4ckTEhu/S2awuI5QH6bsKsHEGKy6w2y2KKEEgR+F6g2c7A==
+X-Received: by 2002:a05:620a:8082:b0:75e:680f:857b with SMTP id ef2-20020a05620a808200b0075e680f857bmr3845741qkb.73.1686182155054;
+        Wed, 07 Jun 2023 16:55:55 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id u10-20020ae9c00a000000b007593bf6e345sm229163qkk.113.2023.06.07.16.55.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Jun 2023 16:55:54 -0700 (PDT)
+Message-ID: <5d0364f2-8525-2d6d-ddc9-409c32b8147c@gmail.com>
+Date:   Wed, 7 Jun 2023 16:55:45 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6480f938.1c0a0220.17a3a.0e1e@mx.google.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 5.15 000/159] 5.15.116-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+References: <20230607200903.652580797@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jun 07, 2023 at 08:31:58PM +0200, Christian Marangi wrote:
-> On Wed, Jun 07, 2023 at 02:19:51PM -0700, Kees Cook wrote:
-> > On Wed, Jun 07, 2023 at 04:42:27PM +0200, Christian Marangi wrote:
-> > > Dynamically allocate note.data in parse_elf_properties to fix
-> > > compilation warning on some arch.
-> > 
-> > I'd rather avoid dynamic allocation as much as possible in the exec
-> > path, but we can balance it against how much it may happen.
-> >
+On 6/7/23 13:15, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.116 release.
+> There are 159 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> I guess there isn't a good way to handle this other than static global
-> variables and kmalloc. But check the arch question for additional info
-> on the case.
+> Responses should be made by Fri, 09 Jun 2023 20:07:31 +0000.
+> Anything received after that time might be too late.
 > 
-> > > On some arch note.data exceed the stack limit for a single function and
-> > > this cause the following compilation warning:
-> > > fs/binfmt_elf.c: In function 'parse_elf_properties.isra':
-> > > fs/binfmt_elf.c:821:1: error: the frame size of 1040 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
-> > >   821 | }
-> > >       | ^
-> > > cc1: all warnings being treated as errors
-> > 
-> > Which architectures see this warning?
-> > 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.116-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
 > 
-> This is funny. On OpenWRT we are enforcing WERROR and we had FRAME_WARN
-> hardcoded to 1024. (the option is set to 2048 on 64bit arch)
+> thanks,
+> 
+> greg k-h
 
-Ah-ha. Okay, I was wondering how you got that. :)
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tseted on 
+BMIPS_GENERIC:
 
-> ARCH_USE_GNU_PROPERTY is set only on arm64 that have a FRAME_WARN set to
-> 2048.
-> 
-> So this was triggered by building arm64 with FRAME_WARN set to 1024.
-> 
-> Now with the configuration of 2048 the stack warn is not triggered, but
-> I wonder if it may happen to have a 32bit system with
-> ARCH_USE_GNU_PROPERTY. That would effectively trigger the warning.
-> 
-> So this is effectively a patch that fix a currently not possible
-> configuration, since:
-> 
-> !IS_ENABLED(CONFIG_ARCH_USE_GNU_PROPERTY) will result in node.data
-> effectively never allocated by the compiler are the function will return
-> 0 on everything that doesn't have CONFIG_ARCH_USE_GNU_PROPERTY.
-> 
-> > > Fix this by dynamically allocating the array.
-> > > Update the sizeof of the union to the biggest element allocated.
-> > 
-> > How common are these notes? I assume they're very common; I see them
-> > even in /bin/true:
-> > 
-> > $ readelf -lW /bin/true | grep PROP
-> >   GNU_PROPERTY   0x000338 0x0000000000000338 0x0000000000000338 0x000030 0x000030 R   0x8
-> > 
-> > -- 
-> 
-> Is there a way to check if this kmalloc actually cause perf regression?
-
-I don't have a good benchmark besides just an exec loop. But since this
-isn't reachable in a regular config, I'd rather keep things how there
-already are.
-
--Kees
-
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-Kees Cook
+Florian
+
