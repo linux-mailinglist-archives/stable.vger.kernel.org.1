@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D9CF726BA6
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 093C7726D2B
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:40:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233386AbjFGU04 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:26:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52454 "EHLO
+        id S234283AbjFGUkB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:40:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233344AbjFGU0z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:55 -0400
+        with ESMTP id S234406AbjFGUjn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:39:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3A0426B5
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:26:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB62C2708
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:39:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B432A64474
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:26:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF000C433D2;
-        Wed,  7 Jun 2023 20:26:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D89D5645B5
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:39:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEBCFC433EF;
+        Wed,  7 Jun 2023 20:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169593;
-        bh=Ob3qJWVV0UzBiL0Q4d/OmDcvpBKUL55xRXXAWm7zHZg=;
+        s=korg; t=1686170341;
+        bh=XbtT5uO7a6nqUL47UckCoROPRq0YKLC6Il5Lx32n8Fc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e8HIh0YKkqn30DPPW6Sqkgr0Z59+REVGHPN3YZ/gs3Y9NIAvvcsvWmhh/HeTMHGE9
-         xl4dNSixg4VJndZ5JT2uge/1NruAuYtfEOcHL8g6b5RzMtkR4lqRhIF9OteJjiyT+Q
-         JJO6AQ6OgF3lzTj91DSALVfMsxFZWmB0UlnGrU7w=
+        b=RjoxmSsyjs6S9puhWe60EhTMRSpEVCeOpSHBndAiUjBcORPUIwdmwa2FHjCKltaM2
+         VDxDUKBRddeUvRW+4ZnhoRLWlhQr+x37kzRSwwvWErHtpy3+Dku66aGcMVgfao8u8g
+         fuSBebG5Aj0s+oUTvqORWpYwO71wiLGw4FN8+sFM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hyunwoo Kim <v4bel@theori.io>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Hangyu Hua <hbh25y@gmail.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 140/286] media: dvb-core: Fix use-after-free due to race condition at dvb_ca_en50221
-Date:   Wed,  7 Jun 2023 22:13:59 +0200
-Message-ID: <20230607200927.658080102@linuxfoundation.org>
+Subject: [PATCH 6.1 047/225] net/sched: flower: fix possible OOB write in fl_set_geneve_opt()
+Date:   Wed,  7 Jun 2023 22:14:00 +0200
+Message-ID: <20230607200915.890261866@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,126 +56,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Hangyu Hua <hbh25y@gmail.com>
 
-[ Upstream commit 280a8ab81733da8bc442253c700a52c4c0886ffd ]
+[ Upstream commit 4d56304e5827c8cc8cc18c75343d283af7c4825c ]
 
-If the device node of dvb_ca_en50221 is open() and the
-device is disconnected, a UAF may occur when calling
-close() on the device node.
+If we send two TCA_FLOWER_KEY_ENC_OPTS_GENEVE packets and their total
+size is 252 bytes(key->enc_opts.len = 252) then
+key->enc_opts.len = opt->length = data_len / 4 = 0 when the third
+TCA_FLOWER_KEY_ENC_OPTS_GENEVE packet enters fl_set_geneve_opt. This
+bypasses the next bounds check and results in an out-of-bounds.
 
-The root cause is that wake_up() and wait_event() for
-dvbdev->wait_queue are not implemented.
-
-So implement wait_event() function in dvb_ca_en50221_release()
-and add 'remove_mutex' which prevents race condition
-for 'ca->exit'.
-
-[mchehab: fix a checkpatch warning]
-
-Link: https://lore.kernel.org/linux-media/20221121063308.GA33821@ubuntu
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 0a6e77784f49 ("net/sched: allow flower to match tunnel options")
+Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Reviewed-by: Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>
+Link: https://lore.kernel.org/r/20230531102805.27090-1-hbh25y@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-core/dvb_ca_en50221.c | 37 ++++++++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+ net/sched/cls_flower.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/media/dvb-core/dvb_ca_en50221.c b/drivers/media/dvb-core/dvb_ca_en50221.c
-index b6ca29dfb184a..baf64540dc00a 100644
---- a/drivers/media/dvb-core/dvb_ca_en50221.c
-+++ b/drivers/media/dvb-core/dvb_ca_en50221.c
-@@ -151,6 +151,12 @@ struct dvb_ca_private {
+diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
+index 25bc57ee6ea10..3de72e7c1075a 100644
+--- a/net/sched/cls_flower.c
++++ b/net/sched/cls_flower.c
+@@ -1147,6 +1147,9 @@ static int fl_set_geneve_opt(const struct nlattr *nla, struct fl_flow_key *key,
+ 	if (option_len > sizeof(struct geneve_opt))
+ 		data_len = option_len - sizeof(struct geneve_opt);
  
- 	/* mutex serializing ioctls */
- 	struct mutex ioctl_mutex;
++	if (key->enc_opts.len > FLOW_DIS_TUN_OPTS_MAX - 4)
++		return -ERANGE;
 +
-+	/* A mutex used when a device is disconnected */
-+	struct mutex remove_mutex;
-+
-+	/* Whether the device is disconnected */
-+	int exit;
- };
- 
- static void dvb_ca_private_free(struct dvb_ca_private *ca)
-@@ -1711,12 +1717,22 @@ static int dvb_ca_en50221_io_open(struct inode *inode, struct file *file)
- 
- 	dprintk("%s\n", __func__);
- 
--	if (!try_module_get(ca->pub->owner))
-+	mutex_lock(&ca->remove_mutex);
-+
-+	if (ca->exit) {
-+		mutex_unlock(&ca->remove_mutex);
-+		return -ENODEV;
-+	}
-+
-+	if (!try_module_get(ca->pub->owner)) {
-+		mutex_unlock(&ca->remove_mutex);
- 		return -EIO;
-+	}
- 
- 	err = dvb_generic_open(inode, file);
- 	if (err < 0) {
- 		module_put(ca->pub->owner);
-+		mutex_unlock(&ca->remove_mutex);
- 		return err;
- 	}
- 
-@@ -1741,6 +1757,7 @@ static int dvb_ca_en50221_io_open(struct inode *inode, struct file *file)
- 
- 	dvb_ca_private_get(ca);
- 
-+	mutex_unlock(&ca->remove_mutex);
- 	return 0;
- }
- 
-@@ -1760,6 +1777,8 @@ static int dvb_ca_en50221_io_release(struct inode *inode, struct file *file)
- 
- 	dprintk("%s\n", __func__);
- 
-+	mutex_lock(&ca->remove_mutex);
-+
- 	/* mark the CA device as closed */
- 	ca->open = 0;
- 	dvb_ca_en50221_thread_update_delay(ca);
-@@ -1770,6 +1789,13 @@ static int dvb_ca_en50221_io_release(struct inode *inode, struct file *file)
- 
- 	dvb_ca_private_put(ca);
- 
-+	if (dvbdev->users == 1 && ca->exit == 1) {
-+		mutex_unlock(&ca->remove_mutex);
-+		wake_up(&dvbdev->wait_queue);
-+	} else {
-+		mutex_unlock(&ca->remove_mutex);
-+	}
-+
- 	return err;
- }
- 
-@@ -1893,6 +1919,7 @@ int dvb_ca_en50221_init(struct dvb_adapter *dvb_adapter,
- 	}
- 
- 	mutex_init(&ca->ioctl_mutex);
-+	mutex_init(&ca->remove_mutex);
- 
- 	if (signal_pending(current)) {
- 		ret = -EINTR;
-@@ -1935,6 +1962,14 @@ void dvb_ca_en50221_release(struct dvb_ca_en50221 *pubca)
- 
- 	dprintk("%s\n", __func__);
- 
-+	mutex_lock(&ca->remove_mutex);
-+	ca->exit = 1;
-+	mutex_unlock(&ca->remove_mutex);
-+
-+	if (ca->dvbdev->users < 1)
-+		wait_event(ca->dvbdev->wait_queue,
-+				ca->dvbdev->users == 1);
-+
- 	/* shutdown the thread if there was one */
- 	kthread_stop(ca->thread);
- 
+ 	opt = (struct geneve_opt *)&key->enc_opts.data[key->enc_opts.len];
+ 	memset(opt, 0xff, option_len);
+ 	opt->length = data_len / 4;
 -- 
 2.39.2
 
