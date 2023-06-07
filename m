@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 424E57267CF
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 19:54:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2177D7267D4
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 19:55:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232361AbjFGRyK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 13:54:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48706 "EHLO
+        id S231839AbjFGRzU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 13:55:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231839AbjFGRyE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 13:54:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3A0A1FC2;
-        Wed,  7 Jun 2023 10:54:03 -0700 (PDT)
+        with ESMTP id S230358AbjFGRzT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 13:55:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C4301FD4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 10:55:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 52FBD63F95;
-        Wed,  7 Jun 2023 17:54:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF99C433D2;
-        Wed,  7 Jun 2023 17:54:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A5DA63602
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 17:55:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 091FFC433D2;
+        Wed,  7 Jun 2023 17:55:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686160442;
-        bh=YFGlyfWVwMOZcZEByUpLtH5BeR+scGjqb1eZaoyANJ8=;
+        s=korg; t=1686160517;
+        bh=HPODcED1KNKR5QKvjEKBy0q1aRzojVkb/n75vO9nGq8=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hPM8yKhC1BJa4MZOUmsI7z3wySyuvOv0kMtECUL0zRempqpb39r+Cwm6BKov6il6H
-         sj9Ym6vF3wd7LI4zlomYn6ant2pkDRA3o+dGti6dXwHR7luGVrhjxllqxKmAzJNe47
-         WmJ8qqTimOzA+J/16CF6rDqKSQ7bXGUKUym0zTo8=
-Date:   Wed, 7 Jun 2023 19:53:54 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Amir Goldstein <amir73il@gmail.com>
-Cc:     Sasha Levin <sashal@kernel.org>,
-        Leah Rumancik <leah.rumancik@gmail.com>,
-        Chandan Babu R <chandan.babu@oracle.com>,
-        "Darrick J . Wong" <djwong@kernel.org>, linux-xfs@vger.kernel.org,
-        stable@vger.kernel.org, Dave Chinner <dchinner@redhat.com>,
-        Dave Chinner <david@fromorbit.com>,
-        Danila Chernetsov <listdansp@mail.ru>
-Subject: Re: [PATCH 6.1] xfs: verify buffer contents when we skip log replay
-Message-ID: <2023060730-ultimate-triceps-7bea@gregkh>
-References: <20230605075258.308475-1-amir73il@gmail.com>
+        b=tW/Mcv4Tjv5sTCTFK1HZG5Uji/0Xzx2j7br33K7wWZSFTnQCyBBnKZ/Zpg9JrqG2t
+         gpuPb1+Ov/91oOCi6GtQePb+hvML7cQpo1GIBVwmvJf3yZ/t/Cn3SH04QUpUiI3YE2
+         ryX9jEyz9sOM5fHxLHooygI+rPB5igqj3esr7x6Y=
+Date:   Wed, 7 Jun 2023 19:55:09 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Dan Carpenter <dan.carpenter@linaro.org>
+Cc:     stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>
+Subject: Re: randconfig fixes for 5.10.y
+Message-ID: <2023060701-playmate-annoying-c03a@gregkh>
+References: <b59d1bfe-15b1-4318-a12f-a38143ba35bd@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230605075258.308475-1-amir73il@gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+In-Reply-To: <b59d1bfe-15b1-4318-a12f-a38143ba35bd@kili.mountain>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,14 +53,16 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jun 05, 2023 at 10:52:58AM +0300, Amir Goldstein wrote:
-> From: "Darrick J. Wong" <djwong@kernel.org>
+On Tue, May 30, 2023 at 11:22:09AM +0300, Dan Carpenter wrote:
+> I did some randconfig testing on 5.10.y and the following patches are
+> required.
 > 
-> commit 22ed903eee23a5b174e240f1cdfa9acf393a5210 upstream.
+> d7a7d721064c5 ("media: ti-vpe: cal: avoid FIELD_GET assertion")
+> 42d95d1b3a9c6 ("drm/rcar: stop using 'imply' for dependencies")
+> 
+> The first patch is only required on 5.10.y.
+> The second "drm/rcar" commit is required in 5.15.y as well.
 
-What about 6.3.y?  I can't take a patch for 6.1.y only without it being
-in a newer kernel at the same time, right?
-
-thanks,
+Thanks, both now queued up.
 
 greg k-h
