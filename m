@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC15F726D70
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:42:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED79F726C02
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:30:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234495AbjFGUmG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:42:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41818 "EHLO
+        id S233594AbjFGUaU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:30:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234560AbjFGUmE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:42:04 -0400
+        with ESMTP id S233683AbjFGU35 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:29:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE9E91706
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:41:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF2892702
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:29:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 464A864629
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:41:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31CC9C433D2;
-        Wed,  7 Jun 2023 20:41:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B007A644CB
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:29:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C388EC433EF;
+        Wed,  7 Jun 2023 20:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170516;
-        bh=Sxi1xHoXueVMOkyGq+G37NhDnUbpDpH92RM5P9iFW+4=;
+        s=korg; t=1686169771;
+        bh=4Do0RjYpz0Yh0zWhwAWNNRzFDuPxiLO8wyEhh9zpnoA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wQJQ0Vn6WMrioHc7VaiQ4VuX/c+1D/V+TI6xFcWpfpvT3gcF4kaKlCz1c/fycn/pn
-         ZdAhrnlLFCRoL4d9E536vIpDPIv3XNcww/G8R9RzHIwW6ahsbWb0l72w8S2a+MdDuw
-         kqUg/mRE/AQlsgK5HAHs4JuEoe6Yy9dLfbUkqVdA=
+        b=qW4KbEYewiJyZlOi3CQz11MsqAFABordc5OowicBaof5Z236RSpohQfNZtRG6nUVw
+         HBYVYscakamPoGNsGJWHVr9mBfELkmBsf3n689G2AGBCuwSJycnEYNUJFh/dlkf0Ce
+         6E+VK9X8O81lk5OniVwLqd04fowl5Accsb5HURJo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Min-Hua Chen <minhuadotchen@gmail.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 114/225] arm64/mm: mark private VM_FAULT_X defines as vm_fault_t
+        patches@lists.linux.dev,
+        Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+        =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.3 208/286] net: usb: qmi_wwan: Set DTR quirk for BroadMobi BM818
 Date:   Wed,  7 Jun 2023 22:15:07 +0200
-Message-ID: <20230607200918.102531148@linuxfoundation.org>
+Message-ID: <20230607200930.048366294@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,54 +55,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Min-Hua Chen <minhuadotchen@gmail.com>
+From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
 
-[ Upstream commit d91d580878064b880f3574ac35b98d8b70ee8620 ]
+commit 36936a56e1814f6c526fe71fbf980beab4f5577a upstream.
 
-This patch fixes several sparse warnings for fault.c:
+BM818 is based on Qualcomm MDM9607 chipset.
 
-arch/arm64/mm/fault.c:493:24: sparse: warning: incorrect type in return expression (different base types)
-arch/arm64/mm/fault.c:493:24: sparse:    expected restricted vm_fault_t
-arch/arm64/mm/fault.c:493:24: sparse:    got int
-arch/arm64/mm/fault.c:501:32: sparse: warning: incorrect type in return expression (different base types)
-arch/arm64/mm/fault.c:501:32: sparse:    expected restricted vm_fault_t
-arch/arm64/mm/fault.c:501:32: sparse:    got int
-arch/arm64/mm/fault.c:503:32: sparse: warning: incorrect type in return expression (different base types)
-arch/arm64/mm/fault.c:503:32: sparse:    expected restricted vm_fault_t
-arch/arm64/mm/fault.c:503:32: sparse:    got int
-arch/arm64/mm/fault.c:511:24: sparse: warning: incorrect type in return expression (different base types)
-arch/arm64/mm/fault.c:511:24: sparse:    expected restricted vm_fault_t
-arch/arm64/mm/fault.c:511:24: sparse:    got int
-arch/arm64/mm/fault.c:670:13: sparse: warning: restricted vm_fault_t degrades to integer
-arch/arm64/mm/fault.c:670:13: sparse: warning: restricted vm_fault_t degrades to integer
-arch/arm64/mm/fault.c:713:39: sparse: warning: restricted vm_fault_t degrades to integer
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Min-Hua Chen <minhuadotchen@gmail.com>
-Link: https://lore.kernel.org/r/20230502151909.128810-1-minhuadotchen@gmail.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9a07406b00cd ("net: usb: qmi_wwan: Add the BroadMobi BM818 card")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Acked-by: Bjørn Mork <bjorn@mork.no>
+Link: https://lore.kernel.org/r/20230526-bm818-dtr-v1-1-64bbfa6ba8af@puri.sm
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/fault.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/usb/qmi_wwan.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index 4ee20280133e4..2fef1fa93e7b6 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -480,8 +480,8 @@ static void do_bad_area(unsigned long far, unsigned long esr,
- 	}
- }
- 
--#define VM_FAULT_BADMAP		0x010000
--#define VM_FAULT_BADACCESS	0x020000
-+#define VM_FAULT_BADMAP		((__force vm_fault_t)0x010000)
-+#define VM_FAULT_BADACCESS	((__force vm_fault_t)0x020000)
- 
- static vm_fault_t __do_page_fault(struct mm_struct *mm, unsigned long addr,
- 				  unsigned int mm_flags, unsigned long vm_flags,
--- 
-2.39.2
-
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1325,7 +1325,7 @@ static const struct usb_device_id produc
+ 	{QMI_FIXED_INTF(0x2001, 0x7e3d, 4)},	/* D-Link DWM-222 A2 */
+ 	{QMI_FIXED_INTF(0x2020, 0x2031, 4)},	/* Olicard 600 */
+ 	{QMI_FIXED_INTF(0x2020, 0x2033, 4)},	/* BroadMobi BM806U */
+-	{QMI_FIXED_INTF(0x2020, 0x2060, 4)},	/* BroadMobi BM818 */
++	{QMI_QUIRK_SET_DTR(0x2020, 0x2060, 4)},	/* BroadMobi BM818 */
+ 	{QMI_FIXED_INTF(0x0f3d, 0x68a2, 8)},    /* Sierra Wireless MC7700 */
+ 	{QMI_FIXED_INTF(0x114f, 0x68a2, 8)},    /* Sierra Wireless MC7750 */
+ 	{QMI_FIXED_INTF(0x1199, 0x68a2, 8)},	/* Sierra Wireless MC7710 in QMI mode */
 
 
