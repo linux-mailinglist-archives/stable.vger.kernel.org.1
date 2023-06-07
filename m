@@ -2,45 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21F3B726FA5
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19C11726EC3
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:52:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235852AbjFGVAw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:00:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33334 "EHLO
+        id S235245AbjFGUwf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:52:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236126AbjFGVAW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:22 -0400
+        with ESMTP id S235244AbjFGUwd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:52:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90F3026B9
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:00:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 712DF1BFF
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:52:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC5F8648C4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:00:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C0ABC433D2;
-        Wed,  7 Jun 2023 20:59:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E35716476C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:52:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02CBCC433EF;
+        Wed,  7 Jun 2023 20:52:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171600;
-        bh=cWB1dZy+1AbY9jcNQa0xPC8wJXDRMfc8M7uaWfwUlok=;
+        s=korg; t=1686171150;
+        bh=BYnSv2QC37kiaGqNnSUEOotBrUT8SY7ijmBFxx0UUzk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AfXVC9vIhEvl0uh3DjycicfJ97nQqORo9ocX2YcpT4qWZJ+OU2qlvWq6qkRwYiew7
-         Xht90jUvUvPEEfn6zgi3Rh40FhotPhpcLexfNB27SXV4eB9mtpx/tPnlbxfZ94ver9
-         PG7NecldDzPhpUqGNwv1C+7Msxpgr6idfRJBtNDE=
+        b=Mzj0AbfyRFqjtx5WY/UNRpTFGUDqarN+pQF6vOySW4mn2Jti3TM+2eC/+YW6AcacN
+         WboT8AR4LCNDqwxEXZSzTKlcRYs10OWFftulLUt9VCHHTx1K3lDcsKGjAzikHzna5z
+         LnpwekfR64PGAdo2Ru0oaWX++6pqXTRJxHB6G8qQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Julian Winkler <julian.winkler1@web.de>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev, Firas Jahjah <firasj@amazon.com>,
+        Michael Margolin <mrgolin@amazon.com>,
+        Yonatan Nachum <ynachum@amazon.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 049/159] platform/x86: intel_scu_pcidrv: Add back PCI ID for Medfield
-Date:   Wed,  7 Jun 2023 22:15:52 +0200
-Message-ID: <20230607200905.291444034@linuxfoundation.org>
+Subject: [PATCH 5.4 01/99] RDMA/efa: Fix unsupported page sizes in device
+Date:   Wed,  7 Jun 2023 22:15:53 +0200
+Message-ID: <20230607200900.250302694@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -54,37 +58,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Julian Winkler <julian.winkler1@web.de>
+From: Yonatan Nachum <ynachum@amazon.com>
 
-[ Upstream commit 4a9b6850c794e4394cad99e2b863d75f5bc8e92f ]
+[ Upstream commit 866422cdddcdf59d8c68e9472d49ba1be29b5fcf ]
 
-This id was removed in commit b47018a778c1 ("platform/x86: intel_scu_ipc:
-Remove Lincroft support"), saying it is only used on Moorestown,
-but apparently the same id is also used on Medfield.
+Device uses 4KB size blocks for user pages indirect list while the
+driver creates those blocks with the size of PAGE_SIZE of the kernel. On
+kernels with PAGE_SIZE different than 4KB (ARM RHEL), this leads to a
+failure on register MR with indirect list because of the miss
+communication between driver and device.
 
-Tested on the Medfield based Motorola RAZR i smartphone.
-
-Signed-off-by: Julian Winkler <julian.winkler1@web.de>
-Link: https://lore.kernel.org/r/20230416154932.6579-1-julian.winkler1@web.de
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: 40909f664d27 ("RDMA/efa: Add EFA verbs implementation")
+Link: https://lore.kernel.org/r/20230511115103.13876-1-ynachum@amazon.com
+Reviewed-by: Firas Jahjah <firasj@amazon.com>
+Reviewed-by: Michael Margolin <mrgolin@amazon.com>
+Signed-off-by: Yonatan Nachum <ynachum@amazon.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel_scu_pcidrv.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/hw/efa/efa_verbs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/intel_scu_pcidrv.c b/drivers/platform/x86/intel_scu_pcidrv.c
-index 80abc708e4f2f..d904fad499aa5 100644
---- a/drivers/platform/x86/intel_scu_pcidrv.c
-+++ b/drivers/platform/x86/intel_scu_pcidrv.c
-@@ -34,6 +34,7 @@ static int intel_scu_pci_probe(struct pci_dev *pdev,
+diff --git a/drivers/infiniband/hw/efa/efa_verbs.c b/drivers/infiniband/hw/efa/efa_verbs.c
+index 17f1e59ab12ee..559b24ca52050 100644
+--- a/drivers/infiniband/hw/efa/efa_verbs.c
++++ b/drivers/infiniband/hw/efa/efa_verbs.c
+@@ -1231,7 +1231,7 @@ static int pbl_continuous_initialize(struct efa_dev *dev,
+  */
+ static int pbl_indirect_initialize(struct efa_dev *dev, struct pbl_context *pbl)
+ {
+-	u32 size_in_pages = DIV_ROUND_UP(pbl->pbl_buf_size_in_bytes, PAGE_SIZE);
++	u32 size_in_pages = DIV_ROUND_UP(pbl->pbl_buf_size_in_bytes, EFA_CHUNK_PAYLOAD_SIZE);
+ 	struct scatterlist *sgl;
+ 	int sg_dma_cnt, err;
  
- static const struct pci_device_id pci_ids[] = {
- 	{ PCI_VDEVICE(INTEL, 0x080e) },
-+	{ PCI_VDEVICE(INTEL, 0x082a) },
- 	{ PCI_VDEVICE(INTEL, 0x08ea) },
- 	{ PCI_VDEVICE(INTEL, 0x0a94) },
- 	{ PCI_VDEVICE(INTEL, 0x11a0) },
 -- 
 2.39.2
 
