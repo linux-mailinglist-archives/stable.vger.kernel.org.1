@@ -2,147 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC9C47264F3
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 17:44:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8FF2726194
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 15:43:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241089AbjFGPoj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 11:44:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50764 "EHLO
+        id S235414AbjFGNnl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 09:43:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241467AbjFGPog (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 11:44:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B4731BE8
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 08:43:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686152626;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=spKLLuP6O+r1s/hdstXAgJMud94UgSfX2gIBHfXK4vw=;
-        b=Gv+ltwYGIzfjBQUMNm2UhE0IdwRYEBicPIwSEttR/iUGigdvnG5KndWnPA3VU3on1GCS7n
-        msDq9jetfzUt45PB/6Y9jv5hkM8VkpfN+rlfy0yt3Fp8C0vAs60NfK7JbMCAXLPgj23SWk
-        kC6QsWnUYqoTmvCbX7KNQ5fV6KRjOwg=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-597-2DweP78cPQ6G43coSGDchQ-1; Wed, 07 Jun 2023 09:42:03 -0400
-X-MC-Unique: 2DweP78cPQ6G43coSGDchQ-1
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-75ec9b8775cso208001785a.3
-        for <stable@vger.kernel.org>; Wed, 07 Jun 2023 06:42:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686145323; x=1688737323;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        with ESMTP id S234716AbjFGNnl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 09:43:41 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84F481993
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 06:43:39 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-3f7368126a6so33470135e9.0
+        for <stable@vger.kernel.org>; Wed, 07 Jun 2023 06:43:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tessares.net; s=google; t=1686145418; x=1688737418;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=spKLLuP6O+r1s/hdstXAgJMud94UgSfX2gIBHfXK4vw=;
-        b=dH0qGY9Imi64/5mvja+2VHBkLdn+SJzlW8iJ/6A6xfndL5+X3VYaMEkieuysAJOoXh
-         HB+yLULIirn/KWAlrhNhC0b3k+yVVOncDPgA5qZfEUpWd4kkzfl6Uth2gUiPlNHDW3uE
-         665D1CJpE0viobGg0gNqkXANMRapXCoNqMBhD2ArodslGkVFeqhsLVbftBYsa5BfwsvG
-         irIlb83clbeUBwNJVHa5mv0HmtD0JekNXFN11GfgZiBfOINDEfL+KX3ymp0q+bzcMTRT
-         X9ZBumbE4LT5MaVk4NnWXzgTz/lm/j7E5l07Dg+NWz07rPsRJo6Hm4AiGDC3PF9NI8Ps
-         ss7w==
-X-Gm-Message-State: AC+VfDw4ArfJswcTvZpAZNVmpImCAzQtuZY7pEbvt1h4VmIAB47Sro5z
-        wazgeIWyWZdOdD7cvQZ/xKivyr6HuwQsWgXP/32fRia63Y+Zp7w6VyM6/3zyFOnLehUlxDZy1ox
-        8a/XbXHLP7d6jGOLu
-X-Received: by 2002:a05:620a:8d1:b0:75e:c57b:474c with SMTP id z17-20020a05620a08d100b0075ec57b474cmr2068451qkz.13.1686145323170;
-        Wed, 07 Jun 2023 06:42:03 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ5l7U5JgSV5T13cY5RpvTXXPfzQF/3Pku47suOZclV2+2Jk7neTSNpvNSmo/U6zAtW9LufRcg==
-X-Received: by 2002:a05:620a:8d1:b0:75e:c57b:474c with SMTP id z17-20020a05620a08d100b0075ec57b474cmr2068424qkz.13.1686145322889;
-        Wed, 07 Jun 2023 06:42:02 -0700 (PDT)
-Received: from optiplex-fbsd (c-73-249-122-233.hsd1.nh.comcast.net. [73.249.122.233])
-        by smtp.gmail.com with ESMTPSA id c25-20020a05620a11b900b0075c9e048b19sm3139720qkk.29.2023.06.07.06.42.01
+        bh=ECUPgTh4S75PbWzTfD97t/Bz+CcbzuB43qUb6+l5WGU=;
+        b=Qbc+YhlfNpusMLUnSxKQ1Rm9hwA65e2VrHHeOHHDuKG6bJlVW5fWaZVea6y3EH98XP
+         R7z6NloLJKLmTH4sGo4ModV+Wiz7H/briZX7M/o4Mc4F1+APhLhElqfiCn8CohCfZoL+
+         TvMe6wgwGJrRQl1Ugp3viGaIdNXF/XSRBOUrMdE3TeBO1NPtNcd8wDZYfm7xKa1tzuNV
+         gx6DBJNzNn2wR7uqsAir01HBcL0imdwnGVRNKF+pMWkUg1dWVi/kpiBX0L01q7E5Qma8
+         7XqKfTgthYBnZJegky7tlE7PP7z4815CumE8dc26Id7TQCVXj9+jDoUJ7J0Rav+BGJgg
+         e9KA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686145418; x=1688737418;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ECUPgTh4S75PbWzTfD97t/Bz+CcbzuB43qUb6+l5WGU=;
+        b=YxfgGLi4XscVcxTebUWa08ogINVzvzDLZ4AwsbnmN9d2fikXttPTb7pk/7lEXbUas+
+         36nHREvFL6Ru5RDbV6k+DfhVBXgD1WENA7igGeAsWRrFX7FpLDa1ah70dvr7kn6ql5T9
+         7Vk86TCA6xsEA8iDCGwIV4bF/Th1i630CensOTj/FQQyX+QOJFsH2zpI6G4WpxcnZPyc
+         5SzAD6a9+mZ5MiWfAaEO/V2XbBqSb0+XQZpwE7vLjmUNO5WTJI7ijHGFNQz7qHbSyCET
+         FBPkm0vdBqej4C/YsOPPLTGTXhn+CBnWjMoT+csyJJ3LimPDyqRXba1o5SS9WTneSpAd
+         0obQ==
+X-Gm-Message-State: AC+VfDwrheVc9F7qRRLjeyrhyFA9aKRsxcVV8819MO+HPhchf4u2xc4g
+        1RwDJwAYEdMoLrRI1sBsrXF+TMrD+yk/LI2tnkvTWQ==
+X-Google-Smtp-Source: ACHHUZ6DC+xBZTdSH/GctmG07t6l+KfRE4eQUytnNCtk33wrZeduFpYWJhlbtmOUAvKsFkOr2KIHYg==
+X-Received: by 2002:a7b:c4d5:0:b0:3f6:7af:8fe7 with SMTP id g21-20020a7bc4d5000000b003f607af8fe7mr4448394wmk.10.1686145417646;
+        Wed, 07 Jun 2023 06:43:37 -0700 (PDT)
+Received: from vdi08.nix.tessares.net (static.219.156.76.144.clients.your-server.de. [144.76.156.219])
+        by smtp.gmail.com with ESMTPSA id m6-20020a7bce06000000b003f7e717c770sm2201284wmc.23.2023.06.07.06.43.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jun 2023 06:42:02 -0700 (PDT)
-Date:   Wed, 7 Jun 2023 09:41:59 -0400
-From:   Rafael Aquini <aquini@redhat.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Yafang Shao <laoar.shao@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org,
-        stable@vger.kernel.org, Aristeu Rozanski <aris@redhat.com>
-Subject: Re: [PATCH] writeback: fix dereferencing NULL mapping->host on
- writeback_page_template
-Message-ID: <ZICJJxBtxoy_Jz8u@optiplex-fbsd>
-References: <20230606233613.1290819-1-aquini@redhat.com>
- <20230606174448.ba45510067bcb35b9ac7e739@linux-foundation.org>
+        Wed, 07 Jun 2023 06:43:37 -0700 (PDT)
+From:   Matthieu Baerts <matthieu.baerts@tessares.net>
+To:     stable@vger.kernel.org, gregkh@linuxfoundation.org
+Cc:     Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1.y] selftests: mptcp: diag: skip if MPTCP is not supported
+Date:   Wed,  7 Jun 2023 15:43:14 +0200
+Message-Id: <20230607134314.2611661-1-matthieu.baerts@tessares.net>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <2023060714-residence-cloud-7288@gregkh>
+References: <2023060714-residence-cloud-7288@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230606174448.ba45510067bcb35b9ac7e739@linux-foundation.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1544; i=matthieu.baerts@tessares.net;
+ h=from:subject; bh=nAxUDgG7iRhGl1V+OjhQ8dZib3Z5ma2nN3EWauxIvwM=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBkgIlya3W5GZDK+CpbGmuREmEQ4nEt4auT6umVC
+ 1YZb5qgW1qJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZICJcgAKCRD2t4JPQmmg
+ c8o2EADt7HZ8z33qwwlAoo5uZqvVFPOh2W69iYvRUmsQfVGqNucf/XonVCHZMBGUJewBzULB7/g
+ MCUdER+2TlirmjnE1y15xghrycD91XC/jxRo4k+0tW7A/bM1GuCkOAAiC3491/A/SxNZyxZuNI6
+ Ny+TscuUnttbD7s5qKMRGuGUlxUBPPHqGhzrtkn+8dxHMIU6Rdz8oVyk0PE8SIDILL/ui1rxfCX
+ k4nMPgsMdWhZmHTGTjjeTfODi9CAXumck57PP47nof98x7nFdJPE/TOhQmXZeiV0FmXX9C8FxoW
+ UabtwLpbeb0KV8SWMmq0OJfePgS3Q7PwjSlXGlNjkxNrnVWUUkEQ34NUnDvSrMqykryy/iW9c/D
+ gXyg8fqE+ENifitrfwCt4nTV+9LcUq2aB525DmWHZMPTuZw5RRlct+fw+wOmrH/WB9icaiIurjJ
+ QCE1Zz07zvHHVEaCNJ8jJJ5IZns4gEzqnorVA1L3yRvo2UCxRkkWTHIeu20I5qHLfjHQmV2wfZb
+ ncGgC2c67OO7MS0N0fMlGzXmNUqIj7eQUw7/ccZVJxg9YqCE4pNzhNsFaG40btbiWqYIrk01RJ0
+ 3UJudjLRKAQuSfHQsR7xcQ6q/0uzuYl6bMujC2AetSa3yPdUCu1tjW5cuGCwEvSrT/3Lvxlb6fd CvoZsl68gmvse9Q==
+X-Developer-Key: i=matthieu.baerts@tessares.net; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Jun 06, 2023 at 05:44:48PM -0700, Andrew Morton wrote:
-> On Tue,  6 Jun 2023 19:36:13 -0400 Rafael Aquini <aquini@redhat.com> wrote:
-> 
-> > When commit 19343b5bdd16 ("mm/page-writeback: introduce tracepoint for
-> > wait_on_page_writeback()") repurposed the writeback_dirty_page trace event
-> > as a template to create its new wait_on_page_writeback trace event, it
-> > ended up opening a window to NULL pointer dereference crashes due to
-> > the (infrequent) occurrence of a race where an access to a page in the
-> > swap-cache happens concurrently with the moment this page is being
-> > written to disk and the tracepoint is enabled:
-> 
-> I don't see what the race is, or why a race is involved.
-> 
-> >     BUG: kernel NULL pointer dereference, address: 0000000000000040
-> >     #PF: supervisor read access in kernel mode
-> >     #PF: error_code(0x0000) - not-present page
-> >     PGD 800000010ec0a067 P4D 800000010ec0a067 PUD 102353067 PMD 0
-> >     Oops: 0000 [#1] PREEMPT SMP PTI
-> >     CPU: 1 PID: 1320 Comm: shmem-worker Kdump: loaded Not tainted 6.4.0-rc5+ #13
-> >     Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230301gitf80f052277c8-1.fc37 03/01/2023
-> >     RIP: 0010:trace_event_raw_event_writeback_folio_template+0x76/0xf0
-> >     Code: 4d 85 e4 74 5c 49 8b 3c 24 e8 06 98 ee ff 48 89 c7 e8 9e 8b ee ff ba 20 00 00 00 48 89 ef 48 89 c6 e8 fe d4 1a 00 49 8b 04 24 <48> 8b 40 40 48 89 43 28 49 8b 45 20 48 89 e7 48 89 43 30 e8 a2 4d
-> >     RSP: 0000:ffffaad580b6fb60 EFLAGS: 00010246
-> >     RAX: 0000000000000000 RBX: ffff90e38035c01c RCX: 0000000000000000
-> >     RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff90e38035c044
-> >     RBP: ffff90e38035c024 R08: 0000000000000002 R09: 0000000000000006
-> >     R10: ffff90e38035c02e R11: 0000000000000020 R12: ffff90e380bac000
-> >     R13: ffffe3a7456d9200 R14: 0000000000001b81 R15: ffffe3a7456d9200
-> >     FS:  00007f2e4e8a15c0(0000) GS:ffff90e3fbc80000(0000) knlGS:0000000000000000
-> >     CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> >     CR2: 0000000000000040 CR3: 00000001150c6003 CR4: 0000000000170ee0
-> >     Call Trace:
-> >      <TASK>
-> >      ? __die+0x20/0x70
-> >      ? page_fault_oops+0x76/0x170
-> >      ? kernelmode_fixup_or_oops+0x84/0x110
-> >      ? exc_page_fault+0x65/0x150
-> >      ? asm_exc_page_fault+0x22/0x30
-> >      ? trace_event_raw_event_writeback_folio_template+0x76/0xf0
-> >      folio_wait_writeback+0x6b/0x80
-> >      shmem_swapin_folio+0x24a/0x500
-> 
-> shmem_swapin_folio->folio_wait_writeback will always pass in a page
-> which has ->mapping==NULL, won't it?  So why doesn't it crash every
-> time?
->
+commit 46565acdd29facbf418a11e4a3791b3c8967308d upstream.
 
-Hey Andrew,
+  Backport note: a simple conflict with 787eb1e4df93 ("selftests: mptcp:
+  uniform 'rndh' variable") where a new line was added for something
+  else in the same context.
 
-Here's why we end up looking at the swapper_spaces[] address space, for
-this particular case:
+Selftests are supposed to run on any kernels, including the old ones not
+supporting MPTCP.
 
-void folio_wait_writeback(struct folio *folio)
-{
-    while (folio_test_writeback(folio)) {
-        trace_folio_wait_writeback(folio, folio_mapping(folio));
-            struct address_space *folio_mapping(struct folio *folio)
-            ... 
-                if (unlikely(folio_test_swapcache(folio)))
-                    return swap_address_space(folio_swap_entry(folio));
+A new check is then added to make sure MPTCP is supported. If not, the
+test stops and is marked as "skipped".
 
-when the shmem swap-in path stumbles on a page in the swapcache that is still
-under its way to disk (via swap_writepage->swap_writepage_bdev_async->submit_bio)
-the tracepoint, will get a swap_address_space pointer back from folio_mapping()
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
+Fixes: df62f2ec3df6 ("selftests/mptcp: add diag interface tests")
+Cc: stable@vger.kernel.org
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+---
+ tools/testing/selftests/net/mptcp/diag.sh | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-
+diff --git a/tools/testing/selftests/net/mptcp/diag.sh b/tools/testing/selftests/net/mptcp/diag.sh
+index 515859a5168b..dd730a35bd12 100755
+--- a/tools/testing/selftests/net/mptcp/diag.sh
++++ b/tools/testing/selftests/net/mptcp/diag.sh
+@@ -1,6 +1,8 @@
+ #!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
+ 
++. "$(dirname "${0}")/mptcp_lib.sh"
++
+ rndh=$(printf %x $sec)-$(mktemp -u XXXXXX)
+ ns="ns1-$rndh"
+ ksft_skip=4
+@@ -25,6 +27,8 @@ cleanup()
+ 	ip netns del $ns
+ }
+ 
++mptcp_lib_check_mptcp
++
+ ip -Version > /dev/null 2>&1
+ if [ $? -ne 0 ];then
+ 	echo "SKIP: Could not run test without ip tool"
+-- 
+2.39.2
 
