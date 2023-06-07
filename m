@@ -2,90 +2,136 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82B5D7268CC
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 20:33:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC7E27268D4
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 20:34:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232208AbjFGSdP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 14:33:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48254 "EHLO
+        id S231845AbjFGSeP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 14:34:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232262AbjFGSdM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 14:33:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 900BF1BD0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 11:33:02 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E4ED063BEF
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 18:33:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B2CC433D2;
-        Wed,  7 Jun 2023 18:33:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686162781;
-        bh=R3ANen+nYxN6y2OhJU+Wqoin5M/3/8ATRMK3ROqeqcA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NzNRu7ISd5l4UK3JJuIXR252/aenULzsrVwMXDBzfZFCivBgNQSd3bjhhzuabBrVJ
-         sO2VDTaqp77COxkZ81fy9UxOiy6V00xDgngTb/PO7ZRp6JrFoce7cGKPFzLtUccBy6
-         NdfAAaJnv/tbhPeR7IpAyOQ9bW7XHmtRzm2VeSJc=
-Date:   Wed, 7 Jun 2023 20:32:58 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Conor Dooley <conor.dooley@microchip.com>
-Cc:     Nathan Chancellor <nathan@kernel.org>, sashal@kernel.org,
-        palmer@dabbelt.com, conor@kernel.org, paul.walmsley@sifive.com,
-        aou@eecs.berkeley.edu, ndesaulniers@google.com, trix@redhat.com,
-        stable@vger.kernel.org, linux-riscv@lists.infradead.org,
-        llvm@lists.linux.dev, patches@lists.linux.dev
-Subject: Re: [PATCH 6.3] riscv: vmlinux.lds.S: Explicitly handle '.got'
- section
-Message-ID: <2023060752-chaffing-unable-8b26@gregkh>
-References: <20230605-6-3-riscv-got-orphan-warning-llvm-17-v1-1-72c4f11e020f@kernel.org>
- <20230606-exploit-refill-b9311f2378f3@wendy>
+        with ESMTP id S231585AbjFGSeN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 14:34:13 -0400
+Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 680011FE9;
+        Wed,  7 Jun 2023 11:34:02 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.nyi.internal (Postfix) with ESMTP id 8384A5C017E;
+        Wed,  7 Jun 2023 14:34:01 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute5.internal (MEProxy); Wed, 07 Jun 2023 14:34:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm1; t=1686162841; x=1686249241; bh=hI
+        AsYVAmQhrwKHACsiAIdwxjB+I4M7q3AX8nU7deL08=; b=f3VlPMlix6wv8T5tim
+        d3pG5yxns4bF6ExxzmVMzCbRz2MRvA42FEjLc5PUiadtvCg0hgviBGB3pYzCdJ31
+        qQQA2gP6nCiffQtnaL3vRzpZ8U7UqvwBPe2dFANQJ05qbMstITkCwutjw3yIIpXJ
+        UD4hRsVag5sZP9hou9DCtUWBWEkObZe86eqkw9Pys3QZUoZU3jNPbo4yAOFYpX41
+        soc45iyP2UhOMo1EeLPReSsh1idruu9C5S2NOlWeBbd1KOpWqTz34OkOlQShvxNe
+        7/JMxGXaUFH3NSnlHJG2Y1ZG92C3OttSOIQPy77LY9Oo6SlNyh2GuCBOmzdfJXYM
+        2Sow==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; t=1686162841; x=1686249241; bh=hIAsYVAmQhrwK
+        HACsiAIdwxjB+I4M7q3AX8nU7deL08=; b=cjwkb0uv/EXxOHfEP8BBdKbrp/2Mn
+        /VADnopGp4+Om8M4423PfUgBO2x3hMp1Wxu2xAoKwwKCsA5usR/wPMum1qe8JUGH
+        4MEElq54uvv0gvhrUtW4HA0qBITFpkSsqf+rZtRZ8esIe0p4L/l4QTB5xu1ldstW
+        gvbGDP97padpT+KhKhGBoJnJMy/i4VsLv5+r4U1u3gu/A6WFNv179HH+GXqEg87f
+        3u34l3LdKro5fsT0rw/pK9oBrESrlYce6fe5su9CNT91+rPFUj4ciRJzfMpgAGCO
+        prB66DHLPBuMcblZ0BFHa+CJTrCQIbQ0Gw8CM/w314UleHIyLuKNj2KQw==
+X-ME-Sender: <xms:mc2AZGOqZK7gU6O53OnJGS84qHZ-AQcBzHtbi5LbJDxyr2zVn3zkyg>
+    <xme:mc2AZE-aK-cJy7HV-41hgVSwgq7Ad1lKECv8GUAbOkoR8gUW1VxC93vbX3Q6zCC-P
+    IQQHBjL3AGNpg>
+X-ME-Received: <xmr:mc2AZNQFaFRGE-QH_JS7A5ZcFrmuSMw1QrUaRMo7ItT8m6VHys53wzgfx2tpL51r41bqBwmQ7xseohfG5PWsSsbZxshwZo-HYDPreQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgedtgedguddvjecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgv
+    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeeghe
+    euhefgtdeluddtleekfeegjeetgeeikeehfeduieffvddufeefleevtddtvdenucffohhm
+    rghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
+X-ME-Proxy: <xmx:mc2AZGtf2uG2APQpSPPfDlng6J5b7Fy4HhTj775clZlJaSzNWhp-SQ>
+    <xmx:mc2AZOeGnFgVQzCmHyjTzJ9pT7wf_lgs7NqYCDOo34wmCnnYuXAvVw>
+    <xmx:mc2AZK2Ws4tv-rBEpaeqh9-OPhx9_PzuWI398alDN31if4iurtao2A>
+    <xmx:mc2AZPWg3gn4yXhRxaGZGpscgjUYgHTDZ22YsuxfEdlepyymjJTzmQ>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 7 Jun 2023 14:34:00 -0400 (EDT)
+Date:   Wed, 7 Jun 2023 20:33:54 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        songmuchun@bytedance.com, mike.kravetz@oracle.com,
+        Ackerley Tng <ackerleytng@google.com>
+Subject: Re: [PATCH 6.3.y] mm/hugetlb: revert use of page_cache_next_miss()
+Message-ID: <2023060745-kilometer-omnivore-4471@gregkh>
+References: <20230606172022.128441-1-sidhartha.kumar@oracle.com>
+ <2023060650-overlying-skiing-191d@gregkh>
+ <c6ead868-3523-f25c-3f04-119da28a50ff@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230606-exploit-refill-b9311f2378f3@wendy>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <c6ead868-3523-f25c-3f04-119da28a50ff@oracle.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Jun 06, 2023 at 11:40:35AM +0100, Conor Dooley wrote:
-> On Mon, Jun 05, 2023 at 02:15:08PM -0700, Nathan Chancellor wrote:
-> > This patch is for linux-6.3.y only, it has no direct mainline
-> > equivalent.
+On Tue, Jun 06, 2023 at 11:13:05AM -0700, Sidhartha Kumar wrote:
+> On 6/6/23 10:38 AM, Greg KH wrote:
+> > On Tue, Jun 06, 2023 at 10:20:22AM -0700, Sidhartha Kumar wrote:
+> > > As reported by Ackerley[1], the use of page_cache_next_miss() in
+> > > hugetlbfs_fallocate() introduces a bug where a second fallocate() call to
+> > > same offset fails with -EEXIST. Revert this change and go back to the
+> > > previous method of using get from the page cache and then dropping the
+> > > reference on success.
+> > > 
+> > > hugetlbfs_pagecache_present() was also refactored to use
+> > > page_cache_next_miss(), revert the usage there as well.
+> > > 
+> > > User visible impacts include hugetlb fallocate incorrectly returning
+> > > EEXIST if pages are already present in the file. In addition, hugetlb
+> > > pages will not be included in core dumps if they need to be brought in via
+> > > GUP. userfaultfd UFFDIO_COPY also uses this code and will not notice pages
+> > > already present in the cache. It may try to allocate a new page and
+> > > potentially return ENOMEM as opposed to EEXIST.
+> > > 
+> > > Fixes: d0ce0e47b323 ("mm/hugetlb: convert hugetlb fault paths to use alloc_hugetlb_folio()")
+> > > Cc: <stable@vger.kernel.org> #v6.3
+> > > Reported-by: Ackerley Tng <ackerleytng@google.com>
+> > > Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+> > > Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
+> > > 
+> > > [1] https://lore.kernel.org/linux-mm/cover.1683069252.git.ackerleytng@google.com/
+> > > ---
+> > > 
+> > > This revert is the safest way to fix 6.3. The upstream fix will either
+> > > fix page_cache_next_miss() itself or use Ackerley's patch to introduce a
+> > > new function to check if a page is present in the page cache. Both
+> > > directions are currently under review so we can use this safe and simple
+> > > fix for 6.3
 > > 
-> > LLVM 17 will now use the GOT for extern weak symbols when using the
-> > medany model, which causes a linker orphan section warning on
-> > linux-6.3.y:
-> > 
-> >   ld.lld: warning: <internal>:(.got) is being placed in '.got'
-> > 
-> > This is not an issue in mainline because handling of the .got section
-> > was added by commit 39b33072941f ("riscv: Introduce CONFIG_RELOCATABLE")
-> > and further extended by commit 26e7aacb83df ("riscv: Allow to downgrade
-> > paging mode from the command line") in 6.4-rc1. Neither of these changes
-> > are suitable for stable, so add explicit handling of the .got section in
-> > a standalone change to align 6.3 and mainline, which addresses the
-> > warning.
-> > 
-> > This is only an issue for 6.3 because commit f4b71bff8d85 ("riscv:
-> > select ARCH_WANT_LD_ORPHAN_WARN for !XIP_KERNEL") landed in 6.3-rc1, so
-> > earlier releases will not see this warning because it will not be
-> > enabled.
-> > 
-> > Closes: https://github.com/ClangBuiltLinux/linux/issues/1865
-> > Link: https://github.com/llvm/llvm-project/commit/a178ba9fbd0a27057dc2fa4cb53c76caa013caac
-> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> > Is there any specific reason why we don't just wait for the fix for
+> > Linus's tree before applying this one, or applying the real fix instead?
 > 
-> Seems reasonable to me chief.
-> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> I missed Andrew's message stating he would prefer the real fix[1].
+> 
+> Sorry for the noise,
+> Sidhartha Kumar
+> 
+> [1] https://lore.kernel.org/lkml/20230603022209.GA114055@monkey/T/#mea6c8a015dbea5f9c2be88b9791996f4be6c2de8
 
-Now queued up,t hanks.
+Great, is that going to Linus's tree soon?
+
+thanks,
 
 greg k-h
