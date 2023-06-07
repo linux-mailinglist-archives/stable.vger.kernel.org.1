@@ -2,49 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27962726C54
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:32:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FFC2726AF4
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:21:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233734AbjFGUcg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:32:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58872 "EHLO
+        id S231302AbjFGUVU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:21:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233690AbjFGUcf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:32:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7E081BCC
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:32:28 -0700 (PDT)
+        with ESMTP id S232874AbjFGUVM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:21:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2159D26B8
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:20:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D8F064510
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:32:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70205C433EF;
-        Wed,  7 Jun 2023 20:32:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FA8964392
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:20:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245ABC4339B;
+        Wed,  7 Jun 2023 20:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169947;
-        bh=NoXGJDsHf96ZtB8bjoZdgOBpCuSqudCgUPLR+s4g7bU=;
+        s=korg; t=1686169224;
+        bh=rOGwzp4wdvUK32NTUppxLuccKbf/zm39VBLfEOvqHA8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=atbTDOM234ust/8fFqGz7B5BhltVf9HwfNjJstCpEMtOF+2lmVECsgt0GIILKfo5k
-         +BKqxcNQsfvdclpQcSDrKvUq27GAtbzNCpBtR+aDculb8EoBPG/imgw9HTCKR/fjeM
-         +o59H8Nm8YVAYX6FWYu5aq2t2dlVVB0I8pm14Ghc=
+        b=UTduEo803bW1HgiW+jJHkCqTyyoCvru9nlyr56v6KGk9g50Wqh3fT1PpeHuhCpFgX
+         Bv5U79XR5nwzdqkAWwyVSy4979RD+g8o64m96xiyBJrtTNVEf4IljHjiLY2n4FXisT
+         8o+T50u9UaxkQTCA/I30a52JW7n3pKMI5gigRG20=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.3 275/286] ksmbd: fix credit count leakage
+        patches@lists.linux.dev, stable@kernel.org,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Samuel Mendoza-Jonas <samjonas@amazon.com>
+Subject: [PATCH 4.14 60/61] Fix double fget() in vhost_net_set_backend()
 Date:   Wed,  7 Jun 2023 22:16:14 +0200
-Message-ID: <20230607200932.276450463@linuxfoundation.org>
+Message-ID: <20230607200855.836993540@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
+References: <20230607200835.310274198@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,39 +56,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit 84c5aa47925a1f40d698b6a6a2bf67e99617433d upstream.
+commit fb4554c2232e44d595920f4d5c66cf8f7d13f9bc upstream.
 
-This patch fix the failure from smb2.credits.single_req_credits_granted
-test. When client send 8192 credit request, ksmbd return 8191 credit
-granted. ksmbd should give maximum possible credits that must be granted
-within the range of not exceeding the max credit to client.
+Descriptor table is a shared resource; two fget() on the same descriptor
+may return different struct file references.  get_tap_ptr_ring() is
+called after we'd found (and pinned) the socket we'll be using and it
+tries to find the private tun/tap data structures associated with it.
+Redoing the lookup by the same file descriptor we'd used to get the
+socket is racy - we need to same struct file.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Thanks to Jason for spotting a braino in the original variant of patch -
+I'd missed the use of fd == -1 for disabling backend, and in that case
+we can end up with sock == NULL and sock != oldsock.
+
+Cc: stable@kernel.org
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+[4.14: Account for get_tap_skb_array() instead of get_tap_ptr_ring()]
+Signed-off-by: Samuel Mendoza-Jonas <samjonas@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/smb2pdu.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/vhost/net.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -326,13 +326,9 @@ int smb2_set_rsp_credits(struct ksmbd_wo
- 	if (hdr->Command == SMB2_NEGOTIATE)
- 		aux_max = 1;
- 	else
--		aux_max = conn->vals->max_credits - credit_charge;
-+		aux_max = conn->vals->max_credits - conn->total_credits;
- 	credits_granted = min_t(unsigned short, credits_requested, aux_max);
+--- a/drivers/vhost/net.c
++++ b/drivers/vhost/net.c
+@@ -1047,13 +1047,9 @@ err:
+ 	return ERR_PTR(r);
+ }
  
--	if (conn->vals->max_credits - conn->total_credits < credits_granted)
--		credits_granted = conn->vals->max_credits -
--			conn->total_credits;
+-static struct skb_array *get_tap_skb_array(int fd)
++static struct skb_array *get_tap_skb_array(struct file *file)
+ {
+ 	struct skb_array *array;
+-	struct file *file = fget(fd);
 -
- 	conn->total_credits += credits_granted;
- 	work->credits_granted += credits_granted;
+-	if (!file)
+-		return NULL;
+ 	array = tun_get_skb_array(file);
+ 	if (!IS_ERR(array))
+ 		goto out;
+@@ -1062,7 +1058,6 @@ static struct skb_array *get_tap_skb_arr
+ 		goto out;
+ 	array = NULL;
+ out:
+-	fput(file);
+ 	return array;
+ }
  
+@@ -1143,8 +1138,12 @@ static long vhost_net_set_backend(struct
+ 		vhost_net_disable_vq(n, vq);
+ 		vq->private_data = sock;
+ 		vhost_net_buf_unproduce(nvq);
+-		if (index == VHOST_NET_VQ_RX)
+-			nvq->rx_array = get_tap_skb_array(fd);
++		if (index == VHOST_NET_VQ_RX) {
++			if (sock)
++				nvq->rx_array = get_tap_skb_array(sock->file);
++			else
++				nvq->rx_array = NULL;
++		}
+ 		r = vhost_vq_init_access(vq);
+ 		if (r)
+ 			goto err_used;
 
 
