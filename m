@@ -2,45 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3F45726D2F
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:40:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41CD3726B92
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:26:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234299AbjFGUkE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:40:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38814 "EHLO
+        id S233341AbjFGU03 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:26:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234426AbjFGUjt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:39:49 -0400
+        with ESMTP id S233263AbjFGU0X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:26:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 556782722
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:39:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A8961FDE
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:26:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E77E0645DB
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:39:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D50C7C433D2;
-        Wed,  7 Jun 2023 20:39:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3ED4A64450
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:25:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4CCC433D2;
+        Wed,  7 Jun 2023 20:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170367;
-        bh=3qj6rJ3uvCLuNrY1Hd+24d/bu7yQq7OqvEZSE4B87lo=;
+        s=korg; t=1686169548;
+        bh=ff1S6i4jLOfLLDr5CzWF6ooM3A4D2S7c6EccFUBVNa0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bh5JyC9Cg/SrTjXreAyGlJeBtDDMwuN3qdOx8+X5iMUCmGZX5MmQVoyeAHLWWPcW9
-         4OlO8HrfWYA1eLfumcNvo4iTdHACunfROv2CAc3BG2f0I7ZOBMeqEyfnjzJv4tRwIG
-         knTbPCHrKwn+t/7QM5GfSLc+6uCiB+B6vgBDQFTE=
+        b=wgnTpGUz28LY+5GSzXtWCwfh4/nWoAQToGUgHUPTm4dnuZM2mQJ98Zou9v1gZEgnG
+         h4rVIqCyfz/FU82zfgahGwUHTxD/ljVCG2DHKaq46DUsHz0RRcaWuwH4ueyuGQoqYi
+         SB1Vr391OWek9RKWnPQ3510MIkqVjEV+lSfzDodU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mustafa Ismail <mustafa.ismail@intel.com>,
-        Shiraz Saleem <shiraz.saleem@intel.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 028/225] RDMA/irdma: Prevent QP use after free
+        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 122/286] ASoC: dt-bindings: Adjust #sound-dai-cells on TIs single-DAI codecs
 Date:   Wed,  7 Jun 2023 22:13:41 +0200
-Message-ID: <20230607200915.241753518@linuxfoundation.org>
+Message-ID: <20230607200927.067033112@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,55 +52,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mustafa Ismail <mustafa.ismail@intel.com>
+From: Martin Povišer <povik+lin@cutebit.org>
 
-[ Upstream commit c8f304d75f6c6cc679a73f89591f9a915da38f09 ]
+[ Upstream commit efb2bfd7b3d210c479b9361c176d7426e5eb8663 ]
 
-There is a window where the poll cq may use a QP that has been freed.
-This can happen if a CQE is polled before irdma_clean_cqes() can clear the
-CQE's related to the QP and the destroy QP races to free the QP memory.
-then the QP structures are used in irdma_poll_cq.  Fix this by moving the
-clearing of CQE's before the reference is removed and the QP is destroyed.
+A bunch of TI's codecs have binding schemas which force #sound-dai-cells
+to one despite those codecs only having a single DAI. Allow for bindings
+with zero DAI cells and deprecate the former non-zero value.
 
-Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
-Link: https://lore.kernel.org/r/20230522155654.1309-3-shiraz.saleem@intel.com
-Signed-off-by: Mustafa Ismail <mustafa.ismail@intel.com>
-Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Martin Povišer <povik+lin@cutebit.org
+Link: https://lore.kernel.org/r/20230509153412.62847-1-povik+lin@cutebit.org
+Signed-off-by: Mark Brown <broonie@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/verbs.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ Documentation/devicetree/bindings/sound/tas2562.yaml | 6 ++++--
+ Documentation/devicetree/bindings/sound/tas2770.yaml | 6 ++++--
+ Documentation/devicetree/bindings/sound/tas27xx.yaml | 6 ++++--
+ 3 files changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index f6973ea55eda7..1c5a61f51a67a 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -522,11 +522,6 @@ static int irdma_destroy_qp(struct ib_qp *ibqp, struct ib_udata *udata)
- 	if (!iwqp->user_mode)
- 		cancel_delayed_work_sync(&iwqp->dwork_flush);
+diff --git a/Documentation/devicetree/bindings/sound/tas2562.yaml b/Documentation/devicetree/bindings/sound/tas2562.yaml
+index 1085592cefccc..81218c07079a8 100644
+--- a/Documentation/devicetree/bindings/sound/tas2562.yaml
++++ b/Documentation/devicetree/bindings/sound/tas2562.yaml
+@@ -55,7 +55,9 @@ properties:
+     description: TDM TX current sense time slot.
  
--	irdma_qp_rem_ref(&iwqp->ibqp);
--	wait_for_completion(&iwqp->free_qp);
--	irdma_free_lsmm_rsrc(iwqp);
--	irdma_cqp_qp_destroy_cmd(&iwdev->rf->sc_dev, &iwqp->sc_qp);
--
- 	if (!iwqp->user_mode) {
- 		if (iwqp->iwscq) {
- 			irdma_clean_cqes(iwqp, iwqp->iwscq);
-@@ -534,6 +529,12 @@ static int irdma_destroy_qp(struct ib_qp *ibqp, struct ib_udata *udata)
- 				irdma_clean_cqes(iwqp, iwqp->iwrcq);
- 		}
- 	}
-+
-+	irdma_qp_rem_ref(&iwqp->ibqp);
-+	wait_for_completion(&iwqp->free_qp);
-+	irdma_free_lsmm_rsrc(iwqp);
-+	irdma_cqp_qp_destroy_cmd(&iwdev->rf->sc_dev, &iwqp->sc_qp);
-+
- 	irdma_remove_push_mmap_entries(iwqp);
- 	irdma_free_qp_rsrc(iwqp);
+   '#sound-dai-cells':
+-    const: 1
++    # The codec has a single DAI, the #sound-dai-cells=<1>; case is left in for backward
++    # compatibility but is deprecated.
++    enum: [0, 1]
  
+ required:
+   - compatible
+@@ -72,7 +74,7 @@ examples:
+      codec: codec@4c {
+        compatible = "ti,tas2562";
+        reg = <0x4c>;
+-       #sound-dai-cells = <1>;
++       #sound-dai-cells = <0>;
+        interrupt-parent = <&gpio1>;
+        interrupts = <14>;
+        shutdown-gpios = <&gpio1 15 0>;
+diff --git a/Documentation/devicetree/bindings/sound/tas2770.yaml b/Documentation/devicetree/bindings/sound/tas2770.yaml
+index 982949ba8a4be..cdb493db47f9b 100644
+--- a/Documentation/devicetree/bindings/sound/tas2770.yaml
++++ b/Documentation/devicetree/bindings/sound/tas2770.yaml
+@@ -57,7 +57,9 @@ properties:
+       - 1 # Falling edge
+ 
+   '#sound-dai-cells':
+-    const: 1
++    # The codec has a single DAI, the #sound-dai-cells=<1>; case is left in for backward
++    # compatibility but is deprecated.
++    enum: [0, 1]
+ 
+ required:
+   - compatible
+@@ -74,7 +76,7 @@ examples:
+      codec: codec@41 {
+        compatible = "ti,tas2770";
+        reg = <0x41>;
+-       #sound-dai-cells = <1>;
++       #sound-dai-cells = <0>;
+        interrupt-parent = <&gpio1>;
+        interrupts = <14>;
+        reset-gpio = <&gpio1 15 0>;
+diff --git a/Documentation/devicetree/bindings/sound/tas27xx.yaml b/Documentation/devicetree/bindings/sound/tas27xx.yaml
+index 0957dd435bb4b..2ef05aacc167a 100644
+--- a/Documentation/devicetree/bindings/sound/tas27xx.yaml
++++ b/Documentation/devicetree/bindings/sound/tas27xx.yaml
+@@ -50,7 +50,9 @@ properties:
+     description: TDM TX voltage sense time slot.
+ 
+   '#sound-dai-cells':
+-    const: 1
++    # The codec has a single DAI, the #sound-dai-cells=<1>; case is left in for backward
++    # compatibility but is deprecated.
++    enum: [0, 1]
+ 
+ required:
+   - compatible
+@@ -67,7 +69,7 @@ examples:
+      codec: codec@38 {
+        compatible = "ti,tas2764";
+        reg = <0x38>;
+-       #sound-dai-cells = <1>;
++       #sound-dai-cells = <0>;
+        interrupt-parent = <&gpio1>;
+        interrupts = <14>;
+        reset-gpios = <&gpio1 15 0>;
 -- 
 2.39.2
 
