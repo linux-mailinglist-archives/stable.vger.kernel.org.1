@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6688C726CA4
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:35:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C72F726E4C
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:49:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234010AbjFGUfP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:35:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33446 "EHLO
+        id S235130AbjFGUt3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:49:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234083AbjFGUfC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:35:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE6CA26B9
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:34:51 -0700 (PDT)
+        with ESMTP id S235144AbjFGUtG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:49:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72BB72700
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:48:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F62364524
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:34:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A355EC433EF;
-        Wed,  7 Jun 2023 20:34:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 548AE646D2
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:48:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F42C433EF;
+        Wed,  7 Jun 2023 20:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170091;
-        bh=Kt7jR47mVrz/FultZqMFd7dGSMJbauYPN7iqVUB2JEg=;
+        s=korg; t=1686170921;
+        bh=xh7iFClTNrBmUWKlMC42PsRuhE+xIlxos9/fPlQff7Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mNnDTZJ5fdDl24yrldVDxhI3+VWEqod2yqHGsf5+s1osoGssaO+jl3gfWjfprZKGg
-         re5VOGLnzueiUYOd627ekEqD+qs+b0aqC7azHWAzoAzv2GsgUW1X3ROwldDmjOQ6BV
-         Rc3jLH11jiOUVjszaK47VOPjJN3y3/NHbQken7e4=
+        b=QrFrpbg4vthiWkH8GLYjIayGA1c61MvDjq2jLStyPDFBmPB963dyoXoHF22ZjQ2+q
+         2OEfoXnhsktymU9mqybka0n5ry0vRn2mheeba1+8YDLpoK8YkA4Qcagep8j37Jqc8M
+         3hqcHcBxEEcpKfm4TDYoy2RDiIgD4DzXc256VH6Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 42/88] media: dvb-usb-v2: rtl28xxu: fix null-ptr-deref in rtl28xxu_i2c_xfer
+        patches@lists.linux.dev, Guoqing Jiang <guoqing.jiang@linux.dev>,
+        Christoph Hellwig <hch@lst.de>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 043/120] block/rnbd: replace REQ_OP_FLUSH with REQ_OP_WRITE
 Date:   Wed,  7 Jun 2023 22:15:59 +0200
-Message-ID: <20230607200900.541441784@linuxfoundation.org>
+Message-ID: <20230607200902.257705508@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,82 +55,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Guoqing Jiang <guoqing.jiang@linux.dev>
 
-[ Upstream commit aa4a447b81b84f69c1a89ad899df157f386d7636 ]
+[ Upstream commit 5e6e08087a4acb4ee3574cea32dbff0f63c7f608 ]
 
-In rtl28xxu_i2c_xfer, msg is controlled by user. When msg[i].buf
-is null and msg[i].len is zero, former checks on msg[i].buf would be
-passed. Malicious data finally reach rtl28xxu_i2c_xfer. If accessing
-msg[i].buf[0] without sanity check, null ptr deref would happen.
-We add check on msg[i].len to prevent crash.
+Since flush bios are implemented as writes with no data and
+the preflush flag per Christoph's comment [1].
 
-Similar commit:
-commit 0ed554fd769a
-("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+And we need to change it in rnbd accordingly. Otherwise, I
+got splatting when create fs from rnbd client.
 
-Link: https://lore.kernel.org/linux-media/tencent_3623572106754AC2F266B316798B0F6CCA05@qq.com
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+[  464.028545] ------------[ cut here ]------------
+[  464.028553] WARNING: CPU: 0 PID: 65 at block/blk-core.c:751 submit_bio_noacct+0x32c/0x5d0
+[ ... ]
+[  464.028668] CPU: 0 PID: 65 Comm: kworker/0:1H Tainted: G           OE      6.4.0-rc1 #9
+[  464.028671] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.15.0-0-g2dd4b9b-rebuilt.opensuse.org 04/01/2014
+[  464.028673] Workqueue: ib-comp-wq ib_cq_poll_work [ib_core]
+[  464.028717] RIP: 0010:submit_bio_noacct+0x32c/0x5d0
+[  464.028720] Code: 03 0f 85 51 fe ff ff 48 8b 43 18 8b 88 04 03 00 00 85 c9 0f 85 3f fe ff ff e9 be fd ff ff 0f b6 d0 3c 0d 74 26 83 fa 01 74 21 <0f> 0b b8 0a 00 00 00 e9 56 fd ff ff 4c 89 e7 e8 70 a1 03 00 84 c0
+[  464.028722] RSP: 0018:ffffaf3680b57c68 EFLAGS: 00010202
+[  464.028724] RAX: 0000000000060802 RBX: ffffa09dcc18bf00 RCX: 0000000000000000
+[  464.028726] RDX: 0000000000000002 RSI: 0000000000000000 RDI: ffffa09dde081d00
+[  464.028727] RBP: ffffaf3680b57c98 R08: ffffa09dde081d00 R09: ffffa09e38327200
+[  464.028729] R10: 0000000000000000 R11: 0000000000000000 R12: ffffa09dde081d00
+[  464.028730] R13: ffffa09dcb06e1e8 R14: 0000000000000000 R15: 0000000000200000
+[  464.028733] FS:  0000000000000000(0000) GS:ffffa09e3bc00000(0000) knlGS:0000000000000000
+[  464.028735] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  464.028736] CR2: 000055a4e8206c40 CR3: 0000000119f06000 CR4: 00000000003506f0
+[  464.028738] Call Trace:
+[  464.028740]  <TASK>
+[  464.028746]  submit_bio+0x1b/0x80
+[  464.028748]  rnbd_srv_rdma_ev+0x50d/0x10c0 [rnbd_server]
+[  464.028754]  ? percpu_ref_get_many.constprop.0+0x55/0x140 [rtrs_server]
+[  464.028760]  ? __this_cpu_preempt_check+0x13/0x20
+[  464.028769]  process_io_req+0x1dc/0x450 [rtrs_server]
+[  464.028775]  rtrs_srv_inv_rkey_done+0x67/0xb0 [rtrs_server]
+[  464.028780]  __ib_process_cq+0xbc/0x1f0 [ib_core]
+[  464.028793]  ib_cq_poll_work+0x2b/0xa0 [ib_core]
+[  464.028804]  process_one_work+0x2a9/0x580
+
+[1]. https://lore.kernel.org/all/ZFHgefWofVt24tRl@infradead.org/
+
+Signed-off-by: Guoqing Jiang <guoqing.jiang@linux.dev>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Link: https://lore.kernel.org/r/20230512034631.28686-1-guoqing.jiang@linux.dev
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb-v2/rtl28xxu.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/block/rnbd/rnbd-proto.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/dvb-usb-v2/rtl28xxu.c b/drivers/media/usb/dvb-usb-v2/rtl28xxu.c
-index 857ef9edbc123..195b1977b6a68 100644
---- a/drivers/media/usb/dvb-usb-v2/rtl28xxu.c
-+++ b/drivers/media/usb/dvb-usb-v2/rtl28xxu.c
-@@ -189,6 +189,10 @@ static int rtl28xxu_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 			ret = -EOPNOTSUPP;
- 			goto err_mutex_unlock;
- 		} else if (msg[0].addr == 0x10) {
-+			if (msg[0].len < 1 || msg[1].len < 1) {
-+				ret = -EOPNOTSUPP;
-+				goto err_mutex_unlock;
-+			}
- 			/* method 1 - integrated demod */
- 			if (msg[0].buf[0] == 0x00) {
- 				/* return demod page from driver cache */
-@@ -202,6 +206,10 @@ static int rtl28xxu_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 				ret = rtl28xxu_ctrl_msg(d, &req);
- 			}
- 		} else if (msg[0].len < 2) {
-+			if (msg[0].len < 1) {
-+				ret = -EOPNOTSUPP;
-+				goto err_mutex_unlock;
-+			}
- 			/* method 2 - old I2C */
- 			req.value = (msg[0].buf[0] << 8) | (msg[0].addr << 1);
- 			req.index = CMD_I2C_RD;
-@@ -230,8 +238,16 @@ static int rtl28xxu_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 			ret = -EOPNOTSUPP;
- 			goto err_mutex_unlock;
- 		} else if (msg[0].addr == 0x10) {
-+			if (msg[0].len < 1) {
-+				ret = -EOPNOTSUPP;
-+				goto err_mutex_unlock;
-+			}
- 			/* method 1 - integrated demod */
- 			if (msg[0].buf[0] == 0x00) {
-+				if (msg[0].len < 2) {
-+					ret = -EOPNOTSUPP;
-+					goto err_mutex_unlock;
-+				}
- 				/* save demod page for later demod access */
- 				dev->page = msg[0].buf[1];
- 				ret = 0;
-@@ -244,6 +260,10 @@ static int rtl28xxu_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[],
- 				ret = rtl28xxu_ctrl_msg(d, &req);
- 			}
- 		} else if ((msg[0].len < 23) && (!dev->new_i2c_write)) {
-+			if (msg[0].len < 1) {
-+				ret = -EOPNOTSUPP;
-+				goto err_mutex_unlock;
-+			}
- 			/* method 2 - old I2C */
- 			req.value = (msg[0].buf[0] << 8) | (msg[0].addr << 1);
- 			req.index = CMD_I2C_WR;
+diff --git a/drivers/block/rnbd/rnbd-proto.h b/drivers/block/rnbd/rnbd-proto.h
+index ca166241452c2..cb11855455dde 100644
+--- a/drivers/block/rnbd/rnbd-proto.h
++++ b/drivers/block/rnbd/rnbd-proto.h
+@@ -234,7 +234,7 @@ static inline u32 rnbd_to_bio_flags(u32 rnbd_opf)
+ 		bio_opf = REQ_OP_WRITE;
+ 		break;
+ 	case RNBD_OP_FLUSH:
+-		bio_opf = REQ_OP_FLUSH | REQ_PREFLUSH;
++		bio_opf = REQ_OP_WRITE | REQ_PREFLUSH;
+ 		break;
+ 	case RNBD_OP_DISCARD:
+ 		bio_opf = REQ_OP_DISCARD;
 -- 
 2.39.2
 
