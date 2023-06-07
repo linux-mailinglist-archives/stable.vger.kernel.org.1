@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B49A8726FE7
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:03:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8DE9726F41
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:56:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235683AbjFGVDN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:03:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34290 "EHLO
+        id S235399AbjFGU4x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:56:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235964AbjFGVCz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:02:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79F6C2D56
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:02:19 -0700 (PDT)
+        with ESMTP id S235535AbjFGU4w (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:56:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C58B1FE3
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:56:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 42BB664969
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:02:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59A5DC433D2;
-        Wed,  7 Jun 2023 21:02:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DAA126485A
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:56:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11E4C4339B;
+        Wed,  7 Jun 2023 20:56:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171738;
-        bh=fTAbgeYGcm8/oBVFE8zh5uiwmKb3Y1ytnxJB+vcW7cw=;
+        s=korg; t=1686171406;
+        bh=zEgrazDcCfPtDQWqVRHZCNr7MT17in7QkAQ2bTDJKkg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LHxkRqqdaOaU77gNZawM7mCMAocZ2joW4tmnGLNJssF4hYlT4WkBGqDAjhVDFxnxf
-         lqHGUScsxl0PqYjG9vtGkfcEifLdq+h/Fb1+fdrBmJAnNBiRHYSel+DbgmPbb8gY+6
-         J7KgozSyhGE+FTNzFmmVZRxwqUeapiRVFwOiQYxs=
+        b=CpSlUtPJSKvMWLLPvjfnQpV5LK+7+PNU7MVPGRn/pOjmvPFrTUPW4zdD34Y0yqQxt
+         nomttjGCj/D7avbHlT5krslVvMdOEkGmdr0eyZU+378389TXYKXVXWc5xohi800318
+         FPsVRc9cD/EmjO9xq0ZZAqfbtSB7b14/bcoRlmV0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Ming Lei <ming.lei@redhat.com>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.15 130/159] block: fix revalidate performance regression
+        patches@lists.linux.dev, Kalle Valo <kvalo@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 81/99] wifi: rtlwifi: remove always-true condition pointed out by GCC 12
 Date:   Wed,  7 Jun 2023 22:17:13 +0200
-Message-ID: <20230607200907.930100361@linuxfoundation.org>
+Message-ID: <20230607200902.761419461@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,58 +53,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 47fe1c3064c6bc1bfa3c032ff78e603e5dd6e5bc upstream.
+commit ee3db469dd317e82f57b13aa3bc61be5cb60c2b4 upstream.
 
-The scsi driver function sd_read_block_characteristics() always calls
-disk_set_zoned() to a disk zoned model correctly, in case the device
-model changed. This is done even for regular disks to set the zoned
-model to BLK_ZONED_NONE and free any zone related resources if the drive
-previously was zoned.
+The .value is a two-dim array, not a pointer.
 
-This behavior significantly impact the time it takes to revalidate disks
-on a large system as the call to disk_clear_zone_settings() done from
-disk_set_zoned() for the BLK_ZONED_NONE case results in the device
-request queued to be frozen, even if there are no zone resources to
-free.
+struct iqk_matrix_regs {
+	bool iqk_done;
+        long value[1][IQK_MATRIX_REG_NUM];
+};
 
-Avoid this overhead for non-zoned devices by not calling
-disk_clear_zone_settings() in disk_set_zoned() if the device model
-was already set to BLK_ZONED_NONE, which is always the case for regular
-devices.
-
-Reported by: Brian Bunker <brian@purestorage.com>
-
-Fixes: 508aebb80527 ("block: introduce blk_queue_clear_zone_settings()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20230529073237.1339862-1-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Acked-by: Kalle Valo <kvalo@kernel.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-settings.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -875,6 +875,7 @@ static bool disk_has_partitions(struct g
- void blk_queue_set_zoned(struct gendisk *disk, enum blk_zoned_model model)
- {
- 	struct request_queue *q = disk->queue;
-+	unsigned int old_model = q->limits.zoned;
- 
- 	switch (model) {
- 	case BLK_ZONED_HM:
-@@ -912,7 +913,7 @@ void blk_queue_set_zoned(struct gendisk
- 		 */
- 		blk_queue_zone_write_granularity(q,
- 						queue_logical_block_size(q));
--	} else {
-+	} else if (old_model != BLK_ZONED_NONE) {
- 		blk_queue_clear_zone_settings(q);
- 	}
- }
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+@@ -2392,10 +2392,7 @@ void rtl92d_phy_reload_iqk_setting(struc
+ 			RT_TRACE(rtlpriv, COMP_SCAN, DBG_LOUD,
+ 				 "Just Read IQK Matrix reg for channel:%d....\n",
+ 				 channel);
+-			if ((rtlphy->iqk_matrix[indexforchannel].
+-			     value[0] != NULL)
+-				/*&&(regea4 != 0) */)
+-				_rtl92d_phy_patha_fill_iqk_matrix(hw, true,
++			_rtl92d_phy_patha_fill_iqk_matrix(hw, true,
+ 					rtlphy->iqk_matrix[
+ 					indexforchannel].value,	0,
+ 					(rtlphy->iqk_matrix[
 
 
