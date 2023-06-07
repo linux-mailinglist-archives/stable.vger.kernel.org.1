@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2320726F80
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:59:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3DAD726E2E
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:48:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235617AbjFGU67 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:58:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60348 "EHLO
+        id S234764AbjFGUsl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:48:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235704AbjFGU64 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:58:56 -0400
+        with ESMTP id S234841AbjFGUsZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:48:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5536F1FE3
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:58:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E9DC26B2
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:48:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3540F648A2
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:58:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45EE9C433EF;
-        Wed,  7 Jun 2023 20:58:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EB75D60C6D
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:48:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08EA9C4339B;
+        Wed,  7 Jun 2023 20:48:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171513;
-        bh=da/VMOT6pjZCU031IC5tNYnfdbV3xSFtVNUuAEcG9o0=;
+        s=korg; t=1686170890;
+        bh=RnTWit3fIlmdLqZWT+SREnqj6/o9Z0xdnUlpsu4GJtc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PhLePQXPlm9EXj9PO7osIVOWeyqDTmKTrl8d8SkbiTaLJF22cm0uPq2zqT8J2YWW7
-         Cib7y9mKjH8Dts05Sv4c2bTZrCk5IOc0RsrpVcgzCk6/L0nKIvNZ5T0E64Uv63ulXJ
-         JjVYZv/TVEkazBKhYud1P0LyN25QfkhvcU3ICEn0=
+        b=OJMuV32W0zsgWoX29HnEpyslb9FmTf+XpSXyDRECuToehJbnoXnpjBQ3Nb2VL3N9N
+         tGp5ofNG9WZWXOOkBJdnmu891Cc0LYDMq878WB+jfaRbUTxEKShch/hgVntwGUOsbq
+         GfotGJ5U/9bH2/5yZ8xu/cg/+30oDO3S5m9V6EVQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 017/159] af_packet: Fix data-races of pkt_sk(sk)->num.
+        patches@lists.linux.dev,
+        Tudor Ambarus <tudor.ambarus@microchip.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 004/120] dmaengine: at_xdmac: Fix concurrency over chans completed_cookie
 Date:   Wed,  7 Jun 2023 22:15:20 +0200
-Message-ID: <20230607200904.237272002@linuxfoundation.org>
+Message-ID: <20230607200901.057845937@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -49,102 +47,47 @@ Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-[ Upstream commit 822b5a1c17df7e338b9f05d1cfe5764e37c7f74f ]
+[ Upstream commit 506875c30fc5bf92246060bc3b4c38799646266b ]
 
-syzkaller found a data race of pkt_sk(sk)->num.
+Caller of dma_cookie_complete is expected to hold a lock to prevent
+concurrency over the channel's completed cookie marker. Call
+dma_cookie_complete() with the lock held.
 
-The value is changed under lock_sock() and po->bind_lock, so we
-need READ_ONCE() to access pkt_sk(sk)->num without these locks in
-packet_bind_spkt(), packet_bind(), and sk_diag_fill().
-
-Note that WRITE_ONCE() is already added by commit c7d2ef5dd4b0
-("net/packet: annotate accesses to po->bind").
-
-BUG: KCSAN: data-race in packet_bind / packet_do_bind
-
-write (marked) to 0xffff88802ffd1cee of 2 bytes by task 7322 on cpu 0:
- packet_do_bind+0x446/0x640 net/packet/af_packet.c:3236
- packet_bind+0x99/0xe0 net/packet/af_packet.c:3321
- __sys_bind+0x19b/0x1e0 net/socket.c:1803
- __do_sys_bind net/socket.c:1814 [inline]
- __se_sys_bind net/socket.c:1812 [inline]
- __x64_sys_bind+0x40/0x50 net/socket.c:1812
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-read to 0xffff88802ffd1cee of 2 bytes by task 7318 on cpu 1:
- packet_bind+0xbf/0xe0 net/packet/af_packet.c:3322
- __sys_bind+0x19b/0x1e0 net/socket.c:1803
- __do_sys_bind net/socket.c:1814 [inline]
- __se_sys_bind net/socket.c:1812 [inline]
- __x64_sys_bind+0x40/0x50 net/socket.c:1812
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-value changed: 0x0300 -> 0x0000
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 7318 Comm: syz-executor.4 Not tainted 6.3.0-13380-g7fddb5b5300c #4
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-
-Fixes: 96ec6327144e ("packet: Diag core and basic socket info dumping")
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20230524232934.50950-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e1f7c9eee707 ("dmaengine: at_xdmac: creation of the atmel eXtended DMA Controller driver")
+Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+Link: https://lore.kernel.org/r/20211215110115.191749-5-tudor.ambarus@microchip.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: 4d43acb145c3 ("dmaengine: at_xdmac: fix potential Oops in at_xdmac_prep_interleaved()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c | 4 ++--
- net/packet/diag.c      | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/dma/at_xdmac.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index ce484305be881..05a0b1d8c3721 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -3259,7 +3259,7 @@ static int packet_bind_spkt(struct socket *sock, struct sockaddr *uaddr,
- 	memcpy(name, uaddr->sa_data, sizeof(uaddr->sa_data));
- 	name[sizeof(uaddr->sa_data)] = 0;
+diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
+index 1fe006cc643e7..501196d8c4881 100644
+--- a/drivers/dma/at_xdmac.c
++++ b/drivers/dma/at_xdmac.c
+@@ -1651,11 +1651,10 @@ static void at_xdmac_tasklet(struct tasklet_struct *t)
+ 		}
  
--	return packet_do_bind(sk, name, 0, pkt_sk(sk)->num);
-+	return packet_do_bind(sk, name, 0, READ_ONCE(pkt_sk(sk)->num));
- }
+ 		txd = &desc->tx_dma_desc;
+-
++		dma_cookie_complete(txd);
+ 		at_xdmac_remove_xfer(atchan, desc);
+ 		spin_unlock_irq(&atchan->lock);
  
- static int packet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len)
-@@ -3277,7 +3277,7 @@ static int packet_bind(struct socket *sock, struct sockaddr *uaddr, int addr_len
- 		return -EINVAL;
- 
- 	return packet_do_bind(sk, NULL, sll->sll_ifindex,
--			      sll->sll_protocol ? : pkt_sk(sk)->num);
-+			      sll->sll_protocol ? : READ_ONCE(pkt_sk(sk)->num));
- }
- 
- static struct proto packet_proto = {
-diff --git a/net/packet/diag.c b/net/packet/diag.c
-index d704c7bf51b20..a68a84574c739 100644
---- a/net/packet/diag.c
-+++ b/net/packet/diag.c
-@@ -143,7 +143,7 @@ static int sk_diag_fill(struct sock *sk, struct sk_buff *skb,
- 	rp = nlmsg_data(nlh);
- 	rp->pdiag_family = AF_PACKET;
- 	rp->pdiag_type = sk->sk_type;
--	rp->pdiag_num = ntohs(po->num);
-+	rp->pdiag_num = ntohs(READ_ONCE(po->num));
- 	rp->pdiag_ino = sk_ino;
- 	sock_diag_save_cookie(sk, rp->pdiag_cookie);
+-		dma_cookie_complete(txd);
+ 		if (txd->flags & DMA_PREP_INTERRUPT)
+ 			dmaengine_desc_get_callback_invoke(txd, NULL);
  
 -- 
 2.39.2
