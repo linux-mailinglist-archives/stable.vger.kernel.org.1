@@ -2,164 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAA19726561
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 18:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27B0B72659B
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 18:16:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235657AbjFGQES (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 12:04:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34962 "EHLO
+        id S239020AbjFGQP7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 12:15:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234989AbjFGQER (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 12:04:17 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 503B1199D
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 09:04:16 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-3f78a32266bso38191235e9.3
-        for <stable@vger.kernel.org>; Wed, 07 Jun 2023 09:04:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tessares.net; s=google; t=1686153854; x=1688745854;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dZ1RnlsaAVzdFhEnLHPku4XYhys2W+vin9u3l3exZdY=;
-        b=0jy6lmVGozr8SvtRSw1jYJeyV/apDcqRwcCh3T94wXrdUHV/lBAZxy1ZP2RmqIn/jf
-         IFfK9Wxf4UToA9ImKfu1Q+6UdvcqCano/ZC4Ax6NOvuFvVs1Pv6nu7/Vz8khFGdb51k6
-         uv9QZAfKiiKd9pcPbji4n2O2ecJCPtQic1djNLPl33uwdFj3LDmBPIbT4BgX9XrdqKV5
-         /htpNoyYXU5eFMoDKK14h+BOhFn67bsdDY1qq/RI5prw5IELHCHEkD4tHhyElzoDBj/E
-         FiRqxmVzNBE35ZnN/hxbu41tmTwTEM3xvu/LbZxA+N0DoF6MUs2Ojydd262AsFacfF2F
-         saTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686153854; x=1688745854;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dZ1RnlsaAVzdFhEnLHPku4XYhys2W+vin9u3l3exZdY=;
-        b=Enh7GV1j1Y+RI27P56sJUC3aan5ynLlH/obKj4zuVikbb/iAg6y010AxEMf311asWc
-         M2O77EtrxfUzQVWdNYdNRAU6WiW9Sy81yF51Z9e+pYgt5gEGr64EeXGKrwvlmnUKpOQF
-         gvf/5L+MPNSfnqYvLmh7yyuzuZnAv2e3Kz/PQv0sb/vkOEGD1vDOmx50p4tsqrk//pYf
-         zpUfGbHSuoKxuHExBN7y5jiD39V1SGCyNJStSTg7ORFizvqBBiChLkk3jYFoMMYSX/ku
-         ybCkuK9FHk0wRrMbUH67AlAIjGDQ0+Hkibt0oDU49MYkvmg6CqB/lLUC5XacjilgGlO1
-         X1TQ==
-X-Gm-Message-State: AC+VfDxGc4WPo4ODopawNGQDXe+lSI4g7Nf4KZ2/tPqq9CRAL6JpnZ3n
-        I+/08Ii4KH4vpKXe4SXCNsgLSY2FJc5oKhmBsuNcTA==
-X-Google-Smtp-Source: ACHHUZ7xxlNLcdDm63QWIF9QEUP5Hlu1FK4dhBRePROQeB7OQfBjdUOuJo/Rwo5zCvHVlSvVq+Wz4w==
-X-Received: by 2002:a7b:c84f:0:b0:3f4:27db:d with SMTP id c15-20020a7bc84f000000b003f427db000dmr7477695wml.17.1686153854422;
-        Wed, 07 Jun 2023 09:04:14 -0700 (PDT)
-Received: from vdi08.nix.tessares.net (static.219.156.76.144.clients.your-server.de. [144.76.156.219])
-        by smtp.gmail.com with ESMTPSA id z18-20020a1c4c12000000b003f60d0eef36sm2624300wmf.48.2023.06.07.09.04.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jun 2023 09:04:14 -0700 (PDT)
-From:   Matthieu Baerts <matthieu.baerts@tessares.net>
-To:     stable@vger.kernel.org, gregkh@linuxfoundation.org
-Cc:     Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Mat Martineau <martineau@kernel.org>
-Subject: [PATCH 6.1.y] selftests: mptcp: join: avoid using 'cmp --bytes'
-Date:   Wed,  7 Jun 2023 18:04:04 +0200
-Message-Id: <20230607160404.2716176-1-matthieu.baerts@tessares.net>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <2023060758-corset-cramp-8d97@gregkh>
-References: <2023060758-corset-cramp-8d97@gregkh>
+        with ESMTP id S240581AbjFGQP6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 12:15:58 -0400
+Received: from frasgout11.his.huawei.com (unknown [14.137.139.23])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9D39199D;
+        Wed,  7 Jun 2023 09:15:53 -0700 (PDT)
+Received: from mail02.huawei.com (unknown [172.18.147.227])
+        by frasgout11.his.huawei.com (SkyGuard) with ESMTP id 4Qbscz46shz9v7N7;
+        Thu,  8 Jun 2023 00:05:23 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.204.63.22])
+        by APP2 (Coremail) with SMTP id GxC2BwDXhz4mrYBkJHoTAw--.4340S2;
+        Wed, 07 Jun 2023 17:15:39 +0100 (CET)
+From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
+To:     hughd@google.com, akpm@linux-foundation.org
+Cc:     linux-kernel@vger.kernel.org,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        stable@vger.kernel.org
+Subject: [PATCH] shmem: Use ramfs_kill_sb() for kill_sb method of ramfs-based tmpfs
+Date:   Wed,  7 Jun 2023 18:15:23 +0200
+Message-Id: <20230607161523.2876433-1-roberto.sassu@huaweicloud.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2687; i=matthieu.baerts@tessares.net;
- h=from:subject; bh=i90SchOWRKUHiohLNW60o908vbydTLrLD/nQb5dyS+8=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBkgKpzPcb5zemxtTiPWPjftOPIpVPwV2oFsp/vR
- TGr2tj3ZjCJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZICqcwAKCRD2t4JPQmmg
- c28XEADC9Di2pIizF8M/F6z9w5IkfGj+yiuemk4m1dB1uFOy35JZFlz195bijKX6sL1OON0/uG/
- rmmPkX7/hWfRswj4K5sA40hfj4WGE4A2sUo1Bpy36lNqOcEqJnuEWV2vOMWCLmctN/MhCPGYoTU
- WF6p6MqIVP7hh8dXOspbonjVFGD3eOIeFARRzR9g1xHhkSt9/yJQlJv2hX2ZTjxejqys6oRVhGh
- cEG2qxoMgJKKr40+830/O4p5xGog38eNjcDpTa7zTzxsFjgqm3D3gxE8mPVGhwO3TK2/ir13JPq
- 4Wh0JEvL3TQ+9jUKdBgARlVpYLa5f5/T6RntZCsIXFosPpXQHOZsfDDv9ROjYFdNzUKT7qtqree
- 0hGIZs3DsQz6Tx8MfNTt7QvR3RM4qe7bOg9TqNKfy1dVcdmp8fHuCyqdihSGCHWsuH1fZrd6qKG
- 4Udi6Ep/Qjym1pXU7aTXvVTg8dl36/MHXiX9VeVEGMoY//Xy5yVBzcChllCvIjsb9dVSpwuuslA
- O4yh6cbhvCCsOfgMCwJYti91s7iuTHiGHkbde/gWcn8KfMIkB1DQIhk7Erk1fCPKpY80jv4JgJo
- 5zQltrUSKbaOZYjYltI3gZVHGqUY2GllGWTu4sYHCveP3wzpkRXCIWJT4YfeZPSAjhLUv/B1ux+ 22bQcew2xDgWsxA==
-X-Developer-Key: i=matthieu.baerts@tessares.net; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+X-CM-TRANSID: GxC2BwDXhz4mrYBkJHoTAw--.4340S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Kw17Gw17ArW8ZrW5JFy8AFb_yoW8Aw4xpF
+        1DAFyrCr40gFyUZ3s2ka1vy34fWaykKrWvk34kuw1fJa43tr1vqF1vyr4akryrXrW8WryF
+        qr4j9ryjka4jyrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUk0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k2
+        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+        xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
+        AFwI0_Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+        6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+        Cjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI
+        7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxV
+        Cjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY
+        6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6x
+        AIw20EY4v20xvaj40_Zr0_Wr1UMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIE
+        c7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73UjIFyTuYvjxUInYwUUUUU
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgABBF1jj4pc5gAAsG
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
+        MAY_BE_FORGED,PDS_RDNS_DYNAMIC_FP,RDNS_DYNAMIC,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-commit d328fe87067480cf2bd0b58dab428a98d31dbb7e upstream.
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-  Backport note: a simple conflict with a3735625572d ("selftests: mptcp:
-  make evts global in mptcp_join") where a new line was added for
-  something else in the same context.
+As the ramfs-based tmpfs uses ramfs_init_fs_context() for the
+init_fs_context method, which allocates fc->s_fs_info, use ramfs_kill_sb()
+to free it and avoid a memory leak.
 
-BusyBox's 'cmp' command doesn't support the '--bytes' parameter.
-
-Some CIs -- i.e. LKFT -- use BusyBox and have the mptcp_join.sh test
-failing [1] because their 'cmp' command doesn't support this '--bytes'
-option:
-
-    cmp: unrecognized option '--bytes=1024'
-    BusyBox v1.35.0 () multi-call binary.
-
-    Usage: cmp [-ls] [-n NUM] FILE1 [FILE2]
-
-Instead, 'head --bytes' can be used as this option is supported by
-BusyBox. A temporary file is needed for this operation.
-
-Because it is apparently quite common to use BusyBox, it is certainly
-better to backport this fix to impacted kernels.
-
-Fixes: 6bf41020b72b ("selftests: mptcp: update and extend fastclose test-cases")
-Cc: stable@vger.kernel.org
-Link: https://qa-reports.linaro.org/lkft/linux-mainline-master/build/v6.3-rc5-5-g148341f0a2f5/testrun/16088933/suite/kselftest-net-mptcp/test/net_mptcp_userspace_pm_sh/log [1]
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Cc: stable@vger.kernel.org # v5.4.x
+Fixes: f32356261d44 ("vfs: Convert ramfs, shmem, tmpfs, devtmpfs, rootfs to use the new mount API")
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ fs/ramfs/inode.c      | 2 +-
+ include/linux/ramfs.h | 1 +
+ mm/shmem.c            | 2 +-
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 76a197f7b813..3b9abd5de951 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -13,6 +13,7 @@ sout=""
- cin=""
- cinfail=""
- cinsent=""
-+tmpfile=""
- cout=""
- capout=""
- ns1=""
-@@ -164,6 +165,7 @@ cleanup()
- {
- 	rm -f "$cin" "$cout" "$sinfail"
- 	rm -f "$sin" "$sout" "$cinsent" "$cinfail"
-+	rm -f "$tmpfile"
- 	cleanup_partial
+diff --git a/fs/ramfs/inode.c b/fs/ramfs/inode.c
+index 5ba580c7883..fef477c7810 100644
+--- a/fs/ramfs/inode.c
++++ b/fs/ramfs/inode.c
+@@ -278,7 +278,7 @@ int ramfs_init_fs_context(struct fs_context *fc)
+ 	return 0;
  }
  
-@@ -358,9 +360,16 @@ check_transfer()
- 			fail_test
- 			return 1
- 		fi
--		bytes="--bytes=${bytes}"
-+
-+		# note: BusyBox's "cmp" command doesn't support --bytes
-+		tmpfile=$(mktemp)
-+		head --bytes="$bytes" "$in" > "$tmpfile"
-+		mv "$tmpfile" "$in"
-+		head --bytes="$bytes" "$out" > "$tmpfile"
-+		mv "$tmpfile" "$out"
-+		tmpfile=""
- 	fi
--	cmp -l "$in" "$out" ${bytes} | while read -r i a b; do
-+	cmp -l "$in" "$out" | while read -r i a b; do
- 		local sum=$((0${a} + 0${b}))
- 		if [ $check_invert -eq 0 ] || [ $sum -ne $((0xff)) ]; then
- 			echo "[ FAIL ] $what does not match (in, out):"
+-static void ramfs_kill_sb(struct super_block *sb)
++void ramfs_kill_sb(struct super_block *sb)
+ {
+ 	kfree(sb->s_fs_info);
+ 	kill_litter_super(sb);
+diff --git a/include/linux/ramfs.h b/include/linux/ramfs.h
+index 917528d102c..d506dc63dd4 100644
+--- a/include/linux/ramfs.h
++++ b/include/linux/ramfs.h
+@@ -7,6 +7,7 @@
+ struct inode *ramfs_get_inode(struct super_block *sb, const struct inode *dir,
+ 	 umode_t mode, dev_t dev);
+ extern int ramfs_init_fs_context(struct fs_context *fc);
++extern void ramfs_kill_sb(struct super_block *sb);
+ 
+ #ifdef CONFIG_MMU
+ static inline int
+diff --git a/mm/shmem.c b/mm/shmem.c
+index e40a08c5c6d..74abb97ea55 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -4196,7 +4196,7 @@ static struct file_system_type shmem_fs_type = {
+ 	.name		= "tmpfs",
+ 	.init_fs_context = ramfs_init_fs_context,
+ 	.parameters	= ramfs_fs_parameters,
+-	.kill_sb	= kill_litter_super,
++	.kill_sb	= ramfs_kill_sb,
+ 	.fs_flags	= FS_USERNS_MOUNT,
+ };
+ 
 -- 
-2.39.2
+2.25.1
 
