@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E1E4726D93
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:43:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB0AE726C26
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234431AbjFGUnl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:43:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42746 "EHLO
+        id S233583AbjFGUbD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:31:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234537AbjFGUnk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:43:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F80E2723
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:43:19 -0700 (PDT)
+        with ESMTP id S233613AbjFGUay (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D5052132
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:30:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 19F7764606
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:43:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD52C433EF;
-        Wed,  7 Jun 2023 20:43:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 10E47644E6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:30:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F25C433D2;
+        Wed,  7 Jun 2023 20:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170598;
-        bh=/0qqzz2fl+uzc9k5w7xO/pOxZzmLbxq8Uj5Pdx0I/Fs=;
+        s=korg; t=1686169852;
+        bh=MKy8W4TcMGirM56Harss8Og5lfgLTlOGam4pi4oZM5c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g2NuKYmUO7Cyg3h9w1j3Sbc5D+iAJqGKthuVWNmy/G7xuQu00A51knVw0ck/zCoCs
-         Zg0mUa8SCyEHI3cBgG0ElcRKrZUJmrz3ua2urm8dfDHaVtJIITE8FfLRO3Ne2VOrGU
-         AICYFfnoBcFQgH4K0rOSexwUi7Qf3QG+TKPJjFeU=
+        b=yBbq5ud6NWdhKkYD38k9H4DWGmy+ge37I29XDwbJ7t/d87HOCa3wQk8Bdkn3GoBoJ
+         fW2TOx00byZUCQf5gCvuYArrms+mDH0RzHzWvb7SeRN153bhsal8dgJFyl4ijLlJVr
+         yLEjIpjHiscbyItKPFAKBayNXUk+x04Z8V64cPjU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 145/225] iio: imu: inv_icm42600: fix timestamp reset
+        patches@lists.linux.dev, Mark Lord <mlord@pobox.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        Jiri Kosina <jkosina@suse.cz>
+Subject: [PATCH 6.3 239/286] HID: hidpp: terminate retry loop on success
 Date:   Wed,  7 Jun 2023 22:15:38 +0200
-Message-ID: <20230607200919.154056109@linuxfoundation.org>
+Message-ID: <20230607200931.101345364@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,71 +54,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
 
-commit bbaae0c79ebd49f61ad942a8bf9e12bfc7f821bb upstream.
+commit 7c28afd5512e371773dbb2bf95a31ed5625651d9 upstream.
 
-Timestamp reset is not done in the correct place. It must be done
-before enabling buffer. The reason is that interrupt timestamping
-is always happening when the chip is on, even if the
-corresponding sensor is off. When the sensor restarts, timestamp
-is wrong if you don't do a reset first.
+It seems we forgot the normal case to terminate the retry loop,
+making us asking 3 times each command, which is probably a little bit
+too much.
 
-Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230509152202.245444-1-inv.git-commit@tdk.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+And remove the ugly "goto exit" that can be replaced by a simpler "break"
+
+Fixes: 586e8fede795 ("HID: logitech-hidpp: Retry commands when device is busy")
+Suggested-by: Mark Lord <mlord@pobox.com>
+Tested-by: Mark Lord <mlord@pobox.com>
+Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/hid/hid-logitech-hidpp.c |   13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-@@ -275,9 +275,14 @@ static int inv_icm42600_buffer_preenable
+--- a/drivers/hid/hid-logitech-hidpp.c
++++ b/drivers/hid/hid-logitech-hidpp.c
+@@ -283,7 +283,7 @@ static int hidpp_send_message_sync(struc
+ 	struct hidpp_report *message,
+ 	struct hidpp_report *response)
  {
- 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
- 	struct device *dev = regmap_get_device(st->map);
-+	struct inv_icm42600_timestamp *ts = iio_priv(indio_dev);
+-	int ret;
++	int ret = -1;
+ 	int max_retries = 3;
  
- 	pm_runtime_get_sync(dev);
+ 	mutex_lock(&hidpp->send_mutex);
+@@ -297,13 +297,13 @@ static int hidpp_send_message_sync(struc
+ 	 */
+ 	*response = *message;
  
-+	mutex_lock(&st->lock);
-+	inv_icm42600_timestamp_reset(ts);
-+	mutex_unlock(&st->lock);
-+
- 	return 0;
- }
+-	for (; max_retries != 0; max_retries--) {
++	for (; max_retries != 0 && ret; max_retries--) {
+ 		ret = __hidpp_send_report(hidpp->hid_dev, message);
  
-@@ -375,7 +380,6 @@ static int inv_icm42600_buffer_postdisab
- 	struct device *dev = regmap_get_device(st->map);
- 	unsigned int sensor;
- 	unsigned int *watermark;
--	struct inv_icm42600_timestamp *ts;
- 	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
- 	unsigned int sleep_temp = 0;
- 	unsigned int sleep_sensor = 0;
-@@ -385,11 +389,9 @@ static int inv_icm42600_buffer_postdisab
- 	if (indio_dev == st->indio_gyro) {
- 		sensor = INV_ICM42600_SENSOR_GYRO;
- 		watermark = &st->fifo.watermark.gyro;
--		ts = iio_priv(st->indio_gyro);
- 	} else if (indio_dev == st->indio_accel) {
- 		sensor = INV_ICM42600_SENSOR_ACCEL;
- 		watermark = &st->fifo.watermark.accel;
--		ts = iio_priv(st->indio_accel);
- 	} else {
- 		return -EINVAL;
+ 		if (ret) {
+ 			dbg_hid("__hidpp_send_report returned err: %d\n", ret);
+ 			memset(response, 0, sizeof(struct hidpp_report));
+-			goto exit;
++			break;
+ 		}
+ 
+ 		if (!wait_event_timeout(hidpp->wait, hidpp->answer_available,
+@@ -311,14 +311,14 @@ static int hidpp_send_message_sync(struc
+ 			dbg_hid("%s:timeout waiting for response\n", __func__);
+ 			memset(response, 0, sizeof(struct hidpp_report));
+ 			ret = -ETIMEDOUT;
+-			goto exit;
++			break;
+ 		}
+ 
+ 		if (response->report_id == REPORT_ID_HIDPP_SHORT &&
+ 		    response->rap.sub_id == HIDPP_ERROR) {
+ 			ret = response->rap.params[1];
+ 			dbg_hid("%s:got hidpp error %02X\n", __func__, ret);
+-			goto exit;
++			break;
+ 		}
+ 
+ 		if ((response->report_id == REPORT_ID_HIDPP_LONG ||
+@@ -327,13 +327,12 @@ static int hidpp_send_message_sync(struc
+ 			ret = response->fap.params[1];
+ 			if (ret != HIDPP20_ERROR_BUSY) {
+ 				dbg_hid("%s:got hidpp 2.0 error %02X\n", __func__, ret);
+-				goto exit;
++				break;
+ 			}
+ 			dbg_hid("%s:got busy hidpp 2.0 error %02X, retrying\n", __func__, ret);
+ 		}
  	}
-@@ -417,8 +419,6 @@ static int inv_icm42600_buffer_postdisab
- 	if (!st->fifo.on)
- 		ret = inv_icm42600_set_temp_conf(st, false, &sleep_temp);
  
--	inv_icm42600_timestamp_reset(ts);
--
- out_unlock:
- 	mutex_unlock(&st->lock);
+-exit:
+ 	mutex_unlock(&hidpp->send_mutex);
+ 	return ret;
  
 
 
