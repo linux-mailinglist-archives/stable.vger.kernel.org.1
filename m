@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67987726CE3
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:37:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04801726FDB
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:03:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234055AbjFGUhj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:37:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36676 "EHLO
+        id S236082AbjFGVC6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:02:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234114AbjFGUhf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:37:35 -0400
+        with ESMTP id S236019AbjFGVCp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:02:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4483326B1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:37:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA4122690
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:02:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5085A645AD
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:37:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 640AEC433D2;
-        Wed,  7 Jun 2023 20:37:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7118D6494D
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:01:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857A0C433D2;
+        Wed,  7 Jun 2023 21:01:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170229;
-        bh=9/IyJn0IgiwHspJi4zQ0p07NCFhdpu98U1555qRM39s=;
+        s=korg; t=1686171704;
+        bh=UIgfD+CJU2peIF3JGv8Dm1hCT7GtVyCODo4EZkcaUMo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MpvwVr9S+/dVOw+VGRsfqXbhV1+tsLZkFISX+siXVJ2FEO1SNryO6rPRdoYKCVXxd
-         k8X/yo8YP4pRvDRfXXpclY+OBXx2Z9uuqNTgPBfaTN9pa9FIt+Jrbx0ujCcxaHd7aS
-         YwRznAMCQY7fqd+sy+CwNReBmbbflrAX5gTJSKGc=
+        b=QS++mj39ivYFeeVy9kN7Obm7ljPtaROPc48wh0yHmfM3DDgnrBiEXtPrkflzwn90J
+         UkVgTaPXfn9Y37cjs1NCW/mMG4Um8jd26WppJVrGTm6yNlvnP6rmxnV78PZoz3NzB4
+         v23q/89RZtLpZQsPuVVTHp98ErTTt/Z4l898ZClY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 4.19 64/88] iio: dac: mcp4725: Fix i2c_master_send() return value handling
+        patches@lists.linux.dev,
+        Harald Freudenberger <freude@linux.ibm.com>,
+        Holger Dengler <dengler@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 078/159] s390/pkey: zeroize key blobs
 Date:   Wed,  7 Jun 2023 22:16:21 +0200
-Message-ID: <20230607200901.237570134@linuxfoundation.org>
+Message-ID: <20230607200906.231362712@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,69 +56,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marek Vasut <marex@denx.de>
+From: Holger Dengler <dengler@linux.ibm.com>
 
-commit 09d3bec7009186bdba77039df01e5834788b3f95 upstream.
+[ Upstream commit 844cf829e5f33e00b279230470c8c93b58b8c16f ]
 
-The i2c_master_send() returns number of sent bytes on success,
-or negative on error. The suspend/resume callbacks expect zero
-on success and non-zero on error. Adapt the return value of the
-i2c_master_send() to the expectation of the suspend and resume
-callbacks, including proper validation of the return value.
+Key blobs for the IOCTLs PKEY_KBLOB2PROTK[23] may contain clear key
+material. Zeroize the copies of these keys in kernel memory after
+creating the protected key.
 
-Fixes: cf35ad61aca2 ("iio: add mcp4725 I2C DAC driver")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20230511004330.206942-1-marex@denx.de
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Harald Freudenberger <freude@linux.ibm.com>
+Signed-off-by: Holger Dengler <dengler@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/dac/mcp4725.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/s390/crypto/pkey_api.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iio/dac/mcp4725.c
-+++ b/drivers/iio/dac/mcp4725.c
-@@ -50,12 +50,18 @@ static int mcp4725_suspend(struct device
- 	struct mcp4725_data *data = iio_priv(i2c_get_clientdata(
- 		to_i2c_client(dev)));
- 	u8 outbuf[2];
-+	int ret;
- 
- 	outbuf[0] = (data->powerdown_mode + 1) << 4;
- 	outbuf[1] = 0;
- 	data->powerdown = true;
- 
--	return i2c_master_send(data->client, outbuf, 2);
-+	ret = i2c_master_send(data->client, outbuf, 2);
-+	if (ret < 0)
-+		return ret;
-+	else if (ret != 2)
-+		return -EIO;
-+	return 0;
- }
- 
- static int mcp4725_resume(struct device *dev)
-@@ -63,13 +69,19 @@ static int mcp4725_resume(struct device
- 	struct mcp4725_data *data = iio_priv(i2c_get_clientdata(
- 		to_i2c_client(dev)));
- 	u8 outbuf[2];
-+	int ret;
- 
- 	/* restore previous DAC value */
- 	outbuf[0] = (data->dac_value >> 8) & 0xf;
- 	outbuf[1] = data->dac_value & 0xff;
- 	data->powerdown = false;
- 
--	return i2c_master_send(data->client, outbuf, 2);
-+	ret = i2c_master_send(data->client, outbuf, 2);
-+	if (ret < 0)
-+		return ret;
-+	else if (ret != 2)
-+		return -EIO;
-+	return 0;
- }
- 
- #ifdef CONFIG_PM_SLEEP
+diff --git a/drivers/s390/crypto/pkey_api.c b/drivers/s390/crypto/pkey_api.c
+index cf23ce1b11465..83b335f962c89 100644
+--- a/drivers/s390/crypto/pkey_api.c
++++ b/drivers/s390/crypto/pkey_api.c
+@@ -1286,6 +1286,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
+ 			return PTR_ERR(kkey);
+ 		rc = pkey_keyblob2pkey(kkey, ktp.keylen, &ktp.protkey);
+ 		DEBUG_DBG("%s pkey_keyblob2pkey()=%d\n", __func__, rc);
++		memzero_explicit(kkey, ktp.keylen);
+ 		kfree(kkey);
+ 		if (rc)
+ 			break;
+@@ -1419,6 +1420,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
+ 					kkey, ktp.keylen, &ktp.protkey);
+ 		DEBUG_DBG("%s pkey_keyblob2pkey2()=%d\n", __func__, rc);
+ 		kfree(apqns);
++		memzero_explicit(kkey, ktp.keylen);
+ 		kfree(kkey);
+ 		if (rc)
+ 			break;
+@@ -1545,6 +1547,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
+ 					protkey, &protkeylen);
+ 		DEBUG_DBG("%s pkey_keyblob2pkey3()=%d\n", __func__, rc);
+ 		kfree(apqns);
++		memzero_explicit(kkey, ktp.keylen);
+ 		kfree(kkey);
+ 		if (rc) {
+ 			kfree(protkey);
+-- 
+2.39.2
+
 
 
