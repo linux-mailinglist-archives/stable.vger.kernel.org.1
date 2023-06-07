@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78C18726E49
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:49:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48857726DA8
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:44:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234841AbjFGUt2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:49:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48186 "EHLO
+        id S234637AbjFGUod (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:44:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235137AbjFGUtF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:49:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61D5A26B8
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:48:44 -0700 (PDT)
+        with ESMTP id S234645AbjFGUoa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:44:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CCE91BD4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:44:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B5509646C6
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:48:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A6EC433D2;
-        Wed,  7 Jun 2023 20:48:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7C97864646
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:44:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E108C433D2;
+        Wed,  7 Jun 2023 20:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170919;
-        bh=sFCQ4KYq+xqXpRBzo2EOBj2+f/Qf46ErrZESno4vpSk=;
+        s=korg; t=1686170650;
+        bh=SJP1j1mqezHUwWoWnS+Bz2wz1y41OZ+EeoLAPXJhf1c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VQSlWvOsn8XXzfZHuyd7pIJbcd1qst7OHDnayCcVLUfr5Kqj07l6lzgoVcY6XX3WU
-         Tvy+xAf7kDr/cjGXh4HTx3Ir/GONrvnAw+NKCMBzlAaTio1OI3YZLltGr0oDO5nfp6
-         3z0YL9i77HBmnny1vGkyX16MgWMtbSQfhYNkql3Q=
+        b=MP6uyg9GcWtLGpJHjRkPQ1OA/1TuGwf5WFafLv+WbNZypN/LRtQud32FzEuDYiQLP
+         BlHVmQ6ewgdsbePqHZl1My+6XWzhlX8J5HnVavADYYbzSjaJ2AkhLMGCl1H7El773j
+         xBIyI1DR4y4+DzeWvcAaQ2vtNWVfipOEFTp3x3u0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ivan Orlov <ivan.orlov0322@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 042/120] nbd: Fix debugfs_create_dir error checking
-Date:   Wed,  7 Jun 2023 22:15:58 +0200
-Message-ID: <20230607200902.228135060@linuxfoundation.org>
+        patches@lists.linux.dev, Tim Huang <Tim.Huang@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 166/225] drm/amd/pm: reverse mclk and fclk clocks levels for vangogh
+Date:   Wed,  7 Jun 2023 22:15:59 +0200
+Message-ID: <20230607200919.828702222@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,46 +53,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ivan Orlov <ivan.orlov0322@gmail.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-[ Upstream commit 4913cfcf014c95f0437db2df1734472fd3e15098 ]
+commit bfc03568d9d81332382c73a1985a90c4506bd36c upstream.
 
-The debugfs_create_dir function returns ERR_PTR in case of error, and the
-only correct way to check if an error occurred is 'IS_ERR' inline function.
-This patch will replace the null-comparison with IS_ERR.
+This patch reverses the DPM clocks levels output of pp_dpm_mclk
+and pp_dpm_fclk.
 
-Signed-off-by: Ivan Orlov <ivan.orlov0322@gmail.com>
-Link: https://lore.kernel.org/r/20230512130533.98709-1-ivan.orlov0322@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On dGPUs and older APUs we expose the levels from lowest clocks
+to highest clocks. But for some APUs, the clocks levels that from
+the DFPstateTable are given the reversed orders by PMFW. Like the
+memory DPM clocks that are exposed by pp_dpm_mclk.
+
+It's not intuitive that they are reversed on these APUs. All tools
+and software that talks to the driver then has to know different ways
+to interpret the data depending on the asic.
+
+So we need to reverse them to expose the clocks levels from the
+driver consistently.
+
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/nbd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index dbcd903ba128f..b6940f0a9c905 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -1624,7 +1624,7 @@ static int nbd_dev_dbg_init(struct nbd_device *nbd)
- 		return -EIO;
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/vangogh_ppt.c
+@@ -580,7 +580,7 @@ static int vangogh_print_legacy_clk_leve
+ 	DpmClocks_t *clk_table = smu->smu_table.clocks_table;
+ 	SmuMetrics_legacy_t metrics;
+ 	struct smu_dpm_context *smu_dpm_ctx = &(smu->smu_dpm);
+-	int i, size = 0, ret = 0;
++	int i, idx, size = 0, ret = 0;
+ 	uint32_t cur_value = 0, value = 0, count = 0;
+ 	bool cur_value_match_level = false;
  
- 	dir = debugfs_create_dir(nbd_name(nbd), nbd_dbg_dir);
--	if (!dir) {
-+	if (IS_ERR(dir)) {
- 		dev_err(nbd_to_dev(nbd), "Failed to create debugfs dir for '%s'\n",
- 			nbd_name(nbd));
- 		return -EIO;
-@@ -1650,7 +1650,7 @@ static int nbd_dbg_init(void)
- 	struct dentry *dbg_dir;
- 
- 	dbg_dir = debugfs_create_dir("nbd", NULL);
--	if (!dbg_dir)
-+	if (IS_ERR(dbg_dir))
- 		return -EIO;
- 
- 	nbd_dbg_dir = dbg_dir;
--- 
-2.39.2
-
+@@ -654,7 +654,8 @@ static int vangogh_print_legacy_clk_leve
+ 	case SMU_MCLK:
+ 	case SMU_FCLK:
+ 		for (i = 0; i < count; i++) {
+-			ret = vangogh_get_dpm_clk_limited(smu, clk_type, i, &value);
++			idx = (clk_type == SMU_FCLK || clk_type == SMU_MCLK) ? (count - i - 1) : i;
++			ret = vangogh_get_dpm_clk_limited(smu, clk_type, idx, &value);
+ 			if (ret)
+ 				return ret;
+ 			if (!value)
+@@ -681,7 +682,7 @@ static int vangogh_print_clk_levels(stru
+ 	DpmClocks_t *clk_table = smu->smu_table.clocks_table;
+ 	SmuMetrics_t metrics;
+ 	struct smu_dpm_context *smu_dpm_ctx = &(smu->smu_dpm);
+-	int i, size = 0, ret = 0;
++	int i, idx, size = 0, ret = 0;
+ 	uint32_t cur_value = 0, value = 0, count = 0;
+ 	bool cur_value_match_level = false;
+ 	uint32_t min, max;
+@@ -763,7 +764,8 @@ static int vangogh_print_clk_levels(stru
+ 	case SMU_MCLK:
+ 	case SMU_FCLK:
+ 		for (i = 0; i < count; i++) {
+-			ret = vangogh_get_dpm_clk_limited(smu, clk_type, i, &value);
++			idx = (clk_type == SMU_FCLK || clk_type == SMU_MCLK) ? (count - i - 1) : i;
++			ret = vangogh_get_dpm_clk_limited(smu, clk_type, idx, &value);
+ 			if (ret)
+ 				return ret;
+ 			if (!value)
 
 
