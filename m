@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29497726FDF
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:03:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 720E3726F23
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235875AbjFGVDB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:03:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34786 "EHLO
+        id S235505AbjFGUzr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:55:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236022AbjFGVCq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:02:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B8922694
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:02:06 -0700 (PDT)
+        with ESMTP id S235487AbjFGUzq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:55:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0985FC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:55:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1706364958
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:01:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28193C433D2;
-        Wed,  7 Jun 2023 21:01:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B9576481F
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:55:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ADC3C433D2;
+        Wed,  7 Jun 2023 20:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171715;
-        bh=B3HOxQ6SeThlfptbPHq7i7PovKLToKNVPFQGrFGC9rA=;
+        s=korg; t=1686171342;
+        bh=k87Tmf5cJh/XYC2LnSDfEVGEMXUyn4fGbV50Ai0gCqI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eJK+JDbYi0/aIWg28VsuIdToyfy4zM6GXlJR7vYtQ88a/B7uZ5LecAzB9iMhyeNfD
-         KhATdSoIrICQImhwGABc5bqJA/7z3gr6uymTBYeo2boa+lznPjy9BDFWq4Ya4O/uFp
-         BWti2BQZHKMgMi7Pjq1D6isGsaRQ256kkezZ0cVQ=
+        b=Khu6ba5p6L9z8VisJDBKZ4DzgO2dPKLt+sn+ltigmJ5hs5Zmnv79gNvHXUlippAO/
+         7PrVTatGCaQ4dLyS3363glraPyMI9YNiV+wNnmYdgaF2pujNAPvKbUnCEkDQoqrs/t
+         1XDW83+6EAnUh3Nz4cMJgMHIB9kmBBgnvKtRRzP0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Deren Wu <deren.wu@mediatek.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 122/159] mmc: vub300: fix invalid response handling
-Date:   Wed,  7 Jun 2023 22:17:05 +0200
-Message-ID: <20230607200907.668426529@linuxfoundation.org>
+        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>,
+        Borislav Petkov <bp@suse.de>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.4 74/99] x86/boot: Wrap literal addresses in absolute_pointer()
+Date:   Wed,  7 Jun 2023 22:17:06 +0200
+Message-ID: <20230607200902.548207924@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,64 +54,141 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Deren Wu <deren.wu@mediatek.com>
+From: Kees Cook <keescook@chromium.org>
 
-commit a99d21cefd351c8aaa20b83a3c942340e5789d45 upstream.
+commit aeb84412037b89e06f45e382f044da6f200e12f8 upstream.
 
-We may get an empty response with zero length at the beginning of
-the driver start and get following UBSAN error. Since there is no
-content(SDRT_NONE) for the response, just return and skip the response
-handling to avoid this problem.
+GCC 11 (incorrectly[1]) assumes that literal values cast to (void *)
+should be treated like a NULL pointer with an offset, and raises
+diagnostics when doing bounds checking under -Warray-bounds. GCC 12
+got "smarter" about finding these:
 
-Test pass : SDIO wifi throughput test with this patch
+  In function 'rdfs8',
+      inlined from 'vga_recalc_vertical' at /srv/code/arch/x86/boot/video-mode.c:124:29,
+      inlined from 'set_mode' at /srv/code/arch/x86/boot/video-mode.c:163:3:
+  /srv/code/arch/x86/boot/boot.h:114:9: warning: array subscript 0 is outside array bounds of 'u8[0]' {aka 'unsigned char[]'} [-Warray-bounds]
+    114 |         asm volatile("movb %%fs:%1,%0" : "=q" (v) : "m" (*(u8 *)addr));
+        |         ^~~
 
-[  126.980684] UBSAN: array-index-out-of-bounds in drivers/mmc/host/vub300.c:1719:12
-[  126.980709] index -1 is out of range for type 'u32 [4]'
-[  126.980729] CPU: 4 PID: 9 Comm: kworker/u16:0 Tainted: G            E      6.3.0-rc4-mtk-local-202304272142 #1
-[  126.980754] Hardware name: Intel(R) Client Systems NUC8i7BEH/NUC8BEB, BIOS BECFL357.86A.0081.2020.0504.1834 05/04/2020
-[  126.980770] Workqueue: kvub300c vub300_cmndwork_thread [vub300]
-[  126.980833] Call Trace:
-[  126.980845]  <TASK>
-[  126.980860]  dump_stack_lvl+0x48/0x70
-[  126.980895]  dump_stack+0x10/0x20
-[  126.980916]  ubsan_epilogue+0x9/0x40
-[  126.980944]  __ubsan_handle_out_of_bounds+0x70/0x90
-[  126.980979]  vub300_cmndwork_thread+0x58e7/0x5e10 [vub300]
-[  126.981018]  ? _raw_spin_unlock+0x18/0x40
-[  126.981042]  ? finish_task_switch+0x175/0x6f0
-[  126.981070]  ? __switch_to+0x42e/0xda0
-[  126.981089]  ? __switch_to_asm+0x3a/0x80
-[  126.981129]  ? __pfx_vub300_cmndwork_thread+0x10/0x10 [vub300]
-[  126.981174]  ? __kasan_check_read+0x11/0x20
-[  126.981204]  process_one_work+0x7ee/0x13d0
-[  126.981246]  worker_thread+0x53c/0x1240
-[  126.981291]  kthread+0x2b8/0x370
-[  126.981312]  ? __pfx_worker_thread+0x10/0x10
-[  126.981336]  ? __pfx_kthread+0x10/0x10
-[  126.981359]  ret_from_fork+0x29/0x50
-[  126.981400]  </TASK>
+This has been solved in other places[2] already by using the recently
+added absolute_pointer() macro. Do the same here.
 
-Fixes: 88095e7b473a ("mmc: Add new VUB300 USB-to-SD/SDIO/MMC driver")
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/048cd6972c50c33c2e8f81d5228fed928519918b.1683987673.git.deren.wu@mediatek.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+  [1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=99578
+  [2] https://lore.kernel.org/all/20210912160149.2227137-1-linux@roeck-us.net/
+
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20220227195918.705219-1-keescook@chromium.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/vub300.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/boot/boot.h |   36 ++++++++++++++++++++++++------------
+ arch/x86/boot/main.c |    2 +-
+ 2 files changed, 25 insertions(+), 13 deletions(-)
 
---- a/drivers/mmc/host/vub300.c
-+++ b/drivers/mmc/host/vub300.c
-@@ -1715,6 +1715,9 @@ static void construct_request_response(s
- 	int bytes = 3 & less_cmd;
- 	int words = less_cmd >> 2;
- 	u8 *r = vub300->resp.response.command_response;
-+
-+	if (!resp_len)
-+		return;
- 	if (bytes == 3) {
- 		cmd->resp[words] = (r[1 + (words << 2)] << 24)
- 			| (r[2 + (words << 2)] << 16)
+--- a/arch/x86/boot/boot.h
++++ b/arch/x86/boot/boot.h
+@@ -110,66 +110,78 @@ typedef unsigned int addr_t;
+ 
+ static inline u8 rdfs8(addr_t addr)
+ {
++	u8 *ptr = (u8 *)absolute_pointer(addr);
+ 	u8 v;
+-	asm volatile("movb %%fs:%1,%0" : "=q" (v) : "m" (*(u8 *)addr));
++	asm volatile("movb %%fs:%1,%0" : "=q" (v) : "m" (*ptr));
+ 	return v;
+ }
+ static inline u16 rdfs16(addr_t addr)
+ {
++	u16 *ptr = (u16 *)absolute_pointer(addr);
+ 	u16 v;
+-	asm volatile("movw %%fs:%1,%0" : "=r" (v) : "m" (*(u16 *)addr));
++	asm volatile("movw %%fs:%1,%0" : "=r" (v) : "m" (*ptr));
+ 	return v;
+ }
+ static inline u32 rdfs32(addr_t addr)
+ {
++	u32 *ptr = (u32 *)absolute_pointer(addr);
+ 	u32 v;
+-	asm volatile("movl %%fs:%1,%0" : "=r" (v) : "m" (*(u32 *)addr));
++	asm volatile("movl %%fs:%1,%0" : "=r" (v) : "m" (*ptr));
+ 	return v;
+ }
+ 
+ static inline void wrfs8(u8 v, addr_t addr)
+ {
+-	asm volatile("movb %1,%%fs:%0" : "+m" (*(u8 *)addr) : "qi" (v));
++	u8 *ptr = (u8 *)absolute_pointer(addr);
++	asm volatile("movb %1,%%fs:%0" : "+m" (*ptr) : "qi" (v));
+ }
+ static inline void wrfs16(u16 v, addr_t addr)
+ {
+-	asm volatile("movw %1,%%fs:%0" : "+m" (*(u16 *)addr) : "ri" (v));
++	u16 *ptr = (u16 *)absolute_pointer(addr);
++	asm volatile("movw %1,%%fs:%0" : "+m" (*ptr) : "ri" (v));
+ }
+ static inline void wrfs32(u32 v, addr_t addr)
+ {
+-	asm volatile("movl %1,%%fs:%0" : "+m" (*(u32 *)addr) : "ri" (v));
++	u32 *ptr = (u32 *)absolute_pointer(addr);
++	asm volatile("movl %1,%%fs:%0" : "+m" (*ptr) : "ri" (v));
+ }
+ 
+ static inline u8 rdgs8(addr_t addr)
+ {
++	u8 *ptr = (u8 *)absolute_pointer(addr);
+ 	u8 v;
+-	asm volatile("movb %%gs:%1,%0" : "=q" (v) : "m" (*(u8 *)addr));
++	asm volatile("movb %%gs:%1,%0" : "=q" (v) : "m" (*ptr));
+ 	return v;
+ }
+ static inline u16 rdgs16(addr_t addr)
+ {
++	u16 *ptr = (u16 *)absolute_pointer(addr);
+ 	u16 v;
+-	asm volatile("movw %%gs:%1,%0" : "=r" (v) : "m" (*(u16 *)addr));
++	asm volatile("movw %%gs:%1,%0" : "=r" (v) : "m" (*ptr));
+ 	return v;
+ }
+ static inline u32 rdgs32(addr_t addr)
+ {
++	u32 *ptr = (u32 *)absolute_pointer(addr);
+ 	u32 v;
+-	asm volatile("movl %%gs:%1,%0" : "=r" (v) : "m" (*(u32 *)addr));
++	asm volatile("movl %%gs:%1,%0" : "=r" (v) : "m" (*ptr));
+ 	return v;
+ }
+ 
+ static inline void wrgs8(u8 v, addr_t addr)
+ {
+-	asm volatile("movb %1,%%gs:%0" : "+m" (*(u8 *)addr) : "qi" (v));
++	u8 *ptr = (u8 *)absolute_pointer(addr);
++	asm volatile("movb %1,%%gs:%0" : "+m" (*ptr) : "qi" (v));
+ }
+ static inline void wrgs16(u16 v, addr_t addr)
+ {
+-	asm volatile("movw %1,%%gs:%0" : "+m" (*(u16 *)addr) : "ri" (v));
++	u16 *ptr = (u16 *)absolute_pointer(addr);
++	asm volatile("movw %1,%%gs:%0" : "+m" (*ptr) : "ri" (v));
+ }
+ static inline void wrgs32(u32 v, addr_t addr)
+ {
+-	asm volatile("movl %1,%%gs:%0" : "+m" (*(u32 *)addr) : "ri" (v));
++	u32 *ptr = (u32 *)absolute_pointer(addr);
++	asm volatile("movl %1,%%gs:%0" : "+m" (*ptr) : "ri" (v));
+ }
+ 
+ /* Note: these only return true/false, not a signed return value! */
+--- a/arch/x86/boot/main.c
++++ b/arch/x86/boot/main.c
+@@ -33,7 +33,7 @@ static void copy_boot_params(void)
+ 		u16 cl_offset;
+ 	};
+ 	const struct old_cmdline * const oldcmd =
+-		(const struct old_cmdline *)OLD_CL_ADDRESS;
++		absolute_pointer(OLD_CL_ADDRESS);
+ 
+ 	BUILD_BUG_ON(sizeof(boot_params) != 4096);
+ 	memcpy(&boot_params.hdr, &hdr, sizeof(hdr));
 
 
