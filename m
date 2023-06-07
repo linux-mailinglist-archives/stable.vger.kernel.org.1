@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46E77726F99
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:00:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53508726AC6
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235784AbjFGVAo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:00:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33420 "EHLO
+        id S232594AbjFGUUL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:20:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235979AbjFGVAK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:00:10 -0400
+        with ESMTP id S233058AbjFGUT4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:19:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09E581FE2
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:59:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0534270C
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:19:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F124D64859
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:58:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5ACC433EF;
-        Wed,  7 Jun 2023 20:58:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E50B64383
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:18:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2578EC433EF;
+        Wed,  7 Jun 2023 20:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171529;
-        bh=a+iuMf7Qc3j5zbqP/tv878e3Ya2DhuDQCXSjBQ+GoQo=;
+        s=korg; t=1686169113;
+        bh=4xPzOmRkhGmtPa9ZWXEut/C5fMiZ2ltKJVVjuvwo7BE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O2QLRt/2eSZ8BTy1m0HFtdcsf49d9HEcyVAyORfuZg+VDUxwmzL0uta0JkvVbcnF7
-         kviivQpfZdSWQVIcfsZacWseSZZqoqcrJhAgAGiWGV1S0qABqN2mP1FaZTOvBoht7F
-         Onb0GEUvhsAUssTQyaFCAv41yIHj7bELSTKGZOKs=
+        b=Lrb7XwCYeVBpGaocJjXEB5D6o65oQek2Ciyd6SJTNMmtk6T7gY9T721m2KzftsbIt
+         HqNR77LzJgrSyl0p36avFgXeI+EoJnOMoIL0n0zs2YQapfqX35JLVSxuaH4/EJYPgD
+         i9PJVXn53pQxLwTGVu6Hl0St+Wb3cpLpkKJq0vOM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shay Drory <shayd@nvidia.com>,
-        Moshe Shemesh <moshe@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
+        patches@lists.linux.dev,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= 
+        <amadeuszx.slawinski@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 013/159] net/mlx5: fw_tracer, Fix event handling
+Subject: [PATCH 4.14 02/61] ASoC: Intel: Skylake: Fix declaration of enum skl_ch_cfg
 Date:   Wed,  7 Jun 2023 22:15:16 +0200
-Message-ID: <20230607200904.106536025@linuxfoundation.org>
+Message-ID: <20230607200836.062248528@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
+References: <20230607200835.310274198@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,38 +57,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shay Drory <shayd@nvidia.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit 341a80de2468f481b1f771683709b5649cbfe513 ]
+[ Upstream commit 95109657471311601b98e71f03d0244f48dc61bb ]
 
-mlx5 driver needs to parse traces with event_id inside the range of
-first_string_trace and num_string_trace. However, mlx5 is parsing all
-events with event_id >= first_string_trace.
+Constant 'C4_CHANNEL' does not exist on the firmware side. Value 0xC is
+reserved for 'C7_1' instead.
 
-Fix it by checking for the correct range.
-
-Fixes: c71ad41ccb0c ("net/mlx5: FW tracer, events handling")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Fixes: 04afbbbb1cba ("ASoC: Intel: Skylake: Update the topology interface structure")
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20230519201711.4073845-4-amadeuszx.slawinski@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/intel/skylake/skl-tplg-interface.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-index 05c7c2140909f..958cdb9755598 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-@@ -483,7 +483,7 @@ static void poll_trace(struct mlx5_fw_tracer *tracer,
- 				(u64)timestamp_low;
- 		break;
- 	default:
--		if (tracer_event->event_id >= tracer->str_db.first_string_trace ||
-+		if (tracer_event->event_id >= tracer->str_db.first_string_trace &&
- 		    tracer_event->event_id <= tracer->str_db.first_string_trace +
- 					      tracer->str_db.num_string_trace) {
- 			tracer_event->type = TRACER_EVENT_TYPE_STRING;
+diff --git a/sound/soc/intel/skylake/skl-tplg-interface.h b/sound/soc/intel/skylake/skl-tplg-interface.h
+index f8d1749a2e0c8..2fab55e6537c4 100644
+--- a/sound/soc/intel/skylake/skl-tplg-interface.h
++++ b/sound/soc/intel/skylake/skl-tplg-interface.h
+@@ -71,7 +71,8 @@ enum skl_ch_cfg {
+ 	SKL_CH_CFG_DUAL_MONO = 9,
+ 	SKL_CH_CFG_I2S_DUAL_STEREO_0 = 10,
+ 	SKL_CH_CFG_I2S_DUAL_STEREO_1 = 11,
+-	SKL_CH_CFG_4_CHANNEL = 12,
++	SKL_CH_CFG_7_1 = 12,
++	SKL_CH_CFG_4_CHANNEL = SKL_CH_CFG_7_1,
+ 	SKL_CH_CFG_INVALID
+ };
+ 
 -- 
 2.39.2
 
