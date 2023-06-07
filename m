@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AC23726E0D
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:48:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2649F726D8A
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:43:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235025AbjFGUsG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:48:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48532 "EHLO
+        id S234440AbjFGUnY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:43:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235068AbjFGUrt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:47:49 -0400
+        with ESMTP id S234456AbjFGUnQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:43:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA04B26A9
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:47:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D12226BB
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:42:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 42F09646C1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:47:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54434C433D2;
-        Wed,  7 Jun 2023 20:47:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E99BA64649
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:42:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0501AC4339B;
+        Wed,  7 Jun 2023 20:42:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170842;
-        bh=mcJEw9fcl9w/izgtieClEJKqcxa+M9Q8IKsuXAwl4c0=;
+        s=korg; t=1686170571;
+        bh=DxuCZLxNKZOGFkbLW1z7lpppJgobYKFNPo00ELiykPw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xvk4jmTKg7epUf0O0HiKrcsBdQILogMl3FPbP6XKDXA9txranQ830RvZfsZ7SFPL+
-         VDD8i+r8LA/Dnd0IAmL+ymObZ3mY+VH1AsDjw18ZAYxeuOe25aSjfvy05Wi1rmNwsd
-         KYPCNYuclKZfeUbnHl7jBLSne61ncI7+YATNwhxQ=
+        b=fFeje631aq/t/m1kuvBOWy3xkTQoRJ7S+NUX6swFyJOllGMQj0LNRQeN0E445k++L
+         D0qqbKRQhCtk/xirBT7RJ5ManMSuOO0tNmv9JybbA0Unm8PNN5i1CEUx9kFeZpbigo
+         8B4LF88UaKqP6clsTnQ/TPJj2dYTclp0bIdSpv/U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shay Drory <shayd@nvidia.com>,
-        Moshe Shemesh <moshe@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 013/120] net/mlx5: fw_tracer, Fix event handling
+        patches@lists.linux.dev,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        Oliver Upton <oliver.upton@linux.dev>,
+        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 136/225] KVM: arm64: vgic: Fix locking comment
 Date:   Wed,  7 Jun 2023 22:15:29 +0200
-Message-ID: <20230607200901.333630807@linuxfoundation.org>
+Message-ID: <20230607200918.814548934@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,38 +55,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shay Drory <shayd@nvidia.com>
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
-[ Upstream commit 341a80de2468f481b1f771683709b5649cbfe513 ]
+[ Upstream commit c38b8400aef99d63be2b1ff131bb993465dcafe1 ]
 
-mlx5 driver needs to parse traces with event_id inside the range of
-first_string_trace and num_string_trace. However, mlx5 is parsing all
-events with event_id >= first_string_trace.
+It is now config_lock that must be held, not kvm lock. Replace the
+comment with a lockdep annotation.
 
-Fix it by checking for the correct range.
-
-Fixes: c71ad41ccb0c ("net/mlx5: FW tracer, events handling")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Fixes: f00327731131 ("KVM: arm64: Use config_lock to protect vgic state")
+Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230518100914.2837292-4-jean-philippe@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kvm/vgic/vgic-v4.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-index 0a011a41c039e..5273644fb2bf9 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-@@ -483,7 +483,7 @@ static void poll_trace(struct mlx5_fw_tracer *tracer,
- 				(u64)timestamp_low;
- 		break;
- 	default:
--		if (tracer_event->event_id >= tracer->str_db.first_string_trace ||
-+		if (tracer_event->event_id >= tracer->str_db.first_string_trace &&
- 		    tracer_event->event_id <= tracer->str_db.first_string_trace +
- 					      tracer->str_db.num_string_trace) {
- 			tracer_event->type = TRACER_EVENT_TYPE_STRING;
+diff --git a/arch/arm64/kvm/vgic/vgic-v4.c b/arch/arm64/kvm/vgic/vgic-v4.c
+index 3bb0034780605..c1c28fe680ba3 100644
+--- a/arch/arm64/kvm/vgic/vgic-v4.c
++++ b/arch/arm64/kvm/vgic/vgic-v4.c
+@@ -184,13 +184,14 @@ static void vgic_v4_disable_vsgis(struct kvm_vcpu *vcpu)
+ 	}
+ }
+ 
+-/* Must be called with the kvm lock held */
+ void vgic_v4_configure_vsgis(struct kvm *kvm)
+ {
+ 	struct vgic_dist *dist = &kvm->arch.vgic;
+ 	struct kvm_vcpu *vcpu;
+ 	unsigned long i;
+ 
++	lockdep_assert_held(&kvm->arch.config_lock);
++
+ 	kvm_arm_halt_guest(kvm);
+ 
+ 	kvm_for_each_vcpu(i, vcpu, kvm) {
 -- 
 2.39.2
 
