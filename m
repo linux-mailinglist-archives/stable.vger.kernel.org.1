@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8E11726F0D
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC618726F0F
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235395AbjFGUzZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:55:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56186 "EHLO
+        id S235408AbjFGUz1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:55:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235659AbjFGUy5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A5C2E79
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:54:46 -0700 (PDT)
+        with ESMTP id S235704AbjFGUzA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:55:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 871651BF0
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:54:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 196ED647DC
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:54:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F02FC433EF;
-        Wed,  7 Jun 2023 20:54:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 46367647D2
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:54:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558CAC433D2;
+        Wed,  7 Jun 2023 20:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171285;
-        bh=jXyeWu7J1vpGdlWJwZfkHZ8ILypI0JONqg8icPURwSA=;
+        s=korg; t=1686171290;
+        bh=qzghPzn5owh9oOXDzKJvjnYDhVsb9PppkdpJMhHF/j8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zcULeWEz6bFB4H8Ur8MnQv/NmwZMiwKmElvmglMeRks9Xl+oVA29WcZ/mNXFV++n5
-         rKrKFffvripPqvPQqZ1ftrzrDd+OX+lm3RfZ/DS/3JqrNDbOMMX/iLkAK1UZnbFgij
-         6ui3eCzMjmbCMkvdHTtP+E6HNECyY8w7sCIUsdhQ=
+        b=mj6Hgj+Eu39WJrjBgUoosKytW42AuRjLTzZq/s9ttvrDVVA4ssrfnGX9VSgUO7/sO
+         hxNyFi3onqhKevkVJ866XzHXy9NLverN9KLsvfm8YF147rJpb5WXTh77/EqdK44tOb
+         j9WrBhTruFixXyHaeJ8ABR+8+OiBc6wVpgpZcjoE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Lee Jones <lee@kernel.org>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 60/99] mailbox: mailbox-test: fix a locking issue in mbox_test_message_write()
-Date:   Wed,  7 Jun 2023 22:16:52 +0200
-Message-ID: <20230607200902.125207275@linuxfoundation.org>
+        patches@lists.linux.dev, Jiakai Luo <jkluo@hust.edu.cn>,
+        Dongliang Mu <dzm91@hust.edu.cn>, Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.4 61/99] iio: adc: mxs-lradc: fix the order of two cleanup operations
+Date:   Wed,  7 Jun 2023 22:16:53 +0200
+Message-ID: <20230607200902.154891843@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
 References: <20230607200900.195572674@linuxfoundation.org>
@@ -45,8 +44,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,55 +54,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Jiakai Luo <jkluo@hust.edu.cn>
 
-[ Upstream commit 8fe72b76db79d694858e872370df49676bc3be8c ]
+commit 27b2ed5b6d53cd62fc61c3f259ae52f5cac23b66 upstream.
 
-There was a bug where this code forgot to unlock the tdev->mutex if the
-kzalloc() failed.  Fix this issue, by moving the allocation outside the
-lock.
+Smatch reports:
+drivers/iio/adc/mxs-lradc-adc.c:766 mxs_lradc_adc_probe() warn:
+missing unwind goto?
 
-Fixes: 2d1e952a2b8e ("mailbox: mailbox-test: Fix potential double-free in mbox_test_message_write()")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+the order of three init operation:
+1.mxs_lradc_adc_trigger_init
+2.iio_triggered_buffer_setup
+3.mxs_lradc_adc_hw_init
+
+thus, the order of three cleanup operation should be:
+1.mxs_lradc_adc_hw_stop
+2.iio_triggered_buffer_cleanup
+3.mxs_lradc_adc_trigger_remove
+
+we exchange the order of two cleanup operations,
+introducing the following differences:
+1.if mxs_lradc_adc_trigger_init fails, returns directly;
+2.if trigger_init succeeds but iio_triggered_buffer_setup fails,
+goto err_trig and remove the trigger.
+
+In addition, we also reorder the unwind that goes on in the
+remove() callback to match the new ordering.
+
+Fixes: 6dd112b9f85e ("iio: adc: mxs-lradc: Add support for ADC driver")
+Signed-off-by: Jiakai Luo <jkluo@hust.edu.cn>
+Reviewed-by: Dongliang Mu <dzm91@hust.edu.cn>
+Link: https://lore.kernel.org/r/20230422133407.72908-1-jkluo@hust.edu.cn
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mailbox/mailbox-test.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/iio/adc/mxs-lradc-adc.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
-index 6dd5b9614452b..abcee58e851c2 100644
---- a/drivers/mailbox/mailbox-test.c
-+++ b/drivers/mailbox/mailbox-test.c
-@@ -97,6 +97,7 @@ static ssize_t mbox_test_message_write(struct file *filp,
- 				       size_t count, loff_t *ppos)
- {
- 	struct mbox_test_device *tdev = filp->private_data;
-+	char *message;
- 	void *data;
- 	int ret;
+--- a/drivers/iio/adc/mxs-lradc-adc.c
++++ b/drivers/iio/adc/mxs-lradc-adc.c
+@@ -760,13 +760,13 @@ static int mxs_lradc_adc_probe(struct pl
  
-@@ -112,12 +113,13 @@ static ssize_t mbox_test_message_write(struct file *filp,
- 		return -EINVAL;
- 	}
+ 	ret = mxs_lradc_adc_trigger_init(iio);
+ 	if (ret)
+-		goto err_trig;
++		return ret;
  
--	mutex_lock(&tdev->mutex);
--
--	tdev->message = kzalloc(MBOX_MAX_MSG_LEN, GFP_KERNEL);
--	if (!tdev->message)
-+	message = kzalloc(MBOX_MAX_MSG_LEN, GFP_KERNEL);
-+	if (!message)
- 		return -ENOMEM;
+ 	ret = iio_triggered_buffer_setup(iio, &iio_pollfunc_store_time,
+ 					 &mxs_lradc_adc_trigger_handler,
+ 					 &mxs_lradc_adc_buffer_ops);
+ 	if (ret)
+-		return ret;
++		goto err_trig;
  
-+	mutex_lock(&tdev->mutex);
-+
-+	tdev->message = message;
- 	ret = copy_from_user(tdev->message, userbuf, count);
- 	if (ret) {
- 		ret = -EFAULT;
--- 
-2.39.2
-
+ 	adc->vref_mv = mxs_lradc_adc_vref_mv[lradc->soc];
+ 
+@@ -804,9 +804,9 @@ static int mxs_lradc_adc_probe(struct pl
+ 
+ err_dev:
+ 	mxs_lradc_adc_hw_stop(adc);
+-	mxs_lradc_adc_trigger_remove(iio);
+-err_trig:
+ 	iio_triggered_buffer_cleanup(iio);
++err_trig:
++	mxs_lradc_adc_trigger_remove(iio);
+ 	return ret;
+ }
+ 
+@@ -817,8 +817,8 @@ static int mxs_lradc_adc_remove(struct p
+ 
+ 	iio_device_unregister(iio);
+ 	mxs_lradc_adc_hw_stop(adc);
+-	mxs_lradc_adc_trigger_remove(iio);
+ 	iio_triggered_buffer_cleanup(iio);
++	mxs_lradc_adc_trigger_remove(iio);
+ 
+ 	return 0;
+ }
 
 
