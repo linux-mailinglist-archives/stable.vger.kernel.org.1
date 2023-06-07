@@ -2,89 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6EFE7255D9
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 09:36:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFEF2725642
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 09:46:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239198AbjFGHgj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 03:36:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33932 "EHLO
+        id S236306AbjFGHq4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 03:46:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239204AbjFGHf7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 03:35:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F4A21FC3
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 00:35:56 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A692863B9B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 07:35:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9182C43445;
-        Wed,  7 Jun 2023 07:35:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686123355;
-        bh=9g0Jjoc7PTlSsE7VFQXEqDvnZpk/XhSqHRiArSG1Di0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=X8m2NfYHfwqdrsmCHnr+YFrrDJs1SwO56W1JOLQsMpzAce1uLokjeEamE6AiGGZwi
-         6MHZPIlhS9wVZkljiOVzddR8RQU8XVVVFokha66ikG8eJGx38v53AnErZTOTn8g2P4
-         xcklZq63pzHAkuWDEIIdCFjhAPwhkK1qjprOhw1A=
-Date:   Wed, 7 Jun 2023 09:35:52 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Alexander Aring <aahringo@redhat.com>
-Cc:     teigland@redhat.com, cluster-devel@redhat.com,
-        stable@vger.kernel.org
-Subject: Re: [PATCH dlm/next] fs: dlm: fix nfs async lock callback handling
-Message-ID: <2023060744-raft-gizzard-ad1d@gregkh>
-References: <20230606215626.327239-1-aahringo@redhat.com>
+        with ESMTP id S236424AbjFGHp6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 03:45:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C4C6272D
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 00:43:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1686123798;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vxZp9KdUKEgw6XPITnZ8rbdpOnJBleKSijZBJrFdz/4=;
+        b=BAeajZ+1UH+eWyFAEdYDMWu2eircQm1lfJmOkkSSp3vvePZvRrI7aliNnpwXYubfH9YvnA
+        1AD0wN6uPbz7IN1rf6SMSqfmfu8Pe0kvCuIQKUoxWuWn9ePsD+Yt6bwow+dH+T9xL3hHDa
+        /BicDB4RUXmWy3OCj416KsfuvHlNKeY=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-374-DYHKxxVeONufCYprSw2bMg-1; Wed, 07 Jun 2023 03:43:17 -0400
+X-MC-Unique: DYHKxxVeONufCYprSw2bMg-1
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-3f7ecc15771so1583805e9.1
+        for <stable@vger.kernel.org>; Wed, 07 Jun 2023 00:43:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686123796; x=1688715796;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vxZp9KdUKEgw6XPITnZ8rbdpOnJBleKSijZBJrFdz/4=;
+        b=lE3DI4LnpHm3y2WGkK1rrhNKGic0eRtRzSwXIAIX1GQcFWLsBYconSJaOJAWSgN0k8
+         k6FbOfQTZfuB3V4k8eP07+jVkZDGrBF83aK8dtc5+XOSsMt/1on6HzbUC9GpQeFQNZ1g
+         gbVFgD83Dcdf76gOVgQwvIwaIELnQwThoBORlFVnOZ3S61Ax2GIKjG7mJ68q99++qNy2
+         SbEJHoWp/TvfbhoiDEKTED8bpdvtra7bW5tGP1tRTThWm+PoC9nX122UnKTOVit+WPdt
+         lT04JhBUJyKCg5iubV7PUpfjh7HgYbnimOHngisl3qLcktF4bn33RWo7dXnF31Mil+ig
+         kz0A==
+X-Gm-Message-State: AC+VfDyMM+bPHPK973e0fGJmTt5ZMchjtnrrkkKg0lN5+CGgcUdrxf9p
+        TSz7cLNM+gCE3F5/Qfut5kFjS9b0meRS1vc9iMu8lR0z6BbWYMeucAoSNCjkIwo1Te1OoxOLfsJ
+        8bniQN4GiZIftj//Ge2R0k84I
+X-Received: by 2002:a05:600c:354f:b0:3f7:ec38:7b02 with SMTP id i15-20020a05600c354f00b003f7ec387b02mr2772837wmq.3.1686123796421;
+        Wed, 07 Jun 2023 00:43:16 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ4Z/oafmbbbdymBvFhysi9pZ7rB9/GzpxAwi7QXPZLn1SSiVpHCJ+hrMbTgXgCgV2HZ5oGlPA==
+X-Received: by 2002:a05:600c:354f:b0:3f7:ec38:7b02 with SMTP id i15-20020a05600c354f00b003f7ec387b02mr2772818wmq.3.1686123796122;
+        Wed, 07 Jun 2023 00:43:16 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c70e:9c00:8d26:3031:d131:455c? (p200300cbc70e9c008d263031d131455c.dip0.t-ipconnect.de. [2003:cb:c70e:9c00:8d26:3031:d131:455c])
+        by smtp.gmail.com with ESMTPSA id o16-20020a05600c379000b003f6038faa19sm1178915wmr.19.2023.06.07.00.43.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Jun 2023 00:43:15 -0700 (PDT)
+Message-ID: <1b27077f-d4e5-321c-f15e-b1309763806c@redhat.com>
+Date:   Wed, 7 Jun 2023 09:43:14 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230606215626.327239-1-aahringo@redhat.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] mm/mprotect: Fix do_mprotect_pkey() limit check
+Content-Language: en-US
+To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Lorenzo Stoakes <lstoakes@gmail.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Jeff Xu <jeffxu@chromium.org>, stable@vger.kernel.org
+References: <20230606182912.586576-1-Liam.Howlett@oracle.com>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20230606182912.586576-1-Liam.Howlett@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Jun 06, 2023 at 05:56:26PM -0400, Alexander Aring wrote:
-> This patch is fixing the current the callback handling if it's a nfs
-> async lock request signaled if fl_lmops is set.
+On 06.06.23 20:29, Liam R. Howlett wrote:
+> The return of do_mprotect_pkey() can still be incorrectly returned as
+> success if there is a gap that spans to or beyond the end address passed
+> in.  Update the check to ensure that the end address has indeed been
+> seen.
 > 
-> When using `stress-ng --fcntl 32` on the kernel log there are several
-> messages like:
-> 
-> [11185.123533] dlm: dlm_plock_callback: vfs lock error 5d5127 file 000000002dd10f4d fl 000000007d13afae
-> [11185.127135] dlm: dlm_plock_callback: vfs lock error 5d5127 file 000000002dd10f4d fl 00000000a6046fa0
-> [11185.142668] dlm: dlm_plock_callback: vfs lock error 5d5127 file 000000002dd10f4d fl 000000001d13dfa5
-> 
-> The commit 40595cdc93ed ("nfs: block notification on fs with its
-> own ->lock") using only trylocks in an asynchronous polling behaviour. The
-> behaviour before was however differently by evaluating F_SETLKW or F_SETLK
-> and evaluating FL_SLEEP which was the case before commit 40595cdc93ed
-> ("nfs: block notification on fs with its own ->lock"). This behaviour
-> seems to be broken before. This patch will fix the behaviour for the
-> special nfs case before commit 40595cdc93ed ("nfs: block notification on
-> fs with its own ->lock").
-> 
-> There is still a TODO of solving the case when an nfs locking request
-> got interrupted.
-> 
-> Fixes: 40595cdc93ed ("nfs: block notification on fs with its own ->lock")
-> Signed-off-by: Alexander Aring <aahringo@redhat.com>
+> Link: https://lore.kernel.org/all/CABi2SkXjN+5iFoBhxk71t3cmunTk-s=rB4T7qo0UQRh17s49PQ@mail.gmail.com/
+> Fixes: 82f951340f25 ("mm/mprotect: fix do_mprotect_pkey() return on error")
+> Reported-by: Jeff Xu <jeffxu@chromium.org>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 > ---
->  fs/dlm/plock.c | 22 +---------------------
->  1 file changed, 1 insertion(+), 21 deletions(-)
+>   mm/mprotect.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
+> diff --git a/mm/mprotect.c b/mm/mprotect.c
+> index 92d3d3ca390a..c59e7561698c 100644
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+> @@ -867,7 +867,7 @@ static int do_mprotect_pkey(unsigned long start, size_t len,
+>   	}
+>   	tlb_finish_mmu(&tlb);
+>   
+> -	if (!error && vma_iter_end(&vmi) < end)
+> +	if (!error && tmp < end)
+>   		error = -ENOMEM;
+>   
+>   out:
 
-<formletter>
+Acked-by: David Hildenbrand <david@redhat.com>
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+-- 
+Cheers,
 
-</formletter>
+David / dhildenb
+
