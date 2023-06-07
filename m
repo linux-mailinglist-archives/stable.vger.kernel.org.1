@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1355D726DFE
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:47:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0861E726F13
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235026AbjFGUrR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:47:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46462 "EHLO
+        id S235474AbjFGUz3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:55:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235025AbjFGUqq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:46:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C46B0270B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:46:43 -0700 (PDT)
+        with ESMTP id S235747AbjFGUzE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:55:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA933E4
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:55:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4FED963C18
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:46:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 660CCC433EF;
-        Wed,  7 Jun 2023 20:46:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CB4D4647E5
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:55:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED3BC433D2;
+        Wed,  7 Jun 2023 20:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170802;
-        bh=6YsYYRAJbpN9oOEQnpDa7qJZI+T9Lc/w9ciHPgIEx9A=;
+        s=korg; t=1686171301;
+        bh=TioVpWTIMZ3lovXqix+AuORzxm9tsqxRhU0kzNkH7KY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c4XLADtkoS0jlc5TjNQ3O+Rek/0lV4wxfVLnyEfrRLW1Q2WG3AaoMjQf8uaD2h0lC
-         VoKE/vSMFp7pyrNE7Hl77lgkwd95qLIkOwbI49bdm0/a6IPpNZG54+kTE4S6ftyZgP
-         4nkl+DnKgu8lCIZ9kORSAKAaynJ3jetPdXOSK8bk=
+        b=KPIrGckLHw5WDak8JYJWZT/4tPwiDNNhPagzSe93BbEc2lHWImVtrDTb4Jt8cyIW5
+         3GV+9wQkZscR6VRcd9ohvDU+tLKncUZxFK3iy6xLMNLXGQELSxd2KD0jUI4sXV4qUe
+         qbZsRMYqPrOqIJz7OmcjPNAUzsl0QANCDBoib/D4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
-        Mat Martineau <martineau@kernel.org>,
-        Matthieu Baerts <matthieu.baerts@tessares.net>
-Subject: [PATCH 6.1 224/225] selftests: mptcp: join: avoid using cmp --bytes
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.4 65/99] iio: dac: mcp4725: Fix i2c_master_send() return value handling
 Date:   Wed,  7 Jun 2023 22:16:57 +0200
-Message-ID: <20230607200921.710630563@linuxfoundation.org>
+Message-ID: <20230607200902.275293833@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,75 +55,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Matthieu Baerts <matthieu.baerts@tessares.net>
+From: Marek Vasut <marex@denx.de>
 
-commit d328fe87067480cf2bd0b58dab428a98d31dbb7e upstream.
+commit 09d3bec7009186bdba77039df01e5834788b3f95 upstream.
 
-BusyBox's 'cmp' command doesn't support the '--bytes' parameter.
+The i2c_master_send() returns number of sent bytes on success,
+or negative on error. The suspend/resume callbacks expect zero
+on success and non-zero on error. Adapt the return value of the
+i2c_master_send() to the expectation of the suspend and resume
+callbacks, including proper validation of the return value.
 
-Some CIs -- i.e. LKFT -- use BusyBox and have the mptcp_join.sh test
-failing [1] because their 'cmp' command doesn't support this '--bytes'
-option:
-
-    cmp: unrecognized option '--bytes=1024'
-    BusyBox v1.35.0 () multi-call binary.
-
-    Usage: cmp [-ls] [-n NUM] FILE1 [FILE2]
-
-Instead, 'head --bytes' can be used as this option is supported by
-BusyBox. A temporary file is needed for this operation.
-
-Because it is apparently quite common to use BusyBox, it is certainly
-better to backport this fix to impacted kernels.
-
-Fixes: 6bf41020b72b ("selftests: mptcp: update and extend fastclose test-cases")
-Cc: stable@vger.kernel.org
-Link: https://qa-reports.linaro.org/lkft/linux-mainline-master/build/v6.3-rc5-5-g148341f0a2f5/testrun/16088933/suite/kselftest-net-mptcp/test/net_mptcp_userspace_pm_sh/log [1]
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: cf35ad61aca2 ("iio: add mcp4725 I2C DAC driver")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20230511004330.206942-1-marex@denx.de
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/iio/dac/mcp4725.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -15,6 +15,7 @@ sout=""
- cin=""
- cinfail=""
- cinsent=""
-+tmpfile=""
- cout=""
- capout=""
- ns1=""
-@@ -168,6 +169,7 @@ cleanup()
- {
- 	rm -f "$cin" "$cout" "$sinfail"
- 	rm -f "$sin" "$sout" "$cinsent" "$cinfail"
-+	rm -f "$tmpfile"
- 	cleanup_partial
+--- a/drivers/iio/dac/mcp4725.c
++++ b/drivers/iio/dac/mcp4725.c
+@@ -47,12 +47,18 @@ static int __maybe_unused mcp4725_suspen
+ 	struct mcp4725_data *data = iio_priv(i2c_get_clientdata(
+ 		to_i2c_client(dev)));
+ 	u8 outbuf[2];
++	int ret;
+ 
+ 	outbuf[0] = (data->powerdown_mode + 1) << 4;
+ 	outbuf[1] = 0;
+ 	data->powerdown = true;
+ 
+-	return i2c_master_send(data->client, outbuf, 2);
++	ret = i2c_master_send(data->client, outbuf, 2);
++	if (ret < 0)
++		return ret;
++	else if (ret != 2)
++		return -EIO;
++	return 0;
  }
  
-@@ -362,9 +364,16 @@ check_transfer()
- 			fail_test
- 			return 1
- 		fi
--		bytes="--bytes=${bytes}"
-+
-+		# note: BusyBox's "cmp" command doesn't support --bytes
-+		tmpfile=$(mktemp)
-+		head --bytes="$bytes" "$in" > "$tmpfile"
-+		mv "$tmpfile" "$in"
-+		head --bytes="$bytes" "$out" > "$tmpfile"
-+		mv "$tmpfile" "$out"
-+		tmpfile=""
- 	fi
--	cmp -l "$in" "$out" ${bytes} | while read -r i a b; do
-+	cmp -l "$in" "$out" | while read -r i a b; do
- 		local sum=$((0${a} + 0${b}))
- 		if [ $check_invert -eq 0 ] || [ $sum -ne $((0xff)) ]; then
- 			echo "[ FAIL ] $what does not match (in, out):"
+ static int __maybe_unused mcp4725_resume(struct device *dev)
+@@ -60,13 +66,19 @@ static int __maybe_unused mcp4725_resume
+ 	struct mcp4725_data *data = iio_priv(i2c_get_clientdata(
+ 		to_i2c_client(dev)));
+ 	u8 outbuf[2];
++	int ret;
+ 
+ 	/* restore previous DAC value */
+ 	outbuf[0] = (data->dac_value >> 8) & 0xf;
+ 	outbuf[1] = data->dac_value & 0xff;
+ 	data->powerdown = false;
+ 
+-	return i2c_master_send(data->client, outbuf, 2);
++	ret = i2c_master_send(data->client, outbuf, 2);
++	if (ret < 0)
++		return ret;
++	else if (ret != 2)
++		return -EIO;
++	return 0;
+ }
+ static SIMPLE_DEV_PM_OPS(mcp4725_pm_ops, mcp4725_suspend, mcp4725_resume);
+ 
 
 
