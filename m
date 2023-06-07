@@ -2,53 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17E73726F3F
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:56:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B49A8726FE7
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:03:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235434AbjFGU4x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:56:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58024 "EHLO
+        id S235683AbjFGVDN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:03:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235521AbjFGU4w (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:56:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D62A21721
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:56:44 -0700 (PDT)
+        with ESMTP id S235964AbjFGVCz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:02:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79F6C2D56
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:02:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5078564851
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:56:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6505EC4339B;
-        Wed,  7 Jun 2023 20:56:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 42BB664969
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:02:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59A5DC433D2;
+        Wed,  7 Jun 2023 21:02:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171403;
-        bh=QD6I+bCr+RV/71NDqpz6EaS9MABIMIitX+jkoggWWIs=;
+        s=korg; t=1686171738;
+        bh=fTAbgeYGcm8/oBVFE8zh5uiwmKb3Y1ytnxJB+vcW7cw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e2r22vFDYr181f6AollGSEVchGN7WvqWB7Rhrw9Zb4T0sRZ5ix7AT/b0GNW5m0U8P
-         ZHI21dg0W1nW9ijm2ZlB7oU02lXXTChOb1poxYRSkUAK5Qn+jqEaWJ6XvBqw3c+OMq
-         gYmyr7+ko5CrT3sZJ9H5/7Whq2QxJJKc4LT1HaAk=
+        b=LHxkRqqdaOaU77gNZawM7mCMAocZ2joW4tmnGLNJssF4hYlT4WkBGqDAjhVDFxnxf
+         lqHGUScsxl0PqYjG9vtGkfcEifLdq+h/Fb1+fdrBmJAnNBiRHYSel+DbgmPbb8gY+6
+         J7KgozSyhGE+FTNzFmmVZRxwqUeapiRVFwOiQYxs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jason Baron <jbaron@akamai.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.4 80/99] lib/dynamic_debug.c: use address-of operator on section symbols
-Date:   Wed,  7 Jun 2023 22:17:12 +0200
-Message-ID: <20230607200902.731741043@linuxfoundation.org>
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Ming Lei <ming.lei@redhat.com>, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 130/159] block: fix revalidate performance regression
+Date:   Wed,  7 Jun 2023 22:17:13 +0200
+Message-ID: <20230607200907.930100361@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,45 +53,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nathan Chancellor <natechancellor@gmail.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 8306b057a85ec07482da5d4b99d5c0b47af69be1 upstream.
+commit 47fe1c3064c6bc1bfa3c032ff78e603e5dd6e5bc upstream.
 
-Clang warns:
+The scsi driver function sd_read_block_characteristics() always calls
+disk_set_zoned() to a disk zoned model correctly, in case the device
+model changed. This is done even for regular disks to set the zoned
+model to BLK_ZONED_NONE and free any zone related resources if the drive
+previously was zoned.
 
-../lib/dynamic_debug.c:1034:24: warning: array comparison always
-evaluates to false [-Wtautological-compare]
-        if (__start___verbose == __stop___verbose) {
-                              ^
-1 warning generated.
+This behavior significantly impact the time it takes to revalidate disks
+on a large system as the call to disk_clear_zone_settings() done from
+disk_set_zoned() for the BLK_ZONED_NONE case results in the device
+request queued to be frozen, even if there are no zone resources to
+free.
 
-These are not true arrays, they are linker defined symbols, which are just
-addresses.  Using the address of operator silences the warning and does
-not change the resulting assembly with either clang/ld.lld or gcc/ld
-(tested with diff + objdump -Dr).
+Avoid this overhead for non-zoned devices by not calling
+disk_clear_zone_settings() in disk_set_zoned() if the device model
+was already set to BLK_ZONED_NONE, which is always the case for regular
+devices.
 
-Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Acked-by: Jason Baron <jbaron@akamai.com>
-Link: https://github.com/ClangBuiltLinux/linux/issues/894
-Link: http://lkml.kernel.org/r/20200220051320.10739-1-natechancellor@gmail.com
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Reported by: Brian Bunker <brian@purestorage.com>
+
+Fixes: 508aebb80527 ("block: introduce blk_queue_clear_zone_settings()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20230529073237.1339862-1-dlemoal@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/dynamic_debug.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk-settings.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/lib/dynamic_debug.c
-+++ b/lib/dynamic_debug.c
-@@ -1015,7 +1015,7 @@ static int __init dynamic_debug_init(voi
- 	int n = 0, entries = 0, modct = 0;
- 	int verbose_bytes = 0;
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -875,6 +875,7 @@ static bool disk_has_partitions(struct g
+ void blk_queue_set_zoned(struct gendisk *disk, enum blk_zoned_model model)
+ {
+ 	struct request_queue *q = disk->queue;
++	unsigned int old_model = q->limits.zoned;
  
--	if (__start___verbose == __stop___verbose) {
-+	if (&__start___verbose == &__stop___verbose) {
- 		pr_warn("_ddebug table is empty in a CONFIG_DYNAMIC_DEBUG build\n");
- 		return 1;
+ 	switch (model) {
+ 	case BLK_ZONED_HM:
+@@ -912,7 +913,7 @@ void blk_queue_set_zoned(struct gendisk
+ 		 */
+ 		blk_queue_zone_write_granularity(q,
+ 						queue_logical_block_size(q));
+-	} else {
++	} else if (old_model != BLK_ZONED_NONE) {
+ 		blk_queue_clear_zone_settings(q);
  	}
+ }
 
 
