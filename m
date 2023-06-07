@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34358726E28
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:48:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E9CA726CB2
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:35:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234960AbjFGUsc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:48:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48520 "EHLO
+        id S233958AbjFGUfs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:35:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234927AbjFGUsS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:48:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A0F51FF0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:48:03 -0700 (PDT)
+        with ESMTP id S234003AbjFGUfe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:35:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FF1F2116
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:35:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0AC32646B1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:48:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EDEAC433EF;
-        Wed,  7 Jun 2023 20:48:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3FD4864564
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:35:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50959C433EF;
+        Wed,  7 Jun 2023 20:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170882;
-        bh=+CMClU2x/+ye7AO4QkcGAw9FVRqL4xhy7xhfqFMTa3Q=;
+        s=korg; t=1686170122;
+        bh=a89S2RHs75bjz/PqFiImDOIrIL5j3o7AOXMwYacPgtE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RTYg8orvQPVvNrTS0NBW5datpR2XNc7wEllduLI6yUZX4y2D6/tRFM2gQ9lGA89t+
-         h3DV2eDxzybpcfpbCufK46nB/WdpwdD4w429nfu5gj7dfNvED0w7A0AoXrEtcyHeKL
-         2Pmde9oaptZtbdHbG4PxSMbujDqvWUBbZ9wanX74=
+        b=DXjjZVJna4zFu166WQ3jaAIfGIXsGogmgzzg5CaXzH+QmaCVj4lQewau1jfl32sKQ
+         j7wVnOjmAj1gvu+NTCQOkx3sYMOdscrCuLYdFQ55Q39bVe4OflWBWJvRUTh6+aaFII
+         6zOwFqo04CqojHCqahFREdgLNdDcWPO5o1hW+LS8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vladislav Efanov <VEfanov@ispras.ru>,
+        patches@lists.linux.dev, Hangyu Hua <hbh25y@gmail.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
         Paolo Abeni <pabeni@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 027/120] udp6: Fix race condition in udp6_sendmsg & connect
+Subject: [PATCH 4.19 26/88] net/sched: flower: fix possible OOB write in fl_set_geneve_opt()
 Date:   Wed,  7 Jun 2023 22:15:43 +0200
-Message-ID: <20230607200901.768493851@linuxfoundation.org>
+Message-ID: <20230607200859.913940786@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,58 +56,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladislav Efanov <VEfanov@ispras.ru>
+From: Hangyu Hua <hbh25y@gmail.com>
 
-[ Upstream commit 448a5ce1120c5bdbce1f1ccdabcd31c7d029f328 ]
+[ Upstream commit 4d56304e5827c8cc8cc18c75343d283af7c4825c ]
 
-Syzkaller got the following report:
-BUG: KASAN: use-after-free in sk_setup_caps+0x621/0x690 net/core/sock.c:2018
-Read of size 8 at addr ffff888027f82780 by task syz-executor276/3255
+If we send two TCA_FLOWER_KEY_ENC_OPTS_GENEVE packets and their total
+size is 252 bytes(key->enc_opts.len = 252) then
+key->enc_opts.len = opt->length = data_len / 4 = 0 when the third
+TCA_FLOWER_KEY_ENC_OPTS_GENEVE packet enters fl_set_geneve_opt. This
+bypasses the next bounds check and results in an out-of-bounds.
 
-The function sk_setup_caps (called by ip6_sk_dst_store_flow->
-ip6_dst_store) referenced already freed memory as this memory was
-freed by parallel task in udpv6_sendmsg->ip6_sk_dst_lookup_flow->
-sk_dst_check.
-
-          task1 (connect)              task2 (udp6_sendmsg)
-        sk_setup_caps->sk_dst_set |
-                                  |  sk_dst_check->
-                                  |      sk_dst_set
-                                  |      dst_release
-        sk_setup_caps references  |
-        to already freed dst_entry|
-
-The reason for this race condition is: sk_setup_caps() keeps using
-the dst after transferring the ownership to the dst cache.
-
-Found by Linux Verification Center (linuxtesting.org) with syzkaller.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Vladislav Efanov <VEfanov@ispras.ru>
+Fixes: 0a6e77784f49 ("net/sched: allow flower to match tunnel options")
+Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Reviewed-by: Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>
+Link: https://lore.kernel.org/r/20230531102805.27090-1-hbh25y@gmail.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/cls_flower.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2016,7 +2016,6 @@ void sk_setup_caps(struct sock *sk, stru
- {
- 	u32 max_segs = 1;
+diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
+index 6163648145c19..7ffa28a98d743 100644
+--- a/net/sched/cls_flower.c
++++ b/net/sched/cls_flower.c
+@@ -640,6 +640,9 @@ static int fl_set_geneve_opt(const struct nlattr *nla, struct fl_flow_key *key,
+ 	if (option_len > sizeof(struct geneve_opt))
+ 		data_len = option_len - sizeof(struct geneve_opt);
  
--	sk_dst_set(sk, dst);
- 	sk->sk_route_caps = dst->dev->features | sk->sk_route_forced_caps;
- 	if (sk->sk_route_caps & NETIF_F_GSO)
- 		sk->sk_route_caps |= NETIF_F_GSO_SOFTWARE;
-@@ -2031,6 +2030,7 @@ void sk_setup_caps(struct sock *sk, stru
- 		}
- 	}
- 	sk->sk_gso_max_segs = max_segs;
-+	sk_dst_set(sk, dst);
- }
- EXPORT_SYMBOL_GPL(sk_setup_caps);
- 
++	if (key->enc_opts.len > FLOW_DIS_TUN_OPTS_MAX - 4)
++		return -ERANGE;
++
+ 	opt = (struct geneve_opt *)&key->enc_opts.data[key->enc_opts.len];
+ 	memset(opt, 0xff, option_len);
+ 	opt->length = data_len / 4;
+-- 
+2.39.2
+
 
 
