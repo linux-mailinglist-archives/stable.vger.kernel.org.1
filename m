@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FC50726E23
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:48:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DE71726C27
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:31:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234795AbjFGUsX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:48:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48320 "EHLO
+        id S233597AbjFGUbE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:31:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235097AbjFGUsM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:48:12 -0400
+        with ESMTP id S233635AbjFGUa5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:30:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C27D82D56
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:47:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 931FB2134
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:30:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A2A88646A3
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:47:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2675C433EF;
-        Wed,  7 Jun 2023 20:47:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 28CFC644E7
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:30:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CBE5C433D2;
+        Wed,  7 Jun 2023 20:30:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170872;
-        bh=xF/DBzvWGn5h67Xz6nYpi8GHrzhWxjHqacTqprvA3D0=;
+        s=korg; t=1686169855;
+        bh=kC9LOLN41BDeUI089Se9e6y0RGWuDxlP7H0Whrq/qtw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bEePMs+d8cxwEj8X5m0zlWd8JzwAR89H0RKuBxFY9wTaBRJ9rihovQQtzY7LzeE/5
-         9fyZVgIIEX6JZW435r3XELWHfAyXDZaqoLVQ2duc0rWqjASsCGo+0zWYZYgQ9ABKp1
-         R9NUuhnLJaFX8nli926RJ3rY3GfpYA4eQgeUxTWo=
+        b=Zs/DNTFxIm5Cv3KOT535lr+6c0SaVHwXItm5iNJL09+ro+Vy3EeXStu2UkdB74l4K
+         5HL11ufCqHns1Wy7DwN29xJXK+IBL1i9dNKkPRc7i1Y4HyaarpTXQITUYeC9L2F5Mm
+         7QHe6jbpo+R3wp/QnRx6DTnwo+bPsOjskm0FJ6Po=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pedro Tammela <pctammela@mojatatu.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Vlad Buslov <vladbu@nvidia.com>,
-        Peilin Ye <peilin.ye@bytedance.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 023/120] net/sched: Reserve TC_H_INGRESS (TC_H_CLSACT) for ingress (clsact) Qdiscs
+        patches@lists.linux.dev, Peter Rosin <peda@axentia.se>,
+        Tudor Ambarus <tudor.ambarus@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.3 240/286] dmaengine: at_hdmac: Repair bitfield macros for peripheral ID handling
 Date:   Wed,  7 Jun 2023 22:15:39 +0200
-Message-ID: <20230607200901.644435847@linuxfoundation.org>
+Message-ID: <20230607200931.130982662@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,86 +54,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peilin Ye <peilin.ye@bytedance.com>
+From: Peter Rosin <peda@axentia.se>
 
-[ Upstream commit f85fa45d4a9408d98c46c8fa45ba2e3b2f4bf219 ]
+commit 2a6c7e8cc74e58ba94b8c897035a8ef7f7349f76 upstream.
 
-Currently it is possible to add e.g. an HTB Qdisc under ffff:fff1
-(TC_H_INGRESS, TC_H_CLSACT):
+The MSB part of the peripheral IDs need to go into the ATC_SRC_PER_MSB
+and ATC_DST_PER_MSB fields. Not the LSB part.
 
-  $ ip link add name ifb0 type ifb
-  $ tc qdisc add dev ifb0 parent ffff:fff1 htb
-  $ tc qdisc add dev ifb0 clsact
-  Error: Exclusivity flag on, cannot modify.
-  $ drgn
-  ...
-  >>> ifb0 = netdev_get_by_name(prog, "ifb0")
-  >>> qdisc = ifb0.ingress_queue.qdisc_sleeping
-  >>> print(qdisc.ops.id.string_().decode())
-  htb
-  >>> qdisc.flags.value_() # TCQ_F_INGRESS
-  2
+This fixes a severe regression for TSE-850 devices (compatible
+axentia,tse850v3) where output to the audio I2S codec (the main
+purpose of the device) simply do not work.
 
-Only allow ingress and clsact Qdiscs under ffff:fff1.  Return -EINVAL
-for everything else.  Make TCQ_F_INGRESS a static flag of ingress and
-clsact Qdiscs.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Fixes: 1f211a1b929c ("net, sched: add clsact qdisc")
-Tested-by: Pedro Tammela <pctammela@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
-Signed-off-by: Peilin Ye <peilin.ye@bytedance.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d8840a7edcf0 ("dmaengine: at_hdmac: Use bitfield access macros")
+Cc: stable@vger.kernel.org
+Signed-off-by: Peter Rosin <peda@axentia.se>
+Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Link: https://lore.kernel.org/r/01e5dae1-d4b0-cf31-516b-423b11b077f1@axentia.se
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_api.c     | 7 ++++++-
- net/sched/sch_ingress.c | 4 ++--
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ drivers/dma/at_hdmac.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index 54e2309315eb5..b665f4ff49a60 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -1223,7 +1223,12 @@ static struct Qdisc *qdisc_create(struct net_device *dev,
- 	sch->parent = parent;
+diff --git a/drivers/dma/at_hdmac.c b/drivers/dma/at_hdmac.c
+index 8858470246e1..6362013b90df 100644
+--- a/drivers/dma/at_hdmac.c
++++ b/drivers/dma/at_hdmac.c
+@@ -153,8 +153,6 @@
+ #define ATC_AUTO		BIT(31)		/* Auto multiple buffer tx enable */
  
- 	if (handle == TC_H_INGRESS) {
--		sch->flags |= TCQ_F_INGRESS;
-+		if (!(sch->flags & TCQ_F_INGRESS)) {
-+			NL_SET_ERR_MSG(extack,
-+				       "Specified parent ID is reserved for ingress and clsact Qdiscs");
-+			err = -EINVAL;
-+			goto err_out3;
-+		}
- 		handle = TC_H_MAKE(TC_H_INGRESS, 0);
- 	} else {
- 		if (handle == 0) {
-diff --git a/net/sched/sch_ingress.c b/net/sched/sch_ingress.c
-index 35963929e1178..e43a454993723 100644
---- a/net/sched/sch_ingress.c
-+++ b/net/sched/sch_ingress.c
-@@ -140,7 +140,7 @@ static struct Qdisc_ops ingress_qdisc_ops __read_mostly = {
- 	.cl_ops			=	&ingress_class_ops,
- 	.id			=	"ingress",
- 	.priv_size		=	sizeof(struct ingress_sched_data),
--	.static_flags		=	TCQ_F_CPUSTATS,
-+	.static_flags		=	TCQ_F_INGRESS | TCQ_F_CPUSTATS,
- 	.init			=	ingress_init,
- 	.destroy		=	ingress_destroy,
- 	.dump			=	ingress_dump,
-@@ -281,7 +281,7 @@ static struct Qdisc_ops clsact_qdisc_ops __read_mostly = {
- 	.cl_ops			=	&clsact_class_ops,
- 	.id			=	"clsact",
- 	.priv_size		=	sizeof(struct clsact_sched_data),
--	.static_flags		=	TCQ_F_CPUSTATS,
-+	.static_flags		=	TCQ_F_INGRESS | TCQ_F_CPUSTATS,
- 	.init			=	clsact_init,
- 	.destroy		=	clsact_destroy,
- 	.dump			=	ingress_dump,
+ /* Bitfields in CFG */
+-#define ATC_PER_MSB(h)	((0x30U & (h)) >> 4)	/* Extract most significant bits of a handshaking identifier */
+-
+ #define ATC_SRC_PER		GENMASK(3, 0)	/* Channel src rq associated with periph handshaking ifc h */
+ #define ATC_DST_PER		GENMASK(7, 4)	/* Channel dst rq associated with periph handshaking ifc h */
+ #define ATC_SRC_REP		BIT(8)		/* Source Replay Mod */
+@@ -181,10 +179,15 @@
+ #define ATC_DPIP_HOLE		GENMASK(15, 0)
+ #define ATC_DPIP_BOUNDARY	GENMASK(25, 16)
+ 
+-#define ATC_SRC_PER_ID(id)	(FIELD_PREP(ATC_SRC_PER_MSB, (id)) |	\
+-				 FIELD_PREP(ATC_SRC_PER, (id)))
+-#define ATC_DST_PER_ID(id)	(FIELD_PREP(ATC_DST_PER_MSB, (id)) |	\
+-				 FIELD_PREP(ATC_DST_PER, (id)))
++#define ATC_PER_MSB		GENMASK(5, 4)	/* Extract MSBs of a handshaking identifier */
++#define ATC_SRC_PER_ID(id)					       \
++	({ typeof(id) _id = (id);				       \
++	   FIELD_PREP(ATC_SRC_PER_MSB, FIELD_GET(ATC_PER_MSB, _id)) |  \
++	   FIELD_PREP(ATC_SRC_PER, _id); })
++#define ATC_DST_PER_ID(id)					       \
++	({ typeof(id) _id = (id);				       \
++	   FIELD_PREP(ATC_DST_PER_MSB, FIELD_GET(ATC_PER_MSB, _id)) |  \
++	   FIELD_PREP(ATC_DST_PER, _id); })
+ 
+ 
+ 
 -- 
-2.39.2
+2.41.0
 
 
 
