@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 016F6726E8B
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:51:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80D21726E1B
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:48:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234916AbjFGUvT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:51:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49620 "EHLO
+        id S235101AbjFGUsP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:48:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234934AbjFGUvM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:51:12 -0400
+        with ESMTP id S234916AbjFGUsA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:48:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B3C71FE2
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:50:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3D802717
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:47:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CA8436472E
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:50:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9AF0C433EF;
-        Wed,  7 Jun 2023 20:50:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 15135646B1
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:47:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2482FC433D2;
+        Wed,  7 Jun 2023 20:47:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171047;
-        bh=d3cNt5lw8G2FzFfwyQa4sHJN8DSVnQSgTbP2Akkes9A=;
+        s=korg; t=1686170829;
+        bh=nvxxCqzQSJniYD7SMvM7DQAEKt9nmhMautvZMiswPdM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XwUKuAfSyxv8IF5E87N4prO8MfjoUA4LfRqNIrY5cTGJhDFyPye4vDQuvwGyrxuZA
-         1OhBSzOnEF9QDKFNQfYbCVhMOH7+3ciJrCijNmG2rLDnGxDrygyJPREBPEdo+cBBTa
-         gzA/GZWXgoySrRtNbXkRWUpMMvbilEDs5xYQfvXg=
+        b=f6wvwKqYxFSHXJrAO0cPxuyMGCiv6p2DuVedqIX/vUSjGKRMH/kvqBcWnKhizg6Bu
+         1ii1aGB+taPYR2PQln4rkbidToKNLn74TSyYcJwiLJqCQHUfBjAOhQLL2VpcZHMu71
+         hvnFDtik5XJECR4+c71ynNt3vUjV+tROFz+2HyZ8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 090/120] gcc-12: disable -Wdangling-pointer warning for now
+        patches@lists.linux.dev, Eric Biggers <ebiggers@kernel.org>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Eric Biggers <ebiggers@google.com>,
+        Stefan Berger <stefanb@linux.ibm.com>
+Subject: [PATCH 6.1 213/225] KEYS: asymmetric: Copy sig and digest in public_key_verify_signature()
 Date:   Wed,  7 Jun 2023 22:16:46 +0200
-Message-ID: <20230607200903.737478800@linuxfoundation.org>
+Message-ID: <20230607200921.337114441@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,65 +55,112 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-commit f7d63b50898172b9eb061b9e2daad61b428792d0 upstream.
+commit c3d03e8e35e005e1a614e51bb59053eeb5857f76 upstream.
 
-[ Upstream commit 49beadbd47c270a00754c107a837b4f29df4c822 ]
+Commit ac4e97abce9b8 ("scatterlist: sg_set_buf() argument must be in linear
+mapping") checks that both the signature and the digest reside in the
+linear mapping area.
 
-While the concept of checking for dangling pointers to local variables
-at function exit is really interesting, the gcc-12 implementation is not
-compatible with reality, and results in false positives.
+However, more recently commit ba14a194a434c ("fork: Add generic vmalloced
+stack support") made it possible to move the stack in the vmalloc area,
+which is not contiguous, and thus not suitable for sg_set_buf() which needs
+adjacent pages.
 
-For example, gcc sees us putting things on a local list head allocated
-on the stack, which involves exactly those kinds of pointers to the
-local stack entry:
+Always make a copy of the signature and digest in the same buffer used to
+store the key and its parameters, and pass them to sg_init_one(). Prefer it
+to conditionally doing the copy if necessary, to keep the code simple. The
+buffer allocated with kmalloc() is in the linear mapping area.
 
-  In function ‘__list_add’,
-      inlined from ‘list_add_tail’ at include/linux/list.h:102:2,
-      inlined from ‘rebuild_snap_realms’ at fs/ceph/snap.c:434:2:
-  include/linux/list.h:74:19: warning: storing the address of local variable ‘realm_queue’ in ‘*&realm_27(D)->rebuild_item.prev’ [-Wdangling-pointer=]
-     74 |         new->prev = prev;
-        |         ~~~~~~~~~~^~~~~~
-
-But then gcc - understandably - doesn't really understand the big
-picture how the doubly linked list works, so doesn't see how we then end
-up emptying said list head in a loop and the pointer we added has been
-removed.
-
-Gcc also complains about us (intentionally) using this as a way to store
-a kind of fake stack trace, eg
-
-  drivers/acpi/acpica/utdebug.c:40:38: warning: storing the address of local variable ‘current_sp’ in ‘acpi_gbl_entry_stack_pointer’ [-Wdangling-pointer=]
-     40 |         acpi_gbl_entry_stack_pointer = &current_sp;
-        |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~
-
-which is entirely reasonable from a compiler standpoint, and we may want
-to change those kinds of patterns, but not not.
-
-So this is one of those "it would be lovely if the compiler were to
-complain about us leaving dangling pointers to the stack", but not this
-way.
-
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 4.9.x
+Fixes: ba14a194a434 ("fork: Add generic vmalloced stack support")
+Link: https://lore.kernel.org/linux-integrity/Y4pIpxbjBdajymBJ@sol.localdomain/
+Suggested-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Reviewed-by: Eric Biggers <ebiggers@google.com>
+Tested-by: Stefan Berger <stefanb@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Makefile |    4 ++++
- 1 file changed, 4 insertions(+)
+ crypto/asymmetric_keys/public_key.c |   38 +++++++++++++++++++-----------------
+ 1 file changed, 21 insertions(+), 17 deletions(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -808,6 +808,10 @@ endif
- KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
+--- a/crypto/asymmetric_keys/public_key.c
++++ b/crypto/asymmetric_keys/public_key.c
+@@ -380,9 +380,10 @@ int public_key_verify_signature(const st
+ 	struct crypto_wait cwait;
+ 	struct crypto_akcipher *tfm;
+ 	struct akcipher_request *req;
+-	struct scatterlist src_sg[2];
++	struct scatterlist src_sg;
+ 	char alg_name[CRYPTO_MAX_ALG_NAME];
+-	char *key, *ptr;
++	char *buf, *ptr;
++	size_t buf_len;
+ 	int ret;
  
- KBUILD_CFLAGS += $(call cc-disable-warning, unused-const-variable)
+ 	pr_devel("==>%s()\n", __func__);
+@@ -420,34 +421,37 @@ int public_key_verify_signature(const st
+ 	if (!req)
+ 		goto error_free_tfm;
+ 
+-	key = kmalloc(pkey->keylen + sizeof(u32) * 2 + pkey->paramlen,
+-		      GFP_KERNEL);
+-	if (!key)
++	buf_len = max_t(size_t, pkey->keylen + sizeof(u32) * 2 + pkey->paramlen,
++			sig->s_size + sig->digest_size);
 +
-+# These result in bogus false positives
-+KBUILD_CFLAGS += $(call cc-disable-warning, dangling-pointer)
++	buf = kmalloc(buf_len, GFP_KERNEL);
++	if (!buf)
+ 		goto error_free_req;
+ 
+-	memcpy(key, pkey->key, pkey->keylen);
+-	ptr = key + pkey->keylen;
++	memcpy(buf, pkey->key, pkey->keylen);
++	ptr = buf + pkey->keylen;
+ 	ptr = pkey_pack_u32(ptr, pkey->algo);
+ 	ptr = pkey_pack_u32(ptr, pkey->paramlen);
+ 	memcpy(ptr, pkey->params, pkey->paramlen);
+ 
+ 	if (pkey->key_is_private)
+-		ret = crypto_akcipher_set_priv_key(tfm, key, pkey->keylen);
++		ret = crypto_akcipher_set_priv_key(tfm, buf, pkey->keylen);
+ 	else
+-		ret = crypto_akcipher_set_pub_key(tfm, key, pkey->keylen);
++		ret = crypto_akcipher_set_pub_key(tfm, buf, pkey->keylen);
+ 	if (ret)
+-		goto error_free_key;
++		goto error_free_buf;
+ 
+ 	if (strcmp(pkey->pkey_algo, "sm2") == 0 && sig->data_size) {
+ 		ret = cert_sig_digest_update(sig, tfm);
+ 		if (ret)
+-			goto error_free_key;
++			goto error_free_buf;
+ 	}
+ 
+-	sg_init_table(src_sg, 2);
+-	sg_set_buf(&src_sg[0], sig->s, sig->s_size);
+-	sg_set_buf(&src_sg[1], sig->digest, sig->digest_size);
+-	akcipher_request_set_crypt(req, src_sg, NULL, sig->s_size,
++	memcpy(buf, sig->s, sig->s_size);
++	memcpy(buf + sig->s_size, sig->digest, sig->digest_size);
 +
- ifdef CONFIG_FRAME_POINTER
- KBUILD_CFLAGS	+= -fno-omit-frame-pointer -fno-optimize-sibling-calls
- else
++	sg_init_one(&src_sg, buf, sig->s_size + sig->digest_size);
++	akcipher_request_set_crypt(req, &src_sg, NULL, sig->s_size,
+ 				   sig->digest_size);
+ 	crypto_init_wait(&cwait);
+ 	akcipher_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
+@@ -455,8 +459,8 @@ int public_key_verify_signature(const st
+ 				      crypto_req_done, &cwait);
+ 	ret = crypto_wait_req(crypto_akcipher_verify(req), &cwait);
+ 
+-error_free_key:
+-	kfree(key);
++error_free_buf:
++	kfree(buf);
+ error_free_req:
+ 	akcipher_request_free(req);
+ error_free_tfm:
 
 
