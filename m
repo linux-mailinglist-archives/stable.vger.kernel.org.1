@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90CDB726C5B
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:33:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05115726EE3
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:54:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233742AbjFGUdE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:33:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59506 "EHLO
+        id S235455AbjFGUyC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:54:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233746AbjFGUdD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:33:03 -0400
+        with ESMTP id S235390AbjFGUxi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:53:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94E3E26A4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:32:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F3291FD5
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:53:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A16464524
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:32:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ECF8C433D2;
-        Wed,  7 Jun 2023 20:32:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 83EBF647A9
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:53:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97433C433D2;
+        Wed,  7 Jun 2023 20:53:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169966;
-        bh=gy1YcfXCZCoVpWN94lsgygDGYJlbUs/FpJWOvXGJEVI=;
+        s=korg; t=1686171205;
+        bh=pqzdTNgUwHqgceYCq0XJCIoUPvNv3LVkJxE36qND4w4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FHKK15BAnBDi+Ezc23B84DQS83QxgItITI3kJkOhnD4Qx5zN6UGx/1uM7m1cOr4Wh
-         7IXO1Fr4cE/RmCypbRfpCP/z39fufIWEzszO8+Xm40F+l0o7xwkKV4fxFfDf5p/Ygf
-         WUA0IuDXhp9b0VdNZJL6kkGJoSkSFbx3oddcz5Do=
+        b=gZx3pQ2uRy+g96CJCb6VLlnwfy5rZ/1yxN2TaqYRP8fb6LMbg4gGxO3vVCnQ4RIqG
+         YD4WKRvl8r1p1mi4t03zHPM0e1goFKCkZBlRFU+0SY2dX9yBys6GpCxE9HyMMSC99/
+         Hp5au4bM7YwH9Kp5l2TzLcPKTdE6huJohujnCgUc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev
-Subject: [PATCH 6.3 281/286] regmap: Account for register length when chunking
-Date:   Wed,  7 Jun 2023 22:16:20 +0200
-Message-ID: <20230607200932.462477215@linuxfoundation.org>
+        patches@lists.linux.dev, Lee Jones <lee@kernel.org>,
+        Jassi Brar <jaswinder.singh@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 29/99] mailbox: mailbox-test: Fix potential double-free in mbox_test_message_write()
+Date:   Wed,  7 Jun 2023 22:16:21 +0200
+Message-ID: <20230607200901.172917574@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,46 +54,135 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jim Wylder <jwylder@google.com>
+From: Lee Jones <lee@kernel.org>
 
-commit 3981514180c987a79ea98f0ae06a7cbf58a9ac0f upstream.
+[ Upstream commit 2d1e952a2b8e5e92d8d55ac88a7cf7ca5ea591ad ]
 
-Currently, when regmap_raw_write() splits the data, it uses the
-max_raw_write value defined for the bus.  For any bus that includes
-the target register address in the max_raw_write value, the chunked
-transmission will always exceed the maximum transmission length.
-To avoid this problem, subtract the length of the register and the
-padding from the maximum transmission.
+If a user can make copy_from_user() fail, there is a potential for
+UAF/DF due to a lack of locking around the allocation, use and freeing
+of the data buffers.
 
-Signed-off-by: Jim Wylder <jwylder@google.com
-Link: https://lore.kernel.org/r/20230517152444.3690870-2-jwylder@google.com
-Signed-off-by: Mark Brown <broonie@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This issue is not theoretical.  I managed to author a POC for it:
+
+    BUG: KASAN: double-free in kfree+0x5c/0xac
+    Free of addr ffff29280be5de00 by task poc/356
+    CPU: 1 PID: 356 Comm: poc Not tainted 6.1.0-00001-g961aa6552c04-dirty #20
+    Hardware name: linux,dummy-virt (DT)
+    Call trace:
+     dump_backtrace.part.0+0xe0/0xf0
+     show_stack+0x18/0x40
+     dump_stack_lvl+0x64/0x80
+     print_report+0x188/0x48c
+     kasan_report_invalid_free+0xa0/0xc0
+     ____kasan_slab_free+0x174/0x1b0
+     __kasan_slab_free+0x18/0x24
+     __kmem_cache_free+0x130/0x2e0
+     kfree+0x5c/0xac
+     mbox_test_message_write+0x208/0x29c
+     full_proxy_write+0x90/0xf0
+     vfs_write+0x154/0x440
+     ksys_write+0xcc/0x180
+     __arm64_sys_write+0x44/0x60
+     invoke_syscall+0x60/0x190
+     el0_svc_common.constprop.0+0x7c/0x160
+     do_el0_svc+0x40/0xf0
+     el0_svc+0x2c/0x6c
+     el0t_64_sync_handler+0xf4/0x120
+     el0t_64_sync+0x18c/0x190
+
+    Allocated by task 356:
+     kasan_save_stack+0x3c/0x70
+     kasan_set_track+0x2c/0x40
+     kasan_save_alloc_info+0x24/0x34
+     __kasan_kmalloc+0xb8/0xc0
+     kmalloc_trace+0x58/0x70
+     mbox_test_message_write+0x6c/0x29c
+     full_proxy_write+0x90/0xf0
+     vfs_write+0x154/0x440
+     ksys_write+0xcc/0x180
+     __arm64_sys_write+0x44/0x60
+     invoke_syscall+0x60/0x190
+     el0_svc_common.constprop.0+0x7c/0x160
+     do_el0_svc+0x40/0xf0
+     el0_svc+0x2c/0x6c
+     el0t_64_sync_handler+0xf4/0x120
+     el0t_64_sync+0x18c/0x190
+
+    Freed by task 357:
+     kasan_save_stack+0x3c/0x70
+     kasan_set_track+0x2c/0x40
+     kasan_save_free_info+0x38/0x5c
+     ____kasan_slab_free+0x13c/0x1b0
+     __kasan_slab_free+0x18/0x24
+     __kmem_cache_free+0x130/0x2e0
+     kfree+0x5c/0xac
+     mbox_test_message_write+0x208/0x29c
+     full_proxy_write+0x90/0xf0
+     vfs_write+0x154/0x440
+     ksys_write+0xcc/0x180
+     __arm64_sys_write+0x44/0x60
+     invoke_syscall+0x60/0x190
+     el0_svc_common.constprop.0+0x7c/0x160
+     do_el0_svc+0x40/0xf0
+     el0_svc+0x2c/0x6c
+     el0t_64_sync_handler+0xf4/0x120
+     el0t_64_sync+0x18c/0x190
+
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/mailbox/mailbox-test.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -2064,6 +2064,8 @@ int _regmap_raw_write(struct regmap *map
- 	size_t val_count = val_len / val_bytes;
- 	size_t chunk_count, chunk_bytes;
- 	size_t chunk_regs = val_count;
-+	size_t max_data = map->max_raw_write - map->format.reg_bytes -
-+			map->format.pad_bytes;
- 	int ret, i;
+diff --git a/drivers/mailbox/mailbox-test.c b/drivers/mailbox/mailbox-test.c
+index 4555d678fadda..6dd5b9614452b 100644
+--- a/drivers/mailbox/mailbox-test.c
++++ b/drivers/mailbox/mailbox-test.c
+@@ -12,6 +12,7 @@
+ #include <linux/kernel.h>
+ #include <linux/mailbox_client.h>
+ #include <linux/module.h>
++#include <linux/mutex.h>
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/poll.h>
+@@ -38,6 +39,7 @@ struct mbox_test_device {
+ 	char			*signal;
+ 	char			*message;
+ 	spinlock_t		lock;
++	struct mutex		mutex;
+ 	wait_queue_head_t	waitq;
+ 	struct fasync_struct	*async_queue;
+ 	struct dentry		*root_debugfs_dir;
+@@ -110,6 +112,8 @@ static ssize_t mbox_test_message_write(struct file *filp,
+ 		return -EINVAL;
+ 	}
  
- 	if (!val_count)
-@@ -2071,8 +2073,8 @@ int _regmap_raw_write(struct regmap *map
++	mutex_lock(&tdev->mutex);
++
+ 	tdev->message = kzalloc(MBOX_MAX_MSG_LEN, GFP_KERNEL);
+ 	if (!tdev->message)
+ 		return -ENOMEM;
+@@ -144,6 +148,8 @@ static ssize_t mbox_test_message_write(struct file *filp,
+ 	kfree(tdev->message);
+ 	tdev->signal = NULL;
  
- 	if (map->use_single_write)
- 		chunk_regs = 1;
--	else if (map->max_raw_write && val_len > map->max_raw_write)
--		chunk_regs = map->max_raw_write / val_bytes;
-+	else if (map->max_raw_write && val_len > max_data)
-+		chunk_regs = max_data / val_bytes;
++	mutex_unlock(&tdev->mutex);
++
+ 	return ret < 0 ? ret : count;
+ }
  
- 	chunk_count = val_count / chunk_regs;
- 	chunk_bytes = chunk_regs * val_bytes;
+@@ -392,6 +398,7 @@ static int mbox_test_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, tdev);
+ 
+ 	spin_lock_init(&tdev->lock);
++	mutex_init(&tdev->mutex);
+ 
+ 	if (tdev->rx_channel) {
+ 		tdev->rx_buffer = devm_kzalloc(&pdev->dev,
+-- 
+2.39.2
+
 
 
