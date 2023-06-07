@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FF0E726CE0
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:37:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71FA2726CE6
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:37:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233153AbjFGUhY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:37:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36446 "EHLO
+        id S234126AbjFGUhl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:37:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234049AbjFGUhW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:37:22 -0400
+        with ESMTP id S234072AbjFGUhh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:37:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB66A2121
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:36:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30AFA2701
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:37:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BC418645A6
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:36:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D193FC433D2;
-        Wed,  7 Jun 2023 20:36:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7DF6C645B0
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:37:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92283C433EF;
+        Wed,  7 Jun 2023 20:37:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170214;
-        bh=J90riP2uOpBlrRJw6w3Jg/CafxijhZi6xm1YIMa/+JQ=;
+        s=korg; t=1686170234;
+        bh=pQ/5k1AQ+zLaXa874EIKPhb50W9/u7lSf26AGbJiuDw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hnyTtZYLSQIU/a0255oqoRXhrDPs/o8Z0EYFZDG0PZqpJOoKOmAiwx9g9nU6mZuK+
-         B8ArYGiMM6coWaq061mfZ9W97Ds2ln+JfKsM1FyfyIbCFBvULVQuDtwEEImW0Wlklk
-         tE0Xb88IPlPsla7uSuyNWb5JWPpqR6dhdoLuFx7M=
+        b=EvErowJDfUzcpUuJ6h1kh2KSM1gCLaEtvrJaF3/P4ZFzxL8gTRFp8LU+7xJCBtkAo
+         wYBcWbZy1oi6Ek3+p8MCfqAbeTasluCkrfCZGj0It5c7whz/dwuLnqZ856rhdv8vBD
+         wvFIf0TYSuo3yXVfINRZ7sYPg5rJM7RYNdBdQqx4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ben Hutchings <benh@debian.org>
-Subject: [PATCH 4.19 87/88] scsi: dpt_i2o: Do not process completions with invalid addresses
-Date:   Wed,  7 Jun 2023 22:16:44 +0200
-Message-ID: <20230607200901.939263222@linuxfoundation.org>
+        patches@lists.linux.dev, Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 4.19 88/88] wifi: rtlwifi: 8192de: correct checking of IQK reload
+Date:   Wed,  7 Jun 2023 22:16:45 +0200
+Message-ID: <20230607200901.969040890@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
 References: <20230607200854.030202132@linuxfoundation.org>
@@ -52,59 +53,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ben Hutchings <benh@debian.org>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-adpt_isr() reads reply addresses from a hardware register, which
-should always be within the DMA address range of the device's pool of
-reply address buffers.  In case the address is out of range, it tries
-to muddle on, converting to a virtual address using bus_to_virt().
+commit 93fbc1ebd978cf408ef5765e9c1630fce9a8621b upstream.
 
-bus_to_virt() does not take DMA addresses, and it doesn't make sense
-to try to handle the completion in this case.  Ignore it and continue
-looping to service the interrupt.  If a completion has been lost then
-the SCSI core should eventually time-out and trigger a reset.
+Since IQK could spend time, we make a cache of IQK result matrix that looks
+like iqk_matrix[channel_idx].val[x][y], and we can reload the matrix if we
+have made a cache. To determine a cache is made, we check
+iqk_matrix[channel_idx].val[0][0].
 
-There is no corresponding upstream commit, because this driver was
-removed upstream.
+The initial commit 7274a8c22980 ("rtlwifi: rtl8192de: Merge phy routines")
+make a mistake that checks incorrect iqk_matrix[channel_idx].val[0] that
+is always true, and this mistake is found by commit ee3db469dd31
+("wifi: rtlwifi: remove always-true condition pointed out by GCC 12"), so
+I recall the vendor driver to find fix and apply the correctness.
 
-Fixes: 67af2b060e02 ("[SCSI] dpt_i2o: move from virt_to_bus/bus_to_virt ...")
-Signed-off-by: Ben Hutchings <benh@debian.org>
+Fixes: 7274a8c22980 ("rtlwifi: rtl8192de: Merge phy routines")
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20220801113345.42016-1-pkshih@realtek.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/Kconfig   |    2 +-
- drivers/scsi/dpt_i2o.c |    4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/scsi/Kconfig
-+++ b/drivers/scsi/Kconfig
-@@ -473,7 +473,7 @@ config SCSI_MVUMI
- 
- config SCSI_DPT_I2O
- 	tristate "Adaptec I2O RAID support "
--	depends on SCSI && PCI && VIRT_TO_BUS
-+	depends on SCSI && PCI
- 	help
- 	  This driver supports all of Adaptec's I2O based RAID controllers as 
- 	  well as the DPT SmartRaid V cards.  This is an Adaptec maintained
---- a/drivers/scsi/dpt_i2o.c
-+++ b/drivers/scsi/dpt_i2o.c
-@@ -59,7 +59,7 @@ MODULE_DESCRIPTION("Adaptec I2O RAID Dri
- 
- #include <asm/processor.h>	/* for boot_cpu_data */
- #include <asm/pgtable.h>
--#include <asm/io.h>		/* for virt_to_bus, etc. */
-+#include <asm/io.h>
- 
- #include <scsi/scsi.h>
- #include <scsi/scsi_cmnd.h>
-@@ -1914,7 +1914,7 @@ static irqreturn_t adpt_isr(int irq, voi
- 		} else {
- 			/* Ick, we should *never* be here */
- 			printk(KERN_ERR "dpti: reply frame not from pool\n");
--			reply = (u8 *)bus_to_virt(m);
-+			continue;
- 		}
- 
- 		if (readl(reply) & MSG_FAIL) {
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+@@ -2414,11 +2414,10 @@ void rtl92d_phy_reload_iqk_setting(struc
+ 			RT_TRACE(rtlpriv, COMP_SCAN, DBG_LOUD,
+ 				 "Just Read IQK Matrix reg for channel:%d....\n",
+ 				 channel);
+-			_rtl92d_phy_patha_fill_iqk_matrix(hw, true,
+-					rtlphy->iqk_matrix[
+-					indexforchannel].value,	0,
+-					(rtlphy->iqk_matrix[
+-					indexforchannel].value[0][2] == 0));
++			if (rtlphy->iqk_matrix[indexforchannel].value[0][0] != 0)
++				_rtl92d_phy_patha_fill_iqk_matrix(hw, true,
++					rtlphy->iqk_matrix[indexforchannel].value, 0,
++					rtlphy->iqk_matrix[indexforchannel].value[0][2] == 0);
+ 			if (IS_92D_SINGLEPHY(rtlhal->version)) {
+ 				if ((rtlphy->iqk_matrix[
+ 					indexforchannel].value[0][4] != 0)
 
 
