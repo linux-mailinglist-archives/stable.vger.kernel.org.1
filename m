@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41A7A726EFC
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:54:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF853726CA7
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:35:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235449AbjFGUyd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:54:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55604 "EHLO
+        id S234035AbjFGUfT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:35:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235497AbjFGUyT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC8E21BF0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:54:17 -0700 (PDT)
+        with ESMTP id S234031AbjFGUfF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:35:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93D321706
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:34:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 49011647C2
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:54:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF13C4339B;
-        Wed,  7 Jun 2023 20:54:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 74E686455A
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:34:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87EB1C433D2;
+        Wed,  7 Jun 2023 20:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171256;
-        bh=wXSSdQyJmNc1+zAqIpCgTXO4z+1cRBkB4VzOjiIEOew=;
+        s=korg; t=1686170098;
+        bh=uj879TXgVdpswPbW4om4D1RVeuUOuKBA4Mz97/6MR98=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tpLPV19t8iUvJXOIgr0adMCknbhvNigB1tGrqg4boeShMEsg4KmqY58w3VAIjKX2U
-         /OXkak9PkY0gm+y179spGua6dBsWrjHzTxwqNbqFIoM5IFcGheurBpHBUiKrTvMDed
-         XcKIzNLIk8p7MhENzIq8aenfW6+/9lJzfV7TKYVg=
+        b=ZEmTRvZgFymElm90LE+aJOp+LyBETPQnffm+iOYrN+n920UwWoZMJUf036SEtBVrL
+         8JiE8bMSLrqWAEtOtZ7/TQsBDXvcpGY+xc33D9KIh6vgIv7JPtevGQULRWEet8Yy3z
+         hBDpb0dhnMxwiqqK2XIm0WAyV9GpWFR+ycgmoIxc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Simon Kapadia <szymon@kapadia.pl>,
-        Eric Dumazet <edumazet@google.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 09/99] netrom: fix info-leak in nr_write_internal()
+Subject: [PATCH 4.19 44/88] media: dvb-usb: dw2102: fix uninit-value in su3000_read_mac_address
 Date:   Wed,  7 Jun 2023 22:16:01 +0200
-Message-ID: <20230607200900.529524529@linuxfoundation.org>
+Message-ID: <20230607200900.607287844@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
+References: <20230607200854.030202132@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,83 +54,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Wei Chen <harperchen1110@gmail.com>
 
-[ Upstream commit 31642e7089df8fd3f54ca7843f7ee2952978cad1 ]
+[ Upstream commit a3fd1ef27aa686d871cefe207bd6168c4b0cd29e ]
 
-Simon Kapadia reported the following issue:
+In su3000_read_mac_address, if i2c_transfer fails to execute two
+messages, array mac address will not be initialized. Without handling
+such error, later in function dvb_usb_adapter_dvb_init, proposed_mac
+is accessed before initialization.
 
-<quote>
+Fix this error by returning a negative value if message execution fails.
 
-The Online Amateur Radio Community (OARC) has recently been experimenting
-with building a nationwide packet network in the UK.
-As part of our experimentation, we have been testing out packet on 300bps HF,
-and playing with net/rom.  For HF packet at this baud rate you really need
-to make sure that your MTU is relatively low; AX.25 suggests a PACLEN of 60,
-and a net/rom PACLEN of 40 to go with that.
-However the Linux net/rom support didn't work with a low PACLEN;
-the mkiss module would truncate packets if you set the PACLEN below about 200 or so, e.g.:
-
-Apr 19 14:00:51 radio kernel: [12985.747310] mkiss: ax1: truncating oversized transmit packet!
-
-This didn't make any sense to me (if the packets are smaller why would they
-be truncated?) so I started investigating.
-I looked at the packets using ethereal, and found that many were just huge
-compared to what I would expect.
-A simple net/rom connection request packet had the request and then a bunch
-of what appeared to be random data following it:
-
-</quote>
-
-Simon provided a patch that I slightly revised:
-Not only we must not use skb_tailroom(), we also do
-not want to count NR_NETWORK_LEN twice.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Co-Developed-by: Simon Kapadia <szymon@kapadia.pl>
-Signed-off-by: Simon Kapadia <szymon@kapadia.pl>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Tested-by: Simon Kapadia <szymon@kapadia.pl>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230524141456.1045467-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/linux-media/20230328124416.560889-1-harperchen1110@gmail.com
+Signed-off-by: Wei Chen <harperchen1110@gmail.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netrom/nr_subr.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/media/usb/dvb-usb/dw2102.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netrom/nr_subr.c b/net/netrom/nr_subr.c
-index 3f99b432ea707..e2d2af924cff4 100644
---- a/net/netrom/nr_subr.c
-+++ b/net/netrom/nr_subr.c
-@@ -123,7 +123,7 @@ void nr_write_internal(struct sock *sk, int frametype)
- 	unsigned char  *dptr;
- 	int len, timeout;
- 
--	len = NR_NETWORK_LEN + NR_TRANSPORT_LEN;
-+	len = NR_TRANSPORT_LEN;
- 
- 	switch (frametype & 0x0F) {
- 	case NR_CONNREQ:
-@@ -141,7 +141,8 @@ void nr_write_internal(struct sock *sk, int frametype)
- 		return;
+diff --git a/drivers/media/usb/dvb-usb/dw2102.c b/drivers/media/usb/dvb-usb/dw2102.c
+index ebb0c982a6f21..cd0566c0b3de7 100644
+--- a/drivers/media/usb/dvb-usb/dw2102.c
++++ b/drivers/media/usb/dvb-usb/dw2102.c
+@@ -949,7 +949,7 @@ static int su3000_read_mac_address(struct dvb_usb_device *d, u8 mac[6])
+ 	for (i = 0; i < 6; i++) {
+ 		obuf[1] = 0xf0 + i;
+ 		if (i2c_transfer(&d->i2c_adap, msg, 2) != 2)
+-			break;
++			return -1;
+ 		else
+ 			mac[i] = ibuf[0];
  	}
- 
--	if ((skb = alloc_skb(len, GFP_ATOMIC)) == NULL)
-+	skb = alloc_skb(NR_NETWORK_LEN + len, GFP_ATOMIC);
-+	if (!skb)
- 		return;
- 
- 	/*
-@@ -149,7 +150,7 @@ void nr_write_internal(struct sock *sk, int frametype)
- 	 */
- 	skb_reserve(skb, NR_NETWORK_LEN);
- 
--	dptr = skb_put(skb, skb_tailroom(skb));
-+	dptr = skb_put(skb, len);
- 
- 	switch (frametype & 0x0F) {
- 	case NR_CONNREQ:
 -- 
 2.39.2
 
