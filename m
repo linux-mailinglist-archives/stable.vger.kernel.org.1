@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95A25726FCC
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:02:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B99F726EC2
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:52:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235908AbjFGVBz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:01:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34604 "EHLO
+        id S235241AbjFGUwc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:52:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235913AbjFGVBk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:01:40 -0400
+        with ESMTP id S235144AbjFGUwb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:52:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D11FF2689
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:01:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1076CE46
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:52:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AD8246491B
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:01:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE31C433EF;
-        Wed,  7 Jun 2023 21:01:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 498656476A
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:52:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A85DC433D2;
+        Wed,  7 Jun 2023 20:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171671;
-        bh=Esxmlrmc9mh1QxrQ71GoTLvnPfROd8lQzGYmqxLlYeY=;
+        s=korg; t=1686171147;
+        bh=/WiqoBavaBtYYbo7s1sSybCasoh1uNk+YtbaijrrQag=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xUuye0zdWgB1FZYfDqfyDLLVNzGLmjE4qTECgrDBWO08LWiC0vL6yFAiayO9CWf0U
-         t4kFUFc6wWFkZusuNZSX1R98JfRVVfGXLCiUgwOwhv9XkDed37K5nKtvobIAkSFaK0
-         JuoflyaxGOpNXtbC0I9rTkzv9favAGq9V5RkEb8A=
+        b=WTq0VfMUogQU+3/mLft2WPTsykFVkYJYvfsOyCiYWlw+p8XobBSGe6VkReXOuEdBz
+         V1hN0PBmWxLj/+t/4diBxVy+/16fwEZypHJ6Ls2B7spdNayT2cNbxEKGdwuq5BgKNs
+         9rm3db4otizPzaALt5eiww22fRtwJxkeDrMoAXi0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paul Cercueil <paul@crapouillou.net>,
-        Alisa Roman <alisa.roman@analog.com>,
-        Nuno Sa <nuno.sa@analog.com>, Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 106/159] iio: adc: ad7192: Change "shorted" channels to differential
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Sherry Sun <sherry.sun@nxp.com>
+Subject: [PATCH 5.10 093/120] tty: serial: fsl_lpuart: use UARTCTRL_TXINV to send break instead of UARTCTRL_SBK
 Date:   Wed,  7 Jun 2023 22:16:49 +0200
-Message-ID: <20230607200907.148743630@linuxfoundation.org>
+Message-ID: <20230607200903.835357422@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,71 +53,102 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paul Cercueil <paul@crapouillou.net>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-commit e55245d115bb9054cb72cdd5dda5660f4484873a upstream.
+commit 2474e05467c00f7d51af3039b664de6886325257 upstream.
 
-The AD7192 provides a specific channel configuration where both negative
-and positive inputs are connected to AIN2. This was represented in the
-ad7192 driver as a IIO channel with .channel = 2 and .extended_name set
-to "shorted".
+LPUART IP now has two known bugs, one is that CTS has higher priority
+than the break signal, which causes the break signal sending through
+UARTCTRL_SBK may impacted by the CTS input if the HW flow control is
+enabled. It exists on all platforms we support in this driver.
+So we add a workaround patch for this issue: commit c4c81db5cf8b
+("tty: serial: fsl_lpuart: disable the CTS when send break signal").
 
-The problem with this approach, is that the driver provided two IIO
-channels with the identifier .channel = 2; one "shorted" and the other
-not. This goes against the IIO ABI, as a channel identifier should be
-unique.
+Another IP bug is i.MX8QM LPUART may have an additional break character
+being sent after SBK was cleared. It may need to add some delay between
+clearing SBK and re-enabling CTS to ensure that the SBK latch are
+completely cleared.
 
-Address this issue by changing "shorted" channels to being differential
-instead, with channel 2 vs. itself, as we're actually measuring AIN2 vs.
-itself.
+But we found that during the delay period before CTS is enabled, there
+is still a risk that Bluetooth data in TX FIFO may be sent out during
+this period because of break off and CTS disabled(even if BT sets CTS
+line deasserted, data is still sent to BT).
 
-Note that the fix tag is for the commit that moved the driver out of
-staging. The bug existed before that, but backporting would become very
-complex further down and unlikely to happen.
+Due to this risk, we have to drop the CTS-disabling workaround for SBK
+bugs, use TXINV seems to be a better way to replace SBK feature and
+avoid above risk. Also need to disable the transmitter to prevent any
+data from being sent out during break, then invert the TX line to send
+break. Then disable the TXINV when turn off break and re-enable
+transmitter.
 
-Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Co-developed-by: Alisa Roman <alisa.roman@analog.com>
-Signed-off-by: Alisa Roman <alisa.roman@analog.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20230330102100.17590-1-paul@crapouillou.net
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: c4c81db5cf8b ("tty: serial: fsl_lpuart: disable the CTS when send break signal")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+Link: https://lore.kernel.org/r/20230519094751.28948-1-sherry.sun@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7192.c |    8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/tty/serial/fsl_lpuart.c |   44 ++++++++++++++++++++--------------------
+ 1 file changed, 23 insertions(+), 21 deletions(-)
 
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -835,10 +835,6 @@ static const struct iio_info ad7195_info
- 	__AD719x_CHANNEL(_si, _channel1, -1, _address, NULL, IIO_VOLTAGE, \
- 		BIT(IIO_CHAN_INFO_SCALE), ad7192_calibsys_ext_info)
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -1455,34 +1455,36 @@ static void lpuart_break_ctl(struct uart
  
--#define AD719x_SHORTED_CHANNEL(_si, _channel1, _address) \
--	__AD719x_CHANNEL(_si, _channel1, -1, _address, "shorted", IIO_VOLTAGE, \
--		BIT(IIO_CHAN_INFO_SCALE), ad7192_calibsys_ext_info)
+ static void lpuart32_break_ctl(struct uart_port *port, int break_state)
+ {
+-	unsigned long temp, modem;
+-	struct tty_struct *tty;
+-	unsigned int cflag = 0;
++	unsigned long temp;
+ 
+-	tty = tty_port_tty_get(&port->state->port);
+-	if (tty) {
+-		cflag = tty->termios.c_cflag;
+-		tty_kref_put(tty);
+-	}
 -
- #define AD719x_TEMP_CHANNEL(_si, _address) \
- 	__AD719x_CHANNEL(_si, 0, -1, _address, NULL, IIO_TEMP, 0, NULL)
+-	temp = lpuart32_read(port, UARTCTRL) & ~UARTCTRL_SBK;
+-	modem = lpuart32_read(port, UARTMODIR);
++	temp = lpuart32_read(port, UARTCTRL);
  
-@@ -846,7 +842,7 @@ static const struct iio_chan_spec ad7192
- 	AD719x_DIFF_CHANNEL(0, 1, 2, AD7192_CH_AIN1P_AIN2M),
- 	AD719x_DIFF_CHANNEL(1, 3, 4, AD7192_CH_AIN3P_AIN4M),
- 	AD719x_TEMP_CHANNEL(2, AD7192_CH_TEMP),
--	AD719x_SHORTED_CHANNEL(3, 2, AD7192_CH_AIN2P_AIN2M),
-+	AD719x_DIFF_CHANNEL(3, 2, 2, AD7192_CH_AIN2P_AIN2M),
- 	AD719x_CHANNEL(4, 1, AD7192_CH_AIN1),
- 	AD719x_CHANNEL(5, 2, AD7192_CH_AIN2),
- 	AD719x_CHANNEL(6, 3, AD7192_CH_AIN3),
-@@ -860,7 +856,7 @@ static const struct iio_chan_spec ad7193
- 	AD719x_DIFF_CHANNEL(2, 5, 6, AD7193_CH_AIN5P_AIN6M),
- 	AD719x_DIFF_CHANNEL(3, 7, 8, AD7193_CH_AIN7P_AIN8M),
- 	AD719x_TEMP_CHANNEL(4, AD7193_CH_TEMP),
--	AD719x_SHORTED_CHANNEL(5, 2, AD7193_CH_AIN2P_AIN2M),
-+	AD719x_DIFF_CHANNEL(5, 2, 2, AD7193_CH_AIN2P_AIN2M),
- 	AD719x_CHANNEL(6, 1, AD7193_CH_AIN1),
- 	AD719x_CHANNEL(7, 2, AD7193_CH_AIN2),
- 	AD719x_CHANNEL(8, 3, AD7193_CH_AIN3),
++	/*
++	 * LPUART IP now has two known bugs, one is CTS has higher priority than the
++	 * break signal, which causes the break signal sending through UARTCTRL_SBK
++	 * may impacted by the CTS input if the HW flow control is enabled. It
++	 * exists on all platforms we support in this driver.
++	 * Another bug is i.MX8QM LPUART may have an additional break character
++	 * being sent after SBK was cleared.
++	 * To avoid above two bugs, we use Transmit Data Inversion function to send
++	 * the break signal instead of UARTCTRL_SBK.
++	 */
+ 	if (break_state != 0) {
+-		temp |= UARTCTRL_SBK;
+ 		/*
+-		 * LPUART CTS has higher priority than SBK, need to disable CTS before
+-		 * asserting SBK to avoid any interference if flow control is enabled.
++		 * Disable the transmitter to prevent any data from being sent out
++		 * during break, then invert the TX line to send break.
+ 		 */
+-		if (cflag & CRTSCTS && modem & UARTMODIR_TXCTSE)
+-			lpuart32_write(port, modem & ~UARTMODIR_TXCTSE, UARTMODIR);
++		temp &= ~UARTCTRL_TE;
++		lpuart32_write(port, temp, UARTCTRL);
++		temp |= UARTCTRL_TXINV;
++		lpuart32_write(port, temp, UARTCTRL);
+ 	} else {
+-		/* Re-enable the CTS when break off. */
+-		if (cflag & CRTSCTS && !(modem & UARTMODIR_TXCTSE))
+-			lpuart32_write(port, modem | UARTMODIR_TXCTSE, UARTMODIR);
++		/* Disable the TXINV to turn off break and re-enable transmitter. */
++		temp &= ~UARTCTRL_TXINV;
++		lpuart32_write(port, temp, UARTCTRL);
++		temp |= UARTCTRL_TE;
++		lpuart32_write(port, temp, UARTCTRL);
+ 	}
+-
+-	lpuart32_write(port, temp, UARTCTRL);
+ }
+ 
+ static void lpuart_setup_watermark(struct lpuart_port *sport)
 
 
