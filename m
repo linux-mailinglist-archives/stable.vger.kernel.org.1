@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9224726FC9
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:01:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFCB2726F03
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235819AbjFGVBr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:01:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34410 "EHLO
+        id S235343AbjFGUzW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:55:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235980AbjFGVBU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:01:20 -0400
+        with ESMTP id S235496AbjFGUyl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:54:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DA8A2130
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:01:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D27032116
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:54:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CBA016491A
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:01:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF666C433EF;
-        Wed,  7 Jun 2023 21:01:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A06E647D6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:54:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A36C4339B;
+        Wed,  7 Jun 2023 20:54:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171663;
-        bh=FYJR6qWSJWlnYbwYLYW3Kfbp2BqXiYtyYtr+SGGnWy4=;
+        s=korg; t=1686171269;
+        bh=lRszj8c8nrCfK5xuDq5S/n49YLwti7gEva5S+XlmNAE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q9wvDIMRBWHu2grE6gadd17fEHeUzT8FpVuMEN8tZmWCmjU/fs9z2gxJTeFdWgJyZ
-         mtfFOBr3kIkOVTEI7Qy2ydt+5NjfpPzILeifpY7ee4kyipXz0TMuqj2YQa4J1p+4Ol
-         X2lQ4FMge8TUuLL6aJva6LhSTuzlyCha3cHzgmiY=
+        b=DiyiRD8nGGXSx0VzkPX/bNtFXamvQr2J7UKhaIyIw+7UjAc3vYd3qcru0GDC48zcj
+         xuXsTIjxAOOg7BCQgeWLxL/KcA3SKnGFpENOophz0+jHKSz3Fgq57blpQ93o0xXF8A
+         sF49kNSOceixcNwEmju+7a4MYSi+fse2IakyEkgg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Frank Li <Frank.Li@nxp.com>,
-        Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 103/159] iio: light: vcnl4035: fixed chip ID check
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Min-Hua Chen <minhuadotchen@gmail.com>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 54/99] arm64/mm: mark private VM_FAULT_X defines as vm_fault_t
 Date:   Wed,  7 Jun 2023 22:16:46 +0200
-Message-ID: <20230607200907.053406872@linuxfoundation.org>
+Message-ID: <20230607200901.939956857@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,57 +54,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Min-Hua Chen <minhuadotchen@gmail.com>
 
-commit a551c26e8e568fad42120843521529241b9bceec upstream.
+[ Upstream commit d91d580878064b880f3574ac35b98d8b70ee8620 ]
 
-VCNL4035 register(0xE) ID_L and ID_M define as:
+This patch fixes several sparse warnings for fault.c:
 
- ID_L: 0x80
- ID_H: 7:6 (0:0)
-       5:4 (0:0) slave address = 0x60 (7-bit)
-           (0:1) slave address = 0x51 (7-bit)
-           (1:0) slave address = 0x40 (7-bit)
-           (1:0) slave address = 0x41 (7-bit)
-       3:0 Version code default	(0:0:0:0)
+arch/arm64/mm/fault.c:493:24: sparse: warning: incorrect type in return expression (different base types)
+arch/arm64/mm/fault.c:493:24: sparse:    expected restricted vm_fault_t
+arch/arm64/mm/fault.c:493:24: sparse:    got int
+arch/arm64/mm/fault.c:501:32: sparse: warning: incorrect type in return expression (different base types)
+arch/arm64/mm/fault.c:501:32: sparse:    expected restricted vm_fault_t
+arch/arm64/mm/fault.c:501:32: sparse:    got int
+arch/arm64/mm/fault.c:503:32: sparse: warning: incorrect type in return expression (different base types)
+arch/arm64/mm/fault.c:503:32: sparse:    expected restricted vm_fault_t
+arch/arm64/mm/fault.c:503:32: sparse:    got int
+arch/arm64/mm/fault.c:511:24: sparse: warning: incorrect type in return expression (different base types)
+arch/arm64/mm/fault.c:511:24: sparse:    expected restricted vm_fault_t
+arch/arm64/mm/fault.c:511:24: sparse:    got int
+arch/arm64/mm/fault.c:670:13: sparse: warning: restricted vm_fault_t degrades to integer
+arch/arm64/mm/fault.c:670:13: sparse: warning: restricted vm_fault_t degrades to integer
+arch/arm64/mm/fault.c:713:39: sparse: warning: restricted vm_fault_t degrades to integer
 
-So just check ID_L.
-
-Fixes: 55707294c4eb ("iio: light: Add support for vishay vcnl4035")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20230501143605.1615549-1-Frank.Li@nxp.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Min-Hua Chen <minhuadotchen@gmail.com>
+Link: https://lore.kernel.org/r/20230502151909.128810-1-minhuadotchen@gmail.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/light/vcnl4035.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/mm/fault.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/light/vcnl4035.c
-+++ b/drivers/iio/light/vcnl4035.c
-@@ -8,6 +8,7 @@
-  * TODO: Proximity
-  */
- #include <linux/bitops.h>
-+#include <linux/bitfield.h>
- #include <linux/i2c.h>
- #include <linux/module.h>
- #include <linux/pm_runtime.h>
-@@ -42,6 +43,7 @@
- #define VCNL4035_ALS_PERS_MASK		GENMASK(3, 2)
- #define VCNL4035_INT_ALS_IF_H_MASK	BIT(12)
- #define VCNL4035_INT_ALS_IF_L_MASK	BIT(13)
-+#define VCNL4035_DEV_ID_MASK		GENMASK(7, 0)
- 
- /* Default values */
- #define VCNL4035_MODE_ALS_ENABLE	BIT(0)
-@@ -413,6 +415,7 @@ static int vcnl4035_init(struct vcnl4035
- 		return ret;
+diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+index a8e9c98147a19..af9a6e1fa0d3d 100644
+--- a/arch/arm64/mm/fault.c
++++ b/arch/arm64/mm/fault.c
+@@ -403,8 +403,8 @@ static void do_bad_area(unsigned long addr, unsigned int esr, struct pt_regs *re
  	}
+ }
  
-+	id = FIELD_GET(VCNL4035_DEV_ID_MASK, id);
- 	if (id != VCNL4035_DEV_ID_VAL) {
- 		dev_err(&data->client->dev, "Wrong id, got %x, expected %x\n",
- 			id, VCNL4035_DEV_ID_VAL);
+-#define VM_FAULT_BADMAP		0x010000
+-#define VM_FAULT_BADACCESS	0x020000
++#define VM_FAULT_BADMAP		((__force vm_fault_t)0x010000)
++#define VM_FAULT_BADACCESS	((__force vm_fault_t)0x020000)
+ 
+ static vm_fault_t __do_page_fault(struct mm_struct *mm, unsigned long addr,
+ 			   unsigned int mm_flags, unsigned long vm_flags)
+-- 
+2.39.2
+
 
 
