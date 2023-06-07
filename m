@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F6E0726CA3
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:35:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44FD4726ECC
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:52:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234001AbjFGUfN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:35:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33786 "EHLO
+        id S235310AbjFGUwu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:52:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234061AbjFGUfB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:35:01 -0400
+        with ESMTP id S235339AbjFGUwt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:52:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83D2E26AF
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:34:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E39EE46
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:52:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 045F36456A
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:34:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1DDC433D2;
-        Wed,  7 Jun 2023 20:34:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9192A64780
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:52:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78498C4339B;
+        Wed,  7 Jun 2023 20:52:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170088;
-        bh=mZDtEH9Zmy+aDkPrJKTdtSRKrMzyB2JQlpEDhjhEops=;
+        s=korg; t=1686171164;
+        bh=Bze8mbogLY+vRP2l7mdJ/X1gUaexsQgMF1BZRLya2w4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PUfKGfbKqqHKbmN83Ysy81Jy5X9ZlApF3KQBFX1YSYH9qhWaNRRrXdxy8KXAJVND6
-         xu6gT2KeRX72YPPsi0NrTBS4MaboM+dU+xwXXCqBu8AG0IQWvMh0/CD7GXKQxYKGXh
-         gkcfjA3/kcY2J0ZIN8PQFhfoUeO/9cLEW2aFV8CE=
+        b=tXdBM7/xR9d/mj5gFY2kbKyIvftwJg0y7H9fVb4fdmVmv1BtlBfadyz/l8l3pTRmx
+         Ps0rjNWBSD4k7GPVz37x4G+9d1Y/d0xxIm8yhV6Q8EWdEUBvGmUvWdZP1LGf1IlXZ2
+         YpMIxyVz4tMabIOLKy0QdObE1ELdVtxBIENNQR7o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 41/88] media: dvb-usb-v2: ce6230: fix null-ptr-deref in ce6230_i2c_master_xfer()
+        patches@lists.linux.dev, Joao Martins <joao.m.martins@oracle.com>,
+        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 06/99] iommu/amd: Dont block updates to GATag if guest mode is on
 Date:   Wed,  7 Jun 2023 22:15:58 +0200
-Message-ID: <20230607200900.509227964@linuxfoundation.org>
+Message-ID: <20230607200900.425512512@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,53 +54,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wei Chen <harperchen1110@gmail.com>
+From: Joao Martins <joao.m.martins@oracle.com>
 
-[ Upstream commit dff919090155fb22679869e8469168f270dcd97f ]
+[ Upstream commit ed8a2f4ddef2eaaf864ab1efbbca9788187036ab ]
 
-In ce6230_i2c_master_xfer, msg is controlled by user. When msg[i].buf
-is null and msg[i].len is zero, former checks on msg[i].buf would be
-passed. Malicious data finally reach ce6230_i2c_master_xfer. If accessing
-msg[i].buf[0] without sanity check, null ptr deref would happen. We add
-check on msg[i].len to prevent crash.
+On KVM GSI routing table updates, specially those where they have vIOMMUs
+with interrupt remapping enabled (to boot >255vcpus setups without relying
+on KVM_FEATURE_MSI_EXT_DEST_ID), a VMM may update the backing VF MSIs
+with a new VCPU affinity.
 
-Similar commit:
-commit 0ed554fd769a ("media: dvb-usb: az6027: fix null-ptr-deref in az6027_i2c_xfer()")
+On AMD with AVIC enabled, the new vcpu affinity info is updated via:
+	avic_pi_update_irte()
+		irq_set_vcpu_affinity()
+			amd_ir_set_vcpu_affinity()
+				amd_iommu_{de}activate_guest_mode()
 
-Link: https://lore.kernel.org/linux-media/20230313092751.209496-1-harperchen1110@gmail.com
-Signed-off-by: Wei Chen <harperchen1110@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Where the IRTE[GATag] is updated with the new vcpu affinity. The GATag
+contains VM ID and VCPU ID, and is used by IOMMU hardware to signal KVM
+(via GALog) when interrupt cannot be delivered due to vCPU is in
+blocking state.
+
+The issue is that amd_iommu_activate_guest_mode() will essentially
+only change IRTE fields on transitions from non-guest-mode to guest-mode
+and otherwise returns *with no changes to IRTE* on already configured
+guest-mode interrupts. To the guest this means that the VF interrupts
+remain affined to the first vCPU they were first configured, and guest
+will be unable to issue VF interrupts and receive messages like this
+from spurious interrupts (e.g. from waking the wrong vCPU in GALog):
+
+[  167.759472] __common_interrupt: 3.34 No irq handler for vector
+[  230.680927] mlx5_core 0000:00:02.0: mlx5_cmd_eq_recover:247:(pid
+3122): Recovered 1 EQEs on cmd_eq
+[  230.681799] mlx5_core 0000:00:02.0:
+wait_func_handle_exec_timeout:1113:(pid 3122): cmd[0]: CREATE_CQ(0x400)
+recovered after timeout
+[  230.683266] __common_interrupt: 3.34 No irq handler for vector
+
+Given the fact that amd_ir_set_vcpu_affinity() uses
+amd_iommu_activate_guest_mode() underneath it essentially means that VCPU
+affinity changes of IRTEs are nops. Fix it by dropping the check for
+guest-mode at amd_iommu_activate_guest_mode(). Same thing is applicable to
+amd_iommu_deactivate_guest_mode() although, even if the IRTE doesn't change
+underlying DestID on the host, the VFIO IRQ handler will still be able to
+poke at the right guest-vCPU.
+
+Fixes: b9c6ff94e43a ("iommu/amd: Re-factor guest virtual APIC (de-)activation code")
+Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Link: https://lore.kernel.org/r/20230419201154.83880-2-joao.m.martins@oracle.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb-v2/ce6230.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/iommu/amd_iommu.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/media/usb/dvb-usb-v2/ce6230.c b/drivers/media/usb/dvb-usb-v2/ce6230.c
-index e596031a708d0..80a07aab3b4b0 100644
---- a/drivers/media/usb/dvb-usb-v2/ce6230.c
-+++ b/drivers/media/usb/dvb-usb-v2/ce6230.c
-@@ -111,6 +111,10 @@ static int ce6230_i2c_master_xfer(struct i2c_adapter *adap,
- 		if (num > i + 1 && (msg[i+1].flags & I2C_M_RD)) {
- 			if (msg[i].addr ==
- 				ce6230_zl10353_config.demod_address) {
-+				if (msg[i].len < 1) {
-+					i = -EOPNOTSUPP;
-+					break;
-+				}
- 				req.cmd = DEMOD_READ;
- 				req.value = msg[i].addr >> 1;
- 				req.index = msg[i].buf[0];
-@@ -127,6 +131,10 @@ static int ce6230_i2c_master_xfer(struct i2c_adapter *adap,
- 		} else {
- 			if (msg[i].addr ==
- 				ce6230_zl10353_config.demod_address) {
-+				if (msg[i].len < 1) {
-+					i = -EOPNOTSUPP;
-+					break;
-+				}
- 				req.cmd = DEMOD_WRITE;
- 				req.value = msg[i].addr >> 1;
- 				req.index = msg[i].buf[0];
+diff --git a/drivers/iommu/amd_iommu.c b/drivers/iommu/amd_iommu.c
+index b79309928d786..a30aac41af426 100644
+--- a/drivers/iommu/amd_iommu.c
++++ b/drivers/iommu/amd_iommu.c
+@@ -4420,8 +4420,7 @@ int amd_iommu_activate_guest_mode(void *data)
+ 	struct amd_ir_data *ir_data = (struct amd_ir_data *)data;
+ 	struct irte_ga *entry = (struct irte_ga *) ir_data->entry;
+ 
+-	if (!AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir) ||
+-	    !entry || entry->lo.fields_vapic.guest_mode)
++	if (!AMD_IOMMU_GUEST_IR_VAPIC(amd_iommu_guest_ir) || !entry)
+ 		return 0;
+ 
+ 	entry->lo.val = 0;
 -- 
 2.39.2
 
