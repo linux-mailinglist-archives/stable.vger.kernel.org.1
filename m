@@ -2,99 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE1FC726777
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 19:33:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6091E72678D
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 19:39:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231996AbjFGRdZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 13:33:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37194 "EHLO
+        id S231224AbjFGRjU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 13:39:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231991AbjFGRdV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 13:33:21 -0400
-Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id DCB902118
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 10:32:56 -0700 (PDT)
-Received: (qmail 233960 invoked by uid 1000); 7 Jun 2023 13:32:55 -0400
-Date:   Wed, 7 Jun 2023 13:32:55 -0400
-From:   Alan Stern <stern@rowland.harvard.edu>
-To:     Badhri Jagan Sridharan <badhri@google.com>
-Cc:     gregkh@linuxfoundation.org, colin.i.king@gmail.com,
-        xuetao09@huawei.com, quic_eserrao@quicinc.com,
-        water.zhangjiantao@huawei.com, francesco@dolcini.it,
-        alistair@alistair23.me, stephan@gerhold.net, bagasdotme@gmail.com,
-        luca@z3ntu.xyz, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v6 1/2] usb: gadget: udc: core: Offload
- usb_udc_vbus_handler processing
-Message-ID: <65faa454-c822-4163-be3d-940fb4a647c7@rowland.harvard.edu>
-References: <20230601031028.544244-1-badhri@google.com>
+        with ESMTP id S229659AbjFGRjU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 13:39:20 -0400
+Received: from todd.t-8ch.de (todd.t-8ch.de [IPv6:2a01:4f8:c010:41de::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F7CF19BF;
+        Wed,  7 Jun 2023 10:39:19 -0700 (PDT)
+From:   =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+        s=mail; t=1686159557;
+        bh=5rDKXRphCm5hSfMg9E8EiHD7LdAzDPAqz+JpNaExDw4=;
+        h=From:Date:Subject:To:Cc:From;
+        b=mFHce8rx1V8uP6l1qFTVenfj+CTczcwBtCpvW70GtF4Af+paLIRNu2aqEWbSnQGGK
+         DfkQ1jf4jrgfw4QegZ7L4ZV9r1Mzk04lSSG9tAAblwegNvFcknwLLeHuR6YH/WEQDi
+         qzVNK6hLY9KrlHnjKpwZt9zqAPWfu3Sh5Jmj99Lc=
+Date:   Wed, 07 Jun 2023 19:39:09 +0200
+Subject: [PATCH v2] fs: avoid empty option when generating legacy mount
+ string
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230601031028.544244-1-badhri@google.com>
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20230607-fs-empty-option-v2-1-ffd0cba3bddb@weissschuh.net>
+X-B4-Tracking: v=1; b=H4sIALzAgGQC/3WNQQ6CMBBFr0K6dkxbtBhX3MOwoGWwTbCQTkEJ4
+ e6O7F2+n//yNkGYApK4F5tIuAQKY2TQp0I438YnQuiYhZa6lEZW0BPga8orjFPmL2hzNVqXleK
+ DYMu2hGBTG51nL87DwOOUsA+fI/NomH2gPKb1qC7qt/4PLAoUaOlune0vplK2fmMgIudnf46YR
+ bPv+xdCAgQ7yAAAAA==
+To:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>
+Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        David Howells <dhowells@redhat.com>,
+        Karel Zak <kzag@redhat.com>, stable@vger.kernel.org,
+        =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+X-Mailer: b4 0.12.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1686159556; l=1435;
+ i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
+ bh=5rDKXRphCm5hSfMg9E8EiHD7LdAzDPAqz+JpNaExDw4=;
+ b=oUJfE7kshkS/8Wb6safwZYMONGGPt/Ujmta4e4tMx9loVGy9BsmaNub0Ov05930vOSSL3xSae
+ xKlmNP8i6/2AUp3wEoyVOHZqA7Po6WyW1JsRyxMY+xRIxpfTOuGVzfO
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 01, 2023 at 03:10:27AM +0000, Badhri Jagan Sridharan wrote:
-> usb_udc_vbus_handler() can be invoked from interrupt context by irq
-> handlers of the gadget drivers, however, usb_udc_connect_control() has
-> to run in non-atomic context due to the following:
-> a. Some of the gadget driver implementations expect the ->pullup
->    callback to be invoked in non-atomic context.
-> b. usb_gadget_disconnect() acquires udc_lock which is a mutex.
-> 
-> Hence offload invocation of usb_udc_connect_control()
-> to workqueue.
-> 
-> UDC should not be pulled up unless gadget driver is bound. The new flag
-> "allow_connect" is now set by gadget_bind_driver() and cleared by
-> gadget_unbind_driver(). This prevents work item to pull up the gadget
-> even if queued when the gadget driver is already unbound.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 1016fc0c096c ("USB: gadget: Fix obscure lockdep violation for udc_mutex")
-> Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-> ---
-> Changes since v1:
-> - Address Alan Stern's comment on usb_udc_vbus_handler invocation from
->   atomic context:
-> * vbus_events_lock is now a spinlock and allocations in
-> * usb_udc_vbus_handler are atomic now.
-> 
-> Changes since v2:
-> - Addressing Alan Stern's comments:
-> ** connect_lock is now held by callers of
-> * usb_gadget_pullup_update_locked() and gadget_(un)bind_driver() does
-> * notdirectly hold the lock.
-> 
-> ** Both usb_gadget_(dis)connect() and usb_udc_vbus_handler() would
-> * set/clear udc->vbus and invoke usb_gadget_pullup_update_locked.
-> 
-> ** Add "unbinding" to prevent new connections after the gadget is being
-> * unbound.
-> 
-> Changes since v3:
-> ** Made a minor cleanup which I missed to do in v3 in
-> * usb_udc_vbus_handler().
-> 
-> Changes since v4:
-> - Addressing Alan Stern's comments:
-> ** usb_udc_vbus_handler() now offloads invocation of usb_udc_connect_control()
-> * from workqueue.
-> 
-> ** Dropped vbus_events list as this was redundant. Updating to the
-> * latest value is suffice
-> 
-> Changes since v5:
-> - Addressing Alan Stern's comments:
-> ** Squashed allow_connect logic to this patch.
-> ** Fixed comment length to wrap at 76
-> ** Cancelling vbus_work in del_gadget()
+As each option string fragment is always prepended with a comma it would
+happen that the whole string always starts with a comma.
+This could be interpreted by filesystem drivers as an empty option and
+may produce errors.
 
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+For example the NTFS driver from ntfs.ko behaves like this and fails when
+mounted via the new API.
+
+Link: https://github.com/util-linux/util-linux/issues/2298
+Fixes: 3e1aeb00e6d1 ("vfs: Implement a filesystem superblock creation/configuration context")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+---
+Changes in v2:
+- Mention Cc stable@ in sign-off area
+- Link to v1: https://lore.kernel.org/r/20230607-fs-empty-option-v1-1-20c8dbf4671b@weissschuh.net
+---
+ fs/fs_context.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/fs/fs_context.c b/fs/fs_context.c
+index 24ce12f0db32..851214d1d013 100644
+--- a/fs/fs_context.c
++++ b/fs/fs_context.c
+@@ -561,7 +561,8 @@ static int legacy_parse_param(struct fs_context *fc, struct fs_parameter *param)
+ 			return -ENOMEM;
+ 	}
+ 
+-	ctx->legacy_data[size++] = ',';
++	if (size)
++		ctx->legacy_data[size++] = ',';
+ 	len = strlen(param->key);
+ 	memcpy(ctx->legacy_data + size, param->key, len);
+ 	size += len;
+
+---
+base-commit: 9561de3a55bed6bdd44a12820ba81ec416e705a7
+change-id: 20230607-fs-empty-option-265622371023
+
+Best regards,
+-- 
+Thomas Weißschuh <linux@weissschuh.net>
+
