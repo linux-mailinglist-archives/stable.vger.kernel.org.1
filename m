@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E0A8726E8E
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:51:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5766726C5C
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:33:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234964AbjFGUvZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:51:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51652 "EHLO
+        id S233746AbjFGUdG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:33:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235057AbjFGUvT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:51:19 -0400
+        with ESMTP id S233748AbjFGUdF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:33:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73E3726B6
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:50:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 325FA210B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:32:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 49BC864721
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:50:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E8D4C433D2;
-        Wed,  7 Jun 2023 20:50:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BFE436452D
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:32:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2652C433EF;
+        Wed,  7 Jun 2023 20:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171057;
-        bh=z8swA6wW5Oo1wnkuZhe0uKr1ZhFWOED7/UaCBJAtm+c=;
+        s=korg; t=1686169969;
+        bh=Rfc8FVa3EmDZrkjVY98z7BNwarxJsKCcOvt1SKfKOCE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F8lbeemgdsD8wm1kUPAx+aOrd0Jx+COJ9mjTRvBrcoDI2V+6MTQlgeagQHa50ukwL
-         9deXYNaS/08CbOstvv47npQgimvRGy8TdE86JZG+kjbxJ9EgzvLYIeDcS1vuhd+3mq
-         P6o74nAwwvm4W1C1SCMiSqoqdpA6OkHM4vovPI/4=
+        b=LrSfRwTVu6gAOHF4bERMHkumfCVvvmDe2QZoBy1YHYozLRsDAhp0b5VuiUq3A7sfJ
+         uUeUGjYS9mOAHv/oKu1RGV+UBe+15jld/5eI3bjdya/lga+2iy/2obhBE0Ms0VTeSL
+         Tp95UvLspGZ4zK7cOVaE0+YOCrgD+M3FoUZA/bfw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Min-Hua Chen <minhuadotchen@gmail.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 065/120] arm64/mm: mark private VM_FAULT_X defines as vm_fault_t
+        patches@lists.linux.dev, Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+        =?UTF-8?q?Michael=20Niew=C3=B6hner?= <linux@mniewoehner.de>,
+        Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.3 282/286] tpm, tpm_tis: Request threaded interrupt handler
 Date:   Wed,  7 Jun 2023 22:16:21 +0200
-Message-ID: <20230607200902.929067403@linuxfoundation.org>
+Message-ID: <20230607200932.493840520@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
-References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,54 +54,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Min-Hua Chen <minhuadotchen@gmail.com>
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 
-[ Upstream commit d91d580878064b880f3574ac35b98d8b70ee8620 ]
+commit 0c7e66e5fd69bf21034c9a9b081d7de7c3eb2cea upstream.
 
-This patch fixes several sparse warnings for fault.c:
+The TIS interrupt handler at least has to read and write the interrupt
+status register. In case of SPI both operations result in a call to
+tpm_tis_spi_transfer() which uses the bus_lock_mutex of the spi device
+and thus must only be called from a sleepable context.
 
-arch/arm64/mm/fault.c:493:24: sparse: warning: incorrect type in return expression (different base types)
-arch/arm64/mm/fault.c:493:24: sparse:    expected restricted vm_fault_t
-arch/arm64/mm/fault.c:493:24: sparse:    got int
-arch/arm64/mm/fault.c:501:32: sparse: warning: incorrect type in return expression (different base types)
-arch/arm64/mm/fault.c:501:32: sparse:    expected restricted vm_fault_t
-arch/arm64/mm/fault.c:501:32: sparse:    got int
-arch/arm64/mm/fault.c:503:32: sparse: warning: incorrect type in return expression (different base types)
-arch/arm64/mm/fault.c:503:32: sparse:    expected restricted vm_fault_t
-arch/arm64/mm/fault.c:503:32: sparse:    got int
-arch/arm64/mm/fault.c:511:24: sparse: warning: incorrect type in return expression (different base types)
-arch/arm64/mm/fault.c:511:24: sparse:    expected restricted vm_fault_t
-arch/arm64/mm/fault.c:511:24: sparse:    got int
-arch/arm64/mm/fault.c:670:13: sparse: warning: restricted vm_fault_t degrades to integer
-arch/arm64/mm/fault.c:670:13: sparse: warning: restricted vm_fault_t degrades to integer
-arch/arm64/mm/fault.c:713:39: sparse: warning: restricted vm_fault_t degrades to integer
+To ensure this request a threaded interrupt handler.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Min-Hua Chen <minhuadotchen@gmail.com>
-Link: https://lore.kernel.org/r/20230502151909.128810-1-minhuadotchen@gmail.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Tested-by: Michael Niewöhner <linux@mniewoehner.de>
+Tested-by: Jarkko Sakkinen <jarkko@kernel.org>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/fault.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/char/tpm/tpm_tis_core.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index 2be856731e817..d8baedd160de0 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -402,8 +402,8 @@ static void do_bad_area(unsigned long addr, unsigned int esr, struct pt_regs *re
- 	}
- }
+--- a/drivers/char/tpm/tpm_tis_core.c
++++ b/drivers/char/tpm/tpm_tis_core.c
+@@ -805,8 +805,11 @@ static int tpm_tis_probe_irq_single(stru
+ 	int rc;
+ 	u32 int_status;
  
--#define VM_FAULT_BADMAP		0x010000
--#define VM_FAULT_BADACCESS	0x020000
-+#define VM_FAULT_BADMAP		((__force vm_fault_t)0x010000)
-+#define VM_FAULT_BADACCESS	((__force vm_fault_t)0x020000)
- 
- static vm_fault_t __do_page_fault(struct mm_struct *mm, unsigned long addr,
- 				  unsigned int mm_flags, unsigned long vm_flags,
--- 
-2.39.2
-
+-	if (devm_request_irq(chip->dev.parent, irq, tis_int_handler, flags,
+-			     dev_name(&chip->dev), chip) != 0) {
++
++	rc = devm_request_threaded_irq(chip->dev.parent, irq, NULL,
++				       tis_int_handler, IRQF_ONESHOT | flags,
++				       dev_name(&chip->dev), chip);
++	if (rc) {
+ 		dev_info(&chip->dev, "Unable to request irq: %d for probe\n",
+ 			 irq);
+ 		return -1;
 
 
