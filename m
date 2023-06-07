@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C37CF726B7D
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:25:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39EA4726CF6
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:38:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233201AbjFGUZy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:25:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51238 "EHLO
+        id S234123AbjFGUiH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:38:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233106AbjFGUZx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:25:53 -0400
+        with ESMTP id S234093AbjFGUiF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:38:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85F3326B0
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:25:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7BC62685
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:37:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5562764443
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:25:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69014C4339B;
-        Wed,  7 Jun 2023 20:25:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1AAE7645AF
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:37:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31126C433EF;
+        Wed,  7 Jun 2023 20:37:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169519;
-        bh=VFjO42l3luArZ4psdOiK4HwyLgEcsNzr91BCbnzwSXI=;
+        s=korg; t=1686170263;
+        bh=j9HJQ6BZXzJR3hsPDMRkfVQtfJckkWh2L4mEfnDuf+c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jH/NzojfrsW/C7xupM6dj1niUkAimGDo4mnpOxaMvYw84OFxqXELfmP4S3tIiUjXm
-         K13HBSZNLHdzbobkCndVIV2rw09nVywYEpgNOPXtjTjYrs2qKLdEeQOZALJ2Jx904c
-         8GSZ9Hmkl76tVpqnXpdMCPGqYzGFIprsM/pAFXjk=
+        b=grbjD8NU9nsFi/vDqCaBAQtvMKm6NRjfC2hPsSm77I5BygnNOyXWBuSoLh0AQXdfM
+         XwA704JcTRo8gkL5JQHnnLusrIXa8tIy5YdY/CjKjmCN5I3DkQGCLPRu5UDyzSriGQ
+         bsFPGEjwl25Atcf+793ybRzbVBMI+GuNLcn6mx3Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrey God <andreygod83@protonmail.com>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 112/286] nvme-pci: add NVME_QUIRK_BOGUS_NID for HS-SSD-FUTURE 2048G
-Date:   Wed,  7 Jun 2023 22:13:31 +0200
-Message-ID: <20230607200926.741831975@linuxfoundation.org>
+        patches@lists.linux.dev, Shay Drory <shayd@nvidia.com>,
+        Moshe Shemesh <moshe@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 019/225] net/mlx5: fw_tracer, Fix event handling
+Date:   Wed,  7 Jun 2023 22:13:32 +0200
+Message-ID: <20230607200914.923071913@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
+References: <20230607200913.334991024@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,35 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit 1616d6c3717bae9041a4240d381ec56ccdaafedc ]
+[ Upstream commit 341a80de2468f481b1f771683709b5649cbfe513 ]
 
-Add a quirk to fix HS-SSD-FUTURE 2048G SSD drives reporting duplicate
-nsids.
+mlx5 driver needs to parse traces with event_id inside the range of
+first_string_trace and num_string_trace. However, mlx5 is parsing all
+events with event_id >= first_string_trace.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217384
-Reported-by: Andrey God <andreygod83@protonmail.com>
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fix it by checking for the correct range.
+
+Fixes: c71ad41ccb0c ("net/mlx5: FW tracer, events handling")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index cd7873de31215..bbf96567365cd 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3445,6 +3445,8 @@ static const struct pci_device_id nvme_id_table[] = {
- 				NVME_QUIRK_IGNORE_DEV_SUBNQN, },
- 	{ PCI_DEVICE(0x10ec, 0x5763), /* TEAMGROUP T-FORCE CARDEA ZERO Z330 SSD */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
-+	{ PCI_DEVICE(0x1e4b, 0x1602), /* HS-SSD-FUTURE 2048G  */
-+		.driver_data = NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMAZON, 0x0061),
- 		.driver_data = NVME_QUIRK_DMA_ADDRESS_BITS_48, },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMAZON, 0x0065),
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+index d7b2ee5de1158..c4e40834e3ff9 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+@@ -483,7 +483,7 @@ static void poll_trace(struct mlx5_fw_tracer *tracer,
+ 				(u64)timestamp_low;
+ 		break;
+ 	default:
+-		if (tracer_event->event_id >= tracer->str_db.first_string_trace ||
++		if (tracer_event->event_id >= tracer->str_db.first_string_trace &&
+ 		    tracer_event->event_id <= tracer->str_db.first_string_trace +
+ 					      tracer->str_db.num_string_trace) {
+ 			tracer_event->type = TRACER_EVENT_TYPE_STRING;
 -- 
 2.39.2
 
