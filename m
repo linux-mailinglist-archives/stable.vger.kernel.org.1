@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80D49726F1F
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DB3E726E83
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:51:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235500AbjFGUzi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:55:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56650 "EHLO
+        id S235272AbjFGUu5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:50:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235476AbjFGUze (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:55:34 -0400
+        with ESMTP id S235335AbjFGUuj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:50:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7503C1BE4
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:55:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAF3626B0
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:50:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 086BE64801
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:55:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204FEC4339B;
-        Wed,  7 Jun 2023 20:55:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 14CF164708
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:50:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28742C4339B;
+        Wed,  7 Jun 2023 20:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171332;
-        bh=AEgLpSXR2JytEFrd0+1cvpNsE8QXoxiVVhkuzKyF3J4=;
+        s=korg; t=1686171031;
+        bh=+wMV/2QnJjGPeJV5uuxqr/Hp5qbBlMgraKerOYvZyq4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wCR1qfb5HXR1ZEsVuqWW90meLSk6CQghHgIO68rdmyKmbni48SRr4UpcWy1bMJWrN
-         /DuPYt9kVxFg5EwPV4S25QEPIe5Tmbm8OMVLwfmPq+dlNPiVAzfOLPv78MAboqIuMA
-         mmTgWZ3+SmGDfIGTF3IwYAgXGR33GDcE+MLu7yhM=
+        b=BZgQYyAguNY6xkjMqK7w4QhVj02OTlI/ecior2DtUfYe1b31ERcQVK1RyWpfXq8wD
+         11xLFsQGS75f1H6zWZ0VXHRzK56BHQ2+p99RvQBXbNLTyZA18VN47Rjw6O6s6VFmcN
+         7hc9Vi4YjA641tKW9kywYXJlOulnexzGvgzVlaYc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 48/99] media: mn88443x: fix !CONFIG_OF error by drop of_match_ptr from ID table
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Richard Acayan <mailingradian@gmail.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 5.10 084/120] misc: fastrpc: reject new invocations during device removal
 Date:   Wed,  7 Jun 2023 22:16:40 +0200
-Message-ID: <20230607200901.753943745@linuxfoundation.org>
+Message-ID: <20230607200903.541118643@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,40 +54,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Richard Acayan <mailingradian@gmail.com>
 
-[ Upstream commit ae11c0efaec32fb45130ee9886689f467232eebc ]
+commit 46248400d81e2aa0b65cd659d6f40188192a58b6 upstream.
 
-The driver will match mostly by DT table (even thought there is regular
-ID table) so there is little benefit in of_match_ptr (this also allows
-ACPI matching via PRP0001, even though it might not be relevant here).
-This also fixes !CONFIG_OF error:
+The channel's rpmsg object allows new invocations to be made. After old
+invocations are already interrupted, the driver shouldn't try to invoke
+anymore. Invalidating the rpmsg at the end of the driver removal
+function makes it easy to cause a race condition in userspace. Even
+closing a file descriptor before the driver finishes its cleanup can
+cause an invocation via fastrpc_release_current_dsp_process() and
+subsequent timeout.
 
-  drivers/media/dvb-frontends/mn88443x.c:782:34: error: ‘mn88443x_of_match’ defined but not used [-Werror=unused-const-variable=]
+Invalidate the channel before the invocations are interrupted to make
+sure that no invocations can be created to hang after the device closes.
 
-Link: https://lore.kernel.org/linux-media/20230312131318.351173-28-krzysztof.kozlowski@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c68cfb718c8f ("misc: fastrpc: Add support for context Invoke method")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Richard Acayan <mailingradian@gmail.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230523152550.438363-5-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-frontends/mn88443x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/fastrpc.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-frontends/mn88443x.c b/drivers/media/dvb-frontends/mn88443x.c
-index fff212c0bf3b5..05894deb8a19a 100644
---- a/drivers/media/dvb-frontends/mn88443x.c
-+++ b/drivers/media/dvb-frontends/mn88443x.c
-@@ -800,7 +800,7 @@ MODULE_DEVICE_TABLE(i2c, mn88443x_i2c_id);
- static struct i2c_driver mn88443x_driver = {
- 	.driver = {
- 		.name = "mn88443x",
--		.of_match_table = of_match_ptr(mn88443x_of_match),
-+		.of_match_table = mn88443x_of_match,
- 	},
- 	.probe    = mn88443x_probe,
- 	.remove   = mn88443x_remove,
--- 
-2.39.2
-
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -1688,7 +1688,9 @@ static void fastrpc_rpmsg_remove(struct
+ 	struct fastrpc_user *user;
+ 	unsigned long flags;
+ 
++	/* No invocations past this point */
+ 	spin_lock_irqsave(&cctx->lock, flags);
++	cctx->rpdev = NULL;
+ 	list_for_each_entry(user, &cctx->users, user)
+ 		fastrpc_notify_users(user);
+ 	spin_unlock_irqrestore(&cctx->lock, flags);
+@@ -1696,7 +1698,6 @@ static void fastrpc_rpmsg_remove(struct
+ 	misc_deregister(&cctx->miscdev);
+ 	of_platform_depopulate(&rpdev->dev);
+ 
+-	cctx->rpdev = NULL;
+ 	fastrpc_channel_ctx_put(cctx);
+ }
+ 
 
 
