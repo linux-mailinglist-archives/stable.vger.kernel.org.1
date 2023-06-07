@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4418E726F36
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:56:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D617072700E
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:04:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235528AbjFGU4X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:56:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57304 "EHLO
+        id S236160AbjFGVER (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 17:04:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235536AbjFGU4W (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:56:22 -0400
+        with ESMTP id S236178AbjFGVDz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:03:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A32F6FC
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:56:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0C592680
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:03:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3459664844
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:56:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D98C433D2;
-        Wed,  7 Jun 2023 20:56:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F9D6649A6
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:03:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81DB4C433EF;
+        Wed,  7 Jun 2023 21:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171379;
-        bh=7s73vs/YZ8FRztctnfZ4aEM/BYXTrdu1ejkZVUgfaPs=;
+        s=korg; t=1686171814;
+        bh=eL550BBh8IY2byjPiqFShEUDyXJ3Lg1EcgNmyYJtSQk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LHArfhQgbpn6RiM38ZylopIRRx+g0MteJ+5kiKv2t5Kb0eN7ENvfaYfeVHReCG4d3
-         E0AQCbSl350XXblObzGSSyA8dPFkn4D/LB4x8jRDXWry+71E5uZwNWJslpFVhxFkoK
-         n3wg0EgFw9Uru9mvdKbM2K4cv33h3m/6BDQYg8+A=
+        b=hHgQvwBTELBRWei88fZm97PyYC0kCyqdplqHK3TK6GArl6AramCJ7zdue03E+lcRx
+         AMouVE6+V1Z/9S3EhRAkIJVkURoqif1mYl5IYrUJ5S0FDII2EEFGAshQgM3zFBDAsA
+         3J4xcur9bZYYghDhMfjr/bm50F1OH3ncvSFpVlXE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hulk Robot <hulkci@huawei.com>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Jason Gunthorpe <jgg@mellanox.com>
-Subject: [PATCH 5.4 95/99] RDMA/bnxt_re: Remove set but not used variable dev_attr
+        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
+        Steve French <stfrench@microsoft.com>
+Subject: [PATCH 5.15 144/159] ksmbd: fix credit count leakage
 Date:   Wed,  7 Jun 2023 22:17:27 +0200
-Message-ID: <20230607200903.229887396@linuxfoundation.org>
+Message-ID: <20230607200908.381111650@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
-References: <20230607200900.195572674@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,44 +53,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: YueHaibing <yuehaibing@huawei.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit a0b404a98e274b5fc0cfb7c108d99127d482e5ff upstream.
+commit 84c5aa47925a1f40d698b6a6a2bf67e99617433d upstream.
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+This patch fix the failure from smb2.credits.single_req_credits_granted
+test. When client send 8192 credit request, ksmbd return 8191 credit
+granted. ksmbd should give maximum possible credits that must be granted
+within the range of not exceeding the max credit to client.
 
-drivers/infiniband/hw/bnxt_re/ib_verbs.c: In function 'bnxt_re_create_gsi_qp':
-drivers/infiniband/hw/bnxt_re/ib_verbs.c:1283:30: warning:
- variable 'dev_attr' set but not used [-Wunused-but-set-variable]
-
-commit 8dae419f9ec7 ("RDMA/bnxt_re: Refactor queue pair creation code")
-involved this, but not used, so remove it.
-
-Link: https://lore.kernel.org/r/20200227064542.91205-1-yuehaibing@huawei.com
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Signed-off-by: Jason Gunthorpe <jgg@mellanox.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c |    2 --
- 1 file changed, 2 deletions(-)
+ fs/ksmbd/smb2pdu.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -1286,14 +1286,12 @@ out:
- static int bnxt_re_create_gsi_qp(struct bnxt_re_qp *qp, struct bnxt_re_pd *pd,
- 				 struct ib_qp_init_attr *init_attr)
- {
--	struct bnxt_qplib_dev_attr *dev_attr;
- 	struct bnxt_re_dev *rdev;
- 	struct bnxt_qplib_qp *qplqp;
- 	int rc = 0;
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -338,13 +338,9 @@ int smb2_set_rsp_credits(struct ksmbd_wo
+ 	if (hdr->Command == SMB2_NEGOTIATE)
+ 		aux_max = 1;
+ 	else
+-		aux_max = conn->vals->max_credits - credit_charge;
++		aux_max = conn->vals->max_credits - conn->total_credits;
+ 	credits_granted = min_t(unsigned short, credits_requested, aux_max);
  
- 	rdev = qp->rdev;
- 	qplqp = &qp->qplib_qp;
--	dev_attr = &rdev->dev_attr;
+-	if (conn->vals->max_credits - conn->total_credits < credits_granted)
+-		credits_granted = conn->vals->max_credits -
+-			conn->total_credits;
+-
+ 	conn->total_credits += credits_granted;
+ 	work->credits_granted += credits_granted;
  
- 	qplqp->rq_hdr_buf_size = BNXT_QPLIB_MAX_QP1_RQ_HDR_SIZE_V2;
- 	qplqp->sq_hdr_buf_size = BNXT_QPLIB_MAX_QP1_SQ_HDR_SIZE_V2;
 
 
