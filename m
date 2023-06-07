@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4192726FC7
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AAA4726E87
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:51:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235864AbjFGVBq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:01:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34034 "EHLO
+        id S234963AbjFGUvN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:51:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235971AbjFGVBT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:01:19 -0400
+        with ESMTP id S235268AbjFGUu5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:50:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E85C2737
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 14:00:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C68F26B8
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:50:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AA41A64901
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:00:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBCA5C433EF;
-        Wed,  7 Jun 2023 21:00:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 87CB864721
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:50:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E0FFC433D2;
+        Wed,  7 Jun 2023 20:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171658;
-        bh=/0qqzz2fl+uzc9k5w7xO/pOxZzmLbxq8Uj5Pdx0I/Fs=;
+        s=korg; t=1686171042;
+        bh=bG3r/RDTci+l3fEjaPbYijX9d2QvCQOABc5JLdJIIbs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ODyo2q+ucCvNu7XX+vZDz/QQA+AGRkt7Gw5K2CutWOrL2ROvjOtUtaDAbeeKYJ4x0
-         q6x1aEO5A8oQeEOISE3hWn2zDMM+C3v4C4Dbq9YMZD+R276i6LiERjevPUDGbb30gL
-         DQCY5QkelyCAtmKjZjJaZBTpLS7LccTkv0dB5Ra0=
+        b=a3pLoHt8tftUFrZ3yjVyGljxGT/EAAXng8znygWJinPP90VcaxSMt8xEkj0i5M9Xk
+         q1QyYWeQz9VZ1JrrqpgG01jBC3Fy0+8Ft/91IjXm63Cuo5VzClWGYEnjf8hlxpsSyp
+         5fahYDfuwUB+Fco9gTPElKgkf45F4rBfqK8UPEfU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 101/159] iio: imu: inv_icm42600: fix timestamp reset
+        patches@lists.linux.dev, Adam Borowski <kilobyte@angband.pl>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.10 088/120] ACPI: thermal: drop an always true check
 Date:   Wed,  7 Jun 2023 22:16:44 +0200
-Message-ID: <20230607200906.989130101@linuxfoundation.org>
+Message-ID: <20230607200903.668103836@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+References: <20230607200900.915613242@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,71 +53,30 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: Adam Borowski <kilobyte@angband.pl>
 
-commit bbaae0c79ebd49f61ad942a8bf9e12bfc7f821bb upstream.
+commit e5b5d25444e9ee3ae439720e62769517d331fa39 upstream.
 
-Timestamp reset is not done in the correct place. It must be done
-before enabling buffer. The reason is that interrupt timestamping
-is always happening when the chip is on, even if the
-corresponding sensor is off. When the sensor restarts, timestamp
-is wrong if you don't do a reset first.
+Address of a field inside a struct can't possibly be null; gcc-12 warns
+about this.
 
-Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230509152202.245444-1-inv.git-commit@tdk.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Adam Borowski <kilobyte@angband.pl>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/acpi/thermal.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-@@ -275,9 +275,14 @@ static int inv_icm42600_buffer_preenable
- {
- 	struct inv_icm42600_state *st = iio_device_get_drvdata(indio_dev);
- 	struct device *dev = regmap_get_device(st->map);
-+	struct inv_icm42600_timestamp *ts = iio_priv(indio_dev);
- 
- 	pm_runtime_get_sync(dev);
- 
-+	mutex_lock(&st->lock);
-+	inv_icm42600_timestamp_reset(ts);
-+	mutex_unlock(&st->lock);
-+
- 	return 0;
- }
- 
-@@ -375,7 +380,6 @@ static int inv_icm42600_buffer_postdisab
- 	struct device *dev = regmap_get_device(st->map);
- 	unsigned int sensor;
- 	unsigned int *watermark;
--	struct inv_icm42600_timestamp *ts;
- 	struct inv_icm42600_sensor_conf conf = INV_ICM42600_SENSOR_CONF_INIT;
- 	unsigned int sleep_temp = 0;
- 	unsigned int sleep_sensor = 0;
-@@ -385,11 +389,9 @@ static int inv_icm42600_buffer_postdisab
- 	if (indio_dev == st->indio_gyro) {
- 		sensor = INV_ICM42600_SENSOR_GYRO;
- 		watermark = &st->fifo.watermark.gyro;
--		ts = iio_priv(st->indio_gyro);
- 	} else if (indio_dev == st->indio_accel) {
- 		sensor = INV_ICM42600_SENSOR_ACCEL;
- 		watermark = &st->fifo.watermark.accel;
--		ts = iio_priv(st->indio_accel);
- 	} else {
+--- a/drivers/acpi/thermal.c
++++ b/drivers/acpi/thermal.c
+@@ -1120,8 +1120,6 @@ static int acpi_thermal_resume(struct de
  		return -EINVAL;
- 	}
-@@ -417,8 +419,6 @@ static int inv_icm42600_buffer_postdisab
- 	if (!st->fifo.on)
- 		ret = inv_icm42600_set_temp_conf(st, false, &sleep_temp);
  
--	inv_icm42600_timestamp_reset(ts);
--
- out_unlock:
- 	mutex_unlock(&st->lock);
- 
+ 	for (i = 0; i < ACPI_THERMAL_MAX_ACTIVE; i++) {
+-		if (!(&tz->trips.active[i]))
+-			break;
+ 		if (!tz->trips.active[i].flags.valid)
+ 			break;
+ 		tz->trips.active[i].flags.enabled = 1;
 
 
