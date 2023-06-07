@@ -2,43 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D43C726D71
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:42:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22533726BD5
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:28:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234578AbjFGUmI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:42:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41976 "EHLO
+        id S233477AbjFGU2p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:28:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234504AbjFGUmF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:42:05 -0400
+        with ESMTP id S233446AbjFGU2o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:28:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 514AB2109
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:42:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA02A26BC
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:28:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D89A264625
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:41:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF7BC433D2;
-        Wed,  7 Jun 2023 20:41:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6653F644B1
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:28:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ADCEC433EF;
+        Wed,  7 Jun 2023 20:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686170519;
-        bh=DX3bztbjPlBfBo2b5SmQ6Ry+qJp+X9ph1HSpTHP9eZ8=;
+        s=korg; t=1686169705;
+        bh=0v8Pmqr/5nGSIfTDDZwsBt1fsBtIeH8OhGXUdpTmTds=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=J13ne6xJW2CQd74h+648ybsvt2viRxfcGCIYWqTch9milwJqWrq20jDpNCisVN3x5
-         bIXsBjYp5SD9bNH2OCHnY5YMo2rxaLzzlj9pk72wum75IHdG/fOTiRFUCKUFSC/rKz
-         dsDuOITl7bWHzit728AGR78y14TIy+MYSjjdVbyo=
+        b=sA/ALUiQXzeHsA7auiSN6Lgcq5frP6qyMXN81yzKHopFCF3Ykzp1oeE8izrxtwi+g
+         kHUJPvxXqGGdiPtdfvqCOSaWGyHa5vMD4UFmbKYqMcn+3DUiPBQ9IGFDrnxlpAXPKK
+         czlJF9oddyHLR6nt81h0ohjZgKrWXHkct1yCmi9A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexandru Sorodoc <ealex95@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 088/225] ALSA: hda/realtek: Add quirks for ASUS GU604V and GU603V
+        patches@lists.linux.dev, Pin-yen Lin <treapking@chromium.org>,
+        Chen-Yu Tsai <wenst@chromium.org>,
+        Yunfei Dong <yunfei.dong@mediatek.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 182/286] media: mediatek: vcodec: Only apply 4K frame sizes on decoder formats
 Date:   Wed,  7 Jun 2023 22:14:41 +0200
-Message-ID: <20230607200917.250204865@linuxfoundation.org>
+Message-ID: <20230607200929.212235294@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
-References: <20230607200913.334991024@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,76 +57,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexandru Sorodoc <ealex95@gmail.com>
+From: Pin-yen Lin <treapking@chromium.org>
 
-[ Upstream commit 4b963ae1df6426f0e51de64133d379d9bde50c48 ]
+[ Upstream commit ed17f89e9502f03af493e130620a9bb74c07cf28 ]
 
-These models use 2 CS35L41 amplifiers using SPI for down-facing
-speakers.
+When VCODEC_CAPABILITY_4K_DISABLED is not set in dec_capability, skip
+formats that are not MTK_FMT_DEC so only decoder formats is updated in
+mtk_init_vdec_params.
 
-alc285_fixup_speaker2_to_dac1 is needed to fix volume control of the
-down-facing speakers.
-
-Pin configs are needed to enable headset mic detection.
-
-Note that these models lack the ACPI _DSD properties needed to
-initialize the amplifiers. They can be added during boot to get working
-sound out of the speakers:
-  https://gist.github.com/lamperez/862763881c0e1c812392b5574727f6ff
-
-Signed-off-by: Alexandru Sorodoc <ealex95@gmail.com>
-Link: https://lore.kernel.org/r/20230511161510.315170-1-ealex95@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: e25528e1dbe5 ("media: mediatek: vcodec: Use 4K frame size when supported by stateful decoder")
+Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Yunfei Dong <yunfei.dong@mediatek.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ .../media/platform/mediatek/vcodec/mtk_vcodec_dec_stateful.c   | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 379f216158ab4..7b5f194513c7b 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7063,6 +7063,8 @@ enum {
- 	ALC225_FIXUP_DELL1_MIC_NO_PRESENCE,
- 	ALC295_FIXUP_DISABLE_DAC3,
- 	ALC285_FIXUP_SPEAKER2_TO_DAC1,
-+	ALC285_FIXUP_ASUS_SPEAKER2_TO_DAC1,
-+	ALC285_FIXUP_ASUS_HEADSET_MIC,
- 	ALC280_FIXUP_HP_HEADSET_MIC,
- 	ALC221_FIXUP_HP_FRONT_MIC,
- 	ALC292_FIXUP_TPT460,
-@@ -8033,6 +8035,22 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.chained = true,
- 		.chain_id = ALC269_FIXUP_THINKPAD_ACPI
- 	},
-+	[ALC285_FIXUP_ASUS_SPEAKER2_TO_DAC1] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc285_fixup_speaker2_to_dac1,
-+		.chained = true,
-+		.chain_id = ALC245_FIXUP_CS35L41_SPI_2
-+	},
-+	[ALC285_FIXUP_ASUS_HEADSET_MIC] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x19, 0x03a11050 },
-+			{ 0x1b, 0x03a11c30 },
-+			{ }
-+		},
-+		.chained = true,
-+		.chain_id = ALC285_FIXUP_ASUS_SPEAKER2_TO_DAC1
-+	},
- 	[ALC256_FIXUP_DELL_INSPIRON_7559_SUBWOOFER] = {
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = (const struct hda_pintbl[]) {
-@@ -9507,6 +9525,8 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1313, "Asus K42JZ", ALC269VB_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x13b0, "ASUS Z550SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1427, "Asus Zenbook UX31E", ALC269VB_FIXUP_ASUS_ZENBOOK),
-+	SND_PCI_QUIRK(0x1043, 0x1473, "ASUS GU604V", ALC285_FIXUP_ASUS_HEADSET_MIC),
-+	SND_PCI_QUIRK(0x1043, 0x1483, "ASUS GU603V", ALC285_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1517, "Asus Zenbook UX31A", ALC269VB_FIXUP_ASUS_ZENBOOK_UX31A),
- 	SND_PCI_QUIRK(0x1043, 0x1662, "ASUS GV301QH", ALC294_FIXUP_ASUS_DUAL_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x1683, "ASUS UM3402YAR", ALC287_FIXUP_CS35L41_I2C_2),
+diff --git a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateful.c b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateful.c
+index 29991551cf614..0fbd030026c72 100644
+--- a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateful.c
++++ b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_dec_stateful.c
+@@ -584,6 +584,9 @@ static void mtk_init_vdec_params(struct mtk_vcodec_ctx *ctx)
+ 
+ 	if (!(ctx->dev->dec_capability & VCODEC_CAPABILITY_4K_DISABLED)) {
+ 		for (i = 0; i < num_supported_formats; i++) {
++			if (mtk_video_formats[i].type != MTK_FMT_DEC)
++				continue;
++
+ 			mtk_video_formats[i].frmsize.max_width =
+ 				VCODEC_DEC_4K_CODED_WIDTH;
+ 			mtk_video_formats[i].frmsize.max_height =
 -- 
 2.39.2
 
