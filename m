@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4212726ADB
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:20:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62B5A726F85
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:59:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232771AbjFGUUn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 16:20:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45750 "EHLO
+        id S235699AbjFGU7V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:59:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232508AbjFGUUe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:20:34 -0400
+        with ESMTP id S235687AbjFGU7U (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:59:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A752926B6
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:20:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E1A22704
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:58:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 419936171C
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:18:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54CEAC433EF;
-        Wed,  7 Jun 2023 20:18:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AE80A6487B
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:58:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E5CC4339B;
+        Wed,  7 Jun 2023 20:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686169137;
-        bh=K0DHSQSZVAT8N8ouP5wZ7sV+pKaXBbvB5JzNzqtza14=;
+        s=korg; t=1686171495;
+        bh=jIxp4tjLThDKHW5aiO+43jN/hqqVTONscOHCZGCthDA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BJ668zohJQaw/aA5j0iZhzi0SFUolRgWmNFUUgJmXL6LRU+xJUYKcRecd78Hr6m67
-         HOtoh+5kB7draoINv0rUMO34bRvM9bVbghXaWxBGzoS5wPtGDVPdiSIbE7aDfXSVK+
-         8IKnmEEX5XUdF1Uo0TFlQLd/YKuo/aR1/1b+ZW3Q=
+        b=diy3v0Py/N2/3pEUR26zPCGgoixer/wWbBb2tLLuhNJX2oyJWDfiLYpJViuNeZDs/
+         qJYjKwEgRli+NndgZhepSCI9VB8oYMHib1DnWiaObKiQgJlEAchalOo6g8ueYv7B6u
+         Pvgz7XraIJdxlPs/0zHOC9RG2L53s0N1RhaU3tc8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yun Lu <luyun@kylinos.cn>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 28/61] wifi: rtl8xxxu: fix authentication timeout due to incorrect RCR value
+        patches@lists.linux.dev, Xin Long <lucien.xin@gmail.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 039/159] rtnetlink: call validate_linkmsg in rtnl_create_link
 Date:   Wed,  7 Jun 2023 22:15:42 +0200
-Message-ID: <20230607200845.071129201@linuxfoundation.org>
+Message-ID: <20230607200904.948483523@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-References: <20230607200835.310274198@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+References: <20230607200903.652580797@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,71 +55,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yun Lu <luyun@kylinos.cn>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 20429444e653ee8242dfbf815c0c37866beb371b ]
+[ Upstream commit b0ad3c179059089d809b477a1d445c1183a7b8fe ]
 
-When using rtl8192cu with rtl8xxxu driver to connect wifi, there is a
-probability of failure, which shows "authentication with ... timed out".
-Through debugging, it was found that the RCR register has been inexplicably
-modified to an incorrect value, resulting in the nic not being able to
-receive authenticated frames.
+validate_linkmsg() was introduced by commit 1840bb13c22f5b ("[RTNL]:
+Validate hardware and broadcast address attribute for RTM_NEWLINK")
+to validate tb[IFLA_ADDRESS/BROADCAST] for existing links. The same
+check should also be done for newly created links.
 
-To fix this problem, add regrcr in rtl8xxxu_priv struct, and store
-the RCR value every time the register is written, and use it the next
-time the register need to be modified.
+This patch adds validate_linkmsg() call in rtnl_create_link(), to
+avoid the invalid address set when creating some devices like:
 
-Signed-off-by: Yun Lu <luyun@kylinos.cn>
-Link: https://lore.kernel.org/all/20230427020512.1221062-1-luyun_611@163.com
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230512012055.2990472-1-luyun_611@163.com
+  # ip link add dummy0 type dummy
+  # ip link add link dummy0 name mac0 address 01:02 type macsec
+
+Fixes: 0e06877c6fdb ("[RTNETLINK]: rtnl_link: allow specifying initial device address")
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h      | 1 +
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 4 +++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ net/core/rtnetlink.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index c1163f2a09251..1913b51c1e809 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -1268,6 +1268,7 @@ struct rtl8xxxu_priv {
- 	u32 rege9c;
- 	u32 regeb4;
- 	u32 regebc;
-+	u32 regrcr;
- 	int next_mbox;
- 	int nr_out_eps;
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 8c85e93daa739..bc187289bf64b 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -3155,6 +3155,7 @@ struct net_device *rtnl_create_link(struct net *net, const char *ifname,
+ 	struct net_device *dev;
+ 	unsigned int num_tx_queues = 1;
+ 	unsigned int num_rx_queues = 1;
++	int err;
  
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 1c9f7e1f63cfd..bfd704b17a447 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -4051,6 +4051,7 @@ static int rtl8xxxu_init_device(struct ieee80211_hw *hw)
- 		RCR_ACCEPT_MGMT_FRAME | RCR_HTC_LOC_CTRL |
- 		RCR_APPEND_PHYSTAT | RCR_APPEND_ICV | RCR_APPEND_MIC;
- 	rtl8xxxu_write32(priv, REG_RCR, val32);
-+	priv->regrcr = val32;
+ 	if (tb[IFLA_NUM_TX_QUEUES])
+ 		num_tx_queues = nla_get_u32(tb[IFLA_NUM_TX_QUEUES]);
+@@ -3190,13 +3191,18 @@ struct net_device *rtnl_create_link(struct net *net, const char *ifname,
+ 	if (!dev)
+ 		return ERR_PTR(-ENOMEM);
  
- 	/*
- 	 * Accept all multicast
-@@ -5591,7 +5592,7 @@ static void rtl8xxxu_configure_filter(struct ieee80211_hw *hw,
- 				      unsigned int *total_flags, u64 multicast)
- {
- 	struct rtl8xxxu_priv *priv = hw->priv;
--	u32 rcr = rtl8xxxu_read32(priv, REG_RCR);
-+	u32 rcr = priv->regrcr;
++	err = validate_linkmsg(dev, tb, extack);
++	if (err < 0) {
++		free_netdev(dev);
++		return ERR_PTR(err);
++	}
++
+ 	dev_net_set(dev, net);
+ 	dev->rtnl_link_ops = ops;
+ 	dev->rtnl_link_state = RTNL_LINK_INITIALIZING;
  
- 	dev_dbg(&priv->udev->dev, "%s: changed_flags %08x, total_flags %08x\n",
- 		__func__, changed_flags, *total_flags);
-@@ -5637,6 +5638,7 @@ static void rtl8xxxu_configure_filter(struct ieee80211_hw *hw,
- 	 */
+ 	if (tb[IFLA_MTU]) {
+ 		u32 mtu = nla_get_u32(tb[IFLA_MTU]);
+-		int err;
  
- 	rtl8xxxu_write32(priv, REG_RCR, rcr);
-+	priv->regrcr = rcr;
- 
- 	*total_flags &= (FIF_ALLMULTI | FIF_FCSFAIL | FIF_BCN_PRBRESP_PROMISC |
- 			 FIF_CONTROL | FIF_OTHER_BSS | FIF_PSPOLL |
+ 		err = dev_validate_mtu(dev, mtu, extack);
+ 		if (err) {
 -- 
 2.39.2
 
