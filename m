@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2796F726FDE
-	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 23:03:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3CFA726F1B
+	for <lists+stable@lfdr.de>; Wed,  7 Jun 2023 22:55:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235909AbjFGVDA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 17:03:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34096 "EHLO
+        id S235493AbjFGUzf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 16:55:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235913AbjFGVCp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 17:02:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E444E273C;
-        Wed,  7 Jun 2023 14:02:03 -0700 (PDT)
+        with ESMTP id S235400AbjFGUzY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 16:55:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02921E46
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 13:55:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 768CA64951;
-        Wed,  7 Jun 2023 21:01:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B65C433EF;
-        Wed,  7 Jun 2023 21:01:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D212647E5
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 20:55:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 992E4C433D2;
+        Wed,  7 Jun 2023 20:55:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686171712;
-        bh=3g1ezkSeNovKyNA/mYRnkKvsFp4NaVHgDIm4yL0ohA8=;
+        s=korg; t=1686171322;
+        bh=jQ2SRfdaLHEDz9/dvzphaiak2Xs0Yu6lZfQaTT2Vups=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RCBKLAI5qdA2mToaPW/eWLYpXW2HGo7G5X7Z81GYFO5xaQXDHrgOue4NJM0We1vQM
-         7WiOvqRQENEsOkhxhv7zRIc0RTS0I0o91U3kJ9Q0G4iK2Prv9sgz6lxPcFECzwrvQc
-         Ay1XgrvajT4Vg4SzFJngyOU9320qbr+7nW1RjFrQ=
+        b=WYrICApSMNgbetNKfzwPzBcdbNvFkWJPaN3MdnmTTKj+Gay4nctUa0XsX26+lqfQB
+         mucCWn4w9ByvDXP0LePbHG8RxKSj+na+NRSVEWjW0snpbklxZc13MTdmDCZH7bOBg7
+         QWXXFnKAoG7EY/FaeNqaFzB/SwDF5JsJ9Si+2q/g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Liska <mliska@suse.cz>,
-        Tejun Heo <tj@kernel.org>, Josef Bacik <josef@toxicpanda.com>,
-        Jens Axboe <axboe@kernel.dk>, cgroups@vger.kernel.org,
-        linux-block@vger.kernel.org,
-        "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-Subject: [PATCH 5.15 121/159] block/blk-iocost (gcc13): keep large values in a new enum
+        patches@lists.linux.dev, Xingui Yang <yangxingui@huawei.com>,
+        Damien Le Moal <dlemoal@kernel.org>,
+        Jason Yan <yanaijie@huawei.com>
+Subject: [PATCH 5.4 72/99] ata: libata-scsi: Use correct device no in ata_find_dev()
 Date:   Wed,  7 Jun 2023 22:17:04 +0200
-Message-ID: <20230607200907.635181797@linuxfoundation.org>
+Message-ID: <20230607200902.487002571@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200900.195572674@linuxfoundation.org>
+References: <20230607200900.195572674@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,55 +54,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit ff1cc97b1f4c10db224f276d9615b22835b8c424 upstream.
+commit 7f875850f20a42f488840c9df7af91ef7db2d576 upstream.
 
-Since gcc13, each member of an enum has the same type as the enum [1]. And
-that is inherited from its members. Provided:
-  VTIME_PER_SEC_SHIFT     = 37,
-  VTIME_PER_SEC           = 1LLU << VTIME_PER_SEC_SHIFT,
-  ...
-  AUTOP_CYCLE_NSEC        = 10LLU * NSEC_PER_SEC,
-the named type is unsigned long.
+For devices not attached to a port multiplier and managed directly by
+libata, the device number passed to ata_find_dev() must always be lower
+than the maximum number of devices returned by ata_link_max_devices().
+That is 1 for SATA devices or 2 for an IDE link with master+slave
+devices. This device number is the SCSI device ID which matches these
+constraints as the IDs are generated per port and so never exceed the
+maximum number of devices for the link being used.
 
-This generates warnings with gcc-13:
-  block/blk-iocost.c: In function 'ioc_weight_prfill':
-  block/blk-iocost.c:3037:37: error: format '%u' expects argument of type 'unsigned int', but argument 4 has type 'long unsigned int'
+However, for libsas managed devices, SCSI device IDs are assigned per
+struct scsi_host, leading to device IDs for SATA devices that can be
+well in excess of libata per-link maximum number of devices. This
+results in ata_find_dev() to always return NULL for libsas managed
+devices except for the first device of the target scsi_host with ID
+(device number) equal to 0. This issue is visible by executing the
+hdparm utility, which fails. E.g.:
 
-  block/blk-iocost.c: In function 'ioc_weight_show':
-  block/blk-iocost.c:3047:34: error: format '%u' expects argument of type 'unsigned int', but argument 3 has type 'long unsigned int'
+hdparm -i /dev/sdX
+/dev/sdX:
+  HDIO_GET_IDENTITY failed: No message of desired type
 
-So split the anonymous enum with large values to a separate enum, so
-that they don't affect other members.
+Fix this by rewriting ata_find_dev() to ignore the device number for
+non-PMP attached devices with a link with at most 1 device, that is SATA
+devices. For these, the device number 0 is always used to
+return the correct pointer to the struct ata_device of the port link.
+This change excludes IDE master/slave setups (maximum number of devices
+per link is 2) and port-multiplier attached devices. Also, to be
+consistant with the fact that SCSI device IDs and channel numbers used
+as device numbers are both unsigned int, change the devno argument of
+ata_find_dev() to unsigned int.
 
-[1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=36113
-
-Cc: Martin Liska <mliska@suse.cz>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Josef Bacik <josef@toxicpanda.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: cgroups@vger.kernel.org
-Cc: linux-block@vger.kernel.org
-Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20221213120826.17446-1-jirislaby@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reported-by: Xingui Yang <yangxingui@huawei.com>
+Fixes: 41bda9c98035 ("libata-link: update hotplug to handle PMP links")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Jason Yan <yanaijie@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-iocost.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/ata/libata-scsi.c |   34 ++++++++++++++++++++++++++--------
+ 1 file changed, 26 insertions(+), 8 deletions(-)
 
---- a/block/blk-iocost.c
-+++ b/block/blk-iocost.c
-@@ -232,7 +232,9 @@ enum {
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -3036,18 +3036,36 @@ static unsigned int atapi_xlat(struct at
+ 	return 0;
+ }
  
- 	/* 1/64k is granular enough and can easily be handled w/ u32 */
- 	WEIGHT_ONE		= 1 << 16,
-+};
+-static struct ata_device *ata_find_dev(struct ata_port *ap, int devno)
++static struct ata_device *ata_find_dev(struct ata_port *ap, unsigned int devno)
+ {
+-	if (!sata_pmp_attached(ap)) {
+-		if (likely(devno >= 0 &&
+-			   devno < ata_link_max_devices(&ap->link)))
++	/*
++	 * For the non-PMP case, ata_link_max_devices() returns 1 (SATA case),
++	 * or 2 (IDE master + slave case). However, the former case includes
++	 * libsas hosted devices which are numbered per scsi host, leading
++	 * to devno potentially being larger than 0 but with each struct
++	 * ata_device having its own struct ata_port and struct ata_link.
++	 * To accommodate these, ignore devno and always use device number 0.
++	 */
++	if (likely(!sata_pmp_attached(ap))) {
++		int link_max_devices = ata_link_max_devices(&ap->link);
++
++		if (link_max_devices == 1)
++			return &ap->link.device[0];
++
++		if (devno < link_max_devices)
+ 			return &ap->link.device[devno];
+-	} else {
+-		if (likely(devno >= 0 &&
+-			   devno < ap->nr_pmp_links))
+-			return &ap->pmp_link[devno].device[0];
++
++		return NULL;
+ 	}
  
-+enum {
- 	/*
- 	 * As vtime is used to calculate the cost of each IO, it needs to
- 	 * be fairly high precision.  For example, it should be able to
++	/*
++	 * For PMP-attached devices, the device number corresponds to C
++	 * (channel) of SCSI [H:C:I:L], indicating the port pmp link
++	 * for the device.
++	 */
++	if (devno < ap->nr_pmp_links)
++		return &ap->pmp_link[devno].device[0];
++
+ 	return NULL;
+ }
+ 
 
 
