@@ -2,268 +2,587 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 679B27274BB
-	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 04:08:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F9547274E3
+	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 04:18:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232195AbjFHCIW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 22:08:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34520 "EHLO
+        id S229590AbjFHCSL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 22:18:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbjFHCIV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 22:08:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C145E26A1
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 19:07:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686190054;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=cGbxdnE4kF02ZAat0YucTxFSuVc3j8XkEalI37UwAYo=;
-        b=Budvlc3Leg2s+y4h3gFYYJZQ1MXN/O34pBL7Wxd8QPGXAafjaDt+BYJl1EyBFnUzaJKrzz
-        tUKWTLWbIN7gbn6zOwecC/XZyViuIAKc7dpEbNNHxNslMBiXZdb61N+JGGOBVdwQ2OjkE7
-        U/1cVw5YHccXAv24/6E/sgAykpizadE=
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
- [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-114-TXTy2X5jMFiSVzq1OkglgA-1; Wed, 07 Jun 2023 22:07:32 -0400
-X-MC-Unique: TXTy2X5jMFiSVzq1OkglgA-1
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-53445255181so2593817a12.0
-        for <stable@vger.kernel.org>; Wed, 07 Jun 2023 19:07:32 -0700 (PDT)
+        with ESMTP id S231234AbjFHCSK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 22:18:10 -0400
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 582B62712
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 19:17:42 -0700 (PDT)
+Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-65299178ac5so30273b3a.1
+        for <stable@vger.kernel.org>; Wed, 07 Jun 2023 19:17:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1686190661; x=1688782661;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=TjsR+Epq0JwvWw34pAutTch+KK2KqDuLEGUZ0Ts833U=;
+        b=cBTlY8GWv6pnpdq5KkXg2KVuPDozYP1W6q3joykCGkqfqkz2vkLZ4lz6pm+g+4lVDs
+         QI7PgxUMgyLE0r5nKpI+pKRh6BNezOV83gltdwkp5YNKQbiYbaMW6nJH6rxagpS7Lhe5
+         b2INi1Rfcp07Blatl/DzEUWOPC/30/k2+DsPhhHUuvemCkHpcW7QNkPzOV8yiIRt5KeU
+         Eha3RJaCET7sSZCSS45+BdBmWiTai/HgaAncT3g/8H+rDAtwgIPnfgyuXHNpor8Pgx6a
+         VX1x4Lw4YWllDVDJ2NV8+U999IsalRvB7hemvDBX19TN3rvZKKZCheAar/BCQVDy6eTX
+         5I8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686190052; x=1688782052;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cGbxdnE4kF02ZAat0YucTxFSuVc3j8XkEalI37UwAYo=;
-        b=J72/JoHzVeq84Rf3+NreO1VXdFyBZkVSP8LHHaWithWzxajs9AYT1MH27uqhzux9LI
-         Q+rfNd1xy098xS9yZCgwWQ322aXFqHKOVh0m1uu+qOSSgQKowPNkzQ4BeBiAeHaAjJFg
-         pqdU8OWwDAkQBdeKCAs9vhvvbseSe/One17elTNKZUc0YkwU9eVlgpRc75ANipSDaSFH
-         7eMA9NRWrfj80Zb9nlMcrlwu2jlFZ0/UTfrUkhDM8pBclpOosvDPlXpeiOD+59lcfUZh
-         rpv85HYh8E8FtAzBXi+FnaQ3FMib3dceXNdeGVbtGCrT3lPYwtS9sigf6iD9OtQrsuA+
-         mBrw==
-X-Gm-Message-State: AC+VfDzEiwAql7D3PwSWhNg434WDuoAz4VmdamjuAEUn/z40U3hYg0Jp
-        3ewHXuTOx1k2d4O763/W8EUFkC4NYupQhUUmUqt1Ijq8mUclcNA0aTCGP/yzTM/jncPuSlvXPrI
-        a96GqNF98AX7in/fX
-X-Received: by 2002:a05:6a20:144e:b0:10c:49e:6c67 with SMTP id a14-20020a056a20144e00b0010c049e6c67mr3099495pzi.33.1686190051725;
-        Wed, 07 Jun 2023 19:07:31 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7fCH/GCxnQ8Lw+Duf/tDRO1hR1DptB/ZSHIQ+Oca/DShTY6Spm+XO5HzqrSpMBoDMDzPNvWA==
-X-Received: by 2002:a05:6a20:144e:b0:10c:49e:6c67 with SMTP id a14-20020a056a20144e00b0010c049e6c67mr3099482pzi.33.1686190051331;
-        Wed, 07 Jun 2023 19:07:31 -0700 (PDT)
-Received: from [10.72.13.135] ([209.132.188.80])
-        by smtp.gmail.com with ESMTPSA id jc22-20020a17090325d600b001a6f7744a27sm167810plb.87.2023.06.07.19.07.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jun 2023 19:07:31 -0700 (PDT)
-Message-ID: <eaa3e03d-2c12-9095-0533-cb5b19f0ef4d@redhat.com>
-Date:   Thu, 8 Jun 2023 10:07:20 +0800
+        d=1e100.net; s=20221208; t=1686190661; x=1688782661;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TjsR+Epq0JwvWw34pAutTch+KK2KqDuLEGUZ0Ts833U=;
+        b=lbRsOiWHsbr829KwX8RNLAI8dncLA74NVmD0oCnXZn/wIQMMwmjVbni6EyQF7QWU68
+         uVsWhd1OrLCGG7c7B/inf1+D03wXsHgGJdgroDOZ6YZsO2KnMs6YnM0hGMId+jptRNDZ
+         SrsN8gCeaavdsxgmCICW9ap0D2CdMiBtc5DRtjGnWxcGkKkwEuzKjxc/1dwyuOpDYD9o
+         i9fvqXHLX3L4wvZvdvOZlmgwqZoQTDrTOGGzafMIpWssr91OgII5S6nl8W0nUonF0BPG
+         x6XC2dD9ZpEfzBoz6hsnKZ4KtHDZ/o8gxrKbuBzQ9xR6tyLZXg2NMF88dJ4C8m9dlen1
+         +4jg==
+X-Gm-Message-State: AC+VfDw3jweUr+r4cb4ussNp6T9KOV38gOWv6FEJlD6Gfhn47FHnKBMe
+        S1X/70LJ8y0g7EmgcUfOkFYutdM7yPdxso5Ik0IYiQ==
+X-Google-Smtp-Source: ACHHUZ662UIoVTlboAKJffMhnugim0WMmJTKMf3Cw3O3oKJxmONraI2kGvKwcnwi0Xy1UUNeWzc+Zg==
+X-Received: by 2002:aa7:88c3:0:b0:64d:5f1d:3d77 with SMTP id k3-20020aa788c3000000b0064d5f1d3d77mr8554790pff.34.1686190661158;
+        Wed, 07 Jun 2023 19:17:41 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id s15-20020a62e70f000000b0064d47cd116esm4989pfh.161.2023.06.07.19.17.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Jun 2023 19:17:40 -0700 (PDT)
+Message-ID: <64813a44.620a0220.2192d.0029@mx.google.com>
+Date:   Wed, 07 Jun 2023 19:17:40 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v3] ceph: fix use-after-free bug for inodes when flushing
- capsnaps
-Content-Language: en-US
-To:     Ilya Dryomov <idryomov@gmail.com>
-Cc:     ceph-devel@vger.kernel.org, jlayton@kernel.org,
-        vshankar@redhat.com, mchangir@redhat.com, stable@vger.kernel.org
-References: <20230606005253.1055933-1-xiubli@redhat.com>
- <CAOi1vP_Xr6iMgjo7RKtc4-oZdF_FX7_U3Wx4Y=REdpa4Gj7Oig@mail.gmail.com>
- <b0ec84e4-1999-8284-dc90-307831f1e04b@redhat.com>
- <CAOi1vP_ma6pQ35FpG6wEYBhwxRXYB73vP-B1Jziji7zDodDpGQ@mail.gmail.com>
-From:   Xiubo Li <xiubli@redhat.com>
-In-Reply-To: <CAOi1vP_ma6pQ35FpG6wEYBhwxRXYB73vP-B1Jziji7zDodDpGQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-6.1.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: test
+X-Kernelci-Kernel: v6.1.31-266-g8f4f686e321c
+Subject: stable-rc/linux-6.1.y baseline: 117 runs,
+ 8 regressions (v6.1.31-266-g8f4f686e321c)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+stable-rc/linux-6.1.y baseline: 117 runs, 8 regressions (v6.1.31-266-g8f4f6=
+86e321c)
 
-On 6/7/23 16:03, Ilya Dryomov wrote:
-> On Tue, Jun 6, 2023 at 3:30 PM Xiubo Li <xiubli@redhat.com> wrote:
->>
->> On 6/6/23 18:21, Ilya Dryomov wrote:
->>> On Tue, Jun 6, 2023 at 2:55 AM <xiubli@redhat.com> wrote:
->>>> From: Xiubo Li <xiubli@redhat.com>
->>>>
->>>> There is a race between capsnaps flush and removing the inode from
->>>> 'mdsc->snap_flush_list' list:
->>>>
->>>>      == Thread A ==                     == Thread B ==
->>>> ceph_queue_cap_snap()
->>>>    -> allocate 'capsnapA'
->>>>    ->ihold('&ci->vfs_inode')
->>>>    ->add 'capsnapA' to 'ci->i_cap_snaps'
->>>>    ->add 'ci' to 'mdsc->snap_flush_list'
->>>>       ...
->>>>      == Thread C ==
->>>> ceph_flush_snaps()
->>>>    ->__ceph_flush_snaps()
->>>>     ->__send_flush_snap()
->>>>                                   handle_cap_flushsnap_ack()
->>>>                                    ->iput('&ci->vfs_inode')
->>>>                                      this also will release 'ci'
->>>>                                       ...
->>>>                                         == Thread D ==
->>>>                                   ceph_handle_snap()
->>>>                                    ->flush_snaps()
->>>>                                     ->iterate 'mdsc->snap_flush_list'
->>>>                                      ->get the stale 'ci'
->>>>    ->remove 'ci' from                ->ihold(&ci->vfs_inode) this
->>>>      'mdsc->snap_flush_list'           will WARNING
->>>>
->>>> To fix this we will increase the inode's i_count ref when adding 'ci'
->>>> to the 'mdsc->snap_flush_list' list.
->>>>
->>>> Cc: stable@vger.kernel.org
->>>> URL: https://bugzilla.redhat.com/show_bug.cgi?id=2209299
->>>> Reviewed-by: Milind Changire <mchangir@redhat.com>
->>>> Signed-off-by: Xiubo Li <xiubli@redhat.com>
->>>> ---
->>>>
->>>> V3:
->>>> - Fix two minor typo in commit comments.
->>>>
->>>>
->>>>
->>>>    fs/ceph/caps.c | 6 ++++++
->>>>    fs/ceph/snap.c | 4 +++-
->>>>    2 files changed, 9 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
->>>> index feabf4cc0c4f..7c2cb813aba4 100644
->>>> --- a/fs/ceph/caps.c
->>>> +++ b/fs/ceph/caps.c
->>>> @@ -1684,6 +1684,7 @@ void ceph_flush_snaps(struct ceph_inode_info *ci,
->>>>           struct inode *inode = &ci->netfs.inode;
->>>>           struct ceph_mds_client *mdsc = ceph_inode_to_client(inode)->mdsc;
->>>>           struct ceph_mds_session *session = NULL;
->>>> +       int put = 0;
->>> Hi Xiubo,
->>>
->>> Nit: renaming this variable to need_put and making it a bool would
->>> communicate the intent better.
->> Hi Ilya
->>
->> Sure, will update it.
->>
->>>>           int mds;
->>>>
->>>>           dout("ceph_flush_snaps %p\n", inode);
->>>> @@ -1728,8 +1729,13 @@ void ceph_flush_snaps(struct ceph_inode_info *ci,
->>>>                   ceph_put_mds_session(session);
->>>>           /* we flushed them all; remove this inode from the queue */
->>>>           spin_lock(&mdsc->snap_flush_lock);
->>>> +       if (!list_empty(&ci->i_snap_flush_item))
->>>> +               put++;
->>> What are the cases when ci is expected to not be on snap_flush_list
->>> list (and therefore there is no corresponding reference to put)?
->>>
->>> The reason I'm asking is that ceph_flush_snaps() is called from two
->>> other places directly (i.e. without iterating snap_flush_list list) and
->>> then __ceph_flush_snaps() is called from two yet other places.  The
->>> problem that we are presented with here is that __ceph_flush_snaps()
->>> effectively consumes a reference on ci.  Is ci protected from being
->>> freed by handle_cap_flushsnap_ack() very soon after __send_flush_snap()
->>> returns in all these other places?
->> There are 4 places will call the 'ceph_flush_snaps()':
->>
->> Cscope tag: ceph_flush_snaps
->>      #   line  filename / context / line
->>      1   3221  fs/ceph/caps.c <<__ceph_put_cap_refs>>
->>                ceph_flush_snaps(ci, NULL);
->>      2   3336  fs/ceph/caps.c <<ceph_put_wrbuffer_cap_refs>>
->>                ceph_flush_snaps(ci, NULL);
->>      3   2243  fs/ceph/inode.c <<ceph_inode_work>>
->>                ceph_flush_snaps(ci, NULL);
->>      4    941  fs/ceph/snap.c <<flush_snaps>>
->>                ceph_flush_snaps(ci, &session);
->> Type number and <Enter> (q or empty cancels):
->>
->> For #1 it will add the 'ci' to the 'mdsc->snap_flush_list' list by
->> calling '__ceph_finish_cap_snap()' and then call the
->> 'ceph_flush_snaps()' directly or defer call it in the queue work in #3.
->>
->> The #3 is the reason why we need the 'mdsc->snap_flush_list' list.
->>
->> For #2 it won't add the 'ci' to the list because it will always call the
->> 'ceph_flush_snaps()' directly.
->>
->> For #4 it will call 'ceph_flush_snaps()' by iterating the
->> 'mdsc->snap_flush_list' list just before the #3 being triggered.
->>
->> The problem only exists in case of #1 --> #4, which will make the stale
->> 'ci' to be held in the 'mdsc->snap_flush_list' list after 'capsnap' and
->> 'ci' being freed. All the other cases are okay because the 'ci' will be
->> protected by increasing the ref when allocating the 'capsnap' and will
->> decrease the ref in 'handle_cap_flushsnap_ack()' when freeing the 'capsnap'.
->>
->> Note: the '__ceph_flush_snaps()' won't increase the ref. The
->> 'handle_cap_flushsnap_ack()' will just try to decrease the ref and only
->> in case the ref reaches to '0' will the 'ci' be freed.
-> So my question is: are all __ceph_flush_snaps() callers guaranteed to
-> hold an extra (i.e. one that is not tied to capsnap) reference on ci so
-> that when handle_cap_flushsnap_ack() drops one that is tied to capsnap
-> the reference count doesn't reach 0?  It sounds like you are confident
-> that there is no issue with ceph_flush_snaps() callers, but it would be
-> nice if you could confirm the same for bare __ceph_flush_snaps() call
-> sites in caps.c.
+Regressions Summary
+-------------------
 
-Yeah, checked the code again carefully.  I am sure that when calling the 
-'__ceph_flush_snaps()' it has already well handled the reference too.
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+asus-C436FA-Flip-hatch       | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
 
-Once the 'capsnap' is in 'ci->i_cap_snaps' list the inode's reference 
-must have already been increased, please see 'ceph_queue_cap_snap()', 
-which will allocate and insert 'capsnap' to this list.
+asus-CM1400CXA-dalboz        | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
 
-Except the 'mdsc->snap_flush_list' list, the 'capsnap' will be added to 
-three other lists, which are 'ci->i_cap_snaps', 'mdsc->cap_flush_list' 
-and 'ci->i_cap_flush_list'.
+asus-cx9400-volteer          | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+beagle-xm                    | arm    | lab-baylibre  | gcc-10   | omap2plu=
+s_defconfig          | 1          =
+
+hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+hp-x360-14a-cb0001xx-zork    | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+lenovo-TPad-C13-Yoga-zork    | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
 
 
-  744 INIT_LIST_HEAD(&capsnap->cap_flush.i_list);      --> 
-ci->i_cap_flush_list
-  745 INIT_LIST_HEAD(&capsnap->cap_flush.g_list);    --> 
-mdsc->cap_flush_list
-  746 INIT_LIST_HEAD(&capsnap->ci_item);                   --> 
-ci->i_cap_snaps
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-6.1.y/kern=
+el/v6.1.31-266-g8f4f686e321c/plan/baseline/
+
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   linux-6.1.y
+  Describe: v6.1.31-266-g8f4f686e321c
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      8f4f686e321cfb99dd17774b45f93d96a16c2073 =
 
 
-But 'capsnap' will be removed from them all just before freeing the 
-'capsnap' and iput(inode), more detail please see:
+
+Test Regressions
+---------------- =
 
 
-   handle_cap_flushsnap_ack()
-       -->  ceph_remove_capsnap()
-             --> __ceph_remove_capsnap()
-                  --> list_del_init(&capsnap->ci_item); // remove from 
-'ci->i_cap_snaps' list
-                  --> __detach_cap_flush_from_ci()         // remove 
-from 'ci->i_cap_flush_list' list
-                 --> __detach_cap_flush_from_mdsc()} // remove from 
-'mdsc->cap_flush_list'
-       --> ceph_put_cap_snap(capsnap)
-       --> iput(inode)
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+asus-C436FA-Flip-hatch       | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
 
 
-The 'mdsc->cap_flush_list' list will be proected by 
-'mdsc->cap_dirty_lock', so do not have any issue here.
+  Details:     https://kernelci.org/test/plan/id/648102be546223dcf9306156
 
-So I am sure that just before 'capsnap' being freed the 'ci' won't 
-released in the above case.
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.31-=
+266-g8f4f686e321c/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabo=
+ra/baseline-asus-C436FA-Flip-hatch.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.31-=
+266-g8f4f686e321c/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabo=
+ra/baseline-asus-C436FA-Flip-hatch.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230527.0/x86/rootfs.cpio.gz =
 
-Thanks
 
-- Xiubo
 
-> Thanks,
->
->                  Ilya
->
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/648102be546223dcf930615b
+        failing since 69 days (last pass: v6.1.21, first fail: v6.1.22)
 
+    2023-06-07T22:20:37.091239  + set +x
+
+    2023-06-07T22:20:37.098121  <8>[    9.999298] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 10631213_1.4.2.3.1>
+
+    2023-06-07T22:20:37.199717  #
+
+    2023-06-07T22:20:37.300604  / # #export SHELL=3D/bin/sh
+
+    2023-06-07T22:20:37.300878  =
+
+
+    2023-06-07T22:20:37.401462  / # export SHELL=3D/bin/sh. /lava-10631213/=
+environment
+
+    2023-06-07T22:20:37.401695  =
+
+
+    2023-06-07T22:20:37.502252  / # . /lava-10631213/environment/lava-10631=
+213/bin/lava-test-runner /lava-10631213/1
+
+    2023-06-07T22:20:37.502500  =
+
+
+    2023-06-07T22:20:37.508860  / # /lava-10631213/bin/lava-test-runner /la=
+va-10631213/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+asus-CM1400CXA-dalboz        | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6481024694acb3bb0830616c
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.31-=
+266-g8f4f686e321c/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabo=
+ra/baseline-asus-CM1400CXA-dalboz.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.31-=
+266-g8f4f686e321c/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabo=
+ra/baseline-asus-CM1400CXA-dalboz.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230527.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6481024694acb3bb08306171
+        failing since 69 days (last pass: v6.1.21, first fail: v6.1.22)
+
+    2023-06-07T22:18:39.609658  + <8>[   11.854995] <LAVA_SIGNAL_ENDRUN 0_d=
+mesg 10631150_1.4.2.3.1>
+
+    2023-06-07T22:18:39.609813  set +x
+
+    2023-06-07T22:18:39.714033  / # #
+
+    2023-06-07T22:18:39.814619  export SHELL=3D/bin/sh
+
+    2023-06-07T22:18:39.814806  #
+
+    2023-06-07T22:18:39.915306  / # export SHELL=3D/bin/sh. /lava-10631150/=
+environment
+
+    2023-06-07T22:18:39.915575  =
+
+
+    2023-06-07T22:18:40.016113  / # . /lava-10631150/environment/lava-10631=
+150/bin/lava-test-runner /lava-10631150/1
+
+    2023-06-07T22:18:40.016397  =
+
+
+    2023-06-07T22:18:40.021272  / # /lava-10631150/bin/lava-test-runner /la=
+va-10631150/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+asus-cx9400-volteer          | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6481025052821cfe4a30612e
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.31-=
+266-g8f4f686e321c/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabo=
+ra/baseline-asus-cx9400-volteer.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.31-=
+266-g8f4f686e321c/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabo=
+ra/baseline-asus-cx9400-volteer.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230527.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6481025052821cfe4a306133
+        failing since 69 days (last pass: v6.1.21, first fail: v6.1.22)
+
+    2023-06-07T22:18:32.449708  <8>[    8.720263] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 10631183_1.4.2.3.1>
+
+    2023-06-07T22:18:32.453067  + set +x
+
+    2023-06-07T22:18:32.554444  =
+
+
+    2023-06-07T22:18:32.655077  / # #export SHELL=3D/bin/sh
+
+    2023-06-07T22:18:32.655300  =
+
+
+    2023-06-07T22:18:32.755804  / # export SHELL=3D/bin/sh. /lava-10631183/=
+environment
+
+    2023-06-07T22:18:32.755995  =
+
+
+    2023-06-07T22:18:32.856508  / # . /lava-10631183/environment/lava-10631=
+183/bin/lava-test-runner /lava-10631183/1
+
+    2023-06-07T22:18:32.856863  =
+
+
+    2023-06-07T22:18:32.861958  / # /lava-10631183/bin/lava-test-runner /la=
+va-10631183/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+beagle-xm                    | arm    | lab-baylibre  | gcc-10   | omap2plu=
+s_defconfig          | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/648104bbebd46072d6306177
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: omap2plus_defconfig
+  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
+10110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.31-=
+266-g8f4f686e321c/arm/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-beag=
+le-xm.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.31-=
+266-g8f4f686e321c/arm/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-beag=
+le-xm.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230527.0/armel/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/648104bbebd46072d6306=
+178
+        new failure (last pass: v6.1.31-40-g7d0a9678d276) =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64810234256aa69885306161
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.31-=
+266-g8f4f686e321c/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabo=
+ra/baseline-hp-x360-12b-ca0010nr-n4020-octopus.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.31-=
+266-g8f4f686e321c/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabo=
+ra/baseline-hp-x360-12b-ca0010nr-n4020-octopus.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230527.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/64810234256aa69885306166
+        failing since 69 days (last pass: v6.1.21, first fail: v6.1.22)
+
+    2023-06-07T22:18:26.839353  + set +x
+
+    2023-06-07T22:18:26.846540  <8>[    8.588010] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 10631170_1.4.2.3.1>
+
+    2023-06-07T22:18:26.950793  / # #
+
+    2023-06-07T22:18:27.051386  export SHELL=3D/bin/sh
+
+    2023-06-07T22:18:27.051583  #
+
+    2023-06-07T22:18:27.152090  / # export SHELL=3D/bin/sh. /lava-10631170/=
+environment
+
+    2023-06-07T22:18:27.152342  =
+
+
+    2023-06-07T22:18:27.252909  / # . /lava-10631170/environment/lava-10631=
+170/bin/lava-test-runner /lava-10631170/1
+
+    2023-06-07T22:18:27.253206  =
+
+
+    2023-06-07T22:18:27.257682  / # /lava-10631170/bin/lava-test-runner /la=
+va-10631170/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6481023a94acb3bb0830613c
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.31-=
+266-g8f4f686e321c/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabo=
+ra/baseline-hp-x360-14-G1-sona.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.31-=
+266-g8f4f686e321c/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabo=
+ra/baseline-hp-x360-14-G1-sona.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230527.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6481023a94acb3bb08306141
+        failing since 69 days (last pass: v6.1.21, first fail: v6.1.22)
+
+    2023-06-07T22:18:21.082483  + set +x
+
+    2023-06-07T22:18:21.089215  <8>[   11.029109] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 10631198_1.4.2.3.1>
+
+    2023-06-07T22:18:21.192185  =
+
+
+    2023-06-07T22:18:21.293159  / # #export SHELL=3D/bin/sh
+
+    2023-06-07T22:18:21.293444  =
+
+
+    2023-06-07T22:18:21.394267  / # export SHELL=3D/bin/sh. /lava-10631198/=
+environment
+
+    2023-06-07T22:18:21.394485  =
+
+
+    2023-06-07T22:18:21.495180  / # . /lava-10631198/environment/lava-10631=
+198/bin/lava-test-runner /lava-10631198/1
+
+    2023-06-07T22:18:21.496313  =
+
+
+    2023-06-07T22:18:21.502002  / # /lava-10631198/bin/lava-test-runner /la=
+va-10631198/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+hp-x360-14a-cb0001xx-zork    | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6481024fa92d668520306151
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.31-=
+266-g8f4f686e321c/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabo=
+ra/baseline-hp-x360-14a-cb0001xx-zork.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.31-=
+266-g8f4f686e321c/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabo=
+ra/baseline-hp-x360-14a-cb0001xx-zork.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230527.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6481024fa92d668520306156
+        failing since 69 days (last pass: v6.1.21, first fail: v6.1.22)
+
+    2023-06-07T22:18:33.945686  + set<8>[   11.298369] <LAVA_SIGNAL_ENDRUN =
+0_dmesg 10631142_1.4.2.3.1>
+
+    2023-06-07T22:18:33.945771   +x
+
+    2023-06-07T22:18:34.050575  / # #
+
+    2023-06-07T22:18:34.151137  export SHELL=3D/bin/sh
+
+    2023-06-07T22:18:34.151319  #
+
+    2023-06-07T22:18:34.251815  / # export SHELL=3D/bin/sh. /lava-10631142/=
+environment
+
+    2023-06-07T22:18:34.252010  =
+
+
+    2023-06-07T22:18:34.352491  / # . /lava-10631142/environment/lava-10631=
+142/bin/lava-test-runner /lava-10631142/1
+
+    2023-06-07T22:18:34.352818  =
+
+
+    2023-06-07T22:18:34.357383  / # /lava-10631142/bin/lava-test-runner /la=
+va-10631142/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform                     | arch   | lab           | compiler | defconfi=
+g                    | regressions
+-----------------------------+--------+---------------+----------+---------=
+---------------------+------------
+lenovo-TPad-C13-Yoga-zork    | x86_64 | lab-collabora | gcc-10   | x86_64_d=
+efcon...6-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/648102420840014aac306140
+
+  Results:     6 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-chromebook
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.31-=
+266-g8f4f686e321c/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabo=
+ra/baseline-lenovo-TPad-C13-Yoga-zork.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.31-=
+266-g8f4f686e321c/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-collabo=
+ra/baseline-lenovo-TPad-C13-Yoga-zork.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230527.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/648102420840014aac306145
+        failing since 69 days (last pass: v6.1.21, first fail: v6.1.22)
+
+    2023-06-07T22:18:35.726931  + set<8>[   11.863455] <LAVA_SIGNAL_ENDRUN =
+0_dmesg 10631208_1.4.2.3.1>
+
+    2023-06-07T22:18:35.727021   +x
+
+    2023-06-07T22:18:35.831687  / # #
+
+    2023-06-07T22:18:35.932309  export SHELL=3D/bin/sh
+
+    2023-06-07T22:18:35.932534  #
+
+    2023-06-07T22:18:36.033043  / # export SHELL=3D/bin/sh. /lava-10631208/=
+environment
+
+    2023-06-07T22:18:36.033251  =
+
+
+    2023-06-07T22:18:36.133811  / # . /lava-10631208/environment/lava-10631=
+208/bin/lava-test-runner /lava-10631208/1
+
+    2023-06-07T22:18:36.134149  =
+
+
+    2023-06-07T22:18:36.138930  / # /lava-10631208/bin/lava-test-runner /la=
+va-10631208/1
+ =
+
+    ... (12 line(s) more)  =
+
+ =20
