@@ -2,74 +2,75 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A136F728AC5
-	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 00:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E783728ACA
+	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 00:01:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229927AbjFHWA0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 18:00:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44218 "EHLO
+        id S229796AbjFHWBv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 18:01:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229503AbjFHWAZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 18:00:25 -0400
-Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA6701FE9;
-        Thu,  8 Jun 2023 15:00:23 -0700 (PDT)
-Received: by mail-qk1-x72e.google.com with SMTP id af79cd13be357-75d558c18d0so91940785a.1;
-        Thu, 08 Jun 2023 15:00:23 -0700 (PDT)
+        with ESMTP id S229503AbjFHWBu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 18:01:50 -0400
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA3FC1FE9;
+        Thu,  8 Jun 2023 15:01:49 -0700 (PDT)
+Received: by mail-lj1-x22b.google.com with SMTP id 38308e7fff4ca-2b1acd41ad2so11541621fa.3;
+        Thu, 08 Jun 2023 15:01:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686261623; x=1688853623;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0FoCzygeVaKTYwoTk6+wAeoJQ0ZdkPvrWvOdKLWqiaA=;
-        b=QuIpwTQOa7UC7Y2z48TOxbIQOwAC4vdaoY82fXO6j3FliB1i8brYH3FvyHY4wJjdcP
-         EpI9HqGeTLtxArYOu+XSpXonYxf58g4UeU0nCHggTINDS0m3soU/HAKPjUoeLEkP7jl8
-         Kh8DbQX2sXoQGvwQ0cAmeDn890xlqUg0XSu8HrF9Knn3sY5z76lRvL2R8Tnsdez6YLoU
-         /BQwztQdeGg92UsmiQhEvx8Pr4M5S2emPMbdPumsI+gEJ6jLlgZ90+/GzQsiPVRfsOlG
-         /cbZEmRcNWSzGNvSjvgx3gIv1JWkj148Zxg9NMF0ed4KaLI2/B8bL3SMczoy0YdQt8qv
-         amuQ==
+        d=gmail.com; s=20221208; t=1686261708; x=1688853708;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H9hNmMs82jsS6xNZ5MQRTVCDn5jLbDEwoTYuUqiILy8=;
+        b=PdK2kwXTm0A+AUGPzeAbBJ4biiqnKlWJ93EIDffo02RFUmVBBXXZW1LofktKSl3p1d
+         aG2Tevn4/qPtJxD4e9o7rQ8DwqC1bFENCPAxGdQDb+Y82Nm7cEeQGaNqgky0iOwJRGrD
+         ciyWjjqRtazm6UB3lkMF6EwJKM2JRadmO9v1DIilCCgFNsep5aIz9emgqweaWCQRymdR
+         QVnjK37K0WQlQN4aPsmry4qQ83JlJuWRmPbPgvES47YzrJzbxbUViwPWn/++uMzF7D5d
+         8zN9orZ/TG0OSMnq+OmnIK1Bu+6fYyj996Nst/oDEGI4VkFcfneZJagO36BUBX1xOZjy
+         H0BA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686261623; x=1688853623;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0FoCzygeVaKTYwoTk6+wAeoJQ0ZdkPvrWvOdKLWqiaA=;
-        b=XAlZFOS7PeLMUXH0rHIu/szZjJ0OgiwAf7RaBveVfOGk2351KVYJSbWD33NoCjTC1u
-         f2tmTMcgbtVtK7q2ddXD2rI6ZbGB5eEhDcurz0pu0PKtVFzrzF/OzvGLczkYWMyCTQZ/
-         kEdSTJUbsQVCuu+gyBzrV2CzNwBJvbQd4iUHNWIEyLowu1TsjjgAkv42XrfAYd0bXda6
-         Ah0WOfMwpYdqV1id/2isTZiL9+63sZyoDGoEXbNvF+d0ifQDBCNMwo7833+pbPz7JYU2
-         5W3q8Mwkn+SRJI7zbYp+HktJakLSXNGGaMrbVsNSMYWPpxqPrSRRdRwJf6N+6dws6GHv
-         whoQ==
-X-Gm-Message-State: AC+VfDzdP/UIrznSEMi4jQWAPyGTLYVeB5XMlHMhJZu5F1AGrtAIgO5P
-        ea2puhCrwNfZFlzpsmU4QRY=
-X-Google-Smtp-Source: ACHHUZ5K48vPB/DRyHdpkRd9NNEpvW+f2kZM6GW7XXTb08uGNo1PgJTTs2KFyG0C1mi618GVAeu/pw==
-X-Received: by 2002:a05:620a:6598:b0:75e:c4b8:8d6d with SMTP id qd24-20020a05620a659800b0075ec4b88d6dmr6068432qkn.25.1686261622900;
-        Thu, 08 Jun 2023 15:00:22 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id k27-20020a05620a139b00b0075b1f0e950dsm635538qki.5.2023.06.08.15.00.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Jun 2023 15:00:22 -0700 (PDT)
-Message-ID: <6bb4aca7-dd0f-16c9-0cb5-c09859d73801@gmail.com>
-Date:   Thu, 8 Jun 2023 15:00:12 -0700
+        d=1e100.net; s=20221208; t=1686261708; x=1688853708;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=H9hNmMs82jsS6xNZ5MQRTVCDn5jLbDEwoTYuUqiILy8=;
+        b=Q/1fzyUB792nNTiZhYGApgiWmycA+TIwwjaQeKganKrQ3vnNYevM1tZ5MniJqNcBdX
+         s0BU4RJkNoo+NXPUtS4lprBHZ4hXQFNI/lL6JhykG9wLxaCtR7DAnS+FNBqPFTRyMcTV
+         pMoqdzle2azsKzl8gjQxqx1+s6sKx7k5Vgn+BNU2zcIFG0RJcNwH5RpMD2Jh36DN2RQy
+         dse5cWkXcJjFZZ92Rbysc4Cnk/Z5vCumsfV0K+JqrQ1WntElSJqXP5kHG2nRAa0pHYEf
+         is0PKJwlkT156wSObkMjwmKBpgr6wDd0ljHVMp5uwsuAJHymYQ1CDRo71LeWxSaGZr4I
+         i/aA==
+X-Gm-Message-State: AC+VfDwpp/NT6RrynJ+Dk57oRRLdqPG0wlia3+zdiOtZ/9feGbQ+QKH5
+        6EAlQ74VYLWJWhDXvylS3s9ifZbaPtgCxgSZRno=
+X-Google-Smtp-Source: ACHHUZ5JPShNzttmMw9l9ZlwY4QIBGA9Q4ZrRAveXgYfD75EfSQ/d+Vl7J6pHbO1NIUVksnly5oxWELHUr2E4+kklqc=
+X-Received: by 2002:a2e:9785:0:b0:2ac:82c1:5a3d with SMTP id
+ y5-20020a2e9785000000b002ac82c15a3dmr3856046lji.23.1686261707593; Thu, 08 Jun
+ 2023 15:01:47 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 6.1 000/224] 6.1.33-rc2 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
-References: <20230608175726.909746266@linuxfoundation.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20230608175726.909746266@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+References: <cover.1686166633.git.kjlx@templeofstupid.com> <de425e99876dc6c344e1a4254894a3c81e71a2ec.1686166633.git.kjlx@templeofstupid.com>
+In-Reply-To: <de425e99876dc6c344e1a4254894a3c81e71a2ec.1686166633.git.kjlx@templeofstupid.com>
+From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date:   Thu, 8 Jun 2023 15:01:36 -0700
+Message-ID: <CAADnVQJd=_OZJUWVcQH7OtaH2cv8FLsB7kBhxZANsR9O3+AfZA@mail.gmail.com>
+Subject: Re: [PATCH bpf v2 2/2] bpf: ensure main program has an extable
+To:     Krister Johansen <kjlx@templeofstupid.com>
+Cc:     bpf <bpf@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Song Liu <song@kernel.org>, Yonghong Song <yhs@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@kernel.org>,
+        Stanislav Fomichev <sdf@google.com>,
+        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mykola Lysenko <mykolal@fb.com>, Shuah Khan <shuah@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>, stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -78,29 +79,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 6/8/23 11:00, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.33 release.
-> There are 224 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 10 Jun 2023 17:56:43 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.33-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Wed, Jun 7, 2023 at 2:04=E2=80=AFPM Krister Johansen <kjlx@templeofstupi=
+d.com> wrote:
+>
+> When bpf subprograms are in use, the main program is not jit'd after the
+> subprograms because jit_subprogs sets a value for prog->bpf_func upon
+> success.  Subsequent calls to the JIT are bypassed when this value is
+> non-NULL.  This leads to a situation where the main program and its
+> func[0] counterpart are both in the bpf kallsyms tree, but only func[0]
+> has an extable.  Extables are only created during JIT.  Now there are
+> two nearly identical program ksym entries in the tree, but only one has
+> an extable.  Depending upon how the entries are placed, there's a chance
+> that a fault will call search_extable on the aux with the NULL entry.
+>
+> Since jit_subprogs already copies state from func[0] to the main
+> program, include the extable pointer in this state duplication.  The
+> alternative is to skip adding the main program to the bpf_kallsyms
+> table, but that would mean adding a check for subprograms into the
+> middle of bpf_prog_load.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+adding a check to bpf_prog_load() isn't great. that's true, but...
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+> Cc: stable@vger.kernel.org
+> Fixes: 1c2a088a6626 ("bpf: x64: add JIT support for multi-function progra=
+ms")
+> Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
+> ---
+>  kernel/bpf/verifier.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+> index 5871aa78d01a..d6939db9fbf9 100644
+> --- a/kernel/bpf/verifier.c
+> +++ b/kernel/bpf/verifier.c
+> @@ -17242,6 +17242,7 @@ static int jit_subprogs(struct bpf_verifier_env *=
+env)
+>         prog->jited =3D 1;
+>         prog->bpf_func =3D func[0]->bpf_func;
+>         prog->jited_len =3D func[0]->jited_len;
+> +       prog->aux->extable =3D func[0]->aux->extable;
 
+Why not to do this hunk and what I suggested earlier: start from func=3D1 ?
+That will address double ksym insertion that Yonghong mentioned.
