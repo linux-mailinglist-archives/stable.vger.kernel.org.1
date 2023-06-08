@@ -2,198 +2,205 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 167CF728BA9
-	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 01:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C08E2728BAE
+	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 01:22:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236900AbjFHXUE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 19:20:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42662 "EHLO
+        id S233272AbjFHXWo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 19:22:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236764AbjFHXUD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 19:20:03 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36C0A30D2;
-        Thu,  8 Jun 2023 16:20:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686266401; x=1717802401;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=YWclXhX5PQnVsjXMUGXPdGfgZPrttY9Wds2uez4jA6k=;
-  b=EKnMLV3+rg/1wjFqZ0OyMO54D4pmVBF6YACK5NWpAbDB1i7EoSNK7W+F
-   zOrKLW6Pj2bHQozk7nNLvR6Kw8zKVFsnRtCw5efKg9iTJyPvWYs7ROf1k
-   Ho6nCasvFsDzqQNlRr7R4zrbTgHGJI+VZYVCy5K8t6KwyTn1AYwN8uc8v
-   /Dh+t8Q188ZhUUkiLf9k/mnkacDgXBOVKrE3gZt7X+FcFRgbbZCPHM9dy
-   iWrspB4Pt7S2gbq/sFRnGybplUl0EyF7PZ2elEejvZ+I8DUmeodQqo83P
-   m53lu8KPi49OatcLOm+WjKIJmAWpF9trEBJk2fEqwfuKrGVwy0YULxbit
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10735"; a="360815928"
-X-IronPort-AV: E=Sophos;i="6.00,227,1681196400"; 
-   d="scan'208";a="360815928"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2023 16:19:52 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10735"; a="713286180"
-X-IronPort-AV: E=Sophos;i="6.00,227,1681196400"; 
-   d="scan'208";a="713286180"
-Received: from lkp-server01.sh.intel.com (HELO 15ab08e44a81) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 08 Jun 2023 16:19:48 -0700
-Received: from kbuild by 15ab08e44a81 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1q7Oux-0008LI-0N;
-        Thu, 08 Jun 2023 23:19:47 +0000
-Date:   Fri, 9 Jun 2023 07:18:27 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Badhri Jagan Sridharan <badhri@google.com>,
-        gregkh@linuxfoundation.org, stern@rowland.harvard.edu,
-        colin.i.king@gmail.com, xuetao09@huawei.com,
-        quic_eserrao@quicinc.com, water.zhangjiantao@huawei.com,
-        peter.chen@freescale.com, balbi@ti.com, francesco@dolcini.it,
-        alistair@alistair23.me, stephan@gerhold.net, bagasdotme@gmail.com,
-        luca@z3ntu.xyz
-Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Badhri Jagan Sridharan <badhri@google.com>
-Subject: Re: [PATCH v7 2/2] usb: gadget: udc: core: Prevent
- soft_connect_store() race
-Message-ID: <202306090722.opxFRfOO-lkp@intel.com>
-References: <20230608204517.105396-2-badhri@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230608204517.105396-2-badhri@google.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229888AbjFHXWn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 19:22:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16E0430D3;
+        Thu,  8 Jun 2023 16:22:42 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6988065151;
+        Thu,  8 Jun 2023 23:22:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE00FC433EF;
+        Thu,  8 Jun 2023 23:22:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1686266560;
+        bh=ezGSn0pt9JH0LfMXdjLiiqiussi0F9HljhD3YA9Y0Lc=;
+        h=Date:To:From:Subject:From;
+        b=LBGyL6XaTC/0nPkuD7cl3qVLb2CPjQ96zzShnfQ3U/1RbGTOWTkklU3gZ1ApwgLPJ
+         7WW0UqzU06+/hctupnOE0NfL30uwZQCP7O4Wxaoz5YsSuUy/xpAX1aYBnW+3usRWgD
+         rwsaTFGLT+bbM5O/YvNubDdlHpzpE41vHinazSu0=
+Date:   Thu, 08 Jun 2023 16:22:39 -0700
+To:     mm-commits@vger.kernel.org, vivek.kasireddy@intel.com,
+        stable@vger.kernel.org, muchun.song@linux.dev, mhocko@suse.com,
+        kraxel@redhat.com, kirill.shutemov@linux.intel.com,
+        junxiao.chang@intel.com, jthoughton@google.com,
+        jmarchan@redhat.com, gregkh@linuxfoundation.org,
+        dongwon.kim@intel.com, david@redhat.com, mike.kravetz@oracle.com,
+        akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + udmabuf-revert-add-support-for-mapping-hugepages-v4.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230608232240.AE00FC433EF@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Badhri,
 
-kernel test robot noticed the following build warnings:
+The patch titled
+     Subject: udmabuf: revert 'Add support for mapping hugepages (v4)'
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     udmabuf-revert-add-support-for-mapping-hugepages-v4.patch
 
-[auto build test WARNING on d37537a1f7cf09e304fe7993cb5e732534a0fb22]
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/udmabuf-revert-add-support-for-mapping-hugepages-v4.patch
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Badhri-Jagan-Sridharan/usb-gadget-udc-core-Prevent-soft_connect_store-race/20230609-044555
-base:   d37537a1f7cf09e304fe7993cb5e732534a0fb22
-patch link:    https://lore.kernel.org/r/20230608204517.105396-2-badhri%40google.com
-patch subject: [PATCH v7 2/2] usb: gadget: udc: core: Prevent soft_connect_store() race
-config: hexagon-randconfig-r015-20230608 (https://download.01.org/0day-ci/archive/20230609/202306090722.opxFRfOO-lkp@intel.com/config)
-compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project.git 4a5ac14ee968ff0ad5d2cc1ffa0299048db4c88a)
-reproduce (this is a W=1 build):
-        mkdir -p ~/bin
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        git checkout d37537a1f7cf09e304fe7993cb5e732534a0fb22
-        b4 shazam https://lore.kernel.org/r/20230608204517.105396-2-badhri@google.com
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang ~/bin/make.cross W=1 O=build_dir ARCH=hexagon olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang ~/bin/make.cross W=1 O=build_dir ARCH=hexagon SHELL=/bin/bash drivers/usb/gadget/udc/
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202306090722.opxFRfOO-lkp@intel.com/
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-All warnings (new ones prefixed by >>):
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-   In file included from drivers/usb/gadget/udc/core.c:17:
-   In file included from include/linux/dma-mapping.h:10:
-   In file included from include/linux/scatterlist.h:9:
-   In file included from arch/hexagon/include/asm/io.h:334:
-   include/asm-generic/io.h:547:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     547 |         val = __raw_readb(PCI_IOBASE + addr);
-         |                           ~~~~~~~~~~ ^
-   include/asm-generic/io.h:560:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     560 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
-         |                                                         ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
-      37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
-         |                                                   ^
-   In file included from drivers/usb/gadget/udc/core.c:17:
-   In file included from include/linux/dma-mapping.h:10:
-   In file included from include/linux/scatterlist.h:9:
-   In file included from arch/hexagon/include/asm/io.h:334:
-   include/asm-generic/io.h:573:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     573 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
-         |                                                         ~~~~~~~~~~ ^
-   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
-      35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
-         |                                                   ^
-   In file included from drivers/usb/gadget/udc/core.c:17:
-   In file included from include/linux/dma-mapping.h:10:
-   In file included from include/linux/scatterlist.h:9:
-   In file included from arch/hexagon/include/asm/io.h:334:
-   include/asm-generic/io.h:584:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     584 |         __raw_writeb(value, PCI_IOBASE + addr);
-         |                             ~~~~~~~~~~ ^
-   include/asm-generic/io.h:594:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     594 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
-         |                                                       ~~~~~~~~~~ ^
-   include/asm-generic/io.h:604:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
-     604 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
-         |                                                       ~~~~~~~~~~ ^
->> drivers/usb/gadget/udc/core.c:850:1: warning: unused label 'out' [-Wunused-label]
-     850 | out:
-         | ^~~~
-     851 |         trace_usb_gadget_deactivate(gadget, ret);
-   drivers/usb/gadget/udc/core.c:886:1: warning: unused label 'out' [-Wunused-label]
-     886 | out:
-         | ^~~~
-     887 |         trace_usb_gadget_activate(gadget, ret);
-   8 warnings generated.
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
+------------------------------------------------------
+From: Mike Kravetz <mike.kravetz@oracle.com>
+Subject: udmabuf: revert 'Add support for mapping hugepages (v4)'
+Date: Thu, 8 Jun 2023 13:49:27 -0700
 
-vim +/out +850 drivers/usb/gadget/udc/core.c
+This effectively reverts commit 16c243e99d33 ("udmabuf: Add support for
+mapping hugepages (v4)").  Recently, Junxiao Chang found a BUG with page
+map counting as described here [1].  This issue pointed out that the
+udmabuf driver was making direct use of subpages of hugetlb pages.  This
+is not a good idea, and no other mm code attempts such use.  In addition
+to the mapcount issue, this also causes issues with hugetlb vmemmap
+optimization and page poisoning.
 
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  815  
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  816  /**
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  817   * usb_gadget_deactivate - deactivate function which is not ready to work
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  818   * @gadget: the peripheral being deactivated
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  819   *
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  820   * This routine may be used during the gadget driver bind() call to prevent
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  821   * the peripheral from ever being visible to the USB host, unless later
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  822   * usb_gadget_activate() is called.  For example, user mode components may
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  823   * need to be activated before the system can talk to hosts.
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  824   *
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  825   * Returns zero on success, else negative errno.
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  826   */
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  827  int usb_gadget_deactivate(struct usb_gadget *gadget)
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  828  {
-5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2016-05-31  829  	int ret = 0;
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  830  
-bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2023-06-08  831  	mutex_lock(&gadget->udc->connect_lock);
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  832  	if (gadget->deactivated)
-bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2023-06-08  833  		goto unlock;
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  834  
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  835  	if (gadget->connected) {
-bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2023-06-08  836  		ret = usb_gadget_disconnect_locked(gadget);
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  837  		if (ret)
-bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2023-06-08  838  			goto unlock;
-5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2016-05-31  839  
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  840  		/*
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  841  		 * If gadget was being connected before deactivation, we want
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  842  		 * to reconnect it in usb_gadget_activate().
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  843  		 */
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  844  		gadget->connected = true;
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  845  	}
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  846  	gadget->deactivated = true;
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  847  
-bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2023-06-08  848  unlock:
-bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2023-06-08  849  	mutex_unlock(&gadget->udc->connect_lock);
-5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2016-05-31 @850  out:
-5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2016-05-31  851  	trace_usb_gadget_deactivate(gadget, ret);
-5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2016-05-31  852  
-5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2016-05-31  853  	return ret;
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  854  }
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  855  EXPORT_SYMBOL_GPL(usb_gadget_deactivate);
-5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  856  
+For now, remove hugetlb support.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+If udmabuf wants to be used on hugetlb mappings, it should be changed to
+only use complete hugetlb pages.  This will require different alignment
+and size requirements on the UDMABUF_CREATE API.
+
+[1] https://lore.kernel.org/linux-mm/20230512072036.1027784-1-junxiao.chang@intel.com/
+
+Link: https://lkml.kernel.org/r/20230608204927.88711-1-mike.kravetz@oracle.com
+Fixes: 16c243e99d33 ("udmabuf: Add support for mapping hugepages (v4)")
+Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Dongwon Kim <dongwon.kim@intel.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: James Houghton <jthoughton@google.com>
+Cc: Jerome Marchand <jmarchan@redhat.com>
+Cc: Junxiao Chang <junxiao.chang@intel.com>
+Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ drivers/dma-buf/udmabuf.c |   47 ++++--------------------------------
+ 1 file changed, 6 insertions(+), 41 deletions(-)
+
+--- a/drivers/dma-buf/udmabuf.c~udmabuf-revert-add-support-for-mapping-hugepages-v4
++++ a/drivers/dma-buf/udmabuf.c
+@@ -12,7 +12,6 @@
+ #include <linux/shmem_fs.h>
+ #include <linux/slab.h>
+ #include <linux/udmabuf.h>
+-#include <linux/hugetlb.h>
+ #include <linux/vmalloc.h>
+ #include <linux/iosys-map.h>
+ 
+@@ -207,9 +206,7 @@ static long udmabuf_create(struct miscde
+ 	struct udmabuf *ubuf;
+ 	struct dma_buf *buf;
+ 	pgoff_t pgoff, pgcnt, pgidx, pgbuf = 0, pglimit;
+-	struct page *page, *hpage = NULL;
+-	pgoff_t subpgoff, maxsubpgs;
+-	struct hstate *hpstate;
++	struct page *page;
+ 	int seals, ret = -EINVAL;
+ 	u32 i, flags;
+ 
+@@ -245,7 +242,7 @@ static long udmabuf_create(struct miscde
+ 		if (!memfd)
+ 			goto err;
+ 		mapping = memfd->f_mapping;
+-		if (!shmem_mapping(mapping) && !is_file_hugepages(memfd))
++		if (!shmem_mapping(mapping))
+ 			goto err;
+ 		seals = memfd_fcntl(memfd, F_GET_SEALS, 0);
+ 		if (seals == -EINVAL)
+@@ -256,48 +253,16 @@ static long udmabuf_create(struct miscde
+ 			goto err;
+ 		pgoff = list[i].offset >> PAGE_SHIFT;
+ 		pgcnt = list[i].size   >> PAGE_SHIFT;
+-		if (is_file_hugepages(memfd)) {
+-			hpstate = hstate_file(memfd);
+-			pgoff = list[i].offset >> huge_page_shift(hpstate);
+-			subpgoff = (list[i].offset &
+-				    ~huge_page_mask(hpstate)) >> PAGE_SHIFT;
+-			maxsubpgs = huge_page_size(hpstate) >> PAGE_SHIFT;
+-		}
+ 		for (pgidx = 0; pgidx < pgcnt; pgidx++) {
+-			if (is_file_hugepages(memfd)) {
+-				if (!hpage) {
+-					hpage = find_get_page_flags(mapping, pgoff,
+-								    FGP_ACCESSED);
+-					if (!hpage) {
+-						ret = -EINVAL;
+-						goto err;
+-					}
+-				}
+-				page = hpage + subpgoff;
+-				get_page(page);
+-				subpgoff++;
+-				if (subpgoff == maxsubpgs) {
+-					put_page(hpage);
+-					hpage = NULL;
+-					subpgoff = 0;
+-					pgoff++;
+-				}
+-			} else {
+-				page = shmem_read_mapping_page(mapping,
+-							       pgoff + pgidx);
+-				if (IS_ERR(page)) {
+-					ret = PTR_ERR(page);
+-					goto err;
+-				}
++			page = shmem_read_mapping_page(mapping, pgoff + pgidx);
++			if (IS_ERR(page)) {
++				ret = PTR_ERR(page);
++				goto err;
+ 			}
+ 			ubuf->pages[pgbuf++] = page;
+ 		}
+ 		fput(memfd);
+ 		memfd = NULL;
+-		if (hpage) {
+-			put_page(hpage);
+-			hpage = NULL;
+-		}
+ 	}
+ 
+ 	exp_info.ops  = &udmabuf_ops;
+_
+
+Patches currently in -mm which might be from mike.kravetz@oracle.com are
+
+udmabuf-revert-add-support-for-mapping-hugepages-v4.patch
+
