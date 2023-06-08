@@ -2,105 +2,153 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD8437275CA
-	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 05:35:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 657E2727640
+	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 06:41:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231259AbjFHDfe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 23:35:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38804 "EHLO
+        id S234147AbjFHEla (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 00:41:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233604AbjFHDfa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 23:35:30 -0400
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6AC92708;
-        Wed,  7 Jun 2023 20:35:25 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-656923b7c81so36859b3a.1;
-        Wed, 07 Jun 2023 20:35:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686195325; x=1688787325;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=8xiW69CoMUIjxHIQzyXjlAxYnBQMHQabgtc/B1ukDjI=;
-        b=RzXUburYEfhlUWJ2Ms4IzfzP4qqvqjX3RT6PhqNQBzEyP+1bevOAD+Dt3uecywLo0u
-         9orIw/sAbMLT+ofSVDOGwBar3Xq1tIxxWa74PkzG+UaL+f3L/t5d14prtIF6ED0f84IO
-         rGCA9oEBt3dvR0ln/uuAb3aPhcrE9bcEcXPjCTfl6DagNF0WrX7MSRBygldeotxtN3hU
-         yrcBCei8ebdLXe1J8Uwa09Y2sJELkTh8JLk1ImnOulAci02YQ1QAjcbrcDUN+ivlcxlU
-         JZzkKIHDLrAxQkPFqEld1ow4j/mL6DqkLwmm6c4On7lVDckAPzjsdhBht/lY2ir4/H1A
-         5ahA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686195325; x=1688787325;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8xiW69CoMUIjxHIQzyXjlAxYnBQMHQabgtc/B1ukDjI=;
-        b=AVysVWEdaDRbNKcP5drs3kPzSsSFX5YY2wFjjQNDYRt6R3qxRnQ5UANNIP8CMK3bTt
-         fENqgc6sUVCFPAIQeyUJz0FKj720nl7M2hOMTS+7UwTUcy5vgtipBZXw4Q0ZiU/tehB+
-         vxTP698bRvQlwmL1O/bvEZmnOwRzFa2m+7113lF99Uf0R8IIPVCrN2MYmJ0XvdHiluqT
-         ZzM7tm0DkeH6sv6uOdOx5gfUP8Z4C9jNC1+KUJhNqDhUa+sLSUzMbX74QgZPIQvcH792
-         98pCq6ZcMf5cDhr2IUKPTxUO2z5ypcwXP7fO8jzFCW1KjKE/u5vGXx4eefKtCufYR1Dk
-         59ig==
-X-Gm-Message-State: AC+VfDy+9DSrmvCreFr1sOAUX8wE8i3ROU2g7w4S2hSDRvrsLWNpIo0h
-        7IeVlSUWcoCjbeG0lv3SxQQ=
-X-Google-Smtp-Source: ACHHUZ4mTyt2JXsKjlbOs+T0Dfrve/D9stmzk9TWs1QPPGYxbMJIYEWifxp5CT3kmUtimd4LFX0YFA==
-X-Received: by 2002:a05:6a20:158d:b0:117:71bf:a58a with SMTP id h13-20020a056a20158d00b0011771bfa58amr3040316pzj.17.1686195325115;
-        Wed, 07 Jun 2023 20:35:25 -0700 (PDT)
-Received: from [192.168.1.3] (ip72-194-116-95.oc.oc.cox.net. [72.194.116.95])
-        by smtp.gmail.com with ESMTPSA id d7-20020a170902854700b001b00e0ab7b3sm256431plo.50.2023.06.07.20.35.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jun 2023 20:35:24 -0700 (PDT)
-Message-ID: <b1f1054a-5b15-ab43-e1f3-fa539b6a0b88@gmail.com>
-Date:   Wed, 7 Jun 2023 20:35:22 -0700
+        with ESMTP id S234124AbjFHEl0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 00:41:26 -0400
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BD122706
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 21:41:23 -0700 (PDT)
+Received: from cwcc.thunk.org (pool-173-48-82-39.bstnma.fios.verizon.net [173.48.82.39])
+        (authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 3584euUk006748
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 8 Jun 2023 00:40:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+        t=1686199259; bh=PrkgoFChjjS/t6u7nUUd0Q1FegS/n9GQDkTMlzso8ts=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To;
+        b=WUEiQBUhZRUSLgSW0x2RfgsormeTtlzVD+EQpDXfT5Y/Lzc2XYFpkskpUkfDqSlJY
+         7ZPipKOJ20PMDF1x8IMRURM5Rd9sjAS5v29ym1pH6IBxbWG8qJ4QEjqJG5YYaDUKR/
+         ux8/P6p2b1Wo2yJblHp0SkLV4DOPxFunChWzUsjCWO7L6ZpMB5Q4HbTIMBNR9QVJtR
+         xlE4Fy1yDXHIUT8h04Hm6ypp9f4f7rC1KUWVcEJHQz8kYnAtwwl0oYqbde8DzTnP6+
+         tDupzFEWWFOv9c5b4zpUm+6Xmqp0XdgFXnRWcabtybrpUFDxNZsBJpjpa9ruTPQbvB
+         8l6gghFuRk+hQ==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+        id 73EA615C04C3; Thu,  8 Jun 2023 00:40:56 -0400 (EDT)
+Date:   Thu, 8 Jun 2023 00:40:56 -0400
+From:   "Theodore Ts'o" <tytso@mit.edu>
+To:     Bagas Sanjaya <bagasdotme@gmail.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux ext4 Development <linux-ext4@vger.kernel.org>,
+        Nikolas Kraetzschmar <nikolas.kraetzschmar@sap.com>,
+        Linux Stable <stable@vger.kernel.org>, Jan Kara <jack@suse.cz>,
+        syzbot+6385d7d3065524c5ca6d@syzkaller.appspotmail.com,
+        syzkaller-bugs@googlegroups.com
+Subject: Re: Fwd: Remounting ext4 filesystem from ro to rw fails when quotas
+ are enabled
+Message-ID: <20230608044056.GA1418535@mit.edu>
+References: <653b3359-2005-21b1-039d-c55ca4cffdcc@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Subject: Re: [PATCH 6.3 000/286] 6.3.7-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
-References: <20230607200922.978677727@linuxfoundation.org>
-Content-Language: en-US
-In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <653b3359-2005-21b1-039d-c55ca4cffdcc@gmail.com>
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 6/7/23 13:11, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.3.7 release.
-> There are 286 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Jun 07, 2023 at 12:51:26PM +0700, Bagas Sanjaya wrote:
+> I notice a regression report on Bugzilla [1]. Quoting from it:
 > 
-> Responses should be made by Fri, 09 Jun 2023 20:07:31 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.3.7-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.3.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> > Since commit a44be64, remounting a read-only ext4 filesystem to
+> > become read-write fails when quotas are enabled. The mount syscall
+> > returns -EROFS and outputs the following in dmesg:
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tseted on 
-BMIPS_GENERIC:
+Yeah, and I think all we can do is revert this commit:
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+    ext4: don't clear SB_RDONLY when remounting r/w until quota is re-enabled
 
+I think I saw some messages go by about this getting queued for the
+stable kernel; if so, could it please be dropped?
+
+> > 
+> > The problem can be traced back to the changes introduced in commit
+> > a44be64. It appears that the issue arises because the SB_RDONLY
+> > bit of the s_flags field is now only cleared after executing the
+> > ext4_enable_quotas function. However, the vfs_setup_quota_inode
+> > function, called by ext4_enable_quotas, checks whether this bit is
+> > set (fs/quota/dquot.c:2331):
+
+The problem that we're trying to solve is the malicious syzbot
+reproducer is in one thread, twiddling the file system state from r/o
+to rw and back.  In another thread, it's attempt to create files and
+directories.   And occasionally, we're tripping this warning:
+
+	WARN_ON_ONCE(dquot_initialize_needed(inode));
+
+That's because we're racing with the quota getting initialized, and
+the moment we clear the SB_RDONLY bit the thread which is trying to
+create a directory or file will proceed with the operation --- even
+though the quota subsystem hasn't been initialized yet.  That's why
+the patch attempted to move the clearing the SB_RDONLY bit ahead of
+reiniitalization of the quota subsystem.
+
+Since this is screwing up the ability to remount the file system rw,
+we need to revert this commit, at which point, we'll be able to
+trigger this warning again.
+
+So how do we fix the warning?  Well, we could just drop the
+WARN_ON_ONCE(); the downside is that when this race gets hit, the
+quota operations to allocate the block and inode will silently become
+a no-op, which means the quota will get out of sync with reality.
+
+Alternatively, we could add a call to the beginning to
+ext4_xattr_block_Set():
+
+	if (dquot_initialize_needed(inode))
+		reutrn -EROFS;
+
+... on the theory that the only time we should hit this is when there
+is a quota setup racing with inode creation, and it's better that we
+just let the mkdir or open with O_CREAT fail than to succeed, and
+allocate blocks before the quota subsystem has been initialized.  I'm
+not sure how safe this would be on older quota setups (pre-ext4 quota
+feature), since I suspect the race window is a quite a bit bigger if I
+understand correctly how things worked with the legacy quota support.
+
+The final really hacky thing I could imagine is to hack
+dquot_initialize() to something like this:
+
+int dquot_initialize(struct inode *inode)
+{
+	ret = __dquot_initialize(inode, -1);
+	if (ret)
+		return ret;
+	if (dquot_initialize_needed(inode)) {
+		msleep(1000)
+		return __dquot_initialize(inode, -1);
+	}
+	return 0;
+}
+
+But I threw up a little in my mouth while writing it....
+
+So I'm tempted to just remove the WARN_ON's, and just accept that if
+superuser wants to twiddle the read/only state of a file system with
+quota, at high rates, while something else is trying to create
+files/directories, most of which will fail while the file system is
+read-only, then the quota may gets out of sync, and... ¯\_(ツ)_/¯
+
+Since this is only something that crazy people or malicious Syzbot
+reproducers would try to do, I'm really having a hard time bringing
+myself to care.  Especially since we have plenty of other places where
+we aren't doing the dquot_initialize_needed() check, so the
+opportunities for the quota to get out of sync already exist in other
+code paths.
+
+Jan, what do you think?
+
+					- Ted
