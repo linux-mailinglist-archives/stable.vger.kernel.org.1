@@ -2,57 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19D42727759
-	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 08:37:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C8F9727756
+	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 08:37:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234452AbjFHGhK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 02:37:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58410 "EHLO
+        id S234475AbjFHGg5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 02:36:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234514AbjFHGhF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 02:37:05 -0400
-Received: from dilbert.mork.no (dilbert.mork.no [IPv6:2a01:4f9:c010:a439::d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA3B72717;
-        Wed,  7 Jun 2023 23:36:58 -0700 (PDT)
-Received: from canardo.dyn.mork.no ([IPv6:2a01:799:c9a:3200:0:0:0:1])
-        (authenticated bits=0)
-        by dilbert.mork.no (8.17.1.9/8.17.1.9) with ESMTPSA id 3586aLIb1511367
-        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-        Thu, 8 Jun 2023 07:36:22 +0100
-Received: from miraculix.mork.no ([IPv6:2a01:799:964:4b0a:9af7:269:d286:bcf0])
-        (authenticated bits=0)
-        by canardo.dyn.mork.no (8.15.2/8.15.2) with ESMTPSA id 3586aFRb1374861
-        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-        Thu, 8 Jun 2023 08:36:15 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
-        t=1686206176; bh=o4taXXBgL3fitDlVeOrhKNo+T/8XA6xGhb9a2DaU7/8=;
-        h=From:To:Cc:Subject:References:Date:Message-ID:From;
-        b=K2m/7ZGh4kwqBALF0znIdFmzTbV76KVH0Vwha4mUjXdxtvFQMQwwOZEmRVrSboxu+
-         tjdrzPLHpnBxMGxQriDwg84jO2Kads2Oqgh5TBjPlMY05jdYJNU0BWnlcaaKMFUv6t
-         wR8kNYMjM8+YdmKZqSZEEAqnsOPQrQiKObilTuGc=
-Received: (nullmailer pid 1642711 invoked by uid 1000);
-        Thu, 08 Jun 2023 06:36:10 -0000
-From:   =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
-To:     Wes Huang <wes155076@gmail.com>
-Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, netdev@vger.kernel.org,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Wes Huang <wes.huang@moxa.com>, stable@vger.kernel.org
-Subject: Re: [PATCH V2 1/1] net: usb: qmi_wwan: add support for Compal RXM-G1
-Organization: m
-References: <20230608030141.3546-1-wes.huang@moxa.com>
-Date:   Thu, 08 Jun 2023 08:36:10 +0200
-In-Reply-To: <20230608030141.3546-1-wes.huang@moxa.com> (Wes Huang's message
-        of "Thu, 8 Jun 2023 11:01:42 +0800")
-Message-ID: <87jzweihph.fsf@miraculix.mork.no>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        with ESMTP id S234444AbjFHGgz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 02:36:55 -0400
+Received: from mail.antaris-organics.com (mail.antaris-organics.com [91.227.220.155])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B4D3270D;
+        Wed,  7 Jun 2023 23:36:52 -0700 (PDT)
+Date:   Thu, 8 Jun 2023 08:36:50 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mareichelt.com;
+        s=202107; t=1686206210;
+        bh=o2hoZSh4iyIHUenJpEJ0R3njomYSbuvPEJpI+wwfbOw=;
+        h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+         Content-Type:In-Reply-To:Cc:Cc:content-type:content-type:date:date:
+         From:from:in-reply-to:in-reply-to:message-id:mime-version:
+         references:reply-to:Sender:Subject:Subject:To:To;
+        b=DJIMOMbXUzKFAwFhxMsaat6pTuNbZJbm4yMty5D5+DFDd6/O4FuPbU7xMTbCkf2L4
+         iUh3Kr0LLxfptJhxBt5J+F3n/VU6iNowiuptrlkSnLc8CENPr9bEXp/cIC6KnuJWNi
+         mrOXdEBWf6tzIuuUwRPhaJIQiTbmf08GRqr2wiXSUGAowcI5rW59RVZGjw65bAyOt/
+         9s67wg8jXG1BDG2F+MTLZuPji+beHTUzuAU3yhbi29ldS2P0JorZR0ss0+Q+3+S24u
+         y0N4pAQeXoGpaXbIi4CX2dUZjOOje7DdYBTf5xFCmLp0K2sAhJnOV8ak2iIX9GmFLV
+         2cx2fhCjPy2jQ==
+From:   Markus Reichelt <lkt+2023@mareichelt.com>
+To:     stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.3 000/286] 6.3.7-rc1 review
+Message-ID: <20230608063650.GB19139@pc21.mareichelt.com>
+Mail-Followup-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230607200922.978677727@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Virus-Scanned: clamav-milter 0.103.8 at canardo
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+Organization: still stuck in reorganization mode
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,14 +48,21 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Wes Huang <wes155076@gmail.com> writes:
+* Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-> From: Wes Huang <wes.huang@moxa.com>
->
-> Add support for Compal RXM-G1 which is based on Qualcomm SDX55 chip.
-> This patch adds support for two compositions:
->
-> 0x9091: DIAG + MODEM + QMI_RMNET + ADB
-> 0x90db: DIAG + DUN + RMNET + DPL + QDSS(Trace) + ADB
+> This is the start of the stable review cycle for the 6.3.7 release.
+> There are 286 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 09 Jun 2023 20:07:31 +0000.
+> Anything received after that time might be too late.
 
-Acked-by: Bj=C3=B8rn Mork <bjorn@mork.no>
+Hi Greg
+
+6.3.7-rc1
+
+compiles, boots and runs here on x86_64
+(AMD Ryzen 5 PRO 4650G, Slackware64-15.0)
+
+Tested-by: Markus Reichelt <lkt+2023@mareichelt.com>
