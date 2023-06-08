@@ -2,66 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FF2E7281BB
-	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 15:49:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE11972822E
+	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 16:05:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236608AbjFHNth (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 09:49:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33884 "EHLO
+        id S236514AbjFHOFr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 10:05:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236531AbjFHNtg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 09:49:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0491726AB;
-        Thu,  8 Jun 2023 06:49:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E35364DC7;
-        Thu,  8 Jun 2023 13:49:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A369EC433A1;
-        Thu,  8 Jun 2023 13:49:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686232173;
-        bh=Sa9nZsCxkXD9FQ5kXqqWNAwoYbU5YK9mi/D75HIteHg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VSb9bu4GA6/8gt/eIjkIakHh/kPuBohC729d4Zdzb7MdeFx0pnKEHWKW/iPHMIC2j
-         7ahFbG4Hox64nxj1XbVLLr4TbyKKgXcwk+KWc5AAUGpcp2TbHX4b38Ce/IdlVoMzOx
-         HsdHyGKBBYsxnk9BNvjmj+IkAGd6L96+Kps2cvQLIOtbDR0B9MoLTk9GiClGFoEdGq
-         vZBZ0XuacaNRCwSwoTXefyJvJUTEjOQRcFTplMkePgRN5iDPN52bUZH5B1ETv7PSLj
-         8i9K5aH4ujLfNAEiSVuCKoJt04YbjTvEfttiUWbLCUGfUmt0wYQiNSX22IpDWTWkPS
-         blwaVMP24omnw==
-Received: from johan by xi.lan with local (Exim 4.94.2)
-        (envelope-from <johan@kernel.org>)
-        id 1q7G1W-0001f5-Up; Thu, 08 Jun 2023 15:49:59 +0200
-Date:   Thu, 8 Jun 2023 15:49:58 +0200
-From:   Johan Hovold <johan@kernel.org>
-To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc:     Johan Hovold <johan+linaro@kernel.org>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Krishna Kurapati <quic_kriskura@quicinc.com>,
-        linux-usb@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Li Jun <jun.li@nxp.com>,
-        Sandeep Maheswaram <quic_c_sanm@quicinc.com>
-Subject: Re: [PATCH 2/2] USB: dwc3: fix use-after-free on core driver unbind
-Message-ID: <ZIHchsMdf2nPv3wh@hovoldconsulting.com>
-References: <20230607100540.31045-1-johan+linaro@kernel.org>
- <20230607100540.31045-3-johan+linaro@kernel.org>
- <20230608130246.GF5672@thinkpad>
- <ZIHTBw3pMNjieVyj@hovoldconsulting.com>
- <20230608132313.GG5672@thinkpad>
+        with ESMTP id S236787AbjFHOFo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 10:05:44 -0400
+Received: from mail-ot1-x32c.google.com (mail-ot1-x32c.google.com [IPv6:2607:f8b0:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44DF8273F
+        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 07:05:42 -0700 (PDT)
+Received: by mail-ot1-x32c.google.com with SMTP id 46e09a7af769-6b29f53137cso437120a34.0
+        for <stable@vger.kernel.org>; Thu, 08 Jun 2023 07:05:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686233140; x=1688825140;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=safYf9mtP/TqCKpDii2aud/ldnVoerr/RL86C5Y3JdA=;
+        b=yeoSvKknohEapCfJtL5b/uPDo3O36xSSP2UiE2gr6fJmVfRaHgAh09q9GaP3Gt9i9O
+         8l8Y6DRFuvkUi7j+dD3r5qVSIbc2q0/C2DEKzM810+BSkueV+RQ656VTwjBTN3yLABcN
+         uMIMjTLU63yF1wON1fhy3ZzAI1kjnrSEAqMoYZ7Z71sB7sbQ3rY+uN9mu3C+uVzzgxT+
+         suwNL53FZUCT4F5k8zLyU0NosM3HeMkkj/CBtgoe63biDtDJ1m1MZbLOndgp9c1FAOds
+         aUDCIvLS7NAPtwy1VOorPTy0hDImZk3+IGtHRJqsaM3JEu1IC590xC1Fi/lh36NB66Jq
+         RXIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686233140; x=1688825140;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=safYf9mtP/TqCKpDii2aud/ldnVoerr/RL86C5Y3JdA=;
+        b=ZzyqxYpCoI7vgtjGqGURYvhbpQps+d1TfiIB23ryWXWPIevrfhRJuxBmk27yiMwt13
+         lTnaGnzyUQe/2midiU0+yAvXRyLVIil8W4WN7K0m46tDmZ3Tvf1ypbj+Q++2hUoCRddh
+         p9yNzQlFUltwVP1nKxPTozfm4GrMyHz3Hc8X9I1EJa2HeP+EVKecOP4eIDckf9aZhG++
+         ELuCPWPS+feyyv2mQg4y58Vjlgo82Olg4+UuGErGm4jABVyFDDeiDTaSpTqwF7VzMM+K
+         1dS3KOsJjB1JGLgNthZCRDMpCipKoDJxFVqh2lr9I6gj3tfje46PopccREy5alb14S1u
+         3ILA==
+X-Gm-Message-State: AC+VfDyqzErBAkYZdb5N1hsm9AAO98wSPSDXONNigzmOgmt/LY+GmW57
+        IUyAkjhK4Murorg61VHj8lfquvslzmvh1uK5W5DgQg==
+X-Google-Smtp-Source: ACHHUZ7KqxK0en144Hhhsj8yZ0vGveaeyuTpvLD0jU/cAdPLf+priNbDb4qTL52S86AU3Rt7dkR58oNUP0V5p14gzIY=
+X-Received: by 2002:a05:6830:1e6d:b0:68d:6a1e:46b9 with SMTP id
+ m13-20020a0568301e6d00b0068d6a1e46b9mr6119381otr.26.1686233139634; Thu, 08
+ Jun 2023 07:05:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230608132313.GG5672@thinkpad>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+References: <20230607200903.652580797@linuxfoundation.org>
+In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Thu, 8 Jun 2023 19:35:28 +0530
+Message-ID: <CA+G9fYtqtXhZ2CM56xP3C8iDz6CjvcsdP8SvJhtD=hkAt7VoBQ@mail.gmail.com>
+Subject: Re: [PATCH 5.15 000/159] 5.15.116-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,48 +72,175 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 08, 2023 at 06:53:13PM +0530, Manivannan Sadhasivam wrote:
-> On Thu, Jun 08, 2023 at 03:09:27PM +0200, Johan Hovold wrote:
-> > On Thu, Jun 08, 2023 at 06:32:46PM +0530, Manivannan Sadhasivam wrote:
-> > > On Wed, Jun 07, 2023 at 12:05:40PM +0200, Johan Hovold wrote:
-> > > > Some dwc3 glue drivers are currently accessing the driver data of the
-> > > > child core device directly, which is clearly a bad idea as the child may
-> > > > not have probed yet or may have been unbound from its driver.
-> > > > 
-> > > > As a workaround until the glue drivers have been fixed, clear the driver
-> > > > data pointer before allowing the glue parent device to runtime suspend
-> > > > to prevent its driver from accessing data that has been freed during
-> > > > unbind.
-> > 
-> > > > @@ -1929,6 +1929,11 @@ static int dwc3_remove(struct platform_device *pdev)
-> > > >  	pm_runtime_disable(&pdev->dev);
-> > > >  	pm_runtime_dont_use_autosuspend(&pdev->dev);
-> > > >  	pm_runtime_put_noidle(&pdev->dev);
-> > > > +	/*
-> > > > +	 * HACK: Clear the driver data, which is currently accessed by parent
-> > > > +	 * glue drivers, before allowing the parent to suspend.
-> > > > +	 */
-> > > > +	platform_set_drvdata(pdev, NULL);
-> > > 
-> > > This is required because you have seen the glue driver going to runtime suspend
-> > > once the below pm_runtime_set_suspended() is completed?
-> > 
-> > This is based on analysis of the code. The parent (glue) can not suspend
-> > while the child (core) is in the active state, but once we set the
-> > suspended state that could happen.
-> 
-> I could see that the driver core is setting drvdata to NULL during
-> device_unbind_cleanup(), so not sure if this scenario could be met otherwise it
-> will be redundant.
+On Thu, 8 Jun 2023 at 02:27, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.15.116 release.
+> There are 159 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 09 Jun 2023 20:07:31 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.15.116-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-If this was redundant I wouldn't have added it. ;)
 
-The parent driver has no business accessing the driver data of the child
-in the first place, but it must absolutely not do so after the child has
-been unbound from its driver and the driver data is getting freed.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Relying on the clean up in driver core that resets this pointer does not
-work as that would still leave a window where the parent could access
-this stale data.
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Johan
+## Build
+* kernel: 5.15.116-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git branch: linux-5.15.y
+* git commit: 00621f2608ac31643168c86e902c21a017ffe3b1
+* git describe: v5.15.114-196-g00621f2608ac
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
+.114-196-g00621f2608ac
+
+## Test Regressions (compared to v5.15.114)
+
+## Metric Regressions (compared to v5.15.114)
+
+## Test Fixes (compared to v5.15.114)
+
+## Metric Fixes (compared to v5.15.114)
+
+## Test result summary
+total: 108256, pass: 91348, fail: 3032, skip: 13715, xfail: 161
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 117 total, 116 passed, 1 failed
+* arm64: 45 total, 43 passed, 2 failed
+* i386: 35 total, 32 passed, 3 failed
+* mips: 27 total, 26 passed, 1 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 27 total, 26 passed, 1 failed
+* riscv: 11 total, 11 passed, 0 failed
+* s390: 12 total, 11 passed, 1 failed
+* sh: 14 total, 12 passed, 2 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 38 total, 36 passed, 2 failed
+
+## Test suites summary
+* boot
+* fwts
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+* vdso
+
+--
+Linaro LKFT
+https://lkft.linaro.org
