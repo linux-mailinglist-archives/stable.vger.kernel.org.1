@@ -2,144 +2,232 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E4C9728069
-	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 14:49:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22DC772806B
+	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 14:49:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236293AbjFHMtP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 08:49:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60922 "EHLO
+        id S234893AbjFHMtX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 08:49:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235841AbjFHMtO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 08:49:14 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C7DE26B2
-        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 05:49:12 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-652d76be8c2so492684b3a.3
-        for <stable@vger.kernel.org>; Thu, 08 Jun 2023 05:49:12 -0700 (PDT)
+        with ESMTP id S236491AbjFHMtS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 08:49:18 -0400
+Received: from mail-vk1-xa2b.google.com (mail-vk1-xa2b.google.com [IPv6:2607:f8b0:4864:20::a2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0B6D1FE9
+        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 05:49:16 -0700 (PDT)
+Received: by mail-vk1-xa2b.google.com with SMTP id 71dfb90a1353d-466021212d0so792651e0c.1
+        for <stable@vger.kernel.org>; Thu, 08 Jun 2023 05:49:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686228552; x=1688820552;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=YkIAhLvLnVwhb1623YqvVKWgPZype03kjxLPtMN1rsU=;
-        b=n+U+30vobooxgtQnaHc1KysZzSn6jdERYhOotJVB4hboAx6NrJumODxFOdJmZ5DVtc
-         Rs6M5zIv+HTi015uuZJEVVUq6FifOjoHeBYLNh115+x3CLbJAxjVGM5lEd6NUp4M4OTG
-         R/sKlueRfruZvQzLiy/iol6Zx7OEbiOPZldEwyV9m0NqWdJV766peMNlT+bGgfwz34QU
-         1kKBi7/kL9N65y6V/mYW3u2V21U4Db51tGnIpBboUWvuqoj+MyyPPDWVJ12GNzQbjxZ/
-         hbFfY4OG9tddUCgGs41XycnC9gSMTaES7Ipd74smgKrbqrPykhVjLjOf78R2AdPFTTbr
-         tNNw==
+        d=linaro.org; s=google; t=1686228556; x=1688820556;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7IG1ThSQ1jxrOuB1P2MSWtqb4AAHY6/cg8lxWJNKVGY=;
+        b=IYFVb0U2Oq7LZb1F6Dmi54zSNKZDEY3k2bQ5z08t5fSjL6y/vjU0XKpnXcr2qe/sMJ
+         PL44XqQSLBe3imAZ1KmVKdrYe8+z5e79lStvACtgRjeiMPlR53HUjqe/xHwQ74NpJ2wi
+         WzS+7VP5Y4Uh0SOU6MwHmsdsMZ5KN73rqjfwMYMfFP5lh5097IcikWXcTpN2KMAidzLB
+         e+jFqyp3giEqno7JZC1lntvVjOW5TwTM9iw8md7kGtw4Q2CO3DJtG1Mx59ORftzHNzwv
+         aYsgsqyfHPt9qU5YchF6VQEnGu7HhsfZFKClsCDpPuI3ZUopfZhYvskqmFvS3517gF7r
+         6zug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686228552; x=1688820552;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YkIAhLvLnVwhb1623YqvVKWgPZype03kjxLPtMN1rsU=;
-        b=ljYvJHyJdapOOG7AvPGiwM7ifoMk4Es3OmDEOjJNqCEDxUyXXej6Cjs8SJakPTMzoS
-         9r6fsfUgvV2+nHmLOMN1uL0fdYRmNXD+6GkCkVKM4zea7dj7Jp8LfcjaOqBovv03hfQ1
-         f/6/qN+dDAQDTczDPDcQjVvMiw+8VKHf+Q/uxBBF5Q+8bzbI4iD79YB50nlT2aeTpI5V
-         +Ox8EJoHSB4Z4cXi4lW0AKHEpujsnoOSA1Cw2b4y4b51FEB/igvUd6q3OnNyw+61MT41
-         sSMnMd6hd0vM2EU2Xp3YqbyzRJgzKItJvBiZaJLSDuNC+BY+4JBndadyySApgdCXxBWP
-         2tVg==
-X-Gm-Message-State: AC+VfDxsDRCTeQhSkXQUDN+xTQejq1TG8sxAOMJoTnZ/FY2QAhUpyONp
-        SUJwZxf8B6kThLPW881+lkpb
-X-Google-Smtp-Source: ACHHUZ4iAqD/Jz411eyAzEsPuFH5BlY0kU8cHNTBiM1PkXwV+u8COwWL6C4wUXsw6nqiPx/Cjqj20w==
-X-Received: by 2002:a05:6a20:549d:b0:10c:3cf3:ef7e with SMTP id i29-20020a056a20549d00b0010c3cf3ef7emr7532523pzk.42.1686228551815;
-        Thu, 08 Jun 2023 05:49:11 -0700 (PDT)
-Received: from thinkpad ([117.202.186.138])
-        by smtp.gmail.com with ESMTPSA id s12-20020a63450c000000b0051b0e564963sm1185367pga.49.2023.06.08.05.49.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jun 2023 05:49:11 -0700 (PDT)
-Date:   Thu, 8 Jun 2023 18:19:00 +0530
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To:     Johan Hovold <johan+linaro@kernel.org>
-Cc:     Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Krishna Kurapati <quic_kriskura@quicinc.com>,
-        linux-usb@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Sandeep Maheswaram <quic_c_sanm@quicinc.com>
-Subject: Re: [PATCH 1/2] USB: dwc3: qcom: fix NULL-deref on suspend
-Message-ID: <20230608124900.GE5672@thinkpad>
-References: <20230607100540.31045-1-johan+linaro@kernel.org>
- <20230607100540.31045-2-johan+linaro@kernel.org>
+        d=1e100.net; s=20221208; t=1686228556; x=1688820556;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7IG1ThSQ1jxrOuB1P2MSWtqb4AAHY6/cg8lxWJNKVGY=;
+        b=SjQIXUjrF3Oy2qklVBJaEzteA0p8oa4bCKfldRiUpTzlTh14klIAplpW+75aDAThLY
+         Fb7xsRrNLKJoMyy45gHmPTJJB0wfsKnhWMODricMsP/hY7l3luplxq93NwMj4wt2oKly
+         n2lZlUfuZdO2SNylK+4p3Ii1jkqCbWrnLJtI1Sm9fuOpb99vtz0B96ujRVtv+vzZ/xU3
+         0dGs+0cTFZ2qBuZqRrHMYjhSxYAKkvNcsR+O0hiC4WdGGoxC+k+23jqeovbB5z+eVyO2
+         DICWgKQMf/vWGsKR1G4rPVJ704ZICY3+CtTZseye85n+J0NN8K1fkFoAiw4EyfECa3z1
+         k/oA==
+X-Gm-Message-State: AC+VfDxE3SRJVXpEYqE60wTrrbcI897ijRBKbiS3pM+4+xu3HbxGcIRx
+        o6272n3QOtiyYFrZy6F3qjhXe0VoXnFsgfX+Zm0ZiQ==
+X-Google-Smtp-Source: ACHHUZ7DmXMy6qtRSZaHnwd/L+HqaTf5Vqi1SwvFj7z9WO+R1e00H+9zA1ptMecUQIGDdjXHRFMVVtTvOmv+a/5/mEI=
+X-Received: by 2002:a1f:a643:0:b0:446:b903:d76c with SMTP id
+ p64-20020a1fa643000000b00446b903d76cmr567941vke.5.1686228555827; Thu, 08 Jun
+ 2023 05:49:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230607100540.31045-2-johan+linaro@kernel.org>
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+References: <20230607200900.915613242@linuxfoundation.org>
+In-Reply-To: <20230607200900.915613242@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Thu, 8 Jun 2023 18:19:04 +0530
+Message-ID: <CA+G9fYu4Pe=6aBnvui4ab+JA=WvGOm8PaR+woYvD_miNwf+A2w@mail.gmail.com>
+Subject: Re: [PATCH 5.10 000/120] 5.10.183-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jun 07, 2023 at 12:05:39PM +0200, Johan Hovold wrote:
-> The Qualcomm dwc3 glue driver is currently accessing the driver data of
-> the child core device during suspend and on wakeup interrupts. This is
-> clearly a bad idea as the child may not have probed yet or could have
-> been unbound from its driver.
-> 
-> The first such layering violation was part of the initial version of the
-> driver, but this was later made worse when the hack that accesses the
-> driver data of the grand child xhci device to configure the wakeup
-> interrupts was added.
-> 
-> Fixing this properly is not that easily done, so add a sanity check to
-> make sure that the child driver data is non-NULL before dereferencing it
-> for now.
-> 
-> Note that this relies on subtleties like the fact that driver core is
-> making sure that the parent is not suspended while the child is probing.
-> 
-> Reported-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> Link: https://lore.kernel.org/all/20230325165217.31069-4-manivannan.sadhasivam@linaro.org/
-> Fixes: d9152161b4bf ("usb: dwc3: Add Qualcomm DWC3 glue layer driver")
-> Fixes: 6895ea55c385 ("usb: dwc3: qcom: Configure wakeup interrupts during suspend")
-> Cc: stable@vger.kernel.org	# 3.18: a872ab303d5d: "usb: dwc3: qcom: fix use-after-free on runtime-PM wakeup"
-> Cc: Sandeep Maheswaram <quic_c_sanm@quicinc.com>
-> Cc: Krishna Kurapati <quic_kriskura@quicinc.com>
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+On Thu, 8 Jun 2023 at 02:18, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.10.183 release.
+> There are 120 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 09 Jun 2023 20:07:31 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.10.183-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.10.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-- Mani
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-> ---
->  drivers/usb/dwc3/dwc3-qcom.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
-> index 959fc925ca7c..79b22abf9727 100644
-> --- a/drivers/usb/dwc3/dwc3-qcom.c
-> +++ b/drivers/usb/dwc3/dwc3-qcom.c
-> @@ -308,7 +308,16 @@ static void dwc3_qcom_interconnect_exit(struct dwc3_qcom *qcom)
->  /* Only usable in contexts where the role can not change. */
->  static bool dwc3_qcom_is_host(struct dwc3_qcom *qcom)
->  {
-> -	struct dwc3 *dwc = platform_get_drvdata(qcom->dwc3);
-> +	struct dwc3 *dwc;
-> +
-> +	/*
-> +	 * FIXME: Fix this layering violation.
-> +	 */
-> +	dwc = platform_get_drvdata(qcom->dwc3);
-> +
-> +	/* Core driver may not have probed yet. */
-> +	if (!dwc)
-> +		return false;
->  
->  	return dwc->xhci;
->  }
-> -- 
-> 2.39.3
-> 
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
--- 
-மணிவண்ணன் சதாசிவம்
+## Build
+* kernel: 5.10.183-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-5.10.y
+* git commit: 2aa548ff4cdfc9c180d0501d29b68c1a63f47d4f
+* git describe: v5.10.181-148-g2aa548ff4cdf
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10=
+.181-148-g2aa548ff4cdf
+
+## Test Regressions (compared to v5.10.181)
+
+## Metric Regressions (compared to v5.10.181)
+
+## Test Fixes (compared to v5.10.181)
+
+## Metric Fixes (compared to v5.10.181)
+
+## Test result summary
+total: 95158, pass: 80772, fail: 2161, skip: 12081, xfail: 144
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 114 total, 113 passed, 1 failed
+* arm64: 42 total, 40 passed, 2 failed
+* i386: 32 total, 30 passed, 2 failed
+* mips: 24 total, 24 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 23 total, 23 passed, 0 failed
+* riscv: 9 total, 9 passed, 0 failed
+* s390: 9 total, 9 passed, 0 failed
+* sh: 12 total, 12 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 35 total, 33 passed, 2 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-crypto
+* ltp-cve
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* rcutorture
+* v4l2-compliance
+
+--
+Linaro LKFT
+https://lkft.linaro.org
