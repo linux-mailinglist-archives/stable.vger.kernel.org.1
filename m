@@ -2,182 +2,154 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43A24727504
-	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 04:34:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58AFE727563
+	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 05:03:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233248AbjFHCeL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 22:34:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43784 "EHLO
+        id S232710AbjFHDDf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 23:03:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233089AbjFHCeK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 22:34:10 -0400
-Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ADCC1FFA;
-        Wed,  7 Jun 2023 19:34:09 -0700 (PDT)
-Received: by mail-qv1-xf2a.google.com with SMTP id 6a1803df08f44-6262d8688baso1459576d6.1;
-        Wed, 07 Jun 2023 19:34:09 -0700 (PDT)
+        with ESMTP id S231302AbjFHDDe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 23:03:34 -0400
+Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED8BB2115;
+        Wed,  7 Jun 2023 20:03:32 -0700 (PDT)
+Received: by mail-ot1-x332.google.com with SMTP id 46e09a7af769-6b291d55f52so60782a34.2;
+        Wed, 07 Jun 2023 20:03:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686191648; x=1688783648;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uP40DkHZE8fMAP8vvdgFF2kWzyMWQZR4DZPduOdwDWQ=;
-        b=G0obPoIN8utqPXiuq/+nMv0epDlB1dzGm/vjM7bcGwptd1Jn6kyG8HWxD9YXpN/cm+
-         mSb8p2kzKNMz8QvIXEZPRHGcz+pppRanKsWlAHMS6uoiT4FAal411F5XIqwbNnGvUP71
-         lEHnsSlMV2ICiGwkrAiKFiKTnD5BTQAvfeeG1786OX8MSW60LUkgZVqfqvY0M8AxfxFS
-         DSGJx7uM8VBV4knFc1yBhpt7p63HCkykjLpiaCVYcB60l+iO9F8XNQv5G58PF1fcsJhw
-         2Rx9nmvOmRgdBrs82YierCWnRBLm+xii0qax286v7BLUVt8ay3El2nCuyAUX13ko5Fm2
-         HIsg==
+        d=gmail.com; s=20221208; t=1686193412; x=1688785412;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZIJSy3f8mfMTvVk+C/jv8xuqI307FWWCGcIcKPcWwQA=;
+        b=A3Se/JedcbFPQpz/OS95VPY+fztk8F3cGTFsYO+ezyPvH7JQ7xM+jwL12g6rYNpPAq
+         bl+IP1LwNB3c2YUfOCBRPTJmRusoynQoCOHuU3vR0IkJO8lEm46Uw452w8xunCn3cbTi
+         WB1W3/1FTYz5ynctELrcwTWeQ2qXQH1Rf1wm0Qtack1exdIDczkuz/sBG7/bxBLvhZPt
+         yoZZZiKez4pfVZ7WKNSKMArsZ5LmlxU9iZn5Ab1nu9fltKiA0gLP+HHCCrwKhlcFSJVG
+         Nw3cuMK7L4n2S98YVS+2LIrFoqMA2pMsM+4KbKRTtx5+K+TJYm3AC4yUxWRuvMQReiLS
+         /7Ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686191648; x=1688783648;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uP40DkHZE8fMAP8vvdgFF2kWzyMWQZR4DZPduOdwDWQ=;
-        b=g+gTczFlTXmxv6Hm+p+c8lctszVNq/Z1vtjHh2+fZdSWGhWd6fIdP/PzjqFUc5mhSO
-         fhNH+TdLiN3bRFVx6l9fE4rOycPTG0dlVOtABiYwDhnn1MkEKW+pD9aHeNQ9Dfg/RbO2
-         MS+/WISiuZUonRsdAa+hm1uXaUXKI5mxR5I+IyaQWWTXMU8qyt+kKqRaPwQMCVKH/KEW
-         yB17wrECl3pypKBGZtn2dKlV/EOEvGxW0re5soypzclF5HsgLz+8YIbLr9Oc+PfprMNv
-         5R+l3d/qSUg/ITxQDoTCkvu59RLXSQZ+xltLAh5CHVxmHxhIMfbq8w1gA1F2GdRERPMo
-         ntDw==
-X-Gm-Message-State: AC+VfDyz+oz0tjLdXhaXCTcBT3ajRmRHlsJY9kyLSuUky8fCz4ZMOzKM
-        ZB8Z9I5jflH3CqL5QKzwDZN8L92CxdApRMCLjCs=
-X-Google-Smtp-Source: ACHHUZ5gPVxw/28i5FilUmnhbMAE2AV8ykYXtiYaqW0G3GBqN7vSor/zNpBGMX/7DPaEu6m3yvv4BbB4Ws/Z3to+T9o=
-X-Received: by 2002:a05:6214:1c4b:b0:5f1:606b:a9c8 with SMTP id
- if11-20020a0562141c4b00b005f1606ba9c8mr262744qvb.22.1686191648232; Wed, 07
- Jun 2023 19:34:08 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1686193412; x=1688785412;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZIJSy3f8mfMTvVk+C/jv8xuqI307FWWCGcIcKPcWwQA=;
+        b=GXXWnmdvijTWV0kXXld5Amz9xfUfmFJ/wissHHCl+c6H4wf8pISxejRHRqolD8TcEK
+         hIRBmKhwpiR5nqOu0yOE1ebHkYLzvaKDxg6cN1GFYpFUvGMJFk6M+VbmHvsktjq/HBSY
+         LV4kFq0O3Ykid18wouRDWydJdE63zQVDYFo2l8xB3GNFwdXitRHI2WJ6bG1VPwTDYY08
+         7TGbKhXNYiHwhkNQ0G7Mr3a8Z9SwFnwcJEOTj42mjzmTVHo3mlpBNPyAx11+fiDxyKbb
+         fod8O7ZsPQsOv5R/uwdbuzGRgytRj3vgBi0YGRQmB3XjfJ1ssc7hT+sHbwzCMfPVU8Ok
+         W8XQ==
+X-Gm-Message-State: AC+VfDwUwfJTg56XJdzNe4K8ObCIBegK5NCxWfJkFlfgc7mrKuLx8myo
+        T0PRqzqd0AadFMgHH/jRSOI=
+X-Google-Smtp-Source: ACHHUZ4R+6s7cg2wRZfDGQyockcpDWi9JMFyEToT/pb/qLH2yA0XBOVCSZ5aNSuT/0F7/sIvqJhtLQ==
+X-Received: by 2002:a9d:4b09:0:b0:6af:a47b:28b4 with SMTP id q9-20020a9d4b09000000b006afa47b28b4mr5177613otf.2.1686193412148;
+        Wed, 07 Jun 2023 20:03:32 -0700 (PDT)
+Received: from weshuang.weshuang (123-51-235-192.moxa.com. [123.51.235.192])
+        by smtp.googlemail.com with ESMTPSA id a15-20020aa7864f000000b0064fe332209esm56378pfo.98.2023.06.07.20.03.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Jun 2023 20:03:31 -0700 (PDT)
+From:   Wes Huang <wes155076@gmail.com>
+X-Google-Original-From: Wes Huang <wes.huang@moxa.com>
+To:     bjorn@mork.no
+Cc:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, netdev@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Wes Huang <wes.huang@moxa.com>, stable@vger.kernel.org
+Subject: [PATCH V2 1/1] net: usb: qmi_wwan: add support for Compal RXM-G1
+Date:   Thu,  8 Jun 2023 11:01:42 +0800
+Message-Id: <20230608030141.3546-1-wes.huang@moxa.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20230606233613.1290819-1-aquini@redhat.com>
-In-Reply-To: <20230606233613.1290819-1-aquini@redhat.com>
-From:   Yafang Shao <laoar.shao@gmail.com>
-Date:   Thu, 8 Jun 2023 10:33:31 +0800
-Message-ID: <CALOAHbD5ZWaXudkxsb4FWshfX0HEXNXa7zARXWa5BFPUXRmhxA@mail.gmail.com>
-Subject: Re: [PATCH] writeback: fix dereferencing NULL mapping->host on writeback_page_template
-To:     Rafael Aquini <aquini@redhat.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        linux-mm@kvack.org, stable@vger.kernel.org,
-        Aristeu Rozanski <aris@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jun 7, 2023 at 7:37=E2=80=AFAM Rafael Aquini <aquini@redhat.com> wr=
-ote:
->
-> When commit 19343b5bdd16 ("mm/page-writeback: introduce tracepoint for
-> wait_on_page_writeback()") repurposed the writeback_dirty_page trace even=
-t
-> as a template to create its new wait_on_page_writeback trace event, it
-> ended up opening a window to NULL pointer dereference crashes due to
-> the (infrequent) occurrence of a race where an access to a page in the
-> swap-cache happens concurrently with the moment this page is being
-> written to disk and the tracepoint is enabled:
->
->     BUG: kernel NULL pointer dereference, address: 0000000000000040
->     #PF: supervisor read access in kernel mode
->     #PF: error_code(0x0000) - not-present page
->     PGD 800000010ec0a067 P4D 800000010ec0a067 PUD 102353067 PMD 0
->     Oops: 0000 [#1] PREEMPT SMP PTI
->     CPU: 1 PID: 1320 Comm: shmem-worker Kdump: loaded Not tainted 6.4.0-r=
-c5+ #13
->     Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-2023030=
-1gitf80f052277c8-1.fc37 03/01/2023
->     RIP: 0010:trace_event_raw_event_writeback_folio_template+0x76/0xf0
->     Code: 4d 85 e4 74 5c 49 8b 3c 24 e8 06 98 ee ff 48 89 c7 e8 9e 8b ee =
-ff ba 20 00 00 00 48 89 ef 48 89 c6 e8 fe d4 1a 00 49 8b 04 24 <48> 8b 40 4=
-0 48 89 43 28 49 8b 45 20 48 89 e7 48 89 43 30 e8 a2 4d
->     RSP: 0000:ffffaad580b6fb60 EFLAGS: 00010246
->     RAX: 0000000000000000 RBX: ffff90e38035c01c RCX: 0000000000000000
->     RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff90e38035c044
->     RBP: ffff90e38035c024 R08: 0000000000000002 R09: 0000000000000006
->     R10: ffff90e38035c02e R11: 0000000000000020 R12: ffff90e380bac000
->     R13: ffffe3a7456d9200 R14: 0000000000001b81 R15: ffffe3a7456d9200
->     FS:  00007f2e4e8a15c0(0000) GS:ffff90e3fbc80000(0000) knlGS:000000000=
-0000000
->     CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->     CR2: 0000000000000040 CR3: 00000001150c6003 CR4: 0000000000170ee0
->     Call Trace:
->      <TASK>
->      ? __die+0x20/0x70
->      ? page_fault_oops+0x76/0x170
->      ? kernelmode_fixup_or_oops+0x84/0x110
->      ? exc_page_fault+0x65/0x150
->      ? asm_exc_page_fault+0x22/0x30
->      ? trace_event_raw_event_writeback_folio_template+0x76/0xf0
->      folio_wait_writeback+0x6b/0x80
->      shmem_swapin_folio+0x24a/0x500
->      ? filemap_get_entry+0xe3/0x140
->      shmem_get_folio_gfp+0x36e/0x7c0
->      ? find_busiest_group+0x43/0x1a0
->      shmem_fault+0x76/0x2a0
->      ? __update_load_avg_cfs_rq+0x281/0x2f0
->      __do_fault+0x33/0x130
->      do_read_fault+0x118/0x160
->      do_pte_missing+0x1ed/0x2a0
->      __handle_mm_fault+0x566/0x630
->      handle_mm_fault+0x91/0x210
->      do_user_addr_fault+0x22c/0x740
->      exc_page_fault+0x65/0x150
->      asm_exc_page_fault+0x22/0x30
->
-> This problem arises from the fact that the repurposed writeback_dirty_pag=
-e
-> trace event code was written assuming that every pointer to mapping
-> (struct address_space) would come from a file-mapped page-cache object,
-> thus mapping->host would always be populated, and that was a valid case
-> before commit 19343b5bdd16. The swap-cache address space (swapper_spaces)=
-,
-> however, doesn't populate its ->host (struct inode) pointer, thus leading
-> to the crashes in the corner-case aforementioned.
->
-> commit 19343b5bdd16 ended up breaking the assignment of __entry->name and
-> __entry->ino for the wait_on_page_writeback tracepoint -- both dependent
-> on mapping->host carrying a pointer to a valid inode. The assignment of
-> __entry->name was fixed by commit 68f23b89067f ("memcg: fix a crash in
-> wb_workfn when a device disappears"), and this commit fixes the remaining
-> case, for __entry->ino.
->
-> Fixes: 19343b5bdd16 ("mm/page-writeback: introduce tracepoint for wait_on=
-_page_writeback()")
-> Signed-off-by: Rafael Aquini <aquini@redhat.com>
+From: Wes Huang <wes.huang@moxa.com>
 
-Thanks for your fix!
-Reviewed-by: Yafang Shao <laoar.shao@gmail.com>
+Add support for Compal RXM-G1 which is based on Qualcomm SDX55 chip.
+This patch adds support for two compositions:
 
-> ---
->  include/trace/events/writeback.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/include/trace/events/writeback.h b/include/trace/events/writ=
-eback.h
-> index 86b2a82da546..54e353c9f919 100644
-> --- a/include/trace/events/writeback.h
-> +++ b/include/trace/events/writeback.h
-> @@ -68,7 +68,7 @@ DECLARE_EVENT_CLASS(writeback_folio_template,
->                 strscpy_pad(__entry->name,
->                             bdi_dev_name(mapping ? inode_to_bdi(mapping->=
-host) :
->                                          NULL), 32);
-> -               __entry->ino =3D mapping ? mapping->host->i_ino : 0;
-> +               __entry->ino =3D (mapping && mapping->host) ? mapping->ho=
-st->i_ino : 0;
->                 __entry->index =3D folio->index;
->         ),
->
-> --
-> 2.39.2
->
+0x9091: DIAG + MODEM + QMI_RMNET + ADB
+0x90db: DIAG + DUN + RMNET + DPL + QDSS(Trace) + ADB
 
+T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=05c6 ProdID=9091 Rev= 4.14
+S:  Manufacturer=QCOM
+S:  Product=SDXPRAIRIE-MTP _SN:719AB680
+S:  SerialNumber=719ab680
+C:* #Ifs= 4 Cfg#= 1 Atr=80 MxPwr=896mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=(none)
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=(none)
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=84(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
 
---=20
-Regards
-Yafang
+T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=05c6 ProdID=90db Rev= 4.14
+S:  Manufacturer=QCOM
+S:  Product=SDXPRAIRIE-MTP _SN:719AB680
+S:  SerialNumber=719ab680
+C:* #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=896mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=(none)
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=(none)
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=84(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+E:  Ad=8f(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Wes Huang <wes.huang@moxa.com>
+---
+V1 -> V2: No code change, just add "From" to the email body to let
+author information is correct.
+
+ drivers/net/usb/qmi_wwan.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index 571e37e67f9c..90f4655a671d 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1220,7 +1220,9 @@ static const struct usb_device_id products[] = {
+ 	{QMI_FIXED_INTF(0x05c6, 0x9080, 8)},
+ 	{QMI_FIXED_INTF(0x05c6, 0x9083, 3)},
+ 	{QMI_FIXED_INTF(0x05c6, 0x9084, 4)},
++	{QMI_QUIRK_SET_DTR(0x05c6, 0x9091, 2)},	/* Compal RXM-G1 */
+ 	{QMI_FIXED_INTF(0x05c6, 0x90b2, 3)},    /* ublox R410M */
++	{QMI_QUIRK_SET_DTR(0x05c6, 0x90db, 2)},	/* Compal RXM-G1 */
+ 	{QMI_FIXED_INTF(0x05c6, 0x920d, 0)},
+ 	{QMI_FIXED_INTF(0x05c6, 0x920d, 5)},
+ 	{QMI_QUIRK_SET_DTR(0x05c6, 0x9625, 4)},	/* YUGA CLM920-NC5 */
+-- 
+2.30.2
+
