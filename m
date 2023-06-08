@@ -2,151 +2,143 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25DA672834B
-	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 17:11:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10C0D72837B
+	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 17:17:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236125AbjFHPLR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 11:11:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46962 "EHLO
+        id S236868AbjFHPRS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 11:17:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234372AbjFHPLQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 11:11:16 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02B7F2D63;
-        Thu,  8 Jun 2023 08:11:14 -0700 (PDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 358EqCxh003113;
-        Thu, 8 Jun 2023 15:11:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=LUPON5A/yOq6SV0ahS6sBgfeIZzY9Jqq451H2rYMksg=;
- b=GfhCC1litHF3NBsn7H5W8uW5ERTdCZjzUz45Iw2nzr2sbVP8rJ++PD3lg+xsRY/qNx57
- 12vEmKGYDQjehtKUvDo8KEQAvEb8CsuJeyU4pdIsTm42cgtj5MpyjqIo0Mo9X75l3F+h
- BnbDiMiroF1JxEIcDtwtXUTNP4SigsdEC6aHzb+AtfZuSc0ClFP1Ud1IFjovVB1pqNYR
- MaKP4z2oy9UPoTSBobY4zrEMLlwx+eTlXX2LpTWzEypDvR0bqQr1moH4B38GPqqXgSI7
- YQIthQqjMmo9t8pCvFe9rSVzx1sGFNVuuR2QnOrv8w+Y7aIa+g7YBnONvPCzNBHqRN4/ ng== 
-Received: from ppma04wdc.us.ibm.com (1a.90.2fa9.ip4.static.sl-reverse.com [169.47.144.26])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r3h4p8hqp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 08 Jun 2023 15:11:03 +0000
-Received: from pps.filterd (ppma04wdc.us.ibm.com [127.0.0.1])
-        by ppma04wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 358Cnfc6000311;
-        Thu, 8 Jun 2023 15:11:01 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([9.208.130.98])
-        by ppma04wdc.us.ibm.com (PPS) with ESMTPS id 3r2a76s9jp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 08 Jun 2023 15:11:01 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-        by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 358FB0DC61210898
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 8 Jun 2023 15:11:01 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 8F8FC58066;
-        Thu,  8 Jun 2023 15:11:00 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id DBAE958053;
-        Thu,  8 Jun 2023 15:10:59 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-        by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-        Thu,  8 Jun 2023 15:10:59 +0000 (GMT)
-Message-ID: <666b8422-3e4f-3d88-1ff7-1f650dd401ce@linux.ibm.com>
-Date:   Thu, 8 Jun 2023 11:10:59 -0400
+        with ESMTP id S236177AbjFHPRR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 11:17:17 -0400
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9686C30EC
+        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 08:16:54 -0700 (PDT)
+Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-650352b89f6so459105b3a.0
+        for <stable@vger.kernel.org>; Thu, 08 Jun 2023 08:16:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686237413; x=1688829413;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=kiyhnHcKDOBzoeAnFI9BVgwjzQkyxa/Y9kkA33HbNN0=;
+        b=eal4zHXfjlKZMB14rbh91Ry1/isoqhVWzGhLfxZgb0uoQjmDYdJ9r1wuSHqAEyOWc1
+         ZVsM2SYGSuXVZHcAW2+D7opvQLHyc3j18leKuaTOn92Htk47uInT/FR9jX5UeUYboyLd
+         SpvA4osn+SFpRJ7PTkL9u9wvqC1VL96qCNwcyLNOA0sf9KP/KZygU2whEfieNCOzWtuy
+         hpjo3+WZ6nSZ2DV3LHsKok5D1fSHgWl9EKn70Pzya5hwfRUpcM0005Z9zQsGzIMJCtII
+         sZK4jLjJRtXS23s3pyez9nIuDNp9i/zvK7I91vI7VmE8Za6uX9do8QqUrFnHXjfWmQa3
+         OmQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686237413; x=1688829413;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kiyhnHcKDOBzoeAnFI9BVgwjzQkyxa/Y9kkA33HbNN0=;
+        b=JAS9bZhWSJbcHDaN84+9hZFfpxrevA/rPK3R1k+lI318OTjT+TzBNWZto/tRAZ38QU
+         2Zic/uMpfQiVZK3QHwtFChUATJXyXerSb50gIg9qTz11Guje2rxs23CU4Tc3E7VGKDFH
+         zhXkVI0ZuCPWWjh1+RtdH8dii3kTLEHb3lWs2OJqTjl5Cfxqy+3PIGQ4QxzAwQlrvH5f
+         k2VLSscbe2467ifV05eR8JQj/8WwUUc3lZg+88B2zeSKdU4RHDA6pxBrfXwwhKD57Ojb
+         Q6KqY4f5Z4hDfXv34I5mGp9LyWeHg2JJdN5k76gu0LqprbYN9b/yPNOmXrgb2fr16mEG
+         77mw==
+X-Gm-Message-State: AC+VfDwFb/k8K6VCDmifSSQqqxU9gU7S/mp30sxnQV8FUlFh4h2HafnF
+        TBb7/tP8uw5yeMTk4Fy88dmG
+X-Google-Smtp-Source: ACHHUZ6g12hcR5RsXes44rDIC42wWSUUb2AAjwP175B+ZA0ks73GoPrUGDVnrP+EUEthRVd4rLf4bA==
+X-Received: by 2002:a05:6a20:c1a5:b0:10e:a8e6:35c5 with SMTP id bg37-20020a056a20c1a500b0010ea8e635c5mr3605322pzb.59.1686237413535;
+        Thu, 08 Jun 2023 08:16:53 -0700 (PDT)
+Received: from thinkpad ([117.202.186.138])
+        by smtp.gmail.com with ESMTPSA id i26-20020a63585a000000b00543f7538d64sm1379430pgm.31.2023.06.08.08.16.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Jun 2023 08:16:52 -0700 (PDT)
+Date:   Thu, 8 Jun 2023 20:46:46 +0530
+From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To:     Johan Hovold <johan@kernel.org>
+Cc:     Johan Hovold <johan+linaro@kernel.org>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Krishna Kurapati <quic_kriskura@quicinc.com>,
+        linux-usb@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Li Jun <jun.li@nxp.com>,
+        Sandeep Maheswaram <quic_c_sanm@quicinc.com>
+Subject: Re: [PATCH 2/2] USB: dwc3: fix use-after-free on core driver unbind
+Message-ID: <20230608151646.GH5672@thinkpad>
+References: <20230607100540.31045-1-johan+linaro@kernel.org>
+ <20230607100540.31045-3-johan+linaro@kernel.org>
+ <20230608130246.GF5672@thinkpad>
+ <ZIHTBw3pMNjieVyj@hovoldconsulting.com>
+ <20230608132313.GG5672@thinkpad>
+ <ZIHchsMdf2nPv3wh@hovoldconsulting.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH] tpm: factor out the user space mm from
- tpm_vtpm_set_locality()
-Content-Language: en-US
-To:     Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-integrity@vger.kernel.org
-Cc:     Jason Gunthorpe <jgg@nvidia.com>,
-        Alejandro Cabrera <alejandro.cabreraaldaya@tuni.fi>,
-        Jarkko Sakkinen <jarkko.sakkinen@tuni.fi>,
-        stable@vger.kernel.org, Stefan Berger <stefanb@linux.vnet.ibm.com>,
-        linux-kernel@vger.kernel.org
-References: <20230530205001.1302975-1-jarkko@kernel.org>
- <8f15feb5-7c6e-5a16-d9b4-008b7b45b01a@linux.ibm.com>
- <324df0fa5ad1f0508c5f62c25dd1f8d297d78813.camel@kernel.org>
- <0438f5e3-ca42-343b-e79e-5f7976ec8a62@linux.ibm.com>
- <CT7AOKF4OGHA.2S5VUEAG76GYB@suppilovahvero>
-From:   Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <CT7AOKF4OGHA.2S5VUEAG76GYB@suppilovahvero>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: mR7sOTxaBrTwFfyiL_U6TBxePEWg73Om
-X-Proofpoint-ORIG-GUID: mR7sOTxaBrTwFfyiL_U6TBxePEWg73Om
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-08_10,2023-06-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- suspectscore=0 priorityscore=1501 phishscore=0 adultscore=0 mlxscore=0
- malwarescore=0 bulkscore=0 clxscore=1015 lowpriorityscore=0
- impostorscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2305260000 definitions=main-2306080131
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H5,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZIHchsMdf2nPv3wh@hovoldconsulting.com>
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
-
-On 6/8/23 09:14, Jarkko Sakkinen wrote:
-> On Wed May 31, 2023 at 8:01 PM EEST, Stefan Berger wrote:
->>
->>
->
->>
->> This is swtpm picking up this command with its user buffer.
->>
->>     So, I am not sure at this point what is wrong.
->>
->>      Stefan
+On Thu, Jun 08, 2023 at 03:49:58PM +0200, Johan Hovold wrote:
+> On Thu, Jun 08, 2023 at 06:53:13PM +0530, Manivannan Sadhasivam wrote:
+> > On Thu, Jun 08, 2023 at 03:09:27PM +0200, Johan Hovold wrote:
+> > > On Thu, Jun 08, 2023 at 06:32:46PM +0530, Manivannan Sadhasivam wrote:
+> > > > On Wed, Jun 07, 2023 at 12:05:40PM +0200, Johan Hovold wrote:
+> > > > > Some dwc3 glue drivers are currently accessing the driver data of the
+> > > > > child core device directly, which is clearly a bad idea as the child may
+> > > > > not have probed yet or may have been unbound from its driver.
+> > > > > 
+> > > > > As a workaround until the glue drivers have been fixed, clear the driver
+> > > > > data pointer before allowing the glue parent device to runtime suspend
+> > > > > to prevent its driver from accessing data that has been freed during
+> > > > > unbind.
+> > > 
+> > > > > @@ -1929,6 +1929,11 @@ static int dwc3_remove(struct platform_device *pdev)
+> > > > >  	pm_runtime_disable(&pdev->dev);
+> > > > >  	pm_runtime_dont_use_autosuspend(&pdev->dev);
+> > > > >  	pm_runtime_put_noidle(&pdev->dev);
+> > > > > +	/*
+> > > > > +	 * HACK: Clear the driver data, which is currently accessed by parent
+> > > > > +	 * glue drivers, before allowing the parent to suspend.
+> > > > > +	 */
+> > > > > +	platform_set_drvdata(pdev, NULL);
+> > > > 
+> > > > This is required because you have seen the glue driver going to runtime suspend
+> > > > once the below pm_runtime_set_suspended() is completed?
+> > > 
+> > > This is based on analysis of the code. The parent (glue) can not suspend
+> > > while the child (core) is in the active state, but once we set the
+> > > suspended state that could happen.
+> > 
+> > I could see that the driver core is setting drvdata to NULL during
+> > device_unbind_cleanup(), so not sure if this scenario could be met otherwise it
+> > will be redundant.
 > 
-> The answer was below but in short it is that you have a function that
-> expects __user * and you don't pass user tagged memory.
-
-There are two functions that expect user tagged memory:
-
-static ssize_t vtpm_proxy_fops_read(struct file *filp, char __user *buf,
-				    size_t count, loff_t *off)
-static ssize_t vtpm_proxy_fops_write(struct file *filp, const char __user *buf,
-				     size_t count, loff_t *off)
-
-the correspond to this interface:
-
-struct file_operations {
-	struct module *owner;
-	loff_t (*llseek) (struct file *, loff_t, int);
-	ssize_t (*read) (struct file *, char __user *, size_t, loff_t *);
-	ssize_t (*write) (struct file *, const char __user *, size_t, loff_t *);
-
-defined here:
-
-static const struct file_operations vtpm_proxy_fops = {
-	.owner = THIS_MODULE,
-	.llseek = no_llseek,
-	.read = vtpm_proxy_fops_read,
-	.write = vtpm_proxy_fops_write,
-
-Conversely, I see no other function interfaces in tpm_vtpm_proxy.c where the code would be missing the __user.
-
-Neither do I see any functions where I am passing a __user tagged buffer as parameter that shouldn't have
-such a tag on it or the reverse where a plain buffer is passed and it should be a __user tagged buffer.
-
-    Stefan
-
+> If this was redundant I wouldn't have added it. ;)
 > 
-> Even tho it is a bug, I think cc to stable is not necessary given that
-> it is not known to blow up anything. The main problem is that we have
-> code that does not work according to the expectations.
+> The parent driver has no business accessing the driver data of the child
+> in the first place, but it must absolutely not do so after the child has
+> been unbound from its driver and the driver data is getting freed.
 > 
-> BR, Jarkko
+> Relying on the clean up in driver core that resets this pointer does not
+> work as that would still leave a window where the parent could access
+> this stale data.
 > 
-> 
+
+Well, I agree with the small window here.
+
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+
+- Mani
+
+> Johan
+
+-- 
+மணிவண்ணன் சதாசிவம்
