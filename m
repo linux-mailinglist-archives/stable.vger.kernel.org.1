@@ -2,139 +2,243 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC23B727D29
-	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 12:49:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6771727D45
+	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 12:52:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233222AbjFHKtb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 06:49:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54856 "EHLO
+        id S236170AbjFHKwu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 06:52:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232891AbjFHKt3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 06:49:29 -0400
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2121.outbound.protection.outlook.com [40.107.243.121])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75D122D46;
-        Thu,  8 Jun 2023 03:49:25 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BDi3+bQiXUqsY9qADoug3+hxCD0apGXO0nqz2t5Gt4uLIcoW/c3GiIuV8Skrn/fNYL+6rwNAPBfQlcjqPKBD+XWL8xtOfBAqzRVrLQlTXf3uQsFEq9tDeUFMPPIo0XCwF5ZmI6dY0LbhZrw78jSQ29eEZOU2j36n5zcbqWOwUl38uOeoTjXax5ghf8hopKK6e7aamy2o0w42kE9YODhmwZJhclvQDu44ljRoviTv07qFkQBxMmX/GSISzLvLwJNdmA4V87OZ1St1sf+2OVM/ZDtZi5q1P3OhFyg+jxktlyinvSmrSI83Infs9J7CD4nodGDVznL2+P2V2tFskBM/Rg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Q+cR2mIDvwag+qeQZBuJbI4wmjM3ho6/mkFxr6MDEDU=;
- b=Nci6Gqj4cNFCge4hDINyCMtJCjwKLLSJFVyTh007+tpSLaSjZVxkr7XzKI9ojNkfUaIdnk2zmJJSWXpAv+NJ7bgKD0fE475LxTwDKejBZLdK7/svXdaCo4+xH8DNUa+Rnz2GEvqIEnXHwiCYoqb5F2U0+j0yGntABTGk/b5LnSqGhrq4+YNGyd7mRkbtIPzT2UoyxfKPG/SOvFE5qTthQ5EqOVPERRJG42zEpaA4/5plV1mE6sgymmVeBN/+xqUklSQgcUHVC7vzf4llXJdiKDt0uCpjnlKHHnpid8dDrA3Y4S8RMyMErpeHN0g+oWNRCN6Sl0ZrFM6t4HXc1Hk4hA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
+        with ESMTP id S235836AbjFHKwZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 06:52:25 -0400
+Received: from mail-vk1-xa33.google.com (mail-vk1-xa33.google.com [IPv6:2607:f8b0:4864:20::a33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41DB22D40
+        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 03:52:06 -0700 (PDT)
+Received: by mail-vk1-xa33.google.com with SMTP id 71dfb90a1353d-462e3a806cbso142114e0c.3
+        for <stable@vger.kernel.org>; Thu, 08 Jun 2023 03:52:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q+cR2mIDvwag+qeQZBuJbI4wmjM3ho6/mkFxr6MDEDU=;
- b=Baa2nn8IAwm9zgINzssT2fJ8yLwKdCnk/QEVRbrwgCxZrqhNqM7V5OKjEXi3lChB6r6gl9QIOMLVUE+E3rXddzUCm6MIS5zl3k48BEZ248QEM2B1I940S4gmoFw5Sha2c1xdK0P3AyO2iTHFUEjrHxhS5HBYN0DCWymuM0vFqUA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
- by BY3PR13MB5044.namprd13.prod.outlook.com (2603:10b6:a03:362::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.33; Thu, 8 Jun
- 2023 10:49:21 +0000
-Received: from PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::eb8f:e482:76e0:fe6e]) by PH0PR13MB4842.namprd13.prod.outlook.com
- ([fe80::eb8f:e482:76e0:fe6e%4]) with mapi id 15.20.6455.030; Thu, 8 Jun 2023
- 10:49:21 +0000
-Date:   Thu, 8 Jun 2023 12:49:13 +0200
-From:   Simon Horman <simon.horman@corigine.com>
-To:     Ivan Mikhaylov <fr0st61te@gmail.com>
-Cc:     Samuel Mendoza-Jonas <sam@mendozajonas.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Vijay Khemka <vijaykhemka@fb.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, openbmc@lists.ozlabs.org,
-        stable@vger.kernel.org, Paul Fertser <fercerpav@gmail.com>
-Subject: Re: [PATCH v3 2/2] net/ncsi: change from ndo_set_mac_address to
- dev_set_mac_address
-Message-ID: <ZIGyKQV2yHTa+cI4@corigine.com>
-References: <20230607151742.6699-1-fr0st61te@gmail.com>
- <20230607151742.6699-3-fr0st61te@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230607151742.6699-3-fr0st61te@gmail.com>
-X-ClientProxiedBy: AM0PR04CA0062.eurprd04.prod.outlook.com
- (2603:10a6:208:1::39) To PH0PR13MB4842.namprd13.prod.outlook.com
- (2603:10b6:510:78::6)
+        d=linaro.org; s=google; t=1686221525; x=1688813525;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t+wKmn+dGFIKb4lUNmkGpLUatoAVJNOyxAKbwg0PNTE=;
+        b=FXX4WlkDxC6e/BwUUoQ9mYR1oXHrRvqnPf4ZcRCqgk7HTbrvPt33x/D1C2YZBA3Plm
+         ZYMrYM9/4IJUKzSHlVl7pr6TLGSRB4oyo0ksF6IXwB3fil1KQLQXFtEwRWPHjHfqj6pk
+         7VAlyP0zgz/1ZpKxW+GYi5Vu0t5qXZQ3Sav4P67zD7ix5pzZc2wwRTQbQ+7tfEYkKkt7
+         67VGd5YoEXnw4f4N6H+GkSIOJaPb6wp6qvFnTbeI4IaHvxyfGAAwMcD056m5MXO9DEb2
+         ZU8Oy0JkN1jvhq9a3Zadds+RBKsrpXNbrA1esgzqqqemQbnOpLhjjKQEQVTuAXCrCTQz
+         pCRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686221525; x=1688813525;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=t+wKmn+dGFIKb4lUNmkGpLUatoAVJNOyxAKbwg0PNTE=;
+        b=bvDahRjir5daeYrRwQt0Lej9PXfkgyTaXBCQaXcmMCTU/VEdFFaiujyaMjduLc14B3
+         8/M24Hn16n4TWqe4JEBPOlNsdIL4asS6IeSJVS6G/gcVis9ippqzzseZ1U5FuzeFa/OY
+         gIiYmjM08s9eIN89VZoAEa4KNLjN63hNjif8KTXw9ev2MfyeGM+b9K8UKgqd41CNBOeS
+         ERvxWn2Z0hcx0kP9q1hoAb0ylWGCqKK8rSvog9CrYS6ZN7dm9N2rAXFognAROoxNnf0i
+         bWD0fAfmE46EkuCexuwAStM8Yd3sSWGs48akuW8sipsLCHBuyn2ge9cgZr5zeOXOwszU
+         mjHQ==
+X-Gm-Message-State: AC+VfDzc6cw6y8ViIYuxWFUIUZEMPsZfLuwR0SzOGur/G8SAgSQDylUx
+        aclmW0FM2MVW+qJTL+XnArAkCXekEReAnl5AdjRclg==
+X-Google-Smtp-Source: ACHHUZ693v6i8cQH8pJrkhIBaCx8F9RI+5evhOle5Jb3R3CnNgus9SfPOwHT3YuWZm+CoOsmxExNhFO/rhGiSLwHiZ4=
+X-Received: by 2002:a1f:43c6:0:b0:464:6036:604f with SMTP id
+ q189-20020a1f43c6000000b004646036604fmr3036424vka.7.1686221525223; Thu, 08
+ Jun 2023 03:52:05 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|BY3PR13MB5044:EE_
-X-MS-Office365-Filtering-Correlation-Id: 79de3500-5785-4ad2-eee5-08db680e03fd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: sInn21JMfzGTwvqbx/7Qx+ammILNeJNIz2BARYjDr1WAbXUpJv3/7QWvnKvbmKa/Ft6lr0MTuK2wKAJq0q8YuwJhFYuKCuzsy47hq+uOFtKQDJZtJPmzFOAWAR4OjZJImqij/lTDMXpoLu3s1YJXsBETMGEQ0mQFRrvLgDYfHDKrigC1J6+CoEa1qWpfE08g5Q8NMvZ0pTby4UJ5N3YRSGKC3ufR9WBin4lY+x7nRtINpzp8f7JUaRqpvoP8h0t5zy/YqRAZNEyGNDOUR8X9G3MYFW8eBDOloNAFlsBJrWJqbosbx3iNJbTOKMercZnqnau8uKREl+xAEZEiPu5LE2vRRm4X+yBz/wyrIzTJCyNR0hjgVXaaxjvRN7N9cJGQP8idIEmimzgEQ6PJBPRJDiuyFN5WeTC7OWR4o8NAqaCu90XZ+9+1NOc0A7ivbWzxk/z3tZIoJjWYe6UIhYVMqdCBi+tlZcgkQ3E0u9hFIwlyUeEGNUGUJUeFBNng3RTQ/FCX5kHFz+HvVS70dMpVbNYjXMK4gV0wS2q91q9dOCRpNeRpYMH2inTyIHmFoW/vT+ti7p1ENlDz2zqG+NdapOn0O0uKnry6GJrm1pYbdsc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(136003)(366004)(376002)(39840400004)(346002)(396003)(451199021)(86362001)(4744005)(2906002)(36756003)(44832011)(7416002)(6666004)(6486002)(83380400001)(186003)(6506007)(6512007)(478600001)(54906003)(6916009)(66556008)(66476007)(316002)(66946007)(8676002)(8936002)(4326008)(38100700002)(2616005)(41300700001)(5660300002)(67856001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ptQqlahjc7Qj6HwDkA4mqSdAJJ0D46627c+TQycmPqbD4IXe/E/DFCZg/zL5?=
- =?us-ascii?Q?6qFNZZYtIpc9hKm6Ul5PkEHTeROdsNP6YHgrGcOKxlSnqVGmNaL2A4qBeN1K?=
- =?us-ascii?Q?YIpvTvyijQTaumRVsW/OAnF3qQE5yFQj+uGB5PnXAIrrT3OrZZZpNR8E/b4n?=
- =?us-ascii?Q?Vskn/n2JaVcGBvXKJclN6hnnRkCwDplLEHNqXvFXtSqSETRDbCGIykKFB7tr?=
- =?us-ascii?Q?kxeEDPWg2SIhs9QzBda7GG9C4PRrFVcYU8oeTIRo8Z6ICpa/LXMj96fxHWNm?=
- =?us-ascii?Q?9Qde0IvOOMbolZRUqGBs1vR3xdpaa6zIKx8RtJ3skAbie3ABEPch0g7bItKJ?=
- =?us-ascii?Q?7Z3CgDkrQeg5pe84aVzCSrfGwrvVuE6P4cWms7eFrQ016y06UdR7CW/WTNiN?=
- =?us-ascii?Q?twmLi39NdkSf9yq9jB4srT5dHWgbZgUktrjZzYSPqCdZ+kvEQoaTcLG6dIhN?=
- =?us-ascii?Q?0Rl2L89xZvTGWjV4SrzRBjcs0c7+KvswJpPigKQqaKBAmZYGI7xBEIkdNY6g?=
- =?us-ascii?Q?7dDMzAf2pLR3oWHDmBmehvz4f0I6YnhhG2VFhIZ1X9Gq4rY2CtqVD1gG3LRf?=
- =?us-ascii?Q?T/5gxh98rSvD5g872fescu2izKNKLgTkDriwlqk7KzfjgIj9FQY5RgI+A6Ax?=
- =?us-ascii?Q?pjhpWflUjGyuTjvNIBj7zekk4zPabHXFwmqpPGuMfvrYl+Xpvji7LZT57Y6I?=
- =?us-ascii?Q?ey5ZtUKXB+JBlEqGRhyS8n9Hj7WVags5//RSsD/E9v9WNTP0fVOl7Ab2uo7L?=
- =?us-ascii?Q?k3QJCpzvApD6NJONjWBsSPcrpQAd1lbLsit0VT7BwI4qOoFoLPBGaenq/9/i?=
- =?us-ascii?Q?dBxRD4HKymOJDf1cRLQcfuUM0rYKmVwMQ2Kd1wCjJxcmiiti9qtCyct0LB9P?=
- =?us-ascii?Q?fb22mrow+eS/FjPUPFId2F6EqnNoBbTP8dMVYjYgmsoTW+mZt2qXtJ2vLB6I?=
- =?us-ascii?Q?UF5+qg7NeXdVmImoYWRRaI/6YINWK43Do9V+YU4k78jFkoo/PDhZZHR9xmCi?=
- =?us-ascii?Q?0sh989k2bXq+JXE62qUfX+sbs2rVZeB1S+r0w8e3GURKUYGNJJUBPVmR12H0?=
- =?us-ascii?Q?AxmU1tbs0lscRTYIWGsHbV1AYNQ4cWT4kPCZVAoAzyDNNbhVVoGpv7l4N6HE?=
- =?us-ascii?Q?Hfxn2L6Jpb1L/RZ2KdbvnRzhYmfg7fuCWEh9ygwbxolkpcoYGU4X21M52zu3?=
- =?us-ascii?Q?6+cVcBL29OgYLfC3lGs0B37Jli7ujvPxR5qfOwcPmHmIvPUDiaafixmbWIZs?=
- =?us-ascii?Q?9VpESwpvrii45a2d5GAJ7xapNXVsKXIDHwi03rt6/H1He3HSxfhL18ocfpW9?=
- =?us-ascii?Q?1dq72lf9nwqIgYeEpg7C+r+viMuhXGBcQ92DcBbjpMvHXBBzRh+0QbTqln4Y?=
- =?us-ascii?Q?EqxsgxQe8Rja/iitQb/w2PT8isqnSgJw2Ikcu7AQ+ON8fcmYfTUfVppuyCyk?=
- =?us-ascii?Q?T9yd6FMnx1IvFO21ugcPYX+8uG440EHTAz3vxLGgBSJCz4TChrC9WhCUpEJT?=
- =?us-ascii?Q?uXxUSaVh97NpYU2gME8SSqlUMY3E2YGECyDN1w6zmrdatYqXyhRBg7RI4hSp?=
- =?us-ascii?Q?mFUYRcK/2jCHML4opegkJMBbI6m89YuL8trVKI73aJgIELlxq/XEAtA4zH6C?=
- =?us-ascii?Q?xD+Iz/1igHclZ4xFhvi/7XuHJs2FlfntmbrV+SIuLKnM3CGSP0XvhEO/R43u?=
- =?us-ascii?Q?azNsPg=3D=3D?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 79de3500-5785-4ad2-eee5-08db680e03fd
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2023 10:49:21.1251
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qjof1PCD6X55MvolL2gvjxHxCs3BG3yq86ZImSrybrvn0j6ilT9BaF06xboTRrzsjAi0iCCSW5gtlX8OBqbvncH5rTcrVtYzen68bkJNO+Y=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY3PR13MB5044
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230607200922.978677727@linuxfoundation.org>
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Thu, 8 Jun 2023 16:21:53 +0530
+Message-ID: <CA+G9fYuv4MhCAMSc33hZdDozV=MJzbK3CvHYCn10nDOY5gDQpQ@mail.gmail.com>
+Subject: Re: [PATCH 6.3 000/286] 6.3.7-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jun 07, 2023 at 06:17:42PM +0300, Ivan Mikhaylov wrote:
-> Change ndo_set_mac_address to dev_set_mac_address because
-> dev_set_mac_address provides a way to notify network layer about MAC
-> change. In other case, services may not aware about MAC change and keep
-> using old one which set from network adapter driver.
-> 
-> As example, DHCP client from systemd do not update MAC address without
-> notification from net subsystem which leads to the problem with acquiring
-> the right address from DHCP server.
-> 
-> Fixes: cb10c7c0dfd9e ("net/ncsi: Add NCSI Broadcom OEM command")
-> Cc: stable@vger.kernel.org # v6.0+ 2f38e84 net/ncsi: make one oem_gma function for all mfr id
-> Signed-off-by: Paul Fertser <fercerpav@gmail.com>
-> Signed-off-by: Ivan Mikhaylov <fr0st61te@gmail.com>
+On Thu, 8 Jun 2023 at 01:52, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.3.7 release.
+> There are 286 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 09 Jun 2023 20:07:31 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.3.7-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.3.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
 
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
+
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build
+* kernel: 6.3.7-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git branch: linux-6.3.y
+* git commit: 78317e11fb00aba0b42e15367d2630a515e4a808
+* git describe: v6.3.5-333-g78317e11fb00
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build/v6.3.5=
+-333-g78317e11fb00
+
+## Test Regressions (compared to v6.3.5)
+
+## Metric Regressions (compared to v6.3.5)
+
+## Test Fixes (compared to v6.3.5)
+
+## Metric Fixes (compared to v6.3.5)
+
+## Test result summary
+total: 138349, pass: 121372, fail: 2111, skip: 14667, xfail: 199
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 140 total, 139 passed, 1 failed
+* arm64: 50 total, 50 passed, 0 failed
+* i386: 36 total, 35 passed, 1 failed
+* mips: 26 total, 26 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 34 total, 34 passed, 0 failed
+* riscv: 22 total, 22 passed, 0 failed
+* s390: 12 total, 12 passed, 0 failed
+* sh: 12 total, 12 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 42 total, 42 passed, 0 failed
+
+## Test suites summary
+* boot
+* fwts
+* igt-gpu-tools
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+* vdso
+
+--
+Linaro LKFT
+https://lkft.linaro.org
