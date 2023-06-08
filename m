@@ -2,220 +2,364 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1498727F98
-	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 14:04:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E303727FF2
+	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 14:26:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236155AbjFHMEP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 08:04:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41006 "EHLO
+        id S236598AbjFHM0v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 08:26:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236107AbjFHMEO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 08:04:14 -0400
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F6C51FDB;
-        Thu,  8 Jun 2023 05:04:13 -0700 (PDT)
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3589cnnK017139;
-        Thu, 8 Jun 2023 12:03:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-03-30;
- bh=pM3KQmztQZ4OsrPPirot07xwlQwMJ62TYOjlNpCY5m0=;
- b=0qjWWwIWe1XXudIWTEPlItdMbzxgVQvDmFMmExZL9e6StRRGP9b9Jgr41aIFn2bv2lm/
- kX1g1AAtiT6eL7pNWihEtxbEfy6sNwAW/EOC4pA0MeR7qTq5Dfhs34IupVZJAHXNvs/l
- Poywj0kH1LSYJY7vHkhxP5/ZAU4tuLJM2Tb99aA/TPt/xWKdjSiwBJFIFOkNDpH15IKx
- KH6k5kC7WiYxF3z6lcVtwykpWkRzVMZ5S1xZdwH5atW/boT/oM2jcKuEgj2TRPYlXrIz
- /qn01nAn9gC3Vy6ajVjwxL99PZ3AkmmMtgH+BGmIzU0/BOfKBKsaaFF8i6nayzJGejvD AA== 
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3r2a6pm5ew-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 08 Jun 2023 12:03:32 +0000
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 358BBRMJ010413;
-        Thu, 8 Jun 2023 12:03:31 GMT
-Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2168.outbound.protection.outlook.com [104.47.58.168])
-        by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3r2a6rsv48-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 08 Jun 2023 12:03:31 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VFQ74b7oq7+kQy3ldHUj1yo2ucFmsf4Yr0C8pDS50/2FOAEhFWjvzWopWGICy9URPCRjZPa9E9U8NQO3X7T4ffG1wqf/09tQx62yhCTYRtqgo4wSv4DcQlX4DWyMf4cpWe8uDPNxPkUpsdvFrA/9aIlBSxvXYu5FQlmRfqGk8E1dgZXlEzcY+HnNSGu14hvP2PcVhTNSDXtmtQhfgvAwSGs2KJjN/boB1JNgE2Pusp9BYNHf/kORjotcmVlCpHGod60w/sn8N4wY4ZyrmHvm5f15k1fBtkD/540NZhcVYgnuazWzgdrZBQ4GnYjhFrisybAIMVlmyNOZugADyeewzg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pM3KQmztQZ4OsrPPirot07xwlQwMJ62TYOjlNpCY5m0=;
- b=W1+bB76ADaErRgCnrnEUoB8IHjzY2uyUMjGqi+ST3v/j7QGAvXKOiKfoZSTZaYUyCkl94JnxsLvk9O14GFWT/7x/39sOqbD/GOTCWF9LjAR4FSLE8HshTky05o/B5dMEwlRkQAbuMlVbQYzYakmxovFOtax/jDvM4SqZS5cmlFiKM+2u9FSeo0bzV71zh5ZC3LwAJhmvfwX0utUDdcePz+AwK8dF2gegeB/P8lPu4fDCXvm2d7Mef2IxZ2aI8qHL3hCJY7ecX0VvV2y/rPK6HDEfsnk/1lo60A6Vamjlm2HHZhoFVAp4DrNBbR8pS6Dzi1qcSsHzjKbMIutmed++bw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pM3KQmztQZ4OsrPPirot07xwlQwMJ62TYOjlNpCY5m0=;
- b=du6tl8A9H+ywWtMMJ/HJsu3BpbwN9A9HwqcxDIK1vd/Aadwk+eRxsO2os3cF8qr4TCxT47QrwftOHXW80MT2LodEGl9rBUDYVtsKPEk/TvfOfKInbeNLmzyqLM0th2PVeNQPG909JA/yI/jpoZp1I+VpwOZKX5xv8XT4ofy7YKE=
-Received: from PH8PR10MB6290.namprd10.prod.outlook.com (2603:10b6:510:1c1::7)
- by IA1PR10MB6100.namprd10.prod.outlook.com (2603:10b6:208:3ab::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.24; Thu, 8 Jun
- 2023 12:03:18 +0000
-Received: from PH8PR10MB6290.namprd10.prod.outlook.com
- ([fe80::68c5:330c:d234:3834]) by PH8PR10MB6290.namprd10.prod.outlook.com
- ([fe80::68c5:330c:d234:3834%7]) with mapi id 15.20.6455.030; Thu, 8 Jun 2023
- 12:03:18 +0000
-Message-ID: <464b8d63-f18e-8229-0370-78861536d371@oracle.com>
-Date:   Thu, 8 Jun 2023 17:33:01 +0530
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.5.1
-Subject: Re: [PATCH 4.14 00/61] 4.14.317-rc1 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de,
-        Vegard Nossum <vegard.nossum@oracle.com>,
-        Darren Kenny <darren.kenny@oracle.com>
-References: <20230607200835.310274198@linuxfoundation.org>
-From:   Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SG2PR01CA0145.apcprd01.prod.exchangelabs.com
- (2603:1096:4:8f::25) To PH8PR10MB6290.namprd10.prod.outlook.com
- (2603:10b6:510:1c1::7)
+        with ESMTP id S236554AbjFHM0q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 08:26:46 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EB3430C6
+        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 05:26:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686227193; x=1717763193;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=lpwSug0A9uVIJP0rYqaNApuqhZnBfSjaRcLAHDOIRCI=;
+  b=VX6Aj0/J+N2AdRdS0/Jki4pbTyBomojVJeQr0mAeyorC1UsT5Gu/FD0z
+   3fv7QYKA9D48bgv9MOAgn/oNhJWseh2lVZxmX5VPUUVvcN0PhtN9/wI1A
+   /KkEVr9593o5dOA3mZCGdMTyFSRy9av4SCLvlTnhi52uK8qZaX/t1CFd9
+   MOFMOrau/UxBLbf3VrIT1syUUZM6HKGRNfm60uMkBYjXR2tcD76IBuPfJ
+   fi4fImvG/50IMpIz1i53HfCmTZNi0fNlOVRNvbmHW0Kc/4TLPiscV+aRQ
+   uKKd2R+XzlzgUNolRT5BuMAeOIGT51LjU0il2d9PmG0J1JxvEUQo4Jqod
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="354778139"
+X-IronPort-AV: E=Sophos;i="6.00,226,1681196400"; 
+   d="scan'208";a="354778139"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2023 05:26:16 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10734"; a="1040087851"
+X-IronPort-AV: E=Sophos;i="6.00,226,1681196400"; 
+   d="scan'208";a="1040087851"
+Received: from unknown (HELO localhost) ([10.237.66.162])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2023 05:26:13 -0700
+From:   Jani Nikula <jani.nikula@intel.com>
+To:     Wayne Lin <Wayne.Lin@amd.com>, dri-devel@lists.freedesktop.org,
+        amd-gfx@lists.freedesktop.org
+Cc:     lyude@redhat.com, ville.syrjala@linux.intel.com,
+        imre.deak@intel.com, harry.wentland@amd.com, jerry.zuo@amd.com,
+        Wayne Lin <Wayne.Lin@amd.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v4] drm/dp_mst: Clear MSG_RDY flag before sending new
+ message
+In-Reply-To: <20230608114316.3078024-1-Wayne.Lin@amd.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20230608114316.3078024-1-Wayne.Lin@amd.com>
+Date:   Thu, 08 Jun 2023 15:26:10 +0300
+Message-ID: <87a5xarvh9.fsf@intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR10MB6290:EE_|IA1PR10MB6100:EE_
-X-MS-Office365-Filtering-Correlation-Id: 941a494c-7921-45a2-424a-08db68185893
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: DL0VYD7/GDjjVNEuU+/D3YZG0Jofmxfas/9+IyThUFq4JcTM6PZ17iqC3k5nAQsvjrTrYniLhTavc2+b6yALiJl0+lmrHYAV5vyGtOdlxRY4vkH9rLU1urMQJd2zto+C89JPvGMXRwR4ueoAp/sUEo+da9qTN4tWCuYfjkEVdA+9aSPLXcG9s3eEo4BHpZtiZBzsw2mIRH3VWm7/up/4LhrxyPH8+qwuFx+5yulHwn2G2NXDw59Ud2p5d0WfIbCCrk61mHpiIrom5Og/C9O4ozjeBEUJdDpgt0wnPF8E0OH+VqyzH0I1Hup34a8ybrVN4WWzo+fbgYgvOgDBFipZas/zpiPg207yHzNs8puhiTVfQkFyVvJw268R1qH1Tb7qfDcE3S1fiXkh5AYIKzqaqhxflmMlbM7/Jd6uDdDZTAGcA+JwSzAgGSAqUJca1OgS1JPpsqjxiiViqjNzKriR1ygMDPFgwXBi5pzyRjZLFkDgO/5YTdE4ifYEC9Zs49CTPEt4R5YXj7w9QpHHUhTiO5n/yqkICHIkUTmmVIGWWe+wVuTvVbAOF8e1pNAOkLQjw6mlwTrj86qQmEeR9/08YN/B4Yp9ZT7SmOhsIyUhxg75LL696LMZiw1tfqMHgkeoYhG+Y2il0CM4KBXmjcu65A==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6290.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(136003)(396003)(346002)(366004)(376002)(39860400002)(451199021)(8936002)(186003)(2906002)(54906003)(478600001)(4326008)(2616005)(66476007)(4744005)(6666004)(66946007)(66556008)(8676002)(5660300002)(107886003)(53546011)(966005)(41300700001)(6506007)(6512007)(26005)(7416002)(6486002)(31696002)(36756003)(86362001)(316002)(38100700002)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?U3BSbzdaNm85WUN2cDJQdUNoYnNDc0ZObXhGSE5YOHRpaXFoSW1NYnNjdzlV?=
- =?utf-8?B?VVFIMDFJdnl3ZDJpQ2tsNGU2Y1pNcHpwSmZsUVlFK0szQ0tmbEY1ZldwcnYx?=
- =?utf-8?B?WEo4TlZwWG9ZMUFOVERYRTdiU0UyYVJ5L3I4cTdEcDdOc1E0azFGR2E2WFll?=
- =?utf-8?B?OFdrQTNmb2pNVVRXaHp4cTF1allDN2NpaUk5a1JPMVJ2enBuN3RWQ2V1VDZY?=
- =?utf-8?B?ejByc3hrT0h0SHRLSlN0bm9mcG52RnFoNm9SdzFZMGRQMVRlNU5scG5FVDIr?=
- =?utf-8?B?c3dxdjROZDJkcUFrY29hd2pKWk04RCtVSkhtY01weWhTMUdCUkJLV2d4RWhD?=
- =?utf-8?B?emZBalpDNUJTQWFkVy9OMDRnTWVCLzErQlZlSWQ0bTV6RE5RYkU4bEJwa3VP?=
- =?utf-8?B?czhJMktPOGNUSzNjUXJQcHBVcUFVcDBRN3dpUDB2bWo0R2JVenlkYmtpSVpz?=
- =?utf-8?B?Qy8wTmZ1WHRMcUU5MkJRWkE0elBvNGZVbVVpUDhKYlFWVmhVUmtmd09ZUUFE?=
- =?utf-8?B?V0RBSWd3RjNrMmhXV3JLOFlVWGpoOGsxTkw5aC9WTWRsWklJbnFUSmdYdHd6?=
- =?utf-8?B?VmVFT1FVZWZjNU44d0krZ2lJYXZMRU5HN25vYm1NUEdjL3F0Y0xGZmJDMGV5?=
- =?utf-8?B?US9GZlhaM0xDb2d4cmc2WXlSMnltVndVcmdqdGg3MXlVcG9LSFp5d21oOGtI?=
- =?utf-8?B?ek1TSlpnNGZzWEZQc1dJazVxdTdqekJ1YjlYMm00S2Q1ZklyMnFESjlzWmds?=
- =?utf-8?B?bk8zbis5YWgrYTJaT0JHRyt2S2l6cXNpd3ByK2gwMENBTXNZTWFCRzZXdFl4?=
- =?utf-8?B?QytlVXdYdlVCeDhDajMrbkdTc1F1amt3VFBGWVdKTXIwTGh5NjM4cnRYMmFR?=
- =?utf-8?B?V3IrdWdNelJMUkwzcnJuUzlocGRXWDBtTGpPM0RXYzUyaDhuMWg2bGpJUWpS?=
- =?utf-8?B?eWxKNk8xUWdCa2FLREdYOStUa3Z5Mm9NREszNlFYK3FWbFplRTY3ODZoQjlS?=
- =?utf-8?B?YXF2WVFIKzh3MGhSTFZlc2ROMVgrSEZaYUFDSHAyTW1HNEowcjdWV3pmeXdJ?=
- =?utf-8?B?b1VGcWtTRkRpQXRiNmoxSXVCZE5VSk4rQWhJSkVRLzRicXUwamlvLy8zZUR6?=
- =?utf-8?B?d2VoRUM4KzR5ZHJUSk1EQ1lIM2xtMm82cGtZZm1XSjJSa2JRemxtYlNkSkdH?=
- =?utf-8?B?OXJ2eU1oVnhCeVhiWmNIc1pnWVM2a3lkNjJsQ0YvS2MxNWU0cmN4Yytaek50?=
- =?utf-8?B?aU05b2ZaTmhFaG4weW5PMWZGTTBoVUc3akhEaEc5SWd0djBKWnJocUFGdFpN?=
- =?utf-8?B?eDMvRHNSTGVMV0ZNb1lublpKWVNidndyd21uMUc1cE1BTHBaS0RYaDEzdC92?=
- =?utf-8?B?aTZzMTJxalVDR3FXT3Z2OE1KN1A3dTYyeXBIMElIMzBvMTFBSVRUYVdmTndt?=
- =?utf-8?B?alViWnByUGFBR3hLTzVnL3UycDBmTVJ0SDZINjdMaFV1QUIzTlpNR0hQZ2Mw?=
- =?utf-8?B?cUhJSkpkb2lyV21hTm5STkZjSGhnblBudjl6WktOd2M3Z240dFYrd2EySmJu?=
- =?utf-8?B?bkdVeWJQNFgvdFhLNHQxeE0vQURLVWVNRTZMK2VaQzRUaDQxU1JwVG1OM2g0?=
- =?utf-8?B?OU1vTldTeG8rYU41VmpZTXNqZFJwejJFNnJhbVFycndkalRwZDR5K0lLcnZz?=
- =?utf-8?B?TDdVMDFTZkRWMVJORHNRMXVJMW9yYnRVUlF2NnVFL2FzU0FiejUrZnB6T3Fs?=
- =?utf-8?B?LzZPVVFZNHBwcmRnK3FwWm1KcmhFTVJPU2R1ZFNlOXo2MmRldFdweXNyTGFo?=
- =?utf-8?B?dm85YmpZWGlSY2wyTTN6MVBGM0UwZno4dEtJNnBOZHZPelN0WjBFZmNpbGxC?=
- =?utf-8?B?NTBvZFAvMzJnQnRtakkzNUs1OEdxeVdFYmdUT1FXZ3Q4QlRHZzV0QjdSY1Uz?=
- =?utf-8?B?NmFLcytuQkFxUHE5eTgvVVF0YkhWL1RWUTRJSjdqTDF6aE0vOVZXbmhoM0gy?=
- =?utf-8?B?ZTBSVnJnQVRDV1hMREljdzhyRUdpcFNjOUcrWHZJWkgyVkNnQnM5bmQ4VW1q?=
- =?utf-8?B?ZFNFd3ErYmo2NXIrNG1abjJaOXdra0t1WTh2aDJTQktlaDZPcTQvd2krclUw?=
- =?utf-8?B?bjB5NEdwYzFkRXFNWlJQUTJtTGlubUVuRzZWNmVyR3VmSDJGQUowZnd3MTk3?=
- =?utf-8?Q?TdsyL+qtyCbaJ8WnEZDTVik=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?utf-8?B?OGxDVi9uQ0JFWHNZMHdOWDBsenI1OFk3OGZoL3RIaWhsY01KL01YR0tIVTMw?=
- =?utf-8?B?aCtlSVF6V3N2KzcyanpLRlhxOTJJSXJYRTFQdlV0SHVzVGIxSHZpemNlNmZp?=
- =?utf-8?B?RzU4Q0xnRStMRS94NWxsRlBnWE94ZWFXS0hwa3dKS3lYQjVDdnc2eEtvVkha?=
- =?utf-8?B?SmdCeEVNVUV5YW5zS25GZ1V2OVdSekNJNGFjMU9OYjYrcGkwREFEZnJmaE5v?=
- =?utf-8?B?MC9qN2pWTkhobFJyUUIxek9FM2Uzcmp3bFAxTktqTVcwTDRuZStnb0xMYVp2?=
- =?utf-8?B?VGNOamZYNFRwbG9hemdwY0cxdGlMKzJ6MUJENDNJdG16RUZTd1U5UmtPZ1k0?=
- =?utf-8?B?Y2dZTHUvTUh5Nk9MaVlJb2QrQWVKZHVqMWpwTThvZWE3VGNjd2hSSXF4Mk92?=
- =?utf-8?B?cTJlOGVuVFcxejNqNVJtdDZja2QzS3lIVjRtckN4bjNkbEVFd1czT0xrU05Q?=
- =?utf-8?B?ZGZmV0hpV1JRK29SUU1YZTZlTUwrTHlJSmVmRjdDU3RTOUZ2SjhobDIxRGU0?=
- =?utf-8?B?dTVjYlplckYvVWF6OUdhSGlGTFFsbEtHNlZDcXZhbno0am5MY0lVdDVaYTYv?=
- =?utf-8?B?M2pKK1g2eVhoeVVxdnVJWS9CT2pSdGRDTEZWVDQvYkR5NXc2dmpjekVLajRw?=
- =?utf-8?B?TnBtOVBZTldiQ09FL3UwOE14bTZneU9kbmZZMTYyOUtEY0dKaFVualcrL0dh?=
- =?utf-8?B?SGVMbnlMM3ZaaUk3WXN6VndEWmhGWU54SnZHY3hESEJLdGZNSTNwYnUwS2hS?=
- =?utf-8?B?UmF6ckpkM053T0g3QjRod1NCcjNoLy9vQ1ZSQm0veXFVUnZKd3B0UzAwbmZn?=
- =?utf-8?B?bTcweGNiREZCTW5oVUtGNHFFdVgrcFRrM0pZVG5McHJnRlhCN2haUEFxcmtj?=
- =?utf-8?B?QjBnRDZzQmZlYXNhV3NWMTlmZGFxUzdSSmMzMFJaQlFMbWdKQXc0c3FnSkxK?=
- =?utf-8?B?bVJnSG85T1JRTCtTd3drT2p6YW5ZcnZRUDJHeEFQQzFvYlFFWi93Z3RCcXcr?=
- =?utf-8?B?RFBFdTVHdDZ4akxpcHN3Z3dlSFpyRmVtUkdKTHpmMjhxd3lQcE1lRm11VGhZ?=
- =?utf-8?B?NEZSd043Y3BWUFNSeFZSUTk0djZXUGNQNnM2SWVpM2tOMDAxYndhcEorMUFy?=
- =?utf-8?B?Y05BdzlyQWw2L1lXZ1VZSFdiWnUvS1ZjeEpKbTlUemZ3M2lOdC9aZkVxeUo1?=
- =?utf-8?B?U3ZTNDRma0hnZy9vb1huSWlkNDZkbnVVTk1TaDVPTEY3S2hVVXRGNGxHT0hP?=
- =?utf-8?B?b2xtd1RwSDZwNHRLZHRuV0J2eGNyUjNLTWlRdjhLd3N5eTVwR3BOcWlwb0Vh?=
- =?utf-8?B?Tm90RlJsUHdJREs2L1FnSGduSjN3WFFmY1BlQlExNUhCdkxDNmxZY1JlWno1?=
- =?utf-8?B?OVhrcGtyVm5URHlVV1dWUWkxcUxUNndMUjA4Z282NzhGQ2lBRGJTZlArTnF3?=
- =?utf-8?B?THBEL2FDcnBlV1V3aFBxOUxUQ3k1QTd5NGJxOG1QYnJxWExQSExrTkQ3aEJP?=
- =?utf-8?B?VGpCMFQ0cmN0T2p0NkZIeGFVZ004NGlxZlE3SDdoaHMxMzczOUpqMm1tVzRN?=
- =?utf-8?Q?InPryf2Z8/5bB0xGOxeP8c8r389f6vvQu2LYhj3qzRrlOu?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 941a494c-7921-45a2-424a-08db68185893
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6290.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2023 12:03:17.9123
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: igDIcY1QIzNz8HjmFtG8MBG5OGCW1gV40/CJYeHpXgqe0NDjFFZ1JAWT84Er3YGVCiz1qqYFxxFq+30YTIlc7A3VPiIkVfhOw0c1N/dPAiNovVs00Kde6QISqhWoESD3
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB6100
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-08_08,2023-06-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- mlxscore=0 bulkscore=0 phishscore=0 mlxlogscore=999 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306080104
-X-Proofpoint-ORIG-GUID: LGOlhOkfj2jf3RClNT0D5g2xxGJ08qoU
-X-Proofpoint-GUID: LGOlhOkfj2jf3RClNT0D5g2xxGJ08qoU
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
+On Thu, 08 Jun 2023, Wayne Lin <Wayne.Lin@amd.com> wrote:
+> [Why]
+> The sequence for collecting down_reply from source perspective should
+> be:
+>
+> Request_n->repeat (get partial reply of Request_n->clear message ready
+> flag to ack DPRX that the message is received) till all partial
+> replies for Request_n are received->new Request_n+1.
+>
+> Now there is chance that drm_dp_mst_hpd_irq() will fire new down
+> request in the tx queue when the down reply is incomplete. Source is
+> restricted to generate interveleaved message transactions so we should
+> avoid it.
+>
+> Also, while assembling partial reply packets, reading out DPCD DOWN_REP
+> Sideband MSG buffer + clearing DOWN_REP_MSG_RDY flag should be
+> wrapped up as a complete operation for reading out a reply packet.
+> Kicking off a new request before clearing DOWN_REP_MSG_RDY flag might
+> be risky. e.g. If the reply of the new request has overwritten the
+> DPRX DOWN_REP Sideband MSG buffer before source writing one to clear
+> DOWN_REP_MSG_RDY flag, source then unintentionally flushes the reply
+> for the new request. Should handle the up request in the same way.
+>
+> [How]
+> Separete drm_dp_mst_hpd_irq() into 2 steps. After acking the MST IRQ
+> event, driver calls drm_dp_mst_hpd_irq_send_new_request() and might
+> trigger drm_dp_mst_kick_tx() only when there is no on going message
+> transaction.
+>
+> Changes since v1:
+> * Reworked on review comments received
+> -> Adjust the fix to let driver explicitly kick off new down request
+> when mst irq event is handled and acked
+> -> Adjust the commit message
+>
+> Changes since v2:
+> * Adjust the commit message
+> * Adjust the naming of the divided 2 functions and add a new input
+>   parameter "ack".
+> * Adjust code flow as per review comments.
+>
+> Changes since v3:
+> * Update the function description of drm_dp_mst_hpd_irq_handle_event
+>
+> Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+> Cc: stable@vger.kernel.org
+> ---
+>  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 33 ++++++------
+>  drivers/gpu/drm/display/drm_dp_mst_topology.c | 54 ++++++++++++++++---
+>  drivers/gpu/drm/i915/display/intel_dp.c       |  7 +--
+>  drivers/gpu/drm/nouveau/dispnv50/disp.c       | 12 +++--
+>  include/drm/display/drm_dp_mst_helper.h       |  7 ++-
+>  5 files changed, 82 insertions(+), 31 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> index d5cec03eaa8d..597c3368bcfb 100644
+> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> @@ -3236,6 +3236,7 @@ static void dm_handle_mst_sideband_msg(struct amdgpu_dm_connector *aconnector)
+>  {
+>  	u8 esi[DP_PSR_ERROR_STATUS - DP_SINK_COUNT_ESI] = { 0 };
+>  	u8 dret;
+> +	u8 ack;
+>  	bool new_irq_handled = false;
+>  	int dpcd_addr;
+>  	int dpcd_bytes_to_read;
+> @@ -3265,34 +3266,36 @@ static void dm_handle_mst_sideband_msg(struct amdgpu_dm_connector *aconnector)
+>  		process_count < max_process_count) {
+>  		u8 retry;
+>  		dret = 0;
+> +		ack = 0;
+>  
+>  		process_count++;
+>  
+>  		DRM_DEBUG_DRIVER("ESI %02x %02x %02x\n", esi[0], esi[1], esi[2]);
+>  		/* handle HPD short pulse irq */
+>  		if (aconnector->mst_mgr.mst_state)
+> -			drm_dp_mst_hpd_irq(
+> -				&aconnector->mst_mgr,
+> -				esi,
+> -				&new_irq_handled);
+> +			drm_dp_mst_hpd_irq_handle_event(&aconnector->mst_mgr,
+> +							esi,
+> +							&ack,
+> +							&new_irq_handled);
+>  
+>  		if (new_irq_handled) {
+>  			/* ACK at DPCD to notify down stream */
+> -			const int ack_dpcd_bytes_to_write =
+> -				dpcd_bytes_to_read - 1;
+> -
+>  			for (retry = 0; retry < 3; retry++) {
+> -				u8 wret;
+> -
+> -				wret = drm_dp_dpcd_write(
+> -					&aconnector->dm_dp_aux.aux,
+> -					dpcd_addr + 1,
+> -					&esi[1],
+> -					ack_dpcd_bytes_to_write);
+> -				if (wret == ack_dpcd_bytes_to_write)
+> +				ssize_t wret;
+> +
+> +				wret = drm_dp_dpcd_writeb(&aconnector->dm_dp_aux.aux,
+> +							  dpcd_addr + 1,
+> +							  ack);
+> +				if (wret == 1)
+>  					break;
+>  			}
+>  
+> +			if (retry == 3) {
+> +				DRM_ERROR("Failed to ack MST event.\n");
+> +				return;
+> +			}
+> +
+> +			drm_dp_mst_hpd_irq_send_new_request(&aconnector->mst_mgr);
+>  			/* check if there is new irq to be handled */
+>  			dret = drm_dp_dpcd_read(
+>  				&aconnector->dm_dp_aux.aux,
+> diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> index 38dab76ae69e..3a018f5b604c 100644
+> --- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> +++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> @@ -4053,17 +4053,28 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
+>  }
+>  
+>  /**
+> - * drm_dp_mst_hpd_irq() - MST hotplug IRQ notify
+> + * drm_dp_mst_hpd_irq_handle_event() - MST hotplug IRQ handle MST event
+>   * @mgr: manager to notify irq for.
+>   * @esi: 4 bytes from SINK_COUNT_ESI
+> + * @ack: flags of events to ack
+>   * @handled: whether the hpd interrupt was consumed or not
+>   *
+> - * This should be called from the driver when it detects a short IRQ,
+> + * This should be called from the driver when it detects a HPD IRQ,
+>   * along with the value of the DEVICE_SERVICE_IRQ_VECTOR_ESI0. The
+> - * topology manager will process the sideband messages received as a result
+> - * of this.
+> + * topology manager will process the sideband messages received
+> + * as indicated in the DEVICE_SERVICE_IRQ_VECTOR_ESI0 and set the
+> + * corresponding flags that Driver has to ack the DP receiver later.
+> + *
+> + * Note that driver shall also call
+> + * drm_dp_mst_hpd_irq_send_new_request() if the 'handled' is set
+> + * after calling this function, to try to kick off a new request in
+> + * the queue if the previous message transaction is completed.
+> + *
+> + * See also:
+> + * drm_dp_mst_hpd_irq_send_new_request()
+>   */
+> -int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi, bool *handled)
+> +int drm_dp_mst_hpd_irq_handle_event(struct drm_dp_mst_topology_mgr *mgr, const u8 *esi,
+> +				    u8 *ack, bool *handled)
+>  {
+>  	int ret = 0;
+>  	int sc;
+> @@ -4078,18 +4089,47 @@ int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi, bool *handl
+>  	if (esi[1] & DP_DOWN_REP_MSG_RDY) {
+>  		ret = drm_dp_mst_handle_down_rep(mgr);
+>  		*handled = true;
+> +		*ack |= DP_DOWN_REP_MSG_RDY;
+
+My idea was that esi and ack would be the same size buffers, so the
+caller wouldn't have to worry where exactly to point ack to.
+
+I think the asymmetry here is misleading, with ack and esi having to
+point at different locations.
+
+BR,
+Jani.
 
 
-On 08/06/23 1:45 am, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 4.14.317 release.
-> There are 61 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 09 Jun 2023 20:07:31 +0000.
-> Anything received after that time might be too late.
-> 
 
-No problems seen on aarch64.
+>  	}
+>  
+>  	if (esi[1] & DP_UP_REQ_MSG_RDY) {
+>  		ret |= drm_dp_mst_handle_up_req(mgr);
+>  		*handled = true;
+> +		*ack |= DP_UP_REQ_MSG_RDY;
+>  	}
+>  
+> -	drm_dp_mst_kick_tx(mgr);
+>  	return ret;
+>  }
+> -EXPORT_SYMBOL(drm_dp_mst_hpd_irq);
+> +EXPORT_SYMBOL(drm_dp_mst_hpd_irq_handle_event);
+>  
+> +/**
+> + * drm_dp_mst_hpd_irq_send_new_request() - MST hotplug IRQ kick off new request
+> + * @mgr: manager to notify irq for.
+> + *
+> + * This should be called from the driver when mst irq event is handled
+> + * and acked. Note that new down request should only be sent when
+> + * previous message transaction is completed. Source is not supposed to generate
+> + * interleaved message transactions.
+> + */
+> +void drm_dp_mst_hpd_irq_send_new_request(struct drm_dp_mst_topology_mgr *mgr)
+> +{
+> +	struct drm_dp_sideband_msg_tx *txmsg;
+> +	bool kick = true;
+> +
+> +	mutex_lock(&mgr->qlock);
+> +	txmsg = list_first_entry_or_null(&mgr->tx_msg_downq,
+> +					 struct drm_dp_sideband_msg_tx, next);
+> +	/* If last transaction is not completed yet*/
+> +	if (!txmsg ||
+> +	    txmsg->state == DRM_DP_SIDEBAND_TX_START_SEND ||
+> +	    txmsg->state == DRM_DP_SIDEBAND_TX_SENT)
+> +		kick = false;
+> +	mutex_unlock(&mgr->qlock);
+> +
+> +	if (kick)
+> +		drm_dp_mst_kick_tx(mgr);
+> +}
+> +EXPORT_SYMBOL(drm_dp_mst_hpd_irq_send_new_request);
+>  /**
+>   * drm_dp_mst_detect_port() - get connection status for an MST port
+>   * @connector: DRM connector for this port
+> diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+> index 4bec8cd7979f..f24602887015 100644
+> --- a/drivers/gpu/drm/i915/display/intel_dp.c
+> +++ b/drivers/gpu/drm/i915/display/intel_dp.c
+> @@ -4062,9 +4062,7 @@ intel_dp_mst_hpd_irq(struct intel_dp *intel_dp, u8 *esi, u8 *ack)
+>  {
+>  	bool handled = false;
+>  
+> -	drm_dp_mst_hpd_irq(&intel_dp->mst_mgr, esi, &handled);
+> -	if (handled)
+> -		ack[1] |= esi[1] & (DP_DOWN_REP_MSG_RDY | DP_UP_REQ_MSG_RDY);
+> +	drm_dp_mst_hpd_irq_handle_event(&intel_dp->mst_mgr, esi, &ack[1], &handled);
+>  
+>  	if (esi[1] & DP_CP_IRQ) {
+>  		intel_hdcp_handle_cp_irq(intel_dp->attached_connector);
+> @@ -4139,6 +4137,9 @@ intel_dp_check_mst_status(struct intel_dp *intel_dp)
+>  
+>  		if (!intel_dp_ack_sink_irq_esi(intel_dp, ack))
+>  			drm_dbg_kms(&i915->drm, "Failed to ack ESI\n");
+> +
+> +		if (ack[1] & (DP_DOWN_REP_MSG_RDY | DP_UP_REQ_MSG_RDY))
+> +			drm_dp_mst_hpd_irq_send_new_request(&intel_dp->mst_mgr);
+>  	}
+>  
+>  	return link_ok;
+> diff --git a/drivers/gpu/drm/nouveau/dispnv50/disp.c b/drivers/gpu/drm/nouveau/dispnv50/disp.c
+> index 9b6824f6b9e4..b2d9978e88a8 100644
+> --- a/drivers/gpu/drm/nouveau/dispnv50/disp.c
+> +++ b/drivers/gpu/drm/nouveau/dispnv50/disp.c
+> @@ -1357,6 +1357,7 @@ nv50_mstm_service(struct nouveau_drm *drm,
+>  	bool handled = true, ret = true;
+>  	int rc;
+>  	u8 esi[8] = {};
+> +	u8 ack;
+>  
+>  	while (handled) {
+>  		rc = drm_dp_dpcd_read(aux, DP_SINK_COUNT_ESI, esi, 8);
+> @@ -1365,16 +1366,19 @@ nv50_mstm_service(struct nouveau_drm *drm,
+>  			break;
+>  		}
+>  
+> -		drm_dp_mst_hpd_irq(&mstm->mgr, esi, &handled);
+> +		ack = 0;
+> +		drm_dp_mst_hpd_irq_handle_event(&mstm->mgr, esi, &ack, &handled);
+>  		if (!handled)
+>  			break;
+>  
+> -		rc = drm_dp_dpcd_write(aux, DP_SINK_COUNT_ESI + 1, &esi[1],
+> -				       3);
+> -		if (rc != 3) {
+> +		rc = drm_dp_dpcd_writeb(aux, DP_SINK_COUNT_ESI + 1, ack);
+> +
+> +		if (rc != 1) {
+>  			ret = false;
+>  			break;
+>  		}
+> +
+> +		drm_dp_mst_hpd_irq_send_new_request(&mstm->mgr);
+>  	}
+>  
+>  	if (!ret)
+> diff --git a/include/drm/display/drm_dp_mst_helper.h b/include/drm/display/drm_dp_mst_helper.h
+> index 32c764fb9cb5..40e855c8407c 100644
+> --- a/include/drm/display/drm_dp_mst_helper.h
+> +++ b/include/drm/display/drm_dp_mst_helper.h
+> @@ -815,8 +815,11 @@ void drm_dp_mst_topology_mgr_destroy(struct drm_dp_mst_topology_mgr *mgr);
+>  bool drm_dp_read_mst_cap(struct drm_dp_aux *aux, const u8 dpcd[DP_RECEIVER_CAP_SIZE]);
+>  int drm_dp_mst_topology_mgr_set_mst(struct drm_dp_mst_topology_mgr *mgr, bool mst_state);
+>  
+> -int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi, bool *handled);
+> -
+> +int drm_dp_mst_hpd_irq_handle_event(struct drm_dp_mst_topology_mgr *mgr,
+> +				    const u8 *esi,
+> +				    u8 *ack,
+> +				    bool *handled);
+> +void drm_dp_mst_hpd_irq_send_new_request(struct drm_dp_mst_topology_mgr *mgr);
+>  
+>  int
+>  drm_dp_mst_detect_port(struct drm_connector *connector,
 
-Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-
-Thanks,
-Harshit
-
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.14.317-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.14.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+-- 
+Jani Nikula, Intel Open Source Graphics Center
