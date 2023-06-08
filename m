@@ -2,245 +2,132 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE11972822E
-	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 16:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB81B728289
+	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 16:21:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236514AbjFHOFr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 10:05:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43836 "EHLO
+        id S236571AbjFHOVk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 10:21:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236787AbjFHOFo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 10:05:44 -0400
-Received: from mail-ot1-x32c.google.com (mail-ot1-x32c.google.com [IPv6:2607:f8b0:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44DF8273F
-        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 07:05:42 -0700 (PDT)
-Received: by mail-ot1-x32c.google.com with SMTP id 46e09a7af769-6b29f53137cso437120a34.0
-        for <stable@vger.kernel.org>; Thu, 08 Jun 2023 07:05:42 -0700 (PDT)
+        with ESMTP id S236034AbjFHOVj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 10:21:39 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFA562728
+        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 07:21:37 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-5147f5efeb5so1203154a12.0
+        for <stable@vger.kernel.org>; Thu, 08 Jun 2023 07:21:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686233140; x=1688825140;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=safYf9mtP/TqCKpDii2aud/ldnVoerr/RL86C5Y3JdA=;
-        b=yeoSvKknohEapCfJtL5b/uPDo3O36xSSP2UiE2gr6fJmVfRaHgAh09q9GaP3Gt9i9O
-         8l8Y6DRFuvkUi7j+dD3r5qVSIbc2q0/C2DEKzM810+BSkueV+RQ656VTwjBTN3yLABcN
-         uMIMjTLU63yF1wON1fhy3ZzAI1kjnrSEAqMoYZ7Z71sB7sbQ3rY+uN9mu3C+uVzzgxT+
-         suwNL53FZUCT4F5k8zLyU0NosM3HeMkkj/CBtgoe63biDtDJ1m1MZbLOndgp9c1FAOds
-         aUDCIvLS7NAPtwy1VOorPTy0hDImZk3+IGtHRJqsaM3JEu1IC590xC1Fi/lh36NB66Jq
-         RXIA==
+        d=baylibre-com.20221208.gappssmtp.com; s=20221208; t=1686234096; x=1688826096;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JFkhR/nDDeZj3WU6Lo1Y6tuS2XYosQh6K+Nbpj2dhnU=;
+        b=qxlisgdHqBeEhwNLBpWcPgpovCr6Y95mAfrZh87SswHzpMTNNzslwV3f2fT6fzmuqH
+         LcbUF0BRW2XWlyJ7W6eHIN5VLrRZEVHA1nIbXm3Lh27vbcB2bdkylZ9uQ9YCbxEozAN3
+         8+Gu6SCPI+apwJPWGiJjZCdTOXBDycrax4kgIEzCo69KcelqZMaEn5tzi2JfjlyIk/rO
+         gxiHGz+FiQmwVW/VfOkadpvOBf9JLBopfol6/lMDJnA6z/fgbnD0wx4M7rMZ2fg9Q/q4
+         0snRl1/McNlBNEZiHwK7amJDEVk/eZyxFjc4xF8xOOq1ua1OC2IXVomgesQja+jTLVBV
+         7gAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686233140; x=1688825140;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=safYf9mtP/TqCKpDii2aud/ldnVoerr/RL86C5Y3JdA=;
-        b=ZzyqxYpCoI7vgtjGqGURYvhbpQps+d1TfiIB23ryWXWPIevrfhRJuxBmk27yiMwt13
-         lTnaGnzyUQe/2midiU0+yAvXRyLVIil8W4WN7K0m46tDmZ3Tvf1ypbj+Q++2hUoCRddh
-         p9yNzQlFUltwVP1nKxPTozfm4GrMyHz3Hc8X9I1EJa2HeP+EVKecOP4eIDckf9aZhG++
-         ELuCPWPS+feyyv2mQg4y58Vjlgo82Olg4+UuGErGm4jABVyFDDeiDTaSpTqwF7VzMM+K
-         1dS3KOsJjB1JGLgNthZCRDMpCipKoDJxFVqh2lr9I6gj3tfje46PopccREy5alb14S1u
-         3ILA==
-X-Gm-Message-State: AC+VfDyqzErBAkYZdb5N1hsm9AAO98wSPSDXONNigzmOgmt/LY+GmW57
-        IUyAkjhK4Murorg61VHj8lfquvslzmvh1uK5W5DgQg==
-X-Google-Smtp-Source: ACHHUZ7KqxK0en144Hhhsj8yZ0vGveaeyuTpvLD0jU/cAdPLf+priNbDb4qTL52S86AU3Rt7dkR58oNUP0V5p14gzIY=
-X-Received: by 2002:a05:6830:1e6d:b0:68d:6a1e:46b9 with SMTP id
- m13-20020a0568301e6d00b0068d6a1e46b9mr6119381otr.26.1686233139634; Thu, 08
- Jun 2023 07:05:39 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1686234096; x=1688826096;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JFkhR/nDDeZj3WU6Lo1Y6tuS2XYosQh6K+Nbpj2dhnU=;
+        b=irvwZXf+JyqWwtshmhslFjRqgzFKLw6R9VPEcN+K7UA+kXxntJ/hcBDGXprmYLWl03
+         1+6D3Rfd10+7E67TKhvs+XSMN/fjiivL5izgjvkpeQ+w6UtNlbdyxfF5H3eQ5dFYRFHG
+         N3PXquvGEYVtswAy8/4hp2d7j4RczpHFIBSO7PZh3bzxrNC+mvfeiOM38NTlduUMppHD
+         mA8W5oMbPjEqhxsK+27URu+wNcwFPbDcEC1yRBsgLbkDxI5SE5NkyeC0fOoEFk6sL0Nu
+         D9mSsvuvY36cfw3NdV2AAWKAVc3kclqr2AhAmTwzbdQRYV8lyiaS/oFbrqrKQT0fQNEm
+         7/YQ==
+X-Gm-Message-State: AC+VfDwVtYsuMoK77n0FQKSljAVdXRSH1h3KYKicOZUepqa4ORVLWyZ7
+        1fXWEeKGy5OcIAwqRjlUWr7SEA==
+X-Google-Smtp-Source: ACHHUZ7i7rJ4brnAidm+bbFk1+QBPpUKU7+0GYUHz0CLGipYiUtH1+5j5CMhK7fU+bULYsqiVWARfg==
+X-Received: by 2002:a17:907:1c85:b0:96f:45cd:6c21 with SMTP id nb5-20020a1709071c8500b0096f45cd6c21mr11013812ejc.30.1686234096275;
+        Thu, 08 Jun 2023 07:21:36 -0700 (PDT)
+Received: from jerome-BL.. (192.201.68.85.rev.sfr.net. [85.68.201.192])
+        by smtp.gmail.com with ESMTPSA id l8-20020a7bc448000000b003f42328b5d9sm2159912wmi.39.2023.06.08.07.21.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Jun 2023 07:21:35 -0700 (PDT)
+From:   Jerome Neanne <jneanne@baylibre.com>
+To:     linux-patch-review@list.ti.com
+Cc:     s.sharma@ti.com, u-kumar1@ti.com, eblanc@baylibre.com,
+        jneanne@baylibre.com, aseketeli@baylibre.com, jpanis@baylibre.com,
+        khilman@baylibre.com, d-gole@ti.com, vigneshr@ti.com,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        stable@vger.kernel.org,
+        Markus Schneider-Pargmann <msp@baylibre.com>
+Subject: [tiL6.1-P PATCH] regulator: tps65219: fix matching interrupts for their regulators
+Date:   Thu,  8 Jun 2023 16:21:32 +0200
+Message-Id: <20230608142132.3728511-1-jneanne@baylibre.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20230607200903.652580797@linuxfoundation.org>
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Thu, 8 Jun 2023 19:35:28 +0530
-Message-ID: <CA+G9fYtqtXhZ2CM56xP3C8iDz6CjvcsdP8SvJhtD=hkAt7VoBQ@mail.gmail.com>
-Subject: Re: [PATCH 5.15 000/159] 5.15.116-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 8 Jun 2023 at 02:27, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.15.116 release.
-> There are 159 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 09 Jun 2023 20:07:31 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.15.116-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
+The driver's probe() first registers regulators in a loop and then in a
+second loop passes them as irq data to the interrupt handlers.  However
+the function to get the regulator for given name
+tps65219_get_rdev_by_name() was a no-op due to argument passed by value,
+not pointer, thus the second loop assigned always same value - from
+previous loop.  The interrupts, when fired, where executed with wrong
+data.  Compiler also noticed it:
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+  drivers/regulator/tps65219-regulator.c: In function ‘tps65219_get_rdev_by_name’:
+  drivers/regulator/tps65219-regulator.c:292:60: error: parameter ‘dev’ set but not used [-Werror=unused-but-set-parameter]
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Fixes: c12ac5fc3e0a ("regulator: drivers: Add TI TPS65219 PMIC regulators support")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
+Signed-off-by: Jerome Neanne <jneanne@baylibre.com>
+---
 
-## Build
-* kernel: 5.15.116-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git branch: linux-5.15.y
-* git commit: 00621f2608ac31643168c86e902c21a017ffe3b1
-* git describe: v5.15.114-196-g00621f2608ac
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
-.114-196-g00621f2608ac
+Notes:
+    This is backport of upstream fix in TI mainline:
+    Link: https://lore.kernel.org/all/20230507144656.192800-1-krzysztof.kozlowski@linaro.org/
 
-## Test Regressions (compared to v5.15.114)
+ drivers/regulator/tps65219-regulator.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-## Metric Regressions (compared to v5.15.114)
+diff --git a/drivers/regulator/tps65219-regulator.c b/drivers/regulator/tps65219-regulator.c
+index 58f6541b6417..b0d8d6fed24d 100644
+--- a/drivers/regulator/tps65219-regulator.c
++++ b/drivers/regulator/tps65219-regulator.c
+@@ -289,13 +289,13 @@ static irqreturn_t tps65219_regulator_irq_handler(int irq, void *data)
+ 
+ static int tps65219_get_rdev_by_name(const char *regulator_name,
+ 				     struct regulator_dev *rdevtbl[7],
+-				     struct regulator_dev *dev)
++				     struct regulator_dev **dev)
+ {
+ 	int i;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(regulators); i++) {
+ 		if (strcmp(regulator_name, regulators[i].name) == 0) {
+-			dev = rdevtbl[i];
++			*dev = rdevtbl[i];
+ 			return 0;
+ 		}
+ 	}
+@@ -348,7 +348,7 @@ static int tps65219_regulator_probe(struct platform_device *pdev)
+ 		irq_data[i].dev = tps->dev;
+ 		irq_data[i].type = irq_type;
+ 
+-		tps65219_get_rdev_by_name(irq_type->regulator_name, rdevtbl, rdev);
++		tps65219_get_rdev_by_name(irq_type->regulator_name, rdevtbl, &rdev);
+ 		if (IS_ERR(rdev)) {
+ 			dev_err(tps->dev, "Failed to get rdev for %s\n",
+ 				irq_type->regulator_name);
+-- 
+2.34.1
 
-## Test Fixes (compared to v5.15.114)
-
-## Metric Fixes (compared to v5.15.114)
-
-## Test result summary
-total: 108256, pass: 91348, fail: 3032, skip: 13715, xfail: 161
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 117 total, 116 passed, 1 failed
-* arm64: 45 total, 43 passed, 2 failed
-* i386: 35 total, 32 passed, 3 failed
-* mips: 27 total, 26 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 27 total, 26 passed, 1 failed
-* riscv: 11 total, 11 passed, 0 failed
-* s390: 12 total, 11 passed, 1 failed
-* sh: 14 total, 12 passed, 2 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 38 total, 36 passed, 2 failed
-
-## Test suites summary
-* boot
-* fwts
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-* vdso
-
---
-Linaro LKFT
-https://lkft.linaro.org
