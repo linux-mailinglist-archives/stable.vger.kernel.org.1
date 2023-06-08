@@ -2,52 +2,67 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDD4A727905
-	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 09:44:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05467727BC7
+	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 11:45:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232116AbjFHHoO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 03:44:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39838 "EHLO
+        id S230290AbjFHJpP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 05:45:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232954AbjFHHoK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 03:44:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDED126B5
-        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 00:44:08 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2EC4E649AB
-        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 07:44:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E25C4339E;
-        Thu,  8 Jun 2023 07:44:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686210247;
-        bh=44ZX1/E2URdeoOQhLnD0WSIkxPdv5hv0yg9fQ0AKqQI=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NVF+otL98/xTKC6DMJu/vGfZAQzdK5ca97MewAtJJEKkMymQkknbqDCtbBF5p/uk5
-         9DZuEkalhYoQO1dNB9/cp3rGCtwVZ1rjnAnx93gk1fnsUeB/879tVePQTOgrSCeZXE
-         2LSaxwOP+JsdNSE7cKwnLrTpEQC8S4dvDiSLdMr8=
-Date:   Thu, 8 Jun 2023 09:44:04 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Cc:     stable@vger.kernel.org, dpark@linux.microsoft.com,
-        t-lo@linux.microsoft.com, Sasha Levin <sashal@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>
-Subject: Re: [PATCH 6.1] arm64: efi: Use SMBIOS processor version to key off
- Ampere quirk
-Message-ID: <2023060845-wipe-headlamp-6c00@gregkh>
-References: <2023060606-shininess-rosy-7533@gregkh>
- <20230607122612.GA846@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
- <2023060719-uncertain-implant-dede@gregkh>
- <c8928af7-3e93-515e-1259-1d172cedef83@linux.microsoft.com>
+        with ESMTP id S236127AbjFHJox (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 05:44:53 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 930732720;
+        Thu,  8 Jun 2023 02:44:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1686217479; x=1717753479;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=N8BM0i5rppABoxdZHrQfySlcFcT+hRHiqGkgHCysC3w=;
+  b=yJtETtgTUK8XKpDatjdyWKaXZpW99/OOhy65lpZVdW8eeQaQ61DRM/zz
+   8boAVoqyqtypC3GYcdgt0An1E/Z0fk3BOKBZ4BqC0jWq6o2eSy92Fq+dd
+   n23AJstN+anuHqe6yW8k7plXCbedTLHGrr5PtsTYq48ZORWMficOtn2LQ
+   hbmjxdGuTXg4Wvci+8SiQrJRytAe8/v77TUrl601evlwZu+eFUTtBV9XJ
+   4SGY7Jg2M/8mx1HvFuXUJmLVqWMkpcSwGbpC5S/tEbqAK2YfXt01BOaJo
+   5aLy0nj4t3TfcqP2QafOEvkmUPQu+pKYwDy1xEFeEuPplub1vL/FBkHQX
+   Q==;
+X-IronPort-AV: E=Sophos;i="6.00,226,1681196400"; 
+   d="asc'?scan'208";a="219398130"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 08 Jun 2023 02:44:38 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Thu, 8 Jun 2023 02:44:00 -0700
+Received: from wendy (10.10.115.15) by chn-vm-ex04.mchp-main.com
+ (10.10.85.152) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
+ Transport; Thu, 8 Jun 2023 02:43:57 -0700
+Date:   Thu, 8 Jun 2023 10:43:33 +0100
+From:   Conor Dooley <conor.dooley@microchip.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     <stable@vger.kernel.org>, <patches@lists.linux.dev>,
+        <linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
+        <akpm@linux-foundation.org>, <linux@roeck-us.net>,
+        <shuah@kernel.org>, <patches@kernelci.org>,
+        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
+        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
+        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+        <rwarsow@gmx.de>
+Subject: Re: [PATCH 6.1 000/225] 6.1.33-rc1 review
+Message-ID: <20230608-boss-municipal-75220d1158f9@wendy>
+References: <20230607200913.334991024@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="ZEKmY72Ta3DxAanB"
 Content-Disposition: inline
-In-Reply-To: <c8928af7-3e93-515e-1259-1d172cedef83@linux.microsoft.com>
+In-Reply-To: <20230607200913.334991024@linuxfoundation.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,31 +70,31 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 08, 2023 at 09:36:22AM +0200, Jeremi Piotrowski wrote:
-> On 6/7/2023 8:36 PM, Greg KH wrote:
-> > On Wed, Jun 07, 2023 at 05:26:12AM -0700, Ard Biesheuvel wrote:
-> >> [ Upstream commit eb684408f3ea4856639675d6465f0024e498e4b1 ]
-> >>
-> >> Instead of using the SMBIOS type 1 record 'family' field, which is often
-> >> modified by OEMs, use the type 4 'processor ID' and 'processor version'
-> >> fields, which are set to a small set of probe-able values on all known
-> >> Ampere EFI systems in the field.
-> >>
-> >> Fixes: 550b33cfd4452968 ("arm64: efi: Force the use of ...")
-> >> Tested-by: Andrea Righi <andrea.righi@canonical.com>
-> >> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> >> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > 
-> > Where did Sasha sign off on this?
-> > 
-> 
-> I must have picked the commit from the 6.2 backport:
-> 
-> https://lore.kernel.org/stable/20230328142621.544265000@linuxfoundation.org/#t
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.2.16&id=b824efafca6739f6c80d22d88a83e6545114ed8e
+--ZEKmY72Ta3DxAanB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-When doing so, please be explicit, otherwise it is very confusing.
+On Wed, Jun 07, 2023 at 10:13:13PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.33 release.
+> There are 225 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-thanks,
+LGTM chief,
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
 
-greg k-h
+Thanks,
+Conor.
+
+--ZEKmY72Ta3DxAanB
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZIGixQAKCRB4tDGHoIJi
+0g4OAP0admz+rz+U1D9Q80IclWoci4XliKC4AEdi2qw1ND5MJgD9FdaHOjJIjp8a
+bFi+2tRcU1mZvtECVwFIXKMrkwMRGwM=
+=OqD+
+-----END PGP SIGNATURE-----
+
+--ZEKmY72Ta3DxAanB--
