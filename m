@@ -2,182 +2,133 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51538728A41
-	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 23:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 321AD728A48
+	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 23:35:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235711AbjFHV3e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 17:29:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37276 "EHLO
+        id S234505AbjFHVfY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 17:35:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232870AbjFHV3d (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 17:29:33 -0400
-Received: from frasgout13.his.huawei.com (unknown [14.137.139.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B10142D4A;
-        Thu,  8 Jun 2023 14:29:31 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.18.147.227])
-        by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4QccXS0Rsrz9y10X;
-        Fri,  9 Jun 2023 05:19:04 +0800 (CST)
-Received: from [10.81.214.99] (unknown [10.81.214.99])
-        by APP1 (Coremail) with SMTP id LxC2BwC3PwsoSIJkXE0hAw--.4266S2;
-        Thu, 08 Jun 2023 22:29:18 +0100 (CET)
-Message-ID: <688c274d-a4d2-9dc2-3bc0-ffd147f0bafd@huaweicloud.com>
-Date:   Thu, 8 Jun 2023 23:29:07 +0200
+        with ESMTP id S232119AbjFHVfW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 17:35:22 -0400
+Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01on2075.outbound.protection.outlook.com [40.107.215.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8D232D63
+        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 14:35:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=VWccaV0Cr78bEOGJWQD5Pm3ElMiBTSVHf3Je3t5OdZUPrVj9/IJYP1wfFDAhqGpImLMl9Cglz9yq/65C58P+34QUKeqvgTef+/358GDzvZ8obFvrSi1RxL52LzAZxy/LLbCRKoX2cX1kJLy9cylQov7CyxVYYFI8eyUVSet8YFM3VscY4YFkfOGTKa8aBrBbm2SSCPzUG5KjiTw9itS6gJq0RNQYpdT6aNM0WXrf5N3nAz9N62hDCvAz2uBtXSyObFPeEGT4mFi8e0Y1tjWV0QSf1+vIaLSQfM2wimiI0G0JDu0gVbAd3s8AtYVzJ/abvETvXThg6PMkHaFsyzJAeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+i9ZlqSvRIWBS/oyLu9xmTKRh2svF2ckUBhDCdl91Ac=;
+ b=Zx+9w17BWZH9ZSQbL/prhW+pH1RxSiibiUcaKholj7EyYyWaAxaoyYLuoqOZB9pWs7lIfVRAaYomMfn54jCdskoawlgsuyPiXisSQgeopgK8dUhb51FoAXVrS9Gn5OX6M2Qz4/mmkv70xF5RU2miYSk6EpZ5X9Vzk/bcK8Wmxo+5RBuUsA0hYrIKFvauy/dqMBSTY2DxU5l216fg5KMyuQz+NiFABMyFFCP/tn8L5jF8pwIw1InWpwXBEBLsADr3dOxGyv6ev18vMP2flgzm7gnNLiHqW/jfYpsX9oMMwpAfjb1GeAY0BRy1ujp2fVvCr8rym6MDS7a8t4SgahjO6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=sancloud.com; dmarc=pass action=none header.from=sancloud.com;
+ dkim=pass header.d=sancloud.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=sancloud.com;
+Received: from SEYPR06MB5064.apcprd06.prod.outlook.com (2603:1096:101:55::13)
+ by TYSPR06MB6750.apcprd06.prod.outlook.com (2603:1096:400:479::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.31; Thu, 8 Jun
+ 2023 21:35:18 +0000
+Received: from SEYPR06MB5064.apcprd06.prod.outlook.com
+ ([fe80::de44:cc0c:5757:6626]) by SEYPR06MB5064.apcprd06.prod.outlook.com
+ ([fe80::de44:cc0c:5757:6626%5]) with mapi id 15.20.6455.030; Thu, 8 Jun 2023
+ 21:35:17 +0000
+From:   Paul Barker <paul.barker@sancloud.com>
+To:     stable@vger.kernel.org
+Cc:     Paul Barker <paul.barker@sancloud.com>
+Subject: [PATCH 5.15.y 0/2] Backport GCC 13 fixes
+Date:   Thu,  8 Jun 2023 22:34:56 +0100
+Message-Id: <20230608213458.123923-1-paul.barker@sancloud.com>
+X-Mailer: git-send-email 2.34.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=877; i=paul.barker@sancloud.com; h=from:subject; bh=TvF2GWCnlP/7Lsv/7ZjAQ9JlLIR/2Z3TGRrVCl55Nlw=; b=owGbwMvMwCF2w7xIXuiX9CvG02pJDClNnnXdOwNt3fTKgvtMBVt5/2anFV5+L2rJfG/Kly271 GcuMiztKGVhEONgkBVTZNk9e9fl6w+WbO29IR0MM4eVCWQIAxenAEwkvI6R4S3TyxWLj5h/u3LC gVXndHZoTPuODTOuJr6+XHRrX9C2nreMDM9+K06ccaXs3O62pFkZ//wmdZwN27BCsHxxwLk01ZA SNW4A
+X-Developer-Key: i=paul.barker@sancloud.com; a=openpgp; fpr=D2DDFDAE30017AF4CB62AA96A67255DFCCE62ECD
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ClientProxiedBy: LO4P265CA0262.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:37c::10) To SEYPR06MB5064.apcprd06.prod.outlook.com
+ (2603:1096:101:55::13)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH] memfd: Check for non-NULL file_seals in memfd_create()
- syscall
-Content-Language: en-US
-From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        stable@vger.kernel.org,
-        =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>
-References: <20230607132427.2867435-1-roberto.sassu@huaweicloud.com>
- <20230607102131.11964c87b1078374c9d4b341@linux-foundation.org>
- <6663c7b0-26f5-bdd9-1209-b1c4d8ad31cc@huaweicloud.com>
-In-Reply-To: <6663c7b0-26f5-bdd9-1209-b1c4d8ad31cc@huaweicloud.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: LxC2BwC3PwsoSIJkXE0hAw--.4266S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxtF15XF4rAry8ZF1xur48WFg_yoW7XF47pr
-        y8XayDGrW8tr18Xr17Ar1j9ryUJa12y3W8Xrn2yFWrAFnFvF1qvw4DXF4j9ryDCr48Zw17
-        Ja1kJFn2vF18A3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUkjb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-        xVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
-        AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-        x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-        0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0E
-        wIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E74
-        80Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0
-        I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04
-        k26cxKx2IYs7xG6rWUJVWrZr1UMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIE
-        c7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07UWE__UUUUU=
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgACBF1jj4p0PwABs1
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.0 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
-        MAY_BE_FORGED,NICE_REPLY_A,PDS_RDNS_DYNAMIC_FP,RCVD_IN_MSPIKE_BL,
-        RCVD_IN_MSPIKE_L3,RDNS_DYNAMIC,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SEYPR06MB5064:EE_|TYSPR06MB6750:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8fcc5fa3-0134-4fb8-8564-08db6868408d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: UcJHSgSCZbfsja/Rl2VyXyZgQ4Frq7UGeNOjMbLkCkR8rDtlRS10hcyLxjwidpFwoEwBiy7U0qmUnNI5NBDKgfdlICsDEHfxzzBflcAB9WG/JicQAykgbm2NqlZ5LSiVQ4QMsGF86cFl3pWf1GX0cdW1uDmVY7L7CZeOG/bAdinmHidX/Y1gf6bNmypY5SgKVCfJlvUDqP0ag5vP7GYIR/Lt5BLjzNrUctBneJXAQavbUuIw5ST3vnHb/U965IBwEPcO0et+3hTQCDa5kixYpc8P8ykki8IQ6h5y/M7kw3MCCPhImZdfiANZqa3rJSV7Sh5J0w7QORFTgUfKCDXl9gG+d1wXZVdIvRu1yWKC1IRE/Qky7zxaU9DwoZwSpmmA0RKQp/OMTw/iBX58cvmIXurZViCQI2DPWVOBGl4aaA+ivWtYMLDm5kPWWO31MdM/mrpu9zNOV77pAA0q2Vz1nJvNtsP2BgkkJCCJGTBtdTsj/FjH/1c8D/QZ0BixEzSbSCpIacFjFDqEsoHsyCfMbvmNfmfWH0ZeGscjry7pPva6Y7PMEmNxZ7E6jFV6jRjHMMUaLpr+42Tfq74MrcPfSJBvmvPid5n1xiAQg3S3PoM=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SEYPR06MB5064.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(39830400003)(366004)(376002)(136003)(346002)(396003)(451199021)(786003)(316002)(36756003)(86362001)(38350700002)(41300700001)(38100700002)(83380400001)(66946007)(26005)(6506007)(1076003)(6512007)(66476007)(66556008)(186003)(2616005)(4326008)(6916009)(6666004)(478600001)(41320700001)(107886003)(4744005)(2906002)(52116002)(6486002)(44832011)(5660300002)(8936002)(8676002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?RqxFHUidPFsvVbNtvIiMOFuDjQCmdKdiBu7bT6PtuPq6YXWAp9Zc/IcDJUfs?=
+ =?us-ascii?Q?kp+eQ+o6nfH2YP//lC6hTsw0m2gfgESXr96Jx1Y2MaFKi7cNIni6c3BrPyjX?=
+ =?us-ascii?Q?xh/i+4eqE4hVQpSR5H2cskGGforBx8ZgAu7rpFmB4kcqDPw5uPtvjS1BwCrB?=
+ =?us-ascii?Q?c2MtUe3BubdmGEjHpy+KjL3ZbUreV6t93Par/Vybfg1O7yVD5KVsCLFmhw5t?=
+ =?us-ascii?Q?cEeAmRSppwL3hyHu4jCqYUzKVDIojC9GN3m2ak+PY85f6U9aYIlyObbwAqDz?=
+ =?us-ascii?Q?St6awlfE7zG+Yx0hmYbttIzCgOhHI6DydiadQC4/yS1iyy53FkNu1ayeEHoH?=
+ =?us-ascii?Q?XrTsTuCKqRmgIAnulqZ7mMrrTzh5SpVqDDZW4Qp4BcVBfWwQphJ1VX6DCXJY?=
+ =?us-ascii?Q?riRnHVJbC4zzudugeiaFoqWbEBv/rgO5NTux3BH7WPmM+8YhN2C6V4jBspHS?=
+ =?us-ascii?Q?6ZlUM+ITNqCQ4WiPvG0ZqxVnftclQlChKrle4b3IC6BuWdmKCktRwpJOp25l?=
+ =?us-ascii?Q?1WIOjVDefO/sgQ+MPq+EfCdvO0IvQ+if39jyLR042DQXgZUYE3dAhRZbGZAE?=
+ =?us-ascii?Q?qDkAhGcHorH2y6tDMSUOi+gvVqLX3YecJp3H4/9/fwObsC+PSBdfwz7ceRvM?=
+ =?us-ascii?Q?iYj6Ax+bpR1FjUooE/eg1eTdHWK4J5kZFP1OHnDr6skiHewSEQk4GhiUeEsd?=
+ =?us-ascii?Q?FAXnbrdVhg9yFbGr0IQqnmgkV8qHfFJlrSqyEdE13UH4VtIH/9mpdjMbaCwO?=
+ =?us-ascii?Q?bWNV97bFPlOA+/Pke7eCSik5gguXJFwZl1R8/fSWDSAD4BivMoywRlkAH8M3?=
+ =?us-ascii?Q?fkeD+9+9JXlYxjgEit045qMzjIuRKqbItpQsYtR9b/PsVmS5/VPdnkQ9UoR5?=
+ =?us-ascii?Q?eRS0k3XF3iK+MB/9H0ZMuOpGm+C1hwBQajEzzWi9QLlHXzDC86AG/XQ+GbTx?=
+ =?us-ascii?Q?gm1kiv0oiWNZ4FEXyl06dtPYUNxb6d65HInkZnQCTE3+FWkF/3+Gtu/mpzv9?=
+ =?us-ascii?Q?eHTSCJf4xb7UG+oCRkJialso7/hAjFyVkCzhnoZvuOkWKLo/e8RkiVXkVFd3?=
+ =?us-ascii?Q?L91Crqg3C4E6pX6PyCAqMuYjuQEFQRTsm6Njn28H/fL4sC2fmvdnO3UXpUhO?=
+ =?us-ascii?Q?49arKPvtbZzmFd6natTe4JKsJgBeGZlbIKXyFfkNWMrwAeGWURj5kL/Fo6H3?=
+ =?us-ascii?Q?I/DqpW7fXjbu46g8++noFK/BYdaZg+T6BQsaA5W7Lp0fmmXVCrOAfSjsSxBk?=
+ =?us-ascii?Q?ROSC5bdGecYG37zFeZKsQnscNu4TtmEHcQITiZKrhMvG2hP7VjNnq1NkUtDU?=
+ =?us-ascii?Q?CQBfGdV888ZOM61vT4euxIZDlAX6R3QvFL3BdSb0nz1YiXttDNS9xhV4YLmD?=
+ =?us-ascii?Q?GTSN0/F9tOiOnxy8I46IEDozBzZFLdU9xs5eHR6oD4Fz73WjkJAvVZ7HIHoi?=
+ =?us-ascii?Q?FaLAN5JfOb0icsETX4Fv+Tjsw0d4rOqL2qqpEhGkEd93649MmcyUQSNUK2G2?=
+ =?us-ascii?Q?fPsGwQL4RRlqdufqOtIvLZj+dG1VNwZ7LZio3TWP844W5ufKp1URoEhUd525?=
+ =?us-ascii?Q?jUxuXWHYtkz+kBkRRuYbHKkp/o78U0J/wq8vkXUl5vlDpyHkjfbRXccCAIns?=
+ =?us-ascii?Q?9Q=3D=3D?=
+X-OriginatorOrg: sancloud.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8fcc5fa3-0134-4fb8-8564-08db6868408d
+X-MS-Exchange-CrossTenant-AuthSource: SEYPR06MB5064.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2023 21:35:17.6813
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3e0f949f-6a74-4378-baf2-0abfca8d5e06
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xVDpIy2Fm9C/TsccVb937IRsBFgyJ5uYpcufJNfFFPLogIiKYF0Ac4LkpYqbSf/VZhL6logdCo8V+uo5NsKFyoBH/++Uxt2ylnM9PpGE2E0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYSPR06MB6750
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 6/8/2023 11:05 PM, Roberto Sassu wrote:
-> On 6/7/2023 7:21 PM, Andrew Morton wrote:
->> On Wed,  7 Jun 2023 15:24:27 +0200 Roberto Sassu 
->> <roberto.sassu@huaweicloud.com> wrote:
->>
->>> From: Roberto Sassu <roberto.sassu@huawei.com>
->>>
->>> Ensure that file_seals is non-NULL before using it in the memfd_create()
->>> syscall. One situation in which memfd_file_seals_ptr() could return a 
->>> NULL
->>> pointer is when CONFIG_SHMEM=n.
->>
->> Thanks.  Has thie crash actually been demonstrated?
-> 
-> Welcome. Yes, I noticed it when booting Fedora 38:
-> 
-> Jun 07 11:45:17 localhost kernel: BUG: kernel NULL pointer dereference, 
-> address: 0000000000000000
-> Jun 07 11:45:17 localhost kernel: #PF: supervisor write access in kernel 
-> mode
-> Jun 07 11:45:17 localhost kernel: #PF: error_code(0x0002) - not-present 
-> page
-> Jun 07 11:45:17 localhost kernel: PGD 0 P4D 0
-> Jun 07 11:45:17 localhost kernel: Oops: 0002 [#1] PREEMPT SMP NOPTI
-> Jun 07 11:45:17 localhost kernel: CPU: 0 PID: 752 Comm: dbus-broker-lau 
-> Not tainted 6.4.0-rc1+ #596
-> Jun 07 11:45:17 localhost kernel: Hardware name: QEMU Standard PC (Q35 + 
-> ICH9, 2009), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-> Jun 07 11:45:17 localhost kernel: RIP: 
-> 0010:__do_sys_memfd_create+0x2a4/0x320
-> Jun 07 11:45:17 localhost kernel: Code: ff 83 e3 02 0f 84 6a ff ff ff 49 
-> 81 7d 28 00 cd 24 82 74 0c 4c 89 ef e8 5a 6c 27 00 84 c0 74 29 49 8b 45 
-> 20 48 05 88 04 00 0>
-> Jun 07 11:45:17 localhost kernel: RSP: 0018:ffffc900007d3ef8 EFLAGS: 
-> 00010246
-> Jun 07 11:45:17 localhost kernel: RAX: 0000000000000000 RBX: 
-> 0000000000000002 RCX: 0000000000000000
-> Jun 07 11:45:17 localhost kernel: RDX: 0000000000000003 RSI: 
-> 0000000000000004 RDI: ffff888012ab1600
-> Jun 07 11:45:17 localhost kernel: RBP: ffff888025eb4d60 R08: 
-> 0000000000000000 R09: 0000000000000000
-> Jun 07 11:45:17 localhost kernel: R10: ffffffff83524c90 R11: 
-> 0000000000000000 R12: 000000000000000c
-> Jun 07 11:45:17 localhost kernel: R13: ffff888012ab1600 R14: 
-> ffff888025eb4d66 R15: 0000000000000000
-> Jun 07 11:45:17 localhost kernel: FS:  00007f4ef466de80(0000) 
-> GS:ffff88807dc00000(0000) knlGS:0000000000000000
-> Jun 07 11:45:17 localhost kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 
-> 0000000080050033
-> Jun 07 11:45:17 localhost kernel: CR2: 0000000000000000 CR3: 
-> 000000000e7fe000 CR4: 0000000000350ef0
-> Jun 07 11:45:17 localhost kernel: Call Trace:
-> Jun 07 11:45:17 localhost kernel:  <TASK>
-> Jun 07 11:45:17 localhost kernel:  do_syscall_64+0x3b/0x90
-> Jun 07 11:45:17 localhost kernel:  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-> Jun 07 11:45:17 localhost kernel: RIP: 0033:0x7f4ef4a0dd2d
-> Jun 07 11:45:17 localhost kernel: Code: c3 66 2e 0f 1f 84 00 00 00 00 00 
-> 66 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 
-> 4c 8b 4c 24 08 0f 0>
-> Jun 07 11:45:17 localhost kernel: RSP: 002b:00007fff308c5b58 EFLAGS: 
-> 00000246 ORIG_RAX: 000000000000013f
-> Jun 07 11:45:17 localhost kernel: RAX: ffffffffffffffda RBX: 
-> 00005597c14742d8 RCX: 00007f4ef4a0dd2d
-> Jun 07 11:45:17 localhost kernel: RDX: 00007f4ef49dfa5b RSI: 
-> 0000000000000003 RDI: 00005597c0b8f778
-> Jun 07 11:45:17 localhost kernel: RBP: 00007fff308c5b80 R08: 
-> 0000000000000000 R09: 00007fff308c5fa0
-> Jun 07 11:45:17 localhost kernel: R10: 0000000000000000 R11: 
-> 0000000000000246 R12: 0000000000000000
-> Jun 07 11:45:17 localhost kernel: R13: 00007fff308c5e60 R14: 
-> 00007fff308c5c20 R15: 00007fff308c5c00
-> Jun 07 11:45:17 localhost kernel:  </TASK>
-> Jun 07 11:45:17 localhost kernel: Modules linked in: sunrpc 
-> intel_rapl_msr intel_rapl_common kvm_amd snd_hda_codec_generic ccp 
-> snd_hda_intel snd_intel_dspcfg iTCO_w>
-> Jun 07 11:45:17 localhost kernel: CR2: 0000000000000000
-> Jun 07 11:45:17 localhost kernel: ---[ end trace 0000000000000000 ]---
-> 
-> Thanks for picking the patches. If it is still possible, it seems
-> that the Fixes tag is incorrect. The fixed commit should be:
-> 
-> c3b1b1cbf002 ("ramfs: add support for "mode=" mount option")
+These two commits are required to build the linux-5.15.y branch
+successfully with GCC 13 in my testing. Both are backports from
+mainline, with a couple of tweaks to make them apply cleanly.
 
-Ops, sorry. The comment above was for the patch: shmem: Use 
-ramfs_kill_sb() for kill_sb method of ramfs-based tmpfs.
+The result has been build tested against a few different gcc versions
+(9.5, 11.3 & 13.1) and defconfigs (x86_64_defconfig, i386_defconfig,
+ARM multi_v7_defconfig, ARM64 defconfig, RISCV defconfig,
+RISCV rv32_defconfig) via Yocto Project builds.
 
-Thanks
+Patches for linux-5.10.y are also on the way.
 
-Roberto
+Arnd Bergmann (1):
+  ata: ahci: fix enum constants for gcc-13
 
-> Roberto
-> 
->>> --- a/mm/memfd.c
->>> +++ b/mm/memfd.c
->>> @@ -371,12 +371,15 @@ SYSCALL_DEFINE2(memfd_create,
->>>           inode->i_mode &= ~0111;
->>>           file_seals = memfd_file_seals_ptr(file);
->>> -        *file_seals &= ~F_SEAL_SEAL;
->>> -        *file_seals |= F_SEAL_EXEC;
->>> +        if (file_seals) {
->>> +            *file_seals &= ~F_SEAL_SEAL;
->>> +            *file_seals |= F_SEAL_EXEC;
->>> +        }
->>>       } else if (flags & MFD_ALLOW_SEALING) {
->>>           /* MFD_EXEC and MFD_ALLOW_SEALING are set */
->>>           file_seals = memfd_file_seals_ptr(file);
->>> -        *file_seals &= ~F_SEAL_SEAL;
->>> +        if (file_seals)
->>> +            *file_seals &= ~F_SEAL_SEAL;
->>>       }
->>>       fd_install(fd, file);
+Kees Cook (1):
+  gcc-plugins: Reorganize gimple includes for GCC 13
 
+ drivers/ata/ahci.h               | 245 ++++++++++++++++---------------
+ scripts/gcc-plugins/gcc-common.h |   4 +-
+ 2 files changed, 125 insertions(+), 124 deletions(-)
+
+
+base-commit: d7af3e5ba454d007b4939f858739cf1cecdeab46
+-- 
+2.34.1
