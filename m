@@ -2,104 +2,94 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48B9472744D
-	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 03:30:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A2617274AB
+	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 03:59:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230071AbjFHBaC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 21:30:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49426 "EHLO
+        id S233089AbjFHB7H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 21:59:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231432AbjFHBaB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 21:30:01 -0400
-Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2920226A2
-        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 18:29:59 -0700 (PDT)
-Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-1a2cc92f12aso22451fac.0
-        for <stable@vger.kernel.org>; Wed, 07 Jun 2023 18:29:59 -0700 (PDT)
+        with ESMTP id S229499AbjFHB7G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 21:59:06 -0400
+Received: from mail-vs1-xe34.google.com (mail-vs1-xe34.google.com [IPv6:2607:f8b0:4864:20::e34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 926CD26AB;
+        Wed,  7 Jun 2023 18:59:05 -0700 (PDT)
+Received: by mail-vs1-xe34.google.com with SMTP id ada2fe7eead31-43dc0aa328dso113471137.1;
+        Wed, 07 Jun 2023 18:59:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1686187798; x=1688779798;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Q9wnjGe5UURJo7WWA04Rwg6yssO99190s+RUQSR8wj0=;
-        b=d0sDMlHxot8jX1BOZfMCdSShbw6aKymnJQ2DEioJuL8ZGkNj/mcM2tqtmTlKZJnPeS
-         4s1ddrkzMf7EDE/O6rj2OR/iNV8P2gcYHdbrQTfZkJg9IezU/p4scbIFXQzB94eFPHWB
-         B7yd9k6wLhKbBm30dknQ8fgcMGou2Soou2Utk=
+        d=gmail.com; s=20221208; t=1686189544; x=1688781544;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hLD/AoRxIRH6DflQuY1pQRUk5GfyHQapQE2eJSJgDwc=;
+        b=RLpOkZZB5Z2i5e/q/2M58hjF8/6cOeJ4Z+1leqfeXaWr8ZOBNF2fvCxb4M/xgxbbmK
+         BgONIu66JErya1JDcuy4nGgRP3iN1zdYJQtFEcANuXDVQlNsuStDFGJucViQRYxJWupv
+         GIEvpEiBgICCMOOzvxaT8zW9Hu3naVM1gULoC1Pvfc7pcP5lKnRCXcekoHcvzhkkhedz
+         EH4PboHRJTIAwrwYQc7ZQqRDnYxnUzM2W7Q5Pq6UUQIE1qtcEOxI84Zhjsack65l5iMB
+         eVKWJLy2EVmMGSyd8k5QMagCt3JsZTw0Raaw5FrT+CdtJB3wx+MPPnmSbva/psQA426H
+         XPiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686187798; x=1688779798;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q9wnjGe5UURJo7WWA04Rwg6yssO99190s+RUQSR8wj0=;
-        b=KMfgeiWoPsR2Ij377J4OM5ynok7u0TUimjasGJZMAxfILfE9F6JU0BVEcDMKoKhFw3
-         dTfiuwKRLsWJoAad8pzKIsgVTACfz4Iast5F+Um7TKLD8D58sOnGwl5YWer1q9Fbu9gW
-         A0aL0qF44ZkyKAgky03vtcOHwzj2JdLSKFV+dT2jPaHlmQuDn6B2O1U/I/ZGl4YHmiHb
-         GUd537xnoldxrfNJ8M62da3ben8a7w+DFFguwtbDeFJNrAEPPa7vwEwITOOS6qqgss7C
-         6N1ejiFDcFBVeqhlpiro0ck3+R9Ps+m9fUrDJ7DYkGqHQf5iSeCF5jygWs147F1T4LWs
-         XyOA==
-X-Gm-Message-State: AC+VfDzcD+25KKCc3Dh+2LgK6Iod5XnU74BP7/fBSDliydr3f+Gsmk+b
-        CSAZDUkQO/U3BuRoABQS0agKwA==
-X-Google-Smtp-Source: ACHHUZ4Wk8tfXecvJKKETcV+6pvRSLdbTHgMZoxgrP4KT1zfyPOL324JtwfpBssrGDS76bzJtDJ4AQ==
-X-Received: by 2002:aca:a996:0:b0:397:f167:e3cb with SMTP id s144-20020acaa996000000b00397f167e3cbmr2073040oie.3.1686187797773;
-        Wed, 07 Jun 2023 18:29:57 -0700 (PDT)
-Received: from [192.168.1.128] ([38.15.45.1])
-        by smtp.gmail.com with ESMTPSA id l9-20020a02a889000000b0041631393ac9sm3950216jam.18.2023.06.07.18.29.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jun 2023 18:29:57 -0700 (PDT)
-Message-ID: <2731b2fc-f40e-2551-f463-b3ea2c5d0308@linuxfoundation.org>
-Date:   Wed, 7 Jun 2023 19:29:56 -0600
+        d=1e100.net; s=20221208; t=1686189544; x=1688781544;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hLD/AoRxIRH6DflQuY1pQRUk5GfyHQapQE2eJSJgDwc=;
+        b=D1PVxjhwWGEH8wuROSF7S8cKwXYijFGKoiFh0AV264k3HVy7fdBA9QUUgix/a+Brh7
+         t9NHbYBZ/TvwCcwPsFPD2JzML73p2mVKoxZqCz0A9OvCR098+TdRa6gW1IDUBeSQxmTx
+         eEWwQcMeBhZO4p3Mgc7RXB4gopNC434y5OGWyGuzFcPBNhKqSQFuOni8rfKCWMZ2QAOr
+         2bzNDJu1p3PM5DWaApWmw1+A5Q6KKFkF33avVI+OxgtTzgZPpjdaC71YqSNS6L1mzRUd
+         E98MQj1NAUorqzKKdJ9IzvFXqE9z8aVMQLVXvGIiTe55NiNMLHSpSqdoCMQ4KbQcnoA9
+         zZeQ==
+X-Gm-Message-State: AC+VfDyQZ2jpDgQX2NlDgVWsnkOPXYfkJjY4VhVeakA/rFwuanisUEEh
+        HT7MNDyTzUVZthdNDHIxg4VWDtl9iWFkm6oy7WSON9iu
+X-Google-Smtp-Source: ACHHUZ6IysarFoLEMkoINq2FS2nreTCCGW2A/LlTZrix6kwXfjtEemgVvYXIrTyB44lYFPt/Yw2mvpvDcWSYwPSBL1k=
+X-Received: by 2002:a05:6102:c04:b0:43b:4f2e:359 with SMTP id
+ x4-20020a0561020c0400b0043b4f2e0359mr260503vss.3.1686189544692; Wed, 07 Jun
+ 2023 18:59:04 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 4.19 00/88] 4.19.285-rc1 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de,
-        Shuah Khan <skhan@linuxfoundation.org>
-References: <20230607200854.030202132@linuxfoundation.org>
-From:   Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20230607200854.030202132@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+References: <20230605075258.308475-1-amir73il@gmail.com> <2023060730-ultimate-triceps-7bea@gregkh>
+ <2023060708-paver-foe-ed80@gregkh>
+In-Reply-To: <2023060708-paver-foe-ed80@gregkh>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Thu, 8 Jun 2023 04:58:53 +0300
+Message-ID: <CAOQ4uxg0h1t_xBrLNhPT-2tpxauAgUxe4L-3Oh5MLDXBLkUMEg@mail.gmail.com>
+Subject: Re: [PATCH 6.1] xfs: verify buffer contents when we skip log replay
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Sasha Levin <sashal@kernel.org>,
+        Leah Rumancik <leah.rumancik@gmail.com>,
+        Chandan Babu R <chandan.babu@oracle.com>,
+        "Darrick J . Wong" <djwong@kernel.org>, linux-xfs@vger.kernel.org,
+        stable@vger.kernel.org, Dave Chinner <dchinner@redhat.com>,
+        Dave Chinner <david@fromorbit.com>,
+        Danila Chernetsov <listdansp@mail.ru>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 6/7/23 14:15, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 4.19.285 release.
-> There are 88 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 09 Jun 2023 20:07:31 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.285-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+On Wed, Jun 7, 2023 at 9:34=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Wed, Jun 07, 2023 at 07:53:54PM +0200, Greg Kroah-Hartman wrote:
+> > On Mon, Jun 05, 2023 at 10:52:58AM +0300, Amir Goldstein wrote:
+> > > From: "Darrick J. Wong" <djwong@kernel.org>
+> > >
+> > > commit 22ed903eee23a5b174e240f1cdfa9acf393a5210 upstream.
+> >
+> > What about 6.3.y?  I can't take a patch for 6.1.y only without it being
+> > in a newer kernel at the same time, right?
+>
+> Ah, it's simple enough, I added it to 6.3.y for now as well, thanks.
+>
 
-Compiled and booted on my test system. No dmesg regressions.
+It's ok, I forgot to say that this one is good for 6.3 as well.
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
-
-thanks,
--- Shuah
+Thanks,
+Amir.
