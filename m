@@ -2,145 +2,135 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 049A3728ADD
-	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 00:05:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DF68728AFD
+	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 00:14:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236399AbjFHWFs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 18:05:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46466 "EHLO
+        id S229888AbjFHWOK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 18:14:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230095AbjFHWFr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 18:05:47 -0400
-Received: from bee.birch.relay.mailchannels.net (bee.birch.relay.mailchannels.net [23.83.209.14])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A370D30CD
-        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 15:05:44 -0700 (PDT)
-X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-        by relay.mailchannels.net (Postfix) with ESMTP id B6328100FE8
-        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 22:05:43 +0000 (UTC)
-Received: from pdx1-sub0-mail-a235.dreamhost.com (unknown [127.0.0.6])
-        (Authenticated sender: dreamhost)
-        by relay.mailchannels.net (Postfix) with ESMTPA id 49969100C8D
-        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 22:05:43 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1686261943; a=rsa-sha256;
-        cv=none;
-        b=Etxo91sNX9yETiip/Qq3z42bZGkclwrttfdR6poRw2FiN4hqTjMuLJQofJpY1U10uu5gD/
-        HdmlcBHFAktezxgMUrmDUBTTblvQj0wP0Ahf7lR+d1dA5aboejk3fk8cbjGst6spDESZKU
-        iDgzQCDWyULCJOsib3s4wS3ofcobz1rV1a3QY5hh2LdMl/TZto3D7cxcgbZ0UoCX/fKDNK
-        cxzJdUl3ajVioJ755sTS/pS79qFuBWstFmGYBG2UuCriwuFnG2ikin9kBLZIcJYdhy5hpa
-        3/DEsQFRob4hzlsnXtZPk59lLIPp4enidnoF6ddQU7SLqymjIuScIggGQYZh5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-        s=arc-2022; t=1686261943;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references:dkim-signature;
-        bh=6VFcr740ClHDgfooQ+FLHb4V9tJxfdRe/N7zQ7funAE=;
-        b=R/eu2UYbnNC4peOZJCqsMZ+CrN6OXtZJ141cA0+30q7cxMER/qq6qpYj0kZTCrv4Cmc6y+
-        aojBP7w7zpaG9O5H2A1FLPwq+rlOUODgxQJRnvT3KOVluB+w640lge1pD+X+QwnQIjTrsB
-        /zXHN9fn5oGbDdhEbqU7bHLW3LabtTOPKZq5a7oSv/mRyD4rVy50Bd0Pybmaf6VOkof2Hq
-        I9ayC1LO8GpqeDu3Qgoh13bkYZLrSP/N5ay/HJF/sAeTEoeNFtNgCphtjaHCkS7nWUrACe
-        DFyQB2hkYlj3JlbA7LtAxD24I+LMrpFwT+hE8xqNF3HH1u1N+lMaam6kYFJ1cA==
-ARC-Authentication-Results: i=1;
-        rspamd-6f5cfd578c-c6h9m;
-        auth=pass smtp.auth=dreamhost smtp.mailfrom=kjlx@templeofstupid.com
-X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|kjlx@templeofstupid.com
-X-MailChannels-Auth-Id: dreamhost
-X-Tangy-Eyes: 105959cc68f969b7_1686261943525_2050693864
-X-MC-Loop-Signature: 1686261943525:1992703612
-X-MC-Ingress-Time: 1686261943524
-Received: from pdx1-sub0-mail-a235.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-        by 100.120.163.30 (trex/6.8.1);
-        Thu, 08 Jun 2023 22:05:43 +0000
-Received: from kmjvbox (c-73-93-64-36.hsd1.ca.comcast.net [73.93.64.36])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: kjlx@templeofstupid.com)
-        by pdx1-sub0-mail-a235.dreamhost.com (Postfix) with ESMTPSA id 4QcdZH0Ps2z76
-        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 15:05:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=templeofstupid.com;
-        s=dreamhost; t=1686261943;
-        bh=6VFcr740ClHDgfooQ+FLHb4V9tJxfdRe/N7zQ7funAE=;
-        h=Date:From:To:Cc:Subject:Content-Type;
-        b=fcWyME1PTxbcYwVPtejuIEGcMXGEkL8T6ddygN281e8u+RFnlTxdv4vSPPJtIhu3G
-         qx3B8C5XxtwKHUse6/Utr33nINbAXeENOMcXU5ZX2q3A0IQreZZomJupaWTqr5WrN/
-         LWi0PaiU7QyHVgI2H8zkDd6/3NWY8p2GZTFI67bo=
-Received: from johansen (uid 1000)
-        (envelope-from kjlx@templeofstupid.com)
-        id e0042
-        by kmjvbox (DragonFly Mail Agent v0.12);
-        Thu, 08 Jun 2023 15:05:42 -0700
-Date:   Thu, 8 Jun 2023 15:05:42 -0700
-From:   Krister Johansen <kjlx@templeofstupid.com>
-To:     Yonghong Song <yhs@meta.com>
-Cc:     bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Martin KaFai Lau <martin.lau@linux.dev>,
-        Song Liu <song@kernel.org>, Yonghong Song <yhs@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@kernel.org>,
-        Stanislav Fomichev <sdf@google.com>,
-        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Mykola Lysenko <mykolal@fb.com>, Shuah Khan <shuah@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH bpf v2 2/2] bpf: ensure main program has an extable
-Message-ID: <20230608220542.GA2057@templeofstupid.com>
-References: <cover.1686166633.git.kjlx@templeofstupid.com>
- <de425e99876dc6c344e1a4254894a3c81e71a2ec.1686166633.git.kjlx@templeofstupid.com>
- <33c52b4c-2a16-7578-f782-51267deff750@meta.com>
+        with ESMTP id S229678AbjFHWOK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 18:14:10 -0400
+Received: from APC01-PSA-obe.outbound.protection.outlook.com (mail-psaapc01on2064.outbound.protection.outlook.com [40.107.255.64])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 116581BE4
+        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 15:14:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=A1NNI+MPmlVR0AxIxtvkrHXrl8LpIRS+1IpqTXMge7UPUBJemg2whQ/8Cfu7msZ6FJ+pxc6DCIlkaQKXH+rrE09X8rGbjOdV0YpQIAsnJgekM+uuCy+i6Ugw/05Bvi0Xl5BpOMe3acQHykjxlwjfnpBBtNuSLRXPfSDLaTqyxYJHKsK338PG2icYLDVR1XUxl1wPQ8/uKAJDM+BAUFHt9W52e5Bg0IgdvY+C9IqDCgRt5KHkFKQWQ6RYseLVd07AWusnkFNE3I9dPRfKXXcHCGVLLmIzxM6xSazLsTvL1SpDjtmzLAFHD80BYNBvXCM1G1MNvL8PkH1DZ3541P7qEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SSa7CpyPUn7GAHzmbgXGUjcKdbifk3xSUAT+9q7n6Ek=;
+ b=HSPYahpoS1WyMTqSS4YKx3baNTXZaCqwZywXaOEN9+pZhU5+ZrtouVU0XwcoOLlj12d1JQ9MeWpn7TTY3cgbHgzvrtKe9/YcB36AmQsgHmlVJWXn8+cjhZsAEHLF4yDvBZ68uEn0+ASbl9fSAQdhc2cTfnF9UFK/xH8N/HfISGqYXji5dCV3aUZD34Wc6eS0sTZVSAnN9SyWEG4wT0tlKzcoyPE7LJDenpWUY5NblU/9Sd+/o7lyA7XiVX5ZJgXsnjn+rqMtZ4o7cSqHgbfKwr7OVl8JpT5WCzP3hU8M6Cznyp4//Ust3rCTI4Vyqncny2g5Vxk3q9MRN4Dh7/sudA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=sancloud.com; dmarc=pass action=none header.from=sancloud.com;
+ dkim=pass header.d=sancloud.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=sancloud.com;
+Received: from SEYPR06MB5064.apcprd06.prod.outlook.com (2603:1096:101:55::13)
+ by SI2PR06MB4316.apcprd06.prod.outlook.com (2603:1096:4:155::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.19; Thu, 8 Jun
+ 2023 22:14:05 +0000
+Received: from SEYPR06MB5064.apcprd06.prod.outlook.com
+ ([fe80::de44:cc0c:5757:6626]) by SEYPR06MB5064.apcprd06.prod.outlook.com
+ ([fe80::de44:cc0c:5757:6626%5]) with mapi id 15.20.6455.030; Thu, 8 Jun 2023
+ 22:14:05 +0000
+From:   Paul Barker <paul.barker@sancloud.com>
+To:     stable@vger.kernel.org
+Cc:     Paul Barker <paul.barker@sancloud.com>
+Subject: [PATCH 5.10.y 0/2] Backport GCC 13 fixes
+Date:   Thu,  8 Jun 2023 23:13:33 +0100
+Message-Id: <20230608221335.124520-1-paul.barker@sancloud.com>
+X-Mailer: git-send-email 2.34.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=965; i=paul.barker@sancloud.com; h=from:subject; bh=vfgQJuc/RCjNcGmQyUlBPMjphEmeOoNCcHhfc9usFpc=; b=owGbwMvMwCF2w7xIXuiX9CvG02pJDClNQfV3t7n6cSl9FhP+dWzZH+slR0vq9m/1V91/84P2F iffj/7vOkpZGMQ4GGTFFFl2z951+fqDJVt7b0gHw8xhZQIZwsDFKQATaX7JyHD2/G07E5P2c9eu Fx4QeL7W/Ehuh+PX0gflim5vSyWO23kz/M9cITPhiVGV0Jd9qgd+NidNvml4VzFwLV+DZaqZ+gI LJnYA
+X-Developer-Key: i=paul.barker@sancloud.com; a=openpgp; fpr=D2DDFDAE30017AF4CB62AA96A67255DFCCE62ECD
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-ClientProxiedBy: LO4P123CA0374.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18e::19) To SEYPR06MB5064.apcprd06.prod.outlook.com
+ (2603:1096:101:55::13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <33c52b4c-2a16-7578-f782-51267deff750@meta.com>
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SEYPR06MB5064:EE_|SI2PR06MB4316:EE_
+X-MS-Office365-Filtering-Correlation-Id: 34abb958-f3bc-4b68-3f2c-08db686dabd8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: /fVIRTOd2MpTIHzhRPIZ25ZmePSkg7dKrynR3QZlbh8NK9UpreJHynhRlinXfODpEmFid47bEGbzWgzsxjyQ7snyYtTj3JTS2711pVAAsxoGfSqBn5z367Zob3Cf21Dbee6StdclLOThiaZFExwGHU9rHCkPQXt73bEiWyxEyKc8hNiYDZejCrUF3gEsLB6O3Up07ZPlcJ+PfnsDsUclmqDVViA0bo/usJEObZnNCYVeaOTFkE+T9lOBEV93OdxT5aIehTjH7MwXiK4fRS7xUNA6FAaDYVzFNOLsmKXwP/GdDFkvUnWyErhmuigaDxhwh8KAb+9/KkqhflqqcHKgv9AF07Qn3d4fI0ybf3WnM/WAzoJ1H9Hfva2JthPLwFcemlwBjB0cXjyd94uES7s0HiLUUfPWTfzdG5VNnlKiy8Kn/zVlADRdLZw1B93mHg4apdtBhSaeCBEbKCXPUDNu2Wlro7s+AG2KQ2+ri2+aEVIKXJd4DwM71WIe8UCxi1ikSi7aCD4ddKqsiZzToj8UmbL2gcNKYnmzQtOsztc5TCK/YY0J4Dp1yt2IpO05L2kRn59zFlmLOzbh5wt2bJTU38db1rVplyVOMEEEeUH76jM=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SEYPR06MB5064.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(136003)(396003)(366004)(39830400003)(376002)(346002)(451199021)(41300700001)(6666004)(966005)(5660300002)(8676002)(8936002)(6916009)(44832011)(4326008)(66946007)(66476007)(66556008)(36756003)(316002)(786003)(478600001)(2906002)(4744005)(38100700002)(38350700002)(52116002)(6486002)(41320700001)(26005)(1076003)(6506007)(107886003)(186003)(6512007)(83380400001)(2616005)(86362001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?B9nuEBhBmKS+tbs70Zeu4MocGdyhjPTz50JPsFwa9EQY63xqiHUBh60/dhO9?=
+ =?us-ascii?Q?yAm8ay+Pnt/h7BMyPX87UlsYSXhNYEYlPQtICIvdCSzV8Z0VOtm42WZpRcx8?=
+ =?us-ascii?Q?tgfF5erD+600ePrXNP+hLqUNBe2mP3S4FufhvNeSyf7+qllY54KUbbFpxWUA?=
+ =?us-ascii?Q?18sjHotvtFaghk3/nXHf2y5nS8w3eZyaXLx0w4ekMVG+J/lAro7L/4fbei11?=
+ =?us-ascii?Q?d+qR/Vw1nfK9vqr8S6UqzDY8ZYkPgmpYbw/fzkHNpwl3NKjMQsOH2jrIEkHd?=
+ =?us-ascii?Q?QI6phSZsHf1oM3MJ0/6pALG8g8HqQYzeCneGwWXhXsRaOV+cnItHqd7eWrTi?=
+ =?us-ascii?Q?FnOp1ZwVOUucvDf7uQ7IYzbd/QScjJ3hEESWLp5wlmHFwg17cNHc8HqEgBxE?=
+ =?us-ascii?Q?C5WW/CXFGK+ULpgk5aBiZpT+aO8kxozh+ex+0zII0R7H3j+A8fzGsL/KLxTT?=
+ =?us-ascii?Q?HZ9ZFAbq2W4AqhXXWf+eBy7HRkFlb64CqcE3zLsJWwL/YFZcuS115uB8XvFN?=
+ =?us-ascii?Q?cgTdrUQZUMNcMlwLw7Qq61Wzq7ocgyIzxxb9kPd84iXl6jBXa/VL0RMKcIqk?=
+ =?us-ascii?Q?vjfxyrh3Vsx3gv9gr6PtwjyDM6p/j+C9RRiKo9VeivMgDG46CqDinwc0u4k6?=
+ =?us-ascii?Q?FIC1zMEgAALg4Z6GQPZrtxAZFQklGGJiq4APh2zMaWp+7b3pjuLm6BIT4tKb?=
+ =?us-ascii?Q?VWXj2Rcde1/QZbGz1Ry1tTR1oCgeSyx1JQn3JqCIhcJfhmGygVl+fSaFJ+Oi?=
+ =?us-ascii?Q?HzZ2h7wOG/m9fppNJvrZen1+58BGnE1E4ewqNIqx7TtgwI1jiVtWiShOiPQ1?=
+ =?us-ascii?Q?hsV0YrZdgtPTLg54XoGStuZiJpXGadTlzkdl+hhhvGfCVa28Ln+y4nP/2yW6?=
+ =?us-ascii?Q?qwpaTQHmlp0EKP1+OgnwfnCNFtv7eMqYoQpWO9EDyQ4fIbNP2s6GOBtzHeIY?=
+ =?us-ascii?Q?5aMqx+TXkCpQVuH32H21kHu6gf1xiB7OBr9E4th3gsowywllKq9utWupD2KU?=
+ =?us-ascii?Q?5Gj5BTnD1yyNABjmjvXXgTUG1HlSM+6MEgysCRQT52ZQqqmrq24LWT/wPesd?=
+ =?us-ascii?Q?ImPTi5hFgbOcSEK5LxdtoAzygZbtPmhQg+VsMLTxayS8QtZxiNuLPzV+yFeK?=
+ =?us-ascii?Q?lTgVPAk6VA7DrF+iLSvC8/ZniUoD9AGkgeLlMRkozbP5CfDNZptvIz0ThDOn?=
+ =?us-ascii?Q?iB8OIf4FZMGMYaV3Q3qE5VfAkEeWSlz6xNkWtrx9gaKokw+/wsb3sqkzXf7N?=
+ =?us-ascii?Q?GGrHkajJAlEpAGNoCC5H/LeRvCsMUMwcKXlfIChwhR7aTequQo0545hCZdIA?=
+ =?us-ascii?Q?BWyBDGgAh697bKddYtUl4PVQe1gtAk5r5C0KQafxwzOiClEStzoIyX+GV3KK?=
+ =?us-ascii?Q?HolcSTlOsoxodxlvp5HLVEk6uVDpmE4JFFB4F5UvAX1c9E0QHMceSbuwIuIx?=
+ =?us-ascii?Q?jxpGbah4KhBpJ2brRZR+s3R+I635UEVsWkRaUBSUn2hC7N4Oqf0J9ivy/Tp5?=
+ =?us-ascii?Q?zGpyWsOSLbIjutmz1PRU/dieulRM8NvFRXXrEY8xnbFjyAKz+TE0NWUhFJTz?=
+ =?us-ascii?Q?HsWSxgtJVz96i6H5NYVXvcLN7+56M39Kgnc/S7qOogZpnE+XqEopB0u04s5+?=
+ =?us-ascii?Q?1Q=3D=3D?=
+X-OriginatorOrg: sancloud.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 34abb958-f3bc-4b68-3f2c-08db686dabd8
+X-MS-Exchange-CrossTenant-AuthSource: SEYPR06MB5064.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jun 2023 22:14:05.1303
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3e0f949f-6a74-4378-baf2-0abfca8d5e06
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FLAx19dg+gkJlJbbxVJkneGQ0+gmVo9WIr+f9M7cY/QL0XYlLQFiuRvUhx5MlwRbQVFtj86/O4B2E0a1teJUbWvh+ReTfaYqrNfLlAf9dak=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SI2PR06MB4316
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 08, 2023 at 10:38:12AM -0700, Yonghong Song wrote:
-> 
-> 
-> On 6/7/23 2:04 PM, Krister Johansen wrote:
-> > When bpf subprograms are in use, the main program is not jit'd after the
-> > subprograms because jit_subprogs sets a value for prog->bpf_func upon
-> > success.  Subsequent calls to the JIT are bypassed when this value is
-> > non-NULL.  This leads to a situation where the main program and its
-> > func[0] counterpart are both in the bpf kallsyms tree, but only func[0]
-> > has an extable.  Extables are only created during JIT.  Now there are
-> > two nearly identical program ksym entries in the tree, but only one has
-> > an extable.  Depending upon how the entries are placed, there's a chance
-> > that a fault will call search_extable on the aux with the NULL entry.
-> > 
-> > Since jit_subprogs already copies state from func[0] to the main
-> > program, include the extable pointer in this state duplication.  The
-> > alternative is to skip adding the main program to the bpf_kallsyms
-> > table, but that would mean adding a check for subprograms into the
-> > middle of bpf_prog_load.
-> 
-> I think having two early identical program ksym entries is bad.
-> When people 'cat /proc/kallsyms | grep <their program name>',
-> they will find two programs with identical kernel address but different
-> hash value. This is just very confusing. I think removing the
-> duplicate in kallsyms is better from user's perspective.
+These two commits are required to build the linux-5.10.y branch
+successfully with GCC 13 in my testing. Both are backports from
+mainline, with a couple of tweaks to make them apply cleanly.
 
-Thanks for all the feedback.
+The result has been build tested against a few different gcc versions
+(9.5, 11.3 & 13.1) and defconfigs (x86_64_defconfig, i386_defconfig,
+ARM multi_v7_defconfig, ARM64 defconfig, RISCV defconfig,
+RISCV rv32_defconfig) via Yocto Project builds.
 
-In terms of resolving this confusion my inclination is to use the main
-program. That way users see in kallsyms the same tag that is reported by
-bpftool.  On the other hand, the tag in kallsyms won't match the sha1 of
-that actual chunk of code.  Is anything relying on the hash in the tag
-and the digest of the code agreeing?
+Patches for linux-5.15.y have also been sent:
+    https://lore.kernel.org/stable/20230608213458.123923-1-paul.barker@sancloud.com/T/
 
--K
+Arnd Bergmann (1):
+  ata: ahci: fix enum constants for gcc-13
+
+Kees Cook (1):
+  gcc-plugins: Reorganize gimple includes for GCC 13
+
+ drivers/ata/ahci.h               | 245 ++++++++++++++++---------------
+ scripts/gcc-plugins/gcc-common.h |   9 +-
+ 2 files changed, 129 insertions(+), 125 deletions(-)
+
+
+base-commit: c7992b6c7f0e2b0a87dd8e3f488250557b077c20
+-- 
+2.34.1
+
