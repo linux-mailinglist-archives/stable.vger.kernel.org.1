@@ -2,73 +2,74 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22EB2728A53
-	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 23:38:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A136F728AC5
+	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 00:00:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236290AbjFHVif (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 17:38:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39368 "EHLO
+        id S229927AbjFHWA0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 18:00:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234340AbjFHVie (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 17:38:34 -0400
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA24E2D76;
-        Thu,  8 Jun 2023 14:38:33 -0700 (PDT)
-Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-ba829e17aacso1216609276.0;
-        Thu, 08 Jun 2023 14:38:33 -0700 (PDT)
+        with ESMTP id S229503AbjFHWAZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 18:00:25 -0400
+Received: from mail-qk1-x72e.google.com (mail-qk1-x72e.google.com [IPv6:2607:f8b0:4864:20::72e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA6701FE9;
+        Thu,  8 Jun 2023 15:00:23 -0700 (PDT)
+Received: by mail-qk1-x72e.google.com with SMTP id af79cd13be357-75d558c18d0so91940785a.1;
+        Thu, 08 Jun 2023 15:00:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686260312; x=1688852312;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mNSTXKmj7hUlHOCo/xW5hZUWoBrrqUdvHn7X8LT0uEo=;
-        b=rZIcXZyCfGooVGGpLJeChBFLN7dybtTQQD+7IN5Ah2gDaJGh/7o5lF95DKFVrZsmau
-         JcQ65/GsP+NRet2RK+xat+jPJeJldBX+ajWq3AXStMP+NjrkQCBwhWDUHBWLgTrvLiW9
-         Zly30kTox+RY3fR2R+F6WxGyDP4RFLQgkC7lcsortV2U6N0eXXtJ1UW8HkAJH5Zbp61/
-         nXeFFq7CyIBapVygOmu9XOVRXN9kaw1HPg6dgsts8kvtrpirYegNqztW50RQlW7bszQo
-         /IRoSYsI2qP7dc3xmZAYjVl9OEaUtA+82pznAY7RWkkBEtUlLMh+xZIQ9YFcNu2DZI+N
-         TrfA==
+        d=gmail.com; s=20221208; t=1686261623; x=1688853623;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0FoCzygeVaKTYwoTk6+wAeoJQ0ZdkPvrWvOdKLWqiaA=;
+        b=QuIpwTQOa7UC7Y2z48TOxbIQOwAC4vdaoY82fXO6j3FliB1i8brYH3FvyHY4wJjdcP
+         EpI9HqGeTLtxArYOu+XSpXonYxf58g4UeU0nCHggTINDS0m3soU/HAKPjUoeLEkP7jl8
+         Kh8DbQX2sXoQGvwQ0cAmeDn890xlqUg0XSu8HrF9Knn3sY5z76lRvL2R8Tnsdez6YLoU
+         /BQwztQdeGg92UsmiQhEvx8Pr4M5S2emPMbdPumsI+gEJ6jLlgZ90+/GzQsiPVRfsOlG
+         /cbZEmRcNWSzGNvSjvgx3gIv1JWkj148Zxg9NMF0ed4KaLI2/B8bL3SMczoy0YdQt8qv
+         amuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686260312; x=1688852312;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mNSTXKmj7hUlHOCo/xW5hZUWoBrrqUdvHn7X8LT0uEo=;
-        b=YnlziMDHh3v0mVoWXz2x4dLNgSUQmKBsL044ZMTN4ecqnrMW56/bsdftVjkpLSPDsM
-         pzBrtpwbfCMKCp/Y2d4iJ1l54feO0bP1xfYCbvoiEVYYlb2mkxMy6fsw0T2X0MustoD/
-         gCsJKvWGl70UCVOakBx0PQlay79nJphCrU8cxdMdZk7T8LL47ePE8OchDWogkod30Wsg
-         7hDmdsv1zj1WV+8gbDVanHabPXYkI2A3tUQEzOnVvEa1IhPU8c7DJWuJowbyHwmKMDQz
-         rxjYr+szVs8O308DSgFcF2MdIwBmGU4SdO1f2sZn6oBGTKDfjwDv5DRVVcXETQseyQaI
-         wjWQ==
-X-Gm-Message-State: AC+VfDxwjiV7+8dg3kGMMzH/1lBk10YJx7fS9nGUb1FvlvlL6/0ojKIR
-        soS62SuTutqjy2B+tYwUWky3ItrQtbiEmg==
-X-Google-Smtp-Source: ACHHUZ64nz/89TF4yOsANzK3DPKHXPY8azQ0YKED8rWPYKwjdTat0cV7rT7fhdPR0mnUoTDTSHU0fg==
-X-Received: by 2002:a81:49c6:0:b0:561:e7bb:1b27 with SMTP id w189-20020a8149c6000000b00561e7bb1b27mr585571ywa.52.1686260312608;
-        Thu, 08 Jun 2023 14:38:32 -0700 (PDT)
-Received: from horus.lan (75-164-186-145.ptld.qwest.net. [75.164.186.145])
-        by smtp.gmail.com with ESMTPSA id e130-20020a816988000000b00545b02d4af5sm189158ywc.48.2023.06.08.14.38.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jun 2023 14:38:32 -0700 (PDT)
-From:   Jason Gerecke <killertofu@gmail.com>
-X-Google-Original-From: Jason Gerecke <jason.gerecke@wacom.com>
-To:     linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Jiri Kosina <jikos@kernel.org>
-Cc:     Ping Cheng <pinglinux@gmail.com>,
-        Aaron Armstrong Skomra <skomra@gmail.com>,
-        Joshua Dickens <Joshua@Joshua-Dickens.com>,
-        Peter Hutterer <peter.hutterer@who-t.net>,
-        Jason Gerecke <jason.gerecke@wacom.com>, stable@vger.kernel.org
-Subject: [PATCH v2] HID: wacom: Use ktime_t rather than int when dealing with timestamps
-Date:   Thu,  8 Jun 2023 14:38:28 -0700
-Message-ID: <20230608213828.2108-1-jason.gerecke@wacom.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607214102.2113-1-jason.gerecke@wacom.com>
-References: <20230607214102.2113-1-jason.gerecke@wacom.com>
+        d=1e100.net; s=20221208; t=1686261623; x=1688853623;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0FoCzygeVaKTYwoTk6+wAeoJQ0ZdkPvrWvOdKLWqiaA=;
+        b=XAlZFOS7PeLMUXH0rHIu/szZjJ0OgiwAf7RaBveVfOGk2351KVYJSbWD33NoCjTC1u
+         f2tmTMcgbtVtK7q2ddXD2rI6ZbGB5eEhDcurz0pu0PKtVFzrzF/OzvGLczkYWMyCTQZ/
+         kEdSTJUbsQVCuu+gyBzrV2CzNwBJvbQd4iUHNWIEyLowu1TsjjgAkv42XrfAYd0bXda6
+         Ah0WOfMwpYdqV1id/2isTZiL9+63sZyoDGoEXbNvF+d0ifQDBCNMwo7833+pbPz7JYU2
+         5W3q8Mwkn+SRJI7zbYp+HktJakLSXNGGaMrbVsNSMYWPpxqPrSRRdRwJf6N+6dws6GHv
+         whoQ==
+X-Gm-Message-State: AC+VfDzdP/UIrznSEMi4jQWAPyGTLYVeB5XMlHMhJZu5F1AGrtAIgO5P
+        ea2puhCrwNfZFlzpsmU4QRY=
+X-Google-Smtp-Source: ACHHUZ5K48vPB/DRyHdpkRd9NNEpvW+f2kZM6GW7XXTb08uGNo1PgJTTs2KFyG0C1mi618GVAeu/pw==
+X-Received: by 2002:a05:620a:6598:b0:75e:c4b8:8d6d with SMTP id qd24-20020a05620a659800b0075ec4b88d6dmr6068432qkn.25.1686261622900;
+        Thu, 08 Jun 2023 15:00:22 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id k27-20020a05620a139b00b0075b1f0e950dsm635538qki.5.2023.06.08.15.00.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Jun 2023 15:00:22 -0700 (PDT)
+Message-ID: <6bb4aca7-dd0f-16c9-0cb5-c09859d73801@gmail.com>
+Date:   Thu, 8 Jun 2023 15:00:12 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 6.1 000/224] 6.1.33-rc2 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+References: <20230608175726.909746266@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20230608175726.909746266@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -77,70 +78,29 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Code which interacts with timestamps needs to use the ktime_t type
-returned by functions like ktime_get. The int type does not offer
-enough space to store these values, and attempting to use it is a
-recipe for problems. In this particular case, overflows would occur
-when calculating/storing timestamps leading to incorrect values being
-reported to userspace. In some cases these bad timestamps cause input
-handling in userspace to appear hung.
+On 6/8/23 11:00, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.33 release.
+> There are 224 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 10 Jun 2023 17:56:43 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.33-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Link: https://gitlab.freedesktop.org/libinput/libinput/-/issues/901
-Fixes: 17d793f3ed53 ("HID: wacom: insert timestamp to packed Bluetooth (BT) events")
-CC: stable@vger.kernel.org
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
----
-v2: Use div_u64 to perform division to deal with ARC and ARM architectures
-    (as found by the kernel test robot)
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
- drivers/hid/wacom_wac.c | 6 +++---
- drivers/hid/wacom_wac.h | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
-index 2ccf838371343..174bf03908d7c 100644
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -1314,7 +1314,7 @@ static void wacom_intuos_pro2_bt_pen(struct wacom_wac *wacom)
- 	struct input_dev *pen_input = wacom->pen_input;
- 	unsigned char *data = wacom->data;
- 	int number_of_valid_frames = 0;
--	int time_interval = 15000000;
-+	ktime_t time_interval = 15000000;
- 	ktime_t time_packet_received = ktime_get();
- 	int i;
- 
-@@ -1348,7 +1348,7 @@ static void wacom_intuos_pro2_bt_pen(struct wacom_wac *wacom)
- 	if (number_of_valid_frames) {
- 		if (wacom->hid_data.time_delayed)
- 			time_interval = ktime_get() - wacom->hid_data.time_delayed;
--		time_interval /= number_of_valid_frames;
-+		time_interval = div_u64(time_interval, number_of_valid_frames);
- 		wacom->hid_data.time_delayed = time_packet_received;
- 	}
- 
-@@ -1359,7 +1359,7 @@ static void wacom_intuos_pro2_bt_pen(struct wacom_wac *wacom)
- 		bool range = frame[0] & 0x20;
- 		bool invert = frame[0] & 0x10;
- 		int frames_number_reversed = number_of_valid_frames - i - 1;
--		int event_timestamp = time_packet_received - frames_number_reversed * time_interval;
-+		ktime_t event_timestamp = time_packet_received - frames_number_reversed * time_interval;
- 
- 		if (!valid)
- 			continue;
-diff --git a/drivers/hid/wacom_wac.h b/drivers/hid/wacom_wac.h
-index 1a40bb8c5810c..ee21bb260f22f 100644
---- a/drivers/hid/wacom_wac.h
-+++ b/drivers/hid/wacom_wac.h
-@@ -324,7 +324,7 @@ struct hid_data {
- 	int ps_connected;
- 	bool pad_input_event_flag;
- 	unsigned short sequence_number;
--	int time_delayed;
-+	ktime_t time_delayed;
- };
- 
- struct wacom_remote_data {
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.41.0
+Florian
 
