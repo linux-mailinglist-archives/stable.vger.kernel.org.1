@@ -2,98 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF81272862C
-	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 19:19:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E5BD728644
+	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 19:25:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236911AbjFHRTi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 13:19:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44660 "EHLO
+        id S237033AbjFHRZe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 13:25:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236897AbjFHRTh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 13:19:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B62072727;
-        Thu,  8 Jun 2023 10:19:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 51AF864FAE;
-        Thu,  8 Jun 2023 17:19:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83DCAC433D2;
-        Thu,  8 Jun 2023 17:19:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686244773;
-        bh=6ad4Ze1/w0HwSx4VHiAz44pNtRELAkpuEtOfWAJU1Eo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=YdfcfRKqLJ40FuDdoTSVmRM59ViFQ9d62OUiQnwXIXPAteXBAEXPSS1RwfI34G5Q/
-         IXT7FFgFG83agNDw1g2EZmqgIuAXoBm5Y2tnLegxMyp4PhZsYj+N4eHL+kq8pr2CC7
-         crFZoqJyfoVY6ZKzBAsac8uLYJvnSMaaXYhuGhUkZlno6X9sN4zviMFHrKEFNm8cW7
-         xzvDsHK2w/T1vIdlTZfAjlvk6uxU9Cs6UOjLU+j7K4/jtix0t5hdaNiGHVC4oEwhRq
-         pMYw3WUhTeuRw1Cwha0qtfFWslBtasx/UMavhic7exuLXedpc+q6J+WE7wAz1k6i+c
-         9jhxtxE3aMKSA==
-Date:   Thu, 8 Jun 2023 12:19:32 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     bhelgaas@google.com, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
-        hch@infradead.org, stable@vger.kernel.org,
-        Jason Adriaanse <jason_a69@yahoo.co.uk>
-Subject: Re: [PATCH RESEND] PCI: Add function 1 DMA alias quirk for Marvell
- 88SE9235
-Message-ID: <20230608171932.GA1206912@bhelgaas>
+        with ESMTP id S231459AbjFHRZd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 13:25:33 -0400
+Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEE6A1BDF
+        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 10:25:30 -0700 (PDT)
+Received: by mail-oi1-x235.google.com with SMTP id 5614622812f47-39a3f2668d5so644729b6e.1
+        for <stable@vger.kernel.org>; Thu, 08 Jun 2023 10:25:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1686245130; x=1688837130;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wKBFg60cWuUD0LVXfKP1NLor9h+suWJBlukHsIpPRjk=;
+        b=iN4601uPzHQNLlzHwONjgwmNfEIBvmsDmgCm/86VWnFj8eqqG5HfcIJ/UGRBQRWvx4
+         XFXWZawEJTYwWvbjnrscXdqQKlMR0XbL6Uo5I3vARcoICcNg+nToGmS0AIRbeFa9xIAA
+         vLuLsWl46WOIo7q48TpF7VYlxLPixAtY8C3CU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686245130; x=1688837130;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wKBFg60cWuUD0LVXfKP1NLor9h+suWJBlukHsIpPRjk=;
+        b=HvRDBYYnvGBQB7eWUr+abJIIhx8fZpN2LEqZhbU1Y7Dyr2sXmNXDSH5HFS4kmegQ0Z
+         scyFwE27mBZBxxRIAvFAKPuCio0igcd1DuNI5GQPwaRWKhgnjNpmWJJM0bT6S2rM/r0t
+         40CXHC3tTpogf69SUkb3qhXcrXJtaOlWPxUC/zEafBteZa9pW2TBawXtg/DA/hwntpOf
+         rqhLonzm9EcQOTZay0ffy4wLxzt6WGgXXtBGAXk0TqK/OwQ8AxMZYqe8i4gtSoBGmKSc
+         +mp/2Drs0fYJQKMJJM9WW3MKVhS5mpoU1NOsT1E5YI6U3ksmEwd3jXuMYi9McGcC/Hv1
+         RFZg==
+X-Gm-Message-State: AC+VfDx+6+IZtC3WBla/wp5mYqFa/FQSe9k8MQlIeUS0HgqRX1cEqyxW
+        AEM6bAv773cVILvnfGf//nWuLg==
+X-Google-Smtp-Source: ACHHUZ6oHplnoBJLkNML8qJBJBs2hZ6s/0SNRjXynHk9itwTvZD42Auwlu154ksXHwS5kgYjwfAPqQ==
+X-Received: by 2002:a05:6808:98b:b0:398:2b78:5a53 with SMTP id a11-20020a056808098b00b003982b785a53mr5626118oic.40.1686245128739;
+        Thu, 08 Jun 2023 10:25:28 -0700 (PDT)
+Received: from fedora64.linuxtx.org ([99.47.93.78])
+        by smtp.gmail.com with ESMTPSA id j132-20020aca3c8a000000b0038c0a359e74sm626111oia.31.2023.06.08.10.25.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Jun 2023 10:25:28 -0700 (PDT)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date:   Thu, 8 Jun 2023 12:25:26 -0500
+From:   Justin Forbes <jforbes@fedoraproject.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+Subject: Re: [PATCH 6.3 000/286] 6.3.7-rc1 review
+Message-ID: <ZIIPBuKQzllrV7pC@fedora64.linuxtx.org>
+References: <20230607200922.978677727@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <731507e05d70239aec96fcbfab6e65d8ce00edd2.1686157165.git.robin.murphy@arm.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230607200922.978677727@linuxfoundation.org>
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jun 07, 2023 at 06:18:47PM +0100, Robin Murphy wrote:
-> Marvell's own product brief implies the 92xx series are a closely
-> related family, and sure enough it turns out that 9235 seems to need the
-> same quirk as the other three, although possibly only when certain ports
-> are used.
+On Wed, Jun 07, 2023 at 10:11:39PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.3.7 release.
+> There are 286 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> CC: stable@vger.kernel.org
-> Reported-by: Jason Adriaanse <jason_a69@yahoo.co.uk>
-> Link: https://lore.kernel.org/linux-iommu/2a699a99-545c-1324-e052-7d2f41fed1ae@yahoo.co.uk/
-> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+> Responses should be made by Fri, 09 Jun 2023 20:07:31 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.3.7-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.3.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Applied with Christoph's reviewed-by to pci/virtualization for v6.5,
-thanks!
+Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
+x86_64), and boot tested x86_64. No regressions noted.
 
-> ---
-> 
-> Note that the actual regression which started the thread is a different
-> matter, wherein a particular combination of parameters which used to put
-> intel-iommu into passthrough mode now enables full translation instead.
-> 
-> Take #2, hopefully not royally screwing up my email alises this time.
-> Sorry about that...
-> 
->  drivers/pci/quirks.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-> index f4e2a88729fd..3186f2c84eab 100644
-> --- a/drivers/pci/quirks.c
-> +++ b/drivers/pci/quirks.c
-> @@ -4174,6 +4174,8 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MARVELL_EXT, 0x9220,
->  /* https://bugzilla.kernel.org/show_bug.cgi?id=42679#c49 */
->  DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MARVELL_EXT, 0x9230,
->  			 quirk_dma_func1_alias);
-> +DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MARVELL_EXT, 0x9235,
-> +			 quirk_dma_func1_alias);
->  DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_TTI, 0x0642,
->  			 quirk_dma_func1_alias);
->  DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_TTI, 0x0645,
-> -- 
-> 2.39.2.101.g768bb238c484.dirty
-> 
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
