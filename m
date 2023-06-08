@@ -2,216 +2,198 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24482728B99
-	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 01:11:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 167CF728BA9
+	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 01:20:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233477AbjFHXLT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 19:11:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40572 "EHLO
+        id S236900AbjFHXUE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 19:20:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233682AbjFHXLS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 19:11:18 -0400
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64F7230C2
-        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 16:11:05 -0700 (PDT)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-652699e72f7so984732b3a.3
-        for <stable@vger.kernel.org>; Thu, 08 Jun 2023 16:11:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1686265864; x=1688857864;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=sTP0JVpf1f5b+2Xjzlr5QOXRp8Axu0c3Qz6jDYB0dp8=;
-        b=a7lNeERUflhnUaD6laddV48Egfddjc0OsKgTbfkXlhaqopETQVyxs4gtCrHINMiCIC
-         WRDN05z9I+8g8LREUxqcxaPtJO8OscYhl47S5XM9FSIPjQdx82E5lnzEdxVqNoyGqNKC
-         O6FhueXyNt5sn1CLM1gDXZ4Yc+9r/fv2OWMnsHvO4+UkXuJA7Qm7nz4q6Ms/cRCWC1jp
-         kdap3qu64Mij9Ed4MeM1UGAywcIFhXjmnKu2CfLSkocZ1wYkwk/ZHL+0jdMmClOpKBId
-         qkmrBQ3LTwDV3uaV1Q7tjtWnhI0cy6j+ec/LQDsrjfSwDqmkUVwbSQaW8MnjP1pzvqua
-         ++Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686265864; x=1688857864;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sTP0JVpf1f5b+2Xjzlr5QOXRp8Axu0c3Qz6jDYB0dp8=;
-        b=lCGIO66evivNr5cglQiG+TRXHgTRvwSC6kLg4gtK3O8AwMUkqECXY3DXLwCPGKDQeK
-         ZVuMefEfBKMH53BdQME9g4nZpHLqZPOEfWSbI7gIzqLdvekxHi8A3U+nIwww+lnDok72
-         GT5KamTUJ2WTcqn5AUNPATecJ/PLBnIYXtaXp31+ygdZiSHGmgHDCdDIrTNOivCVoyfC
-         Dud1af35miefdVxm4dXb70smN91gk4o8+6ZRoiyJ6z+15fm7Qa6XiggEB+81gwambX0P
-         VZ+7h80b4tBbmgXTI6U/VCTcxjXAR0b6CLWDMuF+FmTBLQDOMOfc5N4zgYSE5T3AI9k9
-         bz4g==
-X-Gm-Message-State: AC+VfDzjdi2Nv8tuXGOLYYfKnGVQ9Qs2/BCTz5kmQvcPktC0yhnahqHb
-        CC6msIfjveQpDfDsFsjhp8LNGxqt+dHJrBjCwcLF9Q==
-X-Google-Smtp-Source: ACHHUZ7V1zyqIcxU0BlvY/A+ADbSASDs06wCGjMcRe1+37+NKwhlpyW7mUMgRVAOW0uh6NO/YyQL4w==
-X-Received: by 2002:a05:6a20:431f:b0:10f:f672:6e88 with SMTP id h31-20020a056a20431f00b0010ff6726e88mr4987736pzk.4.1686265864299;
-        Thu, 08 Jun 2023 16:11:04 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id c2-20020aa78802000000b005a8de0f4c64sm1551549pfo.82.2023.06.08.16.11.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jun 2023 16:11:03 -0700 (PDT)
-Message-ID: <64826007.a70a0220.8e070.392c@mx.google.com>
-Date:   Thu, 08 Jun 2023 16:11:03 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S236764AbjFHXUD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 19:20:03 -0400
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36C0A30D2;
+        Thu,  8 Jun 2023 16:20:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686266401; x=1717802401;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=YWclXhX5PQnVsjXMUGXPdGfgZPrttY9Wds2uez4jA6k=;
+  b=EKnMLV3+rg/1wjFqZ0OyMO54D4pmVBF6YACK5NWpAbDB1i7EoSNK7W+F
+   zOrKLW6Pj2bHQozk7nNLvR6Kw8zKVFsnRtCw5efKg9iTJyPvWYs7ROf1k
+   Ho6nCasvFsDzqQNlRr7R4zrbTgHGJI+VZYVCy5K8t6KwyTn1AYwN8uc8v
+   /Dh+t8Q188ZhUUkiLf9k/mnkacDgXBOVKrE3gZt7X+FcFRgbbZCPHM9dy
+   iWrspB4Pt7S2gbq/sFRnGybplUl0EyF7PZ2elEejvZ+I8DUmeodQqo83P
+   m53lu8KPi49OatcLOm+WjKIJmAWpF9trEBJk2fEqwfuKrGVwy0YULxbit
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10735"; a="360815928"
+X-IronPort-AV: E=Sophos;i="6.00,227,1681196400"; 
+   d="scan'208";a="360815928"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jun 2023 16:19:52 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10735"; a="713286180"
+X-IronPort-AV: E=Sophos;i="6.00,227,1681196400"; 
+   d="scan'208";a="713286180"
+Received: from lkp-server01.sh.intel.com (HELO 15ab08e44a81) ([10.239.97.150])
+  by fmsmga007.fm.intel.com with ESMTP; 08 Jun 2023 16:19:48 -0700
+Received: from kbuild by 15ab08e44a81 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1q7Oux-0008LI-0N;
+        Thu, 08 Jun 2023 23:19:47 +0000
+Date:   Fri, 9 Jun 2023 07:18:27 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Badhri Jagan Sridharan <badhri@google.com>,
+        gregkh@linuxfoundation.org, stern@rowland.harvard.edu,
+        colin.i.king@gmail.com, xuetao09@huawei.com,
+        quic_eserrao@quicinc.com, water.zhangjiantao@huawei.com,
+        peter.chen@freescale.com, balbi@ti.com, francesco@dolcini.it,
+        alistair@alistair23.me, stephan@gerhold.net, bagasdotme@gmail.com,
+        luca@z3ntu.xyz
+Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Badhri Jagan Sridharan <badhri@google.com>
+Subject: Re: [PATCH v7 2/2] usb: gadget: udc: core: Prevent
+ soft_connect_store() race
+Message-ID: <202306090722.opxFRfOO-lkp@intel.com>
+References: <20230608204517.105396-2-badhri@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-6.3.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: test
-X-Kernelci-Kernel: v6.3.5-332-g6f9b6a83bd08
-Subject: stable-rc/linux-6.3.y baseline: 175 runs,
- 3 regressions (v6.3.5-332-g6f9b6a83bd08)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230608204517.105396-2-badhri@google.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-6.3.y baseline: 175 runs, 3 regressions (v6.3.5-332-g6f9b6a=
-83bd08)
+Hi Badhri,
 
-Regressions Summary
--------------------
+kernel test robot noticed the following build warnings:
 
-platform                     | arch  | lab           | compiler | defconfig=
-                  | regressions
------------------------------+-------+---------------+----------+----------=
-------------------+------------
-at91-sama5d4_xplained        | arm   | lab-baylibre  | gcc-10   | multi_v7_=
-defconfig         | 1          =
+[auto build test WARNING on d37537a1f7cf09e304fe7993cb5e732534a0fb22]
 
-beagle-xm                    | arm   | lab-baylibre  | gcc-10   | omap2plus=
-_defconfig        | 1          =
+url:    https://github.com/intel-lab-lkp/linux/commits/Badhri-Jagan-Sridharan/usb-gadget-udc-core-Prevent-soft_connect_store-race/20230609-044555
+base:   d37537a1f7cf09e304fe7993cb5e732534a0fb22
+patch link:    https://lore.kernel.org/r/20230608204517.105396-2-badhri%40google.com
+patch subject: [PATCH v7 2/2] usb: gadget: udc: core: Prevent soft_connect_store() race
+config: hexagon-randconfig-r015-20230608 (https://download.01.org/0day-ci/archive/20230609/202306090722.opxFRfOO-lkp@intel.com/config)
+compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project.git 4a5ac14ee968ff0ad5d2cc1ffa0299048db4c88a)
+reproduce (this is a W=1 build):
+        mkdir -p ~/bin
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        git checkout d37537a1f7cf09e304fe7993cb5e732534a0fb22
+        b4 shazam https://lore.kernel.org/r/20230608204517.105396-2-badhri@google.com
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang ~/bin/make.cross W=1 O=build_dir ARCH=hexagon olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang ~/bin/make.cross W=1 O=build_dir ARCH=hexagon SHELL=/bin/bash drivers/usb/gadget/udc/
 
-mt8183-kukui-...uniper-sku16 | arm64 | lab-collabora | gcc-10   | defconfig=
-+arm64-chromebook | 1          =
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202306090722.opxFRfOO-lkp@intel.com/
 
+All warnings (new ones prefixed by >>):
 
-  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-6.3.y/kern=
-el/v6.3.5-332-g6f9b6a83bd08/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   linux-6.3.y
-  Describe: v6.3.5-332-g6f9b6a83bd08
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      6f9b6a83bd08fb6abac41d5a521adec785ea0e68 =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform                     | arch  | lab           | compiler | defconfig=
-                  | regressions
------------------------------+-------+---------------+----------+----------=
-------------------+------------
-at91-sama5d4_xplained        | arm   | lab-baylibre  | gcc-10   | multi_v7_=
-defconfig         | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/64822b2201938bde35306163
-
-  Results:     0 PASS, 1 FAIL, 0 SKIP
-  Full config: multi_v7_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.5-3=
-32-g6f9b6a83bd08/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-at91-s=
-ama5d4_xplained.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.5-3=
-32-g6f9b6a83bd08/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-at91-s=
-ama5d4_xplained.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230527.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.login: https://kernelci.org/test/case/id/64822b2201938bde35306=
-164
-        new failure (last pass: v6.3.5-46-gb8c049753f7c) =
-
- =
-
-
-
-platform                     | arch  | lab           | compiler | defconfig=
-                  | regressions
------------------------------+-------+---------------+----------+----------=
-------------------+------------
-beagle-xm                    | arm   | lab-baylibre  | gcc-10   | omap2plus=
-_defconfig        | 1          =
+   In file included from drivers/usb/gadget/udc/core.c:17:
+   In file included from include/linux/dma-mapping.h:10:
+   In file included from include/linux/scatterlist.h:9:
+   In file included from arch/hexagon/include/asm/io.h:334:
+   include/asm-generic/io.h:547:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     547 |         val = __raw_readb(PCI_IOBASE + addr);
+         |                           ~~~~~~~~~~ ^
+   include/asm-generic/io.h:560:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     560 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
+      37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
+         |                                                   ^
+   In file included from drivers/usb/gadget/udc/core.c:17:
+   In file included from include/linux/dma-mapping.h:10:
+   In file included from include/linux/scatterlist.h:9:
+   In file included from arch/hexagon/include/asm/io.h:334:
+   include/asm-generic/io.h:573:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     573 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
+      35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
+         |                                                   ^
+   In file included from drivers/usb/gadget/udc/core.c:17:
+   In file included from include/linux/dma-mapping.h:10:
+   In file included from include/linux/scatterlist.h:9:
+   In file included from arch/hexagon/include/asm/io.h:334:
+   include/asm-generic/io.h:584:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     584 |         __raw_writeb(value, PCI_IOBASE + addr);
+         |                             ~~~~~~~~~~ ^
+   include/asm-generic/io.h:594:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     594 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+   include/asm-generic/io.h:604:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     604 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+>> drivers/usb/gadget/udc/core.c:850:1: warning: unused label 'out' [-Wunused-label]
+     850 | out:
+         | ^~~~
+     851 |         trace_usb_gadget_deactivate(gadget, ret);
+   drivers/usb/gadget/udc/core.c:886:1: warning: unused label 'out' [-Wunused-label]
+     886 | out:
+         | ^~~~
+     887 |         trace_usb_gadget_activate(gadget, ret);
+   8 warnings generated.
 
 
-  Details:     https://kernelci.org/test/plan/id/64822f7b790380318f30616c
+vim +/out +850 drivers/usb/gadget/udc/core.c
 
-  Results:     0 PASS, 1 FAIL, 0 SKIP
-  Full config: omap2plus_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.5-3=
-32-g6f9b6a83bd08/arm/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-beagl=
-e-xm.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.5-3=
-32-g6f9b6a83bd08/arm/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-beagl=
-e-xm.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230527.0/armel/rootfs.cpio.gz =
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  815  
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  816  /**
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  817   * usb_gadget_deactivate - deactivate function which is not ready to work
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  818   * @gadget: the peripheral being deactivated
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  819   *
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  820   * This routine may be used during the gadget driver bind() call to prevent
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  821   * the peripheral from ever being visible to the USB host, unless later
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  822   * usb_gadget_activate() is called.  For example, user mode components may
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  823   * need to be activated before the system can talk to hosts.
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  824   *
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  825   * Returns zero on success, else negative errno.
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  826   */
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  827  int usb_gadget_deactivate(struct usb_gadget *gadget)
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  828  {
+5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2016-05-31  829  	int ret = 0;
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  830  
+bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2023-06-08  831  	mutex_lock(&gadget->udc->connect_lock);
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  832  	if (gadget->deactivated)
+bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2023-06-08  833  		goto unlock;
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  834  
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  835  	if (gadget->connected) {
+bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2023-06-08  836  		ret = usb_gadget_disconnect_locked(gadget);
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  837  		if (ret)
+bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2023-06-08  838  			goto unlock;
+5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2016-05-31  839  
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  840  		/*
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  841  		 * If gadget was being connected before deactivation, we want
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  842  		 * to reconnect it in usb_gadget_activate().
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  843  		 */
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  844  		gadget->connected = true;
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  845  	}
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  846  	gadget->deactivated = true;
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  847  
+bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2023-06-08  848  unlock:
+bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2023-06-08  849  	mutex_unlock(&gadget->udc->connect_lock);
+5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2016-05-31 @850  out:
+5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2016-05-31  851  	trace_usb_gadget_deactivate(gadget, ret);
+5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2016-05-31  852  
+5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2016-05-31  853  	return ret;
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  854  }
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  855  EXPORT_SYMBOL_GPL(usb_gadget_deactivate);
+5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2016-05-31  856  
 
-
-
-  * baseline.login: https://kernelci.org/test/case/id/64822f7b790380318f306=
-16d
-        new failure (last pass: v6.3.5-46-gb8c049753f7c) =
-
- =
-
-
-
-platform                     | arch  | lab           | compiler | defconfig=
-                  | regressions
------------------------------+-------+---------------+----------+----------=
-------------------+------------
-mt8183-kukui-...uniper-sku16 | arm64 | lab-collabora | gcc-10   | defconfig=
-+arm64-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/64822ba155e922f3ba30623b
-
-  Results:     164 PASS, 8 FAIL, 0 SKIP
-  Full config: defconfig+arm64-chromebook
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.5-3=
-32-g6f9b6a83bd08/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/base=
-line-mt8183-kukui-jacuzzi-juniper-sku16.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.5-3=
-32-g6f9b6a83bd08/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/base=
-line-mt8183-kukui-jacuzzi-juniper-sku16.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230527.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.mtk-thermal-probed: https://kernelci.org/test/case/id/6=
-4822ba155e922f3ba30623f
-        failing since 6 days (last pass: v6.3.5, first fail: v6.3.5-46-gb8c=
-049753f7c)
-
-    2023-06-08T19:27:19.743399  <8>[   27.465002] <LAVA_SIGNAL_TESTCASE TES=
-T_CASE_ID=3Dmtk-thermal-driver-present RESULT=3Dpass>
-
-    2023-06-08T19:27:20.761095  /lava-10645957/1/../bin/lava-test-case
-
-    2023-06-08T19:27:20.771425  <8>[   28.494995] <LAVA_SIGNAL_TESTCASE TES=
-T_CASE_ID=3Dmtk-thermal-probed RESULT=3Dfail>
-   =
-
- =20
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
