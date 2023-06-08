@@ -2,61 +2,61 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD7B8728559
-	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 18:40:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09AAB728551
+	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 18:39:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236658AbjFHQjq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 12:39:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47726 "EHLO
+        id S236561AbjFHQjg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 12:39:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236309AbjFHQj2 (ORCPT
+        with ESMTP id S236302AbjFHQj2 (ORCPT
         <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 12:39:28 -0400
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F525359E
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 477D835A0
         for <stable@vger.kernel.org>; Thu,  8 Jun 2023 09:39:00 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-30ae141785bso830033f8f.3
+Received: by mail-wr1-x42f.google.com with SMTP id ffacd0b85a97d-30aeee7c8a0so666750f8f.1
         for <stable@vger.kernel.org>; Thu, 08 Jun 2023 09:39:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tessares.net; s=google; t=1686242336; x=1688834336;
+        d=tessares.net; s=google; t=1686242337; x=1688834337;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=3pKdEbukEA9wOHrFUgiYXVQj+yJNTo3IznsPdW4CCZs=;
-        b=70KA64TSRhWJ4T90MG2iHcjb3Zi3RFeXaht1Lf1EEtjdE9WlKyq2714iztw+/nGJeV
-         c8AUU5Ba5YyuRguUjQL9vxdFBQhW0nKokhL0C0/OVMySpo3PZ+drHqjZA6Z3TuphZKWH
-         e6MzQgH2KtlEHOVDIJN3tV3AlH9V6SACDCM9o09BcudkRO1woTyp9ZBprJy5bkxGAqMg
-         HFRf5dgU4bRRIjgkzbRg/yJcEs1rMBotUSm2ZnAuShAWbM8960PR+MlkNxBgH7SD1SWV
-         sv3Mwv2WD1oMZr288mNpzmRzzv+gwhb6Gs17Y2o7uAK38LE9eY3Wx3O75h+wkGQ/Rg3q
-         LKfg==
+        bh=W8fna5vAfprlhMtgok8TsdPxk4+XnGn2xwviFFs33yA=;
+        b=WjO95Uf8AXRZTgpmN0MrSemNy88XXAN9Yk9p2wn1WqhQZBDRPbXKGIoeCTflOlpzD7
+         oTfas4tuqIXOJ/S7agipjh1KA1+nozfvMysP9Kc+MOCo34ut2xf5Maw7usiwaX204l+X
+         BpxdZUX24N5i//2vIGpLjt381/3jf+ShzYWLto7pU00AldqM8QfXM8qQzpaO2zonnwL7
+         J/93qagNO9dpeFFCaS9mSukB0oDjDbZZVsMPlWUAUY6ueyHM8VLrIKacf5E9fHkl1WJS
+         cbzfRa45Tv21NEGemJEF0qAaJvVBf9M5W5Yl9Xnlw8vY63enauWem++arnmG+kOppux6
+         Ey9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686242336; x=1688834336;
+        d=1e100.net; s=20221208; t=1686242337; x=1688834337;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3pKdEbukEA9wOHrFUgiYXVQj+yJNTo3IznsPdW4CCZs=;
-        b=jKmpIo/xC5xoWcHENMEia5asNTcU88o0q72CYTvDWSp+mwe9H4MAbd0Jqkmlr1Hcl6
-         R3wYPXtcVpDgcni86cKZDyIGrC+FQjfFKeu9fM18hzNfLEHB+gLzFx7WzKCKx496Jkiz
-         y7J4uWtaeA/icE/iTB/6R54/6xSgIFKX5kd4ZSNRU34eu5N+uv+pGuYZerWrHo9hoAeB
-         qss/z9nLR/JQKql4S0msDoejioJalkdzpTsWr8m1nvkbwY5lk9oxYAjyVjD0lHBCjBV3
-         ZronB8L3KW6BNIMDtV06s9Oez72u6/M3G7WdmNMV4l0GPOLc/Df6LFqjSGcA89hpD7gI
-         Frlg==
-X-Gm-Message-State: AC+VfDzRH7xqeQKePCF8WVR0qAds68DDK9b6Cdq7KnhzlD7s/D8+IwTF
-        oMHL25p2HjC/T0rp0+kp+geyI03eSrf8FAVkZXXotA==
-X-Google-Smtp-Source: ACHHUZ7LFg83lJitnPpbKmdUbO1JdjuYAV0sJIIUNitB3YJVh/LJvrCyTbEfaTniFgABpB9mrYUZtg==
-X-Received: by 2002:adf:cd8f:0:b0:307:a52c:26b4 with SMTP id q15-20020adfcd8f000000b00307a52c26b4mr7653582wrj.66.1686242335891;
-        Thu, 08 Jun 2023 09:38:55 -0700 (PDT)
+        bh=W8fna5vAfprlhMtgok8TsdPxk4+XnGn2xwviFFs33yA=;
+        b=SQ2kjU0IH81As90o1GAGsJ5dpFczjiKuxbnyE9W/AunlT4p+CoLMjKx0mP813xHJBk
+         yAhlhyQ8XnYXgx5c6hrQCKE9jVdBh52ZpGFNA4IYM2cL97Z8RXkujxP29D9kypcqA9zf
+         UgT4XZ3+GfKBwf7dsvgAm306Xe0bin93DGddD4cwRTH8xy1pCEH/7diEomKR4jLsy+rv
+         GshKQKATo0+x5vB0rCV7Sftt0H86AtYXozyBXMcW935qMA7M59Yo1770jaEOINSIihNb
+         N+25kiwEEbvhR/Fbjw0hDmzzjId0O8kcaD4ED4A9uimiDjucyF/EBnn4aie2TedgzkEY
+         yLwg==
+X-Gm-Message-State: AC+VfDxYvH5UHzaAS+Kw/x4/pTkfsF2xjBk6nkPammq2uND9CLCaKrrN
+        6l28GPND1+4aYSGe+qdDbEG4DA==
+X-Google-Smtp-Source: ACHHUZ7qQMZsxyPNdRoFPT+JK7h8RzgnXGJX5TEj1DySMBO8nQYkOmQk40GIHbQG+y80B48uf6v17g==
+X-Received: by 2002:adf:ee12:0:b0:2fe:e455:666c with SMTP id y18-20020adfee12000000b002fee455666cmr1957326wrn.33.1686242337238;
+        Thu, 08 Jun 2023 09:38:57 -0700 (PDT)
 Received: from vdi08.nix.tessares.net (static.219.156.76.144.clients.your-server.de. [144.76.156.219])
-        by smtp.gmail.com with ESMTPSA id e13-20020adfef0d000000b0030aeb3731d0sm2038215wro.98.2023.06.08.09.38.54
+        by smtp.gmail.com with ESMTPSA id e13-20020adfef0d000000b0030aeb3731d0sm2038215wro.98.2023.06.08.09.38.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Jun 2023 09:38:55 -0700 (PDT)
+        Thu, 08 Jun 2023 09:38:56 -0700 (PDT)
 From:   Matthieu Baerts <matthieu.baerts@tessares.net>
-Date:   Thu, 08 Jun 2023 18:38:45 +0200
-Subject: [PATCH net 03/14] selftests: mptcp: connect: skip disconnect tests
- if not supported
+Date:   Thu, 08 Jun 2023 18:38:46 +0200
+Subject: [PATCH net 04/14] selftests: mptcp: connect: skip TFO tests if not
+ supported
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230608-upstream-net-20230608-mptcp-selftests-support-old-kernels-part-2-v1-3-20997a6fd841@tessares.net>
+Message-Id: <20230608-upstream-net-20230608-mptcp-selftests-support-old-kernels-part-2-v1-4-20997a6fd841@tessares.net>
 References: <20230608-upstream-net-20230608-mptcp-selftests-support-old-kernels-part-2-v1-0-20997a6fd841@tessares.net>
 In-Reply-To: <20230608-upstream-net-20230608-mptcp-selftests-support-old-kernels-part-2-v1-0-20997a6fd841@tessares.net>
 To:     mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
@@ -74,21 +74,21 @@ Cc:     Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org,
         Matthieu Baerts <matthieu.baerts@tessares.net>,
         stable@vger.kernel.org
 X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1360;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1341;
  i=matthieu.baerts@tessares.net; h=from:subject:message-id;
- bh=SSoDnMmEl+pZEVoxZerlus09SVoahC8r5yKSBz8cTUI=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBkggQZQVS717uvTyZWy2u8rtgcAqqdKmNxlD+z6
- B+jLTuc0yaJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZIIEGQAKCRD2t4JPQmmg
- c1FGD/9ddiKh4tHtz6ADpgl+xu8AGJPLieuIMGl9OK2GRXKRRNlIQxqEUHKz+rDp43krnh4jwUC
- AN97ZLs6xHqne9Ovt4ymciq8nY8knbogUSHvF4wyYuN7Dacx32RGMUcaNUj7/b5FvQJxOX+/mIb
- Bj8h/b+MLkdelSNY/y6plEJdbE7Ky1BQlJlPrngZKpBRYhxl6W/I9tPBiKyeJmgkQrM6E8+hvFx
- HPS5bnKRhZyVq83W/z1IRilZL3uxV0wHhDrLk/TVH+J8rcedEN3wCbcp4RKjOhMBmS2SdKO3Dfk
- C0qwC0fNfh6wgzhGG6xehEKs1oT4o9kAdqtM/Bd+8vCYF4+nbYVeL4UEANIUUkRGaJkGpS8xE0x
- uYEezzhYda/2hwdKeICljOUzHs9oNdFjbOrpVSHH43W5HggJfnUSF64nlv48RCXnti/Qdk4w3nC
- hhMEm2utnQfRzs+wG4nEEGppqZChP0YdCxLeejCr5yWbUk+tKDOnlDgO1Jj7O5mP6vHTh25Yzk6
- 68/4+JQgeiVdRR3ru3O5UerBsr+d4FCSdmg2dBWKs7+42gxHgOrTTqJnO/LrugyqfAZjK2yo0xZ
- BJdqui59b4sMXsM0MXP30Y9kFa6GiiKeF8Qi1NcE7CYToVmtUlwzNB5XxpzMI9K8fOD2IiFatA0
- zXgFkmBOpN1FN/g==
+ bh=ungmKl+jPgBUIELXD/hdgwcdNa+5IIbuKeJXRHeksWg=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBkggQZgRvNNN5VdNCvqhNddhCcd54OxjWj6abwK
+ eeFhezbl4CJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZIIEGQAKCRD2t4JPQmmg
+ c3p5D/45/+1kAY+ShxGYgWdaJUzHapthY6xFvYQGSwqDpGdNrIaww+42fkLBQtNgpHmdh709Nas
+ 5GM4KPTO3a3QBwl+UWoQd9+3ordpb6kksvUtX50aP4F7k2nl8JllIRTS0rDO7m+egbU4JN1M7n0
+ 6gWPUcw4K2kBvhDpVcEgrmioFGI6O+oj0dBMoOIh92jo5kBXvS7REhtQisFF11B5i3y00QXz1WB
+ d3ZBxpiw5NOHfRasVVsTFUorqgswFOWRm5zQEMMtj3a23aTlBLtPHfajDjwh2ITNco++Lt8cy2f
+ ZIQ1OWtMz/HFVEdabI8Fhvgfq+iSH0roXEnclRnnyQSiL+MtDeflxenuGJyiWBgcn2S8FqACUEu
+ ai8I+3jCE7k+9w352KzzGaAYNlx1li9kRqqll25Mdm9iRW8cxlmhAMMQLdpq7gsskcU9s0Fc8Qu
+ wiYB9AuotY7aR+uJkUnLTMiGA6T8Zu+7e2D+ZXY4xODyRy6WM8cGD+sP5Z8OGtq+oxnwaRGxxDD
+ cY/41eKJTrkPb7mpfWk+z606pENgZ7WhfzC35mVA3LfO3VPlG8awrhRBMLlXWcuSNWwnTodm0+a
+ dcnB9l1eEUCGskXpmxNSqJdd9nqIuz0fQGFsBadsWLMgHpkgvH3cw778jHcBwFFXm1wmuk6FxWe
+ AE/eqCuJHBlXlsw==
 X-Developer-Key: i=matthieu.baerts@tessares.net; a=openpgp;
  fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -104,16 +104,15 @@ X-Mailing-List: stable@vger.kernel.org
 Selftests are supposed to run on any kernels, including the old ones not
 supporting all MPTCP features.
 
-One of them is the full support of disconnections from the userspace
-introduced by commit b29fcfb54cd7 ("mptcp: full disconnect
-implementation").
+One of them is the support of TCP_FASTOPEN socket option with MPTCP
+connections introduced by commit 4ffb0a02346c ("mptcp: add TCP_FASTOPEN
+sock option").
 
-It is possible to look for "mptcp_pm_data_reset" in kallsyms because a
-preparation patch added it to ease the introduction of the mentioned
-feature.
+It is possible to look for "mptcp_fastopen_" in kallsyms to know if the
+feature is supported or not.
 
 Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
-Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
+Fixes: ca7ae8916043 ("selftests: mptcp: mptfo Initiator/Listener")
 Cc: stable@vger.kernel.org
 Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
 ---
@@ -121,21 +120,21 @@ Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
  1 file changed, 5 insertions(+)
 
 diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect.sh b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-index f9c36c6929cc..895114fb6832 100755
+index 895114fb6832..773dd770a567 100755
 --- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
 +++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-@@ -797,6 +797,11 @@ run_tests_disconnect()
- 	local old_cin=$cin
- 	local old_sin=$sin
+@@ -777,6 +777,11 @@ run_tests_peekmode()
  
-+	if ! mptcp_lib_kallsyms_has "mptcp_pm_data_reset$"; then
-+		echo "INFO: Full disconnect not supported: SKIP"
+ run_tests_mptfo()
+ {
++	if ! mptcp_lib_kallsyms_has "mptcp_fastopen_"; then
++		echo "INFO: TFO not supported by the kernel: SKIP"
 +		return
 +	fi
 +
- 	cat $cin $cin $cin > "$cin".disconnect
- 
- 	# force do_transfer to cope with the multiple tranmissions
+ 	echo "INFO: with MPTFO start"
+ 	ip netns exec "$ns1" sysctl -q net.ipv4.tcp_fastopen=2
+ 	ip netns exec "$ns2" sysctl -q net.ipv4.tcp_fastopen=1
 
 -- 
 2.40.1
