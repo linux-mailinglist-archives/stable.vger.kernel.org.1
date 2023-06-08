@@ -2,129 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F3A472878D
-	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 20:59:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6E3072882C
+	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 21:21:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231302AbjFHS7y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 14:59:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53916 "EHLO
+        id S236714AbjFHTVM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 15:21:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235392AbjFHS7x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 14:59:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CCCD2717;
-        Thu,  8 Jun 2023 11:59:52 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 974AE6507C;
-        Thu,  8 Jun 2023 18:59:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B23C433D2;
-        Thu,  8 Jun 2023 18:59:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686250791;
-        bh=rqZ4ygu1jLFkMHAxHH0SRmGgcjM3Ci1aIw0aCx2SYxI=;
-        h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-        b=sfU9IXPot4mF1XN/tYoJwE16kEfPWP/tgtjkkMvyfamC9RFns57b2pY6GXZHyMj8q
-         wCWSu8nyxPTAoeY6Y26DBqMn2HXnFJqppEzcVZcKw7yKn0+WFirJuyh+LrfySFQ4Fp
-         +01N29WGY5G68pgZlHUFZBuWZCMQIYZWBcLa95vHipj8Dm4ez7Lh+5XXYwFmSheh+Q
-         COwRgyTerjCd0MZV+YsuSzO4JTbNX56XcGwgbp7Yk0jIFBHNIlsjTBf6T9ORr8UmO2
-         HL+hM+7KCL4ZuI/H7J/oc4+KKnxp38qiSNKFaK8UuhsgpJ6BpVN8y7QrPjhOycA3xJ
-         tlBwaY/RqsRLw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Thu, 08 Jun 2023 21:59:46 +0300
-Message-Id: <CT7I0L9VA43U.295DG4TZ6ZIC9@suppilovahvero>
-Subject: Re: [PATCH] tpm: factor out the user space mm from
- tpm_vtpm_set_locality()
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Stefan Berger" <stefanb@linux.ibm.com>,
-        <linux-integrity@vger.kernel.org>
-Cc:     "Jason Gunthorpe" <jgg@nvidia.com>,
-        "Alejandro Cabrera" <alejandro.cabreraaldaya@tuni.fi>,
-        "Jarkko Sakkinen" <jarkko.sakkinen@tuni.fi>,
-        <stable@vger.kernel.org>,
-        "Stefan Berger" <stefanb@linux.vnet.ibm.com>,
-        <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.14.0
-References: <20230530205001.1302975-1-jarkko@kernel.org>
- <8f15feb5-7c6e-5a16-d9b4-008b7b45b01a@linux.ibm.com>
- <324df0fa5ad1f0508c5f62c25dd1f8d297d78813.camel@kernel.org>
- <0438f5e3-ca42-343b-e79e-5f7976ec8a62@linux.ibm.com>
- <CT7AOKF4OGHA.2S5VUEAG76GYB@suppilovahvero>
- <666b8422-3e4f-3d88-1ff7-1f650dd401ce@linux.ibm.com>
-In-Reply-To: <666b8422-3e4f-3d88-1ff7-1f650dd401ce@linux.ibm.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S235941AbjFHTVL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 15:21:11 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10497E50;
+        Thu,  8 Jun 2023 12:20:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1686252015; x=1686856815; i=rwarsow@gmx.de;
+ bh=0BsqEZ8AeUZZU5Rv4gzd6HuD/lO3oQ0x9OYg9EC3PeI=;
+ h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+ b=ew5sebd4+ehWIjSAYkoqgROC4cSLR+/1E7k0MsQuOr0qGh3XC5KRFRqhCu0QnnvFi3rzVBm
+ viQYX9rGOMrJaNAXU8dqxbAqYVLxWyuJQJNqvB8X0ptP+1K6GFfP1Vz7jRvIx38MdeRh+QFnN
+ J+lJteoHifcMuV2Ph3vOBpOs+BcSeJGuBjCeilI2y9rNioTPGEY73oiIKx39bvQXcCjpjq8Y9
+ DPAE2JfPq+pVJALBPFFYWZrRIAnZHle2uTN0mObDxn3Ny//a3+nV1TpAPS8IOlPN8FKfL+/ZN
+ xm6rL97KaVOOxExq6PZ3OPILx716hG6QTB6vfa6jx1oTTgzOkPEQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([94.134.26.152]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MFKGZ-1qMzLJ1AL3-00Fieg; Thu, 08
+ Jun 2023 21:15:00 +0200
+Message-ID: <3589716d-4f21-ddf6-7b8f-8aad0d67658e@gmx.de>
+Date:   Thu, 8 Jun 2023 21:14:59 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+From:   Ronald Warsow <rwarsow@gmx.de>
+To:     linux-kernel@vger.kernel.org
+Cc:     stable@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.3 000/285] 6.3.7-rc2 review
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:T3yU0m5pNBW0i27IR/BXwNqamSuN7MJ1p3JBjBCDpEp/B5Ytkrz
+ RXr3UFGStq3Pr1oIXXMtAxEipgw/Nzq+aS6DhyVcSdkeWaBkhNphV47jVTeJTQgR6XRGEL6
+ EFsDqE65Gv4caHfnmbN0O20ir1rq2eNPusfA5oLEinlOjgsIotKrqIUx+h5meeKKp0sAc3j
+ Js5SYsCJ3W+ykybdutnSQ==
+UI-OutboundReport: notjunk:1;M01:P0:7y+1hLQkXPI=;KvWWOzVktbg4MiqeSaqbmcPIyCl
+ pGXRhf9hYXOGNxQr7D0ZsTFU9HrrTaDE+0SV5jJqUF5dq4BDHk56L6kso1HZf+8nkRmm2nN4j
+ /syorwKYiIghUYDENuK2557zauuyTrlzkuIKFhavTS0zprpmmgpJkfxkwjlOS16QbZtw78BWn
+ BBWvbG7dYeQDat3eXJ1U0RCKe7hWo0DYfrovbhYaS8tOF+5sR73csic3TlR7YSNdnRvovrEOY
+ dEUyCjtGvxoL8ZpijA9KPlEY8Gr96scf5qroNhr8n63HRo0E9yPvseQuOaanbRAm/QTarsfAI
+ oQnJzTBc2zfPuVedbAamtD3HjmJId9qRpRg1m3FtPmsa+/yHCUSx3ZddSeTZdBRgYRJPNZS6F
+ t8HGBwd7xY7u/aOaIK88cGBZ5G7dzLDHcYewUFgkX+02viGJXaYXyKhoK3PMSXEL8jdN8kxjc
+ iIcFBKo2ErXmU8n+fVb/HQM47KAJuQKLriQdeVU4jMWvcEQ5uWILFJcaYVjOOOYninfWvW6WK
+ sap+m0iwhxWR7+XRIUfpTh3FNWlpGmd7Nqc4OXRoRkjNZQxcCv/hq5xIwSCXrF0vAuHG4EjEk
+ a3c2bVyPruTR2iTNyoEqJNyVK9DkEYk5Jb+8+grOh1c68CYZlMtZBhzdUfCdvIaby5Y3TvECP
+ Ung3n0XMWkg7clYs1dtir/CfVrmhMF1XWtcawGmmpHFqODYvalPA0CSxtI+fWB5fC8U4rKHYI
+ F+00nuUBySBN95eJB2zDvrrrYHxfcss+dDTpEbKgGot/aluc1/2d6+dLpTbUe7VSHGMvOtJk9
+ Rgc6fhUOEBkHEoELfZF7xmReghTQGJS//Rqi7rdK0UAqarpJ+lbwozpQzAJ81NxRk9BVCb8DQ
+ 5HnewpAgLUS8uX9WBM8wQyElQqsZ1dV3rz1nU0a9foUJCf3dTl5lGk1xpcZwEC700S8Snjac4
+ f3mhA4rKRqW9EJdlZ+Uf3ECKhqs=
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FAKE_REPLY_A1,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu Jun 8, 2023 at 6:10 PM EEST, Stefan Berger wrote:
->
->
-> On 6/8/23 09:14, Jarkko Sakkinen wrote:
-> > On Wed May 31, 2023 at 8:01 PM EEST, Stefan Berger wrote:
-> >>
-> >>
-> >
-> >>
-> >> This is swtpm picking up this command with its user buffer.
-> >>
-> >>     So, I am not sure at this point what is wrong.
-> >>
-> >>      Stefan
-> >=20
-> > The answer was below but in short it is that you have a function that
-> > expects __user * and you don't pass user tagged memory.
->
-> There are two functions that expect user tagged memory:
->
-> static ssize_t vtpm_proxy_fops_read(struct file *filp, char __user *buf,
-> 				    size_t count, loff_t *off)
-> static ssize_t vtpm_proxy_fops_write(struct file *filp, const char __user=
- *buf,
-> 				     size_t count, loff_t *off)
->
-> the correspond to this interface:
->
-> struct file_operations {
-> 	struct module *owner;
-> 	loff_t (*llseek) (struct file *, loff_t, int);
-> 	ssize_t (*read) (struct file *, char __user *, size_t, loff_t *);
-> 	ssize_t (*write) (struct file *, const char __user *, size_t, loff_t *);
->
-> defined here:
->
-> static const struct file_operations vtpm_proxy_fops =3D {
-> 	.owner =3D THIS_MODULE,
-> 	.llseek =3D no_llseek,
-> 	.read =3D vtpm_proxy_fops_read,
-> 	.write =3D vtpm_proxy_fops_write,
->
-> Conversely, I see no other function interfaces in tpm_vtpm_proxy.c where =
-the code would be missing the __user.
->
-> Neither do I see any functions where I am passing a __user tagged buffer =
-as parameter that shouldn't have
-> such a tag on it or the reverse where a plain buffer is passed and it sho=
-uld be a __user tagged buffer.
+Hi Greg
 
-Uh oh, you're correct. I was looking this in the context of my user
-vtpm driver changes, so that confused me, so it is actually my bad.
-So blame is on my side.
+6.3.7-rc2
 
-I would still want to open code the whole thing because there is no
-need to cycle it through tpm_transmit_cmd() but I'll do it in the
-context of other changes.
+compiles, boots and runs here on x86_64
+(Intel Rocket Lake)
 
-It is pretty complicated sequence and makes hard to build anything
-on top of existing functionality, so it needs to be simplified in
-any case... But you are right: it is not a bug.
+Thanks
 
-BR, Jarkko
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
+
