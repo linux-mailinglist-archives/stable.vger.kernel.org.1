@@ -2,71 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A2617274AB
-	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 03:59:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 679B27274BB
+	for <lists+stable@lfdr.de>; Thu,  8 Jun 2023 04:08:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233089AbjFHB7H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 7 Jun 2023 21:59:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32838 "EHLO
+        id S232195AbjFHCIW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 7 Jun 2023 22:08:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229499AbjFHB7G (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 21:59:06 -0400
-Received: from mail-vs1-xe34.google.com (mail-vs1-xe34.google.com [IPv6:2607:f8b0:4864:20::e34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 926CD26AB;
-        Wed,  7 Jun 2023 18:59:05 -0700 (PDT)
-Received: by mail-vs1-xe34.google.com with SMTP id ada2fe7eead31-43dc0aa328dso113471137.1;
-        Wed, 07 Jun 2023 18:59:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686189544; x=1688781544;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hLD/AoRxIRH6DflQuY1pQRUk5GfyHQapQE2eJSJgDwc=;
-        b=RLpOkZZB5Z2i5e/q/2M58hjF8/6cOeJ4Z+1leqfeXaWr8ZOBNF2fvCxb4M/xgxbbmK
-         BgONIu66JErya1JDcuy4nGgRP3iN1zdYJQtFEcANuXDVQlNsuStDFGJucViQRYxJWupv
-         GIEvpEiBgICCMOOzvxaT8zW9Hu3naVM1gULoC1Pvfc7pcP5lKnRCXcekoHcvzhkkhedz
-         EH4PboHRJTIAwrwYQc7ZQqRDnYxnUzM2W7Q5Pq6UUQIE1qtcEOxI84Zhjsack65l5iMB
-         eVKWJLy2EVmMGSyd8k5QMagCt3JsZTw0Raaw5FrT+CdtJB3wx+MPPnmSbva/psQA426H
-         XPiA==
+        with ESMTP id S229454AbjFHCIV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 7 Jun 2023 22:08:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C145E26A1
+        for <stable@vger.kernel.org>; Wed,  7 Jun 2023 19:07:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1686190054;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=cGbxdnE4kF02ZAat0YucTxFSuVc3j8XkEalI37UwAYo=;
+        b=Budvlc3Leg2s+y4h3gFYYJZQ1MXN/O34pBL7Wxd8QPGXAafjaDt+BYJl1EyBFnUzaJKrzz
+        tUKWTLWbIN7gbn6zOwecC/XZyViuIAKc7dpEbNNHxNslMBiXZdb61N+JGGOBVdwQ2OjkE7
+        U/1cVw5YHccXAv24/6E/sgAykpizadE=
+Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
+ [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-114-TXTy2X5jMFiSVzq1OkglgA-1; Wed, 07 Jun 2023 22:07:32 -0400
+X-MC-Unique: TXTy2X5jMFiSVzq1OkglgA-1
+Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-53445255181so2593817a12.0
+        for <stable@vger.kernel.org>; Wed, 07 Jun 2023 19:07:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686189544; x=1688781544;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hLD/AoRxIRH6DflQuY1pQRUk5GfyHQapQE2eJSJgDwc=;
-        b=D1PVxjhwWGEH8wuROSF7S8cKwXYijFGKoiFh0AV264k3HVy7fdBA9QUUgix/a+Brh7
-         t9NHbYBZ/TvwCcwPsFPD2JzML73p2mVKoxZqCz0A9OvCR098+TdRa6gW1IDUBeSQxmTx
-         eEWwQcMeBhZO4p3Mgc7RXB4gopNC434y5OGWyGuzFcPBNhKqSQFuOni8rfKCWMZ2QAOr
-         2bzNDJu1p3PM5DWaApWmw1+A5Q6KKFkF33avVI+OxgtTzgZPpjdaC71YqSNS6L1mzRUd
-         E98MQj1NAUorqzKKdJ9IzvFXqE9z8aVMQLVXvGIiTe55NiNMLHSpSqdoCMQ4KbQcnoA9
-         zZeQ==
-X-Gm-Message-State: AC+VfDyQZ2jpDgQX2NlDgVWsnkOPXYfkJjY4VhVeakA/rFwuanisUEEh
-        HT7MNDyTzUVZthdNDHIxg4VWDtl9iWFkm6oy7WSON9iu
-X-Google-Smtp-Source: ACHHUZ6IysarFoLEMkoINq2FS2nreTCCGW2A/LlTZrix6kwXfjtEemgVvYXIrTyB44lYFPt/Yw2mvpvDcWSYwPSBL1k=
-X-Received: by 2002:a05:6102:c04:b0:43b:4f2e:359 with SMTP id
- x4-20020a0561020c0400b0043b4f2e0359mr260503vss.3.1686189544692; Wed, 07 Jun
- 2023 18:59:04 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1686190052; x=1688782052;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cGbxdnE4kF02ZAat0YucTxFSuVc3j8XkEalI37UwAYo=;
+        b=J72/JoHzVeq84Rf3+NreO1VXdFyBZkVSP8LHHaWithWzxajs9AYT1MH27uqhzux9LI
+         Q+rfNd1xy098xS9yZCgwWQ322aXFqHKOVh0m1uu+qOSSgQKowPNkzQ4BeBiAeHaAjJFg
+         pqdU8OWwDAkQBdeKCAs9vhvvbseSe/One17elTNKZUc0YkwU9eVlgpRc75ANipSDaSFH
+         7eMA9NRWrfj80Zb9nlMcrlwu2jlFZ0/UTfrUkhDM8pBclpOosvDPlXpeiOD+59lcfUZh
+         rpv85HYh8E8FtAzBXi+FnaQ3FMib3dceXNdeGVbtGCrT3lPYwtS9sigf6iD9OtQrsuA+
+         mBrw==
+X-Gm-Message-State: AC+VfDzEiwAql7D3PwSWhNg434WDuoAz4VmdamjuAEUn/z40U3hYg0Jp
+        3ewHXuTOx1k2d4O763/W8EUFkC4NYupQhUUmUqt1Ijq8mUclcNA0aTCGP/yzTM/jncPuSlvXPrI
+        a96GqNF98AX7in/fX
+X-Received: by 2002:a05:6a20:144e:b0:10c:49e:6c67 with SMTP id a14-20020a056a20144e00b0010c049e6c67mr3099495pzi.33.1686190051725;
+        Wed, 07 Jun 2023 19:07:31 -0700 (PDT)
+X-Google-Smtp-Source: ACHHUZ7fCH/GCxnQ8Lw+Duf/tDRO1hR1DptB/ZSHIQ+Oca/DShTY6Spm+XO5HzqrSpMBoDMDzPNvWA==
+X-Received: by 2002:a05:6a20:144e:b0:10c:49e:6c67 with SMTP id a14-20020a056a20144e00b0010c049e6c67mr3099482pzi.33.1686190051331;
+        Wed, 07 Jun 2023 19:07:31 -0700 (PDT)
+Received: from [10.72.13.135] ([209.132.188.80])
+        by smtp.gmail.com with ESMTPSA id jc22-20020a17090325d600b001a6f7744a27sm167810plb.87.2023.06.07.19.07.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 Jun 2023 19:07:31 -0700 (PDT)
+Message-ID: <eaa3e03d-2c12-9095-0533-cb5b19f0ef4d@redhat.com>
+Date:   Thu, 8 Jun 2023 10:07:20 +0800
 MIME-Version: 1.0
-References: <20230605075258.308475-1-amir73il@gmail.com> <2023060730-ultimate-triceps-7bea@gregkh>
- <2023060708-paver-foe-ed80@gregkh>
-In-Reply-To: <2023060708-paver-foe-ed80@gregkh>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Thu, 8 Jun 2023 04:58:53 +0300
-Message-ID: <CAOQ4uxg0h1t_xBrLNhPT-2tpxauAgUxe4L-3Oh5MLDXBLkUMEg@mail.gmail.com>
-Subject: Re: [PATCH 6.1] xfs: verify buffer contents when we skip log replay
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Sasha Levin <sashal@kernel.org>,
-        Leah Rumancik <leah.rumancik@gmail.com>,
-        Chandan Babu R <chandan.babu@oracle.com>,
-        "Darrick J . Wong" <djwong@kernel.org>, linux-xfs@vger.kernel.org,
-        stable@vger.kernel.org, Dave Chinner <dchinner@redhat.com>,
-        Dave Chinner <david@fromorbit.com>,
-        Danila Chernetsov <listdansp@mail.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v3] ceph: fix use-after-free bug for inodes when flushing
+ capsnaps
+Content-Language: en-US
+To:     Ilya Dryomov <idryomov@gmail.com>
+Cc:     ceph-devel@vger.kernel.org, jlayton@kernel.org,
+        vshankar@redhat.com, mchangir@redhat.com, stable@vger.kernel.org
+References: <20230606005253.1055933-1-xiubli@redhat.com>
+ <CAOi1vP_Xr6iMgjo7RKtc4-oZdF_FX7_U3Wx4Y=REdpa4Gj7Oig@mail.gmail.com>
+ <b0ec84e4-1999-8284-dc90-307831f1e04b@redhat.com>
+ <CAOi1vP_ma6pQ35FpG6wEYBhwxRXYB73vP-B1Jziji7zDodDpGQ@mail.gmail.com>
+From:   Xiubo Li <xiubli@redhat.com>
+In-Reply-To: <CAOi1vP_ma6pQ35FpG6wEYBhwxRXYB73vP-B1Jziji7zDodDpGQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,22 +84,186 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jun 7, 2023 at 9:34=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+
+On 6/7/23 16:03, Ilya Dryomov wrote:
+> On Tue, Jun 6, 2023 at 3:30 PM Xiubo Li <xiubli@redhat.com> wrote:
+>>
+>> On 6/6/23 18:21, Ilya Dryomov wrote:
+>>> On Tue, Jun 6, 2023 at 2:55 AM <xiubli@redhat.com> wrote:
+>>>> From: Xiubo Li <xiubli@redhat.com>
+>>>>
+>>>> There is a race between capsnaps flush and removing the inode from
+>>>> 'mdsc->snap_flush_list' list:
+>>>>
+>>>>      == Thread A ==                     == Thread B ==
+>>>> ceph_queue_cap_snap()
+>>>>    -> allocate 'capsnapA'
+>>>>    ->ihold('&ci->vfs_inode')
+>>>>    ->add 'capsnapA' to 'ci->i_cap_snaps'
+>>>>    ->add 'ci' to 'mdsc->snap_flush_list'
+>>>>       ...
+>>>>      == Thread C ==
+>>>> ceph_flush_snaps()
+>>>>    ->__ceph_flush_snaps()
+>>>>     ->__send_flush_snap()
+>>>>                                   handle_cap_flushsnap_ack()
+>>>>                                    ->iput('&ci->vfs_inode')
+>>>>                                      this also will release 'ci'
+>>>>                                       ...
+>>>>                                         == Thread D ==
+>>>>                                   ceph_handle_snap()
+>>>>                                    ->flush_snaps()
+>>>>                                     ->iterate 'mdsc->snap_flush_list'
+>>>>                                      ->get the stale 'ci'
+>>>>    ->remove 'ci' from                ->ihold(&ci->vfs_inode) this
+>>>>      'mdsc->snap_flush_list'           will WARNING
+>>>>
+>>>> To fix this we will increase the inode's i_count ref when adding 'ci'
+>>>> to the 'mdsc->snap_flush_list' list.
+>>>>
+>>>> Cc: stable@vger.kernel.org
+>>>> URL: https://bugzilla.redhat.com/show_bug.cgi?id=2209299
+>>>> Reviewed-by: Milind Changire <mchangir@redhat.com>
+>>>> Signed-off-by: Xiubo Li <xiubli@redhat.com>
+>>>> ---
+>>>>
+>>>> V3:
+>>>> - Fix two minor typo in commit comments.
+>>>>
+>>>>
+>>>>
+>>>>    fs/ceph/caps.c | 6 ++++++
+>>>>    fs/ceph/snap.c | 4 +++-
+>>>>    2 files changed, 9 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
+>>>> index feabf4cc0c4f..7c2cb813aba4 100644
+>>>> --- a/fs/ceph/caps.c
+>>>> +++ b/fs/ceph/caps.c
+>>>> @@ -1684,6 +1684,7 @@ void ceph_flush_snaps(struct ceph_inode_info *ci,
+>>>>           struct inode *inode = &ci->netfs.inode;
+>>>>           struct ceph_mds_client *mdsc = ceph_inode_to_client(inode)->mdsc;
+>>>>           struct ceph_mds_session *session = NULL;
+>>>> +       int put = 0;
+>>> Hi Xiubo,
+>>>
+>>> Nit: renaming this variable to need_put and making it a bool would
+>>> communicate the intent better.
+>> Hi Ilya
+>>
+>> Sure, will update it.
+>>
+>>>>           int mds;
+>>>>
+>>>>           dout("ceph_flush_snaps %p\n", inode);
+>>>> @@ -1728,8 +1729,13 @@ void ceph_flush_snaps(struct ceph_inode_info *ci,
+>>>>                   ceph_put_mds_session(session);
+>>>>           /* we flushed them all; remove this inode from the queue */
+>>>>           spin_lock(&mdsc->snap_flush_lock);
+>>>> +       if (!list_empty(&ci->i_snap_flush_item))
+>>>> +               put++;
+>>> What are the cases when ci is expected to not be on snap_flush_list
+>>> list (and therefore there is no corresponding reference to put)?
+>>>
+>>> The reason I'm asking is that ceph_flush_snaps() is called from two
+>>> other places directly (i.e. without iterating snap_flush_list list) and
+>>> then __ceph_flush_snaps() is called from two yet other places.  The
+>>> problem that we are presented with here is that __ceph_flush_snaps()
+>>> effectively consumes a reference on ci.  Is ci protected from being
+>>> freed by handle_cap_flushsnap_ack() very soon after __send_flush_snap()
+>>> returns in all these other places?
+>> There are 4 places will call the 'ceph_flush_snaps()':
+>>
+>> Cscope tag: ceph_flush_snaps
+>>      #   line  filename / context / line
+>>      1   3221  fs/ceph/caps.c <<__ceph_put_cap_refs>>
+>>                ceph_flush_snaps(ci, NULL);
+>>      2   3336  fs/ceph/caps.c <<ceph_put_wrbuffer_cap_refs>>
+>>                ceph_flush_snaps(ci, NULL);
+>>      3   2243  fs/ceph/inode.c <<ceph_inode_work>>
+>>                ceph_flush_snaps(ci, NULL);
+>>      4    941  fs/ceph/snap.c <<flush_snaps>>
+>>                ceph_flush_snaps(ci, &session);
+>> Type number and <Enter> (q or empty cancels):
+>>
+>> For #1 it will add the 'ci' to the 'mdsc->snap_flush_list' list by
+>> calling '__ceph_finish_cap_snap()' and then call the
+>> 'ceph_flush_snaps()' directly or defer call it in the queue work in #3.
+>>
+>> The #3 is the reason why we need the 'mdsc->snap_flush_list' list.
+>>
+>> For #2 it won't add the 'ci' to the list because it will always call the
+>> 'ceph_flush_snaps()' directly.
+>>
+>> For #4 it will call 'ceph_flush_snaps()' by iterating the
+>> 'mdsc->snap_flush_list' list just before the #3 being triggered.
+>>
+>> The problem only exists in case of #1 --> #4, which will make the stale
+>> 'ci' to be held in the 'mdsc->snap_flush_list' list after 'capsnap' and
+>> 'ci' being freed. All the other cases are okay because the 'ci' will be
+>> protected by increasing the ref when allocating the 'capsnap' and will
+>> decrease the ref in 'handle_cap_flushsnap_ack()' when freeing the 'capsnap'.
+>>
+>> Note: the '__ceph_flush_snaps()' won't increase the ref. The
+>> 'handle_cap_flushsnap_ack()' will just try to decrease the ref and only
+>> in case the ref reaches to '0' will the 'ci' be freed.
+> So my question is: are all __ceph_flush_snaps() callers guaranteed to
+> hold an extra (i.e. one that is not tied to capsnap) reference on ci so
+> that when handle_cap_flushsnap_ack() drops one that is tied to capsnap
+> the reference count doesn't reach 0?  It sounds like you are confident
+> that there is no issue with ceph_flush_snaps() callers, but it would be
+> nice if you could confirm the same for bare __ceph_flush_snaps() call
+> sites in caps.c.
+
+Yeah, checked the code again carefully.  I am sure that when calling the 
+'__ceph_flush_snaps()' it has already well handled the reference too.
+
+Once the 'capsnap' is in 'ci->i_cap_snaps' list the inode's reference 
+must have already been increased, please see 'ceph_queue_cap_snap()', 
+which will allocate and insert 'capsnap' to this list.
+
+Except the 'mdsc->snap_flush_list' list, the 'capsnap' will be added to 
+three other lists, which are 'ci->i_cap_snaps', 'mdsc->cap_flush_list' 
+and 'ci->i_cap_flush_list'.
+
+
+  744 INIT_LIST_HEAD(&capsnap->cap_flush.i_list);      --> 
+ci->i_cap_flush_list
+  745 INIT_LIST_HEAD(&capsnap->cap_flush.g_list);    --> 
+mdsc->cap_flush_list
+  746 INIT_LIST_HEAD(&capsnap->ci_item);                   --> 
+ci->i_cap_snaps
+
+
+But 'capsnap' will be removed from them all just before freeing the 
+'capsnap' and iput(inode), more detail please see:
+
+
+   handle_cap_flushsnap_ack()
+       -->  ceph_remove_capsnap()
+             --> __ceph_remove_capsnap()
+                  --> list_del_init(&capsnap->ci_item); // remove from 
+'ci->i_cap_snaps' list
+                  --> __detach_cap_flush_from_ci()         // remove 
+from 'ci->i_cap_flush_list' list
+                 --> __detach_cap_flush_from_mdsc()} // remove from 
+'mdsc->cap_flush_list'
+       --> ceph_put_cap_snap(capsnap)
+       --> iput(inode)
+
+
+The 'mdsc->cap_flush_list' list will be proected by 
+'mdsc->cap_dirty_lock', so do not have any issue here.
+
+So I am sure that just before 'capsnap' being freed the 'ci' won't 
+released in the above case.
+
+Thanks
+
+- Xiubo
+
+> Thanks,
 >
-> On Wed, Jun 07, 2023 at 07:53:54PM +0200, Greg Kroah-Hartman wrote:
-> > On Mon, Jun 05, 2023 at 10:52:58AM +0300, Amir Goldstein wrote:
-> > > From: "Darrick J. Wong" <djwong@kernel.org>
-> > >
-> > > commit 22ed903eee23a5b174e240f1cdfa9acf393a5210 upstream.
-> >
-> > What about 6.3.y?  I can't take a patch for 6.1.y only without it being
-> > in a newer kernel at the same time, right?
->
-> Ah, it's simple enough, I added it to 6.3.y for now as well, thanks.
+>                  Ilya
 >
 
-It's ok, I forgot to say that this one is good for 6.3 as well.
-
-Thanks,
-Amir.
