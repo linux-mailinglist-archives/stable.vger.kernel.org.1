@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C789B728C87
-	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 02:35:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AE29728C9D
+	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 02:52:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229732AbjFIAfx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 20:35:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48112 "EHLO
+        id S237236AbjFIAwM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 20:52:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236243AbjFIAfx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 20:35:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45CD230DA;
-        Thu,  8 Jun 2023 17:35:51 -0700 (PDT)
+        with ESMTP id S234560AbjFIAwI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 20:52:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B7612136;
+        Thu,  8 Jun 2023 17:52:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CB0556526B;
-        Fri,  9 Jun 2023 00:35:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27067C433EF;
-        Fri,  9 Jun 2023 00:35:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D5AE6205D;
+        Fri,  9 Jun 2023 00:52:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74779C433EF;
+        Fri,  9 Jun 2023 00:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1686270950;
-        bh=5tCXU43lF9jkXpDUjJpFYBB9XM2svlva57tFV3HeN90=;
+        s=korg; t=1686271926;
+        bh=taEWEHnfM5KSbeFm8Zv9kHCH7Ky0+Fb8BX/HvqXGHls=;
         h=Date:To:From:Subject:From;
-        b=lacKCBDQ4rpxmFnw5Pl69QCuNxQ/y2hMHgPiCFiJ8Nh54xtPnAFhyuElxxeK/C/WR
-         E6PBVDs8cmtYFjJ4roCR3hMGisoOVEcW4A0LFjizbXb6zaO1Kzl4LB6gK7u423qOER
-         UQWoZR2MwAwrHtMja4L3sdujz8P2NWqBkjUdaY1c=
-Date:   Thu, 08 Jun 2023 17:35:49 -0700
-To:     mm-commits@vger.kernel.org, yury.norov@gmail.com,
-        stable@vger.kernel.org, nicolas@fjasle.eu, ndesaulniers@google.com,
-        nathan@kernel.org, mingo@kernel.org, masahiroy@kernel.org,
-        prathubaronia2011@gmail.com, akpm@linux-foundation.org
+        b=Q1Yr4nz4MkX+Tk1m+kTREgVtBkmWN8yIhr68skBnh0JHXb15Y6fcYSXzEa6vgGWx5
+         SLhAkpY9KhbVeykad9DuOodx52xd5PH6fyHAThwxNR2Pm+n3qZ3eFImUU37cSLgh3H
+         RVZiPkg0VOsDD9XefeKDK0h55jBrPs08CF0jufeM=
+Date:   Thu, 08 Jun 2023 17:52:05 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        dhowells@redhat.com, vishal.moola@gmail.com,
+        akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + scripts-fix-the-gfp-flags-header-path-in-gfp-translate.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230609003550.27067C433EF@smtp.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+Subject: + afs-fix-dangling-folio-ref-counts-in-writeback.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230609005206.74779C433EF@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -48,12 +47,12 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The patch titled
-     Subject: scripts: fix the gfp flags header path in gfp-translate
+     Subject: afs: fix dangling folio ref counts in writeback
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     scripts-fix-the-gfp-flags-header-path-in-gfp-translate.patch
+     afs-fix-dangling-folio-ref-counts-in-writeback.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/scripts-fix-the-gfp-flags-header-path-in-gfp-translate.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/afs-fix-dangling-folio-ref-counts-in-writeback.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -71,49 +70,39 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Prathu Baronia <prathubaronia2011@gmail.com>
-Subject: scripts: fix the gfp flags header path in gfp-translate
-Date: Thu, 8 Jun 2023 21:14:49 +0530
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Subject: afs: fix dangling folio ref counts in writeback
+Date: Wed, 7 Jun 2023 13:41:19 -0700
 
-Since gfp flags have been shifted to gfp_types.h so update the path in
-the gfp-translate script.
+Commit acc8d8588cb7 converted afs_writepages_region() to write back a
+folio batch.  If writeback needs rescheduling, the function exits without
+dropping the references to the folios in fbatch.  This patch fixes that.
 
-Link: https://lkml.kernel.org/r/20230608154450.21758-1-prathubaronia2011@gmail.com
-Fixes: cb5a065b4ea9c ("headers/deps: mm: Split <linux/gfp_types.h> out of <linux/gfp.h>")
-Signed-off-by: Prathu Baronia <prathubaronia2011@gmail.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Yury Norov <yury.norov@gmail.com>
+Link: https://lkml.kernel.org/r/20230607204120.89416-1-vishal.moola@gmail.com
+Fixes: acc8d8588cb7 ("afs: convert afs_writepages_region() to use filemap_get_folios_tag()")
+Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Cc: David Howells <dhowells@redhat.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- scripts/gfp-translate |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/afs/write.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/scripts/gfp-translate~scripts-fix-the-gfp-flags-header-path-in-gfp-translate
-+++ a/scripts/gfp-translate
-@@ -63,11 +63,11 @@ fi
- 
- # Extract GFP flags from the kernel source
- TMPFILE=`mktemp -t gfptranslate-XXXXXX` || exit 1
--grep -q ___GFP $SOURCE/include/linux/gfp.h
-+grep -q ___GFP $SOURCE/include/linux/gfp_types.h
- if [ $? -eq 0 ]; then
--	grep "^#define ___GFP" $SOURCE/include/linux/gfp.h | sed -e 's/u$//' | grep -v GFP_BITS > $TMPFILE
-+	grep "^#define ___GFP" $SOURCE/include/linux/gfp_types.h | sed -e 's/u$//' | grep -v GFP_BITS > $TMPFILE
- else
--	grep "^#define __GFP" $SOURCE/include/linux/gfp.h | sed -e 's/(__force gfp_t)//' | sed -e 's/u)/)/' | grep -v GFP_BITS | sed -e 's/)\//) \//' > $TMPFILE
-+	grep "^#define __GFP" $SOURCE/include/linux/gfp_types.h | sed -e 's/(__force gfp_t)//' | sed -e 's/u)/)/' | grep -v GFP_BITS | sed -e 's/)\//) \//' > $TMPFILE
- fi
- 
- # Parse the flags
+--- a/fs/afs/write.c~afs-fix-dangling-folio-ref-counts-in-writeback
++++ a/fs/afs/write.c
+@@ -764,6 +764,7 @@ static int afs_writepages_region(struct
+ 					if (skips >= 5 || need_resched()) {
+ 						*_next = start;
+ 						_leave(" = 0 [%llx]", *_next);
++						folio_batch_release(&fbatch);
+ 						return 0;
+ 					}
+ 					skips++;
 _
 
-Patches currently in -mm which might be from prathubaronia2011@gmail.com are
+Patches currently in -mm which might be from vishal.moola@gmail.com are
 
-scripts-fix-the-gfp-flags-header-path-in-gfp-translate.patch
+afs-fix-dangling-folio-ref-counts-in-writeback.patch
+afs-fix-waiting-for-writeback-then-skipping-folio.patch
 
