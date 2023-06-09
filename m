@@ -2,83 +2,83 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E316C728FA3
-	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 08:09:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31DE6728FE2
+	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 08:22:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230239AbjFIGJX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 9 Jun 2023 02:09:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37020 "EHLO
+        id S237968AbjFIGVd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 9 Jun 2023 02:21:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjFIGJV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 9 Jun 2023 02:09:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2C0E1FE6;
-        Thu,  8 Jun 2023 23:09:20 -0700 (PDT)
+        with ESMTP id S237833AbjFIGVT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 9 Jun 2023 02:21:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98A6630F0;
+        Thu,  8 Jun 2023 23:21:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A05261560;
-        Fri,  9 Jun 2023 06:09:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54AD7C433D2;
-        Fri,  9 Jun 2023 06:09:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686290959;
-        bh=VymAURH6DqwhMHojBPt5ZuPQYK69zpD8+HmhzERJHQs=;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 29561653D6;
+        Fri,  9 Jun 2023 06:21:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A52C433D2;
+        Fri,  9 Jun 2023 06:21:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686291677;
+        bh=pjcIRBp4TxDCF1VbEyrm0rP6g/GjTwNBBru1sxq77qU=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BUcm9vafTjmhcgggePjJmaz/CH0W+mbeHr5qrrQwiB0h1f0JVSlBxyQKzOgMopEnY
-         lFRs6FwN6lXiIizorV33KI6IMNKLqQPxpXoK4tRUII5GGb3Z08TYo2zB8FwXnZmiP8
-         Hwt8ucnJj7jNCiplSapmsMgpbeFiRHshdQZliN6g=
-Date:   Fri, 9 Jun 2023 08:09:17 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Mike Kravetz <mike.kravetz@oracle.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        dri-devel@lists.freedesktop.org, qemu-devel@nongnu.org,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        Vivek Kasireddy <vivek.kasireddy@intel.com>,
-        Dongwon Kim <dongwon.kim@intel.com>,
-        Junxiao Chang <junxiao.chang@intel.com>,
-        kirill.shutemov@linux.intel.com, mhocko@suse.com,
-        jmarchan@redhat.com, muchun.song@linux.dev,
-        James Houghton <jthoughton@google.com>,
-        David Hildenbrand <david@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        b=c14UQ8gX72mslbloG2zO5Sf4bloRxlz7ZzupEA7l5PAPXvl6t3gIst/Cj3HFRfFiA
+         BIXoBfxutzLzu1mlwEhPPAwsAGxuNDbJqzGGPm+M0CXASp+oSvuRbqxf6DORhkvBMK
+         1BdJBYgTKOAKB6g1zvsSkk4ZJmCrtiyi/hNhGr5ev7Pki6luj22P0huJNSpbWG4fA5
+         xKo8VHz7rDLof33wOXRTxPhV2X++bPyPkg0CFOMtFavtn1uIES4OQOfYp03ZRrlm+C
+         R9+lywgWpTai3fvdzDlVWo/vHFSeXG7/w4CP29cRSKbxlPU1giR2ADJesftiBp7Lpv
+         xaTw8d0AN16SQ==
+Received: from johan by xi.lan with local (Exim 4.94.2)
+        (envelope-from <johan@kernel.org>)
+        id 1q7VVJ-0005E4-4A; Fri, 09 Jun 2023 08:21:45 +0200
+Date:   Fri, 9 Jun 2023 08:21:45 +0200
+From:   Johan Hovold <johan@kernel.org>
+To:     Lee Jones <lee@kernel.org>
+Cc:     Johan Hovold <johan+linaro@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
         stable@vger.kernel.org
-Subject: Re: [PATCH] udmabuf: revert 'Add support for mapping hugepages (v4)'
-Message-ID: <2023060908-pretender-boastful-cbb9@gregkh>
-References: <20230608204927.88711-1-mike.kravetz@oracle.com>
+Subject: Re: [PATCH 1/2] mfd: pm8008: fix module autoloading
+Message-ID: <ZILE-Yy8TYaicACV@hovoldconsulting.com>
+References: <20230526091646.17318-1-johan+linaro@kernel.org>
+ <20230526091646.17318-2-johan+linaro@kernel.org>
+ <20230608154503.GO1930705@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230608204927.88711-1-mike.kravetz@oracle.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230608154503.GO1930705@google.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 08, 2023 at 01:49:27PM -0700, Mike Kravetz wrote:
-> This effectively reverts commit 16c243e99d33 ("udmabuf: Add support
-> for mapping hugepages (v4)").  Recently, Junxiao Chang found a BUG
-> with page map counting as described here [1].  This issue pointed out
-> that the udmabuf driver was making direct use of subpages of hugetlb
-> pages.  This is not a good idea, and no other mm code attempts such use.
-> In addition to the mapcount issue, this also causes issues with hugetlb
-> vmemmap optimization and page poisoning.
+On Thu, Jun 08, 2023 at 04:45:03PM +0100, Lee Jones wrote:
+> On Fri, 26 May 2023, Johan Hovold wrote:
 > 
-> For now, remove hugetlb support.
+> > Add the missing module device table alias to that the driver can be
+> > autoloaded when built as a module.
+> > 
+> > Fixes: 6b149f3310a4 ("mfd: pm8008: Add driver for QCOM PM8008 PMIC")
+> > Cc: stable@vger.kernel.org      # 5.14
+> > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> > ---
+> >  drivers/mfd/qcom-pm8008.c | 1 +
+> >  1 file changed, 1 insertion(+)
 > 
-> If udmabuf wants to be used on hugetlb mappings, it should be changed to
-> only use complete hugetlb pages.  This will require different alignment
-> and size requirements on the UDMABUF_CREATE API.
-> 
-> [1] https://lore.kernel.org/linux-mm/20230512072036.1027784-1-junxiao.chang@intel.com/
-> 
-> Fixes: 16c243e99d33 ("udmabuf: Add support for mapping hugepages (v4)")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
+> Applied, thanks
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Thanks, Lee. Did you forget to push these out? I was gonna see if you
+merged them for 6.4 or 6.5, but I can't seem to find them in your mfd
+repo.
+
+Johan
