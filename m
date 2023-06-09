@@ -2,66 +2,61 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C3C272A2D1
-	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 21:06:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 191AD72A31E
+	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 21:31:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229695AbjFITGg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 9 Jun 2023 15:06:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33716 "EHLO
+        id S229576AbjFITbM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 9 Jun 2023 15:31:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229572AbjFITGe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 9 Jun 2023 15:06:34 -0400
-Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4D2035BE
-        for <stable@vger.kernel.org>; Fri,  9 Jun 2023 12:06:33 -0700 (PDT)
-Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-977c89c47bdso372895566b.2
-        for <stable@vger.kernel.org>; Fri, 09 Jun 2023 12:06:33 -0700 (PDT)
+        with ESMTP id S231695AbjFITbL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 9 Jun 2023 15:31:11 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0B772D44;
+        Fri,  9 Jun 2023 12:31:08 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1b0236ee816so9265835ad.1;
+        Fri, 09 Jun 2023 12:31:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1686337592; x=1688929592;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4+ONXQdK4a1fSmqiExKhyWkPlcAP+HPrxGCh1eVdlew=;
-        b=Cv68Dy34qfiDrivaElTOV8z1kkFw17nNzXJkh+M26LPyyk3hUBr9bD5nna7A8Y01cS
-         PQsabNvycR8KhEwSlekBvj/zZmJCzVVl6LBg+vYjIFtAfoHPFmQqiT9WbPYUIJTBLf6g
-         AXVq7ecgVB9FKw6eP7lVOa910fpgl7tHaGutk=
+        d=gmail.com; s=20221208; t=1686339068; x=1688931068;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=F34e28g4Hf9Xu+fszBUHQ7hLKPkEewO0EPUPYwTOjus=;
+        b=LE/fMAN1eq+8apJ5cArgFf2LnG32AfY2XmpV26YtEqBi4dZ42YoMHnEcgB7Oh3NbgB
+         nckQVLFbaSRF9RRETPQkN0E1/u0TRgjpngQ987s/qhDZIdgbwMso0dcUidTLs7m5OC/r
+         2yBQAZyczYX9eIwKylGrjK36/954Zt7wzHn8D1JgVEEH6bQP1EblABjVKUlm/ErO1RTs
+         lLfQay2hApQRAscs3PZ3PWRCi00OmWAYUZkZq+ux2Ch2hE/mPhhjb4vfR8Ld95of43Xh
+         ZTzexqW5zub3WJfGgnqPKKfWV+7FAdvMTvbbQojEtwKFZxuQdGAtAoCiAmc9k0z2Mhz4
+         Qqtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686337592; x=1688929592;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4+ONXQdK4a1fSmqiExKhyWkPlcAP+HPrxGCh1eVdlew=;
-        b=J+AAbnlDLrVgeXfknllh2qn2BCeW6Lakx8bvr5W0/p4eA1he/LUgUGrHEt5NLiGAE5
-         4neFkTNn1uWRTs308gtJ7o9wBkjw+E6eB9u5zbnHhLIsR6gFfmBwICj6hKRi0MC8JU6l
-         jX5Gmm1xdpgBQ8SL89/C4k10cNg/rpcyBt91Qe4ZLTjoNHX/0U0uDsbHFSdKDaON39eG
-         hkKzkPTxkiM+P7dgCgM34+oT7VyRUx5orXm3xRnrXMVBG58V2zaJN/mGPq5L11+DJxcQ
-         pFANMhVI8T/P9UlCvhI1nhmzVmA9RdpIsRIBkp1jCb7ZVdcPKJD4BaDmdLGSfvquwpS6
-         nuoA==
-X-Gm-Message-State: AC+VfDzjV2cdvB1Q5eknLqXDKlNNy5F0mzeJcYxuEKvZR7hHj7nWt/Yh
-        ty2twGJ2ZQAAvPhkibZ1pQa3u/J6AYfnVU1lLtD+anmH
-X-Google-Smtp-Source: ACHHUZ7DjEmGZPip6CxXTGWc61ql5VMHwtEcS0EQvBPDYkN7T9oOOpHETBD4sNH0ZB6vfWEx3zXERg==
-X-Received: by 2002:a17:907:74d:b0:978:8e8c:1bcb with SMTP id xc13-20020a170907074d00b009788e8c1bcbmr2427295ejb.43.1686337592277;
-        Fri, 09 Jun 2023 12:06:32 -0700 (PDT)
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com. [209.85.218.46])
-        by smtp.gmail.com with ESMTPSA id gv11-20020a170906f10b00b00947ed087a2csm1617162ejb.154.2023.06.09.12.06.29
-        for <stable@vger.kernel.org>
+        d=1e100.net; s=20221208; t=1686339068; x=1688931068;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=F34e28g4Hf9Xu+fszBUHQ7hLKPkEewO0EPUPYwTOjus=;
+        b=Z6A0Cc+h75LD+9lWQSjkedSQuzgAiDMAOvFueHVNaRCKh3ZBPnMNsssSPYjOoy/Ebp
+         ac7SsD0ip2v/vu2uFP84LfacFYhO1ojfBPVvo9wxSPc39LWRbk0azEyvV6WbwL4qwW1X
+         LLhedgbe9x0Y1uUN8l6+WqM/BJMzFMmejJrmCiT9iaev0iB69Eeh7piPIsg+j9L5agB8
+         N5UnKAERgjKpy/b52WqdORZBJLXGmhVUDA/EUvlcNeHQrt503+4pZEmtKIw7qexPr1Un
+         lY5UdkAZbU0lUoZyj90RS/Lo5P4NtgiQXVAeCEIMmKAR6a66B8pbeVDK0eTyQBKbiXPr
+         6Yzg==
+X-Gm-Message-State: AC+VfDwoxhm/fJTR3x8nA5VKlH5TC+5ttNT+Bs0zA382Al9jcRwbKxjk
+        zROJhEmza4cLSeYmY7Nja+c=
+X-Google-Smtp-Source: ACHHUZ4EDmsFV4rkhZkvBQJPbuLNdV9oFboN/HmzG5iCfpmxSjR0JkyudcjqFqlMwaIKqRz2uHqlpw==
+X-Received: by 2002:a17:902:f947:b0:1af:bae0:6be7 with SMTP id kx7-20020a170902f94700b001afbae06be7mr5559562plb.10.1686339068275;
+        Fri, 09 Jun 2023 12:31:08 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id a7-20020a170902ecc700b001a69c1c78e7sm3654934plh.71.2023.06.09.12.31.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Jun 2023 12:06:30 -0700 (PDT)
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-977c89c47bdso372889566b.2
-        for <stable@vger.kernel.org>; Fri, 09 Jun 2023 12:06:29 -0700 (PDT)
-X-Received: by 2002:a17:907:26c1:b0:978:930e:2279 with SMTP id
- bp1-20020a17090726c100b00978930e2279mr2489992ejc.52.1686337589586; Fri, 09
- Jun 2023 12:06:29 -0700 (PDT)
+        Fri, 09 Jun 2023 12:31:07 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <8a166eec-fc09-9ae8-b590-2c2e84796da0@roeck-us.net>
+Date:   Fri, 9 Jun 2023 12:31:04 -0700
 MIME-Version: 1.0
-References: <20230607200903.652580797@linuxfoundation.org> <b979807a-a437-4d3f-98f9-989da52abb30@roeck-us.net>
- <d35b1ff1-e198-481c-b1be-9e22445efe06@roeck-us.net>
-In-Reply-To: <d35b1ff1-e198-481c-b1be-9e22445efe06@roeck-us.net>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Fri, 9 Jun 2023 12:06:12 -0700
-X-Gmail-Original-Message-ID: <CAHk-=whA=HsyDFtgQnWMZP-08ddhMh1a88OZHCXf8N-iP6hFQw@mail.gmail.com>
-Message-ID: <CAHk-=whA=HsyDFtgQnWMZP-08ddhMh1a88OZHCXf8N-iP6hFQw@mail.gmail.com>
-Subject: Re: [PATCH 5.15 000/159] 5.15.116-rc1 review
-To:     Guenter Roeck <linux@roeck-us.net>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Content-Language: en-US
+To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, patches@lists.linux.dev,
         linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
@@ -71,33 +66,54 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         srw@sladewatkins.net, rwarsow@gmx.de,
         Thomas Gleixner <tglx@linutronix.de>,
         Ido Schimmel <idosch@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+References: <20230607200903.652580797@linuxfoundation.org>
+ <b979807a-a437-4d3f-98f9-989da52abb30@roeck-us.net>
+ <d35b1ff1-e198-481c-b1be-9e22445efe06@roeck-us.net>
+ <CAHk-=whA=HsyDFtgQnWMZP-08ddhMh1a88OZHCXf8N-iP6hFQw@mail.gmail.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH 5.15 000/159] 5.15.116-rc1 review
+In-Reply-To: <CAHk-=whA=HsyDFtgQnWMZP-08ddhMh1a88OZHCXf8N-iP6hFQw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Jun 9, 2023 at 11:42=E2=80=AFAM Guenter Roeck <linux@roeck-us.net> =
-wrote:
->
-> I managed to revise my bisect script sufficiently enough to get reliable
-> results. It looks like the culprit is commit 503e554782c9 (" debugobject:
-> Ensure pool refill (again)"); see bisect log below. Bisect on four
-> different systems all have the same result. After reverting this patch,
-> I do not see the problem anymore (again, confirmed on four different
-> systems).
+On 6/9/23 12:06, Linus Torvalds wrote:
+> On Fri, Jun 9, 2023 at 11:42 AM Guenter Roeck <linux@roeck-us.net> wrote:
+>>
+>> I managed to revise my bisect script sufficiently enough to get reliable
+>> results. It looks like the culprit is commit 503e554782c9 (" debugobject:
+>> Ensure pool refill (again)"); see bisect log below. Bisect on four
+>> different systems all have the same result. After reverting this patch,
+>> I do not see the problem anymore (again, confirmed on four different
+>> systems).
+> 
+> Does this happen on mainline too? It's commit 0af462f19e63 in the upstream tree.
+> 
+> It was in 6.4-rc1, and I see a clean result from you at least for
+> -rc2, so for some reason it sounds like upstream is ok. But I don't
+> really see why that would be the case...
+> 
 
-Does this happen on mainline too? It's commit 0af462f19e63 in the upstream =
-tree.
+I see the problem only in v5.15.y, to the point where it is almost
+impossible to get a clean test of all arm-v7 systems. Affected are
+npcm (Nuvoton) boards (kudo-bmc, quanta-gsj, npcm750-evb) as well as
+orangepi-pc. I don't see it in any other branch or with any other
+platform/architecture.
 
-It was in 6.4-rc1, and I see a clean result from you at least for
--rc2, so for some reason it sounds like upstream is ok. But I don't
-really see why that would be the case...
+Mainline is fine; I have not seen any problems since -rc2.
 
-                  Linus
+I have no idea what is going on either, only that I can reliably
+reproduce the problem (and of course it disappears if CONFIG_DEBUG_OBJECTS
+is disabled).
+
+Guenter
+
