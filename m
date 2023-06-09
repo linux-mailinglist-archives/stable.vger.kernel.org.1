@@ -2,196 +2,222 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B411D72A6C4
-	for <lists+stable@lfdr.de>; Sat, 10 Jun 2023 01:34:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F26D72A6CF
+	for <lists+stable@lfdr.de>; Sat, 10 Jun 2023 01:44:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232971AbjFIXe6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 9 Jun 2023 19:34:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35832 "EHLO
+        id S232210AbjFIXoO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 9 Jun 2023 19:44:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232978AbjFIXdW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 9 Jun 2023 19:33:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 518C64213;
-        Fri,  9 Jun 2023 16:30:27 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S229527AbjFIXoO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 9 Jun 2023 19:44:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE2A53583
+        for <stable@vger.kernel.org>; Fri,  9 Jun 2023 16:43:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1686354212;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=sUOxjUz5rmFxVHeTGi6MZBU2TmYiW3x4eeQM8P0T2no=;
+        b=itB+6N4LLUZQyB1aTmXyCq2WaGPE6/Mo5T+0yW8pLFDnajRRgN9lk3gYVU+a6m10uwG8be
+        GDzsz5ERQMDtsTvWAjqdXPWR4uKuVbW1Gijr4Zzv4+bcKzzZ98q2jz8ndc97Frkjqyz4qD
+        ZM3BjMx+npTctIiDgegXQMQi2tMdNRQ=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-312-NBJ5P1KdP8-yyaZYCS0OBA-1; Fri, 09 Jun 2023 19:43:23 -0400
+X-MC-Unique: NBJ5P1KdP8-yyaZYCS0OBA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E34EA6169F;
-        Fri,  9 Jun 2023 23:30:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45EA8C433D2;
-        Fri,  9 Jun 2023 23:30:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1686353426;
-        bh=AIrIeqi+Rh6tB5owmeEIJ6phq8ouZzdiLf9OXCG1OvQ=;
-        h=Date:To:From:Subject:From;
-        b=BHp6syk2FIj5B4+cA2D7/5nR0eJQUjHMYfjWhpamccq5D/hjEGiel66gqIPoSpHab
-         QM38s3uq5VraSP90tL/FnPXdFY/mJ/RGw/vYxMznB9KhrpNAqt45LXkPUJl5CcYug8
-         WX9IjcfpyD2fs/MZxh8mA0L5KwA5eJwB7yan9jCo=
-Date:   Fri, 09 Jun 2023 16:30:25 -0700
-To:     mm-commits@vger.kernel.org, ziy@nvidia.com, yuzhao@google.com,
-        willy@infradead.org, urezki@gmail.com, stable@vger.kernel.org,
-        sj@kernel.org, rppt@kernel.org, lstoakes@gmail.com,
-        kirill.shutemov@linux.intel.com, hch@lst.de, ryan.roberts@arm.com,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-damon-ops-common-atomically-test-and-clear-young-on-ptes-and-pmds.patch removed from -mm tree
-Message-Id: <20230609233026.45EA8C433D2@smtp.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 581A21C02D33;
+        Fri,  9 Jun 2023 23:43:23 +0000 (UTC)
+Received: from localhost (ovpn-8-16.pek2.redhat.com [10.72.8.16])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 61CBB492B00;
+        Fri,  9 Jun 2023 23:43:21 +0000 (UTC)
+From:   Ming Lei <ming.lei@redhat.com>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     linux-block@vger.kernel.org, Ming Lei <ming.lei@redhat.com>,
+        stable@vger.kernel.org, Jay Shin <jaeshin@redhat.com>,
+        Tejun Heo <tj@kernel.org>, Waiman Long <longman@redhat.com>,
+        mkoutny@suse.com, Yosry Ahmed <yosryahmed@google.com>
+Subject: [PATCH V4] blk-cgroup: Flush stats before releasing blkcg_gq
+Date:   Sat, 10 Jun 2023 07:42:49 +0800
+Message-Id: <20230609234249.1412858-1-ming.lei@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+As noted by Michal, the blkg_iostat_set's in the lockless list hold
+reference to blkg's to protect against their removal. Those blkg's
+hold reference to blkcg. When a cgroup is being destroyed,
+cgroup_rstat_flush() is only called at css_release_work_fn() which
+is called when the blkcg reference count reaches 0. This circular
+dependency will prevent blkcg and some blkgs from being freed after
+they are made offline.
 
-The quilt patch titled
-     Subject: mm/damon/ops-common: atomically test and clear young on ptes and pmds
-has been removed from the -mm tree.  Its filename was
-     mm-damon-ops-common-atomically-test-and-clear-young-on-ptes-and-pmds.patch
+It is less a problem if the cgroup to be destroyed also has other
+controllers like memory that will call cgroup_rstat_flush() which will
+clean up the reference count. If block is the only controller that uses
+rstat, these offline blkcg and blkgs may never be freed leaking more
+and more memory over time.
 
-This patch was dropped because it was merged into the mm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+To prevent this potential memory leak:
 
-------------------------------------------------------
-From: Ryan Roberts <ryan.roberts@arm.com>
-Subject: mm/damon/ops-common: atomically test and clear young on ptes and pmds
-Date: Fri, 2 Jun 2023 10:29:47 +0100
+- flush blkcg per-cpu stats list in __blkg_release(), when no new stat
+can be added
 
-It is racy to non-atomically read a pte, then clear the young bit, then
-write it back as this could discard dirty information.  Further, it is bad
-practice to directly set a pte entry within a table.  Instead clearing
-young must go through the arch-provided helper,
-ptep_test_and_clear_young() to ensure it is modified atomically and to
-give the arch code visibility and allow it to check (and potentially
-modify) the operation.
+- add global blkg_stat_lock for covering concurrent parent blkg stat
+update
 
-Link: https://lkml.kernel.org/r/20230602092949.545577-3-ryan.roberts@arm.com
-Fixes: 3f49584b262c ("mm/damon: implement primitives for the virtual memory address spaces").
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: Lorenzo Stoakes <lstoakes@gmail.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+- don't grab bio->bi_blkg reference when adding the stats into blkcg's
+per-cpu stat list since all stats are guaranteed to be consumed before
+releasing blkg instance, and grabbing blkg reference for stats was the
+most fragile part of original patch
+
+Based on Waiman's patch:
+
+https://lore.kernel.org/linux-block/20221215033132.230023-3-longman@redhat.com/
+
+Fixes: 3b8cc6298724 ("blk-cgroup: Optimize blkcg_rstat_flush()")
+Cc: stable@vger.kernel.org
+Reported-by: Jay Shin <jaeshin@redhat.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Cc: Waiman Long <longman@redhat.com>
+Cc: mkoutny@suse.com
+Cc: Yosry Ahmed <yosryahmed@google.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
 ---
+V4:
+	- add ack tag
+	
+V3:
+	- add one global blkg_stat_lock for avoiding concurrent update on
+	blkg stat; this way is easier for backport, also won't cause contention;
 
- mm/damon/ops-common.c |   16 ++++++----------
- mm/damon/ops-common.h |    4 ++--
- mm/damon/paddr.c      |    4 ++--
- mm/damon/vaddr.c      |    4 ++--
- 4 files changed, 12 insertions(+), 16 deletions(-)
+V2:
+	- remove kernel/cgroup change, and call blkcg_rstat_flush()
+	to flush stat directly
 
---- a/mm/damon/ops-common.c~mm-damon-ops-common-atomically-test-and-clear-young-on-ptes-and-pmds
-+++ a/mm/damon/ops-common.c
-@@ -37,7 +37,7 @@ struct folio *damon_get_folio(unsigned l
- 	return folio;
- }
+ block/blk-cgroup.c | 40 +++++++++++++++++++++++++++++++---------
+ 1 file changed, 31 insertions(+), 9 deletions(-)
+
+diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+index 0ce64dd73cfe..f0b5c9c41cde 100644
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -34,6 +34,8 @@
+ #include "blk-ioprio.h"
+ #include "blk-throttle.h"
  
--void damon_ptep_mkold(pte_t *pte, struct mm_struct *mm, unsigned long addr)
-+void damon_ptep_mkold(pte_t *pte, struct vm_area_struct *vma, unsigned long addr)
++static void __blkcg_rstat_flush(struct blkcg *blkcg, int cpu);
++
+ /*
+  * blkcg_pol_mutex protects blkcg_policy[] and policy [de]activation.
+  * blkcg_pol_register_mutex nests outside of it and synchronizes entire
+@@ -56,6 +58,8 @@ static LIST_HEAD(all_blkcgs);		/* protected by blkcg_pol_mutex */
+ 
+ bool blkcg_debug_stats = false;
+ 
++static DEFINE_RAW_SPINLOCK(blkg_stat_lock);
++
+ #define BLKG_DESTROY_BATCH_SIZE  64
+ 
+ /*
+@@ -163,10 +167,20 @@ static void blkg_free(struct blkcg_gq *blkg)
+ static void __blkg_release(struct rcu_head *rcu)
  {
- 	bool referenced = false;
- 	struct folio *folio = damon_get_folio(pte_pfn(*pte));
-@@ -45,13 +45,11 @@ void damon_ptep_mkold(pte_t *pte, struct
- 	if (!folio)
- 		return;
+ 	struct blkcg_gq *blkg = container_of(rcu, struct blkcg_gq, rcu_head);
++	struct blkcg *blkcg = blkg->blkcg;
++	int cpu;
  
--	if (pte_young(*pte)) {
-+	if (ptep_test_and_clear_young(vma, addr, pte))
- 		referenced = true;
--		*pte = pte_mkold(*pte);
--	}
+ #ifdef CONFIG_BLK_CGROUP_PUNT_BIO
+ 	WARN_ON(!bio_list_empty(&blkg->async_bios));
+ #endif
++	/*
++	 * Flush all the non-empty percpu lockless lists before releasing
++	 * us, given these stat belongs to us.
++	 *
++	 * blkg_stat_lock is for serializing blkg stat update
++	 */
++	for_each_possible_cpu(cpu)
++		__blkcg_rstat_flush(blkcg, cpu);
  
- #ifdef CONFIG_MMU_NOTIFIER
--	if (mmu_notifier_clear_young(mm, addr, addr + PAGE_SIZE))
-+	if (mmu_notifier_clear_young(vma->vm_mm, addr, addr + PAGE_SIZE))
- 		referenced = true;
- #endif /* CONFIG_MMU_NOTIFIER */
- 
-@@ -62,7 +60,7 @@ void damon_ptep_mkold(pte_t *pte, struct
- 	folio_put(folio);
+ 	/* release the blkcg and parent blkg refs this blkg has been holding */
+ 	css_put(&blkg->blkcg->css);
+@@ -951,23 +965,26 @@ static void blkcg_iostat_update(struct blkcg_gq *blkg, struct blkg_iostat *cur,
+ 	u64_stats_update_end_irqrestore(&blkg->iostat.sync, flags);
  }
  
--void damon_pmdp_mkold(pmd_t *pmd, struct mm_struct *mm, unsigned long addr)
-+void damon_pmdp_mkold(pmd_t *pmd, struct vm_area_struct *vma, unsigned long addr)
+-static void blkcg_rstat_flush(struct cgroup_subsys_state *css, int cpu)
++static void __blkcg_rstat_flush(struct blkcg *blkcg, int cpu)
  {
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- 	bool referenced = false;
-@@ -71,13 +69,11 @@ void damon_pmdp_mkold(pmd_t *pmd, struct
- 	if (!folio)
- 		return;
+-	struct blkcg *blkcg = css_to_blkcg(css);
+ 	struct llist_head *lhead = per_cpu_ptr(blkcg->lhead, cpu);
+ 	struct llist_node *lnode;
+ 	struct blkg_iostat_set *bisc, *next_bisc;
  
--	if (pmd_young(*pmd)) {
-+	if (pmdp_test_and_clear_young(vma, addr, pmd))
- 		referenced = true;
--		*pmd = pmd_mkold(*pmd);
--	}
+-	/* Root-level stats are sourced from system-wide IO stats */
+-	if (!cgroup_parent(css->cgroup))
+-		return;
+-
+ 	rcu_read_lock();
  
- #ifdef CONFIG_MMU_NOTIFIER
--	if (mmu_notifier_clear_young(mm, addr, addr + HPAGE_PMD_SIZE))
-+	if (mmu_notifier_clear_young(vma->vm_mm, addr, addr + HPAGE_PMD_SIZE))
- 		referenced = true;
- #endif /* CONFIG_MMU_NOTIFIER */
- 
---- a/mm/damon/ops-common.h~mm-damon-ops-common-atomically-test-and-clear-young-on-ptes-and-pmds
-+++ a/mm/damon/ops-common.h
-@@ -9,8 +9,8 @@
- 
- struct folio *damon_get_folio(unsigned long pfn);
- 
--void damon_ptep_mkold(pte_t *pte, struct mm_struct *mm, unsigned long addr);
--void damon_pmdp_mkold(pmd_t *pmd, struct mm_struct *mm, unsigned long addr);
-+void damon_ptep_mkold(pte_t *pte, struct vm_area_struct *vma, unsigned long addr);
-+void damon_pmdp_mkold(pmd_t *pmd, struct vm_area_struct *vma, unsigned long addr);
- 
- int damon_cold_score(struct damon_ctx *c, struct damon_region *r,
- 			struct damos *s);
---- a/mm/damon/paddr.c~mm-damon-ops-common-atomically-test-and-clear-young-on-ptes-and-pmds
-+++ a/mm/damon/paddr.c
-@@ -24,9 +24,9 @@ static bool __damon_pa_mkold(struct foli
- 	while (page_vma_mapped_walk(&pvmw)) {
- 		addr = pvmw.address;
- 		if (pvmw.pte)
--			damon_ptep_mkold(pvmw.pte, vma->vm_mm, addr);
-+			damon_ptep_mkold(pvmw.pte, vma, addr);
- 		else
--			damon_pmdp_mkold(pvmw.pmd, vma->vm_mm, addr);
-+			damon_pmdp_mkold(pvmw.pmd, vma, addr);
- 	}
- 	return true;
- }
---- a/mm/damon/vaddr.c~mm-damon-ops-common-atomically-test-and-clear-young-on-ptes-and-pmds
-+++ a/mm/damon/vaddr.c
-@@ -311,7 +311,7 @@ static int damon_mkold_pmd_entry(pmd_t *
- 		}
- 
- 		if (pmd_trans_huge(*pmd)) {
--			damon_pmdp_mkold(pmd, walk->mm, addr);
-+			damon_pmdp_mkold(pmd, walk->vma, addr);
- 			spin_unlock(ptl);
- 			return 0;
- 		}
-@@ -323,7 +323,7 @@ static int damon_mkold_pmd_entry(pmd_t *
- 	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
- 	if (!pte_present(*pte))
+ 	lnode = llist_del_all(lhead);
+ 	if (!lnode)
  		goto out;
--	damon_ptep_mkold(pte, walk->mm, addr);
-+	damon_ptep_mkold(pte, walk->vma, addr);
+ 
++	/*
++	 * For covering concurrent parent blkg update from blkg_release().
++	 *
++	 * When flushing from cgroup, cgroup_rstat_lock is always held, so
++	 * this lock won't cause contention most of time.
++	 */
++	raw_spin_lock(&blkg_stat_lock);
++
+ 	/*
+ 	 * Iterate only the iostat_cpu's queued in the lockless list.
+ 	 */
+@@ -991,13 +1008,19 @@ static void blkcg_rstat_flush(struct cgroup_subsys_state *css, int cpu)
+ 		if (parent && parent->parent)
+ 			blkcg_iostat_update(parent, &blkg->iostat.cur,
+ 					    &blkg->iostat.last);
+-		percpu_ref_put(&blkg->refcnt);
+ 	}
+-
++	raw_spin_unlock(&blkg_stat_lock);
  out:
- 	pte_unmap_unlock(pte, ptl);
- 	return 0;
-_
-
-Patches currently in -mm which might be from ryan.roberts@arm.com are
-
+ 	rcu_read_unlock();
+ }
+ 
++static void blkcg_rstat_flush(struct cgroup_subsys_state *css, int cpu)
++{
++	/* Root-level stats are sourced from system-wide IO stats */
++	if (cgroup_parent(css->cgroup))
++		__blkcg_rstat_flush(css_to_blkcg(css), cpu);
++}
++
+ /*
+  * We source root cgroup stats from the system-wide stats to avoid
+  * tracking the same information twice and incurring overhead when no
+@@ -2075,7 +2098,6 @@ void blk_cgroup_bio_start(struct bio *bio)
+ 
+ 		llist_add(&bis->lnode, lhead);
+ 		WRITE_ONCE(bis->lqueued, true);
+-		percpu_ref_get(&bis->blkg->refcnt);
+ 	}
+ 
+ 	u64_stats_update_end_irqrestore(&bis->sync, flags);
+-- 
+2.40.1
 
