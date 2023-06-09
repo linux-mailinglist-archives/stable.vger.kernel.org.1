@@ -2,247 +2,89 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C2B1729006
-	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 08:36:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CB3E72901A
+	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 08:38:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238189AbjFIGgv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 9 Jun 2023 02:36:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48258 "EHLO
+        id S238146AbjFIGih (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 9 Jun 2023 02:38:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229957AbjFIGgt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 9 Jun 2023 02:36:49 -0400
-Received: from mail-ua1-x92e.google.com (mail-ua1-x92e.google.com [IPv6:2607:f8b0:4864:20::92e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7B5730D1
-        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 23:36:42 -0700 (PDT)
-Received: by mail-ua1-x92e.google.com with SMTP id a1e0cc1a2514c-786d10951d8so495262241.3
-        for <stable@vger.kernel.org>; Thu, 08 Jun 2023 23:36:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686292602; x=1688884602;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=c/Ri0MY+C8LWnFeLcYvuFxV4IlOKjoBFfe7H5eKN3PE=;
-        b=vzJ53iDH99qCGcscqHPLc7juLS52qEHKzDn9G6wFHKs/RHQ/a+24P6pelrT47C9i8K
-         b236ogTR0D174u5n6ofjEktQ1lVvpvaduz71ahaTPCXO+3bezCuTG1aQ/zwSPF/CEY/z
-         8YeY2btUedzf7tYRaaQE1pM7Um5YJLgp8jT+tCiGwOUR9/294ivWTn8jZP+KQ593vhxq
-         B6vi09YqUlYBY/uRYgD412wq31MCOdM3YFQAVhZOTrEDcuH+htFxGloBzFpYD5Y23XxF
-         rg6cbzdGXe4HFQcMDDjQ3mLPvRV7Vfcy40WGmi5uRBk4Pm0IQpi0l4JtSKZ87fSBkiws
-         c7Nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686292602; x=1688884602;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=c/Ri0MY+C8LWnFeLcYvuFxV4IlOKjoBFfe7H5eKN3PE=;
-        b=NVi9HHjCMB0yyd+6FAvzjWHQioEMRn+vwiUCEqO2Q66Gorqe2s9kxD3BlqjEPSrI1r
-         fUkv9ajc5Q6uaWnMdHFHerg9WEzxXnbS3O/Ct3NsvC6b75ySJk3hroyNjLQxk7DoBM63
-         9T2um3HKxeAYJQLSfcIfX31/Juk3Ug/O/j/beUaEWXom6ZiPSx3PUsGGnUMGzrd5ZBs/
-         vqfRB1A+a+pZlCprntxYufzppydNH5sU+DlmEtkgADH5agxXGl+35rJgHZcAiqBNqWIy
-         RogJTkjcIcK1nM9IEOBFWe0wDKkJGYjbwxnT32qvjmF3gWeo4JBb88Jp5zFfvQpLK3Jd
-         mabw==
-X-Gm-Message-State: AC+VfDxmgdsmBZJbYypv4XISS9GDoXm0zkfulanA/K3ZlGmN88hF6PAw
-        ZhjgAUYSyg23BQ7HcBJEW0kwdk27IvtwohtADfFLUA==
-X-Google-Smtp-Source: ACHHUZ4E04sbIpQsBKmZ4rgGd8ZUv6mj4gQ5EvT8z4FOkw9sojsEVyzf2LV+GrMkE6kH978NWLgT94v6jrLZCCkMm5M=
-X-Received: by 2002:a67:bc0d:0:b0:43b:3eec:5e2b with SMTP id
- t13-20020a67bc0d000000b0043b3eec5e2bmr346623vsn.33.1686292601629; Thu, 08 Jun
- 2023 23:36:41 -0700 (PDT)
+        with ESMTP id S238410AbjFIGiN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 9 Jun 2023 02:38:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 102E03584;
+        Thu,  8 Jun 2023 23:38:11 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F9D0653F4;
+        Fri,  9 Jun 2023 06:38:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C7BC433EF;
+        Fri,  9 Jun 2023 06:38:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686292690;
+        bh=ydU6KVz48ejvQHdgUNpVzc5R9W8cHBZ7+uugeAbS4cQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=C+fWnL/MgWVD4n+2VJUqCNDlZB1beMagYUj98lBZMYH3nFwBxlQyBzz6vQez2ikIn
+         uUs99TfNrNyuodVNxLDROSUzk8kx7p0wivk8loqwnK42DkNs0z08ENrwEK4qUJW6Vk
+         /4+rcE1+6/COI6PahY9q4OwCc2nmL50LzyHe512NHRqGTCHdCMGtRKnfQGRu6B+6vm
+         KT+bAmd6FSY+zmLg02WtT1r+tOAYb3uakpqnJ2gGHbLUhEBDKkEHsJRxqbF3v20W9p
+         ssa57FGXUpXVYaqeHensvFrU2PpkKP9GhjMtY5tGmdwCvid5EEbZBpTaIesRZ2k7+x
+         h/6hxC99zxAag==
+Date:   Fri, 9 Jun 2023 07:38:04 +0100
+From:   Lee Jones <lee@kernel.org>
+To:     Johan Hovold <johan@kernel.org>
+Cc:     Johan Hovold <johan+linaro@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] mfd: pm8008: fix module autoloading
+Message-ID: <20230609063804.GB3635807@google.com>
+References: <20230526091646.17318-1-johan+linaro@kernel.org>
+ <20230526091646.17318-2-johan+linaro@kernel.org>
+ <20230608154503.GO1930705@google.com>
+ <ZILE-Yy8TYaicACV@hovoldconsulting.com>
 MIME-Version: 1.0
-References: <20230608175726.909746266@linuxfoundation.org>
-In-Reply-To: <20230608175726.909746266@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Fri, 9 Jun 2023 12:06:30 +0530
-Message-ID: <CA+G9fYv9crqtPsX=v-k+1zxpeRFuvVDmghRQ7HsE2gpCiBLV_g@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/224] 6.1.33-rc2 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZILE-Yy8TYaicACV@hovoldconsulting.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 8 Jun 2023 at 23:30, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.33 release.
-> There are 224 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 10 Jun 2023 17:56:43 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.33-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Fri, 09 Jun 2023, Johan Hovold wrote:
 
+> On Thu, Jun 08, 2023 at 04:45:03PM +0100, Lee Jones wrote:
+> > On Fri, 26 May 2023, Johan Hovold wrote:
+> > 
+> > > Add the missing module device table alias to that the driver can be
+> > > autoloaded when built as a module.
+> > > 
+> > > Fixes: 6b149f3310a4 ("mfd: pm8008: Add driver for QCOM PM8008 PMIC")
+> > > Cc: stable@vger.kernel.org      # 5.14
+> > > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> > > ---
+> > >  drivers/mfd/qcom-pm8008.c | 1 +
+> > >  1 file changed, 1 insertion(+)
+> > 
+> > Applied, thanks
+> 
+> Thanks, Lee. Did you forget to push these out? I was gonna see if you
+> merged them for 6.4 or 6.5, but I can't seem to find them in your mfd
+> repo.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+I don't tend to push daily.  I can push them now if you like.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+These were added for v6.5.
 
-## Build
-* kernel: 6.1.33-rc2
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git branch: linux-6.1.y
-* git commit: 621717027bee62901033052db34271ebbc0123f1
-* git describe: v6.1.31-265-g621717027bee
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.3=
-1-265-g621717027bee
-
-## Test Regressions (compared to v6.1.31)
-
-## Metric Regressions (compared to v6.1.31)
-
-## Test Fixes (compared to v6.1.31)
-
-## Metric Fixes (compared to v6.1.31)
-
-## Test result summary
-total: 166640, pass: 144062, fail: 4048, skip: 18258, xfail: 272
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 148 total, 147 passed, 1 failed
-* arm64: 54 total, 54 passed, 0 failed
-* i386: 44 total, 43 passed, 1 failed
-* mips: 26 total, 26 passed, 0 failed
-* parisc: 3 total, 3 passed, 0 failed
-* powerpc: 34 total, 34 passed, 0 failed
-* riscv: 12 total, 12 passed, 0 failed
-* s390: 12 total, 12 passed, 0 failed
-* sh: 12 total, 12 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 47 total, 47 passed, 0 failed
-
-## Test suites summary
-* boot
-* fwts
-* igt-gpu-tools
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-* vdso
-
---
-Linaro LKFT
-https://lkft.linaro.org
+-- 
+Lee Jones [李琼斯]
