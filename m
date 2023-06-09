@@ -2,146 +2,542 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 750F472A280
-	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 20:42:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D110172A2B3
+	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 20:59:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229726AbjFISmj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 9 Jun 2023 14:42:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54552 "EHLO
+        id S230169AbjFIS7G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 9 Jun 2023 14:59:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229477AbjFISmi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 9 Jun 2023 14:42:38 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5CEB198C;
-        Fri,  9 Jun 2023 11:42:37 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-651ffcc1d3dso1707594b3a.3;
-        Fri, 09 Jun 2023 11:42:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686336157; x=1688928157;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pEF17blG1HpNLnd1VQwJnQONyB72caC9miz5H/8JZIs=;
-        b=Pjh9KSMIMB74rYByeSQemLQ4hA6z+9/fP5Z3uGHIOI6xHmw3GUT2NUtpkVzaNED7tT
-         SAoiPDl1u8QzvEJKBAez9VQU2nWyqxViCNDUuqPO4Zkl5C7ceURkq7Mvegp6Num1PUMx
-         S2gmaj7x/mmOXVotYfH5KZ0Ko6bDOO9txTPiOhEGh1sY65cZmbGF2S00nhNSOgWk4L6Z
-         GFfRRU6VrkkyUba3S3lF6xMMuqV+I232U5kN9SM7AyxsqnF2du1QH0ynv+UdL+pOU21I
-         +eXA4dPPPqrgXqcCMmPmHp2WiTlP1roQlG9K/pMQvh1bfaupfudfrTRnkjh4ibU4Yhvx
-         qtdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686336157; x=1688928157;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pEF17blG1HpNLnd1VQwJnQONyB72caC9miz5H/8JZIs=;
-        b=XClFSruJGuGFo5IxH5AjN3eYKbUXEQnAeRZnra8HmYSZ+07iqH/nBihqfhaPYq5MXp
-         D/Oz+K8eH2ZjF2hOy9vCBHCLtOMHcwG/PL+eOqkooPf0bgpXEbGnx/BVEf1MQR4bjlgy
-         dlIqxhqZZ4Bk0E/zsepXh3hel03dC/J+J+O+2lviQpM9Rpgcej9MKxNGPFzfVj/p8QRj
-         gY5Z5TJRH32IMH7owEykxCLyJQmZc0zP3MFP0QW+PBWrqRTH/MsdjBbYb1LitIPxeUHo
-         44FFIa7YqPrfwWkE5fi0THnx7H51zoFSjxZ49Mg10aNbEXCCIaWoHxl4x7lFQVeobT5u
-         wHlg==
-X-Gm-Message-State: AC+VfDwQhi9pOJiqt3i2QsHYBnDQKx+r6jJest2M/YKNwk/J03VZxDkt
-        61xY8wB3AwXdmoBcFgOCxRE=
-X-Google-Smtp-Source: ACHHUZ6iEgipL33n3ih3zruF3rlNZa5ojmGPQ4pzKRTEoboB2T+j4WNqhl3Bg9qVqBph8lmlIg/Vkw==
-X-Received: by 2002:a05:6a20:4303:b0:105:63b0:5bf8 with SMTP id h3-20020a056a20430300b0010563b05bf8mr1993249pzk.18.1686336157243;
-        Fri, 09 Jun 2023 11:42:37 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 13-20020aa7924d000000b0064d74808738sm2936320pfp.214.2023.06.09.11.42.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jun 2023 11:42:36 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Fri, 9 Jun 2023 11:42:35 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
+        with ESMTP id S229603AbjFIS7F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 9 Jun 2023 14:59:05 -0400
+X-Greylist: delayed 429 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 09 Jun 2023 11:59:02 PDT
+Received: from sole.flsd.net (sole.flsd.net [185.75.180.6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55BB535B3
+        for <stable@vger.kernel.org>; Fri,  9 Jun 2023 11:59:02 -0700 (PDT)
+Received: by sole.flsd.net (Postfix, from userid 1003)
+        id 499A195DF71; Fri,  9 Jun 2023 21:51:50 +0300 (MSK)
+Date:   Fri, 9 Jun 2023 21:51:50 +0300
+From:   Your Name <you@example.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ido Schimmel <idosch@nvidia.com>
-Subject: Re: [PATCH 5.15 000/159] 5.15.116-rc1 review
-Message-ID: <d35b1ff1-e198-481c-b1be-9e22445efe06@roeck-us.net>
-References: <20230607200903.652580797@linuxfoundation.org>
- <b979807a-a437-4d3f-98f9-989da52abb30@roeck-us.net>
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10 076/124] tcp: convert elligible sysctls to u8
+Message-ID: <20230609185150.kwpdc3fefcfeviny@sole.flsd.net>
+References: <20230418120309.539243408@linuxfoundation.org>
+ <20230418120312.629258550@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b979807a-a437-4d3f-98f9-989da52abb30@roeck-us.net>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <20230418120312.629258550@linuxfoundation.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_FAIL,
+        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+Greg,
 
-On Fri, Jun 09, 2023 at 04:07:00AM -0700, Guenter Roeck wrote:
-> On Wed, Jun 07, 2023 at 10:15:03PM +0200, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 5.15.116 release.
-> > There are 159 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> > 
-> > Responses should be made by Fri, 09 Jun 2023 20:07:31 +0000.
-> > Anything received after that time might be too late.
-> > 
+On Tue, Apr 18, 2023 at 02:21:35PM +0200, Greg Kroah-Hartman wrote:
+> From: Eric Dumazet <edumazet@google.com>
 > 
-> Build results:
-> 	total: 155 pass: 155 fail: 0
-> Qemu test results:
-> 	total: 499 pass: 498 fail: 1
-> Failed tests:
-> 	arm:kudo-bmc:multi_v7_defconfig:npcm:usb0.1:nuvoton-npcm730-kudo:rootfs
+> [ Upstream commit 4ecc1baf362c5df2dcabe242511e38ee28486545 ]
 > 
-> The test failure is spurious and not new. I observe it randomly on
-> multi_v7_defconfig builds, primarily on npcm platforms. There is no error
-> message, just a stalled boot. I have been trying to bisect for a while,
-> but I have not been successful so far. No immediate concern; I just wanted
-> to mention it in case someone else hits the same or a similar problem.
+> Many tcp sysctls are either bools or small ints that can fit into u8.
 > 
+> Reducing space taken by sysctls can save few cache line misses
+> when sending/receiving data while cpu caches are empty,
+> for example after cpu idle period.
+> 
+> This is hard to measure with typical network performance tests,
+> but after this patch, struct netns_ipv4 has shrunk
+> by three cache lines.
 
-I managed to revise my bisect script sufficiently enough to get reliable
-results. It looks like the culprit is commit 503e554782c9 (" debugobject:
-Ensure pool refill (again)"); see bisect log below. Bisect on four
-different systems all have the same result. After reverting this patch,
-I do not see the problem anymore (again, confirmed on four different
-systems). If anyone has an idea how to debug this, please let me know.
-I'll be happy to give it a try.
+This commit in 5.10 needs fix from d24f511b04b8 ("tcp: fix
+tcp_min_tso_segs sysctl") which have incorrectly set commit id in Fixes
+tag. (Perhaps, that's why it's missed.)
+
+      Fixes: 47996b489bdc ("tcp: convert elligible sysctls to u8")
 
 Thanks,
-Guenter
 
----
-# bad: [7349e40704a0209a2af8b37fa876322209de9684] Linux 5.15.116
-# good: [d214f240b0f61480f9dbc4384cef03f6a55e5d03] Linux 5.15.100
-git bisect start 'HEAD' 'v5.15.100'
-# good: [11c58a0c1937c157dbdf82d5ab634d68c99f3098] x86/MCE/AMD: Use an u64 for bank_map
-git bisect good 11c58a0c1937c157dbdf82d5ab634d68c99f3098
-# bad: [e9c5fc4f3f35e769932158a7347ec245be5cefb9] drm/amd/display: Use DC_LOG_DC in the trasform pixel function
-git bisect bad e9c5fc4f3f35e769932158a7347ec245be5cefb9
-# good: [3dc3a86b88bda88b4ac859b18559385f02932e78] SMB3: Close deferred file handles in case of handle lease break
-git bisect good 3dc3a86b88bda88b4ac859b18559385f02932e78
-# bad: [b13e20cc58e438b2d3473147329fe3fe80e3bc09] perf stat: Separate bperf from bpf_profiler
-git bisect bad b13e20cc58e438b2d3473147329fe3fe80e3bc09
-# bad: [43b2f7d690697182beed6f71aa57b7249d3cfc9c] ubifs: Fix memory leak in do_rename
-git bisect bad 43b2f7d690697182beed6f71aa57b7249d3cfc9c
-# good: [8444b46e163aa9559a0af0381a1d230ec4146eb2] mtd: core: fix nvmem error reporting
-git bisect good 8444b46e163aa9559a0af0381a1d230ec4146eb2
-# good: [f76fcb9d43ec014ac4a1bb983768696d5b032df9] dm flakey: fix a crash with invalid table line
-git bisect good f76fcb9d43ec014ac4a1bb983768696d5b032df9
-# bad: [aa6ff950f875ebc9a01dc53666a1af17004924ad] arm64: dts: qcom: sdm845: correct dynamic power coefficients - again
-git bisect bad aa6ff950f875ebc9a01dc53666a1af17004924ad
-# good: [06106efa20f74a14674ae53def7abaddd851f7e2] perf auxtrace: Fix address filter entire kernel size
-git bisect good 06106efa20f74a14674ae53def7abaddd851f7e2
-# bad: [503e554782c916aec553f790298564a530cf1778] debugobject: Ensure pool refill (again)
-git bisect bad 503e554782c916aec553f790298564a530cf1778
-# good: [6b84832966a094a1b8305b1a42a4f157a3121258] perf intel-pt: Fix CYC timestamps after standalone CBR
-git bisect good 6b84832966a094a1b8305b1a42a4f157a3121258
-# first bad commit: [503e554782c916aec553f790298564a530cf1778] debugobject: Ensure pool refill (again)
+> 
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> Signed-off-by: David S. Miller <davem@davemloft.net>
+> Stable-dep-of: dc5110c2d959 ("tcp: restrict net.ipv4.tcp_app_win")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  include/net/netns/ipv4.h   |  68 +++++++++----------
+>  net/ipv4/sysctl_net_ipv4.c | 136 ++++++++++++++++++-------------------
+>  2 files changed, 102 insertions(+), 102 deletions(-)
+> 
+> diff --git a/include/net/netns/ipv4.h b/include/net/netns/ipv4.h
+> index 92e3d8fe954ab..d8b320cf54ba0 100644
+> --- a/include/net/netns/ipv4.h
+> +++ b/include/net/netns/ipv4.h
+> @@ -114,11 +114,11 @@ struct netns_ipv4 {
+>  	u8 sysctl_nexthop_compat_mode;
+>  
+>  	u8 sysctl_fwmark_reflect;
+> -	int sysctl_tcp_fwmark_accept;
+> +	u8 sysctl_tcp_fwmark_accept;
+>  #ifdef CONFIG_NET_L3_MASTER_DEV
+> -	int sysctl_tcp_l3mdev_accept;
+> +	u8 sysctl_tcp_l3mdev_accept;
+>  #endif
+> -	int sysctl_tcp_mtu_probing;
+> +	u8 sysctl_tcp_mtu_probing;
+>  	int sysctl_tcp_mtu_probe_floor;
+>  	int sysctl_tcp_base_mss;
+>  	int sysctl_tcp_min_snd_mss;
+> @@ -126,46 +126,47 @@ struct netns_ipv4 {
+>  	u32 sysctl_tcp_probe_interval;
+>  
+>  	int sysctl_tcp_keepalive_time;
+> -	int sysctl_tcp_keepalive_probes;
+>  	int sysctl_tcp_keepalive_intvl;
+> +	u8 sysctl_tcp_keepalive_probes;
+>  
+> -	int sysctl_tcp_syn_retries;
+> -	int sysctl_tcp_synack_retries;
+> -	int sysctl_tcp_syncookies;
+> +	u8 sysctl_tcp_syn_retries;
+> +	u8 sysctl_tcp_synack_retries;
+> +	u8 sysctl_tcp_syncookies;
+>  	int sysctl_tcp_reordering;
+> -	int sysctl_tcp_retries1;
+> -	int sysctl_tcp_retries2;
+> -	int sysctl_tcp_orphan_retries;
+> +	u8 sysctl_tcp_retries1;
+> +	u8 sysctl_tcp_retries2;
+> +	u8 sysctl_tcp_orphan_retries;
+> +	u8 sysctl_tcp_tw_reuse;
+>  	int sysctl_tcp_fin_timeout;
+>  	unsigned int sysctl_tcp_notsent_lowat;
+> -	int sysctl_tcp_tw_reuse;
+> -	int sysctl_tcp_sack;
+> -	int sysctl_tcp_window_scaling;
+> -	int sysctl_tcp_timestamps;
+> -	int sysctl_tcp_early_retrans;
+> -	int sysctl_tcp_recovery;
+> -	int sysctl_tcp_thin_linear_timeouts;
+> -	int sysctl_tcp_slow_start_after_idle;
+> -	int sysctl_tcp_retrans_collapse;
+> -	int sysctl_tcp_stdurg;
+> -	int sysctl_tcp_rfc1337;
+> -	int sysctl_tcp_abort_on_overflow;
+> -	int sysctl_tcp_fack;
+> +	u8 sysctl_tcp_sack;
+> +	u8 sysctl_tcp_window_scaling;
+> +	u8 sysctl_tcp_timestamps;
+> +	u8 sysctl_tcp_early_retrans;
+> +	u8 sysctl_tcp_recovery;
+> +	u8 sysctl_tcp_thin_linear_timeouts;
+> +	u8 sysctl_tcp_slow_start_after_idle;
+> +	u8 sysctl_tcp_retrans_collapse;
+> +	u8 sysctl_tcp_stdurg;
+> +	u8 sysctl_tcp_rfc1337;
+> +	u8 sysctl_tcp_abort_on_overflow;
+> +	u8 sysctl_tcp_fack; /* obsolete */
+>  	int sysctl_tcp_max_reordering;
+> -	int sysctl_tcp_dsack;
+> -	int sysctl_tcp_app_win;
+>  	int sysctl_tcp_adv_win_scale;
+> -	int sysctl_tcp_frto;
+> -	int sysctl_tcp_nometrics_save;
+> -	int sysctl_tcp_no_ssthresh_metrics_save;
+> -	int sysctl_tcp_moderate_rcvbuf;
+> -	int sysctl_tcp_tso_win_divisor;
+> -	int sysctl_tcp_workaround_signed_windows;
+> +	u8 sysctl_tcp_dsack;
+> +	u8 sysctl_tcp_app_win;
+> +	u8 sysctl_tcp_frto;
+> +	u8 sysctl_tcp_nometrics_save;
+> +	u8 sysctl_tcp_no_ssthresh_metrics_save;
+> +	u8 sysctl_tcp_moderate_rcvbuf;
+> +	u8 sysctl_tcp_tso_win_divisor;
+> +	u8 sysctl_tcp_workaround_signed_windows;
+>  	int sysctl_tcp_limit_output_bytes;
+>  	int sysctl_tcp_challenge_ack_limit;
+> -	int sysctl_tcp_min_tso_segs;
+>  	int sysctl_tcp_min_rtt_wlen;
+> -	int sysctl_tcp_autocorking;
+> +	u8 sysctl_tcp_min_tso_segs;
+> +	u8 sysctl_tcp_autocorking;
+> +	u8 sysctl_tcp_reflect_tos;
+>  	int sysctl_tcp_invalid_ratelimit;
+>  	int sysctl_tcp_pacing_ss_ratio;
+>  	int sysctl_tcp_pacing_ca_ratio;
+> @@ -183,7 +184,6 @@ struct netns_ipv4 {
+>  	unsigned int sysctl_tcp_fastopen_blackhole_timeout;
+>  	atomic_t tfo_active_disable_times;
+>  	unsigned long tfo_active_disable_stamp;
+> -	int sysctl_tcp_reflect_tos;
+>  
+>  	int sysctl_udp_wmem_min;
+>  	int sysctl_udp_rmem_min;
+> diff --git a/net/ipv4/sysctl_net_ipv4.c b/net/ipv4/sysctl_net_ipv4.c
+> index cb587bdd683a6..1a2506f795d4e 100644
+> --- a/net/ipv4/sysctl_net_ipv4.c
+> +++ b/net/ipv4/sysctl_net_ipv4.c
+> @@ -720,17 +720,17 @@ static struct ctl_table ipv4_net_table[] = {
+>  	{
+>  		.procname	= "tcp_fwmark_accept",
+>  		.data		= &init_net.ipv4.sysctl_tcp_fwmark_accept,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec,
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  #ifdef CONFIG_NET_L3_MASTER_DEV
+>  	{
+>  		.procname	= "tcp_l3mdev_accept",
+>  		.data		= &init_net.ipv4.sysctl_tcp_l3mdev_accept,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec_minmax,
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  		.extra1		= SYSCTL_ZERO,
+>  		.extra2		= SYSCTL_ONE,
+>  	},
+> @@ -738,9 +738,9 @@ static struct ctl_table ipv4_net_table[] = {
+>  	{
+>  		.procname	= "tcp_mtu_probing",
+>  		.data		= &init_net.ipv4.sysctl_tcp_mtu_probing,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec,
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname	= "tcp_base_mss",
+> @@ -842,9 +842,9 @@ static struct ctl_table ipv4_net_table[] = {
+>  	{
+>  		.procname	= "tcp_keepalive_probes",
+>  		.data		= &init_net.ipv4.sysctl_tcp_keepalive_probes,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname	= "tcp_keepalive_intvl",
+> @@ -856,26 +856,26 @@ static struct ctl_table ipv4_net_table[] = {
+>  	{
+>  		.procname	= "tcp_syn_retries",
+>  		.data		= &init_net.ipv4.sysctl_tcp_syn_retries,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec_minmax,
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  		.extra1		= &tcp_syn_retries_min,
+>  		.extra2		= &tcp_syn_retries_max
+>  	},
+>  	{
+>  		.procname	= "tcp_synack_retries",
+>  		.data		= &init_net.ipv4.sysctl_tcp_synack_retries,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  #ifdef CONFIG_SYN_COOKIES
+>  	{
+>  		.procname	= "tcp_syncookies",
+>  		.data		= &init_net.ipv4.sysctl_tcp_syncookies,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  #endif
+>  	{
+> @@ -888,24 +888,24 @@ static struct ctl_table ipv4_net_table[] = {
+>  	{
+>  		.procname	= "tcp_retries1",
+>  		.data		= &init_net.ipv4.sysctl_tcp_retries1,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec_minmax,
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  		.extra2		= &tcp_retr1_max
+>  	},
+>  	{
+>  		.procname	= "tcp_retries2",
+>  		.data		= &init_net.ipv4.sysctl_tcp_retries2,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname	= "tcp_orphan_retries",
+>  		.data		= &init_net.ipv4.sysctl_tcp_orphan_retries,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname	= "tcp_fin_timeout",
+> @@ -924,9 +924,9 @@ static struct ctl_table ipv4_net_table[] = {
+>  	{
+>  		.procname	= "tcp_tw_reuse",
+>  		.data		= &init_net.ipv4.sysctl_tcp_tw_reuse,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec_minmax,
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  		.extra1		= SYSCTL_ZERO,
+>  		.extra2		= &two,
+>  	},
+> @@ -1012,88 +1012,88 @@ static struct ctl_table ipv4_net_table[] = {
+>  	{
+>  		.procname	= "tcp_sack",
+>  		.data		= &init_net.ipv4.sysctl_tcp_sack,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname	= "tcp_window_scaling",
+>  		.data		= &init_net.ipv4.sysctl_tcp_window_scaling,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname	= "tcp_timestamps",
+>  		.data		= &init_net.ipv4.sysctl_tcp_timestamps,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname	= "tcp_early_retrans",
+>  		.data		= &init_net.ipv4.sysctl_tcp_early_retrans,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec_minmax,
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  		.extra1		= SYSCTL_ZERO,
+>  		.extra2		= &four,
+>  	},
+>  	{
+>  		.procname	= "tcp_recovery",
+>  		.data		= &init_net.ipv4.sysctl_tcp_recovery,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec,
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname       = "tcp_thin_linear_timeouts",
+>  		.data           = &init_net.ipv4.sysctl_tcp_thin_linear_timeouts,
+> -		.maxlen         = sizeof(int),
+> +		.maxlen         = sizeof(u8),
+>  		.mode           = 0644,
+> -		.proc_handler   = proc_dointvec
+> +		.proc_handler   = proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname	= "tcp_slow_start_after_idle",
+>  		.data		= &init_net.ipv4.sysctl_tcp_slow_start_after_idle,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname	= "tcp_retrans_collapse",
+>  		.data		= &init_net.ipv4.sysctl_tcp_retrans_collapse,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname	= "tcp_stdurg",
+>  		.data		= &init_net.ipv4.sysctl_tcp_stdurg,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname	= "tcp_rfc1337",
+>  		.data		= &init_net.ipv4.sysctl_tcp_rfc1337,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname	= "tcp_abort_on_overflow",
+>  		.data		= &init_net.ipv4.sysctl_tcp_abort_on_overflow,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname	= "tcp_fack",
+>  		.data		= &init_net.ipv4.sysctl_tcp_fack,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname	= "tcp_max_reordering",
+> @@ -1105,16 +1105,16 @@ static struct ctl_table ipv4_net_table[] = {
+>  	{
+>  		.procname	= "tcp_dsack",
+>  		.data		= &init_net.ipv4.sysctl_tcp_dsack,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname	= "tcp_app_win",
+>  		.data		= &init_net.ipv4.sysctl_tcp_app_win,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname	= "tcp_adv_win_scale",
+> @@ -1128,46 +1128,46 @@ static struct ctl_table ipv4_net_table[] = {
+>  	{
+>  		.procname	= "tcp_frto",
+>  		.data		= &init_net.ipv4.sysctl_tcp_frto,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname	= "tcp_no_metrics_save",
+>  		.data		= &init_net.ipv4.sysctl_tcp_nometrics_save,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec,
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname	= "tcp_no_ssthresh_metrics_save",
+>  		.data		= &init_net.ipv4.sysctl_tcp_no_ssthresh_metrics_save,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec_minmax,
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  		.extra1		= SYSCTL_ZERO,
+>  		.extra2		= SYSCTL_ONE,
+>  	},
+>  	{
+>  		.procname	= "tcp_moderate_rcvbuf",
+>  		.data		= &init_net.ipv4.sysctl_tcp_moderate_rcvbuf,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec,
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname	= "tcp_tso_win_divisor",
+>  		.data		= &init_net.ipv4.sysctl_tcp_tso_win_divisor,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec,
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname	= "tcp_workaround_signed_windows",
+>  		.data		= &init_net.ipv4.sysctl_tcp_workaround_signed_windows,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  	},
+>  	{
+>  		.procname	= "tcp_limit_output_bytes",
+> @@ -1186,9 +1186,9 @@ static struct ctl_table ipv4_net_table[] = {
+>  	{
+>  		.procname	= "tcp_min_tso_segs",
+>  		.data		= &init_net.ipv4.sysctl_tcp_min_tso_segs,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec_minmax,
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  		.extra1		= SYSCTL_ONE,
+>  		.extra2		= &gso_max_segs,
+>  	},
+> @@ -1204,9 +1204,9 @@ static struct ctl_table ipv4_net_table[] = {
+>  	{
+>  		.procname	= "tcp_autocorking",
+>  		.data		= &init_net.ipv4.sysctl_tcp_autocorking,
+> -		.maxlen		= sizeof(int),
+> +		.maxlen		= sizeof(u8),
+>  		.mode		= 0644,
+> -		.proc_handler	= proc_dointvec_minmax,
+> +		.proc_handler	= proc_dou8vec_minmax,
+>  		.extra1		= SYSCTL_ZERO,
+>  		.extra2		= SYSCTL_ONE,
+>  	},
+> @@ -1277,9 +1277,9 @@ static struct ctl_table ipv4_net_table[] = {
+>  	{
+>  		.procname       = "tcp_reflect_tos",
+>  		.data           = &init_net.ipv4.sysctl_tcp_reflect_tos,
+> -		.maxlen         = sizeof(int),
+> +		.maxlen         = sizeof(u8),
+>  		.mode           = 0644,
+> -		.proc_handler   = proc_dointvec_minmax,
+> +		.proc_handler   = proc_dou8vec_minmax,
+>  		.extra1         = SYSCTL_ZERO,
+>  		.extra2         = SYSCTL_ONE,
+>  	},
+> -- 
+> 2.39.2
+> 
+> 
+> 
