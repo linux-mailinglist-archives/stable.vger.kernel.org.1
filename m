@@ -2,289 +2,65 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F012B728CE1
-	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 03:11:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C19DB728CF9
+	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 03:18:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237202AbjFIBLP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 21:11:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33144 "EHLO
+        id S237478AbjFIBSD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 21:18:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229520AbjFIBLN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 21:11:13 -0400
-Received: from mail-oo1-xc2c.google.com (mail-oo1-xc2c.google.com [IPv6:2607:f8b0:4864:20::c2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F9901B9
-        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 18:11:11 -0700 (PDT)
-Received: by mail-oo1-xc2c.google.com with SMTP id 006d021491bc7-55ab0f7778cso822266eaf.1
-        for <stable@vger.kernel.org>; Thu, 08 Jun 2023 18:11:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1686273070; x=1688865070;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6t04VHxxvgy87m1PmWNniDTbl7PTXZyrjVB3uf4V0HA=;
-        b=mTk9d4eUqpL2hSkyiy7p1kHFt9V500PQg8nfV5Dl4cS4evEwmPy6yoHgV5DHmS3FxK
-         NbgZA37nQ/GUtPrHxqAHe1cNZhEnEiDbVi1MDMRm0zHSlGl5BNGK7uCjjpFBux9c+j4m
-         REhnC/GG2TdYlOYMiqxqlWIQc++Bu4uKChohoeciOUW6HfCGVaDf+NlbjzQo9TtcAse5
-         gUuyWQNVxzZVCWPx/zM0xrP4L/OhloKweaQleGmQfZ3UcErbnExBga9EGqTaFYExc9D5
-         A9Y3Jdvc+OAAwKqa56dKjn32pSlzGTLRZyRot52zNuzCebUrdqBAIefaXWOJlF0MYnyW
-         SLaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686273070; x=1688865070;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6t04VHxxvgy87m1PmWNniDTbl7PTXZyrjVB3uf4V0HA=;
-        b=lFneZkanNRs8gkU1kkGTIakQcGiWztY7wDqKH9N46ZvliCTWmzQrxvsrXQHTzIjmLI
-         zH3NL/NsPdOqlCW+P6YpcwOLZg7JFy6omMidEC2smLqWRZCqutX0Z658bSgqI36YQDZk
-         BvjAvhhrPCWdke5RSDTPOOZPaF5Qk8xv11Fat/cLnwg/5XNRDJe2z62g4GCFDW7+axE+
-         Y758vwKlIzh9TSHsi6rlqJPPNV/LmdPDSO19fzuAKRymRqEarN88hg9eNgsoZrQIMpO+
-         azFAmpXAJKMArHAj3mtFmHl+oMp2+RY4G3hetIsS46Mpwp4Jr5EOzGY/pxfoTVWOao3A
-         +fSw==
-X-Gm-Message-State: AC+VfDz4WN7v+rp5OUcF4M88cUfRhVHrsEwGuB3D7bLFirlOP4IBN6cs
-        DM9aLH2M9EZhAYvL6Inv0pfYamMi7yhMFNm7jI3MMA==
-X-Google-Smtp-Source: ACHHUZ7yaBLm0LL+IwFANCK4QJtFGTbyC/PIvIHBAEqLfn3M8KtkReRXt0/UiFfb7ZyHQbQG86UTdc1f5axmdMSv/Bg=
-X-Received: by 2002:a05:6808:1b10:b0:398:581:aedd with SMTP id
- bx16-20020a0568081b1000b003980581aeddmr152154oib.37.1686273070437; Thu, 08
- Jun 2023 18:11:10 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230608204517.105396-2-badhri@google.com> <202306090722.opxFRfOO-lkp@intel.com>
-In-Reply-To: <202306090722.opxFRfOO-lkp@intel.com>
-From:   Badhri Jagan Sridharan <badhri@google.com>
-Date:   Thu, 8 Jun 2023 18:10:33 -0700
-Message-ID: <CAPTae5+iL0sG8kezCLMFj26QB51L7hoWno63PHiPpepFsKf0Wg@mail.gmail.com>
-Subject: Re: [PATCH v7 2/2] usb: gadget: udc: core: Prevent
- soft_connect_store() race
-To:     kernel test robot <lkp@intel.com>
-Cc:     gregkh@linuxfoundation.org, stern@rowland.harvard.edu,
-        colin.i.king@gmail.com, xuetao09@huawei.com,
-        quic_eserrao@quicinc.com, water.zhangjiantao@huawei.com,
-        peter.chen@freescale.com, balbi@ti.com, francesco@dolcini.it,
+        with ESMTP id S237352AbjFIBSC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 21:18:02 -0400
+Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 16932271D
+        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 18:17:59 -0700 (PDT)
+Received: (qmail 283453 invoked by uid 1000); 8 Jun 2023 21:17:59 -0400
+Date:   Thu, 8 Jun 2023 21:17:59 -0400
+From:   Alan Stern <stern@rowland.harvard.edu>
+To:     Badhri Jagan Sridharan <badhri@google.com>
+Cc:     gregkh@linuxfoundation.org, colin.i.king@gmail.com,
+        xuetao09@huawei.com, quic_eserrao@quicinc.com,
+        water.zhangjiantao@huawei.com, francesco@dolcini.it,
         alistair@alistair23.me, stephan@gerhold.net, bagasdotme@gmail.com,
-        luca@z3ntu.xyz, llvm@lists.linux.dev,
-        oe-kbuild-all@lists.linux.dev, linux-usb@vger.kernel.org,
+        luca@z3ntu.xyz, linux-usb@vger.kernel.org,
         linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,
-        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v8 2/2] usb: gadget: udc: core: Prevent
+ soft_connect_store() race
+Message-ID: <7b1a8de9-3811-4b4b-b85f-9afded0e45d1@rowland.harvard.edu>
+References: <20230609010227.978661-1-badhri@google.com>
+ <20230609010227.978661-2-badhri@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230609010227.978661-2-badhri@google.com>
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Removed the unused out labels reported by test in v8.
+On Fri, Jun 09, 2023 at 01:02:27AM +0000, Badhri Jagan Sridharan wrote:
+> usb_udc_connect_control(), soft_connect_store() and
+> usb_gadget_deactivate() can potentially race against each other to invoke
+> usb_gadget_connect()/usb_gadget_disconnect(). To prevent this, guard
+> udc->started, gadget->allow_connect, gadget->deactivate and
+> gadget->connect with connect_lock so that ->pullup() is only invoked when
+> the gadget is bound, started and not deactivated. The routines
+> usb_gadget_connect_locked(), usb_gadget_disconnect_locked(),
+> usb_udc_connect_control_locked(), usb_gadget_udc_start_locked(),
+> usb_gadget_udc_stop_locked() are called with this lock held.
+> 
+> An earlier version of this commit was reverted due to the crash reported in
+> https://lore.kernel.org/all/ZF4BvgsOyoKxdPFF@francesco-nb.int.toradex.com/.
+> commit 16737e78d190 ("usb: gadget: udc: core: Offload usb_udc_vbus_handler processing")
+> addresses the crash reported.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 628ef0d273a6 ("usb: udc: add usb_udc_vbus_handler")
+> Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+> ---
 
-Regards,
-Badhri
-
-On Thu, Jun 8, 2023 at 4:20=E2=80=AFPM kernel test robot <lkp@intel.com> wr=
-ote:
->
-> Hi Badhri,
->
-> kernel test robot noticed the following build warnings:
->
-> [auto build test WARNING on d37537a1f7cf09e304fe7993cb5e732534a0fb22]
->
-> url:    https://github.com/intel-lab-lkp/linux/commits/Badhri-Jagan-Sridh=
-aran/usb-gadget-udc-core-Prevent-soft_connect_store-race/20230609-044555
-> base:   d37537a1f7cf09e304fe7993cb5e732534a0fb22
-> patch link:    https://lore.kernel.org/r/20230608204517.105396-2-badhri%4=
-0google.com
-> patch subject: [PATCH v7 2/2] usb: gadget: udc: core: Prevent soft_connec=
-t_store() race
-> config: hexagon-randconfig-r015-20230608 (https://download.01.org/0day-ci=
-/archive/20230609/202306090722.opxFRfOO-lkp@intel.com/config)
-> compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project.git =
-4a5ac14ee968ff0ad5d2cc1ffa0299048db4c88a)
-> reproduce (this is a W=3D1 build):
->         mkdir -p ~/bin
->         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbi=
-n/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         git checkout d37537a1f7cf09e304fe7993cb5e732534a0fb22
->         b4 shazam https://lore.kernel.org/r/20230608204517.105396-2-badhr=
-i@google.com
->         # save the config file
->         mkdir build_dir && cp config build_dir/.config
->         COMPILER_INSTALL_PATH=3D$HOME/0day COMPILER=3Dclang ~/bin/make.cr=
-oss W=3D1 O=3Dbuild_dir ARCH=3Dhexagon olddefconfig
->         COMPILER_INSTALL_PATH=3D$HOME/0day COMPILER=3Dclang ~/bin/make.cr=
-oss W=3D1 O=3Dbuild_dir ARCH=3Dhexagon SHELL=3D/bin/bash drivers/usb/gadget=
-/udc/
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
-ion of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202306090722.opxFRfOO-lkp=
-@intel.com/
->
-> All warnings (new ones prefixed by >>):
->
->    In file included from drivers/usb/gadget/udc/core.c:17:
->    In file included from include/linux/dma-mapping.h:10:
->    In file included from include/linux/scatterlist.h:9:
->    In file included from arch/hexagon/include/asm/io.h:334:
->    include/asm-generic/io.h:547:31: warning: performing pointer arithmeti=
-c on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      547 |         val =3D __raw_readb(PCI_IOBASE + addr);
->          |                           ~~~~~~~~~~ ^
->    include/asm-generic/io.h:560:61: warning: performing pointer arithmeti=
-c on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      560 |         val =3D __le16_to_cpu((__le16 __force)__raw_readw(PCI_=
-IOBASE + addr));
->          |                                                         ~~~~~~=
-~~~~ ^
->    include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded fro=
-m macro '__le16_to_cpu'
->       37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
->          |                                                   ^
->    In file included from drivers/usb/gadget/udc/core.c:17:
->    In file included from include/linux/dma-mapping.h:10:
->    In file included from include/linux/scatterlist.h:9:
->    In file included from arch/hexagon/include/asm/io.h:334:
->    include/asm-generic/io.h:573:61: warning: performing pointer arithmeti=
-c on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      573 |         val =3D __le32_to_cpu((__le32 __force)__raw_readl(PCI_=
-IOBASE + addr));
->          |                                                         ~~~~~~=
-~~~~ ^
->    include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded fro=
-m macro '__le32_to_cpu'
->       35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
->          |                                                   ^
->    In file included from drivers/usb/gadget/udc/core.c:17:
->    In file included from include/linux/dma-mapping.h:10:
->    In file included from include/linux/scatterlist.h:9:
->    In file included from arch/hexagon/include/asm/io.h:334:
->    include/asm-generic/io.h:584:33: warning: performing pointer arithmeti=
-c on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      584 |         __raw_writeb(value, PCI_IOBASE + addr);
->          |                             ~~~~~~~~~~ ^
->    include/asm-generic/io.h:594:59: warning: performing pointer arithmeti=
-c on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      594 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBA=
-SE + addr);
->          |                                                       ~~~~~~~~=
-~~ ^
->    include/asm-generic/io.h:604:59: warning: performing pointer arithmeti=
-c on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
->      604 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBA=
-SE + addr);
->          |                                                       ~~~~~~~~=
-~~ ^
-> >> drivers/usb/gadget/udc/core.c:850:1: warning: unused label 'out' [-Wun=
-used-label]
->      850 | out:
->          | ^~~~
->      851 |         trace_usb_gadget_deactivate(gadget, ret);
->    drivers/usb/gadget/udc/core.c:886:1: warning: unused label 'out' [-Wun=
-used-label]
->      886 | out:
->          | ^~~~
->      887 |         trace_usb_gadget_activate(gadget, ret);
->    8 warnings generated.
->
->
-> vim +/out +850 drivers/usb/gadget/udc/core.c
->
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  815
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  816  /**
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  817   * usb_gadget_deactivate - deactivate function which is not=
- ready to work
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  818   * @gadget: the peripheral being deactivated
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  819   *
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  820   * This routine may be used during the gadget driver bind()=
- call to prevent
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  821   * the peripheral from ever being visible to the USB host, =
-unless later
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  822   * usb_gadget_activate() is called.  For example, user mode=
- components may
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  823   * need to be activated before the system can talk to hosts=
-.
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  824   *
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  825   * Returns zero on success, else negative errno.
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  826   */
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  827  int usb_gadget_deactivate(struct usb_gadget *gadget)
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  828  {
-> 5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2=
-016-05-31  829         int ret =3D 0;
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  830
-> bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2=
-023-06-08  831         mutex_lock(&gadget->udc->connect_lock);
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  832         if (gadget->deactivated)
-> bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2=
-023-06-08  833                 goto unlock;
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  834
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  835         if (gadget->connected) {
-> bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2=
-023-06-08  836                 ret =3D usb_gadget_disconnect_locked(gadget)=
-;
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  837                 if (ret)
-> bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2=
-023-06-08  838                         goto unlock;
-> 5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2=
-016-05-31  839
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  840                 /*
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  841                  * If gadget was being connected before deac=
-tivation, we want
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  842                  * to reconnect it in usb_gadget_activate().
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  843                  */
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  844                 gadget->connected =3D true;
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  845         }
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  846         gadget->deactivated =3D true;
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  847
-> bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2=
-023-06-08  848  unlock:
-> bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2=
-023-06-08  849         mutex_unlock(&gadget->udc->connect_lock);
-> 5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2=
-016-05-31 @850  out:
-> 5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2=
-016-05-31  851         trace_usb_gadget_deactivate(gadget, ret);
-> 5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2=
-016-05-31  852
-> 5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2=
-016-05-31  853         return ret;
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  854  }
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  855  EXPORT_SYMBOL_GPL(usb_gadget_deactivate);
-> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
-016-05-31  856
->
-> --
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
