@@ -2,104 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F8FC7297CB
-	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 13:07:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA6D97297DC
+	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 13:10:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231351AbjFILHI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 9 Jun 2023 07:07:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53694 "EHLO
+        id S229969AbjFILJt convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Fri, 9 Jun 2023 07:09:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237371AbjFILHC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 9 Jun 2023 07:07:02 -0400
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 126302113;
-        Fri,  9 Jun 2023 04:07:01 -0700 (PDT)
-Received: by mail-pj1-x1032.google.com with SMTP id 98e67ed59e1d1-2565b864f9aso491130a91.1;
-        Fri, 09 Jun 2023 04:07:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686308820; x=1688900820;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=p9Kp49qcxB2W/Gx/r6msDIk3UxITI3+DTECoDc55ia0=;
-        b=XH0RYKJglDJSo+LUgfbk7Lirkr5mNmGpbJX1n0pLDknKqm0t5b873l5/KlTaoaDD5y
-         d7QYPMTJvEZN9IoD0Nj7b+mIw3Ag29u0gelrFQVdzqRAc9tykFS0an2cmFc8X4PkH+CU
-         uiNTqcwQ2clV+eatSPfSSNwZLIKXa8kvG9HhGITNWD2mmC08LhPpLtXhguktlHsMyHbo
-         u8od/c5kD8b4nsnDQDmuzCoaP6tjPLBY553qCG04qlb4g5W9SxKw+sfbsArLu+UIi8Id
-         X8COKAxOl4IhNPZngfbh/mNH4JZ5UYrX6v2VmNH73jfCkjXJeTGqUrbHCUPxYFP6hI95
-         0IYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686308820; x=1688900820;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=p9Kp49qcxB2W/Gx/r6msDIk3UxITI3+DTECoDc55ia0=;
-        b=YrCIdxw6uNTGQB7/IJgGB6NOkdhfNwktrBQsFvw9h+4lvued4p0nGX9KiDd7W3itse
-         qmabe3b1DbK5prPBl/QnjFP4qHpOQLl/kyBOCExy6D8ctNIi1a2RsAhQABX2TXqYZuES
-         t/M7KIzqeT1v6cKYDOsKR7idN9sj+wWOD+F82YDSmLCo0m2GvcRTA1ibYkCiH0Ey67Gj
-         M5GhxsWTGBA1CbiwjJxZcYVlZLa3yLQHZdXZEF5wBgmpuxpWea1qsdD276eJ6mYwmqi0
-         EUCq7Js1coHmpMF8Ra/eqoiU+ItGCd4hkCy54Ptm/+q+aQyAMwpnnVaob32Sfoy7tH3K
-         LXLg==
-X-Gm-Message-State: AC+VfDwJ3FHXIJIs1EpoAdtOms48W7uxmj3vejOdIfNCVe2ItBBvt6fU
-        TcQNXAJ5GOdAPtGYkP2EPx4=
-X-Google-Smtp-Source: ACHHUZ69iuycrMPAsL6r820Mk8A8KabO+WlKUAKOfAWMN+/OE9BN5aN5Lh0/htRWag2WEwxd0cl8UQ==
-X-Received: by 2002:a17:90a:1908:b0:256:9b75:84cf with SMTP id 8-20020a17090a190800b002569b7584cfmr703254pjg.6.1686308820385;
-        Fri, 09 Jun 2023 04:07:00 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 3-20020a17090a194300b00253305f36c4sm4785820pjh.18.2023.06.09.04.06.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jun 2023 04:06:59 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Fri, 9 Jun 2023 04:06:58 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de
-Subject: Re: [PATCH 5.15 000/159] 5.15.116-rc1 review
-Message-ID: <b979807a-a437-4d3f-98f9-989da52abb30@roeck-us.net>
-References: <20230607200903.652580797@linuxfoundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230607200903.652580797@linuxfoundation.org>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S238967AbjFILJX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 9 Jun 2023 07:09:23 -0400
+Received: from tilde.cafe (tilde.cafe [51.222.161.16])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3336E2D42;
+        Fri,  9 Jun 2023 04:09:22 -0700 (PDT)
+Received: from localhost (67.250.94.80.dyn.idknet.com [80.94.250.67])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by tilde.cafe (Postfix) with ESMTPSA id CA44020309;
+        Fri,  9 Jun 2023 07:09:18 -0400 (EDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=UTF-8
+Date:   Fri, 09 Jun 2023 14:09:17 +0300
+Subject: Re: [REGRESSION] Asus X541UAK hangs on suspend and poweroff (v6.1.6
+ onward)
+Cc:     <bagasdotme@gmail.com>, <linux-acpi@vger.kernel.org>,
+        <rafael@kernel.org>, <regressions@leemhuis.info>,
+        <regressions@lists.linux.dev>, <stable@vger.kernel.org>,
+        <helgaas@kernel.org>
+From:   "Acid Bong" <acidbong@tilde.cafe>
+To:     <acidbong@tilde.cafe>
+Message-Id: <CT81XH8HT8A1.2XAHQ1IF5VSO9@bong>
+X-Mailer: aerc 0.15.2-0-gf1772c92f92e
+In-Reply-To: <CSB8TSV6LXJ8.7SHI9VM2YMAR@bong>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jun 07, 2023 at 10:15:03PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.116 release.
-> There are 159 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 09 Jun 2023 20:07:31 +0000.
-> Anything received after that time might be too late.
-> 
+Hi there, hello.
 
-Build results:
-	total: 155 pass: 155 fail: 0
-Qemu test results:
-	total: 499 pass: 498 fail: 1
-Failed tests:
-	arm:kudo-bmc:multi_v7_defconfig:npcm:usb0.1:nuvoton-npcm730-kudo:rootfs
+This seems to be my final update.
 
-The test failure is spurious and not new. I observe it randomly on
-multi_v7_defconfig builds, primarily on npcm platforms. There is no error
-message, just a stalled boot. I have been trying to bisect for a while,
-but I have not been successful so far. No immediate concern; I just wanted
-to mention it in case someone else hits the same or a similar problem.
+About a week ago I returned to using Gajim, which, as I remember from
+earlier, also seemed to be responsible for these hangings, and they got
+more frequent (I haven't updated any software for the last 2 months). I
+decided to move to the kernel version 6.1.1, which I earlier marked as
+"good", and my laptop hung last evening during the shutdown. As always,
+nothing in the logs.
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+I tried to compile some versions from 5.15.y branch, but either I had a
+bad luck, or the commits weren't properly compatible with GCC 12 yet,
+but they (.48 and .78) emitted warnings, so I never used them (or I
+broke the repo, who knows).
 
-Guenter
+Due to the fact that software does have impact on this behaviour, and
+due to my health issues and potential conscription (cuz our army doesn't
+care about health), which will cut me from my laptop for a long-long
+time, I give up on bisecting. I'll just update all my software (there's
+also a GCC upgrade in the repos) and hope for the best.
+
+Sorry for inconvenience and have a great day. Thank you very much.
