@@ -2,140 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F27C2728C30
-	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 02:09:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21491728C5E
+	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 02:26:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237661AbjFIAJT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 20:09:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38306 "EHLO
+        id S229732AbjFIA0N (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 20:26:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237629AbjFIAJS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 20:09:18 -0400
-Received: from bird.elm.relay.mailchannels.net (bird.elm.relay.mailchannels.net [23.83.212.17])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85E0A2733
-        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 17:09:17 -0700 (PDT)
-X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-        by relay.mailchannels.net (Postfix) with ESMTP id B0E5D140D9E
-        for <stable@vger.kernel.org>; Fri,  9 Jun 2023 00:09:16 +0000 (UTC)
-Received: from pdx1-sub0-mail-a313.dreamhost.com (unknown [127.0.0.6])
-        (Authenticated sender: dreamhost)
-        by relay.mailchannels.net (Postfix) with ESMTPA id 4CF601411AE
-        for <stable@vger.kernel.org>; Fri,  9 Jun 2023 00:09:16 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1686269356; a=rsa-sha256;
-        cv=none;
-        b=nlkN5GW24ZFFbUiMb/QEbAoBYFfjiXh4s25v1BFVA21ZJhoxbRgEQhlRjUsxOJlYvyQPNE
-        PS9HWx00ll9C6JiNtwUxzlNNsmbfmtCzti+TSoVBmQpELWomvfvD5mSHGbVhnkGh3wllUF
-        SUb/0mIEGAB4G8/bbDQ9fFqogLH9c4Fyv+tDXmoQwEyLjUaKuta87rC5Z4uEPEtVzj6KkX
-        UcftZGyQThignNbZNKOB431OEm+YZF30rG+FSof1CUtaf2GyLO3pkMI4IHxwOyemG7xTR2
-        ujMVGBZc1oVjo5bmQlCWRpIaEF6T6IFVTjT4HUA9AoY8l4GYZiXjV16hK/CPTg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-        s=arc-2022; t=1686269356;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references:dkim-signature;
-        bh=lQJUql2528Cy+DS6D/lrrawtBMQvuJVlQtJ26lBfYIk=;
-        b=3q07sYL0yhADPaWaRsFZbuEACUmvjvsI845fcdVP/YygL23iin5lsXqTat8l6kGnsVpZqi
-        6FDbUJiwXn/q5Lfzq8hz8wAqG/x1REoNm1JXZaPKaDWj+ONrnWrltRzgkaOFg9+7+1Kfyw
-        3uF+z/69iDQyRswavU6tSQiz64hPD/OXYOo0LBWbfcMFwJQ81n1pxWlNMdoa6IXwLC/LCp
-        utbjIh5zMZ4eCXz8CWcnbZxyUNDtVv+XV9nExXNtTF9uRIL4aRBN+3qzdbLSo5nbCC7BjI
-        WtonKG0hH/9q38feRmgeXbqtNe1bbb59EBgomCWuE0nFHYmnVJjise7f0I5R6Q==
-ARC-Authentication-Results: i=1;
-        rspamd-6f5cfd578c-b5r78;
-        auth=pass smtp.auth=dreamhost smtp.mailfrom=kjlx@templeofstupid.com
-X-Sender-Id: dreamhost|x-authsender|kjlx@templeofstupid.com
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: dreamhost|x-authsender|kjlx@templeofstupid.com
-X-MailChannels-Auth-Id: dreamhost
-X-Average-Print: 2e77ff4d2653fc89_1686269356531_2892472446
-X-MC-Loop-Signature: 1686269356531:758589605
-X-MC-Ingress-Time: 1686269356531
-Received: from pdx1-sub0-mail-a313.dreamhost.com (pop.dreamhost.com
- [64.90.62.162])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-        by 100.126.30.49 (trex/6.8.1);
-        Fri, 09 Jun 2023 00:09:16 +0000
-Received: from kmjvbox (c-73-93-64-36.hsd1.ca.comcast.net [73.93.64.36])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: kjlx@templeofstupid.com)
-        by pdx1-sub0-mail-a313.dreamhost.com (Postfix) with ESMTPSA id 4QchJq480Pz1n8
-        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 17:09:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=templeofstupid.com;
-        s=dreamhost; t=1686269355;
-        bh=lQJUql2528Cy+DS6D/lrrawtBMQvuJVlQtJ26lBfYIk=;
-        h=Date:From:To:Cc:Subject:Content-Type:Content-Transfer-Encoding;
-        b=dDoHPKhVC+rSbuXrQXH1ctahyAjgA25ZAMjDsDW+522psbJy33cRsO9a2Cg/4XYOi
-         Ltrq5G01Y8FBynl/M4J7Vkd2TZtyVkvfX5p5/NuGhPauvEr5fCwwfu8xzC/sb8vZqG
-         PipsXZb9CtdoVe3oOri82oo52gIu8s+CmmhxOwWw=
-Received: from johansen (uid 1000)
-        (envelope-from kjlx@templeofstupid.com)
-        id e0042
-        by kmjvbox (DragonFly Mail Agent v0.12);
-        Thu, 08 Jun 2023 17:09:14 -0700
-Date:   Thu, 8 Jun 2023 17:09:14 -0700
-From:   Krister Johansen <kjlx@templeofstupid.com>
-To:     Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc:     bpf <bpf@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Martin KaFai Lau <martin.lau@linux.dev>,
-        Song Liu <song@kernel.org>, Yonghong Song <yhs@fb.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@kernel.org>,
-        Stanislav Fomichev <sdf@google.com>,
-        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Mykola Lysenko <mykolal@fb.com>, Shuah Khan <shuah@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>, stable <stable@vger.kernel.org>
-Subject: Re: [PATCH bpf v2 2/2] bpf: ensure main program has an extable
-Message-ID: <20230609000914.GA4980@templeofstupid.com>
-References: <cover.1686166633.git.kjlx@templeofstupid.com>
- <de425e99876dc6c344e1a4254894a3c81e71a2ec.1686166633.git.kjlx@templeofstupid.com>
- <CAADnVQJd=_OZJUWVcQH7OtaH2cv8FLsB7kBhxZANsR9O3+AfZA@mail.gmail.com>
+        with ESMTP id S229605AbjFIA0K (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 20:26:10 -0400
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE2402D72;
+        Thu,  8 Jun 2023 17:26:09 -0700 (PDT)
+Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-652328c18d5so937427b3a.1;
+        Thu, 08 Jun 2023 17:26:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686270369; x=1688862369;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SsLHpUV3U4RHcYmttv82/JvsSyFIcyIPeIQmZazPerg=;
+        b=JVxMAS5Rql8+6bB8cFnlTJE1Y+0PDTB5UwnRSgYerzJLulSMpalR6I9yuAcrJp2oZG
+         pyktcLw+3fZ6jEQx9/pTy5xKcYdSTO4jgULDn0kS3QgFQ68O9oouVPSDfGhPGqyBtK/t
+         s1x53uaxxiVHwYGaLoSPg4ZRrcAxJdnrKLkRIiNMgAaDOr3ekZ6GOX2JWE8n721BeJc0
+         bKnKNdgd2P7ouW95NZPekHQaIYaoeLoJnIwoHhg6hi8gYOluOWmJ3vMGPgnWJMnyppgw
+         mOZpLLgzrdV1Yn213xCgdn6CtR/7I1GiyinI6EWoR/GgCQSLtIWI9wSG++l6V6XaYFDf
+         fF0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686270369; x=1688862369;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SsLHpUV3U4RHcYmttv82/JvsSyFIcyIPeIQmZazPerg=;
+        b=cOdvQkH4rbHr7hd7lWWnUgrOoQycWYLrPeawwpr9DFrHMWtY++BGOa0ta2wFIqb4DM
+         SzT5LmNPaJ1VIyQE8tiu+DqFw9NIkZRDrdyYG4mQ+dVqIcBog4jNIleDARgAPBho7zvr
+         SUpgaEn54jo4Vuuo51FwGpiDapuraPw+J1FI/aVkdSVYUo4G+X4TqmPBFW2kgINKcpwL
+         j1C+RbGwcOeBXV4JlOUF7DkWzMjr8KvwJ/0GF62NSeLMO6kLl7HAO4B2aefic2wL+ZyR
+         ybJklqLdhq0Udq94gh4k+dj7n9pbdtPL4LgAm1VDNAJYPdulKxqS/o9BYgtVOI3NVslQ
+         EndQ==
+X-Gm-Message-State: AC+VfDyhW+ZLiLqMsSGnm1gMqGeo1tdzMnJk38NGlZ8oNLH0KvABtRBh
+        06LYILpCyJYO6v2JUK8GfKM=
+X-Google-Smtp-Source: ACHHUZ5RHs5idAHmUIW80YZUdFMTvAyPG7GtZS73qmDLkqkEZVWKhZn3UsojLdEcAAL5NpXAKUMBew==
+X-Received: by 2002:a05:6a21:6d91:b0:10d:3ff2:452b with SMTP id wl17-20020a056a216d9100b0010d3ff2452bmr5743417pzb.18.1686270369049;
+        Thu, 08 Jun 2023 17:26:09 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id s64-20020a635e43000000b0053efc8ac7e9sm1771643pgb.29.2023.06.08.17.26.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Jun 2023 17:26:08 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Thu, 8 Jun 2023 17:26:06 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de
+Subject: Re: [PATCH 4.14 00/61] 4.14.317-rc1 review
+Message-ID: <2ec644ea-e58e-44da-9bc8-25cf9a942714@roeck-us.net>
+References: <20230607200835.310274198@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAADnVQJd=_OZJUWVcQH7OtaH2cv8FLsB7kBhxZANsR9O3+AfZA@mail.gmail.com>
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <20230607200835.310274198@linuxfoundation.org>
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 08, 2023 at 03:01:36PM -0700, Alexei Starovoitov wrote:
-> On Wed, Jun 7, 2023 at 2:04 PM Krister Johansen <kjlx@templeofstupid.com> wrote:
-> > Cc: stable@vger.kernel.org
-> > Fixes: 1c2a088a6626 ("bpf: x64: add JIT support for multi-function programs")
-> > Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
-> > ---
-> >  kernel/bpf/verifier.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-> > index 5871aa78d01a..d6939db9fbf9 100644
-> > --- a/kernel/bpf/verifier.c
-> > +++ b/kernel/bpf/verifier.c
-> > @@ -17242,6 +17242,7 @@ static int jit_subprogs(struct bpf_verifier_env *env)
-> >         prog->jited = 1;
-> >         prog->bpf_func = func[0]->bpf_func;
-> >         prog->jited_len = func[0]->jited_len;
-> > +       prog->aux->extable = func[0]->aux->extable;
+On Wed, Jun 07, 2023 at 10:15:14PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 4.14.317 release.
+> There are 61 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Why not to do this hunk and what I suggested earlier: start from func=1 ?
-> That will address double ksym insertion that Yonghong mentioned.
+> Responses should be made by Fri, 09 Jun 2023 20:07:31 +0000.
+> Anything received after that time might be too late.
+> 
 
-Sure thing.  Yonghong and you have convinced me.
+Build results:
+	total: 168 pass: 167 fail: 1
+Failed builds:
+	x86_64:tools/perf
+Qemu test results:
+	total: 430 pass: 430 fail: 0
 
-I'll send out a v3 with all changes requested so far.
+I don't know what causes the perf build failure; there has been no change.
+I suspect it is because I recently switched from Ubuntu 20.04 to 22.04.
+I don't think it is worth bothering; I'll just stop build testing perf on
+that branch.
 
--K
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+
+Guenter
