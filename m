@@ -2,52 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC38572A623
-	for <lists+stable@lfdr.de>; Sat, 10 Jun 2023 00:08:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36F2872A62B
+	for <lists+stable@lfdr.de>; Sat, 10 Jun 2023 00:11:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229606AbjFIWIh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 9 Jun 2023 18:08:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40896 "EHLO
+        id S232740AbjFIWLs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 9 Jun 2023 18:11:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229475AbjFIWIg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 9 Jun 2023 18:08:36 -0400
-X-Greylist: delayed 437 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 09 Jun 2023 15:08:34 PDT
-Received: from out-63.mta0.migadu.com (out-63.mta0.migadu.com [91.218.175.63])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE6BA30F8
-        for <stable@vger.kernel.org>; Fri,  9 Jun 2023 15:08:34 -0700 (PDT)
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-        t=1686348075;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=QffNQ8PwW07AvO1bgOe/KOc535PWheP8HU3uyYnPhpQ=;
-        b=QCEWPqxpWlsFB3NrL4mpoZHVgC6D+wwqoICtrJUiG1BcCI+g50MvCxiAmK+89mEwsTtchG
-        sgg3nIwjaRA26wyiVnziLLNOmFWMS0GLfLkaFxrIeqjnH4mLXD6GXYgiqQHHfIwOrp41+W
-        BPZgisVvHOM4dQ5D9A7dd9NIRiq8UAI=
-From:   Oliver Upton <oliver.upton@linux.dev>
-To:     kvmarm@lists.linux.dev
-Cc:     Marc Zyngier <maz@kernel.org>, James Morse <james.morse@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Zenghui Yu <yuzenghui@huawei.com>,
-        Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Darren Hart <darren@os.amperecomputing.com>,
-        D Scott Phillips <scott@os.amperecomputing.com>,
-        Oliver Upton <oliver.upton@linux.dev>, stable@vger.kernel.org
-Subject: [PATCH 1/3] arm64: errata: Mitigate Ampere1 erratum AC03_CPU_38 at stage-2
-Date:   Fri,  9 Jun 2023 22:01:02 +0000
-Message-ID: <20230609220104.1836988-2-oliver.upton@linux.dev>
-In-Reply-To: <20230609220104.1836988-1-oliver.upton@linux.dev>
-References: <20230609220104.1836988-1-oliver.upton@linux.dev>
+        with ESMTP id S232727AbjFIWLr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 9 Jun 2023 18:11:47 -0400
+Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A09B930F9;
+        Fri,  9 Jun 2023 15:11:45 -0700 (PDT)
+X-IronPort-AV: E=Sophos;i="6.00,230,1681138800"; 
+   d="scan'208";a="162941221"
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie5.idc.renesas.com with ESMTP; 10 Jun 2023 07:11:44 +0900
+Received: from renesas-ubuntu18.ree.adwin.renesas.com (unknown [10.226.93.27])
+        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 638CC40CF008;
+        Sat, 10 Jun 2023 07:11:40 +0900 (JST)
+From:   Chris Paterson <chris.paterson2@renesas.com>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+Cc:     Biju Das <biju.das@bp.renesas.com>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Chris Paterson <chris.paterson2@renesas.com>,
+        stable@vger.kernel.org,
+        Tomohiro Komagata <tomohiro.komagata.aj@renesas.com>
+Subject: [PATCH] arm64: dts: renesas: Fix txdv-skew-psec typo in RZ/G2L family smarc-som.dtsi files
+Date:   Fri,  9 Jun 2023 23:11:36 +0100
+Message-Id: <20230609221136.7431-1-chris.paterson2@renesas.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,129 +49,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-AmpereOne has an erratum in its implementation of FEAT_HAFDBS that
-required disabling the feature on the design. This was done by reporting
-the feature as not implemented in the ID register, although the
-corresponding control bits were not actually RES0. This does not align
-well with the requirements of the architecture, which mandates these
-bits be RES0 if HAFDBS isn't implemented.
+It looks like txdv-skew-psec is a typo from a copy+paste. txdv-skew-psec
+is not present in the PHY bindings nor is it in the driver.
 
-The kernel's use of stage-1 is unaffected, as the HA and HD bits are
-only set if HAFDBS is detected in the ID register. KVM, on the other
-hand, relies on the RES0 behavior at stage-2 to use the same value for
-VTCR_EL2 on any cpu in the system. Mitigate the non-RES0 behavior by
-leaving VTCR_EL2.HA clear on affected systems.
+Correct to txen-skew-psec which is clearly what it was meant to be.
 
-Cc: stable@vger.kernel.org
-Cc: D Scott Phillips <scott@os.amperecomputing.com>
-Cc: Darren Hart <darren@os.amperecomputing.com>
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Given that the default for txen-skew-psec is 0, and the device tree is
+only trying to set it to 0 anyway, there should not be any functional
+change from this fix.
+
+Fixes: 361b0dcbd7f9 ("arm64: dts: renesas: rzg2l-smarc-som: Enable Ethernet")
+Fixes: 6494e4f90503 ("arm64: dts: renesas: rzg2ul-smarc-som: Enable Ethernet on SMARC platform")
+Fixes: ce0c63b6a5ef ("arm64: dts: renesas: Add initial device tree for RZ/G2LC SMARC EVK")
+Cc: stable@vger.kernel.org # 6.1.y
+Reported-by: Tomohiro Komagata <tomohiro.komagata.aj@renesas.com>
+Signed-off-by: Chris Paterson <chris.paterson2@renesas.com>
+
 ---
- Documentation/arm64/silicon-errata.rst |  3 +++
- arch/arm64/Kconfig                     | 17 +++++++++++++++++
- arch/arm64/kernel/cpu_errata.c         |  7 +++++++
- arch/arm64/kvm/hyp/pgtable.c           | 14 +++++++++++---
- arch/arm64/tools/cpucaps               |  1 +
- 5 files changed, 39 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
-index 9e311bc43e05..cd46e2b20a81 100644
---- a/Documentation/arm64/silicon-errata.rst
-+++ b/Documentation/arm64/silicon-errata.rst
-@@ -52,6 +52,9 @@ stable kernels.
- | Allwinner      | A64/R18         | UNKNOWN1        | SUN50I_ERRATUM_UNKNOWN1     |
- +----------------+-----------------+-----------------+-----------------------------+
- +----------------+-----------------+-----------------+-----------------------------+
-+| Ampere         | AmpereOne       | AC03_CPU_38     | AMPERE_ERRATUM_AC03_CPU_38  |
-++----------------+-----------------+-----------------+-----------------------------+
-++----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A510     | #2457168        | ARM64_ERRATUM_2457168       |
- +----------------+-----------------+-----------------+-----------------------------+
- | ARM            | Cortex-A510     | #2064142        | ARM64_ERRATUM_2064142       |
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index b1201d25a8a4..f853af10142b 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -406,6 +406,23 @@ menu "Kernel Features"
- 
- menu "ARM errata workarounds via the alternatives framework"
- 
-+config AMPERE_ERRATUM_AC03_CPU_38
-+        bool "AmpereOne: AC03_CPU_38: Certain bits in the Virtualization Translation Control Register and Translation Control Registers do not follow RES0 semantics"
-+	default y
-+	help
-+	  This option adds an alternative code sequence to work around Ampere
-+	  erratum AC03_CPU_38 on AmpereOne.
-+
-+	  The affected design reports FEAT_HAFDBS as not implemented in
-+	  ID_AA64MMFR1_EL1.HAFDBS, but (V)TCR_ELx.{HA,HD} are not RES0
-+	  as required by the architecture.
-+
-+	  The workaround forces KVM to explicitly set VTCR_EL2.HA to 0,
-+	  which avoids enabling unadvertised hardware Access Flag management
-+	  at stage-2.
-+
-+	  If unsure, say Y.
-+
- config ARM64_WORKAROUND_CLEAN_CACHE
- 	bool
- 
-diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
-index 307faa2b4395..be66e94a21bd 100644
---- a/arch/arm64/kernel/cpu_errata.c
-+++ b/arch/arm64/kernel/cpu_errata.c
-@@ -729,6 +729,13 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
- 		MIDR_FIXED(MIDR_CPU_VAR_REV(1,1), BIT(25)),
- 		.cpu_enable = cpu_clear_bf16_from_user_emulation,
- 	},
-+#endif
-+#ifdef CONFIG_AMPERE_ERRATUM_AC03_CPU_38
-+	{
-+		.desc = "AmpereOne erratum AC03_CPU_38",
-+		.capability = ARM64_WORKAROUND_AMPERE_AC03_CPU_38,
-+		ERRATA_MIDR_ALL_VERSIONS(MIDR_AMPERE1),
-+	},
- #endif
- 	{
- 	}
-diff --git a/arch/arm64/kvm/hyp/pgtable.c b/arch/arm64/kvm/hyp/pgtable.c
-index 3d61bd3e591d..9b5c8e6c08a0 100644
---- a/arch/arm64/kvm/hyp/pgtable.c
-+++ b/arch/arm64/kvm/hyp/pgtable.c
-@@ -609,10 +609,18 @@ u64 kvm_get_vtcr(u64 mmfr0, u64 mmfr1, u32 phys_shift)
- #ifdef CONFIG_ARM64_HW_AFDBM
- 	/*
- 	 * Enable the Hardware Access Flag management, unconditionally
--	 * on all CPUs. The features is RES0 on CPUs without the support
--	 * and must be ignored by the CPUs.
-+	 * on all CPUs. In systems that have asymmetric support for the feature
-+	 * this allows KVM to leverage hardware support on the subset of cores
-+	 * that implement the feature.
-+	 *
-+	 * The architecture requires VTCR_EL2.HA to be RES0 (thus ignored by
-+	 * hardware) on implementations that do not advertise support for the
-+	 * feature. As such, setting HA unconditionally is safe, unless you
-+	 * happen to be running on a design that has unadvertised support for
-+	 * HAFDBS. Here be dragons.
- 	 */
--	vtcr |= VTCR_EL2_HA;
-+	if (!cpus_have_final_cap(ARM64_WORKAROUND_AMPERE_AC03_CPU_38))
-+		vtcr |= VTCR_EL2_HA;
- #endif /* CONFIG_ARM64_HW_AFDBM */
- 
- 	/* Set the vmid bits */
-diff --git a/arch/arm64/tools/cpucaps b/arch/arm64/tools/cpucaps
-index 40ba95472594..9f9a2d6652eb 100644
---- a/arch/arm64/tools/cpucaps
-+++ b/arch/arm64/tools/cpucaps
-@@ -77,6 +77,7 @@ WORKAROUND_2077057
- WORKAROUND_2457168
- WORKAROUND_2645198
- WORKAROUND_2658417
-+WORKAROUND_AMPERE_AC03_CPU_38
- WORKAROUND_TRBE_OVERWRITE_FILL_MODE
- WORKAROUND_TSB_FLUSH_FAILURE
- WORKAROUND_TRBE_WRITE_OUT_OF_RANGE
+I've put all three fixes into a single patch to save on churn.
+If it is preferred that each dtsi is fixed in a separate commit I'm happy
+to make the change. Let me know.
+
+Thanks!
+---
+ arch/arm64/boot/dts/renesas/rzg2l-smarc-som.dtsi  | 4 ++--
+ arch/arm64/boot/dts/renesas/rzg2lc-smarc-som.dtsi | 2 +-
+ arch/arm64/boot/dts/renesas/rzg2ul-smarc-som.dtsi | 4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/renesas/rzg2l-smarc-som.dtsi b/arch/arm64/boot/dts/renesas/rzg2l-smarc-som.dtsi
+index fbbb4f03440b..d0515769e66d 100644
+--- a/arch/arm64/boot/dts/renesas/rzg2l-smarc-som.dtsi
++++ b/arch/arm64/boot/dts/renesas/rzg2l-smarc-som.dtsi
+@@ -100,7 +100,7 @@ phy0: ethernet-phy@7 {
+ 		rxc-skew-psec = <2400>;
+ 		txc-skew-psec = <2400>;
+ 		rxdv-skew-psec = <0>;
+-		txdv-skew-psec = <0>;
++		txen-skew-psec = <0>;
+ 		rxd0-skew-psec = <0>;
+ 		rxd1-skew-psec = <0>;
+ 		rxd2-skew-psec = <0>;
+@@ -128,7 +128,7 @@ phy1: ethernet-phy@7 {
+ 		rxc-skew-psec = <2400>;
+ 		txc-skew-psec = <2400>;
+ 		rxdv-skew-psec = <0>;
+-		txdv-skew-psec = <0>;
++		txen-skew-psec = <0>;
+ 		rxd0-skew-psec = <0>;
+ 		rxd1-skew-psec = <0>;
+ 		rxd2-skew-psec = <0>;
+diff --git a/arch/arm64/boot/dts/renesas/rzg2lc-smarc-som.dtsi b/arch/arm64/boot/dts/renesas/rzg2lc-smarc-som.dtsi
+index 8a0d56872de7..79279ffb4099 100644
+--- a/arch/arm64/boot/dts/renesas/rzg2lc-smarc-som.dtsi
++++ b/arch/arm64/boot/dts/renesas/rzg2lc-smarc-som.dtsi
+@@ -77,7 +77,7 @@ phy0: ethernet-phy@7 {
+ 		rxc-skew-psec = <2400>;
+ 		txc-skew-psec = <2400>;
+ 		rxdv-skew-psec = <0>;
+-		txdv-skew-psec = <0>;
++		txen-skew-psec = <0>;
+ 		rxd0-skew-psec = <0>;
+ 		rxd1-skew-psec = <0>;
+ 		rxd2-skew-psec = <0>;
+diff --git a/arch/arm64/boot/dts/renesas/rzg2ul-smarc-som.dtsi b/arch/arm64/boot/dts/renesas/rzg2ul-smarc-som.dtsi
+index 49ecd33aeeb8..97cdad2a12e2 100644
+--- a/arch/arm64/boot/dts/renesas/rzg2ul-smarc-som.dtsi
++++ b/arch/arm64/boot/dts/renesas/rzg2ul-smarc-som.dtsi
+@@ -83,7 +83,7 @@ phy0: ethernet-phy@7 {
+ 		rxc-skew-psec = <2400>;
+ 		txc-skew-psec = <2400>;
+ 		rxdv-skew-psec = <0>;
+-		txdv-skew-psec = <0>;
++		txen-skew-psec = <0>;
+ 		rxd0-skew-psec = <0>;
+ 		rxd1-skew-psec = <0>;
+ 		rxd2-skew-psec = <0>;
+@@ -112,7 +112,7 @@ phy1: ethernet-phy@7 {
+ 		rxc-skew-psec = <2400>;
+ 		txc-skew-psec = <2400>;
+ 		rxdv-skew-psec = <0>;
+-		txdv-skew-psec = <0>;
++		txen-skew-psec = <0>;
+ 		rxd0-skew-psec = <0>;
+ 		rxd1-skew-psec = <0>;
+ 		rxd2-skew-psec = <0>;
 -- 
-2.41.0.162.gfafddb0af9-goog
+2.40.1
 
