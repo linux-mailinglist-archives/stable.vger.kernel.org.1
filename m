@@ -2,205 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C08E2728BAE
-	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 01:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08561728C29
+	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 02:07:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233272AbjFHXWo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 19:22:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43698 "EHLO
+        id S229609AbjFIAG6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 20:06:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229888AbjFHXWn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 19:22:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16E0430D3;
-        Thu,  8 Jun 2023 16:22:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6988065151;
-        Thu,  8 Jun 2023 23:22:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE00FC433EF;
-        Thu,  8 Jun 2023 23:22:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1686266560;
-        bh=ezGSn0pt9JH0LfMXdjLiiqiussi0F9HljhD3YA9Y0Lc=;
-        h=Date:To:From:Subject:From;
-        b=LBGyL6XaTC/0nPkuD7cl3qVLb2CPjQ96zzShnfQ3U/1RbGTOWTkklU3gZ1ApwgLPJ
-         7WW0UqzU06+/hctupnOE0NfL30uwZQCP7O4Wxaoz5YsSuUy/xpAX1aYBnW+3usRWgD
-         rwsaTFGLT+bbM5O/YvNubDdlHpzpE41vHinazSu0=
-Date:   Thu, 08 Jun 2023 16:22:39 -0700
-To:     mm-commits@vger.kernel.org, vivek.kasireddy@intel.com,
-        stable@vger.kernel.org, muchun.song@linux.dev, mhocko@suse.com,
-        kraxel@redhat.com, kirill.shutemov@linux.intel.com,
-        junxiao.chang@intel.com, jthoughton@google.com,
-        jmarchan@redhat.com, gregkh@linuxfoundation.org,
-        dongwon.kim@intel.com, david@redhat.com, mike.kravetz@oracle.com,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + udmabuf-revert-add-support-for-mapping-hugepages-v4.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230608232240.AE00FC433EF@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S230095AbjFIAG4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 20:06:56 -0400
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0AAB2733;
+        Thu,  8 Jun 2023 17:06:55 -0700 (PDT)
+Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-64d18d772bdso1223096b3a.3;
+        Thu, 08 Jun 2023 17:06:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686269215; x=1688861215;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=r6hN9wMbwSLIBDVcm5SJFo8XQzYymvLuNabBXcg6nBo=;
+        b=lMuAe2pfiTlWHpbbqlhaUJ80LV3jx0RHi/pmv0Tp6XhcAKCxhOXrRwe4/wGcMQ+gnI
+         RycsIGbbBD2Gu6I1doizkO1fU4gOLLQc9vKRUgPxu77Gmr/Jow2aFk0VwzBVroQ0ok04
+         lChqQoytYgOWPGKBdVPU2Fb8ye5GGdzHXmIKLYpCVPw/2x8H0SNz8NNnUmo+QGSO+WgC
+         JFNCZMWoLM18CdWJZJiE9fAV+PvAbl0yw4DjxBtUmAULqXlaPwwRrcJMasww4ck+zwfV
+         OSJikGzFaQzOb4LLZqA5yRfQ7voB9I8Zjsohu+5zYCoOn4yTvUdv5SJCi83WiGRlQAtV
+         WFcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686269215; x=1688861215;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=r6hN9wMbwSLIBDVcm5SJFo8XQzYymvLuNabBXcg6nBo=;
+        b=OYFoZJJvkOIlJY1jYc/cdN5tDJ49n0yyPTvHjNp840Hl79vi807R+wHMbJzpZ9VVWd
+         pdLs4PlJurxkTDWm9aFJEn98Q5eB+IqgKDqvStkv673mOyDRDS9VcZXpTbKxV04a6N9O
+         0uGBj7AmjknrGSBilLJVsoL7rAZ1/cHMD1UbEiu7NdgRKi7bHZiMQgUX+3NiVHxx4tBR
+         +3cAzfXjnAWnqAcJ75ecfYyMeOYhJRQ5XUvR4deMmoixR849O/YsmSCU5/6IeGrqIj/I
+         l+WZmgCHCfUIZm1HGly/kur8Q8N+019c46b3EqMMdNQnKQcvRW2WKW/a0M0j9D31h+dI
+         6OBQ==
+X-Gm-Message-State: AC+VfDxkVNFfzB4PS3vlRsTh7MmEDGyU/csrAsdSCRxqE0r1qmbLJF2j
+        BZpz11K4o+2Vt7kBG1v/bDc=
+X-Google-Smtp-Source: ACHHUZ5SaA1jNX1L0MT2FtY4lXGt69R0JbYE7bx+vfgGKpSfIxkre59gAPAChXVOrqUpwqH+OBDH4A==
+X-Received: by 2002:a05:6a20:3d21:b0:118:e011:5e44 with SMTP id y33-20020a056a203d2100b00118e0115e44mr3766465pzi.48.1686269215264;
+        Thu, 08 Jun 2023 17:06:55 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id 17-20020aa79211000000b00662610cf7a8sm1606588pfo.172.2023.06.08.17.06.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Jun 2023 17:06:54 -0700 (PDT)
+Message-ID: <d37368c2-1800-f4ed-427d-ef1da822fba1@gmail.com>
+Date:   Thu, 8 Jun 2023 17:06:37 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 6.3 000/285] 6.3.7-rc2 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+References: <20230608175722.489602717@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20230608175722.489602717@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 6/8/23 11:00, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.3.7 release.
+> There are 285 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 10 Jun 2023 17:56:29 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.3.7-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.3.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-The patch titled
-     Subject: udmabuf: revert 'Add support for mapping hugepages (v4)'
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     udmabuf-revert-add-support-for-mapping-hugepages-v4.patch
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/udmabuf-revert-add-support-for-mapping-hugepages-v4.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Mike Kravetz <mike.kravetz@oracle.com>
-Subject: udmabuf: revert 'Add support for mapping hugepages (v4)'
-Date: Thu, 8 Jun 2023 13:49:27 -0700
-
-This effectively reverts commit 16c243e99d33 ("udmabuf: Add support for
-mapping hugepages (v4)").  Recently, Junxiao Chang found a BUG with page
-map counting as described here [1].  This issue pointed out that the
-udmabuf driver was making direct use of subpages of hugetlb pages.  This
-is not a good idea, and no other mm code attempts such use.  In addition
-to the mapcount issue, this also causes issues with hugetlb vmemmap
-optimization and page poisoning.
-
-For now, remove hugetlb support.
-
-If udmabuf wants to be used on hugetlb mappings, it should be changed to
-only use complete hugetlb pages.  This will require different alignment
-and size requirements on the UDMABUF_CREATE API.
-
-[1] https://lore.kernel.org/linux-mm/20230512072036.1027784-1-junxiao.chang@intel.com/
-
-Link: https://lkml.kernel.org/r/20230608204927.88711-1-mike.kravetz@oracle.com
-Fixes: 16c243e99d33 ("udmabuf: Add support for mapping hugepages (v4)")
-Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Dongwon Kim <dongwon.kim@intel.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: James Houghton <jthoughton@google.com>
-Cc: Jerome Marchand <jmarchan@redhat.com>
-Cc: Junxiao Chang <junxiao.chang@intel.com>
-Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- drivers/dma-buf/udmabuf.c |   47 ++++--------------------------------
- 1 file changed, 6 insertions(+), 41 deletions(-)
-
---- a/drivers/dma-buf/udmabuf.c~udmabuf-revert-add-support-for-mapping-hugepages-v4
-+++ a/drivers/dma-buf/udmabuf.c
-@@ -12,7 +12,6 @@
- #include <linux/shmem_fs.h>
- #include <linux/slab.h>
- #include <linux/udmabuf.h>
--#include <linux/hugetlb.h>
- #include <linux/vmalloc.h>
- #include <linux/iosys-map.h>
- 
-@@ -207,9 +206,7 @@ static long udmabuf_create(struct miscde
- 	struct udmabuf *ubuf;
- 	struct dma_buf *buf;
- 	pgoff_t pgoff, pgcnt, pgidx, pgbuf = 0, pglimit;
--	struct page *page, *hpage = NULL;
--	pgoff_t subpgoff, maxsubpgs;
--	struct hstate *hpstate;
-+	struct page *page;
- 	int seals, ret = -EINVAL;
- 	u32 i, flags;
- 
-@@ -245,7 +242,7 @@ static long udmabuf_create(struct miscde
- 		if (!memfd)
- 			goto err;
- 		mapping = memfd->f_mapping;
--		if (!shmem_mapping(mapping) && !is_file_hugepages(memfd))
-+		if (!shmem_mapping(mapping))
- 			goto err;
- 		seals = memfd_fcntl(memfd, F_GET_SEALS, 0);
- 		if (seals == -EINVAL)
-@@ -256,48 +253,16 @@ static long udmabuf_create(struct miscde
- 			goto err;
- 		pgoff = list[i].offset >> PAGE_SHIFT;
- 		pgcnt = list[i].size   >> PAGE_SHIFT;
--		if (is_file_hugepages(memfd)) {
--			hpstate = hstate_file(memfd);
--			pgoff = list[i].offset >> huge_page_shift(hpstate);
--			subpgoff = (list[i].offset &
--				    ~huge_page_mask(hpstate)) >> PAGE_SHIFT;
--			maxsubpgs = huge_page_size(hpstate) >> PAGE_SHIFT;
--		}
- 		for (pgidx = 0; pgidx < pgcnt; pgidx++) {
--			if (is_file_hugepages(memfd)) {
--				if (!hpage) {
--					hpage = find_get_page_flags(mapping, pgoff,
--								    FGP_ACCESSED);
--					if (!hpage) {
--						ret = -EINVAL;
--						goto err;
--					}
--				}
--				page = hpage + subpgoff;
--				get_page(page);
--				subpgoff++;
--				if (subpgoff == maxsubpgs) {
--					put_page(hpage);
--					hpage = NULL;
--					subpgoff = 0;
--					pgoff++;
--				}
--			} else {
--				page = shmem_read_mapping_page(mapping,
--							       pgoff + pgidx);
--				if (IS_ERR(page)) {
--					ret = PTR_ERR(page);
--					goto err;
--				}
-+			page = shmem_read_mapping_page(mapping, pgoff + pgidx);
-+			if (IS_ERR(page)) {
-+				ret = PTR_ERR(page);
-+				goto err;
- 			}
- 			ubuf->pages[pgbuf++] = page;
- 		}
- 		fput(memfd);
- 		memfd = NULL;
--		if (hpage) {
--			put_page(hpage);
--			hpage = NULL;
--		}
- 	}
- 
- 	exp_info.ops  = &udmabuf_ops;
-_
-
-Patches currently in -mm which might be from mike.kravetz@oracle.com are
-
-udmabuf-revert-add-support-for-mapping-hugepages-v4.patch
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
