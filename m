@@ -2,441 +2,289 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93A24728CCB
-	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 03:02:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F012B728CE1
+	for <lists+stable@lfdr.de>; Fri,  9 Jun 2023 03:11:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236984AbjFIBCj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 8 Jun 2023 21:02:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57598 "EHLO
+        id S237202AbjFIBLP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 8 Jun 2023 21:11:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237015AbjFIBCh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 21:02:37 -0400
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB4D830EB
-        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 18:02:32 -0700 (PDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-568a8704f6dso16228777b3.1
-        for <stable@vger.kernel.org>; Thu, 08 Jun 2023 18:02:32 -0700 (PDT)
+        with ESMTP id S229520AbjFIBLN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 8 Jun 2023 21:11:13 -0400
+Received: from mail-oo1-xc2c.google.com (mail-oo1-xc2c.google.com [IPv6:2607:f8b0:4864:20::c2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F9901B9
+        for <stable@vger.kernel.org>; Thu,  8 Jun 2023 18:11:11 -0700 (PDT)
+Received: by mail-oo1-xc2c.google.com with SMTP id 006d021491bc7-55ab0f7778cso822266eaf.1
+        for <stable@vger.kernel.org>; Thu, 08 Jun 2023 18:11:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1686272552; x=1688864552;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1f5GzB40Nnck/SbxerHyt9uxjJKMRlabQvqAToawx7E=;
-        b=3FYYWCtG2kS1UktUFM6mj7GIYlBU+gK/llSekuedvBVkK/lwHh1cx7mQb9Lv3VVq7w
-         3DrHwYfdNcr/l7OXjqR6yHAZQsREfdVt9KG9eS3xPaCyCgUIMVP/Y9lZfFrhTJ1gRw1I
-         1Gg6byGnIctnsOt0JUYCTOZIqfIqLPsBzEOVwqBufin/57/AYeNsPXE5PHVjT7ahQZHP
-         1asbzSyOyG+P/YnAQkEGjumPWC6hHYsYJNRPfNEQNkNEi+x385ixKgUwUsy8u5dgNrtw
-         zScOVVQnPrJ2P3rjpIX1uD0pqOVrL2kAxpzANbMBS+Lcj7eenk5RZU8d55oiUC8P4hOU
-         U7eg==
+        d=google.com; s=20221208; t=1686273070; x=1688865070;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6t04VHxxvgy87m1PmWNniDTbl7PTXZyrjVB3uf4V0HA=;
+        b=mTk9d4eUqpL2hSkyiy7p1kHFt9V500PQg8nfV5Dl4cS4evEwmPy6yoHgV5DHmS3FxK
+         NbgZA37nQ/GUtPrHxqAHe1cNZhEnEiDbVi1MDMRm0zHSlGl5BNGK7uCjjpFBux9c+j4m
+         REhnC/GG2TdYlOYMiqxqlWIQc++Bu4uKChohoeciOUW6HfCGVaDf+NlbjzQo9TtcAse5
+         gUuyWQNVxzZVCWPx/zM0xrP4L/OhloKweaQleGmQfZ3UcErbnExBga9EGqTaFYExc9D5
+         A9Y3Jdvc+OAAwKqa56dKjn32pSlzGTLRZyRot52zNuzCebUrdqBAIefaXWOJlF0MYnyW
+         SLaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686272552; x=1688864552;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1f5GzB40Nnck/SbxerHyt9uxjJKMRlabQvqAToawx7E=;
-        b=dy/QCiV7dUnwGEMSsdi8ajXydWbRe3YfCBUAhiQDc4YlZ1DDSvF1zFs3cT1CdWIz+h
-         wpyQHGj09z7Jp/icLR4HsoHvrsa8TNBDjvmy8qtGA/UOiLI1kBuQ5iiisUkwZmrA/I3u
-         QWuWkMd+Z3QcqzMoCFuxUIk0k8nUYvJEsGe32zrElwRuFYT5fDRJDK2UZGDnsS/vTnkO
-         e1lkpVZeW9DoExIiWZwkBcaL708UBuczGiMqPWRSiPJwJAKhhPgn03KNLjHXZMqOSBcq
-         GF7/hjqI1Vnu59CzyeRr1VLbM8HLDvhPZ57nieaBfYMVB+YqKwljQGssJEyf57o2Pn3R
-         t8Kw==
-X-Gm-Message-State: AC+VfDx6opTx1kVyPGJqgC9j1dzvpq62tCGwIabHWdXU5v/bEWmCwEhW
-        w+acEnQVT/69pAmiF33FgE9YrrXqIu4=
-X-Google-Smtp-Source: ACHHUZ5gK44/b3yxRtBkmeSyylUDPqEDFCgloH+0XWnbA+uXK7tNeZ+RdBfP8g2+Ro7hYCxReFLsJ517d28=
-X-Received: from badhri.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:6442])
- (user=badhri job=sendgmr) by 2002:a81:e346:0:b0:559:e97a:cb21 with SMTP id
- w6-20020a81e346000000b00559e97acb21mr693037ywl.9.1686272552209; Thu, 08 Jun
- 2023 18:02:32 -0700 (PDT)
-Date:   Fri,  9 Jun 2023 01:02:27 +0000
-In-Reply-To: <20230609010227.978661-1-badhri@google.com>
-Mime-Version: 1.0
-References: <20230609010227.978661-1-badhri@google.com>
-X-Mailer: git-send-email 2.41.0.162.gfafddb0af9-goog
-Message-ID: <20230609010227.978661-2-badhri@google.com>
-Subject: [PATCH v8 2/2] usb: gadget: udc: core: Prevent soft_connect_store() race
+        d=1e100.net; s=20221208; t=1686273070; x=1688865070;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6t04VHxxvgy87m1PmWNniDTbl7PTXZyrjVB3uf4V0HA=;
+        b=lFneZkanNRs8gkU1kkGTIakQcGiWztY7wDqKH9N46ZvliCTWmzQrxvsrXQHTzIjmLI
+         zH3NL/NsPdOqlCW+P6YpcwOLZg7JFy6omMidEC2smLqWRZCqutX0Z658bSgqI36YQDZk
+         BvjAvhhrPCWdke5RSDTPOOZPaF5Qk8xv11Fat/cLnwg/5XNRDJe2z62g4GCFDW7+axE+
+         Y758vwKlIzh9TSHsi6rlqJPPNV/LmdPDSO19fzuAKRymRqEarN88hg9eNgsoZrQIMpO+
+         azFAmpXAJKMArHAj3mtFmHl+oMp2+RY4G3hetIsS46Mpwp4Jr5EOzGY/pxfoTVWOao3A
+         +fSw==
+X-Gm-Message-State: AC+VfDz4WN7v+rp5OUcF4M88cUfRhVHrsEwGuB3D7bLFirlOP4IBN6cs
+        DM9aLH2M9EZhAYvL6Inv0pfYamMi7yhMFNm7jI3MMA==
+X-Google-Smtp-Source: ACHHUZ7yaBLm0LL+IwFANCK4QJtFGTbyC/PIvIHBAEqLfn3M8KtkReRXt0/UiFfb7ZyHQbQG86UTdc1f5axmdMSv/Bg=
+X-Received: by 2002:a05:6808:1b10:b0:398:581:aedd with SMTP id
+ bx16-20020a0568081b1000b003980581aeddmr152154oib.37.1686273070437; Thu, 08
+ Jun 2023 18:11:10 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230608204517.105396-2-badhri@google.com> <202306090722.opxFRfOO-lkp@intel.com>
+In-Reply-To: <202306090722.opxFRfOO-lkp@intel.com>
 From:   Badhri Jagan Sridharan <badhri@google.com>
-To:     gregkh@linuxfoundation.org, stern@rowland.harvard.edu,
+Date:   Thu, 8 Jun 2023 18:10:33 -0700
+Message-ID: <CAPTae5+iL0sG8kezCLMFj26QB51L7hoWno63PHiPpepFsKf0Wg@mail.gmail.com>
+Subject: Re: [PATCH v7 2/2] usb: gadget: udc: core: Prevent
+ soft_connect_store() race
+To:     kernel test robot <lkp@intel.com>
+Cc:     gregkh@linuxfoundation.org, stern@rowland.harvard.edu,
         colin.i.king@gmail.com, xuetao09@huawei.com,
         quic_eserrao@quicinc.com, water.zhangjiantao@huawei.com,
         peter.chen@freescale.com, balbi@ti.com, francesco@dolcini.it,
         alistair@alistair23.me, stephan@gerhold.net, bagasdotme@gmail.com,
-        luca@z3ntu.xyz
-Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Badhri Jagan Sridharan <badhri@google.com>
+        luca@z3ntu.xyz, llvm@lists.linux.dev,
+        oe-kbuild-all@lists.linux.dev, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-usb_udc_connect_control(), soft_connect_store() and
-usb_gadget_deactivate() can potentially race against each other to invoke
-usb_gadget_connect()/usb_gadget_disconnect(). To prevent this, guard
-udc->started, gadget->allow_connect, gadget->deactivate and
-gadget->connect with connect_lock so that ->pullup() is only invoked when
-the gadget is bound, started and not deactivated. The routines
-usb_gadget_connect_locked(), usb_gadget_disconnect_locked(),
-usb_udc_connect_control_locked(), usb_gadget_udc_start_locked(),
-usb_gadget_udc_stop_locked() are called with this lock held.
+Removed the unused out labels reported by test in v8.
 
-An earlier version of this commit was reverted due to the crash reported in
-https://lore.kernel.org/all/ZF4BvgsOyoKxdPFF@francesco-nb.int.toradex.com/.
-commit 16737e78d190 ("usb: gadget: udc: core: Offload usb_udc_vbus_handler processing")
-addresses the crash reported.
+Regards,
+Badhri
 
-Cc: stable@vger.kernel.org
-Fixes: 628ef0d273a6 ("usb: udc: add usb_udc_vbus_handler")
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
----
-v5 is the first version in this series.
-Changes since v5:
-** Fixed up commit message
-** Wrapped comments at 76.
-
-Changes since v6:
-** Address Alan comments around style/presentation.
-** Fixed code to acquire ->connect_lock before testing gadget->deactivated.
-
-Changes since v7:
-** Remove unused out labels reported by ktest robot
----
- drivers/usb/gadget/udc/core.c | 155 +++++++++++++++++++++++-----------
- 1 file changed, 106 insertions(+), 49 deletions(-)
-
-diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
-index d2e4f78c53e3..83fd1de14784 100644
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -40,6 +40,11 @@ static const struct bus_type gadget_bus_type;
-  * @allow_connect: Indicates whether UDC is allowed to be pulled up.
-  * Set/cleared by gadget_(un)bind_driver() after gadget driver is bound or
-  * unbound.
-+ * @connect_lock: protects udc->started, gadget->connect,
-+ * gadget->allow_connect and gadget->deactivate. The routines
-+ * usb_gadget_connect_locked(), usb_gadget_disconnect_locked(),
-+ * usb_udc_connect_control_locked(), usb_gadget_udc_start_locked() and
-+ * usb_gadget_udc_stop_locked() are called with this lock held.
-  *
-  * This represents the internal data structure which is used by the UDC-class
-  * to hold information about udc driver and gadget together.
-@@ -53,6 +58,7 @@ struct usb_udc {
- 	bool				started;
- 	bool				allow_connect;
- 	struct work_struct		vbus_work;
-+	struct mutex			connect_lock;
- };
- 
- static struct class *udc_class;
-@@ -692,17 +698,8 @@ int usb_gadget_vbus_disconnect(struct usb_gadget *gadget)
- }
- EXPORT_SYMBOL_GPL(usb_gadget_vbus_disconnect);
- 
--/**
-- * usb_gadget_connect - software-controlled connect to USB host
-- * @gadget:the peripheral being connected
-- *
-- * Enables the D+ (or potentially D-) pullup.  The host will start
-- * enumerating this gadget when the pullup is active and a VBUS session
-- * is active (the link is powered).
-- *
-- * Returns zero on success, else negative errno.
-- */
--int usb_gadget_connect(struct usb_gadget *gadget)
-+static int usb_gadget_connect_locked(struct usb_gadget *gadget)
-+	__must_hold(&gadget->udc->connect_lock)
- {
- 	int ret = 0;
- 
-@@ -711,10 +708,12 @@ int usb_gadget_connect(struct usb_gadget *gadget)
- 		goto out;
- 	}
- 
--	if (gadget->deactivated || !gadget->udc->allow_connect) {
-+	if (gadget->deactivated || !gadget->udc->allow_connect || !gadget->udc->started) {
- 		/*
--		 * If gadget is deactivated we only save new state.
--		 * Gadget will be connected automatically after activation.
-+		 * If the gadget isn't usable (because it is deactivated,
-+		 * unbound, or not yet started), we only save the new state.
-+		 * The gadget will be connected automatically when it is
-+		 * activated/bound/started.
- 		 */
- 		gadget->connected = true;
- 		goto out;
-@@ -729,22 +728,31 @@ int usb_gadget_connect(struct usb_gadget *gadget)
- 
- 	return ret;
- }
--EXPORT_SYMBOL_GPL(usb_gadget_connect);
- 
- /**
-- * usb_gadget_disconnect - software-controlled disconnect from USB host
-- * @gadget:the peripheral being disconnected
-- *
-- * Disables the D+ (or potentially D-) pullup, which the host may see
-- * as a disconnect (when a VBUS session is active).  Not all systems
-- * support software pullup controls.
-+ * usb_gadget_connect - software-controlled connect to USB host
-+ * @gadget:the peripheral being connected
-  *
-- * Following a successful disconnect, invoke the ->disconnect() callback
-- * for the current gadget driver so that UDC drivers don't need to.
-+ * Enables the D+ (or potentially D-) pullup.  The host will start
-+ * enumerating this gadget when the pullup is active and a VBUS session
-+ * is active (the link is powered).
-  *
-  * Returns zero on success, else negative errno.
-  */
--int usb_gadget_disconnect(struct usb_gadget *gadget)
-+int usb_gadget_connect(struct usb_gadget *gadget)
-+{
-+	int ret;
-+
-+	mutex_lock(&gadget->udc->connect_lock);
-+	ret = usb_gadget_connect_locked(gadget);
-+	mutex_unlock(&gadget->udc->connect_lock);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(usb_gadget_connect);
-+
-+static int usb_gadget_disconnect_locked(struct usb_gadget *gadget)
-+	__must_hold(&gadget->udc->connect_lock)
- {
- 	int ret = 0;
- 
-@@ -756,7 +764,7 @@ int usb_gadget_disconnect(struct usb_gadget *gadget)
- 	if (!gadget->connected)
- 		goto out;
- 
--	if (gadget->deactivated) {
-+	if (gadget->deactivated || !gadget->udc->started) {
- 		/*
- 		 * If gadget is deactivated we only save new state.
- 		 * Gadget will stay disconnected after activation.
-@@ -779,6 +787,30 @@ int usb_gadget_disconnect(struct usb_gadget *gadget)
- 
- 	return ret;
- }
-+
-+/**
-+ * usb_gadget_disconnect - software-controlled disconnect from USB host
-+ * @gadget:the peripheral being disconnected
-+ *
-+ * Disables the D+ (or potentially D-) pullup, which the host may see
-+ * as a disconnect (when a VBUS session is active).  Not all systems
-+ * support software pullup controls.
-+ *
-+ * Following a successful disconnect, invoke the ->disconnect() callback
-+ * for the current gadget driver so that UDC drivers don't need to.
-+ *
-+ * Returns zero on success, else negative errno.
-+ */
-+int usb_gadget_disconnect(struct usb_gadget *gadget)
-+{
-+	int ret;
-+
-+	mutex_lock(&gadget->udc->connect_lock);
-+	ret = usb_gadget_disconnect_locked(gadget);
-+	mutex_unlock(&gadget->udc->connect_lock);
-+
-+	return ret;
-+}
- EXPORT_SYMBOL_GPL(usb_gadget_disconnect);
- 
- /**
-@@ -796,13 +828,14 @@ int usb_gadget_deactivate(struct usb_gadget *gadget)
- {
- 	int ret = 0;
- 
-+	mutex_lock(&gadget->udc->connect_lock);
- 	if (gadget->deactivated)
--		goto out;
-+		goto unlock;
- 
- 	if (gadget->connected) {
--		ret = usb_gadget_disconnect(gadget);
-+		ret = usb_gadget_disconnect_locked(gadget);
- 		if (ret)
--			goto out;
-+			goto unlock;
- 
- 		/*
- 		 * If gadget was being connected before deactivation, we want
-@@ -812,7 +845,8 @@ int usb_gadget_deactivate(struct usb_gadget *gadget)
- 	}
- 	gadget->deactivated = true;
- 
--out:
-+unlock:
-+	mutex_unlock(&gadget->udc->connect_lock);
- 	trace_usb_gadget_deactivate(gadget, ret);
- 
- 	return ret;
-@@ -832,8 +866,9 @@ int usb_gadget_activate(struct usb_gadget *gadget)
- {
- 	int ret = 0;
- 
-+	mutex_lock(&gadget->udc->connect_lock);
- 	if (!gadget->deactivated)
--		goto out;
-+		goto unlock;
- 
- 	gadget->deactivated = false;
- 
-@@ -842,9 +877,11 @@ int usb_gadget_activate(struct usb_gadget *gadget)
- 	 * while it was being deactivated, we call usb_gadget_connect().
- 	 */
- 	if (gadget->connected)
--		ret = usb_gadget_connect(gadget);
-+		ret = usb_gadget_connect_locked(gadget);
-+	mutex_unlock(&gadget->udc->connect_lock);
- 
--out:
-+unlock:
-+	mutex_unlock(&gadget->udc->connect_lock);
- 	trace_usb_gadget_activate(gadget, ret);
- 
- 	return ret;
-@@ -1083,19 +1120,22 @@ EXPORT_SYMBOL_GPL(usb_gadget_set_state);
- 
- /* ------------------------------------------------------------------------- */
- 
--static void usb_udc_connect_control(struct usb_udc *udc)
-+/* Acquire connect_lock before calling this function. */
-+static void usb_udc_connect_control_locked(struct usb_udc *udc) __must_hold(&udc->connect_lock)
- {
- 	if (udc->vbus)
--		usb_gadget_connect(udc->gadget);
-+		usb_gadget_connect_locked(udc->gadget);
- 	else
--		usb_gadget_disconnect(udc->gadget);
-+		usb_gadget_disconnect_locked(udc->gadget);
- }
- 
- static void vbus_event_work(struct work_struct *work)
- {
- 	struct usb_udc *udc = container_of(work, struct usb_udc, vbus_work);
- 
--	usb_udc_connect_control(udc);
-+	mutex_lock(&udc->connect_lock);
-+	usb_udc_connect_control_locked(udc);
-+	mutex_unlock(&udc->connect_lock);
- }
- 
- /**
-@@ -1144,7 +1184,7 @@ void usb_gadget_udc_reset(struct usb_gadget *gadget,
- EXPORT_SYMBOL_GPL(usb_gadget_udc_reset);
- 
- /**
-- * usb_gadget_udc_start - tells usb device controller to start up
-+ * usb_gadget_udc_start_locked - tells usb device controller to start up
-  * @udc: The UDC to be started
-  *
-  * This call is issued by the UDC Class driver when it's about
-@@ -1155,8 +1195,11 @@ EXPORT_SYMBOL_GPL(usb_gadget_udc_reset);
-  * necessary to have it powered on.
-  *
-  * Returns zero on success, else negative errno.
-+ *
-+ * Caller should acquire connect_lock before invoking this function.
-  */
--static inline int usb_gadget_udc_start(struct usb_udc *udc)
-+static inline int usb_gadget_udc_start_locked(struct usb_udc *udc)
-+	__must_hold(&udc->connect_lock)
- {
- 	int ret;
- 
-@@ -1173,7 +1216,7 @@ static inline int usb_gadget_udc_start(struct usb_udc *udc)
- }
- 
- /**
-- * usb_gadget_udc_stop - tells usb device controller we don't need it anymore
-+ * usb_gadget_udc_stop_locked - tells usb device controller we don't need it anymore
-  * @udc: The UDC to be stopped
-  *
-  * This call is issued by the UDC Class driver after calling
-@@ -1182,8 +1225,11 @@ static inline int usb_gadget_udc_start(struct usb_udc *udc)
-  * The details are implementation specific, but it can go as
-  * far as powering off UDC completely and disable its data
-  * line pullups.
-+ *
-+ * Caller should acquire connect lock before invoking this function.
-  */
--static inline void usb_gadget_udc_stop(struct usb_udc *udc)
-+static inline void usb_gadget_udc_stop_locked(struct usb_udc *udc)
-+	__must_hold(&udc->connect_lock)
- {
- 	if (!udc->started) {
- 		dev_err(&udc->dev, "UDC had already stopped\n");
-@@ -1342,6 +1388,7 @@ int usb_add_gadget(struct usb_gadget *gadget)
- 
- 	udc->gadget = gadget;
- 	gadget->udc = udc;
-+	mutex_init(&udc->connect_lock);
- 
- 	udc->started = false;
- 
-@@ -1545,12 +1592,16 @@ static int gadget_bind_driver(struct device *dev)
- 	if (ret)
- 		goto err_bind;
- 
--	ret = usb_gadget_udc_start(udc);
--	if (ret)
-+	mutex_lock(&udc->connect_lock);
-+	ret = usb_gadget_udc_start_locked(udc);
-+	if (ret) {
-+		mutex_unlock(&udc->connect_lock);
- 		goto err_start;
-+	}
- 	usb_gadget_enable_async_callbacks(udc);
- 	udc->allow_connect = true;
--	usb_udc_connect_control(udc);
-+	usb_udc_connect_control_locked(udc);
-+	mutex_unlock(&udc->connect_lock);
- 
- 	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
- 	return 0;
-@@ -1583,12 +1634,14 @@ static void gadget_unbind_driver(struct device *dev)
- 
- 	udc->allow_connect = false;
- 	cancel_work_sync(&udc->vbus_work);
--	usb_gadget_disconnect(gadget);
-+	mutex_lock(&udc->connect_lock);
-+	usb_gadget_disconnect_locked(gadget);
- 	usb_gadget_disable_async_callbacks(udc);
- 	if (gadget->irq)
- 		synchronize_irq(gadget->irq);
- 	udc->driver->unbind(gadget);
--	usb_gadget_udc_stop(udc);
-+	usb_gadget_udc_stop_locked(udc);
-+	mutex_unlock(&udc->connect_lock);
- 
- 	mutex_lock(&udc_lock);
- 	driver->is_bound = false;
-@@ -1674,11 +1727,15 @@ static ssize_t soft_connect_store(struct device *dev,
- 	}
- 
- 	if (sysfs_streq(buf, "connect")) {
--		usb_gadget_udc_start(udc);
--		usb_gadget_connect(udc->gadget);
-+		mutex_lock(&udc->connect_lock);
-+		usb_gadget_udc_start_locked(udc);
-+		usb_gadget_connect_locked(udc->gadget);
-+		mutex_unlock(&udc->connect_lock);
- 	} else if (sysfs_streq(buf, "disconnect")) {
--		usb_gadget_disconnect(udc->gadget);
--		usb_gadget_udc_stop(udc);
-+		mutex_lock(&udc->connect_lock);
-+		usb_gadget_disconnect_locked(udc->gadget);
-+		usb_gadget_udc_stop_locked(udc);
-+		mutex_unlock(&udc->connect_lock);
- 	} else {
- 		dev_err(dev, "unsupported command '%s'\n", buf);
- 		ret = -EINVAL;
--- 
-2.41.0.162.gfafddb0af9-goog
-
+On Thu, Jun 8, 2023 at 4:20=E2=80=AFPM kernel test robot <lkp@intel.com> wr=
+ote:
+>
+> Hi Badhri,
+>
+> kernel test robot noticed the following build warnings:
+>
+> [auto build test WARNING on d37537a1f7cf09e304fe7993cb5e732534a0fb22]
+>
+> url:    https://github.com/intel-lab-lkp/linux/commits/Badhri-Jagan-Sridh=
+aran/usb-gadget-udc-core-Prevent-soft_connect_store-race/20230609-044555
+> base:   d37537a1f7cf09e304fe7993cb5e732534a0fb22
+> patch link:    https://lore.kernel.org/r/20230608204517.105396-2-badhri%4=
+0google.com
+> patch subject: [PATCH v7 2/2] usb: gadget: udc: core: Prevent soft_connec=
+t_store() race
+> config: hexagon-randconfig-r015-20230608 (https://download.01.org/0day-ci=
+/archive/20230609/202306090722.opxFRfOO-lkp@intel.com/config)
+> compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project.git =
+4a5ac14ee968ff0ad5d2cc1ffa0299048db4c88a)
+> reproduce (this is a W=3D1 build):
+>         mkdir -p ~/bin
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbi=
+n/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         git checkout d37537a1f7cf09e304fe7993cb5e732534a0fb22
+>         b4 shazam https://lore.kernel.org/r/20230608204517.105396-2-badhr=
+i@google.com
+>         # save the config file
+>         mkdir build_dir && cp config build_dir/.config
+>         COMPILER_INSTALL_PATH=3D$HOME/0day COMPILER=3Dclang ~/bin/make.cr=
+oss W=3D1 O=3Dbuild_dir ARCH=3Dhexagon olddefconfig
+>         COMPILER_INSTALL_PATH=3D$HOME/0day COMPILER=3Dclang ~/bin/make.cr=
+oss W=3D1 O=3Dbuild_dir ARCH=3Dhexagon SHELL=3D/bin/bash drivers/usb/gadget=
+/udc/
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
+ion of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202306090722.opxFRfOO-lkp=
+@intel.com/
+>
+> All warnings (new ones prefixed by >>):
+>
+>    In file included from drivers/usb/gadget/udc/core.c:17:
+>    In file included from include/linux/dma-mapping.h:10:
+>    In file included from include/linux/scatterlist.h:9:
+>    In file included from arch/hexagon/include/asm/io.h:334:
+>    include/asm-generic/io.h:547:31: warning: performing pointer arithmeti=
+c on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+>      547 |         val =3D __raw_readb(PCI_IOBASE + addr);
+>          |                           ~~~~~~~~~~ ^
+>    include/asm-generic/io.h:560:61: warning: performing pointer arithmeti=
+c on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+>      560 |         val =3D __le16_to_cpu((__le16 __force)__raw_readw(PCI_=
+IOBASE + addr));
+>          |                                                         ~~~~~~=
+~~~~ ^
+>    include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded fro=
+m macro '__le16_to_cpu'
+>       37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
+>          |                                                   ^
+>    In file included from drivers/usb/gadget/udc/core.c:17:
+>    In file included from include/linux/dma-mapping.h:10:
+>    In file included from include/linux/scatterlist.h:9:
+>    In file included from arch/hexagon/include/asm/io.h:334:
+>    include/asm-generic/io.h:573:61: warning: performing pointer arithmeti=
+c on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+>      573 |         val =3D __le32_to_cpu((__le32 __force)__raw_readl(PCI_=
+IOBASE + addr));
+>          |                                                         ~~~~~~=
+~~~~ ^
+>    include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded fro=
+m macro '__le32_to_cpu'
+>       35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
+>          |                                                   ^
+>    In file included from drivers/usb/gadget/udc/core.c:17:
+>    In file included from include/linux/dma-mapping.h:10:
+>    In file included from include/linux/scatterlist.h:9:
+>    In file included from arch/hexagon/include/asm/io.h:334:
+>    include/asm-generic/io.h:584:33: warning: performing pointer arithmeti=
+c on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+>      584 |         __raw_writeb(value, PCI_IOBASE + addr);
+>          |                             ~~~~~~~~~~ ^
+>    include/asm-generic/io.h:594:59: warning: performing pointer arithmeti=
+c on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+>      594 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBA=
+SE + addr);
+>          |                                                       ~~~~~~~~=
+~~ ^
+>    include/asm-generic/io.h:604:59: warning: performing pointer arithmeti=
+c on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+>      604 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBA=
+SE + addr);
+>          |                                                       ~~~~~~~~=
+~~ ^
+> >> drivers/usb/gadget/udc/core.c:850:1: warning: unused label 'out' [-Wun=
+used-label]
+>      850 | out:
+>          | ^~~~
+>      851 |         trace_usb_gadget_deactivate(gadget, ret);
+>    drivers/usb/gadget/udc/core.c:886:1: warning: unused label 'out' [-Wun=
+used-label]
+>      886 | out:
+>          | ^~~~
+>      887 |         trace_usb_gadget_activate(gadget, ret);
+>    8 warnings generated.
+>
+>
+> vim +/out +850 drivers/usb/gadget/udc/core.c
+>
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  815
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  816  /**
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  817   * usb_gadget_deactivate - deactivate function which is not=
+ ready to work
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  818   * @gadget: the peripheral being deactivated
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  819   *
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  820   * This routine may be used during the gadget driver bind()=
+ call to prevent
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  821   * the peripheral from ever being visible to the USB host, =
+unless later
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  822   * usb_gadget_activate() is called.  For example, user mode=
+ components may
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  823   * need to be activated before the system can talk to hosts=
+.
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  824   *
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  825   * Returns zero on success, else negative errno.
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  826   */
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  827  int usb_gadget_deactivate(struct usb_gadget *gadget)
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  828  {
+> 5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2=
+016-05-31  829         int ret =3D 0;
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  830
+> bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2=
+023-06-08  831         mutex_lock(&gadget->udc->connect_lock);
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  832         if (gadget->deactivated)
+> bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2=
+023-06-08  833                 goto unlock;
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  834
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  835         if (gadget->connected) {
+> bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2=
+023-06-08  836                 ret =3D usb_gadget_disconnect_locked(gadget)=
+;
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  837                 if (ret)
+> bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2=
+023-06-08  838                         goto unlock;
+> 5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2=
+016-05-31  839
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  840                 /*
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  841                  * If gadget was being connected before deac=
+tivation, we want
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  842                  * to reconnect it in usb_gadget_activate().
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  843                  */
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  844                 gadget->connected =3D true;
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  845         }
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  846         gadget->deactivated =3D true;
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  847
+> bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2=
+023-06-08  848  unlock:
+> bfc8a68e3289a9 drivers/usb/gadget/udc/core.c     Badhri Jagan Sridharan 2=
+023-06-08  849         mutex_unlock(&gadget->udc->connect_lock);
+> 5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2=
+016-05-31 @850  out:
+> 5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2=
+016-05-31  851         trace_usb_gadget_deactivate(gadget, ret);
+> 5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2=
+016-05-31  852
+> 5e42d710a108c2 drivers/usb/gadget/udc/core.c     Felipe Balbi           2=
+016-05-31  853         return ret;
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  854  }
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  855  EXPORT_SYMBOL_GPL(usb_gadget_deactivate);
+> 5a8d651a2bde01 drivers/usb/gadget/udc/udc-core.c Felipe Balbi           2=
+016-05-31  856
+>
+> --
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
