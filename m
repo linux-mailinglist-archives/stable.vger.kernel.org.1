@@ -2,171 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB63672AD0A
-	for <lists+stable@lfdr.de>; Sat, 10 Jun 2023 18:13:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7026672AE35
+	for <lists+stable@lfdr.de>; Sat, 10 Jun 2023 21:00:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231552AbjFJQN0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 10 Jun 2023 12:13:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34500 "EHLO
+        id S229497AbjFJTAf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 10 Jun 2023 15:00:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230416AbjFJQM4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 10 Jun 2023 12:12:56 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A4633C28
-        for <stable@vger.kernel.org>; Sat, 10 Jun 2023 09:12:34 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-30e56fc9fd2so2680445f8f.0
-        for <stable@vger.kernel.org>; Sat, 10 Jun 2023 09:12:34 -0700 (PDT)
+        with ESMTP id S229483AbjFJTAe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 10 Jun 2023 15:00:34 -0400
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84F9C30F8
+        for <stable@vger.kernel.org>; Sat, 10 Jun 2023 12:00:33 -0700 (PDT)
+Received: by mail-pg1-x529.google.com with SMTP id 41be03b00d2f7-53fe2275249so1372995a12.2
+        for <stable@vger.kernel.org>; Sat, 10 Jun 2023 12:00:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tessares.net; s=google; t=1686413528; x=1689005528;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pwYMvVDtDeMxDpan+XQeqhiNTjyJ3BxX8xvun0+4810=;
-        b=YLQzMRZ1lO1BQlvkOaAElWb6EEYz7qAiLXE1NJI526f6ZfJlQsCHNnwBD63aNm/EmS
-         eH80JouKXGbLHungB+13HYoHRhkqTcGv9EJ0sQdN+Bgtq956IGIqv9Fc/1Gafs7PS+Dc
-         +VzcqhrdW0fyCzYCG0juZPpPz2iU1HASKc6CARhlkwo7GYiubdbp/Xo+J66GBXiFbQLI
-         sSDKmJiwSmz98SXm65vAdEihbVbJL7oBrO9kbr9JRrVZlha3a0xM1ASubBPHOzywJdU3
-         uMhskFgOJe8NtPlHJpdyqsPyXaYGq83RC5Xe1gqhKnGDSp3fhg+TwpIA/+R4MtGYi5ae
-         fIeQ==
+        d=gmail.com; s=20221208; t=1686423632; x=1689015632;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=6yk9cjAETDeQXC7gW5sz4TZUUZTSRbwKlM0y3j72/Uo=;
+        b=Y1rYLLqwSmIs0mb99s3fiztpAyrLl8ZhfPDh1S15gpka2HfQPnEGtj+wp7gHugqjhN
+         QZBA4oo7JBsu+xH/MCEtlewctqG9V/LDtMpUdI9EUmTHsg0k36io5KtRnaZCGK3cpgtL
+         dIsKj/B3c68AgNPKcOU8WJd3Kns89NYk2pKQnVL4qvgnK8ESBsLg70MwBxUiIp4oPk+3
+         /IthYXNJAkyi8uLhrRYzfwNYYeNOgxHeZ6rtXvt4gghGAzqTie4NqklrdZBQbAB44wyI
+         mezUjXLOGCoedrDnzA9RGUYvaSHl9ULe6b6Zo3W0zU0hnlUsZX0/pg4DV99sYr0A5UlB
+         VNRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686413528; x=1689005528;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pwYMvVDtDeMxDpan+XQeqhiNTjyJ3BxX8xvun0+4810=;
-        b=FLtDC2+jr5gVNLteyQaeSR9RDCAPeIduuhvKt6MVkVSph4SdZWtqkcw8h6ruFD55SG
-         1P9ob53a740kLL/p73WiLwa6CbcgDveLvVENv+Gm/kkLq/U/jnPF+/pJe/97EbI8OKQU
-         R8s3uLgL0F4wfbOUD7FDsSpxlVWICN/mJQ+F6spaX+SXam/wjbyRzsmNTPf3XZV+THgM
-         jUBnNwOCgInL1iXQokpusPJJtyJ3A2rWbC2FqriXNMyJLM282noImnEK65I1r9jdYTy+
-         CMjemvuZK65LWhBF+J3M1cu0JTbWjwf1gTuehFKXPKWcuKCjgLyBmOChnSzI/iPjiRsu
-         PBrg==
-X-Gm-Message-State: AC+VfDzY/9UbBoqc86c/cW/SCf38dRjAYDcbkeuzosMgeuzaTUodnHQf
-        mbiSV+j1jWaidDrSmYIhu173dA==
-X-Google-Smtp-Source: ACHHUZ6yqy6/s9krkQFTqNF4ENRu4006HuXc7bosbag+gxCH24WeaXJOz579H6GEDA0cDujFgzri5w==
-X-Received: by 2002:adf:f701:0:b0:30a:ea8a:7a6d with SMTP id r1-20020adff701000000b0030aea8a7a6dmr1560264wrp.16.1686413528543;
-        Sat, 10 Jun 2023 09:12:08 -0700 (PDT)
-Received: from vdi08.nix.tessares.net (static.219.156.76.144.clients.your-server.de. [144.76.156.219])
-        by smtp.gmail.com with ESMTPSA id u9-20020a5d4349000000b003079c402762sm7431145wrr.19.2023.06.10.09.12.07
+        d=1e100.net; s=20221208; t=1686423632; x=1689015632;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6yk9cjAETDeQXC7gW5sz4TZUUZTSRbwKlM0y3j72/Uo=;
+        b=NFVytoBSmq2amDxJlZvVAEoaCafIyjoIpVE4xdmNKKG/G7gHmTY+V9+UMnctym7Dil
+         0wViIDExoLyW2klDx0EoC6KJN5LFLa79FgiE5bAYbPthr8jHAgDUR5tyAG3B1T1eXJdd
+         8ubPs3en80i2bW7K8nuAzLB8G9yPybbknvbmdkYTFDYdkf7s1sN04zqHyK/AHLIesdHg
+         llJpJP3k3pTjzOPl+1XsMQ+GORADsQGDODcMBzM6ttd8ZmM6R2uYkDEVg0dk4fVQ1m1l
+         StjEb3FZie9LTOvGmYLPxOtIExK6TyDbRaO98ug6sad4oBmd73Rezio0Bi0zZfyJFbqw
+         UKWg==
+X-Gm-Message-State: AC+VfDzq9Ha5qyRLPYoVYv13IFs7YGkZWXVQi8zE8iOM7+w18pWVVMjS
+        ngp8Jz4TX+/08MkBJAcY/Lw8hfLOrdI=
+X-Google-Smtp-Source: ACHHUZ7VfuweHwp+B3lKYBKEeJnmxdmEX3Bj1atMXu8oCP+tTY/qgAqcEW3Ei11sg/EJeE27/J/C9g==
+X-Received: by 2002:a17:90b:e85:b0:25b:c8b7:9e58 with SMTP id fv5-20020a17090b0e8500b0025bc8b79e58mr836532pjb.25.1686423632383;
+        Sat, 10 Jun 2023 12:00:32 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 23-20020a17090a005700b002568073d6fbsm5161665pjb.13.2023.06.10.12.00.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Jun 2023 09:12:08 -0700 (PDT)
-From:   Matthieu Baerts <matthieu.baerts@tessares.net>
-Date:   Sat, 10 Jun 2023 18:11:52 +0200
-Subject: [PATCH net 17/17] selftests: mptcp: join: skip mixed tests if not
- supported
+        Sat, 10 Jun 2023 12:00:31 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     stable@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rui Wang <wangrui@loongson.cn>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.10.y] MIPS: locking/atomic: Fix atomic{_64,}_sub_if_positive
+Date:   Sat, 10 Jun 2023 12:00:19 -0700
+Message-Id: <20230610190019.2807608-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230609-upstream-net-20230610-mptcp-selftests-support-old-kernels-part-3-v1-17-2896fe2ee8a3@tessares.net>
-References: <20230609-upstream-net-20230610-mptcp-selftests-support-old-kernels-part-3-v1-0-2896fe2ee8a3@tessares.net>
-In-Reply-To: <20230609-upstream-net-20230610-mptcp-selftests-support-old-kernels-part-3-v1-0-2896fe2ee8a3@tessares.net>
-To:     mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>,
-        Florian Westphal <fw@strlen.de>,
-        Davide Caratti <dcaratti@redhat.com>,
-        Christoph Paasch <cpaasch@apple.com>,
-        Geliang Tang <geliangtang@gmail.com>,
-        Geliang Tang <geliang.tang@suse.com>
-Cc:     netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        stable@vger.kernel.org
-X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2834;
- i=matthieu.baerts@tessares.net; h=from:subject:message-id;
- bh=PI3L9ABnerswxTMqx6UTE581B0kBCB3cu6Q+YqONX60=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBkhKC/oSOXJtkmjY+HOVFkhrxqwZyGqCtAlqidW
- LDI+5gIZlyJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZISgvwAKCRD2t4JPQmmg
- c3IwD/48YMd8rDjzHYVBYD4HEfyc4z5nj3ogAwDh2ngzuk/Mjcow/1HLqoZV/fbF/bAYcUxjZ4K
- UvL0n3qPjbEH1ubK4XWLhgw2csjThEQq1zk9USJQqVqP88tZBQsZuEDxjwlfmkK4g1IJ/VD4UXt
- 5XJylV/IVb8qKni3FoidLF0aMtYOjZT7hXbjGsj98yFmpUNLH0H1A8Ng+M3QzIb5ZJCFuzFkdkY
- MtGTJPbQjZxpuu9P0aa1WmydhNbDZar8rNWp0c1NfzNEMv/WIbTY6NuOSUntikgHANbMeAxlKH0
- RvhfZ0n6ra/gQiz1WhEC4Yt4JBVgQBnbWwZQ3JkbvbaNatv4T140Sl/l7O3ETiBmJhF0IfR08mR
- qi+GcDjJLol3L45uWun6IFlNhCilDj7I2gDHgP5K8H8ahxmF/ppMOCY1wFaP+96EX6sIr9GoqLj
- NnHkwMlLcZopqktA2bJMyRQV4EzCM6/xg2Lz56YuqtUtAt6ZhN1fhQZLBDRmoTHYQzZH26/W5rF
- yq7tgYbB8ZKebHXNRZLGqVmsxDz480JmMeT0iEdkg39WVj/tMn5Wok/0q0IV4cAUnoCti3uRRAk
- jyiR4qgkHPuN1rmMSU1PSULgN+hUmUeR5YWAye5ZfXKTY4RTdOdIWkzZHCo0KNznSsAb56CrzMD
- gSvSCkmxAsN7wfA==
-X-Developer-Key: i=matthieu.baerts@tessares.net; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Selftests are supposed to run on any kernels, including the old ones not
-supporting all MPTCP features.
+From: Rui Wang <wangrui@loongson.cn>
 
-One of them is the support of a mix of subflows in v4 and v6 by the
-in-kernel PM introduced by commit b9d69db87fb7 ("mptcp: let the
-in-kernel PM use mixed IPv4 and IPv6 addresses").
+commit cb95ea79b3fc772c5873a7a4532ab4c14a455da2 upstream.
 
-It looks like there is no external sign we can use to predict the
-expected behaviour. Instead of accepting different behaviours and thus
-not really checking for the expected behaviour, we are looking here for
-a specific kernel version. That's not ideal but it looks better than
-removing the test because it cannot support older kernel versions.
+This looks like a typo and that caused atomic64 test failed.
 
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
-Fixes: ad3493746ebe ("selftests: mptcp: add test-cases for mixed v4/v6 subflows")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Rui Wang <wangrui@loongson.cn>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+I recently enabled atomic CONFIG_ATOMIC64_SELFTEST, which results in
+a crash when testing 64-bit little endian mips images in v5.10.y.
+This patch fixes the problem.
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 281581d3c8eb..0ae8cafde439 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2637,7 +2637,8 @@ v4mapped_tests()
- 
- mixed_tests()
- {
--	if reset "IPv4 sockets do not use IPv6 addresses"; then
-+	if reset "IPv4 sockets do not use IPv6 addresses" &&
-+	   continue_if mptcp_lib_kversion_ge 6.3; then
- 		pm_nl_set_limits $ns1 0 1
- 		pm_nl_set_limits $ns2 1 1
- 		pm_nl_add_endpoint $ns1 dead:beef:2::1 flags signal
-@@ -2646,7 +2647,8 @@ mixed_tests()
- 	fi
- 
- 	# Need an IPv6 mptcp socket to allow subflows of both families
--	if reset "simult IPv4 and IPv6 subflows"; then
-+	if reset "simult IPv4 and IPv6 subflows" &&
-+	   continue_if mptcp_lib_kversion_ge 6.3; then
- 		pm_nl_set_limits $ns1 0 1
- 		pm_nl_set_limits $ns2 1 1
- 		pm_nl_add_endpoint $ns1 10.0.1.1 flags signal
-@@ -2655,7 +2657,8 @@ mixed_tests()
- 	fi
- 
- 	# cross families subflows will not be created even in fullmesh mode
--	if reset "simult IPv4 and IPv6 subflows, fullmesh 1x1"; then
-+	if reset "simult IPv4 and IPv6 subflows, fullmesh 1x1" &&
-+	   continue_if mptcp_lib_kversion_ge 6.3; then
- 		pm_nl_set_limits $ns1 0 4
- 		pm_nl_set_limits $ns2 1 4
- 		pm_nl_add_endpoint $ns2 dead:beef:2::2 flags subflow,fullmesh
-@@ -2666,7 +2669,8 @@ mixed_tests()
- 
- 	# fullmesh still tries to create all the possibly subflows with
- 	# matching family
--	if reset "simult IPv4 and IPv6 subflows, fullmesh 2x2"; then
-+	if reset "simult IPv4 and IPv6 subflows, fullmesh 2x2" &&
-+	   continue_if mptcp_lib_kversion_ge 6.3; then
- 		pm_nl_set_limits $ns1 0 4
- 		pm_nl_set_limits $ns2 2 4
- 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
+ arch/mips/include/asm/atomic.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/arch/mips/include/asm/atomic.h b/arch/mips/include/asm/atomic.h
+index 27ad76791539..fd0e09033a7c 100644
+--- a/arch/mips/include/asm/atomic.h
++++ b/arch/mips/include/asm/atomic.h
+@@ -203,7 +203,7 @@ ATOMIC_OPS(atomic64, xor, s64, ^=, xor, lld, scd)
+  * The function returns the old value of @v minus @i.
+  */
+ #define ATOMIC_SIP_OP(pfx, type, op, ll, sc)				\
+-static __inline__ int pfx##_sub_if_positive(type i, pfx##_t * v)	\
++static __inline__ type pfx##_sub_if_positive(type i, pfx##_t * v)	\
+ {									\
+ 	type temp, result;						\
+ 									\
 -- 
-2.40.1
+2.39.2
 
