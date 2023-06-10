@@ -2,357 +2,354 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A48A72A9FF
-	for <lists+stable@lfdr.de>; Sat, 10 Jun 2023 09:48:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4E6472AAB0
+	for <lists+stable@lfdr.de>; Sat, 10 Jun 2023 11:36:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229805AbjFJHsI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 10 Jun 2023 03:48:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42466 "EHLO
+        id S229905AbjFJJf7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 10 Jun 2023 05:35:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbjFJHsH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 10 Jun 2023 03:48:07 -0400
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF3C73A8C
-        for <stable@vger.kernel.org>; Sat, 10 Jun 2023 00:48:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686383285; x=1717919285;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=gPkLg/0r/eo2IQbzVlwKQrg5f60/iyeJSJzuYqUZ02A=;
-  b=RH2Y3q8qUfTy8t7yMvnyzn3X8/a/ofpJfBbaoWb49S/HOthgb22OU9Yv
-   /jAgmwsbtxpBCi3kQtD6w1lEuzks5Yw+w4otFVP6AqEpFLPc3f4pHHQN/
-   +a4M/le7enkUKkCite7YZcdqJTODtsh38zgrCw3rMfGv2oWibOaBlHPhD
-   759yvOhiZNIuZFu9HNTvIV2z8AkHFu6NJUDsjF6/EsMFUodc1cZjvp1Me
-   FcBErUXRR5ZypxoB4b+V1bdsp8KQrs6W81pvqa8shxNDGN/ymRUO1qm6j
-   aCMQ8XG6ySvg94Wc3Oi5IEh6rUfSLd0iBtwtTH79y0x2N73/gDyXKSvti
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10736"; a="342420802"
-X-IronPort-AV: E=Sophos;i="6.00,232,1681196400"; 
-   d="scan'208";a="342420802"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2023 00:48:05 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10736"; a="884834982"
-X-IronPort-AV: E=Sophos;i="6.00,232,1681196400"; 
-   d="scan'208";a="884834982"
-Received: from mnovakov-mobl1.amr.corp.intel.com (HELO localhost) ([10.252.60.33])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2023 00:48:00 -0700
-From:   Jani Nikula <jani.nikula@intel.com>
-To:     Wayne Lin <Wayne.Lin@amd.com>, dri-devel@lists.freedesktop.org,
-        amd-gfx@lists.freedesktop.org
-Cc:     lyude@redhat.com, ville.syrjala@linux.intel.com,
-        imre.deak@intel.com, harry.wentland@amd.com, jerry.zuo@amd.com,
-        Wayne Lin <Wayne.Lin@amd.com>, stable@vger.kernel.org,
-        intel-gfx@lists.freedesktop.org
-Subject: Re: [PATCH v5] drm/dp_mst: Clear MSG_RDY flag before sending new
- message
-In-Reply-To: <20230609104925.3736756-1-Wayne.Lin@amd.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20230609104925.3736756-1-Wayne.Lin@amd.com>
-Date:   Sat, 10 Jun 2023 10:47:58 +0300
-Message-ID: <87h6rfpxld.fsf@intel.com>
+        with ESMTP id S229649AbjFJJf6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 10 Jun 2023 05:35:58 -0400
+Received: from domac.alu.hr (domac.alu.unizg.hr [161.53.235.3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6D9E269A
+        for <stable@vger.kernel.org>; Sat, 10 Jun 2023 02:35:55 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by domac.alu.hr (Postfix) with ESMTP id 4DB45601B6;
+        Sat, 10 Jun 2023 11:35:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1686389753; bh=nfkHECzGnR9k+5dmUNZ/8eJV+Thnd/QEjr92nL33ZM8=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=SmiwN5WvI2xREN3BGh1mSW6DVB49GyACsv6dvZ2g9tGPJIc2PfQJCiVIIVFHguTUM
+         NYnU12PHo7ZGNFnN8QUdE8J+8PxKkyBT7hZDkwJIU2bmzr9tlHZjMhWHjXR08P5BNm
+         tby7VhB+ArYMJ9LgBio6EEeu22jOBIOtapn2qz4th557OVRDtrVnL5UVZhtbkrNI/D
+         lxjjriH3rFQJSz5hWifvWVhjtnT2uf+xhZ2k5aN2Isk8zHJjO91FjPUCLy9RKpE6aE
+         TuesL+Z9EXT6vYECPyInt89Q23swbeBApZr6G+e2/HSi8AUAnSk5bOfE/w7UZq/dD1
+         KEdc+HT2DZkMQ==
+X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
+Received: from domac.alu.hr ([127.0.0.1])
+        by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id QgXzsHIH21Rw; Sat, 10 Jun 2023 11:35:50 +0200 (CEST)
+Received: from [192.168.1.6] (unknown [77.237.113.62])
+        by domac.alu.hr (Postfix) with ESMTPSA id F2F77601B5;
+        Sat, 10 Jun 2023 11:35:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+        t=1686389750; bh=nfkHECzGnR9k+5dmUNZ/8eJV+Thnd/QEjr92nL33ZM8=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=eolJtDTxVXzzXs51opDoQLkXCuheyGeuKl9wZkxkVgJqzomRI0EzN05pe/ixa4TTs
+         v/DTcfytabH/6r76eOvJpzdH/mme+RMYwGpBwYV2zQkU2M2pBw69RPVSu4kGGjisoB
+         be7jJnF/JISuB9uBj7YcxMZcd3bdbXdVxIK2TH42G+02W2ub/pLFPBMwFWB5RjpNqT
+         CWe6dIYiySLi3rPgN72a2YhnXvOpISlcD5gNOJjkPd5TQrpMCWtLtM9birZySUplyY
+         hESpfXWe4zPTGBjOrQhLDAsV6zgJweU7bMeAld4fX8YBOJWKfQmPwShMYdGO5ux7PQ
+         hk8PMNioe30gg==
+Message-ID: <e3e80409-d3ca-7304-6234-ff7cb8bae3e9@alu.unizg.hr>
+Date:   Sat, 10 Jun 2023 11:35:34 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: FAILED: patch "[PATCH] test_firmware: prevent race conditions by
+ a correct" failed to apply to 5.15-stable tree
+Content-Language: en-US
+To:     gregkh@linuxfoundation.org, colin.i.king@gmail.com,
+        error27@gmail.com, mcgrof@kernel.org, rdunlap@infradead.org,
+        russell.h.weight@intel.com, shuah@kernel.org,
+        tianfei.zhang@intel.com, tiwai@suse.de
+Cc:     stable@vger.kernel.org
+References: <2023060753-dowry-untried-a3d2@gregkh>
+From:   Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+In-Reply-To: <2023060753-dowry-untried-a3d2@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,NICE_REPLY_A,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, 09 Jun 2023, Wayne Lin <Wayne.Lin@amd.com> wrote:
-> [Why]
-> The sequence for collecting down_reply from source perspective should
-> be:
->
-> Request_n->repeat (get partial reply of Request_n->clear message ready
-> flag to ack DPRX that the message is received) till all partial
-> replies for Request_n are received->new Request_n+1.
->
-> Now there is chance that drm_dp_mst_hpd_irq() will fire new down
-> request in the tx queue when the down reply is incomplete. Source is
-> restricted to generate interveleaved message transactions so we should
-> avoid it.
->
-> Also, while assembling partial reply packets, reading out DPCD DOWN_REP
-> Sideband MSG buffer + clearing DOWN_REP_MSG_RDY flag should be
-> wrapped up as a complete operation for reading out a reply packet.
-> Kicking off a new request before clearing DOWN_REP_MSG_RDY flag might
-> be risky. e.g. If the reply of the new request has overwritten the
-> DPRX DOWN_REP Sideband MSG buffer before source writing one to clear
-> DOWN_REP_MSG_RDY flag, source then unintentionally flushes the reply
-> for the new request. Should handle the up request in the same way.
->
-> [How]
-> Separete drm_dp_mst_hpd_irq() into 2 steps. After acking the MST IRQ
-> event, driver calls drm_dp_mst_hpd_irq_send_new_request() and might
-> trigger drm_dp_mst_kick_tx() only when there is no on going message
-> transaction.
->
-> Changes since v1:
-> * Reworked on review comments received
-> -> Adjust the fix to let driver explicitly kick off new down request
-> when mst irq event is handled and acked
-> -> Adjust the commit message
->
-> Changes since v2:
-> * Adjust the commit message
-> * Adjust the naming of the divided 2 functions and add a new input
->   parameter "ack".
-> * Adjust code flow as per review comments.
->
-> Changes since v3:
-> * Update the function description of drm_dp_mst_hpd_irq_handle_event
->
-> Changes since v4:
-> * Change ack of drm_dp_mst_hpd_irq_handle_event() to be an array align
->   the size of esi[]
+On 6/7/23 14:22, gregkh@linuxfoundation.org wrote:
+> 
+> The patch below does not apply to the 5.15-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+> 
+> To reproduce the conflict and resubmit, you may use the following commands:
+> 
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x 4acfe3dfde685a5a9eaec5555351918e2d7266a1
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023060753-dowry-untried-a3d2@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+> 
+> Possible dependencies:
+> 
+> 
+> 
+> thanks,
+> 
+> greg k-h
 
-I don't have the time for detailed review right now, but assuming
-someone does that, and Intel CI passes (I bounced this to
-intel-gfx@lists.freedesktop.org which should get it going),
+Hi, Mr. Greg,
 
-Acked-by: Jani Nikula <jani.nikula@intel.com>
+Is there something wrong with the patch and do I need to resubmit?
 
+Regards,
+Mirsad
 
->
-> Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-> Cc: stable@vger.kernel.org
-> ---
->  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 32 +++++------
->  drivers/gpu/drm/display/drm_dp_mst_topology.c | 54 ++++++++++++++++---
->  drivers/gpu/drm/i915/display/intel_dp.c       |  7 +--
->  drivers/gpu/drm/nouveau/dispnv50/disp.c       | 12 +++--
->  include/drm/display/drm_dp_mst_helper.h       |  7 ++-
->  5 files changed, 81 insertions(+), 31 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> index d5cec03eaa8d..ec629b4037e4 100644
-> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> @@ -3263,6 +3263,7 @@ static void dm_handle_mst_sideband_msg(struct amdgpu_dm_connector *aconnector)
->  
->  	while (dret == dpcd_bytes_to_read &&
->  		process_count < max_process_count) {
-> +		u8 ack[DP_PSR_ERROR_STATUS - DP_SINK_COUNT_ESI] = {};
->  		u8 retry;
->  		dret = 0;
->  
-> @@ -3271,28 +3272,29 @@ static void dm_handle_mst_sideband_msg(struct amdgpu_dm_connector *aconnector)
->  		DRM_DEBUG_DRIVER("ESI %02x %02x %02x\n", esi[0], esi[1], esi[2]);
->  		/* handle HPD short pulse irq */
->  		if (aconnector->mst_mgr.mst_state)
-> -			drm_dp_mst_hpd_irq(
-> -				&aconnector->mst_mgr,
-> -				esi,
-> -				&new_irq_handled);
-> +			drm_dp_mst_hpd_irq_handle_event(&aconnector->mst_mgr,
-> +							esi,
-> +							ack,
-> +							&new_irq_handled);
->  
->  		if (new_irq_handled) {
->  			/* ACK at DPCD to notify down stream */
-> -			const int ack_dpcd_bytes_to_write =
-> -				dpcd_bytes_to_read - 1;
-> -
->  			for (retry = 0; retry < 3; retry++) {
-> -				u8 wret;
-> -
-> -				wret = drm_dp_dpcd_write(
-> -					&aconnector->dm_dp_aux.aux,
-> -					dpcd_addr + 1,
-> -					&esi[1],
-> -					ack_dpcd_bytes_to_write);
-> -				if (wret == ack_dpcd_bytes_to_write)
-> +				ssize_t wret;
-> +
-> +				wret = drm_dp_dpcd_writeb(&aconnector->dm_dp_aux.aux,
-> +							  dpcd_addr + 1,
-> +							  ack[1]);
-> +				if (wret == 1)
->  					break;
->  			}
->  
-> +			if (retry == 3) {
-> +				DRM_ERROR("Failed to ack MST event.\n");
-> +				return;
-> +			}
-> +
-> +			drm_dp_mst_hpd_irq_send_new_request(&aconnector->mst_mgr);
->  			/* check if there is new irq to be handled */
->  			dret = drm_dp_dpcd_read(
->  				&aconnector->dm_dp_aux.aux,
-> diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-> index 38dab76ae69e..487d057a9582 100644
-> --- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-> +++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-> @@ -4053,17 +4053,28 @@ static int drm_dp_mst_handle_up_req(struct drm_dp_mst_topology_mgr *mgr)
->  }
->  
->  /**
-> - * drm_dp_mst_hpd_irq() - MST hotplug IRQ notify
-> + * drm_dp_mst_hpd_irq_handle_event() - MST hotplug IRQ handle MST event
->   * @mgr: manager to notify irq for.
->   * @esi: 4 bytes from SINK_COUNT_ESI
-> + * @ack: 4 bytes used to ack events starting from SINK_COUNT_ESI
->   * @handled: whether the hpd interrupt was consumed or not
->   *
-> - * This should be called from the driver when it detects a short IRQ,
-> + * This should be called from the driver when it detects a HPD IRQ,
->   * along with the value of the DEVICE_SERVICE_IRQ_VECTOR_ESI0. The
-> - * topology manager will process the sideband messages received as a result
-> - * of this.
-> + * topology manager will process the sideband messages received
-> + * as indicated in the DEVICE_SERVICE_IRQ_VECTOR_ESI0 and set the
-> + * corresponding flags that Driver has to ack the DP receiver later.
-> + *
-> + * Note that driver shall also call
-> + * drm_dp_mst_hpd_irq_send_new_request() if the 'handled' is set
-> + * after calling this function, to try to kick off a new request in
-> + * the queue if the previous message transaction is completed.
-> + *
-> + * See also:
-> + * drm_dp_mst_hpd_irq_send_new_request()
->   */
-> -int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi, bool *handled)
-> +int drm_dp_mst_hpd_irq_handle_event(struct drm_dp_mst_topology_mgr *mgr, const u8 *esi,
-> +				    u8 *ack, bool *handled)
->  {
->  	int ret = 0;
->  	int sc;
-> @@ -4078,18 +4089,47 @@ int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi, bool *handl
->  	if (esi[1] & DP_DOWN_REP_MSG_RDY) {
->  		ret = drm_dp_mst_handle_down_rep(mgr);
->  		*handled = true;
-> +		ack[1] |= DP_DOWN_REP_MSG_RDY;
->  	}
->  
->  	if (esi[1] & DP_UP_REQ_MSG_RDY) {
->  		ret |= drm_dp_mst_handle_up_req(mgr);
->  		*handled = true;
-> +		ack[1] |= DP_UP_REQ_MSG_RDY;
->  	}
->  
-> -	drm_dp_mst_kick_tx(mgr);
->  	return ret;
->  }
-> -EXPORT_SYMBOL(drm_dp_mst_hpd_irq);
-> +EXPORT_SYMBOL(drm_dp_mst_hpd_irq_handle_event);
->  
-> +/**
-> + * drm_dp_mst_hpd_irq_send_new_request() - MST hotplug IRQ kick off new request
-> + * @mgr: manager to notify irq for.
-> + *
-> + * This should be called from the driver when mst irq event is handled
-> + * and acked. Note that new down request should only be sent when
-> + * previous message transaction is completed. Source is not supposed to generate
-> + * interleaved message transactions.
-> + */
-> +void drm_dp_mst_hpd_irq_send_new_request(struct drm_dp_mst_topology_mgr *mgr)
+> ------------------ original commit in Linus's tree ------------------
+> 
+>>From 4acfe3dfde685a5a9eaec5555351918e2d7266a1 Mon Sep 17 00:00:00 2001
+> From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+> Date: Tue, 9 May 2023 10:47:45 +0200
+> Subject: [PATCH] test_firmware: prevent race conditions by a correct
+>   implementation of locking
+> 
+> Dan Carpenter spotted a race condition in a couple of situations like
+> these in the test_firmware driver:
+> 
+> static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
+> {
+>          u8 val;
+>          int ret;
+> 
+>          ret = kstrtou8(buf, 10, &val);
+>          if (ret)
+>                  return ret;
+> 
+>          mutex_lock(&test_fw_mutex);
+>          *(u8 *)cfg = val;
+>          mutex_unlock(&test_fw_mutex);
+> 
+>          /* Always return full write size even if we didn't consume all */
+>          return size;
+> }
+> 
+> static ssize_t config_num_requests_store(struct device *dev,
+>                                           struct device_attribute *attr,
+>                                           const char *buf, size_t count)
+> {
+>          int rc;
+> 
+>          mutex_lock(&test_fw_mutex);
+>          if (test_fw_config->reqs) {
+>                  pr_err("Must call release_all_firmware prior to changing config\n");
+>                  rc = -EINVAL;
+>                  mutex_unlock(&test_fw_mutex);
+>                  goto out;
+>          }
+>          mutex_unlock(&test_fw_mutex);
+> 
+>          rc = test_dev_config_update_u8(buf, count,
+>                                         &test_fw_config->num_requests);
+> 
+> out:
+>          return rc;
+> }
+> 
+> static ssize_t config_read_fw_idx_store(struct device *dev,
+>                                          struct device_attribute *attr,
+>                                          const char *buf, size_t count)
+> {
+>          return test_dev_config_update_u8(buf, count,
+>                                           &test_fw_config->read_fw_idx);
+> }
+> 
+> The function test_dev_config_update_u8() is called from both the locked
+> and the unlocked context, function config_num_requests_store() and
+> config_read_fw_idx_store() which can both be called asynchronously as
+> they are driver's methods, while test_dev_config_update_u8() and siblings
+> change their argument pointed to by u8 *cfg or similar pointer.
+> 
+> To avoid deadlock on test_fw_mutex, the lock is dropped before calling
+> test_dev_config_update_u8() and re-acquired within test_dev_config_update_u8()
+> itself, but alas this creates a race condition.
+> 
+> Having two locks wouldn't assure a race-proof mutual exclusion.
+> 
+> This situation is best avoided by the introduction of a new, unlocked
+> function __test_dev_config_update_u8() which can be called from the locked
+> context and reducing test_dev_config_update_u8() to:
+> 
+> static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
+> {
+>          int ret;
+> 
+>          mutex_lock(&test_fw_mutex);
+>          ret = __test_dev_config_update_u8(buf, size, cfg);
+>          mutex_unlock(&test_fw_mutex);
+> 
+>          return ret;
+> }
+> 
+> doing the locking and calling the unlocked primitive, which enables both
+> locked and unlocked versions without duplication of code.
+> 
+> The similar approach was applied to all functions called from the locked
+> and the unlocked context, which safely mitigates both deadlocks and race
+> conditions in the driver.
+> 
+> __test_dev_config_update_bool(), __test_dev_config_update_u8() and
+> __test_dev_config_update_size_t() unlocked versions of the functions
+> were introduced to be called from the locked contexts as a workaround
+> without releasing the main driver's lock and thereof causing a race
+> condition.
+> 
+> The test_dev_config_update_bool(), test_dev_config_update_u8() and
+> test_dev_config_update_size_t() locked versions of the functions
+> are being called from driver methods without the unnecessary multiplying
+> of the locking and unlocking code for each method, and complicating
+> the code with saving of the return value across lock.
+> 
+> Fixes: 7feebfa487b92 ("test_firmware: add support for request_firmware_into_buf")
+> Cc: Luis Chamberlain <mcgrof@kernel.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Russ Weight <russell.h.weight@intel.com>
+> Cc: Takashi Iwai <tiwai@suse.de>
+> Cc: Tianfei Zhang <tianfei.zhang@intel.com>
+> Cc: Shuah Khan <shuah@kernel.org>
+> Cc: Colin Ian King <colin.i.king@gmail.com>
+> Cc: Randy Dunlap <rdunlap@infradead.org>
+> Cc: linux-kselftest@vger.kernel.org
+> Cc: stable@vger.kernel.org # v5.4
+> Suggested-by: Dan Carpenter <error27@gmail.com>
+> Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+> Link: https://lore.kernel.org/r/20230509084746.48259-1-mirsad.todorovac@alu.unizg.hr
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> 
+> diff --git a/lib/test_firmware.c b/lib/test_firmware.c
+> index 05ed84c2fc4c..35417e0af3f4 100644
+> --- a/lib/test_firmware.c
+> +++ b/lib/test_firmware.c
+> @@ -353,16 +353,26 @@ static ssize_t config_test_show_str(char *dst,
+>   	return len;
+>   }
+>   
+> +static inline int __test_dev_config_update_bool(const char *buf, size_t size,
+> +				       bool *cfg)
 > +{
-> +	struct drm_dp_sideband_msg_tx *txmsg;
-> +	bool kick = true;
+> +	int ret;
 > +
-> +	mutex_lock(&mgr->qlock);
-> +	txmsg = list_first_entry_or_null(&mgr->tx_msg_downq,
-> +					 struct drm_dp_sideband_msg_tx, next);
-> +	/* If last transaction is not completed yet*/
-> +	if (!txmsg ||
-> +	    txmsg->state == DRM_DP_SIDEBAND_TX_START_SEND ||
-> +	    txmsg->state == DRM_DP_SIDEBAND_TX_SENT)
-> +		kick = false;
-> +	mutex_unlock(&mgr->qlock);
+> +	if (kstrtobool(buf, cfg) < 0)
+> +		ret = -EINVAL;
+> +	else
+> +		ret = size;
 > +
-> +	if (kick)
-> +		drm_dp_mst_kick_tx(mgr);
+> +	return ret;
 > +}
-> +EXPORT_SYMBOL(drm_dp_mst_hpd_irq_send_new_request);
->  /**
->   * drm_dp_mst_detect_port() - get connection status for an MST port
->   * @connector: DRM connector for this port
-> diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-> index 4bec8cd7979f..f4a2e72a5c20 100644
-> --- a/drivers/gpu/drm/i915/display/intel_dp.c
-> +++ b/drivers/gpu/drm/i915/display/intel_dp.c
-> @@ -4062,9 +4062,7 @@ intel_dp_mst_hpd_irq(struct intel_dp *intel_dp, u8 *esi, u8 *ack)
->  {
->  	bool handled = false;
->  
-> -	drm_dp_mst_hpd_irq(&intel_dp->mst_mgr, esi, &handled);
-> -	if (handled)
-> -		ack[1] |= esi[1] & (DP_DOWN_REP_MSG_RDY | DP_UP_REQ_MSG_RDY);
-> +	drm_dp_mst_hpd_irq_handle_event(&intel_dp->mst_mgr, esi, ack, &handled);
->  
->  	if (esi[1] & DP_CP_IRQ) {
->  		intel_hdcp_handle_cp_irq(intel_dp->attached_connector);
-> @@ -4139,6 +4137,9 @@ intel_dp_check_mst_status(struct intel_dp *intel_dp)
->  
->  		if (!intel_dp_ack_sink_irq_esi(intel_dp, ack))
->  			drm_dbg_kms(&i915->drm, "Failed to ack ESI\n");
 > +
-> +		if (ack[1] & (DP_DOWN_REP_MSG_RDY | DP_UP_REQ_MSG_RDY))
-> +			drm_dp_mst_hpd_irq_send_new_request(&intel_dp->mst_mgr);
->  	}
->  
->  	return link_ok;
-> diff --git a/drivers/gpu/drm/nouveau/dispnv50/disp.c b/drivers/gpu/drm/nouveau/dispnv50/disp.c
-> index 9b6824f6b9e4..42e1665ba11a 100644
-> --- a/drivers/gpu/drm/nouveau/dispnv50/disp.c
-> +++ b/drivers/gpu/drm/nouveau/dispnv50/disp.c
-> @@ -1359,22 +1359,26 @@ nv50_mstm_service(struct nouveau_drm *drm,
->  	u8 esi[8] = {};
->  
->  	while (handled) {
-> +		u8 ack[8] = {};
+>   static int test_dev_config_update_bool(const char *buf, size_t size,
+>   				       bool *cfg)
+>   {
+>   	int ret;
+>   
+>   	mutex_lock(&test_fw_mutex);
+> -	if (kstrtobool(buf, cfg) < 0)
+> -		ret = -EINVAL;
+> -	else
+> -		ret = size;
+> +	ret = __test_dev_config_update_bool(buf, size, cfg);
+>   	mutex_unlock(&test_fw_mutex);
+>   
+>   	return ret;
+> @@ -373,7 +383,8 @@ static ssize_t test_dev_config_show_bool(char *buf, bool val)
+>   	return snprintf(buf, PAGE_SIZE, "%d\n", val);
+>   }
+>   
+> -static int test_dev_config_update_size_t(const char *buf,
+> +static int __test_dev_config_update_size_t(
+> +					 const char *buf,
+>   					 size_t size,
+>   					 size_t *cfg)
+>   {
+> @@ -384,9 +395,7 @@ static int test_dev_config_update_size_t(const char *buf,
+>   	if (ret)
+>   		return ret;
+>   
+> -	mutex_lock(&test_fw_mutex);
+>   	*(size_t *)cfg = new;
+> -	mutex_unlock(&test_fw_mutex);
+>   
+>   	/* Always return full write size even if we didn't consume all */
+>   	return size;
+> @@ -402,7 +411,7 @@ static ssize_t test_dev_config_show_int(char *buf, int val)
+>   	return snprintf(buf, PAGE_SIZE, "%d\n", val);
+>   }
+>   
+> -static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
+> +static int __test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
+>   {
+>   	u8 val;
+>   	int ret;
+> @@ -411,14 +420,23 @@ static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
+>   	if (ret)
+>   		return ret;
+>   
+> -	mutex_lock(&test_fw_mutex);
+>   	*(u8 *)cfg = val;
+> -	mutex_unlock(&test_fw_mutex);
+>   
+>   	/* Always return full write size even if we didn't consume all */
+>   	return size;
+>   }
+>   
+> +static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
+> +{
+> +	int ret;
 > +
->  		rc = drm_dp_dpcd_read(aux, DP_SINK_COUNT_ESI, esi, 8);
->  		if (rc != 8) {
->  			ret = false;
->  			break;
->  		}
->  
-> -		drm_dp_mst_hpd_irq(&mstm->mgr, esi, &handled);
-> +		drm_dp_mst_hpd_irq_handle_event(&mstm->mgr, esi, ack, &handled);
->  		if (!handled)
->  			break;
->  
-> -		rc = drm_dp_dpcd_write(aux, DP_SINK_COUNT_ESI + 1, &esi[1],
-> -				       3);
-> -		if (rc != 3) {
-> +		rc = drm_dp_dpcd_writeb(aux, DP_SINK_COUNT_ESI + 1, ack[1]);
+> +	mutex_lock(&test_fw_mutex);
+> +	ret = __test_dev_config_update_u8(buf, size, cfg);
+> +	mutex_unlock(&test_fw_mutex);
 > +
-> +		if (rc != 1) {
->  			ret = false;
->  			break;
->  		}
+> +	return ret;
+> +}
 > +
-> +		drm_dp_mst_hpd_irq_send_new_request(&mstm->mgr);
->  	}
->  
->  	if (!ret)
-> diff --git a/include/drm/display/drm_dp_mst_helper.h b/include/drm/display/drm_dp_mst_helper.h
-> index 32c764fb9cb5..40e855c8407c 100644
-> --- a/include/drm/display/drm_dp_mst_helper.h
-> +++ b/include/drm/display/drm_dp_mst_helper.h
-> @@ -815,8 +815,11 @@ void drm_dp_mst_topology_mgr_destroy(struct drm_dp_mst_topology_mgr *mgr);
->  bool drm_dp_read_mst_cap(struct drm_dp_aux *aux, const u8 dpcd[DP_RECEIVER_CAP_SIZE]);
->  int drm_dp_mst_topology_mgr_set_mst(struct drm_dp_mst_topology_mgr *mgr, bool mst_state);
->  
-> -int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi, bool *handled);
-> -
-> +int drm_dp_mst_hpd_irq_handle_event(struct drm_dp_mst_topology_mgr *mgr,
-> +				    const u8 *esi,
-> +				    u8 *ack,
-> +				    bool *handled);
-> +void drm_dp_mst_hpd_irq_send_new_request(struct drm_dp_mst_topology_mgr *mgr);
->  
->  int
->  drm_dp_mst_detect_port(struct drm_connector *connector,
-
--- 
-Jani Nikula, Intel Open Source Graphics Center
+>   static ssize_t test_dev_config_show_u8(char *buf, u8 val)
+>   {
+>   	return snprintf(buf, PAGE_SIZE, "%u\n", val);
+> @@ -471,10 +489,10 @@ static ssize_t config_num_requests_store(struct device *dev,
+>   		mutex_unlock(&test_fw_mutex);
+>   		goto out;
+>   	}
+> -	mutex_unlock(&test_fw_mutex);
+>   
+> -	rc = test_dev_config_update_u8(buf, count,
+> -				       &test_fw_config->num_requests);
+> +	rc = __test_dev_config_update_u8(buf, count,
+> +					 &test_fw_config->num_requests);
+> +	mutex_unlock(&test_fw_mutex);
+>   
+>   out:
+>   	return rc;
+> @@ -518,10 +536,10 @@ static ssize_t config_buf_size_store(struct device *dev,
+>   		mutex_unlock(&test_fw_mutex);
+>   		goto out;
+>   	}
+> -	mutex_unlock(&test_fw_mutex);
+>   
+> -	rc = test_dev_config_update_size_t(buf, count,
+> -					   &test_fw_config->buf_size);
+> +	rc = __test_dev_config_update_size_t(buf, count,
+> +					     &test_fw_config->buf_size);
+> +	mutex_unlock(&test_fw_mutex);
+>   
+>   out:
+>   	return rc;
+> @@ -548,10 +566,10 @@ static ssize_t config_file_offset_store(struct device *dev,
+>   		mutex_unlock(&test_fw_mutex);
+>   		goto out;
+>   	}
+> -	mutex_unlock(&test_fw_mutex);
+>   
+> -	rc = test_dev_config_update_size_t(buf, count,
+> -					   &test_fw_config->file_offset);
+> +	rc = __test_dev_config_update_size_t(buf, count,
+> +					     &test_fw_config->file_offset);
+> +	mutex_unlock(&test_fw_mutex);
+>   
+>   out:
+>   	return rc;
