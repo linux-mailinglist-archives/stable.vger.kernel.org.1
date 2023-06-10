@@ -2,106 +2,104 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7026672AE35
-	for <lists+stable@lfdr.de>; Sat, 10 Jun 2023 21:00:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 489AC72AE57
+	for <lists+stable@lfdr.de>; Sat, 10 Jun 2023 21:24:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229497AbjFJTAf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 10 Jun 2023 15:00:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54026 "EHLO
+        id S229894AbjFJTYB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 10 Jun 2023 15:24:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229483AbjFJTAe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 10 Jun 2023 15:00:34 -0400
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84F9C30F8
-        for <stable@vger.kernel.org>; Sat, 10 Jun 2023 12:00:33 -0700 (PDT)
-Received: by mail-pg1-x529.google.com with SMTP id 41be03b00d2f7-53fe2275249so1372995a12.2
-        for <stable@vger.kernel.org>; Sat, 10 Jun 2023 12:00:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686423632; x=1689015632;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=6yk9cjAETDeQXC7gW5sz4TZUUZTSRbwKlM0y3j72/Uo=;
-        b=Y1rYLLqwSmIs0mb99s3fiztpAyrLl8ZhfPDh1S15gpka2HfQPnEGtj+wp7gHugqjhN
-         QZBA4oo7JBsu+xH/MCEtlewctqG9V/LDtMpUdI9EUmTHsg0k36io5KtRnaZCGK3cpgtL
-         dIsKj/B3c68AgNPKcOU8WJd3Kns89NYk2pKQnVL4qvgnK8ESBsLg70MwBxUiIp4oPk+3
-         /IthYXNJAkyi8uLhrRYzfwNYYeNOgxHeZ6rtXvt4gghGAzqTie4NqklrdZBQbAB44wyI
-         mezUjXLOGCoedrDnzA9RGUYvaSHl9ULe6b6Zo3W0zU0hnlUsZX0/pg4DV99sYr0A5UlB
-         VNRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686423632; x=1689015632;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6yk9cjAETDeQXC7gW5sz4TZUUZTSRbwKlM0y3j72/Uo=;
-        b=NFVytoBSmq2amDxJlZvVAEoaCafIyjoIpVE4xdmNKKG/G7gHmTY+V9+UMnctym7Dil
-         0wViIDExoLyW2klDx0EoC6KJN5LFLa79FgiE5bAYbPthr8jHAgDUR5tyAG3B1T1eXJdd
-         8ubPs3en80i2bW7K8nuAzLB8G9yPybbknvbmdkYTFDYdkf7s1sN04zqHyK/AHLIesdHg
-         llJpJP3k3pTjzOPl+1XsMQ+GORADsQGDODcMBzM6ttd8ZmM6R2uYkDEVg0dk4fVQ1m1l
-         StjEb3FZie9LTOvGmYLPxOtIExK6TyDbRaO98ug6sad4oBmd73Rezio0Bi0zZfyJFbqw
-         UKWg==
-X-Gm-Message-State: AC+VfDzq9Ha5qyRLPYoVYv13IFs7YGkZWXVQi8zE8iOM7+w18pWVVMjS
-        ngp8Jz4TX+/08MkBJAcY/Lw8hfLOrdI=
-X-Google-Smtp-Source: ACHHUZ7VfuweHwp+B3lKYBKEeJnmxdmEX3Bj1atMXu8oCP+tTY/qgAqcEW3Ei11sg/EJeE27/J/C9g==
-X-Received: by 2002:a17:90b:e85:b0:25b:c8b7:9e58 with SMTP id fv5-20020a17090b0e8500b0025bc8b79e58mr836532pjb.25.1686423632383;
-        Sat, 10 Jun 2023 12:00:32 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 23-20020a17090a005700b002568073d6fbsm5161665pjb.13.2023.06.10.12.00.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Jun 2023 12:00:31 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     stable@vger.kernel.org
+        with ESMTP id S229667AbjFJTYA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 10 Jun 2023 15:24:00 -0400
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4583270B;
+        Sat, 10 Jun 2023 12:23:49 -0700 (PDT)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 307FF1C0EB8; Sat, 10 Jun 2023 21:23:48 +0200 (CEST)
+Date:   Sat, 10 Jun 2023 21:23:47 +0200
+From:   Pavel Machek <pavel@denx.de>
+To:     Guenter Roeck <linux@roeck-us.net>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rui Wang <wangrui@loongson.cn>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.10.y] MIPS: locking/atomic: Fix atomic{_64,}_sub_if_positive
-Date:   Sat, 10 Jun 2023 12:00:19 -0700
-Message-Id: <20230610190019.2807608-1-linux@roeck-us.net>
-X-Mailer: git-send-email 2.39.2
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ido Schimmel <idosch@nvidia.com>
+Subject: Re: [PATCH 5.15 000/159] 5.15.116-rc1 review
+Message-ID: <ZITNw9cv/WoZcSaO@duo.ucw.cz>
+References: <20230607200903.652580797@linuxfoundation.org>
+ <b979807a-a437-4d3f-98f9-989da52abb30@roeck-us.net>
+ <d35b1ff1-e198-481c-b1be-9e22445efe06@roeck-us.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="R7QnfhQzEFI8g4qW"
+Content-Disposition: inline
+In-Reply-To: <d35b1ff1-e198-481c-b1be-9e22445efe06@roeck-us.net>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Rui Wang <wangrui@loongson.cn>
 
-commit cb95ea79b3fc772c5873a7a4532ab4c14a455da2 upstream.
+--R7QnfhQzEFI8g4qW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This looks like a typo and that caused atomic64 test failed.
+Hi!
 
-Signed-off-by: Rui Wang <wangrui@loongson.cn>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
----
-I recently enabled atomic CONFIG_ATOMIC64_SELFTEST, which results in
-a crash when testing 64-bit little endian mips images in v5.10.y.
-This patch fixes the problem.
+> > Build results:
+> > 	total: 155 pass: 155 fail: 0
+> > Qemu test results:
+> > 	total: 499 pass: 498 fail: 1
+> > Failed tests:
+> > 	arm:kudo-bmc:multi_v7_defconfig:npcm:usb0.1:nuvoton-npcm730-kudo:rootfs
+> >=20
+> > The test failure is spurious and not new. I observe it randomly on
+> > multi_v7_defconfig builds, primarily on npcm platforms. There is no err=
+or
+> > message, just a stalled boot. I have been trying to bisect for a while,
+> > but I have not been successful so far. No immediate concern; I just wan=
+ted
+> > to mention it in case someone else hits the same or a similar problem.
+> >=20
+>=20
+> I managed to revise my bisect script sufficiently enough to get reliable
+> results. It looks like the culprit is commit 503e554782c9 (" debugobject:
+> Ensure pool refill (again)"); see bisect log below. Bisect on four
+> different systems all have the same result. After reverting this patch,
+> I do not see the problem anymore (again, confirmed on four different
+> systems). If anyone has an idea how to debug this, please let me know.
+> I'll be happy to give it a try.
 
- arch/mips/include/asm/atomic.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+You may want to comment out debug_objects_fill_pool() in
+debug_object_activate or debug_object_assert_init to see which one is
+causing the failure...
 
-diff --git a/arch/mips/include/asm/atomic.h b/arch/mips/include/asm/atomic.h
-index 27ad76791539..fd0e09033a7c 100644
---- a/arch/mips/include/asm/atomic.h
-+++ b/arch/mips/include/asm/atomic.h
-@@ -203,7 +203,7 @@ ATOMIC_OPS(atomic64, xor, s64, ^=, xor, lld, scd)
-  * The function returns the old value of @v minus @i.
-  */
- #define ATOMIC_SIP_OP(pfx, type, op, ll, sc)				\
--static __inline__ int pfx##_sub_if_positive(type i, pfx##_t * v)	\
-+static __inline__ type pfx##_sub_if_positive(type i, pfx##_t * v)	\
- {									\
- 	type temp, result;						\
- 									\
--- 
-2.39.2
+CONFIG_PREEMPT_RT is disabled for you, right? (Should 5.15 even have
+that option?)
 
+Best regards,
+								Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--R7QnfhQzEFI8g4qW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZITNwwAKCRAw5/Bqldv6
+8gMQAKCninpq2IbLx5zozdVkDJvbs6AMzgCgnaBEzhZym15ISXWB1LFhT8v8jR4=
+=Mu2c
+-----END PGP SIGNATURE-----
+
+--R7QnfhQzEFI8g4qW--
