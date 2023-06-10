@@ -2,61 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02CE372ACD5
-	for <lists+stable@lfdr.de>; Sat, 10 Jun 2023 18:12:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FFD272ACD3
+	for <lists+stable@lfdr.de>; Sat, 10 Jun 2023 18:12:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229550AbjFJQLy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 10 Jun 2023 12:11:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33948 "EHLO
+        id S229491AbjFJQL5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 10 Jun 2023 12:11:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229524AbjFJQLx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 10 Jun 2023 12:11:53 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60F533A8D
-        for <stable@vger.kernel.org>; Sat, 10 Jun 2023 09:11:49 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-3f7e7fc9fe6so27908745e9.3
-        for <stable@vger.kernel.org>; Sat, 10 Jun 2023 09:11:49 -0700 (PDT)
+        with ESMTP id S229551AbjFJQLy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 10 Jun 2023 12:11:54 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD70630F4
+        for <stable@vger.kernel.org>; Sat, 10 Jun 2023 09:11:50 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-3f6d7abe9a4so20621765e9.2
+        for <stable@vger.kernel.org>; Sat, 10 Jun 2023 09:11:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tessares.net; s=google; t=1686413507; x=1689005507;
+        d=tessares.net; s=google; t=1686413509; x=1689005509;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=dcJWVGbSU0dUIbvIjNveh6i0eUkpPqP3eHFiS929B+A=;
-        b=7LiGc3P7ncxu18MxPWIri6SjQjGjM7kjAdYBv4qS4/8nKVEAlDTO5Ryc7cDo/nBWm7
-         /dZWm8oGlhBTbm1W4sdjv8HYRxn5Zrn7mVZXS835/NMfKXy/6+ZTqkZ7lWxXHElEgTsn
-         Z2urlC6n1/sJbVPf6sY9tadQ7xLiWwllH41R16sDWu+UFN2DIGg4rc7W8BMOZg8pb4i3
-         7gFyJMfx5qgOiQRAgAk7qz0VKSn/6/FBi/F4K1LYd+eX+dLLdVqT6hCLOILORETg17H7
-         kmp1aWuNHc3QfYLsWcRdax78w17rrhr6SV4VDh98QMKZ9GPTnbXF+UzH/2lG0kCKrzNV
-         wHmg==
+        bh=vbCMcIUx++P6SdtXKp4v0Xqp9nJ5C2WK+DmOSVFkYWI=;
+        b=OkrifqmXX55yO4FkuGabclI2bqoO6y31QHS0r9xw/jLI+lO52u5kYKZduErpx/V/bD
+         ARYC6z4PZnqkEvQzfajdeZ+NhlkixaBJD2GNH4lo27KNXUOsUmiAfDnHV8XEHAn33TwR
+         tWi16rZHVucUexDXiLob8dosG/aKk7E5YMz0LkG6cKcPZiodzry0lFjHghVVk8VhMFMi
+         5TtPRAvgOyEp44yhwA6z9xgeW9Xx7sCTodA3dXa05YjcNxjqTSNm255l/Av94O+qyuS8
+         n2L57Ke2b+0X6KksWQ9QTlIDO/Bns4x7mJ8Fqmc1cCMrTjVLnHWZrpUIjCexXJZI65Df
+         3fDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686413507; x=1689005507;
+        d=1e100.net; s=20221208; t=1686413509; x=1689005509;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dcJWVGbSU0dUIbvIjNveh6i0eUkpPqP3eHFiS929B+A=;
-        b=KY9AJy6rWRV+s6AHRtpXZVrmUYmX0ukGjdGa/nuL52dtIzPS7IR6IptZcSKi1G0Qyl
-         85woocH9u0O5oY0YwSMYq+a0oP54BgrThvtMbylphKSQY/MMteGk7zd2BesLhcTZmR2O
-         TwUT05nUPrICygcWYcuZUJZWI0EDiGjlsktEGr4r5SBKGZlKPr3NcKxUDFUdLvEjLT5d
-         /1DrTedD6mF1gjuJ33Fk7KB0XkGDkckBPNZhVJuI/XhNRYIhQzCK1YNfdY8cBc3jCKRG
-         iv5akPiKDPZmLmVqAT2J7jQGtWFi4hSIyP5ijktVFs/iEyJWZi1cXWQqIqbB/APrzNz0
-         wmJQ==
-X-Gm-Message-State: AC+VfDwDahXoGcGi/keYlFZF3ujs8/K/EbrLu3harb8vOsVHg5xdhsnn
-        wm8fSjiGpOLkgr4MjLcrSrrz7g==
-X-Google-Smtp-Source: ACHHUZ6EGpHTgQ61KhnT+WpqYZ4Pz44mNkho11TvylD5C8j51moshXZPKKFv7CWAp1/N2SPjkB8XBw==
-X-Received: by 2002:adf:fec1:0:b0:30f:aef1:2add with SMTP id q1-20020adffec1000000b0030faef12addmr1444765wrs.47.1686413507753;
-        Sat, 10 Jun 2023 09:11:47 -0700 (PDT)
+        bh=vbCMcIUx++P6SdtXKp4v0Xqp9nJ5C2WK+DmOSVFkYWI=;
+        b=Hab4CynMUeGwN8LN+LS5eTLzYBe/ldRp6cufxdkODuqisAAP+Lb45vf/pKC3BcKn8Q
+         In5DvF8/zv/T+lRhdztthzDsL1Df4ex1NDNQu0/xvkAbvX+Oxlx5O347XT8xCChRpEd4
+         zxLfmscV5HI4uufi2C6fE/sguEOkog/GOlfXaY9iCJJxq353LMo4plTGR9F/CCyFDtw8
+         1CzjXFYuxCsfVsWZ3LTdyIInUlXp90ymMqZW9i/3eKGhQ4WTuikMi/I6f/7Uwu16rqoX
+         zzYyG2Uf0v8MBm8J/9rMj7BP9EM31FBAfC1TogrtvtJCM2xn+k9JJPr1Am/COXMZ9LqM
+         WaSQ==
+X-Gm-Message-State: AC+VfDxc2RtJJiXkZ8Rgwe7IhPW1LZXKepYxYKUJf6AY9ywJOc0GxR1i
+        fj/BMoH6QkPB/Gz13Y8f916A1g==
+X-Google-Smtp-Source: ACHHUZ5wlz6A6rIrbQvMeFaiq5asxJYrpA4MR7RzkZ2k6tR9yrG+PNtzsvJBrkaLVHeDVziVC9ETJQ==
+X-Received: by 2002:a05:600c:3785:b0:3f4:2328:b5c2 with SMTP id o5-20020a05600c378500b003f42328b5c2mr2977964wmr.35.1686413509234;
+        Sat, 10 Jun 2023 09:11:49 -0700 (PDT)
 Received: from vdi08.nix.tessares.net (static.219.156.76.144.clients.your-server.de. [144.76.156.219])
-        by smtp.gmail.com with ESMTPSA id u9-20020a5d4349000000b003079c402762sm7431145wrr.19.2023.06.10.09.11.46
+        by smtp.gmail.com with ESMTPSA id u9-20020a5d4349000000b003079c402762sm7431145wrr.19.2023.06.10.09.11.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Jun 2023 09:11:47 -0700 (PDT)
+        Sat, 10 Jun 2023 09:11:48 -0700 (PDT)
 From:   Matthieu Baerts <matthieu.baerts@tessares.net>
-Date:   Sat, 10 Jun 2023 18:11:37 +0200
-Subject: [PATCH net 02/17] selftests: mptcp: join: use 'iptables-legacy' if
- available
+Date:   Sat, 10 Jun 2023 18:11:38 +0200
+Subject: [PATCH net 03/17] selftests: mptcp: join: helpers to skip tests
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230609-upstream-net-20230610-mptcp-selftests-support-old-kernels-part-3-v1-2-2896fe2ee8a3@tessares.net>
+Message-Id: <20230609-upstream-net-20230610-mptcp-selftests-support-old-kernels-part-3-v1-3-2896fe2ee8a3@tessares.net>
 References: <20230609-upstream-net-20230610-mptcp-selftests-support-old-kernels-part-3-v1-0-2896fe2ee8a3@tessares.net>
 In-Reply-To: <20230609-upstream-net-20230610-mptcp-selftests-support-old-kernels-part-3-v1-0-2896fe2ee8a3@tessares.net>
 To:     mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
@@ -74,21 +73,21 @@ Cc:     netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
         Matthieu Baerts <matthieu.baerts@tessares.net>,
         stable@vger.kernel.org
 X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2321;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1874;
  i=matthieu.baerts@tessares.net; h=from:subject:message-id;
- bh=wr7uItaSFcLXiJMNJDpVgU2oEvlx/b3Yp6m2pXKEEpE=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBkhKC9aTW95InrthBqcIPHSuBLNcpNZ7TqyAQA0
- ETRNnDMvYeJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZISgvQAKCRD2t4JPQmmg
- c/SSD/9UORMMaxpWLt/pxXtiA9DlaDIFzYtk8pipZ/BGT6ptcIQbpLNO5hQWR8DAcJ7665T1TwN
- eBNmu+3XDxWejPA34P6eZPs9iYyBI0KlRaZfc2LWHB3eQRSH2inb6NUaaAFnX6d66uTSvag4jQx
- o9o3CnhsaVl4MyaG+N/nURU3bsAVF+25ecXbFPB7+FScgY+tKWOL1FvU3SI5uNPP7uWocxCLWz9
- RzlkKB8kuwny/7wnBWdNUdJef8LIHK6wjwYMst7z0pWSjRkMJVCWNY2Q7v7vLvHmDHuqYYUfBhB
- rh41xelDYVlLcrFW3FWWQCgsp5dpqpDrMcu+KN85lnDs5i2r81tyNJztfWOPj6CxW7Yz0eMqcGA
- 5pfF4v8g1P+XtnfhTpRt8jdW9jE9pD+PBGrvuw27jvd+0mq9HqFu94AOIy3GIPo33YB75oFwfYx
- EttzhFJZQjnbuSZxEUdGJM/dN4Eag3dGTKd6J7H+RppqK2FzrAnkc7tfDcuppt4yVndYt3VX1F7
- oT6wkDCspTT62qecxzXveuS/zjcX4Wj9MXMStxxNg1UXilcAatYGcXz/qEgTwdsiEg1Th3oPotT
- 4lNt4L/a474v3SQgOsJKPPBBeEzTVFTjl45G/yeGBTcbITOSnkwrvfkUMXItAsE2u9/JQb03XJZ
- OuNgx2e4y2tR5rw==
+ bh=Lz+CG90Q/jYCqW9q9yYPKVP+ZrLRJq5EixGj4YlvfsI=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBkhKC9J8WtCudLHdu3pw2KRPMvFMZqLF+DxvfkK
+ FVZhqBJlNOJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZISgvQAKCRD2t4JPQmmg
+ c6HxD/9O/MNGyJjazN49T9UQv63fgVXYnatJP7GDD9kQX0OYx61bP3EnSR66Kh7fiTFvnz4/tKZ
+ Q+oKGIiBYx1moIqeIXkFpenYehlPHAHXx4c5/39x2nJkWmyOoY8/9RUhIErdpmAk/0FvVHOBaIF
+ 93CYxPcWShett7MrQnXx0xZtudzxhrLMesJqAcW71bWeJElSNnyCB7jB7wkuEpNyMYFb5rlsWWM
+ Hph1em3uYE2n7rrnKTsQLNxbobiiyeGaR3jx7wsvN/yw9Aw9+Ymr8fkx1gedHT8J4v+YfuenKnd
+ 7Zp0FY94LBDeTqXXPuPW0Df+6n9/amNQdT1oPpvin5gzxgdG9YlLZOPykVmA2dSMQPqsOGdKzNs
+ 8EyUFBLDkL7RQx6Kn26snCvnBxzWv76VnT+JIF/uFCoPrX4Mf8NmoaG5Bo/DlT7Wi0gF5DKXMOZ
+ qjAa7WSFeXTuajNDhEFWT8aFZaYUm+yPBO6Yaed8bxptsUHdYjqBf9td9Fz1w/FWM1b8423zDJj
+ CnwzDE34Qxh3WRstPo2A6sh+Widdt9+hG1YrmunwEYsSFkqlhflVPJJU82YaIAiF9I3PdB7C5VO
+ pQ7lrIEZ/tUifWUE7JrJsg8WDsevx0WFJAgYEOW3ds0D1gNPuToO/exvZULEiOCLjWh6HZrDq1w
+ d0DBsdLnDgS+7wQ==
 X-Developer-Key: i=matthieu.baerts@tessares.net; a=openpgp;
  fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -101,82 +100,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-IPTables commands using 'iptables-nft' fail on old kernels, at least
-5.15 because it doesn't see the default IPTables chains:
+Selftests are supposed to run on any kernels, including the old ones not
+supporting all MPTCP features.
 
-  $ iptables -L
-  iptables/1.8.2 Failed to initialize nft: Protocol not supported
+Here are some helpers that will be used to mark subtests as skipped if a
+feature is not supported. Marking as a fix for the commit introducing
+this selftest to help with the backports.
 
-As a first step before switching to NFTables, we can use iptables-legacy
-if available.
+While at it, also check if kallsyms feature is available as it will also
+be used in the following commits to check if MPTCP features are
+available before starting a test.
 
 Link: https://github.com/multipath-tcp/mptcp_net-next/issues/368
-Fixes: 8d014eaa9254 ("selftests: mptcp: add ADD_ADDR timeout test case")
+Fixes: b08fbf241064 ("selftests: add test-cases for MPTCP MP_JOIN")
 Cc: stable@vger.kernel.org
 Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 27 +++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
 diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 29f0c99d9a46..74cc8a74a9d6 100755
+index 74cc8a74a9d6..a63aed145393 100755
 --- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
 +++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -25,6 +25,8 @@ capout=""
- ns1=""
- ns2=""
- ksft_skip=4
-+iptables="iptables"
-+ip6tables="ip6tables"
- timeout_poll=30
- timeout_test=$((timeout_poll * 2 + 1))
- capture=0
-@@ -146,7 +148,11 @@ check_tools()
- 		exit $ksft_skip
- 	fi
+@@ -142,6 +142,7 @@ cleanup_partial()
+ check_tools()
+ {
+ 	mptcp_lib_check_mptcp
++	mptcp_lib_check_kallsyms
  
--	if ! iptables -V &> /dev/null; then
-+	# Use the legacy version if available to support old kernel versions
-+	if iptables-legacy -V &> /dev/null; then
-+		iptables="iptables-legacy"
-+		ip6tables="ip6tables-legacy"
-+	elif ! iptables -V &> /dev/null; then
- 		echo "SKIP: Could not run all tests without iptables tool"
- 		exit $ksft_skip
- 	fi
-@@ -247,9 +253,9 @@ reset_with_add_addr_timeout()
- 
- 	reset "${1}" || return 1
- 
--	tables="iptables"
-+	tables="${iptables}"
- 	if [ $ip -eq 6 ]; then
--		tables="ip6tables"
-+		tables="${ip6tables}"
- 	fi
- 
- 	ip netns exec $ns1 sysctl -q net.mptcp.add_addr_timeout=1
-@@ -314,9 +320,9 @@ reset_with_fail()
- 	local ip="${3:-4}"
- 	local tables
- 
--	tables="iptables"
-+	tables="${iptables}"
- 	if [ $ip -eq 6 ]; then
--		tables="ip6tables"
-+		tables="${ip6tables}"
- 	fi
- 
- 	ip netns exec $ns2 $tables \
-@@ -704,7 +710,7 @@ filter_tcp_from()
- 	local src="${2}"
- 	local target="${3}"
- 
--	ip netns exec "${ns}" iptables -A INPUT -s "${src}" -p tcp -j "${target}"
-+	ip netns exec "${ns}" ${iptables} -A INPUT -s "${src}" -p tcp -j "${target}"
+ 	if ! ip -Version &> /dev/null; then
+ 		echo "SKIP: Could not run test without ip tool"
+@@ -191,6 +192,32 @@ cleanup()
+ 	cleanup_partial
  }
  
- do_transfer()
++# $1: msg
++print_title()
++{
++	printf "%03u %-36s %s" "${TEST_COUNT}" "${TEST_NAME}" "${1}"
++}
++
++# [ $1: fail msg ]
++mark_as_skipped()
++{
++	local msg="${1:-"Feature not supported"}"
++
++	mptcp_lib_fail_if_expected_feature "${msg}"
++
++	print_title "[ skip ] ${msg}"
++	printf "\n"
++}
++
++# $@: condition
++continue_if()
++{
++	if ! "${@}"; then
++		mark_as_skipped
++		return 1
++	fi
++}
++
+ skip_test()
+ {
+ 	if [ "${#only_tests_ids[@]}" -eq 0 ] && [ "${#only_tests_names[@]}" -eq 0 ]; then
 
 -- 
 2.40.1
