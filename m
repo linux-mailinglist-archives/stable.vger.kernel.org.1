@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFFB372B1F3
-	for <lists+stable@lfdr.de>; Sun, 11 Jun 2023 15:09:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF90872B1F5
+	for <lists+stable@lfdr.de>; Sun, 11 Jun 2023 15:11:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229825AbjFKNJR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 11 Jun 2023 09:09:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54508 "EHLO
+        id S230030AbjFKNLL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 11 Jun 2023 09:11:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229562AbjFKNJQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 09:09:16 -0400
+        with ESMTP id S229562AbjFKNLK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 09:11:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 962C210DA
-        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 06:09:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF85710DA
+        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 06:11:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 310F361141
-        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 13:09:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37187C4339B;
-        Sun, 11 Jun 2023 13:09:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 82FD160D33
+        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 13:11:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB37C433D2;
+        Sun, 11 Jun 2023 13:11:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686488954;
-        bh=OXn/Y+mOvpno1nm03aS6qwmS1X2ARCNhG/NPqQHL7rI=;
+        s=korg; t=1686489068;
+        bh=R5UP9zm0jLNIAKe5QFLEmQgIYCl64EF+3V6QcmfHNVo=;
         h=Subject:To:Cc:From:Date:From;
-        b=Pcvgil8xLJKkUIx92q62BuuL6Mni7Zu87/YrkeXR9DmTIR2GNYTI8AdMEcHkxUBJK
-         8AzAzBavqTN6NHy5/72DBDerV4A+mke6aKczYxm6P+qp48deTtySDSyRl7LbC45WYV
-         mHvmpm40LkB4R37dMf+ty13dJqnjO4c81TYPi5JM=
-Subject: FAILED: patch "[PATCH] s390/dasd: Use correct lock while counting channel queue" failed to apply to 5.4-stable tree
-To:     hoeppner@linux.ibm.com, axboe@kernel.dk, sth@linux.ibm.com
+        b=KbBbFQe0MI1c8/wwnyGhQobDxkYnfEEBMudsCVt1RFQXKn2DtUS3/nACK5lL8WlTs
+         0KZCLmCfKVvcLI65PLqHm31KmaMcz/CDvVyX3Uit72IwFfO+kOCj6iY4NFM/Uc+UOe
+         4iCH3Znf8dFP4LabOgW2y3QVjqKE+9T4hhCoL1vs=
+Subject: FAILED: patch "[PATCH] Bluetooth: fix debugfs registration" failed to apply to 5.15-stable tree
+To:     johan+linaro@kernel.org, luiz.von.dentz@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 11 Jun 2023 15:09:11 +0200
-Message-ID: <2023061111-tracing-shakiness-9054@gregkh>
+Date:   Sun, 11 Jun 2023 15:11:05 +0200
+Message-ID: <2023061105-backup-cotton-481a@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x ccc45cb4e7271c74dbb27776ae8f73d84557f5c6
+git cherry-pick -x fe2ccc6c29d53e14d3c8b3ddf8ad965a92e074ee
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061111-tracing-shakiness-9054@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061105-backup-cotton-481a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -72,50 +72,58 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ccc45cb4e7271c74dbb27776ae8f73d84557f5c6 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Jan=20H=C3=B6ppner?= <hoeppner@linux.ibm.com>
-Date: Fri, 9 Jun 2023 17:37:50 +0200
-Subject: [PATCH] s390/dasd: Use correct lock while counting channel queue
- length
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From fe2ccc6c29d53e14d3c8b3ddf8ad965a92e074ee Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan+linaro@kernel.org>
+Date: Wed, 31 May 2023 10:57:58 +0200
+Subject: [PATCH] Bluetooth: fix debugfs registration
 
-The lock around counting the channel queue length in the BIODASDINFO
-ioctl was incorrectly changed to the dasd_block->queue_lock with commit
-583d6535cb9d ("dasd: remove dead code"). This can lead to endless list
-iterations and a subsequent crash.
+Since commit ec6cef9cd98d ("Bluetooth: Fix SMP channel registration for
+unconfigured controllers") the debugfs interface for unconfigured
+controllers will be created when the controller is configured.
 
-The queue_lock is supposed to be used only for queue lists belonging to
-dasd_block. For dasd_device related queue lists the ccwdev lock must be
-used.
+There is however currently nothing preventing a controller from being
+configured multiple time (e.g. setting the device address using btmgmt)
+which results in failed attempts to register the already registered
+debugfs entries:
 
-Fix the mentioned issues by correctly using the ccwdev lock instead of
-the queue lock.
+	debugfs: File 'features' in directory 'hci0' already present!
+	debugfs: File 'manufacturer' in directory 'hci0' already present!
+	debugfs: File 'hci_version' in directory 'hci0' already present!
+	...
+	debugfs: File 'quirk_simultaneous_discovery' in directory 'hci0' already present!
 
-Fixes: 583d6535cb9d ("dasd: remove dead code")
-Cc: stable@vger.kernel.org # v5.0+
-Signed-off-by: Jan Höppner <hoeppner@linux.ibm.com>
-Reviewed-by: Stefan Haberland <sth@linux.ibm.com>
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230609153750.1258763-2-sth@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Add a controller flag to avoid trying to register the debugfs interface
+more than once.
 
-diff --git a/drivers/s390/block/dasd_ioctl.c b/drivers/s390/block/dasd_ioctl.c
-index 9327dcdd6e5e..8fca725b3dae 100644
---- a/drivers/s390/block/dasd_ioctl.c
-+++ b/drivers/s390/block/dasd_ioctl.c
-@@ -552,10 +552,10 @@ static int __dasd_ioctl_information(struct dasd_block *block,
+Fixes: ec6cef9cd98d ("Bluetooth: Fix SMP channel registration for unconfigured controllers")
+Cc: stable@vger.kernel.org      # 4.0
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+
+diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
+index 07df96c47ef4..872dcb91a540 100644
+--- a/include/net/bluetooth/hci.h
++++ b/include/net/bluetooth/hci.h
+@@ -350,6 +350,7 @@ enum {
+ enum {
+ 	HCI_SETUP,
+ 	HCI_CONFIG,
++	HCI_DEBUGFS_CREATED,
+ 	HCI_AUTO_OFF,
+ 	HCI_RFKILLED,
+ 	HCI_MGMT,
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index a59695f04c25..804cde43b4e0 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -4551,6 +4551,9 @@ static int hci_init_sync(struct hci_dev *hdev)
+ 	    !hci_dev_test_flag(hdev, HCI_CONFIG))
+ 		return 0;
  
- 	memcpy(dasd_info->type, base->discipline->name, 4);
++	if (hci_dev_test_and_set_flag(hdev, HCI_DEBUGFS_CREATED))
++		return 0;
++
+ 	hci_debugfs_create_common(hdev);
  
--	spin_lock_irqsave(&block->queue_lock, flags);
-+	spin_lock_irqsave(get_ccwdev_lock(base->cdev), flags);
- 	list_for_each(l, &base->ccw_queue)
- 		dasd_info->chanq_len++;
--	spin_unlock_irqrestore(&block->queue_lock, flags);
-+	spin_unlock_irqrestore(get_ccwdev_lock(base->cdev), flags);
- 	return 0;
- }
- 
+ 	if (lmp_bredr_capable(hdev))
 
