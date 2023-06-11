@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D471F72B202
-	for <lists+stable@lfdr.de>; Sun, 11 Jun 2023 15:12:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5EF972B203
+	for <lists+stable@lfdr.de>; Sun, 11 Jun 2023 15:15:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233627AbjFKNMr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 11 Jun 2023 09:12:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55300 "EHLO
+        id S233633AbjFKNPJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 11 Jun 2023 09:15:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232910AbjFKNMr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 09:12:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C4799F
-        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 06:12:46 -0700 (PDT)
+        with ESMTP id S232910AbjFKNPJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 09:15:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A3B69F
+        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 06:15:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A67AC61138
-        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 13:12:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC00FC433EF;
-        Sun, 11 Jun 2023 13:12:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2327861231
+        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 13:15:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B01AC433EF;
+        Sun, 11 Jun 2023 13:15:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686489165;
-        bh=J8kbC1wIGTa6A6nY705AXj9RQZYY4uaX7QmarWZlho4=;
+        s=korg; t=1686489306;
+        bh=psDy3DbLUbrXdpQfFLxIawFHLSxlJelNoametOWZOcA=;
         h=Subject:To:Cc:From:Date:From;
-        b=g70K77X1y667YJ9MZAApJ0n2g83tUYQ4nQFljt6muXvLFolkne27rC7vRnLVAJAO6
-         0tBYZ3mPWqGRny6njhaKncuoNRyhnA7FQe5UpRZBNgkgaNukcb9X+CQee2zkOqwhmB
-         Lz1ImVSVYpjDdPffqoSrX8m0lJ6Spi3AuYAPzqDA=
-Subject: FAILED: patch "[PATCH] cgroup: fix missing cpus_read_{lock,unlock}() in" failed to apply to 6.1-stable tree
-To:     zhengqi.arch@bytedance.com, songmuchun@bytedance.com,
-        tj@kernel.org, zhaogongyi@bytedance.com
+        b=zqWWOG22PFg0uXt63YP+b0az2SXZxluQC1yNeEJw0DshkJqXy+kqdMt8DaxbKzbhx
+         XTGqa5FBcWa6HgB6eohiXXEy84MtFPw54eN0ud5bTm13pNwVQiNou2O4w17lzQRUPl
+         NkVIGwTsglXOER5s63FSdZ4DacmNYafiAFF/RPOA=
+Subject: FAILED: patch "[PATCH] EDAC/qcom: Get rid of hardcoded register offsets" failed to apply to 6.3-stable tree
+To:     mani@kernel.org, andersson@kernel.org, bp@alien8.de,
+        manivannan.sadhasivam@linaro.org, stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 11 Jun 2023 15:12:34 +0200
-Message-ID: <2023061134-amuser-define-59aa@gregkh>
+Date:   Sun, 11 Jun 2023 15:15:03 +0200
+Message-ID: <2023061103-perky-gracious-d962@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.3-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
 git checkout FETCH_HEAD
-git cherry-pick -x ab1de7ead871ebe6d12a774c3c25de0388cde082
+git cherry-pick -x cbd77119b6355872cd308a60e99f9ca678435d15
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061134-amuser-define-59aa@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061103-perky-gracious-d962@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,71 +73,320 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ab1de7ead871ebe6d12a774c3c25de0388cde082 Mon Sep 17 00:00:00 2001
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-Date: Wed, 17 May 2023 07:45:45 +0000
-Subject: [PATCH] cgroup: fix missing cpus_read_{lock,unlock}() in
- cgroup_transfer_tasks()
+From cbd77119b6355872cd308a60e99f9ca678435d15 Mon Sep 17 00:00:00 2001
+From: Manivannan Sadhasivam <mani@kernel.org>
+Date: Wed, 17 May 2023 17:16:35 +0530
+Subject: [PATCH] EDAC/qcom: Get rid of hardcoded register offsets
 
-The commit 4f7e7236435c ("cgroup: Fix threadgroup_rwsem <-> cpus_read_lock()
-deadlock") fixed the deadlock between cgroup_threadgroup_rwsem and
-cpus_read_lock() by introducing cgroup_attach_{lock,unlock}() and removing
-cpus_read_{lock,unlock}() from cpuset_attach(). But cgroup_transfer_tasks()
-was missed and not handled, which will cause th following warning:
+The LLCC EDAC register offsets varies between each SoC. Hardcoding the
+register offsets won't work and will often result in crash due to
+accessing the wrong locations.
 
- WARNING: CPU: 0 PID: 589 at kernel/cpu.c:526 lockdep_assert_cpus_held+0x32/0x40
- CPU: 0 PID: 589 Comm: kworker/1:4 Not tainted 6.4.0-rc2-next-20230517 #50
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01/2014
- Workqueue: events cpuset_hotplug_workfn
- RIP: 0010:lockdep_assert_cpus_held+0x32/0x40
- <...>
- Call Trace:
-  <TASK>
-  cpuset_attach+0x40/0x240
-  cgroup_migrate_execute+0x452/0x5e0
-  ? _raw_spin_unlock_irq+0x28/0x40
-  cgroup_transfer_tasks+0x1f3/0x360
-  ? find_held_lock+0x32/0x90
-  ? cpuset_hotplug_workfn+0xc81/0xed0
-  cpuset_hotplug_workfn+0xcb1/0xed0
-  ? process_one_work+0x248/0x5b0
-  process_one_work+0x2b9/0x5b0
-  worker_thread+0x56/0x3b0
-  ? process_one_work+0x5b0/0x5b0
-  kthread+0xf1/0x120
-  ? kthread_complete_and_exit+0x20/0x20
-  ret_from_fork+0x1f/0x30
-  </TASK>
+Hence, get the register offsets from the LLCC driver matching the
+individual SoCs.
 
-So just use the cgroup_attach_{lock,unlock}() helper to fix it.
+Cc: <stable@vger.kernel.org> # 6.0: 5365cea199c7 ("soc: qcom: llcc: Rename reg_offset structs to reflect LLCC version")
+Cc: <stable@vger.kernel.org> # 6.0: c13d7d261e36 ("soc: qcom: llcc: Pass LLCC version based register offsets to EDAC driver")
+Cc: <stable@vger.kernel.org> # 6.0
+Fixes: a6e9d7ef252c ("soc: qcom: llcc: Add configuration data for SM8450 SoC")
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230517114635.76358-3-manivannan.sadhasivam@linaro.org
 
-Reported-by: Zhao Gongyi <zhaogongyi@bytedance.com>
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Acked-by: Muchun Song <songmuchun@bytedance.com>
-Fixes: 05c7b7a92cc8 ("cgroup/cpuset: Fix a race between cpuset_attach() and cpu hotplug")
-Cc: stable@vger.kernel.org # v5.17+
-Signed-off-by: Tejun Heo <tj@kernel.org>
-
-diff --git a/kernel/cgroup/cgroup-v1.c b/kernel/cgroup/cgroup-v1.c
-index aeef06c465ef..5407241dbb45 100644
---- a/kernel/cgroup/cgroup-v1.c
-+++ b/kernel/cgroup/cgroup-v1.c
-@@ -108,7 +108,7 @@ int cgroup_transfer_tasks(struct cgroup *to, struct cgroup *from)
+diff --git a/drivers/edac/qcom_edac.c b/drivers/edac/qcom_edac.c
+index 6140001f21c4..b2db545c6810 100644
+--- a/drivers/edac/qcom_edac.c
++++ b/drivers/edac/qcom_edac.c
+@@ -21,30 +21,9 @@
+ #define TRP_SYN_REG_CNT                 6
+ #define DRP_SYN_REG_CNT                 8
  
- 	cgroup_lock();
+-#define LLCC_COMMON_STATUS0             0x0003000c
+ #define LLCC_LB_CNT_MASK                GENMASK(31, 28)
+ #define LLCC_LB_CNT_SHIFT               28
  
--	percpu_down_write(&cgroup_threadgroup_rwsem);
-+	cgroup_attach_lock(true);
+-/* Single & double bit syndrome register offsets */
+-#define TRP_ECC_SB_ERR_SYN0             0x0002304c
+-#define TRP_ECC_DB_ERR_SYN0             0x00020370
+-#define DRP_ECC_SB_ERR_SYN0             0x0004204c
+-#define DRP_ECC_DB_ERR_SYN0             0x00042070
+-
+-/* Error register offsets */
+-#define TRP_ECC_ERROR_STATUS1           0x00020348
+-#define TRP_ECC_ERROR_STATUS0           0x00020344
+-#define DRP_ECC_ERROR_STATUS1           0x00042048
+-#define DRP_ECC_ERROR_STATUS0           0x00042044
+-
+-/* TRP, DRP interrupt register offsets */
+-#define DRP_INTERRUPT_STATUS            0x00041000
+-#define TRP_INTERRUPT_0_STATUS          0x00020480
+-#define DRP_INTERRUPT_CLEAR             0x00041008
+-#define DRP_ECC_ERROR_CNTR_CLEAR        0x00040004
+-#define TRP_INTERRUPT_0_CLEAR           0x00020484
+-#define TRP_ECC_ERROR_CNTR_CLEAR        0x00020440
+-
+ /* Mask and shift macros */
+ #define ECC_DB_ERR_COUNT_MASK           GENMASK(4, 0)
+ #define ECC_DB_ERR_WAYS_MASK            GENMASK(31, 16)
+@@ -60,15 +39,6 @@
+ #define DRP_TRP_INT_CLEAR               GENMASK(1, 0)
+ #define DRP_TRP_CNT_CLEAR               GENMASK(1, 0)
  
- 	/* all tasks in @from are being moved, all csets are source */
- 	spin_lock_irq(&css_set_lock);
-@@ -144,7 +144,7 @@ int cgroup_transfer_tasks(struct cgroup *to, struct cgroup *from)
- 	} while (task && !ret);
- out_err:
- 	cgroup_migrate_finish(&mgctx);
--	percpu_up_write(&cgroup_threadgroup_rwsem);
-+	cgroup_attach_unlock(true);
- 	cgroup_unlock();
+-/* Config registers offsets*/
+-#define DRP_ECC_ERROR_CFG               0x00040000
+-
+-/* Tag RAM, Data RAM interrupt register offsets */
+-#define CMN_INTERRUPT_0_ENABLE          0x0003001c
+-#define CMN_INTERRUPT_2_ENABLE          0x0003003c
+-#define TRP_INTERRUPT_0_ENABLE          0x00020488
+-#define DRP_INTERRUPT_ENABLE            0x0004100c
+-
+ #define SB_ERROR_THRESHOLD              0x1
+ #define SB_ERROR_THRESHOLD_SHIFT        24
+ #define SB_DB_TRP_INTERRUPT_ENABLE      0x3
+@@ -88,9 +58,6 @@ enum {
+ static const struct llcc_edac_reg_data edac_reg_data[] = {
+ 	[LLCC_DRAM_CE] = {
+ 		.name = "DRAM Single-bit",
+-		.synd_reg = DRP_ECC_SB_ERR_SYN0,
+-		.count_status_reg = DRP_ECC_ERROR_STATUS1,
+-		.ways_status_reg = DRP_ECC_ERROR_STATUS0,
+ 		.reg_cnt = DRP_SYN_REG_CNT,
+ 		.count_mask = ECC_SB_ERR_COUNT_MASK,
+ 		.ways_mask = ECC_SB_ERR_WAYS_MASK,
+@@ -98,9 +65,6 @@ static const struct llcc_edac_reg_data edac_reg_data[] = {
+ 	},
+ 	[LLCC_DRAM_UE] = {
+ 		.name = "DRAM Double-bit",
+-		.synd_reg = DRP_ECC_DB_ERR_SYN0,
+-		.count_status_reg = DRP_ECC_ERROR_STATUS1,
+-		.ways_status_reg = DRP_ECC_ERROR_STATUS0,
+ 		.reg_cnt = DRP_SYN_REG_CNT,
+ 		.count_mask = ECC_DB_ERR_COUNT_MASK,
+ 		.ways_mask = ECC_DB_ERR_WAYS_MASK,
+@@ -108,9 +72,6 @@ static const struct llcc_edac_reg_data edac_reg_data[] = {
+ 	},
+ 	[LLCC_TRAM_CE] = {
+ 		.name = "TRAM Single-bit",
+-		.synd_reg = TRP_ECC_SB_ERR_SYN0,
+-		.count_status_reg = TRP_ECC_ERROR_STATUS1,
+-		.ways_status_reg = TRP_ECC_ERROR_STATUS0,
+ 		.reg_cnt = TRP_SYN_REG_CNT,
+ 		.count_mask = ECC_SB_ERR_COUNT_MASK,
+ 		.ways_mask = ECC_SB_ERR_WAYS_MASK,
+@@ -118,9 +79,6 @@ static const struct llcc_edac_reg_data edac_reg_data[] = {
+ 	},
+ 	[LLCC_TRAM_UE] = {
+ 		.name = "TRAM Double-bit",
+-		.synd_reg = TRP_ECC_DB_ERR_SYN0,
+-		.count_status_reg = TRP_ECC_ERROR_STATUS1,
+-		.ways_status_reg = TRP_ECC_ERROR_STATUS0,
+ 		.reg_cnt = TRP_SYN_REG_CNT,
+ 		.count_mask = ECC_DB_ERR_COUNT_MASK,
+ 		.ways_mask = ECC_DB_ERR_WAYS_MASK,
+@@ -128,7 +86,7 @@ static const struct llcc_edac_reg_data edac_reg_data[] = {
+ 	},
+ };
+ 
+-static int qcom_llcc_core_setup(struct regmap *llcc_bcast_regmap)
++static int qcom_llcc_core_setup(struct llcc_drv_data *drv, struct regmap *llcc_bcast_regmap)
+ {
+ 	u32 sb_err_threshold;
+ 	int ret;
+@@ -137,31 +95,31 @@ static int qcom_llcc_core_setup(struct regmap *llcc_bcast_regmap)
+ 	 * Configure interrupt enable registers such that Tag, Data RAM related
+ 	 * interrupts are propagated to interrupt controller for servicing
+ 	 */
+-	ret = regmap_update_bits(llcc_bcast_regmap, CMN_INTERRUPT_2_ENABLE,
++	ret = regmap_update_bits(llcc_bcast_regmap, drv->edac_reg_offset->cmn_interrupt_2_enable,
+ 				 TRP0_INTERRUPT_ENABLE,
+ 				 TRP0_INTERRUPT_ENABLE);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = regmap_update_bits(llcc_bcast_regmap, TRP_INTERRUPT_0_ENABLE,
++	ret = regmap_update_bits(llcc_bcast_regmap, drv->edac_reg_offset->trp_interrupt_0_enable,
+ 				 SB_DB_TRP_INTERRUPT_ENABLE,
+ 				 SB_DB_TRP_INTERRUPT_ENABLE);
+ 	if (ret)
+ 		return ret;
+ 
+ 	sb_err_threshold = (SB_ERROR_THRESHOLD << SB_ERROR_THRESHOLD_SHIFT);
+-	ret = regmap_write(llcc_bcast_regmap, DRP_ECC_ERROR_CFG,
++	ret = regmap_write(llcc_bcast_regmap, drv->edac_reg_offset->drp_ecc_error_cfg,
+ 			   sb_err_threshold);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = regmap_update_bits(llcc_bcast_regmap, CMN_INTERRUPT_2_ENABLE,
++	ret = regmap_update_bits(llcc_bcast_regmap, drv->edac_reg_offset->cmn_interrupt_2_enable,
+ 				 DRP0_INTERRUPT_ENABLE,
+ 				 DRP0_INTERRUPT_ENABLE);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = regmap_write(llcc_bcast_regmap, DRP_INTERRUPT_ENABLE,
++	ret = regmap_write(llcc_bcast_regmap, drv->edac_reg_offset->drp_interrupt_enable,
+ 			   SB_DB_DRP_INTERRUPT_ENABLE);
  	return ret;
  }
+@@ -175,24 +133,28 @@ qcom_llcc_clear_error_status(int err_type, struct llcc_drv_data *drv)
+ 	switch (err_type) {
+ 	case LLCC_DRAM_CE:
+ 	case LLCC_DRAM_UE:
+-		ret = regmap_write(drv->bcast_regmap, DRP_INTERRUPT_CLEAR,
++		ret = regmap_write(drv->bcast_regmap,
++				   drv->edac_reg_offset->drp_interrupt_clear,
+ 				   DRP_TRP_INT_CLEAR);
+ 		if (ret)
+ 			return ret;
+ 
+-		ret = regmap_write(drv->bcast_regmap, DRP_ECC_ERROR_CNTR_CLEAR,
++		ret = regmap_write(drv->bcast_regmap,
++				   drv->edac_reg_offset->drp_ecc_error_cntr_clear,
+ 				   DRP_TRP_CNT_CLEAR);
+ 		if (ret)
+ 			return ret;
+ 		break;
+ 	case LLCC_TRAM_CE:
+ 	case LLCC_TRAM_UE:
+-		ret = regmap_write(drv->bcast_regmap, TRP_INTERRUPT_0_CLEAR,
++		ret = regmap_write(drv->bcast_regmap,
++				   drv->edac_reg_offset->trp_interrupt_0_clear,
+ 				   DRP_TRP_INT_CLEAR);
+ 		if (ret)
+ 			return ret;
+ 
+-		ret = regmap_write(drv->bcast_regmap, TRP_ECC_ERROR_CNTR_CLEAR,
++		ret = regmap_write(drv->bcast_regmap,
++				   drv->edac_reg_offset->trp_ecc_error_cntr_clear,
+ 				   DRP_TRP_CNT_CLEAR);
+ 		if (ret)
+ 			return ret;
+@@ -205,16 +167,54 @@ qcom_llcc_clear_error_status(int err_type, struct llcc_drv_data *drv)
+ 	return ret;
+ }
+ 
++struct qcom_llcc_syn_regs {
++	u32 synd_reg;
++	u32 count_status_reg;
++	u32 ways_status_reg;
++};
++
++static void get_reg_offsets(struct llcc_drv_data *drv, int err_type,
++			    struct qcom_llcc_syn_regs *syn_regs)
++{
++	const struct llcc_edac_reg_offset *edac_reg_offset = drv->edac_reg_offset;
++
++	switch (err_type) {
++	case LLCC_DRAM_CE:
++		syn_regs->synd_reg = edac_reg_offset->drp_ecc_sb_err_syn0;
++		syn_regs->count_status_reg = edac_reg_offset->drp_ecc_error_status1;
++		syn_regs->ways_status_reg = edac_reg_offset->drp_ecc_error_status0;
++		break;
++	case LLCC_DRAM_UE:
++		syn_regs->synd_reg = edac_reg_offset->drp_ecc_db_err_syn0;
++		syn_regs->count_status_reg = edac_reg_offset->drp_ecc_error_status1;
++		syn_regs->ways_status_reg = edac_reg_offset->drp_ecc_error_status0;
++		break;
++	case LLCC_TRAM_CE:
++		syn_regs->synd_reg = edac_reg_offset->trp_ecc_sb_err_syn0;
++		syn_regs->count_status_reg = edac_reg_offset->trp_ecc_error_status1;
++		syn_regs->ways_status_reg = edac_reg_offset->trp_ecc_error_status0;
++		break;
++	case LLCC_TRAM_UE:
++		syn_regs->synd_reg = edac_reg_offset->trp_ecc_db_err_syn0;
++		syn_regs->count_status_reg = edac_reg_offset->trp_ecc_error_status1;
++		syn_regs->ways_status_reg = edac_reg_offset->trp_ecc_error_status0;
++		break;
++	}
++}
++
+ /* Dump Syndrome registers data for Tag RAM, Data RAM bit errors*/
+ static int
+ dump_syn_reg_values(struct llcc_drv_data *drv, u32 bank, int err_type)
+ {
+ 	struct llcc_edac_reg_data reg_data = edac_reg_data[err_type];
++	struct qcom_llcc_syn_regs regs = { };
+ 	int err_cnt, err_ways, ret, i;
+ 	u32 synd_reg, synd_val;
+ 
++	get_reg_offsets(drv, err_type, &regs);
++
+ 	for (i = 0; i < reg_data.reg_cnt; i++) {
+-		synd_reg = reg_data.synd_reg + (i * 4);
++		synd_reg = regs.synd_reg + (i * 4);
+ 		ret = regmap_read(drv->regmaps[bank], synd_reg,
+ 				  &synd_val);
+ 		if (ret)
+@@ -224,7 +224,7 @@ dump_syn_reg_values(struct llcc_drv_data *drv, u32 bank, int err_type)
+ 			    reg_data.name, i, synd_val);
+ 	}
+ 
+-	ret = regmap_read(drv->regmaps[bank], reg_data.count_status_reg,
++	ret = regmap_read(drv->regmaps[bank], regs.count_status_reg,
+ 			  &err_cnt);
+ 	if (ret)
+ 		goto clear;
+@@ -234,7 +234,7 @@ dump_syn_reg_values(struct llcc_drv_data *drv, u32 bank, int err_type)
+ 	edac_printk(KERN_CRIT, EDAC_LLCC, "%s: Error count: 0x%4x\n",
+ 		    reg_data.name, err_cnt);
+ 
+-	ret = regmap_read(drv->regmaps[bank], reg_data.ways_status_reg,
++	ret = regmap_read(drv->regmaps[bank], regs.ways_status_reg,
+ 			  &err_ways);
+ 	if (ret)
+ 		goto clear;
+@@ -295,7 +295,7 @@ static irqreturn_t llcc_ecc_irq_handler(int irq, void *edev_ctl)
+ 
+ 	/* Iterate over the banks and look for Tag RAM or Data RAM errors */
+ 	for (i = 0; i < drv->num_banks; i++) {
+-		ret = regmap_read(drv->regmaps[i], DRP_INTERRUPT_STATUS,
++		ret = regmap_read(drv->regmaps[i], drv->edac_reg_offset->drp_interrupt_status,
+ 				  &drp_error);
+ 
+ 		if (!ret && (drp_error & SB_ECC_ERROR)) {
+@@ -310,7 +310,7 @@ static irqreturn_t llcc_ecc_irq_handler(int irq, void *edev_ctl)
+ 		if (!ret)
+ 			irq_rc = IRQ_HANDLED;
+ 
+-		ret = regmap_read(drv->regmaps[i], TRP_INTERRUPT_0_STATUS,
++		ret = regmap_read(drv->regmaps[i], drv->edac_reg_offset->trp_interrupt_0_status,
+ 				  &trp_error);
+ 
+ 		if (!ret && (trp_error & SB_ECC_ERROR)) {
+@@ -342,7 +342,7 @@ static int qcom_llcc_edac_probe(struct platform_device *pdev)
+ 	int ecc_irq;
+ 	int rc;
+ 
+-	rc = qcom_llcc_core_setup(llcc_driv_data->bcast_regmap);
++	rc = qcom_llcc_core_setup(llcc_driv_data, llcc_driv_data->bcast_regmap);
+ 	if (rc)
+ 		return rc;
+ 
+diff --git a/include/linux/soc/qcom/llcc-qcom.h b/include/linux/soc/qcom/llcc-qcom.h
+index 423220e66026..93417ba1ead4 100644
+--- a/include/linux/soc/qcom/llcc-qcom.h
++++ b/include/linux/soc/qcom/llcc-qcom.h
+@@ -69,9 +69,6 @@ struct llcc_slice_desc {
+ /**
+  * struct llcc_edac_reg_data - llcc edac registers data for each error type
+  * @name: Name of the error
+- * @synd_reg: Syndrome register address
+- * @count_status_reg: Status register address to read the error count
+- * @ways_status_reg: Status register address to read the error ways
+  * @reg_cnt: Number of registers
+  * @count_mask: Mask value to get the error count
+  * @ways_mask: Mask value to get the error ways
+@@ -80,9 +77,6 @@ struct llcc_slice_desc {
+  */
+ struct llcc_edac_reg_data {
+ 	char *name;
+-	u64 synd_reg;
+-	u64 count_status_reg;
+-	u64 ways_status_reg;
+ 	u32 reg_cnt;
+ 	u32 count_mask;
+ 	u32 ways_mask;
 
