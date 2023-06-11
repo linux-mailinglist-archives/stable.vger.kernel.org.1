@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D775672B1F8
-	for <lists+stable@lfdr.de>; Sun, 11 Jun 2023 15:11:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50C0072B1F9
+	for <lists+stable@lfdr.de>; Sun, 11 Jun 2023 15:11:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231793AbjFKNLW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 11 Jun 2023 09:11:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54742 "EHLO
+        id S229562AbjFKNLZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 11 Jun 2023 09:11:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229562AbjFKNLV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 09:11:21 -0400
+        with ESMTP id S233536AbjFKNLY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 09:11:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA7431988
-        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 06:11:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D69310DA
+        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 06:11:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E56F61193
-        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 13:11:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F06C433EF;
-        Sun, 11 Jun 2023 13:11:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3B22C61193
+        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 13:11:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50AA1C433D2;
+        Sun, 11 Jun 2023 13:11:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686489077;
-        bh=Ki9dJuhOqJ2f3ofMWxpa4HcTx4SjPLGFQ7/ZJ9Z3MnE=;
+        s=korg; t=1686489081;
+        bh=X2SrBPM02IVrh3Jr43ZjzxC9xN4X3zpP/SmOvgT94Pk=;
         h=Subject:To:Cc:From:Date:From;
-        b=mqR7NYfbt4k2BpZEQ9E/pLJRb04HRhWYEGP7VMGdbRRnGXgKlaWY9FnJf0J3Y7zwh
-         a52OfkdNIChmByYGu1YGGIo+3RV0WXn+j+/yBIA7de15PlGw2tG5Fgw1IC7niB3k9q
-         c9hYWehfnRGMdmfOwwG2pZt2QoTUuX/YthE3DfzQ=
-Subject: FAILED: patch "[PATCH] Bluetooth: fix debugfs registration" failed to apply to 4.19-stable tree
+        b=b4oa+KxnBM01kCqRtXY6o0My+Cm/abe/yOg+jIxT8HCsQaT2EfD/czDbbcF7auRu/
+         tdX1wEU+woket/HQ93S7f9hs+FZeopr/iqaC4ytoADy3gskNwFEhHOWbDcspvOyTYB
+         uVzmmew1/FYfTmZmSWV+kEswWTh3Gf6Uxzcz9+kA=
+Subject: FAILED: patch "[PATCH] Bluetooth: fix debugfs registration" failed to apply to 4.14-stable tree
 To:     johan+linaro@kernel.org, luiz.von.dentz@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 11 Jun 2023 15:11:09 +0200
-Message-ID: <2023061109-dropbox-cattle-a47d@gregkh>
+Date:   Sun, 11 Jun 2023 15:11:10 +0200
+Message-ID: <2023061110-rise-hatless-e928@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x fe2ccc6c29d53e14d3c8b3ddf8ad965a92e074ee
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061109-dropbox-cattle-a47d@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061110-rise-hatless-e928@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
