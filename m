@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3862472B1FC
-	for <lists+stable@lfdr.de>; Sun, 11 Jun 2023 15:11:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EB0372B1FD
+	for <lists+stable@lfdr.de>; Sun, 11 Jun 2023 15:12:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233536AbjFKNLk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 11 Jun 2023 09:11:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54842 "EHLO
+        id S233612AbjFKNM1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 11 Jun 2023 09:12:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232910AbjFKNLj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 09:11:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD85110DC
-        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 06:11:38 -0700 (PDT)
+        with ESMTP id S232910AbjFKNM1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 09:12:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E6289F
+        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 06:12:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B9DF61BE3
-        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 13:11:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A36FC433D2;
-        Sun, 11 Jun 2023 13:11:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C58F061087
+        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 13:12:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B25B4C433EF;
+        Sun, 11 Jun 2023 13:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686489097;
-        bh=yPG6IIWXqKBEUWVCSv0qlhvE9N1FSrr95zs6kSTfmhM=;
+        s=korg; t=1686489145;
+        bh=cEJLKTI1PreVPDFWZeM7+ETeInPDfC1cwr2hdlRtArs=;
         h=Subject:To:Cc:From:Date:From;
-        b=OrLdmK8EucXWiBfiABQIKquTayZfLjCHgIDkHU8L6wkvJuAWBQgh4TJ6SAoCk3QLD
-         m7DpnUnpAz/f7qixilzzFAZHOtopXqeRfxybVP6Ns9PyaAbshrgWat8GWdgMd5x3fS
-         x4jidLMfbsJYeyMFwNARZ9uo48tL185uzqPxysLg=
-Subject: FAILED: patch "[PATCH] Bluetooth: hci_qca: fix debugfs registration" failed to apply to 4.14-stable tree
-To:     johan+linaro@kernel.org, luiz.von.dentz@intel.com
+        b=CVPYVg3pzoJdQuu5GOAmidRu9aEB/F5ijjsKvMJjBzDgWH2R2vykXVdXau7WIO6Du
+         kr/K8A2AP3tFlY95aGzeuQWK1LvmqYsRX05WqAHxyO1i+dbKNsSbOuSJ29GjbrAfZu
+         FYLa+YvQLla0uLUrND6c+smgek/iBCqV4Ln24mns=
+Subject: FAILED: patch "[PATCH] cgroup: always put cset in cgroup_css_set_put_fork" failed to apply to 6.3-stable tree
+To:     jsperbeck@google.com, tj@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 11 Jun 2023 15:11:25 +0200
-Message-ID: <2023061125-doodle-same-5a50@gregkh>
+Date:   Sun, 11 Jun 2023 15:12:22 +0200
+Message-ID: <2023061122-spherical-drone-089d@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -48,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.3-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
 git checkout FETCH_HEAD
-git cherry-pick -x 47c5d829a3e326b7395352a10fc8a6effe7afa15
+git cherry-pick -x 2bd110339288c18823dcace602b63b0d8627e520
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061125-doodle-same-5a50@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061122-spherical-drone-089d@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
 
 Possible dependencies:
 
@@ -72,50 +72,79 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 47c5d829a3e326b7395352a10fc8a6effe7afa15 Mon Sep 17 00:00:00 2001
-From: Johan Hovold <johan+linaro@kernel.org>
-Date: Wed, 31 May 2023 10:57:59 +0200
-Subject: [PATCH] Bluetooth: hci_qca: fix debugfs registration
+From 2bd110339288c18823dcace602b63b0d8627e520 Mon Sep 17 00:00:00 2001
+From: John Sperbeck <jsperbeck@google.com>
+Date: Sun, 21 May 2023 19:29:53 +0000
+Subject: [PATCH] cgroup: always put cset in cgroup_css_set_put_fork
 
-Since commit 3e4be65eb82c ("Bluetooth: hci_qca: Add poweroff support
-during hci down for wcn3990"), the setup callback which registers the
-debugfs interface can be called multiple times.
+A successful call to cgroup_css_set_fork() will always have taken
+a ref on kargs->cset (regardless of CLONE_INTO_CGROUP), so always
+do a corresponding put in cgroup_css_set_put_fork().
 
-This specifically leads to the following error when powering on the
-controller:
+Without this, a cset and its contained css structures will be
+leaked for some fork failures.  The following script reproduces
+the leak for a fork failure due to exceeding pids.max in the
+pids controller.  A similar thing can happen if we jump to the
+bad_fork_cancel_cgroup label in copy_process().
 
-	debugfs: Directory 'ibs' with parent 'hci0' already present!
+[ -z "$1" ] && echo "Usage $0 pids-root" && exit 1
+PID_ROOT=$1
+CGROUP=$PID_ROOT/foo
 
-Add a driver flag to avoid trying to register the debugfs interface more
-than once.
+[ -e $CGROUP ] && rmdir -f $CGROUP
+mkdir $CGROUP
+echo 5 > $CGROUP/pids.max
+echo $$ > $CGROUP/cgroup.procs
 
-Fixes: 3e4be65eb82c ("Bluetooth: hci_qca: Add poweroff support during hci down for wcn3990")
-Cc: stable@vger.kernel.org	# 4.20
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+fork_bomb()
+{
+	set -e
+	for i in $(seq 10); do
+		/bin/sleep 3600 &
+	done
+}
 
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index 1b064504b388..e30c979535b1 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -78,7 +78,8 @@ enum qca_flags {
- 	QCA_HW_ERROR_EVENT,
- 	QCA_SSR_TRIGGERED,
- 	QCA_BT_OFF,
--	QCA_ROM_FW
-+	QCA_ROM_FW,
-+	QCA_DEBUGFS_CREATED,
- };
- 
- enum qca_capabilities {
-@@ -635,6 +636,9 @@ static void qca_debugfs_init(struct hci_dev *hdev)
- 	if (!hdev->debugfs)
- 		return;
- 
-+	if (test_and_set_bit(QCA_DEBUGFS_CREATED, &qca->flags))
-+		return;
+(fork_bomb) &
+wait
+echo $$ > $PID_ROOT/cgroup.procs
+kill $(cat $CGROUP/cgroup.procs)
+rmdir $CGROUP
+
+Fixes: ef2c41cf38a7 ("clone3: allow spawning processes into cgroups")
+Cc: stable@vger.kernel.org # v5.7+
+Signed-off-by: John Sperbeck <jsperbeck@google.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index 625d7483951c..245cf62ce85a 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -6486,19 +6486,18 @@ static int cgroup_css_set_fork(struct kernel_clone_args *kargs)
+ static void cgroup_css_set_put_fork(struct kernel_clone_args *kargs)
+ 	__releases(&cgroup_threadgroup_rwsem) __releases(&cgroup_mutex)
+ {
++	struct cgroup *cgrp = kargs->cgrp;
++	struct css_set *cset = kargs->cset;
 +
- 	ibs_dir = debugfs_create_dir("ibs", hdev->debugfs);
+ 	cgroup_threadgroup_change_end(current);
  
- 	/* read only */
++	if (cset) {
++		put_css_set(cset);
++		kargs->cset = NULL;
++	}
++
+ 	if (kargs->flags & CLONE_INTO_CGROUP) {
+-		struct cgroup *cgrp = kargs->cgrp;
+-		struct css_set *cset = kargs->cset;
+-
+ 		cgroup_unlock();
+-
+-		if (cset) {
+-			put_css_set(cset);
+-			kargs->cset = NULL;
+-		}
+-
+ 		if (cgrp) {
+ 			cgroup_put(cgrp);
+ 			kargs->cgrp = NULL;
 
