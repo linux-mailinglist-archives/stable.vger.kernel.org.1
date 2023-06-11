@@ -2,391 +2,141 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AF0E72B205
-	for <lists+stable@lfdr.de>; Sun, 11 Jun 2023 15:15:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32D3C72B265
+	for <lists+stable@lfdr.de>; Sun, 11 Jun 2023 17:14:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233646AbjFKNPU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 11 Jun 2023 09:15:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55530 "EHLO
+        id S229772AbjFKPO0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 11 Jun 2023 11:14:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232910AbjFKNPS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 09:15:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93B5C9F
-        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 06:15:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3020161087
-        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 13:15:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28714C433EF;
-        Sun, 11 Jun 2023 13:15:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686489315;
-        bh=hN240Qcpr/FZjdu+ml63m3+LsKVj2RW5/No73EUR8g4=;
-        h=Subject:To:Cc:From:Date:From;
-        b=z9pcja5AVOpplmZM4jKGw2mBSBd7Z751IrlYjDG+jlYZvTiDdp/5t7dDZN3fcDQVd
-         kr3/LgW4ftS99NMNk4r/BmwQgOcJYgB+Mph2gB1flJAkRnbF+5QkxHa1lThV6CRpe7
-         OhXZonseNqqVPW8k6zJQe9ferx1+WymcjnkXQt+8=
-Subject: FAILED: patch "[PATCH] EDAC/qcom: Get rid of hardcoded register offsets" failed to apply to 6.1-stable tree
-To:     mani@kernel.org, andersson@kernel.org, bp@alien8.de,
-        manivannan.sadhasivam@linaro.org, stable@vger.kernel.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 11 Jun 2023 15:15:04 +0200
-Message-ID: <2023061104-cane-brutishly-f3ba@gregkh>
+        with ESMTP id S229497AbjFKPOZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 11:14:25 -0400
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF7D419A;
+        Sun, 11 Jun 2023 08:14:23 -0700 (PDT)
+Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-652dd220d67so3648197b3a.3;
+        Sun, 11 Jun 2023 08:14:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686496463; x=1689088463;
+        h=content-transfer-encoding:in-reply-to:subject:references:cc:to:from
+         :content-language:user-agent:mime-version:date:message-id:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7WY33NERKlb17TukmGOgkhDaG5sdGDG/5hEoznoyZyc=;
+        b=KwDvtnK+ZKfFuIcSDBnGZGcuyVdYfWVKiDGusWxDKK7vtT4+rOpxM6PZSVLv8DxmQW
+         vAbTmuE8KHbyXmldyGPGn7On0esT7A1R7FX2K+uU/4twbBbhxhPv9ICSBb6hnVnFOpTn
+         8S3Lot2Yi4PD6Nttp+N/Fu2Cv4Pe2uxpST2/uebP3QxHUyiou5Q+HjaZ1n4hBEPZjwkk
+         iSEbv7JJoOHyyo/cVIxAUz8AgntHlytq3qj4iTD85j+wGkBTjMnCNm5XJc+HcfHTcWFm
+         BPoGr9jY74VX3XBiE4X/QaPCHDsGWC5x0DpQhDWKcCEpkRkGGH37KX99qxBY/81jbnnm
+         GuDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686496463; x=1689088463;
+        h=content-transfer-encoding:in-reply-to:subject:references:cc:to:from
+         :content-language:user-agent:mime-version:date:message-id:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7WY33NERKlb17TukmGOgkhDaG5sdGDG/5hEoznoyZyc=;
+        b=Nn59Tdvg1ivoHUWHd+1d5SoKpOw0OZYY03hgyKT1vFrLHG7krnYO2RgmKcoud2ywTI
+         pM9iKmWFjJ3wejtvDbG3NyaV7z5oFZJlhNTQa4Gk0a9GgTCvc4EGNDc3BIRwyHf2aPRV
+         aOHTtiNIB3HGcQwo4WJPITbVMEendlwG0ymm7X819C7YvQjeMxMk+w2fGrO9l3j7EHoQ
+         cSg5neuIW3LkYUOKoa3lpSLpspM4kH45wdW0lE/Cx4Hem6N6craMUuZcjELPKhw9p3D8
+         BbIHe5d6tWZ+u897M5HoQ+bkjBrgYxs+hGy+XD+bcEtYMgDPTSaF7L4gK29sTeacMbJl
+         nvzw==
+X-Gm-Message-State: AC+VfDyQ4NBxuiT53S/VH3O0nbCRSj/ts5QQoUw+gKgqOCDiX8XK6P9r
+        TvaDX0PT8m1tmg/HZk6Jzy0=
+X-Google-Smtp-Source: ACHHUZ43Ffz5wTnifjxwVl6GRz5Oa44su8A+B7LKcbE7NlYZIHGl1+2DlCG4ylI1qXLoHYRmpVaLdQ==
+X-Received: by 2002:a05:6a00:1aca:b0:658:8eae:a8de with SMTP id f10-20020a056a001aca00b006588eaea8demr8076103pfv.4.1686496463153;
+        Sun, 11 Jun 2023 08:14:23 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id k67-20020a632446000000b005439aaf0301sm5910871pgk.64.2023.06.11.08.14.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 11 Jun 2023 08:14:22 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <1e9e0ce4-dc47-81d6-e3a5-681d4a9ba9b0@roeck-us.net>
+Date:   Sun, 11 Jun 2023 08:14:19 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Content-Language: en-US
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Pavel Machek <pavel@denx.de>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ido Schimmel <idosch@nvidia.com>
+References: <20230607200903.652580797@linuxfoundation.org>
+ <b979807a-a437-4d3f-98f9-989da52abb30@roeck-us.net>
+ <d35b1ff1-e198-481c-b1be-9e22445efe06@roeck-us.net>
+ <ZITNw9cv/WoZcSaO@duo.ucw.cz>
+ <39b34446-88a7-eeb5-cf95-e4f1843100b3@roeck-us.net>
+Subject: Re: [PATCH 5.15 000/159] 5.15.116-rc1 review
+In-Reply-To: <39b34446-88a7-eeb5-cf95-e4f1843100b3@roeck-us.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 6/10/23 14:14, Guenter Roeck wrote:
+> Hi,
+> 
+> On 6/10/23 12:23, Pavel Machek wrote:
+>> Hi!
+>>
+>>>> Build results:
+>>>>     total: 155 pass: 155 fail: 0
+>>>> Qemu test results:
+>>>>     total: 499 pass: 498 fail: 1
+>>>> Failed tests:
+>>>>     arm:kudo-bmc:multi_v7_defconfig:npcm:usb0.1:nuvoton-npcm730-kudo:rootfs
+>>>>
+>>>> The test failure is spurious and not new. I observe it randomly on
+>>>> multi_v7_defconfig builds, primarily on npcm platforms. There is no error
+>>>> message, just a stalled boot. I have been trying to bisect for a while,
+>>>> but I have not been successful so far. No immediate concern; I just wanted
+>>>> to mention it in case someone else hits the same or a similar problem.
+>>>>
+>>>
+>>> I managed to revise my bisect script sufficiently enough to get reliable
+>>> results. It looks like the culprit is commit 503e554782c9 (" debugobject:
+>>> Ensure pool refill (again)"); see bisect log below. Bisect on four
+>>> different systems all have the same result. After reverting this patch,
+>>> I do not see the problem anymore (again, confirmed on four different
+>>> systems). If anyone has an idea how to debug this, please let me know.
+>>> I'll be happy to give it a try.
+>>
+>> You may want to comment out debug_objects_fill_pool() in
+>> debug_object_activate or debug_object_assert_init to see which one is
+>> causing the failure...
+>>
+>> CONFIG_PREEMPT_RT is disabled for you, right? (Should 5.15 even have
+>> that option?)
+>>
+> 
+> CONFIG_PREEMPT_RT is disabled (it depends on ARCH_SUPPORTS_RT which is not
+> enabled by any architecture in v5.15.y).
+> 
+> The added call in debug_object_activate() triggers the problem.
+> Any idea what to do about it or how to debug it further ?
+> 
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+I did some more debugging. The call to debug_object_activate()
+from debug_hrtimer_activate() causes the immediate problem, and the
+call from debug_timer_activate() causes a second (less likely) problem,
+where the stall is seen during reboot.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+In other words, the problem is (only) seen if DEBUG_OBJECTS_TIMERS
+is enabled.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x cbd77119b6355872cd308a60e99f9ca678435d15
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061104-cane-brutishly-f3ba@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From cbd77119b6355872cd308a60e99f9ca678435d15 Mon Sep 17 00:00:00 2001
-From: Manivannan Sadhasivam <mani@kernel.org>
-Date: Wed, 17 May 2023 17:16:35 +0530
-Subject: [PATCH] EDAC/qcom: Get rid of hardcoded register offsets
-
-The LLCC EDAC register offsets varies between each SoC. Hardcoding the
-register offsets won't work and will often result in crash due to
-accessing the wrong locations.
-
-Hence, get the register offsets from the LLCC driver matching the
-individual SoCs.
-
-Cc: <stable@vger.kernel.org> # 6.0: 5365cea199c7 ("soc: qcom: llcc: Rename reg_offset structs to reflect LLCC version")
-Cc: <stable@vger.kernel.org> # 6.0: c13d7d261e36 ("soc: qcom: llcc: Pass LLCC version based register offsets to EDAC driver")
-Cc: <stable@vger.kernel.org> # 6.0
-Fixes: a6e9d7ef252c ("soc: qcom: llcc: Add configuration data for SM8450 SoC")
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230517114635.76358-3-manivannan.sadhasivam@linaro.org
-
-diff --git a/drivers/edac/qcom_edac.c b/drivers/edac/qcom_edac.c
-index 6140001f21c4..b2db545c6810 100644
---- a/drivers/edac/qcom_edac.c
-+++ b/drivers/edac/qcom_edac.c
-@@ -21,30 +21,9 @@
- #define TRP_SYN_REG_CNT                 6
- #define DRP_SYN_REG_CNT                 8
- 
--#define LLCC_COMMON_STATUS0             0x0003000c
- #define LLCC_LB_CNT_MASK                GENMASK(31, 28)
- #define LLCC_LB_CNT_SHIFT               28
- 
--/* Single & double bit syndrome register offsets */
--#define TRP_ECC_SB_ERR_SYN0             0x0002304c
--#define TRP_ECC_DB_ERR_SYN0             0x00020370
--#define DRP_ECC_SB_ERR_SYN0             0x0004204c
--#define DRP_ECC_DB_ERR_SYN0             0x00042070
--
--/* Error register offsets */
--#define TRP_ECC_ERROR_STATUS1           0x00020348
--#define TRP_ECC_ERROR_STATUS0           0x00020344
--#define DRP_ECC_ERROR_STATUS1           0x00042048
--#define DRP_ECC_ERROR_STATUS0           0x00042044
--
--/* TRP, DRP interrupt register offsets */
--#define DRP_INTERRUPT_STATUS            0x00041000
--#define TRP_INTERRUPT_0_STATUS          0x00020480
--#define DRP_INTERRUPT_CLEAR             0x00041008
--#define DRP_ECC_ERROR_CNTR_CLEAR        0x00040004
--#define TRP_INTERRUPT_0_CLEAR           0x00020484
--#define TRP_ECC_ERROR_CNTR_CLEAR        0x00020440
--
- /* Mask and shift macros */
- #define ECC_DB_ERR_COUNT_MASK           GENMASK(4, 0)
- #define ECC_DB_ERR_WAYS_MASK            GENMASK(31, 16)
-@@ -60,15 +39,6 @@
- #define DRP_TRP_INT_CLEAR               GENMASK(1, 0)
- #define DRP_TRP_CNT_CLEAR               GENMASK(1, 0)
- 
--/* Config registers offsets*/
--#define DRP_ECC_ERROR_CFG               0x00040000
--
--/* Tag RAM, Data RAM interrupt register offsets */
--#define CMN_INTERRUPT_0_ENABLE          0x0003001c
--#define CMN_INTERRUPT_2_ENABLE          0x0003003c
--#define TRP_INTERRUPT_0_ENABLE          0x00020488
--#define DRP_INTERRUPT_ENABLE            0x0004100c
--
- #define SB_ERROR_THRESHOLD              0x1
- #define SB_ERROR_THRESHOLD_SHIFT        24
- #define SB_DB_TRP_INTERRUPT_ENABLE      0x3
-@@ -88,9 +58,6 @@ enum {
- static const struct llcc_edac_reg_data edac_reg_data[] = {
- 	[LLCC_DRAM_CE] = {
- 		.name = "DRAM Single-bit",
--		.synd_reg = DRP_ECC_SB_ERR_SYN0,
--		.count_status_reg = DRP_ECC_ERROR_STATUS1,
--		.ways_status_reg = DRP_ECC_ERROR_STATUS0,
- 		.reg_cnt = DRP_SYN_REG_CNT,
- 		.count_mask = ECC_SB_ERR_COUNT_MASK,
- 		.ways_mask = ECC_SB_ERR_WAYS_MASK,
-@@ -98,9 +65,6 @@ static const struct llcc_edac_reg_data edac_reg_data[] = {
- 	},
- 	[LLCC_DRAM_UE] = {
- 		.name = "DRAM Double-bit",
--		.synd_reg = DRP_ECC_DB_ERR_SYN0,
--		.count_status_reg = DRP_ECC_ERROR_STATUS1,
--		.ways_status_reg = DRP_ECC_ERROR_STATUS0,
- 		.reg_cnt = DRP_SYN_REG_CNT,
- 		.count_mask = ECC_DB_ERR_COUNT_MASK,
- 		.ways_mask = ECC_DB_ERR_WAYS_MASK,
-@@ -108,9 +72,6 @@ static const struct llcc_edac_reg_data edac_reg_data[] = {
- 	},
- 	[LLCC_TRAM_CE] = {
- 		.name = "TRAM Single-bit",
--		.synd_reg = TRP_ECC_SB_ERR_SYN0,
--		.count_status_reg = TRP_ECC_ERROR_STATUS1,
--		.ways_status_reg = TRP_ECC_ERROR_STATUS0,
- 		.reg_cnt = TRP_SYN_REG_CNT,
- 		.count_mask = ECC_SB_ERR_COUNT_MASK,
- 		.ways_mask = ECC_SB_ERR_WAYS_MASK,
-@@ -118,9 +79,6 @@ static const struct llcc_edac_reg_data edac_reg_data[] = {
- 	},
- 	[LLCC_TRAM_UE] = {
- 		.name = "TRAM Double-bit",
--		.synd_reg = TRP_ECC_DB_ERR_SYN0,
--		.count_status_reg = TRP_ECC_ERROR_STATUS1,
--		.ways_status_reg = TRP_ECC_ERROR_STATUS0,
- 		.reg_cnt = TRP_SYN_REG_CNT,
- 		.count_mask = ECC_DB_ERR_COUNT_MASK,
- 		.ways_mask = ECC_DB_ERR_WAYS_MASK,
-@@ -128,7 +86,7 @@ static const struct llcc_edac_reg_data edac_reg_data[] = {
- 	},
- };
- 
--static int qcom_llcc_core_setup(struct regmap *llcc_bcast_regmap)
-+static int qcom_llcc_core_setup(struct llcc_drv_data *drv, struct regmap *llcc_bcast_regmap)
- {
- 	u32 sb_err_threshold;
- 	int ret;
-@@ -137,31 +95,31 @@ static int qcom_llcc_core_setup(struct regmap *llcc_bcast_regmap)
- 	 * Configure interrupt enable registers such that Tag, Data RAM related
- 	 * interrupts are propagated to interrupt controller for servicing
- 	 */
--	ret = regmap_update_bits(llcc_bcast_regmap, CMN_INTERRUPT_2_ENABLE,
-+	ret = regmap_update_bits(llcc_bcast_regmap, drv->edac_reg_offset->cmn_interrupt_2_enable,
- 				 TRP0_INTERRUPT_ENABLE,
- 				 TRP0_INTERRUPT_ENABLE);
- 	if (ret)
- 		return ret;
- 
--	ret = regmap_update_bits(llcc_bcast_regmap, TRP_INTERRUPT_0_ENABLE,
-+	ret = regmap_update_bits(llcc_bcast_regmap, drv->edac_reg_offset->trp_interrupt_0_enable,
- 				 SB_DB_TRP_INTERRUPT_ENABLE,
- 				 SB_DB_TRP_INTERRUPT_ENABLE);
- 	if (ret)
- 		return ret;
- 
- 	sb_err_threshold = (SB_ERROR_THRESHOLD << SB_ERROR_THRESHOLD_SHIFT);
--	ret = regmap_write(llcc_bcast_regmap, DRP_ECC_ERROR_CFG,
-+	ret = regmap_write(llcc_bcast_regmap, drv->edac_reg_offset->drp_ecc_error_cfg,
- 			   sb_err_threshold);
- 	if (ret)
- 		return ret;
- 
--	ret = regmap_update_bits(llcc_bcast_regmap, CMN_INTERRUPT_2_ENABLE,
-+	ret = regmap_update_bits(llcc_bcast_regmap, drv->edac_reg_offset->cmn_interrupt_2_enable,
- 				 DRP0_INTERRUPT_ENABLE,
- 				 DRP0_INTERRUPT_ENABLE);
- 	if (ret)
- 		return ret;
- 
--	ret = regmap_write(llcc_bcast_regmap, DRP_INTERRUPT_ENABLE,
-+	ret = regmap_write(llcc_bcast_regmap, drv->edac_reg_offset->drp_interrupt_enable,
- 			   SB_DB_DRP_INTERRUPT_ENABLE);
- 	return ret;
- }
-@@ -175,24 +133,28 @@ qcom_llcc_clear_error_status(int err_type, struct llcc_drv_data *drv)
- 	switch (err_type) {
- 	case LLCC_DRAM_CE:
- 	case LLCC_DRAM_UE:
--		ret = regmap_write(drv->bcast_regmap, DRP_INTERRUPT_CLEAR,
-+		ret = regmap_write(drv->bcast_regmap,
-+				   drv->edac_reg_offset->drp_interrupt_clear,
- 				   DRP_TRP_INT_CLEAR);
- 		if (ret)
- 			return ret;
- 
--		ret = regmap_write(drv->bcast_regmap, DRP_ECC_ERROR_CNTR_CLEAR,
-+		ret = regmap_write(drv->bcast_regmap,
-+				   drv->edac_reg_offset->drp_ecc_error_cntr_clear,
- 				   DRP_TRP_CNT_CLEAR);
- 		if (ret)
- 			return ret;
- 		break;
- 	case LLCC_TRAM_CE:
- 	case LLCC_TRAM_UE:
--		ret = regmap_write(drv->bcast_regmap, TRP_INTERRUPT_0_CLEAR,
-+		ret = regmap_write(drv->bcast_regmap,
-+				   drv->edac_reg_offset->trp_interrupt_0_clear,
- 				   DRP_TRP_INT_CLEAR);
- 		if (ret)
- 			return ret;
- 
--		ret = regmap_write(drv->bcast_regmap, TRP_ECC_ERROR_CNTR_CLEAR,
-+		ret = regmap_write(drv->bcast_regmap,
-+				   drv->edac_reg_offset->trp_ecc_error_cntr_clear,
- 				   DRP_TRP_CNT_CLEAR);
- 		if (ret)
- 			return ret;
-@@ -205,16 +167,54 @@ qcom_llcc_clear_error_status(int err_type, struct llcc_drv_data *drv)
- 	return ret;
- }
- 
-+struct qcom_llcc_syn_regs {
-+	u32 synd_reg;
-+	u32 count_status_reg;
-+	u32 ways_status_reg;
-+};
-+
-+static void get_reg_offsets(struct llcc_drv_data *drv, int err_type,
-+			    struct qcom_llcc_syn_regs *syn_regs)
-+{
-+	const struct llcc_edac_reg_offset *edac_reg_offset = drv->edac_reg_offset;
-+
-+	switch (err_type) {
-+	case LLCC_DRAM_CE:
-+		syn_regs->synd_reg = edac_reg_offset->drp_ecc_sb_err_syn0;
-+		syn_regs->count_status_reg = edac_reg_offset->drp_ecc_error_status1;
-+		syn_regs->ways_status_reg = edac_reg_offset->drp_ecc_error_status0;
-+		break;
-+	case LLCC_DRAM_UE:
-+		syn_regs->synd_reg = edac_reg_offset->drp_ecc_db_err_syn0;
-+		syn_regs->count_status_reg = edac_reg_offset->drp_ecc_error_status1;
-+		syn_regs->ways_status_reg = edac_reg_offset->drp_ecc_error_status0;
-+		break;
-+	case LLCC_TRAM_CE:
-+		syn_regs->synd_reg = edac_reg_offset->trp_ecc_sb_err_syn0;
-+		syn_regs->count_status_reg = edac_reg_offset->trp_ecc_error_status1;
-+		syn_regs->ways_status_reg = edac_reg_offset->trp_ecc_error_status0;
-+		break;
-+	case LLCC_TRAM_UE:
-+		syn_regs->synd_reg = edac_reg_offset->trp_ecc_db_err_syn0;
-+		syn_regs->count_status_reg = edac_reg_offset->trp_ecc_error_status1;
-+		syn_regs->ways_status_reg = edac_reg_offset->trp_ecc_error_status0;
-+		break;
-+	}
-+}
-+
- /* Dump Syndrome registers data for Tag RAM, Data RAM bit errors*/
- static int
- dump_syn_reg_values(struct llcc_drv_data *drv, u32 bank, int err_type)
- {
- 	struct llcc_edac_reg_data reg_data = edac_reg_data[err_type];
-+	struct qcom_llcc_syn_regs regs = { };
- 	int err_cnt, err_ways, ret, i;
- 	u32 synd_reg, synd_val;
- 
-+	get_reg_offsets(drv, err_type, &regs);
-+
- 	for (i = 0; i < reg_data.reg_cnt; i++) {
--		synd_reg = reg_data.synd_reg + (i * 4);
-+		synd_reg = regs.synd_reg + (i * 4);
- 		ret = regmap_read(drv->regmaps[bank], synd_reg,
- 				  &synd_val);
- 		if (ret)
-@@ -224,7 +224,7 @@ dump_syn_reg_values(struct llcc_drv_data *drv, u32 bank, int err_type)
- 			    reg_data.name, i, synd_val);
- 	}
- 
--	ret = regmap_read(drv->regmaps[bank], reg_data.count_status_reg,
-+	ret = regmap_read(drv->regmaps[bank], regs.count_status_reg,
- 			  &err_cnt);
- 	if (ret)
- 		goto clear;
-@@ -234,7 +234,7 @@ dump_syn_reg_values(struct llcc_drv_data *drv, u32 bank, int err_type)
- 	edac_printk(KERN_CRIT, EDAC_LLCC, "%s: Error count: 0x%4x\n",
- 		    reg_data.name, err_cnt);
- 
--	ret = regmap_read(drv->regmaps[bank], reg_data.ways_status_reg,
-+	ret = regmap_read(drv->regmaps[bank], regs.ways_status_reg,
- 			  &err_ways);
- 	if (ret)
- 		goto clear;
-@@ -295,7 +295,7 @@ static irqreturn_t llcc_ecc_irq_handler(int irq, void *edev_ctl)
- 
- 	/* Iterate over the banks and look for Tag RAM or Data RAM errors */
- 	for (i = 0; i < drv->num_banks; i++) {
--		ret = regmap_read(drv->regmaps[i], DRP_INTERRUPT_STATUS,
-+		ret = regmap_read(drv->regmaps[i], drv->edac_reg_offset->drp_interrupt_status,
- 				  &drp_error);
- 
- 		if (!ret && (drp_error & SB_ECC_ERROR)) {
-@@ -310,7 +310,7 @@ static irqreturn_t llcc_ecc_irq_handler(int irq, void *edev_ctl)
- 		if (!ret)
- 			irq_rc = IRQ_HANDLED;
- 
--		ret = regmap_read(drv->regmaps[i], TRP_INTERRUPT_0_STATUS,
-+		ret = regmap_read(drv->regmaps[i], drv->edac_reg_offset->trp_interrupt_0_status,
- 				  &trp_error);
- 
- 		if (!ret && (trp_error & SB_ECC_ERROR)) {
-@@ -342,7 +342,7 @@ static int qcom_llcc_edac_probe(struct platform_device *pdev)
- 	int ecc_irq;
- 	int rc;
- 
--	rc = qcom_llcc_core_setup(llcc_driv_data->bcast_regmap);
-+	rc = qcom_llcc_core_setup(llcc_driv_data, llcc_driv_data->bcast_regmap);
- 	if (rc)
- 		return rc;
- 
-diff --git a/include/linux/soc/qcom/llcc-qcom.h b/include/linux/soc/qcom/llcc-qcom.h
-index 423220e66026..93417ba1ead4 100644
---- a/include/linux/soc/qcom/llcc-qcom.h
-+++ b/include/linux/soc/qcom/llcc-qcom.h
-@@ -69,9 +69,6 @@ struct llcc_slice_desc {
- /**
-  * struct llcc_edac_reg_data - llcc edac registers data for each error type
-  * @name: Name of the error
-- * @synd_reg: Syndrome register address
-- * @count_status_reg: Status register address to read the error count
-- * @ways_status_reg: Status register address to read the error ways
-  * @reg_cnt: Number of registers
-  * @count_mask: Mask value to get the error count
-  * @ways_mask: Mask value to get the error ways
-@@ -80,9 +77,6 @@ struct llcc_slice_desc {
-  */
- struct llcc_edac_reg_data {
- 	char *name;
--	u64 synd_reg;
--	u64 count_status_reg;
--	u64 ways_status_reg;
- 	u32 reg_cnt;
- 	u32 count_mask;
- 	u32 ways_mask;
+Guenter
 
