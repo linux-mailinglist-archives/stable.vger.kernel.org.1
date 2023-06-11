@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F97172B200
-	for <lists+stable@lfdr.de>; Sun, 11 Jun 2023 15:12:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 883B772B201
+	for <lists+stable@lfdr.de>; Sun, 11 Jun 2023 15:12:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233618AbjFKNMh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 11 Jun 2023 09:12:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55250 "EHLO
+        id S233630AbjFKNMp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 11 Jun 2023 09:12:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232910AbjFKNMg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 09:12:36 -0400
+        with ESMTP id S232910AbjFKNMo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 09:12:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FE6E9F
-        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 06:12:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BC259F
+        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 06:12:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 343F461087
-        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 13:12:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5A3C433D2;
-        Sun, 11 Jun 2023 13:12:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1FAF761087
+        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 13:12:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE21C433EF;
+        Sun, 11 Jun 2023 13:12:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686489154;
-        bh=EGaRfvvHhY7BmXuWwoJVKe4I3rAdd3K6RaxPwH5/6nk=;
+        s=korg; t=1686489162;
+        bh=STNAJtrjagubnl0A10nnDXRy2p1RvWWdnMKqRNWJTFY=;
         h=Subject:To:Cc:From:Date:From;
-        b=YAHiAoOEa2r+LMJXxODhrCUeDBPC9oTyTKdR+zyi+Rpyvet4Ioo+Dq6Q4bYpJJtYn
-         oPBtPJPr6oP+8lT+XZjy6L6Ao5x00mnSn74v2yXzbH/PlTfqH1TCsIvVaYwI5kCgQ/
-         E5U2rJ+boEpSkHT9IMQqzJ+z4ZzmMOZmWvb8iNHc=
-Subject: FAILED: patch "[PATCH] cgroup: always put cset in cgroup_css_set_put_fork" failed to apply to 5.10-stable tree
-To:     jsperbeck@google.com, tj@kernel.org
+        b=f5/fiQ1fKxTvbSp5I5+DrgRTQBgjzqAQJy3ynWl8UbgN2e/ci6+UhmMDJ8+YIl41n
+         mVI+eqrJIjRPrKMhz92XMYGkVQynW74+vJBLQdMs9ZY/xE0cyn9VQf6/tIylag71nA
+         6Jp8V+55vFir6Qb1+ZOn1tZkLsIdjKJDY6NEKG3Y=
+Subject: FAILED: patch "[PATCH] cgroup: fix missing cpus_read_{lock,unlock}() in" failed to apply to 6.3-stable tree
+To:     zhengqi.arch@bytedance.com, songmuchun@bytedance.com,
+        tj@kernel.org, zhaogongyi@bytedance.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 11 Jun 2023 15:12:26 +0200
-Message-ID: <2023061126-outthink-improvise-7307@gregkh>
+Date:   Sun, 11 Jun 2023 15:12:33 +0200
+Message-ID: <2023061132-curator-unbent-d3ad@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -48,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.3-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2bd110339288c18823dcace602b63b0d8627e520
+git cherry-pick -x ab1de7ead871ebe6d12a774c3c25de0388cde082
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061126-outthink-improvise-7307@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061132-curator-unbent-d3ad@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
 
 Possible dependencies:
 
@@ -72,79 +73,71 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2bd110339288c18823dcace602b63b0d8627e520 Mon Sep 17 00:00:00 2001
-From: John Sperbeck <jsperbeck@google.com>
-Date: Sun, 21 May 2023 19:29:53 +0000
-Subject: [PATCH] cgroup: always put cset in cgroup_css_set_put_fork
+From ab1de7ead871ebe6d12a774c3c25de0388cde082 Mon Sep 17 00:00:00 2001
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+Date: Wed, 17 May 2023 07:45:45 +0000
+Subject: [PATCH] cgroup: fix missing cpus_read_{lock,unlock}() in
+ cgroup_transfer_tasks()
 
-A successful call to cgroup_css_set_fork() will always have taken
-a ref on kargs->cset (regardless of CLONE_INTO_CGROUP), so always
-do a corresponding put in cgroup_css_set_put_fork().
+The commit 4f7e7236435c ("cgroup: Fix threadgroup_rwsem <-> cpus_read_lock()
+deadlock") fixed the deadlock between cgroup_threadgroup_rwsem and
+cpus_read_lock() by introducing cgroup_attach_{lock,unlock}() and removing
+cpus_read_{lock,unlock}() from cpuset_attach(). But cgroup_transfer_tasks()
+was missed and not handled, which will cause th following warning:
 
-Without this, a cset and its contained css structures will be
-leaked for some fork failures.  The following script reproduces
-the leak for a fork failure due to exceeding pids.max in the
-pids controller.  A similar thing can happen if we jump to the
-bad_fork_cancel_cgroup label in copy_process().
+ WARNING: CPU: 0 PID: 589 at kernel/cpu.c:526 lockdep_assert_cpus_held+0x32/0x40
+ CPU: 0 PID: 589 Comm: kworker/1:4 Not tainted 6.4.0-rc2-next-20230517 #50
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01/2014
+ Workqueue: events cpuset_hotplug_workfn
+ RIP: 0010:lockdep_assert_cpus_held+0x32/0x40
+ <...>
+ Call Trace:
+  <TASK>
+  cpuset_attach+0x40/0x240
+  cgroup_migrate_execute+0x452/0x5e0
+  ? _raw_spin_unlock_irq+0x28/0x40
+  cgroup_transfer_tasks+0x1f3/0x360
+  ? find_held_lock+0x32/0x90
+  ? cpuset_hotplug_workfn+0xc81/0xed0
+  cpuset_hotplug_workfn+0xcb1/0xed0
+  ? process_one_work+0x248/0x5b0
+  process_one_work+0x2b9/0x5b0
+  worker_thread+0x56/0x3b0
+  ? process_one_work+0x5b0/0x5b0
+  kthread+0xf1/0x120
+  ? kthread_complete_and_exit+0x20/0x20
+  ret_from_fork+0x1f/0x30
+  </TASK>
 
-[ -z "$1" ] && echo "Usage $0 pids-root" && exit 1
-PID_ROOT=$1
-CGROUP=$PID_ROOT/foo
+So just use the cgroup_attach_{lock,unlock}() helper to fix it.
 
-[ -e $CGROUP ] && rmdir -f $CGROUP
-mkdir $CGROUP
-echo 5 > $CGROUP/pids.max
-echo $$ > $CGROUP/cgroup.procs
-
-fork_bomb()
-{
-	set -e
-	for i in $(seq 10); do
-		/bin/sleep 3600 &
-	done
-}
-
-(fork_bomb) &
-wait
-echo $$ > $PID_ROOT/cgroup.procs
-kill $(cat $CGROUP/cgroup.procs)
-rmdir $CGROUP
-
-Fixes: ef2c41cf38a7 ("clone3: allow spawning processes into cgroups")
-Cc: stable@vger.kernel.org # v5.7+
-Signed-off-by: John Sperbeck <jsperbeck@google.com>
+Reported-by: Zhao Gongyi <zhaogongyi@bytedance.com>
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Acked-by: Muchun Song <songmuchun@bytedance.com>
+Fixes: 05c7b7a92cc8 ("cgroup/cpuset: Fix a race between cpuset_attach() and cpu hotplug")
+Cc: stable@vger.kernel.org # v5.17+
 Signed-off-by: Tejun Heo <tj@kernel.org>
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 625d7483951c..245cf62ce85a 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -6486,19 +6486,18 @@ static int cgroup_css_set_fork(struct kernel_clone_args *kargs)
- static void cgroup_css_set_put_fork(struct kernel_clone_args *kargs)
- 	__releases(&cgroup_threadgroup_rwsem) __releases(&cgroup_mutex)
- {
-+	struct cgroup *cgrp = kargs->cgrp;
-+	struct css_set *cset = kargs->cset;
-+
- 	cgroup_threadgroup_change_end(current);
+diff --git a/kernel/cgroup/cgroup-v1.c b/kernel/cgroup/cgroup-v1.c
+index aeef06c465ef..5407241dbb45 100644
+--- a/kernel/cgroup/cgroup-v1.c
++++ b/kernel/cgroup/cgroup-v1.c
+@@ -108,7 +108,7 @@ int cgroup_transfer_tasks(struct cgroup *to, struct cgroup *from)
  
-+	if (cset) {
-+		put_css_set(cset);
-+		kargs->cset = NULL;
-+	}
-+
- 	if (kargs->flags & CLONE_INTO_CGROUP) {
--		struct cgroup *cgrp = kargs->cgrp;
--		struct css_set *cset = kargs->cset;
--
- 		cgroup_unlock();
--
--		if (cset) {
--			put_css_set(cset);
--			kargs->cset = NULL;
--		}
--
- 		if (cgrp) {
- 			cgroup_put(cgrp);
- 			kargs->cgrp = NULL;
+ 	cgroup_lock();
+ 
+-	percpu_down_write(&cgroup_threadgroup_rwsem);
++	cgroup_attach_lock(true);
+ 
+ 	/* all tasks in @from are being moved, all csets are source */
+ 	spin_lock_irq(&css_set_lock);
+@@ -144,7 +144,7 @@ int cgroup_transfer_tasks(struct cgroup *to, struct cgroup *from)
+ 	} while (task && !ret);
+ out_err:
+ 	cgroup_migrate_finish(&mgctx);
+-	percpu_up_write(&cgroup_threadgroup_rwsem);
++	cgroup_attach_unlock(true);
+ 	cgroup_unlock();
+ 	return ret;
+ }
 
