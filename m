@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5EF972B203
-	for <lists+stable@lfdr.de>; Sun, 11 Jun 2023 15:15:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AF0E72B205
+	for <lists+stable@lfdr.de>; Sun, 11 Jun 2023 15:15:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233633AbjFKNPJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 11 Jun 2023 09:15:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55512 "EHLO
+        id S233646AbjFKNPU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 11 Jun 2023 09:15:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232910AbjFKNPJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 09:15:09 -0400
+        with ESMTP id S232910AbjFKNPS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 09:15:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A3B69F
-        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 06:15:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93B5C9F
+        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 06:15:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2327861231
-        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 13:15:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B01AC433EF;
-        Sun, 11 Jun 2023 13:15:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3020161087
+        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 13:15:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28714C433EF;
+        Sun, 11 Jun 2023 13:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686489306;
-        bh=psDy3DbLUbrXdpQfFLxIawFHLSxlJelNoametOWZOcA=;
+        s=korg; t=1686489315;
+        bh=hN240Qcpr/FZjdu+ml63m3+LsKVj2RW5/No73EUR8g4=;
         h=Subject:To:Cc:From:Date:From;
-        b=zqWWOG22PFg0uXt63YP+b0az2SXZxluQC1yNeEJw0DshkJqXy+kqdMt8DaxbKzbhx
-         XTGqa5FBcWa6HgB6eohiXXEy84MtFPw54eN0ud5bTm13pNwVQiNou2O4w17lzQRUPl
-         NkVIGwTsglXOER5s63FSdZ4DacmNYafiAFF/RPOA=
-Subject: FAILED: patch "[PATCH] EDAC/qcom: Get rid of hardcoded register offsets" failed to apply to 6.3-stable tree
+        b=z9pcja5AVOpplmZM4jKGw2mBSBd7Z751IrlYjDG+jlYZvTiDdp/5t7dDZN3fcDQVd
+         kr3/LgW4ftS99NMNk4r/BmwQgOcJYgB+Mph2gB1flJAkRnbF+5QkxHa1lThV6CRpe7
+         OhXZonseNqqVPW8k6zJQe9ferx1+WymcjnkXQt+8=
+Subject: FAILED: patch "[PATCH] EDAC/qcom: Get rid of hardcoded register offsets" failed to apply to 6.1-stable tree
 To:     mani@kernel.org, andersson@kernel.org, bp@alien8.de,
         manivannan.sadhasivam@linaro.org, stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 11 Jun 2023 15:15:03 +0200
-Message-ID: <2023061103-perky-gracious-d962@gregkh>
+Date:   Sun, 11 Jun 2023 15:15:04 +0200
+Message-ID: <2023061104-cane-brutishly-f3ba@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.3-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x cbd77119b6355872cd308a60e99f9ca678435d15
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061103-perky-gracious-d962@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061104-cane-brutishly-f3ba@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
