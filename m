@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21BF372C129
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:56:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6698472C248
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:04:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236681AbjFLK4y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:56:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60290 "EHLO
+        id S237803AbjFLLEA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:04:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236690AbjFLK4h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:56:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EC9DD5E7
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:44:19 -0700 (PDT)
+        with ESMTP id S237111AbjFLLDe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:03:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D32427EF1
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:51:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E45F0612B4
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:44:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4120C433D2;
-        Mon, 12 Jun 2023 10:44:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 702AA62537
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:51:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8185EC433D2;
+        Mon, 12 Jun 2023 10:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566658;
-        bh=jEuMCZlB6k6IkyhDhDNA2ucFdMwI8BrA8LRZbkqGAMY=;
+        s=korg; t=1686567095;
+        bh=95iwpAtoNZeCOMLqbAt18AhREwNbfyDMmpnQeG9WliA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DExO056CBiouxOPyo7a0n0fp6b2a7jzO6Y/PzD54SmKcdo5P9ZZDCOljrPRNf55/8
-         AfqY9A3A60BjWxvwABWGWiwlZU6YdvUMLDoKBxab8s6x1Fd9w8hCfYY81f6uuOynkd
-         fe5/MXd1rh1+0daepyGfEQVWRSDldIf73kRBc+7Y=
+        b=crnA55Bs3M4LiJzIK5mEQr1gZGZRuJsyGAtlQDkPsyTYeax7oSqCWjMW8QPzG6f1x
+         IPnFpma+CHwIXNNt91aBNr7fXiqtZyzjqUe82Bpa7TtEdRGVHp6uv2hqb3WrdVX/gM
+         soFKqKhufqElTCwOd0JVbwo3oNXKy4yhmFOn8w+g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shenwei Wang <shenwei.wang@nxp.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 108/132] arm64: dts: imx8-ss-dma: assign default clock rate for lpuarts
+        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
+        Dongsheng Yang <dongsheng.yang@easystack.cn>
+Subject: [PATCH 6.3 110/160] rbd: get snapshot context after exclusive lock is ensured to be held
 Date:   Mon, 12 Jun 2023 12:27:22 +0200
-Message-ID: <20230612101715.220846330@linuxfoundation.org>
+Message-ID: <20230612101720.079525574@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,65 +53,119 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shenwei Wang <shenwei.wang@nxp.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-[ Upstream commit ca50d7765587fe0a8351a6e8d9742cfd4811d925 ]
+commit 870611e4877eff1e8413c3fb92a585e45d5291f6 upstream.
 
-Add the assigned-clocks and assigned-clock-rates properties for the
-LPUARTx nodes. Without these properties, the default clock rate
-used would be 0, which can cause the UART ports to fail when open.
+Move capturing the snapshot context into the image request state
+machine, after exclusive lock is ensured to be held for the duration of
+dealing with the image request.  This is needed to ensure correctness
+of fast-diff states (OBJECT_EXISTS vs OBJECT_EXISTS_CLEAN) and object
+deltas computed based off of them.  Otherwise the object map that is
+forked for the snapshot isn't guaranteed to accurately reflect the
+contents of the snapshot when the snapshot is taken under I/O.  This
+breaks differential backup and snapshot-based mirroring use cases with
+fast-diff enabled: since some object deltas may be incomplete, the
+destination image may get corrupted.
 
-Fixes: 35f4e9d7530f ("arm64: dts: imx8: split adma ss into dma and audio ss")
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://tracker.ceph.com/issues/61472
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/block/rbd.c |   30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-index d7b4229bb4a23..9ad56aaf19b42 100644
---- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-@@ -26,6 +26,8 @@ lpuart0: serial@5a060000 {
- 		clocks = <&uart0_lpcg IMX_LPCG_CLK_4>,
- 			 <&uart0_lpcg IMX_LPCG_CLK_0>;
- 		clock-names = "ipg", "baud";
-+		assigned-clocks = <&clk IMX_SC_R_UART_0 IMX_SC_PM_CLK_PER>;
-+		assigned-clock-rates = <80000000>;
- 		power-domains = <&pd IMX_SC_R_UART_0>;
- 		status = "disabled";
- 	};
-@@ -36,6 +38,8 @@ lpuart1: serial@5a070000 {
- 		clocks = <&uart1_lpcg IMX_LPCG_CLK_4>,
- 			 <&uart1_lpcg IMX_LPCG_CLK_0>;
- 		clock-names = "ipg", "baud";
-+		assigned-clocks = <&clk IMX_SC_R_UART_1 IMX_SC_PM_CLK_PER>;
-+		assigned-clock-rates = <80000000>;
- 		power-domains = <&pd IMX_SC_R_UART_1>;
- 		status = "disabled";
- 	};
-@@ -46,6 +50,8 @@ lpuart2: serial@5a080000 {
- 		clocks = <&uart2_lpcg IMX_LPCG_CLK_4>,
- 			 <&uart2_lpcg IMX_LPCG_CLK_0>;
- 		clock-names = "ipg", "baud";
-+		assigned-clocks = <&clk IMX_SC_R_UART_2 IMX_SC_PM_CLK_PER>;
-+		assigned-clock-rates = <80000000>;
- 		power-domains = <&pd IMX_SC_R_UART_2>;
- 		status = "disabled";
- 	};
-@@ -56,6 +62,8 @@ lpuart3: serial@5a090000 {
- 		clocks = <&uart3_lpcg IMX_LPCG_CLK_4>,
- 			 <&uart3_lpcg IMX_LPCG_CLK_0>;
- 		clock-names = "ipg", "baud";
-+		assigned-clocks = <&clk IMX_SC_R_UART_3 IMX_SC_PM_CLK_PER>;
-+		assigned-clock-rates = <80000000>;
- 		power-domains = <&pd IMX_SC_R_UART_3>;
- 		status = "disabled";
- 	};
--- 
-2.39.2
-
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -1336,6 +1336,8 @@ static bool rbd_obj_is_tail(struct rbd_o
+  */
+ static void rbd_obj_set_copyup_enabled(struct rbd_obj_request *obj_req)
+ {
++	rbd_assert(obj_req->img_request->snapc);
++
+ 	if (obj_req->img_request->op_type == OBJ_OP_DISCARD) {
+ 		dout("%s %p objno %llu discard\n", __func__, obj_req,
+ 		     obj_req->ex.oe_objno);
+@@ -1456,6 +1458,7 @@ __rbd_obj_add_osd_request(struct rbd_obj
+ static struct ceph_osd_request *
+ rbd_obj_add_osd_request(struct rbd_obj_request *obj_req, int num_ops)
+ {
++	rbd_assert(obj_req->img_request->snapc);
+ 	return __rbd_obj_add_osd_request(obj_req, obj_req->img_request->snapc,
+ 					 num_ops);
+ }
+@@ -1592,15 +1595,18 @@ static void rbd_img_request_init(struct
+ 	mutex_init(&img_request->state_mutex);
+ }
+ 
++/*
++ * Only snap_id is captured here, for reads.  For writes, snapshot
++ * context is captured in rbd_img_object_requests() after exclusive
++ * lock is ensured to be held.
++ */
+ static void rbd_img_capture_header(struct rbd_img_request *img_req)
+ {
+ 	struct rbd_device *rbd_dev = img_req->rbd_dev;
+ 
+ 	lockdep_assert_held(&rbd_dev->header_rwsem);
+ 
+-	if (rbd_img_is_write(img_req))
+-		img_req->snapc = ceph_get_snap_context(rbd_dev->header.snapc);
+-	else
++	if (!rbd_img_is_write(img_req))
+ 		img_req->snap_id = rbd_dev->spec->snap_id;
+ 
+ 	if (rbd_dev_parent_get(rbd_dev))
+@@ -3482,9 +3488,19 @@ static int rbd_img_exclusive_lock(struct
+ 
+ static void rbd_img_object_requests(struct rbd_img_request *img_req)
+ {
++	struct rbd_device *rbd_dev = img_req->rbd_dev;
+ 	struct rbd_obj_request *obj_req;
+ 
+ 	rbd_assert(!img_req->pending.result && !img_req->pending.num_pending);
++	rbd_assert(!need_exclusive_lock(img_req) ||
++		   __rbd_is_lock_owner(rbd_dev));
++
++	if (rbd_img_is_write(img_req)) {
++		rbd_assert(!img_req->snapc);
++		down_read(&rbd_dev->header_rwsem);
++		img_req->snapc = ceph_get_snap_context(rbd_dev->header.snapc);
++		up_read(&rbd_dev->header_rwsem);
++	}
+ 
+ 	for_each_obj_request(img_req, obj_req) {
+ 		int result = 0;
+@@ -3502,7 +3518,6 @@ static void rbd_img_object_requests(stru
+ 
+ static bool rbd_img_advance(struct rbd_img_request *img_req, int *result)
+ {
+-	struct rbd_device *rbd_dev = img_req->rbd_dev;
+ 	int ret;
+ 
+ again:
+@@ -3523,9 +3538,6 @@ again:
+ 		if (*result)
+ 			return true;
+ 
+-		rbd_assert(!need_exclusive_lock(img_req) ||
+-			   __rbd_is_lock_owner(rbd_dev));
+-
+ 		rbd_img_object_requests(img_req);
+ 		if (!img_req->pending.num_pending) {
+ 			*result = img_req->pending.result;
+@@ -3987,6 +3999,10 @@ static int rbd_post_acquire_action(struc
+ {
+ 	int ret;
+ 
++	ret = rbd_dev_refresh(rbd_dev);
++	if (ret)
++		return ret;
++
+ 	if (rbd_dev->header.features & RBD_FEATURE_OBJECT_MAP) {
+ 		ret = rbd_object_map_open(rbd_dev);
+ 		if (ret)
 
 
