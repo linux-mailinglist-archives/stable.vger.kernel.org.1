@@ -2,67 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7960E72CE9E
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 20:40:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A00472CEC3
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 20:54:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233574AbjFLSkq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 14:40:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58058 "EHLO
+        id S231517AbjFLSy3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 14:54:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234190AbjFLSkp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 14:40:45 -0400
-Received: from mail-vs1-xe2c.google.com (mail-vs1-xe2c.google.com [IPv6:2607:f8b0:4864:20::e2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9AB8E6B
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 11:40:42 -0700 (PDT)
-Received: by mail-vs1-xe2c.google.com with SMTP id ada2fe7eead31-43dc0aa328dso120151137.1
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 11:40:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686595242; x=1689187242;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=kPF8uPb56GviGY9KiREimI3Llex5+RzsOybBEO8RgOE=;
-        b=bSub8knI2My+mzdaIppR7khjRkqEOAJYxAgrpaHsB74yBrmaVGcnccW2fkxC4RD4Er
-         Dj36HtgZm64aau1F0geqCqra5BKcQhORteB3ZvxW7jGgx9alss4uXQlntCEmhf0+qUBP
-         SMaknbSSY9pftOMeU3KeaORgEvCbHS2kVgp5UnYdRQoz/IZowDK88X9xNypKonMdKix0
-         +fifpmPPyY2IT9deMsOL7TohKu/WS+pDiOf0xNRBYb3SFiJ0KMRv2wPud7uFV5CVg/9F
-         xnyR9o/n6O3XXziSeQDA8q522aR7h1Ea5bKDFX/e+SRceRhvlRHctdALXvVMGW7pQolc
-         tX4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686595242; x=1689187242;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kPF8uPb56GviGY9KiREimI3Llex5+RzsOybBEO8RgOE=;
-        b=BlRuX5Rq4yfO6F3yh6eUp4PgUsLEM6sjT667yGwByRxWrre21E7ueBruwXxMJXBIq8
-         KZrpyFp9vsZuvHocZLEr7nVvNEn9j19fRA4aN5vN2eUOJjIVNgWbTGCSusxXbqrtc2YV
-         IDI7Tj4itLqpvTIx/DNDflPn7bkD9L8ny8vCY4bEd55nVNVE2dlQqnugb1aYCUE+MC9Q
-         2DtCbcDuRxSYWeGUc8vg4ArF3eY54g4HXKbKQpxHDXoXxxrWLBvAFDKwcrZHbepLbl99
-         2cENqFvhxZSLx2j7mOHO2aBVvViKPoIbicApdjHCGWM/WEkYEu86hhZctG26CfWDhQyI
-         uOsA==
-X-Gm-Message-State: AC+VfDyPBYsgdyyqvQeLhrmM4DVxE6nFOobHvP3i76YzZFsDBPy8GVtY
-        btfYtAV5sxgtbRNtjvayzVwIuiFZmA377yqKLPXm0A==
-X-Google-Smtp-Source: ACHHUZ6+WeYQrAwQgl9qOclJRU4IgMRZR5i2j3aydWORpX0W6M+7rLZHhZ1sf5W41WNq+KeYignkj7N34hIkFAod87o=
-X-Received: by 2002:a05:6102:5106:b0:43b:1dd8:76b4 with SMTP id
- bm6-20020a056102510600b0043b1dd876b4mr5677539vsb.11.1686595241684; Mon, 12
- Jun 2023 11:40:41 -0700 (PDT)
-MIME-Version: 1.0
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Tue, 13 Jun 2023 00:10:30 +0530
-Message-ID: <CA+G9fYsJq0sPC+q6vLNKUgBqCGmmjDrfeP4R1-95Eu28FJRY_A@mail.gmail.com>
-Subject: =?UTF-8?Q?clang=3A_Powerpc=3A_clang=2Dnightly=2Dmaple=5Fdefconfig_=E2=80=94_FA?=
-        =?UTF-8?Q?IL?=
-To:     clang-built-linux <llvm@lists.linux.dev>,
+        with ESMTP id S229576AbjFLSy2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 14:54:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53744189;
+        Mon, 12 Jun 2023 11:54:27 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC54E620E6;
+        Mon, 12 Jun 2023 18:54:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B808DC433EF;
+        Mon, 12 Jun 2023 18:54:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686596066;
+        bh=/Ri1xyOerdimybY5WnwGgxuj7fv7VGFmjAE4nT3rS6c=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=SJSh/vuWkOaDMgV+aJhtgMUtUkZlKSJ207YLgw2MMqinW9+Ax7JBbNJB0TEh3zpKQ
+         TPtoFVa4YCcif6L2dfpF8lWIVtT4JVDS9sP5m9y4sdnDpGSPC2IqzSNy4EZ7wTGjlO
+         gMz9V6BXA1aAuXg9irzuu2u1SmvTjFOTTEKEkUhUDynk5cB2V0h9hIeq2L7RV9heDN
+         9ZKg5RjNKH1YsoxU0OUdMnELVNDidzZurCRd4lxYXC0yfhZP3WXOPRFVd9yK5eUWCV
+         01Fq4dfxwyi6SHbneeufQNKJ5CHfd8IlA73levP3Pxwyyi3zcTZ4y85VyVWR0dvDtl
+         xkO5n2Izn2kDA==
+Date:   Mon, 12 Jun 2023 11:54:24 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc:     clang-built-linux <llvm@lists.linux.dev>,
         open list <linux-kernel@vger.kernel.org>,
         linux-stable <stable@vger.kernel.org>,
-        lkft-triage@lists.linaro.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        lkft-triage@lists.linaro.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
         Nick Desaulniers <ndesaulniers@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Subject: Re: clang: Powerpc: =?utf-8?Q?clang-nightl?=
+ =?utf-8?B?eS1tYXBsZV9kZWZjb25maWcg4oCU?= FAIL
+Message-ID: <20230612185424.GA2891387@dev-arch.thelio-3990X>
+References: <CA+G9fYsJq0sPC+q6vLNKUgBqCGmmjDrfeP4R1-95Eu28FJRY_A@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+G9fYsJq0sPC+q6vLNKUgBqCGmmjDrfeP4R1-95Eu28FJRY_A@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -71,81 +60,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[Please ignore if it is already reported]
+Hi Naresh,
 
-Following two builds failed on stable-rc 6.1.34-rc1.
+On Tue, Jun 13, 2023 at 12:10:30AM +0530, Naresh Kamboju wrote:
+> [Please ignore if it is already reported]
+> 
+> Following two builds failed on stable-rc 6.1.34-rc1.
+> 
+>   - Powerpc: clang-nightly-maple_defconfig — FAIL
+>   - Powerpc: clang-nightly-cell_defconfig — FAIL
+> 
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> 
+> make --silent --keep-going --jobs=8
+> O=/home/tuxbuild/.cache/tuxmake/builds/1/build ARCH=powerpc
+> CROSS_COMPILE=powerpc64le-linux-gnu- HOSTCC=clang CC=clang LLVM=1
+> LLVM_IAS=0 LD=powerpc64le-linux-gnu-ld
+> 
+> arch/powerpc/lib/copypage_power7.S: Assembler messages:
+> arch/powerpc/lib/copypage_power7.S:34: Error: junk at end of line: `0b01000'
+> arch/powerpc/lib/copypage_power7.S:35: Error: junk at end of line: `0b01010'
+> arch/powerpc/lib/copypage_power7.S:37: Error: junk at end of line: `0b01000'
+> arch/powerpc/lib/copypage_power7.S:38: Error: junk at end of line: `0b01010'
+> arch/powerpc/lib/copypage_power7.S:40: Error: junk at end of line: `0b01010'
+> clang: error: assembler command failed with exit code 1 (use -v to see
+> invocation)
+> make[4]: *** [scripts/Makefile.build:382:
+> arch/powerpc/lib/copypage_power7.o] Error 1
+> make[4]: Target 'arch/powerpc/lib/' not remade because of errors.
+> make[3]: *** [scripts/Makefile.build:500: arch/powerpc/lib] Error 2
+> arch/powerpc/kernel/exceptions-64s.S: Assembler messages:
+> arch/powerpc/kernel/exceptions-64s.S:2959: Error: junk at end of line: `0b01010'
+> arch/powerpc/kernel/exceptions-64s.S:2979: Error: junk at end of line: `0b01010'
+> arch/powerpc/kernel/exceptions-64s.S:2994: Error: junk at end of line: `0b01010'
+> arch/powerpc/kernel/exceptions-64s.S:3012: Error: junk at end of line: `0b01010'
+> arch/powerpc/kernel/exceptions-64s.S:3032: Error: junk at end of line: `0b01010'
+> arch/powerpc/kernel/exceptions-64s.S:3079: Error: junk at end of line: `0b01010'
+> clang: error: assembler command failed with exit code 1 (use -v to see
+> invocation)
+> make[4]: *** [scripts/Makefile.build:382: arch/powerpc/kernel/head_64.o] Error 1
+> arch/powerpc/kernel/entry_64.S: Assembler messages:
+> arch/powerpc/kernel/entry_64.S:172: Error: junk at end of line: `0b01010'
+> clang: error: assembler command failed with exit code 1 (use -v to see
+> invocation)
+> make[4]: *** [scripts/Makefile.build:382:
+> arch/powerpc/kernel/entry_64.o] Error 1
+> make[4]: Target 'arch/powerpc/kernel/' not remade because of errors.
+> make[3]: *** [scripts/Makefile.build:500: arch/powerpc/kernel] Error 2
+> make[3]: Target 'arch/powerpc/' not remade because of errors.
+> make[2]: *** [scripts/Makefile.build:500: arch/powerpc] Error 2
+> make[2]: Target './' not remade because of errors.
+> make[1]: *** [Makefile:2012: .] Error 2
+> make[1]: Target '__all' not remade because of errors.
+> make: *** [Makefile:238: __sub-make] Error 2
+> make: Target '__all' not remade because of errors.
 
-  - Powerpc: clang-nightly-maple_defconfig =E2=80=94 FAIL
-  - Powerpc: clang-nightly-cell_defconfig =E2=80=94 FAIL
+As always, thanks for the report. This is an LLVM regression/change in
+behavior caused by [1], which can break as-option and as-instr on
+releases prior to commit d5c8d6e0fa61 ("kbuild: Update assembler calls
+to use proper flags and language target"), as unsupported flags for the
+current target ('-x') may be present (KBUILD_CFLAGS is used for these
+tests instead of KBUILD_AFLAGS). Inside try-run, the macro behind
+as-instr and as-option, I see
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+  clang-17: error: unsupported option '-mno-prefixed' for target 'powerpc64le-linux-gnu'
+  clang-17: error: unsupported option '-mno-pcrel' for target 'powerpc64le-linux-gnu'
+  clang-17: error: unsupported option '-mno-altivec' for target 'powerpc64le-linux-gnu'
+  clang-17: error: unsupported option '-mno-vsx' for target 'powerpc64le-linux-gnu'
+  clang-17: error: unsupported option '-mno-mma' for target 'powerpc64le-linux-gnu'
+  clang-17: error: unsupported option '-mno-spe' for target 'powerpc64le-linux-gnu'
 
-make --silent --keep-going --jobs=3D8
-O=3D/home/tuxbuild/.cache/tuxmake/builds/1/build ARCH=3Dpowerpc
-CROSS_COMPILE=3Dpowerpc64le-linux-gnu- HOSTCC=3Dclang CC=3Dclang LLVM=3D1
-LLVM_IAS=3D0 LD=3Dpowerpc64le-linux-gnu-ld
+This has come up recently elsewhere in PowerPC, see
+commit 2b694fc96fe3 ("powerpc/boot: Disable power10 features after
+BOOTAFLAGS assignment"). While I think it is dubious that clang errors
+on these flags for the assembler target, this is already fixed on the
+Linux side by using KBUILD_AFLAGS for these make macros.
 
-arch/powerpc/lib/copypage_power7.S: Assembler messages:
-arch/powerpc/lib/copypage_power7.S:34: Error: junk at end of line: `0b01000=
-'
-arch/powerpc/lib/copypage_power7.S:35: Error: junk at end of line: `0b01010=
-'
-arch/powerpc/lib/copypage_power7.S:37: Error: junk at end of line: `0b01000=
-'
-arch/powerpc/lib/copypage_power7.S:38: Error: junk at end of line: `0b01010=
-'
-arch/powerpc/lib/copypage_power7.S:40: Error: junk at end of line: `0b01010=
-'
-clang: error: assembler command failed with exit code 1 (use -v to see
-invocation)
-make[4]: *** [scripts/Makefile.build:382:
-arch/powerpc/lib/copypage_power7.o] Error 1
-make[4]: Target 'arch/powerpc/lib/' not remade because of errors.
-make[3]: *** [scripts/Makefile.build:500: arch/powerpc/lib] Error 2
-arch/powerpc/kernel/exceptions-64s.S: Assembler messages:
-arch/powerpc/kernel/exceptions-64s.S:2959: Error: junk at end of line: `0b0=
-1010'
-arch/powerpc/kernel/exceptions-64s.S:2979: Error: junk at end of line: `0b0=
-1010'
-arch/powerpc/kernel/exceptions-64s.S:2994: Error: junk at end of line: `0b0=
-1010'
-arch/powerpc/kernel/exceptions-64s.S:3012: Error: junk at end of line: `0b0=
-1010'
-arch/powerpc/kernel/exceptions-64s.S:3032: Error: junk at end of line: `0b0=
-1010'
-arch/powerpc/kernel/exceptions-64s.S:3079: Error: junk at end of line: `0b0=
-1010'
-clang: error: assembler command failed with exit code 1 (use -v to see
-invocation)
-make[4]: *** [scripts/Makefile.build:382: arch/powerpc/kernel/head_64.o] Er=
-ror 1
-arch/powerpc/kernel/entry_64.S: Assembler messages:
-arch/powerpc/kernel/entry_64.S:172: Error: junk at end of line: `0b01010'
-clang: error: assembler command failed with exit code 1 (use -v to see
-invocation)
-make[4]: *** [scripts/Makefile.build:382:
-arch/powerpc/kernel/entry_64.o] Error 1
-make[4]: Target 'arch/powerpc/kernel/' not remade because of errors.
-make[3]: *** [scripts/Makefile.build:500: arch/powerpc/kernel] Error 2
-make[3]: Target 'arch/powerpc/' not remade because of errors.
-make[2]: *** [scripts/Makefile.build:500: arch/powerpc] Error 2
-make[2]: Target './' not remade because of errors.
-make[1]: *** [Makefile:2012: .] Error 2
-make[1]: Target '__all' not remade because of errors.
-make: *** [Makefile:238: __sub-make] Error 2
-make: Target '__all' not remade because of errors.
+I am preparing a series of d5c8d6e0fa61 and its dependencies for 6.1 but
+I want to do sufficient build testing first, which is currently running
+for me. Would you be able to point your matrix to [2] to make sure
+everything works properly with both GCC and LLVM? It is a work in
+progress as the second patch in the stack needs a proper commit message
+but it is the diff I expect to ship so that it all that matters.
 
+[1]: https://github.com/llvm/llvm-project/commit/5548843d692a92a7840f14002debc3cebcb3cdc3
+[2]: https://git.kernel.org/pub/scm/linux/kernel/git/nathan/linux.git/log/?h=wip/b4/6-1-asssembler-target-llvm-17
 
-
-Links,
-- https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1=
-.33-133-g08f336c8c68d/testrun/17475368/suite/build/test/clang-nightly-cell_=
-defconfig/history/
-- https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1=
-.33-133-g08f336c8c68d/testrun/17475373/suite/build/test/clang-nightly-maple=
-_defconfig/history/
-
-
---
-Linaro LKFT
-https://lkft.linaro.org
+Cheers,
+Nathan
