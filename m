@@ -2,104 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 662A472BCF6
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 11:46:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5A1C72BD1B
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 11:53:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233337AbjFLJqx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 05:46:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59184 "EHLO
+        id S232269AbjFLJw7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 05:52:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234377AbjFLJqU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 05:46:20 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 019E69EF9
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 02:33:45 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-51480d3e161so6128886a12.3
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 02:33:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686562364; x=1689154364;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fxptPHq1O+ZJRSAEfyKsgsV23hTKa6VIIx3zc9GnV3c=;
-        b=hCmcyVytK82HpzCwE/oay+5j6YXulQ5qeBz2qIxRxPCSNBmrxyI/KkUXPV9/C73H2G
-         217lTHoZxqJw+nNxRymHSgB3rfxbUk5vmxf8Z6Xf4tZoiLr7e0gJJnwVOe13n7aHl49t
-         L1gSSmsYSV7Ujk0CnZhQJtNJdjSppqi23dSUsGMRbxyWNbtWLEgj6Cn3xP03BVl6M1MA
-         6eYF6i2fdMInmlARzm5ZYXdkR1d8RvWgp1zFGxNLxYPTAn3e4FmonBJVXT+FV2chBQo+
-         cCSgKa0xJe9Dlny+9g3dQsNblopH7UNjPxYqri8TO8G8JEsynvtl7BmSxH8o72Ci0ddY
-         AacQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686562364; x=1689154364;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fxptPHq1O+ZJRSAEfyKsgsV23hTKa6VIIx3zc9GnV3c=;
-        b=jba/hLyrjUO+qEG/SFGGzVR04MXIDgCp1n2KX2OhiWmC1fgd7da0GcRScAMpse4QSO
-         l/mqcs0X/K7f0uw0iclL7AQOxfEfTsRVcqUuhJAl+mNMS9KX2qTjIhnIIfDWmIY0h1iR
-         7CfNH8rdcrU6ZauXSv9KgrxfrmtCLRu71VgRAmbjpXnbMK82U3yWtn+hJe0c07nxoI91
-         NYHaQLds+kD+hGAIviYYUfTP6GJfq3EGZcT7MOJAZ2DzO2A/QgeffEk6kbOQ3f6FnOBg
-         NbaSxjH6P/7E47o1rmCmA4CgGq6exRbuDXJb6lvfawrZFG2ry2gGLh4CE+5TKWSM4DM7
-         r3bQ==
-X-Gm-Message-State: AC+VfDzj0JR/K14T8yv3paOoYLV2040zlNjGmquGNGnlGuhrg8FyULuu
-        6K5heHNvvrccPM2zUmHnn2+HluBkmFFkjKuJ0Io=
-X-Google-Smtp-Source: ACHHUZ6/FojaJyTEQm9O6Zs6A+IrBkSNajZV0GiHGHRLLIRkYPyz3EOWYKvPK5Eom/xvmuTzP7o8shkmEtop/ADMS2A=
-X-Received: by 2002:a17:907:1c97:b0:973:ff4d:d01e with SMTP id
- nb23-20020a1709071c9700b00973ff4dd01emr9772718ejc.31.1686562364436; Mon, 12
- Jun 2023 02:32:44 -0700 (PDT)
+        with ESMTP id S229533AbjFLJwT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 05:52:19 -0400
+Received: from phobos.denx.de (phobos.denx.de [IPv6:2a01:238:438b:c500:173d:9f52:ddab:ee01])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B8439678
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 02:36:41 -0700 (PDT)
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: marex@denx.de)
+        by phobos.denx.de (Postfix) with ESMTPSA id 7F35984682;
+        Mon, 12 Jun 2023 11:36:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+        s=phobos-20191101; t=1686562599;
+        bh=AlUcBHOL8pXtm34yWd6JErCfh8dio8BjWUZzaXOwb8Q=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=F473lQhZhpnayMegTy/n654vnFkcLq1C8ao/C9nlzpvqwTNUZkKqh2Wl8p8DZgluu
+         wH4aELs0GCbiWImEgmNthizAg34yGqbzkvuuUsLJKlyjyadaxrxe4jL1qAHKbJN21o
+         ww5DQZsrdoAjdIRwmT5ZG2m6W+5NKPNeQL8cTJh0pPYVKTG6DMNn/gPs9+FmbjCK1O
+         9vBwlayY86Opxie2uGSc5gg1x4yMb4psK7wApigJOZvre/D3L4PR5zB6/7A9bLBjOk
+         Sff/MDFPqmH2NzfgzXePthuOXJAIpXofgpWEZZcjpQ/IU9VMl2L8GSUnDXmmqw1hLI
+         XBDKqnSshZ4bg==
+Message-ID: <111df1a8-2945-3868-6ce3-98dcaa4912df@denx.de>
+Date:   Mon, 12 Jun 2023 11:36:38 +0200
 MIME-Version: 1.0
-References: <20230611184127.29830-1-idryomov@gmail.com> <2023061228-dab-doorbell-c1ed@gregkh>
-In-Reply-To: <2023061228-dab-doorbell-c1ed@gregkh>
-From:   Ilya Dryomov <idryomov@gmail.com>
-Date:   Mon, 12 Jun 2023 11:32:32 +0200
-Message-ID: <CAOi1vP9chuevEnh4j0KTPMJ6VUKSM78TsFL8CQndz40uRXPb-g@mail.gmail.com>
-Subject: Re: [PATCH for 5.4] rbd: get snapshot context after exclusive lock is
- ensured to be held
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v2] drm/mxsfb: Disable overlay plane in
+ mxsfb_plane_overlay_atomic_disable()
+Content-Language: en-US
+To:     Liu Ying <victor.liu@nxp.com>, dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org
+Cc:     stefan@agner.ch, airlied@gmail.com, daniel@ffwll.ch,
+        shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+        festevam@gmail.com, linux-imx@nxp.com, sam@ravnborg.org,
+        stable@vger.kernel.org
+References: <20230612092359.784115-1-victor.liu@nxp.com>
+From:   Marek Vasut <marex@denx.de>
+In-Reply-To: <20230612092359.784115-1-victor.liu@nxp.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jun 12, 2023 at 11:25=E2=80=AFAM Greg KH <gregkh@linuxfoundation.or=
-g> wrote:
->
-> On Sun, Jun 11, 2023 at 08:41:27PM +0200, Ilya Dryomov wrote:
-> > Move capturing the snapshot context into the image request state
-> > machine, after exclusive lock is ensured to be held for the duration of
-> > dealing with the image request.  This is needed to ensure correctness
-> > of fast-diff states (OBJECT_EXISTS vs OBJECT_EXISTS_CLEAN) and object
-> > deltas computed based off of them.  Otherwise the object map that is
-> > forked for the snapshot isn't guaranteed to accurately reflect the
-> > contents of the snapshot when the snapshot is taken under I/O.  This
-> > breaks differential backup and snapshot-based mirroring use cases with
-> > fast-diff enabled: since some object deltas may be incomplete, the
-> > destination image may get corrupted.
-> >
-> > Cc: stable@vger.kernel.org
-> > Link: https://tracker.ceph.com/issues/61472
-> > Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-> > Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
-> > [idryomov@gmail.com: backport to 5.4: no rbd_img_capture_header(),
-> >  img_request not embedded in blk-mq pdu]
-> > ---
-> >  drivers/block/rbd.c | 41 ++++++++++++++++++++++++-----------------
-> >  1 file changed, 24 insertions(+), 17 deletions(-)
->
-> What is the commit id in Linus's tree of this change?
+On 6/12/23 11:23, Liu Ying wrote:
+> When disabling overlay plane in mxsfb_plane_overlay_atomic_update(),
+> overlay plane's framebuffer pointer is NULL.  So, dereferencing it would
+> cause a kernel Oops(NULL pointer dereferencing).  Fix the issue by
+> disabling overlay plane in mxsfb_plane_overlay_atomic_disable() instead.
+> 
+> Fixes: cb285a5348e7 ("drm: mxsfb: Replace mxsfb_get_fb_paddr() with drm_fb_cma_get_gem_addr()")
+> Cc: stable@vger.kernel.org # 5.19+
+> Signed-off-by: Liu Ying <victor.liu@nxp.com>
 
-Hi Greg,
-
-It's 870611e4877eff1e8413c3fb92a585e45d5291f6.
-
-Thanks,
-
-                Ilya
+Reviewed-by: Marek Vasut <marex@denx.de>
