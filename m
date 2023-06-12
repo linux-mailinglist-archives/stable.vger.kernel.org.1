@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC50372C1DA
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:01:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 294D772BF9D
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:45:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237540AbjFLLBC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:01:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60806 "EHLO
+        id S233327AbjFLKpz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:45:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236960AbjFLLAq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:00:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5B5F449D
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:47:34 -0700 (PDT)
+        with ESMTP id S234330AbjFLKpM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:45:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 643C26EAC
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:30:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 42C036247E
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:47:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54A34C4339E;
-        Mon, 12 Jun 2023 10:47:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 44E1C61500
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:30:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B63C433EF;
+        Mon, 12 Jun 2023 10:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566853;
-        bh=1nrQ5F6ekR10V8j/UcRgcOG4Erc+vhsRua3F4EN64Ng=;
+        s=korg; t=1686565804;
+        bh=3NUSvyRoVAfr/QfONetE2PuaZnvPKTiaoIdLj2dy1Kg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s/LYMunbujD2AKpYPeo7leOHeuZ3os0O3zBlIj7Bbv7Ww82To0BIJ0GPie868I2qd
-         daO+6+Hn8bbd8x7Er282b6YeqUZHoGC7M8xdz/EO/pTb6SpNYGzYNlgKgDXown4/7O
-         46cJCNzAu1w0mJGRiDqOWDp5CSx0C07YUBaahPKo=
+        b=oLWZCZQa2/ulBo3Xoz85g77n4beZdx36D5+dEu6YW4A8Y6c4cmTrf7FQEYI/f9Om3
+         JDoUjGqThM42ZvK8vWEtPDsj0GRoxxd9hYtR5CSM9b3F94s8ExLJkceQJSIO9CP2eN
+         F4nVULmWrW3dm+WdNap3J/FjYkferahf4oVA7/o8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 049/160] rfs: annotate lockless accesses to sk->sk_rxhash
-Date:   Mon, 12 Jun 2023 12:26:21 +0200
-Message-ID: <20230612101717.279538736@linuxfoundation.org>
+        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
+        Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>,
+        Stefan Ghinea <stefan.ghinea@windriver.com>
+Subject: [PATCH 4.19 21/23] btrfs: check return value of btrfs_commit_transaction in relocation
+Date:   Mon, 12 Jun 2023 12:26:22 +0200
+Message-ID: <20230612101651.846259280@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101651.138592130@linuxfoundation.org>
+References: <20230612101651.138592130@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,73 +55,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 1e5c647c3f6d4f8497dedcd226204e1880e0ffb3 ]
+commit fb686c6824dd6294ca772b92424b8fba666e7d00 upstream.
 
-Add READ_ONCE()/WRITE_ONCE() on accesses to sk->sk_rxhash.
+There are a few places where we don't check the return value of
+btrfs_commit_transaction in relocation.c.  Thankfully all these places
+have straightforward error handling, so simply change all of the sites
+at once.
 
-This also prevents a (smart ?) compiler to remove the condition in:
-
-if (sk->sk_rxhash != newval)
-	sk->sk_rxhash = newval;
-
-We need the condition to avoid dirtying a shared cache line.
-
-Fixes: fec5e652e58f ("rfs: Receive Flow Steering")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Stefan Ghinea <stefan.ghinea@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sock.h | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ fs/btrfs/relocation.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 45e46a1c4afc6..f0654c44acf5f 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1152,8 +1152,12 @@ static inline void sock_rps_record_flow(const struct sock *sk)
- 		 * OR	an additional socket flag
- 		 * [1] : sk_state and sk_prot are in the same cache line.
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -2341,7 +2341,7 @@ again:
+ 	list_splice(&reloc_roots, &rc->reloc_roots);
+ 
+ 	if (!err)
+-		btrfs_commit_transaction(trans);
++		err = btrfs_commit_transaction(trans);
+ 	else
+ 		btrfs_end_transaction(trans);
+ 	return err;
+@@ -3930,8 +3930,7 @@ int prepare_to_relocate(struct reloc_con
  		 */
--		if (sk->sk_state == TCP_ESTABLISHED)
--			sock_rps_record_flow_hash(sk->sk_rxhash);
-+		if (sk->sk_state == TCP_ESTABLISHED) {
-+			/* This READ_ONCE() is paired with the WRITE_ONCE()
-+			 * from sock_rps_save_rxhash() and sock_rps_reset_rxhash().
-+			 */
-+			sock_rps_record_flow_hash(READ_ONCE(sk->sk_rxhash));
-+		}
+ 		return PTR_ERR(trans);
  	}
- #endif
- }
-@@ -1162,15 +1166,19 @@ static inline void sock_rps_save_rxhash(struct sock *sk,
- 					const struct sk_buff *skb)
- {
- #ifdef CONFIG_RPS
--	if (unlikely(sk->sk_rxhash != skb->hash))
--		sk->sk_rxhash = skb->hash;
-+	/* The following WRITE_ONCE() is paired with the READ_ONCE()
-+	 * here, and another one in sock_rps_record_flow().
-+	 */
-+	if (unlikely(READ_ONCE(sk->sk_rxhash) != skb->hash))
-+		WRITE_ONCE(sk->sk_rxhash, skb->hash);
- #endif
+-	btrfs_commit_transaction(trans);
+-	return 0;
++	return btrfs_commit_transaction(trans);
  }
  
- static inline void sock_rps_reset_rxhash(struct sock *sk)
- {
- #ifdef CONFIG_RPS
--	sk->sk_rxhash = 0;
-+	/* Paired with READ_ONCE() in sock_rps_record_flow() */
-+	WRITE_ONCE(sk->sk_rxhash, 0);
- #endif
- }
- 
--- 
-2.39.2
-
+ static noinline_for_stack int relocate_block_group(struct reloc_control *rc)
+@@ -4097,7 +4096,9 @@ restart:
+ 		err = PTR_ERR(trans);
+ 		goto out_free;
+ 	}
+-	btrfs_commit_transaction(trans);
++	ret = btrfs_commit_transaction(trans);
++	if (ret && !err)
++		err = ret;
+ out_free:
+ 	btrfs_free_block_rsv(fs_info, rc->block_rsv);
+ 	btrfs_free_path(path);
 
 
