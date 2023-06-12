@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D006772C04A
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:51:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C88E672C0CB
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:54:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235314AbjFLKvh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:51:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56698 "EHLO
+        id S236353AbjFLKym (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:54:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235425AbjFLKvK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:51:10 -0400
+        with ESMTP id S236015AbjFLKyS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 067AA868B;
-        Mon, 12 Jun 2023 03:35:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53FAE268D
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:39:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E01A623E2;
-        Mon, 12 Jun 2023 10:35:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2DDC433EF;
-        Mon, 12 Jun 2023 10:35:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DD81A612A1
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:39:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F105DC433D2;
+        Mon, 12 Jun 2023 10:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566137;
-        bh=IKwH/tBAoVNQ8juC60qCPJoFqJex7Fupw4VQCFwEX/c=;
+        s=korg; t=1686566398;
+        bh=E9g09rWu+pqsp75QD6O6PA7Mf19ddmLZPGl4spOU61U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b91dLeuUTA5gCmHXmyLkB3Jv08CRttQa4eXxozWUPFOvvYt17+NJlsBCLTfi8qODg
-         9u+3t6bfMG+TkRdyb1SfnX6cAOMQCMhXd7QQnE/LezZDBsaaTMIwwIfGzU5EJCzRPo
-         5tSRpkqVZBIw0SZD9W3+xs6HqyMcJSgXTLD1ejO4=
+        b=yvtyDTb41/BVgxEiRVgqxBRbZi68gi0RRdjU07YWUctlKQaIxkOFxKlUGA83TEiLD
+         UXA6cZqHrCHBJuA5+B0wgGdXXSkaivHRrSJ36TEM1iNF+strQKdWt/trvp+UeVfsaS
+         dkI0HuVgTDzFjrn6rbH65sDYypLocdW20/kNzeXY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Palmer Dabbelt <palmer@rivosinc.com>,
-        linux-hardening@vger.kernel.org, Kees Cook <keescook@chromium.org>,
-        Paul Barker <paul.barker@sancloud.com>
-Subject: [PATCH 5.15 02/91] gcc-plugins: Reorganize gimple includes for GCC 13
+        patches@lists.linux.dev, Wei Fang <wei.fang@nxp.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 017/132] net: enetc: correct the statistics of rx bytes
 Date:   Mon, 12 Jun 2023 12:25:51 +0200
-Message-ID: <20230612101702.184506593@linuxfoundation.org>
+Message-ID: <20230612101711.045698701@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
-References: <20230612101702.085813286@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,49 +55,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kees Cook <keescook@chromium.org>
+From: Wei Fang <wei.fang@nxp.com>
 
-mainline commit: e6a71160cc145e18ab45195abf89884112e02dfb
+[ Upstream commit 7190d0ff0e17690a9b1279d84a06473600ba2060 ]
 
-The gimple-iterator.h header must be included before gimple-fold.h
-starting with GCC 13. Reorganize gimple headers to work for all GCC
-versions.
+The rx_bytes of struct net_device_stats should count the length of
+ethernet frames excluding the FCS. However, there are two problems
+with the rx_bytes statistics of the current enetc driver. one is
+that the length of VLAN header is not counted if the VLAN extraction
+feature is enabled. The other is that the length of L2 header is not
+counted, because eth_type_trans() is invoked before updating rx_bytes
+which will subtract the length of L2 header from skb->len.
+BTW, the rx_bytes statistics of XDP path also have similar problem,
+I will fix it in another patch.
 
-Reported-by: Palmer Dabbelt <palmer@rivosinc.com>
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-Link: https://lore.kernel.org/all/20230113173033.4380-1-palmer@rivosinc.com/
-Cc: linux-hardening@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
-[ Modified to handle differences in other includes in the 5.15.y tree. ]
-Signed-off-by: Paul Barker <paul.barker@sancloud.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a800abd3ecb9 ("net: enetc: move skb creation into enetc_build_skb")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/gcc-plugins/gcc-common.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/scripts/gcc-plugins/gcc-common.h
-+++ b/scripts/gcc-plugins/gcc-common.h
-@@ -77,7 +77,9 @@
- #include "varasm.h"
- #include "stor-layout.h"
- #include "internal-fn.h"
-+#include "gimple.h"
- #include "gimple-expr.h"
-+#include "gimple-iterator.h"
- #include "gimple-fold.h"
- #include "context.h"
- #include "tree-ssa-alias.h"
-@@ -91,11 +93,9 @@
- #include "tree-eh.h"
- #include "stmt.h"
- #include "gimplify.h"
--#include "gimple.h"
- #include "tree-ssa-operands.h"
- #include "tree-phinodes.h"
- #include "tree-cfg.h"
--#include "gimple-iterator.h"
- #include "gimple-ssa.h"
- #include "ssa-iterators.h"
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+index e96449eedfb54..df7747e49bb84 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -1209,7 +1209,13 @@ static int enetc_clean_rx_ring(struct enetc_bdr *rx_ring,
+ 		if (!skb)
+ 			break;
  
+-		rx_byte_cnt += skb->len;
++		/* When set, the outer VLAN header is extracted and reported
++		 * in the receive buffer descriptor. So rx_byte_cnt should
++		 * add the length of the extracted VLAN header.
++		 */
++		if (bd_status & ENETC_RXBD_FLAG_VLAN)
++			rx_byte_cnt += VLAN_HLEN;
++		rx_byte_cnt += skb->len + ETH_HLEN;
+ 		rx_frm_cnt++;
+ 
+ 		napi_gro_receive(napi, skb);
+-- 
+2.39.2
+
 
 
