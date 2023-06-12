@@ -2,50 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF42172C0D3
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:54:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2ECA72BFB1
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:46:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236524AbjFLKys (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:54:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55644 "EHLO
+        id S232693AbjFLKqc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:46:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236398AbjFLKyW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B58CD65B5
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:40:17 -0700 (PDT)
+        with ESMTP id S233810AbjFLKqJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:46:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F2BF3FC9A
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:30:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 48539612E1
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:40:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59556C433D2;
-        Mon, 12 Jun 2023 10:40:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AE135614F0
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:30:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF5DDC433EF;
+        Mon, 12 Jun 2023 10:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566416;
-        bh=+1zTzJP5vuqeJOpL1m1HNRK9uwk06NhIPgkQXODDm44=;
+        s=korg; t=1686565844;
+        bh=YW6QTg2KfihgPJyA0r8A1bdBDrJYlu2pK0pBJD0r5F0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ihKhUCzBeloG21NgbWYFRiODpWs6Jux95aXLInJQYiIOwJbjpqgTrQviJWnO4KLmk
-         9ifupmCuknfBBTNIrVfQGLWf7a3QUZXtXwMCDiYoAv7LccixebCwHx1IE8uOTlRuUH
-         /pWg5Wqg2TZefbhPF8HiQEFowX1p8QqWsv27Asd8=
+        b=EV+IJ2FWnZ+bfLYo+jbHxZoCPDYW8ndDV25RlWZLINTO/Aytb97fBjDdSrf6z19ei
+         Wuv/9tGl7lcGY9PpfKRw1JrrT+ebiIII9bx/U1V8qK4pGprjqj7a8Ex6sY2BumjsKt
+         4a0Pu79ZA0FxDNVRq8CTxG/ap5S2pAFr7/YQK/zY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ying Hsu <yinghsu@chromium.org>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 023/132] Bluetooth: Fix l2cap_disconnect_req deadlock
+        patches@lists.linux.dev
+Subject: [PATCH 5.4 03/45] i40iw: fix build warning in i40iw_manage_apbvt()
 Date:   Mon, 12 Jun 2023 12:25:57 +0200
-Message-ID: <20230612101711.283781697@linuxfoundation.org>
+Message-ID: <20230612101654.776792037@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
+References: <20230612101654.644983109@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,61 +52,30 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ying Hsu <yinghsu@chromium.org>
+Not upstream as this function is no longer around anymore.
 
-[ Upstream commit 02c5ea5246a44d6ffde0fddebfc1d56188052976 ]
+The function i40iw_manage_apbvt() has the wrong prototype match from the
+.h file to the .c declaration, so fix it up, otherwise gcc-13 complains
+(rightfully) that the type is incorrect.
 
-L2CAP assumes that the locks conn->chan_lock and chan->lock are
-acquired in the order conn->chan_lock, chan->lock to avoid
-potential deadlock.
-For example, l2sock_shutdown acquires these locks in the order:
-  mutex_lock(&conn->chan_lock)
-  l2cap_chan_lock(chan)
-
-However, l2cap_disconnect_req acquires chan->lock in
-l2cap_get_chan_by_scid first and then acquires conn->chan_lock
-before calling l2cap_chan_del. This means that these locks are
-acquired in unexpected order, which leads to potential deadlock:
-  l2cap_chan_lock(c)
-  mutex_lock(&conn->chan_lock)
-
-This patch releases chan->lock before acquiring the conn_chan_lock
-to avoid the potential deadlock.
-
-Fixes: a2a9339e1c9d ("Bluetooth: L2CAP: Fix use-after-free in l2cap_disconnect_{req,rsp}")
-Signed-off-by: Ying Hsu <yinghsu@chromium.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/infiniband/hw/i40iw/i40iw.h |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index ee8f806534dfb..1287de387bc53 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -4664,7 +4664,9 @@ static inline int l2cap_disconnect_req(struct l2cap_conn *conn,
+--- a/drivers/infiniband/hw/i40iw/i40iw.h
++++ b/drivers/infiniband/hw/i40iw/i40iw.h
+@@ -411,9 +411,8 @@ void i40iw_manage_arp_cache(struct i40iw
+ 			    bool ipv4,
+ 			    u32 action);
  
- 	chan->ops->set_shutdown(chan);
+-int i40iw_manage_apbvt(struct i40iw_device *iwdev,
+-		       u16 accel_local_port,
+-		       bool add_port);
++enum i40iw_status_code i40iw_manage_apbvt(struct i40iw_device *iwdev,
++					  u16 accel_local_port, bool add_port);
  
-+	l2cap_chan_unlock(chan);
- 	mutex_lock(&conn->chan_lock);
-+	l2cap_chan_lock(chan);
- 	l2cap_chan_del(chan, ECONNRESET);
- 	mutex_unlock(&conn->chan_lock);
- 
-@@ -4703,7 +4705,9 @@ static inline int l2cap_disconnect_rsp(struct l2cap_conn *conn,
- 		return 0;
- 	}
- 
-+	l2cap_chan_unlock(chan);
- 	mutex_lock(&conn->chan_lock);
-+	l2cap_chan_lock(chan);
- 	l2cap_chan_del(chan, 0);
- 	mutex_unlock(&conn->chan_lock);
- 
--- 
-2.39.2
-
+ struct i40iw_cqp_request *i40iw_get_cqp_request(struct i40iw_cqp *cqp, bool wait);
+ void i40iw_free_cqp_request(struct i40iw_cqp *cqp, struct i40iw_cqp_request *cqp_request);
 
 
