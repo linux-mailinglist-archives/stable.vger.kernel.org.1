@@ -2,53 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7602772C232
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:03:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB6AD72C13F
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:57:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237414AbjFLLD3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:03:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36740 "EHLO
+        id S229639AbjFLK5k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:57:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237538AbjFLLDO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:03:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF17A7D81
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:50:51 -0700 (PDT)
+        with ESMTP id S236237AbjFLK51 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:57:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AFBA55B1
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:45:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 538716252A
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:50:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F0C4C433D2;
-        Mon, 12 Jun 2023 10:50:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EEF8F62443
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:45:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F26C433D2;
+        Mon, 12 Jun 2023 10:45:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686567050;
-        bh=R+yf2sL3KB1xPCxOBxs0E0UyHP0WZU0b1lr7OpxjYSA=;
+        s=korg; t=1686566716;
+        bh=sXUgXIQQ4PRZTFna2ds8+TBTgB+/vszqEoGQWRCvhww=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q2s2G38fdTfe6YMM3gQPcWcgF5zXknkAL6qCWVWvw4iMN6PYCBb33EQtz8nb5/ksW
-         Dphh8juyN9qjkc8lTuFbQ6IThP8r+zbbBe3QLaPQfjd5FZ5QQS2/zCvggd6VlOSrXZ
-         qrrxakYUVLGas6QZB43Hf0+9oYpFU0r+D8/ErUkg=
+        b=16IfZ1W7lajVTYGB4Tj8IQBcvJLF25VvbFm68rRflLhw9BfniyL9qFr7JCYni7Awn
+         QRLTrvdugUWv0dNjDQ9faEW6y7RE8cDCDjMrJr3YOwNhvcCZwerz3GktnTJyLT+igL
+         nXulUURr5SCSG3Xe/4Yf5V5G6aT8p4B4zJZAhcsQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Trevor Wu <trevor.wu@mediatek.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 131/160] ASoC: mediatek: mt8188: fix use-after-free in driver remove path
-Date:   Mon, 12 Jun 2023 12:27:43 +0200
-Message-ID: <20230612101721.063418063@linuxfoundation.org>
+        patches@lists.linux.dev, Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.1 130/132] wifi: rtw89: correct PS calculation for SUPPORTS_DYNAMIC_PS
+Date:   Mon, 12 Jun 2023 12:27:44 +0200
+Message-ID: <20230612101716.102624366@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,165 +53,121 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Trevor Wu <trevor.wu@mediatek.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit fd67a7a1a22ce47fcbc094c4b6e164c34c652cbe ]
+commit 26a125f550a3bf86ac91d38752f4d446426dfe1c upstream.
 
-During mt8188_afe_init_clock(), mt8188_audsys_clk_register() was called
-followed by several other devm functions. The caller of
-mt8188_afe_init_clock() utilized devm_add_action_or_reset() to call
-mt8188_afe_deinit_clock(). However, the order was incorrect, causing a
-use-after-free issue during remove time.
+This driver relies on IEEE80211_CONF_PS of hw->conf.flags to turn off PS or
+turn on dynamic PS controlled by driver and firmware. Though this would be
+incorrect, it did work before because the flag is always recalculated until
+the commit 28977e790b5d ("wifi: mac80211: skip powersave recalc if driver SUPPORTS_DYNAMIC_PS")
+is introduced by kernel 5.20 to skip to recalculate IEEE80211_CONF_PS
+of hw->conf.flags if driver sets SUPPORTS_DYNAMIC_PS.
 
-At probe time, the order of calls was:
-1. mt8188_audsys_clk_register
-2. afe_priv->clk = devm_kcalloc
-3. afe_priv->clk[i] = devm_clk_get
+Correct this by doing recalculation while BSS_CHANGED_PS is changed and
+interface is added or removed. For now, it is allowed to enter PS only if
+single one station vif is working, and it could possible to have PS per
+vif after firmware can support it. Without this fix, driver doesn't
+enter PS anymore that causes higher power consumption.
 
-At remove time, the order of calls was:
-1. mt8188_audsys_clk_unregister
-3. free afe_priv->clk[i]
-2. free afe_priv->clk
-
-To resolve the problem, it's necessary to move devm_add_action_or_reset()
-to the appropriate position so that the remove order can be 3->2->1.
-
-Fixes: f6b026479b13 ("ASoC: mediatek: mt8188: support audio clock control")
-Signed-off-by: Trevor Wu <trevor.wu@mediatek.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230601033318.10408-2-trevor.wu@mediatek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
+Cc: stable@vger.kernel.org # 6.1+
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230527082939.11206-3-pkshih@realtek.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/mediatek/mt8188/mt8188-afe-clk.c    |  7 ---
- sound/soc/mediatek/mt8188/mt8188-afe-clk.h    |  1 -
- sound/soc/mediatek/mt8188/mt8188-afe-pcm.c    |  4 --
- sound/soc/mediatek/mt8188/mt8188-audsys-clk.c | 47 ++++++++++---------
- sound/soc/mediatek/mt8188/mt8188-audsys-clk.h |  1 -
- 5 files changed, 24 insertions(+), 36 deletions(-)
+ drivers/net/wireless/realtek/rtw89/mac80211.c |   16 +++++++---------
+ drivers/net/wireless/realtek/rtw89/ps.c       |   26 ++++++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/ps.h       |    1 +
+ 3 files changed, 34 insertions(+), 9 deletions(-)
 
-diff --git a/sound/soc/mediatek/mt8188/mt8188-afe-clk.c b/sound/soc/mediatek/mt8188/mt8188-afe-clk.c
-index 743d6a162cb9a..0fb97517f82c6 100644
---- a/sound/soc/mediatek/mt8188/mt8188-afe-clk.c
-+++ b/sound/soc/mediatek/mt8188/mt8188-afe-clk.c
-@@ -418,13 +418,6 @@ int mt8188_afe_init_clock(struct mtk_base_afe *afe)
- 	return 0;
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -78,15 +78,6 @@ static int rtw89_ops_config(struct ieee8
+ 	    !(hw->conf.flags & IEEE80211_CONF_IDLE))
+ 		rtw89_leave_ips(rtwdev);
+ 
+-	if (changed & IEEE80211_CONF_CHANGE_PS) {
+-		if (hw->conf.flags & IEEE80211_CONF_PS) {
+-			rtwdev->lps_enabled = true;
+-		} else {
+-			rtw89_leave_lps(rtwdev);
+-			rtwdev->lps_enabled = false;
+-		}
+-	}
+-
+ 	if (changed & IEEE80211_CONF_CHANGE_CHANNEL) {
+ 		rtw89_config_entity_chandef(rtwdev, RTW89_SUB_ENTITY_0,
+ 					    &hw->conf.chandef);
+@@ -142,6 +133,8 @@ static int rtw89_ops_add_interface(struc
+ 	rtw89_core_txq_init(rtwdev, vif->txq);
+ 
+ 	rtw89_btc_ntfy_role_info(rtwdev, rtwvif, NULL, BTC_ROLE_START);
++
++	rtw89_recalc_lps(rtwdev);
+ out:
+ 	mutex_unlock(&rtwdev->mutex);
+ 
+@@ -165,6 +158,8 @@ static void rtw89_ops_remove_interface(s
+ 	rtw89_mac_remove_vif(rtwdev, rtwvif);
+ 	rtw89_core_release_bit_map(rtwdev->hw_port, rtwvif->port);
+ 	list_del_init(&rtwvif->list);
++	rtw89_recalc_lps(rtwdev);
++
+ 	mutex_unlock(&rtwdev->mutex);
  }
  
--void mt8188_afe_deinit_clock(void *priv)
--{
--	struct mtk_base_afe *afe = priv;
--
--	mt8188_audsys_clk_unregister(afe);
--}
--
- int mt8188_afe_enable_clk(struct mtk_base_afe *afe, struct clk *clk)
- {
- 	int ret;
-diff --git a/sound/soc/mediatek/mt8188/mt8188-afe-clk.h b/sound/soc/mediatek/mt8188/mt8188-afe-clk.h
-index 084fdfb1d877a..a4203a87a1e35 100644
---- a/sound/soc/mediatek/mt8188/mt8188-afe-clk.h
-+++ b/sound/soc/mediatek/mt8188/mt8188-afe-clk.h
-@@ -100,7 +100,6 @@ int mt8188_afe_get_mclk_source_clk_id(int sel);
- int mt8188_afe_get_mclk_source_rate(struct mtk_base_afe *afe, int apll);
- int mt8188_afe_get_default_mclk_source_by_rate(int rate);
- int mt8188_afe_init_clock(struct mtk_base_afe *afe);
--void mt8188_afe_deinit_clock(void *priv);
- int mt8188_afe_enable_clk(struct mtk_base_afe *afe, struct clk *clk);
- void mt8188_afe_disable_clk(struct mtk_base_afe *afe, struct clk *clk);
- int mt8188_afe_set_clk_rate(struct mtk_base_afe *afe, struct clk *clk,
-diff --git a/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c b/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c
-index e8e84de865422..45ab6e2829b7a 100644
---- a/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c
-+++ b/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c
-@@ -3185,10 +3185,6 @@ static int mt8188_afe_pcm_dev_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "init clock error");
+@@ -411,6 +406,9 @@ static void rtw89_ops_bss_info_changed(s
+ 	if (changed & BSS_CHANGED_P2P_PS)
+ 		rtw89_process_p2p_ps(rtwdev, vif);
  
--	ret = devm_add_action_or_reset(dev, mt8188_afe_deinit_clock, (void *)afe);
--	if (ret)
--		return ret;
--
- 	spin_lock_init(&afe_priv->afe_ctrl_lock);
++	if (changed & BSS_CHANGED_PS)
++		rtw89_recalc_lps(rtwdev);
++
+ 	mutex_unlock(&rtwdev->mutex);
+ }
  
- 	mutex_init(&afe->irq_alloc_lock);
-diff --git a/sound/soc/mediatek/mt8188/mt8188-audsys-clk.c b/sound/soc/mediatek/mt8188/mt8188-audsys-clk.c
-index be1c53bf47298..c796ad8b62eea 100644
---- a/sound/soc/mediatek/mt8188/mt8188-audsys-clk.c
-+++ b/sound/soc/mediatek/mt8188/mt8188-audsys-clk.c
-@@ -138,6 +138,29 @@ static const struct afe_gate aud_clks[CLK_AUD_NR_CLK] = {
- 	GATE_AUD6(CLK_AUD_GASRC11, "aud_gasrc11", "top_asm_h", 11),
- };
- 
-+static void mt8188_audsys_clk_unregister(void *data)
+--- a/drivers/net/wireless/realtek/rtw89/ps.c
++++ b/drivers/net/wireless/realtek/rtw89/ps.c
+@@ -244,3 +244,29 @@ void rtw89_process_p2p_ps(struct rtw89_d
+ 	rtw89_p2p_disable_all_noa(rtwdev, vif);
+ 	rtw89_p2p_update_noa(rtwdev, vif);
+ }
++
++void rtw89_recalc_lps(struct rtw89_dev *rtwdev)
 +{
-+	struct mtk_base_afe *afe = data;
-+	struct mt8188_afe_private *afe_priv = afe->platform_priv;
-+	struct clk *clk;
-+	struct clk_lookup *cl;
-+	int i;
++	struct ieee80211_vif *vif, *found_vif = NULL;
++	struct rtw89_vif *rtwvif;
++	int count = 0;
 +
-+	if (!afe_priv)
-+		return;
++	rtw89_for_each_rtwvif(rtwdev, rtwvif) {
++		vif = rtwvif_to_vif(rtwvif);
 +
-+	for (i = 0; i < CLK_AUD_NR_CLK; i++) {
-+		cl = afe_priv->lookup[i];
-+		if (!cl)
-+			continue;
++		if (vif->type != NL80211_IFTYPE_STATION) {
++			count = 0;
++			break;
++		}
 +
-+		clk = cl->clk;
-+		clk_unregister_gate(clk);
++		count++;
++		found_vif = vif;
++	}
 +
-+		clkdev_drop(cl);
++	if (count == 1 && found_vif->cfg.ps) {
++		rtwdev->lps_enabled = true;
++	} else {
++		rtw89_leave_lps(rtwdev);
++		rtwdev->lps_enabled = false;
 +	}
 +}
-+
- int mt8188_audsys_clk_register(struct mtk_base_afe *afe)
- {
- 	struct mt8188_afe_private *afe_priv = afe->platform_priv;
-@@ -179,27 +202,5 @@ int mt8188_audsys_clk_register(struct mtk_base_afe *afe)
- 		afe_priv->lookup[i] = cl;
- 	}
- 
--	return 0;
--}
--
--void mt8188_audsys_clk_unregister(struct mtk_base_afe *afe)
--{
--	struct mt8188_afe_private *afe_priv = afe->platform_priv;
--	struct clk *clk;
--	struct clk_lookup *cl;
--	int i;
--
--	if (!afe_priv)
--		return;
--
--	for (i = 0; i < CLK_AUD_NR_CLK; i++) {
--		cl = afe_priv->lookup[i];
--		if (!cl)
--			continue;
--
--		clk = cl->clk;
--		clk_unregister_gate(clk);
--
--		clkdev_drop(cl);
--	}
-+	return devm_add_action_or_reset(afe->dev, mt8188_audsys_clk_unregister, afe);
- }
-diff --git a/sound/soc/mediatek/mt8188/mt8188-audsys-clk.h b/sound/soc/mediatek/mt8188/mt8188-audsys-clk.h
-index 6c5f463ad7e4d..45b0948c4a06e 100644
---- a/sound/soc/mediatek/mt8188/mt8188-audsys-clk.h
-+++ b/sound/soc/mediatek/mt8188/mt8188-audsys-clk.h
-@@ -10,6 +10,5 @@
- #define _MT8188_AUDSYS_CLK_H_
- 
- int mt8188_audsys_clk_register(struct mtk_base_afe *afe);
--void mt8188_audsys_clk_unregister(struct mtk_base_afe *afe);
+--- a/drivers/net/wireless/realtek/rtw89/ps.h
++++ b/drivers/net/wireless/realtek/rtw89/ps.h
+@@ -13,5 +13,6 @@ void rtw89_enter_ips(struct rtw89_dev *r
+ void rtw89_leave_ips(struct rtw89_dev *rtwdev);
+ void rtw89_set_coex_ctrl_lps(struct rtw89_dev *rtwdev, bool btc_ctrl);
+ void rtw89_process_p2p_ps(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif);
++void rtw89_recalc_lps(struct rtw89_dev *rtwdev);
  
  #endif
--- 
-2.39.2
-
 
 
