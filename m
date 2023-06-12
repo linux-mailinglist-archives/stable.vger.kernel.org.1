@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DF2272C00A
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:49:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1EB772C0E1
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233203AbjFLKtW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:49:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51504 "EHLO
+        id S236416AbjFLKzS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:55:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235517AbjFLKsw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:48:52 -0400
+        with ESMTP id S235680AbjFLKyr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F3D85FD0
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:33:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87EDD2946
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:41:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7EFFB623E3
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:33:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE68C433EF;
-        Mon, 12 Jun 2023 10:33:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1ADC8612B4
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:41:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EC5CC433D2;
+        Mon, 12 Jun 2023 10:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566017;
-        bh=mfo6LRszHmCnQABfe+CSPh5ZvnbFPnXxx/WrSSWDGpw=;
+        s=korg; t=1686566493;
+        bh=d4VEqdS/JrEr4n/5qAE5LnsY3iRWnNbs21zGIhRboyw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ipdG5BN4swk4lK/KMkq0TNgLaI6gn4D4IgVh2vEVOHXV70Py90xq0fMCk23g8kgDr
-         NlPD8gPOqmAS7+zk8qLBUyKkoJI+/bp1p/79WU4e2zWx6P34KjEeAqeEB0qgKr0BaS
-         LizXS6QpROu9KrbrcIeQpRZ0FdBaA80Gl2RS/ogc=
+        b=ImNPpgjHE/l3i0TzcJuWwNwaT5g/20NhvcDWSa1khqq/Dc2ObykFQQNAuy1q89lZ2
+         NK5/yWJbTm9IdXv/cTk8iE2a6meK5SQsdZQWR9G+AOZdSMZnpb3ivwlIYlZCde83RS
+         aflD9N3nzPulrMwFHcJLGVVs7wKLsle/w0zXxs3I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pavan Chebbi <pavan.chebbi@broadcom.com>,
-        Somnath Kotur <somnath.kotur@broadcom.com>,
-        Michael Chan <michael.chan@broadcom.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 33/68] bnxt_en: Query default VLAN before VNIC setup on a VF
-Date:   Mon, 12 Jun 2023 12:26:25 +0200
-Message-ID: <20230612101659.794388055@linuxfoundation.org>
+Subject: [PATCH 6.1 052/132] net: bcmgenet: Fix EEE implementation
+Date:   Mon, 12 Jun 2023 12:26:26 +0200
+Message-ID: <20230612101712.627096505@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
-References: <20230612101658.437327280@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,49 +56,139 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Somnath Kotur <somnath.kotur@broadcom.com>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-[ Upstream commit 1a9e4f501bc6ff1b6ecb60df54fbf2b54db43bfe ]
+[ Upstream commit a9f31047baca57d47440c879cf259b86f900260c ]
 
-We need to call bnxt_hwrm_func_qcfg() on a VF to query the default
-VLAN that may be setup by the PF.  If a default VLAN is enabled,
-the VF cannot support VLAN acceleration on the receive side and
-the VNIC must be setup to strip out the default VLAN tag.  If a
-default VLAN is not enabled, the VF can support VLAN acceleration
-on the receive side.  The VNIC should be set up to strip or not
-strip the VLAN based on the RX VLAN acceleration setting.
+We had a number of short comings:
 
-Without this call to determine the default VLAN before calling
-bnxt_setup_vnic(), the VNIC may not be set up correctly.  For
-example, bnxt_setup_vnic() may set up to strip the VLAN tag based
-on stale default VLAN information.  If RX VLAN acceleration is
-not enabled, the VLAN tag will be incorrectly stripped and the
-RX data path will not work correctly.
+- EEE must be re-evaluated whenever the state machine detects a link
+  change as wight be switching from a link partner with EEE
+  enabled/disabled
 
-Fixes: cf6645f8ebc6 ("bnxt_en: Add function for VF driver to query default VLAN.")
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+- tx_lpi_enabled controls whether EEE should be enabled/disabled for the
+  transmit path, which applies to the TBUF block
+
+- We do not need to forcibly enable EEE upon system resume, as the PHY
+  state machine will trigger a link event that will do that, too
+
+Fixes: 6ef398ea60d9 ("net: bcmgenet: add EEE support")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://lore.kernel.org/r/20230606214348.2408018-1-florian.fainelli@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../net/ethernet/broadcom/genet/bcmgenet.c    | 22 +++++++------------
+ .../net/ethernet/broadcom/genet/bcmgenet.h    |  3 +++
+ drivers/net/ethernet/broadcom/genet/bcmmii.c  |  5 +++++
+ 3 files changed, 16 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 3a9fcf942a6de..127ed119b5f71 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -8337,6 +8337,9 @@ static int bnxt_init_chip(struct bnxt *bp, bool irq_re_init)
- 		goto err_out;
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index 4da2becfa950c..1ae082eb9e905 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -1290,7 +1290,8 @@ static void bcmgenet_get_ethtool_stats(struct net_device *dev,
+ 	}
+ }
+ 
+-static void bcmgenet_eee_enable_set(struct net_device *dev, bool enable)
++void bcmgenet_eee_enable_set(struct net_device *dev, bool enable,
++			     bool tx_lpi_enabled)
+ {
+ 	struct bcmgenet_priv *priv = netdev_priv(dev);
+ 	u32 off = priv->hw_params->tbuf_offset + TBUF_ENERGY_CTRL;
+@@ -1310,7 +1311,7 @@ static void bcmgenet_eee_enable_set(struct net_device *dev, bool enable)
+ 
+ 	/* Enable EEE and switch to a 27Mhz clock automatically */
+ 	reg = bcmgenet_readl(priv->base + off);
+-	if (enable)
++	if (tx_lpi_enabled)
+ 		reg |= TBUF_EEE_EN | TBUF_PM_EN;
+ 	else
+ 		reg &= ~(TBUF_EEE_EN | TBUF_PM_EN);
+@@ -1331,6 +1332,7 @@ static void bcmgenet_eee_enable_set(struct net_device *dev, bool enable)
+ 
+ 	priv->eee.eee_enabled = enable;
+ 	priv->eee.eee_active = enable;
++	priv->eee.tx_lpi_enabled = tx_lpi_enabled;
+ }
+ 
+ static int bcmgenet_get_eee(struct net_device *dev, struct ethtool_eee *e)
+@@ -1346,6 +1348,7 @@ static int bcmgenet_get_eee(struct net_device *dev, struct ethtool_eee *e)
+ 
+ 	e->eee_enabled = p->eee_enabled;
+ 	e->eee_active = p->eee_active;
++	e->tx_lpi_enabled = p->tx_lpi_enabled;
+ 	e->tx_lpi_timer = bcmgenet_umac_readl(priv, UMAC_EEE_LPI_TIMER);
+ 
+ 	return phy_ethtool_get_eee(dev->phydev, e);
+@@ -1355,7 +1358,6 @@ static int bcmgenet_set_eee(struct net_device *dev, struct ethtool_eee *e)
+ {
+ 	struct bcmgenet_priv *priv = netdev_priv(dev);
+ 	struct ethtool_eee *p = &priv->eee;
+-	int ret = 0;
+ 
+ 	if (GENET_IS_V1(priv))
+ 		return -EOPNOTSUPP;
+@@ -1366,16 +1368,11 @@ static int bcmgenet_set_eee(struct net_device *dev, struct ethtool_eee *e)
+ 	p->eee_enabled = e->eee_enabled;
+ 
+ 	if (!p->eee_enabled) {
+-		bcmgenet_eee_enable_set(dev, false);
++		bcmgenet_eee_enable_set(dev, false, false);
+ 	} else {
+-		ret = phy_init_eee(dev->phydev, false);
+-		if (ret) {
+-			netif_err(priv, hw, dev, "EEE initialization failed\n");
+-			return ret;
+-		}
+-
++		p->eee_active = phy_init_eee(dev->phydev, false) >= 0;
+ 		bcmgenet_umac_writel(priv, e->tx_lpi_timer, UMAC_EEE_LPI_TIMER);
+-		bcmgenet_eee_enable_set(dev, true);
++		bcmgenet_eee_enable_set(dev, p->eee_active, e->tx_lpi_enabled);
  	}
  
-+	if (BNXT_VF(bp))
-+		bnxt_hwrm_func_qcfg(bp);
+ 	return phy_ethtool_set_eee(dev->phydev, e);
+@@ -4274,9 +4271,6 @@ static int bcmgenet_resume(struct device *d)
+ 	if (!device_may_wakeup(d))
+ 		phy_resume(dev->phydev);
+ 
+-	if (priv->eee.eee_enabled)
+-		bcmgenet_eee_enable_set(dev, true);
+-
+ 	bcmgenet_netif_start(dev);
+ 
+ 	netif_device_attach(dev);
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+index 946f6e283c4e6..1985c0ec4da2a 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
+@@ -703,4 +703,7 @@ int bcmgenet_wol_power_down_cfg(struct bcmgenet_priv *priv,
+ void bcmgenet_wol_power_up_cfg(struct bcmgenet_priv *priv,
+ 			       enum bcmgenet_power_mode mode);
+ 
++void bcmgenet_eee_enable_set(struct net_device *dev, bool enable,
++			     bool tx_lpi_enabled);
 +
- 	rc = bnxt_setup_vnic(bp, 0);
- 	if (rc)
- 		goto err_out;
+ #endif /* __BCMGENET_H__ */
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmmii.c b/drivers/net/ethernet/broadcom/genet/bcmmii.c
+index ded0e64a9f6a1..bf9e246784b6e 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
+@@ -88,6 +88,11 @@ static void bcmgenet_mac_config(struct net_device *dev)
+ 		reg |= CMD_TX_EN | CMD_RX_EN;
+ 	}
+ 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
++
++	priv->eee.eee_active = phy_init_eee(phydev, 0) >= 0;
++	bcmgenet_eee_enable_set(dev,
++				priv->eee.eee_enabled && priv->eee.eee_active,
++				priv->eee.tx_lpi_enabled);
+ }
+ 
+ /* setup netdev link state when PHY link status change and
 -- 
 2.39.2
 
