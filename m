@@ -2,71 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D75F272B533
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 03:49:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21EB872B549
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 04:03:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232800AbjFLBtz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 11 Jun 2023 21:49:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54464 "EHLO
+        id S232800AbjFLCDi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 11 Jun 2023 22:03:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229631AbjFLBtp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 21:49:45 -0400
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C5A712F
-        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 18:49:45 -0700 (PDT)
-Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1b0338fac5dso4154395ad.0
-        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 18:49:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20221208.gappssmtp.com; s=20221208; t=1686534584; x=1689126584;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xus9Jdno3dSYyQj1Y02RRzobrTs+sJiqzjSX1kh0CtE=;
-        b=OfipTe5QQuBYY3a7kGYEe3i/tRYJuwD+MjRMZ6tTuxeLCMCp+NmoRImTCFjVlvVdRA
-         XQxx1nsmf0YZIW8WgHwdqxVP3Kq2hCstGzs9FPpl3IRKVXuwHjt7wRew+2BGrXyGJ+65
-         VLE545UYbMxMvKU+rkhb6hXyzCfeJPrKzyLzisUJ6xJ4WLUuCyYcErCFZ3Bie1eh9Ud+
-         cFX8Drmi+ZRuwR5sJX+FXctulqJfGggnPHVULyQRgUDafid+zO7C4MaTFShXrCsZ1Ayz
-         zH8ql1Aq1/B4pcAfyuPyhZh90RlchdLIH0rQHM6Pt9pbifFBuxCRuclfXSVXL17UtRFY
-         epJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686534584; x=1689126584;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xus9Jdno3dSYyQj1Y02RRzobrTs+sJiqzjSX1kh0CtE=;
-        b=ZPlvJwe1crBJHvHie8IVrSquImEFe8y7iYd9EaL2aAieLSnS29bR5EijoEe7FI0cvD
-         PAzS68KSH5YUJdjCkseaXtUN9Wj+3Flpjt3Bmmq3z5XMGOkU4cn3RdOGbiZsYhhAeQUu
-         awOcYF4/5W43O0ZSrQHad1u8hrM0E27FgHuLG8T+dlAisQDRquY7Sn10MDAJugDzu1y4
-         kCcCYjorQnxcB7A0TG2OohfqIJV+OtHtCBEWRgKSb19KgTRMNeYXj7rhzfaZC/mgiLOh
-         siQj4tyYBvcNBaFjVJzTCabzdpADHlKUg0jBKRm1buK6l/8WaMAyAC9ImdWRA+Lp88eQ
-         qUWg==
-X-Gm-Message-State: AC+VfDyvtYz1/iytRLHLmBQhdqqw6g0SXh24eMvh5nK5rzKilMrm/8UW
-        ZLNm4+OhNXpjnCZ7vGWuffQKlw==
-X-Google-Smtp-Source: ACHHUZ63qohTtWPXlmI/KO02vGFG1A5HuuzA8XxyrEdIQ2ajiyb5iircK2AVLoqOGJRYwSwr9Z6a5A==
-X-Received: by 2002:a17:902:e744:b0:1af:b80a:b964 with SMTP id p4-20020a170902e74400b001afb80ab964mr8723912plf.5.1686534584540;
-        Sun, 11 Jun 2023 18:49:44 -0700 (PDT)
-Received: from [127.0.0.1] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id jd17-20020a170903261100b001b3cc4d60b7sm884833plb.238.2023.06.11.18.49.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Jun 2023 18:49:43 -0700 (PDT)
-From:   Jens Axboe <axboe@kernel.dk>
-To:     Ming Lei <ming.lei@redhat.com>
-Cc:     linux-block@vger.kernel.org, stable@vger.kernel.org,
-        Jay Shin <jaeshin@redhat.com>, Tejun Heo <tj@kernel.org>,
-        Waiman Long <longman@redhat.com>, mkoutny@suse.com,
-        Yosry Ahmed <yosryahmed@google.com>
-In-Reply-To: <20230609234249.1412858-1-ming.lei@redhat.com>
-References: <20230609234249.1412858-1-ming.lei@redhat.com>
-Subject: Re: [PATCH V4] blk-cgroup: Flush stats before releasing blkcg_gq
-Message-Id: <168653458323.828509.645185217328655352.b4-ty@kernel.dk>
-Date:   Sun, 11 Jun 2023 19:49:43 -0600
+        with ESMTP id S229754AbjFLCDh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 22:03:37 -0400
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 570DA9B
+        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 19:03:35 -0700 (PDT)
+Authenticated-By: 
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 35C23FGA0005390, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 35C23FGA0005390
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK)
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:03:15 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Mon, 12 Jun 2023 10:03:32 +0800
+Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 12 Jun
+ 2023 10:03:32 +0800
+From:   Ping-Ke Shih <pkshih@realtek.com>
+To:     <stable@vger.kernel.org>
+Subject: [PATCH 6.1.y] wifi: rtw89: correct PS calculation for SUPPORTS_DYNAMIC_PS
+Date:   Mon, 12 Jun 2023 10:03:02 +0800
+Message-ID: <20230612020302.11425-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <2023061149-purebred-gyration-1ca5@gregkh>
+References: <2023061149-purebred-gyration-1ca5@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-c6835
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.21.69.188]
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,26 +55,125 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+This driver relies on IEEE80211_CONF_PS of hw->conf.flags to turn off PS or
+turn on dynamic PS controlled by driver and firmware. Though this would be
+incorrect, it did work before because the flag is always recalculated until
+the commit 28977e790b5d ("wifi: mac80211: skip powersave recalc if driver SUPPORTS_DYNAMIC_PS")
+is introduced by kernel 5.20 to skip to recalculate IEEE80211_CONF_PS
+of hw->conf.flags if driver sets SUPPORTS_DYNAMIC_PS.
 
-On Sat, 10 Jun 2023 07:42:49 +0800, Ming Lei wrote:
-> As noted by Michal, the blkg_iostat_set's in the lockless list hold
-> reference to blkg's to protect against their removal. Those blkg's
-> hold reference to blkcg. When a cgroup is being destroyed,
-> cgroup_rstat_flush() is only called at css_release_work_fn() which
-> is called when the blkcg reference count reaches 0. This circular
-> dependency will prevent blkcg and some blkgs from being freed after
-> they are made offline.
-> 
-> [...]
+Correct this by doing recalculation while BSS_CHANGED_PS is changed and
+interface is added or removed. For now, it is allowed to enter PS only if
+single one station vif is working, and it could possible to have PS per
+vif after firmware can support it. Without this fix, driver doesn't
+enter PS anymore that causes higher power consumption.
 
-Applied, thanks!
+Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
+Cc: stable@vger.kernel.org # 6.1+
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230527082939.11206-3-pkshih@realtek.com
+(cherry picked from commit 26a125f550a3bf86ac91d38752f4d446426dfe1c)
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/mac80211.c | 16 +++++-------
+ drivers/net/wireless/realtek/rtw89/ps.c       | 26 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/ps.h       |  1 +
+ 3 files changed, 34 insertions(+), 9 deletions(-)
 
-[1/1] blk-cgroup: Flush stats before releasing blkcg_gq
-      commit: 20cb1c2fb7568a6054c55defe044311397e01ddb
-
-Best regards,
+diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
+index a296bfa8188f2..a8f478f0cde90 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -78,15 +78,6 @@ static int rtw89_ops_config(struct ieee80211_hw *hw, u32 changed)
+ 	    !(hw->conf.flags & IEEE80211_CONF_IDLE))
+ 		rtw89_leave_ips(rtwdev);
+ 
+-	if (changed & IEEE80211_CONF_CHANGE_PS) {
+-		if (hw->conf.flags & IEEE80211_CONF_PS) {
+-			rtwdev->lps_enabled = true;
+-		} else {
+-			rtw89_leave_lps(rtwdev);
+-			rtwdev->lps_enabled = false;
+-		}
+-	}
+-
+ 	if (changed & IEEE80211_CONF_CHANGE_CHANNEL) {
+ 		rtw89_config_entity_chandef(rtwdev, RTW89_SUB_ENTITY_0,
+ 					    &hw->conf.chandef);
+@@ -142,6 +133,8 @@ static int rtw89_ops_add_interface(struct ieee80211_hw *hw,
+ 	rtw89_core_txq_init(rtwdev, vif->txq);
+ 
+ 	rtw89_btc_ntfy_role_info(rtwdev, rtwvif, NULL, BTC_ROLE_START);
++
++	rtw89_recalc_lps(rtwdev);
+ out:
+ 	mutex_unlock(&rtwdev->mutex);
+ 
+@@ -165,6 +158,8 @@ static void rtw89_ops_remove_interface(struct ieee80211_hw *hw,
+ 	rtw89_mac_remove_vif(rtwdev, rtwvif);
+ 	rtw89_core_release_bit_map(rtwdev->hw_port, rtwvif->port);
+ 	list_del_init(&rtwvif->list);
++	rtw89_recalc_lps(rtwdev);
++
+ 	mutex_unlock(&rtwdev->mutex);
+ }
+ 
+@@ -411,6 +406,9 @@ static void rtw89_ops_bss_info_changed(struct ieee80211_hw *hw,
+ 	if (changed & BSS_CHANGED_P2P_PS)
+ 		rtw89_process_p2p_ps(rtwdev, vif);
+ 
++	if (changed & BSS_CHANGED_PS)
++		rtw89_recalc_lps(rtwdev);
++
+ 	mutex_unlock(&rtwdev->mutex);
+ }
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/ps.c b/drivers/net/wireless/realtek/rtw89/ps.c
+index bf41a11416792..7cf9f80c7a93c 100644
+--- a/drivers/net/wireless/realtek/rtw89/ps.c
++++ b/drivers/net/wireless/realtek/rtw89/ps.c
+@@ -244,3 +244,29 @@ void rtw89_process_p2p_ps(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif)
+ 	rtw89_p2p_disable_all_noa(rtwdev, vif);
+ 	rtw89_p2p_update_noa(rtwdev, vif);
+ }
++
++void rtw89_recalc_lps(struct rtw89_dev *rtwdev)
++{
++	struct ieee80211_vif *vif, *found_vif = NULL;
++	struct rtw89_vif *rtwvif;
++	int count = 0;
++
++	rtw89_for_each_rtwvif(rtwdev, rtwvif) {
++		vif = rtwvif_to_vif(rtwvif);
++
++		if (vif->type != NL80211_IFTYPE_STATION) {
++			count = 0;
++			break;
++		}
++
++		count++;
++		found_vif = vif;
++	}
++
++	if (count == 1 && found_vif->cfg.ps) {
++		rtwdev->lps_enabled = true;
++	} else {
++		rtw89_leave_lps(rtwdev);
++		rtwdev->lps_enabled = false;
++	}
++}
+diff --git a/drivers/net/wireless/realtek/rtw89/ps.h b/drivers/net/wireless/realtek/rtw89/ps.h
+index 0feae39916238..49fb9d8b65466 100644
+--- a/drivers/net/wireless/realtek/rtw89/ps.h
++++ b/drivers/net/wireless/realtek/rtw89/ps.h
+@@ -13,5 +13,6 @@ void rtw89_enter_ips(struct rtw89_dev *rtwdev);
+ void rtw89_leave_ips(struct rtw89_dev *rtwdev);
+ void rtw89_set_coex_ctrl_lps(struct rtw89_dev *rtwdev, bool btc_ctrl);
+ void rtw89_process_p2p_ps(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif);
++void rtw89_recalc_lps(struct rtw89_dev *rtwdev);
+ 
+ #endif
 -- 
-Jens Axboe
-
-
+2.25.1
 
