@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C81EE72C230
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:03:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FCCF72C131
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:57:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237490AbjFLLDX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:03:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38060 "EHLO
+        id S236823AbjFLK5U (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:57:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237393AbjFLLDI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:03:08 -0400
+        with ESMTP id S236984AbjFLK5H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:57:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 664E87ABE
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:50:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D404E54D
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:44:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F101F6252A
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:50:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E85AC433EF;
-        Mon, 12 Jun 2023 10:50:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 218186242D
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:44:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3621FC433EF;
+        Mon, 12 Jun 2023 10:44:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686567045;
-        bh=4VKdvJeQ4izTZl1blo3mkVCpCYtokCTrzCYAO0Bhff0=;
+        s=korg; t=1686566679;
+        bh=AHGiYkjRQhfzyrQ2Me3LxjISK/CcpqlaFKZIJM9ekl8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RYKKvztjXPBBYdh+AZtHafmxGcYxDetWd38Zr2aPLs7CWoSn47DzO3Hff5mwD51qy
-         TmP6On7AO/lpW+3sdMB4qPbXvGVY96l8ji0ycgVN+vfzIwrFKGCYDe7+3+L4d2XHLj
-         hdrEjs580fAaA28dLHaRK4dx+i346uHlxdH59I4Y=
+        b=HDNEP5pUET4tSTgidwkxVdks6xgre0exAwHcKzmBt6J2Xp7HOnl5ZntOrdNbtJ+yh
+         +7oyUXMjik4fOLTdjGWO5ve4UXsMIOk3JyXmJ0moxJh3Q+RmVcy/QB6q9M9SaXn9Me
+         94q9dW9LKa/W7LIY8SUbkE9P7bEgQaML4Cv0ZODw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Dan Carpenter <error27@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.3 112/160] soc: qcom: icc-bwmon: fix incorrect error code passed to dev_err_probe()
+        patches@lists.linux.dev, Trevor Wu <trevor.wu@mediatek.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 110/132] ASoC: mediatek: mt8195: fix use-after-free in driver remove path
 Date:   Mon, 12 Jun 2023 12:27:24 +0200
-Message-ID: <20230612101720.176963447@linuxfoundation.org>
+Message-ID: <20230612101715.314004850@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,49 +57,173 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Trevor Wu <trevor.wu@mediatek.com>
 
-commit 3530167c6fe8001de6c026a3058eaca4c8a5329f upstream.
+[ Upstream commit dc93f0dcb436dfd24a06c5b3c0f4c5cd9296e8e5 ]
 
-Pass to dev_err_probe() PTR_ERR from actual dev_pm_opp_find_bw_floor()
-call which failed, instead of previous ret which at this point is 0.
-Failure of dev_pm_opp_find_bw_floor() would result in prematurely ending
-the probe with success.
+During mt8195_afe_init_clock(), mt8195_audsys_clk_register() was called
+followed by several other devm functions. At mt8195_afe_deinit_clock()
+located at mt8195_afe_pcm_dev_remove(), mt8195_audsys_clk_unregister()
+was called.
 
-Fixes smatch warnings:
+However, there was an issue with the order in which these functions were
+called. Specifically, the remove callback of platform_driver was called
+before devres released the resource, resulting in a use-after-free issue
+during remove time.
 
-  drivers/soc/qcom/icc-bwmon.c:776 bwmon_probe() warn: passing zero to 'dev_err_probe'
-  drivers/soc/qcom/icc-bwmon.c:781 bwmon_probe() warn: passing zero to 'dev_err_probe'
+At probe time, the order of calls was:
+1. mt8195_audsys_clk_register
+2. afe_priv->clk = devm_kcalloc
+3. afe_priv->clk[i] = devm_clk_get
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Link: https://lore.kernel.org/r/202305131657.76XeHDjF-lkp@intel.com/
-Cc: <stable@vger.kernel.org>
-Fixes: b9c2ae6cac40 ("soc: qcom: icc-bwmon: Add bandwidth monitoring driver")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230513111747.132532-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+At remove time, the order of calls was:
+1. mt8195_audsys_clk_unregister
+3. free afe_priv->clk[i]
+2. free afe_priv->clk
+
+To resolve the problem, we can utilize devm_add_action_or_reset() in
+mt8195_audsys_clk_register() so that the remove order can be changed to
+3->2->1.
+
+Fixes: 6746cc858259 ("ASoC: mediatek: mt8195: add platform driver")
+Signed-off-by: Trevor Wu <trevor.wu@mediatek.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230601033318.10408-3-trevor.wu@mediatek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/icc-bwmon.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/mediatek/mt8195/mt8195-afe-clk.c    |  5 --
+ sound/soc/mediatek/mt8195/mt8195-afe-clk.h    |  1 -
+ sound/soc/mediatek/mt8195/mt8195-afe-pcm.c    |  4 --
+ sound/soc/mediatek/mt8195/mt8195-audsys-clk.c | 47 ++++++++++---------
+ sound/soc/mediatek/mt8195/mt8195-audsys-clk.h |  1 -
+ 5 files changed, 24 insertions(+), 34 deletions(-)
 
---- a/drivers/soc/qcom/icc-bwmon.c
-+++ b/drivers/soc/qcom/icc-bwmon.c
-@@ -603,12 +603,12 @@ static int bwmon_probe(struct platform_d
- 	bwmon->max_bw_kbps = UINT_MAX;
- 	opp = dev_pm_opp_find_bw_floor(dev, &bwmon->max_bw_kbps, 0);
- 	if (IS_ERR(opp))
--		return dev_err_probe(dev, ret, "failed to find max peak bandwidth\n");
-+		return dev_err_probe(dev, PTR_ERR(opp), "failed to find max peak bandwidth\n");
+diff --git a/sound/soc/mediatek/mt8195/mt8195-afe-clk.c b/sound/soc/mediatek/mt8195/mt8195-afe-clk.c
+index 9ca2cb8c8a9c2..f35318ae07392 100644
+--- a/sound/soc/mediatek/mt8195/mt8195-afe-clk.c
++++ b/sound/soc/mediatek/mt8195/mt8195-afe-clk.c
+@@ -410,11 +410,6 @@ int mt8195_afe_init_clock(struct mtk_base_afe *afe)
+ 	return 0;
+ }
  
- 	bwmon->min_bw_kbps = 0;
- 	opp = dev_pm_opp_find_bw_ceil(dev, &bwmon->min_bw_kbps, 0);
- 	if (IS_ERR(opp))
--		return dev_err_probe(dev, ret, "failed to find min peak bandwidth\n");
-+		return dev_err_probe(dev, PTR_ERR(opp), "failed to find min peak bandwidth\n");
+-void mt8195_afe_deinit_clock(struct mtk_base_afe *afe)
+-{
+-	mt8195_audsys_clk_unregister(afe);
+-}
+-
+ int mt8195_afe_enable_clk(struct mtk_base_afe *afe, struct clk *clk)
+ {
+ 	int ret;
+diff --git a/sound/soc/mediatek/mt8195/mt8195-afe-clk.h b/sound/soc/mediatek/mt8195/mt8195-afe-clk.h
+index 40663e31becd1..a08c0ee6c8602 100644
+--- a/sound/soc/mediatek/mt8195/mt8195-afe-clk.h
++++ b/sound/soc/mediatek/mt8195/mt8195-afe-clk.h
+@@ -101,7 +101,6 @@ int mt8195_afe_get_mclk_source_clk_id(int sel);
+ int mt8195_afe_get_mclk_source_rate(struct mtk_base_afe *afe, int apll);
+ int mt8195_afe_get_default_mclk_source_by_rate(int rate);
+ int mt8195_afe_init_clock(struct mtk_base_afe *afe);
+-void mt8195_afe_deinit_clock(struct mtk_base_afe *afe);
+ int mt8195_afe_enable_clk(struct mtk_base_afe *afe, struct clk *clk);
+ void mt8195_afe_disable_clk(struct mtk_base_afe *afe, struct clk *clk);
+ int mt8195_afe_prepare_clk(struct mtk_base_afe *afe, struct clk *clk);
+diff --git a/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c b/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c
+index 9e45efeada55c..03dabc056b916 100644
+--- a/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c
++++ b/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c
+@@ -3255,15 +3255,11 @@ static int mt8195_afe_pcm_dev_probe(struct platform_device *pdev)
  
- 	bwmon->dev = dev;
+ static void mt8195_afe_pcm_dev_remove(struct platform_device *pdev)
+ {
+-	struct mtk_base_afe *afe = platform_get_drvdata(pdev);
+-
+ 	snd_soc_unregister_component(&pdev->dev);
  
+ 	pm_runtime_disable(&pdev->dev);
+ 	if (!pm_runtime_status_suspended(&pdev->dev))
+ 		mt8195_afe_runtime_suspend(&pdev->dev);
+-
+-	mt8195_afe_deinit_clock(afe);
+ }
+ 
+ static const struct of_device_id mt8195_afe_pcm_dt_match[] = {
+diff --git a/sound/soc/mediatek/mt8195/mt8195-audsys-clk.c b/sound/soc/mediatek/mt8195/mt8195-audsys-clk.c
+index e0670e0dbd5b0..38594bc3f2f77 100644
+--- a/sound/soc/mediatek/mt8195/mt8195-audsys-clk.c
++++ b/sound/soc/mediatek/mt8195/mt8195-audsys-clk.c
+@@ -148,6 +148,29 @@ static const struct afe_gate aud_clks[CLK_AUD_NR_CLK] = {
+ 	GATE_AUD6(CLK_AUD_GASRC19, "aud_gasrc19", "top_asm_h", 19),
+ };
+ 
++static void mt8195_audsys_clk_unregister(void *data)
++{
++	struct mtk_base_afe *afe = data;
++	struct mt8195_afe_private *afe_priv = afe->platform_priv;
++	struct clk *clk;
++	struct clk_lookup *cl;
++	int i;
++
++	if (!afe_priv)
++		return;
++
++	for (i = 0; i < CLK_AUD_NR_CLK; i++) {
++		cl = afe_priv->lookup[i];
++		if (!cl)
++			continue;
++
++		clk = cl->clk;
++		clk_unregister_gate(clk);
++
++		clkdev_drop(cl);
++	}
++}
++
+ int mt8195_audsys_clk_register(struct mtk_base_afe *afe)
+ {
+ 	struct mt8195_afe_private *afe_priv = afe->platform_priv;
+@@ -188,27 +211,5 @@ int mt8195_audsys_clk_register(struct mtk_base_afe *afe)
+ 		afe_priv->lookup[i] = cl;
+ 	}
+ 
+-	return 0;
+-}
+-
+-void mt8195_audsys_clk_unregister(struct mtk_base_afe *afe)
+-{
+-	struct mt8195_afe_private *afe_priv = afe->platform_priv;
+-	struct clk *clk;
+-	struct clk_lookup *cl;
+-	int i;
+-
+-	if (!afe_priv)
+-		return;
+-
+-	for (i = 0; i < CLK_AUD_NR_CLK; i++) {
+-		cl = afe_priv->lookup[i];
+-		if (!cl)
+-			continue;
+-
+-		clk = cl->clk;
+-		clk_unregister_gate(clk);
+-
+-		clkdev_drop(cl);
+-	}
++	return devm_add_action_or_reset(afe->dev, mt8195_audsys_clk_unregister, afe);
+ }
+diff --git a/sound/soc/mediatek/mt8195/mt8195-audsys-clk.h b/sound/soc/mediatek/mt8195/mt8195-audsys-clk.h
+index 239d31016ba76..69db2dd1c9e02 100644
+--- a/sound/soc/mediatek/mt8195/mt8195-audsys-clk.h
++++ b/sound/soc/mediatek/mt8195/mt8195-audsys-clk.h
+@@ -10,6 +10,5 @@
+ #define _MT8195_AUDSYS_CLK_H_
+ 
+ int mt8195_audsys_clk_register(struct mtk_base_afe *afe);
+-void mt8195_audsys_clk_unregister(struct mtk_base_afe *afe);
+ 
+ #endif
+-- 
+2.39.2
+
 
 
