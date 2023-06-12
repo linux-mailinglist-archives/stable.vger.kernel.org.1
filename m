@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8BC672C0ED
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5303C72C07E
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:53:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236707AbjFLKz0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:55:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55622 "EHLO
+        id S233344AbjFLKxB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:53:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236691AbjFLKy6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:58 -0400
+        with ESMTP id S235797AbjFLKwq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:52:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF036296E
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:41:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 981751BF0
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:37:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 458F5612E8
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:41:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5844BC433D2;
-        Mon, 12 Jun 2023 10:41:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E9FA623F7
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:37:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B4FC4339B;
+        Mon, 12 Jun 2023 10:37:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566511;
-        bh=kykGhLEOmlx9d7alSiSCXq61le4YWP1qYybA39wLHPg=;
+        s=korg; t=1686566228;
+        bh=3a3S7E//5RGg3AIUfWREo/KfaGDdWdkOow4ZzeCJryo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vCQWhbIu9UsVet9BUhhN4uvt/fU3N76NUI7U1yiYGRQ4rjlp70tcKRaxJih3maAQ4
-         KANiYuZeejKY12gmwAUL6MCf26BiuSbbXRoTFHE4ix3FrWcoJczywDdYFE1kTSsU6i
-         xTS7BiZjvZDzLLduERq9mq/c/3dI9DZV5O8t2j0Y=
+        b=rcJmtji04y7ih4dXDyZ151BbdHf8IK13t4lQ0ZJ0vrHzpMv8X29yExQJcAeGvs/+x
+         JTM27eK9jp6VPx/egNdIavb4bpOFO7SzJVIwxmWn6Osk+a3NThewiC2RPUPkEbiUW1
+         UplFyVR5LkQ4uOGjiEY6cpInyIRl4A2XPJSPnwv8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sudarsana Kalluru <skalluru@marvell.com>,
-        David Miller <davem@davemloft.net>,
-        Manish Chopra <manishc@marvell.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        Qingfang DENG <qingfang.deng@siflower.com.cn>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 030/132] qed/qede: Fix scheduling while atomic
+Subject: [PATCH 5.15 15/91] neighbour: fix unaligned access to pneigh_entry
 Date:   Mon, 12 Jun 2023 12:26:04 +0200
-Message-ID: <20230612101711.596864228@linuxfoundation.org>
+Message-ID: <20230612101702.727875399@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
+References: <20230612101702.085813286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,273 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Manish Chopra <manishc@marvell.com>
+From: Qingfang DENG <qingfang.deng@siflower.com.cn>
 
-[ Upstream commit 42510dffd0e2c27046905f742172ed6662af5557 ]
+[ Upstream commit ed779fe4c9b5a20b4ab4fd6f3e19807445bb78c7 ]
 
-Statistics read through bond interface via sysfs causes
-below bug and traces as it triggers the bonding module to
-collect the slave device statistics while holding the spinlock,
-beneath that qede->qed driver statistics flow gets scheduled out
-due to usleep_range() used in PTT acquire logic
+After the blamed commit, the member key is longer 4-byte aligned. On
+platforms that do not support unaligned access, e.g., MIPS32R2 with
+unaligned_action set to 1, this will trigger a crash when accessing
+an IPv6 pneigh_entry, as the key is cast to an in6_addr pointer.
 
-[ 3673.988874] Hardware name: HPE ProLiant DL365 Gen10 Plus/ProLiant DL365 Gen10 Plus, BIOS A42 10/29/2021
-[ 3673.988878] Call Trace:
-[ 3673.988891]  dump_stack_lvl+0x34/0x44
-[ 3673.988908]  __schedule_bug.cold+0x47/0x53
-[ 3673.988918]  __schedule+0x3fb/0x560
-[ 3673.988929]  schedule+0x43/0xb0
-[ 3673.988932]  schedule_hrtimeout_range_clock+0xbf/0x1b0
-[ 3673.988937]  ? __hrtimer_init+0xc0/0xc0
-[ 3673.988950]  usleep_range+0x5e/0x80
-[ 3673.988955]  qed_ptt_acquire+0x2b/0xd0 [qed]
-[ 3673.988981]  _qed_get_vport_stats+0x141/0x240 [qed]
-[ 3673.989001]  qed_get_vport_stats+0x18/0x80 [qed]
-[ 3673.989016]  qede_fill_by_demand_stats+0x37/0x400 [qede]
-[ 3673.989028]  qede_get_stats64+0x19/0xe0 [qede]
-[ 3673.989034]  dev_get_stats+0x5c/0xc0
-[ 3673.989045]  netstat_show.constprop.0+0x52/0xb0
-[ 3673.989055]  dev_attr_show+0x19/0x40
-[ 3673.989065]  sysfs_kf_seq_show+0x9b/0xf0
-[ 3673.989076]  seq_read_iter+0x120/0x4b0
-[ 3673.989087]  new_sync_read+0x118/0x1a0
-[ 3673.989095]  vfs_read+0xf3/0x180
-[ 3673.989099]  ksys_read+0x5f/0xe0
-[ 3673.989102]  do_syscall_64+0x3b/0x90
-[ 3673.989109]  entry_SYSCALL_64_after_hwframe+0x44/0xae
-[ 3673.989115] RIP: 0033:0x7f8467d0b082
-[ 3673.989119] Code: c0 e9 b2 fe ff ff 50 48 8d 3d ca 05 08 00 e8 35 e7 01 00 0f 1f 44 00 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 0f 05 <48> 3d 00 f0 ff ff 77 56 c3 0f 1f 44 00 00 48 83 ec 28 48 89 54 24
-[ 3673.989121] RSP: 002b:00007ffffb21fd08 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-[ 3673.989127] RAX: ffffffffffffffda RBX: 000000000100eca0 RCX: 00007f8467d0b082
-[ 3673.989128] RDX: 00000000000003ff RSI: 00007ffffb21fdc0 RDI: 0000000000000003
-[ 3673.989130] RBP: 00007f8467b96028 R08: 0000000000000010 R09: 00007ffffb21ec00
-[ 3673.989132] R10: 00007ffffb27b170 R11: 0000000000000246 R12: 00000000000000f0
-[ 3673.989134] R13: 0000000000000003 R14: 00007f8467b92000 R15: 0000000000045a05
-[ 3673.989139] CPU: 30 PID: 285188 Comm: read_all Kdump: loaded Tainted: G        W  OE
+Change the type of the key to u32 to make it aligned.
 
-Fix this by collecting the statistics asynchronously from a periodic
-delayed work scheduled at default stats coalescing interval and return
-the recent copy of statisitcs from .ndo_get_stats64(), also add ability
-to configure/retrieve stats coalescing interval using below commands -
-
-ethtool -C ethx stats-block-usecs <val>
-ethtool -c ethx
-
-Fixes: 133fac0eedc3 ("qede: Add basic ethtool support")
-Cc: Sudarsana Kalluru <skalluru@marvell.com>
-Cc: David Miller <davem@davemloft.net>
-Signed-off-by: Manish Chopra <manishc@marvell.com>
-Link: https://lore.kernel.org/r/20230605112600.48238-1-manishc@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 62dd93181aaa ("[IPV6] NDISC: Set per-entry is_router flag in Proxy NA.")
+Signed-off-by: Qingfang DENG <qingfang.deng@siflower.com.cn>
+Link: https://lore.kernel.org/r/20230601015432.159066-1-dqfext@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qed/qed_l2.c      |  2 +-
- drivers/net/ethernet/qlogic/qede/qede.h       |  4 +++
- .../net/ethernet/qlogic/qede/qede_ethtool.c   | 24 +++++++++++--
- drivers/net/ethernet/qlogic/qede/qede_main.c  | 34 ++++++++++++++++++-
- 4 files changed, 60 insertions(+), 4 deletions(-)
+ include/net/neighbour.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qed/qed_l2.c b/drivers/net/ethernet/qlogic/qed/qed_l2.c
-index 2edd6bf64a3cc..7776d3bdd459a 100644
---- a/drivers/net/ethernet/qlogic/qed/qed_l2.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_l2.c
-@@ -1903,7 +1903,7 @@ void qed_get_vport_stats(struct qed_dev *cdev, struct qed_eth_stats *stats)
- {
- 	u32 i;
- 
--	if (!cdev) {
-+	if (!cdev || cdev->recov_in_prog) {
- 		memset(stats, 0, sizeof(*stats));
- 		return;
- 	}
-diff --git a/drivers/net/ethernet/qlogic/qede/qede.h b/drivers/net/ethernet/qlogic/qede/qede.h
-index f90dcfe9ee688..8a63f99d499c4 100644
---- a/drivers/net/ethernet/qlogic/qede/qede.h
-+++ b/drivers/net/ethernet/qlogic/qede/qede.h
-@@ -271,6 +271,10 @@ struct qede_dev {
- #define QEDE_ERR_WARN			3
- 
- 	struct qede_dump_info		dump_info;
-+	struct delayed_work		periodic_task;
-+	unsigned long			stats_coal_ticks;
-+	u32				stats_coal_usecs;
-+	spinlock_t			stats_lock; /* lock for vport stats access */
+diff --git a/include/net/neighbour.h b/include/net/neighbour.h
+index d5767e25509cc..abb22cfd4827f 100644
+--- a/include/net/neighbour.h
++++ b/include/net/neighbour.h
+@@ -174,7 +174,7 @@ struct pneigh_entry {
+ 	struct net_device	*dev;
+ 	u8			flags;
+ 	u8			protocol;
+-	u8			key[];
++	u32			key[];
  };
  
- enum QEDE_STATE {
-diff --git a/drivers/net/ethernet/qlogic/qede/qede_ethtool.c b/drivers/net/ethernet/qlogic/qede/qede_ethtool.c
-index 8034d812d5a00..d0a3395b2bc1f 100644
---- a/drivers/net/ethernet/qlogic/qede/qede_ethtool.c
-+++ b/drivers/net/ethernet/qlogic/qede/qede_ethtool.c
-@@ -430,6 +430,8 @@ static void qede_get_ethtool_stats(struct net_device *dev,
- 		}
- 	}
- 
-+	spin_lock(&edev->stats_lock);
-+
- 	for (i = 0; i < QEDE_NUM_STATS; i++) {
- 		if (qede_is_irrelevant_stat(edev, i))
- 			continue;
-@@ -439,6 +441,8 @@ static void qede_get_ethtool_stats(struct net_device *dev,
- 		buf++;
- 	}
- 
-+	spin_unlock(&edev->stats_lock);
-+
- 	__qede_unlock(edev);
- }
- 
-@@ -830,6 +834,7 @@ static int qede_get_coalesce(struct net_device *dev,
- 
- 	coal->rx_coalesce_usecs = rx_coal;
- 	coal->tx_coalesce_usecs = tx_coal;
-+	coal->stats_block_coalesce_usecs = edev->stats_coal_usecs;
- 
- 	return rc;
- }
-@@ -843,6 +848,19 @@ int qede_set_coalesce(struct net_device *dev, struct ethtool_coalesce *coal,
- 	int i, rc = 0;
- 	u16 rxc, txc;
- 
-+	if (edev->stats_coal_usecs != coal->stats_block_coalesce_usecs) {
-+		edev->stats_coal_usecs = coal->stats_block_coalesce_usecs;
-+		if (edev->stats_coal_usecs) {
-+			edev->stats_coal_ticks = usecs_to_jiffies(edev->stats_coal_usecs);
-+			schedule_delayed_work(&edev->periodic_task, 0);
-+
-+			DP_INFO(edev, "Configured stats coal ticks=%lu jiffies\n",
-+				edev->stats_coal_ticks);
-+		} else {
-+			cancel_delayed_work_sync(&edev->periodic_task);
-+		}
-+	}
-+
- 	if (!netif_running(dev)) {
- 		DP_INFO(edev, "Interface is down\n");
- 		return -EINVAL;
-@@ -2253,7 +2271,8 @@ static int qede_get_per_coalesce(struct net_device *dev,
- }
- 
- static const struct ethtool_ops qede_ethtool_ops = {
--	.supported_coalesce_params	= ETHTOOL_COALESCE_USECS,
-+	.supported_coalesce_params	= ETHTOOL_COALESCE_USECS |
-+					  ETHTOOL_COALESCE_STATS_BLOCK_USECS,
- 	.get_link_ksettings		= qede_get_link_ksettings,
- 	.set_link_ksettings		= qede_set_link_ksettings,
- 	.get_drvinfo			= qede_get_drvinfo,
-@@ -2304,7 +2323,8 @@ static const struct ethtool_ops qede_ethtool_ops = {
- };
- 
- static const struct ethtool_ops qede_vf_ethtool_ops = {
--	.supported_coalesce_params	= ETHTOOL_COALESCE_USECS,
-+	.supported_coalesce_params	= ETHTOOL_COALESCE_USECS |
-+					  ETHTOOL_COALESCE_STATS_BLOCK_USECS,
- 	.get_link_ksettings		= qede_get_link_ksettings,
- 	.get_drvinfo			= qede_get_drvinfo,
- 	.get_msglevel			= qede_get_msglevel,
-diff --git a/drivers/net/ethernet/qlogic/qede/qede_main.c b/drivers/net/ethernet/qlogic/qede/qede_main.c
-index 89d64a5a4951a..e8d427c7d1cff 100644
---- a/drivers/net/ethernet/qlogic/qede/qede_main.c
-+++ b/drivers/net/ethernet/qlogic/qede/qede_main.c
-@@ -308,6 +308,8 @@ void qede_fill_by_demand_stats(struct qede_dev *edev)
- 
- 	edev->ops->get_vport_stats(edev->cdev, &stats);
- 
-+	spin_lock(&edev->stats_lock);
-+
- 	p_common->no_buff_discards = stats.common.no_buff_discards;
- 	p_common->packet_too_big_discard = stats.common.packet_too_big_discard;
- 	p_common->ttl0_discard = stats.common.ttl0_discard;
-@@ -405,6 +407,8 @@ void qede_fill_by_demand_stats(struct qede_dev *edev)
- 		p_ah->tx_1519_to_max_byte_packets =
- 		    stats.ah.tx_1519_to_max_byte_packets;
- 	}
-+
-+	spin_unlock(&edev->stats_lock);
- }
- 
- static void qede_get_stats64(struct net_device *dev,
-@@ -413,9 +417,10 @@ static void qede_get_stats64(struct net_device *dev,
- 	struct qede_dev *edev = netdev_priv(dev);
- 	struct qede_stats_common *p_common;
- 
--	qede_fill_by_demand_stats(edev);
- 	p_common = &edev->stats.common;
- 
-+	spin_lock(&edev->stats_lock);
-+
- 	stats->rx_packets = p_common->rx_ucast_pkts + p_common->rx_mcast_pkts +
- 			    p_common->rx_bcast_pkts;
- 	stats->tx_packets = p_common->tx_ucast_pkts + p_common->tx_mcast_pkts +
-@@ -435,6 +440,8 @@ static void qede_get_stats64(struct net_device *dev,
- 		stats->collisions = edev->stats.bb.tx_total_collisions;
- 	stats->rx_crc_errors = p_common->rx_crc_errors;
- 	stats->rx_frame_errors = p_common->rx_align_errors;
-+
-+	spin_unlock(&edev->stats_lock);
- }
- 
- #ifdef CONFIG_QED_SRIOV
-@@ -1061,6 +1068,23 @@ static void qede_unlock(struct qede_dev *edev)
- 	rtnl_unlock();
- }
- 
-+static void qede_periodic_task(struct work_struct *work)
-+{
-+	struct qede_dev *edev = container_of(work, struct qede_dev,
-+					     periodic_task.work);
-+
-+	qede_fill_by_demand_stats(edev);
-+	schedule_delayed_work(&edev->periodic_task, edev->stats_coal_ticks);
-+}
-+
-+static void qede_init_periodic_task(struct qede_dev *edev)
-+{
-+	INIT_DELAYED_WORK(&edev->periodic_task, qede_periodic_task);
-+	spin_lock_init(&edev->stats_lock);
-+	edev->stats_coal_usecs = USEC_PER_SEC;
-+	edev->stats_coal_ticks = usecs_to_jiffies(USEC_PER_SEC);
-+}
-+
- static void qede_sp_task(struct work_struct *work)
- {
- 	struct qede_dev *edev = container_of(work, struct qede_dev,
-@@ -1080,6 +1104,7 @@ static void qede_sp_task(struct work_struct *work)
- 	 */
- 
- 	if (test_and_clear_bit(QEDE_SP_RECOVERY, &edev->sp_flags)) {
-+		cancel_delayed_work_sync(&edev->periodic_task);
- #ifdef CONFIG_QED_SRIOV
- 		/* SRIOV must be disabled outside the lock to avoid a deadlock.
- 		 * The recovery of the active VFs is currently not supported.
-@@ -1270,6 +1295,7 @@ static int __qede_probe(struct pci_dev *pdev, u32 dp_module, u8 dp_level,
- 		 */
- 		INIT_DELAYED_WORK(&edev->sp_task, qede_sp_task);
- 		mutex_init(&edev->qede_lock);
-+		qede_init_periodic_task(edev);
- 
- 		rc = register_netdev(edev->ndev);
- 		if (rc) {
-@@ -1294,6 +1320,11 @@ static int __qede_probe(struct pci_dev *pdev, u32 dp_module, u8 dp_level,
- 	edev->rx_copybreak = QEDE_RX_HDR_SIZE;
- 
- 	qede_log_probe(edev);
-+
-+	/* retain user config (for example - after recovery) */
-+	if (edev->stats_coal_usecs)
-+		schedule_delayed_work(&edev->periodic_task, 0);
-+
- 	return 0;
- 
- err4:
-@@ -1362,6 +1393,7 @@ static void __qede_remove(struct pci_dev *pdev, enum qede_remove_mode mode)
- 		unregister_netdev(ndev);
- 
- 		cancel_delayed_work_sync(&edev->sp_task);
-+		cancel_delayed_work_sync(&edev->periodic_task);
- 
- 		edev->ops->common->set_power_state(cdev, PCI_D0);
- 
+ /*
 -- 
 2.39.2
 
