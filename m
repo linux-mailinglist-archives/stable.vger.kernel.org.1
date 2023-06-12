@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A25472C222
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:03:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFDF572C10A
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:56:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237284AbjFLLDH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:03:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35386 "EHLO
+        id S236606AbjFLK4J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:56:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237290AbjFLLCb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:02:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 882D95FFB
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:50:09 -0700 (PDT)
+        with ESMTP id S236826AbjFLKzx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:55:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 720BD4EFD
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:43:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1DDD6624E7
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:50:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC06C433EF;
-        Mon, 12 Jun 2023 10:50:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1028D612F0
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:43:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 297B3C433D2;
+        Mon, 12 Jun 2023 10:42:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686567008;
-        bh=oc32ZB1JTcluBLHraCvjWDj7/bruu9izjuB1A/JOl5Y=;
+        s=korg; t=1686566579;
+        bh=4VVWe/qZ7QNynVZRVNjj9geL7VWS+naqZ43tobl/uWs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KGySyadBfwqohH0tO5MAI+k7QEm5Yn+Nr8n4WCVpqVytg1flWefVKEYs2XnAz1wCL
-         2cPjdPgBuDOfnOjlSHGb3/Z+o082gzv6jIs/9xbw+4xwdajW5uuqdDjtlxkMXQkbyk
-         dFwCYygzBjp/eaVilAk0qg/WFX+Edddwn96zlLGw=
+        b=Wi52P6Z4tekYzvc36JWABtt94eaVinKI01uV5GUT2LRCR7he8yl/8tunlOqAv9wN8
+         Khx4KdANShayoFNmh2OdG/vn52LiyNpARjJG6VyXFPQO/ABobCHvtgXwj7dTjuAFhz
+         I0q0Y6X4pR6z1ELXT9zEpPx6QP21jLlBNaC57dTM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, YiPeng Chai <YiPeng.Chai@amd.com>,
-        Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.3 087/160] drm/amdgpu: change reserved vram info print
+        patches@lists.linux.dev,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Geliang Tang <geliang.tang@suse.com>,
+        Mat Martineau <martineau@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 085/132] selftests: mptcp: update userspace pm subflow tests
 Date:   Mon, 12 Jun 2023 12:26:59 +0200
-Message-ID: <20230612101718.994714342@linuxfoundation.org>
+Message-ID: <20230612101714.143699758@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,45 +56,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: YiPeng Chai <YiPeng.Chai@amd.com>
+From: Geliang Tang <geliang.tang@suse.com>
 
-commit dac652220ba0e5a2ef2da2a47a60b60aea333fdb upstream.
+commit 6c160b636c91e71e50c39134f78257cc35305ff0 upstream.
 
-The link object of mgr->reserved_pages is the blocks
-variable in struct amdgpu_vram_reservation, not the
-link variable in struct drm_buddy_block.
+To align with what is done by the in-kernel PM, update userspace pm
+subflow selftests, by sending the a remove_addrs command together
+before the remove_subflows command. This will get a RM_ADDR in
+chk_rm_nr().
 
-Signed-off-by: YiPeng Chai <YiPeng.Chai@amd.com>
-Reviewed-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: d9a4594edabf ("mptcp: netlink: Add MPTCP_PM_CMD_REMOVE")
+Fixes: 5e986ec46874 ("selftests: mptcp: userspace pm subflow tests")
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/379
 Cc: stable@vger.kernel.org
+Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Geliang Tang <geliang.tang@suse.com>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-@@ -800,7 +800,7 @@ static void amdgpu_vram_mgr_debug(struct
- {
- 	struct amdgpu_vram_mgr *mgr = to_vram_mgr(man);
- 	struct drm_buddy *mm = &mgr->mm;
--	struct drm_buddy_block *block;
-+	struct amdgpu_vram_reservation *rsv;
- 
- 	drm_printf(printer, "  vis usage:%llu\n",
- 		   amdgpu_vram_mgr_vis_usage(mgr));
-@@ -812,8 +812,9 @@ static void amdgpu_vram_mgr_debug(struct
- 	drm_buddy_print(mm, printer);
- 
- 	drm_printf(printer, "reserved:\n");
--	list_for_each_entry(block, &mgr->reserved_pages, link)
--		drm_buddy_block_print(mm, block, printer);
-+	list_for_each_entry(rsv, &mgr->reserved_pages, blocks)
-+		drm_printf(printer, "%#018llx-%#018llx: %llu\n",
-+			rsv->start, rsv->start + rsv->size, rsv->size);
- 	mutex_unlock(&mgr->lock);
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -925,6 +925,7 @@ do_transfer()
+ 				sleep 1
+ 				sp=$(grep "type:10" "$evts_ns2" |
+ 				     sed -n 's/.*\(sport:\)\([[:digit:]]*\).*$/\2/p;q')
++				ip netns exec ${connector_ns} ./pm_nl_ctl rem token $tk id $id
+ 				ip netns exec ${connector_ns} ./pm_nl_ctl dsf lip $addr lport $sp \
+ 									rip $da rport $dp token $tk
+ 			fi
+@@ -3007,7 +3008,7 @@ userspace_tests()
+ 		pm_nl_set_limits $ns1 0 1
+ 		run_tests $ns1 $ns2 10.0.1.1 0 0 userspace_1 slow
+ 		chk_join_nr 1 1 1
+-		chk_rm_nr 0 1
++		chk_rm_nr 1 1
+ 	fi
  }
  
 
