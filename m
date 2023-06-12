@@ -2,45 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CA0C72C123
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:56:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F82972C0B4
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:54:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236558AbjFLK4f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:56:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60266 "EHLO
+        id S236310AbjFLKyL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:54:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236634AbjFLK4V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:56:21 -0400
+        with ESMTP id S235882AbjFLKxu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:53:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7402F527C
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:44:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DFB4D17B
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:39:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C8158615CB
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:44:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD714C433EF;
-        Mon, 12 Jun 2023 10:44:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B592614F0
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:39:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76B29C433D2;
+        Mon, 12 Jun 2023 10:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566642;
-        bh=eHqA/XNTgPzNyWaSNWkVQYCmkusbEx6uTjAX+yi3Nxk=;
+        s=korg; t=1686566340;
+        bh=bdNhbHHiZ1gjS7wN5u6aaOveVriureyTwf2YZIRJulE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HfvVFls+LYcEY7KLFLAx0zu4sm17NLszqxCawuPoPig59esamP1kqF9Wtqn4PQqxc
-         eh7Za1Kq/V10rQMGp0a3CnI/r9CK7li2JSMyZNli7N8fjSF9z5XHZxM5hlwCDR8m9/
-         lBsFYtQXvh2reylrYu+eqHqicZscHB/tAyLEwpYE=
+        b=pK3dPBq0x/Rb1l4aj5ZXH5m9mZ5Z5kinl0OGqKBId2wkxn/yG1GcInQiejWxW/RRg
+         WWCv+cxO/Yytu386t3gXfe53WqQ0vBsMXk5v1J12bhq2e3VYfuJm50nMYtsAKUy65M
+         Jsc0rdrsMxuAw4Bd52+ui4UUUWvGk8Xa/FZejXug=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/132] ARM: at91: pm: fix imbalanced reference counter for ethernet devices
+        patches@lists.linux.dev, Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.15 87/91] Revert "ext4: dont clear SB_RDONLY when remounting r/w until quota is re-enabled"
 Date:   Mon, 12 Jun 2023 12:27:16 +0200
-Message-ID: <20230612101714.946062577@linuxfoundation.org>
+Message-ID: <20230612101705.761808117@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
+References: <20230612101702.085813286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,87 +52,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Claudiu Beznea <claudiu.beznea@microchip.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-[ Upstream commit ccd4923d18d5698a5910d516646ce125b9155d47 ]
+commit 1b29243933098cdbc31b579b5616e183b4275e2f upstream.
 
-The of_find_device_by_node() function is returning a struct platform_device
-object with the embedded struct device member's reference counter
-incremented. This needs to be dropped when done with the platform device
-returned by of_find_device_by_node().
+This reverts commit a44be64bbecb15a452496f60db6eacfee2b59c79.
 
-at91_pm_eth_quirk_is_valid() calls of_find_device_by_node() on
-suspend and resume path. On suspend it calls of_find_device_by_node() and
-on resume and failure paths it drops the counter of
-struct platform_device::dev.
-
-In case ethernet device may not wakeup there is a put_device() on
-at91_pm_eth_quirk_is_valid() which is wrong as it colides with
-put_device() on resume path leading to the reference counter of struct
-device embedded in struct platform_device to be messed, stack trace to be
-displayed (after 5 consecutive suspend/resume cycles) and execution to
-hang.
-
-Along with this the error path of at91_pm_config_quirks() had been also
-adapted to decrement propertly the reference counter of struct device
-embedded in struct platform_device.
-
-Fixes: b7fc72c63399 ("ARM: at91: pm: add quirks for pm")
-Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Link: https://lore.kernel.org/r/20230518062511.2988500-1-claudiu.beznea@microchip.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/653b3359-2005-21b1-039d-c55ca4cffdcc@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-at91/pm.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ fs/ext4/super.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/arch/arm/mach-at91/pm.c b/arch/arm/mach-at91/pm.c
-index 60dc56d8acfb9..437dd0352fd44 100644
---- a/arch/arm/mach-at91/pm.c
-+++ b/arch/arm/mach-at91/pm.c
-@@ -334,16 +334,14 @@ static bool at91_pm_eth_quirk_is_valid(struct at91_pm_quirk_eth *eth)
- 		pdev = of_find_device_by_node(eth->np);
- 		if (!pdev)
- 			return false;
-+		/* put_device(eth->dev) is called at the end of suspend. */
- 		eth->dev = &pdev->dev;
- 	}
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5748,7 +5748,6 @@ static int ext4_remount(struct super_blo
+ 	struct ext4_mount_options old_opts;
+ 	ext4_group_t g;
+ 	int err = 0;
+-	int enable_rw = 0;
+ #ifdef CONFIG_QUOTA
+ 	int enable_quota = 0;
+ 	int i, j;
+@@ -5949,7 +5948,7 @@ static int ext4_remount(struct super_blo
+ 			if (err)
+ 				goto restore_opts;
  
- 	/* No quirks if device isn't a wakeup source. */
--	if (!device_may_wakeup(eth->dev)) {
--		put_device(eth->dev);
-+	if (!device_may_wakeup(eth->dev))
- 		return false;
--	}
+-			enable_rw = 1;
++			sb->s_flags &= ~SB_RDONLY;
+ 			if (ext4_has_feature_mmp(sb)) {
+ 				err = ext4_multi_mount_protect(sb,
+ 						le64_to_cpu(es->s_mmp_block));
+@@ -5996,9 +5995,6 @@ static int ext4_remount(struct super_blo
+ 	if (!test_opt(sb, BLOCK_VALIDITY) && sbi->s_system_blks)
+ 		ext4_release_system_zone(sb);
  
--	/* put_device(eth->dev) is called at the end of suspend. */
- 	return true;
- }
- 
-@@ -439,14 +437,14 @@ static int at91_pm_config_quirks(bool suspend)
- 				pr_err("AT91: PM: failed to enable %s clocks\n",
- 				       j == AT91_PM_G_ETH ? "geth" : "eth");
- 			}
--		} else {
--			/*
--			 * Release the reference to eth->dev taken in
--			 * at91_pm_eth_quirk_is_valid().
--			 */
--			put_device(eth->dev);
--			eth->dev = NULL;
- 		}
-+
-+		/*
-+		 * Release the reference to eth->dev taken in
-+		 * at91_pm_eth_quirk_is_valid().
-+		 */
-+		put_device(eth->dev);
-+		eth->dev = NULL;
- 	}
- 
- 	return ret;
--- 
-2.39.2
-
+-	if (enable_rw)
+-		sb->s_flags &= ~SB_RDONLY;
+-
+ 	/*
+ 	 * Reinitialize lazy itable initialization thread based on
+ 	 * current settings
 
 
