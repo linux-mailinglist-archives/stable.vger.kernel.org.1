@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B31E72B556
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 04:18:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BB2D72B56D
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 04:30:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233318AbjFLCSj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 11 Jun 2023 22:18:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60636 "EHLO
+        id S232168AbjFLCax (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 11 Jun 2023 22:30:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232705AbjFLCSi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 22:18:38 -0400
+        with ESMTP id S231786AbjFLCax (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 22:30:53 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BD0EE48
-        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 19:18:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6C5610A
+        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 19:30:51 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 35C2IFsN4027669, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 35C2IFsN4027669
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 35C2UV4c8010139, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 35C2UV4c8010139
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK)
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:18:15 +0800
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:30:31 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Mon, 12 Jun 2023 10:18:32 +0800
+ 15.1.2507.17; Mon, 12 Jun 2023 10:30:49 +0800
 Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 12 Jun
- 2023 10:18:32 +0800
+ 2023 10:30:49 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <stable@vger.kernel.org>
 CC:     <pkshih@realtek.com>
-Subject: [PATCH 6.1.y] wifi: rtw88: correct PS calculation for SUPPORTS_DYNAMIC_PS
-Date:   Mon, 12 Jun 2023 10:18:09 +0800
-Message-ID: <20230612021809.15624-1-pkshih@realtek.com>
+Subject: [PATCH 6.3.y] wifi: rtw88: correct PS calculation for SUPPORTS_DYNAMIC_PS
+Date:   Mon, 12 Jun 2023 10:30:26 +0800
+Message-ID: <20230612023026.8164-1-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <2023061100-swab-sultry-d7ef@gregkh>
-References: <2023061100-swab-sultry-d7ef@gregkh>
+In-Reply-To: <2023061159-vascular-afloat-9a55@gregkh>
+References: <2023061159-vascular-afloat-9a55@gregkh>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -44,10 +44,6 @@ X-Originating-IP: [172.21.69.188]
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
@@ -87,7 +83,7 @@ Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
  4 files changed, 52 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
-index 62fb28f14c94d..fabca307867a0 100644
+index e29ca5dcf105b..0bf6882d18f14 100644
 --- a/drivers/net/wireless/realtek/rtw88/mac80211.c
 +++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
 @@ -88,15 +88,6 @@ static int rtw_ops_config(struct ieee80211_hw *hw, u32 changed)
@@ -133,10 +129,10 @@ index 62fb28f14c94d..fabca307867a0 100644
  
  	mutex_unlock(&rtwdev->mutex);
 diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 8080ace5ed51e..4c8164db4a9e4 100644
+index 76f7aadef77c5..fc51acc9a5998 100644
 --- a/drivers/net/wireless/realtek/rtw88/main.c
 +++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -248,8 +248,8 @@ static void rtw_watch_dog_work(struct work_struct *work)
+@@ -250,8 +250,8 @@ static void rtw_watch_dog_work(struct work_struct *work)
  	 * more than two stations associated to the AP, then we can not enter
  	 * lps, because fw does not handle the overlapped beacon interval
  	 *
@@ -148,7 +144,7 @@ index 8080ace5ed51e..4c8164db4a9e4 100644
  	 * threshold.
  	 */
 diff --git a/drivers/net/wireless/realtek/rtw88/ps.c b/drivers/net/wireless/realtek/rtw88/ps.c
-index dc0d852182454..7ac35c368d7a5 100644
+index 996365575f44f..53933fb38a330 100644
 --- a/drivers/net/wireless/realtek/rtw88/ps.c
 +++ b/drivers/net/wireless/realtek/rtw88/ps.c
 @@ -299,3 +299,46 @@ void rtw_leave_lps_deep(struct rtw_dev *rtwdev)
