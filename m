@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA26572C0BE
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CE1772C205
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:02:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235799AbjFLKyV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:54:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55624 "EHLO
+        id S237505AbjFLLCQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:02:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236039AbjFLKyH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 192126591
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:39:28 -0700 (PDT)
+        with ESMTP id S237156AbjFLLBy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:01:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25F904C04
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:49:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A2F07614F0
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:39:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B425AC433D2;
-        Mon, 12 Jun 2023 10:39:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B76AE624D0
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:49:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7168C433EF;
+        Mon, 12 Jun 2023 10:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566367;
-        bh=+ZBCRj1kzTGu0fnO1M4sdXQuZUwwO+tV/jPDhQ/rbrs=;
+        s=korg; t=1686566951;
+        bh=GcDl7Zim06hob0Dr5v3+WjE0uTBWIlCP44U25nqI24s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wAIdovt8nIjyy/LDQS6YxesqzZpPyb5gFHU9pVA4kF3sdSxQjjS8robafCikwsn9F
-         IYts/k7ym1C0/L1DpjBd6YIiS1Xs4gAT5QxFZ2d/bpNZukTOi/l+QiKdXTwAe22sh3
-         pD/WKva5ox2ttYKpGaak07FkBXuqF/Qjw3aQqLyw=
+        b=MOs5tNGXA26d/wJX6pNeU3APfRhucubRoQEqI3vogIXZazcheYD59SzJNpdRWsN4V
+         Pc8aAd4zoqls3mSwu1zPv7kJFl35qa/TcV9xd9F+UEyFiW+8mYgVPf+cDh0NCmJGun
+         UJNUGsGcIFix4HZ8A4xDLaXVXjphTsBV4B4EQ7eA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Trevor Wu <trevor.wu@mediatek.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 77/91] ASoC: mediatek: mt8195: fix use-after-free in driver remove path
+        patches@lists.linux.dev,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Fedor Pchelkin <pchelkin@ispras.ru>,
+        Oleksij Rempel <o.rempel@pengutronix.de>,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.3 094/160] can: j1939: change j1939_netdev_lock type to mutex
 Date:   Mon, 12 Jun 2023 12:27:06 +0200
-Message-ID: <20230612101705.294907156@linuxfoundation.org>
+Message-ID: <20230612101719.311071093@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
-References: <20230612101702.085813286@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,173 +56,119 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Trevor Wu <trevor.wu@mediatek.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit dc93f0dcb436dfd24a06c5b3c0f4c5cd9296e8e5 ]
+commit cd9c790de2088b0d797dc4d244b4f174f9962554 upstream.
 
-During mt8195_afe_init_clock(), mt8195_audsys_clk_register() was called
-followed by several other devm functions. At mt8195_afe_deinit_clock()
-located at mt8195_afe_pcm_dev_remove(), mt8195_audsys_clk_unregister()
-was called.
+It turns out access to j1939_can_rx_register() needs to be serialized,
+otherwise j1939_priv can be corrupted when parallel threads call
+j1939_netdev_start() and j1939_can_rx_register() fails. This issue is
+thoroughly covered in other commit which serializes access to
+j1939_can_rx_register().
 
-However, there was an issue with the order in which these functions were
-called. Specifically, the remove callback of platform_driver was called
-before devres released the resource, resulting in a use-after-free issue
-during remove time.
+Change j1939_netdev_lock type to mutex so that we do not need to remove
+GFP_KERNEL from can_rx_register().
 
-At probe time, the order of calls was:
-1. mt8195_audsys_clk_register
-2. afe_priv->clk = devm_kcalloc
-3. afe_priv->clk[i] = devm_clk_get
+j1939_netdev_lock seems to be used in normal contexts where mutex usage
+is not prohibited.
 
-At remove time, the order of calls was:
-1. mt8195_audsys_clk_unregister
-3. free afe_priv->clk[i]
-2. free afe_priv->clk
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-To resolve the problem, we can utilize devm_add_action_or_reset() in
-mt8195_audsys_clk_register() so that the remove order can be changed to
-3->2->1.
-
-Fixes: 6746cc858259 ("ASoC: mediatek: mt8195: add platform driver")
-Signed-off-by: Trevor Wu <trevor.wu@mediatek.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230601033318.10408-3-trevor.wu@mediatek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
+Suggested-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://lore.kernel.org/r/20230526171910.227615-2-pchelkin@ispras.ru
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/mediatek/mt8195/mt8195-afe-clk.c    |  5 --
- sound/soc/mediatek/mt8195/mt8195-afe-clk.h    |  1 -
- sound/soc/mediatek/mt8195/mt8195-afe-pcm.c    |  4 --
- sound/soc/mediatek/mt8195/mt8195-audsys-clk.c | 47 ++++++++++---------
- sound/soc/mediatek/mt8195/mt8195-audsys-clk.h |  1 -
- 5 files changed, 24 insertions(+), 34 deletions(-)
+ net/can/j1939/main.c |   22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/sound/soc/mediatek/mt8195/mt8195-afe-clk.c b/sound/soc/mediatek/mt8195/mt8195-afe-clk.c
-index 8420b2c71332a..d1939e08d333c 100644
---- a/sound/soc/mediatek/mt8195/mt8195-afe-clk.c
-+++ b/sound/soc/mediatek/mt8195/mt8195-afe-clk.c
-@@ -136,11 +136,6 @@ int mt8195_afe_init_clock(struct mtk_base_afe *afe)
- 	return 0;
+--- a/net/can/j1939/main.c
++++ b/net/can/j1939/main.c
+@@ -126,7 +126,7 @@ static void j1939_can_recv(struct sk_buf
+ #define J1939_CAN_ID CAN_EFF_FLAG
+ #define J1939_CAN_MASK (CAN_EFF_FLAG | CAN_RTR_FLAG)
+ 
+-static DEFINE_SPINLOCK(j1939_netdev_lock);
++static DEFINE_MUTEX(j1939_netdev_lock);
+ 
+ static struct j1939_priv *j1939_priv_create(struct net_device *ndev)
+ {
+@@ -220,7 +220,7 @@ static void __j1939_rx_release(struct kr
+ 	j1939_can_rx_unregister(priv);
+ 	j1939_ecu_unmap_all(priv);
+ 	j1939_priv_set(priv->ndev, NULL);
+-	spin_unlock(&j1939_netdev_lock);
++	mutex_unlock(&j1939_netdev_lock);
  }
  
--void mt8195_afe_deinit_clock(struct mtk_base_afe *afe)
--{
--	mt8195_audsys_clk_unregister(afe);
--}
--
- int mt8195_afe_enable_clk(struct mtk_base_afe *afe, struct clk *clk)
+ /* get pointer to priv without increasing ref counter */
+@@ -248,9 +248,9 @@ static struct j1939_priv *j1939_priv_get
  {
+ 	struct j1939_priv *priv;
+ 
+-	spin_lock(&j1939_netdev_lock);
++	mutex_lock(&j1939_netdev_lock);
+ 	priv = j1939_priv_get_by_ndev_locked(ndev);
+-	spin_unlock(&j1939_netdev_lock);
++	mutex_unlock(&j1939_netdev_lock);
+ 
+ 	return priv;
+ }
+@@ -260,14 +260,14 @@ struct j1939_priv *j1939_netdev_start(st
+ 	struct j1939_priv *priv, *priv_new;
  	int ret;
-diff --git a/sound/soc/mediatek/mt8195/mt8195-afe-clk.h b/sound/soc/mediatek/mt8195/mt8195-afe-clk.h
-index f8e6eeb29a895..24eb2f06682f2 100644
---- a/sound/soc/mediatek/mt8195/mt8195-afe-clk.h
-+++ b/sound/soc/mediatek/mt8195/mt8195-afe-clk.h
-@@ -90,7 +90,6 @@ int mt8195_afe_get_mclk_source_clk_id(int sel);
- int mt8195_afe_get_mclk_source_rate(struct mtk_base_afe *afe, int apll);
- int mt8195_afe_get_default_mclk_source_by_rate(int rate);
- int mt8195_afe_init_clock(struct mtk_base_afe *afe);
--void mt8195_afe_deinit_clock(struct mtk_base_afe *afe);
- int mt8195_afe_enable_clk(struct mtk_base_afe *afe, struct clk *clk);
- void mt8195_afe_disable_clk(struct mtk_base_afe *afe, struct clk *clk);
- int mt8195_afe_prepare_clk(struct mtk_base_afe *afe, struct clk *clk);
-diff --git a/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c b/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c
-index 6c15d45f4a006..4e817542dd745 100644
---- a/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c
-+++ b/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c
-@@ -3239,15 +3239,11 @@ static int mt8195_afe_pcm_dev_probe(struct platform_device *pdev)
  
- static void mt8195_afe_pcm_dev_remove(struct platform_device *pdev)
- {
--	struct mtk_base_afe *afe = platform_get_drvdata(pdev);
--
- 	snd_soc_unregister_component(&pdev->dev);
- 
- 	pm_runtime_disable(&pdev->dev);
- 	if (!pm_runtime_status_suspended(&pdev->dev))
- 		mt8195_afe_runtime_suspend(&pdev->dev);
--
--	mt8195_afe_deinit_clock(afe);
- }
- 
- static const struct of_device_id mt8195_afe_pcm_dt_match[] = {
-diff --git a/sound/soc/mediatek/mt8195/mt8195-audsys-clk.c b/sound/soc/mediatek/mt8195/mt8195-audsys-clk.c
-index 740aa6ddda0ec..353aa17323648 100644
---- a/sound/soc/mediatek/mt8195/mt8195-audsys-clk.c
-+++ b/sound/soc/mediatek/mt8195/mt8195-audsys-clk.c
-@@ -148,6 +148,29 @@ static const struct afe_gate aud_clks[CLK_AUD_NR_CLK] = {
- 	GATE_AUD6(CLK_AUD_GASRC19, "aud_gasrc19", "asm_h_sel", 19),
- };
- 
-+static void mt8195_audsys_clk_unregister(void *data)
-+{
-+	struct mtk_base_afe *afe = data;
-+	struct mt8195_afe_private *afe_priv = afe->platform_priv;
-+	struct clk *clk;
-+	struct clk_lookup *cl;
-+	int i;
-+
-+	if (!afe_priv)
-+		return;
-+
-+	for (i = 0; i < CLK_AUD_NR_CLK; i++) {
-+		cl = afe_priv->lookup[i];
-+		if (!cl)
-+			continue;
-+
-+		clk = cl->clk;
-+		clk_unregister_gate(clk);
-+
-+		clkdev_drop(cl);
-+	}
-+}
-+
- int mt8195_audsys_clk_register(struct mtk_base_afe *afe)
- {
- 	struct mt8195_afe_private *afe_priv = afe->platform_priv;
-@@ -188,27 +211,5 @@ int mt8195_audsys_clk_register(struct mtk_base_afe *afe)
- 		afe_priv->lookup[i] = cl;
+-	spin_lock(&j1939_netdev_lock);
++	mutex_lock(&j1939_netdev_lock);
+ 	priv = j1939_priv_get_by_ndev_locked(ndev);
+ 	if (priv) {
+ 		kref_get(&priv->rx_kref);
+-		spin_unlock(&j1939_netdev_lock);
++		mutex_unlock(&j1939_netdev_lock);
+ 		return priv;
  	}
+-	spin_unlock(&j1939_netdev_lock);
++	mutex_unlock(&j1939_netdev_lock);
  
--	return 0;
--}
--
--void mt8195_audsys_clk_unregister(struct mtk_base_afe *afe)
--{
--	struct mt8195_afe_private *afe_priv = afe->platform_priv;
--	struct clk *clk;
--	struct clk_lookup *cl;
--	int i;
--
--	if (!afe_priv)
--		return;
--
--	for (i = 0; i < CLK_AUD_NR_CLK; i++) {
--		cl = afe_priv->lookup[i];
--		if (!cl)
--			continue;
--
--		clk = cl->clk;
--		clk_unregister_gate(clk);
--
--		clkdev_drop(cl);
--	}
-+	return devm_add_action_or_reset(afe->dev, mt8195_audsys_clk_unregister, afe);
+ 	priv = j1939_priv_create(ndev);
+ 	if (!priv)
+@@ -277,20 +277,20 @@ struct j1939_priv *j1939_netdev_start(st
+ 	spin_lock_init(&priv->j1939_socks_lock);
+ 	INIT_LIST_HEAD(&priv->j1939_socks);
+ 
+-	spin_lock(&j1939_netdev_lock);
++	mutex_lock(&j1939_netdev_lock);
+ 	priv_new = j1939_priv_get_by_ndev_locked(ndev);
+ 	if (priv_new) {
+ 		/* Someone was faster than us, use their priv and roll
+ 		 * back our's.
+ 		 */
+ 		kref_get(&priv_new->rx_kref);
+-		spin_unlock(&j1939_netdev_lock);
++		mutex_unlock(&j1939_netdev_lock);
+ 		dev_put(ndev);
+ 		kfree(priv);
+ 		return priv_new;
+ 	}
+ 	j1939_priv_set(ndev, priv);
+-	spin_unlock(&j1939_netdev_lock);
++	mutex_unlock(&j1939_netdev_lock);
+ 
+ 	ret = j1939_can_rx_register(priv);
+ 	if (ret < 0)
+@@ -308,7 +308,7 @@ struct j1939_priv *j1939_netdev_start(st
+ 
+ void j1939_netdev_stop(struct j1939_priv *priv)
+ {
+-	kref_put_lock(&priv->rx_kref, __j1939_rx_release, &j1939_netdev_lock);
++	kref_put_mutex(&priv->rx_kref, __j1939_rx_release, &j1939_netdev_lock);
+ 	j1939_priv_put(priv);
  }
-diff --git a/sound/soc/mediatek/mt8195/mt8195-audsys-clk.h b/sound/soc/mediatek/mt8195/mt8195-audsys-clk.h
-index 239d31016ba76..69db2dd1c9e02 100644
---- a/sound/soc/mediatek/mt8195/mt8195-audsys-clk.h
-+++ b/sound/soc/mediatek/mt8195/mt8195-audsys-clk.h
-@@ -10,6 +10,5 @@
- #define _MT8195_AUDSYS_CLK_H_
  
- int mt8195_audsys_clk_register(struct mtk_base_afe *afe);
--void mt8195_audsys_clk_unregister(struct mtk_base_afe *afe);
- 
- #endif
--- 
-2.39.2
-
 
 
