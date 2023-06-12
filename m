@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D16A72C100
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:56:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4A7F72C09B
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:53:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236398AbjFLK4A (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:56:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60336 "EHLO
+        id S235704AbjFLKxg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:53:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235680AbjFLKzq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:55:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B6354EF1
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:42:42 -0700 (PDT)
+        with ESMTP id S231811AbjFLKxU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:53:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FEDDAD28
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:38:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D10D9615B7
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:42:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E41C433D2;
-        Mon, 12 Jun 2023 10:42:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C5F5623EE
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:38:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F800C4339B;
+        Mon, 12 Jun 2023 10:38:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566561;
-        bh=cZfWCa99St9eb01zjbzxJth1IR50E8rE0F8769taugE=;
+        s=korg; t=1686566280;
+        bh=lZmncEOXhR/DL4JLuP5p/9gz+poKWYx+qwIB+KuYEiw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xb2eutNqSZ+0mTxb53yALRmIZ4F/cEtHQLFYdH56785GCNou3rhqUvVZrNXX8g9sD
-         jcbnA+4qzKe5Vr29gfX0z22q8Jv6LyGFjrdwo2cjxpnLHtg/pyuCpMlNHoFB3J5nh9
-         C0q+DIVRdIGqpbS/ONnZiiqkD9DnMQy03jInCGEw=
+        b=XrMTdweYLvngrqrUAWstvqQJ3yK6Y5q8c8dlmm9QMUcTGDXSnQeWyG0X8SmpizpQ5
+         SyEbXynN+MH69n/PdwO/XToUUcHbZhcAaAJRIW2DAPK0SgXIgfQq75As1cSWyBRJO2
+         gxYyxOPtWtvG5Qw6URI71C7FJJsMKJ75PnJ0JG/w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Jander <david@protonic.nl>,
-        Oleksij Rempel <o.rempel@pengutronix.de>,
-        Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.1 078/132] can: j1939: j1939_sk_send_loop_abort(): improved error queue handling in J1939 Socket
+        patches@lists.linux.dev, Min Li <lm0963hack@gmail.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.15 63/91] Bluetooth: Fix use-after-free in hci_remove_ltk/hci_remove_irk
 Date:   Mon, 12 Jun 2023 12:26:52 +0200
-Message-ID: <20230612101713.811928465@linuxfoundation.org>
+Message-ID: <20230612101704.698793684@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
+References: <20230612101702.085813286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,63 +53,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 2a84aea80e925ecba6349090559754f8e8eb68ef upstream.
+commit c5d2b6fa26b5b8386a9cc902cdece3a46bef2bd2 upstream.
 
-This patch addresses an issue within the j1939_sk_send_loop_abort()
-function in the j1939/socket.c file, specifically in the context of
-Transport Protocol (TP) sessions.
+Similar to commit 0f7d9b31ce7a ("netfilter: nf_tables: fix use-after-free
+in nft_set_catchall_destroy()"). We can not access k after kfree_rcu()
+call.
 
-Without this patch, when a TP session is initiated and a Clear To Send
-(CTS) frame is received from the remote side requesting one data packet,
-the kernel dispatches the first Data Transport (DT) frame and then waits
-for the next CTS. If the remote side doesn't respond with another CTS,
-the kernel aborts due to a timeout. This leads to the user-space
-receiving an EPOLLERR on the socket, and the socket becomes active.
-
-However, when trying to read the error queue from the socket with
-sock.recvmsg(, , socket.MSG_ERRQUEUE), it returns -EAGAIN,
-given that the socket is non-blocking. This situation results in an
-infinite loop: the user-space repeatedly calls epoll(), epoll() returns
-the socket file descriptor with EPOLLERR, but the socket then blocks on
-the recv() of ERRQUEUE.
-
-This patch introduces an additional check for the J1939_SOCK_ERRQUEUE
-flag within the j1939_sk_send_loop_abort() function. If the flag is set,
-it indicates that the application has subscribed to receive error queue
-messages. In such cases, the kernel can communicate the current transfer
-state via the error queue. This allows for the function to return early,
-preventing the unnecessary setting of the socket into an error state,
-and breaking the infinite loop. It is crucial to note that a socket
-error is only needed if the application isn't using the error queue, as,
-without it, the application wouldn't be aware of transfer issues.
-
-Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
-Reported-by: David Jander <david@protonic.nl>
-Tested-by: David Jander <david@protonic.nl>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://lore.kernel.org/r/20230526081946.715190-1-o.rempel@pengutronix.de
 Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Min Li <lm0963hack@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/j1939/socket.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/bluetooth/hci_core.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/net/can/j1939/socket.c
-+++ b/net/can/j1939/socket.c
-@@ -1088,6 +1088,11 @@ void j1939_sk_errqueue(struct j1939_sess
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -2697,10 +2697,10 @@ int hci_remove_link_key(struct hci_dev *
  
- void j1939_sk_send_loop_abort(struct sock *sk, int err)
+ int hci_remove_ltk(struct hci_dev *hdev, bdaddr_t *bdaddr, u8 bdaddr_type)
  {
-+	struct j1939_sock *jsk = j1939_sk(sk);
-+
-+	if (jsk->state & J1939_SOCK_ERRQUEUE)
-+		return;
-+
- 	sk->sk_err = err;
+-	struct smp_ltk *k;
++	struct smp_ltk *k, *tmp;
+ 	int removed = 0;
  
- 	sk_error_report(sk);
+-	list_for_each_entry_rcu(k, &hdev->long_term_keys, list) {
++	list_for_each_entry_safe(k, tmp, &hdev->long_term_keys, list) {
+ 		if (bacmp(bdaddr, &k->bdaddr) || k->bdaddr_type != bdaddr_type)
+ 			continue;
+ 
+@@ -2716,9 +2716,9 @@ int hci_remove_ltk(struct hci_dev *hdev,
+ 
+ void hci_remove_irk(struct hci_dev *hdev, bdaddr_t *bdaddr, u8 addr_type)
+ {
+-	struct smp_irk *k;
++	struct smp_irk *k, *tmp;
+ 
+-	list_for_each_entry_rcu(k, &hdev->identity_resolving_keys, list) {
++	list_for_each_entry_safe(k, tmp, &hdev->identity_resolving_keys, list) {
+ 		if (bacmp(bdaddr, &k->bdaddr) || k->addr_type != addr_type)
+ 			continue;
+ 
 
 
