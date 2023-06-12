@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBCE972BFFB
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:48:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9F1072C080
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:53:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229922AbjFLKsi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:48:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50882 "EHLO
+        id S233371AbjFLKxD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:53:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231440AbjFLKsU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:48:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 543E346AB
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:33:08 -0700 (PDT)
+        with ESMTP id S235862AbjFLKwr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:52:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EADCE4C2F
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:37:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B7A8C61D7A
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:32:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F65C433EF;
-        Mon, 12 Jun 2023 10:32:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CAECB62408
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:37:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF93C433D2;
+        Mon, 12 Jun 2023 10:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565965;
-        bh=2qs5QvqZHdL2ahqf7G6zHKoc8BemV4eshuUutC96v/E=;
+        s=korg; t=1686566231;
+        bh=nomEvDJ7bXqxcceUuB626g+UQ9At5z+4FFSHw6ef1oU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FBleXbHEO+Zq6OsgVuUsihI6IhNj8HBbm7dfQTsOXRYNydVKM4NIrb0MHfiGi+tdZ
-         NS3Eur768mvB6S40MrkS94kppkgWAo45Sa+0IvKpJctV64ruXsjKFNrFvu+DP8RycH
-         5alyn66zOQ0ttihcg9SbOLfTTcFpbWvEnNdK7m9U=
+        b=idCSu9vvXtTStpj9AIQHRXGt1BKJykk6FKdWXnoBZd1EA0H4v2RCFbSoREdAjCnVY
+         BxhT3NDlrC9jw+RdxixDygKiQx9vHGnKEmC31Tdw0ygJ+cZWjA711Rbf/3UnBC7e2I
+         B6k6R1L3vyx/GI1GaagHcIisZSbBvx1ao09FUOrM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephan Gerhold <stephan@gerhold.net>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev,
+        Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 13/68] spi: qup: Request DMA before enabling clocks
+Subject: [PATCH 5.15 16/91] net: dsa: lan9303: allow vid != 0 in port_fdb_{add|del} methods
 Date:   Mon, 12 Jun 2023 12:26:05 +0200
-Message-ID: <20230612101659.017266905@linuxfoundation.org>
+Message-ID: <20230612101702.768000075@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
-References: <20230612101658.437327280@linuxfoundation.org>
+In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
+References: <20230612101702.085813286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,120 +56,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stephan Gerhold <stephan@gerhold.net>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit 0c331fd1dccfba657129380ee084b95c1cedfbef ]
+[ Upstream commit 5a59a58ec25d44f853c26bdbfda47d73b3067435 ]
 
-It is usually better to request all necessary resources (clocks,
-regulators, ...) before starting to make use of them. That way they do
-not change state in case one of the resources is not available yet and
-probe deferral (-EPROBE_DEFER) is necessary. This is particularly
-important for DMA channels and IOMMUs which are not enforced by
-fw_devlink yet (unless you use fw_devlink.strict=1).
+LAN9303 doesn't associate FDB (ALR) entries with VLANs, it has just one
+global Address Logic Resolution table [1].
 
-spi-qup does this in the wrong order, the clocks are enabled and
-disabled again when the DMA channels are not available yet.
+Ignore VID in port_fdb_{add|del} methods, go on with the global table. This
+is the same semantics as hellcreek or RZ/N1 implement.
 
-This causes issues in some cases: On most SoCs one of the SPI QUP
-clocks is shared with the UART controller. When using earlycon UART is
-actively used during boot but might not have probed yet, usually for
-the same reason (waiting for the DMA controller). In this case, the
-brief enable/disable cycle ends up gating the clock and further UART
-console output will halt the system completely.
+Visible symptoms:
+LAN9303_MDIO 5b050000.ethernet-1:00: port 2 failed to delete 00:xx:xx:xx:xx:cf vid 1 from fdb: -2
+LAN9303_MDIO 5b050000.ethernet-1:00: port 2 failed to add 00:xx:xx:xx:xx:cf vid 1 to fdb: -95
 
-Avoid this by requesting the DMA channels before changing the clock
-state.
+[1] https://ww1.microchip.com/downloads/en/DeviceDoc/00002308A.pdf
 
-Fixes: 612762e82ae6 ("spi: qup: Add DMA capabilities")
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-Link: https://lore.kernel.org/r/20230518-spi-qup-clk-defer-v1-1-f49fc9ca4e02@gerhold.net
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 0620427ea0d6 ("net: dsa: lan9303: Add fdb/mdb manipulation")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://lore.kernel.org/r/20230531143826.477267-1-alexander.sverdlin@siemens.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-qup.c | 37 ++++++++++++++++++-------------------
- 1 file changed, 18 insertions(+), 19 deletions(-)
+ drivers/net/dsa/lan9303-core.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
-index 8bf58510cca6d..2cc9bb413c108 100644
---- a/drivers/spi/spi-qup.c
-+++ b/drivers/spi/spi-qup.c
-@@ -1030,23 +1030,8 @@ static int spi_qup_probe(struct platform_device *pdev)
- 		return -ENXIO;
- 	}
+diff --git a/drivers/net/dsa/lan9303-core.c b/drivers/net/dsa/lan9303-core.c
+index 22547b10dfe50..63826553719bf 100644
+--- a/drivers/net/dsa/lan9303-core.c
++++ b/drivers/net/dsa/lan9303-core.c
+@@ -1194,8 +1194,6 @@ static int lan9303_port_fdb_add(struct dsa_switch *ds, int port,
+ 	struct lan9303 *chip = ds->priv;
  
--	ret = clk_prepare_enable(cclk);
--	if (ret) {
--		dev_err(dev, "cannot enable core clock\n");
--		return ret;
--	}
--
--	ret = clk_prepare_enable(iclk);
--	if (ret) {
--		clk_disable_unprepare(cclk);
--		dev_err(dev, "cannot enable iface clock\n");
--		return ret;
--	}
--
- 	master = spi_alloc_master(dev, sizeof(struct spi_qup));
- 	if (!master) {
--		clk_disable_unprepare(cclk);
--		clk_disable_unprepare(iclk);
- 		dev_err(dev, "cannot allocate master\n");
- 		return -ENOMEM;
- 	}
-@@ -1092,6 +1077,19 @@ static int spi_qup_probe(struct platform_device *pdev)
- 	spin_lock_init(&controller->lock);
- 	init_completion(&controller->done);
+ 	dev_dbg(chip->dev, "%s(%d, %pM, %d)\n", __func__, port, addr, vid);
+-	if (vid)
+-		return -EOPNOTSUPP;
  
-+	ret = clk_prepare_enable(cclk);
-+	if (ret) {
-+		dev_err(dev, "cannot enable core clock\n");
-+		goto error_dma;
-+	}
-+
-+	ret = clk_prepare_enable(iclk);
-+	if (ret) {
-+		clk_disable_unprepare(cclk);
-+		dev_err(dev, "cannot enable iface clock\n");
-+		goto error_dma;
-+	}
-+
- 	iomode = readl_relaxed(base + QUP_IO_M_MODES);
- 
- 	size = QUP_IO_M_OUTPUT_BLOCK_SIZE(iomode);
-@@ -1121,7 +1119,7 @@ static int spi_qup_probe(struct platform_device *pdev)
- 	ret = spi_qup_set_state(controller, QUP_STATE_RESET);
- 	if (ret) {
- 		dev_err(dev, "cannot set RESET state\n");
--		goto error_dma;
-+		goto error_clk;
- 	}
- 
- 	writel_relaxed(0, base + QUP_OPERATIONAL);
-@@ -1145,7 +1143,7 @@ static int spi_qup_probe(struct platform_device *pdev)
- 	ret = devm_request_irq(dev, irq, spi_qup_qup_irq,
- 			       IRQF_TRIGGER_HIGH, pdev->name, controller);
- 	if (ret)
--		goto error_dma;
-+		goto error_clk;
- 
- 	pm_runtime_set_autosuspend_delay(dev, MSEC_PER_SEC);
- 	pm_runtime_use_autosuspend(dev);
-@@ -1160,11 +1158,12 @@ static int spi_qup_probe(struct platform_device *pdev)
- 
- disable_pm:
- 	pm_runtime_disable(&pdev->dev);
-+error_clk:
-+	clk_disable_unprepare(cclk);
-+	clk_disable_unprepare(iclk);
- error_dma:
- 	spi_qup_release_dma(master);
- error:
--	clk_disable_unprepare(cclk);
--	clk_disable_unprepare(iclk);
- 	spi_master_put(master);
- 	return ret;
+ 	return lan9303_alr_add_port(chip, addr, port, false);
  }
+@@ -1207,8 +1205,6 @@ static int lan9303_port_fdb_del(struct dsa_switch *ds, int port,
+ 	struct lan9303 *chip = ds->priv;
+ 
+ 	dev_dbg(chip->dev, "%s(%d, %pM, %d)\n", __func__, port, addr, vid);
+-	if (vid)
+-		return -EOPNOTSUPP;
+ 	lan9303_alr_del_port(chip, addr, port);
+ 
+ 	return 0;
 -- 
 2.39.2
 
