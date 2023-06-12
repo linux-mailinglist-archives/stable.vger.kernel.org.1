@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDBCF72BF7E
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:44:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5672872C1BD
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:00:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229777AbjFLKoi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:44:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48190 "EHLO
+        id S236689AbjFLLAK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:00:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234050AbjFLKoW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:44:22 -0400
+        with ESMTP id S237374AbjFLK7o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:59:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 836DB3C15
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:29:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9EE8127E1
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:46:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6109860C2D
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:29:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78074C433D2;
-        Mon, 12 Jun 2023 10:29:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 478CF62475
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:46:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA11C433EF;
+        Mon, 12 Jun 2023 10:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565746;
-        bh=pqBGfxUzFxFMmgWEbXuVrmXQEVAxxV/dTRkTVZMPCUY=;
+        s=korg; t=1686566803;
+        bh=9xHM3ixLZZBJtNM/kIArIDVog9YyMwqEuEs6QnsdVaA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SuL4UwA5p3A1WPU/+c6IdmK67XvJ39qzidRPCaVPZNizPE8G8pYC8SpRzOE5TXxHk
-         NtJCByFwKYtP4e4TigLmD8j/erfBv9d6m6SAiCULfvL04TFkGH29nKWUWA40koFgDW
-         tzLbJpMWidupwUFwhDNJbNNfQLYPGtI9/3y7mw+c=
+        b=RgobJVpfdjUi/qKMhDgig74XahLTb9aqXCxFjq+fagGQQxZ+p2Ue9KB1VRRWyy0dc
+         dV8PzrkN/UY/BTcBjTjNpql+iYl5VPx3rxxoIocBoU6GMi5jHc2+zfRYqOThh0t6nm
+         8GO0I8cBfffLvOTeYtiS3aslW0WUE4FH7+EhvJp0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chia-I Wu <olvaffe@gmail.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 4.14 14/21] drm/amdgpu: fix xclk freq on CHIP_STONEY
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 037/160] wifi: cfg80211: fix locking in sched scan stop work
 Date:   Mon, 12 Jun 2023 12:26:09 +0200
-Message-ID: <20230612101651.546930221@linuxfoundation.org>
+Message-ID: <20230612101716.752056851@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101651.048240731@linuxfoundation.org>
-References: <20230612101651.048240731@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,41 +53,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chia-I Wu <olvaffe@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit b447b079cf3a9971ea4d31301e673f49612ccc18 upstream.
+[ Upstream commit 3e54ed8247c94c8bdf370bd872bd9dfe72b1b12b ]
 
-According to Alex, most APUs from that time seem to have the same issue
-(vbios says 48Mhz, actual is 100Mhz).  I only have a CHIP_STONEY so I
-limit the fixup to CHIP_STONEY
+This should use wiphy_lock() now instead of acquiring the
+RTNL, since cfg80211_stop_sched_scan_req() now needs that.
 
-Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a05829a7222e ("cfg80211: avoid holding the RTNL when calling the driver")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vi.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ net/wireless/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/vi.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vi.c
-@@ -327,8 +327,15 @@ static u32 vi_get_xclk(struct amdgpu_dev
- 	u32 reference_clock = adev->clock.spll.reference_freq;
- 	u32 tmp;
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 5b0c4d5b80cf5..b3ec9eaec36b3 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -368,12 +368,12 @@ static void cfg80211_sched_scan_stop_wk(struct work_struct *work)
+ 	rdev = container_of(work, struct cfg80211_registered_device,
+ 			   sched_scan_stop_wk);
  
--	if (adev->flags & AMD_IS_APU)
--		return reference_clock;
-+	if (adev->flags & AMD_IS_APU) {
-+		switch (adev->asic_type) {
-+		case CHIP_STONEY:
-+			/* vbios says 48Mhz, but the actual freq is 100Mhz */
-+			return 10000;
-+		default:
-+			return reference_clock;
-+		}
-+	}
+-	rtnl_lock();
++	wiphy_lock(&rdev->wiphy);
+ 	list_for_each_entry_safe(req, tmp, &rdev->sched_scan_req_list, list) {
+ 		if (req->nl_owner_dead)
+ 			cfg80211_stop_sched_scan_req(rdev, req, false);
+ 	}
+-	rtnl_unlock();
++	wiphy_unlock(&rdev->wiphy);
+ }
  
- 	tmp = RREG32_SMC(ixCG_CLKPIN_CNTL_2);
- 	if (REG_GET_FIELD(tmp, CG_CLKPIN_CNTL_2, MUX_TCLK_TO_XCLK))
+ static void cfg80211_propagate_radar_detect_wk(struct work_struct *work)
+-- 
+2.39.2
+
 
 
