@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEFE872C1ED
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:01:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B3AC72C0F6
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237190AbjFLLBa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:01:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36740 "EHLO
+        id S235655AbjFLKzr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:55:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237191AbjFLLBG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:01:06 -0400
+        with ESMTP id S236558AbjFLKzT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:55:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32BC55BA3
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:48:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84C0D820F
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:42:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B8599624B4
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:48:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE58C433EF;
-        Mon, 12 Jun 2023 10:48:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 58EA5612B4
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:42:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72540C433D2;
+        Mon, 12 Jun 2023 10:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566893;
-        bh=q7AZgL1Q2wUJlbLmBb90imZYwU03OA8U9REGe/qT1fk=;
+        s=korg; t=1686566537;
+        bh=VNrWFfgH1aZ3K4EvtfFYKXR1l2gklhfy0r7uW08nOjQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Jqm39DAW29v0J//0cVSeSthpUHGIT8NGWnT3tm1uAwaSyTfr2MZkxpX4706ituo0U
-         RKICWCAtkw4eevUcpk9g+MLznNyHZjdlS/nAO19cgc/JrX3hEdK6/f/r7E6yoJF1ih
-         S1ztn+ywtemJthfwVCIP3r5AvX3LOwVdlUvTsd+U=
+        b=qtCWOoOmrTyqcmKwp9Sl0+DafHdgy2JNU81L5W6kaktSxr2H54TBuaNv12u7WX7cJ
+         Ai9uynsy+X+Ad4t2bRkN704Q3rucQZrF7I7LvgGdNCTwlpvuGSYmjqilnoRBjgqTuH
+         KovD3hwiGcSM0hKvic4RnAsjEp90RPkdxLfVnF2c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Ismael Ferreras Morezuelas <swyterzone@gmail.com>,
-        Cameron Gutman <aicommander@gmail.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.3 071/160] Input: xpad - delete a Razer DeathAdder mouse VID/PID entry
-Date:   Mon, 12 Jun 2023 12:26:43 +0200
-Message-ID: <20230612101718.259864658@linuxfoundation.org>
+        Stefan Binding <sbinding@opensource.cirrus.com>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 070/132] ALSA: hda/realtek: Add quirks for Asus ROG 2024 laptops using CS35L41
+Date:   Mon, 12 Jun 2023 12:26:44 +0200
+Message-ID: <20230612101713.469761288@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,73 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ismael Ferreras Morezuelas <swyterzone@gmail.com>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-commit feee70f4568650cf44c573488798ffc0a2faeea3 upstream.
+commit 811dd426a9b16cf61a86fdb12d5f5b983cbfb130 upstream.
 
-While doing my research to improve the xpad device names I noticed
-that the 1532:0037 VID/PID seems to be used by the DeathAdder 2013,
-so that Razer Sabertooth instance looked wrong and very suspect to
-me. I didn't see any mention in the official drivers, either.
+Add support for Asus ROG 2024 models using CS35L41 SPI with Internal
+Boost.
 
-After doing more research, it turns out that the xpad list
-is used by many other projects (like Steam) as-is [1], this
-issue was reported [2] and Valve/Sam Lantinga fixed it [3]:
-
-[1]: https://github.com/libsdl-org/SDL/blob/dcc5eef0e2395854b254ea2873a4899edab347c6/src/joystick/controller_type.h#L251
-[2]: https://steamcommunity.com/app/353380/discussions/0/1743392486228754770/
-[3]: https://hg.libsdl.org/SDL/rev/29809f6f0271
-
-(With multiple Internet users reporting similar issues, not linked here)
-
-After not being able to find the correct VID/PID combination anywhere
-on the Internet and not receiving any reply from Razer support I did
-some additional detective work, it seems like it presents itself as
-"Razer Sabertooth Gaming Controller (XBOX360)", code 1689:FE00.
-
-Leaving us with this:
- * Razer Sabertooth (1689:fe00)
- * Razer Sabertooth Elite (24c6:5d04)
- * Razer DeathAdder 2013 (1532:0037) [note: not a gamepad]
-
-So, to sum things up; remove this conflicting/duplicate entry:
-
-{ 0x1532, 0x0037, "Razer Sabertooth", 0, XTYPE_XBOX360 },
-
-As the real/correct one is already present there, even if
-the Internet as a whole insists on presenting it as the
-Razer Sabertooth Elite, which (by all accounts) is not:
-
-{ 0x1689, 0xfe00, "Razer Sabertooth", 0, XTYPE_XBOX360 },
-
-Actual change in SDL2 referencing this kernel issue:
-https://github.com/libsdl-org/SDL/commit/e5e54169754ca5d3e86339d968b20126d9da0a15
-
-For more information of the device, take a look here:
-https://github.com/xboxdrv/xboxdrv/pull/59
-
-You can see a lsusb dump here: https://github.com/xboxdrv/xboxdrv/files/76581/Qa6dBcrv.txt
-
-Fixes: f554f619b70 ("Input: xpad - sync device IDs with xboxdrv")
-Signed-off-by: Ismael Ferreras Morezuelas <swyterzone@gmail.com>
-Reviewed-by: Cameron Gutman <aicommander@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/5c12dbdb-5774-fc68-5c58-ca596383663e@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230605153308.448550-1-sbinding@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c |    1 -
- 1 file changed, 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -282,7 +282,6 @@ static const struct xpad_device {
- 	{ 0x1430, 0xf801, "RedOctane Controller", 0, XTYPE_XBOX360 },
- 	{ 0x146b, 0x0601, "BigBen Interactive XBOX 360 Controller", 0, XTYPE_XBOX360 },
- 	{ 0x146b, 0x0604, "Bigben Interactive DAIJA Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
--	{ 0x1532, 0x0037, "Razer Sabertooth", 0, XTYPE_XBOX360 },
- 	{ 0x1532, 0x0a00, "Razer Atrox Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOXONE },
- 	{ 0x1532, 0x0a03, "Razer Wildcat", 0, XTYPE_XBOXONE },
- 	{ 0x15e4, 0x3f00, "Power A Mini Pro Elite", 0, XTYPE_XBOX360 },
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9547,6 +9547,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1043, 0x1a8f, "ASUS UX582ZS", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1b11, "ASUS UX431DA", ALC294_FIXUP_ASUS_COEF_1B),
+ 	SND_PCI_QUIRK(0x1043, 0x1b13, "Asus U41SV", ALC269_FIXUP_INV_DMIC),
++	SND_PCI_QUIRK(0x1043, 0x1b93, "ASUS G614JVR/JIR", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1bbd, "ASUS Z550MA", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1c23, "Asus X55U", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x1043, 0x1c62, "ASUS GU603", ALC289_FIXUP_ASUS_GA401),
+@@ -9565,6 +9566,11 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1043, 0x1f12, "ASUS UM5302", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1f92, "ASUS ROG Flow X16", ALC289_FIXUP_ASUS_GA401),
+ 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
++	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x3a30, "ASUS G814JVR/JIR", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x3a40, "ASUS G814JZR", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x3a50, "ASUS G834JYR/JZR", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x3a60, "ASUS G634JYR/JZR", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x831a, "ASUS P901", ALC269_FIXUP_STEREO_DMIC),
+ 	SND_PCI_QUIRK(0x1043, 0x834a, "ASUS S101", ALC269_FIXUP_STEREO_DMIC),
+ 	SND_PCI_QUIRK(0x1043, 0x8398, "ASUS P1005", ALC269_FIXUP_STEREO_DMIC),
 
 
