@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82C3472C10C
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:56:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C44872C200
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:02:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236963AbjFLK4M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:56:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60290 "EHLO
+        id S237374AbjFLLCC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:02:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236807AbjFLKzz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:55:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5DC38C0A
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:43:05 -0700 (PDT)
+        with ESMTP id S237414AbjFLLBg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:01:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21DBF49DB
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:48:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 43368612E8
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:43:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54FBCC433EF;
-        Mon, 12 Jun 2023 10:43:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ADBCB624CF
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:48:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE94C433EF;
+        Mon, 12 Jun 2023 10:48:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566584;
-        bh=Tj5pIUHrwKbgZKMQUQA49EpM6LyQZLQbHXh/SbjZEW4=;
+        s=korg; t=1686566938;
+        bh=EYuEkeCPEWWbbCX01P83N+1oqQy7cklZH5Ysb8vs/64=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y6h6WLM7AgihR+RjXXxyMYs7HgN1LNqCq3ZoneZnsqOldQwrH3TWuvZpXT5iy8e3e
-         89MlyHLFEx39Gb5/8qjZ7pmhd2fUyIgkK+iwJQf9YDA6/GBbtIbnMZK2mO+fh+y1UO
-         TS1OJbCUFaauIK/sXCGd3OKD5tbR7Lc2UnaHGQAI=
+        b=Jydb82TkSlYJ8KawmgeyfIHI8b+Ry9ZQlOCz+WDygAZM9XmCROfZOP8I1eYgIX46Q
+         Yd83FX4cbbl7kE9AyO51tIEoBx3urQTKbmA/nG6NbNs/n2UJsC5GkMaAYmC/jFr33i
+         nu+GbmUaGg8gT7sNAkpvknDLmBH5z869YOOsS7y8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Jan=20H=C3=B6ppner?= <hoeppner@linux.ibm.com>,
-        Stefan Haberland <sth@linux.ibm.com>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 087/132] s390/dasd: Use correct lock while counting channel queue length
+        patches@lists.linux.dev, Lijo Lazar <lijo.lazar@amd.com>,
+        Hawking Zhang <Hawking.Zhang@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.3 089/160] drm/amd/pm: Fix power context allocation in SMU13
 Date:   Mon, 12 Jun 2023 12:27:01 +0200
-Message-ID: <20230612101714.230735749@linuxfoundation.org>
+Message-ID: <20230612101719.093189010@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,48 +54,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Höppner <hoeppner@linux.ibm.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-commit ccc45cb4e7271c74dbb27776ae8f73d84557f5c6 upstream.
+commit 1d13c49cf4e246b218d71873f1bb1bbd376aa10e upstream.
 
-The lock around counting the channel queue length in the BIODASDINFO
-ioctl was incorrectly changed to the dasd_block->queue_lock with commit
-583d6535cb9d ("dasd: remove dead code"). This can lead to endless list
-iterations and a subsequent crash.
+Use the right data structure for allocation.
 
-The queue_lock is supposed to be used only for queue lists belonging to
-dasd_block. For dasd_device related queue lists the ccwdev lock must be
-used.
-
-Fix the mentioned issues by correctly using the ccwdev lock instead of
-the queue lock.
-
-Fixes: 583d6535cb9d ("dasd: remove dead code")
-Cc: stable@vger.kernel.org # v5.0+
-Signed-off-by: Jan Höppner <hoeppner@linux.ibm.com>
-Reviewed-by: Stefan Haberland <sth@linux.ibm.com>
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230609153750.1258763-2-sth@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/block/dasd_ioctl.c |    4 ++--
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/s390/block/dasd_ioctl.c
-+++ b/drivers/s390/block/dasd_ioctl.c
-@@ -552,10 +552,10 @@ static int __dasd_ioctl_information(stru
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+@@ -566,11 +566,11 @@ int smu_v13_0_init_power(struct smu_cont
+ 	if (smu_power->power_context || smu_power->power_context_size != 0)
+ 		return -EINVAL;
  
- 	memcpy(dasd_info->type, base->discipline->name, 4);
+-	smu_power->power_context = kzalloc(sizeof(struct smu_13_0_dpm_context),
++	smu_power->power_context = kzalloc(sizeof(struct smu_13_0_power_context),
+ 					   GFP_KERNEL);
+ 	if (!smu_power->power_context)
+ 		return -ENOMEM;
+-	smu_power->power_context_size = sizeof(struct smu_13_0_dpm_context);
++	smu_power->power_context_size = sizeof(struct smu_13_0_power_context);
  
--	spin_lock_irqsave(&block->queue_lock, flags);
-+	spin_lock_irqsave(get_ccwdev_lock(base->cdev), flags);
- 	list_for_each(l, &base->ccw_queue)
- 		dasd_info->chanq_len++;
--	spin_unlock_irqrestore(&block->queue_lock, flags);
-+	spin_unlock_irqrestore(get_ccwdev_lock(base->cdev), flags);
  	return 0;
  }
- 
 
 
