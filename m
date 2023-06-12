@@ -2,56 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA4C872C12A
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:57:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEC5E72C225
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:03:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236955AbjFLK5I (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:57:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32960 "EHLO
+        id S237684AbjFLLDI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:03:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236952AbjFLK4k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:56:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C3B3D5EF
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:44:22 -0700 (PDT)
+        with ESMTP id S236791AbjFLLCh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:02:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFC6BB7
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:50:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8529B615B7
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:44:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955B7C433EF;
-        Mon, 12 Jun 2023 10:44:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 17D11623BC
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:50:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08909C433D2;
+        Mon, 12 Jun 2023 10:50:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566660;
-        bh=PH6bLGUgGP3iZu6mCo/5iH37mW+D/cyo6Ac9a4Muzm0=;
+        s=korg; t=1686567016;
+        bh=WO05a4864ACH2xxDKXti9pGn8ez6zPNtPk00LzpFDDs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RvVjMSGRQIe18BP/8D9c+YG82m7qwtcWypkOiOBUI4x9buQtASfxq7A/7iExRonPd
-         3DHmamqvd0wacC1nWuZZa0S92POgvv0Y5uU1FuXve7rhOTX8jdj6lZDf/fRH+UJlJA
-         n40RuP7NKn8KATefLS9eqcZ0BUsneDzivltBNOL4=
+        b=pCsOfevEvDi2ue4QisWwr9yXZT7TVgWwc7BHdTkm42/38/G2o9soY6fCHpR+OjFgP
+         7jPdQm3eOtgfU2Mv/0L8UukYM/bWZwD94XB/WFC57u9lp6LqeBAZ1wsWrx4+r54WAW
+         Bw3te+Nhbup2FAfitpp1wBlXU/6q8nskqSEZc5IQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Takashi Iwai <tiwai@suse.de>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 109/132] ASoC: mediatek: mt8195-afe-pcm: Convert to platform remove callback returning void
+        patches@lists.linux.dev, Shannon Nelson <shannon.nelson@amd.com>,
+        Allen Hubbe <allen.hubbe@amd.com>,
+        Brett Creeley <brett.creeley@amd.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.3 111/160] virtio_net: use control_buf for coalesce params
 Date:   Mon, 12 Jun 2023 12:27:23 +0200
-Message-ID: <20230612101715.263131032@linuxfoundation.org>
+Message-ID: <20230612101720.129481688@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -60,65 +58,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Brett Creeley <brett.creeley@amd.com>
 
-[ Upstream commit 6461fee68064ba970e3ba90241fe5f5e038aa9d4 ]
+commit accc1bf23068c1cdc4c2b015320ba856e210dd98 upstream.
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is (mostly) ignored
-and this typically results in resource leaks. To improve here there is a
-quest to make the remove callback return void. In the first step of this
-quest all drivers are converted to .remove_new() which already returns
-void.
+Commit 699b045a8e43 ("net: virtio_net: notifications coalescing
+support") added coalescing command support for virtio_net. However,
+the coalesce commands are using buffers on the stack, which is causing
+the device to see DMA errors. There should also be a complaint from
+check_for_stack() in debug_dma_map_xyz(). Fix this by adding and using
+coalesce params from the control_buf struct, which aligns with other
+commands.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Acked-by: Takashi Iwai <tiwai@suse.de>
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Link: https://lore.kernel.org/r/20230315150745.67084-114-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: dc93f0dcb436 ("ASoC: mediatek: mt8195: fix use-after-free in driver remove path")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 699b045a8e43 ("net: virtio_net: notifications coalescing support")
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Signed-off-by: Allen Hubbe <allen.hubbe@amd.com>
+Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Link: https://lore.kernel.org/r/20230605195925.51625-1-brett.creeley@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/mediatek/mt8195/mt8195-afe-pcm.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/virtio_net.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c b/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c
-index 72b2c6d629b93..9e45efeada55c 100644
---- a/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c
-+++ b/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c
-@@ -3253,7 +3253,7 @@ static int mt8195_afe_pcm_dev_probe(struct platform_device *pdev)
- 	return ret;
- }
- 
--static int mt8195_afe_pcm_dev_remove(struct platform_device *pdev)
-+static void mt8195_afe_pcm_dev_remove(struct platform_device *pdev)
- {
- 	struct mtk_base_afe *afe = platform_get_drvdata(pdev);
- 
-@@ -3264,7 +3264,6 @@ static int mt8195_afe_pcm_dev_remove(struct platform_device *pdev)
- 		mt8195_afe_runtime_suspend(&pdev->dev);
- 
- 	mt8195_afe_deinit_clock(afe);
--	return 0;
- }
- 
- static const struct of_device_id mt8195_afe_pcm_dt_match[] = {
-@@ -3285,7 +3284,7 @@ static struct platform_driver mt8195_afe_pcm_driver = {
- 		   .pm = &mt8195_afe_pm_ops,
- 	},
- 	.probe = mt8195_afe_pcm_dev_probe,
--	.remove = mt8195_afe_pcm_dev_remove,
-+	.remove_new = mt8195_afe_pcm_dev_remove,
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -204,6 +204,8 @@ struct control_buf {
+ 	__virtio16 vid;
+ 	__virtio64 offloads;
+ 	struct virtio_net_ctrl_rss rss;
++	struct virtio_net_ctrl_coal_tx coal_tx;
++	struct virtio_net_ctrl_coal_rx coal_rx;
  };
  
- module_platform_driver(mt8195_afe_pcm_driver);
--- 
-2.39.2
-
+ struct virtnet_info {
+@@ -2933,12 +2935,10 @@ static int virtnet_send_notf_coal_cmds(s
+ 				       struct ethtool_coalesce *ec)
+ {
+ 	struct scatterlist sgs_tx, sgs_rx;
+-	struct virtio_net_ctrl_coal_tx coal_tx;
+-	struct virtio_net_ctrl_coal_rx coal_rx;
+ 
+-	coal_tx.tx_usecs = cpu_to_le32(ec->tx_coalesce_usecs);
+-	coal_tx.tx_max_packets = cpu_to_le32(ec->tx_max_coalesced_frames);
+-	sg_init_one(&sgs_tx, &coal_tx, sizeof(coal_tx));
++	vi->ctrl->coal_tx.tx_usecs = cpu_to_le32(ec->tx_coalesce_usecs);
++	vi->ctrl->coal_tx.tx_max_packets = cpu_to_le32(ec->tx_max_coalesced_frames);
++	sg_init_one(&sgs_tx, &vi->ctrl->coal_tx, sizeof(vi->ctrl->coal_tx));
+ 
+ 	if (!virtnet_send_command(vi, VIRTIO_NET_CTRL_NOTF_COAL,
+ 				  VIRTIO_NET_CTRL_NOTF_COAL_TX_SET,
+@@ -2949,9 +2949,9 @@ static int virtnet_send_notf_coal_cmds(s
+ 	vi->tx_usecs = ec->tx_coalesce_usecs;
+ 	vi->tx_max_packets = ec->tx_max_coalesced_frames;
+ 
+-	coal_rx.rx_usecs = cpu_to_le32(ec->rx_coalesce_usecs);
+-	coal_rx.rx_max_packets = cpu_to_le32(ec->rx_max_coalesced_frames);
+-	sg_init_one(&sgs_rx, &coal_rx, sizeof(coal_rx));
++	vi->ctrl->coal_rx.rx_usecs = cpu_to_le32(ec->rx_coalesce_usecs);
++	vi->ctrl->coal_rx.rx_max_packets = cpu_to_le32(ec->rx_max_coalesced_frames);
++	sg_init_one(&sgs_rx, &vi->ctrl->coal_rx, sizeof(vi->ctrl->coal_rx));
+ 
+ 	if (!virtnet_send_command(vi, VIRTIO_NET_CTRL_NOTF_COAL,
+ 				  VIRTIO_NET_CTRL_NOTF_COAL_RX_SET,
 
 
