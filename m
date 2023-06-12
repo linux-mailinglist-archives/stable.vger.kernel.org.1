@@ -2,42 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB4CD72C0DD
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 130E272C0E5
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236213AbjFLKzR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:55:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56914 "EHLO
+        id S236627AbjFLKzU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:55:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236360AbjFLKyp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5C8DE7D
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:41:23 -0700 (PDT)
+        with ESMTP id S236507AbjFLKyq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 966012943
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:41:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B49F614F0
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:41:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78917C433D2;
-        Mon, 12 Jun 2023 10:41:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C347612F0
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:41:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B76BC433EF;
+        Mon, 12 Jun 2023 10:41:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566482;
-        bh=nelDD/aYcP3XX6JVhlFC0HLNUY5XNg6xuDsrWKkQxP4=;
+        s=korg; t=1686566485;
+        bh=zuteXLUzs2XJRYve8URZRigyEklO1ZTKtkGGHiDZdA8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QPkbkjFTxKqUgXyBWPqFUkXbtywz8nO32UH5M0mi4nojIDjwjnuQpXf/TAosVMB3U
-         bAAUPrEOxE/RsCFXkB344fNZsPBbZjkKCo0hXSufA0QwOnAFS4C5jAx0+8/MY9V2G5
-         8DtQJK7Q4K0YGIVt69SHIUzBF+iZsUtgRcMLWY7U=
+        b=TlcIHmKJmHHYKct8nOPElOU1V7Is4/WV64Ygq5rCiBbXQTgThTfsa2Mc9rXsw27jl
+         g1dZKoefle9sZs3sQ9bTNBubIZvNH/e0M5N7FpAk3vX5QnuieFDhZYkglJ0Cq1h1xo
+         8I/bKr6tGsx/pdbZN07IrFhwH32/4oiyIDygyQ0c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hangyu Hua <hbh25y@gmail.com>,
-        Larysa Zaremba <larysa.zaremba@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 048/132] net: sched: fix possible refcount leak in tc_chain_tmplt_add()
-Date:   Mon, 12 Jun 2023 12:26:22 +0200
-Message-ID: <20230612101712.441435979@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Anastasios Papagiannis <tasos.papagiannnis@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Stanislav Fomichev <sdf@google.com>,
+        Yonghong Song <yhs@fb.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 049/132] bpf: Add extra path pointer check to d_path helper
+Date:   Mon, 12 Jun 2023 12:26:23 +0200
+Message-ID: <20230612101712.490564448@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
 References: <20230612101710.279705932@linuxfoundation.org>
@@ -45,8 +48,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,35 +58,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hangyu Hua <hbh25y@gmail.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit 44f8baaf230c655c249467ca415b570deca8df77 ]
+[ Upstream commit f46fab0e36e611a2389d3843f34658c849b6bd60 ]
 
-try_module_get will be called in tcf_proto_lookup_ops. So module_put needs
-to be called to drop the refcount if ops don't implement the required
-function.
+Anastasios reported crash on stable 5.15 kernel with following
+BPF attached to lsm hook:
 
-Fixes: 9f407f1768d3 ("net: sched: introduce chain templates")
-Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
-Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+  SEC("lsm.s/bprm_creds_for_exec")
+  int BPF_PROG(bprm_creds_for_exec, struct linux_binprm *bprm)
+  {
+          struct path *path = &bprm->executable->f_path;
+          char p[128] = { 0 };
+
+          bpf_d_path(path, p, 128);
+          return 0;
+  }
+
+But bprm->executable can be NULL, so bpf_d_path call will crash:
+
+  BUG: kernel NULL pointer dereference, address: 0000000000000018
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 0 P4D 0
+  Oops: 0000 [#1] PREEMPT SMP DEBUG_PAGEALLOC NOPTI
+  ...
+  RIP: 0010:d_path+0x22/0x280
+  ...
+  Call Trace:
+   <TASK>
+   bpf_d_path+0x21/0x60
+   bpf_prog_db9cf176e84498d9_bprm_creds_for_exec+0x94/0x99
+   bpf_trampoline_6442506293_0+0x55/0x1000
+   bpf_lsm_bprm_creds_for_exec+0x5/0x10
+   security_bprm_creds_for_exec+0x29/0x40
+   bprm_execve+0x1c1/0x900
+   do_execveat_common.isra.0+0x1af/0x260
+   __x64_sys_execve+0x32/0x40
+
+It's problem for all stable trees with bpf_d_path helper, which was
+added in 5.9.
+
+This issue is fixed in current bpf code, where we identify and mark
+trusted pointers, so the above code would fail even to load.
+
+For the sake of the stable trees and to workaround potentially broken
+verifier in the future, adding the code that reads the path object from
+the passed pointer and verifies it's valid in kernel space.
+
+Fixes: 6e22ab9da793 ("bpf: Add d_path helper")
+Reported-by: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
+Suggested-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Stanislav Fomichev <sdf@google.com>
+Acked-by: Yonghong Song <yhs@fb.com>
+Link: https://lore.kernel.org/bpf/20230606181714.532998-1-jolsa@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_api.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/bpf_trace.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index b51d80a2fece3..abaf75300497d 100644
---- a/net/sched/cls_api.c
-+++ b/net/sched/cls_api.c
-@@ -2780,6 +2780,7 @@ static int tc_chain_tmplt_add(struct tcf_chain *chain, struct net *net,
- 		return PTR_ERR(ops);
- 	if (!ops->tmplt_create || !ops->tmplt_destroy || !ops->tmplt_dump) {
- 		NL_SET_ERR_MSG(extack, "Chain templates are not supported with specified classifier");
-+		module_put(ops->owner);
- 		return -EOPNOTSUPP;
- 	}
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 9d4163abadf4e..1642548892a8e 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -903,13 +903,23 @@ static const struct bpf_func_proto bpf_send_signal_thread_proto = {
  
+ BPF_CALL_3(bpf_d_path, struct path *, path, char *, buf, u32, sz)
+ {
++	struct path copy;
+ 	long len;
+ 	char *p;
+ 
+ 	if (!sz)
+ 		return 0;
+ 
+-	p = d_path(path, buf, sz);
++	/*
++	 * The path pointer is verified as trusted and safe to use,
++	 * but let's double check it's valid anyway to workaround
++	 * potentially broken verifier.
++	 */
++	len = copy_from_kernel_nofault(&copy, path, sizeof(*path));
++	if (len < 0)
++		return len;
++
++	p = d_path(&copy, buf, sz);
+ 	if (IS_ERR(p)) {
+ 		len = PTR_ERR(p);
+ 	} else {
 -- 
 2.39.2
 
