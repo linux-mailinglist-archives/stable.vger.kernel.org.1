@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1EB772C0E1
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F61F72C1F9
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:01:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236416AbjFLKzS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:55:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59372 "EHLO
+        id S237050AbjFLLBu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:01:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235680AbjFLKyr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87EDD2946
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:41:34 -0700 (PDT)
+        with ESMTP id S236960AbjFLLB2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:01:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E82B3C1B
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:48:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1ADC8612B4
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:41:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EC5CC433D2;
-        Mon, 12 Jun 2023 10:41:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E0771624C9
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:48:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAEC3C433D2;
+        Mon, 12 Jun 2023 10:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566493;
-        bh=d4VEqdS/JrEr4n/5qAE5LnsY3iRWnNbs21zGIhRboyw=;
+        s=korg; t=1686566922;
+        bh=Sa7V6jMgfFAa5X0ATg7Cj/9Yi9OIsQ2VFTCb1/5Cg8s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ImNPpgjHE/l3i0TzcJuWwNwaT5g/20NhvcDWSa1khqq/Dc2ObykFQQNAuy1q89lZ2
-         NK5/yWJbTm9IdXv/cTk8iE2a6meK5SQsdZQWR9G+AOZdSMZnpb3ivwlIYlZCde83RS
-         aflD9N3nzPulrMwFHcJLGVVs7wKLsle/w0zXxs3I=
+        b=SA+lbETE5bN8Uej+qK/JZuUVFWmgxvyySjJe7BIe6AQqwsEQOBZmzgwob3MDqmnfs
+         mFIXJ7xNKFx21zQR/WoeXFEJ9+R/lqPFF+w8EFqPwxbuuQuXHRZmaLn8BzdGhXTGUq
+         3I/gTGDkoNX24Qp2qH46kIE9X5ZYabFXvhNk1WH4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/132] net: bcmgenet: Fix EEE implementation
+Subject: [PATCH 6.3 054/160] net: sched: move rtm_tca_policy declaration to include file
 Date:   Mon, 12 Jun 2023 12:26:26 +0200
-Message-ID: <20230612101712.627096505@linuxfoundation.org>
+Message-ID: <20230612101717.492175332@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,139 +55,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit a9f31047baca57d47440c879cf259b86f900260c ]
+[ Upstream commit 886bc7d6ed3357975c5f1d3c784da96000d4bbb4 ]
 
-We had a number of short comings:
+rtm_tca_policy is used from net/sched/sch_api.c and net/sched/cls_api.c,
+thus should be declared in an include file.
 
-- EEE must be re-evaluated whenever the state machine detects a link
-  change as wight be switching from a link partner with EEE
-  enabled/disabled
+This fixes the following sparse warning:
+net/sched/sch_api.c:1434:25: warning: symbol 'rtm_tca_policy' was not declared. Should it be static?
 
-- tx_lpi_enabled controls whether EEE should be enabled/disabled for the
-  transmit path, which applies to the TBUF block
-
-- We do not need to forcibly enable EEE upon system resume, as the PHY
-  state machine will trigger a link event that will do that, too
-
-Fixes: 6ef398ea60d9 ("net: bcmgenet: add EEE support")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://lore.kernel.org/r/20230606214348.2408018-1-florian.fainelli@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e331473fee3d ("net/sched: cls_api: add missing validation of netlink attributes")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/broadcom/genet/bcmgenet.c    | 22 +++++++------------
- .../net/ethernet/broadcom/genet/bcmgenet.h    |  3 +++
- drivers/net/ethernet/broadcom/genet/bcmmii.c  |  5 +++++
- 3 files changed, 16 insertions(+), 14 deletions(-)
+ include/net/pkt_sched.h | 2 ++
+ net/sched/cls_api.c     | 2 --
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 4da2becfa950c..1ae082eb9e905 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -1290,7 +1290,8 @@ static void bcmgenet_get_ethtool_stats(struct net_device *dev,
+diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
+index fc688c7e95951..4df802f84eeba 100644
+--- a/include/net/pkt_sched.h
++++ b/include/net/pkt_sched.h
+@@ -128,6 +128,8 @@ static inline void qdisc_run(struct Qdisc *q)
  	}
  }
  
--static void bcmgenet_eee_enable_set(struct net_device *dev, bool enable)
-+void bcmgenet_eee_enable_set(struct net_device *dev, bool enable,
-+			     bool tx_lpi_enabled)
- {
- 	struct bcmgenet_priv *priv = netdev_priv(dev);
- 	u32 off = priv->hw_params->tbuf_offset + TBUF_ENERGY_CTRL;
-@@ -1310,7 +1311,7 @@ static void bcmgenet_eee_enable_set(struct net_device *dev, bool enable)
- 
- 	/* Enable EEE and switch to a 27Mhz clock automatically */
- 	reg = bcmgenet_readl(priv->base + off);
--	if (enable)
-+	if (tx_lpi_enabled)
- 		reg |= TBUF_EEE_EN | TBUF_PM_EN;
- 	else
- 		reg &= ~(TBUF_EEE_EN | TBUF_PM_EN);
-@@ -1331,6 +1332,7 @@ static void bcmgenet_eee_enable_set(struct net_device *dev, bool enable)
- 
- 	priv->eee.eee_enabled = enable;
- 	priv->eee.eee_active = enable;
-+	priv->eee.tx_lpi_enabled = tx_lpi_enabled;
- }
- 
- static int bcmgenet_get_eee(struct net_device *dev, struct ethtool_eee *e)
-@@ -1346,6 +1348,7 @@ static int bcmgenet_get_eee(struct net_device *dev, struct ethtool_eee *e)
- 
- 	e->eee_enabled = p->eee_enabled;
- 	e->eee_active = p->eee_active;
-+	e->tx_lpi_enabled = p->tx_lpi_enabled;
- 	e->tx_lpi_timer = bcmgenet_umac_readl(priv, UMAC_EEE_LPI_TIMER);
- 
- 	return phy_ethtool_get_eee(dev->phydev, e);
-@@ -1355,7 +1358,6 @@ static int bcmgenet_set_eee(struct net_device *dev, struct ethtool_eee *e)
- {
- 	struct bcmgenet_priv *priv = netdev_priv(dev);
- 	struct ethtool_eee *p = &priv->eee;
--	int ret = 0;
- 
- 	if (GENET_IS_V1(priv))
- 		return -EOPNOTSUPP;
-@@ -1366,16 +1368,11 @@ static int bcmgenet_set_eee(struct net_device *dev, struct ethtool_eee *e)
- 	p->eee_enabled = e->eee_enabled;
- 
- 	if (!p->eee_enabled) {
--		bcmgenet_eee_enable_set(dev, false);
-+		bcmgenet_eee_enable_set(dev, false, false);
- 	} else {
--		ret = phy_init_eee(dev->phydev, false);
--		if (ret) {
--			netif_err(priv, hw, dev, "EEE initialization failed\n");
--			return ret;
--		}
--
-+		p->eee_active = phy_init_eee(dev->phydev, false) >= 0;
- 		bcmgenet_umac_writel(priv, e->tx_lpi_timer, UMAC_EEE_LPI_TIMER);
--		bcmgenet_eee_enable_set(dev, true);
-+		bcmgenet_eee_enable_set(dev, p->eee_active, e->tx_lpi_enabled);
- 	}
- 
- 	return phy_ethtool_set_eee(dev->phydev, e);
-@@ -4274,9 +4271,6 @@ static int bcmgenet_resume(struct device *d)
- 	if (!device_may_wakeup(d))
- 		phy_resume(dev->phydev);
- 
--	if (priv->eee.eee_enabled)
--		bcmgenet_eee_enable_set(dev, true);
--
- 	bcmgenet_netif_start(dev);
- 
- 	netif_device_attach(dev);
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-index 946f6e283c4e6..1985c0ec4da2a 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-@@ -703,4 +703,7 @@ int bcmgenet_wol_power_down_cfg(struct bcmgenet_priv *priv,
- void bcmgenet_wol_power_up_cfg(struct bcmgenet_priv *priv,
- 			       enum bcmgenet_power_mode mode);
- 
-+void bcmgenet_eee_enable_set(struct net_device *dev, bool enable,
-+			     bool tx_lpi_enabled);
++extern const struct nla_policy rtm_tca_policy[TCA_MAX + 1];
 +
- #endif /* __BCMGENET_H__ */
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmmii.c b/drivers/net/ethernet/broadcom/genet/bcmmii.c
-index ded0e64a9f6a1..bf9e246784b6e 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
-@@ -88,6 +88,11 @@ static void bcmgenet_mac_config(struct net_device *dev)
- 		reg |= CMD_TX_EN | CMD_RX_EN;
- 	}
- 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+
-+	priv->eee.eee_active = phy_init_eee(phydev, 0) >= 0;
-+	bcmgenet_eee_enable_set(dev,
-+				priv->eee.eee_enabled && priv->eee.eee_active,
-+				priv->eee.tx_lpi_enabled);
- }
+ /* Calculate maximal size of packet seen by hard_start_xmit
+    routine of this device.
+  */
+diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
+index 2621550bfddc1..b2432ee04f319 100644
+--- a/net/sched/cls_api.c
++++ b/net/sched/cls_api.c
+@@ -43,8 +43,6 @@
+ #include <net/flow_offload.h>
+ #include <net/tc_wrapper.h>
  
- /* setup netdev link state when PHY link status change and
+-extern const struct nla_policy rtm_tca_policy[TCA_MAX + 1];
+-
+ /* The list of all installed classifier types */
+ static LIST_HEAD(tcf_proto_base);
+ 
 -- 
 2.39.2
 
