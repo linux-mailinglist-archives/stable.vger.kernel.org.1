@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71E3972C076
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:52:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DF2272C00A
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:49:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233761AbjFLKws (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:52:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54486 "EHLO
+        id S233203AbjFLKtW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:49:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235740AbjFLKwU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:52:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5065A251
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:36:50 -0700 (PDT)
+        with ESMTP id S235517AbjFLKsw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:48:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F3D85FD0
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:33:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C4853623E8
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:36:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7FE3C433EF;
-        Mon, 12 Jun 2023 10:36:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7EFFB623E3
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:33:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE68C433EF;
+        Mon, 12 Jun 2023 10:33:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566210;
-        bh=AOC2DmyQtfbXyATOqInCF0MgQDI4Vzw+suWwLoSnuQM=;
+        s=korg; t=1686566017;
+        bh=mfo6LRszHmCnQABfe+CSPh5ZvnbFPnXxx/WrSSWDGpw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w1ISqf490X2wVCq1KOr7qZcmAUZEzXmv1YqiipaDZ85RVDk6TCMKUE0bYSsOh86zM
-         8hsCguAU7Js4D44fin4sz+lEl091/cZEmBTgbJkaQs+iRa41twW/30XDGPTkzlGoQW
-         KTj3g3wuvlu5m/xZBTjXzLA7YCPbS7efr/kFki0U=
+        b=ipdG5BN4swk4lK/KMkq0TNgLaI6gn4D4IgVh2vEVOHXV70Py90xq0fMCk23g8kgDr
+         NlPD8gPOqmAS7+zk8qLBUyKkoJI+/bp1p/79WU4e2zWx6P34KjEeAqeEB0qgKr0BaS
+         LizXS6QpROu9KrbrcIeQpRZ0FdBaA80Gl2RS/ogc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Akeem G Abodunrin <akeem.g.abodunrin@intel.com>,
-        Matthew Brost <matthew.brost@intel.com>,
-        Matthew Auld <matthew.auld@intel.com>,
+        patches@lists.linux.dev, Pavan Chebbi <pavan.chebbi@broadcom.com>,
+        Somnath Kotur <somnath.kotur@broadcom.com>,
+        Michael Chan <michael.chan@broadcom.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 36/91] drm/i915/selftests: Increase timeout for live_parallel_switch
+Subject: [PATCH 5.10 33/68] bnxt_en: Query default VLAN before VNIC setup on a VF
 Date:   Mon, 12 Jun 2023 12:26:25 +0200
-Message-ID: <20230612101703.594664431@linuxfoundation.org>
+Message-ID: <20230612101659.794388055@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
-References: <20230612101702.085813286@linuxfoundation.org>
+In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
+References: <20230612101658.437327280@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,39 +56,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Akeem G Abodunrin <akeem.g.abodunrin@intel.com>
+From: Somnath Kotur <somnath.kotur@broadcom.com>
 
-[ Upstream commit 373269ae6f90bbbe945abde4c0811a991a27901a ]
+[ Upstream commit 1a9e4f501bc6ff1b6ecb60df54fbf2b54db43bfe ]
 
-With GuC submission, it takes a little bit longer switching contexts
-among all available engines simultaneously, when running
-live_parallel_switch subtest. Increase the timeout.
+We need to call bnxt_hwrm_func_qcfg() on a VF to query the default
+VLAN that may be setup by the PF.  If a default VLAN is enabled,
+the VF cannot support VLAN acceleration on the receive side and
+the VNIC must be setup to strip out the default VLAN tag.  If a
+default VLAN is not enabled, the VF can support VLAN acceleration
+on the receive side.  The VNIC should be set up to strip or not
+strip the VLAN based on the RX VLAN acceleration setting.
 
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/5885
-Signed-off-by: Akeem G Abodunrin <akeem.g.abodunrin@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20220622141104.334432-1-matthew.auld@intel.com
-Stable-dep-of: 79d0150d2d98 ("drm/i915/selftests: Add some missing error propagation")
+Without this call to determine the default VLAN before calling
+bnxt_setup_vnic(), the VNIC may not be set up correctly.  For
+example, bnxt_setup_vnic() may set up to strip the VLAN tag based
+on stale default VLAN information.  If RX VLAN acceleration is
+not enabled, the VLAN tag will be incorrectly stripped and the
+RX data path will not work correctly.
+
+Fixes: cf6645f8ebc6 ("bnxt_en: Add function for VF driver to query default VLAN.")
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gem/selftests/i915_gem_context.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/gem/selftests/i915_gem_context.c b/drivers/gpu/drm/i915/gem/selftests/i915_gem_context.c
-index 8eb5050f8cb3e..a1cdb852ecc82 100644
---- a/drivers/gpu/drm/i915/gem/selftests/i915_gem_context.c
-+++ b/drivers/gpu/drm/i915/gem/selftests/i915_gem_context.c
-@@ -215,7 +215,7 @@ static int __live_parallel_switch1(void *data)
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 3a9fcf942a6de..127ed119b5f71 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -8337,6 +8337,9 @@ static int bnxt_init_chip(struct bnxt *bp, bool irq_re_init)
+ 		goto err_out;
+ 	}
  
- 			i915_request_add(rq);
- 		}
--		if (i915_request_wait(rq, 0, HZ / 5) < 0)
-+		if (i915_request_wait(rq, 0, HZ) < 0)
- 			err = -ETIME;
- 		i915_request_put(rq);
- 		if (err)
++	if (BNXT_VF(bp))
++		bnxt_hwrm_func_qcfg(bp);
++
+ 	rc = bnxt_setup_vnic(bp, 0);
+ 	if (rc)
+ 		goto err_out;
 -- 
 2.39.2
 
