@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CBA272C143
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:57:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AA2572C168
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:58:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236808AbjFLK5x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:57:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60326 "EHLO
+        id S237018AbjFLK6F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:58:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236791AbjFLK5c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:57:32 -0400
+        with ESMTP id S236957AbjFLK5l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:57:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A98F96E8C
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:45:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6844EE57E
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:45:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8906B62418
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:45:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F123C4339B;
-        Mon, 12 Jun 2023 10:45:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F184362451
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:45:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE19C433A1;
+        Mon, 12 Jun 2023 10:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566727;
-        bh=yE6ZNkwiUyFipHu7AolJCJtUyVtwGLYZAofLAYPkzHA=;
+        s=korg; t=1686566745;
+        bh=vnhpbjfFfYigKPr5qHqKo8Y1CgVSHDtl0jhnZwUjIE0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uvnuxRRvRxoCyAh/ZqiqUBnq0T0XA03BcS4WPwo8wX7ZGm3LwAVExgaFbJRyVNVga
-         gueTJtaWnyoDpsnSJhWl0LNMPsrqttBxwG27EcP8iemsTdBYknVXYFUN1N5XFsiWmR
-         5Gz/b+I/dh6Y9RFlL48eGnudOo0FFDABC6ScYj6w=
+        b=sxLidKcCDZRVKlWjqJdC+5U8KABP2WQSIrY7V8n36DBPEO/rnA81YWvnck+zL+nB4
+         HaDhhM/pwENhPKBSGSF2YV0nfWUkOqE7cR9M5l6RtZQVuVxw5/gXTVSSdQn5OI6cLx
+         rASiaKQYvsCVhFhhjsfQ2XEuXrNYRJf5FiJt81WE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Golle <daniel@makrotopia.org>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Maximilian Luz <luzmaximilian@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 001/160] spi: mt65xx: make sure operations completed before unloading
-Date:   Mon, 12 Jun 2023 12:25:33 +0200
-Message-ID: <20230612101715.190812770@linuxfoundation.org>
+Subject: [PATCH 6.3 002/160] platform/surface: aggregator: Allow completion work-items to be executed in parallel
+Date:   Mon, 12 Jun 2023 12:25:34 +0200
+Message-ID: <20230612101715.234494664@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
 References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -56,75 +54,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Maximilian Luz <luzmaximilian@gmail.com>
 
-[ Upstream commit 4be47a5d59cbc9396a6ffd327913eb4c8d67a32f ]
+[ Upstream commit 539e0a7f9105d19c00629c3f4da00330488e8c60 ]
 
-When unloading the spi-mt65xx kernel module during an ongoing spi-mem
-operation the kernel will Oops shortly after unloading the module.
-This is because wait_for_completion_timeout was still running and
-returning into the no longer loaded module:
+Currently, event completion work-items are restricted to be run strictly
+in non-parallel fashion by the respective workqueue. However, this has
+lead to some problems:
 
-Internal error: Oops: 0000000096000005 [#1] SMP
-Modules linked in: [many, but spi-mt65xx is no longer there]
-CPU: 0 PID: 2578 Comm: block Tainted: G        W  O       6.3.0-next-20230428+ #0
-Hardware name: Bananapi BPI-R3 (DT)
-pstate: 804000c5 (Nzcv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : __lock_acquire+0x18c/0x20e8
-lr : __lock_acquire+0x9b8/0x20e8
-sp : ffffffc009ec3400
-x29: ffffffc009ec3400 x28: 0000000000000001 x27: 0000000000000004
-x26: ffffff80082888c8 x25: 0000000000000000 x24: 0000000000000000
-x23: ffffffc009609da8 x22: ffffff8008288000 x21: ffffff8008288968
-x20: 00000000000003c2 x19: ffffff8008be7990 x18: 00000000000002af
-x17: 0000000000000000 x16: 0000000000000000 x15: ffffffc008d78970
-x14: 000000000000080d x13: 00000000000002af x12: 00000000ffffffea
-x11: 00000000ffffefff x10: ffffffc008dd0970 x9 : ffffffc008d78918
-x8 : 0000000000017fe8 x7 : 0000000000000001 x6 : 0000000000000000
-x5 : ffffff807fb53910 x4 : 0000000000000000 x3 : 0000000000000027
-x2 : 0000000000000027 x1 : 0000000000000000 x0 : 00000000000c03c2
-Call trace:
- __lock_acquire+0x18c/0x20e8
- lock_acquire+0x100/0x2a4
- _raw_spin_lock_irq+0x58/0x74
- __wait_for_common+0xe0/0x1b4
- wait_for_completion_timeout+0x1c/0x24
- 0xffffffc000acc8a4 <--- used to be mtk_spi_transfer_wait
- spi_mem_exec_op+0x390/0x3ec
- spi_mem_no_dirmap_read+0x6c/0x88
- spi_mem_dirmap_read+0xcc/0x12c
- spinand_read_page+0xf8/0x1dc
- spinand_mtd_read+0x1b4/0x2fc
- mtd_read_oob_std+0x58/0x7c
- mtd_read_oob+0x8c/0x148
- mtd_read+0x50/0x6c
- ...
+In some instances, the event notifier function called inside this
+completion workqueue takes a non-negligible amount of time to execute.
+One such example is the battery event handling code (surface_battery.c),
+which can result in a full battery information refresh, involving
+further synchronous communication with the EC inside the event handler.
+This is made worse if the communication fails spuriously, generally
+incurring a multi-second timeout.
 
-Prevent this by completing in mtk_spi_remove if needed.
+Since the event completions are run strictly non-parallel, this blocks
+other events from being propagated to the respective subsystems. This
+becomes especially noticeable for keyboard and touchpad input, which
+also funnel their events through this system. Here, users have reported
+occasional multi-second "freezes".
 
-Fixes: 9f763fd20da7 ("spi: mediatek: add spi memory support for ipm design")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://lore.kernel.org/r/ZFAF6pJxMu1z6k4w@makrotopia.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Note, however, that the event handling system was never intended to run
+purely sequentially. Instead, we have one work struct per EC/SAM
+subsystem, processing the event queue for that subsystem. These work
+structs were intended to run in parallel, allowing sequential processing
+of work items for each subsystem but parallel processing of work items
+across subsystems.
+
+The only restriction to this is the way the workqueue is created.
+Therefore, replace create_workqueue() with alloc_workqueue() and do not
+restrict the maximum number of parallel work items to be executed on
+that queue, resolving any cross-subsystem blockage.
+
+Fixes: c167b9c7e3d6 ("platform/surface: Add Surface Aggregator subsystem")
+Link: https://github.com/linux-surface/linux-surface/issues/1026
+Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
+Link: https://lore.kernel.org/r/20230525210110.2785470-1-luzmaximilian@gmail.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-mt65xx.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/platform/surface/aggregator/controller.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index 9eab6c20dbc56..6e95efb50acbc 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -1275,6 +1275,9 @@ static int mtk_spi_remove(struct platform_device *pdev)
- 	struct mtk_spi *mdata = spi_master_get_devdata(master);
- 	int ret;
+diff --git a/drivers/platform/surface/aggregator/controller.c b/drivers/platform/surface/aggregator/controller.c
+index 535581c0471c5..7fc602e01487d 100644
+--- a/drivers/platform/surface/aggregator/controller.c
++++ b/drivers/platform/surface/aggregator/controller.c
+@@ -825,7 +825,7 @@ static int ssam_cplt_init(struct ssam_cplt *cplt, struct device *dev)
  
-+	if (mdata->use_spimem && !completion_done(&mdata->spimem_done))
-+		complete(&mdata->spimem_done);
-+
- 	ret = pm_runtime_resume_and_get(&pdev->dev);
- 	if (ret < 0)
- 		return ret;
+ 	cplt->dev = dev;
+ 
+-	cplt->wq = create_workqueue(SSAM_CPLT_WQ_NAME);
++	cplt->wq = alloc_workqueue(SSAM_CPLT_WQ_NAME, WQ_UNBOUND | WQ_MEM_RECLAIM, 0);
+ 	if (!cplt->wq)
+ 		return -ENOMEM;
+ 
 -- 
 2.39.2
 
