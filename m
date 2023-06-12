@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D9F672C006
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:49:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB11472C074
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:52:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231653AbjFLKtT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:49:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50376 "EHLO
+        id S235849AbjFLKwn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:52:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233015AbjFLKss (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:48:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CDEB5BBF
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:33:33 -0700 (PDT)
+        with ESMTP id S235796AbjFLKwQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:52:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F7DB9EF3
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:36:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D9D2623D4
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:33:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D90FC433EF;
-        Mon, 12 Jun 2023 10:33:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 978A260C2D
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:36:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB151C433D2;
+        Mon, 12 Jun 2023 10:36:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566012;
-        bh=zCtngt7i5ghcETzlIiSo7jb5PTvYxVu4FDBKqSlNkEo=;
+        s=korg; t=1686566205;
+        bh=oK5KPqOWSERBBE+zuUqo3UklGrRjnuEGPmo1/ak6d30=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pDLLJt7mJDCnWmj7Bz3OAQPI3I7K+FYv4n2GgezCVTf6jniBzS3aC1Ufg7qffHZWy
-         c+nqFr5evPP3SMNVHsKzias5ROOmz1meMWd5LhzfY8MXlUq4odherITJqCdnFo80Ts
-         P3WQOodUj6tQfpXGbznPJtVn35QeLo7d+LRnSHz0=
+        b=AAoSNq5MPG6m5aYWRJYybQd/gEadheFv2Trqp6JBMPj1lmHTwCIy9nhd32TNS7+4y
+         mTTNwP+GGB3dtfA4/rO3uPYuWsrtU4dqmC5xxI0DG49VX9vepF+rgXB5jmNLq/42nd
+         ULevKPFwEgHq2PMwOA6//nZop6u/xCzoQHlCkGmM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ben Hutchings <ben@decadent.org.uk>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
         Simon Horman <simon.horman@corigine.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 31/68] lib: cpu_rmap: Fix potential use-after-free in irq_cpu_rmap_release()
+Subject: [PATCH 5.15 34/91] rfs: annotate lockless accesses to sk->sk_rxhash
 Date:   Mon, 12 Jun 2023 12:26:23 +0200
-Message-ID: <20230612101659.706624870@linuxfoundation.org>
+Message-ID: <20230612101703.513937132@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
-References: <20230612101658.437327280@linuxfoundation.org>
+In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
+References: <20230612101702.085813286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,36 +56,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ben Hutchings <ben@decadent.org.uk>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 7c5d4801ecf0564c860033d89726b99723c55146 ]
+[ Upstream commit 1e5c647c3f6d4f8497dedcd226204e1880e0ffb3 ]
 
-irq_cpu_rmap_release() calls cpu_rmap_put(), which may free the rmap.
-So we need to clear the pointer to our glue structure in rmap before
-doing that, not after.
+Add READ_ONCE()/WRITE_ONCE() on accesses to sk->sk_rxhash.
 
-Fixes: 4e0473f1060a ("lib: cpu_rmap: Avoid use after free on rmap->obj array entries")
-Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+This also prevents a (smart ?) compiler to remove the condition in:
+
+if (sk->sk_rxhash != newval)
+	sk->sk_rxhash = newval;
+
+We need the condition to avoid dirtying a shared cache line.
+
+Fixes: fec5e652e58f ("rfs: Receive Flow Steering")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/ZHo0vwquhOy3FaXc@decadent.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/cpu_rmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/sock.h | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/lib/cpu_rmap.c b/lib/cpu_rmap.c
-index e77f12bb3c774..1833ad73de6fc 100644
---- a/lib/cpu_rmap.c
-+++ b/lib/cpu_rmap.c
-@@ -268,8 +268,8 @@ static void irq_cpu_rmap_release(struct kref *ref)
- 	struct irq_glue *glue =
- 		container_of(ref, struct irq_glue, notify.kref);
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 104d80d850e41..0eb6a4d07a4d1 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1093,8 +1093,12 @@ static inline void sock_rps_record_flow(const struct sock *sk)
+ 		 * OR	an additional socket flag
+ 		 * [1] : sk_state and sk_prot are in the same cache line.
+ 		 */
+-		if (sk->sk_state == TCP_ESTABLISHED)
+-			sock_rps_record_flow_hash(sk->sk_rxhash);
++		if (sk->sk_state == TCP_ESTABLISHED) {
++			/* This READ_ONCE() is paired with the WRITE_ONCE()
++			 * from sock_rps_save_rxhash() and sock_rps_reset_rxhash().
++			 */
++			sock_rps_record_flow_hash(READ_ONCE(sk->sk_rxhash));
++		}
+ 	}
+ #endif
+ }
+@@ -1103,15 +1107,19 @@ static inline void sock_rps_save_rxhash(struct sock *sk,
+ 					const struct sk_buff *skb)
+ {
+ #ifdef CONFIG_RPS
+-	if (unlikely(sk->sk_rxhash != skb->hash))
+-		sk->sk_rxhash = skb->hash;
++	/* The following WRITE_ONCE() is paired with the READ_ONCE()
++	 * here, and another one in sock_rps_record_flow().
++	 */
++	if (unlikely(READ_ONCE(sk->sk_rxhash) != skb->hash))
++		WRITE_ONCE(sk->sk_rxhash, skb->hash);
+ #endif
+ }
  
--	cpu_rmap_put(glue->rmap);
- 	glue->rmap->obj[glue->index] = NULL;
-+	cpu_rmap_put(glue->rmap);
- 	kfree(glue);
+ static inline void sock_rps_reset_rxhash(struct sock *sk)
+ {
+ #ifdef CONFIG_RPS
+-	sk->sk_rxhash = 0;
++	/* Paired with READ_ONCE() in sock_rps_record_flow() */
++	WRITE_ONCE(sk->sk_rxhash, 0);
+ #endif
  }
  
 -- 
