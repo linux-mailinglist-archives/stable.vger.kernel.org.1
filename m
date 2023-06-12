@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DC5472C1B2
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:00:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B14E472BFA0
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:46:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236281AbjFLLAC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:00:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60792 "EHLO
+        id S235027AbjFLKqA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:46:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236930AbjFLK7K (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:59:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66C98F7D6
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:46:26 -0700 (PDT)
+        with ESMTP id S235206AbjFLKpT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:45:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D35ED59DC
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:30:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC5B962424
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:46:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D818C433D2;
-        Mon, 12 Jun 2023 10:46:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 53DAE614F0
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:30:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43583C433EF;
+        Mon, 12 Jun 2023 10:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566785;
-        bh=n4mUpVu/UfJ4WB4OEWIhTa0M6oY7bCWxe0/WSIusqkU=;
+        s=korg; t=1686565812;
+        bh=pg4Ua/GqQJpaYWdcnz09aPWpo+axTNYbee0RYC9+wGs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nZMJYiFkNZK4ZvpC79xFTX3f9CWemmj6JrwRKngMswP40IrR8wkFl/5par23fxHRa
-         skNvXHcNH6UC3Vp3u5gq7KAeRkx4AvwXqXFxxnoAYEozEbptB8nMy269FqA1qJ4uCq
-         xeMBFOWSJ9HCM7JlURcpwPTbhMD0MWylqNQP2DvU=
+        b=I8wLF6JQdagOyom7h6lS6J0tfvjp5Xqgg4CUgLt26LLJssmmls6SUy/7hSrn4iJer
+         akJ6IcjMvKcxtSYEesG62YfmIZoZ6KFxE2yLnj0cCIElC3isMJZcDynpX6XUrt18jb
+         M2BlBVNctEKG6CTAsfq3n6PnSkEEZ26s3hWDxgcU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
+        patches@lists.linux.dev, Stephan Gerhold <stephan@gerhold.net>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 031/160] wifi: cfg80211: reject bad AP MLD address
-Date:   Mon, 12 Jun 2023 12:26:03 +0200
-Message-ID: <20230612101716.468019096@linuxfoundation.org>
+Subject: [PATCH 4.19 03/23] spi: qup: Request DMA before enabling clocks
+Date:   Mon, 12 Jun 2023 12:26:04 +0200
+Message-ID: <20230612101651.268579109@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101651.138592130@linuxfoundation.org>
+References: <20230612101651.138592130@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,37 +54,120 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Stephan Gerhold <stephan@gerhold.net>
 
-[ Upstream commit 727073ca5e55ab6a07df316250be8a12606e8677 ]
+[ Upstream commit 0c331fd1dccfba657129380ee084b95c1cedfbef ]
 
-When trying to authenticate, if the AP MLD address isn't
-a valid address, mac80211 can throw a warning. Avoid that
-by rejecting such addresses.
+It is usually better to request all necessary resources (clocks,
+regulators, ...) before starting to make use of them. That way they do
+not change state in case one of the resources is not available yet and
+probe deferral (-EPROBE_DEFER) is necessary. This is particularly
+important for DMA channels and IOMMUs which are not enforced by
+fw_devlink yet (unless you use fw_devlink.strict=1).
 
-Fixes: d648c23024bd ("wifi: nl80211: support MLO in auth/assoc")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230604120651.89188912bd1d.I8dbc6c8ee0cb766138803eec59508ef4ce477709@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+spi-qup does this in the wrong order, the clocks are enabled and
+disabled again when the DMA channels are not available yet.
+
+This causes issues in some cases: On most SoCs one of the SPI QUP
+clocks is shared with the UART controller. When using earlycon UART is
+actively used during boot but might not have probed yet, usually for
+the same reason (waiting for the DMA controller). In this case, the
+brief enable/disable cycle ends up gating the clock and further UART
+console output will halt the system completely.
+
+Avoid this by requesting the DMA channels before changing the clock
+state.
+
+Fixes: 612762e82ae6 ("spi: qup: Add DMA capabilities")
+Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+Link: https://lore.kernel.org/r/20230518-spi-qup-clk-defer-v1-1-f49fc9ca4e02@gerhold.net
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spi-qup.c | 37 ++++++++++++++++++-------------------
+ 1 file changed, 18 insertions(+), 19 deletions(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 4f63059efd813..1922fccb96ace 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -10642,6 +10642,8 @@ static int nl80211_authenticate(struct sk_buff *skb, struct genl_info *info)
- 		if (!info->attrs[NL80211_ATTR_MLD_ADDR])
- 			return -EINVAL;
- 		req.ap_mld_addr = nla_data(info->attrs[NL80211_ATTR_MLD_ADDR]);
-+		if (!is_valid_ether_addr(req.ap_mld_addr))
-+			return -EINVAL;
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index defe959884dae..1518a8bf49be1 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -1003,23 +1003,8 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 		return -ENXIO;
  	}
  
- 	req.bss = cfg80211_get_bss(&rdev->wiphy, chan, bssid, ssid, ssid_len,
+-	ret = clk_prepare_enable(cclk);
+-	if (ret) {
+-		dev_err(dev, "cannot enable core clock\n");
+-		return ret;
+-	}
+-
+-	ret = clk_prepare_enable(iclk);
+-	if (ret) {
+-		clk_disable_unprepare(cclk);
+-		dev_err(dev, "cannot enable iface clock\n");
+-		return ret;
+-	}
+-
+ 	master = spi_alloc_master(dev, sizeof(struct spi_qup));
+ 	if (!master) {
+-		clk_disable_unprepare(cclk);
+-		clk_disable_unprepare(iclk);
+ 		dev_err(dev, "cannot allocate master\n");
+ 		return -ENOMEM;
+ 	}
+@@ -1065,6 +1050,19 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	spin_lock_init(&controller->lock);
+ 	init_completion(&controller->done);
+ 
++	ret = clk_prepare_enable(cclk);
++	if (ret) {
++		dev_err(dev, "cannot enable core clock\n");
++		goto error_dma;
++	}
++
++	ret = clk_prepare_enable(iclk);
++	if (ret) {
++		clk_disable_unprepare(cclk);
++		dev_err(dev, "cannot enable iface clock\n");
++		goto error_dma;
++	}
++
+ 	iomode = readl_relaxed(base + QUP_IO_M_MODES);
+ 
+ 	size = QUP_IO_M_OUTPUT_BLOCK_SIZE(iomode);
+@@ -1094,7 +1092,7 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	ret = spi_qup_set_state(controller, QUP_STATE_RESET);
+ 	if (ret) {
+ 		dev_err(dev, "cannot set RESET state\n");
+-		goto error_dma;
++		goto error_clk;
+ 	}
+ 
+ 	writel_relaxed(0, base + QUP_OPERATIONAL);
+@@ -1118,7 +1116,7 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	ret = devm_request_irq(dev, irq, spi_qup_qup_irq,
+ 			       IRQF_TRIGGER_HIGH, pdev->name, controller);
+ 	if (ret)
+-		goto error_dma;
++		goto error_clk;
+ 
+ 	pm_runtime_set_autosuspend_delay(dev, MSEC_PER_SEC);
+ 	pm_runtime_use_autosuspend(dev);
+@@ -1133,11 +1131,12 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 
+ disable_pm:
+ 	pm_runtime_disable(&pdev->dev);
++error_clk:
++	clk_disable_unprepare(cclk);
++	clk_disable_unprepare(iclk);
+ error_dma:
+ 	spi_qup_release_dma(master);
+ error:
+-	clk_disable_unprepare(cclk);
+-	clk_disable_unprepare(iclk);
+ 	spi_master_put(master);
+ 	return ret;
+ }
 -- 
 2.39.2
 
