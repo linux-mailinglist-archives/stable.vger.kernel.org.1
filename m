@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C58AB72C0F3
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC10D72C016
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:50:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235471AbjFLKzb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:55:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60292 "EHLO
+        id S235281AbjFLKtp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:49:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237074AbjFLKzO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:55:14 -0400
+        with ESMTP id S233646AbjFLKtU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:49:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2148B12505
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:42:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69BF96190
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:34:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9BD176158B
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:42:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B17A9C4339B;
-        Mon, 12 Jun 2023 10:42:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A8AF623E8
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:34:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B793C433EF;
+        Mon, 12 Jun 2023 10:34:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566530;
-        bh=q7AZgL1Q2wUJlbLmBb90imZYwU03OA8U9REGe/qT1fk=;
+        s=korg; t=1686566041;
+        bh=QVbw6dLxTYjcevPwM0si9brrphk8f05DStcX4s9hUMw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OB0cK+QbotsFngymagSBf+qXFJEgSamuy7ERrUe+BFXPQI6njaSjhCTYtWGBvViq9
-         WeaC/2fGy29tZ3w5m13E6DnCdeXrO0Gksdk5JvE73Dq9QJ+7KZeCyj25flXqYu1BTj
-         Urx3NQJEaqQBP6n6ngr/ClZm7ckUazb6709CyqyM=
+        b=mC/nSzpu+OLYEqfmWs2VbNQq2IQZrfZq1csAV55mQNRuZVigmKb2L+WcQ+Jvh1vwj
+         TldPsR9h7FJypvMCBEXz7KljEHI/oYp8Vs71kYtCIlkUfibTM+fQ6yi5+8yxXh42dc
+         62Hfcog5cGHfRQh5xGXvDRLcrvdP1cOAzDahRpus=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ismael Ferreras Morezuelas <swyterzone@gmail.com>,
-        Cameron Gutman <aicommander@gmail.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.1 059/132] Input: xpad - delete a Razer DeathAdder mouse VID/PID entry
+        patches@lists.linux.dev, David Jander <david@protonic.nl>,
+        Oleksij Rempel <o.rempel@pengutronix.de>,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.10 41/68] can: j1939: j1939_sk_send_loop_abort(): improved error queue handling in J1939 Socket
 Date:   Mon, 12 Jun 2023 12:26:33 +0200
-Message-ID: <20230612101712.958067423@linuxfoundation.org>
+Message-ID: <20230612101700.110243190@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
+References: <20230612101658.437327280@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,73 +54,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ismael Ferreras Morezuelas <swyterzone@gmail.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit feee70f4568650cf44c573488798ffc0a2faeea3 upstream.
+commit 2a84aea80e925ecba6349090559754f8e8eb68ef upstream.
 
-While doing my research to improve the xpad device names I noticed
-that the 1532:0037 VID/PID seems to be used by the DeathAdder 2013,
-so that Razer Sabertooth instance looked wrong and very suspect to
-me. I didn't see any mention in the official drivers, either.
+This patch addresses an issue within the j1939_sk_send_loop_abort()
+function in the j1939/socket.c file, specifically in the context of
+Transport Protocol (TP) sessions.
 
-After doing more research, it turns out that the xpad list
-is used by many other projects (like Steam) as-is [1], this
-issue was reported [2] and Valve/Sam Lantinga fixed it [3]:
+Without this patch, when a TP session is initiated and a Clear To Send
+(CTS) frame is received from the remote side requesting one data packet,
+the kernel dispatches the first Data Transport (DT) frame and then waits
+for the next CTS. If the remote side doesn't respond with another CTS,
+the kernel aborts due to a timeout. This leads to the user-space
+receiving an EPOLLERR on the socket, and the socket becomes active.
 
-[1]: https://github.com/libsdl-org/SDL/blob/dcc5eef0e2395854b254ea2873a4899edab347c6/src/joystick/controller_type.h#L251
-[2]: https://steamcommunity.com/app/353380/discussions/0/1743392486228754770/
-[3]: https://hg.libsdl.org/SDL/rev/29809f6f0271
+However, when trying to read the error queue from the socket with
+sock.recvmsg(, , socket.MSG_ERRQUEUE), it returns -EAGAIN,
+given that the socket is non-blocking. This situation results in an
+infinite loop: the user-space repeatedly calls epoll(), epoll() returns
+the socket file descriptor with EPOLLERR, but the socket then blocks on
+the recv() of ERRQUEUE.
 
-(With multiple Internet users reporting similar issues, not linked here)
+This patch introduces an additional check for the J1939_SOCK_ERRQUEUE
+flag within the j1939_sk_send_loop_abort() function. If the flag is set,
+it indicates that the application has subscribed to receive error queue
+messages. In such cases, the kernel can communicate the current transfer
+state via the error queue. This allows for the function to return early,
+preventing the unnecessary setting of the socket into an error state,
+and breaking the infinite loop. It is crucial to note that a socket
+error is only needed if the application isn't using the error queue, as,
+without it, the application wouldn't be aware of transfer issues.
 
-After not being able to find the correct VID/PID combination anywhere
-on the Internet and not receiving any reply from Razer support I did
-some additional detective work, it seems like it presents itself as
-"Razer Sabertooth Gaming Controller (XBOX360)", code 1689:FE00.
-
-Leaving us with this:
- * Razer Sabertooth (1689:fe00)
- * Razer Sabertooth Elite (24c6:5d04)
- * Razer DeathAdder 2013 (1532:0037) [note: not a gamepad]
-
-So, to sum things up; remove this conflicting/duplicate entry:
-
-{ 0x1532, 0x0037, "Razer Sabertooth", 0, XTYPE_XBOX360 },
-
-As the real/correct one is already present there, even if
-the Internet as a whole insists on presenting it as the
-Razer Sabertooth Elite, which (by all accounts) is not:
-
-{ 0x1689, 0xfe00, "Razer Sabertooth", 0, XTYPE_XBOX360 },
-
-Actual change in SDL2 referencing this kernel issue:
-https://github.com/libsdl-org/SDL/commit/e5e54169754ca5d3e86339d968b20126d9da0a15
-
-For more information of the device, take a look here:
-https://github.com/xboxdrv/xboxdrv/pull/59
-
-You can see a lsusb dump here: https://github.com/xboxdrv/xboxdrv/files/76581/Qa6dBcrv.txt
-
-Fixes: f554f619b70 ("Input: xpad - sync device IDs with xboxdrv")
-Signed-off-by: Ismael Ferreras Morezuelas <swyterzone@gmail.com>
-Reviewed-by: Cameron Gutman <aicommander@gmail.com>
+Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
+Reported-by: David Jander <david@protonic.nl>
+Tested-by: David Jander <david@protonic.nl>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://lore.kernel.org/r/20230526081946.715190-1-o.rempel@pengutronix.de
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/5c12dbdb-5774-fc68-5c58-ca596383663e@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c |    1 -
- 1 file changed, 1 deletion(-)
+ net/can/j1939/socket.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -282,7 +282,6 @@ static const struct xpad_device {
- 	{ 0x1430, 0xf801, "RedOctane Controller", 0, XTYPE_XBOX360 },
- 	{ 0x146b, 0x0601, "BigBen Interactive XBOX 360 Controller", 0, XTYPE_XBOX360 },
- 	{ 0x146b, 0x0604, "Bigben Interactive DAIJA Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
--	{ 0x1532, 0x0037, "Razer Sabertooth", 0, XTYPE_XBOX360 },
- 	{ 0x1532, 0x0a00, "Razer Atrox Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOXONE },
- 	{ 0x1532, 0x0a03, "Razer Wildcat", 0, XTYPE_XBOXONE },
- 	{ 0x15e4, 0x3f00, "Power A Mini Pro Elite", 0, XTYPE_XBOX360 },
+--- a/net/can/j1939/socket.c
++++ b/net/can/j1939/socket.c
+@@ -1013,6 +1013,11 @@ void j1939_sk_errqueue(struct j1939_sess
+ 
+ void j1939_sk_send_loop_abort(struct sock *sk, int err)
+ {
++	struct j1939_sock *jsk = j1939_sk(sk);
++
++	if (jsk->state & J1939_SOCK_ERRQUEUE)
++		return;
++
+ 	sk->sk_err = err;
+ 
+ 	sk->sk_error_report(sk);
 
 
