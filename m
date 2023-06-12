@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98AB372C00F
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:49:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C3CF72C0E8
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229480AbjFLKt2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:49:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54940 "EHLO
+        id S236856AbjFLKzY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:55:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229507AbjFLKtO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:49:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F28D5FE7
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:33:55 -0700 (PDT)
+        with ESMTP id S236664AbjFLKy5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A62E3296A
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:41:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A129623F2
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:33:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91734C4339E;
-        Mon, 12 Jun 2023 10:33:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2715A614F0
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:41:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A580C433EF;
+        Mon, 12 Jun 2023 10:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566033;
-        bh=AcM5l9VSuN3Evni/WepS9pVffE4Dx8ME2ASCLrlYkD8=;
+        s=korg; t=1686566506;
+        bh=vRjL/QT0vsgK0+hsmCeJTYF44KAZj4JfXpGiTYMJFD4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ngt/W6YeW1gtYI9KtBnodivJ0M732BipCMUZsoMw4Lcd60GFii0Jp+2OCHUQ8sWis
-         HF7GN75KUzn8E5Pqra2qMjYeHL6KYn94v4Vy3HyA04lLBRcJW2QCO8YhxpsVLXvZ2c
-         OYx/ckZ44sMIVLxGqCNIc+BKxu3P3CXS+3uaViuw=
+        b=KtxS4VgwUBkfFAdHprqjQBo9vjVqwTpb0BSrwmR8cY+sMaT6Tgq5IttOlOEU2RDjH
+         zqnzx0M4L/Rb5oVt3fBigMZSjaJJGhwkMZMhwZq17y6pDTjxTBaMiyZxiZ+wMwdoGA
+         fD5fhbkSqJcJfiQ3qy7xYZmP5QNPCEklpWGfWndE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ai Chao <aichao@kylinos.cn>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 38/68] ALSA: hda/realtek: Add a quirk for HP Slim Desktop S01
+        patches@lists.linux.dev, Pavan Chebbi <pavan.chebbi@broadcom.com>,
+        Michael Chan <michael.chan@broadcom.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 056/132] bnxt_en: Prevent kernel panic when receiving unexpected PHC_UPDATE event
 Date:   Mon, 12 Jun 2023 12:26:30 +0200
-Message-ID: <20230612101659.982672526@linuxfoundation.org>
+Message-ID: <20230612101712.809721751@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
-References: <20230612101658.437327280@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,30 +55,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ai Chao <aichao@kylinos.cn>
+From: Pavan Chebbi <pavan.chebbi@broadcom.com>
 
-commit 527c356b51f3ddee02c9ed5277538f85e30a2cdc upstream.
+[ Upstream commit 319a7827df9784048abe072afe6b4fb4501d8de4 ]
 
-Add a quirk for HP Slim Desktop S01 to fixup headset MIC no presence.
+The firmware can send PHC_RTC_UPDATE async event on a PF that may not
+have PTP registered. In such a case, there will be a null pointer
+deference for bp->ptp_cfg when we try to handle the event.
 
-Signed-off-by: Ai Chao <aichao@kylinos.cn>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230526094704.14597-1-aichao@kylinos.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix it by not registering for this event with the firmware if !bp->ptp_cfg.
+Also, check that bp->ptp_cfg is valid before proceeding when we receive
+the event.
+
+Fixes: 8bcf6f04d4a5 ("bnxt_en: Handle async event when the PHC is updated in RTC mode")
+Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     | 6 ++++++
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c | 1 +
+ 2 files changed, 7 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11162,6 +11162,7 @@ static const struct snd_pci_quirk alc662
- 	SND_PCI_QUIRK(0x103c, 0x8719, "HP", ALC897_FIXUP_HP_HSMIC_VERB),
- 	SND_PCI_QUIRK(0x103c, 0x872b, "HP", ALC897_FIXUP_HP_HSMIC_VERB),
- 	SND_PCI_QUIRK(0x103c, 0x873e, "HP", ALC671_FIXUP_HP_HEADSET_MIC2),
-+	SND_PCI_QUIRK(0x103c, 0x8768, "HP Slim Desktop S01", ALC671_FIXUP_HP_HEADSET_MIC2),
- 	SND_PCI_QUIRK(0x103c, 0x877e, "HP 288 Pro G6", ALC671_FIXUP_HP_HEADSET_MIC2),
- 	SND_PCI_QUIRK(0x103c, 0x885f, "HP 288 Pro G8", ALC671_FIXUP_HP_HEADSET_MIC2),
- 	SND_PCI_QUIRK(0x1043, 0x1080, "Asus UX501VW", ALC668_FIXUP_HEADSET_MODE),
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index f7b2c4e94e898..37a31f684938a 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -2389,6 +2389,9 @@ static int bnxt_async_event_process(struct bnxt *bp,
+ 				struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
+ 				u64 ns;
+ 
++				if (!ptp)
++					goto async_event_process_exit;
++
+ 				spin_lock_bh(&ptp->ptp_lock);
+ 				bnxt_ptp_update_current_time(bp);
+ 				ns = (((u64)BNXT_EVENT_PHC_RTC_UPDATE(data1) <<
+@@ -4787,6 +4790,9 @@ int bnxt_hwrm_func_drv_rgtr(struct bnxt *bp, unsigned long *bmap, int bmap_size,
+ 		if (event_id == ASYNC_EVENT_CMPL_EVENT_ID_ERROR_RECOVERY &&
+ 		    !(bp->fw_cap & BNXT_FW_CAP_ERROR_RECOVERY))
+ 			continue;
++		if (event_id == ASYNC_EVENT_CMPL_EVENT_ID_PHC_UPDATE &&
++		    !bp->ptp_cfg)
++			continue;
+ 		__set_bit(bnxt_async_events_arr[i], async_events_bmap);
+ 	}
+ 	if (bmap && bmap_size) {
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
+index 2132ce63193ce..4faaa9a50f4bc 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
+@@ -929,6 +929,7 @@ int bnxt_ptp_init(struct bnxt *bp, bool phc_cfg)
+ 	} else {
+ 		bnxt_ptp_timecounter_init(bp, true);
+ 	}
++	bnxt_hwrm_func_drv_rgtr(bp, NULL, 0, true);
+ 
+ 	ptp->ptp_info = bnxt_ptp_caps;
+ 	if ((bp->fw_cap & BNXT_FW_CAP_PTP_PPS)) {
+-- 
+2.39.2
+
 
 
