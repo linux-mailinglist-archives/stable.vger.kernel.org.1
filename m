@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADED672C0EA
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E390272BFB8
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:46:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236250AbjFLKzY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:55:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55586 "EHLO
+        id S232651AbjFLKqp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:46:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236615AbjFLKyy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ACE7295F
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:41:44 -0700 (PDT)
+        with ESMTP id S233015AbjFLKqb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:46:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15AAE42B99
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:31:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 85BF161BD9
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:41:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942C0C433D2;
-        Mon, 12 Jun 2023 10:41:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E8D5623CE
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:31:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A72EC433EF;
+        Mon, 12 Jun 2023 10:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566503;
-        bh=gUz7u2rjJu321GiDK3r3TFK+SzdqOfYtLcmuy/8ZDgE=;
+        s=korg; t=1686565860;
+        bh=aL7EuDhRqyTUcEkf7GnJRgbR9thDNh0B1+sZymv0ikk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sDK+Sbl52UOxCyG8xbSy1Cmstb1hgFjkix/H6VirqvDhBzyb8c4ozUG4Kn+BQ0dYf
-         ijwdpgjZ/9a22+oaMWZcNNW7j46C5ixYBG+ByNyhwZwmlDUNpEO/99bFXEwyyMT3Xl
-         6DwBGA+rBC8IpRzd9G0lSJjIzefQMiNc2luSZjTY=
+        b=pH0Fml72HbjGA+ESVmGRdaMetp17jFew78CsNuL8PT/xq0nHrDgX0GZBJIhl3tPmY
+         bSS37LO2bpzDPEUlcj+rVIxEpcIuniMEQ8DzusScP3qW8NKvOXSi75JX1mz2Aq1MDV
+         HxtaxHGJyolfNBZDACwLgA1TRJ6ra+6oTCon5OYY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
+        patches@lists.linux.dev, Ying Hsu <yinghsu@chromium.org>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 029/132] wifi: mac80211: dont translate beacon/presp addrs
+Subject: [PATCH 5.4 09/45] Bluetooth: Fix l2cap_disconnect_req deadlock
 Date:   Mon, 12 Jun 2023 12:26:03 +0200
-Message-ID: <20230612101711.562832923@linuxfoundation.org>
+Message-ID: <20230612101654.998717164@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
+References: <20230612101654.644983109@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,42 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ying Hsu <yinghsu@chromium.org>
 
-[ Upstream commit 47c171a426e305f2225b92ed7b5e0a990c95f6d4 ]
+[ Upstream commit 02c5ea5246a44d6ffde0fddebfc1d56188052976 ]
 
-Don't do link address translation for beacons and probe responses,
-this leads to reporting multiple scan list entries for the same AP
-(one with the MLD address) which just breaks things.
+L2CAP assumes that the locks conn->chan_lock and chan->lock are
+acquired in the order conn->chan_lock, chan->lock to avoid
+potential deadlock.
+For example, l2sock_shutdown acquires these locks in the order:
+  mutex_lock(&conn->chan_lock)
+  l2cap_chan_lock(chan)
 
-We might need to extend this in the future for some other (action)
-frames that aren't MLD addressed.
+However, l2cap_disconnect_req acquires chan->lock in
+l2cap_get_chan_by_scid first and then acquires conn->chan_lock
+before calling l2cap_chan_del. This means that these locks are
+acquired in unexpected order, which leads to potential deadlock:
+  l2cap_chan_lock(c)
+  mutex_lock(&conn->chan_lock)
 
-Fixes: 42fb9148c078 ("wifi: mac80211: do link->MLD address translation on RX")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230604120651.62adead1b43a.Ifc25eed26ebf3b269f60b1ec10060156d0e7ec0d@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This patch releases chan->lock before acquiring the conn_chan_lock
+to avoid the potential deadlock.
+
+Fixes: a2a9339e1c9d ("Bluetooth: L2CAP: Fix use-after-free in l2cap_disconnect_{req,rsp}")
+Signed-off-by: Ying Hsu <yinghsu@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/rx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/bluetooth/l2cap_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index 44e407e1a14c7..0f81492da0b46 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -4857,7 +4857,9 @@ static bool ieee80211_prepare_and_rx_handle(struct ieee80211_rx_data *rx,
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 5f53e75d83024..6bbe0fd79d154 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -4380,7 +4380,9 @@ static inline int l2cap_disconnect_req(struct l2cap_conn *conn,
+ 
+ 	chan->ops->set_shutdown(chan);
+ 
++	l2cap_chan_unlock(chan);
+ 	mutex_lock(&conn->chan_lock);
++	l2cap_chan_lock(chan);
+ 	l2cap_chan_del(chan, ECONNRESET);
+ 	mutex_unlock(&conn->chan_lock);
+ 
+@@ -4419,7 +4421,9 @@ static inline int l2cap_disconnect_rsp(struct l2cap_conn *conn,
+ 		return 0;
  	}
  
- 	if (unlikely(rx->sta && rx->sta->sta.mlo) &&
--	    is_unicast_ether_addr(hdr->addr1)) {
-+	    is_unicast_ether_addr(hdr->addr1) &&
-+	    !ieee80211_is_probe_resp(hdr->frame_control) &&
-+	    !ieee80211_is_beacon(hdr->frame_control)) {
- 		/* translate to MLD addresses */
- 		if (ether_addr_equal(link->conf->addr, hdr->addr1))
- 			ether_addr_copy(hdr->addr1, rx->sdata->vif.addr);
++	l2cap_chan_unlock(chan);
+ 	mutex_lock(&conn->chan_lock);
++	l2cap_chan_lock(chan);
+ 	l2cap_chan_del(chan, 0);
+ 	mutex_unlock(&conn->chan_lock);
+ 
 -- 
 2.39.2
 
