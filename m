@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DB2372C0FE
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DE4B72C224
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:03:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235968AbjFLKz6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:55:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60312 "EHLO
+        id S237531AbjFLLDI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:03:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235796AbjFLKzi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:55:38 -0400
+        with ESMTP id S237385AbjFLLCe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:02:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C142F8233
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:42:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B285CBB
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:50:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A17D061BD9
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:42:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B386CC433D2;
-        Mon, 12 Jun 2023 10:42:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4BD19623BC
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:50:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60EB6C433EF;
+        Mon, 12 Jun 2023 10:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566556;
-        bh=2iRA7uErQSuNAYYXEatdxBxgAKRRT5anmmqn2uOSuOg=;
+        s=korg; t=1686567013;
+        bh=UUHWATXInQ719PnwDvtplB/g46UJwj/fh08kvBO7RDs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P9mpIme/CWSo3kRhf6cODFn5Z84SZEGnujiqeGWFXEiPbvrYGR1kSFtriAowAFs1h
-         733clMF7F7eEwUDZpcXa49jhc/d5bltLR02Bhhl2EgrIJttj/DfdW2CAIxYqPo/Ixd
-         glRAIfLaqNNf51iquLvlMeKaGU0dqcJcMDpWBeZ0=
+        b=we6w36EoV8MDvLe2rjH9J30AgSL0GWBWKan2tL57b8m4mZPeedfv3/fp7EEzFTiX9
+         CoHhHrNVvc7j8LHJmBiEcvM/OoJpeFI/q7+aNTdjSmfdAO3e7efNdmytd/lHLhvD/S
+         vEBtY5nimldlXRhfveiWq1o3YxMdl8G9XjT7tbWI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.1 077/132] wifi: iwlwifi: mvm: Fix -Warray-bounds bug in iwl_mvm_wait_d3_notif()
+        patches@lists.linux.dev, Tim Crawford <tcrawford@system76.com>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.3 079/160] ALSA: hda/realtek: Add quirk for Clevo NS50AU
 Date:   Mon, 12 Jun 2023 12:26:51 +0200
-Message-ID: <20230612101713.764827364@linuxfoundation.org>
+Message-ID: <20230612101718.636729375@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,111 +53,30 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Tim Crawford <tcrawford@system76.com>
 
-commit 7a4615b9a9da5225b22b36a20508555dd133ac24 upstream.
+commit da209f7a80dd633a32cbcbafe9e9f778933119c1 upstream.
 
-kmemdup() at line 2735 is not duplicating enough memory for
-notif->tid_tear_down and notif->station_id. As it only duplicates
-612 bytes: up to offsetofend(struct iwl_wowlan_info_notif,
-received_beacons), this is the range of [0, 612) bytes.
+Fixes headset detection on Clevo NS50AU.
 
-2735	notif = kmemdup(notif_v1,
-2736			offsetofend(struct iwl_wowlan_info_notif,
-2737				    received_beacons),
-2738			GFP_ATOMIC);
-
-which evidently does not cover bytes 612 and 613 for members
-tid_tear_down and station_id in struct iwl_wowlan_info_notif.
-See below:
-
-$ pahole -C iwl_wowlan_info_notif drivers/net/wireless/intel/iwlwifi/mvm/d3.o
-struct iwl_wowlan_info_notif {
-	struct iwl_wowlan_gtk_status_v3 gtk[2];          /*     0   488 */
-	/* --- cacheline 7 boundary (448 bytes) was 40 bytes ago --- */
-	struct iwl_wowlan_igtk_status igtk[2];           /*   488    80 */
-	/* --- cacheline 8 boundary (512 bytes) was 56 bytes ago --- */
-	__le64                     replay_ctr;           /*   568     8 */
-	/* --- cacheline 9 boundary (576 bytes) --- */
-	__le16                     pattern_number;       /*   576     2 */
-	__le16                     reserved1;            /*   578     2 */
-	__le16                     qos_seq_ctr[8];       /*   580    16 */
-	__le32                     wakeup_reasons;       /*   596     4 */
-	__le32                     num_of_gtk_rekeys;    /*   600     4 */
-	__le32                     transmitted_ndps;     /*   604     4 */
-	__le32                     received_beacons;     /*   608     4 */
-	u8                         tid_tear_down;        /*   612     1 */
-	u8                         station_id;           /*   613     1 */
-	u8                         reserved2[2];         /*   614     2 */
-
-	/* size: 616, cachelines: 10, members: 13 */
-	/* last cacheline: 40 bytes */
-};
-
-Therefore, when the following assignments take place, actually no memory
-has been allocated for those objects:
-
-2743	notif->tid_tear_down = notif_v1->tid_tear_down;
-2744	notif->station_id = notif_v1->station_id;
-
-Fix this by allocating space for the whole notif object and zero out the
-remaining space in memory after member station_id.
-
-This also fixes the following -Warray-bounds issues:
- CC      drivers/net/wireless/intel/iwlwifi/mvm/d3.o
-drivers/net/wireless/intel/iwlwifi/mvm/d3.c: In function ‘iwl_mvm_wait_d3_notif’:
-drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2743:30: warning: array subscript ‘struct iwl_wowlan_info_notif[0]’ is partly outside array bounds of ‘unsigned char[612]’ [-Warray-bounds=]
- 2743 |                         notif->tid_tear_down = notif_v1->tid_tear_down;
-      |
-                 from drivers/net/wireless/intel/iwlwifi/mvm/d3.c:7:
-In function ‘kmemdup’,
-    inlined from ‘iwl_mvm_wait_d3_notif’ at drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2735:12:
-include/linux/fortify-string.h:765:16: note: object of size 612 allocated by ‘__real_kmemdup’
-  765 |         return __real_kmemdup(p, size, gfp);
-      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/net/wireless/intel/iwlwifi/mvm/d3.c: In function ‘iwl_mvm_wait_d3_notif’:
-drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2744:30: warning: array subscript ‘struct iwl_wowlan_info_notif[0]’ is partly outside array bounds of ‘unsigned char[612]’ [-Warray-bounds=]
- 2744 |                         notif->station_id = notif_v1->station_id;
-      |                              ^~
-In function ‘kmemdup’,
-    inlined from ‘iwl_mvm_wait_d3_notif’ at drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2735:12:
-include/linux/fortify-string.h:765:16: note: object of size 612 allocated by ‘__real_kmemdup’
-  765 |         return __real_kmemdup(p, size, gfp);
-      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Link: https://github.com/KSPP/linux/issues/306
-Fixes: 905d50ddbc83 ("wifi: iwlwifi: mvm: support wowlan info notification version 2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Acked-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/ZHpGN555FwAKGduH@work
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Tim Crawford <tcrawford@system76.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230605163834.24653-1-tcrawford@system76.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c |    8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -2724,17 +2724,13 @@ static bool iwl_mvm_wait_d3_notif(struct
- 		if (wowlan_info_ver < 2) {
- 			struct iwl_wowlan_info_notif_v1 *notif_v1 = (void *)pkt->data;
- 
--			notif = kmemdup(notif_v1,
--					offsetofend(struct iwl_wowlan_info_notif,
--						    received_beacons),
--					GFP_ATOMIC);
--
-+			notif = kmemdup(notif_v1, sizeof(*notif), GFP_ATOMIC);
- 			if (!notif)
- 				return false;
- 
- 			notif->tid_tear_down = notif_v1->tid_tear_down;
- 			notif->station_id = notif_v1->station_id;
--
-+			memset_after(notif, 0, station_id);
- 		} else {
- 			notif = (void *)pkt->data;
- 		}
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9636,6 +9636,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1558, 0x5101, "Clevo S510WU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x5157, "Clevo W517GU1", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x51a1, "Clevo NS50MU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1558, 0x51b1, "Clevo NS50AU", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x5630, "Clevo NP50RNJS", ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x70a1, "Clevo NB70T[HJK]", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1558, 0x70b3, "Clevo NK70SB", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
 
 
