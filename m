@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2638272C0D7
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BC0E72C056
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:51:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236549AbjFLKyt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:54:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59090 "EHLO
+        id S234931AbjFLKvy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:51:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236098AbjFLKyX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66D7965B6
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:40:20 -0700 (PDT)
+        with ESMTP id S234985AbjFLKvf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:51:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D643902A
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:35:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 036DF61297
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:40:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9643C433EF;
-        Mon, 12 Jun 2023 10:40:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AD6A8623E7
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:35:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA8EC4339B;
+        Mon, 12 Jun 2023 10:35:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566419;
-        bh=KMI9ei2Dfb6cE4OolLTe5QXrIfxcguDlWCN7q/2DRvg=;
+        s=korg; t=1686566157;
+        bh=ydreA1rPmJuAPDbIB631KtY+U4yg59AGmeNR+zn6zCo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XRGBWf/dBPOh9obIwtXnjN1bjMnjjaidBXTuVIyVwJqje5OLVKCrXgVmyTM2RQn93
-         D7NDwRUgHokxu6I8zB6KJVASiUT/h4ZcY7o8ut6pwFAptceQKk1XnYTtOxfAN+zOyj
-         rzvY7WbVpxDUWOV0X6tNoyZqQorbzW5/x60Ev3es=
+        b=Y69VNuOu5UMCw0VBVJQqKH6Ievzxz8ai5iR7EEFgCrDqqSvYU9AuYxfk3LhRxul/I
+         JSp2J+kqDTH70XlVXyjIyYpcDLviCQEkpiXrM8cOVWBiWbAv1Kvjs4H3KgpbXjXFmg
+         m6vjIW210Mr/V6ltRk0ZLcyrnhjtPe7L+2g5Bh14=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pauli Virtanen <pav@iki.fi>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/132] Bluetooth: ISO: dont try to remove CIG if there are bound CIS left
+        patches@lists.linux.dev, Qilin Tan <qilin.tan@mediatek.com>,
+        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
+        Daniel Rosenberg <drosen@google.com>
+Subject: [PATCH 5.15 09/91] f2fs: fix iostat lock protection
 Date:   Mon, 12 Jun 2023 12:25:58 +0200
-Message-ID: <20230612101711.329168669@linuxfoundation.org>
+Message-ID: <20230612101702.474354291@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
+References: <20230612101702.085813286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,37 +54,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Qilin Tan <qilin.tan@mediatek.com>
 
-[ Upstream commit 6c242c64a09e78349fb0a5f0a6f8076a3d7c0bb4 ]
+commit 144f1cd40bf91fb3ac1d41806470756ce774f389 upstream.
 
-Consider existing BOUND & CONNECT state CIS to block CIG removal.
-Otherwise, under suitable timing conditions we may attempt to remove CIG
-while Create CIS is pending, which fails.
+Made iostat lock irq safe to avoid potentinal deadlock.
 
-Fixes: 26afbd826ee3 ("Bluetooth: Add initial implementation of CIS connections")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Deadlock scenario:
+f2fs_attr_store
+  -> f2fs_sbi_store
+  -> _sbi_store
+  -> spin_lock(sbi->iostat_lock)
+    <interrupt request>
+    -> scsi_end_request
+    -> bio_endio
+    -> f2fs_dio_read_end_io
+    -> f2fs_update_iostat
+    -> spin_lock_irqsave(sbi->iostat_lock)  ===> Dead lock here
+
+Fixes: 61803e984307 ("f2fs: fix iostat related lock protection")
+Fixes: a1e09b03e6f5 ("f2fs: use iomap for direct I/O")
+Signed-off-by: Qilin Tan <qilin.tan@mediatek.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: Daniel Rosenberg <drosen@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_conn.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/f2fs/sysfs.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index c2c6dea01cc91..ab9f00252dc2a 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -966,6 +966,8 @@ static void cis_cleanup(struct hci_conn *conn)
- 	/* Check if ISO connection is a CIS and remove CIG if there are
- 	 * no other connections using it.
- 	 */
-+	hci_conn_hash_list_state(hdev, find_cis, ISO_LINK, BT_BOUND, &d);
-+	hci_conn_hash_list_state(hdev, find_cis, ISO_LINK, BT_CONNECT, &d);
- 	hci_conn_hash_list_state(hdev, find_cis, ISO_LINK, BT_CONNECTED, &d);
- 	if (d.count)
- 		return;
--- 
-2.39.2
-
+--- a/fs/f2fs/sysfs.c
++++ b/fs/f2fs/sysfs.c
+@@ -491,9 +491,9 @@ out:
+ 	if (!strcmp(a->attr.name, "iostat_period_ms")) {
+ 		if (t < MIN_IOSTAT_PERIOD_MS || t > MAX_IOSTAT_PERIOD_MS)
+ 			return -EINVAL;
+-		spin_lock(&sbi->iostat_lock);
++		spin_lock_irq(&sbi->iostat_lock);
+ 		sbi->iostat_period_ms = (unsigned int)t;
+-		spin_unlock(&sbi->iostat_lock);
++		spin_unlock_irq(&sbi->iostat_lock);
+ 		return count;
+ 	}
+ #endif
 
 
