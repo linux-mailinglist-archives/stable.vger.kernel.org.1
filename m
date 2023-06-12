@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E66EE72C1CC
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:00:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7932872C017
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:50:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237102AbjFLLAt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:00:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36250 "EHLO
+        id S231273AbjFLKuW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:50:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237111AbjFLLAX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:00:23 -0400
+        with ESMTP id S233445AbjFLKtW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:49:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AF7A49D2
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:47:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CEC97D99
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:34:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B1E46246A
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:47:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E74BC4339B;
-        Mon, 12 Jun 2023 10:47:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 20A0961500
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:33:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39461C433D2;
+        Mon, 12 Jun 2023 10:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566829;
-        bh=AuaguCctI90FO0aGOFMYzdYt3RaFcGrzvcwifpDBOyQ=;
+        s=korg; t=1686565999;
+        bh=af8uFrWTOi3GEG0AEEc2Q+3qZyFkqdVeb6Y8CFQ5Fss=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E5IQe5FppWYXQnddd+HoS7/5RkruRd1nDFxS8NclAeCL53zpjNimLBJOJDHXO9k2l
-         oC/BwHKk5GcR26Odd2jiGM2X+bJLN736Ae5A2K61hqNt8yVBYYfGRxJlBpfQ8Nuecw
-         6C+MbncdMK+6F7huvPOKM1BOR78o5XhKdqD+dezs=
+        b=uQG6Mb2INDIfO2xqVHz55WkLqYvN4iZN2p7tBBhKemsY+4hydOdBjalg10m2YGLqr
+         UCC0Z5yvhZALeShzzP5qRYttL7zTu6j7j/2GbJDdEZBNueYfQxkG4nNAz48BggPpQQ
+         ZQdf4/kwiBMLeVkK030dQA7s02mrtJYpVdkJ6lMQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vasily Khoruzhick <anarsoul@gmail.com>,
-        Erico Nunes <nunes.erico@gmail.com>,
-        Qiang Yu <yuq825@gmail.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 046/160] drm/lima: fix sched context destroy
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 26/68] rfs: annotate lockless accesses to sk->sk_rxhash
 Date:   Mon, 12 Jun 2023 12:26:18 +0200
-Message-ID: <20230612101717.142087555@linuxfoundation.org>
+Message-ID: <20230612101659.507635367@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
+References: <20230612101658.437327280@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,42 +56,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Erico Nunes <nunes.erico@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 6eea63c7090b20ee41032d3e478e617b219d69aa ]
+[ Upstream commit 1e5c647c3f6d4f8497dedcd226204e1880e0ffb3 ]
 
-The drm sched entity must be flushed before finishing, to account for
-jobs potentially still in flight at that time.
-Lima did not do this flush until now, so switch the destroy call to the
-drm_sched_entity_destroy() wrapper which will take care of that.
+Add READ_ONCE()/WRITE_ONCE() on accesses to sk->sk_rxhash.
 
-This fixes a regression on lima which started since the rework in
-commit 2fdb8a8f07c2 ("drm/scheduler: rework entity flush, kill and fini")
-where some specific types of applications may hang indefinitely.
+This also prevents a (smart ?) compiler to remove the condition in:
 
-Fixes: 2fdb8a8f07c2 ("drm/scheduler: rework entity flush, kill and fini")
-Reviewed-by: Vasily Khoruzhick <anarsoul@gmail.com>
-Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
-Signed-off-by: Qiang Yu <yuq825@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230606143247.433018-1-nunes.erico@gmail.com
+if (sk->sk_rxhash != newval)
+	sk->sk_rxhash = newval;
+
+We need the condition to avoid dirtying a shared cache line.
+
+Fixes: fec5e652e58f ("rfs: Receive Flow Steering")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/lima/lima_sched.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/sock.h | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/lima/lima_sched.c b/drivers/gpu/drm/lima/lima_sched.c
-index ff003403fbbc7..ffd91a5ee2990 100644
---- a/drivers/gpu/drm/lima/lima_sched.c
-+++ b/drivers/gpu/drm/lima/lima_sched.c
-@@ -165,7 +165,7 @@ int lima_sched_context_init(struct lima_sched_pipe *pipe,
- void lima_sched_context_fini(struct lima_sched_pipe *pipe,
- 			     struct lima_sched_context *context)
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 3da0601b573ed..51b499d745499 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1073,8 +1073,12 @@ static inline void sock_rps_record_flow(const struct sock *sk)
+ 		 * OR	an additional socket flag
+ 		 * [1] : sk_state and sk_prot are in the same cache line.
+ 		 */
+-		if (sk->sk_state == TCP_ESTABLISHED)
+-			sock_rps_record_flow_hash(sk->sk_rxhash);
++		if (sk->sk_state == TCP_ESTABLISHED) {
++			/* This READ_ONCE() is paired with the WRITE_ONCE()
++			 * from sock_rps_save_rxhash() and sock_rps_reset_rxhash().
++			 */
++			sock_rps_record_flow_hash(READ_ONCE(sk->sk_rxhash));
++		}
+ 	}
+ #endif
+ }
+@@ -1083,15 +1087,19 @@ static inline void sock_rps_save_rxhash(struct sock *sk,
+ 					const struct sk_buff *skb)
  {
--	drm_sched_entity_fini(&context->base);
-+	drm_sched_entity_destroy(&context->base);
+ #ifdef CONFIG_RPS
+-	if (unlikely(sk->sk_rxhash != skb->hash))
+-		sk->sk_rxhash = skb->hash;
++	/* The following WRITE_ONCE() is paired with the READ_ONCE()
++	 * here, and another one in sock_rps_record_flow().
++	 */
++	if (unlikely(READ_ONCE(sk->sk_rxhash) != skb->hash))
++		WRITE_ONCE(sk->sk_rxhash, skb->hash);
+ #endif
  }
  
- struct dma_fence *lima_sched_context_queue_task(struct lima_sched_task *task)
+ static inline void sock_rps_reset_rxhash(struct sock *sk)
+ {
+ #ifdef CONFIG_RPS
+-	sk->sk_rxhash = 0;
++	/* Paired with READ_ONCE() in sock_rps_record_flow() */
++	WRITE_ONCE(sk->sk_rxhash, 0);
+ #endif
+ }
+ 
 -- 
 2.39.2
 
