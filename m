@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22C9772BF8F
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:45:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA5CA72C1C2
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:00:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234942AbjFLKpR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:45:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51546 "EHLO
+        id S237147AbjFLLAY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:00:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235484AbjFLKo5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:44:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DC133576B
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:29:39 -0700 (PDT)
+        with ESMTP id S237512AbjFLK7u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:59:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1860B72B4
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:46:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E39A60C2D
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:29:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20188C433EF;
-        Mon, 12 Jun 2023 10:29:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C223A62477
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:46:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D915CC433EF;
+        Mon, 12 Jun 2023 10:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565778;
-        bh=G8I90bYBPqy7qKURWkcYrPSx7e3niQHhFqSI4K4qxzo=;
+        s=korg; t=1686566814;
+        bh=s6013grOLBFlPEB2a7QwgUNo+2/b3mguGf7o4l+PHwQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jvw6G8kNLLRWkxHV9N059kTWqO8JXGupTq88IGzUYMWi3KBEc7aRjSguiYw2KKhhm
-         KBJNEIho44AbMcc4Mts3fwLDGLUvXAkIhcWCotVmHb2u3uwJw9LdYbOatAJZxKwY/o
-         myqSKdWbMTuzfzSURnWCD8JQATQXwxAoJJ5aPqwo=
+        b=TkYpSmcSNHe5TiFuAJCNPmw7QrOSu4NYVrY86rUKQWH60AA6oMHd9ED95BpZzxG3/
+         HhlcQDVpRdCdywg5rQo9NFBbcHHF5M3+X7mO50RCN+C1pDfSN2+qwp4fZuaVh8+KCU
+         mmWkD384H1nFhk3m+qF0cgwAkcvZ8wY9Y7kWoKFk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Vladislav Efanov <VEfanov@ispras.ru>,
-        Sven Eckelmann <sven@narfation.org>,
-        Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 4.19 12/23] batman-adv: Broken sync while rescheduling delayed work
+        patches@lists.linux.dev, Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>,
+        Florian Westphal <fw@strlen.de>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 041/160] netfilter: nf_tables: Add null check for nla_nest_start_noflag() in nft_dump_basechain_hook()
 Date:   Mon, 12 Jun 2023 12:26:13 +0200
-Message-ID: <20230612101651.574852545@linuxfoundation.org>
+Message-ID: <20230612101716.918834827@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101651.138592130@linuxfoundation.org>
-References: <20230612101651.138592130@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,58 +55,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladislav Efanov <VEfanov@ispras.ru>
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
 
-commit abac3ac97fe8734b620e7322a116450d7f90aa43 upstream.
+[ Upstream commit bd058763a624a1fb5c20f3c46e632d623c043676 ]
 
-Syzkaller got a lot of crashes like:
-KASAN: use-after-free Write in *_timers*
+The nla_nest_start_noflag() function may fail and return NULL;
+the return value needs to be checked.
 
-All of these crashes point to the same memory area:
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with SVACE.
 
-The buggy address belongs to the object at ffff88801f870000
- which belongs to the cache kmalloc-8k of size 8192
-The buggy address is located 5320 bytes inside of
- 8192-byte region [ffff88801f870000, ffff88801f872000)
-
-This area belongs to :
-        batadv_priv->batadv_priv_dat->delayed_work->timer_list
-
-The reason for these issues is the lack of synchronization. Delayed
-work (batadv_dat_purge) schedules new timer/work while the device
-is being deleted. As the result new timer/delayed work is set after
-cancel_delayed_work_sync() was called. So after the device is freed
-the timer list contains pointer to already freed memory.
-
-Found by Linux Verification Center (linuxtesting.org) with syzkaller.
-
-Cc: stable@kernel.org
-Fixes: 2f1dfbe18507 ("batman-adv: Distributed ARP Table - implement local storage")
-Signed-off-by: Vladislav Efanov <VEfanov@ispras.ru>
-Acked-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d54725cd11a5 ("netfilter: nf_tables: support for multiple devices per netdev hook")
+Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/distributed-arp-table.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/batman-adv/distributed-arp-table.c
-+++ b/net/batman-adv/distributed-arp-table.c
-@@ -68,7 +68,6 @@ static void batadv_dat_purge(struct work
-  */
- static void batadv_dat_start_timer(struct batadv_priv *bat_priv)
- {
--	INIT_DELAYED_WORK(&bat_priv->dat.work, batadv_dat_purge);
- 	queue_delayed_work(batadv_event_workqueue, &bat_priv->dat.work,
- 			   msecs_to_jiffies(10000));
- }
-@@ -783,6 +782,7 @@ int batadv_dat_init(struct batadv_priv *
- 	if (!bat_priv->dat.hash)
- 		return -ENOMEM;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index ef80504c3ccd2..8c74bb1ca78a0 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1593,6 +1593,8 @@ static int nft_dump_basechain_hook(struct sk_buff *skb, int family,
  
-+	INIT_DELAYED_WORK(&bat_priv->dat.work, batadv_dat_purge);
- 	batadv_dat_start_timer(bat_priv);
+ 	if (nft_base_chain_netdev(family, ops->hooknum)) {
+ 		nest_devs = nla_nest_start_noflag(skb, NFTA_HOOK_DEVS);
++		if (!nest_devs)
++			goto nla_put_failure;
  
- 	batadv_tvlv_handler_register(bat_priv, batadv_dat_tvlv_ogm_handler_v1,
+ 		if (!hook_list)
+ 			hook_list = &basechain->hook_list;
+-- 
+2.39.2
+
 
 
