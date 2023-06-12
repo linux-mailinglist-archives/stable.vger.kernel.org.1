@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91B2672B81B
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 08:34:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D013672B829
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 08:39:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233109AbjFLGeE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 02:34:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54656 "EHLO
+        id S233120AbjFLGj0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 02:39:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232490AbjFLGeD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 02:34:03 -0400
+        with ESMTP id S229476AbjFLGjZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 02:39:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21F4E10FA
-        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 23:29:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CD461705
+        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 23:34:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ED58561240
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 06:28:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15D38C433D2;
-        Mon, 12 Jun 2023 06:28:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3EA6F61F8E
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 06:31:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30339C433D2;
+        Mon, 12 Jun 2023 06:31:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686551293;
-        bh=gBJKuFiVu+4vHDKElsAYZAGxW0hkoFwvZUrBVyIkyU0=;
+        s=korg; t=1686551483;
+        bh=xm71RDQf23P7Fz5kDaN4HK9XLI7pWTqHopOxOCpL65s=;
         h=Subject:To:Cc:From:Date:From;
-        b=vC7N+4s/E52V8Hmow8a+wGuluBdHgi9w3zKZyXBzBV0CYnbCIDXEHIa3Ak1xdbCh2
-         c1rC4/7UM+iQ//Kdq5xB9IemU1YGRKhESN+djz7ks3DYla4d1JjEukpKbtedj3YRxA
-         TndhPouhWamWHwKKlZV8osXB7Z1ilkAUiOBryaYA=
-Subject: FAILED: patch "[PATCH] ksmbd: fix out-of-bound read in parse_lease_state()" failed to apply to 5.15-stable tree
+        b=QvLPFdyWMOoLx3Z3LOSHBLhdZzIoZVpOIj1mRgnmvRKwelxx2SwQJx1jHmicvb/YM
+         aZrbTUegcG0pP5eslC6EmxGCObe/Nu/OiIiDM/h7qQeDaHPzEQhlBWSmMcOvxdnpgQ
+         D593532Nj+dLOgjiV1gJZTJuAe+O1iVqKpmmDnjI=
+Subject: FAILED: patch "[PATCH] ksmbd: validate smb request protocol id" failed to apply to 6.3-stable tree
 To:     linkinjeon@kernel.org, cc85nod@gmail.com, stfrench@microsoft.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 12 Jun 2023 08:28:10 +0200
-Message-ID: <2023061210-shaft-wrangle-7b2d@gregkh>
+Date:   Mon, 12 Jun 2023 08:31:20 +0200
+Message-ID: <2023061220-wand-recite-dccb@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.3-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
 git checkout FETCH_HEAD
-git cherry-pick -x fc6c6a3c324c1b3e93a03d0cfa3749c781f23de0
+git cherry-pick -x 1c1bcf2d3ea061613119b534f57507c377df20f9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061210-shaft-wrangle-7b2d@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061220-wand-recite-dccb@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
 
 Possible dependencies:
 
@@ -66,121 +66,80 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From fc6c6a3c324c1b3e93a03d0cfa3749c781f23de0 Mon Sep 17 00:00:00 2001
+From 1c1bcf2d3ea061613119b534f57507c377df20f9 Mon Sep 17 00:00:00 2001
 From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Sun, 28 May 2023 00:23:41 +0900
-Subject: [PATCH] ksmbd: fix out-of-bound read in parse_lease_state()
+Date: Wed, 31 May 2023 17:59:32 +0900
+Subject: [PATCH] ksmbd: validate smb request protocol id
 
-This bug is in parse_lease_state, and it is caused by the missing check
-of `struct create_context`. When the ksmbd traverses the create_contexts,
-it doesn't check if the field of `NameOffset` and `Next` is valid,
-The KASAN message is following:
+This patch add the validation for smb request protocol id.
+If it is not one of the four ids(SMB1_PROTO_NUMBER, SMB2_PROTO_NUMBER,
+SMB2_TRANSFORM_PROTO_NUM, SMB2_COMPRESSION_TRANSFORM_ID), don't allow
+processing the request. And this will fix the following KASAN warning
+also.
 
-[    6.664323] BUG: KASAN: slab-out-of-bounds in parse_lease_state+0x7d/0x280
-[    6.664738] Read of size 2 at addr ffff888005c08988 by task kworker/0:3/103
+[   13.905265] BUG: KASAN: slab-out-of-bounds in init_smb2_rsp_hdr+0x1b9/0x1f0
+[   13.905900] Read of size 16 at addr ffff888005fd2f34 by task kworker/0:2/44
 ...
-[    6.666644] Call Trace:
-[    6.666796]  <TASK>
-[    6.666933]  dump_stack_lvl+0x33/0x50
-[    6.667167]  print_report+0xcc/0x620
-[    6.667903]  kasan_report+0xae/0xe0
-[    6.668374]  kasan_check_range+0x35/0x1b0
-[    6.668621]  parse_lease_state+0x7d/0x280
-[    6.668868]  smb2_open+0xbe8/0x4420
-[    6.675137]  handle_ksmbd_work+0x282/0x820
-
-Use smb2_find_context_vals() to find smb2 create request lease context.
-smb2_find_context_vals validate create context fields.
+[   13.908553] Call Trace:
+[   13.908793]  <TASK>
+[   13.908995]  dump_stack_lvl+0x33/0x50
+[   13.909369]  print_report+0xcc/0x620
+[   13.910870]  kasan_report+0xae/0xe0
+[   13.911519]  kasan_check_range+0x35/0x1b0
+[   13.911796]  init_smb2_rsp_hdr+0x1b9/0x1f0
+[   13.912492]  handle_ksmbd_work+0xe5/0x820
 
 Cc: stable@vger.kernel.org
 Reported-by: Chih-Yen Chang <cc85nod@gmail.com>
-Tested-by: Chih-Yen Chang <cc85nod@gmail.com>
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
-index db181bdad73a..844b303baf29 100644
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -1415,56 +1415,38 @@ void create_lease_buf(u8 *rbuf, struct lease *lease)
+diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
+index e11d4a1e63d7..2a717d158f02 100644
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -364,8 +364,6 @@ int ksmbd_conn_handler_loop(void *p)
+ 			break;
+ 
+ 		memcpy(conn->request_buf, hdr_buf, sizeof(hdr_buf));
+-		if (!ksmbd_smb_request(conn))
+-			break;
+ 
+ 		/*
+ 		 * We already read 4 bytes to find out PDU size, now
+@@ -383,6 +381,9 @@ int ksmbd_conn_handler_loop(void *p)
+ 			continue;
+ 		}
+ 
++		if (!ksmbd_smb_request(conn))
++			break;
++
+ 		if (((struct smb2_hdr *)smb2_get_msg(conn->request_buf))->ProtocolId ==
+ 		    SMB2_PROTO_NUMBER) {
+ 			if (pdu_size < SMB2_MIN_SUPPORTED_HEADER_SIZE)
+diff --git a/fs/smb/server/smb_common.c b/fs/smb/server/smb_common.c
+index af0c2a9b8529..569e5eecdf3d 100644
+--- a/fs/smb/server/smb_common.c
++++ b/fs/smb/server/smb_common.c
+@@ -158,7 +158,19 @@ int ksmbd_verify_smb_message(struct ksmbd_work *work)
   */
- struct lease_ctx_info *parse_lease_state(void *open_req)
+ bool ksmbd_smb_request(struct ksmbd_conn *conn)
  {
--	char *data_offset;
- 	struct create_context *cc;
--	unsigned int next = 0;
--	char *name;
--	bool found = false;
- 	struct smb2_create_req *req = (struct smb2_create_req *)open_req;
--	struct lease_ctx_info *lreq = kzalloc(sizeof(struct lease_ctx_info),
--		GFP_KERNEL);
-+	struct lease_ctx_info *lreq;
+-	return conn->request_buf[0] == 0;
++	__le32 *proto = (__le32 *)smb2_get_msg(conn->request_buf);
 +
-+	cc = smb2_find_context_vals(req, SMB2_CREATE_REQUEST_LEASE, 4);
-+	if (IS_ERR_OR_NULL(cc))
-+		return NULL;
++	if (*proto == SMB2_COMPRESSION_TRANSFORM_ID) {
++		pr_err_ratelimited("smb2 compression not support yet");
++		return false;
++	}
 +
-+	lreq = kzalloc(sizeof(struct lease_ctx_info), GFP_KERNEL);
- 	if (!lreq)
- 		return NULL;
- 
--	data_offset = (char *)req + le32_to_cpu(req->CreateContextsOffset);
--	cc = (struct create_context *)data_offset;
--	do {
--		cc = (struct create_context *)((char *)cc + next);
--		name = le16_to_cpu(cc->NameOffset) + (char *)cc;
--		if (le16_to_cpu(cc->NameLength) != 4 ||
--		    strncmp(name, SMB2_CREATE_REQUEST_LEASE, 4)) {
--			next = le32_to_cpu(cc->Next);
--			continue;
--		}
--		found = true;
--		break;
--	} while (next != 0);
-+	if (sizeof(struct lease_context_v2) == le32_to_cpu(cc->DataLength)) {
-+		struct create_lease_v2 *lc = (struct create_lease_v2 *)cc;
- 
--	if (found) {
--		if (sizeof(struct lease_context_v2) == le32_to_cpu(cc->DataLength)) {
--			struct create_lease_v2 *lc = (struct create_lease_v2 *)cc;
-+		memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
-+		lreq->req_state = lc->lcontext.LeaseState;
-+		lreq->flags = lc->lcontext.LeaseFlags;
-+		lreq->duration = lc->lcontext.LeaseDuration;
-+		memcpy(lreq->parent_lease_key, lc->lcontext.ParentLeaseKey,
-+				SMB2_LEASE_KEY_SIZE);
-+		lreq->version = 2;
-+	} else {
-+		struct create_lease *lc = (struct create_lease *)cc;
- 
--			memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
--			lreq->req_state = lc->lcontext.LeaseState;
--			lreq->flags = lc->lcontext.LeaseFlags;
--			lreq->duration = lc->lcontext.LeaseDuration;
--			memcpy(lreq->parent_lease_key, lc->lcontext.ParentLeaseKey,
--			       SMB2_LEASE_KEY_SIZE);
--			lreq->version = 2;
--		} else {
--			struct create_lease *lc = (struct create_lease *)cc;
--
--			memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
--			lreq->req_state = lc->lcontext.LeaseState;
--			lreq->flags = lc->lcontext.LeaseFlags;
--			lreq->duration = lc->lcontext.LeaseDuration;
--			lreq->version = 1;
--		}
--		return lreq;
-+		memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
-+		lreq->req_state = lc->lcontext.LeaseState;
-+		lreq->flags = lc->lcontext.LeaseFlags;
-+		lreq->duration = lc->lcontext.LeaseDuration;
-+		lreq->version = 1;
- 	}
--
--	kfree(lreq);
--	return NULL;
-+	return lreq;
++	if (*proto != SMB1_PROTO_NUMBER &&
++	    *proto != SMB2_PROTO_NUMBER &&
++	    *proto != SMB2_TRANSFORM_PROTO_NUM)
++		return false;
++
++	return true;
  }
  
- /**
+ static bool supported_protocol(int idx)
 
