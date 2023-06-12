@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBC5572BFF0
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:48:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDEDF72C193
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:59:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229726AbjFLKsM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:48:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51538 "EHLO
+        id S235732AbjFLK66 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:58:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235281AbjFLKrx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:47:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 252FD10C9
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:32:42 -0700 (PDT)
+        with ESMTP id S235495AbjFLKyl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D24035B6
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:41:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C40A623DC
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:32:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFE5C433EF;
-        Mon, 12 Jun 2023 10:32:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C6F07623CE
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:40:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5CA7C433EF;
+        Mon, 12 Jun 2023 10:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565941;
-        bh=xcnTPd5uLkR1sj0BDnktTkPDKNR7V7W0HZukmwsN0HE=;
+        s=korg; t=1686566459;
+        bh=6Y6/0m5cmc2yHceB393htXJuSpcOf+tERViRuoHXJdY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qbpc24VwkRyE55z5A/UTAdxr4uUioXfHJHhm24JvH6UZwu8xu1nDWQ7XNALrpVZdB
-         1kbcV70CPrDSua7mIJMz4pdmFrmuF7N349PEGsWDD9KnabCBOUsPeYSyh7YFFhXvPy
-         0rM0WdZbMn7nCIBq/s3szefHh/Nusov5O3bG8T9Y=
+        b=ekvluzz5Dd86HmdB2PEfzFBJuFSsDsHwAvcegr6fD8xmc9mP/vKbPAbj+Bfq1QAQF
+         SK4UNoLvdyX2/EKPLpZdJSQrCJhMhpfPMTLFqPY2+8gxK6bCe+824+sv4gDrhFR9eU
+         StjXyw8GADotN2FfUUi3vpSZYaweal6pyKcUoF3g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ismael Ferreras Morezuelas <swyterzone@gmail.com>,
-        Cameron Gutman <aicommander@gmail.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.4 20/45] Input: xpad - delete a Razer DeathAdder mouse VID/PID entry
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Alexander Duyck <alexanderduyck@fb.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 040/132] tcp: gso: really support BIG TCP
 Date:   Mon, 12 Jun 2023 12:26:14 +0200
-Message-ID: <20230612101655.476903863@linuxfoundation.org>
+Message-ID: <20230612101712.064304973@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
-References: <20230612101654.644983109@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,73 +56,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ismael Ferreras Morezuelas <swyterzone@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit feee70f4568650cf44c573488798ffc0a2faeea3 upstream.
+[ Upstream commit 82a01ab35bd02ba4b0b4e12bc95c5b69240eb7b0 ]
 
-While doing my research to improve the xpad device names I noticed
-that the 1532:0037 VID/PID seems to be used by the DeathAdder 2013,
-so that Razer Sabertooth instance looked wrong and very suspect to
-me. I didn't see any mention in the official drivers, either.
+We missed that tcp_gso_segment() was assuming skb->len was smaller than 65535 :
 
-After doing more research, it turns out that the xpad list
-is used by many other projects (like Steam) as-is [1], this
-issue was reported [2] and Valve/Sam Lantinga fixed it [3]:
+oldlen = (u16)~skb->len;
 
-[1]: https://github.com/libsdl-org/SDL/blob/dcc5eef0e2395854b254ea2873a4899edab347c6/src/joystick/controller_type.h#L251
-[2]: https://steamcommunity.com/app/353380/discussions/0/1743392486228754770/
-[3]: https://hg.libsdl.org/SDL/rev/29809f6f0271
+This part came with commit 0718bcc09b35 ("[NET]: Fix CHECKSUM_HW GSO problems.")
 
-(With multiple Internet users reporting similar issues, not linked here)
+This leads to wrong TCP checksum.
 
-After not being able to find the correct VID/PID combination anywhere
-on the Internet and not receiving any reply from Razer support I did
-some additional detective work, it seems like it presents itself as
-"Razer Sabertooth Gaming Controller (XBOX360)", code 1689:FE00.
+Adapt the code to accept arbitrary packet length.
 
-Leaving us with this:
- * Razer Sabertooth (1689:fe00)
- * Razer Sabertooth Elite (24c6:5d04)
- * Razer DeathAdder 2013 (1532:0037) [note: not a gamepad]
+v2:
+  - use two csum_add() instead of csum_fold() (Alexander Duyck)
+  - Change delta type to __wsum to reduce casts (Alexander Duyck)
 
-So, to sum things up; remove this conflicting/duplicate entry:
-
-{ 0x1532, 0x0037, "Razer Sabertooth", 0, XTYPE_XBOX360 },
-
-As the real/correct one is already present there, even if
-the Internet as a whole insists on presenting it as the
-Razer Sabertooth Elite, which (by all accounts) is not:
-
-{ 0x1689, 0xfe00, "Razer Sabertooth", 0, XTYPE_XBOX360 },
-
-Actual change in SDL2 referencing this kernel issue:
-https://github.com/libsdl-org/SDL/commit/e5e54169754ca5d3e86339d968b20126d9da0a15
-
-For more information of the device, take a look here:
-https://github.com/xboxdrv/xboxdrv/pull/59
-
-You can see a lsusb dump here: https://github.com/xboxdrv/xboxdrv/files/76581/Qa6dBcrv.txt
-
-Fixes: f554f619b70 ("Input: xpad - sync device IDs with xboxdrv")
-Signed-off-by: Ismael Ferreras Morezuelas <swyterzone@gmail.com>
-Reviewed-by: Cameron Gutman <aicommander@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/5c12dbdb-5774-fc68-5c58-ca596383663e@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 09f3d1a3a52c ("ipv6/gso: remove temporary HBH/jumbo header")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Alexander Duyck <alexanderduyck@fb.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/20230605161647.3624428-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c |    1 -
- 1 file changed, 1 deletion(-)
+ net/ipv4/tcp_offload.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -262,7 +262,6 @@ static const struct xpad_device {
- 	{ 0x1430, 0xf801, "RedOctane Controller", 0, XTYPE_XBOX360 },
- 	{ 0x146b, 0x0601, "BigBen Interactive XBOX 360 Controller", 0, XTYPE_XBOX360 },
- 	{ 0x146b, 0x0604, "Bigben Interactive DAIJA Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
--	{ 0x1532, 0x0037, "Razer Sabertooth", 0, XTYPE_XBOX360 },
- 	{ 0x1532, 0x0a00, "Razer Atrox Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOXONE },
- 	{ 0x1532, 0x0a03, "Razer Wildcat", 0, XTYPE_XBOXONE },
- 	{ 0x15e4, 0x3f00, "Power A Mini Pro Elite", 0, XTYPE_XBOX360 },
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index 45dda78893870..4851211aa60d6 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -60,12 +60,12 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
+ 	struct tcphdr *th;
+ 	unsigned int thlen;
+ 	unsigned int seq;
+-	__be32 delta;
+ 	unsigned int oldlen;
+ 	unsigned int mss;
+ 	struct sk_buff *gso_skb = skb;
+ 	__sum16 newcheck;
+ 	bool ooo_okay, copy_destructor;
++	__wsum delta;
+ 
+ 	th = tcp_hdr(skb);
+ 	thlen = th->doff * 4;
+@@ -75,7 +75,7 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
+ 	if (!pskb_may_pull(skb, thlen))
+ 		goto out;
+ 
+-	oldlen = (u16)~skb->len;
++	oldlen = ~skb->len;
+ 	__skb_pull(skb, thlen);
+ 
+ 	mss = skb_shinfo(skb)->gso_size;
+@@ -110,7 +110,7 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
+ 	if (skb_is_gso(segs))
+ 		mss *= skb_shinfo(segs)->gso_segs;
+ 
+-	delta = htonl(oldlen + (thlen + mss));
++	delta = (__force __wsum)htonl(oldlen + thlen + mss);
+ 
+ 	skb = segs;
+ 	th = tcp_hdr(skb);
+@@ -119,8 +119,7 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
+ 	if (unlikely(skb_shinfo(gso_skb)->tx_flags & SKBTX_SW_TSTAMP))
+ 		tcp_gso_tstamp(segs, skb_shinfo(gso_skb)->tskey, seq, mss);
+ 
+-	newcheck = ~csum_fold((__force __wsum)((__force u32)th->check +
+-					       (__force u32)delta));
++	newcheck = ~csum_fold(csum_add(csum_unfold(th->check), delta));
+ 
+ 	while (skb->next) {
+ 		th->fin = th->psh = 0;
+@@ -165,11 +164,11 @@ struct sk_buff *tcp_gso_segment(struct sk_buff *skb,
+ 			WARN_ON_ONCE(refcount_sub_and_test(-delta, &skb->sk->sk_wmem_alloc));
+ 	}
+ 
+-	delta = htonl(oldlen + (skb_tail_pointer(skb) -
+-				skb_transport_header(skb)) +
+-		      skb->data_len);
+-	th->check = ~csum_fold((__force __wsum)((__force u32)th->check +
+-				(__force u32)delta));
++	delta = (__force __wsum)htonl(oldlen +
++				      (skb_tail_pointer(skb) -
++				       skb_transport_header(skb)) +
++				      skb->data_len);
++	th->check = ~csum_fold(csum_add(csum_unfold(th->check), delta));
+ 	if (skb->ip_summed == CHECKSUM_PARTIAL)
+ 		gso_reset_checksum(skb, ~th->check);
+ 	else
+-- 
+2.39.2
+
 
 
