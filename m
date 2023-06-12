@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEB4D72BF85
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:45:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 216EA72C189
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:58:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231816AbjFLKpG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:45:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48116 "EHLO
+        id S236047AbjFLK6y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:58:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232270AbjFLKo2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:44:28 -0400
+        with ESMTP id S235861AbjFLKyk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA2BC6A4C
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:29:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFF2411DAC
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:40:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 33DD961492
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:29:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E0A3C433EF;
-        Mon, 12 Jun 2023 10:29:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 363D8614F0
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:40:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48DE6C433D2;
+        Mon, 12 Jun 2023 10:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565754;
-        bh=JDQK1Pf00jZCA8tjrcn2hBx8/s8NmpYKmsGfK243RSs=;
+        s=korg; t=1686566456;
+        bh=RME3VQMWXEjxIOn+jgGDQmeIj12kyu7HjfH3eLBCCa8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x3ClgdTL1v6enO77lD3L6+O5MeGJ5ggyVRxfXjbDLdjXvbHqkQaQSxBTWn/Xo7bhR
-         vX5zMOiOHZkEvkvlhFfruuEH/eOQzYO/tcs2jEJP14Yxgmqw11vtiWJ/0ULGBK4LYX
-         1FLu5vsT7Zg9uZ+pmFwpNwOvlwICYDcjIgDBN1Dw=
+        b=nfJ7onZCffCG5Yh4ts+7tCcJurWp0MQmVZehVPr5CzoEPbl8yxOhVla68c1zVWc7p
+         sJJTPguJ+brHmwtNr41k4Yo0e3XK6uJRnY3pk63oxK4eIlnhwfASD1DImTLr+rgGpI
+         JOnlt+mM2yPN23QBytkslKhguu8YMvtX1HORPH+Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 17/21] i2c: sprd: Delete i2c adapter in .removes error path
-Date:   Mon, 12 Jun 2023 12:26:12 +0200
-Message-ID: <20230612101651.637274030@linuxfoundation.org>
+        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 039/132] ipv6: rpl: Fix Route of Death.
+Date:   Mon, 12 Jun 2023 12:26:13 +0200
+Message-ID: <20230612101712.017602337@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101651.048240731@linuxfoundation.org>
-References: <20230612101651.048240731@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,45 +55,193 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit ca0aa17f2db3468fd017038d23a78e17388e2f67 ]
+[ Upstream commit a2f4c143d76b1a47c91ef9bc46907116b111da0b ]
 
-If pm runtime resume fails the .remove callback used to exit early. This
-resulted in an error message by the driver core but the device gets
-removed anyhow. This lets the registered i2c adapter stay around with an
-unbound parent device.
+A remote DoS vulnerability of RPL Source Routing is assigned CVE-2023-2156.
 
-So only skip clk disabling if resume failed, but do delete the adapter.
+The Source Routing Header (SRH) has the following format:
 
-Fixes: 8b9ec0719834 ("i2c: Add Spreadtrum I2C controller driver")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+  0                   1                   2                   3
+  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |  Next Header  |  Hdr Ext Len  | Routing Type  | Segments Left |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  | CmprI | CmprE |  Pad  |               Reserved                |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+  |                                                               |
+  .                                                               .
+  .                        Addresses[1..n]                        .
+  .                                                               .
+  |                                                               |
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+The originator of an SRH places the first hop's IPv6 address in the IPv6
+header's IPv6 Destination Address and the second hop's IPv6 address as
+the first address in Addresses[1..n].
+
+The CmprI and CmprE fields indicate the number of prefix octets that are
+shared with the IPv6 Destination Address.  When CmprI or CmprE is not 0,
+Addresses[1..n] are compressed as follows:
+
+  1..n-1 : (16 - CmprI) bytes
+       n : (16 - CmprE) bytes
+
+Segments Left indicates the number of route segments remaining.  When the
+value is not zero, the SRH is forwarded to the next hop.  Its address
+is extracted from Addresses[n - Segment Left + 1] and swapped with IPv6
+Destination Address.
+
+When Segment Left is greater than or equal to 2, the size of SRH is not
+changed because Addresses[1..n-1] are decompressed and recompressed with
+CmprI.
+
+OTOH, when Segment Left changes from 1 to 0, the new SRH could have a
+different size because Addresses[1..n-1] are decompressed with CmprI and
+recompressed with CmprE.
+
+Let's say CmprI is 15 and CmprE is 0.  When we receive SRH with Segment
+Left >= 2, Addresses[1..n-1] have 1 byte for each, and Addresses[n] has
+16 bytes.  When Segment Left is 1, Addresses[1..n-1] is decompressed to
+16 bytes and not recompressed.  Finally, the new SRH will need more room
+in the header, and the size is (16 - 1) * (n - 1) bytes.
+
+Here the max value of n is 255 as Segment Left is u8, so in the worst case,
+we have to allocate 3825 bytes in the skb headroom.  However, now we only
+allocate a small fixed buffer that is IPV6_RPL_SRH_WORST_SWAP_SIZE (16 + 7
+bytes).  If the decompressed size overflows the room, skb_push() hits BUG()
+below [0].
+
+Instead of allocating the fixed buffer for every packet, let's allocate
+enough headroom only when we receive SRH with Segment Left 1.
+
+[0]:
+skbuff: skb_under_panic: text:ffffffff81c9f6e2 len:576 put:576 head:ffff8880070b5180 data:ffff8880070b4fb0 tail:0x70 end:0x140 dev:lo
+kernel BUG at net/core/skbuff.c:200!
+invalid opcode: 0000 [#1] PREEMPT SMP PTI
+CPU: 0 PID: 154 Comm: python3 Not tainted 6.4.0-rc4-00190-gc308e9ec0047 #7
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+RIP: 0010:skb_panic (net/core/skbuff.c:200)
+Code: 4f 70 50 8b 87 bc 00 00 00 50 8b 87 b8 00 00 00 50 ff b7 c8 00 00 00 4c 8b 8f c0 00 00 00 48 c7 c7 80 6e 77 82 e8 ad 8b 60 ff <0f> 0b 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90
+RSP: 0018:ffffc90000003da0 EFLAGS: 00000246
+RAX: 0000000000000085 RBX: ffff8880058a6600 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: ffff88807dc1c540 RDI: ffff88807dc1c540
+RBP: ffffc90000003e48 R08: ffffffff82b392c8 R09: 00000000ffffdfff
+R10: ffffffff82a592e0 R11: ffffffff82b092e0 R12: ffff888005b1c800
+R13: ffff8880070b51b8 R14: ffff888005b1ca18 R15: ffff8880070b5190
+FS:  00007f4539f0b740(0000) GS:ffff88807dc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055670baf3000 CR3: 0000000005b0e000 CR4: 00000000007506f0
+PKRU: 55555554
+Call Trace:
+ <IRQ>
+ skb_push (net/core/skbuff.c:210)
+ ipv6_rthdr_rcv (./include/linux/skbuff.h:2880 net/ipv6/exthdrs.c:634 net/ipv6/exthdrs.c:718)
+ ip6_protocol_deliver_rcu (net/ipv6/ip6_input.c:437 (discriminator 5))
+ ip6_input_finish (./include/linux/rcupdate.h:805 net/ipv6/ip6_input.c:483)
+ __netif_receive_skb_one_core (net/core/dev.c:5494)
+ process_backlog (./include/linux/rcupdate.h:805 net/core/dev.c:5934)
+ __napi_poll (net/core/dev.c:6496)
+ net_rx_action (net/core/dev.c:6565 net/core/dev.c:6696)
+ __do_softirq (./arch/x86/include/asm/jump_label.h:27 ./include/linux/jump_label.h:207 ./include/trace/events/irq.h:142 kernel/softirq.c:572)
+ do_softirq (kernel/softirq.c:472 kernel/softirq.c:459)
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip (kernel/softirq.c:396)
+ __dev_queue_xmit (net/core/dev.c:4272)
+ ip6_finish_output2 (./include/net/neighbour.h:544 net/ipv6/ip6_output.c:134)
+ rawv6_sendmsg (./include/net/dst.h:458 ./include/linux/netfilter.h:303 net/ipv6/raw.c:656 net/ipv6/raw.c:914)
+ sock_sendmsg (net/socket.c:724 net/socket.c:747)
+ __sys_sendto (net/socket.c:2144)
+ __x64_sys_sendto (net/socket.c:2156 net/socket.c:2152 net/socket.c:2152)
+ do_syscall_64 (arch/x86/entry/common.c:50 arch/x86/entry/common.c:80)
+ entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:120)
+RIP: 0033:0x7f453a138aea
+Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3 0f 1e fa 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
+RSP: 002b:00007ffcc212a1c8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00007ffcc212a288 RCX: 00007f453a138aea
+RDX: 0000000000000060 RSI: 00007f4539084c20 RDI: 0000000000000003
+RBP: 00007f4538308e80 R08: 00007ffcc212a300 R09: 000000000000001c
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: ffffffffc4653600 R14: 0000000000000001 R15: 00007f4539712d1b
+ </TASK>
+Modules linked in:
+
+Fixes: 8610c7c6e3bd ("net: ipv6: add support for rpl sr exthdr")
+Reported-by: Max VA
+Closes: https://www.interruptlabs.co.uk/articles/linux-ipv6-route-of-death
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20230605180617.67284-1-kuniyu@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-sprd.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ include/net/rpl.h  |  3 ---
+ net/ipv6/exthdrs.c | 29 +++++++++++------------------
+ 2 files changed, 11 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-sprd.c b/drivers/i2c/busses/i2c-sprd.c
-index 1925c89381194..452b868e5c974 100644
---- a/drivers/i2c/busses/i2c-sprd.c
-+++ b/drivers/i2c/busses/i2c-sprd.c
-@@ -581,10 +581,12 @@ static int sprd_i2c_remove(struct platform_device *pdev)
+diff --git a/include/net/rpl.h b/include/net/rpl.h
+index 308ef0a05caef..30fe780d1e7c8 100644
+--- a/include/net/rpl.h
++++ b/include/net/rpl.h
+@@ -23,9 +23,6 @@ static inline int rpl_init(void)
+ static inline void rpl_exit(void) {}
+ #endif
  
- 	ret = pm_runtime_get_sync(i2c_dev->dev);
- 	if (ret < 0)
--		return ret;
-+		dev_err(&pdev->dev, "Failed to resume device (%pe)\n", ERR_PTR(ret));
+-/* Worst decompression memory usage ipv6 address (16) + pad 7 */
+-#define IPV6_RPL_SRH_WORST_SWAP_SIZE (sizeof(struct in6_addr) + 7)
+-
+ size_t ipv6_rpl_srh_size(unsigned char n, unsigned char cmpri,
+ 			 unsigned char cmpre);
  
- 	i2c_del_adapter(&i2c_dev->adap);
--	clk_disable_unprepare(i2c_dev->clk);
+diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
+index a8d961d3a477f..5fa0e37305d9d 100644
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -569,24 +569,6 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb)
+ 		return -1;
+ 	}
+ 
+-	if (skb_cloned(skb)) {
+-		if (pskb_expand_head(skb, IPV6_RPL_SRH_WORST_SWAP_SIZE, 0,
+-				     GFP_ATOMIC)) {
+-			__IP6_INC_STATS(net, ip6_dst_idev(skb_dst(skb)),
+-					IPSTATS_MIB_OUTDISCARDS);
+-			kfree_skb(skb);
+-			return -1;
+-		}
+-	} else {
+-		err = skb_cow_head(skb, IPV6_RPL_SRH_WORST_SWAP_SIZE);
+-		if (unlikely(err)) {
+-			kfree_skb(skb);
+-			return -1;
+-		}
+-	}
+-
+-	hdr = (struct ipv6_rpl_sr_hdr *)skb_transport_header(skb);
+-
+ 	if (!pskb_may_pull(skb, ipv6_rpl_srh_size(n, hdr->cmpri,
+ 						  hdr->cmpre))) {
+ 		kfree_skb(skb);
+@@ -630,6 +612,17 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb)
+ 	skb_pull(skb, ((hdr->hdrlen + 1) << 3));
+ 	skb_postpull_rcsum(skb, oldhdr,
+ 			   sizeof(struct ipv6hdr) + ((hdr->hdrlen + 1) << 3));
++	if (unlikely(!hdr->segments_left)) {
++		if (pskb_expand_head(skb, sizeof(struct ipv6hdr) + ((chdr->hdrlen + 1) << 3), 0,
++				     GFP_ATOMIC)) {
++			__IP6_INC_STATS(net, ip6_dst_idev(skb_dst(skb)), IPSTATS_MIB_OUTDISCARDS);
++			kfree_skb(skb);
++			kfree(buf);
++			return -1;
++		}
 +
-+	if (ret >= 0)
-+		clk_disable_unprepare(i2c_dev->clk);
- 
- 	pm_runtime_put_noidle(i2c_dev->dev);
- 	pm_runtime_disable(i2c_dev->dev);
++		oldhdr = ipv6_hdr(skb);
++	}
+ 	skb_push(skb, ((chdr->hdrlen + 1) << 3) + sizeof(struct ipv6hdr));
+ 	skb_reset_network_header(skb);
+ 	skb_mac_header_rebuild(skb);
 -- 
 2.39.2
 
