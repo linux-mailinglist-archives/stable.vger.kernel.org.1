@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2C3A72C0F0
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D62872BFA4
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:46:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236182AbjFLKz2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:55:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56224 "EHLO
+        id S233785AbjFLKqG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:46:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236960AbjFLKzJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:55:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D21E421A
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:42:03 -0700 (PDT)
+        with ESMTP id S233213AbjFLKpv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:45:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F1957295
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:30:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B08E36158B
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:42:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DEB0C433D2;
-        Mon, 12 Jun 2023 10:42:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C54C4615BF
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:30:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCBD3C433D2;
+        Mon, 12 Jun 2023 10:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566522;
-        bh=XfOhGVN0v3hG1viVczaSizwo/DtWCgAmZJl6dL9mBfo=;
+        s=korg; t=1686565823;
+        bh=iXR+VP/Qy+D+UpXIlynX4yCgBQo/KHF7j1j3Gx1fwxw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V16UoqO42tt0Ern3BGAcrJ2a3oIBhULWxHfa6yJTt/YhCdqCW77SjSU9ciRZMtxr/
-         g2rm8HpntZT2rUekINzdBMsJ5jxi22mGixbQVOFOdUm+VUdQOo4CyylGYByAduoZ1u
-         N/oK+ueY1xEp3sWlii7vpMK+s8RIaZnOpe1EzGDk=
+        b=Wzrp/lbRAm+Mr1wGPQIZtv+VHLQxk9lqN8gWkRbZNqqlyli48Bqo1JJBHvnAcBzMR
+         iWVkeeGbZsI6VaB76aLjwWvBwkIjrkAyXELO5zqWc3TmFzMkI4oiSFKRB9GT3ROVcs
+         HLNrkA2MKUIyV9ArD3ukkGFGO0kJ31tq1Ls9eo+g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yonghong Song <yhs@fb.com>,
-        Andrii Nakryiko <andrii@kernel.org>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 034/132] selftests/bpf: Fix sockopt_sk selftest
+Subject: [PATCH 4.19 07/23] rfs: annotate lockless accesses to sk->sk_rxhash
 Date:   Mon, 12 Jun 2023 12:26:08 +0200
-Message-ID: <20230612101711.774822183@linuxfoundation.org>
+Message-ID: <20230612101651.407477221@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101651.138592130@linuxfoundation.org>
+References: <20230612101651.138592130@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,52 +56,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yonghong Song <yhs@fb.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 69844e335d8c22454746c7903776533d8b4ab8fa ]
+[ Upstream commit 1e5c647c3f6d4f8497dedcd226204e1880e0ffb3 ]
 
-Commit f4e4534850a9 ("net/netlink: fix NETLINK_LIST_MEMBERSHIPS length report")
-fixed NETLINK_LIST_MEMBERSHIPS length report which caused
-selftest sockopt_sk failure. The failure log looks like
+Add READ_ONCE()/WRITE_ONCE() on accesses to sk->sk_rxhash.
 
-  test_sockopt_sk:PASS:join_cgroup /sockopt_sk 0 nsec
-  run_test:PASS:skel_load 0 nsec
-  run_test:PASS:setsockopt_link 0 nsec
-  run_test:PASS:getsockopt_link 0 nsec
-  getsetsockopt:FAIL:Unexpected NETLINK_LIST_MEMBERSHIPS value unexpected Unexpected NETLINK_LIST_MEMBERSHIPS value: actual 8 != expected 4
-  run_test:PASS:getsetsockopt 0 nsec
-  #201     sockopt_sk:FAIL
+This also prevents a (smart ?) compiler to remove the condition in:
 
-In net/netlink/af_netlink.c, function netlink_getsockopt(), for NETLINK_LIST_MEMBERSHIPS,
-nlk->ngroups equals to 36. Before Commit f4e4534850a9, the optlen is calculated as
-  ALIGN(nlk->ngroups / 8, sizeof(u32)) = 4
-After that commit, the optlen is
-  ALIGN(BITS_TO_BYTES(nlk->ngroups), sizeof(u32)) = 8
+if (sk->sk_rxhash != newval)
+	sk->sk_rxhash = newval;
 
-Fix the test by setting the expected optlen to be 8.
+We need the condition to avoid dirtying a shared cache line.
 
-Fixes: f4e4534850a9 ("net/netlink: fix NETLINK_LIST_MEMBERSHIPS length report")
-Signed-off-by: Yonghong Song <yhs@fb.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20230606172202.1606249-1-yhs@fb.com
+Fixes: fec5e652e58f ("rfs: Receive Flow Steering")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/sockopt_sk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/sock.h | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/sockopt_sk.c b/tools/testing/selftests/bpf/prog_tests/sockopt_sk.c
-index 4512dd808c335..05d0e07da3942 100644
---- a/tools/testing/selftests/bpf/prog_tests/sockopt_sk.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sockopt_sk.c
-@@ -209,7 +209,7 @@ static int getsetsockopt(void)
- 			err, errno);
- 		goto err;
+diff --git a/include/net/sock.h b/include/net/sock.h
+index c140c6f86e4b1..616e84d1670df 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -988,8 +988,12 @@ static inline void sock_rps_record_flow(const struct sock *sk)
+ 		 * OR	an additional socket flag
+ 		 * [1] : sk_state and sk_prot are in the same cache line.
+ 		 */
+-		if (sk->sk_state == TCP_ESTABLISHED)
+-			sock_rps_record_flow_hash(sk->sk_rxhash);
++		if (sk->sk_state == TCP_ESTABLISHED) {
++			/* This READ_ONCE() is paired with the WRITE_ONCE()
++			 * from sock_rps_save_rxhash() and sock_rps_reset_rxhash().
++			 */
++			sock_rps_record_flow_hash(READ_ONCE(sk->sk_rxhash));
++		}
  	}
--	ASSERT_EQ(optlen, 4, "Unexpected NETLINK_LIST_MEMBERSHIPS value");
-+	ASSERT_EQ(optlen, 8, "Unexpected NETLINK_LIST_MEMBERSHIPS value");
+ #endif
+ }
+@@ -998,15 +1002,19 @@ static inline void sock_rps_save_rxhash(struct sock *sk,
+ 					const struct sk_buff *skb)
+ {
+ #ifdef CONFIG_RPS
+-	if (unlikely(sk->sk_rxhash != skb->hash))
+-		sk->sk_rxhash = skb->hash;
++	/* The following WRITE_ONCE() is paired with the READ_ONCE()
++	 * here, and another one in sock_rps_record_flow().
++	 */
++	if (unlikely(READ_ONCE(sk->sk_rxhash) != skb->hash))
++		WRITE_ONCE(sk->sk_rxhash, skb->hash);
+ #endif
+ }
  
- 	free(big_buf);
- 	close(fd);
+ static inline void sock_rps_reset_rxhash(struct sock *sk)
+ {
+ #ifdef CONFIG_RPS
+-	sk->sk_rxhash = 0;
++	/* Paired with READ_ONCE() in sock_rps_record_flow() */
++	WRITE_ONCE(sk->sk_rxhash, 0);
+ #endif
+ }
+ 
 -- 
 2.39.2
 
