@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B93CE72C0B5
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:54:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4844B72C212
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:02:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236226AbjFLKyM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:54:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56938 "EHLO
+        id S237556AbjFLLCl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:02:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236177AbjFLKx6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:53:58 -0400
+        with ESMTP id S237389AbjFLLCV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:02:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8C9F25A07
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:39:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5824F5FF5
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:49:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 11222612F0
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:39:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D1DC433D2;
-        Mon, 12 Jun 2023 10:39:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CDD66624F1
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:49:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0026C433EF;
+        Mon, 12 Jun 2023 10:49:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566343;
-        bh=NTDSLLPqlQRQtoib1cZBKeBGA0zK4bHA4JnZdcpVlRs=;
+        s=korg; t=1686566982;
+        bh=5PFxjeJveLfVvr6mqd9x2YkeqXFH63mh76MbchnERyM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0tNMUiufKzOjwPaVJJedC5Yb9tx14aJ2sXafsljQ1MS+GnGwGkfbgyCMf7HH/m5pn
-         B0Tak8jO9cHrhcYvX6/rvEeNCNrs+MuhaLF19qK8tJ0I+M89X7+aCH65UrGQGiUhHW
-         wtxVaVd4fFviEYWvqijKFC7Qm+A4Z0QT0u3uyKqA=
+        b=G88JYah3nWaB7+6KakLIUKLaDAF/0KiEByfwjBI/PWeOueUMAThiAOQlit9BusFuk
+         gfjquFGLtX0+q7bsOzuAd+CFfvNuYWGtP2uJRPC8ypmfCPrahIC3G5Qn1T1Ei72GAV
+         F4ICE6lyqPpR2EjTbcMWSMpi2qFMBVG9te78BvzE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 88/91] ext4: only check dquot_initialize_needed() when debugging
+        patches@lists.linux.dev, Min Li <lm0963hack@gmail.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.3 105/160] Bluetooth: Fix use-after-free in hci_remove_ltk/hci_remove_irk
 Date:   Mon, 12 Jun 2023 12:27:17 +0200
-Message-ID: <20230612101705.801251227@linuxfoundation.org>
+Message-ID: <20230612101719.829331236@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
-References: <20230612101702.085813286@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,47 +53,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit dea9d8f7643fab07bf89a1155f1f94f37d096a5e upstream.
+commit c5d2b6fa26b5b8386a9cc902cdece3a46bef2bd2 upstream.
 
-ext4_xattr_block_set() relies on its caller to call dquot_initialize()
-on the inode.  To assure that this has happened there are WARN_ON
-checks.  Unfortunately, this is subject to false positives if there is
-an antagonist thread which is flipping the file system at high rates
-between r/o and rw.  So only do the check if EXT4_XATTR_DEBUG is
-enabled.
+Similar to commit 0f7d9b31ce7a ("netfilter: nf_tables: fix use-after-free
+in nft_set_catchall_destroy()"). We can not access k after kfree_rcu()
+call.
 
-Link: https://lore.kernel.org/r/20230608044056.GA1418535@mit.edu
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@vger.kernel.org
+Signed-off-by: Min Li <lm0963hack@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/xattr.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/bluetooth/hci_core.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -2006,8 +2006,9 @@ inserted:
- 			else {
- 				u32 ref;
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -1416,10 +1416,10 @@ int hci_remove_link_key(struct hci_dev *
  
-+#ifdef EXT4_XATTR_DEBUG
- 				WARN_ON_ONCE(dquot_initialize_needed(inode));
--
-+#endif
- 				/* The old block is released after updating
- 				   the inode. */
- 				error = dquot_alloc_block(inode,
-@@ -2070,8 +2071,9 @@ inserted:
- 			/* We need to allocate a new block */
- 			ext4_fsblk_t goal, block;
+ int hci_remove_ltk(struct hci_dev *hdev, bdaddr_t *bdaddr, u8 bdaddr_type)
+ {
+-	struct smp_ltk *k;
++	struct smp_ltk *k, *tmp;
+ 	int removed = 0;
  
-+#ifdef EXT4_XATTR_DEBUG
- 			WARN_ON_ONCE(dquot_initialize_needed(inode));
--
-+#endif
- 			goal = ext4_group_first_block_no(sb,
- 						EXT4_I(inode)->i_block_group);
- 			block = ext4_new_meta_blocks(handle, inode, goal, 0,
+-	list_for_each_entry_rcu(k, &hdev->long_term_keys, list) {
++	list_for_each_entry_safe(k, tmp, &hdev->long_term_keys, list) {
+ 		if (bacmp(bdaddr, &k->bdaddr) || k->bdaddr_type != bdaddr_type)
+ 			continue;
+ 
+@@ -1435,9 +1435,9 @@ int hci_remove_ltk(struct hci_dev *hdev,
+ 
+ void hci_remove_irk(struct hci_dev *hdev, bdaddr_t *bdaddr, u8 addr_type)
+ {
+-	struct smp_irk *k;
++	struct smp_irk *k, *tmp;
+ 
+-	list_for_each_entry_rcu(k, &hdev->identity_resolving_keys, list) {
++	list_for_each_entry_safe(k, tmp, &hdev->identity_resolving_keys, list) {
+ 		if (bacmp(bdaddr, &k->bdaddr) || k->addr_type != addr_type)
+ 			continue;
+ 
 
 
