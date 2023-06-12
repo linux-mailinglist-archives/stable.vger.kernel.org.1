@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9906672BF89
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:45:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B215C72C027
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:50:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234126AbjFLKpL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:45:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48520 "EHLO
+        id S234623AbjFLKub (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:50:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234901AbjFLKod (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:44:33 -0400
+        with ESMTP id S235622AbjFLKtt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:49:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76CFB55BA
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:29:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B5066195
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:34:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 131B561372
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:29:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2342AC433EF;
-        Mon, 12 Jun 2023 10:29:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C5B8623E8
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:34:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 502FDC433D2;
+        Mon, 12 Jun 2023 10:34:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565762;
-        bh=Dlp7GNrWuB6drP4QziRSb9t+AHQdPPdDFWKqmSCyeRI=;
+        s=korg; t=1686566072;
+        bh=Hi1gcnckmzJJ3mBYt6M/GKNWQUtbnGO2vnlJgpn9Ly8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GCgrDYyMOitesdZFx0WQka6qDVBIXEVDYzle8HsLODfM9QD22rA2ojEDcB7HVFqj4
-         pK2+xU2SZ59kI5eE1rCThdsy9Htn+KzPVcTpVmPmzY4RlusfwB+8EGjOO+P+i4DvqV
-         GS3hP6keWuNdakDVnGdClSyVv+bgG+y7HM4VMBu0=
+        b=142x9QQf3xpzt0XPWXExdlM1Gtoo49w8cbJZtMu4STytM2ohGOhq/V3x4kV49Ua12
+         B1XeVyDdbxsMJwmzKaj9HY83Hm62Fo0W7BB2HFGxdK95svijwXDc7yt4PtX9U45mR0
+         qFSTAvZCweqTZ61MR5vxLaVPe/toGtwd7sqJwiHs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, TOTE Robot <oslab@tsinghua.edu.cn>,
-        Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
-        Nikolay Borisov <nborisov@suse.com>,
-        Zixuan Fu <r33s3n6@gmail.com>, David Sterba <dsterba@suse.com>,
-        Stefan Ghinea <stefan.ghinea@windriver.com>
-Subject: [PATCH 4.14 20/21] btrfs: unset reloc control if transaction commit fails in prepare_to_relocate()
-Date:   Mon, 12 Jun 2023 12:26:15 +0200
-Message-ID: <20230612101651.733633951@linuxfoundation.org>
+        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Jozsef Kadlecsik <kadlec@netfilter.org>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 24/68] netfilter: ipset: Add schedule point in call_ad().
+Date:   Mon, 12 Jun 2023 12:26:16 +0200
+Message-ID: <20230612101659.433546076@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101651.048240731@linuxfoundation.org>
-References: <20230612101651.048240731@linuxfoundation.org>
+In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
+References: <20230612101658.437327280@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,103 +56,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zixuan Fu <r33s3n6@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 85f02d6c856b9f3a0acf5219de6e32f58b9778eb upstream.
+[ Upstream commit 24e227896bbf003165e006732dccb3516f87f88e ]
 
-In btrfs_relocate_block_group(), the rc is allocated.  Then
-btrfs_relocate_block_group() calls
+syzkaller found a repro that causes Hung Task [0] with ipset.  The repro
+first creates an ipset and then tries to delete a large number of IPs
+from the ipset concurrently:
 
-relocate_block_group()
-  prepare_to_relocate()
-    set_reloc_control()
+  IPSET_ATTR_IPADDR_IPV4 : 172.20.20.187
+  IPSET_ATTR_CIDR        : 2
 
-that assigns rc to the variable fs_info->reloc_ctl. When
-prepare_to_relocate() returns, it calls
+The first deleting thread hogs a CPU with nfnl_lock(NFNL_SUBSYS_IPSET)
+held, and other threads wait for it to be released.
 
-btrfs_commit_transaction()
-  btrfs_start_dirty_block_groups()
-    btrfs_alloc_path()
-      kmem_cache_zalloc()
+Previously, the same issue existed in set->variant->uadt() that could run
+so long under ip_set_lock(set).  Commit 5e29dc36bd5e ("netfilter: ipset:
+Rework long task execution when adding/deleting entries") tried to fix it,
+but the issue still exists in the caller with another mutex.
 
-which may fail for example (or other errors could happen). When the
-failure occurs, btrfs_relocate_block_group() detects the error and frees
-rc and doesn't set fs_info->reloc_ctl to NULL. After that, in
-btrfs_init_reloc_root(), rc is retrieved from fs_info->reloc_ctl and
-then used, which may cause a use-after-free bug.
+While adding/deleting many IPs, we should release the CPU periodically to
+prevent someone from abusing ipset to hang the system.
 
-This possible bug can be triggered by calling btrfs_ioctl_balance()
-before calling btrfs_ioctl_defrag().
+Note we need to increment the ipset's refcnt to prevent the ipset from
+being destroyed while rescheduling.
 
-To fix this possible bug, in prepare_to_relocate(), check if
-btrfs_commit_transaction() fails. If the failure occurs,
-unset_reloc_control() is called to set fs_info->reloc_ctl to NULL.
+[0]:
+INFO: task syz-executor174:268 blocked for more than 143 seconds.
+      Not tainted 6.4.0-rc1-00145-gba79e9a73284 #1
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:syz-executor174 state:D stack:0     pid:268   ppid:260    flags:0x0000000d
+Call trace:
+ __switch_to+0x308/0x714 arch/arm64/kernel/process.c:556
+ context_switch kernel/sched/core.c:5343 [inline]
+ __schedule+0xd84/0x1648 kernel/sched/core.c:6669
+ schedule+0xf0/0x214 kernel/sched/core.c:6745
+ schedule_preempt_disabled+0x58/0xf0 kernel/sched/core.c:6804
+ __mutex_lock_common kernel/locking/mutex.c:679 [inline]
+ __mutex_lock+0x6fc/0xdb0 kernel/locking/mutex.c:747
+ __mutex_lock_slowpath+0x14/0x20 kernel/locking/mutex.c:1035
+ mutex_lock+0x98/0xf0 kernel/locking/mutex.c:286
+ nfnl_lock net/netfilter/nfnetlink.c:98 [inline]
+ nfnetlink_rcv_msg+0x480/0x70c net/netfilter/nfnetlink.c:295
+ netlink_rcv_skb+0x1c0/0x350 net/netlink/af_netlink.c:2546
+ nfnetlink_rcv+0x18c/0x199c net/netfilter/nfnetlink.c:658
+ netlink_unicast_kernel net/netlink/af_netlink.c:1339 [inline]
+ netlink_unicast+0x664/0x8cc net/netlink/af_netlink.c:1365
+ netlink_sendmsg+0x6d0/0xa4c net/netlink/af_netlink.c:1913
+ sock_sendmsg_nosec net/socket.c:724 [inline]
+ sock_sendmsg net/socket.c:747 [inline]
+ ____sys_sendmsg+0x4b8/0x810 net/socket.c:2503
+ ___sys_sendmsg net/socket.c:2557 [inline]
+ __sys_sendmsg+0x1f8/0x2a4 net/socket.c:2586
+ __do_sys_sendmsg net/socket.c:2595 [inline]
+ __se_sys_sendmsg net/socket.c:2593 [inline]
+ __arm64_sys_sendmsg+0x80/0x94 net/socket.c:2593
+ __invoke_syscall arch/arm64/kernel/syscall.c:38 [inline]
+ invoke_syscall+0x84/0x270 arch/arm64/kernel/syscall.c:52
+ el0_svc_common+0x134/0x24c arch/arm64/kernel/syscall.c:142
+ do_el0_svc+0x64/0x198 arch/arm64/kernel/syscall.c:193
+ el0_svc+0x2c/0x7c arch/arm64/kernel/entry-common.c:637
+ el0t_64_sync_handler+0x84/0xf0 arch/arm64/kernel/entry-common.c:655
+ el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:591
 
-The error log in our fault-injection testing is shown as follows:
-
-  [   58.751070] BUG: KASAN: use-after-free in btrfs_init_reloc_root+0x7ca/0x920 [btrfs]
-  ...
-  [   58.753577] Call Trace:
-  ...
-  [   58.755800]  kasan_report+0x45/0x60
-  [   58.756066]  btrfs_init_reloc_root+0x7ca/0x920 [btrfs]
-  [   58.757304]  record_root_in_trans+0x792/0xa10 [btrfs]
-  [   58.757748]  btrfs_record_root_in_trans+0x463/0x4f0 [btrfs]
-  [   58.758231]  start_transaction+0x896/0x2950 [btrfs]
-  [   58.758661]  btrfs_defrag_root+0x250/0xc00 [btrfs]
-  [   58.759083]  btrfs_ioctl_defrag+0x467/0xa00 [btrfs]
-  [   58.759513]  btrfs_ioctl+0x3c95/0x114e0 [btrfs]
-  ...
-  [   58.768510] Allocated by task 23683:
-  [   58.768777]  ____kasan_kmalloc+0xb5/0xf0
-  [   58.769069]  __kmalloc+0x227/0x3d0
-  [   58.769325]  alloc_reloc_control+0x10a/0x3d0 [btrfs]
-  [   58.769755]  btrfs_relocate_block_group+0x7aa/0x1e20 [btrfs]
-  [   58.770228]  btrfs_relocate_chunk+0xf1/0x760 [btrfs]
-  [   58.770655]  __btrfs_balance+0x1326/0x1f10 [btrfs]
-  [   58.771071]  btrfs_balance+0x3150/0x3d30 [btrfs]
-  [   58.771472]  btrfs_ioctl_balance+0xd84/0x1410 [btrfs]
-  [   58.771902]  btrfs_ioctl+0x4caa/0x114e0 [btrfs]
-  ...
-  [   58.773337] Freed by task 23683:
-  ...
-  [   58.774815]  kfree+0xda/0x2b0
-  [   58.775038]  free_reloc_control+0x1d6/0x220 [btrfs]
-  [   58.775465]  btrfs_relocate_block_group+0x115c/0x1e20 [btrfs]
-  [   58.775944]  btrfs_relocate_chunk+0xf1/0x760 [btrfs]
-  [   58.776369]  __btrfs_balance+0x1326/0x1f10 [btrfs]
-  [   58.776784]  btrfs_balance+0x3150/0x3d30 [btrfs]
-  [   58.777185]  btrfs_ioctl_balance+0xd84/0x1410 [btrfs]
-  [   58.777621]  btrfs_ioctl+0x4caa/0x114e0 [btrfs]
-  ...
-
-Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
-Reviewed-by: Nikolay Borisov <nborisov@suse.com>
-Signed-off-by: Zixuan Fu <r33s3n6@gmail.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Stefan Ghinea <stefan.ghinea@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Fixes: a7b4f989a629 ("netfilter: ipset: IP set core support")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/relocation.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/netfilter/ipset/ip_set_core.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -4014,7 +4014,12 @@ int prepare_to_relocate(struct reloc_con
- 		 */
- 		return PTR_ERR(trans);
- 	}
--	return btrfs_commit_transaction(trans);
-+
-+	ret = btrfs_commit_transaction(trans);
-+	if (ret)
-+		unset_reloc_control(rc);
-+
-+	return ret;
- }
+diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
+index 1bf6ab83644b3..55ac0cc12657c 100644
+--- a/net/netfilter/ipset/ip_set_core.c
++++ b/net/netfilter/ipset/ip_set_core.c
+@@ -1704,6 +1704,14 @@ call_ad(struct sock *ctnl, struct sk_buff *skb, struct ip_set *set,
+ 	bool eexist = flags & IPSET_FLAG_EXIST, retried = false;
  
- static noinline_for_stack int relocate_block_group(struct reloc_control *rc)
+ 	do {
++		if (retried) {
++			__ip_set_get(set);
++			nfnl_unlock(NFNL_SUBSYS_IPSET);
++			cond_resched();
++			nfnl_lock(NFNL_SUBSYS_IPSET);
++			__ip_set_put(set);
++		}
++
+ 		ip_set_lock(set);
+ 		ret = set->variant->uadt(set, tb, adt, &lineno, flags, retried);
+ 		ip_set_unlock(set);
+-- 
+2.39.2
+
 
 
