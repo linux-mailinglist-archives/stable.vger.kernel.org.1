@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A65D472C02A
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:50:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94E6472C0FC
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235028AbjFLKue (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:50:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51610 "EHLO
+        id S236928AbjFLKz5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:55:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235740AbjFLKt5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:49:57 -0400
+        with ESMTP id S236875AbjFLKza (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:55:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D1987DA1
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:34:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88377822B
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:42:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0DFEB623E7
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:34:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20679C433D2;
-        Mon, 12 Jun 2023 10:34:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 685D5612B4
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:42:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE46C433EF;
+        Mon, 12 Jun 2023 10:42:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566080;
-        bh=XsKyawLmBz3Db+v60Vq7hakm0USK2aN7e1Qm5x0KWEg=;
+        s=korg; t=1686566550;
+        bh=na9N3aXF/9uTUa++8QxH3vtHXE4sIUNb1Q8uxiW2zHY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VlbWuVfxZYcllPvCou+ZI2P/jPaPdJZih00X3kHFtitPxRkwq/W+thuEm3BhhJkRU
-         HsEG6xMqkrFr9jZbNzXWPkI/f0qyfMbePrfnu3RPF2eUizU+eF1g6oPn+4L7bI3ep3
-         jKe1miYpD4sjpUJ5X54HZOZ0lYEumZNhMmH+YYRM=
+        b=zDFc6IS2b78avZPQO1BLankEmC8CEzAFNOZbkf6KKTU4wPLSp5sa9BlM06qF52gyx
+         RjyvwjoAto7OushNvVSuhooq6I/7HCODrZOIqaowQn7Dq3cPwSnFjZ9q5tt+eGL6HH
+         KaH8G/I1VfnL9wJRgs9lKFALaUFuD4toPrFG0oig=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 57/68] eeprom: at24: also select REGMAP
+        patches@lists.linux.dev, Lijo Lazar <lijo.lazar@amd.com>,
+        Hawking Zhang <Hawking.Zhang@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 075/132] drm/amd/pm: Fix power context allocation in SMU13
 Date:   Mon, 12 Jun 2023 12:26:49 +0200
-Message-ID: <20230612101700.806374560@linuxfoundation.org>
+Message-ID: <20230612101713.681850019@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
-References: <20230612101658.437327280@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,49 +54,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 7f3c782b3914e510b646a77aedc3adeac2e4a63b ]
+commit 1d13c49cf4e246b218d71873f1bb1bbd376aa10e upstream.
 
-Selecting only REGMAP_I2C can leave REGMAP unset, causing build errors,
-so also select REGMAP to prevent the build errors.
+Use the right data structure for allocation.
 
-../drivers/misc/eeprom/at24.c:540:42: warning: 'struct regmap_config' declared inside parameter list will not be visible outside of this definition or declaration
-  540 |                                   struct regmap_config *regmap_config)
-../drivers/misc/eeprom/at24.c: In function 'at24_make_dummy_client':
-../drivers/misc/eeprom/at24.c:552:18: error: implicit declaration of function 'devm_regmap_init_i2c' [-Werror=implicit-function-declaration]
-  552 |         regmap = devm_regmap_init_i2c(dummy_client, regmap_config);
-../drivers/misc/eeprom/at24.c:552:16: warning: assignment to 'struct regmap *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-  552 |         regmap = devm_regmap_init_i2c(dummy_client, regmap_config);
-../drivers/misc/eeprom/at24.c: In function 'at24_probe':
-../drivers/misc/eeprom/at24.c:586:16: error: variable 'regmap_config' has initializer but incomplete type
-  586 |         struct regmap_config regmap_config = { };
-../drivers/misc/eeprom/at24.c:586:30: error: storage size of 'regmap_config' isn't known
-  586 |         struct regmap_config regmap_config = { };
-../drivers/misc/eeprom/at24.c:586:30: warning: unused variable 'regmap_config' [-Wunused-variable]
-
-Fixes: 5c015258478e ("eeprom: at24: add basic regmap_i2c support")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/eeprom/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/misc/eeprom/Kconfig b/drivers/misc/eeprom/Kconfig
-index 0f791bfdc1f58..c92f2cdf40263 100644
---- a/drivers/misc/eeprom/Kconfig
-+++ b/drivers/misc/eeprom/Kconfig
-@@ -6,6 +6,7 @@ config EEPROM_AT24
- 	depends on I2C && SYSFS
- 	select NVMEM
- 	select NVMEM_SYSFS
-+	select REGMAP
- 	select REGMAP_I2C
- 	help
- 	  Enable this driver to get read/write support to most I2C EEPROMs
--- 
-2.39.2
-
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+@@ -582,11 +582,11 @@ int smu_v13_0_init_power(struct smu_cont
+ 	if (smu_power->power_context || smu_power->power_context_size != 0)
+ 		return -EINVAL;
+ 
+-	smu_power->power_context = kzalloc(sizeof(struct smu_13_0_dpm_context),
++	smu_power->power_context = kzalloc(sizeof(struct smu_13_0_power_context),
+ 					   GFP_KERNEL);
+ 	if (!smu_power->power_context)
+ 		return -ENOMEM;
+-	smu_power->power_context_size = sizeof(struct smu_13_0_dpm_context);
++	smu_power->power_context_size = sizeof(struct smu_13_0_power_context);
+ 
+ 	return 0;
+ }
 
 
