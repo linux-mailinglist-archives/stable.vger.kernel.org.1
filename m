@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BB2D72B56D
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 04:30:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FCC872B576
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 04:41:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232168AbjFLCax (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 11 Jun 2023 22:30:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35922 "EHLO
+        id S231894AbjFLClR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 11 Jun 2023 22:41:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231786AbjFLCax (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 22:30:53 -0400
+        with ESMTP id S229902AbjFLClQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 22:41:16 -0400
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6C5610A
-        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 19:30:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 001AE19D
+        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 19:41:14 -0700 (PDT)
 Authenticated-By: 
-X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 35C2UV4c8010139, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 35C2UV4c8010139
+X-SpamFilter-By: ArmorX SpamTrap 5.77 with qID 35C2es1bB030040, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.81/5.90) with ESMTPS id 35C2es1bB030040
         (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=OK)
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:30:31 +0800
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:40:55 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Mon, 12 Jun 2023 10:30:49 +0800
+ 15.1.2375.32; Mon, 12 Jun 2023 10:41:12 +0800
 Received: from [127.0.1.1] (172.21.69.188) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.7; Mon, 12 Jun
- 2023 10:30:49 +0800
+ 2023 10:41:11 +0800
 From:   Ping-Ke Shih <pkshih@realtek.com>
 To:     <stable@vger.kernel.org>
 CC:     <pkshih@realtek.com>
-Subject: [PATCH 6.3.y] wifi: rtw88: correct PS calculation for SUPPORTS_DYNAMIC_PS
-Date:   Mon, 12 Jun 2023 10:30:26 +0800
-Message-ID: <20230612023026.8164-1-pkshih@realtek.com>
+Subject: [PATCH 6.3.y] wifi: rtw89: correct PS calculation for SUPPORTS_DYNAMIC_PS
+Date:   Mon, 12 Jun 2023 10:40:49 +0800
+Message-ID: <20230612024049.10456-1-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <2023061159-vascular-afloat-9a55@gregkh>
-References: <2023061159-vascular-afloat-9a55@gregkh>
+In-Reply-To: <2023061148-obsessive-robe-72b9@gregkh>
+References: <2023061148-obsessive-robe-72b9@gregkh>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -44,6 +44,10 @@ X-Originating-IP: [172.21.69.188]
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
 X-KSE-AntiSpam-Interceptor-Info: fallback
 X-KSE-Antivirus-Interceptor-Info: fallback
 X-KSE-AntiSpam-Interceptor-Info: fallback
@@ -64,146 +68,116 @@ is introduced by kernel 5.20 to skip to recalculate IEEE80211_CONF_PS
 of hw->conf.flags if driver sets SUPPORTS_DYNAMIC_PS.
 
 Correct this by doing recalculation while BSS_CHANGED_PS is changed and
-interface is added or removed. It is allowed to enter PS only if single
-one station vif is working. Without this fix, driver doesn't enter PS
-anymore that causes higher power consumption.
+interface is added or removed. For now, it is allowed to enter PS only if
+single one station vif is working, and it could possible to have PS per
+vif after firmware can support it. Without this fix, driver doesn't
+enter PS anymore that causes higher power consumption.
 
-Fixes: bcde60e599fb ("rtw88: remove misleading module parameter rtw_fw_support_lps")
+Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
 Cc: stable@vger.kernel.org # 6.1+
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230527082939.11206-2-pkshih@realtek.com
-(cherry picked from commit 3918dd0177ee08970683a2c22a3388825d82fd79)
+Link: https://lore.kernel.org/r/20230527082939.11206-3-pkshih@realtek.com
+(cherry picked from commit 26a125f550a3bf86ac91d38752f4d446426dfe1c)
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw88/mac80211.c | 14 +++---
- drivers/net/wireless/realtek/rtw88/main.c     |  4 +-
- drivers/net/wireless/realtek/rtw88/ps.c       | 43 +++++++++++++++++++
- drivers/net/wireless/realtek/rtw88/ps.h       |  2 +
- 4 files changed, 52 insertions(+), 11 deletions(-)
+ drivers/net/wireless/realtek/rtw89/mac80211.c | 16 +++++-------
+ drivers/net/wireless/realtek/rtw89/ps.c       | 26 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw89/ps.h       |  1 +
+ 3 files changed, 34 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
-index e29ca5dcf105b..0bf6882d18f14 100644
---- a/drivers/net/wireless/realtek/rtw88/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
-@@ -88,15 +88,6 @@ static int rtw_ops_config(struct ieee80211_hw *hw, u32 changed)
- 		}
- 	}
+diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
+index d43281f7335b1..3dc988cac4aeb 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -79,15 +79,6 @@ static int rtw89_ops_config(struct ieee80211_hw *hw, u32 changed)
+ 	    !(hw->conf.flags & IEEE80211_CONF_IDLE))
+ 		rtw89_leave_ips(rtwdev);
  
 -	if (changed & IEEE80211_CONF_CHANGE_PS) {
 -		if (hw->conf.flags & IEEE80211_CONF_PS) {
--			rtwdev->ps_enabled = true;
+-			rtwdev->lps_enabled = true;
 -		} else {
--			rtwdev->ps_enabled = false;
--			rtw_leave_lps(rtwdev);
+-			rtw89_leave_lps(rtwdev);
+-			rtwdev->lps_enabled = false;
 -		}
 -	}
 -
- 	if (changed & IEEE80211_CONF_CHANGE_CHANNEL)
- 		rtw_set_channel(rtwdev);
+ 	if (changed & IEEE80211_CONF_CHANGE_CHANNEL) {
+ 		rtw89_config_entity_chandef(rtwdev, RTW89_SUB_ENTITY_0,
+ 					    &hw->conf.chandef);
+@@ -147,6 +138,8 @@ static int rtw89_ops_add_interface(struct ieee80211_hw *hw,
+ 	rtw89_core_txq_init(rtwdev, vif->txq);
  
-@@ -206,6 +197,7 @@ static int rtw_ops_add_interface(struct ieee80211_hw *hw,
- 	rtwvif->bcn_ctrl = bcn_ctrl;
- 	config |= PORT_SET_BCN_CTRL;
- 	rtw_vif_port_config(rtwdev, rtwvif, config);
-+	rtw_recalc_lps(rtwdev, vif);
- 
+ 	rtw89_btc_ntfy_role_info(rtwdev, rtwvif, NULL, BTC_ROLE_START);
++
++	rtw89_recalc_lps(rtwdev);
+ out:
  	mutex_unlock(&rtwdev->mutex);
  
-@@ -236,6 +228,7 @@ static void rtw_ops_remove_interface(struct ieee80211_hw *hw,
- 	rtwvif->bcn_ctrl = 0;
- 	config |= PORT_SET_BCN_CTRL;
- 	rtw_vif_port_config(rtwdev, rtwvif, config);
-+	rtw_recalc_lps(rtwdev, NULL);
- 
+@@ -170,6 +163,8 @@ static void rtw89_ops_remove_interface(struct ieee80211_hw *hw,
+ 	rtw89_mac_remove_vif(rtwdev, rtwvif);
+ 	rtw89_core_release_bit_map(rtwdev->hw_port, rtwvif->port);
+ 	list_del_init(&rtwvif->list);
++	rtw89_recalc_lps(rtwdev);
++
  	mutex_unlock(&rtwdev->mutex);
  }
-@@ -428,6 +421,9 @@ static void rtw_ops_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & BSS_CHANGED_ERP_SLOT)
- 		rtw_conf_tx(rtwdev, rtwvif);
+ 
+@@ -425,6 +420,9 @@ static void rtw89_ops_bss_info_changed(struct ieee80211_hw *hw,
+ 	if (changed & BSS_CHANGED_P2P_PS)
+ 		rtw89_process_p2p_ps(rtwdev, vif);
  
 +	if (changed & BSS_CHANGED_PS)
-+		rtw_recalc_lps(rtwdev, NULL);
++		rtw89_recalc_lps(rtwdev);
 +
- 	rtw_vif_port_config(rtwdev, rtwvif, config);
- 
  	mutex_unlock(&rtwdev->mutex);
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 76f7aadef77c5..fc51acc9a5998 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -250,8 +250,8 @@ static void rtw_watch_dog_work(struct work_struct *work)
- 	 * more than two stations associated to the AP, then we can not enter
- 	 * lps, because fw does not handle the overlapped beacon interval
- 	 *
--	 * mac80211 should iterate vifs and determine if driver can enter
--	 * ps by passing IEEE80211_CONF_PS to us, all we need to do is to
-+	 * rtw_recalc_lps() iterate vifs and determine if driver can enter
-+	 * ps by vif->type and vif->cfg.ps, all we need to do here is to
- 	 * get that vif and check if device is having traffic more than the
- 	 * threshold.
- 	 */
-diff --git a/drivers/net/wireless/realtek/rtw88/ps.c b/drivers/net/wireless/realtek/rtw88/ps.c
-index 996365575f44f..53933fb38a330 100644
---- a/drivers/net/wireless/realtek/rtw88/ps.c
-+++ b/drivers/net/wireless/realtek/rtw88/ps.c
-@@ -299,3 +299,46 @@ void rtw_leave_lps_deep(struct rtw_dev *rtwdev)
+ }
  
- 	__rtw_leave_lps_deep(rtwdev);
+diff --git a/drivers/net/wireless/realtek/rtw89/ps.c b/drivers/net/wireless/realtek/rtw89/ps.c
+index 40498812205ea..c1f1083d3f634 100644
+--- a/drivers/net/wireless/realtek/rtw89/ps.c
++++ b/drivers/net/wireless/realtek/rtw89/ps.c
+@@ -244,3 +244,29 @@ void rtw89_process_p2p_ps(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif)
+ 	rtw89_p2p_disable_all_noa(rtwdev, vif);
+ 	rtw89_p2p_update_noa(rtwdev, vif);
  }
 +
-+struct rtw_vif_recalc_lps_iter_data {
-+	struct rtw_dev *rtwdev;
-+	struct ieee80211_vif *found_vif;
-+	int count;
-+};
-+
-+static void __rtw_vif_recalc_lps(struct rtw_vif_recalc_lps_iter_data *data,
-+				 struct ieee80211_vif *vif)
++void rtw89_recalc_lps(struct rtw89_dev *rtwdev)
 +{
-+	if (data->count < 0)
-+		return;
++	struct ieee80211_vif *vif, *found_vif = NULL;
++	struct rtw89_vif *rtwvif;
++	int count = 0;
 +
-+	if (vif->type != NL80211_IFTYPE_STATION) {
-+		data->count = -1;
-+		return;
++	rtw89_for_each_rtwvif(rtwdev, rtwvif) {
++		vif = rtwvif_to_vif(rtwvif);
++
++		if (vif->type != NL80211_IFTYPE_STATION) {
++			count = 0;
++			break;
++		}
++
++		count++;
++		found_vif = vif;
 +	}
 +
-+	data->count++;
-+	data->found_vif = vif;
-+}
-+
-+static void rtw_vif_recalc_lps_iter(void *data, u8 *mac,
-+				    struct ieee80211_vif *vif)
-+{
-+	__rtw_vif_recalc_lps(data, vif);
-+}
-+
-+void rtw_recalc_lps(struct rtw_dev *rtwdev, struct ieee80211_vif *new_vif)
-+{
-+	struct rtw_vif_recalc_lps_iter_data data = { .rtwdev = rtwdev };
-+
-+	if (new_vif)
-+		__rtw_vif_recalc_lps(&data, new_vif);
-+	rtw_iterate_vifs(rtwdev, rtw_vif_recalc_lps_iter, &data);
-+
-+	if (data.count == 1 && data.found_vif->cfg.ps) {
-+		rtwdev->ps_enabled = true;
++	if (count == 1 && found_vif->cfg.ps) {
++		rtwdev->lps_enabled = true;
 +	} else {
-+		rtwdev->ps_enabled = false;
-+		rtw_leave_lps(rtwdev);
++		rtw89_leave_lps(rtwdev);
++		rtwdev->lps_enabled = false;
 +	}
 +}
-diff --git a/drivers/net/wireless/realtek/rtw88/ps.h b/drivers/net/wireless/realtek/rtw88/ps.h
-index c194386f6db53..5ae83d2526cfd 100644
---- a/drivers/net/wireless/realtek/rtw88/ps.h
-+++ b/drivers/net/wireless/realtek/rtw88/ps.h
-@@ -23,4 +23,6 @@ void rtw_enter_lps(struct rtw_dev *rtwdev, u8 port_id);
- void rtw_leave_lps(struct rtw_dev *rtwdev);
- void rtw_leave_lps_deep(struct rtw_dev *rtwdev);
- enum rtw_lps_deep_mode rtw_get_lps_deep_mode(struct rtw_dev *rtwdev);
-+void rtw_recalc_lps(struct rtw_dev *rtwdev, struct ieee80211_vif *new_vif);
-+
+diff --git a/drivers/net/wireless/realtek/rtw89/ps.h b/drivers/net/wireless/realtek/rtw89/ps.h
+index 6ac1f7ea53394..374e9a358683f 100644
+--- a/drivers/net/wireless/realtek/rtw89/ps.h
++++ b/drivers/net/wireless/realtek/rtw89/ps.h
+@@ -14,5 +14,6 @@ void rtw89_enter_ips(struct rtw89_dev *rtwdev);
+ void rtw89_leave_ips(struct rtw89_dev *rtwdev);
+ void rtw89_set_coex_ctrl_lps(struct rtw89_dev *rtwdev, bool btc_ctrl);
+ void rtw89_process_p2p_ps(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif);
++void rtw89_recalc_lps(struct rtw89_dev *rtwdev);
+ 
  #endif
 -- 
 2.25.1
