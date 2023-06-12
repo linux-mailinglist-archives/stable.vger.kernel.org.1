@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2932372C0AD
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:54:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 697D972C208
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:02:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236352AbjFLKyF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:54:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55764 "EHLO
+        id S237395AbjFLLCT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:02:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232781AbjFLKxk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:53:40 -0400
+        with ESMTP id S237389AbjFLLCD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:02:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E157FFE6
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:38:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D47434C18
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:49:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3A263612E8
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:38:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B27DC433D2;
-        Mon, 12 Jun 2023 10:38:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B8BD624D0
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:49:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C4AC433EF;
+        Mon, 12 Jun 2023 10:49:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566322;
-        bh=uq0SVz5UqtJkl8ieMNLcZhzMswHJEEXgcxp9PenjSck=;
+        s=korg; t=1686566958;
+        bh=jJgmSvEYEOsEO/bgivF0ZcaPY6/lWkIuSQj/2yWhwMk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uzzmLdDT7rsUgRGvIsJHjM4F/ZXC2Hgig0/Ok7dqGCvKhXYw+CzRthQ8MUA2svS/2
-         7yLCtANNPKkc30m+SHAV7VjLcmUhBSJkYqHTCSAFOQE4Weqa27Utz3ol2frKtFr80J
-         BXgURqm8NaFaJeFB6RuWnGs+xE3qwMGXplfy4Hww=
+        b=HFks3EJdxEWvIZTvr3cfzLKZwTeE18c5LTrjdGfBUZZWfw/qW+hHmoCdLFvzwN8lF
+         A9kRcLRcj02jiAN+wSjRszO2Na4x6br32pNeArSqUPJQMVaFuz02jTiMOf1R5u35Ej
+         UefCcFGPOeSDbM/isFrTpnOFPeclxYCyDIQbV53Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Imre Kis <imre.kis@arm.com>,
-        Balint Dobszay <balint.dobszay@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 80/91] firmware: arm_ffa: Set handle field to zero in memory descriptor
+        patches@lists.linux.dev,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Geliang Tang <geliang.tang@suse.com>,
+        Mat Martineau <martineau@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.3 097/160] mptcp: add address into userspace pm list
 Date:   Mon, 12 Jun 2023 12:27:09 +0200
-Message-ID: <20230612101705.428434163@linuxfoundation.org>
+Message-ID: <20230612101719.443059909@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
-References: <20230612101702.085813286@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,39 +56,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Balint Dobszay <balint.dobszay@arm.com>
+From: Geliang Tang <geliang.tang@suse.com>
 
-[ Upstream commit 3aa0519a4780f1b8e11966bd879d4a2934ba455f ]
+commit 24430f8bf51655c5ab7ddc2fafe939dd3cd0dd47 upstream.
 
-As described in the commit 111a833dc5cb ("firmware: arm_ffa: Set
-reserved/MBZ fields to zero in the memory descriptors") some fields in
-the memory descriptor have to be zeroed explicitly. The handle field is
-one of these, but it was left out from that change, fix this now.
+Add the address into userspace_pm_local_addr_list when the subflow is
+created. Make sure it can be found in mptcp_nl_cmd_remove(). And delete
+it in the new helper mptcp_userspace_pm_delete_local_addr().
 
-Fixes: 111a833dc5cb ("firmware: arm_ffa: Set reserved/MBZ fields to zero in the memory descriptors")
-Reported-by: Imre Kis <imre.kis@arm.com>
-Signed-off-by: Balint Dobszay <balint.dobszay@arm.com>
-Link: https://lore.kernel.org/r/20230601140749.93812-1-balint.dobszay@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+By doing this, the "REMOVE" command also works with subflows that have
+been created via the "SUB_CREATE" command instead of restricting to
+the addresses that have been announced via the "ANNOUNCE" command.
+
+Fixes: d9a4594edabf ("mptcp: netlink: Add MPTCP_PM_CMD_REMOVE")
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/379
+Cc: stable@vger.kernel.org
+Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Geliang Tang <geliang.tang@suse.com>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/mptcp/pm_userspace.c |   41 +++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
 
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index f53d11eff65e0..e4fb0c1ae4869 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -454,6 +454,7 @@ ffa_setup_and_transmit(u32 func_id, void *buffer, u32 max_fragsize,
- 		ep_mem_access->flag = 0;
- 		ep_mem_access->reserved = 0;
+--- a/net/mptcp/pm_userspace.c
++++ b/net/mptcp/pm_userspace.c
+@@ -79,6 +79,30 @@ append_err:
+ 	return ret;
+ }
+ 
++/* If the subflow is closed from the other peer (not via a
++ * subflow destroy command then), we want to keep the entry
++ * not to assign the same ID to another address and to be
++ * able to send RM_ADDR after the removal of the subflow.
++ */
++static int mptcp_userspace_pm_delete_local_addr(struct mptcp_sock *msk,
++						struct mptcp_pm_addr_entry *addr)
++{
++	struct mptcp_pm_addr_entry *entry, *tmp;
++
++	list_for_each_entry_safe(entry, tmp, &msk->pm.userspace_pm_local_addr_list, list) {
++		if (mptcp_addresses_equal(&entry->addr, &addr->addr, false)) {
++			/* TODO: a refcount is needed because the entry can
++			 * be used multiple times (e.g. fullmesh mode).
++			 */
++			list_del_rcu(&entry->list);
++			kfree(entry);
++			return 0;
++		}
++	}
++
++	return -EINVAL;
++}
++
+ int mptcp_userspace_pm_get_flags_and_ifindex_by_id(struct mptcp_sock *msk,
+ 						   unsigned int id,
+ 						   u8 *flags, int *ifindex)
+@@ -251,6 +275,7 @@ int mptcp_nl_cmd_sf_create(struct sk_buf
+ 	struct nlattr *raddr = info->attrs[MPTCP_PM_ATTR_ADDR_REMOTE];
+ 	struct nlattr *token = info->attrs[MPTCP_PM_ATTR_TOKEN];
+ 	struct nlattr *laddr = info->attrs[MPTCP_PM_ATTR_ADDR];
++	struct mptcp_pm_addr_entry local = { 0 };
+ 	struct mptcp_addr_info addr_r;
+ 	struct mptcp_addr_info addr_l;
+ 	struct mptcp_sock *msk;
+@@ -302,12 +327,24 @@ int mptcp_nl_cmd_sf_create(struct sk_buf
+ 		goto create_err;
  	}
-+	mem_region->handle = 0;
- 	mem_region->reserved_0 = 0;
- 	mem_region->reserved_1 = 0;
- 	mem_region->ep_count = args->nattrs;
--- 
-2.39.2
-
+ 
++	local.addr = addr_l;
++	err = mptcp_userspace_pm_append_new_local_addr(msk, &local);
++	if (err < 0) {
++		GENL_SET_ERR_MSG(info, "did not match address and id");
++		goto create_err;
++	}
++
+ 	lock_sock(sk);
+ 
+ 	err = __mptcp_subflow_connect(sk, &addr_l, &addr_r);
+ 
+ 	release_sock(sk);
+ 
++	spin_lock_bh(&msk->pm.lock);
++	if (err)
++		mptcp_userspace_pm_delete_local_addr(msk, &local);
++	spin_unlock_bh(&msk->pm.lock);
++
+  create_err:
+ 	sock_put((struct sock *)msk);
+ 	return err;
+@@ -420,7 +457,11 @@ int mptcp_nl_cmd_sf_destroy(struct sk_bu
+ 	ssk = mptcp_nl_find_ssk(msk, &addr_l, &addr_r);
+ 	if (ssk) {
+ 		struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
++		struct mptcp_pm_addr_entry entry = { .addr = addr_l };
+ 
++		spin_lock_bh(&msk->pm.lock);
++		mptcp_userspace_pm_delete_local_addr(msk, &entry);
++		spin_unlock_bh(&msk->pm.lock);
+ 		mptcp_subflow_shutdown(sk, ssk, RCV_SHUTDOWN | SEND_SHUTDOWN);
+ 		mptcp_close_ssk(sk, ssk, subflow);
+ 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RMSUBFLOW);
 
 
