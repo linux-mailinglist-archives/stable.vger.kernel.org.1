@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A9F372BCC5
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 11:33:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6C6372BCC8
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 11:34:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232954AbjFLJd0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 05:33:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49204 "EHLO
+        id S233758AbjFLJeB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 05:34:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231137AbjFLJbp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 05:31:45 -0400
+        with ESMTP id S231290AbjFLJdK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 05:33:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58525420F
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 02:25:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CCD75248
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 02:25:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E98A062239
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 09:25:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E81C433A1;
-        Mon, 12 Jun 2023 09:25:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1940B62230
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 09:25:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF908C433AE;
+        Mon, 12 Jun 2023 09:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686561922;
-        bh=l8b/Dn/3G4Jn87eVPRfG9/pWmTwUtEFyc1KH6XTeq9c=;
+        s=korg; t=1686561946;
+        bh=B+Q1pJZ83mqVXYXDx2fyRggrICY7qEupSuKiF+VcpM4=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=OFkGYFuF4XBGukoptr8VpHocYeNm2ehSoIBmX6omd+KjAmYIMNUHLAP7HemRrTkYj
-         7UHxBAwXZwxNyj73pNfzR2RTwWwwcbKYeDkWv/0U4kKkXvDMCL46xt7mvPqUoKA459
-         DStbOpaK2cbCY81eITppLdDGPRTYi+cz7HyPxsoc=
-Date:   Mon, 12 Jun 2023 11:25:19 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     stable@vger.kernel.org, Rui Wang <wangrui@loongson.cn>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: Re: [PATCH 5.10.y] MIPS: locking/atomic: Fix
- atomic{_64,}_sub_if_positive
-Message-ID: <2023061213-hatchet-error-d5b0@gregkh>
-References: <20230610190019.2807608-1-linux@roeck-us.net>
+        b=bYKr3gjBsf3RW04q2VMEM1eMcrihByeoKJYbIgAVKIuJgi1ePhYOCnWEUahF8vDBK
+         TPTO70h5VA0kZGl5L7/a6qrhWXdiKOAN3HmcP+1BvyiuRXR2xRl+qGH359Z4aQaFfV
+         fXVwh/u4pZCtnCyS9kjlW7ADFwm3RTDWvi9MWp7s=
+Date:   Mon, 12 Jun 2023 11:25:43 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Ilya Dryomov <idryomov@gmail.com>
+Cc:     stable@vger.kernel.org,
+        Dongsheng Yang <dongsheng.yang@easystack.cn>
+Subject: Re: [PATCH for 5.4] rbd: get snapshot context after exclusive lock
+ is ensured to be held
+Message-ID: <2023061228-dab-doorbell-c1ed@gregkh>
+References: <20230611184127.29830-1-idryomov@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230610190019.2807608-1-linux@roeck-us.net>
+In-Reply-To: <20230611184127.29830-1-idryomov@gmail.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -51,24 +51,30 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, Jun 10, 2023 at 12:00:19PM -0700, Guenter Roeck wrote:
-> From: Rui Wang <wangrui@loongson.cn>
+On Sun, Jun 11, 2023 at 08:41:27PM +0200, Ilya Dryomov wrote:
+> Move capturing the snapshot context into the image request state
+> machine, after exclusive lock is ensured to be held for the duration of
+> dealing with the image request.  This is needed to ensure correctness
+> of fast-diff states (OBJECT_EXISTS vs OBJECT_EXISTS_CLEAN) and object
+> deltas computed based off of them.  Otherwise the object map that is
+> forked for the snapshot isn't guaranteed to accurately reflect the
+> contents of the snapshot when the snapshot is taken under I/O.  This
+> breaks differential backup and snapshot-based mirroring use cases with
+> fast-diff enabled: since some object deltas may be incomplete, the
+> destination image may get corrupted.
 > 
-> commit cb95ea79b3fc772c5873a7a4532ab4c14a455da2 upstream.
-> 
-> This looks like a typo and that caused atomic64 test failed.
-> 
-> Signed-off-by: Rui Wang <wangrui@loongson.cn>
-> Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> Cc: stable@vger.kernel.org
+> Link: https://tracker.ceph.com/issues/61472
+> Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+> Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
+> [idryomov@gmail.com: backport to 5.4: no rbd_img_capture_header(),
+>  img_request not embedded in blk-mq pdu]
 > ---
-> I recently enabled atomic CONFIG_ATOMIC64_SELFTEST, which results in
-> a crash when testing 64-bit little endian mips images in v5.10.y.
-> This patch fixes the problem.
-> 
->  arch/mips/include/asm/atomic.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/block/rbd.c | 41 ++++++++++++++++++++++++-----------------
+>  1 file changed, 24 insertions(+), 17 deletions(-)
 
-Now queued up, thanks.
+What is the commit id in Linus's tree of this change?
+
+thanks,
 
 greg k-h
