@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A130F72BFAB
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:46:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C91A972BFA1
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:46:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235128AbjFLKqS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:46:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52244 "EHLO
+        id S233672AbjFLKqC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:46:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231797AbjFLKqD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:46:03 -0400
+        with ESMTP id S235307AbjFLKpX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:45:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 706F3F7FA
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:30:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 671BE59E3
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:30:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 03B38623CB
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:30:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15F5AC433EF;
-        Mon, 12 Jun 2023 10:30:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F04AE60C2D
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:30:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E60EC433D2;
+        Mon, 12 Jun 2023 10:30:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565836;
-        bh=HCZ96EUcsEpO1qmo7iXH+LMxPmqQS/gErolqnh6hiUE=;
+        s=korg; t=1686565815;
+        bh=WG8YRsDnKF5Jsf6Vv3V61WWIhFLUiIsvpfcrCShqzzY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yD7jSvH/eEuBodCUvbdmzbLwuiGo0ddPLB+pmJixtx3XiinwHhsZ9+fH/Ip7ykSyF
-         YkaMdjw398du9hl9VSthaGGQUM8YUbGjAHZsHYscLCU8x3EYQuBWGpr4DIqXM/Ah96
-         NQT2HCXa5+vk/j0jPDna9ZMeo25ZS7Nrg9BaKLWw=
+        b=iJXhyMmQDilTTjPFJmNty4UC/GCV7+SzDmsIW/VEAhHEgZdT9Hmxkz7IRtbUQCA7t
+         zgHoalA1C/btpijipVBUWjsVzCYpLkS8jqNx+GQiYUqkoz+H8AWgqap/hr0QU6L+hb
+         tUIdnvjFDWnfxLkrh6oMpAePJlq1OOGTXRmamkkI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sungwoo Kim <iam@sung-woo.kim>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev,
+        Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 10/45] Bluetooth: L2CAP: Add missing checks for invalid DCID
-Date:   Mon, 12 Jun 2023 12:26:04 +0200
-Message-ID: <20230612101655.040545161@linuxfoundation.org>
+Subject: [PATCH 4.19 04/23] net: dsa: lan9303: allow vid != 0 in port_fdb_{add|del} methods
+Date:   Mon, 12 Jun 2023 12:26:05 +0200
+Message-ID: <20230612101651.299809161@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
-References: <20230612101654.644983109@linuxfoundation.org>
+In-Reply-To: <20230612101651.138592130@linuxfoundation.org>
+References: <20230612101651.138592130@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,51 +56,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sungwoo Kim <iam@sung-woo.kim>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit 75767213f3d9b97f63694d02260b6a49a2271876 ]
+[ Upstream commit 5a59a58ec25d44f853c26bdbfda47d73b3067435 ]
 
-When receiving a connect response we should make sure that the DCID is
-within the valid range and that we don't already have another channel
-allocated for the same DCID.
-Missing checks may violate the specification (BLUETOOTH CORE SPECIFICATION
-Version 5.4 | Vol 3, Part A, Page 1046).
+LAN9303 doesn't associate FDB (ALR) entries with VLANs, it has just one
+global Address Logic Resolution table [1].
 
-Fixes: 40624183c202 ("Bluetooth: L2CAP: Add missing checks for invalid LE DCID")
-Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Ignore VID in port_fdb_{add|del} methods, go on with the global table. This
+is the same semantics as hellcreek or RZ/N1 implement.
+
+Visible symptoms:
+LAN9303_MDIO 5b050000.ethernet-1:00: port 2 failed to delete 00:xx:xx:xx:xx:cf vid 1 from fdb: -2
+LAN9303_MDIO 5b050000.ethernet-1:00: port 2 failed to add 00:xx:xx:xx:xx:cf vid 1 to fdb: -95
+
+[1] https://ww1.microchip.com/downloads/en/DeviceDoc/00002308A.pdf
+
+Fixes: 0620427ea0d6 ("net: dsa: lan9303: Add fdb/mdb manipulation")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://lore.kernel.org/r/20230531143826.477267-1-alexander.sverdlin@siemens.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/dsa/lan9303-core.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 6bbe0fd79d154..e56863587ea2e 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -4024,6 +4024,10 @@ static int l2cap_connect_create_rsp(struct l2cap_conn *conn,
- 	result = __le16_to_cpu(rsp->result);
- 	status = __le16_to_cpu(rsp->status);
+diff --git a/drivers/net/dsa/lan9303-core.c b/drivers/net/dsa/lan9303-core.c
+index f976b3d64593a..80ac5efb0a7a9 100644
+--- a/drivers/net/dsa/lan9303-core.c
++++ b/drivers/net/dsa/lan9303-core.c
+@@ -1191,8 +1191,6 @@ static int lan9303_port_fdb_add(struct dsa_switch *ds, int port,
+ 	struct lan9303 *chip = ds->priv;
  
-+	if (result == L2CAP_CR_SUCCESS && (dcid < L2CAP_CID_DYN_START ||
-+					   dcid > L2CAP_CID_DYN_END))
-+		return -EPROTO;
-+
- 	BT_DBG("dcid 0x%4.4x scid 0x%4.4x result 0x%2.2x status 0x%2.2x",
- 	       dcid, scid, result, status);
+ 	dev_dbg(chip->dev, "%s(%d, %pM, %d)\n", __func__, port, addr, vid);
+-	if (vid)
+-		return -EOPNOTSUPP;
  
-@@ -4055,6 +4059,11 @@ static int l2cap_connect_create_rsp(struct l2cap_conn *conn,
+ 	return lan9303_alr_add_port(chip, addr, port, false);
+ }
+@@ -1204,8 +1202,6 @@ static int lan9303_port_fdb_del(struct dsa_switch *ds, int port,
+ 	struct lan9303 *chip = ds->priv;
  
- 	switch (result) {
- 	case L2CAP_CR_SUCCESS:
-+		if (__l2cap_get_chan_by_dcid(conn, dcid)) {
-+			err = -EBADSLT;
-+			break;
-+		}
-+
- 		l2cap_state_change(chan, BT_CONFIG);
- 		chan->ident = 0;
- 		chan->dcid = dcid;
+ 	dev_dbg(chip->dev, "%s(%d, %pM, %d)\n", __func__, port, addr, vid);
+-	if (vid)
+-		return -EOPNOTSUPP;
+ 	lan9303_alr_del_port(chip, addr, port);
+ 
+ 	return 0;
 -- 
 2.39.2
 
