@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45E3F72C0F9
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30CEF72C1F2
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:01:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236781AbjFLKzz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:55:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56930 "EHLO
+        id S235408AbjFLLBi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:01:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236765AbjFLKz3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:55:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 604BA8224
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:42:26 -0700 (PDT)
+        with ESMTP id S237521AbjFLLBN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:01:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CE884203
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:48:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 409C6615CB
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:42:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D4FC433EF;
-        Mon, 12 Jun 2023 10:42:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C6FF2624C9
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:48:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E59C4339C;
+        Mon, 12 Jun 2023 10:48:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566545;
-        bh=D407yoHy8k15nn4A+GJw2lD3h6C6R2U50/wzyNSiIwM=;
+        s=korg; t=1686566906;
+        bh=B7A7U+QIML6q9L9p26ZV99TiZEb0yefHpnnkpVH9zac=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G8XqOLDjGLRStYCkwqsjy+HZqjQh+eSa1u0k6attaW4f4HcQrLzQhueeGcGK1WPib
-         IHDXpH9QAEY+dbKgcd9GsWvu3gNQ1QUrizXabpQi18TuUaDfOljLSldinzos8T2hWt
-         PJp9GfanrApeeiaBa0KN7YLHB7oD5mxT7JRkivcY=
+        b=u66YQ/v+sXzSCvdGN4Nv/0XAizCo7gL1cPKGOtQk2U6M4KUwH3SuAu/UWtfdYb2AH
+         6F20Z1jRcRC+8NFUs/z6+1fGFTWwHwh6Owtge/t60rEifeA0an5si07qlCzeaW7Dde
+         tzOIrHI6ngbLawsuYzlEHpbBIdDS956vUyKtW0lg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chia-I Wu <olvaffe@gmail.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 073/132] drm/amdgpu: fix xclk freq on CHIP_STONEY
-Date:   Mon, 12 Jun 2023 12:26:47 +0200
-Message-ID: <20230612101713.607945315@linuxfoundation.org>
+        patches@lists.linux.dev, Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.3 076/160] ALSA: ymfpci: Fix kctl->id initialization
+Date:   Mon, 12 Jun 2023 12:26:48 +0200
+Message-ID: <20230612101718.500742215@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,41 +53,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chia-I Wu <olvaffe@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit b447b079cf3a9971ea4d31301e673f49612ccc18 upstream.
+commit c9b83ae4a1609b1914ba7fc70826a3f3a8b234db upstream.
 
-According to Alex, most APUs from that time seem to have the same issue
-(vbios says 48Mhz, actual is 100Mhz).  I only have a CHIP_STONEY so I
-limit the fixup to CHIP_STONEY
+ymfpci driver replaces the kctl->id.device after assigning the kctl
+via snd_ctl_add().  This doesn't work any longer with the new Xarray
+lookup change.  It has to be set before snd_ctl_add() call instead.
 
-Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Fixes: c27e1efb61c5 ("ALSA: control: Use xarray for faster lookups")
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Jaroslav Kysela <perex@perex.cz>
+Link: https://lore.kernel.org/r/20230606093855.14685-2-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/vi.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ sound/pci/ymfpci/ymfpci_main.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/vi.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vi.c
-@@ -542,8 +542,15 @@ static u32 vi_get_xclk(struct amdgpu_dev
- 	u32 reference_clock = adev->clock.spll.reference_freq;
- 	u32 tmp;
+--- a/sound/pci/ymfpci/ymfpci_main.c
++++ b/sound/pci/ymfpci/ymfpci_main.c
+@@ -1827,20 +1827,20 @@ int snd_ymfpci_mixer(struct snd_ymfpci *
+ 	if (snd_BUG_ON(!chip->pcm_spdif))
+ 		return -ENXIO;
+ 	kctl = snd_ctl_new1(&snd_ymfpci_spdif_default, chip);
++	kctl->id.device = chip->pcm_spdif->device;
+ 	err = snd_ctl_add(chip->card, kctl);
+ 	if (err < 0)
+ 		return err;
+-	kctl->id.device = chip->pcm_spdif->device;
+ 	kctl = snd_ctl_new1(&snd_ymfpci_spdif_mask, chip);
++	kctl->id.device = chip->pcm_spdif->device;
+ 	err = snd_ctl_add(chip->card, kctl);
+ 	if (err < 0)
+ 		return err;
+-	kctl->id.device = chip->pcm_spdif->device;
+ 	kctl = snd_ctl_new1(&snd_ymfpci_spdif_stream, chip);
++	kctl->id.device = chip->pcm_spdif->device;
+ 	err = snd_ctl_add(chip->card, kctl);
+ 	if (err < 0)
+ 		return err;
+-	kctl->id.device = chip->pcm_spdif->device;
+ 	chip->spdif_pcm_ctl = kctl;
  
--	if (adev->flags & AMD_IS_APU)
--		return reference_clock;
-+	if (adev->flags & AMD_IS_APU) {
-+		switch (adev->asic_type) {
-+		case CHIP_STONEY:
-+			/* vbios says 48Mhz, but the actual freq is 100Mhz */
-+			return 10000;
-+		default:
-+			return reference_clock;
-+		}
-+	}
- 
- 	tmp = RREG32_SMC(ixCG_CLKPIN_CNTL_2);
- 	if (REG_GET_FIELD(tmp, CG_CLKPIN_CNTL_2, MUX_TCLK_TO_XCLK))
+ 	/* direct recording source */
 
 
