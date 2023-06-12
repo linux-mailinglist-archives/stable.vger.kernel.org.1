@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 115E672C0B0
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:54:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4384072C20C
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:02:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236082AbjFLKyH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:54:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55916 "EHLO
+        id S237424AbjFLLCZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:02:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235816AbjFLKxp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:53:45 -0400
+        with ESMTP id S237413AbjFLLCH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:02:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75DD5423F
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:38:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BB3D5BAD
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:49:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 04E4C612E1
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:38:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1883BC433EF;
-        Mon, 12 Jun 2023 10:38:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BC45B624E3
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:49:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D3CC433A1;
+        Mon, 12 Jun 2023 10:49:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566330;
-        bh=9sXzeLltWVl57ngHS56++RTl7JECoK7Ibgz4yUWQQ9Q=;
+        s=korg; t=1686566969;
+        bh=RhfJTJA4FOwpiH7R7K2DhdExjRF31GU6+g6f5IFWdYY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TV+1A0Xk1a/Ccx39GXKdHjnpYVcE+OgpTPBmIP5IpK/cdKj7uD2IRG2PYXh9fVgfk
-         U+xLo2MaQasQQ5PEHLtaTWlsZ6LophWCyLUslsTogQn9E4zhJ8dBmCGWdrSPbU7V2o
-         +48wv9oXkkx/E5QxiNGJBQxkx2G4a4lD7OX0cCsM=
+        b=hCPylg1yseYKMqZ1faJ1TBhBTstMx3yW4uME7GJrS9QoHyhe08jMDhyKXsSoC688i
+         eMj7y7qGBMzVIXS//+KaJrMFA2tr3fXQ1/YEkSq5r9FEREKD0FxCwBjZIlrGiAhUd2
+         C+wEOIjYguN9oxRlEkrpB2wrdsetSvR7+Ea/jjoo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ruan Jinjie <ruanjinjie@huawei.com>,
-        =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 83/91] riscv: fix kprobe __user string arg print fault issue
+        patches@lists.linux.dev,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Geliang Tang <geliang.tang@suse.com>,
+        Mat Martineau <martineau@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.3 100/160] selftests: mptcp: update userspace pm subflow tests
 Date:   Mon, 12 Jun 2023 12:27:12 +0200
-Message-ID: <20230612101705.584303627@linuxfoundation.org>
+Message-ID: <20230612101719.588971685@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
-References: <20230612101702.085813286@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,65 +56,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ruan Jinjie <ruanjinjie@huawei.com>
+From: Geliang Tang <geliang.tang@suse.com>
 
-[ Upstream commit 99a670b2069c725a7b50318aa681d9cae8f89325 ]
+commit 6c160b636c91e71e50c39134f78257cc35305ff0 upstream.
 
-On riscv qemu platform, when add kprobe event on do_sys_open() to show
-filename string arg, it just print fault as follow:
+To align with what is done by the in-kernel PM, update userspace pm
+subflow selftests, by sending the a remove_addrs command together
+before the remove_subflows command. This will get a RM_ADDR in
+chk_rm_nr().
 
-echo 'p:myprobe do_sys_open dfd=$arg1 filename=+0($arg2):string flags=$arg3
-mode=$arg4' > kprobe_events
-
-bash-166     [000] ...1.   360.195367: myprobe: (do_sys_open+0x0/0x84)
-dfd=0xffffffffffffff9c filename=(fault) flags=0x8241 mode=0x1b6
-
-bash-166     [000] ...1.   360.219369: myprobe: (do_sys_open+0x0/0x84)
-dfd=0xffffffffffffff9c filename=(fault) flags=0x8241 mode=0x1b6
-
-bash-191     [000] ...1.   360.378827: myprobe: (do_sys_open+0x0/0x84)
-dfd=0xffffffffffffff9c filename=(fault) flags=0x98800 mode=0x0
-
-As riscv do not select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE,
-the +0($arg2) addr is processed as a kernel address though it is a
-userspace address, cause the above filename=(fault) print. So select
-ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE to avoid the issue, after that the
-kprobe trace is ok as below:
-
-bash-166     [000] ...1.    96.767641: myprobe: (do_sys_open+0x0/0x84)
-dfd=0xffffffffffffff9c filename="/dev/null" flags=0x8241 mode=0x1b6
-
-bash-166     [000] ...1.    96.793751: myprobe: (do_sys_open+0x0/0x84)
-dfd=0xffffffffffffff9c filename="/dev/null" flags=0x8241 mode=0x1b6
-
-bash-177     [000] ...1.    96.962354: myprobe: (do_sys_open+0x0/0x84)
-dfd=0xffffffffffffff9c filename="/sys/kernel/debug/tracing/events/kprobes/"
-flags=0x98800 mode=0x0
-
-Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
-Acked-by: Björn Töpel <bjorn@rivosinc.com>
-Fixes: 0ebeea8ca8a4 ("bpf: Restrict bpf_probe_read{, str}() only to archs where they work")
-Link: https://lore.kernel.org/r/20230504072910.3742842-1-ruanjinjie@huawei.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d9a4594edabf ("mptcp: netlink: Add MPTCP_PM_CMD_REMOVE")
+Fixes: 5e986ec46874 ("selftests: mptcp: userspace pm subflow tests")
+Link: https://github.com/multipath-tcp/mptcp_net-next/issues/379
+Cc: stable@vger.kernel.org
+Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Geliang Tang <geliang.tang@suse.com>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index bf602e38962fa..8dd7f01ee031d 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -23,6 +23,7 @@ config RISCV
- 	select ARCH_HAS_GIGANTIC_PAGE
- 	select ARCH_HAS_KCOV
- 	select ARCH_HAS_MMIOWB
-+	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
- 	select ARCH_HAS_PTE_SPECIAL
- 	select ARCH_HAS_SET_DIRECT_MAP if MMU
- 	select ARCH_HAS_SET_MEMORY if MMU
--- 
-2.39.2
-
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -930,6 +930,7 @@ do_transfer()
+ 				sleep 1
+ 				sp=$(grep "type:10" "$evts_ns2" |
+ 				     sed -n 's/.*\(sport:\)\([[:digit:]]*\).*$/\2/p;q')
++				ip netns exec ${connector_ns} ./pm_nl_ctl rem token $tk id $id
+ 				ip netns exec ${connector_ns} ./pm_nl_ctl dsf lip $addr lport $sp \
+ 									rip $da rport $dp token $tk
+ 			fi
+@@ -3104,7 +3105,7 @@ userspace_tests()
+ 		pm_nl_set_limits $ns1 0 1
+ 		run_tests $ns1 $ns2 10.0.1.1 0 0 userspace_1 slow
+ 		chk_join_nr 1 1 1
+-		chk_rm_nr 0 1
++		chk_rm_nr 1 1
+ 		kill_events_pids
+ 	fi
+ }
 
 
