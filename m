@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBD8E72C10E
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:56:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9506F72C0BB
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:54:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236880AbjFLK4N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:56:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56698 "EHLO
+        id S235723AbjFLKyS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:54:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236924AbjFLKz5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:55:57 -0400
+        with ESMTP id S235495AbjFLKyG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E62F68C1F
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:43:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CDB3658B
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:39:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 833CE612E1
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:43:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99E76C433EF;
-        Mon, 12 Jun 2023 10:43:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DDEEB612E1
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:39:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED8F1C433D2;
+        Mon, 12 Jun 2023 10:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566590;
-        bh=5PFxjeJveLfVvr6mqd9x2YkeqXFH63mh76MbchnERyM=;
+        s=korg; t=1686566359;
+        bh=p8/J1IWMB823FHy2ftLNQjQSDlMewV8lA0iChZXFhhs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VmY3/uDEoCMVp6J7st+frtERddVIS7hFyfb8zg3OibMtFU7GLfQDBZ5/KBaMc7szg
-         b11utGYBX5la/E2BAnOWHtDrcVgFnvv9ZToPk85M9b+CsjNuSjFcGlbV0gFh0/MX9v
-         Y1CUNvIZFR2Yl8bfPW0673iGaxL3UsEsoGR51ijg=
+        b=jxosQGWamjn18ugJnUiHSpWF93Jmf54/j9MV6H3gYKtYxcQmrboOhq91qqe5bV6tC
+         NS/8lYp9FVv7OVaVsgxZIM8jCFwLfskpPARdn511RcERDK01iCKs9zyOtpgsATOOep
+         jd8c3AHQa/EXsQYA/uQDP3ezn9w3gYF0VrOFObxA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Min Li <lm0963hack@gmail.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 088/132] Bluetooth: Fix use-after-free in hci_remove_ltk/hci_remove_irk
-Date:   Mon, 12 Jun 2023 12:27:02 +0200
-Message-ID: <20230612101714.266765261@linuxfoundation.org>
+        patches@lists.linux.dev, Shenwei Wang <shenwei.wang@nxp.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 74/91] arm64: dts: imx8qm-mek: correct GPIOs for USDHC2 CD and WP signals
+Date:   Mon, 12 Jun 2023 12:27:03 +0200
+Message-ID: <20230612101705.155369938@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
+References: <20230612101702.085813286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,48 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Shenwei Wang <shenwei.wang@nxp.com>
 
-commit c5d2b6fa26b5b8386a9cc902cdece3a46bef2bd2 upstream.
+[ Upstream commit 2b28fc688cdff225c41cdd22857500e187453ed7 ]
 
-Similar to commit 0f7d9b31ce7a ("netfilter: nf_tables: fix use-after-free
-in nft_set_catchall_destroy()"). We can not access k after kfree_rcu()
-call.
+The USDHC2 CD and WP sginal should be on LSIO_GPIO5.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Min Li <lm0963hack@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 307fd14d4b14 ("arm64: dts: imx: add imx8qm mek support")
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8qm-mek.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -1416,10 +1416,10 @@ int hci_remove_link_key(struct hci_dev *
+diff --git a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+index ce9d3f0b98fc0..607cd6b4e9721 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
++++ b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+@@ -82,8 +82,8 @@ &usdhc2 {
+ 	pinctrl-0 = <&pinctrl_usdhc2>;
+ 	bus-width = <4>;
+ 	vmmc-supply = <&reg_usdhc2_vmmc>;
+-	cd-gpios = <&lsio_gpio4 22 GPIO_ACTIVE_LOW>;
+-	wp-gpios = <&lsio_gpio4 21 GPIO_ACTIVE_HIGH>;
++	cd-gpios = <&lsio_gpio5 22 GPIO_ACTIVE_LOW>;
++	wp-gpios = <&lsio_gpio5 21 GPIO_ACTIVE_HIGH>;
+ 	status = "okay";
+ };
  
- int hci_remove_ltk(struct hci_dev *hdev, bdaddr_t *bdaddr, u8 bdaddr_type)
- {
--	struct smp_ltk *k;
-+	struct smp_ltk *k, *tmp;
- 	int removed = 0;
- 
--	list_for_each_entry_rcu(k, &hdev->long_term_keys, list) {
-+	list_for_each_entry_safe(k, tmp, &hdev->long_term_keys, list) {
- 		if (bacmp(bdaddr, &k->bdaddr) || k->bdaddr_type != bdaddr_type)
- 			continue;
- 
-@@ -1435,9 +1435,9 @@ int hci_remove_ltk(struct hci_dev *hdev,
- 
- void hci_remove_irk(struct hci_dev *hdev, bdaddr_t *bdaddr, u8 addr_type)
- {
--	struct smp_irk *k;
-+	struct smp_irk *k, *tmp;
- 
--	list_for_each_entry_rcu(k, &hdev->identity_resolving_keys, list) {
-+	list_for_each_entry_safe(k, tmp, &hdev->identity_resolving_keys, list) {
- 		if (bacmp(bdaddr, &k->bdaddr) || k->addr_type != addr_type)
- 			continue;
- 
+-- 
+2.39.2
+
 
 
