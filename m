@@ -2,49 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B12BA72BF87
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:45:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00E0572BFE4
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:47:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233586AbjFLKpK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:45:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48136 "EHLO
+        id S235143AbjFLKru (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:47:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232693AbjFLKoa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:44:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 037C63ABF
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:29:18 -0700 (PDT)
+        with ESMTP id S235307AbjFLKr3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:47:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B64644BE
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:32:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CBAC0614F0
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:29:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF704C433EF;
-        Mon, 12 Jun 2023 10:29:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B298623DF
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:32:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB4EC433D2;
+        Mon, 12 Jun 2023 10:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565757;
-        bh=XdQH2He5Ft1uyTKj+3e52dR8lxmhinwftpS0PGdklps=;
+        s=korg; t=1686565938;
+        bh=VyZv/MO/Su+LQLmpquylZZ1K/IlFNdVPERni5/Z4khU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DuDE3yOb5N9SeeDseRFaWTQy8ojcb2/pznHX5mM+XgmFlRJJbK8ZIDjg5TBQai8CC
-         oB2HOAq0HzfkkSvr0UMHcSXK7hlLRMkSKxv4iQQmpAyiQVOoq2YftDKGYLP3HLDSsv
-         v48RlgFXqHaX9wZOtwctmJj/OUjvgRN3/8/R+jvg=
+        b=jURnvea0Oi1uQPzNIKwI0QqeGmbow2JzMhTnToX2CXt+DNv9vrbZIOf0hKANtxrra
+         JiL3UPpvflg1UXzqKuuQ2m1UuRoqTjIgQ0yFMmsy20jX2RNcrxI0Ro4n+9ypiTzLqL
+         wMveECwCeOpHyypnoCr0xU9I121lIBtZ73aLndlE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 4.14 18/21] ext4: only check dquot_initialize_needed() when debugging
+        patches@lists.linux.dev, stable@kernel.org,
+        Vladislav Efanov <VEfanov@ispras.ru>,
+        Sven Eckelmann <sven@narfation.org>,
+        Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 5.4 19/45] batman-adv: Broken sync while rescheduling delayed work
 Date:   Mon, 12 Jun 2023 12:26:13 +0200
-Message-ID: <20230612101651.667334201@linuxfoundation.org>
+Message-ID: <20230612101655.437448973@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101651.048240731@linuxfoundation.org>
-References: <20230612101651.048240731@linuxfoundation.org>
+In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
+References: <20230612101654.644983109@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,47 +55,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Vladislav Efanov <VEfanov@ispras.ru>
 
-commit dea9d8f7643fab07bf89a1155f1f94f37d096a5e upstream.
+commit abac3ac97fe8734b620e7322a116450d7f90aa43 upstream.
 
-ext4_xattr_block_set() relies on its caller to call dquot_initialize()
-on the inode.  To assure that this has happened there are WARN_ON
-checks.  Unfortunately, this is subject to false positives if there is
-an antagonist thread which is flipping the file system at high rates
-between r/o and rw.  So only do the check if EXT4_XATTR_DEBUG is
-enabled.
+Syzkaller got a lot of crashes like:
+KASAN: use-after-free Write in *_timers*
 
-Link: https://lore.kernel.org/r/20230608044056.GA1418535@mit.edu
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+All of these crashes point to the same memory area:
+
+The buggy address belongs to the object at ffff88801f870000
+ which belongs to the cache kmalloc-8k of size 8192
+The buggy address is located 5320 bytes inside of
+ 8192-byte region [ffff88801f870000, ffff88801f872000)
+
+This area belongs to :
+        batadv_priv->batadv_priv_dat->delayed_work->timer_list
+
+The reason for these issues is the lack of synchronization. Delayed
+work (batadv_dat_purge) schedules new timer/work while the device
+is being deleted. As the result new timer/delayed work is set after
+cancel_delayed_work_sync() was called. So after the device is freed
+the timer list contains pointer to already freed memory.
+
+Found by Linux Verification Center (linuxtesting.org) with syzkaller.
+
+Cc: stable@kernel.org
+Fixes: 2f1dfbe18507 ("batman-adv: Distributed ARP Table - implement local storage")
+Signed-off-by: Vladislav Efanov <VEfanov@ispras.ru>
+Acked-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/xattr.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/batman-adv/distributed-arp-table.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -2021,8 +2021,9 @@ inserted:
- 			else {
- 				u32 ref;
+--- a/net/batman-adv/distributed-arp-table.c
++++ b/net/batman-adv/distributed-arp-table.c
+@@ -102,7 +102,6 @@ static void batadv_dat_purge(struct work
+  */
+ static void batadv_dat_start_timer(struct batadv_priv *bat_priv)
+ {
+-	INIT_DELAYED_WORK(&bat_priv->dat.work, batadv_dat_purge);
+ 	queue_delayed_work(batadv_event_workqueue, &bat_priv->dat.work,
+ 			   msecs_to_jiffies(10000));
+ }
+@@ -817,6 +816,7 @@ int batadv_dat_init(struct batadv_priv *
+ 	if (!bat_priv->dat.hash)
+ 		return -ENOMEM;
  
-+#ifdef EXT4_XATTR_DEBUG
- 				WARN_ON_ONCE(dquot_initialize_needed(inode));
--
-+#endif
- 				/* The old block is released after updating
- 				   the inode. */
- 				error = dquot_alloc_block(inode,
-@@ -2090,8 +2091,9 @@ inserted:
- 			/* We need to allocate a new block */
- 			ext4_fsblk_t goal, block;
++	INIT_DELAYED_WORK(&bat_priv->dat.work, batadv_dat_purge);
+ 	batadv_dat_start_timer(bat_priv);
  
-+#ifdef EXT4_XATTR_DEBUG
- 			WARN_ON_ONCE(dquot_initialize_needed(inode));
--
-+#endif
- 			goal = ext4_group_first_block_no(sb,
- 						EXT4_I(inode)->i_block_group);
- 			block = ext4_new_meta_blocks(handle, inode, goal, 0,
+ 	batadv_tvlv_handler_register(bat_priv, batadv_dat_tvlv_ogm_handler_v1,
 
 
