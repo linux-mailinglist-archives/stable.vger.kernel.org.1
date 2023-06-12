@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 632B872C094
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:53:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9884772BFCC
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:47:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235874AbjFLKxa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:53:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56860 "EHLO
+        id S232954AbjFLKrW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:47:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236140AbjFLKxH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:53:07 -0400
+        with ESMTP id S235143AbjFLKrK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:47:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2438AD13
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:37:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E4A85B80
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:31:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3AA26623CE
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:37:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 259BAC433EF;
-        Mon, 12 Jun 2023 10:37:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D5A89623EA
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:31:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C427FC433EF;
+        Mon, 12 Jun 2023 10:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566267;
-        bh=j9sUsz0swgi9pYfLpp6pRTJQR87rlxtEhpd2zdromsE=;
+        s=korg; t=1686565907;
+        bh=XsKyawLmBz3Db+v60Vq7hakm0USK2aN7e1Qm5x0KWEg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ivNP4VMoLffN1dWvsbQqGV48OTRzN57WwuZIqj2FUyuhFM3U5flwNKt6eECxCw7g8
-         Lf+JUhQk2UFS4HIZ5NGfStiGmPnCU792Np/ZU6fI0k7ZzsnuM7WiKVwzvjSQ9jCaCK
-         9MlXV6Ewy4qI4Jg+9wanyxzy4VPdRUkDFusJB2lE=
+        b=b+9ZIaMAuhKFWpMQb//p1wHHhq59a9Eu84ItehzBm3DDVqoS65CBtvTme1UUsLScx
+         Gr3RBKdiFP969A4QOm5M8u8Qf3QbwII73iDB6byzC+xPZtXBDqJmynQmPBf8Q0heTZ
+         KYoa6zJvrNrDcXR9zFZoueDkeyHvMLdeqz+34qKc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hangyu Hua <hbh25y@gmail.com>,
-        Larysa Zaremba <larysa.zaremba@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 41/91] net: sched: fix possible refcount leak in tc_chain_tmplt_add()
+Subject: [PATCH 5.4 36/45] eeprom: at24: also select REGMAP
 Date:   Mon, 12 Jun 2023 12:26:30 +0200
-Message-ID: <20230612101703.774017457@linuxfoundation.org>
+Message-ID: <20230612101656.136303428@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
-References: <20230612101702.085813286@linuxfoundation.org>
+In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
+References: <20230612101654.644983109@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,35 +54,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hangyu Hua <hbh25y@gmail.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 44f8baaf230c655c249467ca415b570deca8df77 ]
+[ Upstream commit 7f3c782b3914e510b646a77aedc3adeac2e4a63b ]
 
-try_module_get will be called in tcf_proto_lookup_ops. So module_put needs
-to be called to drop the refcount if ops don't implement the required
-function.
+Selecting only REGMAP_I2C can leave REGMAP unset, causing build errors,
+so also select REGMAP to prevent the build errors.
 
-Fixes: 9f407f1768d3 ("net: sched: introduce chain templates")
-Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
-Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+../drivers/misc/eeprom/at24.c:540:42: warning: 'struct regmap_config' declared inside parameter list will not be visible outside of this definition or declaration
+  540 |                                   struct regmap_config *regmap_config)
+../drivers/misc/eeprom/at24.c: In function 'at24_make_dummy_client':
+../drivers/misc/eeprom/at24.c:552:18: error: implicit declaration of function 'devm_regmap_init_i2c' [-Werror=implicit-function-declaration]
+  552 |         regmap = devm_regmap_init_i2c(dummy_client, regmap_config);
+../drivers/misc/eeprom/at24.c:552:16: warning: assignment to 'struct regmap *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+  552 |         regmap = devm_regmap_init_i2c(dummy_client, regmap_config);
+../drivers/misc/eeprom/at24.c: In function 'at24_probe':
+../drivers/misc/eeprom/at24.c:586:16: error: variable 'regmap_config' has initializer but incomplete type
+  586 |         struct regmap_config regmap_config = { };
+../drivers/misc/eeprom/at24.c:586:30: error: storage size of 'regmap_config' isn't known
+  586 |         struct regmap_config regmap_config = { };
+../drivers/misc/eeprom/at24.c:586:30: warning: unused variable 'regmap_config' [-Wunused-variable]
+
+Fixes: 5c015258478e ("eeprom: at24: add basic regmap_i2c support")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_api.c | 1 +
+ drivers/misc/eeprom/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index 0aca0ecb029bd..d88a0946301c5 100644
---- a/net/sched/cls_api.c
-+++ b/net/sched/cls_api.c
-@@ -2766,6 +2766,7 @@ static int tc_chain_tmplt_add(struct tcf_chain *chain, struct net *net,
- 		return PTR_ERR(ops);
- 	if (!ops->tmplt_create || !ops->tmplt_destroy || !ops->tmplt_dump) {
- 		NL_SET_ERR_MSG(extack, "Chain templates are not supported with specified classifier");
-+		module_put(ops->owner);
- 		return -EOPNOTSUPP;
- 	}
- 
+diff --git a/drivers/misc/eeprom/Kconfig b/drivers/misc/eeprom/Kconfig
+index 0f791bfdc1f58..c92f2cdf40263 100644
+--- a/drivers/misc/eeprom/Kconfig
++++ b/drivers/misc/eeprom/Kconfig
+@@ -6,6 +6,7 @@ config EEPROM_AT24
+ 	depends on I2C && SYSFS
+ 	select NVMEM
+ 	select NVMEM_SYSFS
++	select REGMAP
+ 	select REGMAP_I2C
+ 	help
+ 	  Enable this driver to get read/write support to most I2C EEPROMs
 -- 
 2.39.2
 
