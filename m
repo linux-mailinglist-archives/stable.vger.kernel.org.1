@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B28372C090
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:53:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DF8A72C041
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:51:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233361AbjFLKxZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:53:25 -0400
+        id S235422AbjFLKvK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:51:10 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233015AbjFLKxB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:53:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8297AD0A
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:37:37 -0700 (PDT)
+        with ESMTP id S235548AbjFLKuk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:50:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 979B7869F
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:35:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B8AC4612E1
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:37:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C84FCC433D2;
-        Mon, 12 Jun 2023 10:37:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C8371623CE
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:35:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D74F0C433D2;
+        Mon, 12 Jun 2023 10:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566257;
-        bh=bMSadpbYsWkse8nK1W+CibkkrwqPCLd++Xn3LcNEEls=;
+        s=korg; t=1686566119;
+        bh=aiHVrP1AU7n/VhBZXGJ1BjVtPW57c9DZLL+c4V9SZpI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mNP29L9A+T9wJdo+AetlCfZqPgtIORFG2dJ8ODLMUOHf0PbS1j2DOx0MAo/GaBciN
-         iqSGyU047BHfW1UwOThgcZnYVCWlEqm+kDI6YK4vuOw0jHhTVLS0JliTuNkSJUs6Mg
-         iLtVTng1gR9cCWj2LaJ5Q6+WBm7DacD8JIyyaleA=
+        b=wUDIQn+DV7CW9Qd52gD3XSWHKcQJ1RjyTA/FFlfJJbXnPCKTFrKnB63FAL/EEUxWm
+         7BUE35dKMwYapel50r89l2iGEGKq7ei981dZE4RsXAEUdF7rHG7vyLfULzO+arFWJA
+         of7Y1kxQD69OozYDYmeakiTXjTfCk8dzFHV7KuZo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Evan Quan <evan.quan@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 55/91] drm/amd/pm: conditionally disable pcie lane switching for some sienna_cichlid SKUs
+        patches@lists.linux.dev,
+        syzbot+fcf1a817ceb50935ce99@syzkaller.appspotmail.comm,
+        Ruihan Li <lrh2000@pku.edu.cn>,
+        Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.10 52/68] usb: usbfs: Enforce page requirements for mmap
 Date:   Mon, 12 Jun 2023 12:26:44 +0200
-Message-ID: <20230612101704.359222920@linuxfoundation.org>
+Message-ID: <20230612101700.586136522@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
-References: <20230612101702.085813286@linuxfoundation.org>
+In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
+References: <20230612101658.437327280@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,143 +55,140 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Evan Quan <evan.quan@amd.com>
+From: Ruihan Li <lrh2000@pku.edu.cn>
 
-commit 38e4ced804796c5725e2a52ec3601951552c4a97 upstream.
+commit 0143d148d1e882fb1538dc9974c94d63961719b9 upstream.
 
-Disable the pcie lane switching for some sienna_cichlid SKUs since it
-might not work well on some platforms.
+The current implementation of usbdev_mmap uses usb_alloc_coherent to
+allocate memory pages that will later be mapped into the user space.
+Meanwhile, usb_alloc_coherent employs three different methods to
+allocate memory, as outlined below:
+ * If hcd->localmem_pool is non-null, it uses gen_pool_dma_alloc to
+   allocate memory;
+ * If DMA is not available, it uses kmalloc to allocate memory;
+ * Otherwise, it uses dma_alloc_coherent.
 
-Signed-off-by: Evan Quan <evan.quan@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+However, it should be noted that gen_pool_dma_alloc does not guarantee
+that the resulting memory will be page-aligned. Furthermore, trying to
+map slab pages (i.e., memory allocated by kmalloc) into the user space
+is not resonable and can lead to problems, such as a type confusion bug
+when PAGE_TABLE_CHECK=y [1].
+
+To address these issues, this patch introduces hcd_alloc_coherent_pages,
+which addresses the above two problems. Specifically,
+hcd_alloc_coherent_pages uses gen_pool_dma_alloc_align instead of
+gen_pool_dma_alloc to ensure that the memory is page-aligned. To replace
+kmalloc, hcd_alloc_coherent_pages directly allocates pages by calling
+__get_free_pages.
+
+Reported-by: syzbot+fcf1a817ceb50935ce99@syzkaller.appspotmail.comm
+Closes: https://lore.kernel.org/lkml/000000000000258e5e05fae79fc1@google.com/ [1]
+Fixes: f7d34b445abc ("USB: Add support for usbfs zerocopy.")
+Fixes: ff2437befd8f ("usb: host: Fix excessive alignment restriction for local memory allocations")
 Cc: stable@vger.kernel.org
+Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20230515130958.32471-2-lrh2000@pku.edu.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c |   92 ++++++++++++----
- 1 file changed, 74 insertions(+), 18 deletions(-)
+ drivers/usb/core/buffer.c |   41 +++++++++++++++++++++++++++++++++++++++++
+ drivers/usb/core/devio.c  |    9 +++++----
+ include/linux/usb/hcd.h   |    5 +++++
+ 3 files changed, 51 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
-@@ -1928,33 +1928,94 @@ static int sienna_cichlid_get_power_limi
- 	return 0;
+--- a/drivers/usb/core/buffer.c
++++ b/drivers/usb/core/buffer.c
+@@ -170,3 +170,44 @@ void hcd_buffer_free(
+ 	}
+ 	dma_free_coherent(hcd->self.sysdev, size, addr, dma);
  }
- 
-+static void sienna_cichlid_get_override_pcie_settings(struct smu_context *smu,
-+						      uint32_t *gen_speed_override,
-+						      uint32_t *lane_width_override)
++
++void *hcd_buffer_alloc_pages(struct usb_hcd *hcd,
++		size_t size, gfp_t mem_flags, dma_addr_t *dma)
 +{
-+	struct amdgpu_device *adev = smu->adev;
++	if (size == 0)
++		return NULL;
 +
-+	*gen_speed_override = 0xff;
-+	*lane_width_override = 0xff;
++	if (hcd->localmem_pool)
++		return gen_pool_dma_alloc_align(hcd->localmem_pool,
++				size, dma, PAGE_SIZE);
 +
-+	switch (adev->pdev->device) {
-+	case 0x73A0:
-+	case 0x73A1:
-+	case 0x73A2:
-+	case 0x73A3:
-+	case 0x73AB:
-+	case 0x73AE:
-+		/* Bit 7:0: PCIE lane width, 1 to 7 corresponds is x1 to x32 */
-+		*lane_width_override = 6;
-+		break;
-+	case 0x73E0:
-+	case 0x73E1:
-+	case 0x73E3:
-+		*lane_width_override = 4;
-+		break;
-+	case 0x7420:
-+	case 0x7421:
-+	case 0x7422:
-+	case 0x7423:
-+	case 0x7424:
-+		*lane_width_override = 3;
-+		break;
-+	default:
-+		break;
++	/* some USB hosts just use PIO */
++	if (!hcd_uses_dma(hcd)) {
++		*dma = DMA_MAPPING_ERROR;
++		return (void *)__get_free_pages(mem_flags,
++				get_order(size));
 +	}
++
++	return dma_alloc_coherent(hcd->self.sysdev,
++			size, dma, mem_flags);
 +}
 +
-+#define MAX(a, b)	((a) > (b) ? (a) : (b))
++void hcd_buffer_free_pages(struct usb_hcd *hcd,
++		size_t size, void *addr, dma_addr_t dma)
++{
++	if (!addr)
++		return;
 +
- static int sienna_cichlid_update_pcie_parameters(struct smu_context *smu,
- 					 uint32_t pcie_gen_cap,
- 					 uint32_t pcie_width_cap)
- {
- 	struct smu_11_0_dpm_context *dpm_context = smu->smu_dpm.dpm_context;
--
--	uint32_t smu_pcie_arg;
-+	struct smu_11_0_pcie_table *pcie_table = &dpm_context->dpm_tables.pcie_table;
-+	uint32_t gen_speed_override, lane_width_override;
- 	uint8_t *table_member1, *table_member2;
-+	uint32_t min_gen_speed, max_gen_speed;
-+	uint32_t min_lane_width, max_lane_width;
-+	uint32_t smu_pcie_arg;
- 	int ret, i;
- 
- 	GET_PPTABLE_MEMBER(PcieGenSpeed, &table_member1);
- 	GET_PPTABLE_MEMBER(PcieLaneCount, &table_member2);
- 
--	/* lclk dpm table setup */
--	for (i = 0; i < MAX_PCIE_CONF; i++) {
--		dpm_context->dpm_tables.pcie_table.pcie_gen[i] = table_member1[i];
--		dpm_context->dpm_tables.pcie_table.pcie_lane[i] = table_member2[i];
-+	sienna_cichlid_get_override_pcie_settings(smu,
-+						  &gen_speed_override,
-+						  &lane_width_override);
-+
-+	/* PCIE gen speed override */
-+	if (gen_speed_override != 0xff) {
-+		min_gen_speed = MIN(pcie_gen_cap, gen_speed_override);
-+		max_gen_speed = MIN(pcie_gen_cap, gen_speed_override);
-+	} else {
-+		min_gen_speed = MAX(0, table_member1[0]);
-+		max_gen_speed = MIN(pcie_gen_cap, table_member1[1]);
-+		min_gen_speed = min_gen_speed > max_gen_speed ?
-+				max_gen_speed : min_gen_speed;
- 	}
-+	pcie_table->pcie_gen[0] = min_gen_speed;
-+	pcie_table->pcie_gen[1] = max_gen_speed;
-+
-+	/* PCIE lane width override */
-+	if (lane_width_override != 0xff) {
-+		min_lane_width = MIN(pcie_width_cap, lane_width_override);
-+		max_lane_width = MIN(pcie_width_cap, lane_width_override);
-+	} else {
-+		min_lane_width = MAX(1, table_member2[0]);
-+		max_lane_width = MIN(pcie_width_cap, table_member2[1]);
-+		min_lane_width = min_lane_width > max_lane_width ?
-+				 max_lane_width : min_lane_width;
++	if (hcd->localmem_pool) {
++		gen_pool_free(hcd->localmem_pool,
++				(unsigned long)addr, size);
++		return;
 +	}
-+	pcie_table->pcie_lane[0] = min_lane_width;
-+	pcie_table->pcie_lane[1] = max_lane_width;
++
++	if (!hcd_uses_dma(hcd)) {
++		free_pages((unsigned long)addr, get_order(size));
++		return;
++	}
++
++	dma_free_coherent(hcd->self.sysdev, size, addr, dma);
++}
+--- a/drivers/usb/core/devio.c
++++ b/drivers/usb/core/devio.c
+@@ -173,6 +173,7 @@ static int connected(struct usb_dev_stat
+ static void dec_usb_memory_use_count(struct usb_memory *usbm, int *count)
+ {
+ 	struct usb_dev_state *ps = usbm->ps;
++	struct usb_hcd *hcd = bus_to_hcd(ps->dev->bus);
+ 	unsigned long flags;
  
- 	for (i = 0; i < NUM_LINK_LEVELS; i++) {
--		smu_pcie_arg = (i << 16) |
--			((table_member1[i] <= pcie_gen_cap) ?
--			 (table_member1[i] << 8) :
--			 (pcie_gen_cap << 8)) |
--			((table_member2[i] <= pcie_width_cap) ?
--			 table_member2[i] :
--			 pcie_width_cap);
-+		smu_pcie_arg = (i << 16 |
-+				pcie_table->pcie_gen[i] << 8 |
-+				pcie_table->pcie_lane[i]);
+ 	spin_lock_irqsave(&ps->lock, flags);
+@@ -181,8 +182,8 @@ static void dec_usb_memory_use_count(str
+ 		list_del(&usbm->memlist);
+ 		spin_unlock_irqrestore(&ps->lock, flags);
  
- 		ret = smu_cmn_send_smc_msg_with_param(smu,
- 				SMU_MSG_OverridePcieParameters,
-@@ -1962,11 +2023,6 @@ static int sienna_cichlid_update_pcie_pa
- 				NULL);
- 		if (ret)
- 			return ret;
--
--		if (table_member1[i] > pcie_gen_cap)
--			dpm_context->dpm_tables.pcie_table.pcie_gen[i] = pcie_gen_cap;
--		if (table_member2[i] > pcie_width_cap)
--			dpm_context->dpm_tables.pcie_table.pcie_lane[i] = pcie_width_cap;
+-		usb_free_coherent(ps->dev, usbm->size, usbm->mem,
+-				usbm->dma_handle);
++		hcd_buffer_free_pages(hcd, usbm->size,
++				usbm->mem, usbm->dma_handle);
+ 		usbfs_decrease_memory_usage(
+ 			usbm->size + sizeof(struct usb_memory));
+ 		kfree(usbm);
+@@ -234,8 +235,8 @@ static int usbdev_mmap(struct file *file
+ 		goto error_decrease_mem;
  	}
  
- 	return 0;
+-	mem = usb_alloc_coherent(ps->dev, size, GFP_USER | __GFP_NOWARN,
+-			&dma_handle);
++	mem = hcd_buffer_alloc_pages(hcd,
++			size, GFP_USER | __GFP_NOWARN, &dma_handle);
+ 	if (!mem) {
+ 		ret = -ENOMEM;
+ 		goto error_free_usbm;
+--- a/include/linux/usb/hcd.h
++++ b/include/linux/usb/hcd.h
+@@ -504,6 +504,11 @@ void *hcd_buffer_alloc(struct usb_bus *b
+ void hcd_buffer_free(struct usb_bus *bus, size_t size,
+ 	void *addr, dma_addr_t dma);
+ 
++void *hcd_buffer_alloc_pages(struct usb_hcd *hcd,
++		size_t size, gfp_t mem_flags, dma_addr_t *dma);
++void hcd_buffer_free_pages(struct usb_hcd *hcd,
++		size_t size, void *addr, dma_addr_t dma);
++
+ /* generic bus glue, needed for host controllers that don't use PCI */
+ extern irqreturn_t usb_hcd_irq(int irq, void *__hcd);
+ 
 
 
