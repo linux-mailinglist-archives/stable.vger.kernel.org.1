@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0D8472C12C
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:57:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5FEB72C23E
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:03:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237033AbjFLK5K (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:57:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58258 "EHLO
+        id S236431AbjFLLDo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:03:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237055AbjFLK4m (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:56:42 -0400
+        with ESMTP id S236733AbjFLLD2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:03:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C40CD5F6
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:44:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B158F7ED9
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:51:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CD983615CB
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:44:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD986C433EF;
-        Mon, 12 Jun 2023 10:44:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4ED8662523
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:51:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E181C433D2;
+        Mon, 12 Jun 2023 10:51:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566666;
-        bh=/S2lHOpUQxVqCj3h1NuNbFrdl5UTx6eM1nOF6OASFe4=;
+        s=korg; t=1686567074;
+        bh=Tbu2ok51QPVVY5W7T+bALWIj77KRewtAb9WN5gCVu5w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TK7a2kXj/fAIzBm5wV1nneZ8WkQWnXipKnf5O0E3F6uAA6et98s/CculRqZMmEstQ
-         WekO4MAISsReSh3HYh74jdit++sUZbAw1wCjCBUia3xlZh+6BAxhuJa8ahWDyTjK4E
-         E6EHr4xQZ/Tso1jobo4kGJW4MLySZ5H8YtB41hus=
+        b=WJ4QLhmVi5uAkPdAAOK4XPKgstJuhK44qko0t060VlP0TrlH2mo7/GluOgYjLKrAs
+         CLq3Bz4b/AM4KNjk3I2dvQuylF/gLUer3kqnQ1LkeWb7rrjX2nc1bawBnX/q7215Ot
+         kqX6B+OkkbtksWbru1lBTVgehKD+ANn3yrpv9R1s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Robert Hancock <robert.hancock@calian.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 111/132] ASoC: simple-card-utils: fix PCM constraint error check
+        =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Dmitry Rokosov <ddrokosov@sberdevices.ru>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.3 113/160] pinctrl: meson-axg: add missing GPIOA_18 gpio group
 Date:   Mon, 12 Jun 2023 12:27:25 +0200
-Message-ID: <20230612101715.360675747@linuxfoundation.org>
+Message-ID: <20230612101720.226303157@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,47 +56,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Robert Hancock <robert.hancock@calian.com>
+From: Martin Hundebøll <martin@geanix.com>
 
-[ Upstream commit 635071f5fee31550e921644b2becc42b3ff1036c ]
+commit 5b10ff013e8a57f8845615ac2cc37edf7f6eef05 upstream.
 
-The code in asoc_simple_startup was treating any non-zero return from
-snd_pcm_hw_constraint_minmax as an error, when this can return 1 in some
-normal cases and only negative values indicate an error.
+Without this, the gpio cannot be explicitly mux'ed to its gpio function.
 
-When this happened, it caused asoc_simple_startup to disable the clocks
-it just enabled and return 1, which was not treated as an error by the
-calling code which only checks for negative return values. Then when the
-PCM is eventually shut down, it causes the clock framework to complain
-about disabling clocks that were not enabled.
-
-Fix the check for snd_pcm_hw_constraint_minmax return value to only
-treat negative values as an error.
-
-Fixes: 5ca2ab459817 ("ASoC: simple-card-utils: Add new system-clock-fixed flag")
-Signed-off-by: Robert Hancock <robert.hancock@calian.com>
-Link: https://lore.kernel.org/r/20230602011936.231931-1-robert.hancock@calian.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 83c566806a68a ("pinctrl: meson-axg: Add new pinctrl driver for Meson AXG SoC")
+Cc: stable@vger.kernel.org
+Signed-off-by: Martin Hundebøll <martin@geanix.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
+Link: https://lore.kernel.org/r/20230512064925.133516-1-martin@geanix.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/generic/simple-card-utils.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/meson/pinctrl-meson-axg.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/generic/simple-card-utils.c b/sound/soc/generic/simple-card-utils.c
-index be69bbc47f813..8811321717fbb 100644
---- a/sound/soc/generic/simple-card-utils.c
-+++ b/sound/soc/generic/simple-card-utils.c
-@@ -335,7 +335,7 @@ int asoc_simple_startup(struct snd_pcm_substream *substream)
- 		}
- 		ret = snd_pcm_hw_constraint_minmax(substream->runtime, SNDRV_PCM_HW_PARAM_RATE,
- 			fixed_rate, fixed_rate);
--		if (ret)
-+		if (ret < 0)
- 			goto codec_err;
- 	}
+--- a/drivers/pinctrl/meson/pinctrl-meson-axg.c
++++ b/drivers/pinctrl/meson/pinctrl-meson-axg.c
+@@ -400,6 +400,7 @@ static struct meson_pmx_group meson_axg_
+ 	GPIO_GROUP(GPIOA_15),
+ 	GPIO_GROUP(GPIOA_16),
+ 	GPIO_GROUP(GPIOA_17),
++	GPIO_GROUP(GPIOA_18),
+ 	GPIO_GROUP(GPIOA_19),
+ 	GPIO_GROUP(GPIOA_20),
  
--- 
-2.39.2
-
 
 
