@@ -2,49 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DF5A72C140
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D09972C234
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:03:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236535AbjFLK5r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:57:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59960 "EHLO
+        id S237044AbjFLLDd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:03:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237055AbjFLK51 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:57:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2E2D55BD
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:45:19 -0700 (PDT)
+        with ESMTP id S237590AbjFLLDR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:03:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB1D27DA1
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:50:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B3C15615CB
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:45:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F615C4339B;
-        Mon, 12 Jun 2023 10:45:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B81FE62521
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:50:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C537AC433EF;
+        Mon, 12 Jun 2023 10:50:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566719;
-        bh=vGak1k/CCC26GG+PtlWR8IZFP72XZ8YIenrQ484rrGQ=;
+        s=korg; t=1686567056;
+        bh=AHGiYkjRQhfzyrQ2Me3LxjISK/CcpqlaFKZIJM9ekl8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lvvpx0pTBkuzqjJituzKIb3AT9W2vItOXdVTOuKQT5TP6jjv0u3ECPKXhJUYIKj+u
-         UZId42qryGk41nCIruTolirmEDZ0jAnJKFME+DdME6t4buniowtZUmHa6amW0sl8/h
-         H4RZbwzn05L36G1z4QgOQoyu0EW57Vjixzx1YFjU=
+        b=wA7HMiDTxKqa9SQRz/JUwaTzDnJwq1lPFpOBIYjaRHn48vCbkeHgfipYvkdMFF1o+
+         8QRp3rOegAY+z6O18PDzvnR1qDZbe0s0ACTjcLYqTsJLKQ2/uzd4BLaJ/c4cwDut5+
+         eBGQIj0qmWVm2QQ/9y9CX5L2sKI1pLue7LJQ8qBc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.1 131/132] wifi: rtw88: correct PS calculation for SUPPORTS_DYNAMIC_PS
+        patches@lists.linux.dev, Trevor Wu <trevor.wu@mediatek.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 133/160] ASoC: mediatek: mt8195: fix use-after-free in driver remove path
 Date:   Mon, 12 Jun 2023 12:27:45 +0200
-Message-ID: <20230612101716.139353423@linuxfoundation.org>
+Message-ID: <20230612101721.159149649@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,149 +57,173 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Trevor Wu <trevor.wu@mediatek.com>
 
-commit 3918dd0177ee08970683a2c22a3388825d82fd79 upstream.
+[ Upstream commit dc93f0dcb436dfd24a06c5b3c0f4c5cd9296e8e5 ]
 
-This driver relies on IEEE80211_CONF_PS of hw->conf.flags to turn off PS or
-turn on dynamic PS controlled by driver and firmware. Though this would be
-incorrect, it did work before because the flag is always recalculated until
-the commit 28977e790b5d ("wifi: mac80211: skip powersave recalc if driver SUPPORTS_DYNAMIC_PS")
-is introduced by kernel 5.20 to skip to recalculate IEEE80211_CONF_PS
-of hw->conf.flags if driver sets SUPPORTS_DYNAMIC_PS.
+During mt8195_afe_init_clock(), mt8195_audsys_clk_register() was called
+followed by several other devm functions. At mt8195_afe_deinit_clock()
+located at mt8195_afe_pcm_dev_remove(), mt8195_audsys_clk_unregister()
+was called.
 
-Correct this by doing recalculation while BSS_CHANGED_PS is changed and
-interface is added or removed. It is allowed to enter PS only if single
-one station vif is working. Without this fix, driver doesn't enter PS
-anymore that causes higher power consumption.
+However, there was an issue with the order in which these functions were
+called. Specifically, the remove callback of platform_driver was called
+before devres released the resource, resulting in a use-after-free issue
+during remove time.
 
-Fixes: bcde60e599fb ("rtw88: remove misleading module parameter rtw_fw_support_lps")
-Cc: stable@vger.kernel.org # 6.1+
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230527082939.11206-2-pkshih@realtek.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+At probe time, the order of calls was:
+1. mt8195_audsys_clk_register
+2. afe_priv->clk = devm_kcalloc
+3. afe_priv->clk[i] = devm_clk_get
+
+At remove time, the order of calls was:
+1. mt8195_audsys_clk_unregister
+3. free afe_priv->clk[i]
+2. free afe_priv->clk
+
+To resolve the problem, we can utilize devm_add_action_or_reset() in
+mt8195_audsys_clk_register() so that the remove order can be changed to
+3->2->1.
+
+Fixes: 6746cc858259 ("ASoC: mediatek: mt8195: add platform driver")
+Signed-off-by: Trevor Wu <trevor.wu@mediatek.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230601033318.10408-3-trevor.wu@mediatek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/mac80211.c |   14 +++-----
- drivers/net/wireless/realtek/rtw88/main.c     |    4 +-
- drivers/net/wireless/realtek/rtw88/ps.c       |   43 ++++++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw88/ps.h       |    2 +
- 4 files changed, 52 insertions(+), 11 deletions(-)
+ sound/soc/mediatek/mt8195/mt8195-afe-clk.c    |  5 --
+ sound/soc/mediatek/mt8195/mt8195-afe-clk.h    |  1 -
+ sound/soc/mediatek/mt8195/mt8195-afe-pcm.c    |  4 --
+ sound/soc/mediatek/mt8195/mt8195-audsys-clk.c | 47 ++++++++++---------
+ sound/soc/mediatek/mt8195/mt8195-audsys-clk.h |  1 -
+ 5 files changed, 24 insertions(+), 34 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtw88/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
-@@ -88,15 +88,6 @@ static int rtw_ops_config(struct ieee802
- 		}
+diff --git a/sound/soc/mediatek/mt8195/mt8195-afe-clk.c b/sound/soc/mediatek/mt8195/mt8195-afe-clk.c
+index 9ca2cb8c8a9c2..f35318ae07392 100644
+--- a/sound/soc/mediatek/mt8195/mt8195-afe-clk.c
++++ b/sound/soc/mediatek/mt8195/mt8195-afe-clk.c
+@@ -410,11 +410,6 @@ int mt8195_afe_init_clock(struct mtk_base_afe *afe)
+ 	return 0;
+ }
+ 
+-void mt8195_afe_deinit_clock(struct mtk_base_afe *afe)
+-{
+-	mt8195_audsys_clk_unregister(afe);
+-}
+-
+ int mt8195_afe_enable_clk(struct mtk_base_afe *afe, struct clk *clk)
+ {
+ 	int ret;
+diff --git a/sound/soc/mediatek/mt8195/mt8195-afe-clk.h b/sound/soc/mediatek/mt8195/mt8195-afe-clk.h
+index 40663e31becd1..a08c0ee6c8602 100644
+--- a/sound/soc/mediatek/mt8195/mt8195-afe-clk.h
++++ b/sound/soc/mediatek/mt8195/mt8195-afe-clk.h
+@@ -101,7 +101,6 @@ int mt8195_afe_get_mclk_source_clk_id(int sel);
+ int mt8195_afe_get_mclk_source_rate(struct mtk_base_afe *afe, int apll);
+ int mt8195_afe_get_default_mclk_source_by_rate(int rate);
+ int mt8195_afe_init_clock(struct mtk_base_afe *afe);
+-void mt8195_afe_deinit_clock(struct mtk_base_afe *afe);
+ int mt8195_afe_enable_clk(struct mtk_base_afe *afe, struct clk *clk);
+ void mt8195_afe_disable_clk(struct mtk_base_afe *afe, struct clk *clk);
+ int mt8195_afe_prepare_clk(struct mtk_base_afe *afe, struct clk *clk);
+diff --git a/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c b/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c
+index 9e45efeada55c..03dabc056b916 100644
+--- a/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c
++++ b/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c
+@@ -3255,15 +3255,11 @@ static int mt8195_afe_pcm_dev_probe(struct platform_device *pdev)
+ 
+ static void mt8195_afe_pcm_dev_remove(struct platform_device *pdev)
+ {
+-	struct mtk_base_afe *afe = platform_get_drvdata(pdev);
+-
+ 	snd_soc_unregister_component(&pdev->dev);
+ 
+ 	pm_runtime_disable(&pdev->dev);
+ 	if (!pm_runtime_status_suspended(&pdev->dev))
+ 		mt8195_afe_runtime_suspend(&pdev->dev);
+-
+-	mt8195_afe_deinit_clock(afe);
+ }
+ 
+ static const struct of_device_id mt8195_afe_pcm_dt_match[] = {
+diff --git a/sound/soc/mediatek/mt8195/mt8195-audsys-clk.c b/sound/soc/mediatek/mt8195/mt8195-audsys-clk.c
+index e0670e0dbd5b0..38594bc3f2f77 100644
+--- a/sound/soc/mediatek/mt8195/mt8195-audsys-clk.c
++++ b/sound/soc/mediatek/mt8195/mt8195-audsys-clk.c
+@@ -148,6 +148,29 @@ static const struct afe_gate aud_clks[CLK_AUD_NR_CLK] = {
+ 	GATE_AUD6(CLK_AUD_GASRC19, "aud_gasrc19", "top_asm_h", 19),
+ };
+ 
++static void mt8195_audsys_clk_unregister(void *data)
++{
++	struct mtk_base_afe *afe = data;
++	struct mt8195_afe_private *afe_priv = afe->platform_priv;
++	struct clk *clk;
++	struct clk_lookup *cl;
++	int i;
++
++	if (!afe_priv)
++		return;
++
++	for (i = 0; i < CLK_AUD_NR_CLK; i++) {
++		cl = afe_priv->lookup[i];
++		if (!cl)
++			continue;
++
++		clk = cl->clk;
++		clk_unregister_gate(clk);
++
++		clkdev_drop(cl);
++	}
++}
++
+ int mt8195_audsys_clk_register(struct mtk_base_afe *afe)
+ {
+ 	struct mt8195_afe_private *afe_priv = afe->platform_priv;
+@@ -188,27 +211,5 @@ int mt8195_audsys_clk_register(struct mtk_base_afe *afe)
+ 		afe_priv->lookup[i] = cl;
  	}
  
--	if (changed & IEEE80211_CONF_CHANGE_PS) {
--		if (hw->conf.flags & IEEE80211_CONF_PS) {
--			rtwdev->ps_enabled = true;
--		} else {
--			rtwdev->ps_enabled = false;
--			rtw_leave_lps(rtwdev);
--		}
--	}
+-	return 0;
+-}
 -
- 	if (changed & IEEE80211_CONF_CHANGE_CHANNEL)
- 		rtw_set_channel(rtwdev);
- 
-@@ -206,6 +197,7 @@ static int rtw_ops_add_interface(struct
- 	rtwvif->bcn_ctrl = bcn_ctrl;
- 	config |= PORT_SET_BCN_CTRL;
- 	rtw_vif_port_config(rtwdev, rtwvif, config);
-+	rtw_recalc_lps(rtwdev, vif);
- 
- 	mutex_unlock(&rtwdev->mutex);
- 
-@@ -236,6 +228,7 @@ static void rtw_ops_remove_interface(str
- 	rtwvif->bcn_ctrl = 0;
- 	config |= PORT_SET_BCN_CTRL;
- 	rtw_vif_port_config(rtwdev, rtwvif, config);
-+	rtw_recalc_lps(rtwdev, NULL);
- 
- 	mutex_unlock(&rtwdev->mutex);
+-void mt8195_audsys_clk_unregister(struct mtk_base_afe *afe)
+-{
+-	struct mt8195_afe_private *afe_priv = afe->platform_priv;
+-	struct clk *clk;
+-	struct clk_lookup *cl;
+-	int i;
+-
+-	if (!afe_priv)
+-		return;
+-
+-	for (i = 0; i < CLK_AUD_NR_CLK; i++) {
+-		cl = afe_priv->lookup[i];
+-		if (!cl)
+-			continue;
+-
+-		clk = cl->clk;
+-		clk_unregister_gate(clk);
+-
+-		clkdev_drop(cl);
+-	}
++	return devm_add_action_or_reset(afe->dev, mt8195_audsys_clk_unregister, afe);
  }
-@@ -428,6 +421,9 @@ static void rtw_ops_bss_info_changed(str
- 	if (changed & BSS_CHANGED_ERP_SLOT)
- 		rtw_conf_tx(rtwdev, rtwvif);
+diff --git a/sound/soc/mediatek/mt8195/mt8195-audsys-clk.h b/sound/soc/mediatek/mt8195/mt8195-audsys-clk.h
+index 239d31016ba76..69db2dd1c9e02 100644
+--- a/sound/soc/mediatek/mt8195/mt8195-audsys-clk.h
++++ b/sound/soc/mediatek/mt8195/mt8195-audsys-clk.h
+@@ -10,6 +10,5 @@
+ #define _MT8195_AUDSYS_CLK_H_
  
-+	if (changed & BSS_CHANGED_PS)
-+		rtw_recalc_lps(rtwdev, NULL);
-+
- 	rtw_vif_port_config(rtwdev, rtwvif, config);
+ int mt8195_audsys_clk_register(struct mtk_base_afe *afe);
+-void mt8195_audsys_clk_unregister(struct mtk_base_afe *afe);
  
- 	mutex_unlock(&rtwdev->mutex);
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -248,8 +248,8 @@ static void rtw_watch_dog_work(struct wo
- 	 * more than two stations associated to the AP, then we can not enter
- 	 * lps, because fw does not handle the overlapped beacon interval
- 	 *
--	 * mac80211 should iterate vifs and determine if driver can enter
--	 * ps by passing IEEE80211_CONF_PS to us, all we need to do is to
-+	 * rtw_recalc_lps() iterate vifs and determine if driver can enter
-+	 * ps by vif->type and vif->cfg.ps, all we need to do here is to
- 	 * get that vif and check if device is having traffic more than the
- 	 * threshold.
- 	 */
---- a/drivers/net/wireless/realtek/rtw88/ps.c
-+++ b/drivers/net/wireless/realtek/rtw88/ps.c
-@@ -299,3 +299,46 @@ void rtw_leave_lps_deep(struct rtw_dev *
- 
- 	__rtw_leave_lps_deep(rtwdev);
- }
-+
-+struct rtw_vif_recalc_lps_iter_data {
-+	struct rtw_dev *rtwdev;
-+	struct ieee80211_vif *found_vif;
-+	int count;
-+};
-+
-+static void __rtw_vif_recalc_lps(struct rtw_vif_recalc_lps_iter_data *data,
-+				 struct ieee80211_vif *vif)
-+{
-+	if (data->count < 0)
-+		return;
-+
-+	if (vif->type != NL80211_IFTYPE_STATION) {
-+		data->count = -1;
-+		return;
-+	}
-+
-+	data->count++;
-+	data->found_vif = vif;
-+}
-+
-+static void rtw_vif_recalc_lps_iter(void *data, u8 *mac,
-+				    struct ieee80211_vif *vif)
-+{
-+	__rtw_vif_recalc_lps(data, vif);
-+}
-+
-+void rtw_recalc_lps(struct rtw_dev *rtwdev, struct ieee80211_vif *new_vif)
-+{
-+	struct rtw_vif_recalc_lps_iter_data data = { .rtwdev = rtwdev };
-+
-+	if (new_vif)
-+		__rtw_vif_recalc_lps(&data, new_vif);
-+	rtw_iterate_vifs(rtwdev, rtw_vif_recalc_lps_iter, &data);
-+
-+	if (data.count == 1 && data.found_vif->cfg.ps) {
-+		rtwdev->ps_enabled = true;
-+	} else {
-+		rtwdev->ps_enabled = false;
-+		rtw_leave_lps(rtwdev);
-+	}
-+}
---- a/drivers/net/wireless/realtek/rtw88/ps.h
-+++ b/drivers/net/wireless/realtek/rtw88/ps.h
-@@ -23,4 +23,6 @@ void rtw_enter_lps(struct rtw_dev *rtwde
- void rtw_leave_lps(struct rtw_dev *rtwdev);
- void rtw_leave_lps_deep(struct rtw_dev *rtwdev);
- enum rtw_lps_deep_mode rtw_get_lps_deep_mode(struct rtw_dev *rtwdev);
-+void rtw_recalc_lps(struct rtw_dev *rtwdev, struct ieee80211_vif *new_vif);
-+
  #endif
+-- 
+2.39.2
+
 
 
