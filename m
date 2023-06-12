@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70A2972C0A3
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:53:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A817A72C221
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:03:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236127AbjFLKxr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:53:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55930 "EHLO
+        id S237488AbjFLLDG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:03:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235758AbjFLKxa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:53:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5996AD15A
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:38:20 -0700 (PDT)
+        with ESMTP id S236983AbjFLLCa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:02:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E96474C27
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:50:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 879C9612B4
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:38:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B482C433D2;
-        Mon, 12 Jun 2023 10:38:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 85079624E7
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:50:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 978B3C433EF;
+        Mon, 12 Jun 2023 10:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566299;
-        bh=v2BrSqRNMp8NySsv92SzCQlC5pKQXFPtsYAUG9mTth8=;
+        s=korg; t=1686567005;
+        bh=D407yoHy8k15nn4A+GJw2lD3h6C6R2U50/wzyNSiIwM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nGAmhYA2QwLDSmHgaixLnbfyeAsS8IIWLEI0TlG5Sa2IL+2yxPI7ur3N2HOafxvRt
-         eRSNA2xOgncN9o5p2i/pI9IgeqtE+b79cQHX2J521ZJQtC2Je8YV8IzrFvKjbb7+2h
-         vzo4TbM0ivDbGuk2Z/QZ2p0GpnAM1d/6i1mIehms=
+        b=DibpDco0kM2T/ZVagu26J0RjEZb8QKYpsllzVlDSvSsjH87jJcs45aAMLsCnrIObY
+         htsKH6dI5N17k2kgV64xm5uS5iENcacTyaBAFUZBToEu0DgXBzf11zf+yBisWwoYv9
+         3apkeuCTmJbl7Meb/t5LsNKlh3txo9Zu9NitSBII=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+fcf1a817ceb50935ce99@syzkaller.appspotmail.comm,
-        Ruihan Li <lrh2000@pku.edu.cn>,
-        Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.15 69/91] usb: usbfs: Enforce page requirements for mmap
+        patches@lists.linux.dev, Chia-I Wu <olvaffe@gmail.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.3 086/160] drm/amdgpu: fix xclk freq on CHIP_STONEY
 Date:   Mon, 12 Jun 2023 12:26:58 +0200
-Message-ID: <20230612101704.962816916@linuxfoundation.org>
+Message-ID: <20230612101718.942165045@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
-References: <20230612101702.085813286@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,140 +53,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ruihan Li <lrh2000@pku.edu.cn>
+From: Chia-I Wu <olvaffe@gmail.com>
 
-commit 0143d148d1e882fb1538dc9974c94d63961719b9 upstream.
+commit b447b079cf3a9971ea4d31301e673f49612ccc18 upstream.
 
-The current implementation of usbdev_mmap uses usb_alloc_coherent to
-allocate memory pages that will later be mapped into the user space.
-Meanwhile, usb_alloc_coherent employs three different methods to
-allocate memory, as outlined below:
- * If hcd->localmem_pool is non-null, it uses gen_pool_dma_alloc to
-   allocate memory;
- * If DMA is not available, it uses kmalloc to allocate memory;
- * Otherwise, it uses dma_alloc_coherent.
+According to Alex, most APUs from that time seem to have the same issue
+(vbios says 48Mhz, actual is 100Mhz).  I only have a CHIP_STONEY so I
+limit the fixup to CHIP_STONEY
 
-However, it should be noted that gen_pool_dma_alloc does not guarantee
-that the resulting memory will be page-aligned. Furthermore, trying to
-map slab pages (i.e., memory allocated by kmalloc) into the user space
-is not resonable and can lead to problems, such as a type confusion bug
-when PAGE_TABLE_CHECK=y [1].
-
-To address these issues, this patch introduces hcd_alloc_coherent_pages,
-which addresses the above two problems. Specifically,
-hcd_alloc_coherent_pages uses gen_pool_dma_alloc_align instead of
-gen_pool_dma_alloc to ensure that the memory is page-aligned. To replace
-kmalloc, hcd_alloc_coherent_pages directly allocates pages by calling
-__get_free_pages.
-
-Reported-by: syzbot+fcf1a817ceb50935ce99@syzkaller.appspotmail.comm
-Closes: https://lore.kernel.org/lkml/000000000000258e5e05fae79fc1@google.com/ [1]
-Fixes: f7d34b445abc ("USB: Add support for usbfs zerocopy.")
-Fixes: ff2437befd8f ("usb: host: Fix excessive alignment restriction for local memory allocations")
+Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20230515130958.32471-2-lrh2000@pku.edu.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/buffer.c |   41 +++++++++++++++++++++++++++++++++++++++++
- drivers/usb/core/devio.c  |    9 +++++----
- include/linux/usb/hcd.h   |    5 +++++
- 3 files changed, 51 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/vi.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/core/buffer.c
-+++ b/drivers/usb/core/buffer.c
-@@ -172,3 +172,44 @@ void hcd_buffer_free(
- 	}
- 	dma_free_coherent(hcd->self.sysdev, size, addr, dma);
- }
-+
-+void *hcd_buffer_alloc_pages(struct usb_hcd *hcd,
-+		size_t size, gfp_t mem_flags, dma_addr_t *dma)
-+{
-+	if (size == 0)
-+		return NULL;
-+
-+	if (hcd->localmem_pool)
-+		return gen_pool_dma_alloc_align(hcd->localmem_pool,
-+				size, dma, PAGE_SIZE);
-+
-+	/* some USB hosts just use PIO */
-+	if (!hcd_uses_dma(hcd)) {
-+		*dma = DMA_MAPPING_ERROR;
-+		return (void *)__get_free_pages(mem_flags,
-+				get_order(size));
+--- a/drivers/gpu/drm/amd/amdgpu/vi.c
++++ b/drivers/gpu/drm/amd/amdgpu/vi.c
+@@ -542,8 +542,15 @@ static u32 vi_get_xclk(struct amdgpu_dev
+ 	u32 reference_clock = adev->clock.spll.reference_freq;
+ 	u32 tmp;
+ 
+-	if (adev->flags & AMD_IS_APU)
+-		return reference_clock;
++	if (adev->flags & AMD_IS_APU) {
++		switch (adev->asic_type) {
++		case CHIP_STONEY:
++			/* vbios says 48Mhz, but the actual freq is 100Mhz */
++			return 10000;
++		default:
++			return reference_clock;
++		}
 +	}
-+
-+	return dma_alloc_coherent(hcd->self.sysdev,
-+			size, dma, mem_flags);
-+}
-+
-+void hcd_buffer_free_pages(struct usb_hcd *hcd,
-+		size_t size, void *addr, dma_addr_t dma)
-+{
-+	if (!addr)
-+		return;
-+
-+	if (hcd->localmem_pool) {
-+		gen_pool_free(hcd->localmem_pool,
-+				(unsigned long)addr, size);
-+		return;
-+	}
-+
-+	if (!hcd_uses_dma(hcd)) {
-+		free_pages((unsigned long)addr, get_order(size));
-+		return;
-+	}
-+
-+	dma_free_coherent(hcd->self.sysdev, size, addr, dma);
-+}
---- a/drivers/usb/core/devio.c
-+++ b/drivers/usb/core/devio.c
-@@ -174,6 +174,7 @@ static int connected(struct usb_dev_stat
- static void dec_usb_memory_use_count(struct usb_memory *usbm, int *count)
- {
- 	struct usb_dev_state *ps = usbm->ps;
-+	struct usb_hcd *hcd = bus_to_hcd(ps->dev->bus);
- 	unsigned long flags;
  
- 	spin_lock_irqsave(&ps->lock, flags);
-@@ -182,8 +183,8 @@ static void dec_usb_memory_use_count(str
- 		list_del(&usbm->memlist);
- 		spin_unlock_irqrestore(&ps->lock, flags);
- 
--		usb_free_coherent(ps->dev, usbm->size, usbm->mem,
--				usbm->dma_handle);
-+		hcd_buffer_free_pages(hcd, usbm->size,
-+				usbm->mem, usbm->dma_handle);
- 		usbfs_decrease_memory_usage(
- 			usbm->size + sizeof(struct usb_memory));
- 		kfree(usbm);
-@@ -235,8 +236,8 @@ static int usbdev_mmap(struct file *file
- 		goto error_decrease_mem;
- 	}
- 
--	mem = usb_alloc_coherent(ps->dev, size, GFP_USER | __GFP_NOWARN,
--			&dma_handle);
-+	mem = hcd_buffer_alloc_pages(hcd,
-+			size, GFP_USER | __GFP_NOWARN, &dma_handle);
- 	if (!mem) {
- 		ret = -ENOMEM;
- 		goto error_free_usbm;
---- a/include/linux/usb/hcd.h
-+++ b/include/linux/usb/hcd.h
-@@ -515,6 +515,11 @@ void *hcd_buffer_alloc(struct usb_bus *b
- void hcd_buffer_free(struct usb_bus *bus, size_t size,
- 	void *addr, dma_addr_t dma);
- 
-+void *hcd_buffer_alloc_pages(struct usb_hcd *hcd,
-+		size_t size, gfp_t mem_flags, dma_addr_t *dma);
-+void hcd_buffer_free_pages(struct usb_hcd *hcd,
-+		size_t size, void *addr, dma_addr_t dma);
-+
- /* generic bus glue, needed for host controllers that don't use PCI */
- extern irqreturn_t usb_hcd_irq(int irq, void *__hcd);
- 
+ 	tmp = RREG32_SMC(ixCG_CLKPIN_CNTL_2);
+ 	if (REG_GET_FIELD(tmp, CG_CLKPIN_CNTL_2, MUX_TCLK_TO_XCLK))
 
 
