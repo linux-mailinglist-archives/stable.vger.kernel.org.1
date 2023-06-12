@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FCCF72C131
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:57:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0D8472C12C
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:57:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236823AbjFLK5U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:57:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32972 "EHLO
+        id S237033AbjFLK5K (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:57:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236984AbjFLK5H (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:57:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D404E54D
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:44:40 -0700 (PDT)
+        with ESMTP id S237055AbjFLK4m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:56:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C40CD5F6
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:44:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 218186242D
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:44:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3621FC433EF;
-        Mon, 12 Jun 2023 10:44:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CD983615CB
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:44:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD986C433EF;
+        Mon, 12 Jun 2023 10:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566679;
-        bh=AHGiYkjRQhfzyrQ2Me3LxjISK/CcpqlaFKZIJM9ekl8=;
+        s=korg; t=1686566666;
+        bh=/S2lHOpUQxVqCj3h1NuNbFrdl5UTx6eM1nOF6OASFe4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HDNEP5pUET4tSTgidwkxVdks6xgre0exAwHcKzmBt6J2Xp7HOnl5ZntOrdNbtJ+yh
-         +7oyUXMjik4fOLTdjGWO5ve4UXsMIOk3JyXmJ0moxJh3Q+RmVcy/QB6q9M9SaXn9Me
-         94q9dW9LKa/W7LIY8SUbkE9P7bEgQaML4Cv0ZODw=
+        b=TK7a2kXj/fAIzBm5wV1nneZ8WkQWnXipKnf5O0E3F6uAA6et98s/CculRqZMmEstQ
+         WekO4MAISsReSh3HYh74jdit++sUZbAw1wCjCBUia3xlZh+6BAxhuJa8ahWDyTjK4E
+         E6EHr4xQZ/Tso1jobo4kGJW4MLySZ5H8YtB41hus=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Trevor Wu <trevor.wu@mediatek.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
+        patches@lists.linux.dev,
+        Robert Hancock <robert.hancock@calian.com>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 110/132] ASoC: mediatek: mt8195: fix use-after-free in driver remove path
-Date:   Mon, 12 Jun 2023 12:27:24 +0200
-Message-ID: <20230612101715.314004850@linuxfoundation.org>
+Subject: [PATCH 6.1 111/132] ASoC: simple-card-utils: fix PCM constraint error check
+Date:   Mon, 12 Jun 2023 12:27:25 +0200
+Message-ID: <20230612101715.360675747@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
 References: <20230612101710.279705932@linuxfoundation.org>
@@ -47,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,171 +55,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Trevor Wu <trevor.wu@mediatek.com>
+From: Robert Hancock <robert.hancock@calian.com>
 
-[ Upstream commit dc93f0dcb436dfd24a06c5b3c0f4c5cd9296e8e5 ]
+[ Upstream commit 635071f5fee31550e921644b2becc42b3ff1036c ]
 
-During mt8195_afe_init_clock(), mt8195_audsys_clk_register() was called
-followed by several other devm functions. At mt8195_afe_deinit_clock()
-located at mt8195_afe_pcm_dev_remove(), mt8195_audsys_clk_unregister()
-was called.
+The code in asoc_simple_startup was treating any non-zero return from
+snd_pcm_hw_constraint_minmax as an error, when this can return 1 in some
+normal cases and only negative values indicate an error.
 
-However, there was an issue with the order in which these functions were
-called. Specifically, the remove callback of platform_driver was called
-before devres released the resource, resulting in a use-after-free issue
-during remove time.
+When this happened, it caused asoc_simple_startup to disable the clocks
+it just enabled and return 1, which was not treated as an error by the
+calling code which only checks for negative return values. Then when the
+PCM is eventually shut down, it causes the clock framework to complain
+about disabling clocks that were not enabled.
 
-At probe time, the order of calls was:
-1. mt8195_audsys_clk_register
-2. afe_priv->clk = devm_kcalloc
-3. afe_priv->clk[i] = devm_clk_get
+Fix the check for snd_pcm_hw_constraint_minmax return value to only
+treat negative values as an error.
 
-At remove time, the order of calls was:
-1. mt8195_audsys_clk_unregister
-3. free afe_priv->clk[i]
-2. free afe_priv->clk
-
-To resolve the problem, we can utilize devm_add_action_or_reset() in
-mt8195_audsys_clk_register() so that the remove order can be changed to
-3->2->1.
-
-Fixes: 6746cc858259 ("ASoC: mediatek: mt8195: add platform driver")
-Signed-off-by: Trevor Wu <trevor.wu@mediatek.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230601033318.10408-3-trevor.wu@mediatek.com
+Fixes: 5ca2ab459817 ("ASoC: simple-card-utils: Add new system-clock-fixed flag")
+Signed-off-by: Robert Hancock <robert.hancock@calian.com>
+Link: https://lore.kernel.org/r/20230602011936.231931-1-robert.hancock@calian.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/mt8195/mt8195-afe-clk.c    |  5 --
- sound/soc/mediatek/mt8195/mt8195-afe-clk.h    |  1 -
- sound/soc/mediatek/mt8195/mt8195-afe-pcm.c    |  4 --
- sound/soc/mediatek/mt8195/mt8195-audsys-clk.c | 47 ++++++++++---------
- sound/soc/mediatek/mt8195/mt8195-audsys-clk.h |  1 -
- 5 files changed, 24 insertions(+), 34 deletions(-)
+ sound/soc/generic/simple-card-utils.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/mediatek/mt8195/mt8195-afe-clk.c b/sound/soc/mediatek/mt8195/mt8195-afe-clk.c
-index 9ca2cb8c8a9c2..f35318ae07392 100644
---- a/sound/soc/mediatek/mt8195/mt8195-afe-clk.c
-+++ b/sound/soc/mediatek/mt8195/mt8195-afe-clk.c
-@@ -410,11 +410,6 @@ int mt8195_afe_init_clock(struct mtk_base_afe *afe)
- 	return 0;
- }
- 
--void mt8195_afe_deinit_clock(struct mtk_base_afe *afe)
--{
--	mt8195_audsys_clk_unregister(afe);
--}
--
- int mt8195_afe_enable_clk(struct mtk_base_afe *afe, struct clk *clk)
- {
- 	int ret;
-diff --git a/sound/soc/mediatek/mt8195/mt8195-afe-clk.h b/sound/soc/mediatek/mt8195/mt8195-afe-clk.h
-index 40663e31becd1..a08c0ee6c8602 100644
---- a/sound/soc/mediatek/mt8195/mt8195-afe-clk.h
-+++ b/sound/soc/mediatek/mt8195/mt8195-afe-clk.h
-@@ -101,7 +101,6 @@ int mt8195_afe_get_mclk_source_clk_id(int sel);
- int mt8195_afe_get_mclk_source_rate(struct mtk_base_afe *afe, int apll);
- int mt8195_afe_get_default_mclk_source_by_rate(int rate);
- int mt8195_afe_init_clock(struct mtk_base_afe *afe);
--void mt8195_afe_deinit_clock(struct mtk_base_afe *afe);
- int mt8195_afe_enable_clk(struct mtk_base_afe *afe, struct clk *clk);
- void mt8195_afe_disable_clk(struct mtk_base_afe *afe, struct clk *clk);
- int mt8195_afe_prepare_clk(struct mtk_base_afe *afe, struct clk *clk);
-diff --git a/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c b/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c
-index 9e45efeada55c..03dabc056b916 100644
---- a/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c
-+++ b/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c
-@@ -3255,15 +3255,11 @@ static int mt8195_afe_pcm_dev_probe(struct platform_device *pdev)
- 
- static void mt8195_afe_pcm_dev_remove(struct platform_device *pdev)
- {
--	struct mtk_base_afe *afe = platform_get_drvdata(pdev);
--
- 	snd_soc_unregister_component(&pdev->dev);
- 
- 	pm_runtime_disable(&pdev->dev);
- 	if (!pm_runtime_status_suspended(&pdev->dev))
- 		mt8195_afe_runtime_suspend(&pdev->dev);
--
--	mt8195_afe_deinit_clock(afe);
- }
- 
- static const struct of_device_id mt8195_afe_pcm_dt_match[] = {
-diff --git a/sound/soc/mediatek/mt8195/mt8195-audsys-clk.c b/sound/soc/mediatek/mt8195/mt8195-audsys-clk.c
-index e0670e0dbd5b0..38594bc3f2f77 100644
---- a/sound/soc/mediatek/mt8195/mt8195-audsys-clk.c
-+++ b/sound/soc/mediatek/mt8195/mt8195-audsys-clk.c
-@@ -148,6 +148,29 @@ static const struct afe_gate aud_clks[CLK_AUD_NR_CLK] = {
- 	GATE_AUD6(CLK_AUD_GASRC19, "aud_gasrc19", "top_asm_h", 19),
- };
- 
-+static void mt8195_audsys_clk_unregister(void *data)
-+{
-+	struct mtk_base_afe *afe = data;
-+	struct mt8195_afe_private *afe_priv = afe->platform_priv;
-+	struct clk *clk;
-+	struct clk_lookup *cl;
-+	int i;
-+
-+	if (!afe_priv)
-+		return;
-+
-+	for (i = 0; i < CLK_AUD_NR_CLK; i++) {
-+		cl = afe_priv->lookup[i];
-+		if (!cl)
-+			continue;
-+
-+		clk = cl->clk;
-+		clk_unregister_gate(clk);
-+
-+		clkdev_drop(cl);
-+	}
-+}
-+
- int mt8195_audsys_clk_register(struct mtk_base_afe *afe)
- {
- 	struct mt8195_afe_private *afe_priv = afe->platform_priv;
-@@ -188,27 +211,5 @@ int mt8195_audsys_clk_register(struct mtk_base_afe *afe)
- 		afe_priv->lookup[i] = cl;
+diff --git a/sound/soc/generic/simple-card-utils.c b/sound/soc/generic/simple-card-utils.c
+index be69bbc47f813..8811321717fbb 100644
+--- a/sound/soc/generic/simple-card-utils.c
++++ b/sound/soc/generic/simple-card-utils.c
+@@ -335,7 +335,7 @@ int asoc_simple_startup(struct snd_pcm_substream *substream)
+ 		}
+ 		ret = snd_pcm_hw_constraint_minmax(substream->runtime, SNDRV_PCM_HW_PARAM_RATE,
+ 			fixed_rate, fixed_rate);
+-		if (ret)
++		if (ret < 0)
+ 			goto codec_err;
  	}
  
--	return 0;
--}
--
--void mt8195_audsys_clk_unregister(struct mtk_base_afe *afe)
--{
--	struct mt8195_afe_private *afe_priv = afe->platform_priv;
--	struct clk *clk;
--	struct clk_lookup *cl;
--	int i;
--
--	if (!afe_priv)
--		return;
--
--	for (i = 0; i < CLK_AUD_NR_CLK; i++) {
--		cl = afe_priv->lookup[i];
--		if (!cl)
--			continue;
--
--		clk = cl->clk;
--		clk_unregister_gate(clk);
--
--		clkdev_drop(cl);
--	}
-+	return devm_add_action_or_reset(afe->dev, mt8195_audsys_clk_unregister, afe);
- }
-diff --git a/sound/soc/mediatek/mt8195/mt8195-audsys-clk.h b/sound/soc/mediatek/mt8195/mt8195-audsys-clk.h
-index 239d31016ba76..69db2dd1c9e02 100644
---- a/sound/soc/mediatek/mt8195/mt8195-audsys-clk.h
-+++ b/sound/soc/mediatek/mt8195/mt8195-audsys-clk.h
-@@ -10,6 +10,5 @@
- #define _MT8195_AUDSYS_CLK_H_
- 
- int mt8195_audsys_clk_register(struct mtk_base_afe *afe);
--void mt8195_audsys_clk_unregister(struct mtk_base_afe *afe);
- 
- #endif
 -- 
 2.39.2
 
