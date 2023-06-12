@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74B1572C0B2
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:54:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22BE572C122
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:56:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235758AbjFLKyJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:54:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55642 "EHLO
+        id S236948AbjFLK4d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:56:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235965AbjFLKxr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:53:47 -0400
+        with ESMTP id S236539AbjFLK4U (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:56:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF2706587
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:38:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB04EA850
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:44:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BFEE2612E1
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:38:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D323DC433EF;
-        Mon, 12 Jun 2023 10:38:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3185D612E8
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:44:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B622C433EF;
+        Mon, 12 Jun 2023 10:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566338;
-        bh=tfWdPRvcclp8G4QZU+xabn493pIUaeMFIIBQDGdFWEo=;
+        s=korg; t=1686566639;
+        bh=87/2ABLTJfH0R946A73ilL4HQfbigVKWtTZD+m6xuxI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Oanpwo82XIxBAPKWSl+HnG6Kv2ewjBjuidUAxi3aK7d5NBSCGS6hjDx0ATP0LlaSk
-         3LJ7DVM4EOe6rHMzhyFVcDHvH86yAtmYnfyW50S98G3AAMITbOGN0A1RlYbTpHDm1n
-         qWsF8Doou5bLUMZ6EnAyPoqoqOssD1DRID9fNBwg=
+        b=jF4mCX4PZnAfCnhU/75/ztBJPL2aNLjSC2O3Z/bOwVOcVOoN3gWQ9YAl1quhcfy+Z
+         jp+rrUNbaoOntpSrQPqV2acRxaemp+iTzqE8NrbsF8HItVFBelpoCTrt2gXon1B1ac
+         I5tD/yTsc5wdhpbWIFGLjm9agCXrymZwH93248hU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shannon Nelson <shannon.nelson@amd.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
+        patches@lists.linux.dev,
+        Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 86/91] vhost_vdpa: support PACKED when setting-getting vring_base
+Subject: [PATCH 6.1 101/132] arm64: dts: qcom: sc8280xp: Flush RSC sleep & wake votes
 Date:   Mon, 12 Jun 2023 12:27:15 +0200
-Message-ID: <20230612101705.712493507@linuxfoundation.org>
+Message-ID: <20230612101714.906005950@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
-References: <20230612101702.085813286@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,62 +56,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-[ Upstream commit beee7fdb5b56a46415a4992d28dd4c2d06eb52df ]
+[ Upstream commit ce7c014937c442be677963848c7db62eccd94eac ]
 
-Use the right structs for PACKED or split vqs when setting and
-getting the vring base.
+The rpmh driver will cache sleep and wake votes until the cluster
+power-domain is about to enter idle, to avoid unnecessary writes. So
+associate the apps_rsc with the cluster pd, so that it can be notified
+about this event.
 
-Fixes: 4c8cf31885f6 ("vhost: introduce vDPA-based backend")
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Message-Id: <20230424225031.18947-4-shannon.nelson@amd.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+Without this, only AMC votes are being commited.
+
+Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Fixes: 152d1faf1e2f ("arm64: dts: qcom: add SC8280XP platform")
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230512150425.3171122-1-quic_bjorande@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/vdpa.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/sc8280xp.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-index 299a995326185..9ca8b92d92ae4 100644
---- a/drivers/vhost/vdpa.c
-+++ b/drivers/vhost/vdpa.c
-@@ -392,7 +392,14 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
- 		if (r)
- 			return r;
+diff --git a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
+index ba684d980cf26..1afc960bab5c9 100644
+--- a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
+@@ -1727,6 +1727,7 @@ apps_rsc: rsc@18200000 {
+ 			qcom,tcs-config = <ACTIVE_TCS  2>, <SLEEP_TCS   3>,
+ 					  <WAKE_TCS    3>, <CONTROL_TCS 1>;
+ 			label = "apps_rsc";
++			power-domains = <&CLUSTER_PD>;
  
--		vq->last_avail_idx = vq_state.split.avail_index;
-+		if (vhost_has_feature(vq, VIRTIO_F_RING_PACKED)) {
-+			vq->last_avail_idx = vq_state.packed.last_avail_idx |
-+					     (vq_state.packed.last_avail_counter << 15);
-+			vq->last_used_idx = vq_state.packed.last_used_idx |
-+					    (vq_state.packed.last_used_counter << 15);
-+		} else {
-+			vq->last_avail_idx = vq_state.split.avail_index;
-+		}
- 		break;
- 	}
- 
-@@ -410,9 +417,15 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
- 		break;
- 
- 	case VHOST_SET_VRING_BASE:
--		vq_state.split.avail_index = vq->last_avail_idx;
--		if (ops->set_vq_state(vdpa, idx, &vq_state))
--			r = -EINVAL;
-+		if (vhost_has_feature(vq, VIRTIO_F_RING_PACKED)) {
-+			vq_state.packed.last_avail_idx = vq->last_avail_idx & 0x7fff;
-+			vq_state.packed.last_avail_counter = !!(vq->last_avail_idx & 0x8000);
-+			vq_state.packed.last_used_idx = vq->last_used_idx & 0x7fff;
-+			vq_state.packed.last_used_counter = !!(vq->last_used_idx & 0x8000);
-+		} else {
-+			vq_state.split.avail_index = vq->last_avail_idx;
-+		}
-+		r = ops->set_vq_state(vdpa, idx, &vq_state);
- 		break;
- 
- 	case VHOST_SET_VRING_CALL:
+ 			apps_bcm_voter: bcm-voter {
+ 				compatible = "qcom,bcm-voter";
 -- 
 2.39.2
 
