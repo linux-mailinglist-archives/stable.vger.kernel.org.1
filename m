@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D45A472BFEF
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:48:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D278472C07D
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:53:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235401AbjFLKsL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:48:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51740 "EHLO
+        id S236030AbjFLKxB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:53:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229726AbjFLKrv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:47:51 -0400
+        with ESMTP id S235796AbjFLKwq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:52:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B226E64
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:32:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8ED13C28
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:37:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5ADBE623CE
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:32:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66A96C433A0;
-        Mon, 12 Jun 2023 10:32:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 98FAA60C2D
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:37:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B208EC433EF;
+        Mon, 12 Jun 2023 10:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565959;
-        bh=Tyco2/frODmM11+aSp8BZ4JqeKefzybVQDxmZCHymYE=;
+        s=korg; t=1686566226;
+        bh=oXResC91VdN7eCvf90K4ovTtAdv43tdV262UchwJIrM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H8De3rFyFG0uVsmBtjUKy3GOiQ++CW5N6gS5lsWa/Ja8KYRGuOHOTGZjPiwTO/L90
-         UPpulh5Hy/BkkD7Mquc1CqVeiOFh9jtn1a4HPPxI0ErHqP/A407kS/pBK4JRYXH1Tu
-         z7hAbr6K+Qm505Cqx3Mf1vCDjcf4ZHUb+9jzJ+GU=
+        b=iN1U30OH9Eulgph+zyCvwtyQAtgXIgDgzEYjrtUS/BZUyj0sEX5n/wQZADnZdWb2+
+         etdxAgvArYxSxOqTffTkpT2GeACDajF4AhTLbtEZXuQZ89q26YOmbApL5iBgpzVHnE
+         3pt2tZcVDIc6AzHWusOW37AIPySMU/E8o7Du5Ho8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev
-Subject: [PATCH 5.10 11/68] i40e: fix build warning in ice_fltr_add_mac_to_list()
+        patches@lists.linux.dev, Lorenzo Bianconi <lorenzo@kernel.org>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 14/91] wifi: mt76: mt7615: fix possible race in mt7615_mac_sta_poll
 Date:   Mon, 12 Jun 2023 12:26:03 +0200
-Message-ID: <20230612101658.942299030@linuxfoundation.org>
+Message-ID: <20230612101702.686974767@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
-References: <20230612101658.437327280@linuxfoundation.org>
+In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
+References: <20230612101702.085813286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,28 +53,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Not upstream as this was fixed in a much larger change in commit
-5e24d5984c80 ("ice: Use int for ice_status")
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-The function ice_fltr_add_mac_to_list() has the wrong prototype match
-from the .h file to the .c declaration, so fix it up, otherwise gcc-13
-complains (rightfully) that the type is incorrect.
+[ Upstream commit 30bc32c7c1f975cc3c14e1c7dc437266311282cf ]
 
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Grab sta_poll_lock spinlock in mt7615_mac_sta_poll routine in order to
+avoid possible races with mt7615_mac_add_txs() or mt7615_mac_fill_rx()
+removing msta pointer from sta_poll_list.
+
+Fixes: a621372a04ac ("mt76: mt7615: rework mt7615_mac_sta_poll for usb code")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/48b23404b759de4f1db2ef85975c72a4aeb1097c.1684938695.git.lorenzo@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_fltr.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/ethernet/intel/ice/ice_fltr.c
-+++ b/drivers/net/ethernet/intel/ice/ice_fltr.c
-@@ -128,7 +128,7 @@ void ice_fltr_remove_all(struct ice_vsi
-  * @mac: MAC address to add
-  * @action: filter action
-  */
--int
-+enum ice_status
- ice_fltr_add_mac_to_list(struct ice_vsi *vsi, struct list_head *list,
- 			 const u8 *mac, enum ice_sw_fwd_act_type action)
- {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index 37bc307c19719..2f0ba8a75d71b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -869,7 +869,10 @@ void mt7615_mac_sta_poll(struct mt7615_dev *dev)
+ 
+ 		msta = list_first_entry(&sta_poll_list, struct mt7615_sta,
+ 					poll_list);
++
++		spin_lock_bh(&dev->sta_poll_lock);
+ 		list_del_init(&msta->poll_list);
++		spin_unlock_bh(&dev->sta_poll_lock);
+ 
+ 		addr = mt7615_mac_wtbl_addr(dev, msta->wcid.idx) + 19 * 4;
+ 
+-- 
+2.39.2
+
 
 
