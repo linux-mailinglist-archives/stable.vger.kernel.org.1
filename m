@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 081F272C135
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:57:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8ECE72C229
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:03:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237063AbjFLK53 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:57:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58766 "EHLO
+        id S237585AbjFLLDN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:03:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236630AbjFLK5Q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:57:16 -0400
+        with ESMTP id S237414AbjFLLCm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:02:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8577D1252D
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:44:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2CF810F3
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:50:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C820A612E8
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:44:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B84C5C433EF;
-        Mon, 12 Jun 2023 10:44:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6FED5624F1
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:50:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80EE3C433D2;
+        Mon, 12 Jun 2023 10:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566690;
-        bh=mVdiv4DOGsBo5Il4XsRzh1KgwunS4LrbSxU3SHXgMwA=;
+        s=korg; t=1686567026;
+        bh=qs/6yswkLGAR13ZXdbOh+r9zqpFz+omd9cTw0u2gtcY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mhnETqT7a7mGa44mhOjsHXmoH8W/dncWTxhL1Y9lQYRfABdQOjoZUc8d12PyKd3qX
-         S4dLP2NDSDloey8rKn/WBW5kxR3iS96fN5YHUZLuxMike/MGBmacATraoZhkkCicqA
-         1ES9cdeh0VpoQVjs+613UhA9i9uS+aPtvr6/O9IA=
+        b=i+5Ufj61G0jqdvTd081E9gsWbvNqME84p7ePclrwj9br4J8NLykWjASZzPREMOfKk
+         KY4wnZKIYe6AQcbdSci/ZwSqL6f+92PQnDhsGxkUVgDrd1DUP6g+4O6NMNmKAdju9U
+         edAQQc46W0lQ5O/oj4v9gNcLx7j0ugdxrM2Ip6cY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 120/132] soundwire: stream: Add missing clear of alloc_slave_rt
-Date:   Mon, 12 Jun 2023 12:27:34 +0200
-Message-ID: <20230612101715.710124097@linuxfoundation.org>
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 123/160] ASoC: codecs: wsa883x: do not set can_multi_write flag
+Date:   Mon, 12 Jun 2023 12:27:35 +0200
+Message-ID: <20230612101720.682837050@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,40 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-[ Upstream commit 58d95889f3c2064c6139ee94bb0e4d86e1ad4eab ]
+[ Upstream commit 40ba0411074485e2cf1bf8ee0f3db27bdff88394 ]
 
-The current path that skips allocating the slave runtime does not clear
-the alloc_slave_rt flag, this is clearly incorrect. Add the missing
-clear, so the runtime won't be erroneously cleaned up.
+regmap-sdw does not support multi register writes, so there is
+no point in setting this flag. This also leads to incorrect
+programming of WSA codecs with regmap_multi_reg_write() call.
 
-Fixes: f3016b891c8c ("soundwire: stream: sdw_stream_add_ functions can be called multiple times")
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20230602101140.2040141-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+This invalid configuration should have been rejected by regmap-sdw.
+
+Fixes: 43b8c7dc85a1 ("ASoC: codecs: add wsa883x amplifier support")
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230523154605.4284-1-srinivas.kandagatla@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/stream.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/soc/codecs/wsa883x.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/soundwire/stream.c b/drivers/soundwire/stream.c
-index bd502368339e5..b10ea69a638e1 100644
---- a/drivers/soundwire/stream.c
-+++ b/drivers/soundwire/stream.c
-@@ -2019,8 +2019,10 @@ int sdw_stream_add_slave(struct sdw_slave *slave,
+diff --git a/sound/soc/codecs/wsa883x.c b/sound/soc/codecs/wsa883x.c
+index c609cb63dae6d..e80b531435696 100644
+--- a/sound/soc/codecs/wsa883x.c
++++ b/sound/soc/codecs/wsa883x.c
+@@ -946,7 +946,6 @@ static struct regmap_config wsa883x_regmap_config = {
+ 	.writeable_reg = wsa883x_writeable_register,
+ 	.reg_format_endian = REGMAP_ENDIAN_NATIVE,
+ 	.val_format_endian = REGMAP_ENDIAN_NATIVE,
+-	.can_multi_write = true,
+ 	.use_single_read = true,
+ };
  
- skip_alloc_master_rt:
- 	s_rt = sdw_slave_rt_find(slave, stream);
--	if (s_rt)
-+	if (s_rt) {
-+		alloc_slave_rt = false;
- 		goto skip_alloc_slave_rt;
-+	}
- 
- 	s_rt = sdw_slave_rt_alloc(slave, m_rt);
- 	if (!s_rt) {
 -- 
 2.39.2
 
