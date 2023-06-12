@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C471A72C0B1
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:54:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80A8C72C126
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:56:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236101AbjFLKyI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:54:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56886 "EHLO
+        id S236848AbjFLK4r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:56:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236098AbjFLKxr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:53:47 -0400
+        with ESMTP id S236971AbjFLK43 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:56:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B280E46B2
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:38:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C17AA87B
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:44:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 91D1161BD9
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:38:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8EBCC433EF;
-        Mon, 12 Jun 2023 10:38:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 17CF061ABD
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:44:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE50C433EF;
+        Mon, 12 Jun 2023 10:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566333;
-        bh=zkcYIc5sPGXzuj58X5j25whufhu7Btaiwh7++5t5GBk=;
+        s=korg; t=1686566650;
+        bh=kyu1WU7nvNAR+c0NzljfB4PJigdtj0IlZOiSPt4rdaU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CXDLPOSEI/Gp2LE16JuL8WhtF0rlEw1fmxmyiqeDeDmz5NDqQ8DOrvH4z4ifvNCrY
-         1XBqUKXXrie4dbS+Zj2GogXBZcCEnGcEgUuQJidL0LSI9dQOERkgs5hrWGKP9Cvpdz
-         tcroU3PIPFgsKTgYm7q3evvNnqyIT4jjXBk0k6Vc=
+        b=Fa46t72/ZcATWuC7Mbeb73rHcCj0QqzQb3F+1j3W9IJGE1e0AiUlcY/CjNj/7ZVoC
+         /7cFoKL5MhYev5q5IzqH48pqV4UCKy76LHFvKFDToSYXcytr8Ol3NP/NRL4f2wW62i
+         f0iry/3FZIAVajh2U18aq+dVzuPIc0HBOyyWsynY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Xie Yongji" <xieyongji@bytedance.com>,
-        Xianjun Zeng <zengxianjun@bytedance.com>,
-        Sheng Zhao <sheng.zhao@bytedance.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 84/91] vduse: avoid empty string for dev name
-Date:   Mon, 12 Jun 2023 12:27:13 +0200
-Message-ID: <20230612101705.626294763@linuxfoundation.org>
+        patches@lists.linux.dev,
+        syzbot+fcf1a817ceb50935ce99@syzkaller.appspotmail.com,
+        Ruihan Li <lrh2000@pku.edu.cn>,
+        Pasha Tatashin <pasha.tatashin@soleen.com>
+Subject: [PATCH 6.1 100/132] mm: page_table_check: Ensure user pages are not slab pages
+Date:   Mon, 12 Jun 2023 12:27:14 +0200
+Message-ID: <20230612101714.856536643@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
-References: <20230612101702.085813286@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,64 +55,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sheng Zhao <sheng.zhao@bytedance.com>
+From: Ruihan Li <lrh2000@pku.edu.cn>
 
-[ Upstream commit a90e8608eb0ed93d31ac0feb055f77ce59512542 ]
+commit 44d0fb387b53e56c8a050bac5c7d460e21eb226f upstream.
 
-Syzkaller hits a kernel WARN when the first character of the dev name
-provided is NULL. Solution is to add a NULL check before calling
-cdev_device_add() in vduse_create_dev().
+The current uses of PageAnon in page table check functions can lead to
+type confusion bugs between struct page and slab [1], if slab pages are
+accidentally mapped into the user space. This is because slab reuses the
+bits in struct page to store its internal states, which renders PageAnon
+ineffective on slab pages.
 
-kobject: (0000000072042169): attempted to be registered with empty name!
-WARNING: CPU: 0 PID: 112695 at lib/kobject.c:236
-Call Trace:
- kobject_add_varg linux/src/lib/kobject.c:390 [inline]
- kobject_add+0xf6/0x150 linux/src/lib/kobject.c:442
- device_add+0x28f/0xc20 linux/src/drivers/base/core.c:2167
- cdev_device_add+0x83/0xc0 linux/src/fs/char_dev.c:546
- vduse_create_dev linux/src/drivers/vdpa/vdpa_user/vduse_dev.c:2254 [inline]
- vduse_ioctl+0x7b5/0xf30 linux/src/drivers/vdpa/vdpa_user/vduse_dev.c:2316
- vfs_ioctl linux/src/fs/ioctl.c:47 [inline]
- file_ioctl linux/src/fs/ioctl.c:510 [inline]
- do_vfs_ioctl+0x14b/0xa80 linux/src/fs/ioctl.c:697
- ksys_ioctl+0x7c/0xa0 linux/src/fs/ioctl.c:714
- __do_sys_ioctl linux/src/fs/ioctl.c:721 [inline]
- __se_sys_ioctl linux/src/fs/ioctl.c:719 [inline]
- __x64_sys_ioctl+0x42/0x50 linux/src/fs/ioctl.c:719
- do_syscall_64+0x94/0x330 linux/src/arch/x86/entry/common.c:291
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
+Since slab pages are not expected to be mapped into the user space, this
+patch adds BUG_ON(PageSlab(page)) checks to make sure that slab pages
+are not inadvertently mapped. Otherwise, there must be some bugs in the
+kernel.
 
-Fixes: c8a6153b6c59 ("vduse: Introduce VDUSE - vDPA Device in Userspace")
-Cc: "Xie Yongji" <xieyongji@bytedance.com>
-Reported-by: Xianjun Zeng <zengxianjun@bytedance.com>
-Signed-off-by: Sheng Zhao <sheng.zhao@bytedance.com>
-Message-Id: <20230530033626.1266794-1-sheng.zhao@bytedance.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
-Cc: "Michael S. Tsirkin"<mst@redhat.com>, "Jason Wang"<jasowang@redhat.com>,
-Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+fcf1a817ceb50935ce99@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/000000000000258e5e05fae79fc1@google.com/ [1]
+Fixes: df4e817b7108 ("mm: page table check")
+Cc: <stable@vger.kernel.org> # 5.17
+Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
+Acked-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Link: https://lore.kernel.org/r/20230515130958.32471-5-lrh2000@pku.edu.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vdpa/vdpa_user/vduse_dev.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/page-flags.h |    6 ++++++
+ mm/page_table_check.c      |    6 ++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_user/vduse_dev.c
-index 3467c75f310a5..30ae4237f3dd4 100644
---- a/drivers/vdpa/vdpa_user/vduse_dev.c
-+++ b/drivers/vdpa/vdpa_user/vduse_dev.c
-@@ -1254,6 +1254,9 @@ static bool vduse_validate_config(struct vduse_dev_config *config)
- 	if (config->vq_num > 0xffff)
- 		return false;
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -631,6 +631,12 @@ PAGEFLAG_FALSE(VmemmapSelfHosted, vmemma
+  * Please note that, confusingly, "page_mapping" refers to the inode
+  * address_space which maps the page from disk; whereas "page_mapped"
+  * refers to user virtual address space into which the page is mapped.
++ *
++ * For slab pages, since slab reuses the bits in struct page to store its
++ * internal states, the page->mapping does not exist as such, nor do these
++ * flags below.  So in order to avoid testing non-existent bits, please
++ * make sure that PageSlab(page) actually evaluates to false before calling
++ * the following functions (e.g., PageAnon).  See mm/slab.h.
+  */
+ #define PAGE_MAPPING_ANON	0x1
+ #define PAGE_MAPPING_MOVABLE	0x2
+--- a/mm/page_table_check.c
++++ b/mm/page_table_check.c
+@@ -69,6 +69,8 @@ static void page_table_check_clear(struc
  
-+	if (!config->name[0])
-+		return false;
+ 	page = pfn_to_page(pfn);
+ 	page_ext = page_ext_get(page);
 +
- 	if (!device_is_allowed(config->device_id))
- 		return false;
++	BUG_ON(PageSlab(page));
+ 	anon = PageAnon(page);
  
--- 
-2.39.2
-
+ 	for (i = 0; i < pgcnt; i++) {
+@@ -105,6 +107,8 @@ static void page_table_check_set(struct
+ 
+ 	page = pfn_to_page(pfn);
+ 	page_ext = page_ext_get(page);
++
++	BUG_ON(PageSlab(page));
+ 	anon = PageAnon(page);
+ 
+ 	for (i = 0; i < pgcnt; i++) {
+@@ -131,6 +135,8 @@ void __page_table_check_zero(struct page
+ 	struct page_ext *page_ext;
+ 	unsigned long i;
+ 
++	BUG_ON(PageSlab(page));
++
+ 	page_ext = page_ext_get(page);
+ 	BUG_ON(!page_ext);
+ 	for (i = 0; i < (1ul << order); i++) {
 
 
