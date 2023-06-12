@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EC3D72BFD3
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:47:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAE1D72BF9F
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:45:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231699AbjFLKrQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:47:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51668 "EHLO
+        id S234509AbjFLKp5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:45:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235375AbjFLKqw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:46:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91173768D
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:31:31 -0700 (PDT)
+        with ESMTP id S234866AbjFLKpQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:45:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53200F7C7
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:30:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5225361500
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:31:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649A1C433EF;
-        Mon, 12 Jun 2023 10:31:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 96B1360D56
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:30:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E4BC433B4;
+        Mon, 12 Jun 2023 10:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565888;
-        bh=dCW03YcQ7Sp8gb5yhGj9XFZ6AhfxdonTI6+xK0RH5Xw=;
+        s=korg; t=1686565810;
+        bh=TgQq0faDLmnnZWwMjnJtw+W6Lul6DKuyzev9gDI/2wQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jz+V/wIOX0EEOb8TfJWJkYFvzOK5T/1YYxXI0tsyRS1HUoofGE9SdXr8DzE7fiyPi
-         w3VtgKQ7X1AwF1fJUXjXXrPF+9Y3KsrW+hvigafNqdmarfFubtS2TTO2sA3v3Updjg
-         Q+2APg43Q+OmSaS+DHupjgvSoN/WExgOxmska0xI=
+        b=eoagyYuNecYgyhpGb5NBP4RqkW1SpGcwqk3Z0rzqBAgq+aKVYx53bwKXycThZvTee
+         Ojv7rV/VUMFEXie33MjmI8meu+/x10TEmrvH5J8A1oVdntDweUA02KTRmyZhrBoxha
+         BThAx4OWHdvxTfI3jPiAXeviavIX6GQQpQ+l6fPs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>
-Subject: [PATCH 5.4 30/45] rbd: move RBD_OBJ_FLAG_COPYUP_ENABLED flag setting
+        patches@lists.linux.dev, Ben Hutchings <ben@decadent.org.uk>,
+        Philipp Hortmann <philipp.g.hortmann@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 23/23] Revert "staging: rtl8192e: Replace macro RTL_PCI_DEVICE with PCI_DEVICE"
 Date:   Mon, 12 Jun 2023 12:26:24 +0200
-Message-ID: <20230612101655.882266373@linuxfoundation.org>
+Message-ID: <20230612101651.911193510@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
-References: <20230612101654.644983109@linuxfoundation.org>
+In-Reply-To: <20230612101651.138592130@linuxfoundation.org>
+References: <20230612101651.138592130@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,85 +54,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 09fe05c57b5aaf23e2c35036c98ea9f282b19a77 upstream.
+This reverts commit ec310591cf839653a5b2c1fcf6b8a110c3f2485c which is
+commit a80f4c7dc4dbd2925cf3da86004137965cb16086 upstream.
 
-Move RBD_OBJ_FLAG_COPYUP_ENABLED flag setting into the object request
-state machine to allow for the snapshot context to be captured in the
-image request state machine rather than in rbd_queue_workfn().
+Ben reports that this should not have been backported to the older
+kernels as the rest of the macro is not empty.  It was a clean-up patch
+in 6.4-rc1 only, it did not add new device ids.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
+Reported-by: Ben Hutchings <ben@decadent.org.uk>
+Cc: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+Cc: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/aa0d401a7f63448cd4c2fe4a2d7e8495d9aa123e.camel@decadent.org.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/rbd.c |   32 +++++++++++++++++++++-----------
- 1 file changed, 21 insertions(+), 11 deletions(-)
+ drivers/staging/rtl8192e/rtl8192e/rtl_core.c |    6 +++---
+ drivers/staging/rtl8192e/rtl8192e/rtl_core.h |    5 +++++
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -1493,14 +1493,28 @@ static bool rbd_obj_is_tail(struct rbd_o
- /*
-  * Must be called after rbd_obj_calc_img_extents().
-  */
--static bool rbd_obj_copyup_enabled(struct rbd_obj_request *obj_req)
-+static void rbd_obj_set_copyup_enabled(struct rbd_obj_request *obj_req)
- {
--	if (!obj_req->num_img_extents ||
--	    (rbd_obj_is_entire(obj_req) &&
--	     !obj_req->img_request->snapc->num_snaps))
--		return false;
-+	if (obj_req->img_request->op_type == OBJ_OP_DISCARD) {
-+		dout("%s %p objno %llu discard\n", __func__, obj_req,
-+		     obj_req->ex.oe_objno);
-+		return;
-+	}
+--- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
++++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
+@@ -61,9 +61,9 @@ static const struct rtl819x_ops rtl819xp
+ };
  
--	return true;
-+	if (!obj_req->num_img_extents) {
-+		dout("%s %p objno %llu not overlapping\n", __func__, obj_req,
-+		     obj_req->ex.oe_objno);
-+		return;
-+	}
+ static struct pci_device_id rtl8192_pci_id_tbl[] = {
+-	{PCI_DEVICE(0x10ec, 0x8192)},
+-	{PCI_DEVICE(0x07aa, 0x0044)},
+-	{PCI_DEVICE(0x07aa, 0x0047)},
++	{RTL_PCI_DEVICE(0x10ec, 0x8192, rtl819xp_ops)},
++	{RTL_PCI_DEVICE(0x07aa, 0x0044, rtl819xp_ops)},
++	{RTL_PCI_DEVICE(0x07aa, 0x0047, rtl819xp_ops)},
+ 	{}
+ };
+ 
+--- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.h
++++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.h
+@@ -67,6 +67,11 @@
+ #define IS_HARDWARE_TYPE_8192SE(_priv)		\
+ 	(((struct r8192_priv *)rtllib_priv(dev))->card_8192 == NIC_8192SE)
+ 
++#define RTL_PCI_DEVICE(vend, dev, cfg) \
++	.vendor = (vend), .device = (dev), \
++	.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID, \
++	.driver_data = (kernel_ulong_t)&(cfg)
 +
-+	if (rbd_obj_is_entire(obj_req) &&
-+	    !obj_req->img_request->snapc->num_snaps) {
-+		dout("%s %p objno %llu entire\n", __func__, obj_req,
-+		     obj_req->ex.oe_objno);
-+		return;
-+	}
-+
-+	obj_req->flags |= RBD_OBJ_FLAG_COPYUP_ENABLED;
- }
- 
- static u64 rbd_obj_img_extents_bytes(struct rbd_obj_request *obj_req)
-@@ -2389,9 +2403,6 @@ static int rbd_obj_init_write(struct rbd
- 	if (ret)
- 		return ret;
- 
--	if (rbd_obj_copyup_enabled(obj_req))
--		obj_req->flags |= RBD_OBJ_FLAG_COPYUP_ENABLED;
--
- 	obj_req->write_state = RBD_OBJ_WRITE_START;
- 	return 0;
- }
-@@ -2497,8 +2508,6 @@ static int rbd_obj_init_zeroout(struct r
- 	if (ret)
- 		return ret;
- 
--	if (rbd_obj_copyup_enabled(obj_req))
--		obj_req->flags |= RBD_OBJ_FLAG_COPYUP_ENABLED;
- 	if (!obj_req->num_img_extents) {
- 		obj_req->flags |= RBD_OBJ_FLAG_NOOP_FOR_NONEXISTENT;
- 		if (rbd_obj_is_entire(obj_req))
-@@ -3439,6 +3448,7 @@ again:
- 	case RBD_OBJ_WRITE_START:
- 		rbd_assert(!*result);
- 
-+		rbd_obj_set_copyup_enabled(obj_req);
- 		if (rbd_obj_write_is_noop(obj_req))
- 			return true;
+ #define TOTAL_CAM_ENTRY		32
+ #define CAM_CONTENT_COUNT	8
  
 
 
