@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 697D972C208
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:02:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0150E72C0AE
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:54:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237395AbjFLLCT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:02:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35394 "EHLO
+        id S236013AbjFLKyF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:54:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237389AbjFLLCD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:02:03 -0400
+        with ESMTP id S235858AbjFLKxn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:53:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D47434C18
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:49:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D7CCFFF0
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:38:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B8BD624D0
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:49:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C4AC433EF;
-        Mon, 12 Jun 2023 10:49:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C7776623CE
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:38:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC9E8C4339B;
+        Mon, 12 Jun 2023 10:38:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566958;
-        bh=jJgmSvEYEOsEO/bgivF0ZcaPY6/lWkIuSQj/2yWhwMk=;
+        s=korg; t=1686566325;
+        bh=90l3CperUsWVQyKDeDHF31RbxyYLwd43JfJcKMQzqEA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HFks3EJdxEWvIZTvr3cfzLKZwTeE18c5LTrjdGfBUZZWfw/qW+hHmoCdLFvzwN8lF
-         A9kRcLRcj02jiAN+wSjRszO2Na4x6br32pNeArSqUPJQMVaFuz02jTiMOf1R5u35Ej
-         UefCcFGPOeSDbM/isFrTpnOFPeclxYCyDIQbV53Y=
+        b=LYQMpbHTbdwmyNU9U/WJsou5Ao4iyqdaOtZJ4PMyHwgcXjPfuFAhrKuheacqId5Zd
+         u33WIgEt2CYdjruySSRcyNp4XYcHvZmlSVCPZaEzUzWf4Gk7EhT8EL6pDTQagQVikm
+         W/D9UPbEgw7IVyaY70lk3pYPQPELUVBm92d4f1OQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Geliang Tang <geliang.tang@suse.com>,
-        Mat Martineau <martineau@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.3 097/160] mptcp: add address into userspace pm list
-Date:   Mon, 12 Jun 2023 12:27:09 +0200
-Message-ID: <20230612101719.443059909@linuxfoundation.org>
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 81/91] i2c: sprd: Delete i2c adapter in .removes error path
+Date:   Mon, 12 Jun 2023 12:27:10 +0200
+Message-ID: <20230612101705.480395475@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
+References: <20230612101702.085813286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,107 +56,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geliang Tang <geliang.tang@suse.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit 24430f8bf51655c5ab7ddc2fafe939dd3cd0dd47 upstream.
+[ Upstream commit ca0aa17f2db3468fd017038d23a78e17388e2f67 ]
 
-Add the address into userspace_pm_local_addr_list when the subflow is
-created. Make sure it can be found in mptcp_nl_cmd_remove(). And delete
-it in the new helper mptcp_userspace_pm_delete_local_addr().
+If pm runtime resume fails the .remove callback used to exit early. This
+resulted in an error message by the driver core but the device gets
+removed anyhow. This lets the registered i2c adapter stay around with an
+unbound parent device.
 
-By doing this, the "REMOVE" command also works with subflows that have
-been created via the "SUB_CREATE" command instead of restricting to
-the addresses that have been announced via the "ANNOUNCE" command.
+So only skip clk disabling if resume failed, but do delete the adapter.
 
-Fixes: d9a4594edabf ("mptcp: netlink: Add MPTCP_PM_CMD_REMOVE")
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/379
-Cc: stable@vger.kernel.org
-Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Geliang Tang <geliang.tang@suse.com>
-Signed-off-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8b9ec0719834 ("i2c: Add Spreadtrum I2C controller driver")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_userspace.c |   41 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 41 insertions(+)
+ drivers/i2c/busses/i2c-sprd.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/net/mptcp/pm_userspace.c
-+++ b/net/mptcp/pm_userspace.c
-@@ -79,6 +79,30 @@ append_err:
- 	return ret;
- }
+diff --git a/drivers/i2c/busses/i2c-sprd.c b/drivers/i2c/busses/i2c-sprd.c
+index 4fe15cd78907e..ffc54fbf814dd 100644
+--- a/drivers/i2c/busses/i2c-sprd.c
++++ b/drivers/i2c/busses/i2c-sprd.c
+@@ -576,12 +576,14 @@ static int sprd_i2c_remove(struct platform_device *pdev)
+ 	struct sprd_i2c *i2c_dev = platform_get_drvdata(pdev);
+ 	int ret;
  
-+/* If the subflow is closed from the other peer (not via a
-+ * subflow destroy command then), we want to keep the entry
-+ * not to assign the same ID to another address and to be
-+ * able to send RM_ADDR after the removal of the subflow.
-+ */
-+static int mptcp_userspace_pm_delete_local_addr(struct mptcp_sock *msk,
-+						struct mptcp_pm_addr_entry *addr)
-+{
-+	struct mptcp_pm_addr_entry *entry, *tmp;
+-	ret = pm_runtime_resume_and_get(i2c_dev->dev);
++	ret = pm_runtime_get_sync(i2c_dev->dev);
+ 	if (ret < 0)
+-		return ret;
++		dev_err(&pdev->dev, "Failed to resume device (%pe)\n", ERR_PTR(ret));
+ 
+ 	i2c_del_adapter(&i2c_dev->adap);
+-	clk_disable_unprepare(i2c_dev->clk);
 +
-+	list_for_each_entry_safe(entry, tmp, &msk->pm.userspace_pm_local_addr_list, list) {
-+		if (mptcp_addresses_equal(&entry->addr, &addr->addr, false)) {
-+			/* TODO: a refcount is needed because the entry can
-+			 * be used multiple times (e.g. fullmesh mode).
-+			 */
-+			list_del_rcu(&entry->list);
-+			kfree(entry);
-+			return 0;
-+		}
-+	}
-+
-+	return -EINVAL;
-+}
-+
- int mptcp_userspace_pm_get_flags_and_ifindex_by_id(struct mptcp_sock *msk,
- 						   unsigned int id,
- 						   u8 *flags, int *ifindex)
-@@ -251,6 +275,7 @@ int mptcp_nl_cmd_sf_create(struct sk_buf
- 	struct nlattr *raddr = info->attrs[MPTCP_PM_ATTR_ADDR_REMOTE];
- 	struct nlattr *token = info->attrs[MPTCP_PM_ATTR_TOKEN];
- 	struct nlattr *laddr = info->attrs[MPTCP_PM_ATTR_ADDR];
-+	struct mptcp_pm_addr_entry local = { 0 };
- 	struct mptcp_addr_info addr_r;
- 	struct mptcp_addr_info addr_l;
- 	struct mptcp_sock *msk;
-@@ -302,12 +327,24 @@ int mptcp_nl_cmd_sf_create(struct sk_buf
- 		goto create_err;
- 	}
++	if (ret >= 0)
++		clk_disable_unprepare(i2c_dev->clk);
  
-+	local.addr = addr_l;
-+	err = mptcp_userspace_pm_append_new_local_addr(msk, &local);
-+	if (err < 0) {
-+		GENL_SET_ERR_MSG(info, "did not match address and id");
-+		goto create_err;
-+	}
-+
- 	lock_sock(sk);
- 
- 	err = __mptcp_subflow_connect(sk, &addr_l, &addr_r);
- 
- 	release_sock(sk);
- 
-+	spin_lock_bh(&msk->pm.lock);
-+	if (err)
-+		mptcp_userspace_pm_delete_local_addr(msk, &local);
-+	spin_unlock_bh(&msk->pm.lock);
-+
-  create_err:
- 	sock_put((struct sock *)msk);
- 	return err;
-@@ -420,7 +457,11 @@ int mptcp_nl_cmd_sf_destroy(struct sk_bu
- 	ssk = mptcp_nl_find_ssk(msk, &addr_l, &addr_r);
- 	if (ssk) {
- 		struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
-+		struct mptcp_pm_addr_entry entry = { .addr = addr_l };
- 
-+		spin_lock_bh(&msk->pm.lock);
-+		mptcp_userspace_pm_delete_local_addr(msk, &entry);
-+		spin_unlock_bh(&msk->pm.lock);
- 		mptcp_subflow_shutdown(sk, ssk, RCV_SHUTDOWN | SEND_SHUTDOWN);
- 		mptcp_close_ssk(sk, ssk, subflow);
- 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RMSUBFLOW);
+ 	pm_runtime_put_noidle(i2c_dev->dev);
+ 	pm_runtime_disable(i2c_dev->dev);
+-- 
+2.39.2
+
 
 
