@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE5AA72C1B0
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:00:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD29272C008
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:49:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237378AbjFLK7o (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:59:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32960 "EHLO
+        id S235341AbjFLKtV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:49:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236365AbjFLK7C (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:59:02 -0400
+        with ESMTP id S235513AbjFLKsv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:48:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58E9B7287
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:46:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13F0F7D88;
+        Mon, 12 Jun 2023 03:33:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E6C9F6244C
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:46:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0585CC433EF;
-        Mon, 12 Jun 2023 10:46:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D218623F0;
+        Mon, 12 Jun 2023 10:33:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32083C4339B;
+        Mon, 12 Jun 2023 10:33:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566777;
-        bh=5F3pARx27/Kclj+fMsdAUFMTm7s1UnijKAOg3RduDFE=;
+        s=korg; t=1686565986;
+        bh=3g1ezkSeNovKyNA/mYRnkKvsFp4NaVHgDIm4yL0ohA8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vQfGaOmHxZftjqRpUV1tCyNBKzNnQP5ZZ1Y1H5AmTTTk2p7djogtbZRv/WgTLhvIF
-         VkvAQXEhTGEj1Aajh01YyFpylTU47/6H3FDHSvGICU/d+5rau6HWhdp28p5vZnFbjk
-         v19k/OwKRRhXMFB7tKjUQYftnmkGxKmkMfG8A1L0=
+        b=QtmF08sghYmBDd9UBshT23jBK1ILZr+o1F+BzTsat6Kh+D+hwS07zeGzWc+edA010
+         03/fwA7fAbgXeqHHvJSp2BcVCUL9dNVuvYiJs9URhXmRK2LBv8BJfHvzwngUe6T8sf
+         pyEhx0P9U7ChM2QNKh45nGdF6zke6xHWOqgQeMh8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pauli Virtanen <pav@iki.fi>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 028/160] Bluetooth: ISO: use correct CIS order in Set CIG Parameters event
+        patches@lists.linux.dev, Martin Liska <mliska@suse.cz>,
+        Tejun Heo <tj@kernel.org>, Josef Bacik <josef@toxicpanda.com>,
+        Jens Axboe <axboe@kernel.dk>, cgroups@vger.kernel.org,
+        linux-block@vger.kernel.org,
+        "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Subject: [PATCH 5.10 08/68] block/blk-iocost (gcc13): keep large values in a new enum
 Date:   Mon, 12 Jun 2023 12:26:00 +0200
-Message-ID: <20230612101716.329008574@linuxfoundation.org>
+Message-ID: <20230612101658.811733055@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
+References: <20230612101658.437327280@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,126 +56,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit 71e9588435c38112d6a8686d3d8e7cc1de8fe22c ]
+commit ff1cc97b1f4c10db224f276d9615b22835b8c424 upstream.
 
-The order of CIS handle array in Set CIG Parameters response shall match
-the order of the CIS_ID array in the command (Core v5.3 Vol 4 Part E Sec
-7.8.97).  We send CIS_IDs mainly in the order of increasing CIS_ID (but
-with "last" CIS first if it has fixed CIG_ID).  In handling of the
-reply, we currently assume this is also the same as the order of
-hci_conn in hdev->conn_hash, but that is not true.
+Since gcc13, each member of an enum has the same type as the enum [1]. And
+that is inherited from its members. Provided:
+  VTIME_PER_SEC_SHIFT     = 37,
+  VTIME_PER_SEC           = 1LLU << VTIME_PER_SEC_SHIFT,
+  ...
+  AUTOP_CYCLE_NSEC        = 10LLU * NSEC_PER_SEC,
+the named type is unsigned long.
 
-Match the correct hci_conn to the correct handle by matching them based
-on the CIG+CIS combination.  The CIG+CIS combination shall be unique for
-ISO_LINK hci_conn at state >= BT_BOUND, which we maintain in
-hci_le_set_cig_params.
+This generates warnings with gcc-13:
+  block/blk-iocost.c: In function 'ioc_weight_prfill':
+  block/blk-iocost.c:3037:37: error: format '%u' expects argument of type 'unsigned int', but argument 4 has type 'long unsigned int'
 
-Fixes: 26afbd826ee3 ("Bluetooth: Add initial implementation of CIS connections")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  block/blk-iocost.c: In function 'ioc_weight_show':
+  block/blk-iocost.c:3047:34: error: format '%u' expects argument of type 'unsigned int', but argument 3 has type 'long unsigned int'
+
+So split the anonymous enum with large values to a separate enum, so
+that they don't affect other members.
+
+[1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=36113
+
+Cc: Martin Liska <mliska@suse.cz>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Josef Bacik <josef@toxicpanda.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: cgroups@vger.kernel.org
+Cc: linux-block@vger.kernel.org
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20221213120826.17446-1-jirislaby@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/bluetooth/hci_core.h |  3 ++-
- net/bluetooth/hci_event.c        | 44 +++++++++++++++++++-------------
- 2 files changed, 28 insertions(+), 19 deletions(-)
+ block/blk-iocost.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index a08e8dc772e54..341592d427520 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -1197,7 +1197,8 @@ static inline struct hci_conn *hci_conn_hash_lookup_cis(struct hci_dev *hdev,
- 		if (id != BT_ISO_QOS_CIS_UNSET && id != c->iso_qos.ucast.cis)
- 			continue;
+--- a/block/blk-iocost.c
++++ b/block/blk-iocost.c
+@@ -232,7 +232,9 @@ enum {
  
--		if (ba_type == c->dst_type && !bacmp(&c->dst, ba)) {
-+		/* Match destination address if set */
-+		if (!ba || (ba_type == c->dst_type && !bacmp(&c->dst, ba))) {
- 			rcu_read_unlock();
- 			return c;
- 		}
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index d00ef6e3fc451..09ba6d8987ee1 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -3804,48 +3804,56 @@ static u8 hci_cc_le_set_cig_params(struct hci_dev *hdev, void *data,
- 				   struct sk_buff *skb)
- {
- 	struct hci_rp_le_set_cig_params *rp = data;
-+	struct hci_cp_le_set_cig_params *cp;
- 	struct hci_conn *conn;
--	int i = 0;
-+	u8 status = rp->status;
-+	int i;
+ 	/* 1/64k is granular enough and can easily be handled w/ u32 */
+ 	WEIGHT_ONE		= 1 << 16,
++};
  
- 	bt_dev_dbg(hdev, "status 0x%2.2x", rp->status);
- 
-+	cp = hci_sent_cmd_data(hdev, HCI_OP_LE_SET_CIG_PARAMS);
-+	if (!cp || rp->num_handles != cp->num_cis || rp->cig_id != cp->cig_id) {
-+		bt_dev_err(hdev, "unexpected Set CIG Parameters response data");
-+		status = HCI_ERROR_UNSPECIFIED;
-+	}
-+
- 	hci_dev_lock(hdev);
- 
--	if (rp->status) {
-+	if (status) {
- 		while ((conn = hci_conn_hash_lookup_cig(hdev, rp->cig_id))) {
- 			conn->state = BT_CLOSED;
--			hci_connect_cfm(conn, rp->status);
-+			hci_connect_cfm(conn, status);
- 			hci_conn_del(conn);
- 		}
- 		goto unlock;
- 	}
- 
--	rcu_read_lock();
-+	/* BLUETOOTH CORE SPECIFICATION Version 5.3 | Vol 4, Part E page 2553
-+	 *
-+	 * If the Status return parameter is zero, then the Controller shall
-+	 * set the Connection_Handle arrayed return parameter to the connection
-+	 * handle(s) corresponding to the CIS configurations specified in
-+	 * the CIS_IDs command parameter, in the same order.
-+	 */
-+	for (i = 0; i < rp->num_handles; ++i) {
-+		conn = hci_conn_hash_lookup_cis(hdev, NULL, 0, rp->cig_id,
-+						cp->cis[i].cis_id);
-+		if (!conn || !bacmp(&conn->dst, BDADDR_ANY))
-+			continue;
- 
--	list_for_each_entry_rcu(conn, &hdev->conn_hash.list, list) {
--		if (conn->type != ISO_LINK ||
--		    conn->iso_qos.ucast.cig != rp->cig_id ||
--		    conn->state == BT_CONNECTED)
-+		if (conn->state != BT_BOUND && conn->state != BT_CONNECT)
- 			continue;
- 
--		conn->handle = __le16_to_cpu(rp->handle[i++]);
-+		conn->handle = __le16_to_cpu(rp->handle[i]);
- 
- 		bt_dev_dbg(hdev, "%p handle 0x%4.4x parent %p", conn,
- 			   conn->handle, conn->parent);
- 
- 		/* Create CIS if LE is already connected */
--		if (conn->parent && conn->parent->state == BT_CONNECTED) {
--			rcu_read_unlock();
-+		if (conn->parent && conn->parent->state == BT_CONNECTED)
- 			hci_le_create_cis(conn);
--			rcu_read_lock();
--		}
--
--		if (i == rp->num_handles)
--			break;
- 	}
- 
--	rcu_read_unlock();
--
- unlock:
- 	hci_dev_unlock(hdev);
- 
--- 
-2.39.2
-
++enum {
+ 	/*
+ 	 * As vtime is used to calculate the cost of each IO, it needs to
+ 	 * be fairly high precision.  For example, it should be able to
 
 
