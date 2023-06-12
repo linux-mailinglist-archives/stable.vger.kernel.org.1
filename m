@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EAB8D72C0B7
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:54:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82C3472C10C
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:56:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236367AbjFLKyO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:54:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54940 "EHLO
+        id S236963AbjFLK4M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:56:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236286AbjFLKyC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:02 -0400
+        with ESMTP id S236807AbjFLKzz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:55:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 986CE25A10
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:39:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5DC38C0A
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:43:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 30E0661BD9
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:39:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E1AC433EF;
-        Mon, 12 Jun 2023 10:39:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 43368612E8
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:43:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54FBCC433EF;
+        Mon, 12 Jun 2023 10:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566348;
-        bh=V4YIowO+xAY+C1UGEmPPOeTJ0NLkD/poue9I9goNAQc=;
+        s=korg; t=1686566584;
+        bh=Tj5pIUHrwKbgZKMQUQA49EpM6LyQZLQbHXh/SbjZEW4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iHs+trHC9o08Tbhr0kTYhNzjnd09yO0SIDEEtLVT1g3cpvWguKDB4UfdJPZgCHsiW
-         F5ogzAES8mjKOFaOPScQMylw41QWulH28TQ2GYW08ssZD9i2bCWu3GCYe7U3Fazgv9
-         0wmGnYB9UEB3IMg+xoYfoAWq1fGUYkltbopFEzOE=
+        b=y6h6WLM7AgihR+RjXXxyMYs7HgN1LNqCq3ZoneZnsqOldQwrH3TWuvZpXT5iy8e3e
+         89MlyHLFEx39Gb5/8qjZ7pmhd2fUyIgkK+iwJQf9YDA6/GBbtIbnMZK2mO+fh+y1UO
+         TS1OJbCUFaauIK/sXCGd3OKD5tbR7Lc2UnaHGQAI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 72/91] ASoC: codecs: wsa881x: do not set can_multi_write flag
+        =?UTF-8?q?Jan=20H=C3=B6ppner?= <hoeppner@linux.ibm.com>,
+        Stefan Haberland <sth@linux.ibm.com>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 087/132] s390/dasd: Use correct lock while counting channel queue length
 Date:   Mon, 12 Jun 2023 12:27:01 +0200
-Message-ID: <20230612101705.068950275@linuxfoundation.org>
+Message-ID: <20230612101714.230735749@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
-References: <20230612101702.085813286@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,39 +55,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+From: Jan Höppner <hoeppner@linux.ibm.com>
 
-[ Upstream commit 6e7a6d4797ef521c0762914610ed682e102b9d36 ]
+commit ccc45cb4e7271c74dbb27776ae8f73d84557f5c6 upstream.
 
-regmap-sdw does not support multi register writes, so there is
-no point in setting this flag. This also leads to incorrect
-programming of WSA codecs with regmap_multi_reg_write() call.
+The lock around counting the channel queue length in the BIODASDINFO
+ioctl was incorrectly changed to the dasd_block->queue_lock with commit
+583d6535cb9d ("dasd: remove dead code"). This can lead to endless list
+iterations and a subsequent crash.
 
-This invalid configuration should have been rejected by regmap-sdw.
+The queue_lock is supposed to be used only for queue lists belonging to
+dasd_block. For dasd_device related queue lists the ccwdev lock must be
+used.
 
-Fixes: a0aab9e1404a ("ASoC: codecs: add wsa881x amplifier support")
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20230523154605.4284-2-srinivas.kandagatla@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the mentioned issues by correctly using the ccwdev lock instead of
+the queue lock.
+
+Fixes: 583d6535cb9d ("dasd: remove dead code")
+Cc: stable@vger.kernel.org # v5.0+
+Signed-off-by: Jan Höppner <hoeppner@linux.ibm.com>
+Reviewed-by: Stefan Haberland <sth@linux.ibm.com>
+Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230609153750.1258763-2-sth@linux.ibm.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wsa881x.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/s390/block/dasd_ioctl.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/wsa881x.c b/sound/soc/codecs/wsa881x.c
-index 0222370ff95de..8559047694873 100644
---- a/sound/soc/codecs/wsa881x.c
-+++ b/sound/soc/codecs/wsa881x.c
-@@ -646,7 +646,6 @@ static struct regmap_config wsa881x_regmap_config = {
- 	.readable_reg = wsa881x_readable_register,
- 	.reg_format_endian = REGMAP_ENDIAN_NATIVE,
- 	.val_format_endian = REGMAP_ENDIAN_NATIVE,
--	.can_multi_write = true,
- };
+--- a/drivers/s390/block/dasd_ioctl.c
++++ b/drivers/s390/block/dasd_ioctl.c
+@@ -552,10 +552,10 @@ static int __dasd_ioctl_information(stru
  
- enum {
--- 
-2.39.2
-
+ 	memcpy(dasd_info->type, base->discipline->name, 4);
+ 
+-	spin_lock_irqsave(&block->queue_lock, flags);
++	spin_lock_irqsave(get_ccwdev_lock(base->cdev), flags);
+ 	list_for_each(l, &base->ccw_queue)
+ 		dasd_info->chanq_len++;
+-	spin_unlock_irqrestore(&block->queue_lock, flags);
++	spin_unlock_irqrestore(get_ccwdev_lock(base->cdev), flags);
+ 	return 0;
+ }
+ 
 
 
