@@ -2,51 +2,67 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DAB772CD9A
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 20:13:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7960E72CE9E
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 20:40:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237301AbjFLSNq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 14:13:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37880 "EHLO
+        id S233574AbjFLSkq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 14:40:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237325AbjFLSNo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 14:13:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 469B510E2;
-        Mon, 12 Jun 2023 11:13:43 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A16C762CAE;
-        Mon, 12 Jun 2023 18:13:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8623CC433D2;
-        Mon, 12 Jun 2023 18:13:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686593622;
-        bh=0vMAS5XT6J0YOY/P6/h4ZZSt7CogaFpg8bXoq4Ri2nQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hiPfxUYP14W7ult6tJFHOYve3cAaGvoH4MbQ6X7FimDYlIAE6iKbOBu1nMmw2KZMf
-         FTf479bDppoh1uIYm52UDLE+SSI+khzGEAHK7art2f8oni/DvMdZimpoTCVjyyvBqs
-         UuM9kv4uUbF9MQ8yUjR0f+DjRkHB+smcRzkpsGgo=
-Date:   Mon, 12 Jun 2023 20:13:39 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Pavel Machek <pavel@denx.de>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
-Subject: Re: [PATCH 6.1 000/132] 6.1.34-rc1 review
-Message-ID: <2023061224-bubble-violator-ef08@gregkh>
-References: <20230612101710.279705932@linuxfoundation.org>
- <ZIde9VarEXi/BkzI@duo.ucw.cz>
+        with ESMTP id S234190AbjFLSkp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 14:40:45 -0400
+Received: from mail-vs1-xe2c.google.com (mail-vs1-xe2c.google.com [IPv6:2607:f8b0:4864:20::e2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9AB8E6B
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 11:40:42 -0700 (PDT)
+Received: by mail-vs1-xe2c.google.com with SMTP id ada2fe7eead31-43dc0aa328dso120151137.1
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 11:40:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686595242; x=1689187242;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=kPF8uPb56GviGY9KiREimI3Llex5+RzsOybBEO8RgOE=;
+        b=bSub8knI2My+mzdaIppR7khjRkqEOAJYxAgrpaHsB74yBrmaVGcnccW2fkxC4RD4Er
+         Dj36HtgZm64aau1F0geqCqra5BKcQhORteB3ZvxW7jGgx9alss4uXQlntCEmhf0+qUBP
+         SMaknbSSY9pftOMeU3KeaORgEvCbHS2kVgp5UnYdRQoz/IZowDK88X9xNypKonMdKix0
+         +fifpmPPyY2IT9deMsOL7TohKu/WS+pDiOf0xNRBYb3SFiJ0KMRv2wPud7uFV5CVg/9F
+         xnyR9o/n6O3XXziSeQDA8q522aR7h1Ea5bKDFX/e+SRceRhvlRHctdALXvVMGW7pQolc
+         tX4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686595242; x=1689187242;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kPF8uPb56GviGY9KiREimI3Llex5+RzsOybBEO8RgOE=;
+        b=BlRuX5Rq4yfO6F3yh6eUp4PgUsLEM6sjT667yGwByRxWrre21E7ueBruwXxMJXBIq8
+         KZrpyFp9vsZuvHocZLEr7nVvNEn9j19fRA4aN5vN2eUOJjIVNgWbTGCSusxXbqrtc2YV
+         IDI7Tj4itLqpvTIx/DNDflPn7bkD9L8ny8vCY4bEd55nVNVE2dlQqnugb1aYCUE+MC9Q
+         2DtCbcDuRxSYWeGUc8vg4ArF3eY54g4HXKbKQpxHDXoXxxrWLBvAFDKwcrZHbepLbl99
+         2cENqFvhxZSLx2j7mOHO2aBVvViKPoIbicApdjHCGWM/WEkYEu86hhZctG26CfWDhQyI
+         uOsA==
+X-Gm-Message-State: AC+VfDyPBYsgdyyqvQeLhrmM4DVxE6nFOobHvP3i76YzZFsDBPy8GVtY
+        btfYtAV5sxgtbRNtjvayzVwIuiFZmA377yqKLPXm0A==
+X-Google-Smtp-Source: ACHHUZ6+WeYQrAwQgl9qOclJRU4IgMRZR5i2j3aydWORpX0W6M+7rLZHhZ1sf5W41WNq+KeYignkj7N34hIkFAod87o=
+X-Received: by 2002:a05:6102:5106:b0:43b:1dd8:76b4 with SMTP id
+ bm6-20020a056102510600b0043b1dd876b4mr5677539vsb.11.1686595241684; Mon, 12
+ Jun 2023 11:40:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZIde9VarEXi/BkzI@duo.ucw.cz>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 13 Jun 2023 00:10:30 +0530
+Message-ID: <CA+G9fYsJq0sPC+q6vLNKUgBqCGmmjDrfeP4R1-95Eu28FJRY_A@mail.gmail.com>
+Subject: =?UTF-8?Q?clang=3A_Powerpc=3A_clang=2Dnightly=2Dmaple=5Fdefconfig_=E2=80=94_FA?=
+        =?UTF-8?Q?IL?=
+To:     clang-built-linux <llvm@lists.linux.dev>,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-stable <stable@vger.kernel.org>,
+        lkft-triage@lists.linaro.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,18 +71,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jun 12, 2023 at 08:07:49PM +0200, Pavel Machek wrote:
-> Hi!
-> 
-> > This is the start of the stable review cycle for the 6.1.34 release.
-> > There are 132 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> 
-> I notice that origin/queue/6.1 was not updated. Is that an oversight?
-> It was quite useful to see what is coming.
+[Please ignore if it is already reported]
 
-I have no idea what creates that branch, sorry, it's nothing that I do
-on my end.
+Following two builds failed on stable-rc 6.1.34-rc1.
 
-greg k-h
+  - Powerpc: clang-nightly-maple_defconfig =E2=80=94 FAIL
+  - Powerpc: clang-nightly-cell_defconfig =E2=80=94 FAIL
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+make --silent --keep-going --jobs=3D8
+O=3D/home/tuxbuild/.cache/tuxmake/builds/1/build ARCH=3Dpowerpc
+CROSS_COMPILE=3Dpowerpc64le-linux-gnu- HOSTCC=3Dclang CC=3Dclang LLVM=3D1
+LLVM_IAS=3D0 LD=3Dpowerpc64le-linux-gnu-ld
+
+arch/powerpc/lib/copypage_power7.S: Assembler messages:
+arch/powerpc/lib/copypage_power7.S:34: Error: junk at end of line: `0b01000=
+'
+arch/powerpc/lib/copypage_power7.S:35: Error: junk at end of line: `0b01010=
+'
+arch/powerpc/lib/copypage_power7.S:37: Error: junk at end of line: `0b01000=
+'
+arch/powerpc/lib/copypage_power7.S:38: Error: junk at end of line: `0b01010=
+'
+arch/powerpc/lib/copypage_power7.S:40: Error: junk at end of line: `0b01010=
+'
+clang: error: assembler command failed with exit code 1 (use -v to see
+invocation)
+make[4]: *** [scripts/Makefile.build:382:
+arch/powerpc/lib/copypage_power7.o] Error 1
+make[4]: Target 'arch/powerpc/lib/' not remade because of errors.
+make[3]: *** [scripts/Makefile.build:500: arch/powerpc/lib] Error 2
+arch/powerpc/kernel/exceptions-64s.S: Assembler messages:
+arch/powerpc/kernel/exceptions-64s.S:2959: Error: junk at end of line: `0b0=
+1010'
+arch/powerpc/kernel/exceptions-64s.S:2979: Error: junk at end of line: `0b0=
+1010'
+arch/powerpc/kernel/exceptions-64s.S:2994: Error: junk at end of line: `0b0=
+1010'
+arch/powerpc/kernel/exceptions-64s.S:3012: Error: junk at end of line: `0b0=
+1010'
+arch/powerpc/kernel/exceptions-64s.S:3032: Error: junk at end of line: `0b0=
+1010'
+arch/powerpc/kernel/exceptions-64s.S:3079: Error: junk at end of line: `0b0=
+1010'
+clang: error: assembler command failed with exit code 1 (use -v to see
+invocation)
+make[4]: *** [scripts/Makefile.build:382: arch/powerpc/kernel/head_64.o] Er=
+ror 1
+arch/powerpc/kernel/entry_64.S: Assembler messages:
+arch/powerpc/kernel/entry_64.S:172: Error: junk at end of line: `0b01010'
+clang: error: assembler command failed with exit code 1 (use -v to see
+invocation)
+make[4]: *** [scripts/Makefile.build:382:
+arch/powerpc/kernel/entry_64.o] Error 1
+make[4]: Target 'arch/powerpc/kernel/' not remade because of errors.
+make[3]: *** [scripts/Makefile.build:500: arch/powerpc/kernel] Error 2
+make[3]: Target 'arch/powerpc/' not remade because of errors.
+make[2]: *** [scripts/Makefile.build:500: arch/powerpc] Error 2
+make[2]: Target './' not remade because of errors.
+make[1]: *** [Makefile:2012: .] Error 2
+make[1]: Target '__all' not remade because of errors.
+make: *** [Makefile:238: __sub-make] Error 2
+make: Target '__all' not remade because of errors.
+
+
+
+Links,
+- https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1=
+.33-133-g08f336c8c68d/testrun/17475368/suite/build/test/clang-nightly-cell_=
+defconfig/history/
+- https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1=
+.33-133-g08f336c8c68d/testrun/17475373/suite/build/test/clang-nightly-maple=
+_defconfig/history/
+
+
+--
+Linaro LKFT
+https://lkft.linaro.org
