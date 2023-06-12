@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5538372BFDA
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:47:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98C9B72C1E0
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:01:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235274AbjFLKr3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:47:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51726 "EHLO
+        id S237371AbjFLLBJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:01:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235422AbjFLKrQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:47:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B63C83C24
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:31:58 -0700 (PDT)
+        with ESMTP id S237500AbjFLLAy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:00:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F18E35B8D
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:47:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9538960D56
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:31:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD02AC433D2;
-        Mon, 12 Jun 2023 10:31:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8C3C462499
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:47:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CC2EC433D2;
+        Mon, 12 Jun 2023 10:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565918;
-        bh=gu+woyY600EgFNCOX5M7aN+WcWbBcb/QrxPZoXv4bwo=;
+        s=korg; t=1686566867;
+        bh=eP7D0Ja1R9WBcVi31o8KcCPt6SpBY5UAIB20QHyZuy8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v9xzQK4ysB+ErIFZNai2xjmqWLX8wflfJr3XEIghqAz6UT7J1aj0NDgV92yw1ma8D
-         4QlNPOh8WtaKbuWVFatLYOeN03wlUGfqE/nW87n0uH+FzTwiQGQz9ouLtkaZmSpuOc
-         lH5T0mvv0jGcQmPXmMsP60DiNQ3iSHfVJbMVJ8DE=
+        b=G6FBi5EYOs0e7GoKmCOunSVZYTo0oSWwFNEX37oMWpkRix904gbbw8HYMBel2y2zB
+         ynH0jFI1g2c6xqhyawO1vF2pywOXtNJgZAwwSdLXUD6+oSPlNO2yKRzT60fBXknLeV
+         RLg3Bou6kLAzJJ43QW5nJmv5eB2YhHvr3xHmVZ3I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, fuyufan <fuyufan@huawei.com>,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>, Maxime Ripard <maxime@cerno.tech>,
-        Fedor Pchelkin <pchelkin@ispras.ru>
-Subject: [PATCH 5.4 40/45] drm/atomic: Dont pollute crtc_state->mode_blob with error pointers
+        patches@lists.linux.dev,
+        Krystian Pradzynski <krystian.pradzynski@linux.intel.com>,
+        Jeffrey Hugo <quic_jhugo@quicinc.com>,
+        Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 062/160] accel/ivpu: Do not use mutex_lock_interruptible
 Date:   Mon, 12 Jun 2023 12:26:34 +0200
-Message-ID: <20230612101656.280451877@linuxfoundation.org>
+Message-ID: <20230612101717.843699029@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
-References: <20230612101654.644983109@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,50 +56,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
 
-commit 439cf34c8e0a8a33d8c15a31be1b7423426bc765 upstream.
+[ Upstream commit b563e47957af4ff71736c5cc4120a59b055ab583 ]
 
-Make sure we don't assign an error pointer to crtc_state->mode_blob
-as that will break all kinds of places that assume either NULL or a
-valid pointer (eg. drm_property_blob_put()).
+If we get signal when waiting for the mmu->lock we do not invalidate
+current MMU configuration that might result in undefined behavior.
 
-Cc: stable@vger.kernel.org
-Reported-by: fuyufan <fuyufan@huawei.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20220209091928.14766-1-ville.syrjala@linux.intel.com
-Acked-by: Maxime Ripard <maxime@cerno.tech>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Additionally there is little or no benefit on break waiting for
+ipc->lock. In current code base, we keep this lock for short periods.
+
+Fixes: 263b2ba5fc93 ("accel/ivpu: Add Intel VPU MMU support")
+Reviewed-by: Krystian Pradzynski <krystian.pradzynski@linux.intel.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230525103818.877590-2-stanislaw.gruszka@linux.intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_atomic_uapi.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/accel/ivpu/ivpu_ipc.c |  4 +---
+ drivers/accel/ivpu/ivpu_mmu.c | 22 ++++++----------------
+ 2 files changed, 7 insertions(+), 19 deletions(-)
 
---- a/drivers/gpu/drm/drm_atomic_uapi.c
-+++ b/drivers/gpu/drm/drm_atomic_uapi.c
-@@ -75,15 +75,17 @@ int drm_atomic_set_mode_for_crtc(struct
- 	state->mode_blob = NULL;
+diff --git a/drivers/accel/ivpu/ivpu_ipc.c b/drivers/accel/ivpu/ivpu_ipc.c
+index 3adcfa80fc0e5..fa0af59e39ab6 100644
+--- a/drivers/accel/ivpu/ivpu_ipc.c
++++ b/drivers/accel/ivpu/ivpu_ipc.c
+@@ -183,9 +183,7 @@ ivpu_ipc_send(struct ivpu_device *vdev, struct ivpu_ipc_consumer *cons, struct v
+ 	struct ivpu_ipc_info *ipc = vdev->ipc;
+ 	int ret;
  
- 	if (mode) {
-+		struct drm_property_blob *blob;
-+
- 		drm_mode_convert_to_umode(&umode, mode);
--		state->mode_blob =
--			drm_property_create_blob(state->crtc->dev,
--		                                 sizeof(umode),
--		                                 &umode);
--		if (IS_ERR(state->mode_blob))
--			return PTR_ERR(state->mode_blob);
-+		blob = drm_property_create_blob(crtc->dev,
-+						sizeof(umode), &umode);
-+		if (IS_ERR(blob))
-+			return PTR_ERR(blob);
+-	ret = mutex_lock_interruptible(&ipc->lock);
+-	if (ret)
+-		return ret;
++	mutex_lock(&ipc->lock);
  
- 		drm_mode_copy(&state->mode, mode);
-+
-+		state->mode_blob = blob;
- 		state->enable = true;
- 		DRM_DEBUG_ATOMIC("Set [MODE:%s] for [CRTC:%d:%s] state %p\n",
- 				 mode->name, crtc->base.id, crtc->name, state);
+ 	if (!ipc->on) {
+ 		ret = -EAGAIN;
+diff --git a/drivers/accel/ivpu/ivpu_mmu.c b/drivers/accel/ivpu/ivpu_mmu.c
+index 694e978aba663..b8b259b3aa635 100644
+--- a/drivers/accel/ivpu/ivpu_mmu.c
++++ b/drivers/accel/ivpu/ivpu_mmu.c
+@@ -587,16 +587,11 @@ static int ivpu_mmu_strtab_init(struct ivpu_device *vdev)
+ int ivpu_mmu_invalidate_tlb(struct ivpu_device *vdev, u16 ssid)
+ {
+ 	struct ivpu_mmu_info *mmu = vdev->mmu;
+-	int ret;
+-
+-	ret = mutex_lock_interruptible(&mmu->lock);
+-	if (ret)
+-		return ret;
++	int ret = 0;
+ 
+-	if (!mmu->on) {
+-		ret = 0;
++	mutex_lock(&mmu->lock);
++	if (!mmu->on)
+ 		goto unlock;
+-	}
+ 
+ 	ret = ivpu_mmu_cmdq_write_tlbi_nh_asid(vdev, ssid);
+ 	if (ret)
+@@ -614,7 +609,7 @@ static int ivpu_mmu_cd_add(struct ivpu_device *vdev, u32 ssid, u64 cd_dma)
+ 	struct ivpu_mmu_cdtab *cdtab = &mmu->cdtab;
+ 	u64 *entry;
+ 	u64 cd[4];
+-	int ret;
++	int ret = 0;
+ 
+ 	if (ssid > IVPU_MMU_CDTAB_ENT_COUNT)
+ 		return -EINVAL;
+@@ -655,14 +650,9 @@ static int ivpu_mmu_cd_add(struct ivpu_device *vdev, u32 ssid, u64 cd_dma)
+ 	ivpu_dbg(vdev, MMU, "CDTAB %s entry (SSID=%u, dma=%pad): 0x%llx, 0x%llx, 0x%llx, 0x%llx\n",
+ 		 cd_dma ? "write" : "clear", ssid, &cd_dma, cd[0], cd[1], cd[2], cd[3]);
+ 
+-	ret = mutex_lock_interruptible(&mmu->lock);
+-	if (ret)
+-		return ret;
+-
+-	if (!mmu->on) {
+-		ret = 0;
++	mutex_lock(&mmu->lock);
++	if (!mmu->on)
+ 		goto unlock;
+-	}
+ 
+ 	ret = ivpu_mmu_cmdq_write_cfgi_all(vdev);
+ 	if (ret)
+-- 
+2.39.2
+
 
 
