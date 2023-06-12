@@ -2,52 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4384072C20C
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:02:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF4D972C11E
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:56:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237424AbjFLLCZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:02:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36680 "EHLO
+        id S236868AbjFLK41 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:56:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237413AbjFLLCH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:02:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BB3D5BAD
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:49:30 -0700 (PDT)
+        with ESMTP id S235716AbjFLK4N (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:56:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81719526C
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:43:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BC45B624E3
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:49:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D3CC433A1;
-        Mon, 12 Jun 2023 10:49:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1222D616EF
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:43:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24ABDC433EF;
+        Mon, 12 Jun 2023 10:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566969;
-        bh=RhfJTJA4FOwpiH7R7K2DhdExjRF31GU6+g6f5IFWdYY=;
+        s=korg; t=1686566631;
+        bh=8VrfnGZ1rfHOZ/yFldYrKcKJSmi/In6gdkVhTRolang=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hCPylg1yseYKMqZ1faJ1TBhBTstMx3yW4uME7GJrS9QoHyhe08jMDhyKXsSoC688i
-         eMj7y7qGBMzVIXS//+KaJrMFA2tr3fXQ1/YEkSq5r9FEREKD0FxCwBjZIlrGiAhUd2
-         C+wEOIjYguN9oxRlEkrpB2wrdsetSvR7+Ea/jjoo=
+        b=om6G0yua1agwOnxxxJcchLUdXJ6bY6eYLufc6ZItM29sOzxlRstO0gix4rKiULEyy
+         Y+liuJaF/4F+e4gEHV/+GDrw1hyaOKgdVqY4KTPaOiiMJThdtIdLmwjh14wX6+lwVJ
+         h9UkHrXV0AVzYD9/+smA99BcOur3A23X+e76VRmo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Matthieu Baerts <matthieu.baerts@tessares.net>,
-        Geliang Tang <geliang.tang@suse.com>,
-        Mat Martineau <martineau@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.3 100/160] selftests: mptcp: update userspace pm subflow tests
+        patches@lists.linux.dev, Ruihan Li <lrh2000@pku.edu.cn>
+Subject: [PATCH 6.1 098/132] usb: usbfs: Use consistent mmap functions
 Date:   Mon, 12 Jun 2023 12:27:12 +0200
-Message-ID: <20230612101719.588971685@linuxfoundation.org>
+Message-ID: <20230612101714.776821366@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,46 +52,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geliang Tang <geliang.tang@suse.com>
+From: Ruihan Li <lrh2000@pku.edu.cn>
 
-commit 6c160b636c91e71e50c39134f78257cc35305ff0 upstream.
+commit d0b861653f8c16839c3035875b556afc4472f941 upstream.
 
-To align with what is done by the in-kernel PM, update userspace pm
-subflow selftests, by sending the a remove_addrs command together
-before the remove_subflows command. This will get a RM_ADDR in
-chk_rm_nr().
+When hcd->localmem_pool is non-null, localmem_pool is used to allocate
+DMA memory. In this case, the dma address will be properly returned (in
+dma_handle), and dma_mmap_coherent should be used to map this memory
+into the user space. However, the current implementation uses
+pfn_remap_range, which is supposed to map normal pages.
 
-Fixes: d9a4594edabf ("mptcp: netlink: Add MPTCP_PM_CMD_REMOVE")
-Fixes: 5e986ec46874 ("selftests: mptcp: userspace pm subflow tests")
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/379
+Instead of repeating the logic in the memory allocation function, this
+patch introduces a more robust solution. Here, the type of allocated
+memory is checked by testing whether dma_handle is properly set. If
+dma_handle is properly returned, it means some DMA pages are allocated
+and dma_mmap_coherent should be used to map them. Otherwise, normal
+pages are allocated and pfn_remap_range should be called. This ensures
+that the correct mmap functions are used consistently, independently
+with logic details that determine which type of memory gets allocated.
+
+Fixes: a0e710a7def4 ("USB: usbfs: fix mmap dma mismatch")
 Cc: stable@vger.kernel.org
-Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: Geliang Tang <geliang.tang@suse.com>
-Signed-off-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
+Link: https://lore.kernel.org/r/20230515130958.32471-3-lrh2000@pku.edu.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/core/devio.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -930,6 +930,7 @@ do_transfer()
- 				sleep 1
- 				sp=$(grep "type:10" "$evts_ns2" |
- 				     sed -n 's/.*\(sport:\)\([[:digit:]]*\).*$/\2/p;q')
-+				ip netns exec ${connector_ns} ./pm_nl_ctl rem token $tk id $id
- 				ip netns exec ${connector_ns} ./pm_nl_ctl dsf lip $addr lport $sp \
- 									rip $da rport $dp token $tk
- 			fi
-@@ -3104,7 +3105,7 @@ userspace_tests()
- 		pm_nl_set_limits $ns1 0 1
- 		run_tests $ns1 $ns2 10.0.1.1 0 0 userspace_1 slow
- 		chk_join_nr 1 1 1
--		chk_rm_nr 0 1
-+		chk_rm_nr 1 1
- 		kill_events_pids
- 	fi
- }
+--- a/drivers/usb/core/devio.c
++++ b/drivers/usb/core/devio.c
+@@ -235,7 +235,7 @@ static int usbdev_mmap(struct file *file
+ 	size_t size = vma->vm_end - vma->vm_start;
+ 	void *mem;
+ 	unsigned long flags;
+-	dma_addr_t dma_handle;
++	dma_addr_t dma_handle = DMA_MAPPING_ERROR;
+ 	int ret;
+ 
+ 	ret = usbfs_increase_memory_usage(size + sizeof(struct usb_memory));
+@@ -265,7 +265,14 @@ static int usbdev_mmap(struct file *file
+ 	usbm->vma_use_count = 1;
+ 	INIT_LIST_HEAD(&usbm->memlist);
+ 
+-	if (hcd->localmem_pool || !hcd_uses_dma(hcd)) {
++	/*
++	 * In DMA-unavailable cases, hcd_buffer_alloc_pages allocates
++	 * normal pages and assigns DMA_MAPPING_ERROR to dma_handle. Check
++	 * whether we are in such cases, and then use remap_pfn_range (or
++	 * dma_mmap_coherent) to map normal (or DMA) pages into the user
++	 * space, respectively.
++	 */
++	if (dma_handle == DMA_MAPPING_ERROR) {
+ 		if (remap_pfn_range(vma, vma->vm_start,
+ 				    virt_to_phys(usbm->mem) >> PAGE_SHIFT,
+ 				    size, vma->vm_page_prot) < 0) {
 
 
