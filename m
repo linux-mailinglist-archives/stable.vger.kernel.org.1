@@ -2,55 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1BE072BFFE
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:48:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65FE472C1D2
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:00:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232494AbjFLKsq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:48:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52534 "EHLO
+        id S237360AbjFLLAx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:00:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230026AbjFLKsX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:48:23 -0400
+        with ESMTP id S237372AbjFLLA2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:00:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89E0A49C5;
-        Mon, 12 Jun 2023 03:33:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 465F5E6
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:47:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5582A623E1;
-        Mon, 12 Jun 2023 10:33:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C497C433D2;
-        Mon, 12 Jun 2023 10:33:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D565762461
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:47:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD88EC433EF;
+        Mon, 12 Jun 2023 10:47:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565991;
-        bh=eJ24hOEaCmyoBhRNnM4VQP5Yjld7Lzx8mLbSnqUwerw=;
-        h=From:To:Cc:Subject:Date:From;
-        b=s+AwYnnjcHKWzu3aJPgMkH7jhc4IEpKZ48WVvWgrOWvljCmDb7bDN+dtuqILIT+L5
-         zGH1uEV5xu4l2a9pYvnbzbixCTG20fU5o633Q5QJO+7Ah9VbKFyyeNoVPyrODxiDLe
-         EwkCxKIPvFzgkHEKX2/J9feSKVEoqK06XGds9MjE=
+        s=korg; t=1686566835;
+        bh=m5uVrG323bW9lRHtBSsqUns5GfoIr18nlgNeeP9HYa0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=mvH/9Gk+kCVi33+zDWdm9BZ3zwr3ojCC6ibfTAJPyUZOXWkFdSduy0FWdI+UVUqZL
+         xnWAuwYqN++ZvYz81+QKR8V8QloPr7P6kiUqTR5GEYSYAGt8jehDPVvuT3iYUElbuN
+         LO/KopXhIJU4wPPbuh4dlVBXxDH4VfeiVFHLST1M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de
-Subject: [PATCH 5.10 00/68] 5.10.184-rc1 review
+        patches@lists.linux.dev, Iulia Tanasescu <iulia.tanasescu@nxp.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 020/160] Bluetooth: Split bt_iso_qos into dedicated structures
 Date:   Mon, 12 Jun 2023 12:25:52 +0200
-Message-ID: <20230612101658.437327280@linuxfoundation.org>
+Message-ID: <20230612101715.989933658@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-MIME-Version: 1.0
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.184-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-5.10.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 5.10.184-rc1
-X-KernelTest-Deadline: 2023-06-14T10:17+00:00
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -63,312 +54,872 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is the start of the stable review cycle for the 5.10.184 release.
-There are 68 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+
+[ Upstream commit 0fe8c8d071343fa9278980ce4b6f8e6ea24a2ed1 ]
+
+Split bt_iso_qos into dedicated unicast and broadcast
+structures and add additional broadcast parameters.
+
+Fixes: eca0ae4aea66 ("Bluetooth: Add initial implementation of BIS connections")
+Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: 31c5f9164949 ("Bluetooth: ISO: consider right CIS when removing CIG at cleanup")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/net/bluetooth/bluetooth.h |  43 +++++---
+ include/net/bluetooth/hci_core.h  |   9 +-
+ net/bluetooth/hci_conn.c          | 162 ++++++++++++++++--------------
+ net/bluetooth/hci_event.c         |  33 +++---
+ net/bluetooth/iso.c               | 125 ++++++++++++++++++-----
+ 5 files changed, 237 insertions(+), 135 deletions(-)
+
+diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
+index bcc5a4cd2c17b..1b4230cd42a37 100644
+--- a/include/net/bluetooth/bluetooth.h
++++ b/include/net/bluetooth/bluetooth.h
+@@ -1,6 +1,7 @@
+ /*
+    BlueZ - Bluetooth protocol stack for Linux
+    Copyright (C) 2000-2001 Qualcomm Incorporated
++   Copyright 2023 NXP
+ 
+    Written 2000,2001 by Maxim Krasnyansky <maxk@qualcomm.com>
+ 
+@@ -171,23 +172,39 @@ struct bt_iso_io_qos {
+ 	__u8  rtn;
+ };
+ 
+-struct bt_iso_qos {
+-	union {
+-		__u8  cig;
+-		__u8  big;
+-	};
+-	union {
+-		__u8  cis;
+-		__u8  bis;
+-	};
+-	union {
+-		__u8  sca;
+-		__u8  sync_interval;
+-	};
++struct bt_iso_ucast_qos {
++	__u8  cig;
++	__u8  cis;
++	__u8  sca;
++	__u8  packing;
++	__u8  framing;
++	struct bt_iso_io_qos in;
++	struct bt_iso_io_qos out;
++};
++
++struct bt_iso_bcast_qos {
++	__u8  big;
++	__u8  bis;
++	__u8  sync_interval;
+ 	__u8  packing;
+ 	__u8  framing;
+ 	struct bt_iso_io_qos in;
+ 	struct bt_iso_io_qos out;
++	__u8  encryption;
++	__u8  bcode[16];
++	__u8  options;
++	__u16 skip;
++	__u16 sync_timeout;
++	__u8  sync_cte_type;
++	__u8  mse;
++	__u16 timeout;
++};
++
++struct bt_iso_qos {
++	union {
++		struct bt_iso_ucast_qos ucast;
++		struct bt_iso_bcast_qos bcast;
++	};
+ };
+ 
+ #define BT_ISO_PHY_1M		0x01
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index d5311ceb21c62..86db7f3a31ce5 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -1,6 +1,7 @@
+ /*
+    BlueZ - Bluetooth protocol stack for Linux
+    Copyright (c) 2000-2001, 2010, Code Aurora Forum. All rights reserved.
++   Copyright 2023 NXP
+ 
+    Written 2000,2001 by Maxim Krasnyansky <maxk@qualcomm.com>
+ 
+@@ -1091,7 +1092,7 @@ static inline struct hci_conn *hci_conn_hash_lookup_bis(struct hci_dev *hdev,
+ 		if (bacmp(&c->dst, ba) || c->type != ISO_LINK)
+ 			continue;
+ 
+-		if (c->iso_qos.big == big && c->iso_qos.bis == bis) {
++		if (c->iso_qos.bcast.big == big && c->iso_qos.bcast.bis == bis) {
+ 			rcu_read_unlock();
+ 			return c;
+ 		}
+@@ -1200,7 +1201,7 @@ static inline struct hci_conn *hci_conn_hash_lookup_cig(struct hci_dev *hdev,
+ 		if (c->type != ISO_LINK)
+ 			continue;
+ 
+-		if (handle == c->iso_qos.cig) {
++		if (handle == c->iso_qos.ucast.cig) {
+ 			rcu_read_unlock();
+ 			return c;
+ 		}
+@@ -1223,7 +1224,7 @@ static inline struct hci_conn *hci_conn_hash_lookup_big(struct hci_dev *hdev,
+ 		if (bacmp(&c->dst, BDADDR_ANY) || c->type != ISO_LINK)
+ 			continue;
+ 
+-		if (handle == c->iso_qos.big) {
++		if (handle == c->iso_qos.bcast.big) {
+ 			rcu_read_unlock();
+ 			return c;
+ 		}
+@@ -1332,7 +1333,7 @@ struct hci_conn *hci_connect_bis(struct hci_dev *hdev, bdaddr_t *dst,
+ 				 __u8 dst_type, struct bt_iso_qos *qos,
+ 				 __u8 data_len, __u8 *data);
+ int hci_pa_create_sync(struct hci_dev *hdev, bdaddr_t *dst, __u8 dst_type,
+-		       __u8 sid);
++		       __u8 sid, struct bt_iso_qos *qos);
+ int hci_le_big_create_sync(struct hci_dev *hdev, struct bt_iso_qos *qos,
+ 			   __u16 sync_handle, __u8 num_bis, __u8 bis[]);
+ int hci_conn_check_link_mode(struct hci_conn *conn);
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index 8455ba141ee61..5672b49245721 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -1,6 +1,7 @@
+ /*
+    BlueZ - Bluetooth protocol stack for Linux
+    Copyright (c) 2000-2001, 2010, Code Aurora Forum. All rights reserved.
++   Copyright 2023 NXP
+ 
+    Written 2000,2001 by Maxim Krasnyansky <maxk@qualcomm.com>
+ 
+@@ -795,8 +796,8 @@ static void bis_list(struct hci_conn *conn, void *data)
+ 	if (bacmp(&conn->dst, BDADDR_ANY))
+ 		return;
+ 
+-	if (d->big != conn->iso_qos.big || d->bis == BT_ISO_QOS_BIS_UNSET ||
+-	    d->bis != conn->iso_qos.bis)
++	if (d->big != conn->iso_qos.bcast.big || d->bis == BT_ISO_QOS_BIS_UNSET ||
++	    d->bis != conn->iso_qos.bcast.bis)
+ 		return;
+ 
+ 	d->count++;
+@@ -916,10 +917,10 @@ static void bis_cleanup(struct hci_conn *conn)
+ 		if (!test_and_clear_bit(HCI_CONN_PER_ADV, &conn->flags))
+ 			return;
+ 
+-		hci_le_terminate_big(hdev, conn->iso_qos.big,
+-				     conn->iso_qos.bis);
++		hci_le_terminate_big(hdev, conn->iso_qos.bcast.big,
++				     conn->iso_qos.bcast.bis);
+ 	} else {
+-		hci_le_big_terminate(hdev, conn->iso_qos.big,
++		hci_le_big_terminate(hdev, conn->iso_qos.bcast.big,
+ 				     conn->sync_handle);
+ 	}
+ }
+@@ -959,7 +960,7 @@ static void cis_cleanup(struct hci_conn *conn)
+ 	struct iso_list_data d;
+ 
+ 	memset(&d, 0, sizeof(d));
+-	d.cig = conn->iso_qos.cig;
++	d.cig = conn->iso_qos.ucast.cig;
+ 
+ 	/* Check if ISO connection is a CIS and remove CIG if there are
+ 	 * no other connections using it.
+@@ -968,7 +969,7 @@ static void cis_cleanup(struct hci_conn *conn)
+ 	if (d.count)
+ 		return;
+ 
+-	hci_le_remove_cig(hdev, conn->iso_qos.cig);
++	hci_le_remove_cig(hdev, conn->iso_qos.ucast.cig);
+ }
+ 
+ struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
+@@ -1411,7 +1412,7 @@ static int qos_set_big(struct hci_dev *hdev, struct bt_iso_qos *qos)
+ 	struct iso_list_data data;
+ 
+ 	/* Allocate a BIG if not set */
+-	if (qos->big == BT_ISO_QOS_BIG_UNSET) {
++	if (qos->bcast.big == BT_ISO_QOS_BIG_UNSET) {
+ 		for (data.big = 0x00; data.big < 0xef; data.big++) {
+ 			data.count = 0;
+ 			data.bis = 0xff;
+@@ -1426,7 +1427,7 @@ static int qos_set_big(struct hci_dev *hdev, struct bt_iso_qos *qos)
+ 			return -EADDRNOTAVAIL;
+ 
+ 		/* Update BIG */
+-		qos->big = data.big;
++		qos->bcast.big = data.big;
+ 	}
+ 
+ 	return 0;
+@@ -1437,7 +1438,7 @@ static int qos_set_bis(struct hci_dev *hdev, struct bt_iso_qos *qos)
+ 	struct iso_list_data data;
+ 
+ 	/* Allocate BIS if not set */
+-	if (qos->bis == BT_ISO_QOS_BIS_UNSET) {
++	if (qos->bcast.bis == BT_ISO_QOS_BIS_UNSET) {
+ 		/* Find an unused adv set to advertise BIS, skip instance 0x00
+ 		 * since it is reserved as general purpose set.
+ 		 */
+@@ -1455,7 +1456,7 @@ static int qos_set_bis(struct hci_dev *hdev, struct bt_iso_qos *qos)
+ 			return -EADDRNOTAVAIL;
+ 
+ 		/* Update BIS */
+-		qos->bis = data.bis;
++		qos->bcast.bis = data.bis;
+ 	}
+ 
+ 	return 0;
+@@ -1484,8 +1485,8 @@ static struct hci_conn *hci_add_bis(struct hci_dev *hdev, bdaddr_t *dst,
+ 	if (err)
+ 		return ERR_PTR(err);
+ 
+-	data.big = qos->big;
+-	data.bis = qos->bis;
++	data.big = qos->bcast.big;
++	data.bis = qos->bcast.bis;
+ 	data.count = 0;
+ 
+ 	/* Check if there is already a matching BIG/BIS */
+@@ -1493,7 +1494,7 @@ static struct hci_conn *hci_add_bis(struct hci_dev *hdev, bdaddr_t *dst,
+ 	if (data.count)
+ 		return ERR_PTR(-EADDRINUSE);
+ 
+-	conn = hci_conn_hash_lookup_bis(hdev, dst, qos->big, qos->bis);
++	conn = hci_conn_hash_lookup_bis(hdev, dst, qos->bcast.big, qos->bcast.bis);
+ 	if (conn)
+ 		return ERR_PTR(-EADDRINUSE);
+ 
+@@ -1648,13 +1649,13 @@ static void cis_add(struct iso_list_data *d, struct bt_iso_qos *qos)
+ {
+ 	struct hci_cis_params *cis = &d->pdu.cis[d->pdu.cp.num_cis];
+ 
+-	cis->cis_id = qos->cis;
+-	cis->c_sdu  = cpu_to_le16(qos->out.sdu);
+-	cis->p_sdu  = cpu_to_le16(qos->in.sdu);
+-	cis->c_phy  = qos->out.phy ? qos->out.phy : qos->in.phy;
+-	cis->p_phy  = qos->in.phy ? qos->in.phy : qos->out.phy;
+-	cis->c_rtn  = qos->out.rtn;
+-	cis->p_rtn  = qos->in.rtn;
++	cis->cis_id = qos->ucast.cis;
++	cis->c_sdu  = cpu_to_le16(qos->ucast.out.sdu);
++	cis->p_sdu  = cpu_to_le16(qos->ucast.in.sdu);
++	cis->c_phy  = qos->ucast.out.phy ? qos->ucast.out.phy : qos->ucast.in.phy;
++	cis->p_phy  = qos->ucast.in.phy ? qos->ucast.in.phy : qos->ucast.out.phy;
++	cis->c_rtn  = qos->ucast.out.rtn;
++	cis->p_rtn  = qos->ucast.in.rtn;
+ 
+ 	d->pdu.cp.num_cis++;
+ }
+@@ -1667,8 +1668,8 @@ static void cis_list(struct hci_conn *conn, void *data)
+ 	if (!bacmp(&conn->dst, BDADDR_ANY))
+ 		return;
+ 
+-	if (d->cig != conn->iso_qos.cig || d->cis == BT_ISO_QOS_CIS_UNSET ||
+-	    d->cis != conn->iso_qos.cis)
++	if (d->cig != conn->iso_qos.ucast.cig || d->cis == BT_ISO_QOS_CIS_UNSET ||
++	    d->cis != conn->iso_qos.ucast.cis)
+ 		return;
+ 
+ 	d->count++;
+@@ -1687,17 +1688,18 @@ static int hci_le_create_big(struct hci_conn *conn, struct bt_iso_qos *qos)
+ 
+ 	memset(&cp, 0, sizeof(cp));
+ 
+-	cp.handle = qos->big;
+-	cp.adv_handle = qos->bis;
++	cp.handle = qos->bcast.big;
++	cp.adv_handle = qos->bcast.bis;
+ 	cp.num_bis  = 0x01;
+-	hci_cpu_to_le24(qos->out.interval, cp.bis.sdu_interval);
+-	cp.bis.sdu = cpu_to_le16(qos->out.sdu);
+-	cp.bis.latency =  cpu_to_le16(qos->out.latency);
+-	cp.bis.rtn  = qos->out.rtn;
+-	cp.bis.phy  = qos->out.phy;
+-	cp.bis.packing = qos->packing;
+-	cp.bis.framing = qos->framing;
+-	cp.bis.encryption = 0x00;
++	hci_cpu_to_le24(qos->bcast.out.interval, cp.bis.sdu_interval);
++	cp.bis.sdu = cpu_to_le16(qos->bcast.out.sdu);
++	cp.bis.latency =  cpu_to_le16(qos->bcast.out.latency);
++	cp.bis.rtn  = qos->bcast.out.rtn;
++	cp.bis.phy  = qos->bcast.out.phy;
++	cp.bis.packing = qos->bcast.packing;
++	cp.bis.framing = qos->bcast.framing;
++	cp.bis.encryption = qos->bcast.encryption;
++	memcpy(cp.bis.bcode, qos->bcast.bcode, sizeof(cp.bis.bcode));
+ 	memset(&cp.bis.bcode, 0, sizeof(cp.bis.bcode));
+ 
+ 	return hci_send_cmd(hdev, HCI_OP_LE_CREATE_BIG, sizeof(cp), &cp);
+@@ -1711,7 +1713,7 @@ static bool hci_le_set_cig_params(struct hci_conn *conn, struct bt_iso_qos *qos)
+ 	memset(&data, 0, sizeof(data));
+ 
+ 	/* Allocate a CIG if not set */
+-	if (qos->cig == BT_ISO_QOS_CIG_UNSET) {
++	if (qos->ucast.cig == BT_ISO_QOS_CIG_UNSET) {
+ 		for (data.cig = 0x00; data.cig < 0xff; data.cig++) {
+ 			data.count = 0;
+ 			data.cis = 0xff;
+@@ -1731,22 +1733,22 @@ static bool hci_le_set_cig_params(struct hci_conn *conn, struct bt_iso_qos *qos)
+ 			return false;
+ 
+ 		/* Update CIG */
+-		qos->cig = data.cig;
++		qos->ucast.cig = data.cig;
+ 	}
+ 
+-	data.pdu.cp.cig_id = qos->cig;
+-	hci_cpu_to_le24(qos->out.interval, data.pdu.cp.c_interval);
+-	hci_cpu_to_le24(qos->in.interval, data.pdu.cp.p_interval);
+-	data.pdu.cp.sca = qos->sca;
+-	data.pdu.cp.packing = qos->packing;
+-	data.pdu.cp.framing = qos->framing;
+-	data.pdu.cp.c_latency = cpu_to_le16(qos->out.latency);
+-	data.pdu.cp.p_latency = cpu_to_le16(qos->in.latency);
++	data.pdu.cp.cig_id = qos->ucast.cig;
++	hci_cpu_to_le24(qos->ucast.out.interval, data.pdu.cp.c_interval);
++	hci_cpu_to_le24(qos->ucast.in.interval, data.pdu.cp.p_interval);
++	data.pdu.cp.sca = qos->ucast.sca;
++	data.pdu.cp.packing = qos->ucast.packing;
++	data.pdu.cp.framing = qos->ucast.framing;
++	data.pdu.cp.c_latency = cpu_to_le16(qos->ucast.out.latency);
++	data.pdu.cp.p_latency = cpu_to_le16(qos->ucast.in.latency);
+ 
+-	if (qos->cis != BT_ISO_QOS_CIS_UNSET) {
++	if (qos->ucast.cis != BT_ISO_QOS_CIS_UNSET) {
+ 		data.count = 0;
+-		data.cig = qos->cig;
+-		data.cis = qos->cis;
++		data.cig = qos->ucast.cig;
++		data.cis = qos->ucast.cis;
+ 
+ 		hci_conn_hash_list_state(hdev, cis_list, ISO_LINK, BT_BOUND,
+ 					 &data);
+@@ -1757,7 +1759,7 @@ static bool hci_le_set_cig_params(struct hci_conn *conn, struct bt_iso_qos *qos)
+ 	}
+ 
+ 	/* Reprogram all CIS(s) with the same CIG */
+-	for (data.cig = qos->cig, data.cis = 0x00; data.cis < 0x11;
++	for (data.cig = qos->ucast.cig, data.cis = 0x00; data.cis < 0x11;
+ 	     data.cis++) {
+ 		data.count = 0;
+ 
+@@ -1767,14 +1769,14 @@ static bool hci_le_set_cig_params(struct hci_conn *conn, struct bt_iso_qos *qos)
+ 			continue;
+ 
+ 		/* Allocate a CIS if not set */
+-		if (qos->cis == BT_ISO_QOS_CIS_UNSET) {
++		if (qos->ucast.cis == BT_ISO_QOS_CIS_UNSET) {
+ 			/* Update CIS */
+-			qos->cis = data.cis;
++			qos->ucast.cis = data.cis;
+ 			cis_add(&data, qos);
+ 		}
+ 	}
+ 
+-	if (qos->cis == BT_ISO_QOS_CIS_UNSET || !data.pdu.cp.num_cis)
++	if (qos->ucast.cis == BT_ISO_QOS_CIS_UNSET || !data.pdu.cp.num_cis)
+ 		return false;
+ 
+ 	if (hci_send_cmd(hdev, HCI_OP_LE_SET_CIG_PARAMS,
+@@ -1809,32 +1811,32 @@ struct hci_conn *hci_bind_cis(struct hci_dev *hdev, bdaddr_t *dst,
+ 		return cis;
+ 
+ 	/* Update LINK PHYs according to QoS preference */
+-	cis->le_tx_phy = qos->out.phy;
+-	cis->le_rx_phy = qos->in.phy;
++	cis->le_tx_phy = qos->ucast.out.phy;
++	cis->le_rx_phy = qos->ucast.in.phy;
+ 
+ 	/* If output interval is not set use the input interval as it cannot be
+ 	 * 0x000000.
+ 	 */
+-	if (!qos->out.interval)
+-		qos->out.interval = qos->in.interval;
++	if (!qos->ucast.out.interval)
++		qos->ucast.out.interval = qos->ucast.in.interval;
+ 
+ 	/* If input interval is not set use the output interval as it cannot be
+ 	 * 0x000000.
+ 	 */
+-	if (!qos->in.interval)
+-		qos->in.interval = qos->out.interval;
++	if (!qos->ucast.in.interval)
++		qos->ucast.in.interval = qos->ucast.out.interval;
+ 
+ 	/* If output latency is not set use the input latency as it cannot be
+ 	 * 0x0000.
+ 	 */
+-	if (!qos->out.latency)
+-		qos->out.latency = qos->in.latency;
++	if (!qos->ucast.out.latency)
++		qos->ucast.out.latency = qos->ucast.in.latency;
+ 
+ 	/* If input latency is not set use the output latency as it cannot be
+ 	 * 0x0000.
+ 	 */
+-	if (!qos->in.latency)
+-		qos->in.latency = qos->out.latency;
++	if (!qos->ucast.in.latency)
++		qos->ucast.in.latency = qos->ucast.out.latency;
+ 
+ 	if (!hci_le_set_cig_params(cis, qos)) {
+ 		hci_conn_drop(cis);
+@@ -1854,7 +1856,7 @@ bool hci_iso_setup_path(struct hci_conn *conn)
+ 
+ 	memset(&cmd, 0, sizeof(cmd));
+ 
+-	if (conn->iso_qos.out.sdu) {
++	if (conn->iso_qos.ucast.out.sdu) {
+ 		cmd.handle = cpu_to_le16(conn->handle);
+ 		cmd.direction = 0x00; /* Input (Host to Controller) */
+ 		cmd.path = 0x00; /* HCI path if enabled */
+@@ -1865,7 +1867,7 @@ bool hci_iso_setup_path(struct hci_conn *conn)
+ 			return false;
+ 	}
+ 
+-	if (conn->iso_qos.in.sdu) {
++	if (conn->iso_qos.ucast.in.sdu) {
+ 		cmd.handle = cpu_to_le16(conn->handle);
+ 		cmd.direction = 0x01; /* Output (Controller to Host) */
+ 		cmd.path = 0x00; /* HCI path if enabled */
+@@ -1892,7 +1894,7 @@ static int hci_create_cis_sync(struct hci_dev *hdev, void *data)
+ 	cmd.cis[0].acl_handle = cpu_to_le16(conn->link->handle);
+ 	cmd.cis[0].cis_handle = cpu_to_le16(conn->handle);
+ 	cmd.cp.num_cis++;
+-	cig = conn->iso_qos.cig;
++	cig = conn->iso_qos.ucast.cig;
+ 
+ 	hci_dev_lock(hdev);
+ 
+@@ -1902,7 +1904,7 @@ static int hci_create_cis_sync(struct hci_dev *hdev, void *data)
+ 		struct hci_cis *cis = &cmd.cis[cmd.cp.num_cis];
+ 
+ 		if (conn == data || conn->type != ISO_LINK ||
+-		    conn->state == BT_CONNECTED || conn->iso_qos.cig != cig)
++		    conn->state == BT_CONNECTED || conn->iso_qos.ucast.cig != cig)
+ 			continue;
+ 
+ 		/* Check if all CIS(s) belonging to a CIG are ready */
+@@ -2002,8 +2004,8 @@ static void hci_bind_bis(struct hci_conn *conn,
+ 			 struct bt_iso_qos *qos)
+ {
+ 	/* Update LINK PHYs according to QoS preference */
+-	conn->le_tx_phy = qos->out.phy;
+-	conn->le_tx_phy = qos->out.phy;
++	conn->le_tx_phy = qos->bcast.out.phy;
++	conn->le_tx_phy = qos->bcast.out.phy;
+ 	conn->iso_qos = *qos;
+ 	conn->state = BT_BOUND;
+ }
+@@ -2016,16 +2018,16 @@ static int create_big_sync(struct hci_dev *hdev, void *data)
+ 	u32 flags = 0;
+ 	int err;
+ 
+-	if (qos->out.phy == 0x02)
++	if (qos->bcast.out.phy == 0x02)
+ 		flags |= MGMT_ADV_FLAG_SEC_2M;
+ 
+ 	/* Align intervals */
+-	interval = qos->out.interval / 1250;
++	interval = qos->bcast.out.interval / 1250;
+ 
+-	if (qos->bis)
+-		sync_interval = qos->sync_interval * 1600;
++	if (qos->bcast.bis)
++		sync_interval = qos->bcast.sync_interval * 1600;
+ 
+-	err = hci_start_per_adv_sync(hdev, qos->bis, conn->le_per_adv_data_len,
++	err = hci_start_per_adv_sync(hdev, qos->bcast.bis, conn->le_per_adv_data_len,
+ 				     conn->le_per_adv_data, flags, interval,
+ 				     interval, sync_interval);
+ 	if (err)
+@@ -2062,7 +2064,7 @@ static int create_pa_sync(struct hci_dev *hdev, void *data)
+ }
+ 
+ int hci_pa_create_sync(struct hci_dev *hdev, bdaddr_t *dst, __u8 dst_type,
+-		       __u8 sid)
++		       __u8 sid, struct bt_iso_qos *qos)
+ {
+ 	struct hci_cp_le_pa_create_sync *cp;
+ 
+@@ -2075,9 +2077,13 @@ int hci_pa_create_sync(struct hci_dev *hdev, bdaddr_t *dst, __u8 dst_type,
+ 		return -ENOMEM;
+ 	}
+ 
++	cp->options = qos->bcast.options;
+ 	cp->sid = sid;
+ 	cp->addr_type = dst_type;
+ 	bacpy(&cp->addr, dst);
++	cp->skip = cpu_to_le16(qos->bcast.skip);
++	cp->sync_timeout = cpu_to_le16(qos->bcast.sync_timeout);
++	cp->sync_cte_type = qos->bcast.sync_cte_type;
+ 
+ 	/* Queue start pa_create_sync and scan */
+ 	return hci_cmd_sync_queue(hdev, create_pa_sync, cp, create_pa_complete);
+@@ -2100,8 +2106,12 @@ int hci_le_big_create_sync(struct hci_dev *hdev, struct bt_iso_qos *qos,
+ 		return err;
+ 
+ 	memset(&pdu, 0, sizeof(pdu));
+-	pdu.cp.handle = qos->big;
++	pdu.cp.handle = qos->bcast.big;
+ 	pdu.cp.sync_handle = cpu_to_le16(sync_handle);
++	pdu.cp.encryption = qos->bcast.encryption;
++	memcpy(pdu.cp.bcode, qos->bcast.bcode, sizeof(pdu.cp.bcode));
++	pdu.cp.mse = qos->bcast.mse;
++	pdu.cp.timeout = cpu_to_le16(qos->bcast.timeout);
+ 	pdu.cp.num_bis = num_bis;
+ 	memcpy(pdu.bis, bis, num_bis);
+ 
+@@ -2151,7 +2161,7 @@ struct hci_conn *hci_connect_bis(struct hci_dev *hdev, bdaddr_t *dst,
+ 		return ERR_PTR(err);
+ 	}
+ 
+-	hci_iso_qos_setup(hdev, conn, &qos->out,
++	hci_iso_qos_setup(hdev, conn, &qos->bcast.out,
+ 			  conn->le_tx_phy ? conn->le_tx_phy :
+ 			  hdev->le_tx_def_phys);
+ 
+@@ -2177,9 +2187,9 @@ struct hci_conn *hci_connect_cis(struct hci_dev *hdev, bdaddr_t *dst,
+ 	if (IS_ERR(le))
+ 		return le;
+ 
+-	hci_iso_qos_setup(hdev, le, &qos->out,
++	hci_iso_qos_setup(hdev, le, &qos->ucast.out,
+ 			  le->le_tx_phy ? le->le_tx_phy : hdev->le_tx_def_phys);
+-	hci_iso_qos_setup(hdev, le, &qos->in,
++	hci_iso_qos_setup(hdev, le, &qos->ucast.in,
+ 			  le->le_rx_phy ? le->le_rx_phy : hdev->le_rx_def_phys);
+ 
+ 	cis = hci_bind_cis(hdev, dst, dst_type, qos);
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 51f13518dba9b..0e0a93cc12186 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -1,6 +1,7 @@
+ /*
+    BlueZ - Bluetooth protocol stack for Linux
+    Copyright (c) 2000-2001, 2010, Code Aurora Forum. All rights reserved.
++   Copyright 2023 NXP
+ 
+    Written 2000,2001 by Maxim Krasnyansky <maxk@qualcomm.com>
+ 
+@@ -3833,7 +3834,7 @@ static u8 hci_cc_le_set_cig_params(struct hci_dev *hdev, void *data,
+ 	rcu_read_lock();
+ 
+ 	list_for_each_entry_rcu(conn, &hdev->conn_hash.list, list) {
+-		if (conn->type != ISO_LINK || conn->iso_qos.cig != rp->cig_id ||
++		if (conn->type != ISO_LINK || conn->iso_qos.ucast.cig != rp->cig_id ||
+ 		    conn->state == BT_CONNECTED)
+ 			continue;
+ 
+@@ -3890,7 +3891,7 @@ static u8 hci_cc_le_setup_iso_path(struct hci_dev *hdev, void *data,
+ 	/* Input (Host to Controller) */
+ 	case 0x00:
+ 		/* Only confirm connection if output only */
+-		if (conn->iso_qos.out.sdu && !conn->iso_qos.in.sdu)
++		if (conn->iso_qos.ucast.out.sdu && !conn->iso_qos.ucast.in.sdu)
+ 			hci_connect_cfm(conn, rp->status);
+ 		break;
+ 	/* Output (Controller to Host) */
+@@ -6818,15 +6819,15 @@ static void hci_le_cis_estabilished_evt(struct hci_dev *hdev, void *data,
+ 		memset(&interval, 0, sizeof(interval));
+ 
+ 		memcpy(&interval, ev->c_latency, sizeof(ev->c_latency));
+-		conn->iso_qos.in.interval = le32_to_cpu(interval);
++		conn->iso_qos.ucast.in.interval = le32_to_cpu(interval);
+ 		memcpy(&interval, ev->p_latency, sizeof(ev->p_latency));
+-		conn->iso_qos.out.interval = le32_to_cpu(interval);
+-		conn->iso_qos.in.latency = le16_to_cpu(ev->interval);
+-		conn->iso_qos.out.latency = le16_to_cpu(ev->interval);
+-		conn->iso_qos.in.sdu = le16_to_cpu(ev->c_mtu);
+-		conn->iso_qos.out.sdu = le16_to_cpu(ev->p_mtu);
+-		conn->iso_qos.in.phy = ev->c_phy;
+-		conn->iso_qos.out.phy = ev->p_phy;
++		conn->iso_qos.ucast.out.interval = le32_to_cpu(interval);
++		conn->iso_qos.ucast.in.latency = le16_to_cpu(ev->interval);
++		conn->iso_qos.ucast.out.latency = le16_to_cpu(ev->interval);
++		conn->iso_qos.ucast.in.sdu = le16_to_cpu(ev->c_mtu);
++		conn->iso_qos.ucast.out.sdu = le16_to_cpu(ev->p_mtu);
++		conn->iso_qos.ucast.in.phy = ev->c_phy;
++		conn->iso_qos.ucast.out.phy = ev->p_phy;
+ 	}
+ 
+ 	if (!ev->status) {
+@@ -6900,8 +6901,8 @@ static void hci_le_cis_req_evt(struct hci_dev *hdev, void *data,
+ 		cis->handle = cis_handle;
+ 	}
+ 
+-	cis->iso_qos.cig = ev->cig_id;
+-	cis->iso_qos.cis = ev->cis_id;
++	cis->iso_qos.ucast.cig = ev->cig_id;
++	cis->iso_qos.ucast.cis = ev->cis_id;
+ 
+ 	if (!(flags & HCI_PROTO_DEFER)) {
+ 		hci_le_accept_cis(hdev, ev->cis_handle);
+@@ -6988,13 +6989,13 @@ static void hci_le_big_sync_established_evt(struct hci_dev *hdev, void *data,
+ 			bis->handle = handle;
+ 		}
+ 
+-		bis->iso_qos.big = ev->handle;
++		bis->iso_qos.bcast.big = ev->handle;
+ 		memset(&interval, 0, sizeof(interval));
+ 		memcpy(&interval, ev->latency, sizeof(ev->latency));
+-		bis->iso_qos.in.interval = le32_to_cpu(interval);
++		bis->iso_qos.bcast.in.interval = le32_to_cpu(interval);
+ 		/* Convert ISO Interval (1.25 ms slots) to latency (ms) */
+-		bis->iso_qos.in.latency = le16_to_cpu(ev->interval) * 125 / 100;
+-		bis->iso_qos.in.sdu = le16_to_cpu(ev->max_pdu);
++		bis->iso_qos.bcast.in.latency = le16_to_cpu(ev->interval) * 125 / 100;
++		bis->iso_qos.bcast.in.sdu = le16_to_cpu(ev->max_pdu);
+ 
+ 		hci_iso_setup_path(bis);
+ 	}
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index 8d136a7301630..74117df03a3fa 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -3,6 +3,7 @@
+  * BlueZ - Bluetooth protocol stack for Linux
+  *
+  * Copyright (C) 2022 Intel Corporation
++ * Copyright 2023 NXP
+  */
+ 
+ #include <linux/module.h>
+@@ -59,11 +60,17 @@ struct iso_pinfo {
+ 	__u16			sync_handle;
+ 	__u32			flags;
+ 	struct bt_iso_qos	qos;
++	bool			qos_user_set;
+ 	__u8			base_len;
+ 	__u8			base[BASE_MAX_LENGTH];
+ 	struct iso_conn		*conn;
+ };
+ 
++static struct bt_iso_qos default_qos;
++
++static bool check_ucast_qos(struct bt_iso_qos *qos);
++static bool check_bcast_qos(struct bt_iso_qos *qos);
++
+ /* ---- ISO timers ---- */
+ #define ISO_CONN_TIMEOUT	(HZ * 40)
+ #define ISO_DISCONN_TIMEOUT	(HZ * 2)
+@@ -264,8 +271,15 @@ static int iso_connect_bis(struct sock *sk)
+ 		goto unlock;
+ 	}
+ 
++	/* Fail if user set invalid QoS */
++	if (iso_pi(sk)->qos_user_set && !check_bcast_qos(&iso_pi(sk)->qos)) {
++		iso_pi(sk)->qos = default_qos;
++		err = -EINVAL;
++		goto unlock;
++	}
++
+ 	/* Fail if out PHYs are marked as disabled */
+-	if (!iso_pi(sk)->qos.out.phy) {
++	if (!iso_pi(sk)->qos.bcast.out.phy) {
+ 		err = -EINVAL;
+ 		goto unlock;
+ 	}
+@@ -336,8 +350,15 @@ static int iso_connect_cis(struct sock *sk)
+ 		goto unlock;
+ 	}
+ 
++	/* Fail if user set invalid QoS */
++	if (iso_pi(sk)->qos_user_set && !check_ucast_qos(&iso_pi(sk)->qos)) {
++		iso_pi(sk)->qos = default_qos;
++		err = -EINVAL;
++		goto unlock;
++	}
++
+ 	/* Fail if either PHYs are marked as disabled */
+-	if (!iso_pi(sk)->qos.in.phy && !iso_pi(sk)->qos.out.phy) {
++	if (!iso_pi(sk)->qos.ucast.in.phy && !iso_pi(sk)->qos.ucast.out.phy) {
+ 		err = -EINVAL;
+ 		goto unlock;
+ 	}
+@@ -417,7 +438,7 @@ static int iso_send_frame(struct sock *sk, struct sk_buff *skb)
+ 
+ 	BT_DBG("sk %p len %d", sk, skb->len);
+ 
+-	if (skb->len > qos->out.sdu)
++	if (skb->len > qos->ucast.out.sdu)
+ 		return -EMSGSIZE;
+ 
+ 	len = skb->len;
+@@ -680,13 +701,23 @@ static struct proto iso_proto = {
+ }
+ 
+ static struct bt_iso_qos default_qos = {
+-	.cig		= BT_ISO_QOS_CIG_UNSET,
+-	.cis		= BT_ISO_QOS_CIS_UNSET,
+-	.sca		= 0x00,
+-	.packing	= 0x00,
+-	.framing	= 0x00,
+-	.in		= DEFAULT_IO_QOS,
+-	.out		= DEFAULT_IO_QOS,
++	.bcast = {
++		.big			= BT_ISO_QOS_BIG_UNSET,
++		.bis			= BT_ISO_QOS_BIS_UNSET,
++		.sync_interval		= 0x00,
++		.packing		= 0x00,
++		.framing		= 0x00,
++		.in			= DEFAULT_IO_QOS,
++		.out			= DEFAULT_IO_QOS,
++		.encryption		= 0x00,
++		.bcode			= {0x00},
++		.options		= 0x00,
++		.skip			= 0x0000,
++		.sync_timeout		= 0x4000,
++		.sync_cte_type		= 0x00,
++		.mse			= 0x00,
++		.timeout		= 0x4000,
++	},
+ };
+ 
+ static struct sock *iso_sock_alloc(struct net *net, struct socket *sock,
+@@ -893,9 +924,15 @@ static int iso_listen_bis(struct sock *sk)
+ 	if (!hdev)
+ 		return -EHOSTUNREACH;
+ 
++	/* Fail if user set invalid QoS */
++	if (iso_pi(sk)->qos_user_set && !check_bcast_qos(&iso_pi(sk)->qos)) {
++		iso_pi(sk)->qos = default_qos;
++		return -EINVAL;
++	}
++
+ 	err = hci_pa_create_sync(hdev, &iso_pi(sk)->dst,
+ 				 le_addr_type(iso_pi(sk)->dst_type),
+-				 iso_pi(sk)->bc_sid);
++				 iso_pi(sk)->bc_sid, &iso_pi(sk)->qos);
+ 
+ 	hci_dev_put(hdev);
+ 
+@@ -1154,21 +1191,62 @@ static bool check_io_qos(struct bt_iso_io_qos *qos)
+ 	return true;
+ }
+ 
+-static bool check_qos(struct bt_iso_qos *qos)
++static bool check_ucast_qos(struct bt_iso_qos *qos)
+ {
+-	if (qos->sca > 0x07)
++	if (qos->ucast.sca > 0x07)
+ 		return false;
+ 
+-	if (qos->packing > 0x01)
++	if (qos->ucast.packing > 0x01)
+ 		return false;
+ 
+-	if (qos->framing > 0x01)
++	if (qos->ucast.framing > 0x01)
+ 		return false;
+ 
+-	if (!check_io_qos(&qos->in))
++	if (!check_io_qos(&qos->ucast.in))
+ 		return false;
+ 
+-	if (!check_io_qos(&qos->out))
++	if (!check_io_qos(&qos->ucast.out))
++		return false;
++
++	return true;
++}
++
++static bool check_bcast_qos(struct bt_iso_qos *qos)
++{
++	if (qos->bcast.sync_interval > 0x07)
++		return false;
++
++	if (qos->bcast.packing > 0x01)
++		return false;
++
++	if (qos->bcast.framing > 0x01)
++		return false;
++
++	if (!check_io_qos(&qos->bcast.in))
++		return false;
++
++	if (!check_io_qos(&qos->bcast.out))
++		return false;
++
++	if (qos->bcast.encryption > 0x01)
++		return false;
++
++	if (qos->bcast.options > 0x07)
++		return false;
++
++	if (qos->bcast.skip > 0x01f3)
++		return false;
++
++	if (qos->bcast.sync_timeout < 0x000a || qos->bcast.sync_timeout > 0x4000)
++		return false;
++
++	if (qos->bcast.sync_cte_type > 0x1f)
++		return false;
++
++	if (qos->bcast.mse > 0x1f)
++		return false;
++
++	if (qos->bcast.timeout < 0x000a || qos->bcast.timeout > 0x4000)
+ 		return false;
+ 
+ 	return true;
+@@ -1179,7 +1257,7 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
+ {
+ 	struct sock *sk = sock->sk;
+ 	int len, err = 0;
+-	struct bt_iso_qos qos;
++	struct bt_iso_qos qos = default_qos;
+ 	u32 opt;
+ 
+ 	BT_DBG("sk %p", sk);
+@@ -1212,24 +1290,19 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
+ 		}
+ 
+ 		len = min_t(unsigned int, sizeof(qos), optlen);
+-		if (len != sizeof(qos)) {
+-			err = -EINVAL;
+-			break;
+-		}
+-
+-		memset(&qos, 0, sizeof(qos));
+ 
+ 		if (copy_from_sockptr(&qos, optval, len)) {
+ 			err = -EFAULT;
+ 			break;
+ 		}
+ 
+-		if (!check_qos(&qos)) {
++		if (len == sizeof(qos.ucast) && !check_ucast_qos(&qos)) {
+ 			err = -EINVAL;
+ 			break;
+ 		}
+ 
+ 		iso_pi(sk)->qos = qos;
++		iso_pi(sk)->qos_user_set = true;
+ 
+ 		break;
+ 
+@@ -1419,7 +1492,7 @@ static bool iso_match_big(struct sock *sk, void *data)
+ {
+ 	struct hci_evt_le_big_sync_estabilished *ev = data;
+ 
+-	return ev->handle == iso_pi(sk)->qos.big;
++	return ev->handle == iso_pi(sk)->qos.bcast.big;
+ }
+ 
+ static void iso_conn_ready(struct iso_conn *conn)
+-- 
+2.39.2
 
-Responses should be made by Wed, 14 Jun 2023 10:16:41 +0000.
-Anything received after that time might be too late.
-
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.184-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-and the diffstat can be found below.
-
-thanks,
-
-greg k-h
-
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 5.10.184-rc1
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Revert "staging: rtl8192e: Replace macro RTL_PCI_DEVICE with PCI_DEVICE"
-
-Zixuan Fu <r33s3n6@gmail.com>
-    btrfs: unset reloc control if transaction commit fails in prepare_to_relocate()
-
-Josef Bacik <josef@toxicpanda.com>
-    btrfs: check return value of btrfs_commit_transaction in relocation
-
-Ville Syrjälä <ville.syrjala@linux.intel.com>
-    drm/atomic: Don't pollute crtc_state->mode_blob with error pointers
-
-Rui Wang <wangrui@loongson.cn>
-    MIPS: locking/atomic: Fix atomic{_64,}_sub_if_positive
-
-Darrick J. Wong <djwong@kernel.org>
-    xfs: verify buffer contents when we skip log replay
-
-Eric Dumazet <edumazet@google.com>
-    tcp: fix tcp_min_tso_segs sysctl
-
-Theodore Ts'o <tytso@mit.edu>
-    ext4: only check dquot_initialize_needed() when debugging
-
-Theodore Ts'o <tytso@mit.edu>
-    Revert "ext4: don't clear SB_RDONLY when remounting r/w until quota is re-enabled"
-
-Shannon Nelson <shannon.nelson@amd.com>
-    vhost: support PACKED when setting-getting vring_base
-
-Ruan Jinjie <ruanjinjie@huawei.com>
-    riscv: fix kprobe __user string arg print fault issue
-
-Randy Dunlap <rdunlap@infradead.org>
-    eeprom: at24: also select REGMAP
-
-Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-    i2c: sprd: Delete i2c adapter in .remove's error path
-
-Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-    ASoC: codecs: wsa881x: do not set can_multi_write flag
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    staging: vc04_services: fix gcc-13 build warning
-
-Ruihan Li <lrh2000@pku.edu.cn>
-    usb: usbfs: Use consistent mmap functions
-
-Ruihan Li <lrh2000@pku.edu.cn>
-    usb: usbfs: Enforce page requirements for mmap
-
-Martin Hundebøll <martin@geanix.com>
-    pinctrl: meson-axg: add missing GPIOA_18 gpio group
-
-Ilya Dryomov <idryomov@gmail.com>
-    rbd: get snapshot context after exclusive lock is ensured to be held
-
-Ilya Dryomov <idryomov@gmail.com>
-    rbd: move RBD_OBJ_FLAG_COPYUP_ENABLED flag setting
-
-Rijo Thomas <Rijo-john.Thomas@amd.com>
-    tee: amdtee: Add return_origin to 'struct tee_cmd_load_ta'
-
-Johan Hovold <johan+linaro@kernel.org>
-    Bluetooth: hci_qca: fix debugfs registration
-
-Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-    Bluetooth: Fix use-after-free in hci_remove_ltk/hci_remove_irk
-
-Jan Höppner <hoeppner@linux.ibm.com>
-    s390/dasd: Use correct lock while counting channel queue length
-
-Xiubo Li <xiubli@redhat.com>
-    ceph: fix use-after-free bug for inodes when flushing capsnaps
-
-Fedor Pchelkin <pchelkin@ispras.ru>
-    can: j1939: avoid possible use-after-free when j1939_can_rx_register fails
-
-Fedor Pchelkin <pchelkin@ispras.ru>
-    can: j1939: change j1939_netdev_lock type to mutex
-
-Oleksij Rempel <linux@rempel-privat.de>
-    can: j1939: j1939_sk_send_loop_abort(): improved error queue handling in J1939 Socket
-
-Chia-I Wu <olvaffe@gmail.com>
-    drm/amdgpu: fix xclk freq on CHIP_STONEY
-
-RenHai <kean0048@gmail.com>
-    ALSA: hda/realtek: Add Lenovo P3 Tower platform
-
-Ai Chao <aichao@kylinos.cn>
-    ALSA: hda/realtek: Add a quirk for HP Slim Desktop S01
-
-Dmitry Torokhov <dmitry.torokhov@gmail.com>
-    Input: psmouse - fix OOB access in Elantech protocol
-
-Ismael Ferreras Morezuelas <swyterzone@gmail.com>
-    Input: xpad - delete a Razer DeathAdder mouse VID/PID entry
-
-Vladislav Efanov <VEfanov@ispras.ru>
-    batman-adv: Broken sync while rescheduling delayed work
-
-Somnath Kotur <somnath.kotur@broadcom.com>
-    bnxt_en: Implement .set_port / .unset_port UDP tunnel callbacks
-
-Somnath Kotur <somnath.kotur@broadcom.com>
-    bnxt_en: Query default VLAN before VNIC setup on a VF
-
-Sreekanth Reddy <sreekanth.reddy@broadcom.com>
-    bnxt_en: Don't issue AP reset during ethtool's reset operation
-
-Ben Hutchings <ben@decadent.org.uk>
-    lib: cpu_rmap: Fix potential use-after-free in irq_cpu_rmap_release()
-
-Jiri Olsa <jolsa@kernel.org>
-    bpf: Add extra path pointer check to d_path helper
-
-Hangyu Hua <hbh25y@gmail.com>
-    net: sched: fix possible refcount leak in tc_chain_tmplt_add()
-
-Eric Dumazet <edumazet@google.com>
-    net: sched: move rtm_tca_policy declaration to include file
-
-Eric Dumazet <edumazet@google.com>
-    rfs: annotate lockless accesses to RFS sock flow table
-
-Eric Dumazet <edumazet@google.com>
-    rfs: annotate lockless accesses to sk->sk_rxhash
-
-Kuniyuki Iwashima <kuniyu@amazon.com>
-    ipv6: rpl: Fix Route of Death.
-
-Kuniyuki Iwashima <kuniyu@amazon.com>
-    netfilter: ipset: Add schedule point in call_ad().
-
-Tijs Van Buggenhout <tijs.van.buggenhout@axsguard.com>
-    netfilter: conntrack: fix NULL pointer dereference in nf_confirm_cthelper
-
-Manish Chopra <manishc@marvell.com>
-    qed/qede: Fix scheduling while atomic
-
-Sungwoo Kim <iam@sung-woo.kim>
-    Bluetooth: L2CAP: Add missing checks for invalid DCID
-
-Ying Hsu <yinghsu@chromium.org>
-    Bluetooth: Fix l2cap_disconnect_req deadlock
-
-Eric Dumazet <edumazet@google.com>
-    net/sched: fq_pie: ensure reasonable TCA_FQ_PIE_QUANTUM values
-
-Wen Gu <guwen@linux.alibaba.com>
-    net/smc: Avoid to access invalid RMBs' MRs in SMCRv1 ADD LINK CONT
-
-Alexander Sverdlin <alexander.sverdlin@siemens.com>
-    net: dsa: lan9303: allow vid != 0 in port_fdb_{add|del} methods
-
-Qingfang DENG <qingfang.deng@siflower.com.cn>
-    neighbour: fix unaligned access to pneigh_entry
-
-Lorenzo Bianconi <lorenzo@kernel.org>
-    wifi: mt76: mt7615: fix possible race in mt7615_mac_sta_poll
-
-David Howells <dhowells@redhat.com>
-    afs: Fix setting of mtime when creating a file/dir/symlink
-
-Stephan Gerhold <stephan@gerhold.net>
-    spi: qup: Request DMA before enabling clocks
-
-Stefan Wahren <stefan.wahren@i2se.com>
-    staging: vchiq_core: drop vchiq_status from vchiq_initialise
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    i40e: fix build warning in ice_fltr_add_mac_to_list()
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    i40e: fix build warnings in i40e_alloc.h
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    i40iw: fix build warning in i40iw_manage_apbvt()
-
-Jiri Slaby (SUSE) <jirislaby@kernel.org>
-    block/blk-iocost (gcc13): keep large values in a new enum
-
-Arnd Bergmann <arnd@arndb.de>
-    blk-iocost: avoid 64-bit division in ioc_timer_fn
-
-Qilin Tan <qilin.tan@mediatek.com>
-    f2fs: fix iostat lock protection
-
-Jiri Slaby (SUSE) <jirislaby@kernel.org>
-    bonding (gcc13): synchronize bond_{a,t}lb_xmit() types
-
-Christoph Hellwig <hch@lst.de>
-    remove the sx8 block driver
-
-Jiri Slaby (SUSE) <jirislaby@kernel.org>
-    sfc (gcc13): synchronize ef100_enqueue_skb()'s return type
-
-Kees Cook <keescook@chromium.org>
-    gcc-plugins: Reorganize gimple includes for GCC 13
-
-Arnd Bergmann <arnd@arndb.de>
-    ata: ahci: fix enum constants for gcc-13
-
-
--------------
-
-Diffstat:
-
- Makefile                                           |    4 +-
- arch/mips/include/asm/atomic.h                     |    2 +-
- arch/riscv/Kconfig                                 |    1 +
- block/blk-iocost.c                                 |   10 +-
- drivers/ata/ahci.h                                 |  241 +--
- drivers/block/Kconfig                              |    9 -
- drivers/block/Makefile                             |    2 -
- drivers/block/rbd.c                                |   62 +-
- drivers/block/sx8.c                                | 1586 --------------------
- drivers/bluetooth/hci_qca.c                        |    6 +-
- drivers/gpu/drm/amd/amdgpu/vi.c                    |   11 +-
- drivers/gpu/drm/drm_atomic_uapi.c                  |   14 +-
- drivers/i2c/busses/i2c-sprd.c                      |    8 +-
- drivers/infiniband/hw/i40iw/i40iw.h                |    5 +-
- drivers/input/joystick/xpad.c                      |    1 -
- drivers/input/mouse/elantech.c                     |    9 +-
- drivers/misc/eeprom/Kconfig                        |    1 +
- drivers/net/dsa/lan9303-core.c                     |    4 -
- drivers/net/ethernet/broadcom/bnxt/bnxt.c          |   28 +-
- drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c  |    2 +-
- drivers/net/ethernet/intel/i40e/i40e_alloc.h       |   17 +-
- drivers/net/ethernet/intel/ice/ice_fltr.c          |    2 +-
- drivers/net/ethernet/qlogic/qed/qed_l2.c           |    2 +-
- drivers/net/ethernet/qlogic/qede/qede.h            |    4 +
- drivers/net/ethernet/qlogic/qede/qede_ethtool.c    |   24 +-
- drivers/net/ethernet/qlogic/qede/qede_main.c       |   34 +-
- drivers/net/ethernet/sfc/ef100_tx.c                |    3 +-
- drivers/net/wireless/mediatek/mt76/mt7615/mac.c    |    3 +
- drivers/pinctrl/meson/pinctrl-meson-axg.c          |    1 +
- drivers/s390/block/dasd_ioctl.c                    |    4 +-
- drivers/spi/spi-qup.c                              |   37 +-
- drivers/staging/rtl8192e/rtl8192e/rtl_core.c       |    6 +-
- drivers/staging/rtl8192e/rtl8192e/rtl_core.h       |    5 +
- .../vc04_services/interface/vchiq_arm/vchiq_arm.c  |   24 +-
- drivers/tee/amdtee/amdtee_if.h                     |   10 +-
- drivers/tee/amdtee/call.c                          |   28 +-
- drivers/usb/core/buffer.c                          |   41 +
- drivers/usb/core/devio.c                           |   20 +-
- drivers/vhost/vhost.c                              |   18 +-
- drivers/vhost/vhost.h                              |    8 +-
- fs/afs/dir.c                                       |    3 +
- fs/btrfs/relocation.c                              |   14 +-
- fs/ceph/caps.c                                     |    6 +
- fs/ceph/snap.c                                     |    4 +-
- fs/ext4/super.c                                    |    6 +-
- fs/ext4/xattr.c                                    |    6 +-
- fs/f2fs/sysfs.c                                    |    4 +-
- fs/xfs/xfs_buf_item_recover.c                      |   10 +
- include/linux/netdevice.h                          |    7 +-
- include/linux/usb/hcd.h                            |    5 +
- include/net/bond_alb.h                             |    4 +-
- include/net/neighbour.h                            |    2 +-
- include/net/pkt_sched.h                            |    2 +
- include/net/rpl.h                                  |    3 -
- include/net/sock.h                                 |   18 +-
- kernel/trace/bpf_trace.c                           |   12 +-
- lib/cpu_rmap.c                                     |    2 +-
- net/batman-adv/distributed-arp-table.c             |    2 +-
- net/bluetooth/hci_core.c                           |    8 +-
- net/bluetooth/l2cap_core.c                         |   13 +
- net/can/j1939/main.c                               |   24 +-
- net/can/j1939/socket.c                             |    5 +
- net/core/dev.c                                     |    6 +-
- net/ipv4/sysctl_net_ipv4.c                         |    2 -
- net/ipv6/exthdrs.c                                 |   29 +-
- net/netfilter/ipset/ip_set_core.c                  |    8 +
- net/netfilter/nf_conntrack_core.c                  |    3 +
- net/sched/cls_api.c                                |    3 +-
- net/sched/sch_fq_pie.c                             |    8 +-
- net/smc/smc_llc.c                                  |    4 +-
- scripts/gcc-plugins/gcc-common.h                   |    9 +-
- sound/pci/hda/patch_realtek.c                      |    2 +
- sound/soc/codecs/wsa881x.c                         |    1 -
- 73 files changed, 602 insertions(+), 1930 deletions(-)
 
 
