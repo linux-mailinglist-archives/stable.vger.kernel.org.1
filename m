@@ -2,112 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EB9072CEFB
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 21:06:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9942472CF3E
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 21:20:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237727AbjFLTGG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 15:06:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42426 "EHLO
+        id S230335AbjFLTUK convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Mon, 12 Jun 2023 15:20:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237691AbjFLTGE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 15:06:04 -0400
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 466D7114;
-        Mon, 12 Jun 2023 12:05:59 -0700 (PDT)
-Date:   Mon, 12 Jun 2023 19:05:45 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=hk5wwxcnufftnmnhwl5xrasb5a.protonmail; t=1686596754; x=1686855954;
-        bh=25iDRWOxvgNspBxNkjPDBM29e6F7kcNQ02iow0Mrb0s=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=lOAZlqYJh3lQ5cuA0WRR8ZJ2QUOn1PeZRl9WPh/3ppHub1GJgqpXggTL8806BR9TY
-         XJtO9gEKzPE8RhoDeIFJvh/xGYRsDcCu1E7N1Y/6buhrz2woTYQSYRtmRd6N7J3Yi0
-         gMqOEf0CI7+ulrrPy7GwkxwpPhhZZNrjuaKucO7pcEIMyVuBMsZ8XektUpe41lef1n
-         79gSGc2AN4KBgWPg53pd5bUE2O69hFXa9BS0UeSTrJ/hCx0xDTpHIgdORsa5/HhpSW
-         HDF3cZOpr2x2a0DzW2ek+Nyss5/u4Y+jRDbItEwCMkwvj7zRcZjmJUrmNOjI6XNSS0
-         /3EIj+/ZMIduw==
-To:     Bagas Sanjaya <bagasdotme@gmail.com>
-From:   Sami Korkalainen <sami.korkalainen@proton.me>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Linux Stable <stable@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Networking <netdev@vger.kernel.org>,
-        Linux ACPI <linux-acpi@vger.kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Subject: Re: [REGRESSION][BISECTED] Boot stall from merge tag 'net-next-6.2'
-Message-ID: <oEbkgJ-ImLxBDZDUTnIAGFWrRVnwBss3FOlalTpwrz83xWgESC9pcvNKiAVp9BzFgqZ0V-NIwzBZ7icKD8ynuIi_ZMtGt7URu3ftcSt16u4=@proton.me>
-In-Reply-To: <ZIcmpcEsTLXFaO0f@debian.me>
-References: <GQUnKz2al3yke5mB2i1kp3SzNHjK8vi6KJEh7rnLrOQ24OrlljeCyeWveLW9pICEmB9Qc8PKdNt3w1t_g3-Uvxq1l8Wj67PpoMeWDoH8PKk=@proton.me> <ZHFaFosKY24-L7tQ@debian.me> <NVN-hJsvHwaHe6R-y6XIYJp0FV7sCavgMjobFnseULT1wjgkOFNXbGBGT5iVjCfbtU7dW5xy2hIDoq0ASeNaXhvSY-g2Df4aHWVIMQ2c3TQ=@proton.me> <ZIcmpcEsTLXFaO0f@debian.me>
-Feedback-ID: 45678890:user:proton
+        with ESMTP id S231734AbjFLTUF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 15:20:05 -0400
+Received: from mail1.bemta33.messagelabs.com (mail1.bemta33.messagelabs.com [67.219.247.2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FCD2B1
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 12:20:03 -0700 (PDT)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupnleJIrShJLcpLzFFi42K5f3TBY91H+e0
+  pBtebGS0WbHzE6MDo8XmTXABjFGtmXlJ+RQJrxobudqaCe4wV1y8eY2xg3MHYxcjJISSwnFHi
+  YKtwFyMXkL2RUeLw5hVMIAlmAT2JG1OnsIHYvAKCEidnPmGBiGtLLFv4mrmLkQPIVpP42lUCE
+  hYWcJO48rsPrFVEQENi0s7vYPPZBPQlrk1czQ5SziKgKnHwKz/EWmWJyZPfM0NM95W4teUXC0
+  RcReLlhe9gWyUEiiTO3f/BBnKahMBaPokT9zdCJYIl5i4+zTiBUWAWkktnIbl0FpJLZyFcuoC
+  RZRWjaXFqUVlqka6ZXlJRZnpGSW5iZo5eYpVuol5psW5qYnGJrpFeYnmxXmpxsV5xZW5yTope
+  XmrJJkZgKKcUOWrsYPy+86/eIUZJDiYlUd5yv/YUIb6k/JTKjMTijPii0pzU4kOMehwcAhfOP
+  vzEKHDlw6cmJimWvPy8VCUJXm5gBAkJFqWmp1akZeYAYw+mQYKDR0mE93AGUJq3uCAxtzgzHS
+  J1ijGQY/vO/XuZOZ4fugIkHxy4BiS/bus6wMzxfeUtIPnx+oaDzBxX5287yCwEtkdKnFcqGmi
+  QAMigjNI8uDWwdHKJUVZKmJeRgYFBiKcgtSg3swRV/hWjOAejkjDv/RygKTyZeSVw17wCOpQJ
+  6FAVH7BDSxIRUlINTKqGs8XbsxYsTdstWeDO28N0oSeVSyruuXn1pNQ8pcY5t18Lvj194VjFp
+  GzG+Te9Wao7RB3OZvQY/t/x+raN0KOwizUfXu5coS8WvPH6KQ/9iVlmXDoWu5yPtcx9MaXBj0
+  nYYCnjuUZXXmf+CX/U8jY0vv1m0f51elZ0ZrVZ7KWwX82Hj+XvfyPAyJ3f72Kp8GcWw382voP
+  3p+nmvJgbqHlx6sSmdOXQmGCPrvkPGzWeft/y9PqUi0vnmb54Hrx+PW+rHE9FzbKFFfs47ud/
+  XLjMJiZoTazpFgmRnCfip5YERvZX5//kkJI8zRid/EawW4h/c+4n4UzVZY4BWrM/FO+PnKD/m
+  vP0ygvPinP5lFiKMxINtZiLihMBR8+fIKIDAAA=
+X-Env-Sender: veraca34kjh@hotmail.com
+X-Msg-Ref: server-2.tower-715.messagelabs.com!1686597600!10879!1
+X-Originating-IP: [223.197.160.227]
+X-SYMC-ESS-Client-Auth: outbound-route-from=fail
+X-StarScan-Received: 
+X-StarScan-Version: 9.105.4; banners=-,-,-
+X-VirusChecked: Checked
+Received: (qmail 14902 invoked from network); 12 Jun 2023 19:20:01 -0000
+Received: from 223-197-160-227.static.imsbiz.com (HELO FTL-MS-01.FinorTrust.Global) (223.197.160.227)
+  by server-2.tower-715.messagelabs.com with SMTP; 12 Jun 2023 19:20:01 -0000
+Received: from FTL-DS-FS-00.FinorTrust.Global ([192.168.1.15]) by FTL-MS-01.FinorTrust.Global with Microsoft SMTPSVC(8.5.9600.16384);
+         Tue, 13 Jun 2023 03:20:00 +0800
+Received: from [87.121.221.44] (192.168.1.1) by FTL-DS-FS-00.FinorTrust.Global
+ (192.168.1.17) with Microsoft SMTP Server (TLS) id 15.0.1497.42; Tue, 13 Jun
+ 2023 03:19:55 +0800
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Re:Contact for more details irrespective of your current job.
+To:     Recipients <veraca34kjh@hotmail.com>
+From:   Ms Vera Carmona <veraca34kjh@hotmail.com>
+Date:   Mon, 12 Jun 2023 12:19:51 -0700
+Reply-To: <carmonavera23@gmail.com>
+Message-ID: <bdcfda0705de49b0b6042ee27b52c5fc@FTL-DS-FS-00.FinorTrust.Global>
+X-ClientProxiedBy: FTL-DS-FS-00.FinorTrust.Global (192.168.1.17) To
+ FTL-DS-FS-00.FinorTrust.Global (192.168.1.17)
+X-Brightmail-Tracker: =?iso-8859-1?Q?H4sIAAAAAAAAC+NgFrrFJsWRWlGSWpSXmKPExsVyYAUjo+6D/PYUg5eLXv?=
+ =?iso-8859-1?Q?1ktpjxrIvN4uf6G+wWB55dZrGYs8TKYstHY4tL75+xWfz98pvd4sP6H4wW?=
+ =?iso-8859-1?Q?6zquMFv0r+1ks/j+fT27xf+VjBYzf+5lt+jti7L4s3Izk8WvHT9ZLBZsfM?=
+ =?iso-8859-1?Q?RoMef3NTaLVR8OMFscO97E4iDiMf+NvMePvw0sHn++7GXx2LBsAZPHqdX3?=
+ =?iso-8859-1?Q?WTy+flP1aP/Xwu6xYFOpx4Kr3Wwel89/ZPT41RXu8fzgTSaPow1PmT2uLz?=
+ =?iso-8859-1?Q?zK4vHx6S0Wjy8X5ANEolgz85LyKxJYMxate8hW8Iix4vrFY4wNjDsYuxi5?=
+ =?iso-8859-1?Q?OIQENjNK7Nm1jq2LkZODWUBP4sbUKWA2r4CgxMmZT1gg4toSyxa+Zu5i5A?=
+ =?iso-8859-1?Q?Cy1SS+dpWAhIUF3CSu/O5jArFFBDQkJu38zghiswnoS1ybuJodpJxFQFXi?=
+ =?iso-8859-1?Q?4Fd+kLCQgKLE52cNUNN9JW5t+cUCEVeReHnhOxtIuYRAoMSaC4oQpqvEuR?=
+ =?iso-8859-1?Q?PeIBUSAvYS6158Y4WwHSQuf9sEZbtKfOl+CWVrS2x/tQ/K1pFYvm86O4Rd?=
+ =?iso-8859-1?Q?LLFy8gs2CDtW4kzHOqh4qMTz5tNMExjFZiF5fRaS12cheX0WwusLGFlWMc?=
+ =?iso-8859-1?Q?q5hfjougTrugXrGhjouWXm5ReFFJUWl+i55+QnJeZsYoSkG8EdjJtffdU7?=
+ =?iso-8859-1?Q?xCjJwaQkyut8UT5RiC8pP6UyI7E4I76oNCe1+BCjHgeHwIWzDz8xClz58K?=
+ =?iso-8859-1?Q?mJSYolLz8vVUmCd7O9QqKQYFFqempFWmYOMD3CNDBxcB5ilODgURLhZbEA?=
+ =?iso-8859-1?Q?quEtLkjMLc5Mh8ifYnTl2Hh03iJmju1g8iCYvLBqCZA8effiFmYhsAVS4r?=
+ =?iso-8859-1?Q?zTLYGaBUCaM0rz4OaDknx45V2dS4yyUsK8RYuATuYpSC3KzSxBlX/FKM7B?=
+ =?iso-8859-1?Q?qCTM2+AINIUnM68E7oJXQMcxAR0npCoLclxJIkJKqoFJ0PPptgBXn7s5M/?=
+ =?iso-8859-1?Q?YZqPbsdnMUE3201f1bW9n6qZXJL2/PEmlZdNmYZ1HflbORKx9IRr6Nu6C+?=
+ =?iso-8859-1?Q?f6LVz1pt5UZTrw0Mui8nxC1YWxH35/bXHy+6z/Opz39+4omD+Y3490flbv?=
+ =?iso-8859-1?Q?8T5D7zhW/z7b4rHcLTI4KrhXsWXpL7c8fg3MZ9SR85FPTKw1kafhxpCJjJ?=
+ =?iso-8859-1?Q?2qRWLXVz+fE3dtuF5tZMu/hq60kfd+sLfczbF7/cXTtnotm+FS3fJ3/MVv?=
+ =?iso-8859-1?Q?lz8su7vf8LctcYbTJl3a3BGVHxJrBsl3MaJ+ectQWT6nLcX562W/N41on+?=
+ =?iso-8859-1?Q?H7KtN2vCt4fE73E5eFSSRXrXsTM18226mTuLJ8X/NqzqzZs53Wnmz9yvU5?=
+ =?iso-8859-1?Q?VYijMSDbWYi4oTAQxG0VBtBAAA?=
+X-OriginalArrivalTime: 12 Jun 2023 19:20:00.0396 (UTC) FILETIME=[E1C01CC0:01D99D62]
+X-Spam-Status: No, score=3.9 required=5.0 tests=BAYES_50,FREEMAIL_FROM,
+        FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SCC_BODY_URI_ONLY,SPF_HELO_NONE,SPF_SOFTFAIL,
+        SPOOFED_FREEMAIL,SPOOFED_FREEM_REPTO,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Ok. I will try the latest mainline and if it does not work, I try bisecting=
- again, but it should take at least a couple of weeks with this old PC. Can=
-'t really compile more than once a day.
-
-Regards
-Sami Korkalainen
-___________________________
-
-Sent with Proton Mail secure email.
-
-------- Original Message -------
-On Monday, June 12th, 2023 at 17.07, Bagas Sanjaya <bagasdotme@gmail.com> w=
-rote:
-
-
-> On Sat, May 27, 2023 at 04:07:56AM +0000, Sami Korkalainen wrote:
->=20
-> > > Where is SCSI info?
-> >=20
-> > Right there, under the text (It was so short, that I thought to put it =
-in the message. Maybe I should have put that also in pastebin for consisten=
-cy and clarity):
-> >=20
-> > Attached devices:
-> > Host: scsi0 Channel: 00 Id: 00 Lun: 00
-> > Vendor: ATA Model: KINGSTON SVP200S Rev: C4
-> > Type: Direct-Access ANSI SCSI revision: 05
-> > Host: scsi1 Channel: 00 Id: 00 Lun: 00
-> > Vendor: hp Model: CDDVDW TS-L633M Rev: 0301
-> > Type: CD-ROM ANSI SCSI revision: 05
-> >=20
-> > > I think networking changes shouldn't cause this ACPI regression, righ=
-t?
-> > > Yeah, beats me, but that's what I got by bisecting. My expertise ends=
- about here.
->=20
->=20
-> Hmm, no reply for a while.
->=20
-> Networking people: It looks like your v6.2 PR introduces unrelated
-> ACPICA regression. Can you explain why?
->=20
-> ACPICA people: Can you figure out why do this regression happen?
->=20
-> Sami: Can you try latest mainline and repeat bisection as confirmation?
->=20
-> I'm considering to remove this from regression tracking if there is
-> no replies in several more days.
->=20
-> Thanks.
->=20
-> --
-> An old man doll... just what I always wanted! - Clara
+Good Day.
+How are you today? I am the head of the Research and Sales Department working with Zera Pharmaceutical Laboratories Ltd, UK. My company is sourcing for a raw material for production.Contact for more details.
