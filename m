@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBA4272BFDF
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 868CA72C116
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:56:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231418AbjFLKrd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:47:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50652 "EHLO
+        id S236907AbjFLK4U (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:56:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232662AbjFLKrV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:47:21 -0400
+        with ESMTP id S236507AbjFLK4E (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:56:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB8847A87
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:32:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A849C5251
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:43:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E040614F0
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:31:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8449AC433EF;
-        Mon, 12 Jun 2023 10:31:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4581E612E1
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:43:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59955C433D2;
+        Mon, 12 Jun 2023 10:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565912;
-        bh=DYFhqVohNDLi4aW1HLIDStGyfnABCNRW6+o2Z1Q3Lxo=;
+        s=korg; t=1686566610;
+        bh=9OsA4wiFDR0vEoePViywymDkJFGn8FMf+817mTunXBc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SCq6TwuGnJ201VNgGqq9LQHbAz9Iiw8TRfYH/srfcVgZ1W2sOPj7r6xpo5KF9PYZk
-         ziruvSyu/EVuaUIBmXdJGTTwasNCLlwkNsMEkHGEBCHbz71DvcanCEu2c3PwMrxFy3
-         GRM/MtqO8ADOUzmtR2nf8og+9BATImAyueK4QAI0=
+        b=tbXysqMzcpF1dxkM27R+zPA0b1/tSj+G65Sg8mlfLU32Ngimbfz4FLRItL81IMIR3
+         FrJr49dzcn7zCL6R6CyUw03KBmqu48x/hx9R+iKjnICtZYRvnonUqPOF5K41W9OOeC
+         UuIvzVWOHvL1+vcYqx7Q9RodauSR7EqXq3ynbsow=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Paulo Alcantara (SUSE)" <pc@cjr.nz>,
-        Aurelien Aptel <aaptel@suse.com>,
-        Steve French <stfrench@microsoft.com>,
-        Rishabh Bhatnagar <risbhat@amazon.com>
-Subject: [PATCH 5.4 38/45] cifs: get rid of unused parameter in reconn_setup_dfs_targets()
+        patches@lists.linux.dev, stable@kernel.org,
+        Vladislav Efanov <VEfanov@ispras.ru>,
+        Sven Eckelmann <sven@narfation.org>,
+        Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 6.1 058/132] batman-adv: Broken sync while rescheduling delayed work
 Date:   Mon, 12 Jun 2023 12:26:32 +0200
-Message-ID: <20230612101656.210793408@linuxfoundation.org>
+Message-ID: <20230612101712.909608210@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
-References: <20230612101654.644983109@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,42 +55,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paulo Alcantara <pc@cjr.nz>
+From: Vladislav Efanov <VEfanov@ispras.ru>
 
-commit baf3f08ef4083b76ca67b143e135213a7f941879 upstream.
+commit abac3ac97fe8734b620e7322a116450d7f90aa43 upstream.
 
-The target iterator parameter "it" is not used in
-reconn_setup_dfs_targets(), so just remove it.
+Syzkaller got a lot of crashes like:
+KASAN: use-after-free Write in *_timers*
 
-Signed-off-by: Paulo Alcantara (SUSE) <pc@cjr.nz>
-Reviewed-by: Aurelien Aptel <aaptel@suse.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Rishabh Bhatnagar <risbhat@amazon.com>
+All of these crashes point to the same memory area:
+
+The buggy address belongs to the object at ffff88801f870000
+ which belongs to the cache kmalloc-8k of size 8192
+The buggy address is located 5320 bytes inside of
+ 8192-byte region [ffff88801f870000, ffff88801f872000)
+
+This area belongs to :
+        batadv_priv->batadv_priv_dat->delayed_work->timer_list
+
+The reason for these issues is the lack of synchronization. Delayed
+work (batadv_dat_purge) schedules new timer/work while the device
+is being deleted. As the result new timer/delayed work is set after
+cancel_delayed_work_sync() was called. So after the device is freed
+the timer list contains pointer to already freed memory.
+
+Found by Linux Verification Center (linuxtesting.org) with syzkaller.
+
+Cc: stable@kernel.org
+Fixes: 2f1dfbe18507 ("batman-adv: Distributed ARP Table - implement local storage")
+Signed-off-by: Vladislav Efanov <VEfanov@ispras.ru>
+Acked-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/connect.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ net/batman-adv/distributed-arp-table.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/cifs/connect.c
-+++ b/fs/cifs/connect.c
-@@ -469,8 +469,7 @@ static void reconn_inval_dfs_target(stru
- }
- 
- static inline int reconn_setup_dfs_targets(struct cifs_sb_info *cifs_sb,
--					   struct dfs_cache_tgt_list *tl,
--					   struct dfs_cache_tgt_iterator **it)
-+					   struct dfs_cache_tgt_list *tl)
+--- a/net/batman-adv/distributed-arp-table.c
++++ b/net/batman-adv/distributed-arp-table.c
+@@ -101,7 +101,6 @@ static void batadv_dat_purge(struct work
+  */
+ static void batadv_dat_start_timer(struct batadv_priv *bat_priv)
  {
- 	if (!cifs_sb->origin_fullpath)
- 		return -EOPNOTSUPP;
-@@ -515,7 +514,7 @@ cifs_reconnect(struct TCP_Server_Info *s
- 	} else {
- 		cifs_sb = CIFS_SB(sb);
+-	INIT_DELAYED_WORK(&bat_priv->dat.work, batadv_dat_purge);
+ 	queue_delayed_work(batadv_event_workqueue, &bat_priv->dat.work,
+ 			   msecs_to_jiffies(10000));
+ }
+@@ -819,6 +818,7 @@ int batadv_dat_init(struct batadv_priv *
+ 	if (!bat_priv->dat.hash)
+ 		return -ENOMEM;
  
--		rc = reconn_setup_dfs_targets(cifs_sb, &tgt_list, &tgt_it);
-+		rc = reconn_setup_dfs_targets(cifs_sb, &tgt_list);
- 		if (rc && (rc != -EOPNOTSUPP)) {
- 			cifs_server_dbg(VFS, "%s: no target servers for DFS failover\n",
- 				 __func__);
++	INIT_DELAYED_WORK(&bat_priv->dat.work, batadv_dat_purge);
+ 	batadv_dat_start_timer(bat_priv);
+ 
+ 	batadv_tvlv_handler_register(bat_priv, batadv_dat_tvlv_ogm_handler_v1,
 
 
