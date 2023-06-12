@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D896872C11F
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:56:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C471A72C0B1
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:54:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236922AbjFLK42 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:56:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58258 "EHLO
+        id S236101AbjFLKyI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:54:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236971AbjFLK4O (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:56:14 -0400
+        with ESMTP id S236098AbjFLKxr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:53:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11B9B526E
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:43:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B280E46B2
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:38:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A2C646193B
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:43:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C60C433D2;
-        Mon, 12 Jun 2023 10:43:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 91D1161BD9
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:38:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8EBCC433EF;
+        Mon, 12 Jun 2023 10:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566634;
-        bh=dBN67CzY9LtRQOaaSvK9esdQNYjIJVkQxE5ZWVM+hCk=;
+        s=korg; t=1686566333;
+        bh=zkcYIc5sPGXzuj58X5j25whufhu7Btaiwh7++5t5GBk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FMvssMQyx6OnM05mbHLrHkCqXuTbJEAobYBAxamJsKwMbQxIL1GoHMZq7C8r68Q8X
-         z3r0iW2iPThjdr4NO58MsjUfPskMs5ZNiIa21TEPPxMWjjgMLeLPVxFU9DnjkIU7AA
-         G5Zyg2NZA8ZKJRxKpmK3N/c8esUiM+n4La8mWu8Q=
+        b=CXDLPOSEI/Gp2LE16JuL8WhtF0rlEw1fmxmyiqeDeDmz5NDqQ8DOrvH4z4ifvNCrY
+         1XBqUKXXrie4dbS+Zj2GogXBZcCEnGcEgUuQJidL0LSI9dQOERkgs5hrWGKP9Cvpdz
+         tcroU3PIPFgsKTgYm7q3evvNnqyIT4jjXBk0k6Vc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ruihan Li <lrh2000@pku.edu.cn>,
-        David Hildenbrand <david@redhat.com>,
-        Pasha Tatashin <pasha.tatashin@soleen.com>
-Subject: [PATCH 6.1 099/132] mm: page_table_check: Make it dependent on EXCLUSIVE_SYSTEM_RAM
+        patches@lists.linux.dev, "Xie Yongji" <xieyongji@bytedance.com>,
+        Xianjun Zeng <zengxianjun@bytedance.com>,
+        Sheng Zhao <sheng.zhao@bytedance.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 84/91] vduse: avoid empty string for dev name
 Date:   Mon, 12 Jun 2023 12:27:13 +0200
-Message-ID: <20230612101714.816419106@linuxfoundation.org>
+Message-ID: <20230612101705.626294763@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
+References: <20230612101702.085813286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,71 +57,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ruihan Li <lrh2000@pku.edu.cn>
+From: Sheng Zhao <sheng.zhao@bytedance.com>
 
-commit 81a31a860bb61d54eb688af2568d9332ed9b8942 upstream.
+[ Upstream commit a90e8608eb0ed93d31ac0feb055f77ce59512542 ]
 
-Without EXCLUSIVE_SYSTEM_RAM, users are allowed to map arbitrary
-physical memory regions into the userspace via /dev/mem. At the same
-time, pages may change their properties (e.g., from anonymous pages to
-named pages) while they are still being mapped in the userspace, leading
-to "corruption" detected by the page table check.
+Syzkaller hits a kernel WARN when the first character of the dev name
+provided is NULL. Solution is to add a NULL check before calling
+cdev_device_add() in vduse_create_dev().
 
-To avoid these false positives, this patch makes PAGE_TABLE_CHECK
-depends on EXCLUSIVE_SYSTEM_RAM. This dependency is understandable
-because PAGE_TABLE_CHECK is a hardening technique but /dev/mem without
-STRICT_DEVMEM (i.e., !EXCLUSIVE_SYSTEM_RAM) is itself a security
-problem.
+kobject: (0000000072042169): attempted to be registered with empty name!
+WARNING: CPU: 0 PID: 112695 at lib/kobject.c:236
+Call Trace:
+ kobject_add_varg linux/src/lib/kobject.c:390 [inline]
+ kobject_add+0xf6/0x150 linux/src/lib/kobject.c:442
+ device_add+0x28f/0xc20 linux/src/drivers/base/core.c:2167
+ cdev_device_add+0x83/0xc0 linux/src/fs/char_dev.c:546
+ vduse_create_dev linux/src/drivers/vdpa/vdpa_user/vduse_dev.c:2254 [inline]
+ vduse_ioctl+0x7b5/0xf30 linux/src/drivers/vdpa/vdpa_user/vduse_dev.c:2316
+ vfs_ioctl linux/src/fs/ioctl.c:47 [inline]
+ file_ioctl linux/src/fs/ioctl.c:510 [inline]
+ do_vfs_ioctl+0x14b/0xa80 linux/src/fs/ioctl.c:697
+ ksys_ioctl+0x7c/0xa0 linux/src/fs/ioctl.c:714
+ __do_sys_ioctl linux/src/fs/ioctl.c:721 [inline]
+ __se_sys_ioctl linux/src/fs/ioctl.c:719 [inline]
+ __x64_sys_ioctl+0x42/0x50 linux/src/fs/ioctl.c:719
+ do_syscall_64+0x94/0x330 linux/src/arch/x86/entry/common.c:291
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
 
-Even with EXCLUSIVE_SYSTEM_RAM, I/O pages may be still allowed to be
-mapped via /dev/mem. However, these pages are always considered as named
-pages, so they won't break the logic used in the page table check.
-
-Cc: <stable@vger.kernel.org> # 5.17
-Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Link: https://lore.kernel.org/r/20230515130958.32471-4-lrh2000@pku.edu.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c8a6153b6c59 ("vduse: Introduce VDUSE - vDPA Device in Userspace")
+Cc: "Xie Yongji" <xieyongji@bytedance.com>
+Reported-by: Xianjun Zeng <zengxianjun@bytedance.com>
+Signed-off-by: Sheng Zhao <sheng.zhao@bytedance.com>
+Message-Id: <20230530033626.1266794-1-sheng.zhao@bytedance.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
+Cc: "Michael S. Tsirkin"<mst@redhat.com>, "Jason Wang"<jasowang@redhat.com>,
+Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/mm/page_table_check.rst |   19 +++++++++++++++++++
- mm/Kconfig.debug                      |    1 +
- 2 files changed, 20 insertions(+)
+ drivers/vdpa/vdpa_user/vduse_dev.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/Documentation/mm/page_table_check.rst
-+++ b/Documentation/mm/page_table_check.rst
-@@ -54,3 +54,22 @@ Build kernel with:
+diff --git a/drivers/vdpa/vdpa_user/vduse_dev.c b/drivers/vdpa/vdpa_user/vduse_dev.c
+index 3467c75f310a5..30ae4237f3dd4 100644
+--- a/drivers/vdpa/vdpa_user/vduse_dev.c
++++ b/drivers/vdpa/vdpa_user/vduse_dev.c
+@@ -1254,6 +1254,9 @@ static bool vduse_validate_config(struct vduse_dev_config *config)
+ 	if (config->vq_num > 0xffff)
+ 		return false;
  
- Optionally, build kernel with PAGE_TABLE_CHECK_ENFORCED in order to have page
- table support without extra kernel parameter.
++	if (!config->name[0])
++		return false;
 +
-+Implementation notes
-+====================
-+
-+We specifically decided not to use VMA information in order to avoid relying on
-+MM states (except for limited "struct page" info). The page table check is a
-+separate from Linux-MM state machine that verifies that the user accessible
-+pages are not falsely shared.
-+
-+PAGE_TABLE_CHECK depends on EXCLUSIVE_SYSTEM_RAM. The reason is that without
-+EXCLUSIVE_SYSTEM_RAM, users are allowed to map arbitrary physical memory
-+regions into the userspace via /dev/mem. At the same time, pages may change
-+their properties (e.g., from anonymous pages to named pages) while they are
-+still being mapped in the userspace, leading to "corruption" detected by the
-+page table check.
-+
-+Even with EXCLUSIVE_SYSTEM_RAM, I/O pages may be still allowed to be mapped via
-+/dev/mem. However, these pages are always considered as named pages, so they
-+won't break the logic used in the page table check.
---- a/mm/Kconfig.debug
-+++ b/mm/Kconfig.debug
-@@ -98,6 +98,7 @@ config PAGE_OWNER
- config PAGE_TABLE_CHECK
- 	bool "Check for invalid mappings in user page tables"
- 	depends on ARCH_SUPPORTS_PAGE_TABLE_CHECK
-+	depends on EXCLUSIVE_SYSTEM_RAM
- 	select PAGE_EXTENSION
- 	help
- 	  Check that anonymous page is not being mapped twice with read write
+ 	if (!device_is_allowed(config->device_id))
+ 		return false;
+ 
+-- 
+2.39.2
+
 
 
