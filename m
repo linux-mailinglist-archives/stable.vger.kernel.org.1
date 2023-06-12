@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 399A972C1C0
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:00:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0027472C061
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:52:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236765AbjFLLAR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:00:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35402 "EHLO
+        id S235853AbjFLKwP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:52:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237421AbjFLK7r (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:59:47 -0400
+        with ESMTP id S235717AbjFLKvs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:51:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0CCA72A9
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:46:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5E6993D2
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:36:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 69CEE6246D
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:46:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82139C433EF;
-        Mon, 12 Jun 2023 10:46:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7DC86623DC
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:36:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90F6AC433EF;
+        Mon, 12 Jun 2023 10:36:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566808;
-        bh=tM68sGVqE0tz5h7mYBc1/1KjITyctaa/18xD0/vfC8Y=;
+        s=korg; t=1686566173;
+        bh=eEMDT4gqV3r30hmY/IrIGV4L+N31mCMAqkx/Uze+LCs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CCzzgLQKcr80TmcPXik7DT1zMGpfqH9wWsDeWQnk/9vsHL635NvrRQ0DzuSFabPKB
-         TWQ1P4Q4vZyaNi+X+vJoJ+pYu9+tiBVbwFbfPqJqjqo+c8XLrzQb+1Kcim01qeXTq8
-         ct9/6Sn+jpvtOguS+mXqJkOs7g/4D5yK53W+k4n4=
+        b=BQPLTeDIvSYaHHQqOUryW3q0nGyxMmnP3wEQo5YAuEoFbn4nkp7u0+I0n0un2c2O7
+         b5h3fSeoMOr0hPsBAl0ziGFrkhy6cIw6j+4pZkcoFgFJrlmCoY4ILxMXN0hLvkBqdm
+         WVIxS2FF67OH1f082yIPv1X6nOgLHexLq4W6JbBc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stanislav Fomichev <sdf@google.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 039/160] selftests/bpf: Verify optval=NULL case
-Date:   Mon, 12 Jun 2023 12:26:11 +0200
-Message-ID: <20230612101716.834744237@linuxfoundation.org>
+Subject: [PATCH 5.15 23/91] drm/i915: Use 18 fast wake AUX sync len
+Date:   Mon, 12 Jun 2023 12:26:12 +0200
+Message-ID: <20230612101703.060282118@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
+References: <20230612101702.085813286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,98 +56,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Stanislav Fomichev <sdf@google.com>
+From: Jouni Högander <jouni.hogander@intel.com>
 
-[ Upstream commit 833d67ecdc5f35f1ebf59d0fccc1ce771434be9c ]
+[ Upstream commit 2d6f2f79e06571d41eb1223abebe9097511c9544 ]
 
-Make sure we get optlen exported instead of getting EFAULT.
+HW default for wake sync pulses is 18. 10 precharge and 8 preamble. There
+is no reason to change this especially as it is causing problems with
+certain eDP panels.
 
-Signed-off-by: Stanislav Fomichev <sdf@google.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20230418225343.553806-3-sdf@google.com
-Stable-dep-of: 69844e335d8c ("selftests/bpf: Fix sockopt_sk selftest")
+v3: Change "Fixes:" commit
+v2: Remove "fast wake" repeat from subject
+
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Fixes: e1c71f8f9180 ("drm/i915: Fix fast wake AUX sync len")
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8475
+Reviewed-by: Luca Coelho <luciano.coelho@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230530101649.2549949-1-jouni.hogander@intel.com
+(cherry picked from commit b29a20f7c4995a059ed764ce42389857426397c7)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/bpf/prog_tests/sockopt_sk.c     | 28 +++++++++++++++++++
- .../testing/selftests/bpf/progs/sockopt_sk.c  | 12 ++++++++
- 2 files changed, 40 insertions(+)
+ drivers/gpu/drm/i915/display/intel_dp_aux.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/sockopt_sk.c b/tools/testing/selftests/bpf/prog_tests/sockopt_sk.c
-index 60d952719d275..4512dd808c335 100644
---- a/tools/testing/selftests/bpf/prog_tests/sockopt_sk.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sockopt_sk.c
-@@ -3,6 +3,7 @@
- #include "cgroup_helpers.h"
+diff --git a/drivers/gpu/drm/i915/display/intel_dp_aux.c b/drivers/gpu/drm/i915/display/intel_dp_aux.c
+index f0485521e58ad..d507a20822db1 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp_aux.c
++++ b/drivers/gpu/drm/i915/display/intel_dp_aux.c
+@@ -129,7 +129,7 @@ static int intel_dp_aux_sync_len(void)
  
- #include <linux/tcp.h>
-+#include <linux/netlink.h>
- #include "sockopt_sk.skel.h"
+ static int intel_dp_aux_fw_sync_len(void)
+ {
+-	int precharge = 16; /* 10-16 */
++	int precharge = 10; /* 10-16 */
+ 	int preamble = 8;
  
- #ifndef SOL_TCP
-@@ -183,6 +184,33 @@ static int getsetsockopt(void)
- 		goto err;
- 	}
- 
-+	/* optval=NULL case is handled correctly */
-+
-+	close(fd);
-+	fd = socket(AF_NETLINK, SOCK_RAW, 0);
-+	if (fd < 0) {
-+		log_err("Failed to create AF_NETLINK socket");
-+		return -1;
-+	}
-+
-+	buf.u32 = 1;
-+	optlen = sizeof(__u32);
-+	err = setsockopt(fd, SOL_NETLINK, NETLINK_ADD_MEMBERSHIP, &buf, optlen);
-+	if (err) {
-+		log_err("Unexpected getsockopt(NETLINK_ADD_MEMBERSHIP) err=%d errno=%d",
-+			err, errno);
-+		goto err;
-+	}
-+
-+	optlen = 0;
-+	err = getsockopt(fd, SOL_NETLINK, NETLINK_LIST_MEMBERSHIPS, NULL, &optlen);
-+	if (err) {
-+		log_err("Unexpected getsockopt(NETLINK_LIST_MEMBERSHIPS) err=%d errno=%d",
-+			err, errno);
-+		goto err;
-+	}
-+	ASSERT_EQ(optlen, 4, "Unexpected NETLINK_LIST_MEMBERSHIPS value");
-+
- 	free(big_buf);
- 	close(fd);
- 	return 0;
-diff --git a/tools/testing/selftests/bpf/progs/sockopt_sk.c b/tools/testing/selftests/bpf/progs/sockopt_sk.c
-index c8d810010a946..fe1df4cd206eb 100644
---- a/tools/testing/selftests/bpf/progs/sockopt_sk.c
-+++ b/tools/testing/selftests/bpf/progs/sockopt_sk.c
-@@ -32,6 +32,12 @@ int _getsockopt(struct bpf_sockopt *ctx)
- 	__u8 *optval_end = ctx->optval_end;
- 	__u8 *optval = ctx->optval;
- 	struct sockopt_sk *storage;
-+	struct bpf_sock *sk;
-+
-+	/* Bypass AF_NETLINK. */
-+	sk = ctx->sk;
-+	if (sk && sk->family == AF_NETLINK)
-+		return 1;
- 
- 	/* Make sure bpf_get_netns_cookie is callable.
- 	 */
-@@ -131,6 +137,12 @@ int _setsockopt(struct bpf_sockopt *ctx)
- 	__u8 *optval_end = ctx->optval_end;
- 	__u8 *optval = ctx->optval;
- 	struct sockopt_sk *storage;
-+	struct bpf_sock *sk;
-+
-+	/* Bypass AF_NETLINK. */
-+	sk = ctx->sk;
-+	if (sk && sk->family == AF_NETLINK)
-+		return 1;
- 
- 	/* Make sure bpf_get_netns_cookie is callable.
- 	 */
+ 	return precharge + preamble;
 -- 
 2.39.2
 
