@@ -2,48 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3B1B72C1E1
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:01:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89FB672C0A7
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:53:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237403AbjFLLBL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:01:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36912 "EHLO
+        id S236005AbjFLKxu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:53:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237414AbjFLLAz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:00:55 -0400
+        with ESMTP id S236237AbjFLKxe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:53:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E3143C35
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:47:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85569D143
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:38:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2810B62461
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:47:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43814C433D2;
-        Mon, 12 Jun 2023 10:47:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 232F7614F0
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:38:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36FBAC433EF;
+        Mon, 12 Jun 2023 10:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566869;
-        bh=JGArsnGpUZ67DXBDnAEQi3ykRVpK6gnih3n/0AwWznw=;
+        s=korg; t=1686566309;
+        bh=YylcBKYCBwzUDhByyMAfeFWts4fBvtOpS5b90cL417U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jMTAuj/XWXbvlu8ERUrXrcqHyFjVLqkqpzH1J+0AmiDsBs+zevDzY0Zq8M+Eimqih
-         ZomAgexFnriMKJaB1k7mesYVNupkjOvLQBb35Ln1NkhjBa16KaazVecw0/kGpYeKRX
-         RrW5zIe8bZ+wqAiRLE20UirGXhvqAKsV/vM2AhEI=
+        b=UrTMyGgKmA5qvVrfzzofhRFqFbM8Jp4+b5GrR6fjnJWkNapt+xuHMQvpjkUm+/9rF
+         LiLbvR3j0T6p2r+F62yMi4ogVVzOifHBX/wUdYesfidbrxrq49S/HdvJhmcD+Uv4dr
+         bNrcFiVAl7DI0VGSz0lktG4YD4l4fXMi0wgHkpJ8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
         Kalesh Anakkur Purayil <kalesh-anakkur.purayil@broadcom.com>,
         Somnath Kotur <somnath.kotur@broadcom.com>,
-        Pavan Chebbi <pavan.chebbi@broadcom.com>,
         Michael Chan <michael.chan@broadcom.com>,
         Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 063/160] bnxt_en: Fix bnxt_hwrm_update_rss_hash_cfg()
+Subject: [PATCH 5.15 46/91] bnxt_en: Implement .set_port / .unset_port UDP tunnel callbacks
 Date:   Mon, 12 Jun 2023 12:26:35 +0200
-Message-ID: <20230612101717.892993207@linuxfoundation.org>
+Message-ID: <20230612101703.980322634@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
+References: <20230612101702.085813286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,36 +57,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+From: Somnath Kotur <somnath.kotur@broadcom.com>
 
-[ Upstream commit 095d5dc0c1d9f3284e3c575ccf4c0e8b04b548f8 ]
+[ Upstream commit 1eb4ef12591348c440ac9d6efcf7521e73cf2b10 ]
 
-We must specify the vnic id of the vnic in the input structure of this
-firmware message.  Otherwise we will get an error from the firmware.
+As per the new udp tunnel framework, drivers which need to know the
+details of a port entry (i.e. port type) when it gets deleted should
+use the .set_port / .unset_port callbacks.
 
-Fixes: 98a4322b70e8 ("bnxt_en: update RSS config using difference algorithm")
+Implementing the current .udp_tunnel_sync callback would mean that the
+deleted tunnel port entry would be all zeros.  This used to work on
+older firmware because it would not check the input when deleting a
+tunnel port.  With newer firmware, the delete will now fail and
+subsequent tunnel port allocation will fail as a result.
+
+Fixes: 442a35a5a7aa ("bnxt: convert to new udp_tunnel_nic infra")
 Reviewed-by: Kalesh Anakkur Purayil <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Somnath Kotur <somnath.kotur@broadcom.com>
 Signed-off-by: Michael Chan <michael.chan@broadcom.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 25 ++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 651b79ce5d80c..26766c93b06ac 100644
+index 2629e8805651e..931bb40ac05b5 100644
 --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -5376,6 +5376,7 @@ static void bnxt_hwrm_update_rss_hash_cfg(struct bnxt *bp)
- 	if (hwrm_req_init(bp, req, HWRM_VNIC_RSS_QCFG))
- 		return;
+@@ -12701,26 +12701,37 @@ static void bnxt_cfg_ntp_filters(struct bnxt *bp)
  
-+	req->vnic_id = cpu_to_le16(vnic->fw_vnic_id);
- 	/* all contexts configured to same hash_type, zero always exists */
- 	req->rss_ctx_idx = cpu_to_le16(vnic->fw_rss_cos_lb_ctx[0]);
- 	resp = hwrm_req_hold(bp, req);
+ #endif /* CONFIG_RFS_ACCEL */
+ 
+-static int bnxt_udp_tunnel_sync(struct net_device *netdev, unsigned int table)
++static int bnxt_udp_tunnel_set_port(struct net_device *netdev, unsigned int table,
++				    unsigned int entry, struct udp_tunnel_info *ti)
+ {
+ 	struct bnxt *bp = netdev_priv(netdev);
+-	struct udp_tunnel_info ti;
+ 	unsigned int cmd;
+ 
+-	udp_tunnel_nic_get_port(netdev, table, 0, &ti);
+-	if (ti.type == UDP_TUNNEL_TYPE_VXLAN)
++	if (ti->type == UDP_TUNNEL_TYPE_VXLAN)
+ 		cmd = TUNNEL_DST_PORT_FREE_REQ_TUNNEL_TYPE_VXLAN;
+ 	else
+ 		cmd = TUNNEL_DST_PORT_FREE_REQ_TUNNEL_TYPE_GENEVE;
+ 
+-	if (ti.port)
+-		return bnxt_hwrm_tunnel_dst_port_alloc(bp, ti.port, cmd);
++	return bnxt_hwrm_tunnel_dst_port_alloc(bp, ti->port, cmd);
++}
++
++static int bnxt_udp_tunnel_unset_port(struct net_device *netdev, unsigned int table,
++				      unsigned int entry, struct udp_tunnel_info *ti)
++{
++	struct bnxt *bp = netdev_priv(netdev);
++	unsigned int cmd;
++
++	if (ti->type == UDP_TUNNEL_TYPE_VXLAN)
++		cmd = TUNNEL_DST_PORT_FREE_REQ_TUNNEL_TYPE_VXLAN;
++	else
++		cmd = TUNNEL_DST_PORT_FREE_REQ_TUNNEL_TYPE_GENEVE;
+ 
+ 	return bnxt_hwrm_tunnel_dst_port_free(bp, cmd);
+ }
+ 
+ static const struct udp_tunnel_nic_info bnxt_udp_tunnels = {
+-	.sync_table	= bnxt_udp_tunnel_sync,
++	.set_port	= bnxt_udp_tunnel_set_port,
++	.unset_port	= bnxt_udp_tunnel_unset_port,
+ 	.flags		= UDP_TUNNEL_NIC_INFO_MAY_SLEEP |
+ 			  UDP_TUNNEL_NIC_INFO_OPEN_ONLY,
+ 	.tables		= {
 -- 
 2.39.2
 
