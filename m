@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB11472C074
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:52:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F3D272BF9E
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:45:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235849AbjFLKwn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:52:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54450 "EHLO
+        id S234050AbjFLKp4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:45:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235796AbjFLKwQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:52:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F7DB9EF3
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:36:46 -0700 (PDT)
+        with ESMTP id S234339AbjFLKpM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:45:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01EFE6EB2
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:30:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 978A260C2D
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:36:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB151C433D2;
-        Mon, 12 Jun 2023 10:36:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D6D5E60D56
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:30:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED35EC433EF;
+        Mon, 12 Jun 2023 10:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566205;
-        bh=oK5KPqOWSERBBE+zuUqo3UklGrRjnuEGPmo1/ak6d30=;
+        s=korg; t=1686565807;
+        bh=O3pJwAxYpxj0Q4RElW6oyGSAiSrIkJqp3cC15nV5HhQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AAoSNq5MPG6m5aYWRJYybQd/gEadheFv2Trqp6JBMPj1lmHTwCIy9nhd32TNS7+4y
-         mTTNwP+GGB3dtfA4/rO3uPYuWsrtU4dqmC5xxI0DG49VX9vepF+rgXB5jmNLq/42nd
-         ULevKPFwEgHq2PMwOA6//nZop6u/xCzoQHlCkGmM=
+        b=jbur99rphQSNDgFJPMc7PeWB/AN88ZHLvPobHAdVwv2i09dK7hV4yyXnv4MPQ6wjc
+         w5ZVVRBHtrCr/e7d9YzlEu2xdnQly+VogqxG76dU75y08E2G3lKqKAEIGn9C858HAP
+         debqvK5qm3HP5PKlH6lZE4LFQzn4kH22Bko2ggwo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 34/91] rfs: annotate lockless accesses to sk->sk_rxhash
+        patches@lists.linux.dev, TOTE Robot <oslab@tsinghua.edu.cn>,
+        Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+        Nikolay Borisov <nborisov@suse.com>,
+        Zixuan Fu <r33s3n6@gmail.com>, David Sterba <dsterba@suse.com>,
+        Stefan Ghinea <stefan.ghinea@windriver.com>
+Subject: [PATCH 4.19 22/23] btrfs: unset reloc control if transaction commit fails in prepare_to_relocate()
 Date:   Mon, 12 Jun 2023 12:26:23 +0200
-Message-ID: <20230612101703.513937132@linuxfoundation.org>
+Message-ID: <20230612101651.881289219@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
-References: <20230612101702.085813286@linuxfoundation.org>
+In-Reply-To: <20230612101651.138592130@linuxfoundation.org>
+References: <20230612101651.138592130@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,73 +56,103 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Zixuan Fu <r33s3n6@gmail.com>
 
-[ Upstream commit 1e5c647c3f6d4f8497dedcd226204e1880e0ffb3 ]
+commit 85f02d6c856b9f3a0acf5219de6e32f58b9778eb upstream.
 
-Add READ_ONCE()/WRITE_ONCE() on accesses to sk->sk_rxhash.
+In btrfs_relocate_block_group(), the rc is allocated.  Then
+btrfs_relocate_block_group() calls
 
-This also prevents a (smart ?) compiler to remove the condition in:
+relocate_block_group()
+  prepare_to_relocate()
+    set_reloc_control()
 
-if (sk->sk_rxhash != newval)
-	sk->sk_rxhash = newval;
+that assigns rc to the variable fs_info->reloc_ctl. When
+prepare_to_relocate() returns, it calls
 
-We need the condition to avoid dirtying a shared cache line.
+btrfs_commit_transaction()
+  btrfs_start_dirty_block_groups()
+    btrfs_alloc_path()
+      kmem_cache_zalloc()
 
-Fixes: fec5e652e58f ("rfs: Receive Flow Steering")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+which may fail for example (or other errors could happen). When the
+failure occurs, btrfs_relocate_block_group() detects the error and frees
+rc and doesn't set fs_info->reloc_ctl to NULL. After that, in
+btrfs_init_reloc_root(), rc is retrieved from fs_info->reloc_ctl and
+then used, which may cause a use-after-free bug.
+
+This possible bug can be triggered by calling btrfs_ioctl_balance()
+before calling btrfs_ioctl_defrag().
+
+To fix this possible bug, in prepare_to_relocate(), check if
+btrfs_commit_transaction() fails. If the failure occurs,
+unset_reloc_control() is called to set fs_info->reloc_ctl to NULL.
+
+The error log in our fault-injection testing is shown as follows:
+
+  [   58.751070] BUG: KASAN: use-after-free in btrfs_init_reloc_root+0x7ca/0x920 [btrfs]
+  ...
+  [   58.753577] Call Trace:
+  ...
+  [   58.755800]  kasan_report+0x45/0x60
+  [   58.756066]  btrfs_init_reloc_root+0x7ca/0x920 [btrfs]
+  [   58.757304]  record_root_in_trans+0x792/0xa10 [btrfs]
+  [   58.757748]  btrfs_record_root_in_trans+0x463/0x4f0 [btrfs]
+  [   58.758231]  start_transaction+0x896/0x2950 [btrfs]
+  [   58.758661]  btrfs_defrag_root+0x250/0xc00 [btrfs]
+  [   58.759083]  btrfs_ioctl_defrag+0x467/0xa00 [btrfs]
+  [   58.759513]  btrfs_ioctl+0x3c95/0x114e0 [btrfs]
+  ...
+  [   58.768510] Allocated by task 23683:
+  [   58.768777]  ____kasan_kmalloc+0xb5/0xf0
+  [   58.769069]  __kmalloc+0x227/0x3d0
+  [   58.769325]  alloc_reloc_control+0x10a/0x3d0 [btrfs]
+  [   58.769755]  btrfs_relocate_block_group+0x7aa/0x1e20 [btrfs]
+  [   58.770228]  btrfs_relocate_chunk+0xf1/0x760 [btrfs]
+  [   58.770655]  __btrfs_balance+0x1326/0x1f10 [btrfs]
+  [   58.771071]  btrfs_balance+0x3150/0x3d30 [btrfs]
+  [   58.771472]  btrfs_ioctl_balance+0xd84/0x1410 [btrfs]
+  [   58.771902]  btrfs_ioctl+0x4caa/0x114e0 [btrfs]
+  ...
+  [   58.773337] Freed by task 23683:
+  ...
+  [   58.774815]  kfree+0xda/0x2b0
+  [   58.775038]  free_reloc_control+0x1d6/0x220 [btrfs]
+  [   58.775465]  btrfs_relocate_block_group+0x115c/0x1e20 [btrfs]
+  [   58.775944]  btrfs_relocate_chunk+0xf1/0x760 [btrfs]
+  [   58.776369]  __btrfs_balance+0x1326/0x1f10 [btrfs]
+  [   58.776784]  btrfs_balance+0x3150/0x3d30 [btrfs]
+  [   58.777185]  btrfs_ioctl_balance+0xd84/0x1410 [btrfs]
+  [   58.777621]  btrfs_ioctl+0x4caa/0x114e0 [btrfs]
+  ...
+
+Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Reviewed-by: Nikolay Borisov <nborisov@suse.com>
+Signed-off-by: Zixuan Fu <r33s3n6@gmail.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Stefan Ghinea <stefan.ghinea@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sock.h | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ fs/btrfs/relocation.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 104d80d850e41..0eb6a4d07a4d1 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1093,8 +1093,12 @@ static inline void sock_rps_record_flow(const struct sock *sk)
- 		 * OR	an additional socket flag
- 		 * [1] : sk_state and sk_prot are in the same cache line.
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -3930,7 +3930,12 @@ int prepare_to_relocate(struct reloc_con
  		 */
--		if (sk->sk_state == TCP_ESTABLISHED)
--			sock_rps_record_flow_hash(sk->sk_rxhash);
-+		if (sk->sk_state == TCP_ESTABLISHED) {
-+			/* This READ_ONCE() is paired with the WRITE_ONCE()
-+			 * from sock_rps_save_rxhash() and sock_rps_reset_rxhash().
-+			 */
-+			sock_rps_record_flow_hash(READ_ONCE(sk->sk_rxhash));
-+		}
+ 		return PTR_ERR(trans);
  	}
- #endif
- }
-@@ -1103,15 +1107,19 @@ static inline void sock_rps_save_rxhash(struct sock *sk,
- 					const struct sk_buff *skb)
- {
- #ifdef CONFIG_RPS
--	if (unlikely(sk->sk_rxhash != skb->hash))
--		sk->sk_rxhash = skb->hash;
-+	/* The following WRITE_ONCE() is paired with the READ_ONCE()
-+	 * here, and another one in sock_rps_record_flow().
-+	 */
-+	if (unlikely(READ_ONCE(sk->sk_rxhash) != skb->hash))
-+		WRITE_ONCE(sk->sk_rxhash, skb->hash);
- #endif
+-	return btrfs_commit_transaction(trans);
++
++	ret = btrfs_commit_transaction(trans);
++	if (ret)
++		unset_reloc_control(rc);
++
++	return ret;
  }
  
- static inline void sock_rps_reset_rxhash(struct sock *sk)
- {
- #ifdef CONFIG_RPS
--	sk->sk_rxhash = 0;
-+	/* Paired with READ_ONCE() in sock_rps_record_flow() */
-+	WRITE_ONCE(sk->sk_rxhash, 0);
- #endif
- }
- 
--- 
-2.39.2
-
+ static noinline_for_stack int relocate_block_group(struct reloc_control *rc)
 
 
