@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7932872C017
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:50:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3406D72BF96
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:45:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231273AbjFLKuW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:50:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54450 "EHLO
+        id S229691AbjFLKpZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:45:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233445AbjFLKtW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:49:22 -0400
+        with ESMTP id S230283AbjFLKpJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:45:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CEC97D99
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:34:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2817859CD
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:29:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 20A0961500
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:33:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39461C433D2;
-        Mon, 12 Jun 2023 10:33:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 08E1061500
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:29:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D14CC433D2;
+        Mon, 12 Jun 2023 10:29:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565999;
-        bh=af8uFrWTOi3GEG0AEEc2Q+3qZyFkqdVeb6Y8CFQ5Fss=;
+        s=korg; t=1686565791;
+        bh=vfjv2kynwe9F8iphwJjPyAH/i4yW5V1N13gFEty/Zbs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uQG6Mb2INDIfO2xqVHz55WkLqYvN4iZN2p7tBBhKemsY+4hydOdBjalg10m2YGLqr
-         UCC0Z5yvhZALeShzzP5qRYttL7zTu6j7j/2GbJDdEZBNueYfQxkG4nNAz48BggPpQQ
-         ZQdf4/kwiBMLeVkK030dQA7s02mrtJYpVdkJ6lMQ=
+        b=LMz2h/UOXr1ib+shDiqP5S1mqiVAkMH3WsFcgATQ85tTnQIJFZx4SL8zQaMJb5l58
+         xgyzeWZmIuVXSI4rQbd5rDPFGPQkzjxny6q1vzHCsyp+dDsGYc7CNQs+iuUxvnYUGd
+         kmh2uaSikxkoncpoHDoXiQ91cVRdCibHG2pMpBQ8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 26/68] rfs: annotate lockless accesses to sk->sk_rxhash
+        patches@lists.linux.dev, Min Li <lm0963hack@gmail.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 4.19 17/23] Bluetooth: Fix use-after-free in hci_remove_ltk/hci_remove_irk
 Date:   Mon, 12 Jun 2023 12:26:18 +0200
-Message-ID: <20230612101659.507635367@linuxfoundation.org>
+Message-ID: <20230612101651.727346851@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
-References: <20230612101658.437327280@linuxfoundation.org>
+In-Reply-To: <20230612101651.138592130@linuxfoundation.org>
+References: <20230612101651.138592130@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,73 +53,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 1e5c647c3f6d4f8497dedcd226204e1880e0ffb3 ]
+commit c5d2b6fa26b5b8386a9cc902cdece3a46bef2bd2 upstream.
 
-Add READ_ONCE()/WRITE_ONCE() on accesses to sk->sk_rxhash.
+Similar to commit 0f7d9b31ce7a ("netfilter: nf_tables: fix use-after-free
+in nft_set_catchall_destroy()"). We can not access k after kfree_rcu()
+call.
 
-This also prevents a (smart ?) compiler to remove the condition in:
-
-if (sk->sk_rxhash != newval)
-	sk->sk_rxhash = newval;
-
-We need the condition to avoid dirtying a shared cache line.
-
-Fixes: fec5e652e58f ("rfs: Receive Flow Steering")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Min Li <lm0963hack@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sock.h | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ net/bluetooth/hci_core.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 3da0601b573ed..51b499d745499 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1073,8 +1073,12 @@ static inline void sock_rps_record_flow(const struct sock *sk)
- 		 * OR	an additional socket flag
- 		 * [1] : sk_state and sk_prot are in the same cache line.
- 		 */
--		if (sk->sk_state == TCP_ESTABLISHED)
--			sock_rps_record_flow_hash(sk->sk_rxhash);
-+		if (sk->sk_state == TCP_ESTABLISHED) {
-+			/* This READ_ONCE() is paired with the WRITE_ONCE()
-+			 * from sock_rps_save_rxhash() and sock_rps_reset_rxhash().
-+			 */
-+			sock_rps_record_flow_hash(READ_ONCE(sk->sk_rxhash));
-+		}
- 	}
- #endif
- }
-@@ -1083,15 +1087,19 @@ static inline void sock_rps_save_rxhash(struct sock *sk,
- 					const struct sk_buff *skb)
- {
- #ifdef CONFIG_RPS
--	if (unlikely(sk->sk_rxhash != skb->hash))
--		sk->sk_rxhash = skb->hash;
-+	/* The following WRITE_ONCE() is paired with the READ_ONCE()
-+	 * here, and another one in sock_rps_record_flow().
-+	 */
-+	if (unlikely(READ_ONCE(sk->sk_rxhash) != skb->hash))
-+		WRITE_ONCE(sk->sk_rxhash, skb->hash);
- #endif
- }
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -2517,10 +2517,10 @@ int hci_remove_link_key(struct hci_dev *
  
- static inline void sock_rps_reset_rxhash(struct sock *sk)
+ int hci_remove_ltk(struct hci_dev *hdev, bdaddr_t *bdaddr, u8 bdaddr_type)
  {
- #ifdef CONFIG_RPS
--	sk->sk_rxhash = 0;
-+	/* Paired with READ_ONCE() in sock_rps_record_flow() */
-+	WRITE_ONCE(sk->sk_rxhash, 0);
- #endif
- }
+-	struct smp_ltk *k;
++	struct smp_ltk *k, *tmp;
+ 	int removed = 0;
  
--- 
-2.39.2
-
+-	list_for_each_entry_rcu(k, &hdev->long_term_keys, list) {
++	list_for_each_entry_safe(k, tmp, &hdev->long_term_keys, list) {
+ 		if (bacmp(bdaddr, &k->bdaddr) || k->bdaddr_type != bdaddr_type)
+ 			continue;
+ 
+@@ -2536,9 +2536,9 @@ int hci_remove_ltk(struct hci_dev *hdev,
+ 
+ void hci_remove_irk(struct hci_dev *hdev, bdaddr_t *bdaddr, u8 addr_type)
+ {
+-	struct smp_irk *k;
++	struct smp_irk *k, *tmp;
+ 
+-	list_for_each_entry_rcu(k, &hdev->identity_resolving_keys, list) {
++	list_for_each_entry_safe(k, tmp, &hdev->identity_resolving_keys, list) {
+ 		if (bacmp(bdaddr, &k->bdaddr) || k->addr_type != addr_type)
+ 			continue;
+ 
 
 
