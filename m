@@ -2,49 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B08A72C087
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:53:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB84972C114
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:56:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235593AbjFLKxO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:53:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56860 "EHLO
+        id S236815AbjFLK4R (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:56:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235916AbjFLKww (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:52:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86935A5D5
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:37:27 -0700 (PDT)
+        with ESMTP id S236935AbjFLK4C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:56:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 806173ABE
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:43:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 519D562204
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:37:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CBD7C433D2;
-        Mon, 12 Jun 2023 10:37:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 16040612E1
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:43:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E2CC433EF;
+        Mon, 12 Jun 2023 10:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566246;
-        bh=v+8V7IHgjudlXBSY5/7wBPN1jlBhuKfo4IMnQFJmWtg=;
+        s=korg; t=1686566605;
+        bh=UUHWATXInQ719PnwDvtplB/g46UJwj/fh08kvBO7RDs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vQZn3gPqE9VFL0sjVH5RHGKJ8SKJchUzdUcKes+Gc7LwKpFDxFXbcf49Z/jJi8+7I
-         9OYNzH2/roh9JWrr+v1kQN4kr5aP6KGzRY0VoY6opyyq2YRSnv6dm0ZaIW3qqc2iKZ
-         s8ag15Pw2WScehBJmsjfeyD3aeWRzsFHoSwHwDf4=
+        b=mcOFOJn1Z9HpLQMiLpOtt93gnO3/L2bEd5Vui/wQPvtS1BKZS6tvhdR0ONWH+CKuY
+         xgOzXGgj9hH7aOEqBlwMfGSL3xLrX3tPSgr6L5Y/tRUO2Z5XP9qCl4W7MFkPkD72Al
+         NQS79XBrkO27auKoER/+M7VSKTuj5cYbQX9/MxVU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Tim Crawford <tcrawford@system76.com>,
         Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 51/91] ALSA: hda/realtek: Add quirk for Clevo NS50AU
+Subject: [PATCH 6.1 066/132] ALSA: hda/realtek: Add quirk for Clevo NS50AU
 Date:   Mon, 12 Jun 2023 12:26:40 +0200
-Message-ID: <20230612101704.199882968@linuxfoundation.org>
+Message-ID: <20230612101713.279575581@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
-References: <20230612101702.085813286@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -70,7 +70,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/sound/pci/hda/patch_realtek.c
 +++ b/sound/pci/hda/patch_realtek.c
-@@ -9205,6 +9205,7 @@ static const struct snd_pci_quirk alc269
+@@ -9636,6 +9636,7 @@ static const struct snd_pci_quirk alc269
  	SND_PCI_QUIRK(0x1558, 0x5101, "Clevo S510WU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
  	SND_PCI_QUIRK(0x1558, 0x5157, "Clevo W517GU1", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
  	SND_PCI_QUIRK(0x1558, 0x51a1, "Clevo NS50MU", ALC293_FIXUP_SYSTEM76_MIC_NO_PRESENCE),
