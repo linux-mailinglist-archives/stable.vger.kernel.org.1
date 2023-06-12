@@ -2,49 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9F6772C04D
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:51:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13FD272BFE9
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:48:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235488AbjFLKvm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:51:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55740 "EHLO
+        id S234058AbjFLKr7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:47:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235525AbjFLKvV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:51:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0E9F1BC6
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:35:43 -0700 (PDT)
+        with ESMTP id S233668AbjFLKrn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:47:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B877FBA7
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:32:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 004C9623EC
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:35:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1109EC433EF;
-        Mon, 12 Jun 2023 10:35:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EF541623EA
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:32:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B52AC433EF;
+        Mon, 12 Jun 2023 10:32:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566132;
-        bh=joQZeV5ipw6eWGHCmzQA13SZ80alg8b5kPBnt9FuKV8=;
+        s=korg; t=1686565949;
+        bh=u5iNb48Gt9DmVXa2o4Pti6OIcvJdvGVRFjn11IWKtEc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zx0D11a2hMIPt2A0/YWcsnik4R26tthDV0uibfplGyeq/LabjnoizECAOvAFU6DvO
-         PVzRYm2fn0/OQ3Q/tPgKyfr26+wHHRGik26OqVlGHETYzWSkml7GT52kOlxqzrXCVl
-         Nm2GK60h4AnavJvNGXDxhyB2WsYMrNSycikUo0tc=
+        b=hRVDfD90/eaRqCcOLy/rxrxUH8F7jsjKHPasKORiUmW92ikggCtsOkp31ALaa3sPU
+         U2YNI3iQI1349PBxCXOQDzfYEsU3e0VDDjkzGs6M0pPRZP+cKAqezqz4hP6Ro0ZPl2
+         te/Yls7qBGbye4DPGqAsC0wkEYx2E1s3isJl+Xbg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.10 47/68] Bluetooth: hci_qca: fix debugfs registration
+        patches@lists.linux.dev, Ben Hutchings <ben@decadent.org.uk>,
+        Philipp Hortmann <philipp.g.hortmann@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 45/45] Revert "staging: rtl8192e: Replace macro RTL_PCI_DEVICE with PCI_DEVICE"
 Date:   Mon, 12 Jun 2023 12:26:39 +0200
-Message-ID: <20230612101700.371144611@linuxfoundation.org>
+Message-ID: <20230612101656.434523813@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
-References: <20230612101658.437327280@linuxfoundation.org>
+In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
+References: <20230612101654.644983109@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,52 +54,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 47c5d829a3e326b7395352a10fc8a6effe7afa15 upstream.
+This reverts commit 8a65476dd1cad790ca67ea639be98c14fcd86288 which is
+commit fda2093860df4812d69052a8cf4997e53853a340 upstream.
 
-Since commit 3e4be65eb82c ("Bluetooth: hci_qca: Add poweroff support
-during hci down for wcn3990"), the setup callback which registers the
-debugfs interface can be called multiple times.
+Ben reports that this should not have been backported to the older
+kernels as the rest of the macro is not empty.  It was a clean-up patch
+in 6.4-rc1 only, it did not add new device ids.
 
-This specifically leads to the following error when powering on the
-controller:
-
-	debugfs: Directory 'ibs' with parent 'hci0' already present!
-
-Add a driver flag to avoid trying to register the debugfs interface more
-than once.
-
-Fixes: 3e4be65eb82c ("Bluetooth: hci_qca: Add poweroff support during hci down for wcn3990")
-Cc: stable@vger.kernel.org	# 4.20
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: Ben Hutchings <ben@decadent.org.uk>
+Cc: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+Cc: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/aa0d401a7f63448cd4c2fe4a2d7e8495d9aa123e.camel@decadent.org.uk
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_qca.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/staging/rtl8192e/rtl8192e/rtl_core.c |    6 +++---
+ drivers/staging/rtl8192e/rtl8192e/rtl_core.h |    5 +++++
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -78,7 +78,8 @@ enum qca_flags {
- 	QCA_HW_ERROR_EVENT,
- 	QCA_SSR_TRIGGERED,
- 	QCA_BT_OFF,
--	QCA_ROM_FW
-+	QCA_ROM_FW,
-+	QCA_DEBUGFS_CREATED,
+--- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
++++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.c
+@@ -50,9 +50,9 @@ static const struct rtl819x_ops rtl819xp
  };
  
- enum qca_capabilities {
-@@ -633,6 +634,9 @@ static void qca_debugfs_init(struct hci_
- 	if (!hdev->debugfs)
- 		return;
+ static struct pci_device_id rtl8192_pci_id_tbl[] = {
+-	{PCI_DEVICE(0x10ec, 0x8192)},
+-	{PCI_DEVICE(0x07aa, 0x0044)},
+-	{PCI_DEVICE(0x07aa, 0x0047)},
++	{RTL_PCI_DEVICE(0x10ec, 0x8192, rtl819xp_ops)},
++	{RTL_PCI_DEVICE(0x07aa, 0x0044, rtl819xp_ops)},
++	{RTL_PCI_DEVICE(0x07aa, 0x0047, rtl819xp_ops)},
+ 	{}
+ };
  
-+	if (test_and_set_bit(QCA_DEBUGFS_CREATED, &qca->flags))
-+		return;
+--- a/drivers/staging/rtl8192e/rtl8192e/rtl_core.h
++++ b/drivers/staging/rtl8192e/rtl8192e/rtl_core.h
+@@ -55,6 +55,11 @@
+ #define IS_HARDWARE_TYPE_8192SE(_priv)		\
+ 	(((struct r8192_priv *)rtllib_priv(dev))->card_8192 == NIC_8192SE)
+ 
++#define RTL_PCI_DEVICE(vend, dev, cfg) \
++	.vendor = (vend), .device = (dev), \
++	.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID, \
++	.driver_data = (kernel_ulong_t)&(cfg)
 +
- 	ibs_dir = debugfs_create_dir("ibs", hdev->debugfs);
+ #define TOTAL_CAM_ENTRY		32
+ #define CAM_CONTENT_COUNT	8
  
- 	/* read only */
 
 
