@@ -2,42 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F82972C0B4
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:54:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58E9B72C210
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:02:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236310AbjFLKyL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:54:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55048 "EHLO
+        id S237516AbjFLLCc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:02:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235882AbjFLKxu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:53:50 -0400
+        with ESMTP id S237531AbjFLLCS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:02:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DFB4D17B
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:39:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A26EB5FE8
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:49:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B592614F0
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:39:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76B29C433D2;
-        Mon, 12 Jun 2023 10:39:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3AE82624D3
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:49:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D1DCC433EF;
+        Mon, 12 Jun 2023 10:49:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566340;
-        bh=bdNhbHHiZ1gjS7wN5u6aaOveVriureyTwf2YZIRJulE=;
+        s=korg; t=1686566979;
+        bh=Tj5pIUHrwKbgZKMQUQA49EpM6LyQZLQbHXh/SbjZEW4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pK3dPBq0x/Rb1l4aj5ZXH5m9mZ5Z5kinl0OGqKBId2wkxn/yG1GcInQiejWxW/RRg
-         WWCv+cxO/Yytu386t3gXfe53WqQ0vBsMXk5v1J12bhq2e3VYfuJm50nMYtsAKUy65M
-         Jsc0rdrsMxuAw4Bd52+ui4UUUWvGk8Xa/FZejXug=
+        b=C1BPy5xKrHLlHbeaHscn69TNIXvECwKJdyDG7nTmdvUHWBb8ODqzX3WBbGNhjzQqb
+         qcmqTTreIVSALhSEFgA7EYjXQdErzwpxU4IhxcKoC8+t3SYhPVuJ1YIQ+nxoq16LYR
+         v7UOR1UkH8r+TnIoyXa+W+qQOthbcCRkvVZzRzqM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 87/91] Revert "ext4: dont clear SB_RDONLY when remounting r/w until quota is re-enabled"
+        patches@lists.linux.dev,
+        =?UTF-8?q?Jan=20H=C3=B6ppner?= <hoeppner@linux.ibm.com>,
+        Stefan Haberland <sth@linux.ibm.com>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.3 104/160] s390/dasd: Use correct lock while counting channel queue length
 Date:   Mon, 12 Jun 2023 12:27:16 +0200
-Message-ID: <20230612101705.761808117@linuxfoundation.org>
+Message-ID: <20230612101719.778066489@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
-References: <20230612101702.085813286@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,47 +55,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Jan Höppner <hoeppner@linux.ibm.com>
 
-commit 1b29243933098cdbc31b579b5616e183b4275e2f upstream.
+commit ccc45cb4e7271c74dbb27776ae8f73d84557f5c6 upstream.
 
-This reverts commit a44be64bbecb15a452496f60db6eacfee2b59c79.
+The lock around counting the channel queue length in the BIODASDINFO
+ioctl was incorrectly changed to the dasd_block->queue_lock with commit
+583d6535cb9d ("dasd: remove dead code"). This can lead to endless list
+iterations and a subsequent crash.
 
-Link: https://lore.kernel.org/r/653b3359-2005-21b1-039d-c55ca4cffdcc@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+The queue_lock is supposed to be used only for queue lists belonging to
+dasd_block. For dasd_device related queue lists the ccwdev lock must be
+used.
+
+Fix the mentioned issues by correctly using the ccwdev lock instead of
+the queue lock.
+
+Fixes: 583d6535cb9d ("dasd: remove dead code")
+Cc: stable@vger.kernel.org # v5.0+
+Signed-off-by: Jan Höppner <hoeppner@linux.ibm.com>
+Reviewed-by: Stefan Haberland <sth@linux.ibm.com>
+Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230609153750.1258763-2-sth@linux.ibm.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/super.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/s390/block/dasd_ioctl.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -5748,7 +5748,6 @@ static int ext4_remount(struct super_blo
- 	struct ext4_mount_options old_opts;
- 	ext4_group_t g;
- 	int err = 0;
--	int enable_rw = 0;
- #ifdef CONFIG_QUOTA
- 	int enable_quota = 0;
- 	int i, j;
-@@ -5949,7 +5948,7 @@ static int ext4_remount(struct super_blo
- 			if (err)
- 				goto restore_opts;
+--- a/drivers/s390/block/dasd_ioctl.c
++++ b/drivers/s390/block/dasd_ioctl.c
+@@ -552,10 +552,10 @@ static int __dasd_ioctl_information(stru
  
--			enable_rw = 1;
-+			sb->s_flags &= ~SB_RDONLY;
- 			if (ext4_has_feature_mmp(sb)) {
- 				err = ext4_multi_mount_protect(sb,
- 						le64_to_cpu(es->s_mmp_block));
-@@ -5996,9 +5995,6 @@ static int ext4_remount(struct super_blo
- 	if (!test_opt(sb, BLOCK_VALIDITY) && sbi->s_system_blks)
- 		ext4_release_system_zone(sb);
+ 	memcpy(dasd_info->type, base->discipline->name, 4);
  
--	if (enable_rw)
--		sb->s_flags &= ~SB_RDONLY;
--
- 	/*
- 	 * Reinitialize lazy itable initialization thread based on
- 	 * current settings
+-	spin_lock_irqsave(&block->queue_lock, flags);
++	spin_lock_irqsave(get_ccwdev_lock(base->cdev), flags);
+ 	list_for_each(l, &base->ccw_queue)
+ 		dasd_info->chanq_len++;
+-	spin_unlock_irqrestore(&block->queue_lock, flags);
++	spin_unlock_irqrestore(get_ccwdev_lock(base->cdev), flags);
+ 	return 0;
+ }
+ 
 
 
