@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93B4972BFCF
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:47:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E82A72C01B
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:50:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231145AbjFLKrU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:47:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51470 "EHLO
+        id S232462AbjFLKuY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:50:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230416AbjFLKrH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:47:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5178A3C3E
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:31:39 -0700 (PDT)
+        with ESMTP id S234242AbjFLKtY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:49:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 875AA131
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:34:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 207BC615BF
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:31:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C62C433D2;
-        Mon, 12 Jun 2023 10:31:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D32F623DC
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:33:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B2BC433D2;
+        Mon, 12 Jun 2023 10:33:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565896;
-        bh=RhGpgNGMy5hionLSoLSxdarQOgYaH6g0SIX4sHDx55E=;
+        s=korg; t=1686566020;
+        bh=fBZqHSpT53nuDhBN4fFMuA0ZrenNODG0H+/JkigtgBA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W6HfdmJAgC4xjdiOgyej0L9LLJ/961jvUf13g5+VAdbZo6eNoCsBAwATqaWnmg5cA
-         mNKtY7I9ebP4lkwMZPdQ7I7fz/5ISb/wBi2a5tnyF41+lV+fxdxsUxqkaTs8N6cycg
-         n5dS9cIE29pfcpy8nDugBgVL7ov/QfoD6MH3HUas=
+        b=fw/vR6gPwezlyHPp+j1fbP70KzLXQGVAgFWnjRh0ZAEQ+Q2+qjrxFANEMeh/qeiPi
+         dAluICLRP7xXnEWcoKrmLloF1gDN/Tj59VfR21RkvwdsSeQCcQ0N0VjqCds1kSHgL2
+         a3tLAT7rp0CpXvi7MhyZPPl73U2Gr1O8JXPo9K2k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        syzbot+fcf1a817ceb50935ce99@syzkaller.appspotmail.comm,
-        Ruihan Li <lrh2000@pku.edu.cn>,
-        Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 5.4 32/45] usb: usbfs: Enforce page requirements for mmap
+        Kalesh Anakkur Purayil <kalesh-anakkur.purayil@broadcom.com>,
+        Somnath Kotur <somnath.kotur@broadcom.com>,
+        Michael Chan <michael.chan@broadcom.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 34/68] bnxt_en: Implement .set_port / .unset_port UDP tunnel callbacks
 Date:   Mon, 12 Jun 2023 12:26:26 +0200
-Message-ID: <20230612101655.957855054@linuxfoundation.org>
+Message-ID: <20230612101659.833875366@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
-References: <20230612101654.644983109@linuxfoundation.org>
+In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
+References: <20230612101658.437327280@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,140 +57,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ruihan Li <lrh2000@pku.edu.cn>
+From: Somnath Kotur <somnath.kotur@broadcom.com>
 
-commit 0143d148d1e882fb1538dc9974c94d63961719b9 upstream.
+[ Upstream commit 1eb4ef12591348c440ac9d6efcf7521e73cf2b10 ]
 
-The current implementation of usbdev_mmap uses usb_alloc_coherent to
-allocate memory pages that will later be mapped into the user space.
-Meanwhile, usb_alloc_coherent employs three different methods to
-allocate memory, as outlined below:
- * If hcd->localmem_pool is non-null, it uses gen_pool_dma_alloc to
-   allocate memory;
- * If DMA is not available, it uses kmalloc to allocate memory;
- * Otherwise, it uses dma_alloc_coherent.
+As per the new udp tunnel framework, drivers which need to know the
+details of a port entry (i.e. port type) when it gets deleted should
+use the .set_port / .unset_port callbacks.
 
-However, it should be noted that gen_pool_dma_alloc does not guarantee
-that the resulting memory will be page-aligned. Furthermore, trying to
-map slab pages (i.e., memory allocated by kmalloc) into the user space
-is not resonable and can lead to problems, such as a type confusion bug
-when PAGE_TABLE_CHECK=y [1].
+Implementing the current .udp_tunnel_sync callback would mean that the
+deleted tunnel port entry would be all zeros.  This used to work on
+older firmware because it would not check the input when deleting a
+tunnel port.  With newer firmware, the delete will now fail and
+subsequent tunnel port allocation will fail as a result.
 
-To address these issues, this patch introduces hcd_alloc_coherent_pages,
-which addresses the above two problems. Specifically,
-hcd_alloc_coherent_pages uses gen_pool_dma_alloc_align instead of
-gen_pool_dma_alloc to ensure that the memory is page-aligned. To replace
-kmalloc, hcd_alloc_coherent_pages directly allocates pages by calling
-__get_free_pages.
-
-Reported-by: syzbot+fcf1a817ceb50935ce99@syzkaller.appspotmail.comm
-Closes: https://lore.kernel.org/lkml/000000000000258e5e05fae79fc1@google.com/ [1]
-Fixes: f7d34b445abc ("USB: Add support for usbfs zerocopy.")
-Fixes: ff2437befd8f ("usb: host: Fix excessive alignment restriction for local memory allocations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20230515130958.32471-2-lrh2000@pku.edu.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 442a35a5a7aa ("bnxt: convert to new udp_tunnel_nic infra")
+Reviewed-by: Kalesh Anakkur Purayil <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/buffer.c |   41 +++++++++++++++++++++++++++++++++++++++++
- drivers/usb/core/devio.c  |    9 +++++----
- include/linux/usb/hcd.h   |    5 +++++
- 3 files changed, 51 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 25 ++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/core/buffer.c
-+++ b/drivers/usb/core/buffer.c
-@@ -170,3 +170,44 @@ void hcd_buffer_free(
- 	}
- 	dma_free_coherent(hcd->self.sysdev, size, addr, dma);
- }
-+
-+void *hcd_buffer_alloc_pages(struct usb_hcd *hcd,
-+		size_t size, gfp_t mem_flags, dma_addr_t *dma)
-+{
-+	if (size == 0)
-+		return NULL;
-+
-+	if (hcd->localmem_pool)
-+		return gen_pool_dma_alloc_align(hcd->localmem_pool,
-+				size, dma, PAGE_SIZE);
-+
-+	/* some USB hosts just use PIO */
-+	if (!hcd_uses_dma(hcd)) {
-+		*dma = DMA_MAPPING_ERROR;
-+		return (void *)__get_free_pages(mem_flags,
-+				get_order(size));
-+	}
-+
-+	return dma_alloc_coherent(hcd->self.sysdev,
-+			size, dma, mem_flags);
-+}
-+
-+void hcd_buffer_free_pages(struct usb_hcd *hcd,
-+		size_t size, void *addr, dma_addr_t dma)
-+{
-+	if (!addr)
-+		return;
-+
-+	if (hcd->localmem_pool) {
-+		gen_pool_free(hcd->localmem_pool,
-+				(unsigned long)addr, size);
-+		return;
-+	}
-+
-+	if (!hcd_uses_dma(hcd)) {
-+		free_pages((unsigned long)addr, get_order(size));
-+		return;
-+	}
-+
-+	dma_free_coherent(hcd->self.sysdev, size, addr, dma);
-+}
---- a/drivers/usb/core/devio.c
-+++ b/drivers/usb/core/devio.c
-@@ -173,6 +173,7 @@ static int connected(struct usb_dev_stat
- static void dec_usb_memory_use_count(struct usb_memory *usbm, int *count)
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 127ed119b5f71..d8366351cf14a 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -12104,26 +12104,37 @@ static void bnxt_cfg_ntp_filters(struct bnxt *bp)
+ 
+ #endif /* CONFIG_RFS_ACCEL */
+ 
+-static int bnxt_udp_tunnel_sync(struct net_device *netdev, unsigned int table)
++static int bnxt_udp_tunnel_set_port(struct net_device *netdev, unsigned int table,
++				    unsigned int entry, struct udp_tunnel_info *ti)
  {
- 	struct usb_dev_state *ps = usbm->ps;
-+	struct usb_hcd *hcd = bus_to_hcd(ps->dev->bus);
- 	unsigned long flags;
+ 	struct bnxt *bp = netdev_priv(netdev);
+-	struct udp_tunnel_info ti;
+ 	unsigned int cmd;
  
- 	spin_lock_irqsave(&ps->lock, flags);
-@@ -181,8 +182,8 @@ static void dec_usb_memory_use_count(str
- 		list_del(&usbm->memlist);
- 		spin_unlock_irqrestore(&ps->lock, flags);
+-	udp_tunnel_nic_get_port(netdev, table, 0, &ti);
+-	if (ti.type == UDP_TUNNEL_TYPE_VXLAN)
++	if (ti->type == UDP_TUNNEL_TYPE_VXLAN)
+ 		cmd = TUNNEL_DST_PORT_FREE_REQ_TUNNEL_TYPE_VXLAN;
+ 	else
+ 		cmd = TUNNEL_DST_PORT_FREE_REQ_TUNNEL_TYPE_GENEVE;
  
--		usb_free_coherent(ps->dev, usbm->size, usbm->mem,
--				usbm->dma_handle);
-+		hcd_buffer_free_pages(hcd, usbm->size,
-+				usbm->mem, usbm->dma_handle);
- 		usbfs_decrease_memory_usage(
- 			usbm->size + sizeof(struct usb_memory));
- 		kfree(usbm);
-@@ -234,8 +235,8 @@ static int usbdev_mmap(struct file *file
- 		goto error_decrease_mem;
- 	}
- 
--	mem = usb_alloc_coherent(ps->dev, size, GFP_USER | __GFP_NOWARN,
--			&dma_handle);
-+	mem = hcd_buffer_alloc_pages(hcd,
-+			size, GFP_USER | __GFP_NOWARN, &dma_handle);
- 	if (!mem) {
- 		ret = -ENOMEM;
- 		goto error_free_usbm;
---- a/include/linux/usb/hcd.h
-+++ b/include/linux/usb/hcd.h
-@@ -503,6 +503,11 @@ void *hcd_buffer_alloc(struct usb_bus *b
- void hcd_buffer_free(struct usb_bus *bus, size_t size,
- 	void *addr, dma_addr_t dma);
- 
-+void *hcd_buffer_alloc_pages(struct usb_hcd *hcd,
-+		size_t size, gfp_t mem_flags, dma_addr_t *dma);
-+void hcd_buffer_free_pages(struct usb_hcd *hcd,
-+		size_t size, void *addr, dma_addr_t dma);
+-	if (ti.port)
+-		return bnxt_hwrm_tunnel_dst_port_alloc(bp, ti.port, cmd);
++	return bnxt_hwrm_tunnel_dst_port_alloc(bp, ti->port, cmd);
++}
 +
- /* generic bus glue, needed for host controllers that don't use PCI */
- extern irqreturn_t usb_hcd_irq(int irq, void *__hcd);
++static int bnxt_udp_tunnel_unset_port(struct net_device *netdev, unsigned int table,
++				      unsigned int entry, struct udp_tunnel_info *ti)
++{
++	struct bnxt *bp = netdev_priv(netdev);
++	unsigned int cmd;
++
++	if (ti->type == UDP_TUNNEL_TYPE_VXLAN)
++		cmd = TUNNEL_DST_PORT_FREE_REQ_TUNNEL_TYPE_VXLAN;
++	else
++		cmd = TUNNEL_DST_PORT_FREE_REQ_TUNNEL_TYPE_GENEVE;
  
+ 	return bnxt_hwrm_tunnel_dst_port_free(bp, cmd);
+ }
+ 
+ static const struct udp_tunnel_nic_info bnxt_udp_tunnels = {
+-	.sync_table	= bnxt_udp_tunnel_sync,
++	.set_port	= bnxt_udp_tunnel_set_port,
++	.unset_port	= bnxt_udp_tunnel_unset_port,
+ 	.flags		= UDP_TUNNEL_NIC_INFO_MAY_SLEEP |
+ 			  UDP_TUNNEL_NIC_INFO_OPEN_ONLY,
+ 	.tables		= {
+-- 
+2.39.2
+
 
 
