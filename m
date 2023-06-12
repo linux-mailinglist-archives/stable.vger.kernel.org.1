@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B87872C07B
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:53:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADED672C0EA
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235795AbjFLKw7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:52:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56914 "EHLO
+        id S236250AbjFLKzY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:55:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235846AbjFLKwn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:52:43 -0400
+        with ESMTP id S236615AbjFLKyy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 693F0270B;
-        Mon, 12 Jun 2023 03:37:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ACE7295F
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:41:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0637062402;
-        Mon, 12 Jun 2023 10:37:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17873C433D2;
-        Mon, 12 Jun 2023 10:37:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 85BF161BD9
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:41:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942C0C433D2;
+        Mon, 12 Jun 2023 10:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566223;
-        bh=qvZA7DdE6Wpv6Z8AcTjW6nR/pOLEnQm9PEJnaG0qfLI=;
+        s=korg; t=1686566503;
+        bh=gUz7u2rjJu321GiDK3r3TFK+SzdqOfYtLcmuy/8ZDgE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d9BlCr9mxY2RAvWUj5v2T93OY5eA0FsnKb0YD5QVpBKLvuRQarxXyrOzDesy478F8
-         dwHk+FIgjhcxaR+o3yS0sPpycuhrz/2FGS/FTKqd7Uh3Wre1tMgm0+jHcZGtqjkBgv
-         q4JA/42CIDxWxJfLXvYW1q1uBXoxKUHkeU1Z4n6U=
+        b=sDK+Sbl52UOxCyG8xbSy1Cmstb1hgFjkix/H6VirqvDhBzyb8c4ozUG4Kn+BQ0dYf
+         ijwdpgjZ/9a22+oaMWZcNNW7j46C5ixYBG+ByNyhwZwmlDUNpEO/99bFXEwyyMT3Xl
+         6DwBGA+rBC8IpRzd9G0lSJjIzefQMiNc2luSZjTY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
-        Jeffrey Altman <jaltman@auristor.com>,
-        Marc Dionne <marc.dionne@auristor.com>,
-        linux-afs@lists.infradead.org, linux-fsdevel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 13/91] afs: Fix setting of mtime when creating a file/dir/symlink
-Date:   Mon, 12 Jun 2023 12:26:02 +0200
-Message-ID: <20230612101702.645844977@linuxfoundation.org>
+Subject: [PATCH 6.1 029/132] wifi: mac80211: dont translate beacon/presp addrs
+Date:   Mon, 12 Jun 2023 12:26:03 +0200
+Message-ID: <20230612101711.562832923@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
-References: <20230612101702.085813286@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,59 +54,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Howells <dhowells@redhat.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit a27648c742104a833a01c54becc24429898d85bf ]
+[ Upstream commit 47c171a426e305f2225b92ed7b5e0a990c95f6d4 ]
 
-kafs incorrectly passes a zero mtime (ie. 1st Jan 1970) to the server when
-creating a file, dir or symlink because the mtime recorded in the
-afs_operation struct gets passed to the server by the marshalling routines,
-but the afs_mkdir(), afs_create() and afs_symlink() functions don't set it.
+Don't do link address translation for beacons and probe responses,
+this leads to reporting multiple scan list entries for the same AP
+(one with the MLD address) which just breaks things.
 
-This gets masked if a file or directory is subsequently modified.
+We might need to extend this in the future for some other (action)
+frames that aren't MLD addressed.
 
-Fix this by filling in op->mtime before calling the create op.
-
-Fixes: e49c7b2f6de7 ("afs: Build an abstraction around an "operation" concept")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-Reviewed-by: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: 42fb9148c078 ("wifi: mac80211: do link->MLD address translation on RX")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230604120651.62adead1b43a.Ifc25eed26ebf3b269f60b1ec10060156d0e7ec0d@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/dir.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/mac80211/rx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/afs/dir.c b/fs/afs/dir.c
-index 948a808a964d1..cec18f9f8bd7a 100644
---- a/fs/afs/dir.c
-+++ b/fs/afs/dir.c
-@@ -1394,6 +1394,7 @@ static int afs_mkdir(struct user_namespace *mnt_userns, struct inode *dir,
- 	op->dentry	= dentry;
- 	op->create.mode	= S_IFDIR | mode;
- 	op->create.reason = afs_edit_dir_for_mkdir;
-+	op->mtime	= current_time(dir);
- 	op->ops		= &afs_mkdir_operation;
- 	return afs_do_sync_operation(op);
- }
-@@ -1697,6 +1698,7 @@ static int afs_create(struct user_namespace *mnt_userns, struct inode *dir,
- 	op->dentry	= dentry;
- 	op->create.mode	= S_IFREG | mode;
- 	op->create.reason = afs_edit_dir_for_create;
-+	op->mtime	= current_time(dir);
- 	op->ops		= &afs_create_operation;
- 	return afs_do_sync_operation(op);
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 44e407e1a14c7..0f81492da0b46 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -4857,7 +4857,9 @@ static bool ieee80211_prepare_and_rx_handle(struct ieee80211_rx_data *rx,
+ 	}
  
-@@ -1832,6 +1834,7 @@ static int afs_symlink(struct user_namespace *mnt_userns, struct inode *dir,
- 	op->ops			= &afs_symlink_operation;
- 	op->create.reason	= afs_edit_dir_for_symlink;
- 	op->create.symlink	= content;
-+	op->mtime		= current_time(dir);
- 	return afs_do_sync_operation(op);
- 
- error:
+ 	if (unlikely(rx->sta && rx->sta->sta.mlo) &&
+-	    is_unicast_ether_addr(hdr->addr1)) {
++	    is_unicast_ether_addr(hdr->addr1) &&
++	    !ieee80211_is_probe_resp(hdr->frame_control) &&
++	    !ieee80211_is_beacon(hdr->frame_control)) {
+ 		/* translate to MLD addresses */
+ 		if (ether_addr_equal(link->conf->addr, hdr->addr1))
+ 			ether_addr_copy(hdr->addr1, rx->sdata->vif.addr);
 -- 
 2.39.2
 
