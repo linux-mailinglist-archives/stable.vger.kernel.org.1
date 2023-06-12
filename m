@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F349D72BFA7
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:46:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FC7E72C1BE
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:00:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234339AbjFLKqL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:46:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52412 "EHLO
+        id S236715AbjFLLAN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:00:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233589AbjFLKp4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:45:56 -0400
+        with ESMTP id S237411AbjFLK7q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:59:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1734F7E7
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:30:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4534059F1
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:46:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 357F6623D4
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:30:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2176BC433D2;
-        Mon, 12 Jun 2023 10:30:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE18162469
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:46:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF08EC433D2;
+        Mon, 12 Jun 2023 10:46:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565828;
-        bh=arxZZynGdZtSjlrkY5dZb15DFXerYNj9uCu9kQ5//s0=;
+        s=korg; t=1686566806;
+        bh=9sHuu3R+X8TzQQXU4igDfk+2EX7hIwz9RjZO06KtObo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g+bNDHlmvpKdxyj2RAHm2OR5/u8JpFlWwc5bTZVB0JO4PUo4uCkoy5phc7Y5p0ZhZ
-         82/P30TTHnay9c1l2czvpOXouqfEXW2SookPclKyVaWs2vvOsSAjw3H4y9LqSYT4Mp
-         hI5og0jFPG+70ovx8LRUPkJDX/oyeac7RzZ3asTo=
+        b=CkXo9BRe3Rn/WoQgTkSXKqLaXsusdL+UBm6EqAO09Q8lAMOTqv2tQWyElbkbchU3P
+         AV+XAiMuLOR5pzeJLMgbik5PCAl6ib4ZGhfoGUpSssWbWBkMjgeGEHZG9S/XjvDUd5
+         8Z8/+crdS00PiaUWU1NOQq2h6q94+XipdUQEcRNo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 09/23] net: sched: move rtm_tca_policy declaration to include file
+Subject: [PATCH 6.3 038/160] wifi: cfg80211: fix locking in regulatory disconnect
 Date:   Mon, 12 Jun 2023 12:26:10 +0200
-Message-ID: <20230612101651.476483186@linuxfoundation.org>
+Message-ID: <20230612101716.793331479@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101651.138592130@linuxfoundation.org>
-References: <20230612101651.138592130@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,52 +53,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 886bc7d6ed3357975c5f1d3c784da96000d4bbb4 ]
+[ Upstream commit f7e60032c6618dfd643c7210d5cba2789e2de2e2 ]
 
-rtm_tca_policy is used from net/sched/sch_api.c and net/sched/cls_api.c,
-thus should be declared in an include file.
+This should use wiphy_lock() now instead of requiring the
+RTNL, since __cfg80211_leave() via cfg80211_leave() is now
+requiring that lock to be held.
 
-This fixes the following sparse warning:
-net/sched/sch_api.c:1434:25: warning: symbol 'rtm_tca_policy' was not declared. Should it be static?
-
-Fixes: e331473fee3d ("net/sched: cls_api: add missing validation of netlink attributes")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: a05829a7222e ("cfg80211: avoid holding the RTNL when calling the driver")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/pkt_sched.h | 2 ++
- net/sched/cls_api.c     | 2 --
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/wireless/reg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
-index 1a6ac924266db..e09ea6917c061 100644
---- a/include/net/pkt_sched.h
-+++ b/include/net/pkt_sched.h
-@@ -124,6 +124,8 @@ static inline void qdisc_run(struct Qdisc *q)
- 	}
+diff --git a/net/wireless/reg.c b/net/wireless/reg.c
+index 0d40d6af7e10a..949e1fb3bec67 100644
+--- a/net/wireless/reg.c
++++ b/net/wireless/reg.c
+@@ -2440,11 +2440,11 @@ static void reg_leave_invalid_chans(struct wiphy *wiphy)
+ 	struct wireless_dev *wdev;
+ 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
+ 
+-	ASSERT_RTNL();
+-
++	wiphy_lock(wiphy);
+ 	list_for_each_entry(wdev, &rdev->wiphy.wdev_list, list)
+ 		if (!reg_wdev_chan_valid(wiphy, wdev))
+ 			cfg80211_leave(rdev, wdev);
++	wiphy_unlock(wiphy);
  }
  
-+extern const struct nla_policy rtm_tca_policy[TCA_MAX + 1];
-+
- /* Calculate maximal size of packet seen by hard_start_xmit
-    routine of this device.
-  */
-diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index 435911dc9f16a..fdd4af137c9fe 100644
---- a/net/sched/cls_api.c
-+++ b/net/sched/cls_api.c
-@@ -31,8 +31,6 @@
- #include <net/pkt_sched.h>
- #include <net/pkt_cls.h>
- 
--extern const struct nla_policy rtm_tca_policy[TCA_MAX + 1];
--
- /* The list of all installed classifier types */
- static LIST_HEAD(tcf_proto_base);
- 
+ static void reg_check_chans_work(struct work_struct *work)
 -- 
 2.39.2
 
