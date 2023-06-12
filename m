@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35F0372BFE2
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:47:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD20872C1E3
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:01:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233109AbjFLKrn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:47:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50118 "EHLO
+        id S237453AbjFLLBN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:01:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229900AbjFLKrX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:47:23 -0400
+        with ESMTP id S237444AbjFLLA6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:00:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D2D644AB
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:32:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D74EB4680
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:47:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E11C623EB
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:32:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2055CC433D2;
-        Mon, 12 Jun 2023 10:32:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 684426249F
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:47:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB52C433D2;
+        Mon, 12 Jun 2023 10:47:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565928;
-        bh=uE+O9bm3KYqO7YNsO/aecvmFY10J6xu2EvPnttrVqRY=;
+        s=korg; t=1686566874;
+        bh=zRgJsQNkVHv0NwKgByCEIEykv4P2GTxNfQWnYCKTCCk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pdcvDdt9IU3FMEPEjJ50taJvPOeN0Az/SHyhHu42OFmxrsj9vOGlPyLpSBe8lwBc4
-         My5X/1at6VJ499YuJ8u7DlfGRca4NBiwEKRO8gR3TerYo+iMuOz8W1mfcZ3fWSc56k
-         eiHVzt76GZ7KGtZMJkbFhKwBoWh71X5jGLxApCWw=
+        b=foe1/oubgYTRUYO1iMn6mGhwcDPtvLwJsGXTY+Pj2rJRUWkFVIYGpNcEL8Dill8mu
+         yNQjzjoO1ma24udFdYGqgHQmuwbS4n21aoiK1FYdVQgJY8MgDGTO6ZiWW3/2vd1cC1
+         PG+TVnD7p7rja6j4kM19RuezbZbF2ZZFD8HwmEfA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, TOTE Robot <oslab@tsinghua.edu.cn>,
-        Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
-        Nikolay Borisov <nborisov@suse.com>,
-        Zixuan Fu <r33s3n6@gmail.com>, David Sterba <dsterba@suse.com>,
-        Stefan Ghinea <stefan.ghinea@windriver.com>
-Subject: [PATCH 5.4 43/45] btrfs: unset reloc control if transaction commit fails in prepare_to_relocate()
+        patches@lists.linux.dev, Pavan Chebbi <pavan.chebbi@broadcom.com>,
+        Somnath Kotur <somnath.kotur@broadcom.com>,
+        Michael Chan <michael.chan@broadcom.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 065/160] bnxt_en: Query default VLAN before VNIC setup on a VF
 Date:   Mon, 12 Jun 2023 12:26:37 +0200
-Message-ID: <20230612101656.369597664@linuxfoundation.org>
+Message-ID: <20230612101717.982070855@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
-References: <20230612101654.644983109@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,103 +56,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zixuan Fu <r33s3n6@gmail.com>
+From: Somnath Kotur <somnath.kotur@broadcom.com>
 
-commit 85f02d6c856b9f3a0acf5219de6e32f58b9778eb upstream.
+[ Upstream commit 1a9e4f501bc6ff1b6ecb60df54fbf2b54db43bfe ]
 
-In btrfs_relocate_block_group(), the rc is allocated.  Then
-btrfs_relocate_block_group() calls
+We need to call bnxt_hwrm_func_qcfg() on a VF to query the default
+VLAN that may be setup by the PF.  If a default VLAN is enabled,
+the VF cannot support VLAN acceleration on the receive side and
+the VNIC must be setup to strip out the default VLAN tag.  If a
+default VLAN is not enabled, the VF can support VLAN acceleration
+on the receive side.  The VNIC should be set up to strip or not
+strip the VLAN based on the RX VLAN acceleration setting.
 
-relocate_block_group()
-  prepare_to_relocate()
-    set_reloc_control()
+Without this call to determine the default VLAN before calling
+bnxt_setup_vnic(), the VNIC may not be set up correctly.  For
+example, bnxt_setup_vnic() may set up to strip the VLAN tag based
+on stale default VLAN information.  If RX VLAN acceleration is
+not enabled, the VLAN tag will be incorrectly stripped and the
+RX data path will not work correctly.
 
-that assigns rc to the variable fs_info->reloc_ctl. When
-prepare_to_relocate() returns, it calls
-
-btrfs_commit_transaction()
-  btrfs_start_dirty_block_groups()
-    btrfs_alloc_path()
-      kmem_cache_zalloc()
-
-which may fail for example (or other errors could happen). When the
-failure occurs, btrfs_relocate_block_group() detects the error and frees
-rc and doesn't set fs_info->reloc_ctl to NULL. After that, in
-btrfs_init_reloc_root(), rc is retrieved from fs_info->reloc_ctl and
-then used, which may cause a use-after-free bug.
-
-This possible bug can be triggered by calling btrfs_ioctl_balance()
-before calling btrfs_ioctl_defrag().
-
-To fix this possible bug, in prepare_to_relocate(), check if
-btrfs_commit_transaction() fails. If the failure occurs,
-unset_reloc_control() is called to set fs_info->reloc_ctl to NULL.
-
-The error log in our fault-injection testing is shown as follows:
-
-  [   58.751070] BUG: KASAN: use-after-free in btrfs_init_reloc_root+0x7ca/0x920 [btrfs]
-  ...
-  [   58.753577] Call Trace:
-  ...
-  [   58.755800]  kasan_report+0x45/0x60
-  [   58.756066]  btrfs_init_reloc_root+0x7ca/0x920 [btrfs]
-  [   58.757304]  record_root_in_trans+0x792/0xa10 [btrfs]
-  [   58.757748]  btrfs_record_root_in_trans+0x463/0x4f0 [btrfs]
-  [   58.758231]  start_transaction+0x896/0x2950 [btrfs]
-  [   58.758661]  btrfs_defrag_root+0x250/0xc00 [btrfs]
-  [   58.759083]  btrfs_ioctl_defrag+0x467/0xa00 [btrfs]
-  [   58.759513]  btrfs_ioctl+0x3c95/0x114e0 [btrfs]
-  ...
-  [   58.768510] Allocated by task 23683:
-  [   58.768777]  ____kasan_kmalloc+0xb5/0xf0
-  [   58.769069]  __kmalloc+0x227/0x3d0
-  [   58.769325]  alloc_reloc_control+0x10a/0x3d0 [btrfs]
-  [   58.769755]  btrfs_relocate_block_group+0x7aa/0x1e20 [btrfs]
-  [   58.770228]  btrfs_relocate_chunk+0xf1/0x760 [btrfs]
-  [   58.770655]  __btrfs_balance+0x1326/0x1f10 [btrfs]
-  [   58.771071]  btrfs_balance+0x3150/0x3d30 [btrfs]
-  [   58.771472]  btrfs_ioctl_balance+0xd84/0x1410 [btrfs]
-  [   58.771902]  btrfs_ioctl+0x4caa/0x114e0 [btrfs]
-  ...
-  [   58.773337] Freed by task 23683:
-  ...
-  [   58.774815]  kfree+0xda/0x2b0
-  [   58.775038]  free_reloc_control+0x1d6/0x220 [btrfs]
-  [   58.775465]  btrfs_relocate_block_group+0x115c/0x1e20 [btrfs]
-  [   58.775944]  btrfs_relocate_chunk+0xf1/0x760 [btrfs]
-  [   58.776369]  __btrfs_balance+0x1326/0x1f10 [btrfs]
-  [   58.776784]  btrfs_balance+0x3150/0x3d30 [btrfs]
-  [   58.777185]  btrfs_ioctl_balance+0xd84/0x1410 [btrfs]
-  [   58.777621]  btrfs_ioctl+0x4caa/0x114e0 [btrfs]
-  ...
-
-Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
-Reviewed-by: Nikolay Borisov <nborisov@suse.com>
-Signed-off-by: Zixuan Fu <r33s3n6@gmail.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Stefan Ghinea <stefan.ghinea@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cf6645f8ebc6 ("bnxt_en: Add function for VF driver to query default VLAN.")
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/relocation.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -4102,7 +4102,12 @@ int prepare_to_relocate(struct reloc_con
- 		 */
- 		return PTR_ERR(trans);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 26766c93b06ac..d974cfdbc9378 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -8839,6 +8839,9 @@ static int bnxt_init_chip(struct bnxt *bp, bool irq_re_init)
+ 		goto err_out;
  	}
--	return btrfs_commit_transaction(trans);
-+
-+	ret = btrfs_commit_transaction(trans);
-+	if (ret)
-+		unset_reloc_control(rc);
-+
-+	return ret;
- }
  
- static noinline_for_stack int relocate_block_group(struct reloc_control *rc)
++	if (BNXT_VF(bp))
++		bnxt_hwrm_func_qcfg(bp);
++
+ 	rc = bnxt_setup_vnic(bp, 0);
+ 	if (rc)
+ 		goto err_out;
+-- 
+2.39.2
+
 
 
