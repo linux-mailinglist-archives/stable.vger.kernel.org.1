@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58E9B72C210
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:02:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B86A72C124
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:56:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237516AbjFLLCc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:02:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35394 "EHLO
+        id S236386AbjFLK4g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:56:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237531AbjFLLCS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:02:18 -0400
+        with ESMTP id S236690AbjFLK4W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:56:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A26EB5FE8
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:49:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C729527E
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:44:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3AE82624D3
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:49:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D1DCC433EF;
-        Mon, 12 Jun 2023 10:49:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9772F61602
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:44:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D90C433D2;
+        Mon, 12 Jun 2023 10:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566979;
-        bh=Tj5pIUHrwKbgZKMQUQA49EpM6LyQZLQbHXh/SbjZEW4=;
+        s=korg; t=1686566645;
+        bh=CSN9F9CwtS/9vqspZimVD2cuF3+T8YvVHArdng57dkY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C1BPy5xKrHLlHbeaHscn69TNIXvECwKJdyDG7nTmdvUHWBb8ODqzX3WBbGNhjzQqb
-         qcmqTTreIVSALhSEFgA7EYjXQdErzwpxU4IhxcKoC8+t3SYhPVuJ1YIQ+nxoq16LYR
-         v7UOR1UkH8r+TnIoyXa+W+qQOthbcCRkvVZzRzqM=
+        b=Su9LWHPqB3OiQiKaCepcUtASgllzAmHhNz+GgWK2q8sQRr16urpVSmBMvfHnLNYT6
+         nCHMKyJwqf6AEaWXVoaFkMKoiFIKbPTRJxwKHtzafFBAAlfdP8QhesDxCbzN0TS9LG
+         NQkYlSPbEdAomsj9F9zTGMULAIF++FXdIyNdZ/7k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Jan=20H=C3=B6ppner?= <hoeppner@linux.ibm.com>,
-        Stefan Haberland <sth@linux.ibm.com>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.3 104/160] s390/dasd: Use correct lock while counting channel queue length
-Date:   Mon, 12 Jun 2023 12:27:16 +0200
-Message-ID: <20230612101719.778066489@linuxfoundation.org>
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 103/132] ARM: dts: at91: sama7g5ek: fix debounce delay property for shdwc
+Date:   Mon, 12 Jun 2023 12:27:17 +0200
+Message-ID: <20230612101714.999157402@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,48 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Höppner <hoeppner@linux.ibm.com>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-commit ccc45cb4e7271c74dbb27776ae8f73d84557f5c6 upstream.
+[ Upstream commit 6b0db163ff9200a55dc77a652dad1d4b0a853f63 ]
 
-The lock around counting the channel queue length in the BIODASDINFO
-ioctl was incorrectly changed to the dasd_block->queue_lock with commit
-583d6535cb9d ("dasd: remove dead code"). This can lead to endless list
-iterations and a subsequent crash.
+There is no atmel,shdwc-debouncer property for SHDWC. The right DT property
+is debounce-delay-us. Use it.
 
-The queue_lock is supposed to be used only for queue lists belonging to
-dasd_block. For dasd_device related queue lists the ccwdev lock must be
-used.
-
-Fix the mentioned issues by correctly using the ccwdev lock instead of
-the queue lock.
-
-Fixes: 583d6535cb9d ("dasd: remove dead code")
-Cc: stable@vger.kernel.org # v5.0+
-Signed-off-by: Jan Höppner <hoeppner@linux.ibm.com>
-Reviewed-by: Stefan Haberland <sth@linux.ibm.com>
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230609153750.1258763-2-sth@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 16b161bcf5d4 ("ARM: dts: at91: sama7g5: add shdwc node")
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Link: https://lore.kernel.org/r/20230523052750.184223-1-claudiu.beznea@microchip.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/block/dasd_ioctl.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/at91-sama7g5ek.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/s390/block/dasd_ioctl.c
-+++ b/drivers/s390/block/dasd_ioctl.c
-@@ -552,10 +552,10 @@ static int __dasd_ioctl_information(stru
+diff --git a/arch/arm/boot/dts/at91-sama7g5ek.dts b/arch/arm/boot/dts/at91-sama7g5ek.dts
+index 3b25c67795ddb..4af8a1c96ed63 100644
+--- a/arch/arm/boot/dts/at91-sama7g5ek.dts
++++ b/arch/arm/boot/dts/at91-sama7g5ek.dts
+@@ -789,7 +789,7 @@ &sdmmc2 {
+ };
  
- 	memcpy(dasd_info->type, base->discipline->name, 4);
+ &shdwc {
+-	atmel,shdwc-debouncer = <976>;
++	debounce-delay-us = <976>;
+ 	status = "okay";
  
--	spin_lock_irqsave(&block->queue_lock, flags);
-+	spin_lock_irqsave(get_ccwdev_lock(base->cdev), flags);
- 	list_for_each(l, &base->ccw_queue)
- 		dasd_info->chanq_len++;
--	spin_unlock_irqrestore(&block->queue_lock, flags);
-+	spin_unlock_irqrestore(get_ccwdev_lock(base->cdev), flags);
- 	return 0;
- }
- 
+ 	input@0 {
+-- 
+2.39.2
+
 
 
