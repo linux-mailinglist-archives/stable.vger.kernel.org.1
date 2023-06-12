@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D144072C17F
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:58:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 015C572C1C3
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:00:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237107AbjFLK6x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:58:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55586 "EHLO
+        id S237127AbjFLLAX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:00:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236292AbjFLKyi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:38 -0400
+        with ESMTP id S237508AbjFLK7u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:59:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10B1D10A
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:40:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E08C3421D
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:46:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 97A6F612E8
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:40:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A77EFC433EF;
-        Mon, 12 Jun 2023 10:40:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 390C96246A
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:46:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A03DC433D2;
+        Mon, 12 Jun 2023 10:46:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566454;
-        bh=c985z30WrxbrhtjCT9lMW2cNMyjQ2xp5BOkbSsofjMo=;
+        s=korg; t=1686566811;
+        bh=XfOhGVN0v3hG1viVczaSizwo/DtWCgAmZJl6dL9mBfo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BrMTIxlBsUucqjt7vLCcjhAGFRwcHr8k3wnUhqGFq2E9UK8Ftpyvvvi9Z4xk/0yXZ
-         r0wE+BAv23f+YEFbF985nnnn35DRA3SUNdd5ciajo0bdicfjUqK8zMxXNb80mp/D+P
-         Jgac1K1gOp0pPu47m+iU4aXwUUVsVwgiMWU8JHOQ=
+        b=YCzBqg/P3ws94iQF2k9bG2tQGiXfbgTn95jLKWTH8l79o1GE92OgACIktyJQRr9Pa
+         J80KNcEzGRWnygpjzfZLT8rMJeEwP3SS5NRzVxkMR9TON6I1UNl/NtUIJknlAAOkWV
+         GaV9ThPKyowX7GUAJsj6kJ7fKmD91A8apcGE2qt4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Yonghong Song <yhs@fb.com>,
+        Andrii Nakryiko <andrii@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/132] netfilter: nf_tables: out-of-bound check in chain blob
+Subject: [PATCH 6.3 040/160] selftests/bpf: Fix sockopt_sk selftest
 Date:   Mon, 12 Jun 2023 12:26:12 +0200
-Message-ID: <20230612101711.968261170@linuxfoundation.org>
+Message-ID: <20230612101716.877934734@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,32 +54,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Yonghong Song <yhs@fb.com>
 
-[ Upstream commit 08e42a0d3ad30f276f9597b591f975971a1b0fcf ]
+[ Upstream commit 69844e335d8c22454746c7903776533d8b4ab8fa ]
 
-Add current size of rule expressions to the boundary check.
+Commit f4e4534850a9 ("net/netlink: fix NETLINK_LIST_MEMBERSHIPS length report")
+fixed NETLINK_LIST_MEMBERSHIPS length report which caused
+selftest sockopt_sk failure. The failure log looks like
 
-Fixes: 2c865a8a28a1 ("netfilter: nf_tables: add rule blob layout")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+  test_sockopt_sk:PASS:join_cgroup /sockopt_sk 0 nsec
+  run_test:PASS:skel_load 0 nsec
+  run_test:PASS:setsockopt_link 0 nsec
+  run_test:PASS:getsockopt_link 0 nsec
+  getsetsockopt:FAIL:Unexpected NETLINK_LIST_MEMBERSHIPS value unexpected Unexpected NETLINK_LIST_MEMBERSHIPS value: actual 8 != expected 4
+  run_test:PASS:getsetsockopt 0 nsec
+  #201     sockopt_sk:FAIL
+
+In net/netlink/af_netlink.c, function netlink_getsockopt(), for NETLINK_LIST_MEMBERSHIPS,
+nlk->ngroups equals to 36. Before Commit f4e4534850a9, the optlen is calculated as
+  ALIGN(nlk->ngroups / 8, sizeof(u32)) = 4
+After that commit, the optlen is
+  ALIGN(BITS_TO_BYTES(nlk->ngroups), sizeof(u32)) = 8
+
+Fix the test by setting the expected optlen to be 8.
+
+Fixes: f4e4534850a9 ("net/netlink: fix NETLINK_LIST_MEMBERSHIPS length report")
+Signed-off-by: Yonghong Song <yhs@fb.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20230606172202.1606249-1-yhs@fb.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 2 +-
+ tools/testing/selftests/bpf/prog_tests/sockopt_sk.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 31775d54f4b40..437891cb8c417 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -8723,7 +8723,7 @@ static int nf_tables_commit_chain_prepare(struct net *net, struct nft_chain *cha
- 				continue;
- 			}
+diff --git a/tools/testing/selftests/bpf/prog_tests/sockopt_sk.c b/tools/testing/selftests/bpf/prog_tests/sockopt_sk.c
+index 4512dd808c335..05d0e07da3942 100644
+--- a/tools/testing/selftests/bpf/prog_tests/sockopt_sk.c
++++ b/tools/testing/selftests/bpf/prog_tests/sockopt_sk.c
+@@ -209,7 +209,7 @@ static int getsetsockopt(void)
+ 			err, errno);
+ 		goto err;
+ 	}
+-	ASSERT_EQ(optlen, 4, "Unexpected NETLINK_LIST_MEMBERSHIPS value");
++	ASSERT_EQ(optlen, 8, "Unexpected NETLINK_LIST_MEMBERSHIPS value");
  
--			if (WARN_ON_ONCE(data + expr->ops->size > data_boundary))
-+			if (WARN_ON_ONCE(data + size + expr->ops->size > data_boundary))
- 				return -ENOMEM;
- 
- 			memcpy(data + size, expr, expr->ops->size);
+ 	free(big_buf);
+ 	close(fd);
 -- 
 2.39.2
 
