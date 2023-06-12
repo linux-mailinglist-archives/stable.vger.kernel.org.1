@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CF4672C216
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:02:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1A5A72C12B
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:57:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236619AbjFLLCw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:02:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36712 "EHLO
+        id S236985AbjFLK5J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:57:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237571AbjFLLCZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:02:25 -0400
+        with ESMTP id S236921AbjFLK4m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:56:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EBD96192
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:49:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 913886A41
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:44:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 23A6A624E3
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:49:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A26FC433EF;
-        Mon, 12 Jun 2023 10:49:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 298C262427
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:44:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39683C433EF;
+        Mon, 12 Jun 2023 10:44:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566987;
-        bh=41XFfg4sL9tKFaniXL7XJIZIre4vXqjU//NfS7vzDn8=;
+        s=korg; t=1686566663;
+        bh=1Us6t0mZJjvXS/EbuXxdTmsImvs2t+IciZTQs69kd20=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p7of2edLD4mQsJ23IfLEtQA5RY/Vv1X30OWYnBTWvtzH7lAZlpUDreEV+nOab2I5i
-         2kmvzld6yzNlbfIOrNN2Mh6E2jq0k4DFDu8fiMv4wpRSQBlGsRih+qhFPUz+mGK1B5
-         vzBnnUTfA7gxawla/0XXp1evfTgFCii1ERg+KO1c=
+        b=K8g2H+8lNWHrBV0hh5naQjxD0vCyyG7utYvQtdS5xAi8sD+lpwYExEOaqUlqDXaon
+         0o+vood/9dCiH3oqpaeU11/LsWTqkkJvWYdd/qM8Mye1sE3clHS9nppgrV3UtEEUaV
+         bBRKhnymnVgr5jx+wroFnq6VBxajiL0qb8kTTH0Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johan Hovold <johan+linaro@kernel.org>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.3 107/160] Bluetooth: hci_qca: fix debugfs registration
+        patches@lists.linux.dev,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 105/132] ASoC: codecs: wsa881x: do not set can_multi_write flag
 Date:   Mon, 12 Jun 2023 12:27:19 +0200
-Message-ID: <20230612101719.925239679@linuxfoundation.org>
+Message-ID: <20230612101715.091169210@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,52 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-commit 47c5d829a3e326b7395352a10fc8a6effe7afa15 upstream.
+[ Upstream commit 6e7a6d4797ef521c0762914610ed682e102b9d36 ]
 
-Since commit 3e4be65eb82c ("Bluetooth: hci_qca: Add poweroff support
-during hci down for wcn3990"), the setup callback which registers the
-debugfs interface can be called multiple times.
+regmap-sdw does not support multi register writes, so there is
+no point in setting this flag. This also leads to incorrect
+programming of WSA codecs with regmap_multi_reg_write() call.
 
-This specifically leads to the following error when powering on the
-controller:
+This invalid configuration should have been rejected by regmap-sdw.
 
-	debugfs: Directory 'ibs' with parent 'hci0' already present!
-
-Add a driver flag to avoid trying to register the debugfs interface more
-than once.
-
-Fixes: 3e4be65eb82c ("Bluetooth: hci_qca: Add poweroff support during hci down for wcn3990")
-Cc: stable@vger.kernel.org	# 4.20
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a0aab9e1404a ("ASoC: codecs: add wsa881x amplifier support")
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230523154605.4284-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_qca.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/soc/codecs/wsa881x.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -78,7 +78,8 @@ enum qca_flags {
- 	QCA_HW_ERROR_EVENT,
- 	QCA_SSR_TRIGGERED,
- 	QCA_BT_OFF,
--	QCA_ROM_FW
-+	QCA_ROM_FW,
-+	QCA_DEBUGFS_CREATED,
+diff --git a/sound/soc/codecs/wsa881x.c b/sound/soc/codecs/wsa881x.c
+index 046843b57b038..264ec05a3c675 100644
+--- a/sound/soc/codecs/wsa881x.c
++++ b/sound/soc/codecs/wsa881x.c
+@@ -648,7 +648,6 @@ static struct regmap_config wsa881x_regmap_config = {
+ 	.readable_reg = wsa881x_readable_register,
+ 	.reg_format_endian = REGMAP_ENDIAN_NATIVE,
+ 	.val_format_endian = REGMAP_ENDIAN_NATIVE,
+-	.can_multi_write = true,
  };
  
- enum qca_capabilities {
-@@ -635,6 +636,9 @@ static void qca_debugfs_init(struct hci_
- 	if (!hdev->debugfs)
- 		return;
- 
-+	if (test_and_set_bit(QCA_DEBUGFS_CREATED, &qca->flags))
-+		return;
-+
- 	ibs_dir = debugfs_create_dir("ibs", hdev->debugfs);
- 
- 	/* read only */
+ enum {
+-- 
+2.39.2
+
 
 
