@@ -2,49 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6698472C248
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:04:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA4C872C12A
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:57:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237803AbjFLLEA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:04:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36984 "EHLO
+        id S236955AbjFLK5I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:57:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237111AbjFLLDe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:03:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D32427EF1
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:51:36 -0700 (PDT)
+        with ESMTP id S236952AbjFLK4k (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:56:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C3B3D5EF
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:44:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 702AA62537
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:51:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8185EC433D2;
-        Mon, 12 Jun 2023 10:51:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8529B615B7
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:44:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955B7C433EF;
+        Mon, 12 Jun 2023 10:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686567095;
-        bh=95iwpAtoNZeCOMLqbAt18AhREwNbfyDMmpnQeG9WliA=;
+        s=korg; t=1686566660;
+        bh=PH6bLGUgGP3iZu6mCo/5iH37mW+D/cyo6Ac9a4Muzm0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=crnA55Bs3M4LiJzIK5mEQr1gZGZRuJsyGAtlQDkPsyTYeax7oSqCWjMW8QPzG6f1x
-         IPnFpma+CHwIXNNt91aBNr7fXiqtZyzjqUe82Bpa7TtEdRGVHp6uv2hqb3WrdVX/gM
-         soFKqKhufqElTCwOd0JVbwo3oNXKy4yhmFOn8w+g=
+        b=RvVjMSGRQIe18BP/8D9c+YG82m7qwtcWypkOiOBUI4x9buQtASfxq7A/7iExRonPd
+         3DHmamqvd0wacC1nWuZZa0S92POgvv0Y5uU1FuXve7rhOTX8jdj6lZDf/fRH+UJlJA
+         n40RuP7NKn8KATefLS9eqcZ0BUsneDzivltBNOL4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>
-Subject: [PATCH 6.3 110/160] rbd: get snapshot context after exclusive lock is ensured to be held
-Date:   Mon, 12 Jun 2023 12:27:22 +0200
-Message-ID: <20230612101720.079525574@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Takashi Iwai <tiwai@suse.de>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 109/132] ASoC: mediatek: mt8195-afe-pcm: Convert to platform remove callback returning void
+Date:   Mon, 12 Jun 2023 12:27:23 +0200
+Message-ID: <20230612101715.263131032@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,119 +60,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit 870611e4877eff1e8413c3fb92a585e45d5291f6 upstream.
+[ Upstream commit 6461fee68064ba970e3ba90241fe5f5e038aa9d4 ]
 
-Move capturing the snapshot context into the image request state
-machine, after exclusive lock is ensured to be held for the duration of
-dealing with the image request.  This is needed to ensure correctness
-of fast-diff states (OBJECT_EXISTS vs OBJECT_EXISTS_CLEAN) and object
-deltas computed based off of them.  Otherwise the object map that is
-forked for the snapshot isn't guaranteed to accurately reflect the
-contents of the snapshot when the snapshot is taken under I/O.  This
-breaks differential backup and snapshot-based mirroring use cases with
-fast-diff enabled: since some object deltas may be incomplete, the
-destination image may get corrupted.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is (mostly) ignored
+and this typically results in resource leaks. To improve here there is a
+quest to make the remove callback return void. In the first step of this
+quest all drivers are converted to .remove_new() which already returns
+void.
 
-Cc: stable@vger.kernel.org
-Link: https://tracker.ceph.com/issues/61472
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Acked-by: Takashi Iwai <tiwai@suse.de>
+Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Link: https://lore.kernel.org/r/20230315150745.67084-114-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: dc93f0dcb436 ("ASoC: mediatek: mt8195: fix use-after-free in driver remove path")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/rbd.c |   30 +++++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
+ sound/soc/mediatek/mt8195/mt8195-afe-pcm.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -1336,6 +1336,8 @@ static bool rbd_obj_is_tail(struct rbd_o
-  */
- static void rbd_obj_set_copyup_enabled(struct rbd_obj_request *obj_req)
- {
-+	rbd_assert(obj_req->img_request->snapc);
-+
- 	if (obj_req->img_request->op_type == OBJ_OP_DISCARD) {
- 		dout("%s %p objno %llu discard\n", __func__, obj_req,
- 		     obj_req->ex.oe_objno);
-@@ -1456,6 +1458,7 @@ __rbd_obj_add_osd_request(struct rbd_obj
- static struct ceph_osd_request *
- rbd_obj_add_osd_request(struct rbd_obj_request *obj_req, int num_ops)
- {
-+	rbd_assert(obj_req->img_request->snapc);
- 	return __rbd_obj_add_osd_request(obj_req, obj_req->img_request->snapc,
- 					 num_ops);
- }
-@@ -1592,15 +1595,18 @@ static void rbd_img_request_init(struct
- 	mutex_init(&img_request->state_mutex);
+diff --git a/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c b/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c
+index 72b2c6d629b93..9e45efeada55c 100644
+--- a/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c
++++ b/sound/soc/mediatek/mt8195/mt8195-afe-pcm.c
+@@ -3253,7 +3253,7 @@ static int mt8195_afe_pcm_dev_probe(struct platform_device *pdev)
+ 	return ret;
  }
  
-+/*
-+ * Only snap_id is captured here, for reads.  For writes, snapshot
-+ * context is captured in rbd_img_object_requests() after exclusive
-+ * lock is ensured to be held.
-+ */
- static void rbd_img_capture_header(struct rbd_img_request *img_req)
+-static int mt8195_afe_pcm_dev_remove(struct platform_device *pdev)
++static void mt8195_afe_pcm_dev_remove(struct platform_device *pdev)
  {
- 	struct rbd_device *rbd_dev = img_req->rbd_dev;
+ 	struct mtk_base_afe *afe = platform_get_drvdata(pdev);
  
- 	lockdep_assert_held(&rbd_dev->header_rwsem);
+@@ -3264,7 +3264,6 @@ static int mt8195_afe_pcm_dev_remove(struct platform_device *pdev)
+ 		mt8195_afe_runtime_suspend(&pdev->dev);
  
--	if (rbd_img_is_write(img_req))
--		img_req->snapc = ceph_get_snap_context(rbd_dev->header.snapc);
--	else
-+	if (!rbd_img_is_write(img_req))
- 		img_req->snap_id = rbd_dev->spec->snap_id;
+ 	mt8195_afe_deinit_clock(afe);
+-	return 0;
+ }
  
- 	if (rbd_dev_parent_get(rbd_dev))
-@@ -3482,9 +3488,19 @@ static int rbd_img_exclusive_lock(struct
+ static const struct of_device_id mt8195_afe_pcm_dt_match[] = {
+@@ -3285,7 +3284,7 @@ static struct platform_driver mt8195_afe_pcm_driver = {
+ 		   .pm = &mt8195_afe_pm_ops,
+ 	},
+ 	.probe = mt8195_afe_pcm_dev_probe,
+-	.remove = mt8195_afe_pcm_dev_remove,
++	.remove_new = mt8195_afe_pcm_dev_remove,
+ };
  
- static void rbd_img_object_requests(struct rbd_img_request *img_req)
- {
-+	struct rbd_device *rbd_dev = img_req->rbd_dev;
- 	struct rbd_obj_request *obj_req;
- 
- 	rbd_assert(!img_req->pending.result && !img_req->pending.num_pending);
-+	rbd_assert(!need_exclusive_lock(img_req) ||
-+		   __rbd_is_lock_owner(rbd_dev));
-+
-+	if (rbd_img_is_write(img_req)) {
-+		rbd_assert(!img_req->snapc);
-+		down_read(&rbd_dev->header_rwsem);
-+		img_req->snapc = ceph_get_snap_context(rbd_dev->header.snapc);
-+		up_read(&rbd_dev->header_rwsem);
-+	}
- 
- 	for_each_obj_request(img_req, obj_req) {
- 		int result = 0;
-@@ -3502,7 +3518,6 @@ static void rbd_img_object_requests(stru
- 
- static bool rbd_img_advance(struct rbd_img_request *img_req, int *result)
- {
--	struct rbd_device *rbd_dev = img_req->rbd_dev;
- 	int ret;
- 
- again:
-@@ -3523,9 +3538,6 @@ again:
- 		if (*result)
- 			return true;
- 
--		rbd_assert(!need_exclusive_lock(img_req) ||
--			   __rbd_is_lock_owner(rbd_dev));
--
- 		rbd_img_object_requests(img_req);
- 		if (!img_req->pending.num_pending) {
- 			*result = img_req->pending.result;
-@@ -3987,6 +3999,10 @@ static int rbd_post_acquire_action(struc
- {
- 	int ret;
- 
-+	ret = rbd_dev_refresh(rbd_dev);
-+	if (ret)
-+		return ret;
-+
- 	if (rbd_dev->header.features & RBD_FEATURE_OBJECT_MAP) {
- 		ret = rbd_object_map_open(rbd_dev);
- 		if (ret)
+ module_platform_driver(mt8195_afe_pcm_driver);
+-- 
+2.39.2
+
 
 
