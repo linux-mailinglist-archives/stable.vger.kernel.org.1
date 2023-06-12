@@ -2,48 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F43C72C03F
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:51:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAD3772C1EF
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:01:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235233AbjFLKu5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:50:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52378 "EHLO
+        id S237398AbjFLLBe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:01:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235436AbjFLKug (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:50:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 966A91BCD
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:35:22 -0700 (PDT)
+        with ESMTP id S237505AbjFLLBL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:01:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 710B7768F
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:48:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6723362100
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:35:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7815CC433EF;
-        Mon, 12 Jun 2023 10:35:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ECB1A624B6
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:48:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C93EC433EF;
+        Mon, 12 Jun 2023 10:48:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566121;
-        bh=8JabWZxOXSUH243D5l+cu+YgoAMIH32dVw5ZiUKxUS0=;
+        s=korg; t=1686566898;
+        bh=r2j0QI6DcKNrNxdrfEVrvBO5Hud/hbJ5kSKdzSok+OQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z9gnP2NVOT0vtzoJ0cP9P6S0yXdpWlbtMfsAm3mFMNkh7bJJ3ZE+C+LnJNOw/qdFp
-         BNKCjpbl23VcONVwsR83WJu0W7Po25RDZVhbWnqbkM+mS/zCjZzY5rAHv1EAY+g1AY
-         j2CvBzMfi+5zmgH682Bh1iW3wZCXe/ekF2flTS10=
+        b=ccISSp5l/u8qNcUfiKYx8T9L3oYZU2GZJY7elF1litNTl3/jM2LJdIb8UodZavys6
+         P6bA2O80CJf8nUlgVqd65rl8+4rniGOMTw3/K7xCpbLeuCIR/agFXIBwAc8BkxOWKF
+         /91lPLTO+zwcg9BCPuT/GBYIta/zq0nXXloeMzbM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ruihan Li <lrh2000@pku.edu.cn>
-Subject: [PATCH 5.10 53/68] usb: usbfs: Use consistent mmap functions
+        patches@lists.linux.dev,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.3 073/160] Input: psmouse - fix OOB access in Elantech protocol
 Date:   Mon, 12 Jun 2023 12:26:45 +0200
-Message-ID: <20230612101700.633128256@linuxfoundation.org>
+Message-ID: <20230612101718.361084089@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
-References: <20230612101658.437327280@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,60 +53,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ruihan Li <lrh2000@pku.edu.cn>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit d0b861653f8c16839c3035875b556afc4472f941 upstream.
+commit 7b63a88bb62ba2ddf5fcd956be85fe46624628b9 upstream.
 
-When hcd->localmem_pool is non-null, localmem_pool is used to allocate
-DMA memory. In this case, the dma address will be properly returned (in
-dma_handle), and dma_mmap_coherent should be used to map this memory
-into the user space. However, the current implementation uses
-pfn_remap_range, which is supposed to map normal pages.
+The kernel only allocate 5 MT slots; check that transmitted slot ID
+falls within the acceptable range.
 
-Instead of repeating the logic in the memory allocation function, this
-patch introduces a more robust solution. Here, the type of allocated
-memory is checked by testing whether dma_handle is properly set. If
-dma_handle is properly returned, it means some DMA pages are allocated
-and dma_mmap_coherent should be used to map them. Otherwise, normal
-pages are allocated and pfn_remap_range should be called. This ensures
-that the correct mmap functions are used consistently, independently
-with logic details that determine which type of memory gets allocated.
-
-Fixes: a0e710a7def4 ("USB: usbfs: fix mmap dma mismatch")
+Link: https://lore.kernel.org/r/ZFnEL91nrT789dbG@google.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
-Link: https://lore.kernel.org/r/20230515130958.32471-3-lrh2000@pku.edu.cn
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/devio.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/input/mouse/elantech.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/core/devio.c
-+++ b/drivers/usb/core/devio.c
-@@ -222,7 +222,7 @@ static int usbdev_mmap(struct file *file
- 	size_t size = vma->vm_end - vma->vm_start;
- 	void *mem;
- 	unsigned long flags;
--	dma_addr_t dma_handle;
-+	dma_addr_t dma_handle = DMA_MAPPING_ERROR;
- 	int ret;
+--- a/drivers/input/mouse/elantech.c
++++ b/drivers/input/mouse/elantech.c
+@@ -674,10 +674,11 @@ static void process_packet_head_v4(struc
+ 	struct input_dev *dev = psmouse->dev;
+ 	struct elantech_data *etd = psmouse->private;
+ 	unsigned char *packet = psmouse->packet;
+-	int id = ((packet[3] & 0xe0) >> 5) - 1;
++	int id;
+ 	int pres, traces;
  
- 	ret = usbfs_increase_memory_usage(size + sizeof(struct usb_memory));
-@@ -252,7 +252,14 @@ static int usbdev_mmap(struct file *file
- 	usbm->vma_use_count = 1;
- 	INIT_LIST_HEAD(&usbm->memlist);
+-	if (id < 0)
++	id = ((packet[3] & 0xe0) >> 5) - 1;
++	if (id < 0 || id >= ETP_MAX_FINGERS)
+ 		return;
  
--	if (hcd->localmem_pool || !hcd_uses_dma(hcd)) {
-+	/*
-+	 * In DMA-unavailable cases, hcd_buffer_alloc_pages allocates
-+	 * normal pages and assigns DMA_MAPPING_ERROR to dma_handle. Check
-+	 * whether we are in such cases, and then use remap_pfn_range (or
-+	 * dma_mmap_coherent) to map normal (or DMA) pages into the user
-+	 * space, respectively.
-+	 */
-+	if (dma_handle == DMA_MAPPING_ERROR) {
- 		if (remap_pfn_range(vma, vma->vm_start,
- 				    virt_to_phys(usbm->mem) >> PAGE_SHIFT,
- 				    size, vma->vm_page_prot) < 0) {
+ 	etd->mt[id].x = ((packet[1] & 0x0f) << 8) | packet[2];
+@@ -707,7 +708,7 @@ static void process_packet_motion_v4(str
+ 	int id, sid;
+ 
+ 	id = ((packet[0] & 0xe0) >> 5) - 1;
+-	if (id < 0)
++	if (id < 0 || id >= ETP_MAX_FINGERS)
+ 		return;
+ 
+ 	sid = ((packet[3] & 0xe0) >> 5) - 1;
+@@ -728,7 +729,7 @@ static void process_packet_motion_v4(str
+ 	input_report_abs(dev, ABS_MT_POSITION_X, etd->mt[id].x);
+ 	input_report_abs(dev, ABS_MT_POSITION_Y, etd->mt[id].y);
+ 
+-	if (sid >= 0) {
++	if (sid >= 0 && sid < ETP_MAX_FINGERS) {
+ 		etd->mt[sid].x += delta_x2 * weight;
+ 		etd->mt[sid].y -= delta_y2 * weight;
+ 		input_mt_slot(dev, sid);
 
 
