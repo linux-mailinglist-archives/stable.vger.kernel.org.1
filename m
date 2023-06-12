@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E390272BFB8
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:46:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECB1072BF78
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:44:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232651AbjFLKqp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:46:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51538 "EHLO
+        id S232111AbjFLKo1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:44:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233015AbjFLKqb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:46:31 -0400
+        with ESMTP id S235077AbjFLKoE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:44:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15AAE42B99
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:31:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA840E564
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:28:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E8D5623CE
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:31:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A72EC433EF;
-        Mon, 12 Jun 2023 10:30:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EA777622B1
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:28:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0892BC433D2;
+        Mon, 12 Jun 2023 10:28:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565860;
-        bh=aL7EuDhRqyTUcEkf7GnJRgbR9thDNh0B1+sZymv0ikk=;
+        s=korg; t=1686565736;
+        bh=lR4CLoo5OoBvBxrrLCT340/L35CbBPLJKJcm1d5o/14=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pH0Fml72HbjGA+ESVmGRdaMetp17jFew78CsNuL8PT/xq0nHrDgX0GZBJIhl3tPmY
-         bSS37LO2bpzDPEUlcj+rVIxEpcIuniMEQ8DzusScP3qW8NKvOXSi75JX1mz2Aq1MDV
-         HxtaxHGJyolfNBZDACwLgA1TRJ6ra+6oTCon5OYY=
+        b=W7yJpWkgUfoHaSVh1NSV1fQxDU9RMomTUhgixaYlSDnCaN7Eoay1F3rbq4Prd2iFr
+         k9hZHeAhBxiHfd5qlb0Vfp6UZpj25j1T9FBwwa0HX56hJAqMGymPcOosdRvbpsJxnp
+         Gz1Ff/KNHV3liWTH8IibVE+I/7uOX8tJD3rh8FKc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ying Hsu <yinghsu@chromium.org>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 09/45] Bluetooth: Fix l2cap_disconnect_req deadlock
+Subject: [PATCH 4.14 08/21] net: sched: move rtm_tca_policy declaration to include file
 Date:   Mon, 12 Jun 2023 12:26:03 +0200
-Message-ID: <20230612101654.998717164@linuxfoundation.org>
+Message-ID: <20230612101651.352385750@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
-References: <20230612101654.644983109@linuxfoundation.org>
+In-Reply-To: <20230612101651.048240731@linuxfoundation.org>
+References: <20230612101651.048240731@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,58 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ying Hsu <yinghsu@chromium.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 02c5ea5246a44d6ffde0fddebfc1d56188052976 ]
+[ Upstream commit 886bc7d6ed3357975c5f1d3c784da96000d4bbb4 ]
 
-L2CAP assumes that the locks conn->chan_lock and chan->lock are
-acquired in the order conn->chan_lock, chan->lock to avoid
-potential deadlock.
-For example, l2sock_shutdown acquires these locks in the order:
-  mutex_lock(&conn->chan_lock)
-  l2cap_chan_lock(chan)
+rtm_tca_policy is used from net/sched/sch_api.c and net/sched/cls_api.c,
+thus should be declared in an include file.
 
-However, l2cap_disconnect_req acquires chan->lock in
-l2cap_get_chan_by_scid first and then acquires conn->chan_lock
-before calling l2cap_chan_del. This means that these locks are
-acquired in unexpected order, which leads to potential deadlock:
-  l2cap_chan_lock(c)
-  mutex_lock(&conn->chan_lock)
+This fixes the following sparse warning:
+net/sched/sch_api.c:1434:25: warning: symbol 'rtm_tca_policy' was not declared. Should it be static?
 
-This patch releases chan->lock before acquiring the conn_chan_lock
-to avoid the potential deadlock.
-
-Fixes: a2a9339e1c9d ("Bluetooth: L2CAP: Fix use-after-free in l2cap_disconnect_{req,rsp}")
-Signed-off-by: Ying Hsu <yinghsu@chromium.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: e331473fee3d ("net/sched: cls_api: add missing validation of netlink attributes")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/net/pkt_sched.h | 2 ++
+ net/sched/cls_api.c     | 2 --
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 5f53e75d83024..6bbe0fd79d154 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -4380,7 +4380,9 @@ static inline int l2cap_disconnect_req(struct l2cap_conn *conn,
+diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
+index b3869f97d37d7..85e059d3bc233 100644
+--- a/include/net/pkt_sched.h
++++ b/include/net/pkt_sched.h
+@@ -126,6 +126,8 @@ static inline __be16 tc_skb_protocol(const struct sk_buff *skb)
+ 	return skb->protocol;
+ }
  
- 	chan->ops->set_shutdown(chan);
++extern const struct nla_policy rtm_tca_policy[TCA_MAX + 1];
++
+ /* Calculate maximal size of packet seen by hard_start_xmit
+    routine of this device.
+  */
+diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
+index 32819d1e20754..8808133e78a37 100644
+--- a/net/sched/cls_api.c
++++ b/net/sched/cls_api.c
+@@ -31,8 +31,6 @@
+ #include <net/pkt_sched.h>
+ #include <net/pkt_cls.h>
  
-+	l2cap_chan_unlock(chan);
- 	mutex_lock(&conn->chan_lock);
-+	l2cap_chan_lock(chan);
- 	l2cap_chan_del(chan, ECONNRESET);
- 	mutex_unlock(&conn->chan_lock);
- 
-@@ -4419,7 +4421,9 @@ static inline int l2cap_disconnect_rsp(struct l2cap_conn *conn,
- 		return 0;
- 	}
- 
-+	l2cap_chan_unlock(chan);
- 	mutex_lock(&conn->chan_lock);
-+	l2cap_chan_lock(chan);
- 	l2cap_chan_del(chan, 0);
- 	mutex_unlock(&conn->chan_lock);
+-extern const struct nla_policy rtm_tca_policy[TCA_MAX + 1];
+-
+ /* The list of all installed classifier types */
+ static LIST_HEAD(tcf_proto_base);
  
 -- 
 2.39.2
