@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F24872C254
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:04:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 846F272C255
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:04:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237767AbjFLLEQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:04:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36112 "EHLO
+        id S237571AbjFLLER (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:04:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237551AbjFLLD5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:03:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B28A83D6
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:52:00 -0700 (PDT)
+        with ESMTP id S236663AbjFLLD7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:03:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 589EF83DF
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:52:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 173DB61182
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:52:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03789C433EF;
-        Mon, 12 Jun 2023 10:51:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D18EA6255B
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:52:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB0BAC433EF;
+        Mon, 12 Jun 2023 10:52:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686567119;
-        bh=lMiMx5ITgFTg7Q7Ry/OBwKW9DOHE4UBKv6ncNMyHBKc=;
+        s=korg; t=1686567122;
+        bh=QCagV4Rf2K+9vllhzKZ+3MxAYw0Sm1wngR3cNiRO4gs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r8NYlXf6fLUTHElz3dO7m8ybe1juPV1n/RRq7t/8Vvnw7Ne6eWqZO+nm03oQlVasU
-         XjzP0YNe+89zkPASVchRRj+EoFFeEYMU15gUJvvFAMH/JBSK3XpjTverOHKurCb+lf
-         /E7hw6oNQqwGwq8aZSUHLuwP80ABP3QoEhUUf8z0=
+        b=QN4vwkvdpBPW6sCArV12MHphcI68zOOQC1IZgFvpEANsHhvestGa3zMcQrIstBQna
+         Osc3Ptaw7mc/Oe4wIV8Id3qEO8onyuumapqSwEAeFTEPGO5OX3/1VMNQvRj2dLfe2G
+         vXYDQ0JT0H1GZlN/Dv3wTOL1DiqS2Q9hQPjUqzGI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Ping-Ke Shih <pkshih@realtek.com>,
         Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.3 158/160] wifi: rtw89: correct PS calculation for SUPPORTS_DYNAMIC_PS
-Date:   Mon, 12 Jun 2023 12:28:10 +0200
-Message-ID: <20230612101722.312844003@linuxfoundation.org>
+Subject: [PATCH 6.3 159/160] wifi: rtw88: correct PS calculation for SUPPORTS_DYNAMIC_PS
+Date:   Mon, 12 Jun 2023 12:28:11 +0200
+Message-ID: <20230612101722.364231859@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
 References: <20230612101715.129581706@linuxfoundation.org>
@@ -43,8 +43,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,7 +55,7 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Ping-Ke Shih <pkshih@realtek.com>
 
-commit 26a125f550a3bf86ac91d38752f4d446426dfe1c upstream.
+commit 3918dd0177ee08970683a2c22a3388825d82fd79 upstream.
 
 This driver relies on IEEE80211_CONF_PS of hw->conf.flags to turn off PS or
 turn on dynamic PS controlled by driver and firmware. Though this would be
@@ -65,109 +65,137 @@ is introduced by kernel 5.20 to skip to recalculate IEEE80211_CONF_PS
 of hw->conf.flags if driver sets SUPPORTS_DYNAMIC_PS.
 
 Correct this by doing recalculation while BSS_CHANGED_PS is changed and
-interface is added or removed. For now, it is allowed to enter PS only if
-single one station vif is working, and it could possible to have PS per
-vif after firmware can support it. Without this fix, driver doesn't
-enter PS anymore that causes higher power consumption.
+interface is added or removed. It is allowed to enter PS only if single
+one station vif is working. Without this fix, driver doesn't enter PS
+anymore that causes higher power consumption.
 
-Fixes: e3ec7017f6a2 ("rtw89: add Realtek 802.11ax driver")
+Fixes: bcde60e599fb ("rtw88: remove misleading module parameter rtw_fw_support_lps")
 Cc: stable@vger.kernel.org # 6.1+
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230527082939.11206-3-pkshih@realtek.com
+Link: https://lore.kernel.org/r/20230527082939.11206-2-pkshih@realtek.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw89/mac80211.c |   16 +++++++---------
- drivers/net/wireless/realtek/rtw89/ps.c       |   26 ++++++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/ps.h       |    1 +
- 3 files changed, 34 insertions(+), 9 deletions(-)
+ drivers/net/wireless/realtek/rtw88/mac80211.c |   14 +++-----
+ drivers/net/wireless/realtek/rtw88/main.c     |    4 +-
+ drivers/net/wireless/realtek/rtw88/ps.c       |   43 ++++++++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/ps.h       |    2 +
+ 4 files changed, 52 insertions(+), 11 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtw89/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
-@@ -79,15 +79,6 @@ static int rtw89_ops_config(struct ieee8
- 	    !(hw->conf.flags & IEEE80211_CONF_IDLE))
- 		rtw89_leave_ips(rtwdev);
+--- a/drivers/net/wireless/realtek/rtw88/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
+@@ -88,15 +88,6 @@ static int rtw_ops_config(struct ieee802
+ 		}
+ 	}
  
 -	if (changed & IEEE80211_CONF_CHANGE_PS) {
 -		if (hw->conf.flags & IEEE80211_CONF_PS) {
--			rtwdev->lps_enabled = true;
+-			rtwdev->ps_enabled = true;
 -		} else {
--			rtw89_leave_lps(rtwdev);
--			rtwdev->lps_enabled = false;
+-			rtwdev->ps_enabled = false;
+-			rtw_leave_lps(rtwdev);
 -		}
 -	}
 -
- 	if (changed & IEEE80211_CONF_CHANGE_CHANNEL) {
- 		rtw89_config_entity_chandef(rtwdev, RTW89_SUB_ENTITY_0,
- 					    &hw->conf.chandef);
-@@ -147,6 +138,8 @@ static int rtw89_ops_add_interface(struc
- 	rtw89_core_txq_init(rtwdev, vif->txq);
+ 	if (changed & IEEE80211_CONF_CHANGE_CHANNEL)
+ 		rtw_set_channel(rtwdev);
  
- 	rtw89_btc_ntfy_role_info(rtwdev, rtwvif, NULL, BTC_ROLE_START);
-+
-+	rtw89_recalc_lps(rtwdev);
- out:
+@@ -206,6 +197,7 @@ static int rtw_ops_add_interface(struct
+ 	rtwvif->bcn_ctrl = bcn_ctrl;
+ 	config |= PORT_SET_BCN_CTRL;
+ 	rtw_vif_port_config(rtwdev, rtwvif, config);
++	rtw_recalc_lps(rtwdev, vif);
+ 
  	mutex_unlock(&rtwdev->mutex);
  
-@@ -170,6 +163,8 @@ static void rtw89_ops_remove_interface(s
- 	rtw89_mac_remove_vif(rtwdev, rtwvif);
- 	rtw89_core_release_bit_map(rtwdev->hw_port, rtwvif->port);
- 	list_del_init(&rtwvif->list);
-+	rtw89_recalc_lps(rtwdev);
-+
+@@ -236,6 +228,7 @@ static void rtw_ops_remove_interface(str
+ 	rtwvif->bcn_ctrl = 0;
+ 	config |= PORT_SET_BCN_CTRL;
+ 	rtw_vif_port_config(rtwdev, rtwvif, config);
++	rtw_recalc_lps(rtwdev, NULL);
+ 
  	mutex_unlock(&rtwdev->mutex);
  }
- 
-@@ -425,6 +420,9 @@ static void rtw89_ops_bss_info_changed(s
- 	if (changed & BSS_CHANGED_P2P_PS)
- 		rtw89_process_p2p_ps(rtwdev, vif);
+@@ -428,6 +421,9 @@ static void rtw_ops_bss_info_changed(str
+ 	if (changed & BSS_CHANGED_ERP_SLOT)
+ 		rtw_conf_tx(rtwdev, rtwvif);
  
 +	if (changed & BSS_CHANGED_PS)
-+		rtw89_recalc_lps(rtwdev);
++		rtw_recalc_lps(rtwdev, NULL);
 +
- 	mutex_unlock(&rtwdev->mutex);
- }
+ 	rtw_vif_port_config(rtwdev, rtwvif, config);
  
---- a/drivers/net/wireless/realtek/rtw89/ps.c
-+++ b/drivers/net/wireless/realtek/rtw89/ps.c
-@@ -244,3 +244,29 @@ void rtw89_process_p2p_ps(struct rtw89_d
- 	rtw89_p2p_disable_all_noa(rtwdev, vif);
- 	rtw89_p2p_update_noa(rtwdev, vif);
+ 	mutex_unlock(&rtwdev->mutex);
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -250,8 +250,8 @@ static void rtw_watch_dog_work(struct wo
+ 	 * more than two stations associated to the AP, then we can not enter
+ 	 * lps, because fw does not handle the overlapped beacon interval
+ 	 *
+-	 * mac80211 should iterate vifs and determine if driver can enter
+-	 * ps by passing IEEE80211_CONF_PS to us, all we need to do is to
++	 * rtw_recalc_lps() iterate vifs and determine if driver can enter
++	 * ps by vif->type and vif->cfg.ps, all we need to do here is to
+ 	 * get that vif and check if device is having traffic more than the
+ 	 * threshold.
+ 	 */
+--- a/drivers/net/wireless/realtek/rtw88/ps.c
++++ b/drivers/net/wireless/realtek/rtw88/ps.c
+@@ -299,3 +299,46 @@ void rtw_leave_lps_deep(struct rtw_dev *
+ 
+ 	__rtw_leave_lps_deep(rtwdev);
  }
 +
-+void rtw89_recalc_lps(struct rtw89_dev *rtwdev)
++struct rtw_vif_recalc_lps_iter_data {
++	struct rtw_dev *rtwdev;
++	struct ieee80211_vif *found_vif;
++	int count;
++};
++
++static void __rtw_vif_recalc_lps(struct rtw_vif_recalc_lps_iter_data *data,
++				 struct ieee80211_vif *vif)
 +{
-+	struct ieee80211_vif *vif, *found_vif = NULL;
-+	struct rtw89_vif *rtwvif;
-+	int count = 0;
++	if (data->count < 0)
++		return;
 +
-+	rtw89_for_each_rtwvif(rtwdev, rtwvif) {
-+		vif = rtwvif_to_vif(rtwvif);
-+
-+		if (vif->type != NL80211_IFTYPE_STATION) {
-+			count = 0;
-+			break;
-+		}
-+
-+		count++;
-+		found_vif = vif;
++	if (vif->type != NL80211_IFTYPE_STATION) {
++		data->count = -1;
++		return;
 +	}
 +
-+	if (count == 1 && found_vif->cfg.ps) {
-+		rtwdev->lps_enabled = true;
++	data->count++;
++	data->found_vif = vif;
++}
++
++static void rtw_vif_recalc_lps_iter(void *data, u8 *mac,
++				    struct ieee80211_vif *vif)
++{
++	__rtw_vif_recalc_lps(data, vif);
++}
++
++void rtw_recalc_lps(struct rtw_dev *rtwdev, struct ieee80211_vif *new_vif)
++{
++	struct rtw_vif_recalc_lps_iter_data data = { .rtwdev = rtwdev };
++
++	if (new_vif)
++		__rtw_vif_recalc_lps(&data, new_vif);
++	rtw_iterate_vifs(rtwdev, rtw_vif_recalc_lps_iter, &data);
++
++	if (data.count == 1 && data.found_vif->cfg.ps) {
++		rtwdev->ps_enabled = true;
 +	} else {
-+		rtw89_leave_lps(rtwdev);
-+		rtwdev->lps_enabled = false;
++		rtwdev->ps_enabled = false;
++		rtw_leave_lps(rtwdev);
 +	}
 +}
---- a/drivers/net/wireless/realtek/rtw89/ps.h
-+++ b/drivers/net/wireless/realtek/rtw89/ps.h
-@@ -14,5 +14,6 @@ void rtw89_enter_ips(struct rtw89_dev *r
- void rtw89_leave_ips(struct rtw89_dev *rtwdev);
- void rtw89_set_coex_ctrl_lps(struct rtw89_dev *rtwdev, bool btc_ctrl);
- void rtw89_process_p2p_ps(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif);
-+void rtw89_recalc_lps(struct rtw89_dev *rtwdev);
- 
+--- a/drivers/net/wireless/realtek/rtw88/ps.h
++++ b/drivers/net/wireless/realtek/rtw88/ps.h
+@@ -23,4 +23,6 @@ void rtw_enter_lps(struct rtw_dev *rtwde
+ void rtw_leave_lps(struct rtw_dev *rtwdev);
+ void rtw_leave_lps_deep(struct rtw_dev *rtwdev);
+ enum rtw_lps_deep_mode rtw_get_lps_deep_mode(struct rtw_dev *rtwdev);
++void rtw_recalc_lps(struct rtw_dev *rtwdev, struct ieee80211_vif *new_vif);
++
  #endif
 
 
