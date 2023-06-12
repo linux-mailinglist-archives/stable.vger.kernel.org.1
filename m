@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AFC672BF92
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:45:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D894472BF88
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:45:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235177AbjFLKpT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:45:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51590 "EHLO
+        id S233998AbjFLKpL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:45:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235557AbjFLKpA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:45:00 -0400
+        with ESMTP id S235077AbjFLKob (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:44:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B617C6E86
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:29:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB2F155AF
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:29:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 976C3615BF
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:29:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFFBFC433EF;
-        Mon, 12 Jun 2023 10:29:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7308E623D4
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:29:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84F48C433D2;
+        Mon, 12 Jun 2023 10:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565781;
-        bh=gwQmwV471jA52SuoeKAyqGrsbRl7zXO7k7kXtziwtLg=;
+        s=korg; t=1686565759;
+        bh=TS/uxx3xKCfB6iAn0Ufx5ZywY9YvxdIIdQ/weI7D9vc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DyHlFepPJ3eXAws4WjjoVv8xj7oh9jt8txT0B1zNwcENbpd8kxzVTsbkL9krmhzh4
-         niSOymY+6V2FUOJjphjOLkUfHyPuXfwmLKVYP7f7yHZ5thBvfiuT56YEbTS5reJPmH
-         ywwPn1bPaxdb0C+hl05sMcLzKJTwv/R2EiYd9FIA=
+        b=axTjyBZT3LOMe0mvi7vNrkNOV/SrFBbiGOCPyCvCgpNkxIRuKnOHlJ/2gj7SJfhP1
+         cjVHpFGGfqfKd+lAWUNvb9e+coTyEit5UzDuWUHb4ViIl8NFlTWBpqX49Kw5fJczS0
+         koGoN7JJYuG6520Q2Qgf2bW72iJ8yor7rrfdmZFs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ismael Ferreras Morezuelas <swyterzone@gmail.com>,
-        Cameron Gutman <aicommander@gmail.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 4.19 13/23] Input: xpad - delete a Razer DeathAdder mouse VID/PID entry
+        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
+        Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>,
+        Stefan Ghinea <stefan.ghinea@windriver.com>
+Subject: [PATCH 4.14 19/21] btrfs: check return value of btrfs_commit_transaction in relocation
 Date:   Mon, 12 Jun 2023 12:26:14 +0200
-Message-ID: <20230612101651.604923014@linuxfoundation.org>
+Message-ID: <20230612101651.701066267@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101651.138592130@linuxfoundation.org>
-References: <20230612101651.138592130@linuxfoundation.org>
+In-Reply-To: <20230612101651.048240731@linuxfoundation.org>
+References: <20230612101651.048240731@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,73 +55,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ismael Ferreras Morezuelas <swyterzone@gmail.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit feee70f4568650cf44c573488798ffc0a2faeea3 upstream.
+commit fb686c6824dd6294ca772b92424b8fba666e7d00 upstream.
 
-While doing my research to improve the xpad device names I noticed
-that the 1532:0037 VID/PID seems to be used by the DeathAdder 2013,
-so that Razer Sabertooth instance looked wrong and very suspect to
-me. I didn't see any mention in the official drivers, either.
+There are a few places where we don't check the return value of
+btrfs_commit_transaction in relocation.c.  Thankfully all these places
+have straightforward error handling, so simply change all of the sites
+at once.
 
-After doing more research, it turns out that the xpad list
-is used by many other projects (like Steam) as-is [1], this
-issue was reported [2] and Valve/Sam Lantinga fixed it [3]:
-
-[1]: https://github.com/libsdl-org/SDL/blob/dcc5eef0e2395854b254ea2873a4899edab347c6/src/joystick/controller_type.h#L251
-[2]: https://steamcommunity.com/app/353380/discussions/0/1743392486228754770/
-[3]: https://hg.libsdl.org/SDL/rev/29809f6f0271
-
-(With multiple Internet users reporting similar issues, not linked here)
-
-After not being able to find the correct VID/PID combination anywhere
-on the Internet and not receiving any reply from Razer support I did
-some additional detective work, it seems like it presents itself as
-"Razer Sabertooth Gaming Controller (XBOX360)", code 1689:FE00.
-
-Leaving us with this:
- * Razer Sabertooth (1689:fe00)
- * Razer Sabertooth Elite (24c6:5d04)
- * Razer DeathAdder 2013 (1532:0037) [note: not a gamepad]
-
-So, to sum things up; remove this conflicting/duplicate entry:
-
-{ 0x1532, 0x0037, "Razer Sabertooth", 0, XTYPE_XBOX360 },
-
-As the real/correct one is already present there, even if
-the Internet as a whole insists on presenting it as the
-Razer Sabertooth Elite, which (by all accounts) is not:
-
-{ 0x1689, 0xfe00, "Razer Sabertooth", 0, XTYPE_XBOX360 },
-
-Actual change in SDL2 referencing this kernel issue:
-https://github.com/libsdl-org/SDL/commit/e5e54169754ca5d3e86339d968b20126d9da0a15
-
-For more information of the device, take a look here:
-https://github.com/xboxdrv/xboxdrv/pull/59
-
-You can see a lsusb dump here: https://github.com/xboxdrv/xboxdrv/files/76581/Qa6dBcrv.txt
-
-Fixes: f554f619b70 ("Input: xpad - sync device IDs with xboxdrv")
-Signed-off-by: Ismael Ferreras Morezuelas <swyterzone@gmail.com>
-Reviewed-by: Cameron Gutman <aicommander@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/5c12dbdb-5774-fc68-5c58-ca596383663e@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Stefan Ghinea <stefan.ghinea@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c |    1 -
- 1 file changed, 1 deletion(-)
+ fs/btrfs/relocation.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -276,7 +276,6 @@ static const struct xpad_device {
- 	{ 0x1430, 0xf801, "RedOctane Controller", 0, XTYPE_XBOX360 },
- 	{ 0x146b, 0x0601, "BigBen Interactive XBOX 360 Controller", 0, XTYPE_XBOX360 },
- 	{ 0x146b, 0x0604, "Bigben Interactive DAIJA Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
--	{ 0x1532, 0x0037, "Razer Sabertooth", 0, XTYPE_XBOX360 },
- 	{ 0x1532, 0x0a00, "Razer Atrox Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOXONE },
- 	{ 0x1532, 0x0a03, "Razer Wildcat", 0, XTYPE_XBOXONE },
- 	{ 0x15e4, 0x3f00, "Power A Mini Pro Elite", 0, XTYPE_XBOX360 },
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -2387,7 +2387,7 @@ again:
+ 	list_splice(&reloc_roots, &rc->reloc_roots);
+ 
+ 	if (!err)
+-		btrfs_commit_transaction(trans);
++		err = btrfs_commit_transaction(trans);
+ 	else
+ 		btrfs_end_transaction(trans);
+ 	return err;
+@@ -4014,8 +4014,7 @@ int prepare_to_relocate(struct reloc_con
+ 		 */
+ 		return PTR_ERR(trans);
+ 	}
+-	btrfs_commit_transaction(trans);
+-	return 0;
++	return btrfs_commit_transaction(trans);
+ }
+ 
+ static noinline_for_stack int relocate_block_group(struct reloc_control *rc)
+@@ -4210,7 +4209,9 @@ restart:
+ 		err = PTR_ERR(trans);
+ 		goto out_free;
+ 	}
+-	btrfs_commit_transaction(trans);
++	ret = btrfs_commit_transaction(trans);
++	if (ret && !err)
++		err = ret;
+ out_free:
+ 	btrfs_free_block_rsv(fs_info, rc->block_rsv);
+ 	btrfs_free_path(path);
 
 
