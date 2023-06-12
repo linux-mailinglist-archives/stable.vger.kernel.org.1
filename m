@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A33972C11D
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:56:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 261FA72C0AF
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:54:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237000AbjFLK41 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:56:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60308 "EHLO
+        id S233560AbjFLKyH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:54:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236868AbjFLK4N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:56:13 -0400
+        with ESMTP id S236082AbjFLKxp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:53:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D25FF526B
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:43:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 878A661BA
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:38:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 67F7B615CB
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:43:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 798E5C433EF;
-        Mon, 12 Jun 2023 10:43:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6870E60F87
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:38:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ECC4C433D2;
+        Mon, 12 Jun 2023 10:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566628;
-        bh=+p7OFqI3OclUteVNOvqoYhrmX4R6YW/CiC53DI6SKn8=;
+        s=korg; t=1686566327;
+        bh=khTySXve3q1fPZUymo85ovTEQXkanLvf18RuLKGE8Tc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cYBVEGa5q9811LFmlu+XYf2BoExS1d15VnNIcLElwOm66pGbTxipqhbNKScmiDJpz
-         0pwnacgKW5KUqym9V6PNQASDl507/+8Jw5DPnQVfMR+CmwCm1ZU6r3z+UVhgytoIZ1
-         tPRh3L0YCnvKRx1aQE/URdS0PcILADQiUwDFC6EU=
+        b=u1tdzgNuK6/gJc+Hov+NjjOyYUa4oHhlOsDPNGJ7vX9pxk+lDYdMb9btRazA28fDq
+         fsa3WNRWnS1EFKb7nejHObklFihPLuYV/PXhI/mW/Yyjs32FsAydFx3pMsC09zYqyn
+         UxFUpn5jpjcJsOP/u1magpSUsB+ivnyRarHmjqPw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+fcf1a817ceb50935ce99@syzkaller.appspotmail.comm,
-        Ruihan Li <lrh2000@pku.edu.cn>,
-        Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.1 097/132] usb: usbfs: Enforce page requirements for mmap
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 82/91] eeprom: at24: also select REGMAP
 Date:   Mon, 12 Jun 2023 12:27:11 +0200
-Message-ID: <20230612101714.728810690@linuxfoundation.org>
+Message-ID: <20230612101705.533633228@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
+References: <20230612101702.085813286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,140 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ruihan Li <lrh2000@pku.edu.cn>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 0143d148d1e882fb1538dc9974c94d63961719b9 upstream.
+[ Upstream commit 7f3c782b3914e510b646a77aedc3adeac2e4a63b ]
 
-The current implementation of usbdev_mmap uses usb_alloc_coherent to
-allocate memory pages that will later be mapped into the user space.
-Meanwhile, usb_alloc_coherent employs three different methods to
-allocate memory, as outlined below:
- * If hcd->localmem_pool is non-null, it uses gen_pool_dma_alloc to
-   allocate memory;
- * If DMA is not available, it uses kmalloc to allocate memory;
- * Otherwise, it uses dma_alloc_coherent.
+Selecting only REGMAP_I2C can leave REGMAP unset, causing build errors,
+so also select REGMAP to prevent the build errors.
 
-However, it should be noted that gen_pool_dma_alloc does not guarantee
-that the resulting memory will be page-aligned. Furthermore, trying to
-map slab pages (i.e., memory allocated by kmalloc) into the user space
-is not resonable and can lead to problems, such as a type confusion bug
-when PAGE_TABLE_CHECK=y [1].
+../drivers/misc/eeprom/at24.c:540:42: warning: 'struct regmap_config' declared inside parameter list will not be visible outside of this definition or declaration
+  540 |                                   struct regmap_config *regmap_config)
+../drivers/misc/eeprom/at24.c: In function 'at24_make_dummy_client':
+../drivers/misc/eeprom/at24.c:552:18: error: implicit declaration of function 'devm_regmap_init_i2c' [-Werror=implicit-function-declaration]
+  552 |         regmap = devm_regmap_init_i2c(dummy_client, regmap_config);
+../drivers/misc/eeprom/at24.c:552:16: warning: assignment to 'struct regmap *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+  552 |         regmap = devm_regmap_init_i2c(dummy_client, regmap_config);
+../drivers/misc/eeprom/at24.c: In function 'at24_probe':
+../drivers/misc/eeprom/at24.c:586:16: error: variable 'regmap_config' has initializer but incomplete type
+  586 |         struct regmap_config regmap_config = { };
+../drivers/misc/eeprom/at24.c:586:30: error: storage size of 'regmap_config' isn't known
+  586 |         struct regmap_config regmap_config = { };
+../drivers/misc/eeprom/at24.c:586:30: warning: unused variable 'regmap_config' [-Wunused-variable]
 
-To address these issues, this patch introduces hcd_alloc_coherent_pages,
-which addresses the above two problems. Specifically,
-hcd_alloc_coherent_pages uses gen_pool_dma_alloc_align instead of
-gen_pool_dma_alloc to ensure that the memory is page-aligned. To replace
-kmalloc, hcd_alloc_coherent_pages directly allocates pages by calling
-__get_free_pages.
-
-Reported-by: syzbot+fcf1a817ceb50935ce99@syzkaller.appspotmail.comm
-Closes: https://lore.kernel.org/lkml/000000000000258e5e05fae79fc1@google.com/ [1]
-Fixes: f7d34b445abc ("USB: Add support for usbfs zerocopy.")
-Fixes: ff2437befd8f ("usb: host: Fix excessive alignment restriction for local memory allocations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20230515130958.32471-2-lrh2000@pku.edu.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5c015258478e ("eeprom: at24: add basic regmap_i2c support")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/buffer.c |   41 +++++++++++++++++++++++++++++++++++++++++
- drivers/usb/core/devio.c  |    9 +++++----
- include/linux/usb/hcd.h   |    5 +++++
- 3 files changed, 51 insertions(+), 4 deletions(-)
+ drivers/misc/eeprom/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/core/buffer.c
-+++ b/drivers/usb/core/buffer.c
-@@ -172,3 +172,44 @@ void hcd_buffer_free(
- 	}
- 	dma_free_coherent(hcd->self.sysdev, size, addr, dma);
- }
-+
-+void *hcd_buffer_alloc_pages(struct usb_hcd *hcd,
-+		size_t size, gfp_t mem_flags, dma_addr_t *dma)
-+{
-+	if (size == 0)
-+		return NULL;
-+
-+	if (hcd->localmem_pool)
-+		return gen_pool_dma_alloc_align(hcd->localmem_pool,
-+				size, dma, PAGE_SIZE);
-+
-+	/* some USB hosts just use PIO */
-+	if (!hcd_uses_dma(hcd)) {
-+		*dma = DMA_MAPPING_ERROR;
-+		return (void *)__get_free_pages(mem_flags,
-+				get_order(size));
-+	}
-+
-+	return dma_alloc_coherent(hcd->self.sysdev,
-+			size, dma, mem_flags);
-+}
-+
-+void hcd_buffer_free_pages(struct usb_hcd *hcd,
-+		size_t size, void *addr, dma_addr_t dma)
-+{
-+	if (!addr)
-+		return;
-+
-+	if (hcd->localmem_pool) {
-+		gen_pool_free(hcd->localmem_pool,
-+				(unsigned long)addr, size);
-+		return;
-+	}
-+
-+	if (!hcd_uses_dma(hcd)) {
-+		free_pages((unsigned long)addr, get_order(size));
-+		return;
-+	}
-+
-+	dma_free_coherent(hcd->self.sysdev, size, addr, dma);
-+}
---- a/drivers/usb/core/devio.c
-+++ b/drivers/usb/core/devio.c
-@@ -186,6 +186,7 @@ static int connected(struct usb_dev_stat
- static void dec_usb_memory_use_count(struct usb_memory *usbm, int *count)
- {
- 	struct usb_dev_state *ps = usbm->ps;
-+	struct usb_hcd *hcd = bus_to_hcd(ps->dev->bus);
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(&ps->lock, flags);
-@@ -194,8 +195,8 @@ static void dec_usb_memory_use_count(str
- 		list_del(&usbm->memlist);
- 		spin_unlock_irqrestore(&ps->lock, flags);
- 
--		usb_free_coherent(ps->dev, usbm->size, usbm->mem,
--				usbm->dma_handle);
-+		hcd_buffer_free_pages(hcd, usbm->size,
-+				usbm->mem, usbm->dma_handle);
- 		usbfs_decrease_memory_usage(
- 			usbm->size + sizeof(struct usb_memory));
- 		kfree(usbm);
-@@ -247,8 +248,8 @@ static int usbdev_mmap(struct file *file
- 		goto error_decrease_mem;
- 	}
- 
--	mem = usb_alloc_coherent(ps->dev, size, GFP_USER | __GFP_NOWARN,
--			&dma_handle);
-+	mem = hcd_buffer_alloc_pages(hcd,
-+			size, GFP_USER | __GFP_NOWARN, &dma_handle);
- 	if (!mem) {
- 		ret = -ENOMEM;
- 		goto error_free_usbm;
---- a/include/linux/usb/hcd.h
-+++ b/include/linux/usb/hcd.h
-@@ -500,6 +500,11 @@ void *hcd_buffer_alloc(struct usb_bus *b
- void hcd_buffer_free(struct usb_bus *bus, size_t size,
- 	void *addr, dma_addr_t dma);
- 
-+void *hcd_buffer_alloc_pages(struct usb_hcd *hcd,
-+		size_t size, gfp_t mem_flags, dma_addr_t *dma);
-+void hcd_buffer_free_pages(struct usb_hcd *hcd,
-+		size_t size, void *addr, dma_addr_t dma);
-+
- /* generic bus glue, needed for host controllers that don't use PCI */
- extern irqreturn_t usb_hcd_irq(int irq, void *__hcd);
- 
+diff --git a/drivers/misc/eeprom/Kconfig b/drivers/misc/eeprom/Kconfig
+index f0a7531f354c1..2d240bfa819f8 100644
+--- a/drivers/misc/eeprom/Kconfig
++++ b/drivers/misc/eeprom/Kconfig
+@@ -6,6 +6,7 @@ config EEPROM_AT24
+ 	depends on I2C && SYSFS
+ 	select NVMEM
+ 	select NVMEM_SYSFS
++	select REGMAP
+ 	select REGMAP_I2C
+ 	help
+ 	  Enable this driver to get read/write support to most I2C EEPROMs
+-- 
+2.39.2
+
 
 
