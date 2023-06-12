@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F61F72C1F9
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:01:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93B4972BFCF
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:47:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237050AbjFLLBu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:01:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36712 "EHLO
+        id S231145AbjFLKrU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:47:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236960AbjFLLB2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:01:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E82B3C1B
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:48:43 -0700 (PDT)
+        with ESMTP id S230416AbjFLKrH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:47:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5178A3C3E
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:31:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E0771624C9
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:48:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAEC3C433D2;
-        Mon, 12 Jun 2023 10:48:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 207BC615BF
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:31:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C62C433D2;
+        Mon, 12 Jun 2023 10:31:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566922;
-        bh=Sa7V6jMgfFAa5X0ATg7Cj/9Yi9OIsQ2VFTCb1/5Cg8s=;
+        s=korg; t=1686565896;
+        bh=RhGpgNGMy5hionLSoLSxdarQOgYaH6g0SIX4sHDx55E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SA+lbETE5bN8Uej+qK/JZuUVFWmgxvyySjJe7BIe6AQqwsEQOBZmzgwob3MDqmnfs
-         mFIXJ7xNKFx21zQR/WoeXFEJ9+R/lqPFF+w8EFqPwxbuuQuXHRZmaLn8BzdGhXTGUq
-         3I/gTGDkoNX24Qp2qH46kIE9X5ZYabFXvhNk1WH4=
+        b=W6HfdmJAgC4xjdiOgyej0L9LLJ/961jvUf13g5+VAdbZo6eNoCsBAwATqaWnmg5cA
+         mNKtY7I9ebP4lkwMZPdQ7I7fz/5ISb/wBi2a5tnyF41+lV+fxdxsUxqkaTs8N6cycg
+         n5dS9cIE29pfcpy8nDugBgVL7ov/QfoD6MH3HUas=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 054/160] net: sched: move rtm_tca_policy declaration to include file
+        patches@lists.linux.dev,
+        syzbot+fcf1a817ceb50935ce99@syzkaller.appspotmail.comm,
+        Ruihan Li <lrh2000@pku.edu.cn>,
+        Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 5.4 32/45] usb: usbfs: Enforce page requirements for mmap
 Date:   Mon, 12 Jun 2023 12:26:26 +0200
-Message-ID: <20230612101717.492175332@linuxfoundation.org>
+Message-ID: <20230612101655.957855054@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
+References: <20230612101654.644983109@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,54 +55,140 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ruihan Li <lrh2000@pku.edu.cn>
 
-[ Upstream commit 886bc7d6ed3357975c5f1d3c784da96000d4bbb4 ]
+commit 0143d148d1e882fb1538dc9974c94d63961719b9 upstream.
 
-rtm_tca_policy is used from net/sched/sch_api.c and net/sched/cls_api.c,
-thus should be declared in an include file.
+The current implementation of usbdev_mmap uses usb_alloc_coherent to
+allocate memory pages that will later be mapped into the user space.
+Meanwhile, usb_alloc_coherent employs three different methods to
+allocate memory, as outlined below:
+ * If hcd->localmem_pool is non-null, it uses gen_pool_dma_alloc to
+   allocate memory;
+ * If DMA is not available, it uses kmalloc to allocate memory;
+ * Otherwise, it uses dma_alloc_coherent.
 
-This fixes the following sparse warning:
-net/sched/sch_api.c:1434:25: warning: symbol 'rtm_tca_policy' was not declared. Should it be static?
+However, it should be noted that gen_pool_dma_alloc does not guarantee
+that the resulting memory will be page-aligned. Furthermore, trying to
+map slab pages (i.e., memory allocated by kmalloc) into the user space
+is not resonable and can lead to problems, such as a type confusion bug
+when PAGE_TABLE_CHECK=y [1].
 
-Fixes: e331473fee3d ("net/sched: cls_api: add missing validation of netlink attributes")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To address these issues, this patch introduces hcd_alloc_coherent_pages,
+which addresses the above two problems. Specifically,
+hcd_alloc_coherent_pages uses gen_pool_dma_alloc_align instead of
+gen_pool_dma_alloc to ensure that the memory is page-aligned. To replace
+kmalloc, hcd_alloc_coherent_pages directly allocates pages by calling
+__get_free_pages.
+
+Reported-by: syzbot+fcf1a817ceb50935ce99@syzkaller.appspotmail.comm
+Closes: https://lore.kernel.org/lkml/000000000000258e5e05fae79fc1@google.com/ [1]
+Fixes: f7d34b445abc ("USB: Add support for usbfs zerocopy.")
+Fixes: ff2437befd8f ("usb: host: Fix excessive alignment restriction for local memory allocations")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20230515130958.32471-2-lrh2000@pku.edu.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/pkt_sched.h | 2 ++
- net/sched/cls_api.c     | 2 --
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/core/buffer.c |   41 +++++++++++++++++++++++++++++++++++++++++
+ drivers/usb/core/devio.c  |    9 +++++----
+ include/linux/usb/hcd.h   |    5 +++++
+ 3 files changed, 51 insertions(+), 4 deletions(-)
 
-diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
-index fc688c7e95951..4df802f84eeba 100644
---- a/include/net/pkt_sched.h
-+++ b/include/net/pkt_sched.h
-@@ -128,6 +128,8 @@ static inline void qdisc_run(struct Qdisc *q)
+--- a/drivers/usb/core/buffer.c
++++ b/drivers/usb/core/buffer.c
+@@ -170,3 +170,44 @@ void hcd_buffer_free(
  	}
+ 	dma_free_coherent(hcd->self.sysdev, size, addr, dma);
  }
- 
-+extern const struct nla_policy rtm_tca_policy[TCA_MAX + 1];
 +
- /* Calculate maximal size of packet seen by hard_start_xmit
-    routine of this device.
-  */
-diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index 2621550bfddc1..b2432ee04f319 100644
---- a/net/sched/cls_api.c
-+++ b/net/sched/cls_api.c
-@@ -43,8 +43,6 @@
- #include <net/flow_offload.h>
- #include <net/tc_wrapper.h>
++void *hcd_buffer_alloc_pages(struct usb_hcd *hcd,
++		size_t size, gfp_t mem_flags, dma_addr_t *dma)
++{
++	if (size == 0)
++		return NULL;
++
++	if (hcd->localmem_pool)
++		return gen_pool_dma_alloc_align(hcd->localmem_pool,
++				size, dma, PAGE_SIZE);
++
++	/* some USB hosts just use PIO */
++	if (!hcd_uses_dma(hcd)) {
++		*dma = DMA_MAPPING_ERROR;
++		return (void *)__get_free_pages(mem_flags,
++				get_order(size));
++	}
++
++	return dma_alloc_coherent(hcd->self.sysdev,
++			size, dma, mem_flags);
++}
++
++void hcd_buffer_free_pages(struct usb_hcd *hcd,
++		size_t size, void *addr, dma_addr_t dma)
++{
++	if (!addr)
++		return;
++
++	if (hcd->localmem_pool) {
++		gen_pool_free(hcd->localmem_pool,
++				(unsigned long)addr, size);
++		return;
++	}
++
++	if (!hcd_uses_dma(hcd)) {
++		free_pages((unsigned long)addr, get_order(size));
++		return;
++	}
++
++	dma_free_coherent(hcd->self.sysdev, size, addr, dma);
++}
+--- a/drivers/usb/core/devio.c
++++ b/drivers/usb/core/devio.c
+@@ -173,6 +173,7 @@ static int connected(struct usb_dev_stat
+ static void dec_usb_memory_use_count(struct usb_memory *usbm, int *count)
+ {
+ 	struct usb_dev_state *ps = usbm->ps;
++	struct usb_hcd *hcd = bus_to_hcd(ps->dev->bus);
+ 	unsigned long flags;
  
--extern const struct nla_policy rtm_tca_policy[TCA_MAX + 1];
--
- /* The list of all installed classifier types */
- static LIST_HEAD(tcf_proto_base);
+ 	spin_lock_irqsave(&ps->lock, flags);
+@@ -181,8 +182,8 @@ static void dec_usb_memory_use_count(str
+ 		list_del(&usbm->memlist);
+ 		spin_unlock_irqrestore(&ps->lock, flags);
  
--- 
-2.39.2
-
+-		usb_free_coherent(ps->dev, usbm->size, usbm->mem,
+-				usbm->dma_handle);
++		hcd_buffer_free_pages(hcd, usbm->size,
++				usbm->mem, usbm->dma_handle);
+ 		usbfs_decrease_memory_usage(
+ 			usbm->size + sizeof(struct usb_memory));
+ 		kfree(usbm);
+@@ -234,8 +235,8 @@ static int usbdev_mmap(struct file *file
+ 		goto error_decrease_mem;
+ 	}
+ 
+-	mem = usb_alloc_coherent(ps->dev, size, GFP_USER | __GFP_NOWARN,
+-			&dma_handle);
++	mem = hcd_buffer_alloc_pages(hcd,
++			size, GFP_USER | __GFP_NOWARN, &dma_handle);
+ 	if (!mem) {
+ 		ret = -ENOMEM;
+ 		goto error_free_usbm;
+--- a/include/linux/usb/hcd.h
++++ b/include/linux/usb/hcd.h
+@@ -503,6 +503,11 @@ void *hcd_buffer_alloc(struct usb_bus *b
+ void hcd_buffer_free(struct usb_bus *bus, size_t size,
+ 	void *addr, dma_addr_t dma);
+ 
++void *hcd_buffer_alloc_pages(struct usb_hcd *hcd,
++		size_t size, gfp_t mem_flags, dma_addr_t *dma);
++void hcd_buffer_free_pages(struct usb_hcd *hcd,
++		size_t size, void *addr, dma_addr_t dma);
++
+ /* generic bus glue, needed for host controllers that don't use PCI */
+ extern irqreturn_t usb_hcd_irq(int irq, void *__hcd);
+ 
 
 
