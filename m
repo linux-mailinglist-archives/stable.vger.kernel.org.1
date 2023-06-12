@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3CBB72C00C
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:49:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57EDD72C0E9
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232334AbjFLKtZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:49:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54892 "EHLO
+        id S236695AbjFLKzW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:55:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231132AbjFLKtL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:49:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D56945FD4
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:33:46 -0700 (PDT)
+        with ESMTP id S236386AbjFLKyr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 264729E
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:41:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B63AF61BD9
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:33:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB033C433D2;
-        Mon, 12 Jun 2023 10:33:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B27A3623EC
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:41:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A4EC433EF;
+        Mon, 12 Jun 2023 10:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566026;
-        bh=X+qWM1QttKJso7M4Q6qezChzj7eqR4TWCS/eVgAg/jA=;
+        s=korg; t=1686566496;
+        bh=PbGqirAaJUwWCwu/U1aez5V0Bf3Qt6XkhfTSPjnrtdg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ziU+puwoUyU35TxboW6g87yYjuHnQ6dPNWcri70K9I1pghsx4BKbd+PgNJQu5ehCB
-         t6Ma6obbuqndjdH1Pu2GaR+9mMBTcmTJegU5qFGT3aFOD8JLcowrrjeN2upqLJ7ySP
-         XnKzwbZpXKwLSGAQofQt5MGTn1xFWMnD5QO+5V9I=
+        b=Wv5rsZMCTx1s6V8pSEn/fhf0VjsteQvcCGJA/hOu4AwjfwcTzjQJ07kPsW5aHyE58
+         whmzosQ6Eez5+3K05ZkA1ghPTMeuufyw8JslFvetm+y06YIRsh6kcF05R5Xr1XP337
+         9DKC1NNfMfvyE/tq0S+i/vYELPraS3TjRi0AW4MM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Vladislav Efanov <VEfanov@ispras.ru>,
-        Sven Eckelmann <sven@narfation.org>,
-        Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 5.10 35/68] batman-adv: Broken sync while rescheduling delayed work
+        patches@lists.linux.dev, Pavan Chebbi <pavan.chebbi@broadcom.com>,
+        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+        Michael Chan <michael.chan@broadcom.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 053/132] bnxt_en: Dont issue AP reset during ethtools reset operation
 Date:   Mon, 12 Jun 2023 12:26:27 +0200
-Message-ID: <20230612101659.869138163@linuxfoundation.org>
+Message-ID: <20230612101712.674700775@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
-References: <20230612101658.437327280@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,58 +56,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladislav Efanov <VEfanov@ispras.ru>
+From: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
 
-commit abac3ac97fe8734b620e7322a116450d7f90aa43 upstream.
+[ Upstream commit 1d997801c7cc6a7f542e46d5a6bf16f893ad3fe9 ]
 
-Syzkaller got a lot of crashes like:
-KASAN: use-after-free Write in *_timers*
+Only older NIC controller's firmware uses the PROC AP reset type.
+Firmware on 5731X/5741X and newer chips does not support this reset
+type.  When bnxt_reset() issues a series of resets, this PROC AP
+reset may actually fail on these newer chips because the firmware
+is not ready to accept this unsupported command yet.  Avoid this
+unnecessary error by skipping this reset type on chips that don't
+support it.
 
-All of these crashes point to the same memory area:
-
-The buggy address belongs to the object at ffff88801f870000
- which belongs to the cache kmalloc-8k of size 8192
-The buggy address is located 5320 bytes inside of
- 8192-byte region [ffff88801f870000, ffff88801f872000)
-
-This area belongs to :
-        batadv_priv->batadv_priv_dat->delayed_work->timer_list
-
-The reason for these issues is the lack of synchronization. Delayed
-work (batadv_dat_purge) schedules new timer/work while the device
-is being deleted. As the result new timer/delayed work is set after
-cancel_delayed_work_sync() was called. So after the device is freed
-the timer list contains pointer to already freed memory.
-
-Found by Linux Verification Center (linuxtesting.org) with syzkaller.
-
-Cc: stable@kernel.org
-Fixes: 2f1dfbe18507 ("batman-adv: Distributed ARP Table - implement local storage")
-Signed-off-by: Vladislav Efanov <VEfanov@ispras.ru>
-Acked-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7a13240e3718 ("bnxt_en: fix ethtool_reset_flags ABI violations")
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/distributed-arp-table.c |    2 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/batman-adv/distributed-arp-table.c
-+++ b/net/batman-adv/distributed-arp-table.c
-@@ -102,7 +102,6 @@ static void batadv_dat_purge(struct work
-  */
- static void batadv_dat_start_timer(struct batadv_priv *bat_priv)
- {
--	INIT_DELAYED_WORK(&bat_priv->dat.work, batadv_dat_purge);
- 	queue_delayed_work(batadv_event_workqueue, &bat_priv->dat.work,
- 			   msecs_to_jiffies(10000));
- }
-@@ -822,6 +821,7 @@ int batadv_dat_init(struct batadv_priv *
- 	if (!bat_priv->dat.hash)
- 		return -ENOMEM;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+index b2d531e014c57..89f046ce1373c 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+@@ -3727,7 +3727,7 @@ static int bnxt_reset(struct net_device *dev, u32 *flags)
+ 		}
+ 	}
  
-+	INIT_DELAYED_WORK(&bat_priv->dat.work, batadv_dat_purge);
- 	batadv_dat_start_timer(bat_priv);
- 
- 	batadv_tvlv_handler_register(bat_priv, batadv_dat_tvlv_ogm_handler_v1,
+-	if (req & BNXT_FW_RESET_AP) {
++	if (!BNXT_CHIP_P4_PLUS(bp) && (req & BNXT_FW_RESET_AP)) {
+ 		/* This feature is not supported in older firmware versions */
+ 		if (bp->hwrm_spec_code >= 0x10803) {
+ 			if (!bnxt_firmware_reset_ap(dev)) {
+-- 
+2.39.2
+
 
 
