@@ -2,32 +2,32 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64F1172C003
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:49:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 019A272C190
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:59:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233804AbjFLKtL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:49:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50652 "EHLO
+        id S236368AbjFLK7C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:59:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235235AbjFLKsf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:48:35 -0400
+        with ESMTP id S236462AbjFLKyp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12F7A4C01
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:33:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87A23121
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:41:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 75815623ED
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:33:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 867ADC433EF;
-        Mon, 12 Jun 2023 10:33:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C59D614F0
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:41:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF8AC433D2;
+        Mon, 12 Jun 2023 10:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566004;
-        bh=F+DmGleVABIvGuMbJlWhceuDkMKVgs35YdKLMyyqfBk=;
+        s=korg; t=1686566477;
+        bh=QeV/Gn4pE6zfHkntn6BCF9T64o7+D0V5udD/hHyJ5uI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dk156HewhHPqJdtmHwUwefuz207nOkVhUi2xPTPkOgLePnu4kM6xv/yfiLTVJuw67
-         ypi5DS1lAgSgeYsFzP9AW3eCWJOxDGhpOvSy8w8808jYWa0Pa21H7jFrSrpfO7hZgQ
-         eMopUIQYCJ4HdkK8t4E6fMbZ8fb3E3hysSByrbp0=
+        b=U607oFTJQ5vGI1GaMZxrz8C3HjFGPl4gezBCaieulIYea/JKrwJ7ipq581o8CcMaE
+         U5/jfiC8PcSOj8IqEJvHZlgAboUqH9XNIgF4qPMJxvXhSCR0MUqpPcfcnL9hMmeAVE
+         3OJj7yWepMvpKGcBmF/BZLRD3lCJRZWE3Z20Qdmw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -35,19 +35,19 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Jamal Hadi Salim <jhs@mojatatu.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 28/68] net: sched: move rtm_tca_policy declaration to include file
+Subject: [PATCH 6.1 046/132] net: sched: move rtm_tca_policy declaration to include file
 Date:   Mon, 12 Jun 2023 12:26:20 +0200
-Message-ID: <20230612101659.585989122@linuxfoundation.org>
+Message-ID: <20230612101712.361578254@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
-References: <20230612101658.437327280@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,10 +76,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
-index 50d5ffbad473e..ba781e0aaf566 100644
+index 38207873eda69..8ab75128512ab 100644
 --- a/include/net/pkt_sched.h
 +++ b/include/net/pkt_sched.h
-@@ -129,6 +129,8 @@ static inline void qdisc_run(struct Qdisc *q)
+@@ -128,6 +128,8 @@ static inline void qdisc_run(struct Qdisc *q)
  	}
  }
  
@@ -89,7 +89,7 @@ index 50d5ffbad473e..ba781e0aaf566 100644
     routine of this device.
   */
 diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index 53d315ed94307..16960d9663e9e 100644
+index 7b2aa04a7cdfd..b51d80a2fece3 100644
 --- a/net/sched/cls_api.c
 +++ b/net/sched/cls_api.c
 @@ -41,8 +41,6 @@
