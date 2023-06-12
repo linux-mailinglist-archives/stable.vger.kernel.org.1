@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A86272C03D
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:50:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B69272C0F4
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233810AbjFLKuy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:50:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55642 "EHLO
+        id S235691AbjFLKze (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:55:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234808AbjFLKud (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:50:33 -0400
+        with ESMTP id S235716AbjFLKzQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:55:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E910583FF
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:35:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A04984EE0
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:42:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D56860F87
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:35:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8314C433D2;
-        Mon, 12 Jun 2023 10:35:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 325CA612E1
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:42:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D04AC433EF;
+        Mon, 12 Jun 2023 10:42:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566114;
-        bh=0vM9I1vIsTy0P+ehdVQTnoU/oeCu8tj7xcsUuMQXmiE=;
+        s=korg; t=1686566532;
+        bh=e6h7ezBfQxf3SpLekI03YTp+/3sYIf3ZR1MfP2Q9c9U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1qJl8V35gVJlV8qhctueDFpN95FXdt2b0Iox8bFfPQaf3W+3cK4eHpMangtF26aJV
-         XtOF/JcqBY1KkNxNU2s7DEN3+QGFysodo926Uu7kGVcIgvlU0vgrpVEpdb4V/5uxAx
-         7M8eFq9Hdfuokszyo/HZqNtpttvBhEwqXvwwzImM=
+        b=EMPcBOst3K7Sx/7RKCAIWOC7CLkJQWBadxyfpQgAiN+4UbrcG8VXH6DPeGdEbRzBO
+         9zDEjUsnGI1u+QYgQ17ixocR96cPZ/r3dV//1osGBRbUM2QQjOGv7MgUJ9vx8sdhoM
+         YmgkbxtGnH1FNvGVKwNDuC4jtCnSA5Utb5ODTt80=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>
-Subject: [PATCH 5.10 50/68] rbd: get snapshot context after exclusive lock is ensured to be held
+        patches@lists.linux.dev, Ai Chao <aichao@kylinos.cn>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 068/132] ALSA: hda/realtek: Add a quirk for HP Slim Desktop S01
 Date:   Mon, 12 Jun 2023 12:26:42 +0200
-Message-ID: <20230612101700.505601591@linuxfoundation.org>
+Message-ID: <20230612101713.374028934@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
-References: <20230612101658.437327280@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,119 +53,30 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Ai Chao <aichao@kylinos.cn>
 
-commit 870611e4877eff1e8413c3fb92a585e45d5291f6 upstream.
+commit 527c356b51f3ddee02c9ed5277538f85e30a2cdc upstream.
 
-Move capturing the snapshot context into the image request state
-machine, after exclusive lock is ensured to be held for the duration of
-dealing with the image request.  This is needed to ensure correctness
-of fast-diff states (OBJECT_EXISTS vs OBJECT_EXISTS_CLEAN) and object
-deltas computed based off of them.  Otherwise the object map that is
-forked for the snapshot isn't guaranteed to accurately reflect the
-contents of the snapshot when the snapshot is taken under I/O.  This
-breaks differential backup and snapshot-based mirroring use cases with
-fast-diff enabled: since some object deltas may be incomplete, the
-destination image may get corrupted.
+Add a quirk for HP Slim Desktop S01 to fixup headset MIC no presence.
 
-Cc: stable@vger.kernel.org
-Link: https://tracker.ceph.com/issues/61472
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
+Signed-off-by: Ai Chao <aichao@kylinos.cn>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230526094704.14597-1-aichao@kylinos.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/rbd.c |   30 +++++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -1399,6 +1399,8 @@ static bool rbd_obj_is_tail(struct rbd_o
-  */
- static void rbd_obj_set_copyup_enabled(struct rbd_obj_request *obj_req)
- {
-+	rbd_assert(obj_req->img_request->snapc);
-+
- 	if (obj_req->img_request->op_type == OBJ_OP_DISCARD) {
- 		dout("%s %p objno %llu discard\n", __func__, obj_req,
- 		     obj_req->ex.oe_objno);
-@@ -1519,6 +1521,7 @@ __rbd_obj_add_osd_request(struct rbd_obj
- static struct ceph_osd_request *
- rbd_obj_add_osd_request(struct rbd_obj_request *obj_req, int num_ops)
- {
-+	rbd_assert(obj_req->img_request->snapc);
- 	return __rbd_obj_add_osd_request(obj_req, obj_req->img_request->snapc,
- 					 num_ops);
- }
-@@ -1655,15 +1658,18 @@ static void rbd_img_request_init(struct
- 	mutex_init(&img_request->state_mutex);
- }
- 
-+/*
-+ * Only snap_id is captured here, for reads.  For writes, snapshot
-+ * context is captured in rbd_img_object_requests() after exclusive
-+ * lock is ensured to be held.
-+ */
- static void rbd_img_capture_header(struct rbd_img_request *img_req)
- {
- 	struct rbd_device *rbd_dev = img_req->rbd_dev;
- 
- 	lockdep_assert_held(&rbd_dev->header_rwsem);
- 
--	if (rbd_img_is_write(img_req))
--		img_req->snapc = ceph_get_snap_context(rbd_dev->header.snapc);
--	else
-+	if (!rbd_img_is_write(img_req))
- 		img_req->snap_id = rbd_dev->spec->snap_id;
- 
- 	if (rbd_dev_parent_get(rbd_dev))
-@@ -3547,9 +3553,19 @@ static int rbd_img_exclusive_lock(struct
- 
- static void rbd_img_object_requests(struct rbd_img_request *img_req)
- {
-+	struct rbd_device *rbd_dev = img_req->rbd_dev;
- 	struct rbd_obj_request *obj_req;
- 
- 	rbd_assert(!img_req->pending.result && !img_req->pending.num_pending);
-+	rbd_assert(!need_exclusive_lock(img_req) ||
-+		   __rbd_is_lock_owner(rbd_dev));
-+
-+	if (rbd_img_is_write(img_req)) {
-+		rbd_assert(!img_req->snapc);
-+		down_read(&rbd_dev->header_rwsem);
-+		img_req->snapc = ceph_get_snap_context(rbd_dev->header.snapc);
-+		up_read(&rbd_dev->header_rwsem);
-+	}
- 
- 	for_each_obj_request(img_req, obj_req) {
- 		int result = 0;
-@@ -3567,7 +3583,6 @@ static void rbd_img_object_requests(stru
- 
- static bool rbd_img_advance(struct rbd_img_request *img_req, int *result)
- {
--	struct rbd_device *rbd_dev = img_req->rbd_dev;
- 	int ret;
- 
- again:
-@@ -3588,9 +3603,6 @@ again:
- 		if (*result)
- 			return true;
- 
--		rbd_assert(!need_exclusive_lock(img_req) ||
--			   __rbd_is_lock_owner(rbd_dev));
--
- 		rbd_img_object_requests(img_req);
- 		if (!img_req->pending.num_pending) {
- 			*result = img_req->pending.result;
-@@ -4048,6 +4060,10 @@ static int rbd_post_acquire_action(struc
- {
- 	int ret;
- 
-+	ret = rbd_dev_refresh(rbd_dev);
-+	if (ret)
-+		return ret;
-+
- 	if (rbd_dev->header.features & RBD_FEATURE_OBJECT_MAP) {
- 		ret = rbd_object_map_open(rbd_dev);
- 		if (ret)
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -11695,6 +11695,7 @@ static const struct snd_pci_quirk alc662
+ 	SND_PCI_QUIRK(0x103c, 0x8719, "HP", ALC897_FIXUP_HP_HSMIC_VERB),
+ 	SND_PCI_QUIRK(0x103c, 0x872b, "HP", ALC897_FIXUP_HP_HSMIC_VERB),
+ 	SND_PCI_QUIRK(0x103c, 0x873e, "HP", ALC671_FIXUP_HP_HEADSET_MIC2),
++	SND_PCI_QUIRK(0x103c, 0x8768, "HP Slim Desktop S01", ALC671_FIXUP_HP_HEADSET_MIC2),
+ 	SND_PCI_QUIRK(0x103c, 0x877e, "HP 288 Pro G6", ALC671_FIXUP_HP_HEADSET_MIC2),
+ 	SND_PCI_QUIRK(0x103c, 0x885f, "HP 288 Pro G8", ALC671_FIXUP_HP_HEADSET_MIC2),
+ 	SND_PCI_QUIRK(0x1043, 0x1080, "Asus UX501VW", ALC668_FIXUP_HEADSET_MODE),
 
 
