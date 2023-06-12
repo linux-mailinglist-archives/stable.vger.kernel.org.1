@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A72872BF90
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:45:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C182E72C18B
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:58:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235085AbjFLKpS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:45:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50868 "EHLO
+        id S235848AbjFLK6z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:58:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235596AbjFLKpB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:45:01 -0400
+        with ESMTP id S236440AbjFLKyl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F9856E8C
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:29:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB1B235B1
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:41:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 35246622B1
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:29:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47942C433D2;
-        Mon, 12 Jun 2023 10:29:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F935612B4
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:41:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73790C433EF;
+        Mon, 12 Jun 2023 10:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565783;
-        bh=ne+H5kK/RBzk0gVJvJzy+rp6tw/szX9ZCoqP+MC+HeI=;
+        s=korg; t=1686566461;
+        bh=WNT4vcYyXMab3jtwc0MSonqEVv5QbK/cjKDw7Ij02Dw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RnaunzWz2HaVLm2HDASAG46pNmpzwRowfaJ3T1teLjl9m4L+gIKD15fO9ZlmDedmc
-         IV6Vr+90a2ZWbp3IDzCqFnjGNavrYEbc7iMsf/CbTmgCnr6QMICZjOp2hImatnl57m
-         AwjAMoS3VgtuOu025kzC5QGokl75SAIHc9UJlrvI=
+        b=C0dTGaqiXocIqttnMPzsYwR0jQEMS+A3zCkyx5ro4daDhjwkVkFZRbgxmr90onMgz
+         qlqEUo5F+XfuS6m2fjSH1SqDiTWwzurwVx2gvuYQOOOQl2acZoNB1G4UgJMSpXIeSO
+         E7iwYxqr7OMd1LfRqXBd0Ou7DEdwDL1/1loLg+EA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 4.19 14/23] Input: psmouse - fix OOB access in Elantech protocol
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 041/132] rfs: annotate lockless accesses to sk->sk_rxhash
 Date:   Mon, 12 Jun 2023 12:26:15 +0200
-Message-ID: <20230612101651.635322452@linuxfoundation.org>
+Message-ID: <20230612101712.117327668@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101651.138592130@linuxfoundation.org>
-References: <20230612101651.138592130@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,54 +56,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 7b63a88bb62ba2ddf5fcd956be85fe46624628b9 upstream.
+[ Upstream commit 1e5c647c3f6d4f8497dedcd226204e1880e0ffb3 ]
 
-The kernel only allocate 5 MT slots; check that transmitted slot ID
-falls within the acceptable range.
+Add READ_ONCE()/WRITE_ONCE() on accesses to sk->sk_rxhash.
 
-Link: https://lore.kernel.org/r/ZFnEL91nrT789dbG@google.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This also prevents a (smart ?) compiler to remove the condition in:
+
+if (sk->sk_rxhash != newval)
+	sk->sk_rxhash = newval;
+
+We need the condition to avoid dirtying a shared cache line.
+
+Fixes: fec5e652e58f ("rfs: Receive Flow Steering")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/mouse/elantech.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ include/net/sock.h | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
---- a/drivers/input/mouse/elantech.c
-+++ b/drivers/input/mouse/elantech.c
-@@ -590,10 +590,11 @@ static void process_packet_head_v4(struc
- 	struct input_dev *dev = psmouse->dev;
- 	struct elantech_data *etd = psmouse->private;
- 	unsigned char *packet = psmouse->packet;
--	int id = ((packet[3] & 0xe0) >> 5) - 1;
-+	int id;
- 	int pres, traces;
+diff --git a/include/net/sock.h b/include/net/sock.h
+index f11b98bd0244c..2f35b82a123f8 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1148,8 +1148,12 @@ static inline void sock_rps_record_flow(const struct sock *sk)
+ 		 * OR	an additional socket flag
+ 		 * [1] : sk_state and sk_prot are in the same cache line.
+ 		 */
+-		if (sk->sk_state == TCP_ESTABLISHED)
+-			sock_rps_record_flow_hash(sk->sk_rxhash);
++		if (sk->sk_state == TCP_ESTABLISHED) {
++			/* This READ_ONCE() is paired with the WRITE_ONCE()
++			 * from sock_rps_save_rxhash() and sock_rps_reset_rxhash().
++			 */
++			sock_rps_record_flow_hash(READ_ONCE(sk->sk_rxhash));
++		}
+ 	}
+ #endif
+ }
+@@ -1158,15 +1162,19 @@ static inline void sock_rps_save_rxhash(struct sock *sk,
+ 					const struct sk_buff *skb)
+ {
+ #ifdef CONFIG_RPS
+-	if (unlikely(sk->sk_rxhash != skb->hash))
+-		sk->sk_rxhash = skb->hash;
++	/* The following WRITE_ONCE() is paired with the READ_ONCE()
++	 * here, and another one in sock_rps_record_flow().
++	 */
++	if (unlikely(READ_ONCE(sk->sk_rxhash) != skb->hash))
++		WRITE_ONCE(sk->sk_rxhash, skb->hash);
+ #endif
+ }
  
--	if (id < 0)
-+	id = ((packet[3] & 0xe0) >> 5) - 1;
-+	if (id < 0 || id >= ETP_MAX_FINGERS)
- 		return;
+ static inline void sock_rps_reset_rxhash(struct sock *sk)
+ {
+ #ifdef CONFIG_RPS
+-	sk->sk_rxhash = 0;
++	/* Paired with READ_ONCE() in sock_rps_record_flow() */
++	WRITE_ONCE(sk->sk_rxhash, 0);
+ #endif
+ }
  
- 	etd->mt[id].x = ((packet[1] & 0x0f) << 8) | packet[2];
-@@ -623,7 +624,7 @@ static void process_packet_motion_v4(str
- 	int id, sid;
- 
- 	id = ((packet[0] & 0xe0) >> 5) - 1;
--	if (id < 0)
-+	if (id < 0 || id >= ETP_MAX_FINGERS)
- 		return;
- 
- 	sid = ((packet[3] & 0xe0) >> 5) - 1;
-@@ -644,7 +645,7 @@ static void process_packet_motion_v4(str
- 	input_report_abs(dev, ABS_MT_POSITION_X, etd->mt[id].x);
- 	input_report_abs(dev, ABS_MT_POSITION_Y, etd->mt[id].y);
- 
--	if (sid >= 0) {
-+	if (sid >= 0 && sid < ETP_MAX_FINGERS) {
- 		etd->mt[sid].x += delta_x2 * weight;
- 		etd->mt[sid].y -= delta_y2 * weight;
- 		input_mt_slot(dev, sid);
+-- 
+2.39.2
+
 
 
