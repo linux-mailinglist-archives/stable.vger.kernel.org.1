@@ -2,59 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBB6472BFA8
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:46:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8051272BFB6
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:46:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234557AbjFLKqM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:46:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51624 "EHLO
+        id S230331AbjFLKql (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:46:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234614AbjFLKp6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:45:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0254BF7EF;
-        Mon, 12 Jun 2023 03:30:32 -0700 (PDT)
+        with ESMTP id S230283AbjFLKqR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:46:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA67C42B8C
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:30:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D474561500;
-        Mon, 12 Jun 2023 10:30:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF7FC4339B;
-        Mon, 12 Jun 2023 10:30:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E34A623E2
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:30:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51B4CC433EF;
+        Mon, 12 Jun 2023 10:30:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565831;
-        bh=9nSCSTE5NIfNzjYPmIfyOiQi8ozTX+gnpJ6Raw0QLi0=;
-        h=From:To:Cc:Subject:Date:From;
-        b=S4GrFvMA9y3QpZhHHq76RuYiv2W7SltlHFdTECg5q6100m1sWQSaEg/R8gIclABY5
-         c8RAiHGVkDX6GdPPqZ8bmCErBd5nHVsC8ngLfZU/oRTn10P8R//jN546FYcJS8nvYx
-         H4ofbYTUjSo+4ex1S9UR4aTusLxCX/L26zJW6CCo=
+        s=korg; t=1686565854;
+        bh=JCQPoLPq47UcRPr39D2d61StNJewNx3JivYWuqnrcVs=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=VeAu+vq0x0YAsVa/l0r/PCb0rrknNP/sf/UsVkWqC0KwqFBmacgbUW8wOAXpnh3yE
+         7BbTwNwmNvecFDBQodX+NodFOBzGPNxTNbps+GWcEaY8BbSCwUfbGOg67hS94yK0ti
+         HEYn7gd8l+LNrA24QxEc5D7HsztPGFsxNfqxU+d8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de
-Subject: [PATCH 4.19 00/23] 4.19.286-rc1 review
+        patches@lists.linux.dev,
+        Qingfang DENG <qingfang.deng@siflower.com.cn>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 07/45] neighbour: fix unaligned access to pneigh_entry
 Date:   Mon, 12 Jun 2023 12:26:01 +0200
-Message-ID: <20230612101651.138592130@linuxfoundation.org>
+Message-ID: <20230612101654.917655587@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-MIME-Version: 1.0
+In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
+References: <20230612101654.644983109@linuxfoundation.org>
 User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.286-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-4.19.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 4.19.286-rc1
-X-KernelTest-Deadline: 2023-06-14T10:16+00:00
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -63,129 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is the start of the stable review cycle for the 4.19.286 release.
-There are 23 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+From: Qingfang DENG <qingfang.deng@siflower.com.cn>
 
-Responses should be made by Wed, 14 Jun 2023 10:16:41 +0000.
-Anything received after that time might be too late.
+[ Upstream commit ed779fe4c9b5a20b4ab4fd6f3e19807445bb78c7 ]
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.286-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
-and the diffstat can be found below.
+After the blamed commit, the member key is longer 4-byte aligned. On
+platforms that do not support unaligned access, e.g., MIPS32R2 with
+unaligned_action set to 1, this will trigger a crash when accessing
+an IPv6 pneigh_entry, as the key is cast to an in6_addr pointer.
 
-thanks,
+Change the type of the key to u32 to make it aligned.
 
-greg k-h
+Fixes: 62dd93181aaa ("[IPV6] NDISC: Set per-entry is_router flag in Proxy NA.")
+Signed-off-by: Qingfang DENG <qingfang.deng@siflower.com.cn>
+Link: https://lore.kernel.org/r/20230601015432.159066-1-dqfext@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/net/neighbour.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
--------------
-Pseudo-Shortlog of commits:
+diff --git a/include/net/neighbour.h b/include/net/neighbour.h
+index 729bdf710b7e0..e595e944ebfc0 100644
+--- a/include/net/neighbour.h
++++ b/include/net/neighbour.h
+@@ -174,7 +174,7 @@ struct pneigh_entry {
+ 	struct net_device	*dev;
+ 	u8			flags;
+ 	u8			protocol;
+-	u8			key[];
++	u32			key[];
+ };
+ 
+ /*
+-- 
+2.39.2
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 4.19.286-rc1
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Revert "staging: rtl8192e: Replace macro RTL_PCI_DEVICE with PCI_DEVICE"
-
-Zixuan Fu <r33s3n6@gmail.com>
-    btrfs: unset reloc control if transaction commit fails in prepare_to_relocate()
-
-Josef Bacik <josef@toxicpanda.com>
-    btrfs: check return value of btrfs_commit_transaction in relocation
-
-Theodore Ts'o <tytso@mit.edu>
-    ext4: only check dquot_initialize_needed() when debugging
-
-Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-    i2c: sprd: Delete i2c adapter in .remove's error path
-
-Martin Hundebøll <martin@geanix.com>
-    pinctrl: meson-axg: add missing GPIOA_18 gpio group
-
-Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-    Bluetooth: Fix use-after-free in hci_remove_ltk/hci_remove_irk
-
-Xiubo Li <xiubli@redhat.com>
-    ceph: fix use-after-free bug for inodes when flushing capsnaps
-
-Chia-I Wu <olvaffe@gmail.com>
-    drm/amdgpu: fix xclk freq on CHIP_STONEY
-
-Dmitry Torokhov <dmitry.torokhov@gmail.com>
-    Input: psmouse - fix OOB access in Elantech protocol
-
-Ismael Ferreras Morezuelas <swyterzone@gmail.com>
-    Input: xpad - delete a Razer DeathAdder mouse VID/PID entry
-
-Vladislav Efanov <VEfanov@ispras.ru>
-    batman-adv: Broken sync while rescheduling delayed work
-
-Ben Hutchings <ben@decadent.org.uk>
-    lib: cpu_rmap: Fix potential use-after-free in irq_cpu_rmap_release()
-
-Hangyu Hua <hbh25y@gmail.com>
-    net: sched: fix possible refcount leak in tc_chain_tmplt_add()
-
-Eric Dumazet <edumazet@google.com>
-    net: sched: move rtm_tca_policy declaration to include file
-
-Eric Dumazet <edumazet@google.com>
-    rfs: annotate lockless accesses to RFS sock flow table
-
-Eric Dumazet <edumazet@google.com>
-    rfs: annotate lockless accesses to sk->sk_rxhash
-
-Sungwoo Kim <iam@sung-woo.kim>
-    Bluetooth: L2CAP: Add missing checks for invalid DCID
-
-Ying Hsu <yinghsu@chromium.org>
-    Bluetooth: Fix l2cap_disconnect_req deadlock
-
-Alexander Sverdlin <alexander.sverdlin@siemens.com>
-    net: dsa: lan9303: allow vid != 0 in port_fdb_{add|del} methods
-
-Stephan Gerhold <stephan@gerhold.net>
-    spi: qup: Request DMA before enabling clocks
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    i40e: fix build warnings in i40e_alloc.h
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    i40iw: fix build warning in i40iw_manage_apbvt()
-
-
--------------
-
-Diffstat:
-
- Makefile                                     |  4 +--
- drivers/gpu/drm/amd/amdgpu/vi.c              | 11 +++++++--
- drivers/i2c/busses/i2c-sprd.c                |  6 +++--
- drivers/infiniband/hw/i40iw/i40iw.h          |  5 ++--
- drivers/input/joystick/xpad.c                |  1 -
- drivers/input/mouse/elantech.c               |  9 ++++---
- drivers/net/dsa/lan9303-core.c               |  4 ---
- drivers/net/ethernet/intel/i40e/i40e_alloc.h | 17 +++++--------
- drivers/pinctrl/meson/pinctrl-meson-axg.c    |  1 +
- drivers/spi/spi-qup.c                        | 37 ++++++++++++++--------------
- drivers/staging/rtl8192e/rtl8192e/rtl_core.c |  6 ++---
- drivers/staging/rtl8192e/rtl8192e/rtl_core.h |  5 ++++
- fs/btrfs/relocation.c                        | 14 ++++++++---
- fs/ceph/caps.c                               |  6 +++++
- fs/ceph/snap.c                               |  4 ++-
- fs/ext4/xattr.c                              |  6 +++--
- include/linux/netdevice.h                    |  7 ++++--
- include/net/pkt_sched.h                      |  2 ++
- include/net/sock.h                           | 18 ++++++++++----
- lib/cpu_rmap.c                               |  2 +-
- net/batman-adv/distributed-arp-table.c       |  2 +-
- net/bluetooth/hci_core.c                     |  8 +++---
- net/bluetooth/l2cap_core.c                   | 13 ++++++++++
- net/core/dev.c                               |  6 +++--
- net/sched/cls_api.c                          |  3 +--
- 25 files changed, 122 insertions(+), 75 deletions(-)
 
 
