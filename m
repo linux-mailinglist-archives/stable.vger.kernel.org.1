@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02ADC72C00B
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:49:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4B4F72BFCD
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:47:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234185AbjFLKtY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:49:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51564 "EHLO
+        id S235464AbjFLKrT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:47:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234292AbjFLKsz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:48:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AACF25FD8
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:33:46 -0700 (PDT)
+        with ESMTP id S235233AbjFLKqx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:46:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7CCF7690
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:31:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E941F614F0
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:33:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08969C433EF;
-        Mon, 12 Jun 2023 10:33:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 87BE5623E5
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:31:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9961BC433D2;
+        Mon, 12 Jun 2023 10:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565994;
-        bh=3a3S7E//5RGg3AIUfWREo/KfaGDdWdkOow4ZzeCJryo=;
+        s=korg; t=1686565894;
+        bh=kusRSPmqog5xyUNDr/Mj7t/OckoBIn9jHL5y5Qyq+Sc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=grUI7REJWYpDldmSclnVtR2A7SCxhc8GDROg3Zlr8FHk7oVmMfOOTt7mzoRqkTWrm
-         Jg44QICVHZ+aN0pLtgqIM6haVLNa95VFAb1Orw31I0fADAwR34X4L/VIdHCIyQdeYm
-         ccngs0M4/140a4rT5edZuSeGbwHEF9uIgeRG/hO8=
+        b=TGu9p3LDAEsIhQcTbnTe+ju+RrJoB/kmyVc5DmRCzuE5C0wlf/CyUsPQexlPwWRre
+         t5l5+JdeQy9rnBKRoOaXs8zK2PB/evzHTS7UfXEclLhZdCpojKT98d76dToKoi87CW
+         9p3MnxcLgvEvSSeE96ZOrnb1PaP4yUrO7K3WlHz8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Qingfang DENG <qingfang.deng@siflower.com.cn>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 16/68] neighbour: fix unaligned access to pneigh_entry
+Subject: [PATCH 5.4 14/45] rfs: annotate lockless accesses to RFS sock flow table
 Date:   Mon, 12 Jun 2023 12:26:08 +0200
-Message-ID: <20230612101659.139958640@linuxfoundation.org>
+Message-ID: <20230612101655.231641443@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
-References: <20230612101658.437327280@linuxfoundation.org>
+In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
+References: <20230612101654.644983109@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,39 +56,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Qingfang DENG <qingfang.deng@siflower.com.cn>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit ed779fe4c9b5a20b4ab4fd6f3e19807445bb78c7 ]
+[ Upstream commit 5c3b74a92aa285a3df722bf6329ba7ccf70346d6 ]
 
-After the blamed commit, the member key is longer 4-byte aligned. On
-platforms that do not support unaligned access, e.g., MIPS32R2 with
-unaligned_action set to 1, this will trigger a crash when accessing
-an IPv6 pneigh_entry, as the key is cast to an in6_addr pointer.
+Add READ_ONCE()/WRITE_ONCE() on accesses to the sock flow table.
 
-Change the type of the key to u32 to make it aligned.
+This also prevents a (smart ?) compiler to remove the condition in:
 
-Fixes: 62dd93181aaa ("[IPV6] NDISC: Set per-entry is_router flag in Proxy NA.")
-Signed-off-by: Qingfang DENG <qingfang.deng@siflower.com.cn>
-Link: https://lore.kernel.org/r/20230601015432.159066-1-dqfext@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+if (table->ents[index] != newval)
+        table->ents[index] = newval;
+
+We need the condition to avoid dirtying a shared cache line.
+
+Fixes: fec5e652e58f ("rfs: Receive Flow Steering")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/neighbour.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/netdevice.h | 7 +++++--
+ net/core/dev.c            | 6 ++++--
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/include/net/neighbour.h b/include/net/neighbour.h
-index d5767e25509cc..abb22cfd4827f 100644
---- a/include/net/neighbour.h
-+++ b/include/net/neighbour.h
-@@ -174,7 +174,7 @@ struct pneigh_entry {
- 	struct net_device	*dev;
- 	u8			flags;
- 	u8			protocol;
--	u8			key[];
-+	u32			key[];
- };
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 125542f305fad..f6a5a866ea70b 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -732,8 +732,11 @@ static inline void rps_record_sock_flow(struct rps_sock_flow_table *table,
+ 		/* We only give a hint, preemption can change CPU under us */
+ 		val |= raw_smp_processor_id();
  
- /*
+-		if (table->ents[index] != val)
+-			table->ents[index] = val;
++		/* The following WRITE_ONCE() is paired with the READ_ONCE()
++		 * here, and another one in get_rps_cpu().
++		 */
++		if (READ_ONCE(table->ents[index]) != val)
++			WRITE_ONCE(table->ents[index], val);
+ 	}
+ }
+ 
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 0cc0809628b08..92ae373475c9a 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -4002,8 +4002,10 @@ static int get_rps_cpu(struct net_device *dev, struct sk_buff *skb,
+ 		u32 next_cpu;
+ 		u32 ident;
+ 
+-		/* First check into global flow table if there is a match */
+-		ident = sock_flow_table->ents[hash & sock_flow_table->mask];
++		/* First check into global flow table if there is a match.
++		 * This READ_ONCE() pairs with WRITE_ONCE() from rps_record_sock_flow().
++		 */
++		ident = READ_ONCE(sock_flow_table->ents[hash & sock_flow_table->mask]);
+ 		if ((ident ^ hash) & ~rps_cpu_mask)
+ 			goto try_rps;
+ 
 -- 
 2.39.2
 
