@@ -2,42 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2FAB72C13E
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:57:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7602772C232
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:03:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236426AbjFLK5k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:57:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59934 "EHLO
+        id S237414AbjFLLD3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:03:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229639AbjFLK50 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:57:26 -0400
+        with ESMTP id S237538AbjFLLDO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:03:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 548EE6A68
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:45:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF17A7D81
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:50:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 34D90612E1
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:45:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CEABC433EF;
-        Mon, 12 Jun 2023 10:45:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 538716252A
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:50:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F0C4C433D2;
+        Mon, 12 Jun 2023 10:50:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566713;
-        bh=NTDSLLPqlQRQtoib1cZBKeBGA0zK4bHA4JnZdcpVlRs=;
+        s=korg; t=1686567050;
+        bh=R+yf2sL3KB1xPCxOBxs0E0UyHP0WZU0b1lr7OpxjYSA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jmPcZ4c0y0eCj3hjGj9VEkcsKIbZkx2S+ZmwpcfJLgmMiCl20ryv7CJQad+z7h1qG
-         0v4XqtNPEUM2mQg6xsjwrfJsMsVmaYT0peTU0w5q0Ob7rkDJ8nUZg/9bbvL6ujq/tu
-         qyhMxdJ2V5C19EBg7z/PnNDDh4sM7PLpi09T9Ecs=
+        b=Q2s2G38fdTfe6YMM3gQPcWcgF5zXknkAL6qCWVWvw4iMN6PYCBb33EQtz8nb5/ksW
+         Dphh8juyN9qjkc8lTuFbQ6IThP8r+zbbBe3QLaPQfjd5FZ5QQS2/zCvggd6VlOSrXZ
+         qrrxakYUVLGas6QZB43Hf0+9oYpFU0r+D8/ErUkg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 129/132] ext4: only check dquot_initialize_needed() when debugging
+        patches@lists.linux.dev, Trevor Wu <trevor.wu@mediatek.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 131/160] ASoC: mediatek: mt8188: fix use-after-free in driver remove path
 Date:   Mon, 12 Jun 2023 12:27:43 +0200
-Message-ID: <20230612101716.054615010@linuxfoundation.org>
+Message-ID: <20230612101721.063418063@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -52,47 +57,165 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Theodore Ts'o <tytso@mit.edu>
+From: Trevor Wu <trevor.wu@mediatek.com>
 
-commit dea9d8f7643fab07bf89a1155f1f94f37d096a5e upstream.
+[ Upstream commit fd67a7a1a22ce47fcbc094c4b6e164c34c652cbe ]
 
-ext4_xattr_block_set() relies on its caller to call dquot_initialize()
-on the inode.  To assure that this has happened there are WARN_ON
-checks.  Unfortunately, this is subject to false positives if there is
-an antagonist thread which is flipping the file system at high rates
-between r/o and rw.  So only do the check if EXT4_XATTR_DEBUG is
-enabled.
+During mt8188_afe_init_clock(), mt8188_audsys_clk_register() was called
+followed by several other devm functions. The caller of
+mt8188_afe_init_clock() utilized devm_add_action_or_reset() to call
+mt8188_afe_deinit_clock(). However, the order was incorrect, causing a
+use-after-free issue during remove time.
 
-Link: https://lore.kernel.org/r/20230608044056.GA1418535@mit.edu
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+At probe time, the order of calls was:
+1. mt8188_audsys_clk_register
+2. afe_priv->clk = devm_kcalloc
+3. afe_priv->clk[i] = devm_clk_get
+
+At remove time, the order of calls was:
+1. mt8188_audsys_clk_unregister
+3. free afe_priv->clk[i]
+2. free afe_priv->clk
+
+To resolve the problem, it's necessary to move devm_add_action_or_reset()
+to the appropriate position so that the remove order can be 3->2->1.
+
+Fixes: f6b026479b13 ("ASoC: mediatek: mt8188: support audio clock control")
+Signed-off-by: Trevor Wu <trevor.wu@mediatek.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230601033318.10408-2-trevor.wu@mediatek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/xattr.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/soc/mediatek/mt8188/mt8188-afe-clk.c    |  7 ---
+ sound/soc/mediatek/mt8188/mt8188-afe-clk.h    |  1 -
+ sound/soc/mediatek/mt8188/mt8188-afe-pcm.c    |  4 --
+ sound/soc/mediatek/mt8188/mt8188-audsys-clk.c | 47 ++++++++++---------
+ sound/soc/mediatek/mt8188/mt8188-audsys-clk.h |  1 -
+ 5 files changed, 24 insertions(+), 36 deletions(-)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -2006,8 +2006,9 @@ inserted:
- 			else {
- 				u32 ref;
+diff --git a/sound/soc/mediatek/mt8188/mt8188-afe-clk.c b/sound/soc/mediatek/mt8188/mt8188-afe-clk.c
+index 743d6a162cb9a..0fb97517f82c6 100644
+--- a/sound/soc/mediatek/mt8188/mt8188-afe-clk.c
++++ b/sound/soc/mediatek/mt8188/mt8188-afe-clk.c
+@@ -418,13 +418,6 @@ int mt8188_afe_init_clock(struct mtk_base_afe *afe)
+ 	return 0;
+ }
  
-+#ifdef EXT4_XATTR_DEBUG
- 				WARN_ON_ONCE(dquot_initialize_needed(inode));
+-void mt8188_afe_deinit_clock(void *priv)
+-{
+-	struct mtk_base_afe *afe = priv;
 -
-+#endif
- 				/* The old block is released after updating
- 				   the inode. */
- 				error = dquot_alloc_block(inode,
-@@ -2070,8 +2071,9 @@ inserted:
- 			/* We need to allocate a new block */
- 			ext4_fsblk_t goal, block;
+-	mt8188_audsys_clk_unregister(afe);
+-}
+-
+ int mt8188_afe_enable_clk(struct mtk_base_afe *afe, struct clk *clk)
+ {
+ 	int ret;
+diff --git a/sound/soc/mediatek/mt8188/mt8188-afe-clk.h b/sound/soc/mediatek/mt8188/mt8188-afe-clk.h
+index 084fdfb1d877a..a4203a87a1e35 100644
+--- a/sound/soc/mediatek/mt8188/mt8188-afe-clk.h
++++ b/sound/soc/mediatek/mt8188/mt8188-afe-clk.h
+@@ -100,7 +100,6 @@ int mt8188_afe_get_mclk_source_clk_id(int sel);
+ int mt8188_afe_get_mclk_source_rate(struct mtk_base_afe *afe, int apll);
+ int mt8188_afe_get_default_mclk_source_by_rate(int rate);
+ int mt8188_afe_init_clock(struct mtk_base_afe *afe);
+-void mt8188_afe_deinit_clock(void *priv);
+ int mt8188_afe_enable_clk(struct mtk_base_afe *afe, struct clk *clk);
+ void mt8188_afe_disable_clk(struct mtk_base_afe *afe, struct clk *clk);
+ int mt8188_afe_set_clk_rate(struct mtk_base_afe *afe, struct clk *clk,
+diff --git a/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c b/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c
+index e8e84de865422..45ab6e2829b7a 100644
+--- a/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c
++++ b/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c
+@@ -3185,10 +3185,6 @@ static int mt8188_afe_pcm_dev_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "init clock error");
  
-+#ifdef EXT4_XATTR_DEBUG
- 			WARN_ON_ONCE(dquot_initialize_needed(inode));
+-	ret = devm_add_action_or_reset(dev, mt8188_afe_deinit_clock, (void *)afe);
+-	if (ret)
+-		return ret;
 -
-+#endif
- 			goal = ext4_group_first_block_no(sb,
- 						EXT4_I(inode)->i_block_group);
- 			block = ext4_new_meta_blocks(handle, inode, goal, 0,
+ 	spin_lock_init(&afe_priv->afe_ctrl_lock);
+ 
+ 	mutex_init(&afe->irq_alloc_lock);
+diff --git a/sound/soc/mediatek/mt8188/mt8188-audsys-clk.c b/sound/soc/mediatek/mt8188/mt8188-audsys-clk.c
+index be1c53bf47298..c796ad8b62eea 100644
+--- a/sound/soc/mediatek/mt8188/mt8188-audsys-clk.c
++++ b/sound/soc/mediatek/mt8188/mt8188-audsys-clk.c
+@@ -138,6 +138,29 @@ static const struct afe_gate aud_clks[CLK_AUD_NR_CLK] = {
+ 	GATE_AUD6(CLK_AUD_GASRC11, "aud_gasrc11", "top_asm_h", 11),
+ };
+ 
++static void mt8188_audsys_clk_unregister(void *data)
++{
++	struct mtk_base_afe *afe = data;
++	struct mt8188_afe_private *afe_priv = afe->platform_priv;
++	struct clk *clk;
++	struct clk_lookup *cl;
++	int i;
++
++	if (!afe_priv)
++		return;
++
++	for (i = 0; i < CLK_AUD_NR_CLK; i++) {
++		cl = afe_priv->lookup[i];
++		if (!cl)
++			continue;
++
++		clk = cl->clk;
++		clk_unregister_gate(clk);
++
++		clkdev_drop(cl);
++	}
++}
++
+ int mt8188_audsys_clk_register(struct mtk_base_afe *afe)
+ {
+ 	struct mt8188_afe_private *afe_priv = afe->platform_priv;
+@@ -179,27 +202,5 @@ int mt8188_audsys_clk_register(struct mtk_base_afe *afe)
+ 		afe_priv->lookup[i] = cl;
+ 	}
+ 
+-	return 0;
+-}
+-
+-void mt8188_audsys_clk_unregister(struct mtk_base_afe *afe)
+-{
+-	struct mt8188_afe_private *afe_priv = afe->platform_priv;
+-	struct clk *clk;
+-	struct clk_lookup *cl;
+-	int i;
+-
+-	if (!afe_priv)
+-		return;
+-
+-	for (i = 0; i < CLK_AUD_NR_CLK; i++) {
+-		cl = afe_priv->lookup[i];
+-		if (!cl)
+-			continue;
+-
+-		clk = cl->clk;
+-		clk_unregister_gate(clk);
+-
+-		clkdev_drop(cl);
+-	}
++	return devm_add_action_or_reset(afe->dev, mt8188_audsys_clk_unregister, afe);
+ }
+diff --git a/sound/soc/mediatek/mt8188/mt8188-audsys-clk.h b/sound/soc/mediatek/mt8188/mt8188-audsys-clk.h
+index 6c5f463ad7e4d..45b0948c4a06e 100644
+--- a/sound/soc/mediatek/mt8188/mt8188-audsys-clk.h
++++ b/sound/soc/mediatek/mt8188/mt8188-audsys-clk.h
+@@ -10,6 +10,5 @@
+ #define _MT8188_AUDSYS_CLK_H_
+ 
+ int mt8188_audsys_clk_register(struct mtk_base_afe *afe);
+-void mt8188_audsys_clk_unregister(struct mtk_base_afe *afe);
+ 
+ #endif
+-- 
+2.39.2
+
 
 
