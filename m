@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31D5E72C1AD
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:59:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 808AC72C1BB
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:00:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237364AbjFLK7l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:59:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35200 "EHLO
+        id S236552AbjFLLAG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:00:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236081AbjFLK7A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:59:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84ACF59E8
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:46:10 -0700 (PDT)
+        with ESMTP id S237101AbjFLK7j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:59:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88283F7FC
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:46:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 144E66244B
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:46:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C220C433EF;
-        Mon, 12 Jun 2023 10:46:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1835C61297
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:46:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE5DC433EF;
+        Mon, 12 Jun 2023 10:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566769;
-        bh=Jmd9PddxIGhsDHBKw2fP/fDV+0yKxbPgZT39R8BvbWA=;
+        s=korg; t=1686566798;
+        bh=MaCiYC8us4E1K6czgWqmYlgjJ/SGB8Z7jdGM6pXE8SM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H8kJnfRegLvrJNvBCXb2NisKI/thY5oYrFZXy54k8cD0B8v1q9wlq9o7BubCsAS+i
-         GiR56UXkHAWgjCaXT8IP01VBreMEG01QaIHw9KFrsNzBNsryFi8SciYkca6oJFWD8H
-         2d3JtxHLPxAecUgin83C3eLdXZmPXiiSSQ0RIXyk=
+        b=SJWnCZlUs4ru8Ku/W7NATso/B0Q4s3HrEVF7tFyRVf7bBG+cHsSdRbc8UNFnENeP4
+         XIjwXRKAKDPDZiv8C6EoYZTjeBAy70qNKx+NYYLMSRxT6zv8UA+qH1S6qBDAjQfdux
+         JtuNDeXJvHuTgQ/TUdUSlsklOT7pF0+BjehvnJzs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 017/160] net/sched: fq_pie: ensure reasonable TCA_FQ_PIE_QUANTUM values
-Date:   Mon, 12 Jun 2023 12:25:49 +0200
-Message-ID: <20230612101715.859961570@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 018/160] drm/i915: Explain the magic numbers for AUX SYNC/precharge length
+Date:   Mon, 12 Jun 2023 12:25:50 +0200
+Message-ID: <20230612101715.902293702@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
 References: <20230612101715.129581706@linuxfoundation.org>
@@ -46,8 +45,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,127 +55,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit cd2b8113c2e8b9f5a88a942e1eaca61eba401b85 ]
+[ Upstream commit 26bfc3f36f2104c174dfc72415547d5c28ef3f1c ]
 
-We got multiple syzbot reports, all duplicates of the following [1]
+Replace the hardcoded final numbers in the AUX SYNC/precharge
+setup, and derive those from numbers from the (e)DP specs.
 
-syzbot managed to install fq_pie with a zero TCA_FQ_PIE_QUANTUM,
-thus triggering infinite loops.
+The new functions can serve as the single point of truth for
+the number of SYNC pulses we use.
 
-Use limits similar to sch_fq, with commits
-3725a269815b ("pkt_sched: fq: avoid hang when quantum 0") and
-d9e15a273306 ("pkt_sched: fq: do not accept silly TCA_FQ_QUANTUM")
-
-[1]
-watchdog: BUG: soft lockup - CPU#0 stuck for 26s! [swapper/0:0]
-Modules linked in:
-irq event stamp: 172817
-hardirqs last enabled at (172816): [<ffff80001242fde4>] __el1_irq arch/arm64/kernel/entry-common.c:476 [inline]
-hardirqs last enabled at (172816): [<ffff80001242fde4>] el1_interrupt+0x58/0x68 arch/arm64/kernel/entry-common.c:486
-hardirqs last disabled at (172817): [<ffff80001242fdb0>] __el1_irq arch/arm64/kernel/entry-common.c:468 [inline]
-hardirqs last disabled at (172817): [<ffff80001242fdb0>] el1_interrupt+0x24/0x68 arch/arm64/kernel/entry-common.c:486
-softirqs last enabled at (167634): [<ffff800008020c1c>] softirq_handle_end kernel/softirq.c:414 [inline]
-softirqs last enabled at (167634): [<ffff800008020c1c>] __do_softirq+0xac0/0xd54 kernel/softirq.c:600
-softirqs last disabled at (167701): [<ffff80000802a660>] ____do_softirq+0x14/0x20 arch/arm64/kernel/irq.c:80
-CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.4.0-rc3-syzkaller-geb0f1697d729 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/28/2023
-pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : fq_pie_qdisc_dequeue+0x10c/0x8ac net/sched/sch_fq_pie.c:246
-lr : fq_pie_qdisc_dequeue+0xe4/0x8ac net/sched/sch_fq_pie.c:240
-sp : ffff800008007210
-x29: ffff800008007280 x28: ffff0000c86f7890 x27: ffff0000cb20c2e8
-x26: ffff0000cb20c2f0 x25: dfff800000000000 x24: ffff0000cb20c2e0
-x23: ffff0000c86f7880 x22: 0000000000000040 x21: 1fffe000190def10
-x20: ffff0000cb20c2e0 x19: ffff0000cb20c2e0 x18: ffff800008006e60
-x17: 0000000000000000 x16: ffff80000850af6c x15: 0000000000000302
-x14: 0000000000000100 x13: 0000000000000000 x12: 0000000000000001
-x11: 0000000000000302 x10: 0000000000000100 x9 : 0000000000000000
-x8 : 0000000000000000 x7 : ffff80000841c468 x6 : 0000000000000000
-x5 : 0000000000000001 x4 : 0000000000000001 x3 : 0000000000000000
-x2 : ffff0000cb20c2e0 x1 : ffff0000cb20c2e0 x0 : 0000000000000001
-Call trace:
-fq_pie_qdisc_dequeue+0x10c/0x8ac net/sched/sch_fq_pie.c:246
-dequeue_skb net/sched/sch_generic.c:292 [inline]
-qdisc_restart net/sched/sch_generic.c:397 [inline]
-__qdisc_run+0x1fc/0x231c net/sched/sch_generic.c:415
-__dev_xmit_skb net/core/dev.c:3868 [inline]
-__dev_queue_xmit+0xc80/0x3318 net/core/dev.c:4210
-dev_queue_xmit include/linux/netdevice.h:3085 [inline]
-neigh_connected_output+0x2f8/0x38c net/core/neighbour.c:1581
-neigh_output include/net/neighbour.h:544 [inline]
-ip6_finish_output2+0xd60/0x1a1c net/ipv6/ip6_output.c:134
-__ip6_finish_output net/ipv6/ip6_output.c:195 [inline]
-ip6_finish_output+0x538/0x8c8 net/ipv6/ip6_output.c:206
-NF_HOOK_COND include/linux/netfilter.h:292 [inline]
-ip6_output+0x270/0x594 net/ipv6/ip6_output.c:227
-dst_output include/net/dst.h:458 [inline]
-NF_HOOK include/linux/netfilter.h:303 [inline]
-ndisc_send_skb+0xc30/0x1790 net/ipv6/ndisc.c:508
-ndisc_send_rs+0x47c/0x5d4 net/ipv6/ndisc.c:718
-addrconf_rs_timer+0x300/0x58c net/ipv6/addrconf.c:3936
-call_timer_fn+0x19c/0x8cc kernel/time/timer.c:1700
-expire_timers kernel/time/timer.c:1751 [inline]
-__run_timers+0x55c/0x734 kernel/time/timer.c:2022
-run_timer_softirq+0x7c/0x114 kernel/time/timer.c:2035
-__do_softirq+0x2d0/0xd54 kernel/softirq.c:571
-____do_softirq+0x14/0x20 arch/arm64/kernel/irq.c:80
-call_on_irq_stack+0x24/0x4c arch/arm64/kernel/entry.S:882
-do_softirq_own_stack+0x20/0x2c arch/arm64/kernel/irq.c:85
-invoke_softirq kernel/softirq.c:452 [inline]
-__irq_exit_rcu+0x28c/0x534 kernel/softirq.c:650
-irq_exit_rcu+0x14/0x84 kernel/softirq.c:662
-__el1_irq arch/arm64/kernel/entry-common.c:472 [inline]
-el1_interrupt+0x38/0x68 arch/arm64/kernel/entry-common.c:486
-el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/entry-common.c:491
-el1h_64_irq+0x64/0x68 arch/arm64/kernel/entry.S:587
-__daif_local_irq_enable arch/arm64/include/asm/irqflags.h:33 [inline]
-arch_local_irq_enable+0x8/0xc arch/arm64/include/asm/irqflags.h:55
-cpuidle_idle_call kernel/sched/idle.c:170 [inline]
-do_idle+0x1f0/0x4e8 kernel/sched/idle.c:282
-cpu_startup_entry+0x24/0x28 kernel/sched/idle.c:379
-rest_init+0x2dc/0x2f4 init/main.c:735
-start_kernel+0x0/0x55c init/main.c:834
-start_kernel+0x3f0/0x55c init/main.c:1088
-__primary_switched+0xb8/0xc0 arch/arm64/kernel/head.S:523
-
-Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: Jouni Högander <jouni.hogander@intel.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230329172434.18744-2-ville.syrjala@linux.intel.com
+Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
+Stable-dep-of: 2d6f2f79e065 ("drm/i915: Use 18 fast wake AUX sync len")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_fq_pie.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_dp_aux.c | 32 +++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 3 deletions(-)
 
-diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
-index 6980796d435d9..c699e5095607d 100644
---- a/net/sched/sch_fq_pie.c
-+++ b/net/sched/sch_fq_pie.c
-@@ -201,6 +201,11 @@ static int fq_pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	return NET_XMIT_CN;
+diff --git a/drivers/gpu/drm/i915/display/intel_dp_aux.c b/drivers/gpu/drm/i915/display/intel_dp_aux.c
+index 30c98810e28bb..2ffd68b07984b 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp_aux.c
++++ b/drivers/gpu/drm/i915/display/intel_dp_aux.c
+@@ -117,6 +117,32 @@ static u32 skl_get_aux_clock_divider(struct intel_dp *intel_dp, int index)
+ 	return index ? 0 : 1;
  }
  
-+static struct netlink_range_validation fq_pie_q_range = {
-+	.min = 1,
-+	.max = 1 << 20,
-+};
++static int intel_dp_aux_sync_len(void)
++{
++	int precharge = 16; /* 10-16 */
++	int preamble = 16;
 +
- static const struct nla_policy fq_pie_policy[TCA_FQ_PIE_MAX + 1] = {
- 	[TCA_FQ_PIE_LIMIT]		= {.type = NLA_U32},
- 	[TCA_FQ_PIE_FLOWS]		= {.type = NLA_U32},
-@@ -208,7 +213,8 @@ static const struct nla_policy fq_pie_policy[TCA_FQ_PIE_MAX + 1] = {
- 	[TCA_FQ_PIE_TUPDATE]		= {.type = NLA_U32},
- 	[TCA_FQ_PIE_ALPHA]		= {.type = NLA_U32},
- 	[TCA_FQ_PIE_BETA]		= {.type = NLA_U32},
--	[TCA_FQ_PIE_QUANTUM]		= {.type = NLA_U32},
-+	[TCA_FQ_PIE_QUANTUM]		=
-+			NLA_POLICY_FULL_RANGE(NLA_U32, &fq_pie_q_range),
- 	[TCA_FQ_PIE_MEMORY_LIMIT]	= {.type = NLA_U32},
- 	[TCA_FQ_PIE_ECN_PROB]		= {.type = NLA_U32},
- 	[TCA_FQ_PIE_ECN]		= {.type = NLA_U32},
++	return precharge + preamble;
++}
++
++static int intel_dp_aux_fw_sync_len(void)
++{
++	int precharge = 16; /* 10-16 */
++	int preamble = 8;
++
++	return precharge + preamble;
++}
++
++static int g4x_dp_aux_precharge_len(void)
++{
++	int precharge_min = 10;
++	int preamble = 16;
++
++	/* HW wants the length of the extra precharge in 2us units */
++	return (intel_dp_aux_sync_len() -
++		precharge_min - preamble) / 2;
++}
++
+ static u32 g4x_get_aux_send_ctl(struct intel_dp *intel_dp,
+ 				int send_bytes,
+ 				u32 aux_clock_divider)
+@@ -139,7 +165,7 @@ static u32 g4x_get_aux_send_ctl(struct intel_dp *intel_dp,
+ 	       timeout |
+ 	       DP_AUX_CH_CTL_RECEIVE_ERROR |
+ 	       (send_bytes << DP_AUX_CH_CTL_MESSAGE_SIZE_SHIFT) |
+-	       (3 << DP_AUX_CH_CTL_PRECHARGE_2US_SHIFT) |
++	       (g4x_dp_aux_precharge_len() << DP_AUX_CH_CTL_PRECHARGE_2US_SHIFT) |
+ 	       (aux_clock_divider << DP_AUX_CH_CTL_BIT_CLOCK_2X_SHIFT);
+ }
+ 
+@@ -163,8 +189,8 @@ static u32 skl_get_aux_send_ctl(struct intel_dp *intel_dp,
+ 	      DP_AUX_CH_CTL_TIME_OUT_MAX |
+ 	      DP_AUX_CH_CTL_RECEIVE_ERROR |
+ 	      (send_bytes << DP_AUX_CH_CTL_MESSAGE_SIZE_SHIFT) |
+-	      DP_AUX_CH_CTL_FW_SYNC_PULSE_SKL(24) |
+-	      DP_AUX_CH_CTL_SYNC_PULSE_SKL(32);
++	      DP_AUX_CH_CTL_FW_SYNC_PULSE_SKL(intel_dp_aux_fw_sync_len()) |
++	      DP_AUX_CH_CTL_SYNC_PULSE_SKL(intel_dp_aux_sync_len());
+ 
+ 	if (intel_tc_port_in_tbt_alt_mode(dig_port))
+ 		ret |= DP_AUX_CH_CTL_TBT_IO;
 -- 
 2.39.2
 
