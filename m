@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D5E372BFBC
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:46:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CBA772C0EF
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235410AbjFLKqy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:46:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52560 "EHLO
+        id S236666AbjFLKz2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:55:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235001AbjFLKqj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:46:39 -0400
+        with ESMTP id S236811AbjFLKzF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:55:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F1434200
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:31:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DBB03AA5
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:42:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C5DC9623DD
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:31:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D53E3C433D2;
-        Mon, 12 Jun 2023 10:31:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F01BA623CE
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:41:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14049C433D2;
+        Mon, 12 Jun 2023 10:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565865;
-        bh=65BghM/jN+5sisB6GEQqGp8owdsQjsoXAnyDV95OwcE=;
+        s=korg; t=1686566519;
+        bh=tM68sGVqE0tz5h7mYBc1/1KjITyctaa/18xD0/vfC8Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jzXqW57NBCsfoV5R1x9EgrFe/s1weAB8gPj8Wg/Y4pGt+WYyjkiBhQGZR2aoswJPT
-         /L0Tzmfke/KOVH0YtfR2lfoCeMjOWbI2zCvilt7CH+6vsQG11FaC3KiyJCcfGhLof0
-         eRkqP+HxlT6KvEOiqvO+MLYaxmgwPY5M9BsfGjIA=
+        b=MV4RGlOEsQvV/M1HjtcIBp1c0M5AQD2aSEVhQWih7UG9T0H8tYZMIZ49JGHAFiiD1
+         FW0VdaDIU2qFwHfrqezQMonVLiAle5TWZYyUwNA0mqHLmjVvmxGv8LfR5os6UASA26
+         273db1nVD1gf5yg/FkLGI9SAlNeANtarKbtTFObo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Stanislav Fomichev <sdf@google.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 13/45] rfs: annotate lockless accesses to sk->sk_rxhash
+Subject: [PATCH 6.1 033/132] selftests/bpf: Verify optval=NULL case
 Date:   Mon, 12 Jun 2023 12:26:07 +0200
-Message-ID: <20230612101655.186124741@linuxfoundation.org>
+Message-ID: <20230612101711.741227665@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
-References: <20230612101654.644983109@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,71 +54,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Stanislav Fomichev <sdf@google.com>
 
-[ Upstream commit 1e5c647c3f6d4f8497dedcd226204e1880e0ffb3 ]
+[ Upstream commit 833d67ecdc5f35f1ebf59d0fccc1ce771434be9c ]
 
-Add READ_ONCE()/WRITE_ONCE() on accesses to sk->sk_rxhash.
+Make sure we get optlen exported instead of getting EFAULT.
 
-This also prevents a (smart ?) compiler to remove the condition in:
-
-if (sk->sk_rxhash != newval)
-	sk->sk_rxhash = newval;
-
-We need the condition to avoid dirtying a shared cache line.
-
-Fixes: fec5e652e58f ("rfs: Receive Flow Steering")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Stanislav Fomichev <sdf@google.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20230418225343.553806-3-sdf@google.com
+Stable-dep-of: 69844e335d8c ("selftests/bpf: Fix sockopt_sk selftest")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sock.h | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ .../selftests/bpf/prog_tests/sockopt_sk.c     | 28 +++++++++++++++++++
+ .../testing/selftests/bpf/progs/sockopt_sk.c  | 12 ++++++++
+ 2 files changed, 40 insertions(+)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 06fdb8f207b69..87e57f81ee82b 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -997,8 +997,12 @@ static inline void sock_rps_record_flow(const struct sock *sk)
- 		 * OR	an additional socket flag
- 		 * [1] : sk_state and sk_prot are in the same cache line.
- 		 */
--		if (sk->sk_state == TCP_ESTABLISHED)
--			sock_rps_record_flow_hash(sk->sk_rxhash);
-+		if (sk->sk_state == TCP_ESTABLISHED) {
-+			/* This READ_ONCE() is paired with the WRITE_ONCE()
-+			 * from sock_rps_save_rxhash() and sock_rps_reset_rxhash().
-+			 */
-+			sock_rps_record_flow_hash(READ_ONCE(sk->sk_rxhash));
-+		}
+diff --git a/tools/testing/selftests/bpf/prog_tests/sockopt_sk.c b/tools/testing/selftests/bpf/prog_tests/sockopt_sk.c
+index 60d952719d275..4512dd808c335 100644
+--- a/tools/testing/selftests/bpf/prog_tests/sockopt_sk.c
++++ b/tools/testing/selftests/bpf/prog_tests/sockopt_sk.c
+@@ -3,6 +3,7 @@
+ #include "cgroup_helpers.h"
+ 
+ #include <linux/tcp.h>
++#include <linux/netlink.h>
+ #include "sockopt_sk.skel.h"
+ 
+ #ifndef SOL_TCP
+@@ -183,6 +184,33 @@ static int getsetsockopt(void)
+ 		goto err;
  	}
- #endif
- }
-@@ -1007,15 +1011,19 @@ static inline void sock_rps_save_rxhash(struct sock *sk,
- 					const struct sk_buff *skb)
- {
- #ifdef CONFIG_RPS
--	if (unlikely(sk->sk_rxhash != skb->hash))
--		sk->sk_rxhash = skb->hash;
-+	/* The following WRITE_ONCE() is paired with the READ_ONCE()
-+	 * here, and another one in sock_rps_record_flow().
-+	 */
-+	if (unlikely(READ_ONCE(sk->sk_rxhash) != skb->hash))
-+		WRITE_ONCE(sk->sk_rxhash, skb->hash);
- #endif
- }
  
- static inline void sock_rps_reset_rxhash(struct sock *sk)
- {
- #ifdef CONFIG_RPS
--	sk->sk_rxhash = 0;
-+	/* Paired with READ_ONCE() in sock_rps_record_flow() */
-+	WRITE_ONCE(sk->sk_rxhash, 0);
- #endif
- }
++	/* optval=NULL case is handled correctly */
++
++	close(fd);
++	fd = socket(AF_NETLINK, SOCK_RAW, 0);
++	if (fd < 0) {
++		log_err("Failed to create AF_NETLINK socket");
++		return -1;
++	}
++
++	buf.u32 = 1;
++	optlen = sizeof(__u32);
++	err = setsockopt(fd, SOL_NETLINK, NETLINK_ADD_MEMBERSHIP, &buf, optlen);
++	if (err) {
++		log_err("Unexpected getsockopt(NETLINK_ADD_MEMBERSHIP) err=%d errno=%d",
++			err, errno);
++		goto err;
++	}
++
++	optlen = 0;
++	err = getsockopt(fd, SOL_NETLINK, NETLINK_LIST_MEMBERSHIPS, NULL, &optlen);
++	if (err) {
++		log_err("Unexpected getsockopt(NETLINK_LIST_MEMBERSHIPS) err=%d errno=%d",
++			err, errno);
++		goto err;
++	}
++	ASSERT_EQ(optlen, 4, "Unexpected NETLINK_LIST_MEMBERSHIPS value");
++
+ 	free(big_buf);
+ 	close(fd);
+ 	return 0;
+diff --git a/tools/testing/selftests/bpf/progs/sockopt_sk.c b/tools/testing/selftests/bpf/progs/sockopt_sk.c
+index c8d810010a946..fe1df4cd206eb 100644
+--- a/tools/testing/selftests/bpf/progs/sockopt_sk.c
++++ b/tools/testing/selftests/bpf/progs/sockopt_sk.c
+@@ -32,6 +32,12 @@ int _getsockopt(struct bpf_sockopt *ctx)
+ 	__u8 *optval_end = ctx->optval_end;
+ 	__u8 *optval = ctx->optval;
+ 	struct sockopt_sk *storage;
++	struct bpf_sock *sk;
++
++	/* Bypass AF_NETLINK. */
++	sk = ctx->sk;
++	if (sk && sk->family == AF_NETLINK)
++		return 1;
  
+ 	/* Make sure bpf_get_netns_cookie is callable.
+ 	 */
+@@ -131,6 +137,12 @@ int _setsockopt(struct bpf_sockopt *ctx)
+ 	__u8 *optval_end = ctx->optval_end;
+ 	__u8 *optval = ctx->optval;
+ 	struct sockopt_sk *storage;
++	struct bpf_sock *sk;
++
++	/* Bypass AF_NETLINK. */
++	sk = ctx->sk;
++	if (sk && sk->family == AF_NETLINK)
++		return 1;
+ 
+ 	/* Make sure bpf_get_netns_cookie is callable.
+ 	 */
 -- 
 2.39.2
 
