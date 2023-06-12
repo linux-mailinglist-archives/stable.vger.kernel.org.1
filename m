@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D278472C07D
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:53:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DC5472C1B2
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:00:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236030AbjFLKxB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:53:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56938 "EHLO
+        id S236281AbjFLLAC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:00:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235796AbjFLKwq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:52:46 -0400
+        with ESMTP id S236930AbjFLK7K (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:59:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8ED13C28
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:37:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66C98F7D6
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:46:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 98FAA60C2D
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:37:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B208EC433EF;
-        Mon, 12 Jun 2023 10:37:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EC5B962424
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:46:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D818C433D2;
+        Mon, 12 Jun 2023 10:46:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566226;
-        bh=oXResC91VdN7eCvf90K4ovTtAdv43tdV262UchwJIrM=;
+        s=korg; t=1686566785;
+        bh=n4mUpVu/UfJ4WB4OEWIhTa0M6oY7bCWxe0/WSIusqkU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iN1U30OH9Eulgph+zyCvwtyQAtgXIgDgzEYjrtUS/BZUyj0sEX5n/wQZADnZdWb2+
-         etdxAgvArYxSxOqTffTkpT2GeACDajF4AhTLbtEZXuQZ89q26YOmbApL5iBgpzVHnE
-         3pt2tZcVDIc6AzHWusOW37AIPySMU/E8o7Du5Ho8=
+        b=nZMJYiFkNZK4ZvpC79xFTX3f9CWemmj6JrwRKngMswP40IrR8wkFl/5par23fxHRa
+         skNvXHcNH6UC3Vp3u5gq7KAeRkx4AvwXqXFxxnoAYEozEbptB8nMy269FqA1qJ4uCq
+         xeMBFOWSJ9HCM7JlURcpwPTbhMD0MWylqNQP2DvU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lorenzo Bianconi <lorenzo@kernel.org>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 14/91] wifi: mt76: mt7615: fix possible race in mt7615_mac_sta_poll
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 031/160] wifi: cfg80211: reject bad AP MLD address
 Date:   Mon, 12 Jun 2023 12:26:03 +0200
-Message-ID: <20230612101702.686974767@linuxfoundation.org>
+Message-ID: <20230612101716.468019096@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
-References: <20230612101702.085813286@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,38 +54,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 30bc32c7c1f975cc3c14e1c7dc437266311282cf ]
+[ Upstream commit 727073ca5e55ab6a07df316250be8a12606e8677 ]
 
-Grab sta_poll_lock spinlock in mt7615_mac_sta_poll routine in order to
-avoid possible races with mt7615_mac_add_txs() or mt7615_mac_fill_rx()
-removing msta pointer from sta_poll_list.
+When trying to authenticate, if the AP MLD address isn't
+a valid address, mac80211 can throw a warning. Avoid that
+by rejecting such addresses.
 
-Fixes: a621372a04ac ("mt76: mt7615: rework mt7615_mac_sta_poll for usb code")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/48b23404b759de4f1db2ef85975c72a4aeb1097c.1684938695.git.lorenzo@kernel.org
+Fixes: d648c23024bd ("wifi: nl80211: support MLO in auth/assoc")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230604120651.89188912bd1d.I8dbc6c8ee0cb766138803eec59508ef4ce477709@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/wireless/nl80211.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-index 37bc307c19719..2f0ba8a75d71b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
-@@ -869,7 +869,10 @@ void mt7615_mac_sta_poll(struct mt7615_dev *dev)
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 4f63059efd813..1922fccb96ace 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -10642,6 +10642,8 @@ static int nl80211_authenticate(struct sk_buff *skb, struct genl_info *info)
+ 		if (!info->attrs[NL80211_ATTR_MLD_ADDR])
+ 			return -EINVAL;
+ 		req.ap_mld_addr = nla_data(info->attrs[NL80211_ATTR_MLD_ADDR]);
++		if (!is_valid_ether_addr(req.ap_mld_addr))
++			return -EINVAL;
+ 	}
  
- 		msta = list_first_entry(&sta_poll_list, struct mt7615_sta,
- 					poll_list);
-+
-+		spin_lock_bh(&dev->sta_poll_lock);
- 		list_del_init(&msta->poll_list);
-+		spin_unlock_bh(&dev->sta_poll_lock);
- 
- 		addr = mt7615_mac_wtbl_addr(dev, msta->wcid.idx) + 19 * 4;
- 
+ 	req.bss = cfg80211_get_bss(&rdev->wiphy, chan, bssid, ssid, ssid_len,
 -- 
 2.39.2
 
