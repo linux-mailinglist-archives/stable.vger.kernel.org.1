@@ -2,54 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 819F972C1DB
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:01:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98AB372C00F
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:49:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236979AbjFLLBD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:01:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33204 "EHLO
+        id S229480AbjFLKt2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:49:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237066AbjFLLAs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:00:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5928544A8
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:47:37 -0700 (PDT)
+        with ESMTP id S229507AbjFLKtO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:49:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F28D5FE7
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:33:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E298562492
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:47:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0302FC4339E;
-        Mon, 12 Jun 2023 10:47:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A129623F2
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:33:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91734C4339E;
+        Mon, 12 Jun 2023 10:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566856;
-        bh=SQRgxqwdRxPTZ/X4WsCTGtV9w07LTi8dQHkn5VkWKjs=;
+        s=korg; t=1686566033;
+        bh=AcM5l9VSuN3Evni/WepS9pVffE4Dx8ME2ASCLrlYkD8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mvF2TtTqrWeC0x7M7oZTcjZ72S/j0yQEiwIGgQ2StKLqeK8IhDKkk8M7J5ZCEJpl/
-         6qGw0JKLVsDeqr2atFJa6EQXvwoizORJh8VdDhmkof4GMDtBfrGLENliT1aTaSwnPM
-         cSfC1dfh2TXL7J8UiMCxSYyNZcMj7m+xZQGESM7s=
+        b=ngt/W6YeW1gtYI9KtBnodivJ0M732BipCMUZsoMw4Lcd60GFii0Jp+2OCHUQ8sWis
+         HF7GN75KUzn8E5Pqra2qMjYeHL6KYn94v4Vy3HyA04lLBRcJW2QCO8YhxpsVLXvZ2c
+         OYx/ckZ44sMIVLxGqCNIc+BKxu3P3CXS+3uaViuw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Anastasios Papagiannis <tasos.papagiannnis@gmail.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Stanislav Fomichev <sdf@google.com>,
-        Yonghong Song <yhs@fb.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 058/160] bpf: Add extra path pointer check to d_path helper
+        patches@lists.linux.dev, Ai Chao <aichao@kylinos.cn>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 38/68] ALSA: hda/realtek: Add a quirk for HP Slim Desktop S01
 Date:   Mon, 12 Jun 2023 12:26:30 +0200
-Message-ID: <20230612101717.671091981@linuxfoundation.org>
+Message-ID: <20230612101659.982672526@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
+References: <20230612101658.437327280@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,98 +53,30 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Ai Chao <aichao@kylinos.cn>
 
-[ Upstream commit f46fab0e36e611a2389d3843f34658c849b6bd60 ]
+commit 527c356b51f3ddee02c9ed5277538f85e30a2cdc upstream.
 
-Anastasios reported crash on stable 5.15 kernel with following
-BPF attached to lsm hook:
+Add a quirk for HP Slim Desktop S01 to fixup headset MIC no presence.
 
-  SEC("lsm.s/bprm_creds_for_exec")
-  int BPF_PROG(bprm_creds_for_exec, struct linux_binprm *bprm)
-  {
-          struct path *path = &bprm->executable->f_path;
-          char p[128] = { 0 };
-
-          bpf_d_path(path, p, 128);
-          return 0;
-  }
-
-But bprm->executable can be NULL, so bpf_d_path call will crash:
-
-  BUG: kernel NULL pointer dereference, address: 0000000000000018
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: 0000 [#1] PREEMPT SMP DEBUG_PAGEALLOC NOPTI
-  ...
-  RIP: 0010:d_path+0x22/0x280
-  ...
-  Call Trace:
-   <TASK>
-   bpf_d_path+0x21/0x60
-   bpf_prog_db9cf176e84498d9_bprm_creds_for_exec+0x94/0x99
-   bpf_trampoline_6442506293_0+0x55/0x1000
-   bpf_lsm_bprm_creds_for_exec+0x5/0x10
-   security_bprm_creds_for_exec+0x29/0x40
-   bprm_execve+0x1c1/0x900
-   do_execveat_common.isra.0+0x1af/0x260
-   __x64_sys_execve+0x32/0x40
-
-It's problem for all stable trees with bpf_d_path helper, which was
-added in 5.9.
-
-This issue is fixed in current bpf code, where we identify and mark
-trusted pointers, so the above code would fail even to load.
-
-For the sake of the stable trees and to workaround potentially broken
-verifier in the future, adding the code that reads the path object from
-the passed pointer and verifies it's valid in kernel space.
-
-Fixes: 6e22ab9da793 ("bpf: Add d_path helper")
-Reported-by: Anastasios Papagiannis <tasos.papagiannnis@gmail.com>
-Suggested-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Stanislav Fomichev <sdf@google.com>
-Acked-by: Yonghong Song <yhs@fb.com>
-Link: https://lore.kernel.org/bpf/20230606181714.532998-1-jolsa@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ai Chao <aichao@kylinos.cn>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230526094704.14597-1-aichao@kylinos.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/bpf_trace.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index e8da032bb6fc8..165441044bc55 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -900,13 +900,23 @@ static const struct bpf_func_proto bpf_send_signal_thread_proto = {
- 
- BPF_CALL_3(bpf_d_path, struct path *, path, char *, buf, u32, sz)
- {
-+	struct path copy;
- 	long len;
- 	char *p;
- 
- 	if (!sz)
- 		return 0;
- 
--	p = d_path(path, buf, sz);
-+	/*
-+	 * The path pointer is verified as trusted and safe to use,
-+	 * but let's double check it's valid anyway to workaround
-+	 * potentially broken verifier.
-+	 */
-+	len = copy_from_kernel_nofault(&copy, path, sizeof(*path));
-+	if (len < 0)
-+		return len;
-+
-+	p = d_path(&copy, buf, sz);
- 	if (IS_ERR(p)) {
- 		len = PTR_ERR(p);
- 	} else {
--- 
-2.39.2
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -11162,6 +11162,7 @@ static const struct snd_pci_quirk alc662
+ 	SND_PCI_QUIRK(0x103c, 0x8719, "HP", ALC897_FIXUP_HP_HSMIC_VERB),
+ 	SND_PCI_QUIRK(0x103c, 0x872b, "HP", ALC897_FIXUP_HP_HSMIC_VERB),
+ 	SND_PCI_QUIRK(0x103c, 0x873e, "HP", ALC671_FIXUP_HP_HEADSET_MIC2),
++	SND_PCI_QUIRK(0x103c, 0x8768, "HP Slim Desktop S01", ALC671_FIXUP_HP_HEADSET_MIC2),
+ 	SND_PCI_QUIRK(0x103c, 0x877e, "HP 288 Pro G6", ALC671_FIXUP_HP_HEADSET_MIC2),
+ 	SND_PCI_QUIRK(0x103c, 0x885f, "HP 288 Pro G8", ALC671_FIXUP_HP_HEADSET_MIC2),
+ 	SND_PCI_QUIRK(0x1043, 0x1080, "Asus UX501VW", ALC668_FIXUP_HEADSET_MODE),
 
 
