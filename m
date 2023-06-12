@@ -2,51 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7703272C22F
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AFAF72C13D
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:57:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237229AbjFLLDU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:03:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36592 "EHLO
+        id S235796AbjFLK5i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:57:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236447AbjFLLDG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:03:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCA667AB1
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:50:43 -0700 (PDT)
+        with ESMTP id S236957AbjFLK5Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:57:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAFE96A64
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:45:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5AD4362521
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:50:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E91C433D2;
-        Mon, 12 Jun 2023 10:50:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AB86562433
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:45:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF54C433EF;
+        Mon, 12 Jun 2023 10:45:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686567042;
-        bh=1eijrB3wxQKuauEEgovy1DTPpS9JdklbokDB1iqawNw=;
+        s=korg; t=1686566711;
+        bh=NcP1zggGf4ov0tf4Srn5QS1cPVLRa+s7b4dEXtOwQhw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m8fpHQhzSfxm/SkG+D0PuZYnHWGkUFvOgoXnkwyo9iAxEfLTmXEGPpwduQqz7RYM3
-         7JXfDqFH9IQmzzJ3ssj8k+8inj/QYMVigOPUbhwQhWH72HwOmi6hXRs2SfxMA+tfIQ
-         8WL1ELvpdgFJghmbzV9mEsHGu45IuYpolxTiYjtI=
+        b=SLN7AXE7IBQWgg9ZlyDX9uhjFESFmO0y+2Pm8vYGGxTNF3Xa3Z3vZ6XXhx2iDgOIg
+         1G+kZCdBz8PwwHDO3zSW8QdE4c53eNx2vADKaXCWrJJSQkR+7dEEtTeMAFVgPmWUCa
+         9T1I1bvIxiWh73gK6SA+njXAhELFeYvheG0SjJzU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shenwei Wang <shenwei.wang@nxp.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 129/160] arm64: dts: imx8-ss-dma: assign default clock rate for lpuarts
-Date:   Mon, 12 Jun 2023 12:27:41 +0200
-Message-ID: <20230612101720.964904897@linuxfoundation.org>
+        patches@lists.linux.dev, Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 128/132] Revert "ext4: dont clear SB_RDONLY when remounting r/w until quota is re-enabled"
+Date:   Mon, 12 Jun 2023 12:27:42 +0200
+Message-ID: <20230612101716.022764251@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,65 +52,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Shenwei Wang <shenwei.wang@nxp.com>
+From: Theodore Ts'o <tytso@mit.edu>
 
-[ Upstream commit ca50d7765587fe0a8351a6e8d9742cfd4811d925 ]
+commit 1b29243933098cdbc31b579b5616e183b4275e2f upstream.
 
-Add the assigned-clocks and assigned-clock-rates properties for the
-LPUARTx nodes. Without these properties, the default clock rate
-used would be 0, which can cause the UART ports to fail when open.
+This reverts commit a44be64bbecb15a452496f60db6eacfee2b59c79.
 
-Fixes: 35f4e9d7530f ("arm64: dts: imx8: split adma ss into dma and audio ss")
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/653b3359-2005-21b1-039d-c55ca4cffdcc@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/ext4/super.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-index a943a1e2797f4..21345ae14eb25 100644
---- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
-@@ -90,6 +90,8 @@ lpuart0: serial@5a060000 {
- 		clocks = <&uart0_lpcg IMX_LPCG_CLK_4>,
- 			 <&uart0_lpcg IMX_LPCG_CLK_0>;
- 		clock-names = "ipg", "baud";
-+		assigned-clocks = <&clk IMX_SC_R_UART_0 IMX_SC_PM_CLK_PER>;
-+		assigned-clock-rates = <80000000>;
- 		power-domains = <&pd IMX_SC_R_UART_0>;
- 		status = "disabled";
- 	};
-@@ -100,6 +102,8 @@ lpuart1: serial@5a070000 {
- 		clocks = <&uart1_lpcg IMX_LPCG_CLK_4>,
- 			 <&uart1_lpcg IMX_LPCG_CLK_0>;
- 		clock-names = "ipg", "baud";
-+		assigned-clocks = <&clk IMX_SC_R_UART_1 IMX_SC_PM_CLK_PER>;
-+		assigned-clock-rates = <80000000>;
- 		power-domains = <&pd IMX_SC_R_UART_1>;
- 		status = "disabled";
- 	};
-@@ -110,6 +114,8 @@ lpuart2: serial@5a080000 {
- 		clocks = <&uart2_lpcg IMX_LPCG_CLK_4>,
- 			 <&uart2_lpcg IMX_LPCG_CLK_0>;
- 		clock-names = "ipg", "baud";
-+		assigned-clocks = <&clk IMX_SC_R_UART_2 IMX_SC_PM_CLK_PER>;
-+		assigned-clock-rates = <80000000>;
- 		power-domains = <&pd IMX_SC_R_UART_2>;
- 		status = "disabled";
- 	};
-@@ -120,6 +126,8 @@ lpuart3: serial@5a090000 {
- 		clocks = <&uart3_lpcg IMX_LPCG_CLK_4>,
- 			 <&uart3_lpcg IMX_LPCG_CLK_0>;
- 		clock-names = "ipg", "baud";
-+		assigned-clocks = <&clk IMX_SC_R_UART_3 IMX_SC_PM_CLK_PER>;
-+		assigned-clock-rates = <80000000>;
- 		power-domains = <&pd IMX_SC_R_UART_3>;
- 		status = "disabled";
- 	};
--- 
-2.39.2
-
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -6341,7 +6341,6 @@ static int __ext4_remount(struct fs_cont
+ 	struct ext4_mount_options old_opts;
+ 	ext4_group_t g;
+ 	int err = 0;
+-	int enable_rw = 0;
+ #ifdef CONFIG_QUOTA
+ 	int enable_quota = 0;
+ 	int i, j;
+@@ -6528,7 +6527,7 @@ static int __ext4_remount(struct fs_cont
+ 			if (err)
+ 				goto restore_opts;
+ 
+-			enable_rw = 1;
++			sb->s_flags &= ~SB_RDONLY;
+ 			if (ext4_has_feature_mmp(sb)) {
+ 				err = ext4_multi_mount_protect(sb,
+ 						le64_to_cpu(es->s_mmp_block));
+@@ -6575,9 +6574,6 @@ static int __ext4_remount(struct fs_cont
+ 	if (!test_opt(sb, BLOCK_VALIDITY) && sbi->s_system_blks)
+ 		ext4_release_system_zone(sb);
+ 
+-	if (enable_rw)
+-		sb->s_flags &= ~SB_RDONLY;
+-
+ 	/*
+ 	 * Reinitialize lazy itable initialization thread based on
+ 	 * current settings
 
 
