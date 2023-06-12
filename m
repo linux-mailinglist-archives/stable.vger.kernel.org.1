@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29D7472C186
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:58:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D6E372C147
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:57:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237059AbjFLKzN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:55:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55680 "EHLO
+        id S237126AbjFLK5x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:57:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236213AbjFLKy0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DCB611DA2;
-        Mon, 12 Jun 2023 03:40:36 -0700 (PDT)
+        with ESMTP id S236765AbjFLK5d (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:57:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 865796E91
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:45:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E792D614F0;
-        Mon, 12 Jun 2023 10:40:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08605C433D2;
-        Mon, 12 Jun 2023 10:40:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 17CBC62433
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:45:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC0EC433A1;
+        Mon, 12 Jun 2023 10:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566435;
-        bh=uoI8i4vfw8cdfeNOmJzsdgmfSxLTaS/cT8pMzKhzaJk=;
+        s=korg; t=1686566729;
+        bh=uMnoRBtoxbQgSUtB8o7vgVKK3vZs7tkD0fGv1JOaEIk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iAjf0RLFtpaNv2XIUkxbQZe/nsWtgs7VUX9uLZNQjWieCzXLVipTPbnjhj5gCnduc
-         U89X0BEAdpXURz2SXJraHfk5TW/BmwkAC7ZZmBLy8oeIhhUkMGYzjqQ1AHUVBdtCBm
-         8yaXm1+445JPZBQBZWMjiK7ZkH9mS7P2bvowuDiM=
+        b=hGFu2hKChPlWHxAx82Ync6f35WJmuks4ONAUyQ3DLf47wuym6dPWA2OaZMQcvaLdt
+         cyCtzq7/5dIJm7ObWLjJTp6brI4/RIey2atf3ku+Ojn6lJQ4ZnCTr5+m4O6fTKwDNL
+         z24O3EXEFhJCQk6HxR9217vd5BNp7g4KVVJLJuho=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
-        Jeffrey Altman <jaltman@auristor.com>,
-        Marc Dionne <marc.dionne@auristor.com>,
-        linux-afs@lists.infradead.org, linux-fsdevel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Akihiro Suda <akihiro.suda.cz@hco.ntt.co.jp>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 007/132] afs: Fix setting of mtime when creating a file/dir/symlink
-Date:   Mon, 12 Jun 2023 12:25:41 +0200
-Message-ID: <20230612101710.635514514@linuxfoundation.org>
+Subject: [PATCH 6.3 010/160] net/ipv4: ping_group_range: allow GID from 2147483648 to 4294967294
+Date:   Mon, 12 Jun 2023 12:25:42 +0200
+Message-ID: <20230612101715.585489335@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,59 +55,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Howells <dhowells@redhat.com>
+From: Akihiro Suda <suda.gitsendemail@gmail.com>
 
-[ Upstream commit a27648c742104a833a01c54becc24429898d85bf ]
+[ Upstream commit e209fee4118fe9a449d4d805361eb2de6796be39 ]
 
-kafs incorrectly passes a zero mtime (ie. 1st Jan 1970) to the server when
-creating a file, dir or symlink because the mtime recorded in the
-afs_operation struct gets passed to the server by the marshalling routines,
-but the afs_mkdir(), afs_create() and afs_symlink() functions don't set it.
+With this commit, all the GIDs ("0 4294967294") can be written to the
+"net.ipv4.ping_group_range" sysctl.
 
-This gets masked if a file or directory is subsequently modified.
+Note that 4294967295 (0xffffffff) is an invalid GID (see gid_valid() in
+include/linux/uidgid.h), and an attempt to register this number will cause
+-EINVAL.
 
-Fix this by filling in op->mtime before calling the create op.
+Prior to this commit, only up to GID 2147483647 could be covered.
+Documentation/networking/ip-sysctl.rst had "0 4294967295" as an example
+value, but this example was wrong and causing -EINVAL.
 
-Fixes: e49c7b2f6de7 ("afs: Build an abstraction around an "operation" concept")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-Reviewed-by: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: c319b4d76b9e ("net: ipv4: add IPPROTO_ICMP socket kind")
+Co-developed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Akihiro Suda <akihiro.suda.cz@hco.ntt.co.jp>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/dir.c | 3 +++
- 1 file changed, 3 insertions(+)
+ Documentation/networking/ip-sysctl.rst | 4 ++--
+ include/net/ping.h                     | 6 +-----
+ net/ipv4/sysctl_net_ipv4.c             | 8 ++++----
+ 3 files changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/fs/afs/dir.c b/fs/afs/dir.c
-index f73b2f62afaae..07dc4ec73520c 100644
---- a/fs/afs/dir.c
-+++ b/fs/afs/dir.c
-@@ -1357,6 +1357,7 @@ static int afs_mkdir(struct user_namespace *mnt_userns, struct inode *dir,
- 	op->dentry	= dentry;
- 	op->create.mode	= S_IFDIR | mode;
- 	op->create.reason = afs_edit_dir_for_mkdir;
-+	op->mtime	= current_time(dir);
- 	op->ops		= &afs_mkdir_operation;
- 	return afs_do_sync_operation(op);
- }
-@@ -1660,6 +1661,7 @@ static int afs_create(struct user_namespace *mnt_userns, struct inode *dir,
- 	op->dentry	= dentry;
- 	op->create.mode	= S_IFREG | mode;
- 	op->create.reason = afs_edit_dir_for_create;
-+	op->mtime	= current_time(dir);
- 	op->ops		= &afs_create_operation;
- 	return afs_do_sync_operation(op);
+diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
+index 58a78a3166978..97ae2b5a6101c 100644
+--- a/Documentation/networking/ip-sysctl.rst
++++ b/Documentation/networking/ip-sysctl.rst
+@@ -1352,8 +1352,8 @@ ping_group_range - 2 INTEGERS
+ 	Restrict ICMP_PROTO datagram sockets to users in the group range.
+ 	The default is "1 0", meaning, that nobody (not even root) may
+ 	create ping sockets.  Setting it to "100 100" would grant permissions
+-	to the single group. "0 4294967295" would enable it for the world, "100
+-	4294967295" would enable it for the users, but not daemons.
++	to the single group. "0 4294967294" would enable it for the world, "100
++	4294967294" would enable it for the users, but not daemons.
  
-@@ -1795,6 +1797,7 @@ static int afs_symlink(struct user_namespace *mnt_userns, struct inode *dir,
- 	op->ops			= &afs_symlink_operation;
- 	op->create.reason	= afs_edit_dir_for_symlink;
- 	op->create.symlink	= content;
-+	op->mtime		= current_time(dir);
- 	return afs_do_sync_operation(op);
+ tcp_early_demux - BOOLEAN
+ 	Enable early demux for established TCP sockets.
+diff --git a/include/net/ping.h b/include/net/ping.h
+index 9233ad3de0ade..bc7779262e603 100644
+--- a/include/net/ping.h
++++ b/include/net/ping.h
+@@ -16,11 +16,7 @@
+ #define PING_HTABLE_SIZE 	64
+ #define PING_HTABLE_MASK 	(PING_HTABLE_SIZE-1)
  
- error:
+-/*
+- * gid_t is either uint or ushort.  We want to pass it to
+- * proc_dointvec_minmax(), so it must not be larger than MAX_INT
+- */
+-#define GID_T_MAX (((gid_t)~0U) >> 1)
++#define GID_T_MAX (((gid_t)~0U) - 1)
+ 
+ /* Compatibility glue so we can support IPv6 when it's compiled as a module */
+ struct pingv6_ops {
+diff --git a/net/ipv4/sysctl_net_ipv4.c b/net/ipv4/sysctl_net_ipv4.c
+index 40fe70fc2015d..88dfe51e68f3c 100644
+--- a/net/ipv4/sysctl_net_ipv4.c
++++ b/net/ipv4/sysctl_net_ipv4.c
+@@ -34,8 +34,8 @@ static int ip_ttl_min = 1;
+ static int ip_ttl_max = 255;
+ static int tcp_syn_retries_min = 1;
+ static int tcp_syn_retries_max = MAX_TCP_SYNCNT;
+-static int ip_ping_group_range_min[] = { 0, 0 };
+-static int ip_ping_group_range_max[] = { GID_T_MAX, GID_T_MAX };
++static unsigned long ip_ping_group_range_min[] = { 0, 0 };
++static unsigned long ip_ping_group_range_max[] = { GID_T_MAX, GID_T_MAX };
+ static u32 u32_max_div_HZ = UINT_MAX / HZ;
+ static int one_day_secs = 24 * 3600;
+ static u32 fib_multipath_hash_fields_all_mask __maybe_unused =
+@@ -165,7 +165,7 @@ static int ipv4_ping_group_range(struct ctl_table *table, int write,
+ {
+ 	struct user_namespace *user_ns = current_user_ns();
+ 	int ret;
+-	gid_t urange[2];
++	unsigned long urange[2];
+ 	kgid_t low, high;
+ 	struct ctl_table tmp = {
+ 		.data = &urange,
+@@ -178,7 +178,7 @@ static int ipv4_ping_group_range(struct ctl_table *table, int write,
+ 	inet_get_ping_group_range_table(table, &low, &high);
+ 	urange[0] = from_kgid_munged(user_ns, low);
+ 	urange[1] = from_kgid_munged(user_ns, high);
+-	ret = proc_dointvec_minmax(&tmp, write, buffer, lenp, ppos);
++	ret = proc_doulongvec_minmax(&tmp, write, buffer, lenp, ppos);
+ 
+ 	if (write && ret == 0) {
+ 		low = make_kgid(user_ns, urange[0]);
 -- 
 2.39.2
 
