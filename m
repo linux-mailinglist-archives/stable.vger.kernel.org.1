@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D65072C1E9
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:01:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F08DC72C02B
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:50:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237485AbjFLLB1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:01:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36640 "EHLO
+        id S235208AbjFLKue (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:50:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237487AbjFLLBC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:01:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51F925B96
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:48:06 -0700 (PDT)
+        with ESMTP id S235720AbjFLKty (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:49:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9971A7EEE
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:34:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DA964624B0
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:48:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED25AC4339B;
-        Mon, 12 Jun 2023 10:48:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A32E623F9
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:34:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B3FC433D2;
+        Mon, 12 Jun 2023 10:34:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566885;
-        bh=E7DnpHIGcrCuXvnjbUstcKpUxusShExzvXolHgxg54A=;
+        s=korg; t=1686566077;
+        bh=YbBwpXW4Id6sB0b69ZgMElRvg+4g9QgpRuqDPaAOMCg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P6rkuKYhH6UGZGkY0vpPAfr5NgCeFn2qDyNNNKhKZup6J90LRcr2eVgGtXNr16XJt
-         iEq/FHdB2DEI1AHLEwvcF5LI1ccx1mPUnf5wtwAXWj/AioZ9B+SsuJj4lDidcT0rU9
-         O5O0jrx37DcPa0zM9EbOohgkx/XMrM6IHoMtg47s=
+        b=AtHuUjNiVYhprLKruSyw+EOGoFxoTd2wEeTzHBkS3P5XRRUTc/VFTeqGbFP9Sqweq
+         fm8/B1hZXIr9MmqEWUUweWxz9eAKx6kbOJktIR5cR73BofSLpUfMGZD836nr9pKtdn
+         QXVzeZLUzO1PtEcEJSW/VrIVIpOcSxFmvpxanAPM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kalesh Anakkur Purayil <kalesh-anakkur.purayil@broadcom.com>,
-        Somnath Kotur <somnath.kotur@broadcom.com>,
-        Michael Chan <michael.chan@broadcom.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 068/160] bnxt_en: Implement .set_port / .unset_port UDP tunnel callbacks
+        patches@lists.linux.dev, Sourabh Das <sourabh.das@amd.com>,
+        Rijo Thomas <Rijo-john.Thomas@amd.com>,
+        Sumit Garg <sumit.garg@linaro.org>,
+        Jens Wiklander <jens.wiklander@linaro.org>
+Subject: [PATCH 5.10 48/68] tee: amdtee: Add return_origin to struct tee_cmd_load_ta
 Date:   Mon, 12 Jun 2023 12:26:40 +0200
-Message-ID: <20230612101718.121041875@linuxfoundation.org>
+Message-ID: <20230612101700.414034920@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
+References: <20230612101658.437327280@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,81 +55,102 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Somnath Kotur <somnath.kotur@broadcom.com>
+From: Rijo Thomas <Rijo-john.Thomas@amd.com>
 
-[ Upstream commit 1eb4ef12591348c440ac9d6efcf7521e73cf2b10 ]
+commit 436eeae0411acdfc54521ddea80ee76d4ae8a7ea upstream.
 
-As per the new udp tunnel framework, drivers which need to know the
-details of a port entry (i.e. port type) when it gets deleted should
-use the .set_port / .unset_port callbacks.
+After TEE has completed processing of TEE_CMD_ID_LOAD_TA, set proper
+value in 'return_origin' argument passed by open_session() call. To do
+so, add 'return_origin' field to the structure tee_cmd_load_ta. The
+Trusted OS shall update return_origin as part of TEE processing.
 
-Implementing the current .udp_tunnel_sync callback would mean that the
-deleted tunnel port entry would be all zeros.  This used to work on
-older firmware because it would not check the input when deleting a
-tunnel port.  With newer firmware, the delete will now fail and
-subsequent tunnel port allocation will fail as a result.
+This change to 'struct tee_cmd_load_ta' interface requires a similar update
+in AMD-TEE Trusted OS's TEE_CMD_ID_LOAD_TA interface.
 
-Fixes: 442a35a5a7aa ("bnxt: convert to new udp_tunnel_nic infra")
-Reviewed-by: Kalesh Anakkur Purayil <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch has been verified on Phoenix Birman setup. On older APUs,
+return_origin value will be 0.
+
+Cc: stable@vger.kernel.org
+Fixes: 757cc3e9ff1d ("tee: add AMD-TEE driver")
+Tested-by: Sourabh Das <sourabh.das@amd.com>
+Signed-off-by: Rijo Thomas <Rijo-john.Thomas@amd.com>
+Acked-by: Sumit Garg <sumit.garg@linaro.org>
+Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 25 ++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ drivers/tee/amdtee/amdtee_if.h | 10 ++++++----
+ drivers/tee/amdtee/call.c      | 28 ++++++++++++++++------------
+ 2 files changed, 22 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index f14519aa6d4f6..9784e86d4d96a 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -13062,26 +13062,37 @@ static void bnxt_cfg_ntp_filters(struct bnxt *bp)
+diff --git a/drivers/tee/amdtee/amdtee_if.h b/drivers/tee/amdtee/amdtee_if.h
+index ff48c3e47375..e2014e21530a 100644
+--- a/drivers/tee/amdtee/amdtee_if.h
++++ b/drivers/tee/amdtee/amdtee_if.h
+@@ -118,16 +118,18 @@ struct tee_cmd_unmap_shared_mem {
  
- #endif /* CONFIG_RFS_ACCEL */
+ /**
+  * struct tee_cmd_load_ta - load Trusted Application (TA) binary into TEE
+- * @low_addr:    [in] bits [31:0] of the physical address of the TA binary
+- * @hi_addr:     [in] bits [63:32] of the physical address of the TA binary
+- * @size:        [in] size of TA binary in bytes
+- * @ta_handle:   [out] return handle of the loaded TA
++ * @low_addr:       [in] bits [31:0] of the physical address of the TA binary
++ * @hi_addr:        [in] bits [63:32] of the physical address of the TA binary
++ * @size:           [in] size of TA binary in bytes
++ * @ta_handle:      [out] return handle of the loaded TA
++ * @return_origin:  [out] origin of return code after TEE processing
+  */
+ struct tee_cmd_load_ta {
+ 	u32 low_addr;
+ 	u32 hi_addr;
+ 	u32 size;
+ 	u32 ta_handle;
++	u32 return_origin;
+ };
  
--static int bnxt_udp_tunnel_sync(struct net_device *netdev, unsigned int table)
-+static int bnxt_udp_tunnel_set_port(struct net_device *netdev, unsigned int table,
-+				    unsigned int entry, struct udp_tunnel_info *ti)
- {
- 	struct bnxt *bp = netdev_priv(netdev);
--	struct udp_tunnel_info ti;
- 	unsigned int cmd;
+ /**
+diff --git a/drivers/tee/amdtee/call.c b/drivers/tee/amdtee/call.c
+index e8cd9aaa3467..e9b63dcb3194 100644
+--- a/drivers/tee/amdtee/call.c
++++ b/drivers/tee/amdtee/call.c
+@@ -423,19 +423,23 @@ int handle_load_ta(void *data, u32 size, struct tee_ioctl_open_session_arg *arg)
+ 	if (ret) {
+ 		arg->ret_origin = TEEC_ORIGIN_COMMS;
+ 		arg->ret = TEEC_ERROR_COMMUNICATION;
+-	} else if (arg->ret == TEEC_SUCCESS) {
+-		ret = get_ta_refcount(load_cmd.ta_handle);
+-		if (!ret) {
+-			arg->ret_origin = TEEC_ORIGIN_COMMS;
+-			arg->ret = TEEC_ERROR_OUT_OF_MEMORY;
++	} else {
++		arg->ret_origin = load_cmd.return_origin;
  
--	udp_tunnel_nic_get_port(netdev, table, 0, &ti);
--	if (ti.type == UDP_TUNNEL_TYPE_VXLAN)
-+	if (ti->type == UDP_TUNNEL_TYPE_VXLAN)
- 		cmd = TUNNEL_DST_PORT_FREE_REQ_TUNNEL_TYPE_VXLAN;
- 	else
- 		cmd = TUNNEL_DST_PORT_FREE_REQ_TUNNEL_TYPE_GENEVE;
- 
--	if (ti.port)
--		return bnxt_hwrm_tunnel_dst_port_alloc(bp, ti.port, cmd);
-+	return bnxt_hwrm_tunnel_dst_port_alloc(bp, ti->port, cmd);
-+}
+-			/* Unload the TA on error */
+-			unload_cmd.ta_handle = load_cmd.ta_handle;
+-			psp_tee_process_cmd(TEE_CMD_ID_UNLOAD_TA,
+-					    (void *)&unload_cmd,
+-					    sizeof(unload_cmd), &ret);
+-		} else {
+-			set_session_id(load_cmd.ta_handle, 0, &arg->session);
++		if (arg->ret == TEEC_SUCCESS) {
++			ret = get_ta_refcount(load_cmd.ta_handle);
++			if (!ret) {
++				arg->ret_origin = TEEC_ORIGIN_COMMS;
++				arg->ret = TEEC_ERROR_OUT_OF_MEMORY;
 +
-+static int bnxt_udp_tunnel_unset_port(struct net_device *netdev, unsigned int table,
-+				      unsigned int entry, struct udp_tunnel_info *ti)
-+{
-+	struct bnxt *bp = netdev_priv(netdev);
-+	unsigned int cmd;
-+
-+	if (ti->type == UDP_TUNNEL_TYPE_VXLAN)
-+		cmd = TUNNEL_DST_PORT_FREE_REQ_TUNNEL_TYPE_VXLAN;
-+	else
-+		cmd = TUNNEL_DST_PORT_FREE_REQ_TUNNEL_TYPE_GENEVE;
- 
- 	return bnxt_hwrm_tunnel_dst_port_free(bp, cmd);
- }
- 
- static const struct udp_tunnel_nic_info bnxt_udp_tunnels = {
--	.sync_table	= bnxt_udp_tunnel_sync,
-+	.set_port	= bnxt_udp_tunnel_set_port,
-+	.unset_port	= bnxt_udp_tunnel_unset_port,
- 	.flags		= UDP_TUNNEL_NIC_INFO_MAY_SLEEP |
- 			  UDP_TUNNEL_NIC_INFO_OPEN_ONLY,
- 	.tables		= {
++				/* Unload the TA on error */
++				unload_cmd.ta_handle = load_cmd.ta_handle;
++				psp_tee_process_cmd(TEE_CMD_ID_UNLOAD_TA,
++						    (void *)&unload_cmd,
++						    sizeof(unload_cmd), &ret);
++			} else {
++				set_session_id(load_cmd.ta_handle, 0, &arg->session);
++			}
+ 		}
+ 	}
+ 	mutex_unlock(&ta_refcount_mutex);
 -- 
-2.39.2
+2.41.0
 
 
 
