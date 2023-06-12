@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBE2072C203
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:02:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5E1272C0BD
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:54:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237045AbjFLLCJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:02:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36298 "EHLO
+        id S236394AbjFLKyU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:54:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236637AbjFLLBu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:01:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEF47769C
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:49:06 -0700 (PDT)
+        with ESMTP id S235799AbjFLKyG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCFF16590
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:39:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D56F624D1
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:49:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D9BDC433D2;
-        Mon, 12 Jun 2023 10:49:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 69F3361297
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:39:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D80C433EF;
+        Mon, 12 Jun 2023 10:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566945;
-        bh=zZwNJA1cWHiwJ8+WmY0D0tpx2UxwYKlywa6iFeeYRu8=;
+        s=korg; t=1686566361;
+        bh=tEYLiiDxvgvBFRIGwXZxVL16iYVhMCH/ItnNbKhv9oE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pXI5Dhkx3DQmOwjEeKr5feC2+i/lbmYh6rWd25BXAr1JwksUOdYBiY+XNFz4a+Y69
-         mS3hOA72IcnxoAMOMk5ecdbmAAVg0NLjfAagWcCpf5qLmgTMYlwnJ2a1lw4xz17L9s
-         vZ87AdeMQ04GLqQ1zkz8HLymHAk5R+Cc3lm+9Nr0=
+        b=uvRh5vEyAjg5grq2rn3ltXsMDAc2NRYTBEO7SygC3Z9YweAzhRx1bia/bC6PCyivk
+         WWhEkN8UscTfMv/+iMreqdjbsiAxHhWvRK8/MMAkxBq45qff9N1DdC2oE3iXqmww4t
+         Jyj4TLbF79m9mtonr5ewIH470uaa3Ddi344OyDJQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.3 092/160] wifi: iwlwifi: mvm: Fix -Warray-bounds bug in iwl_mvm_wait_d3_notif()
+        patches@lists.linux.dev, Shenwei Wang <shenwei.wang@nxp.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 75/91] arm64: dts: imx8-ss-dma: assign default clock rate for lpuarts
 Date:   Mon, 12 Jun 2023 12:27:04 +0200
-Message-ID: <20230612101719.230793849@linuxfoundation.org>
+Message-ID: <20230612101705.196896067@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
+References: <20230612101702.085813286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,111 +55,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Shenwei Wang <shenwei.wang@nxp.com>
 
-commit 7a4615b9a9da5225b22b36a20508555dd133ac24 upstream.
+[ Upstream commit ca50d7765587fe0a8351a6e8d9742cfd4811d925 ]
 
-kmemdup() at line 2735 is not duplicating enough memory for
-notif->tid_tear_down and notif->station_id. As it only duplicates
-612 bytes: up to offsetofend(struct iwl_wowlan_info_notif,
-received_beacons), this is the range of [0, 612) bytes.
+Add the assigned-clocks and assigned-clock-rates properties for the
+LPUARTx nodes. Without these properties, the default clock rate
+used would be 0, which can cause the UART ports to fail when open.
 
-2735	notif = kmemdup(notif_v1,
-2736			offsetofend(struct iwl_wowlan_info_notif,
-2737				    received_beacons),
-2738			GFP_ATOMIC);
-
-which evidently does not cover bytes 612 and 613 for members
-tid_tear_down and station_id in struct iwl_wowlan_info_notif.
-See below:
-
-$ pahole -C iwl_wowlan_info_notif drivers/net/wireless/intel/iwlwifi/mvm/d3.o
-struct iwl_wowlan_info_notif {
-	struct iwl_wowlan_gtk_status_v3 gtk[2];          /*     0   488 */
-	/* --- cacheline 7 boundary (448 bytes) was 40 bytes ago --- */
-	struct iwl_wowlan_igtk_status igtk[2];           /*   488    80 */
-	/* --- cacheline 8 boundary (512 bytes) was 56 bytes ago --- */
-	__le64                     replay_ctr;           /*   568     8 */
-	/* --- cacheline 9 boundary (576 bytes) --- */
-	__le16                     pattern_number;       /*   576     2 */
-	__le16                     reserved1;            /*   578     2 */
-	__le16                     qos_seq_ctr[8];       /*   580    16 */
-	__le32                     wakeup_reasons;       /*   596     4 */
-	__le32                     num_of_gtk_rekeys;    /*   600     4 */
-	__le32                     transmitted_ndps;     /*   604     4 */
-	__le32                     received_beacons;     /*   608     4 */
-	u8                         tid_tear_down;        /*   612     1 */
-	u8                         station_id;           /*   613     1 */
-	u8                         reserved2[2];         /*   614     2 */
-
-	/* size: 616, cachelines: 10, members: 13 */
-	/* last cacheline: 40 bytes */
-};
-
-Therefore, when the following assignments take place, actually no memory
-has been allocated for those objects:
-
-2743	notif->tid_tear_down = notif_v1->tid_tear_down;
-2744	notif->station_id = notif_v1->station_id;
-
-Fix this by allocating space for the whole notif object and zero out the
-remaining space in memory after member station_id.
-
-This also fixes the following -Warray-bounds issues:
- CC      drivers/net/wireless/intel/iwlwifi/mvm/d3.o
-drivers/net/wireless/intel/iwlwifi/mvm/d3.c: In function ‘iwl_mvm_wait_d3_notif’:
-drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2743:30: warning: array subscript ‘struct iwl_wowlan_info_notif[0]’ is partly outside array bounds of ‘unsigned char[612]’ [-Warray-bounds=]
- 2743 |                         notif->tid_tear_down = notif_v1->tid_tear_down;
-      |
-                 from drivers/net/wireless/intel/iwlwifi/mvm/d3.c:7:
-In function ‘kmemdup’,
-    inlined from ‘iwl_mvm_wait_d3_notif’ at drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2735:12:
-include/linux/fortify-string.h:765:16: note: object of size 612 allocated by ‘__real_kmemdup’
-  765 |         return __real_kmemdup(p, size, gfp);
-      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/net/wireless/intel/iwlwifi/mvm/d3.c: In function ‘iwl_mvm_wait_d3_notif’:
-drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2744:30: warning: array subscript ‘struct iwl_wowlan_info_notif[0]’ is partly outside array bounds of ‘unsigned char[612]’ [-Warray-bounds=]
- 2744 |                         notif->station_id = notif_v1->station_id;
-      |                              ^~
-In function ‘kmemdup’,
-    inlined from ‘iwl_mvm_wait_d3_notif’ at drivers/net/wireless/intel/iwlwifi/mvm/d3.c:2735:12:
-include/linux/fortify-string.h:765:16: note: object of size 612 allocated by ‘__real_kmemdup’
-  765 |         return __real_kmemdup(p, size, gfp);
-      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Link: https://github.com/KSPP/linux/issues/306
-Fixes: 905d50ddbc83 ("wifi: iwlwifi: mvm: support wowlan info notification version 2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Acked-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/ZHpGN555FwAKGduH@work
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 35f4e9d7530f ("arm64: dts: imx8: split adma ss into dma and audio ss")
+Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c |    8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -2729,17 +2729,13 @@ static bool iwl_mvm_wait_d3_notif(struct
- 		if (wowlan_info_ver < 2) {
- 			struct iwl_wowlan_info_notif_v1 *notif_v1 = (void *)pkt->data;
- 
--			notif = kmemdup(notif_v1,
--					offsetofend(struct iwl_wowlan_info_notif,
--						    received_beacons),
--					GFP_ATOMIC);
--
-+			notif = kmemdup(notif_v1, sizeof(*notif), GFP_ATOMIC);
- 			if (!notif)
- 				return false;
- 
- 			notif->tid_tear_down = notif_v1->tid_tear_down;
- 			notif->station_id = notif_v1->station_id;
--
-+			memset_after(notif, 0, station_id);
- 		} else {
- 			notif = (void *)pkt->data;
- 		}
+diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
+index 960a802b8b6ee..c33892711138f 100644
+--- a/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-ss-dma.dtsi
+@@ -26,6 +26,8 @@ lpuart0: serial@5a060000 {
+ 		clocks = <&uart0_lpcg IMX_LPCG_CLK_4>,
+ 			 <&uart0_lpcg IMX_LPCG_CLK_0>;
+ 		clock-names = "ipg", "baud";
++		assigned-clocks = <&clk IMX_SC_R_UART_0 IMX_SC_PM_CLK_PER>;
++		assigned-clock-rates = <80000000>;
+ 		power-domains = <&pd IMX_SC_R_UART_0>;
+ 		status = "disabled";
+ 	};
+@@ -36,6 +38,8 @@ lpuart1: serial@5a070000 {
+ 		clocks = <&uart1_lpcg IMX_LPCG_CLK_4>,
+ 			 <&uart1_lpcg IMX_LPCG_CLK_0>;
+ 		clock-names = "ipg", "baud";
++		assigned-clocks = <&clk IMX_SC_R_UART_1 IMX_SC_PM_CLK_PER>;
++		assigned-clock-rates = <80000000>;
+ 		power-domains = <&pd IMX_SC_R_UART_1>;
+ 		status = "disabled";
+ 	};
+@@ -46,6 +50,8 @@ lpuart2: serial@5a080000 {
+ 		clocks = <&uart2_lpcg IMX_LPCG_CLK_4>,
+ 			 <&uart2_lpcg IMX_LPCG_CLK_0>;
+ 		clock-names = "ipg", "baud";
++		assigned-clocks = <&clk IMX_SC_R_UART_2 IMX_SC_PM_CLK_PER>;
++		assigned-clock-rates = <80000000>;
+ 		power-domains = <&pd IMX_SC_R_UART_2>;
+ 		status = "disabled";
+ 	};
+@@ -56,6 +62,8 @@ lpuart3: serial@5a090000 {
+ 		clocks = <&uart3_lpcg IMX_LPCG_CLK_4>,
+ 			 <&uart3_lpcg IMX_LPCG_CLK_0>;
+ 		clock-names = "ipg", "baud";
++		assigned-clocks = <&clk IMX_SC_R_UART_3 IMX_SC_PM_CLK_PER>;
++		assigned-clock-rates = <80000000>;
+ 		power-domains = <&pd IMX_SC_R_UART_3>;
+ 		status = "disabled";
+ 	};
+-- 
+2.39.2
+
 
 
