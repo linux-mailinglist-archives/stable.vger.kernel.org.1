@@ -2,58 +2,70 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CADCC72B522
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 03:37:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D75F272B533
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 03:49:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229597AbjFLBho (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 11 Jun 2023 21:37:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51976 "EHLO
+        id S232800AbjFLBtz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 11 Jun 2023 21:49:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229455AbjFLBhn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 21:37:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5774CE8
-        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 18:36:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686533816;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=YrQbBfCMruid3dvNA82sFQHqZr8uVfLOg59uBwIc3/c=;
-        b=GtXqoiYxpJGr6bV9nnuL0rY7iDHEPvSLcTDuja3p2eFIBdFdVXVezazwrqINGYG26/d31+
-        6uiGrFRNi0OVzBp7l9yik+QNLLzaTJnnCKAdrJ2YkVBb6smhUKuyflYo6v2GiMuQQICnvJ
-        Q9TpyGLYe7/lY5CUwRWYfBGJtA1JHC8=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-92-9d73ADh_PcmrLuVMuf7Xug-1; Sun, 11 Jun 2023 21:36:51 -0400
-X-MC-Unique: 9d73ADh_PcmrLuVMuf7Xug-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4F3FA1C03DB4;
-        Mon, 12 Jun 2023 01:36:51 +0000 (UTC)
-Received: from ovpn-8-23.pek2.redhat.com (ovpn-8-20.pek2.redhat.com [10.72.8.20])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 7F48C2166B25;
-        Mon, 12 Jun 2023 01:36:45 +0000 (UTC)
-Date:   Mon, 12 Jun 2023 09:36:40 +0800
-From:   Ming Lei <ming.lei@redhat.com>
-To:     Jens Axboe <axboe@kernel.dk>
+        with ESMTP id S229631AbjFLBtp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 11 Jun 2023 21:49:45 -0400
+Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C5A712F
+        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 18:49:45 -0700 (PDT)
+Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1b0338fac5dso4154395ad.0
+        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 18:49:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20221208.gappssmtp.com; s=20221208; t=1686534584; x=1689126584;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xus9Jdno3dSYyQj1Y02RRzobrTs+sJiqzjSX1kh0CtE=;
+        b=OfipTe5QQuBYY3a7kGYEe3i/tRYJuwD+MjRMZ6tTuxeLCMCp+NmoRImTCFjVlvVdRA
+         XQxx1nsmf0YZIW8WgHwdqxVP3Kq2hCstGzs9FPpl3IRKVXuwHjt7wRew+2BGrXyGJ+65
+         VLE545UYbMxMvKU+rkhb6hXyzCfeJPrKzyLzisUJ6xJ4WLUuCyYcErCFZ3Bie1eh9Ud+
+         cFX8Drmi+ZRuwR5sJX+FXctulqJfGggnPHVULyQRgUDafid+zO7C4MaTFShXrCsZ1Ayz
+         zH8ql1Aq1/B4pcAfyuPyhZh90RlchdLIH0rQHM6Pt9pbifFBuxCRuclfXSVXL17UtRFY
+         epJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686534584; x=1689126584;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xus9Jdno3dSYyQj1Y02RRzobrTs+sJiqzjSX1kh0CtE=;
+        b=ZPlvJwe1crBJHvHie8IVrSquImEFe8y7iYd9EaL2aAieLSnS29bR5EijoEe7FI0cvD
+         PAzS68KSH5YUJdjCkseaXtUN9Wj+3Flpjt3Bmmq3z5XMGOkU4cn3RdOGbiZsYhhAeQUu
+         awOcYF4/5W43O0ZSrQHad1u8hrM0E27FgHuLG8T+dlAisQDRquY7Sn10MDAJugDzu1y4
+         kCcCYjorQnxcB7A0TG2OohfqIJV+OtHtCBEWRgKSb19KgTRMNeYXj7rhzfaZC/mgiLOh
+         siQj4tyYBvcNBaFjVJzTCabzdpADHlKUg0jBKRm1buK6l/8WaMAyAC9ImdWRA+Lp88eQ
+         qUWg==
+X-Gm-Message-State: AC+VfDyvtYz1/iytRLHLmBQhdqqw6g0SXh24eMvh5nK5rzKilMrm/8UW
+        ZLNm4+OhNXpjnCZ7vGWuffQKlw==
+X-Google-Smtp-Source: ACHHUZ63qohTtWPXlmI/KO02vGFG1A5HuuzA8XxyrEdIQ2ajiyb5iircK2AVLoqOGJRYwSwr9Z6a5A==
+X-Received: by 2002:a17:902:e744:b0:1af:b80a:b964 with SMTP id p4-20020a170902e74400b001afb80ab964mr8723912plf.5.1686534584540;
+        Sun, 11 Jun 2023 18:49:44 -0700 (PDT)
+Received: from [127.0.0.1] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id jd17-20020a170903261100b001b3cc4d60b7sm884833plb.238.2023.06.11.18.49.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 11 Jun 2023 18:49:43 -0700 (PDT)
+From:   Jens Axboe <axboe@kernel.dk>
+To:     Ming Lei <ming.lei@redhat.com>
 Cc:     linux-block@vger.kernel.org, stable@vger.kernel.org,
         Jay Shin <jaeshin@redhat.com>, Tejun Heo <tj@kernel.org>,
         Waiman Long <longman@redhat.com>, mkoutny@suse.com,
-        Yosry Ahmed <yosryahmed@google.com>, ming.lei@redhat.com
-Subject: Re: [PATCH V4] blk-cgroup: Flush stats before releasing blkcg_gq
-Message-ID: <ZIZ2qGXw7vrRB78e@ovpn-8-23.pek2.redhat.com>
-References: <20230609234249.1412858-1-ming.lei@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+        Yosry Ahmed <yosryahmed@google.com>
 In-Reply-To: <20230609234249.1412858-1-ming.lei@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+References: <20230609234249.1412858-1-ming.lei@redhat.com>
+Subject: Re: [PATCH V4] blk-cgroup: Flush stats before releasing blkcg_gq
+Message-Id: <168653458323.828509.645185217328655352.b4-ty@kernel.dk>
+Date:   Sun, 11 Jun 2023 19:49:43 -0600
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-c6835
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -62,7 +74,8 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, Jun 10, 2023 at 07:42:49AM +0800, Ming Lei wrote:
+
+On Sat, 10 Jun 2023 07:42:49 +0800, Ming Lei wrote:
 > As noted by Michal, the blkg_iostat_set's in the lockless list hold
 > reference to blkg's to protect against their removal. Those blkg's
 > hold reference to blkcg. When a cgroup is being destroyed,
@@ -71,48 +84,16 @@ On Sat, Jun 10, 2023 at 07:42:49AM +0800, Ming Lei wrote:
 > dependency will prevent blkcg and some blkgs from being freed after
 > they are made offline.
 > 
-> It is less a problem if the cgroup to be destroyed also has other
-> controllers like memory that will call cgroup_rstat_flush() which will
-> clean up the reference count. If block is the only controller that uses
-> rstat, these offline blkcg and blkgs may never be freed leaking more
-> and more memory over time.
-> 
-> To prevent this potential memory leak:
-> 
-> - flush blkcg per-cpu stats list in __blkg_release(), when no new stat
-> can be added
-> 
-> - add global blkg_stat_lock for covering concurrent parent blkg stat
-> update
-> 
-> - don't grab bio->bi_blkg reference when adding the stats into blkcg's
-> per-cpu stat list since all stats are guaranteed to be consumed before
-> releasing blkg instance, and grabbing blkg reference for stats was the
-> most fragile part of original patch
-> 
-> Based on Waiman's patch:
-> 
-> https://lore.kernel.org/linux-block/20221215033132.230023-3-longman@redhat.com/
-> 
-> Fixes: 3b8cc6298724 ("blk-cgroup: Optimize blkcg_rstat_flush()")
-> Cc: stable@vger.kernel.org
-> Reported-by: Jay Shin <jaeshin@redhat.com>
-> Acked-by: Tejun Heo <tj@kernel.org>
-> Cc: Waiman Long <longman@redhat.com>
-> Cc: mkoutny@suse.com
-> Cc: Yosry Ahmed <yosryahmed@google.com>
-> Signed-off-by: Ming Lei <ming.lei@redhat.com>
-> ---
-> V4:
-> 	- add ack tag
+> [...]
 
-Hi Jens,
+Applied, thanks!
 
-Waiman agrees with this approach too[1], can you make it in v6.4 if you
-are fine?
+[1/1] blk-cgroup: Flush stats before releasing blkcg_gq
+      commit: 20cb1c2fb7568a6054c55defe044311397e01ddb
 
-[1] https://lore.kernel.org/linux-block/64f20e27-0927-334d-5414-9bb81d639cec@redhat.com/
+Best regards,
+-- 
+Jens Axboe
 
-Thanks,
-Ming
+
 
