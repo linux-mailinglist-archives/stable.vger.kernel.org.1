@@ -2,53 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C92B72C0F7
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB01D72C091
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:53:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236678AbjFLKzu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:55:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56872 "EHLO
+        id S235862AbjFLKx0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:53:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236689AbjFLKzW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:55:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2796C821F
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:42:21 -0700 (PDT)
+        with ESMTP id S234023AbjFLKxF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:53:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 726834C3A
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:37:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 07F3E612E8
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:42:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B300C433EF;
-        Mon, 12 Jun 2023 10:42:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 53550612F0
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:37:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683DAC433D2;
+        Mon, 12 Jun 2023 10:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566540;
-        bh=YJlyIAturKAjUMNybcNKEPnWWDQju6twpO8lTBaxFN8=;
+        s=korg; t=1686566259;
+        bh=D407yoHy8k15nn4A+GJw2lD3h6C6R2U50/wzyNSiIwM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cQPOsARsMMb8PNQ2r6rGRr/gGNH0oG9EijthIFE7n4qnl38OnBi+W1mgTgMkuB8vl
-         qpogS6oR8Z98dtX3PE4UTWO9SFm29bTqjWh7zjl+9WseMsu85FB3KHIbBR2AQiGP2l
-         2hv6YXHZE9m1I5muTRSbADXJlbd5lmRTNai/iRsg=
+        b=UzAMxJUMZyZNDUyC/ChxijGsVywPXULM5RzHmCS/pDEhDG/NMTYncEZOdEQ4jHcx2
+         UNUwDfh/rECf/bCcwuodIPnV8f4uJARdJYud9deggW1NbDpaZFahEFIuLWEnXWHdb4
+         id0J/i447J9VhCHzA/0ya75XpBGmKmiP8sOgF/K8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Tejas Upadhyay <tejas.upadhyay@intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.1 071/132] drm/i915/gt: Use the correct error value when kernel_context() fails
+        patches@lists.linux.dev, Chia-I Wu <olvaffe@gmail.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 56/91] drm/amdgpu: fix xclk freq on CHIP_STONEY
 Date:   Mon, 12 Jun 2023 12:26:45 +0200
-Message-ID: <20230612101713.516030637@linuxfoundation.org>
+Message-ID: <20230612101704.399010539@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
+References: <20230612101702.085813286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,61 +53,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andi Shyti <andi.shyti@linux.intel.com>
+From: Chia-I Wu <olvaffe@gmail.com>
 
-commit 40023959dbab3c6ad56fa7213770e63d197b69fb upstream.
+commit b447b079cf3a9971ea4d31301e673f49612ccc18 upstream.
 
-kernel_context() returns an error pointer. Use pointer-error
-conversion functions to evaluate its return value, rather than
-checking for a '0' return.
+According to Alex, most APUs from that time seem to have the same issue
+(vbios says 48Mhz, actual is 100Mhz).  I only have a CHIP_STONEY so I
+limit the fixup to CHIP_STONEY
 
-Fixes: eb5c10cbbc2f ("drm/i915: Remove I915_USER_PRIORITY_SHIFT")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: <stable@vger.kernel.org> # v5.13+
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Acked-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230526124138.2006110-1-andi.shyti@linux.intel.com
-(cherry picked from commit edad9ee94f17adc75d3b13ab51bbe3d615ce1e7e)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Chia-I Wu <olvaffe@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/selftest_execlists.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/vi.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/i915/gt/selftest_execlists.c
-+++ b/drivers/gpu/drm/i915/gt/selftest_execlists.c
-@@ -1532,8 +1532,8 @@ static int live_busywait_preempt(void *a
- 	struct drm_i915_gem_object *obj;
- 	struct i915_vma *vma;
- 	enum intel_engine_id id;
--	int err = -ENOMEM;
- 	u32 *map;
-+	int err;
+--- a/drivers/gpu/drm/amd/amdgpu/vi.c
++++ b/drivers/gpu/drm/amd/amdgpu/vi.c
+@@ -542,8 +542,15 @@ static u32 vi_get_xclk(struct amdgpu_dev
+ 	u32 reference_clock = adev->clock.spll.reference_freq;
+ 	u32 tmp;
  
- 	/*
- 	 * Verify that even without HAS_LOGICAL_RING_PREEMPTION, we can
-@@ -1541,13 +1541,17 @@ static int live_busywait_preempt(void *a
- 	 */
- 
- 	ctx_hi = kernel_context(gt->i915, NULL);
--	if (!ctx_hi)
--		return -ENOMEM;
-+	if (IS_ERR(ctx_hi))
-+		return PTR_ERR(ctx_hi);
-+
- 	ctx_hi->sched.priority = I915_CONTEXT_MAX_USER_PRIORITY;
- 
- 	ctx_lo = kernel_context(gt->i915, NULL);
--	if (!ctx_lo)
-+	if (IS_ERR(ctx_lo)) {
-+		err = PTR_ERR(ctx_lo);
- 		goto err_ctx_hi;
+-	if (adev->flags & AMD_IS_APU)
+-		return reference_clock;
++	if (adev->flags & AMD_IS_APU) {
++		switch (adev->asic_type) {
++		case CHIP_STONEY:
++			/* vbios says 48Mhz, but the actual freq is 100Mhz */
++			return 10000;
++		default:
++			return reference_clock;
++		}
 +	}
-+
- 	ctx_lo->sched.priority = I915_CONTEXT_MIN_USER_PRIORITY;
  
- 	obj = i915_gem_object_create_internal(gt->i915, PAGE_SIZE);
+ 	tmp = RREG32_SMC(ixCG_CLKPIN_CNTL_2);
+ 	if (REG_GET_FIELD(tmp, CG_CLKPIN_CNTL_2, MUX_TCLK_TO_XCLK))
 
 
