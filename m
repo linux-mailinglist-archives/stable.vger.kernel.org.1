@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AED572C132
+	by mail.lfdr.de (Postfix) with ESMTP id CC63E72C133
 	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:57:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237026AbjFLK5X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:57:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59784 "EHLO
+        id S236750AbjFLK5Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:57:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236995AbjFLK5J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:57:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13EA5E556
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:44:42 -0700 (PDT)
+        with ESMTP id S232883AbjFLK5L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:57:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0105E561
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:44:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BA8F16243A
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:44:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D06E5C433D2;
-        Mon, 12 Jun 2023 10:44:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7DFFB615B7
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:44:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A512C433D2;
+        Mon, 12 Jun 2023 10:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566682;
-        bh=90l3CperUsWVQyKDeDHF31RbxyYLwd43JfJcKMQzqEA=;
+        s=korg; t=1686566684;
+        bh=MmQ75FKgYdekAg8tUDYXA9ECdl3eNrrtaMd7N2CvT6Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BELBnHLjJQ8BKkJ9JlbhYX0vL5yVVY15bEZR7gKx9KNlP4Vc65moY6rSDNMAKvO6G
-         wpMhvikrgYXZuN72h8Km/TeqPuM5IlN2O55EyP6LidMS+G4RHUt/mIjG9/Yll6mFj6
-         oNGID7XhPhIwvMrtuZbgJWPeJzqpqHJjHc2WrJR8=
+        b=L7CCVl8zCiHwr3XNSxg5/60v9pCQXNqVztGIjj3omu5/vhGd1j1GNR/BjtcUeZ/JQ
+         aBqbW3LLPqSHmxXpZNBRVstB4Ip3IUjIdC21SDjENFoKzakZP7prEvNtJHpQ6qurce
+         7viV33bu9rMLK3afc9qUKnoSQ8uhPoJSBqxweDjM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 117/132] i2c: sprd: Delete i2c adapter in .removes error path
-Date:   Mon, 12 Jun 2023 12:27:31 +0200
-Message-ID: <20230612101715.603803429@linuxfoundation.org>
+        Hsieh-Tseng Shen <woodrow.shen@sifive.com>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 118/132] riscv: mm: Ensure prot of VM_WRITE and VM_EXEC must be readable
+Date:   Mon, 12 Jun 2023 12:27:32 +0200
+Message-ID: <20230612101715.634045808@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
 References: <20230612101710.279705932@linuxfoundation.org>
@@ -46,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,48 +56,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Hsieh-Tseng Shen <woodrow.shen@sifive.com>
 
-[ Upstream commit ca0aa17f2db3468fd017038d23a78e17388e2f67 ]
+[ Upstream commit 6569fc12e442ea973d96db39e542aa19a7bc3a79 ]
 
-If pm runtime resume fails the .remove callback used to exit early. This
-resulted in an error message by the driver core but the device gets
-removed anyhow. This lets the registered i2c adapter stay around with an
-unbound parent device.
+Commit 8aeb7b17f04e ("RISC-V: Make mmap() with PROT_WRITE imply PROT_READ")
+allows riscv to use mmap with PROT_WRITE only, and meanwhile mmap with w+x
+is also permitted. However, when userspace tries to access this page with
+PROT_WRITE|PROT_EXEC, which causes infinite loop at load page fault as
+well as it triggers soft lockup. According to riscv privileged spec,
+"Writable pages must also be marked readable". The fix to drop the
+`PAGE_COPY_READ_EXEC` and then `PAGE_COPY_EXEC` would be just used instead.
+This aligns the other arches (i.e arm64) for protection_map.
 
-So only skip clk disabling if resume failed, but do delete the adapter.
-
-Fixes: 8b9ec0719834 ("i2c: Add Spreadtrum I2C controller driver")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Fixes: 8aeb7b17f04e ("RISC-V: Make mmap() with PROT_WRITE imply PROT_READ")
+Signed-off-by: Hsieh-Tseng Shen <woodrow.shen@sifive.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20230425102828.1616812-1-woodrow.shen@sifive.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-sprd.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ arch/riscv/include/asm/pgtable.h | 3 +--
+ arch/riscv/mm/init.c             | 2 +-
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-sprd.c b/drivers/i2c/busses/i2c-sprd.c
-index 4fe15cd78907e..ffc54fbf814dd 100644
---- a/drivers/i2c/busses/i2c-sprd.c
-+++ b/drivers/i2c/busses/i2c-sprd.c
-@@ -576,12 +576,14 @@ static int sprd_i2c_remove(struct platform_device *pdev)
- 	struct sprd_i2c *i2c_dev = platform_get_drvdata(pdev);
- 	int ret;
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index 2aeaf8e3a4ab0..59bb53da473dd 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -165,8 +165,7 @@ extern struct pt_alloc_ops pt_ops __initdata;
+ 					 _PAGE_EXEC | _PAGE_WRITE)
  
--	ret = pm_runtime_resume_and_get(i2c_dev->dev);
-+	ret = pm_runtime_get_sync(i2c_dev->dev);
- 	if (ret < 0)
--		return ret;
-+		dev_err(&pdev->dev, "Failed to resume device (%pe)\n", ERR_PTR(ret));
+ #define PAGE_COPY		PAGE_READ
+-#define PAGE_COPY_EXEC		PAGE_EXEC
+-#define PAGE_COPY_READ_EXEC	PAGE_READ_EXEC
++#define PAGE_COPY_EXEC		PAGE_READ_EXEC
+ #define PAGE_SHARED		PAGE_WRITE
+ #define PAGE_SHARED_EXEC	PAGE_WRITE_EXEC
  
- 	i2c_del_adapter(&i2c_dev->adap);
--	clk_disable_unprepare(i2c_dev->clk);
-+
-+	if (ret >= 0)
-+		clk_disable_unprepare(i2c_dev->clk);
- 
- 	pm_runtime_put_noidle(i2c_dev->dev);
- 	pm_runtime_disable(i2c_dev->dev);
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index 2b9906ed2d1d1..d8d97df801909 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -286,7 +286,7 @@ static const pgprot_t protection_map[16] = {
+ 	[VM_EXEC]					= PAGE_EXEC,
+ 	[VM_EXEC | VM_READ]				= PAGE_READ_EXEC,
+ 	[VM_EXEC | VM_WRITE]				= PAGE_COPY_EXEC,
+-	[VM_EXEC | VM_WRITE | VM_READ]			= PAGE_COPY_READ_EXEC,
++	[VM_EXEC | VM_WRITE | VM_READ]			= PAGE_COPY_EXEC,
+ 	[VM_SHARED]					= PAGE_NONE,
+ 	[VM_SHARED | VM_READ]				= PAGE_READ,
+ 	[VM_SHARED | VM_WRITE]				= PAGE_SHARED,
 -- 
 2.39.2
 
