@@ -2,53 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDFF672C21F
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:03:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD35B72C0A1
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:53:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237573AbjFLLDF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:03:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36946 "EHLO
+        id S235719AbjFLKxj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:53:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237471AbjFLLCa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:02:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B66C67A87
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:50:01 -0700 (PDT)
+        with ESMTP id S235724AbjFLKxY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:53:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FD9AAD34
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:38:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DC51624E7
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:50:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DF14C433D2;
-        Mon, 12 Jun 2023 10:50:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F3C9612E1
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:38:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9403DC433D2;
+        Mon, 12 Jun 2023 10:38:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686567000;
-        bh=LbffKf9v3dKBaeQq37WIBdVftKgG1vbIxyNIVX8aDoc=;
+        s=korg; t=1686566290;
+        bh=tnqH8FnCE1KpX1WgzFP/PR2zSPWUrwuFxxI4SgGEInc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iZL70HH00wuxf3ZT5YV9TtPopoOPghQRgL83Rrs5vrTkNteq6Mand9md5s/IZte6Q
-         /YLFQZzHGT7zX7ku5f7lwPRUF6mClkgLqy/pA6D7FR5xKGiOLFnqbfbJRaSEjum/HP
-         UR9C3AoPDFUJ+IEcaYdOpU9kAYschW2vq88B3wbw=
+        b=01SbCni2V6kvVozqZ52r8VYomgb49KBvaieRvDI13pGIXIBJ6o5013v9drNQzvjpO
+         ++7DYFUUkgkIAJBR9Do1b5pDH8+BBI+ft9WozstT2EDsnhpGTsq+n9I9cLiKqG0XEs
+         yrH0312ylbZEtdtH9PJ/A7hnGmAxO94mPXx45UBg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Tejas Upadhyay <tejas.upadhyay@intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.3 084/160] drm/i915/gt: Use the correct error value when kernel_context() fails
+        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
+        Dongsheng Yang <dongsheng.yang@easystack.cn>
+Subject: [PATCH 5.15 67/91] rbd: get snapshot context after exclusive lock is ensured to be held
 Date:   Mon, 12 Jun 2023 12:26:56 +0200
-Message-ID: <20230612101718.844734000@linuxfoundation.org>
+Message-ID: <20230612101704.873582099@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
+References: <20230612101702.085813286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,61 +53,119 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andi Shyti <andi.shyti@linux.intel.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit 40023959dbab3c6ad56fa7213770e63d197b69fb upstream.
+commit 870611e4877eff1e8413c3fb92a585e45d5291f6 upstream.
 
-kernel_context() returns an error pointer. Use pointer-error
-conversion functions to evaluate its return value, rather than
-checking for a '0' return.
+Move capturing the snapshot context into the image request state
+machine, after exclusive lock is ensured to be held for the duration of
+dealing with the image request.  This is needed to ensure correctness
+of fast-diff states (OBJECT_EXISTS vs OBJECT_EXISTS_CLEAN) and object
+deltas computed based off of them.  Otherwise the object map that is
+forked for the snapshot isn't guaranteed to accurately reflect the
+contents of the snapshot when the snapshot is taken under I/O.  This
+breaks differential backup and snapshot-based mirroring use cases with
+fast-diff enabled: since some object deltas may be incomplete, the
+destination image may get corrupted.
 
-Fixes: eb5c10cbbc2f ("drm/i915: Remove I915_USER_PRIORITY_SHIFT")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: <stable@vger.kernel.org> # v5.13+
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Acked-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230526124138.2006110-1-andi.shyti@linux.intel.com
-(cherry picked from commit edad9ee94f17adc75d3b13ab51bbe3d615ce1e7e)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://tracker.ceph.com/issues/61472
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/selftest_execlists.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/block/rbd.c |   30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/i915/gt/selftest_execlists.c
-+++ b/drivers/gpu/drm/i915/gt/selftest_execlists.c
-@@ -1530,8 +1530,8 @@ static int live_busywait_preempt(void *a
- 	struct drm_i915_gem_object *obj;
- 	struct i915_vma *vma;
- 	enum intel_engine_id id;
--	int err = -ENOMEM;
- 	u32 *map;
-+	int err;
- 
- 	/*
- 	 * Verify that even without HAS_LOGICAL_RING_PREEMPTION, we can
-@@ -1539,13 +1539,17 @@ static int live_busywait_preempt(void *a
- 	 */
- 
- 	ctx_hi = kernel_context(gt->i915, NULL);
--	if (!ctx_hi)
--		return -ENOMEM;
-+	if (IS_ERR(ctx_hi))
-+		return PTR_ERR(ctx_hi);
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -1337,6 +1337,8 @@ static bool rbd_obj_is_tail(struct rbd_o
+  */
+ static void rbd_obj_set_copyup_enabled(struct rbd_obj_request *obj_req)
+ {
++	rbd_assert(obj_req->img_request->snapc);
 +
- 	ctx_hi->sched.priority = I915_CONTEXT_MAX_USER_PRIORITY;
+ 	if (obj_req->img_request->op_type == OBJ_OP_DISCARD) {
+ 		dout("%s %p objno %llu discard\n", __func__, obj_req,
+ 		     obj_req->ex.oe_objno);
+@@ -1457,6 +1459,7 @@ __rbd_obj_add_osd_request(struct rbd_obj
+ static struct ceph_osd_request *
+ rbd_obj_add_osd_request(struct rbd_obj_request *obj_req, int num_ops)
+ {
++	rbd_assert(obj_req->img_request->snapc);
+ 	return __rbd_obj_add_osd_request(obj_req, obj_req->img_request->snapc,
+ 					 num_ops);
+ }
+@@ -1593,15 +1596,18 @@ static void rbd_img_request_init(struct
+ 	mutex_init(&img_request->state_mutex);
+ }
  
- 	ctx_lo = kernel_context(gt->i915, NULL);
--	if (!ctx_lo)
-+	if (IS_ERR(ctx_lo)) {
-+		err = PTR_ERR(ctx_lo);
- 		goto err_ctx_hi;
++/*
++ * Only snap_id is captured here, for reads.  For writes, snapshot
++ * context is captured in rbd_img_object_requests() after exclusive
++ * lock is ensured to be held.
++ */
+ static void rbd_img_capture_header(struct rbd_img_request *img_req)
+ {
+ 	struct rbd_device *rbd_dev = img_req->rbd_dev;
+ 
+ 	lockdep_assert_held(&rbd_dev->header_rwsem);
+ 
+-	if (rbd_img_is_write(img_req))
+-		img_req->snapc = ceph_get_snap_context(rbd_dev->header.snapc);
+-	else
++	if (!rbd_img_is_write(img_req))
+ 		img_req->snap_id = rbd_dev->spec->snap_id;
+ 
+ 	if (rbd_dev_parent_get(rbd_dev))
+@@ -3484,9 +3490,19 @@ static int rbd_img_exclusive_lock(struct
+ 
+ static void rbd_img_object_requests(struct rbd_img_request *img_req)
+ {
++	struct rbd_device *rbd_dev = img_req->rbd_dev;
+ 	struct rbd_obj_request *obj_req;
+ 
+ 	rbd_assert(!img_req->pending.result && !img_req->pending.num_pending);
++	rbd_assert(!need_exclusive_lock(img_req) ||
++		   __rbd_is_lock_owner(rbd_dev));
++
++	if (rbd_img_is_write(img_req)) {
++		rbd_assert(!img_req->snapc);
++		down_read(&rbd_dev->header_rwsem);
++		img_req->snapc = ceph_get_snap_context(rbd_dev->header.snapc);
++		up_read(&rbd_dev->header_rwsem);
 +	}
-+
- 	ctx_lo->sched.priority = I915_CONTEXT_MIN_USER_PRIORITY;
  
- 	obj = i915_gem_object_create_internal(gt->i915, PAGE_SIZE);
+ 	for_each_obj_request(img_req, obj_req) {
+ 		int result = 0;
+@@ -3504,7 +3520,6 @@ static void rbd_img_object_requests(stru
+ 
+ static bool rbd_img_advance(struct rbd_img_request *img_req, int *result)
+ {
+-	struct rbd_device *rbd_dev = img_req->rbd_dev;
+ 	int ret;
+ 
+ again:
+@@ -3525,9 +3540,6 @@ again:
+ 		if (*result)
+ 			return true;
+ 
+-		rbd_assert(!need_exclusive_lock(img_req) ||
+-			   __rbd_is_lock_owner(rbd_dev));
+-
+ 		rbd_img_object_requests(img_req);
+ 		if (!img_req->pending.num_pending) {
+ 			*result = img_req->pending.result;
+@@ -3989,6 +4001,10 @@ static int rbd_post_acquire_action(struc
+ {
+ 	int ret;
+ 
++	ret = rbd_dev_refresh(rbd_dev);
++	if (ret)
++		return ret;
++
+ 	if (rbd_dev->header.features & RBD_FEATURE_OBJECT_MAP) {
+ 		ret = rbd_object_map_open(rbd_dev);
+ 		if (ret)
 
 
