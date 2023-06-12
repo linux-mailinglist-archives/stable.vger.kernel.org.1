@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9B3F72C012
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:49:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2697872C1DE
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:01:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232585AbjFLKtl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:49:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51716 "EHLO
+        id S237149AbjFLLBF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:01:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233212AbjFLKtS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:49:18 -0400
+        with ESMTP id S237180AbjFLLAu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:00:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4AEB5FF9
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:33:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4ABF59F8
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:47:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0EE08623F1
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:33:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FEEEC433D2;
-        Mon, 12 Jun 2023 10:33:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 534CA6249F
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:47:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C043C433EF;
+        Mon, 12 Jun 2023 10:47:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566036;
-        bh=zihgKEjlNQPc7g0CdWKisTAY6Iicd31Ld807N2n6qyE=;
+        s=korg; t=1686566861;
+        bh=zCtngt7i5ghcETzlIiSo7jb5PTvYxVu4FDBKqSlNkEo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FmR18yIO3BUOIibLWj2GrvPpsjFuCznMndKcv/0XCg1roN0hA/PxHUZH0TgY+Uh+E
-         rVBjvfG8hyhiTzy5SOyFO8Lg5K0m+l1OPFS8NyEZpmj7j5amsetl32DTo7+5OUj8L6
-         SHY/x3xYrpwa0p0xoEoedyLd3QX1aMz4BPdtbg3g=
+        b=o5pV0EXoal+O4+rd7SrYmwgNaek5bQHhu2G9vLLfz1JEhHfg/ybJDwCw/8VKBmewS
+         67biHE4q27MYTOY9oHkb6srD0GNJNRTS+s5Dn0/fg3C3aomrcPRpZAV0TIo1xs0Vae
+         NJ9ANOW3OAdZlV82LvV/gNBQ+OU0qbVqaAXah4+k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, RenHai <kean0048@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 39/68] ALSA: hda/realtek: Add Lenovo P3 Tower platform
-Date:   Mon, 12 Jun 2023 12:26:31 +0200
-Message-ID: <20230612101700.032248532@linuxfoundation.org>
+        patches@lists.linux.dev, Ben Hutchings <ben@decadent.org.uk>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 060/160] lib: cpu_rmap: Fix potential use-after-free in irq_cpu_rmap_release()
+Date:   Mon, 12 Jun 2023 12:26:32 +0200
+Message-ID: <20230612101717.754949510@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
-References: <20230612101658.437327280@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,31 +55,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: RenHai <kean0048@gmail.com>
+From: Ben Hutchings <ben@decadent.org.uk>
 
-commit 7ca4c8d4d3f41c2cd9b4cf22bb829bf03dac0956 upstream.
+[ Upstream commit 7c5d4801ecf0564c860033d89726b99723c55146 ]
 
-Headset microphone on this platform does not work without
-ALC897_FIXUP_HEADSET_MIC_PIN fixup.
+irq_cpu_rmap_release() calls cpu_rmap_put(), which may free the rmap.
+So we need to clear the pointer to our glue structure in rmap before
+doing that, not after.
 
-Signed-off-by: RenHai <kean0048@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230602003604.975892-1-kean0048@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4e0473f1060a ("lib: cpu_rmap: Avoid use after free on rmap->obj array entries")
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/ZHo0vwquhOy3FaXc@decadent.org.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ lib/cpu_rmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11184,6 +11184,7 @@ static const struct snd_pci_quirk alc662
- 	SND_PCI_QUIRK(0x14cd, 0x5003, "USI", ALC662_FIXUP_USI_HEADSET_MODE),
- 	SND_PCI_QUIRK(0x17aa, 0x1036, "Lenovo P520", ALC662_FIXUP_LENOVO_MULTI_CODECS),
- 	SND_PCI_QUIRK(0x17aa, 0x1057, "Lenovo P360", ALC897_FIXUP_HEADSET_MIC_PIN),
-+	SND_PCI_QUIRK(0x17aa, 0x1064, "Lenovo P3 Tower", ALC897_FIXUP_HEADSET_MIC_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x32ca, "Lenovo ThinkCentre M80", ALC897_FIXUP_HEADSET_MIC_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x32cb, "Lenovo ThinkCentre M70", ALC897_FIXUP_HEADSET_MIC_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x32cf, "Lenovo ThinkCentre M950", ALC897_FIXUP_HEADSET_MIC_PIN),
+diff --git a/lib/cpu_rmap.c b/lib/cpu_rmap.c
+index e77f12bb3c774..1833ad73de6fc 100644
+--- a/lib/cpu_rmap.c
++++ b/lib/cpu_rmap.c
+@@ -268,8 +268,8 @@ static void irq_cpu_rmap_release(struct kref *ref)
+ 	struct irq_glue *glue =
+ 		container_of(ref, struct irq_glue, notify.kref);
+ 
+-	cpu_rmap_put(glue->rmap);
+ 	glue->rmap->obj[glue->index] = NULL;
++	cpu_rmap_put(glue->rmap);
+ 	kfree(glue);
+ }
+ 
+-- 
+2.39.2
+
 
 
