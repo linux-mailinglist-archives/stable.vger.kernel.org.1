@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D64872C20A
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:02:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7164F72C030
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:50:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237433AbjFLLCW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:02:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38060 "EHLO
+        id S235503AbjFLKui (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:50:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237424AbjFLLCF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:02:05 -0400
+        with ESMTP id S235997AbjFLKuG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:50:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35CEA4C21
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:49:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BFA9103
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:34:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BFC32624E4
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:49:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1808C433EF;
-        Mon, 12 Jun 2023 10:49:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 562DA61500
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:34:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A33CC433EF;
+        Mon, 12 Jun 2023 10:34:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566964;
-        bh=e6h7ezBfQxf3SpLekI03YTp+/3sYIf3ZR1MfP2Q9c9U=;
+        s=korg; t=1686566090;
+        bh=SG90XpMJ/6SVDuFyRcbXqbDQgV6lgBBWwhwjuUZdWB0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Elbn+nMDfKvj5vKu0tExuJWADgi9Jc0y+TKM8DhRxZy0LlAb/Y5oiwTuU5PTO2o4e
-         XDfY4lpBLt4eLQ+jEOb9VWhsi8O2Hl3/SS5iIT+rJoNFK7mYcgX4ei5CgIWhL6Af3S
-         fM/Z3lH4I3NLTain+jT7kNd+ASn39qdmbnxZ0M+U=
+        b=c1c1FLcVjjAQ8GSUZgiNnlSNJSnGtebz8ttvSN/T5f/hC10hlgeDViVGKpNVw0qiy
+         rPFhSHLdd4k4h5YDq87PP6ebiKUyGQL5mUnU7tLsD/MWzl9v0u+5kCWbFkAf6B1Gr+
+         ETYuLBRRblT3EjmPW1dlhqPzqKjlPo59XCkaqDn4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ai Chao <aichao@kylinos.cn>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.3 081/160] ALSA: hda/realtek: Add a quirk for HP Slim Desktop S01
+        patches@lists.linux.dev, Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.10 61/68] ext4: only check dquot_initialize_needed() when debugging
 Date:   Mon, 12 Jun 2023 12:26:53 +0200
-Message-ID: <20230612101718.712524917@linuxfoundation.org>
+Message-ID: <20230612101700.981957062@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
+References: <20230612101658.437327280@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,30 +52,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ai Chao <aichao@kylinos.cn>
+From: Theodore Ts'o <tytso@mit.edu>
 
-commit 527c356b51f3ddee02c9ed5277538f85e30a2cdc upstream.
+commit dea9d8f7643fab07bf89a1155f1f94f37d096a5e upstream.
 
-Add a quirk for HP Slim Desktop S01 to fixup headset MIC no presence.
+ext4_xattr_block_set() relies on its caller to call dquot_initialize()
+on the inode.  To assure that this has happened there are WARN_ON
+checks.  Unfortunately, this is subject to false positives if there is
+an antagonist thread which is flipping the file system at high rates
+between r/o and rw.  So only do the check if EXT4_XATTR_DEBUG is
+enabled.
 
-Signed-off-by: Ai Chao <aichao@kylinos.cn>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230526094704.14597-1-aichao@kylinos.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20230608044056.GA1418535@mit.edu
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/ext4/xattr.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11695,6 +11695,7 @@ static const struct snd_pci_quirk alc662
- 	SND_PCI_QUIRK(0x103c, 0x8719, "HP", ALC897_FIXUP_HP_HSMIC_VERB),
- 	SND_PCI_QUIRK(0x103c, 0x872b, "HP", ALC897_FIXUP_HP_HSMIC_VERB),
- 	SND_PCI_QUIRK(0x103c, 0x873e, "HP", ALC671_FIXUP_HP_HEADSET_MIC2),
-+	SND_PCI_QUIRK(0x103c, 0x8768, "HP Slim Desktop S01", ALC671_FIXUP_HP_HEADSET_MIC2),
- 	SND_PCI_QUIRK(0x103c, 0x877e, "HP 288 Pro G6", ALC671_FIXUP_HP_HEADSET_MIC2),
- 	SND_PCI_QUIRK(0x103c, 0x885f, "HP 288 Pro G8", ALC671_FIXUP_HP_HEADSET_MIC2),
- 	SND_PCI_QUIRK(0x1043, 0x1080, "Asus UX501VW", ALC668_FIXUP_HEADSET_MODE),
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -1999,8 +1999,9 @@ inserted:
+ 			else {
+ 				u32 ref;
+ 
++#ifdef EXT4_XATTR_DEBUG
+ 				WARN_ON_ONCE(dquot_initialize_needed(inode));
+-
++#endif
+ 				/* The old block is released after updating
+ 				   the inode. */
+ 				error = dquot_alloc_block(inode,
+@@ -2062,8 +2063,9 @@ inserted:
+ 			/* We need to allocate a new block */
+ 			ext4_fsblk_t goal, block;
+ 
++#ifdef EXT4_XATTR_DEBUG
+ 			WARN_ON_ONCE(dquot_initialize_needed(inode));
+-
++#endif
+ 			goal = ext4_group_first_block_no(sb,
+ 						EXT4_I(inode)->i_block_group);
+ 			block = ext4_new_meta_blocks(handle, inode, goal, 0,
 
 
