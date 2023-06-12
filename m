@@ -2,315 +2,185 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B8E572B821
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 08:34:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91B2672B81B
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 08:34:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231462AbjFLGej (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 02:34:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54742 "EHLO
+        id S233109AbjFLGeE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 02:34:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234501AbjFLGei (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 02:34:38 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5FCC170B;
-        Sun, 11 Jun 2023 23:29:36 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        with ESMTP id S232490AbjFLGeD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 02:34:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21F4E10FA
+        for <stable@vger.kernel.org>; Sun, 11 Jun 2023 23:29:03 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id D805620438;
-        Mon, 12 Jun 2023 06:28:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-        t=1686551281; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=QJccrPvEmL1q1Xpkd6ORczRgTgvUGBgpRzm55Jp+Yxk=;
-        b=gPPwOFTA3NS/t68IR32ccZKhnQvb+6HlfBZ+owozxtLhyhLr23gG90aEk1nL75tyw7p7fa
-        pM+vP4pkPQUC++h5WK7hGb8zaDI5clinJtyfathX6QOuLNMjFOE1pDnkASDlxWugV62EEW
-        ESyXdVxLrFy7pIkuEhcH5C+cDzhhlhA=
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 8E2CE138EC;
-        Mon, 12 Jun 2023 06:28:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 55kyIfG6hmSiTQAAMHmgww
-        (envelope-from <jgross@suse.com>); Mon, 12 Jun 2023 06:28:01 +0000
-Message-ID: <85275900-6b6a-5391-a2a0-16704df3f00f@suse.com>
-Date:   Mon, 12 Jun 2023 08:27:59 +0200
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ED58561240
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 06:28:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15D38C433D2;
+        Mon, 12 Jun 2023 06:28:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1686551293;
+        bh=gBJKuFiVu+4vHDKElsAYZAGxW0hkoFwvZUrBVyIkyU0=;
+        h=Subject:To:Cc:From:Date:From;
+        b=vC7N+4s/E52V8Hmow8a+wGuluBdHgi9w3zKZyXBzBV0CYnbCIDXEHIa3Ak1xdbCh2
+         c1rC4/7UM+iQ//Kdq5xB9IemU1YGRKhESN+djz7ks3DYla4d1JjEukpKbtedj3YRxA
+         TndhPouhWamWHwKKlZV8osXB7Z1ilkAUiOBryaYA=
+Subject: FAILED: patch "[PATCH] ksmbd: fix out-of-bound read in parse_lease_state()" failed to apply to 5.15-stable tree
+To:     linkinjeon@kernel.org, cc85nod@gmail.com, stfrench@microsoft.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Mon, 12 Jun 2023 08:28:10 +0200
+Message-ID: <2023061210-shaft-wrangle-7b2d@gregkh>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Content-Language: en-US
-To:     Demi Marie Obenour <demi@invisiblethingslab.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Jan Beulich <JBeulich@suse.com>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Cc:     Xen developer discussion <xen-devel@lists.xenproject.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        stable@vger.kernel.org
-References: <20230610153232.1859-1-demi@invisiblethingslab.com>
-From:   Juergen Gross <jgross@suse.com>
-Subject: Re: [PATCH] xen: speed up grant-table reclaim
-In-Reply-To: <20230610153232.1859-1-demi@invisiblethingslab.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------PfPXngR00bZvfSGPWBBi8L0B"
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------PfPXngR00bZvfSGPWBBi8L0B
-Content-Type: multipart/mixed; boundary="------------VhH7mL2u9cTh1WElDAyKKSMF";
- protected-headers="v1"
-From: Juergen Gross <jgross@suse.com>
-To: Demi Marie Obenour <demi@invisiblethingslab.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- Jan Beulich <JBeulich@suse.com>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
-Cc: Xen developer discussion <xen-devel@lists.xenproject.org>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- stable@vger.kernel.org
-Message-ID: <85275900-6b6a-5391-a2a0-16704df3f00f@suse.com>
-Subject: Re: [PATCH] xen: speed up grant-table reclaim
-References: <20230610153232.1859-1-demi@invisiblethingslab.com>
-In-Reply-To: <20230610153232.1859-1-demi@invisiblethingslab.com>
 
---------------VhH7mL2u9cTh1WElDAyKKSMF
-Content-Type: multipart/mixed; boundary="------------OjVKIcQRF51gOYUx6IR6Tatd"
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
---------------OjVKIcQRF51gOYUx6IR6Tatd
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+To reproduce the conflict and resubmit, you may use the following commands:
 
-T24gMTAuMDYuMjMgMTc6MzIsIERlbWkgTWFyaWUgT2Jlbm91ciB3cm90ZToNCj4gV2hlbiBh
-IGdyYW50IGVudHJ5IGlzIHN0aWxsIGluIHVzZSBieSB0aGUgcmVtb3RlIGRvbWFpbiwgTGlu
-dXggbXVzdCBwdXQNCj4gaXQgb24gYSBkZWZlcnJlZCBsaXN0Lg0KDQpUaGlzIGxhY2tzIHF1
-aXRlIHNvbWUgY29udGV4dC4NCg0KVGhlIG1haW4gcHJvYmxlbSBpcyByZWxhdGVkIHRvIHRo
-ZSBncmFudCBub3QgaGF2aW5nIGJlZW4gdW5tYXBwZWQgYWZ0ZXINCnRoZSBlbmQgb2YgYSBy
-ZXF1ZXN0LCBidXQgdGhlIHNpZGUgZ3JhbnRpbmcgdGhlIGFjY2VzcyBpcyBhc3N1bWluZyB0
-aGlzDQpzaG91bGQgYmUgdGhlIGNhc2UuDQoNCkluIGdlbmVyYWwgdGhpcyBtZWFucyB0aGF0
-IHRoZSB0d28gc2lkZXMgaW1wbGVtZW50aW5nIHRoZSBwcm90b2NvbCBkb24ndA0KYWdyZWUg
-aG93IGl0IHNob3VsZCB3b3JrLCBvciB0aGF0IHRoZSBwcm90b2NvbCBpdHNlbGYgaGFzIGEg
-Zmxhdy4NCg0KID4gTm9ybWFsbHksIHRoaXMgbGlzdCBpcyB2ZXJ5IHNob3J0LCBiZWNhdXNl
-DQo+IHRoZSBQViBuZXR3b3JrIGFuZCBibG9jayBwcm90b2NvbHMgZXhwZWN0IHRoZSBiYWNr
-ZW5kIHRvIHVubWFwIHRoZSBncmFudA0KPiBmaXJzdC4NCg0KTm9ybWFsbHkgdGhlIGxpc3Qg
-aXMganVzdCBlbXB0eS4gT25seSBpbiB2ZXJ5IHJhcmUgY2FzZXMgbGlrZSBwcmVtYXR1cmUN
-ClBWIGZyb250ZW5kIG1vZHVsZSB1bmxvYWRpbmcgaXQgaXMgZXhwZWN0ZWQgdG8gc2VlIGNh
-c2VzIG9mIGRlZmVycmVkDQpncmFudCByZWNsYWltcy4NCg0KPiBIb3dldmVyLCBRdWJlcyBP
-UydzIEdVSSBwcm90b2NvbCBpcyBzdWJqZWN0IHRvIHRoZSBjb25zdHJhaW50cw0KPiBvZiB0
-aGUgWCBXaW5kb3cgU3lzdGVtLCBhbmQgYXMgc3VjaCB3aW5kcyB1cCB3aXRoIHRoZSBmcm9u
-dGVuZCB1bm1hcHBpbmcNCj4gdGhlIHdpbmRvdyBmaXJzdC4gIEFzIGEgcmVzdWx0LCB0aGUg
-bGlzdCBjYW4gZ3JvdyB2ZXJ5IGxhcmdlLCByZXN1bHRpbmcNCj4gaW4gYSBtYXNzaXZlIG1l
-bW9yeSBsZWFrIGFuZCBldmVudHVhbCBWTSBmcmVlemUuDQoNCkkgZG8gdW5kZXJzdGFuZCB0
-aGF0IGl0IGlzIGRpZmZpY3VsdCB0byBjaGFuZ2UgdGhlIHByb3RvY29sIGFuZC9vcg0KYmVo
-YXZpb3IgYWZ0ZXIgdGhlIGZhY3QsIG9yIHRoYXQgcGVyZm9ybWFuY2UgY29uc2lkZXJhdGlv
-bnMgYXJlIGluIHRoZQ0Kd2F5IG9mIGRvaW5nIHNvLg0KDQo+IFRvIHBhcnRpYWxseSBzb2x2
-ZSB0aGlzIHByb2JsZW0sIG1ha2UgdGhlIG51bWJlciBvZiBlbnRyaWVzIHRoYXQgdGhlIFZN
-DQo+IHdpbGwgYXR0ZW1wdCB0byBmcmVlIGF0IGVhY2ggaXRlcmF0aW9uIHR1bmFibGUuICBU
-aGUgZGVmYXVsdCBpcyBzdGlsbA0KPiAxMCwgYnV0IGl0IGNhbiBiZSBvdmVycmlkZGVuIGF0
-IGNvbXBpbGUtdGltZSAodmlhIEtjb25maWcpLCBib290LXRpbWUNCj4gKHZpYSBhIGtlcm5l
-bCBjb21tYW5kLWxpbmUgb3B0aW9uKSwgb3IgcnVudGltZSAodmlhIHN5c2ZzKS4NCg0KSXMg
-dGhlcmUgcmVhbGx5IGEgbmVlZCB0byBoYXZlIGFub3RoZXIgS2NvbmZpZyBvcHRpb24gZm9y
-IHRoaXM/IEFGQUlDUw0Kb25seSBRdWJlc09TIGlzIGFmZmVjdGVkIGJ5IHRoZSBwcm9ibGVt
-IHlvdSBhcmUgdHJ5aW5nIHRvIHNvbHZlLiBJIGRvbid0DQpzZWUgd2h5IHlvdSBjYW4ndCB1
-c2UgdGhlIGNvbW1hbmQtbGluZSBvcHRpb24gb3Igc3lzZnMgbm9kZSB0byBzZXQgdGhlDQpo
-aWdoZXIgcmVjbGFpbSBiYXRjaCBzaXplLg0KDQo+IA0KPiBGaXhlczogNTY5Y2E1YjNmOTRj
-ICgieGVuL2dudHRhYjogYWRkIGRlZmVycmVkIGZyZWVpbmcgbG9naWMiKQ0KDQpJIGRvbid0
-IHRoaW5rIHRoaXMgIkZpeGVzOiIgdGFnIGlzIGFwcHJvcHJpYXRlLiBUaGUgbWVudGlvbmVk
-IGNvbW1pdCBkaWRuJ3QNCmhhdmUgYSBidWcuIFlvdSBhcmUgYWRkaW5nIG5ldyBmdW5jdGlv
-bmFsaXR5IG9uIHRvcCBvZiBpdC4NCg0KPiBDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZw0K
-PiBTaWduZWQtb2ZmLWJ5OiBEZW1pIE1hcmllIE9iZW5vdXIgPGRlbWlAaW52aXNpYmxldGhp
-bmdzbGFiLmNvbT4NCj4gLS0tDQo+ICAgZHJpdmVycy94ZW4vS2NvbmZpZyAgICAgICB8IDEy
-ICsrKysrKysrKysrKw0KPiAgIGRyaXZlcnMveGVuL2dyYW50LXRhYmxlLmMgfCA0MCArKysr
-KysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLS0tLS0NCj4gICAyIGZpbGVzIGNoYW5n
-ZWQsIDQxIGluc2VydGlvbnMoKyksIDExIGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdp
-dCBhL2RyaXZlcnMveGVuL0tjb25maWcgYi9kcml2ZXJzL3hlbi9LY29uZmlnDQo+IGluZGV4
-IGQ1ZDdjNDAyYjY1MTEyYjg1OTJiYTEwYmQzZmQxNzMyYzI2Yjc3MWUuLjhmOTZlMTM1OWVi
-MTAyZDY0MjA3NzViNjZlNzgwNTAwNGE0Y2U5ZmUgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMv
-eGVuL0tjb25maWcNCj4gKysrIGIvZHJpdmVycy94ZW4vS2NvbmZpZw0KPiBAQCAtNjUsNiAr
-NjUsMTggQEAgY29uZmlnIFhFTl9NRU1PUllfSE9UUExVR19MSU1JVA0KPiAgIAkgIFRoaXMg
-dmFsdWUgaXMgdXNlZCB0byBhbGxvY2F0ZSBlbm91Z2ggc3BhY2UgaW4gaW50ZXJuYWwNCj4g
-ICAJICB0YWJsZXMgbmVlZGVkIGZvciBwaHlzaWNhbCBtZW1vcnkgYWRtaW5pc3RyYXRpb24u
-DQo+ICAgDQo+ICtjb25maWcgWEVOX0dSQU5UU19SRUNMQUlNX1BFUl9JVEVSQVRJT04NCj4g
-KwlpbnQgIkRlZmF1bHQgbnVtYmVyIG9mIGdyYW50IGVudHJpZXMgdG8gcmVjbGFpbSBwZXIg
-aXRlcmF0aW9uIg0KPiArCWRlZmF1bHQgMTANCj4gKwlyYW5nZSAxMCA0Mjk0OTY3Mjk1DQo+
-ICsJaGVscA0KPiArCSAgVGhpcyBzZXRzIHRoZSBkZWZhdWx0IHZhbHVlIGZvciB0aGUgZ3Jh
-bnRfdGFibGUuZnJlZV9wZXJfaXRlcmF0aW9uDQo+ICsJICBrZXJuZWwgY29tbWFuZCBsaW5l
-IG9wdGlvbiwgd2hpY2ggc2V0cyB0aGUgbnVtYmVyIG9mIGdyYW50cyB0aGF0DQo+ICsJICBM
-aW51eCB3aWxsIHRyeSB0byByZWNsYWltIGF0IG9uY2UuICBUaGUgZGVmYXVsdCBpcyAxMCwg
-YnV0DQo+ICsJICB3b3JrbG9hZHMgdGhhdCBtYWtlIGhlYXZ5IHVzZSBvZiBnbnRhbGxvYyB3
-aWxsIGxpa2VseSB3YW50IHRvDQo+ICsJICBpbmNyZWFzZSB0aGlzLiAgVGhlIGN1cnJlbnQg
-dmFsdWUgY2FuIGJlIGFjY2Vzc2VkIGFuZC9vciBtb2RpZmllZA0KPiArCSAgdmlhIC9zeXMv
-bW9kdWxlL2dyYW50X3RhYmxlL3BhcmFtZXRlcnMvZnJlZV9wZXJfaXRlcmF0aW9uLg0KPiAr
-DQoNCkFwYXJ0IGZyb20gdGhlIGZhY3QgdGhhdCBJIGRvbid0IGxpa2UgYWRkaW5nIGEgbmV3
-IEtjb25maWcgb3B0aW9uLCB0aGUgaGVscA0KdGV4dCBpcyBub3QgdGVsbGluZyB0aGUgdHJ1
-ZSBzdG9yeS4gSGVhdnkgdXNlIG9mIGdudGFsbG9jIGlzbid0IHRvIGJsYW1lLCBidXQNCnRo
-ZSBmYWN0IHRoYXQgeW91ciBQVi1kZXZpY2UgaW1wbGVtZW50YXRpb24gaXMgYmFzZWQgb24g
-dGhlIHJlY2xhaW0NCmZ1bmN0aW9uYWxpdHkuIFRCSCwgc29tZW9uZSBub3QgZmFtaWxpYXIg
-d2l0aCB0aGUgZ3JhbnQgcmVjbGFpbSB3aWxsIGhhdmUgbm8NCmNoYW5jZSB0byBzZWxlY3Qg
-YSBzZW5zaWJsZSB2YWx1ZSBiYXNlZCBvbiB5b3VyIGhlbHAgdGV4dC4NCg0KPiAgIGNvbmZp
-ZyBYRU5fU0NSVUJfUEFHRVNfREVGQVVMVA0KPiAgIAlib29sICJTY3J1YiBwYWdlcyBiZWZv
-cmUgcmV0dXJuaW5nIHRoZW0gdG8gc3lzdGVtIGJ5IGRlZmF1bHQiDQo+ICAgCWRlcGVuZHMg
-b24gWEVOX0JBTExPT04NCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMveGVuL2dyYW50LXRhYmxl
-LmMgYi9kcml2ZXJzL3hlbi9ncmFudC10YWJsZS5jDQo+IGluZGV4IGUxZWM3MjVjMjgxOWQ0
-ZDVkZWRlMDYzZWIwMGQ4NmE2ZDUyOTQ0YzAuLmZhNjY2YWE2YWJjM2U3ODZkZGRjOTRmODk1
-NjQxNTA1ZWMwYjIzZDggMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMveGVuL2dyYW50LXRhYmxl
-LmMNCj4gKysrIGIvZHJpdmVycy94ZW4vZ3JhbnQtdGFibGUuYw0KPiBAQCAtNDk4LDE0ICs0
-OTgsMjAgQEAgc3RhdGljIExJU1RfSEVBRChkZWZlcnJlZF9saXN0KTsNCj4gICBzdGF0aWMg
-dm9pZCBnbnR0YWJfaGFuZGxlX2RlZmVycmVkKHN0cnVjdCB0aW1lcl9saXN0ICopOw0KPiAg
-IHN0YXRpYyBERUZJTkVfVElNRVIoZGVmZXJyZWRfdGltZXIsIGdudHRhYl9oYW5kbGVfZGVm
-ZXJyZWQpOw0KPiAgIA0KPiArc3RhdGljIGF0b21pYzY0X3QgZGVmZXJyZWRfY291bnQ7DQo+
-ICtzdGF0aWMgYXRvbWljNjRfdCBsZWFrZWRfY291bnQ7DQo+ICtzdGF0aWMgdW5zaWduZWQg
-aW50IGZyZWVfcGVyX2l0ZXJhdGlvbiA9IENPTkZJR19YRU5fR1JBTlRTX1JFQ0xBSU1fUEVS
-X0lURVJBVElPTjsNCj4gKw0KPiAgIHN0YXRpYyB2b2lkIGdudHRhYl9oYW5kbGVfZGVmZXJy
-ZWQoc3RydWN0IHRpbWVyX2xpc3QgKnVudXNlZCkNCj4gICB7DQo+IC0JdW5zaWduZWQgaW50
-IG5yID0gMTA7DQo+ICsJdW5zaWduZWQgaW50IG5yID0gUkVBRF9PTkNFKGZyZWVfcGVyX2l0
-ZXJhdGlvbik7DQo+ICsJY29uc3QgYm9vbCBpZ25vcmVfbGltaXQgPSBuciA9PSAwOw0KPiAg
-IAlzdHJ1Y3QgZGVmZXJyZWRfZW50cnkgKmZpcnN0ID0gTlVMTDsNCj4gICAJdW5zaWduZWQg
-bG9uZyBmbGFnczsNCj4gKwlzaXplX3QgZnJlZWQgPSAwOw0KPiAgIA0KPiAgIAlzcGluX2xv
-Y2tfaXJxc2F2ZSgmZ250dGFiX2xpc3RfbG9jaywgZmxhZ3MpOw0KPiAtCXdoaWxlIChuci0t
-KSB7DQo+ICsJd2hpbGUgKChpZ25vcmVfbGltaXQgfHwgbnItLSkgJiYgIWxpc3RfZW1wdHko
-JmRlZmVycmVkX2xpc3QpKSB7DQo+ICAgCQlzdHJ1Y3QgZGVmZXJyZWRfZW50cnkgKmVudHJ5
-DQo+ICAgCQkJPSBsaXN0X2ZpcnN0X2VudHJ5KCZkZWZlcnJlZF9saXN0LA0KPiAgIAkJCQkJ
-ICAgc3RydWN0IGRlZmVycmVkX2VudHJ5LCBsaXN0KTsNCj4gQEAgLTUxNSwxMCArNTIxLDEz
-IEBAIHN0YXRpYyB2b2lkIGdudHRhYl9oYW5kbGVfZGVmZXJyZWQoc3RydWN0IHRpbWVyX2xp
-c3QgKnVudXNlZCkNCj4gICAJCWxpc3RfZGVsKCZlbnRyeS0+bGlzdCk7DQo+ICAgCQlzcGlu
-X3VubG9ja19pcnFyZXN0b3JlKCZnbnR0YWJfbGlzdF9sb2NrLCBmbGFncyk7DQo+ICAgCQlp
-ZiAoX2dudHRhYl9lbmRfZm9yZWlnbl9hY2Nlc3NfcmVmKGVudHJ5LT5yZWYpKSB7DQo+ICsJ
-CQl1aW50NjRfdCByZXQgPSBhdG9taWM2NF9zdWJfcmV0dXJuKDEsICZkZWZlcnJlZF9jb3Vu
-dCk7DQo+ICAgCQkJcHV0X2ZyZWVfZW50cnkoZW50cnktPnJlZik7DQo+IC0JCQlwcl9kZWJ1
-ZygiZnJlZWluZyBnLmUuICUjeCAocGZuICUjbHgpXG4iLA0KPiAtCQkJCSBlbnRyeS0+cmVm
-LCBwYWdlX3RvX3BmbihlbnRyeS0+cGFnZSkpOw0KPiArCQkJcHJfZGVidWcoImZyZWVpbmcg
-Zy5lLiAlI3ggKHBmbiAlI2x4KSwgJWxsdSByZW1haW5pbmdcbiIsDQo+ICsJCQkJIGVudHJ5
-LT5yZWYsIHBhZ2VfdG9fcGZuKGVudHJ5LT5wYWdlKSwNCj4gKwkJCQkgKHVuc2lnbmVkIGxv
-bmcgbG9uZylyZXQpOw0KDQpJJ2QgcHJlZmVyIG5vdCB0byBpc3N1ZSBsb3RzIG9mIHByaW50
-cyAoYmVpbmcgaXQgZGVidWcgb3IgaW5mbyBvbmVzKSBpZiB0aGUNCnJlY2xhaW0gaXMgZXhw
-ZWN0ZWQgdG8gaGFwcGVuIHdpdGggYSBzcGVjaWZpYyBQVi1kZXZpY2UuDQoNCk15IHByZWZl
-cnJlZCBzb2x1dGlvbiB3b3VsZCBiZSBhIHBlci1kZXZpY2UgZmxhZywgYnV0IGF0IGxlYXN0
-IHlvdSBzaG91bGQNCnN3aXRjaCB0byBwcl8qX3JhdGVsaW1pdGVkKCkuIFNhbWUgYXBwbGll
-cyBmdXJ0aGVyIGRvd24uDQoNCj4gICAJCQlwdXRfcGFnZShlbnRyeS0+cGFnZSk7DQo+ICsJ
-CQlmcmVlZCsrOw0KPiAgIAkJCWtmcmVlKGVudHJ5KTsNCj4gICAJCQllbnRyeSA9IE5VTEw7
-DQo+ICAgCQl9IGVsc2Ugew0KPiBAQCAtNTMwLDIxICs1MzksMjIgQEAgc3RhdGljIHZvaWQg
-Z250dGFiX2hhbmRsZV9kZWZlcnJlZChzdHJ1Y3QgdGltZXJfbGlzdCAqdW51c2VkKQ0KPiAg
-IAkJc3Bpbl9sb2NrX2lycXNhdmUoJmdudHRhYl9saXN0X2xvY2ssIGZsYWdzKTsNCj4gICAJ
-CWlmIChlbnRyeSkNCj4gICAJCQlsaXN0X2FkZF90YWlsKCZlbnRyeS0+bGlzdCwgJmRlZmVy
-cmVkX2xpc3QpOw0KPiAtCQllbHNlIGlmIChsaXN0X2VtcHR5KCZkZWZlcnJlZF9saXN0KSkN
-Cj4gLQkJCWJyZWFrOw0KPiAgIAl9DQo+IC0JaWYgKCFsaXN0X2VtcHR5KCZkZWZlcnJlZF9s
-aXN0KSAmJiAhdGltZXJfcGVuZGluZygmZGVmZXJyZWRfdGltZXIpKSB7DQo+ICsJaWYgKGxp
-c3RfZW1wdHkoJmRlZmVycmVkX2xpc3QpKQ0KPiArCQlXQVJOX09OKGF0b21pYzY0X3JlYWQo
-JmRlZmVycmVkX2NvdW50KSk7DQo+ICsJZWxzZSBpZiAoIXRpbWVyX3BlbmRpbmcoJmRlZmVy
-cmVkX3RpbWVyKSkgew0KPiAgIAkJZGVmZXJyZWRfdGltZXIuZXhwaXJlcyA9IGppZmZpZXMg
-KyBIWjsNCj4gICAJCWFkZF90aW1lcigmZGVmZXJyZWRfdGltZXIpOw0KPiAgIAl9DQo+ICAg
-CXNwaW5fdW5sb2NrX2lycXJlc3RvcmUoJmdudHRhYl9saXN0X2xvY2ssIGZsYWdzKTsNCj4g
-Kwlwcl9kZWJ1ZygiRnJlZWQgJXp1IHJlZmVyZW5jZXMiLCBmcmVlZCk7DQo+ICAgfQ0KPiAg
-IA0KPiAgIHN0YXRpYyB2b2lkIGdudHRhYl9hZGRfZGVmZXJyZWQoZ3JhbnRfcmVmX3QgcmVm
-LCBzdHJ1Y3QgcGFnZSAqcGFnZSkNCj4gICB7DQo+ICAgCXN0cnVjdCBkZWZlcnJlZF9lbnRy
-eSAqZW50cnk7DQo+ICAgCWdmcF90IGdmcCA9IChpbl9hdG9taWMoKSB8fCBpcnFzX2Rpc2Fi
-bGVkKCkpID8gR0ZQX0FUT01JQyA6IEdGUF9LRVJORUw7DQo+IC0JY29uc3QgY2hhciAqd2hh
-dCA9IEtFUk5fV0FSTklORyAibGVha2luZyI7DQo+ICsJdWludDY0X3QgbGVha2VkLCBkZWZl
-cnJlZDsNCj4gICANCj4gICAJZW50cnkgPSBrbWFsbG9jKHNpemVvZigqZW50cnkpLCBnZnAp
-Ow0KPiAgIAlpZiAoIXBhZ2UpIHsNCj4gQEAgLTU2NywxMiArNTc3LDIwIEBAIHN0YXRpYyB2
-b2lkIGdudHRhYl9hZGRfZGVmZXJyZWQoZ3JhbnRfcmVmX3QgcmVmLCBzdHJ1Y3QgcGFnZSAq
-cGFnZSkNCj4gICAJCQlhZGRfdGltZXIoJmRlZmVycmVkX3RpbWVyKTsNCj4gICAJCX0NCj4g
-ICAJCXNwaW5fdW5sb2NrX2lycXJlc3RvcmUoJmdudHRhYl9saXN0X2xvY2ssIGZsYWdzKTsN
-Cj4gLQkJd2hhdCA9IEtFUk5fREVCVUcgImRlZmVycmluZyI7DQo+ICsJCWRlZmVycmVkID0g
-YXRvbWljNjRfYWRkX3JldHVybigxLCAmZGVmZXJyZWRfY291bnQpOw0KPiArCQlsZWFrZWQg
-PSBhdG9taWM2NF9yZWFkKCZsZWFrZWRfY291bnQpOw0KPiArCQlwcl9kZWJ1ZygiZGVmZXJy
-aW5nIGcuZS4gJSN4IChwZm4gJSNseCkgKHRvdGFsIGRlZmVycmVkICVsbHUsIHRvdGFsIGxl
-YWtlZCAlbGx1KVxuIiwNCj4gKwkJCSByZWYsIHBhZ2UgPyBwYWdlX3RvX3BmbihwYWdlKSA6
-IC0xLCBkZWZlcnJlZCwgbGVha2VkKTsNCj4gKwl9IGVsc2Ugew0KPiArCQlkZWZlcnJlZCA9
-IGF0b21pYzY0X3JlYWQoJmRlZmVycmVkX2NvdW50KTsNCj4gKwkJbGVha2VkID0gYXRvbWlj
-NjRfYWRkX3JldHVybigxLCAmbGVha2VkX2NvdW50KTsNCj4gKwkJcHJfd2FybigibGVha2lu
-ZyBnLmUuICUjeCAocGZuICUjbHgpICh0b3RhbCBkZWZlcnJlZCAlbGx1LCB0b3RhbCBsZWFr
-ZWQgJWxsdSlcbiIsDQo+ICsJCQlyZWYsIHBhZ2UgPyBwYWdlX3RvX3BmbihwYWdlKSA6IC0x
-LCBkZWZlcnJlZCwgbGVha2VkKTsNCj4gICAJfQ0KPiAtCXByaW50aygiJXMgZy5lLiAlI3gg
-KHBmbiAlI2x4KVxuIiwNCj4gLQkgICAgICAgd2hhdCwgcmVmLCBwYWdlID8gcGFnZV90b19w
-Zm4ocGFnZSkgOiAtMSk7DQo+ICAgfQ0KPiAgIA0KPiArbW9kdWxlX3BhcmFtKGZyZWVfcGVy
-X2l0ZXJhdGlvbiwgdWludCwgMDYwMCk7DQo+ICsNCg0KQ291bGQgeW91IHBsZWFzZSBtb3Zl
-IHRoZSBwYXJhbWV0ZXIgZGVmaW5pdGlvbiBjbG9zZXIgdG8gdGhlIHJlbGF0ZWQNCnZhcmlh
-YmxlIGRlZmluaXRpb24/DQoNCg0KSnVlcmdlbg0K
---------------OjVKIcQRF51gOYUx6IR6Tatd
-Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
-Content-Description: OpenPGP public key
-Content-Transfer-Encoding: quoted-printable
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x fc6c6a3c324c1b3e93a03d0cfa3749c781f23de0
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061210-shaft-wrangle-7b2d@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+Possible dependencies:
 
-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
-jR/i1DG86lem3iBDXzXsZDn8R38=3D
-=3D2wuH
------END PGP PUBLIC KEY BLOCK-----
 
---------------OjVKIcQRF51gOYUx6IR6Tatd--
 
---------------VhH7mL2u9cTh1WElDAyKKSMF--
+thanks,
 
---------------PfPXngR00bZvfSGPWBBi8L0B
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+greg k-h
 
------BEGIN PGP SIGNATURE-----
+------------------ original commit in Linus's tree ------------------
 
-wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmSGuvAFAwAAAAAACgkQsN6d1ii/Ey8Y
-bgf/SjZ1UwdB2Gz291L/JdLTsZjlLRNPFLw4ESQnnxF4GbsIhfVSYZ9Mexf5M4jtnUNioEptQzQL
-jdBRboz75DbLKonqbW4L9I2WTx+kIrv+Z6u1G3RCVn1YAwU3afLu1NDBT3YoXjZPrznZUz1hgX9X
-8B+8lYRnAq0HTIJYHWeoipEM963fUuo1r9Ryb94hdIPxFAkHaITe/digQxAKNQwdfLvq+sKo6n7G
-WbLoC2sfNGW7mlhkLcER4XwJuFcv1kXkmdZHLtb2K2U1wy+JMA+aT8WGUJjEdaxKECRNYj6j3GSx
-V0mDdkbwB17htJuqHwK4DxgA+dOmC4Eht1BgitzIeA==
-=80gY
------END PGP SIGNATURE-----
+From fc6c6a3c324c1b3e93a03d0cfa3749c781f23de0 Mon Sep 17 00:00:00 2001
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Sun, 28 May 2023 00:23:41 +0900
+Subject: [PATCH] ksmbd: fix out-of-bound read in parse_lease_state()
 
---------------PfPXngR00bZvfSGPWBBi8L0B--
+This bug is in parse_lease_state, and it is caused by the missing check
+of `struct create_context`. When the ksmbd traverses the create_contexts,
+it doesn't check if the field of `NameOffset` and `Next` is valid,
+The KASAN message is following:
+
+[    6.664323] BUG: KASAN: slab-out-of-bounds in parse_lease_state+0x7d/0x280
+[    6.664738] Read of size 2 at addr ffff888005c08988 by task kworker/0:3/103
+...
+[    6.666644] Call Trace:
+[    6.666796]  <TASK>
+[    6.666933]  dump_stack_lvl+0x33/0x50
+[    6.667167]  print_report+0xcc/0x620
+[    6.667903]  kasan_report+0xae/0xe0
+[    6.668374]  kasan_check_range+0x35/0x1b0
+[    6.668621]  parse_lease_state+0x7d/0x280
+[    6.668868]  smb2_open+0xbe8/0x4420
+[    6.675137]  handle_ksmbd_work+0x282/0x820
+
+Use smb2_find_context_vals() to find smb2 create request lease context.
+smb2_find_context_vals validate create context fields.
+
+Cc: stable@vger.kernel.org
+Reported-by: Chih-Yen Chang <cc85nod@gmail.com>
+Tested-by: Chih-Yen Chang <cc85nod@gmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+
+diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
+index db181bdad73a..844b303baf29 100644
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -1415,56 +1415,38 @@ void create_lease_buf(u8 *rbuf, struct lease *lease)
+  */
+ struct lease_ctx_info *parse_lease_state(void *open_req)
+ {
+-	char *data_offset;
+ 	struct create_context *cc;
+-	unsigned int next = 0;
+-	char *name;
+-	bool found = false;
+ 	struct smb2_create_req *req = (struct smb2_create_req *)open_req;
+-	struct lease_ctx_info *lreq = kzalloc(sizeof(struct lease_ctx_info),
+-		GFP_KERNEL);
++	struct lease_ctx_info *lreq;
++
++	cc = smb2_find_context_vals(req, SMB2_CREATE_REQUEST_LEASE, 4);
++	if (IS_ERR_OR_NULL(cc))
++		return NULL;
++
++	lreq = kzalloc(sizeof(struct lease_ctx_info), GFP_KERNEL);
+ 	if (!lreq)
+ 		return NULL;
+ 
+-	data_offset = (char *)req + le32_to_cpu(req->CreateContextsOffset);
+-	cc = (struct create_context *)data_offset;
+-	do {
+-		cc = (struct create_context *)((char *)cc + next);
+-		name = le16_to_cpu(cc->NameOffset) + (char *)cc;
+-		if (le16_to_cpu(cc->NameLength) != 4 ||
+-		    strncmp(name, SMB2_CREATE_REQUEST_LEASE, 4)) {
+-			next = le32_to_cpu(cc->Next);
+-			continue;
+-		}
+-		found = true;
+-		break;
+-	} while (next != 0);
++	if (sizeof(struct lease_context_v2) == le32_to_cpu(cc->DataLength)) {
++		struct create_lease_v2 *lc = (struct create_lease_v2 *)cc;
+ 
+-	if (found) {
+-		if (sizeof(struct lease_context_v2) == le32_to_cpu(cc->DataLength)) {
+-			struct create_lease_v2 *lc = (struct create_lease_v2 *)cc;
++		memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
++		lreq->req_state = lc->lcontext.LeaseState;
++		lreq->flags = lc->lcontext.LeaseFlags;
++		lreq->duration = lc->lcontext.LeaseDuration;
++		memcpy(lreq->parent_lease_key, lc->lcontext.ParentLeaseKey,
++				SMB2_LEASE_KEY_SIZE);
++		lreq->version = 2;
++	} else {
++		struct create_lease *lc = (struct create_lease *)cc;
+ 
+-			memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
+-			lreq->req_state = lc->lcontext.LeaseState;
+-			lreq->flags = lc->lcontext.LeaseFlags;
+-			lreq->duration = lc->lcontext.LeaseDuration;
+-			memcpy(lreq->parent_lease_key, lc->lcontext.ParentLeaseKey,
+-			       SMB2_LEASE_KEY_SIZE);
+-			lreq->version = 2;
+-		} else {
+-			struct create_lease *lc = (struct create_lease *)cc;
+-
+-			memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
+-			lreq->req_state = lc->lcontext.LeaseState;
+-			lreq->flags = lc->lcontext.LeaseFlags;
+-			lreq->duration = lc->lcontext.LeaseDuration;
+-			lreq->version = 1;
+-		}
+-		return lreq;
++		memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
++		lreq->req_state = lc->lcontext.LeaseState;
++		lreq->flags = lc->lcontext.LeaseFlags;
++		lreq->duration = lc->lcontext.LeaseDuration;
++		lreq->version = 1;
+ 	}
+-
+-	kfree(lreq);
+-	return NULL;
++	return lreq;
+ }
+ 
+ /**
+
