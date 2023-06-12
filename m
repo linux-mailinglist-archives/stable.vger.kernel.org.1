@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C72ED72C021
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:50:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 958E272BFED
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:48:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229519AbjFLKu3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:50:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52560 "EHLO
+        id S234703AbjFLKsD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:48:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234985AbjFLKta (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:49:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00A697DBB
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:34:20 -0700 (PDT)
+        with ESMTP id S234623AbjFLKrs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:47:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 325A0FFC4
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:32:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 53E31623F6
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:34:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62FF0C433EF;
-        Mon, 12 Jun 2023 10:34:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3BF36623E7
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:32:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50249C433D2;
+        Mon, 12 Jun 2023 10:32:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566059;
-        bh=c5r+al49jG5J+gyEcaU32nprCtCwa1DRwO0142ZMM88=;
+        s=korg; t=1686565933;
+        bh=+keJ35w1Mwm1XG1akpgtGBh5lPJ0KeXMXauTf+X1jsw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F9zOCbFDOzWQyqP8+ok7/ETkK/WSplb1prvSQ5KjEh58QMPLzlGwsi6svQdMyfDq8
-         h3M6DHzuE1HxbnVaKkcfxT4fFMZyGULiMi/9bx5HeKF7jsq7oNXnBUf3Y9n2xclJx1
-         7wmaOiDio/Py9sP/zNOXuVSxL02glhGPkqcYHl/U=
+        b=zIULG4t/JOGXZj8+KF2yu775Bat6CwCRrwCQneo8zSOE9M4tJvOJeQB7WS6tUMYNx
+         iiyylU5Yz87OEM4SjoPA81/RMGAzk1Jx7KZUK22mW0mqB1FSmKi7emYg0T149McyjZ
+         s0ku2LGF+hM7IDUkrjsymMACmB85YGG5VwSAO3Jg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Ben Hutchings <ben@decadent.org.uk>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 19/68] net/sched: fq_pie: ensure reasonable TCA_FQ_PIE_QUANTUM values
+Subject: [PATCH 5.4 17/45] lib: cpu_rmap: Fix potential use-after-free in irq_cpu_rmap_release()
 Date:   Mon, 12 Jun 2023 12:26:11 +0200
-Message-ID: <20230612101659.252225921@linuxfoundation.org>
+Message-ID: <20230612101655.337916771@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
-References: <20230612101658.437327280@linuxfoundation.org>
+In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
+References: <20230612101654.644983109@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,127 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ben Hutchings <ben@decadent.org.uk>
 
-[ Upstream commit cd2b8113c2e8b9f5a88a942e1eaca61eba401b85 ]
+[ Upstream commit 7c5d4801ecf0564c860033d89726b99723c55146 ]
 
-We got multiple syzbot reports, all duplicates of the following [1]
+irq_cpu_rmap_release() calls cpu_rmap_put(), which may free the rmap.
+So we need to clear the pointer to our glue structure in rmap before
+doing that, not after.
 
-syzbot managed to install fq_pie with a zero TCA_FQ_PIE_QUANTUM,
-thus triggering infinite loops.
-
-Use limits similar to sch_fq, with commits
-3725a269815b ("pkt_sched: fq: avoid hang when quantum 0") and
-d9e15a273306 ("pkt_sched: fq: do not accept silly TCA_FQ_QUANTUM")
-
-[1]
-watchdog: BUG: soft lockup - CPU#0 stuck for 26s! [swapper/0:0]
-Modules linked in:
-irq event stamp: 172817
-hardirqs last enabled at (172816): [<ffff80001242fde4>] __el1_irq arch/arm64/kernel/entry-common.c:476 [inline]
-hardirqs last enabled at (172816): [<ffff80001242fde4>] el1_interrupt+0x58/0x68 arch/arm64/kernel/entry-common.c:486
-hardirqs last disabled at (172817): [<ffff80001242fdb0>] __el1_irq arch/arm64/kernel/entry-common.c:468 [inline]
-hardirqs last disabled at (172817): [<ffff80001242fdb0>] el1_interrupt+0x24/0x68 arch/arm64/kernel/entry-common.c:486
-softirqs last enabled at (167634): [<ffff800008020c1c>] softirq_handle_end kernel/softirq.c:414 [inline]
-softirqs last enabled at (167634): [<ffff800008020c1c>] __do_softirq+0xac0/0xd54 kernel/softirq.c:600
-softirqs last disabled at (167701): [<ffff80000802a660>] ____do_softirq+0x14/0x20 arch/arm64/kernel/irq.c:80
-CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.4.0-rc3-syzkaller-geb0f1697d729 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/28/2023
-pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : fq_pie_qdisc_dequeue+0x10c/0x8ac net/sched/sch_fq_pie.c:246
-lr : fq_pie_qdisc_dequeue+0xe4/0x8ac net/sched/sch_fq_pie.c:240
-sp : ffff800008007210
-x29: ffff800008007280 x28: ffff0000c86f7890 x27: ffff0000cb20c2e8
-x26: ffff0000cb20c2f0 x25: dfff800000000000 x24: ffff0000cb20c2e0
-x23: ffff0000c86f7880 x22: 0000000000000040 x21: 1fffe000190def10
-x20: ffff0000cb20c2e0 x19: ffff0000cb20c2e0 x18: ffff800008006e60
-x17: 0000000000000000 x16: ffff80000850af6c x15: 0000000000000302
-x14: 0000000000000100 x13: 0000000000000000 x12: 0000000000000001
-x11: 0000000000000302 x10: 0000000000000100 x9 : 0000000000000000
-x8 : 0000000000000000 x7 : ffff80000841c468 x6 : 0000000000000000
-x5 : 0000000000000001 x4 : 0000000000000001 x3 : 0000000000000000
-x2 : ffff0000cb20c2e0 x1 : ffff0000cb20c2e0 x0 : 0000000000000001
-Call trace:
-fq_pie_qdisc_dequeue+0x10c/0x8ac net/sched/sch_fq_pie.c:246
-dequeue_skb net/sched/sch_generic.c:292 [inline]
-qdisc_restart net/sched/sch_generic.c:397 [inline]
-__qdisc_run+0x1fc/0x231c net/sched/sch_generic.c:415
-__dev_xmit_skb net/core/dev.c:3868 [inline]
-__dev_queue_xmit+0xc80/0x3318 net/core/dev.c:4210
-dev_queue_xmit include/linux/netdevice.h:3085 [inline]
-neigh_connected_output+0x2f8/0x38c net/core/neighbour.c:1581
-neigh_output include/net/neighbour.h:544 [inline]
-ip6_finish_output2+0xd60/0x1a1c net/ipv6/ip6_output.c:134
-__ip6_finish_output net/ipv6/ip6_output.c:195 [inline]
-ip6_finish_output+0x538/0x8c8 net/ipv6/ip6_output.c:206
-NF_HOOK_COND include/linux/netfilter.h:292 [inline]
-ip6_output+0x270/0x594 net/ipv6/ip6_output.c:227
-dst_output include/net/dst.h:458 [inline]
-NF_HOOK include/linux/netfilter.h:303 [inline]
-ndisc_send_skb+0xc30/0x1790 net/ipv6/ndisc.c:508
-ndisc_send_rs+0x47c/0x5d4 net/ipv6/ndisc.c:718
-addrconf_rs_timer+0x300/0x58c net/ipv6/addrconf.c:3936
-call_timer_fn+0x19c/0x8cc kernel/time/timer.c:1700
-expire_timers kernel/time/timer.c:1751 [inline]
-__run_timers+0x55c/0x734 kernel/time/timer.c:2022
-run_timer_softirq+0x7c/0x114 kernel/time/timer.c:2035
-__do_softirq+0x2d0/0xd54 kernel/softirq.c:571
-____do_softirq+0x14/0x20 arch/arm64/kernel/irq.c:80
-call_on_irq_stack+0x24/0x4c arch/arm64/kernel/entry.S:882
-do_softirq_own_stack+0x20/0x2c arch/arm64/kernel/irq.c:85
-invoke_softirq kernel/softirq.c:452 [inline]
-__irq_exit_rcu+0x28c/0x534 kernel/softirq.c:650
-irq_exit_rcu+0x14/0x84 kernel/softirq.c:662
-__el1_irq arch/arm64/kernel/entry-common.c:472 [inline]
-el1_interrupt+0x38/0x68 arch/arm64/kernel/entry-common.c:486
-el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/entry-common.c:491
-el1h_64_irq+0x64/0x68 arch/arm64/kernel/entry.S:587
-__daif_local_irq_enable arch/arm64/include/asm/irqflags.h:33 [inline]
-arch_local_irq_enable+0x8/0xc arch/arm64/include/asm/irqflags.h:55
-cpuidle_idle_call kernel/sched/idle.c:170 [inline]
-do_idle+0x1f0/0x4e8 kernel/sched/idle.c:282
-cpu_startup_entry+0x24/0x28 kernel/sched/idle.c:379
-rest_init+0x2dc/0x2f4 init/main.c:735
-start_kernel+0x0/0x55c init/main.c:834
-start_kernel+0x3f0/0x55c init/main.c:1088
-__primary_switched+0xb8/0xc0 arch/arm64/kernel/head.S:523
-
-Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 4e0473f1060a ("lib: cpu_rmap: Avoid use after free on rmap->obj array entries")
+Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/ZHo0vwquhOy3FaXc@decadent.org.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_fq_pie.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ lib/cpu_rmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
-index cf04f70e96bf1..4f6b5b6fba3ed 100644
---- a/net/sched/sch_fq_pie.c
-+++ b/net/sched/sch_fq_pie.c
-@@ -201,6 +201,11 @@ static int fq_pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	return NET_XMIT_CN;
+diff --git a/lib/cpu_rmap.c b/lib/cpu_rmap.c
+index 920403fa5b0de..51621fde0b488 100644
+--- a/lib/cpu_rmap.c
++++ b/lib/cpu_rmap.c
+@@ -268,8 +268,8 @@ static void irq_cpu_rmap_release(struct kref *ref)
+ 	struct irq_glue *glue =
+ 		container_of(ref, struct irq_glue, notify.kref);
+ 
+-	cpu_rmap_put(glue->rmap);
+ 	glue->rmap->obj[glue->index] = NULL;
++	cpu_rmap_put(glue->rmap);
+ 	kfree(glue);
  }
  
-+static struct netlink_range_validation fq_pie_q_range = {
-+	.min = 1,
-+	.max = 1 << 20,
-+};
-+
- static const struct nla_policy fq_pie_policy[TCA_FQ_PIE_MAX + 1] = {
- 	[TCA_FQ_PIE_LIMIT]		= {.type = NLA_U32},
- 	[TCA_FQ_PIE_FLOWS]		= {.type = NLA_U32},
-@@ -208,7 +213,8 @@ static const struct nla_policy fq_pie_policy[TCA_FQ_PIE_MAX + 1] = {
- 	[TCA_FQ_PIE_TUPDATE]		= {.type = NLA_U32},
- 	[TCA_FQ_PIE_ALPHA]		= {.type = NLA_U32},
- 	[TCA_FQ_PIE_BETA]		= {.type = NLA_U32},
--	[TCA_FQ_PIE_QUANTUM]		= {.type = NLA_U32},
-+	[TCA_FQ_PIE_QUANTUM]		=
-+			NLA_POLICY_FULL_RANGE(NLA_U32, &fq_pie_q_range),
- 	[TCA_FQ_PIE_MEMORY_LIMIT]	= {.type = NLA_U32},
- 	[TCA_FQ_PIE_ECN_PROB]		= {.type = NLA_U32},
- 	[TCA_FQ_PIE_ECN]		= {.type = NLA_U32},
 -- 
 2.39.2
 
