@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9479572C0D2
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:54:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5240972C1D6
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:00:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236027AbjFLKyr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:54:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55032 "EHLO
+        id S237421AbjFLLA4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 07:00:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36934 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236039AbjFLKyV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:21 -0400
+        with ESMTP id S237425AbjFLLAk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:00:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A4662D7E
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:40:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB2FE423E
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:47:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A3635612A1
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:40:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91374C433EF;
-        Mon, 12 Jun 2023 10:40:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 50F9B62480
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:47:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67547C4339B;
+        Mon, 12 Jun 2023 10:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566414;
-        bh=C/z0oKGd8LLWwPGcj3ovzvRbzgW/Ra3919UCaKcy0QY=;
+        s=korg; t=1686566845;
+        bh=mLMYpL1Oc/XLsd+Ncu5LG3ZlJAtp2zPTPEs/9m0NRCw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XSZdj32G2gRWkEHTKsrllZNXDnRW6Zk735BKA7cGmCnkBgvBpMGn3KZmQZ8gYpl31
-         r+3XkUhIe879bXtpXPcLu5FosxRKJ1+7gXNv822zWcZbHST330t6549HBHuYVGOIJz
-         O4OyoVMRVzG6KGsxikY5bJdV0kM22T7ySLgk4pVI=
+        b=vsmrwqWkwMvRpAn+CNVghjGqHhqGwzsp/5/BDymeq+4n2TxvgscipFiVH81lFCW3P
+         kMVfe+e50eQMzEmP1vidqSTJrG03QA54amGb7upoYLe6vmzPYNTzU8Suq4BH9e2U5S
+         l8+S8/NCWfNUBRsDEIwB9EHIh6QAC5lGZfWitnnI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhengping Jiang <jiangzp@google.com>,
+        patches@lists.linux.dev, Ying Hsu <yinghsu@chromium.org>,
         Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 022/132] Bluetooth: hci_sync: add lock to protect HCI_UNREGISTER
+Subject: [PATCH 6.3 024/160] Bluetooth: Fix l2cap_disconnect_req deadlock
 Date:   Mon, 12 Jun 2023 12:25:56 +0200
-Message-ID: <20230612101711.251216733@linuxfoundation.org>
+Message-ID: <20230612101716.145725723@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,97 +54,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhengping Jiang <jiangzp@google.com>
+From: Ying Hsu <yinghsu@chromium.org>
 
-[ Upstream commit 1857c19941c87eb36ad47f22a406be5dfe5eff9f ]
+[ Upstream commit 02c5ea5246a44d6ffde0fddebfc1d56188052976 ]
 
-When the HCI_UNREGISTER flag is set, no jobs should be scheduled. Fix
-potential race when HCI_UNREGISTER is set after the flag is tested in
-hci_cmd_sync_queue.
+L2CAP assumes that the locks conn->chan_lock and chan->lock are
+acquired in the order conn->chan_lock, chan->lock to avoid
+potential deadlock.
+For example, l2sock_shutdown acquires these locks in the order:
+  mutex_lock(&conn->chan_lock)
+  l2cap_chan_lock(chan)
 
-Fixes: 0b94f2651f56 ("Bluetooth: hci_sync: Fix queuing commands when HCI_UNREGISTER is set")
-Signed-off-by: Zhengping Jiang <jiangzp@google.com>
+However, l2cap_disconnect_req acquires chan->lock in
+l2cap_get_chan_by_scid first and then acquires conn->chan_lock
+before calling l2cap_chan_del. This means that these locks are
+acquired in unexpected order, which leads to potential deadlock:
+  l2cap_chan_lock(c)
+  mutex_lock(&conn->chan_lock)
+
+This patch releases chan->lock before acquiring the conn_chan_lock
+to avoid the potential deadlock.
+
+Fixes: a2a9339e1c9d ("Bluetooth: L2CAP: Fix use-after-free in l2cap_disconnect_{req,rsp}")
+Signed-off-by: Ying Hsu <yinghsu@chromium.org>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci_core.h |  1 +
- net/bluetooth/hci_core.c         |  2 ++
- net/bluetooth/hci_sync.c         | 20 ++++++++++++++------
- 3 files changed, 17 insertions(+), 6 deletions(-)
+ net/bluetooth/l2cap_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 061fec6fd0152..84c5ce57eab69 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -513,6 +513,7 @@ struct hci_dev {
- 	struct work_struct	cmd_sync_work;
- 	struct list_head	cmd_sync_work_list;
- 	struct mutex		cmd_sync_work_lock;
-+	struct mutex		unregister_lock;
- 	struct work_struct	cmd_sync_cancel_work;
- 	struct work_struct	reenable_adv_work;
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 24d075282996c..e54e2aeb2a891 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -4664,7 +4664,9 @@ static inline int l2cap_disconnect_req(struct l2cap_conn *conn,
  
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 334e308451f53..ac36e7ae70b21 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -2685,7 +2685,9 @@ void hci_unregister_dev(struct hci_dev *hdev)
- {
- 	BT_DBG("%p name %s bus %d", hdev, hdev->name, hdev->bus);
+ 	chan->ops->set_shutdown(chan);
  
-+	mutex_lock(&hdev->unregister_lock);
- 	hci_dev_set_flag(hdev, HCI_UNREGISTER);
-+	mutex_unlock(&hdev->unregister_lock);
++	l2cap_chan_unlock(chan);
+ 	mutex_lock(&conn->chan_lock);
++	l2cap_chan_lock(chan);
+ 	l2cap_chan_del(chan, ECONNRESET);
+ 	mutex_unlock(&conn->chan_lock);
  
- 	write_lock(&hci_dev_list_lock);
- 	list_del(&hdev->list);
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index e8b78104a4071..40a6cfa2f9a07 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -629,6 +629,7 @@ void hci_cmd_sync_init(struct hci_dev *hdev)
- 	INIT_WORK(&hdev->cmd_sync_work, hci_cmd_sync_work);
- 	INIT_LIST_HEAD(&hdev->cmd_sync_work_list);
- 	mutex_init(&hdev->cmd_sync_work_lock);
-+	mutex_init(&hdev->unregister_lock);
+@@ -4703,7 +4705,9 @@ static inline int l2cap_disconnect_rsp(struct l2cap_conn *conn,
+ 		return 0;
+ 	}
  
- 	INIT_WORK(&hdev->cmd_sync_cancel_work, hci_cmd_sync_cancel_work);
- 	INIT_WORK(&hdev->reenable_adv_work, reenable_adv);
-@@ -688,14 +689,19 @@ int hci_cmd_sync_queue(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
- 		       void *data, hci_cmd_sync_work_destroy_t destroy)
- {
- 	struct hci_cmd_sync_work_entry *entry;
-+	int err = 0;
- 
--	if (hci_dev_test_flag(hdev, HCI_UNREGISTER))
--		return -ENODEV;
-+	mutex_lock(&hdev->unregister_lock);
-+	if (hci_dev_test_flag(hdev, HCI_UNREGISTER)) {
-+		err = -ENODEV;
-+		goto unlock;
-+	}
- 
- 	entry = kmalloc(sizeof(*entry), GFP_KERNEL);
--	if (!entry)
--		return -ENOMEM;
--
-+	if (!entry) {
-+		err = -ENOMEM;
-+		goto unlock;
-+	}
- 	entry->func = func;
- 	entry->data = data;
- 	entry->destroy = destroy;
-@@ -706,7 +712,9 @@ int hci_cmd_sync_queue(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
- 
- 	queue_work(hdev->req_workqueue, &hdev->cmd_sync_work);
- 
--	return 0;
-+unlock:
-+	mutex_unlock(&hdev->unregister_lock);
-+	return err;
- }
- EXPORT_SYMBOL(hci_cmd_sync_queue);
++	l2cap_chan_unlock(chan);
+ 	mutex_lock(&conn->chan_lock);
++	l2cap_chan_lock(chan);
+ 	l2cap_chan_del(chan, 0);
+ 	mutex_unlock(&conn->chan_lock);
  
 -- 
 2.39.2
