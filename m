@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D96EA72C0DC
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 577B372BF82
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:44:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235727AbjFLKzQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:55:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59438 "EHLO
+        id S234805AbjFLKoq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:44:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235728AbjFLKyg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1AD830F1
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:40:49 -0700 (PDT)
+        with ESMTP id S229900AbjFLKoY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:44:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 887F3559E
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:29:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3686461297
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:40:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF40C433D2;
-        Mon, 12 Jun 2023 10:40:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 10175623D2
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:29:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22ED1C4339C;
+        Mon, 12 Jun 2023 10:29:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566448;
-        bh=fAmeumtw5JjRDjIAjOQvqxpN8Ft6ueedEjD4NuYupV0=;
+        s=korg; t=1686565749;
+        bh=lU8FhQLhnEr8zyMJztx1pK7aXBuO5++tNudY7xSajbM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V3rpv49q6amyG1iC5ajamxuFuFmrS9E1Wo7UFBZyfqKuH0T69JB1n8ww5lQEyToV/
-         5djiwDSUSC5CXRYDWjLW5naDNHYb9g3YvJQnpbhDXH7d2WCo+W3sP2btx5eV1CVb9g
-         5VRXCvA2dWOsmk/gBioYeJtXWVznsN2JYGBjL8zw=
+        b=QkT7I3REddgb/NzSyYXSdRnFdVU/XXsujEd7azQIwijI0/xJTVmHNKYUuQHNXbo9K
+         yqjX9OJgeBWe24dqm83lmQT1OFKhRcYJZkViT5cr/q3yG1wAZEsOIjNI3BknIXxy9r
+         X4FloP53pv7QmMKDkA6UA2ayCMml0r9yv8noo4Jw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Tijs Van Buggenhout <tijs.van.buggenhout@axsguard.com>,
-        Florian Westphal <fw@strlen.de>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/132] netfilter: conntrack: fix NULL pointer dereference in nf_confirm_cthelper
+        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
+        Milind Changire <mchangir@redhat.com>,
+        Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 4.14 15/21] ceph: fix use-after-free bug for inodes when flushing capsnaps
 Date:   Mon, 12 Jun 2023 12:26:10 +0200
-Message-ID: <20230612101711.872171897@linuxfoundation.org>
+Message-ID: <20230612101651.577529518@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101651.048240731@linuxfoundation.org>
+References: <20230612101651.048240731@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,58 +54,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tijs Van Buggenhout <tijs.van.buggenhout@axsguard.com>
+From: Xiubo Li <xiubli@redhat.com>
 
-[ Upstream commit e1f543dc660b44618a1bd72ddb4ca0828a95f7ad ]
+commit 409e873ea3c1fd3079909718bbeb06ac1ec7f38b upstream.
 
-An nf_conntrack_helper from nf_conn_help may become NULL after DNAT.
+There is a race between capsnaps flush and removing the inode from
+'mdsc->snap_flush_list' list:
 
-Observed when TCP port 1720 (Q931_PORT), associated with h323 conntrack
-helper, is DNAT'ed to another destination port (e.g. 1730), while
-nfqueue is being used for final acceptance (e.g. snort).
+   == Thread A ==                     == Thread B ==
+ceph_queue_cap_snap()
+ -> allocate 'capsnapA'
+ ->ihold('&ci->vfs_inode')
+ ->add 'capsnapA' to 'ci->i_cap_snaps'
+ ->add 'ci' to 'mdsc->snap_flush_list'
+    ...
+   == Thread C ==
+ceph_flush_snaps()
+ ->__ceph_flush_snaps()
+  ->__send_flush_snap()
+                                handle_cap_flushsnap_ack()
+                                 ->iput('&ci->vfs_inode')
+                                   this also will release 'ci'
+                                    ...
+				      == Thread D ==
+                                ceph_handle_snap()
+                                 ->flush_snaps()
+                                  ->iterate 'mdsc->snap_flush_list'
+                                   ->get the stale 'ci'
+ ->remove 'ci' from                ->ihold(&ci->vfs_inode) this
+   'mdsc->snap_flush_list'           will WARNING
 
-This happenned after transition from kernel 4.14 to 5.10.161.
+To fix this we will increase the inode's i_count ref when adding 'ci'
+to the 'mdsc->snap_flush_list' list.
 
-Workarounds:
- * keep the same port (1720) in DNAT
- * disable nfqueue
- * disable/unload h323 NAT helper
+[ idryomov: need_put int -> bool ]
 
-$ linux-5.10/scripts/decode_stacktrace.sh vmlinux < /tmp/kernel.log
-BUG: kernel NULL pointer dereference, address: 0000000000000084
-[..]
-RIP: 0010:nf_conntrack_update (net/netfilter/nf_conntrack_core.c:2080 net/netfilter/nf_conntrack_core.c:2134) nf_conntrack
-[..]
-nfqnl_reinject (net/netfilter/nfnetlink_queue.c:237) nfnetlink_queue
-nfqnl_recv_verdict (net/netfilter/nfnetlink_queue.c:1230) nfnetlink_queue
-nfnetlink_rcv_msg (net/netfilter/nfnetlink.c:241) nfnetlink
-[..]
-
-Fixes: ee04805ff54a ("netfilter: conntrack: make conntrack userspace helpers work again")
-Signed-off-by: Tijs Van Buggenhout <tijs.van.buggenhout@axsguard.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2209299
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Milind Changire <mchangir@redhat.com>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/ceph/caps.c |    6 ++++++
+ fs/ceph/snap.c |    4 +++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_core.c b/net/netfilter/nf_conntrack_core.c
-index a0e9c7af08467..7960262966094 100644
---- a/net/netfilter/nf_conntrack_core.c
-+++ b/net/netfilter/nf_conntrack_core.c
-@@ -2277,6 +2277,9 @@ static int nf_confirm_cthelper(struct sk_buff *skb, struct nf_conn *ct,
- 		return 0;
+--- a/fs/ceph/caps.c
++++ b/fs/ceph/caps.c
+@@ -1437,6 +1437,7 @@ void ceph_flush_snaps(struct ceph_inode_
+ 	struct inode *inode = &ci->vfs_inode;
+ 	struct ceph_mds_client *mdsc = ceph_inode_to_client(inode)->mdsc;
+ 	struct ceph_mds_session *session = NULL;
++	bool need_put = false;
+ 	int mds;
  
- 	helper = rcu_dereference(help->helper);
-+	if (!helper)
-+		return 0;
+ 	dout("ceph_flush_snaps %p\n", inode);
+@@ -1490,8 +1491,13 @@ out:
+ 	}
+ 	/* we flushed them all; remove this inode from the queue */
+ 	spin_lock(&mdsc->snap_flush_lock);
++	if (!list_empty(&ci->i_snap_flush_item))
++		need_put = true;
+ 	list_del_init(&ci->i_snap_flush_item);
+ 	spin_unlock(&mdsc->snap_flush_lock);
 +
- 	if (!(helper->flags & NF_CT_HELPER_F_USERSPACE))
- 		return 0;
++	if (need_put)
++		iput(inode);
+ }
  
--- 
-2.39.2
-
+ /*
+--- a/fs/ceph/snap.c
++++ b/fs/ceph/snap.c
+@@ -623,8 +623,10 @@ int __ceph_finish_cap_snap(struct ceph_i
+ 	     capsnap->size);
+ 
+ 	spin_lock(&mdsc->snap_flush_lock);
+-	if (list_empty(&ci->i_snap_flush_item))
++	if (list_empty(&ci->i_snap_flush_item)) {
++		ihold(inode);
+ 		list_add_tail(&ci->i_snap_flush_item, &mdsc->snap_flush_list);
++	}
+ 	spin_unlock(&mdsc->snap_flush_lock);
+ 	return 1;  /* caller may want to ceph_flush_snaps */
+ }
 
 
