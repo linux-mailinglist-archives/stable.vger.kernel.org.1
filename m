@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5282372C0BF
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:54:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDE5272C119
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:56:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236140AbjFLKyV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:54:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55916 "EHLO
+        id S236742AbjFLK4Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:56:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235807AbjFLKyH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:07 -0400
+        with ESMTP id S235846AbjFLK4I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:56:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0FD56594
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:39:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79533525F
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:43:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 36458612B4
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:39:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4696CC433EF;
-        Mon, 12 Jun 2023 10:39:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1031D612E1
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:43:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26EE3C433D2;
+        Mon, 12 Jun 2023 10:43:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566369;
-        bh=IUoPdRngLU1mvfcm/ZilKiBXWTqPSd99gOMxfZ2sLz0=;
+        s=korg; t=1686566618;
+        bh=YGT5O8LWmbRI8kOfxccvDKASF56ZcRywHubGzlAHvOo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TI6wmnero4+kujjFMq7k7vonRMrKGJsHSHGrH51TmI2pSdT5rGEJOjFnJAgl2fN+N
-         39jxGHG+vloZ+5qB3vdb7V0wkTr/Po6P8WlWt6AD8Qq8orUlWYT9XorVKYK3NeHKK6
-         V4bb/RN6fRT1+FEVzrcpsUaOaA6aH1X8/3KDwzI0=
+        b=p5lAlywPqLlRP91JkARuriNPHiztYfMWmly4uau3D0+cY6KhgQsEkbehLXy85vH9B
+         0SlEXSQFDRtiy6DJWM9nZaiqB9xsaimO5wHKtdootV8JI0+mWynW68GTm2YaARtTau
+         hS8NaxwuAiWvzz93NTBvZWEcLTwYldk5O2Dahs7E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adam Ford <aford173@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 78/91] arm64: dts: imx8mn-beacon: Fix SPI CS pinmux
+        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
+        Dongsheng Yang <dongsheng.yang@easystack.cn>
+Subject: [PATCH 6.1 093/132] rbd: get snapshot context after exclusive lock is ensured to be held
 Date:   Mon, 12 Jun 2023 12:27:07 +0200
-Message-ID: <20230612101705.338196744@linuxfoundation.org>
+Message-ID: <20230612101714.470934970@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
-References: <20230612101702.085813286@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,48 +53,119 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Adam Ford <aford173@gmail.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-[ Upstream commit 9bf2e534313fcf420367668cc1f30e10469901dc ]
+commit 870611e4877eff1e8413c3fb92a585e45d5291f6 upstream.
 
-The final production baseboard had a different chip select than
-earlier prototype boards.  When the newer board was released,
-the SPI stopped working because the wrong pin was used in the device
-tree and conflicted with the UART RTS. Fix the pinmux for
-production boards.
+Move capturing the snapshot context into the image request state
+machine, after exclusive lock is ensured to be held for the duration of
+dealing with the image request.  This is needed to ensure correctness
+of fast-diff states (OBJECT_EXISTS vs OBJECT_EXISTS_CLEAN) and object
+deltas computed based off of them.  Otherwise the object map that is
+forked for the snapshot isn't guaranteed to accurately reflect the
+contents of the snapshot when the snapshot is taken under I/O.  This
+breaks differential backup and snapshot-based mirroring use cases with
+fast-diff enabled: since some object deltas may be incomplete, the
+destination image may get corrupted.
 
-Fixes: 36ca3c8ccb53 ("arm64: dts: imx: Add Beacon i.MX8M Nano development kit")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://tracker.ceph.com/issues/61472
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mn-beacon-baseboard.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/block/rbd.c |   30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-beacon-baseboard.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-beacon-baseboard.dtsi
-index e69fd41b46d0e..4fc22448e411f 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-beacon-baseboard.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-beacon-baseboard.dtsi
-@@ -81,7 +81,7 @@ sound {
- &ecspi2 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_espi2>;
--	cs-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
-+	cs-gpios = <&gpio5 13 GPIO_ACTIVE_LOW>;
- 	status = "okay";
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -1336,6 +1336,8 @@ static bool rbd_obj_is_tail(struct rbd_o
+  */
+ static void rbd_obj_set_copyup_enabled(struct rbd_obj_request *obj_req)
+ {
++	rbd_assert(obj_req->img_request->snapc);
++
+ 	if (obj_req->img_request->op_type == OBJ_OP_DISCARD) {
+ 		dout("%s %p objno %llu discard\n", __func__, obj_req,
+ 		     obj_req->ex.oe_objno);
+@@ -1456,6 +1458,7 @@ __rbd_obj_add_osd_request(struct rbd_obj
+ static struct ceph_osd_request *
+ rbd_obj_add_osd_request(struct rbd_obj_request *obj_req, int num_ops)
+ {
++	rbd_assert(obj_req->img_request->snapc);
+ 	return __rbd_obj_add_osd_request(obj_req, obj_req->img_request->snapc,
+ 					 num_ops);
+ }
+@@ -1592,15 +1595,18 @@ static void rbd_img_request_init(struct
+ 	mutex_init(&img_request->state_mutex);
+ }
  
- 	eeprom@0 {
-@@ -203,7 +203,7 @@ pinctrl_espi2: espi2grp {
- 			MX8MN_IOMUXC_ECSPI2_SCLK_ECSPI2_SCLK		0x82
- 			MX8MN_IOMUXC_ECSPI2_MOSI_ECSPI2_MOSI		0x82
- 			MX8MN_IOMUXC_ECSPI2_MISO_ECSPI2_MISO		0x82
--			MX8MN_IOMUXC_ECSPI1_SS0_GPIO5_IO9		0x41
-+			MX8MN_IOMUXC_ECSPI2_SS0_GPIO5_IO13		0x41
- 		>;
- 	};
++/*
++ * Only snap_id is captured here, for reads.  For writes, snapshot
++ * context is captured in rbd_img_object_requests() after exclusive
++ * lock is ensured to be held.
++ */
+ static void rbd_img_capture_header(struct rbd_img_request *img_req)
+ {
+ 	struct rbd_device *rbd_dev = img_req->rbd_dev;
  
--- 
-2.39.2
-
+ 	lockdep_assert_held(&rbd_dev->header_rwsem);
+ 
+-	if (rbd_img_is_write(img_req))
+-		img_req->snapc = ceph_get_snap_context(rbd_dev->header.snapc);
+-	else
++	if (!rbd_img_is_write(img_req))
+ 		img_req->snap_id = rbd_dev->spec->snap_id;
+ 
+ 	if (rbd_dev_parent_get(rbd_dev))
+@@ -3483,9 +3489,19 @@ static int rbd_img_exclusive_lock(struct
+ 
+ static void rbd_img_object_requests(struct rbd_img_request *img_req)
+ {
++	struct rbd_device *rbd_dev = img_req->rbd_dev;
+ 	struct rbd_obj_request *obj_req;
+ 
+ 	rbd_assert(!img_req->pending.result && !img_req->pending.num_pending);
++	rbd_assert(!need_exclusive_lock(img_req) ||
++		   __rbd_is_lock_owner(rbd_dev));
++
++	if (rbd_img_is_write(img_req)) {
++		rbd_assert(!img_req->snapc);
++		down_read(&rbd_dev->header_rwsem);
++		img_req->snapc = ceph_get_snap_context(rbd_dev->header.snapc);
++		up_read(&rbd_dev->header_rwsem);
++	}
+ 
+ 	for_each_obj_request(img_req, obj_req) {
+ 		int result = 0;
+@@ -3503,7 +3519,6 @@ static void rbd_img_object_requests(stru
+ 
+ static bool rbd_img_advance(struct rbd_img_request *img_req, int *result)
+ {
+-	struct rbd_device *rbd_dev = img_req->rbd_dev;
+ 	int ret;
+ 
+ again:
+@@ -3524,9 +3539,6 @@ again:
+ 		if (*result)
+ 			return true;
+ 
+-		rbd_assert(!need_exclusive_lock(img_req) ||
+-			   __rbd_is_lock_owner(rbd_dev));
+-
+ 		rbd_img_object_requests(img_req);
+ 		if (!img_req->pending.num_pending) {
+ 			*result = img_req->pending.result;
+@@ -3988,6 +4000,10 @@ static int rbd_post_acquire_action(struc
+ {
+ 	int ret;
+ 
++	ret = rbd_dev_refresh(rbd_dev);
++	if (ret)
++		return ret;
++
+ 	if (rbd_dev->header.features & RBD_FEATURE_OBJECT_MAP) {
+ 		ret = rbd_object_map_open(rbd_dev);
+ 		if (ret)
 
 
