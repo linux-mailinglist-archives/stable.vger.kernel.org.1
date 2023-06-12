@@ -2,128 +2,96 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F26172D159
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 23:03:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 163C972D301
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 23:16:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238717AbjFLVDy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 17:03:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54504 "EHLO
+        id S230191AbjFLVPx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 17:15:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235965AbjFLVDf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 17:03:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8779930F1;
-        Mon, 12 Jun 2023 13:59:47 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ACF1E61FBF;
-        Mon, 12 Jun 2023 20:58:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A48C4339B;
-        Mon, 12 Jun 2023 20:58:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1686603486;
-        bh=hxd+LoMEJ9cO+c0Tt7pmCAOX8bgWzrmk3POIw6h1Mto=;
-        h=Date:To:From:Subject:From;
-        b=IQbg5mq/kCd4IGpOOCbUUGcJaFBfyJjw5RmYJpmmSbDJvB79DnRFfqfmfEBDRE6mc
-         SScp5berKNyLzM1gX+umvE2b8MzbJ06hj7rteLT+xfZBAfNumJ1KP/44LBfET6oh6a
-         jtIL9MrXGfstcWm1PwfSTXwB9HYhOc7j5sOOMYg0=
-Date:   Mon, 12 Jun 2023 13:58:05 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        konishi.ryusuke@gmail.com, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + nilfs2-prevent-general-protection-fault-in-nilfs_clear_dirty_page.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230612205806.08A48C4339B@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S239360AbjFLVPD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 17:15:03 -0400
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C594C4C0D;
+        Mon, 12 Jun 2023 14:09:04 -0700 (PDT)
+Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1b3b56dcf1bso20241335ad.2;
+        Mon, 12 Jun 2023 14:09:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686604113; x=1689196113;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=PgflJ5HauZ4+h2KSgczCGeZma4l/SQyA77jKXJkcojw=;
+        b=OqbJgCcwUK2y+JS690twBeqU7wnjZEkGEyBBQpyjRuTpWve63YvvJFZxOQxaImcyzk
+         bvd9BvpY5kEIF+l4O3T7tVLy2vvftotbtSqhmKGm/2oE8+uo3i4uimq9+cYs/bLg+W8k
+         cXfmdO+8pZrZPUtDew9ZCFVlfctj47LhPFXiStMTuia4bIFLgWV7hpzFtJgGMYWmH7BB
+         XvQG5VBfmxfb5+bpVS9Z+7e3T9Ux1TxmKI5wmksfk5nGmPa7YHMMYhqhdUCFmZ/0gqe7
+         QWcNXR9STF7lIGgAzhmuRSf1ydHV5WXJoaGaY+eevuDmZWG47zsYQ6v0bdxZvOmv9bxQ
+         iXkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686604113; x=1689196113;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PgflJ5HauZ4+h2KSgczCGeZma4l/SQyA77jKXJkcojw=;
+        b=kJUijEgHyIF4KlHZcMTafc+JDKYc8tnBWruzi/rqU0dXV8eTR1svRMJwObZKhcFe6e
+         GitBi0xN3ZtJ1XArKf2b0Xk8Eu6bRm8JwA/vzp2wZ+Ht4dHKmfAPv3l0+14MGi1Sc/ET
+         9BhvnGHq2uCpel7aV84cYMoFoZiD7lqavuE1UgXIQicFcOT6vO7x4GMS2d+ktpqDvcqU
+         3zsPZcS7aD3rgAH8S/6VrGOkcDTV5rudceJEbyAmGKaijDuU8mULRhp9AtrLAAmyk9yv
+         qGe6ISLeq324B/xN0/z9cF5misrw4POTBIvupETwIFKXYBoRIaLwpsirmvdWrliNIBq0
+         rBrQ==
+X-Gm-Message-State: AC+VfDztLWPTRrvxJCoDpKOcs1q+zuAql2ADziy12Lrv1exwkWIiSiyk
+        HWbug+UgtvApR3BHGTGCoZpVkcOK+P373xUG4liFtuXZsVU=
+X-Google-Smtp-Source: ACHHUZ5D8B2tB4XZQaX7PnLlkIGl7fgsEwEyJER/K4Dpmu9w++B5VMhiO3d0v8uoPAtcGofZyZqzESr0QPwUfnACVps=
+X-Received: by 2002:a17:903:32c7:b0:1b0:4c32:5d6d with SMTP id
+ i7-20020a17090332c700b001b04c325d6dmr10231740plr.31.1686604112978; Mon, 12
+ Jun 2023 14:08:32 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+From:   Allen Pais <stable.kernel.dev@gmail.com>
+Date:   Mon, 12 Jun 2023 14:08:22 -0700
+Message-ID: <CAJq+SaA3BzspzE=fjLYxrJ55nyKRxkjV_1dwUtN5-f8_P3kubw@mail.gmail.com>
+Subject: Re: [PATCH 6.3 000/160] 6.3.8-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+> This is the start of the stable review cycle for the 6.3.8 release.
+> There are 160 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 14 Jun 2023 10:16:41 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.3.8-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.3.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-The patch titled
-     Subject: nilfs2: prevent general protection fault in nilfs_clear_dirty_page()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     nilfs2-prevent-general-protection-fault-in-nilfs_clear_dirty_page.patch
+Compiled and booted on my x86_64 and ARM64 test systems. No errors or
+regressions.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/nilfs2-prevent-general-protection-fault-in-nilfs_clear_dirty_page.patch
+Tested-by: Allen Pais <apais@linux.microsoft.com>
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: nilfs2: prevent general protection fault in nilfs_clear_dirty_page()
-Date: Mon, 12 Jun 2023 11:14:56 +0900
-
-In a syzbot stress test that deliberately causes file system errors on
-nilfs2 with a corrupted disk image, it has been reported that
-nilfs_clear_dirty_page() called from nilfs_clear_dirty_pages() can cause a
-general protection fault.
-
-In nilfs_clear_dirty_pages(), when looking up dirty pages from the page
-cache and calling nilfs_clear_dirty_page() for each dirty page/folio
-retrieved, the back reference from the argument page to "mapping" may have
-been changed to NULL (and possibly others).  It is necessary to check this
-after locking the page/folio.
-
-So, fix this issue by not calling nilfs_clear_dirty_page() on a page/folio
-after locking it in nilfs_clear_dirty_pages() if the back reference
-"mapping" from the page/folio is different from the "mapping" that held
-the page/folio just before.
-
-Link: https://lkml.kernel.org/r/20230612021456.3682-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+53369d11851d8f26735c@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/000000000000da4f6b05eb9bf593@google.com
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/nilfs2/page.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
---- a/fs/nilfs2/page.c~nilfs2-prevent-general-protection-fault-in-nilfs_clear_dirty_page
-+++ a/fs/nilfs2/page.c
-@@ -370,7 +370,15 @@ void nilfs_clear_dirty_pages(struct addr
- 			struct folio *folio = fbatch.folios[i];
- 
- 			folio_lock(folio);
--			nilfs_clear_dirty_page(&folio->page, silent);
-+
-+			/*
-+			 * This folio may have been removed from the address
-+			 * space by truncation or invalidation when the lock
-+			 * was acquired.  Skip processing in that case.
-+			 */
-+			if (likely(folio->mapping == mapping))
-+				nilfs_clear_dirty_page(&folio->page, silent);
-+
- 			folio_unlock(folio);
- 		}
- 		folio_batch_release(&fbatch);
-_
-
-Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
-
-nilfs2-fix-buffer-corruption-due-to-concurrent-device-reads.patch
-nilfs2-prevent-general-protection-fault-in-nilfs_clear_dirty_page.patch
-
+Thanks.
