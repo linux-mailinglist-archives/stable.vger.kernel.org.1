@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC10D72C016
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:50:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10AEF72C0A5
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:53:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235281AbjFLKtp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:49:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52582 "EHLO
+        id S235567AbjFLKxs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:53:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233646AbjFLKtU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:49:20 -0400
+        with ESMTP id S236143AbjFLKxc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:53:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69BF96190
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:34:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8083A61B7
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:38:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A8AF623E8
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:34:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B793C433EF;
-        Mon, 12 Jun 2023 10:34:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DAA98612E8
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:38:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E51C433EF;
+        Mon, 12 Jun 2023 10:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566041;
-        bh=QVbw6dLxTYjcevPwM0si9brrphk8f05DStcX4s9hUMw=;
+        s=korg; t=1686566304;
+        bh=dMw0/BdmBaL99ptPAFti7Vev/Bf7NWZ6Rho9etQVR2o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mC/nSzpu+OLYEqfmWs2VbNQq2IQZrfZq1csAV55mQNRuZVigmKb2L+WcQ+Jvh1vwj
-         TldPsR9h7FJypvMCBEXz7KljEHI/oYp8Vs71kYtCIlkUfibTM+fQ6yi5+8yxXh42dc
-         62Hfcog5cGHfRQh5xGXvDRLcrvdP1cOAzDahRpus=
+        b=L2B7JQ5I1ZSwfioa0wF+KX3zxhnDqWn5TQwoaTRp1r7Fn2V8cLN1cqdl5LcFB9pKA
+         UIqEXcREzQZpJlwhOag25GTDqXOHRUjhV9DhN5P1Xgl7Jqts0aqKHdWx9nxGyVZtS7
+         BE0O2vxqb2c9Ie9LW1Wz2jztMCfL9DMMXmNCCsqM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Jander <david@protonic.nl>,
-        Oleksij Rempel <o.rempel@pengutronix.de>,
-        Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.10 41/68] can: j1939: j1939_sk_send_loop_abort(): improved error queue handling in J1939 Socket
+        patches@lists.linux.dev, Pavan Chebbi <pavan.chebbi@broadcom.com>,
+        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+        Michael Chan <michael.chan@broadcom.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 44/91] bnxt_en: Dont issue AP reset during ethtools reset operation
 Date:   Mon, 12 Jun 2023 12:26:33 +0200
-Message-ID: <20230612101700.110243190@linuxfoundation.org>
+Message-ID: <20230612101703.900503768@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
-References: <20230612101658.437327280@linuxfoundation.org>
+In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
+References: <20230612101702.085813286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,63 +56,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
 
-commit 2a84aea80e925ecba6349090559754f8e8eb68ef upstream.
+[ Upstream commit 1d997801c7cc6a7f542e46d5a6bf16f893ad3fe9 ]
 
-This patch addresses an issue within the j1939_sk_send_loop_abort()
-function in the j1939/socket.c file, specifically in the context of
-Transport Protocol (TP) sessions.
+Only older NIC controller's firmware uses the PROC AP reset type.
+Firmware on 5731X/5741X and newer chips does not support this reset
+type.  When bnxt_reset() issues a series of resets, this PROC AP
+reset may actually fail on these newer chips because the firmware
+is not ready to accept this unsupported command yet.  Avoid this
+unnecessary error by skipping this reset type on chips that don't
+support it.
 
-Without this patch, when a TP session is initiated and a Clear To Send
-(CTS) frame is received from the remote side requesting one data packet,
-the kernel dispatches the first Data Transport (DT) frame and then waits
-for the next CTS. If the remote side doesn't respond with another CTS,
-the kernel aborts due to a timeout. This leads to the user-space
-receiving an EPOLLERR on the socket, and the socket becomes active.
-
-However, when trying to read the error queue from the socket with
-sock.recvmsg(, , socket.MSG_ERRQUEUE), it returns -EAGAIN,
-given that the socket is non-blocking. This situation results in an
-infinite loop: the user-space repeatedly calls epoll(), epoll() returns
-the socket file descriptor with EPOLLERR, but the socket then blocks on
-the recv() of ERRQUEUE.
-
-This patch introduces an additional check for the J1939_SOCK_ERRQUEUE
-flag within the j1939_sk_send_loop_abort() function. If the flag is set,
-it indicates that the application has subscribed to receive error queue
-messages. In such cases, the kernel can communicate the current transfer
-state via the error queue. This allows for the function to return early,
-preventing the unnecessary setting of the socket into an error state,
-and breaking the infinite loop. It is crucial to note that a socket
-error is only needed if the application isn't using the error queue, as,
-without it, the application wouldn't be aware of transfer issues.
-
-Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
-Reported-by: David Jander <david@protonic.nl>
-Tested-by: David Jander <david@protonic.nl>
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://lore.kernel.org/r/20230526081946.715190-1-o.rempel@pengutronix.de
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7a13240e3718 ("bnxt_en: fix ethtool_reset_flags ABI violations")
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/j1939/socket.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/can/j1939/socket.c
-+++ b/net/can/j1939/socket.c
-@@ -1013,6 +1013,11 @@ void j1939_sk_errqueue(struct j1939_sess
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+index 3c9ba116d5aff..8ebc1c522a05b 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+@@ -3597,7 +3597,7 @@ static int bnxt_reset(struct net_device *dev, u32 *flags)
+ 		}
+ 	}
  
- void j1939_sk_send_loop_abort(struct sock *sk, int err)
- {
-+	struct j1939_sock *jsk = j1939_sk(sk);
-+
-+	if (jsk->state & J1939_SOCK_ERRQUEUE)
-+		return;
-+
- 	sk->sk_err = err;
- 
- 	sk->sk_error_report(sk);
+-	if (req & BNXT_FW_RESET_AP) {
++	if (!BNXT_CHIP_P4_PLUS(bp) && (req & BNXT_FW_RESET_AP)) {
+ 		/* This feature is not supported in older firmware versions */
+ 		if (bp->hwrm_spec_code >= 0x10803) {
+ 			if (!bnxt_firmware_reset_ap(dev)) {
+-- 
+2.39.2
+
 
 
