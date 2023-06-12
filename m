@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29A8672BF98
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:45:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64F1172C003
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:49:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231180AbjFLKps (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:45:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51720 "EHLO
+        id S233804AbjFLKtL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:49:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232501AbjFLKpJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:45:09 -0400
+        with ESMTP id S235235AbjFLKsf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:48:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF7DC6E9A
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:29:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12F7A4C01
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:33:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F806622B1
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:29:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F68C433D2;
-        Mon, 12 Jun 2023 10:29:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 75815623ED
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:33:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 867ADC433EF;
+        Mon, 12 Jun 2023 10:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565794;
-        bh=Tbu2ok51QPVVY5W7T+bALWIj77KRewtAb9WN5gCVu5w=;
+        s=korg; t=1686566004;
+        bh=F+DmGleVABIvGuMbJlWhceuDkMKVgs35YdKLMyyqfBk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qTUPiOEMtVjLI+eDhvxISkaZYY/KlB45YQ1mR5ol46Ca25ucDLm3O58gLOOszBV/G
-         R5dyeyRTQmghDt86fpp+AxZHmbRaW0IDD0zVBlpCiIUHzejbdUalKCNyvqA2GCDk3S
-         g4e9Nmx7M6Gg+WZd+qJtEiwflHcXjZMIrnZ/Xk04=
+        b=dk156HewhHPqJdtmHwUwefuz207nOkVhUi2xPTPkOgLePnu4kM6xv/yfiLTVJuw67
+         ypi5DS1lAgSgeYsFzP9AW3eCWJOxDGhpOvSy8w8808jYWa0Pa21H7jFrSrpfO7hZgQ
+         eMopUIQYCJ4HdkK8t4E6fMbZ8fb3E3hysSByrbp0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Dmitry Rokosov <ddrokosov@sberdevices.ru>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 4.19 18/23] pinctrl: meson-axg: add missing GPIOA_18 gpio group
-Date:   Mon, 12 Jun 2023 12:26:19 +0200
-Message-ID: <20230612101651.756341747@linuxfoundation.org>
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 28/68] net: sched: move rtm_tca_policy declaration to include file
+Date:   Mon, 12 Jun 2023 12:26:20 +0200
+Message-ID: <20230612101659.585989122@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101651.138592130@linuxfoundation.org>
-References: <20230612101651.138592130@linuxfoundation.org>
+In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
+References: <20230612101658.437327280@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,33 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Martin Hundebøll <martin@geanix.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 5b10ff013e8a57f8845615ac2cc37edf7f6eef05 upstream.
+[ Upstream commit 886bc7d6ed3357975c5f1d3c784da96000d4bbb4 ]
 
-Without this, the gpio cannot be explicitly mux'ed to its gpio function.
+rtm_tca_policy is used from net/sched/sch_api.c and net/sched/cls_api.c,
+thus should be declared in an include file.
 
-Fixes: 83c566806a68a ("pinctrl: meson-axg: Add new pinctrl driver for Meson AXG SoC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Martin Hundebøll <martin@geanix.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
-Link: https://lore.kernel.org/r/20230512064925.133516-1-martin@geanix.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This fixes the following sparse warning:
+net/sched/sch_api.c:1434:25: warning: symbol 'rtm_tca_policy' was not declared. Should it be static?
+
+Fixes: e331473fee3d ("net/sched: cls_api: add missing validation of netlink attributes")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/meson/pinctrl-meson-axg.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/net/pkt_sched.h | 2 ++
+ net/sched/cls_api.c     | 2 --
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/pinctrl/meson/pinctrl-meson-axg.c
-+++ b/drivers/pinctrl/meson/pinctrl-meson-axg.c
-@@ -400,6 +400,7 @@ static struct meson_pmx_group meson_axg_
- 	GPIO_GROUP(GPIOA_15),
- 	GPIO_GROUP(GPIOA_16),
- 	GPIO_GROUP(GPIOA_17),
-+	GPIO_GROUP(GPIOA_18),
- 	GPIO_GROUP(GPIOA_19),
- 	GPIO_GROUP(GPIOA_20),
+diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
+index 50d5ffbad473e..ba781e0aaf566 100644
+--- a/include/net/pkt_sched.h
++++ b/include/net/pkt_sched.h
+@@ -129,6 +129,8 @@ static inline void qdisc_run(struct Qdisc *q)
+ 	}
+ }
  
++extern const struct nla_policy rtm_tca_policy[TCA_MAX + 1];
++
+ /* Calculate maximal size of packet seen by hard_start_xmit
+    routine of this device.
+  */
+diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
+index 53d315ed94307..16960d9663e9e 100644
+--- a/net/sched/cls_api.c
++++ b/net/sched/cls_api.c
+@@ -41,8 +41,6 @@
+ #include <net/tc_act/tc_gate.h>
+ #include <net/flow_offload.h>
+ 
+-extern const struct nla_policy rtm_tca_policy[TCA_MAX + 1];
+-
+ /* The list of all installed classifier types */
+ static LIST_HEAD(tcf_proto_base);
+ 
+-- 
+2.39.2
+
 
 
