@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1ADF72C035
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:50:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6841572C107
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:56:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235601AbjFLKuk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:50:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55650 "EHLO
+        id S236659AbjFLK4G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:56:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236181AbjFLKuK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:50:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0248D7ED7
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:35:01 -0700 (PDT)
+        with ESMTP id S236649AbjFLKzt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:55:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3BEF4EF8
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:42:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AE718623E1
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:35:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F32C433EF;
-        Mon, 12 Jun 2023 10:35:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F0787612F0
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:42:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CBFBC433EF;
+        Mon, 12 Jun 2023 10:42:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566101;
-        bh=gu+woyY600EgFNCOX5M7aN+WcWbBcb/QrxPZoXv4bwo=;
+        s=korg; t=1686566574;
+        bh=j2BzpBdeIyZlTqdfqzRYiJ7Jjc9LhsZXNK6YN3IDmEY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lZOk2aoBELqJ0NGgxp0bEkWhuySd56FIFKYgJ9JxhlPdOPjuonC5mOPlxSS+S41lR
-         DORQ0sGqk9xP245vIdKk22Dn12sp0LjB26bJTZ99Ms+Slgdzsle+IvMdAaoIEOH26W
-         515SveZ5hJP7AQz9WcffeTnqNurx6mwdBVilW2g8=
+        b=KUB/XGGeqhkICU9DUEIF47N0EQk3P4FMs+B8Rq8A9HDBzatfr8NJAqrnbA5bQGQvb
+         cmSR93Z5j8tKzq3Cr1wLtN1c8NG8+bgNB3NwT0msCzbgqaJSAAD2aO2n5zKv62nFPF
+         HZvDcIoy8H6nlY7UIQxazvHUYvvSkOAH/8SIpFpQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, fuyufan <fuyufan@huawei.com>,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>, Maxime Ripard <maxime@cerno.tech>,
-        Fedor Pchelkin <pchelkin@ispras.ru>
-Subject: [PATCH 5.10 65/68] drm/atomic: Dont pollute crtc_state->mode_blob with error pointers
+        patches@lists.linux.dev,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Geliang Tang <geliang.tang@suse.com>,
+        Mat Martineau <martineau@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 083/132] mptcp: update userspace pm infos
 Date:   Mon, 12 Jun 2023 12:26:57 +0200
-Message-ID: <20230612101701.146235464@linuxfoundation.org>
+Message-ID: <20230612101714.043525982@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
-References: <20230612101658.437327280@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,50 +56,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Geliang Tang <geliang.tang@suse.com>
 
-commit 439cf34c8e0a8a33d8c15a31be1b7423426bc765 upstream.
+commit 77e4b94a3de692a09b79945ecac5b8e6b77f10c1 upstream.
 
-Make sure we don't assign an error pointer to crtc_state->mode_blob
-as that will break all kinds of places that assume either NULL or a
-valid pointer (eg. drm_property_blob_put()).
+Increase pm subflows counter on both server side and client side when
+userspace pm creates a new subflow, and decrease the counter when it
+closes a subflow.
 
+Increase add_addr_signaled counter in mptcp_nl_cmd_announce() when the
+address is announced by userspace PM.
+
+This modification is similar to how the in-kernel PM is updating the
+counter: when additional subflows are created/removed.
+
+Fixes: 9ab4807c84a4 ("mptcp: netlink: Add MPTCP_PM_CMD_ANNOUNCE")
+Fixes: 702c2f646d42 ("mptcp: netlink: allow userspace-driven subflow establishment")
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/329
 Cc: stable@vger.kernel.org
-Reported-by: fuyufan <fuyufan@huawei.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20220209091928.14766-1-ville.syrjala@linux.intel.com
-Acked-by: Maxime Ripard <maxime@cerno.tech>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Geliang Tang <geliang.tang@suse.com>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_atomic_uapi.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ net/mptcp/pm.c           |   23 +++++++++++++++++++----
+ net/mptcp/pm_userspace.c |    5 +++++
+ 2 files changed, 24 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/drm_atomic_uapi.c
-+++ b/drivers/gpu/drm/drm_atomic_uapi.c
-@@ -75,15 +75,17 @@ int drm_atomic_set_mode_for_crtc(struct
- 	state->mode_blob = NULL;
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -87,8 +87,15 @@ bool mptcp_pm_allow_new_subflow(struct m
+ 	unsigned int subflows_max;
+ 	int ret = 0;
  
- 	if (mode) {
-+		struct drm_property_blob *blob;
-+
- 		drm_mode_convert_to_umode(&umode, mode);
--		state->mode_blob =
--			drm_property_create_blob(state->crtc->dev,
--		                                 sizeof(umode),
--		                                 &umode);
--		if (IS_ERR(state->mode_blob))
--			return PTR_ERR(state->mode_blob);
-+		blob = drm_property_create_blob(crtc->dev,
-+						sizeof(umode), &umode);
-+		if (IS_ERR(blob))
-+			return PTR_ERR(blob);
+-	if (mptcp_pm_is_userspace(msk))
+-		return mptcp_userspace_pm_active(msk);
++	if (mptcp_pm_is_userspace(msk)) {
++		if (mptcp_userspace_pm_active(msk)) {
++			spin_lock_bh(&pm->lock);
++			pm->subflows++;
++			spin_unlock_bh(&pm->lock);
++			return true;
++		}
++		return false;
++	}
  
- 		drm_mode_copy(&state->mode, mode);
+ 	subflows_max = mptcp_pm_get_subflows_max(msk);
+ 
+@@ -181,8 +188,16 @@ void mptcp_pm_subflow_check_next(struct
+ 	struct mptcp_pm_data *pm = &msk->pm;
+ 	bool update_subflows;
+ 
+-	update_subflows = (subflow->request_join || subflow->mp_join) &&
+-			  mptcp_pm_is_kernel(msk);
++	update_subflows = subflow->request_join || subflow->mp_join;
++	if (mptcp_pm_is_userspace(msk)) {
++		if (update_subflows) {
++			spin_lock_bh(&pm->lock);
++			pm->subflows--;
++			spin_unlock_bh(&pm->lock);
++		}
++		return;
++	}
 +
-+		state->mode_blob = blob;
- 		state->enable = true;
- 		DRM_DEBUG_ATOMIC("Set [MODE:%s] for [CRTC:%d:%s] state %p\n",
- 				 mode->name, crtc->base.id, crtc->name, state);
+ 	if (!READ_ONCE(pm->work_pending) && !update_subflows)
+ 		return;
+ 
+--- a/net/mptcp/pm_userspace.c
++++ b/net/mptcp/pm_userspace.c
+@@ -69,6 +69,7 @@ int mptcp_userspace_pm_append_new_local_
+ 							MPTCP_PM_MAX_ADDR_ID + 1,
+ 							1);
+ 		list_add_tail_rcu(&e->list, &msk->pm.userspace_pm_local_addr_list);
++		msk->pm.local_addr_used++;
+ 		ret = e->addr.id;
+ 	} else if (match) {
+ 		ret = entry->addr.id;
+@@ -95,6 +96,7 @@ static int mptcp_userspace_pm_delete_loc
+ 			 */
+ 			list_del_rcu(&entry->list);
+ 			kfree(entry);
++			msk->pm.local_addr_used--;
+ 			return 0;
+ 		}
+ 	}
+@@ -194,6 +196,7 @@ int mptcp_nl_cmd_announce(struct sk_buff
+ 	spin_lock_bh(&msk->pm.lock);
+ 
+ 	if (mptcp_pm_alloc_anno_list(msk, &addr_val)) {
++		msk->pm.add_addr_signaled++;
+ 		mptcp_pm_announce_addr(msk, &addr_val.addr, false);
+ 		mptcp_pm_nl_addr_send_ack(msk);
+ 	}
+@@ -342,6 +345,8 @@ int mptcp_nl_cmd_sf_create(struct sk_buf
+ 	spin_lock_bh(&msk->pm.lock);
+ 	if (err)
+ 		mptcp_userspace_pm_delete_local_addr(msk, &local);
++	else
++		msk->pm.subflows++;
+ 	spin_unlock_bh(&msk->pm.lock);
+ 
+  create_err:
 
 
