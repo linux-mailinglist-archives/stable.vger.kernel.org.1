@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00E0572BFE4
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:47:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B84D72C062
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:52:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235143AbjFLKru (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:47:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51392 "EHLO
+        id S235707AbjFLKwQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:52:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235307AbjFLKr3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:47:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B64644BE
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:32:19 -0700 (PDT)
+        with ESMTP id S235680AbjFLKvt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:51:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70A6793D4
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:36:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6B298623DF
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:32:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB4EC433D2;
-        Mon, 12 Jun 2023 10:32:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B9FA60F87
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:36:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232BBC433D2;
+        Mon, 12 Jun 2023 10:36:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565938;
-        bh=VyZv/MO/Su+LQLmpquylZZ1K/IlFNdVPERni5/Z4khU=;
+        s=korg; t=1686566176;
+        bh=4E3Ra0lC6sYe0Zfy5Ewgo1M+oxhBfPl2HN85bjawNYU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jURnvea0Oi1uQPzNIKwI0QqeGmbow2JzMhTnToX2CXt+DNv9vrbZIOf0hKANtxrra
-         JiL3UPpvflg1UXzqKuuQ2m1UuRoqTjIgQ0yFMmsy20jX2RNcrxI0Ro4n+9ypiTzLqL
-         wMveECwCeOpHyypnoCr0xU9I121lIBtZ73aLndlE=
+        b=YTdkjV5N5QwmEysQbhV07nKea85iam4NXMnT4+jvn4UUH0/RMfyaVz0cDjaw27oSb
+         2Y20cmqg5lq/3yOI3v9wKkQt4dkRlL3addivKNJgcSQV0R9vJDjxIYXRZGRDyPbZ2h
+         h4/QYcDeVKvf756b1rGQ10Wg/8D524LU3yKRyVWM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Vladislav Efanov <VEfanov@ispras.ru>,
-        Sven Eckelmann <sven@narfation.org>,
-        Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 5.4 19/45] batman-adv: Broken sync while rescheduling delayed work
+        patches@lists.linux.dev, Ying Hsu <yinghsu@chromium.org>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 24/91] Bluetooth: Fix l2cap_disconnect_req deadlock
 Date:   Mon, 12 Jun 2023 12:26:13 +0200
-Message-ID: <20230612101655.437448973@linuxfoundation.org>
+Message-ID: <20230612101703.101219410@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
-References: <20230612101654.644983109@linuxfoundation.org>
+In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
+References: <20230612101702.085813286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,58 +54,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladislav Efanov <VEfanov@ispras.ru>
+From: Ying Hsu <yinghsu@chromium.org>
 
-commit abac3ac97fe8734b620e7322a116450d7f90aa43 upstream.
+[ Upstream commit 02c5ea5246a44d6ffde0fddebfc1d56188052976 ]
 
-Syzkaller got a lot of crashes like:
-KASAN: use-after-free Write in *_timers*
+L2CAP assumes that the locks conn->chan_lock and chan->lock are
+acquired in the order conn->chan_lock, chan->lock to avoid
+potential deadlock.
+For example, l2sock_shutdown acquires these locks in the order:
+  mutex_lock(&conn->chan_lock)
+  l2cap_chan_lock(chan)
 
-All of these crashes point to the same memory area:
+However, l2cap_disconnect_req acquires chan->lock in
+l2cap_get_chan_by_scid first and then acquires conn->chan_lock
+before calling l2cap_chan_del. This means that these locks are
+acquired in unexpected order, which leads to potential deadlock:
+  l2cap_chan_lock(c)
+  mutex_lock(&conn->chan_lock)
 
-The buggy address belongs to the object at ffff88801f870000
- which belongs to the cache kmalloc-8k of size 8192
-The buggy address is located 5320 bytes inside of
- 8192-byte region [ffff88801f870000, ffff88801f872000)
+This patch releases chan->lock before acquiring the conn_chan_lock
+to avoid the potential deadlock.
 
-This area belongs to :
-        batadv_priv->batadv_priv_dat->delayed_work->timer_list
-
-The reason for these issues is the lack of synchronization. Delayed
-work (batadv_dat_purge) schedules new timer/work while the device
-is being deleted. As the result new timer/delayed work is set after
-cancel_delayed_work_sync() was called. So after the device is freed
-the timer list contains pointer to already freed memory.
-
-Found by Linux Verification Center (linuxtesting.org) with syzkaller.
-
-Cc: stable@kernel.org
-Fixes: 2f1dfbe18507 ("batman-adv: Distributed ARP Table - implement local storage")
-Signed-off-by: Vladislav Efanov <VEfanov@ispras.ru>
-Acked-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a2a9339e1c9d ("Bluetooth: L2CAP: Fix use-after-free in l2cap_disconnect_{req,rsp}")
+Signed-off-by: Ying Hsu <yinghsu@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/distributed-arp-table.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/l2cap_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/net/batman-adv/distributed-arp-table.c
-+++ b/net/batman-adv/distributed-arp-table.c
-@@ -102,7 +102,6 @@ static void batadv_dat_purge(struct work
-  */
- static void batadv_dat_start_timer(struct batadv_priv *bat_priv)
- {
--	INIT_DELAYED_WORK(&bat_priv->dat.work, batadv_dat_purge);
- 	queue_delayed_work(batadv_event_workqueue, &bat_priv->dat.work,
- 			   msecs_to_jiffies(10000));
- }
-@@ -817,6 +816,7 @@ int batadv_dat_init(struct batadv_priv *
- 	if (!bat_priv->dat.hash)
- 		return -ENOMEM;
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index f01b77b037878..101a15256efe5 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -4664,7 +4664,9 @@ static inline int l2cap_disconnect_req(struct l2cap_conn *conn,
  
-+	INIT_DELAYED_WORK(&bat_priv->dat.work, batadv_dat_purge);
- 	batadv_dat_start_timer(bat_priv);
+ 	chan->ops->set_shutdown(chan);
  
- 	batadv_tvlv_handler_register(bat_priv, batadv_dat_tvlv_ogm_handler_v1,
++	l2cap_chan_unlock(chan);
+ 	mutex_lock(&conn->chan_lock);
++	l2cap_chan_lock(chan);
+ 	l2cap_chan_del(chan, ECONNRESET);
+ 	mutex_unlock(&conn->chan_lock);
+ 
+@@ -4703,7 +4705,9 @@ static inline int l2cap_disconnect_rsp(struct l2cap_conn *conn,
+ 		return 0;
+ 	}
+ 
++	l2cap_chan_unlock(chan);
+ 	mutex_lock(&conn->chan_lock);
++	l2cap_chan_lock(chan);
+ 	l2cap_chan_del(chan, 0);
+ 	mutex_unlock(&conn->chan_lock);
+ 
+-- 
+2.39.2
+
 
 
