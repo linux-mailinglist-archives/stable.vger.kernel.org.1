@@ -2,151 +2,161 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A179F72B90E
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 09:49:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B27872BB04
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 10:42:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235742AbjFLHtP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 03:49:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56876 "EHLO
+        id S233181AbjFLIme (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 04:42:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235485AbjFLHtA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 03:49:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 413A7BB
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 00:47:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686555994;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=yP4vMHkO+yCSQ+z82iPRDsudDDu4cQh6jmBlyoee49w=;
-        b=LO+ICnYPbClZaCFs3nmBt/OlMMcAerbN2cHA0XdZujDydSeQlqklLkJzygVvZw7ZAKW0tW
-        DxuelkytppU5S4PVnIvuM8qR8WEXaiFNXx6KFKXV6+rTLr+EdSxjJN+N9TMvx6PT3RPJ8V
-        18Y5FleZUQdFsndL3KkCkQIsutSsiJ4=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-227-qH9LhvS5OC-dwIekzETsvg-1; Mon, 12 Jun 2023 03:46:25 -0400
-X-MC-Unique: qH9LhvS5OC-dwIekzETsvg-1
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-30fc5d6e697so130391f8f.0
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 00:46:25 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686555984; x=1689147984;
-        h=content-transfer-encoding:in-reply-to:subject:organization:from
-         :references:cc:to:content-language:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yP4vMHkO+yCSQ+z82iPRDsudDDu4cQh6jmBlyoee49w=;
-        b=ITiMD51VZ0a5/qdKXnr2BY302BE045Eeqf3hFTcXhz6UYuX/yLcWawkthdSA7nbDV2
-         k7GPqNd96qop+BHlsYhpujk3u2LMZXSk5Dn7R9zk4cLQ6vv7SciTFMPAjSBsXhIekVkT
-         485SxLblF2wEcUPQjHaHbJ451uJgLQLaKHPe4hNLzkvkGAO6qcbRxmSY6w2AVV5RJyWM
-         7PBySzaB7xuHz88R9iibMtBhptagBsVIZdMKd1qp25/BBR3YJSrbOZ0Sn7iOy4WxAvk0
-         ff/QfdTaW2O8u4r1L7F6rjH/6nIVYUO0cocpb6fp2HGzzQRtIcVjN5OfJFw7rlj0pzEA
-         gvYw==
-X-Gm-Message-State: AC+VfDzqBqtUAP0ON2Pk/8fRlXwfs2Kd4y7PrPEbUjzkLuBY3SrOTPuV
-        mvgv/vJpdOVHLZnEXSgl/lWyXhim8QwT+RWjzDQb1aoCeai1/FUVR6QOHtbdtPSVhd/XraI9jfx
-        HBR5595jhV+vOJL5J
-X-Received: by 2002:a05:6000:14c:b0:30f:a895:d991 with SMTP id r12-20020a056000014c00b0030fa895d991mr3131805wrx.55.1686555984695;
-        Mon, 12 Jun 2023 00:46:24 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ73G0tqHUKMiC3veRGtl5w/v7h2Kk9F4KUkzVL4unSRQmLHkul9W56Mg29yppbvMAA2E73L5A==
-X-Received: by 2002:a05:6000:14c:b0:30f:a895:d991 with SMTP id r12-20020a056000014c00b0030fa895d991mr3131789wrx.55.1686555984277;
-        Mon, 12 Jun 2023 00:46:24 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c74e:1600:4f67:25b2:3e8c:2a4e? (p200300cbc74e16004f6725b23e8c2a4e.dip0.t-ipconnect.de. [2003:cb:c74e:1600:4f67:25b2:3e8c:2a4e])
-        by smtp.gmail.com with ESMTPSA id b5-20020adff905000000b0030aedb8156esm11491237wrr.102.2023.06.12.00.46.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Jun 2023 00:46:23 -0700 (PDT)
-Message-ID: <281caf4f-25da-3a73-554b-4fb252963035@redhat.com>
-Date:   Mon, 12 Jun 2023 09:46:22 +0200
+        with ESMTP id S233370AbjFLImd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 04:42:33 -0400
+X-Greylist: delayed 2019 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 12 Jun 2023 01:42:31 PDT
+Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EDF3B7;
+        Mon, 12 Jun 2023 01:42:30 -0700 (PDT)
+Received: from in02.mta.xmission.com ([166.70.13.52]:49274)
+        by out03.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1q8cba-00GVnS-6T; Mon, 12 Jun 2023 02:08:50 -0600
+Received: from ip68-110-29-46.om.om.cox.net ([68.110.29.46]:41498 helo=email.froward.int.ebiederm.org.xmission.com)
+        by in02.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1q8cbY-00F8nl-Ss; Mon, 12 Jun 2023 02:08:49 -0600
+From:   "Eric W. Biederman" <ebiederm@xmission.com>
+To:     Christian Marangi <ansuelsmth@gmail.com>
+Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Mark Brown <broonie@kernel.org>,
+        Dave Martin <Dave.Martin@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20230607144227.8956-1-ansuelsmth@gmail.com>
+Date:   Mon, 12 Jun 2023 03:08:21 -0500
+In-Reply-To: <20230607144227.8956-1-ansuelsmth@gmail.com> (Christian Marangi's
+        message of "Wed, 7 Jun 2023 16:42:27 +0200")
+Message-ID: <875y7tumq2.fsf@email.froward.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Content-Language: en-US
-To:     "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
-        Hugh Dickins <hughd@google.com>
-Cc:     Gerd Hoffmann <kraxel@redhat.com>,
-        "Kim, Dongwon" <dongwon.kim@intel.com>,
-        "Chang, Junxiao" <junxiao.chang@intel.com>,
-        "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
-        "Hocko, Michal" <mhocko@suse.com>,
-        "jmarchan@redhat.com" <jmarchan@redhat.com>,
-        "muchun.song@linux.dev" <muchun.song@linux.dev>,
-        James Houghton <jthoughton@google.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20230608204927.88711-1-mike.kravetz@oracle.com>
- <IA0PR11MB71851B64A5E7062E3BDD8D2FF854A@IA0PR11MB7185.namprd11.prod.outlook.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH] udmabuf: revert 'Add support for mapping hugepages (v4)'
-In-Reply-To: <IA0PR11MB71851B64A5E7062E3BDD8D2FF854A@IA0PR11MB7185.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-XM-SPF: eid=1q8cbY-00F8nl-Ss;;;mid=<875y7tumq2.fsf@email.froward.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=68.110.29.46;;;frm=ebiederm@xmission.com;;;spf=pass
+X-XM-AID: U2FsdGVkX19mPd4u3NrhQg/U/AK1EfBVUc3XuMgnfKI=
+X-SA-Exim-Connect-IP: 68.110.29.46
+X-SA-Exim-Mail-From: ebiederm@xmission.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
+X-Spam-DCC: XMission; sa06 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: ;Christian Marangi <ansuelsmth@gmail.com>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 648 ms - load_scoreonly_sql: 0.04 (0.0%),
+        signal_user_changed: 12 (1.8%), b_tie_ro: 10 (1.6%), parse: 1.15
+        (0.2%), extract_message_metadata: 4.8 (0.7%), get_uri_detail_list: 2.4
+        (0.4%), tests_pri_-2000: 3.5 (0.5%), tests_pri_-1000: 2.7 (0.4%),
+        tests_pri_-950: 1.29 (0.2%), tests_pri_-900: 1.03 (0.2%),
+        tests_pri_-200: 0.86 (0.1%), tests_pri_-100: 10 (1.5%), tests_pri_-90:
+        90 (13.8%), check_bayes: 86 (13.2%), b_tokenize: 8 (1.3%),
+        b_tok_get_all: 9 (1.4%), b_comp_prob: 3.0 (0.5%), b_tok_touch_all: 62
+        (9.6%), b_finish: 0.93 (0.1%), tests_pri_0: 493 (76.1%),
+        check_dkim_signature: 0.53 (0.1%), check_dkim_adsp: 2.9 (0.4%),
+        poll_dns_idle: 1.04 (0.2%), tests_pri_10: 3.6 (0.6%), tests_pri_500:
+        16 (2.4%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH] binfmt_elf: dynamically allocate note.data in
+ parse_elf_properties
+X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
+X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 12.06.23 09:10, Kasireddy, Vivek wrote:
-> Hi Mike,
+Christian Marangi <ansuelsmth@gmail.com> writes:
 
-Hi Vivek,
+> Dynamically allocate note.data in parse_elf_properties to fix
+> compilation warning on some arch.
+>
+> On some arch note.data exceed the stack limit for a single function and
+> this cause the following compilation warning:
+> fs/binfmt_elf.c: In function 'parse_elf_properties.isra':
+> fs/binfmt_elf.c:821:1: error: the frame size of 1040 bytes is larger than 1024 bytes [-Werror=frame-larger-than=]
+>   821 | }
+>       | ^
+> cc1: all warnings being treated as errors
+>
+> Fix this by dynamically allocating the array.
+> Update the sizeof of the union to the biggest element allocated.
+>
+> Fixes: 00e19ceec80b ("ELF: Add ELF program property parsing support")
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> Cc: stable@vger.kernel.org # v5.8+
+> ---
+>  fs/binfmt_elf.c | 36 +++++++++++++++++++++++++-----------
+>  1 file changed, 25 insertions(+), 11 deletions(-)
+>
+> diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+> index 44b4c42ab8e8..90daa623ca13 100644
+> --- a/fs/binfmt_elf.c
+> +++ b/fs/binfmt_elf.c
+> @@ -768,7 +768,7 @@ static int parse_elf_properties(struct file *f, const struct elf_phdr *phdr,
+>  {
+>  	union {
+>  		struct elf_note nhdr;
+> -		char data[NOTE_DATA_SZ];
+> +		char *data;
+>  	} note;
 
-> 
-> Sorry for the late reply; I just got back from vacation.
-> If it is unsafe to directly use the subpages of a hugetlb page, then reverting
-> this patch seems like the only option for addressing this issue immediately.
-> So, this patch is
-> Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-> 
-> As far as the use-case is concerned, there are two main users of the udmabuf
-> driver: Qemu and CrosVM VMMs. However, it appears Qemu is the only one
-> that uses hugetlb pages (when hugetlb=on is set) as the backing store for
-> Guest (Linux, Android and Windows) system memory. The main goal is to
-> share the pages associated with the Guest allocated framebuffer (FB) with
-> the Host GPU driver and other components in a zero-copy way. To that end,
-> the guest GPU driver (virtio-gpu) allocates 4k size pages (associated with
-> the FB) and pins them before sharing the (guest) physical (or dma) addresses
-> (and lengths) with Qemu. Qemu then translates the addresses into file
-> offsets and shares these offsets with udmabuf.
+If you are going to dynamically allocate this not that way please.
+Only dynamically allocating one member of a union is to put it politely
+completely broken.
 
-Is my understanding correct, that we can effectively long-term pin 
-(worse than mlock) 64 MiB per UDMABUF_CREATE, allowing eventually !root 
-users
+The entire union needs to be dynamically allocated.
 
-ll /dev/udmabuf
-crw-rw---- 1 root kvm 10, 125 12. Jun 08:12 /dev/udmabuf
+Given that the entire thing is 1024 bytes in size.  I can understand the
+concern.
 
-to bypass there effective MEMLOCK limit, fragmenting physical memory and 
-breaking swap?
+Hmm.
 
 
-Regarding the udmabuf_vm_fault(), I assume we're mapping pages we 
-obtained from the memfd ourselves into a special VMA (mmap() of the 
-udmabuf). I'm not sure how well shmem pages are prepared for getting 
-mapped by someone else into an arbitrary VMA (page->index?).
+The entire union is a buffer for the entire note section.
+So 1K is understandable if it needs to hold all of the notes.
 
-... also, just imagine someone doing FALLOC_FL_PUNCH_HOLE / ftruncate() 
-on the memfd. What's mapped into the memfd no longer corresponds to 
-what's pinned / mapped into the VMA.
+Of course only a single note is a wrapper of a bunch of gnu_properties.
+Hopefully that single note comes first.
 
 
-Was linux-mm (and especially shmem maintainers, ccing Hugh) involved in 
-the upstreaming of udmabuf?
+The notehdr + name take 16 bytes.
+The only supported gnu_property takes 12 bytes. I think 16 in practice.
 
--- 
-Cheers,
 
-David / dhildenb
+Hmm.  So we could do with a smaller buffer.
+
+Hmm.
+
+The code does not check that all phdr->p_filesz bytes are actually
+read.
+
+So I would suggest defining the union to be ELF_EXEC_PAGESIZE bytes,
+dynamically allocating it like we do all of the other buffers we
+read elf headers into, and then use elf_read to verify that we
+read all of phdr->p_filesz bytes.
+
+Just like we do for the elf program headers.  I think having a second
+pattern for reading data is more likely to be a problem than a dynamic
+memory allocation.  Especially since this code only runs on one
+architecture in practice.
+
+The changes will cost nothing except on arm64 and it will be as cheap
+as it can be, being simply a single page allocation.
+
+
+Either that or you can up your stack limit on 64bit architectures like
+everyone else.
+
+Eric
 
