@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0027472C061
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:52:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A48E772BFE5
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:47:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235853AbjFLKwP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:52:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55630 "EHLO
+        id S235219AbjFLKrv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:47:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235717AbjFLKvs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:51:48 -0400
+        with ESMTP id S235314AbjFLKr3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:47:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5E6993D2
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:36:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33FF844BD
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:32:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7DC86623DC
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:36:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90F6AC433EF;
-        Mon, 12 Jun 2023 10:36:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D0F9E623ED
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:32:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E10A3C433EF;
+        Mon, 12 Jun 2023 10:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566173;
-        bh=eEMDT4gqV3r30hmY/IrIGV4L+N31mCMAqkx/Uze+LCs=;
+        s=korg; t=1686565936;
+        bh=l7vSjQ6yVyLbbzpSZxaXcYEEBskK+HUj9K2JwQfps/E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BQPLTeDIvSYaHHQqOUryW3q0nGyxMmnP3wEQo5YAuEoFbn4nkp7u0+I0n0un2c2O7
-         b5h3fSeoMOr0hPsBAl0ziGFrkhy6cIw6j+4pZkcoFgFJrlmCoY4ILxMXN0hLvkBqdm
-         WVIxS2FF67OH1f082yIPv1X6nOgLHexLq4W6JbBc=
+        b=IwjVSNdo0XwQi2IY0zICgS9xBOqiciHOF88BDnXsIsNSEBTaQVcdhQVfDfLf9ld8c
+         bt2VeJ/AXXYLOfJWSb5mPL0CYzW2i7FXPqU3Z3bf5+6yH+ymTtWiyof0Ecd6ZDTUlN
+         bjEpiYk75ybOoLRvWBAZO620dJ31+t73GWElb4MY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        patches@lists.linux.dev, Pavan Chebbi <pavan.chebbi@broadcom.com>,
+        Somnath Kotur <somnath.kotur@broadcom.com>,
+        Michael Chan <michael.chan@broadcom.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 23/91] drm/i915: Use 18 fast wake AUX sync len
+Subject: [PATCH 5.4 18/45] bnxt_en: Query default VLAN before VNIC setup on a VF
 Date:   Mon, 12 Jun 2023 12:26:12 +0200
-Message-ID: <20230612101703.060282118@linuxfoundation.org>
+Message-ID: <20230612101655.388193455@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
-References: <20230612101702.085813286@linuxfoundation.org>
+In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
+References: <20230612101654.644983109@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,42 +56,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Somnath Kotur <somnath.kotur@broadcom.com>
 
-[ Upstream commit 2d6f2f79e06571d41eb1223abebe9097511c9544 ]
+[ Upstream commit 1a9e4f501bc6ff1b6ecb60df54fbf2b54db43bfe ]
 
-HW default for wake sync pulses is 18. 10 precharge and 8 preamble. There
-is no reason to change this especially as it is causing problems with
-certain eDP panels.
+We need to call bnxt_hwrm_func_qcfg() on a VF to query the default
+VLAN that may be setup by the PF.  If a default VLAN is enabled,
+the VF cannot support VLAN acceleration on the receive side and
+the VNIC must be setup to strip out the default VLAN tag.  If a
+default VLAN is not enabled, the VF can support VLAN acceleration
+on the receive side.  The VNIC should be set up to strip or not
+strip the VLAN based on the RX VLAN acceleration setting.
 
-v3: Change "Fixes:" commit
-v2: Remove "fast wake" repeat from subject
+Without this call to determine the default VLAN before calling
+bnxt_setup_vnic(), the VNIC may not be set up correctly.  For
+example, bnxt_setup_vnic() may set up to strip the VLAN tag based
+on stale default VLAN information.  If RX VLAN acceleration is
+not enabled, the VLAN tag will be incorrectly stripped and the
+RX data path will not work correctly.
 
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Fixes: e1c71f8f9180 ("drm/i915: Fix fast wake AUX sync len")
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8475
-Reviewed-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230530101649.2549949-1-jouni.hogander@intel.com
-(cherry picked from commit b29a20f7c4995a059ed764ce42389857426397c7)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Fixes: cf6645f8ebc6 ("bnxt_en: Add function for VF driver to query default VLAN.")
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp_aux.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp_aux.c b/drivers/gpu/drm/i915/display/intel_dp_aux.c
-index f0485521e58ad..d507a20822db1 100644
---- a/drivers/gpu/drm/i915/display/intel_dp_aux.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp_aux.c
-@@ -129,7 +129,7 @@ static int intel_dp_aux_sync_len(void)
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 2c71e838fa3d8..7f85315744009 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -7781,6 +7781,9 @@ static int bnxt_init_chip(struct bnxt *bp, bool irq_re_init)
+ 		goto err_out;
+ 	}
  
- static int intel_dp_aux_fw_sync_len(void)
- {
--	int precharge = 16; /* 10-16 */
-+	int precharge = 10; /* 10-16 */
- 	int preamble = 8;
- 
- 	return precharge + preamble;
++	if (BNXT_VF(bp))
++		bnxt_hwrm_func_qcfg(bp);
++
+ 	rc = bnxt_setup_vnic(bp, 0);
+ 	if (rc)
+ 		goto err_out;
 -- 
 2.39.2
 
