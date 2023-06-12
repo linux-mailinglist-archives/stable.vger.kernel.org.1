@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4B4F72BFCD
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:47:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2C3A72C0F0
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235464AbjFLKrT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:47:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51724 "EHLO
+        id S236182AbjFLKz2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:55:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235233AbjFLKqx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:46:53 -0400
+        with ESMTP id S236960AbjFLKzJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:55:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7CCF7690
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:31:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D21E421A
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:42:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 87BE5623E5
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:31:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9961BC433D2;
-        Mon, 12 Jun 2023 10:31:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B08E36158B
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:42:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DEB0C433D2;
+        Mon, 12 Jun 2023 10:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565894;
-        bh=kusRSPmqog5xyUNDr/Mj7t/OckoBIn9jHL5y5Qyq+Sc=;
+        s=korg; t=1686566522;
+        bh=XfOhGVN0v3hG1viVczaSizwo/DtWCgAmZJl6dL9mBfo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TGu9p3LDAEsIhQcTbnTe+ju+RrJoB/kmyVc5DmRCzuE5C0wlf/CyUsPQexlPwWRre
-         t5l5+JdeQy9rnBKRoOaXs8zK2PB/evzHTS7UfXEclLhZdCpojKT98d76dToKoi87CW
-         9p3MnxcLgvEvSSeE96ZOrnb1PaP4yUrO7K3WlHz8=
+        b=V16UoqO42tt0Ern3BGAcrJ2a3oIBhULWxHfa6yJTt/YhCdqCW77SjSU9ciRZMtxr/
+         g2rm8HpntZT2rUekINzdBMsJ5jxi22mGixbQVOFOdUm+VUdQOo4CyylGYByAduoZ1u
+         N/oK+ueY1xEp3sWlii7vpMK+s8RIaZnOpe1EzGDk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Yonghong Song <yhs@fb.com>,
+        Andrii Nakryiko <andrii@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 14/45] rfs: annotate lockless accesses to RFS sock flow table
+Subject: [PATCH 6.1 034/132] selftests/bpf: Fix sockopt_sk selftest
 Date:   Mon, 12 Jun 2023 12:26:08 +0200
-Message-ID: <20230612101655.231641443@linuxfoundation.org>
+Message-ID: <20230612101711.774822183@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
-References: <20230612101654.644983109@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,65 +54,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yonghong Song <yhs@fb.com>
 
-[ Upstream commit 5c3b74a92aa285a3df722bf6329ba7ccf70346d6 ]
+[ Upstream commit 69844e335d8c22454746c7903776533d8b4ab8fa ]
 
-Add READ_ONCE()/WRITE_ONCE() on accesses to the sock flow table.
+Commit f4e4534850a9 ("net/netlink: fix NETLINK_LIST_MEMBERSHIPS length report")
+fixed NETLINK_LIST_MEMBERSHIPS length report which caused
+selftest sockopt_sk failure. The failure log looks like
 
-This also prevents a (smart ?) compiler to remove the condition in:
+  test_sockopt_sk:PASS:join_cgroup /sockopt_sk 0 nsec
+  run_test:PASS:skel_load 0 nsec
+  run_test:PASS:setsockopt_link 0 nsec
+  run_test:PASS:getsockopt_link 0 nsec
+  getsetsockopt:FAIL:Unexpected NETLINK_LIST_MEMBERSHIPS value unexpected Unexpected NETLINK_LIST_MEMBERSHIPS value: actual 8 != expected 4
+  run_test:PASS:getsetsockopt 0 nsec
+  #201     sockopt_sk:FAIL
 
-if (table->ents[index] != newval)
-        table->ents[index] = newval;
+In net/netlink/af_netlink.c, function netlink_getsockopt(), for NETLINK_LIST_MEMBERSHIPS,
+nlk->ngroups equals to 36. Before Commit f4e4534850a9, the optlen is calculated as
+  ALIGN(nlk->ngroups / 8, sizeof(u32)) = 4
+After that commit, the optlen is
+  ALIGN(BITS_TO_BYTES(nlk->ngroups), sizeof(u32)) = 8
 
-We need the condition to avoid dirtying a shared cache line.
+Fix the test by setting the expected optlen to be 8.
 
-Fixes: fec5e652e58f ("rfs: Receive Flow Steering")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: f4e4534850a9 ("net/netlink: fix NETLINK_LIST_MEMBERSHIPS length report")
+Signed-off-by: Yonghong Song <yhs@fb.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20230606172202.1606249-1-yhs@fb.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netdevice.h | 7 +++++--
- net/core/dev.c            | 6 ++++--
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/sockopt_sk.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 125542f305fad..f6a5a866ea70b 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -732,8 +732,11 @@ static inline void rps_record_sock_flow(struct rps_sock_flow_table *table,
- 		/* We only give a hint, preemption can change CPU under us */
- 		val |= raw_smp_processor_id();
- 
--		if (table->ents[index] != val)
--			table->ents[index] = val;
-+		/* The following WRITE_ONCE() is paired with the READ_ONCE()
-+		 * here, and another one in get_rps_cpu().
-+		 */
-+		if (READ_ONCE(table->ents[index]) != val)
-+			WRITE_ONCE(table->ents[index], val);
+diff --git a/tools/testing/selftests/bpf/prog_tests/sockopt_sk.c b/tools/testing/selftests/bpf/prog_tests/sockopt_sk.c
+index 4512dd808c335..05d0e07da3942 100644
+--- a/tools/testing/selftests/bpf/prog_tests/sockopt_sk.c
++++ b/tools/testing/selftests/bpf/prog_tests/sockopt_sk.c
+@@ -209,7 +209,7 @@ static int getsetsockopt(void)
+ 			err, errno);
+ 		goto err;
  	}
- }
+-	ASSERT_EQ(optlen, 4, "Unexpected NETLINK_LIST_MEMBERSHIPS value");
++	ASSERT_EQ(optlen, 8, "Unexpected NETLINK_LIST_MEMBERSHIPS value");
  
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 0cc0809628b08..92ae373475c9a 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -4002,8 +4002,10 @@ static int get_rps_cpu(struct net_device *dev, struct sk_buff *skb,
- 		u32 next_cpu;
- 		u32 ident;
- 
--		/* First check into global flow table if there is a match */
--		ident = sock_flow_table->ents[hash & sock_flow_table->mask];
-+		/* First check into global flow table if there is a match.
-+		 * This READ_ONCE() pairs with WRITE_ONCE() from rps_record_sock_flow().
-+		 */
-+		ident = READ_ONCE(sock_flow_table->ents[hash & sock_flow_table->mask]);
- 		if ((ident ^ hash) & ~rps_cpu_mask)
- 			goto try_rps;
- 
+ 	free(big_buf);
+ 	close(fd);
 -- 
 2.39.2
 
