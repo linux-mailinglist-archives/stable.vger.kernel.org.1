@@ -2,52 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECEFC72BFAC
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:46:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52EDE72C0EC
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229699AbjFLKqT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:46:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52252 "EHLO
+        id S236664AbjFLKzZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:55:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231811AbjFLKqD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:46:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFA8FF7FE
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:30:39 -0700 (PDT)
+        with ESMTP id S236707AbjFLKy6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45D342974
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:41:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 87C6561500
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:30:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D422C433EF;
-        Mon, 12 Jun 2023 10:30:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C8BE6612B4
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:41:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF14C4339B;
+        Mon, 12 Jun 2023 10:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686565839;
-        bh=nLrUB/ipY9U+VtnRqHyd7BJmuuE8q4WPua2Cow98l7U=;
+        s=korg; t=1686566514;
+        bh=9xHM3ixLZZBJtNM/kIArIDVog9YyMwqEuEs6QnsdVaA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ybbONk1j5uaTTWUnQ03/+g6sgbJgSVjbyceSGxL0HVwxiTOpzycbJ7KiRanpUaN6y
-         /LWStt1ONoP8bBKPmgNBdfLYb+1UP/I6cC8CkpbxTV4Rk86mqSGJZt5LjPLeSuj+re
-         L7r+AWWVkjAExH6DcOhUr08al5Kozq/gYJPgvGQ8=
+        b=a9zcXSDosmqZCx63K0EPzk8Pffg9t9+bX62WeTxR7RAf7kyJSUsOM2vVqnrw6YejL
+         RIbq1S5ofBowH0SU9Bq/4p3uiCdZbhOhRB/AyY1RDwQJCayKSHSxVe7pKQeFtGrMji
+         wfi+JZhyQDHI36lK1Y9s0pkNTkMBe31b7UV2F8Rw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Tijs Van Buggenhout <tijs.van.buggenhout@axsguard.com>,
-        Florian Westphal <fw@strlen.de>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 11/45] netfilter: conntrack: fix NULL pointer dereference in nf_confirm_cthelper
+Subject: [PATCH 6.1 031/132] wifi: cfg80211: fix locking in sched scan stop work
 Date:   Mon, 12 Jun 2023 12:26:05 +0200
-Message-ID: <20230612101655.083150941@linuxfoundation.org>
+Message-ID: <20230612101711.646032097@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101654.644983109@linuxfoundation.org>
-References: <20230612101654.644983109@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,56 +53,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tijs Van Buggenhout <tijs.van.buggenhout@axsguard.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit e1f543dc660b44618a1bd72ddb4ca0828a95f7ad ]
+[ Upstream commit 3e54ed8247c94c8bdf370bd872bd9dfe72b1b12b ]
 
-An nf_conntrack_helper from nf_conn_help may become NULL after DNAT.
+This should use wiphy_lock() now instead of acquiring the
+RTNL, since cfg80211_stop_sched_scan_req() now needs that.
 
-Observed when TCP port 1720 (Q931_PORT), associated with h323 conntrack
-helper, is DNAT'ed to another destination port (e.g. 1730), while
-nfqueue is being used for final acceptance (e.g. snort).
-
-This happenned after transition from kernel 4.14 to 5.10.161.
-
-Workarounds:
- * keep the same port (1720) in DNAT
- * disable nfqueue
- * disable/unload h323 NAT helper
-
-$ linux-5.10/scripts/decode_stacktrace.sh vmlinux < /tmp/kernel.log
-BUG: kernel NULL pointer dereference, address: 0000000000000084
-[..]
-RIP: 0010:nf_conntrack_update (net/netfilter/nf_conntrack_core.c:2080 net/netfilter/nf_conntrack_core.c:2134) nf_conntrack
-[..]
-nfqnl_reinject (net/netfilter/nfnetlink_queue.c:237) nfnetlink_queue
-nfqnl_recv_verdict (net/netfilter/nfnetlink_queue.c:1230) nfnetlink_queue
-nfnetlink_rcv_msg (net/netfilter/nfnetlink.c:241) nfnetlink
-[..]
-
-Fixes: ee04805ff54a ("netfilter: conntrack: make conntrack userspace helpers work again")
-Signed-off-by: Tijs Van Buggenhout <tijs.van.buggenhout@axsguard.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: a05829a7222e ("cfg80211: avoid holding the RTNL when calling the driver")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/wireless/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_core.c b/net/netfilter/nf_conntrack_core.c
-index d9b6f2001d006..fb1f12bb0ff2c 100644
---- a/net/netfilter/nf_conntrack_core.c
-+++ b/net/netfilter/nf_conntrack_core.c
-@@ -1943,6 +1943,9 @@ static int nf_confirm_cthelper(struct sk_buff *skb, struct nf_conn *ct,
- 		return 0;
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 5b0c4d5b80cf5..b3ec9eaec36b3 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -368,12 +368,12 @@ static void cfg80211_sched_scan_stop_wk(struct work_struct *work)
+ 	rdev = container_of(work, struct cfg80211_registered_device,
+ 			   sched_scan_stop_wk);
  
- 	helper = rcu_dereference(help->helper);
-+	if (!helper)
-+		return 0;
-+
- 	if (!(helper->flags & NF_CT_HELPER_F_USERSPACE))
- 		return 0;
+-	rtnl_lock();
++	wiphy_lock(&rdev->wiphy);
+ 	list_for_each_entry_safe(req, tmp, &rdev->sched_scan_req_list, list) {
+ 		if (req->nl_owner_dead)
+ 			cfg80211_stop_sched_scan_req(rdev, req, false);
+ 	}
+-	rtnl_unlock();
++	wiphy_unlock(&rdev->wiphy);
+ }
  
+ static void cfg80211_propagate_radar_detect_wk(struct work_struct *work)
 -- 
 2.39.2
 
