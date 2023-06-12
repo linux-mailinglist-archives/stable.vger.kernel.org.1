@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B450F72C0E7
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:55:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C94FF72C083
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:53:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236849AbjFLKzX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:55:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55764 "EHLO
+        id S234671AbjFLKxI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:53:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236606AbjFLKyy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:54 -0400
+        with ESMTP id S234985AbjFLKwt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:52:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 482222959
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:41:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19A5CA5C5
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:37:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D9140612F0
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:41:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDFE9C433EF;
-        Mon, 12 Jun 2023 10:41:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A555F612E8
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:37:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B62A5C433EF;
+        Mon, 12 Jun 2023 10:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566501;
-        bh=89SpB0GH8SY+G4dD41Fm3mZYm5mUMKzPfL+B3GMYZ9k=;
+        s=korg; t=1686566239;
+        bh=sUZbPLLTwnj6LZtp17YCUD22vsFIHCI+LNG3QDn+RIg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jXdnkaE31aVkU5rzz/bbNpwmB4T//SRwKtu82JlSDWwPjjk3tgmNHJM+6u/kdhJoI
-         eaOl8DRubJSniNq5hdNbNzmjaVz8rIAG9pjHx3dAhxbOEydVV+IoUGMUYQd7GWotYF
-         om4F3C2a+vAF8D+z1mQjKldvG1Q1/k40p3s8eDz0=
+        b=g/L2EtLbccn5bn6E6AKc0KBCQBv9iFcJC7T23vpsiRgkKb3WfLqeh/GmoicwjPxNq
+         51NqHy66YfPAYklpOyCIBXTdb7pqu3XkAjtfqx/YMGRdWNsVxSNiOs2zkvkMS/jp+2
+         432z8uRk+4ugd3W6tOY3cwaolbotsGD8jWk/sREE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Somnath Kotur <somnath.kotur@broadcom.com>,
-        Pavan Chebbi <pavan.chebbi@broadcom.com>,
-        Vikas Gupta <vikas.gupta@broadcom.com>,
-        Michael Chan <michael.chan@broadcom.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 055/132] bnxt_en: Skip firmware fatal error recovery if chip is not accessible
+Subject: [PATCH 5.15 40/91] net: sched: act_police: fix sparse errors in tcf_police_dump()
 Date:   Mon, 12 Jun 2023 12:26:29 +0200
-Message-ID: <20230612101712.764724565@linuxfoundation.org>
+Message-ID: <20230612101703.744080627@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
+References: <20230612101702.085813286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,58 +56,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vikas Gupta <vikas.gupta@broadcom.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 83474a9b252ab23e6003865c2775024344cb9c09 ]
+[ Upstream commit 682881ee45c81daa883dcd4fe613b0b0d988bb22 ]
 
-Driver starts firmware fatal error recovery by detecting
-heartbeat failure or fw reset count register changing.  But
-these checks are not reliable if the device is not accessible.
-This can happen while DPC (Downstream Port containment) is in
-progress.  Skip firmware fatal recovery if pci_device_is_present()
-returns false.
+Fixes following sparse errors:
 
-Fixes: acfb50e4e773 ("bnxt_en: Add FW fatal devlink_health_reporter.")
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: Vikas Gupta <vikas.gupta@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+net/sched/act_police.c:360:28: warning: dereference of noderef expression
+net/sched/act_police.c:362:45: warning: dereference of noderef expression
+net/sched/act_police.c:362:45: warning: dereference of noderef expression
+net/sched/act_police.c:368:28: warning: dereference of noderef expression
+net/sched/act_police.c:370:45: warning: dereference of noderef expression
+net/sched/act_police.c:370:45: warning: dereference of noderef expression
+net/sched/act_police.c:376:45: warning: dereference of noderef expression
+net/sched/act_police.c:376:45: warning: dereference of noderef expression
+
+Fixes: d1967e495a8d ("net_sched: act_police: add 2 new attributes to support police 64bit rate and peakrate")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/sched/act_police.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 93c3b8316c46a..f7b2c4e94e898 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -11576,6 +11576,7 @@ static void bnxt_tx_timeout(struct net_device *dev, unsigned int txqueue)
- static void bnxt_fw_health_check(struct bnxt *bp)
- {
- 	struct bnxt_fw_health *fw_health = bp->fw_health;
-+	struct pci_dev *pdev = bp->pdev;
- 	u32 val;
- 
- 	if (!fw_health->enabled || test_bit(BNXT_STATE_IN_FW_RESET, &bp->state))
-@@ -11589,7 +11590,7 @@ static void bnxt_fw_health_check(struct bnxt *bp)
+diff --git a/net/sched/act_police.c b/net/sched/act_police.c
+index d44b933b821d7..db1d021c16be8 100644
+--- a/net/sched/act_police.c
++++ b/net/sched/act_police.c
+@@ -366,23 +366,23 @@ static int tcf_police_dump(struct sk_buff *skb, struct tc_action *a,
+ 	opt.burst = PSCHED_NS2TICKS(p->tcfp_burst);
+ 	if (p->rate_present) {
+ 		psched_ratecfg_getrate(&opt.rate, &p->rate);
+-		if ((police->params->rate.rate_bytes_ps >= (1ULL << 32)) &&
++		if ((p->rate.rate_bytes_ps >= (1ULL << 32)) &&
+ 		    nla_put_u64_64bit(skb, TCA_POLICE_RATE64,
+-				      police->params->rate.rate_bytes_ps,
++				      p->rate.rate_bytes_ps,
+ 				      TCA_POLICE_PAD))
+ 			goto nla_put_failure;
  	}
- 
- 	val = bnxt_fw_health_readl(bp, BNXT_FW_HEARTBEAT_REG);
--	if (val == fw_health->last_fw_heartbeat) {
-+	if (val == fw_health->last_fw_heartbeat && pci_device_is_present(pdev)) {
- 		fw_health->arrests++;
- 		goto fw_reset;
+ 	if (p->peak_present) {
+ 		psched_ratecfg_getrate(&opt.peakrate, &p->peak);
+-		if ((police->params->peak.rate_bytes_ps >= (1ULL << 32)) &&
++		if ((p->peak.rate_bytes_ps >= (1ULL << 32)) &&
+ 		    nla_put_u64_64bit(skb, TCA_POLICE_PEAKRATE64,
+-				      police->params->peak.rate_bytes_ps,
++				      p->peak.rate_bytes_ps,
+ 				      TCA_POLICE_PAD))
+ 			goto nla_put_failure;
  	}
-@@ -11597,7 +11598,7 @@ static void bnxt_fw_health_check(struct bnxt *bp)
- 	fw_health->last_fw_heartbeat = val;
- 
- 	val = bnxt_fw_health_readl(bp, BNXT_FW_RESET_CNT_REG);
--	if (val != fw_health->last_fw_reset_cnt) {
-+	if (val != fw_health->last_fw_reset_cnt && pci_device_is_present(pdev)) {
- 		fw_health->discoveries++;
- 		goto fw_reset;
- 	}
+ 	if (p->pps_present) {
+ 		if (nla_put_u64_64bit(skb, TCA_POLICE_PKTRATE64,
+-				      police->params->ppsrate.rate_pkts_ps,
++				      p->ppsrate.rate_pkts_ps,
+ 				      TCA_POLICE_PAD))
+ 			goto nla_put_failure;
+ 		if (nla_put_u64_64bit(skb, TCA_POLICE_PKTBURST64,
 -- 
 2.39.2
 
