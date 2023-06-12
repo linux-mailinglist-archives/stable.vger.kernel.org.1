@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 623E472C0CF
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:54:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C66172C1A0
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:59:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236421AbjFLKyq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:54:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56886 "EHLO
+        id S236529AbjFLK7E (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:59:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236386AbjFLKyT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18F042681
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:40:07 -0700 (PDT)
+        with ESMTP id S235408AbjFLK5t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:57:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1903959C9
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:45:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AAACC61297
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:40:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE5DC433D2;
-        Mon, 12 Jun 2023 10:40:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4FBAC62440
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:45:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CBADC4339E;
+        Mon, 12 Jun 2023 10:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566406;
-        bh=Sg66cUkicRqodMZr/qck+e/ruS7sU0CTAz4k4bSSH8A=;
+        s=korg; t=1686566750;
+        bh=87z1/pc95oNlqY7euhPFNg0B/aw95XpPuknVGX4DSJg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=umU8bIyAveaK4oIJu4v55142axqDwBXAdoR6XXZzAGLZWFxxzCEHzb79BCpnThfwb
-         wS+kN5OjDbxBRnVcFV+TffMGlW7mwXtrvrR+KEk5loF3sCAhGfdf9B8rpYZ3YkTmSh
-         Oi5Rb7XpoCYCDfu1veTHa66W722taVHc72nZqTu0=
+        b=s6XIuQHn3II/to+TWJ8R4BbrfGi4z1pJfpusVxzR8M/+l7LRohE8nhjF+lX7K/v/J
+         x7m7du2ynLiVEqSXjP3VR3YP/1r/2bVBKJlcwkD5bEhG02NtnwRN+SYwY8qqLbBIF9
+         kkcpbd2WanU8uQmzJKvrhruADrod3101LQ1qKXD8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrew Lunn <andrew@lunn.ch>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 002/132] net: sfp: fix state loss when updating state_hw_mask
+        patches@lists.linux.dev, Stephan Gerhold <stephan@gerhold.net>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 004/160] spi: qup: Request DMA before enabling clocks
 Date:   Mon, 12 Jun 2023 12:25:36 +0200
-Message-ID: <20230612101710.406917908@linuxfoundation.org>
+Message-ID: <20230612101715.334298743@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,49 +54,122 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+From: Stephan Gerhold <stephan@gerhold.net>
 
-commit 04361b8bb81819efb68bf39c276025e2250ac537 upstream.
+[ Upstream commit 0c331fd1dccfba657129380ee084b95c1cedfbef ]
 
-Andrew reports that the SFF modules on one of the ZII platforms do not
-indicate link up due to the SFP code believing that LOS indicating that
-there is no signal being received from the remote end, but in fact the
-LOS signal is showing that there is signal.
+It is usually better to request all necessary resources (clocks,
+regulators, ...) before starting to make use of them. That way they do
+not change state in case one of the resources is not available yet and
+probe deferral (-EPROBE_DEFER) is necessary. This is particularly
+important for DMA channels and IOMMUs which are not enforced by
+fw_devlink yet (unless you use fw_devlink.strict=1).
 
-What makes SFF modules different from SFPs is they typically have an
-inverted LOS, which uncovered this issue. When we read the hardware
-state, we mask it with state_hw_mask so we ignore anything we're not
-interested in. However, we don't re-read when state_hw_mask changes,
-leading to sfp->state being stale.
+spi-qup does this in the wrong order, the clocks are enabled and
+disabled again when the DMA channels are not available yet.
 
-Arrange for a software poll of the module state after we have parsed
-the EEPROM in sfp_sm_mod_probe() and updated state_*_mask. This will
-generate any necessary events for signal changes for the state
-machine as well as updating sfp->state.
+This causes issues in some cases: On most SoCs one of the SPI QUP
+clocks is shared with the UART controller. When using earlycon UART is
+actively used during boot but might not have probed yet, usually for
+the same reason (waiting for the DMA controller). In this case, the
+brief enable/disable cycle ends up gating the clock and further UART
+console output will halt the system completely.
 
-Reported-by: Andrew Lunn <andrew@lunn.ch>
-Tested-by: Andrew Lunn <andrew@lunn.ch>
-Fixes: 8475c4b70b04 ("net: sfp: re-implement soft state polling setup")
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Avoid this by requesting the DMA channels before changing the clock
+state.
+
+Fixes: 612762e82ae6 ("spi: qup: Add DMA capabilities")
+Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+Link: https://lore.kernel.org/r/20230518-spi-qup-clk-defer-v1-1-f49fc9ca4e02@gerhold.net
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/sfp.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/spi/spi-qup.c | 37 ++++++++++++++++++-------------------
+ 1 file changed, 18 insertions(+), 19 deletions(-)
 
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -2199,6 +2199,11 @@ static void sfp_sm_module(struct sfp *sf
- 			break;
- 		}
+diff --git a/drivers/spi/spi-qup.c b/drivers/spi/spi-qup.c
+index 205e54f157b4a..fb6b7738b4f55 100644
+--- a/drivers/spi/spi-qup.c
++++ b/drivers/spi/spi-qup.c
+@@ -1029,23 +1029,8 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 		return -ENXIO;
+ 	}
  
-+		/* Force a poll to re-read the hardware signal state after
-+		 * sfp_sm_mod_probe() changed state_hw_mask.
-+		 */
-+		mod_delayed_work(system_wq, &sfp->poll, 1);
+-	ret = clk_prepare_enable(cclk);
+-	if (ret) {
+-		dev_err(dev, "cannot enable core clock\n");
+-		return ret;
+-	}
+-
+-	ret = clk_prepare_enable(iclk);
+-	if (ret) {
+-		clk_disable_unprepare(cclk);
+-		dev_err(dev, "cannot enable iface clock\n");
+-		return ret;
+-	}
+-
+ 	master = spi_alloc_master(dev, sizeof(struct spi_qup));
+ 	if (!master) {
+-		clk_disable_unprepare(cclk);
+-		clk_disable_unprepare(iclk);
+ 		dev_err(dev, "cannot allocate master\n");
+ 		return -ENOMEM;
+ 	}
+@@ -1093,6 +1078,19 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	spin_lock_init(&controller->lock);
+ 	init_completion(&controller->done);
+ 
++	ret = clk_prepare_enable(cclk);
++	if (ret) {
++		dev_err(dev, "cannot enable core clock\n");
++		goto error_dma;
++	}
 +
- 		err = sfp_hwmon_insert(sfp);
- 		if (err)
- 			dev_warn(sfp->dev, "hwmon probe failed: %pe\n",
++	ret = clk_prepare_enable(iclk);
++	if (ret) {
++		clk_disable_unprepare(cclk);
++		dev_err(dev, "cannot enable iface clock\n");
++		goto error_dma;
++	}
++
+ 	iomode = readl_relaxed(base + QUP_IO_M_MODES);
+ 
+ 	size = QUP_IO_M_OUTPUT_BLOCK_SIZE(iomode);
+@@ -1122,7 +1120,7 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	ret = spi_qup_set_state(controller, QUP_STATE_RESET);
+ 	if (ret) {
+ 		dev_err(dev, "cannot set RESET state\n");
+-		goto error_dma;
++		goto error_clk;
+ 	}
+ 
+ 	writel_relaxed(0, base + QUP_OPERATIONAL);
+@@ -1146,7 +1144,7 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 	ret = devm_request_irq(dev, irq, spi_qup_qup_irq,
+ 			       IRQF_TRIGGER_HIGH, pdev->name, controller);
+ 	if (ret)
+-		goto error_dma;
++		goto error_clk;
+ 
+ 	pm_runtime_set_autosuspend_delay(dev, MSEC_PER_SEC);
+ 	pm_runtime_use_autosuspend(dev);
+@@ -1161,11 +1159,12 @@ static int spi_qup_probe(struct platform_device *pdev)
+ 
+ disable_pm:
+ 	pm_runtime_disable(&pdev->dev);
++error_clk:
++	clk_disable_unprepare(cclk);
++	clk_disable_unprepare(iclk);
+ error_dma:
+ 	spi_qup_release_dma(master);
+ error:
+-	clk_disable_unprepare(cclk);
+-	clk_disable_unprepare(iclk);
+ 	spi_master_put(master);
+ 	return ret;
+ }
+-- 
+2.39.2
+
 
 
