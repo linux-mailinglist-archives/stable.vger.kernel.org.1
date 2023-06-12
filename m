@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D6E372C147
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59B7472C181
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:58:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237126AbjFLK5x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 06:57:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58258 "EHLO
+        id S237037AbjFLKzM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:55:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236765AbjFLK5d (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:57:33 -0400
+        with ESMTP id S236219AbjFLKy0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:54:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 865796E91
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:45:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FF6A118
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:40:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 17CBC62433
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:45:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC0EC433A1;
-        Mon, 12 Jun 2023 10:45:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AD188612E1
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:40:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A85C433D2;
+        Mon, 12 Jun 2023 10:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566729;
-        bh=uMnoRBtoxbQgSUtB8o7vgVKK3vZs7tkD0fGv1JOaEIk=;
+        s=korg; t=1686566438;
+        bh=50vKucQogDqFWHR+PB9LxLIF6jvWs5J2ahDYOLmJ8GE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hGFu2hKChPlWHxAx82Ync6f35WJmuks4ONAUyQ3DLf47wuym6dPWA2OaZMQcvaLdt
-         cyCtzq7/5dIJm7ObWLjJTp6brI4/RIey2atf3ku+Ojn6lJQ4ZnCTr5+m4O6fTKwDNL
-         z24O3EXEFhJCQk6HxR9217vd5BNp7g4KVVJLJuho=
+        b=nwt9PlM5eW3xuRV2fKKzJenURTpU/KaIp2kANXN34NYAytnaafUF0/9co4UlAQf2W
+         Uox2RM5sA4LN9zy8sUV64P+Vv/ibWzOZOMVJgmAntEpk0kML8Jx8nqfU3qkOPXt42M
+         ZSP5fETEW1ZBbpKLBFknHSbXMFO62VBqfS7HgmKo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Akihiro Suda <akihiro.suda.cz@hco.ntt.co.jp>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 010/160] net/ipv4: ping_group_range: allow GID from 2147483648 to 4294967294
+        patches@lists.linux.dev, Lorenzo Bianconi <lorenzo@kernel.org>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 008/132] wifi: mt76: mt7615: fix possible race in mt7615_mac_sta_poll
 Date:   Mon, 12 Jun 2023 12:25:42 +0200
-Message-ID: <20230612101715.585489335@linuxfoundation.org>
+Message-ID: <20230612101710.665743963@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,98 +53,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Akihiro Suda <suda.gitsendemail@gmail.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit e209fee4118fe9a449d4d805361eb2de6796be39 ]
+[ Upstream commit 30bc32c7c1f975cc3c14e1c7dc437266311282cf ]
 
-With this commit, all the GIDs ("0 4294967294") can be written to the
-"net.ipv4.ping_group_range" sysctl.
+Grab sta_poll_lock spinlock in mt7615_mac_sta_poll routine in order to
+avoid possible races with mt7615_mac_add_txs() or mt7615_mac_fill_rx()
+removing msta pointer from sta_poll_list.
 
-Note that 4294967295 (0xffffffff) is an invalid GID (see gid_valid() in
-include/linux/uidgid.h), and an attempt to register this number will cause
--EINVAL.
-
-Prior to this commit, only up to GID 2147483647 could be covered.
-Documentation/networking/ip-sysctl.rst had "0 4294967295" as an example
-value, but this example was wrong and causing -EINVAL.
-
-Fixes: c319b4d76b9e ("net: ipv4: add IPPROTO_ICMP socket kind")
-Co-developed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Akihiro Suda <akihiro.suda.cz@hco.ntt.co.jp>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: a621372a04ac ("mt76: mt7615: rework mt7615_mac_sta_poll for usb code")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/48b23404b759de4f1db2ef85975c72a4aeb1097c.1684938695.git.lorenzo@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/networking/ip-sysctl.rst | 4 ++--
- include/net/ping.h                     | 6 +-----
- net/ipv4/sysctl_net_ipv4.c             | 8 ++++----
- 3 files changed, 7 insertions(+), 11 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mac.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
-index 58a78a3166978..97ae2b5a6101c 100644
---- a/Documentation/networking/ip-sysctl.rst
-+++ b/Documentation/networking/ip-sysctl.rst
-@@ -1352,8 +1352,8 @@ ping_group_range - 2 INTEGERS
- 	Restrict ICMP_PROTO datagram sockets to users in the group range.
- 	The default is "1 0", meaning, that nobody (not even root) may
- 	create ping sockets.  Setting it to "100 100" would grant permissions
--	to the single group. "0 4294967295" would enable it for the world, "100
--	4294967295" would enable it for the users, but not daemons.
-+	to the single group. "0 4294967294" would enable it for the world, "100
-+	4294967294" would enable it for the users, but not daemons.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+index faed43b11ec93..40c80d09d108a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mac.c
+@@ -921,7 +921,10 @@ void mt7615_mac_sta_poll(struct mt7615_dev *dev)
  
- tcp_early_demux - BOOLEAN
- 	Enable early demux for established TCP sockets.
-diff --git a/include/net/ping.h b/include/net/ping.h
-index 9233ad3de0ade..bc7779262e603 100644
---- a/include/net/ping.h
-+++ b/include/net/ping.h
-@@ -16,11 +16,7 @@
- #define PING_HTABLE_SIZE 	64
- #define PING_HTABLE_MASK 	(PING_HTABLE_SIZE-1)
+ 		msta = list_first_entry(&sta_poll_list, struct mt7615_sta,
+ 					poll_list);
++
++		spin_lock_bh(&dev->sta_poll_lock);
+ 		list_del_init(&msta->poll_list);
++		spin_unlock_bh(&dev->sta_poll_lock);
  
--/*
-- * gid_t is either uint or ushort.  We want to pass it to
-- * proc_dointvec_minmax(), so it must not be larger than MAX_INT
-- */
--#define GID_T_MAX (((gid_t)~0U) >> 1)
-+#define GID_T_MAX (((gid_t)~0U) - 1)
+ 		addr = mt7615_mac_wtbl_addr(dev, msta->wcid.idx) + 19 * 4;
  
- /* Compatibility glue so we can support IPv6 when it's compiled as a module */
- struct pingv6_ops {
-diff --git a/net/ipv4/sysctl_net_ipv4.c b/net/ipv4/sysctl_net_ipv4.c
-index 40fe70fc2015d..88dfe51e68f3c 100644
---- a/net/ipv4/sysctl_net_ipv4.c
-+++ b/net/ipv4/sysctl_net_ipv4.c
-@@ -34,8 +34,8 @@ static int ip_ttl_min = 1;
- static int ip_ttl_max = 255;
- static int tcp_syn_retries_min = 1;
- static int tcp_syn_retries_max = MAX_TCP_SYNCNT;
--static int ip_ping_group_range_min[] = { 0, 0 };
--static int ip_ping_group_range_max[] = { GID_T_MAX, GID_T_MAX };
-+static unsigned long ip_ping_group_range_min[] = { 0, 0 };
-+static unsigned long ip_ping_group_range_max[] = { GID_T_MAX, GID_T_MAX };
- static u32 u32_max_div_HZ = UINT_MAX / HZ;
- static int one_day_secs = 24 * 3600;
- static u32 fib_multipath_hash_fields_all_mask __maybe_unused =
-@@ -165,7 +165,7 @@ static int ipv4_ping_group_range(struct ctl_table *table, int write,
- {
- 	struct user_namespace *user_ns = current_user_ns();
- 	int ret;
--	gid_t urange[2];
-+	unsigned long urange[2];
- 	kgid_t low, high;
- 	struct ctl_table tmp = {
- 		.data = &urange,
-@@ -178,7 +178,7 @@ static int ipv4_ping_group_range(struct ctl_table *table, int write,
- 	inet_get_ping_group_range_table(table, &low, &high);
- 	urange[0] = from_kgid_munged(user_ns, low);
- 	urange[1] = from_kgid_munged(user_ns, high);
--	ret = proc_dointvec_minmax(&tmp, write, buffer, lenp, ppos);
-+	ret = proc_doulongvec_minmax(&tmp, write, buffer, lenp, ppos);
- 
- 	if (write && ret == 0) {
- 		low = make_kgid(user_ns, urange[0]);
 -- 
 2.39.2
 
