@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65FE472C1D2
-	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 13:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8452B72C04F
+	for <lists+stable@lfdr.de>; Mon, 12 Jun 2023 12:51:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237360AbjFLLAx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 07:00:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35200 "EHLO
+        id S235596AbjFLKvn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 06:51:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237372AbjFLLA2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 07:00:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 465F5E6
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:47:16 -0700 (PDT)
+        with ESMTP id S235567AbjFLKvZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 06:51:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 497828A74
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 03:35:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D565762461
-        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:47:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD88EC433EF;
-        Mon, 12 Jun 2023 10:47:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 09D3A62100
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 10:35:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3755C433EF;
+        Mon, 12 Jun 2023 10:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686566835;
-        bh=m5uVrG323bW9lRHtBSsqUns5GfoIr18nlgNeeP9HYa0=;
+        s=korg; t=1686566140;
+        bh=HlRH2bsLgsXcl/x+YY1TbfJWachytlqrC2FHHiXbdAQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mvH/9Gk+kCVi33+zDWdm9BZ3zwr3ojCC6ibfTAJPyUZOXWkFdSduy0FWdI+UVUqZL
-         xnWAuwYqN++ZvYz81+QKR8V8QloPr7P6kiUqTR5GEYSYAGt8jehDPVvuT3iYUElbuN
-         LO/KopXhIJU4wPPbuh4dlVBXxDH4VfeiVFHLST1M=
+        b=VWG8cW2vNQ1oEiMZwPUmpKtWW2a/DsFxHMGWFgmKypgPpfaofueG0HJjO5Okuc2ax
+         kZeQPkINbluQ3bp+5C/SihJbybqjltcnGF0HIo32xNGoZyPOLbKIIiPwZUeeocjbEN
+         OZzkfIoSDqC/YD9L7nER/JzvJSIMIlIzqK1ogn+Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Iulia Tanasescu <iulia.tanasescu@nxp.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 020/160] Bluetooth: Split bt_iso_qos into dedicated structures
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 03/91] remove the sx8 block driver
 Date:   Mon, 12 Jun 2023 12:25:52 +0200
-Message-ID: <20230612101715.989933658@linuxfoundation.org>
+Message-ID: <20230612101702.219457412@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
-References: <20230612101715.129581706@linuxfoundation.org>
+In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
+References: <20230612101702.085813286@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,872 +53,1634 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 0fe8c8d071343fa9278980ce4b6f8e6ea24a2ed1 ]
+commit d13bc4d84a8e91060d3797fc95c1a0202bfd1499 upstream.
 
-Split bt_iso_qos into dedicated unicast and broadcast
-structures and add additional broadcast parameters.
+This driver is for fairly obscure hardware, and has only seen random
+drive-by changes after the maintainer stopped working on it in 2005
+(about a year and a half after it was introduced).  It has some
+"interesting" block layer interactions, so let's just drop it unless
+anyone complains.
 
-Fixes: eca0ae4aea66 ("Bluetooth: Add initial implementation of BIS connections")
-Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 31c5f9164949 ("Bluetooth: ISO: consider right CIS when removing CIG at cleanup")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20220721064102.1715460-1-hch@lst.de
+[axboe: fix date typo, it was in 2005, not 2015]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/bluetooth/bluetooth.h |  43 +++++---
- include/net/bluetooth/hci_core.h  |   9 +-
- net/bluetooth/hci_conn.c          | 162 ++++++++++++++++--------------
- net/bluetooth/hci_event.c         |  33 +++---
- net/bluetooth/iso.c               | 125 ++++++++++++++++++-----
- 5 files changed, 237 insertions(+), 135 deletions(-)
+ drivers/block/Kconfig  |    9 
+ drivers/block/Makefile |    2 
+ drivers/block/sx8.c    | 1575 -------------------------------------------------
+ 3 files changed, 1586 deletions(-)
+ delete mode 100644 drivers/block/sx8.c
 
-diff --git a/include/net/bluetooth/bluetooth.h b/include/net/bluetooth/bluetooth.h
-index bcc5a4cd2c17b..1b4230cd42a37 100644
---- a/include/net/bluetooth/bluetooth.h
-+++ b/include/net/bluetooth/bluetooth.h
-@@ -1,6 +1,7 @@
- /*
-    BlueZ - Bluetooth protocol stack for Linux
-    Copyright (C) 2000-2001 Qualcomm Incorporated
-+   Copyright 2023 NXP
- 
-    Written 2000,2001 by Maxim Krasnyansky <maxk@qualcomm.com>
- 
-@@ -171,23 +172,39 @@ struct bt_iso_io_qos {
- 	__u8  rtn;
- };
- 
--struct bt_iso_qos {
--	union {
--		__u8  cig;
--		__u8  big;
--	};
--	union {
--		__u8  cis;
--		__u8  bis;
--	};
--	union {
--		__u8  sca;
--		__u8  sync_interval;
--	};
-+struct bt_iso_ucast_qos {
-+	__u8  cig;
-+	__u8  cis;
-+	__u8  sca;
-+	__u8  packing;
-+	__u8  framing;
-+	struct bt_iso_io_qos in;
-+	struct bt_iso_io_qos out;
-+};
-+
-+struct bt_iso_bcast_qos {
-+	__u8  big;
-+	__u8  bis;
-+	__u8  sync_interval;
- 	__u8  packing;
- 	__u8  framing;
- 	struct bt_iso_io_qos in;
- 	struct bt_iso_io_qos out;
-+	__u8  encryption;
-+	__u8  bcode[16];
-+	__u8  options;
-+	__u16 skip;
-+	__u16 sync_timeout;
-+	__u8  sync_cte_type;
-+	__u8  mse;
-+	__u16 timeout;
-+};
-+
-+struct bt_iso_qos {
-+	union {
-+		struct bt_iso_ucast_qos ucast;
-+		struct bt_iso_bcast_qos bcast;
-+	};
- };
- 
- #define BT_ISO_PHY_1M		0x01
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index d5311ceb21c62..86db7f3a31ce5 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -1,6 +1,7 @@
- /*
-    BlueZ - Bluetooth protocol stack for Linux
-    Copyright (c) 2000-2001, 2010, Code Aurora Forum. All rights reserved.
-+   Copyright 2023 NXP
- 
-    Written 2000,2001 by Maxim Krasnyansky <maxk@qualcomm.com>
- 
-@@ -1091,7 +1092,7 @@ static inline struct hci_conn *hci_conn_hash_lookup_bis(struct hci_dev *hdev,
- 		if (bacmp(&c->dst, ba) || c->type != ISO_LINK)
- 			continue;
- 
--		if (c->iso_qos.big == big && c->iso_qos.bis == bis) {
-+		if (c->iso_qos.bcast.big == big && c->iso_qos.bcast.bis == bis) {
- 			rcu_read_unlock();
- 			return c;
- 		}
-@@ -1200,7 +1201,7 @@ static inline struct hci_conn *hci_conn_hash_lookup_cig(struct hci_dev *hdev,
- 		if (c->type != ISO_LINK)
- 			continue;
- 
--		if (handle == c->iso_qos.cig) {
-+		if (handle == c->iso_qos.ucast.cig) {
- 			rcu_read_unlock();
- 			return c;
- 		}
-@@ -1223,7 +1224,7 @@ static inline struct hci_conn *hci_conn_hash_lookup_big(struct hci_dev *hdev,
- 		if (bacmp(&c->dst, BDADDR_ANY) || c->type != ISO_LINK)
- 			continue;
- 
--		if (handle == c->iso_qos.big) {
-+		if (handle == c->iso_qos.bcast.big) {
- 			rcu_read_unlock();
- 			return c;
- 		}
-@@ -1332,7 +1333,7 @@ struct hci_conn *hci_connect_bis(struct hci_dev *hdev, bdaddr_t *dst,
- 				 __u8 dst_type, struct bt_iso_qos *qos,
- 				 __u8 data_len, __u8 *data);
- int hci_pa_create_sync(struct hci_dev *hdev, bdaddr_t *dst, __u8 dst_type,
--		       __u8 sid);
-+		       __u8 sid, struct bt_iso_qos *qos);
- int hci_le_big_create_sync(struct hci_dev *hdev, struct bt_iso_qos *qos,
- 			   __u16 sync_handle, __u8 num_bis, __u8 bis[]);
- int hci_conn_check_link_mode(struct hci_conn *conn);
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 8455ba141ee61..5672b49245721 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -1,6 +1,7 @@
- /*
-    BlueZ - Bluetooth protocol stack for Linux
-    Copyright (c) 2000-2001, 2010, Code Aurora Forum. All rights reserved.
-+   Copyright 2023 NXP
- 
-    Written 2000,2001 by Maxim Krasnyansky <maxk@qualcomm.com>
- 
-@@ -795,8 +796,8 @@ static void bis_list(struct hci_conn *conn, void *data)
- 	if (bacmp(&conn->dst, BDADDR_ANY))
- 		return;
- 
--	if (d->big != conn->iso_qos.big || d->bis == BT_ISO_QOS_BIS_UNSET ||
--	    d->bis != conn->iso_qos.bis)
-+	if (d->big != conn->iso_qos.bcast.big || d->bis == BT_ISO_QOS_BIS_UNSET ||
-+	    d->bis != conn->iso_qos.bcast.bis)
- 		return;
- 
- 	d->count++;
-@@ -916,10 +917,10 @@ static void bis_cleanup(struct hci_conn *conn)
- 		if (!test_and_clear_bit(HCI_CONN_PER_ADV, &conn->flags))
- 			return;
- 
--		hci_le_terminate_big(hdev, conn->iso_qos.big,
--				     conn->iso_qos.bis);
-+		hci_le_terminate_big(hdev, conn->iso_qos.bcast.big,
-+				     conn->iso_qos.bcast.bis);
- 	} else {
--		hci_le_big_terminate(hdev, conn->iso_qos.big,
-+		hci_le_big_terminate(hdev, conn->iso_qos.bcast.big,
- 				     conn->sync_handle);
- 	}
- }
-@@ -959,7 +960,7 @@ static void cis_cleanup(struct hci_conn *conn)
- 	struct iso_list_data d;
- 
- 	memset(&d, 0, sizeof(d));
--	d.cig = conn->iso_qos.cig;
-+	d.cig = conn->iso_qos.ucast.cig;
- 
- 	/* Check if ISO connection is a CIS and remove CIG if there are
- 	 * no other connections using it.
-@@ -968,7 +969,7 @@ static void cis_cleanup(struct hci_conn *conn)
- 	if (d.count)
- 		return;
- 
--	hci_le_remove_cig(hdev, conn->iso_qos.cig);
-+	hci_le_remove_cig(hdev, conn->iso_qos.ucast.cig);
- }
- 
- struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
-@@ -1411,7 +1412,7 @@ static int qos_set_big(struct hci_dev *hdev, struct bt_iso_qos *qos)
- 	struct iso_list_data data;
- 
- 	/* Allocate a BIG if not set */
--	if (qos->big == BT_ISO_QOS_BIG_UNSET) {
-+	if (qos->bcast.big == BT_ISO_QOS_BIG_UNSET) {
- 		for (data.big = 0x00; data.big < 0xef; data.big++) {
- 			data.count = 0;
- 			data.bis = 0xff;
-@@ -1426,7 +1427,7 @@ static int qos_set_big(struct hci_dev *hdev, struct bt_iso_qos *qos)
- 			return -EADDRNOTAVAIL;
- 
- 		/* Update BIG */
--		qos->big = data.big;
-+		qos->bcast.big = data.big;
- 	}
- 
- 	return 0;
-@@ -1437,7 +1438,7 @@ static int qos_set_bis(struct hci_dev *hdev, struct bt_iso_qos *qos)
- 	struct iso_list_data data;
- 
- 	/* Allocate BIS if not set */
--	if (qos->bis == BT_ISO_QOS_BIS_UNSET) {
-+	if (qos->bcast.bis == BT_ISO_QOS_BIS_UNSET) {
- 		/* Find an unused adv set to advertise BIS, skip instance 0x00
- 		 * since it is reserved as general purpose set.
- 		 */
-@@ -1455,7 +1456,7 @@ static int qos_set_bis(struct hci_dev *hdev, struct bt_iso_qos *qos)
- 			return -EADDRNOTAVAIL;
- 
- 		/* Update BIS */
--		qos->bis = data.bis;
-+		qos->bcast.bis = data.bis;
- 	}
- 
- 	return 0;
-@@ -1484,8 +1485,8 @@ static struct hci_conn *hci_add_bis(struct hci_dev *hdev, bdaddr_t *dst,
- 	if (err)
- 		return ERR_PTR(err);
- 
--	data.big = qos->big;
--	data.bis = qos->bis;
-+	data.big = qos->bcast.big;
-+	data.bis = qos->bcast.bis;
- 	data.count = 0;
- 
- 	/* Check if there is already a matching BIG/BIS */
-@@ -1493,7 +1494,7 @@ static struct hci_conn *hci_add_bis(struct hci_dev *hdev, bdaddr_t *dst,
- 	if (data.count)
- 		return ERR_PTR(-EADDRINUSE);
- 
--	conn = hci_conn_hash_lookup_bis(hdev, dst, qos->big, qos->bis);
-+	conn = hci_conn_hash_lookup_bis(hdev, dst, qos->bcast.big, qos->bcast.bis);
- 	if (conn)
- 		return ERR_PTR(-EADDRINUSE);
- 
-@@ -1648,13 +1649,13 @@ static void cis_add(struct iso_list_data *d, struct bt_iso_qos *qos)
- {
- 	struct hci_cis_params *cis = &d->pdu.cis[d->pdu.cp.num_cis];
- 
--	cis->cis_id = qos->cis;
--	cis->c_sdu  = cpu_to_le16(qos->out.sdu);
--	cis->p_sdu  = cpu_to_le16(qos->in.sdu);
--	cis->c_phy  = qos->out.phy ? qos->out.phy : qos->in.phy;
--	cis->p_phy  = qos->in.phy ? qos->in.phy : qos->out.phy;
--	cis->c_rtn  = qos->out.rtn;
--	cis->p_rtn  = qos->in.rtn;
-+	cis->cis_id = qos->ucast.cis;
-+	cis->c_sdu  = cpu_to_le16(qos->ucast.out.sdu);
-+	cis->p_sdu  = cpu_to_le16(qos->ucast.in.sdu);
-+	cis->c_phy  = qos->ucast.out.phy ? qos->ucast.out.phy : qos->ucast.in.phy;
-+	cis->p_phy  = qos->ucast.in.phy ? qos->ucast.in.phy : qos->ucast.out.phy;
-+	cis->c_rtn  = qos->ucast.out.rtn;
-+	cis->p_rtn  = qos->ucast.in.rtn;
- 
- 	d->pdu.cp.num_cis++;
- }
-@@ -1667,8 +1668,8 @@ static void cis_list(struct hci_conn *conn, void *data)
- 	if (!bacmp(&conn->dst, BDADDR_ANY))
- 		return;
- 
--	if (d->cig != conn->iso_qos.cig || d->cis == BT_ISO_QOS_CIS_UNSET ||
--	    d->cis != conn->iso_qos.cis)
-+	if (d->cig != conn->iso_qos.ucast.cig || d->cis == BT_ISO_QOS_CIS_UNSET ||
-+	    d->cis != conn->iso_qos.ucast.cis)
- 		return;
- 
- 	d->count++;
-@@ -1687,17 +1688,18 @@ static int hci_le_create_big(struct hci_conn *conn, struct bt_iso_qos *qos)
- 
- 	memset(&cp, 0, sizeof(cp));
- 
--	cp.handle = qos->big;
--	cp.adv_handle = qos->bis;
-+	cp.handle = qos->bcast.big;
-+	cp.adv_handle = qos->bcast.bis;
- 	cp.num_bis  = 0x01;
--	hci_cpu_to_le24(qos->out.interval, cp.bis.sdu_interval);
--	cp.bis.sdu = cpu_to_le16(qos->out.sdu);
--	cp.bis.latency =  cpu_to_le16(qos->out.latency);
--	cp.bis.rtn  = qos->out.rtn;
--	cp.bis.phy  = qos->out.phy;
--	cp.bis.packing = qos->packing;
--	cp.bis.framing = qos->framing;
--	cp.bis.encryption = 0x00;
-+	hci_cpu_to_le24(qos->bcast.out.interval, cp.bis.sdu_interval);
-+	cp.bis.sdu = cpu_to_le16(qos->bcast.out.sdu);
-+	cp.bis.latency =  cpu_to_le16(qos->bcast.out.latency);
-+	cp.bis.rtn  = qos->bcast.out.rtn;
-+	cp.bis.phy  = qos->bcast.out.phy;
-+	cp.bis.packing = qos->bcast.packing;
-+	cp.bis.framing = qos->bcast.framing;
-+	cp.bis.encryption = qos->bcast.encryption;
-+	memcpy(cp.bis.bcode, qos->bcast.bcode, sizeof(cp.bis.bcode));
- 	memset(&cp.bis.bcode, 0, sizeof(cp.bis.bcode));
- 
- 	return hci_send_cmd(hdev, HCI_OP_LE_CREATE_BIG, sizeof(cp), &cp);
-@@ -1711,7 +1713,7 @@ static bool hci_le_set_cig_params(struct hci_conn *conn, struct bt_iso_qos *qos)
- 	memset(&data, 0, sizeof(data));
- 
- 	/* Allocate a CIG if not set */
--	if (qos->cig == BT_ISO_QOS_CIG_UNSET) {
-+	if (qos->ucast.cig == BT_ISO_QOS_CIG_UNSET) {
- 		for (data.cig = 0x00; data.cig < 0xff; data.cig++) {
- 			data.count = 0;
- 			data.cis = 0xff;
-@@ -1731,22 +1733,22 @@ static bool hci_le_set_cig_params(struct hci_conn *conn, struct bt_iso_qos *qos)
- 			return false;
- 
- 		/* Update CIG */
--		qos->cig = data.cig;
-+		qos->ucast.cig = data.cig;
- 	}
- 
--	data.pdu.cp.cig_id = qos->cig;
--	hci_cpu_to_le24(qos->out.interval, data.pdu.cp.c_interval);
--	hci_cpu_to_le24(qos->in.interval, data.pdu.cp.p_interval);
--	data.pdu.cp.sca = qos->sca;
--	data.pdu.cp.packing = qos->packing;
--	data.pdu.cp.framing = qos->framing;
--	data.pdu.cp.c_latency = cpu_to_le16(qos->out.latency);
--	data.pdu.cp.p_latency = cpu_to_le16(qos->in.latency);
-+	data.pdu.cp.cig_id = qos->ucast.cig;
-+	hci_cpu_to_le24(qos->ucast.out.interval, data.pdu.cp.c_interval);
-+	hci_cpu_to_le24(qos->ucast.in.interval, data.pdu.cp.p_interval);
-+	data.pdu.cp.sca = qos->ucast.sca;
-+	data.pdu.cp.packing = qos->ucast.packing;
-+	data.pdu.cp.framing = qos->ucast.framing;
-+	data.pdu.cp.c_latency = cpu_to_le16(qos->ucast.out.latency);
-+	data.pdu.cp.p_latency = cpu_to_le16(qos->ucast.in.latency);
- 
--	if (qos->cis != BT_ISO_QOS_CIS_UNSET) {
-+	if (qos->ucast.cis != BT_ISO_QOS_CIS_UNSET) {
- 		data.count = 0;
--		data.cig = qos->cig;
--		data.cis = qos->cis;
-+		data.cig = qos->ucast.cig;
-+		data.cis = qos->ucast.cis;
- 
- 		hci_conn_hash_list_state(hdev, cis_list, ISO_LINK, BT_BOUND,
- 					 &data);
-@@ -1757,7 +1759,7 @@ static bool hci_le_set_cig_params(struct hci_conn *conn, struct bt_iso_qos *qos)
- 	}
- 
- 	/* Reprogram all CIS(s) with the same CIG */
--	for (data.cig = qos->cig, data.cis = 0x00; data.cis < 0x11;
-+	for (data.cig = qos->ucast.cig, data.cis = 0x00; data.cis < 0x11;
- 	     data.cis++) {
- 		data.count = 0;
- 
-@@ -1767,14 +1769,14 @@ static bool hci_le_set_cig_params(struct hci_conn *conn, struct bt_iso_qos *qos)
- 			continue;
- 
- 		/* Allocate a CIS if not set */
--		if (qos->cis == BT_ISO_QOS_CIS_UNSET) {
-+		if (qos->ucast.cis == BT_ISO_QOS_CIS_UNSET) {
- 			/* Update CIS */
--			qos->cis = data.cis;
-+			qos->ucast.cis = data.cis;
- 			cis_add(&data, qos);
- 		}
- 	}
- 
--	if (qos->cis == BT_ISO_QOS_CIS_UNSET || !data.pdu.cp.num_cis)
-+	if (qos->ucast.cis == BT_ISO_QOS_CIS_UNSET || !data.pdu.cp.num_cis)
- 		return false;
- 
- 	if (hci_send_cmd(hdev, HCI_OP_LE_SET_CIG_PARAMS,
-@@ -1809,32 +1811,32 @@ struct hci_conn *hci_bind_cis(struct hci_dev *hdev, bdaddr_t *dst,
- 		return cis;
- 
- 	/* Update LINK PHYs according to QoS preference */
--	cis->le_tx_phy = qos->out.phy;
--	cis->le_rx_phy = qos->in.phy;
-+	cis->le_tx_phy = qos->ucast.out.phy;
-+	cis->le_rx_phy = qos->ucast.in.phy;
- 
- 	/* If output interval is not set use the input interval as it cannot be
- 	 * 0x000000.
- 	 */
--	if (!qos->out.interval)
--		qos->out.interval = qos->in.interval;
-+	if (!qos->ucast.out.interval)
-+		qos->ucast.out.interval = qos->ucast.in.interval;
- 
- 	/* If input interval is not set use the output interval as it cannot be
- 	 * 0x000000.
- 	 */
--	if (!qos->in.interval)
--		qos->in.interval = qos->out.interval;
-+	if (!qos->ucast.in.interval)
-+		qos->ucast.in.interval = qos->ucast.out.interval;
- 
- 	/* If output latency is not set use the input latency as it cannot be
- 	 * 0x0000.
- 	 */
--	if (!qos->out.latency)
--		qos->out.latency = qos->in.latency;
-+	if (!qos->ucast.out.latency)
-+		qos->ucast.out.latency = qos->ucast.in.latency;
- 
- 	/* If input latency is not set use the output latency as it cannot be
- 	 * 0x0000.
- 	 */
--	if (!qos->in.latency)
--		qos->in.latency = qos->out.latency;
-+	if (!qos->ucast.in.latency)
-+		qos->ucast.in.latency = qos->ucast.out.latency;
- 
- 	if (!hci_le_set_cig_params(cis, qos)) {
- 		hci_conn_drop(cis);
-@@ -1854,7 +1856,7 @@ bool hci_iso_setup_path(struct hci_conn *conn)
- 
- 	memset(&cmd, 0, sizeof(cmd));
- 
--	if (conn->iso_qos.out.sdu) {
-+	if (conn->iso_qos.ucast.out.sdu) {
- 		cmd.handle = cpu_to_le16(conn->handle);
- 		cmd.direction = 0x00; /* Input (Host to Controller) */
- 		cmd.path = 0x00; /* HCI path if enabled */
-@@ -1865,7 +1867,7 @@ bool hci_iso_setup_path(struct hci_conn *conn)
- 			return false;
- 	}
- 
--	if (conn->iso_qos.in.sdu) {
-+	if (conn->iso_qos.ucast.in.sdu) {
- 		cmd.handle = cpu_to_le16(conn->handle);
- 		cmd.direction = 0x01; /* Output (Controller to Host) */
- 		cmd.path = 0x00; /* HCI path if enabled */
-@@ -1892,7 +1894,7 @@ static int hci_create_cis_sync(struct hci_dev *hdev, void *data)
- 	cmd.cis[0].acl_handle = cpu_to_le16(conn->link->handle);
- 	cmd.cis[0].cis_handle = cpu_to_le16(conn->handle);
- 	cmd.cp.num_cis++;
--	cig = conn->iso_qos.cig;
-+	cig = conn->iso_qos.ucast.cig;
- 
- 	hci_dev_lock(hdev);
- 
-@@ -1902,7 +1904,7 @@ static int hci_create_cis_sync(struct hci_dev *hdev, void *data)
- 		struct hci_cis *cis = &cmd.cis[cmd.cp.num_cis];
- 
- 		if (conn == data || conn->type != ISO_LINK ||
--		    conn->state == BT_CONNECTED || conn->iso_qos.cig != cig)
-+		    conn->state == BT_CONNECTED || conn->iso_qos.ucast.cig != cig)
- 			continue;
- 
- 		/* Check if all CIS(s) belonging to a CIG are ready */
-@@ -2002,8 +2004,8 @@ static void hci_bind_bis(struct hci_conn *conn,
- 			 struct bt_iso_qos *qos)
- {
- 	/* Update LINK PHYs according to QoS preference */
--	conn->le_tx_phy = qos->out.phy;
--	conn->le_tx_phy = qos->out.phy;
-+	conn->le_tx_phy = qos->bcast.out.phy;
-+	conn->le_tx_phy = qos->bcast.out.phy;
- 	conn->iso_qos = *qos;
- 	conn->state = BT_BOUND;
- }
-@@ -2016,16 +2018,16 @@ static int create_big_sync(struct hci_dev *hdev, void *data)
- 	u32 flags = 0;
- 	int err;
- 
--	if (qos->out.phy == 0x02)
-+	if (qos->bcast.out.phy == 0x02)
- 		flags |= MGMT_ADV_FLAG_SEC_2M;
- 
- 	/* Align intervals */
--	interval = qos->out.interval / 1250;
-+	interval = qos->bcast.out.interval / 1250;
- 
--	if (qos->bis)
--		sync_interval = qos->sync_interval * 1600;
-+	if (qos->bcast.bis)
-+		sync_interval = qos->bcast.sync_interval * 1600;
- 
--	err = hci_start_per_adv_sync(hdev, qos->bis, conn->le_per_adv_data_len,
-+	err = hci_start_per_adv_sync(hdev, qos->bcast.bis, conn->le_per_adv_data_len,
- 				     conn->le_per_adv_data, flags, interval,
- 				     interval, sync_interval);
- 	if (err)
-@@ -2062,7 +2064,7 @@ static int create_pa_sync(struct hci_dev *hdev, void *data)
- }
- 
- int hci_pa_create_sync(struct hci_dev *hdev, bdaddr_t *dst, __u8 dst_type,
--		       __u8 sid)
-+		       __u8 sid, struct bt_iso_qos *qos)
- {
- 	struct hci_cp_le_pa_create_sync *cp;
- 
-@@ -2075,9 +2077,13 @@ int hci_pa_create_sync(struct hci_dev *hdev, bdaddr_t *dst, __u8 dst_type,
- 		return -ENOMEM;
- 	}
- 
-+	cp->options = qos->bcast.options;
- 	cp->sid = sid;
- 	cp->addr_type = dst_type;
- 	bacpy(&cp->addr, dst);
-+	cp->skip = cpu_to_le16(qos->bcast.skip);
-+	cp->sync_timeout = cpu_to_le16(qos->bcast.sync_timeout);
-+	cp->sync_cte_type = qos->bcast.sync_cte_type;
- 
- 	/* Queue start pa_create_sync and scan */
- 	return hci_cmd_sync_queue(hdev, create_pa_sync, cp, create_pa_complete);
-@@ -2100,8 +2106,12 @@ int hci_le_big_create_sync(struct hci_dev *hdev, struct bt_iso_qos *qos,
- 		return err;
- 
- 	memset(&pdu, 0, sizeof(pdu));
--	pdu.cp.handle = qos->big;
-+	pdu.cp.handle = qos->bcast.big;
- 	pdu.cp.sync_handle = cpu_to_le16(sync_handle);
-+	pdu.cp.encryption = qos->bcast.encryption;
-+	memcpy(pdu.cp.bcode, qos->bcast.bcode, sizeof(pdu.cp.bcode));
-+	pdu.cp.mse = qos->bcast.mse;
-+	pdu.cp.timeout = cpu_to_le16(qos->bcast.timeout);
- 	pdu.cp.num_bis = num_bis;
- 	memcpy(pdu.bis, bis, num_bis);
- 
-@@ -2151,7 +2161,7 @@ struct hci_conn *hci_connect_bis(struct hci_dev *hdev, bdaddr_t *dst,
- 		return ERR_PTR(err);
- 	}
- 
--	hci_iso_qos_setup(hdev, conn, &qos->out,
-+	hci_iso_qos_setup(hdev, conn, &qos->bcast.out,
- 			  conn->le_tx_phy ? conn->le_tx_phy :
- 			  hdev->le_tx_def_phys);
- 
-@@ -2177,9 +2187,9 @@ struct hci_conn *hci_connect_cis(struct hci_dev *hdev, bdaddr_t *dst,
- 	if (IS_ERR(le))
- 		return le;
- 
--	hci_iso_qos_setup(hdev, le, &qos->out,
-+	hci_iso_qos_setup(hdev, le, &qos->ucast.out,
- 			  le->le_tx_phy ? le->le_tx_phy : hdev->le_tx_def_phys);
--	hci_iso_qos_setup(hdev, le, &qos->in,
-+	hci_iso_qos_setup(hdev, le, &qos->ucast.in,
- 			  le->le_rx_phy ? le->le_rx_phy : hdev->le_rx_def_phys);
- 
- 	cis = hci_bind_cis(hdev, dst, dst_type, qos);
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 51f13518dba9b..0e0a93cc12186 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -1,6 +1,7 @@
- /*
-    BlueZ - Bluetooth protocol stack for Linux
-    Copyright (c) 2000-2001, 2010, Code Aurora Forum. All rights reserved.
-+   Copyright 2023 NXP
- 
-    Written 2000,2001 by Maxim Krasnyansky <maxk@qualcomm.com>
- 
-@@ -3833,7 +3834,7 @@ static u8 hci_cc_le_set_cig_params(struct hci_dev *hdev, void *data,
- 	rcu_read_lock();
- 
- 	list_for_each_entry_rcu(conn, &hdev->conn_hash.list, list) {
--		if (conn->type != ISO_LINK || conn->iso_qos.cig != rp->cig_id ||
-+		if (conn->type != ISO_LINK || conn->iso_qos.ucast.cig != rp->cig_id ||
- 		    conn->state == BT_CONNECTED)
- 			continue;
- 
-@@ -3890,7 +3891,7 @@ static u8 hci_cc_le_setup_iso_path(struct hci_dev *hdev, void *data,
- 	/* Input (Host to Controller) */
- 	case 0x00:
- 		/* Only confirm connection if output only */
--		if (conn->iso_qos.out.sdu && !conn->iso_qos.in.sdu)
-+		if (conn->iso_qos.ucast.out.sdu && !conn->iso_qos.ucast.in.sdu)
- 			hci_connect_cfm(conn, rp->status);
- 		break;
- 	/* Output (Controller to Host) */
-@@ -6818,15 +6819,15 @@ static void hci_le_cis_estabilished_evt(struct hci_dev *hdev, void *data,
- 		memset(&interval, 0, sizeof(interval));
- 
- 		memcpy(&interval, ev->c_latency, sizeof(ev->c_latency));
--		conn->iso_qos.in.interval = le32_to_cpu(interval);
-+		conn->iso_qos.ucast.in.interval = le32_to_cpu(interval);
- 		memcpy(&interval, ev->p_latency, sizeof(ev->p_latency));
--		conn->iso_qos.out.interval = le32_to_cpu(interval);
--		conn->iso_qos.in.latency = le16_to_cpu(ev->interval);
--		conn->iso_qos.out.latency = le16_to_cpu(ev->interval);
--		conn->iso_qos.in.sdu = le16_to_cpu(ev->c_mtu);
--		conn->iso_qos.out.sdu = le16_to_cpu(ev->p_mtu);
--		conn->iso_qos.in.phy = ev->c_phy;
--		conn->iso_qos.out.phy = ev->p_phy;
-+		conn->iso_qos.ucast.out.interval = le32_to_cpu(interval);
-+		conn->iso_qos.ucast.in.latency = le16_to_cpu(ev->interval);
-+		conn->iso_qos.ucast.out.latency = le16_to_cpu(ev->interval);
-+		conn->iso_qos.ucast.in.sdu = le16_to_cpu(ev->c_mtu);
-+		conn->iso_qos.ucast.out.sdu = le16_to_cpu(ev->p_mtu);
-+		conn->iso_qos.ucast.in.phy = ev->c_phy;
-+		conn->iso_qos.ucast.out.phy = ev->p_phy;
- 	}
- 
- 	if (!ev->status) {
-@@ -6900,8 +6901,8 @@ static void hci_le_cis_req_evt(struct hci_dev *hdev, void *data,
- 		cis->handle = cis_handle;
- 	}
- 
--	cis->iso_qos.cig = ev->cig_id;
--	cis->iso_qos.cis = ev->cis_id;
-+	cis->iso_qos.ucast.cig = ev->cig_id;
-+	cis->iso_qos.ucast.cis = ev->cis_id;
- 
- 	if (!(flags & HCI_PROTO_DEFER)) {
- 		hci_le_accept_cis(hdev, ev->cis_handle);
-@@ -6988,13 +6989,13 @@ static void hci_le_big_sync_established_evt(struct hci_dev *hdev, void *data,
- 			bis->handle = handle;
- 		}
- 
--		bis->iso_qos.big = ev->handle;
-+		bis->iso_qos.bcast.big = ev->handle;
- 		memset(&interval, 0, sizeof(interval));
- 		memcpy(&interval, ev->latency, sizeof(ev->latency));
--		bis->iso_qos.in.interval = le32_to_cpu(interval);
-+		bis->iso_qos.bcast.in.interval = le32_to_cpu(interval);
- 		/* Convert ISO Interval (1.25 ms slots) to latency (ms) */
--		bis->iso_qos.in.latency = le16_to_cpu(ev->interval) * 125 / 100;
--		bis->iso_qos.in.sdu = le16_to_cpu(ev->max_pdu);
-+		bis->iso_qos.bcast.in.latency = le16_to_cpu(ev->interval) * 125 / 100;
-+		bis->iso_qos.bcast.in.sdu = le16_to_cpu(ev->max_pdu);
- 
- 		hci_iso_setup_path(bis);
- 	}
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index 8d136a7301630..74117df03a3fa 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -3,6 +3,7 @@
-  * BlueZ - Bluetooth protocol stack for Linux
-  *
-  * Copyright (C) 2022 Intel Corporation
-+ * Copyright 2023 NXP
-  */
- 
- #include <linux/module.h>
-@@ -59,11 +60,17 @@ struct iso_pinfo {
- 	__u16			sync_handle;
- 	__u32			flags;
- 	struct bt_iso_qos	qos;
-+	bool			qos_user_set;
- 	__u8			base_len;
- 	__u8			base[BASE_MAX_LENGTH];
- 	struct iso_conn		*conn;
- };
- 
-+static struct bt_iso_qos default_qos;
-+
-+static bool check_ucast_qos(struct bt_iso_qos *qos);
-+static bool check_bcast_qos(struct bt_iso_qos *qos);
-+
- /* ---- ISO timers ---- */
- #define ISO_CONN_TIMEOUT	(HZ * 40)
- #define ISO_DISCONN_TIMEOUT	(HZ * 2)
-@@ -264,8 +271,15 @@ static int iso_connect_bis(struct sock *sk)
- 		goto unlock;
- 	}
- 
-+	/* Fail if user set invalid QoS */
-+	if (iso_pi(sk)->qos_user_set && !check_bcast_qos(&iso_pi(sk)->qos)) {
-+		iso_pi(sk)->qos = default_qos;
-+		err = -EINVAL;
-+		goto unlock;
-+	}
-+
- 	/* Fail if out PHYs are marked as disabled */
--	if (!iso_pi(sk)->qos.out.phy) {
-+	if (!iso_pi(sk)->qos.bcast.out.phy) {
- 		err = -EINVAL;
- 		goto unlock;
- 	}
-@@ -336,8 +350,15 @@ static int iso_connect_cis(struct sock *sk)
- 		goto unlock;
- 	}
- 
-+	/* Fail if user set invalid QoS */
-+	if (iso_pi(sk)->qos_user_set && !check_ucast_qos(&iso_pi(sk)->qos)) {
-+		iso_pi(sk)->qos = default_qos;
-+		err = -EINVAL;
-+		goto unlock;
-+	}
-+
- 	/* Fail if either PHYs are marked as disabled */
--	if (!iso_pi(sk)->qos.in.phy && !iso_pi(sk)->qos.out.phy) {
-+	if (!iso_pi(sk)->qos.ucast.in.phy && !iso_pi(sk)->qos.ucast.out.phy) {
- 		err = -EINVAL;
- 		goto unlock;
- 	}
-@@ -417,7 +438,7 @@ static int iso_send_frame(struct sock *sk, struct sk_buff *skb)
- 
- 	BT_DBG("sk %p len %d", sk, skb->len);
- 
--	if (skb->len > qos->out.sdu)
-+	if (skb->len > qos->ucast.out.sdu)
- 		return -EMSGSIZE;
- 
- 	len = skb->len;
-@@ -680,13 +701,23 @@ static struct proto iso_proto = {
- }
- 
- static struct bt_iso_qos default_qos = {
--	.cig		= BT_ISO_QOS_CIG_UNSET,
--	.cis		= BT_ISO_QOS_CIS_UNSET,
--	.sca		= 0x00,
--	.packing	= 0x00,
--	.framing	= 0x00,
--	.in		= DEFAULT_IO_QOS,
--	.out		= DEFAULT_IO_QOS,
-+	.bcast = {
-+		.big			= BT_ISO_QOS_BIG_UNSET,
-+		.bis			= BT_ISO_QOS_BIS_UNSET,
-+		.sync_interval		= 0x00,
-+		.packing		= 0x00,
-+		.framing		= 0x00,
-+		.in			= DEFAULT_IO_QOS,
-+		.out			= DEFAULT_IO_QOS,
-+		.encryption		= 0x00,
-+		.bcode			= {0x00},
-+		.options		= 0x00,
-+		.skip			= 0x0000,
-+		.sync_timeout		= 0x4000,
-+		.sync_cte_type		= 0x00,
-+		.mse			= 0x00,
-+		.timeout		= 0x4000,
-+	},
- };
- 
- static struct sock *iso_sock_alloc(struct net *net, struct socket *sock,
-@@ -893,9 +924,15 @@ static int iso_listen_bis(struct sock *sk)
- 	if (!hdev)
- 		return -EHOSTUNREACH;
- 
-+	/* Fail if user set invalid QoS */
-+	if (iso_pi(sk)->qos_user_set && !check_bcast_qos(&iso_pi(sk)->qos)) {
-+		iso_pi(sk)->qos = default_qos;
-+		return -EINVAL;
-+	}
-+
- 	err = hci_pa_create_sync(hdev, &iso_pi(sk)->dst,
- 				 le_addr_type(iso_pi(sk)->dst_type),
--				 iso_pi(sk)->bc_sid);
-+				 iso_pi(sk)->bc_sid, &iso_pi(sk)->qos);
- 
- 	hci_dev_put(hdev);
- 
-@@ -1154,21 +1191,62 @@ static bool check_io_qos(struct bt_iso_io_qos *qos)
- 	return true;
- }
- 
--static bool check_qos(struct bt_iso_qos *qos)
-+static bool check_ucast_qos(struct bt_iso_qos *qos)
- {
--	if (qos->sca > 0x07)
-+	if (qos->ucast.sca > 0x07)
- 		return false;
- 
--	if (qos->packing > 0x01)
-+	if (qos->ucast.packing > 0x01)
- 		return false;
- 
--	if (qos->framing > 0x01)
-+	if (qos->ucast.framing > 0x01)
- 		return false;
- 
--	if (!check_io_qos(&qos->in))
-+	if (!check_io_qos(&qos->ucast.in))
- 		return false;
- 
--	if (!check_io_qos(&qos->out))
-+	if (!check_io_qos(&qos->ucast.out))
-+		return false;
-+
-+	return true;
-+}
-+
-+static bool check_bcast_qos(struct bt_iso_qos *qos)
-+{
-+	if (qos->bcast.sync_interval > 0x07)
-+		return false;
-+
-+	if (qos->bcast.packing > 0x01)
-+		return false;
-+
-+	if (qos->bcast.framing > 0x01)
-+		return false;
-+
-+	if (!check_io_qos(&qos->bcast.in))
-+		return false;
-+
-+	if (!check_io_qos(&qos->bcast.out))
-+		return false;
-+
-+	if (qos->bcast.encryption > 0x01)
-+		return false;
-+
-+	if (qos->bcast.options > 0x07)
-+		return false;
-+
-+	if (qos->bcast.skip > 0x01f3)
-+		return false;
-+
-+	if (qos->bcast.sync_timeout < 0x000a || qos->bcast.sync_timeout > 0x4000)
-+		return false;
-+
-+	if (qos->bcast.sync_cte_type > 0x1f)
-+		return false;
-+
-+	if (qos->bcast.mse > 0x1f)
-+		return false;
-+
-+	if (qos->bcast.timeout < 0x000a || qos->bcast.timeout > 0x4000)
- 		return false;
- 
- 	return true;
-@@ -1179,7 +1257,7 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
- {
- 	struct sock *sk = sock->sk;
- 	int len, err = 0;
--	struct bt_iso_qos qos;
-+	struct bt_iso_qos qos = default_qos;
- 	u32 opt;
- 
- 	BT_DBG("sk %p", sk);
-@@ -1212,24 +1290,19 @@ static int iso_sock_setsockopt(struct socket *sock, int level, int optname,
- 		}
- 
- 		len = min_t(unsigned int, sizeof(qos), optlen);
--		if (len != sizeof(qos)) {
--			err = -EINVAL;
+--- a/drivers/block/Kconfig
++++ b/drivers/block/Kconfig
+@@ -271,15 +271,6 @@ config BLK_DEV_NBD
+ 
+ 	  If unsure, say N.
+ 
+-config BLK_DEV_SX8
+-	tristate "Promise SATA SX8 support"
+-	depends on PCI
+-	help
+-	  Saying Y or M here will enable support for the 
+-	  Promise SATA SX8 controllers.
+-
+-	  Use devices /dev/sx8/$N and /dev/sx8/$Np$M.
+-
+ config BLK_DEV_RAM
+ 	tristate "RAM block device support"
+ 	help
+--- a/drivers/block/Makefile
++++ b/drivers/block/Makefile
+@@ -27,8 +27,6 @@ obj-$(CONFIG_BLK_DEV_NBD)	+= nbd.o
+ obj-$(CONFIG_BLK_DEV_CRYPTOLOOP) += cryptoloop.o
+ obj-$(CONFIG_VIRTIO_BLK)	+= virtio_blk.o
+ 
+-obj-$(CONFIG_BLK_DEV_SX8)	+= sx8.o
+-
+ obj-$(CONFIG_XEN_BLKDEV_FRONTEND)	+= xen-blkfront.o
+ obj-$(CONFIG_XEN_BLKDEV_BACKEND)	+= xen-blkback/
+ obj-$(CONFIG_BLK_DEV_DRBD)     += drbd/
+--- a/drivers/block/sx8.c
++++ /dev/null
+@@ -1,1575 +0,0 @@
+-/*
+- *  sx8.c: Driver for Promise SATA SX8 looks-like-I2O hardware
+- *
+- *  Copyright 2004-2005 Red Hat, Inc.
+- *
+- *  Author/maintainer:  Jeff Garzik <jgarzik@pobox.com>
+- *
+- *  This file is subject to the terms and conditions of the GNU General Public
+- *  License.  See the file "COPYING" in the main directory of this archive
+- *  for more details.
+- */
+-
+-#include <linux/kernel.h>
+-#include <linux/module.h>
+-#include <linux/init.h>
+-#include <linux/pci.h>
+-#include <linux/slab.h>
+-#include <linux/spinlock.h>
+-#include <linux/blk-mq.h>
+-#include <linux/sched.h>
+-#include <linux/interrupt.h>
+-#include <linux/compiler.h>
+-#include <linux/workqueue.h>
+-#include <linux/bitops.h>
+-#include <linux/delay.h>
+-#include <linux/ktime.h>
+-#include <linux/hdreg.h>
+-#include <linux/dma-mapping.h>
+-#include <linux/completion.h>
+-#include <linux/scatterlist.h>
+-#include <asm/io.h>
+-#include <linux/uaccess.h>
+-
+-#if 0
+-#define CARM_DEBUG
+-#define CARM_VERBOSE_DEBUG
+-#else
+-#undef CARM_DEBUG
+-#undef CARM_VERBOSE_DEBUG
+-#endif
+-#undef CARM_NDEBUG
+-
+-#define DRV_NAME "sx8"
+-#define DRV_VERSION "1.0"
+-#define PFX DRV_NAME ": "
+-
+-MODULE_AUTHOR("Jeff Garzik");
+-MODULE_LICENSE("GPL");
+-MODULE_DESCRIPTION("Promise SATA SX8 block driver");
+-MODULE_VERSION(DRV_VERSION);
+-
+-/*
+- * SX8 hardware has a single message queue for all ATA ports.
+- * When this driver was written, the hardware (firmware?) would
+- * corrupt data eventually, if more than one request was outstanding.
+- * As one can imagine, having 8 ports bottlenecking on a single
+- * command hurts performance.
+- *
+- * Based on user reports, later versions of the hardware (firmware?)
+- * seem to be able to survive with more than one command queued.
+- *
+- * Therefore, we default to the safe option -- 1 command -- but
+- * allow the user to increase this.
+- *
+- * SX8 should be able to support up to ~60 queued commands (CARM_MAX_REQ),
+- * but problems seem to occur when you exceed ~30, even on newer hardware.
+- */
+-static int max_queue = 1;
+-module_param(max_queue, int, 0444);
+-MODULE_PARM_DESC(max_queue, "Maximum number of queued commands. (min==1, max==30, safe==1)");
+-
+-
+-#define NEXT_RESP(idx)	((idx + 1) % RMSG_Q_LEN)
+-
+-/* 0xf is just arbitrary, non-zero noise; this is sorta like poisoning */
+-#define TAG_ENCODE(tag)	(((tag) << 16) | 0xf)
+-#define TAG_DECODE(tag)	(((tag) >> 16) & 0x1f)
+-#define TAG_VALID(tag)	((((tag) & 0xf) == 0xf) && (TAG_DECODE(tag) < 32))
+-
+-/* note: prints function name for you */
+-#ifdef CARM_DEBUG
+-#define DPRINTK(fmt, args...) printk(KERN_ERR "%s: " fmt, __func__, ## args)
+-#ifdef CARM_VERBOSE_DEBUG
+-#define VPRINTK(fmt, args...) printk(KERN_ERR "%s: " fmt, __func__, ## args)
+-#else
+-#define VPRINTK(fmt, args...)
+-#endif	/* CARM_VERBOSE_DEBUG */
+-#else
+-#define DPRINTK(fmt, args...)
+-#define VPRINTK(fmt, args...)
+-#endif	/* CARM_DEBUG */
+-
+-#ifdef CARM_NDEBUG
+-#define assert(expr)
+-#else
+-#define assert(expr) \
+-        if(unlikely(!(expr))) {                                   \
+-        printk(KERN_ERR "Assertion failed! %s,%s,%s,line=%d\n", \
+-	#expr, __FILE__, __func__, __LINE__);          \
+-        }
+-#endif
+-
+-/* defines only for the constants which don't work well as enums */
+-struct carm_host;
+-
+-enum {
+-	/* adapter-wide limits */
+-	CARM_MAX_PORTS		= 8,
+-	CARM_SHM_SIZE		= (4096 << 7),
+-	CARM_MINORS_PER_MAJOR	= 256 / CARM_MAX_PORTS,
+-	CARM_MAX_WAIT_Q		= CARM_MAX_PORTS + 1,
+-
+-	/* command message queue limits */
+-	CARM_MAX_REQ		= 64,	       /* max command msgs per host */
+-	CARM_MSG_LOW_WATER	= (CARM_MAX_REQ / 4),	     /* refill mark */
+-
+-	/* S/G limits, host-wide and per-request */
+-	CARM_MAX_REQ_SG		= 32,	     /* max s/g entries per request */
+-	CARM_MAX_HOST_SG	= 600,		/* max s/g entries per host */
+-	CARM_SG_LOW_WATER	= (CARM_MAX_HOST_SG / 4),   /* re-fill mark */
+-
+-	/* hardware registers */
+-	CARM_IHQP		= 0x1c,
+-	CARM_INT_STAT		= 0x10, /* interrupt status */
+-	CARM_INT_MASK		= 0x14, /* interrupt mask */
+-	CARM_HMUC		= 0x18, /* host message unit control */
+-	RBUF_ADDR_LO		= 0x20, /* response msg DMA buf low 32 bits */
+-	RBUF_ADDR_HI		= 0x24, /* response msg DMA buf high 32 bits */
+-	RBUF_BYTE_SZ		= 0x28,
+-	CARM_RESP_IDX		= 0x2c,
+-	CARM_CMS0		= 0x30, /* command message size reg 0 */
+-	CARM_LMUC		= 0x48,
+-	CARM_HMPHA		= 0x6c,
+-	CARM_INITC		= 0xb5,
+-
+-	/* bits in CARM_INT_{STAT,MASK} */
+-	INT_RESERVED		= 0xfffffff0,
+-	INT_WATCHDOG		= (1 << 3),	/* watchdog timer */
+-	INT_Q_OVERFLOW		= (1 << 2),	/* cmd msg q overflow */
+-	INT_Q_AVAILABLE		= (1 << 1),	/* cmd msg q has free space */
+-	INT_RESPONSE		= (1 << 0),	/* response msg available */
+-	INT_ACK_MASK		= INT_WATCHDOG | INT_Q_OVERFLOW,
+-	INT_DEF_MASK		= INT_RESERVED | INT_Q_OVERFLOW |
+-				  INT_RESPONSE,
+-
+-	/* command messages, and related register bits */
+-	CARM_HAVE_RESP		= 0x01,
+-	CARM_MSG_READ		= 1,
+-	CARM_MSG_WRITE		= 2,
+-	CARM_MSG_VERIFY		= 3,
+-	CARM_MSG_GET_CAPACITY	= 4,
+-	CARM_MSG_FLUSH		= 5,
+-	CARM_MSG_IOCTL		= 6,
+-	CARM_MSG_ARRAY		= 8,
+-	CARM_MSG_MISC		= 9,
+-	CARM_CME		= (1 << 2),
+-	CARM_RME		= (1 << 1),
+-	CARM_WZBC		= (1 << 0),
+-	CARM_RMI		= (1 << 0),
+-	CARM_Q_FULL		= (1 << 3),
+-	CARM_MSG_SIZE		= 288,
+-	CARM_Q_LEN		= 48,
+-
+-	/* CARM_MSG_IOCTL messages */
+-	CARM_IOC_SCAN_CHAN	= 5,	/* scan channels for devices */
+-	CARM_IOC_GET_TCQ	= 13,	/* get tcq/ncq depth */
+-	CARM_IOC_SET_TCQ	= 14,	/* set tcq/ncq depth */
+-
+-	IOC_SCAN_CHAN_NODEV	= 0x1f,
+-	IOC_SCAN_CHAN_OFFSET	= 0x40,
+-
+-	/* CARM_MSG_ARRAY messages */
+-	CARM_ARRAY_INFO		= 0,
+-
+-	ARRAY_NO_EXIST		= (1 << 31),
+-
+-	/* response messages */
+-	RMSG_SZ			= 8,	/* sizeof(struct carm_response) */
+-	RMSG_Q_LEN		= 48,	/* resp. msg list length */
+-	RMSG_OK			= 1,	/* bit indicating msg was successful */
+-					/* length of entire resp. msg buffer */
+-	RBUF_LEN		= RMSG_SZ * RMSG_Q_LEN,
+-
+-	PDC_SHM_SIZE		= (4096 << 7), /* length of entire h/w buffer */
+-
+-	/* CARM_MSG_MISC messages */
+-	MISC_GET_FW_VER		= 2,
+-	MISC_ALLOC_MEM		= 3,
+-	MISC_SET_TIME		= 5,
+-
+-	/* MISC_GET_FW_VER feature bits */
+-	FW_VER_4PORT		= (1 << 2), /* 1=4 ports, 0=8 ports */
+-	FW_VER_NON_RAID		= (1 << 1), /* 1=non-RAID firmware, 0=RAID */
+-	FW_VER_ZCR		= (1 << 0), /* zero channel RAID (whatever that is) */
+-
+-	/* carm_host flags */
+-	FL_NON_RAID		= FW_VER_NON_RAID,
+-	FL_4PORT		= FW_VER_4PORT,
+-	FL_FW_VER_MASK		= (FW_VER_NON_RAID | FW_VER_4PORT),
+-	FL_DYN_MAJOR		= (1 << 17),
+-};
+-
+-enum {
+-	CARM_SG_BOUNDARY	= 0xffffUL,	    /* s/g segment boundary */
+-};
+-
+-enum scatter_gather_types {
+-	SGT_32BIT		= 0,
+-	SGT_64BIT		= 1,
+-};
+-
+-enum host_states {
+-	HST_INVALID,		/* invalid state; never used */
+-	HST_ALLOC_BUF,		/* setting up master SHM area */
+-	HST_ERROR,		/* we never leave here */
+-	HST_PORT_SCAN,		/* start dev scan */
+-	HST_DEV_SCAN_START,	/* start per-device probe */
+-	HST_DEV_SCAN,		/* continue per-device probe */
+-	HST_DEV_ACTIVATE,	/* activate devices we found */
+-	HST_PROBE_FINISHED,	/* probe is complete */
+-	HST_PROBE_START,	/* initiate probe */
+-	HST_SYNC_TIME,		/* tell firmware what time it is */
+-	HST_GET_FW_VER,		/* get firmware version, adapter port cnt */
+-};
+-
+-#ifdef CARM_DEBUG
+-static const char *state_name[] = {
+-	"HST_INVALID",
+-	"HST_ALLOC_BUF",
+-	"HST_ERROR",
+-	"HST_PORT_SCAN",
+-	"HST_DEV_SCAN_START",
+-	"HST_DEV_SCAN",
+-	"HST_DEV_ACTIVATE",
+-	"HST_PROBE_FINISHED",
+-	"HST_PROBE_START",
+-	"HST_SYNC_TIME",
+-	"HST_GET_FW_VER",
+-};
+-#endif
+-
+-struct carm_port {
+-	unsigned int			port_no;
+-	struct gendisk			*disk;
+-	struct carm_host		*host;
+-
+-	/* attached device characteristics */
+-	u64				capacity;
+-	char				name[41];
+-	u16				dev_geom_head;
+-	u16				dev_geom_sect;
+-	u16				dev_geom_cyl;
+-};
+-
+-struct carm_request {
+-	int				n_elem;
+-	unsigned int			msg_type;
+-	unsigned int			msg_subtype;
+-	unsigned int			msg_bucket;
+-	struct scatterlist		sg[CARM_MAX_REQ_SG];
+-};
+-
+-struct carm_host {
+-	unsigned long			flags;
+-	void				__iomem *mmio;
+-	void				*shm;
+-	dma_addr_t			shm_dma;
+-
+-	int				major;
+-	int				id;
+-	char				name[32];
+-
+-	spinlock_t			lock;
+-	struct pci_dev			*pdev;
+-	unsigned int			state;
+-	u32				fw_ver;
+-
+-	struct blk_mq_tag_set		tag_set;
+-	struct request_queue		*oob_q;
+-	unsigned int			n_oob;
+-
+-	unsigned int			hw_sg_used;
+-
+-	unsigned int			resp_idx;
+-
+-	unsigned int			wait_q_prod;
+-	unsigned int			wait_q_cons;
+-	struct request_queue		*wait_q[CARM_MAX_WAIT_Q];
+-
+-	void				*msg_base;
+-	dma_addr_t			msg_dma;
+-
+-	int				cur_scan_dev;
+-	unsigned long			dev_active;
+-	unsigned long			dev_present;
+-	struct carm_port		port[CARM_MAX_PORTS];
+-
+-	struct work_struct		fsm_task;
+-
+-	struct completion		probe_comp;
+-};
+-
+-struct carm_response {
+-	__le32 ret_handle;
+-	__le32 status;
+-}  __attribute__((packed));
+-
+-struct carm_msg_sg {
+-	__le32 start;
+-	__le32 len;
+-}  __attribute__((packed));
+-
+-struct carm_msg_rw {
+-	u8 type;
+-	u8 id;
+-	u8 sg_count;
+-	u8 sg_type;
+-	__le32 handle;
+-	__le32 lba;
+-	__le16 lba_count;
+-	__le16 lba_high;
+-	struct carm_msg_sg sg[32];
+-}  __attribute__((packed));
+-
+-struct carm_msg_allocbuf {
+-	u8 type;
+-	u8 subtype;
+-	u8 n_sg;
+-	u8 sg_type;
+-	__le32 handle;
+-	__le32 addr;
+-	__le32 len;
+-	__le32 evt_pool;
+-	__le32 n_evt;
+-	__le32 rbuf_pool;
+-	__le32 n_rbuf;
+-	__le32 msg_pool;
+-	__le32 n_msg;
+-	struct carm_msg_sg sg[8];
+-}  __attribute__((packed));
+-
+-struct carm_msg_ioctl {
+-	u8 type;
+-	u8 subtype;
+-	u8 array_id;
+-	u8 reserved1;
+-	__le32 handle;
+-	__le32 data_addr;
+-	u32 reserved2;
+-}  __attribute__((packed));
+-
+-struct carm_msg_sync_time {
+-	u8 type;
+-	u8 subtype;
+-	u16 reserved1;
+-	__le32 handle;
+-	u32 reserved2;
+-	__le32 timestamp;
+-}  __attribute__((packed));
+-
+-struct carm_msg_get_fw_ver {
+-	u8 type;
+-	u8 subtype;
+-	u16 reserved1;
+-	__le32 handle;
+-	__le32 data_addr;
+-	u32 reserved2;
+-}  __attribute__((packed));
+-
+-struct carm_fw_ver {
+-	__le32 version;
+-	u8 features;
+-	u8 reserved1;
+-	u16 reserved2;
+-}  __attribute__((packed));
+-
+-struct carm_array_info {
+-	__le32 size;
+-
+-	__le16 size_hi;
+-	__le16 stripe_size;
+-
+-	__le32 mode;
+-
+-	__le16 stripe_blk_sz;
+-	__le16 reserved1;
+-
+-	__le16 cyl;
+-	__le16 head;
+-
+-	__le16 sect;
+-	u8 array_id;
+-	u8 reserved2;
+-
+-	char name[40];
+-
+-	__le32 array_status;
+-
+-	/* device list continues beyond this point? */
+-}  __attribute__((packed));
+-
+-static int carm_init_one (struct pci_dev *pdev, const struct pci_device_id *ent);
+-static void carm_remove_one (struct pci_dev *pdev);
+-static int carm_bdev_getgeo(struct block_device *bdev, struct hd_geometry *geo);
+-
+-static const struct pci_device_id carm_pci_tbl[] = {
+-	{ PCI_VENDOR_ID_PROMISE, 0x8000, PCI_ANY_ID, PCI_ANY_ID, 0, 0, },
+-	{ PCI_VENDOR_ID_PROMISE, 0x8002, PCI_ANY_ID, PCI_ANY_ID, 0, 0, },
+-	{ }	/* terminate list */
+-};
+-MODULE_DEVICE_TABLE(pci, carm_pci_tbl);
+-
+-static struct pci_driver carm_driver = {
+-	.name		= DRV_NAME,
+-	.id_table	= carm_pci_tbl,
+-	.probe		= carm_init_one,
+-	.remove		= carm_remove_one,
+-};
+-
+-static const struct block_device_operations carm_bd_ops = {
+-	.owner		= THIS_MODULE,
+-	.getgeo		= carm_bdev_getgeo,
+-};
+-
+-static unsigned int carm_host_id;
+-static unsigned long carm_major_alloc;
+-
+-
+-
+-static int carm_bdev_getgeo(struct block_device *bdev, struct hd_geometry *geo)
+-{
+-	struct carm_port *port = bdev->bd_disk->private_data;
+-
+-	geo->heads = (u8) port->dev_geom_head;
+-	geo->sectors = (u8) port->dev_geom_sect;
+-	geo->cylinders = port->dev_geom_cyl;
+-	return 0;
+-}
+-
+-static const u32 msg_sizes[] = { 32, 64, 128, CARM_MSG_SIZE };
+-
+-static inline int carm_lookup_bucket(u32 msg_size)
+-{
+-	int i;
+-
+-	for (i = 0; i < ARRAY_SIZE(msg_sizes); i++)
+-		if (msg_size <= msg_sizes[i])
+-			return i;
+-
+-	return -ENOENT;
+-}
+-
+-static void carm_init_buckets(void __iomem *mmio)
+-{
+-	unsigned int i;
+-
+-	for (i = 0; i < ARRAY_SIZE(msg_sizes); i++)
+-		writel(msg_sizes[i], mmio + CARM_CMS0 + (4 * i));
+-}
+-
+-static inline void *carm_ref_msg(struct carm_host *host,
+-				 unsigned int msg_idx)
+-{
+-	return host->msg_base + (msg_idx * CARM_MSG_SIZE);
+-}
+-
+-static inline dma_addr_t carm_ref_msg_dma(struct carm_host *host,
+-					  unsigned int msg_idx)
+-{
+-	return host->msg_dma + (msg_idx * CARM_MSG_SIZE);
+-}
+-
+-static int carm_send_msg(struct carm_host *host,
+-			 struct carm_request *crq, unsigned tag)
+-{
+-	void __iomem *mmio = host->mmio;
+-	u32 msg = (u32) carm_ref_msg_dma(host, tag);
+-	u32 cm_bucket = crq->msg_bucket;
+-	u32 tmp;
+-	int rc = 0;
+-
+-	VPRINTK("ENTER\n");
+-
+-	tmp = readl(mmio + CARM_HMUC);
+-	if (tmp & CARM_Q_FULL) {
+-#if 0
+-		tmp = readl(mmio + CARM_INT_MASK);
+-		tmp |= INT_Q_AVAILABLE;
+-		writel(tmp, mmio + CARM_INT_MASK);
+-		readl(mmio + CARM_INT_MASK);	/* flush */
+-#endif
+-		DPRINTK("host msg queue full\n");
+-		rc = -EBUSY;
+-	} else {
+-		writel(msg | (cm_bucket << 1), mmio + CARM_IHQP);
+-		readl(mmio + CARM_IHQP);	/* flush */
+-	}
+-
+-	return rc;
+-}
+-
+-static int carm_array_info (struct carm_host *host, unsigned int array_idx)
+-{
+-	struct carm_msg_ioctl *ioc;
+-	u32 msg_data;
+-	dma_addr_t msg_dma;
+-	struct carm_request *crq;
+-	struct request *rq;
+-	int rc;
+-
+-	rq = blk_mq_alloc_request(host->oob_q, REQ_OP_DRV_OUT, 0);
+-	if (IS_ERR(rq)) {
+-		rc = -ENOMEM;
+-		goto err_out;
+-	}
+-	crq = blk_mq_rq_to_pdu(rq);
+-
+-	ioc = carm_ref_msg(host, rq->tag);
+-	msg_dma = carm_ref_msg_dma(host, rq->tag);
+-	msg_data = (u32) (msg_dma + sizeof(struct carm_array_info));
+-
+-	crq->msg_type = CARM_MSG_ARRAY;
+-	crq->msg_subtype = CARM_ARRAY_INFO;
+-	rc = carm_lookup_bucket(sizeof(struct carm_msg_ioctl) +
+-				sizeof(struct carm_array_info));
+-	BUG_ON(rc < 0);
+-	crq->msg_bucket = (u32) rc;
+-
+-	memset(ioc, 0, sizeof(*ioc));
+-	ioc->type	= CARM_MSG_ARRAY;
+-	ioc->subtype	= CARM_ARRAY_INFO;
+-	ioc->array_id	= (u8) array_idx;
+-	ioc->handle	= cpu_to_le32(TAG_ENCODE(rq->tag));
+-	ioc->data_addr	= cpu_to_le32(msg_data);
+-
+-	spin_lock_irq(&host->lock);
+-	assert(host->state == HST_DEV_SCAN_START ||
+-	       host->state == HST_DEV_SCAN);
+-	spin_unlock_irq(&host->lock);
+-
+-	DPRINTK("blk_execute_rq_nowait, tag == %u\n", rq->tag);
+-	blk_execute_rq_nowait(NULL, rq, true, NULL);
+-
+-	return 0;
+-
+-err_out:
+-	spin_lock_irq(&host->lock);
+-	host->state = HST_ERROR;
+-	spin_unlock_irq(&host->lock);
+-	return rc;
+-}
+-
+-typedef unsigned int (*carm_sspc_t)(struct carm_host *, unsigned int, void *);
+-
+-static int carm_send_special (struct carm_host *host, carm_sspc_t func)
+-{
+-	struct request *rq;
+-	struct carm_request *crq;
+-	struct carm_msg_ioctl *ioc;
+-	void *mem;
+-	unsigned int msg_size;
+-	int rc;
+-
+-	rq = blk_mq_alloc_request(host->oob_q, REQ_OP_DRV_OUT, 0);
+-	if (IS_ERR(rq))
+-		return -ENOMEM;
+-	crq = blk_mq_rq_to_pdu(rq);
+-
+-	mem = carm_ref_msg(host, rq->tag);
+-
+-	msg_size = func(host, rq->tag, mem);
+-
+-	ioc = mem;
+-	crq->msg_type = ioc->type;
+-	crq->msg_subtype = ioc->subtype;
+-	rc = carm_lookup_bucket(msg_size);
+-	BUG_ON(rc < 0);
+-	crq->msg_bucket = (u32) rc;
+-
+-	DPRINTK("blk_execute_rq_nowait, tag == %u\n", rq->tag);
+-	blk_execute_rq_nowait(NULL, rq, true, NULL);
+-
+-	return 0;
+-}
+-
+-static unsigned int carm_fill_sync_time(struct carm_host *host,
+-					unsigned int idx, void *mem)
+-{
+-	struct carm_msg_sync_time *st = mem;
+-
+-	time64_t tv = ktime_get_real_seconds();
+-
+-	memset(st, 0, sizeof(*st));
+-	st->type	= CARM_MSG_MISC;
+-	st->subtype	= MISC_SET_TIME;
+-	st->handle	= cpu_to_le32(TAG_ENCODE(idx));
+-	st->timestamp	= cpu_to_le32(tv);
+-
+-	return sizeof(struct carm_msg_sync_time);
+-}
+-
+-static unsigned int carm_fill_alloc_buf(struct carm_host *host,
+-					unsigned int idx, void *mem)
+-{
+-	struct carm_msg_allocbuf *ab = mem;
+-
+-	memset(ab, 0, sizeof(*ab));
+-	ab->type	= CARM_MSG_MISC;
+-	ab->subtype	= MISC_ALLOC_MEM;
+-	ab->handle	= cpu_to_le32(TAG_ENCODE(idx));
+-	ab->n_sg	= 1;
+-	ab->sg_type	= SGT_32BIT;
+-	ab->addr	= cpu_to_le32(host->shm_dma + (PDC_SHM_SIZE >> 1));
+-	ab->len		= cpu_to_le32(PDC_SHM_SIZE >> 1);
+-	ab->evt_pool	= cpu_to_le32(host->shm_dma + (16 * 1024));
+-	ab->n_evt	= cpu_to_le32(1024);
+-	ab->rbuf_pool	= cpu_to_le32(host->shm_dma);
+-	ab->n_rbuf	= cpu_to_le32(RMSG_Q_LEN);
+-	ab->msg_pool	= cpu_to_le32(host->shm_dma + RBUF_LEN);
+-	ab->n_msg	= cpu_to_le32(CARM_Q_LEN);
+-	ab->sg[0].start	= cpu_to_le32(host->shm_dma + (PDC_SHM_SIZE >> 1));
+-	ab->sg[0].len	= cpu_to_le32(65536);
+-
+-	return sizeof(struct carm_msg_allocbuf);
+-}
+-
+-static unsigned int carm_fill_scan_channels(struct carm_host *host,
+-					    unsigned int idx, void *mem)
+-{
+-	struct carm_msg_ioctl *ioc = mem;
+-	u32 msg_data = (u32) (carm_ref_msg_dma(host, idx) +
+-			      IOC_SCAN_CHAN_OFFSET);
+-
+-	memset(ioc, 0, sizeof(*ioc));
+-	ioc->type	= CARM_MSG_IOCTL;
+-	ioc->subtype	= CARM_IOC_SCAN_CHAN;
+-	ioc->handle	= cpu_to_le32(TAG_ENCODE(idx));
+-	ioc->data_addr	= cpu_to_le32(msg_data);
+-
+-	/* fill output data area with "no device" default values */
+-	mem += IOC_SCAN_CHAN_OFFSET;
+-	memset(mem, IOC_SCAN_CHAN_NODEV, CARM_MAX_PORTS);
+-
+-	return IOC_SCAN_CHAN_OFFSET + CARM_MAX_PORTS;
+-}
+-
+-static unsigned int carm_fill_get_fw_ver(struct carm_host *host,
+-					 unsigned int idx, void *mem)
+-{
+-	struct carm_msg_get_fw_ver *ioc = mem;
+-	u32 msg_data = (u32) (carm_ref_msg_dma(host, idx) + sizeof(*ioc));
+-
+-	memset(ioc, 0, sizeof(*ioc));
+-	ioc->type	= CARM_MSG_MISC;
+-	ioc->subtype	= MISC_GET_FW_VER;
+-	ioc->handle	= cpu_to_le32(TAG_ENCODE(idx));
+-	ioc->data_addr	= cpu_to_le32(msg_data);
+-
+-	return sizeof(struct carm_msg_get_fw_ver) +
+-	       sizeof(struct carm_fw_ver);
+-}
+-
+-static inline void carm_push_q (struct carm_host *host, struct request_queue *q)
+-{
+-	unsigned int idx = host->wait_q_prod % CARM_MAX_WAIT_Q;
+-
+-	blk_mq_stop_hw_queues(q);
+-	VPRINTK("STOPPED QUEUE %p\n", q);
+-
+-	host->wait_q[idx] = q;
+-	host->wait_q_prod++;
+-	BUG_ON(host->wait_q_prod == host->wait_q_cons); /* overrun */
+-}
+-
+-static inline struct request_queue *carm_pop_q(struct carm_host *host)
+-{
+-	unsigned int idx;
+-
+-	if (host->wait_q_prod == host->wait_q_cons)
+-		return NULL;
+-
+-	idx = host->wait_q_cons % CARM_MAX_WAIT_Q;
+-	host->wait_q_cons++;
+-
+-	return host->wait_q[idx];
+-}
+-
+-static inline void carm_round_robin(struct carm_host *host)
+-{
+-	struct request_queue *q = carm_pop_q(host);
+-	if (q) {
+-		blk_mq_start_hw_queues(q);
+-		VPRINTK("STARTED QUEUE %p\n", q);
+-	}
+-}
+-
+-static inline enum dma_data_direction carm_rq_dir(struct request *rq)
+-{
+-	return op_is_write(req_op(rq)) ? DMA_TO_DEVICE : DMA_FROM_DEVICE;
+-}
+-
+-static blk_status_t carm_queue_rq(struct blk_mq_hw_ctx *hctx,
+-				  const struct blk_mq_queue_data *bd)
+-{
+-	struct request_queue *q = hctx->queue;
+-	struct request *rq = bd->rq;
+-	struct carm_port *port = q->queuedata;
+-	struct carm_host *host = port->host;
+-	struct carm_request *crq = blk_mq_rq_to_pdu(rq);
+-	struct carm_msg_rw *msg;
+-	struct scatterlist *sg;
+-	int i, n_elem = 0, rc;
+-	unsigned int msg_size;
+-	u32 tmp;
+-
+-	crq->n_elem = 0;
+-	sg_init_table(crq->sg, CARM_MAX_REQ_SG);
+-
+-	blk_mq_start_request(rq);
+-
+-	spin_lock_irq(&host->lock);
+-	if (req_op(rq) == REQ_OP_DRV_OUT)
+-		goto send_msg;
+-
+-	/* get scatterlist from block layer */
+-	sg = &crq->sg[0];
+-	n_elem = blk_rq_map_sg(q, rq, sg);
+-	if (n_elem <= 0)
+-		goto out_ioerr;
+-
+-	/* map scatterlist to PCI bus addresses */
+-	n_elem = dma_map_sg(&host->pdev->dev, sg, n_elem, carm_rq_dir(rq));
+-	if (n_elem <= 0)
+-		goto out_ioerr;
+-
+-	/* obey global hardware limit on S/G entries */
+-	if (host->hw_sg_used >= CARM_MAX_HOST_SG - n_elem)
+-		goto out_resource;
+-
+-	crq->n_elem = n_elem;
+-	host->hw_sg_used += n_elem;
+-
+-	/*
+-	 * build read/write message
+-	 */
+-
+-	VPRINTK("build msg\n");
+-	msg = (struct carm_msg_rw *) carm_ref_msg(host, rq->tag);
+-
+-	if (rq_data_dir(rq) == WRITE) {
+-		msg->type = CARM_MSG_WRITE;
+-		crq->msg_type = CARM_MSG_WRITE;
+-	} else {
+-		msg->type = CARM_MSG_READ;
+-		crq->msg_type = CARM_MSG_READ;
+-	}
+-
+-	msg->id		= port->port_no;
+-	msg->sg_count	= n_elem;
+-	msg->sg_type	= SGT_32BIT;
+-	msg->handle	= cpu_to_le32(TAG_ENCODE(rq->tag));
+-	msg->lba	= cpu_to_le32(blk_rq_pos(rq) & 0xffffffff);
+-	tmp		= (blk_rq_pos(rq) >> 16) >> 16;
+-	msg->lba_high	= cpu_to_le16( (u16) tmp );
+-	msg->lba_count	= cpu_to_le16(blk_rq_sectors(rq));
+-
+-	msg_size = sizeof(struct carm_msg_rw) - sizeof(msg->sg);
+-	for (i = 0; i < n_elem; i++) {
+-		struct carm_msg_sg *carm_sg = &msg->sg[i];
+-		carm_sg->start = cpu_to_le32(sg_dma_address(&crq->sg[i]));
+-		carm_sg->len = cpu_to_le32(sg_dma_len(&crq->sg[i]));
+-		msg_size += sizeof(struct carm_msg_sg);
+-	}
+-
+-	rc = carm_lookup_bucket(msg_size);
+-	BUG_ON(rc < 0);
+-	crq->msg_bucket = (u32) rc;
+-send_msg:
+-	/*
+-	 * queue read/write message to hardware
+-	 */
+-	VPRINTK("send msg, tag == %u\n", rq->tag);
+-	rc = carm_send_msg(host, crq, rq->tag);
+-	if (rc) {
+-		host->hw_sg_used -= n_elem;
+-		goto out_resource;
+-	}
+-
+-	spin_unlock_irq(&host->lock);
+-	return BLK_STS_OK;
+-out_resource:
+-	dma_unmap_sg(&host->pdev->dev, &crq->sg[0], n_elem, carm_rq_dir(rq));
+-	carm_push_q(host, q);
+-	spin_unlock_irq(&host->lock);
+-	return BLK_STS_DEV_RESOURCE;
+-out_ioerr:
+-	carm_round_robin(host);
+-	spin_unlock_irq(&host->lock);
+-	return BLK_STS_IOERR;
+-}
+-
+-static void carm_handle_array_info(struct carm_host *host,
+-				   struct carm_request *crq, u8 *mem,
+-				   blk_status_t error)
+-{
+-	struct carm_port *port;
+-	u8 *msg_data = mem + sizeof(struct carm_array_info);
+-	struct carm_array_info *desc = (struct carm_array_info *) msg_data;
+-	u64 lo, hi;
+-	int cur_port;
+-	size_t slen;
+-
+-	DPRINTK("ENTER\n");
+-
+-	if (error)
+-		goto out;
+-	if (le32_to_cpu(desc->array_status) & ARRAY_NO_EXIST)
+-		goto out;
+-
+-	cur_port = host->cur_scan_dev;
+-
+-	/* should never occur */
+-	if ((cur_port < 0) || (cur_port >= CARM_MAX_PORTS)) {
+-		printk(KERN_ERR PFX "BUG: cur_scan_dev==%d, array_id==%d\n",
+-		       cur_port, (int) desc->array_id);
+-		goto out;
+-	}
+-
+-	port = &host->port[cur_port];
+-
+-	lo = (u64) le32_to_cpu(desc->size);
+-	hi = (u64) le16_to_cpu(desc->size_hi);
+-
+-	port->capacity = lo | (hi << 32);
+-	port->dev_geom_head = le16_to_cpu(desc->head);
+-	port->dev_geom_sect = le16_to_cpu(desc->sect);
+-	port->dev_geom_cyl = le16_to_cpu(desc->cyl);
+-
+-	host->dev_active |= (1 << cur_port);
+-
+-	strncpy(port->name, desc->name, sizeof(port->name));
+-	port->name[sizeof(port->name) - 1] = 0;
+-	slen = strlen(port->name);
+-	while (slen && (port->name[slen - 1] == ' ')) {
+-		port->name[slen - 1] = 0;
+-		slen--;
+-	}
+-
+-	printk(KERN_INFO DRV_NAME "(%s): port %u device %Lu sectors\n",
+-	       pci_name(host->pdev), port->port_no,
+-	       (unsigned long long) port->capacity);
+-	printk(KERN_INFO DRV_NAME "(%s): port %u device \"%s\"\n",
+-	       pci_name(host->pdev), port->port_no, port->name);
+-
+-out:
+-	assert(host->state == HST_DEV_SCAN);
+-	schedule_work(&host->fsm_task);
+-}
+-
+-static void carm_handle_scan_chan(struct carm_host *host,
+-				  struct carm_request *crq, u8 *mem,
+-				  blk_status_t error)
+-{
+-	u8 *msg_data = mem + IOC_SCAN_CHAN_OFFSET;
+-	unsigned int i, dev_count = 0;
+-	int new_state = HST_DEV_SCAN_START;
+-
+-	DPRINTK("ENTER\n");
+-
+-	if (error) {
+-		new_state = HST_ERROR;
+-		goto out;
+-	}
+-
+-	/* TODO: scan and support non-disk devices */
+-	for (i = 0; i < 8; i++)
+-		if (msg_data[i] == 0) { /* direct-access device (disk) */
+-			host->dev_present |= (1 << i);
+-			dev_count++;
+-		}
+-
+-	printk(KERN_INFO DRV_NAME "(%s): found %u interesting devices\n",
+-	       pci_name(host->pdev), dev_count);
+-
+-out:
+-	assert(host->state == HST_PORT_SCAN);
+-	host->state = new_state;
+-	schedule_work(&host->fsm_task);
+-}
+-
+-static void carm_handle_generic(struct carm_host *host,
+-				struct carm_request *crq, blk_status_t error,
+-				int cur_state, int next_state)
+-{
+-	DPRINTK("ENTER\n");
+-
+-	assert(host->state == cur_state);
+-	if (error)
+-		host->state = HST_ERROR;
+-	else
+-		host->state = next_state;
+-	schedule_work(&host->fsm_task);
+-}
+-
+-static inline void carm_handle_resp(struct carm_host *host,
+-				    __le32 ret_handle_le, u32 status)
+-{
+-	u32 handle = le32_to_cpu(ret_handle_le);
+-	unsigned int msg_idx;
+-	struct request *rq;
+-	struct carm_request *crq;
+-	blk_status_t error = (status == RMSG_OK) ? 0 : BLK_STS_IOERR;
+-	u8 *mem;
+-
+-	VPRINTK("ENTER, handle == 0x%x\n", handle);
+-
+-	if (unlikely(!TAG_VALID(handle))) {
+-		printk(KERN_ERR DRV_NAME "(%s): BUG: invalid tag 0x%x\n",
+-		       pci_name(host->pdev), handle);
+-		return;
+-	}
+-
+-	msg_idx = TAG_DECODE(handle);
+-	VPRINTK("tag == %u\n", msg_idx);
+-
+-	rq = blk_mq_tag_to_rq(host->tag_set.tags[0], msg_idx);
+-	crq = blk_mq_rq_to_pdu(rq);
+-
+-	/* fast path */
+-	if (likely(crq->msg_type == CARM_MSG_READ ||
+-		   crq->msg_type == CARM_MSG_WRITE)) {
+-		dma_unmap_sg(&host->pdev->dev, &crq->sg[0], crq->n_elem,
+-			     carm_rq_dir(rq));
+-		goto done;
+-	}
+-
+-	mem = carm_ref_msg(host, msg_idx);
+-
+-	switch (crq->msg_type) {
+-	case CARM_MSG_IOCTL: {
+-		switch (crq->msg_subtype) {
+-		case CARM_IOC_SCAN_CHAN:
+-			carm_handle_scan_chan(host, crq, mem, error);
+-			goto done;
+-		default:
+-			/* unknown / invalid response */
+-			goto err_out;
+-		}
+-		break;
+-	}
+-
+-	case CARM_MSG_MISC: {
+-		switch (crq->msg_subtype) {
+-		case MISC_ALLOC_MEM:
+-			carm_handle_generic(host, crq, error,
+-					    HST_ALLOC_BUF, HST_SYNC_TIME);
+-			goto done;
+-		case MISC_SET_TIME:
+-			carm_handle_generic(host, crq, error,
+-					    HST_SYNC_TIME, HST_GET_FW_VER);
+-			goto done;
+-		case MISC_GET_FW_VER: {
+-			struct carm_fw_ver *ver = (struct carm_fw_ver *)
+-				(mem + sizeof(struct carm_msg_get_fw_ver));
+-			if (!error) {
+-				host->fw_ver = le32_to_cpu(ver->version);
+-				host->flags |= (ver->features & FL_FW_VER_MASK);
+-			}
+-			carm_handle_generic(host, crq, error,
+-					    HST_GET_FW_VER, HST_PORT_SCAN);
+-			goto done;
+-		}
+-		default:
+-			/* unknown / invalid response */
+-			goto err_out;
+-		}
+-		break;
+-	}
+-
+-	case CARM_MSG_ARRAY: {
+-		switch (crq->msg_subtype) {
+-		case CARM_ARRAY_INFO:
+-			carm_handle_array_info(host, crq, mem, error);
+-			break;
+-		default:
+-			/* unknown / invalid response */
+-			goto err_out;
+-		}
+-		break;
+-	}
+-
+-	default:
+-		/* unknown / invalid response */
+-		goto err_out;
+-	}
+-
+-	return;
+-
+-err_out:
+-	printk(KERN_WARNING DRV_NAME "(%s): BUG: unhandled message type %d/%d\n",
+-	       pci_name(host->pdev), crq->msg_type, crq->msg_subtype);
+-	error = BLK_STS_IOERR;
+-done:
+-	host->hw_sg_used -= crq->n_elem;
+-	blk_mq_end_request(blk_mq_rq_from_pdu(crq), error);
+-
+-	if (host->hw_sg_used <= CARM_SG_LOW_WATER)
+-		carm_round_robin(host);
+-}
+-
+-static inline void carm_handle_responses(struct carm_host *host)
+-{
+-	void __iomem *mmio = host->mmio;
+-	struct carm_response *resp = (struct carm_response *) host->shm;
+-	unsigned int work = 0;
+-	unsigned int idx = host->resp_idx % RMSG_Q_LEN;
+-
+-	while (1) {
+-		u32 status = le32_to_cpu(resp[idx].status);
+-
+-		if (status == 0xffffffff) {
+-			VPRINTK("ending response on index %u\n", idx);
+-			writel(idx << 3, mmio + CARM_RESP_IDX);
 -			break;
 -		}
 -
--		memset(&qos, 0, sizeof(qos));
- 
- 		if (copy_from_sockptr(&qos, optval, len)) {
- 			err = -EFAULT;
- 			break;
- 		}
- 
--		if (!check_qos(&qos)) {
-+		if (len == sizeof(qos.ucast) && !check_ucast_qos(&qos)) {
- 			err = -EINVAL;
- 			break;
- 		}
- 
- 		iso_pi(sk)->qos = qos;
-+		iso_pi(sk)->qos_user_set = true;
- 
- 		break;
- 
-@@ -1419,7 +1492,7 @@ static bool iso_match_big(struct sock *sk, void *data)
- {
- 	struct hci_evt_le_big_sync_estabilished *ev = data;
- 
--	return ev->handle == iso_pi(sk)->qos.big;
-+	return ev->handle == iso_pi(sk)->qos.bcast.big;
- }
- 
- static void iso_conn_ready(struct iso_conn *conn)
--- 
-2.39.2
-
+-		/* response to a message we sent */
+-		else if ((status & (1 << 31)) == 0) {
+-			VPRINTK("handling msg response on index %u\n", idx);
+-			carm_handle_resp(host, resp[idx].ret_handle, status);
+-			resp[idx].status = cpu_to_le32(0xffffffff);
+-		}
+-
+-		/* asynchronous events the hardware throws our way */
+-		else if ((status & 0xff000000) == (1 << 31)) {
+-			u8 *evt_type_ptr = (u8 *) &resp[idx];
+-			u8 evt_type = *evt_type_ptr;
+-			printk(KERN_WARNING DRV_NAME "(%s): unhandled event type %d\n",
+-			       pci_name(host->pdev), (int) evt_type);
+-			resp[idx].status = cpu_to_le32(0xffffffff);
+-		}
+-
+-		idx = NEXT_RESP(idx);
+-		work++;
+-	}
+-
+-	VPRINTK("EXIT, work==%u\n", work);
+-	host->resp_idx += work;
+-}
+-
+-static irqreturn_t carm_interrupt(int irq, void *__host)
+-{
+-	struct carm_host *host = __host;
+-	void __iomem *mmio;
+-	u32 mask;
+-	int handled = 0;
+-	unsigned long flags;
+-
+-	if (!host) {
+-		VPRINTK("no host\n");
+-		return IRQ_NONE;
+-	}
+-
+-	spin_lock_irqsave(&host->lock, flags);
+-
+-	mmio = host->mmio;
+-
+-	/* reading should also clear interrupts */
+-	mask = readl(mmio + CARM_INT_STAT);
+-
+-	if (mask == 0 || mask == 0xffffffff) {
+-		VPRINTK("no work, mask == 0x%x\n", mask);
+-		goto out;
+-	}
+-
+-	if (mask & INT_ACK_MASK)
+-		writel(mask, mmio + CARM_INT_STAT);
+-
+-	if (unlikely(host->state == HST_INVALID)) {
+-		VPRINTK("not initialized yet, mask = 0x%x\n", mask);
+-		goto out;
+-	}
+-
+-	if (mask & CARM_HAVE_RESP) {
+-		handled = 1;
+-		carm_handle_responses(host);
+-	}
+-
+-out:
+-	spin_unlock_irqrestore(&host->lock, flags);
+-	VPRINTK("EXIT\n");
+-	return IRQ_RETVAL(handled);
+-}
+-
+-static void carm_fsm_task (struct work_struct *work)
+-{
+-	struct carm_host *host =
+-		container_of(work, struct carm_host, fsm_task);
+-	unsigned long flags;
+-	unsigned int state;
+-	int rc, i, next_dev;
+-	int reschedule = 0;
+-	int new_state = HST_INVALID;
+-
+-	spin_lock_irqsave(&host->lock, flags);
+-	state = host->state;
+-	spin_unlock_irqrestore(&host->lock, flags);
+-
+-	DPRINTK("ENTER, state == %s\n", state_name[state]);
+-
+-	switch (state) {
+-	case HST_PROBE_START:
+-		new_state = HST_ALLOC_BUF;
+-		reschedule = 1;
+-		break;
+-
+-	case HST_ALLOC_BUF:
+-		rc = carm_send_special(host, carm_fill_alloc_buf);
+-		if (rc) {
+-			new_state = HST_ERROR;
+-			reschedule = 1;
+-		}
+-		break;
+-
+-	case HST_SYNC_TIME:
+-		rc = carm_send_special(host, carm_fill_sync_time);
+-		if (rc) {
+-			new_state = HST_ERROR;
+-			reschedule = 1;
+-		}
+-		break;
+-
+-	case HST_GET_FW_VER:
+-		rc = carm_send_special(host, carm_fill_get_fw_ver);
+-		if (rc) {
+-			new_state = HST_ERROR;
+-			reschedule = 1;
+-		}
+-		break;
+-
+-	case HST_PORT_SCAN:
+-		rc = carm_send_special(host, carm_fill_scan_channels);
+-		if (rc) {
+-			new_state = HST_ERROR;
+-			reschedule = 1;
+-		}
+-		break;
+-
+-	case HST_DEV_SCAN_START:
+-		host->cur_scan_dev = -1;
+-		new_state = HST_DEV_SCAN;
+-		reschedule = 1;
+-		break;
+-
+-	case HST_DEV_SCAN:
+-		next_dev = -1;
+-		for (i = host->cur_scan_dev + 1; i < CARM_MAX_PORTS; i++)
+-			if (host->dev_present & (1 << i)) {
+-				next_dev = i;
+-				break;
+-			}
+-
+-		if (next_dev >= 0) {
+-			host->cur_scan_dev = next_dev;
+-			rc = carm_array_info(host, next_dev);
+-			if (rc) {
+-				new_state = HST_ERROR;
+-				reschedule = 1;
+-			}
+-		} else {
+-			new_state = HST_DEV_ACTIVATE;
+-			reschedule = 1;
+-		}
+-		break;
+-
+-	case HST_DEV_ACTIVATE: {
+-		int activated = 0;
+-		for (i = 0; i < CARM_MAX_PORTS; i++)
+-			if (host->dev_active & (1 << i)) {
+-				struct carm_port *port = &host->port[i];
+-				struct gendisk *disk = port->disk;
+-
+-				set_capacity(disk, port->capacity);
+-				add_disk(disk);
+-				activated++;
+-			}
+-
+-		printk(KERN_INFO DRV_NAME "(%s): %d ports activated\n",
+-		       pci_name(host->pdev), activated);
+-
+-		new_state = HST_PROBE_FINISHED;
+-		reschedule = 1;
+-		break;
+-	}
+-
+-	case HST_PROBE_FINISHED:
+-		complete(&host->probe_comp);
+-		break;
+-
+-	case HST_ERROR:
+-		/* FIXME: TODO */
+-		break;
+-
+-	default:
+-		/* should never occur */
+-		printk(KERN_ERR PFX "BUG: unknown state %d\n", state);
+-		assert(0);
+-		break;
+-	}
+-
+-	if (new_state != HST_INVALID) {
+-		spin_lock_irqsave(&host->lock, flags);
+-		host->state = new_state;
+-		spin_unlock_irqrestore(&host->lock, flags);
+-	}
+-	if (reschedule)
+-		schedule_work(&host->fsm_task);
+-}
+-
+-static int carm_init_wait(void __iomem *mmio, u32 bits, unsigned int test_bit)
+-{
+-	unsigned int i;
+-
+-	for (i = 0; i < 50000; i++) {
+-		u32 tmp = readl(mmio + CARM_LMUC);
+-		udelay(100);
+-
+-		if (test_bit) {
+-			if ((tmp & bits) == bits)
+-				return 0;
+-		} else {
+-			if ((tmp & bits) == 0)
+-				return 0;
+-		}
+-
+-		cond_resched();
+-	}
+-
+-	printk(KERN_ERR PFX "carm_init_wait timeout, bits == 0x%x, test_bit == %s\n",
+-	       bits, test_bit ? "yes" : "no");
+-	return -EBUSY;
+-}
+-
+-static void carm_init_responses(struct carm_host *host)
+-{
+-	void __iomem *mmio = host->mmio;
+-	unsigned int i;
+-	struct carm_response *resp = (struct carm_response *) host->shm;
+-
+-	for (i = 0; i < RMSG_Q_LEN; i++)
+-		resp[i].status = cpu_to_le32(0xffffffff);
+-
+-	writel(0, mmio + CARM_RESP_IDX);
+-}
+-
+-static int carm_init_host(struct carm_host *host)
+-{
+-	void __iomem *mmio = host->mmio;
+-	u32 tmp;
+-	u8 tmp8;
+-	int rc;
+-
+-	DPRINTK("ENTER\n");
+-
+-	writel(0, mmio + CARM_INT_MASK);
+-
+-	tmp8 = readb(mmio + CARM_INITC);
+-	if (tmp8 & 0x01) {
+-		tmp8 &= ~0x01;
+-		writeb(tmp8, mmio + CARM_INITC);
+-		readb(mmio + CARM_INITC);	/* flush */
+-
+-		DPRINTK("snooze...\n");
+-		msleep(5000);
+-	}
+-
+-	tmp = readl(mmio + CARM_HMUC);
+-	if (tmp & CARM_CME) {
+-		DPRINTK("CME bit present, waiting\n");
+-		rc = carm_init_wait(mmio, CARM_CME, 1);
+-		if (rc) {
+-			DPRINTK("EXIT, carm_init_wait 1 failed\n");
+-			return rc;
+-		}
+-	}
+-	if (tmp & CARM_RME) {
+-		DPRINTK("RME bit present, waiting\n");
+-		rc = carm_init_wait(mmio, CARM_RME, 1);
+-		if (rc) {
+-			DPRINTK("EXIT, carm_init_wait 2 failed\n");
+-			return rc;
+-		}
+-	}
+-
+-	tmp &= ~(CARM_RME | CARM_CME);
+-	writel(tmp, mmio + CARM_HMUC);
+-	readl(mmio + CARM_HMUC);	/* flush */
+-
+-	rc = carm_init_wait(mmio, CARM_RME | CARM_CME, 0);
+-	if (rc) {
+-		DPRINTK("EXIT, carm_init_wait 3 failed\n");
+-		return rc;
+-	}
+-
+-	carm_init_buckets(mmio);
+-
+-	writel(host->shm_dma & 0xffffffff, mmio + RBUF_ADDR_LO);
+-	writel((host->shm_dma >> 16) >> 16, mmio + RBUF_ADDR_HI);
+-	writel(RBUF_LEN, mmio + RBUF_BYTE_SZ);
+-
+-	tmp = readl(mmio + CARM_HMUC);
+-	tmp |= (CARM_RME | CARM_CME | CARM_WZBC);
+-	writel(tmp, mmio + CARM_HMUC);
+-	readl(mmio + CARM_HMUC);	/* flush */
+-
+-	rc = carm_init_wait(mmio, CARM_RME | CARM_CME, 1);
+-	if (rc) {
+-		DPRINTK("EXIT, carm_init_wait 4 failed\n");
+-		return rc;
+-	}
+-
+-	writel(0, mmio + CARM_HMPHA);
+-	writel(INT_DEF_MASK, mmio + CARM_INT_MASK);
+-
+-	carm_init_responses(host);
+-
+-	/* start initialization, probing state machine */
+-	spin_lock_irq(&host->lock);
+-	assert(host->state == HST_INVALID);
+-	host->state = HST_PROBE_START;
+-	spin_unlock_irq(&host->lock);
+-	schedule_work(&host->fsm_task);
+-
+-	DPRINTK("EXIT\n");
+-	return 0;
+-}
+-
+-static const struct blk_mq_ops carm_mq_ops = {
+-	.queue_rq	= carm_queue_rq,
+-};
+-
+-static int carm_init_disk(struct carm_host *host, unsigned int port_no)
+-{
+-	struct carm_port *port = &host->port[port_no];
+-	struct gendisk *disk;
+-
+-	port->host = host;
+-	port->port_no = port_no;
+-
+-	disk = blk_mq_alloc_disk(&host->tag_set, port);
+-	if (IS_ERR(disk))
+-		return PTR_ERR(disk);
+-
+-	port->disk = disk;
+-	sprintf(disk->disk_name, DRV_NAME "/%u",
+-		(unsigned int)host->id * CARM_MAX_PORTS + port_no);
+-	disk->major = host->major;
+-	disk->first_minor = port_no * CARM_MINORS_PER_MAJOR;
+-	disk->minors = CARM_MINORS_PER_MAJOR;
+-	disk->fops = &carm_bd_ops;
+-	disk->private_data = port;
+-
+-	blk_queue_max_segments(disk->queue, CARM_MAX_REQ_SG);
+-	blk_queue_segment_boundary(disk->queue, CARM_SG_BOUNDARY);
+-	return 0;
+-}
+-
+-static void carm_free_disk(struct carm_host *host, unsigned int port_no)
+-{
+-	struct carm_port *port = &host->port[port_no];
+-	struct gendisk *disk = port->disk;
+-
+-	if (!disk)
+-		return;
+-
+-	if (host->state > HST_DEV_ACTIVATE)
+-		del_gendisk(disk);
+-	blk_cleanup_disk(disk);
+-}
+-
+-static int carm_init_shm(struct carm_host *host)
+-{
+-	host->shm = dma_alloc_coherent(&host->pdev->dev, CARM_SHM_SIZE,
+-				       &host->shm_dma, GFP_KERNEL);
+-	if (!host->shm)
+-		return -ENOMEM;
+-
+-	host->msg_base = host->shm + RBUF_LEN;
+-	host->msg_dma = host->shm_dma + RBUF_LEN;
+-
+-	memset(host->shm, 0xff, RBUF_LEN);
+-	memset(host->msg_base, 0, PDC_SHM_SIZE - RBUF_LEN);
+-
+-	return 0;
+-}
+-
+-static int carm_init_one (struct pci_dev *pdev, const struct pci_device_id *ent)
+-{
+-	struct carm_host *host;
+-	int rc;
+-	struct request_queue *q;
+-	unsigned int i;
+-
+-	printk_once(KERN_DEBUG DRV_NAME " version " DRV_VERSION "\n");
+-
+-	rc = pci_enable_device(pdev);
+-	if (rc)
+-		return rc;
+-
+-	rc = pci_request_regions(pdev, DRV_NAME);
+-	if (rc)
+-		goto err_out;
+-
+-	rc = dma_set_mask(&pdev->dev, DMA_BIT_MASK(32));
+-	if (rc) {
+-		printk(KERN_ERR DRV_NAME "(%s): DMA mask failure\n",
+-			pci_name(pdev));
+-		goto err_out_regions;
+-	}
+-
+-	host = kzalloc(sizeof(*host), GFP_KERNEL);
+-	if (!host) {
+-		rc = -ENOMEM;
+-		goto err_out_regions;
+-	}
+-
+-	host->pdev = pdev;
+-	spin_lock_init(&host->lock);
+-	INIT_WORK(&host->fsm_task, carm_fsm_task);
+-	init_completion(&host->probe_comp);
+-
+-	host->mmio = ioremap(pci_resource_start(pdev, 0),
+-			     pci_resource_len(pdev, 0));
+-	if (!host->mmio) {
+-		printk(KERN_ERR DRV_NAME "(%s): MMIO alloc failure\n",
+-		       pci_name(pdev));
+-		rc = -ENOMEM;
+-		goto err_out_kfree;
+-	}
+-
+-	rc = carm_init_shm(host);
+-	if (rc) {
+-		printk(KERN_ERR DRV_NAME "(%s): DMA SHM alloc failure\n",
+-		       pci_name(pdev));
+-		goto err_out_iounmap;
+-	}
+-
+-	memset(&host->tag_set, 0, sizeof(host->tag_set));
+-	host->tag_set.ops = &carm_mq_ops;
+-	host->tag_set.cmd_size = sizeof(struct carm_request);
+-	host->tag_set.nr_hw_queues = 1;
+-	host->tag_set.nr_maps = 1;
+-	host->tag_set.queue_depth = max_queue;
+-	host->tag_set.numa_node = NUMA_NO_NODE;
+-	host->tag_set.flags = BLK_MQ_F_SHOULD_MERGE;
+-
+-	rc = blk_mq_alloc_tag_set(&host->tag_set);
+-	if (rc)
+-		goto err_out_dma_free;
+-
+-	q = blk_mq_init_queue(&host->tag_set);
+-	if (IS_ERR(q)) {
+-		rc = PTR_ERR(q);
+-		blk_mq_free_tag_set(&host->tag_set);
+-		goto err_out_dma_free;
+-	}
+-
+-	host->oob_q = q;
+-	q->queuedata = host;
+-
+-	/*
+-	 * Figure out which major to use: 160, 161, or dynamic
+-	 */
+-	if (!test_and_set_bit(0, &carm_major_alloc))
+-		host->major = 160;
+-	else if (!test_and_set_bit(1, &carm_major_alloc))
+-		host->major = 161;
+-	else
+-		host->flags |= FL_DYN_MAJOR;
+-
+-	host->id = carm_host_id;
+-	sprintf(host->name, DRV_NAME "%d", carm_host_id);
+-
+-	rc = register_blkdev(host->major, host->name);
+-	if (rc < 0)
+-		goto err_out_free_majors;
+-	if (host->flags & FL_DYN_MAJOR)
+-		host->major = rc;
+-
+-	for (i = 0; i < CARM_MAX_PORTS; i++) {
+-		rc = carm_init_disk(host, i);
+-		if (rc)
+-			goto err_out_blkdev_disks;
+-	}
+-
+-	pci_set_master(pdev);
+-
+-	rc = request_irq(pdev->irq, carm_interrupt, IRQF_SHARED, DRV_NAME, host);
+-	if (rc) {
+-		printk(KERN_ERR DRV_NAME "(%s): irq alloc failure\n",
+-		       pci_name(pdev));
+-		goto err_out_blkdev_disks;
+-	}
+-
+-	rc = carm_init_host(host);
+-	if (rc)
+-		goto err_out_free_irq;
+-
+-	DPRINTK("waiting for probe_comp\n");
+-	wait_for_completion(&host->probe_comp);
+-
+-	printk(KERN_INFO "%s: pci %s, ports %d, io %llx, irq %u, major %d\n",
+-	       host->name, pci_name(pdev), (int) CARM_MAX_PORTS,
+-	       (unsigned long long)pci_resource_start(pdev, 0),
+-		   pdev->irq, host->major);
+-
+-	carm_host_id++;
+-	pci_set_drvdata(pdev, host);
+-	return 0;
+-
+-err_out_free_irq:
+-	free_irq(pdev->irq, host);
+-err_out_blkdev_disks:
+-	for (i = 0; i < CARM_MAX_PORTS; i++)
+-		carm_free_disk(host, i);
+-	unregister_blkdev(host->major, host->name);
+-err_out_free_majors:
+-	if (host->major == 160)
+-		clear_bit(0, &carm_major_alloc);
+-	else if (host->major == 161)
+-		clear_bit(1, &carm_major_alloc);
+-	blk_cleanup_queue(host->oob_q);
+-	blk_mq_free_tag_set(&host->tag_set);
+-err_out_dma_free:
+-	dma_free_coherent(&pdev->dev, CARM_SHM_SIZE, host->shm, host->shm_dma);
+-err_out_iounmap:
+-	iounmap(host->mmio);
+-err_out_kfree:
+-	kfree(host);
+-err_out_regions:
+-	pci_release_regions(pdev);
+-err_out:
+-	pci_disable_device(pdev);
+-	return rc;
+-}
+-
+-static void carm_remove_one (struct pci_dev *pdev)
+-{
+-	struct carm_host *host = pci_get_drvdata(pdev);
+-	unsigned int i;
+-
+-	if (!host) {
+-		printk(KERN_ERR PFX "BUG: no host data for PCI(%s)\n",
+-		       pci_name(pdev));
+-		return;
+-	}
+-
+-	free_irq(pdev->irq, host);
+-	for (i = 0; i < CARM_MAX_PORTS; i++)
+-		carm_free_disk(host, i);
+-	unregister_blkdev(host->major, host->name);
+-	if (host->major == 160)
+-		clear_bit(0, &carm_major_alloc);
+-	else if (host->major == 161)
+-		clear_bit(1, &carm_major_alloc);
+-	blk_cleanup_queue(host->oob_q);
+-	blk_mq_free_tag_set(&host->tag_set);
+-	dma_free_coherent(&pdev->dev, CARM_SHM_SIZE, host->shm, host->shm_dma);
+-	iounmap(host->mmio);
+-	kfree(host);
+-	pci_release_regions(pdev);
+-	pci_disable_device(pdev);
+-}
+-
+-module_pci_driver(carm_driver);
 
 
