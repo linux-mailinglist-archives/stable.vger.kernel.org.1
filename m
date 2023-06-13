@@ -2,79 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BAA6272EFFD
-	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 01:23:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E3AE72F05A
+	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 01:42:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235647AbjFMXXp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 13 Jun 2023 19:23:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58376 "EHLO
+        id S240948AbjFMXlO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 13 Jun 2023 19:41:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241013AbjFMXXf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 19:23:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41DDA19B7
-        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 16:22:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686698564;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=FGLPbtaO6/FMLJ93VwoP9QzoKQHeRUYwNndHsqox87g=;
-        b=C+AfWPw9xQYH/gSO2RONa7SpBaGCnYg4H7kpG3/oPue+4Mi8yB5oq9QNRbBGdLwY+FzYLS
-        MT33ag+V0u+kgZxOhePBOJiFFPAxyue6HLuDKHpZPr/9z8UnelcIoT4NEQxLlmIuFxwef4
-        XoFodzukGYR8TCQsHyF7NZ++Mp/3qDI=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-121-hcrwIQ9tM7CSMsQjBJavdg-1; Tue, 13 Jun 2023 19:22:41 -0400
-X-MC-Unique: hcrwIQ9tM7CSMsQjBJavdg-1
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-62de89f4695so17787886d6.3
-        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 16:22:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686698560; x=1689290560;
-        h=mime-version:user-agent:content-transfer-encoding:organization
-         :references:in-reply-to:date:cc:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FGLPbtaO6/FMLJ93VwoP9QzoKQHeRUYwNndHsqox87g=;
-        b=kwzpZw8xg0r/pcaiLLfJE0MIf8lAI9D7JkYIg/SyS9dyv8FvVopOAkjLmVhADmud3J
-         UX/yz9udckXXztKmNOUw4uctG/jDIoPCcfesHPMctb+eZTj471nqw+69mHzN/YN/lBvE
-         +6wgd6LLNfOej48EXDXsqtKjFFR/KyvdxVQh+njHILHJtwZu9NFHRUimH9Y1GBXVnZNk
-         gP9na/i9zhEl2rir7lWXOjubGI7rPC7sGPe9sWLhQxiPvCLOvMdYz39WLMWTICvcNZlQ
-         Oagm/xytRd4GLVOeCh9pN3EuKF2AjVnU6hvvwdXbrp459owfdwbkDAc6eu5HdW6JMo46
-         gVbA==
-X-Gm-Message-State: AC+VfDxcs+2YiHVj744BKRQK+8lVdd7q+zlO2d/8IMqHEav1KnpZgoxz
-        6E/r1+lDuKriax4L6oOdO5UepQppUwHk9Uc/yRDKTT4xEQYJzECqEDAK1r39eOn8NUDxO2SWnUH
-        XO7DrxkPXC5XepJMf
-X-Received: by 2002:a05:6214:20eb:b0:626:2f1b:b427 with SMTP id 11-20020a05621420eb00b006262f1bb427mr14220918qvk.10.1686698560375;
-        Tue, 13 Jun 2023 16:22:40 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ4MEFTRUzOC69Jgj5XMoNd54D49R+ddJOlqiXaonMYnbmso4nM9+sjWsYuKVw4fjOnMcZrTOg==
-X-Received: by 2002:a05:6214:20eb:b0:626:2f1b:b427 with SMTP id 11-20020a05621420eb00b006262f1bb427mr14220901qvk.10.1686698560090;
-        Tue, 13 Jun 2023 16:22:40 -0700 (PDT)
-Received: from ?IPv6:2600:4040:5c62:8200::feb? ([2600:4040:5c62:8200::feb])
-        by smtp.gmail.com with ESMTPSA id mg9-20020a056214560900b006260e4b6de9sm4285720qvb.118.2023.06.13.16.22.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jun 2023 16:22:39 -0700 (PDT)
-Message-ID: <8e8cdc519429cbd0cefad60386a2548f0c96a5c1.camel@redhat.com>
-Subject: Re: [PATCH v5] drm/dp_mst: Clear MSG_RDY flag before sending new
- message
-From:   Lyude Paul <lyude@redhat.com>
-To:     Wayne Lin <Wayne.Lin@amd.com>, dri-devel@lists.freedesktop.org,
-        amd-gfx@lists.freedesktop.org
-Cc:     ville.syrjala@linux.intel.com, jani.nikula@intel.com,
-        imre.deak@intel.com, harry.wentland@amd.com, jerry.zuo@amd.com,
-        stable@vger.kernel.org
-Date:   Tue, 13 Jun 2023 19:22:37 -0400
-In-Reply-To: <20230609104925.3736756-1-Wayne.Lin@amd.com>
-References: <20230609104925.3736756-1-Wayne.Lin@amd.com>
-Organization: Red Hat Inc.
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
+        with ESMTP id S241232AbjFMXkH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 19:40:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B920F2118;
+        Tue, 13 Jun 2023 16:39:44 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 93CA263375;
+        Tue, 13 Jun 2023 23:39:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E07A1C433CB;
+        Tue, 13 Jun 2023 23:39:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686699582;
+        bh=GSISUAdKFLSbpxyTM08xZOsDpcq/incijyeO8wdFdzQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=n6BV8dpImJkWAKnYGbk6jQa8k3INA5QDed/haok34ODb+G9ceokA3wVB/ACdeA7BK
+         lbnSZFRd6Hb1QaHYi3hYDBlHeDIuHWDyWPdoUhFH7F1hptMmFCPrTszGeidgO8UsAb
+         yGY2bQCTIg2qZBby2Xxomtn0zuwoBvq6dfXrN/0ZIGavK/P1GNvD2/+FTDjG8mXg9R
+         0/LYLtrGztsagsUGzKUvsEaU1fYMVKsM+vLUxj8r05UwVt2TTdo/1//fYPVJiwkO9y
+         WjEvZ9NBsRoEs3S/u7W7oIkqcy+I/XdEzxg8eQfUGOisx6Nsq4pBw6rWb2y1YV4VfK
+         ePojbsP7tVeMQ==
+From:   Jaegeuk Kim <jaegeuk@kernel.org>
+To:     linux-kernel@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net
+Cc:     Jaegeuk Kim <jaegeuk@kernel.org>, stable@vger.kernel.org
+Subject: [PATCH] f2fs: remove i_xattr_sem to avoid deadlock and fix the original issue
+Date:   Tue, 13 Jun 2023 16:39:40 -0700
+Message-ID: <20230613233940.3643362-1-jaegeuk@kernel.org>
+X-Mailer: git-send-email 2.41.0.162.gfafddb0af9-goog
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,320 +52,190 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Alright, managed to figure out my MST woes! Just tested with nouveau and I =
-see
-no regressions :)
+This reverts commit 27161f13e3c3 "f2fs: avoid race in between read xattr & write xattr".
 
-Reviewed-by: Lyude Paul <lyude@redhat.com>
+That introduced a deadlock case:
 
+Thread #1:
 
-On Fri, 2023-06-09 at 18:49 +0800, Wayne Lin wrote:
-> [Why]
-> The sequence for collecting down_reply from source perspective should
-> be:
->=20
-> Request_n->repeat (get partial reply of Request_n->clear message ready
-> flag to ack DPRX that the message is received) till all partial
-> replies for Request_n are received->new Request_n+1.
->=20
-> Now there is chance that drm_dp_mst_hpd_irq() will fire new down
-> request in the tx queue when the down reply is incomplete. Source is
-> restricted to generate interveleaved message transactions so we should
-> avoid it.
->=20
-> Also, while assembling partial reply packets, reading out DPCD DOWN_REP
-> Sideband MSG buffer + clearing DOWN_REP_MSG_RDY flag should be
-> wrapped up as a complete operation for reading out a reply packet.
-> Kicking off a new request before clearing DOWN_REP_MSG_RDY flag might
-> be risky. e.g. If the reply of the new request has overwritten the
-> DPRX DOWN_REP Sideband MSG buffer before source writing one to clear
-> DOWN_REP_MSG_RDY flag, source then unintentionally flushes the reply
-> for the new request. Should handle the up request in the same way.
->=20
-> [How]
-> Separete drm_dp_mst_hpd_irq() into 2 steps. After acking the MST IRQ
-> event, driver calls drm_dp_mst_hpd_irq_send_new_request() and might
-> trigger drm_dp_mst_kick_tx() only when there is no on going message
-> transaction.
->=20
-> Changes since v1:
-> * Reworked on review comments received
-> -> Adjust the fix to let driver explicitly kick off new down request
-> when mst irq event is handled and acked
-> -> Adjust the commit message
->=20
-> Changes since v2:
-> * Adjust the commit message
-> * Adjust the naming of the divided 2 functions and add a new input
->   parameter "ack".
-> * Adjust code flow as per review comments.
->=20
-> Changes since v3:
-> * Update the function description of drm_dp_mst_hpd_irq_handle_event
->=20
-> Changes since v4:
-> * Change ack of drm_dp_mst_hpd_irq_handle_event() to be an array align
->   the size of esi[]
->=20
-> Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-> Cc: stable@vger.kernel.org
-> ---
->  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 32 +++++------
->  drivers/gpu/drm/display/drm_dp_mst_topology.c | 54 ++++++++++++++++---
->  drivers/gpu/drm/i915/display/intel_dp.c       |  7 +--
->  drivers/gpu/drm/nouveau/dispnv50/disp.c       | 12 +++--
->  include/drm/display/drm_dp_mst_helper.h       |  7 ++-
->  5 files changed, 81 insertions(+), 31 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/=
-gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> index d5cec03eaa8d..ec629b4037e4 100644
-> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> @@ -3263,6 +3263,7 @@ static void dm_handle_mst_sideband_msg(struct amdgp=
-u_dm_connector *aconnector)
-> =20
->  	while (dret =3D=3D dpcd_bytes_to_read &&
->  		process_count < max_process_count) {
-> +		u8 ack[DP_PSR_ERROR_STATUS - DP_SINK_COUNT_ESI] =3D {};
->  		u8 retry;
->  		dret =3D 0;
-> =20
-> @@ -3271,28 +3272,29 @@ static void dm_handle_mst_sideband_msg(struct amd=
-gpu_dm_connector *aconnector)
->  		DRM_DEBUG_DRIVER("ESI %02x %02x %02x\n", esi[0], esi[1], esi[2]);
->  		/* handle HPD short pulse irq */
->  		if (aconnector->mst_mgr.mst_state)
-> -			drm_dp_mst_hpd_irq(
-> -				&aconnector->mst_mgr,
-> -				esi,
-> -				&new_irq_handled);
-> +			drm_dp_mst_hpd_irq_handle_event(&aconnector->mst_mgr,
-> +							esi,
-> +							ack,
-> +							&new_irq_handled);
-> =20
->  		if (new_irq_handled) {
->  			/* ACK at DPCD to notify down stream */
-> -			const int ack_dpcd_bytes_to_write =3D
-> -				dpcd_bytes_to_read - 1;
-> -
->  			for (retry =3D 0; retry < 3; retry++) {
-> -				u8 wret;
-> -
-> -				wret =3D drm_dp_dpcd_write(
-> -					&aconnector->dm_dp_aux.aux,
-> -					dpcd_addr + 1,
-> -					&esi[1],
-> -					ack_dpcd_bytes_to_write);
-> -				if (wret =3D=3D ack_dpcd_bytes_to_write)
-> +				ssize_t wret;
-> +
-> +				wret =3D drm_dp_dpcd_writeb(&aconnector->dm_dp_aux.aux,
-> +							  dpcd_addr + 1,
-> +							  ack[1]);
-> +				if (wret =3D=3D 1)
->  					break;
->  			}
-> =20
-> +			if (retry =3D=3D 3) {
-> +				DRM_ERROR("Failed to ack MST event.\n");
-> +				return;
-> +			}
-> +
-> +			drm_dp_mst_hpd_irq_send_new_request(&aconnector->mst_mgr);
->  			/* check if there is new irq to be handled */
->  			dret =3D drm_dp_dpcd_read(
->  				&aconnector->dm_dp_aux.aux,
-> diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c b/drivers/gpu/=
-drm/display/drm_dp_mst_topology.c
-> index 38dab76ae69e..487d057a9582 100644
-> --- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
-> +++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
-> @@ -4053,17 +4053,28 @@ static int drm_dp_mst_handle_up_req(struct drm_dp=
-_mst_topology_mgr *mgr)
->  }
-> =20
->  /**
-> - * drm_dp_mst_hpd_irq() - MST hotplug IRQ notify
-> + * drm_dp_mst_hpd_irq_handle_event() - MST hotplug IRQ handle MST event
->   * @mgr: manager to notify irq for.
->   * @esi: 4 bytes from SINK_COUNT_ESI
-> + * @ack: 4 bytes used to ack events starting from SINK_COUNT_ESI
->   * @handled: whether the hpd interrupt was consumed or not
->   *
-> - * This should be called from the driver when it detects a short IRQ,
-> + * This should be called from the driver when it detects a HPD IRQ,
->   * along with the value of the DEVICE_SERVICE_IRQ_VECTOR_ESI0. The
-> - * topology manager will process the sideband messages received as a res=
-ult
-> - * of this.
-> + * topology manager will process the sideband messages received
-> + * as indicated in the DEVICE_SERVICE_IRQ_VECTOR_ESI0 and set the
-> + * corresponding flags that Driver has to ack the DP receiver later.
-> + *
-> + * Note that driver shall also call
-> + * drm_dp_mst_hpd_irq_send_new_request() if the 'handled' is set
-> + * after calling this function, to try to kick off a new request in
-> + * the queue if the previous message transaction is completed.
-> + *
-> + * See also:
-> + * drm_dp_mst_hpd_irq_send_new_request()
->   */
-> -int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi, boo=
-l *handled)
-> +int drm_dp_mst_hpd_irq_handle_event(struct drm_dp_mst_topology_mgr *mgr,=
- const u8 *esi,
-> +				    u8 *ack, bool *handled)
->  {
->  	int ret =3D 0;
->  	int sc;
-> @@ -4078,18 +4089,47 @@ int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology=
-_mgr *mgr, u8 *esi, bool *handl
->  	if (esi[1] & DP_DOWN_REP_MSG_RDY) {
->  		ret =3D drm_dp_mst_handle_down_rep(mgr);
->  		*handled =3D true;
-> +		ack[1] |=3D DP_DOWN_REP_MSG_RDY;
->  	}
-> =20
->  	if (esi[1] & DP_UP_REQ_MSG_RDY) {
->  		ret |=3D drm_dp_mst_handle_up_req(mgr);
->  		*handled =3D true;
-> +		ack[1] |=3D DP_UP_REQ_MSG_RDY;
->  	}
-> =20
-> -	drm_dp_mst_kick_tx(mgr);
->  	return ret;
->  }
-> -EXPORT_SYMBOL(drm_dp_mst_hpd_irq);
-> +EXPORT_SYMBOL(drm_dp_mst_hpd_irq_handle_event);
-> =20
-> +/**
-> + * drm_dp_mst_hpd_irq_send_new_request() - MST hotplug IRQ kick off new =
-request
-> + * @mgr: manager to notify irq for.
-> + *
-> + * This should be called from the driver when mst irq event is handled
-> + * and acked. Note that new down request should only be sent when
-> + * previous message transaction is completed. Source is not supposed to =
-generate
-> + * interleaved message transactions.
-> + */
-> +void drm_dp_mst_hpd_irq_send_new_request(struct drm_dp_mst_topology_mgr =
-*mgr)
-> +{
-> +	struct drm_dp_sideband_msg_tx *txmsg;
-> +	bool kick =3D true;
-> +
-> +	mutex_lock(&mgr->qlock);
-> +	txmsg =3D list_first_entry_or_null(&mgr->tx_msg_downq,
-> +					 struct drm_dp_sideband_msg_tx, next);
-> +	/* If last transaction is not completed yet*/
-> +	if (!txmsg ||
-> +	    txmsg->state =3D=3D DRM_DP_SIDEBAND_TX_START_SEND ||
-> +	    txmsg->state =3D=3D DRM_DP_SIDEBAND_TX_SENT)
-> +		kick =3D false;
-> +	mutex_unlock(&mgr->qlock);
-> +
-> +	if (kick)
-> +		drm_dp_mst_kick_tx(mgr);
-> +}
-> +EXPORT_SYMBOL(drm_dp_mst_hpd_irq_send_new_request);
->  /**
->   * drm_dp_mst_detect_port() - get connection status for an MST port
->   * @connector: DRM connector for this port
-> diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i9=
-15/display/intel_dp.c
-> index 4bec8cd7979f..f4a2e72a5c20 100644
-> --- a/drivers/gpu/drm/i915/display/intel_dp.c
-> +++ b/drivers/gpu/drm/i915/display/intel_dp.c
-> @@ -4062,9 +4062,7 @@ intel_dp_mst_hpd_irq(struct intel_dp *intel_dp, u8 =
-*esi, u8 *ack)
->  {
->  	bool handled =3D false;
-> =20
-> -	drm_dp_mst_hpd_irq(&intel_dp->mst_mgr, esi, &handled);
-> -	if (handled)
-> -		ack[1] |=3D esi[1] & (DP_DOWN_REP_MSG_RDY | DP_UP_REQ_MSG_RDY);
-> +	drm_dp_mst_hpd_irq_handle_event(&intel_dp->mst_mgr, esi, ack, &handled)=
-;
-> =20
->  	if (esi[1] & DP_CP_IRQ) {
->  		intel_hdcp_handle_cp_irq(intel_dp->attached_connector);
-> @@ -4139,6 +4137,9 @@ intel_dp_check_mst_status(struct intel_dp *intel_dp=
-)
-> =20
->  		if (!intel_dp_ack_sink_irq_esi(intel_dp, ack))
->  			drm_dbg_kms(&i915->drm, "Failed to ack ESI\n");
-> +
-> +		if (ack[1] & (DP_DOWN_REP_MSG_RDY | DP_UP_REQ_MSG_RDY))
-> +			drm_dp_mst_hpd_irq_send_new_request(&intel_dp->mst_mgr);
->  	}
-> =20
->  	return link_ok;
-> diff --git a/drivers/gpu/drm/nouveau/dispnv50/disp.c b/drivers/gpu/drm/no=
-uveau/dispnv50/disp.c
-> index 9b6824f6b9e4..42e1665ba11a 100644
-> --- a/drivers/gpu/drm/nouveau/dispnv50/disp.c
-> +++ b/drivers/gpu/drm/nouveau/dispnv50/disp.c
-> @@ -1359,22 +1359,26 @@ nv50_mstm_service(struct nouveau_drm *drm,
->  	u8 esi[8] =3D {};
-> =20
->  	while (handled) {
-> +		u8 ack[8] =3D {};
-> +
->  		rc =3D drm_dp_dpcd_read(aux, DP_SINK_COUNT_ESI, esi, 8);
->  		if (rc !=3D 8) {
->  			ret =3D false;
->  			break;
->  		}
-> =20
-> -		drm_dp_mst_hpd_irq(&mstm->mgr, esi, &handled);
-> +		drm_dp_mst_hpd_irq_handle_event(&mstm->mgr, esi, ack, &handled);
->  		if (!handled)
->  			break;
-> =20
-> -		rc =3D drm_dp_dpcd_write(aux, DP_SINK_COUNT_ESI + 1, &esi[1],
-> -				       3);
-> -		if (rc !=3D 3) {
-> +		rc =3D drm_dp_dpcd_writeb(aux, DP_SINK_COUNT_ESI + 1, ack[1]);
-> +
-> +		if (rc !=3D 1) {
->  			ret =3D false;
->  			break;
->  		}
-> +
-> +		drm_dp_mst_hpd_irq_send_new_request(&mstm->mgr);
->  	}
-> =20
->  	if (!ret)
-> diff --git a/include/drm/display/drm_dp_mst_helper.h b/include/drm/displa=
-y/drm_dp_mst_helper.h
-> index 32c764fb9cb5..40e855c8407c 100644
-> --- a/include/drm/display/drm_dp_mst_helper.h
-> +++ b/include/drm/display/drm_dp_mst_helper.h
-> @@ -815,8 +815,11 @@ void drm_dp_mst_topology_mgr_destroy(struct drm_dp_m=
-st_topology_mgr *mgr);
->  bool drm_dp_read_mst_cap(struct drm_dp_aux *aux, const u8 dpcd[DP_RECEIV=
-ER_CAP_SIZE]);
->  int drm_dp_mst_topology_mgr_set_mst(struct drm_dp_mst_topology_mgr *mgr,=
- bool mst_state);
-> =20
-> -int drm_dp_mst_hpd_irq(struct drm_dp_mst_topology_mgr *mgr, u8 *esi, boo=
-l *handled);
-> -
-> +int drm_dp_mst_hpd_irq_handle_event(struct drm_dp_mst_topology_mgr *mgr,
-> +				    const u8 *esi,
-> +				    u8 *ack,
-> +				    bool *handled);
-> +void drm_dp_mst_hpd_irq_send_new_request(struct drm_dp_mst_topology_mgr =
-*mgr);
-> =20
->  int
->  drm_dp_mst_detect_port(struct drm_connector *connector,
+[122554.641906][   T92]  f2fs_getxattr+0xd4/0x5fc
+    -> waiting for f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
 
---=20
-Cheers,
- Lyude Paul (she/her)
- Software Engineer at Red Hat
+[122554.641927][   T92]  __f2fs_get_acl+0x50/0x284
+[122554.641948][   T92]  f2fs_init_acl+0x84/0x54c
+[122554.641969][   T92]  f2fs_init_inode_metadata+0x460/0x5f0
+[122554.641990][   T92]  f2fs_add_inline_entry+0x11c/0x350
+    -> Locked dir->inode_page by f2fs_get_node_page()
+
+[122554.642009][   T92]  f2fs_do_add_link+0x100/0x1e4
+[122554.642025][   T92]  f2fs_create+0xf4/0x22c
+[122554.642047][   T92]  vfs_create+0x130/0x1f4
+
+Thread #2:
+
+[123996.386358][   T92]  __get_node_page+0x8c/0x504
+    -> waiting for dir->inode_page lock
+
+[123996.386383][   T92]  read_all_xattrs+0x11c/0x1f4
+[123996.386405][   T92]  __f2fs_setxattr+0xcc/0x528
+[123996.386424][   T92]  f2fs_setxattr+0x158/0x1f4
+    -> f2fs_down_write(&F2FS_I(inode)->i_xattr_sem);
+
+[123996.386443][   T92]  __f2fs_set_acl+0x328/0x430
+[123996.386618][   T92]  f2fs_set_acl+0x38/0x50
+[123996.386642][   T92]  posix_acl_chmod+0xc8/0x1c8
+[123996.386669][   T92]  f2fs_setattr+0x5e0/0x6bc
+[123996.386689][   T92]  notify_change+0x4d8/0x580
+[123996.386717][   T92]  chmod_common+0xd8/0x184
+[123996.386748][   T92]  do_fchmodat+0x60/0x124
+[123996.386766][   T92]  __arm64_sys_fchmodat+0x28/0x3c
+
+Let's take a look at the original issue back.
+
+Thread A:                                       Thread B:
+-f2fs_getxattr
+   -lookup_all_xattrs
+      -xnid = F2FS_I(inode)->i_xattr_nid;
+                                                -f2fs_setxattr
+                                                    -__f2fs_setxattr
+                                                        -write_all_xattrs
+                                                            -truncate_xattr_node
+                                                                  ...  ...
+                                                -write_checkpoint
+                                                                  ...  ...
+                                                -alloc_nid   <- nid reuse
+          -get_node_page
+              -f2fs_bug_on  <- nid != node_footer->nid
+
+I think we don't need to truncate xattr pages eagerly which introduces lots of
+data races without big benefits.
+
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+---
+ fs/f2fs/f2fs.h  |  1 -
+ fs/f2fs/super.c |  1 -
+ fs/f2fs/xattr.c | 31 ++++++++-----------------------
+ 3 files changed, 8 insertions(+), 25 deletions(-)
+
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 3f5b161dd743..7b9af2d51656 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -838,7 +838,6 @@ struct f2fs_inode_info {
+ 
+ 	/* avoid racing between foreground op and gc */
+ 	struct f2fs_rwsem i_gc_rwsem[2];
+-	struct f2fs_rwsem i_xattr_sem; /* avoid racing between reading and changing EAs */
+ 
+ 	int i_extra_isize;		/* size of extra space located in i_addr */
+ 	kprojid_t i_projid;		/* id for project quota */
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 1b2c788ed80d..c917fa771f0e 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1418,7 +1418,6 @@ static struct inode *f2fs_alloc_inode(struct super_block *sb)
+ 	INIT_LIST_HEAD(&fi->gdirty_list);
+ 	init_f2fs_rwsem(&fi->i_gc_rwsem[READ]);
+ 	init_f2fs_rwsem(&fi->i_gc_rwsem[WRITE]);
+-	init_f2fs_rwsem(&fi->i_xattr_sem);
+ 
+ 	/* Will be used by directory only */
+ 	fi->i_dir_level = F2FS_SB(sb)->dir_level;
+diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
+index 213805d3592c..bdc8a55085a2 100644
+--- a/fs/f2fs/xattr.c
++++ b/fs/f2fs/xattr.c
+@@ -433,7 +433,7 @@ static inline int write_all_xattrs(struct inode *inode, __u32 hsize,
+ {
+ 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+ 	size_t inline_size = inline_xattr_size(inode);
+-	struct page *in_page = NULL;
++	struct page *in_page = ipage;
+ 	void *xattr_addr;
+ 	void *inline_addr = NULL;
+ 	struct page *xpage;
+@@ -446,29 +446,19 @@ static inline int write_all_xattrs(struct inode *inode, __u32 hsize,
+ 
+ 	/* write to inline xattr */
+ 	if (inline_size) {
+-		if (ipage) {
+-			inline_addr = inline_xattr_addr(inode, ipage);
+-		} else {
++		if (!in_page) {
+ 			in_page = f2fs_get_node_page(sbi, inode->i_ino);
+ 			if (IS_ERR(in_page)) {
+ 				f2fs_alloc_nid_failed(sbi, new_nid);
+ 				return PTR_ERR(in_page);
+ 			}
+-			inline_addr = inline_xattr_addr(inode, in_page);
+ 		}
++		inline_addr = inline_xattr_addr(inode, in_page);
+ 
+-		f2fs_wait_on_page_writeback(ipage ? ipage : in_page,
+-							NODE, true, true);
+-		/* no need to use xattr node block */
++		f2fs_wait_on_page_writeback(in_page, NODE, true, true);
+ 		if (hsize <= inline_size) {
+-			err = f2fs_truncate_xattr_node(inode);
+-			f2fs_alloc_nid_failed(sbi, new_nid);
+-			if (err) {
+-				f2fs_put_page(in_page, 1);
+-				return err;
+-			}
+ 			memcpy(inline_addr, txattr_addr, inline_size);
+-			set_page_dirty(ipage ? ipage : in_page);
++			set_page_dirty(in_page);
+ 			goto in_page_out;
+ 		}
+ 	}
+@@ -502,12 +492,13 @@ static inline int write_all_xattrs(struct inode *inode, __u32 hsize,
+ 	memcpy(xattr_addr, txattr_addr + inline_size, VALID_XATTR_BLOCK_SIZE);
+ 
+ 	if (inline_size)
+-		set_page_dirty(ipage ? ipage : in_page);
++		set_page_dirty(in_page);
+ 	set_page_dirty(xpage);
+ 
+ 	f2fs_put_page(xpage, 1);
+ in_page_out:
+-	f2fs_put_page(in_page, 1);
++	if (in_page != ipage)
++		f2fs_put_page(in_page, 1);
+ 	return err;
+ }
+ 
+@@ -528,10 +519,8 @@ int f2fs_getxattr(struct inode *inode, int index, const char *name,
+ 	if (len > F2FS_NAME_LEN)
+ 		return -ERANGE;
+ 
+-	f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
+ 	error = lookup_all_xattrs(inode, ipage, index, len, name,
+ 				&entry, &base_addr, &base_size, &is_inline);
+-	f2fs_up_read(&F2FS_I(inode)->i_xattr_sem);
+ 	if (error)
+ 		return error;
+ 
+@@ -565,9 +554,7 @@ ssize_t f2fs_listxattr(struct dentry *dentry, char *buffer, size_t buffer_size)
+ 	int error;
+ 	size_t rest = buffer_size;
+ 
+-	f2fs_down_read(&F2FS_I(inode)->i_xattr_sem);
+ 	error = read_all_xattrs(inode, NULL, &base_addr);
+-	f2fs_up_read(&F2FS_I(inode)->i_xattr_sem);
+ 	if (error)
+ 		return error;
+ 
+@@ -794,9 +781,7 @@ int f2fs_setxattr(struct inode *inode, int index, const char *name,
+ 	f2fs_balance_fs(sbi, true);
+ 
+ 	f2fs_lock_op(sbi);
+-	f2fs_down_write(&F2FS_I(inode)->i_xattr_sem);
+ 	err = __f2fs_setxattr(inode, index, name, value, size, ipage, flags);
+-	f2fs_up_write(&F2FS_I(inode)->i_xattr_sem);
+ 	f2fs_unlock_op(sbi);
+ 
+ 	f2fs_update_time(sbi, REQ_TIME);
+-- 
+2.41.0.162.gfafddb0af9-goog
 
