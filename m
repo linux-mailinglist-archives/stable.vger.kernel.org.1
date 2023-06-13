@@ -2,111 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 883E372DE19
-	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 11:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9675972DFA4
+	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 12:35:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241362AbjFMJqE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 13 Jun 2023 05:46:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59056 "EHLO
+        id S239045AbjFMKfP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 13 Jun 2023 06:35:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241079AbjFMJpv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 05:45:51 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBAE510E3
-        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 02:45:46 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-4f61b45ee0dso6462271e87.0
-        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 02:45:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20221208.gappssmtp.com; s=20221208; t=1686649545; x=1689241545;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8SpYglX3xZWy5x6JjxtuTN/FRZavJqUKXS8aVqhebYk=;
-        b=XZdZk9shQ71u/141zS/u087WEwIiXiVqoN5KykFsUDzUgnGRIL2wqNn2WoNL4E4t9q
-         lEr0qAN1yOObjT0sr4ONuHCjhDcE03RnnLuVTjtiHeXQ4yrRSOp5eUV5WV+DULDJ4DOd
-         zFiS7+1DQV6FeRResvIBtMnU7swr8DniimFgP01bMtuezbDe6C+QWZeJM6AsRMXd5dr3
-         JexylTYCI9Khd25mb3PJxRLkGzJS6J6LsXtGUTy81YZ4WBL1ekCFtC8JzjFFED8+Z+f2
-         UVFlX+SXon3VAqzVtIRaoWVYpfMWQP9FVKhDYR+dQusQqDuLqDJgH6bIIHAKHujjTlp3
-         j2aA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686649545; x=1689241545;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8SpYglX3xZWy5x6JjxtuTN/FRZavJqUKXS8aVqhebYk=;
-        b=fDBGngkcCY+SIsHk6yNt77Snozx082E3o1wbbQozNbvmOUOLT22DDvcrETZ1ysAtYQ
-         l1Eu9Y7s0GI1f9u1vbpLA1J40ivsZUjQ7W0W3jjWxmZ/i28Fhn8sMC6pobPx2nU6K4iq
-         Esy+/VP/mz0TZTF1TLunSKZlAsGIK4kawdfp7V2LZjpSIMUYXSvsj0ue8tFpwr7plvf8
-         LycpmoWvYxVDPxNpzArKWeJgsHP+O0E9OT2DBBtDriMmPTqG4SdMrYEXatUvPLcMRg1Y
-         /f91dQ0CKKj18FozgdF6J9+O+qIX7JpDWpVKVnt0FdP0/aGACuibXP13/1J6mvI3E+En
-         PFpQ==
-X-Gm-Message-State: AC+VfDzWIzSRKnAs7ptN8IQxXbgHJJbDFcVinfYegeZ/Jw276p3iA1pL
-        8YsQGxxq3df80RhMSlEXq39AH5fZSH50HKQJo1Aauw==
-X-Google-Smtp-Source: ACHHUZ5cFzMVREFQr4SC+vRlo8q4itfT6Lyp/yPulI7nR8OW7RQeLvlldVxv4pJyEPB8r/jXc7ZKZr9+unN9EIxlpfY=
-X-Received: by 2002:a19:4f0d:0:b0:4f4:dd5d:f3e4 with SMTP id
- d13-20020a194f0d000000b004f4dd5df3e4mr5367991lfb.26.1686649544710; Tue, 13
- Jun 2023 02:45:44 -0700 (PDT)
+        with ESMTP id S241605AbjFMKen (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 06:34:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EC3B10E4
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 03:33:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4951563492
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 10:33:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38465C4339B;
+        Tue, 13 Jun 2023 10:33:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1686652412;
+        bh=+30TxSPw8bIYEmvxMx3HJRi0UP/ZknvcxI1X2goZi/8=;
+        h=Subject:To:From:Date:In-Reply-To:From;
+        b=JE9gDksxRbRmchOFPxCskN0XI5jdehlHQBmXudrqoIawnLT9FLVuRSeFPy6jIBAWI
+         ouIPMKs2Ja4KhhXpnCZuFR9wz+fsT9qQPcTek3wSad64HidsfogvIWlnzj3pAJWg0W
+         JFnWS/ontuGoMRTFoPepQY/3YoqNFa1CU3QcgFq4=
+Subject: patch "tty: serial: samsung_tty: Fix a memory leak in" added to tty-testing
+To:     christophe.jaillet@wanadoo.fr, andi.shyti@kernel.org,
+        gregkh@linuxfoundation.org, jirislaby@kernel.org,
+        krzysztof.kozlowski@linaro.org, stable@vger.kernel.org
+From:   <gregkh@linuxfoundation.org>
+Date:   Tue, 13 Jun 2023 12:33:30 +0200
+In-Reply-To: <e4baf6039368f52e5a5453982ddcb9a330fc689e.1686412569.git.christophe.jaillet@wanadoo.fr>
+Message-ID: <2023061330-debug-bronco-f8af@gregkh>
 MIME-Version: 1.0
-References: <20230612101710.279705932@linuxfoundation.org>
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-From:   ogasawara takeshi <takeshi.ogasawara@futuring-girl.com>
-Date:   Tue, 13 Jun 2023 18:45:33 +0900
-Message-ID: <CAKL4bV5Kvn7bAwChdpmiA7ONJ8bnDYCNFJTxqfs_dYfbTzt38Q@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/132] 6.1.34-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
 
-On Mon, Jun 12, 2023 at 7:56=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.34 release.
-> There are 132 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 14 Jun 2023 10:16:41 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.34-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+This is a note to let you know that I've just added the patch titled
 
-6.1.34-rc1 tested.
+    tty: serial: samsung_tty: Fix a memory leak in
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+to my tty git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git
+in the tty-testing branch.
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64), arch linux)
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
 
-Thanks
+The patch will be merged to the tty-next branch sometime soon,
+after it passes testing, and the merge window is open.
 
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+If you have any questions about this process, please let me know.
+
+
+From a9c09546e903f1068acfa38e1ee18bded7114b37 Mon Sep 17 00:00:00 2001
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Date: Sat, 10 Jun 2023 17:59:25 +0200
+Subject: tty: serial: samsung_tty: Fix a memory leak in
+ s3c24xx_serial_getclk() in case of error
+
+If clk_get_rate() fails, the clk that has just been allocated needs to be
+freed.
+
+Cc: <stable@vger.kernel.org> # v3.3+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 5f5a7a5578c5 ("serial: samsung: switch to clkdev based clock lookup")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Message-ID: <e4baf6039368f52e5a5453982ddcb9a330fc689e.1686412569.git.christophe.jaillet@wanadoo.fr>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/tty/serial/samsung_tty.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/tty/serial/samsung_tty.c b/drivers/tty/serial/samsung_tty.c
+index 2a7520ad3abd..a92a23e1964e 100644
+--- a/drivers/tty/serial/samsung_tty.c
++++ b/drivers/tty/serial/samsung_tty.c
+@@ -1459,8 +1459,12 @@ static unsigned int s3c24xx_serial_getclk(struct s3c24xx_uart_port *ourport,
+ 			continue;
+ 
+ 		rate = clk_get_rate(clk);
+-		if (!rate)
++		if (!rate) {
++			dev_err(ourport->port.dev,
++				"Failed to get clock rate for %s.\n", clkname);
++			clk_put(clk);
+ 			continue;
++		}
+ 
+ 		if (ourport->info->has_divslot) {
+ 			unsigned long div = rate / req_baud;
+-- 
+2.41.0
+
+
