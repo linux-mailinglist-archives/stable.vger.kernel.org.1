@@ -2,58 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94F1172D549
-	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 02:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0084D72D587
+	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 02:10:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232646AbjFMAA1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 20:00:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48736 "EHLO
+        id S238434AbjFMAKm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 20:10:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232056AbjFMAA0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 20:00:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FD8A12A;
-        Mon, 12 Jun 2023 17:00:25 -0700 (PDT)
+        with ESMTP id S237887AbjFMAKj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 20:10:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A592D171D;
+        Mon, 12 Jun 2023 17:10:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C9BF561FCF;
-        Tue, 13 Jun 2023 00:00:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 163F1C4339B;
-        Tue, 13 Jun 2023 00:00:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B4B662E7C;
+        Tue, 13 Jun 2023 00:10:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E8D3C4339C;
+        Tue, 13 Jun 2023 00:10:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686614424;
-        bh=ejP2zOU7tKEEXBd532d7YQRPeaxHw7CzRYHpB1izQJ4=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=nmcYwxruMeSny0UTLfqbrvXR+UhnWDhCeoaMMy0oOt29NVueMD6CWC+vYalTwiYlf
-         LvdGmAheoyR4fzkjl7lsSgvT57EN2XG5gGZ+qw1oQzHU9D0CIWfMY3j/uSYNLPjI5L
-         QTEezCsSe8byoPifLF6vxtfoXcgf0EMU3NLaLQWHePyF2N/kXMGSdsthUIsFqyvlSY
-         QDwpT9AvzpkabnESYSfURroMw4v0Capv6JCxOQ2/tAAGU/818TDExsK+pSPxphpZb3
-         2V4h4v21U6qk5nRC4YxU20JmsTglh+8+4lpuGD8MSNZFoPeKoUNr4bqHkFRT3dwJee
-         ZjSwtq/6w+RaA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id E30E0E1CF31;
-        Tue, 13 Jun 2023 00:00:23 +0000 (UTC)
+        s=k20201202; t=1686615037;
+        bh=RkC7m+ef9MDtn7UWLvgRnRzmN0nJLRntkzJFcqy2vXw=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=FHxvRGIAxDoNvq/SN8C376t3jj5M5YeyBEnSBQEIePf8IYJ5O3iPXFYKxeH3zr9uc
+         vTvrrwDc0P5Jpc+b4Xv4zRkSpfTlrT+fbRC3LRXKDJzxsS1YENK+dX5daB77WpijZG
+         FriHbVFFPh2O1BFpdttS4cZaz+rsWidUolh1MUDZs9E9nhZo0EqzeetlNjKFiU7doB
+         giVt0aYz3nY/pMQDBoxDlE6VjeykIwC26tsmtls+VY83CfjXl2YF+lf1z6vJfea96t
+         l4/IAGDiGi1PPK1KMKROVYpk2Ss3p1x72lqDwT6iGL/JlrKRz99ZG4KudliXDOmNJZ
+         WdTQNIRPk+4sg==
+Message-ID: <2f3328c4be9db6feef2cc662ede70f92.sboyd@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 01/17] selftests: mptcp: lib: skip if not below kernel
- version
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <168661442392.10094.4616497599019441750.git-patchwork-notify@kernel.org>
-Date:   Tue, 13 Jun 2023 00:00:23 +0000
-References: <20230609-upstream-net-20230610-mptcp-selftests-support-old-kernels-part-3-v1-1-2896fe2ee8a3@tessares.net>
-In-Reply-To: <20230609-upstream-net-20230610-mptcp-selftests-support-old-kernels-part-3-v1-1-2896fe2ee8a3@tessares.net>
-To:     Matthieu Baerts <matthieu.baerts@tessares.net>
-Cc:     mptcp@lists.linux.dev, martineau@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        shuah@kernel.org, fw@strlen.de, dcaratti@redhat.com,
-        cpaasch@apple.com, geliangtang@gmail.com, geliang.tang@suse.com,
-        netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-        stable@vger.kernel.org
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20230526171057.66876-2-sebastian.reichel@collabora.com>
+References: <20230526171057.66876-1-sebastian.reichel@collabora.com> <20230526171057.66876-2-sebastian.reichel@collabora.com>
+Subject: Re: [PATCH v2 1/2] clk: composite: Fix handling of high clock rates
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     Christopher Obbard <chris.obbard@collabora.com>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        kernel@collabora.com, stable@vger.kernel.org,
+        Maxime Ripard <maxime@cerno.tech>
+To:     Michael Turquette <mturquette@baylibre.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Mon, 12 Jun 2023 17:10:35 -0700
+User-Agent: alot/0.10
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -62,69 +59,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
+Quoting Sebastian Reichel (2023-05-26 10:10:56)
+> ULONG_MAX is used by a few drivers to figure out the highest available
+> clock rate via clk_round_rate(clk, ULONG_MAX). Since abs() takes a
+> signed value as input, the current logic effectively calculates with
+> ULONG_MAX =3D -1, which results in the worst parent clock being chosen
+> instead of the best one.
+>=20
+> For example on Rockchip RK3588 the eMMC driver tries to figure out
+> the highest available clock rate. There are three parent clocks
+> available resulting in the following rate diffs with the existing
+> logic:
+>=20
+> GPLL:   abs(18446744073709551615 - 1188000000) =3D 1188000001
+> CPLL:   abs(18446744073709551615 - 1500000000) =3D 1500000001
+> XIN24M: abs(18446744073709551615 -   24000000) =3D   24000001
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+I had to read the abs() macro to understand this and also look at the
+types for 'req->rate' and 'tmp_req.rate' (both are unsigned long) to
+understand what's going on. I'm not sure I'd say that abs() takes the
+input as a signed value. Instead, it converts the input to a signed type
+to figure out if it should negate the value or not. The problem is the
+subtraction result is larger than can fit in a signed long long on a
+64-bit machine, so we can't use the macro at all if the type is unsigned
+long and the sign bit is set.
 
-On Sat, 10 Jun 2023 18:11:36 +0200 you wrote:
-> Selftests are supposed to run on any kernels, including the old ones not
-> supporting all MPTCP features.
-> 
-> A new function is now available to easily detect if a feature is
-> missing by looking at the kernel version. That's clearly not ideal and
-> this kind of check should be avoided as soon as possible. But sometimes,
-> there are no external sign that a "feature" is available or not:
-> internal behaviours can change without modifying the uAPI and these
-> selftests are verifying the internal behaviours. Sometimes, the only
-> (easy) way to verify if the feature is present is to run the test but
-> then the validation cannot determine if there is a failure with the
-> feature or if the feature is missing. Then it looks better to check the
-> kernel version instead of having tests that can never fail. In any case,
-> we need a solution not to have a whole selftest being marked as failed
-> just because one sub-test has failed.
-> 
-> [...]
+>=20
+> As a result the clock framework will promote a maximum supported
+> clock rate of 24 MHz, even though 1.5GHz are possible. With the
+> updated logic any casting between signed and unsigned is avoided
+> and the numbers look like this instead:
+>=20
+> GPLL:   18446744073709551615 - 1188000000 =3D 18446744072521551615
+> CPLL:   18446744073709551615 - 1500000000 =3D 18446744072209551615
+> XIN24M: 18446744073709551615 -   24000000 =3D 18446744073685551615
+>=20
+> As a result the parent with the highest acceptable rate is chosen
+> instead of the parent clock with the lowest one.
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: 49502408007b ("mmc: sdhci-of-dwcmshc: properly determine max clock=
+ on Rockchip")
+> Tested-by: Christopher Obbard <chris.obbard@collabora.com>
+> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+> ---
+>  drivers/clk/clk-composite.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/clk/clk-composite.c b/drivers/clk/clk-composite.c
+> index edfa94641bbf..66759fe28fad 100644
+> --- a/drivers/clk/clk-composite.c
+> +++ b/drivers/clk/clk-composite.c
+> @@ -119,7 +119,10 @@ static int clk_composite_determine_rate(struct clk_h=
+w *hw,
+>                         if (ret)
+>                                 continue;
+> =20
+> -                       rate_diff =3D abs(req->rate - tmp_req.rate);
+> +                       if (req->rate >=3D tmp_req.rate)
+> +                               rate_diff =3D req->rate - tmp_req.rate;
+> +                       else
+> +                               rate_diff =3D tmp_req.rate - req->rate;
 
-Here is the summary with links:
-  - [net,01/17] selftests: mptcp: lib: skip if not below kernel version
-    https://git.kernel.org/netdev/net/c/b1a6a38ab8a6
-  - [net,02/17] selftests: mptcp: join: use 'iptables-legacy' if available
-    https://git.kernel.org/netdev/net/c/0c4cd3f86a40
-  - [net,03/17] selftests: mptcp: join: helpers to skip tests
-    https://git.kernel.org/netdev/net/c/cdb50525345c
-  - [net,04/17] selftests: mptcp: join: skip check if MIB counter not supported
-    (no matching commit)
-  - [net,05/17] selftests: mptcp: join: skip test if iptables/tc cmds fail
-    https://git.kernel.org/netdev/net/c/4a0b866a3f7d
-  - [net,06/17] selftests: mptcp: join: support local endpoint being tracked or not
-    https://git.kernel.org/netdev/net/c/d4c81bbb8600
-  - [net,07/17] selftests: mptcp: join: skip Fastclose tests if not supported
-    https://git.kernel.org/netdev/net/c/ae947bb2c253
-  - [net,08/17] selftests: mptcp: join: support RM_ADDR for used endpoints or not
-    https://git.kernel.org/netdev/net/c/425ba803124b
-  - [net,09/17] selftests: mptcp: join: skip implicit tests if not supported
-    https://git.kernel.org/netdev/net/c/36c4127ae8dd
-  - [net,10/17] selftests: mptcp: join: skip backup if set flag on ID not supported
-    https://git.kernel.org/netdev/net/c/07216a3c5d92
-  - [net,11/17] selftests: mptcp: join: skip fullmesh flag tests if not supported
-    https://git.kernel.org/netdev/net/c/9db34c4294af
-  - [net,12/17] selftests: mptcp: join: skip userspace PM tests if not supported
-    https://git.kernel.org/netdev/net/c/f2b492b04a16
-  - [net,13/17] selftests: mptcp: join: skip fail tests if not supported
-    https://git.kernel.org/netdev/net/c/ff8897b51894
-  - [net,14/17] selftests: mptcp: join: skip MPC backups tests if not supported
-    https://git.kernel.org/netdev/net/c/632978f0a961
-  - [net,15/17] selftests: mptcp: join: skip PM listener tests if not supported
-    https://git.kernel.org/netdev/net/c/0471bb479af0
-  - [net,16/17] selftests: mptcp: join: uniform listener tests
-    https://git.kernel.org/netdev/net/c/96b84195df61
-  - [net,17/17] selftests: mptcp: join: skip mixed tests if not supported
-    https://git.kernel.org/netdev/net/c/6673851be0fc
+This problem is widespread
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+ $ git grep abs\(.*- -- drivers/clk/ | wc -l
+ 52
 
+so we may have a bigger problem here. Maybe some sort of coccinelle
+script or smatch checker can be written to look for abs() usage with an
+unsigned long type or a subtraction expression. This may also be worse
+after converting drivers to clk_hw_forward_rate_request() and
+clk_hw_init_rate_request() because those set the rate to ULONG_MAX.
++Maxime for that as an FYI.
 
+Maybe we need an abs_diff() macro instead, that checks the type and on
+CONFIG_64BIT uses a conditional like above, but if it is a smaller type
+then it just uses abs() on the expression because it knows the
+difference will fit in the signed type conversion. I see that such a
+macro exists in some drm driver, so maybe it can be promoted to
+linux/math.h and then every grep hit above can use this macro instead.
+Care to take that on?
+
+Either way, I've applied this to clk-fixes as it is a regression. I'm
+just worried that this problem is more extensive.
