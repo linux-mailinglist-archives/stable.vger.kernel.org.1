@@ -2,110 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBA8A72E2BE
-	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 14:20:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A49D72E2D0
+	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 14:25:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235921AbjFMMUD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 13 Jun 2023 08:20:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58412 "EHLO
+        id S233000AbjFMMZ1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 13 Jun 2023 08:25:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242465AbjFMMT7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 08:19:59 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3A4A1738;
-        Tue, 13 Jun 2023 05:19:38 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4f122ff663eso6604443e87.2;
-        Tue, 13 Jun 2023 05:19:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686658777; x=1689250777;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mzJgGG/CDYOhD2YNQTv2CpS/TSd4Qcu56zqodO6IyB4=;
-        b=Qbe/SL0po5bwWWWFREV7MhlgjuwUoGjUD82KbJ/MQ2qc0C8XQmnPG3w2pzBDWaBxjq
-         pHbZWbhF0e9FOhM1kxt3TbkRYjMuGDGI7W2r0DPVbQxlZgu+EgBeKAr/FARcUpP+88ds
-         uS3SMi98EB6c502dbpLPxEkzoFpKcsxGPDkhXY3xCcvXZxCC+RJH7l3zfMmTUD/G7rbI
-         NSz3t9a7S6sE6U0tHECE02oadhCvLOxmR5J+jF/ZLEMj+WczhTB6Jin8yS46gIvx2Q/D
-         2sYvlkQd2kYY2lvTMLf6cXTS0xuS9fnWaWKZoVFwDQiSglQ2pgErQ9jZqmEvXtrno1OC
-         dNxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686658777; x=1689250777;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mzJgGG/CDYOhD2YNQTv2CpS/TSd4Qcu56zqodO6IyB4=;
-        b=VjcHUBmsLtF8bdJLWlcTvJqEMhNPUpG6JcgvNamVUOtHSpeUoIhU/DJ6HzQABaqB96
-         QmI8EdqHzhim5vN/LuG9nK7BtWQsTCHjxc97qt4J1wsAoes4ZcVQ7ZEHqbfMWu6bZH2c
-         5/yb9Yo5QvE9sMSSu4zCSAUxwKHoRof9JJWV5dN0AsRRz3HlIh+nDMB5Xiri7W8U/GAG
-         HQRCGR4CIfnbHJu46yRZkWn6YJpFixidyxXJ7mD8fqmbwQ7ERhtWI7qERuGisLHzCOqE
-         SJcj9npRHSoHZMxYW4y3Yn1hxd7NzDihr0f6OBsKlGkMVp63MIMWjYXWjlG4AEK9FbbC
-         OydA==
-X-Gm-Message-State: AC+VfDwP/HPOTo3eojSqcLVkDz5hN1Gie/WYkiI8w/n7dGeDOtG7qiGC
-        fVTg5ox3XbTcnQuYmH1FOQU=
-X-Google-Smtp-Source: ACHHUZ73NS69UjggKVhkFEj2G1DBNP2JULH1k7n4O+6a0aEVHacXcSMiSNDEOlOremukbrwfskSwHw==
-X-Received: by 2002:a19:5f0d:0:b0:4f6:26de:502e with SMTP id t13-20020a195f0d000000b004f626de502emr5281226lfb.43.1686658777047;
-        Tue, 13 Jun 2023 05:19:37 -0700 (PDT)
-Received: from debian ([167.98.27.226])
-        by smtp.gmail.com with ESMTPSA id x19-20020a1c7c13000000b003f7aad8c160sm14252269wmc.11.2023.06.13.05.19.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jun 2023 05:19:36 -0700 (PDT)
-Date:   Tue, 13 Jun 2023 13:19:34 +0100
-From:   "Sudip Mukherjee (Codethink)" <sudipm.mukherjee@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com, srw@sladewatkins.net,
-        rwarsow@gmx.de
-Subject: Re: [PATCH 5.15 00/91] 5.15.117-rc1 review
-Message-ID: <ZIhe1sDoz1bNjjcS@debian>
-References: <20230612101702.085813286@linuxfoundation.org>
+        with ESMTP id S242488AbjFMMZQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 08:25:16 -0400
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB9C410CE
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 05:25:14 -0700 (PDT)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-403-Ufe39FLKM9uv02YWJ1c2EA-1; Tue, 13 Jun 2023 13:25:11 +0100
+X-MC-Unique: Ufe39FLKM9uv02YWJ1c2EA-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Tue, 13 Jun
+ 2023 13:25:03 +0100
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Tue, 13 Jun 2023 13:25:03 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     "'Kasireddy, Vivek'" <vivek.kasireddy@intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+        Hugh Dickins <hughd@google.com>
+CC:     Gerd Hoffmann <kraxel@redhat.com>,
+        "Kim, Dongwon" <dongwon.kim@intel.com>,
+        "Chang, Junxiao" <junxiao.chang@intel.com>,
+        "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
+        "Hocko, Michal" <mhocko@suse.com>,
+        "jmarchan@redhat.com" <jmarchan@redhat.com>,
+        "muchun.song@linux.dev" <muchun.song@linux.dev>,
+        James Houghton <jthoughton@google.com>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] udmabuf: revert 'Add support for mapping hugepages (v4)'
+Thread-Topic: [PATCH] udmabuf: revert 'Add support for mapping hugepages (v4)'
+Thread-Index: AQHZmkrTMFwnMH2R1EGnnRur83Hw9a+FyCfggAEHOQCAAT7FoIAAoNDA
+Date:   Tue, 13 Jun 2023 12:25:03 +0000
+Message-ID: <89652021ecea4aa2ada763c97deeb543@AcuMS.aculab.com>
+References: <20230608204927.88711-1-mike.kravetz@oracle.com>
+ <IA0PR11MB71851B64A5E7062E3BDD8D2FF854A@IA0PR11MB7185.namprd11.prod.outlook.com>
+ <281caf4f-25da-3a73-554b-4fb252963035@redhat.com>
+ <IA0PR11MB71852D6B27C83658670CBFBDF855A@IA0PR11MB7185.namprd11.prod.outlook.com>
+In-Reply-To: <IA0PR11MB71852D6B27C83658670CBFBDF855A@IA0PR11MB7185.namprd11.prod.outlook.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
+RnJvbTogS2FzaXJlZGR5LCBWaXZlayA8dml2ZWsua2FzaXJlZGR5QGludGVsLmNvbT4NCj4gU2Vu
+dDogMTMgSnVuZSAyMDIzIDA5OjI2DQouLi4NCj4gPiBJcyBteSB1bmRlcnN0YW5kaW5nIGNvcnJl
+Y3QsIHRoYXQgd2UgY2FuIGVmZmVjdGl2ZWx5IGxvbmctdGVybSBwaW4NCj4gPiAod29yc2UgdGhh
+biBtbG9jaykgNjQgTWlCIHBlciBVRE1BQlVGX0NSRUFURSwgYWxsb3dpbmcgZXZlbnR1YWxseSAh
+cm9vdA0KPiA+IHVzZXJzDQo+DQo+IFRoZSA2NCBNaUIgbGltaXQgaXMgdGhlIHRoZW9yZXRpY2Fs
+IHVwcGVyIGJvdW5kIHRoYXQgd2UgaGF2ZSBub3Qgc2VlbiBoaXQgaW4NCj4gcHJhY3RpY2UuIFR5
+cGljYWxseSwgZm9yIGEgMTkyMHgxMDgwIHJlc29sdXRpb24gKGNvbW1vbmx5IHVzZWQgaW4gR3Vl
+c3RzKSwNCj4gdGhlIHNpemUgb2YgdGhlIEZCIGlzIH44IE1CICgxOTIweDEwODB4NCkuIEFuZCwg
+bW9zdCBtb2Rlcm4gR3JhcGhpY3MNCj4gY29tcG9zaXRvcnMgZmxpcCBiZXR3ZWVuIHR3byBGQnMu
+DQoNCldoYXQgY29kZSBkb2VzIGFuZCB3aGF0IHBvdGVudGlhbGx5IG1hbGljaW91cyBjb2RlIG1p
+Z2h0IGRvDQphcmUgZW50aXJlbHkgZGlmZmVyZW50IHRoaW5ncy4NCg0KCURhdmlkDQoNCi0NClJl
+Z2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0
+b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykN
+Cg==
 
-On Mon, Jun 12, 2023 at 12:25:49PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.117 release.
-> There are 91 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-
-Build test (gcc version 12.2.1 20230511):
-mips: 62 configs -> no failure
-arm: 99 configs -> no failure
-arm64: 3 configs -> no failure
-x86_64: 4 configs -> no failure
-alpha allmodconfig -> no failure
-csky allmodconfig -> no failure
-powerpc allmodconfig -> no failure
-riscv allmodconfig -> no failure
-s390 allmodconfig -> no failure
-xtensa allmodconfig -> no failure
-
-Boot test:
-x86_64: Booted on my test laptop. No regression.
-x86_64: Booted on qemu. No regression. [1]
-arm64: Booted on rpi4b (4GB model). No regression. [2]
-mips: Booted on ci20 board. No regression. [3]
-
-[1]. https://openqa.qa.codethink.co.uk/tests/3932
-[2]. https://openqa.qa.codethink.co.uk/tests/3919
-[3]. https://openqa.qa.codethink.co.uk/tests/3918
-
-Tested-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
-
--- 
-Regards
-Sudip
