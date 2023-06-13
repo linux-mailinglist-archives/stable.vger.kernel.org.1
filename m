@@ -2,55 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76D3572DFD1
-	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 12:40:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6234D72E00F
+	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 12:47:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240801AbjFMKkL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 13 Jun 2023 06:40:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36524 "EHLO
+        id S241264AbjFMKry (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 13 Jun 2023 06:47:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241877AbjFMKjn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 06:39:43 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9B7D10E4
-        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 03:39:40 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-30fc26affa9so1503517f8f.0
-        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 03:39:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686652779; x=1689244779;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=L+0q/8B3X2O+bLieXF8c9g+8ohNwELNU1kRNH19cJQQ=;
-        b=mp5t8BFsJLvB4B2RBPo6x6uNyPCi8jDPJJpT5/LpidCyzOQv4FCXKrMWr1ZoGeWb2S
-         1dBOQjE7wNbB2/NIq8xC5IgXRwNRGlVnZW3Z4RXFfWXN3WDAjIuuNAySekfhnk34w5wO
-         NzDIjtTF8SXSuX25qLMn3huo8p/83/zQMv/5E4FEAXUWYyMCx8Mo+LAzcn9buVVIEf25
-         xq6WyCppmw0R4kg6OL44jDGiDE0u+RRVrPQ0ZksXnqIcz16sfbXTylvjE97DH2Pg1vn+
-         u4HS9GU54OKGBiesVcpBbKbzyQtzvsmO+sXxWBrgzd+eRZlTzu8i2amAs2BDVfmzc8Gh
-         L22w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686652779; x=1689244779;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=L+0q/8B3X2O+bLieXF8c9g+8ohNwELNU1kRNH19cJQQ=;
-        b=e6M9ADDcWDRFiKdejb2Kv7PAr1qYjvaeO1UvlxTpvBnc7T1ck654SHxRCZPqAj/Xgh
-         j1DL1VBTuYFh3BZB3P2gAusD10UKSTxlSiDP5xXlhQ9DQVr2GA2UpBSq2rxu26le03Fl
-         aC+b6FxWMeWNKFhH+0v90SBNK19ooLf/llEc8CMlWEvmh25EOS5TCld4RBG5YRbXRcrB
-         /sTwrDyQnu2ROG7iTu9cok7W7McP3D6s34VH5JuUHw1ZiW5co4GwReqGq8AsFeJWcaPN
-         hBrdt+bw7bLBRNygSuFc6/k5PsmVfdhlkpscEQgnWXMV25gxzkJdTG09kGe6vsUcGI9K
-         qK6g==
-X-Gm-Message-State: AC+VfDzaA+lKqalWBBQGOIlcZ6emCdM1GldlodvkcyDnaYdt2G04jm5j
-        sal6s+LMpe6k0stbB8OWHwbVxQ==
-X-Google-Smtp-Source: ACHHUZ4QXHWcQ+EF1TxBMcwYsV+sIp0eKcDzBEmcY5jt8MfrsM/QF7URk3vwRqxNRqLqrU6BbwKwDg==
-X-Received: by 2002:a5d:508a:0:b0:30f:caf6:5bde with SMTP id a10-20020a5d508a000000b0030fcaf65bdemr1780025wrt.32.1686652779043;
-        Tue, 13 Jun 2023 03:39:39 -0700 (PDT)
-Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
-        by smtp.gmail.com with ESMTPSA id h2-20020a5d5482000000b0030fbc96bdffsm7123579wrv.25.2023.06.13.03.39.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jun 2023 03:39:38 -0700 (PDT)
-Date:   Tue, 13 Jun 2023 11:39:36 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
-To:     Thomas Zimmermann <tzimmermann@suse.de>
+        with ESMTP id S242030AbjFMKrw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 06:47:52 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE53F1AD;
+        Tue, 13 Jun 2023 03:47:50 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 48AA72213E;
+        Tue, 13 Jun 2023 10:47:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1686653269; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=c3fhYdVUr0tRLaaukczpen+StPe7TUnaAnjtsiCIZ2s=;
+        b=tdqBaQl0pM7QXRNqnNkkV7fRdFCZ3I4rbdThW7TEZZdnmPFQb1oVlDr7EHK3gWtsdfD4e2
+        MtKY75Qm/uLPgIZOgYTkJ2OlaQKhj4BNTdGA2Knvvgd72iKiazhq/IF1jKwgyk8PIRb7OB
+        /3jSZLCvym/lzkd/r32KuLer7mbzDds=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1686653269;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=c3fhYdVUr0tRLaaukczpen+StPe7TUnaAnjtsiCIZ2s=;
+        b=yyjG8vmaT01YVpsvIlIprlvIsyvd8WnCZbFEY0qVJByyZzlM558Aj+/peI35jk6oYhyrgf
+        s4FlWVWmtCGS1kDA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id F0CE313483;
+        Tue, 13 Jun 2023 10:47:48 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id 7M8HOlRJiGTGfAAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Tue, 13 Jun 2023 10:47:48 +0000
+Message-ID: <9a390f13-4ad3-cddc-64f7-8a1737965242@suse.de>
+Date:   Tue, 13 Jun 2023 12:47:48 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [PATCH v2 01/38] backlight/bd6107: Compare against struct
+ fb_info.device
+Content-Language: en-US
+To:     Daniel Thompson <daniel.thompson@linaro.org>
 Cc:     daniel@ffwll.ch, javierm@redhat.com, sam@ravnborg.org,
         deller@gmx.de, geert+renesas@glider.be, lee@kernel.org,
         jingoohan1@gmail.com, dan.carpenter@linaro.org,
@@ -59,56 +63,106 @@ Cc:     daniel@ffwll.ch, javierm@redhat.com, sam@ravnborg.org,
         linux-omap@vger.kernel.org, linux-staging@lists.linux.dev,
         linux-kernel@vger.kernel.org,
         Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         stable@vger.kernel.org
-Subject: Re: [PATCH v2 05/38] backlight/lv5207lp: Compare against struct
- fb_info.device
-Message-ID: <20230613103936.GE169438@aspen.lan>
 References: <20230612141352.29939-1-tzimmermann@suse.de>
- <20230612141352.29939-6-tzimmermann@suse.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230612141352.29939-6-tzimmermann@suse.de>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+ <20230612141352.29939-2-tzimmermann@suse.de>
+ <20230613103730.GA169438@aspen.lan>
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <20230613103730.GA169438@aspen.lan>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------Bih0PagUpBHQXHTR42b2H5ZP"
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jun 12, 2023 at 04:07:43PM +0200, Thomas Zimmermann wrote:
-> Struct lv5207lp_platform_data refers to a platform device within
-> the Linux device hierarchy. The test in lv5207lp_backlight_check_fb()
-> compares it against the fbdev device in struct fb_info.dev, which
-> is different. Fix the test by comparing to struct fb_info.device.
->
-> Fixes a bug in the backlight driver and prepares fbdev for making
-> struct fb_info.dev optional.
->
-> v2:
-> 	* move renames into separate patch (Javier, Sam, Michael)
->
-> Fixes: 82e5c40d88f9 ("backlight: Add Sanyo LV5207LP backlight driver")
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-> Cc: Lee Jones <lee@kernel.org>
-> Cc: Daniel Thompson <daniel.thompson@linaro.org>
-> Cc: Jingoo Han <jingoohan1@gmail.com>
-> Cc: linux-sh@vger.kernel.org
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v3.12+
-> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------Bih0PagUpBHQXHTR42b2H5ZP
+Content-Type: multipart/mixed; boundary="------------kN8YWHBXTOAX040efj8X6bTV";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Daniel Thompson <daniel.thompson@linaro.org>
+Cc: daniel@ffwll.ch, javierm@redhat.com, sam@ravnborg.org, deller@gmx.de,
+ geert+renesas@glider.be, lee@kernel.org, jingoohan1@gmail.com,
+ dan.carpenter@linaro.org, michael.j.ruhl@intel.com,
+ linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-sh@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+ stable@vger.kernel.org
+Message-ID: <9a390f13-4ad3-cddc-64f7-8a1737965242@suse.de>
+Subject: Re: [PATCH v2 01/38] backlight/bd6107: Compare against struct
+ fb_info.device
+References: <20230612141352.29939-1-tzimmermann@suse.de>
+ <20230612141352.29939-2-tzimmermann@suse.de>
+ <20230613103730.GA169438@aspen.lan>
+In-Reply-To: <20230613103730.GA169438@aspen.lan>
 
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+--------------kN8YWHBXTOAX040efj8X6bTV
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
+SGkNCg0KQW0gMTMuMDYuMjMgdW0gMTI6Mzcgc2NocmllYiBEYW5pZWwgVGhvbXBzb246DQo+
+IE9uIE1vbiwgSnVuIDEyLCAyMDIzIGF0IDA0OjA3OjM5UE0gKzAyMDAsIFRob21hcyBaaW1t
+ZXJtYW5uIHdyb3RlOg0KPj4gU3RydWN0IGJkNjEwN19wbGF0Zm9ybV9kYXRhIHJlZmVycyB0
+byBhIHBsYXRmb3JtIGRldmljZSB3aXRoaW4NCj4+IHRoZSBMaW51eCBkZXZpY2UgaGllcmFy
+Y2h5LiBUaGUgdGVzdCBpbiBiZDYxMDdfYmFja2xpZ2h0X2NoZWNrX2ZiKCkNCj4+IGNvbXBh
+cmVzIGl0IGFnYWluc3QgdGhlIGZiZGV2IGRldmljZSBpbiBzdHJ1Y3QgZmJfaW5mby5kZXYs
+IHdoaWNoDQo+PiBpcyBkaWZmZXJlbnQuIEZpeCB0aGUgdGVzdCBieSBjb21wYXJpbmcgdG8g
+c3RydWN0IGZiX2luZm8uZGV2aWNlLg0KPj4NCj4+IEZpeGVzIGEgYnVnIGluIHRoZSBiYWNr
+bGlnaHQgZHJpdmVyIGFuZCBwcmVwYXJlcyBmYmRldiBmb3IgbWFraW5nDQo+PiBzdHJ1Y3Qg
+ZmJfaW5mby5kZXYgb3B0aW9uYWwuDQo+Pg0KPj4gdjI6DQo+PiAJKiBtb3ZlIHJlbmFtZXMg
+aW50byBzZXBhcmF0ZSBwYXRjaCAoSmF2aWVyLCBTYW0sIE1pY2hhZWwpDQo+Pg0KPj4gRml4
+ZXM6IDY3YjQzZTU5MDQxNSAoImJhY2tsaWdodDogQWRkIFJPSE0gQkQ2MTA3IGJhY2tsaWdo
+dCBkcml2ZXIiKQ0KPj4gU2lnbmVkLW9mZi1ieTogVGhvbWFzIFppbW1lcm1hbm4gPHR6aW1t
+ZXJtYW5uQHN1c2UuZGU+DQo+PiBDYzogTGF1cmVudCBQaW5jaGFydCA8bGF1cmVudC5waW5j
+aGFydCtyZW5lc2FzQGlkZWFzb25ib2FyZC5jb20+DQo+PiBDYzogTGVlIEpvbmVzIDxsZWVA
+a2VybmVsLm9yZz4NCj4+IENjOiBEYW5pZWwgVGhvbXBzb24gPGRhbmllbC50aG9tcHNvbkBs
+aW5hcm8ub3JnPg0KPj4gQ2M6IEppbmdvbyBIYW4gPGppbmdvb2hhbjFAZ21haWwuY29tPg0K
+Pj4gQ2M6IGRyaS1kZXZlbEBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4+IENjOiA8c3RhYmxl
+QHZnZXIua2VybmVsLm9yZz4gIyB2My4xMisNCj4+IFJldmlld2VkLWJ5OiBKYXZpZXIgTWFy
+dGluZXogQ2FuaWxsYXMgPGphdmllcm1AcmVkaGF0LmNvbT4NCj4gDQo+IFJldmlld2VkLWJ5
+OiBEYW5pZWwgVGhvbXBzb24gPGRhbmllbC50aG9tcHNvbkBsaW5hcm8ub3JnPg0KDQpUaGFu
+a3MgZm9yIGdvaW5nIHRocm91Z2ggdGhlIGJhY2tsaWdodCBwYXRjaGVzLg0KDQo+IA0KPiAN
+Cj4gRGFuaWVsLg0KPiANCj4gUFMgUGxlYXNlIGRvbid0IHRyZWF0IHRoaXMgYXMgYW4gQWNr
+ZWQtYnksIGlmIHlvdSB3YW50IHRvIGxhbmQgdGhpcw0KPiAgICAgcGF0Y2hzZXQgdmlhIGEg
+c2luZ2xlIHRyZWUgcGxlYXNlIGNvb3JkaW5hdGUgd2l0aCBMZWUgSm9uZXMhDQoNCkknZCBs
+aWtlIHRvIG1lcmdlIHRoZW0gdmlhIGRybS1taXNjLW5leHQgdG9nZXRoZXIgd2l0aCB0aGUg
+cmVzdCBvZiB0aGUgDQpwYXRjaHNldC4gSXQncyBub3QgRFJNLCBidXQgZmJkZXYgcGF0Y2hl
+cyBvZnRlbiBnbyB0aHJvdWdoIHRoYXQgdHJlZSANCnF1aXRlIG9mdGVuLg0KDQpCZXN0IHJl
+Z2FyZHMNClRob21hcw0KDQotLSANClRob21hcyBaaW1tZXJtYW5uDQpHcmFwaGljcyBEcml2
+ZXIgRGV2ZWxvcGVyDQpTVVNFIFNvZnR3YXJlIFNvbHV0aW9ucyBHZXJtYW55IEdtYkgNCkZy
+YW5rZW5zdHJhc3NlIDE0NiwgOTA0NjEgTnVlcm5iZXJnLCBHZXJtYW55DQpHRjogSXZvIFRv
+dGV2LCBBbmRyZXcgTXllcnMsIEFuZHJldyBNY0RvbmFsZCwgQm91ZGllbiBNb2VybWFuDQpI
+UkIgMzY4MDkgKEFHIE51ZXJuYmVyZykNCg==
 
-Daniel.
+--------------kN8YWHBXTOAX040efj8X6bTV--
+
+--------------Bih0PagUpBHQXHTR42b2H5ZP
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmSISVQFAwAAAAAACgkQlh/E3EQov+DI
+iQ/7BKHWYUoMmnyorQ8yHtBI1XVxUNzbBJ0OGTBT4b82riNpqOq9KfyBGnmOJcEey66W74EmBU5V
+L4vlnw9VTD4BVQsw/iwIArnUrpazJ+GmYABhFM6I3BR8ZUwY61HH8PX8NeMje/nG4Md9n7ugOyzt
+mQerA5bh9exoD7hytk3CuDeEwpVfk+AvMOovuUwuUsKXOcK+s6oQiRfGSd4q+DrKQbD04JGy1IBf
+3ZR9s0dSIuBzZFwhqr+fUcAuuhZSxq6Fpd5okO6mhDlX+G6eeKuFaeL4hg51TJQe2wPokqZjatnG
+8qG9wA5+0uBdaDW620DSVpyUdAZZAKs5DLmKsM80SyBseZSXddy7Zo3958kbbl7pfcP3j3hlJiUI
+fMXMUY6y9syT/DVUXRVjiYb5qX7tO4W+gi8gBSNkdC99c4JwvhWFiobs4Lru0iM4ePC3LNCnt7Ma
+QZ9jbQlvu16Ke+9EIoA0bIxL0181S+19JHBftQzBAgbmXnB7pGZa9UIng8t0tGaLXMClLxmXC+lD
++ryZgyLhc76mKMxQWy2CbJyM6Aynyq0U0P5DLsMkOBGDmqpLg5nQw6VC0INkEKnzIBq0cRTFEwry
+UwPWiBj1XzooWK/LiDPxdXqHFeibjHLzSCyxrdASPCFlhiw1A7SZWwYwsaP8+pS3KeM80gZPBcKq
+cwE=
+=cAD4
+-----END PGP SIGNATURE-----
+
+--------------Bih0PagUpBHQXHTR42b2H5ZP--
