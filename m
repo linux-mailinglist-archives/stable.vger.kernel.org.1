@@ -2,122 +2,242 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C48372DD28
-	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 11:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B14072DD37
+	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 11:02:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239532AbjFMJAZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 13 Jun 2023 05:00:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34080 "EHLO
+        id S240759AbjFMJC6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 13 Jun 2023 05:02:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239277AbjFMJAX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 05:00:23 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4801FAA
-        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 02:00:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1686646810; x=1687251610; i=s.l-h@gmx.de;
- bh=gbWAOiAH1S0qo/0DEWJ19kZQB9sQn3cSoYgfv9ZLLqw=;
- h=X-UI-Sender-Class:Date:From:To:Cc:Subject:In-Reply-To:References;
- b=kZQexa9XXoegf0D4IpjeVjFFfWMOv5gmq9wmdLxs+MZdi+sENgkoRvdAtn4d2XGRfQxUxlv
- 7OwesgSSu1LclTNJ61oO9Z5SIL5hAjaxzf0eMDYd6SIdW6LHEbrodWkb7kmmF+MZMKTVyvnQd
- x1UTKvsw7gXY5GAwi0QTybH8MCkZ/YxENmqr5/h87rACRkRFwUL3sfy6oQvkz7EJ9JI1vcT6k
- wn4oVCfOfRVLn1o/hQaZV9gig0lizHtsPWjDAPEPgKM6WMp1Q+iqPnC6ElPAPtivTQ2b8dSRZ
- qQ8kRaJ2980iTjYJ9vS7CAYj04j59HLg4dl38k1VauB2p9TwLJDQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from mir ([94.31.90.21]) by mail.gmx.net (mrgmx004 [212.227.17.190])
- with ESMTPSA (Nemesis) id 1MdNY2-1pZwBG0P8i-00ZPWd; Tue, 13 Jun 2023 11:00:10
- +0200
-Date:   Tue, 13 Jun 2023 11:00:06 +0200
-From:   Stefan Lippers-Hollmann <s.l-h@gmx.de>
+        with ESMTP id S239438AbjFMJC4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 05:02:56 -0400
+Received: from mail-vk1-xa2a.google.com (mail-vk1-xa2a.google.com [IPv6:2607:f8b0:4864:20::a2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2C8418E
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 02:02:55 -0700 (PDT)
+Received: by mail-vk1-xa2a.google.com with SMTP id 71dfb90a1353d-463fdee669cso3657293e0c.0
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 02:02:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686646975; x=1689238975;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=V8GrSifCz49aZ98QowmS7zz/X3J0dQxhH0/1YzTAdAw=;
+        b=h8SlbE594Rls0nWuMPFh2Utq/W24JSKrwAxh+0DqkqXVnG9Lt7MKBXyoW4YuPNrq0C
+         KTk1ajaTCwCIeVgbwcxNx2KzHueJh/xEoSTcH8pXw+wES4AxDvKNcajX0LMPbFdMN5iA
+         JYKsvcWk1HpX6VoSpzv+xrNJ632GM9jOWVuh2jFmn2/nN4DRvrJIQyDFeje751MV2f7h
+         DwpAk9h1sTpFLB7brurFiar2PWGP++cRq/22QXyPYhr4u0mmo0chK0aEMV336bjiHywN
+         tKTIjtZbN2ku/IkB6g0BoNN95cnlvuMAJiBrpFPoo4VhGdiT/nz1Ja2UtKuJTSONggCB
+         Vq9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686646975; x=1689238975;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=V8GrSifCz49aZ98QowmS7zz/X3J0dQxhH0/1YzTAdAw=;
+        b=eAZKY3lndR5YHz93mkUiLjs5UeAyg6J+8VCMumqznLFlVmQ7Xz78kqi00aN6eFP5Vc
+         DyQDdbpHqDam8CjAx8iAd9SBg2mO9itzStVgVOH+tTsUA2dAvqfppIr1ZapQ3+4FGuC7
+         GfHP8NaDEIjCriQlGgBzBVjMUTsGcdzmn6OzzdjyJ091St2U6VsVuW2EajXiPtJWqIFd
+         pi4eOpEX+A373M0vdeoSqnnB7XNC7laBPH9DaRtq7ojN3cam69KvL5R+hZCmxnj6O0/c
+         B0ljoqqhWdgbh78NvoRJVXZfNVyKilwwHy04bggN84S8Seen75JB+RPpJrobrV2ikQbP
+         ad0g==
+X-Gm-Message-State: AC+VfDyXeT7+sDQrsrCC2Sso0ijVVvcVDhHzrWA+nMCnT1Sq8oLwNzl6
+        l/FxVa6vTX9lRSNMSyXdn5qd8YuU1p2ksUM57w50Ag==
+X-Google-Smtp-Source: ACHHUZ472ELf3akgi2xGU5AUTtDTUzVkI5rji7GVrCbWRiQMLRH3A90uY6PmW7WUt4aWW5rOkqxSveRWwYed681zXxE=
+X-Received: by 2002:a05:6122:a17:b0:456:f5b7:837c with SMTP id
+ 23-20020a0561220a1700b00456f5b7837cmr4935535vkn.1.1686646974684; Tue, 13 Jun
+ 2023 02:02:54 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230612101658.437327280@linuxfoundation.org>
+In-Reply-To: <20230612101658.437327280@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 13 Jun 2023 14:32:43 +0530
+Message-ID: <CA+G9fYsp+5r2F8asPXzvsAq8_JYuezL+qYnj4VN3oH0T_bP9vA@mail.gmail.com>
+Subject: Re: [PATCH 5.10 00/68] 5.10.184-rc1 review
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        Hyunwoo Kim <imv4bel@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.3 136/286] media: dvb-core: Fix use-after-free on race
- condition at dvb_frontend
-Message-ID: <20230613110006.7c660162@mir>
-In-Reply-To: <20230613053314.70839926@mir>
-References: <20230607200922.978677727@linuxfoundation.org>
-        <20230607200927.531074599@linuxfoundation.org>
-        <20230613053314.70839926@mir>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.37; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:yRIJ5y+vGS5Pm6+FkKMOqmf/15l6vsyTLCn8fXa05KTNaLU/qre
- 62huYSiq4kQrImfcCttjcmfxYuGhF8oQs4Uow88ZWjMFaxVbF3oYErEU4GbLyqqH2es/w1S
- 65EZTSsmb3z/CK0LGh4sW6TD04j+n9EqkqE+j63h7Nx03mYnyiJtH5dsDCP38atpHrJPUM3
- k/3PCy22Nn/g1UFQJUglw==
-UI-OutboundReport: notjunk:1;M01:P0:1AlDcf96GUM=;l6+tcyUR5u4oXTHyKElntQEqCCW
- 2BYiKi9L649aTcjjDK49Zjg8a4vMzknhyHNsz9wyRbC3yWWYptIrmAyoW8RiTZbuIMCD6RU03
- fncafB88uh9dE/RVRnc+xQ5zD4HBmxBumbwJbrXRpgj6wmyBU6uTl3FKD6Eb4gtaZJvJOk01r
- ZOtXjwrX//wVoSAU6rYe88KubunMv461nxF+Y6GZHs67wC+22aJ76bczPdK+7hIuVGhrOC2yN
- 7xmQGX5wOtFC9CNAak7BEJAYohTa1a+m4vt4cOSYawkRb36891go1hAQp/xTiugyceWksfeGF
- cY5GZE/7wJeOyNF48SSc09mLRcqYFj4v74fl1uvTcmjHooLQno5iveaE9/eKKd/t2+9joS0p7
- mwP1YCyAHzSAYmNdisHErCjNcf5Nce5jR8pUMayphS/y4fgpBV3Ka4pPMBm70LZE0auNlXqif
- w/kBSW3K8X1kbnZ9/LWsbyDskdxW1dKjnaU6srm6wI3lZwYSw+VPABtnmyUAVLXqsa5INSQGI
- PpRiSsYh9b+DrxVrKBXJgsAHpOO2ou7ZRkOsVcyd1CUtSiUaZRBav2IwUfpZVxXgtHihE26B7
- QXng2NkftvcrdcOhiVN44ajWW3FZ47X8+ALZsTKVGSLm7HRnuzj+zSW1ZlPgoyuQdXRXc+cNT
- M1uTvRyH5IX3iZ3Sy5Cz+TK3AI1RIdE+KIJXh1smrm0NsBT7lkLuh56JkRBzoZqN54HzlNNw+
- mtOGl+3XKrAztmYbSVXWd97wRXZuA/NPOyc+jWSxtzBAPOl9QDe0PRsElWF59SZeuSUoMHfKx
- 2vhRiU8QG2/YyFYD+EXX7y9a9/brpBnBfxZQJ46aK+6EstKmWQdcqrj9jo3fM0k2vy5bzcZti
- QBUgqResRMgbuaRQLPNOF1yI91eLYB6FECCkXCJtREhjr29uYRzicQFzHAf9lFlOacDnAIMpF
- j6RCqw==
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi
-
-On 2023-06-13, Stefan Lippers-Hollmann wrote:
-> On 2023-06-07, Greg Kroah-Hartman wrote:
-> > From: Hyunwoo Kim <imv4bel@gmail.com>
-> >
-> > [ Upstream commit 6769a0b7ee0c3b31e1b22c3fadff2bfb642de23f ]
-> >
-> > If the device node of dvb_frontend is open() and the device is
-> > disconnected, many kinds of UAFs may occur when calling close()
-> > on the device node.
-> >
-> > The root cause of this is that wake_up() for dvbdev->wait_queue
-> > is implemented in the dvb_frontend_release() function, but
-> > wait_event() is not implemented in the dvb_frontend_stop() function.
-> >
-> > So, implement wait_event() function in dvb_frontend_stop() and
-> > add 'remove_mutex' which prevents race condition for 'fe->exit'.
-> >
-> > [mchehab: fix a couple of checkpatch warnings and some mistakes at the=
- error handling logic]
-> >
-> > Link: https://lore.kernel.org/linux-media/20221117045925.14297-2-imv4b=
-el@gmail.com
-> [...]
+On Mon, 12 Jun 2023 at 16:03, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> I'm noticing a regression relative to kernel v6.3.6 with this change
-> as part of kernel v6.3.7 on my ivy-bridge system running
-> Debian/unstable (amd64) with vdr 2.6.0-1.1[0] and two DVB cards
-> TeVii S480 V2.1 (DVB-S2, dw2102) and an Xbox One Digital TV Tuner
-> (DVB-T2, dvb_usb_dib0700). The systemd unit starting vdr just times
-> out and hangs forever, with vdr never coming up and also preventing
-> a clean system shutdown (hard reset required). Apart from the systemd
-> unit timing out, there don't really appear to be any further issues
-> logged.
-[...]
+> This is the start of the stable review cycle for the 5.10.184 release.
+> There are 68 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 14 Jun 2023 10:16:41 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.10.184-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.10.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-I've now also tested v6.4-rc6-26-gfb054096aea0 and can reproduce
-this regression there as well, with the same fix of reverting this
-corresponding patch.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/=
-?id=3D6769a0b7ee0c3b31e1b22c3fadff2bfb642de23f
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Regards
-	Stefan Lippers-Hollmann
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build
+* kernel: 5.10.184-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git branch: linux-5.10.y
+* git commit: 32cae866b1825021bd263dbd8dbb522e1d0df8a6
+* git describe: v5.10.183-69-g32cae866b182
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10=
+.183-69-g32cae866b182
+
+## Test Regressions (compared to v5.10.183)
+
+## Metric Regressions (compared to v5.10.183)
+
+## Test Fixes (compared to v5.10.183)
+
+## Metric Fixes (compared to v5.10.183)
+
+## Test result summary
+total: 127773, pass: 107744, fail: 3845, skip: 16007, xfail: 177
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 117 total, 116 passed, 1 failed
+* arm64: 45 total, 43 passed, 2 failed
+* i386: 35 total, 32 passed, 3 failed
+* mips: 27 total, 26 passed, 1 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 26 total, 25 passed, 1 failed
+* riscv: 12 total, 11 passed, 1 failed
+* s390: 12 total, 12 passed, 0 failed
+* sh: 14 total, 12 passed, 2 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 38 total, 36 passed, 2 failed
+
+## Test suites summary
+* boot
+* fwts
+* igt-gpu-tools
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+* vdso
+
+--
+Linaro LKFT
+https://lkft.linaro.org
