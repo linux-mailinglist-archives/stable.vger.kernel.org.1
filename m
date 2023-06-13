@@ -2,89 +2,247 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7063672DB87
-	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 09:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6D8972DC10
+	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 10:10:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239649AbjFMHvU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 13 Jun 2023 03:51:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46926 "EHLO
+        id S230183AbjFMIKb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 13 Jun 2023 04:10:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240133AbjFMHvT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 03:51:19 -0400
-X-Greylist: delayed 497 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 13 Jun 2023 00:51:16 PDT
-Received: from mail.startuplaunchpadpro.pl (mail.startuplaunchpadpro.pl [217.61.112.231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7890C10F9
-        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 00:51:16 -0700 (PDT)
-Received: by mail.startuplaunchpadpro.pl (Postfix, from userid 1002)
-        id F41A2832E3; Tue, 13 Jun 2023 09:40:39 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=startuplaunchpadpro.pl; s=mail; t=1686642055;
-        bh=oZTeICgx2X9EeHQQOCJSHYKJVJOCiOs1n/VaxwVhO9Y=;
-        h=Date:From:To:Subject:From;
-        b=TEvMVVoQYOA+UoH259d00e2FpOFt+UyMYMf2n25XcP9tB018c1KjowaiDTlTOMWCh
-         9P3178XecN7LCIIeyxWMYEarE0uz/9AjElsa17STgTCzWMSux2NWYqqncOhRj24jyY
-         FHWUADZoPcDxYLLOZd4OasYSys/b4DDbpdr/E2TqPoE/WbaZiO+g+5MIoD7TDDjETg
-         1oQCKIuxW9pWaHsvjDFm4ylM6IHWHF2yQ6RfGe1iOZwSRN1jRshGvc390Q0uFMgdXh
-         rLbLsK9AuAzWHIUrHf0fwVsYugGI2kPFyz+x1KXXnXVz/gWxqKVpzyMHRL5PbJrSsx
-         6wt8tGuycfegQ==
-Received: by mail.startuplaunchpadpro.pl for <stable@vger.kernel.org>; Tue, 13 Jun 2023 07:40:31 GMT
-Message-ID: <20230613084500-0.1.p.7vir.0.4qqjhyvkbi@startuplaunchpadpro.pl>
-Date:   Tue, 13 Jun 2023 07:40:31 GMT
-From:   "Marcin Wojciechowski" <marcin.wojciechowski@startuplaunchpadpro.pl>
-To:     <stable@vger.kernel.org>
-Subject: =?UTF-8?Q?Prosz=C4=99_o_kontakt?=
-X-Mailer: mail.startuplaunchpadpro.pl
+        with ESMTP id S241213AbjFMIKS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 04:10:18 -0400
+Received: from mail-vk1-xa33.google.com (mail-vk1-xa33.google.com [IPv6:2607:f8b0:4864:20::a33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DA04E7D
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 01:10:17 -0700 (PDT)
+Received: by mail-vk1-xa33.google.com with SMTP id 71dfb90a1353d-45d3e523a43so2139410e0c.2
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 01:10:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686643816; x=1689235816;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DJGoti4fG+0pknEggWZJXFELNKDoqGk9G5Z/l41RQlA=;
+        b=hMlTihtRAuHJ78JmOxiGdKTyXO2S/91L2mxQUOCk6NlnVgqp2VFPHI2CphpRvbincy
+         uVAmHyBoqXM0EWPyV9QukzhHtzlB8FGBY4SUY8zUBjwI++MD9Qvn85/3zvQ61glIXQHD
+         /bRtSGTPjBtXDaMSq1hotNDSBd5xcDMbhTCs1ieM4WHXlAyb6QPPKkPdOeKS2rZg7kvQ
+         MFdIA/ZxQ18xdnjz3sk8oEYGx2biBeeo9EfS4XAngmxXthh4zwi0GcmpGCYYCIdU0EKc
+         d5ygTugefl7j8sPiKQtc0Hbiie5DuZIE583EuKBMtAsO3B1rvMuP9IMBCsxbx7ZAQNdJ
+         q0Lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686643816; x=1689235816;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DJGoti4fG+0pknEggWZJXFELNKDoqGk9G5Z/l41RQlA=;
+        b=ekfHjldSyHpPok7dwGFp9/0/Ho4D24UxGW1nZ7qBcgj2C0S5t91HWpsHIIJGzVKG5b
+         XkkiMW1k+ft85563T0w9Ci0fw355+Aj6ucaJ37W1yDiO3v12MHPlPd95RZblrIP5DdEa
+         aMrhuYo40IIK3rni1P54/fHmR62wesfxhIR5oltgkETOXaJBLK+RRQ622kV6KWHwk3Ae
+         oTjA3zKVaLsxzMJKpvVPOAJAP9KJysCs3DCg7fa8lfCNZ9facR761IxaW7lfvtpdvk2X
+         UIAfKlxRZuYaI8oXTEy4VzpEYTlF0QQ0kHV8SQquI4cFOYXNIwZA2fGH5DUvLyYbyqYA
+         kY4A==
+X-Gm-Message-State: AC+VfDyYEt9TZQ5nkzTl568DvB18u478RZbT6CHXELOeH5q7l37l+ViX
+        Q35cbaDavPE+/5O6XwxZM+A6Dkgc/2/c5rh+nm114g==
+X-Google-Smtp-Source: ACHHUZ55hm3X1GohvSzQ92ugV0VO5+HkLZJhpRZUd2AiBnxKhL0ZabwNCDiom74vi0mGM389RV4QmeNsHhnJeZe0DRs=
+X-Received: by 2002:a1f:4386:0:b0:45d:5914:80b with SMTP id
+ q128-20020a1f4386000000b0045d5914080bmr6056714vka.6.1686643816204; Tue, 13
+ Jun 2023 01:10:16 -0700 (PDT)
 MIME-Version: 1.0
+References: <20230612101710.279705932@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 13 Jun 2023 13:40:04 +0530
+Message-ID: <CA+G9fYvWcZ0x_i3FEdhKb53+NzAs8O-B_dz6jvU1Afv5xwnPDg@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/132] 6.1.34-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_40,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,URIBL_CSS_A,URIBL_DBL_SPAM
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
-        *      blocklist
-        *      [URIs: startuplaunchpadpro.pl]
-        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-        *      [217.61.112.231 listed in zen.spamhaus.org]
-        * -0.0 BAYES_40 BODY: Bayes spam probability is 20 to 40%
-        *      [score: 0.2092]
-        *  0.0 URIBL_BLOCKED ADMINISTRATOR NOTICE: The query to URIBL was
-        *      blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [URIs: startuplaunchpadpro.pl]
-        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
-        *      blocklist
-        *      [URIs: startuplaunchpadpro.pl]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-X-Spam-Level: *****
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Mon, 12 Jun 2023 at 16:10, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.34 release.
+> There are 132 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 14 Jun 2023 10:16:41 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.34-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Czy jest mo=C5=BCliwo=C5=9B=C4=87 nawi=C4=85zania wsp=C3=B3=C5=82pracy z =
-Pa=C5=84stwem?
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Z ch=C4=99ci=C4=85 porozmawiam z osob=C4=85 zajmuj=C4=85c=C4=85 si=C4=99 =
-dzia=C5=82aniami zwi=C4=85zanymi ze sprzeda=C5=BC=C4=85.
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Pomagamy skutecznie pozyskiwa=C4=87 nowych klient=C3=B3w.
+## Build
+* kernel: 6.1.34-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git branch: linux-6.1.y
+* git commit: 08f336c8c68dd7cec1d536063754c10805a7d5b4
+* git describe: v6.1.33-133-g08f336c8c68d
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.3=
+3-133-g08f336c8c68d
 
-Zapraszam do kontaktu.
+## Test Regressions (compared to v6.1.33)
 
+## Metric Regressions (compared to v6.1.33)
 
-Pozdrawiam
-Marcin Wojciechowski
+## Test Fixes (compared to v6.1.33)
+
+## Metric Fixes (compared to v6.1.33)
+
+## Test result summary
+total: 169316, pass: 146224, fail: 3790, skip: 19022, xfail: 280
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 151 total, 150 passed, 1 failed
+* arm64: 57 total, 56 passed, 1 failed
+* i386: 41 total, 38 passed, 3 failed
+* mips: 30 total, 28 passed, 2 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 38 total, 33 passed, 5 failed
+* riscv: 16 total, 15 passed, 1 failed
+* s390: 16 total, 16 passed, 0 failed
+* sh: 14 total, 12 passed, 2 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 46 total, 46 passed, 0 failed
+
+## Test suites summary
+* boot
+* fwts
+* igt-gpu-tools
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-n[
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+* vdso
+
+--
+Linaro LKFT
+https://lkft.linaro.org
