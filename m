@@ -2,97 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80B9F72EAE4
-	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 20:25:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCE2272EAF4
+	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 20:28:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230491AbjFMSZh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 13 Jun 2023 14:25:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58782 "EHLO
+        id S230017AbjFMS1m (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 13 Jun 2023 14:27:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240421AbjFMSZQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 14:25:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C5E610CC;
-        Tue, 13 Jun 2023 11:25:15 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2264462F59;
-        Tue, 13 Jun 2023 18:25:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DAFEC433D9;
-        Tue, 13 Jun 2023 18:25:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686680714;
-        bh=jWg/New539N3VJZmMOxA0JmnZ0dZKjTSIx6uuvCsdhI=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=rOE+V+qajgMj+P/lK8M5eMIy2GTKb+x/c2ma4s9l0HcJSxQMRqhVoHuMN+Nd9Z5wJ
-         TTYLYg60gMIe2301mrSF5ksa//TwB7chF6kq1bKGWxYOZxXkudv5KwetNnrGodNSj6
-         xSkIhPmQEcO+OM92lGJGYGK6y0VLvkYhGomJYgeZzb21A/favFYh6wTZB9XD7243TJ
-         HbU9275R5T8GUstYO7zGEVyKP9mYnho0HWPMXGHvBQrPcdYqatGTcrakCo3epHBMQo
-         a2y401vEd2aXXj1oMakGquU97mTx5KHKVmiQnx6nv5yLAEUKuTm30EFxWVO1bJ5u4t
-         m9Ury5lgR17+Q==
-Message-ID: <86d58c6b131028a71964a0bcb135f01f.sboyd@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S230150AbjFMS1l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 14:27:41 -0400
+Received: from mail-oa1-x2a.google.com (mail-oa1-x2a.google.com [IPv6:2001:4860:4864:20::2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E100E1730
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 11:27:24 -0700 (PDT)
+Received: by mail-oa1-x2a.google.com with SMTP id 586e51a60fabf-1a67ff9d727so1799160fac.1
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 11:27:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1686680844; x=1689272844;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OD/sBnMhOS+76TBbX745v9EyDJOqWBR1zdKjyXB6hEo=;
+        b=TNvKEBQDz0UXjGY82Rdzzk7mJQiwrkyJVwvuxu8n8m0Pi2aswclN30CIh/rhXgR9EL
+         GcUphBoC3mHb5JyYtboioVzFLX76O5uxbzvCqp58ta7SwnjUsDKVDt9AWw9Y9o3re5Ow
+         1Btu5L4SF8IUndx5WaD12X8bmEvsxLbVgaYM0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686680844; x=1689272844;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OD/sBnMhOS+76TBbX745v9EyDJOqWBR1zdKjyXB6hEo=;
+        b=jB8Fm9TScconoI5NaI+OG/1fH3u0Uiq7RuRDlBjgrhCCt9pbd9v80Cp7u9SedhRtYe
+         ZSzEKdo0xAk3cwlKn0o54CCFmQSr0qD9Rcp6SFuFLwEQEx57RWLt1436cIJFWtRc5jjW
+         hW/Jeegr2RQWbvylmaKhLPFkZrfoFYbUNxeEK7d4TWCybKa4n02m2j58PvhEbKqJ/ksy
+         Kqe3FWgArrNDKxM2nGpPxfP4OWZqRhgSMdo1ZMSJWA7pAs7bDOcLBb8ulq7lL3Gg2b7Z
+         Zs1N9jgdfJ1JjX89iW+r8Pn3rS8mJFwJMchFAraZplNgrQZ3zHu2wq32qhQtK6UzfKAj
+         8JaQ==
+X-Gm-Message-State: AC+VfDyfXP29bWBNudw5xjALkqfk0lsE/Nb7YB3GbdDe69p/Zvgmr9GZ
+        C7IY6bw+WSFPiKpbGJFt111OBw==
+X-Google-Smtp-Source: ACHHUZ7ahhE3kP1FUW/F7G37fNcHq4Fz7WbfGH3XVBVth497lPJQKvXVRBAUtifGjYjKR0kmMJqoLg==
+X-Received: by 2002:a05:6871:69f:b0:1a6:b5e5:29c6 with SMTP id l31-20020a056871069f00b001a6b5e529c6mr1822097oao.2.1686680843802;
+        Tue, 13 Jun 2023 11:27:23 -0700 (PDT)
+Received: from fedora64.linuxtx.org ([99.47.93.78])
+        by smtp.gmail.com with ESMTPSA id k19-20020a05687015d300b001a66a48a68asm4236294oad.57.2023.06.13.11.27.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Jun 2023 11:27:23 -0700 (PDT)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date:   Tue, 13 Jun 2023 13:27:20 -0500
+From:   Justin Forbes <jforbes@fedoraproject.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+Subject: Re: [PATCH 6.3 000/160] 6.3.8-rc1 review
+Message-ID: <ZIi1CKTsIJo+wLaE@fedora64.linuxtx.org>
+References: <20230612101715.129581706@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <7s2xdk43a2lhyezgj6bbwxaekbtgym2rin7t432m4pos4j6v74@qaxm3htjak4a>
-References: <20230526171057.66876-1-sebastian.reichel@collabora.com> <20230526171057.66876-2-sebastian.reichel@collabora.com> <2f3328c4be9db6feef2cc662ede70f92.sboyd@kernel.org> <7s2xdk43a2lhyezgj6bbwxaekbtgym2rin7t432m4pos4j6v74@qaxm3htjak4a>
-Subject: Re: [PATCH v2 1/2] clk: composite: Fix handling of high clock rates
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     Michael Turquette <mturquette@baylibre.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Christopher Obbard <chris.obbard@collabora.com>,
-        David Laight <David.Laight@aculab.com>, kernel@collabora.com,
-        stable@vger.kernel.org
-To:     Maxime Ripard <maxime@cerno.tech>
-Date:   Tue, 13 Jun 2023 11:25:12 -0700
-User-Agent: alot/0.10
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230612101715.129581706@linuxfoundation.org>
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Quoting Maxime Ripard (2023-06-13 05:14:25)
-> On Mon, Jun 12, 2023 at 05:10:35PM -0700, Stephen Boyd wrote:
-> > Quoting Sebastian Reichel (2023-05-26 10:10:56)
-> > > diff --git a/drivers/clk/clk-composite.c b/drivers/clk/clk-composite.c
-> > > index edfa94641bbf..66759fe28fad 100644
-> > > --- a/drivers/clk/clk-composite.c
-> > > +++ b/drivers/clk/clk-composite.c
-> > > @@ -119,7 +119,10 @@ static int clk_composite_determine_rate(struct c=
-lk_hw *hw,
-> > >                         if (ret)
-> > >                                 continue;
-> > > =20
-> > > -                       rate_diff =3D abs(req->rate - tmp_req.rate);
-> > > +                       if (req->rate >=3D tmp_req.rate)
-> > > +                               rate_diff =3D req->rate - tmp_req.rat=
-e;
-> > > +                       else
-> > > +                               rate_diff =3D tmp_req.rate - req->rat=
-e;
-> >=20
-> > This problem is widespread
-> >=20
-> >  $ git grep abs\(.*- -- drivers/clk/ | wc -l
-> >  52
-> >=20
-> > so we may have a bigger problem here. Maybe some sort of coccinelle
-> > script or smatch checker can be written to look for abs() usage with an
-> > unsigned long type or a subtraction expression. This may also be worse
-> > after converting drivers to clk_hw_forward_rate_request() and
-> > clk_hw_init_rate_request() because those set the rate to ULONG_MAX.
-> > +Maxime for that as an FYI.
->=20
-> We set max_rate to ULONG_MAX in those functions, and I don't think we
-> have a lot of driver that will call clk_round_rate on the max rate, so
-> we should be somewhat ok?
+On Mon, Jun 12, 2023 at 12:25:32PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.3.8 release.
+> There are 160 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 14 Jun 2023 10:16:41 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.3.8-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.3.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Good point. I haven't looked to see if any drivers are using the
-max_rate directly. Hopefully they aren't.
+Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
+x86_64), and boot tested x86_64. No regressions noted.
+
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
