@@ -2,68 +2,130 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 342DE72EB5E
-	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 20:58:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B358272EBF2
+	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 21:28:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229602AbjFMS6O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 13 Jun 2023 14:58:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47200 "EHLO
+        id S229543AbjFMT1M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 13 Jun 2023 15:27:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240595AbjFMS6M (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 14:58:12 -0400
-Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A8BBB5;
-        Tue, 13 Jun 2023 11:58:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1686682692; x=1718218692;
-  h=message-id:date:mime-version:subject:from:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=99Ry+JANkUA7HY3zQALU3ZGK2YVNo3ZvwuUiJUhJAUg=;
-  b=HBRbphHHLCpncBzserGkYiQy9z+06uh9aCHLnM/4I+cD4hlHwmMTmmFb
-   UDx2qW7WZbC6iTI8iN7NHPH/2MVcS1u3fDwG2nFR571dMyQxurkHwIZo3
-   qOjJA5mfraQXQF8r2UePz85m4N9NUxYbpXwhPSmnpbmch6oj+FbilyQ6i
-   U=;
-X-IronPort-AV: E=Sophos;i="6.00,240,1681171200"; 
-   d="scan'208";a="220442874"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO email-inbound-relay-iad-1d-m6i4x-e651a362.us-east-1.amazon.com) ([10.25.36.210])
-  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 18:58:11 +0000
-Received: from EX19MTAUWB002.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan3.iad.amazon.com [10.40.163.38])
-        by email-inbound-relay-iad-1d-m6i4x-e651a362.us-east-1.amazon.com (Postfix) with ESMTPS id 55C63805C7;
-        Tue, 13 Jun 2023 18:58:08 +0000 (UTC)
-Received: from EX19D002UWC004.ant.amazon.com (10.13.138.186) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Tue, 13 Jun 2023 18:58:07 +0000
-Received: from [192.168.4.185] (10.187.170.24) by
- EX19D002UWC004.ant.amazon.com (10.13.138.186) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Tue, 13 Jun 2023 18:58:06 +0000
-Message-ID: <c4724b40-89f6-5aa7-720d-c4a4af57cf45@amazon.com>
-Date:   Tue, 13 Jun 2023 11:58:05 -0700
+        with ESMTP id S229554AbjFMT1L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 15:27:11 -0400
+Received: from GBR01-CWL-obe.outbound.protection.outlook.com (mail-cwlgbr01on2090.outbound.protection.outlook.com [40.107.11.90])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E41C6E6F;
+        Tue, 13 Jun 2023 12:27:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hn9TQbO57CHmfn04gc5/xWdnS6xQvoX3lKl+kiJ2GnDkpq5HmhWcWRPDWErecsJ6QulvkL5efMXDo5H7eFoGvlBASn+InNjJMtHxNVREQ6r6g5vDkUoQrY94pD8ysmjp5rR2hiFDeWKpSHK95FvDxYePlDiK2zhBScPyMa/3AyZoVHgriPPGBnukPGzJYBoI1MkyPTyVhHDwBKnshuF4xnY5pJyWbQgME4cRdASn8KKupNm8d9kJqB8p6njS3bHMNxKHXeAxbRn5Sj6YEuL9g6b9rlX/sj/T6NA7U2ads5jsAwEHDapZ5GiI2wP3ZdS5oxhkNuvSb/tf+kAjGKjFWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=4bQlsf6RL4rbZaE9Sv3N2HdZW759fa9C6QoollQ+xCU=;
+ b=BAjn8qq3xyjUOcCU99gmBqXS7qdxjUV/nfCIKRBwttjyoPHbgNGlkznrrHerkZ4EeEUIcrnC9+olnNnNIJ6HE5zKS2FSaNwvxeZvXYxl4j0DQcabdO9DjAQvRPKMtglY5l/d6ztZDkHOgDm8veGaR/mUEljxwsUpDLGpkmKTyzisiPFYPz2QBl7McY6wwAsCe32LNsQ86oQb5BjV+7y38hDykEmb9n+9a0cNbxuf2ChoQU3naOhY+CdYrsVTP9vCrL8cauE1/aokHkGwoDgUYdYFRSF3QJPDnzgNm5Zqy1jiq5LNDnaNj8LSYCwudqGtqyV3IFYVJyjFcvE483c4Ig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4bQlsf6RL4rbZaE9Sv3N2HdZW759fa9C6QoollQ+xCU=;
+ b=Nf/xeMXjpHethGatPjJ7rf2u34s7HALSSrXH41jZgiKYlEGnYgIP83+Q+l1MjHOF25SSCFnNtxcxOAV27IYwuiTfdFBpNW8oW0e8tPru3+q3GMQNp7j6UBtBT+sUTU0tKPjOuvSQu9o+Qh6GzPNit/wb52eWRKmNBydx/O5MFoc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO4P265MB6700.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2f2::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.21; Tue, 13 Jun
+ 2023 19:27:04 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f968:901e:1398:7d22]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::f968:901e:1398:7d22%4]) with mapi id 15.20.6500.020; Tue, 13 Jun 2023
+ 19:27:04 +0000
+Date:   Tue, 13 Jun 2023 20:27:02 +0100
+From:   Gary Guo <gary@garyguo.net>
+To:     Boqun Feng <boqun.feng@gmail.com>
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        Alice Ryhl <aliceryhl@google.com>,
+        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
+        Geoffrey Thomas <geofft@ldpreload.com>,
+        Fox Chen <foxhlchen@gmail.com>,
+        John Baublitz <john.m.baublitz@gmail.com>,
+        Christoph Lameter <cl@linux.com>,
+        Pekka Enberg <penberg@kernel.org>,
+        David Rientjes <rientjes@google.com>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        Andreas Hindborg <nmi@metaspace.dk>, stable@vger.kernel.org
+Subject: Re: [PATCH] rust: allocator: Prevents mis-aligned allocation
+Message-ID: <20230613202702.56f321ab.gary@garyguo.net>
+In-Reply-To: <20230613164258.3831917-1-boqun.feng@gmail.com>
+References: <20230613164258.3831917-1-boqun.feng@gmail.com>
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0215.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1a5::22) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.10.0
-Subject: Re: Observing RCU stalls in kernel 5.4/5.10/5.15/6.1 stable trees
-Content-Language: en-US
-From:   "Bhatnagar, Rishabh" <risbhat@amazon.com>
-To:     <bigeasy@linutronix.de>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "sashal@kernel.org" <sashal@kernel.org>, <luizcap@amazon.com>,
-        <abuehaze@amazon.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <12c6f9a3-d087-b824-0d05-0d18c9bc1bf3@amazon.com>
-In-Reply-To: <12c6f9a3-d087-b824-0d05-0d18c9bc1bf3@amazon.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.187.170.24]
-X-ClientProxiedBy: EX19D039UWA001.ant.amazon.com (10.13.139.110) To
- EX19D002UWC004.ant.amazon.com (10.13.138.186)
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO4P265MB6700:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6a9a731f-e5d6-4876-d5b8-08db6c442b2f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: dye1vyA5h+/lgzrI0ctA+o6wOg0tf8En0yElW68KElDe1/+GfIJGfve9alBsWgDn8R3yVEBms69zaeThtAMz+R/CJvibFMaV/JEtXQrAQt17W0zeLz4Sw6V+pl9Pygb+9zSxfopKUKWgTuTBlTU/9up2yNFfRRq82FqpFqE38uccihTmZf+owXw5VVtZOZZy7rcSr+6ZdfzK1pzqG+uDZaJs06DNZ2buMzVwc5cMc52gtfYVBm4cHDS/VIE5b2Tgm183FTjrrVUdTDnQOHTahLMakCAcnf7TUtCFP78VkRx78itJYKeF2AjVWIhiNKnNmLIJlogeVHcXAQWpaUZkLTJV0K7s1gfA1qxUTGRIShv80MmC3BnFe7uRvP2JQl2M6Mmy+85goFmlzWJn18G6ddA8SVNuO4iB4HJRzQFY0Zi9ZOljIUbiZJtP9uXDr0TOW4j204hg25FLoOIX0hvIJyJr8EwONGRStQwbijzhsFnELpXr36jxqDzCZrr3ukV2Cb0vZvHwz2vf7zTCEwfJu4fbG6K6uRymIrq8Ge86JaA=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(396003)(136003)(376002)(366004)(346002)(39830400003)(451199021)(966005)(6486002)(478600001)(26005)(6512007)(83380400001)(1076003)(6506007)(36756003)(186003)(38100700002)(86362001)(2616005)(4326008)(6916009)(66476007)(66946007)(66556008)(316002)(5660300002)(8936002)(8676002)(7416002)(41300700001)(2906002)(66899021)(54906003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?WNgNnF9BLRwkiRtiEd7IlJ7wDPkV7PJcfUxV3Fz66+NPtN/NYHJ+5d04n7kr?=
+ =?us-ascii?Q?nxnG0esKRk5YdTk7jqRFtAdjRWC2QW8aKJJT1idAcRftO/bxw3kI7gFtkdfr?=
+ =?us-ascii?Q?8L1UI5lDeDlJOj2CLQWDsm1NO+7hUqctWK4xIieFRTTH9Wc0UGptee4HCEL0?=
+ =?us-ascii?Q?aVicKIwKngM13QaAvr0SLYGfE8pEy8pGSuGx+t1UUTY592s6iYavQpSPjDxI?=
+ =?us-ascii?Q?ZhfNNiQxOFr+LCS2fheC5hbBoldImXkn2gDxLMH2E+ORDmD7W8NAVg4lZ+qA?=
+ =?us-ascii?Q?x8FqidPUkVR/SrYvlM9D+264liET5FPaxTAAf5KI+JeOjMbaEWXsziMnkXsn?=
+ =?us-ascii?Q?XZW36FkeUS2ZlX1usAk6qWvG4890508bE1HH0ovwhmnojFDsQTaS00SpHfvp?=
+ =?us-ascii?Q?/onrVg2ThVelpNZr0pv+m+0u1zg9BhqOr9PuI+Vd/HWTSPcdiWUuszeSPimF?=
+ =?us-ascii?Q?Z9+/srCeHRa1khvtFTfGV8FiobtSl4xAA5r04xewk3Kno43Czds1t8EUYwEN?=
+ =?us-ascii?Q?f0tw12WB1eId1ixm0PvCH0b1OViFC2YZD+Q4A2A+RLUpFzecUKtOL9U4GNbw?=
+ =?us-ascii?Q?Tv4opVRd1gw9fzEyBhZqDtMIdXcti7eb4jb7yIyBC5/Zui1TJBFQne8zN9KN?=
+ =?us-ascii?Q?+lMoue4L021Y0xDJ7r4kcz+zCtZP2ng2/NaACaM9bbCwO+WIcnMtW6gHLNHa?=
+ =?us-ascii?Q?vdoRgx84ejQl6IuVpLLjcDJkl8gzwLlXj09mTVXzW4VP5ozd1bJF6kzKJ28Q?=
+ =?us-ascii?Q?gJroj+y1BkwztRBFbJsw72eU/1bcuQ+PLcaMofTq/QVVBhu2/lMH1ntVgVNV?=
+ =?us-ascii?Q?Ttv/hosjFMG3SE3tUrpnkWg503QCBuZ/tbNq7n153Ap/leLUzwyb9UuI+RsU?=
+ =?us-ascii?Q?1Py3ywwfI8SFPX+10I5s+yYrc2nToH4TF4c/PRbCSk6MNCm872oJwDhBeamG?=
+ =?us-ascii?Q?7LChj1jw5AFMmIxrh4nwRkyWaMfPl8Qe7gd150FBQGYEBCpljBg8UZ8359hX?=
+ =?us-ascii?Q?xFRr87Z76Tj8Eg0xhiYewJUGSsVLfPRAGJc+2CFWCRM1lVlhdnbaNVygljPE?=
+ =?us-ascii?Q?PoeY2taYENdctzfxyA/O5Fqs9bBOajb3PnRNdSNHhFT8nZ1cnPzQk/PbTZEn?=
+ =?us-ascii?Q?eQTmot1qSNWQFWbgccviInpjuB7kw7pOImGgONsaBLnvh4ekeo7ijtnxugoq?=
+ =?us-ascii?Q?XR3aTFwM24Ii4n0iVUprju5m/jqN3NGilEJyaHawFmSG45Ys4SbCDdul8X1M?=
+ =?us-ascii?Q?WG7h6mzNBoFXfnPeAP+fS4br5fK3WGrHI9gLaS7rwC5rnitvtgkELKCvGQ9H?=
+ =?us-ascii?Q?5YZJW9gv87DChn4Jifp6BCSYJz5IcY78HSqXTrl5hHtMGJ8bdqMTOugrZnCh?=
+ =?us-ascii?Q?Te3gsd5NMa1T+2C2inSDpfcjSxe0T3j69GcJB+BmI8usmprzU+fybQHigIPf?=
+ =?us-ascii?Q?R1icJ9gSz6pLmFkkOkFb2f2Fy+mZ7njZBei/yHRZcZZYm11D6f6VPskZGn8Q?=
+ =?us-ascii?Q?ozX4RPvJZYOLYewYHEpWTWvPPocpIOr3FKROyoJNqFCumm94FkL6KE/yxhIz?=
+ =?us-ascii?Q?S2B1apjvzlS8p7OT2/GUyNFjQ98Tu8C9WrqhfJA/?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6a9a731f-e5d6-4876-d5b8-08db6c442b2f
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2023 19:27:04.2804
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fKSf5tv6EAIxVu641xAnX9SKgkUqlebXt6Hi+hhvujFCecbAil8XG/QJqevghjnLS3o+Gsfy2KRvxl1/fxf5fw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6700
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,227 +133,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Tue, 13 Jun 2023 09:42:58 -0700
+Boqun Feng <boqun.feng@gmail.com> wrote:
 
-On 6/13/23 11:49 AM, Bhatnagar, Rishabh wrote:
-> Hi Sebastian/Greg
->
-> We are seeing RCU stall warnings from recent stable tree updates:
-> 5.4.243, 5.10.180, 5.15.113, 6.1.31 onwards.
-> This is seen in the upstream stable trees without any downstream patches.
->
-> The issue is seen few minutes after booting without any workload.
-> We launch hundred's of virtual instances and this shows up in 1-2 
-> instances, so its hard to reproduce.
-> Attaching a few stack traces below.
->
-> The issue can be seen on virtual and baremetal instances.
-> Another interesting point is we only see this on x86 based instances.
-> We also did test this on linux-mainline but were not able to reproduce 
-> the issue.
-> So maybe there's a fixup or related commit that has gone in?
->
-> We tried bisecting the stable trees and found that after reverting the
-> below commit we couldn't reproduce this in any of the kernels 
-> consistently.
->
-> tick/common: Align tick period with the HZ tick. [ Upstream commit
-> e9523a0d81899361214d118ad60ef76f0e92f71d ]
->
->
-> Not exactly sure how this commit is affecting all stable kernels.
-> Can you take a look at this issue and share your insight?
->
-> A few example stack traces of the observed RCU stall.
->
-> Seen in kernel-5.10.181:
->
-> rcu: INFO: rcu_sched self-detected stall on CPU
-> rcu: 37-....: (1818 ticks this GP) idle=cf2/1/0x4000000000000000
-> softirq=151/151 fqs=7245
->   (t=14809 jiffies g=-759 q=3290)
-> NMI backtrace for cpu 37
-> Hardware name: Xen HVM domU, BIOS 4.11.amazon 08/24/2006
-> Call Trace:
->   <IRQ>
->   dump_stack+0x57/0x70
->   ? lapic_can_unplug_cpu.cold+0x3a/0x3a
->   nmi_cpu_backtrace.cold+0x32/0x68
->   nmi_trigger_cpumask_backtrace+0xdf/0xe6
->   rcu_dump_cpu_stacks+0xa5/0xd7
->   print_cpu_stall.cold+0xa4/0x149
->   check_cpu_stall+0xee/0x210
->   rcu_pending+0x26/0xc0
->   rcu_sched_clock_irq+0x43/0x110
->   update_process_times+0x8c/0xc0
->   tick_periodic+0x27/0x80
->   tick_handle_periodic+0x20/0x70
->   xen_timer_interrupt+0x1e/0x30
->   __handle_irq_event_percpu+0x3d/0x160
->   handle_irq_event_percpu+0x31/0x80
->   handle_percpu_irq+0x37/0x60
->   generic_handle_irq+0x4b/0x60
->   evtchn_2l_handle_events+0x26d/0x280
->   __xen_evtchn_do_upcall+0x66/0xb0
->   __sysvec_xen_hvm_callback+0x22/0x30
->   asm_call_irq_on_stack+0x12/0x20
->   </IRQ>
->   sysvec_xen_hvm_callback+0x72/0x80
->   asm_sysvec_xen_hvm_callback+0x12/0x20
-> RIP: 0010:_raw_spin_unlock_irqrestore+0xe/0x20
-> RSP: 0000:ffffc900188ffa28 EFLAGS: 00000246
->   pci_conf1_read+0xa4/0x100
->   pci_bus_read_config_byte+0x3f/0x70
->   __pci_find_next_cap_ttl+0x3b/0xd0
->   pci_find_capability+0x71/0xa0
->   pci_pm_init+0x6c/0x1c0
->   ? pci_allocate_vc_save_buffers+0x6d/0x8b
->   pci_device_add+0xb0/0x1b0
->   pci_scan_single_device+0xbd/0xf0
->   pci_scan_slot+0x53/0x120
->   pci_scan_child_bus_extend+0x3a/0x2a0
->   acpi_pci_root_create+0x20c/0x26a
->   pci_acpi_scan_root+0x19a/0x1c0
->   ? negotiate_os_control+0xdd/0x2b9
->   acpi_pci_root_add.cold+0x59/0x1b0
->   acpi_bus_attach+0xee/0x210
->   acpi_bus_attach+0x63/0x210
->   acpi_bus_attach+0x63/0x210
->   acpi_bus_scan+0x43/0x90
->   ? acpi_bus_init+0x15f/0x15f
->   acpi_scan_init+0x10e/0x1b4
->   acpi_init+0xba/0x11d
->   ? intel_idle_init+0x2a2/0x2a2
->   do_one_initcall+0x44/0x1c4
->   do_initcalls+0xc6/0xdf
->   kernel_init_freeable+0x14d/0x198
->   ? rest_init+0xb4/0xb4
->   kernel_init+0xa/0x11c
->   ret_from_fork+0x22/0x30
->
-> Seen in kernel-5.4.246:
->
-> NMI backtrace for cpu 7
-> CPU: 7 PID: 1 Comm: swapper/0 Not tainted 5.4.246 #1
-> Hardware name: Amazon EC2 m5.2xlarge/, BIOS 1.0 10/16/2017
-> RIP: 0010:lapic_next_deadline+0x26/0x40
-> RSP: 0000:ffffc900001ecf98 EFLAGS: 00000002
-> Call Trace:
->  <NMI>
->  ? nmi_cpu_backtrace+0x4c/0x90
->  ? nmi_cpu_backtrace_handler+0xd/0x20
->  ? nmi_handle+0x71/0x160
->  ? default_do_nmi+0x4e/0x100
->  ? do_nmi+0x15b/0x190
->  ? end_repeat_nmi+0x16/0x62
->  ? lapic_next_deadline+0x26/0x40
->  ? lapic_next_deadline+0x26/0x40
->  ? lapic_next_deadline+0x26/0x40
->  </NMI>
->  <IRQ>
->  clockevents_program_event+0xcf/0x100
->  tick_handle_periodic+0x48/0x60
->  smp_apic_timer_interrupt+0x6a/0x130
->  apic_timer_interrupt+0xf/0x20
->  </IRQ>
->  ? vprintk_emit+0x19b/0x280
->  ? printk+0x52/0x6e
->  ? pci_hp_add+0x189/0x300
->  ? acpiphp_register_hotplug_slot+0xe0/0xf0
->  ? acpiphp_add_context+0x3b1/0x460
->  ? acpi_ns_walk_namespace+0x108/0x220
->  ? acpiphp_put_context.part.12+0x30/0x30
->  ? acpi_walk_namespace+0xc8/0xf0
->  ? kmem_cache_alloc_trace+0x1f8/0x210
->  ? acpiphp_enumerate_slots+0x172/0x250
->  ? acpi_pci_add_bus+0x50/0xd0
->  ? pci_register_host_bridge+0x22b/0x460
->  ? pci_create_root_bus+0x87/0xb0
->  ? acpi_pci_root_create+0x128/0x290
->  ? pci_acpi_scan_root+0x14a/0x1b0
->  ? acpi_pci_root_add+0x1ff/0x580
->  ? acpi_evaluate_integer+0x52/0x90
->  ? set_debug_rodata+0x2f/0x2f
->  ? acpi_bus_attach+0x144/0x1d0
->  ? acpi_bus_attach+0x80/0x1d0
->  ? acpi_bus_attach+0x80/0x1d0
->  ? acpi_sleep_proc_init+0x24/0x24
->  ? acpi_sleep_proc_init+0x24/0x24
->  ? acpi_bus_scan+0x43/0x90
->  ? acpi_scan_init+0xf1/0x235
->  ? acpi_sleep_proc_init+0x24/0x24
->  ? acpi_init+0x2e9/0x349
->  ? do_one_initcall+0x46/0x200
->  ? kernel_init_freeable+0x1db/0x286
->  ? rest_init+0xb0/0xb0
->  ? kernel_init+0xa/0x110
->  ? ret_from_fork+0x35/0x40
->
->
-> Seen in 5.10.183:
->
-> rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
-> acpiphp: Slot [19] registered
-> rcu:     3-....: (349 ticks this GP) idle=936/1/0x4000000000000000 
-> softirq=94/94 fqs=151
->  (detected by 0, t=14752 jiffies, g=-1063, q=591)
-> Sending NMI from CPU 0 to CPUs 3:
-> NMI backtrace for cpu 3
-> CPU: 3 PID: 1 Comm: swapper/0 Not tainted 5.10.183 #1
-> Hardware name: Amazon EC2 m5.2xlarge/, BIOS 1.0 10/16/2017
-> RIP: 0010:io_serial_in+0x14/0x20
-> RSP: 0000:ffffbc9640017720 EFLAGS: 00000006
-> PKRU: 55555554
-> Call Trace:
->  <NMI>
->  ? nmi_cpu_backtrace+0x57/0xb0
->  ? nmi_cpu_backtrace_handler+0xd/0x20
->  ? nmi_handle+0x62/0x130
->  ? default_do_nmi+0x49/0x100
->  ? exc_nmi+0x152/0x170
->  ? end_repeat_nmi+0x16/0x67
->  ? mem16_serial_in+0x10/0x20
->  ? io_serial_in+0x14/0x20
->  ? io_serial_in+0x14/0x20
->  ? io_serial_in+0x14/0x20
->  </NMI>
->  serial8250_console_write+0x8e/0x310
->  ? record_print_text+0xbf/0x150
->  console_unlock+0x485/0x4c0
->  vprintk_emit+0xe4/0x240
->  printk+0x52/0x72
->  ? pci_hp_add+0x18d/0x300
->  acpiphp_register_hotplug_slot+0xe4/0x100
->  acpiphp_add_context+0x3b5/0x460
->  acpi_ns_walk_namespace+0x10c/0x220
->  ? acpiphp_put_context.part.13+0x30/0x30
->  ? acpiphp_put_context.part.13+0x30/0x30
->  acpi_walk_namespace+0xd4/0xf0
->  ? kmem_cache_alloc_trace+0x3be/0x400
->  acpiphp_enumerate_slots+0x175/0x260
->  acpi_pci_add_bus+0x50/0xe0
->  pci_register_host_bridge+0x233/0x4d0
->  ? complete_all+0x2a/0x40
->  pci_create_root_bus+0x87/0xc0
->  acpi_pci_root_create+0x128/0x2a0
->  pci_acpi_scan_root+0x14e/0x1b0
->  acpi_pci_root_add+0x203/0x580
->  ? acpi_evaluate_integer+0x52/0x90
->  ? rdinit_setup+0x2f/0x2f
->  acpi_bus_attach+0x148/0x1d0
->  acpi_bus_attach+0x84/0x1d0
->  acpi_bus_attach+0x84/0x1d0
->  ? acpi_sleep_proc_init+0x24/0x24
->  ? acpi_sleep_proc_init+0x24/0x24
->  acpi_bus_scan+0x43/0x90
->  acpi_scan_init+0xff/0x247
->  ? acpi_sleep_proc_init+0x24/0x24
->  acpi_init+0x2e9/0x34d
->  do_one_initcall+0x44/0x1e0
->  kernel_init_freeable+0x229/0x286
->  ? rest_init+0xc0/0xc0
->  kernel_init+0xa/0x120
->  ret_from_fork+0x22/0x30
->
-> Thanks
-> Rishabh
-CCing stable kernel list.
+> Currently the KernelAllocator simply passes the size of the type Layout
+> to krealloc(), and in theory the alignment requirement from the type
+> Layout may be larger than the guarantee provided by SLAB, which means
+> the allocated object is mis-aligned.
+> 
+> Fixes this by adjusting the allocation size to the nearest power of two,
+> which SLAB always guarantees a size-aligned allocation. And because Rust
+> guarantees that original size must be a multiple of alignment and the
+> alignment must be a power of two, then the alignment requirement is
+> satisfied.
+> 
+> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+> Co-developed-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
+> Signed-off-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Cc: stable@vger.kernel.org # v6.1+
+
+Reviewed-by: Gary Guo <gary@garyguo.net>
+
+> ---
+> Some more explanation:
+> 
+> * Layout is a data structure describing a particular memory layout,
+>   conceptionally it has two fields: align and size.
+> 
+>   * align is guaranteed to be a power of two.
+>   * size can be smaller than align (only when the Layout is created via
+>     Layout::from_align_size())
+>   * After pad_to_align(), the size is guaranteed to be a multiple of
+>     align
+> 
+> For more information, please see: 
+> 
+> 	https://doc.rust-lang.org/stable/std/alloc/struct.Layout.html
+> 
+>  rust/bindings/bindings_helper.h |  1 +
+>  rust/kernel/allocator.rs        | 17 ++++++++++++++++-
+>  2 files changed, 17 insertions(+), 1 deletion(-)
+> 
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index 3e601ce2548d..6619ce95dd37 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -15,3 +15,4 @@
+>  /* `bindgen` gets confused at certain things. */
+>  const gfp_t BINDINGS_GFP_KERNEL = GFP_KERNEL;
+>  const gfp_t BINDINGS___GFP_ZERO = __GFP_ZERO;
+> +const size_t BINDINGS_ARCH_SLAB_MINALIGN = ARCH_SLAB_MINALIGN;
+> diff --git a/rust/kernel/allocator.rs b/rust/kernel/allocator.rs
+> index 397a3dd57a9b..66575cf87ce2 100644
+> --- a/rust/kernel/allocator.rs
+> +++ b/rust/kernel/allocator.rs
+> @@ -11,9 +11,24 @@
+>  
+>  unsafe impl GlobalAlloc for KernelAllocator {
+>      unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
+> +        // Customized layouts from `Layout::from_size_align()` can have size < align, so pads first.
+> +        let layout = layout.pad_to_align();
+> +
+> +        let mut size = layout.size();
+> +
+> +        if layout.align() > bindings::BINDINGS_ARCH_SLAB_MINALIGN {
+> +            // The alignment requirement exceeds the slab guarantee, then tries to enlarges the size
+> +            // to use the "power-of-two" size/alignment guarantee (see comments in kmalloc() for
+> +            // more information).
+> +            //
+> +            // Note that `layout.size()` (after padding) is guaranteed to be muliples of
+> +            // `layout.align()`, so `next_power_of_two` gives enough alignment guarantee.
+> +            size = size.next_power_of_two();
+> +        }
+> +
+>          // `krealloc()` is used instead of `kmalloc()` because the latter is
+>          // an inline function and cannot be bound to as a result.
+> -        unsafe { bindings::krealloc(ptr::null(), layout.size(), bindings::GFP_KERNEL) as *mut u8 }
+> +        unsafe { bindings::krealloc(ptr::null(), size, bindings::GFP_KERNEL) as *mut u8 }
+>      }
+>  
+>      unsafe fn dealloc(&self, ptr: *mut u8, _layout: Layout) {
+
