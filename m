@@ -2,92 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18D2972E2D4
-	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 14:25:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBCBC72E327
+	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 14:37:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240757AbjFMMZr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 13 Jun 2023 08:25:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34548 "EHLO
+        id S242374AbjFMMhg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 13 Jun 2023 08:37:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236188AbjFMMZp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 08:25:45 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFD6010CE;
-        Tue, 13 Jun 2023 05:25:44 -0700 (PDT)
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35DCNfkV006121;
-        Tue, 13 Jun 2023 12:25:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : date : subject :
- mime-version : content-type : content-transfer-encoding : message-id : to
- : cc; s=pp1; bh=0QJ5OOSqOBhOpoGHM9mIKfqtD9U6FDSmgII1zFfBG7w=;
- b=STSeSzyvzvJkHYgGju6hWsQcfKBHjy6WBf47K+whSQUV+GYHorIEU91AR+m2gohqu+Am
- PN0a3aZttQlnreCeSxtwd3mT5A6PNY9Vh0P6w5G3ShdkvZsnqIgbPqFZofPukkwWxjx3
- BRVVBSMRdPH/xTQeHvnQOqnISkb4L33h+REHp81fqdtrY2eCW17o1zTjYWyZUhU+jAOm
- v4GB208KCoe2X9e3wEfAK3joq3OnGBGSUo8Yq/EyD6pyQtckFuOWFEanFiTFVwyuPAc5
- IJUTQp3DS+nrRDiJuPvQxVc/yzSyNnUa5IscMQvxvIzE1hux4XMTaJF2Ejs+s7npPiqv vw== 
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r6re2r1f3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 13 Jun 2023 12:25:43 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-        by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35D4mTIc016530;
-        Tue, 13 Jun 2023 12:25:41 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-        by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3r4gee246e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 13 Jun 2023 12:25:41 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-        by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35DCPcig42467876
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 13 Jun 2023 12:25:38 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 19F1D20040;
-        Tue, 13 Jun 2023 12:25:38 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 5ED9720043;
-        Tue, 13 Jun 2023 12:25:37 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-        by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-        Tue, 13 Jun 2023 12:25:37 +0000 (GMT)
-From:   Julian Ruess <julianr@linux.ibm.com>
-Date:   Tue, 13 Jun 2023 14:25:37 +0200
-Subject: [PATCH] s390/ism: Fix trying to free already-freed IRQ by repeated
- ism_dev_exit()
+        with ESMTP id S242375AbjFMMhf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 08:37:35 -0400
+Received: from mail5.swissbit.com (mail5.swissbit.com [148.251.244.252])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A55C710EC
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 05:37:33 -0700 (PDT)
+Received: from mail5.swissbit.com (localhost [127.0.0.1])
+        by DDEI (Postfix) with ESMTP id 610A73A2AE8
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 14:37:31 +0200 (CEST)
+Received: from mail5.swissbit.com (localhost [127.0.0.1])
+        by DDEI (Postfix) with ESMTP id 4881E3A23B1
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 14:37:31 +0200 (CEST)
+X-TM-AS-ERS: 10.181.10.103-127.5.254.253
+X-TM-AS-SMTP: 1.0 bXgxLmRtei5zd2lzc2JpdC5jb20= Y2xvZWhsZUBoeXBlcnN0b25lLmNvb
+        Q==
+X-DDEI-TLS-USAGE: Used
+Received: from mx1.dmz.swissbit.com (mx.dmz.swissbit.com [10.181.10.103])
+        by mail5.swissbit.com (Postfix) with ESMTPS
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 14:37:31 +0200 (CEST)
+Content-Type: multipart/signed; 
+ boundary=NoSpamProxy_34187a9f-04a2-4a62-9d00-6bbf6e2bb367; 
+ protocol="application/pkcs7-signature"; micalg="sha256"
+From:   Christian Loehle <CLoehle@hyperstone.com>
+To:     "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+CC:     Christian Loehle <CLoehle@hyperstone.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH] mmc: block: ensure error propagation for non-blk
+Thread-Topic: [PATCH] mmc: block: ensure error propagation for non-blk
+Thread-Index: Admd826Hs6X6LPvDQxGrpsFS9ayCsg==
+Date:   Tue, 13 Jun 2023 12:37:29 +0000
+Message-ID: <d83cedabb09c42209f86618917bef7e3@hyperstone.com>
+Accept-Language: en-US, de-DE
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230613-ism-rmmod-crash-v1-1-359ac51e18c9@linux.ibm.com>
-X-B4-Tracking: v=1; b=H4sIAEBgiGQC/x2NQQqDQAxFryJZN6AzIqVXKUXiGDtZzChJkYJ49
- 6Yu3+c9/gHGKmzwaA5Q3sVkrQ7drYGUqb4ZZXaG0IbYDl1EsYJayjpjUrKMc7/EPoRIwz2CVxM
- Z46RUU/53ro+XPm708cmNTXmR7/X5fJ3nD9slGreDAAAA
-To:     Julian Ruess <julianr@linux.ibm.com>,
-        Alexandra Winter <wintera@linux.ibm.com>,
-        Wenjia Zhang <wenjia@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jan Karcher <jaka@linux.ibm.com>,
-        Stefan Raspl <raspl@linux.ibm.com>
-Cc:     linux-s390@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Niklas Schnelle <schnelle@linux.ibm.com>
-X-Mailer: b4 0.12.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 1aIL0rMSPM2ipBYuvnwOYpT3DYv2dmrH
-X-Proofpoint-ORIG-GUID: 1aIL0rMSPM2ipBYuvnwOYpT3DYv2dmrH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-13_04,2023-06-12_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=960 spamscore=0
- lowpriorityscore=0 priorityscore=1501 impostorscore=0 bulkscore=0
- mlxscore=0 adultscore=0 suspectscore=0 phishscore=0 malwarescore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306130107
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+X-TMASE-Version: DDEI-5.1-9.0.1002-27688.006
+X-TMASE-Result: 10--6.576200-10.000000
+X-TMASE-MatchedRID: zpx2FW2iGB1OcNR3zaWyOBFbgtHjUWLyyqyllX6UJItXGTbsQqHbkvjA
+        2IXz2gxc2w7862BXsuitrcbU2NPmbcfdkIlEiI2kgvmNrsT46HLBOVz0Jwcxl6vCrG0TnfVUgK6
+        qCGa1Z9dAYdLFXr37Pu+1G7Fo/2oBpaAJZi8UzEXN+qWlu2ZxaPEdtecmfyuOQm/bEuDKSM+tya
+        YPv+ErX6MOIRgDSZC3ZzxSjotrw9s7AFczfjr/7J3CKuf3L4ZI2a6H1nxxqgQ1J+y6memv7KNVt
+        A1L8yivGjR2kUU2KhQ=
+X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
+X-TMASE-INERTIA: 0-0;;;;
+X-TMASE-XGENCLOUD: ff93afd5-877f-439a-ae70-60c84568c956-0-0-200-0
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,MIME_QP_LONG_LINE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -96,58 +64,313 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This patch prevents the system from crashing when unloading the ISM module.
+--NoSpamProxy_34187a9f-04a2-4a62-9d00-6bbf6e2bb367
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-How to reproduce: Attach an ISM device and execute 'rmmod ism'.
+comm=69=74 =30=303f=620=6151162d940f=325=66=6335e7=30b0996=6112c=39e08=61 upst=
+ream=2E
 
-Error-Log:
-- Trying to free already-free IRQ 0
-- WARNING: CPU: 1 PID: 966 at kernel/irq/manage.c:1890 free_irq+0x140/0x540
+Re=71=75ests =74o the m=6Dc =6C=61yer =75sual=6C=79 =63ome =74hr=6F=75g=68 a b=
+=6Coc=6B dev=69ce I=4F.
+=54h=65 =65x=63eptions =61r=65 =74=68=65 io=63tl interf=61=63=65, RPMB =63ha=
+=72=64e=76 io=63tl
+and =64ebu=67=66=73=2C wh=69ch i=73=73=75=65 =74hei=72 =6Fw=6E =62l=6B=5Fmq =
+=72e=71ue=73ts =74=68=72=6Fugh
+blk=5Fexecute=5Frq a=6Ed do =6Eot =71ue=72=79 =74he =42LK=5F=53TS =65=72ror =
+=62ut t=68e
+m=6Dcblk-int=65=72=6Eal =64rv=5Fop=5F=72=65su=6C=74. T=68=69=73 pa=74=63h =65=
+=6E=73ures that d=72=76=5Fop=5Fre=73=75l=74
+defa=75=6Cts to =61n er=72=6Fr a=6Ed has t=6F =62e overw=72=69tt=65=6E b=79 =
+=74=68e operatio=6E
+to be cons=69dere=64 s=75c=63es=73=66=75l=2E
 
-After calling ism_dev_exit() for each ISM device in the exit routine,
-pci_unregister_driver() will execute ism_remove() for each ISM device.
-Because ism_remove() also calls ism_dev_exit(),
-free_irq(pci_irq_vector(pdev, 0), ism) is called twice for each ISM
-device. This results in a crash with the error
-'Trying to free already-free IRQ'.
+T=68=65 =62e=68a=76ior =6Ceads =74o a b=75g w=68er=65 =74=68e reques=74 ne=76=
+=65r pro=70=61g=61tes
+=74=68e e=72ror=2C e.=67. b=79 di=72ectl=79 e=72=72oring ou=74 at m=6D=63=5Fbl=
+k=5F=6Dq=5Fis=73u=65=5Frq if
+=6D=6Dc=5F=62lk=5Fpart=5F=73wi=74=63h fails. Th=65 =69o=63tl cal=6Ce=72 o=66 =
+=74=68e rpmb cha=72de=76 then
+can nev=65r s=65e an e=72ro=72 (=42=4C=4B=5FST=53=5FIO=45=52R, =62ut d=72=76=
+=5F=6F=70=5F=72esult i=73 u=6E=63h=61ng=65d)
+and t=68=75s ma=79 a=73=73u=6De =74=68=61t th=65=69r =63al=6C ex=65cut=65=64 =
+=73u=63=63=65=73s=66=75lly w=68en it =64id not.
 
-In the exit routine, it is enough to call pci_unregister_driver()
-because it ensures that ism_dev_exit() is called once per
-ISM device.
+W=68ile a=6Cways =63=68ec=6Bing the b=6Ck=5Fexe=63=75t=65=5Frq =72e=74u=72n va=
+l=75e w=6F=75ld b=65
+ad=76i=73e=64=2C l=65t's =65li=6D=69nate =74he err=6Fr by al=77a=79s =73=65t=
+=74i=6Eg
+d=72=76=5F=6F=70=5Fresult a=73 =2DE=49O t=6F =62=65 ove=72=77r=69tte=6E =6Fn =
+=73uc=63=65s=73 (o=72 =6Ft=68er =65r=72o=72)
 
-Cc: <stable@vger.kernel.org> # 6.3+
-Fixes: 89e7d2ba61b7 ("net/ism: Add new API for client registration")
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Julian Ruess <julianr@linux.ibm.com>
----
- drivers/s390/net/ism_drv.c | 8 --------
- 1 file changed, 8 deletions(-)
+Fi=78=65s: =3614f0=3388=665=380 ("mmc: block: mov=65 s=69ngle =69=6F=63tl() =
+=63o=6Dma=6E=64s to b=6C=6Fck re=71ues=74=73")
+Si=67ned-o=66f-=62y=3A =43=68rist=69a=6E =4Coehl=65 <cloe=68l=65@=68=79=70erst=
+=6F=6E=65.com>
+=2D--
+Thi=73 =69=73 =66=6Fr t=68=65 =66=6F=6C=6C=6Fw=69ng =73ta=62l=65 =74=72ee=73=
+=3A
+=34.1=34
+4=2E=31=39
+5.4
+5.10
+ =64rivers/=6Dm=63/cor=65/=62l=6Fck.c =7C 5 ++=2B+=2B
+ 1 file =63=68an=67ed, =35 =69n=73=65r=74=69ons(+)
 
-diff --git a/drivers/s390/net/ism_drv.c b/drivers/s390/net/ism_drv.c
-index 8acb9eba691b..c2096e4bba31 100644
---- a/drivers/s390/net/ism_drv.c
-+++ b/drivers/s390/net/ism_drv.c
-@@ -771,14 +771,6 @@ static int __init ism_init(void)
- 
- static void __exit ism_exit(void)
- {
--	struct ism_dev *ism;
--
--	mutex_lock(&ism_dev_list.mutex);
--	list_for_each_entry(ism, &ism_dev_list.list, list) {
--		ism_dev_exit(ism);
--	}
--	mutex_unlock(&ism_dev_list.mutex);
--
- 	pci_unregister_driver(&ism_driver);
- 	debug_unregister(ism_debug_info);
- }
+d=69=66f --=67it a=2Fdri=76=65rs=2F=6Dm=63/co=72e/b=6C=6F=63=6B.c b/drivers=2F=
+mmc/=63o=72e/blo=63=6B.c
+=69=6Edex =379e5=61c=636e964=2E.=616=32=32=38=62=66=64=663=65a =31=300644
+=2D=2D- a/d=72ivers=2Fmmc/=63=6Fre=2F=62=6Cock=2Ec
++++ =62/=64ri=76er=73/mmc=2F=63o=72e=2Fbl=6Fck.c
+@@ =2D243=2C=36 =2B2=343,7 @@ =73=74a=74=69c =73size=5F=74 p=6Fwer=5Fr=6F=5Fl=
+=6F=63k=5Fstore=28struct d=65vice *d=65v,
+ =09=09go=74o out=5Fp=75=74=3B
+ =09}
+ =09=72e=71=5F=74o=5Fmm=63=5Fqu=65=75=65=5Freq=28=72eq)->=64rv=5Fo=70 =3D =4DM=
+C=5F=44RV=5F=4F=50=5F=42OOT=5F=57=50=3B
++=09=72=65q=5Ft=6F=5F=6Dmc=5F=71=75=65=75e=5F=72=65q=28req=29-=3Edrv=5Fop=5Fre=
+su=6Ct =3D -E=49O;
+ =09=62=6Ck=5Fexecute=5Frq=28m=71->q=75eu=65, NU=4CL, =72=65q, 0);
+ =09ret =3D req=5Ft=6F=5Fmmc=5F=71=75eue=5Freq=28req)=2D=3E=64r=76=5Fop=5Fre=
+=73ul=74;
+ =09=62lk=5Fput=5Frequ=65s=74=28re=71=29;
+@=40 -671,=36 +67=32,7 @@ s=74a=74=69c =69nt mm=63=5Fblk=5Fi=6Fctl=5Fcm=64=28s=
+tr=75=63t mm=63=5Fblk=5F=64=61=74a =2Amd=2C
+ =09id=61t=61s[=30] =3D idata;
+ =09r=65q=5Fto=5Fm=6D=63=5F=71ue=75=65=5Freq=28r=65q=29-=3Edrv=5Fop =3D
+ =09=09=72p=6Db =3F =4D=4DC=5F=44=52V=5F=4FP=5FIOCTL=5F=52P=4DB =3A M=4DC=5FDR=
+V=5FO=50=5FIO=43TL;
++=09r=65=71=5Fto=5Fmmc=5Fq=75=65=75e=5Fr=65=71(=72e=71)->drv=5F=6Fp=5Fre=73=75=
+l=74 =3D -=45=49O=3B
+ =09req=5Fto=5Fmmc=5F=71ueue=5Fr=65q=28req)=2D>d=72v=5F=6Fp=5Fd=61=74=61 =3D =
+=69da=74a=73;
+ =09r=65q=5Fto=5F=6Dmc=5Fque=75e=5F=72eq(=72eq)-=3Eioc=5F=63ount =3D =31;
+ =09blk=5Fe=78=65cut=65=5Frq(=6Dq->que=75=65=2C N=55LL, =72=65=71, =30);
+@@ =2D=3741=2C6 =2B743,7 @=40 =73tat=69c in=74 mmc=5F=62lk=5Fioctl=5F=6D=75l=
+=74i=5F=63md=28s=74r=75=63t mmc=5F=62=6Ck=5Fd=61=74a =2A=6Dd,
+ =09}
+ =09r=65=71=5F=74=6F=5Fmmc=5Fque=75e=5Fr=65q(=72eq)-=3Ed=72v=5F=6Fp =3D
+ =09=09rpmb =3F =4DMC=5F=44RV=5F=4F=50=5FIOC=54L=5FR=50M=42 =3A MM=43=5F=44=52=
+=56=5F=4FP=5FI=4FC=54L;
++=09re=71=5F=74o=5F=6Dmc=5F=71=75eue=5Fre=71(=72eq)-=3Edr=76=5Fop=5F=72e=73u=
+=6Ct =3D -EI=4F;
+ =09=72eq=5Fto=5F=6Dmc=5Fqu=65=75e=5Freq=28r=65=71)-=3E=64=72v=5Fop=5Fda=74a =
+=3D =69=64=61ta;
+ =09req=5F=74o=5Fm=6Dc=5F=71u=65u=65=5F=72e=71=28r=65q)-=3Ei=6Fc=5F=63o=75nt =
+=3D =6Eum=5Fof=5F=63md=73=3B
+ =09=62l=6B=5F=65=78=65cut=65=5Frq(=6Dq->queue, NUL=4C, re=71=2C =30);
+@@ -2590,6 +2593=2C7 @@ s=74=61tic i=6Et =6Dmc=5F=64bg=5Fcar=64=5F=73=74a=74us=
+=5F=67e=74=28v=6F=69d =2Adat=61, u=364 =2A=76al)
+ =09i=66 (=49S=5FERR=28req=29=29
+ =09=09return PTR=5FERR(req=29;
+ =09=72=65q=5F=74o=5Fmm=63=5Fqueue=5Freq(=72eq)->dr=76=5Fop =3D MM=43=5FD=52=
+=56=5F=4F=50=5F=47E=54=5F=43=41RD=5F=53=54=41=54US;
++=09=72=65=71=5Fto=5Fmm=63=5F=71ue=75=65=5F=72e=71(=72e=71)=2D>drv=5F=6F=70=5F=
+=72=65su=6Ct =3D -EI=4F;
+ =09blk=5Fex=65=63=75te=5Frq=28m=71=2D>=71=75e=75=65, N=55=4C=4C, req=2C 0=29;
+ =09ret =3D =72eq=5F=74=6F=5Fmmc=5Fqu=65=75e=5Freq=28=72e=71=29=2D>d=72=76=5Fo=
+p=5F=72=65sul=74;
+ =09if (=72=65=74 >=3D 0=29 {
+@=40 -2=362=38=2C6 +2=3632,7 =40@ st=61tic i=6E=74 =6Dmc=5Fext=5Fcsd=5Fope=6E=
+=28=73t=72=75=63=74 in=6Fde *=69=6Eo=64=65, =73tru=63t f=69=6Ce *fil=70)
+ =09=09g=6Ft=6F o=75=74=5Ff=72ee;
+ =09}
+ =09r=65=71=5F=74o=5F=6Dm=63=5Fqueu=65=5Freq(=72eq)->d=72=76=5Fo=70 =3D M=4DC=
+=5FD=52V=5FO=50=5FG=45T=5F=45XT=5F=43=53D;
++=09req=5F=74o=5Fmmc=5Fq=75eu=65=5Fre=71(=72eq=29=2D>=64r=76=5F=6Fp=5Fr=65=73=
+=75lt =3D -EIO;
+ =09=72eq=5Ft=6F=5Fmmc=5Fqu=65u=65=5Fr=65q(=72eq=29->drv=5Fop=5Fd=61ta =3D &ex=
+t=5Fcsd;
+ =09b=6Ck=5Fexecu=74=65=5Frq(m=71=2D=3E=71ue=75=65=2C NUL=4C, =72eq, =30=29;
+ =09er=72 =3D =72e=71=5F=74=6F=5Fmmc=5Fq=75eue=5Fr=65q=28=72e=71)=2D>=64r=76=
+=5Fop=5Fres=75lt=3B
+--
+2.=337=2E3
+--NoSpamProxy_34187a9f-04a2-4a62-9d00-6bbf6e2bb367
+Content-Transfer-Encoding: BASE64
+Content-Type: application/pkcs7-signature; name=smime.p7s
+Content-Disposition: attachment; filename=smime.p7s
 
----
-base-commit: 858fd168a95c5b9669aac8db6c14a9aeab446375
-change-id: 20230613-ism-rmmod-crash-d4f34223a683
-
-Best regards,
--- 
-Julian Ruess <julianr@linux.ibm.com>
+MIAGCSqGSIb3DQEHAqCAMIACAQExDTALBglghkgBZQMEAgEwCwYJKoZIhvcNAQcBoIIjdjCCB+sw
+ggXToAMCAQICFH/0ya9FbNqDP1mj8nwYIyzoDuazMA0GCSqGSIb3DQEBCwUAMFMxCzAJBgNVBAYT
+AkNIMRUwEwYDVQQKEwxTd2lzc1NpZ24gQUcxLTArBgNVBAMTJFN3aXNzU2lnbiBSU0EgU01JTUUg
+TENQIElDQSAyMDIxIC0gMjAeFw0yMjEyMTUxMDIwNTJaFw0yMzEyMTUxMDIwNTJaMEgxJTAjBgkq
+hkiG9w0BCQEWFmNsb2VobGVAaHlwZXJzdG9uZS5jb20xHzAdBgNVBAMMFmNsb2VobGVAaHlwZXJz
+dG9uZS5jb20wggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDbQs7vFtBkf7fsjeH5TOTl
+4BCMTLaVKnaZGJ79z62g8ZSuOWg45uUJ6ti+RfIaS/gp8bAnHxrFDcYANbU2S/S19bwpqvKlOcV9
+3mKFefUB7SVTnhD1EDsk3I2SCG7Bz61gflKcRnalJG74AXn4E4MAaRlrWCoLkZIeCSY4lNrQD1pw
+70nmNRY41ICYzAVAb0RiP60audx4UP29YDXLUkrki5cpf3yt/eHS/KRjHiadq2uDnkGQI1oadBXa
+u4B0nCVmN68LKWb8Ak5aSROJarWOPHLQ+wuL78NS11Yer5Mnngad5/pccQY0MjkC7e80HBNaOAOt
+vrf2a7i8fFs278So63WAMt+XUM2rHMyIKsOEWqAHBY1GoAKT81NZ+5YMqfvUbK8SucXAy+UWZlzY
+VXLCtxrqHcxNbTApkjDtxalDMn9bm4qyQE/qxbkuGSPdqIj8v7AOCgb1K4I8hzwOIiCpEJMhbIvp
+bZK1GQ3BxE61FG599xyVZNf29aYdoUDIp4MwG3hcLHvYsRvSo6eHPYk8mr9SM+OhexuEdj3+St+Y
+5MSdDdkvRdspx0gXwmffJ6iCBjChXDHa/W1uSBvM5SlKKsYH7ufOC31CptKkEdM8lGi0PPlevh7U
+25ZI0QVH3EiLgBymsdqPc/7LifBKmp+xamIZAUVcfJqvdvTt+EkgEQIDAQABo4ICwDCCArwwIQYD
+VR0RBBowGIEWY2xvZWhsZUBoeXBlcnN0b25lLmNvbTAOBgNVHQ8BAf8EBAMCBLAwEwYDVR0lBAww
+CgYIKwYBBQUHAwQwHQYDVR0OBBYEFA+H5eoYx7aaS0slW7G0+hgo1ZqlMB8GA1UdIwQYMBaAFPpU
+wIKm/pa9BMdfn1+CDD3DlU9HMIH/BgNVHR8EgfcwgfQwR6BFoEOGQWh0dHA6Ly9jcmwuc3dpc3Nz
+aWduLm5ldC9GQTU0QzA4MkE2RkU5NkJEMDRDNzVGOUY1RjgyMEMzREMzOTU0RjQ3MIGooIGloIGi
+hoGfbGRhcDovL2RpcmVjdG9yeS5zd2lzc3NpZ24ubmV0L0NOPUZBNTRDMDgyQTZGRTk2QkQwNEM3
+NUY5RjVGODIwQzNEQzM5NTRGNDclMkNPPVN3aXNzU2lnbiUyQ0M9Q0g/Y2VydGlmaWNhdGVSZXZv
+Y2F0aW9uTGlzdD9iYXNlP29iamVjdENsYXNzPWNSTERpc3RyaWJ1dGlvblBvaW50MGcGA1UdIARg
+MF4wUgYIYIV0AVkCAQswRjBEBggrBgEFBQcCARY4aHR0cHM6Ly9yZXBvc2l0b3J5LnN3aXNzc2ln
+bi5jb20vU3dpc3NTaWduX0NQU19TTUlNRS5wZGYwCAYGBACPegEDMIHGBggrBgEFBQcBAQSBuTCB
+tjBkBggrBgEFBQcwAoZYaHR0cDovL3N3aXNzc2lnbi5uZXQvY2dpLWJpbi9hdXRob3JpdHkvZG93
+bmxvYWQvRkE1NEMwODJBNkZFOTZCRDA0Qzc1RjlGNUY4MjBDM0RDMzk1NEY0NzBOBggrBgEFBQcw
+AYZCaHR0cDovL29jc3Auc3dpc3NzaWduLm5ldC9GQTU0QzA4MkE2RkU5NkJEMDRDNzVGOUY1Rjgy
+MEMzREMzOTU0RjQ3MA0GCSqGSIb3DQEBCwUAA4ICAQCm+EvZobQCGMXgo2yeAD2ztkKXLEUmp7sp
+to3Unk6h7xNT0k1XsLxQAyF+Ny/Ftd6GAnq02cWyupmU8OfcSbWIi91QT13TUUholbqV1ELlgMpa
+slZ6qBAJLWLXQ8p/BWaGzpRBgJEsg4fc3XC5FRjysoZNOxZIwblQrQDD/cCTUAM43Ar086iZoM1B
+5mqNZil+LoCaXR4q8KS2jV3cTseKK/yIHpOl3NNAU7tC10pO9PNkJ9Dd6W/ghKBvhNiSUucEmm4e
+70b5cP3M0qJ1xdBkRhZ5BDFBPTNWq0pecXdRWILG0xz6neB8VCClW3tYYAriroYjXDZzBMVGfXKo
+0pxnwg2B/+ppYGaji2Sf3IBZKFVS5hRFolcsRAqfxmDYfmVJA1lQqOfr0f1jURksb/+IEG7aZNyG
+4iMIMFmDptXeEysz5ntJw5KAf0i6mJ2y/sEU9pzImRlvQc5kHV3GT9BdYs8GmSmdD8CI0S+/y/no
+Ny4l2SzVjkc+3d+fdWSJV6y4gR+3FmG8B5dTvJBHNs0YSsG2rQSEzDxcZNzhjKA9c70FS1U3m3n6
+bU2mErdOPQ4KtTu5v3D5RBKB2cgbdBI4B8gEHJhqxOdBO5E+Z8+FMqIWCITb1fN2NrgenRDYy4Bj
+tax6L8HT5mEY+mS8Lx08gqY01qcfbiD8uD+qTtmsLjCCB+swggXToAMCAQICFH/0ya9FbNqDP1mj
+8nwYIyzoDuazMA0GCSqGSIb3DQEBCwUAMFMxCzAJBgNVBAYTAkNIMRUwEwYDVQQKEwxTd2lzc1Np
+Z24gQUcxLTArBgNVBAMTJFN3aXNzU2lnbiBSU0EgU01JTUUgTENQIElDQSAyMDIxIC0gMjAeFw0y
+MjEyMTUxMDIwNTJaFw0yMzEyMTUxMDIwNTJaMEgxJTAjBgkqhkiG9w0BCQEWFmNsb2VobGVAaHlw
+ZXJzdG9uZS5jb20xHzAdBgNVBAMMFmNsb2VobGVAaHlwZXJzdG9uZS5jb20wggIiMA0GCSqGSIb3
+DQEBAQUAA4ICDwAwggIKAoICAQDbQs7vFtBkf7fsjeH5TOTl4BCMTLaVKnaZGJ79z62g8ZSuOWg4
+5uUJ6ti+RfIaS/gp8bAnHxrFDcYANbU2S/S19bwpqvKlOcV93mKFefUB7SVTnhD1EDsk3I2SCG7B
+z61gflKcRnalJG74AXn4E4MAaRlrWCoLkZIeCSY4lNrQD1pw70nmNRY41ICYzAVAb0RiP60audx4
+UP29YDXLUkrki5cpf3yt/eHS/KRjHiadq2uDnkGQI1oadBXau4B0nCVmN68LKWb8Ak5aSROJarWO
+PHLQ+wuL78NS11Yer5Mnngad5/pccQY0MjkC7e80HBNaOAOtvrf2a7i8fFs278So63WAMt+XUM2r
+HMyIKsOEWqAHBY1GoAKT81NZ+5YMqfvUbK8SucXAy+UWZlzYVXLCtxrqHcxNbTApkjDtxalDMn9b
+m4qyQE/qxbkuGSPdqIj8v7AOCgb1K4I8hzwOIiCpEJMhbIvpbZK1GQ3BxE61FG599xyVZNf29aYd
+oUDIp4MwG3hcLHvYsRvSo6eHPYk8mr9SM+OhexuEdj3+St+Y5MSdDdkvRdspx0gXwmffJ6iCBjCh
+XDHa/W1uSBvM5SlKKsYH7ufOC31CptKkEdM8lGi0PPlevh7U25ZI0QVH3EiLgBymsdqPc/7LifBK
+mp+xamIZAUVcfJqvdvTt+EkgEQIDAQABo4ICwDCCArwwIQYDVR0RBBowGIEWY2xvZWhsZUBoeXBl
+cnN0b25lLmNvbTAOBgNVHQ8BAf8EBAMCBLAwEwYDVR0lBAwwCgYIKwYBBQUHAwQwHQYDVR0OBBYE
+FA+H5eoYx7aaS0slW7G0+hgo1ZqlMB8GA1UdIwQYMBaAFPpUwIKm/pa9BMdfn1+CDD3DlU9HMIH/
+BgNVHR8EgfcwgfQwR6BFoEOGQWh0dHA6Ly9jcmwuc3dpc3NzaWduLm5ldC9GQTU0QzA4MkE2RkU5
+NkJEMDRDNzVGOUY1RjgyMEMzREMzOTU0RjQ3MIGooIGloIGihoGfbGRhcDovL2RpcmVjdG9yeS5z
+d2lzc3NpZ24ubmV0L0NOPUZBNTRDMDgyQTZGRTk2QkQwNEM3NUY5RjVGODIwQzNEQzM5NTRGNDcl
+MkNPPVN3aXNzU2lnbiUyQ0M9Q0g/Y2VydGlmaWNhdGVSZXZvY2F0aW9uTGlzdD9iYXNlP29iamVj
+dENsYXNzPWNSTERpc3RyaWJ1dGlvblBvaW50MGcGA1UdIARgMF4wUgYIYIV0AVkCAQswRjBEBggr
+BgEFBQcCARY4aHR0cHM6Ly9yZXBvc2l0b3J5LnN3aXNzc2lnbi5jb20vU3dpc3NTaWduX0NQU19T
+TUlNRS5wZGYwCAYGBACPegEDMIHGBggrBgEFBQcBAQSBuTCBtjBkBggrBgEFBQcwAoZYaHR0cDov
+L3N3aXNzc2lnbi5uZXQvY2dpLWJpbi9hdXRob3JpdHkvZG93bmxvYWQvRkE1NEMwODJBNkZFOTZC
+RDA0Qzc1RjlGNUY4MjBDM0RDMzk1NEY0NzBOBggrBgEFBQcwAYZCaHR0cDovL29jc3Auc3dpc3Nz
+aWduLm5ldC9GQTU0QzA4MkE2RkU5NkJEMDRDNzVGOUY1RjgyMEMzREMzOTU0RjQ3MA0GCSqGSIb3
+DQEBCwUAA4ICAQCm+EvZobQCGMXgo2yeAD2ztkKXLEUmp7spto3Unk6h7xNT0k1XsLxQAyF+Ny/F
+td6GAnq02cWyupmU8OfcSbWIi91QT13TUUholbqV1ELlgMpaslZ6qBAJLWLXQ8p/BWaGzpRBgJEs
+g4fc3XC5FRjysoZNOxZIwblQrQDD/cCTUAM43Ar086iZoM1B5mqNZil+LoCaXR4q8KS2jV3cTseK
+K/yIHpOl3NNAU7tC10pO9PNkJ9Dd6W/ghKBvhNiSUucEmm4e70b5cP3M0qJ1xdBkRhZ5BDFBPTNW
+q0pecXdRWILG0xz6neB8VCClW3tYYAriroYjXDZzBMVGfXKo0pxnwg2B/+ppYGaji2Sf3IBZKFVS
+5hRFolcsRAqfxmDYfmVJA1lQqOfr0f1jURksb/+IEG7aZNyG4iMIMFmDptXeEysz5ntJw5KAf0i6
+mJ2y/sEU9pzImRlvQc5kHV3GT9BdYs8GmSmdD8CI0S+/y/noNy4l2SzVjkc+3d+fdWSJV6y4gR+3
+FmG8B5dTvJBHNs0YSsG2rQSEzDxcZNzhjKA9c70FS1U3m3n6bU2mErdOPQ4KtTu5v3D5RBKB2cgb
+dBI4B8gEHJhqxOdBO5E+Z8+FMqIWCITb1fN2NrgenRDYy4Bjtax6L8HT5mEY+mS8Lx08gqY01qcf
+biD8uD+qTtmsLjCCB0cwggUvoAMCAQICDyxaqdlU/bKrlq0Xtl+M9DANBgkqhkiG9w0BAQsFADBT
+MQswCQYDVQQGEwJDSDEVMBMGA1UEChMMU3dpc3NTaWduIEFHMS0wKwYDVQQDEyRTd2lzc1NpZ24g
+UlNBIFNNSU1FIFJvb3QgQ0EgMjAyMSAtIDEwHhcNMjEwODA0MTIxMjU5WhcNMzYwNzMxMTIxMjU5
+WjBTMQswCQYDVQQGEwJDSDEVMBMGA1UEChMMU3dpc3NTaWduIEFHMS0wKwYDVQQDEyRTd2lzc1Np
+Z24gUlNBIFNNSU1FIExDUCBJQ0EgMjAyMSAtIDIwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIK
+AoICAQC9BRnI1A1xPgMDELSTFgDrzyPawAcju1E8OBLTQHXDcmN46wsneV+NVoip2X1ZQ9GIF3bj
+x0aLq9/iiKo9EsCdCO1BENfc70ngvzFS1oOdmfzymiKAZlWsEJSQocyLldDWSF03KN8a7Rgl30PD
+IURBvBWlpIOCxiCAUgKogGYBvm7ZRZZ10BcgfGU/ga19jlhGI9xSJ9pCPjvcWPJKpiSbG+s0CR/M
+4cXaQPO9ZEFYxIn7g4rNIYBYZwhsIjcPn5OtC9/7p/3F/2qKA9gfvK/CyQ14fPVOPVJaPECufMs4
++tRhh2edpGx4irQTaVV85iVU3wjPpi84TIgUlRwqUWloj158A5r7pGVMcI++Slyq3rudu319WjiC
+57kAikVHryC+gwC4SUAYn0CqX//cApx+99nmLWAmWnGdeaRmHMJCmJfXy3Dji8SnVuggcXbErnkr
+5sms1kyp5wiDR7YVIkdTuiJHpF2d7WZ/d5EOT7KBdS/k67/XgTrUwkWwKR2Vm/00b0Zpz3N4Hg9F
+TrBP53A2uci2e7Lf3vR8hFJijhu08zGuClY7Khn+0BBU50YSOE2BnYWsBOe36ddw2470cM/iGtMM
+aTXnA0rg4MsX9TP0vX4iQpWZMwqNwqcYk0ewMqy4RDAY7xH4GXNkRGT2nJngURbQS1wgScF1NMzR
+W+rRrQIDAQABo4ICFjCCAhIwDgYDVR0PAQH/BAQDAgEGMBMGA1UdJQQMMAoGCCsGAQUFBwMEMBIG
+A1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFPpUwIKm/pa9BMdfn1+CDD3DlU9HMB8GA1UdIwQY
+MBaAFAkMvyqiHQQkDLL5QApBws9acqqAMIH/BgNVHR8EgfcwgfQwR6BFoEOGQWh0dHA6Ly9jcmwu
+c3dpc3NzaWduLm5ldC8wOTBDQkYyQUEyMUQwNDI0MENCMkY5NDAwQTQxQzJDRjVBNzJBQTgwMIGo
+oIGloIGihoGfbGRhcDovL2RpcmVjdG9yeS5zd2lzc3NpZ24ubmV0L0NOPTA5MENCRjJBQTIxRDA0
+MjQwQ0IyRjk0MDBBNDFDMkNGNUE3MkFBODAlMkNPPVN3aXNzU2lnbiUyQ0M9Q0g/Y2VydGlmaWNh
+dGVSZXZvY2F0aW9uTGlzdD9iYXNlP29iamVjdENsYXNzPWNSTERpc3RyaWJ1dGlvblBvaW50MB8G
+A1UdIAQYMBYwCgYIYIV0AVkCAQswCAYGBACPegEDMHQGCCsGAQUFBwEBBGgwZjBkBggrBgEFBQcw
+AoZYaHR0cDovL3N3aXNzc2lnbi5uZXQvY2dpLWJpbi9hdXRob3JpdHkvZG93bmxvYWQvMDkwQ0JG
+MkFBMjFEMDQyNDBDQjJGOTQwMEE0MUMyQ0Y1QTcyQUE4MDANBgkqhkiG9w0BAQsFAAOCAgEABw8e
+lwSFegmW7IGpGTOPwtOC2tzTwCQiRA2VC/EWGKckk8A3F9Q+M2A8lUYVlRKJt31pAezcXaP6OFW0
+3IPiiXU70QA598nGqUxzzjn8rpFhZgCj6bi8MJd5MH5C2RRYFrhiRefx6pp42LLc0AFIF1ZqkaYa
+1vz0EgTOL9XE3inXe39twPLoe3rc/f8gfpem/s1NIJk2azwyxZn226YSrSedvxhe7LiN6gOqvU7h
+xpC8bXaiIYVy7DISXwEt902Gc+M4QbhUf8yQ+PiK3QexGIWiusOO46cn673dG/1KCzma/1Llp9Dx
+aeUHlxjjeeer/2WtWWZNFhoInrxpcK58odaJZRMZQJwNljMb66gGb5OpeanN0su93/S9GrZgJqN6
+spp171azfMuQzVqj9gxFy66yIdlrhZcba/QixC2eAJxm5fM/PZg9WXZ737G8jAbsuoREH1bxsglL
+zxAIwboY7uVwIim6ZcieKb6Yy4n6TzperNmhU5UHiUZSJzIQ/qu9B14cfh0CAJo19p7fRvyeF/p7
+INDH0ceTVTq5sF8kFtMM1bz+0/sWOTNqdi8kGO7I7iouC3+V4DDx4F1sGcaigFXtUpLmol5Lss+i
+9NXGgWFcPFreexoLaBdckDJgBk6zOHKVYwZdnrg2CovIev/uumK0WyCa7ix1+SDcsd2PXxIwggaL
+MIIEc6ADAgECAhAA3kxVIPbc9AIbDxFU940QMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNVBAYTAkNI
+MRUwEwYDVQQKEwxTd2lzc1NpZ24gQUcxHzAdBgNVBAMTFlN3aXNzU2lnbiBHb2xkIENBIC0gRzIw
+HhcNMjEwODAzMTMxNDU1WhcNMzYxMDIzMTMxNDU1WjBTMQswCQYDVQQGEwJDSDEVMBMGA1UEChMM
+U3dpc3NTaWduIEFHMS0wKwYDVQQDEyRTd2lzc1NpZ24gUlNBIFNNSU1FIFJvb3QgQ0EgMjAyMSAt
+IDEwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDWsri0OI8mujfIASNFFn6+ZDiGcmZh
+WI0kilmzDKEqq367hXxlZnCn6SLb7rsy+quxhj+rSIG4q/Mq3TfHLgv2q99VrVQgFDq3iURt5+g/
+roghGI5HVpUAyexlblZHFE2tLibS1ItsyvMzLfnwm463hiaB5wueiwx8Bac8evnwhZCciWc5dRGx
+Y7DUIyx93B8rdu0ErboRyQdJDeMoDy4RFNK2sv94uP5aU4AkrAtIuk4yMVHsqv67RCwL1/l9q43a
+bKsI3fNBPY/1QUFcxsxRyg5EH7dqgHZVaVHmTP0XgPuzVO6wSh0zkwZ5uWERrOQOW7Pd4LElXLfU
+0830e54BVCuCkKHhykON8EGkHAfA1jMWo0VGj4RMaf2TV53T5W/LJAwxLQOYwgA5RHkigW3k6vwL
+ZCZu/MqeGgNE7X9NTekRsna9hn17u1Q/UZBHx4v4/04s8ggwjBnBLEc1nr2rU6Qirp8MIRkpvZ6b
+z4TcjtE1SyIQgRti7cBL0yuQIkkfLSGukcXf8dZBVHIO3so0EPXJmp3VXBbkzSWxx6hxRqz4U4UX
+iaskGjgYMiRz6VWu+IBjA2+EsN+glLWpU/CLavVUeeX/W5yibyLh/0ApZWxvjkhpMT6BGzuLWPpb
+LztrfWsk8LzyjeWa5qx4y9iCKwAXHXlqCS7WbnbPMPvbWQIDAQABo4IBZzCCAWMwDwYDVR0TAQH/
+BAUwAwEB/zAdBgNVHQ4EFgQUCQy/KqIdBCQMsvlACkHCz1pyqoAwHwYDVR0jBBgwFoAUWyV7lqRl
+UX64OfPAeGZe6Drn8O4wDgYDVR0PAQH/BAQDAgEGMIH/BgNVHR8EgfcwgfQwR6BFoEOGQWh0dHA6
+Ly9jcmwuc3dpc3NzaWduLm5ldC81QjI1N0I5NkE0NjU1MTdFQjgzOUYzQzA3ODY2NUVFODNBRTdG
+MEVFMIGooIGloIGihoGfbGRhcDovL2RpcmVjdG9yeS5zd2lzc3NpZ24ubmV0L0NOPTVCMjU3Qjk2
+QTQ2NTUxN0VCODM5RjNDMDc4NjY1RUU4M0FFN0YwRUUlMkNPPVN3aXNzU2lnbiUyQ0M9Q0g/Y2Vy
+dGlmaWNhdGVSZXZvY2F0aW9uTGlzdD9iYXNlP29iamVjdENsYXNzPWNSTERpc3RyaWJ1dGlvblBv
+aW50MA0GCSqGSIb3DQEBCwUAA4ICAQAC+Opd0IrMrAgDNlRm/wophuFUgywz6MdsrhCpVIF/Ki2I
+Jq2mqDQoDxkGqZ3iApUEMmRMC8r5433DE1vol0COd+PjgoGHrQFgB8PF4SD9tzCXProccXSLX02n
+sf5OfAl4eodf8ayhJRGXxywRnJDqchY9AjWpu+Uj2B9SQLfQjl3aI7wz6TL9uHWfQ749V0uHYd7t
+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
+--NoSpamProxy_34187a9f-04a2-4a62-9d00-6bbf6e2bb367--
 
