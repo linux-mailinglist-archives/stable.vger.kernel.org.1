@@ -2,112 +2,197 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A275272D89C
-	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 06:29:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C6EE72D89F
+	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 06:31:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239807AbjFME3P (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 13 Jun 2023 00:29:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51368 "EHLO
+        id S233159AbjFMEbp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 13 Jun 2023 00:31:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239851AbjFME26 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 00:28:58 -0400
-Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA0172686;
-        Mon, 12 Jun 2023 21:25:16 -0700 (PDT)
-Received: by mail-ot1-x336.google.com with SMTP id 46e09a7af769-6b28fc460bcso3023573a34.1;
-        Mon, 12 Jun 2023 21:25:16 -0700 (PDT)
+        with ESMTP id S239713AbjFMEbU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 00:31:20 -0400
+Received: from mail-vk1-xa2e.google.com (mail-vk1-xa2e.google.com [IPv6:2607:f8b0:4864:20::a2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60917468F
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 21:28:11 -0700 (PDT)
+Received: by mail-vk1-xa2e.google.com with SMTP id 71dfb90a1353d-460eb67244eso1514731e0c.1
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 21:28:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686630307; x=1689222307;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uTV1jFTnCTF+meucMFZeTrQtmKUmgta7A2zi0G4+f6o=;
-        b=q6CYDd1P73pEt7flSF5GqiX1ie6JOPBVuYBm8qDNP5syUxcB/lmpHMvmFIM7HX3ASp
-         3HFjTFUS059+PTdY8KZH6E9qOFCcsHSPomX94LkhCB12m/xz3dC7Yz0h+TZP2TevqkW/
-         PvRqGude5UsxfiSzUBRH7Xnpq93mpg325bATBkYKA4+uNUW6+0Lcw+19kZ1SjeODtU42
-         PJ5rwxN1RSHqflUytb2lvn3/RWNCMo+Q55E7F7E8H3+w261uQtMyYxlTmGHM+FlQqhVv
-         WUNcOTkPdREzxt0ZTAv5UO+PVmfDavNPtjBlF3CQhS8lP93PYXjgT1cQtTiEpuya3Zbz
-         f1ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686630307; x=1689222307;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1686630489; x=1689222489;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uTV1jFTnCTF+meucMFZeTrQtmKUmgta7A2zi0G4+f6o=;
-        b=e1tZfNlHEWTFzNFs+3cgYVDB7eeQHzqCpRrcdxLf2kE74q3b4+Yw96Al3Rbd/zDWHn
-         nA+GTVgSvBNwxtY+LC4/ewkb/DWEQKlaGreksq66xAtK3Vna3N5MKsqptsU9WwIHe7U/
-         rM+NHsZM/LKH9SyNQwNj3fBaTT70kOkrKt5ZALjz4EW9JrHh1CHlzXgclQ6MxYPxrdTL
-         yTszH6GCgK/gnh/pqPYmamLFhnFN87Fy56qmgrN+ncIC3bqU0f8cNAPxEe58B+mSefVu
-         HuIS/t4pucC2PvKS6y4DKlDCiWhg+d8SoZwPlr/SgiC52IC8XW8d3JC7Hy+HoWOwJyEd
-         THnA==
-X-Gm-Message-State: AC+VfDyqf87sMnfqafW6Q+Sk1Eh2PXGVX9H3xiM7YAlP4ftEz2gx/IG0
-        U2R+XISaHgKOIQguqumCDS3UTy6dPiM=
-X-Google-Smtp-Source: ACHHUZ6cRCkflRCxZhRgxzD4qd/JtQfF3kls8ihf4RVxq4GqCuWKtQ1Sr25dWUiRFC4+9a/DRzxsIg==
-X-Received: by 2002:a05:6830:22ce:b0:6af:991d:126b with SMTP id q14-20020a05683022ce00b006af991d126bmr8111513otc.22.1686630307128;
-        Mon, 12 Jun 2023 21:25:07 -0700 (PDT)
-Received: from debian.me (subs02-180-214-232-27.three.co.id. [180.214.232.27])
-        by smtp.gmail.com with ESMTPSA id i1-20020aa787c1000000b0064f51ee5b90sm7677022pfo.62.2023.06.12.21.25.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jun 2023 21:25:06 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id EB3FA10666F; Tue, 13 Jun 2023 11:25:02 +0700 (WIB)
-Date:   Tue, 13 Jun 2023 11:25:02 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de
-Subject: Re: [PATCH 6.1 000/132] 6.1.34-rc1 review
-Message-ID: <ZIfvnmNxKLAPEcaf@debian.me>
-References: <20230612101710.279705932@linuxfoundation.org>
+        bh=LtvRhJQcBdvD2ySCrR+TDi7rLdn+h5BLqKIPCbTJ4Gg=;
+        b=TxUTyplO+8yHlypDm+yZQ5KBsNgWYPhgKx80eDkfMTZ9T0BBSiJrPvfXVn/aHCHWPt
+         Ny3RJFahwaziSLZJDhyKiDa0vQVSgPbv3eJeay4Qq9bpaYurRBnhwzRbkNRUWZysb1nN
+         aiKTOSj64Imf7vAIvWAaL6sUoUfZa8Arzw2Ft+6ULI+BgmHT7sFR9gLhP51enI4jX6RU
+         eZIftV7dquaD+hk5hzku0T+Mc5wEBai3uLiit7Z6TahDYNfT4FS2Fg4duxG5/BTcrZW0
+         4TR+NppD/tgBnY885wDTap/vrDwWEjCOmxC+prOcu+eVxznj/0/2F/02tsveSnWJNyWn
+         LOXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686630489; x=1689222489;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LtvRhJQcBdvD2ySCrR+TDi7rLdn+h5BLqKIPCbTJ4Gg=;
+        b=flsbk32JmaXSyjQryoYp1Frk3wVxcX2tBfXTpuxwRTAZFbO4BF6F9qTZTYf4T4GV1A
+         0wvxDmvLlS6YQcD9JraIS1hsxhL4/uIEf/g0L/g4j6WFeIAM3WtEmM+8DDDoKvttLM3U
+         83VQzz7hqacjK032XttVmO9F9VcD+E2A5LwgEEd6KkhubKYuqMFhLm73oJ30SkaFpwex
+         BMfP4cWVnVb6ntuRsnyVyENGJI+BV1glyQinwMKoyTOh5lNjxUqoHNOV8YQx9DJsGusx
+         9q8BAyfLU9evAqgX2FUuZdA+W8rjfmepiBCol/Ihdz8JUMAIvRzToScBTVBcPac2zeUF
+         OsJw==
+X-Gm-Message-State: AC+VfDyV5g0AyeBkuu+tRp0vi2UB3wVmDynr8l7x1JYSkSgnja8wOFRx
+        fHVTKnWJLeOjxmaEJ6rcmpj3zkzEq4PC/SdyxT4CDg==
+X-Google-Smtp-Source: ACHHUZ7jNzvzbiJyVqeySaH59vczaM9uJTK1noO4BXwTe2X6N7G9XCCuLCohZ8Z1fjLRrnX9YVnHrZ2Pzb80HwgVz4U=
+X-Received: by 2002:a1f:604c:0:b0:453:4cf2:780f with SMTP id
+ u73-20020a1f604c000000b004534cf2780fmr4713918vkb.3.1686630488821; Mon, 12 Jun
+ 2023 21:28:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="7klP0XdzA/mKyD+r"
-Content-Disposition: inline
-In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+References: <CA+G9fYsJq0sPC+q6vLNKUgBqCGmmjDrfeP4R1-95Eu28FJRY_A@mail.gmail.com>
+ <20230612185424.GA2891387@dev-arch.thelio-3990X>
+In-Reply-To: <20230612185424.GA2891387@dev-arch.thelio-3990X>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 13 Jun 2023 09:57:57 +0530
+Message-ID: <CA+G9fYtX6YNqmz9vxJxa5cA5Uf2rr=RNM0nkoTzRpg79Azp2tA@mail.gmail.com>
+Subject: =?UTF-8?Q?Re=3A_clang=3A_Powerpc=3A_clang=2Dnightly=2Dmaple=5Fdefconfig_?=
+        =?UTF-8?Q?=E2=80=94_FAIL?=
+To:     Nathan Chancellor <nathan@kernel.org>
+Cc:     clang-built-linux <llvm@lists.linux.dev>,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-stable <stable@vger.kernel.org>,
+        lkft-triage@lists.linaro.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Anders Roxell <anders.roxell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi Nathan,
 
---7klP0XdzA/mKyD+r
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tue, 13 Jun 2023 at 00:24, Nathan Chancellor <nathan@kernel.org> wrote:
+>
+> Hi Naresh,
+>
+> On Tue, Jun 13, 2023 at 12:10:30AM +0530, Naresh Kamboju wrote:
+> > [Please ignore if it is already reported]
+> >
+> > Following two builds failed on stable-rc 6.1.34-rc1.
+> >
+> >   - Powerpc: clang-nightly-maple_defconfig =E2=80=94 FAIL
+> >   - Powerpc: clang-nightly-cell_defconfig =E2=80=94 FAIL
+> >
+> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> >
+> > make --silent --keep-going --jobs=3D8
+> > O=3D/home/tuxbuild/.cache/tuxmake/builds/1/build ARCH=3Dpowerpc
+> > CROSS_COMPILE=3Dpowerpc64le-linux-gnu- HOSTCC=3Dclang CC=3Dclang LLVM=
+=3D1
+> > LLVM_IAS=3D0 LD=3Dpowerpc64le-linux-gnu-ld
+> >
+> > arch/powerpc/lib/copypage_power7.S: Assembler messages:
+> > arch/powerpc/lib/copypage_power7.S:34: Error: junk at end of line: `0b0=
+1000'
+> > arch/powerpc/lib/copypage_power7.S:35: Error: junk at end of line: `0b0=
+1010'
+> > arch/powerpc/lib/copypage_power7.S:37: Error: junk at end of line: `0b0=
+1000'
+> > arch/powerpc/lib/copypage_power7.S:38: Error: junk at end of line: `0b0=
+1010'
+> > arch/powerpc/lib/copypage_power7.S:40: Error: junk at end of line: `0b0=
+1010'
+> > clang: error: assembler command failed with exit code 1 (use -v to see
+> > invocation)
+> > make[4]: *** [scripts/Makefile.build:382:
+> > arch/powerpc/lib/copypage_power7.o] Error 1
+> > make[4]: Target 'arch/powerpc/lib/' not remade because of errors.
+> > make[3]: *** [scripts/Makefile.build:500: arch/powerpc/lib] Error 2
+> > arch/powerpc/kernel/exceptions-64s.S: Assembler messages:
+> > arch/powerpc/kernel/exceptions-64s.S:2959: Error: junk at end of line: =
+`0b01010'
+> > arch/powerpc/kernel/exceptions-64s.S:2979: Error: junk at end of line: =
+`0b01010'
+> > arch/powerpc/kernel/exceptions-64s.S:2994: Error: junk at end of line: =
+`0b01010'
+> > arch/powerpc/kernel/exceptions-64s.S:3012: Error: junk at end of line: =
+`0b01010'
+> > arch/powerpc/kernel/exceptions-64s.S:3032: Error: junk at end of line: =
+`0b01010'
+> > arch/powerpc/kernel/exceptions-64s.S:3079: Error: junk at end of line: =
+`0b01010'
+> > clang: error: assembler command failed with exit code 1 (use -v to see
+> > invocation)
+> > make[4]: *** [scripts/Makefile.build:382: arch/powerpc/kernel/head_64.o=
+] Error 1
+> > arch/powerpc/kernel/entry_64.S: Assembler messages:
+> > arch/powerpc/kernel/entry_64.S:172: Error: junk at end of line: `0b0101=
+0'
+> > clang: error: assembler command failed with exit code 1 (use -v to see
+> > invocation)
+> > make[4]: *** [scripts/Makefile.build:382:
+> > arch/powerpc/kernel/entry_64.o] Error 1
+> > make[4]: Target 'arch/powerpc/kernel/' not remade because of errors.
+> > make[3]: *** [scripts/Makefile.build:500: arch/powerpc/kernel] Error 2
+> > make[3]: Target 'arch/powerpc/' not remade because of errors.
+> > make[2]: *** [scripts/Makefile.build:500: arch/powerpc] Error 2
+> > make[2]: Target './' not remade because of errors.
+> > make[1]: *** [Makefile:2012: .] Error 2
+> > make[1]: Target '__all' not remade because of errors.
+> > make: *** [Makefile:238: __sub-make] Error 2
+> > make: Target '__all' not remade because of errors.
+>
+> As always, thanks for the report. This is an LLVM regression/change in
+> behavior caused by [1], which can break as-option and as-instr on
+> releases prior to commit d5c8d6e0fa61 ("kbuild: Update assembler calls
+> to use proper flags and language target"), as unsupported flags for the
+> current target ('-x') may be present (KBUILD_CFLAGS is used for these
+> tests instead of KBUILD_AFLAGS). Inside try-run, the macro behind
+> as-instr and as-option, I see
+>
+>   clang-17: error: unsupported option '-mno-prefixed' for target 'powerpc=
+64le-linux-gnu'
+>   clang-17: error: unsupported option '-mno-pcrel' for target 'powerpc64l=
+e-linux-gnu'
+>   clang-17: error: unsupported option '-mno-altivec' for target 'powerpc6=
+4le-linux-gnu'
+>   clang-17: error: unsupported option '-mno-vsx' for target 'powerpc64le-=
+linux-gnu'
+>   clang-17: error: unsupported option '-mno-mma' for target 'powerpc64le-=
+linux-gnu'
+>   clang-17: error: unsupported option '-mno-spe' for target 'powerpc64le-=
+linux-gnu'
+>
+> This has come up recently elsewhere in PowerPC, see
+> commit 2b694fc96fe3 ("powerpc/boot: Disable power10 features after
+> BOOTAFLAGS assignment"). While I think it is dubious that clang errors
+> on these flags for the assembler target, this is already fixed on the
+> Linux side by using KBUILD_AFLAGS for these make macros.
+>
+> I am preparing a series of d5c8d6e0fa61 and its dependencies for 6.1 but
+> I want to do sufficient build testing first, which is currently running
+> for me. Would you be able to point your matrix to [2] to make sure
+> everything works properly with both GCC and LLVM? It is a work in
+> progress as the second patch in the stack needs a proper commit message
+> but it is the diff I expect to ship so that it all that matters.
 
-On Mon, Jun 12, 2023 at 12:25:34PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.34 release.
-> There are 132 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
+We'll start building [2] with GCC and LLVM by using tuxplans and
+get back to you.
 
-Successfully compiled and installed bindeb-pkgs on my computer (Acer
-Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+>
+> [1]: https://github.com/llvm/llvm-project/commit/5548843d692a92a7840f1400=
+2debc3cebcb3cdc3
+> [2]: https://git.kernel.org/pub/scm/linux/kernel/git/nathan/linux.git/log=
+/?h=3Dwip/b4/6-1-asssembler-target-llvm-17
+>
+> Cheers,
+> Nathan
 
-Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
-
---=20
-An old man doll... just what I always wanted! - Clara
-
---7klP0XdzA/mKyD+r
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZIfvlgAKCRD2uYlJVVFO
-o7FkAP97O6KDtfaoOB71+CFv81wOylEDc22EgYxuuagu5pnYnAD/SSLbOl/Co3ds
-k6WTKHvfZYuyBpej3mLB6XqX9ZLBQgc=
-=3PZu
------END PGP SIGNATURE-----
-
---7klP0XdzA/mKyD+r--
+- Naresh
