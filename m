@@ -2,119 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7F7372DFA3
-	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 12:35:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06C1472DFB7
+	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 12:37:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230183AbjFMKfP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 13 Jun 2023 06:35:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59612 "EHLO
+        id S240911AbjFMKhi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 13 Jun 2023 06:37:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241920AbjFMKet (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 06:34:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05B8A1FE8
-        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 03:33:47 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9FF82620EE
-        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 10:33:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBCC7C433D2;
-        Tue, 13 Jun 2023 10:33:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686652424;
-        bh=r2UtEncxkPez4GCAMn4jkIteEUNTN5FruWDxrh3UhbU=;
-        h=Subject:To:From:Date:In-Reply-To:From;
-        b=pyjcVdE5VSrMLS6B2QB92gZ/0Iu3hCOU6ISZyvl0T++FZg5JxWh3WFiGoudx/PtKd
-         78nTq8MaCzsoHpIkA2kfIeqaTAMmnKXN3H8ng5wA4/Jq0VMJFzGvQRrLni3qF1/XwK
-         nDjly8bcYmDA9VgP0ZxvdDjNVTc/MfXAI4SV0aRk=
-Subject: patch "tty: serial: samsung_tty: Fix a memory leak in" added to tty-testing
-To:     christophe.jaillet@wanadoo.fr, andi.shyti@kernel.org,
-        gregkh@linuxfoundation.org, jirislaby@kernel.org,
-        krzysztof.kozlowski@linaro.org, stable@vger.kernel.org
-From:   <gregkh@linuxfoundation.org>
-Date:   Tue, 13 Jun 2023 12:33:31 +0200
-In-Reply-To: <cf3e0053d2fc7391b2d906a86cd01a5ef15fb9dc.1686412569.git.christophe.jaillet@wanadoo.fr>
-Message-ID: <2023061330-stench-observant-e076@gregkh>
+        with ESMTP id S240605AbjFMKhg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 06:37:36 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 881E6129
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 03:37:34 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4f644dffd71so6599862e87.1
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 03:37:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686652653; x=1689244653;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FcIqiwGu4sLEkTe056TBYKLsIuMHS5/22uZLcaXmrIg=;
+        b=q38P38oFNz436rbtz93StwiYL/vFP7MMNqPeNIqejeYdXIrrCA3boHSyNWjxCLq+yT
+         dL/m53B2SwFPNECbkZSRBytuIDffRItcWoVo+WlXh39G5Czhu9zYzZNMndOPjJyGARt5
+         kbl072mpM6tDiMEqdz247ltufPd3+4qHo6Oeg9xmLT5SlA1fjzpla2uhD6mm/axrTWYJ
+         izBLn9ywFt38UPfmPSDd7ZYJOXCxjbaWU5b05peQOck/vQznRpGC6CifT0xizIH1bxmu
+         Tgoj9P9zSDjP2ZN4rY88dTvxN0xd364jYAjGfSlb2E2YQE15gsbGsvyx1gRL5t7XbU0j
+         m4FA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686652653; x=1689244653;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FcIqiwGu4sLEkTe056TBYKLsIuMHS5/22uZLcaXmrIg=;
+        b=kkhJCbPeAglHrOQ6KyVCpA7SQv37syymAJAQGgt3z4D4Jz+r6Na/IoIa1GdlWdDRuT
+         vKHOLtpPvO2RCDnNgoH/YVr5sL/4TZ4FqUYRNDBIGvm0r28+OU0AXBdyY3h+4ZyT9r2m
+         4/XC/PIL14ydQP94yGMon9CMkWxouIMLw1JyovKs4a8vZo3n+RkkhPmREcLsTaDLoEW8
+         mqr0D9tIOHDI24tTbzMtkwZENWz5bFWUc9g6e+N5x59i9+Pc3jUqVE2u274WWQbdKZW3
+         EPVCC33PvcjJz9i1ccjnxQlnvoZJsMNtFLXMpBoC5iL2cvz8+PoDWv50jMEcjpmAmvAA
+         O4+w==
+X-Gm-Message-State: AC+VfDxaKjWxr4nHXFKLytbGQ+/6SDsU/jmQYmRbz1quSvhEO/FFQGVQ
+        4OdlAd3Fwpf9rRkDsN+CfiMJIQ==
+X-Google-Smtp-Source: ACHHUZ75Fs8dPw0U408VxzYcAqvN1dg4+0El4azN/49u3r8xhE324PvUci35OMNH6AhJBTgTqhwkRg==
+X-Received: by 2002:a19:2d4e:0:b0:4f3:93d6:377b with SMTP id t14-20020a192d4e000000b004f393d6377bmr4733972lft.37.1686652652707;
+        Tue, 13 Jun 2023 03:37:32 -0700 (PDT)
+Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
+        by smtp.gmail.com with ESMTPSA id k9-20020a7bc409000000b003f6050d35c9sm13973436wmi.20.2023.06.13.03.37.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Jun 2023 03:37:32 -0700 (PDT)
+Date:   Tue, 13 Jun 2023 11:37:30 +0100
+From:   Daniel Thompson <daniel.thompson@linaro.org>
+To:     Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     daniel@ffwll.ch, javierm@redhat.com, sam@ravnborg.org,
+        deller@gmx.de, geert+renesas@glider.be, lee@kernel.org,
+        jingoohan1@gmail.com, dan.carpenter@linaro.org,
+        michael.j.ruhl@intel.com, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-sh@vger.kernel.org,
+        linux-omap@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-kernel@vger.kernel.org,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2 01/38] backlight/bd6107: Compare against struct
+ fb_info.device
+Message-ID: <20230613103730.GA169438@aspen.lan>
+References: <20230612141352.29939-1-tzimmermann@suse.de>
+ <20230612141352.29939-2-tzimmermann@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230612141352.29939-2-tzimmermann@suse.de>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Mon, Jun 12, 2023 at 04:07:39PM +0200, Thomas Zimmermann wrote:
+> Struct bd6107_platform_data refers to a platform device within
+> the Linux device hierarchy. The test in bd6107_backlight_check_fb()
+> compares it against the fbdev device in struct fb_info.dev, which
+> is different. Fix the test by comparing to struct fb_info.device.
+>
+> Fixes a bug in the backlight driver and prepares fbdev for making
+> struct fb_info.dev optional.
+>
+> v2:
+> 	* move renames into separate patch (Javier, Sam, Michael)
+>
+> Fixes: 67b43e590415 ("backlight: Add ROHM BD6107 backlight driver")
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+> Cc: Lee Jones <lee@kernel.org>
+> Cc: Daniel Thompson <daniel.thompson@linaro.org>
+> Cc: Jingoo Han <jingoohan1@gmail.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v3.12+
+> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
-This is a note to let you know that I've just added the patch titled
-
-    tty: serial: samsung_tty: Fix a memory leak in
-
-to my tty git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git
-in the tty-testing branch.
-
-The patch will show up in the next release of the linux-next tree
-(usually sometime within the next 24 hours during the week.)
-
-The patch will be merged to the tty-next branch sometime soon,
-after it passes testing, and the merge window is open.
-
-If you have any questions about this process, please let me know.
-
-
-From 832e231cff476102e8204a9e7bddfe5c6154a375 Mon Sep 17 00:00:00 2001
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Date: Sat, 10 Jun 2023 17:59:26 +0200
-Subject: tty: serial: samsung_tty: Fix a memory leak in
- s3c24xx_serial_getclk() when iterating clk
-
-When the best clk is searched, we iterate over all possible clk.
-
-If we find a better match, the previous one, if any, needs to be freed.
-If a better match has already been found, we still need to free the new
-one, otherwise it leaks.
-
-Cc: <stable@vger.kernel.org> # v3.3+
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Fixes: 5f5a7a5578c5 ("serial: samsung: switch to clkdev based clock lookup")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Message-ID: <cf3e0053d2fc7391b2d906a86cd01a5ef15fb9dc.1686412569.git.christophe.jaillet@wanadoo.fr>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/tty/serial/samsung_tty.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/drivers/tty/serial/samsung_tty.c b/drivers/tty/serial/samsung_tty.c
-index a92a23e1964e..0b37019820b4 100644
---- a/drivers/tty/serial/samsung_tty.c
-+++ b/drivers/tty/serial/samsung_tty.c
-@@ -1490,10 +1490,18 @@ static unsigned int s3c24xx_serial_getclk(struct s3c24xx_uart_port *ourport,
- 			calc_deviation = -calc_deviation;
- 
- 		if (calc_deviation < deviation) {
-+			/*
-+			 * If we find a better clk, release the previous one, if
-+			 * any.
-+			 */
-+			if (!IS_ERR(*best_clk))
-+				clk_put(*best_clk);
- 			*best_clk = clk;
- 			best_quot = quot;
- 			*clk_num = cnt;
- 			deviation = calc_deviation;
-+		} else {
-+			clk_put(clk);
- 		}
- 	}
- 
--- 
-2.41.0
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
 
 
+Daniel.
+
+PS Please don't treat this as an Acked-by, if you want to land this
+   patchset via a single tree please coordinate with Lee Jones!
