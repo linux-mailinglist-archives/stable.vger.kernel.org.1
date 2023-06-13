@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBCBC72E327
-	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 14:37:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1322372E33F
+	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 14:43:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242374AbjFMMhg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 13 Jun 2023 08:37:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42364 "EHLO
+        id S233000AbjFMMnV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 13 Jun 2023 08:43:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242375AbjFMMhf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 08:37:35 -0400
+        with ESMTP id S240872AbjFMMnU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 08:43:20 -0400
 Received: from mail5.swissbit.com (mail5.swissbit.com [148.251.244.252])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A55C710EC
-        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 05:37:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11269AD
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 05:43:19 -0700 (PDT)
 Received: from mail5.swissbit.com (localhost [127.0.0.1])
-        by DDEI (Postfix) with ESMTP id 610A73A2AE8
-        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 14:37:31 +0200 (CEST)
+        by DDEI (Postfix) with ESMTP id 5C1A03A2AE8
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 14:43:17 +0200 (CEST)
 Received: from mail5.swissbit.com (localhost [127.0.0.1])
-        by DDEI (Postfix) with ESMTP id 4881E3A23B1
-        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 14:37:31 +0200 (CEST)
-X-TM-AS-ERS: 10.181.10.103-127.5.254.253
-X-TM-AS-SMTP: 1.0 bXgxLmRtei5zd2lzc2JpdC5jb20= Y2xvZWhsZUBoeXBlcnN0b25lLmNvb
+        by DDEI (Postfix) with ESMTP id 4270D3A2AE2
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 14:43:17 +0200 (CEST)
+X-TM-AS-ERS: 10.181.10.102-127.5.254.253
+X-TM-AS-SMTP: 1.0 bXgyLmRtei5zd2lzc2JpdC5jb20= Y2xvZWhsZUBoeXBlcnN0b25lLmNvb
         Q==
 X-DDEI-TLS-USAGE: Used
-Received: from mx1.dmz.swissbit.com (mx.dmz.swissbit.com [10.181.10.103])
+Received: from mx2.dmz.swissbit.com (mx2.dmz.swissbit.com [10.181.10.102])
         by mail5.swissbit.com (Postfix) with ESMTPS
-        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 14:37:31 +0200 (CEST)
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 14:43:17 +0200 (CEST)
 Content-Type: multipart/signed; 
- boundary=NoSpamProxy_34187a9f-04a2-4a62-9d00-6bbf6e2bb367; 
+ boundary=NoSpamProxy_50abc216-7c03-42e5-9fad-985635efcd45; 
  protocol="application/pkcs7-signature"; micalg="sha256"
 From:   Christian Loehle <CLoehle@hyperstone.com>
 To:     "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
@@ -37,9 +37,9 @@ CC:     Christian Loehle <CLoehle@hyperstone.com>,
         Ulf Hansson <ulf.hansson@linaro.org>
 Subject: [PATCH] mmc: block: ensure error propagation for non-blk
 Thread-Topic: [PATCH] mmc: block: ensure error propagation for non-blk
-Thread-Index: Admd826Hs6X6LPvDQxGrpsFS9ayCsg==
-Date:   Tue, 13 Jun 2023 12:37:29 +0000
-Message-ID: <d83cedabb09c42209f86618917bef7e3@hyperstone.com>
+Thread-Index: Admd87Nu67ycfR8CRjeAVjClGH3Q+g==
+Date:   Tue, 13 Jun 2023 12:43:14 +0000
+Message-ID: <4f6724fd4c60476786a31bcbbf663ccb@hyperstone.com>
 Accept-Language: en-US, de-DE
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -50,11 +50,11 @@ X-TMASE-Result: 10--6.576200-10.000000
 X-TMASE-MatchedRID: zpx2FW2iGB1OcNR3zaWyOBFbgtHjUWLyyqyllX6UJItXGTbsQqHbkvjA
         2IXz2gxc2w7862BXsuitrcbU2NPmbcfdkIlEiI2kgvmNrsT46HLBOVz0Jwcxl6vCrG0TnfVUgK6
         qCGa1Z9dAYdLFXr37Pu+1G7Fo/2oBpaAJZi8UzEXN+qWlu2ZxaPEdtecmfyuOQm/bEuDKSM+tya
-        YPv+ErX6MOIRgDSZC3ZzxSjotrw9s7AFczfjr/7J3CKuf3L4ZI2a6H1nxxqgQ1J+y6memv7KNVt
-        A1L8yivGjR2kUU2KhQ=
+        YPv+ErX6MOIRgDSZC3ZzxSjotrw9s7AFczfjr/7MsO1knDiFABT4e5yCxEznmuKhG81cGfb2Mdz
+        a7jenFN5LaZ3LlOXhI=
 X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
 X-TMASE-INERTIA: 0-0;;;;
-X-TMASE-XGENCLOUD: ff93afd5-877f-439a-ae70-60c84568c956-0-0-200-0
+X-TMASE-XGENCLOUD: 6d64a7c8-b6fa-4f81-aa72-3ec036e7812f-0-0-200-0
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,MIME_QP_LONG_LINE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
@@ -64,129 +64,124 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---NoSpamProxy_34187a9f-04a2-4a62-9d00-6bbf6e2bb367
+--NoSpamProxy_50abc216-7c03-42e5-9fad-985635efcd45
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 
-comm=69=74 =30=303f=620=6151162d940f=325=66=6335e7=30b0996=6112c=39e08=61 upst=
-ream=2E
+co=6D=6Dit 0=303f=620a=3511=362d9=340=6625fc35e70b099=36a=312c=39e0=38a ups=74=
+re=61m.
 
-Re=71=75ests =74o the m=6Dc =6C=61yer =75sual=6C=79 =63ome =74hr=6F=75g=68 a b=
-=6Coc=6B dev=69ce I=4F.
-=54h=65 =65x=63eptions =61r=65 =74=68=65 io=63tl interf=61=63=65, RPMB =63ha=
-=72=64e=76 io=63tl
-and =64ebu=67=66=73=2C wh=69ch i=73=73=75=65 =74hei=72 =6Fw=6E =62l=6B=5Fmq =
-=72e=71ue=73ts =74=68=72=6Fugh
-blk=5Fexecute=5Frq a=6Ed do =6Eot =71ue=72=79 =74he =42LK=5F=53TS =65=72ror =
-=62ut t=68e
-m=6Dcblk-int=65=72=6Eal =64rv=5Fop=5F=72=65su=6C=74. T=68=69=73 pa=74=63h =65=
-=6E=73ures that d=72=76=5Fop=5Fre=73=75l=74
-defa=75=6Cts to =61n er=72=6Fr a=6Ed has t=6F =62e overw=72=69tt=65=6E b=79 =
-=74=68e operatio=6E
-to be cons=69dere=64 s=75c=63es=73=66=75l=2E
+R=65quests =74=6F =74h=65 m=6Dc layer usuall=79 com=65 =74=68rou=67h =61 =62=
+=6Cock de=76=69=63e I=4F=2E
+=54h=65 =65=78cep=74i=6F=6E=73 are =74=68e =69o=63tl =69=6Eterfa=63e, R=50M=42=
+ ch=61=72=64ev ioctl
+a=6Ed =64=65b=75gfs, =77hi=63h iss=75=65 =74=68ei=72 =6Fw=6E =62=6Ck=5F=6D=71 =
+reque=73=74s thr=6Fu=67h
+blk=5Fexecut=65=5F=72q and d=6F =6E=6Ft q=75=65ry =74he BLK=5F=53TS e=72=72or =
+but th=65
+mmcblk-in=74=65=72na=6C =64rv=5Fo=70=5F=72esu=6Ct. Thi=73 =70=61=74ch e=6Esu=
+=72e=73 that d=72=76=5F=6Fp=5Fresult
+=64efault=73 to =61n er=72o=72 a=6Ed h=61s =74=6F be o=76e=72written b=79 =74=
+=68e op=65=72atio=6E
+to b=65 consi=64e=72ed =73u=63ces=73f=75l=2E
 
-T=68=65 =62e=68a=76ior =6Ceads =74o a b=75g w=68er=65 =74=68e reques=74 ne=76=
-=65r pro=70=61g=61tes
-=74=68e e=72ror=2C e.=67. b=79 di=72ectl=79 e=72=72oring ou=74 at m=6D=63=5Fbl=
-k=5F=6Dq=5Fis=73u=65=5Frq if
-=6D=6Dc=5F=62lk=5Fpart=5F=73wi=74=63h fails. Th=65 =69o=63tl cal=6Ce=72 o=66 =
-=74=68e rpmb cha=72de=76 then
-can nev=65r s=65e an e=72ro=72 (=42=4C=4B=5FST=53=5FIO=45=52R, =62ut d=72=76=
-=5F=6F=70=5F=72esult i=73 u=6E=63h=61ng=65d)
-and t=68=75s ma=79 a=73=73u=6De =74=68=61t th=65=69r =63al=6C ex=65cut=65=64 =
-=73u=63=63=65=73s=66=75lly w=68en it =64id not.
+The b=65ha=76i=6Fr l=65a=64s =74o a =62=75g wher=65 =74he re=71ue=73t =6E=65v=
+=65r pr=6F=70=61ga=74e=73
+=74he error, e.g=2E =62=79 dir=65ct=6Cy e=72r=6Fr=69ng out at mm=63=5F=62lk=5F=
+m=71=5Fissu=65=5F=72=71 if
+mmc=5Fblk=5Fp=61=72t=5F=73wit=63=68 fa=69ls. The =69=6Fc=74=6C c=61ll=65r =6Ff=
+ =74he rpmb =63=68ardev =74hen
+=63an neve=72 s=65e a=6E =65=72=72or (B=4C=4B=5FSTS=5FIOERR, but d=72=76=5Fop=
+=5Fresul=74 is =75=6Ech=61=6Eg=65=64)
+a=6E=64 =74=68us =6Day as=73ume =74=68at =74heir ca=6Cl execu=74e=64 =73=75=63=
+=63essfu=6Cly w=68en i=74 did =6Eot.
 
-W=68ile a=6Cways =63=68ec=6Bing the b=6Ck=5Fexe=63=75t=65=5Frq =72e=74u=72n va=
-l=75e w=6F=75ld b=65
-ad=76i=73e=64=2C l=65t's =65li=6D=69nate =74he err=6Fr by al=77a=79s =73=65t=
-=74i=6Eg
-d=72=76=5F=6F=70=5Fresult a=73 =2DE=49O t=6F =62=65 ove=72=77r=69tte=6E =6Fn =
-=73uc=63=65s=73 (o=72 =6Ft=68er =65r=72o=72)
+=57hile =61lways =63=68=65=63=6Bi=6Eg th=65 =62lk=5F=65xec=75te=5F=72=71 r=65t=
+ur=6E va=6Cue wo=75=6Cd be
+=61=64vised, le=74's el=69min=61te t=68=65 er=72or by =61l=77ays =73=65tti=6Eg
+dr=76=5F=6F=70=5Fresult as =2DEIO t=6F =62=65 =6Fve=72=77ri=74ten on suc=63ess=
+ =28or =6Ft=68=65r e=72ro=72)
 
-Fi=78=65s: =3614f0=3388=665=380 ("mmc: block: mov=65 s=69ngle =69=6F=63tl() =
-=63o=6Dma=6E=64s to b=6C=6Fck re=71ues=74=73")
-Si=67ned-o=66f-=62y=3A =43=68rist=69a=6E =4Coehl=65 <cloe=68l=65@=68=79=70erst=
-=6F=6E=65.com>
+Fixe=73: 614f0=3388f58=30 ("m=6D=63=3A b=6C=6F=63k=3A =6Do=76e single i=6F=63t=
+l() co=6D=6Da=6Eds =74o bloc=6B r=65=71u=65s=74=73"=29
+Sig=6E=65d=2D=6F=66f=2Db=79: Ch=72ist=69a=6E =4C=6F=65=68l=65 <cloehl=65@hyp=
+=65rs=74on=65.com=3E
 =2D--
-Thi=73 =69=73 =66=6Fr t=68=65 =66=6F=6C=6C=6Fw=69ng =73ta=62l=65 =74=72ee=73=
-=3A
-=34.1=34
-4=2E=31=39
-5.4
-5.10
- =64rivers/=6Dm=63/cor=65/=62l=6Fck.c =7C 5 ++=2B+=2B
- 1 file =63=68an=67ed, =35 =69n=73=65r=74=69ons(+)
+T=68=69s is =66or t=68=65 =35.15=2E =73t=61=62le tr=65=65
+ =64=72i=76ers/mmc/=63ore/=62lo=63k.c | 5 +=2B+++
+ 1 file =63=68a=6Eg=65=64=2C =35 i=6E=73=65r=74=69o=6Es(=2B=29
 
-d=69=66f --=67it a=2Fdri=76=65rs=2F=6Dm=63/co=72e/b=6C=6F=63=6B.c b/drivers=2F=
-mmc/=63o=72e/blo=63=6B.c
-=69=6Edex =379e5=61c=636e964=2E.=616=32=32=38=62=66=64=663=65a =31=300644
-=2D=2D- a/d=72ivers=2Fmmc/=63=6Fre=2F=62=6Cock=2Ec
-+++ =62/=64ri=76er=73/mmc=2F=63o=72e=2Fbl=6Fck.c
-@@ =2D243=2C=36 =2B2=343,7 @@ =73=74a=74=69c =73size=5F=74 p=6Fwer=5Fr=6F=5Fl=
-=6F=63k=5Fstore=28struct d=65vice *d=65v,
- =09=09go=74o out=5Fp=75=74=3B
+d=69=66=66 =2D-=67=69t a/dri=76er=73/=6Dmc/core/=62l=6Fc=6B=2E=63 b=2F=64ri=76=
+=65r=73=2F=6D=6Dc/=63=6Fr=65/blo=63k=2Ec
+index =65d=3034=6293cb=325..0=62720=39=36=6610=656 1=300=364=34
+--- a/driver=73=2F=6Dmc/c=6Fre=2F=62lo=63k.c
++=2B+ b/d=72i=76e=72s/=6Dm=63=2Fc=6F=72=65/block.c
+=40@ -=3265,6 +26=35,7 @@ =73t=61=74ic =73size=5Ft =70owe=72=5Fro=5F=6Coc=6B=
+=5Fst=6Fr=65=28stru=63=74 =64=65v=69=63e *d=65v,
+ =09=09=67oto out=5Fpu=74=3B
  =09}
- =09=72e=71=5F=74o=5Fmm=63=5Fqu=65=75=65=5Freq=28=72eq)->=64rv=5Fo=70 =3D =4DM=
-C=5F=44RV=5F=4F=50=5F=42OOT=5F=57=50=3B
-+=09=72=65q=5Ft=6F=5F=6Dmc=5F=71=75=65=75e=5F=72=65q=28req=29-=3Edrv=5Fop=5Fre=
-su=6Ct =3D -E=49O;
- =09=62=6Ck=5Fexecute=5Frq=28m=71->q=75eu=65, NU=4CL, =72=65q, 0);
- =09ret =3D req=5Ft=6F=5Fmmc=5F=71=75eue=5Freq=28req)=2D=3E=64r=76=5Fop=5Fre=
-=73ul=74;
- =09=62lk=5Fput=5Frequ=65s=74=28re=71=29;
-@=40 -671,=36 +67=32,7 @@ s=74a=74=69c =69nt mm=63=5Fblk=5Fi=6Fctl=5Fcm=64=28s=
-tr=75=63t mm=63=5Fblk=5F=64=61=74a =2Amd=2C
- =09id=61t=61s[=30] =3D idata;
- =09r=65q=5Fto=5Fm=6D=63=5F=71ue=75=65=5Freq=28r=65q=29-=3Edrv=5Fop =3D
- =09=09=72p=6Db =3F =4D=4DC=5F=44=52V=5F=4FP=5FIOCTL=5F=52P=4DB =3A M=4DC=5FDR=
-V=5FO=50=5FIO=43TL;
-+=09r=65=71=5Fto=5Fmmc=5Fq=75=65=75e=5Fr=65=71(=72e=71)->drv=5F=6Fp=5Fre=73=75=
-l=74 =3D -=45=49O=3B
- =09req=5Fto=5Fmmc=5F=71ueue=5Fr=65q=28req)=2D>d=72v=5F=6Fp=5Fd=61=74=61 =3D =
-=69da=74a=73;
- =09r=65q=5Fto=5F=6Dmc=5Fque=75e=5F=72eq(=72eq)-=3Eioc=5F=63ount =3D =31;
- =09blk=5Fe=78=65cut=65=5Frq(=6Dq->que=75=65=2C N=55LL, =72=65=71, =30);
-@@ =2D=3741=2C6 =2B743,7 @=40 =73tat=69c in=74 mmc=5F=62lk=5Fioctl=5F=6D=75l=
-=74i=5F=63md=28s=74r=75=63t mmc=5F=62=6Ck=5Fd=61=74a =2A=6Dd,
+ =09r=65q=5Fto=5F=6Dmc=5F=71ueue=5Fr=65q(req=29->=64rv=5Fop =3D =4D=4DC=5FDR=
+=56=5FOP=5FB=4FOT=5FWP;
++=09=72eq=5Ft=6F=5Fm=6D=63=5F=71ueu=65=5F=72eq(req)=2D>=64=72=76=5F=6Fp=5Fresu=
+lt =3D -EIO=3B
+ =09bl=6B=5Fe=78e=63=75te=5Fr=71=28=4EULL, r=65q=2C 0);
+ =09re=74 =3D re=71=5Fto=5F=6D=6Dc=5F=71ueu=65=5Fre=71(r=65q)-=3Edrv=5Fop=5Fre=
+=73=75lt;
+ =09blk=5Fp=75t=5Fr=65quest=28r=65q)=3B
+=40@ -65=36,6 +65=37,=37 @@ s=74at=69c int mm=63=5Fbl=6B=5Fioct=6C=5Fcmd=28st=
+=72u=63t =6Dmc=5F=62lk=5Fdata *md,
+ =09id=61=74=61=73[0] =3D i=64at=61;
+ =09=72e=71=5Fto=5F=6D=6Dc=5Fqu=65=75e=5Fr=65=71(re=71)-=3E=64rv=5F=6Fp =3D
+ =09=09rpmb =3F MMC=5FD=52=56=5FOP=5FI=4F=43TL=5FRPMB : MMC=5FDRV=5FO=50=5FI=
+=4FCT=4C;
++=09re=71=5F=74o=5F=6Dmc=5Fqu=65=75e=5Freq=28=72=65q)->=64=72v=5F=6Fp=5Fr=65=
+=73=75lt =3D =2D=45IO;
+ =09r=65=71=5F=74o=5Fmmc=5Fqu=65ue=5F=72e=71(re=71=29-=3E=64r=76=5Fop=5F=64at=
+=61 =3D =69d=61t=61s;
+ =09re=71=5Ft=6F=5Fmmc=5F=71u=65ue=5F=72eq(=72e=71=29=2D>i=6F=63=5Fc=6Fu=6E=74=
+ =3D 1;
+ =09blk=5F=65xecute=5Fr=71=28NULL, req, 0);
+@@ =2D725,=36 +727,7 =40=40 =73tatic i=6Et =6Dmc=5F=62lk=5Fio=63t=6C=5Fmulti=
+=5F=63=6D=64=28struc=74 mmc=5Fblk=5F=64=61t=61 *md,
  =09}
- =09r=65=71=5F=74=6F=5Fmmc=5Fque=75e=5Fr=65q(=72eq)-=3Ed=72v=5F=6Fp =3D
- =09=09rpmb =3F =4DMC=5F=44RV=5F=4F=50=5FIOC=54L=5FR=50M=42 =3A MM=43=5F=44=52=
-=56=5F=4FP=5FI=4FC=54L;
-+=09re=71=5F=74o=5F=6Dmc=5F=71=75eue=5Fre=71(=72eq)-=3Edr=76=5Fop=5F=72e=73u=
-=6Ct =3D -EI=4F;
- =09=72eq=5Fto=5F=6Dmc=5Fqu=65=75e=5Freq=28r=65=71)-=3E=64=72v=5Fop=5Fda=74a =
-=3D =69=64=61ta;
- =09req=5F=74o=5Fm=6Dc=5F=71u=65u=65=5F=72e=71=28r=65q)-=3Ei=6Fc=5F=63o=75nt =
-=3D =6Eum=5Fof=5F=63md=73=3B
- =09=62l=6B=5F=65=78=65cut=65=5Frq(=6Dq->queue, NUL=4C, re=71=2C =30);
-@@ -2590,6 +2593=2C7 @@ s=74=61tic i=6Et =6Dmc=5F=64bg=5Fcar=64=5F=73=74a=74us=
-=5F=67e=74=28v=6F=69d =2Adat=61, u=364 =2A=76al)
- =09i=66 (=49S=5FERR=28req=29=29
- =09=09return PTR=5FERR(req=29;
- =09=72=65q=5F=74o=5Fmm=63=5Fqueue=5Freq(=72eq)->dr=76=5Fop =3D MM=43=5FD=52=
-=56=5F=4F=50=5F=47E=54=5F=43=41RD=5F=53=54=41=54US;
-+=09=72=65=71=5Fto=5Fmm=63=5F=71ue=75=65=5F=72e=71(=72e=71)=2D>drv=5F=6F=70=5F=
-=72=65su=6Ct =3D -EI=4F;
- =09blk=5Fex=65=63=75te=5Frq=28m=71=2D>=71=75e=75=65, N=55=4C=4C, req=2C 0=29;
- =09ret =3D =72eq=5F=74=6F=5Fmmc=5Fqu=65=75e=5Freq=28=72e=71=29=2D>d=72=76=5Fo=
-p=5F=72=65sul=74;
- =09if (=72=65=74 >=3D 0=29 {
-@=40 -2=362=38=2C6 +2=3632,7 =40@ st=61tic i=6E=74 =6Dmc=5Fext=5Fcsd=5Fope=6E=
-=28=73t=72=75=63=74 in=6Fde *=69=6Eo=64=65, =73tru=63t f=69=6Ce *fil=70)
- =09=09g=6Ft=6F o=75=74=5Ff=72ee;
- =09}
- =09r=65=71=5F=74o=5F=6Dm=63=5Fqueu=65=5Freq(=72eq)->d=72=76=5Fo=70 =3D M=4DC=
-=5FD=52V=5FO=50=5FG=45T=5F=45XT=5F=43=53D;
-+=09req=5F=74o=5Fmmc=5Fq=75eu=65=5Fre=71(=72eq=29=2D>=64r=76=5F=6Fp=5Fr=65=73=
-=75lt =3D -EIO;
- =09=72eq=5Ft=6F=5Fmmc=5Fqu=65u=65=5Fr=65q(=72eq=29->drv=5Fop=5Fd=61ta =3D &ex=
-t=5Fcsd;
- =09b=6Ck=5Fexecu=74=65=5Frq(m=71=2D=3E=71ue=75=65=2C NUL=4C, =72eq, =30=29;
- =09er=72 =3D =72e=71=5F=74=6F=5Fmmc=5Fq=75eue=5Fr=65q=28=72e=71)=2D>=64r=76=
-=5Fop=5Fres=75lt=3B
+ =09req=5Fto=5F=6Dm=63=5Fqu=65=75e=5F=72=65=71=28req=29->=64rv=5Fop =3D
+ =09=09rpm=62 =3F =4DMC=5FD=52V=5FOP=5FIO=43=54L=5F=52P=4DB : M=4DC=5FDRV=5F=
+=4FP=5FI=4F=43TL;
+=2B=09=72e=71=5Fto=5F=6D=6Dc=5F=71=75eu=65=5Freq=28=72eq=29=2D>drv=5F=6Fp=5F=
+=72esult =3D -EI=4F;
+ =09re=71=5F=74o=5Fmm=63=5F=71=75eue=5Freq=28r=65q)->drv=5F=6Fp=5Fdata =3D =69=
+d=61ta=3B
+ =09=72e=71=5F=74o=5Fmmc=5F=71=75e=75e=5Freq=28=72eq)=2D>ioc=5F=63ou=6Et =3D =
+=6Eum=5F=6Ff=5F=63mds=3B
+ =09bl=6B=5Fexec=75te=5F=72q=28N=55=4CL, r=65q=2C 0);
+=40=40 =2D2=3784,=36 =2B27=387=2C7 =40@ stat=69c =69nt mmc=5Fdbg=5F=63=61r=64=
+=5Fstatus=5F=67e=74(void *=64at=61=2C u64 *va=6C)
+ =09if (=49S=5FERR=28r=65q))
+ =09=09ret=75=72n =50T=52=5FE=52=52=28req);
+ =09r=65q=5Fto=5Fm=6D=63=5Fque=75=65=5Freq(req=29=2D=3Edrv=5Fo=70 =3D M=4DC=5F=
+=44RV=5FO=50=5FGET=5FCA=52=44=5F=53TATUS=3B
+=2B=09re=71=5Fto=5F=6Dm=63=5Fq=75eue=5F=72e=71=28r=65q)=2D>=64rv=5Fop=5F=72es=
+=75=6Ct =3D =2DE=49O=3B
+ =09=62lk=5F=65=78=65cute=5Fr=71(NULL, req=2C =30);
+ =09r=65t =3D re=71=5Fto=5F=6D=6Dc=5Fqu=65ue=5Freq(re=71)=2D=3Edr=76=5F=6Fp=5F=
+=72e=73=75lt=3B
+ =09=69f =28=72et >=3D 0) {
+@@ =2D=32822,6 +=32826,7 =40@ st=61=74i=63 int mmc=5F=65xt=5Fcs=64=5F=6F=70en=
+=28s=74r=75=63=74 in=6F=64e *in=6F=64=65, struct =66i=6Ce =2Af=69=6Cp=29
+ =09=09g=6Fto out=5Ffree=3B
+ =09=7D
+ =09req=5Fto=5F=6Dmc=5Fqu=65=75e=5Fre=71(r=65q)=2D>drv=5Fo=70 =3D M=4DC=5FD=52=
+V=5F=4FP=5FG=45=54=5FEXT=5FCSD;
+=2B=09=72=65q=5Fto=5F=6D=6D=63=5Fqueue=5Fr=65=71=28=72=65q)=2D>=64rv=5Fop=5F=
+=72esu=6Ct =3D -=45=49O;
+ =09req=5Ft=6F=5F=6D=6Dc=5Fq=75eu=65=5Freq(r=65=71)=2D>d=72v=5F=6Fp=5Fdata =3D=
+ =26e=78t=5F=63s=64;
+ =09bl=6B=5F=65x=65=63ute=5Frq(NULL, re=71, 0);
+ =09=65r=72 =3D req=5Fto=5Fmmc=5F=71ueue=5F=72eq(r=65q=29-=3Ed=72v=5Fop=5F=72e=
+s=75=6Ct;
 --
-2.=337=2E3
---NoSpamProxy_34187a9f-04a2-4a62-9d00-6bbf6e2bb367
+2.=33=37.3
+--NoSpamProxy_50abc216-7c03-42e5-9fad-985635efcd45
 Content-Transfer-Encoding: BASE64
 Content-Type: application/pkcs7-signature; name=smime.p7s
 Content-Disposition: attachment; filename=smime.p7s
@@ -354,23 +349,23 @@ pXjXBtpqnks+dzogEyIB0L9onmNgazVNC226oT3Ak+B/I7NVrXIlTkb50hbvsGTBAZ7pyqBqmA7P
 sNBXwfo+euGXyTGAMIACAQEwazBTMQswCQYDVQQGEwJDSDEVMBMGA1UEChMMU3dpc3NTaWduIEFH
 MS0wKwYDVQQDEyRTd2lzc1NpZ24gUlNBIFNNSU1FIExDUCBJQ0EgMjAyMSAtIDICFH/0ya9FbNqD
 P1mj8nwYIyzoDuazMAsGCWCGSAFlAwQCAaCCAfIwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAc
-BgkqhkiG9w0BCQUxDxcNMjMwNjEzMTIzNzMxWjAvBgkqhkiG9w0BCQQxIgQgY79TcDXO5H5k9v+0
-LXYEAzRmeYFdYHmgJkvy7IxMmpkwegYJKwYBBAGCNxAEMW0wazBTMQswCQYDVQQGEwJDSDEVMBMG
+BgkqhkiG9w0BCQUxDxcNMjMwNjEzMTI0MzE3WjAvBgkqhkiG9w0BCQQxIgQg+LGiFLI8jcmxCfAp
+23OuX4kh4nZKBCTI7fhr/UT3qjkwegYJKwYBBAGCNxAEMW0wazBTMQswCQYDVQQGEwJDSDEVMBMG
 A1UEChMMU3dpc3NTaWduIEFHMS0wKwYDVQQDEyRTd2lzc1NpZ24gUlNBIFNNSU1FIExDUCBJQ0Eg
 MjAyMSAtIDICFH/0ya9FbNqDP1mj8nwYIyzoDuazMHwGCyqGSIb3DQEJEAILMW2gazBTMQswCQYD
 VQQGEwJDSDEVMBMGA1UEChMMU3dpc3NTaWduIEFHMS0wKwYDVQQDEyRTd2lzc1NpZ24gUlNBIFNN
 SU1FIExDUCBJQ0EgMjAyMSAtIDICFH/0ya9FbNqDP1mj8nwYIyzoDuazMIGMBgkqhkiG9w0BCQ8x
 fzB9MAcGBSsOAwIaMAsGCWCGSAFlAwQCATALBglghkgBZQMEAgIwCwYJYIZIAWUDBAIDMAoGCCqG
 SIb3DQMHMAsGCWCGSAFlAwQBAjALBglghkgBZQMEAQYwCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQB
-KjALBglghkgBZQMEAS4wDQYJKoZIhvcNAQEBBQAEggIAl+6xwUdn9z1rDKpyQbPIdIwmBLYtNVN4
-JkKDq3PcMuoGxudgNCFNDCIjzjx1yTdcWovJxEFUA4wlYqizmzV7/PV8jLn8AY2IZsIf9MdB5cUL
-7xeNVjbxW/2g6z3eWAbNfJOytpVCKfnUwy0BwmXwtEnnpJNdrdnaX47va64+6vJDIm7tkp9u4DMP
-qZ0k4JFdJyG7oei02B+Aj46C+gdQ4t8VHRAk3+1u2rXpSSObNIKYizsRLFrnCBwjVOfSZLgZWNns
-inaXSfhrGI2xawH6mEH5PPFvNPlpuvtDCXhfRchOCKBB9baruwHodoqY6owcTtlQgofortRlIHYO
-mnrh9s8RqYaZzX3QwrLlfw3dPSu0Vzwy9ffT8l56X2x5Z8//V6ALqXTEjnXPba1cX9nVDTPHYWVa
-0GAOZeuQi/TN44Z15XJ/a+UhZZZSCrPog9pysCbv/GV/2YEgxzwcBp3J593WK2ZaXl3wxbTmBzNo
-azdVsXNiNEPYpRGEmkYaAj77EmE8G2QMP/gjH2fnmDMMISyyAC8dMCMmXzwv6vtbl0uNIjUXB/s8
-XLyO5Hwavn9+w2wJp2P7srYrG7COozKUEs93NdAB+19oQQTYfvjB9FBvRM6Pl2iXQCt9fQCjjGL+
-Uvk5YTL6mVE5s74n6mgJllBuRFAMsAKVt3MHiPvRan8AAAAAAAAAAAAA
---NoSpamProxy_34187a9f-04a2-4a62-9d00-6bbf6e2bb367--
+KjALBglghkgBZQMEAS4wDQYJKoZIhvcNAQEBBQAEggIAyB9CW0xXtsCu985mjXhB5Pjy4GLzNgbE
+WM6QISlWz++kfYazRFWxqSX6hciw5QwwFVYsjsavoAUtya2h+2rQL5/r02RZ4wUgnxLYv1YJ4mfK
+SbbBkglU49DlGvDGjuDvEK3A4sowoAwBvTcE1ezDPKFycJUg/hSAlYyYOiUEEad4ot7jjPksBIBS
+kkyWZYIWqWa6TcJY2m1pyLiX4ewlPFdb2t/GY8APT27SInF8B7FYQ1L67ukPiBKIpe8e/DVeUvi7
+Vfv9Vb9yqxWWLhkU741gijgjENxkAACI5yHLTpJLe+y2HaAH+hP5P4ugodD7usaKuoSKPKwr4Fw1
+c0VKJYQXjOLMyEH3Gg9nhQtVl0/uoLQ/eHdntO3x4ZgteT8fGy9JU1jHutCJWB3SYoHomkF5zqdw
+m2u7nkK4Klx8tg9ONhbmEGvVyvkjGi58floGvkWIEh4rsDkgZjzWVojUi5jvmGB13LpJ31Mx9iYY
+kBlYr9SG++2TPKg0fikN8Zu6Dbq20LCT4xxyA6IqZkzQYBcZbbHnWmkOFik+ECzEp3/YuTU7+xkl
+3WFR6E+gNucEBvH6BmLTGuw2ozeza2eGkf6Hz+YXw9oHEda0vskEGjhUkGHKdfrr9DCWWrkbuQlz
+kWEn272duFwE0aai+Rx7SlW+D+K07SIs/zrG3m0YMwUAAAAAAAAAAAAA
+--NoSpamProxy_50abc216-7c03-42e5-9fad-985635efcd45--
 
