@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21A7672DFBF
-	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 12:38:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76D3572DFD1
+	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 12:40:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241264AbjFMKiv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 13 Jun 2023 06:38:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35686 "EHLO
+        id S240801AbjFMKkL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 13 Jun 2023 06:40:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238776AbjFMKiu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 06:38:50 -0400
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7196DC5
-        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 03:38:49 -0700 (PDT)
-Received: by mail-wr1-x42d.google.com with SMTP id ffacd0b85a97d-30fc42fcbc7so1425624f8f.1
-        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 03:38:49 -0700 (PDT)
+        with ESMTP id S241877AbjFMKjn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 06:39:43 -0400
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9B7D10E4
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 03:39:40 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-30fc26affa9so1503517f8f.0
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 03:39:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686652728; x=1689244728;
+        d=linaro.org; s=google; t=1686652779; x=1689244779;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6d+VLj6m3MAAbwrIUd63IBRinbYN+a8k/C8reDLCUoA=;
-        b=hgjHCdmVZj17ygZWDKclgn2+Ytse1qSnmaG4LRvuBitz3LJyh5HgOVAUSo0/r7wbdt
-         fdSIKGBQtVODe5/DiwzNAY75tQn14eC3cn9Q2yhq2toPlE76Oa5oFJdV9l1XnL0YG0RH
-         fxvfeGPQ4hK4wvvH1FIqK7kR5+J3EkpRC2wIwVTAmEGdctNMUqczSpR/pqHqlcdrvXNx
-         w+5FbTeVgBNFZVVGyto35QUzWBVlGziPVY46F9DgTYoTMe+PwdW3jVov2buriiM7Vv2s
-         PvmiMKy9I+IiUkPF6osBSwKSkROBznVLomANfzqMBfERLZUvUZy0htIwFzMk6D4nAIGS
-         /3Pw==
+        bh=L+0q/8B3X2O+bLieXF8c9g+8ohNwELNU1kRNH19cJQQ=;
+        b=mp5t8BFsJLvB4B2RBPo6x6uNyPCi8jDPJJpT5/LpidCyzOQv4FCXKrMWr1ZoGeWb2S
+         1dBOQjE7wNbB2/NIq8xC5IgXRwNRGlVnZW3Z4RXFfWXN3WDAjIuuNAySekfhnk34w5wO
+         NzDIjtTF8SXSuX25qLMn3huo8p/83/zQMv/5E4FEAXUWYyMCx8Mo+LAzcn9buVVIEf25
+         xq6WyCppmw0R4kg6OL44jDGiDE0u+RRVrPQ0ZksXnqIcz16sfbXTylvjE97DH2Pg1vn+
+         u4HS9GU54OKGBiesVcpBbKbzyQtzvsmO+sXxWBrgzd+eRZlTzu8i2amAs2BDVfmzc8Gh
+         L22w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686652728; x=1689244728;
+        d=1e100.net; s=20221208; t=1686652779; x=1689244779;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6d+VLj6m3MAAbwrIUd63IBRinbYN+a8k/C8reDLCUoA=;
-        b=EMC/jjrV12PihvMlpij5eR0NOg+X4hO8v0MWAvyDEPcktXLgZkFTQ29gPArKyQmtV5
-         X5bDFUXpgf4iJLyN0hhP2Rxgwer05ENnm02lDkq6u5FSMY/H9x8I8ISrjJXH9eVSkB4Q
-         MJsTAgC+AEPveOKZFDLeq/ejCh1Sq0frhe4IwjNSgU11o/vt1iEH5o1OyTshl4Hzaj7H
-         Kqc4XuNMfdyMMUNuxbYEEcygqhTGtK/tDZaVxDiXf5Cyps2RmUc660rIVK4X4i5cPKdJ
-         zfDfhzcBXs3Cpr5ZMQQ91+5BhEwW4Ud5/MOIKPgMG4a+8LIinEXAMrskxL+mVPZQrPj5
-         voaA==
-X-Gm-Message-State: AC+VfDwJxpoVAeuLohAFvZcXauDpaW5IeT126ry2jCp7Zg5rRWbd5eAO
-        pPmkklYZ2QSKIsKIc43davperg==
-X-Google-Smtp-Source: ACHHUZ5HGIJRgD5nl4Qh50NEPcobvGP0CTVSW1VYZZsJoGlj0SicoFaUzO4TaUafxBw4qtclMnMW2w==
-X-Received: by 2002:a5d:6a0b:0:b0:309:46a4:6378 with SMTP id m11-20020a5d6a0b000000b0030946a46378mr5778964wru.12.1686652727984;
-        Tue, 13 Jun 2023 03:38:47 -0700 (PDT)
+        bh=L+0q/8B3X2O+bLieXF8c9g+8ohNwELNU1kRNH19cJQQ=;
+        b=e6M9ADDcWDRFiKdejb2Kv7PAr1qYjvaeO1UvlxTpvBnc7T1ck654SHxRCZPqAj/Xgh
+         j1DL1VBTuYFh3BZB3P2gAusD10UKSTxlSiDP5xXlhQ9DQVr2GA2UpBSq2rxu26le03Fl
+         aC+b6FxWMeWNKFhH+0v90SBNK19ooLf/llEc8CMlWEvmh25EOS5TCld4RBG5YRbXRcrB
+         /sTwrDyQnu2ROG7iTu9cok7W7McP3D6s34VH5JuUHw1ZiW5co4GwReqGq8AsFeJWcaPN
+         hBrdt+bw7bLBRNygSuFc6/k5PsmVfdhlkpscEQgnWXMV25gxzkJdTG09kGe6vsUcGI9K
+         qK6g==
+X-Gm-Message-State: AC+VfDzaA+lKqalWBBQGOIlcZ6emCdM1GldlodvkcyDnaYdt2G04jm5j
+        sal6s+LMpe6k0stbB8OWHwbVxQ==
+X-Google-Smtp-Source: ACHHUZ4QXHWcQ+EF1TxBMcwYsV+sIp0eKcDzBEmcY5jt8MfrsM/QF7URk3vwRqxNRqLqrU6BbwKwDg==
+X-Received: by 2002:a5d:508a:0:b0:30f:caf6:5bde with SMTP id a10-20020a5d508a000000b0030fcaf65bdemr1780025wrt.32.1686652779043;
+        Tue, 13 Jun 2023 03:39:39 -0700 (PDT)
 Received: from aspen.lan (aztw-34-b2-v4wan-166919-cust780.vm26.cable.virginm.net. [82.37.195.13])
-        by smtp.gmail.com with ESMTPSA id f9-20020a5d6649000000b0030f9dc63ff1sm13001387wrw.88.2023.06.13.03.38.47
+        by smtp.gmail.com with ESMTPSA id h2-20020a5d5482000000b0030fbc96bdffsm7123579wrv.25.2023.06.13.03.39.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jun 2023 03:38:47 -0700 (PDT)
-Date:   Tue, 13 Jun 2023 11:38:45 +0100
+        Tue, 13 Jun 2023 03:39:38 -0700 (PDT)
+Date:   Tue, 13 Jun 2023 11:39:36 +0100
 From:   Daniel Thompson <daniel.thompson@linaro.org>
 To:     Thomas Zimmermann <tzimmermann@suse.de>
 Cc:     daniel@ffwll.ch, javierm@redhat.com, sam@ravnborg.org,
@@ -59,31 +59,32 @@ Cc:     daniel@ffwll.ch, javierm@redhat.com, sam@ravnborg.org,
         linux-omap@vger.kernel.org, linux-staging@lists.linux.dev,
         linux-kernel@vger.kernel.org,
         Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
         Rich Felker <dalias@libc.org>,
         John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         stable@vger.kernel.org
-Subject: Re: [PATCH v2 03/38] backlight/gpio_backlight: Compare against
- struct fb_info.device
-Message-ID: <20230613103845.GC169438@aspen.lan>
+Subject: Re: [PATCH v2 05/38] backlight/lv5207lp: Compare against struct
+ fb_info.device
+Message-ID: <20230613103936.GE169438@aspen.lan>
 References: <20230612141352.29939-1-tzimmermann@suse.de>
- <20230612141352.29939-4-tzimmermann@suse.de>
+ <20230612141352.29939-6-tzimmermann@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230612141352.29939-4-tzimmermann@suse.de>
+In-Reply-To: <20230612141352.29939-6-tzimmermann@suse.de>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jun 12, 2023 at 04:07:41PM +0200, Thomas Zimmermann wrote:
-> Struct gpio_backlight_platform_data refers to a platform device within
-> the Linux device hierarchy. The test in gpio_backlight_check_fb()
+On Mon, Jun 12, 2023 at 04:07:43PM +0200, Thomas Zimmermann wrote:
+> Struct lv5207lp_platform_data refers to a platform device within
+> the Linux device hierarchy. The test in lv5207lp_backlight_check_fb()
 > compares it against the fbdev device in struct fb_info.dev, which
 > is different. Fix the test by comparing to struct fb_info.device.
 >
@@ -93,9 +94,10 @@ On Mon, Jun 12, 2023 at 04:07:41PM +0200, Thomas Zimmermann wrote:
 > v2:
 > 	* move renames into separate patch (Javier, Sam, Michael)
 >
+> Fixes: 82e5c40d88f9 ("backlight: Add Sanyo LV5207LP backlight driver")
 > Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Fixes: 8b770e3c9824 ("backlight: Add GPIO-based backlight driver")
 > Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
 > Cc: Rich Felker <dalias@libc.org>
 > Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 > Cc: Lee Jones <lee@kernel.org>
@@ -104,6 +106,7 @@ On Mon, Jun 12, 2023 at 04:07:41PM +0200, Thomas Zimmermann wrote:
 > Cc: linux-sh@vger.kernel.org
 > Cc: dri-devel@lists.freedesktop.org
 > Cc: <stable@vger.kernel.org> # v3.12+
+> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
 Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
 
