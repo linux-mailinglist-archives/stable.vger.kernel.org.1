@@ -2,144 +2,104 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0084D72D587
-	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 02:10:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C942D72D69A
+	for <lists+stable@lfdr.de>; Tue, 13 Jun 2023 02:47:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238434AbjFMAKm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 12 Jun 2023 20:10:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51186 "EHLO
+        id S230046AbjFMArF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 12 Jun 2023 20:47:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237887AbjFMAKj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 20:10:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A592D171D;
-        Mon, 12 Jun 2023 17:10:38 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B4B662E7C;
-        Tue, 13 Jun 2023 00:10:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E8D3C4339C;
-        Tue, 13 Jun 2023 00:10:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686615037;
-        bh=RkC7m+ef9MDtn7UWLvgRnRzmN0nJLRntkzJFcqy2vXw=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=FHxvRGIAxDoNvq/SN8C376t3jj5M5YeyBEnSBQEIePf8IYJ5O3iPXFYKxeH3zr9uc
-         vTvrrwDc0P5Jpc+b4Xv4zRkSpfTlrT+fbRC3LRXKDJzxsS1YENK+dX5daB77WpijZG
-         FriHbVFFPh2O1BFpdttS4cZaz+rsWidUolh1MUDZs9E9nhZo0EqzeetlNjKFiU7doB
-         giVt0aYz3nY/pMQDBoxDlE6VjeykIwC26tsmtls+VY83CfjXl2YF+lf1z6vJfea96t
-         l4/IAGDiGi1PPK1KMKROVYpk2Ss3p1x72lqDwT6iGL/JlrKRz99ZG4KudliXDOmNJZ
-         WdTQNIRPk+4sg==
-Message-ID: <2f3328c4be9db6feef2cc662ede70f92.sboyd@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229807AbjFMArE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 12 Jun 2023 20:47:04 -0400
+Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A322710D3
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 17:47:03 -0700 (PDT)
+Received: by mail-io1-xd2d.google.com with SMTP id ca18e2360f4ac-760dff4b701so49504239f.0
+        for <stable@vger.kernel.org>; Mon, 12 Jun 2023 17:47:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1686617223; x=1689209223;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=lmjM/dRJidQfKguFBam2mPgsQsHoFPzaRQGo375W5P8=;
+        b=gAMbBeMggeuiAjdgkrulOmgIVAY7V5E6KWDdOurzhW+Bc4BkbTjixYbFK3styWR1xT
+         U2j5UzjWlNRKQ7iigc5MCrjlMEf5zXi2KiezqakvxZMDlyhld/4dimIkOd5qPq8qYuvQ
+         6Vv6Us+h2VuC4J2KS2sW3jgKR1liw3O0lRhmg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686617223; x=1689209223;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lmjM/dRJidQfKguFBam2mPgsQsHoFPzaRQGo375W5P8=;
+        b=IVW7dwX/ss27Mz6whgVb6uwp2etWpzEwlZKEM7ZOsw2NE0yMESky4Sd8MmMxiUvQam
+         uSKZ55U8gW7B2fvIg605OKhWEWPnIU+sYXMlGnTQXYuW00RX3lxEbGK01a+rNmQ1kKkc
+         BGwZZKsxF2hUkfKRw8Bsw4fjBYSsb39qbwOh2DSC0/BA5W180A5TTy7R/cD8Jxk3q1Ii
+         B0xwRA5btxc9a5qpokrbYmhofrrgattpj/Zc5jBrw3ynv9aSaJHWPX1Cm/mOdy/VscvX
+         CquCESJv8dA1vo9AxZkA599ZcllVsgirWWTVl28NK8qip/PAKDwO9vu87jX43PDk7aQo
+         F1AA==
+X-Gm-Message-State: AC+VfDzxwZasxP9A3ge28b5wAhI9UgpCUDLXbs4VxAxNlLrCqXhtFtMj
+        kKFSbHvKA1B2UJLXzLMoQxJlEw==
+X-Google-Smtp-Source: ACHHUZ7Zt0PUB3W0hglufQF5/lfwOVJDETIXODth+qZK6FonW+iF851KtxvZ4jXmJx1VrNbqXjGXQg==
+X-Received: by 2002:a05:6602:2e07:b0:777:a94d:a362 with SMTP id o7-20020a0566022e0700b00777a94da362mr9730462iow.2.1686617223020;
+        Mon, 12 Jun 2023 17:47:03 -0700 (PDT)
+Received: from [192.168.1.128] ([38.15.45.1])
+        by smtp.gmail.com with ESMTPSA id ee24-20020a056638293800b0041658c1838asm3082379jab.81.2023.06.12.17.47.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 12 Jun 2023 17:47:02 -0700 (PDT)
+Message-ID: <559744de-1f36-4b36-2dc6-c14354fd4e2b@linuxfoundation.org>
+Date:   Mon, 12 Jun 2023 18:47:01 -0600
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20230526171057.66876-2-sebastian.reichel@collabora.com>
-References: <20230526171057.66876-1-sebastian.reichel@collabora.com> <20230526171057.66876-2-sebastian.reichel@collabora.com>
-Subject: Re: [PATCH v2 1/2] clk: composite: Fix handling of high clock rates
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     Christopher Obbard <chris.obbard@collabora.com>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        kernel@collabora.com, stable@vger.kernel.org,
-        Maxime Ripard <maxime@cerno.tech>
-To:     Michael Turquette <mturquette@baylibre.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Mon, 12 Jun 2023 17:10:35 -0700
-User-Agent: alot/0.10
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 6.1 000/132] 6.1.34-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de,
+        Shuah Khan <skhan@linuxfoundation.org>
+References: <20230612101710.279705932@linuxfoundation.org>
+From:   Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20230612101710.279705932@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Quoting Sebastian Reichel (2023-05-26 10:10:56)
-> ULONG_MAX is used by a few drivers to figure out the highest available
-> clock rate via clk_round_rate(clk, ULONG_MAX). Since abs() takes a
-> signed value as input, the current logic effectively calculates with
-> ULONG_MAX =3D -1, which results in the worst parent clock being chosen
-> instead of the best one.
->=20
-> For example on Rockchip RK3588 the eMMC driver tries to figure out
-> the highest available clock rate. There are three parent clocks
-> available resulting in the following rate diffs with the existing
-> logic:
->=20
-> GPLL:   abs(18446744073709551615 - 1188000000) =3D 1188000001
-> CPLL:   abs(18446744073709551615 - 1500000000) =3D 1500000001
-> XIN24M: abs(18446744073709551615 -   24000000) =3D   24000001
+On 6/12/23 04:25, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.34 release.
+> There are 132 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 14 Jun 2023 10:16:41 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.34-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-I had to read the abs() macro to understand this and also look at the
-types for 'req->rate' and 'tmp_req.rate' (both are unsigned long) to
-understand what's going on. I'm not sure I'd say that abs() takes the
-input as a signed value. Instead, it converts the input to a signed type
-to figure out if it should negate the value or not. The problem is the
-subtraction result is larger than can fit in a signed long long on a
-64-bit machine, so we can't use the macro at all if the type is unsigned
-long and the sign bit is set.
+Compiled and booted on my test system. No dmesg regressions.
 
->=20
-> As a result the clock framework will promote a maximum supported
-> clock rate of 24 MHz, even though 1.5GHz are possible. With the
-> updated logic any casting between signed and unsigned is avoided
-> and the numbers look like this instead:
->=20
-> GPLL:   18446744073709551615 - 1188000000 =3D 18446744072521551615
-> CPLL:   18446744073709551615 - 1500000000 =3D 18446744072209551615
-> XIN24M: 18446744073709551615 -   24000000 =3D 18446744073685551615
->=20
-> As a result the parent with the highest acceptable rate is chosen
-> instead of the parent clock with the lowest one.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 49502408007b ("mmc: sdhci-of-dwcmshc: properly determine max clock=
- on Rockchip")
-> Tested-by: Christopher Obbard <chris.obbard@collabora.com>
-> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-> ---
->  drivers/clk/clk-composite.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/clk/clk-composite.c b/drivers/clk/clk-composite.c
-> index edfa94641bbf..66759fe28fad 100644
-> --- a/drivers/clk/clk-composite.c
-> +++ b/drivers/clk/clk-composite.c
-> @@ -119,7 +119,10 @@ static int clk_composite_determine_rate(struct clk_h=
-w *hw,
->                         if (ret)
->                                 continue;
-> =20
-> -                       rate_diff =3D abs(req->rate - tmp_req.rate);
-> +                       if (req->rate >=3D tmp_req.rate)
-> +                               rate_diff =3D req->rate - tmp_req.rate;
-> +                       else
-> +                               rate_diff =3D tmp_req.rate - req->rate;
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-This problem is widespread
-
- $ git grep abs\(.*- -- drivers/clk/ | wc -l
- 52
-
-so we may have a bigger problem here. Maybe some sort of coccinelle
-script or smatch checker can be written to look for abs() usage with an
-unsigned long type or a subtraction expression. This may also be worse
-after converting drivers to clk_hw_forward_rate_request() and
-clk_hw_init_rate_request() because those set the rate to ULONG_MAX.
-+Maxime for that as an FYI.
-
-Maybe we need an abs_diff() macro instead, that checks the type and on
-CONFIG_64BIT uses a conditional like above, but if it is a smaller type
-then it just uses abs() on the expression because it knows the
-difference will fit in the signed type conversion. I see that such a
-macro exists in some drm driver, so maybe it can be promoted to
-linux/math.h and then every grep hit above can use this macro instead.
-Care to take that on?
-
-Either way, I've applied this to clk-fixes as it is a regression. I'm
-just worried that this problem is more extensive.
+thanks,
+-- Shuah
