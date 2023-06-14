@@ -2,118 +2,165 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F40EA7301F9
-	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 16:30:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5965273020B
+	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 16:33:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235333AbjFNOaG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 14 Jun 2023 10:30:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53104 "EHLO
+        id S244614AbjFNOdJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 14 Jun 2023 10:33:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236257AbjFNOaF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 10:30:05 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3456D1BF7
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 07:30:04 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-5187aa14e3bso2205083a12.3
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 07:30:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=grsecurity.net; s=grsec; t=1686753002; x=1689345002;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AI1+jVJ0qXK3qPPDoJix7ay6mh70gtlE+w7dZ3QHNDk=;
-        b=GZxE8k16++dEa0JLXG3cnjHWLkpI3nGIjGDIc35FLi/itAHoqjCfhLz21hrEhPWPgF
-         bv4U9EIL1fWj+Z0fpE0oP57Q4zpA18WLPGEPDx0Pw+WWvHwFJjhJyamQMIoLuvf/9E47
-         kY7/ZEudp0dFc7tj23UG5jBFQM/69J1xEyeu8YNUo6cgMLegBSgcZsOPYbBFMTzk5vqt
-         +Oy5ioI/aX8hzJdEUveykZKPFgoo3dNFSlgb28LooN4whVFAcppY+9eiJD+0gPkFrOot
-         +ckw+RcFj9vLxkp+DZmG9xTdxSFP1Y7+dReEyaS0QECu050l2nbLfPoNM7Y79WumhUpK
-         l69A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686753002; x=1689345002;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AI1+jVJ0qXK3qPPDoJix7ay6mh70gtlE+w7dZ3QHNDk=;
-        b=MwLx6PxdcWU56sko2doPq04kw9K6SyUEofdU1IWDZHC8F37adP9w7E8B27CdpzrSW9
-         mUVnFgJWAIR7hc4a/WcvtNZIRH30mCUOU6fvCcXZWblCf+RVRQLsYrj2gRO6ThIalBZ7
-         pidui8gKX8vzkwB5NKgy4FTT+Ip6G7n6E1nUH3D6DCfhD3Z8hOPo8hUQyJGRbzYg5FUN
-         9VUOAkqLfzsgtL+L8Jr8mxF2dbyZacmQE35mghDTK0jg71raJfdJsUDz+wkjCEkD+iRP
-         3Sk3KZEpQpJy92ArU4inNEjxmSZusnJVfdHdeWRQvLX5RKzAvXCnIHIQEgT+xfcM+oz+
-         Kh/Q==
-X-Gm-Message-State: AC+VfDzQAg/t1zU0olIooz5WrnhcgDaIHyWVzf01w8gEGcOTeiNSoemx
-        8feijo8fC9sfGh1XEuLtpw+Ok/q/m+KFNhwWmL8=
-X-Google-Smtp-Source: ACHHUZ75xlC7Vpgii9DpgRUZVIqEXIJJ0Hxz5LwgCNtkcxVjqgou9reJjGp2qb2i8c7N6lTeq+8nMw==
-X-Received: by 2002:a17:907:6d85:b0:97c:64bd:50a5 with SMTP id sb5-20020a1709076d8500b0097c64bd50a5mr13773624ejc.53.1686753002331;
-        Wed, 14 Jun 2023 07:30:02 -0700 (PDT)
-Received: from ?IPV6:2003:f6:af14:3c00:9650:2efe:173b:4a64? (p200300f6af143c0096502efe173b4a64.dip0.t-ipconnect.de. [2003:f6:af14:3c00:9650:2efe:173b:4a64])
-        by smtp.gmail.com with ESMTPSA id i25-20020a170906115900b00982855d27c3sm417967eja.173.2023.06.14.07.30.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 14 Jun 2023 07:30:01 -0700 (PDT)
-Message-ID: <23fb8ad7-beb0-ae1c-fa5a-a682a57f79b0@grsecurity.net>
-Date:   Wed, 14 Jun 2023 16:30:03 +0200
+        with ESMTP id S245648AbjFNOdC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 10:33:02 -0400
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39AB62680
+        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 07:32:49 -0700 (PDT)
+Date:   Wed, 14 Jun 2023 14:32:40 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+        s=protonmail; t=1686753167; x=1687012367;
+        bh=Eym4bt3G3yI5tzMrX6NSMGd1+ikTIMtBGpmezvReHMk=;
+        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+         Message-ID:BIMI-Selector;
+        b=Xkh/eR8al1uA04ta5Bbi8OPlyK6TSpuMGojkCHFCB046PABXv7MtBc39nJrrqvDTy
+         Qepc9vvN4tO/+bij/nZwQLdueaT3SnPLRnP/FLD1I/HmrFALkd8uSB0rsVZrcCaiQw
+         1e2kcXYGlxMBuyWM6bgsXqpVMYtwsafhP6BZ2Dzp0LI+sPocaXK5wpFKF/2eLlKdqh
+         lhNUHeg2KsmbSZjuOmeFdM5NC2WxV2WomqYHs9RS04xpJQd7/HaIUOlDqUqb8U7FXD
+         G3wxciegsorkG8l3wVINiAGVclJnBjNmhz36eF5qwXF/aAEuvSGrDQ2lAsfwtDn4W2
+         T9b8t2d5pNruw==
+To:     Boqun Feng <boqun.feng@gmail.com>
+From:   Benno Lossin <benno.lossin@proton.me>
+Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        Alice Ryhl <aliceryhl@google.com>,
+        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
+        Geoffrey Thomas <geofft@ldpreload.com>,
+        Fox Chen <foxhlchen@gmail.com>,
+        John Baublitz <john.m.baublitz@gmail.com>,
+        Christoph Lameter <cl@linux.com>,
+        Pekka Enberg <penberg@kernel.org>,
+        David Rientjes <rientjes@google.com>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        Andreas Hindborg <nmi@metaspace.dk>, stable@vger.kernel.org
+Subject: Re: [PATCH] rust: allocator: Prevents mis-aligned allocation
+Message-ID: <91XpcluPyeKjsC8_uSh1yvgcz2BoRMeih76O5-wTwQgnNiLFdOCiO3HT9kXByzZIiK-6nForUTTeo-H9cR0CWemr7dJuMgMnC0wzGDIBmlQ=@proton.me>
+In-Reply-To: <20230613164258.3831917-1-boqun.feng@gmail.com>
+References: <20230613164258.3831917-1-boqun.feng@gmail.com>
+Feedback-ID: 71780778:user:proton
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: Observing RCU stalls in kernel 5.4/5.10/5.15/6.1 stable trees
-Content-Language: en-US, de-DE
-To:     Luiz Capitulino <luizcap@amazon.com>,
-        Sven-Haegar Koch <haegar@sdinet.de>
-Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "Bhatnagar, Rishabh" <risbhat@amazon.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "sashal@kernel.org" <sashal@kernel.org>, abuehaze@amazon.com,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <12c6f9a3-d087-b824-0d05-0d18c9bc1bf3@amazon.com>
- <c4724b40-89f6-5aa7-720d-c4a4af57cf45@amazon.com>
- <2023061428-compacter-economic-b648@gregkh>
- <20230614092045.tNY8USjq@linutronix.de>
- <4c4178a1-1050-ced4-e6fb-f95c3bdefc98@amazon.com>
- <2a3fa097-8ba0-5b0e-f506-779fee5b8fef@sdinet.de>
- <f5d2cc62-4aae-2579-1468-2e6e389f28dc@amazon.com>
-From:   Mathias Krause <minipli@grsecurity.net>
-In-Reply-To: <f5d2cc62-4aae-2579-1468-2e6e389f28dc@amazon.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 14.06.23 15:57, Luiz Capitulino wrote:
-> On 2023-06-14 09:45, Sven-Haegar Koch wrote:
->> May be this, talking about the same commit as cause as this thread:
->>
->> Subject: Re: [PATCH] timekeeping: Align tick_sched_timer() with the HZ
->> tick. -- regression report
->> https://lore.kernel.org/lkml/5a56290d-806e-b9a5-f37c-f21958b5a8c0@grsecurity.net/
-> 
-> Thank you, Sven.
-> 
-> Sebastian, except for the detailed analysis which we haven't done yet, the
-> issue described by Mathias matches 100% what we're observing. Also, we do
-> observe this on bare-metal instances which could mean that the initial
-> reports are against VMs because those are rebooted more often (our quick
-> reproducer boots hundreds of instances in AWS and only 1 or 2 reproduces
-> this).
+On 13.06.23 18:42, Boqun Feng wrote:
+> Currently the KernelAllocator simply passes the size of the type Layout
+> to krealloc(), and in theory the alignment requirement from the type
+> Layout may be larger than the guarantee provided by SLAB, which means
+> the allocated object is mis-aligned.
+>=20
+> Fixes this by adjusting the allocation size to the nearest power of two,
+> which SLAB always guarantees a size-aligned allocation. And because Rust
+> guarantees that original size must be a multiple of alignment and the
+> alignment must be a power of two, then the alignment requirement is
+> satisfied.
+>=20
+> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+> Co-developed-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
+> Signed-off-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Cc: stable@vger.kernel.org # v6.1+
 
-Yeah, we're doing VM based testing more often than bare metal -- less so
-on a AWS scale. That's why we observed it first in VMs. But that wasn't
-meant to exclude bare metal, not at all. It's just, that we haven't
-tried hard enough yet and testing VMs is so much more pleasant when it
-comes to debugging boot issues ;)
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-Thanks,
-Mathias
+--=20
+Cheers,
+Benno
 
-> IMHO, I'd suggest we revert this for now from Linus tree and stable trees.
-> We can help testing for the fix maybe for the next merge window.
-> 
-> - Luiz
+> ---
+> Some more explanation:
+>=20
+> * Layout is a data structure describing a particular memory layout,
+>    conceptionally it has two fields: align and size.
+>=20
+>    * align is guaranteed to be a power of two.
+>    * size can be smaller than align (only when the Layout is created via
+>      Layout::from_align_size())
+>    * After pad_to_align(), the size is guaranteed to be a multiple of
+>      align
+>=20
+> For more information, please see:
+>=20
+> =09https://doc.rust-lang.org/stable/std/alloc/struct.Layout.html
+>=20
+>   rust/bindings/bindings_helper.h |  1 +
+>   rust/kernel/allocator.rs        | 17 ++++++++++++++++-
+>   2 files changed, 17 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h
+> index 3e601ce2548d..6619ce95dd37 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -15,3 +15,4 @@
+>   /* `bindgen` gets confused at certain things. */
+>   const gfp_t BINDINGS_GFP_KERNEL =3D GFP_KERNEL;
+>   const gfp_t BINDINGS___GFP_ZERO =3D __GFP_ZERO;
+> +const size_t BINDINGS_ARCH_SLAB_MINALIGN =3D ARCH_SLAB_MINALIGN;
+> diff --git a/rust/kernel/allocator.rs b/rust/kernel/allocator.rs
+> index 397a3dd57a9b..66575cf87ce2 100644
+> --- a/rust/kernel/allocator.rs
+> +++ b/rust/kernel/allocator.rs
+> @@ -11,9 +11,24 @@
+>=20
+>   unsafe impl GlobalAlloc for KernelAllocator {
+>       unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
+> +        // Customized layouts from `Layout::from_size_align()` can have =
+size < align, so pads first.
+> +        let layout =3D layout.pad_to_align();
+> +
+> +        let mut size =3D layout.size();
+> +
+> +        if layout.align() > bindings::BINDINGS_ARCH_SLAB_MINALIGN {
+> +            // The alignment requirement exceeds the slab guarantee, the=
+n tries to enlarges the size
+> +            // to use the "power-of-two" size/alignment guarantee (see c=
+omments in kmalloc() for
+> +            // more information).
+> +            //
+> +            // Note that `layout.size()` (after padding) is guaranteed t=
+o be muliples of
+> +            // `layout.align()`, so `next_power_of_two` gives enough ali=
+gnment guarantee.
+> +            size =3D size.next_power_of_two();
+> +        }
+> +
+>           // `krealloc()` is used instead of `kmalloc()` because the latt=
+er is
+>           // an inline function and cannot be bound to as a result.
+> -        unsafe { bindings::krealloc(ptr::null(), layout.size(), bindings=
+::GFP_KERNEL) as *mut u8 }
+> +        unsafe { bindings::krealloc(ptr::null(), size, bindings::GFP_KER=
+NEL) as *mut u8 }
+>       }
+>=20
+>       unsafe fn dealloc(&self, ptr: *mut u8, _layout: Layout) {
+> --
+> 2.39.2
 > 
