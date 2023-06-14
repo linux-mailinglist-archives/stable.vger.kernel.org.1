@@ -2,53 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57D0B72F51E
-	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 08:46:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8195E72F65C
+	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 09:32:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241554AbjFNGqE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 14 Jun 2023 02:46:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52282 "EHLO
+        id S234764AbjFNHcF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 14 Jun 2023 03:32:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233721AbjFNGqD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 02:46:03 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B9F1A5;
-        Tue, 13 Jun 2023 23:46:02 -0700 (PDT)
-Received: from dggpemm500014.china.huawei.com (unknown [172.30.72.57])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4QgwmZ4blkz18MCF;
-        Wed, 14 Jun 2023 14:41:02 +0800 (CST)
-Received: from [10.174.178.120] (10.174.178.120) by
- dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Wed, 14 Jun 2023 14:45:58 +0800
-Message-ID: <cd9688dc-a716-3031-489e-a867df0d1ea2@huawei.com>
-Date:   Wed, 14 Jun 2023 14:45:58 +0800
+        with ESMTP id S234394AbjFNHcE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 03:32:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDE08C2
+        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 00:32:02 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7213E61B2F
+        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 07:32:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41456C433C0;
+        Wed, 14 Jun 2023 07:32:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1686727921;
+        bh=0fGiFQdMqD6RfLn/ofghzwxIJ1Unihgt4GUULygPToI=;
+        h=Subject:To:From:Date:In-Reply-To:From;
+        b=OPbzVZmqEOwKivD8VT4nR1C3mcVYB+VxHa3zLsYxpeCc4UqeAQO5uT3qLfcC56rXo
+         QO7EuGqzOMwAzCVEn1hw03vnD2mef+J6In4tghqcXQg05cL+bRJV7sXSUX7hvtSobP
+         OKewkxMxArvJ2Wtja+D5FZwDH4z4MBmn6KlJiYSU=
+Subject: patch "tty: serial: samsung_tty: Fix a memory leak in" added to tty-next
+To:     christophe.jaillet@wanadoo.fr, andi.shyti@kernel.org,
+        gregkh@linuxfoundation.org, jirislaby@kernel.org,
+        krzysztof.kozlowski@linaro.org, stable@vger.kernel.org
+From:   <gregkh@linuxfoundation.org>
+Date:   Wed, 14 Jun 2023 09:31:47 +0200
+In-Reply-To: <e4baf6039368f52e5a5453982ddcb9a330fc689e.1686412569.git.christophe.jaillet@wanadoo.fr>
+Message-ID: <2023061447-error-bobtail-4611@gregkh>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-CC:     <mawupeng1@huawei.com>, <akpm@linux-foundation.org>,
-        <david@redhat.com>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-        <richard.weiyang@linux.alibaba.com>, <mst@redhat.com>,
-        <jasowang@redhat.com>, <pankaj.gupta.linux@gmail.com>,
-        <mhocko@kernel.org>, <osalvador@suse.de>
-Subject: Re: [PATCH stable 5.10 1/1] mm/memory_hotplug: extend
- offline_and_remove_memory() to handle more than one memory block
-Content-Language: en-US
-To:     <gregkh@linuxfoundation.org>
-References: <20230614061900.3296725-1-mawupeng1@huawei.com>
- <20230614061900.3296725-2-mawupeng1@huawei.com>
- <2023061440-showing-happiest-937e@gregkh>
-From:   mawupeng <mawupeng1@huawei.com>
-In-Reply-To: <2023061440-showing-happiest-937e@gregkh>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.178.120]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpemm500014.china.huawei.com (7.185.36.153)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,68 +51,63 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
+This is a note to let you know that I've just added the patch titled
 
-On 2023/6/14 14:35, Greg KH wrote:
-> On Wed, Jun 14, 2023 at 02:19:00PM +0800, Wupeng Ma wrote:
->> From: David Hildenbrand <david@redhat.com>
->>
->> virtio-mem soon wants to use offline_and_remove_memory() memory that
->> exceeds a single Linux memory block (memory_block_size_bytes()). Let's
->> remove that restriction.
->>
->> Let's remember the old state and try to restore that if anything goes
->> wrong. While re-onlining can, in general, fail, it's highly unlikely to
->> happen (usually only when a notifier fails to allocate memory, and these
->> are rather rare).
->>
->> This will be used by virtio-mem to offline+remove memory ranges that are
->> bigger than a single memory block - for example, with a device block
->> size of 1 GiB (e.g., gigantic pages in the hypervisor) and a Linux memory
->> block size of 128MB.
->>
->> While we could compress the state into 2 bit, using 8 bit is much
->> easier.
->>
->> This handling is similar, but different to acpi_scan_try_to_offline():
->>
->> a) We don't try to offline twice. I am not sure if this CONFIG_MEMCG
->> optimization is still relevant - it should only apply to ZONE_NORMAL
->> (where we have no guarantees). If relevant, we can always add it.
->>
->> b) acpi_scan_try_to_offline() simply onlines all memory in case
->> something goes wrong. It doesn't restore previous online type. Let's do
->> that, so we won't overwrite what e.g., user space configured.
->>
->> Reviewed-by: Wei Yang <richard.weiyang@linux.alibaba.com>
->> Cc: "Michael S. Tsirkin" <mst@redhat.com>
->> Cc: Jason Wang <jasowang@redhat.com>
->> Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
->> Cc: Michal Hocko <mhocko@kernel.org>
->> Cc: Oscar Salvador <osalvador@suse.de>
->> Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Signed-off-by: David Hildenbrand <david@redhat.com>
->> Link: https://lore.kernel.org/r/20201112133815.13332-28-david@redhat.com
->> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
->> Acked-by: Andrew Morton <akpm@linux-foundation.org>
->> ---
->>  mm/memory_hotplug.c | 105 +++++++++++++++++++++++++++++++++++++-------
->>  1 file changed, 89 insertions(+), 16 deletions(-)
-> 
-> As you forwarded this patch on, you too need to sign-off on it.
+    tty: serial: samsung_tty: Fix a memory leak in
 
-Thanks for reminding me.
+to my tty git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git
+in the tty-next branch.
 
-Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
 
-> 
-> Also, what is the git id of the commit in Linus's tree?
+The patch will also be merged in the next major kernel release
+during the merge window.
 
-Sorry, here is the commit in Linus's tree.
+If you have any questions about this process, please let me know.
 
-commit 8dc4bb58a146655eb057247d7c9d19e73928715b upstream.
 
-> 
-> thanks,
-> 
-> greg k-h
+From a9c09546e903f1068acfa38e1ee18bded7114b37 Mon Sep 17 00:00:00 2001
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Date: Sat, 10 Jun 2023 17:59:25 +0200
+Subject: tty: serial: samsung_tty: Fix a memory leak in
+ s3c24xx_serial_getclk() in case of error
+
+If clk_get_rate() fails, the clk that has just been allocated needs to be
+freed.
+
+Cc: <stable@vger.kernel.org> # v3.3+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 5f5a7a5578c5 ("serial: samsung: switch to clkdev based clock lookup")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Message-ID: <e4baf6039368f52e5a5453982ddcb9a330fc689e.1686412569.git.christophe.jaillet@wanadoo.fr>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/tty/serial/samsung_tty.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/tty/serial/samsung_tty.c b/drivers/tty/serial/samsung_tty.c
+index 2a7520ad3abd..a92a23e1964e 100644
+--- a/drivers/tty/serial/samsung_tty.c
++++ b/drivers/tty/serial/samsung_tty.c
+@@ -1459,8 +1459,12 @@ static unsigned int s3c24xx_serial_getclk(struct s3c24xx_uart_port *ourport,
+ 			continue;
+ 
+ 		rate = clk_get_rate(clk);
+-		if (!rate)
++		if (!rate) {
++			dev_err(ourport->port.dev,
++				"Failed to get clock rate for %s.\n", clkname);
++			clk_put(clk);
+ 			continue;
++		}
+ 
+ 		if (ourport->info->has_divslot) {
+ 			unsigned long div = rate / req_baud;
+-- 
+2.41.0
+
+
