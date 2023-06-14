@@ -2,165 +2,168 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5965273020B
-	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 16:33:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DD5173027E
+	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 16:55:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244614AbjFNOdJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 14 Jun 2023 10:33:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56442 "EHLO
+        id S244928AbjFNOzv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 14 Jun 2023 10:55:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245648AbjFNOdC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 10:33:02 -0400
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39AB62680
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 07:32:49 -0700 (PDT)
-Date:   Wed, 14 Jun 2023 14:32:40 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-        s=protonmail; t=1686753167; x=1687012367;
-        bh=Eym4bt3G3yI5tzMrX6NSMGd1+ikTIMtBGpmezvReHMk=;
-        h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-         Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-         Message-ID:BIMI-Selector;
-        b=Xkh/eR8al1uA04ta5Bbi8OPlyK6TSpuMGojkCHFCB046PABXv7MtBc39nJrrqvDTy
-         Qepc9vvN4tO/+bij/nZwQLdueaT3SnPLRnP/FLD1I/HmrFALkd8uSB0rsVZrcCaiQw
-         1e2kcXYGlxMBuyWM6bgsXqpVMYtwsafhP6BZ2Dzp0LI+sPocaXK5wpFKF/2eLlKdqh
-         lhNUHeg2KsmbSZjuOmeFdM5NC2WxV2WomqYHs9RS04xpJQd7/HaIUOlDqUqb8U7FXD
-         G3wxciegsorkG8l3wVINiAGVclJnBjNmhz36eF5qwXF/aAEuvSGrDQ2lAsfwtDn4W2
-         T9b8t2d5pNruw==
-To:     Boqun Feng <boqun.feng@gmail.com>
-From:   Benno Lossin <benno.lossin@proton.me>
-Cc:     rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Alice Ryhl <aliceryhl@google.com>,
-        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
-        Geoffrey Thomas <geofft@ldpreload.com>,
-        Fox Chen <foxhlchen@gmail.com>,
-        John Baublitz <john.m.baublitz@gmail.com>,
-        Christoph Lameter <cl@linux.com>,
-        Pekka Enberg <penberg@kernel.org>,
-        David Rientjes <rientjes@google.com>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-        Kees Cook <keescook@chromium.org>,
-        Andreas Hindborg <nmi@metaspace.dk>, stable@vger.kernel.org
-Subject: Re: [PATCH] rust: allocator: Prevents mis-aligned allocation
-Message-ID: <91XpcluPyeKjsC8_uSh1yvgcz2BoRMeih76O5-wTwQgnNiLFdOCiO3HT9kXByzZIiK-6nForUTTeo-H9cR0CWemr7dJuMgMnC0wzGDIBmlQ=@proton.me>
-In-Reply-To: <20230613164258.3831917-1-boqun.feng@gmail.com>
-References: <20230613164258.3831917-1-boqun.feng@gmail.com>
-Feedback-ID: 71780778:user:proton
+        with ESMTP id S235625AbjFNOzi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 10:55:38 -0400
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2104.outbound.protection.outlook.com [40.107.93.104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C8BE1FE4;
+        Wed, 14 Jun 2023 07:55:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RrmamxjZrpbVkW+3815f6cXepyfGpF6TaeB/B3OFWQlEmmG6PEqLxPi5mfVQ0FWYLxLwSKdxr7Ee0j0lzi+KV6V2c7DIJIfk30NWsB4rNUB8tguesTDRtp4YgPuOr7VsOx4g0gfrHighFSxniHutnNvsnpnw8MzjUz6aX+0v4Tcz2y42c4jD1x6owehJAKVRJs1TARWL4anG/qGY1qtVrbhPtra09l/fZM1GNyzY6G6xCm3Y77JAsa2dmxs0JXkI1GqTyKW/1PZxvmleBq6Aqv6T2zOIut9pMQkTPGYzESQkKZTcaZbfjlglRGx0VTLSCxnPhAjrEMRJZ9EUoi2nUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lCNv1PYhHrDGAsnaeCsqFF6EjSBNWX/7edqgZ23TZfM=;
+ b=E+hCUXmKL/oNjQjhnVgbKGds8k5R544KDXvRHdWk+OyVd5oCUgKN8xllneQaT7VK+UNst1IsIs1Asd6LPDqBJ0OAFHDOwlT1TSYoUjC4ijvvxa815Dq44BvSTY3zf0IGYimoItCKgWCnFpp9dQMQg+L+QD7YDFSP1sg3THSuB94XyEiCMpDTUzWSJQxFX/HkSQyuDH++6KE4hkgS+BCclObO1KzZNIsmKuIByssikio55CS1MKsB64nNJjxbgcxFL9si0wGYNpKkzfSEOhRQ3l2rdjhDV1okrGMZQgKWyFFyJeNm+6XO7Llg+Vdl3CTZ7I6VZCQtQfmnGHtErTxdsA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
+ dkim=pass header.d=corigine.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lCNv1PYhHrDGAsnaeCsqFF6EjSBNWX/7edqgZ23TZfM=;
+ b=gxY518YGPFYzyMOqi8FhVfNYrjja7H0HZlobZp/FmH/RzTrXTi3geGs/ndYaysQos01SI0hYAvwZrq7UCl+jZPZbWmWRqyqNJpMCcEIhvu4BUlNq/p4NTz0FAYvwK532DjXvbUc+jEt0gvKnRMvCoeeo/1esxrp9AdKjN23iluc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=corigine.com;
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com (2603:10b6:510:78::6)
+ by CO6PR13MB5260.namprd13.prod.outlook.com (2603:10b6:303:137::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.37; Wed, 14 Jun
+ 2023 14:55:26 +0000
+Received: from PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::eb8f:e482:76e0:fe6e]) by PH0PR13MB4842.namprd13.prod.outlook.com
+ ([fe80::eb8f:e482:76e0:fe6e%4]) with mapi id 15.20.6477.028; Wed, 14 Jun 2023
+ 14:55:25 +0000
+Date:   Wed, 14 Jun 2023 16:55:10 +0200
+From:   Simon Horman <simon.horman@corigine.com>
+To:     Christian Marangi <ansuelsmth@gmail.com>
+Cc:     Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Jose Abreu <Jose.Abreu@synopsys.com>, stable@vger.kernel.org
+Subject: Re: [net PATCH] net: ethernet: stmicro: stmmac: fix possible memory
+ leak in __stmmac_open
+Message-ID: <ZInUzhOZ/3TGSQl9@corigine.com>
+References: <20230614073241.6382-1-ansuelsmth@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230614073241.6382-1-ansuelsmth@gmail.com>
+X-ClientProxiedBy: AS4P189CA0007.EURP189.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d7::18) To PH0PR13MB4842.namprd13.prod.outlook.com
+ (2603:10b6:510:78::6)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR13MB4842:EE_|CO6PR13MB5260:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4288241b-0956-4afc-577a-08db6ce762d2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: OrvCS5nVYwi1OKjAQ5dGkub6Yh1DuAYk6XwT33sDn/HooP0ebTNf8MA7w7Sto7kvctkb5bRUebxcxHFdXYL0mTZHy8K5FJguqX97t9bfCbuPvf2UwchaSvt8jJaFtNrTlEQBM4TfXYWg3um1v6ODVEcIAHbZZmxMiwf9gvMic0jKyx5mdnTg40GNakWAjOy4MMyNVoWGZEMnrT5sAPc1GyTGRaDr/miM5hTgbUP5rfIzAMvVtZyfFdh0A+n4e5I+yeLE0tKxVOumNCmWhmQ/xZzEuqiKCRbHdyWqhIa4mnwq1bNqyPvGfMIkNUF5QaOOkQxJN836aOtOBnXwrZvjvu2grGV0/sv2py93qfJs3LOUNqD/MaULvY8buv7y8K9MtVPaNGatAM82jS5PxpX5wQutD8SrklWheUoTQAXWlV5XfQMG/XDu81csebrbTsKJZHAjvjDbAZrCv609FmtxxfhJH6MUEEAiwrzZu73IpFFLJVywjFlFLBIsbPgifwFK1o5wfCiSd5sa8dGS5pHXBkiIvhjM/SJkbmMQlBdxO6VhmYPuzA1XWlv1WwiIMzxzXmiwH7Hi19uka2dtzfY7/0wHSB/3SS0q136R5klwdDM=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR13MB4842.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(366004)(39830400003)(136003)(396003)(346002)(451199021)(54906003)(478600001)(8936002)(41300700001)(8676002)(4326008)(66946007)(6916009)(66556008)(66476007)(316002)(38100700002)(2616005)(186003)(83380400001)(6486002)(6666004)(5660300002)(6512007)(6506007)(86362001)(7416002)(44832011)(2906002)(36756003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?G0xHW0KRTCiIxjSaLfWzOEs6iSBfpialVW3d7T0kGbwlE1ZAkuwXKBhCqKVD?=
+ =?us-ascii?Q?KzGPoDwcYIkdcWCo4eaYTY9XcdVhhTcaECuOpWhihElXTETKBKxoeIIPAe9k?=
+ =?us-ascii?Q?cGZ4vE3tQbwJqv16KTqqIwMrfvvapIGV+Q8z02067RdVWp93722Lz5Z0hBC6?=
+ =?us-ascii?Q?kehBt2x9Due8P7dBmpAlvptw8PGJDH9dmn5noWqID9/pyyeaEuY8YXVlE5+a?=
+ =?us-ascii?Q?6AXPeAEs1fveVcyJL/QCpfj4Uk03xBdESb+aZZpAjG0o8d8hozMGFz271ede?=
+ =?us-ascii?Q?CxY+D3cKqzU0Fn6ZizAKepVaZd8vcWwNO8uSwAuNGLezpsxFveoa8WOHpNyf?=
+ =?us-ascii?Q?PSkpw3sar10L7BYo/vR8ZNevcb8HxYmdsc/dbNkUoAC9VjEk7WiKW4EmlTy4?=
+ =?us-ascii?Q?g++3gsUPJ/VBe2ltBdWkwdGERHJp/nAjym7t2MJF4FiT3vDHhv4YkuBivm0X?=
+ =?us-ascii?Q?iK1rUoowy37+jLczYbuBfe6vRgZLcNx3QGUJ5XU5vg68sTxcrkV5ObFHNCpC?=
+ =?us-ascii?Q?PPgjMeakbDS64/Y0yq1veslgQvsBIyTzyDfKh9pdnj2GFyhPkguoZ1MqtShz?=
+ =?us-ascii?Q?pBvUVmvnG0H5KOM4q3fUk2u7qHxrrV84Ssh3fUjjq+nKAuYhlW+x4OmemSen?=
+ =?us-ascii?Q?zRk1V1aoPIhXk/29Pfjav0SmFg74eyYY0tfY/IqYLBk/x66qK/cjYJJKkdM/?=
+ =?us-ascii?Q?+sxYJJhuY93zEYHiZpKvf4c9n5MoRcqS7LJ2X7JmUXDJaGuktm6yHZKbppXZ?=
+ =?us-ascii?Q?4tuw61GvZoQy2vKKWbYofVrse4c64kDlyxM9+Xv/2rpDxL2f7FI1SDRidWbM?=
+ =?us-ascii?Q?5VmaO6d+38eQUoaWJWOd9l5cq0yJFZCPno5Z9mRYUJxYS4ebS0ljGAZit2xU?=
+ =?us-ascii?Q?zAQgZWK7VrKxMyNwrK/3uvlfgcQ8Re6tJMe+QSbCYaLlsWlaAX58BRkXGXoo?=
+ =?us-ascii?Q?caxZwlJqqxR5RPtfj8LJHm86zATvgeS1mLTPnmuiJLqwNz9me7gpoDQACxgG?=
+ =?us-ascii?Q?HOFO4kMsGXqco4ydw2JRm19fuw1axRbT9GJY8BnopaItEfDq8bOGfag/yf/7?=
+ =?us-ascii?Q?FE0N4rPV24vEl3xeSBRHvK+K4ReVrcFUMHyRvWBS2HeHmpJxv1Hd6YvOPB3S?=
+ =?us-ascii?Q?IG8K263Uz2CgqxO2ydSxp29opMo4D+1BDv4XOaC1s/t+ZMIKR4ABEeM76yT/?=
+ =?us-ascii?Q?eWCx/e1z7gTXWZjDR239bLOdZv92lcG0GVr6skVTFFMA/MmSYXhA1ZYWP7r3?=
+ =?us-ascii?Q?EUn0BFYNAcI5yEw8X3Wk9F39XwFGO8Smy9gf60zAeyvllPoVqCF7sx/h4DM7?=
+ =?us-ascii?Q?EjcSS0qcgp0Q6lt2CQneJ8xffne4Pf+rthNXGtyVT4GbjR4IO37bl1CtDZMZ?=
+ =?us-ascii?Q?V/T42OxjdHhkQDAjIDZ5LZAAe8UdrQShJx5iUCWn46Q9rFHmguGhuQ8C8DpM?=
+ =?us-ascii?Q?SdT0WpyPTv/QUtw8x3IxaNrKkUiiXyluLghtTXE4BSjF6oqAtLnBEpfWZUtU?=
+ =?us-ascii?Q?EDFArKcaPGCOTXOwpCJ98KhGLmysb+H9MPafL2pyWKpFxPwgKPE0M7nhvPXZ?=
+ =?us-ascii?Q?V7ViySxs2FxATzUSBszd14j92xKNFhI04s0oeLMTtl62MP4Sgj+yVs6aHXyy?=
+ =?us-ascii?Q?fpUAEPUBMh9kW8YJrbCx02crFo06kxx8hszue222N2+RPIZ+B/L3bUXGTucb?=
+ =?us-ascii?Q?TSu1EA=3D=3D?=
+X-OriginatorOrg: corigine.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4288241b-0956-4afc-577a-08db6ce762d2
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR13MB4842.namprd13.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jun 2023 14:55:25.6906
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QwW4Bo2jFWOGddNrnCzEuhpJtK/Pnot19Im6DQ4ZvZfQ1rpd89IgoNe7KPjwssFKC/+XTU8U5SA3HKL52R61baaSGdIhbUvaKIyR8nxsHbo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO6PR13MB5260
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 13.06.23 18:42, Boqun Feng wrote:
-> Currently the KernelAllocator simply passes the size of the type Layout
-> to krealloc(), and in theory the alignment requirement from the type
-> Layout may be larger than the guarantee provided by SLAB, which means
-> the allocated object is mis-aligned.
->=20
-> Fixes this by adjusting the allocation size to the nearest power of two,
-> which SLAB always guarantees a size-aligned allocation. And because Rust
-> guarantees that original size must be a multiple of alignment and the
-> alignment must be a power of two, then the alignment requirement is
-> satisfied.
->=20
-> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-> Co-developed-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
-> Signed-off-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> Cc: stable@vger.kernel.org # v6.1+
-
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
---=20
-Cheers,
-Benno
-
+On Wed, Jun 14, 2023 at 09:32:41AM +0200, Christian Marangi wrote:
+> Fix a possible memory leak in __stmmac_open when stmmac_init_phy fails.
+> It's also needed to free everything allocated by stmmac_setup_dma_desc
+> and not just the dma_conf struct.
+> 
+> Correctly call free_dma_desc_resources on the new dma_conf passed to
+> __stmmac_open on error.
+> 
+> Reported-by: Jose Abreu <Jose.Abreu@synopsys.com>
+> Fixes: ba39b344e924 ("net: ethernet: stmicro: stmmac: generate stmmac dma conf before open")
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+> Cc: stable@vger.kernel.org
 > ---
-> Some more explanation:
->=20
-> * Layout is a data structure describing a particular memory layout,
->    conceptionally it has two fields: align and size.
->=20
->    * align is guaranteed to be a power of two.
->    * size can be smaller than align (only when the Layout is created via
->      Layout::from_align_size())
->    * After pad_to_align(), the size is guaranteed to be a multiple of
->      align
->=20
-> For more information, please see:
->=20
-> =09https://doc.rust-lang.org/stable/std/alloc/struct.Layout.html
->=20
->   rust/bindings/bindings_helper.h |  1 +
->   rust/kernel/allocator.rs        | 17 ++++++++++++++++-
->   2 files changed, 17 insertions(+), 1 deletion(-)
->=20
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
-per.h
-> index 3e601ce2548d..6619ce95dd37 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -15,3 +15,4 @@
->   /* `bindgen` gets confused at certain things. */
->   const gfp_t BINDINGS_GFP_KERNEL =3D GFP_KERNEL;
->   const gfp_t BINDINGS___GFP_ZERO =3D __GFP_ZERO;
-> +const size_t BINDINGS_ARCH_SLAB_MINALIGN =3D ARCH_SLAB_MINALIGN;
-> diff --git a/rust/kernel/allocator.rs b/rust/kernel/allocator.rs
-> index 397a3dd57a9b..66575cf87ce2 100644
-> --- a/rust/kernel/allocator.rs
-> +++ b/rust/kernel/allocator.rs
-> @@ -11,9 +11,24 @@
->=20
->   unsafe impl GlobalAlloc for KernelAllocator {
->       unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
-> +        // Customized layouts from `Layout::from_size_align()` can have =
-size < align, so pads first.
-> +        let layout =3D layout.pad_to_align();
-> +
-> +        let mut size =3D layout.size();
-> +
-> +        if layout.align() > bindings::BINDINGS_ARCH_SLAB_MINALIGN {
-> +            // The alignment requirement exceeds the slab guarantee, the=
-n tries to enlarges the size
-> +            // to use the "power-of-two" size/alignment guarantee (see c=
-omments in kmalloc() for
-> +            // more information).
-> +            //
-> +            // Note that `layout.size()` (after padding) is guaranteed t=
-o be muliples of
-> +            // `layout.align()`, so `next_power_of_two` gives enough ali=
-gnment guarantee.
-> +            size =3D size.next_power_of_two();
-> +        }
-> +
->           // `krealloc()` is used instead of `kmalloc()` because the latt=
-er is
->           // an inline function and cannot be bound to as a result.
-> -        unsafe { bindings::krealloc(ptr::null(), layout.size(), bindings=
-::GFP_KERNEL) as *mut u8 }
-> +        unsafe { bindings::krealloc(ptr::null(), size, bindings::GFP_KER=
-NEL) as *mut u8 }
->       }
->=20
->       unsafe fn dealloc(&self, ptr: *mut u8, _layout: Layout) {
-> --
-> 2.39.2
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index fa07b0d50b46..0966ab86fde2 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -3877,10 +3877,10 @@ static int __stmmac_open(struct net_device *dev,
+>  
+>  	stmmac_hw_teardown(dev);
+>  init_error:
+> -	free_dma_desc_resources(priv, &priv->dma_conf);
+>  	phylink_disconnect_phy(priv->phylink);
+>  init_phy_error:
+>  	pm_runtime_put(priv->device);
+> +	free_dma_desc_resources(priv, dma_conf);
+
+Hi Christian,
+
+Are these resources allocated by the caller?
+If so, perhaps it would be clearer if a symmetric approach
+was taken and the caller handled freeing them on error.
+
+>  	return ret;
+>  }
+>  
+> -- 
+> 2.40.1
+> 
 > 
