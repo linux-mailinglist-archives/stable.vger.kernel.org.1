@@ -2,55 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A30472FA44
-	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 12:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 237CB72FA45
+	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 12:21:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231674AbjFNKVH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 14 Jun 2023 06:21:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34684 "EHLO
+        id S234264AbjFNKVR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 14 Jun 2023 06:21:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231408AbjFNKVH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 06:21:07 -0400
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5F35E5
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 03:21:02 -0700 (PDT)
-Received: by mail-yb1-xb2d.google.com with SMTP id 3f1490d57ef6-bd6446528dcso437650276.2
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 03:21:02 -0700 (PDT)
+        with ESMTP id S231408AbjFNKVR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 06:21:17 -0400
+Received: from mail-ua1-x933.google.com (mail-ua1-x933.google.com [IPv6:2607:f8b0:4864:20::933])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E737E5
+        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 03:21:16 -0700 (PDT)
+Received: by mail-ua1-x933.google.com with SMTP id a1e0cc1a2514c-78cca1f12e9so813888241.2
+        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 03:21:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686738061; x=1689330061;
+        d=linaro.org; s=google; t=1686738075; x=1689330075;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=3y/Xj2Ca3VwE6RMwHpFnSTSpwSflxnG6R/Pmef/Vv28=;
-        b=Uh0Qlp9zwUUyfNi4tq5WrraiQJXITDRf+RnOZYJi8Ut/tvFHsBJE8mrCQ4JS7//roP
-         p2yvg077MMiDeJmbbH5RuoofLcg4IA675cjdg6/6kPv4mte9fsWtk++pX1KIjj0g7Nvy
-         9x55h1uURGXRKpbllCshH8DYbJRMuxwC46XSTn164ScmEb7lPN43kLDlEi5tL5+mV80P
-         7ddFMBmBjWAc82fkzAzISpdmHXjOoIAGei+yVkZH68wNWDNaBzj/1Al9A1Ahky88x/jT
-         NdQsZlQLzeLUS5N+NKwqJCiFTGyeYx596/K76a+sd3+Lyhr3D0NU/gv9Udl0qwc6zzQD
-         AIbw==
+        bh=2qZrOytnly1ejGUFC/L6cAaUj5yBbCwAcovYjtM+cgk=;
+        b=L4n9Cbk+mYKNRlNdY2e+AtH4a4DZ+guW+oM45WpBTc9pgxWpmWqTujky6/grqvoiBR
+         01DLZRGm+W2vl4FYElMYcm1Val+eT3NkCDj+xf0lU67z4gjQHEkbgPKKpEfzSLeZxb9t
+         wjvUDi5QQq4DR6xS4ATVX/+Q0CNDg5MZsuo1A/jIuQkoHh/yB8pbE1GUXUVU1oZz+zva
+         s5OPKxw/h1+sZzWBWPs4oE6XDfnUw2HMXJ9dRns1DYwZ6p4dH/PQWnv/IOQlgibLwz8s
+         /eGk2EJXXM5ej5A5wawKGD+gRvvp6eTLxgu74tN+2OnLY+cYXxZHh2L3y4sCp1VNCKaX
+         MB1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686738061; x=1689330061;
+        d=1e100.net; s=20221208; t=1686738075; x=1689330075;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=3y/Xj2Ca3VwE6RMwHpFnSTSpwSflxnG6R/Pmef/Vv28=;
-        b=hr+gmnrZlyTO8+iy/X8V75Wu8tHNJWyAex3T3A3tHa6XMmZ/2LWo4aFF6BWxpdVfWT
-         F7gDYwxs+hx9VfSycKM5BvhM9IG08exTh6/t6l3CsAH8Ba8mgrAfReyFc9KH1N5c/79l
-         EPjfFUi8PIzBfRMid8JJnW2LpdbonH/h2Mml7uJvF5KOruS2uT6Jxz/fQb9y0RCpycjz
-         ytQNNhTt7Tck3RU/+unMaFSSURdA7d4JB3DA8oWcEoiM7u2ibrmGny3/cewAmOR3qcdr
-         54O7no0WpryXDerRXteREhxbCbGrlfNJA03tzOh/0CrP60XfjHe7AxX7j8/ar0gImHQI
-         HbGA==
-X-Gm-Message-State: AC+VfDxM3/dAPAUMvHFR/IcxqDHW9YRKplPsZ/WG3IBydfPir29ISF0E
-        +SCYc/dPX7jfPdmaqfzy07OlDjBiZHcL0qF9S0nm4g==
-X-Google-Smtp-Source: ACHHUZ48zQmeLtiS8DkMgEyS9pPtR595ZKK5F58gaDFKl7zWM36L79iOsMypmnFYBPW712u6vXweBmZ8cO133MAq27k=
-X-Received: by 2002:a25:2c2:0:b0:bc3:ac37:99f4 with SMTP id
- 185-20020a2502c2000000b00bc3ac3799f4mr1448761ybc.62.1686738061245; Wed, 14
- Jun 2023 03:21:01 -0700 (PDT)
+        bh=2qZrOytnly1ejGUFC/L6cAaUj5yBbCwAcovYjtM+cgk=;
+        b=ZByWiUVQOx/NO06vnTBLuLR72jdGYjSAHBBbaOl6/Q5dst42Hy5osgydpOwRycI7dV
+         BRyJGBK69tzUsLvhLPiWg6kiRh8nE2mjJk8oUDU9XCNzGFmSLUIQZ1Etu7fa3v04wlNL
+         5lG/f6HNUqO4nKebJvFzA5Ggi7KD4iRwX58FFFO6CQfxS9rGn7MJWabfNElWaFxCRRGW
+         OYC40at/y6g0aIX13x+zyc44v+mrZoPnMuUPLjM/u6kn5WuaKXjc2QAsiIhhcLHpRaWU
+         4tFXAfIT0auJ+WsgYbigaDQnowckvmF0x5AB5KJxZ19VNBgFLn7h9p1s79n1U7/NEXyI
+         7sqQ==
+X-Gm-Message-State: AC+VfDyXrFhcB1mEXK/6Yh5i+KEzsJ8xsy6+7Vy6VHiRMkbyYTcr9n0E
+        dbsslANY8FA3pjLcqTdRlRH2sFVGq6azxkDtqAFEY4uK1M1Q62A/IXw=
+X-Google-Smtp-Source: ACHHUZ5xylBU/F/bfRp6ZckOxOos1x+400V4yD64m2X9z9fZpzU4BJiD97isXrHW/TwjQRC37tWgN9d216Pb9MhqO5o=
+X-Received: by 2002:a67:f492:0:b0:43b:184d:e880 with SMTP id
+ o18-20020a67f492000000b0043b184de880mr7768302vsn.18.1686738075093; Wed, 14
+ Jun 2023 03:21:15 -0700 (PDT)
 MIME-Version: 1.0
-References: <d83cedabb09c42209f86618917bef7e3@hyperstone.com>
-In-Reply-To: <d83cedabb09c42209f86618917bef7e3@hyperstone.com>
+References: <4f6724fd4c60476786a31bcbbf663ccb@hyperstone.com>
+In-Reply-To: <4f6724fd4c60476786a31bcbbf663ccb@hyperstone.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 14 Jun 2023 12:20:25 +0200
-Message-ID: <CAPDyKFoi+rfkS9qKqP3J+r5L0Dic-=dwEr5H1xZHQo7ctscSnA@mail.gmail.com>
+Date:   Wed, 14 Jun 2023 12:20:39 +0200
+Message-ID: <CAPDyKFq8Q4J3=udE2=VXAfWZhvJuOYJ=4N9B6NFWUys8oxvb3Q@mail.gmail.com>
 Subject: Re: [PATCH] mmc: block: ensure error propagation for non-blk
 To:     Christian Loehle <CLoehle@hyperstone.com>
 Cc:     "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
@@ -66,7 +66,7 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 13 Jun 2023 at 14:37, Christian Loehle <CLoehle@hyperstone.com> wrote:
+On Tue, 13 Jun 2023 at 14:43, Christian Loehle <CLoehle@hyperstone.com> wrote:
 >
 > commit 003fb0a51162d940f25fc35e70b0996a12c9e08a upstream.
 >
@@ -97,57 +97,53 @@ Kind regards
 Uffe
 
 > ---
-> This is for the following stable trees:
-> 4.14
-> 4.19
-> 5.4
-> 5.10
+> This is for the 5.15. stable tree
 >  drivers/mmc/core/block.c | 5 +++++
 >  1 file changed, 5 insertions(+)
 >
 > diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-> index 79e5acc6e964..a6228bfdf3ea 100644
+> index ed034b93cb25..0b72096f10e6 100644
 > --- a/drivers/mmc/core/block.c
 > +++ b/drivers/mmc/core/block.c
-> @@ -243,6 +243,7 @@ static ssize_t power_ro_lock_store(struct device *dev,
+> @@ -265,6 +265,7 @@ static ssize_t power_ro_lock_store(struct device *dev,
 >                 goto out_put;
 >         }
 >         req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_BOOT_WP;
 > +       req_to_mmc_queue_req(req)->drv_op_result = -EIO;
->         blk_execute_rq(mq->queue, NULL, req, 0);
+>         blk_execute_rq(NULL, req, 0);
 >         ret = req_to_mmc_queue_req(req)->drv_op_result;
 >         blk_put_request(req);
-> @@ -671,6 +672,7 @@ static int mmc_blk_ioctl_cmd(struct mmc_blk_data *md,
+> @@ -656,6 +657,7 @@ static int mmc_blk_ioctl_cmd(struct mmc_blk_data *md,
 >         idatas[0] = idata;
 >         req_to_mmc_queue_req(req)->drv_op =
 >                 rpmb ? MMC_DRV_OP_IOCTL_RPMB : MMC_DRV_OP_IOCTL;
 > +       req_to_mmc_queue_req(req)->drv_op_result = -EIO;
 >         req_to_mmc_queue_req(req)->drv_op_data = idatas;
 >         req_to_mmc_queue_req(req)->ioc_count = 1;
->         blk_execute_rq(mq->queue, NULL, req, 0);
-> @@ -741,6 +743,7 @@ static int mmc_blk_ioctl_multi_cmd(struct mmc_blk_data *md,
+>         blk_execute_rq(NULL, req, 0);
+> @@ -725,6 +727,7 @@ static int mmc_blk_ioctl_multi_cmd(struct mmc_blk_data *md,
 >         }
 >         req_to_mmc_queue_req(req)->drv_op =
 >                 rpmb ? MMC_DRV_OP_IOCTL_RPMB : MMC_DRV_OP_IOCTL;
 > +       req_to_mmc_queue_req(req)->drv_op_result = -EIO;
 >         req_to_mmc_queue_req(req)->drv_op_data = idata;
 >         req_to_mmc_queue_req(req)->ioc_count = num_of_cmds;
->         blk_execute_rq(mq->queue, NULL, req, 0);
-> @@ -2590,6 +2593,7 @@ static int mmc_dbg_card_status_get(void *data, u64 *val)
+>         blk_execute_rq(NULL, req, 0);
+> @@ -2784,6 +2787,7 @@ static int mmc_dbg_card_status_get(void *data, u64 *val)
 >         if (IS_ERR(req))
 >                 return PTR_ERR(req);
 >         req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_GET_CARD_STATUS;
 > +       req_to_mmc_queue_req(req)->drv_op_result = -EIO;
->         blk_execute_rq(mq->queue, NULL, req, 0);
+>         blk_execute_rq(NULL, req, 0);
 >         ret = req_to_mmc_queue_req(req)->drv_op_result;
 >         if (ret >= 0) {
-> @@ -2628,6 +2632,7 @@ static int mmc_ext_csd_open(struct inode *inode, struct file *filp)
+> @@ -2822,6 +2826,7 @@ static int mmc_ext_csd_open(struct inode *inode, struct file *filp)
 >                 goto out_free;
 >         }
 >         req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_GET_EXT_CSD;
 > +       req_to_mmc_queue_req(req)->drv_op_result = -EIO;
 >         req_to_mmc_queue_req(req)->drv_op_data = &ext_csd;
->         blk_execute_rq(mq->queue, NULL, req, 0);
+>         blk_execute_rq(NULL, req, 0);
 >         err = req_to_mmc_queue_req(req)->drv_op_result;
 > --
 > 2.37.3
