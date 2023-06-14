@@ -2,128 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C21072F9FC
-	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 12:03:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A23CC72FA1D
+	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 12:08:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238273AbjFNKDT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 14 Jun 2023 06:03:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56584 "EHLO
+        id S235268AbjFNKIw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 14 Jun 2023 06:08:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231875AbjFNKDS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 06:03:18 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3069D18C
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 03:03:17 -0700 (PDT)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35E9nVWY032705
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 10:03:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : subject :
- date : message-id : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=OlIA8Zjdhd0KF2C+FVcWYZjh1256/55mL+BAkaDth6U=;
- b=GlAyjnrYhHAUGyjW7rYfZvcckbMgsvS2FP2/UPgJ7p85q4lb1PNEZFAG9nj7D6iwMEUE
- cJ4i75x24vNj4J4pyPt8RmB/8HfzDGVACYXPtvXX57Atune3X5aN2nQMoM24fDdHyVj4
- a1qHPKlsX2GR5lJllnRR9HiA8fVFPHIlR3i+X11NM9aCMRdeIPUDkLZKCKIL9TdpQASY
- Sxf4vrxnqlnF2gEVRo40s8ImXlgyFff/Lu8yZz/wXZBs0S9aRmQfIgAQb6Wp6evnKCAg
- WrG9reV6D+huZytqFkIQz0MRMTN1m6KOQI+cUc42OypTENe9JoFqBM1Rc6PtpzXlkv6F 0g== 
-Received: from ppma02fra.de.ibm.com (47.49.7a9f.ip4.static.sl-reverse.com [159.122.73.71])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r7b8sgc8g-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 10:03:15 +0000
-Received: from pps.filterd (ppma02fra.de.ibm.com [127.0.0.1])
-        by ppma02fra.de.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 35E7Q3fW002264
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 10:02:39 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-        by ppma02fra.de.ibm.com (PPS) with ESMTPS id 3r4gt52290-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 10:02:38 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-        by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 35EA2aRM13501052
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 10:02:36 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 7258420092
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 10:02:36 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 5D53820090
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 10:02:36 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-        by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 10:02:36 +0000 (GMT)
-From:   =?UTF-8?q?Jan=20H=C3=B6ppner?= <hoeppner@linux.ibm.com>
-To:     stable@vger.kernel.org
-Subject: [PATCH 5.4.y] s390/dasd: Use correct lock while counting channel queue length
-Date:   Wed, 14 Jun 2023 12:02:36 +0200
-Message-Id: <20230614100236.726123-1-hoeppner@linux.ibm.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <2023061111-tracing-shakiness-9054@gregkh>
-References: <2023061111-tracing-shakiness-9054@gregkh>
-Content-Type: text/plain; charset=UTF-8
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: WmlubNSAewen7ojuYj6MXKY7tQuH4hyD
-X-Proofpoint-ORIG-GUID: WmlubNSAewen7ojuYj6MXKY7tQuH4hyD
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+        with ESMTP id S234921AbjFNKIu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 06:08:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB30E1BC9
+        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 03:08:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1686737289;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=ECLt4MQqsZaUqdVLVd32V9JuvnwGyQKanHPSvRz66bs=;
+        b=UJVNqbJTTq6RWNXneJNzTjDxbZF5VRBvBAxIw9z3u5BdqH9YzT5tCOpKu5haEBa8GGqwUc
+        Wlwo3o8PlkNLBHxgrGcaytS1a/nGJGKDTrBtnu64mzzSXGfxZmtAewTq1BITB7FqxUXQ83
+        jSakz7OFco7aAcHgzfayeg/1Xz8DQi8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-292-0Si8CIIrMQ-khoOpU0YGkA-1; Wed, 14 Jun 2023 06:08:05 -0400
+X-MC-Unique: 0Si8CIIrMQ-khoOpU0YGkA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5727585A58A;
+        Wed, 14 Jun 2023 10:08:05 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.193.102])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 4A3461121314;
+        Wed, 14 Jun 2023 10:08:04 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Zhang Rui <rui.zhang@intel.com>, linux-pm@vger.kernel.org,
+        Bernhard Krug <b.krug@elektronenpumpe.de>,
+        stable@vger.kernel.org
+Subject: [PATCH] thermal/intel/intel_soc_dts_iosf: Fix reporting wrong temperatures
+Date:   Wed, 14 Jun 2023 12:07:56 +0200
+Message-Id: <20230614100756.437606-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-14_06,2023-06-12_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- lowpriorityscore=0 clxscore=1011 phishscore=0 suspectscore=0
- impostorscore=0 mlxscore=0 spamscore=0 malwarescore=0 mlxlogscore=999
- adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2305260000 definitions=main-2306140085
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The lock around counting the channel queue length in the BIODASDINFO
-ioctl was incorrectly changed to the dasd_block->queue_lock with commit
-583d6535cb9d ("dasd: remove dead code"). This can lead to endless list
-iterations and a subsequent crash.
+Since commit 955fb8719efb ("thermal/intel/intel_soc_dts_iosf: Use Intel
+TCC library") intel_soc_dts_iosf is reporting the wrong temperature.
 
-The queue_lock is supposed to be used only for queue lists belonging to
-dasd_block. For dasd_device related queue lists the ccwdev lock must be
-used.
+The driver expects tj_max to be in milli-degrees-celcius but after
+the switch to the TCC library this is now in degrees celcius so
+instead of e.g. 90000 it is set to 90 causing a temperature 45
+degrees below tj_max to be reported as -44910 milli-degrees
+instead of as 45000 milli-degrees.
 
-Fix the mentioned issues by correctly using the ccwdev lock instead of
-the queue lock.
+Fix this by adding back the lost factor of 1000.
 
-Fixes: 583d6535cb9d ("dasd: remove dead code")
-Cc: stable@vger.kernel.org # v5.0+
-Signed-off-by: Jan Höppner <hoeppner@linux.ibm.com>
-Reviewed-by: Stefan Haberland <sth@linux.ibm.com>
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230609153750.1258763-2-sth@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-(cherry picked from commit ccc45cb4e7271c74dbb27776ae8f73d84557f5c6)
+Fixes: 955fb8719efb ("thermal/intel/intel_soc_dts_iosf: Use Intel TCC library")
+Reported-by: Bernhard Krug <b.krug@elektronenpumpe.de>
+Cc: Zhang Rui <rui.zhang@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 ---
- drivers/s390/block/dasd_ioctl.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Note reported by private email, so no Closes: tag
+---
+ drivers/thermal/intel/intel_soc_dts_iosf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/s390/block/dasd_ioctl.c b/drivers/s390/block/dasd_ioctl.c
-index 9a5f3add325f..c995dae5cc6f 100644
---- a/drivers/s390/block/dasd_ioctl.c
-+++ b/drivers/s390/block/dasd_ioctl.c
-@@ -516,10 +516,10 @@ static int dasd_ioctl_information(struct dasd_block *block,
- 
- 	memcpy(dasd_info->type, base->discipline->name, 4);
- 
--	spin_lock_irqsave(&block->queue_lock, flags);
-+	spin_lock_irqsave(get_ccwdev_lock(base->cdev), flags);
- 	list_for_each(l, &base->ccw_queue)
- 		dasd_info->chanq_len++;
--	spin_unlock_irqrestore(&block->queue_lock, flags);
-+	spin_unlock_irqrestore(get_ccwdev_lock(base->cdev), flags);
- 
- 	rc = 0;
- 	if (copy_to_user(argp, dasd_info,
+diff --git a/drivers/thermal/intel/intel_soc_dts_iosf.c b/drivers/thermal/intel/intel_soc_dts_iosf.c
+index f99dc7e4ae89..db97499f4f0a 100644
+--- a/drivers/thermal/intel/intel_soc_dts_iosf.c
++++ b/drivers/thermal/intel/intel_soc_dts_iosf.c
+@@ -398,7 +398,7 @@ struct intel_soc_dts_sensors *intel_soc_dts_iosf_init(
+ 	spin_lock_init(&sensors->intr_notify_lock);
+ 	mutex_init(&sensors->dts_update_lock);
+ 	sensors->intr_type = intr_type;
+-	sensors->tj_max = tj_max;
++	sensors->tj_max = tj_max * 1000;
+ 	if (intr_type == INTEL_SOC_DTS_INTERRUPT_NONE)
+ 		notification = false;
+ 	else
 -- 
-2.39.2
+2.40.1
 
