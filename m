@@ -2,68 +2,75 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 624E0730825
-	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 21:24:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9708F7308DD
+	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 21:57:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236270AbjFNTYR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 14 Jun 2023 15:24:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50404 "EHLO
+        id S234864AbjFNT52 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 14 Jun 2023 15:57:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236328AbjFNTYQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 15:24:16 -0400
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31F652693
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 12:24:04 -0700 (PDT)
-Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-66643830ab3so1071969b3a.0
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 12:24:04 -0700 (PDT)
+        with ESMTP id S233730AbjFNT50 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 15:57:26 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D82562101;
+        Wed, 14 Jun 2023 12:57:24 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-51640b9ed95so11989846a12.2;
+        Wed, 14 Jun 2023 12:57:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1686770643; x=1689362643;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20221208; t=1686772643; x=1689364643;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JBFhzdyVFTFeidFRV/hzmSKzDZQEfLbMd1EOce0vowg=;
-        b=PuyEFSGBXGTrO/fhnwBpCkobIO5Jk0/+9gDFSJqGsDrc1TEiSpswv2wUEiuqy9xEcz
-         62U47wGFpFzCuFrREagC8eEbD2FxOcYrBcsQFjO62hqW5F+J1ZlWuUvYdhN5iR17064j
-         JUercQ1Lpn//9ZJX+29k81+pv2OIEEUpTYMmw=
+        bh=XLPwTDo5gV4mqPvwKixQb840PKI9upvdKNQ9cbYW6Q8=;
+        b=W2ov78I2fLzdyXFyjae1BbXmaJ7z/RMkaXP6zaB5hIFrlBcHlW7BTNBSt0QXWBZeA+
+         FvjbNDAiNe8OJ3AdGVfCE83tlA3oQNReMQuYRr2V7TpYf6KPAIZcbf3ArQt0Qf0/tr1l
+         amIBTKFg2Oi0uwX4lGLakw97Lprl8rBVx6iDuoSJoPAKgi7Ego/T91c5XUYZjPbowZlb
+         L0pjIH3s9iCc0ol2fEzUAkFW6zM6AtKS7TbEEhOqCbzWyqxyujC09hyFgTgcTCAdT+jv
+         VZ6lvf86Hyx0YhVji+W0UvoxYEK5QqXxP0SREU2e31HkPc75jS+vrpdYWTku1SVy/rFG
+         IXZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686770643; x=1689362643;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1686772643; x=1689364643;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JBFhzdyVFTFeidFRV/hzmSKzDZQEfLbMd1EOce0vowg=;
-        b=GDJIjjhunvqbAVDa9w1v04oVyFgzGAaSihlvIItUXwWgVMTei9YTMmdsxUdmo3nE/i
-         OO9TO0pl3DPlkuDDPIW4o4P5uS6/45uN/foXeZ/YbPBLY747oRg5/UqEwhsZCT5eWS+R
-         DGak5c05o8a4MYM0grBiiRdce76/ZoeF6Gc9f305eGuwOh5M5FWE571+4gGbwbada3/D
-         ronNGbndvGsrqmqrS6FS01Ll7VRvV/OCwM3wEsSNiyZ8eAMOHX0GYHEvUXsK2y9YZyJS
-         sdgwNdCbpU18iIrdId0Y2pEM9r6ja0x/pN1bRXOrxx+128tKAtjx9ldAP8K615KGwTp8
-         KuBg==
-X-Gm-Message-State: AC+VfDyQa2TnuVt+yRY8G8ASZrlZuaSe/HffEAZhzrg4cvvmqkNF+afs
-        yekVFNhjEf12dCe6N5O+PMuOeQ==
-X-Google-Smtp-Source: ACHHUZ7SPmlNngLf5Yjzik1pSrgKnOJsza4hMlfEDXZnlvtwsMUHrcep3YDul2Kfpc98729xaV417w==
-X-Received: by 2002:a05:6a20:5481:b0:10c:b441:5bd0 with SMTP id i1-20020a056a20548100b0010cb4415bd0mr3078684pzk.18.1686770643711;
-        Wed, 14 Jun 2023 12:24:03 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id a17-20020a62e211000000b0063b6cccd5dfsm1619049pfi.195.2023.06.14.12.24.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jun 2023 12:24:03 -0700 (PDT)
-From:   Kees Cook <keescook@chromium.org>
-To:     keescook@chromium.org, richard@nod.at
-Cc:     linux-um@lists.infradead.org, linux-hardening@vger.kernel.org,
-        anton.ivanov@cambridgegreys.com, Al Viro <viro@ftp.linux.org.uk>,
-        johannes@sipsolutions.net, azeemshaikh38@gmail.com,
-        stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] um: Use HOST_DIR for mrproper
-Date:   Wed, 14 Jun 2023 12:23:28 -0700
-Message-Id: <168677060698.1965769.17288786387912659034.b4-ty@chromium.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230606222442.never.807-kees@kernel.org>
-References: <20230606222442.never.807-kees@kernel.org>
+        bh=XLPwTDo5gV4mqPvwKixQb840PKI9upvdKNQ9cbYW6Q8=;
+        b=iekvgzvVEcuCi8D9UAi8C/JsE27e02OXPKrNPRfhoTo5b3RXN5Uc9xNWxrCan50Oei
+         Qsna1HJK0YvY6JYFEC8EfwsznKJLHYGmhsFvedlpxQjAIkiyyudG3vqAHYvcN4omCh1A
+         k+KD9dKO2eZmmrkFnBZDdvmSArzZa++NI+hvdeQIq26j4Thxvy+RlgQwvkn5GTsZsHGc
+         Ypu0GlecJ8bj6Qem3xBSjfzLZIFXGFgPBtUP2kRDxwujHd+F3T5EePOEEYlkSHDJ320t
+         8LRZgiFM3k6CecMSQ7Z365+bCIafgdyZLDnDwsY95ip06kE1DKEvXseLRkwE6Ky1uA3Q
+         DNcA==
+X-Gm-Message-State: AC+VfDzLO9VGC4mRrBr5w54AVWevFeecIGXIpFxDG7nLHLfCp4UGyARs
+        GhohKGvE6QGF63ueToONufR1tCZola84KC5irrk=
+X-Google-Smtp-Source: ACHHUZ4oTxUd1zwcNKSxEXWe/7DXGacs3lHbk1VkUT+4f2hzAvNapDLX1fEpElzJYAchKAT6G391OLBoYz2yHVDnOho=
+X-Received: by 2002:a05:6402:34c:b0:50d:1e11:eb9 with SMTP id
+ r12-20020a056402034c00b0050d1e110eb9mr10572574edw.1.1686772643127; Wed, 14
+ Jun 2023 12:57:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+References: <20221121102113.41893-1-roger.pau@citrix.com> <20221121102113.41893-3-roger.pau@citrix.com>
+ <bac0ed0f-6772-450b-663c-fc0614efa100@suse.com> <Y3uTTAWxe/676t3q@Air-de-Roger>
+In-Reply-To: <Y3uTTAWxe/676t3q@Air-de-Roger>
+From:   Jason Andryuk <jandryuk@gmail.com>
+Date:   Wed, 14 Jun 2023 15:57:11 -0400
+Message-ID: <CAKf6xptcWkdqELORESF1V9eeb-DFHS0UMumQbLYL1-Fgg0LhXg@mail.gmail.com>
+Subject: Re: [PATCH 2/3] acpi/processor: sanitize _PDC buffer bits when
+ running as Xen dom0
+To:     =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>
+Cc:     Jan Beulich <jbeulich@suse.com>, xen-devel@lists.xenproject.org,
+        jgross@suse.com, stable@vger.kernel.org,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,24 +78,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 6 Jun 2023 15:24:45 -0700, Kees Cook wrote:
-> When HEADER_ARCH was introduced, the MRPROPER_FILES (then MRPROPER_DIRS)
-> list wasn't adjusted, leaving SUBARCH as part of the path argument.
-> This resulted in the "mrproper" target not cleaning up arch/x86/... when
-> SUBARCH was specified. Since HOST_DIR is arch/$(HEADER_ARCH), use it
-> instead to get the correct path.
-> 
-> 
-> [...]
+Hi, Roger,
 
-Build tested with/with-out patch, and I can see "mrproper" target
-correctly cleaning up now.
+On Mon, Nov 21, 2022 at 10:04=E2=80=AFAM Roger Pau Monn=C3=A9 <roger.pau@ci=
+trix.com> wrote:
+>
+> On Mon, Nov 21, 2022 at 03:10:36PM +0100, Jan Beulich wrote:
+> > On 21.11.2022 11:21, Roger Pau Monne wrote:
+> > > --- a/drivers/acpi/processor_pdc.c
+> > > +++ b/drivers/acpi/processor_pdc.c
+> > > @@ -137,6 +137,14 @@ acpi_processor_eval_pdc(acpi_handle handle, stru=
+ct acpi_object_list *pdc_in)
+> > >             buffer[2] &=3D ~(ACPI_PDC_C_C2C3_FFH | ACPI_PDC_C_C1_FFH)=
+;
+> > >
+> > >     }
+> > > +   if (xen_initial_domain())
+> > > +           /*
+> > > +            * When Linux is running as Xen dom0 it's the hypervisor =
+the
+> > > +            * entity in charge of the processor power management, an=
+d so
+> > > +            * Xen needs to check the OS capabilities reported in the=
+ _PDC
+> > > +            * buffer matches what the hypervisor driver supports.
+> > > +            */
+> > > +           xen_sanitize_pdc((uint32_t *)pdc_in->pointer->buffer.poin=
+ter);
+> > >     status =3D acpi_evaluate_object(handle, "_PDC", pdc_in, NULL);
+> >
+> > Again looking at our old XenoLinux forward port we had this inside the
+> > earlier if(), as an _alternative_ to the &=3D (I don't think it's valid
+> > to apply both the kernel's and Xen's adjustments). That would also let
+> > you use "buffer" rather than re-calculating it via yet another (risky
+> > from an abstract pov) cast.
+>
+> Hm, I've wondered this and decided it wasn't worth to short-circuit
+> the boot_option_idle_override conditional because ACPI_PDC_C_C2C3_FFH
+> and ACPI_PDC_C_C1_FFH will be set anyway by Xen in
+> arch_acpi_set_pdc_bits() as part of ACPI_PDC_C_CAPABILITY_SMP.
+>
+> I could re-use some of the code in there, but didn't want to make it
+> more difficult to read just for the benefit of reusing buffer.
+>
+> > It was the very nature of requiring Xen-specific conditionals which I
+> > understand was the reason why so far no attempt was made to get this
+> > (incl the corresponding logic for patch 1) into any upstream kernel.
+>
+> Yes, well, it's all kind of ugly.  Hence my suggestion to simply avoid
+> doing any ACPI Processor object handling in Linux with the native code
+> and handle it all in a Xen specific driver.  That requires the Xen
+> driver being able to fetch more data itself form the ACPI Processor
+> methods, but also unties it from the dependency on the data being
+> filled by the generic code, and the 'tricks' is plays into fooling
+> generic code to think certain processors are online.
 
-Applied to for-next/hardening, thanks!
+Are you working on this patch anymore?  My Xen HWP patches need a
+Linux patch like this one to set bit 12 in the PDC.  I had an affected
+user test with this patch and it worked, serving as an equivalent of
+Linux commit a21211672c9a ("ACPI / processor: Request native thermal
+interrupt handling via _OSC").
 
-[1/1] um: Use HOST_DIR for mrproper
-      https://git.kernel.org/kees/c/48ad87a5be06
+Another idea is to use Linux's arch_acpi_set_pdc_bits() to make the
+hypercall to Xen.  It occurs earlier:
+acpi_processor_set_pdc()
+    acpi_processor_alloc_pdc()
+        acpi_set_pdc_bits()
+            arch_acpi_set_pdc_bits()
+    acpi_processor_eval_pdc()
 
--- 
-Kees Cook
+So the IDLE_NOMWAIT masking in acpi_processor_eval_pdc() would still
+apply.  arch_acpi_set_pdc_bits() is provided the buffer, so it's a
+little cleaner in that respect.
 
+Thanks,
+Jason
