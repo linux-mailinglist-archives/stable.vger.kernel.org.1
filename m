@@ -2,49 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8555673097F
-	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 22:58:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23ADD7309FD
+	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 23:48:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229529AbjFNU6H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 14 Jun 2023 16:58:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37284 "EHLO
+        id S233300AbjFNVsZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 14 Jun 2023 17:48:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236998AbjFNU6G (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 16:58:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 245EE2693
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 13:57:56 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9EF8261E7A
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 20:57:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD6AC433C0;
-        Wed, 14 Jun 2023 20:57:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686776275;
-        bh=z8ZWQft7AssxeR6/feMvU6173/9CccnopUSVjMhA2QQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=mU6hGO6lTmOkAkoLNQPzsW2QHp70Ftpd02pGjXzMS8NX40NT35kSsODWWNlhoj/KO
-         YIJas8s2b/gwFa+40fWRRJZXcfgGzC364xcSBM/+q6pEaf3hBh/oOasWH6iA/cr12i
-         Nhr8POPgfmX3+w6ZUhRCmBbBZdnYnPAVfDRLm7nQ=
-Date:   Wed, 14 Jun 2023 22:57:52 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Robert Kolchmeyer <rkolchmeyer@google.com>
-Cc:     stable@vger.kernel.org, regressions@lists.linux.dev, kafai@fb.com,
-        ast@kernel.org, sashal@kernel.org, paul@isovalent.com,
-        Meena Shanmugam <meenashanmugam@google.com>
-Subject: Re: BPF regression in 5.10.168 and 5.15.93 impacting Cilium
-Message-ID: <2023061453-guacamole-porous-8a0e@gregkh>
-References: <CAJc0_fwx6MQa+Uozk+PJB0qb3JP5=9_WcCjOb8qa34u=DVbDmQ@mail.gmail.com>
+        with ESMTP id S230178AbjFNVsY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 17:48:24 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1FF2268C;
+        Wed, 14 Jun 2023 14:48:22 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-51a1d539ffaso291727a12.0;
+        Wed, 14 Jun 2023 14:48:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686779301; x=1689371301;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=z4aA7epvssoPGg5rKcRh6aIf+fYOU5PxCzsadmXXnuA=;
+        b=qFzhXfcLqCB2MSCLrlFYYTIxeaK5Z94fsXhWGJoebSatJORl6vk8BDQ4siY2DXEgOt
+         o9o3qkvC9tcvTTreGFSz5R2gm6l8Zfme2nX9DuU05b1Nt2Updfx8hApStrSWgZ1YPs0R
+         LaLpYMLvTuEySyVGl0vjkvo4yUM8PEdVqPO/guESDel1KF3TbryqXQSqXO3nCmkV3x4r
+         U5Hiz257+vR7OszPDKgm3cA6EHxr5LVrecE+Zr9mzi2y2I7kSHOf3MEP+BXxHtvNizW1
+         oTJ3pW3Y1LYJYKt7m5jNqcj0Izsx5PWQ1SqL9M00CBEYN8iNsPLx7ompRdJ1TR3vi+Wt
+         JxGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686779301; x=1689371301;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=z4aA7epvssoPGg5rKcRh6aIf+fYOU5PxCzsadmXXnuA=;
+        b=Ix+T11qaZWQL2sC2/s3jNt8A0vubzO8qOjRjsIJV6KXXbxGdSaRusiyPZnaLsO4Wnu
+         GF8DSOb46IYFi6yvXgDwm80GAEGt2/kViLSGKQ3j7zO+itOY0732tW3yjJvoogJOC/H+
+         PA6eLfu0VpR9jKOZ5F4yXzzAm9EEMGbxXmG+Mi/cktT6OPYj0kUx/AxfsmzwrS2lwKea
+         ulRo9XZ4OqK6MtxrlO/Uq2z1UPLyOk4U2X+3nuc66cBdVVoP9ZvG6aywIvNZdwmI6yDT
+         Ef+CtTvztIwTmfHrHKP2UgENAoZNA3lmVl7lJ6CbYuUvmquohYZP3NuVWVOfP6VUBh99
+         LGiw==
+X-Gm-Message-State: AC+VfDx3nRxbo/6DS02oKJBWD9r2qMTfnULoXvImy1g3kl1IookVSVp7
+        lk+KLLqBpL389RdOeT7cLEUWRw0hz/fJ8smhi17k5sFJC/s=
+X-Google-Smtp-Source: ACHHUZ4dAD8KrNsvAoAwgxrkO665PN2j4lts/r2C6YriF4GjM2RHOgVk1Vh7//pO//qNwmKoXWTTnQjHAOVuJKVpJiI=
+X-Received: by 2002:a05:6402:2683:b0:4ea:a9b0:a518 with SMTP id
+ w3-20020a056402268300b004eaa9b0a518mr3028443edd.17.1686779301148; Wed, 14 Jun
+ 2023 14:48:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJc0_fwx6MQa+Uozk+PJB0qb3JP5=9_WcCjOb8qa34u=DVbDmQ@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+References: <CAJc0_fwx6MQa+Uozk+PJB0qb3JP5=9_WcCjOb8qa34u=DVbDmQ@mail.gmail.com>
+ <2023061453-guacamole-porous-8a0e@gregkh>
+In-Reply-To: <2023061453-guacamole-porous-8a0e@gregkh>
+From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date:   Wed, 14 Jun 2023 14:48:09 -0700
+Message-ID: <CAADnVQLuHTNPEuXpSUgkNHoK1-X8KxU=spdYWB2bMp6icS+j0g@mail.gmail.com>
+Subject: Re: BPF regression in 5.10.168 and 5.15.93 impacting Cilium
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Robert Kolchmeyer <rkolchmeyer@google.com>,
+        stable <stable@vger.kernel.org>, regressions@lists.linux.dev,
+        Martin KaFai Lau <kafai@fb.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Paul Chaignon <paul@isovalent.com>,
+        Meena Shanmugam <meenashanmugam@google.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        bpf <bpf@vger.kernel.org>, Andrii Nakryiko <andrii@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,36 +76,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jun 14, 2023 at 11:23:52AM -0700, Robert Kolchmeyer wrote:
-> Hi all,
-> 
-> I believe 5.10.168 and 5.15.93 introduced a regression that impacts
-> the Cilium project. Some information on the nature of the regression
-> is available at https://github.com/cilium/cilium/issues/25500. The
-> primary symptom seems to be the error `BPF program is too large.`
-> 
-> My colleague has found that reverting the following two commits:
-> 
-> 8de8c4a "bpf: Support <8-byte scalar spill and refill"
-> 9ff2beb "bpf: Fix incorrect state pruning for <8B spill/fill"
-> 
-> resolves the regression.
-> 
-> If we revert these in the stable tree, there may be a few changes that
-> depend on those that also need to be reverted, but I'm not sure yet.
-> 
-> Would it make sense to revert these changes (and any dependent ones)
-> in the 5.10 and 5.15 trees? If anyone has other ideas, I can help test
-> possible solutions.
+On Wed, Jun 14, 2023 at 1:57=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+>
+> On Wed, Jun 14, 2023 at 11:23:52AM -0700, Robert Kolchmeyer wrote:
+> > Hi all,
+> >
+> > I believe 5.10.168 and 5.15.93 introduced a regression that impacts
+> > the Cilium project. Some information on the nature of the regression
+> > is available at https://github.com/cilium/cilium/issues/25500. The
+> > primary symptom seems to be the error `BPF program is too large.`
+> >
+> > My colleague has found that reverting the following two commits:
+> >
+> > 8de8c4a "bpf: Support <8-byte scalar spill and refill"
+> > 9ff2beb "bpf: Fix incorrect state pruning for <8B spill/fill"
+> >
+> > resolves the regression.
+> >
+> > If we revert these in the stable tree, there may be a few changes that
+> > depend on those that also need to be reverted, but I'm not sure yet.
+> >
+> > Would it make sense to revert these changes (and any dependent ones)
+> > in the 5.10 and 5.15 trees? If anyone has other ideas, I can help test
+> > possible solutions.
+>
+> Can you actually test if those reverts work properly for you and if
+> there are other dependencies involved?
+>
+> And is this issue also in 6.1.y and Linus's tree?  If not, why not, are
+> we just missing a commit?  We can't revert something from a stable
+> release if you are going to hit the same issue when moving to a new
+> release, right?
+>
+> thanks,
+>
+> greg k-h
 
-Can you actually test if those reverts work properly for you and if
-there are other dependencies involved?
+Before jumping to reverts..
+how is it fixed in 6.0+ kernels?
 
-And is this issue also in 6.1.y and Linus's tree?  If not, why not, are
-we just missing a commit?  We can't revert something from a stable
-release if you are going to hit the same issue when moving to a new
-release, right?
-
-thanks,
-
-greg k-h
+"BPF program is too large" can probably be worked around on the cilium side=
+.
+The kernel cannot guarantee that a particular program will
+always be verifiable. We find safety bugs in the verifier and often
+enough the fixes to such issues make the verifier work harder to prove
+the safety of the program.
+This is one of such cases. These two commits are necessary.
+Reverting them will prevent loading of valid programs.
+So reverts is a dangerous path.
+The best is to identify the other patches from 6.0+ and backport them.
+The second best path is to bump 1M limit to something higher to
+mitigate "more work by the verifier".
