@@ -2,55 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B51372F208
-	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 03:36:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AA2072F209
+	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 03:36:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241018AbjFNBgD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 13 Jun 2023 21:36:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46654 "EHLO
+        id S241275AbjFNBgE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 13 Jun 2023 21:36:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234588AbjFNBf5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 21:35:57 -0400
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22BBDC0
-        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 18:35:53 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-babb78a3daaso263594276.1
-        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 18:35:53 -0700 (PDT)
+        with ESMTP id S240275AbjFNBf7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 13 Jun 2023 21:35:59 -0400
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D633EA
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 18:35:55 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-569fee67d9dso3213237b3.1
+        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 18:35:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1686706552; x=1689298552;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=sNbjIv9UztkQJDHGD9DnfdQkL6UlrA7FC1c39cDNZuE=;
-        b=eyugeBWL0qB4Gpp57gMQT7qdf7kD8/4I+srAOg6u2/bQZmhW3nSYJ6fM/IB8sQV/Tn
-         tDiP0pelZvhXsvror//iBofxTZVgjJKM0pylsocMM2uLyW52MPBchyTwXKQjt55nrcVq
-         bOjM+emVBITSFCkqu0b6rRNX+n2vToUEB4O6UciVKV1jo8YtW5746P1VgiYwdyR5I6+B
-         v2/7Pk+zzIN/gnuaQjKBRooskKzfh0uHAAuQyA/KnYyTRu/dERBT0fTtyMMWKwP7puf9
-         FJGslewR6DRZ3Z4Wt0GJQmSoypMK6cfMOLP09koWzaROAKKV558jsflYIIoMtHdLMaT7
-         FBCA==
+        d=google.com; s=20221208; t=1686706554; x=1689298554;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dUP1rteuLNLGDjGu/kihOwC9q1N72CjFLHVL2ZrQjcE=;
+        b=V4kth1jPU8iY3OzZf7Yhm3mGcrug/yYVoVAljgWp24wIj9FEKJfVcuRN5fp6KrvTjh
+         8iJm3taTzqzVk+H/Hx9+Zjn8unVvnnXz6DI1PodZ3BNctJKy/rstYHGHFgRbUPPL5JzI
+         1mqEEvdDjlcdUDLXkPGkwFDdr4cbNfMfIOpmZrsgWQY6aklIhQi/PyQ3NbC+mVmL0QWH
+         OV+WI3Welu4hJETH4cxzNGYzmuqgcS/hYpIE53OzvfJ0O9OxUqCk4ndHepo2rhjzm1By
+         8pwdWXdv7XtoXTYf0XisvTjj1z4apQFdfRSLgLWrWfxWRgG0gcDHLTmPgoZOTdi4bIZk
+         ksjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686706552; x=1689298552;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=sNbjIv9UztkQJDHGD9DnfdQkL6UlrA7FC1c39cDNZuE=;
-        b=CKaMyktNoUCJYTqBmUNvYVIwI/j//l9e9PcGkVQ2hXG13Uo1HJtehiUTyC5dx4EHAY
-         dz5Fry8DcmBH6j9X73zGJUw8KGf+hzGxK3cqCHGxUGttlxaFcECOG+UnaJSgb9m/jKRm
-         P/5cLLFcSz6EiHVlxocJLeADqjKItXDFUponGy9xYp2B6lWi/oaFD/47GloIWEht6r8B
-         0NlEiZHtXE7kkPHnt0zz0s0lPQn9U3eoQJWrDOpdoQluSC//WNdgpt7nHJquntG4tl19
-         x668n+co/VKfqu1+SZrpZovIOUNVuojUHftnAtIPpMpgwpAMxgJeWQZiHOzpx3bmJ0Ic
-         TjkA==
-X-Gm-Message-State: AC+VfDw2v00Lkk0xaqtgwYBRTMmUcAvfXTf8hZId9gyhTYX425TK3kaO
-        e0PAl97rQH+NndufhGZ+IG2UkToU7THptpRzDYzxSZnSFR5RQuPOIzs501sRuhnFT17TIo3dpgK
-        TirTs/g500hhqHvmA66zXLfYcwNbGXFDgdkQRKelRYOh5wdq7T11TKLZfR6bbVQ==
-X-Google-Smtp-Source: ACHHUZ6vuGG4+I5GBkw+0LADnXcFi5QG+Mc52Hk94fnlv+PrB2C8lQR2SjPva3OA+QGOpiAmiCXtrjb/Fsk=
+        d=1e100.net; s=20221208; t=1686706554; x=1689298554;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dUP1rteuLNLGDjGu/kihOwC9q1N72CjFLHVL2ZrQjcE=;
+        b=J59xjJWt7CNVEzoX05KOFls7AQWHCg2FbH4xB/MiGDt0LrV7aW1L5iavmAo/jdgByY
+         dJwHODeuAcimEMzncrHQz64ESnjXM91BxopX9Y8L7FXjhbWQnAbb/DLHXdvHM9zFzeIg
+         w2TZkZuFSKxtIBLuQogEOZRxNHWd2fC/XuMNP0TZxbw/Uris0bgm0A1/zoDS/z/s1UUd
+         9WhVuOm0tboLjjTH3S5/ywws6LObl9/Zdqf93dxdqyoBhcZcZ0imja1I6G/F2aF90Q/m
+         easYP+qW8IkwcST+j2DYKw6q9znSlxyWE1NGrfdU37iaGMFxlQrZVvN/PQ1HtSVaBpKH
+         SHzw==
+X-Gm-Message-State: AC+VfDz3QaDk3ZDuEnHxFhtj1hfziZc5UsLOD6N0NOwR9J5GNaFkMwux
+        OitfPkPFfJ7Otbi5JukyOqAO/DUIWL5D45XF+9qa6NWNJ6hOnZmV7LfHcnb7Y4AegxhoQzJlUFN
+        yPn0dR382BSS+b5smD3sVw9rSO4YkBPG05fDxxugKxqioXma6jvq4zq01/b5EQg==
+X-Google-Smtp-Source: ACHHUZ75dd96I0T8xzjyXpM0TFgNY9742Tk9oKxZ9nIlLixG1EHvkdKbx1ONrqPUVIkpr6Mak5T98agrnok=
 X-Received: from surenb-desktop.mtv.corp.google.com ([2620:15c:211:201:bbff:ed76:4140:fb87])
- (user=surenb job=sendgmr) by 2002:a25:db54:0:b0:bcc:285c:66ea with SMTP id
- g81-20020a25db54000000b00bcc285c66eamr260349ybf.3.1686706552295; Tue, 13 Jun
- 2023 18:35:52 -0700 (PDT)
-Date:   Tue, 13 Jun 2023 18:35:45 -0700
+ (user=surenb job=sendgmr) by 2002:a81:b625:0:b0:56c:f903:8678 with SMTP id
+ u37-20020a81b625000000b0056cf9038678mr83147ywh.2.1686706554693; Tue, 13 Jun
+ 2023 18:35:54 -0700 (PDT)
+Date:   Tue, 13 Jun 2023 18:35:46 -0700
+In-Reply-To: <20230614013548.1382385-1-surenb@google.com>
 Mime-Version: 1.0
+References: <20230614013548.1382385-1-surenb@google.com>
 X-Mailer: git-send-email 2.41.0.162.gfafddb0af9-goog
-Message-ID: <20230614013548.1382385-1-surenb@google.com>
-Subject: [RESEND 1/1] linux-5.10/rcu/kvfree: Avoid freeing new kfree_rcu()
+Message-ID: <20230614013548.1382385-2-surenb@google.com>
+Subject: [RESEND 1/1] linux-5.15/rcu/kvfree: Avoid freeing new kfree_rcu()
  memory after old grace period
 From:   Suren Baghdasaryan <surenb@google.com>
 To:     stable@vger.kernel.org
@@ -62,15 +64,15 @@ Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,PDS_OTHER_BAD_TLD,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED,USER_IN_DEF_DKIM_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        URIBL_BLOCKED,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+From: Ziwei Dai <ziwei.dai@unisoc.com>
 
 From: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
 
@@ -163,7 +165,7 @@ grace period has completed for all three categories.
 
 v2: Use helper function instead of inserted code block at kfree_rcu_monitor().
 
-[UR: backport to 5.10-stable]
+[UR: backport to 5.15-stable]
 [UR: Added missing need_offload_krc() function]
 Fixes: 34c881745549 ("rcu: Support kfree_bulk() interface in kfree_rcu()")
 Fixes: 5f3c8d620447 ("rcu/tree: Maintain separate array for vmalloc ptrs")
@@ -176,16 +178,16 @@ Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
 Resending per Greg's request.
-Original posting: https://lore.kernel.org/all/20230418102518.5911-1-urezki@gmail.com/
+Original posting: https://lore.kernel.org/all/20230418102518.5911-2-urezki@gmail.com/
 
- kernel/rcu/tree.c | 49 +++++++++++++++++++++++++++++++++--------------
- 1 file changed, 35 insertions(+), 14 deletions(-)
+ kernel/rcu/tree.c | 39 +++++++++++++++++++++++++++++++--------
+ 1 file changed, 31 insertions(+), 8 deletions(-)
 
 diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 30e1d7fedb5f..eec8e2f7537e 100644
+index 03902ee655ee..df016f6d0662 100644
 --- a/kernel/rcu/tree.c
 +++ b/kernel/rcu/tree.c
-@@ -3281,6 +3281,30 @@ static void kfree_rcu_work(struct work_struct *work)
+@@ -3328,6 +3328,30 @@ static void kfree_rcu_work(struct work_struct *work)
  	}
  }
  
@@ -214,19 +216,17 @@ index 30e1d7fedb5f..eec8e2f7537e 100644
 +}
 +
  /*
-  * Schedule the kfree batch RCU work to run in workqueue context after a GP.
-  *
-@@ -3298,16 +3322,13 @@ static inline bool queue_kfree_rcu_work(struct kfree_rcu_cpu *krcp)
+  * This function is invoked after the KFREE_DRAIN_JIFFIES timeout.
+  */
+@@ -3344,14 +3368,13 @@ static void kfree_rcu_monitor(struct work_struct *work)
  	for (i = 0; i < KFREE_N_BATCHES; i++) {
- 		krwp = &(krcp->krw_arr[i]);
+ 		struct kfree_rcu_cpu_work *krwp = &(krcp->krw_arr[i]);
  
--		/*
--		 * Try to detach bkvhead or head and attach it over any
--		 * available corresponding free channel. It can be that
--		 * a previous RCU batch is in progress, it means that
--		 * immediately to queue another one is not possible so
--		 * return false to tell caller to retry.
--		 */
+-		// Try to detach bkvhead or head and attach it over any
+-		// available corresponding free channel. It can be that
+-		// a previous RCU batch is in progress, it means that
+-		// immediately to queue another one is not possible so
+-		// in that case the monitor work is rearmed.
 -		if ((krcp->bkvhead[0] && !krwp->bkvhead_free[0]) ||
 -			(krcp->bkvhead[1] && !krwp->bkvhead_free[1]) ||
 -				(krcp->head && !krwp->head_free)) {
@@ -237,26 +237,9 @@ index 30e1d7fedb5f..eec8e2f7537e 100644
 +			continue;
 +
 +		if (need_offload_krc(krcp)) {
- 			// Channel 1 corresponds to SLAB ptrs.
- 			// Channel 2 corresponds to vmalloc ptrs.
+ 			// Channel 1 corresponds to the SLAB-pointer bulk path.
+ 			// Channel 2 corresponds to vmalloc-pointer bulk path.
  			for (j = 0; j < FREE_N_CHANNELS; j++) {
-@@ -3334,12 +3355,12 @@ static inline bool queue_kfree_rcu_work(struct kfree_rcu_cpu *krcp)
- 			 */
- 			queue_rcu_work(system_wq, &krwp->rcu_work);
- 		}
--
--		// Repeat if any "free" corresponding channel is still busy.
--		if (krcp->bkvhead[0] || krcp->bkvhead[1] || krcp->head)
--			repeat = true;
- 	}
- 
-+	// Repeat if any "free" corresponding channel is still busy.
-+	if (need_offload_krc(krcp))
-+		repeat = true;
-+
- 	return !repeat;
- }
- 
 -- 
 2.41.0.162.gfafddb0af9-goog
 
