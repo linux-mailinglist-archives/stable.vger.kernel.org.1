@@ -2,77 +2,149 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2BF872F8EE
-	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 11:21:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16C1072F958
+	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 11:38:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243941AbjFNJVI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 14 Jun 2023 05:21:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59500 "EHLO
+        id S243855AbjFNJiI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 14 Jun 2023 05:38:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243939AbjFNJUy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 05:20:54 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2092C1FCC;
-        Wed, 14 Jun 2023 02:20:51 -0700 (PDT)
-Date:   Wed, 14 Jun 2023 11:20:45 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1686734449;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=IwyE4FJoz8w2cSOIWlMYfXcvxQemNB29XR/ZDxZG3x8=;
-        b=KgXYcXKbAnNq1NsbYFZTrwStOSvHuxcyB84Et9H6FQKkvRJVTTJ5Nl3A0PxtczumxOCM56
-        BLhzaL1FFvYhlZxOWSCUb1p7XJ9rb7A2xIL9Q5iKJ82Z6cprzu+A5M4Atc+Jnu+oKSUZIJ
-        w0JLSDYzXawnsiY1Eq9Bg62qoSietlSPn9GMBbK4pUsVOJs0pbIbn3/4waCjdVeuQzelku
-        5h4H4Vt6OmSeMeis9OGv6LaWLSIL5QASWbi0VgGTLf52b/AKnE6CzZ14BERGTHm9HI9Ngd
-        +WlGU0gafQ9iG7rfE4eQ3emkPlFe4c9yHHl02WExVLxplFeXuae0pc71YpBEbw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1686734449;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=IwyE4FJoz8w2cSOIWlMYfXcvxQemNB29XR/ZDxZG3x8=;
-        b=uNd5x03JLHjui5vET+WBwfIcrL/YOEPkV5IB1HrSERbvdf1MEA/BrZ1BST2qkasdRS6mZX
-        dOqN2TAh4dBCXoCQ==
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To:     "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-Cc:     "Bhatnagar, Rishabh" <risbhat@amazon.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "sashal@kernel.org" <sashal@kernel.org>, luizcap@amazon.com,
-        abuehaze@amazon.com,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: Observing RCU stalls in kernel 5.4/5.10/5.15/6.1 stable trees
-Message-ID: <20230614092045.tNY8USjq@linutronix.de>
-References: <12c6f9a3-d087-b824-0d05-0d18c9bc1bf3@amazon.com>
- <c4724b40-89f6-5aa7-720d-c4a4af57cf45@amazon.com>
- <2023061428-compacter-economic-b648@gregkh>
+        with ESMTP id S233840AbjFNJiH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 05:38:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 719F0DF;
+        Wed, 14 Jun 2023 02:38:06 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 064AE63342;
+        Wed, 14 Jun 2023 09:38:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0471EC433C8;
+        Wed, 14 Jun 2023 09:38:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1686735485;
+        bh=tpW4YlEHIcX307ck/O7pP4loAlJ+EP93YGZ2HAyn1jc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=OZSmYVcDZoB4BQCAicu9RPN6uTBp8pWCinFjqcLbIeYvHXdpBUZDWiDYt3Hkqj0ak
+         l0mQxu3eP7tP4bhBy816fdsTKt1X6KCdd3vNZeiRReflFbxTKwTG+DYOpkAO1PGfrs
+         0A5607s85LYzGgEH3BU1EBVD+zqpluH5pyGopT58=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+        torvalds@linux-foundation.org, stable@vger.kernel.org
+Cc:     lwn@lwn.net, jslaby@suse.cz,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 4.14.318
+Date:   Wed, 14 Jun 2023 11:38:00 +0200
+Message-ID: <2023061401-retiring-volatile-d131@gregkh>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2023061428-compacter-economic-b648@gregkh>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 2023-06-14 11:14:49 [+0200], gregkh@linuxfoundation.org wrote:
-> Oops, missed this.
-> 
-> Yes, there might be, can you do 'git bisect' and track down the patch
-> that fixed this?
+I'm announcing the release of the 4.14.318 kernel.
 
-There was a report of a lockup during boot in VMs yesterday. If I
-remember correctly this still exists and might be related to this
-report. I'm going to have a look.
+All users of the 4.14 kernel series must upgrade.
 
-> thanks,
-> 
-> greg k-h
+The updated 4.14.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-4.14.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
-Sebastian
+thanks,
+
+greg k-h
+
+------------
+
+ Makefile                                     |    2 -
+ drivers/gpu/drm/amd/amdgpu/vi.c              |   11 ++++++--
+ drivers/i2c/busses/i2c-sprd.c                |    6 ++--
+ drivers/infiniband/hw/i40iw/i40iw.h          |    5 +--
+ drivers/input/joystick/xpad.c                |    1 
+ drivers/input/mouse/elantech.c               |    9 +++---
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c    |    3 ++
+ drivers/net/ethernet/intel/i40e/i40e_alloc.h |   17 ++++--------
+ drivers/spi/spi-qup.c                        |   37 +++++++++++++--------------
+ drivers/staging/rtl8192e/rtl8192e/rtl_core.c |    6 ++--
+ drivers/staging/rtl8192e/rtl8192e/rtl_core.h |    5 +++
+ fs/btrfs/relocation.c                        |   14 +++++++---
+ fs/ceph/caps.c                               |    6 ++++
+ fs/ceph/snap.c                               |    4 ++
+ fs/ext4/xattr.c                              |    6 ++--
+ include/linux/netdevice.h                    |    7 +++--
+ include/net/pkt_sched.h                      |    2 +
+ include/net/sock.h                           |   18 +++++++++----
+ lib/cpu_rmap.c                               |    2 -
+ net/batman-adv/distributed-arp-table.c       |    2 -
+ net/bluetooth/hci_core.c                     |    8 ++---
+ net/bluetooth/l2cap_core.c                   |   13 +++++++++
+ net/core/dev.c                               |    6 ++--
+ net/sched/cls_api.c                          |    2 -
+ 24 files changed, 122 insertions(+), 70 deletions(-)
+
+Ben Hutchings (1):
+      lib: cpu_rmap: Fix potential use-after-free in irq_cpu_rmap_release()
+
+Chia-I Wu (1):
+      drm/amdgpu: fix xclk freq on CHIP_STONEY
+
+Dmitry Torokhov (1):
+      Input: psmouse - fix OOB access in Elantech protocol
+
+Eric Dumazet (3):
+      rfs: annotate lockless accesses to sk->sk_rxhash
+      rfs: annotate lockless accesses to RFS sock flow table
+      net: sched: move rtm_tca_policy declaration to include file
+
+Greg Kroah-Hartman (4):
+      i40iw: fix build warning in i40iw_manage_apbvt()
+      i40e: fix build warnings in i40e_alloc.h
+      Revert "staging: rtl8192e: Replace macro RTL_PCI_DEVICE with PCI_DEVICE"
+      Linux 4.14.318
+
+Ismael Ferreras Morezuelas (1):
+      Input: xpad - delete a Razer DeathAdder mouse VID/PID entry
+
+Josef Bacik (1):
+      btrfs: check return value of btrfs_commit_transaction in relocation
+
+Luiz Augusto von Dentz (1):
+      Bluetooth: Fix use-after-free in hci_remove_ltk/hci_remove_irk
+
+Somnath Kotur (1):
+      bnxt_en: Query default VLAN before VNIC setup on a VF
+
+Stephan Gerhold (1):
+      spi: qup: Request DMA before enabling clocks
+
+Sungwoo Kim (1):
+      Bluetooth: L2CAP: Add missing checks for invalid DCID
+
+Theodore Ts'o (1):
+      ext4: only check dquot_initialize_needed() when debugging
+
+Uwe Kleine-König (1):
+      i2c: sprd: Delete i2c adapter in .remove's error path
+
+Vladislav Efanov (1):
+      batman-adv: Broken sync while rescheduling delayed work
+
+Xiubo Li (1):
+      ceph: fix use-after-free bug for inodes when flushing capsnaps
+
+Ying Hsu (1):
+      Bluetooth: Fix l2cap_disconnect_req deadlock
+
+Zixuan Fu (1):
+      btrfs: unset reloc control if transaction commit fails in prepare_to_relocate()
+
