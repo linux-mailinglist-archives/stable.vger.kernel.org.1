@@ -2,89 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B4E872F86D
-	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 10:54:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CE2072F876
+	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 10:57:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240047AbjFNIyB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 14 Jun 2023 04:54:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44136 "EHLO
+        id S231660AbjFNI5A (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 14 Jun 2023 04:57:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243779AbjFNIx5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 04:53:57 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BB8F2688;
-        Wed, 14 Jun 2023 01:53:37 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1q9MFz-0003eN-0R; Wed, 14 Jun 2023 10:53:35 +0200
-Message-ID: <9d0ebb3a-3385-bfc3-13ce-41d54aaec4b4@leemhuis.info>
-Date:   Wed, 14 Jun 2023 10:53:34 +0200
+        with ESMTP id S230303AbjFNI47 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 04:56:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F367510E9
+        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 01:56:58 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8758B62EAD
+        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 08:56:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A89C433C0;
+        Wed, 14 Jun 2023 08:56:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1686733017;
+        bh=Xnri1Toeh7APRF4Cq3k1ATqh5aTwOIcCK3Gpu59jp8I=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=QCa+2vsyOlulHkmwNYQ2orw0C8pCceDfFf8TG853d9X7Sevpd0Qft8I2CBvkYW/84
+         s8Mhc//2mqSoY6tfN8zv/lAKO86qDPt/7FZd4lX8NgFUWput6xB9xpJz6atJmtUbuD
+         vo1cGS8PxyjgRLK5SAMxk10LdCGSaNbb+14cl8wM=
+Date:   Wed, 14 Jun 2023 10:56:55 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Ben Hutchings <ben@decadent.org.uk>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH 4.19 02/23] i40e: fix build warnings in i40e_alloc.h
+Message-ID: <2023061459-scribe-doozy-40b9@gregkh>
+References: <20230612101651.138592130@linuxfoundation.org>
+ <20230612101651.237619015@linuxfoundation.org>
+ <b0662a1562dca6aa2059f908cf18e7be1bf26707.camel@decadent.org.uk>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [REGRESSION] Asus X541UAK hangs on suspend and poweroff (v6.1.6
- onward)
-Content-Language: en-US, de-DE
-To:     Bjorn Helgaas <helgaas@kernel.org>, Acid Bong <acidbong@tilde.cafe>
-Cc:     bagasdotme@gmail.com, linux-acpi@vger.kernel.org,
-        rafael@kernel.org, regressions@lists.linux.dev,
-        stable@vger.kernel.org
-References: <20230609165505.GA1251392@bhelgaas>
-From:   "Linux regression tracking #update (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <20230609165505.GA1251392@bhelgaas>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1686732817;fcb67973;
-X-HE-SMSGID: 1q9MFz-0003eN-0R
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b0662a1562dca6aa2059f908cf18e7be1bf26707.camel@decadent.org.uk>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 09.06.23 18:55, Bjorn Helgaas wrote:
-> On Fri, Jun 09, 2023 at 02:09:17PM +0300, Acid Bong wrote:
->> Hi there, hello.
->>
->> About a week ago I returned to using Gajim, which, as I remember from
->> earlier, also seemed to be responsible for these hangings, and they got
->> more frequent (I haven't updated any software for the last 2 months). I
->> decided to move to the kernel version 6.1.1, which I earlier marked as
->> "good", and my laptop hung last evening during the shutdown. As always,
->> nothing in the logs.
->>
->> I tried to compile some versions from 5.15.y branch, but either I had a
->> bad luck, or the commits weren't properly compatible with GCC 12 yet,
->> but they (.48 and .78) emitted warnings, so I never used them (or I
->> broke the repo, who knows).
->>
->> Due to the fact that software does have impact on this behaviour, and
->> due to my health issues and potential conscription (cuz our army doesn't
->> care about health), which will cut me from my laptop for a long-long
->> time, I give up on bisecting. I'll just update all my software (there's
->> also a GCC upgrade in the repos) and hope for the best.
->>
->> Sorry for inconvenience and have a great day. Thank you very much.
+On Wed, Jun 14, 2023 at 04:05:08AM +0200, Ben Hutchings wrote:
+> On Mon, 2023-06-12 at 12:26 +0200, Greg Kroah-Hartman wrote:
+> > Not upstream as it was fixed in a much larger api change in newer
+> > kernels.
+> > 
+> > gcc-13 rightfully complains that enum is not the same as an int, so fix
+> > up the function prototypes in i40e_alloc.h to be correct, solving a
+> > bunch of build warnings.
+> > 
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > ---
+> >  drivers/net/ethernet/intel/i40e/i40e_alloc.h |   17 ++++++-----------
+> >  1 file changed, 6 insertions(+), 11 deletions(-)
+> > 
+> > --- a/drivers/net/ethernet/intel/i40e/i40e_alloc.h
+> > +++ b/drivers/net/ethernet/intel/i40e/i40e_alloc.h
+> > @@ -20,16 +20,11 @@ enum i40e_memory_type {
+> >  };
+> >  
+> >  /* prototype for functions used for dynamic memory allocation */
+> > -i40e_status i40e_allocate_dma_mem(struct i40e_hw *hw,
+> > -					    struct i40e_dma_mem *mem,
+> > -					    enum i40e_memory_type type,
+> > -					    u64 size, u32 alignment);
+> > -i40e_status i40e_free_dma_mem(struct i40e_hw *hw,
+> > -					struct i40e_dma_mem *mem);
+> > -i40e_status i40e_allocate_virt_mem(struct i40e_hw *hw,
+> > -					     struct i40e_virt_mem *mem,
+> > -					     u32 size);
+> > -i40e_status i40e_free_virt_mem(struct i40e_hw *hw,
+> > -					 struct i40e_virt_mem *mem);
+> > +int i40e_allocate_dma_mem(struct i40e_hw *hw, struct i40e_dma_mem *mem,
+> > +			  enum i40e_memory_type type, u64 size, u32 alignment);
+> > +int i40e_free_dma_mem(struct i40e_hw *hw, struct i40e_dma_mem *mem);
+> > +int i40e_allocate_virt_mem(struct i40e_hw *hw, struct i40e_virt_mem *mem,
+> > +			   u32 size);
+> > +int i40e_free_virt_mem(struct i40e_hw *hw, struct i40e_virt_mem *mem);
 > 
-> No inconvenience on our side; your help is invaluable, especially for
-> intermittent problems like this one.  They are really hard to find and
-> debug, and I'm sorry that we didn't get this one resolved.
+> All these function names are actually macro names, which seems a very
+> strange way to declare functions.
+> 
+> Shouldn't the declarations use the actual function names, which have
+> "_d" suffixes?
 
-+1
+Probably, yes, I was just trying to do the least-ammount-of-work-needed
+to fix up a bunch of obvious errors that were causing build warnings on
+newer versions of gcc :)
 
-Then let me remove this from the regression tracking, too.
+All of this is fixed differently in Linus's tree, but those changes were
+way too messy to backport.
 
-#regzbot inconclusive: ignored, reporter for various real life reasons
-unfortunately will be unable to bisect/debug
-#regzbot ignore-activity
+thanks,
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
+greg k-h
