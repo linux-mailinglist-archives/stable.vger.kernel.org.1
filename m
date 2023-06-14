@@ -2,63 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E0F772FC5C
-	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 13:28:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A899A72FC70
+	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 13:30:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243937AbjFNL2J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 14 Jun 2023 07:28:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45008 "EHLO
+        id S235907AbjFNLaF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 14 Jun 2023 07:30:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243862AbjFNL2I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 07:28:08 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B4121FCE
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 04:27:57 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-652d1d3e040so4975947b3a.1
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 04:27:57 -0700 (PDT)
+        with ESMTP id S244042AbjFNL3z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 07:29:55 -0400
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1596B1BEC
+        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 04:29:52 -0700 (PDT)
+Received: by mail-pg1-x530.google.com with SMTP id 41be03b00d2f7-54f73f09765so2207313a12.1
+        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 04:29:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1686742076; x=1689334076;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1686742191; x=1689334191;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=hm+fmhnpOowAXo8C8JTAnXUho7yEbnZVDyuQPEtIV7o=;
-        b=S3SncDPm34+ZYrJ4zIUFrlXEDviOwV1E5DzLWNWk6NIug0kCzRFGBERCtEhNkfauuJ
-         YGKIVpRUHMp0wvL0TGzcDQcNxpRECwaCbrhoyvXsPlIU81G7wL0Phigql2BftV0opscW
-         /v35lfvQhb3CxlDsavayLYUruF9rb0Kx1aVQW3ns+hMgDRylBGFsXOAbbw5scOmvDbAx
-         dQMZ10+tbGnStZCuyuKc3LVzH4M6BeKC73iA5U1FADbu7NHAv+mIYkXMpjmCfgl9Pxpl
-         wLIJrz5s1LY/haimJi4Sex1Agcn9hIAHW58MWluinVFeMYoHbJv34ei4cta3GuSHfpRc
-         bJvQ==
+        bh=RiRL9ReFJiVaTmQ66XAqdzNC9goMF910bl73VuGkaEY=;
+        b=lb0/W3uoSLCnWipwqPW9KYYm/SE9Y+pwulzStzpKMGL7p7WJPxZOUD/pdYjtwfla23
+         CnHNNeQjnOV+ZU6NnbYDWJvM2U673suc/zzcOFraAp8n4iUdu8s4x2HlnUh2Dc/AZJs/
+         Bac09EegVP3ybItKLBhabjAz4tlDWYKAjyHnHjv/j8MXu6iEC/TFAGUir7zfl/vBrzEe
+         0GvBxyuUEdYScRe+8MVMf0lq4jK4GyP/QgYu3YJVYHxbJRgRFMOOvSJuhVAO48IZNZ79
+         WEwRbIffek2YcT+qlmSimvw7L2mOLvD8a2/6WLmecxbBxnKmPW5qhD/kq+ovv4CBmUeO
+         wUWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686742076; x=1689334076;
+        d=1e100.net; s=20221208; t=1686742191; x=1689334191;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=hm+fmhnpOowAXo8C8JTAnXUho7yEbnZVDyuQPEtIV7o=;
-        b=kU+gX01K618SByLzds29UjYPkUVM+zPKn91axpIE1NItwzMfM3f/KwJD+osg6I81u8
-         xaESy8oMKwcsFgKnwdQKGpqa3LziEO3ZfO+ZvyWsSMYOeDl3017zsnZ9KeU4A3cQYIRm
-         qN4GP8z5/1LVl9Ylqf0kJC0q/qXcYJlMYHxtRMkk6T26vnIYWy8jgyqOIsioKDxW1c0F
-         PbYGyz/5z8Uo3SWTJZf2JI3niy6pJpCMoReUz6/3DMTDLtNm68DbX+mCmJ9rCeIsCre4
-         ZxcUvfcfzD3naHGCPvnFtRqsJs4AzFkN6hiUEHvnyEZyLAm0JnhYX/SD5i6prC26F0Vn
-         s9aQ==
-X-Gm-Message-State: AC+VfDxmnC6YRTNJm56MApqVdknt3O9Zmmr0oNv+3zocxctVjdQ+q5b8
-        Mi1aZx80Q5drIfPZsLmh9Fly6GxmQoA/c67v0HBJyQ==
-X-Google-Smtp-Source: ACHHUZ5ShAl9L1VxLXS/XGGIWhzry28g2h2GjiE2JhFrTwt266Bjtp+3fWyT+yUNGUePUEIgfv+blg==
-X-Received: by 2002:a05:6a00:1a0e:b0:65a:1efc:13ca with SMTP id g14-20020a056a001a0e00b0065a1efc13camr1433085pfv.15.1686742075618;
-        Wed, 14 Jun 2023 04:27:55 -0700 (PDT)
+        bh=RiRL9ReFJiVaTmQ66XAqdzNC9goMF910bl73VuGkaEY=;
+        b=KUMd4z07xdYsmfGIbUM4H4OoW358TNt09tAVLoxf3dNAxutxQNTep3lVe8vgeBWVNN
+         0g39o80e1hSDjzesRFTWdEIazrRUZJkEMFPIH7SnSMi/i42Y8JJAdeAb1R9u2EDZ7Aui
+         uR1JWli58nzcKQNGBienbY/5uDIvvM4yDGp5ruJZ7JP0E18aGjtl/lbXX+hhcDm2Vcip
+         ucQ5bKOz36DXG/G6B4x75delM8ps0dx+tTM+o1V15fytV/4v3VsOHtpQT194nY1N560I
+         vamXMiRnSFgoB9x7+fg9wVj2htG0fP5qsEEJr7Teldehi5Bww604xkF4hWKtwAOIhfGu
+         6kNA==
+X-Gm-Message-State: AC+VfDzUFIVx2LhD6ksJwPwRMFm0fr2kl5TTuOWmtl6WV0nOD3OYm38f
+        GQIodyyPYvT6/X5rggNVfTwc/r2Z04wKd7JvKFuN+g==
+X-Google-Smtp-Source: ACHHUZ4gCIQ7uURl42vvKvETD7KOOJe3kLZQmpvmz2Pf9U2xebtzRWBeTuXreAKCCTgC5ShKaLh/zQ==
+X-Received: by 2002:a05:6a20:12ca:b0:111:d03c:2bf9 with SMTP id v10-20020a056a2012ca00b00111d03c2bf9mr1409226pzg.12.1686742190131;
+        Wed, 14 Jun 2023 04:29:50 -0700 (PDT)
 Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id n16-20020aa79050000000b0063d44634d8csm5283136pfo.71.2023.06.14.04.27.54
+        by smtp.gmail.com with ESMTPSA id n9-20020a170902968900b001b3c7e5ed8csm1485984plp.74.2023.06.14.04.29.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jun 2023 04:27:55 -0700 (PDT)
-Message-ID: <6489a43b.a70a0220.353bf.9df8@mx.google.com>
-Date:   Wed, 14 Jun 2023 04:27:55 -0700 (PDT)
+        Wed, 14 Jun 2023 04:29:49 -0700 (PDT)
+Message-ID: <6489a4ad.170a0220.b9355.2ba3@mx.google.com>
+Date:   Wed, 14 Jun 2023 04:29:49 -0700 (PDT)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-6.3.y
+X-Kernelci-Branch: linux-6.1.y
 X-Kernelci-Tree: stable
 X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v6.3.8
-Subject: stable/linux-6.3.y build: 137 builds: 1 failed, 136 passed,
- 4 errors (v6.3.8)
+X-Kernelci-Kernel: v6.1.34
+Subject: stable/linux-6.1.y build: 166 builds: 1 failed, 165 passed, 4 errors,
+ 17 warnings (v6.1.34)
 To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
         kernelci-results@groups.io
 From:   "kernelci.org bot" <bot@kernelci.org>
@@ -72,34 +72,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable/linux-6.3.y build: 137 builds: 1 failed, 136 passed, 4 errors (v6.3.=
-8)
+stable/linux-6.1.y build: 166 builds: 1 failed, 165 passed, 4 errors, 17 wa=
+rnings (v6.1.34)
 
-Full Build Summary: https://kernelci.org/build/stable/branch/linux-6.3.y/ke=
-rnel/v6.3.8/
+Full Build Summary: https://kernelci.org/build/stable/branch/linux-6.1.y/ke=
+rnel/v6.1.34/
 
 Tree: stable
-Branch: linux-6.3.y
-Git Describe: v6.3.8
-Git Commit: f2427f9a3730e9a1a11b69f6b767f7f2fad87523
+Branch: linux-6.1.y
+Git Describe: v6.1.34
+Git Commit: ca87e77a2ef8b298aa9f69658d5898e72ee450fe
 Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
 e.git
-Built: 6 unique architectures
+Built: 7 unique architectures
 
 Build Failure Detected:
 
 mips:
     decstation_64_defconfig: (gcc-10) FAIL
 
-Errors Detected:
+Errors and Warnings Detected:
 
 arc:
+
+arm64:
 
 arm:
 
 i386:
 
 mips:
+    32r2el_defconfig (gcc-10): 1 warning
+    bmips_be_defconfig (gcc-10): 8 warnings
+    bmips_stb_defconfig (gcc-10): 8 warnings
     fuloong2e_defconfig (gcc-10): 1 error
     lemote2f_defconfig (gcc-10): 1 error
     loongson2k_defconfig (gcc-10): 1 error
@@ -114,6 +119,32 @@ Errors summary:
     4    cc1: error: =E2=80=98-mloongson-mmi=E2=80=99 must be used with =E2=
 =80=98-mhard-float=E2=80=99
 
+Warnings summary:
+
+    2    arch/mips/boot/dts/brcm/bcm63268.dtsi:115.5-22: Warning (reg_forma=
+t): /ubus/timer-mfd@10000080/watchdog@1c:reg: property has invalid length (=
+8 bytes) (#address-cells =3D=3D 2, #size-cells =3D=3D 1)
+    2    arch/mips/boot/dts/brcm/bcm63268.dtsi:113.21-121.6: Warning (avoid=
+_default_addr_size): /ubus/timer-mfd@10000080/watchdog@1c: Relying on defau=
+lt #size-cells value
+    2    arch/mips/boot/dts/brcm/bcm63268.dtsi:113.21-121.6: Warning (avoid=
+_default_addr_size): /ubus/timer-mfd@10000080/watchdog@1c: Relying on defau=
+lt #address-cells value
+    2    arch/mips/boot/dts/brcm/bcm63268.dtsi:111.4-35: Warning (ranges_fo=
+rmat): /ubus/timer-mfd@10000080:ranges: "ranges" property has invalid lengt=
+h (12 bytes) (parent #address-cells =3D=3D 1, child #address-cells =3D=3D 2=
+, #size-cells =3D=3D 1)
+    2    arch/mips/boot/dts/brcm/bcm63268-comtrend-vr-3032u.dtb: Warning (s=
+pi_bus_reg): Failed prerequisite 'reg_format'
+    2    arch/mips/boot/dts/brcm/bcm63268-comtrend-vr-3032u.dtb: Warning (p=
+ci_device_reg): Failed prerequisite 'reg_format'
+    2    arch/mips/boot/dts/brcm/bcm63268-comtrend-vr-3032u.dtb: Warning (p=
+ci_device_bus_num): Failed prerequisite 'reg_format'
+    2    arch/mips/boot/dts/brcm/bcm63268-comtrend-vr-3032u.dtb: Warning (i=
+2c_bus_reg): Failed prerequisite 'reg_format'
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
 
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
@@ -124,8 +155,18 @@ Detailed per-defconfig build reports:
 
 ---------------------------------------------------------------------------=
 -----
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -136,11 +177,6 @@ n mismatches
 -----
 allnoconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
 ismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -199,6 +235,11 @@ section mismatches
 
 ---------------------------------------------------------------------------=
 -----
+badge4_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
 bcm2835_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
 tion mismatches
 
@@ -219,13 +260,59 @@ tion mismatches
 
 ---------------------------------------------------------------------------=
 -----
-bmips_be_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+bmips_be_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 8 warnings, 0 s=
 ection mismatches
+
+Warnings:
+    arch/mips/boot/dts/brcm/bcm63268.dtsi:115.5-22: Warning (reg_format): /=
+ubus/timer-mfd@10000080/watchdog@1c:reg: property has invalid length (8 byt=
+es) (#address-cells =3D=3D 2, #size-cells =3D=3D 1)
+    arch/mips/boot/dts/brcm/bcm63268.dtsi:111.4-35: Warning (ranges_format)=
+: /ubus/timer-mfd@10000080:ranges: "ranges" property has invalid length (12=
+ bytes) (parent #address-cells =3D=3D 1, child #address-cells =3D=3D 2, #si=
+ze-cells =3D=3D 1)
+    arch/mips/boot/dts/brcm/bcm63268-comtrend-vr-3032u.dtb: Warning (pci_de=
+vice_reg): Failed prerequisite 'reg_format'
+    arch/mips/boot/dts/brcm/bcm63268-comtrend-vr-3032u.dtb: Warning (pci_de=
+vice_bus_num): Failed prerequisite 'reg_format'
+    arch/mips/boot/dts/brcm/bcm63268-comtrend-vr-3032u.dtb: Warning (i2c_bu=
+s_reg): Failed prerequisite 'reg_format'
+    arch/mips/boot/dts/brcm/bcm63268-comtrend-vr-3032u.dtb: Warning (spi_bu=
+s_reg): Failed prerequisite 'reg_format'
+    arch/mips/boot/dts/brcm/bcm63268.dtsi:113.21-121.6: Warning (avoid_defa=
+ult_addr_size): /ubus/timer-mfd@10000080/watchdog@1c: Relying on default #a=
+ddress-cells value
+    arch/mips/boot/dts/brcm/bcm63268.dtsi:113.21-121.6: Warning (avoid_defa=
+ult_addr_size): /ubus/timer-mfd@10000080/watchdog@1c: Relying on default #s=
+ize-cells value
 
 ---------------------------------------------------------------------------=
 -----
-bmips_stb_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+bmips_stb_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 8 warnings, 0 =
 section mismatches
+
+Warnings:
+    arch/mips/boot/dts/brcm/bcm63268.dtsi:115.5-22: Warning (reg_format): /=
+ubus/timer-mfd@10000080/watchdog@1c:reg: property has invalid length (8 byt=
+es) (#address-cells =3D=3D 2, #size-cells =3D=3D 1)
+    arch/mips/boot/dts/brcm/bcm63268.dtsi:111.4-35: Warning (ranges_format)=
+: /ubus/timer-mfd@10000080:ranges: "ranges" property has invalid length (12=
+ bytes) (parent #address-cells =3D=3D 1, child #address-cells =3D=3D 2, #si=
+ze-cells =3D=3D 1)
+    arch/mips/boot/dts/brcm/bcm63268-comtrend-vr-3032u.dtb: Warning (pci_de=
+vice_reg): Failed prerequisite 'reg_format'
+    arch/mips/boot/dts/brcm/bcm63268-comtrend-vr-3032u.dtb: Warning (pci_de=
+vice_bus_num): Failed prerequisite 'reg_format'
+    arch/mips/boot/dts/brcm/bcm63268-comtrend-vr-3032u.dtb: Warning (i2c_bu=
+s_reg): Failed prerequisite 'reg_format'
+    arch/mips/boot/dts/brcm/bcm63268-comtrend-vr-3032u.dtb: Warning (spi_bu=
+s_reg): Failed prerequisite 'reg_format'
+    arch/mips/boot/dts/brcm/bcm63268.dtsi:113.21-121.6: Warning (avoid_defa=
+ult_addr_size): /ubus/timer-mfd@10000080/watchdog@1c: Relying on default #a=
+ddress-cells value
+    arch/mips/boot/dts/brcm/bcm63268.dtsi:113.21-121.6: Warning (avoid_defa=
+ult_addr_size): /ubus/timer-mfd@10000080/watchdog@1c: Relying on default #s=
+ize-cells value
 
 ---------------------------------------------------------------------------=
 -----
@@ -234,8 +321,18 @@ cavium_octeon_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings=
 
 ---------------------------------------------------------------------------=
 -----
+cerfcube_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
 ci20_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
 on mismatches
+
+---------------------------------------------------------------------------=
+-----
+cm_x300_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -244,8 +341,23 @@ tion mismatches
 
 ---------------------------------------------------------------------------=
 -----
+colibri_pxa270_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings=
+, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+colibri_pxa300_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings=
+, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
 collie_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
 ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+corgi_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -289,8 +401,28 @@ ismatches
 
 ---------------------------------------------------------------------------=
 -----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+eseries_pxa_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
 exynos_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
 ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+ezx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -325,6 +457,16 @@ n mismatches
 -----
 h3600_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
 on mismatches
+
+---------------------------------------------------------------------------=
+-----
+h5000_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+hackkit_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -413,6 +555,11 @@ ction mismatches
 
 ---------------------------------------------------------------------------=
 -----
+lart_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
 lemote2f_defconfig (mips, gcc-10) =E2=80=94 PASS, 1 error, 0 warnings, 0 se=
 ction mismatches
 
@@ -460,6 +607,26 @@ tion mismatches
 
 ---------------------------------------------------------------------------=
 -----
+lpd270_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+lubbock_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+magician_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+mainstone_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
 malta_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
 ion mismatches
 
@@ -502,6 +669,11 @@ maltaup_xpa_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
 -----
 milbeaut_m10v_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings,=
  0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+mini2440_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -610,13 +782,33 @@ ction mismatches
 
 ---------------------------------------------------------------------------=
 -----
+palmz72_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+pcm027_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
 pic32mzda_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
 section mismatches
 
 ---------------------------------------------------------------------------=
 -----
+pleb_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
 pxa168_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
 ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+pxa255-idp_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -680,6 +872,11 @@ ion mismatches
 
 ---------------------------------------------------------------------------=
 -----
+s3c2410_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
 s3c6400_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
 tion mismatches
 
@@ -705,8 +902,18 @@ sb1250_swarm_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings,=
 
 ---------------------------------------------------------------------------=
 -----
+shannon_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
 shmobile_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
 ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+simpad_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -750,6 +957,11 @@ on mismatches
 
 ---------------------------------------------------------------------------=
 -----
+tct_hammer_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
+section mismatches
+
+---------------------------------------------------------------------------=
+-----
 tegra_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
 on mismatches
 
@@ -767,6 +979,11 @@ ismatches
 -----
 tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
  mismatches
+
+---------------------------------------------------------------------------=
+-----
+trizeps4_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -800,6 +1017,11 @@ tion mismatches
 
 ---------------------------------------------------------------------------=
 -----
+viper_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
 vocore2_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
 ction mismatches
 
@@ -810,11 +1032,6 @@ vt8500_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
 
 ---------------------------------------------------------------------------=
 -----
-wpcm450_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
 x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
 ection mismatches
 
@@ -822,6 +1039,16 @@ ection mismatches
 -----
 x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
 0 warnings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+xcep_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+zeus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
 
 ---
 For more info write to <info@kernelci.org>
