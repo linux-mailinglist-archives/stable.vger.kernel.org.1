@@ -2,164 +2,149 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 766277306B5
-	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 20:05:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89FD5730719
+	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 20:10:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238969AbjFNSFV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 14 Jun 2023 14:05:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37398 "EHLO
+        id S230186AbjFNSKU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 14 Jun 2023 14:10:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235455AbjFNSEq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 14:04:46 -0400
+        with ESMTP id S241321AbjFNSJu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 14:09:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9230E2117
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 11:04:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBBAE3593;
+        Wed, 14 Jun 2023 11:09:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C5AF063805
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 18:04:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F381C433BF;
-        Wed, 14 Jun 2023 18:04:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6BBB26458E;
+        Wed, 14 Jun 2023 18:07:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB21C433C0;
+        Wed, 14 Jun 2023 18:07:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686765883;
-        bh=eD43QHpsk15A4pO5TpffxTwJIE9JOTt4JZ4NFLKhj3U=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-        b=DHYZQFCy3c5tlhhbjoRXv4FwgDDKRcOrYkLGDSM/byz0NJWoJF1q31zoO4/k1OaMh
-         aehjqOvKYJbF/x1VpXirfdr7c09yRjGXNVBHHzjoiZmfcE5EOjMIXt6FQ9KX4x5uGZ
-         1mE4BYUh776p2bVAlRPWFO/xsltIOH33+U+06/WhUjZA/PAiYosiiy/PGAxXTI8dy/
-         ZWcOmqqwVm3jBlbVxyW+wABWh32N2M8TCHoMbnSvDoYYCo4Xo7tT00QRF2OfMTvdk7
-         5py0Pecq8ENWfuS+Yox2lqehnyws7Auwi0dhxlqJYyYkkgfmyb4BQzwIzcKkbd1u8/
-         jGNmp9tW43v4A==
+        s=k20201202; t=1686766077;
+        bh=Uf4sTtIWxAwykiAlD6TKOwJqAz2NJsqgiC/LwUbwvjo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=XARG4ZSJAarJrHn5Jaf0ASt3Qx98VTQJUyDOPFK/JIwyuJ8QaEDeZ8PGuZrUBtisz
+         3ED4S9NC1ACVqmzp3/ty8A+idvmRDWIBqrSZMXRll+zkBP6ljDFcFB6mi+Ta5+licX
+         1OcAz3WCcnxwQ2fheuT7UiUVkmeonyIXDjSHcYOZ+pYmaNIL3lflczmuDcTmSj8k72
+         uDnOUpYpMEUDSyl/Cwe06zLy4riwAwrtiqCsVBawufzl/hM7K7/NhIKNMhDby/vQwQ
+         5TKwBPlbBOxk/I/DCclB6r7JEpj8Zve0EQXeqhXt//rL/jGTzQEUCCFWOPZpQt949z
+         c5VFlJRoPnEtw==
+Date:   Wed, 14 Jun 2023 11:07:55 -0700
 From:   Nathan Chancellor <nathan@kernel.org>
-Date:   Wed, 14 Jun 2023 11:04:38 -0700
-Subject: [PATCH 6.1 4/4] kbuild: Update assembler calls to use proper flags
- and language target
+To:     Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc:     clang-built-linux <llvm@lists.linux.dev>,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-stable <stable@vger.kernel.org>,
+        lkft-triage@lists.linaro.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        Daniel =?iso-8859-1?Q?D=EDaz?= <daniel.diaz@linaro.org>,
+        Dan Carpenter <dan.carpenter@linaro.org>
+Subject: Re: clang: Powerpc: =?utf-8?Q?clang-nightl?=
+ =?utf-8?B?eS1tYXBsZV9kZWZjb25maWcg4oCU?= FAIL
+Message-ID: <20230614180755.GA2035364@dev-arch.thelio-3990X>
+References: <CA+G9fYsJq0sPC+q6vLNKUgBqCGmmjDrfeP4R1-95Eu28FJRY_A@mail.gmail.com>
+ <20230612185424.GA2891387@dev-arch.thelio-3990X>
+ <CA+G9fYtX6YNqmz9vxJxa5cA5Uf2rr=RNM0nkoTzRpg79Azp2tA@mail.gmail.com>
+ <CA+G9fYvmqz3nQ=Cgs=7J6vtRj=OhbNzgkLPmxxN+vOBTU=9zVA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230612-6-1-asssembler-target-llvm-17-v1-4-75605d553401@kernel.org>
-References: <20230612-6-1-asssembler-target-llvm-17-v1-0-75605d553401@kernel.org>
-In-Reply-To: <20230612-6-1-asssembler-target-llvm-17-v1-0-75605d553401@kernel.org>
-To:     gregkh@linuxfoundation.org, sashal@kernel.org,
-        ndesaulniers@google.com
-Cc:     naresh.kamboju@linaro.org, stable@vger.kernel.org,
-        llvm@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Linux Kernel Functional Testing <lkft@linaro.org>,
-        Anders Roxell <anders.roxell@linaro.org>
-X-Mailer: b4 0.13-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3978; i=nathan@kernel.org;
- h=from:subject:message-id; bh=P6OQWYzETz4C5iIyDA0p8vZZJnpeR67V/X1TfW2vqWA=;
- b=owGbwMvMwCEmm602sfCA1DTG02pJDCldjGaOzvb+vXmr8382TTx6bE/08+raGiOe1e77dnd+j
- P3kG3qxo5SFQYyDQVZMkaX6sepxQ8M5ZxlvnJoEM4eVCWQIAxenAEykW5eRYVPVhabVew/P0Ula
- 5LTCee7KazcZD3rxBYs8X7Gv9ZS3hBEjw674a6F+fJaJl9eohwTm6+V6ed29tuT50smn1ZRCzpx
- t5AcA
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+G9fYvmqz3nQ=Cgs=7J6vtRj=OhbNzgkLPmxxN+vOBTU=9zVA@mail.gmail.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nick Desaulniers <ndesaulniers@google.com>
+On Wed, Jun 14, 2023 at 07:43:45PM +0530, Naresh Kamboju wrote:
+> Hi Nathan,
+> 
+> On Tue, 13 Jun 2023 at 09:57, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+> >
+> > Hi Nathan,
+> >
+> > On Tue, 13 Jun 2023 at 00:24, Nathan Chancellor <nathan@kernel.org> wrote:
+> > >
+> > > Hi Naresh,
+> > >
+> > > On Tue, Jun 13, 2023 at 12:10:30AM +0530, Naresh Kamboju wrote:
+> > > > [Please ignore if it is already reported]
+> > > >
+> > > > Following two builds failed on stable-rc 6.1.34-rc1.
+> > > >
+> > > >   - Powerpc: clang-nightly-maple_defconfig — FAIL
+> > > >   - Powerpc: clang-nightly-cell_defconfig — FAIL
+> > > >
+> 
+> > > As always, thanks for the report. This is an LLVM regression/change in
+> > > behavior caused by [1], which can break as-option and as-instr on
+> > > releases prior to commit d5c8d6e0fa61 ("kbuild: Update assembler calls
+> > > to use proper flags and language target"), as unsupported flags for the
+> > > current target ('-x') may be present (KBUILD_CFLAGS is used for these
+> > > tests instead of KBUILD_AFLAGS). Inside try-run, the macro behind
+> > > as-instr and as-option, I see
+> > >
+> > >   clang-17: error: unsupported option '-mno-prefixed' for target 'powerpc64le-linux-gnu'
+> > >   clang-17: error: unsupported option '-mno-pcrel' for target 'powerpc64le-linux-gnu'
+> > >   clang-17: error: unsupported option '-mno-altivec' for target 'powerpc64le-linux-gnu'
+> > >   clang-17: error: unsupported option '-mno-vsx' for target 'powerpc64le-linux-gnu'
+> > >   clang-17: error: unsupported option '-mno-mma' for target 'powerpc64le-linux-gnu'
+> > >   clang-17: error: unsupported option '-mno-spe' for target 'powerpc64le-linux-gnu'
+> > >
+> > > This has come up recently elsewhere in PowerPC, see
+> > > commit 2b694fc96fe3 ("powerpc/boot: Disable power10 features after
+> > > BOOTAFLAGS assignment"). While I think it is dubious that clang errors
+> > > on these flags for the assembler target, this is already fixed on the
+> > > Linux side by using KBUILD_AFLAGS for these make macros.
+> > >
+> > > I am preparing a series of d5c8d6e0fa61 and its dependencies for 6.1 but
+> > > I want to do sufficient build testing first, which is currently running
+> > > for me. Would you be able to point your matrix to [2] to make sure
+> > > everything works properly with both GCC and LLVM? It is a work in
+> > > progress as the second patch in the stack needs a proper commit message
+> > > but it is the diff I expect to ship so that it all that matters.
+> >
+> > We'll start building [2] with GCC and LLVM by using tuxplans and
+> > get back to you.
+> 
+> LKFT has been configured to run GCC and LLVM in total 205 builds
+> and all the builds have passed on your tree / branch [2]. You can find
+> the list of builds including kselftest, perf, rcutorture, kunit, kmemleak
+> and many more combinations and architectures.
+> 
+> I request you to review the list of builds results and test results on
+> projects page [3] [4]. I do not find any regressions compared with
+> mainline master as sanity testing.
 
-commit d5c8d6e0fa61401a729e9eb6a9c7077b2d3aebb0 upstream.
+Thanks a lot for testing!
 
-as-instr uses KBUILD_AFLAGS, but as-option uses KBUILD_CFLAGS. This can
-cause as-option to fail unexpectedly when CONFIG_WERROR is set, because
-clang will emit -Werror,-Wunused-command-line-argument for various -m
-and -f flags in KBUILD_CFLAGS for assembler sources.
+> Do you think LKFT should build your tree / branch often ?
+> We are happy to test anytime.
 
-Callers of as-option and as-instr should be adding flags to
-KBUILD_AFLAGS / aflags-y, not KBUILD_CFLAGS / cflags-y. Use
-KBUILD_AFLAGS in all macros to clear up the initial problem.
+No, this is an exceptional circumstance, not the norm. If I need wider
+testing done in the future, I will keep you all in mind :)
 
-Unfortunately, -Wunused-command-line-argument can still be triggered
-with clang by the presence of warning flags or macro definitions because
-'-x assembler' is used, instead of '-x assembler-with-cpp', which will
-consume these flags. Switch to '-x assembler-with-cpp' in places where
-'-x assembler' is used, as the compiler is always used as the driver for
-out of line assembler sources in the kernel.
+> Thanks Daniel and Anders for your work.
+> 
+> build_names: that got tested and all have passed.
+> 
 
-Finally, add -Werror to these macros so that they behave consistently
-whether or not CONFIG_WERROR is set.
+<snip>
 
-[nathan: Reworded and expanded on problems in commit message
-         Use '-x assembler-with-cpp' in a couple more places]
+Great! I sent along the 6.1 backports now:
 
-Link: https://github.com/ClangBuiltLinux/linux/issues/1699
-Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Anders Roxell <anders.roxell@linaro.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
- scripts/Kconfig.include   | 2 +-
- scripts/Makefile.compiler | 8 ++++----
- scripts/as-version.sh     | 2 +-
- 3 files changed, 6 insertions(+), 6 deletions(-)
+https://lore.kernel.org/20230612-6-1-asssembler-target-llvm-17-v1-0-75605d553401@kernel.org/
 
-diff --git a/scripts/Kconfig.include b/scripts/Kconfig.include
-index 274125307ebd..5a84b6443875 100644
---- a/scripts/Kconfig.include
-+++ b/scripts/Kconfig.include
-@@ -33,7 +33,7 @@ ld-option = $(success,$(LD) -v $(1))
- 
- # $(as-instr,<instr>)
- # Return y if the assembler supports <instr>, n otherwise
--as-instr = $(success,printf "%b\n" "$(1)" | $(CC) $(CLANG_FLAGS) -c -x assembler -o /dev/null -)
-+as-instr = $(success,printf "%b\n" "$(1)" | $(CC) $(CLANG_FLAGS) -c -x assembler-with-cpp -o /dev/null -)
- 
- # check if $(CC) and $(LD) exist
- $(error-if,$(failure,command -v $(CC)),C compiler '$(CC)' not found)
-diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
-index 20d353dcabfb..158c57f2acfd 100644
---- a/scripts/Makefile.compiler
-+++ b/scripts/Makefile.compiler
-@@ -29,16 +29,16 @@ try-run = $(shell set -e;		\
- 	fi)
- 
- # as-option
--# Usage: cflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
-+# Usage: aflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
- 
- as-option = $(call try-run,\
--	$(CC) $(KBUILD_CFLAGS) $(1) -c -x assembler /dev/null -o "$$TMP",$(1),$(2))
-+	$(CC) -Werror $(KBUILD_AFLAGS) $(1) -c -x assembler-with-cpp /dev/null -o "$$TMP",$(1),$(2))
- 
- # as-instr
--# Usage: cflags-y += $(call as-instr,instr,option1,option2)
-+# Usage: aflags-y += $(call as-instr,instr,option1,option2)
- 
- as-instr = $(call try-run,\
--	printf "%b\n" "$(1)" | $(CC) $(KBUILD_AFLAGS) -c -x assembler -o "$$TMP" -,$(2),$(3))
-+	printf "%b\n" "$(1)" | $(CC) -Werror $(KBUILD_AFLAGS) -c -x assembler-with-cpp -o "$$TMP" -,$(2),$(3))
- 
- # __cc-option
- # Usage: MY_CFLAGS += $(call __cc-option,$(CC),$(MY_CFLAGS),-march=winchip-c6,-march=i586)
-diff --git a/scripts/as-version.sh b/scripts/as-version.sh
-index 1a21495e9ff0..af717476152d 100755
---- a/scripts/as-version.sh
-+++ b/scripts/as-version.sh
-@@ -45,7 +45,7 @@ orig_args="$@"
- # Get the first line of the --version output.
- IFS='
- '
--set -- $(LC_ALL=C "$@" -Wa,--version -c -x assembler /dev/null -o /dev/null 2>/dev/null)
-+set -- $(LC_ALL=C "$@" -Wa,--version -c -x assembler-with-cpp /dev/null -o /dev/null 2>/dev/null)
- 
- # Split the line on spaces.
- IFS=' '
-
--- 
-2.41.0
-
+Thanks again for testing and the report, cheers!
+Nathan
