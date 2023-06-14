@@ -2,161 +2,116 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B4C873043F
-	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 17:54:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F28F730504
+	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 18:35:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241786AbjFNPy0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 14 Jun 2023 11:54:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49748 "EHLO
+        id S234582AbjFNQfh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 14 Jun 2023 12:35:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244996AbjFNPyZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 11:54:25 -0400
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D517F106;
-        Wed, 14 Jun 2023 08:54:22 -0700 (PDT)
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-        by mx0a-00128a01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35EDtObl014662;
-        Wed, 14 Jun 2023 11:54:09 -0400
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-        by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3r4p359c1s-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 14 Jun 2023 11:54:08 -0400
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-        by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 35EFs7Ho029744
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 14 Jun 2023 11:54:07 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 14 Jun
- 2023 11:54:06 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Wed, 14 Jun 2023 11:54:06 -0400
-Received: from dariana.ad.analog.com ([10.48.65.197])
-        by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 35EFrqeM020884;
-        Wed, 14 Jun 2023 11:53:55 -0400
-From:   Alisa Roman <alisa.roman@analog.com>
-CC:     Alisa Roman <alisa.roman@analog.com>, <stable@vger.kernel.org>,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH] iio: adc: ad7192: Fix ac excitation feature
-Date:   Wed, 14 Jun 2023 18:52:43 +0300
-Message-ID: <20230614155242.160296-1-alisa.roman@analog.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S234558AbjFNQf0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 12:35:26 -0400
+Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 896622689;
+        Wed, 14 Jun 2023 09:34:55 -0700 (PDT)
+Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-1a2c85ef3c2so5496753fac.0;
+        Wed, 14 Jun 2023 09:34:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686760495; x=1689352495;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=P02UcLI2//J8LvUgRFLkUqu+ureKnlEB4HrY9Uc3j4k=;
+        b=J0jSJqDukYcfhA7sISg8YT5j2AJRPy7WWscY0Pmtmu1xD+4jgXykkAo2CVR7ZJbtH2
+         LxJMgSOX9Tg84S4auSG+Dq4bdv6+pfcoAoGw0s+Kk3HbW7J93Rt+B3bMKIPPwBykdcai
+         dUor7roPb9xBLCf2UMlIcU4vkKdW4qmSSnleDsM6wQxxBd/MhNTCJSUlnsOHyI73W7sb
+         QR3xW8HF6/YWt7RuA0xR79c2aH0UnKegkHc+zZyDEGgOgp02w6poDo5FYWyG0LTlDF3n
+         juTk/s3ZSRipEKSmANiG9qYT4AmNRq8DglCgqd8Imj5iR7qnG2im3Oa8eFSh/8ZmjGCl
+         ZNiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686760495; x=1689352495;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=P02UcLI2//J8LvUgRFLkUqu+ureKnlEB4HrY9Uc3j4k=;
+        b=ZAymgT/AAYGAD5jTszhz9rbq1QwYn1ZFM9PkhCXK2JRY3dU/0yjyaO7Tpk/lzouxN7
+         Sd2nnf2EmOex3+nRzk1g2q92pE+aQEU37dOHneShFhK33eI7w99CLhLLUJlw1lY5IcBf
+         aJ8JIGj9bj8hNtOkwMhNqo3/18hAf9K7D6UmajjKSRH434eQ0GBw+6kynqwPuronxhKk
+         5Hd8Rf+UB9z5WyEz6tmOMnjSIQTnz1xSDHzJfxohio3Kwqrd2jW5km19LuNpWoJ58/uv
+         VYSy6d+2upohLpyvuSnRrnibKfAFX9WmZC7lomWYUrCK4oJCMoxxSXsvONFaOGZWYLrI
+         cc5Q==
+X-Gm-Message-State: AC+VfDzbc/V4AIsT9gt7HN7QWNbq+t7pMc+DW1pAm4MFvtXi3GPl57wm
+        6g5yWWBNTG0fEXUgGSbeeqA=
+X-Google-Smtp-Source: ACHHUZ6LPh/lBfJJZiZ/JXibWTrWDOw5+WfS7pNTIAJ13gUHKTNkU1bHLYeyD6Kf/khV7txSsY69SA==
+X-Received: by 2002:a05:6870:a695:b0:19e:475:9df1 with SMTP id i21-20020a056870a69500b0019e04759df1mr13490656oam.27.1686760494607;
+        Wed, 14 Jun 2023 09:34:54 -0700 (PDT)
+Received: from [192.168.54.90] (static.220.238.itcsa.net. [190.15.220.238])
+        by smtp.gmail.com with ESMTPSA id ld10-20020a0568702b0a00b001762ce27f9asm8848922oab.23.2023.06.14.09.34.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Jun 2023 09:34:54 -0700 (PDT)
+Message-ID: <6e61f06f-2411-0bcb-926b-0a6927096f20@gmail.com>
+Date:   Wed, 14 Jun 2023 13:30:54 -0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: cr6Efloz85FlQNTvcRMST9D6wbR_8Q67
-X-Proofpoint-ORIG-GUID: cr6Efloz85FlQNTvcRMST9D6wbR_8Q67
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-14_11,2023-06-14_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- priorityscore=1501 suspectscore=0 spamscore=0 clxscore=1011
- impostorscore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=999
- bulkscore=0 mlxscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2305260000 definitions=main-2306140138
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] rust: allocator: Prevents mis-aligned allocation
+Content-Language: en-US
+To:     Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc:     Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=c3=b6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Alice Ryhl <aliceryhl@google.com>,
+        Dariusz Sosnowski <dsosnowski@dsosnowski.pl>,
+        Geoffrey Thomas <geofft@ldpreload.com>,
+        Fox Chen <foxhlchen@gmail.com>,
+        John Baublitz <john.m.baublitz@gmail.com>,
+        Christoph Lameter <cl@linux.com>,
+        Pekka Enberg <penberg@kernel.org>,
+        David Rientjes <rientjes@google.com>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+        Kees Cook <keescook@chromium.org>,
+        Andreas Hindborg <nmi@metaspace.dk>, stable@vger.kernel.org
+References: <20230613164258.3831917-1-boqun.feng@gmail.com>
+From:   Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+In-Reply-To: <20230613164258.3831917-1-boqun.feng@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-AC excitation enable feature exposed to user on AD7192, allowing a bit
-which should be 0 to be set. This feature is specific only to AD7195. AC
-excitation attribute moved accordingly.
+On 6/13/23 13:42, Boqun Feng wrote:
+> Currently the KernelAllocator simply passes the size of the type Layout
+> to krealloc(), and in theory the alignment requirement from the type
+> Layout may be larger than the guarantee provided by SLAB, which means
+> the allocated object is mis-aligned.
+> 
+> Fixes this by adjusting the allocation size to the nearest power of two,
+> which SLAB always guarantees a size-aligned allocation. And because Rust
+> guarantees that original size must be a multiple of alignment and the
+> alignment must be a power of two, then the alignment requirement is
+> satisfied.
+> 
+> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+> Co-developed-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
+> Signed-off-by: Andreas Hindborg (Samsung) <nmi@metaspace.dk>
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Cc: stable@vger.kernel.org # v6.1+
+> ---
+> [...]
 
-In the AD7195 documentation, the AC excitation enable bit is on position
-22 in the Configuration register. ACX macro changed to match correct
-register and bit.
-
-Note that the fix tag is for the commit that moved the driver out of
-staging.
-
-Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
-Signed-off-by: Alisa Roman <alisa.roman@analog.com>
-Cc: stable@vger.kernel.org
----
- drivers/iio/adc/ad7192.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-index 8685e0b58a83..7bc3ebfe8081 100644
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -62,7 +62,6 @@
- #define AD7192_MODE_STA_MASK	BIT(20) /* Status Register transmission Mask */
- #define AD7192_MODE_CLKSRC(x)	(((x) & 0x3) << 18) /* Clock Source Select */
- #define AD7192_MODE_SINC3	BIT(15) /* SINC3 Filter Select */
--#define AD7192_MODE_ACX		BIT(14) /* AC excitation enable(AD7195 only)*/
- #define AD7192_MODE_ENPAR	BIT(13) /* Parity Enable */
- #define AD7192_MODE_CLKDIV	BIT(12) /* Clock divide by 2 (AD7190/2 only)*/
- #define AD7192_MODE_SCYCLE	BIT(11) /* Single cycle conversion */
-@@ -91,6 +90,7 @@
- /* Configuration Register Bit Designations (AD7192_REG_CONF) */
- 
- #define AD7192_CONF_CHOP	BIT(23) /* CHOP enable */
-+#define AD7192_CONF_ACX		BIT(22) /* AC excitation enable(AD7195 only) */
- #define AD7192_CONF_REFSEL	BIT(20) /* REFIN1/REFIN2 Reference Select */
- #define AD7192_CONF_CHAN(x)	((x) << 8) /* Channel select */
- #define AD7192_CONF_CHAN_MASK	(0x7FF << 8) /* Channel select mask */
-@@ -472,7 +472,7 @@ static ssize_t ad7192_show_ac_excitation(struct device *dev,
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
- 	struct ad7192_state *st = iio_priv(indio_dev);
- 
--	return sysfs_emit(buf, "%d\n", !!(st->mode & AD7192_MODE_ACX));
-+	return sysfs_emit(buf, "%d\n", !!(st->conf & AD7192_CONF_ACX));
- }
- 
- static ssize_t ad7192_show_bridge_switch(struct device *dev,
-@@ -513,13 +513,13 @@ static ssize_t ad7192_set(struct device *dev,
- 
- 		ad_sd_write_reg(&st->sd, AD7192_REG_GPOCON, 1, st->gpocon);
- 		break;
--	case AD7192_REG_MODE:
-+	case AD7192_REG_CONF:
- 		if (val)
--			st->mode |= AD7192_MODE_ACX;
-+			st->conf |= AD7192_CONF_ACX;
- 		else
--			st->mode &= ~AD7192_MODE_ACX;
-+			st->conf &= ~AD7192_CONF_ACX;
- 
--		ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
-+		ad_sd_write_reg(&st->sd, AD7192_REG_CONF, 3, st->conf);
- 		break;
- 	default:
- 		ret = -EINVAL;
-@@ -579,12 +579,11 @@ static IIO_DEVICE_ATTR(bridge_switch_en, 0644,
- 
- static IIO_DEVICE_ATTR(ac_excitation_en, 0644,
- 		       ad7192_show_ac_excitation, ad7192_set,
--		       AD7192_REG_MODE);
-+		       AD7192_REG_CONF);
- 
- static struct attribute *ad7192_attributes[] = {
- 	&iio_dev_attr_filter_low_pass_3db_frequency_available.dev_attr.attr,
- 	&iio_dev_attr_bridge_switch_en.dev_attr.attr,
--	&iio_dev_attr_ac_excitation_en.dev_attr.attr,
- 	NULL
- };
- 
-@@ -595,6 +594,7 @@ static const struct attribute_group ad7192_attribute_group = {
- static struct attribute *ad7195_attributes[] = {
- 	&iio_dev_attr_filter_low_pass_3db_frequency_available.dev_attr.attr,
- 	&iio_dev_attr_bridge_switch_en.dev_attr.attr,
-+	&iio_dev_attr_ac_excitation_en.dev_attr.attr,
- 	NULL
- };
- 
--- 
-2.34.1
-
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
