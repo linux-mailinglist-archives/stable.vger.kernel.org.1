@@ -2,94 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 187AE72F3E5
-	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 07:02:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A9CE72F49A
+	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 08:19:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241866AbjFNFCt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 14 Jun 2023 01:02:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45456 "EHLO
+        id S242719AbjFNGTP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 14 Jun 2023 02:19:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234261AbjFNFCs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 01:02:48 -0400
-Received: from qproxy5-pub.mail.unifiedlayer.com (qproxy5-pub.mail.unifiedlayer.com [69.89.21.30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9776A122
-        for <stable@vger.kernel.org>; Tue, 13 Jun 2023 22:02:47 -0700 (PDT)
-Received: from outbound-ss-761.bluehost.com (outbound-ss-761.bluehost.com [74.220.211.250])
-        by qproxy5.mail.unifiedlayer.com (Postfix) with ESMTP id 1FF3980347D4
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 05:02:47 +0000 (UTC)
-Received: from cmgw12.mail.unifiedlayer.com (unknown [10.0.90.127])
-        by progateway8.mail.pro1.eigbox.com (Postfix) with ESMTP id DB54C100425FE
-        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 05:01:44 +0000 (UTC)
-Received: from box5620.bluehost.com ([162.241.219.59])
-        by cmsmtp with ESMTP
-        id 9Idcq8Okjn5XG9IdcqoDef; Wed, 14 Jun 2023 05:01:44 +0000
-X-Authority-Reason: nr=8
-X-Authority-Analysis: v=2.4 cv=H8cef8Ui c=1 sm=1 tr=0 ts=648949b8
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=IkcTkHD0fZMA:10:nop_charset_1
- a=of4jigFt-DYA:10:nop_rcvd_month_year
- a=-Ou01B_BuAIA:10:endurance_base64_authed_username_1 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10:nop_charset_2
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=adZdi2LXlXHFlZp3fSHvtmu5fJHU7hbgAPOiM/jZGjs=; b=Ey2wv6MbBNtLxVCiEo3Ha1BpvZ
-        QLf5/nctMuFjdmkr9S2nLFAj14hpmDCdH7pGpXfEqKQcpFwhS4PqYpziW2wZmgmNprAxhxQaYR3Lm
-        DoLfBg9m7QYhXVNfnoeh5UIXdnTfQ2o9ZZhYUUqPLOcdOE1/UZvjq4W+wLi/wxM48aUVqlQy8Inog
-        s2psA0qH6ObL/bxUyb/08kjmXxZs9bqy8LLys/39C0thjcF2wY1DFEeImPOZiw9fSod3DUJruqn9u
-        9wiRr22ctnblhhK+eSOgtS1bu72OXQTMU6sWJGk/HOWOvHlNR2f3qQXEimcWig50M8P9D2YPREvPr
-        pfKtWSZA==;
-Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:43854 helo=[10.0.1.47])
-        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.95)
-        (envelope-from <re@w6rz.net>)
-        id 1q9Idb-0022dG-5W;
-        Tue, 13 Jun 2023 23:01:43 -0600
-Subject: Re: [PATCH 5.15 00/91] 5.15.117-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de
-References: <20230612101702.085813286@linuxfoundation.org>
-In-Reply-To: <20230612101702.085813286@linuxfoundation.org>
-From:   Ron Economos <re@w6rz.net>
-Message-ID: <80ae43cb-a056-1bb3-239a-4569b660c7c6@w6rz.net>
-Date:   Tue, 13 Jun 2023 22:01:40 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        with ESMTP id S242982AbjFNGTJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 02:19:09 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFA191BE3;
+        Tue, 13 Jun 2023 23:19:07 -0700 (PDT)
+Received: from dggpemm500014.china.huawei.com (unknown [172.30.72.55])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Qgw9W1MSgzqTcl;
+        Wed, 14 Jun 2023 14:14:07 +0800 (CST)
+Received: from localhost.localdomain (10.175.112.125) by
+ dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Wed, 14 Jun 2023 14:19:04 +0800
+From:   Wupeng Ma <mawupeng1@huawei.com>
+To:     <akpm@linux-foundation.org>, <david@redhat.com>
+CC:     <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+        <mawupeng1@huawei.com>, <stable@vger.kernel.org>
+Subject: [PATCH stable 5.10 0/1] Fix memleak during hotremove memory
+Date:   Wed, 14 Jun 2023 14:18:59 +0800
+Message-ID: <20230614061900.3296725-1-mawupeng1@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.232.9
-X-Source-L: No
-X-Exim-ID: 1q9Idb-0022dG-5W
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:43854
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.112.125]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemm500014.china.huawei.com (7.185.36.153)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -97,26 +45,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 6/12/23 3:25 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.117 release.
-> There are 91 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 14 Jun 2023 10:16:41 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.117-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+From: Ma Wupeng <mawupeng1@huawei.com>
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Hi maintainers:
 
-Tested-by: Ron Economos <re@w6rz.net>
+Our test find a memleak in init_memory_block, it is clear that mem is never
+been released due to wrong refcount. Commit 08b3acd7a68f ("mm/memory_hotplug:
+Introduce offline_and_remove_memory()") failed to dec refcount after
+find_memory_block which fail to dec refcount to zero in remove memory
+causing the leak.
+
+Commit 8dc4bb58a146 ("mm/memory_hotplug: extend offline_and_remove_memory()
+to handle more than one memory block") introduce walk_memory_blocks to
+replace find_memory_block which dec refcount by calling put_device after
+find_memory_block_by_id. In the way, the memleak is fixed.
+
+Here is the simplified calltrace:
+
+  kmem_cache_alloc_trace+0x664/0xed0
+  init_memory_block+0x8c/0x170
+  create_memory_block_devices+0xa4/0x150
+  add_memory_resource+0x188/0x530
+  __add_memory+0x78/0x104
+  add_memory+0x6c/0xb0
+
+David Hildenbrand (1):
+  mm/memory_hotplug: extend offline_and_remove_memory() to handle more
+    than one memory block
+
+ mm/memory_hotplug.c | 105 +++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 89 insertions(+), 16 deletions(-)
+
+-- 
+2.25.1
 
