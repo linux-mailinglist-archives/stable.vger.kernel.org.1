@@ -2,149 +2,89 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89FD5730719
-	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 20:10:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC33273074F
+	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 20:24:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230186AbjFNSKU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 14 Jun 2023 14:10:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39148 "EHLO
+        id S233699AbjFNSYJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 14 Jun 2023 14:24:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241321AbjFNSJu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 14:09:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBBAE3593;
-        Wed, 14 Jun 2023 11:09:00 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6BBB26458E;
-        Wed, 14 Jun 2023 18:07:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB21C433C0;
-        Wed, 14 Jun 2023 18:07:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686766077;
-        bh=Uf4sTtIWxAwykiAlD6TKOwJqAz2NJsqgiC/LwUbwvjo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=XARG4ZSJAarJrHn5Jaf0ASt3Qx98VTQJUyDOPFK/JIwyuJ8QaEDeZ8PGuZrUBtisz
-         3ED4S9NC1ACVqmzp3/ty8A+idvmRDWIBqrSZMXRll+zkBP6ljDFcFB6mi+Ta5+licX
-         1OcAz3WCcnxwQ2fheuT7UiUVkmeonyIXDjSHcYOZ+pYmaNIL3lflczmuDcTmSj8k72
-         uDnOUpYpMEUDSyl/Cwe06zLy4riwAwrtiqCsVBawufzl/hM7K7/NhIKNMhDby/vQwQ
-         5TKwBPlbBOxk/I/DCclB6r7JEpj8Zve0EQXeqhXt//rL/jGTzQEUCCFWOPZpQt949z
-         c5VFlJRoPnEtw==
-Date:   Wed, 14 Jun 2023 11:07:55 -0700
-From:   Nathan Chancellor <nathan@kernel.org>
-To:     Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc:     clang-built-linux <llvm@lists.linux.dev>,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-stable <stable@vger.kernel.org>,
-        lkft-triage@lists.linaro.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        Daniel =?iso-8859-1?Q?D=EDaz?= <daniel.diaz@linaro.org>,
-        Dan Carpenter <dan.carpenter@linaro.org>
-Subject: Re: clang: Powerpc: =?utf-8?Q?clang-nightl?=
- =?utf-8?B?eS1tYXBsZV9kZWZjb25maWcg4oCU?= FAIL
-Message-ID: <20230614180755.GA2035364@dev-arch.thelio-3990X>
-References: <CA+G9fYsJq0sPC+q6vLNKUgBqCGmmjDrfeP4R1-95Eu28FJRY_A@mail.gmail.com>
- <20230612185424.GA2891387@dev-arch.thelio-3990X>
- <CA+G9fYtX6YNqmz9vxJxa5cA5Uf2rr=RNM0nkoTzRpg79Azp2tA@mail.gmail.com>
- <CA+G9fYvmqz3nQ=Cgs=7J6vtRj=OhbNzgkLPmxxN+vOBTU=9zVA@mail.gmail.com>
+        with ESMTP id S231238AbjFNSYI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 14:24:08 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 208F4DF
+        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 11:24:07 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-514ad92d1e3so967a12.1
+        for <stable@vger.kernel.org>; Wed, 14 Jun 2023 11:24:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1686767045; x=1689359045;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=0XMSBiDo8EnwlS/NxAuHXvKqJ7PWX8RjNfkfEfB1GdY=;
+        b=zSAU5lzePns89P3SFuo1OM+oKQae+GVi7WShgrffrr4QwuWw3wtuxluTYjVRhCvMqS
+         mPK/5yvUzJdmaX+Jh9Edli4Zfg9vJ79RWqjxZjRclscN1Jt9RB8/CeHUAYstl2+8xogj
+         pB3MQTzDMfog9gnFuqZL+RUHsM2njYC4twBWa+j1xRKy40Um6xdWBrg17NxHeeYUs7op
+         ksAVGb3zpxbYOOVZG32rAJSi1dc3jMcEQ0UxH4Am2Y66+NBtMovAC4BW8LZAPei5eluD
+         Ff8wAmQ8K1rymK1AI0/+49wKnpR3+lHgxejVictfJUc/XYn2iaa3muQP//5B7nyP7feT
+         jvwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686767045; x=1689359045;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0XMSBiDo8EnwlS/NxAuHXvKqJ7PWX8RjNfkfEfB1GdY=;
+        b=RdL4/jozXJHXdu8pOPHy/cYRed56Y8jgA8EfL0b264/yk2jUNDwZBlTVfuPKsQDqA9
+         EZoX8NEnXb3BKFULc9aqQvknAJe0cXT+hFN9xFyTK8EwOdFNW7aZ7g+xy4Ip4i7aZj1Z
+         m3eS8LB5Tr7zHuLp55LAhbo2AfWXW6pUWRv8XxHFSQo7n52cIb5jyWBxFBLXBKh04oZi
+         uFs3e5Y4nwZt5BwQYcjVSVHOhdJHAy/4ldMNDvYqvlnhGX+aw3WdnTeNOWUVTMizfqLf
+         FixbdffI72xX3OTXmCoAJ2BejZapUrNqEypj8Xa8MxQ14GzuQqos2rU3uf1zQqIXG4JH
+         UhVA==
+X-Gm-Message-State: AC+VfDxXgd5qDm1BzC4JQ7zwvGEFOSlsZWY6PezY4of2UpTK8yOuZRQd
+        96MjmM7LNkaHYpt0PZCvwdYxamVGoA7OKRcsn4RSPiTkORhUkqy+szqA
+X-Google-Smtp-Source: ACHHUZ4FUPbfTsBArfrhGvB4xXY/W/lejL+aLFB3U1S+AVe+dvd/NAucJjEQf4WFTSz3BKgCgoYIR7gwXou+08id5y4=
+X-Received: by 2002:a50:a6d3:0:b0:51a:1ffd:10e with SMTP id
+ f19-20020a50a6d3000000b0051a1ffd010emr1064edc.3.1686767045189; Wed, 14 Jun
+ 2023 11:24:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+G9fYvmqz3nQ=Cgs=7J6vtRj=OhbNzgkLPmxxN+vOBTU=9zVA@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   Robert Kolchmeyer <rkolchmeyer@google.com>
+Date:   Wed, 14 Jun 2023 11:23:52 -0700
+Message-ID: <CAJc0_fwx6MQa+Uozk+PJB0qb3JP5=9_WcCjOb8qa34u=DVbDmQ@mail.gmail.com>
+Subject: BPF regression in 5.10.168 and 5.15.93 impacting Cilium
+To:     stable@vger.kernel.org
+Cc:     regressions@lists.linux.dev, Greg KH <gregkh@linuxfoundation.org>,
+        kafai@fb.com, ast@kernel.org, sashal@kernel.org,
+        paul@isovalent.com, Meena Shanmugam <meenashanmugam@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jun 14, 2023 at 07:43:45PM +0530, Naresh Kamboju wrote:
-> Hi Nathan,
-> 
-> On Tue, 13 Jun 2023 at 09:57, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
-> >
-> > Hi Nathan,
-> >
-> > On Tue, 13 Jun 2023 at 00:24, Nathan Chancellor <nathan@kernel.org> wrote:
-> > >
-> > > Hi Naresh,
-> > >
-> > > On Tue, Jun 13, 2023 at 12:10:30AM +0530, Naresh Kamboju wrote:
-> > > > [Please ignore if it is already reported]
-> > > >
-> > > > Following two builds failed on stable-rc 6.1.34-rc1.
-> > > >
-> > > >   - Powerpc: clang-nightly-maple_defconfig — FAIL
-> > > >   - Powerpc: clang-nightly-cell_defconfig — FAIL
-> > > >
-> 
-> > > As always, thanks for the report. This is an LLVM regression/change in
-> > > behavior caused by [1], which can break as-option and as-instr on
-> > > releases prior to commit d5c8d6e0fa61 ("kbuild: Update assembler calls
-> > > to use proper flags and language target"), as unsupported flags for the
-> > > current target ('-x') may be present (KBUILD_CFLAGS is used for these
-> > > tests instead of KBUILD_AFLAGS). Inside try-run, the macro behind
-> > > as-instr and as-option, I see
-> > >
-> > >   clang-17: error: unsupported option '-mno-prefixed' for target 'powerpc64le-linux-gnu'
-> > >   clang-17: error: unsupported option '-mno-pcrel' for target 'powerpc64le-linux-gnu'
-> > >   clang-17: error: unsupported option '-mno-altivec' for target 'powerpc64le-linux-gnu'
-> > >   clang-17: error: unsupported option '-mno-vsx' for target 'powerpc64le-linux-gnu'
-> > >   clang-17: error: unsupported option '-mno-mma' for target 'powerpc64le-linux-gnu'
-> > >   clang-17: error: unsupported option '-mno-spe' for target 'powerpc64le-linux-gnu'
-> > >
-> > > This has come up recently elsewhere in PowerPC, see
-> > > commit 2b694fc96fe3 ("powerpc/boot: Disable power10 features after
-> > > BOOTAFLAGS assignment"). While I think it is dubious that clang errors
-> > > on these flags for the assembler target, this is already fixed on the
-> > > Linux side by using KBUILD_AFLAGS for these make macros.
-> > >
-> > > I am preparing a series of d5c8d6e0fa61 and its dependencies for 6.1 but
-> > > I want to do sufficient build testing first, which is currently running
-> > > for me. Would you be able to point your matrix to [2] to make sure
-> > > everything works properly with both GCC and LLVM? It is a work in
-> > > progress as the second patch in the stack needs a proper commit message
-> > > but it is the diff I expect to ship so that it all that matters.
-> >
-> > We'll start building [2] with GCC and LLVM by using tuxplans and
-> > get back to you.
-> 
-> LKFT has been configured to run GCC and LLVM in total 205 builds
-> and all the builds have passed on your tree / branch [2]. You can find
-> the list of builds including kselftest, perf, rcutorture, kunit, kmemleak
-> and many more combinations and architectures.
-> 
-> I request you to review the list of builds results and test results on
-> projects page [3] [4]. I do not find any regressions compared with
-> mainline master as sanity testing.
+Hi all,
 
-Thanks a lot for testing!
+I believe 5.10.168 and 5.15.93 introduced a regression that impacts
+the Cilium project. Some information on the nature of the regression
+is available at https://github.com/cilium/cilium/issues/25500. The
+primary symptom seems to be the error `BPF program is too large.`
 
-> Do you think LKFT should build your tree / branch often ?
-> We are happy to test anytime.
+My colleague has found that reverting the following two commits:
 
-No, this is an exceptional circumstance, not the norm. If I need wider
-testing done in the future, I will keep you all in mind :)
+8de8c4a "bpf: Support <8-byte scalar spill and refill"
+9ff2beb "bpf: Fix incorrect state pruning for <8B spill/fill"
 
-> Thanks Daniel and Anders for your work.
-> 
-> build_names: that got tested and all have passed.
-> 
+resolves the regression.
 
-<snip>
+If we revert these in the stable tree, there may be a few changes that
+depend on those that also need to be reverted, but I'm not sure yet.
 
-Great! I sent along the 6.1 backports now:
+Would it make sense to revert these changes (and any dependent ones)
+in the 5.10 and 5.15 trees? If anyone has other ideas, I can help test
+possible solutions.
 
-https://lore.kernel.org/20230612-6-1-asssembler-target-llvm-17-v1-0-75605d553401@kernel.org/
-
-Thanks again for testing and the report, cheers!
-Nathan
+Thanks,
+-Robert
