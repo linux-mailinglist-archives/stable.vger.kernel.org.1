@@ -2,205 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5768173228C
-	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 00:12:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34B17732321
+	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 01:13:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238942AbjFOWMY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 18:12:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53314 "EHLO
+        id S231230AbjFOXNF convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Thu, 15 Jun 2023 19:13:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234958AbjFOWMX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 18:12:23 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B0F410F7
-        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 15:12:07 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-5187aa18410so44239a12.0
-        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 15:12:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686867125; x=1689459125;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CtSoYMRgTlu/L3Ko+hzV5x4F6aBChamUxp1o4AEO+Vc=;
-        b=kuzE9wD21rrxTjFExigYwVskOkViq9Q0jyeNFAxXCPdD6iuq6yi34EW8LbMdgt0WZu
-         yVoLpsACHyCYyVLQ929xSuygranigsDPG6I+YJJUQZYHj4a5gXV8rpkRvt2YYLW11C4d
-         gAfyyxCA4huAYY3XCyoQhP2pB3CwFzMJjPo8fJPYyJEDekrqAny581MyTARDzlEN1CT/
-         NyXEhQ4ZgX3E9coR23ML4vQzaxrTcLVLipt+D7QLCE/L8j+RsfAIRvAyyef09jqawowx
-         Is57Ta5ringPbGB0CBCbQIuMo1h7Uld2DjAr9GTGLkg2J7djcpZByKVch1/ItKRW/crA
-         39wA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686867125; x=1689459125;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CtSoYMRgTlu/L3Ko+hzV5x4F6aBChamUxp1o4AEO+Vc=;
-        b=EorXNic2iUbUEHqnqu5zCal1r9cz1R9DumelHQddpoQNJLX9oVCvf63ePWiwEt1ckv
-         E/nWYlxd0PHBlG99ShuT+ygwQfW+p4w6+O05QFet7EQsPWW6WJJGv3n4nW4HYITlpD8v
-         4nhMNsRLgQQBT2T2HKDnqy33dTHF5OhxF2XKJ2XFInFGGkfYeebxruG0jp7LDcVT7FgG
-         pGjlJVOa5pZucKFq36YjGkvSn2Hwg2TuWHhstO4/2jwZrun7AfMR5S54s8KW0BteQbpb
-         rHmQ9bNzq+Kpr42kSyOWrxmmr0ac82dhCvFkRErgZ/j+gyjtpnFPDOsaithUTQbb9X57
-         Eixg==
-X-Gm-Message-State: AC+VfDzknmVm6GWjBcGYfAeGX8H3dnn3pRkWKGqmPFoWdXBpGF/HaszN
-        rkHkZH5+UQEH72JJ+YfrCDAmPQH3vOaZ9ou2LGC3ZBLAPM0=
-X-Google-Smtp-Source: ACHHUZ4Xx7UROivJOCLEV60WBPrGPjX3joCLkvS6ST9e3m+2YEQj8FMMjTFzel1p1pv5x6c/uQkiRJ/IzmMuBmdaMzY=
-X-Received: by 2002:a17:907:2d28:b0:973:940e:a01b with SMTP id
- gs40-20020a1709072d2800b00973940ea01bmr295614ejc.60.1686867125236; Thu, 15
- Jun 2023 15:12:05 -0700 (PDT)
+        with ESMTP id S229534AbjFOXNE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 19:13:04 -0400
+X-Greylist: delayed 389 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 15 Jun 2023 16:13:03 PDT
+Received: from mail.pcunix.cl (mail.pcunix.cl [201.236.145.134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF30B294D
+        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 16:13:03 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.pcunix.cl (Postfix) with ESMTP id 697CAA108F;
+        Thu, 15 Jun 2023 19:06:33 -0400 (-04)
+Received: from mail.pcunix.cl ([127.0.0.1])
+        by localhost (mail.pcunix.cl [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id kReacWUvSaQ6; Thu, 15 Jun 2023 19:06:33 -0400 (-04)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.pcunix.cl (Postfix) with ESMTP id 3F7F0A1507;
+        Thu, 15 Jun 2023 19:06:33 -0400 (-04)
+X-Virus-Scanned: amavisd-new at pcunix.cl
+Received: from mail.pcunix.cl ([127.0.0.1])
+        by localhost (mail.pcunix.cl [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id Iaaf_bzpS4lf; Thu, 15 Jun 2023 19:06:33 -0400 (-04)
+Received: from [147.78.103.165] (unknown [192.168.10.1])
+        by mail.pcunix.cl (Postfix) with ESMTP id 970A5A0F79;
+        Thu, 15 Jun 2023 19:06:28 -0400 (-04)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-References: <20230502143906.2401-1-ville.syrjala@linux.intel.com>
- <20230502143906.2401-3-ville.syrjala@linux.intel.com> <ZFIPCm+k9TCyfMfS@intel.com>
- <ZFJAWCGuWcLDQOfS@intel.com> <ZFJSLwVrlE8ABtei@intel.com>
-In-Reply-To: <ZFJSLwVrlE8ABtei@intel.com>
-From:   Dave Airlie <airlied@gmail.com>
-Date:   Fri, 16 Jun 2023 08:11:53 +1000
-Message-ID: <CAPM=9tyXRsBBeykVFLFJ6fMz_eYHXwxKuzVYjUHyk4x6b45PZw@mail.gmail.com>
-Subject: Re: [PATCH 02/11] drm/i915/mst: Remove broken MST DSC support
-To:     "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
-Cc:     =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        intel-gfx@lists.freedesktop.org, stable@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        Vinod Govindapillai <vinod.govindapillai@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Loan Offer
+To:     Recipients <capital@tahoo.com>
+From:   capital@tahoo.com
+Date:   Thu, 15 Jun 2023 16:06:23 -0700
+Reply-To: sawdacapital@yahoo.com
+Message-Id: <20230615230628.970A5A0F79@mail.pcunix.cl>
+X-Spam-Status: No, score=4.2 required=5.0 tests=BAYES_50,
+        FREEMAIL_FORGED_REPLYTO,RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L5,
+        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 3 May 2023 at 22:23, Lisovskiy, Stanislav
-<stanislav.lisovskiy@intel.com> wrote:
->
-> On Wed, May 03, 2023 at 02:07:04PM +0300, Ville Syrj=C3=A4l=C3=A4 wrote:
-> > On Wed, May 03, 2023 at 10:36:42AM +0300, Lisovskiy, Stanislav wrote:
-> > > On Tue, May 02, 2023 at 05:38:57PM +0300, Ville Syrjala wrote:
-> > > > From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
-> > > >
-> > > > The MST DSC code has a myriad of issues:
-> > > > - Platform checks are wrong (MST+DSC is TGL+ only IIRC)
-> > > > - Return values of .mode_valid_ctx() are wrong
-> > > > - .mode_valid_ctx() assumes bigjoiner might be used, but ther rest
-> > > >   of the code doesn't agree
-> > > > - compressed bpp calculations don't make sense
-> > > > - FEC handling needs to consider the entire link as opposed to just
-> > > >   the single stream. Currently FEC would only get enabled if the
-> > > >   first enabled stream is compressed. Also I'm not seeing anything
-> > > >   that would account for the FEC overhead in any bandwidth calculat=
-ions
-> > > > - PPS SDP is only handled for the first stream via the dig_port
-> > > >   hooks, other streams will not be transmittitng any PPS SDPs
-> > > > - PPS SDP readout is missing (also missing for SST!)
-> > > > - VDSC readout is missing (also missing for SST!)
-> > > >
-> > > > The FEC issues is really the big one since we have no way currently
-> > > > to apply such link wide configuration constraints. Changing that is
-> > > > going to require a much bigger rework of the higher level modeset
-> > > > .compute_config() logic. We will also need such a rework to properl=
-y
-> > > > distribute the available bandwidth across all the streams on the
-> > > > same link (which is a must to eg. enable deep color).
-> > >
-> > > Also all the things you mentioned are subject for discussion, for exa=
-mple
-> > > I see that FEC overhead is actually accounted for bpp calculation for=
- instance.
-> >
-> > AFAICS FEC is only accounted for in the data M/N calculations,
-> > assuming that particular stream happened to be compressed. I'm
-> > not sure if that actually matters since at least the link M/N
-> > are not even used by the MST sink. I suppose the data M/N might
-> > still be used for something though. For any uncompressed stream
-> > on the same link the data M/N values will be calculated
-> > incorrectly without FEC.
-> >
-> > And as mentioned, the FEC bandwidth overhead doesn't seem to
-> > be accounted anywhere so no guarantee that we won't try to
-> > oversubcribe the link.
-> >
-> > And FEC will only be enabled if the first stream to be enabled
-> > is compressed, otherwise we will enable the link without FEC
-> > and still try to cram other compressed streams through it
-> > (albeit without the PPS SDP so who knows what will happen)
-> > and that is illegal.
-> >
-> > > We usually improve things by gradually fixing, because if we act same=
- way towards
-> > > all wrong code in the driver, we could end up removing the whole i915=
-.
-> >
-> > We ususally don't merge code that has this many obvious and/or
-> > fundemental issues.
->
-> Well, this is arguable and subjective judgement. Fact is that, so far we =
-had more MST hubs
-> working with that code than without. Also no regressions or anything like=
- that.
-> Moreover we usually merge code after code review, in particular those pat=
-ches
-> did spend lots of time in review, where you could comment also.
->
-> Regarding merging code with fundamental issues, just recently you had adm=
-itted yourself
-> that bigjoiner issue for instance, we had recently, was partly caused by =
-your code, because
-> we don't anymore copy the pll state to slave crtc.
-> I would say that words like "obvious" and "fundamental"
-> issues can be applied to many things, however I thought that we always fi=
-x things in constructive,
-> but not destructive/negative way.
-> Should I call also all code completely broken and remove it, once we disc=
-over some flaws
-> there? Oh, we had many regressions, where I could say the same.
->
-> And once again I'm completely okay, if you did introduce better functiona=
-lity instead
-> AND I know you have some valid points there, but now we are just removing=
- everything completely,
-> without providing anything better.
->
-> But okay, I've mentioned what I think about this and from side this is na=
-k.
-> And once the guys to whom those patches helped will pop up from gitlab,
-> asking why their MST hubs stopped working - I will just refer them here.
->
-> >
-> > Now, most of the issues I listed above are probably fixable
-> > in a way that could be backported to stable kernels, but
-> > unfortunately the FEC issue is not one of those. That one
-> > will likely need massive amounts of work all over the driver
-> > modeset code, making a backport impossible.
-> >
-> > > So from my side I would nack it, at least until you have a code which=
- handles
-> > > all of this better - I have no doubt you probably have some ideas in =
-your mind, so lets be constructive at least and propose something better fi=
-rst.
-> > > This code doesn't cause any regressions, but still provides "some" su=
-pport to DP MST DSC to say the least and even if that would be removed, if =
-some of those users
-> > > refer to me, I would probably then just point to this mail discussion=
- everytime.
-> >
-> > It seems very likely that it will cause regressions at some point,
-> > it just needs a specific multi-display MST setup. The resulting
-> > problems will be very confusing to debug since the order in which
-> > you enable/disable the outputs will have an impact on what actually
-> > goes wrong on account of the FEC and PPS SDP issues. The longer
-> > we wait disabling this the harder it will be to deal with those
-> > regressions since we the probably can't revert anymore (a straight
-> > revert was already not possible) but also can't fix it in a way
-> > that can be backported (due to the FEC issues in particular).
+Hello,
 
-I don't think we can reasonably disable this either.
+We grant loans to individuals and companies. We are interested in financing of large volume projects and grant loans worldwide.
 
-If there are any existant systems which work due to this even if it's
-crap, merging this will regress them and Linus will make us revert it.
+The interest rate will be 3% annually. The repayment period is 1-25 years.
 
-Sorry this isn't an engineering solution to the problem, going to have
-to go around the long way.
+We offer:-
 
-Dave.
+*Project finance
+*Business loans
+*Personal loans
+
+Loan Processing and financing takes about 2 to 3 working days from the day you submit your loan application. For more information reply to this mail.
+
+Kind regards,
+Sawda Team
+
+ 
+
+NOTE: If you received this message in your SPAM/JUNK folder, that is because of the restrictions implemented by your Internet Service Provider, treat it genuinely.
