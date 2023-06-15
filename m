@@ -2,50 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B7D47312A1
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 10:49:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E4A97312FD
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 11:04:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245371AbjFOItO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 04:49:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36616 "EHLO
+        id S239761AbjFOJEl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 05:04:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245340AbjFOIsY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 04:48:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1A0E3C21;
-        Thu, 15 Jun 2023 01:47:15 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        with ESMTP id S239563AbjFOJEk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 05:04:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3D331720
+        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 02:04:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1686819841;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=HaTSzitIpa5FU8GhGJUOowmMnFGdZBSv3GY+LLgvqd4=;
+        b=RYA6pktGf7vKxmGd5h8rHiVAI0K2iLATcDLCLZUzEOdOMXclbTIAQopavef678lnXdnFFq
+        SofamlbZes/Y1nl5pIk56C/qR/DisgOK7epWL/BCJuYxy+t4oyJ0jjo0SPUqFaTEb82tqh
+        MQvPfT0xTm5YcrUyayj8guYeBrZ8+4Q=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-587-uy7OXsghMvGuV55MU0K69Q-1; Thu, 15 Jun 2023 05:03:58 -0400
+X-MC-Unique: uy7OXsghMvGuV55MU0K69Q-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E91A611CE;
-        Thu, 15 Jun 2023 08:47:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55724C433C0;
-        Thu, 15 Jun 2023 08:47:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686818834;
-        bh=m56mMgbW3ae6uqBwLx78dUGnP/kMnvofIKBmjW32CP8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=vzrZNdyDH6kLNr/bXr1VgU7KQgPThhD4lLvUe/0vTGnrAqDnKuFSKbBIOrdo4d+7E
-         A9o3e+NuTglmnAuXUYNZ5IIUdIRofVFdyQg7biiu4bvoDNmr8af5lsSYO2DprtxHVa
-         Y/gkhL68z899XRPx5iG2Lbk8RKT1G+t0RogvU8sg=
-Date:   Thu, 15 Jun 2023 10:47:12 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Ranjan Kumar <ranjan.kumar@broadcom.com>
-Cc:     linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
-        sathya.prakash@broadcom.com, sreekanth.reddy@broadcom.com,
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B4634101A592;
+        Thu, 15 Jun 2023 09:03:57 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.206])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 30C109E9C;
+        Thu, 15 Jun 2023 09:03:57 +0000 (UTC)
+Date:   Thu, 15 Jun 2023 10:03:56 +0100
+From:   "Richard W.M. Jones" <rjones@redhat.com>
+To:     Mathias Krause <minipli@grsecurity.net>
+Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+        Gusenleitner Klaus <gus@keba.com>,
+        Frederic Weisbecker <fweisbec@gmail.com>,
         stable@vger.kernel.org
-Subject: Re: [PATCH] mpt3sas: Perform additional retries if Doorbell read
- returns 0
-Message-ID: <2023061538-dizzy-amiable-9ec7@gregkh>
-References: <20230615083010.45837-1-ranjan.kumar@broadcom.com>
+Subject: Re: [PATCH] timekeeping: Align tick_sched_timer() with the HZ tick.
+ -- regression report
+Message-ID: <20230615090356.GD10301@redhat.com>
+References: <20230406095735.0_14edn3@linutronix.de>
+ <20230406105529.GB392176@hirez.programming.kicks-ass.net>
+ <87mt3lqnde.ffs@tglx>
+ <20230406150254.ZrawA2Y-@linutronix.de>
+ <87jzypq6gq.ffs@tglx>
+ <20230418122639.ikgfvu3f@linutronix.de>
+ <5a56290d-806e-b9a5-f37c-f21958b5a8c0@grsecurity.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/mixed; boundary="eJnRUKwClWJh1Khz"
 Content-Disposition: inline
-In-Reply-To: <20230615083010.45837-1-ranjan.kumar@broadcom.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <5a56290d-806e-b9a5-f37c-f21958b5a8c0@grsecurity.net>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,55 +72,152 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 15, 2023 at 02:00:10PM +0530, Ranjan Kumar wrote:
-> Doorbell and Host diagnostic registers could return 0 even
-> after 3 retries and that leads to occasional resets of the
-> controllers, hence increased the retry count to thirty.
-> 
-> 'Fixes: b899202901a8 ("mpt3sas: Add separate function for aero doorbell reads ")'
 
-No ' characters here please.
+--eJnRUKwClWJh1Khz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> Cc: stable@vger.kernel.org
-> 
-> Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+On Wed, Jun 14, 2023 at 12:59:46AM +0200, Mathias Krause wrote:
+> This patch causes VM boot hangs for us. It took a while to identify as 
+> the boot hangs were only ~1 out of 30 but it's clearly it. Reverting 
+> the commit got me 100 boots in a row without any issue.
 
-No blank line before the signed-off-by and the other fields please.
+FWIW I have quite a nice test program for catching these sorts of boot
+hangs, see attached.  You need to change the VMLINUX define to point
+to your vmlinux or vmlinuz file.
 
-Didn't checkpatch warn you about this?
+Rich.
 
-> ---
->  drivers/scsi/mpt3sas/mpt3sas_base.c | 50 ++++++++++++++++-------------
->  drivers/scsi/mpt3sas/mpt3sas_base.h |  4 ++-
->  2 files changed, 31 insertions(+), 23 deletions(-)
-> 
-> diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
-> index 53f5492579cb..44e7ccb6f780 100644
-> --- a/drivers/scsi/mpt3sas/mpt3sas_base.c
-> +++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
-> @@ -201,20 +201,20 @@ module_param_call(mpt3sas_fwfault_debug, _scsih_set_fwfault_debug,
->   * while reading the system interface register.
->   */
->  static inline u32
-> -_base_readl_aero(const volatile void __iomem *addr)
-> +_base_readl_aero(const volatile void __iomem *addr, u8 retry_count)
+-- 
+Richard Jones, Virtualization Group, Red Hat http://people.redhat.com/~rjones
+Read my programming and virtualization blog: http://rwmj.wordpress.com
+virt-builder quickly builds VMs from scratch
+http://libguestfs.org/virt-builder.1.html
 
-Are you sure that volatile really does what you think it does here?
+--eJnRUKwClWJh1Khz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="bootbootboot.c"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <error.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <pthread.h>
 
->  {
->  	u32 i = 0, ret_val;
->  
->  	do {
->  		ret_val = readl(addr);
->  		i++;
-> -	} while (ret_val == 0 && i < 3);
-> +	} while (ret_val == 0 && i < retry_count);
+#define NR_ITERATIONS 10000
+#define MAX_THREADS 8
+#define MAX_TIME 60 /* max time to wait for qemu to complete */
 
-So newer systems will complete this failure loop faster than older ones?
-That feels very wrong, you will be changing this in a year or so.  Use
-time please, not counts.
+//#define VMLINUX "/home/rjones/d/linux/vmlinux"
+#define VMLINUX "vmlinux"
+//#define QEMU "/home/rjones/d/qemu/build/qemu-system-x86_64"
+#define QEMU "qemu-system-x86_64"
+#define QEMU_COMMAND \
+  QEMU " -no-user-config -nodefaults -display none " \
+  "-machine accel=kvm:tcg,graphics=off -cpu max,la57=off -m 1280 " \
+  "-no-reboot " \
+  "-rtc driftfix=slew -no-hpet -global kvm-pit.lost_tick_policy=discard " \
+  "-kernel " VMLINUX " " \
+  "-serial stdio " \
+  "-append \"panic=1 console=ttyS0 edd=off udevtimeout=6000 udev.event-timeout=6000 no_timer_check printk.time=1 cgroup_disable=memory usbcore.nousb cryptomgr.notests tsc=reliable 8250.nr_uarts=1 selinux=0 TERM=xterm-256color\""
 
-thanks,
+static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+static unsigned iterations;
 
-greg k-h
+static void *start_thread (void *);
+
+int
+main (int argc, char *argv[])
+{
+	long n, i;
+	int r;
+	pthread_t thread[MAX_THREADS];
+
+	n = sysconf (_SC_NPROCESSORS_ONLN);
+	if (n == -1) error (EXIT_FAILURE, errno, "sysconf");
+
+	if (n > MAX_THREADS)
+		n = MAX_THREADS;
+
+	for (i = 0; i < n; ++i) {
+		r = pthread_create (&thread[i], NULL, start_thread, NULL);
+		if (r != 0) error (EXIT_FAILURE, r, "pthread_create");
+	}
+	for (i = 0; i < n; ++i) {
+		r = pthread_join (thread[i], NULL);
+		if (r != 0) error (EXIT_FAILURE, r, "pthread_join");
+	}
+	printf ("\n");
+	printf ("\n");
+	printf ("test ok\n");
+	exit (EXIT_SUCCESS);
+}
+
+static void *
+start_thread (void *vp)
+{
+	pid_t pid;
+	char tmp[] = "/tmp/kernel.out.XXXXXX";
+	char cmd[1024];
+	int i, r, status;
+
+	if (mkstemp (tmp) == -1)
+		error (EXIT_FAILURE, errno, "mkstemp: %s", tmp);
+
+	snprintf (cmd, sizeof cmd, QEMU_COMMAND " >& %s", tmp);
+
+	/* This basically runs a loop starting qemu. */
+	for (;;) {
+		pthread_mutex_lock (&lock);
+		if (iterations >= NR_ITERATIONS) {
+			pthread_mutex_unlock (&lock);
+			return NULL;
+		}
+		if (iterations <= MAX_THREADS) { // stagger the start times
+			pthread_mutex_unlock (&lock);
+			usleep (rand () % 3000000);
+			pthread_mutex_lock (&lock);
+		}
+		iterations++;
+		printf ("%d... ", iterations); fflush (stdout);
+		pthread_mutex_unlock (&lock);
+
+		pid = fork ();
+		if (pid == -1) error (EXIT_FAILURE, errno, "fork");
+		if (pid == 0) {
+			/* Child process, run qemu and wait. */
+			if (system (cmd) != 0)
+				_exit (EXIT_FAILURE);
+			else
+				_exit (EXIT_SUCCESS);
+		}
+
+		/* In the parent wait up to MAX_TIME seconds. */
+		for (i = 0; i < MAX_TIME; ++i) {
+			r = waitpid (pid, &status, WNOHANG);
+			if (r == -1) error (EXIT_FAILURE, errno, "waitpid");
+			if (r > 0) break;
+			sleep (1);
+		}
+
+		if (i == MAX_TIME || status != 0) {
+			/* Something failed in qemu (or it didn't
+			 * exit), dump the whole log and exit with
+			 * error.
+			 */
+			printf ("\n");
+			printf ("\n");
+			snprintf (cmd, sizeof cmd, "tail -20 %s", tmp);
+			system (cmd);
+			fprintf (stderr, "*** ERROR OR HANG ***\n");
+			exit (EXIT_FAILURE);
+		}
+	}
+
+	unlink (tmp);
+}
+
+--eJnRUKwClWJh1Khz--
+
