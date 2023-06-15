@@ -2,98 +2,161 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A23E731494
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 11:54:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F72B7312A9
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 10:50:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245052AbjFOJy2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 05:54:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50874 "EHLO
+        id S238198AbjFOIuP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 04:50:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245432AbjFOJyK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 05:54:10 -0400
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8FA2F297E
-        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 02:53:40 -0700 (PDT)
-Received: from loongson.cn (unknown [10.20.42.35])
-        by gateway (Coremail) with SMTP id _____8DxRumT34pk4IMFAA--.9849S3;
-        Thu, 15 Jun 2023 17:53:23 +0800 (CST)
-Received: from user-pc.202.106.0.20 (unknown [10.20.42.35])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8CxXMqM34pk79UbAA--.5033S7;
-        Thu, 15 Jun 2023 17:53:22 +0800 (CST)
-From:   Yinbo Zhu <zhuyinbo@loongson.cn>
-To:     zybsyzlz@163.com
-Cc:     Yinbo Zhu <zhuyinbo@loongson.cn>,
-        Steve French <stfrench@microsoft.com>,
-        David Howells <dhowells@redhat.com>, stable@vger.kernel.org
-Subject: [PATCH 06/10] cifs: release leases for deferred close handles when freezing
-Date:   Thu, 15 Jun 2023 17:53:11 +0800
-Message-Id: <20230615095315.25120-6-zhuyinbo@loongson.cn>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20230615095315.25120-1-zhuyinbo@loongson.cn>
-References: <20230615095315.25120-1-zhuyinbo@loongson.cn>
+        with ESMTP id S245475AbjFOItm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 04:49:42 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46B0D2D60;
+        Thu, 15 Jun 2023 01:49:25 -0700 (PDT)
+Received: from dggpeml500012.china.huawei.com (unknown [172.30.72.57])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4QhbVc4z8WzMpP3;
+        Thu, 15 Jun 2023 16:46:16 +0800 (CST)
+Received: from localhost.localdomain (10.67.175.61) by
+ dggpeml500012.china.huawei.com (7.185.36.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Thu, 15 Jun 2023 16:49:22 +0800
+From:   Zheng Yejian <zhengyejian1@huawei.com>
+To:     <rostedt@goodmis.org>, <gregkh@linuxfoundation.org>
+CC:     <mhiramat@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-trace-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
+        <zhengyejian1@huawei.com>
+Subject: [PATCH 5.10] tracing: Add tracing_reset_all_online_cpus_unlocked() function
+Date:   Fri, 16 Jun 2023 04:49:31 +0800
+Message-ID: <20230615204931.3250659-1-zhengyejian1@huawei.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxXMqM34pk79UbAA--.5033S7
-X-CM-SenderInfo: 52kx5xhqerqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-        ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-        nUUI43ZEXa7xR_UUUUUUUUU==
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.67.175.61]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpeml500012.china.huawei.com (7.185.36.15)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.0 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_12_24,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Steve French <stfrench@microsoft.com>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-We should not be caching closed files when freeze is invoked on an fs
-(so we can release resources more gracefully).
+commit e18eb8783ec4949adebc7d7b0fdb65f65bfeefd9 upstream.
 
-Fixes xfstests generic/068 generic/390 generic/491
+Currently the tracing_reset_all_online_cpus() requires the
+trace_types_lock held. But only one caller of this function actually has
+that lock held before calling it, and the other just takes the lock so
+that it can call it. More users of this function is needed where the lock
+is not held.
 
-Reviewed-by: David Howells <dhowells@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Add a tracing_reset_all_online_cpus_unlocked() function for the one use
+case that calls it without being held, and also add a lockdep_assert to
+make sure it is held when called.
+
+Then have tracing_reset_all_online_cpus() take the lock internally, such
+that callers do not need to worry about taking it.
+
+Link: https://lkml.kernel.org/r/20221123192741.658273220@goodmis.org
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+[this patch is pre-depended by be111ebd8868d4b7c041cb3c6102e1ae27d6dc1d
+due to tracing_reset_all_online_cpus() should be called after taking lock]
+Fixes: be111ebd8868 ("tracing: Free buffers when a used dynamic event is removed")
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
 ---
- fs/cifs/cifsfs.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ kernel/trace/trace.c              | 11 ++++++++++-
+ kernel/trace/trace.h              |  1 +
+ kernel/trace/trace_events.c       |  2 +-
+ kernel/trace/trace_events_synth.c |  2 --
+ 4 files changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/fs/cifs/cifsfs.c b/fs/cifs/cifsfs.c
-index 8b6b3b6985f3..43a4d8603db3 100644
---- a/fs/cifs/cifsfs.c
-+++ b/fs/cifs/cifsfs.c
-@@ -760,6 +760,20 @@ static void cifs_umount_begin(struct super_block *sb)
- 	return;
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 482ec6606b7b..70526400e05c 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -2178,10 +2178,12 @@ void tracing_reset_online_cpus(struct array_buffer *buf)
  }
  
-+static int cifs_freeze(struct super_block *sb)
+ /* Must have trace_types_lock held */
+-void tracing_reset_all_online_cpus(void)
++void tracing_reset_all_online_cpus_unlocked(void)
+ {
+ 	struct trace_array *tr;
+ 
++	lockdep_assert_held(&trace_types_lock);
++
+ 	list_for_each_entry(tr, &ftrace_trace_arrays, list) {
+ 		if (!tr->clear_trace)
+ 			continue;
+@@ -2193,6 +2195,13 @@ void tracing_reset_all_online_cpus(void)
+ 	}
+ }
+ 
++void tracing_reset_all_online_cpus(void)
 +{
-+	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
-+	struct cifs_tcon *tcon;
-+
-+	if (cifs_sb == NULL)
-+		return 0;
-+
-+	tcon = cifs_sb_master_tcon(cifs_sb);
-+
-+	cifs_close_all_deferred_files(tcon);
-+	return 0;
++	mutex_lock(&trace_types_lock);
++	tracing_reset_all_online_cpus_unlocked();
++	mutex_unlock(&trace_types_lock);
 +}
 +
- #ifdef CONFIG_CIFS_STATS2
- static int cifs_show_stats(struct seq_file *s, struct dentry *root)
- {
-@@ -798,6 +812,7 @@ static const struct super_operations cifs_super_ops = {
- 	as opens */
- 	.show_options = cifs_show_options,
- 	.umount_begin   = cifs_umount_begin,
-+	.freeze_fs      = cifs_freeze,
- #ifdef CONFIG_CIFS_STATS2
- 	.show_stats = cifs_show_stats,
- #endif
+ /*
+  * The tgid_map array maps from pid to tgid; i.e. the value stored at index i
+  * is the tgid last observed corresponding to pid=i.
+diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
+index 37f616bf5fa9..e5b505b5b7d0 100644
+--- a/kernel/trace/trace.h
++++ b/kernel/trace/trace.h
+@@ -725,6 +725,7 @@ int tracing_is_enabled(void);
+ void tracing_reset_online_cpus(struct array_buffer *buf);
+ void tracing_reset_current(int cpu);
+ void tracing_reset_all_online_cpus(void);
++void tracing_reset_all_online_cpus_unlocked(void);
+ int tracing_open_generic(struct inode *inode, struct file *filp);
+ int tracing_open_generic_tr(struct inode *inode, struct file *filp);
+ bool tracing_is_disabled(void);
+diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
+index bac13f24a96e..f8ed66f38175 100644
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -2661,7 +2661,7 @@ static void trace_module_remove_events(struct module *mod)
+ 	 * over from this module may be passed to the new module events and
+ 	 * unexpected results may occur.
+ 	 */
+-	tracing_reset_all_online_cpus();
++	tracing_reset_all_online_cpus_unlocked();
+ }
+ 
+ static int trace_module_notify(struct notifier_block *self,
+diff --git a/kernel/trace/trace_events_synth.c b/kernel/trace/trace_events_synth.c
+index 18291ab35657..ee174de0b8f6 100644
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -1363,7 +1363,6 @@ int synth_event_delete(const char *event_name)
+ 	mutex_unlock(&event_mutex);
+ 
+ 	if (mod) {
+-		mutex_lock(&trace_types_lock);
+ 		/*
+ 		 * It is safest to reset the ring buffer if the module
+ 		 * being unloaded registered any events that were
+@@ -1375,7 +1374,6 @@ int synth_event_delete(const char *event_name)
+ 		 * occur.
+ 		 */
+ 		tracing_reset_all_online_cpus();
+-		mutex_unlock(&trace_types_lock);
+ 	}
+ 
+ 	return ret;
 -- 
-2.20.1
+2.25.1
 
