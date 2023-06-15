@@ -2,65 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F1FF731CE5
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 17:44:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB8F9731D41
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 18:00:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237737AbjFOPom (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 11:44:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39012 "EHLO
+        id S241316AbjFOQAz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 12:00:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344594AbjFOPoc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 11:44:32 -0400
-Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CBA3123
-        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 08:44:31 -0700 (PDT)
-Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-19a427d7b57so5352895fac.2
-        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 08:44:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1686843870; x=1689435870;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4StmFmRajOimzwQuxAIm4oA1Qq+pBLBdDXasM5CJ9r0=;
-        b=X9ur/1kQVScMujlfFfp3RRguZGxLCtamV4Mzp2jhXW69XuqY70QQFqj0rNBmgLCsao
-         YezKD56/IDNwS0TvAu+X+bUeyOKHcNbo5hcSRIIDiQQNyCaVmT0uSxyHhW15PYIizP0m
-         aFyjKgl/6bkcVvtG5PUV5GOXL1+F9NzTfdDE8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686843870; x=1689435870;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4StmFmRajOimzwQuxAIm4oA1Qq+pBLBdDXasM5CJ9r0=;
-        b=H32zOWydoH9MRBFS3QNYG0GFWequlSaN9xEALSsmzQhztKpRc40T6f0uJbxgtIcnij
-         9xNGSAtqKsPJ4ihxNEhU9jF4RqoexvVlw4V811Lex5vp2kPmH+rErcLaHkrSxMVA5n89
-         WsUSVWFryzJvlrbFmG7iV6CP1j2AUUAzZ8Q8zXL2BEfrBphAwoJSBTLI26+4yEFcaVQC
-         woVanj7n0IBxytdSClRg26zJMhrlnoOpDHO0dG0ICUd5qO4qAeVOChXGQ1ylkyV446lH
-         5K9Rp6RDLHv2X/+lxc3hkA/+CkcVCms2uBrYsqnZPH+jWsvfcV2ggNGKixctB7+TXc4F
-         z+5w==
-X-Gm-Message-State: AC+VfDwE2nNOZ0qyFjlwOP6evivTOHERrw7pVJ+GL/I+QemAzDLDrcBz
-        Yb6KiihmfztM+rJx8Njl9x/aSoNqzcwaQgWLekB8EA==
-X-Google-Smtp-Source: ACHHUZ4XzMRy765MiqkYZk2EQDL/FAz6ib58uJzpHUeyESFt2Ss5dqWqW1EtsOL4TZFKrIHxwhGFu6PjB0MFUoR5V30=
-X-Received: by 2002:a05:6870:d450:b0:180:857:d47d with SMTP id
- j16-20020a056870d45000b001800857d47dmr13034116oag.57.1686843870070; Thu, 15
- Jun 2023 08:44:30 -0700 (PDT)
+        with ESMTP id S241465AbjFOQAx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 12:00:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F9D2294E;
+        Thu, 15 Jun 2023 09:00:52 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D8C462118;
+        Thu, 15 Jun 2023 16:00:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735A0C433C0;
+        Thu, 15 Jun 2023 16:00:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686844851;
+        bh=h/6t7DwDjA3p+BAZ2sQtK/aU1fbTz3A8IeHUPH5Jep4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=SV5IxU0dpgPZ7fXfIUCGRNy7QrQkryzp/8BbBqvMIrsaB6UqwdNi1tCY+eV/ZilK7
+         LyxrHXlChvx/Bn/IFU/3i9h7T5GagC73RoCt0mnCE0Xr76fzaQ+voFdSFVsl++5rgr
+         +mnTYUkzTy9tnhmagAS65d8WaEodJ6Y+w6cPTUaJISRGYzSkiHwPwxRA0Y8RAnpoMA
+         o1ePrQbpfKbXCuLTT9H+eCBJ5g3vyLuxGNLEWAkb8uNmgvy3rA8ddHKNNXmCKSnNDr
+         GNW8J7ICGJpIRQreTm4WI84n1WIyv76HWQB9bZB0QYnUwIx/yonXeallCa8uVyPgef
+         WZ7sv0G19K/8A==
+From:   SeongJae Park <sj@kernel.org>
+To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc:     Mathias Krause <minipli@grsecurity.net>,
+        Luiz Capitulino <luizcap@amazon.com>,
+        Sven-Haegar Koch <haegar@sdinet.de>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "Bhatnagar, Rishabh" <risbhat@amazon.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "sashal@kernel.org" <sashal@kernel.org>, abuehaze@amazon.com,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>, SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH] tick/common: Align tick period during sched_timer setup.
+Date:   Thu, 15 Jun 2023 16:00:48 +0000
+Message-Id: <20230615160048.84518-1-sj@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230615091830.RxMV2xf_@linutronix.de>
+References: 
 MIME-Version: 1.0
-References: <20230615145607.3469985-1-revest@chromium.org>
-In-Reply-To: <20230615145607.3469985-1-revest@chromium.org>
-From:   Florent Revest <revest@chromium.org>
-Date:   Thu, 15 Jun 2023 17:44:18 +0200
-Message-ID: <CABRcYm+C+tPwXAGnaDRR_U2hzyt+09fjkKBp3tPx6iKT4wBE2Q@mail.gmail.com>
-Subject: Re: [PATCH bpf] bpf/btf: Accept function names that contain dots
-To:     bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev
-Cc:     martin.lau@linux.dev, ast@kernel.org, daniel@iogearbox.net,
-        andrii@kernel.org, song@kernel.org, yhs@fb.com,
-        john.fastabend@gmail.com, kpsingh@kernel.org, sdf@google.com,
-        haoluo@google.com, jolsa@kernel.org, nathan@kernel.org,
-        ndesaulniers@google.com, trix@redhat.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -69,39 +63,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 15, 2023 at 4:56=E2=80=AFPM Florent Revest <revest@chromium.org=
-> wrote:
->
-> When building a kernel with LLVM=3D1, LLVM_IAS=3D0 and CONFIG_KASAN=3Dy, =
-LLVM
-> leaves DWARF tags for the "asan.module_ctor" & co symbols.
+On Thu, 15 Jun 2023 11:18:30 +0200 Sebastian Andrzej Siewior <bigeasy@linutronix.de> wrote:
 
-To be fair I can't tell if this is an LLVM bug. It's sort of curious
-that with LLVM_IAS=3D1, these debugging symbols are not kept and they
-are with LLVM_IAS=3D0 but I don't know what the expected behavior should
-be and how BTF should deal with it. I'll let people with more context
-comment on this! :)
+> From: Thomas Gleixner <tglx@linutronix.de>
+> 
+> The tick period is aligned very early while the first clock_event_device
+> is registered. The system runs in periodic mode and switches later to
+> one-shot mode if possible.
+> 
+> The next wake-up event is programmed based on aligned value
+> (tick_next_period) but the delta value, that is used to program the
+> clock_event_device, is computed based on ktime_get().
+> 
+> With the subtracted offset, the devices fires in less than the exacted
+> time frame. With a large enough offset the system programs the timer for
+> the next wake-up and the remaining time left is too little to make any
+> boot progress. The system hangs.
+> 
+> Move the alignment later to the setup of tick_sched timer. At this point
+> the system switches to oneshot mode and a highres clocksource is
+> available. It safe to update tick_next_period ktime_get() will now
+> return accurate (not jiffies based) time.
+> 
+> [bigeasy: Patch description + testing].
+> 
+> Reported-by: Mathias Krause <minipli@grsecurity.net>
+> Reported-by: "Bhatnagar, Rishabh" <risbhat@amazon.com>
+> Fixes: e9523a0d81899 ("tick/common: Align tick period with the HZ tick.")
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Link: https://lore.kernel.org/5a56290d-806e-b9a5-f37c-f21958b5a8c0@grsecurity.net
+> Link: https://lore.kernel.org/12c6f9a3-d087-b824-0d05-0d18c9bc1bf3@amazon.com
 
-An easy reproducer is:
+I guess adding 'Cc: stable@' might further help stable maintainers?
 
-$ touch pwet.c
+I also left one very tirival cosmetic comment below, but I dont think those
+could be blockers.
 
-$ clang -g -fsanitize=3Dkernel-address -c -o pwet.o pwet.c
-$ llvm-dwarfdump pwet.o | grep module_ctor
+Acked-by: SeongJae Park <sj@kernel.org>
 
-$ clang -fno-integrated-as -g -fsanitize=3Dkernel-address -c -o pwet.o pwet=
-.c
-$ llvm-dwarfdump pwet.o | grep module_ctor
-                DW_AT_name      ("asan.module_ctor")
 
-> In a dramatic turn of event, this BTF verification failure can cause
-> the netfilter_bpf initialization to fail, causing netfilter_core to
-> free the netfilter_helper hashmap and netfilter_ftp to trigger a
-> use-after-free. The risk of u-a-f in netfilter will be addressed
-> separately
+Thanks,
+SJ
 
-To be precise, I meant "netfilter conntrack".
+> ---
+>  kernel/time/tick-common.c | 11 +----------
+>  kernel/time/tick-sched.c  | 13 ++++++++++++-
+>  2 files changed, 13 insertions(+), 11 deletions(-)
+> 
+> diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
+> index 65b8658da829e..b85f2f9c32426 100644
+> --- a/kernel/time/tick-common.c
+> +++ b/kernel/time/tick-common.c
+> @@ -218,19 +218,10 @@ static void tick_setup_device(struct tick_device *td,
+>  		 * this cpu:
+>  		 */
+>  		if (tick_do_timer_cpu == TICK_DO_TIMER_BOOT) {
+> -			ktime_t next_p;
+> -			u32 rem;
+>  
 
-I sent the following patch as a more targeted mitigation for the uaf
-https://lore.kernel.org/netfilter-devel/20230615152918.3484699-1-revest@chr=
-omium.org/T/#u
+Nit: I guess we'd like to remove above one blank line together?
+
+>  			tick_do_timer_cpu = cpu;
+>  
+> -			next_p = ktime_get();
+> -			div_u64_rem(next_p, TICK_NSEC, &rem);
+> -			if (rem) {
+> -				next_p -= rem;
+> -				next_p += TICK_NSEC;
+> -			}
+> -
+> -			tick_next_period = next_p;
+> +			tick_next_period = ktime_get();
+>  #ifdef CONFIG_NO_HZ_FULL
+>  			/*
+>  			 * The boot CPU may be nohz_full, in which case set
+> diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+> index 52254679ec489..42c0be3080bde 100644
+> --- a/kernel/time/tick-sched.c
+> +++ b/kernel/time/tick-sched.c
+> @@ -161,8 +161,19 @@ static ktime_t tick_init_jiffy_update(void)
+>  	raw_spin_lock(&jiffies_lock);
+>  	write_seqcount_begin(&jiffies_seq);
+>  	/* Did we start the jiffies update yet ? */
+> -	if (last_jiffies_update == 0)
+> +	if (last_jiffies_update == 0) {
+> +		u32 rem;
+> +
+> +		/*
+> +		 * Ensure that the tick is aligned to a multiple of
+> +		 * TICK_NSEC.
+> +		 */
+> +		div_u64_rem(tick_next_period, TICK_NSEC, &rem);
+> +		if (rem)
+> +			tick_next_period += TICK_NSEC - rem;
+> +
+>  		last_jiffies_update = tick_next_period;
+> +	}
+>  	period = last_jiffies_update;
+>  	write_seqcount_end(&jiffies_seq);
+>  	raw_spin_unlock(&jiffies_lock);
+> -- 
+> 2.40.1
