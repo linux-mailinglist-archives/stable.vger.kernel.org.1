@@ -2,335 +2,220 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F771730D71
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 05:08:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC05C730DC8
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 05:56:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238006AbjFODIy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 14 Jun 2023 23:08:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43850 "EHLO
+        id S236412AbjFOD4G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 14 Jun 2023 23:56:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242684AbjFODIs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 23:08:48 -0400
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CEF826A9;
-        Wed, 14 Jun 2023 20:08:47 -0700 (PDT)
-Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-666779dcc8aso955209b3a.0;
-        Wed, 14 Jun 2023 20:08:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686798526; x=1689390526;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=3LLDiVG+RQa/fzfc+Aret+vyoXqbU6usti8V8wN1jVg=;
-        b=Fp6JoIXCO+f2jmhxyBS0yUh0k1IE2Y6aqzH1KcsPREuOvn6rM2RJ3K+B5+J2JUaYxY
-         8SkotVbfoeY9X/R6ndqEn+xXNABTb5l2eazHvMIwSKc0e7s0UOHRYdoGimKa8P8a3J7K
-         zQGe0T31pwJ5mk+AnW2K4FzvHgveUYdFojv/kenPJiKelORJz2TYLbVRd3ufkhrYvUWx
-         BEqJ831qFBVoCro8bOdXn8oXK5hOpHRC+1/n1cW2uA1c6TqTMwfMHFA476wgyN4pRiB5
-         BJeADFKYhOOn3shrSpECswR63cKcGhqf648sYnCQ85bxucp2GYLZE4ebmNJc4LTlatUf
-         lXMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686798526; x=1689390526;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3LLDiVG+RQa/fzfc+Aret+vyoXqbU6usti8V8wN1jVg=;
-        b=Jf91Ivo1qxfcI+BeQyElOxX9a2XFOKW3kpRUSIxQCTKIwE+dfpPjpa/GSQUnvtcNs8
-         P+FKjOHtitOzdnsbXv61UkjHzwaVvz/49peYgl6iD9Dl/A4w8RnkxmDLGqJAFa/yAwTC
-         TYjPg/sTgSLby6u9k5Tqixl0XVGxWbObXxlluORNMFiYYC9mixINuP1onkweUN0Fhmx4
-         3Obxvd/qzxeUUtQIfLLWq74BK6ds5edGx3PDpZ1TkVCsp89yQ88yeNoG83g581Yhunr/
-         Nfu45rgfiL1PIehJDPu1fYJfv5QKaKPbR+R1s/N8zPHFsOulNQ7wQ/V55IYmOExt+3p8
-         7H3A==
-X-Gm-Message-State: AC+VfDwqi7ZenSl5+Uyyl6qreecTXLcLqYIAgZtyxOJOiPOTiOFIohM9
-        kqhEdjRt/JyYNWgCn12Hxnr/ZBaQWuY=
-X-Google-Smtp-Source: ACHHUZ5GM6O0lvw3Hn+JD1GdmwmHP4KFl1f9ccu4Pu4N8mf1H6TePXWYw1E31kTEsrSnttqGXYsPpQ==
-X-Received: by 2002:a05:6a00:1381:b0:650:154:8bd with SMTP id t1-20020a056a00138100b00650015408bdmr4847901pfg.17.1686798526369;
-        Wed, 14 Jun 2023 20:08:46 -0700 (PDT)
-Received: from xplor.waratah.dyndns.org (222-152-217-2-adsl.sparkbb.co.nz. [222.152.217.2])
-        by smtp.gmail.com with ESMTPSA id p18-20020aa78612000000b006414b2c9efasm11025396pfn.123.2023.06.14.20.08.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jun 2023 20:08:45 -0700 (PDT)
-Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
-        id 6C6A5360489; Thu, 15 Jun 2023 15:08:42 +1200 (NZST)
-From:   Michael Schmitz <schmitzmic@gmail.com>
-To:     linux-block@vger.kernel.org, axboe@kernel.dk
-Cc:     linux-m68k@vger.kernel.org, geert@linux-m68k.org, hch@lst.de,
-        martin@lichtvoll.de, fthain@linux-m68k.org,
-        Michael Schmitz <schmitzmic@gmail.com>, stable@vger.kernel.org
-Subject: [PATCH v10 3/3] block: add overflow checks for Amiga partition support
-Date:   Thu, 15 Jun 2023 15:08:37 +1200
-Message-Id: <20230615030837.8518-4-schmitzmic@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230615030837.8518-1-schmitzmic@gmail.com>
-References: <20230615030837.8518-1-schmitzmic@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229711AbjFODzs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 23:55:48 -0400
+Received: from DM6FTOPR00CU001.outbound.protection.outlook.com (mail-centralusazon11020023.outbound.protection.outlook.com [52.101.61.23])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 724E22133;
+        Wed, 14 Jun 2023 20:55:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=I4nDQLXtBrHKjc50hMe7hGXLLJTrPn//qLKoWrQNZZwpwg3qAZya7R7ccA4h0FMXS+Q9fUk5BUnRR16x88AXOJdrfAS5zTDGKRGvCpl+1SgWnva6Yn4h7VQQEtBXNUkRyqAY3FofQuHhQJWYkxiJ0lzgbBE9yUf/XbRHL+f5v2ErKT8FQ/VrwMYi0Pe+RLCUO2PX/qhZyUQWmf1b9yA2SnxwV58mQuQMA44eHaK1m00hKJctfkqfafeWMuiT6gYfVWXI/nTZZ7g6sCyYwk55gpkfYhzfs86QXBGhbDKA364t8Ikqf9czyLlx3ddTBEZJxW48vCMuHVXMUBX7mTXckQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JrichSzLPYq+YUu82LbzmuirLDiaXyTwDNkCwoFSZLE=;
+ b=hB7lY8LiD981vVcLYGJlr2YYd45UF4YoDZ6pFWqUk9vWpKLe46HHxNgUT5tMr5WekA3xpAWBtMpiJ9OD/nK99lUzwT5MoWaOd+YLR9IHyOCJ8co51er8svxCkN7TLE8v/Z69CMUdPj7QT2fX4HG7NLSMZ/kI4SFXyE7Bn7MhInu22BjuKaWtof6cG9Bxcd7cQeK0PAo4sv2iLS8Gcy95IjKahmUcKD9HHRR9EF9cz8txRIgAGRpTlkRGmA9qyRRq5Dhl9VZg8Di1cKuChBa8W+TOmJq0874BiIA+kd7HohEzIcyik96PjcKjMdqBM9LkfczjuOkD4mw9n4T8p36SxA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JrichSzLPYq+YUu82LbzmuirLDiaXyTwDNkCwoFSZLE=;
+ b=h4EAyzrSBD7xOhmE353to6aQb2m+sMRnhuHD4CJ70eRZUETlyY4WfzaCEjWaExLR9k9KpC/ZMeo2W00eK2qjOQSC54ryNvaoq7fLBub3ZEmAh3Txm5efU8jOdqLXgFdAVPvWskFm9lONFSApIUusmxv2xL2+XeOgEXcBPhhJNDA=
+Received: from SA1PR21MB1335.namprd21.prod.outlook.com (2603:10b6:806:1f2::11)
+ by PH7PR21MB3260.namprd21.prod.outlook.com (2603:10b6:510:1d8::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.6; Thu, 15 Jun
+ 2023 03:55:43 +0000
+Received: from SA1PR21MB1335.namprd21.prod.outlook.com
+ ([fe80::bb03:96fc:3397:6022]) by SA1PR21MB1335.namprd21.prod.outlook.com
+ ([fe80::bb03:96fc:3397:6022%4]) with mapi id 15.20.6521.009; Thu, 15 Jun 2023
+ 03:55:43 +0000
+From:   Dexuan Cui <decui@microsoft.com>
+To:     Lorenzo Pieralisi <lpieralisi@kernel.org>
+CC:     "bhelgaas@google.com" <bhelgaas@google.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>,
+        Jake Oshins <jakeo@microsoft.com>,
+        "kuba@kernel.org" <kuba@kernel.org>, "kw@linux.com" <kw@linux.com>,
+        KY Srinivasan <kys@microsoft.com>,
+        "leon@kernel.org" <leon@kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "Michael Kelley (LINUX)" <mikelley@microsoft.com>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "robh@kernel.org" <robh@kernel.org>,
+        "saeedm@nvidia.com" <saeedm@nvidia.com>,
+        "wei.liu@kernel.org" <wei.liu@kernel.org>,
+        Long Li <longli@microsoft.com>,
+        "boqun.feng@gmail.com" <boqun.feng@gmail.com>,
+        Saurabh Singh Sengar <ssengar@microsoft.com>,
+        "helgaas@kernel.org" <helgaas@kernel.org>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        Jose Teuttli Carranco <josete@microsoft.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH v3 1/6] PCI: hv: Fix a race condition bug in
+ hv_pci_query_relations()
+Thread-Topic: [PATCH v3 1/6] PCI: hv: Fix a race condition bug in
+ hv_pci_query_relations()
+Thread-Index: AQHZjuDp3/HWlZZHlUKokFlSLFMUD6+LWp4Q
+Date:   Thu, 15 Jun 2023 03:55:43 +0000
+Message-ID: <SA1PR21MB133577C1859A3B1DCE1ACAA5BF5BA@SA1PR21MB1335.namprd21.prod.outlook.com>
+References: <20230420024037.5921-1-decui@microsoft.com>
+ <20230420024037.5921-2-decui@microsoft.com> <ZG8YzuK/5+8iE8He@lpieralisi>
+In-Reply-To: <ZG8YzuK/5+8iE8He@lpieralisi>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=f554af38-df63-4f69-b441-4d0e85cb67dc;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2023-06-15T03:48:03Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA1PR21MB1335:EE_|PH7PR21MB3260:EE_
+x-ms-office365-filtering-correlation-id: 25e9e427-70a1-47fc-b3d2-08db6d546454
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 4kkL3w+St+5wcM5U24X4JfOGqVnN2aZU0/TaGfawHY11PNTWrY3LeufcNx5fhk6Q9mGYx6miT107lZfvm8FJNfDKEnYQH5mjXTFoat5oUUv6zN8KbwLjs8dePylUhsyMoOHEghaLJl4ROVcJbPyWECZ4OqxwxwaBC9dLFWxsvPAQYPdfoRRNFqUvDozQPYH0dnYX4lIK/mLo8oM5sECiNdZiJMN9alHvohc/8qz9i+jmKM0pBRXhqnv0DYYtx8IObvgzN716tf/WoRbwm1KLAFTEOLwh/4SzhiZdEeEUO7dl6CZWpP7SWt5e9kXEt32OyCGNhd47jcCLnG4ixVql6gw5uo4ODe2ucTnF8Ql40ed4OTM6oP7Rex8Z/RADAeaVJBTiO/4iTC3F3kSlX2ls0yqz5DwFim3K3GxZtKReVpZnaL31B1n/VYEW0ckVe/ksL3rT+cYAMghCYnEACb5pn7oWpz+NCi1n6FWtiNlZmN78/D/Jith+4otkIVgrNizDHNM6DatWhcAECSXcRyJuWRiSJZ4fMBAm5UalHLQMJlo1ubMdoNtUlbAJh0tW1L2+S++/7+C6CyEsetcq8OePahJD7c+Z3OUIbMa5+ibjfEUv+ZwKDhG6Usel7tYDQ9Ql/qw1aT9QM6bL16VjJiZcLAfc597ZOLdEHyEfMo8Niuo=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR21MB1335.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(136003)(396003)(346002)(366004)(376002)(451199021)(86362001)(38070700005)(8990500004)(33656002)(7416002)(2906002)(66899021)(55016003)(38100700002)(7696005)(186003)(83380400001)(52536014)(53546011)(9686003)(6506007)(82960400001)(82950400001)(71200400001)(54906003)(122000001)(5660300002)(66476007)(10290500003)(76116006)(316002)(66556008)(6916009)(4326008)(478600001)(64756008)(66946007)(8676002)(41300700001)(66446008)(8936002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?y08mJpOX6Psi9+Nor0+EqM6W+feECnp/F1qXOrEUuDzAZmhyj5O/otfqgEkD?=
+ =?us-ascii?Q?d72ee/0D6zGqZ8sFr06CcDFUKg8qyhc5G1Q/ym30JxIe7JDkB1uAe3kN90Fe?=
+ =?us-ascii?Q?T6bFOIu1OPqHBhF4paHJa8ssCXEHALHAHSQfaevAQVtMyFI6NOzI/LXyEi3s?=
+ =?us-ascii?Q?t6TnHqVA2yp8tUfydfLkx3UCZD+4Ws7mFGoV0sJn9E8802bZfGY6aqk0lYIV?=
+ =?us-ascii?Q?AsD9n6CvrU9biXrUUQf7Jh247GYXICbFZrQyIh3wWU3CNKy2ouH01ofRw3oQ?=
+ =?us-ascii?Q?jbDZtVfVVGGzVTELQrTno97nZFPMpLSjEzCQ15uO5+GRne2n1Xb4ieoR/zqY?=
+ =?us-ascii?Q?IeDn2/fz/6N8CB9R7w4KNcBGoDseh80PBtne7IC9mRLfLi/z/Jd9RspZnRER?=
+ =?us-ascii?Q?mTWs+8vD+qoEZvQJVExrv8N3zUaL6sQZtPpooZF1vbfH5j66pvBEsBJwgXwF?=
+ =?us-ascii?Q?QlamJXaf/DPOWW0rPMrGzkY19BNV2gDY+fkeGiSpnLBPOVvEuAf/uT/ZKBe3?=
+ =?us-ascii?Q?Jo6yohdPg1TIdiiglnyJUcDwhkanaTybNbmdFvhsaQtPKkvxYtQJs0d5mr7g?=
+ =?us-ascii?Q?ZdrnyBfoL91yc5NkWlyqw+FvA+ixQBuv/Ya7LZWWrAOukSCMfLeAVmeXEAld?=
+ =?us-ascii?Q?jvikpDCxacDpEiSjVVp/f/JFB9cDbOMTQW0DOpdPx5B3b81TY7+qaBl4Zn7j?=
+ =?us-ascii?Q?1Shvv7GDkn/lELFIF+Hirawozf/AFKUpvM1NkXAdqc8kyFSb+ZJPYmkuKFwQ?=
+ =?us-ascii?Q?6zAlMYLM0Um7/cw8m4ETChjqK4vB7tLMbvwAHbjxm8KN9e2z3pz1sTEBbclf?=
+ =?us-ascii?Q?y8B8mPiYNibbSlqUFCPTCmmOUWjpBwC3lXemkxe/57xQwQrRGg+VYyauwzzU?=
+ =?us-ascii?Q?QRtYvBcuZzpvhCXjh46oBm2neWXLautBDJ1ISEbzxRyL+0fUS06Qgv910zAG?=
+ =?us-ascii?Q?AlHkVuYKYyMLmy6yyWe4b0Wn4b2q4vDQ/42LbR7lYbVitSlKNpDTTHUnpc4q?=
+ =?us-ascii?Q?tC4veBlcA79HuFh9jBDherL/ewyYDD3ZFCLbgRi+tTO8FGOdhZZBWC24hntg?=
+ =?us-ascii?Q?POlIDOVmWVNz3I+bAsS7xYwKiUqdaVSq0iqZHuh78WWHfgzBd3yNF+FKemaf?=
+ =?us-ascii?Q?inC5IZfqDFh5RqCxcATc2JCys8aLAWMw45j+OFf2Dy/RSduW/caH41lHQElD?=
+ =?us-ascii?Q?o9owJ4VYEdGbzKbfFQr4oQK3ZhKjPnag+70Sl9QRHQKKmpBUlbiLsI7zsKtx?=
+ =?us-ascii?Q?i7Pe/fLAgCxgQG6GvBNE0syqQco7O0j8vnNIpC5gmL/lH1nPF4aDkM/4Z2Ox?=
+ =?us-ascii?Q?Lt2fe+cESCGXTfK65/WgnCY9AUig6CL4W+n2PGykxo+1AGDHvtzMFDrWjmJV?=
+ =?us-ascii?Q?s2DbRnCzeYanyjrF0X+fCnMaYJgOOs3hrsFXBknXiuJAucAyXCaIqFwnR00u?=
+ =?us-ascii?Q?0dveFmgMVDP2B4SzJhx9LIATD+iNe3QjwknEWvyjR1vRFZwM3J/pagyJD9XW?=
+ =?us-ascii?Q?Ij0c2xoTK9xQ8mVI5vif/hhSzzmnc5Q7eh9P+tvU5+RUbSYu7Uox+qXKpcFw?=
+ =?us-ascii?Q?Sj0tyjI3M6vlj539/0JC8fBEGOhnHgqzxhG8BJO11NbUVapYzjNKVIbpf2VM?=
+ =?us-ascii?Q?N86YFKePOGuhTzFT5wFnlRE=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR21MB1335.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 25e9e427-70a1-47fc-b3d2-08db6d546454
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jun 2023 03:55:43.0614
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: oQl98l7LPcQ39ZI6GSxjpYf8I0cm4BhUCl78GqJmKN03SrMtKvAa/WmFhfIxiurUypjYUy4wQuNuJx+xp96Rng==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR21MB3260
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The Amiga partition parser module uses signed int for partition sector
-address and count, which will overflow for disks larger than 1 TB.
+> From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+> Sent: Thursday, May 25, 2023 1:14 AM
+> To: Dexuan Cui <decui@microsoft.com>
+>=20
+> On Wed, Apr 19, 2023 at 07:40:32PM -0700, Dexuan Cui wrote:
+> > Fix the longstanding race between hv_pci_query_relations() and
+> > survey_child_resources() by flushing the workqueue before we exit from
+> > hv_pci_query_relations().
+>=20
+> "Fix the longstanding race" is vague. Please describe the race
+> succinctly at least to give an idea of what the problem is.
+Hi Lozenzo, I'm sorry for the late response -- finally I'm back on the patc=
+hset...
 
-Use u64 as type for sector address and size to allow using disks up to
-2 TB without LBD support, and disks larger than 2 TB with LBD. The RBD
-format allows to specify disk sizes up to 2^128 bytes (though native
-OS limitations reduce this somewhat, to max 2^68 bytes), so check for
-u64 overflow carefully to protect against overflowing sector_t.
+I'll use the below commit message in v4:
+=20
+ Since day 1 of the driver, there has been a race between
+ hv_pci_query_relations() and survey_child_resources(): during fast
+ device hotplug, hv_pci_query_relations() may error out due to
+ device-remove and the stack variable 'comp' is no longer valid;
+ however, pci_devices_present_work() -> survey_child_resources() ->
+ complete() may be running on another CPU and accessing the no-longer-valid
+ 'comp'. Fix the race by flushing the workqueue before we exit from
+ hv_pci_query_relations().
 
-Bail out if sector addresses overflow 32 bits on kernels without LBD
-support.
+I'll also update the comment to share more details of the race:
 
-This bug was reported originally in 2012, and the fix was created by
-the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
-discussed and reviewed on linux-m68k at that time but never officially
-submitted (now resubmitted as patch 1 in this series).
-This patch adds additional error checking and warning messages.
+--- a/drivers/pci/controller/pci-hyperv.c
++++ b/drivers/pci/controller/pci-hyperv.c
+@@ -3401,6 +3401,24 @@ static int hv_pci_query_relations(struct hv_device *=
+hdev)
+        if (!ret)
+                ret =3D wait_for_response(hdev, &comp);
 
-Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Message-ID: <201206192146.09327.Martin@lichtvoll.de>
-Cc: <stable@vger.kernel.org> # 5.2
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Reviewed-by: Christoph Hellwig <hch@infradead.org>
-
----
-
-Changes from RFC:
-
-- use u64 instead of sector_t, since that may be u32 without LBD support
-- check multiplication overflows each step - 3 u32 values may exceed u64!
-- warn against use on AmigaDOS if partition data overflow u32 sector count.
-- warn if partition CylBlocks larger than what's stored in the RDSK header.
-- bail out if we were to overflow sector_t (32 or 64 bit).
-
-Changes from v1:
-
-Kars de Jong:
-- use defines for magic offsets in DosEnvec struct
-
-Geert Uytterhoeven:
-- use u64 cast for multiplications of u32 numbers
-- use array3_size for overflow checks
-- change pr_err to pr_warn
-- discontinue use of pr_cont
-- reword log messages
-- drop redundant nr_sects overflow test
-- warn against 32 bit overflow for each affected partition
-- skip partitions that overflow sector_t size instead of aborting scan
-
-Changes from v2:
-
-- further trim 32 bit overflow test
-- correct duplicate types.h inclusion introduced in v2
-
-Changes from v3:
-
-- split off sector address type fix for independent review
-- change blksize to unsigned
-- use check_mul_overflow() instead of array3_size()
-- rewrite checks to avoid 64 bit divisions in check_mul_overflow()
-
-Changes from v5:
-
-Geert Uytterhoeven:
-- correct ineffective u64 cast to avoid 32 bit mult. overflow
-- fix mult. overflow in partition block address calculation
-
-Changes from v6:
-
-Geert Uytterhoeven:
-- don't fail hard on partition block address overflow
-
-Changes from v7:
-
-- replace bdevname(state->bdev, b) by state->disk->disk_name
-- drop warn_no_part conditionals
-- remove remaining warn_no_part
-
-Changes from v8:
-
-Christoph Hellwig:
-- whitespace fix, drop unnecessary u64 casts
-
-kbuild warning:
-- sparse warning fix
-
-Changes from v9:
-
-- revert ineffective sparse warning fix, and rely on
-  change to annotation of rdb_CylBlocks (patch 2 this
-  series) instead.
-- add Fixes: tags and stable backport prereq
----
- block/partitions/amiga.c | 103 ++++++++++++++++++++++++++++++++-------
- 1 file changed, 85 insertions(+), 18 deletions(-)
-
-diff --git a/block/partitions/amiga.c b/block/partitions/amiga.c
-index 85c5c79aae48..ed222b9c901b 100644
---- a/block/partitions/amiga.c
-+++ b/block/partitions/amiga.c
-@@ -11,10 +11,18 @@
- #define pr_fmt(fmt) fmt
- 
- #include <linux/types.h>
-+#include <linux/mm_types.h>
-+#include <linux/overflow.h>
- #include <linux/affs_hardblocks.h>
- 
- #include "check.h"
- 
-+/* magic offsets in partition DosEnvVec */
-+#define NR_HD	3
-+#define NR_SECT	5
-+#define LO_CYL	9
-+#define HI_CYL	10
++       /*
++        * In the case of fast device addition/removal, it's possible that
++        * vmbus_sendpacket() or wait_for_response() returns -ENODEV but we
++        * already got a PCI_BUS_RELATIONS* message from the host and the
++        * channel callback already scheduled a work to hbus->wq, which can=
+ be
++        * running pci_devices_present_work() -> survey_child_resources() -=
+>
++        * complete(&hbus->survey_event), even after hv_pci_query_relations=
+()
++        * exits and the stack variable 'comp' is no longer valid; as a res=
+ult,
++        * a hang or a page fault may happen when the complete() calls
++        * raw_spin_lock_irqsave(). Flush hbus->wq before we exit from
++        * hv_pci_query_relations() to avoid the issues. Note: if 'ret' is
++        * -ENODEV, there can't be any more work item scheduled to hbus->wq
++        * after the flush_workqueue(): see vmbus_onoffer_rescind() ->
++        * vmbus_reset_channel_cb(), vmbus_rescind_cleanup() ->
++        * channel->rescind =3D true.
++        */
++       flush_workqueue(hbus->wq);
 +
- static __inline__ u32
- checksum_block(__be32 *m, int size)
- {
-@@ -31,9 +39,12 @@ int amiga_partition(struct parsed_partitions *state)
- 	unsigned char *data;
- 	struct RigidDiskBlock *rdb;
- 	struct PartitionBlock *pb;
--	sector_t start_sect, nr_sects;
--	int blk, part, res = 0;
--	int blksize = 1;	/* Multiplier for disk block size */
-+	u64 start_sect, nr_sects;
-+	sector_t blk, end_sect;
-+	u32 cylblk;		/* rdb_CylBlocks = nr_heads*sect_per_track */
-+	u32 nr_hd, nr_sect, lo_cyl, hi_cyl;
-+	int part, res = 0;
-+	unsigned int blksize = 1;	/* Multiplier for disk block size */
- 	int slot = 1;
- 
- 	for (blk = 0; ; blk++, put_dev_sector(sect)) {
-@@ -41,7 +52,7 @@ int amiga_partition(struct parsed_partitions *state)
- 			goto rdb_done;
- 		data = read_part_sector(state, blk, &sect);
- 		if (!data) {
--			pr_err("Dev %s: unable to read RDB block %d\n",
-+			pr_err("Dev %s: unable to read RDB block %llu\n",
- 			       state->disk->disk_name, blk);
- 			res = -1;
- 			goto rdb_done;
-@@ -58,12 +69,12 @@ int amiga_partition(struct parsed_partitions *state)
- 		*(__be32 *)(data+0xdc) = 0;
- 		if (checksum_block((__be32 *)data,
- 				be32_to_cpu(rdb->rdb_SummedLongs) & 0x7F)==0) {
--			pr_err("Trashed word at 0xd0 in block %d ignored in checksum calculation\n",
-+			pr_err("Trashed word at 0xd0 in block %llu ignored in checksum calculation\n",
- 			       blk);
- 			break;
- 		}
- 
--		pr_err("Dev %s: RDB in block %d has bad checksum\n",
-+		pr_err("Dev %s: RDB in block %llu has bad checksum\n",
- 		       state->disk->disk_name, blk);
- 	}
- 
-@@ -80,10 +91,15 @@ int amiga_partition(struct parsed_partitions *state)
- 	blk = be32_to_cpu(rdb->rdb_PartitionList);
- 	put_dev_sector(sect);
- 	for (part = 1; blk>0 && part<=16; part++, put_dev_sector(sect)) {
--		blk *= blksize;	/* Read in terms partition table understands */
-+		/* Read in terms partition table understands */
-+		if (check_mul_overflow(blk, (sector_t) blksize, &blk)) {
-+			pr_err("Dev %s: overflow calculating partition block %llu! Skipping partitions %u and beyond\n",
-+				state->disk->disk_name, blk, part);
-+			break;
-+		}
- 		data = read_part_sector(state, blk, &sect);
- 		if (!data) {
--			pr_err("Dev %s: unable to read partition block %d\n",
-+			pr_err("Dev %s: unable to read partition block %llu\n",
- 			       state->disk->disk_name, blk);
- 			res = -1;
- 			goto rdb_done;
-@@ -95,19 +111,70 @@ int amiga_partition(struct parsed_partitions *state)
- 		if (checksum_block((__be32 *)pb, be32_to_cpu(pb->pb_SummedLongs) & 0x7F) != 0 )
- 			continue;
- 
--		/* Tell Kernel about it */
-+		/* RDB gives us more than enough rope to hang ourselves with,
-+		 * many times over (2^128 bytes if all fields max out).
-+		 * Some careful checks are in order, so check for potential
-+		 * overflows.
-+		 * We are multiplying four 32 bit numbers to one sector_t!
-+		 */
-+
-+		nr_hd   = be32_to_cpu(pb->pb_Environment[NR_HD]);
-+		nr_sect = be32_to_cpu(pb->pb_Environment[NR_SECT]);
-+
-+		/* CylBlocks is total number of blocks per cylinder */
-+		if (check_mul_overflow(nr_hd, nr_sect, &cylblk)) {
-+			pr_err("Dev %s: heads*sects %u overflows u32, skipping partition!\n",
-+				state->disk->disk_name, cylblk);
-+			continue;
-+		}
-+
-+		/* check for consistency with RDB defined CylBlocks */
-+		if (cylblk > be32_to_cpu(rdb->rdb_CylBlocks)) {
-+			pr_warn("Dev %s: cylblk %u > rdb_CylBlocks %u!\n",
-+				state->disk->disk_name, cylblk,
-+				be32_to_cpu(rdb->rdb_CylBlocks));
-+		}
-+
-+		/* RDB allows for variable logical block size -
-+		 * normalize to 512 byte blocks and check result.
-+		 */
-+
-+		if (check_mul_overflow(cylblk, blksize, &cylblk)) {
-+			pr_err("Dev %s: partition %u bytes per cyl. overflows u32, skipping partition!\n",
-+				state->disk->disk_name, part);
-+			continue;
-+		}
-+
-+		/* Calculate partition start and end. Limit of 32 bit on cylblk
-+		 * guarantees no overflow occurs if LBD support is enabled.
-+		 */
-+
-+		lo_cyl = be32_to_cpu(pb->pb_Environment[LO_CYL]);
-+		start_sect = ((u64) lo_cyl * cylblk);
-+
-+		hi_cyl = be32_to_cpu(pb->pb_Environment[HI_CYL]);
-+		nr_sects = (((u64) hi_cyl - lo_cyl + 1) * cylblk);
- 
--		nr_sects = ((sector_t)be32_to_cpu(pb->pb_Environment[10]) + 1 -
--			   be32_to_cpu(pb->pb_Environment[9])) *
--			   be32_to_cpu(pb->pb_Environment[3]) *
--			   be32_to_cpu(pb->pb_Environment[5]) *
--			   blksize;
- 		if (!nr_sects)
- 			continue;
--		start_sect = (sector_t)be32_to_cpu(pb->pb_Environment[9]) *
--			     be32_to_cpu(pb->pb_Environment[3]) *
--			     be32_to_cpu(pb->pb_Environment[5]) *
--			     blksize;
-+
-+		/* Warn user if partition end overflows u32 (AmigaDOS limit) */
-+
-+		if ((start_sect + nr_sects) > UINT_MAX) {
-+			pr_warn("Dev %s: partition %u (%llu-%llu) needs 64 bit device support!\n",
-+				state->disk->disk_name, part,
-+				start_sect, start_sect + nr_sects);
-+		}
-+
-+		if (check_add_overflow(start_sect, nr_sects, &end_sect)) {
-+			pr_err("Dev %s: partition %u (%llu-%llu) needs LBD device support, skipping partition!\n",
-+				state->disk->disk_name, part,
-+				start_sect, end_sect);
-+			continue;
-+		}
-+
-+		/* Tell Kernel about it */
-+
- 		put_partition(state,slot++,start_sect,nr_sects);
- 		{
- 			/* Be even more informative to aid mounting */
--- 
-2.17.1
+        return ret;
+ }
 
+> > +	 * In the case of fast device addition/removal, it's possible that
+> > +	 * vmbus_sendpacket() or wait_for_response() returns -ENODEV but we
+> > +	 * already got a PCI_BUS_RELATIONS* message from the host and the
+> > +	 * channel callback already scheduled a work to hbus->wq, which can
+> >  be
+> > +	 * running survey_child_resources() -> complete(&hbus->survey_event),
+> > +	 * even after hv_pci_query_relations() exits and the stack variable
+> > +	 * 'comp' is no longer valid. This can cause a strange hang issue
+>=20
+> "A strange hang" sounds like we don't understand what's happening, it
+> does not feel like it is a solid understanding of the issue.
+>=20
+> I would remove it - given that you already explain that comp is no
+> longer valid - that is already a bug that needs fixing.
+I share more details in the comment (see the above).
+=20
+> Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Thanks!
