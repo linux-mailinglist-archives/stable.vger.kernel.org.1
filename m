@@ -2,120 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0DFB732077
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 21:47:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C14BA732083
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 21:53:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229658AbjFOTrl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 15:47:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58648 "EHLO
+        id S229558AbjFOTxY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 15:53:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229530AbjFOTrk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 15:47:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFEC9268A
-        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 12:47:39 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F82D614A9
-        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 19:47:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95106C433C8;
-        Thu, 15 Jun 2023 19:47:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686858458;
-        bh=AKMJ9Nhuvfu6Z+tz0mQlySiQlu7rOvQ1VIdI1LAzQI4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=UrrR+aU7enX0JTf+4gH04k7J/WrkrFfXZFRL74tHMQftQDtSHeeBkpgAnQgt406+J
-         s+bBqIyk15lb3vvecX4AW2J/x+AjbJVPS8jGe9voJTky8KUUvenuQ1rxBiBl7CKifh
-         hdb5jcQ5cHaJIF+gSAc4pwTdVwPLj3d5MFiiCnJriN7E8b3VLoNVv+l1UA6bq0Wbk7
-         t7hKzl6sT1vSn35jUPT/dsxnBc+HC2SAibQZ/uP6AeJ/il/R6XDx6FsFiBIjPHWXcn
-         rz6BFAx04PFV97Z4AprMLZ5gFKdDTu/A0vLcI5Atu7HJ8JRH3FLU1Mf0KFjZ/C0SM+
-         NvPjUrW2daDuQ==
-Date:   Thu, 15 Jun 2023 12:47:37 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Louis Peens <louis.peens@corigine.com>
-Cc:     David Miller <davem@davemloft.net>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Tianyu Yuan <tianyu.yuan@corigine.com>, netdev@vger.kernel.org,
-        stable@vger.kernel.org, oss-drivers@corigine.com
-Subject: Re: [PATCH net v2] nfp: fix rcu_read_lock/unlock while
- rcu_derefrencing
-Message-ID: <20230615124737.43025acb@kernel.org>
-In-Reply-To: <20230615073139.8656-1-louis.peens@corigine.com>
-References: <20230615073139.8656-1-louis.peens@corigine.com>
+        with ESMTP id S229503AbjFOTxX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 15:53:23 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F9C5268A;
+        Thu, 15 Jun 2023 12:53:22 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1b3d0b33dc2so8515ad.0;
+        Thu, 15 Jun 2023 12:53:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686858802; x=1689450802;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rDyg1xRS0mTW8IflRZmJ1y6m6hnypMScbqMo1USnW/Q=;
+        b=nibjocXHmfrLrqxJj8sFvt7u9VyG8VMGJ6DdYQ+ljrDmj1cjDXX8GowkALr6EAq481
+         Aj8z8ITIm3Lnp5PpFcw/Ga6JB0fBr7qE3JeVvU6Nf5eCb56wJ8yVfTOdUYvuT517+Mw1
+         snwDi3gYAVr0qmuZMpG/Om/Lxqh/B45g+ERonreTSQsSy1+DfXyD+fs46Xvdsw6kNX71
+         Z2O88VDcJwj73Pb3kGP1GTpb6X3XRrsGxft6tKeZlJLNircqItxkQE1HH56PqUochH87
+         2yZfPDXD1T4Q01s89jwU/dQVQhRTX4R8suvAULcHWqPl8+mFR1pA5jNv1HeGQUs/j5Oj
+         wUlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686858802; x=1689450802;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rDyg1xRS0mTW8IflRZmJ1y6m6hnypMScbqMo1USnW/Q=;
+        b=OrDvdIEN73Yag7CyXNPSWWH4MCY8cT8f0bjm71W3/ABIyJDdJnQYOdwZBQlgJNKYjF
+         xjvke2o7surU563SGlpJE+gV4feOZC8TUqQrKmol7F7++xbODJiCXEKIh+ZSZigF6IDQ
+         GXJkcPIqDgtSI5S411lwZa/5bPg+BvSH9Os1tqVdi5Zgqd7QV7NnEp5raxcu5YrarHhI
+         8SF1jH2mMiDWD6+GRjqx3JUy1dOmb4ToxoggBiX7o49osDTGCz0gG4LYqNjwKfqOVkil
+         Ia8pLa/FabGBQtxtFG4IH4bt9JlOLEBcsfwy6JfC0in9U02nFjNY0sryj5mFvjiFadwc
+         0aGw==
+X-Gm-Message-State: AC+VfDyPJf/qAC6E3C5WQJC5Diwbk+8rIend7mEhmLIHMz/yizOH9PMq
+        ieSTiXLsKiRSjEVPUwk4KKQ=
+X-Google-Smtp-Source: ACHHUZ5f9Jwb0OQQgGbcS50bZpZR3cRIJmCRpB5LuUiuoZ2cqM1P7md3owTmrvZ3h3afb00ypLngQw==
+X-Received: by 2002:a17:902:744c:b0:1b2:466b:a600 with SMTP id e12-20020a170902744c00b001b2466ba600mr55206plt.19.1686858801984;
+        Thu, 15 Jun 2023 12:53:21 -0700 (PDT)
+Received: from ?IPV6:2001:df0:0:200c:c59a:b7b:526a:7364? ([2001:df0:0:200c:c59a:b7b:526a:7364])
+        by smtp.gmail.com with ESMTPSA id b20-20020a170902d31400b001b414fae374sm4104441plc.291.2023.06.15.12.53.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 15 Jun 2023 12:53:21 -0700 (PDT)
+Message-ID: <69ecfff9-0f18-abe7-aa97-3ec60cf53f13@gmail.com>
+Date:   Fri, 16 Jun 2023 07:53:11 +1200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v10 2/3] block: change annotation of rdb_CylBlocks in
+ affs_hardblocks.h
+Content-Language: en-US
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Christoph Hellwig <hch@lst.de>, linux-block@vger.kernel.org,
+        axboe@kernel.dk, linux-m68k@vger.kernel.org, martin@lichtvoll.de,
+        fthain@linux-m68k.org, stable@vger.kernel.org
+References: <20230615030837.8518-1-schmitzmic@gmail.com>
+ <20230615030837.8518-3-schmitzmic@gmail.com> <20230615041742.GA4426@lst.de>
+ <056834c7-89ca-c8cd-69be-62100f1e5591@gmail.com>
+ <20230615055349.GA5544@lst.de>
+ <CAMuHMdWyQnKUaNtxYjqpxXovFKNPmhQDeCXX=exrqtgOfSFUjw@mail.gmail.com>
+From:   Michael Schmitz <schmitzmic@gmail.com>
+In-Reply-To: <CAMuHMdWyQnKUaNtxYjqpxXovFKNPmhQDeCXX=exrqtgOfSFUjw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 15 Jun 2023 09:31:39 +0200 Louis Peens wrote:
-> From: Tianyu Yuan <tianyu.yuan@corigine.com>
-> 
-> When CONFIG_PROVE_LOCKING and CONFIG_PROVE_RCU are enabled, using OVS with
-> vf reprs on bridge will lead to following log in dmesg:
-> 
->  .../nfp/flower/main.c:269 suspicious rcu_dereference_check() usage!
-> 
->  other info that might help us debug this:
-> 
->  rcu_scheduler_active = 2, debug_locks = 1
->  no locks held by swapper/15/0.
-> 
->  ......
->  Call Trace:
->   <IRQ>
->   dump_stack_lvl+0x8c/0xa0
->   lockdep_rcu_suspicious+0x118/0x1a0
->   nfp_flower_dev_get+0xc1/0x240 [nfp]
->   nfp_nfd3_rx+0x419/0xb90 [nfp]
->   ? validate_chain+0x640/0x1880
->   nfp_nfd3_poll+0x3e/0x180 [nfp]
->   __napi_poll+0x28/0x1d0
->   net_rx_action+0x2bd/0x3c0
->   ? _raw_spin_unlock_irqrestore+0x42/0x70
->   __do_softirq+0xc3/0x3c6
->   irq_exit_rcu+0xeb/0x130
->   common_interrupt+0xb9/0xd0
->   </IRQ>
->   <TASK>
->   ......
->   </TASK>
-> 
-> In previous patch rcu_read_lock()/unlock() are removed because rcu-lock may
-> affect xdp_prog. However this removal will make RCU lockdep report above
-> warning because of missing of rcu_read_lock()/unlock() pair around
-> rcu_deference().
-> 
-> This patch resolves this problem by replacing rcu_deference() with
-> rcu_dereference_check() to annotate that access is safe if
-> rcu_read_lock/rcu_read_lock_bh is held.
-> 
-> Fixes: d5789621b658 ("nfp: Remove rcu_read_lock() around XDP program invocation")
+Hi Geert,
 
-I'd vote to simply revert that commit. Toke likely assumed that the RCU
-protection is only for XDP but turns out we have more datapath stuff
-that depends on it. No strong preference but my vote would be to not
-play with RCU flavors at the driver level.
+On 15/06/23 19:21, Geert Uytterhoeven wrote:
+> Hi Michael,
+>
+> Thanks for your patch!
+>
+> On Thu, Jun 15, 2023 at 7:53 AM Christoph Hellwig <hch@lst.de> wrote:
+>> On Thu, Jun 15, 2023 at 04:50:45PM +1200, Michael Schmitz wrote:
+>>>> And as far as I can tell everything that is a __u32 here should
+>>>> be an __be32 because it is a big endian on-disk format.  Why
+>>>> would you change only a single field?
+>>> Because that's all I needed, and wanted to avoid excess patch churn. Plus
+>>> (appeal to authority here :-)) it's in keeping with what Al Viro did when
+>>> the __be32 annotations were first added.
+>>>
+>>> I can change all __u32 to __be32 and drop the comment if that's preferred.
+>> That would be great!
+> I totally agree with Christoph.
 
-> CC: stable@vger.kernel.org
-> Signed-off-by: Tianyu Yuan <tianyu.yuan@corigine.com>
-> Acked-by: Simon Horman <simon.horman@corigine.com>
-> Signed-off-by: Louis Peens <louis.peens@corigine.com>
+Thanks - now there's two __s32 fields in that header - one checksum each 
+for RDB and PB. No one has so far seen the need for a 'signed big endian 
+32 bit' type, and I'd rather avoid adding one to types.h. I'll leave 
+those as they are (with the tacit understanding that they are equally 
+meant to be big endian).
 
-> -	reprs = rcu_dereference(app->reprs[rtype]);
-> +	reprs = rcu_dereference_check(app->reprs[rtype], rcu_read_lock_bh_held());
+Cheers,
 
-If you prefer to keep the patch I think this is just
-rcu_dereference_bh() ?
--- 
-pw-bot: cr
+     Michael
+
+> Gr{oetje,eeting}s,
+>
+>                          Geert
+>
