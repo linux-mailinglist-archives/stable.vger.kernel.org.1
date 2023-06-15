@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF8A47314F9
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 12:14:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26FA0731504
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 12:16:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244492AbjFOKOi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 06:14:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34672 "EHLO
+        id S241360AbjFOKQV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 06:16:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241499AbjFOKOh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 06:14:37 -0400
+        with ESMTP id S240215AbjFOKQU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 06:16:20 -0400
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7D04B2710
-        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 03:14:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 726F42719
+        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 03:16:19 -0700 (PDT)
 Received: from loongson.cn (unknown [10.20.42.35])
-        by gateway (Coremail) with SMTP id _____8DxzOqL5IpkZYUFAA--.11823S3;
-        Thu, 15 Jun 2023 18:14:35 +0800 (CST)
+        by gateway (Coremail) with SMTP id _____8AxV+ny5Ipki4UFAA--.9839S3;
+        Thu, 15 Jun 2023 18:16:18 +0800 (CST)
 Received: from [10.20.42.35] (unknown [10.20.42.35])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8BxTMqK5Ipk_dobAA--.4752S3;
-        Thu, 15 Jun 2023 18:14:34 +0800 (CST)
+        by localhost.localdomain (Coremail) with SMTP id AQAAf8DxGOXx5IpkMNsbAA--.13907S3;
+        Thu, 15 Jun 2023 18:16:17 +0800 (CST)
 Subject: Re: [PATCH 06/10] cifs: release leases for deferred close handles
  when freezing
 To:     zybsyzlz@163.com
 Cc:     Steve French <stfrench@microsoft.com>,
         David Howells <dhowells@redhat.com>, stable@vger.kernel.org
-References: <20230615094848.24975-1-zhuyinbo@loongson.cn>
- <20230615094848.24975-6-zhuyinbo@loongson.cn>
+References: <20230615095315.25120-1-zhuyinbo@loongson.cn>
+ <20230615095315.25120-6-zhuyinbo@loongson.cn>
 From:   zhuyinbo <zhuyinbo@loongson.cn>
-Message-ID: <b864d7a6-e464-950d-b0dc-d6b230308153@loongson.cn>
-Date:   Thu, 15 Jun 2023 18:14:34 +0800
+Message-ID: <588f8d97-8ab3-f802-e9e7-9a63a74fe713@loongson.cn>
+Date:   Thu, 15 Jun 2023 18:16:17 +0800
 User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
  Thunderbird/68.7.0
 MIME-Version: 1.0
-In-Reply-To: <20230615094848.24975-6-zhuyinbo@loongson.cn>
+In-Reply-To: <20230615095315.25120-6-zhuyinbo@loongson.cn>
 Content-Type: text/plain; charset=gbk; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8BxTMqK5Ipk_dobAA--.4752S3
+X-CM-TRANSID: AQAAf8DxGOXx5IpkMNsbAA--.13907S3
 X-CM-SenderInfo: 52kx5xhqerqz5rrqw2lrqou0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
         ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -55,7 +55,7 @@ X-Mailing-List: stable@vger.kernel.org
 Sorry to bother you. This is an incorrect send, please ignore it.
 
 
-在 2023/6/15 下午5:48, Yinbo Zhu 写道:
+在 2023/6/15 下午5:53, Yinbo Zhu 写道:
 > From: Steve French <stfrench@microsoft.com>
 > 
 > We should not be caching closed files when freeze is invoked on an fs
