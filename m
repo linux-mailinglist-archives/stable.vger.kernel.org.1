@@ -2,181 +2,183 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11BD673184C
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 14:13:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 356D37318E8
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 14:23:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244616AbjFOMN5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 08:13:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56756 "EHLO
+        id S245318AbjFOMXN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 08:23:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343674AbjFOMN4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 08:13:56 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63A8519B5;
-        Thu, 15 Jun 2023 05:13:53 -0700 (PDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id 0CAEA223DA;
-        Thu, 15 Jun 2023 12:13:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1686831232; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
+        with ESMTP id S244879AbjFOMWe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 08:22:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D18D3AB7
+        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 05:20:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1686831608;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=s/txWO7dihxN+v9ZTDPm7tmWwWAwkv4+ElJccgrA55U=;
-        b=yiQPkk35PwuwvgupdGTOVqb/baxXGOi7MUnFh9/awyYFIoeXL8UDIRHkwCmarGtj7pw7om
-        dgwIJ97f890Dk8cOS52Qe+IoOzfPAwh+NXTAaufNqsr7/GHnfX4XLalxV/PvSFgOHIhl26
-        ywMRkRMUhRpcXI0UnOZRpNp61DysDw8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1686831232;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=s/txWO7dihxN+v9ZTDPm7tmWwWAwkv4+ElJccgrA55U=;
-        b=q3KKy0t9UoYzqSQa3GQsqMiAdm8Gw0/FBPntFpQuZs+zMCrlJValMXgIO1pYeinNsLvS9N
-        76pRDh9DcnyymsBg==
-Received: from localhost.localdomain (colyli.tcp.ovpn1.nue.suse.de [10.163.16.22])
-        by relay2.suse.de (Postfix) with ESMTP id 38A1A2C142;
-        Thu, 15 Jun 2023 12:13:46 +0000 (UTC)
-From:   Coly Li <colyli@suse.de>
-To:     axboe@kernel.dk
-Cc:     linux-bcache@vger.kernel.org, linux-block@vger.kernel.org,
-        Mingzhe Zou <mingzhe.zou@easystack.cn>, stable@vger.kernel.org,
-        Coly Li <colyli@suse.de>
-Subject: [PATCH 6/6] bcache: fixup btree_cache_wait list damage
-Date:   Thu, 15 Jun 2023 20:12:23 +0800
-Message-Id: <20230615121223.22502-7-colyli@suse.de>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20230615121223.22502-1-colyli@suse.de>
-References: <20230615121223.22502-1-colyli@suse.de>
+        bh=ej3tCXjr/TYQpn7uiCNnWPg2MFlLuczcmBkJJvm+F10=;
+        b=WMQYcp+QBXWfosH8Zzt2hh6gdTY6E4FvtFs4ZCuNd67LnyW5ohgl40NyZAxtf15UMJuGLQ
+        LNlG00D0ZekXc8KkM5aOe1Qeb/YgBXP6DsvBPQ1r0J9f6CFFZe1mcVt8NovAvwa4TqbMGQ
+        HMtz+nScZzdofPWbwq4tD2Q2CJ0Y1+s=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-645-njiguByWO2izt-U9OBYjKQ-1; Thu, 15 Jun 2023 08:20:02 -0400
+X-MC-Unique: njiguByWO2izt-U9OBYjKQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 16B9E185A794;
+        Thu, 15 Jun 2023 12:20:02 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.206])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id A0B8440D1B60;
+        Thu, 15 Jun 2023 12:20:01 +0000 (UTC)
+Date:   Thu, 15 Jun 2023 13:20:00 +0100
+From:   "Richard W.M. Jones" <rjones@redhat.com>
+To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc:     Mathias Krause <minipli@grsecurity.net>,
+        Luiz Capitulino <luizcap@amazon.com>,
+        Sven-Haegar Koch <haegar@sdinet.de>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "Bhatnagar, Rishabh" <risbhat@amazon.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "sashal@kernel.org" <sashal@kernel.org>, abuehaze@amazon.com,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>
+Subject: Re: [PATCH] tick/common: Align tick period during sched_timer setup.
+Message-ID: <20230615122000.GE10301@redhat.com>
+References: <12c6f9a3-d087-b824-0d05-0d18c9bc1bf3@amazon.com>
+ <c4724b40-89f6-5aa7-720d-c4a4af57cf45@amazon.com>
+ <2023061428-compacter-economic-b648@gregkh>
+ <20230614092045.tNY8USjq@linutronix.de>
+ <4c4178a1-1050-ced4-e6fb-f95c3bdefc98@amazon.com>
+ <2a3fa097-8ba0-5b0e-f506-779fee5b8fef@sdinet.de>
+ <f5d2cc62-4aae-2579-1468-2e6e389f28dc@amazon.com>
+ <23fb8ad7-beb0-ae1c-fa5a-a682a57f79b0@grsecurity.net>
+ <20230615091830.RxMV2xf_@linutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230615091830.RxMV2xf_@linutronix.de>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mingzhe Zou <mingzhe.zou@easystack.cn>
+On Thu, Jun 15, 2023 at 11:18:30AM +0200, Sebastian Andrzej Siewior wrote:
+> From: Thomas Gleixner <tglx@linutronix.de>
+> 
+> The tick period is aligned very early while the first clock_event_device
+> is registered. The system runs in periodic mode and switches later to
+> one-shot mode if possible.
+> 
+> The next wake-up event is programmed based on aligned value
+> (tick_next_period) but the delta value, that is used to program the
+> clock_event_device, is computed based on ktime_get().
+> 
+> With the subtracted offset, the devices fires in less than the exacted
+> time frame. With a large enough offset the system programs the timer for
+> the next wake-up and the remaining time left is too little to make any
+> boot progress. The system hangs.
+> 
+> Move the alignment later to the setup of tick_sched timer. At this point
+> the system switches to oneshot mode and a highres clocksource is
+> available. It safe to update tick_next_period ktime_get() will now
+> return accurate (not jiffies based) time.
+> 
+> [bigeasy: Patch description + testing].
+> 
+> Reported-by: Mathias Krause <minipli@grsecurity.net>
+> Reported-by: "Bhatnagar, Rishabh" <risbhat@amazon.com>
+> Fixes: e9523a0d81899 ("tick/common: Align tick period with the HZ tick.")
+> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+> Link: https://lore.kernel.org/5a56290d-806e-b9a5-f37c-f21958b5a8c0@grsecurity.net
+> Link: https://lore.kernel.org/12c6f9a3-d087-b824-0d05-0d18c9bc1bf3@amazon.com
 
-We get a kernel crash about "list_add corruption. next->prev should be
-prev (ffff9c801bc01210), but was ffff9c77b688237c.
-(next=ffffae586d8afe68)."
+Tested-by: Richard W.M. Jones <rjones@redhat.com>
 
-crash> struct list_head 0xffff9c801bc01210
-struct list_head {
-  next = 0xffffae586d8afe68,
-  prev = 0xffffae586d8afe68
-}
-crash> struct list_head 0xffff9c77b688237c
-struct list_head {
-  next = 0x0,
-  prev = 0x0
-}
-crash> struct list_head 0xffffae586d8afe68
-struct list_head struct: invalid kernel virtual address: ffffae586d8afe68  type: "gdb_readmem_callback"
-Cannot access memory at address 0xffffae586d8afe68
+... fixing this bug which we thought originally was in qemu, then in
+an unrelated kernel commit:
 
-[230469.019492] Call Trace:
-[230469.032041]  prepare_to_wait+0x8a/0xb0
-[230469.044363]  ? bch_btree_keys_free+0x6c/0xc0 [escache]
-[230469.056533]  mca_cannibalize_lock+0x72/0x90 [escache]
-[230469.068788]  mca_alloc+0x2ae/0x450 [escache]
-[230469.080790]  bch_btree_node_get+0x136/0x2d0 [escache]
-[230469.092681]  bch_btree_check_thread+0x1e1/0x260 [escache]
-[230469.104382]  ? finish_wait+0x80/0x80
-[230469.115884]  ? bch_btree_check_recurse+0x1a0/0x1a0 [escache]
-[230469.127259]  kthread+0x112/0x130
-[230469.138448]  ? kthread_flush_work_fn+0x10/0x10
-[230469.149477]  ret_from_fork+0x35/0x40
+https://gitlab.com/qemu-project/qemu/-/issues/1696
+https://lore.kernel.org/all/20230613134105.GA10301@redhat.com/
 
-bch_btree_check_thread() and bch_dirty_init_thread() maybe call
-mca_cannibalize() to cannibalize other cached btree nodes. Only
-one thread can do it at a time, so the op of other threads will
-be added to the btree_cache_wait list.
+Rich.
 
-We must call finish_wait() to remove op from btree_cache_wait
-before free it's memory address. Otherwise, the list will be
-damaged. Also should call bch_cannibalize_unlock() to release
-the btree_cache_alloc_lock and wake_up other waiters.
+>  kernel/time/tick-common.c | 11 +----------
+>  kernel/time/tick-sched.c  | 13 ++++++++++++-
+>  2 files changed, 13 insertions(+), 11 deletions(-)
+> 
+> diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
+> index 65b8658da829e..b85f2f9c32426 100644
+> --- a/kernel/time/tick-common.c
+> +++ b/kernel/time/tick-common.c
+> @@ -218,19 +218,10 @@ static void tick_setup_device(struct tick_device *td,
+>  		 * this cpu:
+>  		 */
+>  		if (tick_do_timer_cpu == TICK_DO_TIMER_BOOT) {
+> -			ktime_t next_p;
+> -			u32 rem;
+>  
+>  			tick_do_timer_cpu = cpu;
+>  
+> -			next_p = ktime_get();
+> -			div_u64_rem(next_p, TICK_NSEC, &rem);
+> -			if (rem) {
+> -				next_p -= rem;
+> -				next_p += TICK_NSEC;
+> -			}
+> -
+> -			tick_next_period = next_p;
+> +			tick_next_period = ktime_get();
+>  #ifdef CONFIG_NO_HZ_FULL
+>  			/*
+>  			 * The boot CPU may be nohz_full, in which case set
+> diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+> index 52254679ec489..42c0be3080bde 100644
+> --- a/kernel/time/tick-sched.c
+> +++ b/kernel/time/tick-sched.c
+> @@ -161,8 +161,19 @@ static ktime_t tick_init_jiffy_update(void)
+>  	raw_spin_lock(&jiffies_lock);
+>  	write_seqcount_begin(&jiffies_seq);
+>  	/* Did we start the jiffies update yet ? */
+> -	if (last_jiffies_update == 0)
+> +	if (last_jiffies_update == 0) {
+> +		u32 rem;
+> +
+> +		/*
+> +		 * Ensure that the tick is aligned to a multiple of
+> +		 * TICK_NSEC.
+> +		 */
+> +		div_u64_rem(tick_next_period, TICK_NSEC, &rem);
+> +		if (rem)
+> +			tick_next_period += TICK_NSEC - rem;
+> +
+>  		last_jiffies_update = tick_next_period;
+> +	}
+>  	period = last_jiffies_update;
+>  	write_seqcount_end(&jiffies_seq);
+>  	raw_spin_unlock(&jiffies_lock);
+> -- 
+> 2.40.1
 
-Fixes: 8e7102273f59 ("bcache: make bch_btree_check() to be multithreaded")
-Fixes: b144e45fc576 ("bcache: make bch_sectors_dirty_init() to be multithreaded")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
-Signed-off-by: Coly Li <colyli@suse.de>
----
- drivers/md/bcache/btree.c     | 11 ++++++++++-
- drivers/md/bcache/btree.h     |  1 +
- drivers/md/bcache/writeback.c | 10 ++++++++++
- 3 files changed, 21 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/md/bcache/btree.c b/drivers/md/bcache/btree.c
-index 0ddf91204782..68b9d7ca864e 100644
---- a/drivers/md/bcache/btree.c
-+++ b/drivers/md/bcache/btree.c
-@@ -885,7 +885,7 @@ static struct btree *mca_cannibalize(struct cache_set *c, struct btree_op *op,
-  * cannibalize_bucket() will take. This means every time we unlock the root of
-  * the btree, we need to release this lock if we have it held.
-  */
--static void bch_cannibalize_unlock(struct cache_set *c)
-+void bch_cannibalize_unlock(struct cache_set *c)
- {
- 	spin_lock(&c->btree_cannibalize_lock);
- 	if (c->btree_cache_alloc_lock == current) {
-@@ -1970,6 +1970,15 @@ static int bch_btree_check_thread(void *arg)
- 			c->gc_stats.nodes++;
- 			bch_btree_op_init(&op, 0);
- 			ret = bcache_btree(check_recurse, p, c->root, &op);
-+			/*
-+			 * The op may be added to cache_set's btree_cache_wait
-+			 * in mca_cannibalize(), must ensure it is removed from
-+			 * the list and release btree_cache_alloc_lock before
-+			 * free op memory.
-+			 * Otherwise, the btree_cache_wait will be damaged.
-+			 */
-+			bch_cannibalize_unlock(c);
-+			finish_wait(&c->btree_cache_wait, &(&op)->wait);
- 			if (ret)
- 				goto out;
- 		}
-diff --git a/drivers/md/bcache/btree.h b/drivers/md/bcache/btree.h
-index 1b5fdbc0d83e..a2920bbfcad5 100644
---- a/drivers/md/bcache/btree.h
-+++ b/drivers/md/bcache/btree.h
-@@ -282,6 +282,7 @@ void bch_initial_gc_finish(struct cache_set *c);
- void bch_moving_gc(struct cache_set *c);
- int bch_btree_check(struct cache_set *c);
- void bch_initial_mark_key(struct cache_set *c, int level, struct bkey *k);
-+void bch_cannibalize_unlock(struct cache_set *c);
- 
- static inline void wake_up_gc(struct cache_set *c)
- {
-diff --git a/drivers/md/bcache/writeback.c b/drivers/md/bcache/writeback.c
-index d4a5fc0650bb..24c049067f61 100644
---- a/drivers/md/bcache/writeback.c
-+++ b/drivers/md/bcache/writeback.c
-@@ -890,6 +890,16 @@ static int bch_root_node_dirty_init(struct cache_set *c,
- 	if (ret < 0)
- 		pr_warn("sectors dirty init failed, ret=%d!\n", ret);
- 
-+	/*
-+	 * The op may be added to cache_set's btree_cache_wait
-+	 * in mca_cannibalize(), must ensure it is removed from
-+	 * the list and release btree_cache_alloc_lock before
-+	 * free op memory.
-+	 * Otherwise, the btree_cache_wait will be damaged.
-+	 */
-+	bch_cannibalize_unlock(c);
-+	finish_wait(&c->btree_cache_wait, &(&op.op)->wait);
-+
- 	return ret;
- }
- 
 -- 
-2.35.3
+Richard Jones, Virtualization Group, Red Hat http://people.redhat.com/~rjones
+Read my programming and virtualization blog: http://rwmj.wordpress.com
+virt-top is 'top' for virtual machines.  Tiny program with many
+powerful monitoring features, net stats, disk stats, logging, etc.
+http://people.redhat.com/~rjones/virt-top
 
