@@ -2,164 +2,151 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 306D47317DF
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 13:51:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB498731844
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 14:13:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344389AbjFOLvV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 07:51:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36416 "EHLO
+        id S1343811AbjFOMNr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 08:13:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344611AbjFOLtv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 07:49:51 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BC774C1D;
-        Thu, 15 Jun 2023 04:45:36 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-51878f8e541so3901449a12.3;
-        Thu, 15 Jun 2023 04:45:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686829463; x=1689421463;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=PsB/lTh8ezN+o2RMhrgiAkKWObZXXCXjnY1D91YDpxU=;
-        b=ANsdqW65dcCX2WTsAXbKhVaPY84BRLwpT/fb1uAmQcG5HOSaBywrukPYcc0wJFqO5J
-         MYRBpaIHU8lBhVC+6nZwgbkCFtvHMftO+1ucfKM6i4DgZwJ4rQQ5yvFgkkv+SWhrQnkO
-         QadCWpb1dQyUi+PkwtcYQoqZ5UE58PP2vLcInh7oI97MaINgZCmPOHTOZHtNyR1w7vbS
-         MZm/Uw/1DGHElmqQijiYhocBA1g0VoJFoJceZgep35GWCe+BTAxwYdde9Z9xc8uhZfsg
-         7YDb7yK/Pa9BU+MjBo9VfYrXRofFsVIiK0YBecM+NNYt/ab57MHXo6soem7sH/AkCXTF
-         NF+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686829463; x=1689421463;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PsB/lTh8ezN+o2RMhrgiAkKWObZXXCXjnY1D91YDpxU=;
-        b=SCWFeGmC1Ivf65IxepnBgEuglstwNhrmr3+hQueVrJ3ceecIv3jK8cpeXXJ71qIsCf
-         SWGqGjQJm4U5lrw4Iv9fjGNWqUFu2UTu+8NPeX50MLdyFNq8yUn7uw+ufZ/B3UsjNlb0
-         2hTaK/CHMMV9VQ6dQeH93oTtdlSF67JsBgNdYwETAaJaSr41fG2KMtWOmMZ5XUT1iBL2
-         4G+yj9PHVatA3oVn64Bbpbz3DIAQZaXMuOxYFUAlspwnPz1ln/AmKqE/ckwQUHDQ/D4y
-         yEvkzGtdsMsv2bRfaswiEH9PcwCZAo/08eohx/IknfOl1gnAGWIDFxT8G0A52OtutEbM
-         ojvw==
-X-Gm-Message-State: AC+VfDwkUXM20+5kQgVIybVarm4jgkN8hvWLL8q420q22TiEX/UNYCR7
-        aVkjRFAdsL9HjYbFeOkdXeU=
-X-Google-Smtp-Source: ACHHUZ6RzWHFSaGw8cn8eRvJn8As/DQXwTkv1B/wA6aGk2IXfELhI/RLREK2k0OjWZhCMoHrOFo/Eg==
-X-Received: by 2002:a05:6402:358:b0:514:a69e:67cc with SMTP id r24-20020a056402035800b00514a69e67ccmr10702186edw.28.1686829462818;
-        Thu, 15 Jun 2023 04:44:22 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef05:8700:f946:69a3:7954:9ee0? (p200300f6ef058700f94669a379549ee0.dip0.t-ipconnect.de. [2003:f6:ef05:8700:f946:69a3:7954:9ee0])
-        by smtp.gmail.com with ESMTPSA id n21-20020aa7c795000000b0050dfd7de30dsm8735856eds.94.2023.06.15.04.44.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jun 2023 04:44:22 -0700 (PDT)
-Message-ID: <b8693c52df5cf520d6994b872bac0768901a0a6d.camel@gmail.com>
-Subject: Re: [PATCH] iio: adc: ad7192: Fix ac excitation feature
-From:   Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To:     Alisa Roman <alisa.roman@analog.com>
-Cc:     stable@vger.kernel.org,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Thu, 15 Jun 2023 13:46:44 +0200
-In-Reply-To: <20230614155242.160296-1-alisa.roman@analog.com>
-References: <20230614155242.160296-1-alisa.roman@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.48.3 
+        with ESMTP id S244616AbjFOMNr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 08:13:47 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7569E1BF3;
+        Thu, 15 Jun 2023 05:13:45 -0700 (PDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out2.suse.de (Postfix) with ESMTP id 221CE1FE0C;
+        Thu, 15 Jun 2023 12:13:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1686831224; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=083yggdhWkQ1j3JQ2+PL+9cV/aHNK49U/1kXTbBdUEM=;
+        b=OAFdI8B51PNTTmn62hB+SKz5TAAzQRcK8pl4y05FbDVpYQ7wl2YtLoofl3CKyZIaFX1tRZ
+        BDMnmpCg3BknS/iRLDpUlXrNfQJmENOcNvuFJfhhjCzdRZKnNr5iDTZ6YP09pdm6Zawl/r
+        Sp1enH83GNVOEN6eygaQC23rD/AOyWg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1686831224;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=083yggdhWkQ1j3JQ2+PL+9cV/aHNK49U/1kXTbBdUEM=;
+        b=NMjf5b1CcD0cX+D46K7eVJ8QC6Xyh/zIRPfwOcaDU01waZUIxEOWSm2/eRxclafjX0vf+T
+        UO9Qgt0Buk9GZgDQ==
+Received: from localhost.localdomain (colyli.tcp.ovpn1.nue.suse.de [10.163.16.22])
+        by relay2.suse.de (Postfix) with ESMTP id C7B4C2C142;
+        Thu, 15 Jun 2023 12:13:41 +0000 (UTC)
+From:   Coly Li <colyli@suse.de>
+To:     axboe@kernel.dk
+Cc:     linux-bcache@vger.kernel.org, linux-block@vger.kernel.org,
+        Zheng Wang <zyytlz.wz@163.com>, stable@vger.kernel.org,
+        Coly Li <colyli@suse.de>
+Subject: [PATCH 4/6] bcache: Remove some unnecessary NULL point check for the return value of __bch_btree_node_alloc-related pointer
+Date:   Thu, 15 Jun 2023 20:12:21 +0800
+Message-Id: <20230615121223.22502-5-colyli@suse.de>
+X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20230615121223.22502-1-colyli@suse.de>
+References: <20230615121223.22502-1-colyli@suse.de>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-T24gV2VkLCAyMDIzLTA2LTE0IGF0IDE4OjUyICswMzAwLCBBbGlzYSBSb21hbiB3cm90ZToKPiBB
-QyBleGNpdGF0aW9uIGVuYWJsZSBmZWF0dXJlIGV4cG9zZWQgdG8gdXNlciBvbiBBRDcxOTIsIGFs
-bG93aW5nIGEgYml0Cj4gd2hpY2ggc2hvdWxkIGJlIDAgdG8gYmUgc2V0LiBUaGlzIGZlYXR1cmUg
-aXMgc3BlY2lmaWMgb25seSB0byBBRDcxOTUuIEFDCj4gZXhjaXRhdGlvbiBhdHRyaWJ1dGUgbW92
-ZWQgYWNjb3JkaW5nbHkuCj4gCj4gSW4gdGhlIEFENzE5NSBkb2N1bWVudGF0aW9uLCB0aGUgQUMg
-ZXhjaXRhdGlvbiBlbmFibGUgYml0IGlzIG9uIHBvc2l0aW9uCj4gMjIgaW4gdGhlIENvbmZpZ3Vy
-YXRpb24gcmVnaXN0ZXIuIEFDWCBtYWNybyBjaGFuZ2VkIHRvIG1hdGNoIGNvcnJlY3QKPiByZWdp
-c3RlciBhbmQgYml0Lgo+IAo+IE5vdGUgdGhhdCB0aGUgZml4IHRhZyBpcyBmb3IgdGhlIGNvbW1p
-dCB0aGF0IG1vdmVkIHRoZSBkcml2ZXIgb3V0IG9mCj4gc3RhZ2luZy4KPiAKPiBGaXhlczogYjU4
-MWY3NDhjY2UwICgic3RhZ2luZzogaWlvOiBhZGM6IGFkNzE5MjogbW92ZSBvdXQgb2Ygc3RhZ2lu
-ZyIpCj4gU2lnbmVkLW9mZi1ieTogQWxpc2EgUm9tYW4gPGFsaXNhLnJvbWFuQGFuYWxvZy5jb20+
-Cj4gQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKPiAtLS0KCkhpIEFsaXNhLAoKSSBzZWUgeW91
-IGltcHJvdmVkIHRoZSBjb21taXQgbWVzc2FnZSB0byBleHBsYWluIHdoYXQncyBnb2luZyBvbiBi
-dXQgeW91IHNob3VsZApoYXZlIHZlcnNpb25lZCB5b3VyIHBhdGNoZXMgYWNjb3JkaW5nbHkuIEFu
-eXdheXMsIGRvbid0IGZvcmdldCB0byBkbyBpdCBuZXh0CnRpbWUgOikuIFlvdSBjb3VsZCBhbHNv
-IG1lbnRpb24gdGhlIG5hbWUgY2hhbmdlIEFENzE5Ml9NT0RFX0FDWCAtPgpBRDcxOTJfQ09ORklH
-X0FDWCBldmVuIHRob3VnaCBpdCdzIGEgYml0IG9idmlvdXMuIEFueXdheXM6CgpSZXZpZXdlZC1i
-eTogTnVubyBTYSA8bnVuby5zYUBhbmFsb2cuY29tPgoKPiDCoGRyaXZlcnMvaWlvL2FkYy9hZDcx
-OTIuYyB8IDE2ICsrKysrKysrLS0tLS0tLS0KPiDCoDEgZmlsZSBjaGFuZ2VkLCA4IGluc2VydGlv
-bnMoKyksIDggZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlvL2FkYy9h
-ZDcxOTIuYyBiL2RyaXZlcnMvaWlvL2FkYy9hZDcxOTIuYwo+IGluZGV4IDg2ODVlMGI1OGE4My4u
-N2JjM2ViZmU4MDgxIDEwMDY0NAo+IC0tLSBhL2RyaXZlcnMvaWlvL2FkYy9hZDcxOTIuYwo+ICsr
-KyBiL2RyaXZlcnMvaWlvL2FkYy9hZDcxOTIuYwo+IEBAIC02Miw3ICs2Miw2IEBACj4gwqAjZGVm
-aW5lIEFENzE5Ml9NT0RFX1NUQV9NQVNLwqDCoMKgQklUKDIwKSAvKiBTdGF0dXMgUmVnaXN0ZXIg
-dHJhbnNtaXNzaW9uIE1hc2sKPiAqLwo+IMKgI2RlZmluZSBBRDcxOTJfTU9ERV9DTEtTUkMoeCnC
-oMKgKCgoeCkgJiAweDMpIDw8IDE4KSAvKiBDbG9jayBTb3VyY2UgU2VsZWN0ICovCj4gwqAjZGVm
-aW5lIEFENzE5Ml9NT0RFX1NJTkMzwqDCoMKgwqDCoMKgQklUKDE1KSAvKiBTSU5DMyBGaWx0ZXIg
-U2VsZWN0ICovCj4gLSNkZWZpbmUgQUQ3MTkyX01PREVfQUNYwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqBCSVQoMTQpIC8qIEFDIGV4Y2l0YXRpb24gZW5hYmxlKEFENzE5NQo+IG9ubHkp
-Ki8KPiDCoCNkZWZpbmUgQUQ3MTkyX01PREVfRU5QQVLCoMKgwqDCoMKgwqBCSVQoMTMpIC8qIFBh
-cml0eSBFbmFibGUgKi8KPiDCoCNkZWZpbmUgQUQ3MTkyX01PREVfQ0xLRElWwqDCoMKgwqDCoEJJ
-VCgxMikgLyogQ2xvY2sgZGl2aWRlIGJ5IDIgKEFENzE5MC8yIG9ubHkpKi8KPiDCoCNkZWZpbmUg
-QUQ3MTkyX01PREVfU0NZQ0xFwqDCoMKgwqDCoEJJVCgxMSkgLyogU2luZ2xlIGN5Y2xlIGNvbnZl
-cnNpb24gKi8KPiBAQCAtOTEsNiArOTAsNyBAQAo+IMKgLyogQ29uZmlndXJhdGlvbiBSZWdpc3Rl
-ciBCaXQgRGVzaWduYXRpb25zIChBRDcxOTJfUkVHX0NPTkYpICovCj4gwqAKPiDCoCNkZWZpbmUg
-QUQ3MTkyX0NPTkZfQ0hPUMKgwqDCoMKgwqDCoMKgQklUKDIzKSAvKiBDSE9QIGVuYWJsZSAqLwo+
-ICsjZGVmaW5lIEFENzE5Ml9DT05GX0FDWMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-QklUKDIyKSAvKiBBQyBleGNpdGF0aW9uIGVuYWJsZShBRDcxOTUKPiBvbmx5KSAqLwo+IMKgI2Rl
-ZmluZSBBRDcxOTJfQ09ORl9SRUZTRUzCoMKgwqDCoMKgQklUKDIwKSAvKiBSRUZJTjEvUkVGSU4y
-IFJlZmVyZW5jZSBTZWxlY3QgKi8KPiDCoCNkZWZpbmUgQUQ3MTkyX0NPTkZfQ0hBTih4KcKgwqDC
-oMKgKCh4KSA8PCA4KSAvKiBDaGFubmVsIHNlbGVjdCAqLwo+IMKgI2RlZmluZSBBRDcxOTJfQ09O
-Rl9DSEFOX01BU0vCoMKgKDB4N0ZGIDw8IDgpIC8qIENoYW5uZWwgc2VsZWN0IG1hc2sgKi8KPiBA
-QCAtNDcyLDcgKzQ3Miw3IEBAIHN0YXRpYyBzc2l6ZV90IGFkNzE5Ml9zaG93X2FjX2V4Y2l0YXRp
-b24oc3RydWN0IGRldmljZQo+ICpkZXYsCj4gwqDCoMKgwqDCoMKgwqDCoHN0cnVjdCBpaW9fZGV2
-ICppbmRpb19kZXYgPSBkZXZfdG9faWlvX2RldihkZXYpOwo+IMKgwqDCoMKgwqDCoMKgwqBzdHJ1
-Y3QgYWQ3MTkyX3N0YXRlICpzdCA9IGlpb19wcml2KGluZGlvX2Rldik7Cj4gwqAKPiAtwqDCoMKg
-wqDCoMKgwqByZXR1cm4gc3lzZnNfZW1pdChidWYsICIlZFxuIiwgISEoc3QtPm1vZGUgJiBBRDcx
-OTJfTU9ERV9BQ1gpKTsKPiArwqDCoMKgwqDCoMKgwqByZXR1cm4gc3lzZnNfZW1pdChidWYsICIl
-ZFxuIiwgISEoc3QtPmNvbmYgJiBBRDcxOTJfQ09ORl9BQ1gpKTsKPiDCoH0KPiDCoAo+IMKgc3Rh
-dGljIHNzaXplX3QgYWQ3MTkyX3Nob3dfYnJpZGdlX3N3aXRjaChzdHJ1Y3QgZGV2aWNlICpkZXYs
-Cj4gQEAgLTUxMywxMyArNTEzLDEzIEBAIHN0YXRpYyBzc2l6ZV90IGFkNzE5Ml9zZXQoc3RydWN0
-IGRldmljZSAqZGV2LAo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBhZF9z
-ZF93cml0ZV9yZWcoJnN0LT5zZCwgQUQ3MTkyX1JFR19HUE9DT04sIDEsIHN0LT5ncG9jb24pOwo+
-IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgYnJlYWs7Cj4gLcKgwqDCoMKgwqDCoMKg
-Y2FzZSBBRDcxOTJfUkVHX01PREU6Cj4gK8KgwqDCoMKgwqDCoMKgY2FzZSBBRDcxOTJfUkVHX0NP
-TkY6Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAodmFsKQo+IC3CoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgc3QtPm1vZGUgfD0gQUQ3MTky
-X01PREVfQUNYOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgc3QtPmNvbmYgfD0gQUQ3MTkyX0NPTkZfQUNYOwo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgZWxzZQo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgc3QtPm1vZGUgJj0gfkFENzE5Ml9NT0RFX0FDWDsKPiArwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHN0LT5jb25mICY9IH5BRDcxOTJfQ09ORl9BQ1g7
-Cj4gwqAKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgYWRfc2Rfd3JpdGVfcmVnKCZz
-dC0+c2QsIEFENzE5Ml9SRUdfTU9ERSwgMywgc3QtPm1vZGUpOwo+ICvCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqBhZF9zZF93cml0ZV9yZWcoJnN0LT5zZCwgQUQ3MTkyX1JFR19DT05GLCAz
-LCBzdC0+Y29uZik7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBicmVhazsKPiDC
-oMKgwqDCoMKgwqDCoMKgZGVmYXVsdDoKPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oHJldCA9IC1FSU5WQUw7Cj4gQEAgLTU3OSwxMiArNTc5LDExIEBAIHN0YXRpYyBJSU9fREVWSUNF
-X0FUVFIoYnJpZGdlX3N3aXRjaF9lbiwgMDY0NCwKPiDCoAo+IMKgc3RhdGljIElJT19ERVZJQ0Vf
-QVRUUihhY19leGNpdGF0aW9uX2VuLCAwNjQ0LAo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgIGFkNzE5Ml9zaG93X2FjX2V4Y2l0YXRpb24sIGFkNzE5Ml9zZXQs
-Cj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBBRDcxOTJfUkVH
-X01PREUpOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgQUQ3
-MTkyX1JFR19DT05GKTsKPiDCoAo+IMKgc3RhdGljIHN0cnVjdCBhdHRyaWJ1dGUgKmFkNzE5Ml9h
-dHRyaWJ1dGVzW10gPSB7Cj4gwqDCoMKgwqDCoMKgwqDCoCZpaW9fZGV2X2F0dHJfZmlsdGVyX2xv
-d19wYXNzXzNkYl9mcmVxdWVuY3lfYXZhaWxhYmxlLmRldl9hdHRyLmF0dHIsCj4gwqDCoMKgwqDC
-oMKgwqDCoCZpaW9fZGV2X2F0dHJfYnJpZGdlX3N3aXRjaF9lbi5kZXZfYXR0ci5hdHRyLAo+IC3C
-oMKgwqDCoMKgwqDCoCZpaW9fZGV2X2F0dHJfYWNfZXhjaXRhdGlvbl9lbi5kZXZfYXR0ci5hdHRy
-LAo+IMKgwqDCoMKgwqDCoMKgwqBOVUxMCj4gwqB9Owo+IMKgCj4gQEAgLTU5NSw2ICs1OTQsNyBA
-QCBzdGF0aWMgY29uc3Qgc3RydWN0IGF0dHJpYnV0ZV9ncm91cCBhZDcxOTJfYXR0cmlidXRlX2dy
-b3VwCj4gPSB7Cj4gwqBzdGF0aWMgc3RydWN0IGF0dHJpYnV0ZSAqYWQ3MTk1X2F0dHJpYnV0ZXNb
-XSA9IHsKPiDCoMKgwqDCoMKgwqDCoMKgJmlpb19kZXZfYXR0cl9maWx0ZXJfbG93X3Bhc3NfM2Ri
-X2ZyZXF1ZW5jeV9hdmFpbGFibGUuZGV2X2F0dHIuYXR0ciwKPiDCoMKgwqDCoMKgwqDCoMKgJmlp
-b19kZXZfYXR0cl9icmlkZ2Vfc3dpdGNoX2VuLmRldl9hdHRyLmF0dHIsCj4gK8KgwqDCoMKgwqDC
-oMKgJmlpb19kZXZfYXR0cl9hY19leGNpdGF0aW9uX2VuLmRldl9hdHRyLmF0dHIsCj4gwqDCoMKg
-wqDCoMKgwqDCoE5VTEwKPiDCoH07Cj4gwqAKCg==
+From: Zheng Wang <zyytlz.wz@163.com>
+
+Due to the previously fix of __bch_btree_node_alloc, the return value will
+never be a NULL pointer. So IS_ERR is enough to handle the failure
+ situation. Fix it by replacing IS_ERR_OR_NULL check to IS_ERR check.
+
+Fixes: cafe56359144 ("bcache: A block layer cache")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Coly Li <colyli@suse.de>
+---
+ drivers/md/bcache/btree.c | 10 +++++-----
+ drivers/md/bcache/super.c |  4 ++--
+ 2 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/md/bcache/btree.c b/drivers/md/bcache/btree.c
+index 147c493a989a..7c21e54468bf 100644
+--- a/drivers/md/bcache/btree.c
++++ b/drivers/md/bcache/btree.c
+@@ -1138,7 +1138,7 @@ static struct btree *btree_node_alloc_replacement(struct btree *b,
+ {
+ 	struct btree *n = bch_btree_node_alloc(b->c, op, b->level, b->parent);
+ 
+-	if (!IS_ERR_OR_NULL(n)) {
++	if (!IS_ERR(n)) {
+ 		mutex_lock(&n->write_lock);
+ 		bch_btree_sort_into(&b->keys, &n->keys, &b->c->sort);
+ 		bkey_copy_key(&n->key, &b->key);
+@@ -1340,7 +1340,7 @@ static int btree_gc_coalesce(struct btree *b, struct btree_op *op,
+ 	memset(new_nodes, 0, sizeof(new_nodes));
+ 	closure_init_stack(&cl);
+ 
+-	while (nodes < GC_MERGE_NODES && !IS_ERR_OR_NULL(r[nodes].b))
++	while (nodes < GC_MERGE_NODES && !IS_ERR(r[nodes].b))
+ 		keys += r[nodes++].keys;
+ 
+ 	blocks = btree_default_blocks(b->c) * 2 / 3;
+@@ -1352,7 +1352,7 @@ static int btree_gc_coalesce(struct btree *b, struct btree_op *op,
+ 
+ 	for (i = 0; i < nodes; i++) {
+ 		new_nodes[i] = btree_node_alloc_replacement(r[i].b, NULL);
+-		if (IS_ERR_OR_NULL(new_nodes[i]))
++		if (IS_ERR(new_nodes[i]))
+ 			goto out_nocoalesce;
+ 	}
+ 
+@@ -1487,7 +1487,7 @@ static int btree_gc_coalesce(struct btree *b, struct btree_op *op,
+ 	bch_keylist_free(&keylist);
+ 
+ 	for (i = 0; i < nodes; i++)
+-		if (!IS_ERR_OR_NULL(new_nodes[i])) {
++		if (!IS_ERR(new_nodes[i])) {
+ 			btree_node_free(new_nodes[i]);
+ 			rw_unlock(true, new_nodes[i]);
+ 		}
+@@ -1669,7 +1669,7 @@ static int bch_btree_gc_root(struct btree *b, struct btree_op *op,
+ 	if (should_rewrite) {
+ 		n = btree_node_alloc_replacement(b, NULL);
+ 
+-		if (!IS_ERR_OR_NULL(n)) {
++		if (!IS_ERR(n)) {
+ 			bch_btree_node_write_sync(n);
+ 
+ 			bch_btree_set_root(n);
+diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
+index 7e9d19fd21dd..077149c4050b 100644
+--- a/drivers/md/bcache/super.c
++++ b/drivers/md/bcache/super.c
+@@ -1723,7 +1723,7 @@ static void cache_set_flush(struct closure *cl)
+ 	if (!IS_ERR_OR_NULL(c->gc_thread))
+ 		kthread_stop(c->gc_thread);
+ 
+-	if (!IS_ERR_OR_NULL(c->root))
++	if (!IS_ERR(c->root))
+ 		list_add(&c->root->list, &c->btree_cache);
+ 
+ 	/*
+@@ -2087,7 +2087,7 @@ static int run_cache_set(struct cache_set *c)
+ 
+ 		err = "cannot allocate new btree root";
+ 		c->root = __bch_btree_node_alloc(c, NULL, 0, true, NULL);
+-		if (IS_ERR_OR_NULL(c->root))
++		if (IS_ERR(c->root))
+ 			goto err;
+ 
+ 		mutex_lock(&c->root->write_lock);
+-- 
+2.35.3
 
