@@ -2,129 +2,130 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23ADD7309FD
-	for <lists+stable@lfdr.de>; Wed, 14 Jun 2023 23:48:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3F8C730BEC
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 02:06:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233300AbjFNVsZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 14 Jun 2023 17:48:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49612 "EHLO
+        id S235084AbjFOAGP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 14 Jun 2023 20:06:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230178AbjFNVsY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 17:48:24 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1FF2268C;
-        Wed, 14 Jun 2023 14:48:22 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-51a1d539ffaso291727a12.0;
-        Wed, 14 Jun 2023 14:48:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686779301; x=1689371301;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z4aA7epvssoPGg5rKcRh6aIf+fYOU5PxCzsadmXXnuA=;
-        b=qFzhXfcLqCB2MSCLrlFYYTIxeaK5Z94fsXhWGJoebSatJORl6vk8BDQ4siY2DXEgOt
-         o9o3qkvC9tcvTTreGFSz5R2gm6l8Zfme2nX9DuU05b1Nt2Updfx8hApStrSWgZ1YPs0R
-         LaLpYMLvTuEySyVGl0vjkvo4yUM8PEdVqPO/guESDel1KF3TbryqXQSqXO3nCmkV3x4r
-         U5Hiz257+vR7OszPDKgm3cA6EHxr5LVrecE+Zr9mzi2y2I7kSHOf3MEP+BXxHtvNizW1
-         oTJ3pW3Y1LYJYKt7m5jNqcj0Izsx5PWQ1SqL9M00CBEYN8iNsPLx7ompRdJ1TR3vi+Wt
-         JxGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686779301; x=1689371301;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=z4aA7epvssoPGg5rKcRh6aIf+fYOU5PxCzsadmXXnuA=;
-        b=Ix+T11qaZWQL2sC2/s3jNt8A0vubzO8qOjRjsIJV6KXXbxGdSaRusiyPZnaLsO4Wnu
-         GF8DSOb46IYFi6yvXgDwm80GAEGt2/kViLSGKQ3j7zO+itOY0732tW3yjJvoogJOC/H+
-         PA6eLfu0VpR9jKOZ5F4yXzzAm9EEMGbxXmG+Mi/cktT6OPYj0kUx/AxfsmzwrS2lwKea
-         ulRo9XZ4OqK6MtxrlO/Uq2z1UPLyOk4U2X+3nuc66cBdVVoP9ZvG6aywIvNZdwmI6yDT
-         Ef+CtTvztIwTmfHrHKP2UgENAoZNA3lmVl7lJ6CbYuUvmquohYZP3NuVWVOfP6VUBh99
-         LGiw==
-X-Gm-Message-State: AC+VfDx3nRxbo/6DS02oKJBWD9r2qMTfnULoXvImy1g3kl1IookVSVp7
-        lk+KLLqBpL389RdOeT7cLEUWRw0hz/fJ8smhi17k5sFJC/s=
-X-Google-Smtp-Source: ACHHUZ4dAD8KrNsvAoAwgxrkO665PN2j4lts/r2C6YriF4GjM2RHOgVk1Vh7//pO//qNwmKoXWTTnQjHAOVuJKVpJiI=
-X-Received: by 2002:a05:6402:2683:b0:4ea:a9b0:a518 with SMTP id
- w3-20020a056402268300b004eaa9b0a518mr3028443edd.17.1686779301148; Wed, 14 Jun
- 2023 14:48:21 -0700 (PDT)
+        with ESMTP id S230017AbjFOAGO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 20:06:14 -0400
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 872B1199D;
+        Wed, 14 Jun 2023 17:06:12 -0700 (PDT)
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 35F05ZO8043728;
+        Wed, 14 Jun 2023 19:05:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1686787535;
+        bh=Ro944csWL7XF8bTU/WPZzWSCBdvSsxg7qwCAJdlrbFg=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=jHlaxHDpCAJKpvYWkgeIlMdPEylesW5KT1MBZGCyxMlCSIcDjV7T2fd9bFhzGOtHt
+         ZZhrY3ysJxuPQl3fUcNbxqbw2pp6qpllhgjfKM7sGl906xxLlXhS4ylmv+Q/ke0piN
+         4aDPExz4IS2MCKM3KJyCpbpf7LSVTWrbVqx7N2rI=
+Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 35F05ZBR089860
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 14 Jun 2023 19:05:35 -0500
+Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 14
+ Jun 2023 19:05:35 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Wed, 14 Jun 2023 19:05:35 -0500
+Received: from localhost (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 35F05Yen095911;
+        Wed, 14 Jun 2023 19:05:34 -0500
+Date:   Wed, 14 Jun 2023 19:05:34 -0500
+From:   Nishanth Menon <nm@ti.com>
+To:     Benjamin Bara <bbara93@gmail.com>
+CC:     Wolfram Sang <wsa@kernel.org>, Lee Jones <lee@kernel.org>,
+        <rafael.j.wysocki@intel.com>, <dmitry.osipenko@collabora.com>,
+        <peterz@infradead.org>, <jonathanh@nvidia.com>,
+        <richard.leitner@linux.dev>, <treding@nvidia.com>,
+        <linux-kernel@vger.kernel.org>, <linux-i2c@vger.kernel.org>,
+        <linux-tegra@vger.kernel.org>,
+        Benjamin Bara <benjamin.bara@skidata.com>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH v6 2/5] i2c: core: run atomic i2c xfer when !preemptible
+Message-ID: <20230615000534.hhha2buodatmwugl@turban>
+References: <20230327-tegra-pmic-reboot-v6-0-af44a4cd82e9@skidata.com>
+ <20230327-tegra-pmic-reboot-v6-2-af44a4cd82e9@skidata.com>
 MIME-Version: 1.0
-References: <CAJc0_fwx6MQa+Uozk+PJB0qb3JP5=9_WcCjOb8qa34u=DVbDmQ@mail.gmail.com>
- <2023061453-guacamole-porous-8a0e@gregkh>
-In-Reply-To: <2023061453-guacamole-porous-8a0e@gregkh>
-From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date:   Wed, 14 Jun 2023 14:48:09 -0700
-Message-ID: <CAADnVQLuHTNPEuXpSUgkNHoK1-X8KxU=spdYWB2bMp6icS+j0g@mail.gmail.com>
-Subject: Re: BPF regression in 5.10.168 and 5.15.93 impacting Cilium
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Robert Kolchmeyer <rkolchmeyer@google.com>,
-        stable <stable@vger.kernel.org>, regressions@lists.linux.dev,
-        Martin KaFai Lau <kafai@fb.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Paul Chaignon <paul@isovalent.com>,
-        Meena Shanmugam <meenashanmugam@google.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        bpf <bpf@vger.kernel.org>, Andrii Nakryiko <andrii@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230327-tegra-pmic-reboot-v6-2-af44a4cd82e9@skidata.com>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Jun 14, 2023 at 1:57=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Wed, Jun 14, 2023 at 11:23:52AM -0700, Robert Kolchmeyer wrote:
-> > Hi all,
-> >
-> > I believe 5.10.168 and 5.15.93 introduced a regression that impacts
-> > the Cilium project. Some information on the nature of the regression
-> > is available at https://github.com/cilium/cilium/issues/25500. The
-> > primary symptom seems to be the error `BPF program is too large.`
-> >
-> > My colleague has found that reverting the following two commits:
-> >
-> > 8de8c4a "bpf: Support <8-byte scalar spill and refill"
-> > 9ff2beb "bpf: Fix incorrect state pruning for <8B spill/fill"
-> >
-> > resolves the regression.
-> >
-> > If we revert these in the stable tree, there may be a few changes that
-> > depend on those that also need to be reverted, but I'm not sure yet.
-> >
-> > Would it make sense to revert these changes (and any dependent ones)
-> > in the 5.10 and 5.15 trees? If anyone has other ideas, I can help test
-> > possible solutions.
->
-> Can you actually test if those reverts work properly for you and if
-> there are other dependencies involved?
->
-> And is this issue also in 6.1.y and Linus's tree?  If not, why not, are
-> we just missing a commit?  We can't revert something from a stable
-> release if you are going to hit the same issue when moving to a new
-> release, right?
->
-> thanks,
->
-> greg k-h
+On 21:03-20230509, Benjamin Bara wrote:
+> From: Benjamin Bara <benjamin.bara@skidata.com>
+> 
+> Since bae1d3a05a8b, i2c transfers are non-atomic if preemption is
+> disabled. However, non-atomic i2c transfers require preemption (e.g. in
+> wait_for_completion() while waiting for the DMA).
+> 
+> panic() calls preempt_disable_notrace() before calling
+> emergency_restart(). Therefore, if an i2c device is used for the
+> restart, the xfer should be atomic. This avoids warnings like:
+> 
+> [   12.667612] WARNING: CPU: 1 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x33c/0x6b0
+> [   12.676926] Voluntary context switch within RCU read-side critical section!
+> ...
+> [   12.742376]  schedule_timeout from wait_for_completion_timeout+0x90/0x114
+> [   12.749179]  wait_for_completion_timeout from tegra_i2c_wait_completion+0x40/0x70
+> ...
+> [   12.994527]  atomic_notifier_call_chain from machine_restart+0x34/0x58
+> [   13.001050]  machine_restart from panic+0x2a8/0x32c
+> 
+> Use !preemptible() instead, which is basically the same check as
+> pre-v5.2.
+> 
+> Fixes: bae1d3a05a8b ("i2c: core: remove use of in_atomic()")
+> Cc: stable@vger.kernel.org # v5.2+
+> Suggested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+> Acked-by: Wolfram Sang <wsa@kernel.org>
+> Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
+> ---
+>  drivers/i2c/i2c-core.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/i2c/i2c-core.h b/drivers/i2c/i2c-core.h
+> index 1247e6e6e975..05b8b8dfa9bd 100644
+> --- a/drivers/i2c/i2c-core.h
+> +++ b/drivers/i2c/i2c-core.h
+> @@ -29,7 +29,7 @@ int i2c_dev_irq_from_resources(const struct resource *resources,
+>   */
+>  static inline bool i2c_in_atomic_xfer_mode(void)
+>  {
+> -	return system_state > SYSTEM_RUNNING && irqs_disabled();
+> +	return system_state > SYSTEM_RUNNING && !preemptible();
+>  }
+>  
+>  static inline int __i2c_lock_bus_helper(struct i2c_adapter *adap)
+> 
+> -- 
+> 2.34.1
+> 
+Tested-by: Nishanth Menon <nm@ti.com>
 
-Before jumping to reverts..
-how is it fixed in 6.0+ kernels?
+This in addition to a deeper bug in our driver seems to have helped
+resolve a report we had been looking at. Tested on beagleplay platform
 
-"BPF program is too large" can probably be worked around on the cilium side=
-.
-The kernel cannot guarantee that a particular program will
-always be verifiable. We find safety bugs in the verifier and often
-enough the fixes to such issues make the verifier work harder to prove
-the safety of the program.
-This is one of such cases. These two commits are necessary.
-Reverting them will prevent loading of valid programs.
-So reverts is a dangerous path.
-The best is to identify the other patches from 6.0+ and backport them.
-The second best path is to bump 1M limit to something higher to
-mitigate "more work by the verifier".
+https://lore.kernel.org/all/ZGeHMjlnob2GFyHF@francesco-nb.int.toradex.com/
+
+-- 
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
