@@ -2,202 +2,154 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87B8B730D48
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 04:35:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50823730D6F
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 05:08:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233557AbjFOCfi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 14 Jun 2023 22:35:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35478 "EHLO
+        id S237578AbjFODIx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 14 Jun 2023 23:08:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229527AbjFOCfh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 22:35:37 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A81292110;
-        Wed, 14 Jun 2023 19:35:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686796536; x=1718332536;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=NeYThufZqc76Y2yKiHihuhnBGvyN7TpimkCuRXPNCho=;
-  b=mBi+l7jvgGd2nZiBXbQAXkpng3fdcd68Ds6EoGRolUdLn/WywzuQjZ//
-   cLmPD/5KT5fHk589wUFK35/vfEWZsOBiCuXyqqdnUeys0wMPsNEe0TTgC
-   9zJn99l4lF483WDaQUBHfaINU+WpL1A2E05NwNMZN7C3mwAIpAPwJkGWK
-   Y8VkE4r2UyZUc6ycaav+gbABXgJIEazItcI+wBor4MiExXsdgZouSrtQq
-   UgKBBSZdbLZ1dKxgb6t+GbmK6iDjJ7zrnvagHNSOTR2GV1ME2jifCV1Cw
-   5zjGINqNAcCBlj/4FH9xdGUDfwj4MABNHzSWSVQr7cm91AY8ekgTM14v9
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10741"; a="361272175"
-X-IronPort-AV: E=Sophos;i="6.00,243,1681196400"; 
-   d="scan'208";a="361272175"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2023 19:33:50 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10741"; a="856754795"
-X-IronPort-AV: E=Sophos;i="6.00,243,1681196400"; 
-   d="scan'208";a="856754795"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by fmsmga001.fm.intel.com with ESMTP; 14 Jun 2023 19:33:50 -0700
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Wed, 14 Jun 2023 19:33:49 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23; Wed, 14 Jun 2023 19:33:49 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.23 via Frontend Transport; Wed, 14 Jun 2023 19:33:49 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.42) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.23; Wed, 14 Jun 2023 19:33:48 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=A4LrpyLzTeC8rthkv++f2y6Ll8tLYl3AHp+HbQCN6UkCWU+Rs9Esun5YYZogWffc2JqETS5gjfXT7zYhMh4cZRzENwEBCLkbSjetvjdLNjL11BNom2pgL+w23EYcquiCaaViD4QWbJzs2HRZdJsTO4Ju/buJ6WIpIMNYCdOb1DejLvg5dx/Wn7wEcdbQ+6LMRoO3qs9SggLIHxnHwIfZKnTHkYtG8kU3T+aYyUQhDUj3WGmwy/weO1B2GgKey0rvJiWx8bka4zE/MPUjrolD2E4M5hkFeqpvimw/JyTpRHNZ3JMBwDoP8GKUhCRM82x9fFvrhRyTEZacHNLd6Ma84w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NeYThufZqc76Y2yKiHihuhnBGvyN7TpimkCuRXPNCho=;
- b=HUF79lDom1juAtPolB1x38V18aJglU2H40Gt0oOc/RZIXXSNDBaJSQxN2bf/atTzKwuWdW7RnRV+3s7AqUZPEjl1P/NXN022uWN7pUWV17KVrZLOzZuOpcq1J8azCaijZwoJojyiZizYBJQRj0GS8ogzxjwceSgaIUUoEVQqfKBNjYaH7ZAf/jwqjkklJ0i7OsPvYPIYGPT8PFQAGB2QgPaYRxgh0M/L2SH3FLuWxvp4Pq+TcG+9aVmkp3BtkZJFL++Dm8XooQJd/HYuc6RQzYM0UuWqdWzFVMD1McT8HuB8D5IjxeUrLhcQRP3JbftNPkgoxdZLhXW7JkfnwXRyag==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SN7PR11MB6604.namprd11.prod.outlook.com (2603:10b6:806:270::18)
- by SN7PR11MB7440.namprd11.prod.outlook.com (2603:10b6:806:340::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.33; Thu, 15 Jun
- 2023 02:33:47 +0000
-Received: from SN7PR11MB6604.namprd11.prod.outlook.com
- ([fe80::1500:c465:9094:c772]) by SN7PR11MB6604.namprd11.prod.outlook.com
- ([fe80::1500:c465:9094:c772%5]) with mapi id 15.20.6455.045; Thu, 15 Jun 2023
- 02:33:46 +0000
-From:   "Zhang, Rui" <rui.zhang@intel.com>
-To:     "hdegoede@redhat.com" <hdegoede@redhat.com>,
-        "rafael@kernel.org" <rafael@kernel.org>,
-        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>
-CC:     "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "b.krug@elektronenpumpe.de" <b.krug@elektronenpumpe.de>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] thermal/intel/intel_soc_dts_iosf: Fix reporting wrong
- temperatures
-Thread-Topic: [PATCH] thermal/intel/intel_soc_dts_iosf: Fix reporting wrong
- temperatures
-Thread-Index: AQHZnqgkQJacw38/7kqic4Rx2B9wPa+LJkqA
-Date:   Thu, 15 Jun 2023 02:33:46 +0000
-Message-ID: <5e2a0ed13daff9b73f0754ea947bd832b3503cdb.camel@intel.com>
-References: <20230614100756.437606-1-hdegoede@redhat.com>
-In-Reply-To: <20230614100756.437606-1-hdegoede@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.44.4-0ubuntu1 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN7PR11MB6604:EE_|SN7PR11MB7440:EE_
-x-ms-office365-filtering-correlation-id: 0da00062-7767-4ae8-302c-08db6d48f1b9
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: GSaukWI7prGrXp0Hiq97BeZz+bhlKujM6+Fu5d6n71LARAnpR573KqrMYXfA7R4prhXYSEVCyYiszjZLAF+/V6bC2QMS7oW/B0jvPE0bW12xs5kW0IkVfY2g2w7vUrdRp7cYLvmBTPPvhW1p1nzk95nMsALik4SxETOzE8FUbICjJcSAbP6yTZdTSjjlstdX7jsJDFFRGwz6tyHhepS3St4QH+ue5c97jqLDai2BOpnh5iCSTI6HtmTkOK2ybKFPgSa4nlE2i+nfX+91WV1iZE5ucACDMiA0/N5Dw60+4ItxnBw+5u2V1OjQSKtSyPzxDN04yQ/PAAYFEURkRKmC2IGZRds47z1EEzH3CRDGkyKqtPP6fNrSqLaEGVVV2qhWJGxwnZwCaqJbXStigg7jaRyktzK9H8/vCDvzNtSmfdGFjqtRza0oxeBztUVds8H+Oafb5X9uWktwsh78eBlkS0sfq0q6qrZfdQMqpKoiAtvrHyHvGiSO1qH38dgFI2C+0KzOukfo9F6t/NFkZyLzUGMXNDblCjezvRNHj3mXiuKKVECX5076HbUcJas3lH1DPpW8t+zuY9JmhuUX9uWYpb+DWviM3ubo7cLLC7KfK4+HnoHDrlty0qEseZGm6l9D
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR11MB6604.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(39860400002)(366004)(396003)(376002)(136003)(451199021)(54906003)(122000001)(110136005)(66446008)(71200400001)(82960400001)(41300700001)(8676002)(478600001)(5660300002)(8936002)(66946007)(2616005)(64756008)(91956017)(66556008)(38100700002)(66476007)(4326008)(316002)(76116006)(83380400001)(186003)(6486002)(6512007)(26005)(6506007)(86362001)(2906002)(38070700005)(36756003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?VG1tNm4yOXNJM1FodEtEeGw4NjNHN1paS29zRVZTcGJIZDRCWjlvamQ5NDFX?=
- =?utf-8?B?b0ZvNjFzamRBanRoaTUveUl5OGY2RG1GeHF2dkV2UFRpcmxZQzFQcExReEZD?=
- =?utf-8?B?OHI5Qmx1UWZCbmVDSmFzUGJ1WFlXSDNDckRrejYyUUQzTWw1c0xOSkt6TWVN?=
- =?utf-8?B?VHE0bit0MUpVMlpCenIvOERWQkw2Rk5JWlFOUjJrdjIzMjNFZlVpenNnZVdk?=
- =?utf-8?B?Yjlrd2ZteTBTM2lFMXpjMXg1NWJhR2Q2NGFUUU9rQjRzekZpOG4wTndta0hy?=
- =?utf-8?B?MUFoSDJNZDlRQnc5VlR1UVpHeXFlcjNERDZqV0JPeExTS0V3WGdjTW5qQ0VL?=
- =?utf-8?B?aTNKNjFuMTJNQUZNUnlhOFFoRG02Y0RHWGc3YVI2cmVEVXlaRUhYdEE5a0JU?=
- =?utf-8?B?VURtbDFpT1ZUVVhtOVhBRklNalR3Q0ZoS0VOZFVsb2JMYlpNYTJJa3ZxZnpz?=
- =?utf-8?B?ZWpjSG9SdjA1eEhiVTVVVklyMWEycTJacC9xSGJOWGhEZDNZSXJRdHRQV1Jk?=
- =?utf-8?B?VHBBMHgySjljWjZVN2w3ME5jWWdqRklsYmdJUzdPU296L0xLKy81WnBsVzFK?=
- =?utf-8?B?bklTdnBIMGN0dU8zUkZTdTdsTncwV2c4N01RSFd4cVpjekd6aG1HTXdFSUpn?=
- =?utf-8?B?ck9mejNkSE1NaUNkUWVoOXJ1eU12b0VGS3ZTWU5lbnQvU0tCZjgwMlM0djB5?=
- =?utf-8?B?Qm4zZHpiTWZSYmRHOTJpVm5JT2NhV2tld2pFRWFhVzc5TlhjRnZhQk5FTnIr?=
- =?utf-8?B?a0UxcTNSaVNGcVRFREJCQUZaNjUyeXdvT3JLOTJTRDJuQVBCK2tPbHJ1eVB6?=
- =?utf-8?B?Q1RoUkRxMWJzNWx2MjZoREFSdVdGeUs3SW9zemFaQzVQU3REVkwrenI3UThV?=
- =?utf-8?B?SVRjZlE3Q3ppaER6UXZMbWRPMnkrRHJ4OTJ1YWRJUkdlWWprakZsdmZJSlhR?=
- =?utf-8?B?c3Q3UzhkVDVDNHJVSkMxS0hyUVRHVWRkbm85NFVpTkdGOHViK3NDaGowNGRL?=
- =?utf-8?B?eHkvdGx5MEpwNGVXall0ZjBGYVdwSjhCdDNucFlhMkNyZnZBdU0rbml2czNY?=
- =?utf-8?B?RVdhaFJ4S21kNGFqc3F1aERLWHpBd2NCOWtrUHJjdGVlNG5TRGptbElmKzZo?=
- =?utf-8?B?ZHBhYkg2ZUdMQ2ppMHFmUUxpeWhRZitkdUs4Y3RnWU51MVRnK25ya1lmMEd2?=
- =?utf-8?B?RDFTejdFU09GQVovaEZ5OHgweUxZY3pPa0FkMXB6cm04eDRlaFQ3cWFEbE9Q?=
- =?utf-8?B?ZzdPMGljeUNaOCs0cXRNQ24xM3p3SzlEcHowRmZGYWgyc1ppQUN1K3ZidzZV?=
- =?utf-8?B?SGcrNlp4UEl3OUV2VTR3bDhwSnVBRUszT1JBUVZyMVlSenZCUFpXVHlXM2gv?=
- =?utf-8?B?a3dFYzdQZ3B6TXVlS2YxMHJGbmFoK2FpSXFJdGZ4REFmOVJjN1JhdzhlZDg0?=
- =?utf-8?B?blZIYkhCTXMxVFJNTzIxSmhZVkx4aVkweGI2WmRoODhSSmRNUjZlSnorVEtl?=
- =?utf-8?B?RXJVdi9xUGUvaWIzVEdscnhTMDBSY052Q3c1R1RGUzhhT0N0RUpTQUg4L1Za?=
- =?utf-8?B?a1ZBNXdacnBaUnVnUkFRMy9sOURBbSswTU8xM0l3dnJSZjMxV1JBcXRpZnRT?=
- =?utf-8?B?WnFkbThCYlNUYWZrTDJJdWdNVHdNOUs0VFcvR1Zqb1cxanhhYXBJNHloVjdZ?=
- =?utf-8?B?cGM3K0NlaFRuTzN6YURWOGd1ZDR4c2M5b0U5ZjdaMkhURWtPZWdRR0ZxWkpN?=
- =?utf-8?B?dit0TzMvMFhWWVFmenFXVS9VTjRZRHl0ZWxabmlnSlpzRis0MUNSU3NNTzhK?=
- =?utf-8?B?WDZDMnUyWTd3YUhzODZIUlY0Ly9lRzhqS3BONXNIZldvbXJaRjdzb1Rmc2Zl?=
- =?utf-8?B?YW1ZZitKWm5CNG5MWjhDWklZMnlwNXlFaHhKQkJNV0o5S2VrYUJnOEZyOVRP?=
- =?utf-8?B?cDZna29NaXdHcWFkODN4OTJhSUdSL2VmUzJCWlptYi9kU2hWVUpZNjVHZVZD?=
- =?utf-8?B?SGIvSi9IcHE1Y201TXM0bUMvN0N0YUFGWWYxcjdLUmdLZG5RTDNGNitPWmky?=
- =?utf-8?B?R2tBZE1LOGpJZklIbTByRldZZ0tIZXJTUzBVekFRVzFEelo1d2I0RWxFeFEw?=
- =?utf-8?B?M3I0NGYvNkIvbEY1UEo4YlpvZ1FlMWdmZkdIekJsY2Z6WnFYbHlZMG9sekJv?=
- =?utf-8?B?cEE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <36411A0BC053C04D9B79905D1B046FD1@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR11MB6604.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0da00062-7767-4ae8-302c-08db6d48f1b9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Jun 2023 02:33:46.3069
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: BOyzTVZ6crzoK7QUm7pBABSLYCl/F7poAmACsYXyNrd4Qj1+9a725CZ9+3U2rcmDA81w/N2JG6aNMVmz9X8LTA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7440
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S238006AbjFODIq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 14 Jun 2023 23:08:46 -0400
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D130F26AD;
+        Wed, 14 Jun 2023 20:08:45 -0700 (PDT)
+Received: by mail-pj1-x102a.google.com with SMTP id 98e67ed59e1d1-25e820b8bc1so648149a91.1;
+        Wed, 14 Jun 2023 20:08:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686798525; x=1689390525;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=+6UCFNg4ScFWTGZ3Vx9Eu23SfSzKM8aQG3DQ2QqYdjs=;
+        b=a0qptBRws1qhqj3Drp+rGVx1eK78HYVKNvOAdya0hnrr0cAuZgIM6/5EhQNLxW09UK
+         hid5MFMDZgXFjyZfQP2UqJkI/fgX1uDJ4Q6T39H+gYE1rVh30Oebh8uveUofjIh3+7SS
+         gvtuedWV+Tr2dCayBSXBlBAYWqN8duGuBUxuv4FMHS4aI3Eieox5nTtVdueIjOW2oVoz
+         DwEyk3xeIWk03PUr10VBZzRDdtyuySiBt2mvCxqcPURS6u6sNEc62HRdWRUEmTVH77XJ
+         2xEJB1c2ue+GdKBIRcdtvmG/MSrAvB2ZvfZUgK2T4VV+R6c/JS6FKoYymZsEb7YmHLQX
+         sQ/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686798525; x=1689390525;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+6UCFNg4ScFWTGZ3Vx9Eu23SfSzKM8aQG3DQ2QqYdjs=;
+        b=KoArkF99r4eiJ4FQxKCol8r64NB3OgmGg96bUBwhypnKCcthAA8y7B9R72UnQbX09i
+         Jz2Nuk0aIGZs3XaS/aAQoYmslYaz+PsxRS3WOOwSUdn8kWjAJlsvvSIdX/F7tmXb/WKV
+         TofOnLFIcel/FZGG6DXL4Ieg+ohGWhOWOB5XWWIYXFe/4JLNDc+KVqOl0a2cS9Xm4O6e
+         sjaPFvPiEGe9h5W6+9nzU90dRoc1CtKPAwbGd/BdyUJF/FOwaU6TvksxtzAk9VGyK4v2
+         4KhpdLF4QbL15Xw6lJFTcYTJooiy8u+VSz7vQ+zPIk7xuwA+y28wOG+7K5bTNsKxCBgd
+         geXw==
+X-Gm-Message-State: AC+VfDywvUgSq4OjMAKICE8VWDnpeWHYwcII0mUqOUiCO8m7IjKs4Ira
+        um6fRRJ7/TQjXQ3XfU2HbbI=
+X-Google-Smtp-Source: ACHHUZ5z3EPz9ldcCp+zdRK4LseB4//i95e30AFPT++7wRgcKy2Q1JMcpfu7KQnXX8iInx+ad2i7PQ==
+X-Received: by 2002:a17:90a:8b92:b0:25b:d67c:6a9e with SMTP id z18-20020a17090a8b9200b0025bd67c6a9emr2876653pjn.16.1686798525237;
+        Wed, 14 Jun 2023 20:08:45 -0700 (PDT)
+Received: from xplor.waratah.dyndns.org (222-152-217-2-adsl.sparkbb.co.nz. [222.152.217.2])
+        by smtp.gmail.com with ESMTPSA id 15-20020a17090a004f00b0025352448ba9sm14502956pjb.0.2023.06.14.20.08.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jun 2023 20:08:44 -0700 (PDT)
+Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
+        id D9922360328; Thu, 15 Jun 2023 15:08:40 +1200 (NZST)
+From:   Michael Schmitz <schmitzmic@gmail.com>
+To:     linux-block@vger.kernel.org, axboe@kernel.dk
+Cc:     linux-m68k@vger.kernel.org, geert@linux-m68k.org, hch@lst.de,
+        martin@lichtvoll.de, fthain@linux-m68k.org,
+        Michael Schmitz <schmitzmic@gmail.com>, stable@vger.kernel.org
+Subject: [PATCH v10 1/3] block: fix signed int overflow in Amiga partition support
+Date:   Thu, 15 Jun 2023 15:08:35 +1200
+Message-Id: <20230615030837.8518-2-schmitzmic@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20230615030837.8518-1-schmitzmic@gmail.com>
+References: <20230615030837.8518-1-schmitzmic@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-T24gV2VkLCAyMDIzLTA2LTE0IGF0IDEyOjA3ICswMjAwLCBIYW5zIGRlIEdvZWRlIHdyb3RlOg0K
-PiBTaW5jZSBjb21taXQgOTU1ZmI4NzE5ZWZiICgidGhlcm1hbC9pbnRlbC9pbnRlbF9zb2NfZHRz
-X2lvc2Y6IFVzZQ0KPiBJbnRlbA0KPiBUQ0MgbGlicmFyeSIpIGludGVsX3NvY19kdHNfaW9zZiBp
-cyByZXBvcnRpbmcgdGhlIHdyb25nIHRlbXBlcmF0dXJlLg0KPiANCj4gVGhlIGRyaXZlciBleHBl
-Y3RzIHRqX21heCB0byBiZSBpbiBtaWxsaS1kZWdyZWVzLWNlbGNpdXMgYnV0IGFmdGVyDQo+IHRo
-ZSBzd2l0Y2ggdG8gdGhlIFRDQyBsaWJyYXJ5IHRoaXMgaXMgbm93IGluIGRlZ3JlZXMgY2VsY2l1
-cyBzbw0KPiBpbnN0ZWFkIG9mIGUuZy4gOTAwMDAgaXQgaXMgc2V0IHRvIDkwIGNhdXNpbmcgYSB0
-ZW1wZXJhdHVyZSA0NQ0KPiBkZWdyZWVzIGJlbG93IHRqX21heCB0byBiZSByZXBvcnRlZCBhcyAt
-NDQ5MTAgbWlsbGktZGVncmVlcw0KPiBpbnN0ZWFkIG9mIGFzIDQ1MDAwIG1pbGxpLWRlZ3JlZXMu
-DQo+IA0KPiBGaXggdGhpcyBieSBhZGRpbmcgYmFjayB0aGUgbG9zdCBmYWN0b3Igb2YgMTAwMC4N
-Cj4gDQo+IEZpeGVzOiA5NTVmYjg3MTllZmIgKCJ0aGVybWFsL2ludGVsL2ludGVsX3NvY19kdHNf
-aW9zZjogVXNlIEludGVsIFRDQw0KPiBsaWJyYXJ5IikNCj4gUmVwb3J0ZWQtYnk6IEJlcm5oYXJk
-IEtydWcgPGIua3J1Z0BlbGVrdHJvbmVucHVtcGUuZGU+DQo+IENjOiBaaGFuZyBSdWkgPHJ1aS56
-aGFuZ0BpbnRlbC5jb20+DQo+IENjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnDQo+IFNpZ25lZC1v
-ZmYtYnk6IEhhbnMgZGUgR29lZGUgPGhkZWdvZWRlQHJlZGhhdC5jb20+DQoNCkFja2VkLWJ5OiBa
-aGFuZyBSdWkgPHJ1aS56aGFuZ0BpbnRlbC5jb20+DQoNCnRoYW5rcywNCnJ1aQ0KDQo+IC0tLQ0K
-PiBOb3RlIHJlcG9ydGVkIGJ5IHByaXZhdGUgZW1haWwsIHNvIG5vIENsb3NlczogdGFnDQo+IC0t
-LQ0KPiDCoGRyaXZlcnMvdGhlcm1hbC9pbnRlbC9pbnRlbF9zb2NfZHRzX2lvc2YuYyB8IDIgKy0N
-Cj4gwqAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkNCj4gDQo+
-IGRpZmYgLS1naXQgYS9kcml2ZXJzL3RoZXJtYWwvaW50ZWwvaW50ZWxfc29jX2R0c19pb3NmLmMN
-Cj4gYi9kcml2ZXJzL3RoZXJtYWwvaW50ZWwvaW50ZWxfc29jX2R0c19pb3NmLmMNCj4gaW5kZXgg
-Zjk5ZGM3ZTRhZTg5Li5kYjk3NDk5ZjRmMGEgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvdGhlcm1h
-bC9pbnRlbC9pbnRlbF9zb2NfZHRzX2lvc2YuYw0KPiArKysgYi9kcml2ZXJzL3RoZXJtYWwvaW50
-ZWwvaW50ZWxfc29jX2R0c19pb3NmLmMNCj4gQEAgLTM5OCw3ICszOTgsNyBAQCBzdHJ1Y3QgaW50
-ZWxfc29jX2R0c19zZW5zb3JzDQo+ICppbnRlbF9zb2NfZHRzX2lvc2ZfaW5pdCgNCj4gwqDCoMKg
-wqDCoMKgwqDCoHNwaW5fbG9ja19pbml0KCZzZW5zb3JzLT5pbnRyX25vdGlmeV9sb2NrKTsNCj4g
-wqDCoMKgwqDCoMKgwqDCoG11dGV4X2luaXQoJnNlbnNvcnMtPmR0c191cGRhdGVfbG9jayk7DQo+
-IMKgwqDCoMKgwqDCoMKgwqBzZW5zb3JzLT5pbnRyX3R5cGUgPSBpbnRyX3R5cGU7DQo+IC3CoMKg
-wqDCoMKgwqDCoHNlbnNvcnMtPnRqX21heCA9IHRqX21heDsNCj4gK8KgwqDCoMKgwqDCoMKgc2Vu
-c29ycy0+dGpfbWF4ID0gdGpfbWF4ICogMTAwMDsNCj4gwqDCoMKgwqDCoMKgwqDCoGlmIChpbnRy
-X3R5cGUgPT0gSU5URUxfU09DX0RUU19JTlRFUlJVUFRfTk9ORSkNCj4gwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqBub3RpZmljYXRpb24gPSBmYWxzZTsNCj4gwqDCoMKgwqDCoMKgwqDC
-oGVsc2UNCg0K
+The Amiga partition parser module uses signed int for partition sector
+address and count, which will overflow for disks larger than 1 TB.
+
+Use sector_t as type for sector address and size to allow using disks
+up to 2 TB without LBD support, and disks larger than 2 TB with LBD.
+
+This bug was reported originally in 2012, and the fix was created by
+the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
+discussed and reviewed on linux-m68k at that time but never officially
+submitted. This patch differs from Joanne's patch only in its use of
+sector_t instead of unsigned int. No checking for overflows is done
+(see patch 3 of this series for that).
+
+Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Message-ID: <201206192146.09327.Martin@lichtvoll.de>
+Cc: <stable@vger.kernel.org> # 5.2
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Tested-by: Martin Steigerwald <Martin@lichtvoll.de>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+
+---
+
+Changes from v3:
+
+- split off change of sector address type as quick fix.
+- cast to sector_t in sector address calculations.
+- move overflow checking to separate patch for more thorough review.
+
+Changes from v4:
+
+Andreas Schwab:
+- correct cast to sector_t in sector address calculations
+
+Changes from v7:
+
+Christoph Hellwig
+- correct style issues
+
+Changes from v9:
+
+- add Fixes: tags and stable backport prereq
+---
+ block/partitions/amiga.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/block/partitions/amiga.c b/block/partitions/amiga.c
+index 5c8624e26a54..85c5c79aae48 100644
+--- a/block/partitions/amiga.c
++++ b/block/partitions/amiga.c
+@@ -31,7 +31,8 @@ int amiga_partition(struct parsed_partitions *state)
+ 	unsigned char *data;
+ 	struct RigidDiskBlock *rdb;
+ 	struct PartitionBlock *pb;
+-	int start_sect, nr_sects, blk, part, res = 0;
++	sector_t start_sect, nr_sects;
++	int blk, part, res = 0;
+ 	int blksize = 1;	/* Multiplier for disk block size */
+ 	int slot = 1;
+ 
+@@ -96,14 +97,14 @@ int amiga_partition(struct parsed_partitions *state)
+ 
+ 		/* Tell Kernel about it */
+ 
+-		nr_sects = (be32_to_cpu(pb->pb_Environment[10]) + 1 -
+-			    be32_to_cpu(pb->pb_Environment[9])) *
++		nr_sects = ((sector_t)be32_to_cpu(pb->pb_Environment[10]) + 1 -
++			   be32_to_cpu(pb->pb_Environment[9])) *
+ 			   be32_to_cpu(pb->pb_Environment[3]) *
+ 			   be32_to_cpu(pb->pb_Environment[5]) *
+ 			   blksize;
+ 		if (!nr_sects)
+ 			continue;
+-		start_sect = be32_to_cpu(pb->pb_Environment[9]) *
++		start_sect = (sector_t)be32_to_cpu(pb->pb_Environment[9]) *
+ 			     be32_to_cpu(pb->pb_Environment[3]) *
+ 			     be32_to_cpu(pb->pb_Environment[5]) *
+ 			     blksize;
+-- 
+2.17.1
+
