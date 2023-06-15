@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6360A731521
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 12:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1FE07315FB
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 13:01:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240620AbjFOKWa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 06:22:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37674 "EHLO
+        id S230009AbjFOLBr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 07:01:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230389AbjFOKW3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 06:22:29 -0400
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D6BF7AC
-        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 03:22:27 -0700 (PDT)
-Received: from loongson.cn (unknown [10.20.42.35])
-        by gateway (Coremail) with SMTP id _____8Cx+eli5opkAIYFAA--.11840S3;
-        Thu, 15 Jun 2023 18:22:26 +0800 (CST)
-Received: from [10.20.42.35] (unknown [10.20.42.35])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8DxK8pd5opkItwbAA--.5073S3;
-        Thu, 15 Jun 2023 18:22:21 +0800 (CST)
-Subject: Re: [PATCH 06/10] cifs: release leases for deferred close handles
- when freezing
-To:     zybsyzlz@163.com
-Cc:     Steve French <stfrench@microsoft.com>,
-        David Howells <dhowells@redhat.com>, stable@vger.kernel.org
-References: <20230615094848.24975-1-zhuyinbo@loongson.cn>
- <20230615094848.24975-6-zhuyinbo@loongson.cn>
-From:   zhuyinbo <zhuyinbo@loongson.cn>
-Message-ID: <84069f5a-fe8f-95e6-623a-ed67e7bcdfe8@loongson.cn>
-Date:   Thu, 15 Jun 2023 18:22:21 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        with ESMTP id S240085AbjFOLBi (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Thu, 15 Jun 2023 07:01:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85B321FE5
+        for <Stable@vger.kernel.org>; Thu, 15 Jun 2023 04:01:37 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1EA59629DD
+        for <Stable@vger.kernel.org>; Thu, 15 Jun 2023 11:01:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32744C433C8;
+        Thu, 15 Jun 2023 11:01:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1686826896;
+        bh=bzmv3vo6wXDTdOd/zL9VsATz/j8OQWAiXUEQ0vNC+Zo=;
+        h=Subject:To:From:Date:From;
+        b=by25+YKSXwgic0JTQnt7n9KX/pJNGRnZQmVGn+9XXrlfkg82Vv+eMSfbMBarQExQC
+         AjtpfBd5FGwZL/5IpvLPdWuih2Opvbs+Yp11hTxG8NkHSh0yFyBRrb4UUNRNc9S14f
+         VX6BjDYJKgFdt6SopUBXRjqKzqMtrrYl0R5JTQQs=
+Subject: patch "iio: addac: ad74413: don't set DIN_SINK for functions other than" added to char-misc-testing
+To:     linux@rasmusvillemoes.dk, Jonathan.Cameron@huawei.com,
+        Stable@vger.kernel.org
+From:   <gregkh@linuxfoundation.org>
+Date:   Thu, 15 Jun 2023 13:01:24 +0200
+Message-ID: <2023061524-yarn-defeat-752d@gregkh>
 MIME-Version: 1.0
-In-Reply-To: <20230615094848.24975-6-zhuyinbo@loongson.cn>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8DxK8pd5opkItwbAA--.5073S3
-X-CM-SenderInfo: 52kx5xhqerqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-        ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-        nUUI43ZEXa7xR_UUUUUUUUU==
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,56 +49,78 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-Sorry to bother you. This is an incorrect send, please ignore it.
+This is a note to let you know that I've just added the patch titled
+
+    iio: addac: ad74413: don't set DIN_SINK for functions other than
+
+to my char-misc git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
+in the char-misc-testing branch.
+
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
+
+The patch will be merged to the char-misc-next branch sometime soon,
+after it passes testing, and the merge window is open.
+
+If you have any questions about this process, please let me know.
 
 
-ÔÚ 2023/6/15 ÏÂÎç5:48, Yinbo Zhu Ð´µÀ:
-> From: Steve French <stfrench@microsoft.com>
-> 
-> We should not be caching closed files when freeze is invoked on an fs
-> (so we can release resources more gracefully).
-> 
-> Fixes xfstests generic/068 generic/390 generic/491
-> 
-> Reviewed-by: David Howells <dhowells@redhat.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Steve French <stfrench@microsoft.com>
-> ---
->   fs/cifs/cifsfs.c | 15 +++++++++++++++
->   1 file changed, 15 insertions(+)
-> 
-> diff --git a/fs/cifs/cifsfs.c b/fs/cifs/cifsfs.c
-> index 8b6b3b6985f3..43a4d8603db3 100644
-> --- a/fs/cifs/cifsfs.c
-> +++ b/fs/cifs/cifsfs.c
-> @@ -760,6 +760,20 @@ static void cifs_umount_begin(struct super_block *sb)
->   	return;
->   }
->   
-> +static int cifs_freeze(struct super_block *sb)
-> +{
-> +	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
-> +	struct cifs_tcon *tcon;
-> +
-> +	if (cifs_sb == NULL)
-> +		return 0;
-> +
-> +	tcon = cifs_sb_master_tcon(cifs_sb);
-> +
-> +	cifs_close_all_deferred_files(tcon);
-> +	return 0;
-> +}
-> +
->   #ifdef CONFIG_CIFS_STATS2
->   static int cifs_show_stats(struct seq_file *s, struct dentry *root)
->   {
-> @@ -798,6 +812,7 @@ static const struct super_operations cifs_super_ops = {
->   	as opens */
->   	.show_options = cifs_show_options,
->   	.umount_begin   = cifs_umount_begin,
-> +	.freeze_fs      = cifs_freeze,
->   #ifdef CONFIG_CIFS_STATS2
->   	.show_stats = cifs_show_stats,
->   #endif
-> 
+From a4cba07e64e6ec22d9504a1a45d29afa863dc19c Mon Sep 17 00:00:00 2001
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Date: Wed, 3 May 2023 12:50:41 +0200
+Subject: iio: addac: ad74413: don't set DIN_SINK for functions other than
+ digital input
+
+Apparently, despite the name Digital Input Configuration Register, the
+settings in the DIN_CONFIGx registers also affect other channel
+functions. In particular, setting a non-zero value in the DIN_SINK
+field breaks the resistance measurement function.
+
+Now, one can of course argue that specifying a drive-strength-microamp
+property along with a adi,ch-func which is not one of the digital
+input functions is a bug in the device tree. However, we have a rather
+complicated setup with instances of ad74412r on external hardware
+modules, and have set a default drive-strength-microamp in our DT
+fragments describing those, merely modifying the adi,ch-func settings
+to reflect however the modules have been wired up. And restricting
+this setting to just being done for digital input doesn't make the
+driver any more complex.
+
+Fixes: 504eb485589d1 (iio: ad74413r: wire up support for drive-strength-microamp property)
+Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Link: https://lore.kernel.org/r/20230503105042.453755-1-linux@rasmusvillemoes.dk
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ drivers/iio/addac/ad74413r.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/iio/addac/ad74413r.c b/drivers/iio/addac/ad74413r.c
+index e3366cf5eb31..6b0e8218f150 100644
+--- a/drivers/iio/addac/ad74413r.c
++++ b/drivers/iio/addac/ad74413r.c
+@@ -1317,13 +1317,14 @@ static int ad74413r_setup_gpios(struct ad74413r_state *st)
+ 		}
+ 
+ 		if (config->func == CH_FUNC_DIGITAL_INPUT_LOGIC ||
+-		    config->func == CH_FUNC_DIGITAL_INPUT_LOOP_POWER)
++		    config->func == CH_FUNC_DIGITAL_INPUT_LOOP_POWER) {
+ 			st->comp_gpio_offsets[comp_gpio_i++] = i;
+ 
+-		strength = config->drive_strength;
+-		ret = ad74413r_set_comp_drive_strength(st, i, strength);
+-		if (ret)
+-			return ret;
++			strength = config->drive_strength;
++			ret = ad74413r_set_comp_drive_strength(st, i, strength);
++			if (ret)
++				return ret;
++		}
+ 
+ 		ret = ad74413r_set_gpo_config(st, i, gpo_config);
+ 		if (ret)
+-- 
+2.41.0
+
 
