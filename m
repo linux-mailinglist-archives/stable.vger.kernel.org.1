@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE9BA731634
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 13:13:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E3B1731636
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 13:14:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239232AbjFOLNz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 07:13:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39680 "EHLO
+        id S231163AbjFOLN5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 07:13:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241004AbjFOLNx (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Thu, 15 Jun 2023 07:13:53 -0400
+        with ESMTP id S241004AbjFOLN4 (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Thu, 15 Jun 2023 07:13:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D3202707
-        for <Stable@vger.kernel.org>; Thu, 15 Jun 2023 04:13:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E26D272E
+        for <Stable@vger.kernel.org>; Thu, 15 Jun 2023 04:13:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9EA6B62264
-        for <Stable@vger.kernel.org>; Thu, 15 Jun 2023 11:13:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B50D5C433C9;
-        Thu, 15 Jun 2023 11:13:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A94E62264
+        for <Stable@vger.kernel.org>; Thu, 15 Jun 2023 11:13:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 414BBC433C0;
+        Thu, 15 Jun 2023 11:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686827632;
-        bh=pOY5RCnBRy1+KKh2O9YEdE4RmMZiY4k14MEqH+YmQ2c=;
+        s=korg; t=1686827634;
+        bh=rpV4TVeAfNRDeqIFaGrTy1KNE0tF6uWcyYlYCdWSYEA=;
         h=Subject:To:From:Date:From;
-        b=Pq4J/Yqxjza/C9UW4qMXlK86v5Nu3ynzEs/zKXJBeFsHuEH1S7utBwkzwQdfBbsDV
-         cjY/SkF7k86it6YQmhNa3ADMJl7/oiUsR6JdeJ5kgQXA4Bv7TCuspO2BG2E2fN6AFv
-         xC3fgsQLFwet3KgZHfctySHBO8MkRB4pyzM2MNdQ=
-Subject: patch "iio: adc: ad7192: Fix null ad7192_state pointer access" added to char-misc-next
+        b=pIqzUeNIp+SZKYO1wsAN9h5qIpdt+QjsAl6vgxBLpUWP3T3EF84O6sWgAW9J8dsmC
+         dkTOl8Cy3A7I46ihXvgxWPurnPUjSO/1vj0LF1hiiKnp0iBTbp7S0Rld6LaYRDqgdt
+         AE0jCkNo6GK/qjf7sdzzRhA1/XIcZ25rKKlltSdM=
+Subject: patch "dt-bindings: iio: ad7192: Add mandatory reference voltage source" added to char-misc-next
 To:     fl.scratchpad@gmail.com, Jonathan.Cameron@huawei.com,
-        Stable@vger.kernel.org, nuno.sa@analog.com
+        Stable@vger.kernel.org, conor.dooley@microchip.com
 From:   <gregkh@linuxfoundation.org>
-Date:   Thu, 15 Jun 2023 13:11:40 +0200
-Message-ID: <2023061540-snoring-morbidly-6bed@gregkh>
+Date:   Thu, 15 Jun 2023 13:11:41 +0200
+Message-ID: <2023061541-scheming-pointless-57de@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -51,7 +51,7 @@ X-Mailing-List: stable@vger.kernel.org
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: adc: ad7192: Fix null ad7192_state pointer access
+    dt-bindings: iio: ad7192: Add mandatory reference voltage source
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -66,53 +66,56 @@ during the merge window.
 If you have any questions about this process, please let me know.
 
 
-From 9e58e3a6f8e1c483c86a04903b7b7aa0923e4426 Mon Sep 17 00:00:00 2001
+From c6dab7245604862d86f0b6d764919f470584d24f Mon Sep 17 00:00:00 2001
 From: Fabrizio Lamarque <fl.scratchpad@gmail.com>
-Date: Tue, 30 May 2023 09:53:07 +0200
-Subject: iio: adc: ad7192: Fix null ad7192_state pointer access
+Date: Tue, 30 May 2023 09:53:10 +0200
+Subject: dt-bindings: iio: ad7192: Add mandatory reference voltage source
 
-Pointer to indio_dev structure is obtained via spi_get_drvdata() at
-the beginning of function ad7192_setup(), but the spi->dev->driver_data
-member is not initialized, hence a NULL pointer is returned.
+Add required reference voltage (VRef) supply regulator.
 
-Fix by changing ad7192_setup() signature to take pointer to struct
-iio_dev, and get ad7192_state pointer via st = iio_priv(indio_dev);
+AD7192 requires three independent voltage sources: DVdd, AVdd and VRef
+(on REFINx pin pairs).
 
-Fixes: bd5dcdeb3fd0 ("iio: adc: ad7192: convert to device-managed functions")
+Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
 Signed-off-by: Fabrizio Lamarque <fl.scratchpad@gmail.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 Cc: <Stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230530075311.400686-2-fl.scratchpad@gmail.com
+Link: https://lore.kernel.org/r/20230530075311.400686-5-fl.scratchpad@gmail.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/ad7192.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-index 99bb604b78c8..55a26dbd6108 100644
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -380,9 +380,9 @@ static int ad7192_of_clock_select(struct ad7192_state *st)
- 	return clock_sel;
- }
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+index d521d516088b..16def2985ab4 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+@@ -47,6 +47,9 @@ properties:
+   avdd-supply:
+     description: AVdd voltage supply
  
--static int ad7192_setup(struct ad7192_state *st, struct device_node *np)
-+static int ad7192_setup(struct iio_dev *indio_dev, struct device_node *np)
- {
--	struct iio_dev *indio_dev = spi_get_drvdata(st->sd.spi);
-+	struct ad7192_state *st = iio_priv(indio_dev);
- 	bool rej60_en, refin2_en;
- 	bool buf_en, bipolar, burnout_curr_en;
- 	unsigned long long scale_uv;
-@@ -1069,7 +1069,7 @@ static int ad7192_probe(struct spi_device *spi)
- 		}
- 	}
++  vref-supply:
++    description: VRef voltage supply
++
+   adi,rejection-60-Hz-enable:
+     description: |
+       This bit enables a notch at 60 Hz when the first notch of the sinc
+@@ -89,6 +92,7 @@ required:
+   - interrupts
+   - dvdd-supply
+   - avdd-supply
++  - vref-supply
+   - spi-cpol
+   - spi-cpha
  
--	ret = ad7192_setup(st, spi->dev.of_node);
-+	ret = ad7192_setup(indio_dev, spi->dev.of_node);
- 	if (ret)
- 		return ret;
+@@ -115,6 +119,7 @@ examples:
+             interrupt-parent = <&gpio>;
+             dvdd-supply = <&dvdd>;
+             avdd-supply = <&avdd>;
++            vref-supply = <&vref>;
  
+             adi,refin2-pins-enable;
+             adi,rejection-60-Hz-enable;
 -- 
 2.41.0
 
