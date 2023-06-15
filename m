@@ -2,73 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11FBA73198D
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 15:06:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FFE47319A4
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 15:12:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239326AbjFONGd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 09:06:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58042 "EHLO
+        id S1343670AbjFONMj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 09:12:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234125AbjFONGc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 09:06:32 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D085196;
-        Thu, 15 Jun 2023 06:06:31 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id C0721223ED;
-        Thu, 15 Jun 2023 13:06:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1686834389; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=YPwlg25jLGaHT3oj2DubbGYtU0RJM6ImkkU7cEnCagg=;
-        b=THle+G0AQvH4k9UPtgierHCbRY7nXJDDCl4OFDcuMVKru5VFjhIrIDBHQdH+Z0O4YfrIou
-        vcMvavvY/ib/0o4hnZgPxE/oQE1GHrSD6gcKuojcferz/KPcHDMFMDUzJjX2aOoKmbGwtz
-        cT90VGcEzSEmSjwH3L4YhjFWoz8wFbY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1686834389;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=YPwlg25jLGaHT3oj2DubbGYtU0RJM6ImkkU7cEnCagg=;
-        b=Ot2Hg7P/MPe+PboV3rKSt/pFxiHOzjFNo139/UwcXQssONiu/NZqgBjx3xARILGrxa4T9N
-        6SKsJOrOxDp/XgCg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 8FD4913467;
-        Thu, 15 Jun 2023 13:06:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id ck3ZIdUMi2T1SAAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Thu, 15 Jun 2023 13:06:29 +0000
-Message-ID: <fe3b90b0-b52f-9677-0245-a201975c3e0c@suse.de>
-Date:   Thu, 15 Jun 2023 15:06:28 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
+        with ESMTP id S1343841AbjFONMc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 09:12:32 -0400
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::228])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E86E3272A;
+        Thu, 15 Jun 2023 06:12:28 -0700 (PDT)
+X-GND-Sasl: cyril@debamax.com
+X-GND-Sasl: cyril@debamax.com
+X-GND-Sasl: cyril@debamax.com
+X-GND-Sasl: cyril@debamax.com
+X-GND-Sasl: cyril@debamax.com
+X-GND-Sasl: cyril@debamax.com
+X-GND-Sasl: cyril@debamax.com
+X-GND-Sasl: cyril@debamax.com
+X-GND-Sasl: cyril@debamax.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D9E3B1BF20C;
+        Thu, 15 Jun 2023 13:12:24 +0000 (UTC)
+Date:   Thu, 15 Jun 2023 15:12:23 +0200
+From:   Cyril Brulebois <cyril@debamax.com>
+To:     Linux regressions mailing list <regressions@lists.linux.dev>
+Cc:     Salvatore Bonaccorso <carnil@debian.org>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Rob Herring <robh@kernel.org>,
+        Michal Suchanek <msuchanek@suse.de>,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Subject: Re: [PATCH 1/2] fbdev/offb: Update expected device name
-Content-Language: en-US
-To:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        Salvatore Bonaccorso <carnil@debian.org>,
-        Cyril Brulebois <cyril@debamax.com>
-Cc:     linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, stable@vger.kernel.org,
-        Michal Suchanek <msuchanek@suse.de>
+Message-ID: <20230615131223.3jlzyjl27v5q42eh@debamax.com>
+Organization: DEBAMAX
 References: <20230412095509.2196162-1-cyril@debamax.com>
- <20230412095509.2196162-2-cyril@debamax.com> <ZDvrY7X9mpJ7WZ3z@eldamar.lan>
+ <20230412095509.2196162-2-cyril@debamax.com>
+ <ZDvrY7X9mpJ7WZ3z@eldamar.lan>
  <11b342dc-1a46-d1be-5fdd-c6eee661e15a@leemhuis.info>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="wakbenit2xnt2vww"
+Content-Disposition: inline
 In-Reply-To: <11b342dc-1a46-d1be-5fdd-c6eee661e15a@leemhuis.info>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------MIFWyohkbRqZtPZHrrSmrfsA"
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -77,89 +55,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------MIFWyohkbRqZtPZHrrSmrfsA
-Content-Type: multipart/mixed; boundary="------------5nyOBEXATYgsVY80Vv7FLhml";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Linux regressions mailing list <regressions@lists.linux.dev>,
- Salvatore Bonaccorso <carnil@debian.org>, Cyril Brulebois <cyril@debamax.com>
-Cc: linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, stable@vger.kernel.org,
- Michal Suchanek <msuchanek@suse.de>
-Message-ID: <fe3b90b0-b52f-9677-0245-a201975c3e0c@suse.de>
-Subject: Re: [PATCH 1/2] fbdev/offb: Update expected device name
-References: <20230412095509.2196162-1-cyril@debamax.com>
- <20230412095509.2196162-2-cyril@debamax.com> <ZDvrY7X9mpJ7WZ3z@eldamar.lan>
- <11b342dc-1a46-d1be-5fdd-c6eee661e15a@leemhuis.info>
-In-Reply-To: <11b342dc-1a46-d1be-5fdd-c6eee661e15a@leemhuis.info>
 
---------------5nyOBEXATYgsVY80Vv7FLhml
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+--wakbenit2xnt2vww
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-SGkNCg0KQW0gMTUuMDYuMjMgdW0gMTU6MDMgc2NocmllYiBMaW51eCByZWdyZXNzaW9uIHRy
-YWNraW5nIChUaG9yc3RlbiBMZWVtaHVpcyk6DQo+IE9uIDE2LjA0LjIzIDE0OjM0LCBTYWx2
-YXRvcmUgQm9uYWNjb3JzbyB3cm90ZToNCj4+DQo+PiBPbiBXZWQsIEFwciAxMiwgMjAyMyBh
-dCAxMTo1NTowOEFNICswMjAwLCBDeXJpbCBCcnVsZWJvaXMgd3JvdGU6DQo+Pj4gU2luY2Ug
-Y29tbWl0IDI0MWQyZmI1NmExOCAoIm9mOiBNYWtlIE9GIGZyYW1lYnVmZmVyIGRldmljZSBu
-YW1lcyB1bmlxdWUiKSwNCj4+PiBhcyBzcG90dGVkIGJ5IEZyw6lkw6lyaWMgQm9ubmFyZCwg
-dGhlIGhpc3RvcmljYWwgIm9mLWRpc3BsYXkiIGRldmljZSBpcw0KPj4+IGdvbmU6IHRoZSB1
-cGRhdGVkIGxvZ2ljIGNyZWF0ZXMgIm9mLWRpc3BsYXkuMCIgaW5zdGVhZCwgdGhlbiBhcyBt
-YW55DQo+Pj4gIm9mLWRpc3BsYXkuTiIgYXMgcmVxdWlyZWQuDQo+Pj4NCj4+PiBUaGlzIG1l
-YW5zIHRoYXQgb2ZmYiBubyBsb25nZXIgZmluZHMgdGhlIGV4cGVjdGVkIGRldmljZSwgd2hp
-Y2ggcHJldmVudHMNCj4+PiB0aGUgRGViaWFuIEluc3RhbGxlciBmcm9tIHNldHRpbmcgdXAg
-aXRzIGludGVyZmFjZSwgYXQgbGVhc3Qgb24gcHBjNjRlbC4NCj4+Pg0KPj4+IEl0IG1pZ2h0
-IGJlIGJldHRlciB0byBpdGVyYXRlIG9uIGFsbCBwb3NzaWJsZSBub2RlcywgYnV0IHVwZGF0
-aW5nIHRoZQ0KPj4+IGhhcmRjb2RlZCBkZXZpY2UgZnJvbSAib2YtZGlzcGxheSIgdG8gIm9m
-LWRpc3BsYXkuMCIgaXMgY29uZmlybWVkIHRvIGZpeA0KPj4+IHRoZSBEZWJpYW4gSW5zdGFs
-bGVyIGF0IHRoZSB2ZXJ5IGxlYXN0Lg0KPj4gWy4uLl0NCj4+ICNyZWd6Ym90IF5pbnRyb2R1
-Y2VkIDI0MWQyZmI1NmExOA0KPj4gI3JlZ3pib3QgdGl0bGU6IE9wZW4gRmlybXdhcmUgZnJh
-bWVidWZmZXIgY2Fubm90IGZpbmQgb2YtZGlzcGxheQ0KPj4gI3JlZ3pib3QgbGluazogaHR0
-cHM6Ly9idWd6aWxsYS5rZXJuZWwub3JnL3Nob3dfYnVnLmNnaT9pZD0yMTczMjgNCj4+ICNy
-ZWd6Ym90IGxpbms6IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC8yMDIzMDQxMjA5NTUw
-OS4yMTk2MTYyLTEtY3lyaWxAZGViYW1heC5jb20vVC8jbTM0NDkzNDgwMjQzYTJjYWQyYWUz
-NTlhYmZkOWRiNWU3NTVmNDFhZGQNCj4+ICNyZWd6Ym90IGxpbms6IGh0dHBzOi8vYnVncy5k
-ZWJpYW4ub3JnLzEwMzMwNTgNCj4gDQo+IE5vIHJlcGx5IHRvIG15IHN0YXR1cyBpbnF1aXJ5
-WzFdIGEgZmV3IHdlZWtzIGFnbywgc28gSSBoYXZlIHRvIGFzc3VtZQ0KPiBub2JvZHkgY2Fy
-ZXMgYW55bW9yZS4gSWYgc29tZWJvZHkgc3RpbGwgY2FyZXMsIGhvbGxlciENCg0KSSdkIHRh
-a2UgYSBsb29rIGlmIGFueW9uZSBjYW4gcG9pbnQgbWUgdG8gYW4gZXhhbXBsZSBvZiBHZWVy
-dCdzIHByb3Bvc2FsLg0KDQpCZXN0IHJlZ2FyZHMNClRob21hcw0KDQo+IA0KPiAjcmVnemJv
-dCBpbmNvbmNsdXNpdmU6IG5vIGFuc3dlciB0byBhIHN0YXR1cyBpbnF1aXJ5DQo+ICNyZWd6
-Ym90IGlnbm9yZS1hY3Rpdml0eQ0KPiANCj4gWzFdDQo+IGh0dHBzOi8vbG9yZS5rZXJuZWwu
-b3JnL2xrbWwvZDFhZWU3ZDMtMDVmNi0wOTIwLWI4ZTEtNGVkNWNmM2Y5ZjcwQGxlZW1odWlz
-LmluZm8vDQo+IA0KPiBDaWFvLCBUaG9yc3RlbiAod2VhcmluZyBoaXMgJ3RoZSBMaW51eCBr
-ZXJuZWwncyByZWdyZXNzaW9uIHRyYWNrZXInIGhhdCkNCj4gLS0NCj4gRXZlcnl0aGluZyB5
-b3Ugd2FubmEga25vdyBhYm91dCBMaW51eCBrZXJuZWwgcmVncmVzc2lvbiB0cmFja2luZzoN
-Cj4gaHR0cHM6Ly9saW51eC1yZWd0cmFja2luZy5sZWVtaHVpcy5pbmZvL2Fib3V0LyN0bGRy
-DQo+IElmIEkgZGlkIHNvbWV0aGluZyBzdHVwaWQsIHBsZWFzZSB0ZWxsIG1lLCBhcyBleHBs
-YWluZWQgb24gdGhhdCBwYWdlLg0KDQotLSANClRob21hcyBaaW1tZXJtYW5uDQpHcmFwaGlj
-cyBEcml2ZXIgRGV2ZWxvcGVyDQpTVVNFIFNvZnR3YXJlIFNvbHV0aW9ucyBHZXJtYW55IEdt
-YkgNCkZyYW5rZW5zdHJhc3NlIDE0NiwgOTA0NjEgTnVlcm5iZXJnLCBHZXJtYW55DQpHRjog
-SXZvIFRvdGV2LCBBbmRyZXcgTXllcnMsIEFuZHJldyBNY0RvbmFsZCwgQm91ZGllbiBNb2Vy
-bWFuDQpIUkIgMzY4MDkgKEFHIE51ZXJuYmVyZykNCg==
+Linux regression tracking (Thorsten Leemhuis) <regressions@leemhuis.info> (=
+2023-06-15):
+> No reply to my status inquiry[1] a few weeks ago, so I have to assume
+> nobody cares anymore. If somebody still cares, holler!
 
---------------5nyOBEXATYgsVY80Vv7FLhml--
+I still care about a proper bugfix, for upstream and for the Debian
+distribution, and so does Salvatore. But fixing kernel regressions isn't
+my day job, so I haven't got around to working on it.
 
---------------MIFWyohkbRqZtPZHrrSmrfsA
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+
+Cheers,
+--=20
+Cyril Brulebois -- Debian Consultant @ DEBAMAX -- https://debamax.com/
+
+--wakbenit2xnt2vww
+Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmSLDNQFAwAAAAAACgkQlh/E3EQov+Db
-kQ/+KGqbOla/cqP49fzHPrd8Zbcp2WJaa6P1g8Ygr6U92wVzKB5XaGdUSBaD9tJsOC4LQKwRDoGW
-mLeM4ubyCw7mZyTkg/Uy7J9PctsQlxOuolsW6hkQ0Ubl0SaFyQ2sPUMJINz7lTFmP4KzqRM1/AdE
-O/q67Jh5QbA9Dmr1nxOxkOZbhz8k/KsuQMcrc7FmyXqfr60OPBhwumx7chWfxeKZYIh/9RSQEQEs
-mGnbmxC4tTxOHspJpP0yBy4GN/ebQhS+53r4KH9B561FBsXMEEnZLBEbdrB0J0MQ7szIsqHyzuEa
-uSZgjVvp8Jr2IdD6kHjL1TfikTVRGwNzgiiWvwew8nAEPuQ7KNUuuxDzF2H5jRdjlHLoY0b4nakL
-s5ESzr8BOCcAqIqdlmupyXgQslxSwkcRHXWGYh99Nl45ONStGqjOv6s6LKJO6gIOLNjKdwK38e87
-mO4WeCl23Wx6P/M5//6g20lS0yV5RwhQoXgCUvJhsvFYjt7gXLo/0qDLbGz9zKK6MeR19j0w3sGK
-+apq/u/K4VqUNX806CHnNY4xejQ9713vlvmOHXay2yAtaRJ57avpx9XAdNfOT4p6HKicdsvpn3Db
-palLXstjkp/G06TbjLqaV+lqmAgSOsrMB1Js2C9k5tcCh/fKF1XIf7f9sXFAs8x9AWKs75eQcjuD
-HGk=
-=iH2J
+iQIzBAABCgAdFiEEHoutkuoaze1Qayc7lZpsmSeGm2EFAmSLDjQACgkQlZpsmSeG
+m2HkXg/9E+QcBfG/Y0jj9Eb6MxbHHf8hyR3pRsmuOX1DA5zQMcxRJV0KVknZKQzn
+tuLBjgzupbWcEscBel+FT28pMM3HKxTc9wU2iBRhfHpz8nx5412Gp6Sba3E9K22X
+domUmIjCfj1RgV3fjMnGxukaLWdkE2qzE0iewN/hTgkG4oA1US/j0rNCW29PNir2
+7nKdp580PfhgEbCNPOPt0US2bdYZ2XhAjZpBmd8PtOBWXH2BWnwYoab+oqykiUBj
+vBjODSWLpoHe35wK4WOJt1u0Dv5eFid18ZagHNviFqERKT7CQduBszH3yajMACkl
+rrBrfDGqmNb8rZeGbcOajodRekRNHf8sUZ/nuZ5sLEUcXysLl6sgr1bRaW2W1oJj
+cohmtvFPcDC4LgGWT9bAMfjvm0rGDjJsFOkvnuehrw+Ae7aMpQ9yGV20GDZpjBBp
+4zKV2PpihZ5GCJ0c57Jzr1SOy2+HhYRZ9m5RVhZ/bu35SR8rVOfIMNb0fRwYxqA/
+Iuo2PBmWdrR0hefOQBP/2O/T/g6Fcs6dTfPnayUYvbkAguBPQXaanphBm6bZ4YbQ
+ebDTRFJJx1QH4KZhoRANEPGhpa/xfsjHZQ1y6kEZQp/mN8H2cyOVPUKuayf2w4R9
+8YCNdcizJt62boDEXkwjCYtU3o+cyOAWGMC9vanHlDUHEvYXkDQ=
+=/K9h
 -----END PGP SIGNATURE-----
 
---------------MIFWyohkbRqZtPZHrrSmrfsA--
+--wakbenit2xnt2vww--
