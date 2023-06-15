@@ -2,109 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BE7E731D7A
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 18:11:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF0FD731EA1
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 19:05:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230102AbjFOQLI convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Thu, 15 Jun 2023 12:11:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54650 "EHLO
+        id S230108AbjFORFT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 13:05:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229511AbjFOQLH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 12:11:07 -0400
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F3F495;
-        Thu, 15 Jun 2023 09:11:03 -0700 (PDT)
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-97ea801b0d0so133559966b.1;
-        Thu, 15 Jun 2023 09:11:03 -0700 (PDT)
+        with ESMTP id S232502AbjFORFR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 13:05:17 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A75194;
+        Thu, 15 Jun 2023 10:05:16 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2b443ebae0dso16163461fa.2;
+        Thu, 15 Jun 2023 10:05:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686848715; x=1689440715;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=crBt2ITg8SZ2kjr+v53DzcSzxyBX77tw0/FzCIW8K/M=;
+        b=DUuKjGKkLd3xr6fw7ISZK9UObyf9IKsH9P5OAMVKBBFO2p+gWILzdkAlmpX9qvis6c
+         rNIKx3JtA3BKucyQwwzgvgLT/405EdgBeNp5o+KsahwdLKpFFRk9rdnmg7z7SHJOZPzK
+         YLn4jzrY3rv65y71YS5w+xMd3K7068Y2Ui+ewyGSM6j7z0BXzwe5aXPLS7TmDcO+Qqzg
+         u3bCkITTMBXCH1+h/MQ7hxPK1TxyNbFO/XRceINXXj2lvq5Cvd0+DfnTBuN35QDj6r2X
+         eopRfgU6pF4o7AAyjP/vnsM63+YkWAp33Gis/C6he4BMsfBKr714P9vuRcc0m1IPGn+S
+         u2Yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686845462; x=1689437462;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=17Q07DScDYSk0TnR+abR7QoN8/zFNIboEzOvILZpX9s=;
-        b=FIpzFC8usm798uso1kgw031HTx0+oiXrpaYNGNbC1DkAsuDwn3+5qhJJOM229JYPMD
-         Va/Txo6UXSW0hCD6z0jwssNiqfwHbyYU9GUpfq/5+hcNupxQOK8Lw32QZSIgM3Kl5Kx7
-         DcRvNLUNIp/UpMXBAcxhJlb97Oqttiy+7nAMJ4yYFIfOGa029k2cwWH/K7p5KchaGKFS
-         4mvFA9lsyL6yTGaI8SpL8BpycbDir1embqMSUihHOo5OtA22mfrQXwpV49xd2kImZ2bO
-         UNy8pzmeOtCqEVCZBFslg3hZU+/4EwdKQZ8CGPLfBVyqNOoqKONYajQVDCelk6m++fBe
-         QUiA==
-X-Gm-Message-State: AC+VfDyVDNTtzjR6I8JjvrhRKGuyD3m7RMGulMy+Jw8DYAu3rxcDXg8D
-        bVCTPzAK3ksJDXNuxQybzRDc5yu5UL4i2uCw2G0=
-X-Google-Smtp-Source: ACHHUZ5Yq07be2+TJSAlRzg9pl/FyiUBFLw5Xp00LNQb5ZdSYUJ4iRXgTWeiUvZm9/5yHl+lUeeWjpRNuLt8PECHJn8=
-X-Received: by 2002:a17:906:7a03:b0:977:cbc4:5d8 with SMTP id
- d3-20020a1709067a0300b00977cbc405d8mr15565590ejo.4.1686845461569; Thu, 15 Jun
- 2023 09:11:01 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230614100756.437606-1-hdegoede@redhat.com> <5e2a0ed13daff9b73f0754ea947bd832b3503cdb.camel@intel.com>
-In-Reply-To: <5e2a0ed13daff9b73f0754ea947bd832b3503cdb.camel@intel.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 15 Jun 2023 18:10:50 +0200
-Message-ID: <CAJZ5v0i77U-a1fkOMf-N2zq9eG4HasP7BTc6ka-HqLeHkjkDpQ@mail.gmail.com>
-Subject: Re: [PATCH] thermal/intel/intel_soc_dts_iosf: Fix reporting wrong temperatures
-To:     "Zhang, Rui" <rui.zhang@intel.com>,
-        "hdegoede@redhat.com" <hdegoede@redhat.com>
-Cc:     "rafael@kernel.org" <rafael@kernel.org>,
-        "daniel.lezcano@linaro.org" <daniel.lezcano@linaro.org>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "b.krug@elektronenpumpe.de" <b.krug@elektronenpumpe.de>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
+        d=1e100.net; s=20221208; t=1686848715; x=1689440715;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=crBt2ITg8SZ2kjr+v53DzcSzxyBX77tw0/FzCIW8K/M=;
+        b=ikk9cwurbU7oeMZYoclSWrh2//W79KeWqHQwGqJsGH/kBa/XraXxiV9P/5AYnu98fB
+         Nd6IJOmGeH/n4fwZB+v8gUA23Z4080V/d4jwCAROIJB/en6tKoduNVnFT/L8Iw9J5XJt
+         COINcN5efdFy3nSCOiA37aODQPngNpTHPdZs0px9BmxBwHeYMJy7gTLSiyHTMXWBuuG8
+         E93MoEYt6Cq8lljQDl3+VW+g1EK5K2P5QVjBqBLC1sWT2ugjzSFEY8e/TEXaNqVkbGr+
+         r9ZQDrKt32VLiLgJa0ap096vKBhn0wF/fuoS4Ne4sRYlKrv4ixQR/HaMldHJbtzmuFXR
+         3kRA==
+X-Gm-Message-State: AC+VfDy6hnecGDlgPqjNSuBFN25HxxkonSkhOphWGsC/wdjLR7m7pXIs
+        9zfTh1ueL7jj+T4XBzNLShepUT8WLK5org==
+X-Google-Smtp-Source: ACHHUZ7r4SbDTfLJT6A+Xdd3hkh4l9+0lbKnY5uI/8PhcRo2xcI7zxTj5tNJ3wYJvt8qxVxw9ze7ug==
+X-Received: by 2002:a2e:a175:0:b0:2b3:47b3:3c39 with SMTP id u21-20020a2ea175000000b002b347b33c39mr49134ljl.23.1686848714423;
+        Thu, 15 Jun 2023 10:05:14 -0700 (PDT)
+Received: from [192.168.1.95] (host-176-36-0-241.b024.la.net.ua. [176.36.0.241])
+        by smtp.gmail.com with ESMTPSA id z27-20020a05651c023b00b002adc6c2cb3bsm3195205ljn.5.2023.06.15.10.05.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Jun 2023 10:05:13 -0700 (PDT)
+Message-ID: <fbd79f5f2b250ec913c78d91b94ca96fb96f67ee.camel@gmail.com>
+Subject: Re: [PATCH bpf] bpf/btf: Accept function names that contain dots
+From:   Eduard Zingerman <eddyz87@gmail.com>
+To:     Florent Revest <revest@chromium.org>, bpf@vger.kernel.org,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Cc:     martin.lau@linux.dev, ast@kernel.org, daniel@iogearbox.net,
+        andrii@kernel.org, song@kernel.org, yhs@fb.com,
+        john.fastabend@gmail.com, kpsingh@kernel.org, sdf@google.com,
+        haoluo@google.com, jolsa@kernel.org, nathan@kernel.org,
+        ndesaulniers@google.com, trix@redhat.com, stable@vger.kernel.org
+Date:   Thu, 15 Jun 2023 20:05:11 +0300
+In-Reply-To: <CABRcYm+C+tPwXAGnaDRR_U2hzyt+09fjkKBp3tPx6iKT4wBE2Q@mail.gmail.com>
+References: <20230615145607.3469985-1-revest@chromium.org>
+         <CABRcYm+C+tPwXAGnaDRR_U2hzyt+09fjkKBp3tPx6iKT4wBE2Q@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu1 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 15, 2023 at 4:35 AM Zhang, Rui <rui.zhang@intel.com> wrote:
->
-> On Wed, 2023-06-14 at 12:07 +0200, Hans de Goede wrote:
-> > Since commit 955fb8719efb ("thermal/intel/intel_soc_dts_iosf: Use
-> > Intel
-> > TCC library") intel_soc_dts_iosf is reporting the wrong temperature.
-> >
-> > The driver expects tj_max to be in milli-degrees-celcius but after
-> > the switch to the TCC library this is now in degrees celcius so
-> > instead of e.g. 90000 it is set to 90 causing a temperature 45
-> > degrees below tj_max to be reported as -44910 milli-degrees
-> > instead of as 45000 milli-degrees.
-> >
-> > Fix this by adding back the lost factor of 1000.
-> >
-> > Fixes: 955fb8719efb ("thermal/intel/intel_soc_dts_iosf: Use Intel TCC
-> > library")
-> > Reported-by: Bernhard Krug <b.krug@elektronenpumpe.de>
-> > Cc: Zhang Rui <rui.zhang@intel.com>
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->
-> Acked-by: Zhang Rui <rui.zhang@intel.com>
+On Thu, 2023-06-15 at 17:44 +0200, Florent Revest wrote:
+> On Thu, Jun 15, 2023 at 4:56=E2=80=AFPM Florent Revest <revest@chromium.o=
+rg> wrote:
+> >=20
+> > When building a kernel with LLVM=3D1, LLVM_IAS=3D0 and CONFIG_KASAN=3Dy=
+, LLVM
+> > leaves DWARF tags for the "asan.module_ctor" & co symbols.
+>=20
+> To be fair I can't tell if this is an LLVM bug. It's sort of curious
+> that with LLVM_IAS=3D1, these debugging symbols are not kept and they
+> are with LLVM_IAS=3D0 but I don't know what the expected behavior should
+> be and how BTF should deal with it. I'll let people with more context
+> comment on this! :)
+>=20
+> An easy reproducer is:
+>=20
+> $ touch pwet.c
+>=20
+> $ clang -g -fsanitize=3Dkernel-address -c -o pwet.o pwet.c
+> $ llvm-dwarfdump pwet.o | grep module_ctor
+>=20
+> $ clang -fno-integrated-as -g -fsanitize=3Dkernel-address -c -o pwet.o pw=
+et.c
+> $ llvm-dwarfdump pwet.o | grep module_ctor
+>                 DW_AT_name      ("asan.module_ctor")
 
-Applied as 6.4-rc material, thanks!
+Interestingly, I am unable to reproduce it using either
+clang version 14.0.0-1ubuntu1 or clang main (bd66f4b1da30).
 
-> > ---
-> > Note reported by private email, so no Closes: tag
-> > ---
-> >  drivers/thermal/intel/intel_soc_dts_iosf.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/thermal/intel/intel_soc_dts_iosf.c
-> > b/drivers/thermal/intel/intel_soc_dts_iosf.c
-> > index f99dc7e4ae89..db97499f4f0a 100644
-> > --- a/drivers/thermal/intel/intel_soc_dts_iosf.c
-> > +++ b/drivers/thermal/intel/intel_soc_dts_iosf.c
-> > @@ -398,7 +398,7 @@ struct intel_soc_dts_sensors
-> > *intel_soc_dts_iosf_init(
-> >         spin_lock_init(&sensors->intr_notify_lock);
-> >         mutex_init(&sensors->dts_update_lock);
-> >         sensors->intr_type = intr_type;
-> > -       sensors->tj_max = tj_max;
-> > +       sensors->tj_max = tj_max * 1000;
-> >         if (intr_type == INTEL_SOC_DTS_INTERRUPT_NONE)
-> >                 notification = false;
-> >         else
->
+>=20
+> > In a dramatic turn of event, this BTF verification failure can cause
+> > the netfilter_bpf initialization to fail, causing netfilter_core to
+> > free the netfilter_helper hashmap and netfilter_ftp to trigger a
+> > use-after-free. The risk of u-a-f in netfilter will be addressed
+> > separately
+>=20
+> To be precise, I meant "netfilter conntrack".
+>=20
+> I sent the following patch as a more targeted mitigation for the uaf
+> https://lore.kernel.org/netfilter-devel/20230615152918.3484699-1-revest@c=
+hromium.org/T/#u
+>=20
+
