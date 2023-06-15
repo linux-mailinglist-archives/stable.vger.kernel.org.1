@@ -2,105 +2,80 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6306731B88
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 16:39:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F2CD731CAA
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 17:30:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344936AbjFOOji (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 10:39:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56716 "EHLO
+        id S1345379AbjFOPaP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 11:30:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238807AbjFOOjh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 10:39:37 -0400
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2142A199;
-        Thu, 15 Jun 2023 07:39:35 -0700 (PDT)
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 35FEd9VZ030973;
-        Thu, 15 Jun 2023 09:39:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1686839949;
-        bh=Y9bvtf286pw8tf5Ndk8qnBgZRSTn851+8LwiWYBhhiQ=;
-        h=Date:From:To:CC:Subject:References:In-Reply-To;
-        b=RLtTisZOpC0lHRYLuLBR3bqlrt6wx9RYRWag0pTbJ5VysSt/yKePtDkYWVfqAHYZx
-         iMLuQvngBTiQIOnwzrRagFnqM/A7QZmQ9yaFcqfySp/cw+mtYbUESrR0n8ahm499hQ
-         dTEl/UGeDdQC0EvqBrVIAOKIJC5GLhlPUc8lmMNs=
-Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 35FEd9Eg023224
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 15 Jun 2023 09:39:09 -0500
-Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE113.ent.ti.com
- (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 15
- Jun 2023 09:39:09 -0500
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 15 Jun 2023 09:39:09 -0500
-Received: from localhost (ileaxei01-snat2.itg.ti.com [10.180.69.6])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 35FEd9oE028627;
-        Thu, 15 Jun 2023 09:39:09 -0500
-Date:   Thu, 15 Jun 2023 09:39:09 -0500
-From:   Nishanth Menon <nm@ti.com>
-To:     Francesco Dolcini <francesco@dolcini.it>
-CC:     Benjamin Bara <bbara93@gmail.com>, Wolfram Sang <wsa@kernel.org>,
-        Lee Jones <lee@kernel.org>, <rafael.j.wysocki@intel.com>,
-        <dmitry.osipenko@collabora.com>, <peterz@infradead.org>,
-        <jonathanh@nvidia.com>, <richard.leitner@linux.dev>,
-        <treding@nvidia.com>, <linux-kernel@vger.kernel.org>,
-        <linux-i2c@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
-        Benjamin Bara <benjamin.bara@skidata.com>,
-        <stable@vger.kernel.org>
-Subject: Re: [PATCH v6 1/5] kernel/reboot: emergency_restart: set correct
- system_state
-Message-ID: <20230615143909.fjr25wghwrtepk6g@unwieldy>
-References: <20230327-tegra-pmic-reboot-v6-0-af44a4cd82e9@skidata.com>
- <20230327-tegra-pmic-reboot-v6-1-af44a4cd82e9@skidata.com>
- <20230615000650.coyphnwdai7smww7@unblended>
- <ZIsQPutiZWACawec@francesco-nb.int.toradex.com>
+        with ESMTP id S1344778AbjFOP3Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 11:29:25 -0400
+X-Greylist: delayed 2232 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 15 Jun 2023 08:28:49 PDT
+Received: from viti.kaiser.cx (viti.kaiser.cx [IPv6:2a01:238:43fe:e600:cd0c:bd4a:7a3:8e9f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5D7F30D0
+        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 08:28:49 -0700 (PDT)
+Received: from [94.118.13.74] (helo=martin-debian-2.paytec.ch)
+        by viti.kaiser.cx with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.89)
+        (envelope-from <martin@kaiser.cx>)
+        id 1q9oJx-0001fB-Iw; Thu, 15 Jun 2023 16:51:33 +0200
+From:   Martin Kaiser <martin@kaiser.cx>
+To:     Herbert Xu <herbert@gondor.apana.org.au>
+Cc:     linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Martin Kaiser <martin@kaiser.cx>,
+        stable@vger.kernel.org
+Subject: [PATCH] hwrng: imx-rngc - fix the timeout for init and self check
+Date:   Thu, 15 Jun 2023 15:49:59 +0100
+Message-Id: <20230615144959.1171085-1-martin@kaiser.cx>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <ZIsQPutiZWACawec@francesco-nb.int.toradex.com>
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 15:21-20230615, Francesco Dolcini wrote:
-> > > 
-> > > -- 
-> > > 2.34.1
-> > > 
-> > 
-> > Tested-by: Nishanth Menon <nm@ti.com>
-> > 
-> > This in addition to a deeper bug in our driver seems to have helped
-> > resolve a report we had been looking at. Tested on beagleplay platform
-> > 
-> > https://lore.kernel.org/all/ZGeHMjlnob2GFyHF@francesco-nb.int.toradex.com/
-> 
-> Is this patch going to fix the RCU warning I reported on that email or
-> it is just part of a more complex solution?
+Fix the timeout that is used for the initialisation and for the self
+test. wait_for_completion_timeout expects a timeout in jiffies, but
+RNGC_TIMEOUT is in milliseconds. Call msecs_to_jiffies to do the
+conversion.
 
-From what I see, It is part of the solution.
-Problem happens as follows for us:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/firmware/ti_sci.c#n421
+Cc: stable@vger.kernel.org
+Fixes: 1d5449445bd0 ("hwrng: mx-rngc - add a driver for Freescale RNGC")
+Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+---
+ drivers/char/hw_random/imx-rngc.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-When i2c is not that frequently used, runtime pm disables the power
-domain on our platform. As part of reset or power-off, when i2c is
-invoked, it ends up calling into the firmware handler which (no
-surprise), attempts to do the wrong thing (and rightly flagged by RCU).
-
-We are in the middle of trying various combinations out to ensure we
-are'nt messing things up.
-
+diff --git a/drivers/char/hw_random/imx-rngc.c b/drivers/char/hw_random/imx-rngc.c
+index 1a6a5dd0a5a1..e5a9dee615c8 100644
+--- a/drivers/char/hw_random/imx-rngc.c
++++ b/drivers/char/hw_random/imx-rngc.c
+@@ -110,7 +110,7 @@ static int imx_rngc_self_test(struct imx_rngc *rngc)
+ 	cmd = readl(rngc->base + RNGC_COMMAND);
+ 	writel(cmd | RNGC_CMD_SELF_TEST, rngc->base + RNGC_COMMAND);
+ 
+-	ret = wait_for_completion_timeout(&rngc->rng_op_done, RNGC_TIMEOUT);
++	ret = wait_for_completion_timeout(&rngc->rng_op_done, msecs_to_jiffies(RNGC_TIMEOUT));
+ 	imx_rngc_irq_mask_clear(rngc);
+ 	if (!ret)
+ 		return -ETIMEDOUT;
+@@ -182,9 +182,7 @@ static int imx_rngc_init(struct hwrng *rng)
+ 		cmd = readl(rngc->base + RNGC_COMMAND);
+ 		writel(cmd | RNGC_CMD_SEED, rngc->base + RNGC_COMMAND);
+ 
+-		ret = wait_for_completion_timeout(&rngc->rng_op_done,
+-				RNGC_TIMEOUT);
+-
++		ret = wait_for_completion_timeout(&rngc->rng_op_done, msecs_to_jiffies(RNGC_TIMEOUT));
+ 		if (!ret) {
+ 			ret = -ETIMEDOUT;
+ 			goto err;
 -- 
-Regards,
-Nishanth Menon
-Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+2.30.2
+
