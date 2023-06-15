@@ -2,402 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE2BA731787
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 13:43:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8527C731781
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 13:43:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344310AbjFOLnY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 07:43:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53234 "EHLO
+        id S1344243AbjFOLnQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 07:43:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344312AbjFOLmp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 07:42:45 -0400
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2075.outbound.protection.outlook.com [40.107.21.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6751235B3
-        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 04:39:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bI3kfq4O/qX8K5VI4UgQ/Xs387Lgsf2rwDaN1UI9V0vQUrMjRMmTPNfjOmXCXsvPZpn2RlLW+8VAXivgcLp3+IXEQX+2v+sgKP1lJOeJ0jZV8Q1EJbaWYr0gfE+KGvXNpDcCH35yfKhynfsLkaDLqKeVoVdOyInLVEvCXjAegJFT1fJIwQRZEP7bJTlD0C6lqt94NRhe1/PXeF/0rOXxDFc3WBikqnwHnUnq3IB3Hl99xP4VjBno5+uHENiupV99Sh8S2Q4m6mTaB8AwhZcKNy7chg8NN+u8DBU1JcwvjgfthRUhzXBWRKzaZbTRv4kp6BtWBLkwSsEJk/LM0G/pug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uxcjV84oBBll05OA58n3ddIuDaltyOt/gIoPuCLHrHg=;
- b=lifnZzfjZhp9fttYbD/AS85xLJBqKnPEu8q2a5KCaSBzjGgd5raNGoDup/bDlPrC1ntQK53dBQ/3G12xhdi3xbWSik9DK1bheaEcWHxZVS3ISD0qU5syvGXi3wYg1aN1Da92+L9cZKGKqQJSfiBrHfxlhddqAS/i00SFJbady6ooahZCtOMTDqL/P6lMbnvg8FgrkUkUQLF8+lhhq4q1+9YSp7i6SaWw+nC2zxuUuq+dLTunwaCioeuKq5ZG/hx7USfHXMCCk6/Xh1f1JCjO6kgxT3nBuecbP+Vkq0t4mueJLHeDGlF79lYMn8aI58BFkHq8KqoYqec5BmBFHuZh0Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 194.138.21.76) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=siemens.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=siemens.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=siemens.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uxcjV84oBBll05OA58n3ddIuDaltyOt/gIoPuCLHrHg=;
- b=eClT8urhMYK+ob9UmSN5Q+AQPZpCEiJGbbkSrNVl3SLZ5GDWES4Swg6IhV/qCfA3+AK9Y4uyepqGKKh+KMEfUgCkm1eDiaJ6tsUFfCI1sdtvUMq9+ap6tvBBQHJ8iuZa/ygsGNvFwBZ0Xuz9uyVRopT7sn3+LQfLb4ALRBYIJx9gy5Qxf1UCd/j/djjBA0F21O7Q1JVoI+MOhQjJyXb1hNEW7jp/s+vZuJ5Kc8ftkIxQWqtmSfy19jOZxLo+L8PRh5hQVqwCeh3xU2lwJLHE2H2pNDKlx+tza6Y79a81SXXLSdWJkirerB8gDch+WYI6yeo4jmOQTh//sivTwSZSMQ==
-Received: from OL1P279CA0071.NORP279.PROD.OUTLOOK.COM (2603:10a6:e10:15::22)
- by PR3PR10MB3914.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:43::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.37; Thu, 15 Jun
- 2023 11:39:22 +0000
-Received: from HE1EUR01FT062.eop-EUR01.prod.protection.outlook.com
- (2603:10a6:e10:15:cafe::83) by OL1P279CA0071.outlook.office365.com
- (2603:10a6:e10:15::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.25 via Frontend
- Transport; Thu, 15 Jun 2023 11:39:21 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 194.138.21.76)
- smtp.mailfrom=siemens.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=siemens.com;
-Received-SPF: Pass (protection.outlook.com: domain of siemens.com designates
- 194.138.21.76 as permitted sender) receiver=protection.outlook.com;
- client-ip=194.138.21.76; helo=hybrid.siemens.com; pr=C
-Received: from hybrid.siemens.com (194.138.21.76) by
- HE1EUR01FT062.mail.protection.outlook.com (10.152.1.16) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6500.25 via Frontend Transport; Thu, 15 Jun 2023 11:39:21 +0000
-Received: from DEMCHDC8WBA.ad011.siemens.net (139.25.226.105) by
- DEMCHDC8VSA.ad011.siemens.net (194.138.21.76) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.25; Thu, 15 Jun 2023 13:39:20 +0200
-Received: from md1za8fc.ppmd.siemens.net (139.25.68.220) by
- DEMCHDC8WBA.ad011.siemens.net (139.25.226.105) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.25; Thu, 15 Jun 2023 13:39:20 +0200
-From:   Henning Schild <henning.schild@siemens.com>
-To:     <stable@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     <holger.philipps@siemens.com>, <wagner.dominik@siemens.com>,
-        =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
-        "Matt Roper" <matthew.d.roper@intel.com>,
-        Lucas De Marchi <lucas.demarchi@intel.com>,
-        Henning Schild <henning.schild@siemens.com>
-Subject: [PATCH 5.10 v2 2/2] drm/i915/gen11+: Only load DRAM information from pcode
-Date:   Thu, 15 Jun 2023 13:39:09 +0200
-Message-ID: <20230615113909.2109-3-henning.schild@siemens.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20230615113909.2109-1-henning.schild@siemens.com>
-References: <20230615113909.2109-1-henning.schild@siemens.com>
+        with ESMTP id S1344300AbjFOLmj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 07:42:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2981D272D;
+        Thu, 15 Jun 2023 04:39:51 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 994D76396F;
+        Thu, 15 Jun 2023 11:39:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50370C433C8;
+        Thu, 15 Jun 2023 11:39:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686829160;
+        bh=J8cJyeymWRL+ftj3SWm0YNChhCztSxSfkhJrIqRnN3o=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Z0tPf/YE3f4VV5PysNXdWdjRGBVy7MJhK6WCCKLPxEOkf+8AsRyeyyASsun4dQLVX
+         JrF9wSF9SST0yynKZJ3OUElcYUs3yrYIIyt2tzZbYWLf8k+8YY8mxhBCvPQYAD4YmD
+         krejPEIpfZE7xDgKKFDxbv+G9EllRnuFr+E6s2AKUvTDiftgkjoA/jwzG+MPPqGysg
+         +jt7LAPAM8Tie3zxUfrUhd/Gtx53sc+9xNIuDsrJQIZPMRDA/wH1b/xy7JLzliFi6H
+         SW4oodqqh0zMOv7nhE4DINFjFyboiR2PG/M91m1q69tjFeCZeFfMFh3xgjSvpcg7Iz
+         BfKZDz6Ahlv6g==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Jim Wylder <jwylder@google.com>, Sasha Levin <sashal@kernel.org>,
+        broonie@kernel.org, gregkh@linuxfoundation.org
+Subject: [PATCH AUTOSEL 5.10 1/9] regmap: Account for register length when chunking
+Date:   Thu, 15 Jun 2023 07:39:09 -0400
+Message-Id: <20230615113917.649505-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 5.10.184
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [139.25.68.220]
-X-ClientProxiedBy: DEMCHDC8WBA.ad011.siemens.net (139.25.226.105) To
- DEMCHDC8WBA.ad011.siemens.net (139.25.226.105)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: HE1EUR01FT062:EE_|PR3PR10MB3914:EE_
-X-MS-Office365-Filtering-Correlation-Id: 34d443c4-6ddb-47ea-f1fc-08db6d952966
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 5n13WKfsTT0cyC5sNjODQKsi/N8rV24uLEh6bIMFQgzti+K+4N6Ph9pEXodhQ8aS1DHKHLj05GgKOpUKcgsRovgdLOotBzktjpQL9z7rkmx8OZtBbcDbYvixu7mbvoKKkx30OrO35Gta1bR76lgPgEoRgKnqc7hdcfWDlgZSOHCTZ0xnRXvB8Wpt/WZWghlBBBZ+KTsEjhdbK+9cMHw0wb7q4zBYrcLihBdnUGxovYLvL1R+it3R5dsYodtieOdjD8VD+rhHtNNxns91uMdoY15eHryzmEdSsHwokvabuQfWT7Nh8BEhvtKG++i0bzkjW5Of6WzylW0nRMkbp7azktNMqA4Hpxjt8E8CJcoV5w32d1mc8QzwObxl4OgEEql3nExfrI9bLPEZ/y6jj4Guva0bV5s9Vc2HmtirfpXl3oK8fjsK1us2K5UnK/gktAF+I0DJ6x+eFaf8s9S/zTHHrQSuTRe/8JWVgWQ/oA4kNJZlxyaGsry60LYUxZa+Tf86e6zxa6sotrC3KHdUKvg5nfEY7mdFBJcad+6G30cTbO/fjMgohPMCTbA/ynMFWKOurzCdFHWs6tuGvCIBmgGZ3IwtWTMDGqctoecub78uQsNbnhj6ZDZZJanrbJSqAGIKs9lmlnxidxhDDyxeXWisL9c8pn10azbn+Pgj5XYN443pDk2+cQ1s4LfJZsIxOwTquVU/SUwzwweOEoGxaAdLCA==
-X-Forefront-Antispam-Report: CIP:194.138.21.76;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:hybrid.siemens.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(376002)(39860400002)(346002)(396003)(136003)(451199021)(36840700001)(40470700004)(46966006)(110136005)(54906003)(82960400001)(81166007)(356005)(82740400003)(40460700003)(40480700001)(478600001)(6666004)(966005)(44832011)(316002)(8676002)(5660300002)(41300700001)(8936002)(70206006)(70586007)(2906002)(4326008)(47076005)(83380400001)(82310400005)(36860700001)(16526019)(26005)(186003)(107886003)(1076003)(336012)(956004)(2616005)(36756003)(86362001)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: siemens.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jun 2023 11:39:21.4130
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 34d443c4-6ddb-47ea-f1fc-08db6d952966
-X-MS-Exchange-CrossTenant-Id: 38ae3bcd-9579-4fd4-adda-b42e1495d55a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=38ae3bcd-9579-4fd4-adda-b42e1495d55a;Ip=[194.138.21.76];Helo=[hybrid.siemens.com]
-X-MS-Exchange-CrossTenant-AuthSource: HE1EUR01FT062.eop-EUR01.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR10MB3914
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: José Roberto de Souza <jose.souza@intel.com>
+From: Jim Wylder <jwylder@google.com>
 
-[ Upstream commit 5d0c938ec9cc96fc7b8abcff0ca8b2a084e9c90c ]
+[ Upstream commit 3981514180c987a79ea98f0ae06a7cbf58a9ac0f ]
 
-Up to now we were reading some DRAM information from MCHBAR register
-and from pcode what is already not good but some GEN12(TGL-H and ADL-S)
-platforms have MCHBAR DRAM information in different offsets.
+Currently, when regmap_raw_write() splits the data, it uses the
+max_raw_write value defined for the bus.  For any bus that includes
+the target register address in the max_raw_write value, the chunked
+transmission will always exceed the maximum transmission length.
+To avoid this problem, subtract the length of the register and the
+padding from the maximum transmission.
 
-This was notified to HW team that decided that the best alternative is
-always apply the 16gb_dimm watermark adjustment for GEN12+ platforms
-and read the remaning DRAM information needed to other display
-programming from pcode.
-
-So here moving the DRAM pcode function to intel_dram.c, removing
-the duplicated fields from intel_qgv_info, setting and using
-information from dram_info.
-
-v2:
-- bring back num_points to intel_qgv_info as num_qgv_point can be
-overwritten in icl_get_qgv_points()
-- add gen12_get_dram_info() and simplify gen11_get_dram_info()
-
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20210128164312.91160-2-jose.souza@intel.com
-Signed-off-by: Henning Schild <henning.schild@siemens.com>
+Signed-off-by: Jim Wylder <jwylder@google.com
+Link: https://lore.kernel.org/r/20230517152444.3690870-2-jwylder@google.com
+Signed-off-by: Mark Brown <broonie@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_bw.c | 80 +++---------------------
- drivers/gpu/drm/i915/i915_drv.c         |  5 +-
- drivers/gpu/drm/i915/i915_drv.h         |  1 +
- drivers/gpu/drm/i915/intel_dram.c       | 82 ++++++++++++++++++++++++-
- 4 files changed, 93 insertions(+), 75 deletions(-)
+ drivers/base/regmap/regmap.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_bw.c b/drivers/gpu/drm/i915/display/intel_bw.c
-index bd060404d249..4b5a30ac84bc 100644
---- a/drivers/gpu/drm/i915/display/intel_bw.c
-+++ b/drivers/gpu/drm/i915/display/intel_bw.c
-@@ -20,76 +20,9 @@ struct intel_qgv_point {
- struct intel_qgv_info {
- 	struct intel_qgv_point points[I915_NUM_QGV_POINTS];
- 	u8 num_points;
--	u8 num_channels;
- 	u8 t_bl;
--	enum intel_dram_type dram_type;
- };
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index 55a30afc14a00..2a3c3dfefdcec 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -1998,6 +1998,8 @@ int _regmap_raw_write(struct regmap *map, unsigned int reg,
+ 	size_t val_count = val_len / val_bytes;
+ 	size_t chunk_count, chunk_bytes;
+ 	size_t chunk_regs = val_count;
++	size_t max_data = map->max_raw_write - map->format.reg_bytes -
++			map->format.pad_bytes;
+ 	int ret, i;
  
--static int icl_pcode_read_mem_global_info(struct drm_i915_private *dev_priv,
--					  struct intel_qgv_info *qi)
--{
--	u32 val = 0;
--	int ret;
--
--	ret = sandybridge_pcode_read(dev_priv,
--				     ICL_PCODE_MEM_SUBSYSYSTEM_INFO |
--				     ICL_PCODE_MEM_SS_READ_GLOBAL_INFO,
--				     &val, NULL);
--	if (ret)
--		return ret;
--
--	if (IS_GEN(dev_priv, 12)) {
--		switch (val & 0xf) {
--		case 0:
--			qi->dram_type = INTEL_DRAM_DDR4;
--			break;
--		case 3:
--			qi->dram_type = INTEL_DRAM_LPDDR4;
--			break;
--		case 4:
--			qi->dram_type = INTEL_DRAM_DDR3;
--			break;
--		case 5:
--			qi->dram_type = INTEL_DRAM_LPDDR3;
--			break;
--		default:
--			MISSING_CASE(val & 0xf);
--			break;
--		}
--	} else if (IS_GEN(dev_priv, 11)) {
--		switch (val & 0xf) {
--		case 0:
--			qi->dram_type = INTEL_DRAM_DDR4;
--			break;
--		case 1:
--			qi->dram_type = INTEL_DRAM_DDR3;
--			break;
--		case 2:
--			qi->dram_type = INTEL_DRAM_LPDDR3;
--			break;
--		case 3:
--			qi->dram_type = INTEL_DRAM_LPDDR4;
--			break;
--		default:
--			MISSING_CASE(val & 0xf);
--			break;
--		}
--	} else {
--		MISSING_CASE(INTEL_GEN(dev_priv));
--		qi->dram_type = INTEL_DRAM_LPDDR3; /* Conservative default */
--	}
--
--	qi->num_channels = (val & 0xf0) >> 4;
--	qi->num_points = (val & 0xf00) >> 8;
--
--	if (IS_GEN(dev_priv, 12))
--		qi->t_bl = qi->dram_type == INTEL_DRAM_DDR4 ? 4 : 16;
--	else if (IS_GEN(dev_priv, 11))
--		qi->t_bl = qi->dram_type == INTEL_DRAM_DDR4 ? 4 : 8;
--
--	return 0;
--}
--
- static int icl_pcode_read_qgv_point_info(struct drm_i915_private *dev_priv,
- 					 struct intel_qgv_point *sp,
- 					 int point)
-@@ -139,11 +72,15 @@ int icl_pcode_restrict_qgv_points(struct drm_i915_private *dev_priv,
- static int icl_get_qgv_points(struct drm_i915_private *dev_priv,
- 			      struct intel_qgv_info *qi)
- {
-+	const struct dram_info *dram_info = &dev_priv->dram_info;
- 	int i, ret;
+ 	if (!val_count)
+@@ -2005,8 +2007,8 @@ int _regmap_raw_write(struct regmap *map, unsigned int reg,
  
--	ret = icl_pcode_read_mem_global_info(dev_priv, qi);
--	if (ret)
--		return ret;
-+	qi->num_points = dram_info->num_qgv_points;
-+
-+	if (IS_GEN(dev_priv, 12))
-+		qi->t_bl = dev_priv->dram_info.type == INTEL_DRAM_DDR4 ? 4 : 16;
-+	else if (IS_GEN(dev_priv, 11))
-+		qi->t_bl = dev_priv->dram_info.type == INTEL_DRAM_DDR4 ? 4 : 8;
+ 	if (map->use_single_write)
+ 		chunk_regs = 1;
+-	else if (map->max_raw_write && val_len > map->max_raw_write)
+-		chunk_regs = map->max_raw_write / val_bytes;
++	else if (map->max_raw_write && val_len > max_data)
++		chunk_regs = max_data / val_bytes;
  
- 	if (drm_WARN_ON(&dev_priv->drm,
- 			qi->num_points > ARRAY_SIZE(qi->points)))
-@@ -209,7 +146,7 @@ static int icl_get_bw_info(struct drm_i915_private *dev_priv, const struct intel
- {
- 	struct intel_qgv_info qi = {};
- 	bool is_y_tile = true; /* assume y tile may be used */
--	int num_channels;
-+	int num_channels = dev_priv->dram_info.num_channels;
- 	int deinterleave;
- 	int ipqdepth, ipqdepthpch;
- 	int dclk_max;
-@@ -222,7 +159,6 @@ static int icl_get_bw_info(struct drm_i915_private *dev_priv, const struct intel
- 			    "Failed to get memory subsystem information, ignoring bandwidth limits");
- 		return ret;
- 	}
--	num_channels = qi.num_channels;
- 
- 	deinterleave = DIV_ROUND_UP(num_channels, is_y_tile ? 4 : 2);
- 	dclk_max = icl_sagv_max_dclk(&qi);
-diff --git a/drivers/gpu/drm/i915/i915_drv.c b/drivers/gpu/drm/i915/i915_drv.c
-index f72e3bb4ee9a..c72a26af181c 100644
---- a/drivers/gpu/drm/i915/i915_drv.c
-+++ b/drivers/gpu/drm/i915/i915_drv.c
-@@ -609,14 +609,15 @@ static int i915_driver_hw_probe(struct drm_i915_private *dev_priv)
- 		goto err_msi;
- 
- 	intel_opregion_setup(dev_priv);
-+
-+	intel_pcode_init(dev_priv);
-+
- 	/*
- 	 * Fill the dram structure to get the system raw bandwidth and
- 	 * dram info. This will be used for memory latency calculation.
- 	 */
- 	intel_dram_detect(dev_priv);
- 
--	intel_pcode_init(dev_priv);
--
- 	intel_bw_init_hw(dev_priv);
- 
- 	return 0;
-diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-index 6909901b3551..a8b65bab82c8 100644
---- a/drivers/gpu/drm/i915/i915_drv.h
-+++ b/drivers/gpu/drm/i915/i915_drv.h
-@@ -1148,6 +1148,7 @@ struct drm_i915_private {
- 			INTEL_DRAM_LPDDR3,
- 			INTEL_DRAM_LPDDR4
- 		} type;
-+		u8 num_qgv_points;
- 	} dram_info;
- 
- 	struct intel_bw_info {
-diff --git a/drivers/gpu/drm/i915/intel_dram.c b/drivers/gpu/drm/i915/intel_dram.c
-index 8aa12cad93ce..26e109c64984 100644
---- a/drivers/gpu/drm/i915/intel_dram.c
-+++ b/drivers/gpu/drm/i915/intel_dram.c
-@@ -5,6 +5,7 @@
- 
- #include "i915_drv.h"
- #include "intel_dram.h"
-+#include "intel_sideband.h"
- 
- struct dram_dimm_info {
- 	u8 size, width, ranks;
-@@ -433,6 +434,81 @@ static int bxt_get_dram_info(struct drm_i915_private *i915)
- 	return 0;
- }
- 
-+static int icl_pcode_read_mem_global_info(struct drm_i915_private *dev_priv)
-+{
-+	struct dram_info *dram_info = &dev_priv->dram_info;
-+	u32 val = 0;
-+	int ret;
-+
-+	ret = sandybridge_pcode_read(dev_priv,
-+				     ICL_PCODE_MEM_SUBSYSYSTEM_INFO |
-+				     ICL_PCODE_MEM_SS_READ_GLOBAL_INFO,
-+				     &val, NULL);
-+	if (ret)
-+		return ret;
-+
-+	if (IS_GEN(dev_priv, 12)) {
-+		switch (val & 0xf) {
-+		case 0:
-+			dram_info->type = INTEL_DRAM_DDR4;
-+			break;
-+		case 3:
-+			dram_info->type = INTEL_DRAM_LPDDR4;
-+			break;
-+		case 4:
-+			dram_info->type = INTEL_DRAM_DDR3;
-+			break;
-+		case 5:
-+			dram_info->type = INTEL_DRAM_LPDDR3;
-+			break;
-+		default:
-+			MISSING_CASE(val & 0xf);
-+			return -1;
-+		}
-+	} else {
-+		switch (val & 0xf) {
-+		case 0:
-+			dram_info->type = INTEL_DRAM_DDR4;
-+			break;
-+		case 1:
-+			dram_info->type = INTEL_DRAM_DDR3;
-+			break;
-+		case 2:
-+			dram_info->type = INTEL_DRAM_LPDDR3;
-+			break;
-+		case 3:
-+			dram_info->type = INTEL_DRAM_LPDDR4;
-+			break;
-+		default:
-+			MISSING_CASE(val & 0xf);
-+			return -1;
-+		}
-+	}
-+
-+	dram_info->num_channels = (val & 0xf0) >> 4;
-+	dram_info->num_qgv_points = (val & 0xf00) >> 8;
-+
-+	return 0;
-+}
-+
-+static int gen11_get_dram_info(struct drm_i915_private *i915)
-+{
-+	int ret = skl_get_dram_info(i915);
-+
-+	if (ret)
-+		return ret;
-+
-+	return icl_pcode_read_mem_global_info(i915);
-+}
-+
-+static int gen12_get_dram_info(struct drm_i915_private *i915)
-+{
-+	/* Always needed for GEN12+ */
-+	i915->dram_info.is_16gb_dimm = true;
-+
-+	return icl_pcode_read_mem_global_info(i915);
-+}
-+
- void intel_dram_detect(struct drm_i915_private *i915)
- {
- 	struct dram_info *dram_info = &i915->dram_info;
-@@ -448,7 +524,11 @@ void intel_dram_detect(struct drm_i915_private *i915)
- 	if (INTEL_GEN(i915) < 9 || !HAS_DISPLAY(i915))
- 		return;
- 
--	if (IS_GEN9_LP(i915))
-+	if (INTEL_GEN(i915) >= 12)
-+		ret = gen12_get_dram_info(i915);
-+	else if (INTEL_GEN(i915) >= 11)
-+		ret = gen11_get_dram_info(i915);
-+	else if (IS_GEN9_LP(i915))
- 		ret = bxt_get_dram_info(i915);
- 	else
- 		ret = skl_get_dram_info(i915);
+ 	chunk_count = val_count / chunk_regs;
+ 	chunk_bytes = chunk_regs * val_bytes;
 -- 
-2.39.3
+2.39.2
 
