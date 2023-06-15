@@ -2,167 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C4CB731BEF
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 16:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E349731C6C
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 17:27:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244745AbjFOO4r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 10:56:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38596 "EHLO
+        id S241358AbjFOP0n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 11:26:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345158AbjFOO4a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 10:56:30 -0400
-Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D7972955
-        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 07:56:29 -0700 (PDT)
-Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-3f7378a75c0so19137745e9.3
-        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 07:56:29 -0700 (PDT)
+        with ESMTP id S1344001AbjFOP0P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 11:26:15 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F17A7213B
+        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 08:26:12 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6667a2c1ab3so1311656b3a.1
+        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 08:26:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1686840988; x=1689432988;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZejLKN5aLCLQqaxNI770STmW64dCVjdqgJRYwrLAEQY=;
-        b=PLv0SOqjQIJKhHDvPhJa/ZXB9L6XDUaeP7ZKUz07rxGmbHpPzPDaIqnBTNJRKv73lf
-         73zFaCphp11PzXmvWBy7SMjfUaaGsYMlOhN5KfuKgPgKWX7pmuIauxcdRvTtKWboDOaS
-         6ZdWEqdqMTaq49d1a7W2ZfqKhadmkebP+Trm4=
+        d=google.com; s=20221208; t=1686842772; x=1689434772;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UTxeaxXFn5GNkcVsWJTf9D5g3nTYEaM86Nc45vNWBR4=;
+        b=U+3bso/Vm9pUh7xz0npUzHyVDR5CzodEcM7fFoco4BuXpWwCjquik+lxENBhrMcsOj
+         47Ax7BphyLNVPJtOvGwxU7iIoUcYpizzcBRj5urmQYZCCcoQdeIrsNIWpI+/klxOwyJ8
+         rSeQ35lLDEKNLBw1GKnC3v2STOrd17u5fZiRJmCbaoONzjRkpjdgTVGYNcEJOvKMZ0Zq
+         znHO1uxq1JyIbH93OcfJe2V8LiSfeihsjC9/Q4TBmmP7236UKtmm9AqXxTiS//zyfkA2
+         QLuFK1SD8fY8z7zaxBTIbR0OOXmJugf9fyhb/8t49LxdyOhrxB8io/WGjavrSVdxUflL
+         cewQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686840988; x=1689432988;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZejLKN5aLCLQqaxNI770STmW64dCVjdqgJRYwrLAEQY=;
-        b=ly7TrIbQYPLKdrtPFbAgGgmM6JUlZ6HufpO2D9De/0JZU9XTc5mFzmsHfHYVQ8NB7V
-         IQhaNwhMHGGmQCt90oN/8yA8cL22yKtx/bCPwxoiXacKtDTRt6m9+GQ1CpGOD54B69KE
-         PTcsBSDX/YcZalF6pRYE8jtCRIbbRbbxDIB5UnE1IutFP1GLHQArlY70J6XEXq7gdZOT
-         44jCkNajosWonbI5DNNvqzlHnwmjZ54xnwk/q2iU0NA7ZwMRuRXB2SLxvUdDgHpZqnrZ
-         lLVk5yw5igY3heSuULtlFGkXicKjnvXDsngHOhuML0hq+Lv6MySod6DMU8kjcPuWkmMa
-         WrJg==
-X-Gm-Message-State: AC+VfDx6DkQf/2AlUQEtddU0YjrUyYp1w+808hNmA1uzqo3ZbfeghCBM
-        VFlmgVOYe6vqR8jPMGzorvY+LQ==
-X-Google-Smtp-Source: ACHHUZ5OpUwlJ/vrCXpmVoMFPIO8LTjjlYgRLY492Ohe4rUYc/w74e7rMy7X0TCztfIjKLgSpnSJyQ==
-X-Received: by 2002:a05:600c:b54:b0:3f6:2ee:6993 with SMTP id k20-20020a05600c0b5400b003f602ee6993mr14415646wmr.4.1686840987856;
-        Thu, 15 Jun 2023 07:56:27 -0700 (PDT)
-Received: from revest.zrh.corp.google.com ([2a00:79e0:9d:6:7ec7:7f97:45af:3056])
-        by smtp.gmail.com with ESMTPSA id e13-20020a05600c218d00b003f709a7e46bsm20617755wme.46.2023.06.15.07.56.26
+        d=1e100.net; s=20221208; t=1686842772; x=1689434772;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UTxeaxXFn5GNkcVsWJTf9D5g3nTYEaM86Nc45vNWBR4=;
+        b=Lfnt2XdTjq7JxKoIrYc54x22XLfBsYItOiTpPcHePu5eUuKrYyCASxzpgR1n72mJFn
+         7b2kFH5DtMd3wLcsqbN/HjEfAgyhZMQ85wFaUCF6FG11Xqx8vcXeU5B1Yva92Zs30dJX
+         M4TZrSvVvQJ2U28k9OMYag9i/tT5GFuV1GwuEU6KMixBJBQEURnIz+TXOlSXZ8t/kZIe
+         fe6aiYZSxlZzFjg+0bkOjfrU5yzVqGwiQMQp+fMgi+5XHOfu3UyGWa5v2LaZCA8m4FsW
+         HD39pU70vT2H+NMREbWtDrmgg/XghuiLiwhnrSNnVTocturPf6FWgSJMIX2za3L9Cfij
+         e8JA==
+X-Gm-Message-State: AC+VfDwE1uF6cnvskhA9j8wOCybloxjGAamwaJW7zKThknk9clRluEQT
+        djqUYPwny85B+J2Tfpdd7lJCcQ==
+X-Google-Smtp-Source: ACHHUZ6zhkxnK3m0+W2oZ3v6Wv41P+H4hsW2NlUutS9ndUuE/gSDgZwQhIQlfr5b/Sh8t/0At9tMIQ==
+X-Received: by 2002:a17:902:c94f:b0:1b0:7c3c:31f7 with SMTP id i15-20020a170902c94f00b001b07c3c31f7mr17437450pla.28.1686842772232;
+        Thu, 15 Jun 2023 08:26:12 -0700 (PDT)
+Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
+        by smtp.gmail.com with ESMTPSA id j11-20020a170902690b00b001b02bd00c61sm14181120plk.237.2023.06.15.08.26.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jun 2023 07:56:27 -0700 (PDT)
-From:   Florent Revest <revest@chromium.org>
-To:     bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev
-Cc:     martin.lau@linux.dev, ast@kernel.org, daniel@iogearbox.net,
-        andrii@kernel.org, song@kernel.org, yhs@fb.com,
-        john.fastabend@gmail.com, kpsingh@kernel.org, sdf@google.com,
-        haoluo@google.com, jolsa@kernel.org, nathan@kernel.org,
-        ndesaulniers@google.com, trix@redhat.com,
-        Florent Revest <revest@chromium.org>, stable@vger.kernel.org
-Subject: [PATCH bpf] bpf/btf: Accept function names that contain dots
-Date:   Thu, 15 Jun 2023 16:56:07 +0200
-Message-ID: <20230615145607.3469985-1-revest@chromium.org>
-X-Mailer: git-send-email 2.41.0.162.gfafddb0af9-goog
+        Thu, 15 Jun 2023 08:26:11 -0700 (PDT)
+Date:   Thu, 15 Jun 2023 15:26:07 +0000
+From:   Carlos Llamas <cmllamas@google.com>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     yixuanjiang <yixuanjiang@google.com>, vkoul@kernel.org,
+        lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
+        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] ASoC: soc-compress: Fix deadlock in soc_compr_open_fe
+Message-ID: <ZIstjzsar5a4bCFN@google.com>
+References: <20230613062350.271107-1-yixuanjiang@google.com>
+ <92159f51-2e17-4c6b-8fd4-0bde8b1dd38a@sirena.org.uk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <92159f51-2e17-4c6b-8fd4-0bde8b1dd38a@sirena.org.uk>
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,FSL_HELO_FAKE,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When building a kernel with LLVM=1, LLVM_IAS=0 and CONFIG_KASAN=y, LLVM
-leaves DWARF tags for the "asan.module_ctor" & co symbols. In turn,
-pahole creates BTF_KIND_FUNC entries for these and this makes the BTF
-metadata validation fail because they contain a dot.
+On Thu, Jun 15, 2023 at 01:56:35AM +0100, Mark Brown wrote:
+> On Tue, Jun 13, 2023 at 02:23:50PM +0800, yixuanjiang wrote:
+> > Modify the error handling flow by release lock.
+> > The require pcm_mutex will keep holding if open fail.
+> 
+> > +++ b/sound/soc/soc-compress.c
+> > @@ -166,6 +166,7 @@ static int soc_compr_open_fe(struct snd_compr_stream *cstream)
+> >  	snd_soc_dai_compr_shutdown(cpu_dai, cstream, 1);
+> >  out:
+> >  	dpcm_path_put(&list);
+> > +	mutex_unlock(&fe->card->pcm_mutex);
+> >  be_err:
+> 
+> This is really hard to follow due to the lack of any mutex_lock()s in
+> the function, I think because this is intended to undo
+> snd_soc_dpcm_mutex_lock(fe) but if that's the case why is it not using
+> snd_soc_dpcm_mutex_unlock(fe) like the success path does?  Given the use
+> of classes not doing that looks like it'll create lockdep issues.
+> 
+> I'd expect the unlock to match the lock.
 
-In a dramatic turn of event, this BTF verification failure can cause
-the netfilter_bpf initialization to fail, causing netfilter_core to
-free the netfilter_helper hashmap and netfilter_ftp to trigger a
-use-after-free. The risk of u-a-f in netfilter will be addressed
-separately but the existence of "asan.module_ctor" debug info under some
-build conditions sounds like a good enough reason to accept functions
-that contain dots in BTF.
+Yes, and judging from the context of the patch I believe this was based
+off of stable 5.15.y tree. The locking has been refactored since. So
+Yixuan, please rebase/adjust your patch on top of Linus's mainline tree
+and resend. Thanks!
 
-Cc: stable@vger.kernel.org
-Fixes: 1dc92851849c ("bpf: kernel side support for BTF Var and DataSec")
-Signed-off-by: Florent Revest <revest@chromium.org>
----
- kernel/bpf/btf.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
-
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index 6b682b8e4b50..72b32b7cd9cd 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -744,13 +744,12 @@ static bool btf_name_offset_valid(const struct btf *btf, u32 offset)
- 	return offset < btf->hdr.str_len;
- }
- 
--static bool __btf_name_char_ok(char c, bool first, bool dot_ok)
-+static bool __btf_name_char_ok(char c, bool first)
- {
- 	if ((first ? !isalpha(c) :
- 		     !isalnum(c)) &&
- 	    c != '_' &&
--	    ((c == '.' && !dot_ok) ||
--	      c != '.'))
-+	    c != '.')
- 		return false;
- 	return true;
- }
-@@ -767,20 +766,20 @@ static const char *btf_str_by_offset(const struct btf *btf, u32 offset)
- 	return NULL;
- }
- 
--static bool __btf_name_valid(const struct btf *btf, u32 offset, bool dot_ok)
-+static bool __btf_name_valid(const struct btf *btf, u32 offset)
- {
- 	/* offset must be valid */
- 	const char *src = btf_str_by_offset(btf, offset);
- 	const char *src_limit;
- 
--	if (!__btf_name_char_ok(*src, true, dot_ok))
-+	if (!__btf_name_char_ok(*src, true))
- 		return false;
- 
- 	/* set a limit on identifier length */
- 	src_limit = src + KSYM_NAME_LEN;
- 	src++;
- 	while (*src && src < src_limit) {
--		if (!__btf_name_char_ok(*src, false, dot_ok))
-+		if (!__btf_name_char_ok(*src, false))
- 			return false;
- 		src++;
- 	}
-@@ -788,17 +787,14 @@ static bool __btf_name_valid(const struct btf *btf, u32 offset, bool dot_ok)
- 	return !*src;
- }
- 
--/* Only C-style identifier is permitted. This can be relaxed if
-- * necessary.
-- */
- static bool btf_name_valid_identifier(const struct btf *btf, u32 offset)
- {
--	return __btf_name_valid(btf, offset, false);
-+	return __btf_name_valid(btf, offset);
- }
- 
- static bool btf_name_valid_section(const struct btf *btf, u32 offset)
- {
--	return __btf_name_valid(btf, offset, true);
-+	return __btf_name_valid(btf, offset);
- }
- 
- static const char *__btf_name_by_offset(const struct btf *btf, u32 offset)
-@@ -4422,7 +4418,7 @@ static s32 btf_var_check_meta(struct btf_verifier_env *env,
- 	}
- 
- 	if (!t->name_off ||
--	    !__btf_name_valid(env->btf, t->name_off, true)) {
-+	    !__btf_name_valid(env->btf, t->name_off)) {
- 		btf_verifier_log_type(env, t, "Invalid name");
- 		return -EINVAL;
- 	}
--- 
-2.41.0.162.gfafddb0af9-goog
-
+--
+Carlos Llamas
