@@ -2,103 +2,116 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E349731C6C
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 17:27:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE61D731CAF
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 17:30:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241358AbjFOP0n (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 11:26:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57018 "EHLO
+        id S1345114AbjFOPa2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 11:30:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344001AbjFOP0P (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 11:26:15 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F17A7213B
-        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 08:26:12 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6667a2c1ab3so1311656b3a.1
-        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 08:26:12 -0700 (PDT)
+        with ESMTP id S1345364AbjFOPaN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 11:30:13 -0400
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44D4D2711
+        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 08:29:32 -0700 (PDT)
+Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-3f8d65ecdbbso17891995e9.0
+        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 08:29:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1686842772; x=1689434772;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UTxeaxXFn5GNkcVsWJTf9D5g3nTYEaM86Nc45vNWBR4=;
-        b=U+3bso/Vm9pUh7xz0npUzHyVDR5CzodEcM7fFoco4BuXpWwCjquik+lxENBhrMcsOj
-         47Ax7BphyLNVPJtOvGwxU7iIoUcYpizzcBRj5urmQYZCCcoQdeIrsNIWpI+/klxOwyJ8
-         rSeQ35lLDEKNLBw1GKnC3v2STOrd17u5fZiRJmCbaoONzjRkpjdgTVGYNcEJOvKMZ0Zq
-         znHO1uxq1JyIbH93OcfJe2V8LiSfeihsjC9/Q4TBmmP7236UKtmm9AqXxTiS//zyfkA2
-         QLuFK1SD8fY8z7zaxBTIbR0OOXmJugf9fyhb/8t49LxdyOhrxB8io/WGjavrSVdxUflL
-         cewQ==
+        d=chromium.org; s=google; t=1686842964; x=1689434964;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DmTVCcDzgdb0rJxfE0Wgi1MTtd65tPNrOoDRMDRx3gQ=;
+        b=ZWKJCPeyY3OAvLfQ/Akuz48aKCvTBQTX/njIi7+Ped9HxmetqggAQuX8AfhzbOMrMB
+         0SjxhsxeYOEEX9VqUD5ASxl4hgU9Nz2oqcj/uFxTGO7cYvDZyEyoyjgYsc9H67ECc5K4
+         h6ydnE3ghYlThrijidU2Apjum47pypqMDNRd4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686842772; x=1689434772;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UTxeaxXFn5GNkcVsWJTf9D5g3nTYEaM86Nc45vNWBR4=;
-        b=Lfnt2XdTjq7JxKoIrYc54x22XLfBsYItOiTpPcHePu5eUuKrYyCASxzpgR1n72mJFn
-         7b2kFH5DtMd3wLcsqbN/HjEfAgyhZMQ85wFaUCF6FG11Xqx8vcXeU5B1Yva92Zs30dJX
-         M4TZrSvVvQJ2U28k9OMYag9i/tT5GFuV1GwuEU6KMixBJBQEURnIz+TXOlSXZ8t/kZIe
-         fe6aiYZSxlZzFjg+0bkOjfrU5yzVqGwiQMQp+fMgi+5XHOfu3UyGWa5v2LaZCA8m4FsW
-         HD39pU70vT2H+NMREbWtDrmgg/XghuiLiwhnrSNnVTocturPf6FWgSJMIX2za3L9Cfij
-         e8JA==
-X-Gm-Message-State: AC+VfDwE1uF6cnvskhA9j8wOCybloxjGAamwaJW7zKThknk9clRluEQT
-        djqUYPwny85B+J2Tfpdd7lJCcQ==
-X-Google-Smtp-Source: ACHHUZ6zhkxnK3m0+W2oZ3v6Wv41P+H4hsW2NlUutS9ndUuE/gSDgZwQhIQlfr5b/Sh8t/0At9tMIQ==
-X-Received: by 2002:a17:902:c94f:b0:1b0:7c3c:31f7 with SMTP id i15-20020a170902c94f00b001b07c3c31f7mr17437450pla.28.1686842772232;
-        Thu, 15 Jun 2023 08:26:12 -0700 (PDT)
-Received: from google.com (157.214.185.35.bc.googleusercontent.com. [35.185.214.157])
-        by smtp.gmail.com with ESMTPSA id j11-20020a170902690b00b001b02bd00c61sm14181120plk.237.2023.06.15.08.26.11
+        d=1e100.net; s=20221208; t=1686842964; x=1689434964;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DmTVCcDzgdb0rJxfE0Wgi1MTtd65tPNrOoDRMDRx3gQ=;
+        b=So06D1FudSE6+viySzHHchBYz7f4iwnaGVZ26jLL/JxWMIPDxwZmX+2bv0sOOA5c7W
+         W7uxVjVdye6iSIYV5oPMvbGq0PgQqT5r2SAy754MVdXybK/ZmctG4iWZEFn2AFzEr9xY
+         pBpajB4AG2Tg2dEdoSrce4YCU9ZDkKf0IxwguXnYbnr5bb5GWZa2Xmlv90PmRqbVka75
+         lE20p/FVXoo6a6jaznzng/ffAfOSDF13JdwE8oXZeaIIN5PRHq3ye5AoyYYDZUjc6RIh
+         rafqSAcJzhcNiyxRpJUumSvAxiHb8HMhFcbUWW1o0+K8lULIzAmJkmL2cxeovRgjD1Me
+         2Q9Q==
+X-Gm-Message-State: AC+VfDyBPpfFk1a5GHOCbzomCAO3qWibF1RIKn7JEyWzkj3tJt4RZfPn
+        FBLGWl8Jewo8spwRw3alkxdGMw==
+X-Google-Smtp-Source: ACHHUZ7if8/QjJGrlFQPl6PUziSmXH/MThCln20vJrrNGAbg26qZf+cyoV/v/dt8J17ZWjgWvauPdA==
+X-Received: by 2002:a05:600c:2212:b0:3f6:cfc7:8bc7 with SMTP id z18-20020a05600c221200b003f6cfc78bc7mr12113985wml.17.1686842963710;
+        Thu, 15 Jun 2023 08:29:23 -0700 (PDT)
+Received: from revest.zrh.corp.google.com ([2a00:79e0:9d:6:7ec7:7f97:45af:3056])
+        by smtp.gmail.com with ESMTPSA id k1-20020a5d6e81000000b0030e5ccaec84sm21510469wrz.32.2023.06.15.08.29.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Jun 2023 08:26:11 -0700 (PDT)
-Date:   Thu, 15 Jun 2023 15:26:07 +0000
-From:   Carlos Llamas <cmllamas@google.com>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     yixuanjiang <yixuanjiang@google.com>, vkoul@kernel.org,
-        lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
-        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+        Thu, 15 Jun 2023 08:29:23 -0700 (PDT)
+From:   Florent Revest <revest@chromium.org>
+To:     netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        bpf@vger.kernel.org
+Cc:     pablo@netfilter.org, kadlec@netfilter.org, fw@strlen.de,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, lirongqing@baidu.com, wangli39@baidu.com,
+        zhangyu31@baidu.com, daniel@iogearbox.net, ast@kernel.org,
+        kpsingh@kernel.org, Florent Revest <revest@chromium.org>,
         stable@vger.kernel.org
-Subject: Re: [PATCH] ASoC: soc-compress: Fix deadlock in soc_compr_open_fe
-Message-ID: <ZIstjzsar5a4bCFN@google.com>
-References: <20230613062350.271107-1-yixuanjiang@google.com>
- <92159f51-2e17-4c6b-8fd4-0bde8b1dd38a@sirena.org.uk>
+Subject: [PATCH nf] netfilter: conntrack: Avoid nf_ct_helper_hash uses after free
+Date:   Thu, 15 Jun 2023 17:29:18 +0200
+Message-ID: <20230615152918.3484699-1-revest@chromium.org>
+X-Mailer: git-send-email 2.41.0.162.gfafddb0af9-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <92159f51-2e17-4c6b-8fd4-0bde8b1dd38a@sirena.org.uk>
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,FSL_HELO_FAKE,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 15, 2023 at 01:56:35AM +0100, Mark Brown wrote:
-> On Tue, Jun 13, 2023 at 02:23:50PM +0800, yixuanjiang wrote:
-> > Modify the error handling flow by release lock.
-> > The require pcm_mutex will keep holding if open fail.
-> 
-> > +++ b/sound/soc/soc-compress.c
-> > @@ -166,6 +166,7 @@ static int soc_compr_open_fe(struct snd_compr_stream *cstream)
-> >  	snd_soc_dai_compr_shutdown(cpu_dai, cstream, 1);
-> >  out:
-> >  	dpcm_path_put(&list);
-> > +	mutex_unlock(&fe->card->pcm_mutex);
-> >  be_err:
-> 
-> This is really hard to follow due to the lack of any mutex_lock()s in
-> the function, I think because this is intended to undo
-> snd_soc_dpcm_mutex_lock(fe) but if that's the case why is it not using
-> snd_soc_dpcm_mutex_unlock(fe) like the success path does?  Given the use
-> of classes not doing that looks like it'll create lockdep issues.
-> 
-> I'd expect the unlock to match the lock.
+If register_nf_conntrack_bpf() fails (for example, if the .BTF section
+contains an invalid entry), nf_conntrack_init_start() calls
+nf_conntrack_helper_fini() as part of its cleanup path and
+nf_ct_helper_hash gets freed.
 
-Yes, and judging from the context of the patch I believe this was based
-off of stable 5.15.y tree. The locking has been refactored since. So
-Yixuan, please rebase/adjust your patch on top of Linus's mainline tree
-and resend. Thanks!
+Further netfilter modules like netfilter_conntrack_ftp don't check
+whether nf_conntrack initialized correctly and call
+nf_conntrack_helpers_register() which accesses the freed
+nf_ct_helper_hash and causes a uaf.
 
---
-Carlos Llamas
+This patch guards nf_conntrack_helper_register() from accessing
+freed/uninitialized nf_ct_helper_hash maps and fixes a boot-time
+use-after-free.
+
+Cc: stable@vger.kernel.org
+Fixes: 12f7a505331e ("netfilter: add user-space connection tracking helper infrastructure")
+Signed-off-by: Florent Revest <revest@chromium.org>
+---
+ net/netfilter/nf_conntrack_helper.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/net/netfilter/nf_conntrack_helper.c b/net/netfilter/nf_conntrack_helper.c
+index 0c4db2f2ac43..f22691f83853 100644
+--- a/net/netfilter/nf_conntrack_helper.c
++++ b/net/netfilter/nf_conntrack_helper.c
+@@ -360,6 +360,9 @@ int nf_conntrack_helper_register(struct nf_conntrack_helper *me)
+ 	BUG_ON(me->expect_class_max >= NF_CT_MAX_EXPECT_CLASSES);
+ 	BUG_ON(strlen(me->name) > NF_CT_HELPER_NAME_LEN - 1);
+ 
++	if (!nf_ct_helper_hash)
++		return -ENOENT;
++
+ 	if (me->expect_policy->max_expected > NF_CT_EXPECT_MAX_CNT)
+ 		return -EINVAL;
+ 
+@@ -515,4 +518,5 @@ int nf_conntrack_helper_init(void)
+ void nf_conntrack_helper_fini(void)
+ {
+ 	kvfree(nf_ct_helper_hash);
++	nf_ct_helper_hash = NULL;
+ }
+-- 
+2.41.0.162.gfafddb0af9-goog
+
