@@ -2,56 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7762A732085
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 21:53:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DFEB73209F
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 22:09:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229696AbjFOTxn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 15:53:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60590 "EHLO
+        id S232085AbjFOUJH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 16:09:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229600AbjFOTxn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 15:53:43 -0400
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04E682959;
-        Thu, 15 Jun 2023 12:53:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686858821; x=1718394821;
-  h=subject:from:to:cc:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=uSLUhUff4RDrXVZo5KeY8oJYT0jcBZtmgkEDqpDLyvA=;
-  b=XoW6LFxXLRrObis2c1PuEGPshAqEViqW1PwWCrdwkYlk48Q08BJOh4QG
-   cnLbzh1czxLsllUKZ50K2679yM/RmOvEBkSSduel0Vl9cydl+BBowbtwG
-   drNTMSuUslIEZRCd3AsyZbeMafmNkx5HLMXFyEe3HlsKN3SdehF4wnThN
-   Oz2VtDwLuuQLBT0CF+Bl/PU8ytWgZrkVhF9MYQOJk9BRuDoRZfV7vP94n
-   jbAKzkeYpF15eG49UrzO+WHAN1/c+Z/biBC/pZ+LFHrhnlBX2NEV0L/dM
-   hK+tqWMEWz0exW2ZsTeL5dXr3hIC5Lf0i1etDUXwoBo9GYgHUg3QP9SX1
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="445405142"
-X-IronPort-AV: E=Sophos;i="6.00,245,1681196400"; 
-   d="scan'208";a="445405142"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 12:53:41 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10742"; a="802545334"
-X-IronPort-AV: E=Sophos;i="6.00,245,1681196400"; 
-   d="scan'208";a="802545334"
-Received: from leoliu1-mobl.amr.corp.intel.com (HELO dwillia2-xfh.jf.intel.com) ([10.209.76.7])
-  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 12:53:40 -0700
-Subject: [PATCH] Revert "cxl/port: Enable the HDM decoder capability for
- switch ports"
-From:   Dan Williams <dan.j.williams@intel.com>
-To:     linux-cxl@vger.kernel.org
-Cc:     stable@vger.kernel.org, ira.weiny@intel.com
-Date:   Thu, 15 Jun 2023 12:53:40 -0700
-Message-ID: <168685882012.3475336.16733084892658264991.stgit@dwillia2-xfh.jf.intel.com>
-User-Agent: StGit/0.18-3-g996c
+        with ESMTP id S229653AbjFOUJG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 16:09:06 -0400
+Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF2E81FD7;
+        Thu, 15 Jun 2023 13:09:04 -0700 (PDT)
+Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-340bdf36dd9so7929335ab.3;
+        Thu, 15 Jun 2023 13:09:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686859744; x=1689451744;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aTfjaS0IPEiXuHhWcjsCm7WS5mqkvAN6gaYW2Bcvzz4=;
+        b=HKsyIAlc1gychI1Iug+BOUo7rfqrlvPgWzjmTRztywf8iehrXgMOdF86aEO0jUIkrC
+         rXilVZpDf+EWKRgpU+bDIQvbkoDlyp+GiMMseNqzLGl6kzfhgNj7uf0LncjdVYnufWvr
+         IaJ+IMuxTL9Njv8ZrE+sjbHjF3JMWj+ltaxH9ikmvUm/d7L0t5ueDI/Fo4j5etlEaziB
+         XnQg3pj2xV7tH9RCdkXMP5ZpSELHHfiHg7ZPpoXQTldoHQs2dCchUEUCEDrnTOPzvjq+
+         7Sz3rLhJaX9Asz5xGzbfxxXYRCSJub7hCUuvKcGFQM/eqJrUP/l6FTAAwEjUE9y3JZKW
+         /56w==
+X-Gm-Message-State: AC+VfDzW5OuMjZjgI6L4jw00cTSUvzydQ8beLOZtsS5zF6YK1WG+o0Ue
+        bT3GJXCLd/Z8JhUTf4SsB701X/9NRg==
+X-Google-Smtp-Source: ACHHUZ79LfJp9RkPNTpyZJ5OtyEoIgIYPICSHb+vRi8hTHwBhSpMqkvv/DethS+ipksLPiMZ71fxMQ==
+X-Received: by 2002:a92:d3c3:0:b0:340:6984:cc6f with SMTP id c3-20020a92d3c3000000b003406984cc6fmr478157ilh.3.1686859744059;
+        Thu, 15 Jun 2023 13:09:04 -0700 (PDT)
+Received: from robh_at_kernel.org ([64.188.179.250])
+        by smtp.gmail.com with ESMTPSA id g24-20020a056638061800b004166c24e30dsm5685797jar.32.2023.06.15.13.09.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Jun 2023 13:09:03 -0700 (PDT)
+Received: (nullmailer pid 1586553 invoked by uid 1000);
+        Thu, 15 Jun 2023 20:09:01 -0000
+Date:   Thu, 15 Jun 2023 14:09:01 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+Cc:     Thomas Zimmermann <tzimmermann@suse.de>,
+        Linux regressions mailing list <regressions@lists.linux.dev>,
+        Salvatore Bonaccorso <carnil@debian.org>,
+        Cyril Brulebois <cyril@debamax.com>,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] fbdev/offb: Update expected device name
+Message-ID: <20230615200901.GA1572644-robh@kernel.org>
+References: <20230412095509.2196162-1-cyril@debamax.com>
+ <20230412095509.2196162-2-cyril@debamax.com>
+ <ZDvrY7X9mpJ7WZ3z@eldamar.lan>
+ <11b342dc-1a46-d1be-5fdd-c6eee661e15a@leemhuis.info>
+ <fe3b90b0-b52f-9677-0245-a201975c3e0c@suse.de>
+ <20230615132107.GA9196@kitsune.suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230615132107.GA9196@kitsune.suse.cz>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,173 +72,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-commit eb0764b822b9 ("cxl/port: Enable the HDM decoder capability for switch ports")
+On Thu, Jun 15, 2023 at 03:21:07PM +0200, Michal Suchánek wrote:
+> Hello,
+> 
+> On Thu, Jun 15, 2023 at 03:06:28PM +0200, Thomas Zimmermann wrote:
+> > Hi
+> > 
+> > Am 15.06.23 um 15:03 schrieb Linux regression tracking (Thorsten Leemhuis):
+> > > On 16.04.23 14:34, Salvatore Bonaccorso wrote:
+> > > > 
+> > > > On Wed, Apr 12, 2023 at 11:55:08AM +0200, Cyril Brulebois wrote:
+> > > > > Since commit 241d2fb56a18 ("of: Make OF framebuffer device names unique"),
+> > > > > as spotted by Frédéric Bonnard, the historical "of-display" device is
+> > > > > gone: the updated logic creates "of-display.0" instead, then as many
+> > > > > "of-display.N" as required.
+> > > > > 
+> > > > > This means that offb no longer finds the expected device, which prevents
+> > > > > the Debian Installer from setting up its interface, at least on ppc64el.
+> > > > > 
+> > > > > It might be better to iterate on all possible nodes, but updating the
+> > > > > hardcoded device from "of-display" to "of-display.0" is confirmed to fix
+> > > > > the Debian Installer at the very least.
+> 
+> At the time this was proposed it was said that "of-display", is wrong,
+> and that "of-display.0" must be used for the first device instead, and
+> if something breaks an alias can be provided.
+> 
+> So how does one provide an alias so that offb can find "of-display.0" as
+> "of-display"?
 
-...was added on the observation of CXL memory not being accessible after
-setting up a region on a "cold-plugged" device. A "cold-plugged" CXL
-device is one that was not present at boot, so platform-firmware/BIOS
-has no chance to set it up.
+I'm not aware of any way. There isn't because device names and paths are 
+not considered ABI. There are mechanisms for getting stable class device 
+indices (e.g. i2c0, mmcblk0, fb0, fb1, etc.) though not implemented for 
+fbN (and please don't add it). 
 
-While it is true that the debug found the enable bit clear in the
-host-bridge's instance of the global control register (CXL 3.0
-8.2.4.19.2 CXL HDM Decoder Global Control Register), that bit is
-described as:
+In any case, this should be an easy fix. Though if "linux,opened" or 
+"linux,boot-display" is not set, then you'd still get "of-display.0":
 
-"This bit is only applicable to CXL.mem devices and shall
-return 0 on CXL Host Bridges and Upstream Switch Ports."
-
-So it is meant to be zero, and further testing confirmed that this "fix"
-had no effect on the failure. Revert it, and be more vigilant about
-proposed fixes in the future. Since the original copied stable@, flag
-this revert for stable@ as well.
-
-Cc: <stable@vger.kernel.org>
-Fixes: eb0764b822b9 ("cxl/port: Enable the HDM decoder capability for switch ports")
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
----
- drivers/cxl/core/pci.c        |   27 ++++-----------------------
- drivers/cxl/cxl.h             |    1 -
- drivers/cxl/port.c            |   14 +++++---------
- tools/testing/cxl/Kbuild      |    1 -
- tools/testing/cxl/test/mock.c |   15 ---------------
- 5 files changed, 9 insertions(+), 49 deletions(-)
-
-diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
-index 7440f84be6c8..552203c13b39 100644
---- a/drivers/cxl/core/pci.c
-+++ b/drivers/cxl/core/pci.c
-@@ -308,36 +308,17 @@ static void disable_hdm(void *_cxlhdm)
- 	       hdm + CXL_HDM_DECODER_CTRL_OFFSET);
- }
- 
--int devm_cxl_enable_hdm(struct cxl_port *port, struct cxl_hdm *cxlhdm)
-+static int devm_cxl_enable_hdm(struct device *host, struct cxl_hdm *cxlhdm)
- {
--	void __iomem *hdm;
-+	void __iomem *hdm = cxlhdm->regs.hdm_decoder;
- 	u32 global_ctrl;
- 
--	/*
--	 * If the hdm capability was not mapped there is nothing to enable and
--	 * the caller is responsible for what happens next.  For example,
--	 * emulate a passthrough decoder.
--	 */
--	if (IS_ERR(cxlhdm))
--		return 0;
--
--	hdm = cxlhdm->regs.hdm_decoder;
- 	global_ctrl = readl(hdm + CXL_HDM_DECODER_CTRL_OFFSET);
--
--	/*
--	 * If the HDM decoder capability was enabled on entry, skip
--	 * registering disable_hdm() since this decode capability may be
--	 * owned by platform firmware.
--	 */
--	if (global_ctrl & CXL_HDM_DECODER_ENABLE)
--		return 0;
--
- 	writel(global_ctrl | CXL_HDM_DECODER_ENABLE,
- 	       hdm + CXL_HDM_DECODER_CTRL_OFFSET);
- 
--	return devm_add_action_or_reset(&port->dev, disable_hdm, cxlhdm);
-+	return devm_add_action_or_reset(host, disable_hdm, cxlhdm);
- }
--EXPORT_SYMBOL_NS_GPL(devm_cxl_enable_hdm, CXL);
- 
- int cxl_dvsec_rr_decode(struct device *dev, int d,
- 			struct cxl_endpoint_dvsec_info *info)
-@@ -511,7 +492,7 @@ int cxl_hdm_decode_init(struct cxl_dev_state *cxlds, struct cxl_hdm *cxlhdm,
- 	if (info->mem_enabled)
- 		return 0;
- 
--	rc = devm_cxl_enable_hdm(port, cxlhdm);
-+	rc = devm_cxl_enable_hdm(&port->dev, cxlhdm);
- 	if (rc)
- 		return rc;
- 
-diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-index 74548f8f5f4c..d743df66a582 100644
---- a/drivers/cxl/cxl.h
-+++ b/drivers/cxl/cxl.h
-@@ -717,7 +717,6 @@ struct cxl_endpoint_dvsec_info {
- struct cxl_hdm;
- struct cxl_hdm *devm_cxl_setup_hdm(struct cxl_port *port,
- 				   struct cxl_endpoint_dvsec_info *info);
--int devm_cxl_enable_hdm(struct cxl_port *port, struct cxl_hdm *cxlhdm);
- int devm_cxl_enumerate_decoders(struct cxl_hdm *cxlhdm,
- 				struct cxl_endpoint_dvsec_info *info);
- int devm_cxl_add_passthrough_decoder(struct cxl_port *port);
-diff --git a/drivers/cxl/port.c b/drivers/cxl/port.c
-index 5ffe3c7d2f5e..43718d0396d7 100644
---- a/drivers/cxl/port.c
-+++ b/drivers/cxl/port.c
-@@ -60,17 +60,13 @@ static int discover_region(struct device *dev, void *root)
- static int cxl_switch_port_probe(struct cxl_port *port)
- {
- 	struct cxl_hdm *cxlhdm;
--	int rc, nr_dports;
--
--	nr_dports = devm_cxl_port_enumerate_dports(port);
--	if (nr_dports < 0)
--		return nr_dports;
-+	int rc;
- 
--	cxlhdm = devm_cxl_setup_hdm(port, NULL);
--	rc = devm_cxl_enable_hdm(port, cxlhdm);
--	if (rc)
-+	rc = devm_cxl_port_enumerate_dports(port);
-+	if (rc < 0)
- 		return rc;
- 
-+	cxlhdm = devm_cxl_setup_hdm(port, NULL);
- 	if (!IS_ERR(cxlhdm))
- 		return devm_cxl_enumerate_decoders(cxlhdm, NULL);
- 
-@@ -79,7 +75,7 @@ static int cxl_switch_port_probe(struct cxl_port *port)
- 		return PTR_ERR(cxlhdm);
- 	}
- 
--	if (nr_dports == 1) {
-+	if (rc == 1) {
- 		dev_dbg(&port->dev, "Fallback to passthrough decoder\n");
- 		return devm_cxl_add_passthrough_decoder(port);
- 	}
-diff --git a/tools/testing/cxl/Kbuild b/tools/testing/cxl/Kbuild
-index 6f9347ade82c..fba7bec96acd 100644
---- a/tools/testing/cxl/Kbuild
-+++ b/tools/testing/cxl/Kbuild
-@@ -6,7 +6,6 @@ ldflags-y += --wrap=acpi_pci_find_root
- ldflags-y += --wrap=nvdimm_bus_register
- ldflags-y += --wrap=devm_cxl_port_enumerate_dports
- ldflags-y += --wrap=devm_cxl_setup_hdm
--ldflags-y += --wrap=devm_cxl_enable_hdm
- ldflags-y += --wrap=devm_cxl_add_passthrough_decoder
- ldflags-y += --wrap=devm_cxl_enumerate_decoders
- ldflags-y += --wrap=cxl_await_media_ready
-diff --git a/tools/testing/cxl/test/mock.c b/tools/testing/cxl/test/mock.c
-index 284416527644..de3933a776fd 100644
---- a/tools/testing/cxl/test/mock.c
-+++ b/tools/testing/cxl/test/mock.c
-@@ -149,21 +149,6 @@ struct cxl_hdm *__wrap_devm_cxl_setup_hdm(struct cxl_port *port,
- }
- EXPORT_SYMBOL_NS_GPL(__wrap_devm_cxl_setup_hdm, CXL);
- 
--int __wrap_devm_cxl_enable_hdm(struct cxl_port *port, struct cxl_hdm *cxlhdm)
--{
--	int index, rc;
--	struct cxl_mock_ops *ops = get_cxl_mock_ops(&index);
--
--	if (ops && ops->is_mock_port(port->uport))
--		rc = 0;
--	else
--		rc = devm_cxl_enable_hdm(port, cxlhdm);
--	put_cxl_mock_ops(index);
--
--	return rc;
--}
--EXPORT_SYMBOL_NS_GPL(__wrap_devm_cxl_enable_hdm, CXL);
--
- int __wrap_devm_cxl_add_passthrough_decoder(struct cxl_port *port)
- {
- 	int rc, index;
-
+diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+index 78ae84187449..e46482cef9c7 100644
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -553,7 +553,7 @@ static int __init of_platform_default_populate_init(void)
+                        if (!of_get_property(node, "linux,opened", NULL) ||
+                            !of_get_property(node, "linux,boot-display", NULL))
+                                continue;
+-                       dev = of_platform_device_create(node, "of-display.0", NULL);
++                       dev = of_platform_device_create(node, "of-display", NULL);
+                        of_node_put(node);
+                        if (WARN_ON(!dev))
+                                return -ENOMEM;
