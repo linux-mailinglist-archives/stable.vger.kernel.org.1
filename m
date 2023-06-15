@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 102BB731745
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 13:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2B4273174B
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 13:41:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344288AbjFOLlb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 07:41:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52858 "EHLO
+        id S1344238AbjFOLls (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 07:41:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343988AbjFOLkd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 07:40:33 -0400
+        with ESMTP id S1344240AbjFOLlR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 07:41:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA8552962;
-        Thu, 15 Jun 2023 04:39:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5469830E7;
+        Thu, 15 Jun 2023 04:39:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 59AC063950;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EFEF462AD0;
+        Thu, 15 Jun 2023 11:38:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F50C433C8;
         Thu, 15 Jun 2023 11:38:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9DEEC433C0;
-        Thu, 15 Jun 2023 11:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686829129;
-        bh=HsCyUvfibQH67qp1YfRajXMffQt8/KA+bwrrVsqQPUE=;
+        s=k20201202; t=1686829131;
+        bh=gkEUkTKKDqISeH840eDNW6Zy1Q0fZKHBArlkBoQ+9A0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MNI6JtGLgJ1DqpI5cdrAr2uqeSY6nWvRVvRt/iQJIMBNnfT1dkorsjhBVKLdGARYI
-         0co+48ndIqBFFEfS0nwdua5BYkiGXLhq8rASx3x27FshQZ+q2VV4JkAFwUgnWdYVrM
-         57cu+DedQSN0XWEOPQITkBzGKacKG8HE9MVI7OLboZTOazSUYqTa6rPjVd2i+hyHii
-         DG8iKlc2C96XPRoM6SMn4Pfez1MhrNT0J0Wz2c1fFnxsntPo4bxGQ7jfzkpADv84hL
-         AgHTy4GoUY4vdCM+l/hqAeDqT0MRz3VoYWGmuYLKLSwgrZNRq73B7GF9x87i6xizVN
-         0QKrOgdXrXIJg==
+        b=AUdktGIjH+hpc0mfBHzNNbje9LHLJGSK8DhgtgiLT14HW5SnzwB/OnpCE/wwcq4qU
+         SjAEoXTmoO2qgn8p4d9IdB56aurGBKH6iXdYxm4utq4NTInPX5sc0PsygwEXzJvxn2
+         QUaow3F3Yqyraq5R6rtzuiIeb1Hmyk6EwmXBWGskuEYVQOnxpKyy4oHzBvYB4+TYLo
+         lwAI3CIDA/s1UxAhcPJsPsAOkX/qOX7sYAXU/vXIdNuvVAR3nSXHi5o9dMnCSw1H80
+         fzpQD8sLn+vNMMPT/YZ67qm6/IDioQAFGha9ZBVUXbuqfhBi1/b+agTBgRnaJ28zHg
+         Vl/76bwffd9jg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Uday Shankar <ushankar@purestorage.com>,
@@ -42,14 +42,13 @@ Cc:     Uday Shankar <ushankar@purestorage.com>,
         Christoph Hellwig <hch@lst.de>,
         Keith Busch <kbusch@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 13/16] nvme: double KA polling frequency to avoid KATO with TBKAS on
-Date:   Thu, 15 Jun 2023 07:38:13 -0400
-Message-Id: <20230615113816.649135-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 14/16] nvme: check IO start time when deciding to defer KA
+Date:   Thu, 15 Jun 2023 07:38:14 -0400
+Message-Id: <20230615113816.649135-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230615113816.649135-1-sashal@kernel.org>
 References: <20230615113816.649135-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.34
@@ -66,30 +65,38 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Uday Shankar <ushankar@purestorage.com>
 
-[ Upstream commit ea4d453b9ec9ea279c39744cd0ecb47ef48ede35 ]
+[ Upstream commit 774a9636514764ddc0d072ae0d1d1c01a47e6ddd ]
 
-With TBKAS on, the completion of one command can defer sending a
-keep alive for up to twice the delay between successive runs of
-nvme_keep_alive_work. The current delay of KATO / 2 thus makes it
-possible for one command to defer sending a keep alive for up to
-KATO, which can result in the controller detecting a KATO. The following
-trace demonstrates the issue, taking KATO = 8 for simplicity:
+When a command completes, we set a flag which will skip sending a
+keep alive at the next run of nvme_keep_alive_work when TBKAS is on.
+However, if the command was submitted long ago, it's possible that
+the controller may have also restarted its keep alive timer (as a
+result of receiving the command) long ago. The following trace
+demonstrates the issue, assuming TBKAS is on and KATO = 8 for
+simplicity:
 
-1. t = 0: run nvme_keep_alive_work, no keep-alive sent
-2. t = ε: I/O completion seen, set comp_seen = true
-3. t = 4: run nvme_keep_alive_work, see comp_seen == true,
-          skip sending keep-alive, set comp_seen = false
-4. t = 8: run nvme_keep_alive_work, see comp_seen == false,
-          send a keep-alive command.
+1. t = 0: submit I/O commands A, B, C, D, E
+2. t = 0.5: commands A, B, C, D, E reach controller, restart its keep
+            alive timer
+3. t = 1: A completes
+4. t = 2: run nvme_keep_alive_work, see recent completion, do nothing
+5. t = 3: B completes
+6. t = 4: run nvme_keep_alive_work, see recent completion, do nothing
+7. t = 5: C completes
+8. t = 6: run nvme_keep_alive_work, see recent completion, do nothing
+9. t = 7: D completes
+10. t = 8: run nvme_keep_alive_work, see recent completion, do nothing
+11. t = 9: E completes
 
-Here, there is a delay of 8 - ε between receiving a command completion
-and sending the next command. With ε small, the controller is likely to
-detect a keep alive timeout.
+At this point, 8.5 seconds have passed without restarting the
+controller's keep alive timer, so the controller will detect a keep
+alive timeout.
 
-Fix this by running nvme_keep_alive_work with a delay of KATO / 4
-whenever TBKAS is on. Going through the above trace now gives us a
-worst-case delay of 4 - ε, which is in line with the recommendation of
-sending a command every KATO / 2 in the NVMe specification.
+Fix this by checking the IO start time when deciding to defer sending a
+keep alive command. Only set comp_seen if the command started after the
+most recent run of nvme_keep_alive_work. With this change, the
+completions of B, C, and D will not set comp_seen and the run of
+nvme_keep_alive_work at t = 4 will send a keep alive.
 
 Reported-by: Costa Sapuntzakis <costa@purestorage.com>
 Reported-by: Randy Jennings <randyj@purestorage.com>
@@ -100,40 +107,61 @@ Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/nvme/host/core.c | 14 +++++++++++++-
+ drivers/nvme/host/nvme.h |  1 +
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index f502e032e7e46..50a83306bea7b 100644
+index 50a83306bea7b..06dd1c0780bfc 100644
 --- a/drivers/nvme/host/core.c
 +++ b/drivers/nvme/host/core.c
-@@ -1198,9 +1198,25 @@ EXPORT_SYMBOL_NS_GPL(nvme_execute_passthru_rq, NVME_TARGET_PASSTHRU);
-  *   The host should send Keep Alive commands at half of the Keep Alive Timeout
-  *   accounting for transport roundtrip times [..].
-  */
-+static unsigned long nvme_keep_alive_work_period(struct nvme_ctrl *ctrl)
-+{
-+	unsigned long delay = ctrl->kato * HZ / 2;
-+
-+	/*
-+	 * When using Traffic Based Keep Alive, we need to run
-+	 * nvme_keep_alive_work at twice the normal frequency, as one
-+	 * command completion can postpone sending a keep alive command
-+	 * by up to twice the delay between runs.
-+	 */
-+	if (ctrl->ctratt & NVME_CTRL_ATTR_TBKAS)
-+		delay /= 2;
-+	return delay;
-+}
-+
- static void nvme_queue_keep_alive_work(struct nvme_ctrl *ctrl)
- {
--	queue_delayed_work(nvme_wq, &ctrl->ka_work, ctrl->kato * HZ / 2);
-+	queue_delayed_work(nvme_wq, &ctrl->ka_work,
-+			   nvme_keep_alive_work_period(ctrl));
- }
+@@ -395,7 +395,16 @@ void nvme_complete_rq(struct request *req)
+ 	trace_nvme_complete_rq(req);
+ 	nvme_cleanup_cmd(req);
  
- static enum rq_end_io_ret nvme_keep_alive_end_io(struct request *rq,
+-	if (ctrl->kas)
++	/*
++	 * Completions of long-running commands should not be able to
++	 * defer sending of periodic keep alives, since the controller
++	 * may have completed processing such commands a long time ago
++	 * (arbitrarily close to command submission time).
++	 * req->deadline - req->timeout is the command submission time
++	 * in jiffies.
++	 */
++	if (ctrl->kas &&
++	    req->deadline - req->timeout >= ctrl->ka_last_check_time)
+ 		ctrl->comp_seen = true;
+ 
+ 	switch (nvme_decide_disposition(req)) {
+@@ -1235,6 +1244,7 @@ static enum rq_end_io_ret nvme_keep_alive_end_io(struct request *rq,
+ 		return RQ_END_IO_NONE;
+ 	}
+ 
++	ctrl->ka_last_check_time = jiffies;
+ 	ctrl->comp_seen = false;
+ 	spin_lock_irqsave(&ctrl->lock, flags);
+ 	if (ctrl->state == NVME_CTRL_LIVE ||
+@@ -1253,6 +1263,8 @@ static void nvme_keep_alive_work(struct work_struct *work)
+ 	bool comp_seen = ctrl->comp_seen;
+ 	struct request *rq;
+ 
++	ctrl->ka_last_check_time = jiffies;
++
+ 	if ((ctrl->ctratt & NVME_CTRL_ATTR_TBKAS) && comp_seen) {
+ 		dev_dbg(ctrl->device,
+ 			"reschedule traffic based keep-alive timer\n");
+diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
+index 01d90424af534..ce668268b2c32 100644
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -318,6 +318,7 @@ struct nvme_ctrl {
+ 	struct delayed_work ka_work;
+ 	struct delayed_work failfast_work;
+ 	struct nvme_command ka_cmd;
++	unsigned long ka_last_check_time;
+ 	struct work_struct fw_act_work;
+ 	unsigned long events;
+ 
 -- 
 2.39.2
 
