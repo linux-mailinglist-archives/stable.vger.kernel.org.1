@@ -2,57 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A78D77323DC
-	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 01:47:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C8937323DF
+	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 01:48:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240201AbjFOXrv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 19:47:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33312 "EHLO
+        id S232291AbjFOXsb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 19:48:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240306AbjFOXrk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 19:47:40 -0400
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55383295B
-        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 16:47:39 -0700 (PDT)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-569e7aec37bso3247137b3.2
-        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 16:47:39 -0700 (PDT)
+        with ESMTP id S239312AbjFOXsa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 19:48:30 -0400
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF0B92D65
+        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 16:48:17 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5701b4d6ef3so3185397b3.3
+        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 16:48:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1686872858; x=1689464858;
+        d=google.com; s=20221208; t=1686872897; x=1689464897;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EY7LZ0z0er5tpNAeNV4NbUJ4wkE8ArklKncpS4EePqs=;
-        b=BE3qWZ5hzMOxsm1HH7wjTVeWhAE1etXxCQkCDw8l6EJpwFS0D8SVbXV1D8pb3Hhtcb
-         dN00my9qr6B5TLM+3dbon7yeoBBoHK0hI/mr+M8AWfJ5xLm1SkF+3Qq5Rf77zJmOvvC7
-         lH+nI10rJAci5baWo7JxZLXufwRu9tfowboKOoKUQU1Q/muS7AQf/CqCPX1nNoaBWgeJ
-         IKqdgDhfpa10etNVoJV9G4gu2fvyp6BY47tpA5cBGzpz2DnK1lhG7h94SdqTVVULqubE
-         D2/Sf7/LBkyjL2kibX2MFp60iyYpRRFjc5ppWuyZlFSRDKps1FoJ9KKZgM5lhZQ3JvPW
-         9DIA==
+        bh=VhJxMN6I0ms8d+c7+U8G+bHs3K5OQrOWF2SVM36do94=;
+        b=U4monlo3fzCidxHuzMvMSRZcS30wuRe1/TRhNgADQomOk7e0bbzak/xeWUJznL1gHP
+         XdlQDjp2eZCKKZ30shiHzgSW9sZCs58HakxVEpN7JiiHHaIns8d2nr8BYSySjR5Baxx1
+         NBLj9fJYN23+HASk6LffJYBn02u9F0yat9BVJ/0P5rI+JrWbyg1gGHGi6zmu9W6OIS4b
+         1V0QZmVhZ3bbSpPMNt8tlPdKkXRu8bRYQwtbRnECml4umOqNsJ5OFw6BJAca3wCveF78
+         182wI/CamI+MkQCOeGpHoks0HwtJuD4gWOhgmovkPs95c+tLvFnFU4S+qkeB+qloqcX2
+         ZV5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686872858; x=1689464858;
+        d=1e100.net; s=20221208; t=1686872897; x=1689464897;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EY7LZ0z0er5tpNAeNV4NbUJ4wkE8ArklKncpS4EePqs=;
-        b=aXjLizKWRzntXhWrlsTsjImtAfFwZXybBnQBr2fKZHWEhwoNh0+WlMVi/UyezhnSrH
-         8h2TqI1+TOezAqzcukpv6UknK0d+eqMw1zph223V+3hzxswskWKWV2wcu1SuZxn9CVma
-         R7LWT0DaPk2HTbWckYrNSVrmiWMukFr94uOT676kD3y1sYh0pCHSrZrX8ZNXrW9x22zB
-         d1NMpgHemn9ThYl4AH6dQj/B6h9mfCDMog+c2XkH0K1whDJNrAad4vIlFQ4B994viUFU
-         YLXkoMHEuf8vbC113L4WbGOpfD/Fgq2dCZooEtSuU9cHjSipl8suWmxtIjI5niplY0OO
-         g2Dw==
-X-Gm-Message-State: AC+VfDwHFHkNwrbnC2ZAPAXe/pvKurd3o/N2lZsNLqKBhfgPILsZCCpq
-        vLkA+I0WZCTUXU2/MQlTJ6Lh57jJ9HHKu6WF6Wl7qoIKKhrlkUQ74rs/onaNAh2hTAi+fYnGEpn
-        w3MAiijh/arAQ2ksjHSlGv0DlLzR8ca4z2sbH2E0s0a30t0z4wzR/ALkmtc0Jbw9QfY8V9A==
-X-Google-Smtp-Source: ACHHUZ63jCnmQygOpR7dWIgpkyu8NNUcZph6Ja+KjYeJRKFW65CNp2cPkM6IuxCQfPzfFD6IdSAm3LBPJUsFRYQ=
+        bh=VhJxMN6I0ms8d+c7+U8G+bHs3K5OQrOWF2SVM36do94=;
+        b=MfHpmJNlmihXTGoJVhJLJppC0mjdgwSE3YoDw/xrQShttpWjJd+iyW6Y1zNyxNwG0H
+         azzOVkDcuY2oDEogK+LebziwAoYXk8TsDNjSCE038arLgc5NDUIlM1bxZDq6tQY+OGPC
+         XqxvBcEU61F+tC07bPfNaFsStPNSIsFRp9Ov2i7rtdH8UqmZRjzQepK3XWnswvk/Gx6r
+         /WwT7MLSlzFFBuR8vR0wViM3Debw/0VzrK/ENdHpL0/jMOeN8ZrodKlMbTBxnC6MTUek
+         B7eJ4rrjid2S04szTbkw3bklnDksY4kd2s3jeuYMwl313pzUPrnrkAvwiFlxgPb1IgmD
+         J2DA==
+X-Gm-Message-State: AC+VfDxoFOe+cK4zFiB32YALgyE+ZHAt9T4WytsACD5CwPWP/VUTTH3b
+        C8zup6gdcSLVartDPNbtDTenv/JgkDFeya/0W3LZ4GgPiprOjoguvHo9bFmUWFTVwqOB2XoH6Rg
+        sPzBvppFrJ8u7Dy+eE+Ak4RIPRzPxYRBHZKGLl6eeDADmNcFw11zeoNFR8WarPAYOMkqQXA==
+X-Google-Smtp-Source: ACHHUZ4RCDblLkbbN6KY3b984aSW4UB4VXdXtN+6clkIVx5rH2NJjySG5WznUcw6r+J7ZqXzJntW1jTCj98cEl4=
 X-Received: from tj.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:53a])
- (user=tjmercier job=sendgmr) by 2002:a5b:f88:0:b0:bc5:4150:8e8d with SMTP id
- q8-20020a5b0f88000000b00bc541508e8dmr91916ybh.4.1686872858579; Thu, 15 Jun
- 2023 16:47:38 -0700 (PDT)
-Date:   Thu, 15 Jun 2023 23:47:07 +0000
-In-Reply-To: <2023061126-outthink-improvise-7307@gregkh>
+ (user=tjmercier job=sendgmr) by 2002:a25:15c7:0:b0:bd6:7609:40a3 with SMTP id
+ 190-20020a2515c7000000b00bd6760940a3mr197740ybv.12.1686872897118; Thu, 15 Jun
+ 2023 16:48:17 -0700 (PDT)
+Date:   Thu, 15 Jun 2023 23:48:06 +0000
+In-Reply-To: <2023061125-chop-frequency-0b37@gregkh>
 Mime-Version: 1.0
-References: <2023061126-outthink-improvise-7307@gregkh>
+References: <2023061125-chop-frequency-0b37@gregkh>
 X-Mailer: git-send-email 2.41.0.162.gfafddb0af9-goog
-Message-ID: <20230615234707.3389367-1-tjmercier@google.com>
-Subject: [PATCH 5.10.y] cgroup: always put cset in cgroup_css_set_put_fork
+Message-ID: <20230615234806.3390147-1-tjmercier@google.com>
+Subject: [PATCH 5.15.y] cgroup: always put cset in cgroup_css_set_put_fork
 From:   "T.J. Mercier" <tjmercier@google.com>
 To:     stable@vger.kernel.org
 Cc:     kernel-team@android.com, John Sperbeck <jsperbeck@google.com>,
@@ -119,10 +119,10 @@ Signed-off-by: T.J. Mercier <tjmercier@google.com>
  1 file changed, 8 insertions(+), 9 deletions(-)
 
 diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 684c16849eff..f123b7f64249 100644
+index a92990f070d1..edae2f49f73f 100644
 --- a/kernel/cgroup/cgroup.c
 +++ b/kernel/cgroup/cgroup.c
-@@ -6138,19 +6138,18 @@ static int cgroup_css_set_fork(struct kernel_clone_args *kargs)
+@@ -6259,19 +6259,18 @@ static int cgroup_css_set_fork(struct kernel_clone_args *kargs)
  static void cgroup_css_set_put_fork(struct kernel_clone_args *kargs)
  	__releases(&cgroup_threadgroup_rwsem) __releases(&cgroup_mutex)
  {
