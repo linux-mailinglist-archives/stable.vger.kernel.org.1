@@ -2,97 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FFE47319A4
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 15:12:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75DEC7319CD
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 15:21:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343670AbjFONMj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 09:12:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60500 "EHLO
+        id S1343919AbjFONVQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 09:21:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343841AbjFONMc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 09:12:32 -0400
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::228])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E86E3272A;
-        Thu, 15 Jun 2023 06:12:28 -0700 (PDT)
-X-GND-Sasl: cyril@debamax.com
-X-GND-Sasl: cyril@debamax.com
-X-GND-Sasl: cyril@debamax.com
-X-GND-Sasl: cyril@debamax.com
-X-GND-Sasl: cyril@debamax.com
-X-GND-Sasl: cyril@debamax.com
-X-GND-Sasl: cyril@debamax.com
-X-GND-Sasl: cyril@debamax.com
-X-GND-Sasl: cyril@debamax.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D9E3B1BF20C;
-        Thu, 15 Jun 2023 13:12:24 +0000 (UTC)
-Date:   Thu, 15 Jun 2023 15:12:23 +0200
-From:   Cyril Brulebois <cyril@debamax.com>
-To:     Linux regressions mailing list <regressions@lists.linux.dev>
-Cc:     Salvatore Bonaccorso <carnil@debian.org>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Rob Herring <robh@kernel.org>,
-        Michal Suchanek <msuchanek@suse.de>,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] fbdev/offb: Update expected device name
-Message-ID: <20230615131223.3jlzyjl27v5q42eh@debamax.com>
-Organization: DEBAMAX
-References: <20230412095509.2196162-1-cyril@debamax.com>
- <20230412095509.2196162-2-cyril@debamax.com>
- <ZDvrY7X9mpJ7WZ3z@eldamar.lan>
- <11b342dc-1a46-d1be-5fdd-c6eee661e15a@leemhuis.info>
+        with ESMTP id S240465AbjFONVO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 09:21:14 -0400
+Received: from mail11.truemail.it (mail11.truemail.it [IPv6:2001:4b7e:0:8::81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0583270D;
+        Thu, 15 Jun 2023 06:21:10 -0700 (PDT)
+Received: from francesco-nb.int.toradex.com (31-10-206-125.static.upc.ch [31.10.206.125])
+        by mail11.truemail.it (Postfix) with ESMTPA id 82320206E1;
+        Thu, 15 Jun 2023 15:21:08 +0200 (CEST)
+Date:   Thu, 15 Jun 2023 15:21:02 +0200
+From:   Francesco Dolcini <francesco@dolcini.it>
+To:     Nishanth Menon <nm@ti.com>
+Cc:     Benjamin Bara <bbara93@gmail.com>, Wolfram Sang <wsa@kernel.org>,
+        Lee Jones <lee@kernel.org>, rafael.j.wysocki@intel.com,
+        dmitry.osipenko@collabora.com, peterz@infradead.org,
+        jonathanh@nvidia.com, richard.leitner@linux.dev,
+        treding@nvidia.com, linux-kernel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-tegra@vger.kernel.org,
+        Benjamin Bara <benjamin.bara@skidata.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v6 1/5] kernel/reboot: emergency_restart: set correct
+ system_state
+Message-ID: <ZIsQPutiZWACawec@francesco-nb.int.toradex.com>
+References: <20230327-tegra-pmic-reboot-v6-0-af44a4cd82e9@skidata.com>
+ <20230327-tegra-pmic-reboot-v6-1-af44a4cd82e9@skidata.com>
+ <20230615000650.coyphnwdai7smww7@unblended>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="wakbenit2xnt2vww"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <11b342dc-1a46-d1be-5fdd-c6eee661e15a@leemhuis.info>
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230615000650.coyphnwdai7smww7@unblended>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hello Nishanth,
 
---wakbenit2xnt2vww
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Wed, Jun 14, 2023 at 07:06:50PM -0500, Nishanth Menon wrote:
+> On 21:02-20230509, Benjamin Bara wrote:
+> > From: Benjamin Bara <benjamin.bara@skidata.com>
+> > 
+> > As the emergency restart does not call kernel_restart_prepare(), the
+> > system_state stays in SYSTEM_RUNNING.
+> > 
+> > Since bae1d3a05a8b, this hinders i2c_in_atomic_xfer_mode() from becoming
+> > active, and therefore might lead to avoidable warnings in the restart
+> > handlers, e.g.:
+> > 
+> > [   12.667612] WARNING: CPU: 1 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x33c/0x6b0
+> > [   12.676926] Voluntary context switch within RCU read-side critical section!
+> > ...
+> > [   12.742376]  schedule_timeout from wait_for_completion_timeout+0x90/0x114
+> > [   12.749179]  wait_for_completion_timeout from tegra_i2c_wait_completion+0x40/0x70
+> > ...
+> > [   12.994527]  atomic_notifier_call_chain from machine_restart+0x34/0x58
+> > [   13.001050]  machine_restart from panic+0x2a8/0x32c
+> > 
+> > Avoid these by setting the correct system_state.
+> > 
+> > Fixes: bae1d3a05a8b ("i2c: core: remove use of in_atomic()")
+> > Cc: stable@vger.kernel.org # v5.2+
+> > Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
+> > ---
+> >  kernel/reboot.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/kernel/reboot.c b/kernel/reboot.c
+> > index 3bba88c7ffc6..6ebef11c8876 100644
+> > --- a/kernel/reboot.c
+> > +++ b/kernel/reboot.c
+> > @@ -74,6 +74,7 @@ void __weak (*pm_power_off)(void);
+> >  void emergency_restart(void)
+> >  {
+> >  	kmsg_dump(KMSG_DUMP_EMERG);
+> > +	system_state = SYSTEM_RESTART;
+> >  	machine_emergency_restart();
+> >  }
+> >  EXPORT_SYMBOL_GPL(emergency_restart);
+> > 
+> > -- 
+> > 2.34.1
+> > 
+> 
+> Tested-by: Nishanth Menon <nm@ti.com>
+> 
+> This in addition to a deeper bug in our driver seems to have helped
+> resolve a report we had been looking at. Tested on beagleplay platform
+> 
+> https://lore.kernel.org/all/ZGeHMjlnob2GFyHF@francesco-nb.int.toradex.com/
 
-Linux regression tracking (Thorsten Leemhuis) <regressions@leemhuis.info> (=
-2023-06-15):
-> No reply to my status inquiry[1] a few weeks ago, so I have to assume
-> nobody cares anymore. If somebody still cares, holler!
+Is this patch going to fix the RCU warning I reported on that email or
+it is just part of a more complex solution?
 
-I still care about a proper bugfix, for upstream and for the Debian
-distribution, and so does Salvatore. But fixing kernel regressions isn't
-my day job, so I haven't got around to working on it.
+Francesco
 
 
-Cheers,
---=20
-Cyril Brulebois -- Debian Consultant @ DEBAMAX -- https://debamax.com/
-
---wakbenit2xnt2vww
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEHoutkuoaze1Qayc7lZpsmSeGm2EFAmSLDjQACgkQlZpsmSeG
-m2HkXg/9E+QcBfG/Y0jj9Eb6MxbHHf8hyR3pRsmuOX1DA5zQMcxRJV0KVknZKQzn
-tuLBjgzupbWcEscBel+FT28pMM3HKxTc9wU2iBRhfHpz8nx5412Gp6Sba3E9K22X
-domUmIjCfj1RgV3fjMnGxukaLWdkE2qzE0iewN/hTgkG4oA1US/j0rNCW29PNir2
-7nKdp580PfhgEbCNPOPt0US2bdYZ2XhAjZpBmd8PtOBWXH2BWnwYoab+oqykiUBj
-vBjODSWLpoHe35wK4WOJt1u0Dv5eFid18ZagHNviFqERKT7CQduBszH3yajMACkl
-rrBrfDGqmNb8rZeGbcOajodRekRNHf8sUZ/nuZ5sLEUcXysLl6sgr1bRaW2W1oJj
-cohmtvFPcDC4LgGWT9bAMfjvm0rGDjJsFOkvnuehrw+Ae7aMpQ9yGV20GDZpjBBp
-4zKV2PpihZ5GCJ0c57Jzr1SOy2+HhYRZ9m5RVhZ/bu35SR8rVOfIMNb0fRwYxqA/
-Iuo2PBmWdrR0hefOQBP/2O/T/g6Fcs6dTfPnayUYvbkAguBPQXaanphBm6bZ4YbQ
-ebDTRFJJx1QH4KZhoRANEPGhpa/xfsjHZQ1y6kEZQp/mN8H2cyOVPUKuayf2w4R9
-8YCNdcizJt62boDEXkwjCYtU3o+cyOAWGMC9vanHlDUHEvYXkDQ=
-=/K9h
------END PGP SIGNATURE-----
-
---wakbenit2xnt2vww--
