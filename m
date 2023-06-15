@@ -2,69 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C805973162D
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 13:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF8A47314F9
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 12:14:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235563AbjFOLLm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 07:11:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39090 "EHLO
+        id S244492AbjFOKOi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 06:14:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230181AbjFOLLm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 07:11:42 -0400
-X-Greylist: delayed 19899 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 15 Jun 2023 04:11:41 PDT
-Received: from mail.sitirkam.com (mail.aurorateknoglobal.com [103.126.10.58])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4993E129
-        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 04:11:41 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.sitirkam.com (Postfix) with ESMTP id 8FCB04EA08E3;
-        Thu, 15 Jun 2023 09:15:48 +0700 (WIB)
-Received: from mail.sitirkam.com ([127.0.0.1])
-        by localhost (mail.sitirkam.com [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id YGrvnPPP_1Qb; Thu, 15 Jun 2023 09:15:47 +0700 (WIB)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.sitirkam.com (Postfix) with ESMTP id 5C5EE4EA0918;
-        Thu, 15 Jun 2023 09:15:37 +0700 (WIB)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.sitirkam.com 5C5EE4EA0918
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sitirkam.com;
-        s=B8AB377C-ED3B-11EA-8736-9248CAEF674E; t=1686795337;
-        bh=q7vDHy+gLAr4GKZUDI+hjt8I93kvW09nNmGJORUTyfg=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=Z7Xvmzq5it1kSNd/5ma1KBLY8GLbHH90tNfL/lvdOEe8e+RJGBlwnpKyf6MpzlvtQ
-         yYYj3F76yeMidUNP6Q14heRghroQoGHNb8KcuMFnxQpWDgMdF9ecB6y+vwoOQHifiA
-         YnRYpU6z3UPS5a+6BRX2AavkTth4/XivsA2AoCS8XLyA1YsN9OGhb1fqAvfcVPKKuX
-         3UVf9WCn0khsau8cudysCUnbPh3WIQXTW9TPYe4APnPZXOHx+11q5R9hXHACVgvB7S
-         jMg0JSPnZ+XxCsK0h5LiQctGB6pBijMAkcNmkg/Mb4JZz24N1AfLKcKwVfQeSGUER8
-         aRdnvqMHzYcaA==
-X-Virus-Scanned: amavisd-new at mail.sitirkam.com
-Received: from mail.sitirkam.com ([127.0.0.1])
-        by localhost (mail.sitirkam.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id JMDV4WUkEWlu; Thu, 15 Jun 2023 09:15:36 +0700 (WIB)
-Received: from [185.169.4.111] (unknown [185.169.4.111])
-        by mail.sitirkam.com (Postfix) with ESMTPSA id C637B4EA0E0C;
-        Thu, 15 Jun 2023 09:15:30 +0700 (WIB)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S241499AbjFOKOh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 06:14:37 -0400
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7D04B2710
+        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 03:14:36 -0700 (PDT)
+Received: from loongson.cn (unknown [10.20.42.35])
+        by gateway (Coremail) with SMTP id _____8DxzOqL5IpkZYUFAA--.11823S3;
+        Thu, 15 Jun 2023 18:14:35 +0800 (CST)
+Received: from [10.20.42.35] (unknown [10.20.42.35])
+        by localhost.localdomain (Coremail) with SMTP id AQAAf8BxTMqK5Ipk_dobAA--.4752S3;
+        Thu, 15 Jun 2023 18:14:34 +0800 (CST)
+Subject: Re: [PATCH 06/10] cifs: release leases for deferred close handles
+ when freezing
+To:     zybsyzlz@163.com
+Cc:     Steve French <stfrench@microsoft.com>,
+        David Howells <dhowells@redhat.com>, stable@vger.kernel.org
+References: <20230615094848.24975-1-zhuyinbo@loongson.cn>
+ <20230615094848.24975-6-zhuyinbo@loongson.cn>
+From:   zhuyinbo <zhuyinbo@loongson.cn>
+Message-ID: <b864d7a6-e464-950d-b0dc-d6b230308153@loongson.cn>
+Date:   Thu, 15 Jun 2023 18:14:34 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Spende
-To:     Recipients <admin@sitirkam.com>
-From:   "Maria-Elisabeth Schaeffler" <admin@sitirkam.com>
-Date:   Wed, 14 Jun 2023 19:17:38 -0700
-Reply-To: schaefflermariaelisabeth1941@gmail.com
-Message-Id: <20230615021530.C637B4EA0E0C@mail.sitirkam.com>
-X-Spam-Status: No, score=2.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: **
+In-Reply-To: <20230615094848.24975-6-zhuyinbo@loongson.cn>
+Content-Type: text/plain; charset=gbk; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8BxTMqK5Ipk_dobAA--.4752S3
+X-CM-SenderInfo: 52kx5xhqerqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+        ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+        nUUI43ZEXa7xR_UUUUUUUUU==
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Your email account has been selected for a donation of =E2=82=AC1,700,000. =
-Please contact me for more information.
 
-Mrs Maria Elisabeth Schaeffler
-CEO SCHAEFFLER.
+Sorry to bother you. This is an incorrect send, please ignore it.
+
+
+ÔÚ 2023/6/15 ÏÂÎç5:48, Yinbo Zhu Ð´µÀ:
+> From: Steve French <stfrench@microsoft.com>
+> 
+> We should not be caching closed files when freeze is invoked on an fs
+> (so we can release resources more gracefully).
+> 
+> Fixes xfstests generic/068 generic/390 generic/491
+> 
+> Reviewed-by: David Howells <dhowells@redhat.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Steve French <stfrench@microsoft.com>
+> ---
+>   fs/cifs/cifsfs.c | 15 +++++++++++++++
+>   1 file changed, 15 insertions(+)
+> 
+> diff --git a/fs/cifs/cifsfs.c b/fs/cifs/cifsfs.c
+> index 8b6b3b6985f3..43a4d8603db3 100644
+> --- a/fs/cifs/cifsfs.c
+> +++ b/fs/cifs/cifsfs.c
+> @@ -760,6 +760,20 @@ static void cifs_umount_begin(struct super_block *sb)
+>   	return;
+>   }
+>   
+> +static int cifs_freeze(struct super_block *sb)
+> +{
+> +	struct cifs_sb_info *cifs_sb = CIFS_SB(sb);
+> +	struct cifs_tcon *tcon;
+> +
+> +	if (cifs_sb == NULL)
+> +		return 0;
+> +
+> +	tcon = cifs_sb_master_tcon(cifs_sb);
+> +
+> +	cifs_close_all_deferred_files(tcon);
+> +	return 0;
+> +}
+> +
+>   #ifdef CONFIG_CIFS_STATS2
+>   static int cifs_show_stats(struct seq_file *s, struct dentry *root)
+>   {
+> @@ -798,6 +812,7 @@ static const struct super_operations cifs_super_ops = {
+>   	as opens */
+>   	.show_options = cifs_show_options,
+>   	.umount_begin   = cifs_umount_begin,
+> +	.freeze_fs      = cifs_freeze,
+>   #ifdef CONFIG_CIFS_STATS2
+>   	.show_stats = cifs_show_stats,
+>   #endif
+> 
+
