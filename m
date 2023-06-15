@@ -2,85 +2,141 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4F80732017
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 20:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EC2273201E
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 20:36:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230175AbjFOSc2 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Thu, 15 Jun 2023 14:32:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41136 "EHLO
+        id S229705AbjFOSgG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 14:36:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229705AbjFOScM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 14:32:12 -0400
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CD6D30FA;
-        Thu, 15 Jun 2023 11:31:26 -0700 (PDT)
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-3f3284dff6cso13394565e9.0;
-        Thu, 15 Jun 2023 11:31:26 -0700 (PDT)
+        with ESMTP id S230033AbjFOSgC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 14:36:02 -0400
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF83610F7
+        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 11:36:00 -0700 (PDT)
+Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-3f7f7dfc037so16735e9.0
+        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 11:36:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1686854159; x=1689446159;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/omKCOwcp2EQQ6DXjBeRhC2FJTA991mg7uA9FudSf/A=;
+        b=7WdakyK4oshrb7I5mdAEawHE0gqSwfLUnysc+u81KTB9OE/I+XGjBLzBBp3ij1Rroi
+         p+5EBevPxH87tpo3p3ieW1oj0qbl3XssFNbWV8YRR1BVb1DePQYjtvaKoPZXBGi/AwCV
+         ykyKgG90f8VITucN+MA3Hre7wb28C1mpX2VXgUjdWwKmK4RsaEBv7adwXOV4dOUDZjNQ
+         g7XDBzFN9y+PwMvzc35xpRyystMw8iseLKE9SuXRwRhPgM+LTT2jq/oTyyz8f6P0mJiS
+         euovvm+o/bp6aOraSWwOXY4j20rWBPjWLMdzrVgGv2LUVLQylboa8sPwWcZr5/ktJiXg
+         dhTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686853850; x=1689445850;
+        d=1e100.net; s=20221208; t=1686854159; x=1689446159;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=yAR77uCR3RfSeCcsLv+JshB75DeenlCwr/hoeEaHGRY=;
-        b=JC20Q4KyZfxKiUMPhQhDHFsD93EPRiHhuUlBLP8PnJtfvMSY8dSXaVP8PfJpPfqarK
-         1TTmQujdERUTc071b9ZgMRMuIkEH4UhsUywKL7KfV0v2gJC4mW/u68vj7tTvXxt+ETzB
-         3mYJeNqQ+vBd/xRs1cTbAjP1p+TkOx6K4ejF3hjc48jM5h10i3eu1uvP67DtWIN6b1XD
-         fZ/ZBPl765bCrdwlCIQYU2zJh/OmaUyFlB9QlFLqwS2r2Y2m293DGWG1Rlm5W2Cd2HzQ
-         mmvTbv964EDm+Gl2Dw6Z+Do8fY3Bbb5jQh2wB9d4ZkV9DvBHo4w6XiHcqqp6PpoQwYO/
-         1MtA==
-X-Gm-Message-State: AC+VfDwo8g31x1turHtPav8WKI3waAOcWjRFg2B4qyXk8LmVJVVvme1z
-        o7GuJi7S/uf98HtQGjOV5wYpO6rn9y4nvgIn8Qo8sn1W
-X-Google-Smtp-Source: ACHHUZ7m2I05085f7+xOSKFukB7wosRy09WA8BAIVoZdk3G+aEC9ZSzvB0qJYZfyJUiyiypLtuk337KxslNev9Od354=
-X-Received: by 2002:ac2:554e:0:b0:4f6:1a99:3b05 with SMTP id
- l14-20020ac2554e000000b004f61a993b05mr8738003lfk.2.1686853829653; Thu, 15 Jun
- 2023 11:30:29 -0700 (PDT)
+        bh=/omKCOwcp2EQQ6DXjBeRhC2FJTA991mg7uA9FudSf/A=;
+        b=MmaxrfA3J6WaCBer0v4Z1r24BGaO2x/dt6b+0ZlMDLW3A6WOhf/7oABj6GlUXDM0gJ
+         862nK4bfGUsWizHukMj3CR9Cp2xp+lqeVcpmRuPimHckUMnppqunYJRjVKVrHLemaE7i
+         JEr+WheHtt/jYgWQcvusf8z4Dyjz3IakiVtEKUwuaEyb1/I1sS3z8pVMr0LW+BnIFWMz
+         a92/LTdThj5UE6D0WripASqd6oOZMzc/nti8tBUr79hPs4omy8PTMVykt+kEMiaa3Jy2
+         h4LuBN1WxllhSAS9Z5hx5haL93nvZ43Dr9XPt2nHXxHfR7bnftBNIt4W1wME4oIitPQM
+         tmAw==
+X-Gm-Message-State: AC+VfDyf4Q1vNI13qWvU5TERfEiCNsXdenUeCtkysmELF9PocXVmyOYb
+        9cVHzQb5d+znG4P2EVdw9hd4FrnoTo2ixCBWsdiy
+X-Google-Smtp-Source: ACHHUZ79usijn1wldJc0UmWEzOBq8i+jS57yOqXyNMWUbtJum/djNxOiWYDRtdkAS1PE7qMfthc7LVkEy7WkdFS9y7M=
+X-Received: by 2002:a05:600c:4e52:b0:3f7:e4d8:2569 with SMTP id
+ e18-20020a05600c4e5200b003f7e4d82569mr224049wmq.5.1686854159080; Thu, 15 Jun
+ 2023 11:35:59 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230612113615.205353-1-wyes.karny@amd.com> <20230612113615.205353-2-wyes.karny@amd.com>
- <CAJZ5v0gfqGj9X=3bdf6X4HqQDxg+gCJN10DXLruYD5p3kZ59Uw@mail.gmail.com> <ZItQmjQHe/I9CXJh@BLR-5CG13462PL.amd.com>
-In-Reply-To: <ZItQmjQHe/I9CXJh@BLR-5CG13462PL.amd.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 15 Jun 2023 20:30:18 +0200
-Message-ID: <CAJZ5v0iKokaEo6ANPO1cHUzM2UL3guf3WcWoVbRH0iNo8D_kDQ@mail.gmail.com>
-Subject: Re: [PATCH 1/6] amd-pstate: Make amd-pstate epp driver name hyphenated
-To:     Wyes Karny <wyes.karny@amd.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>, ray.huang@amd.com,
-        viresh.kumar@linaro.org, trenn@suse.com, shuah@kernel.org,
-        gautham.shenoy@amd.com, Mario.Limonciello@amd.com,
-        Perry.Yuan@amd.com, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <CAJc0_fwx6MQa+Uozk+PJB0qb3JP5=9_WcCjOb8qa34u=DVbDmQ@mail.gmail.com>
+ <2023061453-guacamole-porous-8a0e@gregkh> <CAADnVQLuHTNPEuXpSUgkNHoK1-X8KxU=spdYWB2bMp6icS+j0g@mail.gmail.com>
+In-Reply-To: <CAADnVQLuHTNPEuXpSUgkNHoK1-X8KxU=spdYWB2bMp6icS+j0g@mail.gmail.com>
+From:   Robert Kolchmeyer <rkolchmeyer@google.com>
+Date:   Thu, 15 Jun 2023 11:35:46 -0700
+Message-ID: <CAJc0_fwKZS2=9DfaNSNF7-UBsXTEaopNFXdK3i57KcxUm5rOvA@mail.gmail.com>
+Subject: Re: BPF regression in 5.10.168 and 5.15.93 impacting Cilium
+To:     Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        stable <stable@vger.kernel.org>, regressions@lists.linux.dev,
+        Martin KaFai Lau <kafai@fb.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Paul Chaignon <paul@isovalent.com>,
+        Meena Shanmugam <meenashanmugam@google.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        bpf <bpf@vger.kernel.org>, Andrii Nakryiko <andrii@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Jun 15, 2023 at 7:55 PM Wyes Karny <wyes.karny@amd.com> wrote:
+On Wed, Jun 14, 2023 at 2:48=E2=80=AFPM Alexei Starovoitov
+<alexei.starovoitov@gmail.com> wrote:
 >
-> Hi Rafael,
->
-> On 15 Jun 19:31, Rafael J. Wysocki wrote:
-> > On Mon, Jun 12, 2023 at 1:37 PM Wyes Karny <wyes.karny@amd.com> wrote:
-> > >
-> > > amd-pstate passive mode driver is hyphenated. So make amd-pstate active
-> > > mode driver consistent with that rename "amd_pstate_epp" to
-> > > "amd-pstate-epp".
-> > >
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: ffa5096a7c33 ("cpufreq: amd-pstate: implement Pstate EPP support for the AMD processors")
-> > > Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-> > > Signed-off-by: Wyes Karny <wyes.karny@amd.com>
+> On Wed, Jun 14, 2023 at 1:57=E2=80=AFPM Greg KH <gregkh@linuxfoundation.o=
+rg> wrote:
 > >
-> > How much does the rest of the series depend on this patch?
+> > On Wed, Jun 14, 2023 at 11:23:52AM -0700, Robert Kolchmeyer wrote:
+> > > Hi all,
+> > >
+> > > I believe 5.10.168 and 5.15.93 introduced a regression that impacts
+> > > the Cilium project. Some information on the nature of the regression
+> > > is available at https://github.com/cilium/cilium/issues/25500. The
+> > > primary symptom seems to be the error `BPF program is too large.`
+> > >
+> > > My colleague has found that reverting the following two commits:
+> > >
+> > > 8de8c4a "bpf: Support <8-byte scalar spill and refill"
+> > > 9ff2beb "bpf: Fix incorrect state pruning for <8B spill/fill"
+> > >
+> > > resolves the regression.
+> > >
+> > > If we revert these in the stable tree, there may be a few changes tha=
+t
+> > > depend on those that also need to be reverted, but I'm not sure yet.
+> > >
+> > > Would it make sense to revert these changes (and any dependent ones)
+> > > in the 5.10 and 5.15 trees? If anyone has other ideas, I can help tes=
+t
+> > > possible solutions.
+> >
+> > Can you actually test if those reverts work properly for you and if
+> > there are other dependencies involved?
+> >
+> > And is this issue also in 6.1.y and Linus's tree?  If not, why not, are
+> > we just missing a commit?  We can't revert something from a stable
+> > release if you are going to hit the same issue when moving to a new
+> > release, right?
+> >
+> > thanks,
+> >
+> > greg k-h
 >
-> The rest of the series is independent of this patch.
+> Before jumping to reverts..
+> how is it fixed in 6.0+ kernels?
+>
+> "BPF program is too large" can probably be worked around on the cilium si=
+de.
+> The kernel cannot guarantee that a particular program will
+> always be verifiable. We find safety bugs in the verifier and often
+> enough the fixes to such issues make the verifier work harder to prove
+> the safety of the program.
+> This is one of such cases. These two commits are necessary.
+> Reverting them will prevent loading of valid programs.
+> So reverts is a dangerous path.
+> The best is to identify the other patches from 6.0+ and backport them.
+> The second best path is to bump 1M limit to something higher to
+> mitigate "more work by the verifier".
 
-So it should have been posted separately as an individual fix.
+Thanks all for the pointers, this is super helpful.
 
-Please resend the rest of the series without it to avoid confusion and
-I'll apply it for 6.5 tomorrow.
+I'm working on getting more details, and I'll post here when I have them.
+
+-Robert
