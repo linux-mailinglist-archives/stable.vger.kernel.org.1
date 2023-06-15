@@ -2,222 +2,158 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E4A97312FD
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 11:04:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07EC9731370
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 11:19:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239761AbjFOJEl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 05:04:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44344 "EHLO
+        id S245296AbjFOJTC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 05:19:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239563AbjFOJEk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 05:04:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3D331720
-        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 02:04:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686819841;
+        with ESMTP id S245365AbjFOJS7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 05:18:59 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 587952948;
+        Thu, 15 Jun 2023 02:18:39 -0700 (PDT)
+Date:   Thu, 15 Jun 2023 11:18:30 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1686820716;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=HaTSzitIpa5FU8GhGJUOowmMnFGdZBSv3GY+LLgvqd4=;
-        b=RYA6pktGf7vKxmGd5h8rHiVAI0K2iLATcDLCLZUzEOdOMXclbTIAQopavef678lnXdnFFq
-        SofamlbZes/Y1nl5pIk56C/qR/DisgOK7epWL/BCJuYxy+t4oyJ0jjo0SPUqFaTEb82tqh
-        MQvPfT0xTm5YcrUyayj8guYeBrZ8+4Q=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-587-uy7OXsghMvGuV55MU0K69Q-1; Thu, 15 Jun 2023 05:03:58 -0400
-X-MC-Unique: uy7OXsghMvGuV55MU0K69Q-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B4634101A592;
-        Thu, 15 Jun 2023 09:03:57 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.206])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 30C109E9C;
-        Thu, 15 Jun 2023 09:03:57 +0000 (UTC)
-Date:   Thu, 15 Jun 2023 10:03:56 +0100
-From:   "Richard W.M. Jones" <rjones@redhat.com>
+        bh=yJBsHhi9j6gaSH/KNGHZ5dzFeRRVsQfjlw4dKP1tSb4=;
+        b=swgDGj1M5ZGeCmNyyi7zwy4Dq1HvUfl2MBxr31zksTOwbhSdUevS1p3UpZcK3/T0MkNt1F
+        nHuCXIzNYnfnP/6YnJLiG4VoQozYoN4mNGMXbukXzGgz6lIv0xUdF/PCbD86gYOYy8b97v
+        QWs5YNMHwloyKSOeOV2t2ZgmUadm0RVzL84OleJTjmCkpg/uRHFrOkZVD8K4un6p6+7Rna
+        1fIuFa0lUPXiqGX4XfbTBRZiwjilJPPhn5KoBmU2+YQc9EHqLHhEaUCo7W50+2WVN3ANjR
+        3Gdda4frgMP3qGtq4lhnQiHXJc76DAQpoAz/a9dxwKPCjuZU7ESUGxYzRH3EwQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1686820716;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=yJBsHhi9j6gaSH/KNGHZ5dzFeRRVsQfjlw4dKP1tSb4=;
+        b=gzvNSb/m65jWOeSAkle1s46pqKGz3L9mEUrGata/nSLK3nLDiOPcBF0Y/ulDp90fZHnlkQ
+        XFo0YxdU7ZEnLUDQ==
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 To:     Mathias Krause <minipli@grsecurity.net>
-Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-kernel@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-        Gusenleitner Klaus <gus@keba.com>,
-        Frederic Weisbecker <fweisbec@gmail.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] timekeeping: Align tick_sched_timer() with the HZ tick.
- -- regression report
-Message-ID: <20230615090356.GD10301@redhat.com>
-References: <20230406095735.0_14edn3@linutronix.de>
- <20230406105529.GB392176@hirez.programming.kicks-ass.net>
- <87mt3lqnde.ffs@tglx>
- <20230406150254.ZrawA2Y-@linutronix.de>
- <87jzypq6gq.ffs@tglx>
- <20230418122639.ikgfvu3f@linutronix.de>
- <5a56290d-806e-b9a5-f37c-f21958b5a8c0@grsecurity.net>
+Cc:     Luiz Capitulino <luizcap@amazon.com>,
+        Sven-Haegar Koch <haegar@sdinet.de>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "Bhatnagar, Rishabh" <risbhat@amazon.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "sashal@kernel.org" <sashal@kernel.org>, abuehaze@amazon.com,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH] tick/common: Align tick period during sched_timer setup.
+Message-ID: <20230615091830.RxMV2xf_@linutronix.de>
+References: <12c6f9a3-d087-b824-0d05-0d18c9bc1bf3@amazon.com>
+ <c4724b40-89f6-5aa7-720d-c4a4af57cf45@amazon.com>
+ <2023061428-compacter-economic-b648@gregkh>
+ <20230614092045.tNY8USjq@linutronix.de>
+ <4c4178a1-1050-ced4-e6fb-f95c3bdefc98@amazon.com>
+ <2a3fa097-8ba0-5b0e-f506-779fee5b8fef@sdinet.de>
+ <f5d2cc62-4aae-2579-1468-2e6e389f28dc@amazon.com>
+ <23fb8ad7-beb0-ae1c-fa5a-a682a57f79b0@grsecurity.net>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="eJnRUKwClWJh1Khz"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <5a56290d-806e-b9a5-f37c-f21958b5a8c0@grsecurity.net>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <23fb8ad7-beb0-ae1c-fa5a-a682a57f79b0@grsecurity.net>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+From: Thomas Gleixner <tglx@linutronix.de>
 
---eJnRUKwClWJh1Khz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The tick period is aligned very early while the first clock_event_device
+is registered. The system runs in periodic mode and switches later to
+one-shot mode if possible.
 
-On Wed, Jun 14, 2023 at 12:59:46AM +0200, Mathias Krause wrote:
-> This patch causes VM boot hangs for us. It took a while to identify as 
-> the boot hangs were only ~1 out of 30 but it's clearly it. Reverting 
-> the commit got me 100 boots in a row without any issue.
+The next wake-up event is programmed based on aligned value
+(tick_next_period) but the delta value, that is used to program the
+clock_event_device, is computed based on ktime_get().
 
-FWIW I have quite a nice test program for catching these sorts of boot
-hangs, see attached.  You need to change the VMLINUX define to point
-to your vmlinux or vmlinuz file.
+With the subtracted offset, the devices fires in less than the exacted
+time frame. With a large enough offset the system programs the timer for
+the next wake-up and the remaining time left is too little to make any
+boot progress. The system hangs.
 
-Rich.
+Move the alignment later to the setup of tick_sched timer. At this point
+the system switches to oneshot mode and a highres clocksource is
+available. It safe to update tick_next_period ktime_get() will now
+return accurate (not jiffies based) time.
 
+[bigeasy: Patch description + testing].
+
+Reported-by: Mathias Krause <minipli@grsecurity.net>
+Reported-by: "Bhatnagar, Rishabh" <risbhat@amazon.com>
+Fixes: e9523a0d81899 ("tick/common: Align tick period with the HZ tick.")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/5a56290d-806e-b9a5-f37c-f21958b5a8c0@grsecurity.net
+Link: https://lore.kernel.org/12c6f9a3-d087-b824-0d05-0d18c9bc1bf3@amazon.com
+---
+ kernel/time/tick-common.c | 11 +----------
+ kernel/time/tick-sched.c  | 13 ++++++++++++-
+ 2 files changed, 13 insertions(+), 11 deletions(-)
+
+diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
+index 65b8658da829e..b85f2f9c32426 100644
+--- a/kernel/time/tick-common.c
++++ b/kernel/time/tick-common.c
+@@ -218,19 +218,10 @@ static void tick_setup_device(struct tick_device *td,
+ 		 * this cpu:
+ 		 */
+ 		if (tick_do_timer_cpu == TICK_DO_TIMER_BOOT) {
+-			ktime_t next_p;
+-			u32 rem;
+ 
+ 			tick_do_timer_cpu = cpu;
+ 
+-			next_p = ktime_get();
+-			div_u64_rem(next_p, TICK_NSEC, &rem);
+-			if (rem) {
+-				next_p -= rem;
+-				next_p += TICK_NSEC;
+-			}
+-
+-			tick_next_period = next_p;
++			tick_next_period = ktime_get();
+ #ifdef CONFIG_NO_HZ_FULL
+ 			/*
+ 			 * The boot CPU may be nohz_full, in which case set
+diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+index 52254679ec489..42c0be3080bde 100644
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -161,8 +161,19 @@ static ktime_t tick_init_jiffy_update(void)
+ 	raw_spin_lock(&jiffies_lock);
+ 	write_seqcount_begin(&jiffies_seq);
+ 	/* Did we start the jiffies update yet ? */
+-	if (last_jiffies_update == 0)
++	if (last_jiffies_update == 0) {
++		u32 rem;
++
++		/*
++		 * Ensure that the tick is aligned to a multiple of
++		 * TICK_NSEC.
++		 */
++		div_u64_rem(tick_next_period, TICK_NSEC, &rem);
++		if (rem)
++			tick_next_period += TICK_NSEC - rem;
++
+ 		last_jiffies_update = tick_next_period;
++	}
+ 	period = last_jiffies_update;
+ 	write_seqcount_end(&jiffies_seq);
+ 	raw_spin_unlock(&jiffies_lock);
 -- 
-Richard Jones, Virtualization Group, Red Hat http://people.redhat.com/~rjones
-Read my programming and virtualization blog: http://rwmj.wordpress.com
-virt-builder quickly builds VMs from scratch
-http://libguestfs.org/virt-builder.1.html
-
---eJnRUKwClWJh1Khz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="bootbootboot.c"
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
-#include <error.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <pthread.h>
-
-#define NR_ITERATIONS 10000
-#define MAX_THREADS 8
-#define MAX_TIME 60 /* max time to wait for qemu to complete */
-
-//#define VMLINUX "/home/rjones/d/linux/vmlinux"
-#define VMLINUX "vmlinux"
-//#define QEMU "/home/rjones/d/qemu/build/qemu-system-x86_64"
-#define QEMU "qemu-system-x86_64"
-#define QEMU_COMMAND \
-  QEMU " -no-user-config -nodefaults -display none " \
-  "-machine accel=kvm:tcg,graphics=off -cpu max,la57=off -m 1280 " \
-  "-no-reboot " \
-  "-rtc driftfix=slew -no-hpet -global kvm-pit.lost_tick_policy=discard " \
-  "-kernel " VMLINUX " " \
-  "-serial stdio " \
-  "-append \"panic=1 console=ttyS0 edd=off udevtimeout=6000 udev.event-timeout=6000 no_timer_check printk.time=1 cgroup_disable=memory usbcore.nousb cryptomgr.notests tsc=reliable 8250.nr_uarts=1 selinux=0 TERM=xterm-256color\""
-
-static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
-static unsigned iterations;
-
-static void *start_thread (void *);
-
-int
-main (int argc, char *argv[])
-{
-	long n, i;
-	int r;
-	pthread_t thread[MAX_THREADS];
-
-	n = sysconf (_SC_NPROCESSORS_ONLN);
-	if (n == -1) error (EXIT_FAILURE, errno, "sysconf");
-
-	if (n > MAX_THREADS)
-		n = MAX_THREADS;
-
-	for (i = 0; i < n; ++i) {
-		r = pthread_create (&thread[i], NULL, start_thread, NULL);
-		if (r != 0) error (EXIT_FAILURE, r, "pthread_create");
-	}
-	for (i = 0; i < n; ++i) {
-		r = pthread_join (thread[i], NULL);
-		if (r != 0) error (EXIT_FAILURE, r, "pthread_join");
-	}
-	printf ("\n");
-	printf ("\n");
-	printf ("test ok\n");
-	exit (EXIT_SUCCESS);
-}
-
-static void *
-start_thread (void *vp)
-{
-	pid_t pid;
-	char tmp[] = "/tmp/kernel.out.XXXXXX";
-	char cmd[1024];
-	int i, r, status;
-
-	if (mkstemp (tmp) == -1)
-		error (EXIT_FAILURE, errno, "mkstemp: %s", tmp);
-
-	snprintf (cmd, sizeof cmd, QEMU_COMMAND " >& %s", tmp);
-
-	/* This basically runs a loop starting qemu. */
-	for (;;) {
-		pthread_mutex_lock (&lock);
-		if (iterations >= NR_ITERATIONS) {
-			pthread_mutex_unlock (&lock);
-			return NULL;
-		}
-		if (iterations <= MAX_THREADS) { // stagger the start times
-			pthread_mutex_unlock (&lock);
-			usleep (rand () % 3000000);
-			pthread_mutex_lock (&lock);
-		}
-		iterations++;
-		printf ("%d... ", iterations); fflush (stdout);
-		pthread_mutex_unlock (&lock);
-
-		pid = fork ();
-		if (pid == -1) error (EXIT_FAILURE, errno, "fork");
-		if (pid == 0) {
-			/* Child process, run qemu and wait. */
-			if (system (cmd) != 0)
-				_exit (EXIT_FAILURE);
-			else
-				_exit (EXIT_SUCCESS);
-		}
-
-		/* In the parent wait up to MAX_TIME seconds. */
-		for (i = 0; i < MAX_TIME; ++i) {
-			r = waitpid (pid, &status, WNOHANG);
-			if (r == -1) error (EXIT_FAILURE, errno, "waitpid");
-			if (r > 0) break;
-			sleep (1);
-		}
-
-		if (i == MAX_TIME || status != 0) {
-			/* Something failed in qemu (or it didn't
-			 * exit), dump the whole log and exit with
-			 * error.
-			 */
-			printf ("\n");
-			printf ("\n");
-			snprintf (cmd, sizeof cmd, "tail -20 %s", tmp);
-			system (cmd);
-			fprintf (stderr, "*** ERROR OR HANG ***\n");
-			exit (EXIT_FAILURE);
-		}
-	}
-
-	unlink (tmp);
-}
-
---eJnRUKwClWJh1Khz--
+2.40.1
 
