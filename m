@@ -2,191 +2,89 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12F4C731632
-	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 13:13:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5AC273168A
+	for <lists+stable@lfdr.de>; Thu, 15 Jun 2023 13:30:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239286AbjFOLNx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 15 Jun 2023 07:13:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39674 "EHLO
+        id S243249AbjFOLa6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 15 Jun 2023 07:30:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239226AbjFOLNv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 07:13:51 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A240A270C
-        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 04:13:49 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-977cf86aae5so247602066b.0
-        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 04:13:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=grsecurity.net; s=grsec; t=1686827628; x=1689419628;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=l6/FpzPNAHlY54Fo7NVW+A1R/BCk1nUaPcq02OwjE/0=;
-        b=GJaxW8E7JufGmT2esS3ot3JA2VgRzFAaOrNNcXx6K5actcLiW8n7qr+SW3tu4z23TA
-         X+4gbv4MLyBXljQpCsDSFuv33hgrmEqwNtcwQUQLoBG/mPz1++6O+ibHfnlROvWehg8q
-         EOCMYHF4g90zikooEWE1iYPhSpqiRGLLGxcmXqO+m3FOXC4P6y+mfI4Gp+1CGka64hCB
-         rVklWkiXY9YOXbiDmhUftAsLcYKrSxjLeqXL9ovIp+XRiHjtyzTcAu5n0UWKh9JL4GVt
-         X1MvoYf21N/JhA8s345T9WOWF1BJV7D44Xi+dOxTldx2EHMMFTTzaPQ3pbnleiFCu5DS
-         vTjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686827628; x=1689419628;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=l6/FpzPNAHlY54Fo7NVW+A1R/BCk1nUaPcq02OwjE/0=;
-        b=CXmapylf+y12UgCcstKCDKvmR5EfACeJLa5t9X/sU31LlNbtOkvS6pRXGnGG/cpOIt
-         WYmuX7J8TrIEodG7dSrX3+iwTIYmv0aBYlXpMIC1dC53xs6INeXSJ6Pkwok7hYy1XWX8
-         6/HHSAmqYdcYk1YouACaRaOvC8JhO8vmgbd/zb/HJvxWDt+wp9BgQLA8Dy5qXwM5oSbX
-         7bPSPIDyyYbMskn+FuENmHi1v3l1Y6ZQDr27AyTPFY6XDWdSGNOer/geZjAj/owY1uve
-         LK4H84w/v/moGpFzOjIHPXI3BJKnQWJDeJTAGo7+aeOTKvCLvd+rGP69fS4pzKyvQjCL
-         upyg==
-X-Gm-Message-State: AC+VfDxPPMQ6VsDIXc8fovGNRFbR82LWrr002/7Q7J67oH6TzqwUW6Zw
-        iD7pi81RpSTyKisZgRHSScFF4A==
-X-Google-Smtp-Source: ACHHUZ5qmMgVWsBkgVzr3bL0y21dv6cCP43HOR7ykOJuIK6oyweHnGyCtLeODqvEVxohVh2p05UIdQ==
-X-Received: by 2002:a17:907:3eaa:b0:970:1b2d:45bf with SMTP id hs42-20020a1709073eaa00b009701b2d45bfmr17300569ejc.61.1686827628017;
-        Thu, 15 Jun 2023 04:13:48 -0700 (PDT)
-Received: from ?IPV6:2003:f6:af1c:2300:fa33:8d65:b4c4:3ebe? (p200300f6af1c2300fa338d65b4c43ebe.dip0.t-ipconnect.de. [2003:f6:af1c:2300:fa33:8d65:b4c4:3ebe])
-        by smtp.gmail.com with ESMTPSA id n6-20020a170906164600b0096f71ace804sm1937357ejd.99.2023.06.15.04.13.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Jun 2023 04:13:47 -0700 (PDT)
-Message-ID: <bead7acb-ed71-4a14-0094-f8e39323a3b5@grsecurity.net>
-Date:   Thu, 15 Jun 2023 13:13:46 +0200
+        with ESMTP id S241738AbjFOLa5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 15 Jun 2023 07:30:57 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3322E2695;
+        Thu, 15 Jun 2023 04:30:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686828657; x=1718364657;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=V47QbJqlWZywzmmAVNmpGZOgzmS6dhVZzGlOVYK7p0Q=;
+  b=NY6bG84dhOy6Kot3jVijaGAmsdINPLJONhHhhpc5quLHsFNjDXr+32/k
+   X8KsZOmXAIlzBcTywX3voEAnXArgN3tG+Xe0xDI+pDdsOZIJWkjEeLa5J
+   KAXvVWQS2+JJjAATc2oTaYBlVYUHesBe398xuCivKKAnT5KCSsAeGVnQ0
+   7sQ2KptnrbPRzuNji1jkL4qRklZMXJwqp3Uy+jgTZ8F3RYmuEQiFFkN6x
+   VPLwtAxX0Er0U2p0NT9/8tRP/04i05CpMW8pV8HaJBn9wMCT7r3bTTv2u
+   O4yQ5mYuzxA5r3o9LRrdU2QOBm7wbKi1w52s5HXUlVQrlrbCOxmj+4CjO
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10741"; a="358876903"
+X-IronPort-AV: E=Sophos;i="6.00,244,1681196400"; 
+   d="scan'208";a="358876903"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 04:30:56 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10741"; a="802301902"
+X-IronPort-AV: E=Sophos;i="6.00,244,1681196400"; 
+   d="scan'208";a="802301902"
+Received: from uabekas-mobl.ger.corp.intel.com (HELO ggreenma-mobl2.lan) ([10.214.220.240])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jun 2023 04:30:54 -0700
+From:   gregory.greenman@intel.com
+To:     johannes@sipsolutions.net
+Cc:     linux-wireless@vger.kernel.org,
+        Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
+        stable@vger.kernel.org,
+        Gregory Greenman <gregory.greenman@intel.com>
+Subject: [PATCH] wifi: iwlwifi: pcie: Handle SO-F device for PCI id 0x7AF0
+Date:   Thu, 15 Jun 2023 14:30:36 +0300
+Message-Id: <20230615143003.524f430bc860.I861bb5cff14d707d4bcf76c0896112a5776845ec@changeid>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH] tick/common: Align tick period during sched_timer setup.
-Content-Language: en-US, de-DE
-To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc:     Luiz Capitulino <luizcap@amazon.com>,
-        Sven-Haegar Koch <haegar@sdinet.de>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "Bhatnagar, Rishabh" <risbhat@amazon.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "sashal@kernel.org" <sashal@kernel.org>, abuehaze@amazon.com,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>
-References: <12c6f9a3-d087-b824-0d05-0d18c9bc1bf3@amazon.com>
- <c4724b40-89f6-5aa7-720d-c4a4af57cf45@amazon.com>
- <2023061428-compacter-economic-b648@gregkh>
- <20230614092045.tNY8USjq@linutronix.de>
- <4c4178a1-1050-ced4-e6fb-f95c3bdefc98@amazon.com>
- <2a3fa097-8ba0-5b0e-f506-779fee5b8fef@sdinet.de>
- <f5d2cc62-4aae-2579-1468-2e6e389f28dc@amazon.com>
- <23fb8ad7-beb0-ae1c-fa5a-a682a57f79b0@grsecurity.net>
- <20230615091830.RxMV2xf_@linutronix.de>
-From:   Mathias Krause <minipli@grsecurity.net>
-In-Reply-To: <20230615091830.RxMV2xf_@linutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
 
-On 15.06.23 11:18, Sebastian Andrzej Siewior wrote:
-> From: Thomas Gleixner <tglx@linutronix.de>
-> 
-> The tick period is aligned very early while the first clock_event_device
-> is registered. The system runs in periodic mode and switches later to
-> one-shot mode if possible.
-> 
-> The next wake-up event is programmed based on aligned value
-> (tick_next_period) but the delta value, that is used to program the
-> clock_event_device, is computed based on ktime_get().
-> 
-> With the subtracted offset, the devices fires in less than the exacted
-> time frame. With a large enough offset the system programs the timer for
-> the next wake-up and the remaining time left is too little to make any
-> boot progress. The system hangs.
-> 
-> Move the alignment later to the setup of tick_sched timer. At this point
-> the system switches to oneshot mode and a highres clocksource is
-> available. It safe to update tick_next_period ktime_get() will now
-> return accurate (not jiffies based) time.
-> 
-> [bigeasy: Patch description + testing].
-> 
-> Reported-by: Mathias Krause <minipli@grsecurity.net>
-> Reported-by: "Bhatnagar, Rishabh" <risbhat@amazon.com>
-> Fixes: e9523a0d81899 ("tick/common: Align tick period with the HZ tick.")
+Add support for AX1690i and AX1690s devices with
+PCIE id 0x7AF0.
 
-Cc: stable, maybe? This commit already ended up in quite a few "stable"
-kernels (v6.3.2, v6.2.15, v6.1.28, v5.15.111, v5.10.180 and v5.4.243)
-and it might be better to list them explicitly to avoid one of them
-getting missed.
+Cc: stable@vger.kernel.org # 6.1+
+Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-> Link: https://lore.kernel.org/5a56290d-806e-b9a5-f37c-f21958b5a8c0@grsecurity.net
-> Link: https://lore.kernel.org/12c6f9a3-d087-b824-0d05-0d18c9bc1bf3@amazon.com
-> ---
->  kernel/time/tick-common.c | 11 +----------
->  kernel/time/tick-sched.c  | 13 ++++++++++++-
->  2 files changed, 13 insertions(+), 11 deletions(-)
-> 
-> diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
-> index 65b8658da829e..b85f2f9c32426 100644
-> --- a/kernel/time/tick-common.c
-> +++ b/kernel/time/tick-common.c
-> @@ -218,19 +218,10 @@ static void tick_setup_device(struct tick_device *td,
->  		 * this cpu:
->  		 */
->  		if (tick_do_timer_cpu == TICK_DO_TIMER_BOOT) {
-> -			ktime_t next_p;
-> -			u32 rem;
->  
->  			tick_do_timer_cpu = cpu;
->  
-> -			next_p = ktime_get();
-> -			div_u64_rem(next_p, TICK_NSEC, &rem);
-> -			if (rem) {
-> -				next_p -= rem;
-> -				next_p += TICK_NSEC;
-> -			}
-> -
-> -			tick_next_period = next_p;
-> +			tick_next_period = ktime_get();
->  #ifdef CONFIG_NO_HZ_FULL
->  			/*
->  			 * The boot CPU may be nohz_full, in which case set
-> diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-> index 52254679ec489..42c0be3080bde 100644
-> --- a/kernel/time/tick-sched.c
-> +++ b/kernel/time/tick-sched.c
-> @@ -161,8 +161,19 @@ static ktime_t tick_init_jiffy_update(void)
->  	raw_spin_lock(&jiffies_lock);
->  	write_seqcount_begin(&jiffies_seq);
->  	/* Did we start the jiffies update yet ? */
-> -	if (last_jiffies_update == 0)
-> +	if (last_jiffies_update == 0) {
-> +		u32 rem;
-> +
-> +		/*
-> +		 * Ensure that the tick is aligned to a multiple of
-> +		 * TICK_NSEC.
-> +		 */
-> +		div_u64_rem(tick_next_period, TICK_NSEC, &rem);
-> +		if (rem)
-> +			tick_next_period += TICK_NSEC - rem;
-> +
->  		last_jiffies_update = tick_next_period;
-> +	}
->  	period = last_jiffies_update;
->  	write_seqcount_end(&jiffies_seq);
->  	raw_spin_unlock(&jiffies_lock);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 4ba4dd881c2e..44ef4724cd81 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -550,6 +550,8 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
+ 	IWL_DEV_INFO(0x54F0, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
+ 	IWL_DEV_INFO(0x7A70, 0x1691, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690s_name),
+ 	IWL_DEV_INFO(0x7A70, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
++	IWL_DEV_INFO(0x7AF0, 0x1691, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690s_name),
++	IWL_DEV_INFO(0x7AF0, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
+ 
+ 	IWL_DEV_INFO(0x271C, 0x0214, iwl9260_2ac_cfg, iwl9260_1_name),
+ 	IWL_DEV_INFO(0x7E40, 0x1691, iwl_cfg_ma_a0_gf4_a0, iwl_ax411_killer_1690s_name),
+-- 
+2.38.1
 
-Hah, nice spot. So you implemented what I suggested and it, indeed,
-works as expected, thereby:
-
-Tested-by: Mathias Krause <minipli@grsecurity.net>
-
-Thanks,
-Mathias
