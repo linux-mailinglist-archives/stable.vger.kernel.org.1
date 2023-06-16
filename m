@@ -2,98 +2,179 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7C73733942
-	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 21:11:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 327027339AE
+	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 21:21:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232916AbjFPTLB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 16 Jun 2023 15:11:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46296 "EHLO
+        id S232446AbjFPTVj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 16 Jun 2023 15:21:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229739AbjFPTLA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 15:11:00 -0400
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B53B830EB;
-        Fri, 16 Jun 2023 12:10:58 -0700 (PDT)
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+        with ESMTP id S231154AbjFPTVW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 15:21:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CF32524A;
+        Fri, 16 Jun 2023 12:19:04 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-         client-signature RSA-PSS (4096 bits) client-digest SHA256)
-        (Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
-        by bmailout1.hostsharing.net (Postfix) with ESMTPS id 0812E300002D5;
-        Fri, 16 Jun 2023 21:10:57 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-        id EBE2C1DED93; Fri, 16 Jun 2023 21:10:56 +0200 (CEST)
-Date:   Fri, 16 Jun 2023 21:10:56 +0200
-From:   Lukas Wunner <lukas@wunner.de>
-To:     Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc:     linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Wilczy??ski <kw@linux.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Stefan =?iso-8859-1?Q?M=E4tje?= <stefan.maetje@esd.eu>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Jesse Barnes <jbarnes@virtuousgeek.org>,
-        Matthew Garrett <mjg59@srcf.ucam.org>,
-        Shaohua Li <shaohua.li@intel.com>,
-        Thomas Renninger <trenn@suse.de>,
-        Greg Kroah-Hartman <gregkh@suse.de>,
-        linux-kernel@vger.kernel.org,
-        Dean Luick <dean.luick@cornelisnetworks.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2 3/9] PCI/ASPM: Use RMW accessors for changing LNKCTL
-Message-ID: <20230616191056.GA30821@wunner.de>
-References: <20230517105235.29176-1-ilpo.jarvinen@linux.intel.com>
- <20230517105235.29176-4-ilpo.jarvinen@linux.intel.com>
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 99902634BF;
+        Fri, 16 Jun 2023 19:17:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382D2C433C8;
+        Fri, 16 Jun 2023 19:17:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686943067;
+        bh=CAmP+Lx0wzqgHUs9vsC25lJNjq99NNhM1Mo48RueGyc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ZETvxHndWQKmZsWWEKvvXIR1NvhG0E+JQ9XMa5/v0HqoF1ZdzNxZ/GXDMO1LaUO4z
+         dTo8UADnCGD6UZuvo5lDy70OAvdWz0SEcdnue4m1STiOYVAY/m8pN9g8X7LsAjmFCV
+         zok7BR7RRfuq5+ikc05b+FO7Rmn7O0Pbe+upHOn3mYLkVA10AGC4zNbpMXNNioCN16
+         1PTOFhDX5zn5YaV8YcoVZgp0uT2FEmQOco1kT6lgBXkuDqdNO3Mnf7uVEjoZB0QGZs
+         qujzgPiXMdTyhI6XZL1nnpWuTmGkiAdXp5cymmX88O+lp0TYmei3kIU55NqFC4tDn4
+         VeQ7NL4ofgUqw==
+From:   Jeff Layton <jlayton@kernel.org>
+To:     Chuck Lever <chuck.lever@oracle.com>, Neil Brown <neilb@suse.de>,
+        Olga Kornievskaia <kolga@netapp.com>,
+        Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>
+Cc:     stable@vger.kernel.org, Eirik Fuller <efuller@redhat.com>,
+        linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] nfsd: move init of percpu reply_cache_stats counters back to nfsd_init_net
+Date:   Fri, 16 Jun 2023 15:17:43 -0400
+Message-Id: <20230616191744.202292-1-jlayton@kernel.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230517105235.29176-4-ilpo.jarvinen@linux.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, May 17, 2023 at 01:52:29PM +0300, Ilpo Järvinen wrote:
-> Don't assume that the device is fully under the control of ASPM and use
-> RMW capability accessors which do proper locking to avoid losing
-> concurrent updates to the register values.
-> 
-> If configuration fails in pcie_aspm_configure_common_clock(), the
-> function attempts to restore the old PCI_EXP_LNKCTL_CCC settings. Store
-> only the old PCI_EXP_LNKCTL_CCC bit for the relevant devices rather
-> than the content of the whole LNKCTL registers. It aligns better with
-> how pcie_lnkctl_clear_and_set() expects its parameter and makes the
-> code more obvious to understand.
-[...]
-> @@ -224,17 +223,14 @@ static bool pcie_retrain_link(struct pcie_link_state *link)
->  	if (!pcie_wait_for_retrain(parent))
->  		return false;
->  
-> -	pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &reg16);
-> -	reg16 |= PCI_EXP_LNKCTL_RL;
-> -	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
-> +	pcie_capability_set_word(parent, PCI_EXP_LNKCTL, PCI_EXP_LNKCTL_RL);
->  	if (parent->clear_retrain_link) {
+f5f9d4a314da moved the initialization of the reply cache into the nfsd
+startup, but it didn't account for the stats counters which can be
+accessed before nfsd is ever started, causing a NULL pointer
+dereference.
 
-This and several other RMW operations in drivers/pci/pcie/aspm.c
-are touched by commit b1689799772a ("PCI/ASPM: Use distinct local
-vars in pcie_retrain_link()") which got applied to pci/enumeration
-this week:
+This is easy to trigger on some arches (like aarch64), but on x86_64,
+calling this_cpu_ptr(NULL) evidently returns a pointer to the
+fixed_percpu_data, which I guess this looks just enough like a newly
+initialized percpu var to allow nfsd_reply_cache_stats_show to access it
+without Oopsing.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/commit/?h=enumeration&id=b1689799772a6f4180f918b0ff66e264a3db9796
+Move the initialization of the per-net+per-cpu reply-cache counters back
+into nfsd_init_net, while leaving the rest of the reply cache
+allocations to be done at nfsd startup time.
 
-As a result the $SUBJECT_PATCH no longer applies cleanly and needs
-to be respun.
+Kudos to Eirik who did most of the legwork to track this down.
 
-Thanks,
+Cc: stable@vger.kernel.org # v6.3+
+Fixes: f5f9d4a314da ("nfsd: move reply cache initialization into nfsd startup")
+Reported-and-Tested-by: Eirik Fuller <efuller@redhat.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+---
+ fs/nfsd/cache.h    |  2 ++
+ fs/nfsd/nfscache.c | 13 +++----------
+ fs/nfsd/nfsctl.c   |  8 ++++++++
+ 3 files changed, 13 insertions(+), 10 deletions(-)
 
-Lukas
+diff --git a/fs/nfsd/cache.h b/fs/nfsd/cache.h
+index f21259ead64b..a4b12d6c41d3 100644
+--- a/fs/nfsd/cache.h
++++ b/fs/nfsd/cache.h
+@@ -80,6 +80,8 @@ enum {
+ 
+ int	nfsd_drc_slab_create(void);
+ void	nfsd_drc_slab_free(void);
++int	nfsd_reply_cache_stats_init(struct nfsd_net *nn);
++void	nfsd_reply_cache_stats_destroy(struct nfsd_net *nn);
+ int	nfsd_reply_cache_init(struct nfsd_net *);
+ void	nfsd_reply_cache_shutdown(struct nfsd_net *);
+ int	nfsd_cache_lookup(struct svc_rqst *);
+diff --git a/fs/nfsd/nfscache.c b/fs/nfsd/nfscache.c
+index 041faa13b852..b696dc629c0b 100644
+--- a/fs/nfsd/nfscache.c
++++ b/fs/nfsd/nfscache.c
+@@ -148,12 +148,12 @@ void nfsd_drc_slab_free(void)
+ 	kmem_cache_destroy(drc_slab);
+ }
+ 
+-static int nfsd_reply_cache_stats_init(struct nfsd_net *nn)
++int nfsd_reply_cache_stats_init(struct nfsd_net *nn)
+ {
+ 	return nfsd_percpu_counters_init(nn->counter, NFSD_NET_COUNTERS_NUM);
+ }
+ 
+-static void nfsd_reply_cache_stats_destroy(struct nfsd_net *nn)
++void nfsd_reply_cache_stats_destroy(struct nfsd_net *nn)
+ {
+ 	nfsd_percpu_counters_destroy(nn->counter, NFSD_NET_COUNTERS_NUM);
+ }
+@@ -169,17 +169,13 @@ int nfsd_reply_cache_init(struct nfsd_net *nn)
+ 	hashsize = nfsd_hashsize(nn->max_drc_entries);
+ 	nn->maskbits = ilog2(hashsize);
+ 
+-	status = nfsd_reply_cache_stats_init(nn);
+-	if (status)
+-		goto out_nomem;
+-
+ 	nn->nfsd_reply_cache_shrinker.scan_objects = nfsd_reply_cache_scan;
+ 	nn->nfsd_reply_cache_shrinker.count_objects = nfsd_reply_cache_count;
+ 	nn->nfsd_reply_cache_shrinker.seeks = 1;
+ 	status = register_shrinker(&nn->nfsd_reply_cache_shrinker,
+ 				   "nfsd-reply:%s", nn->nfsd_name);
+ 	if (status)
+-		goto out_stats_destroy;
++		return status;
+ 
+ 	nn->drc_hashtbl = kvzalloc(array_size(hashsize,
+ 				sizeof(*nn->drc_hashtbl)), GFP_KERNEL);
+@@ -195,9 +191,6 @@ int nfsd_reply_cache_init(struct nfsd_net *nn)
+ 	return 0;
+ out_shrinker:
+ 	unregister_shrinker(&nn->nfsd_reply_cache_shrinker);
+-out_stats_destroy:
+-	nfsd_reply_cache_stats_destroy(nn);
+-out_nomem:
+ 	printk(KERN_ERR "nfsd: failed to allocate reply cache\n");
+ 	return -ENOMEM;
+ }
+diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
+index 1489e0b703b4..7c837afcf615 100644
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1505,6 +1505,9 @@ static __net_init int nfsd_init_net(struct net *net)
+ 	retval = nfsd_idmap_init(net);
+ 	if (retval)
+ 		goto out_idmap_error;
++	retval = nfsd_reply_cache_stats_init(nn);
++	if (retval)
++		goto out_repcache_error;
+ 	nn->nfsd_versions = NULL;
+ 	nn->nfsd4_minorversions = NULL;
+ 	nfsd4_init_leases_net(nn);
+@@ -1513,6 +1516,8 @@ static __net_init int nfsd_init_net(struct net *net)
+ 
+ 	return 0;
+ 
++out_repcache_error:
++	nfsd_idmap_shutdown(net);
+ out_idmap_error:
+ 	nfsd_export_shutdown(net);
+ out_export_error:
+@@ -1521,6 +1526,9 @@ static __net_init int nfsd_init_net(struct net *net)
+ 
+ static __net_exit void nfsd_exit_net(struct net *net)
+ {
++	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
++
++	nfsd_reply_cache_stats_destroy(nn);
+ 	nfsd_idmap_shutdown(net);
+ 	nfsd_export_shutdown(net);
+ 	nfsd_netns_free_versions(net_generic(net, nfsd_net_id));
+-- 
+2.40.1
+
