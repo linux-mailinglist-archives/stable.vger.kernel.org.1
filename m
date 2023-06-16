@@ -2,85 +2,143 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A72A07329AA
-	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 10:23:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62D37732D7C
+	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 12:25:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234473AbjFPIXX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 16 Jun 2023 04:23:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57026 "EHLO
+        id S230420AbjFPKZ2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 16 Jun 2023 06:25:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233192AbjFPIXW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 04:23:22 -0400
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A1C2212B;
-        Fri, 16 Jun 2023 01:23:21 -0700 (PDT)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id B394F1C0E6E; Fri, 16 Jun 2023 10:23:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-        t=1686903799;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=uwqz7xaKAqzIwowJQBfMPTshEu7P5aPh8FrMKIEdGvM=;
-        b=sEmhATV/S6WM4B8Ta+dZo2CGYgFmBq01wuDJpjgmdWQs/K8Il8SAF4gGU3UX6GfYUZ/c0Q
-        1+57GmJmxCELS3Sdc/eQ1Kmp50Vl+VgJD3AJUX4zUo3f6f4wrFsuiH05MeaSMSCKACCGsY
-        MEtjVRfS16moMkaloaT1UIuY7jZKN7M=
-Date:   Fri, 16 Jun 2023 10:23:19 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Hans de Goede <hdegoede@redhat.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        sre@kernel.org, linux-pm@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.3 01/37] power: supply: ab8500: Fix
- external_power_changed race
-Message-ID: <ZIwb98ptaEb01MC4@duo.ucw.cz>
-References: <20230615113654.648702-1-sashal@kernel.org>
+        with ESMTP id S232377AbjFPKZ1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 06:25:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24F32C5;
+        Fri, 16 Jun 2023 03:25:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D7B5611D8;
+        Fri, 16 Jun 2023 10:25:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44231C433C8;
+        Fri, 16 Jun 2023 10:25:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686911123;
+        bh=0CVterN2oNR0snu/uDzo3u9HlQDH7EmEEvZabB0r2sE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=LkwUUIOJjiQvT4SFNy4jRZ2IRh6udJtf+ugdJfx1iYQOvMPSGG+dj1IXThKE1Aviq
+         WUV+Yv5ZuRcIYRzAfhb2bWfzkeX8cVud5+2W4d2EzkJFCvteV9lUX9T2WRPu8Mcv0a
+         RP3YYt2ZVRCfb4130fIiQPrgXnhu5eC65lJFUiOjsRAO1ZyYgrwEMHwtvqZG2PU4da
+         5Pp+U6f12ACElv5m4xooYN4nxQIudlh5/W3HYOD9th8mPgterRlwgIvRN5tvMx8PzF
+         RgxjJCE57d6dqoM7qAGpbTc+LzSie4f3h5539uD4KWyV+SPU+5aQAkYTBMUg9CBbsQ
+         zEtGkZmn1AiHw==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Sasha Levin <sashal@kernel.org>, linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.3 01/30] Input: soc_button_array - add invalid acpi_index DMI quirk handling
+Date:   Fri, 16 Jun 2023 06:24:49 -0400
+Message-Id: <20230616102521.673087-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="b+zKUwoCEUgmSd1B"
-Content-Disposition: inline
-In-Reply-To: <20230615113654.648702-1-sashal@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.3.8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+From: Hans de Goede <hdegoede@redhat.com>
 
---b+zKUwoCEUgmSd1B
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[ Upstream commit 20a99a291d564a559cc2fd013b4824a3bb3f1db7 ]
 
-Hi!
+Some devices have a wrong entry in their button array which points to
+a GPIO which is required in another driver, so soc_button_array must
+not claim it.
 
-I do not see complete series in my inbox (only see patches 1-6).
+A specific example of this is the Lenovo Yoga Book X90F / X90L,
+where the PNP0C40 home button entry points to a GPIO which is not
+a home button and which is required by the lenovo-yogabook driver.
 
-But then I see another thread which seems to be complete.
+Add a DMI quirk table which can specify an ACPI GPIO resource index which
+should be skipped; and add an entry for the Lenovo Yoga Book X90F / X90L
+to this new DMI quirk table.
 
-Date: Wed, 31 May 2023 09:39:43 -0400
-Subject: [PATCH AUTOSEL 6.3 01/37] power: supply: ab8500: Fix external_powe=
-r_changed race
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230414072116.4497-1-hdegoede@redhat.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/input/misc/soc_button_array.c | 30 +++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-Best regards,
-								Pavel
---=20
-People of Russia, stop Putin before his war on Ukraine escalates.
+diff --git a/drivers/input/misc/soc_button_array.c b/drivers/input/misc/soc_button_array.c
+index 09489380afda7..e79f5497948b8 100644
+--- a/drivers/input/misc/soc_button_array.c
++++ b/drivers/input/misc/soc_button_array.c
+@@ -108,6 +108,27 @@ static const struct dmi_system_id dmi_use_low_level_irq[] = {
+ 	{} /* Terminating entry */
+ };
+ 
++/*
++ * Some devices have a wrong entry which points to a GPIO which is
++ * required in another driver, so this driver must not claim it.
++ */
++static const struct dmi_system_id dmi_invalid_acpi_index[] = {
++	{
++		/*
++		 * Lenovo Yoga Book X90F / X90L, the PNP0C40 home button entry
++		 * points to a GPIO which is not a home button and which is
++		 * required by the lenovo-yogabook driver.
++		 */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_VERSION, "YETI-11"),
++		},
++		.driver_data = (void *)1l,
++	},
++	{} /* Terminating entry */
++};
++
+ /*
+  * Get the Nth GPIO number from the ACPI object.
+  */
+@@ -137,6 +158,8 @@ soc_button_device_create(struct platform_device *pdev,
+ 	struct platform_device *pd;
+ 	struct gpio_keys_button *gpio_keys;
+ 	struct gpio_keys_platform_data *gpio_keys_pdata;
++	const struct dmi_system_id *dmi_id;
++	int invalid_acpi_index = -1;
+ 	int error, gpio, irq;
+ 	int n_buttons = 0;
+ 
+@@ -154,10 +177,17 @@ soc_button_device_create(struct platform_device *pdev,
+ 	gpio_keys = (void *)(gpio_keys_pdata + 1);
+ 	n_buttons = 0;
+ 
++	dmi_id = dmi_first_match(dmi_invalid_acpi_index);
++	if (dmi_id)
++		invalid_acpi_index = (long)dmi_id->driver_data;
++
+ 	for (info = button_info; info->name; info++) {
+ 		if (info->autorepeat != autorepeat)
+ 			continue;
+ 
++		if (info->acpi_index == invalid_acpi_index)
++			continue;
++
+ 		error = soc_button_lookup_gpio(&pdev->dev, info->acpi_index, &gpio, &irq);
+ 		if (error || irq < 0) {
+ 			/*
+-- 
+2.39.2
 
---b+zKUwoCEUgmSd1B
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZIwb9wAKCRAw5/Bqldv6
-8uh+AJsElO3pROJOHxyIrhQQLDNZKJimtgCghG4XlUIrXuqEWAjN+fwC+/m3tCE=
-=+NFY
------END PGP SIGNATURE-----
-
---b+zKUwoCEUgmSd1B--
