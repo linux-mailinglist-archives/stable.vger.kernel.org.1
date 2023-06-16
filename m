@@ -2,121 +2,91 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C95A07330AC
-	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 14:03:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CA85733145
+	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 14:33:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344994AbjFPMDO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 16 Jun 2023 08:03:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46048 "EHLO
+        id S232291AbjFPMdq convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Fri, 16 Jun 2023 08:33:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344589AbjFPMDN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 08:03:13 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02AEF2D69;
-        Fri, 16 Jun 2023 05:03:12 -0700 (PDT)
-Date:   Fri, 16 Jun 2023 12:03:10 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1686916990;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=46vrl4ylUTLsMdMSynSrUU4Cn+HCsdL3cBHiPpuWos0=;
-        b=1b81gD2qZYQPf2bAHZ/S0802+LZYvoOAfXNuAA1yXvdEQhqHdGzrytYgX0uTuXmXHqfyMc
-        N9ah6hMaYgddjP8IDJNnqJSpLHouhQpOSvd72F5RNX63PvbXTrCegkWCQQ67QcDZvnwAzX
-        hZEOXMGwN5IggR4vKXMhSg8QiBwQzQNje/NQeYIDbvl32Hiu5pKDXFzlvttAo0GIQvQtjK
-        /E0N60h16PdYxYNSLD71jEl8XgQSEukEKVWbBS6CyWGV2m18uzmNOlFLn6DwtwEi4RK/Dp
-        gh0qucgK9jm/GgTH/gsTOB+2DNHPsmh2M/v3VrGIYp9rd5FhZWNwbXPDcmw14w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1686916990;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=46vrl4ylUTLsMdMSynSrUU4Cn+HCsdL3cBHiPpuWos0=;
-        b=pNn8smC+BOAVS5eGRt5UwxEHVLZH4cLiI8s+IYSpjGkQI8zOdc2nWu0ClQ4qSQAcwOKYww
-        5c8+hb84UEd1fLDA==
-From:   "irqchip-bot for Liu Peibao" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-kernel@vger.kernel.org
-Subject: [irqchip: irq/irqchip-next] irqchip/loongson-pch-pic: Fix potential
- incorrect hwirq assignment
-Cc:     stable@vger.kernel.org, Huacai Chen <chenhuacai@loongson.cn>,
-        Liu Peibao <liupeibao@loongson.cn>,
-        Jianmin Lv <lvjianmin@loongson.cn>,
-        Marc Zyngier <maz@kernel.org>, tglx@linutronix.de
-In-Reply-To: <20230614115936.5950-3-lvjianmin@loongson.cn>
-References: <20230614115936.5950-3-lvjianmin@loongson.cn>
+        with ESMTP id S244798AbjFPMdp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 08:33:45 -0400
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB9C030DF;
+        Fri, 16 Jun 2023 05:33:43 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-97ea801b0d0so16277166b.1;
+        Fri, 16 Jun 2023 05:33:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686918822; x=1689510822;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lTRWCve4aiZlLjjembeAxWUlGki5BZgszXsoy6USiS4=;
+        b=WFl7x1M3zrcw6Uu7bUB5KigaF82A5+/AW5FSLYhlG8BQDxVJMcJ6j6cWn3k3JJCl+q
+         Pf2gLz4p0gXPcZo5M8xcjSjLBl3zuvxqiycW8A8WTT9KwSzHDfDK/GvJyNPPF74muKZR
+         kfxUyzkqPCa/askbnVgWSvfg/T0RcLxLG7bk0+VwWf94bT+19pkE66RNp7/vcGbfKT3I
+         1uqe5X7ujc+DhObNxdXtVnxPgZyNotO8WYtEOX9sY7RbtRisj4gMIl2wT41B7feP9yYc
+         4ZmqOGmefSM9oxzcQdrg+LXiTk360jLk71PevS27NRCLlbPjAjOkBZz3Id4nQBxTuQbh
+         ZNeQ==
+X-Gm-Message-State: AC+VfDwNMIEaChPfH1fdtd7GVFlkf0PDXTrmnCluqOMSI8N4/BqN6AyJ
+        EoNIlJG07wsKHzlxcLU8hG4mbZaK+NW/lX04dLN/h0U4
+X-Google-Smtp-Source: ACHHUZ79y6h/AB3JoK5Bq0mgG7Jfw9riBgIfzW94PqUGvj00CUEL8w+BC2GU4nNixQLXM+tLTaPg9Vl1Y+prHIWexZs=
+X-Received: by 2002:a17:906:7a53:b0:976:7c67:4bf8 with SMTP id
+ i19-20020a1709067a5300b009767c674bf8mr1480785ejo.5.1686918822099; Fri, 16 Jun
+ 2023 05:33:42 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <168691699008.404.10069556524976905462.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230612113615.205353-1-wyes.karny@amd.com> <20230612113615.205353-2-wyes.karny@amd.com>
+ <ZIwKNI6OvhZles5F@amd.com>
+In-Reply-To: <ZIwKNI6OvhZles5F@amd.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Fri, 16 Jun 2023 14:33:30 +0200
+Message-ID: <CAJZ5v0j0AqosqH6wx2ToGOM-zGdowJiZtxG2kZrSd9QcJyXdtw@mail.gmail.com>
+Subject: Re: [PATCH 1/6] amd-pstate: Make amd-pstate epp driver name hyphenated
+To:     Huang Rui <ray.huang@amd.com>
+Cc:     "Karny, Wyes" <Wyes.Karny@amd.com>,
+        "rafael@kernel.org" <rafael@kernel.org>,
+        "viresh.kumar@linaro.org" <viresh.kumar@linaro.org>,
+        "trenn@suse.com" <trenn@suse.com>,
+        "shuah@kernel.org" <shuah@kernel.org>,
+        "Shenoy, Gautham Ranjal" <gautham.shenoy@amd.com>,
+        "Limonciello, Mario" <Mario.Limonciello@amd.com>,
+        "Yuan, Perry" <Perry.Yuan@amd.com>,
+        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The following commit has been merged into the irq/irqchip-next branch of irqchip:
+On Fri, Jun 16, 2023 at 9:08 AM Huang Rui <ray.huang@amd.com> wrote:
+>
+> On Mon, Jun 12, 2023 at 07:36:10PM +0800, Karny, Wyes wrote:
+> > amd-pstate passive mode driver is hyphenated. So make amd-pstate active
+> > mode driver consistent with that rename "amd_pstate_epp" to
+> > "amd-pstate-epp".
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: ffa5096a7c33 ("cpufreq: amd-pstate: implement Pstate EPP support for the AMD processors")
+> > Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+> > Signed-off-by: Wyes Karny <wyes.karny@amd.com>
+>
+> Acked-by: Huang Rui <ray.huang@amd.com>
+>
+> And yes, we should seprate it from cpupower as Rafael mentioned. cpupower
+> tool may go to another repo.
 
-Commit-ID:     783422e704ca0fa41cb2fe9ed79e46b6fe7eae29
-Gitweb:        https://git.kernel.org/pub/scm/linux/kernel/git/maz/arm-platforms/783422e704ca0fa41cb2fe9ed79e46b6fe7eae29
-Author:        Liu Peibao <liupeibao@loongson.cn>
-AuthorDate:    Wed, 14 Jun 2023 19:59:33 +08:00
-Committer:     Marc Zyngier <maz@kernel.org>
-CommitterDate: Fri, 16 Jun 2023 12:59:28 +01:00
+Not only that.
 
-irqchip/loongson-pch-pic: Fix potential incorrect hwirq assignment
-
-In DeviceTree path, when ht_vec_base is not zero, the hwirq of PCH PIC
-will be assigned incorrectly. Because when pch_pic_domain_translate()
-adds the ht_vec_base to hwirq, the hwirq does not have the ht_vec_base
-subtracted when calling irq_domain_set_info().
-
-The ht_vec_base is designed for the parent irq chip/domain of the PCH PIC.
-It seems not proper to deal this in callbacks of the PCH PIC domain and
-let's put this back like the initial commit ef8c01eb64ca ("irqchip: Add
-Loongson PCH PIC controller").
-
-Fixes: bcdd75c596c8 ("irqchip/loongson-pch-pic: Add ACPI init support")
-Cc: stable@vger.kernel.org
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Liu Peibao <liupeibao@loongson.cn>
-Signed-off-by: Jianmin Lv <lvjianmin@loongson.cn>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230614115936.5950-3-lvjianmin@loongson.cn
----
- drivers/irqchip/irq-loongson-pch-pic.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/irqchip/irq-loongson-pch-pic.c b/drivers/irqchip/irq-loongson-pch-pic.c
-index 921c5c0..93a71f6 100644
---- a/drivers/irqchip/irq-loongson-pch-pic.c
-+++ b/drivers/irqchip/irq-loongson-pch-pic.c
-@@ -164,7 +164,7 @@ static int pch_pic_domain_translate(struct irq_domain *d,
- 		if (fwspec->param_count < 2)
- 			return -EINVAL;
- 
--		*hwirq = fwspec->param[0] + priv->ht_vec_base;
-+		*hwirq = fwspec->param[0];
- 		*type = fwspec->param[1] & IRQ_TYPE_SENSE_MASK;
- 	} else {
- 		if (fwspec->param_count < 1)
-@@ -196,7 +196,7 @@ static int pch_pic_alloc(struct irq_domain *domain, unsigned int virq,
- 
- 	parent_fwspec.fwnode = domain->parent->fwnode;
- 	parent_fwspec.param_count = 1;
--	parent_fwspec.param[0] = hwirq;
-+	parent_fwspec.param[0] = hwirq + priv->ht_vec_base;
- 
- 	err = irq_domain_alloc_irqs_parent(domain, virq, 1, &parent_fwspec);
- 	if (err)
+It is generally better to send individual fixes that don't depend on
+anything else as separate patches, because this allows them to be
+picked up and fast-tracked at multiple levels (mainline, stable,
+distro kernels etc.).
