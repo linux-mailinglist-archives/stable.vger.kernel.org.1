@@ -2,223 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2258C73394E
-	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 21:16:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7C73733942
+	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 21:11:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229535AbjFPTQB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 16 Jun 2023 15:16:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47678 "EHLO
+        id S232916AbjFPTLB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 16 Jun 2023 15:11:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229471AbjFPTQB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 15:16:01 -0400
-X-Greylist: delayed 364 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 16 Jun 2023 12:15:58 PDT
-Received: from letterbox.kde.org (letterbox.kde.org [46.43.1.242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB23D35A7
-        for <stable@vger.kernel.org>; Fri, 16 Jun 2023 12:15:58 -0700 (PDT)
-Received: from vertex.vmware.com (pool-173-49-113-140.phlapa.fios.verizon.net [173.49.113.140])
-        (Authenticated sender: zack)
-        by letterbox.kde.org (Postfix) with ESMTPSA id 236FF321F5F;
-        Fri, 16 Jun 2023 20:09:51 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kde.org; s=users;
-        t=1686942592; bh=qmVnMW5zhP2iiIgJghhxbEUOs8sNFcB6PquUJzh5Quc=;
-        h=From:To:Cc:Subject:Date:From;
-        b=H01Zo9/alMmLAAaVxyf4kyPX4uJr4Bgs+GgQvo4Cls6B4x1y+gVgntXv2VFK84Gyu
-         BIxNOfBPfYvORfwtBd0uZ8q2CEQJ2ocyyuHesNK4OmAAKh5qwSVdGetGdPHNsXgvDh
-         Auq1CXCeYcxHcDDW0aDtnDDPOQu2YfPp8nyQ8e+dCAtryx/gyNn25aSJIpXMe4aFJt
-         g5i+0mtJiGpnkoIqgW9nNsqugmI1/OgI7DBQFHW5Y4+L/g2o4jwcNKqHzqiCWvNSWc
-         ja2M1RKXv/oY7qg0JtrD8fF3+t2VGIrcyFYc4quBIoOHstm9c/376VBNUQUVyefbw+
-         JZkdUbKjrsV7g==
-From:   Zack Rusin <zack@kde.org>
-To:     dri-devel@lists.freedesktop.org
-Cc:     krastevm@vmware.com, mombasawalam@vmware.com, banackm@vmware.com,
-        iforbes@vmware.com, Zack Rusin <zackr@vmware.com>,
-        security@openanolis.org, Ziming Zhang <ezrakiez@gmail.com>,
-        Niels De Graef <ndegraef@redhat.com>, stable@vger.kernel.org
-Subject: [PATCH] drm/vmwgfx: Fix shader stage validation
-Date:   Fri, 16 Jun 2023 15:09:34 -0400
-Message-Id: <20230616190934.54828-1-zack@kde.org>
-X-Mailer: git-send-email 2.39.2
-Reply-To: Zack Rusin <zackr@vmware.com>
+        with ESMTP id S229739AbjFPTLA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 15:11:00 -0400
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B53B830EB;
+        Fri, 16 Jun 2023 12:10:58 -0700 (PDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+         client-signature RSA-PSS (4096 bits) client-digest SHA256)
+        (Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
+        by bmailout1.hostsharing.net (Postfix) with ESMTPS id 0812E300002D5;
+        Fri, 16 Jun 2023 21:10:57 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+        id EBE2C1DED93; Fri, 16 Jun 2023 21:10:56 +0200 (CEST)
+Date:   Fri, 16 Jun 2023 21:10:56 +0200
+From:   Lukas Wunner <lukas@wunner.de>
+To:     Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc:     linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Wilczy??ski <kw@linux.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Stefan =?iso-8859-1?Q?M=E4tje?= <stefan.maetje@esd.eu>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Jesse Barnes <jbarnes@virtuousgeek.org>,
+        Matthew Garrett <mjg59@srcf.ucam.org>,
+        Shaohua Li <shaohua.li@intel.com>,
+        Thomas Renninger <trenn@suse.de>,
+        Greg Kroah-Hartman <gregkh@suse.de>,
+        linux-kernel@vger.kernel.org,
+        Dean Luick <dean.luick@cornelisnetworks.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2 3/9] PCI/ASPM: Use RMW accessors for changing LNKCTL
+Message-ID: <20230616191056.GA30821@wunner.de>
+References: <20230517105235.29176-1-ilpo.jarvinen@linux.intel.com>
+ <20230517105235.29176-4-ilpo.jarvinen@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230517105235.29176-4-ilpo.jarvinen@linux.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zack Rusin <zackr@vmware.com>
+On Wed, May 17, 2023 at 01:52:29PM +0300, Ilpo Järvinen wrote:
+> Don't assume that the device is fully under the control of ASPM and use
+> RMW capability accessors which do proper locking to avoid losing
+> concurrent updates to the register values.
+> 
+> If configuration fails in pcie_aspm_configure_common_clock(), the
+> function attempts to restore the old PCI_EXP_LNKCTL_CCC settings. Store
+> only the old PCI_EXP_LNKCTL_CCC bit for the relevant devices rather
+> than the content of the whole LNKCTL registers. It aligns better with
+> how pcie_lnkctl_clear_and_set() expects its parameter and makes the
+> code more obvious to understand.
+[...]
+> @@ -224,17 +223,14 @@ static bool pcie_retrain_link(struct pcie_link_state *link)
+>  	if (!pcie_wait_for_retrain(parent))
+>  		return false;
+>  
+> -	pcie_capability_read_word(parent, PCI_EXP_LNKCTL, &reg16);
+> -	reg16 |= PCI_EXP_LNKCTL_RL;
+> -	pcie_capability_write_word(parent, PCI_EXP_LNKCTL, reg16);
+> +	pcie_capability_set_word(parent, PCI_EXP_LNKCTL, PCI_EXP_LNKCTL_RL);
+>  	if (parent->clear_retrain_link) {
 
-For multiple commands the driver was not correctly validating the shader
-stages resulting in possible kernel oopses. The validation code was only.
-if ever, checking the upper bound on the shader stages but never a lower
-bound (valid shader stages start at 1 not 0).
+This and several other RMW operations in drivers/pci/pcie/aspm.c
+are touched by commit b1689799772a ("PCI/ASPM: Use distinct local
+vars in pcie_retrain_link()") which got applied to pci/enumeration
+this week:
 
-Fixes kernel oopses ending up in vmw_binding_add, e.g.:
-Oops: 0000 [#1] PREEMPT SMP PTI
-CPU: 1 PID: 2443 Comm: testcase Not tainted 6.3.0-rc4-vmwgfx #1
-Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
-RIP: 0010:vmw_binding_add+0x4c/0x140 [vmwgfx]
-Code: 7e 30 49 83 ff 0e 0f 87 ea 00 00 00 4b 8d 04 7f 89 d2 89 cb 48 c1 e0 03 4c 8b b0 40 3d 93 c0 48 8b 80 48 3d 93 c0 49 0f af de <48> 03 1c d0 4c 01 e3 49 8>
-RSP: 0018:ffffb8014416b968 EFLAGS: 00010206
-RAX: ffffffffc0933ec0 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: 00000000ffffffff RSI: ffffb8014416b9c0 RDI: ffffb8014316f000
-RBP: ffffb8014416b998 R08: 0000000000000003 R09: 746f6c735f726564
-R10: ffffffffaaf2bda0 R11: 732e676e69646e69 R12: ffffb8014316f000
-R13: ffffb8014416b9c0 R14: 0000000000000040 R15: 0000000000000006
-FS:  00007fba8c0af740(0000) GS:ffff8a1277c80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000007c0933eb8 CR3: 0000000118244001 CR4: 00000000003706e0
-Call Trace:
- <TASK>
- vmw_view_bindings_add+0xf5/0x1b0 [vmwgfx]
- ? ___drm_dbg+0x8a/0xb0 [drm]
- vmw_cmd_dx_set_shader_res+0x8f/0xc0 [vmwgfx]
- vmw_execbuf_process+0x590/0x1360 [vmwgfx]
- vmw_execbuf_ioctl+0x173/0x370 [vmwgfx]
- ? __drm_dev_dbg+0xb4/0xe0 [drm]
- ? __pfx_vmw_execbuf_ioctl+0x10/0x10 [vmwgfx]
- drm_ioctl_kernel+0xbc/0x160 [drm]
- drm_ioctl+0x2d2/0x580 [drm]
- ? __pfx_vmw_execbuf_ioctl+0x10/0x10 [vmwgfx]
- ? do_fault+0x1a6/0x420
- vmw_generic_ioctl+0xbd/0x180 [vmwgfx]
- vmw_unlocked_ioctl+0x19/0x20 [vmwgfx]
- __x64_sys_ioctl+0x96/0xd0
- do_syscall_64+0x5d/0x90
- ? handle_mm_fault+0xe4/0x2f0
- ? debug_smp_processor_id+0x1b/0x30
- ? fpregs_assert_state_consistent+0x2e/0x50
- ? exit_to_user_mode_prepare+0x40/0x180
- ? irqentry_exit_to_user_mode+0xd/0x20
- ? irqentry_exit+0x3f/0x50
- ? exc_page_fault+0x8b/0x180
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
+https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git/commit/?h=enumeration&id=b1689799772a6f4180f918b0ff66e264a3db9796
 
-Signed-off-by: Zack Rusin <zackr@vmware.com>
-Cc: security@openanolis.org
-Reported-by: Ziming Zhang <ezrakiez@gmail.com>
-Testcase-found-by: Niels De Graef <ndegraef@redhat.com>
-Fixes: d80efd5cb3de ("drm/vmwgfx: Initial DX support")
-Cc: <stable@vger.kernel.org> # v4.3+
----
- drivers/gpu/drm/vmwgfx/vmwgfx_drv.h     | 12 ++++++++++
- drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 29 ++++++++++---------------
- 2 files changed, 23 insertions(+), 18 deletions(-)
+As a result the $SUBJECT_PATCH no longer applies cleanly and needs
+to be respun.
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-index 3810a9984a7f..58bfdf203eca 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-@@ -1513,4 +1513,16 @@ static inline bool vmw_has_fences(struct vmw_private *vmw)
- 	return (vmw_fifo_caps(vmw) & SVGA_FIFO_CAP_FENCE) != 0;
- }
- 
-+static inline bool vmw_shadertype_is_valid(enum vmw_sm_type shader_model,
-+					   u32 shader_type)
-+{
-+	SVGA3dShaderType max_allowed = SVGA3D_SHADERTYPE_PREDX_MAX;
-+
-+	if (shader_model >= VMW_SM_5)
-+		max_allowed = SVGA3D_SHADERTYPE_MAX;
-+	else if (shader_model >= VMW_SM_4)
-+		max_allowed = SVGA3D_SHADERTYPE_DX10_MAX;
-+	return shader_type >= SVGA3D_SHADERTYPE_MIN && shader_type < max_allowed;
-+}
-+
- #endif
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-index 6b9aa2b4ef54..d30c0e3d3ab7 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-@@ -1992,7 +1992,7 @@ static int vmw_cmd_set_shader(struct vmw_private *dev_priv,
- 
- 	cmd = container_of(header, typeof(*cmd), header);
- 
--	if (cmd->body.type >= SVGA3D_SHADERTYPE_PREDX_MAX) {
-+	if (!vmw_shadertype_is_valid(VMW_SM_LEGACY, cmd->body.type)) {
- 		VMW_DEBUG_USER("Illegal shader type %u.\n",
- 			       (unsigned int) cmd->body.type);
- 		return -EINVAL;
-@@ -2115,8 +2115,6 @@ vmw_cmd_dx_set_single_constant_buffer(struct vmw_private *dev_priv,
- 				      SVGA3dCmdHeader *header)
- {
- 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXSetSingleConstantBuffer);
--	SVGA3dShaderType max_shader_num = has_sm5_context(dev_priv) ?
--		SVGA3D_NUM_SHADERTYPE : SVGA3D_NUM_SHADERTYPE_DX10;
- 
- 	struct vmw_resource *res = NULL;
- 	struct vmw_ctx_validation_info *ctx_node = VMW_GET_CTX_NODE(sw_context);
-@@ -2133,6 +2131,14 @@ vmw_cmd_dx_set_single_constant_buffer(struct vmw_private *dev_priv,
- 	if (unlikely(ret != 0))
- 		return ret;
- 
-+	if (!vmw_shadertype_is_valid(dev_priv->sm_type, cmd->body.type) ||
-+	    cmd->body.slot >= SVGA3D_DX_MAX_CONSTBUFFERS) {
-+		VMW_DEBUG_USER("Illegal const buffer shader %u slot %u.\n",
-+			       (unsigned int) cmd->body.type,
-+			       (unsigned int) cmd->body.slot);
-+		return -EINVAL;
-+	}
-+
- 	binding.bi.ctx = ctx_node->ctx;
- 	binding.bi.res = res;
- 	binding.bi.bt = vmw_ctx_binding_cb;
-@@ -2141,14 +2147,6 @@ vmw_cmd_dx_set_single_constant_buffer(struct vmw_private *dev_priv,
- 	binding.size = cmd->body.sizeInBytes;
- 	binding.slot = cmd->body.slot;
- 
--	if (binding.shader_slot >= max_shader_num ||
--	    binding.slot >= SVGA3D_DX_MAX_CONSTBUFFERS) {
--		VMW_DEBUG_USER("Illegal const buffer shader %u slot %u.\n",
--			       (unsigned int) cmd->body.type,
--			       (unsigned int) binding.slot);
--		return -EINVAL;
--	}
--
- 	vmw_binding_add(ctx_node->staged, &binding.bi, binding.shader_slot,
- 			binding.slot);
- 
-@@ -2207,15 +2205,13 @@ static int vmw_cmd_dx_set_shader_res(struct vmw_private *dev_priv,
- {
- 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXSetShaderResources) =
- 		container_of(header, typeof(*cmd), header);
--	SVGA3dShaderType max_allowed = has_sm5_context(dev_priv) ?
--		SVGA3D_SHADERTYPE_MAX : SVGA3D_SHADERTYPE_DX10_MAX;
- 
- 	u32 num_sr_view = (cmd->header.size - sizeof(cmd->body)) /
- 		sizeof(SVGA3dShaderResourceViewId);
- 
- 	if ((u64) cmd->body.startView + (u64) num_sr_view >
- 	    (u64) SVGA3D_DX_MAX_SRVIEWS ||
--	    cmd->body.type >= max_allowed) {
-+	    !vmw_shadertype_is_valid(dev_priv->sm_type, cmd->body.type)) {
- 		VMW_DEBUG_USER("Invalid shader binding.\n");
- 		return -EINVAL;
- 	}
-@@ -2239,8 +2235,6 @@ static int vmw_cmd_dx_set_shader(struct vmw_private *dev_priv,
- 				 SVGA3dCmdHeader *header)
- {
- 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXSetShader);
--	SVGA3dShaderType max_allowed = has_sm5_context(dev_priv) ?
--		SVGA3D_SHADERTYPE_MAX : SVGA3D_SHADERTYPE_DX10_MAX;
- 	struct vmw_resource *res = NULL;
- 	struct vmw_ctx_validation_info *ctx_node = VMW_GET_CTX_NODE(sw_context);
- 	struct vmw_ctx_bindinfo_shader binding;
-@@ -2251,8 +2245,7 @@ static int vmw_cmd_dx_set_shader(struct vmw_private *dev_priv,
- 
- 	cmd = container_of(header, typeof(*cmd), header);
- 
--	if (cmd->body.type >= max_allowed ||
--	    cmd->body.type < SVGA3D_SHADERTYPE_MIN) {
-+	if (!vmw_shadertype_is_valid(dev_priv->sm_type, cmd->body.type)) {
- 		VMW_DEBUG_USER("Illegal shader type %u.\n",
- 			       (unsigned int) cmd->body.type);
- 		return -EINVAL;
--- 
-2.39.2
+Thanks,
 
+Lukas
