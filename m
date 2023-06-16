@@ -2,49 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 662197339F6
-	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 21:35:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2348E7339F3
+	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 21:35:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232489AbjFPTfJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 16 Jun 2023 15:35:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35816 "EHLO
+        id S245126AbjFPTfH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 16 Jun 2023 15:35:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345543AbjFPTfI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 15:35:08 -0400
+        with ESMTP id S232355AbjFPTfH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 15:35:07 -0400
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 451D610D8;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 484291715;
         Fri, 16 Jun 2023 12:35:06 -0700 (PDT)
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id BD8B11C0E70; Fri, 16 Jun 2023 21:21:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-        t=1686943283;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=2+gFMPS9WwhZRw1F6SzcR7U1vGuPtvHeVgBGYeYYC6A=;
-        b=oNRyRkePJgSlMzbW/yS+aAyMbho0lBjCJwyurekTctOfEfRAx15dy6j7FHqSjMevssX0Ql
-        1ap5vluAvbu75Qt0nOUHXXQ4PxKRB9G5EVWP0tEG/UYYWcEYLOm0Q7XP/2VPEbSKMRe5wz
-        9MBB1tmohhmvRfrxN5nChDwkUiszbWc=
-Date:   Fri, 16 Jun 2023 21:21:23 +0200
-From:   Pavel Machek <pavel@ucw.cz>
+        id 3B2201C0E71; Fri, 16 Jun 2023 21:24:55 +0200 (CEST)
+Date:   Fri, 16 Jun 2023 21:24:54 +0200
+From:   Pavel Machek <pavel@denx.de>
 To:     Sasha Levin <sashal@kernel.org>
 Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        YongSu Yoo <yongsuyoo0215@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>, v4bel@theori.io,
-        linma@zju.edu.cn, linux-media@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.3 23/67] media: dvb_ca_en50221: fix a size
- write bug
-Message-ID: <ZIy2MxIvrIABE1vX@duo.ucw.cz>
-References: <20230525183144.1717540-1-sashal@kernel.org>
- <20230525183144.1717540-23-sashal@kernel.org>
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        lgirdwood@gmail.com, peter.ujfalusi@linux.intel.com,
+        yung-chuan.liao@linux.intel.com, ranjani.sridharan@linux.intel.com,
+        daniel.baluta@nxp.com, broonie@kernel.org, perex@perex.cz,
+        tiwai@suse.com, sound-open-firmware@alsa-project.org,
+        alsa-devel@alsa-project.org
+Subject: Re: [PATCH AUTOSEL 6.1 28/57] ASoC: SOF: sof-client-probes: fix
+ pm_runtime imbalance in error handling
+Message-ID: <ZIy3BsIKVkfuolO6@duo.ucw.cz>
+References: <20230525183607.1793983-1-sashal@kernel.org>
+ <20230525183607.1793983-28-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="hOGZ+jrDjYq/U51m"
+        protocol="application/pgp-signature"; boundary="2zJgghhj21IUPJmD"
 Content-Disposition: inline
-In-Reply-To: <20230525183144.1717540-23-sashal@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+In-Reply-To: <20230525183607.1793983-28-sashal@kernel.org>
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NEUTRAL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,41 +46,41 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---hOGZ+jrDjYq/U51m
+--2zJgghhj21IUPJmD
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi!
+There are problems with sign-off chain:
 
-I believe you have typo in the comment:
+> When an error occurs, we need to make sure the device can pm_runtime
+> suspend instead of keeping it active.
+>=20
+> Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com
+> Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com
+> Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com
+> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com
+> Link: https://lore.kernel.org/r/20230512103315.8921-4-peter.ujfalusi@linu=
+x.intel.com
+> Signed-off-by: Mark Brown <broonie@kernel.org
 
-
-> @@ -778,11 +778,13 @@ static int dvb_ca_en50221_read_data(struct dvb_ca_p=
-rivate *ca, int slot,
->   * @buf: The data in this buffer is treated as a complete link-level pac=
-ket to
->   *	 be written.
->   * @bytes_write: Size of ebuf.
-> + * @size_write_flag: A flag on Command Register which says whether the l=
-ink size
-> + * information will be writen or not.
-
-writen -> written.
+">" is missing at the end of lines. Same issue exist with patch 29 in
+the series.
 
 Best regards,
 								Pavel
 --=20
-People of Russia, stop Putin before his war on Ukraine escalates.
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---hOGZ+jrDjYq/U51m
+--2zJgghhj21IUPJmD
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZIy2MwAKCRAw5/Bqldv6
-8n+aAJ94LmLIJ0u61qZEHYBeFOXVlNJvDgCeJY1rg6J/8A0srzUeUam9rJSfzcw=
-=Zt1d
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZIy3BgAKCRAw5/Bqldv6
+8sX6AKCEkTFkpXdc6+RUh29AoVqI5UUGowCgrlkOt6/IHkzOxXnDBB5R0J0aT2s=
+=ZGl3
 -----END PGP SIGNATURE-----
 
---hOGZ+jrDjYq/U51m--
+--2zJgghhj21IUPJmD--
