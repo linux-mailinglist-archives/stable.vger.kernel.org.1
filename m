@@ -2,38 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEF0B7339FD
-	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 21:35:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1042733A07
+	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 21:36:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346155AbjFPTf0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 16 Jun 2023 15:35:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35990 "EHLO
+        id S229938AbjFPTgx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 16 Jun 2023 15:36:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346193AbjFPTfZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 15:35:25 -0400
+        with ESMTP id S1344544AbjFPTgv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 15:36:51 -0400
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68C2235A0;
-        Fri, 16 Jun 2023 12:35:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A20435A7;
+        Fri, 16 Jun 2023 12:36:49 -0700 (PDT)
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 213431C0E70; Fri, 16 Jun 2023 21:35:22 +0200 (CEST)
-Date:   Fri, 16 Jun 2023 21:35:21 +0200
+        id 4BB1C1C0AB3; Fri, 16 Jun 2023 21:36:48 +0200 (CEST)
+Date:   Fri, 16 Jun 2023 21:36:47 +0200
 From:   Pavel Machek <pavel@denx.de>
 To:     Sasha Levin <sashal@kernel.org>
 Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Osama Muhammad <osmtendev@gmail.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        krzysztof.kozlowski@linaro.org, netdev@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 4.14 4/6] nfcsim.c: Fix error checking for
- debugfs_create_dir
-Message-ID: <ZIy5ecuHQUP1wUu2@duo.ucw.cz>
+        Helge Deller <deller@gmx.de>, javierm@redhat.com,
+        tzimmermann@suse.de, zyytlz.wz@163.com,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH AUTOSEL 4.14 5/6] fbdev: imsttfb: Release framebuffer and
+ dealloc cmap on error path
+Message-ID: <ZIy5z07fFRazOshY@duo.ucw.cz>
 References: <20230615114016.649846-1-sashal@kernel.org>
- <20230615114016.649846-4-sashal@kernel.org>
+ <20230615114016.649846-5-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="pxvocpSbgigqWfO6"
+        protocol="application/pgp-signature"; boundary="Jt24rwAEGiQvM7C/"
 Content-Disposition: inline
-In-Reply-To: <20230615114016.649846-4-sashal@kernel.org>
+In-Reply-To: <20230615114016.649846-5-sashal@kernel.org>
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
         SPF_NEUTRAL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
         version=3.4.6
@@ -44,60 +43,54 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---pxvocpSbgigqWfO6
+--Jt24rwAEGiQvM7C/
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> [ Upstream commit 9b9e46aa07273ceb96866b2e812b46f1ee0b8d2f ]
+> From: Helge Deller <deller@gmx.de>
 >=20
-> This patch fixes the error checking in nfcsim.c.
-> The DebugFS kernel API is developed in
-> a way that the caller can safely ignore the errors that
-> occur during the creation of DebugFS nodes.
+> [ Upstream commit 5cf9a090a39c97f4506b7b53739d469b1c05a7e9 ]
+>=20
+> Add missing cleanups in error path.
 
-I don't think this is good idea; user will wonder why he can't see
-debugfs files, and pr_err() is quite suitable way to handle this.
-
-Anyway, this does not really fix a bug, so we should not be putting it
-into stable.
+If we insist this is important enough for -stable, it will need
+tweaking. The function returns void, so we can't return a value.
 
 Best regards,
 								Pavel
-
->  drivers/nfc/nfcsim.c | 4 ----
->  1 file changed, 4 deletions(-)
->=20
-> diff --git a/drivers/nfc/nfcsim.c b/drivers/nfc/nfcsim.c
-> index 533e3aa6275cd..cf07b366500e9 100644
-> --- a/drivers/nfc/nfcsim.c
-> +++ b/drivers/nfc/nfcsim.c
-> @@ -345,10 +345,6 @@ static struct dentry *nfcsim_debugfs_root;
->  static void nfcsim_debugfs_init(void)
->  {
->  	nfcsim_debugfs_root =3D debugfs_create_dir("nfcsim", NULL);
-> -
-> -	if (!nfcsim_debugfs_root)
-> -		pr_err("Could not create debugfs entry\n");
-> -
->  }
+							=09
+> +++ b/drivers/video/fbdev/imsttfb.c
+> @@ -1452,9 +1452,13 @@ static void init_imstt(struct fb_info *info)
+>  	              FBINFO_HWACCEL_FILLRECT |
+>  	              FBINFO_HWACCEL_YPAN;
 > =20
->  static void nfcsim_debugfs_remove(void)
+> -	fb_alloc_cmap(&info->cmap, 0, 0);
+> +	if (fb_alloc_cmap(&info->cmap, 0, 0)) {
+> +		framebuffer_release(info);
+> +		return -ENODEV;
+> +	}
+> =20
+>  	if (register_framebuffer(info) < 0) {
+> +		fb_dealloc_cmap(&info->cmap);
+>  		framebuffer_release(info);
+>  		return;
+>  	}
 
 --=20
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---pxvocpSbgigqWfO6
+--Jt24rwAEGiQvM7C/
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZIy5eQAKCRAw5/Bqldv6
-8leTAJ0ThYWaZ8JRFKMl8B8izHMZGm82CQCgjlPLfPVE1r8QIS26e8qGShfD+CU=
-=Onr6
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZIy5zwAKCRAw5/Bqldv6
+8meCAKCgkOAKsby1J3tn/AOi2M2+igh3pQCgmXSLqtqZflXALW7hzkAjZz5lTd0=
+=/Q0f
 -----END PGP SIGNATURE-----
 
---pxvocpSbgigqWfO6--
+--Jt24rwAEGiQvM7C/--
