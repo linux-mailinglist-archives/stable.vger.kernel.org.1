@@ -2,97 +2,169 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CD61733853
-	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 20:49:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A882733867
+	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 20:53:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229654AbjFPStD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 16 Jun 2023 14:49:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60158 "EHLO
+        id S1345323AbjFPSxc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 16 Jun 2023 14:53:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345304AbjFPSs5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 14:48:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA89E3C06
-        for <stable@vger.kernel.org>; Fri, 16 Jun 2023 11:48:52 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4575162B94
-        for <stable@vger.kernel.org>; Fri, 16 Jun 2023 18:48:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33B9DC433C8;
-        Fri, 16 Jun 2023 18:48:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686941331;
-        bh=5BYukNuE46B5WJslTSIxIIPnV1IlIfSwwR0vY1vU9mg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=xmHpYTFGrjfzOWqlIaJoyEJBDGRLX+Hmm4wEpiLMSQms80NGDo5AEIpxclhwYWNa5
-         QAxSAYxNTrJhWii7S0W1lwwKOBWdZNOP6wXutNZXx8dCnG33pdlS2JXz3rIdrAM22X
-         KgSblhUsHBuqT5ZsvBaZeT4zGlariwRhDYD5k4VA=
-Date:   Fri, 16 Jun 2023 20:48:48 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Johannes Berg <johannes@sipsolutions.net>
-Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "patches@lists.linux.dev" <patches@lists.linux.dev>,
-        Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.3 038/160] wifi: cfg80211: fix locking in regulatory
- disconnect
-Message-ID: <2023061628-nimbly-ebook-3635@gregkh>
-References: <20230612101715.129581706@linuxfoundation.org>
- <20230612101716.793331479@linuxfoundation.org>
- <23db24e1efd0ce7904d0e57289009852cd58e29b.camel@sipsolutions.net>
- <2023061216-pry-mournful-beed@gregkh>
- <1bcc48094ecae8b810e394abb7101bb8f4acb860.camel@sipsolutions.net>
+        with ESMTP id S1345156AbjFPSx0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 14:53:26 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D8AE3A9E;
+        Fri, 16 Jun 2023 11:53:22 -0700 (PDT)
+Date:   Fri, 16 Jun 2023 18:53:19 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1686941600;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vwwe934FIcaw97RpxpbJdTmS2f0r5fdZZt43SX5cE2I=;
+        b=BojAA2eXo0THrTKJEZbIpojWx9evZe7MU47eHPGhLHbaPCA4AaV/euHLRXdBNIBytdAPDM
+        epV2Ac9WAcLrmg9xXoYQGN8uO4mnr/MXB8C9HIOrQX3uoY4Y7gpn3AbYqOPvyxM3k3MGk1
+        hKM2HBB1D58LhPQprApVrNrOTsN99rYYi4VQ3wCpgwQkRqj5BZu+I2JIPuy+YiEot603rd
+        jNpoH9+HU1OEttuG8EkrXrJyF7Hvog+3onJGDwonYcK7zOJta9yNdMD8mWxZKRWoOoj5HL
+        2SjUWR3GxICjTipPDufuqQk5tte59lho7hq6I0Yk34XFgfRT0tLzrg7nxm4v4A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1686941600;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vwwe934FIcaw97RpxpbJdTmS2f0r5fdZZt43SX5cE2I=;
+        b=tkIMnXU+b12oBdoyl2GFlPd9wmGyB4UoBkOZvEp7hql83pwsz7qXRQwXu8zxL4obV5XfdV
+        3v5QnXA07FHsZLBQ==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/urgent] tick/common: Align tick period during sched_timer setup
+Cc:     Mathias Krause <minipli@grsecurity.net>,
+        "Bhatnagar, Rishabh" <risbhat@amazon.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "Richard W.M. Jones" <rjones@redhat.com>,
+        SeongJae Park <sj@kernel.org>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <5a56290d-806e-b9a5-f37c-f21958b5a8c0@grsecurity.net>
+References: <5a56290d-806e-b9a5-f37c-f21958b5a8c0@grsecurity.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1bcc48094ecae8b810e394abb7101bb8f4acb860.camel@sipsolutions.net>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Message-ID: <168694159988.404.1902283865304443546.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Jun 16, 2023 at 06:51:15PM +0200, Johannes Berg wrote:
-> On Mon, 2023-06-12 at 14:10 +0200, Greg Kroah-Hartman wrote:
-> > On Mon, Jun 12, 2023 at 01:43:23PM +0200, Johannes Berg wrote:
-> > > On Mon, 2023-06-12 at 10:26 +0000, Greg Kroah-Hartman wrote:
-> > > > From: Johannes Berg <johannes.berg@intel.com>
-> > > > 
-> > > > [ Upstream commit f7e60032c6618dfd643c7210d5cba2789e2de2e2 ]
-> > > > 
-> > > > This should use wiphy_lock() now instead of requiring the
-> > > > RTNL, since __cfg80211_leave() via cfg80211_leave() is now
-> > > > requiring that lock to be held.
-> > > 
-> > > You should perhaps hold off on this. While all this is correct, I missed
-> > > something that Dan found later:
-> > > 
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git/commit/?id=996c3117dae4c02b38a3cb68e5c2aec9d907ec15
-> > > 
-> > > I'll have this in the next pull request.
-> > > 
-> > > I suppose _both_ should go to stable, and nobody ever seems to run into
-> > > this patch (at least lockdep would loudly complain), but stills seems
-> > > better in the short term to have missing locking than a deadlock.
-> > 
-> > Thanks for letting me know, I've dropped this from all queues now.
-> > 
-> 
-> The above commit has landed in Linus's tree, and I think you actually
-> should pick up both of these now - there's a lockdep assertion there and
-> locking issues triggered that I (if erroneously) fixed. Seems that we
-> hardly ever get to that code though.
-> 
-> Should I send those patches individually?
+The following commit has been merged into the timers/urgent branch of tip:
 
-I can pick them up from here, as the git ids are present and that's all
-I need, right?
+Commit-ID:     13bb06f8dd42071cb9a49f6e21099eea05d4b856
+Gitweb:        https://git.kernel.org/tip/13bb06f8dd42071cb9a49f6e21099eea05d4b856
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Thu, 15 Jun 2023 11:18:30 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 16 Jun 2023 20:45:28 +02:00
 
-thanks,
+tick/common: Align tick period during sched_timer setup
 
-greg k-h
+The tick period is aligned very early while the first clock_event_device is
+registered. At that point the system runs in periodic mode and switches
+later to one-shot mode if possible.
+
+The next wake-up event is programmed based on the aligned value
+(tick_next_period) but the delta value, that is used to program the
+clock_event_device, is computed based on ktime_get().
+
+With the subtracted offset, the device fires earlier than the exact time
+frame. With a large enough offset the system programs the timer for the
+next wake-up and the remaining time left is too small to make any boot
+progress. The system hangs.
+
+Move the alignment later to the setup of tick_sched timer. At this point
+the system switches to oneshot mode and a high resolution clocksource is
+available. At this point it is safe to align tick_next_period because
+ktime_get() will now return accurate (not jiffies based) time.
+
+[bigeasy: Patch description + testing].
+
+Fixes: e9523a0d81899 ("tick/common: Align tick period with the HZ tick.")
+Reported-by: Mathias Krause <minipli@grsecurity.net>
+Reported-by: "Bhatnagar, Rishabh" <risbhat@amazon.com>
+Suggested-by: Mathias Krause <minipli@grsecurity.net>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Richard W.M. Jones <rjones@redhat.com>
+Tested-by: Mathias Krause <minipli@grsecurity.net>
+Acked-by: SeongJae Park <sj@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/5a56290d-806e-b9a5-f37c-f21958b5a8c0@grsecurity.net
+Link: https://lore.kernel.org/12c6f9a3-d087-b824-0d05-0d18c9bc1bf3@amazon.com
+Link: https://lore.kernel.org/r/20230615091830.RxMV2xf_@linutronix.de
+---
+ kernel/time/tick-common.c | 13 +------------
+ kernel/time/tick-sched.c  | 13 ++++++++++++-
+ 2 files changed, 13 insertions(+), 13 deletions(-)
+
+diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
+index 65b8658..e9138cd 100644
+--- a/kernel/time/tick-common.c
++++ b/kernel/time/tick-common.c
+@@ -218,19 +218,8 @@ static void tick_setup_device(struct tick_device *td,
+ 		 * this cpu:
+ 		 */
+ 		if (tick_do_timer_cpu == TICK_DO_TIMER_BOOT) {
+-			ktime_t next_p;
+-			u32 rem;
+-
+ 			tick_do_timer_cpu = cpu;
+-
+-			next_p = ktime_get();
+-			div_u64_rem(next_p, TICK_NSEC, &rem);
+-			if (rem) {
+-				next_p -= rem;
+-				next_p += TICK_NSEC;
+-			}
+-
+-			tick_next_period = next_p;
++			tick_next_period = ktime_get();
+ #ifdef CONFIG_NO_HZ_FULL
+ 			/*
+ 			 * The boot CPU may be nohz_full, in which case set
+diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+index 5225467..42c0be3 100644
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -161,8 +161,19 @@ static ktime_t tick_init_jiffy_update(void)
+ 	raw_spin_lock(&jiffies_lock);
+ 	write_seqcount_begin(&jiffies_seq);
+ 	/* Did we start the jiffies update yet ? */
+-	if (last_jiffies_update == 0)
++	if (last_jiffies_update == 0) {
++		u32 rem;
++
++		/*
++		 * Ensure that the tick is aligned to a multiple of
++		 * TICK_NSEC.
++		 */
++		div_u64_rem(tick_next_period, TICK_NSEC, &rem);
++		if (rem)
++			tick_next_period += TICK_NSEC - rem;
++
+ 		last_jiffies_update = tick_next_period;
++	}
+ 	period = last_jiffies_update;
+ 	write_seqcount_end(&jiffies_seq);
+ 	raw_spin_unlock(&jiffies_lock);
