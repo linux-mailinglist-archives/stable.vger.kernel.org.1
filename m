@@ -2,104 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7535733315
-	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 16:07:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8ABF733335
+	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 16:12:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229769AbjFPOHo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 16 Jun 2023 10:07:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58004 "EHLO
+        id S244717AbjFPOME (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 16 Jun 2023 10:12:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229965AbjFPOHn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 10:07:43 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35664270B
-        for <stable@vger.kernel.org>; Fri, 16 Jun 2023 07:07:42 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id ADC121F899;
-        Fri, 16 Jun 2023 14:07:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1686924461; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=dmuBd6wfu7xPrmCdhUYbYsyqzue8SYpjsKk5yr/LlrU=;
-        b=UFBkavSSIUO0QX52+bC3F5Hj1U8z2HKjUglAKZXCyqzpakAQbxNCc1QsIlC7STxxeHnrRO
-        k5zr44z66v5bt3WUO79x3zChdemXYt7AA7Q6SWw/O5ER8euekm6b8Jf90zhBEWnZTR8RDV
-        Wa2a2J09IqZGHkETp3MIE/qjHxqmENM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1686924461;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=dmuBd6wfu7xPrmCdhUYbYsyqzue8SYpjsKk5yr/LlrU=;
-        b=A8Jrx1yi1h1mMdoNLveY0JtXRr9Yqkgxg0qTBN68gy6IFVjgbI1cMkQ51vgfMdn6dAgP3H
-        K1ORVKXrVXjq6jBg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 815CE1391E;
-        Fri, 16 Jun 2023 14:07:41 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id yBh0Hq1sjGTfWgAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Fri, 16 Jun 2023 14:07:41 +0000
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-To:     airlied@redhat.com, jfalempe@redhat.com, daniel@ffwll.ch,
-        jammy_huang@aspeedtech.com
-Cc:     dri-devel@lists.freedesktop.org,
-        Thomas Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org
-Subject: [PATCH 01/14] drm/ast: Fix DRAM init on AST2200
-Date:   Fri, 16 Jun 2023 15:52:23 +0200
-Message-ID: <20230616140739.32042-2-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230616140739.32042-1-tzimmermann@suse.de>
-References: <20230616140739.32042-1-tzimmermann@suse.de>
+        with ESMTP id S229965AbjFPOMD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 10:12:03 -0400
+Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83AF41BF8
+        for <stable@vger.kernel.org>; Fri, 16 Jun 2023 07:12:02 -0700 (PDT)
+Received: by mail-oi1-x232.google.com with SMTP id 5614622812f47-38c35975545so624553b6e.1
+        for <stable@vger.kernel.org>; Fri, 16 Jun 2023 07:12:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686924722; x=1689516722;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZR8l87uxMTn24HKBJkRWEV1gNPPBQJxvGEngYiN4xkQ=;
+        b=j5WOs6Ftj3JBiMEpAfWucV9BkxMbsAsHbfb/l4V8+uuD51kAZDiU5t9DOOKK3gIUdK
+         z9T5+6pWqpRNpHx89X123mOstQwn8SvXyIWxcRtb37fzf5RQnxMqLPqN/wCMf9oe+dmp
+         iGU57FwGUdCtpT2+tLzrqq3Iz9+gnZYoLyPziEk/k1Hhc3UbDoboIi6Tnwjti2rLP5bT
+         f0A66MNudWL5BGLCPp3QmxDS8nTprmANOSnj4ClSTXybkFimf+gdma/1onkcQThsbAtX
+         febgJqw5hpeT4XLhqWhio+OnMSspZt6yEm4qlxsfu6ZJPBH3PE3VzK1ayp9e8U467lEA
+         cAhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686924722; x=1689516722;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZR8l87uxMTn24HKBJkRWEV1gNPPBQJxvGEngYiN4xkQ=;
+        b=PyWK9YjaNQRgp3aqWpAQapWFUdsSeDykSYYxKE2quc3Q+TEj3DNljFGC0PLOGQPVWQ
+         ej6HEC7hdCrZT/aFqJ09aRPjg8AWSF8/Y81SkDwqgwX149n73Jp0xJ41eSMae4O0/AAU
+         1twGpQpkkQ5TWzdH7amFjnM9mgiGmDuQyAdeLBPuTdl6z8zftdw3LMtKf4oMeN+w7Hl1
+         7aOap/oFSEiKXNweoCzmGjSDebv+BCmMilZxfldxfi3EQHmWSar3lxIgxHmDzw2fW3Pu
+         PXVTE0+ag0f2TTDVC7ViVcM8TABcrKuFkX1rc01qY8nEGLp0FFNUvEwn1b2y4DbGglwc
+         PGJw==
+X-Gm-Message-State: AC+VfDw0yqaJDsrWz1Rv/1+4Pz+0601h+rXGwRD2YjNNpwn3fOD/Te6X
+        Vz1PDswzPbTVunQypTg1Drw4DVhnQ+9OLqrEWCh+3iyn
+X-Google-Smtp-Source: ACHHUZ7S7UcTqzYA4X92kgh1zTF0zzUpPOtfVou4EAWc1BUBVzWSXBetXuQNVekQXln0eh+Olb1I2/5nGt05X9ocfS4=
+X-Received: by 2002:a05:6808:2394:b0:39e:78ae:1d2c with SMTP id
+ bp20-20020a056808239400b0039e78ae1d2cmr2519162oib.58.1686924721691; Fri, 16
+ Jun 2023 07:12:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230616062708.15913-1-samuel.pitoiset@gmail.com> <20230616131407.170149-1-samuel.pitoiset@gmail.com>
+In-Reply-To: <20230616131407.170149-1-samuel.pitoiset@gmail.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Fri, 16 Jun 2023 10:11:50 -0400
+Message-ID: <CADnq5_MxYHW8-LYvm2KevPQaiQGh=Yzq1QO7ejc7hwzjeZXW9Q@mail.gmail.com>
+Subject: Re: [PATCH v2] drm/amdgpu: fix clearing mappings for BOs that are
+ always valid in VM
+To:     Samuel Pitoiset <samuel.pitoiset@gmail.com>
+Cc:     amd-gfx@lists.freedesktop.org, stable@vger.kernel.org,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Fix the test for the AST2200 in the DRAM initialization. The value
-in ast->chip has to be compared against an enum constant instead of
-a numerical value.
+Applied.  Thanks!
 
-This bug got introduced when the driver was first imported into the
-kernel.
+Alex
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 312fec1405dd ("drm: Initial KMS driver for AST (ASpeed Technologies) 2000 series (v2)")
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.5+
----
- drivers/gpu/drm/ast/ast_post.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/ast/ast_post.c b/drivers/gpu/drm/ast/ast_post.c
-index a005aec18a020..0262aaafdb1c5 100644
---- a/drivers/gpu/drm/ast/ast_post.c
-+++ b/drivers/gpu/drm/ast/ast_post.c
-@@ -291,7 +291,7 @@ static void ast_init_dram_reg(struct drm_device *dev)
- 				;
- 			} while (ast_read32(ast, 0x10100) != 0xa8);
- 		} else {/* AST2100/1100 */
--			if (ast->chip == AST2100 || ast->chip == 2200)
-+			if (ast->chip == AST2100 || ast->chip == AST2200)
- 				dram_reg_info = ast2100_dram_table_data;
- 			else
- 				dram_reg_info = ast1100_dram_table_data;
--- 
-2.41.0
-
+On Fri, Jun 16, 2023 at 9:38=E2=80=AFAM Samuel Pitoiset
+<samuel.pitoiset@gmail.com> wrote:
+>
+> Per VM BOs must be marked as moved or otherwise their ranges are not
+> updated on use which might be necessary when the replace operation
+> splits mappings.
+>
+> This fixes random GPU hangs when replacing sparse mappings from the
+> userspace, while OP_MAP/OP_UNMAP works fine because always valid BOs
+> are correctly handled there.
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Samuel Pitoiset <samuel.pitoiset@gmail.com>
+> Reviewed-by: Christian K=C3=B6nig <christian.koenig@amd.com>
+> ---
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd=
+/amdgpu/amdgpu_vm.c
+> index 143d11afe0e5..eff73c428b12 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+> @@ -1771,18 +1771,30 @@ int amdgpu_vm_bo_clear_mappings(struct amdgpu_dev=
+ice *adev,
+>
+>         /* Insert partial mapping before the range */
+>         if (!list_empty(&before->list)) {
+> +               struct amdgpu_bo *bo =3D before->bo_va->base.bo;
+> +
+>                 amdgpu_vm_it_insert(before, &vm->va);
+>                 if (before->flags & AMDGPU_PTE_PRT)
+>                         amdgpu_vm_prt_get(adev);
+> +
+> +               if (bo && bo->tbo.base.resv =3D=3D vm->root.bo->tbo.base.=
+resv &&
+> +                   !before->bo_va->base.moved)
+> +                       amdgpu_vm_bo_moved(&before->bo_va->base);
+>         } else {
+>                 kfree(before);
+>         }
+>
+>         /* Insert partial mapping after the range */
+>         if (!list_empty(&after->list)) {
+> +               struct amdgpu_bo *bo =3D after->bo_va->base.bo;
+> +
+>                 amdgpu_vm_it_insert(after, &vm->va);
+>                 if (after->flags & AMDGPU_PTE_PRT)
+>                         amdgpu_vm_prt_get(adev);
+> +
+> +               if (bo && bo->tbo.base.resv =3D=3D vm->root.bo->tbo.base.=
+resv &&
+> +                   !after->bo_va->base.moved)
+> +                       amdgpu_vm_bo_moved(&after->bo_va->base);
+>         } else {
+>                 kfree(after);
+>         }
+> --
+> 2.41.0
+>
