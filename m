@@ -2,105 +2,147 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A63B673339C
-	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 16:32:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52C317333BB
+	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 16:37:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230027AbjFPOcq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 16 Jun 2023 10:32:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41546 "EHLO
+        id S1344465AbjFPOhx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 16 Jun 2023 10:37:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229577AbjFPOco (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 10:32:44 -0400
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D265F30C5
-        for <stable@vger.kernel.org>; Fri, 16 Jun 2023 07:32:38 -0700 (PDT)
-Received: from loongson.cn (unknown [10.20.42.43])
-        by gateway (Coremail) with SMTP id _____8BxKuqFcoxkzwEGAA--.12824S3;
-        Fri, 16 Jun 2023 22:32:37 +0800 (CST)
-Received: from [10.20.42.43] (unknown [10.20.42.43])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8AxZuSEcoxkJV8dAA--.17807S3;
-        Fri, 16 Jun 2023 22:32:37 +0800 (CST)
-Message-ID: <a6f539ba-4f93-7136-36af-dad40d13c03c@loongson.cn>
-Date:   Fri, 16 Jun 2023 22:32:36 +0800
+        with ESMTP id S1344132AbjFPOhx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 10:37:53 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 630362D73;
+        Fri, 16 Jun 2023 07:37:52 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 1203421BD7;
+        Fri, 16 Jun 2023 14:37:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1686926271; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=/pc5e01Az30d0Y7EOVtqX1ghgv8iymBCr4cTKd6NYVc=;
+        b=pxiGv5A2Uk44sRbQW8ymLZStrLHP4hKSsy0fjcizLCRTrfOsJG0muZR3LEEx8hedi2Y12c
+        UN/AmOPNHmjpHGLP/iSfI0oOSh599hdlydntQLyGKqzf04bxSwv3phpZ4hWZoW7Gyw4RhJ
+        16UYf+QqbKlh7hTKgcFgoNPyizpCKl8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1686926271;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=/pc5e01Az30d0Y7EOVtqX1ghgv8iymBCr4cTKd6NYVc=;
+        b=xbba1t2427WO4fkI830Ss7ilzxtJFad8dVD0KbNe0PbI0dCLW0VWSnO2LCR54TUdKusRHB
+        iSViPIkRyVy1g7Dw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9CDB71330B;
+        Fri, 16 Jun 2023 14:37:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id z3+tJL5zjGRFaQAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Fri, 16 Jun 2023 14:37:50 +0000
+Message-ID: <9f74b8de-9a1b-2547-5eab-d4b4349a6a81@suse.de>
+Date:   Fri, 16 Jun 2023 16:37:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [01/14] drm/ast: Fix DRAM init on AST2200
+ Thunderbird/102.11.2
+Subject: Re: [PATCH v3 01/38] backlight/bd6107: Compare against struct
+ fb_info.device
 Content-Language: en-US
-To:     Thomas Zimmermann <tzimmermann@suse.de>, airlied@redhat.com,
-        jfalempe@redhat.com, daniel@ffwll.ch, jammy_huang@aspeedtech.com
-Cc:     stable@vger.kernel.org, dri-devel@lists.freedesktop.org
-References: <20230616140739.32042-2-tzimmermann@suse.de>
-From:   Sui Jingfeng <suijingfeng@loongson.cn>
-Organization: Loongson
-In-Reply-To: <20230616140739.32042-2-tzimmermann@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: AQAAf8AxZuSEcoxkJV8dAA--.17807S3
-X-CM-SenderInfo: xvxlyxpqjiv03j6o00pqjv00gofq/
-X-Coremail-Antispam: 1Uk129KBj93XoWxJr4fKFyrJryUtF4fuF18tFc_yoW8Gr1xpr
-        43Jr9YvrZ5Jw1Yyay7ua1DWFy3Zan5Ja4I9F1kAwna9r90gwn0gF90kw4rGry3ZrWxAryU
-        tFnIqry7GF1vy3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
-        sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-        0xBIdaVrnRJUUUPIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-        IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-        e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-        0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-        xVWxJr0_GcWln4kS14v26r126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
-        xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q
-        6rW5McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
-        1lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxG
-        rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUAVWUtwC20s026c02F40E14
-        v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
-        c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW8JVW5JwCI42IY6xIIjxv20xvEc7CjxVAFwI
-        0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4U
-        MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jz5lbUUU
-        UU=
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     Lee Jones <lee@kernel.org>
+Cc:     daniel.thompson@linaro.org,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        linux-kernel@vger.kernel.org, geert+renesas@glider.be,
+        linux-sh@vger.kernel.org, jingoohan1@gmail.com, deller@gmx.de,
+        linux-staging@lists.linux.dev, javierm@redhat.com,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        michael.j.ruhl@intel.com, stable@vger.kernel.org,
+        linux-omap@vger.kernel.org, sam@ravnborg.org,
+        dan.carpenter@linaro.org
+References: <20230613110953.24176-1-tzimmermann@suse.de>
+ <20230613110953.24176-2-tzimmermann@suse.de>
+ <20230614135157.GU3635807@google.com>
+ <5720dbc1-a3e4-2b23-28cd-f889d3a5a4fc@suse.de>
+In-Reply-To: <5720dbc1-a3e4-2b23-28cd-f889d3a5a4fc@suse.de>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------uqxf1PmsVcgGFzKAiF8s860m"
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------uqxf1PmsVcgGFzKAiF8s860m
+Content-Type: multipart/mixed; boundary="------------Kge1wVVwVTDuGXE1lqDWar4A";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Lee Jones <lee@kernel.org>
+Cc: daniel.thompson@linaro.org,
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+ linux-kernel@vger.kernel.org, geert+renesas@glider.be,
+ linux-sh@vger.kernel.org, jingoohan1@gmail.com, deller@gmx.de,
+ linux-staging@lists.linux.dev, javierm@redhat.com,
+ dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+ michael.j.ruhl@intel.com, stable@vger.kernel.org,
+ linux-omap@vger.kernel.org, sam@ravnborg.org, dan.carpenter@linaro.org
+Message-ID: <9f74b8de-9a1b-2547-5eab-d4b4349a6a81@suse.de>
+Subject: Re: [PATCH v3 01/38] backlight/bd6107: Compare against struct
+ fb_info.device
+References: <20230613110953.24176-1-tzimmermann@suse.de>
+ <20230613110953.24176-2-tzimmermann@suse.de>
+ <20230614135157.GU3635807@google.com>
+ <5720dbc1-a3e4-2b23-28cd-f889d3a5a4fc@suse.de>
+In-Reply-To: <5720dbc1-a3e4-2b23-28cd-f889d3a5a4fc@suse.de>
 
-On 2023/6/16 21:52, Thomas Zimmermann wrote:
-> Fix the test for the AST2200 in the DRAM initialization. The value
-> in ast->chip has to be compared against an enum constant instead of
-> a numerical value.
->
-> This bug got introduced when the driver was first imported into the
-> kernel.
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+--------------Kge1wVVwVTDuGXE1lqDWar4A
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Reviewed-by: Sui Jingfeng <suijingfeng@loongson.cn>
+SGkgTGVlDQoNCkFtIDE0LjA2LjIzIHVtIDE2OjEzIHNjaHJpZWIgVGhvbWFzIFppbW1lcm1h
+bm46DQpbLi4uXQ0KPj4gQ2FuIHRoZSBCYWNrbGlnaHQgcGF0Y2hlcyBiZSBhcHBsaWVkIHdp
+dGhvdXQgdGhlIG90aGVycyBhbmQgdmlzYSB2ZXJzYT8NCj4gDQo+IFVuZm9ydHVuYXRlbHkg
+bm90LiBUaGUgcmVzdCBvZiB0aGUgc2VyaWVzIHJlcXVpcmVzIHRoZSBiYWNrbGlnaHQgcGF0
+Y2hlcy4NCg0KQXJlIHlvdSBPSyB3aXRoIHRoZSBwYXRjaGVzIGdvaW5nIHRocm91Z2ggZHJt
+Pw0KDQpCZXN0IHJlZ2FyZHMNClRob21hcw0KDQo+IA0KPiBCZXN0IHJlZ2FyZHMNCj4gVGhv
+bWFzDQo+IA0KPj4NCj4gDQoNCi0tIA0KVGhvbWFzIFppbW1lcm1hbm4NCkdyYXBoaWNzIERy
+aXZlciBEZXZlbG9wZXINClNVU0UgU29mdHdhcmUgU29sdXRpb25zIEdlcm1hbnkgR21iSA0K
+RnJhbmtlbnN0cmFzc2UgMTQ2LCA5MDQ2MSBOdWVybmJlcmcsIEdlcm1hbnkNCkdGOiBJdm8g
+VG90ZXYsIEFuZHJldyBNeWVycywgQW5kcmV3IE1jRG9uYWxkLCBCb3VkaWVuIE1vZXJtYW4N
+CkhSQiAzNjgwOSAoQUcgTnVlcm5iZXJnKQ0K
 
+--------------Kge1wVVwVTDuGXE1lqDWar4A--
 
-> Fixes: 312fec1405dd ("drm: Initial KMS driver for AST (ASpeed Technologies) 2000 series (v2)")
-> Cc: Dave Airlie <airlied@redhat.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v3.5+
-> ---
->   drivers/gpu/drm/ast/ast_post.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/ast/ast_post.c b/drivers/gpu/drm/ast/ast_post.c
-> index a005aec18a020..0262aaafdb1c5 100644
-> --- a/drivers/gpu/drm/ast/ast_post.c
-> +++ b/drivers/gpu/drm/ast/ast_post.c
-> @@ -291,7 +291,7 @@ static void ast_init_dram_reg(struct drm_device *dev)
->   				;
->   			} while (ast_read32(ast, 0x10100) != 0xa8);
->   		} else {/* AST2100/1100 */
-> -			if (ast->chip == AST2100 || ast->chip == 2200)
-> +			if (ast->chip == AST2100 || ast->chip == AST2200)
->   				dram_reg_info = ast2100_dram_table_data;
->   			else
->   				dram_reg_info = ast1100_dram_table_data;
+--------------uqxf1PmsVcgGFzKAiF8s860m
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
 
--- 
-Jingfeng
+-----BEGIN PGP SIGNATURE-----
 
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmSMc70FAwAAAAAACgkQlh/E3EQov+AF
+FxAAzH7H+UtNiH0YBxQX3fM2qFKzS4qSWBlg3K501Pyci6J+5eAgKYuhwGctklh9HKO9dmkB/Lpt
+X0sRCnnRHSC2K6Ofu4hQOrRv2T51Yz17z9G69YDW0/iDtgkMev1WebyKSyJ2YxJXts5HJffY1hq6
+dBToDogmi+X2RBHKVXDTyIqn0nYt9KAk4EjhmUbkQ4Kdp383yBGdJma0UykmQfznIhNQLNtw3fjv
+TKPM2FzgxpR43x4aUDz12DxdEmsP+DA+6F3iECiW0LiRAvprHE3/9c7vkdhO4hz/NIZuNoGO/HTz
+0TygMS9qSTpeB4+OR502PUp65ZrcK67SoSZ9v/WOntFeQ9zYe+L3rLyvt3/fkbOYWBKF9MgQ33mx
+qrn4cFZSusXpUk4V2p+Ks+XfJP0YIalvFf1dATRQGZYhOYh0oGZPDc+G1EMjpO7uYxKxwE34HJ6i
+zPxtr7lEF0tbvTbIfdF6pkyxK50km6SPWiKRqxn5Nts83C3aw/xAfbpcSeUNYiF5/XErJm5ZSniR
+gwzNaQHAVLgND/Ui5Sh6iM0PpIbfbXRRG4uEpRsXFDE7ArGMQDUbTv6yweN9rQUppjOTUMp49jNM
+hD3j/9H9RSWJZKGxXREFTvP9k2XW82h5450VmiWR4b/Jg386iUX+7jumgmVmf/WOKP+Q4+b8hAqF
+Znk=
+=2ezj
+-----END PGP SIGNATURE-----
+
+--------------uqxf1PmsVcgGFzKAiF8s860m--
