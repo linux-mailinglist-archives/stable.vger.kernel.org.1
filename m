@@ -2,134 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8ABF733335
-	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 16:12:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A63B673339C
+	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 16:32:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244717AbjFPOME (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 16 Jun 2023 10:12:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59926 "EHLO
+        id S230027AbjFPOcq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 16 Jun 2023 10:32:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229965AbjFPOMD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 10:12:03 -0400
-Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83AF41BF8
-        for <stable@vger.kernel.org>; Fri, 16 Jun 2023 07:12:02 -0700 (PDT)
-Received: by mail-oi1-x232.google.com with SMTP id 5614622812f47-38c35975545so624553b6e.1
-        for <stable@vger.kernel.org>; Fri, 16 Jun 2023 07:12:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686924722; x=1689516722;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZR8l87uxMTn24HKBJkRWEV1gNPPBQJxvGEngYiN4xkQ=;
-        b=j5WOs6Ftj3JBiMEpAfWucV9BkxMbsAsHbfb/l4V8+uuD51kAZDiU5t9DOOKK3gIUdK
-         z9T5+6pWqpRNpHx89X123mOstQwn8SvXyIWxcRtb37fzf5RQnxMqLPqN/wCMf9oe+dmp
-         iGU57FwGUdCtpT2+tLzrqq3Iz9+gnZYoLyPziEk/k1Hhc3UbDoboIi6Tnwjti2rLP5bT
-         f0A66MNudWL5BGLCPp3QmxDS8nTprmANOSnj4ClSTXybkFimf+gdma/1onkcQThsbAtX
-         febgJqw5hpeT4XLhqWhio+OnMSspZt6yEm4qlxsfu6ZJPBH3PE3VzK1ayp9e8U467lEA
-         cAhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686924722; x=1689516722;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZR8l87uxMTn24HKBJkRWEV1gNPPBQJxvGEngYiN4xkQ=;
-        b=PyWK9YjaNQRgp3aqWpAQapWFUdsSeDykSYYxKE2quc3Q+TEj3DNljFGC0PLOGQPVWQ
-         ej6HEC7hdCrZT/aFqJ09aRPjg8AWSF8/Y81SkDwqgwX149n73Jp0xJ41eSMae4O0/AAU
-         1twGpQpkkQ5TWzdH7amFjnM9mgiGmDuQyAdeLBPuTdl6z8zftdw3LMtKf4oMeN+w7Hl1
-         7aOap/oFSEiKXNweoCzmGjSDebv+BCmMilZxfldxfi3EQHmWSar3lxIgxHmDzw2fW3Pu
-         PXVTE0+ag0f2TTDVC7ViVcM8TABcrKuFkX1rc01qY8nEGLp0FFNUvEwn1b2y4DbGglwc
-         PGJw==
-X-Gm-Message-State: AC+VfDw0yqaJDsrWz1Rv/1+4Pz+0601h+rXGwRD2YjNNpwn3fOD/Te6X
-        Vz1PDswzPbTVunQypTg1Drw4DVhnQ+9OLqrEWCh+3iyn
-X-Google-Smtp-Source: ACHHUZ7S7UcTqzYA4X92kgh1zTF0zzUpPOtfVou4EAWc1BUBVzWSXBetXuQNVekQXln0eh+Olb1I2/5nGt05X9ocfS4=
-X-Received: by 2002:a05:6808:2394:b0:39e:78ae:1d2c with SMTP id
- bp20-20020a056808239400b0039e78ae1d2cmr2519162oib.58.1686924721691; Fri, 16
- Jun 2023 07:12:01 -0700 (PDT)
+        with ESMTP id S229577AbjFPOco (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 10:32:44 -0400
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D265F30C5
+        for <stable@vger.kernel.org>; Fri, 16 Jun 2023 07:32:38 -0700 (PDT)
+Received: from loongson.cn (unknown [10.20.42.43])
+        by gateway (Coremail) with SMTP id _____8BxKuqFcoxkzwEGAA--.12824S3;
+        Fri, 16 Jun 2023 22:32:37 +0800 (CST)
+Received: from [10.20.42.43] (unknown [10.20.42.43])
+        by localhost.localdomain (Coremail) with SMTP id AQAAf8AxZuSEcoxkJV8dAA--.17807S3;
+        Fri, 16 Jun 2023 22:32:37 +0800 (CST)
+Message-ID: <a6f539ba-4f93-7136-36af-dad40d13c03c@loongson.cn>
+Date:   Fri, 16 Jun 2023 22:32:36 +0800
 MIME-Version: 1.0
-References: <20230616062708.15913-1-samuel.pitoiset@gmail.com> <20230616131407.170149-1-samuel.pitoiset@gmail.com>
-In-Reply-To: <20230616131407.170149-1-samuel.pitoiset@gmail.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Fri, 16 Jun 2023 10:11:50 -0400
-Message-ID: <CADnq5_MxYHW8-LYvm2KevPQaiQGh=Yzq1QO7ejc7hwzjeZXW9Q@mail.gmail.com>
-Subject: Re: [PATCH v2] drm/amdgpu: fix clearing mappings for BOs that are
- always valid in VM
-To:     Samuel Pitoiset <samuel.pitoiset@gmail.com>
-Cc:     amd-gfx@lists.freedesktop.org, stable@vger.kernel.org,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [01/14] drm/ast: Fix DRAM init on AST2200
+Content-Language: en-US
+To:     Thomas Zimmermann <tzimmermann@suse.de>, airlied@redhat.com,
+        jfalempe@redhat.com, daniel@ffwll.ch, jammy_huang@aspeedtech.com
+Cc:     stable@vger.kernel.org, dri-devel@lists.freedesktop.org
+References: <20230616140739.32042-2-tzimmermann@suse.de>
+From:   Sui Jingfeng <suijingfeng@loongson.cn>
+Organization: Loongson
+In-Reply-To: <20230616140739.32042-2-tzimmermann@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID: AQAAf8AxZuSEcoxkJV8dAA--.17807S3
+X-CM-SenderInfo: xvxlyxpqjiv03j6o00pqjv00gofq/
+X-Coremail-Antispam: 1Uk129KBj93XoWxJr4fKFyrJryUtF4fuF18tFc_yoW8Gr1xpr
+        43Jr9YvrZ5Jw1Yyay7ua1DWFy3Zan5Ja4I9F1kAwna9r90gwn0gF90kw4rGry3ZrWxAryU
+        tFnIqry7GF1vy3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
+        sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+        0xBIdaVrnRJUUUPIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+        IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+        e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+        0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+        xVWxJr0_GcWln4kS14v26r126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
+        xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1q
+        6rW5McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
+        1lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxG
+        rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUAVWUtwC20s026c02F40E14
+        v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkG
+        c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW8JVW5JwCI42IY6xIIjxv20xvEc7CjxVAFwI
+        0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4U
+        MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jz5lbUUU
+        UU=
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Applied.  Thanks!
 
-Alex
+On 2023/6/16 21:52, Thomas Zimmermann wrote:
+> Fix the test for the AST2200 in the DRAM initialization. The value
+> in ast->chip has to be compared against an enum constant instead of
+> a numerical value.
+>
+> This bug got introduced when the driver was first imported into the
+> kernel.
+>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 
-On Fri, Jun 16, 2023 at 9:38=E2=80=AFAM Samuel Pitoiset
-<samuel.pitoiset@gmail.com> wrote:
->
-> Per VM BOs must be marked as moved or otherwise their ranges are not
-> updated on use which might be necessary when the replace operation
-> splits mappings.
->
-> This fixes random GPU hangs when replacing sparse mappings from the
-> userspace, while OP_MAP/OP_UNMAP works fine because always valid BOs
-> are correctly handled there.
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Samuel Pitoiset <samuel.pitoiset@gmail.com>
-> Reviewed-by: Christian K=C3=B6nig <christian.koenig@amd.com>
+Reviewed-by: Sui Jingfeng <suijingfeng@loongson.cn>
+
+
+> Fixes: 312fec1405dd ("drm: Initial KMS driver for AST (ASpeed Technologies) 2000 series (v2)")
+> Cc: Dave Airlie <airlied@redhat.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v3.5+
 > ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+>   drivers/gpu/drm/ast/ast_post.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd=
-/amdgpu/amdgpu_vm.c
-> index 143d11afe0e5..eff73c428b12 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-> @@ -1771,18 +1771,30 @@ int amdgpu_vm_bo_clear_mappings(struct amdgpu_dev=
-ice *adev,
->
->         /* Insert partial mapping before the range */
->         if (!list_empty(&before->list)) {
-> +               struct amdgpu_bo *bo =3D before->bo_va->base.bo;
-> +
->                 amdgpu_vm_it_insert(before, &vm->va);
->                 if (before->flags & AMDGPU_PTE_PRT)
->                         amdgpu_vm_prt_get(adev);
-> +
-> +               if (bo && bo->tbo.base.resv =3D=3D vm->root.bo->tbo.base.=
-resv &&
-> +                   !before->bo_va->base.moved)
-> +                       amdgpu_vm_bo_moved(&before->bo_va->base);
->         } else {
->                 kfree(before);
->         }
->
->         /* Insert partial mapping after the range */
->         if (!list_empty(&after->list)) {
-> +               struct amdgpu_bo *bo =3D after->bo_va->base.bo;
-> +
->                 amdgpu_vm_it_insert(after, &vm->va);
->                 if (after->flags & AMDGPU_PTE_PRT)
->                         amdgpu_vm_prt_get(adev);
-> +
-> +               if (bo && bo->tbo.base.resv =3D=3D vm->root.bo->tbo.base.=
-resv &&
-> +                   !after->bo_va->base.moved)
-> +                       amdgpu_vm_bo_moved(&after->bo_va->base);
->         } else {
->                 kfree(after);
->         }
-> --
-> 2.41.0
->
+> diff --git a/drivers/gpu/drm/ast/ast_post.c b/drivers/gpu/drm/ast/ast_post.c
+> index a005aec18a020..0262aaafdb1c5 100644
+> --- a/drivers/gpu/drm/ast/ast_post.c
+> +++ b/drivers/gpu/drm/ast/ast_post.c
+> @@ -291,7 +291,7 @@ static void ast_init_dram_reg(struct drm_device *dev)
+>   				;
+>   			} while (ast_read32(ast, 0x10100) != 0xa8);
+>   		} else {/* AST2100/1100 */
+> -			if (ast->chip == AST2100 || ast->chip == 2200)
+> +			if (ast->chip == AST2100 || ast->chip == AST2200)
+>   				dram_reg_info = ast2100_dram_table_data;
+>   			else
+>   				dram_reg_info = ast1100_dram_table_data;
+
+-- 
+Jingfeng
+
