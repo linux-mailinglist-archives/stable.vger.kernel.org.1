@@ -2,46 +2,64 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F83873272F
-	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 08:15:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 185A57327E1
+	for <lists+stable@lfdr.de>; Fri, 16 Jun 2023 08:52:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232707AbjFPGPO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 16 Jun 2023 02:15:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52534 "EHLO
+        id S232704AbjFPGvz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 16 Jun 2023 02:51:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242890AbjFPGOt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 02:14:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34491B5
-        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 23:14:48 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A8C36611C2
-        for <stable@vger.kernel.org>; Fri, 16 Jun 2023 06:14:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C0BC433C0;
-        Fri, 16 Jun 2023 06:14:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686896086;
-        bh=a25mBb1Sy0fvytUe4U+p+wUDXvoNqXl7or/cE4bDYUQ=;
-        h=Subject:To:From:Date:In-Reply-To:From;
-        b=qvtA1OC5C90mWV9Y75rGoh0rTVWWMJn9KeKAubNau0vlf+vPVep1a9X3sBgYntuL1
-         7hw78mAmOopjlAn6j6PPCwU2QkaABkfAq/26tjdOGrnTZW4iXv4PXqLhgL7Merwi9z
-         xzQUJkKsuLFqsuhtja/VUjs+9yCIJdiDhLqBYp/k=
-Subject: patch "tty: fix hang on tty device with no_room set" added to tty-next
-To:     caelli@tencent.com, gregkh@linuxfoundation.org,
-        ilpo.jarvinen@linux.intel.com, stable@vger.kernel.org
-From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 16 Jun 2023 08:14:41 +0200
-In-Reply-To: <1680749090-14106-1-git-send-email-caelli@tencent.com>
-Message-ID: <2023061641-rimmed-uniformly-7547@gregkh>
+        with ESMTP id S231247AbjFPGvy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 16 Jun 2023 02:51:54 -0400
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61F271FD4
+        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 23:51:53 -0700 (PDT)
+Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-3f738f579ceso2230645e9.3
+        for <stable@vger.kernel.org>; Thu, 15 Jun 2023 23:51:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686898312; x=1689490312;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lF8j2yuMAm7EbfaCMU0ysPlzaZKdK03OP3QqXiTw+vQ=;
+        b=GK7uRYOvyFWouRnsQD+Vex/lFl+l+Wf6/pV26pCGCoLsBj2MRKtEwl3qiSCaze4Ers
+         Gcl7VxyMx8idEcRZuquhsEKv+nMYu64XpUESq0i4rsbN+UDS8PcXja5U1uTjkml6Zban
+         tcpCIAmeVez8IvCGUaD2Bt3XsJ0t+U3n4qPY6qWfyf314HtnSQQHtFBiWkG5u+hvsccb
+         P8L9krMNQeHdP71iJKRS5CYoqa3FC66d2KGhSA3sBAmbKj5bkWjUXYB8t8DaGOUUOIuI
+         HrWHfx0M49zEhWkrTn9Fb1r3MiVwYVQzf7351HG5LgpPYSGAgt454/FxOFR3X8GBDuNn
+         y8/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686898312; x=1689490312;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lF8j2yuMAm7EbfaCMU0ysPlzaZKdK03OP3QqXiTw+vQ=;
+        b=kzn0nHJbhiSi5uS/58bBvW+2jZqotfXD+Q/wIrOviubD3FZPsdaTw3PcqLFNXtVFdM
+         qKRYY8SO4IXL2sOOSxoamJUzI7ytbJ4b4Vdf05W5iU9tVBitqJylX1vgslp55RPSMqBU
+         7Gmf5OzyBDcJq0gXL/QlqtQLdddfqxuBeevlHKVM5b9qQXkIL2xQ/swJsVtUr/hE3yIx
+         aFyKBJ4wTALmfdHP1tFy8oBtTBReoA85dMnG8YmkKsU9j3f1S5WA0aMt3VqZcSnaQdPh
+         tX929+f0t5FP/UvnUu5tSVYIcDH/GgRbiXh3aF0LzFCtj6QOk8K2s58UmXuKZSBQrQs2
+         lNAQ==
+X-Gm-Message-State: AC+VfDwUgjf8RgAi9OFTnmzGtS7rWMQhsFICADor66F40PvY3Hd4gCBA
+        5r/gtPsswrR1j3ES/JU7W48=
+X-Google-Smtp-Source: ACHHUZ5sKJPSWCHaSWRNkJuOi1jmoCEhXeb6ECkkP9dTpyJDQ68N9qF/b+9dbjaMWPRPN8gJi6qNKg==
+X-Received: by 2002:a5d:568a:0:b0:311:1497:a002 with SMTP id f10-20020a5d568a000000b003111497a002mr541143wrv.3.1686898311670;
+        Thu, 15 Jun 2023 23:51:51 -0700 (PDT)
+Received: from localhost.localdomain ([2a01:e0a:1d:6120:b96b:62f7:161e:e519])
+        by smtp.gmail.com with ESMTPSA id v18-20020adfebd2000000b0030789698eebsm22745674wrn.89.2023.06.15.23.51.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Jun 2023 23:51:51 -0700 (PDT)
+From:   Samuel Pitoiset <samuel.pitoiset@gmail.com>
+To:     amd-gfx@lists.freedesktop.org
+Cc:     Samuel Pitoiset <samuel.pitoiset@gmail.com>, stable@vger.kernel.org
+Subject: [PATCH] drm/amdgpu: fix clearing mappings for BOs that are always valid in VM
+Date:   Fri, 16 Jun 2023 08:27:08 +0200
+Message-ID: <20230616062708.15913-1-samuel.pitoiset@gmail.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -49,133 +67,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+If the BO has been moved the PT should be updated, otherwise the VAs
+might point to invalid PT.
 
-This is a note to let you know that I've just added the patch titled
+This fixes random GPU hangs when replacing sparse mappings from the
+userspace, while OP_MAP/OP_UNMAP works fine because always valid BOs
+are correctly handled there.
 
-    tty: fix hang on tty device with no_room set
-
-to my tty git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git
-in the tty-next branch.
-
-The patch will show up in the next release of the linux-next tree
-(usually sometime within the next 24 hours during the week.)
-
-The patch will also be merged in the next major kernel release
-during the merge window.
-
-If you have any questions about this process, please let me know.
-
-
-From 4903fde8047a28299d1fc79c1a0dcc255e928f12 Mon Sep 17 00:00:00 2001
-From: Hui Li <caelli@tencent.com>
-Date: Thu, 6 Apr 2023 10:44:50 +0800
-Subject: tty: fix hang on tty device with no_room set
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-It is possible to hang pty devices in this case, the reader was
-blocking at epoll on master side, the writer was sleeping at
-wait_woken inside n_tty_write on slave side, and the write buffer
-on tty_port was full, we found that the reader and writer would
-never be woken again and blocked forever.
-
-The problem was caused by a race between reader and kworker:
-n_tty_read(reader):  n_tty_receive_buf_common(kworker):
-copy_from_read_buf()|
-                    |room = N_TTY_BUF_SIZE - (ldata->read_head - tail)
-                    |room <= 0
-n_tty_kick_worker() |
-                    |ldata->no_room = true
-
-After writing to slave device, writer wakes up kworker to flush
-data on tty_port to reader, and the kworker finds that reader
-has no room to store data so room <= 0 is met. At this moment,
-reader consumes all the data on reader buffer and calls
-n_tty_kick_worker to check ldata->no_room which is false and
-reader quits reading. Then kworker sets ldata->no_room=true
-and quits too.
-
-If write buffer is not full, writer will wake kworker to flush data
-again after following writes, but if write buffer is full and writer
-goes to sleep, kworker will never be woken again and tty device is
-blocked.
-
-This problem can be solved with a check for read buffer size inside
-n_tty_receive_buf_common, if read buffer is empty and ldata->no_room
-is true, a call to n_tty_kick_worker is necessary to keep flushing
-data to reader.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 42458f41d08f ("n_tty: Ensure reader restarts worker for next reader")
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Hui Li <caelli@tencent.com>
-Message-ID: <1680749090-14106-1-git-send-email-caelli@tencent.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Samuel Pitoiset <samuel.pitoiset@gmail.com>
 ---
- drivers/tty/n_tty.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/tty/n_tty.c b/drivers/tty/n_tty.c
-index 1c9e5d2ea7de..552e8a741562 100644
---- a/drivers/tty/n_tty.c
-+++ b/drivers/tty/n_tty.c
-@@ -203,8 +203,8 @@ static void n_tty_kick_worker(struct tty_struct *tty)
- 	struct n_tty_data *ldata = tty->disc_data;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+index 143d11afe0e5..eff73c428b12 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -1771,18 +1771,30 @@ int amdgpu_vm_bo_clear_mappings(struct amdgpu_device *adev,
  
- 	/* Did the input worker stop? Restart it */
--	if (unlikely(ldata->no_room)) {
--		ldata->no_room = 0;
-+	if (unlikely(READ_ONCE(ldata->no_room))) {
-+		WRITE_ONCE(ldata->no_room, 0);
- 
- 		WARN_RATELIMIT(tty->port->itty == NULL,
- 				"scheduling with invalid itty\n");
-@@ -1697,7 +1697,7 @@ n_tty_receive_buf_common(struct tty_struct *tty, const unsigned char *cp,
- 			if (overflow && room < 0)
- 				ldata->read_head--;
- 			room = overflow;
--			ldata->no_room = flow && !room;
-+			WRITE_ONCE(ldata->no_room, flow && !room);
- 		} else
- 			overflow = 0;
- 
-@@ -1728,6 +1728,17 @@ n_tty_receive_buf_common(struct tty_struct *tty, const unsigned char *cp,
- 	} else
- 		n_tty_check_throttle(tty);
- 
-+	if (unlikely(ldata->no_room)) {
-+		/*
-+		 * Barrier here is to ensure to read the latest read_tail in
-+		 * chars_in_buffer() and to make sure that read_tail is not loaded
-+		 * before ldata->no_room is set.
-+		 */
-+		smp_mb();
-+		if (!chars_in_buffer(tty))
-+			n_tty_kick_worker(tty);
-+	}
+ 	/* Insert partial mapping before the range */
+ 	if (!list_empty(&before->list)) {
++		struct amdgpu_bo *bo = before->bo_va->base.bo;
 +
- 	up_read(&tty->termios_rwsem);
- 
- 	return rcvd;
-@@ -2281,8 +2292,14 @@ static ssize_t n_tty_read(struct tty_struct *tty, struct file *file,
- 		if (time)
- 			timeout = time;
+ 		amdgpu_vm_it_insert(before, &vm->va);
+ 		if (before->flags & AMDGPU_PTE_PRT)
+ 			amdgpu_vm_prt_get(adev);
++
++		if (bo && bo->tbo.base.resv == vm->root.bo->tbo.base.resv &&
++		    !before->bo_va->base.moved)
++			amdgpu_vm_bo_moved(&before->bo_va->base);
+ 	} else {
+ 		kfree(before);
  	}
--	if (old_tail != ldata->read_tail)
-+	if (old_tail != ldata->read_tail) {
-+		/*
-+		 * Make sure no_room is not read in n_tty_kick_worker()
-+		 * before setting ldata->read_tail in copy_from_read_buf().
-+		 */
-+		smp_mb();
- 		n_tty_kick_worker(tty);
-+	}
- 	up_read(&tty->termios_rwsem);
  
- 	remove_wait_queue(&tty->read_wait, &wait);
+ 	/* Insert partial mapping after the range */
+ 	if (!list_empty(&after->list)) {
++		struct amdgpu_bo *bo = after->bo_va->base.bo;
++
+ 		amdgpu_vm_it_insert(after, &vm->va);
+ 		if (after->flags & AMDGPU_PTE_PRT)
+ 			amdgpu_vm_prt_get(adev);
++
++		if (bo && bo->tbo.base.resv == vm->root.bo->tbo.base.resv &&
++		    !after->bo_va->base.moved)
++			amdgpu_vm_bo_moved(&after->bo_va->base);
+ 	} else {
+ 		kfree(after);
+ 	}
 -- 
 2.41.0
-
 
