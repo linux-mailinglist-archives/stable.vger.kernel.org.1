@@ -2,30 +2,32 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52B89734399
-	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 22:37:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04EBB73439B
+	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 22:37:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346488AbjFQUhK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 17 Jun 2023 16:37:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41854 "EHLO
+        id S233644AbjFQUhQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 17 Jun 2023 16:37:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346510AbjFQUhF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 16:37:05 -0400
+        with ESMTP id S1346529AbjFQUhJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 16:37:09 -0400
 Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8C71172D;
-        Sat, 17 Jun 2023 13:36:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4701211D;
+        Sat, 17 Jun 2023 13:37:02 -0700 (PDT)
 Received: from localhost.localdomain (178.176.79.248) by msexch01.omp.ru
  (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Sat, 17 Jun
- 2023 23:36:50 +0300
+ 2023 23:36:51 +0300
 From:   Sergey Shtylyov <s.shtylyov@omp.ru>
 To:     Ulf Hansson <ulf.hansson@linaro.org>, <linux-mmc@vger.kernel.org>
-CC:     Adrian Hunter <adrian.hunter@intel.com>,
-        Viresh Kumar <vireshk@kernel.org>, <stable@vger.kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH v3 09/12] mmc: sdhci-spear: fix deferred probing
-Date:   Sat, 17 Jun 2023 23:36:19 +0300
-Message-ID: <20230617203622.6812-10-s.shtylyov@omp.ru>
+CC:     Chen-Yu Tsai <wens@csie.org>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Samuel Holland <samuel@sholland.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-sunxi@lists.linux.dev>, <stable@vger.kernel.org>
+Subject: [PATCH v3 11/12] mmc: sunxi: fix deferred probing
+Date:   Sat, 17 Jun 2023 23:36:21 +0300
+Message-ID: <20230617203622.6812-12-s.shtylyov@omp.ru>
 X-Mailer: git-send-email 2.26.3
 In-Reply-To: <20230617203622.6812-1-s.shtylyov@omp.ru>
 References: <20230617203622.6812-1-s.shtylyov@omp.ru>
@@ -80,38 +82,37 @@ codes upstream.  Since commit ce753ad1549c ("platform: finally disallow IRQ0
 in platform_get_irq() and its ilk") IRQ0 is no longer returned by those APIs,
 so we now can safely ignore it...
 
-Fixes: 682798a596a6 ("mmc: sdhci-spear: Handle return value of platform_get_irq")
+Fixes: 2408a08583d ("mmc: sunxi-mmc: Handle return value of platform_get_irq")
 Cc: stable@vger.kernel.org # v5.19+
 Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
 ---
 Changes in version 3:
 - added the platform_get_irq() commit reference to the  patch description and
   the Cc: tag marking the 1st kernel version containing it;
-- added Viresh's and Adrian's ACKs.
+- added Jernej's tag.
 
 Changes in version 2:
 - slightly reformatted the patch description.
 
- drivers/mmc/host/sdhci-spear.c | 4 ++--
+ drivers/mmc/host/sunxi-mmc.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci-spear.c b/drivers/mmc/host/sdhci-spear.c
-index d463e2fd5b1a..c79035727b20 100644
---- a/drivers/mmc/host/sdhci-spear.c
-+++ b/drivers/mmc/host/sdhci-spear.c
-@@ -65,8 +65,8 @@ static int sdhci_probe(struct platform_device *pdev)
- 	host->hw_name = "sdhci";
- 	host->ops = &sdhci_pltfm_ops;
+diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mmc.c
+index 3db9f32d6a7b..69dcb8805e05 100644
+--- a/drivers/mmc/host/sunxi-mmc.c
++++ b/drivers/mmc/host/sunxi-mmc.c
+@@ -1350,8 +1350,8 @@ static int sunxi_mmc_resource_request(struct sunxi_mmc_host *host,
+ 		return ret;
+ 
  	host->irq = platform_get_irq(pdev, 0);
 -	if (host->irq <= 0) {
 -		ret = -EINVAL;
 +	if (host->irq < 0) {
 +		ret = host->irq;
- 		goto err_host;
+ 		goto error_disable_mmc;
  	}
- 	host->quirks = SDHCI_QUIRK_BROKEN_ADMA;
+ 
 -- 
 2.26.3
 
