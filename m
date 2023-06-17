@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4EA4733F8A
-	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 10:16:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98FBE733F8B
+	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 10:16:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234172AbjFQIQI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 17 Jun 2023 04:16:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59118 "EHLO
+        id S233241AbjFQIQM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 17 Jun 2023 04:16:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233241AbjFQIQH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 04:16:07 -0400
+        with ESMTP id S1346044AbjFQIQL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 04:16:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2916A1FF6
-        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 01:16:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DA8E1FFE
+        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 01:16:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BB22B60A5A
-        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 08:16:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D20B8C433C8;
-        Sat, 17 Jun 2023 08:16:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BD36C60959
+        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 08:16:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B23C433C0;
+        Sat, 17 Jun 2023 08:16:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686989766;
-        bh=vpjO3cZ0qrcVcNrd7uZ+cnLWsgK5x6GOOVSlQrh9T5Q=;
+        s=korg; t=1686989770;
+        bh=5wZmojwtUr3UBKLikRQN3aM2Jj//Ka9OAJ5+2R+/oQY=;
         h=Subject:To:Cc:From:Date:From;
-        b=iXMWpenWtVoVEEcLLkB4gWX+wHGGtxwg/UmZC+Kh4RnMHQf5KrWWGOIaTRH/p7Auu
-         /Kr+AC1mgMTd27GGw9J+gM2RKuA1VZHTA0/Xn0YrzWQT/mLS5jZqOEMbXgena8yVWQ
-         AE9+ZUQ2lmIVFaufSNPZi8ccf6p+h2Z0tlpw+pZw=
-Subject: FAILED: patch "[PATCH] ALSA: usb-audio: Fix broken resume due to UAC3 power state" failed to apply to 5.4-stable tree
+        b=i3Q8EiBezuPdP/zGs1sPeN7EAOeKAeaTHl7164fSmAP+2tCDf3FtwlTXBuRvsPEXR
+         +dFVb5a7t/SImQvhVPSFzBzOLUwH1rNolWMwQNr/15xqEqakRW+SDOvnx5NJdNtemk
+         QzzXH0kL3fB2bVQBIGrpya6I8p5GRHYWBIaodwGc=
+Subject: FAILED: patch "[PATCH] ALSA: usb-audio: Fix broken resume due to UAC3 power state" failed to apply to 4.19-stable tree
 To:     tiwai@suse.de, stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 17 Jun 2023 10:16:01 +0200
-Message-ID: <2023061700-canon-game-2b28@gregkh>
+Date:   Sat, 17 Jun 2023 10:16:02 +0200
+Message-ID: <2023061702-wireless-nibble-7c21@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 8ba61c9f6c9bdfbf9d197b0282641d24ae909778
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061700-canon-game-2b28@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061702-wireless-nibble-7c21@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
