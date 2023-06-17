@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C445733F8E
-	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 10:17:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA515733F8F
+	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 10:18:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346044AbjFQIR5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 17 Jun 2023 04:17:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59430 "EHLO
+        id S232199AbjFQISA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 17 Jun 2023 04:18:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233558AbjFQIR4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 04:17:56 -0400
+        with ESMTP id S1346111AbjFQIR7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 04:17:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDEDC173A
-        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 01:17:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 628141FF6
+        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 01:17:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 53A786027E
-        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 08:17:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691C8C433C8;
-        Sat, 17 Jun 2023 08:17:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EB17760BA9
+        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 08:17:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB99C433C8;
+        Sat, 17 Jun 2023 08:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686989874;
-        bh=nVTH691ZgF6R+tahG7jBIADMF4zNfqRe8y3YnozitGs=;
+        s=korg; t=1686989877;
+        bh=hGSWMmBGPEt5lyyOGYacjMecm3JDB7XWlGq/Ne1EH7M=;
         h=Subject:To:Cc:From:Date:From;
-        b=04wi7wKsmsRzzzGHSqmsV+zZ9CcvZQSyWkpTvMapboI2LxhUDUx35VzYT9kjmxEXF
-         ciEs/dNpQeNZdKS6P4gQEXqweIZJze3QPA1yI+BLf8eQYF9w3yf1pIZN3WwVLrnjes
-         TH1/CmODGHExMYKtFqtsyOAJuotQJeKE+X41Nxic=
-Subject: FAILED: patch "[PATCH] mm/gup_test: fix ioctl fail for compat task" failed to apply to 5.15-stable tree
+        b=OaXg3jL0AI5nTyR7WDULKUEJ1+mcq2iuGkC+fxRJMwYsXqWsVNSHuhRvVvs6KOSpF
+         Vmv9YKuJLj+VQcmeLNsOe6AUOfY8JVEw8KkdtCSuIb/n2RI7Qlb5/E8u65h+pI/L3b
+         YOPp01QEGazppee6SxkX7t2i0aJDiz14XkV6GqfQ=
+Subject: FAILED: patch "[PATCH] mm/gup_test: fix ioctl fail for compat task" failed to apply to 5.10-stable tree
 To:     haibo.li@mediatek.com, akpm@linux-foundation.org,
         angelogioacchino.delregno@collabora.com, david@redhat.com,
         jhubbard@nvidia.com, matthias.bgg@gmail.com, stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 17 Jun 2023 10:17:50 +0200
-Message-ID: <2023061750-projector-duplicate-1096@gregkh>
+Date:   Sat, 17 Jun 2023 10:17:51 +0200
+Message-ID: <2023061751-chaplain-maternity-2efd@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -51,19 +51,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4f572f0074b8be8a70bd150d96a749aa94c8d85f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061750-projector-duplicate-1096@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061751-chaplain-maternity-2efd@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
