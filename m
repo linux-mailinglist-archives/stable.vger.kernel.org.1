@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F15A733F7F
-	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 10:13:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED8F7733F81
+	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 10:13:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346299AbjFQIN3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 17 Jun 2023 04:13:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58034 "EHLO
+        id S232705AbjFQINc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 17 Jun 2023 04:13:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346293AbjFQIN2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 04:13:28 -0400
+        with ESMTP id S1346304AbjFQINb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 04:13:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D6811FF6
-        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 01:13:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B215A1732
+        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 01:13:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A9860611A9
-        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 08:13:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED01C433C0;
-        Sat, 17 Jun 2023 08:13:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 485E1611A9
+        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 08:13:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6009AC433C0;
+        Sat, 17 Jun 2023 08:13:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686989606;
-        bh=R7o8hu2I3nDBn3OYu9cYukXsQ/Xyo6iS7OWnLHqu/Ac=;
+        s=korg; t=1686989608;
+        bh=IK7ch9Ba6BZSv6j5V/gMq50nao6vF/Vmv20+bvpsjl0=;
         h=Subject:To:Cc:From:Date:From;
-        b=pSq3sBtVtU2iKcYtmG+0wCEkqvmByR50qN3UYehOGrgRqFweaa/n2SVxvj5+QoXVO
-         gEtzouCK8UT7TChwtGIilwALcm39gTgNOPNCR63LmKFxtqR3uX5tL3c6mfvR0KpUFL
-         qBVt1MhFb0w7XDP7OfuF50GFptgMd3uBLr2PLNbY=
-Subject: FAILED: patch "[PATCH] riscv/purgatory: remove PGO flags" failed to apply to 5.15-stable tree
+        b=QKHXh+4his83tsnz7FKzxc4hlUZS/U0Zx4isO62zXjyUT/hhwW8/z0D9z2fXMXfxb
+         t/n3LeI9S0wd2S8GPhAqX49cLI3ezGHXjoX4BTgL/mbNuuYMht31h+RMX++H2TRWBw
+         QuGYJa5g1dNUsXaNJUzWj+m8ZB4IhGzruASKOYj8=
+Subject: FAILED: patch "[PATCH] riscv/purgatory: remove PGO flags" failed to apply to 5.10-stable tree
 To:     ribalda@chromium.org, akpm@linux-foundation.org,
         aou@eecs.berkeley.edu, bhe@redhat.com, bp@alien8.de,
         christophe.leroy@csgroup.eu, dave.hansen@linux.intel.com,
@@ -41,8 +41,8 @@ To:     ribalda@chromium.org, akpm@linux-foundation.org,
         tglx@linutronix.de, trix@redhat.com, zwisler@google.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 17 Jun 2023 10:13:23 +0200
-Message-ID: <2023061723-corroding-vaporizer-cf1c@gregkh>
+Date:   Sat, 17 Jun 2023 10:13:24 +0200
+Message-ID: <2023061724-lyrically-colossal-f345@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -57,19 +57,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 88ac3bbcf73853880a9b2a65c67e6854390741cc
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061723-corroding-vaporizer-cf1c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061724-lyrically-colossal-f345@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
