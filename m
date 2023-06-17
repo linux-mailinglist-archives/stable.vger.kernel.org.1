@@ -2,231 +2,233 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B323734218
-	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 18:03:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D0907342E3
+	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 20:10:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229643AbjFQQDQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 17 Jun 2023 12:03:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40862 "EHLO
+        id S231329AbjFQSK4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 17 Jun 2023 14:10:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229675AbjFQQDO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 12:03:14 -0400
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2041.outbound.protection.outlook.com [40.107.94.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA8F610E0
-        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 09:03:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=U0ffTOiwA3YDZZof1tXSN7tc1zhS7VnqrWmUUhFPXzrDhIVKzYkxSe3luoQHbaBK28/Rvyq+42ctj2zp6MKRyJCnCmTTkzEEBih8YTrL/aU6TTh0tqzHMN7A0H4pJNKVnU5ulGlQiosbLqc/I5Y/BC7tUCoMs5+NkLwKWYIeGjwoeFkSKoAPDWsUm0C9u5ozsOPMoVSiPpzEyIauJIfr3CmmaDT96Lb1hgT8ygAftkP6cFAnEY0MXz3pRBPE12sUsOji8tNhVWTgjiKSb3a0nYT1piOq3qi3apf242Bi/YKm3CglODfMgYFvSmn2UeFB6TSTtQYMT+MpHya9+GKJiQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IBnE9pMZe3fNpyHTC00IZWQ5S9DC14C7d00wxZIg/BQ=;
- b=TRF4A9NWCE+N8/kySIP2mZvVwCGT2xPz4crAl5w0jU/2QTB264xUyitFUZ4hLx8juIEs4Ru6AfGjqgTOBf08khqoVAmMbPRsGhgxpmLvMt9D/DU5Dxjxe+wHbTOik0BXmDCnMEBCkaKKxl4VQ0UH1qopOxLuhAhr3LZMqUk8ZaaUpLyUVHpHmK6L9UUTx0h2FNmOFa0V/KeXK6mJiwWBbKuvt8LF/7br0Q98+gCleV95jCzrNoTk4QDTboDY+AZpfywsoRwpKOHwVbVwvtPhtX4fg4u6RfPO55EusOGyWOVh0hYniugwU5+heGbKUTs0tk1WJzPsLstHa3X/ga7awQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=infinera.com; dmarc=pass action=none header.from=infinera.com;
- dkim=pass header.d=infinera.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infinera.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IBnE9pMZe3fNpyHTC00IZWQ5S9DC14C7d00wxZIg/BQ=;
- b=ifBUTz/y+CKVW6e1/FmKr/WSCFyS+DGp6PJhnQPp2zzOF3bhwtBTuVytdvQtBBnufuUWeRMdhQLjk+b12mkaJ4yGa2rpd0pZ61NGaw454MKUMbhFQz9gwk78vlQjhM+vbJwf9CruP/OKPRD2/czOLf1qwWOuRq4nPNxSvqZZQpyEOchX8V/2dy4P0vS96g/AwEEz/PqA1lBFTQNT9kpefSrl4J2FGtHUF3810ue6EvOz31dZj4c7b+mzLiYVXC+xclhcUQcB2er+6+zpqCfgIROCJJ4Xa/TRW8zaay1iqLzqg6MPfpmaHMLCtsedgupybYpt3G/G1J0qhClQJIxC3A==
-Received: from PH0PR10MB4615.namprd10.prod.outlook.com (2603:10b6:510:36::24)
- by CH0PR10MB5306.namprd10.prod.outlook.com (2603:10b6:610:da::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.35; Sat, 17 Jun
- 2023 16:03:07 +0000
-Received: from PH0PR10MB4615.namprd10.prod.outlook.com
- ([fe80::f01a:585:8d6:3d3c]) by PH0PR10MB4615.namprd10.prod.outlook.com
- ([fe80::f01a:585:8d6:3d3c%7]) with mapi id 15.20.6500.031; Sat, 17 Jun 2023
- 16:03:06 +0000
-From:   Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
-To:     "stable@vger.kernel.org" <stable@vger.kernel.org>
-CC:     "felipe.balbi@linux.intel.com" <felipe.balbi@linux.intel.com>,
-        "romain.izard.pro@gmail.com" <romain.izard.pro@gmail.com>
-Subject: Re: [PATCH 1/2] usb: gadget: f_ncm: Add OS descriptor support
-Thread-Topic: [PATCH 1/2] usb: gadget: f_ncm: Add OS descriptor support
-Thread-Index: AQHZk+YYeEDleSDzUkGuOQMGB6y2ZK+PQpqA
-Date:   Sat, 17 Jun 2023 16:03:06 +0000
-Message-ID: <5533972aab4a15ab2177497edc9aa0ba1b97aaba.camel@infinera.com>
-References: <20230531173358.910767-1-joakim.tjernlund@infinera.com>
-In-Reply-To: <20230531173358.910767-1-joakim.tjernlund@infinera.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.48.2 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=infinera.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH0PR10MB4615:EE_|CH0PR10MB5306:EE_
-x-ms-office365-filtering-correlation-id: 5796c6d3-b647-409d-ff84-08db6f4c5686
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: HNuwJp8WtndsNjkx6c5cRdI97GcyUM0cNBSsj6gsNeZ0/CPhjqlOCaaOHqs3jBirCrmILB7B1jbFOBq/M6qdNVyzMi0plTSd6lboqNi5X6Bynk2ScxctsGvby2ONc3OyhTQfBt9ZkqyOf/neBRwnKUJfa7gbk+R9x6XHFWIpHNjyiFqIPLUdxhPx+4KsMeqDNelvUOj6B2tA62zjn6S9nFqneJgN2MfrUFXDcVC4ilTjUOPkUBhY+aGnYrdAdGvuE60b6kuefs7qjQF0PE+Gk3Zscg/x0QsUQYi7NXER4v8grbAIY6EbWNevJJFSnTZqt6GKY1zImyBBQlIWYkJX6pCs51jdVmN1/od6CY1KUuH4dskj2hEyVsroylbewzChPTOGcuLraAFNLujl1qnDqgn9CeIfUXK0FKwrAKUD2WitIHTStS9x2mwsL3QohZlgS77oH42ZJRe8VclMcUFE8atdm2jvqfxD44furVLQ6Y+/PkNMuK1EDLuyLbjzZwmGNJkC8yoPwHB77+tFZnBULBDZ1E/a5pfcseYIiEaORrqiiW3DJiGVuO9djghTbV/nncVLFKH7L//MTwa1p4dpyZb8Lsnm0M3pFFxXdQvd4Rd0I7Pkz0JAA2leMdEmI8CJ
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB4615.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(346002)(366004)(136003)(39850400004)(396003)(451199021)(71200400001)(2906002)(86362001)(478600001)(45080400002)(38070700005)(6506007)(36756003)(6486002)(316002)(64756008)(66556008)(66476007)(66446008)(6916009)(66946007)(5660300002)(41300700001)(8676002)(8936002)(19627235002)(54906003)(91956017)(4326008)(76116006)(2616005)(83380400001)(122000001)(38100700002)(186003)(6512007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?T3pmZFQ0SERkMktIaXFSQVVlcDJqUlNXbnJLWlhYUTNORnEzenlxU090Q1Y2?=
- =?utf-8?B?VWFZSEZIV2lqbHdIWWQ0d3lhMTZVZUEwUEl6SnNxRk9wOFRPeGdVcnNCb1Ez?=
- =?utf-8?B?QmJoZDFnczFoeS9aY2l4QVZ3U2g3eVcvQnUzRXFXMHhERkxhaE9iTzBsMDA3?=
- =?utf-8?B?Nm8yNFJpUmgzSHZ2RVNYZk5jeFNnaU5GZXcyNGt3bXEwa0xOWCtGeEZKazd0?=
- =?utf-8?B?M2ZILzB3YlRnTFpwZ0hhcmFBZG52djFCQUlOV1h4dTRSUVhXVU5haDZVRDRj?=
- =?utf-8?B?WUhySGFvT054ZEtzaHBYdVhIZmdWbWZjUm5pRm5VRlhjZFZkSC8zQ0R5ZGgw?=
- =?utf-8?B?U3MrOG9UMTk3cVRjMkJXMjc2K1NXNVg1TmpxUWwxL2RJRXROUE5UOHlGMWVH?=
- =?utf-8?B?U1lZbGFQN2psaHkvZHRYMTFMWnZ5NW9NYkVEaHpLSGo4YUZqZVlUMFRzc01K?=
- =?utf-8?B?ZXE3ZDExNEtuTFJHUHVVYTRTb0g0dVlrcXlOTlBqMmQ5ejN5bDJTT3hLRjdK?=
- =?utf-8?B?TmRYV3VBbVk1OGFLYTA1SHVIV213Y0VHSy9hMGxiUWNDVitPM3Y5eVVMQzBC?=
- =?utf-8?B?MVJXTm1zd01jU0FNRWJmYnhtTTJ5ZithYTU2bE96aGVxU2VzVXFVRHFaUFN2?=
- =?utf-8?B?aC9VazRtUDFJTTVKZnlMeGhGUlUyMEdqYmtudVIxckQzN3FqNnNxZTdYM3lk?=
- =?utf-8?B?RnVpS2JMTDZVMURIMDB4SjczT3ozQkgvUWg5TFprc0MwY3hRaDhZa3V0OFEz?=
- =?utf-8?B?S3RuT1RMZ240R1RGWDlwOWp5Zm1GNHBVNjlHTDZZSkNhUGw4L1k5eitFUEJF?=
- =?utf-8?B?MCsvTThQbWo4RGJvcXJnVDV5L2NjSnZJdWYxZ3k5UEJ3OG5nSm05SmNCU1d6?=
- =?utf-8?B?SkRXNUtFQlN2ZzBwQzlzV1ZuaXBhT3hSRHlVQm4xaElyazRjak14c3Fpb0di?=
- =?utf-8?B?c1l3RGd2RXRYTDJKWkpBNitQei8yRlVDOW9IKzB4RjUvUTVUNjc5b3BwdTF0?=
- =?utf-8?B?VlJscW9hMGJQVkdGQ3F5OWFaMnFSNkk4bEpsWTdXOFBMa0VzdDdUc1Q3OVVJ?=
- =?utf-8?B?WjlYRGd6N1JvWmlkb0MvM3NJY3VvM0pHZW14TU91Wm9icHVOR0tzOW5UMnJj?=
- =?utf-8?B?blhRQUFSbzBkOGY1dFh6YWxjdkUxQ25MS2lGSXFMZnR3ODFZRmRDMk4xN3pN?=
- =?utf-8?B?c0Y0ajgwWWJFM2FLS0RUK3gvZU9JSkFlR05NT1loT0lGOEJ5MUxQNnRkdHl2?=
- =?utf-8?B?bVRuUXRTcU9uMitvSktYUTNNcGcyVFFyQURyYUlsMWRZdTFlbVQyY1cxTTZ5?=
- =?utf-8?B?Y2FneGRvSlkzY0VlckdRRjZEU094dVNQeng4NHN3RkNCbHFjNzV0alE0cDBM?=
- =?utf-8?B?M0VxRHRBRmUxUHQyRjNrN3QzTjYyZ01qYUhoWVlXblVXQkV5ek9WMjNTNk4y?=
- =?utf-8?B?M0FEUlREb2E4NU5Lbm9uaGZpR1ZaU0tQTksreGZzRTNXTWZLUDNaYkRHVXFn?=
- =?utf-8?B?Z3pJSlJSektyWHRGNkZGbUVBYkRHMGR6eU1raHZjRVhQQTN3VTMweFB1eGVR?=
- =?utf-8?B?T2ZVckNOeDJGcjVlV1dkczBzVTB4QVUrWmJYQlFHU2w2Z1ZQL0FMMWJld1RQ?=
- =?utf-8?B?TWRLR3B6WHBZbkdNM3ZZMDlramFMZkFubkZhU0tzVXhoaFM3MlNGMWtuOTMz?=
- =?utf-8?B?cTdsQUZyTDJvWDMzTzFER2oyNElHdjJuNk9CMHpzYk5GeEZCZjVhbTJDV0JM?=
- =?utf-8?B?RkZpeXNzQ2JOaGFLaGNxempUMm5YZ2g2L1NjTFc2dkFqMnhZUWgrdjFmTDM0?=
- =?utf-8?B?bC8vY3hLUmtCY1oyRGxNbFViZHZRb1B0S3pBUzJlNGdPMVNtZ0NYaTJzSFg2?=
- =?utf-8?B?WnZEWm4vZ1lnMGhpZjFKR0YwNEJNWHlyM0EzT0ZLWXI5U0d4S3FDRDZwcmcv?=
- =?utf-8?B?ZllRbHh3UXZGV0JKVndRSzNiQTBRaC9GaE1YOHNXM0phMWY4TW5YMnd1b3lM?=
- =?utf-8?B?SVNMWTdCVjlGdXQwaHMyRTY3di9WR0c3SVplNWhxOS9PS3krdkEvZmk5OVZO?=
- =?utf-8?B?Q1dncnZYMm50ZEtyeGVJMmpXeFMxaFgzckg4S3lEMStGOTAzbE1aTG5PQStF?=
- =?utf-8?B?emZicVpYV3FWL3dSaEFaZkR2Mi9WNnR5Q3RlUjVKSHp2UzIrOXljZ0haRjRh?=
- =?utf-8?Q?Cu3M3H8ASX9d4ejVSAw/GPAQYRh1n50ZhPYHL9ePp1bK?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <98766FD9A7A7E44BAEE6AB9E4BD16F7A@namprd10.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        with ESMTP id S229487AbjFQSKz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 14:10:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB88C1736;
+        Sat, 17 Jun 2023 11:10:54 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5951760B6A;
+        Sat, 17 Jun 2023 18:10:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087AFC433C0;
+        Sat, 17 Jun 2023 18:10:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1687025453;
+        bh=+MUxODR25JxS83z5KzVEnmk64ZPPdYw5BmwBRnEkZug=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=KQ+qvDhZbrqMpK69x38tBJXqGniOYa1aHTkKJ74lnZTxGd8gInXVya1OhDINdqigr
+         9VlN4r4kNz1OmbWJ81sCXXanBRteKjaxyqF0QNENKpwdvxpIKdA0EfgbrzoZyVdzxf
+         mp+KS5bKbsyQtYpei2gvo38eOMdBDQeRs71L8RkOdcSnBHWLl9q3mUv6K1IV3WLc/O
+         zGychfnbi+rhLh+6kvjrRk+Zjhu+eSqo6TqJZgHbSE4KPxDJ93+QMijebn6HlOD7Nb
+         xSq6e/WGMI8yRThC4/IhpqRxahs8kBUKqM8KdOZgfX1z35UiMl0L8ynky+uhTr6RsZ
+         jN2Lzb3IZwKvA==
+Date:   Sat, 17 Jun 2023 19:10:47 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc:     Alisa Roman <alisa.roman@analog.com>, stable@vger.kernel.org,
+        Alexandru Tachici <alexandru.tachici@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ad7192: Fix ac excitation feature
+Message-ID: <20230617191047.51e4852f@jic23-huawei>
+In-Reply-To: <b8693c52df5cf520d6994b872bac0768901a0a6d.camel@gmail.com>
+References: <20230614155242.160296-1-alisa.roman@analog.com>
+        <b8693c52df5cf520d6994b872bac0768901a0a6d.camel@gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-OriginatorOrg: infinera.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4615.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5796c6d3-b647-409d-ff84-08db6f4c5686
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Jun 2023 16:03:06.2909
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 285643de-5f5b-4b03-a153-0ae2dc8aaf77
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 4FHVQzgHo7Dn7OwVoVbNjM100aXnMTFfAXvsQitNaYlLqC1vpV8VLZAS7J1M/Pf2E6v29yqKJi4WG1u1FMz3CA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB5306
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-UGluZyA/DQoNCkRpZCBJIGRvIHNvbWV0aGluZyB3cm9uZyB3aXRoIHN1Ym1pc3Npb24gb3IgaXMg
-aXQgcXVldWVkIGZvciBsYXRlciA/DQo0LjE5IGlzIG1pc3NpbmcgdGhlc2Ugd2hpY2ggbWFrZSBV
-U0IgTkNNIHVudXNhYmxlIHdpdGggV2luID49IDEwLiANCg0KIEpvY2tlDQoNCk9uIFdlZCwgMjAy
-My0wNS0zMSBhdCAxOTozMyArMDIwMCwgSm9ha2ltIFRqZXJubHVuZCB3cm90ZToNCj4gRnJvbTog
-Um9tYWluIEl6YXJkIDxyb21haW4uaXphcmQucHJvQGdtYWlsLmNvbT4NCj4gDQo+IFRvIGJlIGFi
-bGUgdG8gdXNlIHRoZSBkZWZhdWx0IFVTQiBjbGFzcyBkcml2ZXJzIGF2YWlsYWJsZSBpbiBNaWNy
-b3NvZnQNCj4gV2luZG93cywgd2UgbmVlZCB0byBhZGQgT1MgZGVzY3JpcHRvcnMgdG8gdGhlIGV4
-cG9ydGVkIFVTQiBnYWRnZXQgdG8NCj4gdGVsbCB0aGUgT1MgdGhhdCB3ZSBhcmUgY29tcGF0aWJs
-ZSB3aXRoIHRoZSBidWlsdC1pbiBkcml2ZXJzLg0KPiANCj4gQ29weSB0aGUgT1MgZGVzY3JpcHRv
-ciBzdXBwb3J0IGZyb20gZl9ybmRpcyBpbnRvIGZfbmNtLiBBcyBhIHJlc3VsdCwNCj4gdXNpbmcg
-dGhlIFdJTk5DTSBjb21wYXRpYmxlIElELCB0aGUgVXNiTmNtIGRyaXZlciBpcyBsb2FkZWQgb24N
-Cj4gZW51bWVyYXRpb24gd2l0aG91dCB0aGUgbmVlZCBmb3IgYSBjdXN0b20gZHJpdmVyIG9yIGlu
-ZiBmaWxlLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogUm9tYWluIEl6YXJkIDxyb21haW4uaXphcmQu
-cHJvQGdtYWlsLmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogRmVsaXBlIEJhbGJpIDxmZWxpcGUuYmFs
-YmlAbGludXguaW50ZWwuY29tPg0KPiBTaWduZWQtb2ZmLWJ5OiBKb2FraW0gVGplcm5sdW5kIDxq
-b2FraW0udGplcm5sdW5kQGluZmluZXJhLmNvbT4NCj4gQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5v
-cmcgIyB2NC4xOQ0KPiAtLS0NCj4gDQo+ICBTZWVtcyB0byBoYXZlIGJlZW4gZm9yZ290dGVuIHdo
-ZW4gYmFja3BvcnRpbmcgTkNNIGZpeGVzLg0KPiAgTmVlZGVkIHRvIG1ha2UgV2luMTAgYWNjZXB0
-IExpbnV4IE5DTSBnYWRnZXQgZXRoZXJuZXQNCj4gDQo+ICBkcml2ZXJzL3VzYi9nYWRnZXQvZnVu
-Y3Rpb24vZl9uY20uYyB8IDQ3ICsrKysrKysrKysrKysrKysrKysrKysrKysrKy0tDQo+ICBkcml2
-ZXJzL3VzYi9nYWRnZXQvZnVuY3Rpb24vdV9uY20uaCB8ICAzICsrDQo+ICAyIGZpbGVzIGNoYW5n
-ZWQsIDQ3IGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEv
-ZHJpdmVycy91c2IvZ2FkZ2V0L2Z1bmN0aW9uL2ZfbmNtLmMgYi9kcml2ZXJzL3VzYi9nYWRnZXQv
-ZnVuY3Rpb24vZl9uY20uYw0KPiBpbmRleCBlNGFhMzcwZTg2YTkuLmI0NTcxNjMzZjdiNSAxMDA2
-NDQNCj4gLS0tIGEvZHJpdmVycy91c2IvZ2FkZ2V0L2Z1bmN0aW9uL2ZfbmNtLmMNCj4gKysrIGIv
-ZHJpdmVycy91c2IvZ2FkZ2V0L2Z1bmN0aW9uL2ZfbmNtLmMNCj4gQEAgLTIzLDYgKzIzLDcgQEAN
-Cj4gICNpbmNsdWRlICJ1X2V0aGVyLmgiDQo+ICAjaW5jbHVkZSAidV9ldGhlcl9jb25maWdmcy5o
-Ig0KPiAgI2luY2x1ZGUgInVfbmNtLmgiDQo+ICsjaW5jbHVkZSAiY29uZmlnZnMuaCINCj4gIA0K
-PiAgLyoNCj4gICAqIFRoaXMgZnVuY3Rpb24gaXMgYSAiQ0RDIE5ldHdvcmsgQ29udHJvbCBNb2Rl
-bCIgKENEQyBOQ00pIEV0aGVybmV0IGxpbmsuDQo+IEBAIC0xNDMyLDYgKzE0MzMsMTYgQEAgc3Rh
-dGljIGludCBuY21fYmluZChzdHJ1Y3QgdXNiX2NvbmZpZ3VyYXRpb24gKmMsIHN0cnVjdCB1c2Jf
-ZnVuY3Rpb24gKmYpDQo+ICAJCXJldHVybiAtRUlOVkFMOw0KPiAgDQo+ICAJbmNtX29wdHMgPSBj
-b250YWluZXJfb2YoZi0+ZmksIHN0cnVjdCBmX25jbV9vcHRzLCBmdW5jX2luc3QpOw0KPiArDQo+
-ICsJaWYgKGNkZXYtPnVzZV9vc19zdHJpbmcpIHsNCj4gKwkJZi0+b3NfZGVzY190YWJsZSA9IGt6
-YWxsb2Moc2l6ZW9mKCpmLT5vc19kZXNjX3RhYmxlKSwNCj4gKwkJCQkJICAgR0ZQX0tFUk5FTCk7
-DQo+ICsJCWlmICghZi0+b3NfZGVzY190YWJsZSkNCj4gKwkJCXJldHVybiAtRU5PTUVNOw0KPiAr
-CQlmLT5vc19kZXNjX24gPSAxOw0KPiArCQlmLT5vc19kZXNjX3RhYmxlWzBdLm9zX2Rlc2MgPSAm
-bmNtX29wdHMtPm5jbV9vc19kZXNjOw0KPiArCX0NCj4gKw0KPiAgCS8qDQo+ICAJICogaW4gZHJp
-dmVycy91c2IvZ2FkZ2V0L2NvbmZpZ2ZzLmM6Y29uZmlnZnNfY29tcG9zaXRlX2JpbmQoKQ0KPiAg
-CSAqIGNvbmZpZ3VyYXRpb25zIGFyZSBib3VuZCBpbiBzZXF1ZW5jZSB3aXRoIGxpc3RfZm9yX2Vh
-Y2hfZW50cnksDQo+IEBAIC0xNDQ1LDEzICsxNDU2LDE1IEBAIHN0YXRpYyBpbnQgbmNtX2JpbmQo
-c3RydWN0IHVzYl9jb25maWd1cmF0aW9uICpjLCBzdHJ1Y3QgdXNiX2Z1bmN0aW9uICpmKQ0KPiAg
-CQlzdGF0dXMgPSBnZXRoZXJfcmVnaXN0ZXJfbmV0ZGV2KG5jbV9vcHRzLT5uZXQpOw0KPiAgCQlt
-dXRleF91bmxvY2soJm5jbV9vcHRzLT5sb2NrKTsNCj4gIAkJaWYgKHN0YXR1cykNCj4gLQkJCXJl
-dHVybiBzdGF0dXM7DQo+ICsJCQlnb3RvIGZhaWw7DQo+ICAJCW5jbV9vcHRzLT5ib3VuZCA9IHRy
-dWU7DQo+ICAJfQ0KPiAgCXVzID0gdXNiX2dzdHJpbmdzX2F0dGFjaChjZGV2LCBuY21fc3RyaW5n
-cywNCj4gIAkJCQkgQVJSQVlfU0laRShuY21fc3RyaW5nX2RlZnMpKTsNCj4gLQlpZiAoSVNfRVJS
-KHVzKSkNCj4gLQkJcmV0dXJuIFBUUl9FUlIodXMpOw0KPiArCWlmIChJU19FUlIodXMpKSB7DQo+
-ICsJCXN0YXR1cyA9IFBUUl9FUlIodXMpOw0KPiArCQlnb3RvIGZhaWw7DQo+ICsJfQ0KPiAgCW5j
-bV9jb250cm9sX2ludGYuaUludGVyZmFjZSA9IHVzW1NUUklOR19DVFJMX0lEWF0uaWQ7DQo+ICAJ
-bmNtX2RhdGFfbm9wX2ludGYuaUludGVyZmFjZSA9IHVzW1NUUklOR19EQVRBX0lEWF0uaWQ7DQo+
-ICAJbmNtX2RhdGFfaW50Zi5pSW50ZXJmYWNlID0gdXNbU1RSSU5HX0RBVEFfSURYXS5pZDsNCj4g
-QEAgLTE0NjgsNiArMTQ4MSwxMCBAQCBzdGF0aWMgaW50IG5jbV9iaW5kKHN0cnVjdCB1c2JfY29u
-ZmlndXJhdGlvbiAqYywgc3RydWN0IHVzYl9mdW5jdGlvbiAqZikNCj4gIAluY21fY29udHJvbF9p
-bnRmLmJJbnRlcmZhY2VOdW1iZXIgPSBzdGF0dXM7DQo+ICAJbmNtX3VuaW9uX2Rlc2MuYk1hc3Rl
-ckludGVyZmFjZTAgPSBzdGF0dXM7DQo+ICANCj4gKwlpZiAoY2Rldi0+dXNlX29zX3N0cmluZykN
-Cj4gKwkJZi0+b3NfZGVzY190YWJsZVswXS5pZl9pZCA9DQo+ICsJCQluY21faWFkX2Rlc2MuYkZp
-cnN0SW50ZXJmYWNlOw0KPiArDQo+ICAJc3RhdHVzID0gdXNiX2ludGVyZmFjZV9pZChjLCBmKTsN
-Cj4gIAlpZiAoc3RhdHVzIDwgMCkNCj4gIAkJZ290byBmYWlsOw0KPiBAQCAtMTU0Nyw2ICsxNTY0
-LDkgQEAgc3RhdGljIGludCBuY21fYmluZChzdHJ1Y3QgdXNiX2NvbmZpZ3VyYXRpb24gKmMsIHN0
-cnVjdCB1c2JfZnVuY3Rpb24gKmYpDQo+ICAJcmV0dXJuIDA7DQo+ICANCj4gIGZhaWw6DQo+ICsJ
-a2ZyZWUoZi0+b3NfZGVzY190YWJsZSk7DQo+ICsJZi0+b3NfZGVzY19uID0gMDsNCj4gKw0KPiAg
-CWlmIChuY20tPm5vdGlmeV9yZXEpIHsNCj4gIAkJa2ZyZWUobmNtLT5ub3RpZnlfcmVxLT5idWYp
-Ow0KPiAgCQl1c2JfZXBfZnJlZV9yZXF1ZXN0KG5jbS0+bm90aWZ5LCBuY20tPm5vdGlmeV9yZXEp
-Ow0KPiBAQCAtMTYwMSwxNiArMTYyMSwyMiBAQCBzdGF0aWMgdm9pZCBuY21fZnJlZV9pbnN0KHN0
-cnVjdCB1c2JfZnVuY3Rpb25faW5zdGFuY2UgKmYpDQo+ICAJCWdldGhlcl9jbGVhbnVwKG5ldGRl
-dl9wcml2KG9wdHMtPm5ldCkpOw0KPiAgCWVsc2UNCj4gIAkJZnJlZV9uZXRkZXYob3B0cy0+bmV0
-KTsNCj4gKwlrZnJlZShvcHRzLT5uY21faW50ZXJmX2dyb3VwKTsNCj4gIAlrZnJlZShvcHRzKTsN
-Cj4gIH0NCj4gIA0KPiAgc3RhdGljIHN0cnVjdCB1c2JfZnVuY3Rpb25faW5zdGFuY2UgKm5jbV9h
-bGxvY19pbnN0KHZvaWQpDQo+ICB7DQo+ICAJc3RydWN0IGZfbmNtX29wdHMgKm9wdHM7DQo+ICsJ
-c3RydWN0IHVzYl9vc19kZXNjICpkZXNjc1sxXTsNCj4gKwljaGFyICpuYW1lc1sxXTsNCj4gKwlz
-dHJ1Y3QgY29uZmlnX2dyb3VwICpuY21faW50ZXJmX2dyb3VwOw0KPiAgDQo+ICAJb3B0cyA9IGt6
-YWxsb2Moc2l6ZW9mKCpvcHRzKSwgR0ZQX0tFUk5FTCk7DQo+ICAJaWYgKCFvcHRzKQ0KPiAgCQly
-ZXR1cm4gRVJSX1BUUigtRU5PTUVNKTsNCj4gKwlvcHRzLT5uY21fb3NfZGVzYy5leHRfY29tcGF0
-X2lkID0gb3B0cy0+bmNtX2V4dF9jb21wYXRfaWQ7DQo+ICsNCj4gIAltdXRleF9pbml0KCZvcHRz
-LT5sb2NrKTsNCj4gIAlvcHRzLT5mdW5jX2luc3QuZnJlZV9mdW5jX2luc3QgPSBuY21fZnJlZV9p
-bnN0Ow0KPiAgCW9wdHMtPm5ldCA9IGdldGhlcl9zZXR1cF9kZWZhdWx0KCk7DQo+IEBAIC0xNjE5
-LDggKzE2NDUsMjAgQEAgc3RhdGljIHN0cnVjdCB1c2JfZnVuY3Rpb25faW5zdGFuY2UgKm5jbV9h
-bGxvY19pbnN0KHZvaWQpDQo+ICAJCWtmcmVlKG9wdHMpOw0KPiAgCQlyZXR1cm4gRVJSX0NBU1Qo
-bmV0KTsNCj4gIAl9DQo+ICsJSU5JVF9MSVNUX0hFQUQoJm9wdHMtPm5jbV9vc19kZXNjLmV4dF9w
-cm9wKTsNCj4gKw0KPiArCWRlc2NzWzBdID0gJm9wdHMtPm5jbV9vc19kZXNjOw0KPiArCW5hbWVz
-WzBdID0gIm5jbSI7DQo+ICANCj4gIAljb25maWdfZ3JvdXBfaW5pdF90eXBlX25hbWUoJm9wdHMt
-PmZ1bmNfaW5zdC5ncm91cCwgIiIsICZuY21fZnVuY190eXBlKTsNCj4gKwluY21faW50ZXJmX2dy
-b3VwID0NCj4gKwkJdXNiX29zX2Rlc2NfcHJlcGFyZV9pbnRlcmZfZGlyKCZvcHRzLT5mdW5jX2lu
-c3QuZ3JvdXAsIDEsIGRlc2NzLA0KPiArCQkJCQkgICAgICAgbmFtZXMsIFRISVNfTU9EVUxFKTsN
-Cj4gKwlpZiAoSVNfRVJSKG5jbV9pbnRlcmZfZ3JvdXApKSB7DQo+ICsJCW5jbV9mcmVlX2luc3Qo
-Jm9wdHMtPmZ1bmNfaW5zdCk7DQo+ICsJCXJldHVybiBFUlJfQ0FTVChuY21faW50ZXJmX2dyb3Vw
-KTsNCj4gKwl9DQo+ICsJb3B0cy0+bmNtX2ludGVyZl9ncm91cCA9IG5jbV9pbnRlcmZfZ3JvdXA7
-DQo+ICANCj4gIAlyZXR1cm4gJm9wdHMtPmZ1bmNfaW5zdDsNCj4gIH0NCj4gQEAgLTE2NDYsNiAr
-MTY4NCw5IEBAIHN0YXRpYyB2b2lkIG5jbV91bmJpbmQoc3RydWN0IHVzYl9jb25maWd1cmF0aW9u
-ICpjLCBzdHJ1Y3QgdXNiX2Z1bmN0aW9uICpmKQ0KPiAgDQo+ICAJaHJ0aW1lcl9jYW5jZWwoJm5j
-bS0+dGFza190aW1lcik7DQo+ICANCj4gKwlrZnJlZShmLT5vc19kZXNjX3RhYmxlKTsNCj4gKwlm
-LT5vc19kZXNjX24gPSAwOw0KPiArDQo+ICAJbmNtX3N0cmluZ19kZWZzWzBdLmlkID0gMDsNCj4g
-IAl1c2JfZnJlZV9hbGxfZGVzY3JpcHRvcnMoZik7DQo+ICANCj4gZGlmZiAtLWdpdCBhL2RyaXZl
-cnMvdXNiL2dhZGdldC9mdW5jdGlvbi91X25jbS5oIGIvZHJpdmVycy91c2IvZ2FkZ2V0L2Z1bmN0
-aW9uL3VfbmNtLmgNCj4gaW5kZXggNjczMjRmOTgzMzQzLi5kZmQ3NWFkNjFiM2YgMTAwNjQ0DQo+
-IC0tLSBhL2RyaXZlcnMvdXNiL2dhZGdldC9mdW5jdGlvbi91X25jbS5oDQo+ICsrKyBiL2RyaXZl
-cnMvdXNiL2dhZGdldC9mdW5jdGlvbi91X25jbS5oDQo+IEBAIC0yMCw2ICsyMCw5IEBAIHN0cnVj
-dCBmX25jbV9vcHRzIHsNCj4gIAlzdHJ1Y3QgbmV0X2RldmljZQkJKm5ldDsNCj4gIAlib29sCQkJ
-CWJvdW5kOw0KPiAgDQo+ICsJc3RydWN0IGNvbmZpZ19ncm91cAkJKm5jbV9pbnRlcmZfZ3JvdXA7
-DQo+ICsJc3RydWN0IHVzYl9vc19kZXNjCQluY21fb3NfZGVzYzsNCj4gKwljaGFyCQkJCW5jbV9l
-eHRfY29tcGF0X2lkWzE2XTsNCj4gIAkvKg0KPiAgCSAqIFJlYWQvd3JpdGUgYWNjZXNzIHRvIGNv
-bmZpZ2ZzIGF0dHJpYnV0ZXMgaXMgaGFuZGxlZCBieSBjb25maWdmcy4NCj4gIAkgKg0KDQo=
+On Thu, 15 Jun 2023 13:46:44 +0200
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+
+> On Wed, 2023-06-14 at 18:52 +0300, Alisa Roman wrote:
+> > AC excitation enable feature exposed to user on AD7192, allowing a bit
+> > which should be 0 to be set. This feature is specific only to AD7195. AC
+> > excitation attribute moved accordingly.
+> >=20
+> > In the AD7195 documentation, the AC excitation enable bit is on position
+> > 22 in the Configuration register. ACX macro changed to match correct
+> > register and bit.
+> >=20
+> > Note that the fix tag is for the commit that moved the driver out of
+> > staging.
+> >=20
+> > Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
+> > Signed-off-by: Alisa Roman <alisa.roman@analog.com>
+> > Cc: stable@vger.kernel.org
+> > --- =20
+>=20
+> Hi Alisa,
+>=20
+> I see you improved the commit message to explain what's going on but you =
+should
+> have versioned your patches accordingly. Anyways, don't forget to do it n=
+ext
+> time :). You could also mention the name change AD7192_MODE_ACX ->
+> AD7192_CONFIG_ACX even though it's a bit obvious. Anyways:
+>=20
+> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+
+Hi Alisa,
+
+I've queued this up locally but as we are close to the merge window, my
+fixes branch is in the odd state of being ahead of what it's usually based =
+on.
+As such I won't push it out until post merge window and won't push it out
+in the meantime as it would make a mess of linux-next.
+
+For now it's pushed out as fixes-testing so we can get some autobuilder cov=
+erage
+on it.
+
+Jonathan
+
+
+>=20
+> > =C2=A0drivers/iio/adc/ad7192.c | 16 ++++++++--------
+> > =C2=A01 file changed, 8 insertions(+), 8 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+> > index 8685e0b58a83..7bc3ebfe8081 100644
+> > --- a/drivers/iio/adc/ad7192.c
+> > +++ b/drivers/iio/adc/ad7192.c
+> > @@ -62,7 +62,6 @@
+> > =C2=A0#define AD7192_MODE_STA_MASK=C2=A0=C2=A0=C2=A0BIT(20) /* Status R=
+egister transmission Mask
+> > */
+> > =C2=A0#define AD7192_MODE_CLKSRC(x)=C2=A0=C2=A0(((x) & 0x3) << 18) /* C=
+lock Source Select */
+> > =C2=A0#define AD7192_MODE_SINC3=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(=
+15) /* SINC3 Filter Select */
+> > -#define AD7192_MODE_ACX=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(14) /* AC excitation=
+ enable(AD7195
+> > only)*/
+> > =C2=A0#define AD7192_MODE_ENPAR=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(=
+13) /* Parity Enable */
+> > =C2=A0#define AD7192_MODE_CLKDIV=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(12) /=
+* Clock divide by 2 (AD7190/2 only)*/
+> > =C2=A0#define AD7192_MODE_SCYCLE=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(11) /=
+* Single cycle conversion */
+> > @@ -91,6 +90,7 @@
+> > =C2=A0/* Configuration Register Bit Designations (AD7192_REG_CONF) */
+> > =C2=A0
+> > =C2=A0#define AD7192_CONF_CHOP=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0BIT(23) /* CHOP enable */
+> > +#define AD7192_CONF_ACX=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(22) /* AC excitation=
+ enable(AD7195
+> > only) */
+> > =C2=A0#define AD7192_CONF_REFSEL=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(20) /=
+* REFIN1/REFIN2 Reference Select */
+> > =C2=A0#define AD7192_CONF_CHAN(x)=C2=A0=C2=A0=C2=A0=C2=A0((x) << 8) /* =
+Channel select */
+> > =C2=A0#define AD7192_CONF_CHAN_MASK=C2=A0=C2=A0(0x7FF << 8) /* Channel =
+select mask */
+> > @@ -472,7 +472,7 @@ static ssize_t ad7192_show_ac_excitation(struct dev=
+ice
+> > *dev,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct iio_dev *indio_d=
+ev =3D dev_to_iio_dev(dev);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct ad7192_state *st=
+ =3D iio_priv(indio_dev);
+> > =C2=A0
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return sysfs_emit(buf, "%d\n=
+", !!(st->mode & AD7192_MODE_ACX));
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return sysfs_emit(buf, "%d\n=
+", !!(st->conf & AD7192_CONF_ACX));
+> > =C2=A0}
+> > =C2=A0
+> > =C2=A0static ssize_t ad7192_show_bridge_switch(struct device *dev,
+> > @@ -513,13 +513,13 @@ static ssize_t ad7192_set(struct device *dev,
+> > =C2=A0
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0ad_sd_write_reg(&st->sd, AD7192_REG_GPOCON, 1, s=
+t->gpocon);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0break;
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0case AD7192_REG_MODE:
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0case AD7192_REG_CONF:
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0if (val)
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0st->mo=
+de |=3D AD7192_MODE_ACX;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0st->co=
+nf |=3D AD7192_CONF_ACX;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0else
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0st->mo=
+de &=3D ~AD7192_MODE_ACX;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0st->co=
+nf &=3D ~AD7192_CONF_ACX;
+> > =C2=A0
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0ad_sd_write_reg(&st->sd, AD7192_REG_CONF, 3, st->conf);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0break;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0default:
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0ret =3D -EINVAL;
+> > @@ -579,12 +579,11 @@ static IIO_DEVICE_ATTR(bridge_switch_en, 0644,
+> > =C2=A0
+> > =C2=A0static IIO_DEVICE_ATTR(ac_excitation_en, 0644,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ad7192_show=
+_ac_excitation, ad7192_set,
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD7192_REG_MODE);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD7192_REG_CONF);
+> > =C2=A0
+> > =C2=A0static struct attribute *ad7192_attributes[] =3D {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0&iio_dev_attr_filter_lo=
+w_pass_3db_frequency_available.dev_attr.attr,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0&iio_dev_attr_bridge_sw=
+itch_en.dev_attr.attr,
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0&iio_dev_attr_ac_excitation_=
+en.dev_attr.attr,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0NULL
+> > =C2=A0};
+> > =C2=A0
+> > @@ -595,6 +594,7 @@ static const struct attribute_group ad7192_attribut=
+e_group
+> > =3D {
+> > =C2=A0static struct attribute *ad7195_attributes[] =3D {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0&iio_dev_attr_filter_lo=
+w_pass_3db_frequency_available.dev_attr.attr,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0&iio_dev_attr_bridge_sw=
+itch_en.dev_attr.attr,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0&iio_dev_attr_ac_excitation_=
+en.dev_attr.attr,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0NULL
+> > =C2=A0};
+> > =C2=A0 =20
+>=20
+
