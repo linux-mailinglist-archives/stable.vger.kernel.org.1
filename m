@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCD44733F87
-	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 10:15:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC937733F88
+	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 10:16:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233465AbjFQIPf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 17 Jun 2023 04:15:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59042 "EHLO
+        id S233528AbjFQIQE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 17 Jun 2023 04:16:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233241AbjFQIPe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 04:15:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A11D1732
-        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 01:15:33 -0700 (PDT)
+        with ESMTP id S233241AbjFQIQC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 04:16:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 165081732
+        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 01:16:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EE60E6068F
-        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 08:15:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 054BBC433C8;
-        Sat, 17 Jun 2023 08:15:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 826CB60A5A
+        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 08:16:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BCF2C433C0;
+        Sat, 17 Jun 2023 08:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686989732;
-        bh=FDD3IdeZy3YEUMqZfujTBuRPLpW2rBbXvVlxbYHjO8E=;
+        s=korg; t=1686989761;
+        bh=j+gsDDhjz56cIRrT7mRvCnknXvnoiAvWGc/QRxjm/84=;
         h=Subject:To:Cc:From:Date:From;
-        b=QsHy9KeT+ADYHVIdJ2U9LM4+E6sEJqEnJL2UGbgv+v3Qg42U6ToumOSYzwcTATPR9
-         QDvKGTt1G84QbJVT9vRNVQ+OtP49FIiikpHvEuGg1JNbSJf2b3/vaLNQRtA5pv698b
-         UhttNOlQrZfzBTyUeP2wmFy4EEdo2pHglis7H1uo=
-Subject: FAILED: patch "[PATCH] cifs: fix status checks in cifs_tree_connect" failed to apply to 6.3-stable tree
-To:     sprasad@microsoft.com, stfrench@microsoft.com
+        b=sKBH63b+ZESEmkC4mO/Js1sZprfBpceEOheNBAWHHCzeXgoOEQ7iRiYs8bo/hB75e
+         S4YTJicZ1YvwiEvNm6m6MjZCf+avZZR+VdfEMjKvVtIculPDuMAAThS00NkoOqPu/j
+         9A6r4CIOo2blCsamLgvbIT1FHC9p7a6mrzy4nMT8=
+Subject: FAILED: patch "[PATCH] ALSA: usb-audio: Fix broken resume due to UAC3 power state" failed to apply to 5.15-stable tree
+To:     tiwai@suse.de, stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 17 Jun 2023 10:15:29 +0200
-Message-ID: <2023061729-prankster-wildcard-db1f@gregkh>
+Date:   Sat, 17 Jun 2023 10:15:58 +0200
+Message-ID: <2023061758-spending-uncooked-683b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.3-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 91f4480c41f56f7c723323cf7f581f1d95d9ffbc
+git cherry-pick -x 8ba61c9f6c9bdfbf9d197b0282641d24ae909778
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061729-prankster-wildcard-db1f@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061758-spending-uncooked-683b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,71 +73,45 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 91f4480c41f56f7c723323cf7f581f1d95d9ffbc Mon Sep 17 00:00:00 2001
-From: Shyam Prasad N <sprasad@microsoft.com>
-Date: Fri, 9 Jun 2023 17:46:54 +0000
-Subject: [PATCH] cifs: fix status checks in cifs_tree_connect
+From 8ba61c9f6c9bdfbf9d197b0282641d24ae909778 Mon Sep 17 00:00:00 2001
+From: Takashi Iwai <tiwai@suse.de>
+Date: Mon, 12 Jun 2023 15:28:18 +0200
+Subject: [PATCH] ALSA: usb-audio: Fix broken resume due to UAC3 power state
 
-The ordering of status checks at the beginning of
-cifs_tree_connect is wrong. As a result, a tcon
-which is good may stay marked as needing reconnect
-infinitely.
+As reported in the bugzilla below, the PM resume of a UAC3 device may
+fail due to the incomplete power state change, stuck at D1.  The
+reason is that the driver expects the full D0 power state change only
+at hw_params, while the normal PCM resume procedure doesn't call
+hw_params.
 
-Fixes: 2f0e4f034220 ("cifs: check only tcon status on tcon related functions")
-Cc: stable@vger.kernel.org # 6.3
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+For fixing the bug, we add the same power state update to D0 at the
+prepare callback, which is certainly called by the resume procedure.
 
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index 8e9a672320ab..1250d156619b 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -4086,16 +4086,17 @@ int cifs_tree_connect(const unsigned int xid, struct cifs_tcon *tcon, const stru
- 
- 	/* only send once per connect */
- 	spin_lock(&tcon->tc_lock);
-+	if (tcon->status == TID_GOOD) {
-+		spin_unlock(&tcon->tc_lock);
-+		return 0;
-+	}
-+
- 	if (tcon->status != TID_NEW &&
- 	    tcon->status != TID_NEED_TCON) {
- 		spin_unlock(&tcon->tc_lock);
- 		return -EHOSTDOWN;
+Note that, with this change, the power state change in the hw_params
+becomes almost redundant, since snd_usb_hw_params() doesn't touch the
+parameters (at least it tires so).  But dropping it is still a bit
+risky (e.g. we have the media-driver binding), so I leave the D0 power
+state change in snd_usb_hw_params() as is for now.
+
+Fixes: a0a4959eb4e9 ("ALSA: usb-audio: Operate UAC3 Power Domains in PCM callbacks")
+Cc: <stable@vger.kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217539
+Link: https://lore.kernel.org/r/20230612132818.29486-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+
+diff --git a/sound/usb/pcm.c b/sound/usb/pcm.c
+index eec5232f9fb2..08bf535ed163 100644
+--- a/sound/usb/pcm.c
++++ b/sound/usb/pcm.c
+@@ -650,6 +650,10 @@ static int snd_usb_pcm_prepare(struct snd_pcm_substream *substream)
+ 		goto unlock;
  	}
  
--	if (tcon->status == TID_GOOD) {
--		spin_unlock(&tcon->tc_lock);
--		return 0;
--	}
- 	tcon->status = TID_IN_TCON;
- 	spin_unlock(&tcon->tc_lock);
- 
-diff --git a/fs/smb/client/dfs.c b/fs/smb/client/dfs.c
-index 2f93bf8c3325..2390b2fedd6a 100644
---- a/fs/smb/client/dfs.c
-+++ b/fs/smb/client/dfs.c
-@@ -575,16 +575,17 @@ int cifs_tree_connect(const unsigned int xid, struct cifs_tcon *tcon, const stru
- 
- 	/* only send once per connect */
- 	spin_lock(&tcon->tc_lock);
-+	if (tcon->status == TID_GOOD) {
-+		spin_unlock(&tcon->tc_lock);
-+		return 0;
-+	}
++	ret = snd_usb_pcm_change_state(subs, UAC3_PD_STATE_D0);
++	if (ret < 0)
++		goto unlock;
 +
- 	if (tcon->status != TID_NEW &&
- 	    tcon->status != TID_NEED_TCON) {
- 		spin_unlock(&tcon->tc_lock);
- 		return -EHOSTDOWN;
- 	}
- 
--	if (tcon->status == TID_GOOD) {
--		spin_unlock(&tcon->tc_lock);
--		return 0;
--	}
- 	tcon->status = TID_IN_TCON;
- 	spin_unlock(&tcon->tc_lock);
- 
+  again:
+ 	if (subs->sync_endpoint) {
+ 		ret = snd_usb_endpoint_prepare(chip, subs->sync_endpoint);
 
