@@ -2,233 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D0907342E3
-	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 20:10:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A316D734389
+	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 22:36:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231329AbjFQSK4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 17 Jun 2023 14:10:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40664 "EHLO
+        id S232284AbjFQUgm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 17 Jun 2023 16:36:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229487AbjFQSKz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 14:10:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB88C1736;
-        Sat, 17 Jun 2023 11:10:54 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5951760B6A;
-        Sat, 17 Jun 2023 18:10:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087AFC433C0;
-        Sat, 17 Jun 2023 18:10:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687025453;
-        bh=+MUxODR25JxS83z5KzVEnmk64ZPPdYw5BmwBRnEkZug=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=KQ+qvDhZbrqMpK69x38tBJXqGniOYa1aHTkKJ74lnZTxGd8gInXVya1OhDINdqigr
-         9VlN4r4kNz1OmbWJ81sCXXanBRteKjaxyqF0QNENKpwdvxpIKdA0EfgbrzoZyVdzxf
-         mp+KS5bKbsyQtYpei2gvo38eOMdBDQeRs71L8RkOdcSnBHWLl9q3mUv6K1IV3WLc/O
-         zGychfnbi+rhLh+6kvjrRk+Zjhu+eSqo6TqJZgHbSE4KPxDJ93+QMijebn6HlOD7Nb
-         xSq6e/WGMI8yRThC4/IhpqRxahs8kBUKqM8KdOZgfX1z35UiMl0L8ynky+uhTr6RsZ
-         jN2Lzb3IZwKvA==
-Date:   Sat, 17 Jun 2023 19:10:47 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc:     Alisa Roman <alisa.roman@analog.com>, stable@vger.kernel.org,
-        Alexandru Tachici <alexandru.tachici@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ad7192: Fix ac excitation feature
-Message-ID: <20230617191047.51e4852f@jic23-huawei>
-In-Reply-To: <b8693c52df5cf520d6994b872bac0768901a0a6d.camel@gmail.com>
-References: <20230614155242.160296-1-alisa.roman@analog.com>
-        <b8693c52df5cf520d6994b872bac0768901a0a6d.camel@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        with ESMTP id S1346317AbjFQUgl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 16:36:41 -0400
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90AE5172C;
+        Sat, 17 Jun 2023 13:36:40 -0700 (PDT)
+Received: from localhost.localdomain (178.176.79.248) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Sat, 17 Jun
+ 2023 23:36:34 +0300
+From:   Sergey Shtylyov <s.shtylyov@omp.ru>
+To:     Ulf Hansson <ulf.hansson@linaro.org>, <linux-mmc@vger.kernel.org>
+CC:     Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Nicolas Saenz Julienne <nsaenz@kernel.org>,
+        <bcm-kernel-feedback-list@broadcom.com>,
+        <linux-rpi-kernel@lists.infradead.org>,
+        <linux-arm-kernel@lists.infradead.org>, <stable@vger.kernel.org>
+Subject: [PATCH v3 01/12] mmc: bcm2835: fix deferred probing
+Date:   Sat, 17 Jun 2023 23:36:11 +0300
+Message-ID: <20230617203622.6812-2-s.shtylyov@omp.ru>
+X-Mailer: git-send-email 2.26.3
+In-Reply-To: <20230617203622.6812-1-s.shtylyov@omp.ru>
+References: <20230617203622.6812-1-s.shtylyov@omp.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [178.176.79.248]
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.59, Database issued on: 06/17/2023 20:23:23
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 59
+X-KSE-AntiSpam-Info: Lua profiles 178086 [Jun 16 2023]
+X-KSE-AntiSpam-Info: Version: 5.9.59.0
+X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 517 517 b0056c19d8e10afbb16cb7aad7258dedb0179a79
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_no_received}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {relay has no DNS name}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.79.248 in (user)
+ dbl.spamhaus.org}
+X-KSE-AntiSpam-Info: omp.ru:7.1.1;178.176.79.248:7.1.2,7.4.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: {iprep_blacklist}
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: {rdns complete}
+X-KSE-AntiSpam-Info: {fromrtbl complete}
+X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.79.248
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 59
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=none header.from=omp.ru;spf=none
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 06/17/2023 20:29:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 6/17/2023 5:34:00 PM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 15 Jun 2023 13:46:44 +0200
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+The driver overrides the error codes and IRQ0 returned by platform_get_irq()
+to -EINVAL, so if it returns -EPROBE_DEFER, the driver will fail the probe
+permanently instead of the deferred probing. Switch to propagating the error
+codes upstream.  Since commit ce753ad1549c ("platform: finally disallow IRQ0
+in platform_get_irq() and its ilk") IRQ0 is no longer returned by those APIs,
+so we now can safely ignore it...
 
-> On Wed, 2023-06-14 at 18:52 +0300, Alisa Roman wrote:
-> > AC excitation enable feature exposed to user on AD7192, allowing a bit
-> > which should be 0 to be set. This feature is specific only to AD7195. AC
-> > excitation attribute moved accordingly.
-> >=20
-> > In the AD7195 documentation, the AC excitation enable bit is on position
-> > 22 in the Configuration register. ACX macro changed to match correct
-> > register and bit.
-> >=20
-> > Note that the fix tag is for the commit that moved the driver out of
-> > staging.
-> >=20
-> > Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
-> > Signed-off-by: Alisa Roman <alisa.roman@analog.com>
-> > Cc: stable@vger.kernel.org
-> > --- =20
->=20
-> Hi Alisa,
->=20
-> I see you improved the commit message to explain what's going on but you =
-should
-> have versioned your patches accordingly. Anyways, don't forget to do it n=
-ext
-> time :). You could also mention the name change AD7192_MODE_ACX ->
-> AD7192_CONFIG_ACX even though it's a bit obvious. Anyways:
->=20
-> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Fixes: 660fc733bd74 ("mmc: bcm2835: Add new driver for the sdhost controller.")
+Cc: stable@vger.kernel.org # v5.19+
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+---
+Changes in version 3:
+- added the platform_get_irq() commit reference to the  patch description and
+  the Cc: tag marking the 1st kernel version containing it.
 
-Hi Alisa,
+Changes in version 2:
+- refreshed the patch;
+- slightly reformatted the patch description.
 
-I've queued this up locally but as we are close to the merge window, my
-fixes branch is in the odd state of being ahead of what it's usually based =
-on.
-As such I won't push it out until post merge window and won't push it out
-in the meantime as it would make a mess of linux-next.
+ drivers/mmc/host/bcm2835.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-For now it's pushed out as fixes-testing so we can get some autobuilder cov=
-erage
-on it.
-
-Jonathan
-
-
->=20
-> > =C2=A0drivers/iio/adc/ad7192.c | 16 ++++++++--------
-> > =C2=A01 file changed, 8 insertions(+), 8 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-> > index 8685e0b58a83..7bc3ebfe8081 100644
-> > --- a/drivers/iio/adc/ad7192.c
-> > +++ b/drivers/iio/adc/ad7192.c
-> > @@ -62,7 +62,6 @@
-> > =C2=A0#define AD7192_MODE_STA_MASK=C2=A0=C2=A0=C2=A0BIT(20) /* Status R=
-egister transmission Mask
-> > */
-> > =C2=A0#define AD7192_MODE_CLKSRC(x)=C2=A0=C2=A0(((x) & 0x3) << 18) /* C=
-lock Source Select */
-> > =C2=A0#define AD7192_MODE_SINC3=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(=
-15) /* SINC3 Filter Select */
-> > -#define AD7192_MODE_ACX=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(14) /* AC excitation=
- enable(AD7195
-> > only)*/
-> > =C2=A0#define AD7192_MODE_ENPAR=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(=
-13) /* Parity Enable */
-> > =C2=A0#define AD7192_MODE_CLKDIV=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(12) /=
-* Clock divide by 2 (AD7190/2 only)*/
-> > =C2=A0#define AD7192_MODE_SCYCLE=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(11) /=
-* Single cycle conversion */
-> > @@ -91,6 +90,7 @@
-> > =C2=A0/* Configuration Register Bit Designations (AD7192_REG_CONF) */
-> > =C2=A0
-> > =C2=A0#define AD7192_CONF_CHOP=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0BIT(23) /* CHOP enable */
-> > +#define AD7192_CONF_ACX=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(22) /* AC excitation=
- enable(AD7195
-> > only) */
-> > =C2=A0#define AD7192_CONF_REFSEL=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0BIT(20) /=
-* REFIN1/REFIN2 Reference Select */
-> > =C2=A0#define AD7192_CONF_CHAN(x)=C2=A0=C2=A0=C2=A0=C2=A0((x) << 8) /* =
-Channel select */
-> > =C2=A0#define AD7192_CONF_CHAN_MASK=C2=A0=C2=A0(0x7FF << 8) /* Channel =
-select mask */
-> > @@ -472,7 +472,7 @@ static ssize_t ad7192_show_ac_excitation(struct dev=
-ice
-> > *dev,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct iio_dev *indio_d=
-ev =3D dev_to_iio_dev(dev);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct ad7192_state *st=
- =3D iio_priv(indio_dev);
-> > =C2=A0
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return sysfs_emit(buf, "%d\n=
-", !!(st->mode & AD7192_MODE_ACX));
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return sysfs_emit(buf, "%d\n=
-", !!(st->conf & AD7192_CONF_ACX));
-> > =C2=A0}
-> > =C2=A0
-> > =C2=A0static ssize_t ad7192_show_bridge_switch(struct device *dev,
-> > @@ -513,13 +513,13 @@ static ssize_t ad7192_set(struct device *dev,
-> > =C2=A0
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0ad_sd_write_reg(&st->sd, AD7192_REG_GPOCON, 1, s=
-t->gpocon);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0break;
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0case AD7192_REG_MODE:
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0case AD7192_REG_CONF:
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0if (val)
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0st->mo=
-de |=3D AD7192_MODE_ACX;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0st->co=
-nf |=3D AD7192_CONF_ACX;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0else
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0st->mo=
-de &=3D ~AD7192_MODE_ACX;
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0st->co=
-nf &=3D ~AD7192_CONF_ACX;
-> > =C2=A0
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0ad_sd_write_reg(&st->sd, AD7192_REG_CONF, 3, st->conf);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0break;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0default:
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0ret =3D -EINVAL;
-> > @@ -579,12 +579,11 @@ static IIO_DEVICE_ATTR(bridge_switch_en, 0644,
-> > =C2=A0
-> > =C2=A0static IIO_DEVICE_ATTR(ac_excitation_en, 0644,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ad7192_show=
-_ac_excitation, ad7192_set,
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD7192_REG_MODE);
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 AD7192_REG_CONF);
-> > =C2=A0
-> > =C2=A0static struct attribute *ad7192_attributes[] =3D {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0&iio_dev_attr_filter_lo=
-w_pass_3db_frequency_available.dev_attr.attr,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0&iio_dev_attr_bridge_sw=
-itch_en.dev_attr.attr,
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0&iio_dev_attr_ac_excitation_=
-en.dev_attr.attr,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0NULL
-> > =C2=A0};
-> > =C2=A0
-> > @@ -595,6 +594,7 @@ static const struct attribute_group ad7192_attribut=
-e_group
-> > =3D {
-> > =C2=A0static struct attribute *ad7195_attributes[] =3D {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0&iio_dev_attr_filter_lo=
-w_pass_3db_frequency_available.dev_attr.attr,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0&iio_dev_attr_bridge_sw=
-itch_en.dev_attr.attr,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0&iio_dev_attr_ac_excitation_=
-en.dev_attr.attr,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0NULL
-> > =C2=A0};
-> > =C2=A0 =20
->=20
+diff --git a/drivers/mmc/host/bcm2835.c b/drivers/mmc/host/bcm2835.c
+index 8648f7e63ca1..eea208856ce0 100644
+--- a/drivers/mmc/host/bcm2835.c
++++ b/drivers/mmc/host/bcm2835.c
+@@ -1403,8 +1403,8 @@ static int bcm2835_probe(struct platform_device *pdev)
+ 	host->max_clk = clk_get_rate(clk);
+ 
+ 	host->irq = platform_get_irq(pdev, 0);
+-	if (host->irq <= 0) {
+-		ret = -EINVAL;
++	if (host->irq < 0) {
++		ret = host->irq;
+ 		goto err;
+ 	}
+ 
+-- 
+2.26.3
 
