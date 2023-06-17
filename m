@@ -2,34 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A316D734389
-	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 22:36:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2894B73438B
+	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 22:36:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232284AbjFQUgm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 17 Jun 2023 16:36:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41710 "EHLO
+        id S1346461AbjFQUgs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 17 Jun 2023 16:36:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346317AbjFQUgl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 16:36:41 -0400
+        with ESMTP id S1346317AbjFQUgq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 16:36:46 -0400
 Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90AE5172C;
-        Sat, 17 Jun 2023 13:36:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B166AE68;
+        Sat, 17 Jun 2023 13:36:45 -0700 (PDT)
 Received: from localhost.localdomain (178.176.79.248) by msexch01.omp.ru
  (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Sat, 17 Jun
- 2023 23:36:34 +0300
+ 2023 23:36:38 +0300
 From:   Sergey Shtylyov <s.shtylyov@omp.ru>
 To:     Ulf Hansson <ulf.hansson@linaro.org>, <linux-mmc@vger.kernel.org>
-CC:     Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Nicolas Saenz Julienne <nsaenz@kernel.org>,
-        <bcm-kernel-feedback-list@broadcom.com>,
-        <linux-rpi-kernel@lists.infradead.org>,
+CC:     Neil Armstrong <neil.armstrong@linaro.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        <linux-amlogic@lists.infradead.org>,
         <linux-arm-kernel@lists.infradead.org>, <stable@vger.kernel.org>
-Subject: [PATCH v3 01/12] mmc: bcm2835: fix deferred probing
-Date:   Sat, 17 Jun 2023 23:36:11 +0300
-Message-ID: <20230617203622.6812-2-s.shtylyov@omp.ru>
+Subject: [PATCH v3 02/12] mmc: meson-gx: fix deferred probing
+Date:   Sat, 17 Jun 2023 23:36:12 +0300
+Message-ID: <20230617203622.6812-3-s.shtylyov@omp.ru>
 X-Mailer: git-send-email 2.26.3
 In-Reply-To: <20230617203622.6812-1-s.shtylyov@omp.ru>
 References: <20230617203622.6812-1-s.shtylyov@omp.ru>
@@ -56,17 +55,13 @@ X-KSE-AntiSpam-Info: {relay has no DNS name}
 X-KSE-AntiSpam-Info: {SMTP from is not routable}
 X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.79.248 in (user)
  dbl.spamhaus.org}
-X-KSE-AntiSpam-Info: omp.ru:7.1.1;178.176.79.248:7.1.2,7.4.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: {iprep_blacklist}
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: {rdns complete}
-X-KSE-AntiSpam-Info: {fromrtbl complete}
+X-KSE-AntiSpam-Info: omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
 X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.79.248
 X-KSE-AntiSpam-Info: {DNS response errors}
 X-KSE-AntiSpam-Info: Rate: 59
 X-KSE-AntiSpam-Info: Status: not_detected
 X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=none header.from=omp.ru;spf=none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
  smtp.mailfrom=omp.ru;dkim=none
 X-KSE-Antiphishing-Info: Clean
 X-KSE-Antiphishing-ScanningType: Heuristic
@@ -93,36 +88,40 @@ codes upstream.  Since commit ce753ad1549c ("platform: finally disallow IRQ0
 in platform_get_irq() and its ilk") IRQ0 is no longer returned by those APIs,
 so we now can safely ignore it...
 
-Fixes: 660fc733bd74 ("mmc: bcm2835: Add new driver for the sdhost controller.")
+Fixes: cbcaac6d7dd2 ("mmc: meson-gx-mmc: Fix platform_get_irq's error checking")
 Cc: stable@vger.kernel.org # v5.19+
 Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 ---
 Changes in version 3:
 - added the platform_get_irq() commit reference to the  patch description and
-  the Cc: tag marking the 1st kernel version containing it.
+  the Cc: tag marking the 1st kernel version containing it;
+- added Neil's tag .
 
 Changes in version 2:
+- updated the fix due to the surrounding code change;
 - refreshed the patch;
+- removed stray newline in the Fixes: tag;
 - slightly reformatted the patch description.
 
- drivers/mmc/host/bcm2835.c | 4 ++--
+ drivers/mmc/host/meson-gx-mmc.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mmc/host/bcm2835.c b/drivers/mmc/host/bcm2835.c
-index 8648f7e63ca1..eea208856ce0 100644
---- a/drivers/mmc/host/bcm2835.c
-+++ b/drivers/mmc/host/bcm2835.c
-@@ -1403,8 +1403,8 @@ static int bcm2835_probe(struct platform_device *pdev)
- 	host->max_clk = clk_get_rate(clk);
+diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
+index b8514d9d5e73..75f97dce7ef3 100644
+--- a/drivers/mmc/host/meson-gx-mmc.c
++++ b/drivers/mmc/host/meson-gx-mmc.c
+@@ -1192,8 +1192,8 @@ static int meson_mmc_probe(struct platform_device *pdev)
+ 		return PTR_ERR(host->regs);
  
  	host->irq = platform_get_irq(pdev, 0);
--	if (host->irq <= 0) {
--		ret = -EINVAL;
-+	if (host->irq < 0) {
-+		ret = host->irq;
- 		goto err;
- 	}
+-	if (host->irq <= 0)
+-		return -EINVAL;
++	if (host->irq < 0)
++		return host->irq;
  
+ 	cd_irq = platform_get_irq_optional(pdev, 1);
+ 	mmc_gpio_set_cd_irq(mmc, cd_irq);
 -- 
 2.26.3
 
