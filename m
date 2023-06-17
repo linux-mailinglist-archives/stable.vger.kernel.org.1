@@ -2,44 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0619A733F79
-	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 10:11:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F4191733F7B
+	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 10:13:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233530AbjFQILg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 17 Jun 2023 04:11:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57496 "EHLO
+        id S1346278AbjFQINF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 17 Jun 2023 04:13:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232319AbjFQILe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 04:11:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B84E21BDF
-        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 01:11:33 -0700 (PDT)
+        with ESMTP id S232319AbjFQINE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 04:13:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE6841FFE
+        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 01:13:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 51C5C6090A
-        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 08:11:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 653C4C433C0;
-        Sat, 17 Jun 2023 08:11:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7387660F16
+        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 08:13:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E45C433C8;
+        Sat, 17 Jun 2023 08:13:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686989492;
-        bh=mDU+han1H15JGSugsz67d0tt1Z8/f2rWeTAVmvMiatA=;
+        s=korg; t=1686989581;
+        bh=FFLY6CcrpVL0tNDP9VYC4ViIDOeiulGXMoXrTJS2z9Q=;
         h=Subject:To:Cc:From:Date:From;
-        b=PvuiFhrqXlj2r8M0cR2NcVCX67KkXSkF6hlXGrwUM3NeT+wQIvaAgy6k4PGzxHevc
-         CSNsBck3HbFFH6BnLAmQymwxJ7TXWPQQXUIAnHCTEZ2TwSRzlQJc0IYujgr4K/YvkQ
-         bWYkOQko41K2KOjm4aGPNPq7KD3QUVbhMCApgySs=
-Subject: FAILED: patch "[PATCH] io_uring/net: save msghdr->msg_control for retries" failed to apply to 5.15-stable tree
-To:     axboe@kernel.dk, marek@cloudflare.com
+        b=EqjO60jjqe5oNImgG6qyy4tELJu5StGYP29BdiK+EhnbzxzymNMvNBnvptlTYFGhm
+         P+0c39nUZGZxoNNSODUlvH0CFkU5VScRD8xgnrwQtpuyBtx8v2BIMhtPopZtJ95Wg7
+         QPoGZPquB5CIWW2oKZtHu8YsuZwT38eQRx5TssuM=
+Subject: FAILED: patch "[PATCH] x86/purgatory: remove PGO flags" failed to apply to 5.4-stable tree
+To:     ribalda@chromium.org, akpm@linux-foundation.org,
+        aou@eecs.berkeley.edu, bhe@redhat.com, bp@alien8.de,
+        christophe.leroy@csgroup.eu, dave.hansen@linux.intel.com,
+        dyoung@redhat.com, ebiederm@xmission.com, horms@kernel.org,
+        hpa@zytor.com, mingo@redhat.com, mpe@ellerman.id.au,
+        nathan@kernel.org, ndesaulniers@google.com, npiggin@gmail.com,
+        palmer@dabbelt.com, palmer@rivosinc.com, paul.walmsley@sifive.com,
+        prudo@redhat.com, rostedt@goodmis.org, stable@vger.kernel.org,
+        tglx@linutronix.de, trix@redhat.com, zwisler@google.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 17 Jun 2023 10:11:22 +0200
-Message-ID: <2023061722-dock-bleep-55f8@gregkh>
+Date:   Sat, 17 Jun 2023 10:12:59 +0200
+Message-ID: <2023061759-gilled-droop-f51d@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,19 +57,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x cac9e4418f4cbd548ccb065b3adcafe073f7f7d2
+git cherry-pick -x 97b6b9cbba40a21c1d9a344d5c1991f8cfbf136e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061722-dock-bleep-55f8@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061759-gilled-droop-f51d@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,58 +81,57 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From cac9e4418f4cbd548ccb065b3adcafe073f7f7d2 Mon Sep 17 00:00:00 2001
-From: Jens Axboe <axboe@kernel.dk>
-Date: Mon, 12 Jun 2023 13:51:36 -0600
-Subject: [PATCH] io_uring/net: save msghdr->msg_control for retries
+From 97b6b9cbba40a21c1d9a344d5c1991f8cfbf136e Mon Sep 17 00:00:00 2001
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Fri, 19 May 2023 16:47:37 +0200
+Subject: [PATCH] x86/purgatory: remove PGO flags
 
-If the application sets ->msg_control and we have to later retry this
-command, or if it got queued with IOSQE_ASYNC to begin with, then we
-need to retain the original msg_control value. This is due to the net
-stack overwriting this field with an in-kernel pointer, to copy it
-in. Hitting that path for the second time will now fail the copy from
-user, as it's attempting to copy from a non-user address.
+If profile-guided optimization is enabled, the purgatory ends up with
+multiple .text sections.  This is not supported by kexec and crashes the
+system.
 
-Cc: stable@vger.kernel.org # 5.10+
-Link: https://github.com/axboe/liburing/issues/880
-Reported-and-tested-by: Marek Majkowski <marek@cloudflare.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-2-b05c520b7296@chromium.org
+Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Cc: <stable@vger.kernel.org>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Philipp Rudo <prudo@redhat.com>
+Cc: Ross Zwisler <zwisler@google.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Tom Rix <trix@redhat.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/io_uring/net.c b/io_uring/net.c
-index 89e839013837..51b0f7fbb4f5 100644
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -65,6 +65,7 @@ struct io_sr_msg {
- 	u16				addr_len;
- 	u16				buf_group;
- 	void __user			*addr;
-+	void __user			*msg_control;
- 	/* used only for send zerocopy */
- 	struct io_kiocb 		*notif;
- };
-@@ -195,11 +196,15 @@ static int io_sendmsg_copy_hdr(struct io_kiocb *req,
- 			       struct io_async_msghdr *iomsg)
- {
- 	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
-+	int ret;
+diff --git a/arch/x86/purgatory/Makefile b/arch/x86/purgatory/Makefile
+index 82fec66d46d2..42abd6af1198 100644
+--- a/arch/x86/purgatory/Makefile
++++ b/arch/x86/purgatory/Makefile
+@@ -14,6 +14,11 @@ $(obj)/sha256.o: $(srctree)/lib/crypto/sha256.c FORCE
  
- 	iomsg->msg.msg_name = &iomsg->addr;
- 	iomsg->free_iov = iomsg->fast_iov;
--	return sendmsg_copy_msghdr(&iomsg->msg, sr->umsg, sr->msg_flags,
-+	ret = sendmsg_copy_msghdr(&iomsg->msg, sr->umsg, sr->msg_flags,
- 					&iomsg->free_iov);
-+	/* save msg_control as sys_sendmsg() overwrites it */
-+	sr->msg_control = iomsg->msg.msg_control;
-+	return ret;
- }
+ CFLAGS_sha256.o := -D__DISABLE_EXPORTS
  
- int io_send_prep_async(struct io_kiocb *req)
-@@ -297,6 +302,7 @@ int io_sendmsg(struct io_kiocb *req, unsigned int issue_flags)
- 
- 	if (req_has_async_data(req)) {
- 		kmsg = req->async_data;
-+		kmsg->msg.msg_control = sr->msg_control;
- 	} else {
- 		ret = io_sendmsg_copy_hdr(req, &iomsg);
- 		if (ret)
++# When profile-guided optimization is enabled, llvm emits two different
++# overlapping text sections, which is not supported by kexec. Remove profile
++# optimization flags.
++KBUILD_CFLAGS := $(filter-out -fprofile-sample-use=% -fprofile-use=%,$(KBUILD_CFLAGS))
++
+ # When linking purgatory.ro with -r unresolved symbols are not checked,
+ # also link a purgatory.chk binary without -r to check for unresolved symbols.
+ PURGATORY_LDFLAGS := -e purgatory_start -z nodefaultlib
 
