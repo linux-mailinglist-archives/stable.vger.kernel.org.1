@@ -2,47 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49544733F83
-	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 10:13:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCD44733F87
+	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 10:15:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346304AbjFQINj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 17 Jun 2023 04:13:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58138 "EHLO
+        id S233465AbjFQIPf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 17 Jun 2023 04:15:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346312AbjFQINh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 04:13:37 -0400
+        with ESMTP id S233241AbjFQIPe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 04:15:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 553B12962
-        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 01:13:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A11D1732
+        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 01:15:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DFF91611B2
-        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 08:13:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 021F9C433C8;
-        Sat, 17 Jun 2023 08:13:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EE60E6068F
+        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 08:15:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 054BBC433C8;
+        Sat, 17 Jun 2023 08:15:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686989615;
-        bh=7CpK2UCu7VATcFnc0ltd50l6WFeJi5P+lYVXmB+HObw=;
+        s=korg; t=1686989732;
+        bh=FDD3IdeZy3YEUMqZfujTBuRPLpW2rBbXvVlxbYHjO8E=;
         h=Subject:To:Cc:From:Date:From;
-        b=CWri9qqtjSlenZeUJX0eTBQ240zkdx4PM6tTOFXQrQXqqQzk/2eHUOJqzMwqcqpuA
-         g0EUK4lK2wlTWAlO36zE5sQO8FgiaOtbPtnUKsLGBP4fVkg6DBQimuejsuIp5byGkx
-         7hXgtE7NxUGX9GVctouGpyd29PO+gQKM2LwWLU60=
-Subject: FAILED: patch "[PATCH] riscv/purgatory: remove PGO flags" failed to apply to 4.19-stable tree
-To:     ribalda@chromium.org, akpm@linux-foundation.org,
-        aou@eecs.berkeley.edu, bhe@redhat.com, bp@alien8.de,
-        christophe.leroy@csgroup.eu, dave.hansen@linux.intel.com,
-        dyoung@redhat.com, ebiederm@xmission.com, horms@kernel.org,
-        hpa@zytor.com, mingo@redhat.com, mpe@ellerman.id.au,
-        nathan@kernel.org, ndesaulniers@google.com, npiggin@gmail.com,
-        palmer@dabbelt.com, palmer@rivosinc.com, paul.walmsley@sifive.com,
-        prudo@redhat.com, rostedt@goodmis.org, stable@vger.kernel.org,
-        tglx@linutronix.de, trix@redhat.com, zwisler@google.com
+        b=QsHy9KeT+ADYHVIdJ2U9LM4+E6sEJqEnJL2UGbgv+v3Qg42U6ToumOSYzwcTATPR9
+         QDvKGTt1G84QbJVT9vRNVQ+OtP49FIiikpHvEuGg1JNbSJf2b3/vaLNQRtA5pv698b
+         UhttNOlQrZfzBTyUeP2wmFy4EEdo2pHglis7H1uo=
+Subject: FAILED: patch "[PATCH] cifs: fix status checks in cifs_tree_connect" failed to apply to 6.3-stable tree
+To:     sprasad@microsoft.com, stfrench@microsoft.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 17 Jun 2023 10:13:27 +0200
-Message-ID: <2023061727-reverb-postbox-4067@gregkh>
+Date:   Sat, 17 Jun 2023 10:15:29 +0200
+Message-ID: <2023061729-prankster-wildcard-db1f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -57,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.3-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
 git checkout FETCH_HEAD
-git cherry-pick -x 88ac3bbcf73853880a9b2a65c67e6854390741cc
+git cherry-pick -x 91f4480c41f56f7c723323cf7f581f1d95d9ffbc
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061727-reverb-postbox-4067@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061729-prankster-wildcard-db1f@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
 
 Possible dependencies:
 
@@ -81,57 +73,71 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 88ac3bbcf73853880a9b2a65c67e6854390741cc Mon Sep 17 00:00:00 2001
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Fri, 19 May 2023 16:47:39 +0200
-Subject: [PATCH] riscv/purgatory: remove PGO flags
+From 91f4480c41f56f7c723323cf7f581f1d95d9ffbc Mon Sep 17 00:00:00 2001
+From: Shyam Prasad N <sprasad@microsoft.com>
+Date: Fri, 9 Jun 2023 17:46:54 +0000
+Subject: [PATCH] cifs: fix status checks in cifs_tree_connect
 
-If profile-guided optimization is enabled, the purgatory ends up with
-multiple .text sections.  This is not supported by kexec and crashes the
-system.
+The ordering of status checks at the beginning of
+cifs_tree_connect is wrong. As a result, a tcon
+which is good may stay marked as needing reconnect
+infinitely.
 
-Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-4-b05c520b7296@chromium.org
-Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-Cc: <stable@vger.kernel.org>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Philipp Rudo <prudo@redhat.com>
-Cc: Ross Zwisler <zwisler@google.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Tom Rix <trix@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 2f0e4f034220 ("cifs: check only tcon status on tcon related functions")
+Cc: stable@vger.kernel.org # 6.3
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/arch/riscv/purgatory/Makefile b/arch/riscv/purgatory/Makefile
-index 5730797a6b40..bd2e27f82532 100644
---- a/arch/riscv/purgatory/Makefile
-+++ b/arch/riscv/purgatory/Makefile
-@@ -35,6 +35,11 @@ CFLAGS_sha256.o := -D__DISABLE_EXPORTS
- CFLAGS_string.o := -D__DISABLE_EXPORTS
- CFLAGS_ctype.o := -D__DISABLE_EXPORTS
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index 8e9a672320ab..1250d156619b 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -4086,16 +4086,17 @@ int cifs_tree_connect(const unsigned int xid, struct cifs_tcon *tcon, const stru
  
-+# When profile-guided optimization is enabled, llvm emits two different
-+# overlapping text sections, which is not supported by kexec. Remove profile
-+# optimization flags.
-+KBUILD_CFLAGS := $(filter-out -fprofile-sample-use=% -fprofile-use=%,$(KBUILD_CFLAGS))
+ 	/* only send once per connect */
+ 	spin_lock(&tcon->tc_lock);
++	if (tcon->status == TID_GOOD) {
++		spin_unlock(&tcon->tc_lock);
++		return 0;
++	}
 +
- # When linking purgatory.ro with -r unresolved symbols are not checked,
- # also link a purgatory.chk binary without -r to check for unresolved symbols.
- PURGATORY_LDFLAGS := -e purgatory_start -z nodefaultlib
+ 	if (tcon->status != TID_NEW &&
+ 	    tcon->status != TID_NEED_TCON) {
+ 		spin_unlock(&tcon->tc_lock);
+ 		return -EHOSTDOWN;
+ 	}
+ 
+-	if (tcon->status == TID_GOOD) {
+-		spin_unlock(&tcon->tc_lock);
+-		return 0;
+-	}
+ 	tcon->status = TID_IN_TCON;
+ 	spin_unlock(&tcon->tc_lock);
+ 
+diff --git a/fs/smb/client/dfs.c b/fs/smb/client/dfs.c
+index 2f93bf8c3325..2390b2fedd6a 100644
+--- a/fs/smb/client/dfs.c
++++ b/fs/smb/client/dfs.c
+@@ -575,16 +575,17 @@ int cifs_tree_connect(const unsigned int xid, struct cifs_tcon *tcon, const stru
+ 
+ 	/* only send once per connect */
+ 	spin_lock(&tcon->tc_lock);
++	if (tcon->status == TID_GOOD) {
++		spin_unlock(&tcon->tc_lock);
++		return 0;
++	}
++
+ 	if (tcon->status != TID_NEW &&
+ 	    tcon->status != TID_NEED_TCON) {
+ 		spin_unlock(&tcon->tc_lock);
+ 		return -EHOSTDOWN;
+ 	}
+ 
+-	if (tcon->status == TID_GOOD) {
+-		spin_unlock(&tcon->tc_lock);
+-		return 0;
+-	}
+ 	tcon->status = TID_IN_TCON;
+ 	spin_unlock(&tcon->tc_lock);
+ 
 
