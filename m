@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98FBE733F8B
-	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 10:16:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 012D2733F8D
+	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 10:17:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233241AbjFQIQM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 17 Jun 2023 04:16:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59142 "EHLO
+        id S1345911AbjFQIRz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 17 Jun 2023 04:17:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346044AbjFQIQL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 04:16:11 -0400
+        with ESMTP id S233558AbjFQIRy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 04:17:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DA8E1FFE
-        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 01:16:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FEC2173A
+        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 01:17:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BD36C60959
-        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 08:16:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B23C433C0;
-        Sat, 17 Jun 2023 08:16:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 96E8660B36
+        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 08:17:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE074C433C8;
+        Sat, 17 Jun 2023 08:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1686989770;
-        bh=5wZmojwtUr3UBKLikRQN3aM2Jj//Ka9OAJ5+2R+/oQY=;
+        s=korg; t=1686989872;
+        bh=0Eaczq22/WdmQqOp5HXGQRr0lwBzOQQ80Yt+vqziphY=;
         h=Subject:To:Cc:From:Date:From;
-        b=i3Q8EiBezuPdP/zGs1sPeN7EAOeKAeaTHl7164fSmAP+2tCDf3FtwlTXBuRvsPEXR
-         +dFVb5a7t/SImQvhVPSFzBzOLUwH1rNolWMwQNr/15xqEqakRW+SDOvnx5NJdNtemk
-         QzzXH0kL3fB2bVQBIGrpya6I8p5GRHYWBIaodwGc=
-Subject: FAILED: patch "[PATCH] ALSA: usb-audio: Fix broken resume due to UAC3 power state" failed to apply to 4.19-stable tree
-To:     tiwai@suse.de, stable@vger.kernel.org
+        b=xkxxxi9IKy7wTO45KYF7GR5zJ+40Mkd4wIyAuiWVRbC7Dxl/5J4wUj10n4lJ9H/N1
+         sZFuhKoQb2o8+hhsXg2Xoobm8rNEFcoAW7Sa0pI/edY4o2Kpk9NaFPThwd0vt2hSLi
+         Q1KY1Ke8PsFef6ZRQCepbTpMeUkM+YpBg45AVxhw=
+Subject: FAILED: patch "[PATCH] mm/gup_test: fix ioctl fail for compat task" failed to apply to 6.1-stable tree
+To:     haibo.li@mediatek.com, akpm@linux-foundation.org,
+        angelogioacchino.delregno@collabora.com, david@redhat.com,
+        jhubbard@nvidia.com, matthias.bgg@gmail.com, stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 17 Jun 2023 10:16:02 +0200
-Message-ID: <2023061702-wireless-nibble-7c21@gregkh>
+Date:   Sat, 17 Jun 2023 10:17:49 +0200
+Message-ID: <2023061749-stool-goliath-6ba9@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +51,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8ba61c9f6c9bdfbf9d197b0282641d24ae909778
+git cherry-pick -x 4f572f0074b8be8a70bd150d96a749aa94c8d85f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061702-wireless-nibble-7c21@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061749-stool-goliath-6ba9@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,45 +75,35 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8ba61c9f6c9bdfbf9d197b0282641d24ae909778 Mon Sep 17 00:00:00 2001
-From: Takashi Iwai <tiwai@suse.de>
-Date: Mon, 12 Jun 2023 15:28:18 +0200
-Subject: [PATCH] ALSA: usb-audio: Fix broken resume due to UAC3 power state
+From 4f572f0074b8be8a70bd150d96a749aa94c8d85f Mon Sep 17 00:00:00 2001
+From: Haibo Li <haibo.li@mediatek.com>
+Date: Fri, 26 May 2023 10:21:25 +0800
+Subject: [PATCH] mm/gup_test: fix ioctl fail for compat task
 
-As reported in the bugzilla below, the PM resume of a UAC3 device may
-fail due to the incomplete power state change, stuck at D1.  The
-reason is that the driver expects the full D0 power state change only
-at hw_params, while the normal PCM resume procedure doesn't call
-hw_params.
+When tools/testing/selftests/mm/gup_test.c is compiled as 32bit, then run
+on arm64 kernel, it reports "ioctl: Inappropriate ioctl for device".
 
-For fixing the bug, we add the same power state update to D0 at the
-prepare callback, which is certainly called by the resume procedure.
+Fix it by filling compat_ioctl in gup_test_fops
 
-Note that, with this change, the power state change in the hw_params
-becomes almost redundant, since snd_usb_hw_params() doesn't touch the
-parameters (at least it tires so).  But dropping it is still a bit
-risky (e.g. we have the media-driver binding), so I leave the D0 power
-state change in snd_usb_hw_params() as is for now.
-
-Fixes: a0a4959eb4e9 ("ALSA: usb-audio: Operate UAC3 Power Domains in PCM callbacks")
+Link: https://lkml.kernel.org/r/20230526022125.175728-1-haibo.li@mediatek.com
+Signed-off-by: Haibo Li <haibo.li@mediatek.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
 Cc: <stable@vger.kernel.org>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217539
-Link: https://lore.kernel.org/r/20230612132818.29486-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/sound/usb/pcm.c b/sound/usb/pcm.c
-index eec5232f9fb2..08bf535ed163 100644
---- a/sound/usb/pcm.c
-+++ b/sound/usb/pcm.c
-@@ -650,6 +650,10 @@ static int snd_usb_pcm_prepare(struct snd_pcm_substream *substream)
- 		goto unlock;
- 	}
+diff --git a/mm/gup_test.c b/mm/gup_test.c
+index 8ae7307a1bb6..c0421b786dcd 100644
+--- a/mm/gup_test.c
++++ b/mm/gup_test.c
+@@ -381,6 +381,7 @@ static int gup_test_release(struct inode *inode, struct file *file)
+ static const struct file_operations gup_test_fops = {
+ 	.open = nonseekable_open,
+ 	.unlocked_ioctl = gup_test_ioctl,
++	.compat_ioctl = compat_ptr_ioctl,
+ 	.release = gup_test_release,
+ };
  
-+	ret = snd_usb_pcm_change_state(subs, UAC3_PD_STATE_D0);
-+	if (ret < 0)
-+		goto unlock;
-+
-  again:
- 	if (subs->sync_endpoint) {
- 		ret = snd_usb_endpoint_prepare(chip, subs->sync_endpoint);
 
