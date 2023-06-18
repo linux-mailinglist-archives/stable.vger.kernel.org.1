@@ -2,63 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6209C73468E
-	for <lists+stable@lfdr.de>; Sun, 18 Jun 2023 16:23:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39A017346BA
+	for <lists+stable@lfdr.de>; Sun, 18 Jun 2023 16:58:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229678AbjFROXL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 18 Jun 2023 10:23:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52114 "EHLO
+        id S229713AbjFRO6A (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 18 Jun 2023 10:58:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229595AbjFROXK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 18 Jun 2023 10:23:10 -0400
-Received: from mail-io1-xd2d.google.com (mail-io1-xd2d.google.com [IPv6:2607:f8b0:4864:20::d2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DA45B3
-        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 07:23:06 -0700 (PDT)
-Received: by mail-io1-xd2d.google.com with SMTP id ca18e2360f4ac-77e3ba2fbbfso5567239f.1
-        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 07:23:06 -0700 (PDT)
+        with ESMTP id S229470AbjFRO6A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 18 Jun 2023 10:58:00 -0400
+Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E892134
+        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 07:57:56 -0700 (PDT)
+Received: by mail-pg1-x531.google.com with SMTP id 41be03b00d2f7-5533c545786so1600500a12.1
+        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 07:57:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1687098185; x=1689690185;
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1687100275; x=1689692275;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=4Od9X0yUBjH/rUjZEqakGjblrnidprTDxuDBYE/UMyU=;
-        b=CJ69uq+0zydkS6unUw/eQ6hdyC+J+GPoQ5tbhB9uV5lmddRwRUVoNn8srM9zL/ydM9
-         vSowHjwoqAUO6JGaM3z6lzCfxqWUJi7/v7zlYYaeaHKgdMPD6gRLqXb1tSrmmoQj/ANP
-         fMxvrWxgfhZQ5NS2gQM/ml3Ib5tKbdeS+vnePsEql6RsLXt6y/LxSWeX39Ohm4mJbK7k
-         Ktd37tDfAJKW36XJ4Ob18pVi21ak08+fvZXtczXr91MR2lM3SwOQRlEUmmWrL8swh0sJ
-         aQyLwIBJR/r1o4GbuWZpgxqftNkPmRYflnIV2yqOU8/fADLp9tqkxAxYc1QOgUnYlT4v
-         VTsQ==
+        bh=ZUcD6ww6C/MlmtPKQYeBDNKvRx3IdJ4Cf5QPIS2EJCU=;
+        b=ZSpsWTPzNXD7oNkVkGY/JT0Pxx6gn3qLwpPDGkmjZVfnI15zDT70tnW1jiI6Bbp/oE
+         Z8gUVZzZaPPyJ2Sp9cwGM+S5sO0EmvutL9iKOrAPs3LMDFKB/AL3x+UvgECx2qR6WEBC
+         lbffKnDGZS7wvifpw+Z+FvaTbs41621sXu+cRqNTpQpbTFdNqrGDQewNqdI9lXb/LI8A
+         NY4Kx0bzUUYTxHWb1CDRQwU5eWfOt5VC76BMCoTX3ZeVFVfd8E9tULWLIVXzuyAainyA
+         Seb0GcrWOWiO0glE5PNn/n8rSA7n7i28Bagc0av1aZN5dnO/FmzZkIJBBTY8mX51RLuK
+         IssQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687098185; x=1689690185;
+        d=1e100.net; s=20221208; t=1687100275; x=1689692275;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=4Od9X0yUBjH/rUjZEqakGjblrnidprTDxuDBYE/UMyU=;
-        b=ISmxKr7Mf+Hdmy5px2BpubS2CHA5DuFge1gz7jkkbomxrq9o+dhps/E4mm3IJ4hzOp
-         WIo+cZpir8DHGH360yTxWLQiJDw8LM6lyd4WPiWM9J9vQ3snL9C3ZgAiNFxQaMkzBhfT
-         6BWcJiMaAZwonhkBc2AZLxePTtbW6k8R7Cx70vs6MTRO0YnnpzXB0+Nqv2G0RiRlAH8g
-         y4vYUajeAxufEtynOHi5dd4LyXK0uu603Eb6W2AmVQUHe/P4s7ynMxBlLAIHdsMEdX2D
-         dM57sMUN4AZoGwDblQgz9nL3zFXAprI9TdXPtgtNGZ/Tc2LVZzLDPZLabC+q+Niu2qqc
-         nt+Q==
-X-Gm-Message-State: AC+VfDyGCURSVYUH0RjfUKG3iJhcPeaei/R6nuIWtf72P8sxSAVu6C7+
-        Fl3UqLjJhOfeE9wLD+8fBxE6+rGVYFx6w4IqzRs=
-X-Google-Smtp-Source: ACHHUZ5gUtZCm9KvnqfX/9ityvoKt0p/ET64VSC3Eq7+1B1SK1XxhbKNkdtGivTOUuFSJvHcXCtxMg==
-X-Received: by 2002:a6b:d90e:0:b0:77a:d862:242f with SMTP id r14-20020a6bd90e000000b0077ad862242fmr5807389ioc.21.1687098184482;
-        Sun, 18 Jun 2023 07:23:04 -0700 (PDT)
+        bh=ZUcD6ww6C/MlmtPKQYeBDNKvRx3IdJ4Cf5QPIS2EJCU=;
+        b=UwK+RXZFTM1vdzkYD88VNbu2nmLWXIbG/gqjLd8YGFJoXerT7OLqbDV3LMLWUNx6cY
+         GrbwcHU71/tFYkh9Wa1FBgFzhA5hkC7GjWZujM0nk8aesmn9PirJfuym8AsE3dOp+QPI
+         RL29DitMqxF9pqHIw16eb1ldYh4ET2LPeXAQAzVBJISj2ZopJeYTMyK1pEU5owKJjXcR
+         +5uMIjAqJ6TDJVWn8v2fka3aBk075FW7Ez/VsqAHPNFFgO7p/H99gUzV4WhN3GPvaPz/
+         hklJl89W7RhSBeyKWZv9yMkZyX18ZufDuqdicgOXWzaS6TdoBdzFSNM39ru28RpuZGgN
+         OV4A==
+X-Gm-Message-State: AC+VfDxfsSm5Wnl7SWk0NsjXvDlKn8imSlhU2hvMM9nHKLztnb4eLOFH
+        b3z193V4wMdo+nes0jmrHIqZB3irg7+IwQ6eUwI=
+X-Google-Smtp-Source: ACHHUZ5oFilMrsdjayLtkU8X0sq1KiX+GFJqKO6fDkaG/jWCNfcd8GG+/6b8/h26ID6yrAeH/SdfRQ==
+X-Received: by 2002:a17:90a:6286:b0:25e:b5d4:a156 with SMTP id d6-20020a17090a628600b0025eb5d4a156mr9629456pjj.2.1687100274558;
+        Sun, 18 Jun 2023 07:57:54 -0700 (PDT)
 Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id q9-20020a170902a3c900b001ae5d21f760sm10311543plb.146.2023.06.18.07.23.03
+        by smtp.gmail.com with ESMTPSA id d36-20020a634f24000000b0050fa6546a45sm17340317pgb.6.2023.06.18.07.57.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Jun 2023 07:23:03 -0700 (PDT)
-Message-ID: <648f1347.170a0220.a4e6a.511d@mx.google.com>
-Date:   Sun, 18 Jun 2023 07:23:03 -0700 (PDT)
+        Sun, 18 Jun 2023 07:57:53 -0700 (PDT)
+Message-ID: <648f1b71.630a0220.ce17b.181f@mx.google.com>
+Date:   Sun, 18 Jun 2023 07:57:53 -0700 (PDT)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-4.19.y
+X-Kernelci-Branch: linux-5.10.y
 X-Kernelci-Tree: stable-rc
 X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v4.19.286-29-gacd426462533
-Subject: stable-rc/linux-4.19.y build: 200 builds: 67 failed, 133 passed,
- 65 errors, 21 warnings (v4.19.286-29-gacd426462533)
+X-Kernelci-Kernel: v5.10.184-46-gb25b2921d506
+Subject: stable-rc/linux-5.10.y build: 185 builds: 62 failed, 123 passed,
+ 64 errors, 7 warnings (v5.10.184-46-gb25b2921d506)
 To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
         kernelci-results@groups.io
 From:   "kernelci.org bot" <bot@kernelci.org>
@@ -71,16 +71,16 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-4.19.y build: 200 builds: 67 failed, 133 passed, 65 errors,=
- 21 warnings (v4.19.286-29-gacd426462533)
+stable-rc/linux-5.10.y build: 185 builds: 62 failed, 123 passed, 64 errors,=
+ 7 warnings (v5.10.184-46-gb25b2921d506)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.19.=
-y/kernel/v4.19.286-29-gacd426462533/
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
+y/kernel/v5.10.184-46-gb25b2921d506/
 
 Tree: stable-rc
-Branch: linux-4.19.y
-Git Describe: v4.19.286-29-gacd426462533
-Git Commit: acd426462533ebd9389567bf4384477474e99300
+Branch: linux-5.10.y
+Git Describe: v5.10.184-46-gb25b2921d506
+Git Commit: b25b2921d5068131d014c425e83680856412101f
 Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
 e-rc.git
 Built: 7 unique architectures
@@ -102,8 +102,11 @@ mips:
     cavium_octeon_defconfig: (gcc-10) FAIL
     ci20_defconfig: (gcc-10) FAIL
     cobalt_defconfig: (gcc-10) FAIL
+    cu1000-neo_defconfig: (gcc-10) FAIL
+    cu1830-neo_defconfig: (gcc-10) FAIL
     db1xxx_defconfig: (gcc-10) FAIL
-    decstation_defconfig: (gcc-10) FAIL
+    decstation_64_defconfig: (gcc-10) FAIL
+    decstation_r4k_defconfig: (gcc-10) FAIL
     e55_defconfig: (gcc-10) FAIL
     fuloong2e_defconfig: (gcc-10) FAIL
     gcw0_defconfig: (gcc-10) FAIL
@@ -113,8 +116,6 @@ mips:
     ip28_defconfig: (gcc-10) FAIL
     ip32_defconfig: (gcc-10) FAIL
     jazz_defconfig: (gcc-10) FAIL
-    jmr3927_defconfig: (gcc-10) FAIL
-    lasat_defconfig: (gcc-10) FAIL
     lemote2f_defconfig: (gcc-10) FAIL
     loongson1b_defconfig: (gcc-10) FAIL
     loongson1c_defconfig: (gcc-10) FAIL
@@ -128,21 +129,18 @@ mips:
     maltasmvp_eva_defconfig: (gcc-10) FAIL
     maltaup_defconfig: (gcc-10) FAIL
     maltaup_xpa_defconfig: (gcc-10) FAIL
-    markeins_defconfig: (gcc-10) FAIL
-    mips_paravirt_defconfig: (gcc-10) FAIL
     mpc30x_defconfig: (gcc-10) FAIL
-    msp71xx_defconfig: (gcc-10) FAIL
     mtx1_defconfig: (gcc-10) FAIL
     nlm_xlp_defconfig: (gcc-10) FAIL
     nlm_xlr_defconfig: (gcc-10) FAIL
     omega2p_defconfig: (gcc-10) FAIL
     pic32mzda_defconfig: (gcc-10) FAIL
     pistachio_defconfig: (gcc-10) FAIL
-    pnx8335_stb225_defconfig: (gcc-10) FAIL
     qi_lb60_defconfig: (gcc-10) FAIL
     rb532_defconfig: (gcc-10) FAIL
     rbtx49xx_defconfig: (gcc-10) FAIL
     rm200_defconfig: (gcc-10) FAIL
+    rs90_defconfig: (gcc-10) FAIL
     rt305x_defconfig: (gcc-10) FAIL
     sb1250_swarm_defconfig: (gcc-10) FAIL
     tb0219_defconfig: (gcc-10) FAIL
@@ -153,26 +151,15 @@ mips:
     workpad_defconfig: (gcc-10) FAIL
     xway_defconfig: (gcc-10) FAIL
 
-riscv:
-    allnoconfig: (gcc-10) FAIL
-    defconfig: (gcc-10) FAIL
-    tinyconfig: (gcc-10) FAIL
-
 Errors and Warnings Detected:
 
 arc:
 
 arm64:
-    defconfig (gcc-10): 3 warnings
-    defconfig+arm64-chromebook (gcc-10): 3 warnings
 
 arm:
-    omap1_defconfig (gcc-10): 1 warning
 
 i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
 
 mips:
     32r2el_defconfig (gcc-10): 1 error
@@ -189,17 +176,19 @@ mips:
     cavium_octeon_defconfig (gcc-10): 1 error
     ci20_defconfig (gcc-10): 1 error
     cobalt_defconfig (gcc-10): 1 error
+    cu1000-neo_defconfig (gcc-10): 1 error
+    cu1830-neo_defconfig (gcc-10): 1 error
     db1xxx_defconfig (gcc-10): 2 errors
-    decstation_defconfig (gcc-10): 1 error
+    decstation_64_defconfig (gcc-10): 1 error, 1 warning
+    decstation_defconfig (gcc-10): 1 warning
+    decstation_r4k_defconfig (gcc-10): 1 error, 1 warning
     e55_defconfig (gcc-10): 1 error
     fuloong2e_defconfig (gcc-10): 1 error
     gcw0_defconfig (gcc-10): 1 error
-    gpr_defconfig (gcc-10): 2 errors
+    gpr_defconfig (gcc-10): 3 errors
     ip22_defconfig (gcc-10): 1 error
     ip32_defconfig (gcc-10): 1 error
     jazz_defconfig (gcc-10): 1 error
-    jmr3927_defconfig (gcc-10): 1 error
-    lasat_defconfig (gcc-10): 1 error
     lemote2f_defconfig (gcc-10): 1 error
     loongson1b_defconfig (gcc-10): 1 error
     loongson1c_defconfig (gcc-10): 1 error
@@ -213,21 +202,18 @@ mips:
     maltasmvp_eva_defconfig (gcc-10): 1 error
     maltaup_defconfig (gcc-10): 1 error
     maltaup_xpa_defconfig (gcc-10): 1 error
-    markeins_defconfig (gcc-10): 1 error
-    mips_paravirt_defconfig (gcc-10): 1 error
     mpc30x_defconfig (gcc-10): 1 error
-    msp71xx_defconfig (gcc-10): 1 error
     mtx1_defconfig (gcc-10): 2 errors
     nlm_xlp_defconfig (gcc-10): 1 error
     nlm_xlr_defconfig (gcc-10): 1 error
     omega2p_defconfig (gcc-10): 1 error
     pic32mzda_defconfig (gcc-10): 1 error
     pistachio_defconfig (gcc-10): 1 error
-    pnx8335_stb225_defconfig (gcc-10): 1 error
     qi_lb60_defconfig (gcc-10): 1 error
     rb532_defconfig (gcc-10): 1 error
     rbtx49xx_defconfig (gcc-10): 1 error
     rm200_defconfig (gcc-10): 1 error
+    rs90_defconfig (gcc-10): 1 error
     rt305x_defconfig (gcc-10): 1 error
     sb1250_swarm_defconfig (gcc-10): 1 error
     tb0219_defconfig (gcc-10): 1 error
@@ -239,33 +225,34 @@ mips:
     xway_defconfig (gcc-10): 1 error
 
 riscv:
+    rv32_defconfig (gcc-10): 4 warnings
 
 x86_64:
-    allnoconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-    x86_64_defconfig (gcc-10): 2 warnings
-    x86_64_defconfig+x86-chromebook (gcc-10): 2 warnings
 
 Errors summary:
 
-    62   arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
-    3    arch/mips/alchemy/common/dbdma.c:33:10: fatal error: linux/dma-map=
--ops.h: No such file or directory
+    58   arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
+    3    arch/mips/alchemy/common/dbdma.c:695:7: error: =E2=80=98dma_defaul=
+t_coherent=E2=80=99 undeclared (first use in this function); did you mean =
+=E2=80=98dma_free_coherent=E2=80=99?
+    3    arch/mips/alchemy/common/dbdma.c:632:7: error: =E2=80=98dma_defaul=
+t_coherent=E2=80=99 undeclared (first use in this function); did you mean =
+=E2=80=98dma_free_coherent=E2=80=99?
 
 Warnings summary:
 
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    6    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    1    drivers/gpio/gpio-omap.c:1233:34: warning: array =E2=80=98omap_gpi=
-o_match=E2=80=99 assumed to have one element
+    3    kernel/rcu/tasks.h:736:13: warning: =E2=80=98show_rcu_tasks_rude_g=
+p_kthread=E2=80=99 defined but not used [-Wunused-function]
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
 
 Section mismatches summary:
 
-    13   WARNING: modpost: Found 1 section mismatch(es).
+    1    WARNING: modpost: vmlinux.o(___ksymtab_gpl+ixp4xx_irq_init+0x0): S=
+ection mismatch in reference from the variable __ksymtab_ixp4xx_irq_init to=
+ the function .init.text:ixp4xx_irq_init()
 
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
@@ -280,32 +267,12 @@ Detailed per-defconfig build reports:
 ion mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
-acs5k_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-acs5k_tiny_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
-section mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section=
- mismatches
+allnoconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -313,22 +280,17 @@ allnoconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 section m=
 ismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
 mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -341,7 +303,7 @@ ar7_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 section=
  mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -369,7 +331,7 @@ ath25_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 secti=
 on mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -377,7 +339,7 @@ ath79_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 secti=
 on mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -410,7 +372,7 @@ bcm47xx_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sec=
 tion mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -418,7 +380,7 @@ bcm63xx_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sec=
 tion mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -426,7 +388,7 @@ bigsur_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sect=
 ion mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -434,7 +396,7 @@ bmips_be_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 se=
 ction mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -442,7 +404,7 @@ bmips_stb_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 s=
 ection mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -450,7 +412,7 @@ capcella_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 se=
 ction mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -458,7 +420,7 @@ cavium_octeon_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings,=
  0 section mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -471,12 +433,7 @@ ci20_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sectio=
 n mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
-
----------------------------------------------------------------------------=
------
-cm_x2xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -489,7 +446,7 @@ cobalt_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sect=
 ion mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -513,6 +470,22 @@ on mismatches
 
 ---------------------------------------------------------------------------=
 -----
+cu1000-neo_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 =
+section mismatches
+
+Errors:
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
+
+---------------------------------------------------------------------------=
+-----
+cu1830-neo_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 =
+section mismatches
+
+Errors:
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
+
+---------------------------------------------------------------------------=
+-----
 davinci_all_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
  section mismatches
 
@@ -522,48 +495,60 @@ db1xxx_defconfig (mips, gcc-10) =E2=80=94 FAIL, 2 errors, 0 warnings, 0 sec=
 tion mismatches
 
 Errors:
-    arch/mips/alchemy/common/dbdma.c:33:10: fatal error: linux/dma-map-ops.=
-h: No such file or directory
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/alchemy/common/dbdma.c:632:7: error: =E2=80=98dma_default_coh=
+erent=E2=80=99 undeclared (first use in this function); did you mean =E2=80=
+=98dma_free_coherent=E2=80=99?
+    arch/mips/alchemy/common/dbdma.c:695:7: error: =E2=80=98dma_default_coh=
+erent=E2=80=99 undeclared (first use in this function); did you mean =E2=80=
+=98dma_free_coherent=E2=80=99?
 
 ---------------------------------------------------------------------------=
 -----
-decstation_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 =
-section mismatches
+decstation_64_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, =
+0 section mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 Warnings:
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
+    kernel/rcu/tasks.h:736:13: warning: =E2=80=98show_rcu_tasks_rude_gp_kth=
+read=E2=80=99 defined but not used [-Wunused-function]
 
 ---------------------------------------------------------------------------=
 -----
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warn=
+decstation_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 =
+section mismatches
+
+Warnings:
+    kernel/rcu/tasks.h:736:13: warning: =E2=80=98show_rcu_tasks_rude_gp_kth=
+read=E2=80=99 defined but not used [-Wunused-function]
+
+---------------------------------------------------------------------------=
+-----
+decstation_r4k_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning,=
+ 0 section mismatches
+
+Errors:
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
+
+Warnings:
+    kernel/rcu/tasks.h:736:13: warning: =E2=80=98show_rcu_tasks_rude_gp_kth=
+read=E2=80=99 defined but not used [-Wunused-function]
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
 ings, 0 section mismatches
-
-Warnings:
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
 
 ---------------------------------------------------------------------------=
 -----
@@ -576,7 +561,7 @@ e55_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 section=
  mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -590,16 +575,8 @@ on mismatches
 
 ---------------------------------------------------------------------------=
 -----
-em_x270_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
 ep93xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
 ion mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
 
 ---------------------------------------------------------------------------=
 -----
@@ -627,7 +604,7 @@ fuloong2e_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 s=
 ection mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -635,7 +612,7 @@ gcw0_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sectio=
 n mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -644,13 +621,17 @@ ion mismatches
 
 ---------------------------------------------------------------------------=
 -----
-gpr_defconfig (mips, gcc-10) =E2=80=94 FAIL, 2 errors, 0 warnings, 0 sectio=
+gpr_defconfig (mips, gcc-10) =E2=80=94 FAIL, 3 errors, 0 warnings, 0 sectio=
 n mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
-    arch/mips/alchemy/common/dbdma.c:33:10: fatal error: linux/dma-map-ops.=
-h: No such file or directory
+    arch/mips/alchemy/common/dbdma.c:632:7: error: =E2=80=98dma_default_coh=
+erent=E2=80=99 undeclared (first use in this function); did you mean =E2=80=
+=98dma_free_coherent=E2=80=99?
+    arch/mips/alchemy/common/dbdma.c:695:7: error: =E2=80=98dma_default_coh=
+erent=E2=80=99 undeclared (first use in this function); did you mean =E2=80=
+=98dma_free_coherent=E2=80=99?
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -689,13 +670,8 @@ n mismatches
 
 ---------------------------------------------------------------------------=
 -----
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
 on mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
 
 ---------------------------------------------------------------------------=
 -----
@@ -717,22 +693,9 @@ ection mismatches
 integrator_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
 section mismatches
 
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-iop13xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
 ---------------------------------------------------------------------------=
 -----
 iop32x_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-iop33x_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
 ion mismatches
 
 ---------------------------------------------------------------------------=
@@ -741,7 +704,7 @@ ip22_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sectio=
 n mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -759,12 +722,17 @@ ip32_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sectio=
 n mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
 ixp4xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
 ion mismatches
+
+Section mismatches:
+    WARNING: modpost: vmlinux.o(___ksymtab_gpl+ixp4xx_irq_init+0x0): Sectio=
+n mismatch in reference from the variable __ksymtab_ixp4xx_irq_init to the =
+function .init.text:ixp4xx_irq_init()
 
 ---------------------------------------------------------------------------=
 -----
@@ -772,20 +740,12 @@ jazz_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sectio=
 n mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
-jmr3927_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sec=
-tion mismatches
-
-Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
-
----------------------------------------------------------------------------=
------
-jornada720_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 =
-section mismatches
+jmr3927_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -794,21 +754,8 @@ ction mismatches
 
 ---------------------------------------------------------------------------=
 -----
-ks8695_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
 lart_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
 n mismatches
-
----------------------------------------------------------------------------=
------
-lasat_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 secti=
-on mismatches
-
-Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -816,7 +763,7 @@ lemote2f_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 se=
 ction mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -824,7 +771,7 @@ loongson1b_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 =
 section mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -832,7 +779,7 @@ loongson1c_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 =
 section mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -840,7 +787,7 @@ loongson3_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 s=
 ection mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -878,7 +825,7 @@ malta_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 secti=
 on mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -886,7 +833,7 @@ malta_kvm_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 s=
 ection mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -894,7 +841,7 @@ malta_kvm_guest_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warning=
 s, 0 section mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -902,7 +849,7 @@ malta_qemu_32r6_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warning=
 s, 0 section mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -910,7 +857,7 @@ maltaaprp_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 s=
 ection mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -918,7 +865,7 @@ maltasmvp_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 s=
 ection mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -926,7 +873,7 @@ maltasmvp_eva_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings,=
  0 section mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -934,7 +881,7 @@ maltaup_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sec=
 tion mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -942,28 +889,17 @@ maltaup_xpa_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0=
  section mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
-markeins_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 se=
-ction mismatches
-
-Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+milbeaut_m10v_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings,=
+ 0 section mismatches
 
 ---------------------------------------------------------------------------=
 -----
 mini2440_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
 ction mismatches
-
----------------------------------------------------------------------------=
------
-mips_paravirt_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings,=
- 0 section mismatches
-
-Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -981,7 +917,7 @@ mpc30x_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sect=
 ion mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -990,21 +926,16 @@ n mismatches
 
 ---------------------------------------------------------------------------=
 -----
-msp71xx_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sec=
-tion mismatches
-
-Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
-
----------------------------------------------------------------------------=
------
 mtx1_defconfig (mips, gcc-10) =E2=80=94 FAIL, 2 errors, 0 warnings, 0 secti=
 on mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
-    arch/mips/alchemy/common/dbdma.c:33:10: fatal error: linux/dma-map-ops.=
-h: No such file or directory
+    arch/mips/alchemy/common/dbdma.c:632:7: error: =E2=80=98dma_default_coh=
+erent=E2=80=99 undeclared (first use in this function); did you mean =E2=80=
+=98dma_free_coherent=E2=80=99?
+    arch/mips/alchemy/common/dbdma.c:695:7: error: =E2=80=98dma_default_coh=
+erent=E2=80=99 undeclared (first use in this function); did you mean =E2=80=
+=98dma_free_coherent=E2=80=99?
 
 ---------------------------------------------------------------------------=
 -----
@@ -1015,9 +946,6 @@ ection mismatches
 -----
 multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
 ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
 
 ---------------------------------------------------------------------------=
 -----
@@ -1051,19 +979,8 @@ ection mismatches
 
 ---------------------------------------------------------------------------=
 -----
-netx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
 nhk8815_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
 tion mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
 
 ---------------------------------------------------------------------------=
 -----
@@ -1071,7 +988,7 @@ nlm_xlp_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sec=
 tion mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -1079,17 +996,12 @@ nlm_xlr_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sec=
 tion mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
-nsim_hs_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-nsim_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -1103,27 +1015,8 @@ s, 0 section mismatches
 
 ---------------------------------------------------------------------------=
 -----
-nuc910_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-nuc950_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-nuc960_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-omap1_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
-n mismatches
-
-Warnings:
-    drivers/gpio/gpio-omap.c:1233:34: warning: array =E2=80=98omap_gpio_mat=
-ch=E2=80=99 assumed to have one element
+omap1_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -1136,7 +1029,7 @@ omega2p_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sec=
 tion mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -1164,7 +1057,7 @@ pic32mzda_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 s=
 ection mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -1172,20 +1065,12 @@ pistachio_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 s=
 ection mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
 pleb_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
 n mismatches
-
----------------------------------------------------------------------------=
------
-pnx8335_stb225_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings=
-, 0 section mismatches
-
-Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -1228,12 +1113,7 @@ qi_lb60_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sec=
 tion mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
-
----------------------------------------------------------------------------=
------
-raumfeld_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -1241,7 +1121,7 @@ rb532_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 secti=
 on mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -1249,7 +1129,7 @@ rbtx49xx_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 se=
 ction mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -1262,7 +1142,15 @@ rm200_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 secti=
 on mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
+
+---------------------------------------------------------------------------=
+-----
+rs90_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sectio=
+n mismatches
+
+Errors:
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -1270,7 +1158,20 @@ rt305x_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sect=
 ion mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
+ion mismatches
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
 
 ---------------------------------------------------------------------------=
 -----
@@ -1282,16 +1183,10 @@ tion mismatches
 s3c6400_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
 tion mismatches
 
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
 ---------------------------------------------------------------------------=
 -----
 s5pv210_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
 tion mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
 
 ---------------------------------------------------------------------------=
 -----
@@ -1304,7 +1199,7 @@ sb1250_swarm_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, =
 0 section mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -1333,19 +1228,8 @@ ection mismatches
 
 ---------------------------------------------------------------------------=
 -----
-spear3xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
 spear6xx_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
 ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
 
 ---------------------------------------------------------------------------=
 -----
@@ -1373,7 +1257,7 @@ tb0219_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sect=
 ion mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -1381,7 +1265,7 @@ tb0226_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sect=
 ion mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -1389,7 +1273,7 @@ tb0287_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sect=
 ion mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -1403,23 +1287,13 @@ on mismatches
 
 ---------------------------------------------------------------------------=
 -----
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section=
- mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
 
 ---------------------------------------------------------------------------=
 -----
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -1428,16 +1302,11 @@ smatches
 
 ---------------------------------------------------------------------------=
 -----
-tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
 tinyconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 section mi=
 smatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -1448,9 +1317,6 @@ ction mismatches
 -----
 u300_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
 n mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
 
 ---------------------------------------------------------------------------=
 -----
@@ -1471,9 +1337,6 @@ vdk_hs38_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
 -----
 versatile_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
 ection mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
 
 ---------------------------------------------------------------------------=
 -----
@@ -1496,7 +1359,7 @@ vocore2_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sec=
 tion mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
@@ -1509,27 +1372,17 @@ workpad_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sec=
 tion mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
 ection mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
 
 ---------------------------------------------------------------------------=
 -----
 x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-2 warnings, 0 section mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+0 warnings, 0 section mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -1542,7 +1395,7 @@ xway_defconfig (mips, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sectio=
 n mismatches
 
 Errors:
-    arch/mips/kernel/cpu-probe.c:2050:2: error: duplicate case value
+    arch/mips/kernel/cpu-probe.c:2026:2: error: duplicate case value
 
 ---------------------------------------------------------------------------=
 -----
