@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2967C73462B
-	for <lists+stable@lfdr.de>; Sun, 18 Jun 2023 14:49:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0663A73462C
+	for <lists+stable@lfdr.de>; Sun, 18 Jun 2023 14:49:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229447AbjFRMtp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 18 Jun 2023 08:49:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34790 "EHLO
+        id S229510AbjFRMtw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 18 Jun 2023 08:49:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229511AbjFRMtn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 18 Jun 2023 08:49:43 -0400
+        with ESMTP id S229509AbjFRMtv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 18 Jun 2023 08:49:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D319E5A
-        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 05:49:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6E57E4D
+        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 05:49:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9772760ACE
-        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 12:49:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFA5EC433C0;
-        Sun, 18 Jun 2023 12:49:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7CA8B60B33
+        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 12:49:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 936EAC433C0;
+        Sun, 18 Jun 2023 12:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687092582;
-        bh=uUCU4RX20MrTsXLqAArt13ACmdsoL9ceNX9nh70KCK0=;
+        s=korg; t=1687092589;
+        bh=TWfLfD3E59AR5V9Ra6b5ao526rNekakTc0TdnUpkdhY=;
         h=Subject:To:Cc:From:Date:From;
-        b=hS6/k8NxVemQGXmxciL0wjLQ3vci4/b5P7f1KYmbmSz+xTMK9UR/+R/v/bmIdIMC/
-         lXHMhvfWAV50ivbYvbNtBBuTpY9LQBdWBT74qaFi3XpGX6Z9ytYzICONHnBTyPw4Fl
-         IES7HDjNWzeocgsW3QyyTFz9bqcZQyQKeaHrqI9I=
-Subject: FAILED: patch "[PATCH] serial: lantiq: add missing interrupt ack" failed to apply to 4.19-stable tree
-To:     mail@bernhard-seibold.de, gregkh@linuxfoundation.org,
-        ilpo.jarvinen@linux.intel.com, stable@vger.kernel.org
+        b=NKv1EbhJlwtoRpsIV46d/52+bNP31LXp7mHk0EM+TzZRQFME4uc+uUULxCxn8jUNL
+         GOluwq8E4w4xHjXee7bkeAyZVUFgd66INqKPOj53CyzHJXWIWotNE+OYX/sSi7pKvE
+         CFpqlBk3YTw+3Zk+ZkkO3stzHK2jH9JUuPfXbHmk=
+Subject: FAILED: patch "[PATCH] tty: serial: fsl_lpuart: reduce RX watermark to 0 on LS1028A" failed to apply to 6.1-stable tree
+To:     robert.hodaszi@digi.com, gregkh@linuxfoundation.org,
+        stable@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 18 Jun 2023 14:49:31 +0200
-Message-ID: <2023061831-detention-overtime-783b@gregkh>
+Date:   Sun, 18 Jun 2023 14:49:47 +0200
+Message-ID: <2023061847-companion-used-96bd@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 306320034e8fbe7ee1cc4f5269c55658b4612048
+git cherry-pick -x a82c3df955f8c1c726e4976527aa6ae924a67dd9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061831-detention-overtime-783b@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061847-companion-used-96bd@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,35 +74,39 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 306320034e8fbe7ee1cc4f5269c55658b4612048 Mon Sep 17 00:00:00 2001
-From: Bernhard Seibold <mail@bernhard-seibold.de>
-Date: Fri, 2 Jun 2023 15:30:29 +0200
-Subject: [PATCH] serial: lantiq: add missing interrupt ack
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From a82c3df955f8c1c726e4976527aa6ae924a67dd9 Mon Sep 17 00:00:00 2001
+From: Robert Hodaszi <robert.hodaszi@digi.com>
+Date: Fri, 9 Jun 2023 14:13:34 +0200
+Subject: [PATCH] tty: serial: fsl_lpuart: reduce RX watermark to 0 on LS1028A
 
-Currently, the error interrupt is never acknowledged, so once active it
-will stay active indefinitely, causing the handler to be called in an
-infinite loop.
+LS1028A is using DMA with LPUART. Having RX watermark set to 1, means
+DMA transactions are started only after receiving the second character.
 
-Fixes: 2f0fc4159a6a ("SERIAL: Lantiq: Add driver for MIPS Lantiq SOCs.")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Bernhard Seibold <mail@bernhard-seibold.de>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Message-ID: <20230602133029.546-1-mail@bernhard-seibold.de>
+On other platforms with newer LPUART IP, Receiver Idle Empty function
+initiates the DMA request after the receiver is idling for 4 characters.
+But this feature is missing on LS1028A, which is causing a 1-character
+delay in the RX direction on this platform.
+
+Set RX watermark to 0 to initiate RX DMA after each character.
+
+Link: https://lore.kernel.org/linux-serial/20230607103459.1222426-1-robert.hodaszi@digi.com/
+Fixes: 9ad9df844754 ("tty: serial: fsl_lpuart: Fix the wrong RXWATER setting for rx dma case")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Robert Hodaszi <robert.hodaszi@digi.com>
+Message-ID: <20230609121334.1878626-1-robert.hodaszi@digi.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/tty/serial/lantiq.c b/drivers/tty/serial/lantiq.c
-index a58e9277dfad..f1387f1024db 100644
---- a/drivers/tty/serial/lantiq.c
-+++ b/drivers/tty/serial/lantiq.c
-@@ -250,6 +250,7 @@ lqasc_err_int(int irq, void *_port)
- 	struct ltq_uart_port *ltq_port = to_ltq_uart_port(port);
+diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
+index 7486a2b8556c..7fd30fcc10c6 100644
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -310,7 +310,7 @@ static const struct lpuart_soc_data ls1021a_data = {
+ static const struct lpuart_soc_data ls1028a_data = {
+ 	.devtype = LS1028A_LPUART,
+ 	.iotype = UPIO_MEM32,
+-	.rx_watermark = 1,
++	.rx_watermark = 0,
+ };
  
- 	spin_lock_irqsave(&ltq_port->lock, flags);
-+	__raw_writel(ASC_IRNCR_EIR, port->membase + LTQ_ASC_IRNCR);
- 	/* clear any pending interrupts */
- 	asc_update_bits(0, ASCWHBSTATE_CLRPE | ASCWHBSTATE_CLRFE |
- 		ASCWHBSTATE_CLRROE, port->membase + LTQ_ASC_WHBSTATE);
+ static struct lpuart_soc_data imx7ulp_data = {
 
