@@ -2,117 +2,128 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04EBB73439B
-	for <lists+stable@lfdr.de>; Sat, 17 Jun 2023 22:37:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A801B7344BC
+	for <lists+stable@lfdr.de>; Sun, 18 Jun 2023 05:10:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233644AbjFQUhQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 17 Jun 2023 16:37:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41950 "EHLO
+        id S229448AbjFRDKu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 17 Jun 2023 23:10:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346529AbjFQUhJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 16:37:09 -0400
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4701211D;
-        Sat, 17 Jun 2023 13:37:02 -0700 (PDT)
-Received: from localhost.localdomain (178.176.79.248) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Sat, 17 Jun
- 2023 23:36:51 +0300
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-To:     Ulf Hansson <ulf.hansson@linaro.org>, <linux-mmc@vger.kernel.org>
-CC:     Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-sunxi@lists.linux.dev>, <stable@vger.kernel.org>
-Subject: [PATCH v3 11/12] mmc: sunxi: fix deferred probing
-Date:   Sat, 17 Jun 2023 23:36:21 +0300
-Message-ID: <20230617203622.6812-12-s.shtylyov@omp.ru>
-X-Mailer: git-send-email 2.26.3
-In-Reply-To: <20230617203622.6812-1-s.shtylyov@omp.ru>
-References: <20230617203622.6812-1-s.shtylyov@omp.ru>
+        with ESMTP id S229379AbjFRDKt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 17 Jun 2023 23:10:49 -0400
+Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 528B5E5A;
+        Sat, 17 Jun 2023 20:10:47 -0700 (PDT)
+Received: by mail-oi1-x22d.google.com with SMTP id 5614622812f47-39ce64700cbso1854879b6e.0;
+        Sat, 17 Jun 2023 20:10:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687057846; x=1689649846;
+        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
+         :message-id:from:cc:references:to:subject:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zLuT+2NzBAXHCK3cGleHFvnJZZ+XBr8qJcVGkHAsIQo=;
+        b=IJ7K4UHUX67qftKWzNY8/niY+7urxToTW/eWv2NQ0IFFRs8UJDWC4d/emClzCu39qm
+         ZSJWgTBHYzhv2ZbC78EqnFFJLqlJkQzOoq0LLFghGWHVwjN2rhmr6SoY6iMJW61ZaBGE
+         UGFP6WEfFtVnwMQ6rvfAkOVE08/tJMem7Eph4aCXU46HVCD+Hm8X7TubH5tXSaHJ43Ty
+         648WnrG22R0qGEHDCpZ4USsQRurQrrfH75dXxM3RqQIU+TMkLtYY5EYHR2OTD7oLeTD4
+         M+Z4F1baPJ7ZnXVZUi+0SY+/GRpD0scCU7Z2HTGuET73euIzUZ7bTBNKtK7AVylvydW0
+         lPbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687057846; x=1689649846;
+        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
+         :message-id:from:cc:references:to:subject:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=zLuT+2NzBAXHCK3cGleHFvnJZZ+XBr8qJcVGkHAsIQo=;
+        b=hwqzJzSxqx1JqnBVwF6MipuUBbR2lAnF7TmkfrHiW15aG3G70Sl0BsHjEAg++YMTGa
+         e9v+xAZYnpIrjGL2zM5G+kHFDCQ1qulRlnva1wde7vokAoHhg+CwBJdvhwpZXBC1hsp1
+         oev35B7A/mLtwovhsgENFLb4nUzYdhBEDZyMnPaGmgFWdXJDjfrNDcE8mm0QOyJN8FkQ
+         PU3uUehrq+JSk4dbJkFhXIEoR9gZbkmel4TztWaqrpKKiiVWzBepEi1CI5BOHi+9X+Fj
+         vd7U22tB3+ifhF1WBZmW7aXg9fWi6VL6HNiQ5j5o7oyQ6Tpv8GifvgpS99Zzo/DgzU33
+         QMrA==
+X-Gm-Message-State: AC+VfDxXYF7oy7C8k67gs2DLzlvVmbt8WOhVaz+LqH5A5lD2wainWj07
+        oZ42Sjou/GPpA6DSEes+ZW6nHp6Oee4=
+X-Google-Smtp-Source: ACHHUZ7f4TlBLNCSeWyO4adJ+o+fKG/W7gEpILn4xOiJ7bxY2+pV+B2dDI8SEWFFiRcBs3qVKbYGMw==
+X-Received: by 2002:a54:4181:0:b0:39c:b3ae:865e with SMTP id 1-20020a544181000000b0039cb3ae865emr6948294oiy.55.1687057846213;
+        Sat, 17 Jun 2023 20:10:46 -0700 (PDT)
+Received: from [10.1.1.24] (222-152-217-2-adsl.sparkbb.co.nz. [222.152.217.2])
+        by smtp.gmail.com with ESMTPSA id j24-20020a62b618000000b0065980654baasm15537805pff.130.2023.06.17.20.10.41
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 17 Jun 2023 20:10:45 -0700 (PDT)
+Subject: Re: [PATCH v12 2/3] block: change annotation of rdb_CylBlocks in
+ affs_hardblocks.h
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+References: <20230616223616.6002-1-schmitzmic@gmail.com>
+ <20230616223616.6002-3-schmitzmic@gmail.com>
+ <CAMuHMdXo+Za3_Bz-PaLhq_oZzEzkN=g5YyDp=vaX7485WuE=Cg@mail.gmail.com>
+Cc:     linux-block@vger.kernel.org, axboe@kernel.dk,
+        linux-m68k@vger.kernel.org, hch@lst.de, martin@lichtvoll.de,
+        fthain@linux-m68k.org, stable@vger.kernel.org
+From:   Michael Schmitz <schmitzmic@gmail.com>
+Message-ID: <e29dcf24-367f-4304-9b01-7913e0dcf650@gmail.com>
+Date:   Sun, 18 Jun 2023 15:10:38 +1200
+User-Agent: Mozilla/5.0 (X11; Linux ppc; rv:45.0) Gecko/20100101
+ Icedove/45.4.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [178.176.79.248]
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.59, Database issued on: 06/17/2023 20:23:23
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 178086 [Jun 16 2023]
-X-KSE-AntiSpam-Info: Version: 5.9.59.0
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 517 517 b0056c19d8e10afbb16cb7aad7258dedb0179a79
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_no_received}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.79.248
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 06/17/2023 20:29:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 6/17/2023 5:34:00 PM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <CAMuHMdXo+Za3_Bz-PaLhq_oZzEzkN=g5YyDp=vaX7485WuE=Cg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The driver overrides the error codes and IRQ0 returned by platform_get_irq()
-to -EINVAL, so if it returns -EPROBE_DEFER, the driver will fail the probe
-permanently instead of the deferred probing. Switch to propagating the error
-codes upstream.  Since commit ce753ad1549c ("platform: finally disallow IRQ0
-in platform_get_irq() and its ilk") IRQ0 is no longer returned by those APIs,
-so we now can safely ignore it...
+Hi Geert,
 
-Fixes: 2408a08583d ("mmc: sunxi-mmc: Handle return value of platform_get_irq")
-Cc: stable@vger.kernel.org # v5.19+
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
----
-Changes in version 3:
-- added the platform_get_irq() commit reference to the  patch description and
-  the Cc: tag marking the 1st kernel version containing it;
-- added Jernej's tag.
+Am 17.06.2023 um 23:08 schrieb Geert Uytterhoeven:
+> On Sat, Jun 17, 2023 at 12:36 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
+>> The Amiga partition parser module uses signed int for partition sector
+>> address and count, which will overflow for disks larger than 1 TB.
+>>
+>> Use u64 as type for sector address and size to allow using disks up to
+>> 2 TB without LBD support, and disks larger than 2 TB with LBD. The RBD
+>> format allows to specify disk sizes up to 2^128 bytes (though native
+>> OS limitations reduce this somewhat, to max 2^68 bytes), so check for
+>> u64 overflow carefully to protect against overflowing sector_t.
+>>
+>> This bug was reported originally in 2012, and the fix was created by
+>> the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
+>> discussed and reviewed on linux-m68k at that time but never officially
+>> submitted (now resubmitted as patch 1 of this series).
+>>
+>> Patch 3 (this series) adds additional error checking and warning
+>> messages. One of the error checks now makes use of the previously
+>> unused rdb_CylBlocks field, which causes a 'sparse' warning
+>> (cast to restricted __be32).
+>>
+>> Annotate all 32 bit fields in affs_hardblocks.h as __be32, as the
+>> on-disk format of RDB and partition blocks is always big endian.
+>>
+>> Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
+>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
+>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+>> Message-ID: <201206192146.09327.Martin@lichtvoll.de>
+>> Cc: <stable@vger.kernel.org> # 5.2
+>> Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+>> Reviewed-by: Christoph Hellwig <hch@lst.de>
+>
+> Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-Changes in version 2:
-- slightly reformatted the patch description.
+Thanks - now I notice the patch title for this one doesn't fit too well 
+anymore.
 
- drivers/mmc/host/sunxi-mmc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Would a change of title mess up the common patch tracking tools?
 
-diff --git a/drivers/mmc/host/sunxi-mmc.c b/drivers/mmc/host/sunxi-mmc.c
-index 3db9f32d6a7b..69dcb8805e05 100644
---- a/drivers/mmc/host/sunxi-mmc.c
-+++ b/drivers/mmc/host/sunxi-mmc.c
-@@ -1350,8 +1350,8 @@ static int sunxi_mmc_resource_request(struct sunxi_mmc_host *host,
- 		return ret;
- 
- 	host->irq = platform_get_irq(pdev, 0);
--	if (host->irq <= 0) {
--		ret = -EINVAL;
-+	if (host->irq < 0) {
-+		ret = host->irq;
- 		goto error_disable_mmc;
- 	}
- 
--- 
-2.26.3
+Cheers,
 
+	Michael
+
+>
+> Gr{oetje,eeting}s,
+>
+>                         Geert
+>
