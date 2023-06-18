@@ -2,45 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5963A73462D
-	for <lists+stable@lfdr.de>; Sun, 18 Jun 2023 14:50:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22701734633
+	for <lists+stable@lfdr.de>; Sun, 18 Jun 2023 14:55:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229511AbjFRMuC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 18 Jun 2023 08:50:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34826 "EHLO
+        id S229520AbjFRMzU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 18 Jun 2023 08:55:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229509AbjFRMuA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 18 Jun 2023 08:50:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11B3DE4D
-        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 05:50:00 -0700 (PDT)
+        with ESMTP id S229453AbjFRMzT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 18 Jun 2023 08:55:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D9A7E5F
+        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 05:55:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A244060ACE
-        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 12:49:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4EEAC433C0;
-        Sun, 18 Jun 2023 12:49:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B64B960DBD
+        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 12:55:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E06C433C0;
+        Sun, 18 Jun 2023 12:55:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687092599;
-        bh=kXRvJtNRP1k67oHtgGifA8q1go/Dlr48dQKAYdJhfh4=;
-        h=Subject:To:Cc:From:Date:From;
-        b=0HsqYVy4Hj8Li9HiSYlLqtet/Ccf1GvnvViNqssUNFtTe+d1/N6TLg6KgIr0WFxgk
-         deDkdmfBqise5z6c4SSYI/1pfO8UCL4kE459Vnd15BOiSe9AYDLG37ha2Ovh+WO+GF
-         4GD61h+muffuQInW7x6cOVJBr/y/EZYdQAzZzE9E=
-Subject: FAILED: patch "[PATCH] tty: serial: fsl_lpuart: reduce RX watermark to 0 on LS1028A" failed to apply to 5.15-stable tree
-To:     robert.hodaszi@digi.com, gregkh@linuxfoundation.org,
-        stable@kernel.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 18 Jun 2023 14:49:48 +0200
-Message-ID: <2023061848-unpleased-sizing-050f@gregkh>
+        s=korg; t=1687092917;
+        bh=dU3OnJRlzvYGfkgLQTJCHs/GkIAmgI22eseUG1Jc8nY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=pjmAaBWq25G/NXazGDdA1wBDUa7orMiPvg45tym3HpQg8BGZhwN8tLblhRKrXK+v/
+         S9yEZrVmU6F3Q/+iEDIxJRDo5ZkIM9Lrx/62zEBr1wEBpbDg5RU1bhSsPwBf7ONk//
+         svkCZrBsPaGx4Kf1c9WLEQwX5rdjsH49qLMlhN4o=
+Date:   Sun, 18 Jun 2023 14:55:14 +0200
+From:   "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To:     Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
+Cc:     "felipe.balbi@linux.intel.com" <felipe.balbi@linux.intel.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "romain.izard.pro@gmail.com" <romain.izard.pro@gmail.com>
+Subject: Re: [PATCH 1/2] usb: gadget: f_ncm: Add OS descriptor support
+Message-ID: <2023061807-refreeze-reshape-8e98@gregkh>
+References: <20230531173358.910767-1-joakim.tjernlund@infinera.com>
+ <5533972aab4a15ab2177497edc9aa0ba1b97aaba.camel@infinera.com>
+ <2023061854-daydream-outage-de91@gregkh>
+ <afbf34e128a744bb37f8e533248b69c2b0fdff9e.camel@infinera.com>
+ <2023061834-relative-gem-0d53@gregkh>
+ <f9a5cb9abd407ee9f8b832e672c24d5bc5347c6b.camel@infinera.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f9a5cb9abd407ee9f8b832e672c24d5bc5347c6b.camel@infinera.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,64 +57,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Sun, Jun 18, 2023 at 11:42:59AM +0000, Joakim Tjernlund wrote:
+> On Sun, 2023-06-18 at 13:04 +0200, gregkh@linuxfoundation.org wrote:
+> > On Sun, Jun 18, 2023 at 09:58:14AM +0000, Joakim Tjernlund wrote:
+> > > On Sun, 2023-06-18 at 09:36 +0200, Greg KH wrote:
+> > > > On Sat, Jun 17, 2023 at 04:03:06PM +0000, Joakim Tjernlund wrote:
+> > > > > Ping ?
+> > > > > 
+> > > > > Did I do something wrong with submission or is it queued for later ?
+> > > > > 4.19 is missing these which make USB NCM unusable with Win >= 10. 
+> > > > > 
+> > > > >  Jocke
+> > > > > 
+> > > > > On Wed, 2023-05-31 at 19:33 +0200, Joakim Tjernlund wrote:
+> > > > > > From: Romain Izard <romain.izard.pro@gmail.com>
+> > > > > > 
+> > > > > > To be able to use the default USB class drivers available in Microsoft
+> > > > > > Windows, we need to add OS descriptors to the exported USB gadget to
+> > > > > > tell the OS that we are compatible with the built-in drivers.
+> > > > > > 
+> > > > > > Copy the OS descriptor support from f_rndis into f_ncm. As a result,
+> > > > > > using the WINNCM compatible ID, the UsbNcm driver is loaded on
+> > > > > > enumeration without the need for a custom driver or inf file.
+> > > > > > 
+> > > > > > Signed-off-by: Romain Izard <romain.izard.pro@gmail.com>
+> > > > > > Signed-off-by: Felipe Balbi <felipe.balbi@linux.intel.com>
+> > > > > > Signed-off-by: Joakim Tjernlund <joakim.tjernlund@infinera.com>
+> > > > > > Cc: stable@vger.kernel.org # v4.19
+> > > > > > ---
+> > > > > > 
+> > > > > >  Seems to have been forgotten when backporting NCM fixes.
+> > > > > >  Needed to make Win10 accept Linux NCM gadget ethernet
+> > > > > > 
+> > > > > >  drivers/usb/gadget/function/f_ncm.c | 47 +++++++++++++++++++++++++++--
+> > > > > >  drivers/usb/gadget/function/u_ncm.h |  3 ++
+> > > > > >  2 files changed, 47 insertions(+), 3 deletions(-)
+> > > > 
+> > > > What is the git commit id of this change in Linus's tree?
+> > > > 
+> > > > thanks,
+> > > > 
+> > > > greg k-h
+> > > For this patch:
+> > > 	793409292382027226769d0299987f06cbd97a6e
+> > > 
+> > > and for "usb: gadget: f_ncm: Fix NTP-32 support"
+> > > 	550eef0c353030ac4223b9c9479bdf77a05445d6
+> > 
+> > Ah, yeah, they did get lost in the deluge, sorry.
+> > 
+> > Can you please resend these _with_ the git commit id in the message so
+> > that we know what is going on?
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> 
+> Resent as PATCHv2 with commit id's
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x a82c3df955f8c1c726e4976527aa6ae924a67dd9
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061848-unpleased-sizing-050f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
+Both now queued up, thanks.
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From a82c3df955f8c1c726e4976527aa6ae924a67dd9 Mon Sep 17 00:00:00 2001
-From: Robert Hodaszi <robert.hodaszi@digi.com>
-Date: Fri, 9 Jun 2023 14:13:34 +0200
-Subject: [PATCH] tty: serial: fsl_lpuart: reduce RX watermark to 0 on LS1028A
-
-LS1028A is using DMA with LPUART. Having RX watermark set to 1, means
-DMA transactions are started only after receiving the second character.
-
-On other platforms with newer LPUART IP, Receiver Idle Empty function
-initiates the DMA request after the receiver is idling for 4 characters.
-But this feature is missing on LS1028A, which is causing a 1-character
-delay in the RX direction on this platform.
-
-Set RX watermark to 0 to initiate RX DMA after each character.
-
-Link: https://lore.kernel.org/linux-serial/20230607103459.1222426-1-robert.hodaszi@digi.com/
-Fixes: 9ad9df844754 ("tty: serial: fsl_lpuart: Fix the wrong RXWATER setting for rx dma case")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Robert Hodaszi <robert.hodaszi@digi.com>
-Message-ID: <20230609121334.1878626-1-robert.hodaszi@digi.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
-index 7486a2b8556c..7fd30fcc10c6 100644
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -310,7 +310,7 @@ static const struct lpuart_soc_data ls1021a_data = {
- static const struct lpuart_soc_data ls1028a_data = {
- 	.devtype = LS1028A_LPUART,
- 	.iotype = UPIO_MEM32,
--	.rx_watermark = 1,
-+	.rx_watermark = 0,
- };
- 
- static struct lpuart_soc_data imx7ulp_data = {
-
