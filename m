@@ -2,91 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AC7C73453B
-	for <lists+stable@lfdr.de>; Sun, 18 Jun 2023 09:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6625D73453D
+	for <lists+stable@lfdr.de>; Sun, 18 Jun 2023 09:51:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229586AbjFRHgY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 18 Jun 2023 03:36:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56816 "EHLO
+        id S229503AbjFRHvn convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Sun, 18 Jun 2023 03:51:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbjFRHgX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 18 Jun 2023 03:36:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51BD0E42
-        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 00:36:22 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CE64660E98
-        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 07:36:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB023C433C0;
-        Sun, 18 Jun 2023 07:36:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687073781;
-        bh=EXF9ayec0xkbswEFTK2tj4MOyChHQF3DLZ677wzyerQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=q1ODi8PGA+lC1wapJPnQrbCGSYsfM+A+UBGQpz3BnvWEFwTkAJMbsmxSO+73SC0Fb
-         MahqFqlA8Ux4dedmM3EbRTvBBLWo6LSV1r9EzAa+k2YUsNJzrPEc/+nm1AagFwOZF/
-         LjlqcAbiRKWRCmG+8GzIO30WsZi4z/DDkHspgtLY=
-Date:   Sun, 18 Jun 2023 09:36:13 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
-Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "felipe.balbi@linux.intel.com" <felipe.balbi@linux.intel.com>,
-        "romain.izard.pro@gmail.com" <romain.izard.pro@gmail.com>
-Subject: Re: [PATCH 1/2] usb: gadget: f_ncm: Add OS descriptor support
-Message-ID: <2023061854-daydream-outage-de91@gregkh>
-References: <20230531173358.910767-1-joakim.tjernlund@infinera.com>
- <5533972aab4a15ab2177497edc9aa0ba1b97aaba.camel@infinera.com>
+        with ESMTP id S229470AbjFRHvm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 18 Jun 2023 03:51:42 -0400
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B845FE51;
+        Sun, 18 Jun 2023 00:51:40 -0700 (PDT)
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-5700401acbeso27900317b3.0;
+        Sun, 18 Jun 2023 00:51:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687074699; x=1689666699;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iXMXyUUSJXR/nTNTa+k3QFOvjzI9dKq9J11YzB0zBbc=;
+        b=DCxCDit2X9jblnIQiL8Q1yuZvkbo7/UbqjncYC6Q5XX2PxYGIb9ON4g8rfnaCb59Af
+         lxDofc5ROwmlPcpV9tzFr+dbnPAQori3pFn/0N+6STQFUkQkU/nG3ze6KIkC43W04xlv
+         WFzMytmCYL272rK5l4E9vNa8AMXBi3qwsKgQRMxLAg8bkd5iyw3SVSGARnhKEwaxiAHd
+         ADJU4bLCLLgxLmiMDKym3PchVLVkIban5rL36616gb/aqACdGOcqvxaOeGRqHd75d8tM
+         exqlQJ5BiC7xNFSPFBXa9I0g2RoID75j7gn2fGaWvCQi1w/RhnAnXoHdHXANEUc66U51
+         KI/Q==
+X-Gm-Message-State: AC+VfDz6wYj7aCEb8zGLsUj0gwCw+KXPBEQh6uDA0cRX1Ea1afuU7kcZ
+        U03+WiZ5eYKD/fNDiYsik0fOm1PzO/cPuw==
+X-Google-Smtp-Source: ACHHUZ7gfC9SiAKuiZVkdGPEIOUbBiWWQzVVNssBR/KT1jM0N6dnRFxrMrm59gO2v3gfW4ajop+EwA==
+X-Received: by 2002:a0d:ca0d:0:b0:56d:770:c315 with SMTP id m13-20020a0dca0d000000b0056d0770c315mr6766217ywd.49.1687074699573;
+        Sun, 18 Jun 2023 00:51:39 -0700 (PDT)
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com. [209.85.219.180])
+        by smtp.gmail.com with ESMTPSA id b16-20020a0dd910000000b005707f542f62sm953037ywe.25.2023.06.18.00.51.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 18 Jun 2023 00:51:38 -0700 (PDT)
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-bd6d9d7da35so2611586276.0;
+        Sun, 18 Jun 2023 00:51:38 -0700 (PDT)
+X-Received: by 2002:a5b:cb:0:b0:bc7:47a:9861 with SMTP id d11-20020a5b00cb000000b00bc7047a9861mr3316637ybp.51.1687074698581;
+ Sun, 18 Jun 2023 00:51:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5533972aab4a15ab2177497edc9aa0ba1b97aaba.camel@infinera.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230616223616.6002-1-schmitzmic@gmail.com> <20230616223616.6002-3-schmitzmic@gmail.com>
+ <CAMuHMdXo+Za3_Bz-PaLhq_oZzEzkN=g5YyDp=vaX7485WuE=Cg@mail.gmail.com> <e29dcf24-367f-4304-9b01-7913e0dcf650@gmail.com>
+In-Reply-To: <e29dcf24-367f-4304-9b01-7913e0dcf650@gmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Sun, 18 Jun 2023 09:51:25 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdUHNGKP4jFM7CDhFxHWd+SR4GG6Co0PosLCk1qpBV176w@mail.gmail.com>
+Message-ID: <CAMuHMdUHNGKP4jFM7CDhFxHWd+SR4GG6Co0PosLCk1qpBV176w@mail.gmail.com>
+Subject: Re: [PATCH v12 2/3] block: change annotation of rdb_CylBlocks in affs_hardblocks.h
+To:     Michael Schmitz <schmitzmic@gmail.com>
+Cc:     linux-block@vger.kernel.org, axboe@kernel.dk,
+        linux-m68k@vger.kernel.org, hch@lst.de, martin@lichtvoll.de,
+        fthain@linux-m68k.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, Jun 17, 2023 at 04:03:06PM +0000, Joakim Tjernlund wrote:
-> Ping ?
-> 
-> Did I do something wrong with submission or is it queued for later ?
-> 4.19 is missing these which make USB NCM unusable with Win >= 10. 
-> 
->  Jocke
-> 
-> On Wed, 2023-05-31 at 19:33 +0200, Joakim Tjernlund wrote:
-> > From: Romain Izard <romain.izard.pro@gmail.com>
-> > 
-> > To be able to use the default USB class drivers available in Microsoft
-> > Windows, we need to add OS descriptors to the exported USB gadget to
-> > tell the OS that we are compatible with the built-in drivers.
-> > 
-> > Copy the OS descriptor support from f_rndis into f_ncm. As a result,
-> > using the WINNCM compatible ID, the UsbNcm driver is loaded on
-> > enumeration without the need for a custom driver or inf file.
-> > 
-> > Signed-off-by: Romain Izard <romain.izard.pro@gmail.com>
-> > Signed-off-by: Felipe Balbi <felipe.balbi@linux.intel.com>
-> > Signed-off-by: Joakim Tjernlund <joakim.tjernlund@infinera.com>
-> > Cc: stable@vger.kernel.org # v4.19
-> > ---
-> > 
-> >  Seems to have been forgotten when backporting NCM fixes.
-> >  Needed to make Win10 accept Linux NCM gadget ethernet
-> > 
-> >  drivers/usb/gadget/function/f_ncm.c | 47 +++++++++++++++++++++++++++--
-> >  drivers/usb/gadget/function/u_ncm.h |  3 ++
-> >  2 files changed, 47 insertions(+), 3 deletions(-)
+Hi Michael,
 
-What is the git commit id of this change in Linus's tree?
+On Sun, Jun 18, 2023 at 5:10 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
+> Am 17.06.2023 um 23:08 schrieb Geert Uytterhoeven:
+> > On Sat, Jun 17, 2023 at 12:36 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
+> >> The Amiga partition parser module uses signed int for partition sector
+> >> address and count, which will overflow for disks larger than 1 TB.
+> >>
+> >> Use u64 as type for sector address and size to allow using disks up to
+> >> 2 TB without LBD support, and disks larger than 2 TB with LBD. The RBD
+> >> format allows to specify disk sizes up to 2^128 bytes (though native
+> >> OS limitations reduce this somewhat, to max 2^68 bytes), so check for
+> >> u64 overflow carefully to protect against overflowing sector_t.
+> >>
+> >> This bug was reported originally in 2012, and the fix was created by
+> >> the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
+> >> discussed and reviewed on linux-m68k at that time but never officially
+> >> submitted (now resubmitted as patch 1 of this series).
+> >>
+> >> Patch 3 (this series) adds additional error checking and warning
+> >> messages. One of the error checks now makes use of the previously
+> >> unused rdb_CylBlocks field, which causes a 'sparse' warning
+> >> (cast to restricted __be32).
+> >>
+> >> Annotate all 32 bit fields in affs_hardblocks.h as __be32, as the
+> >> on-disk format of RDB and partition blocks is always big endian.
+> >>
+> >> Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
+> >> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
+> >> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> >> Message-ID: <201206192146.09327.Martin@lichtvoll.de>
+> >> Cc: <stable@vger.kernel.org> # 5.2
+> >> Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+> >> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> >
+> > Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+>
+> Thanks - now I notice the patch title for this one doesn't fit too well
+> anymore.
+>
+> Would a change of title mess up the common patch tracking tools?
 
-thanks,
+You mean changing one patch subject in v13?
+Nah, happens all the time, so the tooling should handle that fine.
 
-greg k-h
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
