@@ -2,81 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54F4B7344CA
-	for <lists+stable@lfdr.de>; Sun, 18 Jun 2023 05:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8966C7344F8
+	for <lists+stable@lfdr.de>; Sun, 18 Jun 2023 07:28:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229379AbjFRDdG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 17 Jun 2023 23:33:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42056 "EHLO
+        id S229534AbjFRF2f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 18 Jun 2023 01:28:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjFRDdF (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Sat, 17 Jun 2023 23:33:05 -0400
-Received: from mail-oo1-xc2e.google.com (mail-oo1-xc2e.google.com [IPv6:2607:f8b0:4864:20::c2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F3E6FA
-        for <Stable@vger.kernel.org>; Sat, 17 Jun 2023 20:33:02 -0700 (PDT)
-Received: by mail-oo1-xc2e.google.com with SMTP id 006d021491bc7-55b78f40301so1685573eaf.0
-        for <Stable@vger.kernel.org>; Sat, 17 Jun 2023 20:33:02 -0700 (PDT)
+        with ESMTP id S229487AbjFRF2e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 18 Jun 2023 01:28:34 -0400
+Received: from mail-vk1-xa33.google.com (mail-vk1-xa33.google.com [IPv6:2607:f8b0:4864:20::a33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54929123
+        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 22:28:33 -0700 (PDT)
+Received: by mail-vk1-xa33.google.com with SMTP id 71dfb90a1353d-4716726b741so169078e0c.3
+        for <stable@vger.kernel.org>; Sat, 17 Jun 2023 22:28:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687059181; x=1689651181;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=wWTmMQSsiLodfdKu7C8lcuyX7WesZia949PML8BXbEI=;
-        b=K4Oj/L1YIcJyUcgMcP7LzlWSBbmeibh6k9+rN64Z/iUmwNSmrNad67yCh8ZxE1hIp6
-         Cq9vxu3Is3IBwfsTeNn/ZooW2AFICpJ6EVLtCYrerqcihAaaUmm87ggMigBs4yx2qtab
-         skluSVCxno3Wry6D/Vicfos2y6PPxT6EQQlaUFmzJ7rfYRxjbGc9RoRYsJxoGZv47+GN
-         qnhqxw4xX+VuIf+DFoAl+60wuXWNwsQ9dwU+gKle8X0nF8tIkTrIjQPZl1ouNvDsGKue
-         q0/w6GSRBTGe3xwoPZE2wtvklPPnKvpOU+Ecr4mU7TKED64DEmtB3Jq38whLmnQwiP3P
-         GQAQ==
+        d=linaro.org; s=google; t=1687066112; x=1689658112;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=819T+Hums9z0ALJaMfV4zVuKwKkgEHB36oxn/L470wg=;
+        b=vFiBrMLa2ufylk3qqY7rw8oo1wZUyOzx7spgL7nWt8yaR7onpJJLx9Tgu/+/3pge4T
+         wa764t40qoW8CCk/V69XJeH7Mo6/n7NLeGicVLbnQo6ihVb1GsqzQi6RmhRWxa+tNT0M
+         bFFb9TdG7GaFi+/fcDTFRgH/IW9tp2nJy+JKoeLSF2x7anbtMVQ36e5YSQFHcHYTp7gx
+         YX8zc49x6T+/7lVzN46UxTodosj548bL9O/9nagkZxdfdv1UkbOG6rCDbgQesX55i4Dr
+         TcyiCu6UQd2UM5coNp78ORZFoNxr4kww4oPq0Nu0PQx9najeGLcaXUk75kM5dQ5mb2GK
+         WtaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687059181; x=1689651181;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wWTmMQSsiLodfdKu7C8lcuyX7WesZia949PML8BXbEI=;
-        b=Y1OaOgSRFCBYW3SUWlea6CCJSbS8bSBoFKpjcFaqCeIr+iZc3boJ3/Z/I1x+iMQBPw
-         CLPDMErPaDpkLvoKRvpW9E6y8OdV18C8Lhq+2eiv5j88y1vBPMLoMFSqZrlJfDuYlxP5
-         lUoxOAKLzsXfehKMUIi3h4INFHfReBW8ZhkJO04qgb8yGj57CiED5wrtM+gMu01Rwn3S
-         dKG6MN9AlnMC+6WlxstKcgbgHWA0DJJt8kUZTKwDc86rsvZdWtmc1rq+LIpwGMwWwPTY
-         sgxKH59Ti770Ec/+w7UYfVHYhWjsr8ZFwWVmPJ5ltSINjppmdQcP5JLfxbfs86diis44
-         hniQ==
-X-Gm-Message-State: AC+VfDwsBnlabiBrk1hN6y7p5ytA88f+IoI6a4Sxp1UBgJjDnp/1pb+9
-        uOEOuvEBJnb7ZdUDYfFNioDcmZKkgGMjwI0xOMQ=
-X-Google-Smtp-Source: ACHHUZ5Qysr84PAm3pLt9g5+dySjDk/sMWKUD/ZOxg6EDDFuAbJ9FI3sUnpeNmRM6mdQBX29hUT8a6GIG3ENQDph/40=
-X-Received: by 2002:a4a:c446:0:b0:558:b424:8c31 with SMTP id
- h6-20020a4ac446000000b00558b4248c31mr3977297ooq.0.1687059180772; Sat, 17 Jun
- 2023 20:33:00 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1687066112; x=1689658112;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=819T+Hums9z0ALJaMfV4zVuKwKkgEHB36oxn/L470wg=;
+        b=FAw9p9NPq2Luq88kAPxTxBhj7kE5Jxuy+jk43FrorHzdATtj9Fr7diHnTL5Cb/ouFd
+         +r1jEFAcEMMfuK2A55EEm5dbLoPM0/aE4IdNlZS4RDMTPnOqETGdz+ZjNwZ/GGLmZU+X
+         YEnD+IgdO7dvB3c7u5NmTwUiNCWNTtMR3DMmE9VUfHO/letI726L80VEbfAzBlPrqxWV
+         9hN9KUngcFk80Pg6+g4B6AFB6KP/ZZRx4xUNHrJaXFNibACizIpgXk59KcLlrczx/E6y
+         ABhHPbgpUuByry+JL6F4cQZQztofXeC09qZ0i/ZY0F3iVIFuYUURqqZOxKvHHesrw7yr
+         EnQQ==
+X-Gm-Message-State: AC+VfDylHWfidyopTXiuSp0BnfbrEWzOFvbCxBPjrNfhYaexrmFyz4xM
+        eFxEgljrElImz4xb7aQz/FfEqrRHO0yAobtJnChbomaTzV5LL75zDrW+Fw==
+X-Google-Smtp-Source: ACHHUZ41W+nn5g+eIQ+Px1fffx4Aqa3gBgoZDpWHuFBHcwBdrZDnPAMcH6/tff47Q2p45Ed1misAsrncFvfTb4IT/LM=
+X-Received: by 2002:a05:6102:3016:b0:434:6958:cdbf with SMTP id
+ s22-20020a056102301600b004346958cdbfmr680249vsa.18.1687066111963; Sat, 17 Jun
+ 2023 22:28:31 -0700 (PDT)
 MIME-Version: 1.0
-Sender: hubertinecoul@gmail.com
-Received: by 2002:ac9:5b55:0:b0:4d9:6a76:96b3 with HTTP; Sat, 17 Jun 2023
- 20:33:00 -0700 (PDT)
-From:   "Mrs. Ruth Roberto" <robertoruth48@gmail.com>
-Date:   Sat, 17 Jun 2023 19:33:00 -0800
-X-Google-Sender-Auth: kxPoytU4b2cu5eh6M4W_0vTBDhw
-Message-ID: <CAAEzwM=wRMVtrn-J9m4PDFqhvuc=TF8SOKxWQhTAxowWyCQs8Q@mail.gmail.com>
-Subject: I trust in God
-To:     undisclosed-recipients:;
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Sun, 18 Jun 2023 10:58:21 +0530
+Message-ID: <CA+G9fYueU5joKgRRgLgfBaRTx93B71UXMyueNR_NeA_HZTsvFQ@mail.gmail.com>
+Subject: stable-rc-5.4.y: arch/mips/kernel/cpu-probe.c:2125:9: error:
+ duplicate case value 2125 case PRID_COMP_NETLOGIC
+To:     linux-stable <stable@vger.kernel.org>, lkft-triage@lists.linaro.org
+Cc:     Sasha Levin <sashal@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,LOTS_OF_MONEY,
-        MONEY_FRAUD_3,NA_DOLLARS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Dear,
-It is true we do not know each other before but please bear with me,
-I=E2=80=99m writing you this mail from a Hospital bed. My name is Mrs.
-Ruth Roberto. I am a widow and very sick now. I am suffering from
-Endometrial Cancer which my doctor has confirmed that I will not
-survive it because of some damages. Now because of the condition of my
-health I have decided to donate out my late husband hard earn money
-the sum of ($3, 500,000.00) Three Million, Five Hundred Thousand Us
-Dollars on Charity Purpose through your help.if you are interested get
-back for more details.
-Mrs. Ruth Roberto
+Following regressions found on stable rc 5.4 while building MIPS configs,
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+MIPS: Restore Au1300 support
+[ Upstream commit f2041708dee30a3425f680265c337acd28293782 ]
+
+
+Build log:
+======
+arch/mips/kernel/cpu-probe.c: In function 'cpu_probe':
+arch/mips/kernel/cpu-probe.c:2125:9: error: duplicate case value
+ 2125 |         case PRID_COMP_NETLOGIC:
+      |         ^~~~
+arch/mips/kernel/cpu-probe.c:2099:9: note: previously used here
+ 2099 |         case PRID_COMP_NETLOGIC:
+      |         ^~~~
+make[3]: *** [scripts/Makefile.build:262: arch/mips/kernel/cpu-probe.o] Error 1
+
+Links:
+
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.4.y/build/v5.4.247-33-g615b5c31a2ce/testrun/17568185/suite/build/test/gcc-12-rt305x_defconfig/log
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.4.y/build/v5.4.247-33-g615b5c31a2ce/testrun/17568185/suite/build/test/gcc-12-rt305x_defconfig/history/
+
+
+--
+Linaro LKFT
+https://lkft.linaro.org
