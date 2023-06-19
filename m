@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE3AF7352F8
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97C7E7353AD
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:48:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232006AbjFSKk2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:40:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45562 "EHLO
+        id S232056AbjFSKsK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:48:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232077AbjFSKkP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:40:15 -0400
+        with ESMTP id S230358AbjFSKrp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:47:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCFC010F2
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:39:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B6EE10F9
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:47:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 58B9760B33
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:39:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FEE0C433C0;
-        Mon, 19 Jun 2023 10:39:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C966760B5E
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:47:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D09F7C433C8;
+        Mon, 19 Jun 2023 10:46:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171196;
-        bh=l+XSFbHjeYFrHE2NhuscM/4r1Z/1VZ9huz33h8fkovA=;
+        s=korg; t=1687171620;
+        bh=EtghdKTmX7hI7Lsgk6W6tp2CjApi7H5GgSjAmKeCgL8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AZMvNE1poLW4xRs+K7yAi9CDbdN3YY1go9EqisHO+jC/PEZ4AFT2Zy9vXAEzd2YPx
-         7YCDjHfQnu7FhwjjDGf0LSFg3QqQi3AIwOG+PtrGxspO29hvP8HKWCiEdGC+UGX/A1
-         Kga9vdxZkPY5xMFMP4ZmGmXcwev54H+xs05E00Fo=
+        b=M9Elid2pMy88rETTsGLGNC1pVnp0dFvIU66/WG3OdiLqicAdL2JNl1cKusOjG3OM8
+         C8kiY73afdf6Woo6FAHak0HmdU6j9vlTelWXhKveSj2AJlG8w/CJMOCakaXWpttBuV
+         atspKOxgD1kMGa2pXbgBerE0umT8WXDJmOYQ74yg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ratchanan Srirattanamet <peathot@hotmail.com>,
-        Karol Herbst <kherbst@redhat.com>,
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 156/187] drm/nouveau: dont detect DSM for non-NVIDIA device
+Subject: [PATCH 6.1 097/166] netfilter: nfnetlink: skip error delivery on batch in case of ENOMEM
 Date:   Mon, 19 Jun 2023 12:29:34 +0200
-Message-ID: <20230619102205.138485158@linuxfoundation.org>
+Message-ID: <20230619102159.497690997@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,60 +54,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ratchanan Srirattanamet <peathot@hotmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 11d24327c2d7ad7f24fcc44fb00e1fa91ebf6525 ]
+[ Upstream commit a1a64a151dae8ac3581c1cbde44b672045cb658b ]
 
-The call site of nouveau_dsm_pci_probe() uses single set of output
-variables for all invocations. So, we must not write anything to them
-unless it's an NVIDIA device. Otherwise, if we are called with another
-device after the NVIDIA device, we'll clober the result of the NVIDIA
-device.
+If caller reports ENOMEM, then stop iterating over the batch and send a
+single netlink message to userspace to report OOM.
 
-For example, if the other device doesn't have _PR3 resources, the
-detection later would miss the presence of power resource support, and
-the rest of the code will keep using Optimus DSM, breaking power
-management for that machine.
-
-Also, because we're detecting NVIDIA's DSM, it doesn't make sense to run
-this detection on a non-NVIDIA device anyway. Thus, check at the
-beginning of the detection code if this is an NVIDIA card, and just
-return if it isn't.
-
-This, together with commit d22915d22ded ("drm/nouveau/devinit/tu102-:
-wait for GFW_BOOT_PROGRESS == COMPLETED") developed independently and
-landed earlier, fixes runtime power management of the NVIDIA card in
-Lenovo Legion 5-15ARH05. Without this patch, the GPU resumption code
-will "timeout", sometimes hanging userspace.
-
-As a bonus, we'll also stop preventing _PR3 usage from the bridge for
-unrelated devices, which is always nice, I guess.
-
-Fixes: ccfc2d5cdb02 ("drm/nouveau: Use generic helper to check _PR3 presence")
-Signed-off-by: Ratchanan Srirattanamet <peathot@hotmail.com>
-Closes: https://gitlab.freedesktop.org/drm/nouveau/-/issues/79
-Reviewed-by: Karol Herbst <kherbst@redhat.com>
-Signed-off-by: Karol Herbst <kherbst@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/DM6PR19MB2780805D4BE1E3F9B3AC96D0BC409@DM6PR19MB2780.namprd19.prod.outlook.com
+Fixes: cbb8125eb40b ("netfilter: nfnetlink: deliver netlink errors on batch completion")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_acpi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/netfilter/nfnetlink.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_acpi.c b/drivers/gpu/drm/nouveau/nouveau_acpi.c
-index 8cf096f841a90..a2ae8c21e4dce 100644
---- a/drivers/gpu/drm/nouveau/nouveau_acpi.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_acpi.c
-@@ -220,6 +220,9 @@ static void nouveau_dsm_pci_probe(struct pci_dev *pdev, acpi_handle *dhandle_out
- 	int optimus_funcs;
- 	struct pci_dev *parent_pdev;
- 
-+	if (pdev->vendor != PCI_VENDOR_ID_NVIDIA)
-+		return;
-+
- 	*has_pr3 = false;
- 	parent_pdev = pci_upstream_bridge(pdev);
- 	if (parent_pdev) {
+diff --git a/net/netfilter/nfnetlink.c b/net/netfilter/nfnetlink.c
+index ae7146475d17a..c9fbe0f707b5f 100644
+--- a/net/netfilter/nfnetlink.c
++++ b/net/netfilter/nfnetlink.c
+@@ -533,7 +533,8 @@ static void nfnetlink_rcv_batch(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 			 * processed, this avoids that the same error is
+ 			 * reported several times when replaying the batch.
+ 			 */
+-			if (nfnl_err_add(&err_list, nlh, err, &extack) < 0) {
++			if (err == -ENOMEM ||
++			    nfnl_err_add(&err_list, nlh, err, &extack) < 0) {
+ 				/* We failed to enqueue an error, reset the
+ 				 * list of errors and send OOM to userspace
+ 				 * pointing to the batch header.
 -- 
 2.39.2
 
