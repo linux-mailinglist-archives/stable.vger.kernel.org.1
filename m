@@ -2,41 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06577735E68
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 22:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02444735EC4
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 23:00:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229787AbjFSUUr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 16:20:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33510 "EHLO
+        id S229481AbjFSVAd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 17:00:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229929AbjFSUUl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 16:20:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD748E7E;
-        Mon, 19 Jun 2023 13:20:23 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S229448AbjFSVAb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 17:00:31 -0400
+Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1F77128
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 14:00:29 -0700 (PDT)
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 63B3860EB3;
-        Mon, 19 Jun 2023 20:20:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE53AC433C0;
-        Mon, 19 Jun 2023 20:20:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1687206022;
-        bh=uJ1l6Fx0Eiyb3n9VOPc2bzRkDbBnaX71PbFNshqHSvY=;
-        h=Date:To:From:Subject:From;
-        b=lPT5zLv+KaFgbc6hRD/6ynn9KAnxh8uhctPi1sXb/9gfupm/Ce8S1o2HkY8PXcWgU
-         kuHzR2xAvkBNQI8hGhPxOnck1FoDIQ+nRzl7MxI+mJIJ6rwDFYLVZ2qDlApN20KKCc
-         prqyt6CXwgO4K2q3LVc41Iiolqtqq61syhfSL5Gk=
-Date:   Mon, 19 Jun 2023 13:20:22 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        konishi.ryusuke@gmail.com, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] nilfs2-prevent-general-protection-fault-in-nilfs_clear_dirty_page.patch removed from -mm tree
-Message-Id: <20230619202022.BE53AC433C0@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4QlMbq4TV9z9sW2;
+        Mon, 19 Jun 2023 23:00:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bernhard-seibold.de;
+        s=MBO0001; t=1687208423;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=fStXnJ7H0ML2K4HdlShUnZFAEYzo2xVKmLR5Q1QOQh4=;
+        b=gk4/lqlPpiqaxBza6mnvUlxI+ZgdZ+vrzdqZpzEcqNirIf0VrfeJm9YnPeQIW3EP1X6M21
+        SICsnQpxsnrY9eLSxivTm1fCj9PwLQVMeemiNS5xFCRU64JoanyXcYA2JsBdRhIXm0/kAK
+        3tEU1dA7xCAdT73YN1P24XxkUajykJ8uR0C5KDw9RGfiUDmSjxpUipjzWt7Fntbh1Rgwrl
+        WYwP6UxcFNkeq0IF41oMp5UvAUHG1aI5T1Hs8B1nvnmTlQ2/NgMXPpPP9WK3oIAysj2uvY
+        x4T/dMz5o8vl1cRnaDcKzW42+J5V0ArA1QCbnXZiOcJDtQUevb2xXt3z83ynsQ==
+From:   Bernhard Seibold <mail@bernhard-seibold.de>
+To:     stable@vger.kernel.org
+Cc:     Bernhard Seibold <mail@bernhard-seibold.de>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH 4.19.y] serial: lantiq: add missing interrupt ack
+Date:   Mon, 19 Jun 2023 23:00:17 +0200
+Message-ID: <20230619210017.8894-1-mail@bernhard-seibold.de>
+In-Reply-To: <2023061831-detention-overtime-783b@gregkh>
+References: <2023061831-detention-overtime-783b@gregkh>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -45,69 +55,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+commit 306320034e8fbe7ee1cc4f5269c55658b4612048 upstream.
 
-The quilt patch titled
-     Subject: nilfs2: prevent general protection fault in nilfs_clear_dirty_page()
-has been removed from the -mm tree.  Its filename was
-     nilfs2-prevent-general-protection-fault-in-nilfs_clear_dirty_page.patch
+Currently, the error interrupt is never acknowledged, so once active it
+will stay active indefinitely, causing the handler to be called in an
+infinite loop.
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: nilfs2: prevent general protection fault in nilfs_clear_dirty_page()
-Date: Mon, 12 Jun 2023 11:14:56 +0900
-
-In a syzbot stress test that deliberately causes file system errors on
-nilfs2 with a corrupted disk image, it has been reported that
-nilfs_clear_dirty_page() called from nilfs_clear_dirty_pages() can cause a
-general protection fault.
-
-In nilfs_clear_dirty_pages(), when looking up dirty pages from the page
-cache and calling nilfs_clear_dirty_page() for each dirty page/folio
-retrieved, the back reference from the argument page to "mapping" may have
-been changed to NULL (and possibly others).  It is necessary to check this
-after locking the page/folio.
-
-So, fix this issue by not calling nilfs_clear_dirty_page() on a page/folio
-after locking it in nilfs_clear_dirty_pages() if the back reference
-"mapping" from the page/folio is different from the "mapping" that held
-the page/folio just before.
-
-Link: https://lkml.kernel.org/r/20230612021456.3682-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+53369d11851d8f26735c@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/000000000000da4f6b05eb9bf593@google.com
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Fixes: 2f0fc4159a6a ("SERIAL: Lantiq: Add driver for MIPS Lantiq SOCs.")
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Bernhard Seibold <mail@bernhard-seibold.de>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Message-ID: <20230602133029.546-1-mail@bernhard-seibold.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
+ drivers/tty/serial/lantiq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- fs/nilfs2/page.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
---- a/fs/nilfs2/page.c~nilfs2-prevent-general-protection-fault-in-nilfs_clear_dirty_page
-+++ a/fs/nilfs2/page.c
-@@ -370,7 +370,15 @@ void nilfs_clear_dirty_pages(struct addr
- 			struct folio *folio = fbatch.folios[i];
- 
- 			folio_lock(folio);
--			nilfs_clear_dirty_page(&folio->page, silent);
-+
-+			/*
-+			 * This folio may have been removed from the address
-+			 * space by truncation or invalidation when the lock
-+			 * was acquired.  Skip processing in that case.
-+			 */
-+			if (likely(folio->mapping == mapping))
-+				nilfs_clear_dirty_page(&folio->page, silent);
-+
- 			folio_unlock(folio);
- 		}
- 		folio_batch_release(&fbatch);
-_
-
-Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
-
+diff --git a/drivers/tty/serial/lantiq.c b/drivers/tty/serial/lantiq.c
+index 044128277248..d0b81dad2970 100644
+--- a/drivers/tty/serial/lantiq.c
++++ b/drivers/tty/serial/lantiq.c
+@@ -251,6 +251,7 @@ lqasc_err_int(int irq, void *_port)
+ 	unsigned long flags;
+ 	struct uart_port *port = (struct uart_port *)_port;
+ 	spin_lock_irqsave(&ltq_asc_lock, flags);
++	__raw_writel(ASC_IRNCR_EIR, port->membase + LTQ_ASC_IRNCR);
+ 	/* clear any pending interrupts */
+ 	ltq_w32_mask(0, ASCWHBSTATE_CLRPE | ASCWHBSTATE_CLRFE |
+ 		ASCWHBSTATE_CLRROE, port->membase + LTQ_ASC_WHBSTATE);
+-- 
+2.41.0
 
