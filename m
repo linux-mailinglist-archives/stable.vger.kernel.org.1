@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86FD9735322
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:42:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8B18735480
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:56:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230421AbjFSKmG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:42:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46898 "EHLO
+        id S232433AbjFSK4s (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:56:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230259AbjFSKlm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:41:42 -0400
+        with ESMTP id S232428AbjFSK4T (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:56:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D00D6100
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:41:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6236B4
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:54:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6288060B80
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:41:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7365AC433C0;
-        Mon, 19 Jun 2023 10:41:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A7AC60B4B
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:54:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809D7C433C8;
+        Mon, 19 Jun 2023 10:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171300;
-        bh=HGowgLVCc9rXBMtm3tcVpOnG4GSmiIoE/D2kpZzDGHk=;
+        s=korg; t=1687172061;
+        bh=KwNwTOarGqfEgUIEqIygIEwVCbAw5f5lNmai/97YpOQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CMrbEi1E0wLA79Kla8RqgWtDdxqB04CZDO6BjTsVvVPqUTW/Y4aFYmZa/hjdasnVH
-         MfIE9PcRwWA3VN5iN67a7edmpBFkQ6+xDOgxSQzAPPpkj5BU2NDQ66imyhQvybfWPO
-         qE7+KbJlI7fPTtTW3knUSQTelrzDKJQTiYFssmbE=
+        b=OMxSH5ERW9trjFkywsGQyJqwZFFE7D5tQ8TJndzedlNY+vaWUZK/HglgkXTJ1SrO6
+         VoqZrGvgUSWAhwON7Bh4jnkGwmojvFe3CsZ+b7aE/6Bg36NZ4r8eWUQAYCq7hiMMm6
+         S4jtWEnmWUf+E6rIIm0fJARYXSCiNNpE3ge15GcY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maor Gottlieb <maorg@nvidia.com>,
-        Yishai Hadas <yishaih@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev, Liviu Dudau <liviu@dudau.co.uk>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 32/49] IB/uverbs: Fix to consider event queue closing also upon non-blocking mode
+Subject: [PATCH 5.10 22/89] mips: Move initrd_start check after initrd address sanitisation.
 Date:   Mon, 19 Jun 2023 12:30:10 +0200
-Message-ID: <20230619102131.550646975@linuxfoundation.org>
+Message-ID: <20230619102139.299015938@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
-References: <20230619102129.856988902@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,66 +55,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yishai Hadas <yishaih@nvidia.com>
+From: Liviu Dudau <liviu@dudau.co.uk>
 
-[ Upstream commit 62fab312fa1683e812e605db20d4f22de3e3fb2f ]
+[ Upstream commit 4897a898a216058dec55e5e5902534e6e224fcdf ]
 
-Fix ib_uverbs_event_read() to consider event queue closing also upon
-non-blocking mode.
+PAGE_OFFSET is technically a virtual address so when checking the value of
+initrd_start against it we should make sure that it has been sanitised from
+the values passed by the bootloader. Without this change, even with a bootloader
+that passes correct addresses for an initrd, we are failing to load it on MT7621
+boards, for example.
 
-Once the queue is closed (e.g. hot-plug flow) all the existing events
-are cleaned-up as part of ib_uverbs_free_event_queue().
-
-An application that uses the non-blocking FD mode should get -EIO in
-that case to let it knows that the device was removed already.
-
-Otherwise, it can loose the indication that the device was removed and
-won't recover.
-
-As part of that, refactor the code to have a single flow with regards to
-'is_closed' for both blocking and non-blocking modes.
-
-Fixes: 14e23bd6d221 ("RDMA/core: Fix locking in ib_uverbs_event_read")
-Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
-Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
-Link: https://lore.kernel.org/r/97b00116a1e1e13f8dc4ec38a5ea81cf8c030210.1685960567.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Liviu Dudau <liviu@dudau.co.uk>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/uverbs_main.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ arch/mips/kernel/setup.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/core/uverbs_main.c b/drivers/infiniband/core/uverbs_main.c
-index fc4b46258c756..6d8925432d6a7 100644
---- a/drivers/infiniband/core/uverbs_main.c
-+++ b/drivers/infiniband/core/uverbs_main.c
-@@ -283,8 +283,12 @@ static ssize_t ib_uverbs_event_read(struct ib_uverbs_event_queue *ev_queue,
- 	spin_lock_irq(&ev_queue->lock);
- 
- 	while (list_empty(&ev_queue->event_list)) {
--		spin_unlock_irq(&ev_queue->lock);
-+		if (ev_queue->is_closed) {
-+			spin_unlock_irq(&ev_queue->lock);
-+			return -EIO;
-+		}
- 
-+		spin_unlock_irq(&ev_queue->lock);
- 		if (filp->f_flags & O_NONBLOCK)
- 			return -EAGAIN;
- 
-@@ -294,12 +298,6 @@ static ssize_t ib_uverbs_event_read(struct ib_uverbs_event_queue *ev_queue,
- 			return -ERESTARTSYS;
- 
- 		spin_lock_irq(&ev_queue->lock);
--
--		/* If device was disassociated and no event exists set an error */
--		if (list_empty(&ev_queue->event_list) && ev_queue->is_closed) {
--			spin_unlock_irq(&ev_queue->lock);
--			return -EIO;
--		}
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 9d11f68a9e8bb..b49ad569e4690 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -154,10 +154,6 @@ static unsigned long __init init_initrd(void)
+ 		pr_err("initrd start must be page aligned\n");
+ 		goto disable;
  	}
+-	if (initrd_start < PAGE_OFFSET) {
+-		pr_err("initrd start < PAGE_OFFSET\n");
+-		goto disable;
+-	}
  
- 	event = list_entry(ev_queue->event_list.next, struct ib_uverbs_event, list);
+ 	/*
+ 	 * Sanitize initrd addresses. For example firmware
+@@ -170,6 +166,11 @@ static unsigned long __init init_initrd(void)
+ 	initrd_end = (unsigned long)__va(end);
+ 	initrd_start = (unsigned long)__va(__pa(initrd_start));
+ 
++	if (initrd_start < PAGE_OFFSET) {
++		pr_err("initrd start < PAGE_OFFSET\n");
++		goto disable;
++	}
++
+ 	ROOT_DEV = Root_RAM0;
+ 	return PFN_UP(end);
+ disable:
 -- 
 2.39.2
 
