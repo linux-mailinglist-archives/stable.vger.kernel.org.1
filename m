@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1A8E7352CC
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:38:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B5087353C4
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:48:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231598AbjFSKiW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:38:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44154 "EHLO
+        id S232090AbjFSKs2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:48:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231571AbjFSKiJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:38:09 -0400
+        with ESMTP id S229567AbjFSKsI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:48:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2A2410C3
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:38:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8CFA1BC9
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:47:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 73F5A60B42
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:38:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD70C433C0;
-        Mon, 19 Jun 2023 10:38:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E96460A50
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:47:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6449CC433C8;
+        Mon, 19 Jun 2023 10:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171085;
-        bh=SWa4oByh85E1LCcA10mSgHm/ktZQlryIIhNO7aw9NCs=;
+        s=korg; t=1687171657;
+        bh=E2lpTGPZ7rvR7MuQPEYvXmAOO1DAY8csw6d3kblZGKA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Gj71oShpzsKg6WcREKilA+d5kYuo2pwFIq4L84k99ofeo+dkWlTohDkFMikrJFez0
-         mxrLtyQpqeM0ovjUc3b1jPTyeFe5NHTN5L0mC7sG5sCAGByv5kqED9KY67W3KMNe9a
-         ZvB/OGULeS4HnNwiTme5/Owt3x3y6HC0gmZgiIhc=
+        b=E+53r5wFKdE2qOv4b3yNk/UQzKrLGZ5Ayjyfd4NAi98DQ8VTt9wLWkWGS5m5EpLi/
+         M8wu/AH99A0BsvGfRESzHEFPZ6ucEgPqkIwce/Acc5ZWp/atcIJUq02NCAMZXYJMH/
+         2t+ZED2sIAAr6QdSA+iuNNL2meSoVHC33+T7MXAM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maor Gottlieb <maorg@nvidia.com>,
-        Yishai Hadas <yishaih@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 142/187] IB/uverbs: Fix to consider event queue closing also upon non-blocking mode
+        patches@lists.linux.dev, Stephan Bolten <stephan.bolten@gmx.net>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.1 083/166] usb: typec: ucsi: Fix command cancellation
 Date:   Mon, 19 Jun 2023 12:29:20 +0200
-Message-ID: <20230619102204.521538165@linuxfoundation.org>
+Message-ID: <20230619102158.838226760@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,68 +54,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yishai Hadas <yishaih@nvidia.com>
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-[ Upstream commit 62fab312fa1683e812e605db20d4f22de3e3fb2f ]
+commit c4a8bfabefed706bb9150867db528ceefd5cb5fe upstream.
 
-Fix ib_uverbs_event_read() to consider event queue closing also upon
-non-blocking mode.
+The Cancel command was passed to the write callback as the
+offset instead of as the actual command which caused NULL
+pointer dereference.
 
-Once the queue is closed (e.g. hot-plug flow) all the existing events
-are cleaned-up as part of ib_uverbs_free_event_queue().
-
-An application that uses the non-blocking FD mode should get -EIO in
-that case to let it knows that the device was removed already.
-
-Otherwise, it can loose the indication that the device was removed and
-won't recover.
-
-As part of that, refactor the code to have a single flow with regards to
-'is_closed' for both blocking and non-blocking modes.
-
-Fixes: 14e23bd6d221 ("RDMA/core: Fix locking in ib_uverbs_event_read")
-Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
-Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
-Link: https://lore.kernel.org/r/97b00116a1e1e13f8dc4ec38a5ea81cf8c030210.1685960567.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Stephan Bolten <stephan.bolten@gmx.net>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217517
+Fixes: 094902bc6a3c ("usb: typec: ucsi: Always cancel the command if PPM reports BUSY condition")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Message-ID: <20230606115802.79339-1-heikki.krogerus@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/uverbs_main.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/core/uverbs_main.c b/drivers/infiniband/core/uverbs_main.c
-index bdb179a09d77c..3cd4b195007b8 100644
---- a/drivers/infiniband/core/uverbs_main.c
-+++ b/drivers/infiniband/core/uverbs_main.c
-@@ -222,8 +222,12 @@ static ssize_t ib_uverbs_event_read(struct ib_uverbs_event_queue *ev_queue,
- 	spin_lock_irq(&ev_queue->lock);
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -132,10 +132,8 @@ static int ucsi_exec_command(struct ucsi
+ 	if (ret)
+ 		return ret;
  
- 	while (list_empty(&ev_queue->event_list)) {
--		spin_unlock_irq(&ev_queue->lock);
-+		if (ev_queue->is_closed) {
-+			spin_unlock_irq(&ev_queue->lock);
-+			return -EIO;
-+		}
+-	if (cci & UCSI_CCI_BUSY) {
+-		ucsi->ops->async_write(ucsi, UCSI_CANCEL, NULL, 0);
+-		return -EBUSY;
+-	}
++	if (cmd != UCSI_CANCEL && cci & UCSI_CCI_BUSY)
++		return ucsi_exec_command(ucsi, UCSI_CANCEL);
  
-+		spin_unlock_irq(&ev_queue->lock);
- 		if (filp->f_flags & O_NONBLOCK)
- 			return -EAGAIN;
- 
-@@ -233,12 +237,6 @@ static ssize_t ib_uverbs_event_read(struct ib_uverbs_event_queue *ev_queue,
- 			return -ERESTARTSYS;
- 
- 		spin_lock_irq(&ev_queue->lock);
--
--		/* If device was disassociated and no event exists set an error */
--		if (list_empty(&ev_queue->event_list) && ev_queue->is_closed) {
--			spin_unlock_irq(&ev_queue->lock);
--			return -EIO;
--		}
+ 	if (!(cci & UCSI_CCI_COMMAND_COMPLETE))
+ 		return -EIO;
+@@ -149,6 +147,11 @@ static int ucsi_exec_command(struct ucsi
+ 		return ucsi_read_error(ucsi);
  	}
  
- 	event = list_entry(ev_queue->event_list.next, struct ib_uverbs_event, list);
--- 
-2.39.2
-
++	if (cmd == UCSI_CANCEL && cci & UCSI_CCI_CANCEL_COMPLETE) {
++		ret = ucsi_acknowledge_command(ucsi);
++		return ret ? ret : -EBUSY;
++	}
++
+ 	return UCSI_CCI_LENGTH(cci);
+ }
+ 
 
 
