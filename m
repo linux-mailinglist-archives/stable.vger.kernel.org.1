@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 793D97354B7
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:58:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D45F673552B
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:02:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232413AbjFSK6h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:58:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58096 "EHLO
+        id S231135AbjFSLCV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 07:02:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232470AbjFSK6U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:58:20 -0400
+        with ESMTP id S232538AbjFSLBp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:01:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D7224233
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:56:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C19B7172C
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:00:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BCC2E60B4B
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:56:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0551C433C9;
-        Mon, 19 Jun 2023 10:56:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4901760BA6
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:00:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0F8C433C0;
+        Mon, 19 Jun 2023 11:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172186;
-        bh=oD/ZsWwc5qwScHghAn0yXx3DCRnV51znb27JCFRhJtE=;
+        s=korg; t=1687172450;
+        bh=gk5RWp4cf26nNIS/66IUBIzU8LUxCOY9UyWjUocGOj4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y+x6uu3fJeAgCkND7ypo9xiplkTZyemOTT5AlHYYaeURiwsTALri11Lh4NSB4UOHR
-         NiWsL0g042aEg1BriuYzd4+clFSEcJR4PwirBSdrHN6loH3HTstHKZGWmTZ36fZIzT
-         En6Htt7vZDGAJeubSkDdaQt+JUYwCY812sI4QFqE=
+        b=tSkTf3+RF8ZVSZra/2VIiQXDUL1Qo6Wd7LYZ86NiH5N3uJROg2avDHkY+WJMabmPU
+         Qh8gq4nwvaLy1qvQ1uKQGkGwM/eN2jUV2Pxmr2T0wTdhyzgUePByeqV2QJsJaiEgan
+         yZF+2TwigAjRdgBunJG7/Orn6J6MpFLpi1msE9xQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+4acc7d910e617b360859@syzkaller.appspotmail.com,
-        Theodore Tso <tytso@mit.edu>,
-        "Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
+        patches@lists.linux.dev, Ian Ziemba <ian.ziemba@hpe.com>,
+        Bob Pearson <rpearsonhpe@gmail.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 68/89] ext4: drop the call to ext4_error() from ext4_get_group_info()
+Subject: [PATCH 5.15 072/107] RDMA/rxe: Removed unused name from rxe_task struct
 Date:   Mon, 19 Jun 2023 12:30:56 +0200
-Message-ID: <20230619102141.363427587@linuxfoundation.org>
+Message-ID: <20230619102144.893148495@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,62 +56,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fabio M. De Francesco <fmdefrancesco@gmail.com>
+From: Bob Pearson <rpearsonhpe@gmail.com>
 
-[ Upstream commit f451fd97dd2b78f286379203a47d9d295c467255 ]
+[ Upstream commit de669ae8af49ceed0eed44f5b3d51dc62affc5e4 ]
 
-A recent patch added a call to ext4_error() which is problematic since
-some callers of the ext4_get_group_info() function may be holding a
-spinlock, whereas ext4_error() must never be called in atomic context.
+The name field in struct rxe_task is never used. This patch removes it.
 
-This triggered a report from Syzbot: "BUG: sleeping function called from
-invalid context in ext4_update_super" (see the link below).
-
-Therefore, drop the call to ext4_error() from ext4_get_group_info(). In
-the meantime use eight characters tabs instead of nine characters ones.
-
-Reported-by: syzbot+4acc7d910e617b360859@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/00000000000070575805fdc6cdb2@google.com/
-Fixes: 5354b2af3406 ("ext4: allow ext4_get_group_info() to fail")
-Suggested-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Fabio M. De Francesco <fmdefrancesco@gmail.com>
-Link: https://lore.kernel.org/r/20230614100446.14337-1-fmdefrancesco@gmail.com
+Link: https://lore.kernel.org/r/20221021200118.2163-4-rpearsonhpe@gmail.com
+Signed-off-by: Ian Ziemba <ian.ziemba@hpe.com>
+Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Stable-dep-of: 2a62b6210ce8 ("RDMA/rxe: Fix the use-before-initialization error of resp_pkts")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/balloc.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ drivers/infiniband/sw/rxe/rxe_qp.c   | 9 +++------
+ drivers/infiniband/sw/rxe/rxe_task.c | 4 +---
+ drivers/infiniband/sw/rxe/rxe_task.h | 4 +---
+ 3 files changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/fs/ext4/balloc.c b/fs/ext4/balloc.c
-index a43167042b6b1..4efe71efe1277 100644
---- a/fs/ext4/balloc.c
-+++ b/fs/ext4/balloc.c
-@@ -322,17 +322,15 @@ static ext4_fsblk_t ext4_valid_block_bitmap_padding(struct super_block *sb,
- struct ext4_group_info *ext4_get_group_info(struct super_block *sb,
- 					    ext4_group_t group)
- {
--	 struct ext4_group_info **grp_info;
--	 long indexv, indexh;
--
--	 if (unlikely(group >= EXT4_SB(sb)->s_groups_count)) {
--		 ext4_error(sb, "invalid group %u", group);
--		 return NULL;
--	 }
--	 indexv = group >> (EXT4_DESC_PER_BLOCK_BITS(sb));
--	 indexh = group & ((EXT4_DESC_PER_BLOCK(sb)) - 1);
--	 grp_info = sbi_array_rcu_deref(EXT4_SB(sb), s_group_info, indexv);
--	 return grp_info[indexh];
-+	struct ext4_group_info **grp_info;
-+	long indexv, indexh;
-+
-+	if (unlikely(group >= EXT4_SB(sb)->s_groups_count))
-+		return NULL;
-+	indexv = group >> (EXT4_DESC_PER_BLOCK_BITS(sb));
-+	indexh = group & ((EXT4_DESC_PER_BLOCK(sb)) - 1);
-+	grp_info = sbi_array_rcu_deref(EXT4_SB(sb), s_group_info, indexv);
-+	return grp_info[indexh];
+diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
+index 5b78230692fda..64c2729f4c0c0 100644
+--- a/drivers/infiniband/sw/rxe/rxe_qp.c
++++ b/drivers/infiniband/sw/rxe/rxe_qp.c
+@@ -265,10 +265,8 @@ static int rxe_qp_init_req(struct rxe_dev *rxe, struct rxe_qp *qp,
+ 
+ 	skb_queue_head_init(&qp->req_pkts);
+ 
+-	rxe_init_task(&qp->req.task, qp,
+-		      rxe_requester, "req");
+-	rxe_init_task(&qp->comp.task, qp,
+-		      rxe_completer, "comp");
++	rxe_init_task(&qp->req.task, qp, rxe_requester);
++	rxe_init_task(&qp->comp.task, qp, rxe_completer);
+ 
+ 	qp->qp_timeout_jiffies = 0; /* Can't be set for UD/UC in modify_qp */
+ 	if (init->qp_type == IB_QPT_RC) {
+@@ -315,8 +313,7 @@ static int rxe_qp_init_resp(struct rxe_dev *rxe, struct rxe_qp *qp,
+ 
+ 	skb_queue_head_init(&qp->resp_pkts);
+ 
+-	rxe_init_task(&qp->resp.task, qp,
+-		      rxe_responder, "resp");
++	rxe_init_task(&qp->resp.task, qp, rxe_responder);
+ 
+ 	qp->resp.opcode		= OPCODE_NONE;
+ 	qp->resp.msn		= 0;
+diff --git a/drivers/infiniband/sw/rxe/rxe_task.c b/drivers/infiniband/sw/rxe/rxe_task.c
+index f48882b20d6b2..5aa69947a9791 100644
+--- a/drivers/infiniband/sw/rxe/rxe_task.c
++++ b/drivers/infiniband/sw/rxe/rxe_task.c
+@@ -95,12 +95,10 @@ void rxe_do_task(struct tasklet_struct *t)
+ 	task->ret = ret;
  }
  
- /*
+-int rxe_init_task(struct rxe_task *task,
+-		  void *arg, int (*func)(void *), char *name)
++int rxe_init_task(struct rxe_task *task, void *arg, int (*func)(void *))
+ {
+ 	task->arg	= arg;
+ 	task->func	= func;
+-	snprintf(task->name, sizeof(task->name), "%s", name);
+ 	task->destroyed	= false;
+ 
+ 	tasklet_setup(&task->tasklet, rxe_do_task);
+diff --git a/drivers/infiniband/sw/rxe/rxe_task.h b/drivers/infiniband/sw/rxe/rxe_task.h
+index 7f612a1c68a7b..b3dfd970d1dc6 100644
+--- a/drivers/infiniband/sw/rxe/rxe_task.h
++++ b/drivers/infiniband/sw/rxe/rxe_task.h
+@@ -25,7 +25,6 @@ struct rxe_task {
+ 	void			*arg;
+ 	int			(*func)(void *arg);
+ 	int			ret;
+-	char			name[16];
+ 	bool			destroyed;
+ };
+ 
+@@ -34,8 +33,7 @@ struct rxe_task {
+  *	arg  => parameter to pass to fcn
+  *	func => function to call until it returns != 0
+  */
+-int rxe_init_task(struct rxe_task *task,
+-		  void *arg, int (*func)(void *), char *name);
++int rxe_init_task(struct rxe_task *task, void *arg, int (*func)(void *));
+ 
+ /* cleanup task */
+ void rxe_cleanup_task(struct rxe_task *task);
 -- 
 2.39.2
 
