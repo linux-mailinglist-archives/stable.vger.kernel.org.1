@@ -2,63 +2,155 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2470B734E3A
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 10:44:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC3C3734E3C
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 10:44:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229735AbjFSIoL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 04:44:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43126 "EHLO
+        id S230493AbjFSIo2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 04:44:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230493AbjFSIn7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 04:43:59 -0400
-Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7295B19A3
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 01:41:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-        Content-Type:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-        Resent-Message-ID:In-Reply-To:References;
-        bh=6byDLFsn6rqTRYr11z3R/1GJNXGe98ue2+yPQbylj4g=; t=1687164113; x=1688373713; 
-        b=FWT+oF5qi7bbyLYyiPY1PtZ27PvgkeBZ6jGgrEcD/UeRJMFkqG0vGzQYZcjbm7+4EqVyv66ELCe
-        A3bg/todF+s8StI3qyOk3KYA53y4fr3X8VtXVyN2/WPzBMR1vLlKIdP0rlbD2HG0MuoGVcUvz5Z8w
-        6hlPus+5dIghvCOTXSQiT/3oWts5lAJoRd83NBgHjMx2+tE+p3CrBZ4fY/I412oz97u9uMyat9Gcy
-        3M1d50uxRwqWbtbnLNztFXoBm2Ey3OC2WziFWHcRojFH/TJMiy04Q0de4XQcW87xwfeTO9V/G1v7/
-        64VWPhz1pxuihLFevdFqT2nJr4Q7W/smAegQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.96)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1qBASN-00BFmx-1r
-        for stable@vger.kernel.org;
-        Mon, 19 Jun 2023 10:41:51 +0200
-Message-ID: <c2d46fa2647e616a4e2352479619cd0a0b5a14b6.camel@sipsolutions.net>
-Subject: 5.10: fixing b58294ce1a8a ("um: Allow PM with suspend-to-idle")
-From:   Johannes Berg <johannes@sipsolutions.net>
-To:     stable@vger.kernel.org
-Date:   Mon, 19 Jun 2023 10:41:50 +0200
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.3 (3.48.3-1.fc38) 
+        with ESMTP id S230498AbjFSIoP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 04:44:15 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C9461FF6;
+        Mon, 19 Jun 2023 01:42:23 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 483751F45A;
+        Mon, 19 Jun 2023 08:42:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1687164135; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=SOKhXmilt88fh3PH69dqWXrHOU75W6OLJmOPOMDb65A=;
+        b=hqwR1LHoJ/MGt4KUFnwRE3sdb8oZ/60DMUSBxyAKyMZHyAK1Uvi0fSf6BaTng1dwigxoGI
+        +KwikHzcuLd9DGYXF19PFZrb8ePudNcUCCT2+m/2rKTY2XYhPgt6AtbrMcBYgU6VPF/CU3
+        WXf5TL1esz78++EnfrFfr/dnIn7E8sU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1687164135;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=SOKhXmilt88fh3PH69dqWXrHOU75W6OLJmOPOMDb65A=;
+        b=sm+nEFoa3Al6c2EaK7mZ0IpjVbhOZDVheZ7ODRIX+kF2rfutvLdCZMBNqWEm5ODydrlan+
+        f1mdjFDaUkgd04DA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id EAFBA139C2;
+        Mon, 19 Jun 2023 08:42:14 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id 4NgxOOYUkGS4GgAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Mon, 19 Jun 2023 08:42:14 +0000
+Message-ID: <c3dcf033-64f6-3352-98eb-7fa8f9fd9952@suse.de>
+Date:   Mon, 19 Jun 2023 10:42:14 +0200
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH v3 01/38] backlight/bd6107: Compare against struct
+ fb_info.device
+Content-Language: en-US
+To:     Lee Jones <lee@kernel.org>
+Cc:     daniel.thompson@linaro.org,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        linux-kernel@vger.kernel.org, geert+renesas@glider.be,
+        linux-sh@vger.kernel.org, jingoohan1@gmail.com, deller@gmx.de,
+        linux-staging@lists.linux.dev, javierm@redhat.com,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        michael.j.ruhl@intel.com, stable@vger.kernel.org,
+        linux-omap@vger.kernel.org, sam@ravnborg.org,
+        dan.carpenter@linaro.org
+References: <20230613110953.24176-1-tzimmermann@suse.de>
+ <20230613110953.24176-2-tzimmermann@suse.de>
+ <20230614135157.GU3635807@google.com>
+ <5720dbc1-a3e4-2b23-28cd-f889d3a5a4fc@suse.de>
+ <9f74b8de-9a1b-2547-5eab-d4b4349a6a81@suse.de>
+ <20230619083124.GO3635807@google.com>
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+In-Reply-To: <20230619083124.GO3635807@google.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------x2uTMyNaWILr0059uzJaxuqD"
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------x2uTMyNaWILr0059uzJaxuqD
+Content-Type: multipart/mixed; boundary="------------FfrcJLINIay9mSvujcOdSA7r";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Lee Jones <lee@kernel.org>
+Cc: daniel.thompson@linaro.org,
+ Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+ linux-kernel@vger.kernel.org, geert+renesas@glider.be,
+ linux-sh@vger.kernel.org, jingoohan1@gmail.com, deller@gmx.de,
+ linux-staging@lists.linux.dev, javierm@redhat.com,
+ dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+ michael.j.ruhl@intel.com, stable@vger.kernel.org,
+ linux-omap@vger.kernel.org, sam@ravnborg.org, dan.carpenter@linaro.org
+Message-ID: <c3dcf033-64f6-3352-98eb-7fa8f9fd9952@suse.de>
+Subject: Re: [PATCH v3 01/38] backlight/bd6107: Compare against struct
+ fb_info.device
+References: <20230613110953.24176-1-tzimmermann@suse.de>
+ <20230613110953.24176-2-tzimmermann@suse.de>
+ <20230614135157.GU3635807@google.com>
+ <5720dbc1-a3e4-2b23-28cd-f889d3a5a4fc@suse.de>
+ <9f74b8de-9a1b-2547-5eab-d4b4349a6a81@suse.de>
+ <20230619083124.GO3635807@google.com>
+In-Reply-To: <20230619083124.GO3635807@google.com>
 
-Not sure why this was backported in the first place, but if so you'd
-also need 1fb1abc83636 ("um: Fix build w/o CONFIG_PM_SLEEP").
+--------------FfrcJLINIay9mSvujcOdSA7r
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-I think b58294ce1a8a ("um: Allow PM with suspend-to-idle") should just
-be reverted, but picking up the fix for it also works.
+DQoNCkFtIDE5LjA2LjIzIHVtIDEwOjMxIHNjaHJpZWIgTGVlIEpvbmVzOg0KPiBPbiBGcmks
+IDE2IEp1biAyMDIzLCBUaG9tYXMgWmltbWVybWFubiB3cm90ZToNCj4gDQo+PiBIaSBMZWUN
+Cj4+DQo+PiBBbSAxNC4wNi4yMyB1bSAxNjoxMyBzY2hyaWViIFRob21hcyBaaW1tZXJtYW5u
+Og0KPj4gWy4uLl0NCj4+Pj4gQ2FuIHRoZSBCYWNrbGlnaHQgcGF0Y2hlcyBiZSBhcHBsaWVk
+IHdpdGhvdXQgdGhlIG90aGVycyBhbmQgdmlzYSB2ZXJzYT8NCj4+Pg0KPj4+IFVuZm9ydHVu
+YXRlbHkgbm90LiBUaGUgcmVzdCBvZiB0aGUgc2VyaWVzIHJlcXVpcmVzIHRoZSBiYWNrbGln
+aHQgcGF0Y2hlcy4NCj4+DQo+PiBBcmUgeW91IE9LIHdpdGggdGhlIHBhdGNoZXMgZ29pbmcg
+dGhyb3VnaCBkcm0/DQo+IA0KPiBTaG91bGRuJ3QgYmUgYW4gaXNzdWUuDQo+IA0KPiBQbGVh
+c2UgZW5zdXJlIG15IEFjayBpcyBhZGRlZCB0byBlYWNoIHBhdGNoLCBldmVuIGlmIHlvdSBo
+YXZlIHRvIFJFU0VORC4NCj4gDQoNClRoYW5rIHlvdSBzbyBtdWNoLg0KDQotLSANClRob21h
+cyBaaW1tZXJtYW5uDQpHcmFwaGljcyBEcml2ZXIgRGV2ZWxvcGVyDQpTVVNFIFNvZnR3YXJl
+IFNvbHV0aW9ucyBHZXJtYW55IEdtYkgNCkZyYW5rZW5zdHJhc3NlIDE0NiwgOTA0NjEgTnVl
+cm5iZXJnLCBHZXJtYW55DQpHRjogSXZvIFRvdGV2LCBBbmRyZXcgTXllcnMsIEFuZHJldyBN
+Y0RvbmFsZCwgQm91ZGllbiBNb2VybWFuDQpIUkIgMzY4MDkgKEFHIE51ZXJuYmVyZykNCg==
 
-Robot keeps reporting to me that it's broken :)
 
-Thanks,
-johannes
+--------------FfrcJLINIay9mSvujcOdSA7r--
+
+--------------x2uTMyNaWILr0059uzJaxuqD
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmSQFOYFAwAAAAAACgkQlh/E3EQov+Ch
+BQ/+JflJsQuMzXECPK9VFU7zEi53QUx+vcXje64q3GmMHSTW9fdVYOmGbymvWuX6fBVe8dKb0mRD
+qWkSo1eIVuB529fujKvvUv1aYyaeXeClVcfr7tBttmcvaB59aLRjQd9ZY/g6ESubE6sRFhyDr/XU
+ACjE7JDXd4c4cb3c7Oxh4BJbCUMIQy3SEdPdAORSRszkWu3l1mh8SUjsebxJjWNLciriJOgqU/AP
+w3hQKcFjtouXKZD6ABevwyUT0ONCUma5EwVNDdRpzcx3hy+BJQ2r/eo5A6tWVEtEJYjiuEPIk/Lo
+hn19NLelNf/iJk2iX/4eKCz2iIYEr2hb9UO9SgevpaCzSCJHUEwSsN1oo3g8zlKpJcToX9dzBknx
+3yzyNKelgmwBqaLxmUKQv/pACJBvTFiee4rcjp/NvK6aOB3dWT/QUpGZy2zDkLQjMtMVbMkeEmrD
++8/syCKWxf/U5f+O7INzTply1L6zOt/u+Ck4ZF8FRpFsQlUovJdnyZy682OmwERwYmEHr6KCZs+8
+ufThfC8y7P9/h1vrW+esO8WVFC82xVTKGHR9p0oUZ+NWPKps1PLKftYENFMuSf+JkMcjkdkub9YQ
+JwYAIVxKVZnqTwOtb4AirhbO8SkP+9l3gB3aemfLAmnsqcA9gqk/XHAyWHtTCkhUSOpQPzS2sBQ7
+Ehw=
+=SeiA
+-----END PGP SIGNATURE-----
+
+--------------x2uTMyNaWILr0059uzJaxuqD--
