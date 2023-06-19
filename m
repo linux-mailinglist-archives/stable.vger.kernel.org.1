@@ -2,44 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37CEB735439
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:53:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B04C73543A
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:54:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232291AbjFSKx5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:53:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53202 "EHLO
+        id S232302AbjFSKx7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:53:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232304AbjFSKxW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:53:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6C1119A1
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:51:59 -0700 (PDT)
+        with ESMTP id S232308AbjFSKxX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:53:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1A1F1FCD
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:52:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 687C360B88
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:51:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFF2C433C9;
-        Mon, 19 Jun 2023 10:51:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 919F860A4D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:52:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DD1C433C0;
+        Mon, 19 Jun 2023 10:52:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171918;
-        bh=oPYOJ/aJv3k+hNpcd1/ONC1KEGy2FYFZFb44WA2PKpM=;
+        s=korg; t=1687171922;
+        bh=cBs5mgiSJBTqUoNHI2zw+vsGz1CvcJ6N3V0VsS9UuJQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O70yTGQQoQ9UD6ycScYxFcCD6IYecGu+D3v38PuztBvkuwYHEnYizdaQbUoy8+mnO
-         FRi7yRU5I2CBjfpuLzePj1tNy+kNJLs+ZExPYvplLRkEHydr76Eu6PSh5m0jfCbnXq
-         9mxucNNl9M4gCY5GWG2t209l7e4cUkErZe27XG7M=
+        b=eoXfDZXcmacyhLQ+e0ff4LjptNGiDbHN4kgR3yA8pF2ImiDMU3LKnoa7iZ4ncdn5r
+         PajKcxsmGRzbFgfZlb2/GqN+2N9dJbvU5pDa6CqP3onw02jhUMdE7IvBlJmBKSIfU/
+         KKyyfZy9BHj2aWHigMpUqEYalpr7a+yoWSdP1a2Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Lisa=20Chen=20 ?= <minjie.chen@geekplus.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 37/64] spi: fsl-dspi: avoid SCK glitches with continuous transfers
-Date:   Mon, 19 Jun 2023 12:30:33 +0200
-Message-ID: <20230619102134.857894168@linuxfoundation.org>
+Subject: [PATCH 5.4 38/64] netfilter: nfnetlink: skip error delivery on batch in case of ENOMEM
+Date:   Mon, 19 Jun 2023 12:30:34 +0200
+Message-ID: <20230619102134.908883424@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
 References: <20230619102132.808972458@linuxfoundation.org>
@@ -47,8 +44,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,90 +54,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit c5c31fb71f16ba75bad4ade208abbae225305b65 ]
+[ Upstream commit a1a64a151dae8ac3581c1cbde44b672045cb658b ]
 
-The DSPI controller has configurable timing for
+If caller reports ENOMEM, then stop iterating over the batch and send a
+single netlink message to userspace to report OOM.
 
-(a) tCSC: the interval between the assertion of the chip select and the
-    first clock edge
-
-(b) tASC: the interval between the last clock edge and the deassertion
-    of the chip select
-
-What is a bit surprising, but is documented in the figure "Example of
-continuous transfer (CPHA=1, CONT=1)" in the datasheet, is that when the
-chip select stays asserted between multiple TX FIFO writes, the tCSC and
-tASC times still apply. With CONT=1, chip select remains asserted, but
-SCK takes a break and goes to the idle state for tASC + tCSC ns.
-
-In other words, the default values (of 0 and 0 ns) result in SCK
-glitches where the SCK transition to the idle state, as well as the SCK
-transition from the idle state, will have no delay in between, and it
-may appear that a SCK cycle has simply gone missing. The resulting
-timing violation might cause data corruption in many peripherals, as
-their chip select is asserted.
-
-The driver has device tree bindings for tCSC ("fsl,spi-cs-sck-delay")
-and tASC ("fsl,spi-sck-cs-delay"), but these are only specified to apply
-when the chip select toggles in the first place, and this timing
-characteristic depends on each peripheral. Many peripherals do not have
-explicit timing requirements, so many device trees do not have these
-properties present at all.
-
-Nonetheless, the lack of SCK glitches is a common sense requirement, and
-since the SCK stays in the idle state during transfers for tCSC+tASC ns,
-and that in itself should look like half a cycle, then let's ensure that
-tCSC and tASC are at least a quarter of a SCK period, such that their
-sum is at least half of one.
-
-Fixes: 95bf15f38641 ("spi: fsl-dspi: Add ~50ns delay between cs and sck")
-Reported-by: Lisa Chen (陈敏捷) <minjie.chen@geekplus.com>
-Debugged-by: Lisa Chen (陈敏捷) <minjie.chen@geekplus.com>
-Tested-by: Lisa Chen (陈敏捷) <minjie.chen@geekplus.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://lore.kernel.org/r/20230529223402.1199503-1-vladimir.oltean@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: cbb8125eb40b ("netfilter: nfnetlink: deliver netlink errors on batch completion")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ net/netfilter/nfnetlink.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 51e17f0828646..351b2989db071 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -816,7 +816,9 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- static int dspi_setup(struct spi_device *spi)
- {
- 	struct fsl_dspi *dspi = spi_controller_get_devdata(spi->controller);
-+	u32 period_ns = DIV_ROUND_UP(NSEC_PER_SEC, spi->max_speed_hz);
- 	unsigned char br = 0, pbr = 0, pcssck = 0, cssck = 0;
-+	u32 quarter_period_ns = DIV_ROUND_UP(period_ns, 4);
- 	u32 cs_sck_delay = 0, sck_cs_delay = 0;
- 	struct fsl_dspi_platform_data *pdata;
- 	unsigned char pasc = 0, asc = 0;
-@@ -844,6 +846,19 @@ static int dspi_setup(struct spi_device *spi)
- 		sck_cs_delay = pdata->sck_cs_delay;
- 	}
- 
-+	/* Since tCSC and tASC apply to continuous transfers too, avoid SCK
-+	 * glitches of half a cycle by never allowing tCSC + tASC to go below
-+	 * half a SCK period.
-+	 */
-+	if (cs_sck_delay < quarter_period_ns)
-+		cs_sck_delay = quarter_period_ns;
-+	if (sck_cs_delay < quarter_period_ns)
-+		sck_cs_delay = quarter_period_ns;
-+
-+	dev_dbg(&spi->dev,
-+		"DSPI controller timing params: CS-to-SCK delay %u ns, SCK-to-CS delay %u ns\n",
-+		cs_sck_delay, sck_cs_delay);
-+
- 	clkrate = clk_get_rate(dspi->clk);
- 	hz_to_spi_baud(&pbr, &br, spi->max_speed_hz, clkrate);
- 
+diff --git a/net/netfilter/nfnetlink.c b/net/netfilter/nfnetlink.c
+index e3f6e27a9a06d..3cff23c814c37 100644
+--- a/net/netfilter/nfnetlink.c
++++ b/net/netfilter/nfnetlink.c
+@@ -455,7 +455,8 @@ static void nfnetlink_rcv_batch(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 			 * processed, this avoids that the same error is
+ 			 * reported several times when replaying the batch.
+ 			 */
+-			if (nfnl_err_add(&err_list, nlh, err, &extack) < 0) {
++			if (err == -ENOMEM ||
++			    nfnl_err_add(&err_list, nlh, err, &extack) < 0) {
+ 				/* We failed to enqueue an error, reset the
+ 				 * list of errors and send OOM to userspace
+ 				 * pointing to the batch header.
 -- 
 2.39.2
 
