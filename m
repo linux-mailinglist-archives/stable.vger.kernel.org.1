@@ -2,49 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BA6073547A
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:56:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FC1F73533D
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:43:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232402AbjFSK4m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:56:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58848 "EHLO
+        id S231426AbjFSKnQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:43:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232388AbjFSK4F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:56:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F02081FE9
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:54:08 -0700 (PDT)
+        with ESMTP id S231561AbjFSKmw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:42:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93D3219A9
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:42:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CADE360A4D
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:54:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F5FC433C8;
-        Mon, 19 Jun 2023 10:54:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0DE1160B51
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:42:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2336CC433C8;
+        Mon, 19 Jun 2023 10:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172048;
-        bh=HVFzA5/xpPgFBqpHQHkv/BgPv5Wfc3xZi5LakHxOE1s=;
+        s=korg; t=1687171361;
+        bh=BxTk9/SPfGxzCEjoAGFmjJx6WI2hxK+4DQv6zofjwxE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EvBSpnkZdcfliAH0zW7BcpaMaAXdBHVlU0K/9ym20u26QC0QESyLrDQhc+dtaT0Ld
-         wP2MhMmUaYIjdFU2aoWGVEcVlABQmvSBglVhr6zp46aw3hBFmJOJj2rtom+9tBkOmb
-         AjkUgXr1urglBIthX6jiYY7QtF6R1k+7ngpShDNI=
+        b=U9NuMa2/Lk0vaqFzZA3inkwK2VvzPdI0lSKqmJfg8tmHvbA2dQARBPJ4QyZRPuItX
+         HvmejL+3UwG5LRigvutu6fQSKKAnKgI90902MoCCLaGDSiqxFetUje3w2TaE6tiwbH
+         4X5DCq7crsUgnbANu7lN7qbpqS0uqBrZWJJEjUgo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 18/89] ASoC: soc-pcm: test if a BE can be prepared
+        patches@lists.linux.dev,
+        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Guillaume Nault <gnault@redhat.com>,
+        David Ahern <dsahern@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 28/49] ping6: Fix send to link-local addresses with VRF.
 Date:   Mon, 19 Jun 2023 12:30:06 +0200
-Message-ID: <20230619102139.115808974@linuxfoundation.org>
+Message-ID: <20230619102131.356645425@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
+References: <20230619102129.856988902@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,91 +58,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+From: Guillaume Nault <gnault@redhat.com>
 
-[ Upstream commit e123036be377ddf628226a7c6d4f9af5efd113d3 ]
+[ Upstream commit 91ffd1bae1dafbb9e34b46813f5b058581d9144d ]
 
-In the BE hw_params configuration, the existing code checks if any of the
-existing FEs are prepared, running, paused or suspended - and skips the
-configuration in those cases. This allows multiple calls of hw_params
-which the ALSA state machine supports.
+Ping sockets can't send packets when they're bound to a VRF master
+device and the output interface is set to a slave device.
 
-This check is not handled for the prepare stage, which can lead to the
-same BE being prepared multiple times. This patch adds a check similar to
-that of the hw_params, with the main difference being that the suspended
-state is allowed: the ALSA state machine allows a transition from
-suspended to prepared with hw_params skipped.
+For example, when net.ipv4.ping_group_range is properly set, so that
+ping6 can use ping sockets, the following kind of commands fails:
+  $ ip vrf exec red ping6 fe80::854:e7ff:fe88:4bf1%eth1
 
-This problem was detected on Intel IPC4/SoundWire devices, where the BE
-dailink .prepare stage is used to configure the SoundWire stream with a
-bank switch. Multiple .prepare calls lead to conflicts with the .trigger
-operation with IPC4 configurations. This problem was not detected earlier
-on Intel devices, HDaudio BE dailinks detect that the link is already
-prepared and skip the configuration, and for IPC3 devices there is no BE
-trigger.
+What happens is that sk->sk_bound_dev_if is set to the VRF master
+device, but 'oif' is set to the real output device. Since both are set
+but different, ping_v6_sendmsg() sees their value as inconsistent and
+fails.
 
-Link: https://github.com/thesofproject/sof/issues/7596
-Signed-off-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com
-Link: https://lore.kernel.org/r/20230517185731.487124-1-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org
+Fix this by allowing 'oif' to be a slave device of ->sk_bound_dev_if.
+
+This fixes the following kselftest failure:
+  $ ./fcnal-test.sh -t ipv6_ping
+  [...]
+  TEST: ping out, vrf device+address bind - ns-B IPv6 LLA        [FAIL]
+
+Reported-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Closes: https://lore.kernel.org/netdev/b6191f90-ffca-dbca-7d06-88a9788def9c@alu.unizg.hr/
+Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Fixes: 5e457896986e ("net: ipv6: Fix ping to link-local addresses.")
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/6c8b53108816a8d0d5705ae37bdc5a8322b5e3d9.1686153846.git.gnault@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/soc-dpcm.h |  4 ++++
- sound/soc/soc-pcm.c      | 20 ++++++++++++++++++++
- 2 files changed, 24 insertions(+)
+ net/ipv6/ping.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/sound/soc-dpcm.h b/include/sound/soc-dpcm.h
-index 0f6c50b17bba8..bd8795198a7d6 100644
---- a/include/sound/soc-dpcm.h
-+++ b/include/sound/soc-dpcm.h
-@@ -121,6 +121,10 @@ int snd_soc_dpcm_can_be_free_stop(struct snd_soc_pcm_runtime *fe,
- int snd_soc_dpcm_can_be_params(struct snd_soc_pcm_runtime *fe,
- 		struct snd_soc_pcm_runtime *be, int stream);
+diff --git a/net/ipv6/ping.c b/net/ipv6/ping.c
+index 5c9be8594483f..e065f49a4ae38 100644
+--- a/net/ipv6/ping.c
++++ b/net/ipv6/ping.c
+@@ -101,7 +101,8 @@ static int ping_v6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 	addr_type = ipv6_addr_type(daddr);
+ 	if ((__ipv6_addr_needs_scope_id(addr_type) && !oif) ||
+ 	    (addr_type & IPV6_ADDR_MAPPED) ||
+-	    (oif && sk->sk_bound_dev_if && oif != sk->sk_bound_dev_if))
++	    (oif && sk->sk_bound_dev_if && oif != sk->sk_bound_dev_if &&
++	     l3mdev_master_ifindex_by_index(sock_net(sk), oif) != sk->sk_bound_dev_if))
+ 		return -EINVAL;
  
-+/* can this BE perform prepare */
-+int snd_soc_dpcm_can_be_prepared(struct snd_soc_pcm_runtime *fe,
-+				 struct snd_soc_pcm_runtime *be, int stream);
-+
- /* is the current PCM operation for this FE ? */
- int snd_soc_dpcm_fe_can_update(struct snd_soc_pcm_runtime *fe, int stream);
- 
-diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
-index fb874f924bbe3..e52c030bd17a2 100644
---- a/sound/soc/soc-pcm.c
-+++ b/sound/soc/soc-pcm.c
-@@ -2332,6 +2332,9 @@ int dpcm_be_dai_prepare(struct snd_soc_pcm_runtime *fe, int stream)
- 		if (!snd_soc_dpcm_be_can_update(fe, be, stream))
- 			continue;
- 
-+		if (!snd_soc_dpcm_can_be_prepared(fe, be, stream))
-+			continue;
-+
- 		if ((be->dpcm[stream].state != SND_SOC_DPCM_STATE_HW_PARAMS) &&
- 		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_STOP) &&
- 		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_SUSPEND) &&
-@@ -2972,3 +2975,20 @@ int snd_soc_dpcm_can_be_params(struct snd_soc_pcm_runtime *fe,
- 	return snd_soc_dpcm_check_state(fe, be, stream, state, ARRAY_SIZE(state));
- }
- EXPORT_SYMBOL_GPL(snd_soc_dpcm_can_be_params);
-+
-+/*
-+ * We can only prepare a BE DAI if any of it's FE are not prepared,
-+ * running or paused for the specified stream direction.
-+ */
-+int snd_soc_dpcm_can_be_prepared(struct snd_soc_pcm_runtime *fe,
-+				 struct snd_soc_pcm_runtime *be, int stream)
-+{
-+	const enum snd_soc_dpcm_state state[] = {
-+		SND_SOC_DPCM_STATE_START,
-+		SND_SOC_DPCM_STATE_PAUSED,
-+		SND_SOC_DPCM_STATE_PREPARE,
-+	};
-+
-+	return snd_soc_dpcm_check_state(fe, be, stream, state, ARRAY_SIZE(state));
-+}
-+EXPORT_SYMBOL_GPL(snd_soc_dpcm_can_be_prepared);
+ 	/* TODO: use ip6_datagram_send_ctl to get options from cmsg */
 -- 
 2.39.2
 
