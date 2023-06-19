@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D45937353AA
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:47:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7EFC7352F3
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:40:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232057AbjFSKry (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:47:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51978 "EHLO
+        id S231465AbjFSKk1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:40:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232068AbjFSKrd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:47:33 -0400
+        with ESMTP id S232062AbjFSKkO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:40:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC701213E
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:46:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CA4D10E3
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:39:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7201660B82
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:46:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8692FC433C0;
-        Mon, 19 Jun 2023 10:46:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0189260B62
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:39:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E57C433C0;
+        Mon, 19 Jun 2023 10:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171611;
-        bh=clj61MxufCeo8r3bfqXpiJTcJgIQC86Je0XgB64GOyg=;
+        s=korg; t=1687171191;
+        bh=pzn+sLUprHpiBnJ/vb+kVyUOtndT5zBZpPs8YsCVzxU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XJdrHcwcD3ulGJ9HWnf72Euag+tTLJ97kNooELO7cHlVNo+PCtmoQCVqQllbSZys2
-         TaxoRx1RYYIXmdeIH3i6Y/AFxoW6txe8YD6R62cHz5yVeUhI9SUpNCUc1iRGDQ/raV
-         hl7E2om9UGy0tmDIdNIBs6EBT+ETRvHsdRz4VFn4=
+        b=Iu14lRei39h2f7YzpwPzts2SKv7FrbqXwWjJgh1+BAtO+gC4xhY0om2jH37EaVyZh
+         FrOkDXSKGG0I5ctNATMEHwJtpMCNhGophVV3OAkQuWi6dFZZm6daBkAk9T+oDOO4Aj
+         uVCKg52hWHg5JZIY1EFzg8koT70DtNtskT9cevNA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev,
+        Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 094/166] spi: cadence-quadspi: Add missing check for dma_set_mask
-Date:   Mon, 19 Jun 2023 12:29:31 +0200
-Message-ID: <20230619102159.358854047@linuxfoundation.org>
+Subject: [PATCH 6.3 154/187] net: phylink: report correct max speed for QUSGMII
+Date:   Mon, 19 Jun 2023 12:29:32 +0200
+Message-ID: <20230619102205.051830953@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,39 +57,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-[ Upstream commit 947c70a213769f60e9d5aca2bc88b50a1cfaf5a6 ]
+[ Upstream commit b9dc1046edfeb7d9dbc2272c8d9ad5a8c47f3199 ]
 
-Add check for dma_set_mask() and return the error if it fails.
+Q-USGMII is the quad port version of USGMII, and supports a max speed of
+1Gbps on each line. Make so that phylink_interface_max_speed() reports
+this information correctly.
 
-Fixes: 1a6f854f7daa ("spi: cadence-quadspi: Add Xilinx Versal external DMA support")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20230606093859.27818-1-jiasheng@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: ae0e4bb2a0e0 ("net: phylink: Adjust link settings based on rate matching")
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence-quadspi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/phy/phylink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 30fd4bc90580e..b371e4eb41ec3 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1697,8 +1697,11 @@ static int cqspi_probe(struct platform_device *pdev)
- 			cqspi->slow_sram = true;
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 30c166b334686..65ff118f22314 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -188,6 +188,7 @@ static int phylink_interface_max_speed(phy_interface_t interface)
+ 	case PHY_INTERFACE_MODE_RGMII_ID:
+ 	case PHY_INTERFACE_MODE_RGMII:
+ 	case PHY_INTERFACE_MODE_QSGMII:
++	case PHY_INTERFACE_MODE_QUSGMII:
+ 	case PHY_INTERFACE_MODE_SGMII:
+ 	case PHY_INTERFACE_MODE_GMII:
+ 		return SPEED_1000;
+@@ -204,7 +205,6 @@ static int phylink_interface_max_speed(phy_interface_t interface)
+ 	case PHY_INTERFACE_MODE_10GBASER:
+ 	case PHY_INTERFACE_MODE_10GKR:
+ 	case PHY_INTERFACE_MODE_USXGMII:
+-	case PHY_INTERFACE_MODE_QUSGMII:
+ 		return SPEED_10000;
  
- 		if (of_device_is_compatible(pdev->dev.of_node,
--					    "xlnx,versal-ospi-1.0"))
--			dma_set_mask(&pdev->dev, DMA_BIT_MASK(64));
-+					    "xlnx,versal-ospi-1.0")) {
-+			ret = dma_set_mask(&pdev->dev, DMA_BIT_MASK(64));
-+			if (ret)
-+				goto probe_reset_failed;
-+		}
- 	}
- 
- 	ret = devm_request_irq(dev, irq, cqspi_irq_handler, 0,
+ 	case PHY_INTERFACE_MODE_25GBASER:
 -- 
 2.39.2
 
