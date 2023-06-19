@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 501F17353DE
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:49:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 741AE73530D
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232138AbjFSKtP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:49:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52072 "EHLO
+        id S232019AbjFSKlP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:41:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230282AbjFSKs5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:48:57 -0400
+        with ESMTP id S230379AbjFSKkq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:40:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3258110D4
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:48:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0E27CD
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:40:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BB37660B86
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:48:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE1DC433C8;
-        Mon, 19 Jun 2023 10:48:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 62FD360670
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:40:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DF1C433C8;
+        Mon, 19 Jun 2023 10:40:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171735;
-        bh=39jA+KFleRtNfiWm1RhXVMESQvmWYqdMNUx351vQ0yc=;
+        s=korg; t=1687171244;
+        bh=WPH0VvRM0KpFY/Q8zsTcLLIl9hcYu6t5Ivq+VTtOinw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UPpDlyD/9xubfQkEwap3FxI+loSH7Oo9F3Gr4rhhcLzbUZhGn9vdeCxmf4sQaMtro
-         ZovQBdSZuLUrZ37tIo7WEFHh5uIpxYL2ODEzPM9TLrdXK22kInu8Htg0XPfRcGFN0K
-         CSb6XTlsUYHXMXzgN6ckl5aPOxjp1IMY5qSX43NM=
+        b=gAH7b8AiWZYELDsdskojgjlBiPxnsorhMhEhpd4wzeqxYWJ5HALrjU//jh8rIckfY
+         hXzQcel34BeAXUGMtvoBdK8REcbvIUcta01fbr1MmqQT5tgc7De5tAp3zyqjPmsifZ
+         mfL6XafL0Jn/wi+hB/tqWYb+V9m0EDY2R7H9LfYo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ahmed Zaki <ahmed.zaki@intel.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 113/166] iavf: remove mask from iavf_irq_enable_queues()
+        patches@lists.linux.dev,
+        =?UTF-8?q?Lu=C3=ADs=20Henriques?= <lhenriques@suse.de>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        Mark Fasheh <mark@fasheh.com>,
+        Joel Becker <jlbec@evilplan.org>,
+        Junxiao Bi <junxiao.bi@oracle.com>,
+        Changwei Ge <gechangwei@live.cn>, Gang He <ghe@suse.com>,
+        Jun Piao <piaojun@huawei.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 12/49] ocfs2: fix use-after-free when unmounting read-only filesystem
 Date:   Mon, 19 Jun 2023 12:29:50 +0200
-Message-ID: <20230619102200.314038290@linuxfoundation.org>
+Message-ID: <20230619102130.497164166@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
+References: <20230619102129.856988902@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -59,103 +61,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ahmed Zaki <ahmed.zaki@intel.com>
+From: Luís Henriques <ocfs2-devel@oss.oracle.com>
 
-[ Upstream commit c37cf54c12cfaa51e7aaf88708167b0d3259e64e ]
+commit 50d927880e0f90d5cb25e897e9d03e5edacc79a8 upstream.
 
-Enable more than 32 IRQs by removing the u32 bit mask in
-iavf_irq_enable_queues(). There is no need for the mask as there are no
-callers that select individual IRQs through the bitmask. Also, if the PF
-allocates more than 32 IRQs, this mask will prevent us from using all of
-them.
+It's trivial to trigger a use-after-free bug in the ocfs2 quotas code using
+fstest generic/452.  After a read-only remount, quotas are suspended and
+ocfs2_mem_dqinfo is freed through ->ocfs2_local_free_info().  When unmounting
+the filesystem, an UAF access to the oinfo will eventually cause a crash.
 
-Modify the comment in iavf_register.h to show that the maximum number
-allowed for the IRQ index is 63 as per the iAVF standard 1.0 [1].
+BUG: KASAN: slab-use-after-free in timer_delete+0x54/0xc0
+Read of size 8 at addr ffff8880389a8208 by task umount/669
+...
+Call Trace:
+ <TASK>
+ ...
+ timer_delete+0x54/0xc0
+ try_to_grab_pending+0x31/0x230
+ __cancel_work_timer+0x6c/0x270
+ ocfs2_disable_quotas.isra.0+0x3e/0xf0 [ocfs2]
+ ocfs2_dismount_volume+0xdd/0x450 [ocfs2]
+ generic_shutdown_super+0xaa/0x280
+ kill_block_super+0x46/0x70
+ deactivate_locked_super+0x4d/0xb0
+ cleanup_mnt+0x135/0x1f0
+ ...
+ </TASK>
 
-link: [1] https://www.intel.com/content/dam/www/public/us/en/documents/product-specifications/ethernet-adaptive-virtual-function-hardware-spec.pdf
-Fixes: 5eae00c57f5e ("i40evf: main driver core")
-Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20230608200226.451861-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Allocated by task 632:
+ kasan_save_stack+0x1c/0x40
+ kasan_set_track+0x21/0x30
+ __kasan_kmalloc+0x8b/0x90
+ ocfs2_local_read_info+0xe3/0x9a0 [ocfs2]
+ dquot_load_quota_sb+0x34b/0x680
+ dquot_load_quota_inode+0xfe/0x1a0
+ ocfs2_enable_quotas+0x190/0x2f0 [ocfs2]
+ ocfs2_fill_super+0x14ef/0x2120 [ocfs2]
+ mount_bdev+0x1be/0x200
+ legacy_get_tree+0x6c/0xb0
+ vfs_get_tree+0x3e/0x110
+ path_mount+0xa90/0xe10
+ __x64_sys_mount+0x16f/0x1a0
+ do_syscall_64+0x43/0x90
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+Freed by task 650:
+ kasan_save_stack+0x1c/0x40
+ kasan_set_track+0x21/0x30
+ kasan_save_free_info+0x2a/0x50
+ __kasan_slab_free+0xf9/0x150
+ __kmem_cache_free+0x89/0x180
+ ocfs2_local_free_info+0x2ba/0x3f0 [ocfs2]
+ dquot_disable+0x35f/0xa70
+ ocfs2_susp_quotas.isra.0+0x159/0x1a0 [ocfs2]
+ ocfs2_remount+0x150/0x580 [ocfs2]
+ reconfigure_super+0x1a5/0x3a0
+ path_mount+0xc8a/0xe10
+ __x64_sys_mount+0x16f/0x1a0
+ do_syscall_64+0x43/0x90
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+Link: https://lkml.kernel.org/r/20230522102112.9031-1-lhenriques@suse.de
+Signed-off-by: Luís Henriques <lhenriques@suse.de>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Tested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf.h          |  2 +-
- drivers/net/ethernet/intel/iavf/iavf_main.c     | 15 ++++++---------
- drivers/net/ethernet/intel/iavf/iavf_register.h |  2 +-
- 3 files changed, 8 insertions(+), 11 deletions(-)
+ fs/ocfs2/super.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
-index 93a998f169de7..6625625f91e47 100644
---- a/drivers/net/ethernet/intel/iavf/iavf.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf.h
-@@ -525,7 +525,7 @@ void iavf_set_ethtool_ops(struct net_device *netdev);
- void iavf_update_stats(struct iavf_adapter *adapter);
- void iavf_reset_interrupt_capability(struct iavf_adapter *adapter);
- int iavf_init_interrupt_scheme(struct iavf_adapter *adapter);
--void iavf_irq_enable_queues(struct iavf_adapter *adapter, u32 mask);
-+void iavf_irq_enable_queues(struct iavf_adapter *adapter);
- void iavf_free_all_tx_resources(struct iavf_adapter *adapter);
- void iavf_free_all_rx_resources(struct iavf_adapter *adapter);
- 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 34711a88dbaa0..965d02d7ff80f 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -359,21 +359,18 @@ static void iavf_irq_disable(struct iavf_adapter *adapter)
- }
- 
- /**
-- * iavf_irq_enable_queues - Enable interrupt for specified queues
-+ * iavf_irq_enable_queues - Enable interrupt for all queues
-  * @adapter: board private structure
-- * @mask: bitmap of queues to enable
-  **/
--void iavf_irq_enable_queues(struct iavf_adapter *adapter, u32 mask)
-+void iavf_irq_enable_queues(struct iavf_adapter *adapter)
- {
- 	struct iavf_hw *hw = &adapter->hw;
- 	int i;
- 
- 	for (i = 1; i < adapter->num_msix_vectors; i++) {
--		if (mask & BIT(i - 1)) {
--			wr32(hw, IAVF_VFINT_DYN_CTLN1(i - 1),
--			     IAVF_VFINT_DYN_CTLN1_INTENA_MASK |
--			     IAVF_VFINT_DYN_CTLN1_ITR_INDX_MASK);
--		}
-+		wr32(hw, IAVF_VFINT_DYN_CTLN1(i - 1),
-+		     IAVF_VFINT_DYN_CTLN1_INTENA_MASK |
-+		     IAVF_VFINT_DYN_CTLN1_ITR_INDX_MASK);
- 	}
- }
- 
-@@ -387,7 +384,7 @@ void iavf_irq_enable(struct iavf_adapter *adapter, bool flush)
- 	struct iavf_hw *hw = &adapter->hw;
- 
- 	iavf_misc_irq_enable(adapter);
--	iavf_irq_enable_queues(adapter, ~0);
-+	iavf_irq_enable_queues(adapter);
- 
- 	if (flush)
- 		iavf_flush(hw);
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_register.h b/drivers/net/ethernet/intel/iavf/iavf_register.h
-index bf793332fc9d5..a19e88898a0bb 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_register.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf_register.h
-@@ -40,7 +40,7 @@
- #define IAVF_VFINT_DYN_CTL01_INTENA_MASK IAVF_MASK(0x1, IAVF_VFINT_DYN_CTL01_INTENA_SHIFT)
- #define IAVF_VFINT_DYN_CTL01_ITR_INDX_SHIFT 3
- #define IAVF_VFINT_DYN_CTL01_ITR_INDX_MASK IAVF_MASK(0x3, IAVF_VFINT_DYN_CTL01_ITR_INDX_SHIFT)
--#define IAVF_VFINT_DYN_CTLN1(_INTVF) (0x00003800 + ((_INTVF) * 4)) /* _i=0...15 */ /* Reset: VFR */
-+#define IAVF_VFINT_DYN_CTLN1(_INTVF) (0x00003800 + ((_INTVF) * 4)) /* _i=0...63 */ /* Reset: VFR */
- #define IAVF_VFINT_DYN_CTLN1_INTENA_SHIFT 0
- #define IAVF_VFINT_DYN_CTLN1_INTENA_MASK IAVF_MASK(0x1, IAVF_VFINT_DYN_CTLN1_INTENA_SHIFT)
- #define IAVF_VFINT_DYN_CTLN1_SWINT_TRIG_SHIFT 2
--- 
-2.39.2
-
+--- a/fs/ocfs2/super.c
++++ b/fs/ocfs2/super.c
+@@ -985,8 +985,10 @@ static void ocfs2_disable_quotas(struct
+ 	for (type = 0; type < OCFS2_MAXQUOTAS; type++) {
+ 		if (!sb_has_quota_loaded(sb, type))
+ 			continue;
+-		oinfo = sb_dqinfo(sb, type)->dqi_priv;
+-		cancel_delayed_work_sync(&oinfo->dqi_sync_work);
++		if (!sb_has_quota_suspended(sb, type)) {
++			oinfo = sb_dqinfo(sb, type)->dqi_priv;
++			cancel_delayed_work_sync(&oinfo->dqi_sync_work);
++		}
+ 		inode = igrab(sb->s_dquot.files[type]);
+ 		/* Turn off quotas. This will remove all dquot structures from
+ 		 * memory and so they will be automatically synced to global
 
 
