@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A415735296
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:36:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4C38735348
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:43:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230360AbjFSKgj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:36:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42340 "EHLO
+        id S229992AbjFSKny (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:43:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231309AbjFSKgN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:36:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 391D11700
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:36:02 -0700 (PDT)
+        with ESMTP id S231550AbjFSKnc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:43:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E46AF10CF
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:43:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 89AFD60B62
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:36:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E996C433C8;
-        Mon, 19 Jun 2023 10:36:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6C23960B0D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:43:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82547C433C0;
+        Mon, 19 Jun 2023 10:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687170961;
-        bh=YF1xQhfrnl8CC8P3iBmlze25nXyF9xs9d+IBRnfdqhA=;
+        s=korg; t=1687171389;
+        bh=mqL994jDilpj3DORbkHAMlSuexwDHjFi8s1HMFeV82w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jb9UExi8zutRdF+Lyu9MNio9Zgv4/UP0VOtBYNFNFZ33HxeN4PVvnJnLIBdtVPVTW
-         UhGfr4FxcLsQ4zTwUy27N7juf4qUqwV90gj4zN9PotF32qO7sXQfInVVn9RHy764ap
-         jNKl4q8U0fkiI/5qAL9o/DLXI1p0igHRnOUHqD7A=
+        b=rL7qGXNwkciWKYA6rTelDs9Syc1wAd6/yI3teDNx50Zvp6fWpLXa702Dqx35oU48f
+         A3flXSDu4cOUvopm2eu803n+BuNaqbRANvoYBNARa80kit7o4OCoFYkK0QBQ8l61fq
+         G6y9A5ormeDcpp8ECAPY8Yie6HgibJ2sgsirHJTs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Niklas Schnelle <schnelle@linux.ibm.com>,
-        Julian Ruess <julianr@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.3 072/187] s390/ism: Fix trying to free already-freed IRQ by repeated ism_dev_exit()
-Date:   Mon, 19 Jun 2023 12:28:10 +0200
-Message-ID: <20230619102201.128807609@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 014/166] ARM: dts: vexpress: add missing cache properties
+Date:   Mon, 19 Jun 2023 12:28:11 +0200
+Message-ID: <20230619102155.379683590@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,55 +56,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Julian Ruess <julianr@linux.ibm.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 78d0f94902afce8ec2c7a60f600cc0e3729d7412 upstream.
+[ Upstream commit 328acc5657c6197753238d7ce0a6924ead829347 ]
 
-This patch prevents the system from crashing when unloading the ISM module.
+As all level 2 and level 3 caches are unified, add required
+cache-unified property to fix warnings like:
 
-How to reproduce: Attach an ISM device and execute 'rmmod ism'.
+  vexpress-v2p-ca5s.dtb: cache-controller@2c0f0000: 'cache-unified' is a required property
 
-Error-Log:
-- Trying to free already-free IRQ 0
-- WARNING: CPU: 1 PID: 966 at kernel/irq/manage.c:1890 free_irq+0x140/0x540
-
-After calling ism_dev_exit() for each ISM device in the exit routine,
-pci_unregister_driver() will execute ism_remove() for each ISM device.
-Because ism_remove() also calls ism_dev_exit(),
-free_irq(pci_irq_vector(pdev, 0), ism) is called twice for each ISM
-device. This results in a crash with the error
-'Trying to free already-free IRQ'.
-
-In the exit routine, it is enough to call pci_unregister_driver()
-because it ensures that ism_dev_exit() is called once per
-ISM device.
-
-Cc: <stable@vger.kernel.org> # 6.3+
-Fixes: 89e7d2ba61b7 ("net/ism: Add new API for client registration")
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Julian Ruess <julianr@linux.ibm.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230423150837.118466-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/net/ism_drv.c |    8 --------
- 1 file changed, 8 deletions(-)
+ arch/arm/boot/dts/vexpress-v2p-ca5s.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/s390/net/ism_drv.c
-+++ b/drivers/s390/net/ism_drv.c
-@@ -774,14 +774,6 @@ static int __init ism_init(void)
+diff --git a/arch/arm/boot/dts/vexpress-v2p-ca5s.dts b/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
+index 3b88209bacea2..ff1f9a1bcfcfc 100644
+--- a/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
++++ b/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
+@@ -132,6 +132,7 @@ L2: cache-controller@2c0f0000 {
+ 		reg = <0x2c0f0000 0x1000>;
+ 		interrupts = <0 84 4>;
+ 		cache-level = <2>;
++		cache-unified;
+ 	};
  
- static void __exit ism_exit(void)
- {
--	struct ism_dev *ism;
--
--	mutex_lock(&ism_dev_list.mutex);
--	list_for_each_entry(ism, &ism_dev_list.list, list) {
--		ism_dev_exit(ism);
--	}
--	mutex_unlock(&ism_dev_list.mutex);
--
- 	pci_unregister_driver(&ism_driver);
- 	debug_unregister(ism_debug_info);
- }
+ 	pmu {
+-- 
+2.39.2
+
 
 
