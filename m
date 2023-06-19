@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78E8A73533B
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:43:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 674EA735429
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:52:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231926AbjFSKnI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:43:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47176 "EHLO
+        id S232276AbjFSKw6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:52:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231952AbjFSKmn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:42:43 -0400
+        with ESMTP id S230394AbjFSKwg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:52:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FB92E7F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:42:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC3352D47
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:51:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 99FCE60B7F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:42:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC0CC433C0;
-        Mon, 19 Jun 2023 10:42:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CC30160B5B
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:51:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA8F3C433C9;
+        Mon, 19 Jun 2023 10:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171356;
-        bh=GmpFHOh7eUvRjM15pWxFpYiHWim5Aj1goONNBTECNWs=;
+        s=korg; t=1687171889;
+        bh=GeYiJEk5rv9+QjkRUqzIvrDomvXWpHGJuAv1UJMNoaY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jrDT7FXzt7ipmgtIIq6NiPv3qN9Y0eSrvKXiNp3mwD+FWHSs0xGQ//M5HWU1Kcd4F
-         VnOvozS0Vcb7qy0FuOlqlHm+b6JGS6nmt9ixyJrW2uLoSoHNNuTHgP3SueUa5prU2J
-         cQ0STlrnuiRx6DxYe1wDEfTrsDnY7G/jng+htYFA=
+        b=0UbtGw/3GN5QcphEK/VgCln97pn+QwjX0es7HmVuUCl6k09F0qVyVAj+WU5G+cqM/
+         j4U4J6ljk1v+pRrb/GXAFMQ4X4ERwKnEZ17JHX6+pKr8/azpyJLGdLlhHX6IfI2Kbm
+         l1Mbn0wun6O80z983xsmnNGcUpqjOmotbX5uM4vg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Romain Izard <romain.izard.pro@gmail.com>,
-        Felipe Balbi <felipe.balbi@linux.intel.com>,
-        Joakim Tjernlund <joakim.tjernlund@infinera.com>
-Subject: [PATCH 4.19 26/49] usb: gadget: f_ncm: Fix NTP-32 support
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 08/64] ARM: dts: vexpress: add missing cache properties
 Date:   Mon, 19 Jun 2023 12:30:04 +0200
-Message-ID: <20230619102131.238435174@linuxfoundation.org>
+Message-ID: <20230619102133.258615831@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
-References: <20230619102129.856988902@linuxfoundation.org>
+In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
+References: <20230619102132.808972458@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,79 +56,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Romain Izard <romain.izard.pro@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 550eef0c353030ac4223b9c9479bdf77a05445d6 upstream.
+[ Upstream commit 328acc5657c6197753238d7ce0a6924ead829347 ]
 
-When connecting a CDC-NCM gadget to an host that uses the NTP-32 mode,
-or that relies on the default CRC setting, the current implementation gets
-confused, and does not expect the correct signature for its packets.
+As all level 2 and level 3 caches are unified, add required
+cache-unified property to fix warnings like:
 
-Fix this, by ensuring that the ndp_sign member in the f_ncm structure
-always contain a valid value.
+  vexpress-v2p-ca5s.dtb: cache-controller@2c0f0000: 'cache-unified' is a required property
 
-Signed-off-by: Romain Izard <romain.izard.pro@gmail.com>
-Signed-off-by: Felipe Balbi <felipe.balbi@linux.intel.com>
-Signed-off-by: Joakim Tjernlund <joakim.tjernlund@infinera.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230423150837.118466-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_ncm.c |   10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ arch/arm/boot/dts/vexpress-v2p-ca5s.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -36,9 +36,7 @@
+diff --git a/arch/arm/boot/dts/vexpress-v2p-ca5s.dts b/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
+index d5b47d526f9ef..7f1edc3ba6a1e 100644
+--- a/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
++++ b/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
+@@ -132,6 +132,7 @@ L2: cache-controller@2c0f0000 {
+ 		reg = <0x2c0f0000 0x1000>;
+ 		interrupts = <0 84 4>;
+ 		cache-level = <2>;
++		cache-unified;
+ 	};
  
- /* to trigger crc/non-crc ndp signature */
- 
--#define NCM_NDP_HDR_CRC_MASK	0x01000000
- #define NCM_NDP_HDR_CRC		0x01000000
--#define NCM_NDP_HDR_NOCRC	0x00000000
- 
- enum ncm_notify_state {
- 	NCM_NOTIFY_NONE,		/* don't notify */
-@@ -532,6 +530,7 @@ static inline void ncm_reset_values(stru
- {
- 	ncm->parser_opts = &ndp16_opts;
- 	ncm->is_crc = false;
-+	ncm->ndp_sign = ncm->parser_opts->ndp_sign;
- 	ncm->port.cdc_filter = DEFAULT_FILTER;
- 
- 	/* doesn't make sense for ncm, fixed size used */
-@@ -814,25 +813,20 @@ static int ncm_setup(struct usb_function
- 	case ((USB_DIR_OUT | USB_TYPE_CLASS | USB_RECIP_INTERFACE) << 8)
- 		| USB_CDC_SET_CRC_MODE:
- 	{
--		int ndp_hdr_crc = 0;
--
- 		if (w_length != 0 || w_index != ncm->ctrl_id)
- 			goto invalid;
- 		switch (w_value) {
- 		case 0x0000:
- 			ncm->is_crc = false;
--			ndp_hdr_crc = NCM_NDP_HDR_NOCRC;
- 			DBG(cdev, "non-CRC mode selected\n");
- 			break;
- 		case 0x0001:
- 			ncm->is_crc = true;
--			ndp_hdr_crc = NCM_NDP_HDR_CRC;
- 			DBG(cdev, "CRC mode selected\n");
- 			break;
- 		default:
- 			goto invalid;
- 		}
--		ncm->ndp_sign = ncm->parser_opts->ndp_sign | ndp_hdr_crc;
- 		value = 0;
- 		break;
- 	}
-@@ -849,6 +843,8 @@ invalid:
- 			ctrl->bRequestType, ctrl->bRequest,
- 			w_value, w_index, w_length);
- 	}
-+	ncm->ndp_sign = ncm->parser_opts->ndp_sign |
-+		(ncm->is_crc ? NCM_NDP_HDR_CRC : 0);
- 
- 	/* respond with data transfer or status phase? */
- 	if (value >= 0) {
+ 	pmu {
+-- 
+2.39.2
+
 
 
