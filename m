@@ -2,48 +2,65 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D465A735341
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:43:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17443735269
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:34:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229585AbjFSKni (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:43:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47818 "EHLO
+        id S231166AbjFSKeZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:34:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229640AbjFSKnU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:43:20 -0400
+        with ESMTP id S231510AbjFSKeX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:34:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06B6A1735
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:42:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 851E2CD
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:34:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C863460B62
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:42:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB0BC433C9;
-        Mon, 19 Jun 2023 10:42:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 172E760B78
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:34:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07244C433CA;
+        Mon, 19 Jun 2023 10:34:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171376;
-        bh=X77fEewRRbsc242A1IvEOhtkWHLN2cEUzLtxn19E3S8=;
+        s=korg; t=1687170860;
+        bh=IIQ3PwFcjAKv3zTj2D6EmVT3SS7LceeS7lwmzkG4DTM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GkhQv2ivVZbz9nmknTviHUrTAjPfLFQUHUgrPIzqfyTJMLC4LHnMCsCM50l9Yl1Wf
-         WpckGwPpcr03ACwqkST+uDCVZfseJvMageDmFv2DGzFc+RAIhtqfBK1HSdBbfL3vw2
-         FV7ZHJjnk+0e4wKwFDy51H3rfuFv3dZ+KpAggujE=
+        b=jkVH8NA/gi0igwpwGycT2Bjn57DYMasWB9CQrZsoSNdwHlbHnlorELnlRN87IKzwV
+         dVGJvWgafdinl0ymWwXyzSWkhj7sPIjPbtBw9584enJvQ8EqrWIPa8A/+xzXmzdbKY
+         Ww82dCW5k2mXInXekUTB7750I57yFeaSGOdeKpOM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tom Lendacky <thomas.lendacky@amd.com>,
+        patches@lists.linux.dev, Ricardo Ribalda <ribalda@chromium.org>,
+        Ross Zwisler <zwisler@google.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Philipp Rudo <prudo@redhat.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, Baoquan He <bhe@redhat.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 001/166] x86/head/64: Switch to KERNEL_CS as soon as new GDT is installed
-Date:   Mon, 19 Jun 2023 12:27:58 +0200
-Message-ID: <20230619102154.662888016@linuxfoundation.org>
+        Dave Young <dyoung@redhat.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Simon Horman <horms@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tom Rix <trix@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.3 061/187] kexec: support purgatories with .text.hot sections
+Date:   Mon, 19 Jun 2023 12:27:59 +0200
+Message-ID: <20230619102200.634886735@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -57,80 +74,102 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tom Lendacky <thomas.lendacky@amd.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit a37f2699c36a7f6606ba3300f243227856c5ad6b ]
+commit 8652d44f466ad5772e7d1756e9457046189b0dfc upstream.
 
-The call to startup_64_setup_env() will install a new GDT but does not
-actually switch to using the KERNEL_CS entry until returning from the
-function call.
+Patch series "kexec: Fix kexec_file_load for llvm16 with PGO", v7.
 
-Commit bcce82908333 ("x86/sev: Detect/setup SEV/SME features earlier in
-boot") moved the call to sme_enable() earlier in the boot process and in
-between the call to startup_64_setup_env() and the switch to KERNEL_CS.
-An SEV-ES or an SEV-SNP guest will trigger #VC exceptions during the call
-to sme_enable() and if the CS pushed on the stack as part of the exception
-and used by IRETQ is not mapped by the new GDT, then problems occur.
-Today, the current CS when entering startup_64 is the kernel CS value
-because it was set up by the decompressor code, so no issue is seen.
+When upreving llvm I realised that kexec stopped working on my test
+platform.
 
-However, a recent patchset that looked to avoid using the legacy
-decompressor during an EFI boot exposed this bug. At entry to startup_64,
-the CS value is that of EFI and is not mapped in the new kernel GDT. So
-when a #VC exception occurs, the CS value used by IRETQ is not valid and
-the guest boot crashes.
+The reason seems to be that due to PGO there are multiple .text sections
+on the purgatory, and kexec does not supports that.
 
-Fix this issue by moving the block that switches to the KERNEL_CS value to
-be done immediately after returning from startup_64_setup_env().
 
-Fixes: bcce82908333 ("x86/sev: Detect/setup SEV/SME features earlier in boot")
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Joerg Roedel <jroedel@suse.de>
-Link: https://lore.kernel.org/all/6ff1f28af2829cc9aea357ebee285825f90a431f.1684340801.git.thomas.lendacky%40amd.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch (of 4):
+
+Clang16 links the purgatory text in two sections when PGO is in use:
+
+  [ 1] .text             PROGBITS         0000000000000000  00000040
+       00000000000011a1  0000000000000000  AX       0     0     16
+  [ 2] .rela.text        RELA             0000000000000000  00003498
+       0000000000000648  0000000000000018   I      24     1     8
+  ...
+  [17] .text.hot.        PROGBITS         0000000000000000  00003220
+       000000000000020b  0000000000000000  AX       0     0     1
+  [18] .rela.text.hot.   RELA             0000000000000000  00004428
+       0000000000000078  0000000000000018   I      24    17     8
+
+And both of them have their range [sh_addr ... sh_addr+sh_size] on the
+area pointed by `e_entry`.
+
+This causes that image->start is calculated twice, once for .text and
+another time for .text.hot. The second calculation leaves image->start
+in a random location.
+
+Because of this, the system crashes immediately after:
+
+kexec_core: Starting new kernel
+
+Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-0-b05c520b7296@chromium.org
+Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-1-b05c520b7296@chromium.org
+Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Ross Zwisler <zwisler@google.com>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reviewed-by: Philipp Rudo <prudo@redhat.com>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Tom Rix <trix@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/head_64.S | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ kernel/kexec_file.c |   14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index d860d437631b6..998cdb112b725 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -85,6 +85,15 @@ SYM_CODE_START_NOALIGN(startup_64)
- 	call	startup_64_setup_env
- 	popq	%rsi
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -901,10 +901,22 @@ static int kexec_purgatory_setup_sechdrs
+ 		}
  
-+	/* Now switch to __KERNEL_CS so IRET works reliably */
-+	pushq	$__KERNEL_CS
-+	leaq	.Lon_kernel_cs(%rip), %rax
-+	pushq	%rax
-+	lretq
+ 		offset = ALIGN(offset, align);
 +
-+.Lon_kernel_cs:
-+	UNWIND_HINT_EMPTY
-+
- #ifdef CONFIG_AMD_MEM_ENCRYPT
- 	/*
- 	 * Activate SEV/SME memory encryption if supported/enabled. This needs to
-@@ -98,15 +107,6 @@ SYM_CODE_START_NOALIGN(startup_64)
- 	popq	%rsi
- #endif
- 
--	/* Now switch to __KERNEL_CS so IRET works reliably */
--	pushq	$__KERNEL_CS
--	leaq	.Lon_kernel_cs(%rip), %rax
--	pushq	%rax
--	lretq
--
--.Lon_kernel_cs:
--	UNWIND_HINT_EMPTY
--
- 	/* Sanitize CPU configuration */
- 	call verify_cpu
- 
--- 
-2.39.2
-
++		/*
++		 * Check if the segment contains the entry point, if so,
++		 * calculate the value of image->start based on it.
++		 * If the compiler has produced more than one .text section
++		 * (Eg: .text.hot), they are generally after the main .text
++		 * section, and they shall not be used to calculate
++		 * image->start. So do not re-calculate image->start if it
++		 * is not set to the initial value, and warn the user so they
++		 * have a chance to fix their purgatory's linker script.
++		 */
+ 		if (sechdrs[i].sh_flags & SHF_EXECINSTR &&
+ 		    pi->ehdr->e_entry >= sechdrs[i].sh_addr &&
+ 		    pi->ehdr->e_entry < (sechdrs[i].sh_addr
+-					 + sechdrs[i].sh_size)) {
++					 + sechdrs[i].sh_size) &&
++		    !WARN_ON(kbuf->image->start != pi->ehdr->e_entry)) {
+ 			kbuf->image->start -= sechdrs[i].sh_addr;
+ 			kbuf->image->start += kbuf->mem + offset;
+ 		}
 
 
