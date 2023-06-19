@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E408C735450
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:55:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48AFB73552C
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:02:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230415AbjFSKzM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:55:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56798 "EHLO
+        id S232523AbjFSLCV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 07:02:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232287AbjFSKyd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:54:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07E0F30DE
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:53:08 -0700 (PDT)
+        with ESMTP id S232535AbjFSLBq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:01:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DC4D198B
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:00:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DC7D960B5F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:53:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFE8C433C8;
-        Mon, 19 Jun 2023 10:53:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EB27B60BA9
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:00:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5C2C433C9;
+        Mon, 19 Jun 2023 11:00:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171987;
-        bh=pGeDjDxZN8oJ4o7LYABuFyi3Kc23NvPqjI1ccz+uNHA=;
+        s=korg; t=1687172453;
+        bh=mUxazbtijndZeWbbpicFksuF6x2wtYJvWKWc1D0YLXY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IQbLJvXfsSjptRhDfNECCbxhViagBnuE8ifsjqqOWKobipPRmHusEkGkVSBjRvizP
-         +qxvTC4zPcEQgPfXYc0pJqTsRt1AVsNeseWCeAaIUm3kGp32NqvdIeubA6Sp3e36uh
-         fS6WnGaUhEc7InY1a0HSiV9HDM2j/x5kKdFHcDAw=
+        b=OcfwxV6JcM0RS8vBnIA0gVvHi5yEUPteSTFkwo5oKIwHWHj1r7puHt1iK+5Aanu9u
+         NZRPbucym00GPJBd8a+KpJewazRPbjeSJD3tSiWnbHnGAmzfypWIKicOm/7sWdlEtv
+         6bAlvGiCDr+NsogP02nWdt9ixbkrnyxLq92Klqlg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gaosheng Cui <cuigaosheng1@huawei.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 61/64] net: Remove unused inline function dst_hold_and_use()
+        patches@lists.linux.dev,
+        syzbot+eba589d8f49c73d356da@syzkaller.appspotmail.com,
+        Zhu Yanjun <yanjun.zhu@linux.dev>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 073/107] RDMA/rxe: Fix the use-before-initialization error of resp_pkts
 Date:   Mon, 19 Jun 2023 12:30:57 +0200
-Message-ID: <20230619102135.973794266@linuxfoundation.org>
+Message-ID: <20230619102144.935695280@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
-References: <20230619102132.808972458@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,35 +57,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gaosheng Cui <cuigaosheng1@huawei.com>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
 
-commit 0b81882ddf8ac2743f657afb001beec7fc3929af upstream.
+[ Upstream commit 2a62b6210ce876c596086ab8fd4c8a0c3d10611a ]
 
-All uses of dst_hold_and_use() have
-been removed since commit 1202cdd66531 ("Remove DECnet support
-from kernel"), so remove it.
+In the following:
 
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  Call Trace:
+   <TASK>
+   __dump_stack lib/dump_stack.c:88 [inline]
+   dump_stack_lvl+0xd9/0x150 lib/dump_stack.c:106
+   assign_lock_key kernel/locking/lockdep.c:982 [inline]
+   register_lock_class+0xdb6/0x1120 kernel/locking/lockdep.c:1295
+   __lock_acquire+0x10a/0x5df0 kernel/locking/lockdep.c:4951
+   lock_acquire kernel/locking/lockdep.c:5691 [inline]
+   lock_acquire+0x1b1/0x520 kernel/locking/lockdep.c:5656
+   __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+   _raw_spin_lock_irqsave+0x3d/0x60 kernel/locking/spinlock.c:162
+   skb_dequeue+0x20/0x180 net/core/skbuff.c:3639
+   drain_resp_pkts drivers/infiniband/sw/rxe/rxe_comp.c:555 [inline]
+   rxe_completer+0x250d/0x3cc0 drivers/infiniband/sw/rxe/rxe_comp.c:652
+   rxe_qp_do_cleanup+0x1be/0x820 drivers/infiniband/sw/rxe/rxe_qp.c:761
+   execute_in_process_context+0x3b/0x150 kernel/workqueue.c:3473
+   __rxe_cleanup+0x21e/0x370 drivers/infiniband/sw/rxe/rxe_pool.c:233
+   rxe_create_qp+0x3f6/0x5f0 drivers/infiniband/sw/rxe/rxe_verbs.c:583
+
+This is a use-before-initialization problem.
+
+It happens because rxe_qp_do_cleanup is called during error unwind before
+the struct has been fully initialized.
+
+Move the initialization of the skb earlier.
+
+Fixes: 8700e3e7c485 ("Soft RoCE driver")
+Link: https://lore.kernel.org/r/20230602035408.741534-1-yanjun.zhu@intel.com
+Reported-by: syzbot+eba589d8f49c73d356da@syzkaller.appspotmail.com
+Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/dst.h |    6 ------
- 1 file changed, 6 deletions(-)
+ drivers/infiniband/sw/rxe/rxe_qp.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/include/net/dst.h
-+++ b/include/net/dst.h
-@@ -236,12 +236,6 @@ static inline void dst_use_noref(struct
- 	}
- }
+diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
+index 64c2729f4c0c0..13b237d93a616 100644
+--- a/drivers/infiniband/sw/rxe/rxe_qp.c
++++ b/drivers/infiniband/sw/rxe/rxe_qp.c
+@@ -203,6 +203,9 @@ static void rxe_qp_init_misc(struct rxe_dev *rxe, struct rxe_qp *qp,
+ 	spin_lock_init(&qp->rq.producer_lock);
+ 	spin_lock_init(&qp->rq.consumer_lock);
  
--static inline void dst_hold_and_use(struct dst_entry *dst, unsigned long time)
--{
--	dst_hold(dst);
--	dst_use_noref(dst, time);
--}
++	skb_queue_head_init(&qp->req_pkts);
++	skb_queue_head_init(&qp->resp_pkts);
++
+ 	atomic_set(&qp->ssn, 0);
+ 	atomic_set(&qp->skb_out, 0);
+ }
+@@ -263,8 +266,6 @@ static int rxe_qp_init_req(struct rxe_dev *rxe, struct rxe_qp *qp,
+ 	qp->req.opcode		= -1;
+ 	qp->comp.opcode		= -1;
+ 
+-	skb_queue_head_init(&qp->req_pkts);
 -
- static inline struct dst_entry *dst_clone(struct dst_entry *dst)
- {
- 	if (dst)
+ 	rxe_init_task(&qp->req.task, qp, rxe_requester);
+ 	rxe_init_task(&qp->comp.task, qp, rxe_completer);
+ 
+@@ -311,8 +312,6 @@ static int rxe_qp_init_resp(struct rxe_dev *rxe, struct rxe_qp *qp,
+ 		}
+ 	}
+ 
+-	skb_queue_head_init(&qp->resp_pkts);
+-
+ 	rxe_init_task(&qp->resp.task, qp, rxe_responder);
+ 
+ 	qp->resp.opcode		= OPCODE_NONE;
+-- 
+2.39.2
+
 
 
