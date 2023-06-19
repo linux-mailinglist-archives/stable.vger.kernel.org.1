@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C49C735345
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:43:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BB5D735294
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:36:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231451AbjFSKnq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:43:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47170 "EHLO
+        id S231814AbjFSKgf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:36:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229798AbjFSKn1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:43:27 -0400
+        with ESMTP id S231961AbjFSKgK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:36:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C95A5E76
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:43:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59FC910D8
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:35:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6184160670
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:43:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79088C433C9;
-        Mon, 19 Jun 2023 10:43:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E441B60B58
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:35:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0955BC433C8;
+        Mon, 19 Jun 2023 10:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171381;
-        bh=UOuf+ISkjVh8LEl8gJremwMY0utWFUL05SSdIZEVKks=;
+        s=korg; t=1687170955;
+        bh=mdbmSESeonHWN1aK4IwDHNYlhsoIxMfPZ0/Z6vaPIGE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uwjXFc6Q5m/atPwsqf0TuL5Pwigh2kwKvKYQKYFOYSqbUk+8Egh4yOgHDEBaWbDhh
-         qQ9mtu6RATeX67/Nac9IB6NxVi3hzJQV7OZ3Ugu7ZLzg8qynBtyItXUvbpaOeHrt4K
-         JVlp4YrMKPBJvd53PyADmVB6DWjx7fTXakbvMtNE=
+        b=u4bASEKqTHda8PA8FxWRkY/g/W7VMUMGvr+u3JWa+NMVlTlnL8RBEkP+IeHwFi9Op
+         ztAN+ARtgYh1ceQjQLM4MMHDLAYZVCB9FuzJniG7bPkyhxByJ8+1JLyfTPgiSpqJhS
+         /2T/NDrnOUZIee9Tu8BThC6Ui5ELuR6URYnnHUAA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 011/166] power: supply: ab8500: Fix external_power_changed race
+        patches@lists.linux.dev, Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.3 070/187] ALSA: usb-audio: Fix broken resume due to UAC3 power state
 Date:   Mon, 19 Jun 2023 12:28:08 +0200
-Message-ID: <20230619102155.228660101@linuxfoundation.org>
+Message-ID: <20230619102201.040498478@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,73 +53,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit a5299ce4e96f3e8930e9c051b28d8093ada87b08 ]
+commit 8ba61c9f6c9bdfbf9d197b0282641d24ae909778 upstream.
 
-ab8500_btemp_external_power_changed() dereferences di->btemp_psy,
-which gets sets in ab8500_btemp_probe() like this:
+As reported in the bugzilla below, the PM resume of a UAC3 device may
+fail due to the incomplete power state change, stuck at D1.  The
+reason is that the driver expects the full D0 power state change only
+at hw_params, while the normal PCM resume procedure doesn't call
+hw_params.
 
-        di->btemp_psy = devm_power_supply_register(dev, &ab8500_btemp_desc,
-                                                   &psy_cfg);
+For fixing the bug, we add the same power state update to D0 at the
+prepare callback, which is certainly called by the resume procedure.
 
-As soon as devm_power_supply_register() has called device_add()
-the external_power_changed callback can get called. So there is a window
-where ab8500_btemp_external_power_changed() may get called while
-di->btemp_psy has not been set yet leading to a NULL pointer dereference.
+Note that, with this change, the power state change in the hw_params
+becomes almost redundant, since snd_usb_hw_params() doesn't touch the
+parameters (at least it tires so).  But dropping it is still a bit
+risky (e.g. we have the media-driver binding), so I leave the D0 power
+state change in snd_usb_hw_params() as is for now.
 
-Fixing this is easy. The external_power_changed callback gets passed
-the power_supply which will eventually get stored in di->btemp_psy,
-so ab8500_btemp_external_power_changed() can simply directly use
-the passed in psy argument which is always valid.
-
-And the same applies to ab8500_fg_external_power_changed().
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a0a4959eb4e9 ("ALSA: usb-audio: Operate UAC3 Power Domains in PCM callbacks")
+Cc: <stable@vger.kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217539
+Link: https://lore.kernel.org/r/20230612132818.29486-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/ab8500_btemp.c | 6 ++----
- drivers/power/supply/ab8500_fg.c    | 6 ++----
- 2 files changed, 4 insertions(+), 8 deletions(-)
+ sound/usb/pcm.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/power/supply/ab8500_btemp.c b/drivers/power/supply/ab8500_btemp.c
-index 307ee6f71042e..6f83e99d2eb72 100644
---- a/drivers/power/supply/ab8500_btemp.c
-+++ b/drivers/power/supply/ab8500_btemp.c
-@@ -624,10 +624,8 @@ static int ab8500_btemp_get_ext_psy_data(struct device *dev, void *data)
-  */
- static void ab8500_btemp_external_power_changed(struct power_supply *psy)
- {
--	struct ab8500_btemp *di = power_supply_get_drvdata(psy);
--
--	class_for_each_device(power_supply_class, NULL,
--		di->btemp_psy, ab8500_btemp_get_ext_psy_data);
-+	class_for_each_device(power_supply_class, NULL, psy,
-+			      ab8500_btemp_get_ext_psy_data);
- }
+--- a/sound/usb/pcm.c
++++ b/sound/usb/pcm.c
+@@ -650,6 +650,10 @@ static int snd_usb_pcm_prepare(struct sn
+ 		goto unlock;
+ 	}
  
- /* ab8500 btemp driver interrupts and their respective isr */
-diff --git a/drivers/power/supply/ab8500_fg.c b/drivers/power/supply/ab8500_fg.c
-index c6c9804280dbe..71ce28eed463f 100644
---- a/drivers/power/supply/ab8500_fg.c
-+++ b/drivers/power/supply/ab8500_fg.c
-@@ -2407,10 +2407,8 @@ static int ab8500_fg_init_hw_registers(struct ab8500_fg *di)
-  */
- static void ab8500_fg_external_power_changed(struct power_supply *psy)
- {
--	struct ab8500_fg *di = power_supply_get_drvdata(psy);
--
--	class_for_each_device(power_supply_class, NULL,
--		di->fg_psy, ab8500_fg_get_ext_psy_data);
-+	class_for_each_device(power_supply_class, NULL, psy,
-+			      ab8500_fg_get_ext_psy_data);
- }
- 
- /**
--- 
-2.39.2
-
++	ret = snd_usb_pcm_change_state(subs, UAC3_PD_STATE_D0);
++	if (ret < 0)
++		goto unlock;
++
+  again:
+ 	if (subs->sync_endpoint) {
+ 		ret = snd_usb_endpoint_prepare(chip, subs->sync_endpoint);
 
 
