@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33C8D7353C9
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:48:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BED1E735314
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232147AbjFSKsm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:48:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52000 "EHLO
+        id S230003AbjFSKlT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:41:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232047AbjFSKsU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:48:20 -0400
+        with ESMTP id S231918AbjFSKlG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:41:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 490B81AC
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:48:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B08FCCA
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:41:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D614360B5B
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:48:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9BDC433C8;
-        Mon, 19 Jun 2023 10:48:04 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4369B60B82
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:41:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 552C4C433C9;
+        Mon, 19 Jun 2023 10:41:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171685;
-        bh=Jvbzr2SUDghLYhLeyBav6vqkETHkoHwM3Uq1wREb8os=;
+        s=korg; t=1687171264;
+        bh=HWh8sgvnPFqWNGo0bfESw4g+5a7VMFiAMStjfk7kylE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GLAjdfbZePqlGFsxqQ2Ayrqtan1Wq0rHsPkOae/w/nFlr5thPWbAD7R9uod65aunF
-         6oF7EkcocVeR7w7g3SS/whP7Nnh/atk46ns3CxmIQ8M3i+3wMPg2udxWDXhU8GOnfd
-         1AsCBLveHF0XJ6BBoApFSuooSm/M8J3JF+C4w2yI=
+        b=0saQJZGAJmO9fm8XblzJIHbS5mIDD8jbKmH2q1xj2aQgb5sTcHzvPGX4wwhdvUkUb
+         XcUR1r4ppc+kgZ+wnUcz0tBjqEjBzfG7X94iCeqFbgFBNwjSwSnlCpwqE+m3FxrGS0
+         iwC1FhAzXX12UdII+kqs2BM31TKHJJNeKiD5IhAs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maor Gottlieb <maorg@nvidia.com>,
-        Mark Bloch <mbloch@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 120/166] RDMA/mlx5: Fix affinity assignment
+        patches@lists.linux.dev, Karol Herbst <kherbst@redhat.com>,
+        Dave Airlie <airlied@redhat.com>
+Subject: [PATCH 4.19 19/49] nouveau: fix client work fence deletion race
 Date:   Mon, 19 Jun 2023 12:29:57 +0200
-Message-ID: <20230619102200.663318237@linuxfoundation.org>
+Message-ID: <20230619102130.857781927@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
+References: <20230619102129.856988902@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,125 +54,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Bloch <mbloch@nvidia.com>
+From: Dave Airlie <airlied@redhat.com>
 
-[ Upstream commit 617f5db1a626f18d5cbb7c7faf7bf8f9ea12be78 ]
+commit c8a5d5ea3ba6a18958f8d76430e4cd68eea33943 upstream.
 
-The cited commit aimed to ensure that Virtual Functions (VFs) assign a
-queue affinity to a Queue Pair (QP) to distribute traffic when
-the LAG master creates a hardware LAG. If the affinity was set while
-the hardware was not in LAG, the firmware would ignore the affinity value.
+This seems to have existed for ever but is now more apparant after
+commit 9bff18d13473 ("drm/ttm: use per BO cleanup workers")
 
-However, this commit unintentionally assigned an affinity to QPs on the LAG
-master's VPORT even if the RDMA device was not marked as LAG-enabled.
-In most cases, this was not an issue because when the hardware entered
-hardware LAG configuration, the RDMA device of the LAG master would be
-destroyed and a new one would be created, marked as LAG-enabled.
+My analysis: two threads are running, one in the irq signalling the
+fence, in dma_fence_signal_timestamp_locked, it has done the
+DMA_FENCE_FLAG_SIGNALLED_BIT setting, but hasn't yet reached the
+callbacks.
 
-The problem arises when a user configures Equal-Cost Multipath (ECMP).
-In ECMP mode, traffic can be directed to different physical ports based on
-the queue affinity, which is intended for use by VPORTS other than the
-E-Switch manager. ECMP mode is supported only if both E-Switch managers are
-in switchdev mode and the appropriate route is configured via IP. In this
-configuration, the RDMA device is not destroyed, and we retain the RDMA
-device that is not marked as LAG-enabled.
+The second thread in nouveau_cli_work_ready, where it sees the fence is
+signalled, so then puts the fence, cleanups the object and frees the
+work item, which contains the callback.
 
-To ensure correct behavior, Send Queues (SQs) opened by the E-Switch
-manager through verbs should be assigned strict affinity. This means they
-will only be able to communicate through the native physical port
-associated with the E-Switch manager. This will prevent the firmware from
-assigning affinity and will not allow the SQs to be remapped in case of
-failover.
+Thread one goes again and tries to call the callback and causes the
+use-after-free.
 
-Fixes: 802dcc7fc5ec ("RDMA/mlx5: Support TX port affinity for VF drivers in LAG mode")
-Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://lore.kernel.org/r/425b05f4da840bc684b0f7e8ebf61aeb5cef09b0.1685960567.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Proposed fix: lock the fence signalled check in nouveau_cli_work_ready,
+so either the callbacks are done or the memory is freed.
+
+Reviewed-by: Karol Herbst <kherbst@redhat.com>
+Fixes: 11e451e74050 ("drm/nouveau: remove fence wait code from deferred client work handler")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://lore.kernel.org/dri-devel/20230615024008.1600281-1-airlied@gmail.com/
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx5/mlx5_ib.h                |  3 +++
- drivers/infiniband/hw/mlx5/qp.c                     |  3 +++
- drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h | 12 ------------
- include/linux/mlx5/driver.h                         | 12 ++++++++++++
- 4 files changed, 18 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_drm.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-index 038522bb7113e..8d94e6834e01b 100644
---- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
-+++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-@@ -1564,6 +1564,9 @@ static inline bool mlx5_ib_lag_should_assign_affinity(struct mlx5_ib_dev *dev)
- 	    MLX5_CAP_PORT_SELECTION(dev->mdev, port_select_flow_table_bypass))
- 		return 0;
- 
-+	if (mlx5_lag_is_lacp_owner(dev->mdev) && !dev->lag_active)
-+		return 0;
+--- a/drivers/gpu/drm/nouveau/nouveau_drm.c
++++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
+@@ -120,10 +120,16 @@ nouveau_name(struct drm_device *dev)
+ static inline bool
+ nouveau_cli_work_ready(struct dma_fence *fence)
+ {
+-	if (!dma_fence_is_signaled(fence))
+-		return false;
+-	dma_fence_put(fence);
+-	return true;
++	bool ret = true;
 +
- 	return dev->lag_active ||
- 		(MLX5_CAP_GEN(dev->mdev, num_lag_ports) > 1 &&
- 		 MLX5_CAP_GEN(dev->mdev, lag_tx_port_affinity));
-diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
-index f7d3643b08f50..ac53ed79ca64c 100644
---- a/drivers/infiniband/hw/mlx5/qp.c
-+++ b/drivers/infiniband/hw/mlx5/qp.c
-@@ -1156,6 +1156,9 @@ static int create_raw_packet_qp_tis(struct mlx5_ib_dev *dev,
- 
- 	MLX5_SET(create_tis_in, in, uid, to_mpd(pd)->uid);
- 	MLX5_SET(tisc, tisc, transport_domain, tdn);
-+	if (!mlx5_ib_lag_should_assign_affinity(dev) &&
-+	    mlx5_lag_is_lacp_owner(dev->mdev))
-+		MLX5_SET(tisc, tisc, strict_lag_tx_port_affinity, 1);
- 	if (qp->flags & IB_QP_CREATE_SOURCE_QPN)
- 		MLX5_SET(tisc, tisc, underlay_qpn, qp->underlay_qpn);
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-index 1a35b3c2a3674..0b560e97a3563 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-@@ -275,18 +275,6 @@ static inline bool mlx5_sriov_is_enabled(struct mlx5_core_dev *dev)
- 	return pci_num_vf(dev->pdev) ? true : false;
++	spin_lock_irq(fence->lock);
++	if (!dma_fence_is_signaled_locked(fence))
++		ret = false;
++	spin_unlock_irq(fence->lock);
++
++	if (ret == true)
++		dma_fence_put(fence);
++	return ret;
  }
  
--static inline int mlx5_lag_is_lacp_owner(struct mlx5_core_dev *dev)
--{
--	/* LACP owner conditions:
--	 * 1) Function is physical.
--	 * 2) LAG is supported by FW.
--	 * 3) LAG is managed by driver (currently the only option).
--	 */
--	return  MLX5_CAP_GEN(dev, vport_group_manager) &&
--		   (MLX5_CAP_GEN(dev, num_lag_ports) > 1) &&
--		    MLX5_CAP_GEN(dev, lag_master);
--}
--
- int mlx5_rescan_drivers_locked(struct mlx5_core_dev *dev);
- static inline int mlx5_rescan_drivers(struct mlx5_core_dev *dev)
- {
-diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
-index fff61e6d6d4de..3660ce6a93496 100644
---- a/include/linux/mlx5/driver.h
-+++ b/include/linux/mlx5/driver.h
-@@ -1230,6 +1230,18 @@ static inline u16 mlx5_core_max_vfs(const struct mlx5_core_dev *dev)
- 	return dev->priv.sriov.max_vfs;
- }
- 
-+static inline int mlx5_lag_is_lacp_owner(struct mlx5_core_dev *dev)
-+{
-+	/* LACP owner conditions:
-+	 * 1) Function is physical.
-+	 * 2) LAG is supported by FW.
-+	 * 3) LAG is managed by driver (currently the only option).
-+	 */
-+	return  MLX5_CAP_GEN(dev, vport_group_manager) &&
-+		   (MLX5_CAP_GEN(dev, num_lag_ports) > 1) &&
-+		    MLX5_CAP_GEN(dev, lag_master);
-+}
-+
- static inline int mlx5_get_gid_table_len(u16 param)
- {
- 	if (param > 4) {
--- 
-2.39.2
-
+ static void
 
 
