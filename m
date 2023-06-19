@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDF0373532C
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:42:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42E75735404
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:51:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232010AbjFSKmX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:42:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47184 "EHLO
+        id S232196AbjFSKvP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:51:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231129AbjFSKmH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:42:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCE5EE51
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:42:06 -0700 (PDT)
+        with ESMTP id S232204AbjFSKum (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:50:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37278C3
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:50:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A77460670
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:42:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FCCCC433C0;
-        Mon, 19 Jun 2023 10:42:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C14166068B
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:50:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBD45C433C0;
+        Mon, 19 Jun 2023 10:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171325;
-        bh=TvKaVSV7PH0o2IDTEJPk7NGATkfqXbuxkh9jlKRJAGI=;
+        s=korg; t=1687171814;
+        bh=FpZbeesFbF4D+zyryl0oboypA5TXNyeoaUfoXB0qfhQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IxmxvyvLBp7DpgpNRe23RThHOm/4rIiSGRsvMXwVDO7Ao2lCllPaPdW42x2PY5l7n
-         OuTB+GAzWEkE7+r7W7c5iV3v/HkWV2DpRJPQzSIcfhUbFFtkMRpna0yuf6oQNbWISx
-         iUvpseufM5svieqXLLLkVODFQ0rukdRWHuW4Zh0Q=
+        b=IE5EEjbULnUBERGOfXK3pEx4OwHaKPYZ0Q6PY7cbuLVxNVp/pciEA+DmtbZzapqb2
+         uv1gqJh8F9FpBaB+kJ3QgvObzRlVcvqNgYAqaycgiWmc1uDQJUAqu2eYlc6uKBm+XC
+         EOOoNl2/hj9QJec3QEoms4DDp/vIdH7RRbZaUWZw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Martin Schiller <ms@dev.tdt.de>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Danielle Ratson <danieller@nvidia.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 41/49] net: lapbether: only support ethernet devices
+Subject: [PATCH 6.1 142/166] selftests: forwarding: hw_stats_l3: Set addrgenmode in a separate step
 Date:   Mon, 19 Jun 2023 12:30:19 +0200
-Message-ID: <20230619102132.080097967@linuxfoundation.org>
+Message-ID: <20230619102201.628348857@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
-References: <20230619102129.856988902@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,94 +57,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Danielle Ratson <danieller@nvidia.com>
 
-[ Upstream commit 9eed321cde22fc1afd76eac563ce19d899e0d6b2 ]
+[ Upstream commit bef68e201e538eaa3a91f97aae8161eb2d0a8ed7 ]
 
-It probbaly makes no sense to support arbitrary network devices
-for lapbether.
+Setting the IPv6 address generation mode of a net device during its
+creation never worked, but after commit b0ad3c179059 ("rtnetlink: call
+validate_linkmsg in rtnl_create_link") it explicitly fails [1]. The
+failure is caused by the fact that validate_linkmsg() is called before
+the net device is registered, when it still does not have an 'inet6_dev'.
 
-syzbot reported:
+Likewise, raising the net device before setting the address generation
+mode is meaningless, because by the time the mode is set, the address
+has already been generated.
 
-skbuff: skb_under_panic: text:ffff80008934c100 len:44 put:40 head:ffff0000d18dd200 data:ffff0000d18dd1ea tail:0x16 end:0x140 dev:bond1
-kernel BUG at net/core/skbuff.c:200 !
-Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
-Modules linked in:
-CPU: 0 PID: 5643 Comm: dhcpcd Not tainted 6.4.0-rc5-syzkaller-g4641cff8e810 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/25/2023
-pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : skb_panic net/core/skbuff.c:196 [inline]
-pc : skb_under_panic+0x13c/0x140 net/core/skbuff.c:210
-lr : skb_panic net/core/skbuff.c:196 [inline]
-lr : skb_under_panic+0x13c/0x140 net/core/skbuff.c:210
-sp : ffff8000973b7260
-x29: ffff8000973b7270 x28: ffff8000973b7360 x27: dfff800000000000
-x26: ffff0000d85d8150 x25: 0000000000000016 x24: ffff0000d18dd1ea
-x23: ffff0000d18dd200 x22: 000000000000002c x21: 0000000000000140
-x20: 0000000000000028 x19: ffff80008934c100 x18: ffff8000973b68a0
-x17: 0000000000000000 x16: ffff80008a43bfbc x15: 0000000000000202
-x14: 0000000000000000 x13: 0000000000000001 x12: 0000000000000001
-x11: 0000000000000201 x10: 0000000000000000 x9 : f22f7eb937cced00
-x8 : f22f7eb937cced00 x7 : 0000000000000001 x6 : 0000000000000001
-x5 : ffff8000973b6b78 x4 : ffff80008df9ee80 x3 : ffff8000805974f4
-x2 : 0000000000000001 x1 : 0000000100000201 x0 : 0000000000000086
-Call trace:
-skb_panic net/core/skbuff.c:196 [inline]
-skb_under_panic+0x13c/0x140 net/core/skbuff.c:210
-skb_push+0xf0/0x108 net/core/skbuff.c:2409
-ip6gre_header+0xbc/0x738 net/ipv6/ip6_gre.c:1383
-dev_hard_header include/linux/netdevice.h:3137 [inline]
-lapbeth_data_transmit+0x1c4/0x298 drivers/net/wan/lapbether.c:257
-lapb_data_transmit+0x8c/0xb0 net/lapb/lapb_iface.c:447
-lapb_transmit_buffer+0x178/0x204 net/lapb/lapb_out.c:149
-lapb_send_control+0x220/0x320 net/lapb/lapb_subr.c:251
-lapb_establish_data_link+0x94/0xec
-lapb_device_event+0x348/0x4e0
-notifier_call_chain+0x1a4/0x510 kernel/notifier.c:93
-raw_notifier_call_chain+0x3c/0x50 kernel/notifier.c:461
-__dev_notify_flags+0x2bc/0x544
-dev_change_flags+0xd0/0x15c net/core/dev.c:8643
-devinet_ioctl+0x858/0x17e4 net/ipv4/devinet.c:1150
-inet_ioctl+0x2ac/0x4d8 net/ipv4/af_inet.c:979
-sock_do_ioctl+0x134/0x2dc net/socket.c:1201
-sock_ioctl+0x4ec/0x858 net/socket.c:1318
-vfs_ioctl fs/ioctl.c:51 [inline]
-__do_sys_ioctl fs/ioctl.c:870 [inline]
-__se_sys_ioctl fs/ioctl.c:856 [inline]
-__arm64_sys_ioctl+0x14c/0x1c8 fs/ioctl.c:856
-__invoke_syscall arch/arm64/kernel/syscall.c:38 [inline]
-invoke_syscall+0x98/0x2c0 arch/arm64/kernel/syscall.c:52
-el0_svc_common+0x138/0x244 arch/arm64/kernel/syscall.c:142
-do_el0_svc+0x64/0x198 arch/arm64/kernel/syscall.c:191
-el0_svc+0x4c/0x160 arch/arm64/kernel/entry-common.c:647
-el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:665
-el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:591
-Code: aa1803e6 aa1903e7 a90023f5 947730f5 (d4210000)
+Therefore, fix the test to first create the net device, then set its
+IPv6 address generation mode and finally bring it up.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Martin Schiller <ms@dev.tdt.de>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+[1]
+ # ip link add name mydev addrgenmode eui64 type dummy
+ RTNETLINK answers: Address family not supported by protocol
+
+Fixes: ba95e7930957 ("selftests: forwarding: hw_stats_l3: Add a new test")
+Signed-off-by: Danielle Ratson <danieller@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Link: https://lore.kernel.org/r/f3b05d85b2bc0c3d6168fe8f7207c6c8365703db.1686580046.git.petrm@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wan/lapbether.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/net/forwarding/hw_stats_l3.sh | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wan/lapbether.c b/drivers/net/wan/lapbether.c
-index 6233805fc032c..b2ede9acb4bcf 100644
---- a/drivers/net/wan/lapbether.c
-+++ b/drivers/net/wan/lapbether.c
-@@ -344,6 +344,9 @@ static int lapbeth_new_device(struct net_device *dev)
+diff --git a/tools/testing/selftests/net/forwarding/hw_stats_l3.sh b/tools/testing/selftests/net/forwarding/hw_stats_l3.sh
+index 9c1f76e108af1..1a936ffbacee7 100755
+--- a/tools/testing/selftests/net/forwarding/hw_stats_l3.sh
++++ b/tools/testing/selftests/net/forwarding/hw_stats_l3.sh
+@@ -84,8 +84,9 @@ h2_destroy()
  
- 	ASSERT_RTNL();
+ router_rp1_200_create()
+ {
+-	ip link add name $rp1.200 up \
+-		link $rp1 addrgenmode eui64 type vlan id 200
++	ip link add name $rp1.200 link $rp1 type vlan id 200
++	ip link set dev $rp1.200 addrgenmode eui64
++	ip link set dev $rp1.200 up
+ 	ip address add dev $rp1.200 192.0.2.2/28
+ 	ip address add dev $rp1.200 2001:db8:1::2/64
+ 	ip stats set dev $rp1.200 l3_stats on
+@@ -256,9 +257,11 @@ reapply_config()
  
-+	if (dev->type != ARPHRD_ETHER)
-+		return -EINVAL;
-+
- 	ndev = alloc_netdev(sizeof(*lapbeth), "lapb%d", NET_NAME_UNKNOWN,
- 			    lapbeth_setup);
- 	if (!ndev)
+ 	router_rp1_200_destroy
+ 
+-	ip link add name $rp1.200 link $rp1 addrgenmode none type vlan id 200
++	ip link add name $rp1.200 link $rp1 type vlan id 200
++	ip link set dev $rp1.200 addrgenmode none
+ 	ip stats set dev $rp1.200 l3_stats on
+-	ip link set dev $rp1.200 up addrgenmode eui64
++	ip link set dev $rp1.200 addrgenmode eui64
++	ip link set dev $rp1.200 up
+ 	ip address add dev $rp1.200 192.0.2.2/28
+ 	ip address add dev $rp1.200 2001:db8:1::2/64
+ }
 -- 
 2.39.2
 
