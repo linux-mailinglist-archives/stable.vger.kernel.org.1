@@ -2,70 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08214735507
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:00:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C432735337
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:42:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232526AbjFSLAs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:00:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60858 "EHLO
+        id S231723AbjFSKm5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:42:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232616AbjFSLAL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:00:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91DCD10E6
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:59:22 -0700 (PDT)
+        with ESMTP id S231815AbjFSKmf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:42:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE069E60
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:42:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F96360B78
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:59:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 119F7C433CD;
-        Mon, 19 Jun 2023 10:59:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7662460B0D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:42:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B879C433C0;
+        Mon, 19 Jun 2023 10:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172361;
-        bh=SfNM99MH6vh1VJqH781Z/xe6otLHtQbsFp4Y9+DyND8=;
+        s=korg; t=1687171344;
+        bh=gO5fFrOemlEKC6vifkRtKkrolXah1xahUdNKa7KgCO4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fXpk6oPB0x1z1DYjrMZhilgDtMS4nVi2rpt6ANe2NatBtIyU6b/LncL0efgNz9ZuK
-         PdL+9GP4AeSM58iV7oFtnsBAtcTLwFuDma39b4y0y43wFLA6n14I4tdyuz8Ziv1SfV
-         x9VY+v5ZQYin/w/SPnHuRunzBZxqXJdA9cQ4VtPk=
+        b=Fwk/ziMeCm/iG+5XbHYEV8kavuGyjnQFsRNvqYGS0c+cz0IRjbv09MtHJLn3Nj5zO
+         sjhzSPGDJV/JaDCE8avCOdBQB/T+Ab2aEb5CIH17Rx+UnNQBPgzC41e5T0MLUEiAJ3
+         11foNJM1gEDymLRX2SyMkJWhCkyV7u/SArA9hCAQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ricardo Ribalda <ribalda@chromium.org>,
-        Ross Zwisler <zwisler@google.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Philipp Rudo <prudo@redhat.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Baoquan He <bhe@redhat.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Dave Young <dyoung@redhat.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Simon Horman <horms@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tom Rix <trix@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 041/107] kexec: support purgatories with .text.hot sections
+        patches@lists.linux.dev,
+        Alexander Kapshuk <alexander.kapshuk@gmail.com>,
+        Lyude Paul <lyude@redhat.com>, Ben Skeggs <bskeggs@redhat.com>
+Subject: [PATCH 4.19 47/49] drm/nouveau/kms: Fix NULL pointer dereference in nouveau_connector_detect_depth
 Date:   Mon, 19 Jun 2023 12:30:25 +0200
-Message-ID: <20230619102143.466968994@linuxfoundation.org>
+Message-ID: <20230619102132.370909504@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
+References: <20230619102129.856988902@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -74,102 +55,211 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Alexander Kapshuk <alexander.kapshuk@gmail.com>
 
-commit 8652d44f466ad5772e7d1756e9457046189b0dfc upstream.
+commit 630f512280604eecae0ddc2b3f8402f7931c56fd upstream.
 
-Patch series "kexec: Fix kexec_file_load for llvm16 with PGO", v7.
+This oops manifests itself on the following hardware:
+01:00.0 VGA compatible controller: NVIDIA Corporation G98M [GeForce G 103M] (rev a1)
 
-When upreving llvm I realised that kexec stopped working on my test
-platform.
+Oct 09 14:17:46 lp-sasha kernel: BUG: kernel NULL pointer dereference, address: 0000000000000000
+Oct 09 14:17:46 lp-sasha kernel: #PF: supervisor read access in kernel mode
+Oct 09 14:17:46 lp-sasha kernel: #PF: error_code(0x0000) - not-present page
+Oct 09 14:17:46 lp-sasha kernel: PGD 0 P4D 0
+Oct 09 14:17:46 lp-sasha kernel: Oops: 0000 [#1] SMP PTI
+Oct 09 14:17:46 lp-sasha kernel: CPU: 1 PID: 191 Comm: systemd-udevd Not tainted 5.9.0-rc8-next-20201009 #38
+Oct 09 14:17:46 lp-sasha kernel: Hardware name: Hewlett-Packard Compaq Presario CQ61 Notebook PC/306A, BIOS F.03 03/23/2009
+Oct 09 14:17:46 lp-sasha kernel: RIP: 0010:nouveau_connector_detect_depth+0x71/0xc0 [nouveau]
+Oct 09 14:17:46 lp-sasha kernel: Code: 0a 00 00 48 8b 49 48 c7 87 b8 00 00 00 06 00 00 00 80 b9 4d 0a 00 00 00 75 1e 83 fa 41 75 05 48 85 c0 75 29 8b 81 10 0d 00 00 <39> 06 7c 25 f6 81 14 0d 00 00 02 75 b7 c3 80 b9 0c 0d 00 00 00 75
+Oct 09 14:17:46 lp-sasha kernel: RSP: 0018:ffffc9000028f8c0 EFLAGS: 00010297
+Oct 09 14:17:46 lp-sasha kernel: RAX: 0000000000014c08 RBX: ffff8880369d4000 RCX: ffff8880369d3000
+Oct 09 14:17:46 lp-sasha kernel: RDX: 0000000000000040 RSI: 0000000000000000 RDI: ffff8880369d4000
+Oct 09 14:17:46 lp-sasha kernel: RBP: ffff88800601cc00 R08: ffff8880051da298 R09: ffffffff8226201a
+Oct 09 14:17:46 lp-sasha kernel: R10: ffff88800469aa80 R11: ffff888004c84ff8 R12: 0000000000000000
+Oct 09 14:17:46 lp-sasha kernel: R13: ffff8880051da000 R14: 0000000000002000 R15: 0000000000000003
+Oct 09 14:17:46 lp-sasha kernel: FS:  00007fd0192b3440(0000) GS:ffff8880bc900000(0000) knlGS:0000000000000000
+Oct 09 14:17:46 lp-sasha kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+Oct 09 14:17:46 lp-sasha kernel: CR2: 0000000000000000 CR3: 0000000004976000 CR4: 00000000000006e0
+Oct 09 14:17:46 lp-sasha kernel: Call Trace:
+Oct 09 14:17:46 lp-sasha kernel:  nouveau_connector_get_modes+0x1e6/0x240 [nouveau]
+Oct 09 14:17:46 lp-sasha kernel:  ? kfree+0xb9/0x240
+Oct 09 14:17:46 lp-sasha kernel:  ? drm_connector_list_iter_next+0x7c/0xa0
+Oct 09 14:17:46 lp-sasha kernel:  drm_helper_probe_single_connector_modes+0x1ba/0x7c0
+Oct 09 14:17:46 lp-sasha kernel:  drm_client_modeset_probe+0x27e/0x1360
+Oct 09 14:17:46 lp-sasha kernel:  ? nvif_object_sclass_put+0xc/0x20 [nouveau]
+Oct 09 14:17:46 lp-sasha kernel:  ? nouveau_cli_init+0x3cc/0x440 [nouveau]
+Oct 09 14:17:46 lp-sasha kernel:  ? ktime_get_mono_fast_ns+0x49/0xa0
+Oct 09 14:17:46 lp-sasha kernel:  ? nouveau_drm_open+0x4e/0x180 [nouveau]
+Oct 09 14:17:46 lp-sasha kernel:  __drm_fb_helper_initial_config_and_unlock+0x3f/0x4a0
+Oct 09 14:17:46 lp-sasha kernel:  ? drm_file_alloc+0x18f/0x260
+Oct 09 14:17:46 lp-sasha kernel:  ? mutex_lock+0x9/0x40
+Oct 09 14:17:46 lp-sasha kernel:  ? drm_client_init+0x110/0x160
+Oct 09 14:17:46 lp-sasha kernel:  nouveau_fbcon_init+0x14d/0x1c0 [nouveau]
+Oct 09 14:17:46 lp-sasha kernel:  nouveau_drm_device_init+0x1c0/0x880 [nouveau]
+Oct 09 14:17:46 lp-sasha kernel:  nouveau_drm_probe+0x11a/0x1e0 [nouveau]
+Oct 09 14:17:46 lp-sasha kernel:  pci_device_probe+0xcd/0x140
+Oct 09 14:17:46 lp-sasha kernel:  really_probe+0xd8/0x400
+Oct 09 14:17:46 lp-sasha kernel:  driver_probe_device+0x4a/0xa0
+Oct 09 14:17:46 lp-sasha kernel:  device_driver_attach+0x9c/0xc0
+Oct 09 14:17:46 lp-sasha kernel:  __driver_attach+0x6f/0x100
+Oct 09 14:17:46 lp-sasha kernel:  ? device_driver_attach+0xc0/0xc0
+Oct 09 14:17:46 lp-sasha kernel:  bus_for_each_dev+0x75/0xc0
+Oct 09 14:17:46 lp-sasha kernel:  bus_add_driver+0x106/0x1c0
+Oct 09 14:17:46 lp-sasha kernel:  driver_register+0x86/0xe0
+Oct 09 14:17:46 lp-sasha kernel:  ? 0xffffffffa044e000
+Oct 09 14:17:46 lp-sasha kernel:  do_one_initcall+0x48/0x1e0
+Oct 09 14:17:46 lp-sasha kernel:  ? _cond_resched+0x11/0x60
+Oct 09 14:17:46 lp-sasha kernel:  ? kmem_cache_alloc_trace+0x19c/0x1e0
+Oct 09 14:17:46 lp-sasha kernel:  do_init_module+0x57/0x220
+Oct 09 14:17:46 lp-sasha kernel:  __do_sys_finit_module+0xa0/0xe0
+Oct 09 14:17:46 lp-sasha kernel:  do_syscall_64+0x33/0x40
+Oct 09 14:17:46 lp-sasha kernel:  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+Oct 09 14:17:46 lp-sasha kernel: RIP: 0033:0x7fd01a060d5d
+Oct 09 14:17:46 lp-sasha kernel: Code: 00 c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d e3 70 0c 00 f7 d8 64 89 01 48
+Oct 09 14:17:46 lp-sasha kernel: RSP: 002b:00007ffc8ad38a98 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
+Oct 09 14:17:46 lp-sasha kernel: RAX: ffffffffffffffda RBX: 0000563f6e7fd530 RCX: 00007fd01a060d5d
+Oct 09 14:17:46 lp-sasha kernel: RDX: 0000000000000000 RSI: 00007fd01a19f95d RDI: 000000000000000f
+Oct 09 14:17:46 lp-sasha kernel: RBP: 0000000000020000 R08: 0000000000000000 R09: 0000000000000007
+Oct 09 14:17:46 lp-sasha kernel: R10: 000000000000000f R11: 0000000000000246 R12: 00007fd01a19f95d
+Oct 09 14:17:46 lp-sasha kernel: R13: 0000000000000000 R14: 0000563f6e7fbc10 R15: 0000563f6e7fd530
+Oct 09 14:17:46 lp-sasha kernel: Modules linked in: nouveau(+) ttm xt_string xt_mark xt_LOG vgem v4l2_dv_timings uvcvideo ulpi udf ts_kmp ts_fsm ts_bm snd_aloop sil164 qat_dh895xccvf nf_nat_sip nf_nat_irc nf_nat_ftp nf_nat nf_log_ipv6 nf_log_ipv4 nf_log_common ltc2990 lcd intel_qat input_leds i2c_mux gspca_main videobuf2_vmalloc videobuf2_memops videobuf2_v4l2 videobuf2_common videodev mc drivetemp cuse fuse crc_itu_t coretemp ch7006 ath5k ath algif_hash
+Oct 09 14:17:46 lp-sasha kernel: CR2: 0000000000000000
+Oct 09 14:17:46 lp-sasha kernel: ---[ end trace 0ddafe218ad30017 ]---
+Oct 09 14:17:46 lp-sasha kernel: RIP: 0010:nouveau_connector_detect_depth+0x71/0xc0 [nouveau]
+Oct 09 14:17:46 lp-sasha kernel: Code: 0a 00 00 48 8b 49 48 c7 87 b8 00 00 00 06 00 00 00 80 b9 4d 0a 00 00 00 75 1e 83 fa 41 75 05 48 85 c0 75 29 8b 81 10 0d 00 00 <39> 06 7c 25 f6 81 14 0d 00 00 02 75 b7 c3 80 b9 0c 0d 00 00 00 75
+Oct 09 14:17:46 lp-sasha kernel: RSP: 0018:ffffc9000028f8c0 EFLAGS: 00010297
+Oct 09 14:17:46 lp-sasha kernel: RAX: 0000000000014c08 RBX: ffff8880369d4000 RCX: ffff8880369d3000
+Oct 09 14:17:46 lp-sasha kernel: RDX: 0000000000000040 RSI: 0000000000000000 RDI: ffff8880369d4000
+Oct 09 14:17:46 lp-sasha kernel: RBP: ffff88800601cc00 R08: ffff8880051da298 R09: ffffffff8226201a
+Oct 09 14:17:46 lp-sasha kernel: R10: ffff88800469aa80 R11: ffff888004c84ff8 R12: 0000000000000000
+Oct 09 14:17:46 lp-sasha kernel: R13: ffff8880051da000 R14: 0000000000002000 R15: 0000000000000003
+Oct 09 14:17:46 lp-sasha kernel: FS:  00007fd0192b3440(0000) GS:ffff8880bc900000(0000) knlGS:0000000000000000
+Oct 09 14:17:46 lp-sasha kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+Oct 09 14:17:46 lp-sasha kernel: CR2: 0000000000000000 CR3: 0000000004976000 CR4: 00000000000006e0
 
-The reason seems to be that due to PGO there are multiple .text sections
-on the purgatory, and kexec does not supports that.
+The disassembly:
+Code: 0a 00 00 48 8b 49 48 c7 87 b8 00 00 00 06 00 00 00 80 b9 4d 0a 00 00 00 75 1e 83 fa 41 75 05 48 85 c0 75 29 8b 81 10 0d 00 00 <39> 06 7c 25 f6 81 14 0d 00 00 02 75 b7 c3 80 b9 0c 0d 00 00 00 75
+All code
+========
+   0:   0a 00                   or     (%rax),%al
+   2:   00 48 8b                add    %cl,-0x75(%rax)
+   5:   49                      rex.WB
+   6:   48 c7 87 b8 00 00 00    movq   $0x6,0xb8(%rdi)
+   d:   06 00 00 00
+  11:   80 b9 4d 0a 00 00 00    cmpb   $0x0,0xa4d(%rcx)
+  18:   75 1e                   jne    0x38
+  1a:   83 fa 41                cmp    $0x41,%edx
+  1d:   75 05                   jne    0x24
+  1f:   48 85 c0                test   %rax,%rax
+  22:   75 29                   jne    0x4d
+  24:   8b 81 10 0d 00 00       mov    0xd10(%rcx),%eax
+  2a:*  39 06                   cmp    %eax,(%rsi)              <-- trapping instruction
+  2c:   7c 25                   jl     0x53
+  2e:   f6 81 14 0d 00 00 02    testb  $0x2,0xd14(%rcx)
+  35:   75 b7                   jne    0xffffffffffffffee
+  37:   c3                      retq
+  38:   80 b9 0c 0d 00 00 00    cmpb   $0x0,0xd0c(%rcx)
+  3f:   75                      .byte 0x75
 
+Code starting with the faulting instruction
+===========================================
+   0:   39 06                   cmp    %eax,(%rsi)
+   2:   7c 25                   jl     0x29
+   4:   f6 81 14 0d 00 00 02    testb  $0x2,0xd14(%rcx)
+   b:   75 b7                   jne    0xffffffffffffffc4
+   d:   c3                      retq
+   e:   80 b9 0c 0d 00 00 00    cmpb   $0x0,0xd0c(%rcx)
+  15:   75                      .byte 0x75
 
-This patch (of 4):
+objdump -SF --disassemble=nouveau_connector_detect_depth
+[...]
+        if (nv_connector->edid &&
+   c85e1:       83 fa 41                cmp    $0x41,%edx
+   c85e4:       75 05                   jne    c85eb <nouveau_connector_detect_depth+0x6b> (File Offset: 0xc866b)
+   c85e6:       48 85 c0                test   %rax,%rax
+   c85e9:       75 29                   jne    c8614 <nouveau_connector_detect_depth+0x94> (File Offset: 0xc8694)
+            nv_connector->type == DCB_CONNECTOR_LVDS_SPWG)
+                duallink = ((u8 *)nv_connector->edid)[121] == 2;
+        else
+                duallink = mode->clock >= bios->fp.duallink_transition_clk;
 
-Clang16 links the purgatory text in two sections when PGO is in use:
+        if ((!duallink && (bios->fp.strapless_is_24bit & 1)) ||
+   c85eb:       8b 81 10 0d 00 00       mov    0xd10(%rcx),%eax
+   c85f1:       39 06                   cmp    %eax,(%rsi)
+   c85f3:       7c 25                   jl     c861a <nouveau_connector_detect_depth+0x9a> (File Offset: 0xc869a)
+            ( duallink && (bios->fp.strapless_is_24bit & 2)))
+   c85f5:       f6 81 14 0d 00 00 02    testb  $0x2,0xd14(%rcx)
+   c85fc:       75 b7                   jne    c85b5 <nouveau_connector_detect_depth+0x35> (File Offset: 0xc8635)
+                connector->display_info.bpc = 8;
+[...]
 
-  [ 1] .text             PROGBITS         0000000000000000  00000040
-       00000000000011a1  0000000000000000  AX       0     0     16
-  [ 2] .rela.text        RELA             0000000000000000  00003498
-       0000000000000648  0000000000000018   I      24     1     8
-  ...
-  [17] .text.hot.        PROGBITS         0000000000000000  00003220
-       000000000000020b  0000000000000000  AX       0     0     1
-  [18] .rela.text.hot.   RELA             0000000000000000  00004428
-       0000000000000078  0000000000000018   I      24    17     8
+% scripts/faddr2line /lib/modules/5.9.0-rc8-next-20201009/kernel/drivers/gpu/drm/nouveau/nouveau.ko nouveau_connector_detect_depth+0x71/0xc0
+nouveau_connector_detect_depth+0x71/0xc0:
+nouveau_connector_detect_depth at /home/sasha/linux-next/drivers/gpu/drm/nouveau/nouveau_connector.c:891
 
-And both of them have their range [sh_addr ... sh_addr+sh_size] on the
-area pointed by `e_entry`.
+It is actually line 889. See the disassembly below.
+889                     duallink = mode->clock >= bios->fp.duallink_transition_clk;
 
-This causes that image->start is calculated twice, once for .text and
-another time for .text.hot. The second calculation leaves image->start
-in a random location.
+The NULL pointer being dereferenced is mode.
 
-Because of this, the system crashes immediately after:
+Git bisect has identified the following commit as bad:
+f28e32d3906e drm/nouveau/kms: Don't change EDID when it hasn't actually changed
 
-kexec_core: Starting new kernel
+Here is the chain of events that causes the oops.
+On entry to nouveau_connector_detect_lvds, edid is set to NULL.  The call
+to nouveau_connector_detect sets nv_connector->edid to valid memory,
+with status set to connector_status_connected and the flow of execution
+branching to the out label.
 
-Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-0-b05c520b7296@chromium.org
-Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-1-b05c520b7296@chromium.org
-Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Ross Zwisler <zwisler@google.com>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Reviewed-by: Philipp Rudo <prudo@redhat.com>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Palmer Dabbelt <palmer@rivosinc.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Tom Rix <trix@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The subsequent call to nouveau_connector_set_edid erronously clears
+nv_connector->edid, via the local edid pointer which remains set to NULL.
+
+Fix this by setting edid to the value of the just acquired
+nv_connector->edid and executing the body of nouveau_connector_set_edid
+only if nv_connector->edid and edid point to different memory addresses
+thus preventing nv_connector->edid from being turned into a dangling
+pointer.
+
+Fixes: f28e32d3906e ("drm/nouveau/kms: Don't change EDID when it hasn't actually changed")
+Signed-off-by: Alexander Kapshuk <alexander.kapshuk@gmail.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Ben Skeggs <bskeggs@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/kexec_file.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nouveau_connector.c |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/kernel/kexec_file.c
-+++ b/kernel/kexec_file.c
-@@ -910,10 +910,22 @@ static int kexec_purgatory_setup_sechdrs
- 		}
+--- a/drivers/gpu/drm/nouveau/nouveau_connector.c
++++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
+@@ -525,11 +525,13 @@ static void
+ nouveau_connector_set_edid(struct nouveau_connector *nv_connector,
+ 			   struct edid *edid)
+ {
+-	struct edid *old_edid = nv_connector->edid;
++	if (nv_connector->edid != edid) {
++		struct edid *old_edid = nv_connector->edid;
  
- 		offset = ALIGN(offset, align);
-+
-+		/*
-+		 * Check if the segment contains the entry point, if so,
-+		 * calculate the value of image->start based on it.
-+		 * If the compiler has produced more than one .text section
-+		 * (Eg: .text.hot), they are generally after the main .text
-+		 * section, and they shall not be used to calculate
-+		 * image->start. So do not re-calculate image->start if it
-+		 * is not set to the initial value, and warn the user so they
-+		 * have a chance to fix their purgatory's linker script.
-+		 */
- 		if (sechdrs[i].sh_flags & SHF_EXECINSTR &&
- 		    pi->ehdr->e_entry >= sechdrs[i].sh_addr &&
- 		    pi->ehdr->e_entry < (sechdrs[i].sh_addr
--					 + sechdrs[i].sh_size)) {
-+					 + sechdrs[i].sh_size) &&
-+		    !WARN_ON(kbuf->image->start != pi->ehdr->e_entry)) {
- 			kbuf->image->start -= sechdrs[i].sh_addr;
- 			kbuf->image->start += kbuf->mem + offset;
- 		}
+-	drm_connector_update_edid_property(&nv_connector->base, edid);
+-	kfree(old_edid);
+-	nv_connector->edid = edid;
++		drm_connector_update_edid_property(&nv_connector->base, edid);
++		kfree(old_edid);
++		nv_connector->edid = edid;
++	}
+ }
+ 
+ static enum drm_connector_status
+@@ -660,8 +662,10 @@ nouveau_connector_detect_lvds(struct drm
+ 	/* Try retrieving EDID via DDC */
+ 	if (!drm->vbios.fp_no_ddc) {
+ 		status = nouveau_connector_detect(connector, force);
+-		if (status == connector_status_connected)
++		if (status == connector_status_connected) {
++			edid = nv_connector->edid;
+ 			goto out;
++		}
+ 	}
+ 
+ 	/* On some laptops (Sony, i'm looking at you) there appears to
 
 
