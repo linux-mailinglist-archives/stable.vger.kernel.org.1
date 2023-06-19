@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFC307353BF
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5E1A7352CF
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:38:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232134AbjFSKsg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:48:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51464 "EHLO
+        id S231892AbjFSKi0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:38:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231307AbjFSKsK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:48:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 260381701
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:47:44 -0700 (PDT)
+        with ESMTP id S231738AbjFSKiP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:38:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 426D8106
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:38:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AD66360A50
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:47:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4653C433CA;
-        Mon, 19 Jun 2023 10:47:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D4A4260B42
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:38:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D03C433C9;
+        Mon, 19 Jun 2023 10:38:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171663;
-        bh=PMEAXbvyLcJiV4pi5D8rwNVt4Be/Zf0x+WB38b8ei+E=;
+        s=korg; t=1687171094;
+        bh=lR6rO+UXjo9mM+Qs2jK8/hIHUKKhr3g/CBl9gj72dXc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g6YnAQ6TuPiGFCcZCCJ/m5HpMUPQklwGNOwXPyAOxKaZJVb4z5+bzgg3Fs7H/vFPL
-         kn79IemIPhoej0BCtuXHa2XWceOnsQhkmcEPY3Bo8aVx85IwpSiL8v8eA4Ol7iYEbe
-         DeVoxCl4tEUrm1qlXeD8mRF8Srpc5y8FoAip5BAk=
+        b=1nYFJ07eRdK7FGHik/kmUYfqqK6HpY9VYDjw5t85tSp8wf2e8skctdLa82AYT5aCU
+         KDSQIgoxCOWVU8V7BCqWD9IZQNR4eXyNYdkvZRmT2gg8/DsjNDqWY98s/4ymWaQRu1
+         Dmxq/rAhnoZw/ckTu0hLDdom8koh/Oh4RE5w1j60=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Badhri Jagan Sridharan <badhri@google.com>,
-        Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.1 085/166] usb: gadget: udc: core: Offload usb_udc_vbus_handler processing
-Date:   Mon, 19 Jun 2023 12:29:22 +0200
-Message-ID: <20230619102158.921563472@linuxfoundation.org>
+        Selvin Xavier <selvin.xavier@broadcom.com>,
+        Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 145/187] IB/isert: Fix possible list corruption in CMA handler
+Date:   Mon, 19 Jun 2023 12:29:23 +0200
+Message-ID: <20230619102204.674332935@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,135 +57,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Badhri Jagan Sridharan <badhri@google.com>
+From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
 
-commit 50966da807c81c5eb3bdfd392990fe0bba94d1ee upstream.
+[ Upstream commit 7651e2d6c5b359a28c2d4c904fec6608d1021ca8 ]
 
-usb_udc_vbus_handler() can be invoked from interrupt context by irq
-handlers of the gadget drivers, however, usb_udc_connect_control() has
-to run in non-atomic context due to the following:
-a. Some of the gadget driver implementations expect the ->pullup
-   callback to be invoked in non-atomic context.
-b. usb_gadget_disconnect() acquires udc_lock which is a mutex.
+When ib_isert module receives connection error event, it is
+releasing the isert session and removes corresponding list
+node but it doesn't take appropriate mutex lock to remove
+the list node.  This can lead to linked  list corruption
 
-Hence offload invocation of usb_udc_connect_control()
-to workqueue.
-
-UDC should not be pulled up unless gadget driver is bound. The new flag
-"allow_connect" is now set by gadget_bind_driver() and cleared by
-gadget_unbind_driver(). This prevents work item to pull up the gadget
-even if queued when the gadget driver is already unbound.
-
-Cc: stable@vger.kernel.org
-Fixes: 1016fc0c096c ("USB: gadget: Fix obscure lockdep violation for udc_mutex")
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Message-ID: <20230609010227.978661-1-badhri@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bd3792205aae ("iser-target: Fix pending connections handling in target stack shutdown sequnce")
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Link: https://lore.kernel.org/r/20230606102531.162967-3-saravanan.vajravel@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/core.c |   29 +++++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
+ drivers/infiniband/ulp/isert/ib_isert.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -37,6 +37,9 @@ static struct bus_type gadget_bus_type;
-  * @vbus: for udcs who care about vbus status, this value is real vbus status;
-  * for udcs who do not care about vbus status, this value is always true
-  * @started: the UDC's started state. True if the UDC had started.
-+ * @allow_connect: Indicates whether UDC is allowed to be pulled up.
-+ * Set/cleared by gadget_(un)bind_driver() after gadget driver is bound or
-+ * unbound.
-  *
-  * This represents the internal data structure which is used by the UDC-class
-  * to hold information about udc driver and gadget together.
-@@ -48,6 +51,8 @@ struct usb_udc {
- 	struct list_head		list;
- 	bool				vbus;
- 	bool				started;
-+	bool				allow_connect;
-+	struct work_struct		vbus_work;
- };
- 
- static struct class *udc_class;
-@@ -679,7 +684,7 @@ int usb_gadget_connect(struct usb_gadget
- 		goto out;
- 	}
- 
--	if (gadget->deactivated) {
-+	if (gadget->deactivated || !gadget->udc->allow_connect) {
- 		/*
- 		 * If gadget is deactivated we only save new state.
- 		 * Gadget will be connected automatically after activation.
-@@ -1059,6 +1064,13 @@ static void usb_udc_connect_control(stru
- 		usb_gadget_disconnect(udc->gadget);
- }
- 
-+static void vbus_event_work(struct work_struct *work)
-+{
-+	struct usb_udc *udc = container_of(work, struct usb_udc, vbus_work);
-+
-+	usb_udc_connect_control(udc);
-+}
-+
- /**
-  * usb_udc_vbus_handler - updates the udc core vbus status, and try to
-  * connect or disconnect gadget
-@@ -1067,6 +1079,14 @@ static void usb_udc_connect_control(stru
-  *
-  * The udc driver calls it when it wants to connect or disconnect gadget
-  * according to vbus status.
-+ *
-+ * This function can be invoked from interrupt context by irq handlers of
-+ * the gadget drivers, however, usb_udc_connect_control() has to run in
-+ * non-atomic context due to the following:
-+ * a. Some of the gadget driver implementations expect the ->pullup
-+ * callback to be invoked in non-atomic context.
-+ * b. usb_gadget_disconnect() acquires udc_lock which is a mutex.
-+ * Hence offload invocation of usb_udc_connect_control() to workqueue.
-  */
- void usb_udc_vbus_handler(struct usb_gadget *gadget, bool status)
+diff --git a/drivers/infiniband/ulp/isert/ib_isert.c b/drivers/infiniband/ulp/isert/ib_isert.c
+index b4809d2372506..00a7303c8cc60 100644
+--- a/drivers/infiniband/ulp/isert/ib_isert.c
++++ b/drivers/infiniband/ulp/isert/ib_isert.c
+@@ -657,9 +657,13 @@ static int
+ isert_connect_error(struct rdma_cm_id *cma_id)
  {
-@@ -1074,7 +1094,7 @@ void usb_udc_vbus_handler(struct usb_gad
+ 	struct isert_conn *isert_conn = cma_id->qp->qp_context;
++	struct isert_np *isert_np = cma_id->context;
  
- 	if (udc) {
- 		udc->vbus = status;
--		usb_udc_connect_control(udc);
-+		schedule_work(&udc->vbus_work);
- 	}
- }
- EXPORT_SYMBOL_GPL(usb_udc_vbus_handler);
-@@ -1301,6 +1321,7 @@ int usb_add_gadget(struct usb_gadget *ga
- 	mutex_lock(&udc_lock);
- 	list_add_tail(&udc->list, &udc_list);
- 	mutex_unlock(&udc_lock);
-+	INIT_WORK(&udc->vbus_work, vbus_event_work);
+ 	ib_drain_qp(isert_conn->qp);
++
++	mutex_lock(&isert_np->mutex);
+ 	list_del_init(&isert_conn->node);
++	mutex_unlock(&isert_np->mutex);
+ 	isert_conn->cm_id = NULL;
+ 	isert_put_conn(isert_conn);
  
- 	ret = device_add(&udc->dev);
- 	if (ret)
-@@ -1432,6 +1453,7 @@ void usb_del_gadget(struct usb_gadget *g
- 	flush_work(&gadget->work);
- 	device_del(&gadget->dev);
- 	ida_free(&gadget_id_numbers, gadget->id_number);
-+	cancel_work_sync(&udc->vbus_work);
- 	device_unregister(&udc->dev);
- }
- EXPORT_SYMBOL_GPL(usb_del_gadget);
-@@ -1500,6 +1522,7 @@ static int gadget_bind_driver(struct dev
- 	if (ret)
- 		goto err_start;
- 	usb_gadget_enable_async_callbacks(udc);
-+	udc->allow_connect = true;
- 	usb_udc_connect_control(udc);
- 
- 	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
-@@ -1531,6 +1554,8 @@ static void gadget_unbind_driver(struct
- 
- 	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
- 
-+	udc->allow_connect = false;
-+	cancel_work_sync(&udc->vbus_work);
- 	usb_gadget_disconnect(gadget);
- 	usb_gadget_disable_async_callbacks(udc);
- 	if (gadget->irq)
+-- 
+2.39.2
+
 
 
