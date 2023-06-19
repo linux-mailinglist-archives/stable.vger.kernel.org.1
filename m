@@ -2,51 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2761F735473
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:56:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CBA0735427
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:52:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232329AbjFSK4a (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:56:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58038 "EHLO
+        id S232267AbjFSKwt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:52:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232406AbjFSKz4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:55:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FE2319A1
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:53:58 -0700 (PDT)
+        with ESMTP id S230375AbjFSKwX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:52:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EA9210CE
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:51:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B757960BA1
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:53:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF7EC433C0;
-        Mon, 19 Jun 2023 10:53:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1CC6960B85
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:51:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A89C433C0;
+        Mon, 19 Jun 2023 10:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172037;
-        bh=A5zdteXpUM8no805DUNErwDVd2xG8Exjgq3OcfmlveI=;
+        s=korg; t=1687171883;
+        bh=E2wiyKO3ui/unfMVksv7tVOc4UK7hs8hFdfFF7B69V4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cYSRGm70BDzCzYSYpO5ALCEecp8CajgE7hHFcFuqC0+PauwmJDrvOtQG0rwNfWdGN
-         WZdqwHB2tlT7cvBuCpq3pGIAspW4R9z9i9ocAbXAygk+CShlPyJogKEbZbqVtIoVQb
-         QNpOL5MIaWRC+iH/3DgjjOPhNFtmi7pEMNos6DDU=
+        b=npJqv+6nFJ3C6OLBX/DGhFmiERRU50FIw9ZGnh3YaxnqsUaUt/W/XoICoYtJOrmH9
+         dqvbADeqixW14SR6PXygS4ntiz/b2OyQJ96edr+/Sam4BSwis7xs4Z+DQHLqTO1X79
+         lH9CMTFCjA0BerhvzdjCkgL2YnKIuTBPbW1WHokE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Julius Werner <jwerner@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 14/89] irqchip/gic-v3: Disable pseudo NMIs on Mediatek devices w/ firmware issues
+        patches@lists.linux.dev, Orson Zhai <orsonzhai@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 06/64] power: supply: sc27xx: Fix external_power_changed race
 Date:   Mon, 19 Jun 2023 12:30:02 +0200
-Message-ID: <20230619102138.937184726@linuxfoundation.org>
+Message-ID: <20230619102133.146653600@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
+References: <20230619102132.808972458@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,135 +58,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 44bd78dd2b8897f59b7e3963f088caadb7e4f047 ]
+[ Upstream commit 4d5c129d6c8993fe96e9ae712141eedcb9ca68c2 ]
 
-Some Chromebooks with Mediatek SoCs have a problem where the firmware
-doesn't properly save/restore certain GICR registers. Newer
-Chromebooks should fix this issue and we may be able to do firmware
-updates for old Chromebooks. At the moment, the only known issue with
-these Chromebooks is that we can't enable "pseudo NMIs" since the
-priority register can be lost. Enabling "pseudo NMIs" on Chromebooks
-with the problematic firmware causes crashes and freezes.
+sc27xx_fgu_external_power_changed() dereferences data->battery,
+which gets sets in ab8500_btemp_probe() like this:
 
-Let's detect devices with this problem and then disable "pseudo NMIs"
-on them. We'll detect the problem by looking for the presence of the
-"mediatek,broken-save-restore-fw" property in the GIC device tree
-node. Any devices with fixed firmware will not have this property.
+	data->battery = devm_power_supply_register(dev, &sc27xx_fgu_desc,
+                                                   &fgu_cfg);
 
-Our detection plan works because we never bake a Chromebook's device
-tree into firmware. Instead, device trees are always bundled with the
-kernel. We'll update the device trees of all affected Chromebooks and
-then we'll never enable "pseudo NMI" on a kernel that is bundled with
-old device trees. When a firmware update is shipped that fixes this
-issue it will know to patch the device tree to remove the property.
+As soon as devm_power_supply_register() has called device_add()
+the external_power_changed callback can get called. So there is a window
+where sc27xx_fgu_external_power_changed() may get called while
+data->battery has not been set yet leading to a NULL pointer dereference.
 
-In order to make this work, the quick detection mechanism of the GICv3
-code is extended to be able to look for properties in addition to
-looking at "compatible".
+Fixing this is easy. The external_power_changed callback gets passed
+the power_supply which will eventually get stored in data->battery,
+so sc27xx_fgu_external_power_changed() can simply directly use
+the passed in psy argument which is always valid.
 
-Reviewed-by: Julius Werner <jwerner@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230515131353.v2.2.I88dc0a0eb1d9d537de61604cd8994ecc55c0cac1@changeid
+After this change sc27xx_fgu_external_power_changed() is reduced to just
+"power_supply_changed(psy);" and it has the same prototype. While at it
+simply replace it with making the external_power_changed callback
+directly point to power_supply_changed.
+
+Cc: Orson Zhai <orsonzhai@gmail.com>
+Cc: Chunyan Zhang <zhang.lyra@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic-common.c |  8 ++++++--
- drivers/irqchip/irq-gic-common.h |  1 +
- drivers/irqchip/irq-gic-v3.c     | 20 ++++++++++++++++++++
- 3 files changed, 27 insertions(+), 2 deletions(-)
+ drivers/power/supply/sc27xx_fuel_gauge.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/irqchip/irq-gic-common.c b/drivers/irqchip/irq-gic-common.c
-index f47b41dfd0238..02828a16979af 100644
---- a/drivers/irqchip/irq-gic-common.c
-+++ b/drivers/irqchip/irq-gic-common.c
-@@ -29,7 +29,11 @@ void gic_enable_of_quirks(const struct device_node *np,
- 			  const struct gic_quirk *quirks, void *data)
- {
- 	for (; quirks->desc; quirks++) {
--		if (!of_device_is_compatible(np, quirks->compatible))
-+		if (quirks->compatible &&
-+		    !of_device_is_compatible(np, quirks->compatible))
-+			continue;
-+		if (quirks->property &&
-+		    !of_property_read_bool(np, quirks->property))
- 			continue;
- 		if (quirks->init(data))
- 			pr_info("GIC: enabling workaround for %s\n",
-@@ -41,7 +45,7 @@ void gic_enable_quirks(u32 iidr, const struct gic_quirk *quirks,
- 		void *data)
- {
- 	for (; quirks->desc; quirks++) {
--		if (quirks->compatible)
-+		if (quirks->compatible || quirks->property)
- 			continue;
- 		if (quirks->iidr != (quirks->mask & iidr))
- 			continue;
-diff --git a/drivers/irqchip/irq-gic-common.h b/drivers/irqchip/irq-gic-common.h
-index ccba8b0fe0f58..b42572d88f9f7 100644
---- a/drivers/irqchip/irq-gic-common.h
-+++ b/drivers/irqchip/irq-gic-common.h
-@@ -13,6 +13,7 @@
- struct gic_quirk {
- 	const char *desc;
- 	const char *compatible;
-+	const char *property;
- 	bool (*init)(void *data);
- 	u32 iidr;
- 	u32 mask;
-diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-index 2805969e4f15a..c1f8c1be84856 100644
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -35,6 +35,7 @@
- 
- #define FLAGS_WORKAROUND_GICR_WAKER_MSM8996	(1ULL << 0)
- #define FLAGS_WORKAROUND_CAVIUM_ERRATUM_38539	(1ULL << 1)
-+#define FLAGS_WORKAROUND_MTK_GICR_SAVE		(1ULL << 2)
- 
- #define GIC_IRQ_TYPE_PARTITION	(GIC_IRQ_TYPE_LPI + 1)
- 
-@@ -1587,6 +1588,15 @@ static bool gic_enable_quirk_msm8996(void *data)
- 	return true;
+diff --git a/drivers/power/supply/sc27xx_fuel_gauge.c b/drivers/power/supply/sc27xx_fuel_gauge.c
+index 5e5bcdbf2e695..557b02d408134 100644
+--- a/drivers/power/supply/sc27xx_fuel_gauge.c
++++ b/drivers/power/supply/sc27xx_fuel_gauge.c
+@@ -634,13 +634,6 @@ static int sc27xx_fgu_set_property(struct power_supply *psy,
+ 	return ret;
  }
  
-+static bool gic_enable_quirk_mtk_gicr(void *data)
-+{
-+	struct gic_chip_data *d = data;
-+
-+	d->flags |= FLAGS_WORKAROUND_MTK_GICR_SAVE;
-+
-+	return true;
-+}
-+
- static bool gic_enable_quirk_cavium_38539(void *data)
+-static void sc27xx_fgu_external_power_changed(struct power_supply *psy)
+-{
+-	struct sc27xx_fgu_data *data = power_supply_get_drvdata(psy);
+-
+-	power_supply_changed(data->battery);
+-}
+-
+ static int sc27xx_fgu_property_is_writeable(struct power_supply *psy,
+ 					    enum power_supply_property psp)
  {
- 	struct gic_chip_data *d = data;
-@@ -1622,6 +1632,11 @@ static const struct gic_quirk gic_quirks[] = {
- 		.compatible = "qcom,msm8996-gic-v3",
- 		.init	= gic_enable_quirk_msm8996,
- 	},
-+	{
-+		.desc	= "GICv3: Mediatek Chromebook GICR save problem",
-+		.property = "mediatek,broken-save-restore-fw",
-+		.init	= gic_enable_quirk_mtk_gicr,
-+	},
- 	{
- 		.desc	= "GICv3: HIP06 erratum 161010803",
- 		.iidr	= 0x0204043b,
-@@ -1658,6 +1673,11 @@ static void gic_enable_nmi_support(void)
- 	if (!gic_prio_masking_enabled())
- 		return;
+@@ -671,7 +664,7 @@ static const struct power_supply_desc sc27xx_fgu_desc = {
+ 	.num_properties		= ARRAY_SIZE(sc27xx_fgu_props),
+ 	.get_property		= sc27xx_fgu_get_property,
+ 	.set_property		= sc27xx_fgu_set_property,
+-	.external_power_changed	= sc27xx_fgu_external_power_changed,
++	.external_power_changed	= power_supply_changed,
+ 	.property_is_writeable	= sc27xx_fgu_property_is_writeable,
+ };
  
-+	if (gic_data.flags & FLAGS_WORKAROUND_MTK_GICR_SAVE) {
-+		pr_warn("Skipping NMI enable due to firmware issues\n");
-+		return;
-+	}
-+
- 	ppi_nmi_refs = kcalloc(gic_data.ppi_nr, sizeof(*ppi_nmi_refs), GFP_KERNEL);
- 	if (!ppi_nmi_refs)
- 		return;
 -- 
 2.39.2
 
