@@ -2,53 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AEDA473535F
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:45:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 198BA735283
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:35:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231526AbjFSKok (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:44:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47176 "EHLO
+        id S230149AbjFSKfq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:35:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231359AbjFSKoU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:44:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53CAA10DC
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:43:58 -0700 (PDT)
+        with ESMTP id S231719AbjFSKfV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:35:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88C7DE7C
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:35:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ABD3560B88
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:43:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B64BFC433C9;
-        Mon, 19 Jun 2023 10:43:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 268CC60B0D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:35:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D782C433C0;
+        Mon, 19 Jun 2023 10:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171437;
-        bh=FMWsSiYerd3VpLtJ0RL80ScgmPJ4SpAcn+LdzIeVyV4=;
+        s=korg; t=1687170919;
+        bh=s9mrKwL6HcmwOo2sdypbeGAs4lUW4dfeHZAYUaQRDYA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VS7cSVJPS7dmyx6s99k706JH90UCT5kPmdT4mIYmP9qX8um9quxJBwsBkRcWWIWlx
-         LxjncfhRc3gxad2HGuzoebT0nzRw91Cd34KIs9nIV89ZfuiZbt7PyhXC0Tms3VlS17
-         b20IcL8oxw2xkPh2wLpWapNuK6P2Ck+FIMiuVC24=
+        b=h77SK0rs+maGIqP39mSCeXer0BYD8qrB+JuKObDIeQerCV/Y1WLQCkN5r72UPYToM
+         2LVIjgkCv+7FrMkUl+7EOF7a/dQhRZ+DLoYCSi5LC+Ih9wnLztCAg+0TLIqOnlh09p
+         CFCBy6bXKjmEI8eesKYr1yuArsham1ROK8bHvIyQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Evan Quan <Evan.Quan@amd.com>,
-        Lijo Lazar <Lijo.Lazar@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 023/166] power: supply: Fix logic checking if system is running from battery
-Date:   Mon, 19 Jun 2023 12:28:20 +0200
-Message-ID: <20230619102155.861195571@linuxfoundation.org>
+        patches@lists.linux.dev, Alex Deucher <alexander.deucher@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.3 083/187] drm/amd: Make sure image is written to trigger VBIOS image update flow
+Date:   Mon, 19 Jun 2023 12:28:21 +0200
+Message-ID: <20230619102201.610617892@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,64 +56,41 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 95339f40a8b652b5b1773def31e63fc53c26378a ]
+commit 3eb1a3a04056ba3df3205e169b8acc9da0c65a94 upstream.
 
-The logic used for power_supply_is_system_supplied() counts all power
-supplies and assumes that the system is running from AC if there is
-either a non-battery power-supply reporting to be online or if no
-power-supplies exist at all.
+The VBIOS image update flow requires userspace to:
+1) Write the image to `psp_vbflash`
+2) Read `psp_vbflash`
+3) Poll `psp_vbflash_status` to check for completion
 
-The second rule is for desktop systems, that don't have any
-battery/charger devices. These systems will incorrectly report to be
-powered from battery once a device scope power-supply is registered
-(e.g. a HID device), since these power-supplies increase the counter.
+If userspace reads `psp_vbflash` before writing an image, it's
+possible that it causes problems that can put the dGPU into an invalid
+state.
 
-Apart from HID devices, recent dGPUs provide UCSI power supplies on a
-desktop systems. The dGPU by default doesn't have anything plugged in so
-it's 'offline'. This makes power_supply_is_system_supplied() return 0
-with a count of 1 meaning all drivers that use this get a wrong judgement.
+Explicitly check that an image has been written before letting a read
+succeed.
 
-To fix this case adjust the logic to also examine the scope of the power
-supply. If the power supply is deemed a device power supply, then don't
-count it.
-
-Cc: Evan Quan <Evan.Quan@amd.com>
-Suggested-by: Lijo Lazar <Lijo.Lazar@amd.com>
+Cc: stable@vger.kernel.org
+Fixes: 8424f2ccb3c0 ("drm/amdgpu/psp: Add vbflash sysfs interface support")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/power_supply_core.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/power/supply/power_supply_core.c b/drivers/power/supply/power_supply_core.c
-index 8382be867d274..7871ab5e979c0 100644
---- a/drivers/power/supply/power_supply_core.c
-+++ b/drivers/power/supply/power_supply_core.c
-@@ -348,6 +348,10 @@ static int __power_supply_is_system_supplied(struct device *dev, void *data)
- 	struct power_supply *psy = dev_get_drvdata(dev);
- 	unsigned int *count = data;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -3538,6 +3538,9 @@ static ssize_t amdgpu_psp_vbflash_read(s
+ 	void *fw_pri_cpu_addr;
+ 	int ret;
  
-+	if (!psy->desc->get_property(psy, POWER_SUPPLY_PROP_SCOPE, &ret))
-+		if (ret.intval == POWER_SUPPLY_SCOPE_DEVICE)
-+			return 0;
++	if (adev->psp.vbflash_image_size == 0)
++		return -EINVAL;
 +
- 	(*count)++;
- 	if (psy->desc->type != POWER_SUPPLY_TYPE_BATTERY)
- 		if (!psy->desc->get_property(psy, POWER_SUPPLY_PROP_ONLINE,
-@@ -366,8 +370,8 @@ int power_supply_is_system_supplied(void)
- 				      __power_supply_is_system_supplied);
+ 	dev_info(adev->dev, "VBIOS flash to PSP started");
  
- 	/*
--	 * If no power class device was found at all, most probably we are
--	 * running on a desktop system, so assume we are on mains power.
-+	 * If no system scope power class device was found at all, most probably we
-+	 * are running on a desktop system, so assume we are on mains power.
- 	 */
- 	if (count == 0)
- 		return 1;
--- 
-2.39.2
-
+ 	ret = amdgpu_bo_create_kernel(adev, adev->psp.vbflash_image_size,
 
 
