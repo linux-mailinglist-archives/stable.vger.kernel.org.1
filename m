@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE4D57354BA
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:58:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CCA4735459
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:55:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232466AbjFSK6m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:58:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60764 "EHLO
+        id S232067AbjFSKzL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:55:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232484AbjFSK60 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:58:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE25D423F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:56:32 -0700 (PDT)
+        with ESMTP id S230500AbjFSKye (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:54:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 135FE10F4
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:53:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5665860B4B
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:56:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DFF7C433C9;
-        Mon, 19 Jun 2023 10:56:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8874D60B88
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:53:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15FFC433C8;
+        Mon, 19 Jun 2023 10:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172191;
-        bh=ED+MAY+lB/StrJYEnoVv/rQyFMLSjTygkRSN6PyxbSg=;
+        s=korg; t=1687171990;
+        bh=7K7OaqpqCpOGcLdIrxF06hJCehC0z1AWyZo0oeWAAyA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KIatXJe07epdW/eEkaVkG3taPFIP90JTDKHwp6+tLIScJyRNrdaZTQtK8/zfMW1qO
-         AJeISX42xBzZ3+lja1WgYF9paZ8Q1GvjCjD7RpdB+Xx/1nXX5xNXYCyk/WoUO00cJ2
-         AXiVKXj8yR+6akYZ00i8xT3FOdUuT70nzdLITFHo=
+        b=HtFneeYPyo92OrLIIVwgnNUDxuhTeaEr/OijDuC+cntftHjw5/MERJVz7Xr6UFJLs
+         99pjuxRs2RuQ7M+NE9DNsh6IQN56qpqEZx+7JwvbDlFK4ylJOW/WXU2ZSC6oQq6VJo
+         7Stsm+TmcL0CYQNcJJKYz9sJIIRRab5067PyV3Q4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        patches@lists.linux.dev, Leon Romanovsky <leonro@nvidia.com>,
         Eric Dumazet <edumazet@google.com>,
-        Martin Schiller <ms@dev.tdt.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 70/89] net: lapbether: only support ethernet devices
+        Nikolay Aleksandrov <razor@blackwall.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 62/64] neighbour: delete neigh_lookup_nodev as not used
 Date:   Mon, 19 Jun 2023 12:30:58 +0200
-Message-ID: <20230619102141.450908068@linuxfoundation.org>
+Message-ID: <20230619102136.017055105@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
+References: <20230619102132.808972458@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,96 +56,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit 9eed321cde22fc1afd76eac563ce19d899e0d6b2 ]
+commit 76b9bf965c98c9b53ef7420b3b11438dbd764f92 upstream.
 
-It probbaly makes no sense to support arbitrary network devices
-for lapbether.
+neigh_lookup_nodev isn't used in the kernel after removal
+of DECnet. So let's remove it.
 
-syzbot reported:
-
-skbuff: skb_under_panic: text:ffff80008934c100 len:44 put:40 head:ffff0000d18dd200 data:ffff0000d18dd1ea tail:0x16 end:0x140 dev:bond1
-kernel BUG at net/core/skbuff.c:200 !
-Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
-Modules linked in:
-CPU: 0 PID: 5643 Comm: dhcpcd Not tainted 6.4.0-rc5-syzkaller-g4641cff8e810 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/25/2023
-pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : skb_panic net/core/skbuff.c:196 [inline]
-pc : skb_under_panic+0x13c/0x140 net/core/skbuff.c:210
-lr : skb_panic net/core/skbuff.c:196 [inline]
-lr : skb_under_panic+0x13c/0x140 net/core/skbuff.c:210
-sp : ffff8000973b7260
-x29: ffff8000973b7270 x28: ffff8000973b7360 x27: dfff800000000000
-x26: ffff0000d85d8150 x25: 0000000000000016 x24: ffff0000d18dd1ea
-x23: ffff0000d18dd200 x22: 000000000000002c x21: 0000000000000140
-x20: 0000000000000028 x19: ffff80008934c100 x18: ffff8000973b68a0
-x17: 0000000000000000 x16: ffff80008a43bfbc x15: 0000000000000202
-x14: 0000000000000000 x13: 0000000000000001 x12: 0000000000000001
-x11: 0000000000000201 x10: 0000000000000000 x9 : f22f7eb937cced00
-x8 : f22f7eb937cced00 x7 : 0000000000000001 x6 : 0000000000000001
-x5 : ffff8000973b6b78 x4 : ffff80008df9ee80 x3 : ffff8000805974f4
-x2 : 0000000000000001 x1 : 0000000100000201 x0 : 0000000000000086
-Call trace:
-skb_panic net/core/skbuff.c:196 [inline]
-skb_under_panic+0x13c/0x140 net/core/skbuff.c:210
-skb_push+0xf0/0x108 net/core/skbuff.c:2409
-ip6gre_header+0xbc/0x738 net/ipv6/ip6_gre.c:1383
-dev_hard_header include/linux/netdevice.h:3137 [inline]
-lapbeth_data_transmit+0x1c4/0x298 drivers/net/wan/lapbether.c:257
-lapb_data_transmit+0x8c/0xb0 net/lapb/lapb_iface.c:447
-lapb_transmit_buffer+0x178/0x204 net/lapb/lapb_out.c:149
-lapb_send_control+0x220/0x320 net/lapb/lapb_subr.c:251
-lapb_establish_data_link+0x94/0xec
-lapb_device_event+0x348/0x4e0
-notifier_call_chain+0x1a4/0x510 kernel/notifier.c:93
-raw_notifier_call_chain+0x3c/0x50 kernel/notifier.c:461
-__dev_notify_flags+0x2bc/0x544
-dev_change_flags+0xd0/0x15c net/core/dev.c:8643
-devinet_ioctl+0x858/0x17e4 net/ipv4/devinet.c:1150
-inet_ioctl+0x2ac/0x4d8 net/ipv4/af_inet.c:979
-sock_do_ioctl+0x134/0x2dc net/socket.c:1201
-sock_ioctl+0x4ec/0x858 net/socket.c:1318
-vfs_ioctl fs/ioctl.c:51 [inline]
-__do_sys_ioctl fs/ioctl.c:870 [inline]
-__se_sys_ioctl fs/ioctl.c:856 [inline]
-__arm64_sys_ioctl+0x14c/0x1c8 fs/ioctl.c:856
-__invoke_syscall arch/arm64/kernel/syscall.c:38 [inline]
-invoke_syscall+0x98/0x2c0 arch/arm64/kernel/syscall.c:52
-el0_svc_common+0x138/0x244 arch/arm64/kernel/syscall.c:142
-do_el0_svc+0x64/0x198 arch/arm64/kernel/syscall.c:191
-el0_svc+0x4c/0x160 arch/arm64/kernel/entry-common.c:647
-el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:665
-el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:591
-Code: aa1803e6 aa1903e7 a90023f5 947730f5 (d4210000)
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Martin Schiller <ms@dev.tdt.de>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1202cdd66531 ("Remove DECnet support from kernel")
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/eb5656200d7964b2d177a36b77efa3c597d6d72d.1678267343.git.leonro@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wan/lapbether.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/net/neighbour.h |    2 --
+ net/core/neighbour.c    |   31 -------------------------------
+ 2 files changed, 33 deletions(-)
 
-diff --git a/drivers/net/wan/lapbether.c b/drivers/net/wan/lapbether.c
-index b965eb6a4bb17..24c53cc0c112f 100644
---- a/drivers/net/wan/lapbether.c
-+++ b/drivers/net/wan/lapbether.c
-@@ -341,6 +341,9 @@ static int lapbeth_new_device(struct net_device *dev)
+--- a/include/net/neighbour.h
++++ b/include/net/neighbour.h
+@@ -309,8 +309,6 @@ void neigh_table_init(int index, struct
+ int neigh_table_clear(int index, struct neigh_table *tbl);
+ struct neighbour *neigh_lookup(struct neigh_table *tbl, const void *pkey,
+ 			       struct net_device *dev);
+-struct neighbour *neigh_lookup_nodev(struct neigh_table *tbl, struct net *net,
+-				     const void *pkey);
+ struct neighbour *__neigh_create(struct neigh_table *tbl, const void *pkey,
+ 				 struct net_device *dev, bool want_ref);
+ static inline struct neighbour *neigh_create(struct neigh_table *tbl,
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -571,37 +571,6 @@ struct neighbour *neigh_lookup(struct ne
+ }
+ EXPORT_SYMBOL(neigh_lookup);
  
- 	ASSERT_RTNL();
- 
-+	if (dev->type != ARPHRD_ETHER)
-+		return -EINVAL;
-+
- 	ndev = alloc_netdev(sizeof(*lapbeth), "lapb%d", NET_NAME_UNKNOWN,
- 			    lapbeth_setup);
- 	if (!ndev)
--- 
-2.39.2
-
+-struct neighbour *neigh_lookup_nodev(struct neigh_table *tbl, struct net *net,
+-				     const void *pkey)
+-{
+-	struct neighbour *n;
+-	unsigned int key_len = tbl->key_len;
+-	u32 hash_val;
+-	struct neigh_hash_table *nht;
+-
+-	NEIGH_CACHE_STAT_INC(tbl, lookups);
+-
+-	rcu_read_lock_bh();
+-	nht = rcu_dereference_bh(tbl->nht);
+-	hash_val = tbl->hash(pkey, NULL, nht->hash_rnd) >> (32 - nht->hash_shift);
+-
+-	for (n = rcu_dereference_bh(nht->hash_buckets[hash_val]);
+-	     n != NULL;
+-	     n = rcu_dereference_bh(n->next)) {
+-		if (!memcmp(n->primary_key, pkey, key_len) &&
+-		    net_eq(dev_net(n->dev), net)) {
+-			if (!refcount_inc_not_zero(&n->refcnt))
+-				n = NULL;
+-			NEIGH_CACHE_STAT_INC(tbl, hits);
+-			break;
+-		}
+-	}
+-
+-	rcu_read_unlock_bh();
+-	return n;
+-}
+-EXPORT_SYMBOL(neigh_lookup_nodev);
+-
+ static struct neighbour *
+ ___neigh_create(struct neigh_table *tbl, const void *pkey,
+ 		struct net_device *dev, u8 flags,
 
 
