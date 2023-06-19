@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF8CB7354E2
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:59:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EFA97352F0
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:40:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232459AbjFSK7b (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:59:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60834 "EHLO
+        id S231984AbjFSKkZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:40:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232471AbjFSK7I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:59:08 -0400
+        with ESMTP id S232011AbjFSKjx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:39:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35D062115
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:57:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 586BF10C1
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:39:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BE97F60BA0
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:57:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF655C433C8;
-        Mon, 19 Jun 2023 10:57:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DE23960B51
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:39:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04857C433C0;
+        Mon, 19 Jun 2023 10:39:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172275;
-        bh=WRhW1/yv4xK5ItBe59K0gHqbborl2sOOtaP2mg9Htlc=;
+        s=korg; t=1687171180;
+        bh=5eNRMy6eha9gqCKeb2VaekVDqmQJqeCBvf7jr6mFkVc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DqgF8u51IvOZM5o9dcsMxS+sG/tv6Td5NxCLkHV73F2GeY1Sz9S+9eFOdC5z+swcs
-         /GzHJfL38kVMwjLowMChX938nCtTdLv3qV7fzeWSD9MH8FdOssw+wgJLSem7BoBrB2
-         0czsHCc44JDKscPp8xSL9/s0FaE6zRrEbekdZ3Ck=
+        b=a1umqKb4erIS6BZqAhPwt6STQbQlJZGMSbMADWcr5Z4+B0lMtKLR5ltaKsyUeuGDd
+         bx41QXTHB0FL2YiEYRNqHFy9eIQgAsIJC80zCYQ4CsQvAjy5CyTd6osIeVC2D1T7mI
+         9zFDqASZRWNhXXc7ZLtc5fmFTU1N9xqbVvSwC8LM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Orson Zhai <orsonzhai@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
+        Sabrina Dubroca <sd@queasysnail.net>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 010/107] power: supply: sc27xx: Fix external_power_changed race
+Subject: [PATCH 6.3 176/187] net: macsec: fix double free of percpu stats
 Date:   Mon, 19 Jun 2023 12:29:54 +0200
-Message-ID: <20230619102142.033291066@linuxfoundation.org>
+Message-ID: <20230619102206.199565664@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,68 +56,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 4d5c129d6c8993fe96e9ae712141eedcb9ca68c2 ]
+[ Upstream commit 0c0cf3db83f8c7c9bb141c2771a34043bcf952ef ]
 
-sc27xx_fgu_external_power_changed() dereferences data->battery,
-which gets sets in ab8500_btemp_probe() like this:
+Inside macsec_add_dev() we free percpu macsec->secy.tx_sc.stats and
+macsec->stats on some of the memory allocation failure paths. However, the
+net_device is already registered to that moment: in macsec_newlink(), just
+before calling macsec_add_dev(). This means that during unregister process
+its priv_destructor - macsec_free_netdev() - will be called and will free
+the stats again.
 
-	data->battery = devm_power_supply_register(dev, &sc27xx_fgu_desc,
-                                                   &fgu_cfg);
+Remove freeing percpu stats inside macsec_add_dev() because
+macsec_free_netdev() will correctly free the already allocated ones. The
+pointers to unallocated stats stay NULL, and free_percpu() treats that
+correctly.
 
-As soon as devm_power_supply_register() has called device_add()
-the external_power_changed callback can get called. So there is a window
-where sc27xx_fgu_external_power_changed() may get called while
-data->battery has not been set yet leading to a NULL pointer dereference.
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-Fixing this is easy. The external_power_changed callback gets passed
-the power_supply which will eventually get stored in data->battery,
-so sc27xx_fgu_external_power_changed() can simply directly use
-the passed in psy argument which is always valid.
-
-After this change sc27xx_fgu_external_power_changed() is reduced to just
-"power_supply_changed(psy);" and it has the same prototype. While at it
-simply replace it with making the external_power_changed callback
-directly point to power_supply_changed.
-
-Cc: Orson Zhai <orsonzhai@gmail.com>
-Cc: Chunyan Zhang <zhang.lyra@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 0a28bfd4971f ("net/macsec: Add MACsec skb_metadata_dst Tx Data path support")
+Fixes: c09440f7dcb3 ("macsec: introduce IEEE 802.1AE driver")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/sc27xx_fuel_gauge.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/net/macsec.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/power/supply/sc27xx_fuel_gauge.c b/drivers/power/supply/sc27xx_fuel_gauge.c
-index ae45069bd5e1b..3d8a85df87f4d 100644
---- a/drivers/power/supply/sc27xx_fuel_gauge.c
-+++ b/drivers/power/supply/sc27xx_fuel_gauge.c
-@@ -733,13 +733,6 @@ static int sc27xx_fgu_set_property(struct power_supply *psy,
- 	return ret;
- }
+diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
+index 25616247d7a56..e040c191659b9 100644
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -3987,17 +3987,15 @@ static int macsec_add_dev(struct net_device *dev, sci_t sci, u8 icv_len)
+ 		return -ENOMEM;
  
--static void sc27xx_fgu_external_power_changed(struct power_supply *psy)
--{
--	struct sc27xx_fgu_data *data = power_supply_get_drvdata(psy);
--
--	power_supply_changed(data->battery);
--}
--
- static int sc27xx_fgu_property_is_writeable(struct power_supply *psy,
- 					    enum power_supply_property psp)
- {
-@@ -774,7 +767,7 @@ static const struct power_supply_desc sc27xx_fgu_desc = {
- 	.num_properties		= ARRAY_SIZE(sc27xx_fgu_props),
- 	.get_property		= sc27xx_fgu_get_property,
- 	.set_property		= sc27xx_fgu_set_property,
--	.external_power_changed	= sc27xx_fgu_external_power_changed,
-+	.external_power_changed	= power_supply_changed,
- 	.property_is_writeable	= sc27xx_fgu_property_is_writeable,
- 	.no_thermal		= true,
- };
+ 	secy->tx_sc.stats = netdev_alloc_pcpu_stats(struct pcpu_tx_sc_stats);
+-	if (!secy->tx_sc.stats) {
+-		free_percpu(macsec->stats);
++	if (!secy->tx_sc.stats)
+ 		return -ENOMEM;
+-	}
+ 
+ 	secy->tx_sc.md_dst = metadata_dst_alloc(0, METADATA_MACSEC, GFP_KERNEL);
+-	if (!secy->tx_sc.md_dst) {
+-		free_percpu(secy->tx_sc.stats);
+-		free_percpu(macsec->stats);
++	if (!secy->tx_sc.md_dst)
++		/* macsec and secy percpu stats will be freed when unregistering
++		 * net_device in macsec_free_netdev()
++		 */
+ 		return -ENOMEM;
+-	}
+ 
+ 	if (sci == MACSEC_UNDEF_SCI)
+ 		sci = dev_to_sci(dev, MACSEC_PORT_ES);
 -- 
 2.39.2
 
