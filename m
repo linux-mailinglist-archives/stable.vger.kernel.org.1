@@ -2,43 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD42C735471
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:56:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30F4F7354EB
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:00:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232278AbjFSK4X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:56:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56658 "EHLO
+        id S231646AbjFSLAP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 07:00:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232284AbjFSKzv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:55:51 -0400
+        with ESMTP id S232384AbjFSK7Q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:59:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BC0D35AE
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:53:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 253162696
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:58:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E79760A4D
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:53:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 266FBC433C0;
-        Mon, 19 Jun 2023 10:53:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A6F6B60B7F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:58:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B867C433C9;
+        Mon, 19 Jun 2023 10:58:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172034;
-        bh=GYoAnakjNSnWlY/DDKr/dZmA1UPFB3iX//mzuixW2Z8=;
+        s=korg; t=1687172297;
+        bh=xj1Mg+98dZMC3hR/bcfPjPkwhrZbAyWNp9dtAzvdzHM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NA8hIyTZzW56pKWSzSP6N7qMBX7fS7qhPn9MgNTcTvGnLmhNQ0vxVPV/DtdZKOzTv
-         Z3oghhRiSkSKLRMlzFrbMYcUB3l1SF+/siQYWY4zy6Ju/f0bfEdqXeX4CnAp2S7u++
-         B1xH9fQmNRzKydQn3d7O8D7oGeDZkmhdfksGmtVI=
+        b=XO7viEJ8ZybIcRe0D7UqSqss11efHh+PL5ibhsW1yWX28AGnb/obOHte5YbsfinCx
+         r2pn1umgBV3AnY79Q/eFNySWIgT+R/9kiCPNFkSSbX7GNEkn/RXL5g1mMMYuAKWgzD
+         c3bkWHFHgG8Zs5WV9UUU4xNRG1XTIjHUnQYePhRs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 13/89] regulator: Fix error checking for debugfs_create_dir
-Date:   Mon, 19 Jun 2023 12:30:01 +0200
-Message-ID: <20230619102138.889797375@linuxfoundation.org>
+        patches@lists.linux.dev, Evan Quan <Evan.Quan@amd.com>,
+        Lijo Lazar <Lijo.Lazar@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 018/107] power: supply: Fix logic checking if system is running from battery
+Date:   Mon, 19 Jun 2023 12:30:02 +0200
+Message-ID: <20230619102142.400609797@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,44 +57,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Osama Muhammad <osmtendev@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 2bf1c45be3b8f3a3f898d0756c1282f09719debd ]
+[ Upstream commit 95339f40a8b652b5b1773def31e63fc53c26378a ]
 
-This patch fixes the error checking in core.c in debugfs_create_dir.
-The correct way to check if an error occurred is 'IS_ERR' inline function.
+The logic used for power_supply_is_system_supplied() counts all power
+supplies and assumes that the system is running from AC if there is
+either a non-battery power-supply reporting to be online or if no
+power-supplies exist at all.
 
-Signed-off-by: Osama Muhammad <osmtendev@gmail.com
-Suggested-by: Ivan Orlov <ivan.orlov0322@gmail.com
-Link: https://lore.kernel.org/r/20230515172938.13338-1-osmtendev@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org
+The second rule is for desktop systems, that don't have any
+battery/charger devices. These systems will incorrectly report to be
+powered from battery once a device scope power-supply is registered
+(e.g. a HID device), since these power-supplies increase the counter.
+
+Apart from HID devices, recent dGPUs provide UCSI power supplies on a
+desktop systems. The dGPU by default doesn't have anything plugged in so
+it's 'offline'. This makes power_supply_is_system_supplied() return 0
+with a count of 1 meaning all drivers that use this get a wrong judgement.
+
+To fix this case adjust the logic to also examine the scope of the power
+supply. If the power supply is deemed a device power supply, then don't
+count it.
+
+Cc: Evan Quan <Evan.Quan@amd.com>
+Suggested-by: Lijo Lazar <Lijo.Lazar@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/power/supply/power_supply_core.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 47a04c5f7a9b8..f5ab74683b58a 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -5032,7 +5032,7 @@ static void rdev_init_debugfs(struct regulator_dev *rdev)
- 	}
+diff --git a/drivers/power/supply/power_supply_core.c b/drivers/power/supply/power_supply_core.c
+index daf76d7885c05..8b2cd63016160 100644
+--- a/drivers/power/supply/power_supply_core.c
++++ b/drivers/power/supply/power_supply_core.c
+@@ -347,6 +347,10 @@ static int __power_supply_is_system_supplied(struct device *dev, void *data)
+ 	struct power_supply *psy = dev_get_drvdata(dev);
+ 	unsigned int *count = data;
  
- 	rdev->debugfs = debugfs_create_dir(rname, debugfs_root);
--	if (!rdev->debugfs) {
-+	if (IS_ERR(rdev->debugfs)) {
- 		rdev_warn(rdev, "Failed to create debugfs directory\n");
- 		return;
- 	}
-@@ -5937,7 +5937,7 @@ static int __init regulator_init(void)
- 	ret = class_register(&regulator_class);
++	if (!psy->desc->get_property(psy, POWER_SUPPLY_PROP_SCOPE, &ret))
++		if (ret.intval == POWER_SUPPLY_SCOPE_DEVICE)
++			return 0;
++
+ 	(*count)++;
+ 	if (psy->desc->type != POWER_SUPPLY_TYPE_BATTERY)
+ 		if (!psy->desc->get_property(psy, POWER_SUPPLY_PROP_ONLINE,
+@@ -365,8 +369,8 @@ int power_supply_is_system_supplied(void)
+ 				      __power_supply_is_system_supplied);
  
- 	debugfs_root = debugfs_create_dir("regulator", NULL);
--	if (!debugfs_root)
-+	if (IS_ERR(debugfs_root))
- 		pr_warn("regulator: Failed to create debugfs directory\n");
- 
- #ifdef CONFIG_DEBUG_FS
+ 	/*
+-	 * If no power class device was found at all, most probably we are
+-	 * running on a desktop system, so assume we are on mains power.
++	 * If no system scope power class device was found at all, most probably we
++	 * are running on a desktop system, so assume we are on mains power.
+ 	 */
+ 	if (count == 0)
+ 		return 1;
 -- 
 2.39.2
 
