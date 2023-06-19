@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6193735490
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 946E47352FE
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232441AbjFSK5X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:57:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58290 "EHLO
+        id S230359AbjFSKlD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:41:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232361AbjFSK4z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:56:55 -0400
+        with ESMTP id S232087AbjFSKkQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:40:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEADA295B
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:54:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4B81D7
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:40:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 68F316068B
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:54:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D09C433C8;
-        Mon, 19 Jun 2023 10:54:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 67D9860B51
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:40:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79AC5C433C8;
+        Mon, 19 Jun 2023 10:40:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172094;
-        bh=EjYxZE7A74rWWZbpPoDhTcnxA4iNZQDK6VDAwe2HQsg=;
+        s=korg; t=1687171207;
+        bh=RjumdRFAsAUu7MVmkJIN3iUft/0CfxnAWvcSpNwSb3A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Cn3maDOy4zIhdn5IS2/czdn3VOU+rRLZHvtBaJmxXiLBelEa7Gcv7vQ2kYNv0+7LJ
-         RwskWIkEW62UXweOON6EBBECiuud276o4OiF7buhwowjxJclSLNYu9meGJ9g6/NiQZ
-         qVcdCeKLNSclf3/11IVPS8RT92MJRqMEKyJxwTdk=
+        b=uL59V6OVJPiX+sjhOH2IHyOP+BdIXnoIu7+Aw+N12Om9ejmnR9Te3vgs3KwE52kiY
+         F++tK/TDqm9gtecbVg158M0Wvz6YWvz//RpaoAo4mC0uUWfONqs4m6w/xLzFL7fUv6
+         4j5byZSM9WmeQiZN3pMsVS7mT9O7rLoln1md2kd0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Florian Westphal <fw@strlen.de>,
+        Tung Nguyen <tung.q.nguyen@dektech.com.au>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 09/89] ARM: dts: vexpress: add missing cache properties
+Subject: [PATCH 6.3 179/187] net: tipc: resize nlattr array to correct size
 Date:   Mon, 19 Jun 2023 12:29:57 +0200
-Message-ID: <20230619102138.712976999@linuxfoundation.org>
+Message-ID: <20230619102206.357748285@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,35 +57,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 328acc5657c6197753238d7ce0a6924ead829347 ]
+[ Upstream commit 44194cb1b6045dea33ae9a0d54fb7e7cd93a2e09 ]
 
-As all level 2 and level 3 caches are unified, add required
-cache-unified property to fix warnings like:
+According to nla_parse_nested_deprecated(), the tb[] is supposed to the
+destination array with maxtype+1 elements. In current
+tipc_nl_media_get() and __tipc_nl_media_set(), a larger array is used
+which is unnecessary. This patch resize them to a proper size.
 
-  vexpress-v2p-ca5s.dtb: cache-controller@2c0f0000: 'cache-unified' is a required property
-
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230423150837.118466-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: 1e55417d8fc6 ("tipc: add media set to new netlink api")
+Fixes: 46f15c6794fb ("tipc: add media get/dump to new netlink api")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Tung Nguyen <tung.q.nguyen@dektech.com.au>
+Link: https://lore.kernel.org/r/20230614120604.1196377-1-linma@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/vexpress-v2p-ca5s.dts | 1 +
- 1 file changed, 1 insertion(+)
+ net/tipc/bearer.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/vexpress-v2p-ca5s.dts b/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
-index 7aa64ae257798..6fc48016fe8ed 100644
---- a/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
-+++ b/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
-@@ -132,6 +132,7 @@ L2: cache-controller@2c0f0000 {
- 		reg = <0x2c0f0000 0x1000>;
- 		interrupts = <0 84 4>;
- 		cache-level = <2>;
-+		cache-unified;
- 	};
+diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
+index 53881406e2006..cdcd2731860ba 100644
+--- a/net/tipc/bearer.c
++++ b/net/tipc/bearer.c
+@@ -1258,7 +1258,7 @@ int tipc_nl_media_get(struct sk_buff *skb, struct genl_info *info)
+ 	struct tipc_nl_msg msg;
+ 	struct tipc_media *media;
+ 	struct sk_buff *rep;
+-	struct nlattr *attrs[TIPC_NLA_BEARER_MAX + 1];
++	struct nlattr *attrs[TIPC_NLA_MEDIA_MAX + 1];
  
- 	pmu {
+ 	if (!info->attrs[TIPC_NLA_MEDIA])
+ 		return -EINVAL;
+@@ -1307,7 +1307,7 @@ int __tipc_nl_media_set(struct sk_buff *skb, struct genl_info *info)
+ 	int err;
+ 	char *name;
+ 	struct tipc_media *m;
+-	struct nlattr *attrs[TIPC_NLA_BEARER_MAX + 1];
++	struct nlattr *attrs[TIPC_NLA_MEDIA_MAX + 1];
+ 
+ 	if (!info->attrs[TIPC_NLA_MEDIA])
+ 		return -EINVAL;
 -- 
 2.39.2
 
