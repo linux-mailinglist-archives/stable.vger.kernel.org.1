@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C48457354FD
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:00:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DAD9735413
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:52:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231190AbjFSLA3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:00:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33830 "EHLO
+        id S232076AbjFSKv7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:51:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232493AbjFSK7r (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:59:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76776F4
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:58:54 -0700 (PDT)
+        with ESMTP id S230375AbjFSKvZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:51:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27BB21FDF
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:50:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E9EF160B9F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:58:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 043B3C433C0;
-        Mon, 19 Jun 2023 10:58:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E9C160B82
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:50:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FBC6C433C0;
+        Mon, 19 Jun 2023 10:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172333;
-        bh=awNbbUrZKfXcgaKH6JhIK8hfjJtLZGaowOiSziy/Zt0=;
+        s=korg; t=1687171844;
+        bh=GBjQILzGthxWzniGtG0dxUB6FGhTts3BxR2bIVnnOkQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D/AjMjUKth26+7ShW/mdCN4rxMWKxw7WCTIv9rJL1nLF4rkB03JTIisFmfWRAgK48
-         +T3dRxUPjhkzTMIOTo5+WgCstJiAUkd41Ub3l2PX+WJaBKOp9L9JAdHL0XtkNhawR5
-         TRuDI//3PqvgCCb6dtTfBNBKeFRlKo92eyrAlm4U=
+        b=JjArf2kyya4HCO88Tz5/HXwY/ZPlur1u/B1G4I8EQsucwgJwjQ3c61pm5zJ+4l86Y
+         kHFGCr4wXvZv7j3dGjCTy0i8w218q/L3843R70bOGQzIlTsJHCNKU2pmIy4nWmSjx1
+         HvL2co67Sb8CRAy46ydHFmDnmLn3msxpdJv3rD5g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 023/107] parisc: Flush gatt writes and adjust gatt mask in parisc_agp_mask_memory()
+        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 11/64] regulator: Fix error checking for debugfs_create_dir
 Date:   Mon, 19 Jun 2023 12:30:07 +0200
-Message-ID: <20230619102142.646463453@linuxfoundation.org>
+Message-ID: <20230619102133.408720279@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
+References: <20230619102132.808972458@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,59 +53,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
+From: Osama Muhammad <osmtendev@gmail.com>
 
-[ Upstream commit d703797380c540bbeac03f104ebcfc364eaf47cc ]
+[ Upstream commit 2bf1c45be3b8f3a3f898d0756c1282f09719debd ]
 
-Flush caches after changing gatt entries and calculate entry according
-to SBA requirements.
+This patch fixes the error checking in core.c in debugfs_create_dir.
+The correct way to check if an error occurred is 'IS_ERR' inline function.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Osama Muhammad <osmtendev@gmail.com
+Suggested-by: Ivan Orlov <ivan.orlov0322@gmail.com
+Link: https://lore.kernel.org/r/20230515172938.13338-1-osmtendev@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/agp/parisc-agp.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/regulator/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/char/agp/parisc-agp.c b/drivers/char/agp/parisc-agp.c
-index d68d05d5d3838..514f9f287a781 100644
---- a/drivers/char/agp/parisc-agp.c
-+++ b/drivers/char/agp/parisc-agp.c
-@@ -90,6 +90,9 @@ parisc_agp_tlbflush(struct agp_memory *mem)
- {
- 	struct _parisc_agp_info *info = &parisc_agp_info;
- 
-+	/* force fdc ops to be visible to IOMMU */
-+	asm_io_sync();
-+
- 	writeq(info->gart_base | ilog2(info->gart_size), info->ioc_regs+IOC_PCOM);
- 	readq(info->ioc_regs+IOC_PCOM);	/* flush */
- }
-@@ -158,6 +161,7 @@ parisc_agp_insert_memory(struct agp_memory *mem, off_t pg_start, int type)
- 			info->gatt[j] =
- 				parisc_agp_mask_memory(agp_bridge,
- 					paddr, type);
-+			asm_io_fdc(&info->gatt[j]);
- 		}
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 06da271ad5dd3..cc9aa95d69691 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -4906,7 +4906,7 @@ static void rdev_init_debugfs(struct regulator_dev *rdev)
  	}
  
-@@ -191,7 +195,16 @@ static unsigned long
- parisc_agp_mask_memory(struct agp_bridge_data *bridge, dma_addr_t addr,
- 		       int type)
- {
--	return SBA_PDIR_VALID_BIT | addr;
-+	unsigned ci;			/* coherent index */
-+	dma_addr_t pa;
-+
-+	pa = addr & IOVP_MASK;
-+	asm("lci 0(%1), %0" : "=r" (ci) : "r" (phys_to_virt(pa)));
-+
-+	pa |= (ci >> PAGE_SHIFT) & 0xff;/* move CI (8 bits) into lowest byte */
-+	pa |= SBA_PDIR_VALID_BIT;	/* set "valid" bit */
-+
-+	return cpu_to_le64(pa);
- }
+ 	rdev->debugfs = debugfs_create_dir(rname, debugfs_root);
+-	if (!rdev->debugfs) {
++	if (IS_ERR(rdev->debugfs)) {
+ 		rdev_warn(rdev, "Failed to create debugfs directory\n");
+ 		return;
+ 	}
+@@ -5796,7 +5796,7 @@ static int __init regulator_init(void)
+ 	ret = class_register(&regulator_class);
  
- static void
+ 	debugfs_root = debugfs_create_dir("regulator", NULL);
+-	if (!debugfs_root)
++	if (IS_ERR(debugfs_root))
+ 		pr_warn("regulator: Failed to create debugfs directory\n");
+ 
+ #ifdef CONFIG_DEBUG_FS
 -- 
 2.39.2
 
