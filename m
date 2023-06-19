@@ -2,54 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42E75735404
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:51:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F0627354AB
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:58:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232196AbjFSKvP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:51:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52078 "EHLO
+        id S232419AbjFSK6V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:58:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232204AbjFSKum (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:50:42 -0400
+        with ESMTP id S232284AbjFSK6D (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:58:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37278C3
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:50:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E66533C1E
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:56:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C14166068B
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:50:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBD45C433C0;
-        Mon, 19 Jun 2023 10:50:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A61760B4B
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:56:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87559C433C9;
+        Mon, 19 Jun 2023 10:56:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171814;
-        bh=FpZbeesFbF4D+zyryl0oboypA5TXNyeoaUfoXB0qfhQ=;
+        s=korg; t=1687172161;
+        bh=t6BM1ispRrrUdWx8WNvPLixKSPnfmDzRY+ZEq6s6z9Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IE5EEjbULnUBERGOfXK3pEx4OwHaKPYZ0Q6PY7cbuLVxNVp/pciEA+DmtbZzapqb2
-         uv1gqJh8F9FpBaB+kJ3QgvObzRlVcvqNgYAqaycgiWmc1uDQJUAqu2eYlc6uKBm+XC
-         EOOoNl2/hj9QJec3QEoms4DDp/vIdH7RRbZaUWZw=
+        b=xTX6yRt/2RO6f99n7WYfFSO4TE9qy8+Papdb/u3i9z/BTLXaeSRpWR11mKjnYUHBb
+         C72oQMsFjfTIZk6SwWWzuYnVdFMSmXCLwCCLJXCPCA9SzApnoUmglGZxanM0yAepB+
+         E6ENeEoNCpCckXZVxhct5fk/HTh5JtRaEtZ24Ghc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Danielle Ratson <danieller@nvidia.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 142/166] selftests: forwarding: hw_stats_l3: Set addrgenmode in a separate step
-Date:   Mon, 19 Jun 2023 12:30:19 +0200
-Message-ID: <20230619102201.628348857@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        syzbot+b0a35a5c1f7e846d3b09@syzkaller.appspotmail.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 32/89] nilfs2: fix incomplete buffer cleanup in nilfs_btnode_abort_change_key()
+Date:   Mon, 19 Jun 2023 12:30:20 +0200
+Message-ID: <20230619102139.753641801@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,70 +56,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Danielle Ratson <danieller@nvidia.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit bef68e201e538eaa3a91f97aae8161eb2d0a8ed7 ]
+commit 2f012f2baca140c488e43d27a374029c1e59098d upstream.
 
-Setting the IPv6 address generation mode of a net device during its
-creation never worked, but after commit b0ad3c179059 ("rtnetlink: call
-validate_linkmsg in rtnl_create_link") it explicitly fails [1]. The
-failure is caused by the fact that validate_linkmsg() is called before
-the net device is registered, when it still does not have an 'inet6_dev'.
+A syzbot fault injection test reported that nilfs_btnode_create_block, a
+helper function that allocates a new node block for b-trees, causes a
+kernel BUG for disk images where the file system block size is smaller
+than the page size.
 
-Likewise, raising the net device before setting the address generation
-mode is meaningless, because by the time the mode is set, the address
-has already been generated.
+This was due to unexpected flags on the newly allocated buffer head, and
+it turned out to be because the buffer flags were not cleared by
+nilfs_btnode_abort_change_key() after an error occurred during a b-tree
+update operation and the buffer was later reused in that state.
 
-Therefore, fix the test to first create the net device, then set its
-IPv6 address generation mode and finally bring it up.
+Fix this issue by using nilfs_btnode_delete() to abandon the unused
+preallocated buffer in nilfs_btnode_abort_change_key().
 
-[1]
- # ip link add name mydev addrgenmode eui64 type dummy
- RTNETLINK answers: Address family not supported by protocol
-
-Fixes: ba95e7930957 ("selftests: forwarding: hw_stats_l3: Add a new test")
-Signed-off-by: Danielle Ratson <danieller@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://lore.kernel.org/r/f3b05d85b2bc0c3d6168fe8f7207c6c8365703db.1686580046.git.petrm@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20230513102428.10223-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+b0a35a5c1f7e846d3b09@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/000000000000d1d6c205ebc4d512@google.com
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/forwarding/hw_stats_l3.sh | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ fs/nilfs2/btnode.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/forwarding/hw_stats_l3.sh b/tools/testing/selftests/net/forwarding/hw_stats_l3.sh
-index 9c1f76e108af1..1a936ffbacee7 100755
---- a/tools/testing/selftests/net/forwarding/hw_stats_l3.sh
-+++ b/tools/testing/selftests/net/forwarding/hw_stats_l3.sh
-@@ -84,8 +84,9 @@ h2_destroy()
- 
- router_rp1_200_create()
- {
--	ip link add name $rp1.200 up \
--		link $rp1 addrgenmode eui64 type vlan id 200
-+	ip link add name $rp1.200 link $rp1 type vlan id 200
-+	ip link set dev $rp1.200 addrgenmode eui64
-+	ip link set dev $rp1.200 up
- 	ip address add dev $rp1.200 192.0.2.2/28
- 	ip address add dev $rp1.200 2001:db8:1::2/64
- 	ip stats set dev $rp1.200 l3_stats on
-@@ -256,9 +257,11 @@ reapply_config()
- 
- 	router_rp1_200_destroy
- 
--	ip link add name $rp1.200 link $rp1 addrgenmode none type vlan id 200
-+	ip link add name $rp1.200 link $rp1 type vlan id 200
-+	ip link set dev $rp1.200 addrgenmode none
- 	ip stats set dev $rp1.200 l3_stats on
--	ip link set dev $rp1.200 up addrgenmode eui64
-+	ip link set dev $rp1.200 addrgenmode eui64
-+	ip link set dev $rp1.200 up
- 	ip address add dev $rp1.200 192.0.2.2/28
- 	ip address add dev $rp1.200 2001:db8:1::2/64
+--- a/fs/nilfs2/btnode.c
++++ b/fs/nilfs2/btnode.c
+@@ -285,6 +285,14 @@ void nilfs_btnode_abort_change_key(struc
+ 	if (nbh == NULL) {	/* blocksize == pagesize */
+ 		xa_erase_irq(&btnc->i_pages, newkey);
+ 		unlock_page(ctxt->bh->b_page);
+-	} else
+-		brelse(nbh);
++	} else {
++		/*
++		 * When canceling a buffer that a prepare operation has
++		 * allocated to copy a node block to another location, use
++		 * nilfs_btnode_delete() to initialize and release the buffer
++		 * so that the buffer flags will not be in an inconsistent
++		 * state when it is reallocated.
++		 */
++		nilfs_btnode_delete(nbh);
++	}
  }
--- 
-2.39.2
-
 
 
