@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A4D773549C
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:57:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 776D17353FB
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:51:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232353AbjFSK5o (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:57:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60532 "EHLO
+        id S232272AbjFSKvC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:51:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232366AbjFSK5X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:57:23 -0400
+        with ESMTP id S232348AbjFSKu0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:50:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A12461982
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:55:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FF771BD9
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:49:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3DFA660B5F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:55:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55DD4C433C0;
-        Mon, 19 Jun 2023 10:55:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F22160B5F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:49:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3904C433C9;
+        Mon, 19 Jun 2023 10:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172125;
-        bh=xapfUydBY81SVUbKj1KTB3E/atXvI0LmV2QKvdZeqlw=;
+        s=korg; t=1687171790;
+        bh=xVNGg+mf3PaqwE7i8ljUycbIIPAeBrznivx5dRbUUGE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LzVddb1e1JWBqAf+KJjeX6sPkRK2OfXSwRUrrTm2wCp9CO2b049b9M4DTcaVmDYhF
-         Y0FWjqQgRs4Mgz1PDSIsAyreBUFkqGzLWTdSrs3+I4RsqN6W605GJ2upUtcuosmpE6
-         JY2+FmWlGoTWGzWqe5mk2AkUQTqfbhlL+EQGwg5M=
+        b=mibW8RHd0v8YpIrOICpBR8zm+fNX0e9X8JjY2fVxHX31Digv6pC7h8WG0bPJQSf5b
+         wdGOwSO9/f12ohK4YKWI6kWiX1w7kGWuDbgxTYxCrlUMiKqVCzYIh8j4vkZYHeG1GI
+         3AC1udijumbPq1NJGsfj/SvMzJxnr1kgSzRAR7TU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Lisa=20Chen=20 ?= <minjie.chen@geekplus.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 46/89] spi: fsl-dspi: avoid SCK glitches with continuous transfers
+        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        "Gagniuc, Alexandru" <alexandru.gagniuc@hp.com>
+Subject: [PATCH 6.1 157/166] drm/amdgpu: Dont set struct drm_driver.output_poll_changed
 Date:   Mon, 19 Jun 2023 12:30:34 +0200
-Message-ID: <20230619102140.379308534@linuxfoundation.org>
+Message-ID: <20230619102202.306666026@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,92 +55,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit c5c31fb71f16ba75bad4ade208abbae225305b65 ]
+commit 0e3172bac3f43759719384403fe2d1e4c61f87e0 upstream.
 
-The DSPI controller has configurable timing for
+Don't set struct drm_driver.output_poll_changed. It's used to restore
+the fbdev console. But as amdgpu uses generic fbdev emulation, the
+console is being restored by the DRM client helpers already. See the
+functions drm_kms_helper_hotplug_event() and
+drm_kms_helper_connector_hotplug_event() in drm_probe_helper.c.
 
-(a) tCSC: the interval between the assertion of the chip select and the
-    first clock edge
+v2:
+	* fix commit description (Christian)
 
-(b) tASC: the interval between the last clock edge and the deassertion
-    of the chip select
-
-What is a bit surprising, but is documented in the figure "Example of
-continuous transfer (CPHA=1, CONT=1)" in the datasheet, is that when the
-chip select stays asserted between multiple TX FIFO writes, the tCSC and
-tASC times still apply. With CONT=1, chip select remains asserted, but
-SCK takes a break and goes to the idle state for tASC + tCSC ns.
-
-In other words, the default values (of 0 and 0 ns) result in SCK
-glitches where the SCK transition to the idle state, as well as the SCK
-transition from the idle state, will have no delay in between, and it
-may appear that a SCK cycle has simply gone missing. The resulting
-timing violation might cause data corruption in many peripherals, as
-their chip select is asserted.
-
-The driver has device tree bindings for tCSC ("fsl,spi-cs-sck-delay")
-and tASC ("fsl,spi-sck-cs-delay"), but these are only specified to apply
-when the chip select toggles in the first place, and this timing
-characteristic depends on each peripheral. Many peripherals do not have
-explicit timing requirements, so many device trees do not have these
-properties present at all.
-
-Nonetheless, the lack of SCK glitches is a common sense requirement, and
-since the SCK stays in the idle state during transfers for tCSC+tASC ns,
-and that in itself should look like half a cycle, then let's ensure that
-tCSC and tASC are at least a quarter of a SCK period, such that their
-sum is at least half of one.
-
-Fixes: 95bf15f38641 ("spi: fsl-dspi: Add ~50ns delay between cs and sck")
-Reported-by: Lisa Chen (陈敏捷) <minjie.chen@geekplus.com>
-Debugged-by: Lisa Chen (陈敏捷) <minjie.chen@geekplus.com>
-Tested-by: Lisa Chen (陈敏捷) <minjie.chen@geekplus.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://lore.kernel.org/r/20230529223402.1199503-1-vladimir.oltean@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20221103151446.2638-5-tzimmermann@suse.de
+Cc: "Gagniuc, Alexandru" <alexandru.gagniuc@hp.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_display.c       |    1 -
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    2 --
+ 2 files changed, 3 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index fd004c9db9dc0..0d9201a2999de 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -975,7 +975,9 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- static int dspi_setup(struct spi_device *spi)
- {
- 	struct fsl_dspi *dspi = spi_controller_get_devdata(spi->controller);
-+	u32 period_ns = DIV_ROUND_UP(NSEC_PER_SEC, spi->max_speed_hz);
- 	unsigned char br = 0, pbr = 0, pcssck = 0, cssck = 0;
-+	u32 quarter_period_ns = DIV_ROUND_UP(period_ns, 4);
- 	u32 cs_sck_delay = 0, sck_cs_delay = 0;
- 	struct fsl_dspi_platform_data *pdata;
- 	unsigned char pasc = 0, asc = 0;
-@@ -1003,6 +1005,19 @@ static int dspi_setup(struct spi_device *spi)
- 		sck_cs_delay = pdata->sck_cs_delay;
- 	}
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
+@@ -1214,7 +1214,6 @@ amdgpu_display_user_framebuffer_create(s
  
-+	/* Since tCSC and tASC apply to continuous transfers too, avoid SCK
-+	 * glitches of half a cycle by never allowing tCSC + tASC to go below
-+	 * half a SCK period.
-+	 */
-+	if (cs_sck_delay < quarter_period_ns)
-+		cs_sck_delay = quarter_period_ns;
-+	if (sck_cs_delay < quarter_period_ns)
-+		sck_cs_delay = quarter_period_ns;
-+
-+	dev_dbg(&spi->dev,
-+		"DSPI controller timing params: CS-to-SCK delay %u ns, SCK-to-CS delay %u ns\n",
-+		cs_sck_delay, sck_cs_delay);
-+
- 	clkrate = clk_get_rate(dspi->clk);
- 	hz_to_spi_baud(&pbr, &br, spi->max_speed_hz, clkrate);
+ const struct drm_mode_config_funcs amdgpu_mode_funcs = {
+ 	.fb_create = amdgpu_display_user_framebuffer_create,
+-	.output_poll_changed = drm_fb_helper_output_poll_changed,
+ };
  
--- 
-2.39.2
-
+ static const struct drm_prop_enum_list amdgpu_underscan_enum_list[] =
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -83,7 +83,6 @@
+ #include <drm/drm_atomic_uapi.h>
+ #include <drm/drm_atomic_helper.h>
+ #include <drm/drm_blend.h>
+-#include <drm/drm_fb_helper.h>
+ #include <drm/drm_fourcc.h>
+ #include <drm/drm_edid.h>
+ #include <drm/drm_vblank.h>
+@@ -2875,7 +2874,6 @@ const struct amdgpu_ip_block_version dm_
+ static const struct drm_mode_config_funcs amdgpu_dm_mode_funcs = {
+ 	.fb_create = amdgpu_display_user_framebuffer_create,
+ 	.get_format_info = amd_get_format_info,
+-	.output_poll_changed = drm_fb_helper_output_poll_changed,
+ 	.atomic_check = amdgpu_dm_atomic_check,
+ 	.atomic_commit = drm_atomic_helper_commit,
+ };
 
 
