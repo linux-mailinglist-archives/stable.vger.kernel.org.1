@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 051897353DC
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:49:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 704C6735305
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232124AbjFSKtM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:49:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51884 "EHLO
+        id S231547AbjFSKlH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:41:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232157AbjFSKs3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:48:29 -0400
+        with ESMTP id S231989AbjFSKk0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:40:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1656D10C7
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:48:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 668E1CD
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:40:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A0A8D60670
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:48:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B463DC433C0;
-        Mon, 19 Jun 2023 10:48:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F0A4660B0D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:40:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15123C433C8;
+        Mon, 19 Jun 2023 10:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171702;
-        bh=dt4rOr8OdxNG36Kv5PYAvPVKG9VFG5qjHfzcIkWV2uA=;
+        s=korg; t=1687171224;
+        bh=dTMHqZm+d11Fd23qGB6AK54XsswmqL+O+qaQmWOZawU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jCLsKj5K/Mv8PAToqMl3xewwqMGfn3xtA8l+p1lLin4rjyHLRrPLdwBazaS2wYIe9
-         FjA8R9jtp59+ODhTmd89H62he31L8PaeHaSzdGIbwIbLzkkGxftsd5pr1I+wk7oJPZ
-         OnCloG0x1P9d8F0cYhdgCUzh6/kg2BV0o32ilrsc=
+        b=Cfi/9kOY/SsPX6+szKWwleEJrhWGxLXgrFdiTJSqP/xRrBkQi+gQIvQ7xOpuZnLco
+         vVCbOKr6pzlXeYh9xeUYaxq31VqkBi8H+xYoQlbbo9me9P6PCnMajQsBs3fPf3TauM
+         VPfc+1EWqe73W8zIaY4yDuJ/kk26h9oLFN0lbLxU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Xin Long <lucien.xin@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 126/166] sctp: fix an error code in sctp_sf_eat_auth()
+        patches@lists.linux.dev, Leon Romanovsky <leonro@nvidia.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Nikolay Aleksandrov <razor@blackwall.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.3 185/187] neighbour: delete neigh_lookup_nodev as not used
 Date:   Mon, 19 Jun 2023 12:30:03 +0200
-Message-ID: <20230619102200.929507353@linuxfoundation.org>
+Message-ID: <20230619102206.670225174@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,38 +56,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit 75e6def3b26736e7ff80639810098c9074229737 ]
+commit 76b9bf965c98c9b53ef7420b3b11438dbd764f92 upstream.
 
-The sctp_sf_eat_auth() function is supposed to enum sctp_disposition
-values and returning a kernel error code will cause issues in the
-caller.  Change -ENOMEM to SCTP_DISPOSITION_NOMEM.
+neigh_lookup_nodev isn't used in the kernel after removal
+of DECnet. So let's remove it.
 
-Fixes: 65b07e5d0d09 ("[SCTP]: API updates to suport SCTP-AUTH extensions.")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1202cdd66531 ("Remove DECnet support from kernel")
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/eb5656200d7964b2d177a36b77efa3c597d6d72d.1678267343.git.leonro@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/sm_statefuns.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/neighbour.h |    2 --
+ net/core/neighbour.c    |   31 -------------------------------
+ 2 files changed, 33 deletions(-)
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index f6ee7f4040c14..5383b6a9da61c 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -4484,7 +4484,7 @@ enum sctp_disposition sctp_sf_eat_auth(struct net *net,
- 				    SCTP_AUTH_NEW_KEY, GFP_ATOMIC);
+--- a/include/net/neighbour.h
++++ b/include/net/neighbour.h
+@@ -336,8 +336,6 @@ void neigh_table_init(int index, struct
+ int neigh_table_clear(int index, struct neigh_table *tbl);
+ struct neighbour *neigh_lookup(struct neigh_table *tbl, const void *pkey,
+ 			       struct net_device *dev);
+-struct neighbour *neigh_lookup_nodev(struct neigh_table *tbl, struct net *net,
+-				     const void *pkey);
+ struct neighbour *__neigh_create(struct neigh_table *tbl, const void *pkey,
+ 				 struct net_device *dev, bool want_ref);
+ static inline struct neighbour *neigh_create(struct neigh_table *tbl,
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -627,37 +627,6 @@ struct neighbour *neigh_lookup(struct ne
+ }
+ EXPORT_SYMBOL(neigh_lookup);
  
- 		if (!ev)
--			return -ENOMEM;
-+			return SCTP_DISPOSITION_NOMEM;
- 
- 		sctp_add_cmd_sf(commands, SCTP_CMD_EVENT_ULP,
- 				SCTP_ULPEVENT(ev));
--- 
-2.39.2
-
+-struct neighbour *neigh_lookup_nodev(struct neigh_table *tbl, struct net *net,
+-				     const void *pkey)
+-{
+-	struct neighbour *n;
+-	unsigned int key_len = tbl->key_len;
+-	u32 hash_val;
+-	struct neigh_hash_table *nht;
+-
+-	NEIGH_CACHE_STAT_INC(tbl, lookups);
+-
+-	rcu_read_lock_bh();
+-	nht = rcu_dereference_bh(tbl->nht);
+-	hash_val = tbl->hash(pkey, NULL, nht->hash_rnd) >> (32 - nht->hash_shift);
+-
+-	for (n = rcu_dereference_bh(nht->hash_buckets[hash_val]);
+-	     n != NULL;
+-	     n = rcu_dereference_bh(n->next)) {
+-		if (!memcmp(n->primary_key, pkey, key_len) &&
+-		    net_eq(dev_net(n->dev), net)) {
+-			if (!refcount_inc_not_zero(&n->refcnt))
+-				n = NULL;
+-			NEIGH_CACHE_STAT_INC(tbl, hits);
+-			break;
+-		}
+-	}
+-
+-	rcu_read_unlock_bh();
+-	return n;
+-}
+-EXPORT_SYMBOL(neigh_lookup_nodev);
+-
+ static struct neighbour *
+ ___neigh_create(struct neigh_table *tbl, const void *pkey,
+ 		struct net_device *dev, u32 flags,
 
 
