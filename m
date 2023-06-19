@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49D0573545E
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:55:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3C887354BE
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:58:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232216AbjFSKzQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:55:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56566 "EHLO
+        id S230098AbjFSK6t (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:58:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232358AbjFSKyr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:54:47 -0400
+        with ESMTP id S232335AbjFSK6b (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:58:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 878693A8E
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:53:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE11F1988
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:56:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 31DBC60B42
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:53:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44183C433C8;
-        Mon, 19 Jun 2023 10:53:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4880560B5F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:56:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B866C433C8;
+        Mon, 19 Jun 2023 10:56:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171995;
-        bh=IiSz/rBLzEFLi03skcQgIwagICL6pSu7Gr7ep2E4nJo=;
+        s=korg; t=1687172199;
+        bh=O6RYYlVwXXYj/HuWmYtTzIP5NXx3z0ZGT25etE+QaYg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G3w4WoTVIFFTSGD/FITAAthVHLPz3hZxBgZMPGpCqIVEEr5w/b59iwu868uT1hbRn
-         gtd1n8y1iGSV012r6WQOmnVaKRPm5LHfnAXcftSpa/Rvmh1nfBiqSj0x85zRQzVD5j
-         Qbua9oKupXk0iaznHysXzSLPyEa5HKiMgLG9Udvc=
+        b=tdimsf6Ctz1q5rQdrc3ODcx2RYrmDAiO++thxEcdTrqG1ov1NTKBPh7JPxNSpI5P7
+         gkCYBbOjr3nqOs+MIy5BRiewZbXNrSxtwmr6+o+7/s8b/OVulseZwyG7t4AkCdA/BI
+         99JfpOVgKsxRr+rZZ03WvGK3uMvoHisWgFJy0Wnc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christian Loehle <cloehle@hyperstone.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.4 64/64] mmc: block: ensure error propagation for non-blk
-Date:   Mon, 19 Jun 2023 12:31:00 +0200
-Message-ID: <20230619102136.108478928@linuxfoundation.org>
+        patches@lists.linux.dev, Marc Dionne <marc.dionne@auristor.com>,
+        David Howells <dhowells@redhat.com>,
+        linux-afs@lists.infradead.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 73/89] afs: Fix vlserver probe RTT handling
+Date:   Mon, 19 Jun 2023 12:31:01 +0200
+Message-ID: <20230619102141.586370780@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
-References: <20230619102132.808972458@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,81 +57,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christian Loehle <CLoehle@hyperstone.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 003fb0a51162d940f25fc35e70b0996a12c9e08a upstream.
+[ Upstream commit ba00b190670809c1a89326d80de96d714f6004f2 ]
 
-Requests to the mmc layer usually come through a block device IO.
-The exceptions are the ioctl interface, RPMB chardev ioctl
-and debugfs, which issue their own blk_mq requests through
-blk_execute_rq and do not query the BLK_STS error but the
-mmcblk-internal drv_op_result. This patch ensures that drv_op_result
-defaults to an error and has to be overwritten by the operation
-to be considered successful.
+In the same spirit as commit ca57f02295f1 ("afs: Fix fileserver probe
+RTT handling"), don't rule out using a vlserver just because there
+haven't been enough packets yet to calculate a real rtt.  Always set the
+server's probe rtt from the estimate provided by rxrpc_kernel_get_srtt,
+which is capped at 1 second.
 
-The behavior leads to a bug where the request never propagates
-the error, e.g. by directly erroring out at mmc_blk_mq_issue_rq if
-mmc_blk_part_switch fails. The ioctl caller of the rpmb chardev then
-can never see an error (BLK_STS_IOERR, but drv_op_result is unchanged)
-and thus may assume that their call executed successfully when it did not.
+This could lead to EDESTADDRREQ errors when accessing a cell for the
+first time, even though the vl servers are known and have responded to a
+probe.
 
-While always checking the blk_execute_rq return value would be
-advised, let's eliminate the error by always setting
-drv_op_result as -EIO to be overwritten on success (or other error)
-
-Fixes: 614f0388f580 ("mmc: block: move single ioctl() commands to block requests")
-Signed-off-by: Christian Loehle <cloehle@hyperstone.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/59c17ada35664b818b7bd83752119b2d@hyperstone.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Christian Loehle <cloehle@hyperstone.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1d4adfaf6574 ("rxrpc: Make rxrpc_kernel_get_srtt() indicate validity")
+Signed-off-by: Marc Dionne <marc.dionne@auristor.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: linux-afs@lists.infradead.org
+Link: http://lists.infradead.org/pipermail/linux-afs/2023-June/006746.html
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/block.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/afs/vl_probe.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -249,6 +249,7 @@ static ssize_t power_ro_lock_store(struc
- 		goto out_put;
+diff --git a/fs/afs/vl_probe.c b/fs/afs/vl_probe.c
+index d1c7068b4346f..58452b86e6727 100644
+--- a/fs/afs/vl_probe.c
++++ b/fs/afs/vl_probe.c
+@@ -115,8 +115,8 @@ void afs_vlserver_probe_result(struct afs_call *call)
+ 		}
  	}
- 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_BOOT_WP;
-+	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
- 	blk_execute_rq(mq->queue, NULL, req, 0);
- 	ret = req_to_mmc_queue_req(req)->drv_op_result;
- 	blk_put_request(req);
-@@ -688,6 +689,7 @@ static int mmc_blk_ioctl_cmd(struct mmc_
- 	idatas[0] = idata;
- 	req_to_mmc_queue_req(req)->drv_op =
- 		rpmb ? MMC_DRV_OP_IOCTL_RPMB : MMC_DRV_OP_IOCTL;
-+	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
- 	req_to_mmc_queue_req(req)->drv_op_data = idatas;
- 	req_to_mmc_queue_req(req)->ioc_count = 1;
- 	blk_execute_rq(mq->queue, NULL, req, 0);
-@@ -757,6 +759,7 @@ static int mmc_blk_ioctl_multi_cmd(struc
- 	}
- 	req_to_mmc_queue_req(req)->drv_op =
- 		rpmb ? MMC_DRV_OP_IOCTL_RPMB : MMC_DRV_OP_IOCTL;
-+	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
- 	req_to_mmc_queue_req(req)->drv_op_data = idata;
- 	req_to_mmc_queue_req(req)->ioc_count = num_of_cmds;
- 	blk_execute_rq(mq->queue, NULL, req, 0);
-@@ -2738,6 +2741,7 @@ static int mmc_dbg_card_status_get(void
- 	if (IS_ERR(req))
- 		return PTR_ERR(req);
- 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_GET_CARD_STATUS;
-+	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
- 	blk_execute_rq(mq->queue, NULL, req, 0);
- 	ret = req_to_mmc_queue_req(req)->drv_op_result;
- 	if (ret >= 0) {
-@@ -2776,6 +2780,7 @@ static int mmc_ext_csd_open(struct inode
- 		goto out_free;
- 	}
- 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_GET_EXT_CSD;
-+	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
- 	req_to_mmc_queue_req(req)->drv_op_data = &ext_csd;
- 	blk_execute_rq(mq->queue, NULL, req, 0);
- 	err = req_to_mmc_queue_req(req)->drv_op_result;
+ 
+-	if (rxrpc_kernel_get_srtt(call->net->socket, call->rxcall, &rtt_us) &&
+-	    rtt_us < server->probe.rtt) {
++	rxrpc_kernel_get_srtt(call->net->socket, call->rxcall, &rtt_us);
++	if (rtt_us < server->probe.rtt) {
+ 		server->probe.rtt = rtt_us;
+ 		server->rtt = rtt_us;
+ 		alist->preferred = index;
+-- 
+2.39.2
+
 
 
