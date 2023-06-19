@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE338735216
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:30:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD7A673538C
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:46:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230344AbjFSKaW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:30:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38640 "EHLO
+        id S232083AbjFSKqe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:46:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230371AbjFSKaV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:30:21 -0400
+        with ESMTP id S231226AbjFSKqE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:46:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8894EC6
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:30:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14D3E10D4
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:45:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E00F60A50
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:30:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CFE4C433CB;
-        Mon, 19 Jun 2023 10:30:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DC6E60B85
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:45:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3BBC433C8;
+        Mon, 19 Jun 2023 10:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687170619;
-        bh=7SZpRBOPuEVYE2QmaYt4jJ9GIL8+s98F+KMoarjT3RY=;
+        s=korg; t=1687171545;
+        bh=YoGVE1eqIsFP53ya2/Pnnb0ZOMFHukzoST7p0CfUP4M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RCtY+bLfCmVOFc4PpYl4pQ3wOqeJSVcPM15Qrg1wLkeTDFVxmYtUC4hTN4qUuhkZC
-         BV+yn4OmOOxl5lDMqioPFU7XxuJWl95L/NQUbP1aE0pybkFfdj8hCVDWdDfSx6l37v
-         2l0WaHb6N1Y3bMJPdwN1lenzI7vSjvIShMFbgDPU=
+        b=Ii9pSFXFgj5WW5n+ZbRGTD7o0AoT39E8Z33W5CEESTN+rW86K/tnLJRwDau4sGqpt
+         jMz7xcf+NbYFiDSJP6B2MFc94E9rlq5LfSssQOugSxNspVHAhZStDWepc5LN8ywpKd
+         P3XxxPay4vgDyKXQbFuVCMlHh3qen++YhFIGNaGg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Guillaume Nault <gnault@redhat.com>,
-        David Ahern <dsahern@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 19/32] ping6: Fix send to link-local addresses with VRF.
+        patches@lists.linux.dev, Wes Huang <wes.huang@moxa.com>,
+        =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 070/166] net: usb: qmi_wwan: add support for Compal RXM-G1
 Date:   Mon, 19 Jun 2023 12:29:07 +0200
-Message-ID: <20230619102128.553797160@linuxfoundation.org>
+Message-ID: <20230619102158.162611293@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102127.461443957@linuxfoundation.org>
-References: <20230619102127.461443957@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,58 +55,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Wes Huang <wes.huang@moxa.com>
 
-[ Upstream commit 91ffd1bae1dafbb9e34b46813f5b058581d9144d ]
+commit 863199199713908afaa47ba09332b87621c12496 upstream.
 
-Ping sockets can't send packets when they're bound to a VRF master
-device and the output interface is set to a slave device.
+Add support for Compal RXM-G1 which is based on Qualcomm SDX55 chip.
+This patch adds support for two compositions:
 
-For example, when net.ipv4.ping_group_range is properly set, so that
-ping6 can use ping sockets, the following kind of commands fails:
-  $ ip vrf exec red ping6 fe80::854:e7ff:fe88:4bf1%eth1
+0x9091: DIAG + MODEM + QMI_RMNET + ADB
+0x90db: DIAG + DUN + RMNET + DPL + QDSS(Trace) + ADB
 
-What happens is that sk->sk_bound_dev_if is set to the VRF master
-device, but 'oif' is set to the real output device. Since both are set
-but different, ping_v6_sendmsg() sees their value as inconsistent and
-fails.
+T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=05c6 ProdID=9091 Rev= 4.14
+S:  Manufacturer=QCOM
+S:  Product=SDXPRAIRIE-MTP _SN:719AB680
+S:  SerialNumber=719ab680
+C:* #Ifs= 4 Cfg#= 1 Atr=80 MxPwr=896mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=(none)
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=(none)
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=84(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
 
-Fix this by allowing 'oif' to be a slave device of ->sk_bound_dev_if.
+T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=05c6 ProdID=90db Rev= 4.14
+S:  Manufacturer=QCOM
+S:  Product=SDXPRAIRIE-MTP _SN:719AB680
+S:  SerialNumber=719ab680
+C:* #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=896mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=(none)
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=(none)
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=84(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+E:  Ad=8f(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
 
-This fixes the following kselftest failure:
-  $ ./fcnal-test.sh -t ipv6_ping
-  [...]
-  TEST: ping out, vrf device+address bind - ns-B IPv6 LLA        [FAIL]
-
-Reported-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Closes: https://lore.kernel.org/netdev/b6191f90-ffca-dbca-7d06-88a9788def9c@alu.unizg.hr/
-Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Fixes: 5e457896986e ("net: ipv6: Fix ping to link-local addresses.")
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/6c8b53108816a8d0d5705ae37bdc5a8322b5e3d9.1686153846.git.gnault@redhat.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Wes Huang <wes.huang@moxa.com>
+Acked-by: Bjørn Mork <bjorn@mork.no>
+Link: https://lore.kernel.org/r/20230608030141.3546-1-wes.huang@moxa.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ping.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/usb/qmi_wwan.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ipv6/ping.c b/net/ipv6/ping.c
-index d5cdba8213a44..49e11bbf390cf 100644
---- a/net/ipv6/ping.c
-+++ b/net/ipv6/ping.c
-@@ -101,7 +101,8 @@ static int ping_v6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
- 	addr_type = ipv6_addr_type(daddr);
- 	if ((__ipv6_addr_needs_scope_id(addr_type) && !oif) ||
- 	    (addr_type & IPV6_ADDR_MAPPED) ||
--	    (oif && sk->sk_bound_dev_if && oif != sk->sk_bound_dev_if))
-+	    (oif && sk->sk_bound_dev_if && oif != sk->sk_bound_dev_if &&
-+	     l3mdev_master_ifindex_by_index(sock_net(sk), oif) != sk->sk_bound_dev_if))
- 		return -EINVAL;
- 
- 	/* TODO: use ip6_datagram_send_ctl to get options from cmsg */
--- 
-2.39.2
-
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1219,7 +1219,9 @@ static const struct usb_device_id produc
+ 	{QMI_FIXED_INTF(0x05c6, 0x9080, 8)},
+ 	{QMI_FIXED_INTF(0x05c6, 0x9083, 3)},
+ 	{QMI_FIXED_INTF(0x05c6, 0x9084, 4)},
++	{QMI_QUIRK_SET_DTR(0x05c6, 0x9091, 2)},	/* Compal RXM-G1 */
+ 	{QMI_FIXED_INTF(0x05c6, 0x90b2, 3)},    /* ublox R410M */
++	{QMI_QUIRK_SET_DTR(0x05c6, 0x90db, 2)},	/* Compal RXM-G1 */
+ 	{QMI_FIXED_INTF(0x05c6, 0x920d, 0)},
+ 	{QMI_FIXED_INTF(0x05c6, 0x920d, 5)},
+ 	{QMI_QUIRK_SET_DTR(0x05c6, 0x9625, 4)},	/* YUGA CLM920-NC5 */
 
 
