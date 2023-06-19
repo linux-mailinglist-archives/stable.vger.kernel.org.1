@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A427C735363
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:45:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62FF97352A7
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:37:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230434AbjFSKpP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:45:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47412 "EHLO
+        id S230383AbjFSKhI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:37:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229656AbjFSKob (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:44:31 -0400
+        with ESMTP id S230078AbjFSKgn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:36:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D638F198B
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:44:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9C2910D2
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:36:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7311E60B80
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:44:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86510C433C8;
-        Mon, 19 Jun 2023 10:44:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 57ADF60B6D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:36:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70DA9C433C8;
+        Mon, 19 Jun 2023 10:36:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171447;
-        bh=apa5LjQUCPwHfND7dLxHBsRZpGi5SwgtmBlh59yV+Bw=;
+        s=korg; t=1687170999;
+        bh=xUIZ23c+3tN02lO0oTMrtSf2owuRlG5/4NrqvimrJLU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d0evzGL+gOX7hn5HYiS0FG4NUxm7kSNEx45IFHiygM5s6ZU7pKt2qXUD9zUNwaHwk
-         w1zMjblL5inOwny5xuzoP4yloKtO9Y0HlivT2bMXDtME9z0xkVrmlyJ71ZtORgjheM
-         yWyK5mXxy5LOfYMaGBbCoyaqG9iCg7Y6Vpc3kRos=
+        b=eWaYs3w/qVib4bWZyLUJnS7VTG92Uus6SvoXz2QXcOOzE7eoxerPf5UtAV42H9OS6
+         uL1QKnW4VuZ+3+F1hOgNyyakHXIOYLJzZHZpvpF+MmKG4cFKiFjxksE5BsbwWxprdC
+         FrfjNS7+DxKVOG5tMs30UsQZ5MHCxdSP5QQ69Axs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liviu Dudau <liviu@dudau.co.uk>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 035/166] mips: Move initrd_start check after initrd address sanitisation.
+        patches@lists.linux.dev, Pengfei Xu <pengfei.xu@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.3 094/187] thunderbolt: dma_test: Use correct value for absent rings when creating paths
 Date:   Mon, 19 Jun 2023 12:28:32 +0200
-Message-ID: <20230619102156.453928869@linuxfoundation.org>
+Message-ID: <20230619102202.138615313@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,52 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Liviu Dudau <liviu@dudau.co.uk>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit 4897a898a216058dec55e5e5902534e6e224fcdf ]
+commit 70c2e03e9aaf17496c63f6e42333c012f5ae5307 upstream.
 
-PAGE_OFFSET is technically a virtual address so when checking the value of
-initrd_start against it we should make sure that it has been sanitised from
-the values passed by the bootloader. Without this change, even with a bootloader
-that passes correct addresses for an initrd, we are failing to load it on MT7621
-boards, for example.
+Both tb_xdomain_enable_paths() and tb_xdomain_disable_paths() expect -1,
+not 0, if the corresponding ring is not needed. For this reason change
+the driver to use correct value for the rings that are not needed.
 
-Signed-off-by: Liviu Dudau <liviu@dudau.co.uk>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 180b0689425c ("thunderbolt: Allow multiple DMA tunnels over a single XDomain connection")
+Cc: stable@vger.kernel.org
+Reported-by: Pengfei Xu <pengfei.xu@intel.com>
+Tested-by: Pengfei Xu <pengfei.xu@intel.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kernel/setup.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/thunderbolt/dma_test.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
-index f1c88f8a1dc51..81dbb4ef52317 100644
---- a/arch/mips/kernel/setup.c
-+++ b/arch/mips/kernel/setup.c
-@@ -158,10 +158,6 @@ static unsigned long __init init_initrd(void)
- 		pr_err("initrd start must be page aligned\n");
- 		goto disable;
+--- a/drivers/thunderbolt/dma_test.c
++++ b/drivers/thunderbolt/dma_test.c
+@@ -192,9 +192,9 @@ static int dma_test_start_rings(struct d
  	}
--	if (initrd_start < PAGE_OFFSET) {
--		pr_err("initrd start < PAGE_OFFSET\n");
--		goto disable;
--	}
  
- 	/*
- 	 * Sanitize initrd addresses. For example firmware
-@@ -174,6 +170,11 @@ static unsigned long __init init_initrd(void)
- 	initrd_end = (unsigned long)__va(end);
- 	initrd_start = (unsigned long)__va(__pa(initrd_start));
+ 	ret = tb_xdomain_enable_paths(dt->xd, dt->tx_hopid,
+-				      dt->tx_ring ? dt->tx_ring->hop : 0,
++				      dt->tx_ring ? dt->tx_ring->hop : -1,
+ 				      dt->rx_hopid,
+-				      dt->rx_ring ? dt->rx_ring->hop : 0);
++				      dt->rx_ring ? dt->rx_ring->hop : -1);
+ 	if (ret) {
+ 		dma_test_free_rings(dt);
+ 		return ret;
+@@ -218,9 +218,9 @@ static void dma_test_stop_rings(struct d
+ 		tb_ring_stop(dt->tx_ring);
  
-+	if (initrd_start < PAGE_OFFSET) {
-+		pr_err("initrd start < PAGE_OFFSET\n");
-+		goto disable;
-+	}
-+
- 	ROOT_DEV = Root_RAM0;
- 	return PFN_UP(end);
- disable:
--- 
-2.39.2
-
+ 	ret = tb_xdomain_disable_paths(dt->xd, dt->tx_hopid,
+-				       dt->tx_ring ? dt->tx_ring->hop : 0,
++				       dt->tx_ring ? dt->tx_ring->hop : -1,
+ 				       dt->rx_hopid,
+-				       dt->rx_ring ? dt->rx_ring->hop : 0);
++				       dt->rx_ring ? dt->rx_ring->hop : -1);
+ 	if (ret)
+ 		dev_warn(&dt->svc->dev, "failed to disable DMA paths\n");
+ 
 
 
