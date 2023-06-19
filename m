@@ -2,44 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1410D735392
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:46:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A7727352D6
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:38:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230392AbjFSKqb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:46:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47828 "EHLO
+        id S231630AbjFSKil (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:38:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232067AbjFSKp5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:45:57 -0400
+        with ESMTP id S231842AbjFSKig (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:38:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8ECEAE7F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:45:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF734B3
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:38:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2520760B73
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:45:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E95C433C8;
-        Mon, 19 Jun 2023 10:45:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4467E60B33
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:38:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53085C433C8;
+        Mon, 19 Jun 2023 10:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171539;
-        bh=I+Mmvt/J8/mtFygh1dWzkEIiZvzhJYWh4yJ4eClOigo=;
+        s=korg; t=1687171113;
+        bh=J3lpYZiCqTHDafXyj1O2xPum0suji6rUHBPBx8WA+wM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WDmq2C/8bsLVETM1WXuDVrIXPbNr8WdQPxuaWKx8vo95uX0PSazdOPxdURFncn0RU
-         Iw09auspGXbaPGq3+HdVNL0Z3nZoYGL9uuwlJQ0JnoMVsjgUl7O5BAuKsnwH5cVjVK
-         fzQ8sMQY0oncHlKLFNh1tFIC6QdYfKX+PL0oyL8w=
+        b=hddMwJ38y4meXfTYx25UNdN4JGRZSN32LZK07vF7UMQY9oP0DLgb7k7KIJ6sZz5vV
+         e0Uj+cQUTUy67d5v923jXbTTM1KlCKcakIjZPCOBrLO5c/yaTu2VbtM/k4vVhEz7ap
+         5GbbK1y8iZ5QJHBLBOLsdJix3qgxdToHZryFBbZY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Edward Srouji <edwards@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 6.1 068/166] RDMA/uverbs: Restrict usage of privileged QKEYs
+        patches@lists.linux.dev, Max Tottenham <mtottenh@akamai.com>,
+        Josh Hunt <johunt@akamai.com>,
+        kernel test robot <lkp@intel.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 127/187] net/sched: act_pedit: Parse L3 Header for L4 offset
 Date:   Mon, 19 Jun 2023 12:29:05 +0200
-Message-ID: <20230619102158.074595085@linuxfoundation.org>
+Message-ID: <20230619102203.713411829@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,43 +58,140 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Edward Srouji <edwards@nvidia.com>
+From: Max Tottenham <mtottenh@akamai.com>
 
-commit 0cadb4db79e1d9eea66711c4031e435c2191907e upstream.
+[ Upstream commit 6c02568fd1ae53099b4ab86365c5be1ff15f586b ]
 
-According to the IB specification rel-1.6, section 3.5.3:
-"QKEYs with the most significant bit set are considered controlled
-QKEYs, and a HCA does not allow a consumer to arbitrarily specify a
-controlled QKEY."
+Instead of relying on skb->transport_header being set correctly, opt
+instead to parse the L3 header length out of the L3 headers for both
+IPv4/IPv6 when the Extended Layer Op for tcp/udp is used. This fixes a
+bug if GRO is disabled, when GRO is disabled skb->transport_header is
+set by __netif_receive_skb_core() to point to the L3 header, it's later
+fixed by the upper protocol layers, but act_pedit will receive the SKB
+before the fixups are completed. The existing behavior causes the
+following to edit the L3 header if GRO is disabled instead of the UDP
+header:
 
-Thus, block non-privileged users from setting such a QKEY.
+    tc filter add dev eth0 ingress protocol ip flower ip_proto udp \
+ dst_ip 192.168.1.3 action pedit ex munge udp set dport 18053
 
-Cc: stable@vger.kernel.org
-Fixes: bc38a6abdd5a ("[PATCH] IB uverbs: core implementation")
-Signed-off-by: Edward Srouji <edwards@nvidia.com>
-Link: https://lore.kernel.org/r/c00c809ddafaaf87d6f6cb827978670989a511b3.1685960567.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Also re-introduce a rate-limited warning if we were unable to extract
+the header offset when using the 'ex' interface.
+
+Fixes: 71d0ed7079df ("net/act_pedit: Support using offset relative to
+the conventional network headers")
+Signed-off-by: Max Tottenham <mtottenh@akamai.com>
+Reviewed-by: Josh Hunt <johunt@akamai.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202305261541.N165u9TZ-lkp@intel.com/
+Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/uverbs_cmd.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/sched/act_pedit.c | 48 ++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 43 insertions(+), 5 deletions(-)
 
---- a/drivers/infiniband/core/uverbs_cmd.c
-+++ b/drivers/infiniband/core/uverbs_cmd.c
-@@ -1850,8 +1850,13 @@ static int modify_qp(struct uverbs_attr_
- 		attr->path_mtu = cmd->base.path_mtu;
- 	if (cmd->base.attr_mask & IB_QP_PATH_MIG_STATE)
- 		attr->path_mig_state = cmd->base.path_mig_state;
--	if (cmd->base.attr_mask & IB_QP_QKEY)
-+	if (cmd->base.attr_mask & IB_QP_QKEY) {
-+		if (cmd->base.qkey & IB_QP_SET_QKEY && !capable(CAP_NET_RAW)) {
-+			ret = -EPERM;
-+			goto release_qp;
-+		}
- 		attr->qkey = cmd->base.qkey;
+diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
+index 1e7e959b90e48..300b5ae760dcc 100644
+--- a/net/sched/act_pedit.c
++++ b/net/sched/act_pedit.c
+@@ -13,7 +13,10 @@
+ #include <linux/rtnetlink.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
++#include <linux/ip.h>
++#include <linux/ipv6.h>
+ #include <linux/slab.h>
++#include <net/ipv6.h>
+ #include <net/netlink.h>
+ #include <net/pkt_sched.h>
+ #include <linux/tc_act/tc_pedit.h>
+@@ -313,28 +316,58 @@ static bool offset_valid(struct sk_buff *skb, int offset)
+ 	return true;
+ }
+ 
+-static void pedit_skb_hdr_offset(struct sk_buff *skb,
++static int pedit_l4_skb_offset(struct sk_buff *skb, int *hoffset, const int header_type)
++{
++	const int noff = skb_network_offset(skb);
++	int ret = -EINVAL;
++	struct iphdr _iph;
++
++	switch (skb->protocol) {
++	case htons(ETH_P_IP): {
++		const struct iphdr *iph = skb_header_pointer(skb, noff, sizeof(_iph), &_iph);
++
++		if (!iph)
++			goto out;
++		*hoffset = noff + iph->ihl * 4;
++		ret = 0;
++		break;
 +	}
- 	if (cmd->base.attr_mask & IB_QP_RQ_PSN)
- 		attr->rq_psn = cmd->base.rq_psn;
- 	if (cmd->base.attr_mask & IB_QP_SQ_PSN)
++	case htons(ETH_P_IPV6):
++		ret = ipv6_find_hdr(skb, hoffset, header_type, NULL, NULL) == header_type ? 0 : -EINVAL;
++		break;
++	}
++out:
++	return ret;
++}
++
++static int pedit_skb_hdr_offset(struct sk_buff *skb,
+ 				 enum pedit_header_type htype, int *hoffset)
+ {
++	int ret = -EINVAL;
+ 	/* 'htype' is validated in the netlink parsing */
+ 	switch (htype) {
+ 	case TCA_PEDIT_KEY_EX_HDR_TYPE_ETH:
+-		if (skb_mac_header_was_set(skb))
++		if (skb_mac_header_was_set(skb)) {
+ 			*hoffset = skb_mac_offset(skb);
++			ret = 0;
++		}
+ 		break;
+ 	case TCA_PEDIT_KEY_EX_HDR_TYPE_NETWORK:
+ 	case TCA_PEDIT_KEY_EX_HDR_TYPE_IP4:
+ 	case TCA_PEDIT_KEY_EX_HDR_TYPE_IP6:
+ 		*hoffset = skb_network_offset(skb);
++		ret = 0;
+ 		break;
+ 	case TCA_PEDIT_KEY_EX_HDR_TYPE_TCP:
++		ret = pedit_l4_skb_offset(skb, hoffset, IPPROTO_TCP);
++		break;
+ 	case TCA_PEDIT_KEY_EX_HDR_TYPE_UDP:
+-		if (skb_transport_header_was_set(skb))
+-			*hoffset = skb_transport_offset(skb);
++		ret = pedit_l4_skb_offset(skb, hoffset, IPPROTO_UDP);
+ 		break;
+ 	default:
+ 		break;
+ 	}
++	return ret;
+ }
+ 
+ TC_INDIRECT_SCOPE int tcf_pedit_act(struct sk_buff *skb,
+@@ -370,6 +403,7 @@ TC_INDIRECT_SCOPE int tcf_pedit_act(struct sk_buff *skb,
+ 		int hoffset = 0;
+ 		u32 *ptr, hdata;
+ 		u32 val;
++		int rc;
+ 
+ 		if (tkey_ex) {
+ 			htype = tkey_ex->htype;
+@@ -378,7 +412,11 @@ TC_INDIRECT_SCOPE int tcf_pedit_act(struct sk_buff *skb,
+ 			tkey_ex++;
+ 		}
+ 
+-		pedit_skb_hdr_offset(skb, htype, &hoffset);
++		rc = pedit_skb_hdr_offset(skb, htype, &hoffset);
++		if (rc) {
++			pr_info_ratelimited("tc action pedit unable to extract header offset for header type (0x%x)\n", htype);
++			goto bad;
++		}
+ 
+ 		if (tkey->offmask) {
+ 			u8 *d, _d;
+-- 
+2.39.2
+
 
 
