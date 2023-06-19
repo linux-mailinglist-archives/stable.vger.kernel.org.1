@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95029735481
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:56:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 787EB73541D
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:52:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232315AbjFSK4u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:56:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58714 "EHLO
+        id S232227AbjFSKwV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:52:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232438AbjFSK4Y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:56:24 -0400
+        with ESMTP id S232262AbjFSKv7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:51:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BB881B8
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:54:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE8E61BC7
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:50:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1060360B5F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:54:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257FBC433C9;
-        Mon, 19 Jun 2023 10:54:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 389E960B82
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:50:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 429EEC433C9;
+        Mon, 19 Jun 2023 10:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172064;
-        bh=KMj2LiunNv9lAM3k0a5HHfUEb44eHW9R9k6QO2moCYs=;
+        s=korg; t=1687171858;
+        bh=awNbbUrZKfXcgaKH6JhIK8hfjJtLZGaowOiSziy/Zt0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WvwI2AR1pL3SBgwJuMJ2f9m9bo95zrGklFjWDlnsrQCRw9lO+dOn9xemGvD0Fp8mc
-         3K8V2fakYs+rDn4fWjSB7k8m44QBmyW6HV57rRnzhzRgMrmrJ81FRA8hfX+RlgWYBk
-         7h4j3z4H/ya87a1IN8d39v+6/HFI2FxNto7dXmsg=
+        b=EhkCzrqeAMqdV8aTDOFCT8IB59GDGi5g51y39JgiWbwLXU444KGmodwYIhgUjqahB
+         lAYjWYA4CzOpd2K4QR1jp+r07zaVQ9XnsCilQbtrB3xRodaOpJRENUm7poOUXnu2UG
+         yUq4f96wCaojDIE9yrHHykR2kGvVtAqRBO+jjbAM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maxim Kochetkov <fido_max@inbox.ru>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 23/89] ASoC: dwc: move DMA init to snd_soc_dai_driver probe()
-Date:   Mon, 19 Jun 2023 12:30:11 +0200
-Message-ID: <20230619102139.343064398@linuxfoundation.org>
+Subject: [PATCH 5.4 16/64] parisc: Flush gatt writes and adjust gatt mask in parisc_agp_mask_memory()
+Date:   Mon, 19 Jun 2023 12:30:12 +0200
+Message-ID: <20230619102133.697218886@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
+References: <20230619102132.808972458@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,144 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Maxim Kochetkov <fido_max@inbox.ru>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 011a8719d6105dcb48077ea7a6a88ac019d4aa50 ]
+[ Upstream commit d703797380c540bbeac03f104ebcfc364eaf47cc ]
 
-When using DMA mode we are facing with Oops:
-[  396.458157] Unable to handle kernel access to user memory without uaccess routines at virtual address 000000000000000c
-[  396.469374] Oops [#1]
-[  396.471839] Modules linked in:
-[  396.475144] CPU: 0 PID: 114 Comm: arecord Not tainted 6.0.0-00164-g9a8eccdaf2be-dirty #68
-[  396.483619] Hardware name: YMP ELCT FPGA (DT)
-[  396.488156] epc : dmaengine_pcm_open+0x1d2/0x342
-[  396.493227]  ra : dmaengine_pcm_open+0x1d2/0x342
-[  396.498140] epc : ffffffff807fe346 ra : ffffffff807fe346 sp : ffffffc804e138f0
-[  396.505602]  gp : ffffffff817bf730 tp : ffffffd8042c8ac0 t0 : 6500000000000000
-[  396.513045]  t1 : 0000000000000064 t2 : 656e69676e65616d s0 : ffffffc804e13990
-[  396.520477]  s1 : ffffffd801b86a18 a0 : 0000000000000026 a1 : ffffffff816920f8
-[  396.527897]  a2 : 0000000000000010 a3 : fffffffffffffffe a4 : 0000000000000000
-[  396.535319]  a5 : 0000000000000000 a6 : ffffffd801b87040 a7 : 0000000000000038
-[  396.542740]  s2 : ffffffd801b94a00 s3 : 0000000000000000 s4 : ffffffd80427f5e8
-[  396.550153]  s5 : ffffffd80427f5e8 s6 : ffffffd801b44410 s7 : fffffffffffffff5
-[  396.557569]  s8 : 0000000000000800 s9 : 0000000000000001 s10: ffffffff8066d254
-[  396.564978]  s11: ffffffd8059cf768 t3 : ffffffff817d5577 t4 : ffffffff817d5577
-[  396.572391]  t5 : ffffffff817d5578 t6 : ffffffc804e136e8
-[  396.577876] status: 0000000200000120 badaddr: 000000000000000c cause: 000000000000000d
-[  396.586007] [<ffffffff806839f4>] snd_soc_component_open+0x1a/0x68
-[  396.592439] [<ffffffff807fdd62>] __soc_pcm_open+0xf0/0x502
-[  396.598217] [<ffffffff80685d86>] soc_pcm_open+0x2e/0x4e
-[  396.603741] [<ffffffff8066cea4>] snd_pcm_open_substream+0x442/0x68e
-[  396.610313] [<ffffffff8066d1ea>] snd_pcm_open+0xfa/0x212
-[  396.615868] [<ffffffff8066d39c>] snd_pcm_capture_open+0x3a/0x60
-[  396.622048] [<ffffffff8065b35a>] snd_open+0xa8/0x17a
-[  396.627421] [<ffffffff801ae036>] chrdev_open+0xa0/0x218
-[  396.632893] [<ffffffff801a5a28>] do_dentry_open+0x17c/0x2a6
-[  396.638713] [<ffffffff801a6d9a>] vfs_open+0x1e/0x26
-[  396.643850] [<ffffffff801b8544>] path_openat+0x96e/0xc96
-[  396.649518] [<ffffffff801b9390>] do_filp_open+0x7c/0xf6
-[  396.655034] [<ffffffff801a6ff2>] do_sys_openat2+0x8a/0x11e
-[  396.660765] [<ffffffff801a735a>] sys_openat+0x50/0x7c
-[  396.666068] [<ffffffff80003aca>] ret_from_syscall+0x0/0x2
-[  396.674964] ---[ end trace 0000000000000000 ]---
+Flush caches after changing gatt entries and calculate entry according
+to SBA requirements.
 
-It happens because of play_dma_data/capture_dma_data pointers are NULL.
-Current implementation assigns these pointers at snd_soc_dai_driver
-startup() callback and reset them back to NULL at shutdown(). But
-soc_pcm_open() sequence uses DMA pointers in dmaengine_pcm_open()
-before snd_soc_dai_driver startup().
-Most generic DMA capable I2S drivers use snd_soc_dai_driver probe()
-callback to init DMA pointers only once at probe. So move DMA init
-to dw_i2s_dai_probe and drop shutdown() and startup() callbacks.
-
-Signed-off-by: Maxim Kochetkov <fido_max@inbox.ru>
-Link: https://lore.kernel.org/r/20230512110343.66664-1-fido_max@inbox.ru
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/dwc/dwc-i2s.c | 41 +++++++++--------------------------------
- 1 file changed, 9 insertions(+), 32 deletions(-)
+ drivers/char/agp/parisc-agp.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/dwc/dwc-i2s.c b/sound/soc/dwc/dwc-i2s.c
-index 5469399abcb44..8e58347dabe81 100644
---- a/sound/soc/dwc/dwc-i2s.c
-+++ b/sound/soc/dwc/dwc-i2s.c
-@@ -183,30 +183,6 @@ static void i2s_stop(struct dw_i2s_dev *dev,
+diff --git a/drivers/char/agp/parisc-agp.c b/drivers/char/agp/parisc-agp.c
+index d68d05d5d3838..514f9f287a781 100644
+--- a/drivers/char/agp/parisc-agp.c
++++ b/drivers/char/agp/parisc-agp.c
+@@ -90,6 +90,9 @@ parisc_agp_tlbflush(struct agp_memory *mem)
+ {
+ 	struct _parisc_agp_info *info = &parisc_agp_info;
+ 
++	/* force fdc ops to be visible to IOMMU */
++	asm_io_sync();
++
+ 	writeq(info->gart_base | ilog2(info->gart_size), info->ioc_regs+IOC_PCOM);
+ 	readq(info->ioc_regs+IOC_PCOM);	/* flush */
+ }
+@@ -158,6 +161,7 @@ parisc_agp_insert_memory(struct agp_memory *mem, off_t pg_start, int type)
+ 			info->gatt[j] =
+ 				parisc_agp_mask_memory(agp_bridge,
+ 					paddr, type);
++			asm_io_fdc(&info->gatt[j]);
+ 		}
  	}
- }
  
--static int dw_i2s_startup(struct snd_pcm_substream *substream,
--		struct snd_soc_dai *cpu_dai)
--{
--	struct dw_i2s_dev *dev = snd_soc_dai_get_drvdata(cpu_dai);
--	union dw_i2s_snd_dma_data *dma_data = NULL;
--
--	if (!(dev->capability & DWC_I2S_RECORD) &&
--			(substream->stream == SNDRV_PCM_STREAM_CAPTURE))
--		return -EINVAL;
--
--	if (!(dev->capability & DWC_I2S_PLAY) &&
--			(substream->stream == SNDRV_PCM_STREAM_PLAYBACK))
--		return -EINVAL;
--
--	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
--		dma_data = &dev->play_dma_data;
--	else if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
--		dma_data = &dev->capture_dma_data;
--
--	snd_soc_dai_set_dma_data(cpu_dai, substream, (void *)dma_data);
--
--	return 0;
--}
--
- static void dw_i2s_config(struct dw_i2s_dev *dev, int stream)
+@@ -191,7 +195,16 @@ static unsigned long
+ parisc_agp_mask_memory(struct agp_bridge_data *bridge, dma_addr_t addr,
+ 		       int type)
  {
- 	u32 ch_reg;
-@@ -305,12 +281,6 @@ static int dw_i2s_hw_params(struct snd_pcm_substream *substream,
- 	return 0;
- }
- 
--static void dw_i2s_shutdown(struct snd_pcm_substream *substream,
--		struct snd_soc_dai *dai)
--{
--	snd_soc_dai_set_dma_data(dai, substream, NULL);
--}
--
- static int dw_i2s_prepare(struct snd_pcm_substream *substream,
- 			  struct snd_soc_dai *dai)
- {
-@@ -382,8 +352,6 @@ static int dw_i2s_set_fmt(struct snd_soc_dai *cpu_dai, unsigned int fmt)
- }
- 
- static const struct snd_soc_dai_ops dw_i2s_dai_ops = {
--	.startup	= dw_i2s_startup,
--	.shutdown	= dw_i2s_shutdown,
- 	.hw_params	= dw_i2s_hw_params,
- 	.prepare	= dw_i2s_prepare,
- 	.trigger	= dw_i2s_trigger,
-@@ -624,6 +592,14 @@ static int dw_configure_dai_by_dt(struct dw_i2s_dev *dev,
- 
- }
- 
-+static int dw_i2s_dai_probe(struct snd_soc_dai *dai)
-+{
-+	struct dw_i2s_dev *dev = snd_soc_dai_get_drvdata(dai);
+-	return SBA_PDIR_VALID_BIT | addr;
++	unsigned ci;			/* coherent index */
++	dma_addr_t pa;
 +
-+	snd_soc_dai_init_dma_data(dai, &dev->play_dma_data, &dev->capture_dma_data);
-+	return 0;
-+}
++	pa = addr & IOVP_MASK;
++	asm("lci 0(%1), %0" : "=r" (ci) : "r" (phys_to_virt(pa)));
 +
- static int dw_i2s_probe(struct platform_device *pdev)
- {
- 	const struct i2s_platform_data *pdata = pdev->dev.platform_data;
-@@ -642,6 +618,7 @@ static int dw_i2s_probe(struct platform_device *pdev)
- 		return -ENOMEM;
++	pa |= (ci >> PAGE_SHIFT) & 0xff;/* move CI (8 bits) into lowest byte */
++	pa |= SBA_PDIR_VALID_BIT;	/* set "valid" bit */
++
++	return cpu_to_le64(pa);
+ }
  
- 	dw_i2s_dai->ops = &dw_i2s_dai_ops;
-+	dw_i2s_dai->probe = dw_i2s_dai_probe;
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	dev->i2s_base = devm_ioremap_resource(&pdev->dev, res);
+ static void
 -- 
 2.39.2
 
