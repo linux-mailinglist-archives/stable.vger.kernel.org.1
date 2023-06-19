@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5492735365
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:45:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE7DC7352B2
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:37:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231416AbjFSKpW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:45:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47164 "EHLO
+        id S229674AbjFSKhZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:37:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232021AbjFSKoi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:44:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42CDDD7
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:44:14 -0700 (PDT)
+        with ESMTP id S231299AbjFSKhM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:37:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53463CD
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:37:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CDC4260B88
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:44:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26C0C433C0;
-        Mon, 19 Jun 2023 10:44:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DD76560B6D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:37:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38A7C433C8;
+        Mon, 19 Jun 2023 10:37:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171453;
-        bh=rOQ/9jxAILc3kuK4xAix/sDCnUYgQ2w9tT05kYqP9Ew=;
+        s=korg; t=1687171030;
+        bh=v3zHjLvEo+AfNXUvrJl3Ua8pNEyiCqt6CoCyLaVrUdc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hZdTA1u5SXfB180gY834e5rIshSckUjsK1OxRm/aZjdXpk3gBWpViPSTlUIkPe7Ze
-         AhqOqOnLowoB6CDqDGN9LHb1T2mDgFT7dfOhvdSo4Yutvs6HrBkXfUZD9AE44tIYBY
-         bLdI5eA06EqQJECNPFCe5f5HadewM274IVNfx2aA=
+        b=e9WK0OvqC4QRIqI8w0inJmn5r17WTNWA9E3q2zagbHt7mDf3YeD6VpllQcXkIjYer
+         coXKxwjAW3lSlVx3T1TzPRLdPUXQIHTIFhTWpkr+0xqO0xkJEHq3XWYeU5QSNErZhP
+         jwTYtnhALxDvz2MsFIEewnBns4qo6mxSssvXL5Ks=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maxim Kochetkov <fido_max@inbox.ru>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 037/166] ASoC: dwc: move DMA init to snd_soc_dai_driver probe()
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>, Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.3 096/187] clk: pxa: fix NULL pointer dereference in pxa3xx_clk_update_accr
 Date:   Mon, 19 Jun 2023 12:28:34 +0200
-Message-ID: <20230619102156.542160110@linuxfoundation.org>
+Message-ID: <20230619102202.236201473@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,146 +54,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Maxim Kochetkov <fido_max@inbox.ru>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 011a8719d6105dcb48077ea7a6a88ac019d4aa50 ]
+commit 23200a4c8ac284f8b4263d7cecaefecaa3ad6732 upstream.
 
-When using DMA mode we are facing with Oops:
-[  396.458157] Unable to handle kernel access to user memory without uaccess routines at virtual address 000000000000000c
-[  396.469374] Oops [#1]
-[  396.471839] Modules linked in:
-[  396.475144] CPU: 0 PID: 114 Comm: arecord Not tainted 6.0.0-00164-g9a8eccdaf2be-dirty #68
-[  396.483619] Hardware name: YMP ELCT FPGA (DT)
-[  396.488156] epc : dmaengine_pcm_open+0x1d2/0x342
-[  396.493227]  ra : dmaengine_pcm_open+0x1d2/0x342
-[  396.498140] epc : ffffffff807fe346 ra : ffffffff807fe346 sp : ffffffc804e138f0
-[  396.505602]  gp : ffffffff817bf730 tp : ffffffd8042c8ac0 t0 : 6500000000000000
-[  396.513045]  t1 : 0000000000000064 t2 : 656e69676e65616d s0 : ffffffc804e13990
-[  396.520477]  s1 : ffffffd801b86a18 a0 : 0000000000000026 a1 : ffffffff816920f8
-[  396.527897]  a2 : 0000000000000010 a3 : fffffffffffffffe a4 : 0000000000000000
-[  396.535319]  a5 : 0000000000000000 a6 : ffffffd801b87040 a7 : 0000000000000038
-[  396.542740]  s2 : ffffffd801b94a00 s3 : 0000000000000000 s4 : ffffffd80427f5e8
-[  396.550153]  s5 : ffffffd80427f5e8 s6 : ffffffd801b44410 s7 : fffffffffffffff5
-[  396.557569]  s8 : 0000000000000800 s9 : 0000000000000001 s10: ffffffff8066d254
-[  396.564978]  s11: ffffffd8059cf768 t3 : ffffffff817d5577 t4 : ffffffff817d5577
-[  396.572391]  t5 : ffffffff817d5578 t6 : ffffffc804e136e8
-[  396.577876] status: 0000000200000120 badaddr: 000000000000000c cause: 000000000000000d
-[  396.586007] [<ffffffff806839f4>] snd_soc_component_open+0x1a/0x68
-[  396.592439] [<ffffffff807fdd62>] __soc_pcm_open+0xf0/0x502
-[  396.598217] [<ffffffff80685d86>] soc_pcm_open+0x2e/0x4e
-[  396.603741] [<ffffffff8066cea4>] snd_pcm_open_substream+0x442/0x68e
-[  396.610313] [<ffffffff8066d1ea>] snd_pcm_open+0xfa/0x212
-[  396.615868] [<ffffffff8066d39c>] snd_pcm_capture_open+0x3a/0x60
-[  396.622048] [<ffffffff8065b35a>] snd_open+0xa8/0x17a
-[  396.627421] [<ffffffff801ae036>] chrdev_open+0xa0/0x218
-[  396.632893] [<ffffffff801a5a28>] do_dentry_open+0x17c/0x2a6
-[  396.638713] [<ffffffff801a6d9a>] vfs_open+0x1e/0x26
-[  396.643850] [<ffffffff801b8544>] path_openat+0x96e/0xc96
-[  396.649518] [<ffffffff801b9390>] do_filp_open+0x7c/0xf6
-[  396.655034] [<ffffffff801a6ff2>] do_sys_openat2+0x8a/0x11e
-[  396.660765] [<ffffffff801a735a>] sys_openat+0x50/0x7c
-[  396.666068] [<ffffffff80003aca>] ret_from_syscall+0x0/0x2
-[  396.674964] ---[ end trace 0000000000000000 ]---
+sparse points out an embarrasing bug in an older patch of mine,
+which uses the register offset instead of an __iomem pointer:
 
-It happens because of play_dma_data/capture_dma_data pointers are NULL.
-Current implementation assigns these pointers at snd_soc_dai_driver
-startup() callback and reset them back to NULL at shutdown(). But
-soc_pcm_open() sequence uses DMA pointers in dmaengine_pcm_open()
-before snd_soc_dai_driver startup().
-Most generic DMA capable I2S drivers use snd_soc_dai_driver probe()
-callback to init DMA pointers only once at probe. So move DMA init
-to dw_i2s_dai_probe and drop shutdown() and startup() callbacks.
+drivers/clk/pxa/clk-pxa3xx.c:167:9: sparse: sparse: Using plain integer as NULL pointer
 
-Signed-off-by: Maxim Kochetkov <fido_max@inbox.ru>
-Link: https://lore.kernel.org/r/20230512110343.66664-1-fido_max@inbox.ru
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Unlike sparse, gcc and clang ignore this bug and fail to warn
+because a literal '0' is considered a valid representation of
+a NULL pointer.
+
+Fixes: 3c816d950a49 ("ARM: pxa: move clk register definitions to driver")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/oe-kbuild-all/202305111301.RAHohdob-lkp@intel.com/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20230511105845.299859-1-arnd@kernel.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/dwc/dwc-i2s.c | 41 +++++++++--------------------------------
- 1 file changed, 9 insertions(+), 32 deletions(-)
+ drivers/clk/pxa/clk-pxa3xx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/dwc/dwc-i2s.c b/sound/soc/dwc/dwc-i2s.c
-index 3496301582b22..f966d39c5c907 100644
---- a/sound/soc/dwc/dwc-i2s.c
-+++ b/sound/soc/dwc/dwc-i2s.c
-@@ -183,30 +183,6 @@ static void i2s_stop(struct dw_i2s_dev *dev,
- 	}
- }
+--- a/drivers/clk/pxa/clk-pxa3xx.c
++++ b/drivers/clk/pxa/clk-pxa3xx.c
+@@ -164,7 +164,7 @@ void pxa3xx_clk_update_accr(u32 disable,
+ 	accr &= ~disable;
+ 	accr |= enable;
  
--static int dw_i2s_startup(struct snd_pcm_substream *substream,
--		struct snd_soc_dai *cpu_dai)
--{
--	struct dw_i2s_dev *dev = snd_soc_dai_get_drvdata(cpu_dai);
--	union dw_i2s_snd_dma_data *dma_data = NULL;
--
--	if (!(dev->capability & DWC_I2S_RECORD) &&
--			(substream->stream == SNDRV_PCM_STREAM_CAPTURE))
--		return -EINVAL;
--
--	if (!(dev->capability & DWC_I2S_PLAY) &&
--			(substream->stream == SNDRV_PCM_STREAM_PLAYBACK))
--		return -EINVAL;
--
--	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
--		dma_data = &dev->play_dma_data;
--	else if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
--		dma_data = &dev->capture_dma_data;
--
--	snd_soc_dai_set_dma_data(cpu_dai, substream, (void *)dma_data);
--
--	return 0;
--}
--
- static void dw_i2s_config(struct dw_i2s_dev *dev, int stream)
- {
- 	u32 ch_reg;
-@@ -305,12 +281,6 @@ static int dw_i2s_hw_params(struct snd_pcm_substream *substream,
- 	return 0;
- }
+-	writel(accr, ACCR);
++	writel(accr, clk_regs + ACCR);
+ 	if (xclkcfg)
+ 		__asm__("mcr p14, 0, %0, c6, c0, 0\n" : : "r"(xclkcfg));
  
--static void dw_i2s_shutdown(struct snd_pcm_substream *substream,
--		struct snd_soc_dai *dai)
--{
--	snd_soc_dai_set_dma_data(dai, substream, NULL);
--}
--
- static int dw_i2s_prepare(struct snd_pcm_substream *substream,
- 			  struct snd_soc_dai *dai)
- {
-@@ -382,8 +352,6 @@ static int dw_i2s_set_fmt(struct snd_soc_dai *cpu_dai, unsigned int fmt)
- }
- 
- static const struct snd_soc_dai_ops dw_i2s_dai_ops = {
--	.startup	= dw_i2s_startup,
--	.shutdown	= dw_i2s_shutdown,
- 	.hw_params	= dw_i2s_hw_params,
- 	.prepare	= dw_i2s_prepare,
- 	.trigger	= dw_i2s_trigger,
-@@ -625,6 +593,14 @@ static int dw_configure_dai_by_dt(struct dw_i2s_dev *dev,
- 
- }
- 
-+static int dw_i2s_dai_probe(struct snd_soc_dai *dai)
-+{
-+	struct dw_i2s_dev *dev = snd_soc_dai_get_drvdata(dai);
-+
-+	snd_soc_dai_init_dma_data(dai, &dev->play_dma_data, &dev->capture_dma_data);
-+	return 0;
-+}
-+
- static int dw_i2s_probe(struct platform_device *pdev)
- {
- 	const struct i2s_platform_data *pdata = pdev->dev.platform_data;
-@@ -643,6 +619,7 @@ static int dw_i2s_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	dw_i2s_dai->ops = &dw_i2s_dai_ops;
-+	dw_i2s_dai->probe = dw_i2s_dai_probe;
- 
- 	dev->i2s_base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
- 	if (IS_ERR(dev->i2s_base))
--- 
-2.39.2
-
 
 
