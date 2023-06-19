@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E9D67352E9
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:39:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85BC17353A9
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:47:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231732AbjFSKjW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:39:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45426 "EHLO
+        id S231335AbjFSKrv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:47:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231863AbjFSKjU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:39:20 -0400
+        with ESMTP id S231240AbjFSKra (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:47:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49EB7C6
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:39:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25097173A
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:46:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CD96A60B67
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:39:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E590AC433C9;
-        Mon, 19 Jun 2023 10:39:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B595460B88
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:46:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC38FC433CC;
+        Mon, 19 Jun 2023 10:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171158;
-        bh=K5eq/sYVqmLl/7sAPWgjpIiTlXdmIfqKqhkEkdJDTew=;
+        s=korg; t=1687171609;
+        bh=83rw+pcpfln0desEQ7PngDJJgQedTNe2tIna+kndp0A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AibzdgpOZMZDZvqZUbbb1x/Rq2emsndEuEEetK9IAEQnxnlsNWCEjUm5kh0bPWtDD
-         OC/3XMlEUyIIU86ugiSuzc13op8O3N9SlcRKwrudmnbkWrYz+OzWVZyjs5A2ulXJs+
-         7JTf6nQjZSfufM3aOQy40vjHLQk70vj76RJKIe2Y=
+        b=RmFywQu1yJwCjMweMgMm9TPjb4s6VVUHoGxWWkwPl2V91WRYbjJK+TdSSYloDQcmK
+         Ikmtz60QhDaJOq0b9JUVoSCYwKRuESwwYDP5Ayr17L9NGEseTk6nVVM3vh+CgSyhEk
+         2Tf4SWUmLgsGS3byADsnypIlvwsBCu2DxBBn/YY4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>,
-        Naama Meir <naamax.meir@linux.intel.com>,
-        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        patches@lists.linux.dev, Bob Pearson <rpearsonhpe@gmail.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 151/187] igc: Clean the TX buffer and TX descriptor ring
-Date:   Mon, 19 Jun 2023 12:29:29 +0200
-Message-ID: <20230619102204.922528456@linuxfoundation.org>
+Subject: [PATCH 6.1 093/166] RDMA/rxe: Fix ref count error in check_rkey()
+Date:   Mon, 19 Jun 2023 12:29:30 +0200
+Message-ID: <20230619102159.313337812@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,158 +55,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
+From: Bob Pearson <rpearsonhpe@gmail.com>
 
-[ Upstream commit e43516f5978d11d36511ce63d31d1da4db916510 ]
+[ Upstream commit b00683422fd79dd07c9b75efdce1660e5e19150e ]
 
-There could be a race condition during link down where interrupt
-being generated and igc_clean_tx_irq() been called to perform the
-TX completion. Properly clear the TX buffer/descriptor ring and
-disable the TX Queue ring in igc_free_tx_resources() to avoid that.
+There is a reference count error in error path code and a potential race
+in check_rkey() in rxe_resp.c. When looking up the rkey for a memory
+window the reference to the mw from rxe_lookup_mw() is dropped before a
+reference is taken on the mr referenced by the mw. If the mr is destroyed
+immediately after the call to rxe_put(mw) the mr pointer is unprotected
+and may end up pointing at freed memory. The rxe_get(mr) call should take
+place before the rxe_put(mw) call.
 
-Kernel trace:
-[  108.237177] Hardware name: Intel Corporation Tiger Lake Client Platform/TigerLake U DDR4 SODIMM RVP, BIOS TGLIFUI1.R00.4204.A00.2105270302 05/27/2021
-[  108.237178] RIP: 0010:refcount_warn_saturate+0x55/0x110
-[  108.242143] RSP: 0018:ffff9e7980003db0 EFLAGS: 00010286
-[  108.245555] Code: 84 bc 00 00 00 c3 cc cc cc cc 85 f6 74 46 80 3d 20 8c 4d 01 00 75 ee 48 c7 c7 88 f4 03 ab c6 05 10 8c 4d 01 01 e8 0b 10 96 ff <0f> 0b c3 cc cc cc cc 80 3d fc 8b 4d 01 00 75 cb 48 c7 c7 b0 f4 03
-[  108.250434]
-[  108.250434] RSP: 0018:ffff9e798125f910 EFLAGS: 00010286
-[  108.254358] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-[  108.259325]
-[  108.259325] RAX: 0000000000000000 RBX: ffff8ddb935b8000 RCX: 0000000000000027
-[  108.261868] RDX: ffff8de250a28800 RSI: ffff8de250a1c580 RDI: ffff8de250a1c580
-[  108.265538] RDX: 0000000000000027 RSI: 0000000000000002 RDI: ffff8de250a9c588
-[  108.265539] RBP: ffff8ddb935b8000 R08: ffffffffab2655a0 R09: ffff9e798125f898
-[  108.267914] RBP: ffff8ddb8a5b8d80 R08: 0000005648eba354 R09: 0000000000000000
-[  108.270196] R10: 0000000000000001 R11: 000000002d2d2d2d R12: ffff9e798125f948
-[  108.270197] R13: ffff9e798125fa1c R14: ffff8ddb8a5b8d80 R15: 7fffffffffffffff
-[  108.273001] R10: 000000002d2d2d2d R11: 000000002d2d2d2d R12: ffff8ddb8a5b8ed4
-[  108.276410] FS:  00007f605851b740(0000) GS:ffff8de250a80000(0000) knlGS:0000000000000000
-[  108.280597] R13: 00000000000002ac R14: 00000000ffffff99 R15: ffff8ddb92561b80
-[  108.282966] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  108.282967] CR2: 00007f053c039248 CR3: 0000000185850003 CR4: 0000000000f70ee0
-[  108.286206] FS:  0000000000000000(0000) GS:ffff8de250a00000(0000) knlGS:0000000000000000
-[  108.289701] PKRU: 55555554
-[  108.289702] Call Trace:
-[  108.289704]  <TASK>
-[  108.293977] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  108.297562]  sock_alloc_send_pskb+0x20c/0x240
-[  108.301494] CR2: 00007f053c03a168 CR3: 0000000184394002 CR4: 0000000000f70ef0
-[  108.301495] PKRU: 55555554
-[  108.306464]  __ip_append_data.isra.0+0x96f/0x1040
-[  108.309441] Call Trace:
-[  108.309443]  ? __pfx_ip_generic_getfrag+0x10/0x10
-[  108.314927]  <IRQ>
-[  108.314928]  sock_wfree+0x1c7/0x1d0
-[  108.318078]  ? __pfx_ip_generic_getfrag+0x10/0x10
-[  108.320276]  skb_release_head_state+0x32/0x90
-[  108.324812]  ip_make_skb+0xf6/0x130
-[  108.327188]  skb_release_all+0x16/0x40
-[  108.330775]  ? udp_sendmsg+0x9f3/0xcb0
-[  108.332626]  napi_consume_skb+0x48/0xf0
-[  108.334134]  ? xfrm_lookup_route+0x23/0xb0
-[  108.344285]  igc_poll+0x787/0x1620 [igc]
-[  108.346659]  udp_sendmsg+0x9f3/0xcb0
-[  108.360010]  ? ttwu_do_activate+0x40/0x220
-[  108.365237]  ? __pfx_ip_generic_getfrag+0x10/0x10
-[  108.366744]  ? try_to_wake_up+0x289/0x5e0
-[  108.376987]  ? sock_sendmsg+0x81/0x90
-[  108.395698]  ? __pfx_process_timeout+0x10/0x10
-[  108.395701]  sock_sendmsg+0x81/0x90
-[  108.409052]  __napi_poll+0x29/0x1c0
-[  108.414279]  ____sys_sendmsg+0x284/0x310
-[  108.419507]  net_rx_action+0x257/0x2d0
-[  108.438216]  ___sys_sendmsg+0x7c/0xc0
-[  108.439723]  __do_softirq+0xc1/0x2a8
-[  108.444950]  ? finish_task_switch+0xb4/0x2f0
-[  108.452077]  irq_exit_rcu+0xa9/0xd0
-[  108.453584]  ? __schedule+0x372/0xd00
-[  108.460713]  common_interrupt+0x84/0xa0
-[  108.467840]  ? clockevents_program_event+0x95/0x100
-[  108.474968]  </IRQ>
-[  108.482096]  ? do_nanosleep+0x88/0x130
-[  108.489224]  <TASK>
-[  108.489225]  asm_common_interrupt+0x26/0x40
-[  108.496353]  ? __rseq_handle_notify_resume+0xa9/0x4f0
-[  108.503478] RIP: 0010:cpu_idle_poll+0x2c/0x100
-[  108.510607]  __sys_sendmsg+0x5d/0xb0
-[  108.518687] Code: 05 e1 d9 c8 00 65 8b 15 de 64 85 55 85 c0 7f 57 e8 b9 ef ff ff fb 65 48 8b 1c 25 00 cc 02 00 48 8b 03 a8 08 74 0b eb 1c f3 90 <48> 8b 03 a8 08 75 13 8b 05 77 63 cd 00 85 c0 75 ed e8 ce ec ff ff
-[  108.525817]  do_syscall_64+0x44/0xa0
-[  108.531563] RSP: 0018:ffffffffab203e70 EFLAGS: 00000202
-[  108.538693]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-[  108.546775]
-[  108.546777] RIP: 0033:0x7f605862b7f7
-[  108.549495] RAX: 0000000000000001 RBX: ffffffffab20c940 RCX: 000000000000003b
-[  108.551955] Code: 0e 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b9 0f 1f 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 89 54 24 1c 48 89 74 24 10
-[  108.554068] RDX: 4000000000000000 RSI: 000000002da97f6a RDI: 00000000002b8ff4
-[  108.559816] RSP: 002b:00007ffc99264058 EFLAGS: 00000246
-[  108.564178] RBP: 0000000000000000 R08: 00000000002b8ff4 R09: ffff8ddb01554c80
-[  108.571302]  ORIG_RAX: 000000000000002e
-[  108.571303] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f605862b7f7
-[  108.574023] R10: 000000000000015b R11: 000000000000000f R12: ffffffffab20c940
-[  108.574024] R13: 0000000000000000 R14: ffff8de26fbeef40 R15: ffffffffab20c940
-[  108.578727] RDX: 0000000000000000 RSI: 00007ffc992640a0 RDI: 0000000000000003
-[  108.578728] RBP: 00007ffc99264110 R08: 0000000000000000 R09: 175f48ad1c3a9c00
-[  108.581187]  do_idle+0x62/0x230
-[  108.585890] R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffc992642d8
-[  108.585891] R13: 00005577814ab2ba R14: 00005577814addf0 R15: 00007f605876d000
-[  108.587920]  cpu_startup_entry+0x1d/0x20
-[  108.591422]  </TASK>
-[  108.596127]  rest_init+0xc5/0xd0
-[  108.600490] ---[ end trace 0000000000000000 ]---
+All errors in check_rkey() call rxe_put(mw) if mw is not NULL but it was
+already called after the above. The mw pointer should be set to NULL after
+the rxe_put(mw) call to prevent this from happening.
 
-Test Setup:
-
-DUT:
-- Change mac address on DUT Side. Ensure NIC not having same MAC Address
-- Running udp_tai on DUT side. Let udp_tai running throughout the test
-
-Example:
-./udp_tai -i enp170s0 -P 100000 -p 90 -c 1 -t 0 -u 30004
-
-Host:
-- Perform link up/down every 5 second.
-
-Result:
-Kernel panic will happen on DUT Side.
-
-Fixes: 13b5b7fd6a4a ("igc: Add support for Tx/Rx rings")
-Signed-off-by: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: cdd0b85675ae ("RDMA/rxe: Implement memory access through MWs")
+Link: https://lore.kernel.org/r/20230517211509.1819998-1-rpearsonhpe@gmail.com
+Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/infiniband/sw/rxe/rxe_resp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index a2d823e646095..f44d9b8414567 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -255,6 +255,13 @@ static void igc_clean_tx_ring(struct igc_ring *tx_ring)
- 	/* reset BQL for queue */
- 	netdev_tx_reset_queue(txring_txq(tx_ring));
+diff --git a/drivers/infiniband/sw/rxe/rxe_resp.c b/drivers/infiniband/sw/rxe/rxe_resp.c
+index 693081e813ec0..9f65c346d8432 100644
+--- a/drivers/infiniband/sw/rxe/rxe_resp.c
++++ b/drivers/infiniband/sw/rxe/rxe_resp.c
+@@ -466,8 +466,9 @@ static enum resp_states check_rkey(struct rxe_qp *qp,
+ 		if (mw->access & IB_ZERO_BASED)
+ 			qp->resp.offset = mw->addr;
  
-+	/* Zero out the buffer ring */
-+	memset(tx_ring->tx_buffer_info, 0,
-+	       sizeof(*tx_ring->tx_buffer_info) * tx_ring->count);
-+
-+	/* Zero out the descriptor ring */
-+	memset(tx_ring->desc, 0, tx_ring->size);
-+
- 	/* reset next_to_use and next_to_clean */
- 	tx_ring->next_to_use = 0;
- 	tx_ring->next_to_clean = 0;
-@@ -268,7 +275,7 @@ static void igc_clean_tx_ring(struct igc_ring *tx_ring)
-  */
- void igc_free_tx_resources(struct igc_ring *tx_ring)
- {
--	igc_clean_tx_ring(tx_ring);
-+	igc_disable_tx_ring(tx_ring);
- 
- 	vfree(tx_ring->tx_buffer_info);
- 	tx_ring->tx_buffer_info = NULL;
+-		rxe_put(mw);
+ 		rxe_get(mr);
++		rxe_put(mw);
++		mw = NULL;
+ 	} else {
+ 		mr = lookup_mr(qp->pd, access, rkey, RXE_LOOKUP_REMOTE);
+ 		if (!mr) {
 -- 
 2.39.2
 
