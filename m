@@ -2,52 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 112B2735318
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4454E7353B6
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:48:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230440AbjFSKlg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:41:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46510 "EHLO
+        id S232132AbjFSKsX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:48:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232052AbjFSKlX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:41:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C183FE70
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:41:16 -0700 (PDT)
+        with ESMTP id S231873AbjFSKsE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:48:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5305D10CE
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:47:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C53260670
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:41:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4F0C433C8;
-        Mon, 19 Jun 2023 10:41:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DFF2D60A50
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:47:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03120C433C0;
+        Mon, 19 Jun 2023 10:47:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171275;
-        bh=IWEldQ9ADDZO1uTP/02CELiKRd7zYI2XmV89unQm5KQ=;
+        s=korg; t=1687171645;
+        bh=60mE8sp1zSZyRzaIBgs5xZ3/H4dhuUMgkH167kXYk5Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kskmYcGDPdvik9Hh2yZV7iiJFrPcJQmEU3G7TwJxcioLL52WnczccRBe6N7Qz7+pI
-         l+/9M9l6dTCxlxXIR1IyqH9mfwZcKWS4Br6sn0H9aPbVrmRzGyFNycO+Bf9Sg8Juz3
-         OSvTgXCgwJo1mYNTk++lgJ2GGWEd5mwNg4ju1sl8=
+        b=ZKFSAZn0dwnFwELnRAud3mopRIcXEwQEyRKOQNvjRBtzwu1H+vw+BC7u3iFShTEZx
+         PbPdNJys4y/UtXzyhEdOaGTRlwPqdND5hZVv3m1BMlGmND7EjmRDWHCgzIXz+oqkRS
+         jff5yFCTME7vbRFpfoGqsQ+S88BfB2BYVsnRQI2g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
+        patches@lists.linux.dev, Max Tottenham <mtottenh@akamai.com>,
+        Josh Hunt <johunt@akamai.com>,
+        kernel test robot <lkp@intel.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 03/49] ARM: dts: vexpress: add missing cache properties
-Date:   Mon, 19 Jun 2023 12:29:41 +0200
-Message-ID: <20230619102130.026224256@linuxfoundation.org>
+Subject: [PATCH 6.1 105/166] net/sched: act_pedit: Parse L3 Header for L4 offset
+Date:   Mon, 19 Jun 2023 12:29:42 +0200
+Message-ID: <20230619102159.875205480@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
-References: <20230619102129.856988902@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,35 +58,138 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Max Tottenham <mtottenh@akamai.com>
 
-[ Upstream commit 328acc5657c6197753238d7ce0a6924ead829347 ]
+[ Upstream commit 6c02568fd1ae53099b4ab86365c5be1ff15f586b ]
 
-As all level 2 and level 3 caches are unified, add required
-cache-unified property to fix warnings like:
+Instead of relying on skb->transport_header being set correctly, opt
+instead to parse the L3 header length out of the L3 headers for both
+IPv4/IPv6 when the Extended Layer Op for tcp/udp is used. This fixes a
+bug if GRO is disabled, when GRO is disabled skb->transport_header is
+set by __netif_receive_skb_core() to point to the L3 header, it's later
+fixed by the upper protocol layers, but act_pedit will receive the SKB
+before the fixups are completed. The existing behavior causes the
+following to edit the L3 header if GRO is disabled instead of the UDP
+header:
 
-  vexpress-v2p-ca5s.dtb: cache-controller@2c0f0000: 'cache-unified' is a required property
+    tc filter add dev eth0 ingress protocol ip flower ip_proto udp \
+ dst_ip 192.168.1.3 action pedit ex munge udp set dport 18053
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230423150837.118466-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Also re-introduce a rate-limited warning if we were unable to extract
+the header offset when using the 'ex' interface.
+
+Fixes: 71d0ed7079df ("net/act_pedit: Support using offset relative to
+the conventional network headers")
+Signed-off-by: Max Tottenham <mtottenh@akamai.com>
+Reviewed-by: Josh Hunt <johunt@akamai.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202305261541.N165u9TZ-lkp@intel.com/
+Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/vexpress-v2p-ca5s.dts | 1 +
- 1 file changed, 1 insertion(+)
+ net/sched/act_pedit.c | 48 ++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 43 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/boot/dts/vexpress-v2p-ca5s.dts b/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
-index e5b4a7570a010..13a75a87d571b 100644
---- a/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
-+++ b/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
-@@ -118,6 +118,7 @@ L2: cache-controller@2c0f0000 {
- 		reg = <0x2c0f0000 0x1000>;
- 		interrupts = <0 84 4>;
- 		cache-level = <2>;
-+		cache-unified;
- 	};
+diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
+index 48e14cbcd8ffe..180669aa9d097 100644
+--- a/net/sched/act_pedit.c
++++ b/net/sched/act_pedit.c
+@@ -13,7 +13,10 @@
+ #include <linux/rtnetlink.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
++#include <linux/ip.h>
++#include <linux/ipv6.h>
+ #include <linux/slab.h>
++#include <net/ipv6.h>
+ #include <net/netlink.h>
+ #include <net/pkt_sched.h>
+ #include <linux/tc_act/tc_pedit.h>
+@@ -312,28 +315,58 @@ static bool offset_valid(struct sk_buff *skb, int offset)
+ 	return true;
+ }
  
- 	pmu {
+-static void pedit_skb_hdr_offset(struct sk_buff *skb,
++static int pedit_l4_skb_offset(struct sk_buff *skb, int *hoffset, const int header_type)
++{
++	const int noff = skb_network_offset(skb);
++	int ret = -EINVAL;
++	struct iphdr _iph;
++
++	switch (skb->protocol) {
++	case htons(ETH_P_IP): {
++		const struct iphdr *iph = skb_header_pointer(skb, noff, sizeof(_iph), &_iph);
++
++		if (!iph)
++			goto out;
++		*hoffset = noff + iph->ihl * 4;
++		ret = 0;
++		break;
++	}
++	case htons(ETH_P_IPV6):
++		ret = ipv6_find_hdr(skb, hoffset, header_type, NULL, NULL) == header_type ? 0 : -EINVAL;
++		break;
++	}
++out:
++	return ret;
++}
++
++static int pedit_skb_hdr_offset(struct sk_buff *skb,
+ 				 enum pedit_header_type htype, int *hoffset)
+ {
++	int ret = -EINVAL;
+ 	/* 'htype' is validated in the netlink parsing */
+ 	switch (htype) {
+ 	case TCA_PEDIT_KEY_EX_HDR_TYPE_ETH:
+-		if (skb_mac_header_was_set(skb))
++		if (skb_mac_header_was_set(skb)) {
+ 			*hoffset = skb_mac_offset(skb);
++			ret = 0;
++		}
+ 		break;
+ 	case TCA_PEDIT_KEY_EX_HDR_TYPE_NETWORK:
+ 	case TCA_PEDIT_KEY_EX_HDR_TYPE_IP4:
+ 	case TCA_PEDIT_KEY_EX_HDR_TYPE_IP6:
+ 		*hoffset = skb_network_offset(skb);
++		ret = 0;
+ 		break;
+ 	case TCA_PEDIT_KEY_EX_HDR_TYPE_TCP:
++		ret = pedit_l4_skb_offset(skb, hoffset, IPPROTO_TCP);
++		break;
+ 	case TCA_PEDIT_KEY_EX_HDR_TYPE_UDP:
+-		if (skb_transport_header_was_set(skb))
+-			*hoffset = skb_transport_offset(skb);
++		ret = pedit_l4_skb_offset(skb, hoffset, IPPROTO_UDP);
+ 		break;
+ 	default:
+ 		break;
+ 	}
++	return ret;
+ }
+ 
+ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+@@ -368,6 +401,7 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+ 		int hoffset = 0;
+ 		u32 *ptr, hdata;
+ 		u32 val;
++		int rc;
+ 
+ 		if (tkey_ex) {
+ 			htype = tkey_ex->htype;
+@@ -376,7 +410,11 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+ 			tkey_ex++;
+ 		}
+ 
+-		pedit_skb_hdr_offset(skb, htype, &hoffset);
++		rc = pedit_skb_hdr_offset(skb, htype, &hoffset);
++		if (rc) {
++			pr_info_ratelimited("tc action pedit unable to extract header offset for header type (0x%x)\n", htype);
++			goto bad;
++		}
+ 
+ 		if (tkey->offmask) {
+ 			u8 *d, _d;
 -- 
 2.39.2
 
