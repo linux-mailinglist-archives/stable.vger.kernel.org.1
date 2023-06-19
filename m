@@ -2,52 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05D6B735208
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:29:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79E79735385
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:46:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229482AbjFSK3o (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:29:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38388 "EHLO
+        id S231987AbjFSKqX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:46:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229635AbjFSK3o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:29:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45F2EC6
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:29:43 -0700 (PDT)
+        with ESMTP id S231994AbjFSKpw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:45:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89384E50
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:45:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D447760B3E
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:29:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F72C433C8;
-        Mon, 19 Jun 2023 10:29:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E59860670
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:45:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34318C433C8;
+        Mon, 19 Jun 2023 10:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687170582;
-        bh=HWQrXfVTJKRuGlPG2qNjnKNjM14Plwp30UXncrri8Zo=;
+        s=korg; t=1687171531;
+        bh=Azj76M3UM3k0Gk6JxbjEooQCRC94PFZLxz2jarQxRMk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sg0MJeLpCEy7ho7INnaVDGzPyTdg5niFJyuo/eCfm0WzOn0v1vMyB7nWii+1m8OAA
-         XgYLGLGAwHCXckAP48A8TU6tFHj2HfuxYvCK6qQLjDNwkWFko3UxtenfYFhzWFcemp
-         GoUTTtW16QagnaTl4cn32yDbdGdeTrrWRuyt10Ic=
+        b=tqCMKs21upPZUCuy06ZauNHzF8hGffPzkyMD6TSVFX4xsQvFQefJAsoVEMSnzjkmw
+         ljDcbtweJY/Wb/X+5CHFEAxIrxbs4fZChXVu7FOGqOQm5RCsxGDygS2OjeNnphjsgw
+         i8JjoFh92zzb/DxzYE1Ttm9EwUQeMuHxLqWPXA4M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+33494cd0df2ec2931851@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.14 14/32] nilfs2: fix possible out-of-bounds segment allocation in resize ioctl
+        patches@lists.linux.dev, Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 6.1 065/166] dm thin: fix issue_discard to pass GFP_NOIO to __blkdev_issue_discard
 Date:   Mon, 19 Jun 2023 12:29:02 +0200
-Message-ID: <20230619102128.268456204@linuxfoundation.org>
+Message-ID: <20230619102157.941940350@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102127.461443957@linuxfoundation.org>
-References: <20230619102127.461443957@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,62 +53,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Mike Snitzer <snitzer@kernel.org>
 
-commit fee5eaecca86afa544355569b831c1f90f334b85 upstream.
+commit 722d90822321497e2837cfc9000202e256e6b32f upstream.
 
-Syzbot reports that in its stress test for resize ioctl, the log writing
-function nilfs_segctor_do_construct hits a WARN_ON in
-nilfs_segctor_truncate_segments().
+issue_discard() passes GFP_NOWAIT to __blkdev_issue_discard() despite
+its code assuming bio_alloc() always succeeds.
 
-It turned out that there is a problem with the current implementation of
-the resize ioctl, which changes the writable range on the device (the
-range of allocatable segments) at the end of the resize process.
+Commit 3dba53a958a75 ("dm thin: use __blkdev_issue_discard for async
+discard support") clearly shows where things went bad:
 
-This order is necessary for file system expansion to avoid corrupting the
-superblock at trailing edge.  However, in the case of a file system
-shrink, if log writes occur after truncating out-of-bounds trailing
-segments and before the resize is complete, segments may be allocated from
-the truncated space.
+Before commit 3dba53a958a75, dm-thin.c's open-coded
+__blkdev_issue_discard_async() properly handled using GFP_NOWAIT.
+Unfortunately __blkdev_issue_discard() doesn't and it was missed
+during review.
 
-The userspace resize tool was fine as it limits the range of allocatable
-segments before performing the resize, but it can run into this issue if
-the resize ioctl is called alone.
-
-Fix this issue by changing nilfs_sufile_resize() to update the range of
-allocatable segments immediately after successful truncation of segment
-space in case of file system shrink.
-
-Link: https://lkml.kernel.org/r/20230524094348.3784-1-konishi.ryusuke@gmail.com
-Fixes: 4e33f9eab07e ("nilfs2: implement resize ioctl")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+33494cd0df2ec2931851@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/0000000000005434c405fbbafdc5@google.com
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/sufile.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/md/dm-thin.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/nilfs2/sufile.c
-+++ b/fs/nilfs2/sufile.c
-@@ -791,6 +791,15 @@ int nilfs_sufile_resize(struct inode *su
- 			goto out_header;
+--- a/drivers/md/dm-thin.c
++++ b/drivers/md/dm-thin.c
+@@ -398,8 +398,7 @@ static int issue_discard(struct discard_
+ 	sector_t s = block_to_sectors(tc->pool, data_b);
+ 	sector_t len = block_to_sectors(tc->pool, data_e - data_b);
  
- 		sui->ncleansegs -= nsegs - newnsegs;
-+
-+		/*
-+		 * If the sufile is successfully truncated, immediately adjust
-+		 * the segment allocation space while locking the semaphore
-+		 * "mi_sem" so that nilfs_sufile_alloc() never allocates
-+		 * segments in the truncated space.
-+		 */
-+		sui->allocmax = newnsegs - 1;
-+		sui->allocmin = 0;
- 	}
+-	return __blkdev_issue_discard(tc->pool_dev->bdev, s, len, GFP_NOWAIT,
+-				      &op->bio);
++	return __blkdev_issue_discard(tc->pool_dev->bdev, s, len, GFP_NOIO, &op->bio);
+ }
  
- 	kaddr = kmap_atomic(header_bh->b_page);
+ static void end_discard(struct discard_op *op, int r)
 
 
