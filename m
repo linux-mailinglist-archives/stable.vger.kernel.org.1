@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA16173530E
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B57D27352ED
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:40:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232031AbjFSKlR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:41:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46216 "EHLO
+        id S230464AbjFSKkW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:40:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232036AbjFSKkw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:40:52 -0400
+        with ESMTP id S231996AbjFSKjm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:39:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C3D5D7
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:40:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09824E60
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:39:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E6B6460B80
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:40:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ABF3C433C0;
-        Mon, 19 Jun 2023 10:40:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 923A460B0D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:39:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E5BC433C0;
+        Mon, 19 Jun 2023 10:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171250;
-        bh=VFkdDgufTkYR8yTESG6NXD+dY23pjlZxJMEBOt6Rw4g=;
+        s=korg; t=1687171175;
+        bh=WPIb16hqrlz61l0FQA8ADKcKMCDqMZD1I8OUcKmMBzs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nkm2TifkO1GOeIbmDPQOvQqPyk9I5b+Pn2/s5L6KbuKKtVQDvDz5yuOLZixsxb3p7
-         2aQhL9hPBz/abAPeYPCcaKItS3c3/3mL0dBBy3JvLaKks8yyN7bkDtEWIrF4M92nJu
-         t2bs9/MwjKu1xjGKdnzzVj9ULOLWEffj9sPxjp10=
+        b=LeFzhQb5veau3G/OHXQANCcMkEfWxSHwf90k2dB90mLOETwO+zVvh2sTa64OM1934
+         Gn99PF3l9KDyKcH0GIaIVmc2oesejc5jaJtmDwvLeAaXjuaRLd1I9rbGKLqDFWVUw/
+         jvJOVryAGYHzAfH7w3JgJyohcDg5IhpKUD/FxUsM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Janne Grunau <j@jannau.net>,
-        Dinh Nguyen <dinguyen@kernel.org>
-Subject: [PATCH 4.19 14/49] nios2: dts: Fix tse_mac "max-frame-size" property
+        patches@lists.linux.dev, Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 174/187] net: dsa: felix: fix taprio guard band overflow at 10Mbps with jumbo frames
 Date:   Mon, 19 Jun 2023 12:29:52 +0200
-Message-ID: <20230619102130.592505074@linuxfoundation.org>
+Message-ID: <20230619102206.094132849@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
-References: <20230619102129.856988902@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,46 +56,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Janne Grunau <j@jannau.net>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit 85041e12418fd0c08ff972b7729f7971afb361f8 upstream.
+[ Upstream commit 6ac7a27a8b07588497ed53dfd885df9c72bc67e0 ]
 
-The given value of 1518 seems to refer to the layer 2 ethernet frame
-size without 802.1Q tag. Actual use of the "max-frame-size" including in
-the consumer of the "altr,tse-1.0" compatible is the MTU.
+The DEV_MAC_MAXLEN_CFG register contains a 16-bit value - up to 65535.
+Plus 2 * VLAN_HLEN (4), that is up to 65543.
 
-Fixes: 95acd4c7b69c ("nios2: Device tree support")
-Fixes: 61c610ec61bb ("nios2: Add Max10 device tree")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Janne Grunau <j@jannau.net>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The picos_per_byte variable is the largest when "speed" is lowest -
+SPEED_10 = 10. In that case it is (1000000L * 8) / 10 = 800000.
+
+Their product - 52434400000 - exceeds 32 bits, which is a problem,
+because apparently, a multiplication between two 32-bit factors is
+evaluated as 32-bit before being assigned to a 64-bit variable.
+In fact it's a problem for any MTU value larger than 5368.
+
+Cast one of the factors of the multiplication to u64 to force the
+multiplication to take place on 64 bits.
+
+Issue found by Coverity.
+
+Fixes: 55a515b1f5a9 ("net: dsa: felix: drop oversized frames with tc-taprio instead of hanging the port")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Link: https://lore.kernel.org/r/20230613170907.2413559-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/nios2/boot/dts/10m50_devboard.dts |    2 +-
- arch/nios2/boot/dts/3c120_devboard.dts |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/dsa/ocelot/felix_vsc9959.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/nios2/boot/dts/10m50_devboard.dts
-+++ b/arch/nios2/boot/dts/10m50_devboard.dts
-@@ -108,7 +108,7 @@
- 			rx-fifo-depth = <8192>;
- 			tx-fifo-depth = <8192>;
- 			address-bits = <48>;
--			max-frame-size = <1518>;
-+			max-frame-size = <1500>;
- 			local-mac-address = [00 00 00 00 00 00];
- 			altr,has-supplementary-unicast;
- 			altr,enable-sup-addr = <1>;
---- a/arch/nios2/boot/dts/3c120_devboard.dts
-+++ b/arch/nios2/boot/dts/3c120_devboard.dts
-@@ -118,7 +118,7 @@
- 				interrupt-names = "rx_irq", "tx_irq";
- 				rx-fifo-depth = <8192>;
- 				tx-fifo-depth = <8192>;
--				max-frame-size = <1518>;
-+				max-frame-size = <1500>;
- 				local-mac-address = [ 00 00 00 00 00 00 ];
- 				phy-mode = "rgmii-id";
- 				phy-handle = <&phy0>;
+diff --git a/drivers/net/dsa/ocelot/felix_vsc9959.c b/drivers/net/dsa/ocelot/felix_vsc9959.c
+index dddb28984bdfc..841c5ebc1afaa 100644
+--- a/drivers/net/dsa/ocelot/felix_vsc9959.c
++++ b/drivers/net/dsa/ocelot/felix_vsc9959.c
+@@ -1263,7 +1263,7 @@ static void vsc9959_tas_guard_bands_update(struct ocelot *ocelot, int port)
+ 	/* Consider the standard Ethernet overhead of 8 octets preamble+SFD,
+ 	 * 4 octets FCS, 12 octets IFG.
+ 	 */
+-	needed_bit_time_ps = (maxlen + 24) * picos_per_byte;
++	needed_bit_time_ps = (u64)(maxlen + 24) * picos_per_byte;
+ 
+ 	dev_dbg(ocelot->dev,
+ 		"port %d: max frame size %d needs %llu ps at speed %d\n",
+-- 
+2.39.2
+
 
 
