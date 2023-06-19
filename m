@@ -2,103 +2,177 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43C27735AAA
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 17:05:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC6B3735ABD
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 17:06:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231776AbjFSPF2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 11:05:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53940 "EHLO
+        id S229711AbjFSPGN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 11:06:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229821AbjFSPFI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 11:05:08 -0400
-Received: from mail-oa1-x30.google.com (mail-oa1-x30.google.com [IPv6:2001:4860:4864:20::30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 317DF10FA
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 08:04:22 -0700 (PDT)
-Received: by mail-oa1-x30.google.com with SMTP id 586e51a60fabf-1a98cf01151so3640113fac.2
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 08:04:22 -0700 (PDT)
+        with ESMTP id S232008AbjFSPFu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 11:05:50 -0400
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6E8C19A2
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 08:05:26 -0700 (PDT)
+Received: by mail-pg1-x536.google.com with SMTP id 41be03b00d2f7-54f73f09765so1519787a12.1
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 08:05:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1687187061; x=1689779061;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0m9rhWOn8qYbjuVQmQ20zeGCmNCpO//YkkWL6MmvNwg=;
-        b=X4rnGsDhhgcstlEOl2O8Xh0D75fvA4vp4Lp/Hch/7e27uzGYUexdfNn8ekHr0mFBme
-         xRW2Jgigs40z3tnW83vRGWXtbHyCNxWMrMBZJ6b1+dj/QesU3nVfa2PCr01i4TxFgyl5
-         JBfJcs93mVxfsGsi6e5la8UBwnx4Ipd7LNTUrMxmhu+eV0oXz/Fh8ARus8WzXPrPV/RS
-         lHTfF2qz+tPJkpSeHgniix7/lRe+ods8MgZJ1EIpBI2htcjR7+uqSkL5vkczsm7R2HpG
-         aU2lpY8HphbspEUze2dxaRhc3sjMSJ+IqLTvOqRFsi5UolLc0LtUzb8u+bMHAMdKZW1N
-         WU3A==
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1687187126; x=1689779126;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y1SbdD4D7eHoDGdUDLvySeCtmEKEdoc5yQzYuBPTUnM=;
+        b=O/iKOCiCcUVL54qTh75Jx3BTe51LHMb4pA6BqNvJKAxnrdJyoM2LCF9qDr0qGqcjoo
+         paRxcAWn6GwicSbF4lSLsttH+VCh1/zmcpprySVwWHKoq+apvjtxc4msMhj3TP3y5BLq
+         81clpSvo6pUkx2wtEUsVMAjAMDt7+yIk8eah70OadiGJnL8cnD/1ydbaWlBBddoIHmp8
+         R/Xx+yd1vqitwvulHGiQrL5QL0WlwenxuUK0k7RVRZEPTasnly5gsIzxD3MCk8WxU+YY
+         IZPDVdkfkygm6KM2/9vzrbnIeXw9C+UvXX0NJzMS9E3kx7QgY0yn+/E3Gm1TbUVPSrFS
+         7RUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687187061; x=1689779061;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0m9rhWOn8qYbjuVQmQ20zeGCmNCpO//YkkWL6MmvNwg=;
-        b=dj1/kVm8o6gPbjGK87PDAATSp+M7ca2bB/66Hep34dQw5xWrcnpDb8TdwL/IlgacgO
-         fH0iUSqtX27wU13XBDEw4H+b8CjrGOa0xlS1yPa604FZhhat2+qAWwPHmH6MdB6Av8PM
-         3ixX0zdQYsozCZqKge9bmDfZnMO2LDX+WKiFkuB0NbLUcxoKEo2DfIQxgxzod4lO6SbT
-         SBDYKfckikbr/wk2PsFmZbjuoUF23855lzFCZIyRKIYxLHM8dk7h2rdJ8XxQf+MVVdx9
-         hZsrDgyxK/QauFxh8RQlK5d6d/Q1d9gF92eZs6m8KYCTytchLhfVu6A2d4CnBA5nQQNL
-         evtQ==
-X-Gm-Message-State: AC+VfDyYfItlgsZarUwBbrTGEswSfGf2ybGNY4+axxtr+KB1io2aR6Fh
-        s3WKuwYHVNRysfRtVHDq2I/B
-X-Google-Smtp-Source: ACHHUZ5vRE7brlsRPe3Zp8R6nDsOTJqauqzXZH+wyitHVFyn/PXC/KWiff8ZoBlpQBA7Fut4l4DxOw==
-X-Received: by 2002:a05:6870:4710:b0:18f:558a:1f51 with SMTP id b16-20020a056870471000b0018f558a1f51mr11017078oaq.53.1687187061309;
-        Mon, 19 Jun 2023 08:04:21 -0700 (PDT)
-Received: from localhost.localdomain ([117.217.183.37])
-        by smtp.gmail.com with ESMTPSA id 10-20020a17090a19ca00b0025efaf7a0d3sm2765480pjj.14.2023.06.19.08.04.17
+        d=1e100.net; s=20221208; t=1687187126; x=1689779126;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Y1SbdD4D7eHoDGdUDLvySeCtmEKEdoc5yQzYuBPTUnM=;
+        b=FuM4e7H/U38BfrNirhaYxAJ3SbdQUAuwXnL+Zb7+MhBVTPHpreiN4JC07jwDWTjRSR
+         Yh6TFu23A4vWom06++1bW1t+lR+Y2RclE78RLz3R89oZgamVcmJelPjJ6A7fOUu3qSre
+         nE7vRr0GIZIhA9vf3LCMoIHwzrfGLXh7EHXtjUgOLsVPUjDP3VnwLSskGt0/nWWDpodQ
+         UWkoZPJi4rb0fK905teKQ16kSpA1dzIroAfrytH6c48ZSUg1X/4SvbXvkQFyqlVytDOs
+         0RV3cqAQF9EQBYSvTPZPvFOPaQQj9h5rt9p17lxqrM86Q6nCmwP23bIsntXVsl6vSw4A
+         Zt9Q==
+X-Gm-Message-State: AC+VfDygJIByUt7AT1kRH37dBeGXzj2Sg7ez097BZOOpTFFGXW+iE3v9
+        R0qzx5yNxCdj3aeewg5opee2nocMxooK2tSLcVbquo2A
+X-Google-Smtp-Source: ACHHUZ7dtVeN7POixZ1yzzsF5NoGSt3xH1ijB+qH/7iR6E0X1V+KFxnlS7351qyWNmGPyFxXletCPA==
+X-Received: by 2002:a17:902:eacb:b0:1b3:fb76:215b with SMTP id p11-20020a170902eacb00b001b3fb76215bmr6486430pld.48.1687187125762;
+        Mon, 19 Jun 2023 08:05:25 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id u15-20020a170902e80f00b001b6771ad27bsm479273plg.265.2023.06.19.08.05.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jun 2023 08:04:20 -0700 (PDT)
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To:     lpieralisi@kernel.org, kw@linux.com, bhelgaas@google.com
-Cc:     robh@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
-        linux-pci@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, steev@kali.org,
-        quic_srichara@quicinc.com,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        stable@vger.kernel.org
-Subject: [PATCH v4 1/9] PCI: qcom: Disable write access to read only registers for IP v2.3.3
-Date:   Mon, 19 Jun 2023 20:34:00 +0530
-Message-Id: <20230619150408.8468-2-manivannan.sadhasivam@linaro.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230619150408.8468-1-manivannan.sadhasivam@linaro.org>
-References: <20230619150408.8468-1-manivannan.sadhasivam@linaro.org>
+        Mon, 19 Jun 2023 08:05:24 -0700 (PDT)
+Message-ID: <64906eb4.170a0220.3041e.0bb2@mx.google.com>
+Date:   Mon, 19 Jun 2023 08:05:24 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-6.3.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: test
+X-Kernelci-Kernel: v6.3.8-188-gc4f2a2d855d4a
+Subject: stable-rc/linux-6.3.y baseline: 135 runs,
+ 2 regressions (v6.3.8-188-gc4f2a2d855d4a)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-In the post init sequence of v2.9.0, write access to read only registers
-are not disabled after updating the registers. Fix it by disabling the
-access after register update.
+stable-rc/linux-6.3.y baseline: 135 runs, 2 regressions (v6.3.8-188-gc4f2a2=
+d855d4a)
 
-Cc: <stable@vger.kernel.org>
-Fixes: 5d76117f070d ("PCI: qcom: Add support for IPQ8074 PCIe controller")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
----
- drivers/pci/controller/dwc/pcie-qcom.c | 2 ++
- 1 file changed, 2 insertions(+)
+Regressions Summary
+-------------------
 
-diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-index 4ab30892f6ef..ef385d36d653 100644
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -836,6 +836,8 @@ static int qcom_pcie_post_init_2_3_3(struct qcom_pcie *pcie)
- 	writel(PCI_EXP_DEVCTL2_COMP_TMOUT_DIS, pci->dbi_base + offset +
- 		PCI_EXP_DEVCTL2);
- 
-+	dw_pcie_dbi_ro_wr_dis(pci);
-+
- 	return 0;
- }
- 
--- 
-2.25.1
+platform                     | arch  | lab           | compiler | defconfig=
+                  | regressions
+-----------------------------+-------+---------------+----------+----------=
+------------------+------------
+mt8183-kukui-...uniper-sku16 | arm64 | lab-collabora | gcc-10   | defconfig=
++arm64-chromebook | 1          =
 
+odroid-xu3                   | arm   | lab-collabora | gcc-10   | multi_v7_=
+defconfig         | 1          =
+
+
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-6.3.y/kern=
+el/v6.3.8-188-gc4f2a2d855d4a/plan/baseline/
+
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   linux-6.3.y
+  Describe: v6.3.8-188-gc4f2a2d855d4a
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      c4f2a2d855d4abab5f904b8deec55ff390f954e0 =
+
+
+
+Test Regressions
+---------------- =
+
+
+
+platform                     | arch  | lab           | compiler | defconfig=
+                  | regressions
+-----------------------------+-------+---------------+----------+----------=
+------------------+------------
+mt8183-kukui-...uniper-sku16 | arm64 | lab-collabora | gcc-10   | defconfig=
++arm64-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/64903aeb8d3ae18aef306134
+
+  Results:     164 PASS, 8 FAIL, 0 SKIP
+  Full config: defconfig+arm64-chromebook
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.8-1=
+88-gc4f2a2d855d4a/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/bas=
+eline-mt8183-kukui-jacuzzi-juniper-sku16.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.8-1=
+88-gc4f2a2d855d4a/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/bas=
+eline-mt8183-kukui-jacuzzi-juniper-sku16.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230609.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.mtk-thermal-probed: https://kernelci.org/test/case/id/6=
+4903aeb8d3ae18aef30614d
+        failing since 0 day (last pass: v6.3.8-183-g3a50d9e7217ca, first fa=
+il: v6.3.8-187-g6b902997c5c2b)
+
+    2023-06-19T11:24:02.841616  /lava-10812908/1/../bin/lava-test-case
+
+    2023-06-19T11:24:02.851552  <8>[   28.608877] <LAVA_SIGNAL_TESTCASE TES=
+T_CASE_ID=3Dmtk-thermal-probed RESULT=3Dfail>
+   =
+
+ =
+
+
+
+platform                     | arch  | lab           | compiler | defconfig=
+                  | regressions
+-----------------------------+-------+---------------+----------+----------=
+------------------+------------
+odroid-xu3                   | arm   | lab-collabora | gcc-10   | multi_v7_=
+defconfig         | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/649037a8b2d7a523fb30615c
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: multi_v7_defconfig
+  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
+10110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.8-1=
+88-gc4f2a2d855d4a/arm/multi_v7_defconfig/gcc-10/lab-collabora/baseline-odro=
+id-xu3.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.3.y/v6.3.8-1=
+88-gc4f2a2d855d4a/arm/multi_v7_defconfig/gcc-10/lab-collabora/baseline-odro=
+id-xu3.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230609.0/armel/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/649037a8b2d7a523fb306=
+15d
+        new failure (last pass: v6.3.8-187-g6b902997c5c2b) =
+
+ =20
