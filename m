@@ -2,56 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91623735411
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:51:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33C8D7353C9
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:48:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232318AbjFSKvl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:51:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52074 "EHLO
+        id S232147AbjFSKsm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:48:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232158AbjFSKvN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:51:13 -0400
+        with ESMTP id S232047AbjFSKsU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:48:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E2A2198E;
-        Mon, 19 Jun 2023 03:50:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 490B81AC
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:48:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C68BC6068B;
-        Mon, 19 Jun 2023 10:50:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2BFDC433C8;
-        Mon, 19 Jun 2023 10:50:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D614360B5B
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:48:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9BDC433C8;
+        Mon, 19 Jun 2023 10:48:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171839;
-        bh=gzdujEU3/hRV6Pr8z9XYs+gz9JZAg2D18OESNsKRvIY=;
+        s=korg; t=1687171685;
+        bh=Jvbzr2SUDghLYhLeyBav6vqkETHkoHwM3Uq1wREb8os=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t218jkCYiu77x+TGYq/o+VYEZdyZhFO5ECml4ka9BnNy2rDZw8ZU9QUIwft9cqAKb
-         jL2Mb6Msa8oB9DdFE45ua16BMWdKwyGyPZ3yF9dENxKshjxAs18Bu4kSAxt/34Pxx9
-         ZT0o9GxP2m3Mx0O1eR+1JcMoyEBJ1huHajbnMQCc=
+        b=GLAjdfbZePqlGFsxqQ2Ayrqtan1Wq0rHsPkOae/w/nFlr5thPWbAD7R9uod65aunF
+         6oF7EkcocVeR7w7g3SS/whP7Nnh/atk46ns3CxmIQ8M3i+3wMPg2udxWDXhU8GOnfd
+         1AsCBLveHF0XJ6BBoApFSuooSm/M8J3JF+C4w2yI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Luis Chamberlain <mcgrof@kernel.org>,
-        Russ Weight <russell.h.weight@intel.com>,
-        Tianfei Zhang <tianfei.zhang@intel.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Colin Ian King <colin.i.king@gmail.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        linux-kselftest@vger.kernel.org, Dan Carpenter <error27@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>,
-        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
+        patches@lists.linux.dev, Maor Gottlieb <maorg@nvidia.com>,
+        Mark Bloch <mbloch@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 01/64] test_firmware: fix a memory leak with reqs buffer
+Subject: [PATCH 6.1 120/166] RDMA/mlx5: Fix affinity assignment
 Date:   Mon, 19 Jun 2023 12:29:57 +0200
-Message-ID: <20230619102132.877724157@linuxfoundation.org>
+Message-ID: <20230619102200.663318237@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
-References: <20230619102132.808972458@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -65,70 +56,123 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+From: Mark Bloch <mbloch@nvidia.com>
 
-[ Upstream commit be37bed754ed90b2655382f93f9724b3c1aae847 ]
+[ Upstream commit 617f5db1a626f18d5cbb7c7faf7bf8f9ea12be78 ]
 
-Dan Carpenter spotted that test_fw_config->reqs will be leaked if
-trigger_batched_requests_store() is called two or more times.
-The same appears with trigger_batched_requests_async_store().
+The cited commit aimed to ensure that Virtual Functions (VFs) assign a
+queue affinity to a Queue Pair (QP) to distribute traffic when
+the LAG master creates a hardware LAG. If the affinity was set while
+the hardware was not in LAG, the firmware would ignore the affinity value.
 
-This bug wasn't trigger by the tests, but observed by Dan's visual
-inspection of the code.
+However, this commit unintentionally assigned an affinity to QPs on the LAG
+master's VPORT even if the RDMA device was not marked as LAG-enabled.
+In most cases, this was not an issue because when the hardware entered
+hardware LAG configuration, the RDMA device of the LAG master would be
+destroyed and a new one would be created, marked as LAG-enabled.
 
-The recommended workaround was to return -EBUSY if test_fw_config->reqs
-is already allocated.
+The problem arises when a user configures Equal-Cost Multipath (ECMP).
+In ECMP mode, traffic can be directed to different physical ports based on
+the queue affinity, which is intended for use by VPORTS other than the
+E-Switch manager. ECMP mode is supported only if both E-Switch managers are
+in switchdev mode and the appropriate route is configured via IP. In this
+configuration, the RDMA device is not destroyed, and we retain the RDMA
+device that is not marked as LAG-enabled.
 
-Fixes: 7feebfa487b92 ("test_firmware: add support for request_firmware_into_buf")
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Russ Weight <russell.h.weight@intel.com>
-Cc: Tianfei Zhang <tianfei.zhang@intel.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Colin Ian King <colin.i.king@gmail.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kselftest@vger.kernel.org
-Cc: stable@vger.kernel.org # v5.4
-Suggested-by: Dan Carpenter <error27@gmail.com>
-Suggested-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Luis Chamberlain <mcgrof@kernel.org>
-Link: https://lore.kernel.org/r/20230509084746.48259-2-mirsad.todorovac@alu.unizg.hr
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To ensure correct behavior, Send Queues (SQs) opened by the E-Switch
+manager through verbs should be assigned strict affinity. This means they
+will only be able to communicate through the native physical port
+associated with the E-Switch manager. This will prevent the firmware from
+assigning affinity and will not allow the SQs to be remapped in case of
+failover.
+
+Fixes: 802dcc7fc5ec ("RDMA/mlx5: Support TX port affinity for VF drivers in LAG mode")
+Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://lore.kernel.org/r/425b05f4da840bc684b0f7e8ebf61aeb5cef09b0.1685960567.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/test_firmware.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/infiniband/hw/mlx5/mlx5_ib.h                |  3 +++
+ drivers/infiniband/hw/mlx5/qp.c                     |  3 +++
+ drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h | 12 ------------
+ include/linux/mlx5/driver.h                         | 12 ++++++++++++
+ 4 files changed, 18 insertions(+), 12 deletions(-)
 
-diff --git a/lib/test_firmware.c b/lib/test_firmware.c
-index 3146845f01562..38553944e9675 100644
---- a/lib/test_firmware.c
-+++ b/lib/test_firmware.c
-@@ -679,6 +679,11 @@ static ssize_t trigger_batched_requests_store(struct device *dev,
+diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+index 038522bb7113e..8d94e6834e01b 100644
+--- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
++++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
+@@ -1564,6 +1564,9 @@ static inline bool mlx5_ib_lag_should_assign_affinity(struct mlx5_ib_dev *dev)
+ 	    MLX5_CAP_PORT_SELECTION(dev->mdev, port_select_flow_table_bypass))
+ 		return 0;
  
- 	mutex_lock(&test_fw_mutex);
- 
-+	if (test_fw_config->reqs) {
-+		rc = -EBUSY;
-+		goto out_bail;
-+	}
++	if (mlx5_lag_is_lacp_owner(dev->mdev) && !dev->lag_active)
++		return 0;
 +
- 	test_fw_config->reqs =
- 		vzalloc(array3_size(sizeof(struct test_batched_req),
- 				    test_fw_config->num_requests, 2));
-@@ -778,6 +783,11 @@ ssize_t trigger_batched_requests_async_store(struct device *dev,
+ 	return dev->lag_active ||
+ 		(MLX5_CAP_GEN(dev->mdev, num_lag_ports) > 1 &&
+ 		 MLX5_CAP_GEN(dev->mdev, lag_tx_port_affinity));
+diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
+index f7d3643b08f50..ac53ed79ca64c 100644
+--- a/drivers/infiniband/hw/mlx5/qp.c
++++ b/drivers/infiniband/hw/mlx5/qp.c
+@@ -1156,6 +1156,9 @@ static int create_raw_packet_qp_tis(struct mlx5_ib_dev *dev,
  
- 	mutex_lock(&test_fw_mutex);
+ 	MLX5_SET(create_tis_in, in, uid, to_mpd(pd)->uid);
+ 	MLX5_SET(tisc, tisc, transport_domain, tdn);
++	if (!mlx5_ib_lag_should_assign_affinity(dev) &&
++	    mlx5_lag_is_lacp_owner(dev->mdev))
++		MLX5_SET(tisc, tisc, strict_lag_tx_port_affinity, 1);
+ 	if (qp->flags & IB_QP_CREATE_SOURCE_QPN)
+ 		MLX5_SET(tisc, tisc, underlay_qpn, qp->underlay_qpn);
  
-+	if (test_fw_config->reqs) {
-+		rc = -EBUSY;
-+		goto out_bail;
-+	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
+index 1a35b3c2a3674..0b560e97a3563 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
+@@ -275,18 +275,6 @@ static inline bool mlx5_sriov_is_enabled(struct mlx5_core_dev *dev)
+ 	return pci_num_vf(dev->pdev) ? true : false;
+ }
+ 
+-static inline int mlx5_lag_is_lacp_owner(struct mlx5_core_dev *dev)
+-{
+-	/* LACP owner conditions:
+-	 * 1) Function is physical.
+-	 * 2) LAG is supported by FW.
+-	 * 3) LAG is managed by driver (currently the only option).
+-	 */
+-	return  MLX5_CAP_GEN(dev, vport_group_manager) &&
+-		   (MLX5_CAP_GEN(dev, num_lag_ports) > 1) &&
+-		    MLX5_CAP_GEN(dev, lag_master);
+-}
+-
+ int mlx5_rescan_drivers_locked(struct mlx5_core_dev *dev);
+ static inline int mlx5_rescan_drivers(struct mlx5_core_dev *dev)
+ {
+diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
+index fff61e6d6d4de..3660ce6a93496 100644
+--- a/include/linux/mlx5/driver.h
++++ b/include/linux/mlx5/driver.h
+@@ -1230,6 +1230,18 @@ static inline u16 mlx5_core_max_vfs(const struct mlx5_core_dev *dev)
+ 	return dev->priv.sriov.max_vfs;
+ }
+ 
++static inline int mlx5_lag_is_lacp_owner(struct mlx5_core_dev *dev)
++{
++	/* LACP owner conditions:
++	 * 1) Function is physical.
++	 * 2) LAG is supported by FW.
++	 * 3) LAG is managed by driver (currently the only option).
++	 */
++	return  MLX5_CAP_GEN(dev, vport_group_manager) &&
++		   (MLX5_CAP_GEN(dev, num_lag_ports) > 1) &&
++		    MLX5_CAP_GEN(dev, lag_master);
++}
 +
- 	test_fw_config->reqs =
- 		vzalloc(array3_size(sizeof(struct test_batched_req),
- 				    test_fw_config->num_requests, 2));
+ static inline int mlx5_get_gid_table_len(u16 param)
+ {
+ 	if (param > 4) {
 -- 
 2.39.2
 
