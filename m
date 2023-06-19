@@ -2,48 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B03773555E
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:04:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A48B47354C9
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:59:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232535AbjFSLEE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:04:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35970 "EHLO
+        id S232491AbjFSK7J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:59:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232538AbjFSLDq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:03:46 -0400
+        with ESMTP id S232469AbjFSK6n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:58:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EE632120
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:02:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D523B1722
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:57:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C778560BA0
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:02:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB05DC433C9;
-        Mon, 19 Jun 2023 11:02:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5C13960B78
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:57:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F842C433C8;
+        Mon, 19 Jun 2023 10:57:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172560;
-        bh=eCQegtE20z774pZKoBv9G3GcyM2ckysR7AkRdulGkLo=;
+        s=korg; t=1687172227;
+        bh=/aQZyq9jAwM0/PEq8vAWmAofXwP2tbWJNQ7P4wuJ3hA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nZUAXGvksxcJa/XBVHzgk/xDgoB50xoulfiG4yvBvfHruLVgTA4OPH7iWpjuxr8ZU
-         lMg30N3u/giHGGfSXLcf7BrB6PhfeyuKeqeTL5oaKBwDcYqXUMZFn4UlXtuQHt8I7c
-         f78Wrz3BH1Aw1TvKWRi9MXOvh2mpIFx1IYG+DkWA=
+        b=l0vUNmqsuIaCZQuLixE9/w50DQXCfEFQURMKZsi0fRjKutJ5BktqiDBOk8/Apy9gx
+         T2NGT23Tg6XSY08N8YjEYlFOhkd3emgSVcrlLIXOdK8Y2pN8FxK3mM6hdrIUMrMRyT
+         ++jRFNnVRsJqifQbIB4fGqL87ng3Nr/nDQON/+Ac=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>,
-        Naama Meir <naamax.meir@linux.intel.com>,
-        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 086/107] igc: Clean the TX buffer and TX descriptor ring
+        Wei Yang <richard.weiyang@linux.alibaba.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+        Michal Hocko <mhocko@kernel.org>,
+        Oscar Salvador <osalvador@suse.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@redhat.com>,
+        Ma Wupeng <mawupeng1@huawei.com>
+Subject: [PATCH 5.10 82/89] mm/memory_hotplug: extend offline_and_remove_memory() to handle more than one memory block
 Date:   Mon, 19 Jun 2023 12:31:10 +0200
-Message-ID: <20230619102145.496732019@linuxfoundation.org>
+Message-ID: <20230619102142.020097694@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,160 +62,185 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit e43516f5978d11d36511ce63d31d1da4db916510 ]
+commit 8dc4bb58a146655eb057247d7c9d19e73928715b upstream.
 
-There could be a race condition during link down where interrupt
-being generated and igc_clean_tx_irq() been called to perform the
-TX completion. Properly clear the TX buffer/descriptor ring and
-disable the TX Queue ring in igc_free_tx_resources() to avoid that.
+virtio-mem soon wants to use offline_and_remove_memory() memory that
+exceeds a single Linux memory block (memory_block_size_bytes()). Let's
+remove that restriction.
 
-Kernel trace:
-[  108.237177] Hardware name: Intel Corporation Tiger Lake Client Platform/TigerLake U DDR4 SODIMM RVP, BIOS TGLIFUI1.R00.4204.A00.2105270302 05/27/2021
-[  108.237178] RIP: 0010:refcount_warn_saturate+0x55/0x110
-[  108.242143] RSP: 0018:ffff9e7980003db0 EFLAGS: 00010286
-[  108.245555] Code: 84 bc 00 00 00 c3 cc cc cc cc 85 f6 74 46 80 3d 20 8c 4d 01 00 75 ee 48 c7 c7 88 f4 03 ab c6 05 10 8c 4d 01 01 e8 0b 10 96 ff <0f> 0b c3 cc cc cc cc 80 3d fc 8b 4d 01 00 75 cb 48 c7 c7 b0 f4 03
-[  108.250434]
-[  108.250434] RSP: 0018:ffff9e798125f910 EFLAGS: 00010286
-[  108.254358] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
-[  108.259325]
-[  108.259325] RAX: 0000000000000000 RBX: ffff8ddb935b8000 RCX: 0000000000000027
-[  108.261868] RDX: ffff8de250a28800 RSI: ffff8de250a1c580 RDI: ffff8de250a1c580
-[  108.265538] RDX: 0000000000000027 RSI: 0000000000000002 RDI: ffff8de250a9c588
-[  108.265539] RBP: ffff8ddb935b8000 R08: ffffffffab2655a0 R09: ffff9e798125f898
-[  108.267914] RBP: ffff8ddb8a5b8d80 R08: 0000005648eba354 R09: 0000000000000000
-[  108.270196] R10: 0000000000000001 R11: 000000002d2d2d2d R12: ffff9e798125f948
-[  108.270197] R13: ffff9e798125fa1c R14: ffff8ddb8a5b8d80 R15: 7fffffffffffffff
-[  108.273001] R10: 000000002d2d2d2d R11: 000000002d2d2d2d R12: ffff8ddb8a5b8ed4
-[  108.276410] FS:  00007f605851b740(0000) GS:ffff8de250a80000(0000) knlGS:0000000000000000
-[  108.280597] R13: 00000000000002ac R14: 00000000ffffff99 R15: ffff8ddb92561b80
-[  108.282966] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  108.282967] CR2: 00007f053c039248 CR3: 0000000185850003 CR4: 0000000000f70ee0
-[  108.286206] FS:  0000000000000000(0000) GS:ffff8de250a00000(0000) knlGS:0000000000000000
-[  108.289701] PKRU: 55555554
-[  108.289702] Call Trace:
-[  108.289704]  <TASK>
-[  108.293977] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  108.297562]  sock_alloc_send_pskb+0x20c/0x240
-[  108.301494] CR2: 00007f053c03a168 CR3: 0000000184394002 CR4: 0000000000f70ef0
-[  108.301495] PKRU: 55555554
-[  108.306464]  __ip_append_data.isra.0+0x96f/0x1040
-[  108.309441] Call Trace:
-[  108.309443]  ? __pfx_ip_generic_getfrag+0x10/0x10
-[  108.314927]  <IRQ>
-[  108.314928]  sock_wfree+0x1c7/0x1d0
-[  108.318078]  ? __pfx_ip_generic_getfrag+0x10/0x10
-[  108.320276]  skb_release_head_state+0x32/0x90
-[  108.324812]  ip_make_skb+0xf6/0x130
-[  108.327188]  skb_release_all+0x16/0x40
-[  108.330775]  ? udp_sendmsg+0x9f3/0xcb0
-[  108.332626]  napi_consume_skb+0x48/0xf0
-[  108.334134]  ? xfrm_lookup_route+0x23/0xb0
-[  108.344285]  igc_poll+0x787/0x1620 [igc]
-[  108.346659]  udp_sendmsg+0x9f3/0xcb0
-[  108.360010]  ? ttwu_do_activate+0x40/0x220
-[  108.365237]  ? __pfx_ip_generic_getfrag+0x10/0x10
-[  108.366744]  ? try_to_wake_up+0x289/0x5e0
-[  108.376987]  ? sock_sendmsg+0x81/0x90
-[  108.395698]  ? __pfx_process_timeout+0x10/0x10
-[  108.395701]  sock_sendmsg+0x81/0x90
-[  108.409052]  __napi_poll+0x29/0x1c0
-[  108.414279]  ____sys_sendmsg+0x284/0x310
-[  108.419507]  net_rx_action+0x257/0x2d0
-[  108.438216]  ___sys_sendmsg+0x7c/0xc0
-[  108.439723]  __do_softirq+0xc1/0x2a8
-[  108.444950]  ? finish_task_switch+0xb4/0x2f0
-[  108.452077]  irq_exit_rcu+0xa9/0xd0
-[  108.453584]  ? __schedule+0x372/0xd00
-[  108.460713]  common_interrupt+0x84/0xa0
-[  108.467840]  ? clockevents_program_event+0x95/0x100
-[  108.474968]  </IRQ>
-[  108.482096]  ? do_nanosleep+0x88/0x130
-[  108.489224]  <TASK>
-[  108.489225]  asm_common_interrupt+0x26/0x40
-[  108.496353]  ? __rseq_handle_notify_resume+0xa9/0x4f0
-[  108.503478] RIP: 0010:cpu_idle_poll+0x2c/0x100
-[  108.510607]  __sys_sendmsg+0x5d/0xb0
-[  108.518687] Code: 05 e1 d9 c8 00 65 8b 15 de 64 85 55 85 c0 7f 57 e8 b9 ef ff ff fb 65 48 8b 1c 25 00 cc 02 00 48 8b 03 a8 08 74 0b eb 1c f3 90 <48> 8b 03 a8 08 75 13 8b 05 77 63 cd 00 85 c0 75 ed e8 ce ec ff ff
-[  108.525817]  do_syscall_64+0x44/0xa0
-[  108.531563] RSP: 0018:ffffffffab203e70 EFLAGS: 00000202
-[  108.538693]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-[  108.546775]
-[  108.546777] RIP: 0033:0x7f605862b7f7
-[  108.549495] RAX: 0000000000000001 RBX: ffffffffab20c940 RCX: 000000000000003b
-[  108.551955] Code: 0e 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b9 0f 1f 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 89 54 24 1c 48 89 74 24 10
-[  108.554068] RDX: 4000000000000000 RSI: 000000002da97f6a RDI: 00000000002b8ff4
-[  108.559816] RSP: 002b:00007ffc99264058 EFLAGS: 00000246
-[  108.564178] RBP: 0000000000000000 R08: 00000000002b8ff4 R09: ffff8ddb01554c80
-[  108.571302]  ORIG_RAX: 000000000000002e
-[  108.571303] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f605862b7f7
-[  108.574023] R10: 000000000000015b R11: 000000000000000f R12: ffffffffab20c940
-[  108.574024] R13: 0000000000000000 R14: ffff8de26fbeef40 R15: ffffffffab20c940
-[  108.578727] RDX: 0000000000000000 RSI: 00007ffc992640a0 RDI: 0000000000000003
-[  108.578728] RBP: 00007ffc99264110 R08: 0000000000000000 R09: 175f48ad1c3a9c00
-[  108.581187]  do_idle+0x62/0x230
-[  108.585890] R10: 0000000000000000 R11: 0000000000000246 R12: 00007ffc992642d8
-[  108.585891] R13: 00005577814ab2ba R14: 00005577814addf0 R15: 00007f605876d000
-[  108.587920]  cpu_startup_entry+0x1d/0x20
-[  108.591422]  </TASK>
-[  108.596127]  rest_init+0xc5/0xd0
-[  108.600490] ---[ end trace 0000000000000000 ]---
+Let's remember the old state and try to restore that if anything goes
+wrong. While re-onlining can, in general, fail, it's highly unlikely to
+happen (usually only when a notifier fails to allocate memory, and these
+are rather rare).
 
-Test Setup:
+This will be used by virtio-mem to offline+remove memory ranges that are
+bigger than a single memory block - for example, with a device block
+size of 1 GiB (e.g., gigantic pages in the hypervisor) and a Linux memory
+block size of 128MB.
 
-DUT:
-- Change mac address on DUT Side. Ensure NIC not having same MAC Address
-- Running udp_tai on DUT side. Let udp_tai running throughout the test
+While we could compress the state into 2 bit, using 8 bit is much
+easier.
 
-Example:
-./udp_tai -i enp170s0 -P 100000 -p 90 -c 1 -t 0 -u 30004
+This handling is similar, but different to acpi_scan_try_to_offline():
 
-Host:
-- Perform link up/down every 5 second.
+a) We don't try to offline twice. I am not sure if this CONFIG_MEMCG
+optimization is still relevant - it should only apply to ZONE_NORMAL
+(where we have no guarantees). If relevant, we can always add it.
 
-Result:
-Kernel panic will happen on DUT Side.
+b) acpi_scan_try_to_offline() simply onlines all memory in case
+something goes wrong. It doesn't restore previous online type. Let's do
+that, so we won't overwrite what e.g., user space configured.
 
-Fixes: 13b5b7fd6a4a ("igc: Add support for Tx/Rx rings")
-Signed-off-by: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Wei Yang <richard.weiyang@linux.alibaba.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Link: https://lore.kernel.org/r/20201112133815.13332-28-david@redhat.com
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ mm/memory_hotplug.c |  105 ++++++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 89 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index e255b0a004f88..eb7aa8c13f7e5 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -254,6 +254,13 @@ static void igc_clean_tx_ring(struct igc_ring *tx_ring)
- 	/* reset BQL for queue */
- 	netdev_tx_reset_queue(txring_txq(tx_ring));
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1788,39 +1788,112 @@ int remove_memory(int nid, u64 start, u6
+ }
+ EXPORT_SYMBOL_GPL(remove_memory);
  
-+	/* Zero out the buffer ring */
-+	memset(tx_ring->tx_buffer_info, 0,
-+	       sizeof(*tx_ring->tx_buffer_info) * tx_ring->count);
++static int try_offline_memory_block(struct memory_block *mem, void *arg)
++{
++	uint8_t online_type = MMOP_ONLINE_KERNEL;
++	uint8_t **online_types = arg;
++	struct page *page;
++	int rc;
 +
-+	/* Zero out the descriptor ring */
-+	memset(tx_ring->desc, 0, tx_ring->size);
++	/*
++	 * Sense the online_type via the zone of the memory block. Offlining
++	 * with multiple zones within one memory block will be rejected
++	 * by offlining code ... so we don't care about that.
++	 */
++	page = pfn_to_online_page(section_nr_to_pfn(mem->start_section_nr));
++	if (page && zone_idx(page_zone(page)) == ZONE_MOVABLE)
++		online_type = MMOP_ONLINE_MOVABLE;
 +
- 	/* reset next_to_use and next_to_clean */
- 	tx_ring->next_to_use = 0;
- 	tx_ring->next_to_clean = 0;
-@@ -267,7 +274,7 @@ static void igc_clean_tx_ring(struct igc_ring *tx_ring)
++	rc = device_offline(&mem->dev);
++	/*
++	 * Default is MMOP_OFFLINE - change it only if offlining succeeded,
++	 * so try_reonline_memory_block() can do the right thing.
++	 */
++	if (!rc)
++		**online_types = online_type;
++
++	(*online_types)++;
++	/* Ignore if already offline. */
++	return rc < 0 ? rc : 0;
++}
++
++static int try_reonline_memory_block(struct memory_block *mem, void *arg)
++{
++	uint8_t **online_types = arg;
++	int rc;
++
++	if (**online_types != MMOP_OFFLINE) {
++		mem->online_type = **online_types;
++		rc = device_online(&mem->dev);
++		if (rc < 0)
++			pr_warn("%s: Failed to re-online memory: %d",
++				__func__, rc);
++	}
++
++	/* Continue processing all remaining memory blocks. */
++	(*online_types)++;
++	return 0;
++}
++
+ /*
+- * Try to offline and remove a memory block. Might take a long time to
+- * finish in case memory is still in use. Primarily useful for memory devices
+- * that logically unplugged all memory (so it's no longer in use) and want to
+- * offline + remove the memory block.
++ * Try to offline and remove memory. Might take a long time to finish in case
++ * memory is still in use. Primarily useful for memory devices that logically
++ * unplugged all memory (so it's no longer in use) and want to offline + remove
++ * that memory.
   */
- void igc_free_tx_resources(struct igc_ring *tx_ring)
+ int offline_and_remove_memory(int nid, u64 start, u64 size)
  {
--	igc_clean_tx_ring(tx_ring);
-+	igc_disable_tx_ring(tx_ring);
+-	struct memory_block *mem;
+-	int rc = -EINVAL;
++	const unsigned long mb_count = size / memory_block_size_bytes();
++	uint8_t *online_types, *tmp;
++	int rc;
  
- 	vfree(tx_ring->tx_buffer_info);
- 	tx_ring->tx_buffer_info = NULL;
--- 
-2.39.2
-
+ 	if (!IS_ALIGNED(start, memory_block_size_bytes()) ||
+-	    size != memory_block_size_bytes())
+-		return rc;
++	    !IS_ALIGNED(size, memory_block_size_bytes()) || !size)
++		return -EINVAL;
++
++	/*
++	 * We'll remember the old online type of each memory block, so we can
++	 * try to revert whatever we did when offlining one memory block fails
++	 * after offlining some others succeeded.
++	 */
++	online_types = kmalloc_array(mb_count, sizeof(*online_types),
++				     GFP_KERNEL);
++	if (!online_types)
++		return -ENOMEM;
++	/*
++	 * Initialize all states to MMOP_OFFLINE, so when we abort processing in
++	 * try_offline_memory_block(), we'll skip all unprocessed blocks in
++	 * try_reonline_memory_block().
++	 */
++	memset(online_types, MMOP_OFFLINE, mb_count);
+ 
+ 	lock_device_hotplug();
+-	mem = find_memory_block(__pfn_to_section(PFN_DOWN(start)));
+-	if (mem)
+-		rc = device_offline(&mem->dev);
+-	/* Ignore if the device is already offline. */
+-	if (rc > 0)
+-		rc = 0;
++
++	tmp = online_types;
++	rc = walk_memory_blocks(start, size, &tmp, try_offline_memory_block);
+ 
+ 	/*
+-	 * In case we succeeded to offline the memory block, remove it.
++	 * In case we succeeded to offline all memory, remove it.
+ 	 * This cannot fail as it cannot get onlined in the meantime.
+ 	 */
+ 	if (!rc) {
+ 		rc = try_remove_memory(nid, start, size);
+-		WARN_ON_ONCE(rc);
++		if (rc)
++			pr_err("%s: Failed to remove memory: %d", __func__, rc);
++	}
++
++	/*
++	 * Rollback what we did. While memory onlining might theoretically fail
++	 * (nacked by a notifier), it barely ever happens.
++	 */
++	if (rc) {
++		tmp = online_types;
++		walk_memory_blocks(start, size, &tmp,
++				   try_reonline_memory_block);
+ 	}
+ 	unlock_device_hotplug();
+ 
++	kfree(online_types);
+ 	return rc;
+ }
+ EXPORT_SYMBOL_GPL(offline_and_remove_memory);
 
 
