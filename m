@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EC76735228
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:31:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DDC973538E
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:46:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231722AbjFSKbQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:31:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39054 "EHLO
+        id S230166AbjFSKqe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:46:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231814AbjFSKbF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:31:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70F9010C3
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:30:59 -0700 (PDT)
+        with ESMTP id S229830AbjFSKqC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:46:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 526D610CE
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:45:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B3F2760B68
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:30:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F05C433C0;
-        Mon, 19 Jun 2023 10:30:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D5DFD60B5E
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:45:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC8CC433C8;
+        Mon, 19 Jun 2023 10:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687170658;
-        bh=9fZRLWhnGQgFi9XA2dG7hAL9nO90gc2HWWvz1bl8Lb0=;
+        s=korg; t=1687171542;
+        bh=KY0eM9GnRjsZzn792M24nvKSyrF17fuGc+QwLcnmjUc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p+wtnf6vb6RDRKJLE5zCI+sv5nABeLu1QzIjOihNjeJXgy9dY1/baLXhyH6MtlstA
-         d25jeyoDNiiJaYnQmrTYp+kw3gPeFqGTLZCImd+zYMxrffvo1ip+CDZD15QMzCesE6
-         M8HPocqoZeSjkzdScPOWST0qVTWsRMT4txW2zK1c=
+        b=YlRCvsuQDnEG62eadp+ueysoVKrO6i9qoAbuRuSwTH5X1Pz7pgNxiPpagb5LcSoKn
+         Nceb+18SzCUfVRRbHCMq3f6jOSU/ZPBOsdfzYjvN13UtmLKfn8bP7lMq7uBTKBJxt4
+         XokQaCpAjBcqirBS6eqSJpgCq9Mu3US8/nbOL1DM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 18/32] netfilter: nfnetlink: skip error delivery on batch in case of ENOMEM
+        patches@lists.linux.dev, Sonny Jiang <sonjiang@amd.com>,
+        Leo Liu <leo.liu@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 069/166] drm/amdgpu: vcn_4_0 set instance 0 init sched score to 1
 Date:   Mon, 19 Jun 2023 12:29:06 +0200
-Message-ID: <20230619102128.507478587@linuxfoundation.org>
+Message-ID: <20230619102158.117889066@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102127.461443957@linuxfoundation.org>
-References: <20230619102127.461443957@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,36 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Sonny Jiang <sonjiang@amd.com>
 
-[ Upstream commit a1a64a151dae8ac3581c1cbde44b672045cb658b ]
+commit 9db5ec1ceb5303398ec4f899d691073d531257c3 upstream.
 
-If caller reports ENOMEM, then stop iterating over the batch and send a
-single netlink message to userspace to report OOM.
+Only vcn0 can process AV1 codecx. In order to use both vcn0 and
+vcn1 in h264/265 transcode to AV1 cases, set vcn0 sched score to 1
+at initialization time.
 
-Fixes: cbb8125eb40b ("netfilter: nfnetlink: deliver netlink errors on batch completion")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sonny Jiang <sonjiang@amd.com>
+Reviewed-by: Leo Liu <leo.liu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.1.x
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nfnetlink.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nfnetlink.c b/net/netfilter/nfnetlink.c
-index 2cee032af46d2..96ae1c4ad9a91 100644
---- a/net/netfilter/nfnetlink.c
-+++ b/net/netfilter/nfnetlink.c
-@@ -411,7 +411,8 @@ static void nfnetlink_rcv_batch(struct sk_buff *skb, struct nlmsghdr *nlh,
- 			 * processed, this avoids that the same error is
- 			 * reported several times when replaying the batch.
- 			 */
--			if (nfnl_err_add(&err_list, nlh, err, &extack) < 0) {
-+			if (err == -ENOMEM ||
-+			    nfnl_err_add(&err_list, nlh, err, &extack) < 0) {
- 				/* We failed to enqueue an error, reset the
- 				 * list of errors and send OOM to userspace
- 				 * pointing to the batch header.
--- 
-2.39.2
-
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
+@@ -117,7 +117,11 @@ static int vcn_v4_0_sw_init(void *handle
+ 		if (adev->vcn.harvest_config & (1 << i))
+ 			continue;
+ 
+-		atomic_set(&adev->vcn.inst[i].sched_score, 0);
++		/* Init instance 0 sched_score to 1, so it's scheduled after other instances */
++		if (i == 0)
++			atomic_set(&adev->vcn.inst[i].sched_score, 1);
++		else
++			atomic_set(&adev->vcn.inst[i].sched_score, 0);
+ 
+ 		/* VCN UNIFIED TRAP */
+ 		r = amdgpu_irq_add_id(adev, amdgpu_ih_clientid_vcns[i],
 
 
