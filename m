@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57D8C7353DA
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:49:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2DCB7352E7
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:39:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229567AbjFSKtL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:49:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52022 "EHLO
+        id S231863AbjFSKj3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:39:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232124AbjFSKsw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:48:52 -0400
+        with ESMTP id S231918AbjFSKj1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:39:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDD38E70
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:48:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF8671B8
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:39:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F21560B85
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:48:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 873D7C433C0;
-        Mon, 19 Jun 2023 10:48:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3B9BC60B67
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:39:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5279FC433C0;
+        Mon, 19 Jun 2023 10:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171729;
-        bh=aZuNSmatyawk2Y31JTLn3Fw4OgkfgrJNMsdkFTIp9ms=;
+        s=korg; t=1687171163;
+        bh=fdZ88/NxlTEyUssDqwKSQ05UXKPl3fTrBMGaUorOGK8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QlBN1uzl9QbGE7WrtB9Ca90Lzsasw2HMNcvFx1t8GTVCqQ9ev0x/oBAaHDQoXNuaR
-         a2Tze+LgHUYjmptec2NRcR78m/o96stngJtID1hXw2plq9yIiC3WVOaGVHNENbpmLR
-         5bVdNONsxtXA6lvVlaNc32YT0qxkU30Z4+9B6icE=
+        b=aYgZi/8CceDVqpaLBIFobkkHiG0Bpy40/pXmhj75RpePFVlFPGiKCxkUF5IuL/PMb
+         /H73woA508GSfN2o5o21fQxswPYvEtjkrLZj19bqRMHR2ugBmEGzt4x6hUnOM0/5vv
+         8jylzTXwc91F+uj0NX5mivGccnvp0LGgb9644c7M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Ziemba <ian.ziemba@hpe.com>,
-        Bob Pearson <rpearsonhpe@gmail.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
+        patches@lists.linux.dev,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 111/166] RDMA/rxe: Removed unused name from rxe_task struct
+Subject: [PATCH 6.3 170/187] Revert "media: dvb-core: Fix use-after-free on race condition at dvb_frontend"
 Date:   Mon, 19 Jun 2023 12:29:48 +0200
-Message-ID: <20230619102200.208881502@linuxfoundation.org>
+Message-ID: <20230619102205.877358421@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,91 +55,241 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bob Pearson <rpearsonhpe@gmail.com>
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-[ Upstream commit de669ae8af49ceed0eed44f5b3d51dc62affc5e4 ]
+[ Upstream commit ec21a38df77a5aefbd2f70c48127003b6f259cf3 ]
 
-The name field in struct rxe_task is never used. This patch removes it.
+As reported by Thomas Voegtle <tv@lio96.de>, sometimes a DVB card does
+not initialize properly booting Linux 6.4-rc4. This is not always, maybe
+in 3 out of 4 attempts.
 
-Link: https://lore.kernel.org/r/20221021200118.2163-4-rpearsonhpe@gmail.com
-Signed-off-by: Ian Ziemba <ian.ziemba@hpe.com>
-Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Stable-dep-of: 2a62b6210ce8 ("RDMA/rxe: Fix the use-before-initialization error of resp_pkts")
+After double-checking, the root cause seems to be related to the
+UAF fix, which is causing a race issue:
+
+[   26.332149] tda10071 7-0005: found a 'NXP TDA10071' in cold state, will try to load a firmware
+[   26.340779] tda10071 7-0005: downloading firmware from file 'dvb-fe-tda10071.fw'
+[  989.277402] INFO: task vdr:743 blocked for more than 491 seconds.
+[  989.283504]       Not tainted 6.4.0-rc5-i5 #249
+[  989.288036] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[  989.295860] task:vdr             state:D stack:0     pid:743   ppid:711    flags:0x00004002
+[  989.295865] Call Trace:
+[  989.295867]  <TASK>
+[  989.295869]  __schedule+0x2ea/0x12d0
+[  989.295877]  ? asm_sysvec_apic_timer_interrupt+0x16/0x20
+[  989.295881]  schedule+0x57/0xc0
+[  989.295884]  schedule_preempt_disabled+0xc/0x20
+[  989.295887]  __mutex_lock.isra.16+0x237/0x480
+[  989.295891]  ? dvb_get_property.isra.10+0x1bc/0xa50
+[  989.295898]  ? dvb_frontend_stop+0x36/0x180
+[  989.338777]  dvb_frontend_stop+0x36/0x180
+[  989.338781]  dvb_frontend_open+0x2f1/0x470
+[  989.338784]  dvb_device_open+0x81/0xf0
+[  989.338804]  ? exact_lock+0x20/0x20
+[  989.338808]  chrdev_open+0x7f/0x1c0
+[  989.338811]  ? generic_permission+0x1a2/0x230
+[  989.338813]  ? link_path_walk.part.63+0x340/0x380
+[  989.338815]  ? exact_lock+0x20/0x20
+[  989.338817]  do_dentry_open+0x18e/0x450
+[  989.374030]  path_openat+0xca5/0xe00
+[  989.374031]  ? terminate_walk+0xec/0x100
+[  989.374034]  ? path_lookupat+0x93/0x140
+[  989.374036]  do_filp_open+0xc0/0x140
+[  989.374038]  ? __call_rcu_common.constprop.91+0x92/0x240
+[  989.374041]  ? __check_object_size+0x147/0x260
+[  989.374043]  ? __check_object_size+0x147/0x260
+[  989.374045]  ? alloc_fd+0xbb/0x180
+[  989.374048]  ? do_sys_openat2+0x243/0x310
+[  989.374050]  do_sys_openat2+0x243/0x310
+[  989.374052]  do_sys_open+0x52/0x80
+[  989.374055]  do_syscall_64+0x5b/0x80
+[  989.421335]  ? __task_pid_nr_ns+0x92/0xa0
+[  989.421337]  ? syscall_exit_to_user_mode+0x20/0x40
+[  989.421339]  ? do_syscall_64+0x67/0x80
+[  989.421341]  ? syscall_exit_to_user_mode+0x20/0x40
+[  989.421343]  ? do_syscall_64+0x67/0x80
+[  989.421345]  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[  989.421348] RIP: 0033:0x7fe895d067e3
+[  989.421349] RSP: 002b:00007fff933c2ba0 EFLAGS: 00000293 ORIG_RAX: 0000000000000101
+[  989.421351] RAX: ffffffffffffffda RBX: 00007fff933c2c10 RCX: 00007fe895d067e3
+[  989.421352] RDX: 0000000000000802 RSI: 00005594acdce160 RDI: 00000000ffffff9c
+[  989.421353] RBP: 0000000000000802 R08: 0000000000000000 R09: 0000000000000000
+[  989.421353] R10: 0000000000000000 R11: 0000000000000293 R12: 0000000000000001
+[  989.421354] R13: 00007fff933c2ca0 R14: 00000000ffffffff R15: 00007fff933c2c90
+[  989.421355]  </TASK>
+
+This reverts commit 6769a0b7ee0c3b31e1b22c3fadff2bfb642de23f.
+
+Fixes: 6769a0b7ee0c ("media: dvb-core: Fix use-after-free on race condition at dvb_frontend")
+Link: https://lore.kernel.org/all/da5382ad-09d6-20ac-0d53-611594b30861@lio96.de/
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_qp.c   | 9 +++------
- drivers/infiniband/sw/rxe/rxe_task.c | 4 +---
- drivers/infiniband/sw/rxe/rxe_task.h | 4 +---
- 3 files changed, 5 insertions(+), 12 deletions(-)
+ drivers/media/dvb-core/dvb_frontend.c | 53 +++++----------------------
+ include/media/dvb_frontend.h          |  6 +--
+ 2 files changed, 10 insertions(+), 49 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
-index 1f6e006c51c4a..f48a624de493d 100644
---- a/drivers/infiniband/sw/rxe/rxe_qp.c
-+++ b/drivers/infiniband/sw/rxe/rxe_qp.c
-@@ -242,10 +242,8 @@ static int rxe_qp_init_req(struct rxe_dev *rxe, struct rxe_qp *qp,
+diff --git a/drivers/media/dvb-core/dvb_frontend.c b/drivers/media/dvb-core/dvb_frontend.c
+index bc6950a5740f6..9293b058ab997 100644
+--- a/drivers/media/dvb-core/dvb_frontend.c
++++ b/drivers/media/dvb-core/dvb_frontend.c
+@@ -817,26 +817,15 @@ static void dvb_frontend_stop(struct dvb_frontend *fe)
  
- 	skb_queue_head_init(&qp->req_pkts);
+ 	dev_dbg(fe->dvb->device, "%s:\n", __func__);
  
--	rxe_init_task(&qp->req.task, qp,
--		      rxe_requester, "req");
--	rxe_init_task(&qp->comp.task, qp,
--		      rxe_completer, "comp");
-+	rxe_init_task(&qp->req.task, qp, rxe_requester);
-+	rxe_init_task(&qp->comp.task, qp, rxe_completer);
+-	mutex_lock(&fe->remove_mutex);
+-
+ 	if (fe->exit != DVB_FE_DEVICE_REMOVED)
+ 		fe->exit = DVB_FE_NORMAL_EXIT;
+ 	mb();
  
- 	qp->qp_timeout_jiffies = 0; /* Can't be set for UD/UC in modify_qp */
- 	if (init->qp_type == IB_QPT_RC) {
-@@ -292,8 +290,7 @@ static int rxe_qp_init_resp(struct rxe_dev *rxe, struct rxe_qp *qp,
+-	if (!fepriv->thread) {
+-		mutex_unlock(&fe->remove_mutex);
++	if (!fepriv->thread)
+ 		return;
+-	}
  
- 	skb_queue_head_init(&qp->resp_pkts);
+ 	kthread_stop(fepriv->thread);
  
--	rxe_init_task(&qp->resp.task, qp,
--		      rxe_responder, "resp");
-+	rxe_init_task(&qp->resp.task, qp, rxe_responder);
+-	mutex_unlock(&fe->remove_mutex);
+-
+-	if (fepriv->dvbdev->users < -1) {
+-		wait_event(fepriv->dvbdev->wait_queue,
+-			   fepriv->dvbdev->users == -1);
+-	}
+-
+ 	sema_init(&fepriv->sem, 1);
+ 	fepriv->state = FESTATE_IDLE;
  
- 	qp->resp.opcode		= OPCODE_NONE;
- 	qp->resp.msn		= 0;
-diff --git a/drivers/infiniband/sw/rxe/rxe_task.c b/drivers/infiniband/sw/rxe/rxe_task.c
-index ec2b7de1c4972..182d0532a8ab9 100644
---- a/drivers/infiniband/sw/rxe/rxe_task.c
-+++ b/drivers/infiniband/sw/rxe/rxe_task.c
-@@ -94,12 +94,10 @@ void rxe_do_task(struct tasklet_struct *t)
- 	task->ret = ret;
+@@ -2780,13 +2769,9 @@ static int dvb_frontend_open(struct inode *inode, struct file *file)
+ 	struct dvb_adapter *adapter = fe->dvb;
+ 	int ret;
+ 
+-	mutex_lock(&fe->remove_mutex);
+-
+ 	dev_dbg(fe->dvb->device, "%s:\n", __func__);
+-	if (fe->exit == DVB_FE_DEVICE_REMOVED) {
+-		ret = -ENODEV;
+-		goto err_remove_mutex;
+-	}
++	if (fe->exit == DVB_FE_DEVICE_REMOVED)
++		return -ENODEV;
+ 
+ 	if (adapter->mfe_shared == 2) {
+ 		mutex_lock(&adapter->mfe_lock);
+@@ -2794,8 +2779,7 @@ static int dvb_frontend_open(struct inode *inode, struct file *file)
+ 			if (adapter->mfe_dvbdev &&
+ 			    !adapter->mfe_dvbdev->writers) {
+ 				mutex_unlock(&adapter->mfe_lock);
+-				ret = -EBUSY;
+-				goto err_remove_mutex;
++				return -EBUSY;
+ 			}
+ 			adapter->mfe_dvbdev = dvbdev;
+ 		}
+@@ -2818,10 +2802,8 @@ static int dvb_frontend_open(struct inode *inode, struct file *file)
+ 			while (mferetry-- && (mfedev->users != -1 ||
+ 					      mfepriv->thread)) {
+ 				if (msleep_interruptible(500)) {
+-					if (signal_pending(current)) {
+-						ret = -EINTR;
+-						goto err_remove_mutex;
+-					}
++					if (signal_pending(current))
++						return -EINTR;
+ 				}
+ 			}
+ 
+@@ -2833,8 +2815,7 @@ static int dvb_frontend_open(struct inode *inode, struct file *file)
+ 				if (mfedev->users != -1 ||
+ 				    mfepriv->thread) {
+ 					mutex_unlock(&adapter->mfe_lock);
+-					ret = -EBUSY;
+-					goto err_remove_mutex;
++					return -EBUSY;
+ 				}
+ 				adapter->mfe_dvbdev = dvbdev;
+ 			}
+@@ -2893,8 +2874,6 @@ static int dvb_frontend_open(struct inode *inode, struct file *file)
+ 
+ 	if (adapter->mfe_shared)
+ 		mutex_unlock(&adapter->mfe_lock);
+-
+-	mutex_unlock(&fe->remove_mutex);
+ 	return ret;
+ 
+ err3:
+@@ -2916,9 +2895,6 @@ static int dvb_frontend_open(struct inode *inode, struct file *file)
+ err0:
+ 	if (adapter->mfe_shared)
+ 		mutex_unlock(&adapter->mfe_lock);
+-
+-err_remove_mutex:
+-	mutex_unlock(&fe->remove_mutex);
+ 	return ret;
  }
  
--int rxe_init_task(struct rxe_task *task,
--		  void *arg, int (*func)(void *), char *name)
-+int rxe_init_task(struct rxe_task *task, void *arg, int (*func)(void *))
- {
- 	task->arg	= arg;
- 	task->func	= func;
--	snprintf(task->name, sizeof(task->name), "%s", name);
- 	task->destroyed	= false;
+@@ -2929,8 +2905,6 @@ static int dvb_frontend_release(struct inode *inode, struct file *file)
+ 	struct dvb_frontend_private *fepriv = fe->frontend_priv;
+ 	int ret;
  
- 	tasklet_setup(&task->tasklet, rxe_do_task);
-diff --git a/drivers/infiniband/sw/rxe/rxe_task.h b/drivers/infiniband/sw/rxe/rxe_task.h
-index 7f612a1c68a7b..b3dfd970d1dc6 100644
---- a/drivers/infiniband/sw/rxe/rxe_task.h
-+++ b/drivers/infiniband/sw/rxe/rxe_task.h
-@@ -25,7 +25,6 @@ struct rxe_task {
- 	void			*arg;
- 	int			(*func)(void *arg);
- 	int			ret;
--	char			name[16];
- 	bool			destroyed;
+-	mutex_lock(&fe->remove_mutex);
+-
+ 	dev_dbg(fe->dvb->device, "%s:\n", __func__);
+ 
+ 	if ((file->f_flags & O_ACCMODE) != O_RDONLY) {
+@@ -2952,18 +2926,10 @@ static int dvb_frontend_release(struct inode *inode, struct file *file)
+ 		}
+ 		mutex_unlock(&fe->dvb->mdev_lock);
+ #endif
++		if (fe->exit != DVB_FE_NO_EXIT)
++			wake_up(&dvbdev->wait_queue);
+ 		if (fe->ops.ts_bus_ctrl)
+ 			fe->ops.ts_bus_ctrl(fe, 0);
+-
+-		if (fe->exit != DVB_FE_NO_EXIT) {
+-			mutex_unlock(&fe->remove_mutex);
+-			wake_up(&dvbdev->wait_queue);
+-		} else {
+-			mutex_unlock(&fe->remove_mutex);
+-		}
+-
+-	} else {
+-		mutex_unlock(&fe->remove_mutex);
+ 	}
+ 
+ 	dvb_frontend_put(fe);
+@@ -3064,7 +3030,6 @@ int dvb_register_frontend(struct dvb_adapter *dvb,
+ 	fepriv = fe->frontend_priv;
+ 
+ 	kref_init(&fe->refcount);
+-	mutex_init(&fe->remove_mutex);
+ 
+ 	/*
+ 	 * After initialization, there need to be two references: one
+diff --git a/include/media/dvb_frontend.h b/include/media/dvb_frontend.h
+index 367d5381217b5..e7c44870f20de 100644
+--- a/include/media/dvb_frontend.h
++++ b/include/media/dvb_frontend.h
+@@ -686,10 +686,7 @@ struct dtv_frontend_properties {
+  * @id:			Frontend ID
+  * @exit:		Used to inform the DVB core that the frontend
+  *			thread should exit (usually, means that the hardware
+- *			got disconnected).
+- * @remove_mutex:	mutex that avoids a race condition between a callback
+- *			called when the hardware is disconnected and the
+- *			file_operations of dvb_frontend.
++ *			got disconnected.
+  */
+ 
+ struct dvb_frontend {
+@@ -707,7 +704,6 @@ struct dvb_frontend {
+ 	int (*callback)(void *adapter_priv, int component, int cmd, int arg);
+ 	int id;
+ 	unsigned int exit;
+-	struct mutex remove_mutex;
  };
  
-@@ -34,8 +33,7 @@ struct rxe_task {
-  *	arg  => parameter to pass to fcn
-  *	func => function to call until it returns != 0
-  */
--int rxe_init_task(struct rxe_task *task,
--		  void *arg, int (*func)(void *), char *name);
-+int rxe_init_task(struct rxe_task *task, void *arg, int (*func)(void *));
- 
- /* cleanup task */
- void rxe_cleanup_task(struct rxe_task *task);
+ /**
 -- 
 2.39.2
 
