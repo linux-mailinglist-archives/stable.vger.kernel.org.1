@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD33C735467
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:55:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6734C73552A
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:02:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230358AbjFSKzi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:55:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58858 "EHLO
+        id S231166AbjFSLCQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 07:02:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231222AbjFSKzK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:55:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5414B199A
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:53:36 -0700 (PDT)
+        with ESMTP id S232500AbjFSLBl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:01:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFF1A1703
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:00:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B38E26068B
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:53:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C601DC433C0;
-        Mon, 19 Jun 2023 10:53:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6ED4460B42
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:00:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851BCC433C9;
+        Mon, 19 Jun 2023 11:00:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172015;
-        bh=nj8HMEZ3QiPgh0ru2L69PvGWdw05bqlyPL1f8pnQGk0=;
+        s=korg; t=1687172447;
+        bh=ZVnskgNcEpnqTNSbqcUMFbU+Fsvac14gY6lIINMpfOo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UuOK4wut/dX3NTHJxlIjLJzQyMRqjwQEanBCVM24QPAmRQykQDR68xNmSJsmreUE+
-         mn2xVo/GDpS6QE2unckv8z0xJ6/G0IM3l8RgTdNQ7zK+mfNSw/pfh/if1B7zusSsNN
-         /3PhQ4yWCelwtwwlR6l022au2J4yVMdvF9sXocoQ=
+        b=oKdJqf0F9dMTIPLBPk/gFoDCAjmVN2gyrAxt52WgtQubiiG+SHjmnAE2o+gPeAHNp
+         EWbybd7bOvcA8bvDtlAyBBpRuBbuTwzG5fl9gdAw8WcyaIPdIzx4WIOU6H0blhRGdw
+         CcQzJNeVKbd5F8LRN1jacCL1Kc44+MwfCdyZr2WA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Maftei <alex.maftei@amd.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Zhu Yanjun <yanjun.zhu@linux.dev>,
+        Li Zhijian <lizhijian@fujitsu.com>,
+        Bob Pearson <rpearsonhpe@gmail.com>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 58/64] selftests/ptp: Fix timestamp printf format for PTP_SYS_OFFSET
-Date:   Mon, 19 Jun 2023 12:30:54 +0200
-Message-ID: <20230619102135.827155493@linuxfoundation.org>
+Subject: [PATCH 5.15 071/107] RDMA/rxe: Remove the unused variable obj
+Date:   Mon, 19 Jun 2023 12:30:55 +0200
+Message-ID: <20230619102144.844946469@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
-References: <20230619102132.808972458@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,48 +57,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alex Maftei <alex.maftei@amd.com>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
 
-[ Upstream commit 76a4c8b82938bc5020b67663db41f451684bf327 ]
+[ Upstream commit f07853582d1f6ed282f8d9a0b1209a87dd761f58 ]
 
-Previously, timestamps were printed using "%lld.%u" which is incorrect
-for nanosecond values lower than 100,000,000 as they're fractional
-digits, therefore leading zeros are meaningful.
+The member variable obj in struct rxe_task is not needed.
+So remove it to save memory.
 
-This patch changes the format strings to "%lld.%09u" in order to add
-leading zeros to the nanosecond value.
-
-Fixes: 568ebc5985f5 ("ptp: add the PTP_SYS_OFFSET ioctl to the testptp program")
-Fixes: 4ec54f95736f ("ptp: Fix compiler warnings in the testptp utility")
-Fixes: 6ab0e475f1f3 ("Documentation: fix misc. warnings")
-Signed-off-by: Alex Maftei <alex.maftei@amd.com>
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Link: https://lore.kernel.org/r/20230615083404.57112-1-alex.maftei@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20220822011615.805603-4-yanjun.zhu@linux.dev
+Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
+Reviewed-by: Bob Pearson <rpearsonhpe@gmail.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Stable-dep-of: 2a62b6210ce8 ("RDMA/rxe: Fix the use-before-initialization error of resp_pkts")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/ptp/testptp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/infiniband/sw/rxe/rxe_qp.c   | 6 +++---
+ drivers/infiniband/sw/rxe/rxe_task.c | 3 +--
+ drivers/infiniband/sw/rxe/rxe_task.h | 3 +--
+ 3 files changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
-index c0dd10257df5a..49e6eddcb3617 100644
---- a/tools/testing/selftests/ptp/testptp.c
-+++ b/tools/testing/selftests/ptp/testptp.c
-@@ -455,11 +455,11 @@ int main(int argc, char *argv[])
- 			interval = t2 - t1;
- 			offset = (t2 + t1) / 2 - tp;
+diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
+index d7a968356a9bb..5b78230692fda 100644
+--- a/drivers/infiniband/sw/rxe/rxe_qp.c
++++ b/drivers/infiniband/sw/rxe/rxe_qp.c
+@@ -265,9 +265,9 @@ static int rxe_qp_init_req(struct rxe_dev *rxe, struct rxe_qp *qp,
  
--			printf("system time: %lld.%u\n",
-+			printf("system time: %lld.%09u\n",
- 				(pct+2*i)->sec, (pct+2*i)->nsec);
--			printf("phc    time: %lld.%u\n",
-+			printf("phc    time: %lld.%09u\n",
- 				(pct+2*i+1)->sec, (pct+2*i+1)->nsec);
--			printf("system time: %lld.%u\n",
-+			printf("system time: %lld.%09u\n",
- 				(pct+2*i+2)->sec, (pct+2*i+2)->nsec);
- 			printf("system/phc clock time offset is %" PRId64 " ns\n"
- 			       "system     clock time delay  is %" PRId64 " ns\n",
+ 	skb_queue_head_init(&qp->req_pkts);
+ 
+-	rxe_init_task(rxe, &qp->req.task, qp,
++	rxe_init_task(&qp->req.task, qp,
+ 		      rxe_requester, "req");
+-	rxe_init_task(rxe, &qp->comp.task, qp,
++	rxe_init_task(&qp->comp.task, qp,
+ 		      rxe_completer, "comp");
+ 
+ 	qp->qp_timeout_jiffies = 0; /* Can't be set for UD/UC in modify_qp */
+@@ -315,7 +315,7 @@ static int rxe_qp_init_resp(struct rxe_dev *rxe, struct rxe_qp *qp,
+ 
+ 	skb_queue_head_init(&qp->resp_pkts);
+ 
+-	rxe_init_task(rxe, &qp->resp.task, qp,
++	rxe_init_task(&qp->resp.task, qp,
+ 		      rxe_responder, "resp");
+ 
+ 	qp->resp.opcode		= OPCODE_NONE;
+diff --git a/drivers/infiniband/sw/rxe/rxe_task.c b/drivers/infiniband/sw/rxe/rxe_task.c
+index 568cf56c236bc..f48882b20d6b2 100644
+--- a/drivers/infiniband/sw/rxe/rxe_task.c
++++ b/drivers/infiniband/sw/rxe/rxe_task.c
+@@ -95,10 +95,9 @@ void rxe_do_task(struct tasklet_struct *t)
+ 	task->ret = ret;
+ }
+ 
+-int rxe_init_task(void *obj, struct rxe_task *task,
++int rxe_init_task(struct rxe_task *task,
+ 		  void *arg, int (*func)(void *), char *name)
+ {
+-	task->obj	= obj;
+ 	task->arg	= arg;
+ 	task->func	= func;
+ 	snprintf(task->name, sizeof(task->name), "%s", name);
+diff --git a/drivers/infiniband/sw/rxe/rxe_task.h b/drivers/infiniband/sw/rxe/rxe_task.h
+index 11d183fd33386..7f612a1c68a7b 100644
+--- a/drivers/infiniband/sw/rxe/rxe_task.h
++++ b/drivers/infiniband/sw/rxe/rxe_task.h
+@@ -19,7 +19,6 @@ enum {
+  * called again.
+  */
+ struct rxe_task {
+-	void			*obj;
+ 	struct tasklet_struct	tasklet;
+ 	int			state;
+ 	spinlock_t		state_lock; /* spinlock for task state */
+@@ -35,7 +34,7 @@ struct rxe_task {
+  *	arg  => parameter to pass to fcn
+  *	func => function to call until it returns != 0
+  */
+-int rxe_init_task(void *obj, struct rxe_task *task,
++int rxe_init_task(struct rxe_task *task,
+ 		  void *arg, int (*func)(void *), char *name);
+ 
+ /* cleanup task */
 -- 
 2.39.2
 
