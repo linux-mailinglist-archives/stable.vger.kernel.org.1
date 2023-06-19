@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 704C6735305
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF819735472
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:56:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231547AbjFSKlH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:41:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46070 "EHLO
+        id S232340AbjFSK4c (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:56:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231989AbjFSKk0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:40:26 -0400
+        with ESMTP id S232342AbjFSKz7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:55:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 668E1CD
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:40:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF36919BF
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:54:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F0A4660B0D
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:40:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15123C433C8;
-        Mon, 19 Jun 2023 10:40:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9CB5C60B9E
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:54:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA37AC433C0;
+        Mon, 19 Jun 2023 10:53:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171224;
-        bh=dTMHqZm+d11Fd23qGB6AK54XsswmqL+O+qaQmWOZawU=;
+        s=korg; t=1687172040;
+        bh=MAjROVDjAe4W3aXoi6XTL3GDkI5A6f5Q2xeCoyCYFH4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Cfi/9kOY/SsPX6+szKWwleEJrhWGxLXgrFdiTJSqP/xRrBkQi+gQIvQ7xOpuZnLco
-         vVCbOKr6pzlXeYh9xeUYaxq31VqkBi8H+xYoQlbbo9me9P6PCnMajQsBs3fPf3TauM
-         VPfc+1EWqe73W8zIaY4yDuJ/kk26h9oLFN0lbLxU=
+        b=cM2wV7gsF545Yo6rRSmG/9opXOeLDLnuoLwYPoepVE0XhZw82h2hmZNZB5VqEkVp+
+         DiJuPpVcixoLNTVleHdWrCMw2D1ojgtLJTddQLXOYL4roQdsDJo8CevTep9eBZYtoX
+         2eM5etnDE6g55sqSYG0Wlm8KwEMjcIMv85BOW9/4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Leon Romanovsky <leonro@nvidia.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.3 185/187] neighbour: delete neigh_lookup_nodev as not used
+        patches@lists.linux.dev, Evan Quan <Evan.Quan@amd.com>,
+        Lijo Lazar <Lijo.Lazar@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 15/89] power: supply: Fix logic checking if system is running from battery
 Date:   Mon, 19 Jun 2023 12:30:03 +0200
-Message-ID: <20230619102206.670225174@linuxfoundation.org>
+Message-ID: <20230619102138.981366067@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,75 +57,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 76b9bf965c98c9b53ef7420b3b11438dbd764f92 upstream.
+[ Upstream commit 95339f40a8b652b5b1773def31e63fc53c26378a ]
 
-neigh_lookup_nodev isn't used in the kernel after removal
-of DECnet. So let's remove it.
+The logic used for power_supply_is_system_supplied() counts all power
+supplies and assumes that the system is running from AC if there is
+either a non-battery power-supply reporting to be online or if no
+power-supplies exist at all.
 
-Fixes: 1202cdd66531 ("Remove DECnet support from kernel")
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/eb5656200d7964b2d177a36b77efa3c597d6d72d.1678267343.git.leonro@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The second rule is for desktop systems, that don't have any
+battery/charger devices. These systems will incorrectly report to be
+powered from battery once a device scope power-supply is registered
+(e.g. a HID device), since these power-supplies increase the counter.
+
+Apart from HID devices, recent dGPUs provide UCSI power supplies on a
+desktop systems. The dGPU by default doesn't have anything plugged in so
+it's 'offline'. This makes power_supply_is_system_supplied() return 0
+with a count of 1 meaning all drivers that use this get a wrong judgement.
+
+To fix this case adjust the logic to also examine the scope of the power
+supply. If the power supply is deemed a device power supply, then don't
+count it.
+
+Cc: Evan Quan <Evan.Quan@amd.com>
+Suggested-by: Lijo Lazar <Lijo.Lazar@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/neighbour.h |    2 --
- net/core/neighbour.c    |   31 -------------------------------
- 2 files changed, 33 deletions(-)
+ drivers/power/supply/power_supply_core.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/include/net/neighbour.h
-+++ b/include/net/neighbour.h
-@@ -336,8 +336,6 @@ void neigh_table_init(int index, struct
- int neigh_table_clear(int index, struct neigh_table *tbl);
- struct neighbour *neigh_lookup(struct neigh_table *tbl, const void *pkey,
- 			       struct net_device *dev);
--struct neighbour *neigh_lookup_nodev(struct neigh_table *tbl, struct net *net,
--				     const void *pkey);
- struct neighbour *__neigh_create(struct neigh_table *tbl, const void *pkey,
- 				 struct net_device *dev, bool want_ref);
- static inline struct neighbour *neigh_create(struct neigh_table *tbl,
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -627,37 +627,6 @@ struct neighbour *neigh_lookup(struct ne
- }
- EXPORT_SYMBOL(neigh_lookup);
+diff --git a/drivers/power/supply/power_supply_core.c b/drivers/power/supply/power_supply_core.c
+index 53e5b3e04be13..5c8c117b396e7 100644
+--- a/drivers/power/supply/power_supply_core.c
++++ b/drivers/power/supply/power_supply_core.c
+@@ -347,6 +347,10 @@ static int __power_supply_is_system_supplied(struct device *dev, void *data)
+ 	struct power_supply *psy = dev_get_drvdata(dev);
+ 	unsigned int *count = data;
  
--struct neighbour *neigh_lookup_nodev(struct neigh_table *tbl, struct net *net,
--				     const void *pkey)
--{
--	struct neighbour *n;
--	unsigned int key_len = tbl->key_len;
--	u32 hash_val;
--	struct neigh_hash_table *nht;
--
--	NEIGH_CACHE_STAT_INC(tbl, lookups);
--
--	rcu_read_lock_bh();
--	nht = rcu_dereference_bh(tbl->nht);
--	hash_val = tbl->hash(pkey, NULL, nht->hash_rnd) >> (32 - nht->hash_shift);
--
--	for (n = rcu_dereference_bh(nht->hash_buckets[hash_val]);
--	     n != NULL;
--	     n = rcu_dereference_bh(n->next)) {
--		if (!memcmp(n->primary_key, pkey, key_len) &&
--		    net_eq(dev_net(n->dev), net)) {
--			if (!refcount_inc_not_zero(&n->refcnt))
--				n = NULL;
--			NEIGH_CACHE_STAT_INC(tbl, hits);
--			break;
--		}
--	}
--
--	rcu_read_unlock_bh();
--	return n;
--}
--EXPORT_SYMBOL(neigh_lookup_nodev);
--
- static struct neighbour *
- ___neigh_create(struct neigh_table *tbl, const void *pkey,
- 		struct net_device *dev, u32 flags,
++	if (!psy->desc->get_property(psy, POWER_SUPPLY_PROP_SCOPE, &ret))
++		if (ret.intval == POWER_SUPPLY_SCOPE_DEVICE)
++			return 0;
++
+ 	(*count)++;
+ 	if (psy->desc->type != POWER_SUPPLY_TYPE_BATTERY)
+ 		if (!psy->desc->get_property(psy, POWER_SUPPLY_PROP_ONLINE,
+@@ -365,8 +369,8 @@ int power_supply_is_system_supplied(void)
+ 				      __power_supply_is_system_supplied);
+ 
+ 	/*
+-	 * If no power class device was found at all, most probably we are
+-	 * running on a desktop system, so assume we are on mains power.
++	 * If no system scope power class device was found at all, most probably we
++	 * are running on a desktop system, so assume we are on mains power.
+ 	 */
+ 	if (count == 0)
+ 		return 1;
+-- 
+2.39.2
+
 
 
