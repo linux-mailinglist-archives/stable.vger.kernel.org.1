@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AA7673532E
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:42:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C917C73543D
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:54:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230043AbjFSKmU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:42:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47272 "EHLO
+        id S230299AbjFSKyC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:54:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232036AbjFSKmE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:42:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 003E013D
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:42:03 -0700 (PDT)
+        with ESMTP id S232157AbjFSKxg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:53:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5818A1FF1
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:52:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8AB6060B0D
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:42:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A066BC433C0;
-        Mon, 19 Jun 2023 10:42:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DBC4D60B85
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:52:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5E36C433C8;
+        Mon, 19 Jun 2023 10:52:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171323;
-        bh=9RoSE9FixoUb3VxDeIaXna0OWvELECVEc//L0sQQbnM=;
+        s=korg; t=1687171930;
+        bh=vAdsM+hjIZKz2nXd7bnVFlV9WvNPWJyMAkawniZXSjY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VHGn4pYhzLiagCXcb6GTepsrjLaeZijMR9aaMWCcMuOHXTSZq77XRMWHWmhj3q1nc
-         UbX2Rt/Z/G8I4a7mS071XVwV1yy7jRW0GzB/hJwxZGlz4p40OZRCtWjxcz3fhw9XzL
-         r3HXL9lT8IFEuD19Mg07IqsoAn20BRus3g5L992Q=
+        b=0IC47FlDnsjcEM2rjrSoXuMpG6InzPDRoql4jN/o0IDy75xRQZizQo9K8vvPr3Qdz
+         vceEM0+Bn0ZEZl6sEjzvGbOhmWX+LRhhNiyg+swVrbDZBznVcZKtZ7Y6lmAC1zRNII
+         5pmvXoR+9RjY3IhaosBbw3Hku9YXnnxg0V8h1Q2Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Natalia Petrova <n.petrova@fintech.ru>,
-        Lyude Paul <lyude@redhat.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 40/49] drm/nouveau: add nv_encoder pointer check for NULL
-Date:   Mon, 19 Jun 2023 12:30:18 +0200
-Message-ID: <20230619102132.026205948@linuxfoundation.org>
+        patches@lists.linux.dev, Janne Grunau <j@jannau.net>,
+        Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 5.4 23/64] nios2: dts: Fix tse_mac "max-frame-size" property
+Date:   Mon, 19 Jun 2023 12:30:19 +0200
+Message-ID: <20230619102134.106840447@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
-References: <20230619102129.856988902@linuxfoundation.org>
+In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
+References: <20230619102132.808972458@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,43 +54,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Natalia Petrova <n.petrova@fintech.ru>
+From: Janne Grunau <j@jannau.net>
 
-[ Upstream commit 55b94bb8c42464bad3d2217f6874aa1a85664eac ]
+commit 85041e12418fd0c08ff972b7729f7971afb361f8 upstream.
 
-Pointer nv_encoder could be dereferenced at nouveau_connector.c
-in case it's equal to NULL by jumping to goto label.
-This patch adds a NULL-check to avoid it.
+The given value of 1518 seems to refer to the layer 2 ethernet frame
+size without 802.1Q tag. Actual use of the "max-frame-size" including in
+the consumer of the "altr,tse-1.0" compatible is the MTU.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 3195c5f9784a ("drm/nouveau: set encoder for lvds")
-Signed-off-by: Natalia Petrova <n.petrova@fintech.ru>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-[Fixed patch title]
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230512103320.82234-1-n.petrova@fintech.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 95acd4c7b69c ("nios2: Device tree support")
+Fixes: 61c610ec61bb ("nios2: Add Max10 device tree")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Janne Grunau <j@jannau.net>
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_connector.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/nios2/boot/dts/10m50_devboard.dts |    2 +-
+ arch/nios2/boot/dts/3c120_devboard.dts |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_connector.c b/drivers/gpu/drm/nouveau/nouveau_connector.c
-index c6d6ce9af2565..5783ffc6e5ebe 100644
---- a/drivers/gpu/drm/nouveau/nouveau_connector.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
-@@ -712,7 +712,8 @@ nouveau_connector_detect_lvds(struct drm_connector *connector, bool force)
- #endif
- 
- 	nouveau_connector_set_edid(nv_connector, edid);
--	nouveau_connector_set_encoder(connector, nv_encoder);
-+	if (nv_encoder)
-+		nouveau_connector_set_encoder(connector, nv_encoder);
- 	return status;
- }
- 
--- 
-2.39.2
-
+--- a/arch/nios2/boot/dts/10m50_devboard.dts
++++ b/arch/nios2/boot/dts/10m50_devboard.dts
+@@ -97,7 +97,7 @@
+ 			rx-fifo-depth = <8192>;
+ 			tx-fifo-depth = <8192>;
+ 			address-bits = <48>;
+-			max-frame-size = <1518>;
++			max-frame-size = <1500>;
+ 			local-mac-address = [00 00 00 00 00 00];
+ 			altr,has-supplementary-unicast;
+ 			altr,enable-sup-addr = <1>;
+--- a/arch/nios2/boot/dts/3c120_devboard.dts
++++ b/arch/nios2/boot/dts/3c120_devboard.dts
+@@ -106,7 +106,7 @@
+ 				interrupt-names = "rx_irq", "tx_irq";
+ 				rx-fifo-depth = <8192>;
+ 				tx-fifo-depth = <8192>;
+-				max-frame-size = <1518>;
++				max-frame-size = <1500>;
+ 				local-mac-address = [ 00 00 00 00 00 00 ];
+ 				phy-mode = "rgmii-id";
+ 				phy-handle = <&phy0>;
 
 
