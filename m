@@ -2,50 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7259B7354FF
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:00:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 019477354B2
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:58:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231251AbjFSLAc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:00:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34020 "EHLO
+        id S232324AbjFSK6d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:58:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232547AbjFSLAE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:00:04 -0400
+        with ESMTP id S232385AbjFSK6O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:58:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD5B71BE
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:58:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5790819BB
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:56:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6938F60B5F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:58:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A32C433C8;
-        Mon, 19 Jun 2023 10:58:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6E4A060B88
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:56:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8663EC433C0;
+        Mon, 19 Jun 2023 10:56:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172338;
-        bh=rdiy3boReURjM9Iv+4izQiLvwjRJOGrJcui7kNF4eds=;
+        s=korg; t=1687172180;
+        bh=JYYKLxwYVsGO13H0pcIDVtlGBTpF94xE4nuj952xO/I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YC1UdJEsEBnUptwA5C6YiDmdx8Lh80GKyuxKmyXUnzKK5eQlyuEfIZhYM7YxsWwP2
-         aS8q/EYsnYsegO60x9hc0WSIsYk05DzACEc8DfEgAh9K50KaKzLPAwwcAbjfap5FpK
-         AvAOSc532b/7S6mzP18kCCHH+Ka+3xMhLuFLbd7Y=
+        b=H2ASurwLidJevmk4rrCCh9ggm8mobjYaphZMfOkrSI00jaVPadYx+IneDexM1LQDh
+         pxaz/vlAAHTAgCQWPTXnws76SfB9xqFXUJEmquUZf242Hi3OBJ9dz7b9gJctHOWsKk
+         MJ0PMvIGDXUQKj4p0WMDs022/MYC7Zwu43ROxTzc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15 033/107] wifi: cfg80211: fix locking in regulatory disconnect
+        patches@lists.linux.dev,
+        =?UTF-8?q?Lu=C3=ADs=20Henriques?= <lhenriques@suse.de>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        Mark Fasheh <mark@fasheh.com>,
+        Joel Becker <jlbec@evilplan.org>,
+        Junxiao Bi <junxiao.bi@oracle.com>,
+        Changwei Ge <gechangwei@live.cn>, Gang He <ghe@suse.com>,
+        Jun Piao <piaojun@huawei.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 29/89] ocfs2: fix use-after-free when unmounting read-only filesystem
 Date:   Mon, 19 Jun 2023 12:30:17 +0200
-Message-ID: <20230619102143.089186322@linuxfoundation.org>
+Message-ID: <20230619102139.605365498@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,36 +61,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Luís Henriques <ocfs2-devel@oss.oracle.com>
 
-commit f7e60032c6618dfd643c7210d5cba2789e2de2e2 upstream.
+commit 50d927880e0f90d5cb25e897e9d03e5edacc79a8 upstream.
 
-This should use wiphy_lock() now instead of requiring the
-RTNL, since __cfg80211_leave() via cfg80211_leave() is now
-requiring that lock to be held.
+It's trivial to trigger a use-after-free bug in the ocfs2 quotas code using
+fstest generic/452.  After a read-only remount, quotas are suspended and
+ocfs2_mem_dqinfo is freed through ->ocfs2_local_free_info().  When unmounting
+the filesystem, an UAF access to the oinfo will eventually cause a crash.
 
-Fixes: a05829a7222e ("cfg80211: avoid holding the RTNL when calling the driver")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+BUG: KASAN: slab-use-after-free in timer_delete+0x54/0xc0
+Read of size 8 at addr ffff8880389a8208 by task umount/669
+...
+Call Trace:
+ <TASK>
+ ...
+ timer_delete+0x54/0xc0
+ try_to_grab_pending+0x31/0x230
+ __cancel_work_timer+0x6c/0x270
+ ocfs2_disable_quotas.isra.0+0x3e/0xf0 [ocfs2]
+ ocfs2_dismount_volume+0xdd/0x450 [ocfs2]
+ generic_shutdown_super+0xaa/0x280
+ kill_block_super+0x46/0x70
+ deactivate_locked_super+0x4d/0xb0
+ cleanup_mnt+0x135/0x1f0
+ ...
+ </TASK>
+
+Allocated by task 632:
+ kasan_save_stack+0x1c/0x40
+ kasan_set_track+0x21/0x30
+ __kasan_kmalloc+0x8b/0x90
+ ocfs2_local_read_info+0xe3/0x9a0 [ocfs2]
+ dquot_load_quota_sb+0x34b/0x680
+ dquot_load_quota_inode+0xfe/0x1a0
+ ocfs2_enable_quotas+0x190/0x2f0 [ocfs2]
+ ocfs2_fill_super+0x14ef/0x2120 [ocfs2]
+ mount_bdev+0x1be/0x200
+ legacy_get_tree+0x6c/0xb0
+ vfs_get_tree+0x3e/0x110
+ path_mount+0xa90/0xe10
+ __x64_sys_mount+0x16f/0x1a0
+ do_syscall_64+0x43/0x90
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+Freed by task 650:
+ kasan_save_stack+0x1c/0x40
+ kasan_set_track+0x21/0x30
+ kasan_save_free_info+0x2a/0x50
+ __kasan_slab_free+0xf9/0x150
+ __kmem_cache_free+0x89/0x180
+ ocfs2_local_free_info+0x2ba/0x3f0 [ocfs2]
+ dquot_disable+0x35f/0xa70
+ ocfs2_susp_quotas.isra.0+0x159/0x1a0 [ocfs2]
+ ocfs2_remount+0x150/0x580 [ocfs2]
+ reconfigure_super+0x1a5/0x3a0
+ path_mount+0xc8a/0xe10
+ __x64_sys_mount+0x16f/0x1a0
+ do_syscall_64+0x43/0x90
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+Link: https://lkml.kernel.org/r/20230522102112.9031-1-lhenriques@suse.de
+Signed-off-by: Luís Henriques <lhenriques@suse.de>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Tested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/reg.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ocfs2/super.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -2423,11 +2423,11 @@ static void reg_leave_invalid_chans(stru
- 	struct wireless_dev *wdev;
- 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
- 
--	ASSERT_RTNL();
--
-+	wiphy_lock(wiphy);
- 	list_for_each_entry(wdev, &rdev->wiphy.wdev_list, list)
- 		if (!reg_wdev_chan_valid(wiphy, wdev))
- 			cfg80211_leave(rdev, wdev);
-+	wiphy_unlock(wiphy);
- }
- 
- static void reg_check_chans_work(struct work_struct *work)
+--- a/fs/ocfs2/super.c
++++ b/fs/ocfs2/super.c
+@@ -955,8 +955,10 @@ static void ocfs2_disable_quotas(struct
+ 	for (type = 0; type < OCFS2_MAXQUOTAS; type++) {
+ 		if (!sb_has_quota_loaded(sb, type))
+ 			continue;
+-		oinfo = sb_dqinfo(sb, type)->dqi_priv;
+-		cancel_delayed_work_sync(&oinfo->dqi_sync_work);
++		if (!sb_has_quota_suspended(sb, type)) {
++			oinfo = sb_dqinfo(sb, type)->dqi_priv;
++			cancel_delayed_work_sync(&oinfo->dqi_sync_work);
++		}
+ 		inode = igrab(sb->s_dquot.files[type]);
+ 		/* Turn off quotas. This will remove all dquot structures from
+ 		 * memory and so they will be automatically synced to global
 
 
