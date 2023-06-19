@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 275DE7354AE
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:58:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E909B735449
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:54:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232489AbjFSK60 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:58:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60926 "EHLO
+        id S231274AbjFSKyb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:54:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232463AbjFSK6F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:58:05 -0400
+        with ESMTP id S232260AbjFSKyN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:54:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FC9E19B4
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:56:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DDB910C4
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:52:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CE0DB60B5F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:56:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5DDC433C0;
-        Mon, 19 Jun 2023 10:56:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 405026068B
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:52:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13FF8C433C0;
+        Mon, 19 Jun 2023 10:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172167;
-        bh=SfNM99MH6vh1VJqH781Z/xe6otLHtQbsFp4Y9+DyND8=;
+        s=korg; t=1687171964;
+        bh=IIQ3PwFcjAKv3zTj2D6EmVT3SS7LceeS7lwmzkG4DTM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xm9sOA9KEsTbfSg98S9P+5akc3/ErxL9OjSXXNB32xmVFx3ZQB5wAKBPupT8/FEPw
-         Bz263dWW9DijHmzASlaGWWHQzNs1J2AZU2u9Zh8bEtj6vIChe2OSHlrkdP/uHrOcCX
-         CcuWTTzTNrwZ1/nVCPfbmHPubz9PVsktvb0483MY=
+        b=cHXmV5WkAFLhgYAkm7mRF68INkl6BhkRlsUnGaK1LR4O88MUlbg9CNKyUwG7qIGFa
+         xcNU4wzY0wMKVfoxvAYq1ZEORJkjcK5piWzYxi2ScHOd3MaYuGaLSMdmPRpJu72Qwd
+         X01RY2YDDY7qzz5nXohVSlYQv8glL3X83vqtlMx0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -54,19 +54,19 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Tom Rix <trix@redhat.com>,
         Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 34/89] kexec: support purgatories with .text.hot sections
+Subject: [PATCH 5.4 26/64] kexec: support purgatories with .text.hot sections
 Date:   Mon, 19 Jun 2023 12:30:22 +0200
-Message-ID: <20230619102139.837630015@linuxfoundation.org>
+Message-ID: <20230619102134.255861747@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
+References: <20230619102132.808972458@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -147,7 +147,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/kernel/kexec_file.c
 +++ b/kernel/kexec_file.c
-@@ -910,10 +910,22 @@ static int kexec_purgatory_setup_sechdrs
+@@ -901,10 +901,22 @@ static int kexec_purgatory_setup_sechdrs
  		}
  
  		offset = ALIGN(offset, align);
