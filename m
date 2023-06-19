@@ -2,46 +2,64 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5104735351
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:44:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 840EC73526A
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:34:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231659AbjFSKoX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:44:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47184 "EHLO
+        id S231720AbjFSKel (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:34:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231800AbjFSKnr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:43:47 -0400
+        with ESMTP id S231646AbjFSKe3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:34:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 880E119A6
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:43:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B275B3
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:34:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1DD6F60670
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:43:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3480CC433C0;
-        Mon, 19 Jun 2023 10:43:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BD30160B6D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:34:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8DE5C433C0;
+        Mon, 19 Jun 2023 10:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171406;
-        bh=2k+zdiZWNOwDHqTPh7WgCTfO7D/fSThIEoX5B/c8VGQ=;
+        s=korg; t=1687170863;
+        bh=AgtMoc3hDCvaFoRn4pqUG+5F/TCxfhfutLmB626EauU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TkdPMbD0j0piHRX3Xzhf/g5fF/3RsIJPqmm9SmXRlOhXywcQjd3x9Py0aXcR43TgI
-         Sq3LTQywmMDrlk5jWzroH0VGLg231ZmtRAptWosvbAzahkx4n6nWRw+DFwl2diO3lZ
-         XXR/cS8HOEFVe9sHx2rtD3QOVqrk6G28nNEl2Xsc=
+        b=XOTupSO6fiQLUDHF1z4XaFYuefc9Yf0Lk2QcQM0DuARG1t0LC3eKBaV9eA6IjM8Gp
+         h3vCO09bA2J/3GjleLEZYqvUx+6eZZ4nfwlp/tweTuOvs5/MyTXVfT2+i7hvU4jchx
+         jLOumjH71T1uFCOUGNCFOobIkmeciYjuORGk5WrA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 002/166] test_firmware: Use kstrtobool() instead of strtobool()
-Date:   Mon, 19 Jun 2023 12:27:59 +0200
-Message-ID: <20230619102154.721816289@linuxfoundation.org>
+        patches@lists.linux.dev, Ricardo Ribalda <ribalda@chromium.org>,
+        Albert Ou <aou@eecs.berkeley.edu>, Baoquan He <bhe@redhat.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Dave Young <dyoung@redhat.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Philipp Rudo <prudo@redhat.com>,
+        Ross Zwisler <zwisler@google.com>,
+        Simon Horman <horms@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tom Rix <trix@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.3 062/187] x86/purgatory: remove PGO flags
+Date:   Mon, 19 Jun 2023 12:28:00 +0200
+Message-ID: <20230619102200.679650704@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,51 +74,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit f7d85515bd21902b218370a1a6301f76e4e636ff ]
+commit 97b6b9cbba40a21c1d9a344d5c1991f8cfbf136e upstream.
 
-strtobool() is the same as kstrtobool().
-However, the latter is more used within the kernel.
+If profile-guided optimization is enabled, the purgatory ends up with
+multiple .text sections.  This is not supported by kexec and crashes the
+system.
 
-In order to remove strtobool() and slightly simplify kstrtox.h, switch to
-the other function name.
-
-While at it, include the corresponding header file (<linux/kstrtox.h>)
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Luis Chamberlain <mcgrof@kernel.org>
-Link: https://lore.kernel.org/r/34f04735d20e0138695dd4070651bd860a36b81c.1673688120.git.christophe.jaillet@wanadoo.fr
+Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-2-b05c520b7296@chromium.org
+Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Cc: <stable@vger.kernel.org>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Philipp Rudo <prudo@redhat.com>
+Cc: Ross Zwisler <zwisler@google.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Tom Rix <trix@redhat.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 4acfe3dfde68 ("test_firmware: prevent race conditions by a correct implementation of locking")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/test_firmware.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/purgatory/Makefile |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/lib/test_firmware.c b/lib/test_firmware.c
-index 7f165c517338a..6ef3e6926da8a 100644
---- a/lib/test_firmware.c
-+++ b/lib/test_firmware.c
-@@ -22,6 +22,7 @@
- #include <linux/slab.h>
- #include <linux/uaccess.h>
- #include <linux/delay.h>
-+#include <linux/kstrtox.h>
- #include <linux/kthread.h>
- #include <linux/vmalloc.h>
- #include <linux/efi_embedded_fw.h>
-@@ -365,7 +366,7 @@ static int test_dev_config_update_bool(const char *buf, size_t size,
- 	int ret;
+--- a/arch/x86/purgatory/Makefile
++++ b/arch/x86/purgatory/Makefile
+@@ -14,6 +14,11 @@ $(obj)/sha256.o: $(srctree)/lib/crypto/s
  
- 	mutex_lock(&test_fw_mutex);
--	if (strtobool(buf, cfg) < 0)
-+	if (kstrtobool(buf, cfg) < 0)
- 		ret = -EINVAL;
- 	else
- 		ret = size;
--- 
-2.39.2
-
+ CFLAGS_sha256.o := -D__DISABLE_EXPORTS
+ 
++# When profile-guided optimization is enabled, llvm emits two different
++# overlapping text sections, which is not supported by kexec. Remove profile
++# optimization flags.
++KBUILD_CFLAGS := $(filter-out -fprofile-sample-use=% -fprofile-use=%,$(KBUILD_CFLAGS))
++
+ # When linking purgatory.ro with -r unresolved symbols are not checked,
+ # also link a purgatory.chk binary without -r to check for unresolved symbols.
+ PURGATORY_LDFLAGS := -e purgatory_start -z nodefaultlib
 
 
