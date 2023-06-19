@@ -2,92 +2,114 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D841D735871
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 15:23:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78615735890
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 15:30:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231411AbjFSNXR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 09:23:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33220 "EHLO
+        id S229977AbjFSNaT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 09:30:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229888AbjFSNXQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 09:23:16 -0400
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 540D5AA;
-        Mon, 19 Jun 2023 06:23:15 -0700 (PDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailout.nyi.internal (Postfix) with ESMTP id C23375C0223;
-        Mon, 19 Jun 2023 09:23:14 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Mon, 19 Jun 2023 09:23:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        invisiblethingslab.com; h=cc:cc:content-type:content-type:date
-        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
-        1687180994; x=1687267394; bh=ASPRc812BqeG3IP2gOvPXV96skEUS/n5Qf0
-        rjro4vAs=; b=cIXuO0NivKdu3dZltGFduow/h3a1BhzFNX9L8BToqBYSW09jkc4
-        VjCG4/YgXSjK0ll6hWzk97FmO8HJfIUh5uV2B1xg6/DQzIpQggPx4iQ7aaRMYKnY
-        UZ6GAuNMOv0nVGNDrGpIVgOV827zFH0uHBPq8Mgmyr8T4Bid6/l+QuBuInnOvqnX
-        cx1Rx9Pfx8SJI+679YakyBXX+hc2yIe+ctl8oUoYlEn6aqnPSNwcvkF1niJo3scs
-        xjz3iVCGzo44bC1CbGtJrrrNBwsH7KlOmZUkCX0v/uUH0Z81HNl5zKl48M7/iQEd
-        8gpx/mVneG5+dot4dpW4xi69l7Np51H8bNw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1687180994; x=1687267394; bh=ASPRc812BqeG3
-        IP2gOvPXV96skEUS/n5Qf0rjro4vAs=; b=feWosbWJs2yEObUFFmxbxCkEmBlLR
-        8w+YwJJUg3vIRs96ut6UsOVXEBicuo13LjcGFUePYcRfkYBZhFqLVvK0LAe2oAh0
-        Q57ODyt1xwNHjtt4t9B3iWDx6YEBZ98vooMq5J7/cXxuJamJ7bsn3L4weJ+r7fXy
-        VzyifQPw3XPjGqv5ExTvwMwrikjnFH4UV2XWvL+VS8ikJVFG92Xrkqs04ql9zHJB
-        KyICrrLu49oMyrMXuD/Z9MEbihVRmbDH6ioK0i3TZ56yjIAZ0ZDLtSDNBd0NuBnV
-        7KflO0CiK3tYeYgIUjY4wd9M6/Ur6LlEDQK0/4dmaBJukZal6W7RnxRtQ==
-X-ME-Sender: <xms:wlaQZOJ7csfISJBJYkNV1HQVzj6FoK3oqNHoi4gJkX8Clfb_HLypWQ>
-    <xme:wlaQZGLnWT8FeAZTidgJxE215Md2PVirGoVABCMlg4BaopMinuJjRVWAGpsADLf01
-    c3q1OE2cyKVrw>
-X-ME-Received: <xmr:wlaQZOvo4QAtr99KG68a31mFsgiXcCyDUtPjXe4UDGAXhuNu5VgNtYC9vqjZMsos55XuCnrjjNFp4iAY8G1bzLfSQpPY5Ab2ht8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgeefvddgiedvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepofgrrhgv
-    khcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomhgrrhhmrghrvghksehinh
-    hvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepgfdu
-    leetfeevhfefheeiteeliefhjefhleduveetteekveettddvgeeuteefjedunecuvehluh
-    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrrhhmrghrvghk
-    sehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
-X-ME-Proxy: <xmx:wlaQZDa6-h6t6S7YEj_zXPPfyvQ49mFoTjASN6FX0icDarjF4yFPWA>
-    <xmx:wlaQZFaRGS7NOvGdUKGHAtOtUQqEeGLZRR7OOfQwMyO0ImylgVDWVw>
-    <xmx:wlaQZPDBpKnCnoIo2dt_yol4IJb0-xta2elZMcnMG0xWJ8UpC5jGhg>
-    <xmx:wlaQZKOd3hYPL0GAQZGKY3O9Jxh6p5E1MUQQ8vFCHxgRPxqua0e7yw>
-Feedback-ID: i1568416f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 19 Jun 2023 09:23:12 -0400 (EDT)
-Date:   Mon, 19 Jun 2023 15:23:10 +0200
-From:   Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
-        <marmarek@invisiblethingslab.com>
-To:     Juergen Gross <jgross@suse.com>
-Cc:     Demi Marie Obenour <demi@invisiblethingslab.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Jan Beulich <JBeulich@suse.com>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        Xen developer discussion <xen-devel@lists.xenproject.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        with ESMTP id S229546AbjFSNaS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 09:30:18 -0400
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2089.outbound.protection.outlook.com [40.107.105.89])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDE7A101;
+        Mon, 19 Jun 2023 06:30:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UTBkfBNizI+cn4lKauu03NceYxqCL64xh9vJ7lnA1li2OYmaPGmcaH2QxsGlT6vgRg9pLqdL8BO+7cjGMC1u5jnxi2W1w8ZFilsEkdjF/nPLFskYoAA4PKnFhWbujJJ36V6IbxLKLHGoQvmD8ls77zA8VUfez/6LESXmjafSntEx8W/7l4Jbyszs7Xxe3ev2Wio0CjxYE7tHyyPw9MZaWBg/R+TyPwjtbJhgAPesrSDdXTSfPRwSmhGfr2iTffE0+Nv6pLcsxM5xEOAOvKptkDvPsHFA9XAZj15l1e9R/vnQuQPYqt70D5wwZBpJUYTglCbFAAtGQU427TpuXCSywg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+RIuHTtlFGIWs268JjlMQMTzhH6CEFEaQktnPCA2DfE=;
+ b=eBzrnqJHciLeW4AVGnWwWXjkgj8EpjbYYipagfWa1uqA7x34aFIc0Vz2RXbez+kykT3BVA6nTqrRcaDcQrHdYg0OAqhDrsOUgmMeV7BjdeAk05yIuCTgJ1+6uScg+5iQz8BM8AOoW3fSuBnKUpntJ8+vUIH7Z50YxtbCkBirSoEkvYNq2gT0+0z8STrrUBYYLNcBwJEWvZF690nZelnv5IVfsZ96lR1TIvoyzT7+LHkQuthU1y+TNV6PM0hZ/GkcfGiVLkdKzx+ZRPazRdgBGC68ShC0sL1LDFvViUg+c696LFpf6yCgeg1PZ92vR7/sw/2zLlj/vIG1yfsarXJi3g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector2-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+RIuHTtlFGIWs268JjlMQMTzhH6CEFEaQktnPCA2DfE=;
+ b=Muriv0bqL/ibQ9t/tyImpHJ3AvdseSi9y6yWkvHI/ihoS4ztIkcdF+cZhZvBRsUB0opSN3DyQHprTcm3UMdjNu75pBEhc7+4lKb8CZhlZPRFQPPzfxClT7bACXkgctOGbH8i9C9l32NZqylhARBhKplLKTA7j4wVIVp69IxhvvY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AM9PR04MB8954.eurprd04.prod.outlook.com (2603:10a6:20b:409::7)
+ by AS8PR04MB9077.eurprd04.prod.outlook.com (2603:10a6:20b:444::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.36; Mon, 19 Jun
+ 2023 13:30:12 +0000
+Received: from AM9PR04MB8954.eurprd04.prod.outlook.com
+ ([fe80::5356:c79f:ef9f:dc29]) by AM9PR04MB8954.eurprd04.prod.outlook.com
+ ([fe80::5356:c79f:ef9f:dc29%4]) with mapi id 15.20.6500.036; Mon, 19 Jun 2023
+ 13:30:12 +0000
+From:   "Radu Pirea (NXP OSS)" <radu-nicolae.pirea@oss.nxp.com>
+To:     andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, richardcochran@gmail.com
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        sebastian.tobuschat@nxp.com,
+        "Radu Pirea (NXP OSS)" <radu-nicolae.pirea@oss.nxp.com>,
         stable@vger.kernel.org
-Subject: Re: [PATCH] xen: speed up grant-table reclaim
-Message-ID: <ZJBWvpt3UAxeIC13@mail-itl>
-References: <20230610153232.1859-1-demi@invisiblethingslab.com>
- <85275900-6b6a-5391-a2a0-16704df3f00f@suse.com>
- <ZId7ixbqlCSygtvb@itl-email>
- <1150fd9c-25c8-c91c-4ca2-2c587e3fbb43@suse.com>
+Subject: [PATCH net v3 1/1] net: phy: nxp-c45-tja11xx: fix the PTP interrupt enablig/disabling
+Date:   Mon, 19 Jun 2023 16:28:51 +0300
+Message-Id: <20230619132851.233976-1-radu-nicolae.pirea@oss.nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: AS4P250CA0007.EURP250.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5df::11) To AM9PR04MB8954.eurprd04.prod.outlook.com
+ (2603:10a6:20b:409::7)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="oN+TsMtwsmB08J9P"
-Content-Disposition: inline
-In-Reply-To: <1150fd9c-25c8-c91c-4ca2-2c587e3fbb43@suse.com>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8954:EE_|AS8PR04MB9077:EE_
+X-MS-Office365-Filtering-Correlation-Id: bc18d987-850d-432d-51d0-08db70c94f2a
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 2Oz7j0IM2XAjyoZZSM/Jdlu9pluCayfZ9AEZBF/+odHZS1qmiIUMXuzc+aCyCd50zlnzBHtg60tGdFEaguUFjUckae6jEwu6lO8LHnkIQ2dPyllBF26CMzv4/Sb6NCJu8Wfd3v2QeFMSHDiUldbYmPPXopXTrh4a60aaFGxRGMZR1hm4eBhSrp+kSkPJeP2H76+oW4920V4Yl2Hh56LddmkTlNc6oY0SqOdJAsgC2G1WSRLqsy9rzmqLawORfdbqmQfwUiawRiWUvEp/XK4FE7XnAhidRXu1266cuguHZ6EE3jaXpfhNVVvA6dgaPLqj1aqBFDIgFRndHxQVogEOBV1Z4p7xIGywQiNdkro21JrYu1ug3r3H4KuC8WVLt4scj8o+Me5H3q0xrLl6G5oXgBTIcFx9sHEW7UeVOoQx5DcfZFjlgKcBusmCJ9N25OP7/emoLban13DoTs4mbnoEkFhRKFIhZ1MILFv/7CYzhcN6Nvv/TKmjLf7HpSTve7V85MP10yszoj2wDXxQfxgeh50v/bz/aVw/FEJqgeZTD/YldwemjyzmDUAjvC0bVKv1KytqNyrVjSriZL7mKLJiAZJjU9IRTjTYmTEuoqrUTyI=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8954.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(376002)(346002)(366004)(39860400002)(396003)(136003)(451199021)(186003)(52116002)(478600001)(966005)(6666004)(6486002)(86362001)(1076003)(6506007)(6512007)(26005)(2616005)(38100700002)(316002)(38350700002)(83380400001)(66946007)(66556008)(66476007)(4326008)(8676002)(8936002)(7416002)(5660300002)(2906002)(41300700001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?DMcrvLHmtU552jKqhsED6+XH28AYQY/9nHXFy3HMOXCWN2S0qJ1Fwf+vO//N?=
+ =?us-ascii?Q?hae/GydaPJpoFBvFc/p/ooc12VYCWCaOoC+LCVbPH1kXJpteXl8dyzkiRdkL?=
+ =?us-ascii?Q?vQXbtQFMZ9jfBuiUFZWKRl3U+LY71smaS4bCCNvjUbAEV8wQCIdo1RP7WCCd?=
+ =?us-ascii?Q?ArG3vaA5yfSXll7bnmEjH1QW846TXdzb2f2A88z55EYiQZww0r/ltwLWMA/c?=
+ =?us-ascii?Q?9TaU8ZUVuz/b7cjf/Y+dQy3k+hJKRDA+gDQum3LqbWNZ71ST1EJ5PNPRoXQS?=
+ =?us-ascii?Q?wuLE5MLB/JFis3eWmvXnbCK0A/bEyArO9Vt+1sSIkim0CXGGdhZnARyhT1zy?=
+ =?us-ascii?Q?ghGeUmkbn//pdFJ8hBtGfOzsPfZcv7VFNGqDv5o7/wxpvWUz3y9m7mm8BUge?=
+ =?us-ascii?Q?zAo6UQU066fVarXWL03Bx+ieykWcTnj5hmc1D6gzpllnkgQIA4y3q4iTmmEc?=
+ =?us-ascii?Q?Ci9y2gr1EGGTzrLsUH8L9vKj48CQq0G2SqvHPdtpibljilferebMWxFgBAPY?=
+ =?us-ascii?Q?BWuskAaokKUDiQp7k0WSHlf2ZV5lLk2ilLkH22cNDqpXjLhQUtoXYIRHBL8r?=
+ =?us-ascii?Q?7gG5LFeWdZ/qlc7++gkbPX2kNhIJth33IOE+JSXLGPPmapxSsDvIStvEaF/5?=
+ =?us-ascii?Q?LPRUmrsVKiiemJ6Jrcz51ZPCu45u8/a1bdrW39afecOh0HbbQ/33nmZAaaoK?=
+ =?us-ascii?Q?HGFjnAhWMJDu7uyysMa8bqAMY7P0+472u/+PmpYTYiQQMSUJTAHi54KANFOX?=
+ =?us-ascii?Q?Gz/CzYnl6P3FyfZOYPGp/onrZC6XBTYzKxordj1UBgXVpUlerSSjmZ4JgP62?=
+ =?us-ascii?Q?2mxx5RAzLDKNB0p/PlRNSHFpRDGG+cGy9E7Y2bVhXgL2GZ7GxZjIAj7HM8BW?=
+ =?us-ascii?Q?If6+QOUABMljS5iQz50TkI7qUXsasi/Do7zUgWMNGcHDd7ZUV6/wny0eR4hh?=
+ =?us-ascii?Q?pldGkzWqi3cvwZiWNxwUT0ye/WwNW8R7UGQ6HWhQCQtTBBEspfC33j5p0g5+?=
+ =?us-ascii?Q?LVQyd2AHMhUdvxbXiZuCd9oKGZ4cfP3fZV6gZauQNrDMGmIPVEI+FDbDfHvI?=
+ =?us-ascii?Q?+l4zoFw2x97xsWIz+YN9cHzHk8EOlDTJw/rStnz3Rjpr6+yTvw8AuSy/Gxda?=
+ =?us-ascii?Q?YHdVtbFknxc4IYIVFudMH1DkSHA/C6nC6Id0xbeTgPzJvTPeJHvVzGLvjyDX?=
+ =?us-ascii?Q?yHoKwo3/k8mM5RRV0IjgpJec73ldSR+g1c1uS+VfLJOSHBIuEzNEowTQljsy?=
+ =?us-ascii?Q?Z73Lz6RD5EbqTdRfMgbQkzF1oun0xfvqBbI49fKRU7rzw2A8pTE0Hcn3C0To?=
+ =?us-ascii?Q?HjLkiMiLx8lBup2sfCiRWqY61g0IPQHsV5I3G4Ss0eLrDZppGwqi2y6u73p4?=
+ =?us-ascii?Q?4A0RBFBzgsDERjGByHEFg7ogElzJ69yLu6neHRwp6G3pvW5wLiMJXXOPtupS?=
+ =?us-ascii?Q?dCcT+9r3WHURVTuTRCp2EBp/VPfJhbHi+zKG3x7FyTQePPDgP85E2jU93Z53?=
+ =?us-ascii?Q?sMyPsjRepWkPEtvKocjnKXXgGPyUnt7MluHJ9zg2RN70HZ6iRkimfGfhGKr0?=
+ =?us-ascii?Q?8VAL/cO0wOOZYH6Jmd8PKgyi7Xv0tk9P4cW5d/IjRG2nP4tIivs3ogwKclEL?=
+ =?us-ascii?Q?9g=3D=3D?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bc18d987-850d-432d-51d0-08db70c94f2a
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8954.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jun 2023 13:30:12.3843
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4BV97CH+Cc6hAXWZ2q8tqRT4GMz0zldZhhfMK0fU6VeA4c0cO5iUNSZC0Q8ivmpjDD8BltX1XKpmk558sP5qTkzsXwWDrLh0ZvwiLItwiEQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB9077
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -95,104 +117,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+.config_intr() handles only the link event interrupt and should
+disable/enable the PTP interrupt also.
 
---oN+TsMtwsmB08J9P
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 19 Jun 2023 15:23:10 +0200
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: Juergen Gross <jgross@suse.com>
-Cc: Demi Marie Obenour <demi@invisiblethingslab.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Jan Beulich <JBeulich@suse.com>,
-	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-	Xen developer discussion <xen-devel@lists.xenproject.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] xen: speed up grant-table reclaim
+It's safe to disable/enable the PTP irq even if the egress ts irq
+is disabled. This interrupt, the PTP one, acts as a global switch for all
+PTP irqs.
 
-On Tue, Jun 13, 2023 at 08:45:31AM +0200, Juergen Gross wrote:
-> On 12.06.23 22:09, Demi Marie Obenour wrote:
-> > On Mon, Jun 12, 2023 at 08:27:59AM +0200, Juergen Gross wrote:
-> > > On 10.06.23 17:32, Demi Marie Obenour wrote:
-> > > > When a grant entry is still in use by the remote domain, Linux must=
- put
-> > > > it on a deferred list.
-> > >=20
-> > > This lacks quite some context.
-> > >=20
-> > > The main problem is related to the grant not having been unmapped aft=
-er
-> > > the end of a request, but the side granting the access is assuming th=
-is
-> > > should be the case.
-> >=20
-> > The GUI agent has relied on deferred grant reclaim for as long as it has
-> > existed.  One could argue that doing so means that the agent is misusing
-> > gntalloc, but this is not documented anywhere.  A better fix would be to
-> > use IOCTL_GNTDEV_SET_UNMAP_NOTIFY in the GUI daemon.
->=20
-> I don't think this is a gntalloc specific problem. You could create the s=
-ame
-> problem with a kernel implementation.
->=20
-> And yes, using IOCTL_GNTDEV_SET_UNMAP_NOTIFY might be a good idea.
+Fixes: 514def5dd339 ("phy: nxp-c45-tja11xx: add timestamping support")
+CC: stable@vger.kernel.org # 5.15+
+Signed-off-by: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
+---
 
-Just a comment to this one: while in practice it might work most of the
-time, in theory there could be hundreds or even thousands of mappings at
-the same time and event channels seems to be too scarce resource to get
-unmap notification for all of those (even if you'd use an event channel
-per grant area, not individual page).
-As said to Demi elsewhere, our GUI protocol might have a way to signal
-when unmapping happened, but the backend (the side mapping the grants)
-would need to know when they actually were unmapped by another process
-(in some configurations, like Wayland mentioned below, the process
-itself doesn't give us this info). Ideally, for this we'd need something
-similar to IOCTL_GNTDEV_SET_UNMAP_NOTIFY that notifies the mapping side, not
-the other domain. I have no idea how such API should look (just
-poll()/read() on the gntdev FD used for that IOCTL?) or whether it's
-really worth adding such API.
-Or maybe something like this already exists? In worst case, even polling
-for this info (so - a way to check if process P has grant G from domain
-D still mapped) would do, although that wouldn't be ideal.
+Where is V1?
+https://patchwork.kernel.org/project/netdevbpf/patch/20230410124856.287753-1-radu-nicolae.pirea@oss.nxp.com/
 
-> > > In general this means that the two sides implementing the protocol do=
-n't
-> > > agree how it should work, or that the protocol itself has a flaw.
-> >=20
-> > What would a better solution be?  This is going to be particularly
-> > tricky with Wayland, as the wl_shm protocol makes absolutely no
-> > guarantees that compositors will promptly release the mapping and
-> > provides no way whatsoever for Wayland clients to know when this has
-> > happened.  Relying on an LD_PRELOAD hack is not sustainable.
+Where is V2?
+https://patchwork.kernel.org/project/netdevbpf/patch/20230616135323
 
+ drivers/net/phy/nxp-c45-tja11xx.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-Anyway, besides trying to fix our usage of grant tables, I think it's
-still worthwhile to improve deferred reclaim, either by making the limit
-per iteration configurable (sysfs node / writable module parameter is
-fine) or by making the limit not needed by using workqueue. The former
-sounds like a smaller code change.
+diff --git a/drivers/net/phy/nxp-c45-tja11xx.c b/drivers/net/phy/nxp-c45-tja11xx.c
+index 029875a59ff8..f0d047019f33 100644
+--- a/drivers/net/phy/nxp-c45-tja11xx.c
++++ b/drivers/net/phy/nxp-c45-tja11xx.c
+@@ -63,6 +63,9 @@
+ #define VEND1_PORT_ABILITIES		0x8046
+ #define PTP_ABILITY			BIT(3)
+ 
++#define VEND1_PORT_FUNC_IRQ_EN		0x807A
++#define PTP_IRQS			BIT(3)
++
+ #define VEND1_PORT_INFRA_CONTROL	0xAC00
+ #define PORT_INFRA_CONTROL_EN		BIT(14)
+ 
+@@ -890,12 +893,26 @@ static int nxp_c45_start_op(struct phy_device *phydev)
+ 
+ static int nxp_c45_config_intr(struct phy_device *phydev)
+ {
+-	if (phydev->interrupts == PHY_INTERRUPT_ENABLED)
++	int ret;
++
++	/* 0x807A register is not present on SJA1110 PHYs. */
++	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
++		ret = phy_set_bits_mmd(phydev, MDIO_MMD_VEND1,
++				       VEND1_PORT_FUNC_IRQ_EN, PTP_IRQS);
++		if (ret)
++			return ret;
++
+ 		return phy_set_bits_mmd(phydev, MDIO_MMD_VEND1,
+ 					VEND1_PHY_IRQ_EN, PHY_IRQ_LINK_EVENT);
+-	else
++	} else {
++		ret = phy_clear_bits_mmd(phydev, MDIO_MMD_VEND1,
++					 VEND1_PORT_FUNC_IRQ_EN, PTP_IRQS);
++		if (ret)
++			return ret;
++
+ 		return phy_clear_bits_mmd(phydev, MDIO_MMD_VEND1,
+ 					  VEND1_PHY_IRQ_EN, PHY_IRQ_LINK_EVENT);
++	}
+ }
+ 
+ static irqreturn_t nxp_c45_handle_interrupt(struct phy_device *phydev)
+-- 
+2.34.1
 
---=20
-Best Regards,
-Marek Marczykowski-G=C3=B3recki
-Invisible Things Lab
-
---oN+TsMtwsmB08J9P
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmSQVr4ACgkQ24/THMrX
-1yyh2gf+NouvKQSmSXw0WMD1FLa4ZACvsVdcsJy7Prup6EjdKYT/5hicLhNOM7Os
-0ctvuvVYt1gEUrJu/BsWgCd2u55yYEe4VH2oeqiDJF3kqhUFOTRCzpWzr3+3COzf
-e4gzlHfhwc82S9VrvhwGsCOiWRv+BduUa3x/AlWufrDjloIOYZ4tWuaCptYh/vnP
-9khLdrg7gWDFXbslRW21rrPkuQDKqLe9E4q4bgBlgjKMQd9Qyw6KxyF+gd5I0WDl
-BPWJnIqX7ps4bnxNQw7r6VvIjkd9UhMG9pryM4mYSC5/+oO86TOwuboBqWw+SvHJ
-OXhGeB0gN1QZxMuvnp9ipUIci3NIcw==
-=7szl
------END PGP SIGNATURE-----
-
---oN+TsMtwsmB08J9P--
