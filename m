@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30F4F7354EB
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:00:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7322D735331
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:42:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231646AbjFSLAP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:00:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60518 "EHLO
+        id S230229AbjFSKm3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:42:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232384AbjFSK7Q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:59:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 253162696
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:58:19 -0700 (PDT)
+        with ESMTP id S231490AbjFSKmK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:42:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D102CD
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:42:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A6F6B60B7F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:58:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B867C433C9;
-        Mon, 19 Jun 2023 10:58:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0ACBF60B86
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:42:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F5C7C433C0;
+        Mon, 19 Jun 2023 10:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172297;
-        bh=xj1Mg+98dZMC3hR/bcfPjPkwhrZbAyWNp9dtAzvdzHM=;
+        s=korg; t=1687171328;
+        bh=eJUs+vNvTtnAAzKgiwycz9jwX8FtdzI1ZjWf/9vdT+0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XO7viEJ8ZybIcRe0D7UqSqss11efHh+PL5ibhsW1yWX28AGnb/obOHte5YbsfinCx
-         r2pn1umgBV3AnY79Q/eFNySWIgT+R/9kiCPNFkSSbX7GNEkn/RXL5g1mMMYuAKWgzD
-         c3bkWHFHgG8Zs5WV9UUU4xNRG1XTIjHUnQYePhRs=
+        b=FC+uzBKD+6aayE8Qla7Gs0HYmtW4TWwkRrcCfV78rkjYmI+nlAVWdHZtvN7Y+R59h
+         iaRUApQ8/e/oUFr/DPjmL3V4hrIWvF9/qSzHw4xtNPJD50kPXgUI1G5ThFwnIFNFsR
+         A+Rb/VQdH5X5HA5dxesS7Rh3pWvoteuCRdyrdvhs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Evan Quan <Evan.Quan@amd.com>,
-        Lijo Lazar <Lijo.Lazar@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 018/107] power: supply: Fix logic checking if system is running from battery
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Elson Roy Serrao <quic_eserrao@quicinc.com>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 4.19 24/49] usb: dwc3: gadget: Reset num TRBs before giving back the request
 Date:   Mon, 19 Jun 2023 12:30:02 +0200
-Message-ID: <20230619102142.400609797@linuxfoundation.org>
+Message-ID: <20230619102131.132821821@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
+References: <20230619102129.856988902@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,66 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Elson Roy Serrao <quic_eserrao@quicinc.com>
 
-[ Upstream commit 95339f40a8b652b5b1773def31e63fc53c26378a ]
+commit 00f8205ffcf112dcef14f8151d78075d38d22c08 upstream.
 
-The logic used for power_supply_is_system_supplied() counts all power
-supplies and assumes that the system is running from AC if there is
-either a non-battery power-supply reporting to be online or if no
-power-supplies exist at all.
+Consider a scenario where cable disconnect happens when there is an active
+usb reqest queued to the UDC. As part of the disconnect we would issue an
+end transfer with no interrupt-on-completion before giving back this
+request. Since we are giving back the request without skipping TRBs the
+num_trbs field of dwc3_request still holds the stale value previously used.
+Function drivers re-use same request for a given bind-unbind session and
+hence their dwc3_request context gets preserved across cable
+disconnect/connect. When such a request gets re-queued after cable connect,
+we would increase the num_trbs field on top of the previous stale value
+thus incorrectly representing the number of TRBs used. Fix this by
+resetting num_trbs field before giving back the request.
 
-The second rule is for desktop systems, that don't have any
-battery/charger devices. These systems will incorrectly report to be
-powered from battery once a device scope power-supply is registered
-(e.g. a HID device), since these power-supplies increase the counter.
-
-Apart from HID devices, recent dGPUs provide UCSI power supplies on a
-desktop systems. The dGPU by default doesn't have anything plugged in so
-it's 'offline'. This makes power_supply_is_system_supplied() return 0
-with a count of 1 meaning all drivers that use this get a wrong judgement.
-
-To fix this case adjust the logic to also examine the scope of the power
-supply. If the power supply is deemed a device power supply, then don't
-count it.
-
-Cc: Evan Quan <Evan.Quan@amd.com>
-Suggested-by: Lijo Lazar <Lijo.Lazar@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 09fe1f8d7e2f ("usb: dwc3: gadget: track number of TRBs per request")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Message-ID: <1685654850-8468-1-git-send-email-quic_eserrao@quicinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/power_supply_core.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/usb/dwc3/gadget.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/power/supply/power_supply_core.c b/drivers/power/supply/power_supply_core.c
-index daf76d7885c05..8b2cd63016160 100644
---- a/drivers/power/supply/power_supply_core.c
-+++ b/drivers/power/supply/power_supply_core.c
-@@ -347,6 +347,10 @@ static int __power_supply_is_system_supplied(struct device *dev, void *data)
- 	struct power_supply *psy = dev_get_drvdata(dev);
- 	unsigned int *count = data;
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -178,6 +178,7 @@ static void dwc3_gadget_del_and_unmap_re
+ 	list_del(&req->list);
+ 	req->remaining = 0;
+ 	req->needs_extra_trb = false;
++	req->num_trbs = 0;
  
-+	if (!psy->desc->get_property(psy, POWER_SUPPLY_PROP_SCOPE, &ret))
-+		if (ret.intval == POWER_SUPPLY_SCOPE_DEVICE)
-+			return 0;
-+
- 	(*count)++;
- 	if (psy->desc->type != POWER_SUPPLY_TYPE_BATTERY)
- 		if (!psy->desc->get_property(psy, POWER_SUPPLY_PROP_ONLINE,
-@@ -365,8 +369,8 @@ int power_supply_is_system_supplied(void)
- 				      __power_supply_is_system_supplied);
- 
- 	/*
--	 * If no power class device was found at all, most probably we are
--	 * running on a desktop system, so assume we are on mains power.
-+	 * If no system scope power class device was found at all, most probably we
-+	 * are running on a desktop system, so assume we are on mains power.
- 	 */
- 	if (count == 0)
- 		return 1;
--- 
-2.39.2
-
+ 	if (req->request.status == -EINPROGRESS)
+ 		req->request.status = status;
 
 
