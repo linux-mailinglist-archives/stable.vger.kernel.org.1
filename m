@@ -2,130 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21DA0735852
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 15:18:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 588DF735865
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 15:20:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231316AbjFSNSI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 09:18:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57768 "EHLO
+        id S231365AbjFSNUU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 09:20:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231271AbjFSNSG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 09:18:06 -0400
-Received: from sender-of-o51.zoho.in (sender-of-o51.zoho.in [103.117.158.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7919124;
-        Mon, 19 Jun 2023 06:17:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1687180639; cv=none; 
-        d=zohomail.in; s=zohoarc; 
-        b=NBdXVMn5z9fWMBGwVqYqBoCyLpHQOCJwzIifpNUC3TNjRszlZfWK5/y5Eu/4/ZNFgfcrNJcq/BeSieQz9R4nNLvdHrcQ4MoaPQ02kt+PpuWmAc7XmfLn2XcReii6LBjkj/VFKDhw/bBbkJ8+YRhgHi/abmZhJe40zrMiAe+v0zE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.in; s=zohoarc; 
-        t=1687180639; h=Content-Type:Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
-        bh=GvzDRB8KKM+eFSppRsIz/VHygepCr5cjnv/6S4U0hdo=; 
-        b=fUJTI8z4jxlOoFSClv9SIhRkvh9fvRZdeXFs6G7rPwLtxlxLu2uWnL9RQrxLKZhO5E+Chj6oUHI6Xd9gtmDsHXHjfXEWtjvDQ9D5Y0CvT+B0J4P5JmJ4CbhYdIBkQ2EQepwli73ETqlxfgyonypPgThRg6ZfBH8fTnz67WpoABw=
-ARC-Authentication-Results: i=1; mx.zohomail.in;
-        dkim=pass  header.i=siddh.me;
-        spf=pass  smtp.mailfrom=code@siddh.me;
-        dmarc=pass header.from=<code@siddh.me>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1687180639;
-        s=zmail; d=siddh.me; i=code@siddh.me;
-        h=From:From:To:To:Cc:Cc:Message-ID:Subject:Subject:Date:Date:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To;
-        bh=GvzDRB8KKM+eFSppRsIz/VHygepCr5cjnv/6S4U0hdo=;
-        b=GPgWrcCZkH2OW2/Y3pftJf/rXBY+6/GUt0qVsBANuoi/UFFygltgRbHJR9jkmaxi
-        lJR+BnOPBtctgxnydC7ePBSwCLdjyJHhxOAp0kIJn6+kUHiowQ/cLkirmSsqUUCXv+C
-        1yMeqKIpaXjSO2yE6e6RS2fnjMFYi6RSMcPWun6c=
-Received: from kampyooter.. (223.179.149.51 [223.179.149.51]) by mx.zoho.in
-        with SMTPS id 1687180638188470.44972217847703; Mon, 19 Jun 2023 18:47:18 +0530 (IST)
-From:   Siddh Raman Pant <code@siddh.me>
-To:     Dave Kleikamp <dave.kleikamp@oracle.com>,
-        Hoi Pok Wu <wuhoipok@gmail.com>,
-        Liu Shixin <liushixin2@huawei.com>,
-        Dongliang Mu <mudongliangabcd@gmail.com>
-Cc:     jfs-discussion@lists.sourceforge.net, linux-kernel@vger.kernel.org,
-        syzbot+d2cd27dcf8e04b232eb2@syzkaller.appspotmail.com,
-        stable@vger.kernel.org
-Message-ID: <20230619131644.118332-1-code@siddh.me>
-Subject: [PATCH v2] jfs: jfs_dmap: Validate db_l2nbperpage while mounting
-Date:   Mon, 19 Jun 2023 18:46:44 +0530
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S232103AbjFSNUI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 09:20:08 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A98FE59;
+        Mon, 19 Jun 2023 06:20:05 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-3112c11fdc9so1629570f8f.3;
+        Mon, 19 Jun 2023 06:20:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687180804; x=1689772804;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=M2wb2dQCW7fBOdFZFZHr16+OjAXbPjBQ6SA6JZNaR40=;
+        b=Cwmoboud/nFa5rnnaQV9sgUFjEfIFxltkAT7WbAbEZ1gIqpspzerjZdmb/5ry4GDim
+         wvYoQOKeqhDDx/h/TVN+im1euS2BAVXi5o2tsP41IpCng9031lPP+do51Rwd6WG0edqb
+         039JP1YXfduen2E3RrEYCOq2Qct2jya8k1upn8xJgO6qlNnmOpojMFnvC9YVgoioqaXl
+         HONZxfSDPEucjjupDEc3Lc2xLGDPScxb+KzzkXUU81DNjI1TRRO61WsFK1p66Zru98SW
+         TNW38xd7WpHr/xEkJDkmjryhl4C5QDHRGF6lWySNeeQ6/OjUUoIWRr/Tts8MRktThr8W
+         8UUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687180804; x=1689772804;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=M2wb2dQCW7fBOdFZFZHr16+OjAXbPjBQ6SA6JZNaR40=;
+        b=NqtluYCnspVHnsdfkJwr8lE7l3K6cDw5Gysn0sVHMqQ9/fJvHKkpat2PL1ltliq/QG
+         I6+Mu1+pYeyh8C5myOrFER4S3ECgCj8KNMeARqSghN3ilQX6ms0YWVcFcFSsWOrdheC9
+         GFPaUJANoyQi1odakz/PphPu4m9SOpxm8cOJ7zFwGtfukmnMOEaAc9XnC9QXR/DWKQmy
+         FjrY9jf8U5BlYYe0hvjuBa5B/mw/h+13If0EHKdFM8CQ1Ct6z0OyeXUiPi6FzypNOz1c
+         K92gHPpyjWRPNxyi3Zv3Rrsuia2uyhp6Om1ZS6RWDGFbBmI6g8V+PJ6ON11cI9dLIrJI
+         J7Ng==
+X-Gm-Message-State: AC+VfDycIkSIzypZbcYu3L+wGYBxBAXjqkPdU9ZQJwWFmSWC3B1S1WCV
+        7io1j8HJHX0EZts6qEARgSXc2XtEM73D2nLe
+X-Google-Smtp-Source: ACHHUZ5gTJzvZQfjJjDEyn4Q/+S0CagNlqitgicIUCj2Nbo3ecG3/SA2tQh54/7TQUeKn0QxKeIAqg==
+X-Received: by 2002:a5d:58c7:0:b0:30e:45ac:810e with SMTP id o7-20020a5d58c7000000b0030e45ac810emr6391868wrf.36.1687180803699;
+        Mon, 19 Jun 2023 06:20:03 -0700 (PDT)
+Received: from [10.178.67.29] ([192.19.248.250])
+        by smtp.gmail.com with ESMTPSA id i1-20020a5d4381000000b0030c4d8930b1sm31500187wrq.91.2023.06.19.06.20.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Jun 2023 06:20:03 -0700 (PDT)
+Message-ID: <390a3ed6-7349-916a-1d2f-19d644c891f7@gmail.com>
+Date:   Mon, 19 Jun 2023 14:20:01 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
-Content-Type: text/plain; charset=utf8
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 5.10 00/89] 5.10.185-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+References: <20230619102138.279161276@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-In jfs_dmap.c at line 381, BLKTODMAP is used to get a logical block
-number inside dbFree(). db_l2nbperpage, which is the log2 number of
-blocks per page, is passed as an argument to BLKTODMAP which uses it
-for shifting.
-
-Syzbot reported a shift out-of-bounds crash because db_l2nbperpage is
-too big. This happens because the large value is set without any
-validation in dbMount() at line 181.
-
-Thus, make sure that db_l2nbperpage is correct while mounting.
-
-Max number of pages =3D Page size / Min block size
-=3D> log2(Max number of pages) =3D log2(Page size / Min block size)
-=09=09=09     =3D log2(Page size) - log2(Min block size)
-
-=3D> Max db_l2nbperpage =3D L2PSIZE - L2MINBLOCKSIZE
-
-Reported-and-tested-by: syzbot+d2cd27dcf8e04b232eb2@syzkaller.appspotmail.c=
-om
-Closes: https://syzkaller.appspot.com/bug?id=3D2a70a453331db32ed491f5cbb07e=
-81bf2d225715
-Cc: stable@vger.kernel.org
-Suggested-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Siddh Raman Pant <code@siddh.me>
----
-Changes in v2:
-- Fix upper bound as pointed out in v1 by Shaggy.
-- Add an explanation for the same in commit message for completeness.
-
- fs/jfs/jfs_dmap.c   | 6 ++++++
- fs/jfs/jfs_filsys.h | 2 ++
- 2 files changed, 8 insertions(+)
-
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index a3eb1e826947..da6a2bc6bf02 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -178,7 +178,13 @@ int dbMount(struct inode *ipbmap)
- =09dbmp_le =3D (struct dbmap_disk *) mp->data;
- =09bmp->db_mapsize =3D le64_to_cpu(dbmp_le->dn_mapsize);
- =09bmp->db_nfree =3D le64_to_cpu(dbmp_le->dn_nfree);
-+
- =09bmp->db_l2nbperpage =3D le32_to_cpu(dbmp_le->dn_l2nbperpage);
-+=09if (bmp->db_l2nbperpage > L2PSIZE - L2MINBLOCKSIZE) {
-+=09=09err =3D -EINVAL;
-+=09=09goto err_release_metapage;
-+=09}
-+
- =09bmp->db_numag =3D le32_to_cpu(dbmp_le->dn_numag);
- =09if (!bmp->db_numag) {
- =09=09err =3D -EINVAL;
-diff --git a/fs/jfs/jfs_filsys.h b/fs/jfs/jfs_filsys.h
-index b5d702df7111..33ef13a0b110 100644
---- a/fs/jfs/jfs_filsys.h
-+++ b/fs/jfs/jfs_filsys.h
-@@ -122,7 +122,9 @@
- #define NUM_INODE_PER_IAG=09INOSPERIAG
-=20
- #define MINBLOCKSIZE=09=09512
-+#define L2MINBLOCKSIZE=09=099
- #define MAXBLOCKSIZE=09=094096
-+#define L2MAXBLOCKSIZE=09=0912
- #define=09MAXFILESIZE=09=09((s64)1 << 52)
-=20
- #define JFS_LINK_MAX=09=090xffffffff
---=20
-2.39.2
 
 
+On 6/19/2023 11:29 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.185 release.
+> There are 89 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 21 Jun 2023 10:21:12 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.185-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
+
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
