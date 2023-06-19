@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB275735299
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:36:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8380B735362
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:45:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231766AbjFSKgl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:36:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42424 "EHLO
+        id S229728AbjFSKpB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:45:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231383AbjFSKgQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:36:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33858170D
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:36:10 -0700 (PDT)
+        with ESMTP id S230515AbjFSKo2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:44:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BB8D1BCB
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:44:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BC9CD60B0D
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:36:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D19C6C433C0;
-        Mon, 19 Jun 2023 10:36:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C48E660B73
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:44:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADDCC433C8;
+        Mon, 19 Jun 2023 10:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687170969;
-        bh=ozGwol5j77GqcGczXvIkHbM/L9VeyQvm9N7tCJbeE5o=;
+        s=korg; t=1687171445;
+        bh=fiJ/ne/Ykfv8muQRA4JGXByPGHXFo81nC8zZDoViTrw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WcqqpXuFwXJ18dSq1fKu1XChPd0v0eeEFIgvvV07GmTbJP0ZEj3LIUkUUYPmuitYL
-         P8ACkBSKVzGFepI6A132QNgnZUejLrs/k3UVjntowb6IXYLKzyz8aDPnewylrkRY8P
-         2rV6lbdCf/ZJeTeuGGhWDYGsCDvjxRRomqiwQC80=
+        b=jE3MtCl+SGK+L1g7T66K19xU8LHsxG5X9i0NQknc+jtXxuKUcZ+SzfpR/hgoZHD4Z
+         MDA6hr2jiPsS5yTPflzwU5ssPeRD7M242yBT2RYweNDvPDuXWiGiiLkjBACdtzZqi4
+         skT3OVqfCq+0p8k8Ci8Tg4xT9O/swW9Z6WNb+XYw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Koba Ko <koba.ko@canonical.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.3 093/187] thunderbolt: Do not touch CL state configuration during discovery
+        patches@lists.linux.dev,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 034/166] MIPS: Alchemy: fix dbdma2
 Date:   Mon, 19 Jun 2023 12:28:31 +0200
-Message-ID: <20230619102202.094361812@linuxfoundation.org>
+Message-ID: <20230619102156.411419410@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,69 +55,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Manuel Lauss <manuel.lauss@gmail.com>
 
-commit 3fe95742af29b8b4eccab2ba94bc521805c6e10c upstream.
+[ Upstream commit 2d645604f69f3a772d58ead702f9a8e84ab2b342 ]
 
-If the boot firmware has already established tunnels, especially ones
-that have special requirements from the link such as DisplayPort, we
-should not blindly enable CL states (nor change the TMU configuration).
-Otherwise the existing tunnels may not work as expected.
+Various fixes for the Au1200/Au1550/Au1300 DBDMA2 code:
 
-For this reason, skip the CL state enabling when we go over the existing
-topology. This will also keep the TMU settings untouched because we do
-not change the TMU configuration when CL states are not enabled.
+- skip cache invalidation if chip has working coherency circuitry.
+- invalidate KSEG0-portion of the (physical) data address.
+- force the dma channel doorbell write out to bus immediately with
+  a sync.
 
-Reported-by: Koba Ko <koba.ko@canonical.com>
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/7831
-Cc: stable@vger.kernel.org # v6.0+
-Acked-By: Yehezkel Bernat <YehezkelShB@gmail.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/tb.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ arch/mips/alchemy/common/dbdma.c | 27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
---- a/drivers/thunderbolt/tb.c
-+++ b/drivers/thunderbolt/tb.c
-@@ -737,6 +737,7 @@ static void tb_scan_port(struct tb_port
- {
- 	struct tb_cm *tcm = tb_priv(port->sw->tb);
- 	struct tb_port *upstream_port;
-+	bool discovery = false;
- 	struct tb_switch *sw;
- 	int ret;
+diff --git a/arch/mips/alchemy/common/dbdma.c b/arch/mips/alchemy/common/dbdma.c
+index 5ab0430004092..6a3c890f7bbfe 100644
+--- a/arch/mips/alchemy/common/dbdma.c
++++ b/arch/mips/alchemy/common/dbdma.c
+@@ -30,6 +30,7 @@
+  *
+  */
  
-@@ -804,8 +805,10 @@ static void tb_scan_port(struct tb_port
- 	 * tunnels and know which switches were authorized already by
- 	 * the boot firmware.
- 	 */
--	if (!tcm->hotplug_active)
-+	if (!tcm->hotplug_active) {
- 		dev_set_uevent_suppress(&sw->dev, true);
-+		discovery = true;
-+	}
++#include <linux/dma-map-ops.h> /* for dma_default_coherent */
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+ #include <linux/slab.h>
+@@ -623,17 +624,18 @@ u32 au1xxx_dbdma_put_source(u32 chanid, dma_addr_t buf, int nbytes, u32 flags)
+ 		dp->dscr_cmd0 &= ~DSCR_CMD0_IE;
  
  	/*
- 	 * At the moment Thunderbolt 2 and beyond (devices with LC) we
-@@ -835,10 +838,14 @@ static void tb_scan_port(struct tb_port
- 	 * CL0s and CL1 are enabled and supported together.
- 	 * Silently ignore CLx enabling in case CLx is not supported.
+-	 * There is an errata on the Au1200/Au1550 parts that could result
+-	 * in "stale" data being DMA'ed. It has to do with the snoop logic on
+-	 * the cache eviction buffer.  DMA_NONCOHERENT is on by default for
+-	 * these parts. If it is fixed in the future, these dma_cache_inv will
+-	 * just be nothing more than empty macros. See io.h.
++	 * There is an erratum on certain Au1200/Au1550 revisions that could
++	 * result in "stale" data being DMA'ed. It has to do with the snoop
++	 * logic on the cache eviction buffer.  dma_default_coherent is set
++	 * to false on these parts.
  	 */
--	ret = tb_switch_enable_clx(sw, TB_CL1);
--	if (ret && ret != -EOPNOTSUPP)
--		tb_sw_warn(sw, "failed to enable %s on upstream port\n",
--			   tb_switch_clx_name(TB_CL1));
-+	if (discovery) {
-+		tb_sw_dbg(sw, "discovery, not touching CL states\n");
-+	} else {
-+		ret = tb_switch_enable_clx(sw, TB_CL1);
-+		if (ret && ret != -EOPNOTSUPP)
-+			tb_sw_warn(sw, "failed to enable %s on upstream port\n",
-+				   tb_switch_clx_name(TB_CL1));
-+	}
+-	dma_cache_wback_inv((unsigned long)buf, nbytes);
++	if (!dma_default_coherent)
++		dma_cache_wback_inv(KSEG0ADDR(buf), nbytes);
+ 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
+ 	wmb(); /* drain writebuffer */
+ 	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
+ 	ctp->chan_ptr->ddma_dbell = 0;
++	wmb(); /* force doorbell write out to dma engine */
  
- 	if (tb_switch_is_clx_enabled(sw, TB_CL1))
- 		/*
+ 	/* Get next descriptor pointer. */
+ 	ctp->put_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
+@@ -685,17 +687,18 @@ u32 au1xxx_dbdma_put_dest(u32 chanid, dma_addr_t buf, int nbytes, u32 flags)
+ 			  dp->dscr_source1, dp->dscr_dest0, dp->dscr_dest1);
+ #endif
+ 	/*
+-	 * There is an errata on the Au1200/Au1550 parts that could result in
+-	 * "stale" data being DMA'ed. It has to do with the snoop logic on the
+-	 * cache eviction buffer.  DMA_NONCOHERENT is on by default for these
+-	 * parts. If it is fixed in the future, these dma_cache_inv will just
+-	 * be nothing more than empty macros. See io.h.
++	 * There is an erratum on certain Au1200/Au1550 revisions that could
++	 * result in "stale" data being DMA'ed. It has to do with the snoop
++	 * logic on the cache eviction buffer.  dma_default_coherent is set
++	 * to false on these parts.
+ 	 */
+-	dma_cache_inv((unsigned long)buf, nbytes);
++	if (!dma_default_coherent)
++		dma_cache_inv(KSEG0ADDR(buf), nbytes);
+ 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
+ 	wmb(); /* drain writebuffer */
+ 	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
+ 	ctp->chan_ptr->ddma_dbell = 0;
++	wmb(); /* force doorbell write out to dma engine */
+ 
+ 	/* Get next descriptor pointer. */
+ 	ctp->put_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
+-- 
+2.39.2
+
 
 
