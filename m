@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22D03735448
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:54:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B618735333
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:42:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232204AbjFSKyY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:54:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56682 "EHLO
+        id S230055AbjFSKmh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:42:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232211AbjFSKyH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:54:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D23EC3
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:52:42 -0700 (PDT)
+        with ESMTP id S229567AbjFSKmS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:42:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD0F510D2
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:42:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E61960B5E
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:52:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445A9C433C8;
-        Mon, 19 Jun 2023 10:52:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 73B6360B51
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:42:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A92CC433C0;
+        Mon, 19 Jun 2023 10:42:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171961;
-        bh=vrrwknnOMnp3/fFeIK2dbFuoU8Bp6+uORAd3Be18evg=;
+        s=korg; t=1687171333;
+        bh=ADPuoOqyYG5u8UI1C67863VARFTw91JResG5/++W1s8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bnAnKSng3petTYwLLwHIuDlqMtw86F5Ts9EafJJs6vEJSE5rTO79OweTM9R2HtZ5o
-         90GOwvmzOe1qajuIAuKDK2Y1qQba+Fz8O9BXUw8yPPjs8EwE+RxrYwVe5MDQFi0vBX
-         4A0FsnAzAj2NeLx15nXVdmCMb5FYG5XAa9iGENYI=
+        b=E2m/O4nRl+hsW/YOfX3rX1YzdCSd1WIIxCoy827077lPcXmoHuseLR06NMelLk4iP
+         VSg3za/ocYro/H9LPLwKCiY5kfbrp7pobKycowzz9Im6qjbF8et7LSuTXvlOLLfeKp
+         AslzxECxK7b0RI0nIlds1u/urOUB5K9gfjrKxN2c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+33494cd0df2ec2931851@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 25/64] nilfs2: fix possible out-of-bounds segment allocation in resize ioctl
+        patches@lists.linux.dev, Alex Maftei <alex.maftei@amd.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 43/49] selftests/ptp: Fix timestamp printf format for PTP_SYS_OFFSET
 Date:   Mon, 19 Jun 2023 12:30:21 +0200
-Message-ID: <20230619102134.202511087@linuxfoundation.org>
+Message-ID: <20230619102132.177387179@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
-References: <20230619102132.808972458@linuxfoundation.org>
+In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
+References: <20230619102129.856988902@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,62 +56,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Alex Maftei <alex.maftei@amd.com>
 
-commit fee5eaecca86afa544355569b831c1f90f334b85 upstream.
+[ Upstream commit 76a4c8b82938bc5020b67663db41f451684bf327 ]
 
-Syzbot reports that in its stress test for resize ioctl, the log writing
-function nilfs_segctor_do_construct hits a WARN_ON in
-nilfs_segctor_truncate_segments().
+Previously, timestamps were printed using "%lld.%u" which is incorrect
+for nanosecond values lower than 100,000,000 as they're fractional
+digits, therefore leading zeros are meaningful.
 
-It turned out that there is a problem with the current implementation of
-the resize ioctl, which changes the writable range on the device (the
-range of allocatable segments) at the end of the resize process.
+This patch changes the format strings to "%lld.%09u" in order to add
+leading zeros to the nanosecond value.
 
-This order is necessary for file system expansion to avoid corrupting the
-superblock at trailing edge.  However, in the case of a file system
-shrink, if log writes occur after truncating out-of-bounds trailing
-segments and before the resize is complete, segments may be allocated from
-the truncated space.
-
-The userspace resize tool was fine as it limits the range of allocatable
-segments before performing the resize, but it can run into this issue if
-the resize ioctl is called alone.
-
-Fix this issue by changing nilfs_sufile_resize() to update the range of
-allocatable segments immediately after successful truncation of segment
-space in case of file system shrink.
-
-Link: https://lkml.kernel.org/r/20230524094348.3784-1-konishi.ryusuke@gmail.com
-Fixes: 4e33f9eab07e ("nilfs2: implement resize ioctl")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+33494cd0df2ec2931851@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/0000000000005434c405fbbafdc5@google.com
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 568ebc5985f5 ("ptp: add the PTP_SYS_OFFSET ioctl to the testptp program")
+Fixes: 4ec54f95736f ("ptp: Fix compiler warnings in the testptp utility")
+Fixes: 6ab0e475f1f3 ("Documentation: fix misc. warnings")
+Signed-off-by: Alex Maftei <alex.maftei@amd.com>
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Link: https://lore.kernel.org/r/20230615083404.57112-1-alex.maftei@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/sufile.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ tools/testing/selftests/ptp/testptp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/nilfs2/sufile.c
-+++ b/fs/nilfs2/sufile.c
-@@ -782,6 +782,15 @@ int nilfs_sufile_resize(struct inode *su
- 			goto out_header;
+diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
+index a5d8f0ab0da00..60f0f24cee30e 100644
+--- a/tools/testing/selftests/ptp/testptp.c
++++ b/tools/testing/selftests/ptp/testptp.c
+@@ -502,11 +502,11 @@ int main(int argc, char *argv[])
+ 			interval = t2 - t1;
+ 			offset = (t2 + t1) / 2 - tp;
  
- 		sui->ncleansegs -= nsegs - newnsegs;
-+
-+		/*
-+		 * If the sufile is successfully truncated, immediately adjust
-+		 * the segment allocation space while locking the semaphore
-+		 * "mi_sem" so that nilfs_sufile_alloc() never allocates
-+		 * segments in the truncated space.
-+		 */
-+		sui->allocmax = newnsegs - 1;
-+		sui->allocmin = 0;
- 	}
- 
- 	kaddr = kmap_atomic(header_bh->b_page);
+-			printf("system time: %lld.%u\n",
++			printf("system time: %lld.%09u\n",
+ 				(pct+2*i)->sec, (pct+2*i)->nsec);
+-			printf("phc    time: %lld.%u\n",
++			printf("phc    time: %lld.%09u\n",
+ 				(pct+2*i+1)->sec, (pct+2*i+1)->nsec);
+-			printf("system time: %lld.%u\n",
++			printf("system time: %lld.%09u\n",
+ 				(pct+2*i+2)->sec, (pct+2*i+2)->nsec);
+ 			printf("system/phc clock time offset is %" PRId64 " ns\n"
+ 			       "system     clock time delay  is %" PRId64 " ns\n",
+-- 
+2.39.2
+
 
 
