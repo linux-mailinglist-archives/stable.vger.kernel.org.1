@@ -2,48 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AB37735510
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:01:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37CEB735439
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:53:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232335AbjFSLBO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:01:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34020 "EHLO
+        id S232291AbjFSKx5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:53:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230271AbjFSLAx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:00:53 -0400
+        with ESMTP id S232304AbjFSKxW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:53:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55AEC26AF
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:59:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6C1119A1
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:51:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E765460B78
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:59:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037FBC433C8;
-        Mon, 19 Jun 2023 10:59:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 687C360B88
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:51:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFF2C433C9;
+        Mon, 19 Jun 2023 10:51:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172386;
-        bh=R2l51hUOLonAFTtsgoSmpw4FrbG+XD9GDpsR+Ib5vi8=;
+        s=korg; t=1687171918;
+        bh=oPYOJ/aJv3k+hNpcd1/ONC1KEGy2FYFZFb44WA2PKpM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FXcgqp3NFbLKj87jzKA7ytMG6bC1ZYT5bkCM9srK82RVvPlUg1MHCwCYLAwhkHgvL
-         8gPibrl9Ylhxn9dZTUjGEGxKMoq8POEbEHSaXf7WMVSS0iE3lfitdgZG21Y3rjTR+l
-         hkp7OtV0Zq/wtmUCDok485i5PrixiyMEqNW3Sdps=
+        b=O70yTGQQoQ9UD6ycScYxFcCD6IYecGu+D3v38PuztBvkuwYHEnYizdaQbUoy8+mnO
+         FRi7yRU5I2CBjfpuLzePj1tNy+kNJLs+ZExPYvplLRkEHydr76Eu6PSh5m0jfCbnXq
+         9mxucNNl9M4gCY5GWG2t209l7e4cUkErZe27XG7M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Stylon Wang <stylon.wang@amd.com>,
-        Hersen Wu <hersenxs.wu@amd.com>, Roman Li <roman.li@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 5.15 049/107] drm/amd/display: edp do not add non-edid timings
+        =?UTF-8?q?Lisa=20Chen=20 ?= <minjie.chen@geekplus.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 37/64] spi: fsl-dspi: avoid SCK glitches with continuous transfers
 Date:   Mon, 19 Jun 2023 12:30:33 +0200
-Message-ID: <20230619102143.853202705@linuxfoundation.org>
+Message-ID: <20230619102134.857894168@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
+References: <20230619102132.808972458@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,45 +57,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hersen Wu <hersenxs.wu@amd.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit e749dd10e5f292061ad63d2b030194bf7d7d452c upstream.
+[ Upstream commit c5c31fb71f16ba75bad4ade208abbae225305b65 ]
 
-[Why] most edp support only timings from edid. applying
-non-edid timings, especially those timings out of edp
-bandwidth, may damage edp.
+The DSPI controller has configurable timing for
 
-[How] do not add non-edid timings for edp.
+(a) tCSC: the interval between the assertion of the chip select and the
+    first clock edge
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Acked-by: Stylon Wang <stylon.wang@amd.com>
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
-Reviewed-by: Roman Li <roman.li@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+(b) tASC: the interval between the last clock edge and the deassertion
+    of the chip select
+
+What is a bit surprising, but is documented in the figure "Example of
+continuous transfer (CPHA=1, CONT=1)" in the datasheet, is that when the
+chip select stays asserted between multiple TX FIFO writes, the tCSC and
+tASC times still apply. With CONT=1, chip select remains asserted, but
+SCK takes a break and goes to the idle state for tASC + tCSC ns.
+
+In other words, the default values (of 0 and 0 ns) result in SCK
+glitches where the SCK transition to the idle state, as well as the SCK
+transition from the idle state, will have no delay in between, and it
+may appear that a SCK cycle has simply gone missing. The resulting
+timing violation might cause data corruption in many peripherals, as
+their chip select is asserted.
+
+The driver has device tree bindings for tCSC ("fsl,spi-cs-sck-delay")
+and tASC ("fsl,spi-sck-cs-delay"), but these are only specified to apply
+when the chip select toggles in the first place, and this timing
+characteristic depends on each peripheral. Many peripherals do not have
+explicit timing requirements, so many device trees do not have these
+properties present at all.
+
+Nonetheless, the lack of SCK glitches is a common sense requirement, and
+since the SCK stays in the idle state during transfers for tCSC+tASC ns,
+and that in itself should look like half a cycle, then let's ensure that
+tCSC and tASC are at least a quarter of a SCK period, such that their
+sum is at least half of one.
+
+Fixes: 95bf15f38641 ("spi: fsl-dspi: Add ~50ns delay between cs and sck")
+Reported-by: Lisa Chen (陈敏捷) <minjie.chen@geekplus.com>
+Debugged-by: Lisa Chen (陈敏捷) <minjie.chen@geekplus.com>
+Tested-by: Lisa Chen (陈敏捷) <minjie.chen@geekplus.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://lore.kernel.org/r/20230529223402.1199503-1-vladimir.oltean@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/spi/spi-fsl-dspi.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -8177,7 +8177,13 @@ static int amdgpu_dm_connector_get_modes
- 				drm_add_modes_noedid(connector, 640, 480);
- 	} else {
- 		amdgpu_dm_connector_ddc_get_modes(connector, edid);
--		amdgpu_dm_connector_add_common_modes(encoder, connector);
-+		/* most eDP supports only timings from its edid,
-+		 * usually only detailed timings are available
-+		 * from eDP edid. timings which are not from edid
-+		 * may damage eDP
-+		 */
-+		if (connector->connector_type != DRM_MODE_CONNECTOR_eDP)
-+			amdgpu_dm_connector_add_common_modes(encoder, connector);
- 		amdgpu_dm_connector_add_freesync_modes(connector, edid);
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index 51e17f0828646..351b2989db071 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -816,7 +816,9 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ static int dspi_setup(struct spi_device *spi)
+ {
+ 	struct fsl_dspi *dspi = spi_controller_get_devdata(spi->controller);
++	u32 period_ns = DIV_ROUND_UP(NSEC_PER_SEC, spi->max_speed_hz);
+ 	unsigned char br = 0, pbr = 0, pcssck = 0, cssck = 0;
++	u32 quarter_period_ns = DIV_ROUND_UP(period_ns, 4);
+ 	u32 cs_sck_delay = 0, sck_cs_delay = 0;
+ 	struct fsl_dspi_platform_data *pdata;
+ 	unsigned char pasc = 0, asc = 0;
+@@ -844,6 +846,19 @@ static int dspi_setup(struct spi_device *spi)
+ 		sck_cs_delay = pdata->sck_cs_delay;
  	}
- 	amdgpu_dm_fbc_init(connector);
+ 
++	/* Since tCSC and tASC apply to continuous transfers too, avoid SCK
++	 * glitches of half a cycle by never allowing tCSC + tASC to go below
++	 * half a SCK period.
++	 */
++	if (cs_sck_delay < quarter_period_ns)
++		cs_sck_delay = quarter_period_ns;
++	if (sck_cs_delay < quarter_period_ns)
++		sck_cs_delay = quarter_period_ns;
++
++	dev_dbg(&spi->dev,
++		"DSPI controller timing params: CS-to-SCK delay %u ns, SCK-to-CS delay %u ns\n",
++		cs_sck_delay, sck_cs_delay);
++
+ 	clkrate = clk_get_rate(dspi->clk);
+ 	hz_to_spi_baud(&pbr, &br, spi->max_speed_hz, clkrate);
+ 
+-- 
+2.39.2
+
 
 
