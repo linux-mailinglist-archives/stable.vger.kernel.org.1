@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C5147352B9
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:37:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C6BA735384
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:46:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230046AbjFSKhl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:37:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43136 "EHLO
+        id S231775AbjFSKqR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:46:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230078AbjFSKhc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:37:32 -0400
+        with ESMTP id S231800AbjFSKpt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:45:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D465DE58
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:37:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D895510F3
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:45:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 65CD360B62
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:37:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77434C433C0;
-        Mon, 19 Jun 2023 10:37:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D73660670
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:45:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84308C433C0;
+        Mon, 19 Jun 2023 10:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171049;
-        bh=sNj7cOGYZg4VWmG91hYvOzZcixaJu7L1EOfjONTSt/w=;
+        s=korg; t=1687171525;
+        bh=ai00HA7+vtURmaK2lAc7tdM9pjXyQsS5zmBzx0bqBOs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HrfDrT/4dEjrlHfMUwPajHWIg0ntyy65jj+vvIfLUQBTrYoLNN1hunNypp6ZkM3FW
-         3BgL218tlzdbKomsmV8fUzxj46IiXefPd3q/dcQHvf7hk0mENtZ5auS4pQmk1T+c95
-         t8lCqlZE3NnzgrTt4gNYLQlaCP0WWdjHZYKtpmMs=
+        b=yZ9VSTJ8rRY3wUuZ1PlvCCAD+zAy3h0As+fq+MwI6PLTBi39xbp3czBOBT2r+sU1b
+         QzGO2l7z5SMNXva0FN38bK83bfYeCg5ISA2noHfQPlV+oKtPiEMgh1gRn9orKatiNy
+         AvmVrB1Ov3CEIWJlLcGwMeze6cAUOqsgxPpYxkPI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 122/187] netfilter: nf_tables: incorrect error path handling with NFT_MSG_NEWRULE
+        patches@lists.linux.dev, Lukasz Tyl <ltyl@hem-e.com>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 063/166] ALSA: usb-audio: Add quirk flag for HEM devices to enable native DSD playback
 Date:   Mon, 19 Jun 2023 12:29:00 +0200
-Message-ID: <20230619102203.435688179@linuxfoundation.org>
+Message-ID: <20230619102157.846139217@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,75 +54,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Lukasz Tyl <ltyl@hem-e.com>
 
-[ Upstream commit 1240eb93f0616b21c675416516ff3d74798fdc97 ]
+commit 122e2cb7e1a30438cc0e8bf70d4279db245d7d5b upstream.
 
-In case of error when adding a new rule that refers to an anonymous set,
-deactivate expressions via NFT_TRANS_PREPARE state, not NFT_TRANS_RELEASE.
-Thus, the lookup expression marks anonymous sets as inactive in the next
-generation to ensure it is not reachable in this transaction anymore and
-decrement the set refcount as introduced by c1592a89942e ("netfilter:
-nf_tables: deactivate anonymous set from preparation phase"). The abort
-step takes care of undoing the anonymous set.
+This commit adds new DEVICE_FLG with QUIRK_FLAG_DSD_RAW and Vendor Id for
+HEM devices which supports native DSD. Prior to this change Linux kernel
+was not enabling native DSD playback for HEM devices, and as a result,
+DSD audio was being converted to PCM "on the fly". HEM devices,
+when connected to the system, would only play audio in PCM format,
+even if the source material was in DSD format. With the addition of new
+VENDOR_FLG in the quircks.c file, the devices are now correctly
+recognized, and raw DSD data is transmitted to the device,
+allowing for native DSD playback.
 
-This is also consistent with rule deletion, where NFT_TRANS_PREPARE is
-used. Note that this error path is exercised in the preparation step of
-the commit protocol. This patch replaces nf_tables_rule_release() by the
-deactivate and destroy calls, this time with NFT_TRANS_PREPARE.
-
-Due to this incorrect error handling, it is possible to access a
-dangling pointer to the anonymous set that remains in the transaction
-list.
-
-[1009.379054] BUG: KASAN: use-after-free in nft_set_lookup_global+0x147/0x1a0 [nf_tables]
-[1009.379106] Read of size 8 at addr ffff88816c4c8020 by task nft-rule-add/137110
-[1009.379116] CPU: 7 PID: 137110 Comm: nft-rule-add Not tainted 6.4.0-rc4+ #256
-[1009.379128] Call Trace:
-[1009.379132]  <TASK>
-[1009.379135]  dump_stack_lvl+0x33/0x50
-[1009.379146]  ? nft_set_lookup_global+0x147/0x1a0 [nf_tables]
-[1009.379191]  print_address_description.constprop.0+0x27/0x300
-[1009.379201]  kasan_report+0x107/0x120
-[1009.379210]  ? nft_set_lookup_global+0x147/0x1a0 [nf_tables]
-[1009.379255]  nft_set_lookup_global+0x147/0x1a0 [nf_tables]
-[1009.379302]  nft_lookup_init+0xa5/0x270 [nf_tables]
-[1009.379350]  nf_tables_newrule+0x698/0xe50 [nf_tables]
-[1009.379397]  ? nf_tables_rule_release+0xe0/0xe0 [nf_tables]
-[1009.379441]  ? kasan_unpoison+0x23/0x50
-[1009.379450]  nfnetlink_rcv_batch+0x97c/0xd90 [nfnetlink]
-[1009.379470]  ? nfnetlink_rcv_msg+0x480/0x480 [nfnetlink]
-[1009.379485]  ? __alloc_skb+0xb8/0x1e0
-[1009.379493]  ? __alloc_skb+0xb8/0x1e0
-[1009.379502]  ? entry_SYSCALL_64_after_hwframe+0x46/0xb0
-[1009.379509]  ? unwind_get_return_address+0x2a/0x40
-[1009.379517]  ? write_profile+0xc0/0xc0
-[1009.379524]  ? avc_lookup+0x8f/0xc0
-[1009.379532]  ? __rcu_read_unlock+0x43/0x60
-
-Fixes: 958bee14d071 ("netfilter: nf_tables: use new transaction infrastructure to handle sets")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lukasz Tyl <ltyl@hem-e.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230614122524.30271-1-ltyl@hem-e.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/usb/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index f90b1113e5ecc..8f63514656a17 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3781,7 +3781,8 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
- 	if (flow)
- 		nft_flow_rule_destroy(flow);
- err_release_rule:
--	nf_tables_rule_release(&ctx, rule);
-+	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE);
-+	nf_tables_rule_destroy(&ctx, rule);
- err_release_expr:
- 	for (i = 0; i < n; i++) {
- 		if (expr_info[i].ops) {
--- 
-2.39.2
-
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2191,6 +2191,8 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x2ab6, /* T+A devices */
+ 		   QUIRK_FLAG_DSD_RAW),
++	VENDOR_FLG(0x3336, /* HEM devices */
++		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x3353, /* Khadas devices */
+ 		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x3842, /* EVGA */
 
 
