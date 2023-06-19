@@ -2,51 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85BC17353A9
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:47:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5F347352F1
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:40:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231335AbjFSKrv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:47:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51940 "EHLO
+        id S231992AbjFSKk0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:40:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231240AbjFSKra (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:47:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25097173A
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:46:50 -0700 (PDT)
+        with ESMTP id S232040AbjFSKkI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:40:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12C8010D4
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:39:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B595460B88
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:46:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC38FC433CC;
-        Mon, 19 Jun 2023 10:46:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B7EB60B62
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:39:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC86C433C0;
+        Mon, 19 Jun 2023 10:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171609;
-        bh=83rw+pcpfln0desEQ7PngDJJgQedTNe2tIna+kndp0A=;
+        s=korg; t=1687171186;
+        bh=UxxYVwZlU89xa2aZmnLsdlv7+4Qiefbnp5hz4TBnG+w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RmFywQu1yJwCjMweMgMm9TPjb4s6VVUHoGxWWkwPl2V91WRYbjJK+TdSSYloDQcmK
-         Ikmtz60QhDaJOq0b9JUVoSCYwKRuESwwYDP5Ayr17L9NGEseTk6nVVM3vh+CgSyhEk
-         2Tf4SWUmLgsGS3byADsnypIlvwsBCu2DxBBn/YY4=
+        b=DmNEAZ2VaqB6VLtm1UoYM16mG/HQ0m967/o/rMojg7KXRsbSb2ct2L4qgsqKdG13Z
+         ySyi4AGaj9RjUJmaX9ednGG4KCD/i7CFz2PR2C89V53jP7ZwLGcjHKFPB8BOxDrC3w
+         SLoenGsNWX2KJ/ontGCzLmPcBA9MD2PoVAFRlJwA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bob Pearson <rpearsonhpe@gmail.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
+        patches@lists.linux.dev,
+        Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+        Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>,
+        Naama Meir <naamax.meir@linux.intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 093/166] RDMA/rxe: Fix ref count error in check_rkey()
+Subject: [PATCH 6.3 152/187] igc: Fix possible system crash when loading module
 Date:   Mon, 19 Jun 2023 12:29:30 +0200
-Message-ID: <20230619102159.313337812@linuxfoundation.org>
+Message-ID: <20230619102204.965386952@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,46 +58,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bob Pearson <rpearsonhpe@gmail.com>
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
-[ Upstream commit b00683422fd79dd07c9b75efdce1660e5e19150e ]
+[ Upstream commit c080fe262f9e73a00934b70c16b1479cf40cd2bd ]
 
-There is a reference count error in error path code and a potential race
-in check_rkey() in rxe_resp.c. When looking up the rkey for a memory
-window the reference to the mw from rxe_lookup_mw() is dropped before a
-reference is taken on the mr referenced by the mw. If the mr is destroyed
-immediately after the call to rxe_put(mw) the mr pointer is unprotected
-and may end up pointing at freed memory. The rxe_get(mr) call should take
-place before the rxe_put(mw) call.
+Guarantee that when probe() is run again, PTM and PCI busmaster will be
+in the same state as it was if the driver was never loaded.
 
-All errors in check_rkey() call rxe_put(mw) if mw is not NULL but it was
-already called after the above. The mw pointer should be set to NULL after
-the rxe_put(mw) call to prevent this from happening.
+Avoid an i225/i226 hardware issue that PTM requests can be made even
+though PCI bus mastering is not enabled. These unexpected PTM requests
+can crash some systems.
 
-Fixes: cdd0b85675ae ("RDMA/rxe: Implement memory access through MWs")
-Link: https://lore.kernel.org/r/20230517211509.1819998-1-rpearsonhpe@gmail.com
-Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+So, "force" disable PTM and busmastering before removing the driver,
+so they can be re-enabled in the right order during probe(). This is
+more like a workaround and should be applicable for i225 and i226, in
+any platform.
+
+Fixes: 1b5d73fb8624 ("igc: Enable PCIe PTM")
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Reviewed-by: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_resp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igc/igc_main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_resp.c b/drivers/infiniband/sw/rxe/rxe_resp.c
-index 693081e813ec0..9f65c346d8432 100644
---- a/drivers/infiniband/sw/rxe/rxe_resp.c
-+++ b/drivers/infiniband/sw/rxe/rxe_resp.c
-@@ -466,8 +466,9 @@ static enum resp_states check_rkey(struct rxe_qp *qp,
- 		if (mw->access & IB_ZERO_BASED)
- 			qp->resp.offset = mw->addr;
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index f44d9b8414567..b35f5ff3536e5 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -6722,6 +6722,9 @@ static void igc_remove(struct pci_dev *pdev)
  
--		rxe_put(mw);
- 		rxe_get(mr);
-+		rxe_put(mw);
-+		mw = NULL;
- 	} else {
- 		mr = lookup_mr(qp->pd, access, rkey, RXE_LOOKUP_REMOTE);
- 		if (!mr) {
+ 	igc_ptp_stop(adapter);
+ 
++	pci_disable_ptm(pdev);
++	pci_clear_master(pdev);
++
+ 	set_bit(__IGC_DOWN, &adapter->state);
+ 
+ 	del_timer_sync(&adapter->watchdog_timer);
 -- 
 2.39.2
 
