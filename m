@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B318735352
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:44:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E1AC73527F
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:35:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229874AbjFSKoY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:44:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47208 "EHLO
+        id S229928AbjFSKfj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:35:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231877AbjFSKns (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:43:48 -0400
+        with ESMTP id S232142AbjFSKfJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:35:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71CAC1707
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:43:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CDD4E4D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:35:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0EE3F60A50
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:43:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 065A2C433CA;
-        Mon, 19 Jun 2023 10:43:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A973560B73
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:35:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF17C433CC;
+        Mon, 19 Jun 2023 10:35:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171409;
-        bh=VcYR0sWgzjXkIbKenJN0S77R4Sy48bDmMhkc9X+Yq0Q=;
+        s=korg; t=1687170908;
+        bh=pp30uccY/S7yXCXQWq8vn19ZLjHq3aAbNKyLFjSt3fk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JgPxi4vSZU7Vi2qyy6sQoFzXtV3TscQxHykjqibEF+vjEZt4kJn0Dsc43HCLD8uh8
-         5vRFY4o4nbm/OX37wHNDx9CY+tikpqDfcNKFpeH2cV4ghNy6qHH6mNyWy4RD+2GLAm
-         6T2UnsruR/Wc07V4pRrrWwTV/2pkEA1evIYoXZxQ=
+        b=rGcJsjmJ6qjF1oNgZ7eiFvTdSOXqZFWUjm0XkhmIn/J0bk3RFsVOI+pObJxX1ZdSc
+         joG6HxFA9k81UzvNMs39j6w5iRCLWXmOssGzu/V/iwbCpY6KffXFgFGlCkNymbpbm0
+         Odx4/8dSI76zXHV6qLPp1sf8zxchS1UfNPXV/zns=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 020/166] regulator: Fix error checking for debugfs_create_dir
+        patches@lists.linux.dev, Sonny Jiang <sonjiang@amd.com>,
+        Leo Liu <leo.liu@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.3 079/187] drm/amdgpu: vcn_4_0 set instance 0 init sched score to 1
 Date:   Mon, 19 Jun 2023 12:28:17 +0200
-Message-ID: <20230619102155.718831438@linuxfoundation.org>
+Message-ID: <20230619102201.443660819@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,46 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Osama Muhammad <osmtendev@gmail.com>
+From: Sonny Jiang <sonjiang@amd.com>
 
-[ Upstream commit 2bf1c45be3b8f3a3f898d0756c1282f09719debd ]
+commit 9db5ec1ceb5303398ec4f899d691073d531257c3 upstream.
 
-This patch fixes the error checking in core.c in debugfs_create_dir.
-The correct way to check if an error occurred is 'IS_ERR' inline function.
+Only vcn0 can process AV1 codecx. In order to use both vcn0 and
+vcn1 in h264/265 transcode to AV1 cases, set vcn0 sched score to 1
+at initialization time.
 
-Signed-off-by: Osama Muhammad <osmtendev@gmail.com
-Suggested-by: Ivan Orlov <ivan.orlov0322@gmail.com
-Link: https://lore.kernel.org/r/20230515172938.13338-1-osmtendev@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sonny Jiang <sonjiang@amd.com>
+Reviewed-by: Leo Liu <leo.liu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.1.x
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index c417eae887b2d..e01cade8be0c7 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -5257,7 +5257,7 @@ static void rdev_init_debugfs(struct regulator_dev *rdev)
- 	}
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
+@@ -129,7 +129,11 @@ static int vcn_v4_0_sw_init(void *handle
+ 		if (adev->vcn.harvest_config & (1 << i))
+ 			continue;
  
- 	rdev->debugfs = debugfs_create_dir(rname, debugfs_root);
--	if (!rdev->debugfs) {
-+	if (IS_ERR(rdev->debugfs)) {
- 		rdev_warn(rdev, "Failed to create debugfs directory\n");
- 		return;
- 	}
-@@ -6179,7 +6179,7 @@ static int __init regulator_init(void)
- 	ret = class_register(&regulator_class);
+-		atomic_set(&adev->vcn.inst[i].sched_score, 0);
++		/* Init instance 0 sched_score to 1, so it's scheduled after other instances */
++		if (i == 0)
++			atomic_set(&adev->vcn.inst[i].sched_score, 1);
++		else
++			atomic_set(&adev->vcn.inst[i].sched_score, 0);
  
- 	debugfs_root = debugfs_create_dir("regulator", NULL);
--	if (!debugfs_root)
-+	if (IS_ERR(debugfs_root))
- 		pr_warn("regulator: Failed to create debugfs directory\n");
- 
- #ifdef CONFIG_DEBUG_FS
--- 
-2.39.2
-
+ 		/* VCN UNIFIED TRAP */
+ 		r = amdgpu_irq_add_id(adev, amdgpu_ih_clientid_vcns[i],
 
 
