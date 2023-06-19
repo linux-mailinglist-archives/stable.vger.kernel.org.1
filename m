@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA9E87353FF
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:51:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60435735485
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:56:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232294AbjFSKvJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:51:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53156 "EHLO
+        id S232400AbjFSK4x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:56:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232142AbjFSKua (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:50:30 -0400
+        with ESMTP id S232313AbjFSK41 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:56:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF86C1BEE
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:50:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F018E51
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:54:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DE3E60B5B
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:50:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83020C433C8;
-        Mon, 19 Jun 2023 10:50:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1482460B5F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:54:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E3DC433C9;
+        Mon, 19 Jun 2023 10:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171800;
-        bh=st9s7eaSd1f32g4PxDRxrIgd5GWNyJHZCigDb4hdYYc=;
+        s=korg; t=1687172075;
+        bh=eGy7470Zs5xGo/O58VxDZU2Z/mTcEDC0f9Ixbs88Cko=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bzCjb19U8lhXMU8ptphF/tSRBSQdD592cYemsGYbIH8aP0MMt20a+j4uLwA4wcAWz
-         eqZmomFb0f3/5VvGmr0GsJ6T6h2FQ0tNvVYniwc9oDbOQ2JApiTvqwgqJ66Y0cKVRJ
-         AW9xMhC98f6KYZx5dtaFFFDUzIDU9Zrtg4rNiiOw=
+        b=fvdXr/WLekABbGfbvbJFcbyGc43mh1VKFwA6Peir9U8HM9UkxvpdrQLKshmbnDnOf
+         clRCYGqTUB/5B9Chv4lz66Eg6i65DSiIvJUD0hWdQE8c84s0MZvdKNlv+7QAiZM6rX
+         vgKvzsF+nZYcOcEb9wEuLYIvllbG6EP+KVxsqpsY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vlad Buslov <vladbu@nvidia.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 137/166] selftests/tc-testing: Fix Error: failed to find target LOG
-Date:   Mon, 19 Jun 2023 12:30:14 +0200
-Message-ID: <20230619102201.418583314@linuxfoundation.org>
+        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
+        Querijn Voet <querijnqyn@gmail.com>
+Subject: [PATCH 5.10 27/89] io_uring: hold uring mutex around poll removal
+Date:   Mon, 19 Jun 2023 12:30:15 +0200
+Message-ID: <20230619102139.519551782@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,85 +54,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vlad Buslov <vladbu@nvidia.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit b849c566ee9c6ed78288a522278dcaf419f8e239 ]
+Snipped from commit 9ca9fb24d5febccea354089c41f96a8ad0d853f8 upstream.
 
-Add missing netfilter config dependency.
+While reworking the poll hashing in the v6.0 kernel, we ended up
+grabbing the ctx->uring_lock in poll update/removal. This also fixed
+a bug with linked timeouts racing with timeout expiry and poll
+removal.
 
-Fixes following example error when running tests via tdc.sh for all XT
-tests:
+Bring back just the locking fix for that.
 
- # $ sudo ./tdc.py -d eth2 -e 2029
- # Test 2029: Add xt action with log-prefix
- # exit: 255
- # exit: 0
- #  failed to find target LOG
- #
- # bad action parsing
- # parse_action: bad value (7:xt)!
- # Illegal "action"
- #
- # -----> teardown stage *** Could not execute: "$TC actions flush action xt"
- #
- # -----> teardown stage *** Error message: "Error: Cannot flush unknown TC action.
- # We have an error flushing
- # "
- # returncode 1; expected [0]
- #
- # -----> teardown stage *** Aborting test run.
- #
- # <_io.BufferedReader name=3> *** stdout ***
- #
- # <_io.BufferedReader name=5> *** stderr ***
- # "-----> teardown stage" did not complete successfully
- # Exception <class '__main__.PluginMgrTestFail'> ('teardown', ' failed to find target LOG\n\nbad action parsing\nparse_action: bad value (7:xt)!\nIllegal "action"\n', '"-----> teardown stage" did not complete successfully') (caught in test_runner, running test 2 2029 Add xt action with log-prefix stage teardown)
- # ---------------
- # traceback
- #   File "/images/src/linux/tools/testing/selftests/tc-testing/./tdc.py", line 495, in test_runner
- #     res = run_one_test(pm, args, index, tidx)
- #   File "/images/src/linux/tools/testing/selftests/tc-testing/./tdc.py", line 434, in run_one_test
- #     prepare_env(args, pm, 'teardown', '-----> teardown stage', tidx['teardown'], procout)
- #   File "/images/src/linux/tools/testing/selftests/tc-testing/./tdc.py", line 245, in prepare_env
- #     raise PluginMgrTestFail(
- # ---------------
- # accumulated output for this test:
- #  failed to find target LOG
- #
- # bad action parsing
- # parse_action: bad value (7:xt)!
- # Illegal "action"
- #
- # ---------------
- #
- # All test results:
- #
- # 1..1
- # ok 1 2029 - Add xt action with log-prefix # skipped - "-----> teardown stage" did not complete successfully
-
-Fixes: 910d504bc187 ("selftests/tc-testings: add selftests for xt action")
-Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-and-tested-by: Querijn Voet <querijnqyn@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/tc-testing/config | 1 +
- 1 file changed, 1 insertion(+)
+ io_uring/io_uring.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/tc-testing/config b/tools/testing/selftests/tc-testing/config
-index 4638c63a339ff..aec4de8bea78b 100644
---- a/tools/testing/selftests/tc-testing/config
-+++ b/tools/testing/selftests/tc-testing/config
-@@ -6,6 +6,7 @@ CONFIG_NF_CONNTRACK_MARK=y
- CONFIG_NF_CONNTRACK_ZONES=y
- CONFIG_NF_CONNTRACK_LABELS=y
- CONFIG_NF_NAT=m
-+CONFIG_NETFILTER_XT_TARGET_LOG=m
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -5966,6 +5966,8 @@ static int io_poll_update(struct io_kioc
+ 	struct io_kiocb *preq;
+ 	int ret2, ret = 0;
  
- CONFIG_NET_SCHED=y
++	io_ring_submit_lock(ctx, !(issue_flags & IO_URING_F_NONBLOCK));
++
+ 	spin_lock(&ctx->completion_lock);
+ 	preq = io_poll_find(ctx, req->poll_update.old_user_data, true);
+ 	if (!preq || !io_poll_disarm(preq)) {
+@@ -5997,6 +5999,7 @@ out:
+ 		req_set_fail(req);
+ 	/* complete update request, we're done with it */
+ 	io_req_complete(req, ret);
++	io_ring_submit_unlock(ctx, !(issue_flags & IO_URING_F_NONBLOCK));
+ 	return 0;
+ }
  
--- 
-2.39.2
-
 
 
