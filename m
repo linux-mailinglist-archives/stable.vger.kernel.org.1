@@ -2,46 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D8F9734BE7
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 08:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A08D3734BE8
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 08:54:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229904AbjFSGyV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 02:54:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50852 "EHLO
+        id S229673AbjFSGy1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 02:54:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229673AbjFSGyV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 02:54:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09C5AC6
-        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 23:54:20 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9AFC2614D6
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 06:54:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879BBC433C0;
-        Mon, 19 Jun 2023 06:54:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687157659;
-        bh=ip78dtoFW7RN/OFb/B+EorKL7Y/lgjX4yVsnOG8B6oI=;
-        h=Subject:To:Cc:From:Date:From;
-        b=saxEuO0WXuid+ZmQKi4/u+J2br3HlYUvJfutIqVcFdOurv0Cv7H9kTuEELZ+VThjo
-         us8eypE6m7ZzQAuLytnKJlo9VdBgi97U8vh7E29h/QKbebST2WAAsG1UHRGzAxOWGc
-         uxqRRPQZl/I2G3Gs1lCv3uwNH3KR2bEjm3vXwRIw=
-Subject: FAILED: patch "[PATCH] wifi: iwlwifi: mvm: spin_lock_bh() to fix lockdep regression" failed to apply to 6.1-stable tree
-To:     hughd@google.com, johannes.berg@intel.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 19 Jun 2023 08:54:07 +0200
-Message-ID: <2023061907-salami-everyday-f129@gregkh>
+        with ESMTP id S229992AbjFSGy0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 02:54:26 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF9851A4;
+        Sun, 18 Jun 2023 23:54:24 -0700 (PDT)
+Received: from dggpemm500014.china.huawei.com (unknown [172.30.72.56])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Ql0m33pBkzMp5B;
+        Mon, 19 Jun 2023 14:51:15 +0800 (CST)
+Received: from [10.174.178.120] (10.174.178.120) by
+ dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Mon, 19 Jun 2023 14:54:22 +0800
+Message-ID: <0ce6abb5-bf32-a5dc-c6eb-0a96e12a8ebd@huawei.com>
+Date:   Mon, 19 Jun 2023 14:54:21 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+CC:     <mawupeng1@huawei.com>, <akpm@linux-foundation.org>,
+        <david@redhat.com>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
+        <richard.weiyang@linux.alibaba.com>, <mst@redhat.com>,
+        <jasowang@redhat.com>, <pankaj.gupta.linux@gmail.com>,
+        <mhocko@kernel.org>, <osalvador@suse.de>
+Subject: Re: [PATCH stable 5.10 1/1] mm/memory_hotplug: extend
+ offline_and_remove_memory() to handle more than one memory block
+Content-Language: en-US
+To:     <gregkh@linuxfoundation.org>
+References: <20230614061900.3296725-1-mawupeng1@huawei.com>
+ <20230614061900.3296725-2-mawupeng1@huawei.com>
+ <2023061440-showing-happiest-937e@gregkh>
+ <cd9688dc-a716-3031-489e-a867df0d1ea2@huawei.com>
+ <2023061927-parsnip-gauging-86e9@gregkh>
+From:   mawupeng <mawupeng1@huawei.com>
+In-Reply-To: <2023061927-parsnip-gauging-86e9@gregkh>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.120]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemm500014.china.huawei.com (7.185.36.153)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -49,106 +59,79 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+On 2023/6/19 14:20, Greg KH wrote:
+> On Wed, Jun 14, 2023 at 02:45:58PM +0800, mawupeng wrote:
+>>
+>>
+>> On 2023/6/14 14:35, Greg KH wrote:
+>>> On Wed, Jun 14, 2023 at 02:19:00PM +0800, Wupeng Ma wrote:
+>>>> From: David Hildenbrand <david@redhat.com>
+>>>>
+>>>> virtio-mem soon wants to use offline_and_remove_memory() memory that
+>>>> exceeds a single Linux memory block (memory_block_size_bytes()). Let's
+>>>> remove that restriction.
+>>>>
+>>>> Let's remember the old state and try to restore that if anything goes
+>>>> wrong. While re-onlining can, in general, fail, it's highly unlikely to
+>>>> happen (usually only when a notifier fails to allocate memory, and these
+>>>> are rather rare).
+>>>>
+>>>> This will be used by virtio-mem to offline+remove memory ranges that are
+>>>> bigger than a single memory block - for example, with a device block
+>>>> size of 1 GiB (e.g., gigantic pages in the hypervisor) and a Linux memory
+>>>> block size of 128MB.
+>>>>
+>>>> While we could compress the state into 2 bit, using 8 bit is much
+>>>> easier.
+>>>>
+>>>> This handling is similar, but different to acpi_scan_try_to_offline():
+>>>>
+>>>> a) We don't try to offline twice. I am not sure if this CONFIG_MEMCG
+>>>> optimization is still relevant - it should only apply to ZONE_NORMAL
+>>>> (where we have no guarantees). If relevant, we can always add it.
+>>>>
+>>>> b) acpi_scan_try_to_offline() simply onlines all memory in case
+>>>> something goes wrong. It doesn't restore previous online type. Let's do
+>>>> that, so we won't overwrite what e.g., user space configured.
+>>>>
+>>>> Reviewed-by: Wei Yang <richard.weiyang@linux.alibaba.com>
+>>>> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+>>>> Cc: Jason Wang <jasowang@redhat.com>
+>>>> Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+>>>> Cc: Michal Hocko <mhocko@kernel.org>
+>>>> Cc: Oscar Salvador <osalvador@suse.de>
+>>>> Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
+>>>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>>> Link: https://lore.kernel.org/r/20201112133815.13332-28-david@redhat.com
+>>>> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+>>>> Acked-by: Andrew Morton <akpm@linux-foundation.org>
+>>>> ---
+>>>>  mm/memory_hotplug.c | 105 +++++++++++++++++++++++++++++++++++++-------
+>>>>  1 file changed, 89 insertions(+), 16 deletions(-)
+>>>
+>>> As you forwarded this patch on, you too need to sign-off on it.
+>>
+>> Thanks for reminding me.
+>>
+>> Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
+>>
+>>>
+>>> Also, what is the git id of the commit in Linus's tree?
+>>
+>> Sorry, here is the commit in Linus's tree.
+>>
+>> commit 8dc4bb58a146655eb057247d7c9d19e73928715b upstream.
+> 
+> Please resend the change with both of these things fixed up, so I don't
+> have to manually do it :)
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x f1a0898b5d6a77d332d036da03bad6fa9770de5b
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061907-salami-everyday-f129@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+I have resend the patch but use the parent message id for in-reply-to.
 
-Possible dependencies:
+Sorry.
 
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From f1a0898b5d6a77d332d036da03bad6fa9770de5b Mon Sep 17 00:00:00 2001
-From: Hugh Dickins <hughd@google.com>
-Date: Fri, 9 Jun 2023 14:29:39 -0700
-Subject: [PATCH] wifi: iwlwifi: mvm: spin_lock_bh() to fix lockdep regression
-
-Lockdep on 6.4-rc on ThinkPad X1 Carbon 5th says
-=====================================================
-WARNING: SOFTIRQ-safe -> SOFTIRQ-unsafe lock order detected
-6.4.0-rc5 #1 Not tainted
------------------------------------------------------
-kworker/3:1/49 [HC0[0]:SC0[4]:HE1:SE0] is trying to acquire:
-ffff8881066fa368 (&mvm_sta->deflink.lq_sta.rs_drv.pers.lock){+.+.}-{2:2}, at: rs_drv_get_rate+0x46/0xe7
-
-and this task is already holding:
-ffff8881066f80a8 (&sta->rate_ctrl_lock){+.-.}-{2:2}, at: rate_control_get_rate+0xbd/0x126
-which would create a new lock dependency:
- (&sta->rate_ctrl_lock){+.-.}-{2:2} -> (&mvm_sta->deflink.lq_sta.rs_drv.pers.lock){+.+.}-{2:2}
-
-but this new dependency connects a SOFTIRQ-irq-safe lock:
- (&sta->rate_ctrl_lock){+.-.}-{2:2}
-etc. etc. etc.
-
-Changing the spin_lock() in rs_drv_get_rate() to spin_lock_bh() was not
-enough to pacify lockdep, but changing them all on pers.lock has worked.
-
-Fixes: a8938bc881d2 ("wifi: iwlwifi: mvm: Add locking to the rate read flow")
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Link: https://lore.kernel.org/r/79ffcc22-9775-cb6d-3ffd-1a517c40beef@google.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-index 23266d0c9ce4..9a20468345e4 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
-@@ -2692,7 +2692,7 @@ static void rs_drv_get_rate(void *mvm_r, struct ieee80211_sta *sta,
- 
- 	lq_sta = mvm_sta;
- 
--	spin_lock(&lq_sta->pers.lock);
-+	spin_lock_bh(&lq_sta->pers.lock);
- 	iwl_mvm_hwrate_to_tx_rate_v1(lq_sta->last_rate_n_flags,
- 				     info->band, &info->control.rates[0]);
- 	info->control.rates[0].count = 1;
-@@ -2707,7 +2707,7 @@ static void rs_drv_get_rate(void *mvm_r, struct ieee80211_sta *sta,
- 		iwl_mvm_hwrate_to_tx_rate_v1(last_ucode_rate, info->band,
- 					     &txrc->reported_rate);
- 	}
--	spin_unlock(&lq_sta->pers.lock);
-+	spin_unlock_bh(&lq_sta->pers.lock);
- }
- 
- static void *rs_drv_alloc_sta(void *mvm_rate, struct ieee80211_sta *sta,
-@@ -3264,11 +3264,11 @@ void iwl_mvm_rs_tx_status(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
- 	/* If it's locked we are in middle of init flow
- 	 * just wait for next tx status to update the lq_sta data
- 	 */
--	if (!spin_trylock(&mvmsta->deflink.lq_sta.rs_drv.pers.lock))
-+	if (!spin_trylock_bh(&mvmsta->deflink.lq_sta.rs_drv.pers.lock))
- 		return;
- 
- 	__iwl_mvm_rs_tx_status(mvm, sta, tid, info, ndp);
--	spin_unlock(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
-+	spin_unlock_bh(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
- }
- 
- #ifdef CONFIG_MAC80211_DEBUGFS
-@@ -4117,9 +4117,9 @@ void iwl_mvm_rs_rate_init(struct iwl_mvm *mvm,
- 	} else {
- 		struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
- 
--		spin_lock(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
-+		spin_lock_bh(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
- 		rs_drv_rate_init(mvm, sta, band);
--		spin_unlock(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
-+		spin_unlock_bh(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
- 	}
- }
- 
-
+> 
+> thanks,
+> 
+> greg k-h
