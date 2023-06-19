@@ -2,238 +2,176 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 290717354BF
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:58:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42E9073554D
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:03:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232030AbjFSK6t (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:58:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58768 "EHLO
+        id S232544AbjFSLD2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 07:03:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232317AbjFSK6c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:58:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84E8AB4
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:56:46 -0700 (PDT)
+        with ESMTP id S232588AbjFSLDB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:03:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6AFF1FD7
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:01:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1DCAA60B7F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:56:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 050D4C433C8;
-        Mon, 19 Jun 2023 10:56:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7282160B78
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:01:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 856C7C433C8;
+        Mon, 19 Jun 2023 11:01:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172205;
-        bh=HQdSa8ZT4EZx0uzXy0cPUWyzbGB5mAhaVRJrd/JqUzs=;
+        s=korg; t=1687172518;
+        bh=aRSuCT+cIEc5X4PGyUmAU09IARU6nytZnSErAucV+As=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AilA8c4qdHV7DbvARf4thtgii+QktqJzWd9kXvJCZX4CFD3ZG1/aXonLvcLhr2+0t
-         ouz6HmTQEWF6sPboL9NCZTEZ7bDJ1GtKWbF+RX2jNWZ9Sgz/ZLwRPy+bPPkL8JPKu8
-         K0ZlnkhyXQi0iZ5dcpl0j4GsOiP2YHrnConsEVps=
+        b=HK4AIjWhzu+AkppjG1MAqudBzlNFgpa9dF6RzbJNfnVNnjUY2tZK3Oco920EdBjnm
+         iIabmlesr3IqTw7J/jrlqNCDID8IyBgCcU4lYZEfJNRuipTHKHVUv/rSqqzHWDZ978
+         ImRbq79o0fQeyGG/L+ttwh73U68B6m5azEGiPlZc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mukesh Ojha <quic_mojha@quicinc.com>,
-        Ziwei Dai <ziwei.dai@unisoc.com>,
-        "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>
-Subject: [PATCH 5.10 75/89] rcu/kvfree: Avoid freeing new kfree_rcu() memory after old grace period
-Date:   Mon, 19 Jun 2023 12:31:03 +0200
-Message-ID: <20230619102141.680726056@linuxfoundation.org>
+        patches@lists.linux.dev, Sagi Grimberg <sagi@grimberg.me>,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
+        Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 080/107] IB/isert: Fix dead lock in ib_isert
+Date:   Mon, 19 Jun 2023 12:31:04 +0200
+Message-ID: <20230619102145.240466261@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,PDS_OTHER_BAD_TLD,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ziwei Dai <ziwei.dai@unisoc.com>
+From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
 
-commit 5da7cb193db32da783a3f3e77d8b639989321d48 upstream.
+[ Upstream commit 691b0480933f0ce88a81ed1d1a0aff340ff6293a ]
 
-Memory passed to kvfree_rcu() that is to be freed is tracked by a
-per-CPU kfree_rcu_cpu structure, which in turn contains pointers
-to kvfree_rcu_bulk_data structures that contain pointers to memory
-that has not yet been handed to RCU, along with an kfree_rcu_cpu_work
-structure that tracks the memory that has already been handed to RCU.
-These structures track three categories of memory: (1) Memory for
-kfree(), (2) Memory for kvfree(), and (3) Memory for both that arrived
-during an OOM episode.  The first two categories are tracked in a
-cache-friendly manner involving a dynamically allocated page of pointers
-(the aforementioned kvfree_rcu_bulk_data structures), while the third
-uses a simple (but decidedly cache-unfriendly) linked list through the
-rcu_head structures in each block of memory.
+- When a iSER session is released, ib_isert module is taking a mutex
+  lock and releasing all pending connections. As part of this, ib_isert
+  is destroying rdma cm_id. To destroy cm_id, rdma_cm module is sending
+  CM events to CMA handler of ib_isert. This handler is taking same
+  mutex lock. Hence it leads to deadlock between ib_isert & rdma_cm
+  modules.
 
-On a given CPU, these three categories are handled as a unit, with that
-CPU's kfree_rcu_cpu_work structure having one pointer for each of the
-three categories.  Clearly, new memory for a given category cannot be
-placed in the corresponding kfree_rcu_cpu_work structure until any old
-memory has had its grace period elapse and thus has been removed.  And
-the kfree_rcu_monitor() function does in fact check for this.
+- For fix, created local list of pending connections and release the
+  connection outside of mutex lock.
 
-Except that the kfree_rcu_monitor() function checks these pointers one
-at a time.  This means that if the previous kfree_rcu() memory passed
-to RCU had only category 1 and the current one has only category 2, the
-kfree_rcu_monitor() function will send that current category-2 memory
-along immediately.  This can result in memory being freed too soon,
-that is, out from under unsuspecting RCU readers.
+Calltrace:
+---------
+[ 1229.791410] INFO: task kworker/10:1:642 blocked for more than 120 seconds.
+[ 1229.791416]       Tainted: G           OE    --------- -  - 4.18.0-372.9.1.el8.x86_64 #1
+[ 1229.791418] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[ 1229.791419] task:kworker/10:1    state:D stack:    0 pid:  642 ppid:     2 flags:0x80004000
+[ 1229.791424] Workqueue: ib_cm cm_work_handler [ib_cm]
+[ 1229.791436] Call Trace:
+[ 1229.791438]  __schedule+0x2d1/0x830
+[ 1229.791445]  ? select_idle_sibling+0x23/0x6f0
+[ 1229.791449]  schedule+0x35/0xa0
+[ 1229.791451]  schedule_preempt_disabled+0xa/0x10
+[ 1229.791453]  __mutex_lock.isra.7+0x310/0x420
+[ 1229.791456]  ? select_task_rq_fair+0x351/0x990
+[ 1229.791459]  isert_cma_handler+0x224/0x330 [ib_isert]
+[ 1229.791463]  ? ttwu_queue_wakelist+0x159/0x170
+[ 1229.791466]  cma_cm_event_handler+0x25/0xd0 [rdma_cm]
+[ 1229.791474]  cma_ib_handler+0xa7/0x2e0 [rdma_cm]
+[ 1229.791478]  cm_process_work+0x22/0xf0 [ib_cm]
+[ 1229.791483]  cm_work_handler+0xf4/0xf30 [ib_cm]
+[ 1229.791487]  ? move_linked_works+0x6e/0xa0
+[ 1229.791490]  process_one_work+0x1a7/0x360
+[ 1229.791491]  ? create_worker+0x1a0/0x1a0
+[ 1229.791493]  worker_thread+0x30/0x390
+[ 1229.791494]  ? create_worker+0x1a0/0x1a0
+[ 1229.791495]  kthread+0x10a/0x120
+[ 1229.791497]  ? set_kthread_struct+0x40/0x40
+[ 1229.791499]  ret_from_fork+0x1f/0x40
 
-To see this, consider the following sequence of events, in which:
+[ 1229.791739] INFO: task targetcli:28666 blocked for more than 120 seconds.
+[ 1229.791740]       Tainted: G           OE    --------- -  - 4.18.0-372.9.1.el8.x86_64 #1
+[ 1229.791741] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[ 1229.791742] task:targetcli       state:D stack:    0 pid:28666 ppid:  5510 flags:0x00004080
+[ 1229.791743] Call Trace:
+[ 1229.791744]  __schedule+0x2d1/0x830
+[ 1229.791746]  schedule+0x35/0xa0
+[ 1229.791748]  schedule_preempt_disabled+0xa/0x10
+[ 1229.791749]  __mutex_lock.isra.7+0x310/0x420
+[ 1229.791751]  rdma_destroy_id+0x15/0x20 [rdma_cm]
+[ 1229.791755]  isert_connect_release+0x115/0x130 [ib_isert]
+[ 1229.791757]  isert_free_np+0x87/0x140 [ib_isert]
+[ 1229.791761]  iscsit_del_np+0x74/0x120 [iscsi_target_mod]
+[ 1229.791776]  lio_target_np_driver_store+0xe9/0x140 [iscsi_target_mod]
+[ 1229.791784]  configfs_write_file+0xb2/0x110
+[ 1229.791788]  vfs_write+0xa5/0x1a0
+[ 1229.791792]  ksys_write+0x4f/0xb0
+[ 1229.791794]  do_syscall_64+0x5b/0x1a0
+[ 1229.791798]  entry_SYSCALL_64_after_hwframe+0x65/0xca
 
-o	Task A on CPU 0 calls rcu_read_lock(), then uses "from_cset",
-	then is preempted.
-
-o	CPU 1 calls kfree_rcu(cset, rcu_head) in order to free "from_cset"
-	after a later grace period.  Except that "from_cset" is freed
-	right after the previous grace period ended, so that "from_cset"
-	is immediately freed.  Task A resumes and references "from_cset"'s
-	member, after which nothing good happens.
-
-In full detail:
-
-CPU 0					CPU 1
-----------------------			----------------------
-count_memcg_event_mm()
-|rcu_read_lock()  <---
-|mem_cgroup_from_task()
- |// css_set_ptr is the "from_cset" mentioned on CPU 1
- |css_set_ptr = rcu_dereference((task)->cgroups)
- |// Hard irq comes, current task is scheduled out.
-
-					cgroup_attach_task()
-					|cgroup_migrate()
-					|cgroup_migrate_execute()
-					|css_set_move_task(task, from_cset, to_cset, true)
-					|cgroup_move_task(task, to_cset)
-					|rcu_assign_pointer(.., to_cset)
-					|...
-					|cgroup_migrate_finish()
-					|put_css_set_locked(from_cset)
-					|from_cset->refcount return 0
-					|kfree_rcu(cset, rcu_head) // free from_cset after new gp
-					|add_ptr_to_bulk_krc_lock()
-					|schedule_delayed_work(&krcp->monitor_work, ..)
-
-					kfree_rcu_monitor()
-					|krcp->bulk_head[0]'s work attached to krwp->bulk_head_free[]
-					|queue_rcu_work(system_wq, &krwp->rcu_work)
-					|if rwork->rcu.work is not in WORK_STRUCT_PENDING_BIT state,
-					|call_rcu(&rwork->rcu, rcu_work_rcufn) <--- request new gp
-
-					// There is a perious call_rcu(.., rcu_work_rcufn)
-					// gp end, rcu_work_rcufn() is called.
-					rcu_work_rcufn()
-					|__queue_work(.., rwork->wq, &rwork->work);
-
-					|kfree_rcu_work()
-					|krwp->bulk_head_free[0] bulk is freed before new gp end!!!
-					|The "from_cset" is freed before new gp end.
-
-// the task resumes some time later.
- |css_set_ptr->subsys[(subsys_id) <--- Caused kernel crash, because css_set_ptr is freed.
-
-This commit therefore causes kfree_rcu_monitor() to refrain from moving
-kfree_rcu() memory to the kfree_rcu_cpu_work structure until the RCU
-grace period has completed for all three categories.
-
-v2: Use helper function instead of inserted code block at kfree_rcu_monitor().
-
-Fixes: 34c881745549 ("rcu: Support kfree_bulk() interface in kfree_rcu()")
-Fixes: 5f3c8d620447 ("rcu/tree: Maintain separate array for vmalloc ptrs")
-Reported-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Signed-off-by: Ziwei Dai <ziwei.dai@unisoc.com>
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Tested-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bd3792205aae ("iser-target: Fix pending connections handling in target stack shutdown sequnce")
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Link: https://lore.kernel.org/r/20230606102531.162967-2-saravanan.vajravel@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tree.c |   49 +++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 35 insertions(+), 14 deletions(-)
+ drivers/infiniband/ulp/isert/ib_isert.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -3281,6 +3281,30 @@ static void kfree_rcu_work(struct work_s
- 	}
- }
+diff --git a/drivers/infiniband/ulp/isert/ib_isert.c b/drivers/infiniband/ulp/isert/ib_isert.c
+index 636d590765f95..fbee14c8f6116 100644
+--- a/drivers/infiniband/ulp/isert/ib_isert.c
++++ b/drivers/infiniband/ulp/isert/ib_isert.c
+@@ -2431,6 +2431,7 @@ isert_free_np(struct iscsi_np *np)
+ {
+ 	struct isert_np *isert_np = np->np_context;
+ 	struct isert_conn *isert_conn, *n;
++	LIST_HEAD(drop_conn_list);
  
-+static bool
-+need_offload_krc(struct kfree_rcu_cpu *krcp)
-+{
-+	int i;
-+
-+	for (i = 0; i < FREE_N_CHANNELS; i++)
-+		if (krcp->bkvhead[i])
-+			return true;
-+
-+	return !!krcp->head;
-+}
-+
-+static bool
-+need_wait_for_krwp_work(struct kfree_rcu_cpu_work *krwp)
-+{
-+	int i;
-+
-+	for (i = 0; i < FREE_N_CHANNELS; i++)
-+		if (krwp->bkvhead_free[i])
-+			return true;
-+
-+	return !!krwp->head_free;
-+}
-+
- /*
-  * Schedule the kfree batch RCU work to run in workqueue context after a GP.
-  *
-@@ -3298,16 +3322,13 @@ static inline bool queue_kfree_rcu_work(
- 	for (i = 0; i < KFREE_N_BATCHES; i++) {
- 		krwp = &(krcp->krw_arr[i]);
- 
--		/*
--		 * Try to detach bkvhead or head and attach it over any
--		 * available corresponding free channel. It can be that
--		 * a previous RCU batch is in progress, it means that
--		 * immediately to queue another one is not possible so
--		 * return false to tell caller to retry.
--		 */
--		if ((krcp->bkvhead[0] && !krwp->bkvhead_free[0]) ||
--			(krcp->bkvhead[1] && !krwp->bkvhead_free[1]) ||
--				(krcp->head && !krwp->head_free)) {
-+		// Try to detach bulk_head or head and attach it, only when
-+		// all channels are free.  Any channel is not free means at krwp
-+		// there is on-going rcu work to handle krwp's free business.
-+		if (need_wait_for_krwp_work(krwp))
-+			continue;
-+
-+		if (need_offload_krc(krcp)) {
- 			// Channel 1 corresponds to SLAB ptrs.
- 			// Channel 2 corresponds to vmalloc ptrs.
- 			for (j = 0; j < FREE_N_CHANNELS; j++) {
-@@ -3334,12 +3355,12 @@ static inline bool queue_kfree_rcu_work(
- 			 */
- 			queue_rcu_work(system_wq, &krwp->rcu_work);
+ 	if (isert_np->cm_id)
+ 		rdma_destroy_id(isert_np->cm_id);
+@@ -2450,7 +2451,7 @@ isert_free_np(struct iscsi_np *np)
+ 					 node) {
+ 			isert_info("cleaning isert_conn %p state (%d)\n",
+ 				   isert_conn, isert_conn->state);
+-			isert_connect_release(isert_conn);
++			list_move_tail(&isert_conn->node, &drop_conn_list);
  		}
--
--		// Repeat if any "free" corresponding channel is still busy.
--		if (krcp->bkvhead[0] || krcp->bkvhead[1] || krcp->head)
--			repeat = true;
  	}
  
-+	// Repeat if any "free" corresponding channel is still busy.
-+	if (need_offload_krc(krcp))
-+		repeat = true;
-+
- 	return !repeat;
- }
+@@ -2461,11 +2462,16 @@ isert_free_np(struct iscsi_np *np)
+ 					 node) {
+ 			isert_info("cleaning isert_conn %p state (%d)\n",
+ 				   isert_conn, isert_conn->state);
+-			isert_connect_release(isert_conn);
++			list_move_tail(&isert_conn->node, &drop_conn_list);
+ 		}
+ 	}
+ 	mutex_unlock(&isert_np->mutex);
  
++	list_for_each_entry_safe(isert_conn, n, &drop_conn_list, node) {
++		list_del_init(&isert_conn->node);
++		isert_connect_release(isert_conn);
++	}
++
+ 	np->np_context = NULL;
+ 	kfree(isert_np);
+ }
+-- 
+2.39.2
+
 
 
