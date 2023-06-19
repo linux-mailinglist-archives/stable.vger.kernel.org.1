@@ -2,48 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EB4773529E
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:36:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A0B3735371
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:45:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230461AbjFSKgs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:36:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42174 "EHLO
+        id S229967AbjFSKpq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:45:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231650AbjFSKg3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:36:29 -0400
+        with ESMTP id S231561AbjFSKpX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:45:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 307F51722
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:36:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16AA6172C
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:44:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A162B60B6D
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:36:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFFC9C433C0;
-        Mon, 19 Jun 2023 10:36:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A647F60B86
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:44:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B83C433C0;
+        Mon, 19 Jun 2023 10:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687170983;
-        bh=FDlPLZ11yp7rdcLQZ4Yrhjuclb2oiXsUBqeB06nAucg=;
+        s=korg; t=1687171487;
+        bh=99xfb4tsifNZoI9PtdgAdNnaeBeuGeNVgfM4kUZfT00=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KS96nbkrhMi5e3jk/Yya9hjh2y9Hw/R6JGWVJiPM+w/Ch3Es3mITc3qJPH66KO0Lh
-         1pV6qMZOS2qgRVVs//59Vy7zaMJnhc3Fhd4yyEaS2zdgfAJ/j2yqSymJO/vIakTmaa
-         564RvUkqgLTdMbPv2EH8WDZN2+hEP/WegbV2zxZ8=
+        b=WOQuzv5LSVEvYN7a9gu5wMopZ2WUz7dQApxYdDpBE1FQIbq1nGoAfr0h4cKJY7NvA
+         34BFHBDmY5UjKi1Q2RCRG/V+Bu9WYczOz/JQRRL5t1hAMBfce+gpaWt7BIq1ZBp1Od
+         mKrk1nHPRAfEyXcW8DNdndSsd7Joh+4a/nFqeXWg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Li Jun <jun.li@nxp.com>,
-        Sandeep Maheswaram <quic_c_sanm@quicinc.com>,
-        Krishna Kurapati <quic_kriskura@quicinc.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.3 106/187] USB: dwc3: fix use-after-free on core driver unbind
-Date:   Mon, 19 Jun 2023 12:28:44 +0200
-Message-ID: <20230619102202.704334031@linuxfoundation.org>
+        patches@lists.linux.dev, Nhat Pham <nphamcs@gmail.com>,
+        Dan Streetman <ddstreet@ieee.org>,
+        Domenico Cerasuolo <cerasuolodomenico@gmail.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Seth Jennings <sjenning@redhat.com>,
+        Vitaly Wool <vitaly.wool@konsulko.com>,
+        Yosry Ahmed <yosryahmed@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 048/166] zswap: do not shrink if cgroup may not zswap
+Date:   Mon, 19 Jun 2023 12:28:45 +0200
+Message-ID: <20230619102157.059210586@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,47 +60,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Nhat Pham <nphamcs@gmail.com>
 
-commit e3dbb657571509044be15184a13134fa7c1fdca1 upstream.
+commit 0bdf0efa180a9cb1361cbded4e2260a49306ac89 upstream.
 
-Some dwc3 glue drivers are currently accessing the driver data of the
-child core device directly, which is clearly a bad idea as the child may
-not have probed yet or may have been unbound from its driver.
+Before storing a page, zswap first checks if the number of stored pages
+exceeds the limit specified by memory.zswap.max, for each cgroup in the
+hierarchy.  If this limit is reached or exceeded, then zswap shrinking is
+triggered and short-circuits the store attempt.
 
-As a workaround until the glue drivers have been fixed, clear the driver
-data pointer before allowing the glue parent device to runtime suspend
-to prevent its driver from accessing data that has been freed during
-unbind.
+However, since the zswap's LRU is not memcg-aware, this can create the
+following pathological behavior: the cgroup whose zswap limit is 0 will
+evict pages from other cgroups continually, without lowering its own zswap
+usage.  This means the shrinking will continue until the need for swap
+ceases or the pool becomes empty.
 
-Fixes: 6dd2565989b4 ("usb: dwc3: add imx8mp dwc3 glue layer driver")
-Fixes: 6895ea55c385 ("usb: dwc3: qcom: Configure wakeup interrupts during suspend")
-Cc: stable@vger.kernel.org      # 5.12
-Cc: Li Jun <jun.li@nxp.com>
-Cc: Sandeep Maheswaram <quic_c_sanm@quicinc.com>
-Cc: Krishna Kurapati <quic_kriskura@quicinc.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Message-ID: <20230607100540.31045-3-johan+linaro@kernel.org>
+As a result of this, we observe a disproportionate amount of zswap
+writeback and a perpetually small zswap pool in our experiments, even
+though the pool limit is never hit.
+
+More generally, a cgroup might unnecessarily evict pages from other
+cgroups before we drive the memcg back below its limit.
+
+This patch fixes the issue by rejecting zswap store attempt without
+shrinking the pool when obj_cgroup_may_zswap() returns false.
+
+[akpm@linux-foundation.org: fix return of unintialized value]
+[akpm@linux-foundation.org: s/ENOSPC/ENOMEM/]
+Link: https://lkml.kernel.org/r/20230530222440.2777700-1-nphamcs@gmail.com
+Link: https://lkml.kernel.org/r/20230530232435.3097106-1-nphamcs@gmail.com
+Fixes: f4840ccfca25 ("zswap: memcg accounting")
+Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+Cc: Dan Streetman <ddstreet@ieee.org>
+Cc: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Seth Jennings <sjenning@redhat.com>
+Cc: Vitaly Wool <vitaly.wool@konsulko.com>
+Cc: Yosry Ahmed <yosryahmed@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ mm/zswap.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -1982,6 +1982,11 @@ static int dwc3_remove(struct platform_d
- 	pm_runtime_allow(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_put_noidle(&pdev->dev);
-+	/*
-+	 * HACK: Clear the driver data, which is currently accessed by parent
-+	 * glue drivers, before allowing the parent to suspend.
-+	 */
-+	platform_set_drvdata(pdev, NULL);
- 	pm_runtime_set_suspended(&pdev->dev);
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1138,9 +1138,16 @@ static int zswap_frontswap_store(unsigne
+ 		goto reject;
+ 	}
  
- 	dwc3_free_event_buffers(dwc);
++	/*
++	 * XXX: zswap reclaim does not work with cgroups yet. Without a
++	 * cgroup-aware entry LRU, we will push out entries system-wide based on
++	 * local cgroup limits.
++	 */
+ 	objcg = get_obj_cgroup_from_page(page);
+-	if (objcg && !obj_cgroup_may_zswap(objcg))
+-		goto shrink;
++	if (objcg && !obj_cgroup_may_zswap(objcg)) {
++		ret = -ENOMEM;
++		goto reject;
++	}
+ 
+ 	/* reclaim space if needed */
+ 	if (zswap_is_full()) {
 
 
