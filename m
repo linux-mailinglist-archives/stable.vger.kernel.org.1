@@ -2,47 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADBE07352EF
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:40:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4861473548D
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:57:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231980AbjFSKkY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:40:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45694 "EHLO
+        id S232435AbjFSK5R (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:57:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232027AbjFSKkD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:40:03 -0400
+        with ESMTP id S232285AbjFSK4t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:56:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EE2310C8
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:39:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACC322130
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:54:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F47360B51
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:39:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF574C433C8;
-        Mon, 19 Jun 2023 10:39:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1098A60A05
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:54:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2453DC433C0;
+        Mon, 19 Jun 2023 10:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171183;
-        bh=tXhMCFxisL2fE5Uqh9W7TnU3c8I2hYeSlTnHeVSr16k=;
+        s=korg; t=1687172089;
+        bh=Jj7/taZxg+vvICvOCVSFMV/z/mqQxzQLpDREw3YEcVQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0Dr8FJLO2EAAPBSnbCJN2sesXZRYUkCDWdzlntRoefFGjTdkjWeJBqX+AIHQDnj65
-         0+8fPYVfUPZ0x5yrJJuta6T//6j/9SYE9EvrxhVYer7gAkkKjXMnlL0gJPjsWUT3FS
-         MyKzmFVQVWKNtI+ZGQFPVV4FRd9Y8Gz5C9RPDM1w=
+        b=PSjLFoDpWQ4PDZPJ4EkzL7EMh4cnWf4UMhYCuTeDlzCmshRWMW+a7VmgddfAYnYzH
+         RD0RExNd2cHZTDBKcvVJpd4QhJAnrMuy2UPRUPk3ybG3hM+Gv3wVAVINqMtdeV6Cec
+         wYxb3m2jG8U4vY+4snTGdexTeiLw/rm0W9Lk0cCI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yanghang Liu <yanghliu@redhat.com>,
-        =?UTF-8?q?=C3=8D=C3=B1igo=20Huguet?= <ihuguet@redhat.com>,
-        Martin Habets <habetsm.xilinx@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Orson Zhai <orsonzhai@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 177/187] sfc: fix XDP queues mode with legacy IRQ
+Subject: [PATCH 5.10 07/89] power: supply: sc27xx: Fix external_power_changed race
 Date:   Mon, 19 Jun 2023 12:29:55 +0200
-Message-ID: <20230619102206.245430575@linuxfoundation.org>
+Message-ID: <20230619102138.626243791@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,85 +58,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Íñigo Huguet <ihuguet@redhat.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit e84a1e1e683f3558e30f437d7c99df35afb8b52c ]
+[ Upstream commit 4d5c129d6c8993fe96e9ae712141eedcb9ca68c2 ]
 
-In systems without MSI-X capabilities, xdp_txq_queues_mode is calculated
-in efx_allocate_msix_channels, but when enabling MSI-X fails, it was not
-changed to a proper default value. This was leading to the driver
-thinking that it has dedicated XDP queues, when it didn't.
+sc27xx_fgu_external_power_changed() dereferences data->battery,
+which gets sets in ab8500_btemp_probe() like this:
 
-Fix it by setting xdp_txq_queues_mode to the correct value if the driver
-fallbacks to MSI or legacy IRQ mode. The correct value is
-EFX_XDP_TX_QUEUES_BORROWED because there are no XDP dedicated queues.
+	data->battery = devm_power_supply_register(dev, &sc27xx_fgu_desc,
+                                                   &fgu_cfg);
 
-The issue can be easily visible if the kernel is started with pci=nomsi,
-then a call trace is shown. It is not shown only with sfc's modparam
-interrupt_mode=2. Call trace example:
- WARNING: CPU: 2 PID: 663 at drivers/net/ethernet/sfc/efx_channels.c:828 efx_set_xdp_channels+0x124/0x260 [sfc]
- [...skip...]
- Call Trace:
-  <TASK>
-  efx_set_channels+0x5c/0xc0 [sfc]
-  efx_probe_nic+0x9b/0x15a [sfc]
-  efx_probe_all+0x10/0x1a2 [sfc]
-  efx_pci_probe_main+0x12/0x156 [sfc]
-  efx_pci_probe_post_io+0x18/0x103 [sfc]
-  efx_pci_probe.cold+0x154/0x257 [sfc]
-  local_pci_probe+0x42/0x80
+As soon as devm_power_supply_register() has called device_add()
+the external_power_changed callback can get called. So there is a window
+where sc27xx_fgu_external_power_changed() may get called while
+data->battery has not been set yet leading to a NULL pointer dereference.
 
-Fixes: 6215b608a8c4 ("sfc: last resort fallback for lack of xdp tx queues")
-Reported-by: Yanghang Liu <yanghliu@redhat.com>
-Signed-off-by: Íñigo Huguet <ihuguet@redhat.com>
-Acked-by: Martin Habets <habetsm.xilinx@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixing this is easy. The external_power_changed callback gets passed
+the power_supply which will eventually get stored in data->battery,
+so sc27xx_fgu_external_power_changed() can simply directly use
+the passed in psy argument which is always valid.
+
+After this change sc27xx_fgu_external_power_changed() is reduced to just
+"power_supply_changed(psy);" and it has the same prototype. While at it
+simply replace it with making the external_power_changed callback
+directly point to power_supply_changed.
+
+Cc: Orson Zhai <orsonzhai@gmail.com>
+Cc: Chunyan Zhang <zhang.lyra@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/sfc/efx_channels.c       | 2 ++
- drivers/net/ethernet/sfc/siena/efx_channels.c | 2 ++
- 2 files changed, 4 insertions(+)
+ drivers/power/supply/sc27xx_fuel_gauge.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/sfc/efx_channels.c b/drivers/net/ethernet/sfc/efx_channels.c
-index fcea3ea809d77..41b33a75333cd 100644
---- a/drivers/net/ethernet/sfc/efx_channels.c
-+++ b/drivers/net/ethernet/sfc/efx_channels.c
-@@ -301,6 +301,7 @@ int efx_probe_interrupts(struct efx_nic *efx)
- 		efx->tx_channel_offset = 0;
- 		efx->n_xdp_channels = 0;
- 		efx->xdp_channel_offset = efx->n_channels;
-+		efx->xdp_txq_queues_mode = EFX_XDP_TX_QUEUES_BORROWED;
- 		rc = pci_enable_msi(efx->pci_dev);
- 		if (rc == 0) {
- 			efx_get_channel(efx, 0)->irq = efx->pci_dev->irq;
-@@ -322,6 +323,7 @@ int efx_probe_interrupts(struct efx_nic *efx)
- 		efx->tx_channel_offset = efx_separate_tx_channels ? 1 : 0;
- 		efx->n_xdp_channels = 0;
- 		efx->xdp_channel_offset = efx->n_channels;
-+		efx->xdp_txq_queues_mode = EFX_XDP_TX_QUEUES_BORROWED;
- 		efx->legacy_irq = efx->pci_dev->irq;
- 	}
+diff --git a/drivers/power/supply/sc27xx_fuel_gauge.c b/drivers/power/supply/sc27xx_fuel_gauge.c
+index 1ae8374e1cebe..3bf4b263950d7 100644
+--- a/drivers/power/supply/sc27xx_fuel_gauge.c
++++ b/drivers/power/supply/sc27xx_fuel_gauge.c
+@@ -733,13 +733,6 @@ static int sc27xx_fgu_set_property(struct power_supply *psy,
+ 	return ret;
+ }
  
-diff --git a/drivers/net/ethernet/sfc/siena/efx_channels.c b/drivers/net/ethernet/sfc/siena/efx_channels.c
-index 06ed74994e366..1776f7f8a7a90 100644
---- a/drivers/net/ethernet/sfc/siena/efx_channels.c
-+++ b/drivers/net/ethernet/sfc/siena/efx_channels.c
-@@ -302,6 +302,7 @@ int efx_siena_probe_interrupts(struct efx_nic *efx)
- 		efx->tx_channel_offset = 0;
- 		efx->n_xdp_channels = 0;
- 		efx->xdp_channel_offset = efx->n_channels;
-+		efx->xdp_txq_queues_mode = EFX_XDP_TX_QUEUES_BORROWED;
- 		rc = pci_enable_msi(efx->pci_dev);
- 		if (rc == 0) {
- 			efx_get_channel(efx, 0)->irq = efx->pci_dev->irq;
-@@ -323,6 +324,7 @@ int efx_siena_probe_interrupts(struct efx_nic *efx)
- 		efx->tx_channel_offset = efx_siena_separate_tx_channels ? 1 : 0;
- 		efx->n_xdp_channels = 0;
- 		efx->xdp_channel_offset = efx->n_channels;
-+		efx->xdp_txq_queues_mode = EFX_XDP_TX_QUEUES_BORROWED;
- 		efx->legacy_irq = efx->pci_dev->irq;
- 	}
- 
+-static void sc27xx_fgu_external_power_changed(struct power_supply *psy)
+-{
+-	struct sc27xx_fgu_data *data = power_supply_get_drvdata(psy);
+-
+-	power_supply_changed(data->battery);
+-}
+-
+ static int sc27xx_fgu_property_is_writeable(struct power_supply *psy,
+ 					    enum power_supply_property psp)
+ {
+@@ -774,7 +767,7 @@ static const struct power_supply_desc sc27xx_fgu_desc = {
+ 	.num_properties		= ARRAY_SIZE(sc27xx_fgu_props),
+ 	.get_property		= sc27xx_fgu_get_property,
+ 	.set_property		= sc27xx_fgu_set_property,
+-	.external_power_changed	= sc27xx_fgu_external_power_changed,
++	.external_power_changed	= power_supply_changed,
+ 	.property_is_writeable	= sc27xx_fgu_property_is_writeable,
+ 	.no_thermal		= true,
+ };
 -- 
 2.39.2
 
