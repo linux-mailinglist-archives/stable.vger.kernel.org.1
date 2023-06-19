@@ -2,42 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EE1B734C95
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 09:44:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40548734CA3
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 09:46:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229678AbjFSHoV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 03:44:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38988 "EHLO
+        id S229730AbjFSHqo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 03:46:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230027AbjFSHny (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 03:43:54 -0400
+        with ESMTP id S229448AbjFSHqo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 03:46:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A8CB10C7
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 00:43:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ADF71B4
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 00:46:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 026376153C
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 07:43:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD4DC433C9;
-        Mon, 19 Jun 2023 07:43:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EAEFE60E93
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 07:46:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F7CC433CA;
+        Mon, 19 Jun 2023 07:46:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687160632;
-        bh=wrdnHeiIBf5wltDoVrP78G5OlKp2mh5WWrexgJeHuLE=;
-        h=Subject:To:Cc:From:Date:From;
-        b=rMe7geUxAGTOY5BNA3iAYJkguk+KQ3F7f3gHuZT78z/bcQpNzXfdFXiis/+euFJJS
-         E/nV0NoE9C4p63MPhpavwEqGkmaGUmUsqy0qmhg1wsI6yyACr49JQe7HSvObjT8OVp
-         K2VuDryNRPEH91VGcyNP+oPuAcsF59tUTsuA0NWY=
-Subject: FAILED: patch "[PATCH] netfilter: nf_tables: incorrect error path handling with" failed to apply to 4.14-stable tree
-To:     pablo@netfilter.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 19 Jun 2023 09:43:40 +0200
-Message-ID: <2023061939-sprout-jujitsu-b6a0@gregkh>
+        s=korg; t=1687160802;
+        bh=Kfuh1AL0YNzxZl8XN6Rmak939iAX5fuq/O1ymHjSIsU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=LDT7MhBUqvK94b1nSgONlojg10FJiGnOw2KWpoXJoVCuJOC/fjtAGhOAJSZVIwhZF
+         3z+75mlFJYCidAh5ciyculSbPzFVe7NJg1sse2TCGE6dpTNxexwKnSypVvVwM1r//9
+         lZUqFMvb25PqQK185WDNfx4gHLFKUYqkxi6qAjD0=
+Date:   Mon, 19 Jun 2023 09:46:38 +0200
+From:   "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Christian Loehle <CLoehle@hyperstone.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] mmc: block: ensure error propagation for non-blk
+Message-ID: <2023061927-shrubbery-presuming-5480@gregkh>
+References: <4f6724fd4c60476786a31bcbbf663ccb@hyperstone.com>
+ <CAPDyKFq8Q4J3=udE2=VXAfWZhvJuOYJ=4N9B6NFWUys8oxvb3Q@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFq8Q4J3=udE2=VXAfWZhvJuOYJ=4N9B6NFWUys8oxvb3Q@mail.gmail.com>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -48,94 +52,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Wed, Jun 14, 2023 at 12:20:39PM +0200, Ulf Hansson wrote:
+> On Tue, 13 Jun 2023 at 14:43, Christian Loehle <CLoehle@hyperstone.com> wrote:
+> >
+> > commit 003fb0a51162d940f25fc35e70b0996a12c9e08a upstream.
+> >
+> > Requests to the mmc layer usually come through a block device IO.
+> > The exceptions are the ioctl interface, RPMB chardev ioctl
+> > and debugfs, which issue their own blk_mq requests through
+> > blk_execute_rq and do not query the BLK_STS error but the
+> > mmcblk-internal drv_op_result. This patch ensures that drv_op_result
+> > defaults to an error and has to be overwritten by the operation
+> > to be considered successful.
+> >
+> > The behavior leads to a bug where the request never propagates
+> > the error, e.g. by directly erroring out at mmc_blk_mq_issue_rq if
+> > mmc_blk_part_switch fails. The ioctl caller of the rpmb chardev then
+> > can never see an error (BLK_STS_IOERR, but drv_op_result is unchanged)
+> > and thus may assume that their call executed successfully when it did not.
+> >
+> > While always checking the blk_execute_rq return value would be
+> > advised, let's eliminate the error by always setting
+> > drv_op_result as -EIO to be overwritten on success (or other error)
+> >
+> > Fixes: 614f0388f580 ("mmc: block: move single ioctl() commands to block requests")
+> > Signed-off-by: Christian Loehle <cloehle@hyperstone.com>
+> 
+> Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
+> 
 
-The patch below does not apply to the 4.14-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
-git checkout FETCH_HEAD
-git cherry-pick -x 1240eb93f0616b21c675416516ff3d74798fdc97
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061939-sprout-jujitsu-b6a0@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
+All now queued up, thanks.
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 1240eb93f0616b21c675416516ff3d74798fdc97 Mon Sep 17 00:00:00 2001
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-Date: Thu, 8 Jun 2023 02:32:02 +0200
-Subject: [PATCH] netfilter: nf_tables: incorrect error path handling with
- NFT_MSG_NEWRULE
-
-In case of error when adding a new rule that refers to an anonymous set,
-deactivate expressions via NFT_TRANS_PREPARE state, not NFT_TRANS_RELEASE.
-Thus, the lookup expression marks anonymous sets as inactive in the next
-generation to ensure it is not reachable in this transaction anymore and
-decrement the set refcount as introduced by c1592a89942e ("netfilter:
-nf_tables: deactivate anonymous set from preparation phase"). The abort
-step takes care of undoing the anonymous set.
-
-This is also consistent with rule deletion, where NFT_TRANS_PREPARE is
-used. Note that this error path is exercised in the preparation step of
-the commit protocol. This patch replaces nf_tables_rule_release() by the
-deactivate and destroy calls, this time with NFT_TRANS_PREPARE.
-
-Due to this incorrect error handling, it is possible to access a
-dangling pointer to the anonymous set that remains in the transaction
-list.
-
-[1009.379054] BUG: KASAN: use-after-free in nft_set_lookup_global+0x147/0x1a0 [nf_tables]
-[1009.379106] Read of size 8 at addr ffff88816c4c8020 by task nft-rule-add/137110
-[1009.379116] CPU: 7 PID: 137110 Comm: nft-rule-add Not tainted 6.4.0-rc4+ #256
-[1009.379128] Call Trace:
-[1009.379132]  <TASK>
-[1009.379135]  dump_stack_lvl+0x33/0x50
-[1009.379146]  ? nft_set_lookup_global+0x147/0x1a0 [nf_tables]
-[1009.379191]  print_address_description.constprop.0+0x27/0x300
-[1009.379201]  kasan_report+0x107/0x120
-[1009.379210]  ? nft_set_lookup_global+0x147/0x1a0 [nf_tables]
-[1009.379255]  nft_set_lookup_global+0x147/0x1a0 [nf_tables]
-[1009.379302]  nft_lookup_init+0xa5/0x270 [nf_tables]
-[1009.379350]  nf_tables_newrule+0x698/0xe50 [nf_tables]
-[1009.379397]  ? nf_tables_rule_release+0xe0/0xe0 [nf_tables]
-[1009.379441]  ? kasan_unpoison+0x23/0x50
-[1009.379450]  nfnetlink_rcv_batch+0x97c/0xd90 [nfnetlink]
-[1009.379470]  ? nfnetlink_rcv_msg+0x480/0x480 [nfnetlink]
-[1009.379485]  ? __alloc_skb+0xb8/0x1e0
-[1009.379493]  ? __alloc_skb+0xb8/0x1e0
-[1009.379502]  ? entry_SYSCALL_64_after_hwframe+0x46/0xb0
-[1009.379509]  ? unwind_get_return_address+0x2a/0x40
-[1009.379517]  ? write_profile+0xc0/0xc0
-[1009.379524]  ? avc_lookup+0x8f/0xc0
-[1009.379532]  ? __rcu_read_unlock+0x43/0x60
-
-Fixes: 958bee14d071 ("netfilter: nf_tables: use new transaction infrastructure to handle sets")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 3bb0800b3849..69bceefaa5c8 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3844,7 +3844,8 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
- 	if (flow)
- 		nft_flow_rule_destroy(flow);
- err_release_rule:
--	nf_tables_rule_release(&ctx, rule);
-+	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE);
-+	nf_tables_rule_destroy(&ctx, rule);
- err_release_expr:
- 	for (i = 0; i < n; i++) {
- 		if (expr_info[i].ops) {
-
