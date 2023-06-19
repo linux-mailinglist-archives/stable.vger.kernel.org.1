@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1611735488
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:56:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA9E87353FF
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:51:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232286AbjFSK44 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:56:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58198 "EHLO
+        id S232294AbjFSKvJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:51:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232290AbjFSK40 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:56:26 -0400
+        with ESMTP id S232142AbjFSKua (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:50:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5D90B9
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:54:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF86C1BEE
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:50:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6AA6460B89
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:54:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BC23C433C8;
-        Mon, 19 Jun 2023 10:54:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DE3E60B5B
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:50:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83020C433C8;
+        Mon, 19 Jun 2023 10:50:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172072;
-        bh=kFJhTZ9+oXdU21YMdmh0LIx6yZn7YVMk1DiCeyEIBPY=;
+        s=korg; t=1687171800;
+        bh=st9s7eaSd1f32g4PxDRxrIgd5GWNyJHZCigDb4hdYYc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bM1NDLoU+baiUetdQPS8RCLDKNPcJQM4+jPaZKepzeI9e7oc6uNDgKzI26Tok2fIq
-         DxHi07TltCfxAiJw2shkj3zB3DPtQPlwo8kJy0mKVoMOGK7gTPR0wdaYlJ0J4gDnz+
-         xmM7xdVBq+MZJX6SovxD/xf0o52PV9MwSg8BBRc4=
+        b=bzCjb19U8lhXMU8ptphF/tSRBSQdD592cYemsGYbIH8aP0MMt20a+j4uLwA4wcAWz
+         eqZmomFb0f3/5VvGmr0GsJ6T6h2FQ0tNvVYniwc9oDbOQ2JApiTvqwgqJ66Y0cKVRJ
+         AW9xMhC98f6KYZx5dtaFFFDUzIDU9Zrtg4rNiiOw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 26/89] irqchip/gic: Correctly validate OF quirk descriptors
+        patches@lists.linux.dev, Vlad Buslov <vladbu@nvidia.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 137/166] selftests/tc-testing: Fix Error: failed to find target LOG
 Date:   Mon, 19 Jun 2023 12:30:14 +0200
-Message-ID: <20230619102139.472634077@linuxfoundation.org>
+Message-ID: <20230619102201.418583314@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,39 +56,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marc Zyngier <maz@kernel.org>
+From: Vlad Buslov <vladbu@nvidia.com>
 
-[ Upstream commit 91539341a3b6e9c868024a4292455dae36e6f58c ]
+[ Upstream commit b849c566ee9c6ed78288a522278dcaf419f8e239 ]
 
-When checking for OF quirks, make sure either 'compatible' or 'property'
-is set, and give up otherwise.
+Add missing netfilter config dependency.
 
-This avoids non-OF quirks being randomly applied as they don't have any
-of the OF data that need checking.
+Fixes following example error when running tests via tdc.sh for all XT
+tests:
 
-Cc: Douglas Anderson <dianders@chromium.org>
-Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Fixes: 44bd78dd2b88 ("irqchip/gic-v3: Disable pseudo NMIs on Mediatek devices w/ firmware issues")
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+ # $ sudo ./tdc.py -d eth2 -e 2029
+ # Test 2029: Add xt action with log-prefix
+ # exit: 255
+ # exit: 0
+ #  failed to find target LOG
+ #
+ # bad action parsing
+ # parse_action: bad value (7:xt)!
+ # Illegal "action"
+ #
+ # -----> teardown stage *** Could not execute: "$TC actions flush action xt"
+ #
+ # -----> teardown stage *** Error message: "Error: Cannot flush unknown TC action.
+ # We have an error flushing
+ # "
+ # returncode 1; expected [0]
+ #
+ # -----> teardown stage *** Aborting test run.
+ #
+ # <_io.BufferedReader name=3> *** stdout ***
+ #
+ # <_io.BufferedReader name=5> *** stderr ***
+ # "-----> teardown stage" did not complete successfully
+ # Exception <class '__main__.PluginMgrTestFail'> ('teardown', ' failed to find target LOG\n\nbad action parsing\nparse_action: bad value (7:xt)!\nIllegal "action"\n', '"-----> teardown stage" did not complete successfully') (caught in test_runner, running test 2 2029 Add xt action with log-prefix stage teardown)
+ # ---------------
+ # traceback
+ #   File "/images/src/linux/tools/testing/selftests/tc-testing/./tdc.py", line 495, in test_runner
+ #     res = run_one_test(pm, args, index, tidx)
+ #   File "/images/src/linux/tools/testing/selftests/tc-testing/./tdc.py", line 434, in run_one_test
+ #     prepare_env(args, pm, 'teardown', '-----> teardown stage', tidx['teardown'], procout)
+ #   File "/images/src/linux/tools/testing/selftests/tc-testing/./tdc.py", line 245, in prepare_env
+ #     raise PluginMgrTestFail(
+ # ---------------
+ # accumulated output for this test:
+ #  failed to find target LOG
+ #
+ # bad action parsing
+ # parse_action: bad value (7:xt)!
+ # Illegal "action"
+ #
+ # ---------------
+ #
+ # All test results:
+ #
+ # 1..1
+ # ok 1 2029 - Add xt action with log-prefix # skipped - "-----> teardown stage" did not complete successfully
+
+Fixes: 910d504bc187 ("selftests/tc-testings: add selftests for xt action")
+Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
+Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic-common.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/tc-testing/config | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/irqchip/irq-gic-common.c b/drivers/irqchip/irq-gic-common.c
-index 02828a16979af..b8a10f2e72da7 100644
---- a/drivers/irqchip/irq-gic-common.c
-+++ b/drivers/irqchip/irq-gic-common.c
-@@ -29,6 +29,8 @@ void gic_enable_of_quirks(const struct device_node *np,
- 			  const struct gic_quirk *quirks, void *data)
- {
- 	for (; quirks->desc; quirks++) {
-+		if (!quirks->compatible && !quirks->property)
-+			continue;
- 		if (quirks->compatible &&
- 		    !of_device_is_compatible(np, quirks->compatible))
- 			continue;
+diff --git a/tools/testing/selftests/tc-testing/config b/tools/testing/selftests/tc-testing/config
+index 4638c63a339ff..aec4de8bea78b 100644
+--- a/tools/testing/selftests/tc-testing/config
++++ b/tools/testing/selftests/tc-testing/config
+@@ -6,6 +6,7 @@ CONFIG_NF_CONNTRACK_MARK=y
+ CONFIG_NF_CONNTRACK_ZONES=y
+ CONFIG_NF_CONNTRACK_LABELS=y
+ CONFIG_NF_NAT=m
++CONFIG_NETFILTER_XT_TARGET_LOG=m
+ 
+ CONFIG_NET_SCHED=y
+ 
 -- 
 2.39.2
 
