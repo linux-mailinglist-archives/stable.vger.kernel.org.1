@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA2CF735491
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:57:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C07A735421
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:52:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232369AbjFSK5Y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:57:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58858 "EHLO
+        id S232129AbjFSKwe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:52:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232374AbjFSK4z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:56:55 -0400
+        with ESMTP id S232317AbjFSKwH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:52:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 419E32965
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:54:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C40A9171F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:51:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1770860B7C
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:54:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A758C433C0;
-        Mon, 19 Jun 2023 10:54:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 517E460A4D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:51:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6862CC433C9;
+        Mon, 19 Jun 2023 10:51:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172097;
-        bh=zZz1jc8ubBpVgvTtyr6lb67hGIGys3B+2ipic9l6JS8=;
+        s=korg; t=1687171869;
+        bh=2iyR46J3bnTuJfcS0K0KF/ZoJeCGnsxPfGjeHFb+Ahg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mcUliotvhePFDAyiR+1ZN5yJGdZiq6nf/n1ED8P4Suosqfwmi2qoQ+qxUAGg1D1V/
-         t2TY+28625xUR/+X9gB/O+I3SSTFWcWXPW+SOaQhOrjTn8grErWhcJfS2JHBGEoGK6
-         yX9D5DopQKm7/sciukIxtyWDMT9i6vDSedno7tyA=
+        b=i2UDrIGjJyCoZmEkqY2ykN2uJpU6GfJG31dPPZKcukenWrZR4HuJ9hAw0WVMQ47wO
+         La6N80Cj8bK72wEDL2NMK/Lb1ds1MCEZOjl6EPGgdD/ZaTqzIC6Uh26xl/H3eemwhk
+         JNVhiGba/5ESSZA5eFi5813v2moZRyP5IIGjIf1c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Milo Spadacini <milo.spadacini@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        patches@lists.linux.dev, Eric Biggers <ebiggers@kernel.org>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Eric Biggers <ebiggers@google.com>,
+        Stefan Berger <stefanb@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 10/89] tools: gpio: fix debounce_period_us output of lsgpio
+Subject: [PATCH 5.4 02/64] KEYS: asymmetric: Copy sig and digest in public_key_verify_signature()
 Date:   Mon, 19 Jun 2023 12:29:58 +0200
-Message-ID: <20230619102138.755469846@linuxfoundation.org>
+Message-ID: <20230619102132.934361819@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
+References: <20230619102132.808972458@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,35 +57,108 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Milo Spadacini <milo.spadacini@gmail.com>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-[ Upstream commit eb4b8eca1bad98f4b8574558a74f041f9acb5a54 ]
+[ Upstream commit c3d03e8e35e005e1a614e51bb59053eeb5857f76 ]
 
-Fix incorrect output that could occur when more attributes are used and
-GPIO_V2_LINE_ATTR_ID_DEBOUNCE is not the first one.
+Commit ac4e97abce9b8 ("scatterlist: sg_set_buf() argument must be in linear
+mapping") checks that both the signature and the digest reside in the
+linear mapping area.
 
-Signed-off-by: Milo Spadacini <milo.spadacini@gmail.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+However, more recently commit ba14a194a434c ("fork: Add generic vmalloced
+stack support") made it possible to move the stack in the vmalloc area,
+which is not contiguous, and thus not suitable for sg_set_buf() which needs
+adjacent pages.
+
+Always make a copy of the signature and digest in the same buffer used to
+store the key and its parameters, and pass them to sg_init_one(). Prefer it
+to conditionally doing the copy if necessary, to keep the code simple. The
+buffer allocated with kmalloc() is in the linear mapping area.
+
+Cc: stable@vger.kernel.org # 4.9.x
+Fixes: ba14a194a434 ("fork: Add generic vmalloced stack support")
+Link: https://lore.kernel.org/linux-integrity/Y4pIpxbjBdajymBJ@sol.localdomain/
+Suggested-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+Reviewed-by: Eric Biggers <ebiggers@google.com>
+Tested-by: Stefan Berger <stefanb@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/gpio/lsgpio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ crypto/asymmetric_keys/public_key.c | 36 ++++++++++++++++-------------
+ 1 file changed, 20 insertions(+), 16 deletions(-)
 
-diff --git a/tools/gpio/lsgpio.c b/tools/gpio/lsgpio.c
-index 5a05a454d0c97..85a2aa292f5d5 100644
---- a/tools/gpio/lsgpio.c
-+++ b/tools/gpio/lsgpio.c
-@@ -90,7 +90,7 @@ static void print_attributes(struct gpio_v2_line_info *info)
- 	for (i = 0; i < info->num_attrs; i++) {
- 		if (info->attrs[i].id == GPIO_V2_LINE_ATTR_ID_DEBOUNCE)
- 			fprintf(stdout, ", debounce_period=%dusec",
--				info->attrs[0].debounce_period_us);
-+				info->attrs[i].debounce_period_us);
- 	}
- }
+diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
+index e5fae4e838c06..2d57b0b3f9a4a 100644
+--- a/crypto/asymmetric_keys/public_key.c
++++ b/crypto/asymmetric_keys/public_key.c
+@@ -255,9 +255,10 @@ int public_key_verify_signature(const struct public_key *pkey,
+ 	struct crypto_wait cwait;
+ 	struct crypto_akcipher *tfm;
+ 	struct akcipher_request *req;
+-	struct scatterlist src_sg[2];
++	struct scatterlist src_sg;
+ 	char alg_name[CRYPTO_MAX_ALG_NAME];
+-	char *key, *ptr;
++	char *buf, *ptr;
++	size_t buf_len;
+ 	int ret;
  
+ 	pr_devel("==>%s()\n", __func__);
+@@ -281,28 +282,31 @@ int public_key_verify_signature(const struct public_key *pkey,
+ 	if (!req)
+ 		goto error_free_tfm;
+ 
+-	key = kmalloc(pkey->keylen + sizeof(u32) * 2 + pkey->paramlen,
+-		      GFP_KERNEL);
+-	if (!key)
++	buf_len = max_t(size_t, pkey->keylen + sizeof(u32) * 2 + pkey->paramlen,
++			sig->s_size + sig->digest_size);
++
++	buf = kmalloc(buf_len, GFP_KERNEL);
++	if (!buf)
+ 		goto error_free_req;
+ 
+-	memcpy(key, pkey->key, pkey->keylen);
+-	ptr = key + pkey->keylen;
++	memcpy(buf, pkey->key, pkey->keylen);
++	ptr = buf + pkey->keylen;
+ 	ptr = pkey_pack_u32(ptr, pkey->algo);
+ 	ptr = pkey_pack_u32(ptr, pkey->paramlen);
+ 	memcpy(ptr, pkey->params, pkey->paramlen);
+ 
+ 	if (pkey->key_is_private)
+-		ret = crypto_akcipher_set_priv_key(tfm, key, pkey->keylen);
++		ret = crypto_akcipher_set_priv_key(tfm, buf, pkey->keylen);
+ 	else
+-		ret = crypto_akcipher_set_pub_key(tfm, key, pkey->keylen);
++		ret = crypto_akcipher_set_pub_key(tfm, buf, pkey->keylen);
+ 	if (ret)
+-		goto error_free_key;
++		goto error_free_buf;
+ 
+-	sg_init_table(src_sg, 2);
+-	sg_set_buf(&src_sg[0], sig->s, sig->s_size);
+-	sg_set_buf(&src_sg[1], sig->digest, sig->digest_size);
+-	akcipher_request_set_crypt(req, src_sg, NULL, sig->s_size,
++	memcpy(buf, sig->s, sig->s_size);
++	memcpy(buf + sig->s_size, sig->digest, sig->digest_size);
++
++	sg_init_one(&src_sg, buf, sig->s_size + sig->digest_size);
++	akcipher_request_set_crypt(req, &src_sg, NULL, sig->s_size,
+ 				   sig->digest_size);
+ 	crypto_init_wait(&cwait);
+ 	akcipher_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
+@@ -310,8 +314,8 @@ int public_key_verify_signature(const struct public_key *pkey,
+ 				      crypto_req_done, &cwait);
+ 	ret = crypto_wait_req(crypto_akcipher_verify(req), &cwait);
+ 
+-error_free_key:
+-	kfree(key);
++error_free_buf:
++	kfree(buf);
+ error_free_req:
+ 	akcipher_request_free(req);
+ error_free_tfm:
 -- 
 2.39.2
 
