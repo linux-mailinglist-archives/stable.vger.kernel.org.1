@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61256735440
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:54:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6107673540F
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:51:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232190AbjFSKyE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:54:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56096 "EHLO
+        id S231599AbjFSKve (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:51:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232178AbjFSKxp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:53:45 -0400
+        with ESMTP id S232277AbjFSKvG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:51:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54DB32105
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:52:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81F3910F4
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:50:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3545E60B5E
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:52:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AAAAC433C8;
-        Mon, 19 Jun 2023 10:52:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A0BF60B85
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:50:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D7BAC433C0;
+        Mon, 19 Jun 2023 10:50:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171936;
-        bh=tNWHf3/P/W6vR94VOLieI6eO3dxtn/XkWHR5Jv73e94=;
+        s=korg; t=1687171836;
+        bh=dTMHqZm+d11Fd23qGB6AK54XsswmqL+O+qaQmWOZawU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V7s5szuRyC4OcRuhnNlUxmxJzXu+jnWx9+Vn8qzrkdm+ngkt7RbA0rrhGZ2KRu/n/
-         C+iK8JIt5nBnYO8RhbtVYfqCwyrkq3chMESTssBeToMQ9xPsc3dTO98iIJCQFnKX20
-         prEBNFTkfSlvNBuk4rFbXVnoHoQKb02h8Ay4wBdY=
+        b=T1B+3dAw/FabbsgD7dLbca0fs2hAO7RhHAmsSpgV5zrYFHNaDb+ye7oZU2brU6+EH
+         4tTbjt4bFJtvUi5nizzkXVaOtNJMo6iCP8BK/+a3tBnTKZnUYpQw8xjR244mXVUue0
+         5GFnZR047TTmFjfI+FyKQmz9P6WSwOjjS4HldUKc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Ziemba <ian.ziemba@hpe.com>,
-        Bob Pearson <rpearsonhpe@gmail.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 42/64] RDMA/rxe: Removed unused name from rxe_task struct
+        patches@lists.linux.dev, Leon Romanovsky <leonro@nvidia.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Nikolay Aleksandrov <razor@blackwall.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 161/166] neighbour: delete neigh_lookup_nodev as not used
 Date:   Mon, 19 Jun 2023 12:30:38 +0200
-Message-ID: <20230619102135.093905312@linuxfoundation.org>
+Message-ID: <20230619102202.497239823@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
-References: <20230619102132.808972458@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,93 +56,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bob Pearson <rpearsonhpe@gmail.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit de669ae8af49ceed0eed44f5b3d51dc62affc5e4 ]
+commit 76b9bf965c98c9b53ef7420b3b11438dbd764f92 upstream.
 
-The name field in struct rxe_task is never used. This patch removes it.
+neigh_lookup_nodev isn't used in the kernel after removal
+of DECnet. So let's remove it.
 
-Link: https://lore.kernel.org/r/20221021200118.2163-4-rpearsonhpe@gmail.com
-Signed-off-by: Ian Ziemba <ian.ziemba@hpe.com>
-Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Stable-dep-of: 2a62b6210ce8 ("RDMA/rxe: Fix the use-before-initialization error of resp_pkts")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1202cdd66531 ("Remove DECnet support from kernel")
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/eb5656200d7964b2d177a36b77efa3c597d6d72d.1678267343.git.leonro@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/sw/rxe/rxe_qp.c   | 9 +++------
- drivers/infiniband/sw/rxe/rxe_task.c | 4 +---
- drivers/infiniband/sw/rxe/rxe_task.h | 4 +---
- 3 files changed, 5 insertions(+), 12 deletions(-)
+ include/net/neighbour.h |    2 --
+ net/core/neighbour.c    |   31 -------------------------------
+ 2 files changed, 33 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
-index 5b59907594f75..c36000e08f65d 100644
---- a/drivers/infiniband/sw/rxe/rxe_qp.c
-+++ b/drivers/infiniband/sw/rxe/rxe_qp.c
-@@ -278,10 +278,8 @@ static int rxe_qp_init_req(struct rxe_dev *rxe, struct rxe_qp *qp,
- 
- 	skb_queue_head_init(&qp->req_pkts);
- 
--	rxe_init_task(&qp->req.task, qp,
--		      rxe_requester, "req");
--	rxe_init_task(&qp->comp.task, qp,
--		      rxe_completer, "comp");
-+	rxe_init_task(&qp->req.task, qp, rxe_requester);
-+	rxe_init_task(&qp->comp.task, qp, rxe_completer);
- 
- 	qp->qp_timeout_jiffies = 0; /* Can't be set for UD/UC in modify_qp */
- 	if (init->qp_type == IB_QPT_RC) {
-@@ -327,8 +325,7 @@ static int rxe_qp_init_resp(struct rxe_dev *rxe, struct rxe_qp *qp,
- 
- 	skb_queue_head_init(&qp->resp_pkts);
- 
--	rxe_init_task(&qp->resp.task, qp,
--		      rxe_responder, "resp");
-+	rxe_init_task(&qp->resp.task, qp, rxe_responder);
- 
- 	qp->resp.opcode		= OPCODE_NONE;
- 	qp->resp.msn		= 0;
-diff --git a/drivers/infiniband/sw/rxe/rxe_task.c b/drivers/infiniband/sw/rxe/rxe_task.c
-index ea7d5a69eb2a3..39b3adda16550 100644
---- a/drivers/infiniband/sw/rxe/rxe_task.c
-+++ b/drivers/infiniband/sw/rxe/rxe_task.c
-@@ -114,12 +114,10 @@ void rxe_do_task(unsigned long data)
- 	task->ret = ret;
+--- a/include/net/neighbour.h
++++ b/include/net/neighbour.h
+@@ -336,8 +336,6 @@ void neigh_table_init(int index, struct
+ int neigh_table_clear(int index, struct neigh_table *tbl);
+ struct neighbour *neigh_lookup(struct neigh_table *tbl, const void *pkey,
+ 			       struct net_device *dev);
+-struct neighbour *neigh_lookup_nodev(struct neigh_table *tbl, struct net *net,
+-				     const void *pkey);
+ struct neighbour *__neigh_create(struct neigh_table *tbl, const void *pkey,
+ 				 struct net_device *dev, bool want_ref);
+ static inline struct neighbour *neigh_create(struct neigh_table *tbl,
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -627,37 +627,6 @@ struct neighbour *neigh_lookup(struct ne
  }
+ EXPORT_SYMBOL(neigh_lookup);
  
--int rxe_init_task(struct rxe_task *task,
--		  void *arg, int (*func)(void *), char *name)
-+int rxe_init_task(struct rxe_task *task, void *arg, int (*func)(void *))
- {
- 	task->arg	= arg;
- 	task->func	= func;
--	snprintf(task->name, sizeof(task->name), "%s", name);
- 	task->destroyed	= false;
- 
- 	tasklet_init(&task->tasklet, rxe_do_task, (unsigned long)task);
-diff --git a/drivers/infiniband/sw/rxe/rxe_task.h b/drivers/infiniband/sw/rxe/rxe_task.h
-index e87ee072e3179..ecd81b1d1a8cb 100644
---- a/drivers/infiniband/sw/rxe/rxe_task.h
-+++ b/drivers/infiniband/sw/rxe/rxe_task.h
-@@ -52,7 +52,6 @@ struct rxe_task {
- 	void			*arg;
- 	int			(*func)(void *arg);
- 	int			ret;
--	char			name[16];
- 	bool			destroyed;
- };
- 
-@@ -61,8 +60,7 @@ struct rxe_task {
-  *	arg  => parameter to pass to fcn
-  *	fcn  => function to call until it returns != 0
-  */
--int rxe_init_task(struct rxe_task *task,
--		  void *arg, int (*func)(void *), char *name);
-+int rxe_init_task(struct rxe_task *task, void *arg, int (*func)(void *));
- 
- /* cleanup task */
- void rxe_cleanup_task(struct rxe_task *task);
--- 
-2.39.2
-
+-struct neighbour *neigh_lookup_nodev(struct neigh_table *tbl, struct net *net,
+-				     const void *pkey)
+-{
+-	struct neighbour *n;
+-	unsigned int key_len = tbl->key_len;
+-	u32 hash_val;
+-	struct neigh_hash_table *nht;
+-
+-	NEIGH_CACHE_STAT_INC(tbl, lookups);
+-
+-	rcu_read_lock_bh();
+-	nht = rcu_dereference_bh(tbl->nht);
+-	hash_val = tbl->hash(pkey, NULL, nht->hash_rnd) >> (32 - nht->hash_shift);
+-
+-	for (n = rcu_dereference_bh(nht->hash_buckets[hash_val]);
+-	     n != NULL;
+-	     n = rcu_dereference_bh(n->next)) {
+-		if (!memcmp(n->primary_key, pkey, key_len) &&
+-		    net_eq(dev_net(n->dev), net)) {
+-			if (!refcount_inc_not_zero(&n->refcnt))
+-				n = NULL;
+-			NEIGH_CACHE_STAT_INC(tbl, hits);
+-			break;
+-		}
+-	}
+-
+-	rcu_read_unlock_bh();
+-	return n;
+-}
+-EXPORT_SYMBOL(neigh_lookup_nodev);
+-
+ static struct neighbour *
+ ___neigh_create(struct neigh_table *tbl, const void *pkey,
+ 		struct net_device *dev, u32 flags,
 
 
