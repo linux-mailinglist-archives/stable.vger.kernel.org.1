@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62F27735316
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA2CF735491
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:57:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232084AbjFSKld (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:41:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46478 "EHLO
+        id S232369AbjFSK5Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:57:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231236AbjFSKlO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:41:14 -0400
+        with ESMTP id S232374AbjFSK4z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:56:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 393E110C6
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:41:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 419E32965
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:54:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B00A60B82
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:41:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEFBAC433C8;
-        Mon, 19 Jun 2023 10:41:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1770860B7C
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:54:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A758C433C0;
+        Mon, 19 Jun 2023 10:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171270;
-        bh=ClUy4DzBevV1UPFaRliO4Le/uBALyWHLlMsDiCw849o=;
+        s=korg; t=1687172097;
+        bh=zZz1jc8ubBpVgvTtyr6lb67hGIGys3B+2ipic9l6JS8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rHGYODqVk+ZfyMd9GKfSTIBPdlDOXFewWEXR3OhLuo1oElXmYs8c1T1y3aL2ywuhX
-         OqZOst2bVx7MBvZ5HKcquYsydDG0DDlqgNCQvtdje6K8aY13VMtFEs+XeKlZq1kLAP
-         FxGOp9zRCkyMvkSFTI9znR7b0aHOsWOe8yrcqZGo=
+        b=mcUliotvhePFDAyiR+1ZN5yJGdZiq6nf/n1ED8P4Suosqfwmi2qoQ+qxUAGg1D1V/
+         t2TY+28625xUR/+X9gB/O+I3SSTFWcWXPW+SOaQhOrjTn8grErWhcJfS2JHBGEoGK6
+         yX9D5DopQKm7/sciukIxtyWDMT9i6vDSedno7tyA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Edward Srouji <edwards@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 4.19 20/49] RDMA/uverbs: Restrict usage of privileged QKEYs
+        patches@lists.linux.dev, Milo Spadacini <milo.spadacini@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 10/89] tools: gpio: fix debounce_period_us output of lsgpio
 Date:   Mon, 19 Jun 2023 12:29:58 +0200
-Message-ID: <20230619102130.907026961@linuxfoundation.org>
+Message-ID: <20230619102138.755469846@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
-References: <20230619102129.856988902@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,43 +57,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Edward Srouji <edwards@nvidia.com>
+From: Milo Spadacini <milo.spadacini@gmail.com>
 
-commit 0cadb4db79e1d9eea66711c4031e435c2191907e upstream.
+[ Upstream commit eb4b8eca1bad98f4b8574558a74f041f9acb5a54 ]
 
-According to the IB specification rel-1.6, section 3.5.3:
-"QKEYs with the most significant bit set are considered controlled
-QKEYs, and a HCA does not allow a consumer to arbitrarily specify a
-controlled QKEY."
+Fix incorrect output that could occur when more attributes are used and
+GPIO_V2_LINE_ATTR_ID_DEBOUNCE is not the first one.
 
-Thus, block non-privileged users from setting such a QKEY.
-
-Cc: stable@vger.kernel.org
-Fixes: bc38a6abdd5a ("[PATCH] IB uverbs: core implementation")
-Signed-off-by: Edward Srouji <edwards@nvidia.com>
-Link: https://lore.kernel.org/r/c00c809ddafaaf87d6f6cb827978670989a511b3.1685960567.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Milo Spadacini <milo.spadacini@gmail.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/uverbs_cmd.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tools/gpio/lsgpio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/infiniband/core/uverbs_cmd.c
-+++ b/drivers/infiniband/core/uverbs_cmd.c
-@@ -2041,8 +2041,13 @@ static int modify_qp(struct ib_uverbs_fi
- 		attr->path_mtu = cmd->base.path_mtu;
- 	if (cmd->base.attr_mask & IB_QP_PATH_MIG_STATE)
- 		attr->path_mig_state = cmd->base.path_mig_state;
--	if (cmd->base.attr_mask & IB_QP_QKEY)
-+	if (cmd->base.attr_mask & IB_QP_QKEY) {
-+		if (cmd->base.qkey & IB_QP_SET_QKEY && !capable(CAP_NET_RAW)) {
-+			ret = -EPERM;
-+			goto release_qp;
-+		}
- 		attr->qkey = cmd->base.qkey;
-+	}
- 	if (cmd->base.attr_mask & IB_QP_RQ_PSN)
- 		attr->rq_psn = cmd->base.rq_psn;
- 	if (cmd->base.attr_mask & IB_QP_SQ_PSN)
+diff --git a/tools/gpio/lsgpio.c b/tools/gpio/lsgpio.c
+index 5a05a454d0c97..85a2aa292f5d5 100644
+--- a/tools/gpio/lsgpio.c
++++ b/tools/gpio/lsgpio.c
+@@ -90,7 +90,7 @@ static void print_attributes(struct gpio_v2_line_info *info)
+ 	for (i = 0; i < info->num_attrs; i++) {
+ 		if (info->attrs[i].id == GPIO_V2_LINE_ATTR_ID_DEBOUNCE)
+ 			fprintf(stdout, ", debounce_period=%dusec",
+-				info->attrs[0].debounce_period_us);
++				info->attrs[i].debounce_period_us);
+ 	}
+ }
+ 
+-- 
+2.39.2
+
 
 
