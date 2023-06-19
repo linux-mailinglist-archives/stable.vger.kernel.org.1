@@ -2,53 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CB53735539
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:02:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4E2073540A
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:51:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232539AbjFSLCq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:02:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60838 "EHLO
+        id S232236AbjFSKvX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:51:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232578AbjFSLCX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:02:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1B6C10F8
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:01:21 -0700 (PDT)
+        with ESMTP id S232262AbjFSKvA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:51:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FF2610C6
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:50:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F34560A05
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:01:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57754C433C8;
-        Mon, 19 Jun 2023 11:01:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B86C36068B
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:50:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF528C433C8;
+        Mon, 19 Jun 2023 10:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172480;
-        bh=x5cqhOOX9+WZOcrg9T2k5O5rVu0x/Hlo+PcmlWogr74=;
+        s=korg; t=1687171831;
+        bh=8WLuV1rTsZ9DAOfWrtAyWuTgOuwrXTm9cHeQai6aEns=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z9Q9DRCn9MjrjxhrcgtBMkJGnZekx+o/FCnO0OQKXXN3btJ/Q20GSgFy0RV5gBfXV
-         3qptz27BlZKjEZBkA0wfWYrne6r61UvM39UJMal5mcmopE2jNbepDGyYX03dYwLoyd
-         MKsEqPY010pvYMXvUHnFPfAaQT5GlB/u0YzrSdJI=
+        b=BkFQXh2rqrsHItVjrVVv17ES2aD3sjMRTVImvidcbmxr0Qwfxpk4aFnFs42wxGaoF
+         IuxHQ3sClDZpxwPcgS9r8DHf+00cMcI31NECBIi9iSg0tIRlK62C1vdnRZRNLKPOJC
+         FYsBfSdjInH4AWcTBeBW7LXkfJuVcRQmUvLdG1is=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Li Zhijian <lizhijian@fujitsu.com>,
-        Guoqing Jiang <guoqing.jiang@linux.dev>,
-        Jack Wang <jinpu.wang@ionos.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 058/107] RDMA/rtrs: Fix the last iu->buf leak in err path
+        patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+        Linux Kernel Functional Testing <lkft@linaro.org>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.1 165/166] MIPS: Prefer cc-option for additions to cflags
 Date:   Mon, 19 Jun 2023 12:30:42 +0200
-Message-ID: <20230619102144.264733467@linuxfoundation.org>
+Message-ID: <20230619102202.675798857@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,41 +59,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 3bf3a7c6985c625f64e73baefdaa36f1c2045a29 ]
+commit 337ff6bb8960fdc128cabd264aaea3d42ca27a32 upstream.
 
-The last iu->buf will leak if ib_dma_mapping_error() fails.
+A future change will switch as-option to use KBUILD_AFLAGS instead of
+KBUILD_CFLAGS to allow clang to drop -Qunused-arguments, which may cause
+issues if the flag being tested requires a flag previously added to
+KBUILD_CFLAGS but not KBUILD_AFLAGS. Use cc-option for cflags additions
+so that the flags are tested properly.
 
-Fixes: c0894b3ea69d ("RDMA/rtrs: core: lib functions shared between client and server modules")
-Link: https://lore.kernel.org/r/1682384563-2-3-git-send-email-lizhijian@fujitsu.com
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Acked-by: Guoqing Jiang <guoqing.jiang@linux.dev>
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Tested-by: Anders Roxell <anders.roxell@linaro.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/mips/Makefile             |    2 +-
+ arch/mips/loongson2ef/Platform |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs.c b/drivers/infiniband/ulp/rtrs/rtrs.c
-index 4da889103a5ff..4745f33d7104a 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs.c
-@@ -37,8 +37,10 @@ struct rtrs_iu *rtrs_iu_alloc(u32 iu_num, size_t size, gfp_t gfp_mask,
- 			goto err;
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -152,7 +152,7 @@ cflags-y += -fno-stack-check
+ #
+ # Avoid this by explicitly disabling that assembler behaviour.
+ #
+-cflags-y += $(call as-option,-Wa$(comma)-mno-fix-loongson3-llsc,)
++cflags-y += $(call cc-option,-Wa$(comma)-mno-fix-loongson3-llsc,)
  
- 		iu->dma_addr = ib_dma_map_single(dma_dev, iu->buf, size, dir);
--		if (ib_dma_mapping_error(dma_dev, iu->dma_addr))
-+		if (ib_dma_mapping_error(dma_dev, iu->dma_addr)) {
-+			kfree(iu->buf);
- 			goto err;
-+		}
+ #
+ # CPU-dependent compiler/assembler options for optimization.
+--- a/arch/mips/loongson2ef/Platform
++++ b/arch/mips/loongson2ef/Platform
+@@ -25,7 +25,7 @@ cflags-$(CONFIG_CPU_LOONGSON2F) += -marc
+ # binutils does not merge support for the flag then we can revisit & remove
+ # this later - for now it ensures vendor toolchains don't cause problems.
+ #
+-cflags-$(CONFIG_CPU_LOONGSON2EF)	+= $(call as-option,-Wa$(comma)-mno-fix-loongson3-llsc,)
++cflags-$(CONFIG_CPU_LOONGSON2EF)	+= $(call cc-option,-Wa$(comma)-mno-fix-loongson3-llsc,)
  
- 		iu->cqe.done  = done;
- 		iu->size      = size;
--- 
-2.39.2
-
+ # Enable the workarounds for Loongson2f
+ ifdef CONFIG_CPU_LOONGSON2F_WORKAROUNDS
 
 
