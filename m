@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 372517353B5
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:48:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15DE07352E0
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:39:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231142AbjFSKsX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:48:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52032 "EHLO
+        id S231785AbjFSKjG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:39:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232080AbjFSKsB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:48:01 -0400
+        with ESMTP id S230397AbjFSKjD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:39:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8319310C4
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:47:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD529D7
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:39:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2076360B80
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:47:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3401AC433C9;
-        Mon, 19 Jun 2023 10:47:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B2C160B33
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:39:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CC0CC433C8;
+        Mon, 19 Jun 2023 10:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171642;
-        bh=dI1ZuKJN2WqZcZD7wxoaohw9yOQqTmywOcWKZiUM+1w=;
+        s=korg; t=1687171141;
+        bh=McbMLBXb1zWa2kv9l4Q/ho1gDz0d6auu5uWwDs9LbZs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hTSb908KzHHcoVS46PdmBaIt41fRKjcRbiWA09Y5tnth2qFXdCwBkV1/QJK+LtQPR
-         /U9QD6N5kk1W+c6TFFW/Z4YmGXN3znHzTyIiKG6KwVnSE3D21FNp3AHRSSgYGW84m8
-         mv6jouO8PLQZEl3cpltCvMTgt2hjR9J17NHBo4jM=
+        b=i3ULuJswcozKq73BRp/lM4z6DF4uPl7lYr0OIng6iWgtg6KkVQicQDTj0rJZtT2JG
+         C/eisjQJo3OCMDoV581pI3y21SuAfWkwfpGM0SRmwVMZh2PjpEeQlkzv3dZcV3u2WC
+         85OHia1TT1vm88K5HWsCbrkJQ2A6Ia9bZurRIh44=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jamal Hadi Salim <jhs@mojatatu.com>,
-        Simon Horman <simon.horman@corigine.com>,
+        patches@lists.linux.dev, Vlad Buslov <vladbu@nvidia.com>,
         Pedro Tammela <pctammela@mojatatu.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 104/166] net/sched: act_pedit: remove extra check for key type
+Subject: [PATCH 6.3 163/187] selftests/tc-testing: Fix SFB db test
 Date:   Mon, 19 Jun 2023 12:29:41 +0200
-Message-ID: <20230619102159.828619806@linuxfoundation.org>
+Message-ID: <20230619102205.483497756@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,96 +56,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: Vlad Buslov <vladbu@nvidia.com>
 
-[ Upstream commit 577140180ba28d0d37bc898c7bd6702c83aa106f ]
+[ Upstream commit b39d8c41c7a8336ce85c376b5d4906089524a0ae ]
 
-The netlink parsing already validates the key 'htype'.
-Remove the datapath check as it's redundant.
+Setting very small value of db like 10ms introduces rounding errors when
+converting to/from jiffies on some kernel configs. For example, on 250hz
+the actual value will be set to 12ms which causes the test to fail:
 
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 6c02568fd1ae ("net/sched: act_pedit: Parse L3 Header for L4 offset")
+ # $ sudo ./tdc.py  -d eth2 -e 3410
+ #  -- ns/SubPlugin.__init__
+ # Test 3410: Create SFB with db setting
+ #
+ # All test results:
+ #
+ # 1..1
+ # not ok 1 3410 - Create SFB with db setting
+ #         Could not match regex pattern. Verify command output:
+ # qdisc sfb 1: root refcnt 2 rehash 600s db 12ms limit 1000p max 25p target 20p increment 0.000503548 decrement 4.57771e-05 penalty_rate 10pps penalty_burst 20p
+
+Set the value to 100ms instead which currently seem to work on 100hz,
+250hz, 300hz and 1000hz kernel configs.
+
+Fixes: 6ad92dc56fca ("selftests/tc-testing: add selftests for sfb qdisc")
+Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
+Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_pedit.c | 29 +++++++----------------------
- 1 file changed, 7 insertions(+), 22 deletions(-)
+ tools/testing/selftests/tc-testing/tc-tests/qdiscs/sfb.json | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
-index 19f6b3fa6a557..48e14cbcd8ffe 100644
---- a/net/sched/act_pedit.c
-+++ b/net/sched/act_pedit.c
-@@ -312,37 +312,28 @@ static bool offset_valid(struct sk_buff *skb, int offset)
- 	return true;
- }
- 
--static int pedit_skb_hdr_offset(struct sk_buff *skb,
--				enum pedit_header_type htype, int *hoffset)
-+static void pedit_skb_hdr_offset(struct sk_buff *skb,
-+				 enum pedit_header_type htype, int *hoffset)
- {
--	int ret = -EINVAL;
--
-+	/* 'htype' is validated in the netlink parsing */
- 	switch (htype) {
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_ETH:
--		if (skb_mac_header_was_set(skb)) {
-+		if (skb_mac_header_was_set(skb))
- 			*hoffset = skb_mac_offset(skb);
--			ret = 0;
--		}
- 		break;
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_NETWORK:
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_IP4:
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_IP6:
- 		*hoffset = skb_network_offset(skb);
--		ret = 0;
- 		break;
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_TCP:
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_UDP:
--		if (skb_transport_header_was_set(skb)) {
-+		if (skb_transport_header_was_set(skb))
- 			*hoffset = skb_transport_offset(skb);
--			ret = 0;
--		}
- 		break;
- 	default:
--		ret = -EINVAL;
- 		break;
- 	}
--
--	return ret;
- }
- 
- static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
-@@ -374,10 +365,9 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
- 
- 	for (i = parms->tcfp_nkeys; i > 0; i--, tkey++) {
- 		int offset = tkey->off;
-+		int hoffset = 0;
- 		u32 *ptr, hdata;
--		int hoffset;
- 		u32 val;
--		int rc;
- 
- 		if (tkey_ex) {
- 			htype = tkey_ex->htype;
-@@ -386,12 +376,7 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
- 			tkey_ex++;
- 		}
- 
--		rc = pedit_skb_hdr_offset(skb, htype, &hoffset);
--		if (rc) {
--			pr_info("tc action pedit bad header type specified (0x%x)\n",
--				htype);
--			goto bad;
--		}
-+		pedit_skb_hdr_offset(skb, htype, &hoffset);
- 
- 		if (tkey->offmask) {
- 			u8 *d, _d;
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/sfb.json b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/sfb.json
+index ba2f5e79cdbfe..e21c7f22c6d4c 100644
+--- a/tools/testing/selftests/tc-testing/tc-tests/qdiscs/sfb.json
++++ b/tools/testing/selftests/tc-testing/tc-tests/qdiscs/sfb.json
+@@ -58,10 +58,10 @@
+         "setup": [
+             "$IP link add dev $DUMMY type dummy || /bin/true"
+         ],
+-        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root sfb db 10",
++        "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root sfb db 100",
+         "expExitCode": "0",
+         "verifyCmd": "$TC qdisc show dev $DUMMY",
+-        "matchPattern": "qdisc sfb 1: root refcnt [0-9]+ rehash 600s db 10ms",
++        "matchPattern": "qdisc sfb 1: root refcnt [0-9]+ rehash 600s db 100ms",
+         "matchCount": "1",
+         "teardown": [
+             "$TC qdisc del dev $DUMMY handle 1: root",
 -- 
 2.39.2
 
