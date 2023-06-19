@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC98373553E
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:03:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06F707354CD
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:59:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229485AbjFSLDC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:03:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60928 "EHLO
+        id S231724AbjFSK7N (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:59:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232590AbjFSLCe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:02:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2394E62
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:01:35 -0700 (PDT)
+        with ESMTP id S232464AbjFSK6r (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:58:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 388181BDF
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:57:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2CB9960B78
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:01:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F800C433C8;
-        Mon, 19 Jun 2023 11:01:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C8F7160B7C
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:57:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7374C433C9;
+        Mon, 19 Jun 2023 10:57:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172494;
-        bh=+Ook6JXlmVq2UFKEU/pllJPgODWXr8qPCHNTAMgXFQs=;
+        s=korg; t=1687172236;
+        bh=EmtYtNtfJBU8OI3hKa8VUkrEMX2tcuI4EMThsqQldAM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=odwn4js0u2NnYCxSx6uiX2HcJBR6bVgJWBevk0TinmYF8KqUIKpzo2bO3SCpR0P7z
-         jJgiWjQ8gc5ToenYQV1vyO93+R94S2Bvnt1sCIQ22y/qa0gEWWjHlmC7pjuDEWING1
-         a0hX/zDAs4Orl2rJzngJ86IRe7zdH8zpzunfAFH0=
+        b=O10/yq87WT+u7U35Q/s1fQ/+/8MnP28T8SY/1kUoaF1ABdujzCeirb9UqS4hG9QV7
+         jgsj9gDTTpRTA0kAkaBDkAlojunXFV/RTEjg6jf1W9+1z8b7AyxrT5ozjt9B24GxXy
+         FlVk5/zPIBXijhCG3lXA8TbTLBl8myiI9LqWuJCI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Natalia Petrova <n.petrova@fintech.ru>,
-        Lyude Paul <lyude@redhat.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 089/107] drm/nouveau/dp: check for NULL nv_connector->native_mode
+        patches@lists.linux.dev,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Ovidiu Panait <ovidiu.panait@windriver.com>
+Subject: [PATCH 5.10 85/89] media: dvbdev: fix error logic at dvb_register_device()
 Date:   Mon, 19 Jun 2023 12:31:13 +0200
-Message-ID: <20230619102145.641855108@linuxfoundation.org>
+Message-ID: <20230619102142.160282191@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,53 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Natalia Petrova <n.petrova@fintech.ru>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit 20a2ce87fbaf81e4c3dcb631d738e423959eb320 ]
+commit 1fec2ecc252301110e4149e6183fa70460d29674 upstream.
 
-Add checking for NULL before calling nouveau_connector_detect_depth() in
-nouveau_connector_get_modes() function because nv_connector->native_mode
-could be dereferenced there since connector pointer passed to
-nouveau_connector_detect_depth() and the same value of
-nv_connector->native_mode is used there.
+As reported by smatch:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+	drivers/media/dvb-core/dvbdev.c: drivers/media/dvb-core/dvbdev.c:510 dvb_register_device() warn: '&dvbdev->list_head' not removed from list
+	drivers/media/dvb-core/dvbdev.c: drivers/media/dvb-core/dvbdev.c:530 dvb_register_device() warn: '&dvbdev->list_head' not removed from list
+	drivers/media/dvb-core/dvbdev.c: drivers/media/dvb-core/dvbdev.c:545 dvb_register_device() warn: '&dvbdev->list_head' not removed from list
 
-Fixes: d4c2c99bdc83 ("drm/nouveau/dp: remove broken display depth function, use the improved one")
+The error logic inside dvb_register_device() doesn't remove
+devices from the dvb_adapter_list in case of errors.
 
-Signed-off-by: Natalia Petrova <n.petrova@fintech.ru>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230512111526.82408-1-n.petrova@fintech.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_connector.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/dvb-core/dvbdev.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_connector.c b/drivers/gpu/drm/nouveau/nouveau_connector.c
-index 96be2ecb86d4d..f5c79d367f290 100644
---- a/drivers/gpu/drm/nouveau/nouveau_connector.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
-@@ -965,7 +965,7 @@ nouveau_connector_get_modes(struct drm_connector *connector)
- 	/* Determine display colour depth for everything except LVDS now,
- 	 * DP requires this before mode_valid() is called.
- 	 */
--	if (connector->connector_type != DRM_MODE_CONNECTOR_LVDS)
-+	if (connector->connector_type != DRM_MODE_CONNECTOR_LVDS && nv_connector->native_mode)
- 		nouveau_connector_detect_depth(connector);
+--- a/drivers/media/dvb-core/dvbdev.c
++++ b/drivers/media/dvb-core/dvbdev.c
+@@ -511,6 +511,7 @@ int dvb_register_device(struct dvb_adapt
+ 			break;
  
- 	/* Find the native mode if this is a digital panel, if we didn't
-@@ -986,7 +986,7 @@ nouveau_connector_get_modes(struct drm_connector *connector)
- 	 * "native" mode as some VBIOS tables require us to use the
- 	 * pixel clock as part of the lookup...
- 	 */
--	if (connector->connector_type == DRM_MODE_CONNECTOR_LVDS)
-+	if (connector->connector_type == DRM_MODE_CONNECTOR_LVDS && nv_connector->native_mode)
- 		nouveau_connector_detect_depth(connector);
+ 	if (minor == MAX_DVB_MINORS) {
++		list_del (&dvbdev->list_head);
+ 		kfree(dvbdevfops);
+ 		kfree(dvbdev);
+ 		up_write(&minor_rwsem);
+@@ -531,6 +532,7 @@ int dvb_register_device(struct dvb_adapt
+ 		      __func__);
  
- 	if (nv_encoder->dcb->type == DCB_OUTPUT_TV)
--- 
-2.39.2
-
+ 		dvb_media_device_free(dvbdev);
++		list_del (&dvbdev->list_head);
+ 		kfree(dvbdevfops);
+ 		kfree(dvbdev);
+ 		mutex_unlock(&dvbdev_register_lock);
+@@ -546,6 +548,7 @@ int dvb_register_device(struct dvb_adapt
+ 		pr_err("%s: failed to create device dvb%d.%s%d (%ld)\n",
+ 		       __func__, adap->num, dnames[type], id, PTR_ERR(clsdev));
+ 		dvb_media_device_free(dvbdev);
++		list_del (&dvbdev->list_head);
+ 		kfree(dvbdevfops);
+ 		kfree(dvbdev);
+ 		return PTR_ERR(clsdev);
 
 
