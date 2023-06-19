@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E34C735310
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBC3773548C
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:57:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232035AbjFSKlR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:41:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46294 "EHLO
+        id S232414AbjFSK5L (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:57:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232043AbjFSKkz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:40:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10DD0CD
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:40:54 -0700 (PDT)
+        with ESMTP id S232419AbjFSK4p (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:56:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEBF3213B
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:54:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B07E60B33
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:40:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF697C433C8;
-        Mon, 19 Jun 2023 10:40:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F4646068B
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:54:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 668CAC433C8;
+        Mon, 19 Jun 2023 10:54:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171253;
-        bh=tpuOws+oxXt3CZ3VJF6kWlsiTtkN7i0BiQ8jiANC4SE=;
+        s=korg; t=1687172086;
+        bh=a4agFHeHv3LUURie+04g3677uYkw0LGl6UHrB/kX5I4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JWZh0JNZPpJu9qq+gN7QWIbGkFU8pzsh3JN3K31T2GXFbzIcsxjaA/WhWJsN2LsD3
-         wCkGHrYIa7IvBAWk/VmigRVk+ZcerLbUpxqZ2n5Gc4w/7SopCoKjFuTlFnQo8xXSJQ
-         xnLAW3OkRUL/UO4M6gLdpUXan6Drq9AYAAYiL7ss=
+        b=YWSiDDPmHLU/YI+N7+jI47sl0CFDo+UGDruHTqJph83DWF9JrKOfo4IgBC+yZSRSv
+         0+/fTvdfBfAAMGLd2g2xT3n5W8Zj1qY9DeU8rY9C5BxeJkqFA1UWaKVieoFtfPUXM4
+         RT6C6BNcrSJcXRBsbTbfmDWB071ScN2HwYyi8dHs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+b0a35a5c1f7e846d3b09@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 15/49] nilfs2: fix incomplete buffer cleanup in nilfs_btnode_abort_change_key()
-Date:   Mon, 19 Jun 2023 12:29:53 +0200
-Message-ID: <20230619102130.646798901@linuxfoundation.org>
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 06/89] power: supply: ab8500: Fix external_power_changed race
+Date:   Mon, 19 Jun 2023 12:29:54 +0200
+Message-ID: <20230619102138.580275458@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
-References: <20230619102129.856988902@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,53 +56,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 2f012f2baca140c488e43d27a374029c1e59098d upstream.
+[ Upstream commit a5299ce4e96f3e8930e9c051b28d8093ada87b08 ]
 
-A syzbot fault injection test reported that nilfs_btnode_create_block, a
-helper function that allocates a new node block for b-trees, causes a
-kernel BUG for disk images where the file system block size is smaller
-than the page size.
+ab8500_btemp_external_power_changed() dereferences di->btemp_psy,
+which gets sets in ab8500_btemp_probe() like this:
 
-This was due to unexpected flags on the newly allocated buffer head, and
-it turned out to be because the buffer flags were not cleared by
-nilfs_btnode_abort_change_key() after an error occurred during a b-tree
-update operation and the buffer was later reused in that state.
+        di->btemp_psy = devm_power_supply_register(dev, &ab8500_btemp_desc,
+                                                   &psy_cfg);
 
-Fix this issue by using nilfs_btnode_delete() to abandon the unused
-preallocated buffer in nilfs_btnode_abort_change_key().
+As soon as devm_power_supply_register() has called device_add()
+the external_power_changed callback can get called. So there is a window
+where ab8500_btemp_external_power_changed() may get called while
+di->btemp_psy has not been set yet leading to a NULL pointer dereference.
 
-Link: https://lkml.kernel.org/r/20230513102428.10223-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+b0a35a5c1f7e846d3b09@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/000000000000d1d6c205ebc4d512@google.com
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixing this is easy. The external_power_changed callback gets passed
+the power_supply which will eventually get stored in di->btemp_psy,
+so ab8500_btemp_external_power_changed() can simply directly use
+the passed in psy argument which is always valid.
+
+And the same applies to ab8500_fg_external_power_changed().
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/btnode.c |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/power/supply/ab8500_btemp.c | 6 ++----
+ drivers/power/supply/ab8500_fg.c    | 6 ++----
+ 2 files changed, 4 insertions(+), 8 deletions(-)
 
---- a/fs/nilfs2/btnode.c
-+++ b/fs/nilfs2/btnode.c
-@@ -295,6 +295,14 @@ void nilfs_btnode_abort_change_key(struc
- 		radix_tree_delete(&btnc->i_pages, newkey);
- 		xa_unlock_irq(&btnc->i_pages);
- 		unlock_page(ctxt->bh->b_page);
--	} else
--		brelse(nbh);
-+	} else {
-+		/*
-+		 * When canceling a buffer that a prepare operation has
-+		 * allocated to copy a node block to another location, use
-+		 * nilfs_btnode_delete() to initialize and release the buffer
-+		 * so that the buffer flags will not be in an inconsistent
-+		 * state when it is reallocated.
-+		 */
-+		nilfs_btnode_delete(nbh);
-+	}
+diff --git a/drivers/power/supply/ab8500_btemp.c b/drivers/power/supply/ab8500_btemp.c
+index 4417d64c31f97..5a1adceb6974d 100644
+--- a/drivers/power/supply/ab8500_btemp.c
++++ b/drivers/power/supply/ab8500_btemp.c
+@@ -921,10 +921,8 @@ static int ab8500_btemp_get_ext_psy_data(struct device *dev, void *data)
+  */
+ static void ab8500_btemp_external_power_changed(struct power_supply *psy)
+ {
+-	struct ab8500_btemp *di = power_supply_get_drvdata(psy);
+-
+-	class_for_each_device(power_supply_class, NULL,
+-		di->btemp_psy, ab8500_btemp_get_ext_psy_data);
++	class_for_each_device(power_supply_class, NULL, psy,
++			      ab8500_btemp_get_ext_psy_data);
  }
+ 
+ /* ab8500 btemp driver interrupts and their respective isr */
+diff --git a/drivers/power/supply/ab8500_fg.c b/drivers/power/supply/ab8500_fg.c
+index a6b4a94c27662..a88590563647e 100644
+--- a/drivers/power/supply/ab8500_fg.c
++++ b/drivers/power/supply/ab8500_fg.c
+@@ -2380,10 +2380,8 @@ static int ab8500_fg_init_hw_registers(struct ab8500_fg *di)
+  */
+ static void ab8500_fg_external_power_changed(struct power_supply *psy)
+ {
+-	struct ab8500_fg *di = power_supply_get_drvdata(psy);
+-
+-	class_for_each_device(power_supply_class, NULL,
+-		di->fg_psy, ab8500_fg_get_ext_psy_data);
++	class_for_each_device(power_supply_class, NULL, psy,
++			      ab8500_fg_get_ext_psy_data);
+ }
+ 
+ /**
+-- 
+2.39.2
+
 
 
