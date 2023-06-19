@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6077735340
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:43:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 539B273547F
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:56:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232017AbjFSKn3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:43:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47204 "EHLO
+        id S232396AbjFSK4q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:56:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230268AbjFSKnJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:43:09 -0400
+        with ESMTP id S232401AbjFSK4S (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:56:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 062D31707
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:42:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E26813D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:54:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 98C6B60B51
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:42:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0520C433C8;
-        Mon, 19 Jun 2023 10:42:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AC9A660B4B
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:54:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C07C3C433C8;
+        Mon, 19 Jun 2023 10:54:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171370;
-        bh=+2mnVYH94NWWfCXCQu58/iY7CNAo5eFE+qqa38jEeew=;
+        s=korg; t=1687172059;
+        bh=qEUsjwhhl3BEEVwSGFW2pv6M333EyUzh6VO+NOAFXjg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WH76O9WEg5UyveDhpUHR8JXb2R7kMLz5W1u+vpohDFmhw8aHUnsede6sQqPGd6HDD
-         NnZWVm4lTq/7BShTSeCDwEZ7Qaz2wCgLyTLShX3JZbS7w7wOnckZXbeH0ww4vGxzwh
-         GeYdeWaVp6syGZkXgMH7VB52+TqxHuanIfYF0n44=
+        b=M1fuBVOo3taPYbY87Tz5YgVvy7jrG4mqUFOuvLYmalbhIJQrauVWfWakb+s0x/LDg
+         E8ay1g4UVYL1lzF4D41Ea+kc7xNMC/ISl4jVWz+8WqR3D940JDwDmKyzcsdNfeG2ar
+         3sm0597c9r0pmdjYM0ccx6Lrb5wLiUFbEoe08HwE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        syzbot+eba589d8f49c73d356da@syzkaller.appspotmail.com,
-        Zhu Yanjun <yanjun.zhu@linux.dev>,
-        Jason Gunthorpe <jgg@nvidia.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 31/49] RDMA/rxe: Fix the use-before-initialization error of resp_pkts
+Subject: [PATCH 5.10 21/89] MIPS: Alchemy: fix dbdma2
 Date:   Mon, 19 Jun 2023 12:30:09 +0200
-Message-ID: <20230619102131.502961724@linuxfoundation.org>
+Message-ID: <20230619102139.256666792@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
-References: <20230619102129.856988902@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,80 +55,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Manuel Lauss <manuel.lauss@gmail.com>
 
-[ Upstream commit 2a62b6210ce876c596086ab8fd4c8a0c3d10611a ]
+[ Upstream commit 2d645604f69f3a772d58ead702f9a8e84ab2b342 ]
 
-In the following:
+Various fixes for the Au1200/Au1550/Au1300 DBDMA2 code:
 
-  Call Trace:
-   <TASK>
-   __dump_stack lib/dump_stack.c:88 [inline]
-   dump_stack_lvl+0xd9/0x150 lib/dump_stack.c:106
-   assign_lock_key kernel/locking/lockdep.c:982 [inline]
-   register_lock_class+0xdb6/0x1120 kernel/locking/lockdep.c:1295
-   __lock_acquire+0x10a/0x5df0 kernel/locking/lockdep.c:4951
-   lock_acquire kernel/locking/lockdep.c:5691 [inline]
-   lock_acquire+0x1b1/0x520 kernel/locking/lockdep.c:5656
-   __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
-   _raw_spin_lock_irqsave+0x3d/0x60 kernel/locking/spinlock.c:162
-   skb_dequeue+0x20/0x180 net/core/skbuff.c:3639
-   drain_resp_pkts drivers/infiniband/sw/rxe/rxe_comp.c:555 [inline]
-   rxe_completer+0x250d/0x3cc0 drivers/infiniband/sw/rxe/rxe_comp.c:652
-   rxe_qp_do_cleanup+0x1be/0x820 drivers/infiniband/sw/rxe/rxe_qp.c:761
-   execute_in_process_context+0x3b/0x150 kernel/workqueue.c:3473
-   __rxe_cleanup+0x21e/0x370 drivers/infiniband/sw/rxe/rxe_pool.c:233
-   rxe_create_qp+0x3f6/0x5f0 drivers/infiniband/sw/rxe/rxe_verbs.c:583
+- skip cache invalidation if chip has working coherency circuitry.
+- invalidate KSEG0-portion of the (physical) data address.
+- force the dma channel doorbell write out to bus immediately with
+  a sync.
 
-This is a use-before-initialization problem.
-
-It happens because rxe_qp_do_cleanup is called during error unwind before
-the struct has been fully initialized.
-
-Move the initialization of the skb earlier.
-
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Link: https://lore.kernel.org/r/20230602035408.741534-1-yanjun.zhu@intel.com
-Reported-by: syzbot+eba589d8f49c73d356da@syzkaller.appspotmail.com
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_qp.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ arch/mips/alchemy/common/dbdma.c | 27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
-index b137ed1c74af1..73009bf8a9c0b 100644
---- a/drivers/infiniband/sw/rxe/rxe_qp.c
-+++ b/drivers/infiniband/sw/rxe/rxe_qp.c
-@@ -218,6 +218,9 @@ static void rxe_qp_init_misc(struct rxe_dev *rxe, struct rxe_qp *qp,
- 	spin_lock_init(&qp->rq.producer_lock);
- 	spin_lock_init(&qp->rq.consumer_lock);
+diff --git a/arch/mips/alchemy/common/dbdma.c b/arch/mips/alchemy/common/dbdma.c
+index 4ca2c28878e0f..e9ee9ab90a0c6 100644
+--- a/arch/mips/alchemy/common/dbdma.c
++++ b/arch/mips/alchemy/common/dbdma.c
+@@ -30,6 +30,7 @@
+  *
+  */
  
-+	skb_queue_head_init(&qp->req_pkts);
-+	skb_queue_head_init(&qp->resp_pkts);
-+
- 	atomic_set(&qp->ssn, 0);
- 	atomic_set(&qp->skb_out, 0);
- }
-@@ -266,8 +269,6 @@ static int rxe_qp_init_req(struct rxe_dev *rxe, struct rxe_qp *qp,
- 	qp->req.opcode		= -1;
- 	qp->comp.opcode		= -1;
++#include <linux/dma-map-ops.h> /* for dma_default_coherent */
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+ #include <linux/slab.h>
+@@ -623,17 +624,18 @@ u32 au1xxx_dbdma_put_source(u32 chanid, dma_addr_t buf, int nbytes, u32 flags)
+ 		dp->dscr_cmd0 &= ~DSCR_CMD0_IE;
  
--	skb_queue_head_init(&qp->req_pkts);
--
- 	rxe_init_task(&qp->req.task, qp, rxe_requester);
- 	rxe_init_task(&qp->comp.task, qp, rxe_completer);
+ 	/*
+-	 * There is an errata on the Au1200/Au1550 parts that could result
+-	 * in "stale" data being DMA'ed. It has to do with the snoop logic on
+-	 * the cache eviction buffer.  DMA_NONCOHERENT is on by default for
+-	 * these parts. If it is fixed in the future, these dma_cache_inv will
+-	 * just be nothing more than empty macros. See io.h.
++	 * There is an erratum on certain Au1200/Au1550 revisions that could
++	 * result in "stale" data being DMA'ed. It has to do with the snoop
++	 * logic on the cache eviction buffer.  dma_default_coherent is set
++	 * to false on these parts.
+ 	 */
+-	dma_cache_wback_inv((unsigned long)buf, nbytes);
++	if (!dma_default_coherent)
++		dma_cache_wback_inv(KSEG0ADDR(buf), nbytes);
+ 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
+ 	wmb(); /* drain writebuffer */
+ 	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
+ 	ctp->chan_ptr->ddma_dbell = 0;
++	wmb(); /* force doorbell write out to dma engine */
  
-@@ -313,8 +314,6 @@ static int rxe_qp_init_resp(struct rxe_dev *rxe, struct rxe_qp *qp,
- 		}
- 	}
+ 	/* Get next descriptor pointer. */
+ 	ctp->put_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
+@@ -685,17 +687,18 @@ u32 au1xxx_dbdma_put_dest(u32 chanid, dma_addr_t buf, int nbytes, u32 flags)
+ 			  dp->dscr_source1, dp->dscr_dest0, dp->dscr_dest1);
+ #endif
+ 	/*
+-	 * There is an errata on the Au1200/Au1550 parts that could result in
+-	 * "stale" data being DMA'ed. It has to do with the snoop logic on the
+-	 * cache eviction buffer.  DMA_NONCOHERENT is on by default for these
+-	 * parts. If it is fixed in the future, these dma_cache_inv will just
+-	 * be nothing more than empty macros. See io.h.
++	 * There is an erratum on certain Au1200/Au1550 revisions that could
++	 * result in "stale" data being DMA'ed. It has to do with the snoop
++	 * logic on the cache eviction buffer.  dma_default_coherent is set
++	 * to false on these parts.
+ 	 */
+-	dma_cache_inv((unsigned long)buf, nbytes);
++	if (!dma_default_coherent)
++		dma_cache_inv(KSEG0ADDR(buf), nbytes);
+ 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
+ 	wmb(); /* drain writebuffer */
+ 	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
+ 	ctp->chan_ptr->ddma_dbell = 0;
++	wmb(); /* force doorbell write out to dma engine */
  
--	skb_queue_head_init(&qp->resp_pkts);
--
- 	rxe_init_task(&qp->resp.task, qp, rxe_responder);
- 
- 	qp->resp.opcode		= OPCODE_NONE;
+ 	/* Get next descriptor pointer. */
+ 	ctp->put_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
 -- 
 2.39.2
 
