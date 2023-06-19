@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ED767353E6
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:49:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3884735325
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:42:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232163AbjFSKt2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:49:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51384 "EHLO
+        id S230053AbjFSKmH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:42:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232165AbjFSKtK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:49:10 -0400
+        with ESMTP id S231276AbjFSKls (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:41:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB6ABE62
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:49:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1B35E51
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:41:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 80A8E60B7F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:49:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D94C433C8;
-        Mon, 19 Jun 2023 10:49:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 39E3D60B7F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:41:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B03BC433C8;
+        Mon, 19 Jun 2023 10:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171748;
-        bh=uvPD4bGKRDWQCGUnwIAjiRstslLnmosiclP4vnJiUL8=;
+        s=korg; t=1687171306;
+        bh=JkjAxRk8IilW6sHm9qh/48x5z/VoK+Due3w8oh8QbGs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QYGaXUoRBRIdTql62EBsZS8aQjwfg+v5VP7nBueQPwzx1nMz8a7gHNen+eLZK9hLf
-         xa2ROL28LFryGAof71Mj0rzdUA3psxhNTEYm3v3EaAs+Lc1aVA0zmFZRbJuqmlcZao
-         iglZKk9t1K2Z2lL7+OiWxSxD/gV9kozxPrf9mgnM=
+        b=TQIsEvKdgu0aMIDBYUxUPtQFqTAmxIZFglnW/LPUpQpxwdwE7woeAPfj2FSrlxS4+
+         Nyn15UxILF8aKzPKLeGH90BK9L6PqxXpaSgW7SboqWu3EV/185+XAGWj45Ubv7CZRD
+         zWgQLHg9SMYYD4XlF+aQ4h8m5z69M4hASyfnzUMo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Natalia Petrova <n.petrova@fintech.ru>,
-        Lyude Paul <lyude@redhat.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 135/166] drm/nouveau: add nv_encoder pointer check for NULL
+        patches@lists.linux.dev,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
+        Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 34/49] IB/isert: Fix possible list corruption in CMA handler
 Date:   Mon, 19 Jun 2023 12:30:12 +0200
-Message-ID: <20230619102201.325488626@linuxfoundation.org>
+Message-ID: <20230619102131.671456830@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
+References: <20230619102129.856988902@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,40 +57,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Natalia Petrova <n.petrova@fintech.ru>
+From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
 
-[ Upstream commit 55b94bb8c42464bad3d2217f6874aa1a85664eac ]
+[ Upstream commit 7651e2d6c5b359a28c2d4c904fec6608d1021ca8 ]
 
-Pointer nv_encoder could be dereferenced at nouveau_connector.c
-in case it's equal to NULL by jumping to goto label.
-This patch adds a NULL-check to avoid it.
+When ib_isert module receives connection error event, it is
+releasing the isert session and removes corresponding list
+node but it doesn't take appropriate mutex lock to remove
+the list node.  This can lead to linked  list corruption
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 3195c5f9784a ("drm/nouveau: set encoder for lvds")
-Signed-off-by: Natalia Petrova <n.petrova@fintech.ru>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-[Fixed patch title]
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230512103320.82234-1-n.petrova@fintech.ru
+Fixes: bd3792205aae ("iser-target: Fix pending connections handling in target stack shutdown sequnce")
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Link: https://lore.kernel.org/r/20230606102531.162967-3-saravanan.vajravel@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_connector.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/ulp/isert/ib_isert.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_connector.c b/drivers/gpu/drm/nouveau/nouveau_connector.c
-index fd984733b8e6f..f40310559d13f 100644
---- a/drivers/gpu/drm/nouveau/nouveau_connector.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
-@@ -730,7 +730,8 @@ nouveau_connector_detect_lvds(struct drm_connector *connector, bool force)
- #endif
+diff --git a/drivers/infiniband/ulp/isert/ib_isert.c b/drivers/infiniband/ulp/isert/ib_isert.c
+index 51e4f4e112841..60594dad55455 100644
+--- a/drivers/infiniband/ulp/isert/ib_isert.c
++++ b/drivers/infiniband/ulp/isert/ib_isert.c
+@@ -742,9 +742,13 @@ static int
+ isert_connect_error(struct rdma_cm_id *cma_id)
+ {
+ 	struct isert_conn *isert_conn = cma_id->qp->qp_context;
++	struct isert_np *isert_np = cma_id->context;
  
- 	nouveau_connector_set_edid(nv_connector, edid);
--	nouveau_connector_set_encoder(connector, nv_encoder);
-+	if (nv_encoder)
-+		nouveau_connector_set_encoder(connector, nv_encoder);
- 	return status;
- }
+ 	ib_drain_qp(isert_conn->qp);
++
++	mutex_lock(&isert_np->mutex);
+ 	list_del_init(&isert_conn->node);
++	mutex_unlock(&isert_np->mutex);
+ 	isert_conn->cm_id = NULL;
+ 	isert_put_conn(isert_conn);
  
 -- 
 2.39.2
