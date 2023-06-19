@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C6BA735384
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28B717352CA
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:38:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231775AbjFSKqR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:46:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47346 "EHLO
+        id S231705AbjFSKiN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:38:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231800AbjFSKpt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:45:49 -0400
+        with ESMTP id S231738AbjFSKiD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:38:03 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D895510F3
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:45:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75BFEE58
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:38:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D73660670
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:45:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84308C433C0;
-        Mon, 19 Jun 2023 10:45:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E40A860B33
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:38:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0076FC433C0;
+        Mon, 19 Jun 2023 10:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171525;
-        bh=ai00HA7+vtURmaK2lAc7tdM9pjXyQsS5zmBzx0bqBOs=;
+        s=korg; t=1687171080;
+        bh=WJLGO3fYtxjJ9+Vm4eCIyW+nvhFPvCQMH4xOzt3sN7Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yZ9VSTJ8rRY3wUuZ1PlvCCAD+zAy3h0As+fq+MwI6PLTBi39xbp3czBOBT2r+sU1b
-         QzGO2l7z5SMNXva0FN38bK83bfYeCg5ISA2noHfQPlV+oKtPiEMgh1gRn9orKatiNy
-         AvmVrB1Ov3CEIWJlLcGwMeze6cAUOqsgxPpYxkPI=
+        b=e3033ZCzws5ymMtK2SQcZ9bkhnR+s0YIZbi38kGGtmagHweio+i+VsIMbrCppdQcD
+         M3z/2f5Jb6eAITn0EaK2eUr+A8b5uyo9cSmfTEJe6MHCBR8yx7VrlXENiwx5BFrZcs
+         Nl2nwgxJLzhF+HUofxjwNTSLYWaUgn/ptKuKWPXA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lukasz Tyl <ltyl@hem-e.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 063/166] ALSA: usb-audio: Add quirk flag for HEM devices to enable native DSD playback
-Date:   Mon, 19 Jun 2023 12:29:00 +0200
-Message-ID: <20230619102157.846139217@linuxfoundation.org>
+        patches@lists.linux.dev, Wei Fang <wei.fang@nxp.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 123/187] net: enetc: correct the indexes of highest and 2nd highest TCs
+Date:   Mon, 19 Jun 2023 12:29:01 +0200
+Message-ID: <20230619102203.477848459@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,39 +57,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lukasz Tyl <ltyl@hem-e.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-commit 122e2cb7e1a30438cc0e8bf70d4279db245d7d5b upstream.
+[ Upstream commit 21225873be1472b7c59ed3650396af0e40578112 ]
 
-This commit adds new DEVICE_FLG with QUIRK_FLAG_DSD_RAW and Vendor Id for
-HEM devices which supports native DSD. Prior to this change Linux kernel
-was not enabling native DSD playback for HEM devices, and as a result,
-DSD audio was being converted to PCM "on the fly". HEM devices,
-when connected to the system, would only play audio in PCM format,
-even if the source material was in DSD format. With the addition of new
-VENDOR_FLG in the quircks.c file, the devices are now correctly
-recognized, and raw DSD data is transmitted to the device,
-allowing for native DSD playback.
+For ENETC hardware, the TCs are numbered from 0 to N-1, where N
+is the number of TCs. Numerically higher TC has higher priority.
+It's obvious that the highest priority TC index should be N-1 and
+the 2nd highest priority TC index should be N-2.
 
-Signed-off-by: Lukasz Tyl <ltyl@hem-e.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230614122524.30271-1-ltyl@hem-e.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, the previous logic uses netdev_get_prio_tc_map() to get
+the indexes of highest priority and 2nd highest priority TCs, it
+does not make sense and is incorrect to give a "tc" argument to
+netdev_get_prio_tc_map(). So the driver may get the wrong indexes
+of the two highest priotiry TCs which would lead to failed to set
+the CBS for the two highest priotiry TCs.
+
+e.g.
+$ tc qdisc add dev eno0 parent root handle 100: mqprio num_tc 6 \
+	map 0 0 1 1 2 3 4 5 queues 1@0 1@1 1@2 1@3 2@4 2@6 hw 1
+$ tc qdisc replace dev eno0 parent 100:6 cbs idleslope 100000 \
+	sendslope -900000 hicredit 12 locredit -113 offload 1
+$ Error: Specified device failed to setup cbs hardware offload.
+  ^^^^^
+
+In this example, the previous logic deems the indexes of the two
+highest priotiry TCs should be 3 and 2. Actually, the indexes are
+5 and 4, because the number of TCs is 6. So it would be failed to
+configure the CBS for the two highest priority TCs.
+
+Fixes: c431047c4efe ("enetc: add support Credit Based Shaper(CBS) for hardware offload")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/freescale/enetc/enetc_qos.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2191,6 +2191,8 @@ static const struct usb_audio_quirk_flag
- 		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x2ab6, /* T+A devices */
- 		   QUIRK_FLAG_DSD_RAW),
-+	VENDOR_FLG(0x3336, /* HEM devices */
-+		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x3353, /* Khadas devices */
- 		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x3842, /* EVGA */
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_qos.c b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
+index 83c27bbbc6edf..126007ab70f61 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_qos.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
+@@ -181,8 +181,8 @@ int enetc_setup_tc_cbs(struct net_device *ndev, void *type_data)
+ 	int bw_sum = 0;
+ 	u8 bw;
+ 
+-	prio_top = netdev_get_prio_tc_map(ndev, tc_nums - 1);
+-	prio_next = netdev_get_prio_tc_map(ndev, tc_nums - 2);
++	prio_top = tc_nums - 1;
++	prio_next = tc_nums - 2;
+ 
+ 	/* Support highest prio and second prio tc in cbs mode */
+ 	if (tc != prio_top && tc != prio_next)
+-- 
+2.39.2
+
 
 
