@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A93477352FB
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 162227353B0
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:48:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230482AbjFSKka (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:40:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45502 "EHLO
+        id S231137AbjFSKsP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:48:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232082AbjFSKkQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:40:16 -0400
+        with ESMTP id S231146AbjFSKru (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:47:50 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75B03E62
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:40:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75827E58
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:47:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C11160B62
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:40:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A34C433C0;
-        Mon, 19 Jun 2023 10:40:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4515A60B80
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:47:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 585CCC433C8;
+        Mon, 19 Jun 2023 10:47:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171202;
-        bh=It2DotmhJgF6bEerrBSRXbMcT0xPUBgjMzA77bJYsFU=;
+        s=korg; t=1687171628;
+        bh=Ck530VepZayj+5eORAX4bPndjM+KXbVtZF+QVbwFaUI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iNTJsXn+A4PR8X97ByOP1jcaca8e2Qlh0Nn9TMjinNTNqHKYooa6wcTlOhb8jyY5f
-         9L1dbun1K1uF3w+4KWhtUJcVPhYXf2fuldAwL0zwJJMks+9NCv5dHtd51K849NEh5C
-         C6BQECPppmsBk74/0rn8qXi8lPK92dkHx2KGpwAg=
+        b=aucKD9BrmE2xz0yeneMwfcPlnP6bMXmUmqGikwPAFqoBPtYpHQz3GVj4QrgtpNiLN
+         ziog/RfG9/HlImIrkw2tkXkotPJ8QBqilSWQjCnh5o9/6CJk7VHOoXHyWYp40G0/I4
+         R3OfSyDWMuRacgN+sje81IWCp9fwXJ7NvUFSdjLM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Natalia Petrova <n.petrova@fintech.ru>,
-        Lyude Paul <lyude@redhat.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 158/187] drm/nouveau/dp: check for NULL nv_connector->native_mode
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 099/166] netfilter: nf_tables: incorrect error path handling with NFT_MSG_NEWRULE
 Date:   Mon, 19 Jun 2023 12:29:36 +0200
-Message-ID: <20230619102205.223211120@linuxfoundation.org>
+Message-ID: <20230619102159.586709029@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,51 +54,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Natalia Petrova <n.petrova@fintech.ru>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 20a2ce87fbaf81e4c3dcb631d738e423959eb320 ]
+[ Upstream commit 1240eb93f0616b21c675416516ff3d74798fdc97 ]
 
-Add checking for NULL before calling nouveau_connector_detect_depth() in
-nouveau_connector_get_modes() function because nv_connector->native_mode
-could be dereferenced there since connector pointer passed to
-nouveau_connector_detect_depth() and the same value of
-nv_connector->native_mode is used there.
+In case of error when adding a new rule that refers to an anonymous set,
+deactivate expressions via NFT_TRANS_PREPARE state, not NFT_TRANS_RELEASE.
+Thus, the lookup expression marks anonymous sets as inactive in the next
+generation to ensure it is not reachable in this transaction anymore and
+decrement the set refcount as introduced by c1592a89942e ("netfilter:
+nf_tables: deactivate anonymous set from preparation phase"). The abort
+step takes care of undoing the anonymous set.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+This is also consistent with rule deletion, where NFT_TRANS_PREPARE is
+used. Note that this error path is exercised in the preparation step of
+the commit protocol. This patch replaces nf_tables_rule_release() by the
+deactivate and destroy calls, this time with NFT_TRANS_PREPARE.
 
-Fixes: d4c2c99bdc83 ("drm/nouveau/dp: remove broken display depth function, use the improved one")
+Due to this incorrect error handling, it is possible to access a
+dangling pointer to the anonymous set that remains in the transaction
+list.
 
-Signed-off-by: Natalia Petrova <n.petrova@fintech.ru>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230512111526.82408-1-n.petrova@fintech.ru
+[1009.379054] BUG: KASAN: use-after-free in nft_set_lookup_global+0x147/0x1a0 [nf_tables]
+[1009.379106] Read of size 8 at addr ffff88816c4c8020 by task nft-rule-add/137110
+[1009.379116] CPU: 7 PID: 137110 Comm: nft-rule-add Not tainted 6.4.0-rc4+ #256
+[1009.379128] Call Trace:
+[1009.379132]  <TASK>
+[1009.379135]  dump_stack_lvl+0x33/0x50
+[1009.379146]  ? nft_set_lookup_global+0x147/0x1a0 [nf_tables]
+[1009.379191]  print_address_description.constprop.0+0x27/0x300
+[1009.379201]  kasan_report+0x107/0x120
+[1009.379210]  ? nft_set_lookup_global+0x147/0x1a0 [nf_tables]
+[1009.379255]  nft_set_lookup_global+0x147/0x1a0 [nf_tables]
+[1009.379302]  nft_lookup_init+0xa5/0x270 [nf_tables]
+[1009.379350]  nf_tables_newrule+0x698/0xe50 [nf_tables]
+[1009.379397]  ? nf_tables_rule_release+0xe0/0xe0 [nf_tables]
+[1009.379441]  ? kasan_unpoison+0x23/0x50
+[1009.379450]  nfnetlink_rcv_batch+0x97c/0xd90 [nfnetlink]
+[1009.379470]  ? nfnetlink_rcv_msg+0x480/0x480 [nfnetlink]
+[1009.379485]  ? __alloc_skb+0xb8/0x1e0
+[1009.379493]  ? __alloc_skb+0xb8/0x1e0
+[1009.379502]  ? entry_SYSCALL_64_after_hwframe+0x46/0xb0
+[1009.379509]  ? unwind_get_return_address+0x2a/0x40
+[1009.379517]  ? write_profile+0xc0/0xc0
+[1009.379524]  ? avc_lookup+0x8f/0xc0
+[1009.379532]  ? __rcu_read_unlock+0x43/0x60
+
+Fixes: 958bee14d071 ("netfilter: nf_tables: use new transaction infrastructure to handle sets")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_connector.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_connector.c b/drivers/gpu/drm/nouveau/nouveau_connector.c
-index 086b66b60d918..5dbf025e68737 100644
---- a/drivers/gpu/drm/nouveau/nouveau_connector.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
-@@ -966,7 +966,7 @@ nouveau_connector_get_modes(struct drm_connector *connector)
- 	/* Determine display colour depth for everything except LVDS now,
- 	 * DP requires this before mode_valid() is called.
- 	 */
--	if (connector->connector_type != DRM_MODE_CONNECTOR_LVDS)
-+	if (connector->connector_type != DRM_MODE_CONNECTOR_LVDS && nv_connector->native_mode)
- 		nouveau_connector_detect_depth(connector);
- 
- 	/* Find the native mode if this is a digital panel, if we didn't
-@@ -987,7 +987,7 @@ nouveau_connector_get_modes(struct drm_connector *connector)
- 	 * "native" mode as some VBIOS tables require us to use the
- 	 * pixel clock as part of the lookup...
- 	 */
--	if (connector->connector_type == DRM_MODE_CONNECTOR_LVDS)
-+	if (connector->connector_type == DRM_MODE_CONNECTOR_LVDS && nv_connector->native_mode)
- 		nouveau_connector_detect_depth(connector);
- 
- 	if (nv_encoder->dcb->type == DCB_OUTPUT_TV)
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index db84d607a413e..13d4913266b4d 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3669,7 +3669,8 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 	if (flow)
+ 		nft_flow_rule_destroy(flow);
+ err_release_rule:
+-	nf_tables_rule_release(&ctx, rule);
++	nft_rule_expr_deactivate(&ctx, rule, NFT_TRANS_PREPARE);
++	nf_tables_rule_destroy(&ctx, rule);
+ err_release_expr:
+ 	for (i = 0; i < n; i++) {
+ 		if (expr_info[i].ops) {
 -- 
 2.39.2
 
