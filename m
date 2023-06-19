@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61C8E735560
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:04:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6D617354CA
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:59:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232592AbjFSLEH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:04:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37140 "EHLO
+        id S232469AbjFSK7K (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:59:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232653AbjFSLDs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:03:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FD0D213D
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:02:43 -0700 (PDT)
+        with ESMTP id S232366AbjFSK6n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:58:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 817131723
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:57:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 733C260B5B
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:02:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88510C433C0;
-        Mon, 19 Jun 2023 11:02:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0DAA960B5F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:57:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A70C433C0;
+        Mon, 19 Jun 2023 10:57:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172562;
-        bh=JruvNauU9jppT6TR62KLtSt2QrFzO3Q6kPQnqW84+CI=;
+        s=korg; t=1687172230;
+        bh=tyw/1INzvYwlkUZF5NwSsxLIo63T8sqs8Ids4I6zJ1c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r/b8KkEVdqQ3VUU2pSnXl1AS6FFKmTxSXRMs87OceXZB4p6FRcjcxa9v7KcSJHNrl
-         Q+xT5HR7bVhjNvHdx66HnDBAJO6/U6s/GMesv0KQjspCKAYh3EmOJBjeCWg5y15TQk
-         nt3J9IItH+5A76RhLJ1kO3w9zIF1WKO7QJ0GsueQ=
+        b=BmrFfqwrVg81K3dMUO0ZUFiSkUm9VH20+d3b/cVRx5n8aWGAui06ho6kxmB3F06i+
+         QAPS6NoMF/TI5WRWkBu5ARguGZS+n9iq7TPxvJ9yF/hITr2blUeIZdinhxvlfluMtv
+         0zwvGMe24Tmf+DeGZNx4r7F4uhcM5L9fhySJcCXY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 087/107] igb: fix nvm.ops.read() error handling
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        syzbot+7d50f1e54a12ba3aeae2@syzkaller.appspotmail.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 83/89] nilfs2: reject devices with insufficient block count
 Date:   Mon, 19 Jun 2023 12:31:11 +0200
-Message-ID: <20230619102145.547232099@linuxfoundation.org>
+Message-ID: <20230619102142.066600154@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,44 +56,105 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 48a821fd58837800750ec1b3962f0f799630a844 ]
+commit 92c5d1b860e9581d64baca76779576c0ab0d943d upstream.
 
-Add error handling into igb_set_eeprom() function, in case
-nvm.ops.read() fails just quit with error code asap.
+The current sanity check for nilfs2 geometry information lacks checks for
+the number of segments stored in superblocks, so even for device images
+that have been destructively truncated or have an unusually high number of
+segments, the mount operation may succeed.
 
-Fixes: 9d5c824399de ("igb: PCI-Express 82575 Gigabit Ethernet driver")
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This causes out-of-bounds block I/O on file system block reads or log
+writes to the segments, the latter in particular causing
+"a_ops->writepages" to repeatedly fail, resulting in sync_inodes_sb() to
+hang.
+
+Fix this issue by checking the number of segments stored in the superblock
+and avoiding mounting devices that can cause out-of-bounds accesses.  To
+eliminate the possibility of overflow when calculating the number of
+blocks required for the device from the number of segments, this also adds
+a helper function to calculate the upper bound on the number of segments
+and inserts a check using it.
+
+Link: https://lkml.kernel.org/r/20230526021332.3431-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+7d50f1e54a12ba3aeae2@syzkaller.appspotmail.com
+  Link: https://syzkaller.appspot.com/bug?extid=7d50f1e54a12ba3aeae2
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igb/igb_ethtool.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/nilfs2/the_nilfs.c |   44 +++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 43 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-index e99e6e44b525a..b2f46004a3d0f 100644
---- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
-+++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-@@ -822,6 +822,8 @@ static int igb_set_eeprom(struct net_device *netdev,
- 		 */
- 		ret_val = hw->nvm.ops.read(hw, last_word, 1,
- 				   &eeprom_buff[last_word - first_word]);
-+		if (ret_val)
-+			goto out;
+--- a/fs/nilfs2/the_nilfs.c
++++ b/fs/nilfs2/the_nilfs.c
+@@ -405,6 +405,18 @@ unsigned long nilfs_nrsvsegs(struct the_
+ 				  100));
+ }
+ 
++/**
++ * nilfs_max_segment_count - calculate the maximum number of segments
++ * @nilfs: nilfs object
++ */
++static u64 nilfs_max_segment_count(struct the_nilfs *nilfs)
++{
++	u64 max_count = U64_MAX;
++
++	do_div(max_count, nilfs->ns_blocks_per_segment);
++	return min_t(u64, max_count, ULONG_MAX);
++}
++
+ void nilfs_set_nsegments(struct the_nilfs *nilfs, unsigned long nsegs)
+ {
+ 	nilfs->ns_nsegments = nsegs;
+@@ -414,6 +426,8 @@ void nilfs_set_nsegments(struct the_nilf
+ static int nilfs_store_disk_layout(struct the_nilfs *nilfs,
+ 				   struct nilfs_super_block *sbp)
+ {
++	u64 nsegments, nblocks;
++
+ 	if (le32_to_cpu(sbp->s_rev_level) < NILFS_MIN_SUPP_REV) {
+ 		nilfs_err(nilfs->ns_sb,
+ 			  "unsupported revision (superblock rev.=%d.%d, current rev.=%d.%d). Please check the version of mkfs.nilfs(2).",
+@@ -457,7 +471,35 @@ static int nilfs_store_disk_layout(struc
+ 		return -EINVAL;
  	}
  
- 	/* Device's eeprom is always little-endian, word addressable */
-@@ -841,6 +843,7 @@ static int igb_set_eeprom(struct net_device *netdev,
- 		hw->nvm.ops.update(hw);
- 
- 	igb_set_fw_version(adapter);
-+out:
- 	kfree(eeprom_buff);
- 	return ret_val;
+-	nilfs_set_nsegments(nilfs, le64_to_cpu(sbp->s_nsegments));
++	nsegments = le64_to_cpu(sbp->s_nsegments);
++	if (nsegments > nilfs_max_segment_count(nilfs)) {
++		nilfs_err(nilfs->ns_sb,
++			  "segment count %llu exceeds upper limit (%llu segments)",
++			  (unsigned long long)nsegments,
++			  (unsigned long long)nilfs_max_segment_count(nilfs));
++		return -EINVAL;
++	}
++
++	nblocks = (u64)i_size_read(nilfs->ns_sb->s_bdev->bd_inode) >>
++		nilfs->ns_sb->s_blocksize_bits;
++	if (nblocks) {
++		u64 min_block_count = nsegments * nilfs->ns_blocks_per_segment;
++		/*
++		 * To avoid failing to mount early device images without a
++		 * second superblock, exclude that block count from the
++		 * "min_block_count" calculation.
++		 */
++
++		if (nblocks < min_block_count) {
++			nilfs_err(nilfs->ns_sb,
++				  "total number of segment blocks %llu exceeds device size (%llu blocks)",
++				  (unsigned long long)min_block_count,
++				  (unsigned long long)nblocks);
++			return -EINVAL;
++		}
++	}
++
++	nilfs_set_nsegments(nilfs, nsegments);
+ 	nilfs->ns_crc_seed = le32_to_cpu(sbp->s_crc_seed);
+ 	return 0;
  }
--- 
-2.39.2
-
 
 
