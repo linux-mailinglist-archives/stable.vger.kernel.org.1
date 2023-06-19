@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68D2E735786
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 15:01:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C61C8735787
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 15:01:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231519AbjFSNBU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 09:01:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42738 "EHLO
+        id S231488AbjFSNB1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 09:01:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231526AbjFSNBJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 09:01:09 -0400
+        with ESMTP id S231500AbjFSNBT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 09:01:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 879011AC
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 06:01:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3304D1722
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 06:01:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0FDD760BFF
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 13:01:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B7EC433C0;
-        Mon, 19 Jun 2023 13:01:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BA25460BFF
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 13:01:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9BB8C433C0;
+        Mon, 19 Jun 2023 13:01:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687179661;
-        bh=1sNih7wY8HH+jfWLZGb8IpxUoGWGXxHHq5R/Vl21tEY=;
+        s=korg; t=1687179669;
+        bh=oWy61UpNMpvfB2gIHACYRgrjfpoVUBxw+3adwBTFvN4=;
         h=Subject:To:Cc:From:Date:From;
-        b=bjjYHkM+b+EI8rr21THjBKDYkp8ubRKjfhwMjjrxc1KN2l0iLcLZQ1foQgmcO2tZs
-         xhndEm7ko/MXf+wCwgOQ5UasfkiyXAU4yY6uCAMh/hc5b/geonqwITzO583ulYDU8o
-         38K1kIPv5Ow9gudzZ6vsVQx471gpg+tBjUyDjbA8=
-Subject: FAILED: patch "[PATCH] mm/mmap: Fix error path in do_vmi_align_munmap()" failed to apply to 6.3-stable tree
+        b=UU/cFsOq4qD2KvJ6W7DImHVcQmGZrmgIZFOGMJOtg49wSs7ycT9muvXW88ROYGk7V
+         K7I3IP2WszVt6zcuI4byW1DxcQ4jEDBnqZCpBtWlmtoHbIerjr+N7lnomtmutxmNY5
+         meosY+XijJT8nzb8f5n/CivXMcRAPtzvF66RpGEo=
+Subject: FAILED: patch "[PATCH] mm/mmap: Fix error path in do_vmi_align_munmap()" failed to apply to 6.1-stable tree
 To:     Liam.Howlett@oracle.com, torvalds@linux-foundation.org,
         vegard.nossum@oracle.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 19 Jun 2023 15:00:58 +0200
-Message-ID: <2023061957-faceplate-coeditor-ef11@gregkh>
+Date:   Mon, 19 Jun 2023 15:01:05 +0200
+Message-ID: <2023061905-footless-freewill-5f13@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.3-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 606c812eb1d5b5fb0dd9e330ca94b52d7c227830
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061957-faceplate-coeditor-ef11@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061905-footless-freewill-5f13@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
