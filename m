@@ -2,141 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1C08734A64
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 04:54:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9BC7734B9D
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 08:14:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229658AbjFSCx6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 18 Jun 2023 22:53:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54914 "EHLO
+        id S229933AbjFSGOo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 02:14:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229654AbjFSCx4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 18 Jun 2023 22:53:56 -0400
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0588E4E;
-        Sun, 18 Jun 2023 19:53:54 -0700 (PDT)
-Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1b549e81cecso1643515ad.0;
-        Sun, 18 Jun 2023 19:53:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687143234; x=1689735234;
-        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
-         :message-id:from:cc:references:to:subject:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HcW1VUXTqcSc+mMUauKY0UCtX0Nd8ZbF6k2ii5GYHdA=;
-        b=qZDLkP7m9HtsnGf2OuczgZWOWhpB4CCADkesjrgcg5ZTM1XTBgY8KEjkV4hSmZfoIJ
-         Kid2JeOmMTbAEyfaJxwyD/TBJbo5cg3My76H20uHvPsOvIPmwPPFV96tMe+uinswJ4IZ
-         ZTg+N8eKRzwa3Q/8LLBFBgvqakCwJdh+oRwWaO7JXTpxkY58iw2cHqOqeFhShQDnuQLt
-         9u17/giJOm4BsQ151qK+upIrBOreQUxuMfFe04IbDgU+u51kbCYhcHJVMqCrwhVPbDSh
-         /XHq29LI7WAoTXZ+mNZIwCZSM/1KC2wqmtld1cqU/DIPOnB3geDxwMjJi5ruZKeCkPrW
-         MuxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687143234; x=1689735234;
-        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
-         :message-id:from:cc:references:to:subject:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=HcW1VUXTqcSc+mMUauKY0UCtX0Nd8ZbF6k2ii5GYHdA=;
-        b=UPyTESzqDdtCvR6TkKDDoiUu4ZmaLWOBOM/gXo2UbDArcZnz6maYGNe8AHTEwx9Rzf
-         HZCV4FR8TTjJ3hFyb0Sq3ZNx2NNtWwS5YrzeUQGaedxcNzEfPg4rY9IKOvZBIPntHpPG
-         ilEdXr+IU3vKcI16c47C2rwaDgZK9t2kGdnfYA3iUVeTAOj4B+V75YFXGdeDg5nW9mSi
-         UHC19EVtAY2t4CMBhY67bkNcS/NnvuJzVnKtHPbFLwipaK/biM+8VBGjSyBWoJ9KD2+6
-         lVIPUimEABbK2y27Pum3pKbP1V2or5O7wdAaeGgXvaihs8uSbF82WE7tcaFMv4Fnou1n
-         8IIQ==
-X-Gm-Message-State: AC+VfDzWkybYig5NO+LzjtXo96lMK5MQqqETZNFqj9mPThGZsTQEvJj+
-        /3o518+4B45+NttTRAjDvLkZq5QVufQ=
-X-Google-Smtp-Source: ACHHUZ4sug0G5UmyVJCVoN+6pnic1syO1JLx7pj9HnnqDKeHP35kdVDp18umy8bDO80CO482avnPHQ==
-X-Received: by 2002:a17:902:e848:b0:1b5:49fc:e336 with SMTP id t8-20020a170902e84800b001b549fce336mr1885019plg.42.1687143233794;
-        Sun, 18 Jun 2023 19:53:53 -0700 (PDT)
-Received: from [10.1.1.24] (222-152-217-2-adsl.sparkbb.co.nz. [222.152.217.2])
-        by smtp.gmail.com with ESMTPSA id i9-20020a17090332c900b0019e60c645b1sm10805337plr.305.2023.06.18.19.53.47
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 18 Jun 2023 19:53:53 -0700 (PDT)
-Subject: Re: [PATCH v12 2/3] block: change annotation of rdb_CylBlocks in
- affs_hardblocks.h
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-References: <20230616223616.6002-1-schmitzmic@gmail.com>
- <20230616223616.6002-3-schmitzmic@gmail.com>
- <CAMuHMdXo+Za3_Bz-PaLhq_oZzEzkN=g5YyDp=vaX7485WuE=Cg@mail.gmail.com>
- <e29dcf24-367f-4304-9b01-7913e0dcf650@gmail.com>
- <CAMuHMdUHNGKP4jFM7CDhFxHWd+SR4GG6Co0PosLCk1qpBV176w@mail.gmail.com>
-Cc:     linux-block@vger.kernel.org, axboe@kernel.dk,
-        linux-m68k@vger.kernel.org, hch@lst.de, martin@lichtvoll.de,
-        fthain@linux-m68k.org, stable@vger.kernel.org
-From:   Michael Schmitz <schmitzmic@gmail.com>
-Message-ID: <d4c2a542-f8ce-2aef-805b-d5fc3091e30a@gmail.com>
-Date:   Mon, 19 Jun 2023 14:53:45 +1200
-User-Agent: Mozilla/5.0 (X11; Linux ppc; rv:45.0) Gecko/20100101
- Icedove/45.4.0
+        with ESMTP id S229926AbjFSGOi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 02:14:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0F3D115
+        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 23:14:28 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F76161122
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 06:14:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2C4C433C0;
+        Mon, 19 Jun 2023 06:14:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1687155267;
+        bh=pLpdWrNtxp49XvK0pNF2MVRq9wjxOQbKJ0Pu1Bis8WQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=on6+40TsGIsQMFyrghFRJA73OD8Yv26WwKHmbfotOJzxfYP3i11ZNVrCohzXrqOs+
+         Qq5a0aUNc02pTYhCUgECXbZzNHjI7bORTmzB5YMrOgduagDQTLB5lCugVKBB9SjLp3
+         0lkzgO/xWO4W0W1YpTlVni2zaXiiJfmwm0P8T94s=
+Date:   Mon, 19 Jun 2023 08:14:23 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     stable <stable@vger.kernel.org>
+Subject: Re: Build error in v4.19.y.queue (parisc)
+Message-ID: <2023061914-plunging-certified-7780@gregkh>
+References: <d76bca14-4d95-2d6d-f51a-7c6071dcbdbd@roeck-us.net>
 MIME-Version: 1.0
-In-Reply-To: <CAMuHMdUHNGKP4jFM7CDhFxHWd+SR4GG6Co0PosLCk1qpBV176w@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d76bca14-4d95-2d6d-f51a-7c6071dcbdbd@roeck-us.net>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Geert,
+On Sun, Jun 18, 2023 at 08:43:31AM -0700, Guenter Roeck wrote:
+> Building parisc64:a500_defconfig ... failed
+> --------------
+> Error log:
+> drivers/char/agp/parisc-agp.c: In function 'parisc_agp_tlbflush':
+> drivers/char/agp/parisc-agp.c:98:9: error: implicit declaration of function 'asm_io_sync' [-Werror=implicit-function-declaration]
+>    98 |         asm_io_sync();
+>       |         ^~~~~~~~~~~
+> drivers/char/agp/parisc-agp.c: In function 'parisc_agp_insert_memory':
+> drivers/char/agp/parisc-agp.c:168:25: error: implicit declaration of function 'asm_io_fdc' [-Werror=implicit-function-declaration]
+>   168 |                         asm_io_fdc(&info->gatt[j]);
+>       |                         ^~~~~~~~~~
+> 
+> Those functions are indeed not available in v4.1.y.
 
-Am 18.06.2023 um 19:51 schrieb Geert Uytterhoeven:
-> Hi Michael,
->
-> On Sun, Jun 18, 2023 at 5:10 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
->> Am 17.06.2023 um 23:08 schrieb Geert Uytterhoeven:
->>> On Sat, Jun 17, 2023 at 12:36 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
->>>> The Amiga partition parser module uses signed int for partition sector
->>>> address and count, which will overflow for disks larger than 1 TB.
->>>>
->>>> Use u64 as type for sector address and size to allow using disks up to
->>>> 2 TB without LBD support, and disks larger than 2 TB with LBD. The RBD
->>>> format allows to specify disk sizes up to 2^128 bytes (though native
->>>> OS limitations reduce this somewhat, to max 2^68 bytes), so check for
->>>> u64 overflow carefully to protect against overflowing sector_t.
->>>>
->>>> This bug was reported originally in 2012, and the fix was created by
->>>> the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
->>>> discussed and reviewed on linux-m68k at that time but never officially
->>>> submitted (now resubmitted as patch 1 of this series).
->>>>
->>>> Patch 3 (this series) adds additional error checking and warning
->>>> messages. One of the error checks now makes use of the previously
->>>> unused rdb_CylBlocks field, which causes a 'sparse' warning
->>>> (cast to restricted __be32).
->>>>
->>>> Annotate all 32 bit fields in affs_hardblocks.h as __be32, as the
->>>> on-disk format of RDB and partition blocks is always big endian.
->>>>
->>>> Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
->>>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
->>>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
->>>> Message-ID: <201206192146.09327.Martin@lichtvoll.de>
->>>> Cc: <stable@vger.kernel.org> # 5.2
->>>> Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
->>>> Reviewed-by: Christoph Hellwig <hch@lst.de>
->>>
->>> Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
->>
->> Thanks - now I notice the patch title for this one doesn't fit too well
->> anymore.
->>
->> Would a change of title mess up the common patch tracking tools?
->
-> You mean changing one patch subject in v13?
+Thanks, offending commit now dropped.
 
-Correct.
-
-> Nah, happens all the time, so the tooling should handle that fine.
-
-OK - I need to add your review tag anyway.
-
-Cheers,
-
-	Michael
->
-> Gr{oetje,eeting}s,
->
->                         Geert
->
+greg k-h
