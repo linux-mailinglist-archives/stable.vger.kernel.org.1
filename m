@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7911073523A
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:32:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2A6573523B
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:32:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231327AbjFSKcu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:32:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40216 "EHLO
+        id S231599AbjFSKcw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:32:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231426AbjFSKch (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:32:37 -0400
+        with ESMTP id S231511AbjFSKck (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:32:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAAFC10D3
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:32:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AA3ECD
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:32:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2F5A660B6D
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:32:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 353EBC433C8;
-        Mon, 19 Jun 2023 10:32:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1070E60B67
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:32:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2592CC433C8;
+        Mon, 19 Jun 2023 10:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687170749;
-        bh=jDPutq90C407fOavbmlaUYa/EjOSxaywVjrPOoAuTiI=;
+        s=korg; t=1687170752;
+        bh=UL1wfdsUQBKlzGq2PJgrxBOWBUnxUBn/pysu3p7J4s0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dJcKrYU9D0XfC6gQRAKlhEEGXxzU2/kay4hA2BXvoxConM3/gV4/IdEQeNxJuJPVA
-         b6AoUdverXRdUA2t22foj3ak3Vb6HSmNSWpGFdacKmiNNm+92RGHt17NFULgbSDmyX
-         EO8UPhYOAeCjJ4lJllroIjtETomQlMEWxK/qfa28=
+        b=DgIq9wedB1Uhm8WkwuKN7JFxksC2wXNU8zD4sFUxSGEmkPOfoeqnrqF1jBLB2q5RN
+         YRkSHWi7sjiIBsA6AJuRoaEgt596Rs/j/jhNxj4FX5Jn7pfR4ARfWDwbABqYt0YR5I
+         xlggL/2dcSKkNInFGNnnXbc9XzePHQsnupS+NXxA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Evan Quan <Evan.Quan@amd.com>,
-        Lijo Lazar <Lijo.Lazar@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        patches@lists.linux.dev, Maya Matuszczyk <maccraft123mc@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 022/187] power: supply: Fix logic checking if system is running from battery
-Date:   Mon, 19 Jun 2023 12:27:20 +0200
-Message-ID: <20230619102158.726263801@linuxfoundation.org>
+Subject: [PATCH 6.3 023/187] drm: panel-orientation-quirks: Change Airs quirk to support Air Plus
+Date:   Mon, 19 Jun 2023 12:27:21 +0200
+Message-ID: <20230619102158.778177070@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
 References: <20230619102157.579823843@linuxfoundation.org>
@@ -57,64 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Maya Matuszczyk <maccraft123mc@gmail.com>
 
-[ Upstream commit 95339f40a8b652b5b1773def31e63fc53c26378a ]
+[ Upstream commit 1aa7f416175619e0286fddc5fc44e968b06bf2aa ]
 
-The logic used for power_supply_is_system_supplied() counts all power
-supplies and assumes that the system is running from AC if there is
-either a non-battery power-supply reporting to be online or if no
-power-supplies exist at all.
+It turned out that Aya Neo Air Plus had a different board name than
+expected.
+This patch changes Aya Neo Air's quirk to account for that, as both
+devices share "Air" in DMI product name.
 
-The second rule is for desktop systems, that don't have any
-battery/charger devices. These systems will incorrectly report to be
-powered from battery once a device scope power-supply is registered
-(e.g. a HID device), since these power-supplies increase the counter.
+Tested on Air claiming to be an Air Pro, and on Air Plus.
 
-Apart from HID devices, recent dGPUs provide UCSI power supplies on a
-desktop systems. The dGPU by default doesn't have anything plugged in so
-it's 'offline'. This makes power_supply_is_system_supplied() return 0
-with a count of 1 meaning all drivers that use this get a wrong judgement.
-
-To fix this case adjust the logic to also examine the scope of the power
-supply. If the power supply is deemed a device power supply, then don't
-count it.
-
-Cc: Evan Quan <Evan.Quan@amd.com>
-Suggested-by: Lijo Lazar <Lijo.Lazar@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Maya Matuszczyk <maccraft123mc@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230515184843.1552612-1-maccraft123mc@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/power_supply_core.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_panel_orientation_quirks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/power_supply_core.c b/drivers/power/supply/power_supply_core.c
-index f3d7c1da299fe..d325e6dbc7709 100644
---- a/drivers/power/supply/power_supply_core.c
-+++ b/drivers/power/supply/power_supply_core.c
-@@ -348,6 +348,10 @@ static int __power_supply_is_system_supplied(struct device *dev, void *data)
- 	struct power_supply *psy = dev_get_drvdata(dev);
- 	unsigned int *count = data;
- 
-+	if (!psy->desc->get_property(psy, POWER_SUPPLY_PROP_SCOPE, &ret))
-+		if (ret.intval == POWER_SUPPLY_SCOPE_DEVICE)
-+			return 0;
-+
- 	(*count)++;
- 	if (psy->desc->type != POWER_SUPPLY_TYPE_BATTERY)
- 		if (!psy->desc->get_property(psy, POWER_SUPPLY_PROP_ONLINE,
-@@ -366,8 +370,8 @@ int power_supply_is_system_supplied(void)
- 				      __power_supply_is_system_supplied);
- 
- 	/*
--	 * If no power class device was found at all, most probably we are
--	 * running on a desktop system, so assume we are on mains power.
-+	 * If no system scope power class device was found at all, most probably we
-+	 * are running on a desktop system, so assume we are on mains power.
- 	 */
- 	if (count == 0)
- 		return 1;
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index b1a38e6ce2f8f..0cb646cb04ee1 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -179,7 +179,7 @@ static const struct dmi_system_id orientation_data[] = {
+ 	}, {	/* AYA NEO AIR */
+ 		.matches = {
+ 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
+-		  DMI_MATCH(DMI_BOARD_NAME, "AIR"),
++		  DMI_MATCH(DMI_PRODUCT_NAME, "AIR"),
+ 		},
+ 		.driver_data = (void *)&lcd1080x1920_leftside_up,
+ 	}, {	/* AYA NEO NEXT */
 -- 
 2.39.2
 
