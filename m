@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBF2F735464
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:55:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33AF1735524
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:01:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232389AbjFSKzf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:55:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56476 "EHLO
+        id S232260AbjFSLBr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 07:01:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232444AbjFSKzG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:55:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A9673AA8
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:53:30 -0700 (PDT)
+        with ESMTP id S232544AbjFSLB3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:01:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3598930D1
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:00:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E5AA360B5E
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:53:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD98C433C0;
-        Mon, 19 Jun 2023 10:53:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B7CF960B42
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:00:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE564C433C0;
+        Mon, 19 Jun 2023 11:00:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172009;
-        bh=Jc+YjTco8dAdz8lyMeHLwjLlHpViZ9pryO74O5KKW1o=;
+        s=korg; t=1687172436;
+        bh=ZkDIXLnUdokvY1pT6o294zlkfX76L1K+Xpw7CWJZBjk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eyc4pNA+RmOaafSg1hirrXssb8DbAkLs/SCNHcCzopp6kHWR4l/stYU0efbghK+jn
-         OqdGQfjnzhcvsxP8PzBMlgmSveEqMUTtlgkuj0tdv7n7fzLmJ4LS2rhwD88RZC7whn
-         7pRNb+2VmkmCh4EMmJ3DHwhDmH70/Fd3CoKQdZr4=
+        b=fIUTcFmFNQhgUFwdSt34FQMdxx/3nY5p3ASi89BObRtF1b9qFNFVolaV1M2YJoVav
+         Uvujza6QZfQwJGsCv98GBZS3XW+hNHfSwEyslyn8zFIWziT5Utg7KenCQcBDGNdmIs
+         cbxyy2QsOT57+eeOPWKJ5t+5uEfCFISk5KG6Z0j0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Martin Schiller <ms@dev.tdt.de>,
+        patches@lists.linux.dev, Jamal Hadi Salim <jhs@mojatatu.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 56/64] net: lapbether: only support ethernet devices
+Subject: [PATCH 5.15 068/107] net/sched: act_pedit: remove extra check for key type
 Date:   Mon, 19 Jun 2023 12:30:52 +0200
-Message-ID: <20230619102135.736638481@linuxfoundation.org>
+Message-ID: <20230619102144.707296022@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
-References: <20230619102132.808972458@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,94 +57,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Pedro Tammela <pctammela@mojatatu.com>
 
-[ Upstream commit 9eed321cde22fc1afd76eac563ce19d899e0d6b2 ]
+[ Upstream commit 577140180ba28d0d37bc898c7bd6702c83aa106f ]
 
-It probbaly makes no sense to support arbitrary network devices
-for lapbether.
+The netlink parsing already validates the key 'htype'.
+Remove the datapath check as it's redundant.
 
-syzbot reported:
-
-skbuff: skb_under_panic: text:ffff80008934c100 len:44 put:40 head:ffff0000d18dd200 data:ffff0000d18dd1ea tail:0x16 end:0x140 dev:bond1
-kernel BUG at net/core/skbuff.c:200 !
-Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
-Modules linked in:
-CPU: 0 PID: 5643 Comm: dhcpcd Not tainted 6.4.0-rc5-syzkaller-g4641cff8e810 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/25/2023
-pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : skb_panic net/core/skbuff.c:196 [inline]
-pc : skb_under_panic+0x13c/0x140 net/core/skbuff.c:210
-lr : skb_panic net/core/skbuff.c:196 [inline]
-lr : skb_under_panic+0x13c/0x140 net/core/skbuff.c:210
-sp : ffff8000973b7260
-x29: ffff8000973b7270 x28: ffff8000973b7360 x27: dfff800000000000
-x26: ffff0000d85d8150 x25: 0000000000000016 x24: ffff0000d18dd1ea
-x23: ffff0000d18dd200 x22: 000000000000002c x21: 0000000000000140
-x20: 0000000000000028 x19: ffff80008934c100 x18: ffff8000973b68a0
-x17: 0000000000000000 x16: ffff80008a43bfbc x15: 0000000000000202
-x14: 0000000000000000 x13: 0000000000000001 x12: 0000000000000001
-x11: 0000000000000201 x10: 0000000000000000 x9 : f22f7eb937cced00
-x8 : f22f7eb937cced00 x7 : 0000000000000001 x6 : 0000000000000001
-x5 : ffff8000973b6b78 x4 : ffff80008df9ee80 x3 : ffff8000805974f4
-x2 : 0000000000000001 x1 : 0000000100000201 x0 : 0000000000000086
-Call trace:
-skb_panic net/core/skbuff.c:196 [inline]
-skb_under_panic+0x13c/0x140 net/core/skbuff.c:210
-skb_push+0xf0/0x108 net/core/skbuff.c:2409
-ip6gre_header+0xbc/0x738 net/ipv6/ip6_gre.c:1383
-dev_hard_header include/linux/netdevice.h:3137 [inline]
-lapbeth_data_transmit+0x1c4/0x298 drivers/net/wan/lapbether.c:257
-lapb_data_transmit+0x8c/0xb0 net/lapb/lapb_iface.c:447
-lapb_transmit_buffer+0x178/0x204 net/lapb/lapb_out.c:149
-lapb_send_control+0x220/0x320 net/lapb/lapb_subr.c:251
-lapb_establish_data_link+0x94/0xec
-lapb_device_event+0x348/0x4e0
-notifier_call_chain+0x1a4/0x510 kernel/notifier.c:93
-raw_notifier_call_chain+0x3c/0x50 kernel/notifier.c:461
-__dev_notify_flags+0x2bc/0x544
-dev_change_flags+0xd0/0x15c net/core/dev.c:8643
-devinet_ioctl+0x858/0x17e4 net/ipv4/devinet.c:1150
-inet_ioctl+0x2ac/0x4d8 net/ipv4/af_inet.c:979
-sock_do_ioctl+0x134/0x2dc net/socket.c:1201
-sock_ioctl+0x4ec/0x858 net/socket.c:1318
-vfs_ioctl fs/ioctl.c:51 [inline]
-__do_sys_ioctl fs/ioctl.c:870 [inline]
-__se_sys_ioctl fs/ioctl.c:856 [inline]
-__arm64_sys_ioctl+0x14c/0x1c8 fs/ioctl.c:856
-__invoke_syscall arch/arm64/kernel/syscall.c:38 [inline]
-invoke_syscall+0x98/0x2c0 arch/arm64/kernel/syscall.c:52
-el0_svc_common+0x138/0x244 arch/arm64/kernel/syscall.c:142
-do_el0_svc+0x64/0x198 arch/arm64/kernel/syscall.c:191
-el0_svc+0x4c/0x160 arch/arm64/kernel/entry-common.c:647
-el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:665
-el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:591
-Code: aa1803e6 aa1903e7 a90023f5 947730f5 (d4210000)
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Martin Schiller <ms@dev.tdt.de>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 6c02568fd1ae ("net/sched: act_pedit: Parse L3 Header for L4 offset")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wan/lapbether.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/sched/act_pedit.c | 29 +++++++----------------------
+ 1 file changed, 7 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/net/wan/lapbether.c b/drivers/net/wan/lapbether.c
-index bbcd8ef2873f6..4f52003bf422e 100644
---- a/drivers/net/wan/lapbether.c
-+++ b/drivers/net/wan/lapbether.c
-@@ -341,6 +341,9 @@ static int lapbeth_new_device(struct net_device *dev)
+diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
+index 0237d898fabea..e3bc5bb6c60ef 100644
+--- a/net/sched/act_pedit.c
++++ b/net/sched/act_pedit.c
+@@ -313,37 +313,28 @@ static bool offset_valid(struct sk_buff *skb, int offset)
+ 	return true;
+ }
  
- 	ASSERT_RTNL();
+-static int pedit_skb_hdr_offset(struct sk_buff *skb,
+-				enum pedit_header_type htype, int *hoffset)
++static void pedit_skb_hdr_offset(struct sk_buff *skb,
++				 enum pedit_header_type htype, int *hoffset)
+ {
+-	int ret = -EINVAL;
+-
++	/* 'htype' is validated in the netlink parsing */
+ 	switch (htype) {
+ 	case TCA_PEDIT_KEY_EX_HDR_TYPE_ETH:
+-		if (skb_mac_header_was_set(skb)) {
++		if (skb_mac_header_was_set(skb))
+ 			*hoffset = skb_mac_offset(skb);
+-			ret = 0;
+-		}
+ 		break;
+ 	case TCA_PEDIT_KEY_EX_HDR_TYPE_NETWORK:
+ 	case TCA_PEDIT_KEY_EX_HDR_TYPE_IP4:
+ 	case TCA_PEDIT_KEY_EX_HDR_TYPE_IP6:
+ 		*hoffset = skb_network_offset(skb);
+-		ret = 0;
+ 		break;
+ 	case TCA_PEDIT_KEY_EX_HDR_TYPE_TCP:
+ 	case TCA_PEDIT_KEY_EX_HDR_TYPE_UDP:
+-		if (skb_transport_header_was_set(skb)) {
++		if (skb_transport_header_was_set(skb))
+ 			*hoffset = skb_transport_offset(skb);
+-			ret = 0;
+-		}
+ 		break;
+ 	default:
+-		ret = -EINVAL;
+ 		break;
+ 	}
+-
+-	return ret;
+ }
  
-+	if (dev->type != ARPHRD_ETHER)
-+		return -EINVAL;
-+
- 	ndev = alloc_netdev(sizeof(*lapbeth), "lapb%d", NET_NAME_UNKNOWN,
- 			    lapbeth_setup);
- 	if (!ndev)
+ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+@@ -375,10 +366,9 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+ 
+ 	for (i = parms->tcfp_nkeys; i > 0; i--, tkey++) {
+ 		int offset = tkey->off;
++		int hoffset = 0;
+ 		u32 *ptr, hdata;
+-		int hoffset;
+ 		u32 val;
+-		int rc;
+ 
+ 		if (tkey_ex) {
+ 			htype = tkey_ex->htype;
+@@ -387,12 +377,7 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
+ 			tkey_ex++;
+ 		}
+ 
+-		rc = pedit_skb_hdr_offset(skb, htype, &hoffset);
+-		if (rc) {
+-			pr_info("tc action pedit bad header type specified (0x%x)\n",
+-				htype);
+-			goto bad;
+-		}
++		pedit_skb_hdr_offset(skb, htype, &hoffset);
+ 
+ 		if (tkey->offmask) {
+ 			u8 *d, _d;
 -- 
 2.39.2
 
