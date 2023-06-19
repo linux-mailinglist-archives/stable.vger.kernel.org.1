@@ -2,51 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0819D7352D8
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:38:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE338735216
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:30:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231670AbjFSKin (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:38:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44630 "EHLO
+        id S230344AbjFSKaW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:30:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231732AbjFSKil (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:38:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D15ECD
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:38:40 -0700 (PDT)
+        with ESMTP id S230371AbjFSKaV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:30:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8894EC6
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:30:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AE94660B7F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:38:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39E6C433C0;
-        Mon, 19 Jun 2023 10:38:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E00F60A50
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:30:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CFE4C433CB;
+        Mon, 19 Jun 2023 10:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171119;
-        bh=+dL4KD/N2q4MwQ4FKjKcVbXHpf0CN7d9dg68q7mCrug=;
+        s=korg; t=1687170619;
+        bh=7SZpRBOPuEVYE2QmaYt4jJ9GIL8+s98F+KMoarjT3RY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dyCf02ZGjY8x3olCfW7qqszSpPUtXKlsyccsJuiuOjGcijP4I7fN3vrL6gvtOt+xH
-         2rt+l/XRPneNSZnkUJuBJ3Zf+JtM1Myo5b3Dd23isQ3VWdT4Ccelv84hUUWjDIq+R+
-         duv8mfbiFN0nnMnpII8au7dH5KlhP3x+/weP4HaY=
+        b=RCtY+bLfCmVOFc4PpYl4pQ3wOqeJSVcPM15Qrg1wLkeTDFVxmYtUC4hTN4qUuhkZC
+         BV+yn4OmOOxl5lDMqioPFU7XxuJWl95L/NQUbP1aE0pybkFfdj8hCVDWdDfSx6l37v
+         2l0WaHb6N1Y3bMJPdwN1lenzI7vSjvIShMFbgDPU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ratheesh Kannoth <rkannoth@marvell.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Guillaume Nault <gnault@redhat.com>,
+        David Ahern <dsahern@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 129/187] octeontx2-af: Fix promiscuous mode
+Subject: [PATCH 4.14 19/32] ping6: Fix send to link-local addresses with VRF.
 Date:   Mon, 19 Jun 2023 12:29:07 +0200
-Message-ID: <20230619102203.835882916@linuxfoundation.org>
+Message-ID: <20230619102128.553797160@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102127.461443957@linuxfoundation.org>
+References: <20230619102127.461443957@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,110 +58,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ratheesh Kannoth <rkannoth@marvell.com>
+From: Guillaume Nault <gnault@redhat.com>
 
-[ Upstream commit c0e489372a294044feea650b38f38c888eff57a4 ]
+[ Upstream commit 91ffd1bae1dafbb9e34b46813f5b058581d9144d ]
 
-CN10KB silicon introduced a new exact match feature,
-which is used for DMAC filtering. The state of installed
-DMAC filters in this exact match table is getting corrupted
-when promiscuous mode is toggled. Fix this by not touching
-Exact match related config when promiscuous mode is toggled.
+Ping sockets can't send packets when they're bound to a VRF master
+device and the output interface is set to a slave device.
 
-Fixes: 2dba9459d2c9 ("octeontx2-af: Wrapper functions for MAC addr add/del/update/reset")
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+For example, when net.ipv4.ping_group_range is properly set, so that
+ping6 can use ping sockets, the following kind of commands fails:
+  $ ip vrf exec red ping6 fe80::854:e7ff:fe88:4bf1%eth1
+
+What happens is that sk->sk_bound_dev_if is set to the VRF master
+device, but 'oif' is set to the real output device. Since both are set
+but different, ping_v6_sendmsg() sees their value as inconsistent and
+fails.
+
+Fix this by allowing 'oif' to be a slave device of ->sk_bound_dev_if.
+
+This fixes the following kselftest failure:
+  $ ./fcnal-test.sh -t ipv6_ping
+  [...]
+  TEST: ping out, vrf device+address bind - ns-B IPv6 LLA        [FAIL]
+
+Reported-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Closes: https://lore.kernel.org/netdev/b6191f90-ffca-dbca-7d06-88a9788def9c@alu.unizg.hr/
+Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Fixes: 5e457896986e ("net: ipv6: Fix ping to link-local addresses.")
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/6c8b53108816a8d0d5705ae37bdc5a8322b5e3d9.1686153846.git.gnault@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../marvell/octeontx2/af/rvu_npc_hash.c       | 29 ++-----------------
- 1 file changed, 2 insertions(+), 27 deletions(-)
+ net/ipv6/ping.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
-index 51209119f0f2f..9f11c1e407373 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_hash.c
-@@ -1164,10 +1164,8 @@ static u16 __rvu_npc_exact_cmd_rules_cnt_update(struct rvu *rvu, int drop_mcam_i
- {
- 	struct npc_exact_table *table;
- 	u16 *cnt, old_cnt;
--	bool promisc;
+diff --git a/net/ipv6/ping.c b/net/ipv6/ping.c
+index d5cdba8213a44..49e11bbf390cf 100644
+--- a/net/ipv6/ping.c
++++ b/net/ipv6/ping.c
+@@ -101,7 +101,8 @@ static int ping_v6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 	addr_type = ipv6_addr_type(daddr);
+ 	if ((__ipv6_addr_needs_scope_id(addr_type) && !oif) ||
+ 	    (addr_type & IPV6_ADDR_MAPPED) ||
+-	    (oif && sk->sk_bound_dev_if && oif != sk->sk_bound_dev_if))
++	    (oif && sk->sk_bound_dev_if && oif != sk->sk_bound_dev_if &&
++	     l3mdev_master_ifindex_by_index(sock_net(sk), oif) != sk->sk_bound_dev_if))
+ 		return -EINVAL;
  
- 	table = rvu->hw->table;
--	promisc = table->promisc_mode[drop_mcam_idx];
- 
- 	cnt = &table->cnt_cmd_rules[drop_mcam_idx];
- 	old_cnt = *cnt;
-@@ -1179,16 +1177,13 @@ static u16 __rvu_npc_exact_cmd_rules_cnt_update(struct rvu *rvu, int drop_mcam_i
- 
- 	*enable_or_disable_cam = false;
- 
--	if (promisc)
--		goto done;
--
--	/* If all rules are deleted and not already in promisc mode; disable cam */
-+	/* If all rules are deleted, disable cam */
- 	if (!*cnt && val < 0) {
- 		*enable_or_disable_cam = true;
- 		goto done;
- 	}
- 
--	/* If rule got added and not already in promisc mode; enable cam */
-+	/* If rule got added, enable cam */
- 	if (!old_cnt && val > 0) {
- 		*enable_or_disable_cam = true;
- 		goto done;
-@@ -1443,7 +1438,6 @@ int rvu_npc_exact_promisc_disable(struct rvu *rvu, u16 pcifunc)
- 	u32 drop_mcam_idx;
- 	bool *promisc;
- 	bool rc;
--	u32 cnt;
- 
- 	table = rvu->hw->table;
- 
-@@ -1466,17 +1460,8 @@ int rvu_npc_exact_promisc_disable(struct rvu *rvu, u16 pcifunc)
- 		return LMAC_AF_ERR_INVALID_PARAM;
- 	}
- 	*promisc = false;
--	cnt = __rvu_npc_exact_cmd_rules_cnt_update(rvu, drop_mcam_idx, 0, NULL);
- 	mutex_unlock(&table->lock);
- 
--	/* If no dmac filter entries configured, disable drop rule */
--	if (!cnt)
--		rvu_npc_enable_mcam_by_entry_index(rvu, drop_mcam_idx, NIX_INTF_RX, false);
--	else
--		rvu_npc_enable_mcam_by_entry_index(rvu, drop_mcam_idx, NIX_INTF_RX, !*promisc);
--
--	dev_dbg(rvu->dev, "%s: disabled  promisc mode (cgx=%d lmac=%d, cnt=%d)\n",
--		__func__, cgx_id, lmac_id, cnt);
- 	return 0;
- }
- 
-@@ -1494,7 +1479,6 @@ int rvu_npc_exact_promisc_enable(struct rvu *rvu, u16 pcifunc)
- 	u32 drop_mcam_idx;
- 	bool *promisc;
- 	bool rc;
--	u32 cnt;
- 
- 	table = rvu->hw->table;
- 
-@@ -1517,17 +1501,8 @@ int rvu_npc_exact_promisc_enable(struct rvu *rvu, u16 pcifunc)
- 		return LMAC_AF_ERR_INVALID_PARAM;
- 	}
- 	*promisc = true;
--	cnt = __rvu_npc_exact_cmd_rules_cnt_update(rvu, drop_mcam_idx, 0, NULL);
- 	mutex_unlock(&table->lock);
- 
--	/* If no dmac filter entries configured, disable drop rule */
--	if (!cnt)
--		rvu_npc_enable_mcam_by_entry_index(rvu, drop_mcam_idx, NIX_INTF_RX, false);
--	else
--		rvu_npc_enable_mcam_by_entry_index(rvu, drop_mcam_idx, NIX_INTF_RX, !*promisc);
--
--	dev_dbg(rvu->dev, "%s: Enabled promisc mode (cgx=%d lmac=%d cnt=%d)\n",
--		__func__, cgx_id, lmac_id, cnt);
- 	return 0;
- }
- 
+ 	/* TODO: use ip6_datagram_send_ctl to get options from cmsg */
 -- 
 2.39.2
 
