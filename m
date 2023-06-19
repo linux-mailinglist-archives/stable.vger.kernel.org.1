@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E64977352BB
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:37:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3D54735221
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:30:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231145AbjFSKhn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:37:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44024 "EHLO
+        id S230421AbjFSKas (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:30:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231299AbjFSKhi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:37:38 -0400
+        with ESMTP id S230509AbjFSKaq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:30:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 813A9100
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:37:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E734B3
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:30:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0797C60B62
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:37:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1990CC433C0;
-        Mon, 19 Jun 2023 10:37:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 20C1C60B67
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:30:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD4CC433C8;
+        Mon, 19 Jun 2023 10:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171055;
-        bh=27r0tyXi3rEI+hpo4kFpJsSCNtKJyG5BGnB9wB8UBLU=;
+        s=korg; t=1687170644;
+        bh=sOiZEPsnmIolin2GEbvpYTAZfRyaCUbr0ry6XlYcJXE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o5F43aGhUI8jvw7jlpc3OyYhM1YhZZe+V34hL5U9CyXa7i4IbYB3XkdpFu2PsnxgG
-         TBZZxAaeIos/+7XDN2VrtbDw9k1k7PyBKy6GRmQFpiboNd4Y+tnLLom0LFE5RJCMEm
-         bjFeBiJJtJlTzS9TBo0ZmGBomlg3fg55sosbTeI4=
+        b=XdOeP3sPErAXdH12tcaKc7Uz3vDxgCz/6mRDL8nRVffKpfK9EmBCjmKhWuYHio63c
+         cPWDfXs0uw0M6OPmAGq2M1FZOa2JzQVd0NWRIqE1kP2Exhex1FaFqyAvmnepNiKXcY
+         JLWBmx+AXuJFedjNjO93h3InfrfRlu1JcrIX47ms=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Xin Long <lucien.xin@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 132/187] wifi: mac80211: fix link activation settings order
-Date:   Mon, 19 Jun 2023 12:29:10 +0200
-Message-ID: <20230619102203.997608165@linuxfoundation.org>
+Subject: [PATCH 4.14 23/32] sctp: fix an error code in sctp_sf_eat_auth()
+Date:   Mon, 19 Jun 2023 12:29:11 +0200
+Message-ID: <20230619102128.776831969@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102127.461443957@linuxfoundation.org>
+References: <20230619102127.461443957@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,58 +56,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 01605ad6c3e8608d7e147c9b75d67eb8a3d27d88 ]
+[ Upstream commit 75e6def3b26736e7ff80639810098c9074229737 ]
 
-In the normal MLME code we always call
-ieee80211_mgd_set_link_qos_params() before
-ieee80211_link_info_change_notify() and some drivers,
-notably iwlwifi, rely on that as they don't do anything
-(but store the data) in their conf_tx.
+The sctp_sf_eat_auth() function is supposed to enum sctp_disposition
+values and returning a kernel error code will cause issues in the
+caller.  Change -ENOMEM to SCTP_DISPOSITION_NOMEM.
 
-Fix the order here to be the same as in the normal code
-paths, so this isn't broken.
-
-Fixes: 3d9011029227 ("wifi: mac80211: implement link switching")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230608163202.a2a86bba2f80.Iac97e04827966d22161e63bb6e201b4061e9651b@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 65b07e5d0d09 ("[SCTP]: API updates to suport SCTP-AUTH extensions.")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/link.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/sctp/sm_statefuns.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/link.c b/net/mac80211/link.c
-index 8c8869cc1fb4c..aab4d7b4def24 100644
---- a/net/mac80211/link.c
-+++ b/net/mac80211/link.c
-@@ -2,7 +2,7 @@
- /*
-  * MLO link handling
-  *
-- * Copyright (C) 2022 Intel Corporation
-+ * Copyright (C) 2022-2023 Intel Corporation
-  */
- #include <linux/slab.h>
- #include <linux/kernel.h>
-@@ -404,6 +404,7 @@ static int _ieee80211_set_active_links(struct ieee80211_sub_if_data *sdata,
- 						 IEEE80211_CHANCTX_SHARED);
- 		WARN_ON_ONCE(ret);
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index 03434e7295eb6..80ab383d54950 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -4312,7 +4312,7 @@ enum sctp_disposition sctp_sf_eat_auth(struct net *net,
+ 				    SCTP_AUTH_NEWKEY, GFP_ATOMIC);
  
-+		ieee80211_mgd_set_link_qos_params(link);
- 		ieee80211_link_info_change_notify(sdata, link,
- 						  BSS_CHANGED_ERP_CTS_PROT |
- 						  BSS_CHANGED_ERP_PREAMBLE |
-@@ -418,7 +419,6 @@ static int _ieee80211_set_active_links(struct ieee80211_sub_if_data *sdata,
- 						  BSS_CHANGED_TWT |
- 						  BSS_CHANGED_HE_OBSS_PD |
- 						  BSS_CHANGED_HE_BSS_COLOR);
--		ieee80211_mgd_set_link_qos_params(link);
- 	}
+ 		if (!ev)
+-			return -ENOMEM;
++			return SCTP_DISPOSITION_NOMEM;
  
- 	old_active = sdata->vif.active_links;
+ 		sctp_add_cmd_sf(commands, SCTP_CMD_EVENT_ULP,
+ 				SCTP_ULPEVENT(ev));
 -- 
 2.39.2
 
