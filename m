@@ -2,84 +2,141 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEF8F7349CC
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 03:51:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1C08734A64
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 04:54:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229665AbjFSBvu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 18 Jun 2023 21:51:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40590 "EHLO
+        id S229658AbjFSCx6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 18 Jun 2023 22:53:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229475AbjFSBvt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 18 Jun 2023 21:51:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1C5DE42
-        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 18:51:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1687139461;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=juZChD7AeGuoIhBQHb19M6VO8+L15OVX04eqmBo6al4=;
-        b=JEyEp34J3N2CsE4gPNWz8VcbWR5clU0n2S2e/9siQSr369npMJyzr3AQRdKY+2cujvbgtr
-        6LtdMMh1dXwgjt5S7xrt642Qn6Uz2RO0Z2V3OLKD3aurW/ptU3R/dXerV1hhRIjMaLAWE/
-        JNOOkqXDE8doT2Yt4lV1Vhu/xWyxa4w=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-636-2VLEOqZ5PF2iiGds8b3jhA-1; Sun, 18 Jun 2023 21:50:58 -0400
-X-MC-Unique: 2VLEOqZ5PF2iiGds8b3jhA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 06DDB185A78B;
-        Mon, 19 Jun 2023 01:50:58 +0000 (UTC)
-Received: from ovpn-8-18.pek2.redhat.com (ovpn-8-18.pek2.redhat.com [10.72.8.18])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id AE63C2166B26;
-        Mon, 19 Jun 2023 01:50:53 +0000 (UTC)
-Date:   Mon, 19 Jun 2023 09:50:47 +0800
-From:   Ming Lei <ming.lei@redhat.com>
-To:     gregkh@linuxfoundation.org
-Cc:     axboe@kernel.dk, jaeshin@redhat.com, longman@redhat.com,
-        tj@kernel.org, yosryahmed@google.com, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] blk-cgroup: Flush stats before releasing
- blkcg_gq" failed to apply to 6.3-stable tree
-Message-ID: <ZI+0d98BX0knu+PT@ovpn-8-18.pek2.redhat.com>
-References: <2023061747-drum-devourer-6205@gregkh>
+        with ESMTP id S229654AbjFSCx4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 18 Jun 2023 22:53:56 -0400
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0588E4E;
+        Sun, 18 Jun 2023 19:53:54 -0700 (PDT)
+Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1b549e81cecso1643515ad.0;
+        Sun, 18 Jun 2023 19:53:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687143234; x=1689735234;
+        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
+         :message-id:from:cc:references:to:subject:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HcW1VUXTqcSc+mMUauKY0UCtX0Nd8ZbF6k2ii5GYHdA=;
+        b=qZDLkP7m9HtsnGf2OuczgZWOWhpB4CCADkesjrgcg5ZTM1XTBgY8KEjkV4hSmZfoIJ
+         Kid2JeOmMTbAEyfaJxwyD/TBJbo5cg3My76H20uHvPsOvIPmwPPFV96tMe+uinswJ4IZ
+         ZTg+N8eKRzwa3Q/8LLBFBgvqakCwJdh+oRwWaO7JXTpxkY58iw2cHqOqeFhShQDnuQLt
+         9u17/giJOm4BsQ151qK+upIrBOreQUxuMfFe04IbDgU+u51kbCYhcHJVMqCrwhVPbDSh
+         /XHq29LI7WAoTXZ+mNZIwCZSM/1KC2wqmtld1cqU/DIPOnB3geDxwMjJi5ruZKeCkPrW
+         MuxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687143234; x=1689735234;
+        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
+         :message-id:from:cc:references:to:subject:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=HcW1VUXTqcSc+mMUauKY0UCtX0Nd8ZbF6k2ii5GYHdA=;
+        b=UPyTESzqDdtCvR6TkKDDoiUu4ZmaLWOBOM/gXo2UbDArcZnz6maYGNe8AHTEwx9Rzf
+         HZCV4FR8TTjJ3hFyb0Sq3ZNx2NNtWwS5YrzeUQGaedxcNzEfPg4rY9IKOvZBIPntHpPG
+         ilEdXr+IU3vKcI16c47C2rwaDgZK9t2kGdnfYA3iUVeTAOj4B+V75YFXGdeDg5nW9mSi
+         UHC19EVtAY2t4CMBhY67bkNcS/NnvuJzVnKtHPbFLwipaK/biM+8VBGjSyBWoJ9KD2+6
+         lVIPUimEABbK2y27Pum3pKbP1V2or5O7wdAaeGgXvaihs8uSbF82WE7tcaFMv4Fnou1n
+         8IIQ==
+X-Gm-Message-State: AC+VfDzWkybYig5NO+LzjtXo96lMK5MQqqETZNFqj9mPThGZsTQEvJj+
+        /3o518+4B45+NttTRAjDvLkZq5QVufQ=
+X-Google-Smtp-Source: ACHHUZ4sug0G5UmyVJCVoN+6pnic1syO1JLx7pj9HnnqDKeHP35kdVDp18umy8bDO80CO482avnPHQ==
+X-Received: by 2002:a17:902:e848:b0:1b5:49fc:e336 with SMTP id t8-20020a170902e84800b001b549fce336mr1885019plg.42.1687143233794;
+        Sun, 18 Jun 2023 19:53:53 -0700 (PDT)
+Received: from [10.1.1.24] (222-152-217-2-adsl.sparkbb.co.nz. [222.152.217.2])
+        by smtp.gmail.com with ESMTPSA id i9-20020a17090332c900b0019e60c645b1sm10805337plr.305.2023.06.18.19.53.47
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 18 Jun 2023 19:53:53 -0700 (PDT)
+Subject: Re: [PATCH v12 2/3] block: change annotation of rdb_CylBlocks in
+ affs_hardblocks.h
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+References: <20230616223616.6002-1-schmitzmic@gmail.com>
+ <20230616223616.6002-3-schmitzmic@gmail.com>
+ <CAMuHMdXo+Za3_Bz-PaLhq_oZzEzkN=g5YyDp=vaX7485WuE=Cg@mail.gmail.com>
+ <e29dcf24-367f-4304-9b01-7913e0dcf650@gmail.com>
+ <CAMuHMdUHNGKP4jFM7CDhFxHWd+SR4GG6Co0PosLCk1qpBV176w@mail.gmail.com>
+Cc:     linux-block@vger.kernel.org, axboe@kernel.dk,
+        linux-m68k@vger.kernel.org, hch@lst.de, martin@lichtvoll.de,
+        fthain@linux-m68k.org, stable@vger.kernel.org
+From:   Michael Schmitz <schmitzmic@gmail.com>
+Message-ID: <d4c2a542-f8ce-2aef-805b-d5fc3091e30a@gmail.com>
+Date:   Mon, 19 Jun 2023 14:53:45 +1200
+User-Agent: Mozilla/5.0 (X11; Linux ppc; rv:45.0) Gecko/20100101
+ Icedove/45.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2023061747-drum-devourer-6205@gregkh>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <CAMuHMdUHNGKP4jFM7CDhFxHWd+SR4GG6Co0PosLCk1qpBV176w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, Jun 17, 2023 at 10:18:47AM +0200, gregkh@linuxfoundation.org wrote:
-> 
-> The patch below does not apply to the 6.3-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 20cb1c2fb7568a6054c55defe044311397e01ddb
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061747-drum-devourer-6205@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
-> 
-> Possible dependencies:
+Hi Geert,
 
-I will port it to 6.3.y and post it later.
+Am 18.06.2023 um 19:51 schrieb Geert Uytterhoeven:
+> Hi Michael,
+>
+> On Sun, Jun 18, 2023 at 5:10 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
+>> Am 17.06.2023 um 23:08 schrieb Geert Uytterhoeven:
+>>> On Sat, Jun 17, 2023 at 12:36 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
+>>>> The Amiga partition parser module uses signed int for partition sector
+>>>> address and count, which will overflow for disks larger than 1 TB.
+>>>>
+>>>> Use u64 as type for sector address and size to allow using disks up to
+>>>> 2 TB without LBD support, and disks larger than 2 TB with LBD. The RBD
+>>>> format allows to specify disk sizes up to 2^128 bytes (though native
+>>>> OS limitations reduce this somewhat, to max 2^68 bytes), so check for
+>>>> u64 overflow carefully to protect against overflowing sector_t.
+>>>>
+>>>> This bug was reported originally in 2012, and the fix was created by
+>>>> the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
+>>>> discussed and reviewed on linux-m68k at that time but never officially
+>>>> submitted (now resubmitted as patch 1 of this series).
+>>>>
+>>>> Patch 3 (this series) adds additional error checking and warning
+>>>> messages. One of the error checks now makes use of the previously
+>>>> unused rdb_CylBlocks field, which causes a 'sparse' warning
+>>>> (cast to restricted __be32).
+>>>>
+>>>> Annotate all 32 bit fields in affs_hardblocks.h as __be32, as the
+>>>> on-disk format of RDB and partition blocks is always big endian.
+>>>>
+>>>> Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
+>>>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
+>>>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+>>>> Message-ID: <201206192146.09327.Martin@lichtvoll.de>
+>>>> Cc: <stable@vger.kernel.org> # 5.2
+>>>> Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+>>>> Reviewed-by: Christoph Hellwig <hch@lst.de>
+>>>
+>>> Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+>>
+>> Thanks - now I notice the patch title for this one doesn't fit too well
+>> anymore.
+>>
+>> Would a change of title mess up the common patch tracking tools?
+>
+> You mean changing one patch subject in v13?
 
-Thanks,
-Ming
+Correct.
 
+> Nah, happens all the time, so the tooling should handle that fine.
+
+OK - I need to add your review tag anyway.
+
+Cheers,
+
+	Michael
+>
+> Gr{oetje,eeting}s,
+>
+>                         Geert
+>
