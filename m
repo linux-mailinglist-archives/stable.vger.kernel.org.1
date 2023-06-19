@@ -2,58 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D3E1734D02
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 10:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7CB9734D5F
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 10:17:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229473AbjFSIFq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 04:05:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47816 "EHLO
+        id S230088AbjFSIRd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 04:17:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230304AbjFSIFA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 04:05:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 057CBD3;
-        Mon, 19 Jun 2023 01:04:43 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9596461574;
-        Mon, 19 Jun 2023 08:04:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471BBC433C0;
-        Mon, 19 Jun 2023 08:04:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687161882;
-        bh=Jkv3EGzDEoQxhxTQKy7Jh7KLg0vAnB0lxbXiokDwKsg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=oFbvYOPv+cOU5MZ/vephP2zLkQnuJcgb/785+006D4R7v9jvYTpkJMWKrt/Stfanz
-         74abWgx0R2eoRXXICOUzZpKQvxnwrCi01m2Kik8jxH4RH2q0QeiYKCP90rSpTl6nOr
-         7lk//ALTYrwr58n+B8p2mVAfInm83HL92Uz1pYyA=
-Date:   Mon, 19 Jun 2023 10:04:38 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     mawupeng <mawupeng1@huawei.com>
-Cc:     david@redhat.com, akpm@linux-foundation.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        richard.weiyang@linux.alibaba.com, mst@redhat.com,
-        jasowang@redhat.com, pankaj.gupta.linux@gmail.com,
-        mhocko@kernel.org, osalvador@suse.de
-Subject: Re: [PATCH stable 5.10] mm/memory_hotplug: extend
- offline_and_remove_memory() to handle more than one memory block
-Message-ID: <2023061936-mantra-pancreas-67d4@gregkh>
-References: <cd9688dc-a716-3031-489e-a867df0d1ea2@huawei.com>
- <20230619065121.1720912-1-mawupeng1@huawei.com>
- <2023061926-monoxide-pastor-fa3b@gregkh>
- <a7d39606-cc85-42c3-c882-fa217954bf00@huawei.com>
- <cc1c2973-493a-6e21-048e-148ed55e653b@redhat.com>
- <a54be73e-840b-2091-b240-1417499f5738@huawei.com>
+        with ESMTP id S230061AbjFSIRc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 04:17:32 -0400
+Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2766110
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 01:17:30 -0700 (PDT)
+Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-4f86e6e4038so1038596e87.0
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 01:17:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rasmusvillemoes.dk; s=google; t=1687162649; x=1689754649;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2Yv2rIjaXMDMpPLlwF9jwu6QeCtYranVnkffyN+HyQU=;
+        b=PwoutS+BntF9MCQalJkmoo5F0NDU9r5BLunwlMmivEzDmJCqE0xV3ZIlYjX5JDEi/p
+         T1imxKFaIUWUEf1c8DVAUeT0hwnmVlNhEgz8f3A1trJ8ZvDzPZUpL8GtWINkVb4XyxGN
+         lGsmTavgOCfyEFps6M/vTYd7rLHJU07DiLGNo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687162649; x=1689754649;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2Yv2rIjaXMDMpPLlwF9jwu6QeCtYranVnkffyN+HyQU=;
+        b=S6lM7JsFpcfKTh74FJ0MGPtP4kqchHc4l6QOGjb8v3i0ubxkCqm0+SXLerL6gRF7qW
+         xfioJq7YegdamGDloXYlNOKHEH4TlnSoscbvuASDId72BHaj9uo2raw9WSHo+JHas1I3
+         n2CQ5zmBTLdqo3JJ6asS+5dIMY9+ZiPwlTe9CYHoKX9QJLV7wRSy6zJoNSKYOGLOn1NX
+         Af83W/q2UwM2i4H7OfIpZFx23ULjvmU2mVc6WSTuIwOmWrDWoOyWMUPjcbuy8id1XC6K
+         9fGvpcqFKe7Yzk+O+jJCD4c3tse8jrTChMpCu6lPXRrbfKgqgsoil+Gg9KUcTAnPG5nZ
+         ozDQ==
+X-Gm-Message-State: AC+VfDzevA2egv0sSR28iHVtxjjDnJxd4/8gqIuuXUtmPwi9o1B0/NOw
+        uXJ+gMgk/NC0nFXxZAfl5as8Uw==
+X-Google-Smtp-Source: ACHHUZ7qO6cBJkmxBk4du5cNmihY6RimwgxVhN5bfZR9+X6qndg8wPmimAT8wFwu0qd2uAI5R7zWEg==
+X-Received: by 2002:a05:6512:2ef:b0:4f4:ffae:7b93 with SMTP id m15-20020a05651202ef00b004f4ffae7b93mr2891866lfq.7.1687162648785;
+        Mon, 19 Jun 2023 01:17:28 -0700 (PDT)
+Received: from prevas-ravi.prevas.se ([81.216.59.226])
+        by smtp.gmail.com with ESMTPSA id g23-20020a19ee17000000b004f4b3e9e0cesm4137924lfb.297.2023.06.19.01.17.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jun 2023 01:17:28 -0700 (PDT)
+From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
+To:     Woojung Huh <woojung.huh@microchip.com>,
+        UNGLinuxDriver@microchip.com, Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Robert Hancock <hancock@sedsystems.ca>
+Cc:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        stable@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] net: dsa: microchip: ksz9477: follow errata sheet when applying fixups
+Date:   Mon, 19 Jun 2023 10:16:32 +0200
+Message-Id: <20230619081633.589703-1-linux@rasmusvillemoes.dk>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <a54be73e-840b-2091-b240-1417499f5738@huawei.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,107 +74,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jun 19, 2023 at 03:53:40PM +0800, mawupeng wrote:
-> 
-> 
-> On 2023/6/19 15:41, David Hildenbrand wrote:
-> > On 19.06.23 09:22, mawupeng wrote:
-> >>
-> >>
-> >> On 2023/6/19 15:16, Greg KH wrote:
-> >>> On Mon, Jun 19, 2023 at 02:51:21PM +0800, Wupeng Ma wrote:
-> >>>> From: David Hildenbrand <david@redhat.com>
-> >>>>
-> >>>> commit 8dc4bb58a146655eb057247d7c9d19e73928715b upstream.
-> >>>>
-> >>>> virtio-mem soon wants to use offline_and_remove_memory() memory that
-> >>>> exceeds a single Linux memory block (memory_block_size_bytes()). Let's
-> >>>> remove that restriction.
-> >>>>
-> >>>> Let's remember the old state and try to restore that if anything goes
-> >>>> wrong. While re-onlining can, in general, fail, it's highly unlikely to
-> >>>> happen (usually only when a notifier fails to allocate memory, and these
-> >>>> are rather rare).
-> >>>>
-> >>>> This will be used by virtio-mem to offline+remove memory ranges that are
-> >>>> bigger than a single memory block - for example, with a device block
-> >>>> size of 1 GiB (e.g., gigantic pages in the hypervisor) and a Linux memory
-> >>>> block size of 128MB.
-> >>>>
-> >>>> While we could compress the state into 2 bit, using 8 bit is much
-> >>>> easier.
-> >>>>
-> >>>> This handling is similar, but different to acpi_scan_try_to_offline():
-> >>>>
-> >>>> a) We don't try to offline twice. I am not sure if this CONFIG_MEMCG
-> >>>> optimization is still relevant - it should only apply to ZONE_NORMAL
-> >>>> (where we have no guarantees). If relevant, we can always add it.
-> >>>>
-> >>>> b) acpi_scan_try_to_offline() simply onlines all memory in case
-> >>>> something goes wrong. It doesn't restore previous online type. Let's do
-> >>>> that, so we won't overwrite what e.g., user space configured.
-> >>>>
-> >>>> Reviewed-by: Wei Yang <richard.weiyang@linux.alibaba.com>
-> >>>> Cc: "Michael S. Tsirkin" <mst@redhat.com>
-> >>>> Cc: Jason Wang <jasowang@redhat.com>
-> >>>> Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-> >>>> Cc: Michal Hocko <mhocko@kernel.org>
-> >>>> Cc: Oscar Salvador <osalvador@suse.de>
-> >>>> Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
-> >>>> Cc: Andrew Morton <akpm@linux-foundation.org>
-> >>>> Signed-off-by: David Hildenbrand <david@redhat.com>
-> >>>> Link: https://lore.kernel.org/r/20201112133815.13332-28-david@redhat.com
-> >>>> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> >>>> Acked-by: Andrew Morton <akpm@linux-foundation.org>
-> >>>> Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
-> >>>> ---
-> >>>>   mm/memory_hotplug.c | 105 +++++++++++++++++++++++++++++++++++++-------
-> >>>>   1 file changed, 89 insertions(+), 16 deletions(-)
-> >>>>
-> >>>
-> >>> Why is this needed in 5.10.y?  Looks like a new feature to me, what
-> >>> problem does it solve there?
-> >>>
-> >>> thanks,
-> >>>
-> >>> greg k-h
-> >>
-> >> It do introduce a new feature. But at the same time, it fix a memleak introduced
-> >> in Commit 08b3acd7a68f ("mm/memory_hotplug: Introduce offline_and_remove_memory()"
-> >>
-> >> Our test find a memleak in init_memory_block, it is clear that mem is never
-> >> been released due to wrong refcount. Commit 08b3acd7a68f ("mm/memory_hotplug:
-> >> Introduce offline_and_remove_memory()") failed to dec refcount after
-> >> find_memory_block which fail to dec refcount to zero in remove memory
-> >> causing the leak.
-> >>
-> >> Commit 8dc4bb58a146 ("mm/memory_hotplug: extend offline_and_remove_memory()
-> >> to handle more than one memory block") introduce walk_memory_blocks to
-> >> replace find_memory_block which dec refcount by calling put_device after
-> >> find_memory_block_by_id. In the way, the memleak is fixed.
-> >>
-> >> Here is the simplified calltrace:
-> >>
-> >>    kmem_cache_alloc_trace+0x664/0xed0
-> >>    init_memory_block+0x8c/0x170
-> >>    create_memory_block_devices+0xa4/0x150
-> >>    add_memory_resource+0x188/0x530
-> >>    __add_memory+0x78/0x104
-> >>    add_memory+0x6c/0xb0
-> >>
-> > 
-> > Makes sense to me. Of course, we could think about a simplified stable fix that only drops the ref.
-> 
-> Since the new patch does not introduce any kabi change, maybe we can merge this one？
+The errata sheets for both ksz9477 and ksz9567 begin with
 
-stable kernels never care about "kabi", that is a made up thing that
-some distros work to enforce only.  It has nothing to do with the
-community.
+  IMPORTANT NOTE
 
-And I will always prefer to take the real commit that is in Linus's tree
-over any "custom" patch, as 90%+ of the time, custom changes are almost
-always wrong.
+  Multiple errata workarounds in this document call for changing PHY
+  registers for each PHY port. PHY registers 0x0 to 0x1F are in the
+  address range 0xN100 to 0xN13F, while indirect (MMD) PHY registers
+  are accessed via the PHY MMD Setup Register and the PHY MMD Data
+  Register.
 
-thanks,
+  Before configuring the PHY MMD registers, it is necessary to set the
+  PHY to 100 Mbps speed with auto-negotiation disabled by writing to
+  register 0xN100-0xN101. After writing the MMD registers, and after
+  all errata workarounds that involve PHY register settings, write
+  register 0xN100-0xN101 again to enable and restart auto-negotiation.
 
-greg k-h
+Without that explicit auto-neg restart, we do sometimes have problems
+establishing link.
+
+Rather than writing back the hardcoded 0x1340 value the errata sheet
+suggests (which likely just corresponds to the most common strap
+configuration), restore the original value, setting the
+PORT_AUTO_NEG_RESTART bit if PORT_AUTO_NEG_ENABLE is set.
+
+Fixes: 1fc33199185d ("net: dsa: microchip: Add PHY errata workarounds")
+Cc: stable@vger.kernel.org
+Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+---
+While I do believe this is a fix, I don't think it's post-rc7
+material, hence targeting net-next with cc stable.
+
+ drivers/net/dsa/microchip/ksz9477.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/drivers/net/dsa/microchip/ksz9477.c b/drivers/net/dsa/microchip/ksz9477.c
+index bf13d47c26cf..9a712ea71ee7 100644
+--- a/drivers/net/dsa/microchip/ksz9477.c
++++ b/drivers/net/dsa/microchip/ksz9477.c
+@@ -902,6 +902,16 @@ static void ksz9477_port_mmd_write(struct ksz_device *dev, int port,
+ 
+ static void ksz9477_phy_errata_setup(struct ksz_device *dev, int port)
+ {
++	u16 cr;
++
++	/* Errata document says the PHY must be configured to 100Mbps
++	 * with auto-neg disabled before configuring the PHY MMD
++	 * registers.
++	 */
++	ksz_pread16(dev, port, REG_PORT_PHY_CTRL, &cr);
++	ksz_pwrite16(dev, port, REG_PORT_PHY_CTRL,
++		     PORT_SPEED_100MBIT | PORT_FULL_DUPLEX);
++
+ 	/* Apply PHY settings to address errata listed in
+ 	 * KSZ9477, KSZ9897, KSZ9896, KSZ9567, KSZ8565
+ 	 * Silicon Errata and Data Sheet Clarification documents:
+@@ -943,6 +953,13 @@ static void ksz9477_phy_errata_setup(struct ksz_device *dev, int port)
+ 	ksz9477_port_mmd_write(dev, port, 0x1c, 0x1d, 0xe7ff);
+ 	ksz9477_port_mmd_write(dev, port, 0x1c, 0x1e, 0xefff);
+ 	ksz9477_port_mmd_write(dev, port, 0x1c, 0x20, 0xeeee);
++
++	/* Restore PHY CTRL register, restart auto-negotiation if
++	 * enabled in the original value.
++	 */
++	if (cr & PORT_AUTO_NEG_ENABLE)
++		cr |= PORT_AUTO_NEG_RESTART;
++	ksz_pwrite16(dev, port, REG_PORT_PHY_CTRL, cr);
+ }
+ 
+ void ksz9477_get_caps(struct ksz_device *dev, int port,
+-- 
+2.37.2
+
