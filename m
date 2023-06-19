@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6D617354CA
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:59:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70CA173553D
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:03:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232469AbjFSK7K (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:59:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60838 "EHLO
+        id S231801AbjFSLDC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 07:03:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232366AbjFSK6n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:58:43 -0400
+        with ESMTP id S232479AbjFSLCd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:02:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 817131723
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:57:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7B641BE
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:01:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0DAA960B5F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:57:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A70C433C0;
-        Mon, 19 Jun 2023 10:57:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A72360B42
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:01:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C68C433CA;
+        Mon, 19 Jun 2023 11:01:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172230;
-        bh=tyw/1INzvYwlkUZF5NwSsxLIo63T8sqs8Ids4I6zJ1c=;
+        s=korg; t=1687172491;
+        bh=zq4nnTlqtmiqbR77FE7idtr8cdB+41VJ+u5WnJZMXxA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BmrFfqwrVg81K3dMUO0ZUFiSkUm9VH20+d3b/cVRx5n8aWGAui06ho6kxmB3F06i+
-         QAPS6NoMF/TI5WRWkBu5ARguGZS+n9iq7TPxvJ9yF/hITr2blUeIZdinhxvlfluMtv
-         0zwvGMe24Tmf+DeGZNx4r7F4uhcM5L9fhySJcCXY=
+        b=JAkdsWPjKa1qSPXIz+9SZVa2WIVTqQPE8g102/pkbyRvEiVyR0imqR4IeyyAiVy3C
+         VLtf2/racF8TaZHufDWYk+VDITnMrH+e9yUQbelGk9nvEec+fgScrIR1K4OtICTbUJ
+         sQbpdViW1G5r9B63TdHWqzWPzMBhV0oxcjSRToA0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+7d50f1e54a12ba3aeae2@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 83/89] nilfs2: reject devices with insufficient block count
-Date:   Mon, 19 Jun 2023 12:31:11 +0200
-Message-ID: <20230619102142.066600154@linuxfoundation.org>
+        Ratchanan Srirattanamet <peathot@hotmail.com>,
+        Karol Herbst <kherbst@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 088/107] drm/nouveau: dont detect DSM for non-NVIDIA device
+Date:   Mon, 19 Jun 2023 12:31:12 +0200
+Message-ID: <20230619102145.593622292@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,105 +56,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Ratchanan Srirattanamet <peathot@hotmail.com>
 
-commit 92c5d1b860e9581d64baca76779576c0ab0d943d upstream.
+[ Upstream commit 11d24327c2d7ad7f24fcc44fb00e1fa91ebf6525 ]
 
-The current sanity check for nilfs2 geometry information lacks checks for
-the number of segments stored in superblocks, so even for device images
-that have been destructively truncated or have an unusually high number of
-segments, the mount operation may succeed.
+The call site of nouveau_dsm_pci_probe() uses single set of output
+variables for all invocations. So, we must not write anything to them
+unless it's an NVIDIA device. Otherwise, if we are called with another
+device after the NVIDIA device, we'll clober the result of the NVIDIA
+device.
 
-This causes out-of-bounds block I/O on file system block reads or log
-writes to the segments, the latter in particular causing
-"a_ops->writepages" to repeatedly fail, resulting in sync_inodes_sb() to
-hang.
+For example, if the other device doesn't have _PR3 resources, the
+detection later would miss the presence of power resource support, and
+the rest of the code will keep using Optimus DSM, breaking power
+management for that machine.
 
-Fix this issue by checking the number of segments stored in the superblock
-and avoiding mounting devices that can cause out-of-bounds accesses.  To
-eliminate the possibility of overflow when calculating the number of
-blocks required for the device from the number of segments, this also adds
-a helper function to calculate the upper bound on the number of segments
-and inserts a check using it.
+Also, because we're detecting NVIDIA's DSM, it doesn't make sense to run
+this detection on a non-NVIDIA device anyway. Thus, check at the
+beginning of the detection code if this is an NVIDIA card, and just
+return if it isn't.
 
-Link: https://lkml.kernel.org/r/20230526021332.3431-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+7d50f1e54a12ba3aeae2@syzkaller.appspotmail.com
-  Link: https://syzkaller.appspot.com/bug?extid=7d50f1e54a12ba3aeae2
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This, together with commit d22915d22ded ("drm/nouveau/devinit/tu102-:
+wait for GFW_BOOT_PROGRESS == COMPLETED") developed independently and
+landed earlier, fixes runtime power management of the NVIDIA card in
+Lenovo Legion 5-15ARH05. Without this patch, the GPU resumption code
+will "timeout", sometimes hanging userspace.
+
+As a bonus, we'll also stop preventing _PR3 usage from the bridge for
+unrelated devices, which is always nice, I guess.
+
+Fixes: ccfc2d5cdb02 ("drm/nouveau: Use generic helper to check _PR3 presence")
+Signed-off-by: Ratchanan Srirattanamet <peathot@hotmail.com>
+Closes: https://gitlab.freedesktop.org/drm/nouveau/-/issues/79
+Reviewed-by: Karol Herbst <kherbst@redhat.com>
+Signed-off-by: Karol Herbst <kherbst@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/DM6PR19MB2780805D4BE1E3F9B3AC96D0BC409@DM6PR19MB2780.namprd19.prod.outlook.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/the_nilfs.c |   44 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 43 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nouveau_acpi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/nilfs2/the_nilfs.c
-+++ b/fs/nilfs2/the_nilfs.c
-@@ -405,6 +405,18 @@ unsigned long nilfs_nrsvsegs(struct the_
- 				  100));
- }
+diff --git a/drivers/gpu/drm/nouveau/nouveau_acpi.c b/drivers/gpu/drm/nouveau/nouveau_acpi.c
+index 7c15f64484281..9c55f205ab663 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_acpi.c
++++ b/drivers/gpu/drm/nouveau/nouveau_acpi.c
+@@ -220,6 +220,9 @@ static void nouveau_dsm_pci_probe(struct pci_dev *pdev, acpi_handle *dhandle_out
+ 	int optimus_funcs;
+ 	struct pci_dev *parent_pdev;
  
-+/**
-+ * nilfs_max_segment_count - calculate the maximum number of segments
-+ * @nilfs: nilfs object
-+ */
-+static u64 nilfs_max_segment_count(struct the_nilfs *nilfs)
-+{
-+	u64 max_count = U64_MAX;
++	if (pdev->vendor != PCI_VENDOR_ID_NVIDIA)
++		return;
 +
-+	do_div(max_count, nilfs->ns_blocks_per_segment);
-+	return min_t(u64, max_count, ULONG_MAX);
-+}
-+
- void nilfs_set_nsegments(struct the_nilfs *nilfs, unsigned long nsegs)
- {
- 	nilfs->ns_nsegments = nsegs;
-@@ -414,6 +426,8 @@ void nilfs_set_nsegments(struct the_nilf
- static int nilfs_store_disk_layout(struct the_nilfs *nilfs,
- 				   struct nilfs_super_block *sbp)
- {
-+	u64 nsegments, nblocks;
-+
- 	if (le32_to_cpu(sbp->s_rev_level) < NILFS_MIN_SUPP_REV) {
- 		nilfs_err(nilfs->ns_sb,
- 			  "unsupported revision (superblock rev.=%d.%d, current rev.=%d.%d). Please check the version of mkfs.nilfs(2).",
-@@ -457,7 +471,35 @@ static int nilfs_store_disk_layout(struc
- 		return -EINVAL;
- 	}
- 
--	nilfs_set_nsegments(nilfs, le64_to_cpu(sbp->s_nsegments));
-+	nsegments = le64_to_cpu(sbp->s_nsegments);
-+	if (nsegments > nilfs_max_segment_count(nilfs)) {
-+		nilfs_err(nilfs->ns_sb,
-+			  "segment count %llu exceeds upper limit (%llu segments)",
-+			  (unsigned long long)nsegments,
-+			  (unsigned long long)nilfs_max_segment_count(nilfs));
-+		return -EINVAL;
-+	}
-+
-+	nblocks = (u64)i_size_read(nilfs->ns_sb->s_bdev->bd_inode) >>
-+		nilfs->ns_sb->s_blocksize_bits;
-+	if (nblocks) {
-+		u64 min_block_count = nsegments * nilfs->ns_blocks_per_segment;
-+		/*
-+		 * To avoid failing to mount early device images without a
-+		 * second superblock, exclude that block count from the
-+		 * "min_block_count" calculation.
-+		 */
-+
-+		if (nblocks < min_block_count) {
-+			nilfs_err(nilfs->ns_sb,
-+				  "total number of segment blocks %llu exceeds device size (%llu blocks)",
-+				  (unsigned long long)min_block_count,
-+				  (unsigned long long)nblocks);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	nilfs_set_nsegments(nilfs, nsegments);
- 	nilfs->ns_crc_seed = le32_to_cpu(sbp->s_crc_seed);
- 	return 0;
- }
+ 	*has_pr3 = false;
+ 	parent_pdev = pci_upstream_bridge(pdev);
+ 	if (parent_pdev) {
+-- 
+2.39.2
+
 
 
