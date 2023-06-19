@@ -2,357 +2,143 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB84A734910
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 00:11:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1FA9734974
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 02:24:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229471AbjFRWLb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 18 Jun 2023 18:11:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43194 "EHLO
+        id S229515AbjFSAYn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 18 Jun 2023 20:24:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229456AbjFRWLa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 18 Jun 2023 18:11:30 -0400
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C645110
-        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 15:11:29 -0700 (PDT)
-Received: by mail-pj1-x102b.google.com with SMTP id 98e67ed59e1d1-25e89791877so1011538a91.2
-        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 15:11:29 -0700 (PDT)
+        with ESMTP id S229513AbjFSAYm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 18 Jun 2023 20:24:42 -0400
+Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BC91E4D;
+        Sun, 18 Jun 2023 17:24:40 -0700 (PDT)
+Received: by mail-ot1-x331.google.com with SMTP id 46e09a7af769-6b44b5adfd3so1936147a34.3;
+        Sun, 18 Jun 2023 17:24:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1687126288; x=1689718288;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=SMTP+QgQZ279PkEP/99AlW5gdaKzDbqHd2E9MA/1ruc=;
-        b=h4MFqDEJhpUQQMlRmMIO8cDmzVrlqHmEr1kq8WT9l52IVSWm4RwhfzBjphTdtzOVpx
-         FbCPcc/1o15JYWU6huSLiXS31lWDAHnD9PExlKjX5Z/2Ki7Ido4Lg0zPD6gA7HcRjpIQ
-         b3Vjpjju3SzGTlZd+hu3gjmRjChd9R8wIHfaRFPAEC05cGPjD3qsHMTGdkvujwtyWFbl
-         iCrDI4q2SVsXWBmWCc3+VgD/Kvw3GINdBo5CsNJ+EHxAmX5VY7epi/MA9RSaOd3xA4Jx
-         SWgXffQgxdk3gKPVWCgNTV3qYeFrlyqmg0XLF30tKMBRVUbEpkjTZSeGARxn37kU89me
-         NK0g==
+        d=gmail.com; s=20221208; t=1687134280; x=1689726280;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KEmDS2p8yjBfYlfB/iT3dpocB29HdgNOixmRsTqFoPQ=;
+        b=n01n1B1tGlntSnuy4b1JwNT5ifgmjeITHLn0NlkjenDrw+PEQuhDsEKetwZmQAjRLf
+         uiC0DCHu4cfleoVBIoAylHp9h8acVV+VAYgFr3zdUk188yMvVFT1XJTdbvBLXtFsWLLj
+         lv2xHB2zoFSqwpcLNEZ55g1hOZ0Dn76eHzVDH0cg3oE93MpOEuaQQgO+somBdZixKe3s
+         j4dNkUe9I9hhg7l4Ft9pK3VYgU1cIkKvmQvKP6NBXBShvIa8gKB9qT6yK6HU7tYwv6vJ
+         STpWZ4ER0kaTXEH7Q68FjzC8gwy2ig7dggl3jZosVAib9tVkliSyPZxboWi+t/1lGIxw
+         jiyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687126288; x=1689718288;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SMTP+QgQZ279PkEP/99AlW5gdaKzDbqHd2E9MA/1ruc=;
-        b=RYt7oiMpSsp/Dw6fCOeGc9hIBfRAtvlf7Wgm0AqZzQWCQtZE8KkD+WybQUHIWwerV4
-         j6ZdzVnte1Rl6bnsIrhgUsmEVq7rVLjArbZfRwvs0UBm7mgn/y3xBWmCu5m0PE+kp0A1
-         wqJbkJ188MjGs5nmb7tD3cuA04ltb1ZVIc9ey/GdcZ9x3MMqHqLWQTsa168m7ssD1OFo
-         IHXe8O32WXmezSc09UGIpEnPK5KDKXGHWqCJB7Ze/d6l12xewrsZ6ZkdGfcHDqaL+KvC
-         P7584OP6ltDza4PUqgNEmZfDCrd6UUe3oUtNtLOJUPI6TMKfyPGBXZOfbWcOYkaSzR+r
-         pQEQ==
-X-Gm-Message-State: AC+VfDxktKugR1hAJoSHa6m8Fygpz1Pvi9+RonlWdpY9TZs/1PxCnwkE
-        rSPPyO530330CrEi8jBIWddCj+DmDksr5/TdMPk64CRN
-X-Google-Smtp-Source: ACHHUZ68jjFxbV8QKmvQGa0Os2GSInkipabfB1jsKdeAlOvB5d9cPaYN+vVnU2tQeJYNmUJfdRANeg==
-X-Received: by 2002:a17:90a:bb85:b0:24d:fbaf:e0b1 with SMTP id v5-20020a17090abb8500b0024dfbafe0b1mr3796960pjr.19.1687126287937;
-        Sun, 18 Jun 2023 15:11:27 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id x18-20020a17090abc9200b002533ce5b261sm4489024pjr.10.2023.06.18.15.11.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Jun 2023 15:11:27 -0700 (PDT)
-Message-ID: <648f810f.170a0220.7b038.7625@mx.google.com>
-Date:   Sun, 18 Jun 2023 15:11:27 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20221208; t=1687134280; x=1689726280;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=KEmDS2p8yjBfYlfB/iT3dpocB29HdgNOixmRsTqFoPQ=;
+        b=F80eFJuN4HH+Q5IstfySpw3mckmpa/j7vMZOmsn+Rigfs5EJVZ/SqZXIJCwYh5UkmP
+         7IAwiO9Z8zp6L7u+yjKPdAgpd1mkk427rkLFh7Vt76OAMPfOAwcvZnSdmID1/8V1nwID
+         Q38Hw4mzgOb9znO3xOqJemkaHkvqP8xVzyAL3fjYMlhyWG52J55hnB9rgUhhFBZ3F7hj
+         YjEPo4K+jqDETfMEuWXRl0DiGFTPMdrhPa176W0P1UVbwFuBJHz7uNZubvpdUdiVCpNu
+         nneUV2xrHlMhvd3qB6Hz6m+yVhG0MrxatwOVJ4433dgsoX6ApP7t+OLK6v/C/SpV790C
+         l+JQ==
+X-Gm-Message-State: AC+VfDwGIBH+PH4XrX2odRzJ57lLIDuhlLfhxeCQWIIpcQgUIKJTSgbx
+        cK2hV4Ci/8vuiquk1D0i/A0xmhYSg/4=
+X-Google-Smtp-Source: ACHHUZ5o2qY03OHoswZtTdeRjesgO49FTz2FBobZYESYSyBx3gRmEcK2lJYL5q5kz256+OENnWC8fA==
+X-Received: by 2002:a05:6358:cd1c:b0:12b:d79a:d433 with SMTP id gv28-20020a056358cd1c00b0012bd79ad433mr4383161rwb.11.1687134279460;
+        Sun, 18 Jun 2023 17:24:39 -0700 (PDT)
+Received: from [192.168.0.103] ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id i25-20020aa787d9000000b0064f51ee5b90sm6335043pfo.62.2023.06.18.17.24.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 18 Jun 2023 17:24:39 -0700 (PDT)
+Message-ID: <a7f997fc-e7cc-cf67-3ac0-80ed30346511@gmail.com>
+Date:   Mon, 19 Jun 2023 07:24:32 +0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-5.10.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: test
-X-Kernelci-Kernel: v5.10.184-75-gb03b7f10db06
-Subject: stable-rc/linux-5.10.y baseline: 113 runs,
- 5 regressions (v5.10.184-75-gb03b7f10db06)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Content-Language: en-US
+To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Hans Verkuil <hverkuil@xs4all.nl>, rouckat@quick.cz,
+        Thorsten Leemhuis <linux@leemhuis.info>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Media <linux-media@vger.kernel.org>,
+        Linux Stable <stable@vger.kernel.org>
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+Subject: Fwd: in linux 6.3.7-200.fc38.x86_64 goes vlc in time to switch tv
+ channels to zombie-process
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.10.y baseline: 113 runs, 5 regressions (v5.10.184-75-gb03=
-b7f10db06)
-
-Regressions Summary
--------------------
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-cubietruck                   | arm    | lab-baylibre  | gcc-10   | multi_v7=
-_defconfig           | 1          =
-
-hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-qemu_x86_64                  | x86_64 | lab-baylibre  | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-r8a7743-iwg20d-q7            | arm    | lab-cip       | gcc-10   | shmobile=
-_defconfig           | 1          =
-
-
-  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-5.10.y/ker=
-nel/v5.10.184-75-gb03b7f10db06/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   linux-5.10.y
-  Describe: v5.10.184-75-gb03b7f10db06
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      b03b7f10db06b3155cb49bad4a1b8b36eaecb8bc =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-cubietruck                   | arm    | lab-baylibre  | gcc-10   | multi_v7=
-_defconfig           | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/648f47facd7d319a61306157
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: multi_v7_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-84-75-gb03b7f10db06/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-cub=
-ietruck.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-84-75-gb03b7f10db06/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-cub=
-ietruck.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230609.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/648f47facd7d319a6130615c
-        failing since 151 days (last pass: v5.10.158-107-gd2432186ff47, fir=
-st fail: v5.10.162-852-geeaac3cf2eb3)
-
-    2023-06-18T18:07:29.268705  + set +x<8>[   11.079232] <LAVA_SIGNAL_ENDR=
-UN 0_dmesg 3673683_1.5.2.4.1>
-    2023-06-18T18:07:29.269280  =
-
-    2023-06-18T18:07:29.379049  / # #
-    2023-06-18T18:07:29.480465  export SHELL=3D/bin/sh
-    2023-06-18T18:07:29.480822  #
-    2023-06-18T18:07:29.581976  / # export SHELL=3D/bin/sh. /lava-3673683/e=
-nvironment
-    2023-06-18T18:07:29.582338  =
-
-    2023-06-18T18:07:29.683543  / # . /lava-3673683/environment/lava-367368=
-3/bin/lava-test-runner /lava-3673683/1
-    2023-06-18T18:07:29.684086  =
-
-    2023-06-18T18:07:29.684220  / # <3>[   11.452015] Bluetooth: hci0: comm=
-and 0x0c03 tx timeout =
-
-    ... (13 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-hp-x360-12b-c...4020-octopus | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/648f47f6086064a01030614a
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-84-75-gb03b7f10db06/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-colla=
-bora/baseline-hp-x360-12b-ca0010nr-n4020-octopus.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-84-75-gb03b7f10db06/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-colla=
-bora/baseline-hp-x360-12b-ca0010nr-n4020-octopus.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230609.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/648f47f6086064a01030614f
-        failing since 81 days (last pass: v5.10.176, first fail: v5.10.176-=
-105-g18265b240021)
-
-    2023-06-18T18:07:47.810663  + <8>[   14.877572] <LAVA_SIGNAL_ENDRUN 0_d=
-mesg 10796934_1.4.2.3.1>
-
-    2023-06-18T18:07:47.810753  set +x
-
-    2023-06-18T18:07:47.911981  #
-
-    2023-06-18T18:07:48.012802  / # #export SHELL=3D/bin/sh
-
-    2023-06-18T18:07:48.013011  =
-
-
-    2023-06-18T18:07:48.113619  / # export SHELL=3D/bin/sh. /lava-10796934/=
-environment
-
-    2023-06-18T18:07:48.113849  =
-
-
-    2023-06-18T18:07:48.214426  / # . /lava-10796934/environment/lava-10796=
-934/bin/lava-test-runner /lava-10796934/1
-
-    2023-06-18T18:07:48.214789  =
-
-
-    2023-06-18T18:07:48.219941  / # /lava-10796934/bin/lava-test-runner /la=
-va-10796934/1
- =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-hp-x360-14-G1-sona           | x86_64 | lab-collabora | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/648f48035f1da5530e306158
-
-  Results:     6 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-84-75-gb03b7f10db06/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-colla=
-bora/baseline-hp-x360-14-G1-sona.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-84-75-gb03b7f10db06/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-colla=
-bora/baseline-hp-x360-14-G1-sona.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230609.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/648f48035f1da5530e30615d
-        failing since 81 days (last pass: v5.10.176, first fail: v5.10.176-=
-105-g18265b240021)
-
-    2023-06-18T18:07:52.640699  + set<8>[   12.629177] <LAVA_SIGNAL_ENDRUN =
-0_dmesg 10796965_1.4.2.3.1>
-
-    2023-06-18T18:07:52.641175   +x
-
-    2023-06-18T18:07:52.745943  / ##
-
-    2023-06-18T18:07:52.848100  export SHELL=3D/bin/sh
-
-    2023-06-18T18:07:52.848846   #
-
-    2023-06-18T18:07:52.950509  / # export SHELL=3D/bin/sh. /lava-10796965/=
-environment
-
-    2023-06-18T18:07:52.951233  =
-
-
-    2023-06-18T18:07:53.052717  / # . /lava-10796965/environment/lava-10796=
-965/bin/lava-test-runner /lava-10796965/1
-
-    2023-06-18T18:07:53.053830  =
-
-
-    2023-06-18T18:07:53.059045  / # /lava-10796965/bin/lava-test-runner /la=
-va-10796965/1
- =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-qemu_x86_64                  | x86_64 | lab-baylibre  | gcc-10   | x86_64_d=
-efcon...6-chromebook | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/648f4902c625c6334630617a
-
-  Results:     0 PASS, 1 FAIL, 0 SKIP
-  Full config: x86_64_defconfig+x86-chromebook
-  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-84-75-gb03b7f10db06/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-bayli=
-bre/baseline-qemu_x86_64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-84-75-gb03b7f10db06/x86_64/x86_64_defconfig+x86-chromebook/gcc-10/lab-bayli=
-bre/baseline-qemu_x86_64.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230609.0/x86/rootfs.cpio.gz =
-
-
-
-  * baseline.login: https://kernelci.org/test/case/id/648f4902c625c63346306=
-17b
-        new failure (last pass: v5.10.184-46-gb25b2921d506) =
-
- =
-
-
-
-platform                     | arch   | lab           | compiler | defconfi=
-g                    | regressions
------------------------------+--------+---------------+----------+---------=
----------------------+------------
-r8a7743-iwg20d-q7            | arm    | lab-cip       | gcc-10   | shmobile=
-_defconfig           | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/648f472815cd51aa92306131
-
-  Results:     0 PASS, 1 FAIL, 0 SKIP
-  Full config: shmobile_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-84-75-gb03b7f10db06/arm/shmobile_defconfig/gcc-10/lab-cip/baseline-r8a7743-=
-iwg20d-q7.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-84-75-gb03b7f10db06/arm/shmobile_defconfig/gcc-10/lab-cip/baseline-r8a7743-=
-iwg20d-q7.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230609.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.login: https://kernelci.org/test/case/id/648f472815cd51aa92306=
-132
-        new failure (last pass: v5.10.184-46-gb25b2921d506) =
-
- =20
+Hi,
+
+I notice a regression report on Bugzilla [1]. Quoting from it:
+
+> vmlinuz-6.3.7-200.fc38.x86_64  and vmlinuz-6.3.8-200.fc38.x86_64
+> 
+> in the switch tv channel to another vlc stay blocked and and the loading of firmware newer ending. power must be switch to off.
+> from dmesg:
+> 
+> dvb-tuner-si2141-a10-01.fw
+> dvb-demod-si2168-d60-01.fw 
+> firmware version: D 6.0.13
+> 
+> restart of dvb modules is impossible, They stay working. 
+> 
+> kernel 6.3.5-200.fc38.x86_64 works  OK. I don't how works kernel 6.3.6-200.fc38.x86_64
+> 
+> this same error is in vmlinuz-6.3.5-200.fc38.x86_64 and earliers but there is the occurence accesptable.
+> 
+> listing from 6.3.5 kernel:
+> 
+> [ 3378.026035] si2168 7-0064: firmware version: D 6.0.13
+> [ 3431.891579] si2168 7-0064: downloading firmware from file 'dvb-demod-si2168-d60-01.fw'
+> [ 3434.037278] usb 1-4: dvb_usb_v2: 2nd usb_bulk_msg() failed=-110
+> [ 3434.037289] si2168 7-0064: firmware download failed -110
+> [ 3436.085265] usb 1-4: dvb_usb_v2: usb_bulk_msg() failed=-110
+> 
+> lsmod |grep dvb
+> dvb_usb_dvbsky         32768  2
+> dvb_usb_v2             57344  1 dvb_usb_dvbsky
+> m88ds3103              49152  1 dvb_usb_dvbsky
+> dvb_core              192512  3 dvb_usb_v2,m88ds3103,dvb_usb_dvbsky
+> m
+> 
+> modprobe -r dvb_usb_dvbsky
+> modprobe: FATAL: Module dvb_usb_dvbsky is in use.
+> 
+> ?????? The problem in dvb_usb_dvbsky or firmware ?????   
+> 
+> The answer from https://bugzilla.rpmfusion.org was:
+> 
+> If it was working with previous kernel this is likely a kernel regression. 
+> please forward to the dvb sub-system maintainers.
+> 
+> this problen insist a long time (years), but not too horible
+
+See Bugzilla for the full thread and attached dmesg and lsusb.
+
+Thorsten: The reporter can't perform bisection for he has problem
+compiling his own vanilla kernel (see comment 8 on the Bugzilla
+ticket, albeit with translated make(1) output). Can you take a look on
+it?
+
+Anyway, I'm adding it to regzbot (as stable-specific regression
+for now):
+
+#regzbot introduced: v6.3.5..v6.3.7 https://bugzilla.kernel.org/show_bug.cgi?id=217566
+#regzbot title: switching TV channel causes VLC and firmware loading hang
+
+Thanks.
+
+[1]: https://bugzilla.kernel.org/show_bug.cgi?id=217566
+
+-- 
+An old man doll... just what I always wanted! - Clara
