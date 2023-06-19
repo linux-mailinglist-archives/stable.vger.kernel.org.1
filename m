@@ -2,52 +2,70 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2D51735336
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:42:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD2647354B0
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:58:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232027AbjFSKmy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:42:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47382 "EHLO
+        id S232365AbjFSK63 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:58:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229585AbjFSKma (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:42:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FF3A1732
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:42:23 -0700 (PDT)
+        with ESMTP id S232406AbjFSK6L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:58:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 911B84200
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:56:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C8E7160B51
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:42:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E104BC433C8;
-        Mon, 19 Jun 2023 10:42:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E28160670
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:56:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2151AC433C0;
+        Mon, 19 Jun 2023 10:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171342;
-        bh=JFFVBMct/yX/UZPD8N/GLj70kM9PxvqbKdxCgpwk2Js=;
+        s=korg; t=1687172172;
+        bh=XIXwth59SuEvQaGLTsV9sBhMTEGy6Sea6erPeQpXrh0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CsJeRiREolJ8L0WEE7T7wQU9fMBb5Rb2Ut5OucevfLHmY+M4fSeAICS3W15XjR11q
-         jCke0Eetsu6po3JbecDg8L6mGZ1T2pqHAEv3F9uk47NKBgLogpir3qSiBfNNhDuOo5
-         qsdRTvXDpg7qRk/ybVviOPtCDcBRXtAcDATfvmDU=
+        b=X55gtVcJMfsXoKYOTqyYbTiDTJG/GnY9TJjo4FZkcNyIFKXkHBQ2CIavB07wxovWZ
+         kGC1eU0AiFYZpoLT2ZdS4cUnHXATPdD/yIdvbYta4dUxBWMtyNupckuYu0AvsDjoAq
+         SxEZC6kkm1fyZKFvuV7caKVhCHuPFlY7uMLAlfIg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Leon Romanovsky <leonro@nvidia.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.19 46/49] neighbour: delete neigh_lookup_nodev as not used
+        patches@lists.linux.dev, Ricardo Ribalda <ribalda@chromium.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Albert Ou <aou@eecs.berkeley.edu>, Baoquan He <bhe@redhat.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Dave Young <dyoung@redhat.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Philipp Rudo <prudo@redhat.com>,
+        Ross Zwisler <zwisler@google.com>,
+        Simon Horman <horms@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tom Rix <trix@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 36/89] powerpc/purgatory: remove PGO flags
 Date:   Mon, 19 Jun 2023 12:30:24 +0200
-Message-ID: <20230619102132.325561977@linuxfoundation.org>
+Message-ID: <20230619102139.925265570@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
-References: <20230619102129.856988902@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,75 +74,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 76b9bf965c98c9b53ef7420b3b11438dbd764f92 upstream.
+commit 20188baceb7a1463dc0bcb0c8678b69c2f447df6 upstream.
 
-neigh_lookup_nodev isn't used in the kernel after removal
-of DECnet. So let's remove it.
+If profile-guided optimization is enabled, the purgatory ends up with
+multiple .text sections.  This is not supported by kexec and crashes the
+system.
 
-Fixes: 1202cdd66531 ("Remove DECnet support from kernel")
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/eb5656200d7964b2d177a36b77efa3c597d6d72d.1678267343.git.leonro@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-3-b05c520b7296@chromium.org
+Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: <stable@vger.kernel.org>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Philipp Rudo <prudo@redhat.com>
+Cc: Ross Zwisler <zwisler@google.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Tom Rix <trix@redhat.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/neighbour.h |    2 --
- net/core/neighbour.c    |   31 -------------------------------
- 2 files changed, 33 deletions(-)
+ arch/powerpc/purgatory/Makefile |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/include/net/neighbour.h
-+++ b/include/net/neighbour.h
-@@ -300,8 +300,6 @@ void neigh_table_init(int index, struct
- int neigh_table_clear(int index, struct neigh_table *tbl);
- struct neighbour *neigh_lookup(struct neigh_table *tbl, const void *pkey,
- 			       struct net_device *dev);
--struct neighbour *neigh_lookup_nodev(struct neigh_table *tbl, struct net *net,
--				     const void *pkey);
- struct neighbour *__neigh_create(struct neigh_table *tbl, const void *pkey,
- 				 struct net_device *dev, bool want_ref);
- static inline struct neighbour *neigh_create(struct neigh_table *tbl,
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -476,37 +476,6 @@ struct neighbour *neigh_lookup(struct ne
- }
- EXPORT_SYMBOL(neigh_lookup);
+--- a/arch/powerpc/purgatory/Makefile
++++ b/arch/powerpc/purgatory/Makefile
+@@ -4,6 +4,11 @@ KASAN_SANITIZE := n
  
--struct neighbour *neigh_lookup_nodev(struct neigh_table *tbl, struct net *net,
--				     const void *pkey)
--{
--	struct neighbour *n;
--	unsigned int key_len = tbl->key_len;
--	u32 hash_val;
--	struct neigh_hash_table *nht;
--
--	NEIGH_CACHE_STAT_INC(tbl, lookups);
--
--	rcu_read_lock_bh();
--	nht = rcu_dereference_bh(tbl->nht);
--	hash_val = tbl->hash(pkey, NULL, nht->hash_rnd) >> (32 - nht->hash_shift);
--
--	for (n = rcu_dereference_bh(nht->hash_buckets[hash_val]);
--	     n != NULL;
--	     n = rcu_dereference_bh(n->next)) {
--		if (!memcmp(n->primary_key, pkey, key_len) &&
--		    net_eq(dev_net(n->dev), net)) {
--			if (!refcount_inc_not_zero(&n->refcnt))
--				n = NULL;
--			NEIGH_CACHE_STAT_INC(tbl, hits);
--			break;
--		}
--	}
--
--	rcu_read_unlock_bh();
--	return n;
--}
--EXPORT_SYMBOL(neigh_lookup_nodev);
--
- struct neighbour *__neigh_create(struct neigh_table *tbl, const void *pkey,
- 				 struct net_device *dev, bool want_ref)
- {
+ targets += trampoline_$(BITS).o purgatory.ro kexec-purgatory.c
+ 
++# When profile-guided optimization is enabled, llvm emits two different
++# overlapping text sections, which is not supported by kexec. Remove profile
++# optimization flags.
++KBUILD_CFLAGS := $(filter-out -fprofile-sample-use=% -fprofile-use=%,$(KBUILD_CFLAGS))
++
+ LDFLAGS_purgatory.ro := -e purgatory_start -r --no-undefined
+ 
+ $(obj)/purgatory.ro: $(obj)/trampoline_$(BITS).o FORCE
 
 
