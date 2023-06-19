@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5618C734BEB
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 08:54:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABFE8734BEE
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 08:54:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229765AbjFSGyt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 02:54:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51198 "EHLO
+        id S229636AbjFSGy4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 02:54:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230104AbjFSGys (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 02:54:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F01713D
-        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 23:54:47 -0700 (PDT)
+        with ESMTP id S229806AbjFSGyz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 02:54:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD33AC6
+        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 23:54:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D875460DDD
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 06:54:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D47C433C9;
-        Mon, 19 Jun 2023 06:54:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7AE1660DDD
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 06:54:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E331C433C0;
+        Mon, 19 Jun 2023 06:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687157686;
-        bh=+vqzWMZ1aaA9YhHvAgL6q7yeHH7M1mALg0ND3CLdAGI=;
+        s=korg; t=1687157692;
+        bh=0QJrDEegyhz2tGrCv7ox/hxFwl/9FOsGc1CoyqBqEXM=;
         h=Subject:To:Cc:From:Date:From;
-        b=WxCRmNrtfpYYsivqrXrF/wD083RaJTvlvKXASJoVpbbZsNyjnqUiaihIOliv9Pqs/
-         wHxOvj/qFW/D1gYpgzusXOUGnHfea48JX1VZNoAbvGlB8/rTSYWEoYAhD3tQA6e8Qi
-         jjSUvwzbAql/x9c/56QppkWiVQx5cMo4+yXtgahI=
-Subject: FAILED: patch "[PATCH] net/sched: qdisc_destroy() old ingress and clsact Qdiscs" failed to apply to 5.15-stable tree
+        b=AS/TZS5VnRT90aFnFKf2lXqA6wti+6tZg92j9O9sxi55HUWUf7znaIWP3EPQs+/wR
+         fSru5Wlm0m0xIB/29hvvGr4R+JU8HpZb05vNSE99N4ZjyPnEiHQDFdZBJ8d0XFZYzG
+         9crAIy/FQkW3TZatECGjY4MuaX9JDubn/x9lr5s0=
+Subject: FAILED: patch "[PATCH] net/sched: qdisc_destroy() old ingress and clsact Qdiscs" failed to apply to 5.10-stable tree
 To:     peilin.ye@bytedance.com, hdanton@sina.com, jhs@mojatatu.com,
         pabeni@redhat.com, vladbu@mellanox.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 19 Jun 2023 08:54:41 +0200
-Message-ID: <2023061941-anaerobic-washing-b481@gregkh>
+Date:   Mon, 19 Jun 2023 08:54:45 +0200
+Message-ID: <2023061945-polish-remorse-02cf@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 84ad0af0bccd3691cb951c2974c5cb2c10594d4a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061941-anaerobic-washing-b481@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061945-polish-remorse-02cf@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
