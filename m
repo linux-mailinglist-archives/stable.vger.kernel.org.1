@@ -2,70 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FE2273539C
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D436B7352AB
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:37:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232106AbjFSKq4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:46:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47808 "EHLO
+        id S231494AbjFSKhP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:37:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232124AbjFSKqY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:46:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBB3FD7
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:46:13 -0700 (PDT)
+        with ESMTP id S231701AbjFSKgx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:36:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBFD310E0
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:36:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 69C4360B94
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:46:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D536C433C0;
-        Mon, 19 Jun 2023 10:46:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 55A7D60B51
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:36:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69134C433C0;
+        Mon, 19 Jun 2023 10:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171572;
-        bh=AgtMoc3hDCvaFoRn4pqUG+5F/TCxfhfutLmB626EauU=;
+        s=korg; t=1687171010;
+        bh=Olwgj9eY2SNfH3XHF3SH4Qps8YjLfnS5iSIB3vQxqLA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S+cfR8n8U/7r1wAHNnf+9zp/Xtpc/v16pX28J0XTewkxoVK8saQqjHyMIa7ol8slx
-         IFYc0XDOt1kJ3VdggK52FPhifbDWD+9W1oZ3Cdkz7JQwGBJsaDt38dMAOSk/rB8sfO
-         2DuPcgKqxhhjcwiEy/8R3NptQ71T4gyl5LEOg/As=
+        b=hFu8DseA3RXeYkaeRCs6pYg/EXfL1eCooiok7OXOyFjeLBQLkUb6gBZxksn5dGNHh
+         LQ0cLLSbNWSOlichCyh2OjBGpVHvBozsMN+BK7lheTzNxMKUVT1/oF9if4le0glC9C
+         SCOETST3bLfOVvSaRGWuZljZqMLcq8hm2jpdS5tk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ricardo Ribalda <ribalda@chromium.org>,
-        Albert Ou <aou@eecs.berkeley.edu>, Baoquan He <bhe@redhat.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Dave Young <dyoung@redhat.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Philipp Rudo <prudo@redhat.com>,
-        Ross Zwisler <zwisler@google.com>,
-        Simon Horman <horms@kernel.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tom Rix <trix@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 056/166] x86/purgatory: remove PGO flags
+        patches@lists.linux.dev,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 115/187] regulator: qcom-rpmh: add support for pmm8654au regulators
 Date:   Mon, 19 Jun 2023 12:28:53 +0200
-Message-ID: <20230619102157.465989008@linuxfoundation.org>
+Message-ID: <20230619102203.123653658@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -74,59 +57,118 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit 97b6b9cbba40a21c1d9a344d5c1991f8cfbf136e upstream.
+[ Upstream commit 65f1b1dc0cc90236ed9be3970f4a763e853f3aab ]
 
-If profile-guided optimization is enabled, the purgatory ends up with
-multiple .text sections.  This is not supported by kexec and crashes the
-system.
+Add the RPMH regulators exposed by the PMM8654au PMIC and its variants.
 
-Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-2-b05c520b7296@chromium.org
-Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Cc: <stable@vger.kernel.org>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Palmer Dabbelt <palmer@rivosinc.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Philipp Rudo <prudo@redhat.com>
-Cc: Ross Zwisler <zwisler@google.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Tom Rix <trix@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230406192811.460888-3-brgl@bgdev.pl
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: b00de0000a69 ("regulator: qcom-rpmh: Fix regulators for PM8550")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/purgatory/Makefile |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/regulator/qcom-rpmh-regulator.c | 55 +++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
 
---- a/arch/x86/purgatory/Makefile
-+++ b/arch/x86/purgatory/Makefile
-@@ -14,6 +14,11 @@ $(obj)/sha256.o: $(srctree)/lib/crypto/s
+diff --git a/drivers/regulator/qcom-rpmh-regulator.c b/drivers/regulator/qcom-rpmh-regulator.c
+index ae6021390143c..4c07ec15aff20 100644
+--- a/drivers/regulator/qcom-rpmh-regulator.c
++++ b/drivers/regulator/qcom-rpmh-regulator.c
+@@ -694,6 +694,16 @@ static const struct rpmh_vreg_hw_data pmic5_pldo_lv = {
+ 	.of_map_mode = rpmh_regulator_pmic4_ldo_of_map_mode,
+ };
  
- CFLAGS_sha256.o := -D__DISABLE_EXPORTS
- 
-+# When profile-guided optimization is enabled, llvm emits two different
-+# overlapping text sections, which is not supported by kexec. Remove profile
-+# optimization flags.
-+KBUILD_CFLAGS := $(filter-out -fprofile-sample-use=% -fprofile-use=%,$(KBUILD_CFLAGS))
++static const struct rpmh_vreg_hw_data pmic5_pldo515_mv = {
++	.regulator_type = VRM,
++	.ops = &rpmh_regulator_vrm_drms_ops,
++	.voltage_range = REGULATOR_LINEAR_RANGE(1800000, 0, 187, 8000),
++	.n_voltages = 188,
++	.hpm_min_load_uA = 10000,
++	.pmic_mode_map = pmic_mode_map_pmic5_ldo,
++	.of_map_mode = rpmh_regulator_pmic4_ldo_of_map_mode,
++};
 +
- # When linking purgatory.ro with -r unresolved symbols are not checked,
- # also link a purgatory.chk binary without -r to check for unresolved symbols.
- PURGATORY_LDFLAGS := -e purgatory_start -z nodefaultlib
+ static const struct rpmh_vreg_hw_data pmic5_nldo = {
+ 	.regulator_type = VRM,
+ 	.ops = &rpmh_regulator_vrm_drms_ops,
+@@ -704,6 +714,16 @@ static const struct rpmh_vreg_hw_data pmic5_nldo = {
+ 	.of_map_mode = rpmh_regulator_pmic4_ldo_of_map_mode,
+ };
+ 
++static const struct rpmh_vreg_hw_data pmic5_nldo515 = {
++	.regulator_type = VRM,
++	.ops = &rpmh_regulator_vrm_drms_ops,
++	.voltage_range = REGULATOR_LINEAR_RANGE(320000, 0, 210, 8000),
++	.n_voltages = 211,
++	.hpm_min_load_uA = 30000,
++	.pmic_mode_map = pmic_mode_map_pmic5_ldo,
++	.of_map_mode = rpmh_regulator_pmic4_ldo_of_map_mode,
++};
++
+ static const struct rpmh_vreg_hw_data pmic5_hfsmps510 = {
+ 	.regulator_type = VRM,
+ 	.ops = &rpmh_regulator_vrm_ops,
+@@ -749,6 +769,15 @@ static const struct rpmh_vreg_hw_data pmic5_ftsmps525_mv = {
+ 	.of_map_mode = rpmh_regulator_pmic4_smps_of_map_mode,
+ };
+ 
++static const struct rpmh_vreg_hw_data pmic5_ftsmps527 = {
++	.regulator_type = VRM,
++	.ops = &rpmh_regulator_vrm_ops,
++	.voltage_range = REGULATOR_LINEAR_RANGE(320000, 0, 215, 8000),
++	.n_voltages = 215,
++	.pmic_mode_map = pmic_mode_map_pmic5_smps,
++	.of_map_mode = rpmh_regulator_pmic4_smps_of_map_mode,
++};
++
+ static const struct rpmh_vreg_hw_data pmic5_hfsmps515 = {
+ 	.regulator_type = VRM,
+ 	.ops = &rpmh_regulator_vrm_ops,
+@@ -937,6 +966,28 @@ static const struct rpmh_vreg_init_data pmm8155au_vreg_data[] = {
+ 	{}
+ };
+ 
++static const struct rpmh_vreg_init_data pmm8654au_vreg_data[] = {
++	RPMH_VREG("smps1",  "smp%s1",  &pmic5_ftsmps527,  "vdd-s1"),
++	RPMH_VREG("smps2",  "smp%s2",  &pmic5_ftsmps527,  "vdd-s2"),
++	RPMH_VREG("smps3",  "smp%s3",  &pmic5_ftsmps527,  "vdd-s3"),
++	RPMH_VREG("smps4",  "smp%s4",  &pmic5_ftsmps527,  "vdd-s4"),
++	RPMH_VREG("smps5",  "smp%s5",  &pmic5_ftsmps527,  "vdd-s5"),
++	RPMH_VREG("smps6",  "smp%s6",  &pmic5_ftsmps527,  "vdd-s6"),
++	RPMH_VREG("smps7",  "smp%s7",  &pmic5_ftsmps527,  "vdd-s7"),
++	RPMH_VREG("smps8",  "smp%s8",  &pmic5_ftsmps527,  "vdd-s8"),
++	RPMH_VREG("smps9",  "smp%s9",  &pmic5_ftsmps527,  "vdd-s9"),
++	RPMH_VREG("ldo1",   "ldo%s1",  &pmic5_nldo515,    "vdd-s9"),
++	RPMH_VREG("ldo2",   "ldo%s2",  &pmic5_nldo515,    "vdd-l2-l3"),
++	RPMH_VREG("ldo3",   "ldo%s3",  &pmic5_nldo515,    "vdd-l2-l3"),
++	RPMH_VREG("ldo4",   "ldo%s4",  &pmic5_nldo515,    "vdd-s9"),
++	RPMH_VREG("ldo5",   "ldo%s5",  &pmic5_nldo515,    "vdd-s9"),
++	RPMH_VREG("ldo6",   "ldo%s6",  &pmic5_nldo515,    "vdd-l6-l7"),
++	RPMH_VREG("ldo7",   "ldo%s7",  &pmic5_nldo515,    "vdd-l6-l7"),
++	RPMH_VREG("ldo8",   "ldo%s8",  &pmic5_pldo515_mv, "vdd-l8-l9"),
++	RPMH_VREG("ldo9",   "ldo%s9",  &pmic5_pldo,       "vdd-l8-l9"),
++	{}
++};
++
+ static const struct rpmh_vreg_init_data pm8350_vreg_data[] = {
+ 	RPMH_VREG("smps1",  "smp%s1",  &pmic5_ftsmps510, "vdd-s1"),
+ 	RPMH_VREG("smps2",  "smp%s2",  &pmic5_ftsmps510, "vdd-s2"),
+@@ -1431,6 +1482,10 @@ static const struct of_device_id __maybe_unused rpmh_regulator_match_table[] = {
+ 		.compatible = "qcom,pmm8155au-rpmh-regulators",
+ 		.data = pmm8155au_vreg_data,
+ 	},
++	{
++		.compatible = "qcom,pmm8654au-rpmh-regulators",
++		.data = pmm8654au_vreg_data,
++	},
+ 	{
+ 		.compatible = "qcom,pmx55-rpmh-regulators",
+ 		.data = pmx55_vreg_data,
+-- 
+2.39.2
+
 
 
