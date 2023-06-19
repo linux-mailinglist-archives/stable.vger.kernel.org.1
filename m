@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E374735513
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:01:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95029735481
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:56:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232445AbjFSLBT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:01:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33342 "EHLO
+        id S232315AbjFSK4u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:56:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232449AbjFSLBB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:01:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B651B2965
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:59:55 -0700 (PDT)
+        with ESMTP id S232438AbjFSK4Y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:56:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BB881B8
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:54:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5101160B7F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:59:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 682F3C433C0;
-        Mon, 19 Jun 2023 10:59:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1060360B5F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:54:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257FBC433C9;
+        Mon, 19 Jun 2023 10:54:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172394;
-        bh=cY/GuX6hSgMAouYLFJkTqnAYtlxDr9QH8fHKSkKTri4=;
+        s=korg; t=1687172064;
+        bh=KMj2LiunNv9lAM3k0a5HHfUEb44eHW9R9k6QO2moCYs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tssUJDu9sgEmudtxPp8WzJ8ngNfJaONhzTBrIcCb0LfJJilN3xxhBwFAT9IiWYadB
-         Vfr3RQhVIkl2dUDGFeTeGPolBvq/TnRrgb6Plbfd/dnKKOIayOp740LMRaFfKUjL5y
-         PfkZMMM0jukEjFcsEvR1AfJAoWOqLJFRAxJXcZzU=
+        b=WvwI2AR1pL3SBgwJuMJ2f9m9bo95zrGklFjWDlnsrQCRw9lO+dOn9xemGvD0Fp8mc
+         3K8V2fakYs+rDn4fWjSB7k8m44QBmyW6HV57rRnzhzRgMrmrJ81FRA8hfX+RlgWYBk
+         7h4j3z4H/ya87a1IN8d39v+6/HFI2FxNto7dXmsg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Maxim Kochetkov <fido_max@inbox.ru>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 027/107] ASoC: dwc: move DMA init to snd_soc_dai_driver probe()
+Subject: [PATCH 5.10 23/89] ASoC: dwc: move DMA init to snd_soc_dai_driver probe()
 Date:   Mon, 19 Jun 2023 12:30:11 +0200
-Message-ID: <20230619102142.830770107@linuxfoundation.org>
+Message-ID: <20230619102139.343064398@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -114,7 +114,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 9 insertions(+), 32 deletions(-)
 
 diff --git a/sound/soc/dwc/dwc-i2s.c b/sound/soc/dwc/dwc-i2s.c
-index 14ad8023fcdcb..feed7281ba215 100644
+index 5469399abcb44..8e58347dabe81 100644
 --- a/sound/soc/dwc/dwc-i2s.c
 +++ b/sound/soc/dwc/dwc-i2s.c
 @@ -183,30 +183,6 @@ static void i2s_stop(struct dw_i2s_dev *dev,
@@ -191,8 +191,8 @@ index 14ad8023fcdcb..feed7281ba215 100644
  	dw_i2s_dai->ops = &dw_i2s_dai_ops;
 +	dw_i2s_dai->probe = dw_i2s_dai_probe;
  
- 	dev->i2s_base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
- 	if (IS_ERR(dev->i2s_base))
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	dev->i2s_base = devm_ioremap_resource(&pdev->dev, res);
 -- 
 2.39.2
 
