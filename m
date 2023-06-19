@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A90F7354CE
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:59:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFE38735462
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:55:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232327AbjFSK7O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:59:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58030 "EHLO
+        id S232321AbjFSKzY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:55:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232479AbjFSK6s (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:58:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09D2D1BE4
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:57:20 -0700 (PDT)
+        with ESMTP id S232391AbjFSKy4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:54:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 418FF10F9
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:53:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 898C060B78
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:57:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE99C433C0;
-        Mon, 19 Jun 2023 10:57:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9CB1760B5E
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:53:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CE8C433C8;
+        Mon, 19 Jun 2023 10:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172239;
-        bh=5lx/oszNGPAsedtuC8kQdGo+r94eFpFnAvzNAO4709o=;
+        s=korg; t=1687172001;
+        bh=VyZ1xoQ/c/qTma/aijGGuo2oo/G61WqJ2O9mKfy+TJk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QA2gipEahXD0B40CgxPetfGyNdzcFDd8Jhp16yfkKvJJn5Q2b9fhUY/ISVaG32S6b
-         5EAnaZBmTiy8sklbIqM1YLDISxxsu+6P92ismItqiVLTlRrpJqVVbtSsQDdMJuH/U2
-         dbOXlfIGmEGS39am2VA5d87dgdKpbwy3IC0dULu4=
+        b=P6Rl4dsI55Ul4UEyi4B7ngDuzxWER9LNVF8/mNgmwhrh1Y9ZPY0Eb4e740S6bmPLW
+         NZPohgTN0IDW9rMaQM5XiJYg8BiueM6SuO1eb+CvFBcuI6Hup3itcsT7d8qhBhXS8H
+         t1i3anx0qhmr8KoD/XqKINrGQEF1dx8sI/Y97fGM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sagi Grimberg <sagi@grimberg.me>,
-        Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev, Lyude Paul <lyude@redhat.com>,
+        Ben Skeggs <bskeggs@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 61/89] IB/isert: Fix incorrect release of isert connection
+Subject: [PATCH 5.4 53/64] drm/nouveau/kms: Dont change EDID when it hasnt actually changed
 Date:   Mon, 19 Jun 2023 12:30:49 +0200
-Message-ID: <20230619102141.042449430@linuxfoundation.org>
+Message-ID: <20230619102135.606323120@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
+References: <20230619102132.808972458@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,43 +55,166 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+From: Lyude Paul <lyude@redhat.com>
 
-[ Upstream commit 699826f4e30ab76a62c238c86fbef7e826639c8d ]
+[ Upstream commit f28e32d3906eac2e1cb3291b448f0d528ec93996 ]
 
-The ib_isert module is releasing the isert connection both in
-isert_wait_conn() handler as well as isert_free_conn() handler.
-In isert_wait_conn() handler, it is expected to wait for iSCSI
-session logout operation to complete. It should free the isert
-connection only in isert_free_conn() handler.
+Currently in nouveau_connector_ddc_detect() and
+nouveau_connector_detect_lvds(), we start the connector probing process
+by releasing the previous EDID and informing DRM of the change. However,
+since commit 5186421cbfe2 ("drm: Introduce epoch counter to
+drm_connector") drm_connector_update_edid_property() actually checks
+whether the new EDID we've specified is different from the previous one,
+and updates the connector's epoch accordingly if it is. But, because we
+always set the EDID to NULL first in nouveau_connector_ddc_detect() and
+nouveau_connector_detect_lvds() we end up making DRM think that the EDID
+changes every single time we do a connector probe - which isn't needed.
 
-When a bunch of iSER target is cleared, this issue can lead to
-use-after-free memory issue as isert conn is twice released
+So, let's fix this by not clearing the EDID at the start of the
+connector probing process, and instead simply changing or removing it
+once near the end of the probing process. This will help prevent us from
+sending unneeded hotplug events to userspace when nothing has actually
+changed.
 
-Fixes: b02efbfc9a05 ("iser-target: Fix implicit termination of connections")
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://lore.kernel.org/r/20230606102531.162967-4-saravanan.vajravel@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Reviewed-by: Ben Skeggs <bskeggs@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20200826182456.322681-19-lyude@redhat.com
+Stable-dep-of: 55b94bb8c424 ("drm/nouveau: add nv_encoder pointer check for NULL")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/isert/ib_isert.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_connector.c | 54 ++++++++++-----------
+ 1 file changed, 27 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/isert/ib_isert.c b/drivers/infiniband/ulp/isert/ib_isert.c
-index ed375f517e8ac..7cd90604502ec 100644
---- a/drivers/infiniband/ulp/isert/ib_isert.c
-+++ b/drivers/infiniband/ulp/isert/ib_isert.c
-@@ -2560,8 +2560,6 @@ static void isert_wait_conn(struct iscsi_conn *conn)
- 	isert_put_unsol_pending_cmds(conn);
- 	isert_wait4cmds(conn);
- 	isert_wait4logout(isert_conn);
--
--	queue_work(isert_release_wq, &isert_conn->release_work);
+diff --git a/drivers/gpu/drm/nouveau/nouveau_connector.c b/drivers/gpu/drm/nouveau/nouveau_connector.c
+index 18c3aae91be26..048a04701910e 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_connector.c
++++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
+@@ -538,6 +538,17 @@ nouveau_connector_set_encoder(struct drm_connector *connector,
+ 	}
  }
  
- static void isert_free_conn(struct iscsi_conn *conn)
++static void
++nouveau_connector_set_edid(struct nouveau_connector *nv_connector,
++			   struct edid *edid)
++{
++	struct edid *old_edid = nv_connector->edid;
++
++	drm_connector_update_edid_property(&nv_connector->base, edid);
++	kfree(old_edid);
++	nv_connector->edid = edid;
++}
++
+ static enum drm_connector_status
+ nouveau_connector_detect(struct drm_connector *connector, bool force)
+ {
+@@ -551,13 +562,6 @@ nouveau_connector_detect(struct drm_connector *connector, bool force)
+ 	int ret;
+ 	enum drm_connector_status conn_status = connector_status_disconnected;
+ 
+-	/* Cleanup the previous EDID block. */
+-	if (nv_connector->edid) {
+-		drm_connector_update_edid_property(connector, NULL);
+-		kfree(nv_connector->edid);
+-		nv_connector->edid = NULL;
+-	}
+-
+ 	/* Outputs are only polled while runtime active, so resuming the
+ 	 * device here is unnecessary (and would deadlock upon runtime suspend
+ 	 * because it waits for polling to finish). We do however, want to
+@@ -570,22 +574,23 @@ nouveau_connector_detect(struct drm_connector *connector, bool force)
+ 		ret = pm_runtime_get_sync(dev->dev);
+ 		if (ret < 0 && ret != -EACCES) {
+ 			pm_runtime_put_autosuspend(dev->dev);
++			nouveau_connector_set_edid(nv_connector, NULL);
+ 			return conn_status;
+ 		}
+ 	}
+ 
+ 	nv_encoder = nouveau_connector_ddc_detect(connector);
+ 	if (nv_encoder && (i2c = nv_encoder->i2c) != NULL) {
++		struct edid *new_edid;
++
+ 		if ((vga_switcheroo_handler_flags() &
+ 		     VGA_SWITCHEROO_CAN_SWITCH_DDC) &&
+ 		    nv_connector->type == DCB_CONNECTOR_LVDS)
+-			nv_connector->edid = drm_get_edid_switcheroo(connector,
+-								     i2c);
++			new_edid = drm_get_edid_switcheroo(connector, i2c);
+ 		else
+-			nv_connector->edid = drm_get_edid(connector, i2c);
++			new_edid = drm_get_edid(connector, i2c);
+ 
+-		drm_connector_update_edid_property(connector,
+-							nv_connector->edid);
++		nouveau_connector_set_edid(nv_connector, new_edid);
+ 		if (!nv_connector->edid) {
+ 			NV_ERROR(drm, "DDC responded, but no EDID for %s\n",
+ 				 connector->name);
+@@ -619,6 +624,8 @@ nouveau_connector_detect(struct drm_connector *connector, bool force)
+ 		conn_status = connector_status_connected;
+ 		drm_dp_cec_set_edid(&nv_connector->aux, nv_connector->edid);
+ 		goto out;
++	} else {
++		nouveau_connector_set_edid(nv_connector, NULL);
+ 	}
+ 
+ 	nv_encoder = nouveau_connector_of_detect(connector);
+@@ -661,18 +668,12 @@ nouveau_connector_detect_lvds(struct drm_connector *connector, bool force)
+ 	struct nouveau_drm *drm = nouveau_drm(dev);
+ 	struct nouveau_connector *nv_connector = nouveau_connector(connector);
+ 	struct nouveau_encoder *nv_encoder = NULL;
++	struct edid *edid = NULL;
+ 	enum drm_connector_status status = connector_status_disconnected;
+ 
+-	/* Cleanup the previous EDID block. */
+-	if (nv_connector->edid) {
+-		drm_connector_update_edid_property(connector, NULL);
+-		kfree(nv_connector->edid);
+-		nv_connector->edid = NULL;
+-	}
+-
+ 	nv_encoder = find_encoder(connector, DCB_OUTPUT_LVDS);
+ 	if (!nv_encoder)
+-		return connector_status_disconnected;
++		goto out;
+ 
+ 	/* Try retrieving EDID via DDC */
+ 	if (!drm->vbios.fp_no_ddc) {
+@@ -691,7 +692,8 @@ nouveau_connector_detect_lvds(struct drm_connector *connector, bool force)
+ 	 * valid - it's not (rh#613284)
+ 	 */
+ 	if (nv_encoder->dcb->lvdsconf.use_acpi_for_edid) {
+-		if ((nv_connector->edid = nouveau_acpi_edid(dev, connector))) {
++		edid = nouveau_acpi_edid(dev, connector);
++		if (edid) {
+ 			status = connector_status_connected;
+ 			goto out;
+ 		}
+@@ -711,12 +713,10 @@ nouveau_connector_detect_lvds(struct drm_connector *connector, bool force)
+ 	 * stored for the panel stored in them.
+ 	 */
+ 	if (!drm->vbios.fp_no_ddc) {
+-		struct edid *edid =
+-			(struct edid *)nouveau_bios_embedded_edid(dev);
++		edid = (struct edid *)nouveau_bios_embedded_edid(dev);
+ 		if (edid) {
+-			nv_connector->edid =
+-					kmemdup(edid, EDID_LENGTH, GFP_KERNEL);
+-			if (nv_connector->edid)
++			edid = kmemdup(edid, EDID_LENGTH, GFP_KERNEL);
++			if (edid)
+ 				status = connector_status_connected;
+ 		}
+ 	}
+@@ -729,7 +729,7 @@ nouveau_connector_detect_lvds(struct drm_connector *connector, bool force)
+ 		status = connector_status_unknown;
+ #endif
+ 
+-	drm_connector_update_edid_property(connector, nv_connector->edid);
++	nouveau_connector_set_edid(nv_connector, edid);
+ 	nouveau_connector_set_encoder(connector, nv_encoder);
+ 	return status;
+ }
 -- 
 2.39.2
 
