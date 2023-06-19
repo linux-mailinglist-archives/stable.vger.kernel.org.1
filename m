@@ -2,44 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C9DB7353A1
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:47:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7638D735204
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:29:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232128AbjFSKrN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:47:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47358 "EHLO
+        id S229567AbjFSK3e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:29:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232024AbjFSKqv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:46:51 -0400
+        with ESMTP id S229482AbjFSK3d (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:29:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08E611BC8
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:46:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B408B3
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:29:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9999860B9B
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:46:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAEB7C433C8;
-        Mon, 19 Jun 2023 10:46:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CCAE160B3E
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:29:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0EBC433C8;
+        Mon, 19 Jun 2023 10:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171587;
-        bh=J/tTqgo641HYVk9EzkTqYtxqHXRyv7pA9oc9qdMCfGI=;
+        s=korg; t=1687170571;
+        bh=WPH0VvRM0KpFY/Q8zsTcLLIl9hcYu6t5Ivq+VTtOinw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WVYXtc2CH/Z6kp4up7hGEFVarb5jq843ImlUxJQ1v51ZavfAWa6jzXIgFzbzz7xQd
-         H4haeJeudV5oqWloLWK+JsaSGD3z+sFI0IUJ0X1jaIJEvRH7PYicYcOQ0MtmemKfe3
-         qA1k2gYU0bduqO6N5fMLdb1D72GPY4+K3SfMq8+I=
+        b=n+8pTg9EKC/SjLsmp03415JTPuh8dHs1vNkEDQw8RKESCUijmb06CGBOaWXjyEpQ9
+         T6NXSGW5osVWPZZvdacpkXGUZSe+k3dTUfPMk/zBDEjAVvoJIl78x/0F1qLfpi0i5w
+         x4XJwCpFfGCj3zLWEJzU3GBYzPsjjZJEBDicFw20=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
-        Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 061/166] btrfs: can_nocow_file_extent should pass down args->strict from callers
+        patches@lists.linux.dev,
+        =?UTF-8?q?Lu=C3=ADs=20Henriques?= <lhenriques@suse.de>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        Mark Fasheh <mark@fasheh.com>,
+        Joel Becker <jlbec@evilplan.org>,
+        Junxiao Bi <junxiao.bi@oracle.com>,
+        Changwei Ge <gechangwei@live.cn>, Gang He <ghe@suse.com>,
+        Jun Piao <piaojun@huawei.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.14 10/32] ocfs2: fix use-after-free when unmounting read-only filesystem
 Date:   Mon, 19 Jun 2023 12:28:58 +0200
-Message-ID: <20230619102157.758509442@linuxfoundation.org>
+Message-ID: <20230619102128.048003491@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102127.461443957@linuxfoundation.org>
+References: <20230619102127.461443957@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,55 +61,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chris Mason <clm@fb.com>
+From: Luís Henriques <ocfs2-devel@oss.oracle.com>
 
-commit deccae40e4b30f98837e44225194d80c8baf2233 upstream.
+commit 50d927880e0f90d5cb25e897e9d03e5edacc79a8 upstream.
 
-Commit 619104ba453ad0 ("btrfs: move common NOCOW checks against a file
-extent into a helper") changed our call to btrfs_cross_ref_exist() to
-always pass false for the 'strict' parameter.  We're passing this down
-through the stack so that we can do a full check for cross references
-during swapfile activation.
+It's trivial to trigger a use-after-free bug in the ocfs2 quotas code using
+fstest generic/452.  After a read-only remount, quotas are suspended and
+ocfs2_mem_dqinfo is freed through ->ocfs2_local_free_info().  When unmounting
+the filesystem, an UAF access to the oinfo will eventually cause a crash.
 
-With strict always false, this test fails:
+BUG: KASAN: slab-use-after-free in timer_delete+0x54/0xc0
+Read of size 8 at addr ffff8880389a8208 by task umount/669
+...
+Call Trace:
+ <TASK>
+ ...
+ timer_delete+0x54/0xc0
+ try_to_grab_pending+0x31/0x230
+ __cancel_work_timer+0x6c/0x270
+ ocfs2_disable_quotas.isra.0+0x3e/0xf0 [ocfs2]
+ ocfs2_dismount_volume+0xdd/0x450 [ocfs2]
+ generic_shutdown_super+0xaa/0x280
+ kill_block_super+0x46/0x70
+ deactivate_locked_super+0x4d/0xb0
+ cleanup_mnt+0x135/0x1f0
+ ...
+ </TASK>
 
-  btrfs subvol create swappy
-  chattr +C swappy
-  fallocate -l1G swappy/swapfile
-  chmod 600 swappy/swapfile
-  mkswap swappy/swapfile
+Allocated by task 632:
+ kasan_save_stack+0x1c/0x40
+ kasan_set_track+0x21/0x30
+ __kasan_kmalloc+0x8b/0x90
+ ocfs2_local_read_info+0xe3/0x9a0 [ocfs2]
+ dquot_load_quota_sb+0x34b/0x680
+ dquot_load_quota_inode+0xfe/0x1a0
+ ocfs2_enable_quotas+0x190/0x2f0 [ocfs2]
+ ocfs2_fill_super+0x14ef/0x2120 [ocfs2]
+ mount_bdev+0x1be/0x200
+ legacy_get_tree+0x6c/0xb0
+ vfs_get_tree+0x3e/0x110
+ path_mount+0xa90/0xe10
+ __x64_sys_mount+0x16f/0x1a0
+ do_syscall_64+0x43/0x90
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
 
-  btrfs subvol snap swappy swapsnap
-  btrfs subvol del -C swapsnap
+Freed by task 650:
+ kasan_save_stack+0x1c/0x40
+ kasan_set_track+0x21/0x30
+ kasan_save_free_info+0x2a/0x50
+ __kasan_slab_free+0xf9/0x150
+ __kmem_cache_free+0x89/0x180
+ ocfs2_local_free_info+0x2ba/0x3f0 [ocfs2]
+ dquot_disable+0x35f/0xa70
+ ocfs2_susp_quotas.isra.0+0x159/0x1a0 [ocfs2]
+ ocfs2_remount+0x150/0x580 [ocfs2]
+ reconfigure_super+0x1a5/0x3a0
+ path_mount+0xc8a/0xe10
+ __x64_sys_mount+0x16f/0x1a0
+ do_syscall_64+0x43/0x90
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
 
-  btrfs fi sync /
-  sync;sync;sync
-
-  swapon swappy/swapfile
-
-The fix is to just use args->strict, and everyone except swapfile
-activation is passing false.
-
-Fixes: 619104ba453ad0 ("btrfs: move common NOCOW checks against a file extent into a helper")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Chris Mason <clm@fb.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Link: https://lkml.kernel.org/r/20230522102112.9031-1-lhenriques@suse.de
+Signed-off-by: Luís Henriques <lhenriques@suse.de>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Tested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ocfs2/super.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -1849,7 +1849,7 @@ static int can_nocow_file_extent(struct
- 
- 	ret = btrfs_cross_ref_exist(root, btrfs_ino(inode),
- 				    key->offset - args->extent_offset,
--				    args->disk_bytenr, false, path);
-+				    args->disk_bytenr, args->strict, path);
- 	WARN_ON_ONCE(ret > 0 && is_freespace_inode);
- 	if (ret != 0)
- 		goto out;
+--- a/fs/ocfs2/super.c
++++ b/fs/ocfs2/super.c
+@@ -985,8 +985,10 @@ static void ocfs2_disable_quotas(struct
+ 	for (type = 0; type < OCFS2_MAXQUOTAS; type++) {
+ 		if (!sb_has_quota_loaded(sb, type))
+ 			continue;
+-		oinfo = sb_dqinfo(sb, type)->dqi_priv;
+-		cancel_delayed_work_sync(&oinfo->dqi_sync_work);
++		if (!sb_has_quota_suspended(sb, type)) {
++			oinfo = sb_dqinfo(sb, type)->dqi_priv;
++			cancel_delayed_work_sync(&oinfo->dqi_sync_work);
++		}
+ 		inode = igrab(sb->s_dquot.files[type]);
+ 		/* Turn off quotas. This will remove all dquot structures from
+ 		 * memory and so they will be automatically synced to global
 
 
