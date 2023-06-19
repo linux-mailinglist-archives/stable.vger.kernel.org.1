@@ -2,54 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7F5C735309
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C5397352DE
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:39:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231990AbjFSKlM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:41:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46158 "EHLO
+        id S231391AbjFSKjE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:39:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232022AbjFSKkj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:40:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B309EB3
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:40:37 -0700 (PDT)
+        with ESMTP id S231865AbjFSKjA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:39:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9B82E50
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:38:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 498DB60B33
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:40:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D655C433C8;
-        Mon, 19 Jun 2023 10:40:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4040F60B33
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:38:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56F2CC433C0;
+        Mon, 19 Jun 2023 10:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171236;
-        bh=2JLfz6tfQEPJb7CnVemWAmMS6q+Kz6PN2Zzsfl1N9Jc=;
+        s=korg; t=1687171135;
+        bh=pQknnUIGTrufniS4kWBHkPjtXpRs2Hm2zKFwlHmJzLA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZFMYAkSA1g1Ioaro7ClBh8529Ww2f5RuGZo72MwhtJM90OpZsObVO0JkXC/wmJtlm
-         pSO1l+n7MMVpV+nIc2dQcznDmm/8zBo44+E5TqSm1KlSYMAoe8CmFSbPZcrd9gHaN1
-         Rsmf3mLjTySC7J0Jbe0KkWAYUAS4YkSOkH8l+k7o=
+        b=a/BRZULyD9t95o5hbAuEp49qPBWHkXvcN5A7M0AVf6b+MZ8h8rpAFvo27LrNIKDOp
+         CH16KxT7lU8gn3M52otR0lp1iZSDqdWiQ1Xx+EAVHhTfhHFpFep/LynpMQ7XqFPYS6
+         xtNK9myRU43XLZcXuTMHl26sdPKyY2eISaMcxmrM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        patches@lists.linux.dev, Vlad Buslov <vladbu@nvidia.com>,
+        Victor Nogueira <victor@mojatatu.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 01/49] power: supply: ab8500: Fix external_power_changed race
+Subject: [PATCH 6.3 161/187] selftests/tc-testing: Fix Error: Specified qdisc kind is unknown.
 Date:   Mon, 19 Jun 2023 12:29:39 +0200
-Message-ID: <20230619102129.934197194@linuxfoundation.org>
+Message-ID: <20230619102205.360677356@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
-References: <20230619102129.856988902@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,71 +57,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Vlad Buslov <vladbu@nvidia.com>
 
-[ Upstream commit a5299ce4e96f3e8930e9c051b28d8093ada87b08 ]
+[ Upstream commit aef6e908b54200d04f2d77dab31509fcff2e60ae ]
 
-ab8500_btemp_external_power_changed() dereferences di->btemp_psy,
-which gets sets in ab8500_btemp_probe() like this:
+All TEQL tests assume that sch_teql module is loaded. Load module in tdc.sh
+before running qdisc tests.
 
-        di->btemp_psy = devm_power_supply_register(dev, &ab8500_btemp_desc,
-                                                   &psy_cfg);
+Fixes following example error when running tests via tdc.sh for all TEQL
+tests:
 
-As soon as devm_power_supply_register() has called device_add()
-the external_power_changed callback can get called. So there is a window
-where ab8500_btemp_external_power_changed() may get called while
-di->btemp_psy has not been set yet leading to a NULL pointer dereference.
+ # $ sudo ./tdc.py -d eth2 -e 84a0
+ #  -- ns/SubPlugin.__init__
+ # Test 84a0: Create TEQL with default setting
+ # exit: 2
+ # exit: 0
+ # Error: Specified qdisc kind is unknown.
+ #
+ # -----> teardown stage *** Could not execute: "$TC qdisc del dev $DUMMY handle 1: root"
+ #
+ # -----> teardown stage *** Error message: "Error: Invalid handle.
+ # "
+ # returncode 2; expected [0]
+ #
+ # -----> teardown stage *** Aborting test run.
+ #
+ # <_io.BufferedReader name=3> *** stdout ***
+ #
+ # <_io.BufferedReader name=5> *** stderr ***
+ # "-----> teardown stage" did not complete successfully
+ # Exception <class '__main__.PluginMgrTestFail'> ('teardown', 'Error: Specified qdisc kind is unknown.\n', '"-----> teardown stage" did not complete successfully') (caught in test_runner, running test 2 84a0 Create TEQL with default setting stage teardown)
+ # ---------------
+ # traceback
+ #   File "/images/src/linux/tools/testing/selftests/tc-testing/./tdc.py", line 495, in test_runner
+ #     res = run_one_test(pm, args, index, tidx)
+ #   File "/images/src/linux/tools/testing/selftests/tc-testing/./tdc.py", line 434, in run_one_test
+ #     prepare_env(args, pm, 'teardown', '-----> teardown stage', tidx['teardown'], procout)
+ #   File "/images/src/linux/tools/testing/selftests/tc-testing/./tdc.py", line 245, in prepare_env
+ #     raise PluginMgrTestFail(
+ # ---------------
+ # accumulated output for this test:
+ # Error: Specified qdisc kind is unknown.
+ #
+ # ---------------
+ #
+ # All test results:
+ #
+ # 1..1
+ # ok 1 84a0 - Create TEQL with default setting # skipped - "-----> teardown stage" did not complete successfully
 
-Fixing this is easy. The external_power_changed callback gets passed
-the power_supply which will eventually get stored in di->btemp_psy,
-so ab8500_btemp_external_power_changed() can simply directly use
-the passed in psy argument which is always valid.
-
-And the same applies to ab8500_fg_external_power_changed().
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: cc62fbe114c9 ("selftests/tc-testing: add selftests for teql qdisc")
+Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/ab8500_btemp.c | 6 ++----
- drivers/power/supply/ab8500_fg.c    | 6 ++----
- 2 files changed, 4 insertions(+), 8 deletions(-)
+ tools/testing/selftests/tc-testing/tdc.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/power/supply/ab8500_btemp.c b/drivers/power/supply/ab8500_btemp.c
-index 0fd24577112eb..0bec8b90667c8 100644
---- a/drivers/power/supply/ab8500_btemp.c
-+++ b/drivers/power/supply/ab8500_btemp.c
-@@ -919,10 +919,8 @@ static int ab8500_btemp_get_ext_psy_data(struct device *dev, void *data)
-  */
- static void ab8500_btemp_external_power_changed(struct power_supply *psy)
- {
--	struct ab8500_btemp *di = power_supply_get_drvdata(psy);
--
--	class_for_each_device(power_supply_class, NULL,
--		di->btemp_psy, ab8500_btemp_get_ext_psy_data);
-+	class_for_each_device(power_supply_class, NULL, psy,
-+			      ab8500_btemp_get_ext_psy_data);
- }
+diff --git a/tools/testing/selftests/tc-testing/tdc.sh b/tools/testing/selftests/tc-testing/tdc.sh
+index afb0cd86fa3df..eb357bd7923c0 100755
+--- a/tools/testing/selftests/tc-testing/tdc.sh
++++ b/tools/testing/selftests/tc-testing/tdc.sh
+@@ -2,5 +2,6 @@
+ # SPDX-License-Identifier: GPL-2.0
  
- /* ab8500 btemp driver interrupts and their respective isr */
-diff --git a/drivers/power/supply/ab8500_fg.c b/drivers/power/supply/ab8500_fg.c
-index 675f9d0e8471e..d0cbd7189a622 100644
---- a/drivers/power/supply/ab8500_fg.c
-+++ b/drivers/power/supply/ab8500_fg.c
-@@ -2380,10 +2380,8 @@ static int ab8500_fg_init_hw_registers(struct ab8500_fg *di)
-  */
- static void ab8500_fg_external_power_changed(struct power_supply *psy)
- {
--	struct ab8500_fg *di = power_supply_get_drvdata(psy);
--
--	class_for_each_device(power_supply_class, NULL,
--		di->fg_psy, ab8500_fg_get_ext_psy_data);
-+	class_for_each_device(power_supply_class, NULL, psy,
-+			      ab8500_fg_get_ext_psy_data);
- }
- 
- /**
+ modprobe netdevsim
++modprobe sch_teql
+ ./tdc.py -c actions --nobuildebpf
+ ./tdc.py -c qdisc
 -- 
 2.39.2
 
