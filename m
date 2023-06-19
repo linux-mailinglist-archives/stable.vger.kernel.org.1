@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 172B6735495
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:57:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37C2673550C
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:01:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232383AbjFSK51 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:57:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58522 "EHLO
+        id S229896AbjFSLBE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 07:01:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232386AbjFSK5J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:57:09 -0400
+        with ESMTP id S232494AbjFSLAo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:00:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF0E11BCD
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:55:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42E17198C
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:59:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 46E2B60B4B
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:55:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C050C433C8;
-        Mon, 19 Jun 2023 10:55:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CCA6060BA2
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:59:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D67C1C433CB;
+        Mon, 19 Jun 2023 10:59:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172108;
-        bh=LXvEoZ2EKOeYROGVXgzVgjzcEws1DTNge38RYFtnhoY=;
+        s=korg; t=1687172375;
+        bh=4sAiuO1XPL71JCvuqk3PQrvdkN6iDcQN3USvTxd2SEY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o3RiBquANn5dsKUGHjOddV8PYMd2mTii5t5JkTjTxyjy/S7rC/hIjhAm7R99YW8LO
-         eTFSm1r56ALeEH+QIQeGtlyFj2SCggqR5qMW7SlhwiOn6xE+wdPWHplzpeCveaSgnk
-         AJkm1zkARdcv8YIYj+oC+SlB2o8zJq9X9D8ZDPdQ=
+        b=p/JUz2HWGLqcZqsyqbzrLQfCoCjp7GO2NgGP1ED6p+XutWgI/dp+eDf16D1Bt0hVa
+         ysvGOmUeo9xepMCEI/oVG302m128gCXuw3++oEaPS+deR5ur2WiWHLdziLL4NqzpT8
+         plSF5MCyTtHsnQs3y59Tx+XAi3OMddURJdjeKpoE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 40/89] ALSA: hda/realtek: Add a quirk for Compaq N14JP6
-Date:   Mon, 19 Jun 2023 12:30:28 +0200
-Message-ID: <20230619102140.105079149@linuxfoundation.org>
+        patches@lists.linux.dev, Li Lingfeng <lilingfeng3@huawei.com>,
+        Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 5.15 045/107] dm thin metadata: check fail_io before using data_sm
+Date:   Mon, 19 Jun 2023 12:30:29 +0200
+Message-ID: <20230619102143.645302918@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,30 +54,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-commit a2a871483161014f1bcc4e9a04354b01aa77cedb upstream.
+commit cb65b282c9640c27d3129e2e04b711ce1b352838 upstream.
 
-Add a quirk for Compaq N14JP6 to fixup ALC897 headset MIC no sound.
+Must check pmd->fail_io before using pmd->data_sm since
+pmd->data_sm may be destroyed by other processes.
 
-Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230609201058.523499-1-edson.drosdeck@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+       P1(kworker)                             P2(message)
+do_worker
+ process_prepared
+  process_prepared_discard_passdown_pt2
+   dm_pool_dec_data_range
+                                    pool_message
+                                     commit
+                                      dm_pool_commit_metadata
+                                        ↓
+                                       // commit failed
+                                      metadata_operation_failed
+                                       abort_transaction
+                                        dm_pool_abort_metadata
+                                         __open_or_format_metadata
+                                           ↓
+                                          dm_sm_disk_open
+                                            ↓
+                                           // open failed
+                                           // pmd->data_sm is NULL
+    dm_sm_dec_blocks
+      ↓
+     // try to access pmd->data_sm --> UAF
+
+As shown above, if dm_pool_commit_metadata() and
+dm_pool_abort_metadata() fail in pool_message process, kworker may
+trigger UAF.
+
+Fixes: be500ed721a6 ("dm space maps: improve performance with inc/dec on ranges of blocks")
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/md/dm-thin-metadata.c |   20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11199,6 +11199,7 @@ static const struct snd_pci_quirk alc662
- 	SND_PCI_QUIRK(0x1b0a, 0x01b8, "ACER Veriton", ALC662_FIXUP_ACER_VERITON),
- 	SND_PCI_QUIRK(0x1b35, 0x1234, "CZC ET26", ALC662_FIXUP_CZC_ET26),
- 	SND_PCI_QUIRK(0x1b35, 0x2206, "CZC P10T", ALC662_FIXUP_CZC_P10T),
-+	SND_PCI_QUIRK(0x1c6c, 0x1239, "Compaq N14JP6-V2", ALC897_FIXUP_HP_HSMIC_VERB),
+--- a/drivers/md/dm-thin-metadata.c
++++ b/drivers/md/dm-thin-metadata.c
+@@ -1778,13 +1778,15 @@ int dm_thin_remove_range(struct dm_thin_
  
- #if 0
- 	/* Below is a quirk table taken from the old code.
+ int dm_pool_block_is_shared(struct dm_pool_metadata *pmd, dm_block_t b, bool *result)
+ {
+-	int r;
++	int r = -EINVAL;
+ 	uint32_t ref_count;
+ 
+ 	down_read(&pmd->root_lock);
+-	r = dm_sm_get_count(pmd->data_sm, b, &ref_count);
+-	if (!r)
+-		*result = (ref_count > 1);
++	if (!pmd->fail_io) {
++		r = dm_sm_get_count(pmd->data_sm, b, &ref_count);
++		if (!r)
++			*result = (ref_count > 1);
++	}
+ 	up_read(&pmd->root_lock);
+ 
+ 	return r;
+@@ -1792,10 +1794,11 @@ int dm_pool_block_is_shared(struct dm_po
+ 
+ int dm_pool_inc_data_range(struct dm_pool_metadata *pmd, dm_block_t b, dm_block_t e)
+ {
+-	int r = 0;
++	int r = -EINVAL;
+ 
+ 	pmd_write_lock(pmd);
+-	r = dm_sm_inc_blocks(pmd->data_sm, b, e);
++	if (!pmd->fail_io)
++		r = dm_sm_inc_blocks(pmd->data_sm, b, e);
+ 	pmd_write_unlock(pmd);
+ 
+ 	return r;
+@@ -1803,10 +1806,11 @@ int dm_pool_inc_data_range(struct dm_poo
+ 
+ int dm_pool_dec_data_range(struct dm_pool_metadata *pmd, dm_block_t b, dm_block_t e)
+ {
+-	int r = 0;
++	int r = -EINVAL;
+ 
+ 	pmd_write_lock(pmd);
+-	r = dm_sm_dec_blocks(pmd->data_sm, b, e);
++	if (!pmd->fail_io)
++		r = dm_sm_dec_blocks(pmd->data_sm, b, e);
+ 	pmd_write_unlock(pmd);
+ 
+ 	return r;
 
 
