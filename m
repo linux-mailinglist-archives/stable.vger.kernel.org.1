@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C32D0735303
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62F27735316
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231423AbjFSKlE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:41:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46006 "EHLO
+        id S232084AbjFSKld (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:41:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232090AbjFSKkQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:40:16 -0400
+        with ESMTP id S231236AbjFSKlO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:41:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92C15100
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:40:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 393E110C6
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:41:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E19B60B80
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:40:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40CABC433C8;
-        Mon, 19 Jun 2023 10:40:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B00A60B82
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:41:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEFBAC433C8;
+        Mon, 19 Jun 2023 10:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171210;
-        bh=PnY/I8ajRCIUsai3zYKDhcXSuyjOuFtoyfC8XeZp5LI=;
+        s=korg; t=1687171270;
+        bh=ClUy4DzBevV1UPFaRliO4Le/uBALyWHLlMsDiCw849o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ih76JCDJBIG1AGAzjF8F6vjqtPqK+mYum8NcbUVxqffw3y2Q5y0mwjtf7aheE7gCO
-         3mbMk7822edLwUJ9oxnDPT9OlHP3B9Lg+5ut1Zod60BBbAI48jOpKrlaMyDk9ZUCHf
-         pMObS5fZ7SJO1cEjt5v4e0SCpYtomzW8Rc6GnWuE=
+        b=rHGYODqVk+ZfyMd9GKfSTIBPdlDOXFewWEXR3OhLuo1oElXmYs8c1T1y3aL2ywuhX
+         OqZOst2bVx7MBvZ5HKcquYsydDG0DDlqgNCQvtdje6K8aY13VMtFEs+XeKlZq1kLAP
+         FxGOp9zRCkyMvkSFTI9znR7b0aHOsWOe8yrcqZGo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Maftei <alex.maftei@amd.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 180/187] selftests/ptp: Fix timestamp printf format for PTP_SYS_OFFSET
+        patches@lists.linux.dev, Edward Srouji <edwards@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 4.19 20/49] RDMA/uverbs: Restrict usage of privileged QKEYs
 Date:   Mon, 19 Jun 2023 12:29:58 +0200
-Message-ID: <20230619102206.409031986@linuxfoundation.org>
+Message-ID: <20230619102130.907026961@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
+References: <20230619102129.856988902@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,50 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alex Maftei <alex.maftei@amd.com>
+From: Edward Srouji <edwards@nvidia.com>
 
-[ Upstream commit 76a4c8b82938bc5020b67663db41f451684bf327 ]
+commit 0cadb4db79e1d9eea66711c4031e435c2191907e upstream.
 
-Previously, timestamps were printed using "%lld.%u" which is incorrect
-for nanosecond values lower than 100,000,000 as they're fractional
-digits, therefore leading zeros are meaningful.
+According to the IB specification rel-1.6, section 3.5.3:
+"QKEYs with the most significant bit set are considered controlled
+QKEYs, and a HCA does not allow a consumer to arbitrarily specify a
+controlled QKEY."
 
-This patch changes the format strings to "%lld.%09u" in order to add
-leading zeros to the nanosecond value.
+Thus, block non-privileged users from setting such a QKEY.
 
-Fixes: 568ebc5985f5 ("ptp: add the PTP_SYS_OFFSET ioctl to the testptp program")
-Fixes: 4ec54f95736f ("ptp: Fix compiler warnings in the testptp utility")
-Fixes: 6ab0e475f1f3 ("Documentation: fix misc. warnings")
-Signed-off-by: Alex Maftei <alex.maftei@amd.com>
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Link: https://lore.kernel.org/r/20230615083404.57112-1-alex.maftei@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: bc38a6abdd5a ("[PATCH] IB uverbs: core implementation")
+Signed-off-by: Edward Srouji <edwards@nvidia.com>
+Link: https://lore.kernel.org/r/c00c809ddafaaf87d6f6cb827978670989a511b3.1685960567.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/ptp/testptp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/infiniband/core/uverbs_cmd.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/ptp/testptp.c b/tools/testing/selftests/ptp/testptp.c
-index 198ad5f321878..cfa9562f3cd83 100644
---- a/tools/testing/selftests/ptp/testptp.c
-+++ b/tools/testing/selftests/ptp/testptp.c
-@@ -502,11 +502,11 @@ int main(int argc, char *argv[])
- 			interval = t2 - t1;
- 			offset = (t2 + t1) / 2 - tp;
- 
--			printf("system time: %lld.%u\n",
-+			printf("system time: %lld.%09u\n",
- 				(pct+2*i)->sec, (pct+2*i)->nsec);
--			printf("phc    time: %lld.%u\n",
-+			printf("phc    time: %lld.%09u\n",
- 				(pct+2*i+1)->sec, (pct+2*i+1)->nsec);
--			printf("system time: %lld.%u\n",
-+			printf("system time: %lld.%09u\n",
- 				(pct+2*i+2)->sec, (pct+2*i+2)->nsec);
- 			printf("system/phc clock time offset is %" PRId64 " ns\n"
- 			       "system     clock time delay  is %" PRId64 " ns\n",
--- 
-2.39.2
-
+--- a/drivers/infiniband/core/uverbs_cmd.c
++++ b/drivers/infiniband/core/uverbs_cmd.c
+@@ -2041,8 +2041,13 @@ static int modify_qp(struct ib_uverbs_fi
+ 		attr->path_mtu = cmd->base.path_mtu;
+ 	if (cmd->base.attr_mask & IB_QP_PATH_MIG_STATE)
+ 		attr->path_mig_state = cmd->base.path_mig_state;
+-	if (cmd->base.attr_mask & IB_QP_QKEY)
++	if (cmd->base.attr_mask & IB_QP_QKEY) {
++		if (cmd->base.qkey & IB_QP_SET_QKEY && !capable(CAP_NET_RAW)) {
++			ret = -EPERM;
++			goto release_qp;
++		}
+ 		attr->qkey = cmd->base.qkey;
++	}
+ 	if (cmd->base.attr_mask & IB_QP_RQ_PSN)
+ 		attr->rq_psn = cmd->base.rq_psn;
+ 	if (cmd->base.attr_mask & IB_QP_SQ_PSN)
 
 
