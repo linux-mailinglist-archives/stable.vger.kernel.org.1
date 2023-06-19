@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB7A5735406
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:51:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E717735324
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:42:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232213AbjFSKvS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:51:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51182 "EHLO
+        id S230396AbjFSKmH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:42:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232216AbjFSKuo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:50:44 -0400
+        with ESMTP id S230053AbjFSKlp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:41:45 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F16041723
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:50:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88E0CC1
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:41:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F0BD6068B
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:50:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A60EFC433C0;
-        Mon, 19 Jun 2023 10:50:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D57A60B82
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:41:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FDFFC433C8;
+        Mon, 19 Jun 2023 10:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171820;
-        bh=61QMRtyLWMns25YZqvhLBcbJq5vqjmtP/73R2kA9qw0=;
+        s=korg; t=1687171303;
+        bh=6Yre4pVb3Yt4tj8jAyXY1EpOeFe+nYiWp9GY2sCTs0A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m0PU9ZJXlWX74Wf3hS4X7Tm4EAgxQ1/Az0Dq60Q80pPEQKY8U3R6wDcpUynKF5fDL
-         taNbrfKnpU4TUMsJ+FBMEofoi71IKslILPLnPq0Cpyd9AShRzE/Cn3cKHpt42WTwsq
-         ZqfEayAyYP/K6pjOl2GQk+CNOWJdHq/vkQtH154g=
+        b=nxBaXoWvLL78T8rmxAs8UkpdHDFXdxSVqjZVac7mVZuoIZ8O8gEE7n5q6I90pDCai
+         EgbupS8LA6MmiE11aaacvjKl2LVTpD6EbOmtRJ83P+hFHllz3Hu58W8sXlpErVJS4T
+         7qkC+7ngSWV1oEhr6PenqTY+5CpBwIQG4B4voF6A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Natalia Petrova <n.petrova@fintech.ru>,
-        Lyude Paul <lyude@redhat.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 134/166] drm/nouveau/dp: check for NULL nv_connector->native_mode
+        patches@lists.linux.dev, Sagi Grimberg <sagi@grimberg.me>,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
+        Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 33/49] IB/isert: Fix dead lock in ib_isert
 Date:   Mon, 19 Jun 2023 12:30:11 +0200
-Message-ID: <20230619102201.272091203@linuxfoundation.org>
+Message-ID: <20230619102131.606069063@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
+References: <20230619102129.856988902@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,51 +57,119 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Natalia Petrova <n.petrova@fintech.ru>
+From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
 
-[ Upstream commit 20a2ce87fbaf81e4c3dcb631d738e423959eb320 ]
+[ Upstream commit 691b0480933f0ce88a81ed1d1a0aff340ff6293a ]
 
-Add checking for NULL before calling nouveau_connector_detect_depth() in
-nouveau_connector_get_modes() function because nv_connector->native_mode
-could be dereferenced there since connector pointer passed to
-nouveau_connector_detect_depth() and the same value of
-nv_connector->native_mode is used there.
+- When a iSER session is released, ib_isert module is taking a mutex
+  lock and releasing all pending connections. As part of this, ib_isert
+  is destroying rdma cm_id. To destroy cm_id, rdma_cm module is sending
+  CM events to CMA handler of ib_isert. This handler is taking same
+  mutex lock. Hence it leads to deadlock between ib_isert & rdma_cm
+  modules.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+- For fix, created local list of pending connections and release the
+  connection outside of mutex lock.
 
-Fixes: d4c2c99bdc83 ("drm/nouveau/dp: remove broken display depth function, use the improved one")
+Calltrace:
+---------
+[ 1229.791410] INFO: task kworker/10:1:642 blocked for more than 120 seconds.
+[ 1229.791416]       Tainted: G           OE    --------- -  - 4.18.0-372.9.1.el8.x86_64 #1
+[ 1229.791418] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[ 1229.791419] task:kworker/10:1    state:D stack:    0 pid:  642 ppid:     2 flags:0x80004000
+[ 1229.791424] Workqueue: ib_cm cm_work_handler [ib_cm]
+[ 1229.791436] Call Trace:
+[ 1229.791438]  __schedule+0x2d1/0x830
+[ 1229.791445]  ? select_idle_sibling+0x23/0x6f0
+[ 1229.791449]  schedule+0x35/0xa0
+[ 1229.791451]  schedule_preempt_disabled+0xa/0x10
+[ 1229.791453]  __mutex_lock.isra.7+0x310/0x420
+[ 1229.791456]  ? select_task_rq_fair+0x351/0x990
+[ 1229.791459]  isert_cma_handler+0x224/0x330 [ib_isert]
+[ 1229.791463]  ? ttwu_queue_wakelist+0x159/0x170
+[ 1229.791466]  cma_cm_event_handler+0x25/0xd0 [rdma_cm]
+[ 1229.791474]  cma_ib_handler+0xa7/0x2e0 [rdma_cm]
+[ 1229.791478]  cm_process_work+0x22/0xf0 [ib_cm]
+[ 1229.791483]  cm_work_handler+0xf4/0xf30 [ib_cm]
+[ 1229.791487]  ? move_linked_works+0x6e/0xa0
+[ 1229.791490]  process_one_work+0x1a7/0x360
+[ 1229.791491]  ? create_worker+0x1a0/0x1a0
+[ 1229.791493]  worker_thread+0x30/0x390
+[ 1229.791494]  ? create_worker+0x1a0/0x1a0
+[ 1229.791495]  kthread+0x10a/0x120
+[ 1229.791497]  ? set_kthread_struct+0x40/0x40
+[ 1229.791499]  ret_from_fork+0x1f/0x40
 
-Signed-off-by: Natalia Petrova <n.petrova@fintech.ru>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230512111526.82408-1-n.petrova@fintech.ru
+[ 1229.791739] INFO: task targetcli:28666 blocked for more than 120 seconds.
+[ 1229.791740]       Tainted: G           OE    --------- -  - 4.18.0-372.9.1.el8.x86_64 #1
+[ 1229.791741] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[ 1229.791742] task:targetcli       state:D stack:    0 pid:28666 ppid:  5510 flags:0x00004080
+[ 1229.791743] Call Trace:
+[ 1229.791744]  __schedule+0x2d1/0x830
+[ 1229.791746]  schedule+0x35/0xa0
+[ 1229.791748]  schedule_preempt_disabled+0xa/0x10
+[ 1229.791749]  __mutex_lock.isra.7+0x310/0x420
+[ 1229.791751]  rdma_destroy_id+0x15/0x20 [rdma_cm]
+[ 1229.791755]  isert_connect_release+0x115/0x130 [ib_isert]
+[ 1229.791757]  isert_free_np+0x87/0x140 [ib_isert]
+[ 1229.791761]  iscsit_del_np+0x74/0x120 [iscsi_target_mod]
+[ 1229.791776]  lio_target_np_driver_store+0xe9/0x140 [iscsi_target_mod]
+[ 1229.791784]  configfs_write_file+0xb2/0x110
+[ 1229.791788]  vfs_write+0xa5/0x1a0
+[ 1229.791792]  ksys_write+0x4f/0xb0
+[ 1229.791794]  do_syscall_64+0x5b/0x1a0
+[ 1229.791798]  entry_SYSCALL_64_after_hwframe+0x65/0xca
+
+Fixes: bd3792205aae ("iser-target: Fix pending connections handling in target stack shutdown sequnce")
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Link: https://lore.kernel.org/r/20230606102531.162967-2-saravanan.vajravel@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_connector.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/ulp/isert/ib_isert.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_connector.c b/drivers/gpu/drm/nouveau/nouveau_connector.c
-index 1991bbb1d05c3..fd984733b8e6f 100644
---- a/drivers/gpu/drm/nouveau/nouveau_connector.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
-@@ -966,7 +966,7 @@ nouveau_connector_get_modes(struct drm_connector *connector)
- 	/* Determine display colour depth for everything except LVDS now,
- 	 * DP requires this before mode_valid() is called.
- 	 */
--	if (connector->connector_type != DRM_MODE_CONNECTOR_LVDS)
-+	if (connector->connector_type != DRM_MODE_CONNECTOR_LVDS && nv_connector->native_mode)
- 		nouveau_connector_detect_depth(connector);
+diff --git a/drivers/infiniband/ulp/isert/ib_isert.c b/drivers/infiniband/ulp/isert/ib_isert.c
+index f39670c5c25c5..51e4f4e112841 100644
+--- a/drivers/infiniband/ulp/isert/ib_isert.c
++++ b/drivers/infiniband/ulp/isert/ib_isert.c
+@@ -2515,6 +2515,7 @@ isert_free_np(struct iscsi_np *np)
+ {
+ 	struct isert_np *isert_np = np->np_context;
+ 	struct isert_conn *isert_conn, *n;
++	LIST_HEAD(drop_conn_list);
  
- 	/* Find the native mode if this is a digital panel, if we didn't
-@@ -987,7 +987,7 @@ nouveau_connector_get_modes(struct drm_connector *connector)
- 	 * "native" mode as some VBIOS tables require us to use the
- 	 * pixel clock as part of the lookup...
- 	 */
--	if (connector->connector_type == DRM_MODE_CONNECTOR_LVDS)
-+	if (connector->connector_type == DRM_MODE_CONNECTOR_LVDS && nv_connector->native_mode)
- 		nouveau_connector_detect_depth(connector);
+ 	if (isert_np->cm_id)
+ 		rdma_destroy_id(isert_np->cm_id);
+@@ -2534,7 +2535,7 @@ isert_free_np(struct iscsi_np *np)
+ 					 node) {
+ 			isert_info("cleaning isert_conn %p state (%d)\n",
+ 				   isert_conn, isert_conn->state);
+-			isert_connect_release(isert_conn);
++			list_move_tail(&isert_conn->node, &drop_conn_list);
+ 		}
+ 	}
  
- 	if (nv_encoder->dcb->type == DCB_OUTPUT_TV)
+@@ -2545,11 +2546,16 @@ isert_free_np(struct iscsi_np *np)
+ 					 node) {
+ 			isert_info("cleaning isert_conn %p state (%d)\n",
+ 				   isert_conn, isert_conn->state);
+-			isert_connect_release(isert_conn);
++			list_move_tail(&isert_conn->node, &drop_conn_list);
+ 		}
+ 	}
+ 	mutex_unlock(&isert_np->mutex);
+ 
++	list_for_each_entry_safe(isert_conn, n, &drop_conn_list, node) {
++		list_del_init(&isert_conn->node);
++		isert_connect_release(isert_conn);
++	}
++
+ 	np->np_context = NULL;
+ 	kfree(isert_np);
+ }
 -- 
 2.39.2
 
