@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB1CE735541
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C59ED7354DD
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:59:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232465AbjFSLDG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:03:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34122 "EHLO
+        id S232453AbjFSK7Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:59:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232514AbjFSLCm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:02:42 -0400
+        with ESMTP id S232434AbjFSK7A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:59:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C45CE199F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:01:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D7B61BFE
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:57:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F18B60B5B
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:01:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51494C433D9;
-        Mon, 19 Jun 2023 11:01:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A1EF60670
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:57:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3291CC433AB;
+        Mon, 19 Jun 2023 10:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172502;
-        bh=JUmh2wvMHY7xkpyeZRrOLraNizmcWgW0EsyYFWjBuuE=;
+        s=korg; t=1687172266;
+        bh=Ztc0/YyUKCxv2oxuyl++E4/FbJR0kBP9C58Zqb5dEws=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vxXNX3dG54rkUHTVZyB8sfQaXVNYFSj3My80hTa3071CKsCaaOgJYccGcaF6KM5Hu
-         6legKNAtkWTb/YshWt+/7tNb8XfmEQ/fWGZX2PZKy5YKBWoYDzoXYR7Cv/idGxVm8o
-         QPlvmd8Yq6lvH6z4f4lkuPxwsIxeh/OGPNhscD2w=
+        b=OjhbfeFJoH3wqzErojfT8A9MO9W6hKITBAl7LlvpY/QqVrPpOheYD4hAyEyEXz0yi
+         VExczcpyi+ywoekw06Qch8q1KrBdB7RVF+BP5qeToHEfrRNGZtRsBYUtp4shWXqWA5
+         7AF12SCxRg8byrTPgOmubJL+uSkWJW2rzgREWSpI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+4acc7d910e617b360859@syzkaller.appspotmail.com,
-        Theodore Tso <tytso@mit.edu>,
-        "Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 092/107] ext4: drop the call to ext4_error() from ext4_get_group_info()
-Date:   Mon, 19 Jun 2023 12:31:16 +0200
-Message-ID: <20230619102145.769027998@linuxfoundation.org>
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Richard Weinberger <richard@nod.at>
+Subject: [PATCH 5.10 89/89] um: Fix build w/o CONFIG_PM_SLEEP
+Date:   Mon, 19 Jun 2023 12:31:17 +0200
+Message-ID: <20230619102142.350713787@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,64 +55,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fabio M. De Francesco <fmdefrancesco@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit f451fd97dd2b78f286379203a47d9d295c467255 ]
+commit 1fb1abc83636f5329c26cd29f0f19f3faeb697a5 upstream.
 
-A recent patch added a call to ext4_error() which is problematic since
-some callers of the ext4_get_group_info() function may be holding a
-spinlock, whereas ext4_error() must never be called in atomic context.
+uml_pm_wake() is unconditionally called from the SIGUSR1 wakeup
+handler since that's in the userspace portion of UML, and thus
+a bit tricky to ifdef out. Since pm_system_wakeup() can always
+be called (but may be an empty inline), also simply always have
+uml_pm_wake() to fix the build.
 
-This triggered a report from Syzbot: "BUG: sleeping function called from
-invalid context in ext4_update_super" (see the link below).
-
-Therefore, drop the call to ext4_error() from ext4_get_group_info(). In
-the meantime use eight characters tabs instead of nine characters ones.
-
-Reported-by: syzbot+4acc7d910e617b360859@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/00000000000070575805fdc6cdb2@google.com/
-Fixes: 5354b2af3406 ("ext4: allow ext4_get_group_info() to fail")
-Suggested-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Fabio M. De Francesco <fmdefrancesco@gmail.com>
-Link: https://lore.kernel.org/r/20230614100446.14337-1-fmdefrancesco@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/balloc.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+ arch/um/kernel/um_arch.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext4/balloc.c b/fs/ext4/balloc.c
-index fadcb94e80fa1..7649376fd93d3 100644
---- a/fs/ext4/balloc.c
-+++ b/fs/ext4/balloc.c
-@@ -322,17 +322,15 @@ static ext4_fsblk_t ext4_valid_block_bitmap_padding(struct super_block *sb,
- struct ext4_group_info *ext4_get_group_info(struct super_block *sb,
- 					    ext4_group_t group)
+--- a/arch/um/kernel/um_arch.c
++++ b/arch/um/kernel/um_arch.c
+@@ -387,12 +387,12 @@ void text_poke_sync(void)
  {
--	 struct ext4_group_info **grp_info;
--	 long indexv, indexh;
--
--	 if (unlikely(group >= EXT4_SB(sb)->s_groups_count)) {
--		 ext4_error(sb, "invalid group %u", group);
--		 return NULL;
--	 }
--	 indexv = group >> (EXT4_DESC_PER_BLOCK_BITS(sb));
--	 indexh = group & ((EXT4_DESC_PER_BLOCK(sb)) - 1);
--	 grp_info = sbi_array_rcu_deref(EXT4_SB(sb), s_group_info, indexv);
--	 return grp_info[indexh];
-+	struct ext4_group_info **grp_info;
-+	long indexv, indexh;
-+
-+	if (unlikely(group >= EXT4_SB(sb)->s_groups_count))
-+		return NULL;
-+	indexv = group >> (EXT4_DESC_PER_BLOCK_BITS(sb));
-+	indexh = group & ((EXT4_DESC_PER_BLOCK(sb)) - 1);
-+	grp_info = sbi_array_rcu_deref(EXT4_SB(sb), s_group_info, indexv);
-+	return grp_info[indexh];
  }
  
- /*
--- 
-2.39.2
-
+-#ifdef CONFIG_PM_SLEEP
+ void uml_pm_wake(void)
+ {
+ 	pm_system_wakeup();
+ }
+ 
++#ifdef CONFIG_PM_SLEEP
+ static int init_pm_wake_signal(void)
+ {
+ 	/*
 
 
