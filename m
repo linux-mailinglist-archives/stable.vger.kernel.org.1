@@ -2,81 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FBF0735AA5
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 17:05:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43C27735AAA
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 17:05:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230402AbjFSPFR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 11:05:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54284 "EHLO
+        id S231776AbjFSPF2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 11:05:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232360AbjFSPE5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 11:04:57 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C0BA26AF;
-        Mon, 19 Jun 2023 08:04:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1687187009; x=1687791809; i=rwarsow@gmx.de;
- bh=hhdxj/Xjt6ZWARd6D3wTAaeKNyhelBmF6mC73vvS9Gk=;
- h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
- b=EK6aIxFz+/4fgKaCu/bKKerxmEOBZBainQMwan+iJ4pJx+orQ+4PUSbH28ccjXFY4SDg70S
- MsONHHvFPcOXRnW+pp+NbLnm8RYz4m/5YnE+pUWL0Uw7T21l8anB1TTZiZiLiWJtYzOftFI/3
- ZXse0A8ZncvFRqiwXgjVeWIjuILavnLrt/v4o5ncHKmxxAmzDIJVmOVXxMKjdQE9aFkRg/PWf
- w5e0vGRdgs9TaqBjM6+R8Cy1OlGoFxJa1nPyl6V+IAZl005wsLFw9k++7TSo9Uhg31zQtxeEc
- RNOr7y88neSoQwYIvQYVN3A7nCDvnMnZj7q5wxrsEc+6AjdLzHgw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.100.20] ([46.142.33.36]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MDQiS-1qLfkd288c-00AVSa; Mon, 19
- Jun 2023 17:03:29 +0200
-Message-ID: <c5ee96f9-1f93-3eca-6560-b8367cd8d124@gmx.de>
-Date:   Mon, 19 Jun 2023 17:03:28 +0200
+        with ESMTP id S229821AbjFSPFI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 11:05:08 -0400
+Received: from mail-oa1-x30.google.com (mail-oa1-x30.google.com [IPv6:2001:4860:4864:20::30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 317DF10FA
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 08:04:22 -0700 (PDT)
+Received: by mail-oa1-x30.google.com with SMTP id 586e51a60fabf-1a98cf01151so3640113fac.2
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 08:04:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1687187061; x=1689779061;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0m9rhWOn8qYbjuVQmQ20zeGCmNCpO//YkkWL6MmvNwg=;
+        b=X4rnGsDhhgcstlEOl2O8Xh0D75fvA4vp4Lp/Hch/7e27uzGYUexdfNn8ekHr0mFBme
+         xRW2Jgigs40z3tnW83vRGWXtbHyCNxWMrMBZJ6b1+dj/QesU3nVfa2PCr01i4TxFgyl5
+         JBfJcs93mVxfsGsi6e5la8UBwnx4Ipd7LNTUrMxmhu+eV0oXz/Fh8ARus8WzXPrPV/RS
+         lHTfF2qz+tPJkpSeHgniix7/lRe+ods8MgZJ1EIpBI2htcjR7+uqSkL5vkczsm7R2HpG
+         aU2lpY8HphbspEUze2dxaRhc3sjMSJ+IqLTvOqRFsi5UolLc0LtUzb8u+bMHAMdKZW1N
+         WU3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687187061; x=1689779061;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0m9rhWOn8qYbjuVQmQ20zeGCmNCpO//YkkWL6MmvNwg=;
+        b=dj1/kVm8o6gPbjGK87PDAATSp+M7ca2bB/66Hep34dQw5xWrcnpDb8TdwL/IlgacgO
+         fH0iUSqtX27wU13XBDEw4H+b8CjrGOa0xlS1yPa604FZhhat2+qAWwPHmH6MdB6Av8PM
+         3ixX0zdQYsozCZqKge9bmDfZnMO2LDX+WKiFkuB0NbLUcxoKEo2DfIQxgxzod4lO6SbT
+         SBDYKfckikbr/wk2PsFmZbjuoUF23855lzFCZIyRKIYxLHM8dk7h2rdJ8XxQf+MVVdx9
+         hZsrDgyxK/QauFxh8RQlK5d6d/Q1d9gF92eZs6m8KYCTytchLhfVu6A2d4CnBA5nQQNL
+         evtQ==
+X-Gm-Message-State: AC+VfDyYfItlgsZarUwBbrTGEswSfGf2ybGNY4+axxtr+KB1io2aR6Fh
+        s3WKuwYHVNRysfRtVHDq2I/B
+X-Google-Smtp-Source: ACHHUZ5vRE7brlsRPe3Zp8R6nDsOTJqauqzXZH+wyitHVFyn/PXC/KWiff8ZoBlpQBA7Fut4l4DxOw==
+X-Received: by 2002:a05:6870:4710:b0:18f:558a:1f51 with SMTP id b16-20020a056870471000b0018f558a1f51mr11017078oaq.53.1687187061309;
+        Mon, 19 Jun 2023 08:04:21 -0700 (PDT)
+Received: from localhost.localdomain ([117.217.183.37])
+        by smtp.gmail.com with ESMTPSA id 10-20020a17090a19ca00b0025efaf7a0d3sm2765480pjj.14.2023.06.19.08.04.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Jun 2023 08:04:20 -0700 (PDT)
+From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To:     lpieralisi@kernel.org, kw@linux.com, bhelgaas@google.com
+Cc:     robh@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
+        linux-pci@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, steev@kali.org,
+        quic_srichara@quicinc.com,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        stable@vger.kernel.org
+Subject: [PATCH v4 1/9] PCI: qcom: Disable write access to read only registers for IP v2.3.3
+Date:   Mon, 19 Jun 2023 20:34:00 +0530
+Message-Id: <20230619150408.8468-2-manivannan.sadhasivam@linaro.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230619150408.8468-1-manivannan.sadhasivam@linaro.org>
+References: <20230619150408.8468-1-manivannan.sadhasivam@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-From:   Ronald Warsow <rwarsow@gmx.de>
-To:     linux-kernel@vger.kernel.org
-Cc:     stable@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.3 000/187] 6.3.9-rc1 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:ZQRydHeOsjL+k65rPKB5LoyImqjxiCgWsvKYYNvuvBJI7DZdRwS
- NIMHvaE6JPbDNYua3IYd43Pul+BM5368vEmD1bkmRT83vNh/Zdp9JY9+T+Be+pa6VhJmSIf
- C4k/333TjG0ePmY3+Cw+l49/i/nvjxN7t6tuToLwWhRnV9+4DsZWaQw6UX9jQjWttiRCVWu
- Eixm7Ij2i+wwcoN4/U35A==
-UI-OutboundReport: notjunk:1;M01:P0:MWw0k52Rp6g=;C65A7r/Nmw7ZR4REydKCLi9E6dx
- l2EkmuJqlpmcv8IWSVYIGJFhlzkBrdia28sXC0GUR3XNGToN9TDc6n+FoyZpSQb0rLMNfzZGy
- Y9NBuhA2HcTNCls1LVLLPfcdrDQ9xd/osUKJH87goa6LSqC7MxFDMCjhjWnSrOxYQBL/8OtGh
- BAt39vjawz5zu2XVMjeeZsKXDEPTHDOtPwhtoFdSJg4b+xk0aV7dM9uoTpgE00fxso8booQqp
- 6RopDzmkKiI/9muzgk2Bk3eQl86uq0coQi4qnphvXwiC/Jltffye0XZ1tgSiKn24BctKXY9nO
- 9qWdDrv/uQz16f/BTGkj55U/PaZ0Zee1WBNURYKFaty7yqARaLIDBWdfz1xkwNXilda94tseF
- 0Nz04/4FHSa4ijh/mZWJNfdUu38YN1uw2JLAxCj38+rthsxs7ePDmmBBxJ9DDV9wvtbzIt8bc
- RVLmV6Y2ge0nSbNX+2Ncz1sEje7GbMBSCLHitZ1bk2BiwH60k6Bk4LnFpZi2AnP6vYsHNR3yY
- FhtzCCCB0d+xShb0fOLEpy3hdy33rWdxwuGxn3BfAivCD6KPcTPTlmdaKoQu764Ca0OfUR3Vv
- vbRKrXNqIn6n4RghFmaXXgNzpGXu2l9OV1GTRI03/+LepRJ24c/84OP+mHk8n66Rwu8P//S6c
- Oo3iZkcMEmgV9egKj+xSvUL4L5wk3wA/BK6uxUAu0lyzxwGt8p3zo8UX4HFYaSUtFj0UfhZKT
- W4v4Ql5//F1N5TTPli7G7n0UL8kHsoawqcoTmgbXt5W4rnnBbIACAXDyjMrxGq5EnvUNeQGKf
- ia5V21x6tyNuJp+kicJX5doV9EFWpnEsg0jbVo79iHV1AuwZvi/Km9kPV0oZeFg7Axs+NVCwI
- f5KT7VMeQ/VjA2EwjHrP5lQuBfZcHDKorxgSxezBZhtn+7YpOBEu9rBudJEJ+CHx8IGdo/zP2
- kUqCKP4Y5G19xefTYEVKxLb5CzI=
-X-Spam-Status: No, score=0.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FAKE_REPLY_A1,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
+In the post init sequence of v2.9.0, write access to read only registers
+are not disabled after updating the registers. Fix it by disabling the
+access after register update.
 
-6.3.9-rc1
+Cc: <stable@vger.kernel.org>
+Fixes: 5d76117f070d ("PCI: qcom: Add support for IPQ8074 PCIe controller")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+---
+ drivers/pci/controller/dwc/pcie-qcom.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-compiles, boots and runs here on x86_64
-(Intel Rocket Lake, i5-11400)
-
-Thanks
-
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+index 4ab30892f6ef..ef385d36d653 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom.c
++++ b/drivers/pci/controller/dwc/pcie-qcom.c
+@@ -836,6 +836,8 @@ static int qcom_pcie_post_init_2_3_3(struct qcom_pcie *pcie)
+ 	writel(PCI_EXP_DEVCTL2_COMP_TMOUT_DIS, pci->dbi_base + offset +
+ 		PCI_EXP_DEVCTL2);
+ 
++	dw_pcie_dbi_ro_wr_dis(pci);
++
+ 	return 0;
+ }
+ 
+-- 
+2.25.1
 
