@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47564735483
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:56:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB9A7735423
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:52:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232339AbjFSK4w (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:56:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58064 "EHLO
+        id S232283AbjFSKwg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:52:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232322AbjFSK43 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:56:29 -0400
+        with ESMTP id S230394AbjFSKwK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:52:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3343AE70
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:54:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DACCB4
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:51:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C29B660BA0
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:54:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4650C433C0;
-        Mon, 19 Jun 2023 10:54:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0B7A560B9D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:51:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 224ABC433C0;
+        Mon, 19 Jun 2023 10:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172078;
-        bh=4ZINmTttvxCpVyROHXgllf3cThuP8kv6d/saJZJP7vw=;
+        s=korg; t=1687171872;
+        bh=m06ceMhyO4JVZ0PtHa9pKKlIIQ9blBSeo6TuX2MCOKY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dLf8hOGkM96/KbhpCs+g9hmmTNusFkJC6pxgR9lU+LoskUKPIgrXL8M3CEvIgpGxk
-         Y0+rsaKCwO5fSobLuF4E5p2VFoK0/7IPuV8qPFXc0S5qdTgURVDl4WFdHd6SG9x5RD
-         sZN8ycea9cBv344vY1EWBRxT4f8s//lxyQZkvomM=
+        b=DVpZQB7Q7+XYpj/cKPNs+cC4YYZ4I9VuX3Km9+GsyZ3KFvZorb6jhqE2PRmYZocSy
+         4bq0uwH3MLPobw0hHmCyxCrVcNC1Qcp6y/RVTticXdD88EbnlNs6qpjqwNKld1CFLu
+         tv4TJKjKfFaducdRT7JJh0hgCDqObdMKOHJlCGxc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ben Segall <bsegall@google.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 28/89] epoll: ep_autoremove_wake_function should use list_del_init_careful
+        patches@lists.linux.dev, Sukrut Bellary <sukrut.bellary@linux.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 20/64] drm:amd:amdgpu: Fix missing buffer object unlock in failure path
 Date:   Mon, 19 Jun 2023 12:30:16 +0200
-Message-ID: <20230619102139.563040868@linuxfoundation.org>
+Message-ID: <20230619102133.917094790@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
+References: <20230619102132.808972458@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,42 +55,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Benjamin Segall <bsegall@google.com>
+From: Sukrut Bellary <sukrut.bellary@linux.com>
 
-commit 2192bba03d80f829233bfa34506b428f71e531e7 upstream.
+[ Upstream commit 60ecaaf54886b0642d5c4744f7fbf1ff0d6b3e42 ]
 
-autoremove_wake_function uses list_del_init_careful, so should epoll's
-more aggressive variant.  It only doesn't because it was copied from an
-older wait.c rather than the most recent.
+smatch warning -
+1) drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c:3615 gfx_v9_0_kiq_resume()
+warn: inconsistent returns 'ring->mqd_obj->tbo.base.resv'.
 
-[bsegall@google.com: add comment]
-  Link: https://lkml.kernel.org/r/xm26bki0ulsr.fsf_-_@google.com
-Link: https://lkml.kernel.org/r/xm26pm6hvfer.fsf@google.com
-Fixes: a16ceb139610 ("epoll: autoremove wakers even more aggressively")
-Signed-off-by: Ben Segall <bsegall@google.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+2) drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c:6901 gfx_v10_0_kiq_resume()
+warn: inconsistent returns 'ring->mqd_obj->tbo.base.resv'.
+
+Signed-off-by: Sukrut Bellary <sukrut.bellary@linux.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/eventpoll.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 4 +++-
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c  | 4 +++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -1817,7 +1817,11 @@ static int ep_autoremove_wake_function(s
- {
- 	int ret = default_wake_function(wq_entry, mode, sync, key);
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+index 1d8739a4fbcad..a84deb3c79a30 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+@@ -3527,8 +3527,10 @@ static int gfx_v10_0_kiq_resume(struct amdgpu_device *adev)
+ 		return r;
  
--	list_del_init(&wq_entry->entry);
-+	/*
-+	 * Pairs with list_empty_careful in ep_poll, and ensures future loop
-+	 * iterations see the cause of this wakeup.
-+	 */
-+	list_del_init_careful(&wq_entry->entry);
- 	return ret;
- }
+ 	r = amdgpu_bo_kmap(ring->mqd_obj, (void **)&ring->mqd_ptr);
+-	if (unlikely(r != 0))
++	if (unlikely(r != 0)) {
++		amdgpu_bo_unreserve(ring->mqd_obj);
+ 		return r;
++	}
  
+ 	gfx_v10_0_kiq_init_queue(ring);
+ 	amdgpu_bo_kunmap(ring->mqd_obj);
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+index 762a407a4997a..4eba6b2d9cdec 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+@@ -3748,8 +3748,10 @@ static int gfx_v9_0_kiq_resume(struct amdgpu_device *adev)
+ 		return r;
+ 
+ 	r = amdgpu_bo_kmap(ring->mqd_obj, (void **)&ring->mqd_ptr);
+-	if (unlikely(r != 0))
++	if (unlikely(r != 0)) {
++		amdgpu_bo_unreserve(ring->mqd_obj);
+ 		return r;
++	}
+ 
+ 	gfx_v9_0_kiq_init_queue(ring);
+ 	amdgpu_bo_kunmap(ring->mqd_obj);
+-- 
+2.39.2
+
 
 
