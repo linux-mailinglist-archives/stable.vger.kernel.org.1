@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C00F37354F5
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:00:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD9E473530B
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232447AbjFSLAU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:00:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60818 "EHLO
+        id S231948AbjFSKlM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:41:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232523AbjFSK7W (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:59:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 553A919BD
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:58:35 -0700 (PDT)
+        with ESMTP id S232026AbjFSKkl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:40:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52458CA
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:40:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF93460B7F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:58:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3135C433C8;
-        Mon, 19 Jun 2023 10:58:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E3F9C60B62
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:40:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 070D4C433C8;
+        Mon, 19 Jun 2023 10:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172314;
-        bh=PcMLzG59PngyVHlKGq9hFI9F9v8wtx5t90I4RlnfWv8=;
+        s=korg; t=1687171239;
+        bh=iNSIX/q69BO9D9C8quIGMYIKKtzREPqOzGa8/KIbOUY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1AwoOEBRWLibBz8D86Lc0iJjiWimGQzBvuos4CYpDbYRHJ54PsOsJ9Eynh4t4ZxzS
-         j+MBqK//aKmtqIRQVWOZOfnqLgYxCu2tK8RikfTXPb6mi10XpfqiSQIiwk7XZTmbI2
-         UdlEU89BnhQDS3vQ4GQrKZ+n4I2Y+S5BRA3qr73Q=
+        b=yabgogawGMHqon/keTwLYl/A8l/0AGTNasaja+0YLUSU9hRFgAlRgLFvSwodGN92+
+         KxRTlmpCe72GfzyzAQttGtczMxazu5rj6DyBhPjNozOmgOWdQoYNg6UHOv1u6wWW5p
+         VZuHnPT+qB6gZFlthXYLiLD6w8bmABDB9WXw2KSQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kuan-Ting Chen <h3xrabbit@gmail.com>,
-        Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>,
+        patches@lists.linux.dev, Liviu Dudau <liviu@dudau.co.uk>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 004/107] ksmbd: fix slab-out-of-bounds read in smb2_handle_negotiate
+Subject: [PATCH 4.19 10/49] mips: Move initrd_start check after initrd address sanitisation.
 Date:   Mon, 19 Jun 2023 12:29:48 +0200
-Message-ID: <20230619102141.745140984@linuxfoundation.org>
+Message-ID: <20230619102130.396510186@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
+References: <20230619102129.856988902@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,61 +55,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuan-Ting Chen <h3xrabbit@gmail.com>
+From: Liviu Dudau <liviu@dudau.co.uk>
 
-[ Upstream commit d738950f112c8f40f0515fe967db998e8235a175 ]
+[ Upstream commit 4897a898a216058dec55e5e5902534e6e224fcdf ]
 
-Check request_buf length first to avoid out-of-bounds read by
-req->DialectCount.
+PAGE_OFFSET is technically a virtual address so when checking the value of
+initrd_start against it we should make sure that it has been sanitised from
+the values passed by the bootloader. Without this change, even with a bootloader
+that passes correct addresses for an initrd, we are failing to load it on MT7621
+boards, for example.
 
-[ 3350.990282] BUG: KASAN: slab-out-of-bounds in smb2_handle_negotiate+0x35d7/0x3e60
-[ 3350.990282] Read of size 2 at addr ffff88810ad61346 by task kworker/5:0/276
-[ 3351.000406] Workqueue: ksmbd-io handle_ksmbd_work
-[ 3351.003499] Call Trace:
-[ 3351.006473]  <TASK>
-[ 3351.006473]  dump_stack_lvl+0x8d/0xe0
-[ 3351.006473]  print_report+0xcc/0x620
-[ 3351.006473]  kasan_report+0x92/0xc0
-[ 3351.006473]  smb2_handle_negotiate+0x35d7/0x3e60
-[ 3351.014760]  ksmbd_smb_negotiate_common+0x7a7/0xf00
-[ 3351.014760]  handle_ksmbd_work+0x3f7/0x12d0
-[ 3351.014760]  process_one_work+0xa85/0x1780
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuan-Ting Chen <h3xrabbit@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Liviu Dudau <liviu@dudau.co.uk>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ksmbd/smb2pdu.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/mips/kernel/setup.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
-index e24fd10d85d3b..266430a2a0e07 100644
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -1083,16 +1083,16 @@ int smb2_handle_negotiate(struct ksmbd_work *work)
- 		return rc;
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index 2c2480be3f365..124bc842306d6 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -265,10 +265,6 @@ static unsigned long __init init_initrd(void)
+ 		pr_err("initrd start must be page aligned\n");
+ 		goto disable;
  	}
+-	if (initrd_start < PAGE_OFFSET) {
+-		pr_err("initrd start < PAGE_OFFSET\n");
+-		goto disable;
+-	}
  
--	if (req->DialectCount == 0) {
--		pr_err("malformed packet\n");
-+	smb2_buf_len = get_rfc1002_len(work->request_buf);
-+	smb2_neg_size = offsetof(struct smb2_negotiate_req, Dialects) - 4;
-+	if (smb2_neg_size > smb2_buf_len) {
- 		rsp->hdr.Status = STATUS_INVALID_PARAMETER;
- 		rc = -EINVAL;
- 		goto err_out;
- 	}
+ 	/*
+ 	 * Sanitize initrd addresses. For example firmware
+@@ -281,6 +277,11 @@ static unsigned long __init init_initrd(void)
+ 	initrd_end = (unsigned long)__va(end);
+ 	initrd_start = (unsigned long)__va(__pa(initrd_start));
  
--	smb2_buf_len = get_rfc1002_len(work->request_buf);
--	smb2_neg_size = offsetof(struct smb2_negotiate_req, Dialects) - 4;
--	if (smb2_neg_size > smb2_buf_len) {
-+	if (req->DialectCount == 0) {
-+		pr_err("malformed packet\n");
- 		rsp->hdr.Status = STATUS_INVALID_PARAMETER;
- 		rc = -EINVAL;
- 		goto err_out;
++	if (initrd_start < PAGE_OFFSET) {
++		pr_err("initrd start < PAGE_OFFSET\n");
++		goto disable;
++	}
++
+ 	ROOT_DEV = Root_RAM0;
+ 	return PFN_UP(end);
+ disable:
 -- 
 2.39.2
 
