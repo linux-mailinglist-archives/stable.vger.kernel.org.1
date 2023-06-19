@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5669735535
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:02:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8135273543E
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:54:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232589AbjFSLCd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:02:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33254 "EHLO
+        id S232158AbjFSKyD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:54:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232475AbjFSLCO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:02:14 -0400
+        with ESMTP id S232160AbjFSKxk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:53:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B2E11BF9
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:01:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66DD81FF5
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:52:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7BD6D60B42
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:01:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9243CC433C9;
-        Mon, 19 Jun 2023 11:01:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E287360BA2
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:52:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D646CC433CC;
+        Mon, 19 Jun 2023 10:52:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172466;
-        bh=xUIZ23c+3tN02lO0oTMrtSf2owuRlG5/4NrqvimrJLU=;
+        s=korg; t=1687171933;
+        bh=2O3VdNDHy5O/nyN7FP+133uHlHNEFc43xoQ11Uz0480=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lwWJ1CmbPPJ/WrnYPSA+ehaVa1oY4WclBtY3ASLVngKwgBuGm7jD3XeUtn1W3LucO
-         d46mQorXxbtjQ8i7vHd8m6Jq02oLgloO/QJJpzR7MXzf/CqQC8Lpm3FTgK00BuhZiZ
-         UMQ2hDwrlEIDIpyX1rN5msad6qTCSDzxh+WLKOX4=
+        b=u4fsVPS9tokGstKcer74fD82Gs/mew4InVJ9ONML4mYLWcHgIQfMYr3sE7lDl58AT
+         yriBnrQzhnJqnZ2pdaLqF3LxCAobeSwwtHKcX0UNmII/yVz8jnlqbzg1sYwQkb1R1U
+         DYLPzsEFBWm5wy5HLEyl+GA0nYewPyjAHup24MqY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pengfei Xu <pengfei.xu@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 5.15 053/107] thunderbolt: dma_test: Use correct value for absent rings when creating paths
+        patches@lists.linux.dev, Zhu Yanjun <yanjun.zhu@linux.dev>,
+        Li Zhijian <lizhijian@fujitsu.com>,
+        Bob Pearson <rpearsonhpe@gmail.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 41/64] RDMA/rxe: Remove the unused variable obj
 Date:   Mon, 19 Jun 2023 12:30:37 +0200
-Message-ID: <20230619102144.037842483@linuxfoundation.org>
+Message-ID: <20230619102135.047989227@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
+References: <20230619102132.808972458@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,49 +57,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
 
-commit 70c2e03e9aaf17496c63f6e42333c012f5ae5307 upstream.
+[ Upstream commit f07853582d1f6ed282f8d9a0b1209a87dd761f58 ]
 
-Both tb_xdomain_enable_paths() and tb_xdomain_disable_paths() expect -1,
-not 0, if the corresponding ring is not needed. For this reason change
-the driver to use correct value for the rings that are not needed.
+The member variable obj in struct rxe_task is not needed.
+So remove it to save memory.
 
-Fixes: 180b0689425c ("thunderbolt: Allow multiple DMA tunnels over a single XDomain connection")
-Cc: stable@vger.kernel.org
-Reported-by: Pengfei Xu <pengfei.xu@intel.com>
-Tested-by: Pengfei Xu <pengfei.xu@intel.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20220822011615.805603-4-yanjun.zhu@linux.dev
+Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
+Reviewed-by: Bob Pearson <rpearsonhpe@gmail.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Stable-dep-of: 2a62b6210ce8 ("RDMA/rxe: Fix the use-before-initialization error of resp_pkts")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/dma_test.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/infiniband/sw/rxe/rxe_qp.c   | 6 +++---
+ drivers/infiniband/sw/rxe/rxe_task.c | 3 +--
+ drivers/infiniband/sw/rxe/rxe_task.h | 3 +--
+ 3 files changed, 5 insertions(+), 7 deletions(-)
 
---- a/drivers/thunderbolt/dma_test.c
-+++ b/drivers/thunderbolt/dma_test.c
-@@ -192,9 +192,9 @@ static int dma_test_start_rings(struct d
- 	}
+diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
+index 5dd9bcef5921a..5b59907594f75 100644
+--- a/drivers/infiniband/sw/rxe/rxe_qp.c
++++ b/drivers/infiniband/sw/rxe/rxe_qp.c
+@@ -278,9 +278,9 @@ static int rxe_qp_init_req(struct rxe_dev *rxe, struct rxe_qp *qp,
  
- 	ret = tb_xdomain_enable_paths(dt->xd, dt->tx_hopid,
--				      dt->tx_ring ? dt->tx_ring->hop : 0,
-+				      dt->tx_ring ? dt->tx_ring->hop : -1,
- 				      dt->rx_hopid,
--				      dt->rx_ring ? dt->rx_ring->hop : 0);
-+				      dt->rx_ring ? dt->rx_ring->hop : -1);
- 	if (ret) {
- 		dma_test_free_rings(dt);
- 		return ret;
-@@ -218,9 +218,9 @@ static void dma_test_stop_rings(struct d
- 		tb_ring_stop(dt->tx_ring);
+ 	skb_queue_head_init(&qp->req_pkts);
  
- 	ret = tb_xdomain_disable_paths(dt->xd, dt->tx_hopid,
--				       dt->tx_ring ? dt->tx_ring->hop : 0,
-+				       dt->tx_ring ? dt->tx_ring->hop : -1,
- 				       dt->rx_hopid,
--				       dt->rx_ring ? dt->rx_ring->hop : 0);
-+				       dt->rx_ring ? dt->rx_ring->hop : -1);
- 	if (ret)
- 		dev_warn(&dt->svc->dev, "failed to disable DMA paths\n");
+-	rxe_init_task(rxe, &qp->req.task, qp,
++	rxe_init_task(&qp->req.task, qp,
+ 		      rxe_requester, "req");
+-	rxe_init_task(rxe, &qp->comp.task, qp,
++	rxe_init_task(&qp->comp.task, qp,
+ 		      rxe_completer, "comp");
  
+ 	qp->qp_timeout_jiffies = 0; /* Can't be set for UD/UC in modify_qp */
+@@ -327,7 +327,7 @@ static int rxe_qp_init_resp(struct rxe_dev *rxe, struct rxe_qp *qp,
+ 
+ 	skb_queue_head_init(&qp->resp_pkts);
+ 
+-	rxe_init_task(rxe, &qp->resp.task, qp,
++	rxe_init_task(&qp->resp.task, qp,
+ 		      rxe_responder, "resp");
+ 
+ 	qp->resp.opcode		= OPCODE_NONE;
+diff --git a/drivers/infiniband/sw/rxe/rxe_task.c b/drivers/infiniband/sw/rxe/rxe_task.c
+index 08f05ac5f5d52..ea7d5a69eb2a3 100644
+--- a/drivers/infiniband/sw/rxe/rxe_task.c
++++ b/drivers/infiniband/sw/rxe/rxe_task.c
+@@ -114,10 +114,9 @@ void rxe_do_task(unsigned long data)
+ 	task->ret = ret;
+ }
+ 
+-int rxe_init_task(void *obj, struct rxe_task *task,
++int rxe_init_task(struct rxe_task *task,
+ 		  void *arg, int (*func)(void *), char *name)
+ {
+-	task->obj	= obj;
+ 	task->arg	= arg;
+ 	task->func	= func;
+ 	snprintf(task->name, sizeof(task->name), "%s", name);
+diff --git a/drivers/infiniband/sw/rxe/rxe_task.h b/drivers/infiniband/sw/rxe/rxe_task.h
+index 08ff42d451c62..e87ee072e3179 100644
+--- a/drivers/infiniband/sw/rxe/rxe_task.h
++++ b/drivers/infiniband/sw/rxe/rxe_task.h
+@@ -46,7 +46,6 @@ enum {
+  * called again.
+  */
+ struct rxe_task {
+-	void			*obj;
+ 	struct tasklet_struct	tasklet;
+ 	int			state;
+ 	spinlock_t		state_lock; /* spinlock for task state */
+@@ -62,7 +61,7 @@ struct rxe_task {
+  *	arg  => parameter to pass to fcn
+  *	fcn  => function to call until it returns != 0
+  */
+-int rxe_init_task(void *obj, struct rxe_task *task,
++int rxe_init_task(struct rxe_task *task,
+ 		  void *arg, int (*func)(void *), char *name);
+ 
+ /* cleanup task */
+-- 
+2.39.2
+
 
 
