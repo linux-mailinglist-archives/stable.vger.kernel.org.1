@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8F0D7352D2
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:38:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F9847352FD
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231258AbjFSKig (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:38:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44244 "EHLO
+        id S229557AbjFSKlA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:41:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231649AbjFSKiY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:38:24 -0400
+        with ESMTP id S232085AbjFSKkQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:40:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE7CECD
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:38:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CE9F10F8
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:40:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 52C2D60B62
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:38:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 669D8C433C8;
-        Mon, 19 Jun 2023 10:38:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B765360B0D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:40:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD193C433C0;
+        Mon, 19 Jun 2023 10:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171102;
-        bh=LFhSZaWrLkPi69TGqTKhasEZ06KWUxtIGozV4/e72Is=;
+        s=korg; t=1687171205;
+        bh=Y6MBSY97SJc6gArE0pDXarPoM4AXlqY9EeogjInlCE0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mK1xEAbssmnvTW3AFYkT6fgV+c6DtAwRqqbT2/r7PxydnWOgFezvl6M8m4ovt2Dz/
-         2iZKD1GE8MpTB1p+sxP70gTZi0zxPnPXTWj9nk05tMS55uR+bpjJl6/WLfz0YFdXbH
-         Uti1IXbGQmcegvPr11Brbo8ZSySrx01sCBA4kaLg=
+        b=Lzoq+Cs2MyiZ6Zt6/iPavugkrhKEHEzil8VzPDXwDY7rrH5o8Wwvk/UZywrrxwGsq
+         1QVnP6LjPgK3zCCFlDL1amz6o+zDroSy/5KmWjRfqjqIeRGyAk8aruBKZeageFCRN2
+         UkMF9Yhy8i9Tr+JBpROwlg77eLb4kSwQuuZLFer8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benjamin Berg <benjamin.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Hangbin Liu <liuhangbin@gmail.com>,
+        Larysa Zaremba <larysa.zaremba@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 148/187] wifi: mac80211: fragment per STA profile correctly
-Date:   Mon, 19 Jun 2023 12:29:26 +0200
-Message-ID: <20230619102204.798771389@linuxfoundation.org>
+Subject: [PATCH 6.3 149/187] ipvlan: fix bound dev checking for IPv6 l3s mode
+Date:   Mon, 19 Jun 2023 12:29:27 +0200
+Message-ID: <20230619102204.839804184@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
 References: <20230619102157.579823843@linuxfoundation.org>
@@ -56,81 +56,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit d094482c9974a543851a18a1c587a7d132a81659 ]
+[ Upstream commit ce57adc222aba32431c42632b396e9213d0eb0b8 ]
 
-When fragmenting the ML per STA profile, the element ID should be
-IEEE80211_MLE_SUBELEM_PER_STA_PROFILE rather than WLAN_EID_FRAGMENT.
+The commit 59a0b022aa24 ("ipvlan: Make skb->skb_iif track skb->dev for l3s
+mode") fixed ipvlan bonded dev checking by updating skb skb_iif. This fix
+works for IPv4, as in raw_v4_input() the dif is from inet_iif(skb), which
+is skb->skb_iif when there is no route.
 
-Change the helper function to take the to be used element ID and pass
-the appropriate value for each of the fragmentation levels.
+But for IPv6, the fix is not enough, because in ipv6_raw_deliver() ->
+raw_v6_match(), the dif is inet6_iif(skb), which is returns IP6CB(skb)->iif
+instead of skb->skb_iif if it's not a l3_slave. To fix the IPv6 part
+issue. Let's set IP6CB(skb)->iif to correct ifindex.
 
-Fixes: 81151ce462e5 ("wifi: mac80211: support MLO authentication/association with one link")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230611121219.9b5c793d904b.I7dad952bea8e555e2f3139fbd415d0cd2b3a08c3@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+BTW, ipvlan handles NS/NA specifically. Since it works fine, I will not
+reset IP6CB(skb)->iif when addr->atype is IPVL_ICMPV6.
+
+Fixes: c675e06a98a4 ("ipvlan: decouple l3s mode dependencies from other modes")
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2196710
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/ieee80211_i.h | 2 +-
- net/mac80211/mlme.c        | 5 +++--
- net/mac80211/util.c        | 4 ++--
- 3 files changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/ipvlan/ipvlan_l3s.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index eba7ae63fac45..347030b9bb9e3 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2272,7 +2272,7 @@ ieee802_11_parse_elems(const u8 *start, size_t len, bool action,
- 	return ieee802_11_parse_elems_crc(start, len, action, 0, 0, bss);
- }
+diff --git a/drivers/net/ipvlan/ipvlan_l3s.c b/drivers/net/ipvlan/ipvlan_l3s.c
+index 71712ea25403d..d5b05e8032199 100644
+--- a/drivers/net/ipvlan/ipvlan_l3s.c
++++ b/drivers/net/ipvlan/ipvlan_l3s.c
+@@ -102,6 +102,10 @@ static unsigned int ipvlan_nf_input(void *priv, struct sk_buff *skb,
  
--void ieee80211_fragment_element(struct sk_buff *skb, u8 *len_pos);
-+void ieee80211_fragment_element(struct sk_buff *skb, u8 *len_pos, u8 frag_id);
- 
- extern const int ieee802_1d_to_ac[8];
- 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 7a970b6dda640..d28a35c538bac 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -1372,10 +1372,11 @@ static void ieee80211_assoc_add_ml_elem(struct ieee80211_sub_if_data *sdata,
- 		ieee80211_add_non_inheritance_elem(skb, outer_present_elems,
- 						   link_present_elems);
- 
--		ieee80211_fragment_element(skb, subelem_len);
-+		ieee80211_fragment_element(skb, subelem_len,
-+					   IEEE80211_MLE_SUBELEM_FRAGMENT);
- 	}
- 
--	ieee80211_fragment_element(skb, ml_elem_len);
-+	ieee80211_fragment_element(skb, ml_elem_len, WLAN_EID_FRAGMENT);
- }
- 
- static int ieee80211_send_assoc(struct ieee80211_sub_if_data *sdata)
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index d7b382866b260..1a0d38cd46337 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -4955,7 +4955,7 @@ u8 *ieee80211_ie_build_eht_cap(u8 *pos,
- 	return pos;
- }
- 
--void ieee80211_fragment_element(struct sk_buff *skb, u8 *len_pos)
-+void ieee80211_fragment_element(struct sk_buff *skb, u8 *len_pos, u8 frag_id)
- {
- 	unsigned int elem_len;
- 
-@@ -4975,7 +4975,7 @@ void ieee80211_fragment_element(struct sk_buff *skb, u8 *len_pos)
- 		memmove(len_pos + 255 + 3, len_pos + 255 + 1, elem_len);
- 		/* place the fragment ID */
- 		len_pos += 255 + 1;
--		*len_pos = WLAN_EID_FRAGMENT;
-+		*len_pos = frag_id;
- 		/* and point to fragment length to update later */
- 		len_pos++;
- 	}
+ 	skb->dev = addr->master->dev;
+ 	skb->skb_iif = skb->dev->ifindex;
++#if IS_ENABLED(CONFIG_IPV6)
++	if (addr->atype == IPVL_IPV6)
++		IP6CB(skb)->iif = skb->dev->ifindex;
++#endif
+ 	len = skb->len + ETH_HLEN;
+ 	ipvlan_count_rx(addr->master, len, true, false);
+ out:
 -- 
 2.39.2
 
