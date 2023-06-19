@@ -2,51 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D6F2735359
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:44:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D43B1735291
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:36:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231194AbjFSKob (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:44:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47808 "EHLO
+        id S231442AbjFSKg3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:36:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231987AbjFSKoG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:44:06 -0400
+        with ESMTP id S231830AbjFSKgE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:36:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5977C1735
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:43:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AFF7E7A
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:35:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CE09260B85
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:43:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF221C433C8;
-        Mon, 19 Jun 2023 10:43:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F41CE60B6D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:35:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14BADC433C0;
+        Mon, 19 Jun 2023 10:35:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171426;
-        bh=5dx/032Z0rtUE2fDGQ5yJQBoruEJyUnbrT2zP4GYERg=;
+        s=korg; t=1687170947;
+        bh=XxdEGGmyLV0LKu8P653UjJoZ6Rz8TrhH59m7uTfAvbA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xkn9ZtRw6rX6gvMgK9wmDPm0czApc4Vt6uMwzMqY/O9Il7WY9v9lsCjDvv0HINHO/
-         vw2qRVYENV2SjufjgiTGjKjDYNdLzdm92lcAC8vdxD0geiJbjXjJSAVrSNumsu8ST2
-         UIpOGruCipWGd2vYMIQImhKXzHcBvZW+MBRf36E8=
+        b=vtvNeK5Zm07Lzc0vMZZ0DHKkORnSJiKQLxTXQKy0rtURqpjLjJmuEVTDDC/eEgSIG
+         wtqaq6Ch/IhnTeLIvgs/vFvHVQwg4OkYtn7ft6fnuzca8S8DpIjTF1UBtfpVpO9pRd
+         Ts4W7w9EeBDAPVJPCd10Dk2mhglSDc6VP6UrrMIU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Parikshit Pareek <quic_ppareek@quicinc.com>,
-        Luca Weiss <luca.weiss@fairphone.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Steev Klimaszewski <steev@kali.org>,
-        Andrew Halaney <ahalaney@redhat.com>
-Subject: [PATCH 6.1 007/166] qcom: llcc/edac: Fix the base address used for accessing LLCC banks
-Date:   Mon, 19 Jun 2023 12:28:04 +0200
-Message-ID: <20230619102155.015533097@linuxfoundation.org>
+        syzbot+a694851c6ab28cbcfb9c@syzkaller.appspotmail.com,
+        Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.3 067/187] btrfs: do not ASSERT() on duplicated global roots
+Date:   Mon, 19 Jun 2023 12:28:05 +0200
+Message-ID: <20230619102200.910402010@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -61,268 +55,120 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit ee13b5008707948d3052c1b5aab485c6cd53658e ]
+commit 745806fb4554f334e6406fa82b328562aa48f08f upstream.
 
-The Qualcomm LLCC/EDAC drivers were using a fixed register stride for
-accessing the (Control and Status Registers) CSRs of each LLCC bank.
-This stride only works for some SoCs like SDM845 for which driver
-support was initially added.
+[BUG]
+Syzbot reports a reproducible ASSERT() when using rescue=usebackuproot
+mount option on a corrupted fs.
 
-But the later SoCs use different register stride that vary between the
-banks with holes in-between. So it is not possible to use a single register
-stride for accessing the CSRs of each bank. By doing so could result in a
-crash.
+The full report can be found here:
+https://syzkaller.appspot.com/bug?extid=c4614eae20a166c25bf0
 
-For fixing this issue, let's obtain the base address of each LLCC bank from
-devicetree and get rid of the fixed stride. This also means, there is no
-need to rely on reg-names property and the base addresses can be obtained
-using the index.
+  BTRFS error (device loop0: state C): failed to load root csum
+  assertion failed: !tmp, in fs/btrfs/disk-io.c:1103
+  ------------[ cut here ]------------
+  kernel BUG at fs/btrfs/ctree.h:3664!
+  invalid opcode: 0000 [#1] PREEMPT SMP KASAN
+  CPU: 1 PID: 3608 Comm: syz-executor356 Not tainted 6.0.0-rc7-syzkaller-00029-g3800a713b607 #0
+  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/26/2022
+  RIP: 0010:assertfail+0x1a/0x1c fs/btrfs/ctree.h:3663
+  RSP: 0018:ffffc90003aaf250 EFLAGS: 00010246
+  RAX: 0000000000000032 RBX: 0000000000000000 RCX: f21c13f886638400
+  RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
+  RBP: ffff888021c640a0 R08: ffffffff816bd38d R09: ffffed10173667f1
+  R10: ffffed10173667f1 R11: 1ffff110173667f0 R12: dffffc0000000000
+  R13: ffff8880229c21f7 R14: ffff888021c64060 R15: ffff8880226c0000
+  FS:  0000555556a73300(0000) GS:ffff8880b9b00000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 000055a2637d7a00 CR3: 00000000709c4000 CR4: 00000000003506e0
+  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  Call Trace:
+   <TASK>
+   btrfs_global_root_insert+0x1a7/0x1b0 fs/btrfs/disk-io.c:1103
+   load_global_roots_objectid+0x482/0x8c0 fs/btrfs/disk-io.c:2467
+   load_global_roots fs/btrfs/disk-io.c:2501 [inline]
+   btrfs_read_roots fs/btrfs/disk-io.c:2528 [inline]
+   init_tree_roots+0xccb/0x203c fs/btrfs/disk-io.c:2939
+   open_ctree+0x1e53/0x33df fs/btrfs/disk-io.c:3574
+   btrfs_fill_super+0x1c6/0x2d0 fs/btrfs/super.c:1456
+   btrfs_mount_root+0x885/0x9a0 fs/btrfs/super.c:1824
+   legacy_get_tree+0xea/0x180 fs/fs_context.c:610
+   vfs_get_tree+0x88/0x270 fs/super.c:1530
+   fc_mount fs/namespace.c:1043 [inline]
+   vfs_kern_mount+0xc9/0x160 fs/namespace.c:1073
+   btrfs_mount+0x3d3/0xbb0 fs/btrfs/super.c:1884
 
-First index is LLCC bank 0 and last index is LLCC broadcast. If the SoC
-supports more than one bank, then those need to be defined in devicetree
-for index from 1..N-1.
+[CAUSE]
+Since the introduction of global roots, we handle
+csum/extent/free-space-tree roots as global roots, even if no
+extent-tree-v2 feature is enabled.
 
-Reported-by: Parikshit Pareek <quic_ppareek@quicinc.com>
-Tested-by: Luca Weiss <luca.weiss@fairphone.com>
-Tested-by: Steev Klimaszewski <steev@kali.org> # Thinkpad X13s
-Tested-by: Andrew Halaney <ahalaney@redhat.com> # sa8540p-ride
-Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230314080443.64635-13-manivannan.sadhasivam@linaro.org
-Stable-dep-of: cbd77119b635 ("EDAC/qcom: Get rid of hardcoded register offsets")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So for regular csum/extent/fst roots, we load them into
+fs_info::global_root_tree rb tree.
+
+And we should not expect any conflicts in that rb tree, thus we have an
+ASSERT() inside btrfs_global_root_insert().
+
+But rescue=usebackuproot can break the assumption, as we will try to
+load those trees again and again as long as we have bad roots and have
+backup roots slot remaining.
+
+So in that case we can have conflicting roots in the rb tree, and
+triggering the ASSERT() crash.
+
+[FIX]
+We can safely remove that ASSERT(), as the caller will properly put the
+offending root.
+
+To make further debugging easier, also add two explicit error messages:
+
+- Error message for conflicting global roots
+- Error message when using backup roots slot
+
+Reported-by: syzbot+a694851c6ab28cbcfb9c@syzkaller.appspotmail.com
+Fixes: abed4aaae4f7 ("btrfs: track the csum, extent, and free space trees in a rb tree")
+CC: stable@vger.kernel.org # 6.1+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/qcom_edac.c           | 14 +++---
- drivers/soc/qcom/llcc-qcom.c       | 72 +++++++++++++++++-------------
- include/linux/soc/qcom/llcc-qcom.h |  6 +--
- 3 files changed, 48 insertions(+), 44 deletions(-)
+ fs/btrfs/disk-io.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/edac/qcom_edac.c b/drivers/edac/qcom_edac.c
-index 2c91ceff8a9ca..b1f5b9a02d6dd 100644
---- a/drivers/edac/qcom_edac.c
-+++ b/drivers/edac/qcom_edac.c
-@@ -215,7 +215,7 @@ dump_syn_reg_values(struct llcc_drv_data *drv, u32 bank, int err_type)
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -996,13 +996,18 @@ int btrfs_global_root_insert(struct btrf
+ {
+ 	struct btrfs_fs_info *fs_info = root->fs_info;
+ 	struct rb_node *tmp;
++	int ret = 0;
  
- 	for (i = 0; i < reg_data.reg_cnt; i++) {
- 		synd_reg = reg_data.synd_reg + (i * 4);
--		ret = regmap_read(drv->regmap, drv->offsets[bank] + synd_reg,
-+		ret = regmap_read(drv->regmaps[bank], synd_reg,
- 				  &synd_val);
- 		if (ret)
- 			goto clear;
-@@ -224,8 +224,7 @@ dump_syn_reg_values(struct llcc_drv_data *drv, u32 bank, int err_type)
- 			    reg_data.name, i, synd_val);
- 	}
+ 	write_lock(&fs_info->global_root_lock);
+ 	tmp = rb_find_add(&root->rb_node, &fs_info->global_root_tree, global_root_cmp);
+ 	write_unlock(&fs_info->global_root_lock);
+-	ASSERT(!tmp);
  
--	ret = regmap_read(drv->regmap,
--			  drv->offsets[bank] + reg_data.count_status_reg,
-+	ret = regmap_read(drv->regmaps[bank], reg_data.count_status_reg,
- 			  &err_cnt);
- 	if (ret)
- 		goto clear;
-@@ -235,8 +234,7 @@ dump_syn_reg_values(struct llcc_drv_data *drv, u32 bank, int err_type)
- 	edac_printk(KERN_CRIT, EDAC_LLCC, "%s: Error count: 0x%4x\n",
- 		    reg_data.name, err_cnt);
- 
--	ret = regmap_read(drv->regmap,
--			  drv->offsets[bank] + reg_data.ways_status_reg,
-+	ret = regmap_read(drv->regmaps[bank], reg_data.ways_status_reg,
- 			  &err_ways);
- 	if (ret)
- 		goto clear;
-@@ -297,8 +295,7 @@ static irqreturn_t llcc_ecc_irq_handler(int irq, void *edev_ctl)
- 
- 	/* Iterate over the banks and look for Tag RAM or Data RAM errors */
- 	for (i = 0; i < drv->num_banks; i++) {
--		ret = regmap_read(drv->regmap,
--				  drv->offsets[i] + DRP_INTERRUPT_STATUS,
-+		ret = regmap_read(drv->regmaps[i], DRP_INTERRUPT_STATUS,
- 				  &drp_error);
- 
- 		if (!ret && (drp_error & SB_ECC_ERROR)) {
-@@ -313,8 +310,7 @@ static irqreturn_t llcc_ecc_irq_handler(int irq, void *edev_ctl)
- 		if (!ret)
- 			irq_rc = IRQ_HANDLED;
- 
--		ret = regmap_read(drv->regmap,
--				  drv->offsets[i] + TRP_INTERRUPT_0_STATUS,
-+		ret = regmap_read(drv->regmaps[i], TRP_INTERRUPT_0_STATUS,
- 				  &trp_error);
- 
- 		if (!ret && (trp_error & SB_ECC_ERROR)) {
-diff --git a/drivers/soc/qcom/llcc-qcom.c b/drivers/soc/qcom/llcc-qcom.c
-index d4cba3b3c56c4..85219b5e1f416 100644
---- a/drivers/soc/qcom/llcc-qcom.c
-+++ b/drivers/soc/qcom/llcc-qcom.c
-@@ -50,8 +50,6 @@
- #define LLCC_TRP_WRSC_EN              0x21f20
- #define LLCC_TRP_WRSC_CACHEABLE_EN    0x21f2c
- 
--#define BANK_OFFSET_STRIDE	      0x80000
--
- #define LLCC_VERSION_2_0_0_0          0x02000000
- #define LLCC_VERSION_2_1_0_0          0x02010000
- 
-@@ -749,8 +747,8 @@ static int qcom_llcc_remove(struct platform_device *pdev)
- 	return 0;
+-	return tmp ? -EEXIST : 0;
++	if (tmp) {
++		ret = -EEXIST;
++		btrfs_warn(fs_info, "global root %llu %llu already exists",
++				root->root_key.objectid, root->root_key.offset);
++	}
++	return ret;
  }
  
--static struct regmap *qcom_llcc_init_mmio(struct platform_device *pdev,
--		const char *name)
-+static struct regmap *qcom_llcc_init_mmio(struct platform_device *pdev, u8 index,
-+					  const char *name)
- {
- 	void __iomem *base;
- 	struct regmap_config llcc_regmap_config = {
-@@ -760,7 +758,7 @@ static struct regmap *qcom_llcc_init_mmio(struct platform_device *pdev,
- 		.fast_io = true,
- 	};
+ void btrfs_global_root_delete(struct btrfs_root *root)
+@@ -2843,6 +2848,7 @@ static int __cold init_tree_roots(struct
+ 			/* We can't trust the free space cache either */
+ 			btrfs_set_opt(fs_info->mount_opt, CLEAR_CACHE);
  
--	base = devm_platform_ioremap_resource_byname(pdev, name);
-+	base = devm_platform_ioremap_resource(pdev, index);
- 	if (IS_ERR(base))
- 		return ERR_CAST(base);
- 
-@@ -778,6 +776,7 @@ static int qcom_llcc_probe(struct platform_device *pdev)
- 	const struct llcc_slice_config *llcc_cfg;
- 	u32 sz;
- 	u32 version;
-+	struct regmap *regmap;
- 
- 	drv_data = devm_kzalloc(dev, sizeof(*drv_data), GFP_KERNEL);
- 	if (!drv_data) {
-@@ -785,21 +784,51 @@ static int qcom_llcc_probe(struct platform_device *pdev)
- 		goto err;
- 	}
- 
--	drv_data->regmap = qcom_llcc_init_mmio(pdev, "llcc_base");
--	if (IS_ERR(drv_data->regmap)) {
--		ret = PTR_ERR(drv_data->regmap);
-+	/* Initialize the first LLCC bank regmap */
-+	regmap = qcom_llcc_init_mmio(pdev, 0, "llcc0_base");
-+	if (IS_ERR(regmap)) {
-+		ret = PTR_ERR(regmap);
- 		goto err;
- 	}
- 
--	drv_data->bcast_regmap =
--		qcom_llcc_init_mmio(pdev, "llcc_broadcast_base");
-+	cfg = of_device_get_match_data(&pdev->dev);
-+
-+	ret = regmap_read(regmap, cfg->reg_offset[LLCC_COMMON_STATUS0], &num_banks);
-+	if (ret)
-+		goto err;
-+
-+	num_banks &= LLCC_LB_CNT_MASK;
-+	num_banks >>= LLCC_LB_CNT_SHIFT;
-+	drv_data->num_banks = num_banks;
-+
-+	drv_data->regmaps = devm_kcalloc(dev, num_banks, sizeof(*drv_data->regmaps), GFP_KERNEL);
-+	if (!drv_data->regmaps) {
-+		ret = -ENOMEM;
-+		goto err;
-+	}
-+
-+	drv_data->regmaps[0] = regmap;
-+
-+	/* Initialize rest of LLCC bank regmaps */
-+	for (i = 1; i < num_banks; i++) {
-+		char *base = kasprintf(GFP_KERNEL, "llcc%d_base", i);
-+
-+		drv_data->regmaps[i] = qcom_llcc_init_mmio(pdev, i, base);
-+		if (IS_ERR(drv_data->regmaps[i])) {
-+			ret = PTR_ERR(drv_data->regmaps[i]);
-+			kfree(base);
-+			goto err;
-+		}
-+
-+		kfree(base);
-+	}
-+
-+	drv_data->bcast_regmap = qcom_llcc_init_mmio(pdev, i, "llcc_broadcast_base");
- 	if (IS_ERR(drv_data->bcast_regmap)) {
- 		ret = PTR_ERR(drv_data->bcast_regmap);
- 		goto err;
- 	}
- 
--	cfg = of_device_get_match_data(&pdev->dev);
--
- 	/* Extract version of the IP */
- 	ret = regmap_read(drv_data->bcast_regmap, cfg->reg_offset[LLCC_COMMON_HW_INFO],
- 			  &version);
-@@ -808,15 +837,6 @@ static int qcom_llcc_probe(struct platform_device *pdev)
- 
- 	drv_data->version = version;
- 
--	ret = regmap_read(drv_data->regmap, cfg->reg_offset[LLCC_COMMON_STATUS0],
--			  &num_banks);
--	if (ret)
--		goto err;
--
--	num_banks &= LLCC_LB_CNT_MASK;
--	num_banks >>= LLCC_LB_CNT_SHIFT;
--	drv_data->num_banks = num_banks;
--
- 	llcc_cfg = cfg->sct_data;
- 	sz = cfg->size;
- 
-@@ -824,16 +844,6 @@ static int qcom_llcc_probe(struct platform_device *pdev)
- 		if (llcc_cfg[i].slice_id > drv_data->max_slices)
- 			drv_data->max_slices = llcc_cfg[i].slice_id;
- 
--	drv_data->offsets = devm_kcalloc(dev, num_banks, sizeof(u32),
--							GFP_KERNEL);
--	if (!drv_data->offsets) {
--		ret = -ENOMEM;
--		goto err;
--	}
--
--	for (i = 0; i < num_banks; i++)
--		drv_data->offsets[i] = i * BANK_OFFSET_STRIDE;
--
- 	drv_data->bitmap = devm_bitmap_zalloc(dev, drv_data->max_slices,
- 					      GFP_KERNEL);
- 	if (!drv_data->bitmap) {
-diff --git a/include/linux/soc/qcom/llcc-qcom.h b/include/linux/soc/qcom/llcc-qcom.h
-index bc2fb8343a944..dfa5706e90a7a 100644
---- a/include/linux/soc/qcom/llcc-qcom.h
-+++ b/include/linux/soc/qcom/llcc-qcom.h
-@@ -108,7 +108,7 @@ struct llcc_edac_reg_offset {
- 
- /**
-  * struct llcc_drv_data - Data associated with the llcc driver
-- * @regmap: regmap associated with the llcc device
-+ * @regmaps: regmaps associated with the llcc device
-  * @bcast_regmap: regmap associated with llcc broadcast offset
-  * @cfg: pointer to the data structure for slice configuration
-  * @edac_reg_offset: Offset of the LLCC EDAC registers
-@@ -117,12 +117,11 @@ struct llcc_edac_reg_offset {
-  * @max_slices: max slices as read from device tree
-  * @num_banks: Number of llcc banks
-  * @bitmap: Bit map to track the active slice ids
-- * @offsets: Pointer to the bank offsets array
-  * @ecc_irq: interrupt for llcc cache error detection and reporting
-  * @version: Indicates the LLCC version
-  */
- struct llcc_drv_data {
--	struct regmap *regmap;
-+	struct regmap **regmaps;
- 	struct regmap *bcast_regmap;
- 	const struct llcc_slice_config *cfg;
- 	const struct llcc_edac_reg_offset *edac_reg_offset;
-@@ -131,7 +130,6 @@ struct llcc_drv_data {
- 	u32 max_slices;
- 	u32 num_banks;
- 	unsigned long *bitmap;
--	u32 *offsets;
- 	int ecc_irq;
- 	u32 version;
- };
--- 
-2.39.2
-
++			btrfs_warn(fs_info, "try to load backup roots slot %d", i);
+ 			ret = read_backup_root(fs_info, i);
+ 			backup_index = ret;
+ 			if (ret < 0)
 
 
