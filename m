@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14B1A73524E
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:33:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 296CC73524F
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:33:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230299AbjFSKdZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:33:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40766 "EHLO
+        id S230500AbjFSKd1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:33:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230414AbjFSKdY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:33:24 -0400
+        with ESMTP id S230414AbjFSKd0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:33:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 410FFC6
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:33:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E273CB3
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:33:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D279C60B67
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:33:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0FB2C433C8;
-        Mon, 19 Jun 2023 10:33:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F30A60B67
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:33:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90895C433C8;
+        Mon, 19 Jun 2023 10:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687170802;
-        bh=7E2zN5wOxQMVNkWEJ3ZmsKlKUOT5ZHnKm+Nl0rmX0JY=;
+        s=korg; t=1687170804;
+        bh=6gpORcAxPIswk5rt3904T6pVzx2l7Ca1K3vmcaIsjyc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GibAisl/oTOUSdavoWyyw/97jcQJuoTsmb4YNoYkZbnQcZqdx13LEglgWBNkMQYI1
-         jU1HvCh+eSHeRBeqijt/a4ohuf1GIKltw7IPxZiIeDmIZ3Rl2uRKSWZADQAEuU9d1w
-         pcAtUoRA33AyF5N1FVOeDBbQB8lGNtvpcsJ99nDc=
+        b=SDGOAco1u0Ph+PE79CalVeGvfl2OQFoxisbP6gxJS5pLomqVBOb/8xV4hNiWlGNlb
+         ihHzgLcrQsQstFuzFr6y1hn/Nrhrhbkyh2rnqtr03UbSXqNiTMh9yBfdMO8PW8N/6C
+         HsdZumCx041JMH4lRQk0pB3gjawTOeiEKnY+htj0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 015/187] selftests: gpio: gpio-sim: Fix BUG: test FAILED due to recent change
-Date:   Mon, 19 Jun 2023 12:27:13 +0200
-Message-ID: <20230619102158.337393995@linuxfoundation.org>
+Subject: [PATCH 6.3 016/187] power: supply: Ratelimit no data debug output
+Date:   Mon, 19 Jun 2023 12:27:14 +0200
+Message-ID: <20230619102158.391455354@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
 References: <20230619102157.579823843@linuxfoundation.org>
@@ -57,53 +56,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 976d3c6778e99390c6d854d140b746d12ea18a51 ]
+[ Upstream commit 155c45a25679f571c2ae57d10db843a9dfc63430 ]
 
-According to Mirsad the gpio-sim.sh test appears to FAIL in a wrong way
-due to missing initialisation of shell variables:
+Reduce the amount of output this dev_dbg() statement emits into logs,
+otherwise if system software polls the sysfs entry for data and keeps
+getting -ENODATA, it could end up filling the logs up.
 
- 4.2. Bias settings work correctly
- cat: /sys/devices/platform/gpio-sim.0/gpiochip18/sim_gpio0/value: No such file or directory
- ./gpio-sim.sh: line 393: test: =: unary operator expected
- bias setting does not work
- GPIO gpio-sim test FAIL
+This does in fact make systemd journald choke, since during boot the
+sysfs power supply entries are polled and if journald starts at the
+same time, the journal is just being repeatedly filled up, and the
+system stops on trying to start journald without booting any further.
 
-After this change the test passed:
-
- 4.2. Bias settings work correctly
- GPIO gpio-sim test PASS
-
-His testing environment is AlmaLinux 8.7 on Lenovo desktop box with
-the latest Linux kernel based on v6.2:
-
-  Linux 6.2.0-mglru-kmlk-andy-09238-gd2980d8d8265 x86_64
-
-Suggested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Tested-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/gpio/gpio-sim.sh | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/power/supply/power_supply_sysfs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/gpio/gpio-sim.sh b/tools/testing/selftests/gpio/gpio-sim.sh
-index 9f539d454ee4d..fa2ce2b9dd5fc 100755
---- a/tools/testing/selftests/gpio/gpio-sim.sh
-+++ b/tools/testing/selftests/gpio/gpio-sim.sh
-@@ -389,6 +389,9 @@ create_chip chip
- create_bank chip bank
- set_num_lines chip bank 8
- enable_chip chip
-+DEVNAME=`configfs_dev_name chip`
-+CHIPNAME=`configfs_chip_name chip bank`
-+SYSFS_PATH="/sys/devices/platform/$DEVNAME/$CHIPNAME/sim_gpio0/value"
- $BASE_DIR/gpio-mockup-cdev -b pull-up /dev/`configfs_chip_name chip bank` 0
- test `cat $SYSFS_PATH` = "1" || fail "bias setting does not work"
- remove_chip chip
+diff --git a/drivers/power/supply/power_supply_sysfs.c b/drivers/power/supply/power_supply_sysfs.c
+index c228205e09538..4bbb3053eef44 100644
+--- a/drivers/power/supply/power_supply_sysfs.c
++++ b/drivers/power/supply/power_supply_sysfs.c
+@@ -285,7 +285,8 @@ static ssize_t power_supply_show_property(struct device *dev,
+ 
+ 		if (ret < 0) {
+ 			if (ret == -ENODATA)
+-				dev_dbg(dev, "driver has no data for `%s' property\n",
++				dev_dbg_ratelimited(dev,
++					"driver has no data for `%s' property\n",
+ 					attr->attr.name);
+ 			else if (ret != -ENODEV && ret != -EAGAIN)
+ 				dev_err_ratelimited(dev,
 -- 
 2.39.2
 
