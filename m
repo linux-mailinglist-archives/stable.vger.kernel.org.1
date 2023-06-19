@@ -2,53 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C5537353DF
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:49:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D06E47352E3
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:39:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232133AbjFSKt0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:49:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53158 "EHLO
+        id S231788AbjFSKjO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:39:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232129AbjFSKtI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:49:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A4B61B8
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:49:07 -0700 (PDT)
+        with ESMTP id S231732AbjFSKjN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:39:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D23F0CC
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:39:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DB72160B7F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:49:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2620C433C8;
-        Mon, 19 Jun 2023 10:49:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 547B360B73
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:39:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A2AC433C0;
+        Mon, 19 Jun 2023 10:39:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171746;
-        bh=zMCFc6cFdBfDLQ1g6nz6+4imKudIewl73e2c3Z5gM1w=;
+        s=korg; t=1687171149;
+        bh=WyovPCQsMvlRPfjKqvka22KLu5aFASKW8GFo6eBux/U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=INJK13CSlQAp+yDk13bl/CxTFZ7lIjNcNVXTPnplVPL1zPIm5i6dBMl8reifFk3Ie
-         6RBcaA7p1LvQFsv+sclMZ3xjmarAKYuQyjKZdFPYAE/JAXfpOZidnIvNfsVRnzLxJ6
-         wsWJ10SXTTjXVbjTqnK2BrtNrNbkIINyY0i0MiGI=
+        b=ixmq3xrKYHtig9lCnDPkIOjS4a4WGXd8jJU6e8A8Os4QnQtfKazKszCB+rjLc/kZ/
+         f6T8XoJEDDXs8kmbMos/R3KbUeMuWiMvTVDnxo3f3AywvWJAUcxs9ZFfWdbRWHH0QF
+         GZJtX8wlybnjrxvwOHwOS7TW8p345BBzrjKu+zqM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Lee Jones <lee@kernel.org>,
+        patches@lists.linux.dev,
+        syzbot+b53a9c0d1ea4ad62da8b@syzkaller.appspotmail.com,
+        Hillf Danton <hdanton@sina.com>,
+        Vlad Buslov <vladbu@mellanox.com>,
+        Peilin Ye <peilin.ye@bytedance.com>,
         Jamal Hadi Salim <jhs@mojatatu.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 107/166] net/sched: cls_u32: Fix reference counter leak leading to overflow
+Subject: [PATCH 6.3 166/187] net/sched: qdisc_destroy() old ingress and clsact Qdiscs before grafting
 Date:   Mon, 19 Jun 2023 12:29:44 +0200
-Message-ID: <20230619102159.999479340@linuxfoundation.org>
+Message-ID: <20230619102205.658598141@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,76 +60,243 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lee Jones <lee@kernel.org>
+From: Peilin Ye <peilin.ye@bytedance.com>
 
-[ Upstream commit 04c55383fa5689357bcdd2c8036725a55ed632bc ]
+[ Upstream commit 84ad0af0bccd3691cb951c2974c5cb2c10594d4a ]
 
-In the event of a failure in tcf_change_indev(), u32_set_parms() will
-immediately return without decrementing the recently incremented
-reference counter.  If this happens enough times, the counter will
-rollover and the reference freed, leading to a double free which can be
-used to do 'bad things'.
+mini_Qdisc_pair::p_miniq is a double pointer to mini_Qdisc, initialized
+in ingress_init() to point to net_device::miniq_ingress.  ingress Qdiscs
+access this per-net_device pointer in mini_qdisc_pair_swap().  Similar
+for clsact Qdiscs and miniq_egress.
 
-In order to prevent this, move the point of possible failure above the
-point where the reference counter is incremented.  Also save any
-meaningful return values to be applied to the return data at the
-appropriate point in time.
+Unfortunately, after introducing RTNL-unlocked RTM_{NEW,DEL,GET}TFILTER
+requests (thanks Hillf Danton for the hint), when replacing ingress or
+clsact Qdiscs, for example, the old Qdisc ("@old") could access the same
+miniq_{in,e}gress pointer(s) concurrently with the new Qdisc ("@new"),
+causing race conditions [1] including a use-after-free bug in
+mini_qdisc_pair_swap() reported by syzbot:
 
-This issue was caught with KASAN.
+ BUG: KASAN: slab-use-after-free in mini_qdisc_pair_swap+0x1c2/0x1f0 net/sched/sch_generic.c:1573
+ Write of size 8 at addr ffff888045b31308 by task syz-executor690/14901
+...
+ Call Trace:
+  <TASK>
+  __dump_stack lib/dump_stack.c:88 [inline]
+  dump_stack_lvl+0xd9/0x150 lib/dump_stack.c:106
+  print_address_description.constprop.0+0x2c/0x3c0 mm/kasan/report.c:319
+  print_report mm/kasan/report.c:430 [inline]
+  kasan_report+0x11c/0x130 mm/kasan/report.c:536
+  mini_qdisc_pair_swap+0x1c2/0x1f0 net/sched/sch_generic.c:1573
+  tcf_chain_head_change_item net/sched/cls_api.c:495 [inline]
+  tcf_chain0_head_change.isra.0+0xb9/0x120 net/sched/cls_api.c:509
+  tcf_chain_tp_insert net/sched/cls_api.c:1826 [inline]
+  tcf_chain_tp_insert_unique net/sched/cls_api.c:1875 [inline]
+  tc_new_tfilter+0x1de6/0x2290 net/sched/cls_api.c:2266
+...
 
-Fixes: 705c7091262d ("net: sched: cls_u32: no need to call tcf_exts_change for newly allocated struct")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+@old and @new should not affect each other.  In other words, @old should
+never modify miniq_{in,e}gress after @new, and @new should not update
+@old's RCU state.
+
+Fixing without changing sch_api.c turned out to be difficult (please
+refer to Closes: for discussions).  Instead, make sure @new's first call
+always happen after @old's last call (in {ingress,clsact}_destroy()) has
+finished:
+
+In qdisc_graft(), return -EBUSY if @old has any ongoing filter requests,
+and call qdisc_destroy() for @old before grafting @new.
+
+Introduce qdisc_refcount_dec_if_one() as the counterpart of
+qdisc_refcount_inc_nz() used for filter requests.  Introduce a
+non-static version of qdisc_destroy() that does a TCQ_F_BUILTIN check,
+just like qdisc_put() etc.
+
+Depends on patch "net/sched: Refactor qdisc_graft() for ingress and
+clsact Qdiscs".
+
+[1] To illustrate, the syzkaller reproducer adds ingress Qdiscs under
+TC_H_ROOT (no longer possible after commit c7cfbd115001 ("net/sched:
+sch_ingress: Only create under TC_H_INGRESS")) on eth0 that has 8
+transmission queues:
+
+  Thread 1 creates ingress Qdisc A (containing mini Qdisc a1 and a2),
+  then adds a flower filter X to A.
+
+  Thread 2 creates another ingress Qdisc B (containing mini Qdisc b1 and
+  b2) to replace A, then adds a flower filter Y to B.
+
+ Thread 1               A's refcnt   Thread 2
+  RTM_NEWQDISC (A, RTNL-locked)
+   qdisc_create(A)               1
+   qdisc_graft(A)                9
+
+  RTM_NEWTFILTER (X, RTNL-unlocked)
+   __tcf_qdisc_find(A)          10
+   tcf_chain0_head_change(A)
+   mini_qdisc_pair_swap(A) (1st)
+            |
+            |                         RTM_NEWQDISC (B, RTNL-locked)
+         RCU sync                2     qdisc_graft(B)
+            |                    1     notify_and_destroy(A)
+            |
+   tcf_block_release(A)          0    RTM_NEWTFILTER (Y, RTNL-unlocked)
+   qdisc_destroy(A)                    tcf_chain0_head_change(B)
+   tcf_chain0_head_change_cb_del(A)    mini_qdisc_pair_swap(B) (2nd)
+   mini_qdisc_pair_swap(A) (3rd)                |
+           ...                                 ...
+
+Here, B calls mini_qdisc_pair_swap(), pointing eth0->miniq_ingress to
+its mini Qdisc, b1.  Then, A calls mini_qdisc_pair_swap() again during
+ingress_destroy(), setting eth0->miniq_ingress to NULL, so ingress
+packets on eth0 will not find filter Y in sch_handle_ingress().
+
+This is just one of the possible consequences of concurrently accessing
+miniq_{in,e}gress pointers.
+
+Fixes: 7a096d579e8e ("net: sched: ingress: set 'unlocked' flag for Qdisc ops")
+Fixes: 87f373921c4e ("net: sched: ingress: set 'unlocked' flag for clsact Qdisc ops")
+Reported-by: syzbot+b53a9c0d1ea4ad62da8b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/0000000000006cf87705f79acf1a@google.com/
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: Vlad Buslov <vladbu@mellanox.com>
+Signed-off-by: Peilin Ye <peilin.ye@bytedance.com>
 Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_u32.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ include/net/sch_generic.h |  8 ++++++++
+ net/sched/sch_api.c       | 28 +++++++++++++++++++++++-----
+ net/sched/sch_generic.c   | 14 +++++++++++---
+ 3 files changed, 42 insertions(+), 8 deletions(-)
 
-diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
-index 34d25f7a0687a..a3477537c102b 100644
---- a/net/sched/cls_u32.c
-+++ b/net/sched/cls_u32.c
-@@ -716,13 +716,19 @@ static int u32_set_parms(struct net *net, struct tcf_proto *tp,
- 			 struct nlattr *est, u32 flags, u32 fl_flags,
- 			 struct netlink_ext_ack *extack)
- {
--	int err;
-+	int err, ifindex = -1;
- 
- 	err = tcf_exts_validate_ex(net, tp, tb, est, &n->exts, flags,
- 				   fl_flags, extack);
- 	if (err < 0)
- 		return err;
- 
-+	if (tb[TCA_U32_INDEV]) {
-+		ifindex = tcf_change_indev(net, tb[TCA_U32_INDEV], extack);
-+		if (ifindex < 0)
-+			return -EINVAL;
-+	}
-+
- 	if (tb[TCA_U32_LINK]) {
- 		u32 handle = nla_get_u32(tb[TCA_U32_LINK]);
- 		struct tc_u_hnode *ht_down = NULL, *ht_old;
-@@ -757,13 +763,9 @@ static int u32_set_parms(struct net *net, struct tcf_proto *tp,
- 		tcf_bind_filter(tp, &n->res, base);
- 	}
- 
--	if (tb[TCA_U32_INDEV]) {
--		int ret;
--		ret = tcf_change_indev(net, tb[TCA_U32_INDEV], extack);
--		if (ret < 0)
--			return -EINVAL;
--		n->ifindex = ret;
--	}
-+	if (ifindex >= 0)
-+		n->ifindex = ifindex;
-+
- 	return 0;
+diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
+index 27271f2b37cb3..12eadecf8cd05 100644
+--- a/include/net/sch_generic.h
++++ b/include/net/sch_generic.h
+@@ -137,6 +137,13 @@ static inline void qdisc_refcount_inc(struct Qdisc *qdisc)
+ 	refcount_inc(&qdisc->refcnt);
  }
  
++static inline bool qdisc_refcount_dec_if_one(struct Qdisc *qdisc)
++{
++	if (qdisc->flags & TCQ_F_BUILTIN)
++		return true;
++	return refcount_dec_if_one(&qdisc->refcnt);
++}
++
+ /* Intended to be used by unlocked users, when concurrent qdisc release is
+  * possible.
+  */
+@@ -652,6 +659,7 @@ void dev_deactivate_many(struct list_head *head);
+ struct Qdisc *dev_graft_qdisc(struct netdev_queue *dev_queue,
+ 			      struct Qdisc *qdisc);
+ void qdisc_reset(struct Qdisc *qdisc);
++void qdisc_destroy(struct Qdisc *qdisc);
+ void qdisc_put(struct Qdisc *qdisc);
+ void qdisc_put_unlocked(struct Qdisc *qdisc);
+ void qdisc_tree_reduce_backlog(struct Qdisc *qdisc, int n, int len);
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index 5fa9ddd629f95..3f7311529cc00 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -1084,10 +1084,22 @@ static int qdisc_graft(struct net_device *dev, struct Qdisc *parent,
+ 		if ((q && q->flags & TCQ_F_INGRESS) ||
+ 		    (new && new->flags & TCQ_F_INGRESS)) {
+ 			ingress = 1;
+-			if (!dev_ingress_queue(dev)) {
++			dev_queue = dev_ingress_queue(dev);
++			if (!dev_queue) {
+ 				NL_SET_ERR_MSG(extack, "Device does not have an ingress queue");
+ 				return -ENOENT;
+ 			}
++
++			q = rtnl_dereference(dev_queue->qdisc_sleeping);
++
++			/* This is the counterpart of that qdisc_refcount_inc_nz() call in
++			 * __tcf_qdisc_find() for filter requests.
++			 */
++			if (!qdisc_refcount_dec_if_one(q)) {
++				NL_SET_ERR_MSG(extack,
++					       "Current ingress or clsact Qdisc has ongoing filter requests");
++				return -EBUSY;
++			}
+ 		}
+ 
+ 		if (dev->flags & IFF_UP)
+@@ -1108,8 +1120,16 @@ static int qdisc_graft(struct net_device *dev, struct Qdisc *parent,
+ 				qdisc_put(old);
+ 			}
+ 		} else {
+-			dev_queue = dev_ingress_queue(dev);
+-			old = dev_graft_qdisc(dev_queue, new);
++			old = dev_graft_qdisc(dev_queue, NULL);
++
++			/* {ingress,clsact}_destroy() @old before grafting @new to avoid
++			 * unprotected concurrent accesses to net_device::miniq_{in,e}gress
++			 * pointer(s) in mini_qdisc_pair_swap().
++			 */
++			qdisc_notify(net, skb, n, classid, old, new, extack);
++			qdisc_destroy(old);
++
++			dev_graft_qdisc(dev_queue, new);
+ 		}
+ 
+ skip:
+@@ -1123,8 +1143,6 @@ static int qdisc_graft(struct net_device *dev, struct Qdisc *parent,
+ 
+ 			if (new && new->ops->attach)
+ 				new->ops->attach(new);
+-		} else {
+-			notify_and_destroy(net, skb, n, classid, old, new, extack);
+ 		}
+ 
+ 		if (dev->flags & IFF_UP)
+diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+index ee43e8ac039ed..a5693e25b2482 100644
+--- a/net/sched/sch_generic.c
++++ b/net/sched/sch_generic.c
+@@ -1046,7 +1046,7 @@ static void qdisc_free_cb(struct rcu_head *head)
+ 	qdisc_free(q);
+ }
+ 
+-static void qdisc_destroy(struct Qdisc *qdisc)
++static void __qdisc_destroy(struct Qdisc *qdisc)
+ {
+ 	const struct Qdisc_ops  *ops = qdisc->ops;
+ 
+@@ -1070,6 +1070,14 @@ static void qdisc_destroy(struct Qdisc *qdisc)
+ 	call_rcu(&qdisc->rcu, qdisc_free_cb);
+ }
+ 
++void qdisc_destroy(struct Qdisc *qdisc)
++{
++	if (qdisc->flags & TCQ_F_BUILTIN)
++		return;
++
++	__qdisc_destroy(qdisc);
++}
++
+ void qdisc_put(struct Qdisc *qdisc)
+ {
+ 	if (!qdisc)
+@@ -1079,7 +1087,7 @@ void qdisc_put(struct Qdisc *qdisc)
+ 	    !refcount_dec_and_test(&qdisc->refcnt))
+ 		return;
+ 
+-	qdisc_destroy(qdisc);
++	__qdisc_destroy(qdisc);
+ }
+ EXPORT_SYMBOL(qdisc_put);
+ 
+@@ -1094,7 +1102,7 @@ void qdisc_put_unlocked(struct Qdisc *qdisc)
+ 	    !refcount_dec_and_rtnl_lock(&qdisc->refcnt))
+ 		return;
+ 
+-	qdisc_destroy(qdisc);
++	__qdisc_destroy(qdisc);
+ 	rtnl_unlock();
+ }
+ EXPORT_SYMBOL(qdisc_put_unlocked);
 -- 
 2.39.2
 
