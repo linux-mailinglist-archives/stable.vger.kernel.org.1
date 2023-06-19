@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60435735485
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:56:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A7B3735517
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:01:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232400AbjFSK4x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:56:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56720 "EHLO
+        id S232520AbjFSLBZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 07:01:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232313AbjFSK41 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:56:27 -0400
+        with ESMTP id S232512AbjFSLBH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:01:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F018E51
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:54:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4ABB10F1
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:00:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1482460B5F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:54:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E3DC433C9;
-        Mon, 19 Jun 2023 10:54:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 48FDC60B78
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:00:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D003C433C8;
+        Mon, 19 Jun 2023 11:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172075;
-        bh=eGy7470Zs5xGo/O58VxDZU2Z/mTcEDC0f9Ixbs88Cko=;
+        s=korg; t=1687172405;
+        bh=CHbZjusSHvhm1S3FGdarnEpAyiu+RS/DEBMoN7yQXJQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fvdXr/WLekABbGfbvbJFcbyGc43mh1VKFwA6Peir9U8HM9UkxvpdrQLKshmbnDnOf
-         clRCYGqTUB/5B9Chv4lz66Eg6i65DSiIvJUD0hWdQE8c84s0MZvdKNlv+7QAiZM6rX
-         vgKvzsF+nZYcOcEb9wEuLYIvllbG6EP+KVxsqpsY=
+        b=tG7zyy1P3lqdC2IaZ9mmsg/nvBsGbeT9h5mFflr2W5yCiWyDzZyT/dug6cIWR/9Bk
+         fYgj76RucHGNgc4uuqlkK0z0UC+e96MyFEjJe724V4i1EoarR9/Lq8kMUYdOa8F8oF
+         W/l3RK1D7VPDyPeP5k9uUZY607J1ORo1EIp0XGOM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
-        Querijn Voet <querijnqyn@gmail.com>
-Subject: [PATCH 5.10 27/89] io_uring: hold uring mutex around poll removal
+        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 031/107] irqchip/gic: Correctly validate OF quirk descriptors
 Date:   Mon, 19 Jun 2023 12:30:15 +0200
-Message-ID: <20230619102139.519551782@linuxfoundation.org>
+Message-ID: <20230619102143.004446119@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,42 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Marc Zyngier <maz@kernel.org>
 
-Snipped from commit 9ca9fb24d5febccea354089c41f96a8ad0d853f8 upstream.
+[ Upstream commit 91539341a3b6e9c868024a4292455dae36e6f58c ]
 
-While reworking the poll hashing in the v6.0 kernel, we ended up
-grabbing the ctx->uring_lock in poll update/removal. This also fixed
-a bug with linked timeouts racing with timeout expiry and poll
-removal.
+When checking for OF quirks, make sure either 'compatible' or 'property'
+is set, and give up otherwise.
 
-Bring back just the locking fix for that.
+This avoids non-OF quirks being randomly applied as they don't have any
+of the OF data that need checking.
 
-Reported-and-tested-by: Querijn Voet <querijnqyn@gmail.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Douglas Anderson <dianders@chromium.org>
+Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: 44bd78dd2b88 ("irqchip/gic-v3: Disable pseudo NMIs on Mediatek devices w/ firmware issues")
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/irqchip/irq-gic-common.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -5966,6 +5966,8 @@ static int io_poll_update(struct io_kioc
- 	struct io_kiocb *preq;
- 	int ret2, ret = 0;
- 
-+	io_ring_submit_lock(ctx, !(issue_flags & IO_URING_F_NONBLOCK));
-+
- 	spin_lock(&ctx->completion_lock);
- 	preq = io_poll_find(ctx, req->poll_update.old_user_data, true);
- 	if (!preq || !io_poll_disarm(preq)) {
-@@ -5997,6 +5999,7 @@ out:
- 		req_set_fail(req);
- 	/* complete update request, we're done with it */
- 	io_req_complete(req, ret);
-+	io_ring_submit_unlock(ctx, !(issue_flags & IO_URING_F_NONBLOCK));
- 	return 0;
- }
- 
+diff --git a/drivers/irqchip/irq-gic-common.c b/drivers/irqchip/irq-gic-common.c
+index de47b51cdadbe..afd6a1841715a 100644
+--- a/drivers/irqchip/irq-gic-common.c
++++ b/drivers/irqchip/irq-gic-common.c
+@@ -16,6 +16,8 @@ void gic_enable_of_quirks(const struct device_node *np,
+ 			  const struct gic_quirk *quirks, void *data)
+ {
+ 	for (; quirks->desc; quirks++) {
++		if (!quirks->compatible && !quirks->property)
++			continue;
+ 		if (quirks->compatible &&
+ 		    !of_device_is_compatible(np, quirks->compatible))
+ 			continue;
+-- 
+2.39.2
+
 
 
