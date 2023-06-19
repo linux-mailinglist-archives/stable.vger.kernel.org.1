@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EA307354DB
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:59:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB1CE735541
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:03:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232248AbjFSK7X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:59:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60670 "EHLO
+        id S232465AbjFSLDG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 07:03:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232430AbjFSK67 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:58:59 -0400
+        with ESMTP id S232514AbjFSLCm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:02:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8FE41986
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:57:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C45CE199F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:01:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 45FAD60B5F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:57:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E0A6C433C8;
-        Mon, 19 Jun 2023 10:57:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F18B60B5B
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:01:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51494C433D9;
+        Mon, 19 Jun 2023 11:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172263;
-        bh=iB0w+YAroKzDCm750u+E4FwTebo86LQPGM8HLpRqP/Y=;
+        s=korg; t=1687172502;
+        bh=JUmh2wvMHY7xkpyeZRrOLraNizmcWgW0EsyYFWjBuuE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zYH8Uti9EPKzHb4jKAUJY6PAS2u6uqU+zYMw7npMCLagDWvXZOgXHsIUBKtnTQhRG
-         oniCmzXzHG5ZktJ8HzTM7aNSyZD4rcdPemcv6o+I89tKAsqJTXzMQg3isaAFHiXVWR
-         r0J4o2eTL7G4jWV2hiGwfT1/PjNGCHOr2Zd8hAF0=
+        b=vxXNX3dG54rkUHTVZyB8sfQaXVNYFSj3My80hTa3071CKsCaaOgJYccGcaF6KM5Hu
+         6legKNAtkWTb/YshWt+/7tNb8XfmEQ/fWGZX2PZKy5YKBWoYDzoXYR7Cv/idGxVm8o
+         QPlvmd8Yq6lvH6z4f4lkuPxwsIxeh/OGPNhscD2w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Lucas De Marchi <lucas.demarchi@intel.com>,
-        =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
-        Henning Schild <henning.schild@siemens.com>
-Subject: [PATCH 5.10 88/89] drm/i915/gen11+: Only load DRAM information from pcode
+        syzbot+4acc7d910e617b360859@syzkaller.appspotmail.com,
+        Theodore Tso <tytso@mit.edu>,
+        "Fabio M. De Francesco" <fmdefrancesco@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 092/107] ext4: drop the call to ext4_error() from ext4_get_group_info()
 Date:   Mon, 19 Jun 2023 12:31:16 +0200
-Message-ID: <20230619102142.299853583@linuxfoundation.org>
+Message-ID: <20230619102145.769027998@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,289 +57,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: José Roberto de Souza <jose.souza@intel.com>
+From: Fabio M. De Francesco <fmdefrancesco@gmail.com>
 
-[ Upstream commit 5d0c938ec9cc96fc7b8abcff0ca8b2a084e9c90c ]
+[ Upstream commit f451fd97dd2b78f286379203a47d9d295c467255 ]
 
-Up to now we were reading some DRAM information from MCHBAR register
-and from pcode what is already not good but some GEN12(TGL-H and ADL-S)
-platforms have MCHBAR DRAM information in different offsets.
+A recent patch added a call to ext4_error() which is problematic since
+some callers of the ext4_get_group_info() function may be holding a
+spinlock, whereas ext4_error() must never be called in atomic context.
 
-This was notified to HW team that decided that the best alternative is
-always apply the 16gb_dimm watermark adjustment for GEN12+ platforms
-and read the remaning DRAM information needed to other display
-programming from pcode.
+This triggered a report from Syzbot: "BUG: sleeping function called from
+invalid context in ext4_update_super" (see the link below).
 
-So here moving the DRAM pcode function to intel_dram.c, removing
-the duplicated fields from intel_qgv_info, setting and using
-information from dram_info.
+Therefore, drop the call to ext4_error() from ext4_get_group_info(). In
+the meantime use eight characters tabs instead of nine characters ones.
 
-v2:
-- bring back num_points to intel_qgv_info as num_qgv_point can be
-overwritten in icl_get_qgv_points()
-- add gen12_get_dram_info() and simplify gen11_get_dram_info()
-
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20210128164312.91160-2-jose.souza@intel.com
-Signed-off-by: Henning Schild <henning.schild@siemens.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+4acc7d910e617b360859@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/00000000000070575805fdc6cdb2@google.com/
+Fixes: 5354b2af3406 ("ext4: allow ext4_get_group_info() to fail")
+Suggested-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Fabio M. De Francesco <fmdefrancesco@gmail.com>
+Link: https://lore.kernel.org/r/20230614100446.14337-1-fmdefrancesco@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_bw.c |   80 +++----------------------------
- drivers/gpu/drm/i915/i915_drv.c         |    5 +
- drivers/gpu/drm/i915/i915_drv.h         |    1 
- drivers/gpu/drm/i915/intel_dram.c       |   82 +++++++++++++++++++++++++++++++-
- 4 files changed, 93 insertions(+), 75 deletions(-)
+ fs/ext4/balloc.c | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_bw.c
-+++ b/drivers/gpu/drm/i915/display/intel_bw.c
-@@ -20,76 +20,9 @@ struct intel_qgv_point {
- struct intel_qgv_info {
- 	struct intel_qgv_point points[I915_NUM_QGV_POINTS];
- 	u8 num_points;
--	u8 num_channels;
- 	u8 t_bl;
--	enum intel_dram_type dram_type;
- };
- 
--static int icl_pcode_read_mem_global_info(struct drm_i915_private *dev_priv,
--					  struct intel_qgv_info *qi)
--{
--	u32 val = 0;
--	int ret;
--
--	ret = sandybridge_pcode_read(dev_priv,
--				     ICL_PCODE_MEM_SUBSYSYSTEM_INFO |
--				     ICL_PCODE_MEM_SS_READ_GLOBAL_INFO,
--				     &val, NULL);
--	if (ret)
--		return ret;
--
--	if (IS_GEN(dev_priv, 12)) {
--		switch (val & 0xf) {
--		case 0:
--			qi->dram_type = INTEL_DRAM_DDR4;
--			break;
--		case 3:
--			qi->dram_type = INTEL_DRAM_LPDDR4;
--			break;
--		case 4:
--			qi->dram_type = INTEL_DRAM_DDR3;
--			break;
--		case 5:
--			qi->dram_type = INTEL_DRAM_LPDDR3;
--			break;
--		default:
--			MISSING_CASE(val & 0xf);
--			break;
--		}
--	} else if (IS_GEN(dev_priv, 11)) {
--		switch (val & 0xf) {
--		case 0:
--			qi->dram_type = INTEL_DRAM_DDR4;
--			break;
--		case 1:
--			qi->dram_type = INTEL_DRAM_DDR3;
--			break;
--		case 2:
--			qi->dram_type = INTEL_DRAM_LPDDR3;
--			break;
--		case 3:
--			qi->dram_type = INTEL_DRAM_LPDDR4;
--			break;
--		default:
--			MISSING_CASE(val & 0xf);
--			break;
--		}
--	} else {
--		MISSING_CASE(INTEL_GEN(dev_priv));
--		qi->dram_type = INTEL_DRAM_LPDDR3; /* Conservative default */
--	}
--
--	qi->num_channels = (val & 0xf0) >> 4;
--	qi->num_points = (val & 0xf00) >> 8;
--
--	if (IS_GEN(dev_priv, 12))
--		qi->t_bl = qi->dram_type == INTEL_DRAM_DDR4 ? 4 : 16;
--	else if (IS_GEN(dev_priv, 11))
--		qi->t_bl = qi->dram_type == INTEL_DRAM_DDR4 ? 4 : 8;
--
--	return 0;
--}
--
- static int icl_pcode_read_qgv_point_info(struct drm_i915_private *dev_priv,
- 					 struct intel_qgv_point *sp,
- 					 int point)
-@@ -139,11 +72,15 @@ int icl_pcode_restrict_qgv_points(struct
- static int icl_get_qgv_points(struct drm_i915_private *dev_priv,
- 			      struct intel_qgv_info *qi)
+diff --git a/fs/ext4/balloc.c b/fs/ext4/balloc.c
+index fadcb94e80fa1..7649376fd93d3 100644
+--- a/fs/ext4/balloc.c
++++ b/fs/ext4/balloc.c
+@@ -322,17 +322,15 @@ static ext4_fsblk_t ext4_valid_block_bitmap_padding(struct super_block *sb,
+ struct ext4_group_info *ext4_get_group_info(struct super_block *sb,
+ 					    ext4_group_t group)
  {
-+	const struct dram_info *dram_info = &dev_priv->dram_info;
- 	int i, ret;
- 
--	ret = icl_pcode_read_mem_global_info(dev_priv, qi);
--	if (ret)
--		return ret;
-+	qi->num_points = dram_info->num_qgv_points;
-+
-+	if (IS_GEN(dev_priv, 12))
-+		qi->t_bl = dev_priv->dram_info.type == INTEL_DRAM_DDR4 ? 4 : 16;
-+	else if (IS_GEN(dev_priv, 11))
-+		qi->t_bl = dev_priv->dram_info.type == INTEL_DRAM_DDR4 ? 4 : 8;
- 
- 	if (drm_WARN_ON(&dev_priv->drm,
- 			qi->num_points > ARRAY_SIZE(qi->points)))
-@@ -209,7 +146,7 @@ static int icl_get_bw_info(struct drm_i9
- {
- 	struct intel_qgv_info qi = {};
- 	bool is_y_tile = true; /* assume y tile may be used */
--	int num_channels;
-+	int num_channels = dev_priv->dram_info.num_channels;
- 	int deinterleave;
- 	int ipqdepth, ipqdepthpch;
- 	int dclk_max;
-@@ -222,7 +159,6 @@ static int icl_get_bw_info(struct drm_i9
- 			    "Failed to get memory subsystem information, ignoring bandwidth limits");
- 		return ret;
- 	}
--	num_channels = qi.num_channels;
- 
- 	deinterleave = DIV_ROUND_UP(num_channels, is_y_tile ? 4 : 2);
- 	dclk_max = icl_sagv_max_dclk(&qi);
---- a/drivers/gpu/drm/i915/i915_drv.c
-+++ b/drivers/gpu/drm/i915/i915_drv.c
-@@ -609,14 +609,15 @@ static int i915_driver_hw_probe(struct d
- 		goto err_msi;
- 
- 	intel_opregion_setup(dev_priv);
-+
-+	intel_pcode_init(dev_priv);
-+
- 	/*
- 	 * Fill the dram structure to get the system raw bandwidth and
- 	 * dram info. This will be used for memory latency calculation.
- 	 */
- 	intel_dram_detect(dev_priv);
- 
--	intel_pcode_init(dev_priv);
+-	 struct ext4_group_info **grp_info;
+-	 long indexv, indexh;
 -
- 	intel_bw_init_hw(dev_priv);
- 
- 	return 0;
---- a/drivers/gpu/drm/i915/i915_drv.h
-+++ b/drivers/gpu/drm/i915/i915_drv.h
-@@ -1148,6 +1148,7 @@ struct drm_i915_private {
- 			INTEL_DRAM_LPDDR3,
- 			INTEL_DRAM_LPDDR4
- 		} type;
-+		u8 num_qgv_points;
- 	} dram_info;
- 
- 	struct intel_bw_info {
---- a/drivers/gpu/drm/i915/intel_dram.c
-+++ b/drivers/gpu/drm/i915/intel_dram.c
-@@ -5,6 +5,7 @@
- 
- #include "i915_drv.h"
- #include "intel_dram.h"
-+#include "intel_sideband.h"
- 
- struct dram_dimm_info {
- 	u8 size, width, ranks;
-@@ -433,6 +434,81 @@ static int bxt_get_dram_info(struct drm_
- 	return 0;
+-	 if (unlikely(group >= EXT4_SB(sb)->s_groups_count)) {
+-		 ext4_error(sb, "invalid group %u", group);
+-		 return NULL;
+-	 }
+-	 indexv = group >> (EXT4_DESC_PER_BLOCK_BITS(sb));
+-	 indexh = group & ((EXT4_DESC_PER_BLOCK(sb)) - 1);
+-	 grp_info = sbi_array_rcu_deref(EXT4_SB(sb), s_group_info, indexv);
+-	 return grp_info[indexh];
++	struct ext4_group_info **grp_info;
++	long indexv, indexh;
++
++	if (unlikely(group >= EXT4_SB(sb)->s_groups_count))
++		return NULL;
++	indexv = group >> (EXT4_DESC_PER_BLOCK_BITS(sb));
++	indexh = group & ((EXT4_DESC_PER_BLOCK(sb)) - 1);
++	grp_info = sbi_array_rcu_deref(EXT4_SB(sb), s_group_info, indexv);
++	return grp_info[indexh];
  }
  
-+static int icl_pcode_read_mem_global_info(struct drm_i915_private *dev_priv)
-+{
-+	struct dram_info *dram_info = &dev_priv->dram_info;
-+	u32 val = 0;
-+	int ret;
-+
-+	ret = sandybridge_pcode_read(dev_priv,
-+				     ICL_PCODE_MEM_SUBSYSYSTEM_INFO |
-+				     ICL_PCODE_MEM_SS_READ_GLOBAL_INFO,
-+				     &val, NULL);
-+	if (ret)
-+		return ret;
-+
-+	if (IS_GEN(dev_priv, 12)) {
-+		switch (val & 0xf) {
-+		case 0:
-+			dram_info->type = INTEL_DRAM_DDR4;
-+			break;
-+		case 3:
-+			dram_info->type = INTEL_DRAM_LPDDR4;
-+			break;
-+		case 4:
-+			dram_info->type = INTEL_DRAM_DDR3;
-+			break;
-+		case 5:
-+			dram_info->type = INTEL_DRAM_LPDDR3;
-+			break;
-+		default:
-+			MISSING_CASE(val & 0xf);
-+			return -1;
-+		}
-+	} else {
-+		switch (val & 0xf) {
-+		case 0:
-+			dram_info->type = INTEL_DRAM_DDR4;
-+			break;
-+		case 1:
-+			dram_info->type = INTEL_DRAM_DDR3;
-+			break;
-+		case 2:
-+			dram_info->type = INTEL_DRAM_LPDDR3;
-+			break;
-+		case 3:
-+			dram_info->type = INTEL_DRAM_LPDDR4;
-+			break;
-+		default:
-+			MISSING_CASE(val & 0xf);
-+			return -1;
-+		}
-+	}
-+
-+	dram_info->num_channels = (val & 0xf0) >> 4;
-+	dram_info->num_qgv_points = (val & 0xf00) >> 8;
-+
-+	return 0;
-+}
-+
-+static int gen11_get_dram_info(struct drm_i915_private *i915)
-+{
-+	int ret = skl_get_dram_info(i915);
-+
-+	if (ret)
-+		return ret;
-+
-+	return icl_pcode_read_mem_global_info(i915);
-+}
-+
-+static int gen12_get_dram_info(struct drm_i915_private *i915)
-+{
-+	/* Always needed for GEN12+ */
-+	i915->dram_info.is_16gb_dimm = true;
-+
-+	return icl_pcode_read_mem_global_info(i915);
-+}
-+
- void intel_dram_detect(struct drm_i915_private *i915)
- {
- 	struct dram_info *dram_info = &i915->dram_info;
-@@ -448,7 +524,11 @@ void intel_dram_detect(struct drm_i915_p
- 	if (INTEL_GEN(i915) < 9 || !HAS_DISPLAY(i915))
- 		return;
- 
--	if (IS_GEN9_LP(i915))
-+	if (INTEL_GEN(i915) >= 12)
-+		ret = gen12_get_dram_info(i915);
-+	else if (INTEL_GEN(i915) >= 11)
-+		ret = gen11_get_dram_info(i915);
-+	else if (IS_GEN9_LP(i915))
- 		ret = bxt_get_dram_info(i915);
- 	else
- 		ret = skl_get_dram_info(i915);
+ /*
+-- 
+2.39.2
+
 
 
