@@ -2,53 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74B55735443
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:54:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0F1D7354A7
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:58:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232328AbjFSKyK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:54:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53140 "EHLO
+        id S232386AbjFSK6O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:58:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232234AbjFSKxy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:53:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 813A72134
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:52:28 -0700 (PDT)
+        with ESMTP id S232098AbjFSK55 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:57:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82E19EA
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:55:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 52FBC60A4D
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:52:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E2DC433C9;
-        Mon, 19 Jun 2023 10:52:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6323160B4B
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:55:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F68C433C0;
+        Mon, 19 Jun 2023 10:55:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171947;
-        bh=Zv6xeJn5n/oomG6whmmFlWwSCPWYd3leJIdGyOiAjVo=;
+        s=korg; t=1687172150;
+        bh=ymPt2dBkTYKj099jfjsiIZEpYfQji25F9F32paK1cgU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mLB2hweIqeIR/B+oMAX84OjZaook2tGvGik78lH/KRLvWIVOtGc34VSkGPQ1D4fLA
-         VJm2yBaV6lMqwR9jrVxiNYy0M+Cdx67hZt/kqp2bpApohgTgYt2tK96FbWqrf8fDx5
-         tJqCuv0L+Wp33R0reWqlba/AnhAiqDVCEZTniuL0=
+        b=hSjOFeBjso8IOQCCjKHn7MaU6SRxr1t7isNO9rWRjmk9+Eobm8TF1eKrCga3OMeF2
+         OJIJrn4wEOZsh5OfiBaMfUOcpZlPR9PCAWVuE0o/CiSjKneeoNXqaKHQ+4gWYtBKX0
+         jVrHIYXtC+HX4dL4JOcxwq++VdK3LQ/E+hJ+SN2k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sagi Grimberg <sagi@grimberg.me>,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev, Ahmed Zaki <ahmed.zaki@intel.com>,
+        Rafal Romanowski <rafal.romanowski@intel.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 46/64] IB/isert: Fix dead lock in ib_isert
+Subject: [PATCH 5.10 54/89] iavf: remove mask from iavf_irq_enable_queues()
 Date:   Mon, 19 Jun 2023 12:30:42 +0200
-Message-ID: <20230619102135.286397295@linuxfoundation.org>
+Message-ID: <20230619102140.733455898@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
-References: <20230619102132.808972458@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,119 +59,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+From: Ahmed Zaki <ahmed.zaki@intel.com>
 
-[ Upstream commit 691b0480933f0ce88a81ed1d1a0aff340ff6293a ]
+[ Upstream commit c37cf54c12cfaa51e7aaf88708167b0d3259e64e ]
 
-- When a iSER session is released, ib_isert module is taking a mutex
-  lock and releasing all pending connections. As part of this, ib_isert
-  is destroying rdma cm_id. To destroy cm_id, rdma_cm module is sending
-  CM events to CMA handler of ib_isert. This handler is taking same
-  mutex lock. Hence it leads to deadlock between ib_isert & rdma_cm
-  modules.
+Enable more than 32 IRQs by removing the u32 bit mask in
+iavf_irq_enable_queues(). There is no need for the mask as there are no
+callers that select individual IRQs through the bitmask. Also, if the PF
+allocates more than 32 IRQs, this mask will prevent us from using all of
+them.
 
-- For fix, created local list of pending connections and release the
-  connection outside of mutex lock.
+Modify the comment in iavf_register.h to show that the maximum number
+allowed for the IRQ index is 63 as per the iAVF standard 1.0 [1].
 
-Calltrace:
----------
-[ 1229.791410] INFO: task kworker/10:1:642 blocked for more than 120 seconds.
-[ 1229.791416]       Tainted: G           OE    --------- -  - 4.18.0-372.9.1.el8.x86_64 #1
-[ 1229.791418] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-[ 1229.791419] task:kworker/10:1    state:D stack:    0 pid:  642 ppid:     2 flags:0x80004000
-[ 1229.791424] Workqueue: ib_cm cm_work_handler [ib_cm]
-[ 1229.791436] Call Trace:
-[ 1229.791438]  __schedule+0x2d1/0x830
-[ 1229.791445]  ? select_idle_sibling+0x23/0x6f0
-[ 1229.791449]  schedule+0x35/0xa0
-[ 1229.791451]  schedule_preempt_disabled+0xa/0x10
-[ 1229.791453]  __mutex_lock.isra.7+0x310/0x420
-[ 1229.791456]  ? select_task_rq_fair+0x351/0x990
-[ 1229.791459]  isert_cma_handler+0x224/0x330 [ib_isert]
-[ 1229.791463]  ? ttwu_queue_wakelist+0x159/0x170
-[ 1229.791466]  cma_cm_event_handler+0x25/0xd0 [rdma_cm]
-[ 1229.791474]  cma_ib_handler+0xa7/0x2e0 [rdma_cm]
-[ 1229.791478]  cm_process_work+0x22/0xf0 [ib_cm]
-[ 1229.791483]  cm_work_handler+0xf4/0xf30 [ib_cm]
-[ 1229.791487]  ? move_linked_works+0x6e/0xa0
-[ 1229.791490]  process_one_work+0x1a7/0x360
-[ 1229.791491]  ? create_worker+0x1a0/0x1a0
-[ 1229.791493]  worker_thread+0x30/0x390
-[ 1229.791494]  ? create_worker+0x1a0/0x1a0
-[ 1229.791495]  kthread+0x10a/0x120
-[ 1229.791497]  ? set_kthread_struct+0x40/0x40
-[ 1229.791499]  ret_from_fork+0x1f/0x40
-
-[ 1229.791739] INFO: task targetcli:28666 blocked for more than 120 seconds.
-[ 1229.791740]       Tainted: G           OE    --------- -  - 4.18.0-372.9.1.el8.x86_64 #1
-[ 1229.791741] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-[ 1229.791742] task:targetcli       state:D stack:    0 pid:28666 ppid:  5510 flags:0x00004080
-[ 1229.791743] Call Trace:
-[ 1229.791744]  __schedule+0x2d1/0x830
-[ 1229.791746]  schedule+0x35/0xa0
-[ 1229.791748]  schedule_preempt_disabled+0xa/0x10
-[ 1229.791749]  __mutex_lock.isra.7+0x310/0x420
-[ 1229.791751]  rdma_destroy_id+0x15/0x20 [rdma_cm]
-[ 1229.791755]  isert_connect_release+0x115/0x130 [ib_isert]
-[ 1229.791757]  isert_free_np+0x87/0x140 [ib_isert]
-[ 1229.791761]  iscsit_del_np+0x74/0x120 [iscsi_target_mod]
-[ 1229.791776]  lio_target_np_driver_store+0xe9/0x140 [iscsi_target_mod]
-[ 1229.791784]  configfs_write_file+0xb2/0x110
-[ 1229.791788]  vfs_write+0xa5/0x1a0
-[ 1229.791792]  ksys_write+0x4f/0xb0
-[ 1229.791794]  do_syscall_64+0x5b/0x1a0
-[ 1229.791798]  entry_SYSCALL_64_after_hwframe+0x65/0xca
-
-Fixes: bd3792205aae ("iser-target: Fix pending connections handling in target stack shutdown sequnce")
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Link: https://lore.kernel.org/r/20230606102531.162967-2-saravanan.vajravel@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+link: [1] https://www.intel.com/content/dam/www/public/us/en/documents/product-specifications/ethernet-adaptive-virtual-function-hardware-spec.pdf
+Fixes: 5eae00c57f5e ("i40evf: main driver core")
+Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20230608200226.451861-1-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/isert/ib_isert.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf.h          |  2 +-
+ drivers/net/ethernet/intel/iavf/iavf_main.c     | 15 ++++++---------
+ drivers/net/ethernet/intel/iavf/iavf_register.h |  2 +-
+ 3 files changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/isert/ib_isert.c b/drivers/infiniband/ulp/isert/ib_isert.c
-index 71268d61d2b8a..226ddf92b7362 100644
---- a/drivers/infiniband/ulp/isert/ib_isert.c
-+++ b/drivers/infiniband/ulp/isert/ib_isert.c
-@@ -2507,6 +2507,7 @@ isert_free_np(struct iscsi_np *np)
- {
- 	struct isert_np *isert_np = np->np_context;
- 	struct isert_conn *isert_conn, *n;
-+	LIST_HEAD(drop_conn_list);
+diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
+index a994a2970ab24..6a6b5f6e8276d 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf.h
++++ b/drivers/net/ethernet/intel/iavf/iavf.h
+@@ -398,7 +398,7 @@ void iavf_set_ethtool_ops(struct net_device *netdev);
+ void iavf_update_stats(struct iavf_adapter *adapter);
+ void iavf_reset_interrupt_capability(struct iavf_adapter *adapter);
+ int iavf_init_interrupt_scheme(struct iavf_adapter *adapter);
+-void iavf_irq_enable_queues(struct iavf_adapter *adapter, u32 mask);
++void iavf_irq_enable_queues(struct iavf_adapter *adapter);
+ void iavf_free_all_tx_resources(struct iavf_adapter *adapter);
+ void iavf_free_all_rx_resources(struct iavf_adapter *adapter);
  
- 	if (isert_np->cm_id)
- 		rdma_destroy_id(isert_np->cm_id);
-@@ -2526,7 +2527,7 @@ isert_free_np(struct iscsi_np *np)
- 					 node) {
- 			isert_info("cleaning isert_conn %p state (%d)\n",
- 				   isert_conn, isert_conn->state);
--			isert_connect_release(isert_conn);
-+			list_move_tail(&isert_conn->node, &drop_conn_list);
- 		}
- 	}
- 
-@@ -2537,11 +2538,16 @@ isert_free_np(struct iscsi_np *np)
- 					 node) {
- 			isert_info("cleaning isert_conn %p state (%d)\n",
- 				   isert_conn, isert_conn->state);
--			isert_connect_release(isert_conn);
-+			list_move_tail(&isert_conn->node, &drop_conn_list);
- 		}
- 	}
- 	mutex_unlock(&isert_np->mutex);
- 
-+	list_for_each_entry_safe(isert_conn, n, &drop_conn_list, node) {
-+		list_del_init(&isert_conn->node);
-+		isert_connect_release(isert_conn);
-+	}
-+
- 	np->np_context = NULL;
- 	kfree(isert_np);
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index ae96b552a3bb3..e45f3a1a11f36 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -234,21 +234,18 @@ static void iavf_irq_disable(struct iavf_adapter *adapter)
  }
+ 
+ /**
+- * iavf_irq_enable_queues - Enable interrupt for specified queues
++ * iavf_irq_enable_queues - Enable interrupt for all queues
+  * @adapter: board private structure
+- * @mask: bitmap of queues to enable
+  **/
+-void iavf_irq_enable_queues(struct iavf_adapter *adapter, u32 mask)
++void iavf_irq_enable_queues(struct iavf_adapter *adapter)
+ {
+ 	struct iavf_hw *hw = &adapter->hw;
+ 	int i;
+ 
+ 	for (i = 1; i < adapter->num_msix_vectors; i++) {
+-		if (mask & BIT(i - 1)) {
+-			wr32(hw, IAVF_VFINT_DYN_CTLN1(i - 1),
+-			     IAVF_VFINT_DYN_CTLN1_INTENA_MASK |
+-			     IAVF_VFINT_DYN_CTLN1_ITR_INDX_MASK);
+-		}
++		wr32(hw, IAVF_VFINT_DYN_CTLN1(i - 1),
++		     IAVF_VFINT_DYN_CTLN1_INTENA_MASK |
++		     IAVF_VFINT_DYN_CTLN1_ITR_INDX_MASK);
+ 	}
+ }
+ 
+@@ -262,7 +259,7 @@ void iavf_irq_enable(struct iavf_adapter *adapter, bool flush)
+ 	struct iavf_hw *hw = &adapter->hw;
+ 
+ 	iavf_misc_irq_enable(adapter);
+-	iavf_irq_enable_queues(adapter, ~0);
++	iavf_irq_enable_queues(adapter);
+ 
+ 	if (flush)
+ 		iavf_flush(hw);
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_register.h b/drivers/net/ethernet/intel/iavf/iavf_register.h
+index bf793332fc9d5..a19e88898a0bb 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_register.h
++++ b/drivers/net/ethernet/intel/iavf/iavf_register.h
+@@ -40,7 +40,7 @@
+ #define IAVF_VFINT_DYN_CTL01_INTENA_MASK IAVF_MASK(0x1, IAVF_VFINT_DYN_CTL01_INTENA_SHIFT)
+ #define IAVF_VFINT_DYN_CTL01_ITR_INDX_SHIFT 3
+ #define IAVF_VFINT_DYN_CTL01_ITR_INDX_MASK IAVF_MASK(0x3, IAVF_VFINT_DYN_CTL01_ITR_INDX_SHIFT)
+-#define IAVF_VFINT_DYN_CTLN1(_INTVF) (0x00003800 + ((_INTVF) * 4)) /* _i=0...15 */ /* Reset: VFR */
++#define IAVF_VFINT_DYN_CTLN1(_INTVF) (0x00003800 + ((_INTVF) * 4)) /* _i=0...63 */ /* Reset: VFR */
+ #define IAVF_VFINT_DYN_CTLN1_INTENA_SHIFT 0
+ #define IAVF_VFINT_DYN_CTLN1_INTENA_MASK IAVF_MASK(0x1, IAVF_VFINT_DYN_CTLN1_INTENA_SHIFT)
+ #define IAVF_VFINT_DYN_CTLN1_SWINT_TRIG_SHIFT 2
 -- 
 2.39.2
 
