@@ -2,143 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55C3873589A
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 15:31:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DCD5735918
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 16:03:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229481AbjFSNb1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 09:31:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37026 "EHLO
+        id S232103AbjFSODV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 10:03:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229885AbjFSNbJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 09:31:09 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 877F810F2;
-        Mon, 19 Jun 2023 06:31:03 -0700 (PDT)
-Received: from dggpeml500012.china.huawei.com (unknown [172.30.72.54])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Ql9Yh1BSSzMpSX;
-        Mon, 19 Jun 2023 21:27:52 +0800 (CST)
-Received: from localhost.localdomain (10.67.175.61) by
- dggpeml500012.china.huawei.com (7.185.36.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 19 Jun 2023 21:30:59 +0800
-From:   Zheng Yejian <zhengyejian1@huawei.com>
-To:     <gregkh@linuxfoundation.org>, <rostedt@goodmis.org>,
-        <mhiramat@kernel.org>
-CC:     <linux-kernel@vger.kernel.org>,
-        <linux-trace-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-        <zhengyejian1@huawei.com>
-Subject: [PATCH 5.4] tracing: Add tracing_reset_all_online_cpus_unlocked() function
-Date:   Tue, 20 Jun 2023 09:31:13 +0800
-Message-ID: <20230620013113.1127152-1-zhengyejian1@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S231199AbjFSODU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 10:03:20 -0400
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B13D010F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 07:03:18 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1b52fd56b7aso12520875ad.2
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 07:03:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1687183398; x=1689775398;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c4zA2x2rf1p5pzoQJxSBuzoBeRkUzNS4Bq8HFTmaCoE=;
+        b=b+fkLYr3MnYz/OQ9BhX6fL07uLzvPcMpQDFVDzDecktXyoL50Q3ZJxYZPSun/2NE/k
+         KAeGe8M8bNjBkwmPAz++D+U7I948YLAmWCn1fOit3orWSOPF/RnJZYfh3GMaN9pBA8N3
+         3V7ScFFz8VQoikvuMgU/IicArKbCOUt6tCa2c=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687183398; x=1689775398;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=c4zA2x2rf1p5pzoQJxSBuzoBeRkUzNS4Bq8HFTmaCoE=;
+        b=YfPeOPnxYMWNt3Jv1Y6KyXnrbCPYmSk4j5NJ9az/U6iYUWfl2Rb8b5TsgZUWrwh+Vt
+         qc5OzR0hhN9zpDKBSs+zEPak1BRUVWANLsc4GXYtM85uw19Bne/3W3ZQJJ+jD7Tgdals
+         1yQC28r4UwKjJYTJCzA5PouInjZiPLROVsEosOFKgIMo4p5aEtVBSSoEcfjPF71ZD4JI
+         qIgH01x3ifk1yORVZwGi7e2H1KWKqfOTU3Emr9zJ9eE4jb9JvkB5ehrZMy6ofbRe2v9G
+         CujBKBk5crnV7jhZeitLWhmhg9Qir/3xYD63p7vt5nQZ7pbB6mgD81wPTsQKOezMtyL/
+         QSHg==
+X-Gm-Message-State: AC+VfDwM6ykqfh87N5A3OoTYMJf8Tm5YGPIXAbfB6oQ0r5q/WpqOOx0p
+        G7tv9ky6maWQrRs/BcNb8lerKlZRaLogVW4+umuOXg==
+X-Google-Smtp-Source: ACHHUZ4v3i2RgZ9YWY86OIWqNc5hX+EADjk5U09Liihu9nq6bBliCQ8oKBwC0e38lv6wShZ5U2kDtW6XiCKfFXAjnS0=
+X-Received: by 2002:a17:903:1112:b0:1af:a293:e155 with SMTP id
+ n18-20020a170903111200b001afa293e155mr6269262plh.16.1687183398115; Mon, 19
+ Jun 2023 07:03:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.67.175.61]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpeml500012.china.huawei.com (7.185.36.15)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.0 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_12_24,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+References: <20230615145607.3469985-1-revest@chromium.org> <CAEf4BzbjCt3tKJ40tg12rMjCLXrm7UoGuOdC62vGnpTTt8-buw@mail.gmail.com>
+In-Reply-To: <CAEf4BzbjCt3tKJ40tg12rMjCLXrm7UoGuOdC62vGnpTTt8-buw@mail.gmail.com>
+From:   Florent Revest <revest@chromium.org>
+Date:   Mon, 19 Jun 2023 16:03:07 +0200
+Message-ID: <CABRcYmK=yXDumZj3tdW7341+sSV1zmZw1UpQkfSF6RFgnBQjew@mail.gmail.com>
+Subject: Re: [PATCH bpf] bpf/btf: Accept function names that contain dots
+To:     Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Cc:     bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev, martin.lau@linux.dev, ast@kernel.org,
+        daniel@iogearbox.net, andrii@kernel.org, song@kernel.org,
+        yhs@fb.com, john.fastabend@gmail.com, kpsingh@kernel.org,
+        sdf@google.com, haoluo@google.com, jolsa@kernel.org,
+        nathan@kernel.org, ndesaulniers@google.com, trix@redhat.com,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+On Fri, Jun 16, 2023 at 6:57=E2=80=AFPM Andrii Nakryiko
+<andrii.nakryiko@gmail.com> wrote:
+>
+> On Thu, Jun 15, 2023 at 7:56=E2=80=AFAM Florent Revest <revest@chromium.o=
+rg> wrote:
+> >
+> > When building a kernel with LLVM=3D1, LLVM_IAS=3D0 and CONFIG_KASAN=3Dy=
+, LLVM
+> > leaves DWARF tags for the "asan.module_ctor" & co symbols. In turn,
+> > pahole creates BTF_KIND_FUNC entries for these and this makes the BTF
+> > metadata validation fail because they contain a dot.
+> >
+> > In a dramatic turn of event, this BTF verification failure can cause
+> > the netfilter_bpf initialization to fail, causing netfilter_core to
+> > free the netfilter_helper hashmap and netfilter_ftp to trigger a
+> > use-after-free. The risk of u-a-f in netfilter will be addressed
+> > separately but the existence of "asan.module_ctor" debug info under som=
+e
+> > build conditions sounds like a good enough reason to accept functions
+> > that contain dots in BTF.
+>
+> I don't see much harm in allowing dots. There are also all those .isra
+> and other modifications to functions that we currently don't have in
+> BTF, but with the discussions about recording function addrs we might
+> eventually have those as well. So:
+>
+> Acked-by: Andrii Nakryiko <andrii@kernel.org>
 
-commit e18eb8783ec4949adebc7d7b0fdb65f65bfeefd9 upstream.
+Thanks Andrii! :)
 
-Currently the tracing_reset_all_online_cpus() requires the
-trace_types_lock held. But only one caller of this function actually has
-that lock held before calling it, and the other just takes the lock so
-that it can call it. More users of this function is needed where the lock
-is not held.
+> > Cc: stable@vger.kernel.org
+> > Fixes: 1dc92851849c ("bpf: kernel side support for BTF Var and DataSec"=
+)
 
-Add a tracing_reset_all_online_cpus_unlocked() function for the one use
-case that calls it without being held, and also add a lockdep_assert to
-make sure it is held when called.
-
-Then have tracing_reset_all_online_cpus() take the lock internally, such
-that callers do not need to worry about taking it.
-
-Link: https://lkml.kernel.org/r/20221123192741.658273220@goodmis.org
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-
-[Refers to commit message of 1603feac154ff38514e8354e3079a455eb4801e2,
-this patch is pre-depended, and tracing_reset_all_online_cpus() should
-be called after trace_types_lock is held as its comment describes.]
-Fixes: 1603feac154f ("tracing: Free buffers when a used dynamic event is removed")
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
----
- kernel/trace/trace.c        | 11 ++++++++++-
- kernel/trace/trace.h        |  1 +
- kernel/trace/trace_events.c |  2 +-
- 3 files changed, 12 insertions(+), 2 deletions(-)
-
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index d068124815bc..219cd2c81936 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -1931,10 +1931,12 @@ void tracing_reset_online_cpus(struct trace_buffer *buf)
- }
- 
- /* Must have trace_types_lock held */
--void tracing_reset_all_online_cpus(void)
-+void tracing_reset_all_online_cpus_unlocked(void)
- {
- 	struct trace_array *tr;
- 
-+	lockdep_assert_held(&trace_types_lock);
-+
- 	list_for_each_entry(tr, &ftrace_trace_arrays, list) {
- 		if (!tr->clear_trace)
- 			continue;
-@@ -1946,6 +1948,13 @@ void tracing_reset_all_online_cpus(void)
- 	}
- }
- 
-+void tracing_reset_all_online_cpus(void)
-+{
-+	mutex_lock(&trace_types_lock);
-+	tracing_reset_all_online_cpus_unlocked();
-+	mutex_unlock(&trace_types_lock);
-+}
-+
- /*
-  * The tgid_map array maps from pid to tgid; i.e. the value stored at index i
-  * is the tgid last observed corresponding to pid=i.
-diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
-index f2ff39353e03..edc17a640ab3 100644
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -677,6 +677,7 @@ int tracing_is_enabled(void);
- void tracing_reset_online_cpus(struct trace_buffer *buf);
- void tracing_reset_current(int cpu);
- void tracing_reset_all_online_cpus(void);
-+void tracing_reset_all_online_cpus_unlocked(void);
- int tracing_open_generic(struct inode *inode, struct file *filp);
- int tracing_open_generic_tr(struct inode *inode, struct file *filp);
- bool tracing_is_disabled(void);
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index 8f2cbc9ebb6e..a0675ecc8142 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -2440,7 +2440,7 @@ static void trace_module_remove_events(struct module *mod)
- 	 * over from this module may be passed to the new module events and
- 	 * unexpected results may occur.
- 	 */
--	tracing_reset_all_online_cpus();
-+	tracing_reset_all_online_cpus_unlocked();
- }
- 
- static int trace_module_notify(struct notifier_block *self,
--- 
-2.25.1
-
+So do you think these trailers should be kept ? I suppose we can
+either see this as a "new feature" to accommodate .isra that should go
+through bpf-next or as a bug fix that goes through bpf and gets
+backported to stable (without this, BTF wouldn't work on old kernels
+built under a new clang and with LLVM_IAS=3D0 and CONFIG_KASAN=3Dy so this
+sounds like a legitimate bug fix to me, I just wanted to double check)
