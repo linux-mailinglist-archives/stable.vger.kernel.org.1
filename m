@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4C38735348
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:43:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC9DE735297
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:36:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229992AbjFSKny (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:43:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47664 "EHLO
+        id S231620AbjFSKgj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:36:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231550AbjFSKnc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:43:32 -0400
+        with ESMTP id S231476AbjFSKgO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:36:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E46AF10CF
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:43:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE9B7C6
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:36:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6C23960B0D
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:43:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82547C433C0;
-        Mon, 19 Jun 2023 10:43:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4804560B62
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:36:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF07C433C0;
+        Mon, 19 Jun 2023 10:36:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171389;
-        bh=mqL994jDilpj3DORbkHAMlSuexwDHjFi8s1HMFeV82w=;
+        s=korg; t=1687170963;
+        bh=eI0XLdGRbGkBKcXO3h1cxYBroD3tfaO6YBEd59PKZAA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rL7qGXNwkciWKYA6rTelDs9Syc1wAd6/yI3teDNx50Zvp6fWpLXa702Dqx35oU48f
-         A3flXSDu4cOUvopm2eu803n+BuNaqbRANvoYBNARa80kit7o4OCoFYkK0QBQ8l61fq
-         G6y9A5ormeDcpp8ECAPY8Yie6HgibJ2sgsirHJTs=
+        b=oBgLKqbjRSI6P4FnvC3dRlBoNhCqR13tX34XKkI5nE28Zm8tjdBjfkGxuFY3ho3vv
+         ye4wncKMHasp2cVrYlFjsXS673U+UrEJz1hfTO+ZZuErXMkkjvigJEhb7/juCl8sNr
+         T1h1DY6kHb6/x0F9vZzIrKFaEAhxV3VRsOk69O2I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 014/166] ARM: dts: vexpress: add missing cache properties
+        patches@lists.linux.dev, Li Lingfeng <lilingfeng3@huawei.com>,
+        Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 6.3 073/187] dm thin metadata: check fail_io before using data_sm
 Date:   Mon, 19 Jun 2023 12:28:11 +0200
-Message-ID: <20230619102155.379683590@linuxfoundation.org>
+Message-ID: <20230619102201.171792152@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,37 +54,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-[ Upstream commit 328acc5657c6197753238d7ce0a6924ead829347 ]
+commit cb65b282c9640c27d3129e2e04b711ce1b352838 upstream.
 
-As all level 2 and level 3 caches are unified, add required
-cache-unified property to fix warnings like:
+Must check pmd->fail_io before using pmd->data_sm since
+pmd->data_sm may be destroyed by other processes.
 
-  vexpress-v2p-ca5s.dtb: cache-controller@2c0f0000: 'cache-unified' is a required property
+       P1(kworker)                             P2(message)
+do_worker
+ process_prepared
+  process_prepared_discard_passdown_pt2
+   dm_pool_dec_data_range
+                                    pool_message
+                                     commit
+                                      dm_pool_commit_metadata
+                                        ↓
+                                       // commit failed
+                                      metadata_operation_failed
+                                       abort_transaction
+                                        dm_pool_abort_metadata
+                                         __open_or_format_metadata
+                                           ↓
+                                          dm_sm_disk_open
+                                            ↓
+                                           // open failed
+                                           // pmd->data_sm is NULL
+    dm_sm_dec_blocks
+      ↓
+     // try to access pmd->data_sm --> UAF
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230423150837.118466-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As shown above, if dm_pool_commit_metadata() and
+dm_pool_abort_metadata() fail in pool_message process, kworker may
+trigger UAF.
+
+Fixes: be500ed721a6 ("dm space maps: improve performance with inc/dec on ranges of blocks")
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/vexpress-v2p-ca5s.dts | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/md/dm-thin-metadata.c |   20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/boot/dts/vexpress-v2p-ca5s.dts b/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
-index 3b88209bacea2..ff1f9a1bcfcfc 100644
---- a/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
-+++ b/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
-@@ -132,6 +132,7 @@ L2: cache-controller@2c0f0000 {
- 		reg = <0x2c0f0000 0x1000>;
- 		interrupts = <0 84 4>;
- 		cache-level = <2>;
-+		cache-unified;
- 	};
+--- a/drivers/md/dm-thin-metadata.c
++++ b/drivers/md/dm-thin-metadata.c
+@@ -1756,13 +1756,15 @@ int dm_thin_remove_range(struct dm_thin_
  
- 	pmu {
--- 
-2.39.2
-
+ int dm_pool_block_is_shared(struct dm_pool_metadata *pmd, dm_block_t b, bool *result)
+ {
+-	int r;
++	int r = -EINVAL;
+ 	uint32_t ref_count;
+ 
+ 	down_read(&pmd->root_lock);
+-	r = dm_sm_get_count(pmd->data_sm, b, &ref_count);
+-	if (!r)
+-		*result = (ref_count > 1);
++	if (!pmd->fail_io) {
++		r = dm_sm_get_count(pmd->data_sm, b, &ref_count);
++		if (!r)
++			*result = (ref_count > 1);
++	}
+ 	up_read(&pmd->root_lock);
+ 
+ 	return r;
+@@ -1770,10 +1772,11 @@ int dm_pool_block_is_shared(struct dm_po
+ 
+ int dm_pool_inc_data_range(struct dm_pool_metadata *pmd, dm_block_t b, dm_block_t e)
+ {
+-	int r = 0;
++	int r = -EINVAL;
+ 
+ 	pmd_write_lock(pmd);
+-	r = dm_sm_inc_blocks(pmd->data_sm, b, e);
++	if (!pmd->fail_io)
++		r = dm_sm_inc_blocks(pmd->data_sm, b, e);
+ 	pmd_write_unlock(pmd);
+ 
+ 	return r;
+@@ -1781,10 +1784,11 @@ int dm_pool_inc_data_range(struct dm_poo
+ 
+ int dm_pool_dec_data_range(struct dm_pool_metadata *pmd, dm_block_t b, dm_block_t e)
+ {
+-	int r = 0;
++	int r = -EINVAL;
+ 
+ 	pmd_write_lock(pmd);
+-	r = dm_sm_dec_blocks(pmd->data_sm, b, e);
++	if (!pmd->fail_io)
++		r = dm_sm_dec_blocks(pmd->data_sm, b, e);
+ 	pmd_write_unlock(pmd);
+ 
+ 	return r;
 
 
