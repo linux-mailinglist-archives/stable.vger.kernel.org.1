@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2790735475
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:56:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78E8A73533B
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:43:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232350AbjFSK4h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:56:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58256 "EHLO
+        id S231926AbjFSKnI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:43:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232355AbjFSKz7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:55:59 -0400
+        with ESMTP id S231952AbjFSKmn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:42:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 944281FE2
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:54:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FB92E7F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:42:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 75A6160B5F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:54:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ACB8C433C0;
-        Mon, 19 Jun 2023 10:54:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 99FCE60B7F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:42:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC0CC433C0;
+        Mon, 19 Jun 2023 10:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172042;
-        bh=Vfo4ErLyz+INFU2BisZzvB8XYdc4O22qYJ0XCpDUdAw=;
+        s=korg; t=1687171356;
+        bh=GmpFHOh7eUvRjM15pWxFpYiHWim5Aj1goONNBTECNWs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mMMvZ1p94fexnoGd1YpwJhOJhtjEw8knrGd+SgRimsTOzCy1KISSQuL/uBXqxL2dm
-         aX4WHSvaS5bmRh1DArTFYU/9gWZprGtSotDNU7GoNv2RIKVL7yQZ65IZHfTxf/86Rt
-         rYE2LAr+kfsoYY4bzJmhEtJrtB3RYket1/Z/xgyY=
+        b=jrDT7FXzt7ipmgtIIq6NiPv3qN9Y0eSrvKXiNp3mwD+FWHSs0xGQ//M5HWU1Kcd4F
+         VnOvozS0Vcb7qy0FuOlqlHm+b6JGS6nmt9ixyJrW2uLoSoHNNuTHgP3SueUa5prU2J
+         cQ0STlrnuiRx6DxYe1wDEfTrsDnY7G/jng+htYFA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
-        David Sterba <dsterba@suse.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 16/89] btrfs: scrub: try harder to mark RAID56 block groups read-only
+        patches@lists.linux.dev, Romain Izard <romain.izard.pro@gmail.com>,
+        Felipe Balbi <felipe.balbi@linux.intel.com>,
+        Joakim Tjernlund <joakim.tjernlund@infinera.com>
+Subject: [PATCH 4.19 26/49] usb: gadget: f_ncm: Fix NTP-32 support
 Date:   Mon, 19 Jun 2023 12:30:04 +0200
-Message-ID: <20230619102139.028295593@linuxfoundation.org>
+Message-ID: <20230619102131.238435174@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
+References: <20230619102129.856988902@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,95 +55,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Qu Wenruo <wqu@suse.com>
+From: Romain Izard <romain.izard.pro@gmail.com>
 
-[ Upstream commit 7561551e7ba870b9659083b95feb520fb2dacce3 ]
+commit 550eef0c353030ac4223b9c9479bdf77a05445d6 upstream.
 
-Currently we allow a block group not to be marked read-only for scrub.
+When connecting a CDC-NCM gadget to an host that uses the NTP-32 mode,
+or that relies on the default CRC setting, the current implementation gets
+confused, and does not expect the correct signature for its packets.
 
-But for RAID56 block groups if we require the block group to be
-read-only, then we're allowed to use cached content from scrub stripe to
-reduce unnecessary RAID56 reads.
+Fix this, by ensuring that the ndp_sign member in the f_ncm structure
+always contain a valid value.
 
-So this patch would:
-
-- Make btrfs_inc_block_group_ro() try harder
-  During my tests, for cases like btrfs/061 and btrfs/064, we can hit
-  ENOSPC from btrfs_inc_block_group_ro() calls during scrub.
-
-  The reason is if we only have one single data chunk, and trying to
-  scrub it, we won't have any space left for any newer data writes.
-
-  But this check should be done by the caller, especially for scrub
-  cases we only temporarily mark the chunk read-only.
-  And newer data writes would always try to allocate a new data chunk
-  when needed.
-
-- Return error for scrub if we failed to mark a RAID56 chunk read-only
-
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Romain Izard <romain.izard.pro@gmail.com>
+Signed-off-by: Felipe Balbi <felipe.balbi@linux.intel.com>
+Signed-off-by: Joakim Tjernlund <joakim.tjernlund@infinera.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/block-group.c | 14 ++++++++++++--
- fs/btrfs/scrub.c       |  9 ++++++++-
- 2 files changed, 20 insertions(+), 3 deletions(-)
+ drivers/usb/gadget/function/f_ncm.c |   10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
-index 889a598b17f6b..d0fecbd28232f 100644
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -2279,10 +2279,20 @@ int btrfs_inc_block_group_ro(struct btrfs_block_group *cache,
- 	}
+--- a/drivers/usb/gadget/function/f_ncm.c
++++ b/drivers/usb/gadget/function/f_ncm.c
+@@ -36,9 +36,7 @@
  
- 	ret = inc_block_group_ro(cache, 0);
--	if (!do_chunk_alloc || ret == -ETXTBSY)
--		goto unlock_out;
- 	if (!ret)
- 		goto out;
-+	if (ret == -ETXTBSY)
-+		goto unlock_out;
-+
-+	/*
-+	 * Skip chunk alloction if the bg is SYSTEM, this is to avoid system
-+	 * chunk allocation storm to exhaust the system chunk array.  Otherwise
-+	 * we still want to try our best to mark the block group read-only.
-+	 */
-+	if (!do_chunk_alloc && ret == -ENOSPC &&
-+	    (cache->flags & BTRFS_BLOCK_GROUP_SYSTEM))
-+		goto unlock_out;
-+
- 	alloc_flags = btrfs_get_alloc_profile(fs_info, cache->space_info->flags);
- 	ret = btrfs_chunk_alloc(trans, alloc_flags, CHUNK_ALLOC_FORCE);
- 	if (ret < 0)
-diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
-index 88b9a5394561e..715a0329ba277 100644
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -3559,13 +3559,20 @@ int scrub_enumerate_chunks(struct scrub_ctx *sctx,
- 		ret = btrfs_inc_block_group_ro(cache, sctx->is_dev_replace);
- 		if (ret == 0) {
- 			ro_set = 1;
--		} else if (ret == -ENOSPC && !sctx->is_dev_replace) {
-+		} else if (ret == -ENOSPC && !sctx->is_dev_replace &&
-+			   !(cache->flags & BTRFS_BLOCK_GROUP_RAID56_MASK)) {
- 			/*
- 			 * btrfs_inc_block_group_ro return -ENOSPC when it
- 			 * failed in creating new chunk for metadata.
- 			 * It is not a problem for scrub, because
- 			 * metadata are always cowed, and our scrub paused
- 			 * commit_transactions.
-+			 *
-+			 * For RAID56 chunks, we have to mark them read-only
-+			 * for scrub, as later we would use our own cache
-+			 * out of RAID56 realm.
-+			 * Thus we want the RAID56 bg to be marked RO to
-+			 * prevent RMW from screwing up out cache.
- 			 */
- 			ro_set = 0;
- 		} else if (ret == -ETXTBSY) {
--- 
-2.39.2
-
+ /* to trigger crc/non-crc ndp signature */
+ 
+-#define NCM_NDP_HDR_CRC_MASK	0x01000000
+ #define NCM_NDP_HDR_CRC		0x01000000
+-#define NCM_NDP_HDR_NOCRC	0x00000000
+ 
+ enum ncm_notify_state {
+ 	NCM_NOTIFY_NONE,		/* don't notify */
+@@ -532,6 +530,7 @@ static inline void ncm_reset_values(stru
+ {
+ 	ncm->parser_opts = &ndp16_opts;
+ 	ncm->is_crc = false;
++	ncm->ndp_sign = ncm->parser_opts->ndp_sign;
+ 	ncm->port.cdc_filter = DEFAULT_FILTER;
+ 
+ 	/* doesn't make sense for ncm, fixed size used */
+@@ -814,25 +813,20 @@ static int ncm_setup(struct usb_function
+ 	case ((USB_DIR_OUT | USB_TYPE_CLASS | USB_RECIP_INTERFACE) << 8)
+ 		| USB_CDC_SET_CRC_MODE:
+ 	{
+-		int ndp_hdr_crc = 0;
+-
+ 		if (w_length != 0 || w_index != ncm->ctrl_id)
+ 			goto invalid;
+ 		switch (w_value) {
+ 		case 0x0000:
+ 			ncm->is_crc = false;
+-			ndp_hdr_crc = NCM_NDP_HDR_NOCRC;
+ 			DBG(cdev, "non-CRC mode selected\n");
+ 			break;
+ 		case 0x0001:
+ 			ncm->is_crc = true;
+-			ndp_hdr_crc = NCM_NDP_HDR_CRC;
+ 			DBG(cdev, "CRC mode selected\n");
+ 			break;
+ 		default:
+ 			goto invalid;
+ 		}
+-		ncm->ndp_sign = ncm->parser_opts->ndp_sign | ndp_hdr_crc;
+ 		value = 0;
+ 		break;
+ 	}
+@@ -849,6 +843,8 @@ invalid:
+ 			ctrl->bRequestType, ctrl->bRequest,
+ 			w_value, w_index, w_length);
+ 	}
++	ncm->ndp_sign = ncm->parser_opts->ndp_sign |
++		(ncm->is_crc ? NCM_NDP_HDR_CRC : 0);
+ 
+ 	/* respond with data transfer or status phase? */
+ 	if (value >= 0) {
 
 
