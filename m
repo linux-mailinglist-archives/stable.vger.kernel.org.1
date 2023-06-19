@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69A5E735308
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A54D073548E
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:57:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231989AbjFSKlL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:41:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45604 "EHLO
+        id S232319AbjFSK5R (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:57:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232012AbjFSKkf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:40:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F07D9B3
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:40:34 -0700 (PDT)
+        with ESMTP id S232317AbjFSK4u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:56:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38F5026AF
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:54:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8E49260B33
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:40:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA16C433C0;
-        Mon, 19 Jun 2023 10:40:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BF33660B5F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:54:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1F1DC433C0;
+        Mon, 19 Jun 2023 10:54:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171234;
-        bh=Pul34P8CNk8cDA88LtbaaJpVxSTVfOkB1qKR617HdFE=;
+        s=korg; t=1687172092;
+        bh=R4XMzTn17KnzS2HlQReMFImYBbp+eY9qG2uqjupNCsc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bTdQYtP3sXG8q/s8nxKBwPb7xvWH1jpehPNIkGOb7cGCceVIkcfFAcaRBVKpOhkC9
-         EZQ/tmPRHTtxCm74G+tB90+DWyig9c6RSW+HgIzrfL3LhGg8iyXmqwB1KlDdJMpGvI
-         R5UcgJtAfrVqDDZKhvrAHNbzUNggPvUQMqyEnJcs=
+        b=kgT/FlyA03BTpoP4iyWB7W1fokfFA6Q3ez4RjuK91Me8/xMbvxvTurk6+O/Hf+nda
+         oyzwZ9A4WzV0kjtXtuylEtbP26s+UcNZg2gNTh7brBZ87JEWGdWpdxxkGdHhqhWQVt
+         RxF8PwKBJP2AYpT8lY+Hf1zJRDdvjsg6r8pepiSE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Li Lingfeng <lilingfeng3@huawei.com>,
-        Mike Snitzer <snitzer@kernel.org>,
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 178/187] dm: dont lock fs when the map is NULL during suspend or resume
+Subject: [PATCH 5.10 08/89] power: supply: bq27xxx: Use mod_delayed_work() instead of cancel() + schedule()
 Date:   Mon, 19 Jun 2023 12:29:56 +0200
-Message-ID: <20230619102206.303958736@linuxfoundation.org>
+Message-ID: <20230619102138.670542183@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,63 +55,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 2760904d895279f87196f0fa9ec570c79fe6a2e4 ]
+[ Upstream commit 59dddea9879713423c7b2ade43c423bb71e0d216 ]
 
-As described in commit 38d11da522aa ("dm: don't lock fs when the map is
-NULL in process of resume"), a deadlock may be triggered between
-do_resume() and do_mount().
+Use mod_delayed_work() instead of separate cancel_delayed_work_sync() +
+schedule_delayed_work() calls.
 
-This commit preserves the fix from commit 38d11da522aa but moves it to
-where it also serves to fix a similar deadlock between do_suspend()
-and do_mount().  It does so, if the active map is NULL, by clearing
-DM_SUSPEND_LOCKFS_FLAG in dm_suspend() which is called by both
-do_suspend() and do_resume().
-
-Fixes: 38d11da522aa ("dm: don't lock fs when the map is NULL in process of resume")
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-ioctl.c | 5 +----
- drivers/md/dm.c       | 4 ++++
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/power/supply/bq27xxx_battery.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/dm-ioctl.c b/drivers/md/dm-ioctl.c
-index cc77cf3d41092..7d5c9c582ed2d 100644
---- a/drivers/md/dm-ioctl.c
-+++ b/drivers/md/dm-ioctl.c
-@@ -1168,13 +1168,10 @@ static int do_resume(struct dm_ioctl *param)
- 	/* Do we need to load a new map ? */
- 	if (new_map) {
- 		sector_t old_size, new_size;
--		int srcu_idx;
+diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
+index 235647b21af71..0673e0fe0ffbd 100644
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -1018,10 +1018,8 @@ static int poll_interval_param_set(const char *val, const struct kernel_param *k
+ 		return ret;
  
- 		/* Suspend if it isn't already suspended */
--		old_map = dm_get_live_table(md, &srcu_idx);
--		if ((param->flags & DM_SKIP_LOCKFS_FLAG) || !old_map)
-+		if (param->flags & DM_SKIP_LOCKFS_FLAG)
- 			suspend_flags &= ~DM_SUSPEND_LOCKFS_FLAG;
--		dm_put_live_table(md, srcu_idx);
- 		if (param->flags & DM_NOFLUSH_FLAG)
- 			suspend_flags |= DM_SUSPEND_NOFLUSH_FLAG;
- 		if (!dm_suspended_md(md))
-diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-index dfde0088147a1..0a10e94a6db17 100644
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -2795,6 +2795,10 @@ int dm_suspend(struct mapped_device *md, unsigned int suspend_flags)
- 	}
+ 	mutex_lock(&bq27xxx_list_lock);
+-	list_for_each_entry(di, &bq27xxx_battery_devices, list) {
+-		cancel_delayed_work_sync(&di->work);
+-		schedule_delayed_work(&di->work, 0);
+-	}
++	list_for_each_entry(di, &bq27xxx_battery_devices, list)
++		mod_delayed_work(system_wq, &di->work, 0);
+ 	mutex_unlock(&bq27xxx_list_lock);
  
- 	map = rcu_dereference_protected(md->map, lockdep_is_held(&md->suspend_lock));
-+	if (!map) {
-+		/* avoid deadlock with fs/namespace.c:do_mount() */
-+		suspend_flags &= ~DM_SUSPEND_LOCKFS_FLAG;
-+	}
- 
- 	r = __dm_suspend(md, map, suspend_flags, TASK_INTERRUPTIBLE, DMF_SUSPENDED);
- 	if (r)
+ 	return ret;
 -- 
 2.39.2
 
