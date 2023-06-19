@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA5CA73534C
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:44:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FA9B73527D
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:35:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229817AbjFSKoG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:44:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47808 "EHLO
+        id S231995AbjFSKfg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:35:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231256AbjFSKnf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:43:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72E931989
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:43:19 -0700 (PDT)
+        with ESMTP id S232123AbjFSKfH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:35:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38ADE10F1
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:35:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0852B60B73
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:43:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B2ADC433C0;
-        Mon, 19 Jun 2023 10:43:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 19EC560B5E
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:35:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B885C433C0;
+        Mon, 19 Jun 2023 10:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171398;
-        bh=OLDhhT5qpFUeH3U2U09c/h5uBzwtuxiQ6N7R4v2aKuM=;
+        s=korg; t=1687170899;
+        bh=WBLrPzM4Y0mMUKeL5/0+BVQePUg4SRItKXToj05HItA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=STkJqPFu2PQEE6wPDD8G2IsPMHaZQMmUE3XTSAsFJtftxst75afwjTkP1RkQ9TQwz
-         qZb4lFUPFXjOaY/BAg7kmRrGx+mzIhh5NYWt26OvR9UgrXt9hxSIPD+AgvZDbi2RFx
-         IGV021VFfj72N7aGZiQYHlv/S8e6QGFc8DS83Rto=
+        b=0BznmfkrmbEGbvmRcjnOh/voPR0Sr5Oy4ijwSCQlqKFXSk/vsMmeHhjU6gITZfefa
+         Bwfd2WSGF/HB7rCH4+0fPUAJkENRxdDLVIB5tbZ/EqI4m2agLzJf/zBRzPsSJ9L/mH
+         xxAz4kFjeENPraUHdt3p/KC5tdx29PNDepJILA7w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 017/166] power: supply: Ratelimit no data debug output
+        patches@lists.linux.dev, Karol Herbst <kherbst@redhat.com>,
+        Dave Airlie <airlied@redhat.com>
+Subject: [PATCH 6.3 076/187] nouveau: fix client work fence deletion race
 Date:   Mon, 19 Jun 2023 12:28:14 +0200
-Message-ID: <20230619102155.537250638@linuxfoundation.org>
+Message-ID: <20230619102201.305411667@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,43 +54,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marek Vasut <marex@denx.de>
+From: Dave Airlie <airlied@redhat.com>
 
-[ Upstream commit 155c45a25679f571c2ae57d10db843a9dfc63430 ]
+commit c8a5d5ea3ba6a18958f8d76430e4cd68eea33943 upstream.
 
-Reduce the amount of output this dev_dbg() statement emits into logs,
-otherwise if system software polls the sysfs entry for data and keeps
-getting -ENODATA, it could end up filling the logs up.
+This seems to have existed for ever but is now more apparant after
+commit 9bff18d13473 ("drm/ttm: use per BO cleanup workers")
 
-This does in fact make systemd journald choke, since during boot the
-sysfs power supply entries are polled and if journald starts at the
-same time, the journal is just being repeatedly filled up, and the
-system stops on trying to start journald without booting any further.
+My analysis: two threads are running, one in the irq signalling the
+fence, in dma_fence_signal_timestamp_locked, it has done the
+DMA_FENCE_FLAG_SIGNALLED_BIT setting, but hasn't yet reached the
+callbacks.
 
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The second thread in nouveau_cli_work_ready, where it sees the fence is
+signalled, so then puts the fence, cleanups the object and frees the
+work item, which contains the callback.
+
+Thread one goes again and tries to call the callback and causes the
+use-after-free.
+
+Proposed fix: lock the fence signalled check in nouveau_cli_work_ready,
+so either the callbacks are done or the memory is freed.
+
+Reviewed-by: Karol Herbst <kherbst@redhat.com>
+Fixes: 11e451e74050 ("drm/nouveau: remove fence wait code from deferred client work handler")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://lore.kernel.org/dri-devel/20230615024008.1600281-1-airlied@gmail.com/
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/power_supply_sysfs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nouveau_drm.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/power/supply/power_supply_sysfs.c b/drivers/power/supply/power_supply_sysfs.c
-index 5369abaceb5cc..7abd916d005a6 100644
---- a/drivers/power/supply/power_supply_sysfs.c
-+++ b/drivers/power/supply/power_supply_sysfs.c
-@@ -285,7 +285,8 @@ static ssize_t power_supply_show_property(struct device *dev,
+--- a/drivers/gpu/drm/nouveau/nouveau_drm.c
++++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
+@@ -137,10 +137,16 @@ nouveau_name(struct drm_device *dev)
+ static inline bool
+ nouveau_cli_work_ready(struct dma_fence *fence)
+ {
+-	if (!dma_fence_is_signaled(fence))
+-		return false;
+-	dma_fence_put(fence);
+-	return true;
++	bool ret = true;
++
++	spin_lock_irq(fence->lock);
++	if (!dma_fence_is_signaled_locked(fence))
++		ret = false;
++	spin_unlock_irq(fence->lock);
++
++	if (ret == true)
++		dma_fence_put(fence);
++	return ret;
+ }
  
- 		if (ret < 0) {
- 			if (ret == -ENODATA)
--				dev_dbg(dev, "driver has no data for `%s' property\n",
-+				dev_dbg_ratelimited(dev,
-+					"driver has no data for `%s' property\n",
- 					attr->attr.name);
- 			else if (ret != -ENODEV && ret != -EAGAIN)
- 				dev_err_ratelimited(dev,
--- 
-2.39.2
-
+ static void
 
 
