@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EFA97352F0
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:40:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C9FE735312
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231984AbjFSKkZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:40:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45876 "EHLO
+        id S232037AbjFSKlS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:41:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232011AbjFSKjx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:39:53 -0400
+        with ESMTP id S232048AbjFSKk5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:40:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 586BF10C1
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:39:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C02F1C6
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:40:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DE23960B51
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:39:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04857C433C0;
-        Mon, 19 Jun 2023 10:39:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 566C660B62
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:40:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A016C433C0;
+        Mon, 19 Jun 2023 10:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171180;
-        bh=5eNRMy6eha9gqCKeb2VaekVDqmQJqeCBvf7jr6mFkVc=;
+        s=korg; t=1687171255;
+        bh=vrrwknnOMnp3/fFeIK2dbFuoU8Bp6+uORAd3Be18evg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a1umqKb4erIS6BZqAhPwt6STQbQlJZGMSbMADWcr5Z4+B0lMtKLR5ltaKsyUeuGDd
-         bx41QXTHB0FL2YiEYRNqHFy9eIQgAsIJC80zCYQ4CsQvAjy5CyTd6osIeVC2D1T7mI
-         9zFDqASZRWNhXXc7ZLtc5fmFTU1N9xqbVvSwC8LM=
+        b=b0dTBJFbyGVbjMjTjTwaGGnuvF3ZvIm1JJFyZv290UYiVNNVYNSV4rIDNkymCopT2
+         eWSoT2b7W7vI6+wpJt2Dt3Q5zOxVCrKp/3lcPaJo6HmIqT33jR3k8s4bCejEgTo145
+         UkG8q9kshY8iCJ7dndagmh/Ej9IlUsxlwEzxMpCI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
-        Sabrina Dubroca <sd@queasysnail.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 176/187] net: macsec: fix double free of percpu stats
+        patches@lists.linux.dev,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        syzbot+33494cd0df2ec2931851@syzkaller.appspotmail.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 16/49] nilfs2: fix possible out-of-bounds segment allocation in resize ioctl
 Date:   Mon, 19 Jun 2023 12:29:54 +0200
-Message-ID: <20230619102206.199565664@linuxfoundation.org>
+Message-ID: <20230619102130.699910672@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
+References: <20230619102129.856988902@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,63 +56,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 0c0cf3db83f8c7c9bb141c2771a34043bcf952ef ]
+commit fee5eaecca86afa544355569b831c1f90f334b85 upstream.
 
-Inside macsec_add_dev() we free percpu macsec->secy.tx_sc.stats and
-macsec->stats on some of the memory allocation failure paths. However, the
-net_device is already registered to that moment: in macsec_newlink(), just
-before calling macsec_add_dev(). This means that during unregister process
-its priv_destructor - macsec_free_netdev() - will be called and will free
-the stats again.
+Syzbot reports that in its stress test for resize ioctl, the log writing
+function nilfs_segctor_do_construct hits a WARN_ON in
+nilfs_segctor_truncate_segments().
 
-Remove freeing percpu stats inside macsec_add_dev() because
-macsec_free_netdev() will correctly free the already allocated ones. The
-pointers to unallocated stats stay NULL, and free_percpu() treats that
-correctly.
+It turned out that there is a problem with the current implementation of
+the resize ioctl, which changes the writable range on the device (the
+range of allocatable segments) at the end of the resize process.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+This order is necessary for file system expansion to avoid corrupting the
+superblock at trailing edge.  However, in the case of a file system
+shrink, if log writes occur after truncating out-of-bounds trailing
+segments and before the resize is complete, segments may be allocated from
+the truncated space.
 
-Fixes: 0a28bfd4971f ("net/macsec: Add MACsec skb_metadata_dst Tx Data path support")
-Fixes: c09440f7dcb3 ("macsec: introduce IEEE 802.1AE driver")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The userspace resize tool was fine as it limits the range of allocatable
+segments before performing the resize, but it can run into this issue if
+the resize ioctl is called alone.
+
+Fix this issue by changing nilfs_sufile_resize() to update the range of
+allocatable segments immediately after successful truncation of segment
+space in case of file system shrink.
+
+Link: https://lkml.kernel.org/r/20230524094348.3784-1-konishi.ryusuke@gmail.com
+Fixes: 4e33f9eab07e ("nilfs2: implement resize ioctl")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+33494cd0df2ec2931851@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/0000000000005434c405fbbafdc5@google.com
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/macsec.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ fs/nilfs2/sufile.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 25616247d7a56..e040c191659b9 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -3987,17 +3987,15 @@ static int macsec_add_dev(struct net_device *dev, sci_t sci, u8 icv_len)
- 		return -ENOMEM;
+--- a/fs/nilfs2/sufile.c
++++ b/fs/nilfs2/sufile.c
+@@ -782,6 +782,15 @@ int nilfs_sufile_resize(struct inode *su
+ 			goto out_header;
  
- 	secy->tx_sc.stats = netdev_alloc_pcpu_stats(struct pcpu_tx_sc_stats);
--	if (!secy->tx_sc.stats) {
--		free_percpu(macsec->stats);
-+	if (!secy->tx_sc.stats)
- 		return -ENOMEM;
--	}
- 
- 	secy->tx_sc.md_dst = metadata_dst_alloc(0, METADATA_MACSEC, GFP_KERNEL);
--	if (!secy->tx_sc.md_dst) {
--		free_percpu(secy->tx_sc.stats);
--		free_percpu(macsec->stats);
-+	if (!secy->tx_sc.md_dst)
-+		/* macsec and secy percpu stats will be freed when unregistering
-+		 * net_device in macsec_free_netdev()
+ 		sui->ncleansegs -= nsegs - newnsegs;
++
++		/*
++		 * If the sufile is successfully truncated, immediately adjust
++		 * the segment allocation space while locking the semaphore
++		 * "mi_sem" so that nilfs_sufile_alloc() never allocates
++		 * segments in the truncated space.
 +		 */
- 		return -ENOMEM;
--	}
++		sui->allocmax = newnsegs - 1;
++		sui->allocmin = 0;
+ 	}
  
- 	if (sci == MACSEC_UNDEF_SCI)
- 		sci = dev_to_sci(dev, MACSEC_PORT_ES);
--- 
-2.39.2
-
+ 	kaddr = kmap_atomic(header_bh->b_page);
 
 
