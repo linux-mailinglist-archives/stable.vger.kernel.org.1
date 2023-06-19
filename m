@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 323657352DB
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:38:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF2697353A8
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:47:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231239AbjFSKiu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:38:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45052 "EHLO
+        id S232114AbjFSKrr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:47:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231732AbjFSKit (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:38:49 -0400
+        with ESMTP id S232122AbjFSKr0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:47:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1F1BC6
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:38:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9196D170C
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:46:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3F7EE60B73
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:38:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E23C433C8;
-        Mon, 19 Jun 2023 10:38:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 177C260B80
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:46:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A2BC433C0;
+        Mon, 19 Jun 2023 10:46:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171127;
-        bh=RVztm4/vrSiW5WqQ4YfeISdYVwnPIjfS9CPujgdcBMU=;
+        s=korg; t=1687171606;
+        bh=ZhAyOwvSGoFPHh++mdoXSyx++vCWSFAfmWREXWYFuGY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BDzdlhF0F3Ewpx9QBZapg+IAcIMqhdEakWT/2NdW9jenvxEYIofnjuMHPhpp3jnPA
-         tHzpkbHIixRBXLq/38/3RjoBlvn/JEllgq0IwAFxi/g6/7MzoW284UZw4c6QQiZECB
-         0aAifRzd3BdeSlPP7BnsHkBXjKDMVlyAIKPjKcbI=
+        b=fWu4GaSAwa4ZkW2bZ7DckoWs0PcWEJb4UH56/cRvUXBm8d+jMJdvQIkIFFq2i/RDc
+         Rp8sOnyZRJSljPG/2HeQn0fTSrMElTvMuk05x0AvcgCsI1NNWTOxRJID74nFZOCF32
+         s2A0PAwM6YlVjzYknQEPjPsCTUALo9RAALWuK5Vo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Xin Long <lucien.xin@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Bob Pearson <rpearsonhpe@gmail.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 150/187] sctp: fix an error code in sctp_sf_eat_auth()
-Date:   Mon, 19 Jun 2023 12:29:28 +0200
-Message-ID: <20230619102204.881337457@linuxfoundation.org>
+Subject: [PATCH 6.1 092/166] RDMA/rxe: Fix packet length checks
+Date:   Mon, 19 Jun 2023 12:29:29 +0200
+Message-ID: <20230619102159.265719008@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,36 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Bob Pearson <rpearsonhpe@gmail.com>
 
-[ Upstream commit 75e6def3b26736e7ff80639810098c9074229737 ]
+[ Upstream commit 9a3763e87379c97a78b7c6c6f40720b1e877174f ]
 
-The sctp_sf_eat_auth() function is supposed to enum sctp_disposition
-values and returning a kernel error code will cause issues in the
-caller.  Change -ENOMEM to SCTP_DISPOSITION_NOMEM.
+In rxe_net.c a received packet, from udp or loopback, is passed to
+rxe_rcv() in rxe_recv.c as a udp packet. I.e. skb->data is pointing at the
+udp header. But rxe_rcv() makes length checks to verify the packet is long
+enough to hold the roce headers as if it were a roce
+packet. I.e. skb->data pointing at the bth header. A runt packet would
+appear to have 8 more bytes than it actually does which may lead to
+incorrect behavior.
 
-Fixes: 65b07e5d0d09 ("[SCTP]: API updates to suport SCTP-AUTH extensions.")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+This patch calls skb_pull() to adjust the skb to point at the bth header
+before calling rxe_rcv() which fixes this error.
+
+Fixes: 8700e3e7c485 ("Soft RoCE driver")
+Link: https://lore.kernel.org/r/20230517172242.1806340-1-rpearsonhpe@gmail.com
+Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/sm_statefuns.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/sw/rxe/rxe_net.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-index ce54261712062..07edf56f7b8c6 100644
---- a/net/sctp/sm_statefuns.c
-+++ b/net/sctp/sm_statefuns.c
-@@ -4484,7 +4484,7 @@ enum sctp_disposition sctp_sf_eat_auth(struct net *net,
- 				    SCTP_AUTH_NEW_KEY, GFP_ATOMIC);
+diff --git a/drivers/infiniband/sw/rxe/rxe_net.c b/drivers/infiniband/sw/rxe/rxe_net.c
+index 35f327b9d4b8e..65d16024b3bf6 100644
+--- a/drivers/infiniband/sw/rxe/rxe_net.c
++++ b/drivers/infiniband/sw/rxe/rxe_net.c
+@@ -156,6 +156,9 @@ static int rxe_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ 	pkt->mask = RXE_GRH_MASK;
+ 	pkt->paylen = be16_to_cpu(udph->len) - sizeof(*udph);
  
- 		if (!ev)
--			return -ENOMEM;
-+			return SCTP_DISPOSITION_NOMEM;
++	/* remove udp header */
++	skb_pull(skb, sizeof(struct udphdr));
++
+ 	rxe_rcv(skb);
  
- 		sctp_add_cmd_sf(commands, SCTP_CMD_EVENT_ULP,
- 				SCTP_ULPEVENT(ev));
+ 	return 0;
+@@ -397,6 +400,9 @@ static int rxe_loopback(struct sk_buff *skb, struct rxe_pkt_info *pkt)
+ 		return -EIO;
+ 	}
+ 
++	/* remove udp header */
++	skb_pull(skb, sizeof(struct udphdr));
++
+ 	rxe_rcv(skb);
+ 
+ 	return 0;
 -- 
 2.39.2
 
