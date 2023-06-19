@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA6E273520F
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:30:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B59127352AA
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:37:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229997AbjFSKaC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:30:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38518 "EHLO
+        id S229769AbjFSKhO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:37:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229967AbjFSKaC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:30:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E79A8CA
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:30:00 -0700 (PDT)
+        with ESMTP id S231649AbjFSKgu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:36:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16495E62
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:36:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 75E7260180
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:30:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837C0C433C8;
-        Mon, 19 Jun 2023 10:29:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A861A60B73
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:36:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0172C433C8;
+        Mon, 19 Jun 2023 10:36:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687170599;
-        bh=zbqPbSENyw3DdOvFt3+ZGl33ytCQkw9IgcL13hy02bQ=;
+        s=korg; t=1687171008;
+        bh=ZojzQArF8LHlDg6Ouxo9YOSW5FsreN61RO9jAhLuFss=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZtbdKv5SQdTFazt8N8TA556t55Mx0R6qc3MlL+scCBnoWn+OVQjnJkdqRihjThz2b
-         g1+4ErWBbgFhgqqRmCC+UTO6X+rq1ZkqgWnXJYch0v0TTFUaO6gGP6VCRxwDKumVzU
-         +lBVLh1ABo+F5a1OVCrVBPBMtxNDSwr8RABMtmKk=
+        b=uHMLtd8pmXzzzglqr8OPer5JjkhSpeeX7hM/atsNL4pPpVkP+4ajycdjhRZTumQWU
+         I9QC+6n6PoJ226XGWQn2A5eIIACGS1nSG+9dWhXysx3nt/UMEMiuix1yCrgC/BYTPh
+         PSHuhDDAj3c+PRLGSGXiofgU3FEwFCjuiLbj69gU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Lisa=20Chen=20 ?= <minjie.chen@geekplus.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 04/32] power: supply: Ratelimit no data debug output
+Subject: [PATCH 6.3 114/187] spi: fsl-dspi: avoid SCK glitches with continuous transfers
 Date:   Mon, 19 Jun 2023 12:28:52 +0200
-Message-ID: <20230619102127.698908787@linuxfoundation.org>
+Message-ID: <20230619102203.082051418@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102127.461443957@linuxfoundation.org>
-References: <20230619102127.461443957@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,41 +57,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Marek Vasut <marex@denx.de>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 155c45a25679f571c2ae57d10db843a9dfc63430 ]
+[ Upstream commit c5c31fb71f16ba75bad4ade208abbae225305b65 ]
 
-Reduce the amount of output this dev_dbg() statement emits into logs,
-otherwise if system software polls the sysfs entry for data and keeps
-getting -ENODATA, it could end up filling the logs up.
+The DSPI controller has configurable timing for
 
-This does in fact make systemd journald choke, since during boot the
-sysfs power supply entries are polled and if journald starts at the
-same time, the journal is just being repeatedly filled up, and the
-system stops on trying to start journald without booting any further.
+(a) tCSC: the interval between the assertion of the chip select and the
+    first clock edge
 
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+(b) tASC: the interval between the last clock edge and the deassertion
+    of the chip select
+
+What is a bit surprising, but is documented in the figure "Example of
+continuous transfer (CPHA=1, CONT=1)" in the datasheet, is that when the
+chip select stays asserted between multiple TX FIFO writes, the tCSC and
+tASC times still apply. With CONT=1, chip select remains asserted, but
+SCK takes a break and goes to the idle state for tASC + tCSC ns.
+
+In other words, the default values (of 0 and 0 ns) result in SCK
+glitches where the SCK transition to the idle state, as well as the SCK
+transition from the idle state, will have no delay in between, and it
+may appear that a SCK cycle has simply gone missing. The resulting
+timing violation might cause data corruption in many peripherals, as
+their chip select is asserted.
+
+The driver has device tree bindings for tCSC ("fsl,spi-cs-sck-delay")
+and tASC ("fsl,spi-sck-cs-delay"), but these are only specified to apply
+when the chip select toggles in the first place, and this timing
+characteristic depends on each peripheral. Many peripherals do not have
+explicit timing requirements, so many device trees do not have these
+properties present at all.
+
+Nonetheless, the lack of SCK glitches is a common sense requirement, and
+since the SCK stays in the idle state during transfers for tCSC+tASC ns,
+and that in itself should look like half a cycle, then let's ensure that
+tCSC and tASC are at least a quarter of a SCK period, such that their
+sum is at least half of one.
+
+Fixes: 95bf15f38641 ("spi: fsl-dspi: Add ~50ns delay between cs and sck")
+Reported-by: Lisa Chen (陈敏捷) <minjie.chen@geekplus.com>
+Debugged-by: Lisa Chen (陈敏捷) <minjie.chen@geekplus.com>
+Tested-by: Lisa Chen (陈敏捷) <minjie.chen@geekplus.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://lore.kernel.org/r/20230529223402.1199503-1-vladimir.oltean@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/power_supply_sysfs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-fsl-dspi.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/power/supply/power_supply_sysfs.c b/drivers/power/supply/power_supply_sysfs.c
-index 2ccaf4ff4be47..2cb8a31e9dac0 100644
---- a/drivers/power/supply/power_supply_sysfs.c
-+++ b/drivers/power/supply/power_supply_sysfs.c
-@@ -88,7 +88,8 @@ static ssize_t power_supply_show_property(struct device *dev,
+diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
+index e419642eb10e5..0da5c6ec46fb1 100644
+--- a/drivers/spi/spi-fsl-dspi.c
++++ b/drivers/spi/spi-fsl-dspi.c
+@@ -1002,7 +1002,9 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
+ static int dspi_setup(struct spi_device *spi)
+ {
+ 	struct fsl_dspi *dspi = spi_controller_get_devdata(spi->controller);
++	u32 period_ns = DIV_ROUND_UP(NSEC_PER_SEC, spi->max_speed_hz);
+ 	unsigned char br = 0, pbr = 0, pcssck = 0, cssck = 0;
++	u32 quarter_period_ns = DIV_ROUND_UP(period_ns, 4);
+ 	u32 cs_sck_delay = 0, sck_cs_delay = 0;
+ 	struct fsl_dspi_platform_data *pdata;
+ 	unsigned char pasc = 0, asc = 0;
+@@ -1031,6 +1033,19 @@ static int dspi_setup(struct spi_device *spi)
+ 		sck_cs_delay = pdata->sck_cs_delay;
+ 	}
  
- 		if (ret < 0) {
- 			if (ret == -ENODATA)
--				dev_dbg(dev, "driver has no data for `%s' property\n",
-+				dev_dbg_ratelimited(dev,
-+					"driver has no data for `%s' property\n",
- 					attr->attr.name);
- 			else if (ret != -ENODEV && ret != -EAGAIN)
- 				dev_err_ratelimited(dev,
++	/* Since tCSC and tASC apply to continuous transfers too, avoid SCK
++	 * glitches of half a cycle by never allowing tCSC + tASC to go below
++	 * half a SCK period.
++	 */
++	if (cs_sck_delay < quarter_period_ns)
++		cs_sck_delay = quarter_period_ns;
++	if (sck_cs_delay < quarter_period_ns)
++		sck_cs_delay = quarter_period_ns;
++
++	dev_dbg(&spi->dev,
++		"DSPI controller timing params: CS-to-SCK delay %u ns, SCK-to-CS delay %u ns\n",
++		cs_sck_delay, sck_cs_delay);
++
+ 	clkrate = clk_get_rate(dspi->clk);
+ 	hz_to_spi_baud(&pbr, &br, spi->max_speed_hz, clkrate);
+ 
 -- 
 2.39.2
 
