@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4861473548D
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:57:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCD607354E0
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:59:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232435AbjFSK5R (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:57:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58768 "EHLO
+        id S232470AbjFSK7c (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:59:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232285AbjFSK4t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:56:49 -0400
+        with ESMTP id S232356AbjFSK7I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:59:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACC322130
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:54:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECF0A2120
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:57:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1098A60A05
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:54:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2453DC433C0;
-        Mon, 19 Jun 2023 10:54:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8842460B8D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:57:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9909BC433C0;
+        Mon, 19 Jun 2023 10:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172089;
-        bh=Jj7/taZxg+vvICvOCVSFMV/z/mqQxzQLpDREw3YEcVQ=;
+        s=korg; t=1687172278;
+        bh=Z3jEnciimgfjimbOt2+a34W8ecJ/nCY3U7dP4B3QJnA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PSjLFoDpWQ4PDZPJ4EkzL7EMh4cnWf4UMhYCuTeDlzCmshRWMW+a7VmgddfAYnYzH
-         RD0RExNd2cHZTDBKcvVJpd4QhJAnrMuy2UPRUPk3ybG3hM+Gv3wVAVINqMtdeV6Cec
-         wYxb3m2jG8U4vY+4snTGdexTeiLw/rm0W9Lk0cCI=
+        b=ybSqpQIvfEwcfpZ+dNdqZVrnslwLOF1Cf86KCXzECLfXZP9EmT1hXdFfCum9sqakx
+         jOZ8NwMG4iQyzrQdEqs6VHg9r9XrYa3icrWtw6cfm42wAnTgFnsgF/LucPBdFyaafH
+         n3vouFS60dQxaZNPX4jlNZjHSYxfvWQ0rRicpf7o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Orson Zhai <orsonzhai@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
         Sebastian Reichel <sebastian.reichel@collabora.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 07/89] power: supply: sc27xx: Fix external_power_changed race
+Subject: [PATCH 5.15 011/107] power: supply: bq27xxx: Use mod_delayed_work() instead of cancel() + schedule()
 Date:   Mon, 19 Jun 2023 12:29:55 +0200
-Message-ID: <20230619102138.626243791@linuxfoundation.org>
+Message-ID: <20230619102142.081193575@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,66 +57,35 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 4d5c129d6c8993fe96e9ae712141eedcb9ca68c2 ]
+[ Upstream commit 59dddea9879713423c7b2ade43c423bb71e0d216 ]
 
-sc27xx_fgu_external_power_changed() dereferences data->battery,
-which gets sets in ab8500_btemp_probe() like this:
+Use mod_delayed_work() instead of separate cancel_delayed_work_sync() +
+schedule_delayed_work() calls.
 
-	data->battery = devm_power_supply_register(dev, &sc27xx_fgu_desc,
-                                                   &fgu_cfg);
-
-As soon as devm_power_supply_register() has called device_add()
-the external_power_changed callback can get called. So there is a window
-where sc27xx_fgu_external_power_changed() may get called while
-data->battery has not been set yet leading to a NULL pointer dereference.
-
-Fixing this is easy. The external_power_changed callback gets passed
-the power_supply which will eventually get stored in data->battery,
-so sc27xx_fgu_external_power_changed() can simply directly use
-the passed in psy argument which is always valid.
-
-After this change sc27xx_fgu_external_power_changed() is reduced to just
-"power_supply_changed(psy);" and it has the same prototype. While at it
-simply replace it with making the external_power_changed callback
-directly point to power_supply_changed.
-
-Cc: Orson Zhai <orsonzhai@gmail.com>
-Cc: Chunyan Zhang <zhang.lyra@gmail.com>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/sc27xx_fuel_gauge.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/power/supply/bq27xxx_battery.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/power/supply/sc27xx_fuel_gauge.c b/drivers/power/supply/sc27xx_fuel_gauge.c
-index 1ae8374e1cebe..3bf4b263950d7 100644
---- a/drivers/power/supply/sc27xx_fuel_gauge.c
-+++ b/drivers/power/supply/sc27xx_fuel_gauge.c
-@@ -733,13 +733,6 @@ static int sc27xx_fgu_set_property(struct power_supply *psy,
- 	return ret;
- }
+diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
+index ffb5f5c028223..7c1295986b594 100644
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -1083,10 +1083,8 @@ static int poll_interval_param_set(const char *val, const struct kernel_param *k
+ 		return ret;
  
--static void sc27xx_fgu_external_power_changed(struct power_supply *psy)
--{
--	struct sc27xx_fgu_data *data = power_supply_get_drvdata(psy);
--
--	power_supply_changed(data->battery);
--}
--
- static int sc27xx_fgu_property_is_writeable(struct power_supply *psy,
- 					    enum power_supply_property psp)
- {
-@@ -774,7 +767,7 @@ static const struct power_supply_desc sc27xx_fgu_desc = {
- 	.num_properties		= ARRAY_SIZE(sc27xx_fgu_props),
- 	.get_property		= sc27xx_fgu_get_property,
- 	.set_property		= sc27xx_fgu_set_property,
--	.external_power_changed	= sc27xx_fgu_external_power_changed,
-+	.external_power_changed	= power_supply_changed,
- 	.property_is_writeable	= sc27xx_fgu_property_is_writeable,
- 	.no_thermal		= true,
- };
+ 	mutex_lock(&bq27xxx_list_lock);
+-	list_for_each_entry(di, &bq27xxx_battery_devices, list) {
+-		cancel_delayed_work_sync(&di->work);
+-		schedule_delayed_work(&di->work, 0);
+-	}
++	list_for_each_entry(di, &bq27xxx_battery_devices, list)
++		mod_delayed_work(system_wq, &di->work, 0);
+ 	mutex_unlock(&bq27xxx_list_lock);
+ 
+ 	return ret;
 -- 
 2.39.2
 
