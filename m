@@ -2,55 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DAB27352C4
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:38:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85217735396
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:46:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231342AbjFSKh5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:37:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44156 "EHLO
+        id S232093AbjFSKqy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:46:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231738AbjFSKhs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:37:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0A16CD
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:37:47 -0700 (PDT)
+        with ESMTP id S231873AbjFSKqW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:46:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4068210E4
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:46:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 36AD360B7F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:37:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7F5C433C9;
-        Mon, 19 Jun 2023 10:37:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D143360B73
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:46:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E027CC433C0;
+        Mon, 19 Jun 2023 10:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171066;
-        bh=PALvgKeFB9iwkUaWZCC5xRKYAOW3MdJ78OEK+a+W8Lg=;
+        s=korg; t=1687171567;
+        bh=e+qVfnpZcJy3ZLlXu79qoo7XmRAhWpFQIPxZz8yvVkk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZhqVXIEG1/UQO7+S61rz2ZZx2nyByQaeulSJ9Ommp4Bx87A5t/DEEYBSnbhEs51ay
-         OU4mhJSUiekV02I/qpBZn8OLqV0r4m0+Bmv9bGWEDykeflZugpWWb8jMQ1nFBEuiJF
-         bLl6VQnVwF/1IKMDVVW/jOeNRl2XceMLLOI260sg=
+        b=RGWEF0IGiBy/dUphfoPIqcjT285ur7oPmysD1sOmTr6irxtzgJECGMX2IC8dQQJsy
+         jKfL+HRVzdJ90kJSkWRMcOLUPT4P9OBt4mMB5mrm4feyjPt6pCi8T7kfb/1ASuBeYy
+         sPX856vMqVFWt04KkEasdOy/WUSU/XLUsXSMQHNw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ahmed Zaki <ahmed.zaki@intel.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 136/187] iavf: remove mask from iavf_irq_enable_queues()
+        patches@lists.linux.dev, Koba Ko <koba.ko@canonical.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.1 077/166] thunderbolt: Do not touch CL state configuration during discovery
 Date:   Mon, 19 Jun 2023 12:29:14 +0200
-Message-ID: <20230619102204.209905390@linuxfoundation.org>
+Message-ID: <20230619102158.520578281@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -59,103 +55,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ahmed Zaki <ahmed.zaki@intel.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit c37cf54c12cfaa51e7aaf88708167b0d3259e64e ]
+commit 3fe95742af29b8b4eccab2ba94bc521805c6e10c upstream.
 
-Enable more than 32 IRQs by removing the u32 bit mask in
-iavf_irq_enable_queues(). There is no need for the mask as there are no
-callers that select individual IRQs through the bitmask. Also, if the PF
-allocates more than 32 IRQs, this mask will prevent us from using all of
-them.
+If the boot firmware has already established tunnels, especially ones
+that have special requirements from the link such as DisplayPort, we
+should not blindly enable CL states (nor change the TMU configuration).
+Otherwise the existing tunnels may not work as expected.
 
-Modify the comment in iavf_register.h to show that the maximum number
-allowed for the IRQ index is 63 as per the iAVF standard 1.0 [1].
+For this reason, skip the CL state enabling when we go over the existing
+topology. This will also keep the TMU settings untouched because we do
+not change the TMU configuration when CL states are not enabled.
 
-link: [1] https://www.intel.com/content/dam/www/public/us/en/documents/product-specifications/ethernet-adaptive-virtual-function-hardware-spec.pdf
-Fixes: 5eae00c57f5e ("i40evf: main driver core")
-Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20230608200226.451861-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Koba Ko <koba.ko@canonical.com>
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/7831
+Cc: stable@vger.kernel.org # v6.0+
+Acked-By: Yehezkel Bernat <YehezkelShB@gmail.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf.h          |  2 +-
- drivers/net/ethernet/intel/iavf/iavf_main.c     | 15 ++++++---------
- drivers/net/ethernet/intel/iavf/iavf_register.h |  2 +-
- 3 files changed, 8 insertions(+), 11 deletions(-)
+ drivers/thunderbolt/tb.c |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
-index 746ff76f2fb1e..0615bb2b3c33b 100644
---- a/drivers/net/ethernet/intel/iavf/iavf.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf.h
-@@ -526,7 +526,7 @@ void iavf_set_ethtool_ops(struct net_device *netdev);
- void iavf_update_stats(struct iavf_adapter *adapter);
- void iavf_reset_interrupt_capability(struct iavf_adapter *adapter);
- int iavf_init_interrupt_scheme(struct iavf_adapter *adapter);
--void iavf_irq_enable_queues(struct iavf_adapter *adapter, u32 mask);
-+void iavf_irq_enable_queues(struct iavf_adapter *adapter);
- void iavf_free_all_tx_resources(struct iavf_adapter *adapter);
- void iavf_free_all_rx_resources(struct iavf_adapter *adapter);
- 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 2de4baff4c205..4a66873882d12 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -359,21 +359,18 @@ static void iavf_irq_disable(struct iavf_adapter *adapter)
- }
- 
- /**
-- * iavf_irq_enable_queues - Enable interrupt for specified queues
-+ * iavf_irq_enable_queues - Enable interrupt for all queues
-  * @adapter: board private structure
-- * @mask: bitmap of queues to enable
-  **/
--void iavf_irq_enable_queues(struct iavf_adapter *adapter, u32 mask)
-+void iavf_irq_enable_queues(struct iavf_adapter *adapter)
+--- a/drivers/thunderbolt/tb.c
++++ b/drivers/thunderbolt/tb.c
+@@ -607,6 +607,7 @@ static void tb_scan_port(struct tb_port
  {
- 	struct iavf_hw *hw = &adapter->hw;
- 	int i;
+ 	struct tb_cm *tcm = tb_priv(port->sw->tb);
+ 	struct tb_port *upstream_port;
++	bool discovery = false;
+ 	struct tb_switch *sw;
+ 	int ret;
  
- 	for (i = 1; i < adapter->num_msix_vectors; i++) {
--		if (mask & BIT(i - 1)) {
--			wr32(hw, IAVF_VFINT_DYN_CTLN1(i - 1),
--			     IAVF_VFINT_DYN_CTLN1_INTENA_MASK |
--			     IAVF_VFINT_DYN_CTLN1_ITR_INDX_MASK);
--		}
-+		wr32(hw, IAVF_VFINT_DYN_CTLN1(i - 1),
-+		     IAVF_VFINT_DYN_CTLN1_INTENA_MASK |
-+		     IAVF_VFINT_DYN_CTLN1_ITR_INDX_MASK);
- 	}
- }
+@@ -674,8 +675,10 @@ static void tb_scan_port(struct tb_port
+ 	 * tunnels and know which switches were authorized already by
+ 	 * the boot firmware.
+ 	 */
+-	if (!tcm->hotplug_active)
++	if (!tcm->hotplug_active) {
+ 		dev_set_uevent_suppress(&sw->dev, true);
++		discovery = true;
++	}
  
-@@ -387,7 +384,7 @@ void iavf_irq_enable(struct iavf_adapter *adapter, bool flush)
- 	struct iavf_hw *hw = &adapter->hw;
+ 	/*
+ 	 * At the moment Thunderbolt 2 and beyond (devices with LC) we
+@@ -705,10 +708,14 @@ static void tb_scan_port(struct tb_port
+ 	 * CL0s and CL1 are enabled and supported together.
+ 	 * Silently ignore CLx enabling in case CLx is not supported.
+ 	 */
+-	ret = tb_switch_enable_clx(sw, TB_CL1);
+-	if (ret && ret != -EOPNOTSUPP)
+-		tb_sw_warn(sw, "failed to enable %s on upstream port\n",
+-			   tb_switch_clx_name(TB_CL1));
++	if (discovery) {
++		tb_sw_dbg(sw, "discovery, not touching CL states\n");
++	} else {
++		ret = tb_switch_enable_clx(sw, TB_CL1);
++		if (ret && ret != -EOPNOTSUPP)
++			tb_sw_warn(sw, "failed to enable %s on upstream port\n",
++				   tb_switch_clx_name(TB_CL1));
++	}
  
- 	iavf_misc_irq_enable(adapter);
--	iavf_irq_enable_queues(adapter, ~0);
-+	iavf_irq_enable_queues(adapter);
- 
- 	if (flush)
- 		iavf_flush(hw);
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_register.h b/drivers/net/ethernet/intel/iavf/iavf_register.h
-index bf793332fc9d5..a19e88898a0bb 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_register.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf_register.h
-@@ -40,7 +40,7 @@
- #define IAVF_VFINT_DYN_CTL01_INTENA_MASK IAVF_MASK(0x1, IAVF_VFINT_DYN_CTL01_INTENA_SHIFT)
- #define IAVF_VFINT_DYN_CTL01_ITR_INDX_SHIFT 3
- #define IAVF_VFINT_DYN_CTL01_ITR_INDX_MASK IAVF_MASK(0x3, IAVF_VFINT_DYN_CTL01_ITR_INDX_SHIFT)
--#define IAVF_VFINT_DYN_CTLN1(_INTVF) (0x00003800 + ((_INTVF) * 4)) /* _i=0...15 */ /* Reset: VFR */
-+#define IAVF_VFINT_DYN_CTLN1(_INTVF) (0x00003800 + ((_INTVF) * 4)) /* _i=0...63 */ /* Reset: VFR */
- #define IAVF_VFINT_DYN_CTLN1_INTENA_SHIFT 0
- #define IAVF_VFINT_DYN_CTLN1_INTENA_MASK IAVF_MASK(0x1, IAVF_VFINT_DYN_CTLN1_INTENA_SHIFT)
- #define IAVF_VFINT_DYN_CTLN1_SWINT_TRIG_SHIFT 2
--- 
-2.39.2
-
+ 	if (tb_switch_is_clx_enabled(sw, TB_CL1))
+ 		/*
 
 
