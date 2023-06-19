@@ -2,42 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 331F9735E64
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 22:20:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B989B735E65
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 22:20:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229985AbjFSUUU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 16:20:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33422 "EHLO
+        id S229810AbjFSUUW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 16:20:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229572AbjFSUUK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 16:20:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D178199;
-        Mon, 19 Jun 2023 13:20:09 -0700 (PDT)
+        with ESMTP id S229875AbjFSUUN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 16:20:13 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B32FE63;
+        Mon, 19 Jun 2023 13:20:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 272C360C96;
-        Mon, 19 Jun 2023 20:20:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8096AC433C0;
-        Mon, 19 Jun 2023 20:20:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 82AF060EB7;
+        Mon, 19 Jun 2023 20:20:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C77C433C8;
+        Mon, 19 Jun 2023 20:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1687206008;
-        bh=BnTTsonXDCFaDO3hpoYOOMVwChJ5TEBN7H4Y60zt26U=;
+        s=korg; t=1687206010;
+        bh=10/kCI5Ttrf4hRsSJqVVVucNRiK6mVo1zX3xiVZfAto=;
         h=Date:To:From:Subject:From;
-        b=ZWfFBBLNqGHmYSnyKSXSibmH2CIt46WPKcmf3HX9AL0zqmymVqL+u3Yp+5sEvopws
-         quH5tgOAqYgm5A0jdPbXhXxUJ0LoghC1XGSC44nnzp2JIXmHDGTdTOqDhwQBtGVr/H
-         OuACS37xYiPBMDdZUWYpCeTWNh3N9GbNWLW9rq14=
-Date:   Mon, 19 Jun 2023 13:20:07 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        mike.kravetz@oracle.com, marcandre.lureau@redhat.com,
-        roberto.sassu@huawei.com, akpm@linux-foundation.org
+        b=qZXSbITGvw+QYzXwnV4uOVk8vvrmuErjDHt46uFAiuXTuIqlcUh0BcWTaJDYT2uyi
+         FdrOtqpxSwhqnG4d4kNZqBqonKrbTy+zv2miF3zDeyESEQ7H4QVPtVFkV1SuVjdzl8
+         1KmL75bLZgCL/TcR1oIgrNlPG6jSg7RSfwHd034g=
+Date:   Mon, 19 Jun 2023 13:20:10 -0700
+To:     mm-commits@vger.kernel.org, vivek.kasireddy@intel.com,
+        stable@vger.kernel.org, muchun.song@linux.dev, mhocko@suse.com,
+        kraxel@redhat.com, kirill.shutemov@linux.intel.com,
+        junxiao.chang@intel.com, jthoughton@google.com,
+        jmarchan@redhat.com, gregkh@linuxfoundation.org,
+        dongwon.kim@intel.com, david@redhat.com, mike.kravetz@oracle.com,
+        akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] memfd-check-for-non-null-file_seals-in-memfd_create-syscall.patch removed from -mm tree
-Message-Id: <20230619202008.8096AC433C0@smtp.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+Subject: [merged mm-hotfixes-stable] udmabuf-revert-add-support-for-mapping-hugepages-v4.patch removed from -mm tree
+Message-Id: <20230619202010.D3C77C433C8@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -48,58 +52,140 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: memfd: check for non-NULL file_seals in memfd_create() syscall
+     Subject: udmabuf: revert 'Add support for mapping hugepages (v4)'
 has been removed from the -mm tree.  Its filename was
-     memfd-check-for-non-null-file_seals-in-memfd_create-syscall.patch
+     udmabuf-revert-add-support-for-mapping-hugepages-v4.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Roberto Sassu <roberto.sassu@huawei.com>
-Subject: memfd: check for non-NULL file_seals in memfd_create() syscall
-Date: Wed, 7 Jun 2023 15:24:27 +0200
+From: Mike Kravetz <mike.kravetz@oracle.com>
+Subject: udmabuf: revert 'Add support for mapping hugepages (v4)'
+Date: Thu, 8 Jun 2023 13:49:27 -0700
 
-Ensure that file_seals is non-NULL before using it in the memfd_create()
-syscall.  One situation in which memfd_file_seals_ptr() could return a
-NULL pointer when CONFIG_SHMEM=n, oopsing the kernel.
+This effectively reverts commit 16c243e99d33 ("udmabuf: Add support for
+mapping hugepages (v4)").  Recently, Junxiao Chang found a BUG with page
+map counting as described here [1].  This issue pointed out that the
+udmabuf driver was making direct use of subpages of hugetlb pages.  This
+is not a good idea, and no other mm code attempts such use.  In addition
+to the mapcount issue, this also causes issues with hugetlb vmemmap
+optimization and page poisoning.
 
-Link: https://lkml.kernel.org/r/20230607132427.2867435-1-roberto.sassu@huaweicloud.com
-Fixes: 47b9012ecdc7 ("shmem: add sealing support to hugetlb-backed memfd")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Cc: Marc-Andr Lureau <marcandre.lureau@redhat.com>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
+For now, remove hugetlb support.
+
+If udmabuf wants to be used on hugetlb mappings, it should be changed to
+only use complete hugetlb pages.  This will require different alignment
+and size requirements on the UDMABUF_CREATE API.
+
+[1] https://lore.kernel.org/linux-mm/20230512072036.1027784-1-junxiao.chang@intel.com/
+
+Link: https://lkml.kernel.org/r/20230608204927.88711-1-mike.kravetz@oracle.com
+Fixes: 16c243e99d33 ("udmabuf: Add support for mapping hugepages (v4)")
+Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Acked-by: Gerd Hoffmann <kraxel@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Dongwon Kim <dongwon.kim@intel.com>
+Cc: James Houghton <jthoughton@google.com>
+Cc: Jerome Marchand <jmarchan@redhat.com>
+Cc: Junxiao Chang <junxiao.chang@intel.com>
+Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Muchun Song <muchun.song@linux.dev>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/memfd.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/dma-buf/udmabuf.c |   47 ++++--------------------------------
+ 1 file changed, 6 insertions(+), 41 deletions(-)
 
---- a/mm/memfd.c~memfd-check-for-non-null-file_seals-in-memfd_create-syscall
-+++ a/mm/memfd.c
-@@ -371,12 +371,15 @@ SYSCALL_DEFINE2(memfd_create,
+--- a/drivers/dma-buf/udmabuf.c~udmabuf-revert-add-support-for-mapping-hugepages-v4
++++ a/drivers/dma-buf/udmabuf.c
+@@ -12,7 +12,6 @@
+ #include <linux/shmem_fs.h>
+ #include <linux/slab.h>
+ #include <linux/udmabuf.h>
+-#include <linux/hugetlb.h>
+ #include <linux/vmalloc.h>
+ #include <linux/iosys-map.h>
  
- 		inode->i_mode &= ~0111;
- 		file_seals = memfd_file_seals_ptr(file);
--		*file_seals &= ~F_SEAL_SEAL;
--		*file_seals |= F_SEAL_EXEC;
-+		if (file_seals) {
-+			*file_seals &= ~F_SEAL_SEAL;
-+			*file_seals |= F_SEAL_EXEC;
-+		}
- 	} else if (flags & MFD_ALLOW_SEALING) {
- 		/* MFD_EXEC and MFD_ALLOW_SEALING are set */
- 		file_seals = memfd_file_seals_ptr(file);
--		*file_seals &= ~F_SEAL_SEAL;
-+		if (file_seals)
-+			*file_seals &= ~F_SEAL_SEAL;
+@@ -207,9 +206,7 @@ static long udmabuf_create(struct miscde
+ 	struct udmabuf *ubuf;
+ 	struct dma_buf *buf;
+ 	pgoff_t pgoff, pgcnt, pgidx, pgbuf = 0, pglimit;
+-	struct page *page, *hpage = NULL;
+-	pgoff_t subpgoff, maxsubpgs;
+-	struct hstate *hpstate;
++	struct page *page;
+ 	int seals, ret = -EINVAL;
+ 	u32 i, flags;
+ 
+@@ -245,7 +242,7 @@ static long udmabuf_create(struct miscde
+ 		if (!memfd)
+ 			goto err;
+ 		mapping = memfd->f_mapping;
+-		if (!shmem_mapping(mapping) && !is_file_hugepages(memfd))
++		if (!shmem_mapping(mapping))
+ 			goto err;
+ 		seals = memfd_fcntl(memfd, F_GET_SEALS, 0);
+ 		if (seals == -EINVAL)
+@@ -256,48 +253,16 @@ static long udmabuf_create(struct miscde
+ 			goto err;
+ 		pgoff = list[i].offset >> PAGE_SHIFT;
+ 		pgcnt = list[i].size   >> PAGE_SHIFT;
+-		if (is_file_hugepages(memfd)) {
+-			hpstate = hstate_file(memfd);
+-			pgoff = list[i].offset >> huge_page_shift(hpstate);
+-			subpgoff = (list[i].offset &
+-				    ~huge_page_mask(hpstate)) >> PAGE_SHIFT;
+-			maxsubpgs = huge_page_size(hpstate) >> PAGE_SHIFT;
+-		}
+ 		for (pgidx = 0; pgidx < pgcnt; pgidx++) {
+-			if (is_file_hugepages(memfd)) {
+-				if (!hpage) {
+-					hpage = find_get_page_flags(mapping, pgoff,
+-								    FGP_ACCESSED);
+-					if (!hpage) {
+-						ret = -EINVAL;
+-						goto err;
+-					}
+-				}
+-				page = hpage + subpgoff;
+-				get_page(page);
+-				subpgoff++;
+-				if (subpgoff == maxsubpgs) {
+-					put_page(hpage);
+-					hpage = NULL;
+-					subpgoff = 0;
+-					pgoff++;
+-				}
+-			} else {
+-				page = shmem_read_mapping_page(mapping,
+-							       pgoff + pgidx);
+-				if (IS_ERR(page)) {
+-					ret = PTR_ERR(page);
+-					goto err;
+-				}
++			page = shmem_read_mapping_page(mapping, pgoff + pgidx);
++			if (IS_ERR(page)) {
++				ret = PTR_ERR(page);
++				goto err;
+ 			}
+ 			ubuf->pages[pgbuf++] = page;
+ 		}
+ 		fput(memfd);
+ 		memfd = NULL;
+-		if (hpage) {
+-			put_page(hpage);
+-			hpage = NULL;
+-		}
  	}
  
- 	fd_install(fd, file);
+ 	exp_info.ops  = &udmabuf_ops;
 _
 
-Patches currently in -mm which might be from roberto.sassu@huawei.com are
+Patches currently in -mm which might be from mike.kravetz@oracle.com are
 
-shmem-use-ramfs_kill_sb-for-kill_sb-method-of-ramfs-based-tmpfs.patch
 
