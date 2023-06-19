@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3133D73544C
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:54:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2D51735336
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:42:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232301AbjFSKyh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:54:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53304 "EHLO
+        id S232027AbjFSKmy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:42:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232240AbjFSKyQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:54:16 -0400
+        with ESMTP id S229585AbjFSKma (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:42:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ECBB10D9
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:52:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FF3A1732
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:42:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F18B860B36
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:52:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 122BAC433C8;
-        Mon, 19 Jun 2023 10:52:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C8E7160B51
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:42:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E104BC433C8;
+        Mon, 19 Jun 2023 10:42:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171970;
-        bh=Q412A8uYul4sfbpdHRXwb45qt7ghnIqfwClbz6rfyF8=;
+        s=korg; t=1687171342;
+        bh=JFFVBMct/yX/UZPD8N/GLj70kM9PxvqbKdxCgpwk2Js=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W6344L0MO08xRMTtqDKt2JxVw8AF1pzNf89xbEpIwZuq2KjfoDs1c+WTAus/G9+Ss
-         afbfzDwP4q/4Hjiv7Us91gt4q4m7hbe2vclXbMvRU691+KN9JU08DM4ut/Ff8RmMFr
-         yvioKhKuxASPCT2XWX70IFcIelZotrs9+6Qdac9U=
+        b=CsJeRiREolJ8L0WEE7T7wQU9fMBb5Rb2Ut5OucevfLHmY+M4fSeAICS3W15XjR11q
+         jCke0Eetsu6po3JbecDg8L6mGZ1T2pqHAEv3F9uk47NKBgLogpir3qSiBfNNhDuOo5
+         qsdRTvXDpg7qRk/ybVviOPtCDcBRXtAcDATfvmDU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Karol Herbst <kherbst@redhat.com>,
-        Dave Airlie <airlied@redhat.com>
-Subject: [PATCH 5.4 28/64] nouveau: fix client work fence deletion race
+        patches@lists.linux.dev, Leon Romanovsky <leonro@nvidia.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Nikolay Aleksandrov <razor@blackwall.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 4.19 46/49] neighbour: delete neigh_lookup_nodev as not used
 Date:   Mon, 19 Jun 2023 12:30:24 +0200
-Message-ID: <20230619102134.373555440@linuxfoundation.org>
+Message-ID: <20230619102132.325561977@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
-References: <20230619102132.808972458@linuxfoundation.org>
+In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
+References: <20230619102129.856988902@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,60 +56,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dave Airlie <airlied@redhat.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-commit c8a5d5ea3ba6a18958f8d76430e4cd68eea33943 upstream.
+commit 76b9bf965c98c9b53ef7420b3b11438dbd764f92 upstream.
 
-This seems to have existed for ever but is now more apparant after
-commit 9bff18d13473 ("drm/ttm: use per BO cleanup workers")
+neigh_lookup_nodev isn't used in the kernel after removal
+of DECnet. So let's remove it.
 
-My analysis: two threads are running, one in the irq signalling the
-fence, in dma_fence_signal_timestamp_locked, it has done the
-DMA_FENCE_FLAG_SIGNALLED_BIT setting, but hasn't yet reached the
-callbacks.
-
-The second thread in nouveau_cli_work_ready, where it sees the fence is
-signalled, so then puts the fence, cleanups the object and frees the
-work item, which contains the callback.
-
-Thread one goes again and tries to call the callback and causes the
-use-after-free.
-
-Proposed fix: lock the fence signalled check in nouveau_cli_work_ready,
-so either the callbacks are done or the memory is freed.
-
-Reviewed-by: Karol Herbst <kherbst@redhat.com>
-Fixes: 11e451e74050 ("drm/nouveau: remove fence wait code from deferred client work handler")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Link: https://lore.kernel.org/dri-devel/20230615024008.1600281-1-airlied@gmail.com/
+Fixes: 1202cdd66531 ("Remove DECnet support from kernel")
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/eb5656200d7964b2d177a36b77efa3c597d6d72d.1678267343.git.leonro@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_drm.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ include/net/neighbour.h |    2 --
+ net/core/neighbour.c    |   31 -------------------------------
+ 2 files changed, 33 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/nouveau_drm.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
-@@ -123,10 +123,16 @@ nouveau_name(struct drm_device *dev)
- static inline bool
- nouveau_cli_work_ready(struct dma_fence *fence)
- {
--	if (!dma_fence_is_signaled(fence))
--		return false;
--	dma_fence_put(fence);
--	return true;
-+	bool ret = true;
-+
-+	spin_lock_irq(fence->lock);
-+	if (!dma_fence_is_signaled_locked(fence))
-+		ret = false;
-+	spin_unlock_irq(fence->lock);
-+
-+	if (ret == true)
-+		dma_fence_put(fence);
-+	return ret;
+--- a/include/net/neighbour.h
++++ b/include/net/neighbour.h
+@@ -300,8 +300,6 @@ void neigh_table_init(int index, struct
+ int neigh_table_clear(int index, struct neigh_table *tbl);
+ struct neighbour *neigh_lookup(struct neigh_table *tbl, const void *pkey,
+ 			       struct net_device *dev);
+-struct neighbour *neigh_lookup_nodev(struct neigh_table *tbl, struct net *net,
+-				     const void *pkey);
+ struct neighbour *__neigh_create(struct neigh_table *tbl, const void *pkey,
+ 				 struct net_device *dev, bool want_ref);
+ static inline struct neighbour *neigh_create(struct neigh_table *tbl,
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -476,37 +476,6 @@ struct neighbour *neigh_lookup(struct ne
  }
+ EXPORT_SYMBOL(neigh_lookup);
  
- static void
+-struct neighbour *neigh_lookup_nodev(struct neigh_table *tbl, struct net *net,
+-				     const void *pkey)
+-{
+-	struct neighbour *n;
+-	unsigned int key_len = tbl->key_len;
+-	u32 hash_val;
+-	struct neigh_hash_table *nht;
+-
+-	NEIGH_CACHE_STAT_INC(tbl, lookups);
+-
+-	rcu_read_lock_bh();
+-	nht = rcu_dereference_bh(tbl->nht);
+-	hash_val = tbl->hash(pkey, NULL, nht->hash_rnd) >> (32 - nht->hash_shift);
+-
+-	for (n = rcu_dereference_bh(nht->hash_buckets[hash_val]);
+-	     n != NULL;
+-	     n = rcu_dereference_bh(n->next)) {
+-		if (!memcmp(n->primary_key, pkey, key_len) &&
+-		    net_eq(dev_net(n->dev), net)) {
+-			if (!refcount_inc_not_zero(&n->refcnt))
+-				n = NULL;
+-			NEIGH_CACHE_STAT_INC(tbl, hits);
+-			break;
+-		}
+-	}
+-
+-	rcu_read_unlock_bh();
+-	return n;
+-}
+-EXPORT_SYMBOL(neigh_lookup_nodev);
+-
+ struct neighbour *__neigh_create(struct neigh_table *tbl, const void *pkey,
+ 				 struct net_device *dev, bool want_ref)
+ {
 
 
