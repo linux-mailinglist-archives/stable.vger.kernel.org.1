@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 188A573533A
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:43:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D21EE7354ED
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:00:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232046AbjFSKnF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:43:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47500 "EHLO
+        id S232164AbjFSLAQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 07:00:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231876AbjFSKmi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:42:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54F1F1988
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:42:34 -0700 (PDT)
+        with ESMTP id S232502AbjFSK7Q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:59:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C31710F8
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:58:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E614460670
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:42:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A2CC433C8;
-        Mon, 19 Jun 2023 10:42:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0F1C960B5F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:58:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2663DC433C8;
+        Mon, 19 Jun 2023 10:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171353;
-        bh=VFVGxBuqm5H4J4uwXFbJt8Tm/NJQ3pTZiq5CYB4ywaI=;
+        s=korg; t=1687172300;
+        bh=MJ9SqAkxj+Uz/O9NmUpcMuzKZlxZQhNVDtS3Pv/kHuI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wte8lB9GZtxZzD3nvskDjGPMKSEuoTs+DrzND28o9jctp+u4n4sx4Yo3usAUhK0ev
-         HmqFtHLjWLw7RdzXvxIen4KTp/5wVoLHx3c9IpXs5dEQOMRkQrV2Xv+kGlegV3DM7X
-         Z8ruSItLnw1dgvz4bRgfMU+9xM24iKn5kBG2a4lE=
+        b=Z03BmcI8r3A8DsIvxz1RQaI6L9y/603PAGYc/S97ySL7eEKVXTXtj4IBk8O5kWwjT
+         1ILPM9maUntRMa48S6GIyXIcvmVl7cPEs04VzpHC7MMb6I7qOsEnUNxh6sm3JrvDE+
+         Eg6FTd5jh88vlOhWIzHsi8S9o1THtNVm6c4tBM1Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Romain Izard <romain.izard.pro@gmail.com>,
-        Felipe Balbi <felipe.balbi@linux.intel.com>,
-        Joakim Tjernlund <joakim.tjernlund@infinera.com>
-Subject: [PATCH 4.19 25/49] usb: gadget: f_ncm: Add OS descriptor support
+        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
+        David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 019/107] btrfs: scrub: try harder to mark RAID56 block groups read-only
 Date:   Mon, 19 Jun 2023 12:30:03 +0200
-Message-ID: <20230619102131.190677138@linuxfoundation.org>
+Message-ID: <20230619102142.445479856@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
-References: <20230619102129.856988902@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,159 +55,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Romain Izard <romain.izard.pro@gmail.com>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 793409292382027226769d0299987f06cbd97a6e upstream.
+[ Upstream commit 7561551e7ba870b9659083b95feb520fb2dacce3 ]
 
-To be able to use the default USB class drivers available in Microsoft
-Windows, we need to add OS descriptors to the exported USB gadget to
-tell the OS that we are compatible with the built-in drivers.
+Currently we allow a block group not to be marked read-only for scrub.
 
-Copy the OS descriptor support from f_rndis into f_ncm. As a result,
-using the WINNCM compatible ID, the UsbNcm driver is loaded on
-enumeration without the need for a custom driver or inf file.
+But for RAID56 block groups if we require the block group to be
+read-only, then we're allowed to use cached content from scrub stripe to
+reduce unnecessary RAID56 reads.
 
-Signed-off-by: Romain Izard <romain.izard.pro@gmail.com>
-Signed-off-by: Felipe Balbi <felipe.balbi@linux.intel.com>
-Signed-off-by: Joakim Tjernlund <joakim.tjernlund@infinera.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So this patch would:
+
+- Make btrfs_inc_block_group_ro() try harder
+  During my tests, for cases like btrfs/061 and btrfs/064, we can hit
+  ENOSPC from btrfs_inc_block_group_ro() calls during scrub.
+
+  The reason is if we only have one single data chunk, and trying to
+  scrub it, we won't have any space left for any newer data writes.
+
+  But this check should be done by the caller, especially for scrub
+  cases we only temporarily mark the chunk read-only.
+  And newer data writes would always try to allocate a new data chunk
+  when needed.
+
+- Return error for scrub if we failed to mark a RAID56 chunk read-only
+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_ncm.c |   47 +++++++++++++++++++++++++++++++++---
- drivers/usb/gadget/function/u_ncm.h |    3 ++
- 2 files changed, 47 insertions(+), 3 deletions(-)
+ fs/btrfs/block-group.c | 14 ++++++++++++--
+ fs/btrfs/scrub.c       |  9 ++++++++-
+ 2 files changed, 20 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -23,6 +23,7 @@
- #include "u_ether.h"
- #include "u_ether_configfs.h"
- #include "u_ncm.h"
-+#include "configfs.h"
- 
- /*
-  * This function is a "CDC Network Control Model" (CDC NCM) Ethernet link.
-@@ -1434,6 +1435,16 @@ static int ncm_bind(struct usb_configura
- 		return -EINVAL;
- 
- 	ncm_opts = container_of(f->fi, struct f_ncm_opts, func_inst);
-+
-+	if (cdev->use_os_string) {
-+		f->os_desc_table = kzalloc(sizeof(*f->os_desc_table),
-+					   GFP_KERNEL);
-+		if (!f->os_desc_table)
-+			return -ENOMEM;
-+		f->os_desc_n = 1;
-+		f->os_desc_table[0].os_desc = &ncm_opts->ncm_os_desc;
-+	}
-+
- 	/*
- 	 * in drivers/usb/gadget/configfs.c:configfs_composite_bind()
- 	 * configurations are bound in sequence with list_for_each_entry,
-@@ -1447,13 +1458,15 @@ static int ncm_bind(struct usb_configura
- 		status = gether_register_netdev(ncm_opts->net);
- 		mutex_unlock(&ncm_opts->lock);
- 		if (status)
--			return status;
-+			goto fail;
- 		ncm_opts->bound = true;
+diff --git a/fs/btrfs/block-group.c b/fs/btrfs/block-group.c
+index 19f71c305b988..a76796f153d5f 100644
+--- a/fs/btrfs/block-group.c
++++ b/fs/btrfs/block-group.c
+@@ -2576,10 +2576,20 @@ int btrfs_inc_block_group_ro(struct btrfs_block_group *cache,
  	}
- 	us = usb_gstrings_attach(cdev, ncm_strings,
- 				 ARRAY_SIZE(ncm_string_defs));
--	if (IS_ERR(us))
--		return PTR_ERR(us);
-+	if (IS_ERR(us)) {
-+		status = PTR_ERR(us);
-+		goto fail;
-+	}
- 	ncm_control_intf.iInterface = us[STRING_CTRL_IDX].id;
- 	ncm_data_nop_intf.iInterface = us[STRING_DATA_IDX].id;
- 	ncm_data_intf.iInterface = us[STRING_DATA_IDX].id;
-@@ -1470,6 +1483,10 @@ static int ncm_bind(struct usb_configura
- 	ncm_control_intf.bInterfaceNumber = status;
- 	ncm_union_desc.bMasterInterface0 = status;
  
-+	if (cdev->use_os_string)
-+		f->os_desc_table[0].if_id =
-+			ncm_iad_desc.bFirstInterface;
+ 	ret = inc_block_group_ro(cache, 0);
+-	if (!do_chunk_alloc || ret == -ETXTBSY)
+-		goto unlock_out;
+ 	if (!ret)
+ 		goto out;
++	if (ret == -ETXTBSY)
++		goto unlock_out;
 +
- 	status = usb_interface_id(c, f);
- 	if (status < 0)
- 		goto fail;
-@@ -1549,6 +1566,9 @@ static int ncm_bind(struct usb_configura
- 	return 0;
- 
- fail:
-+	kfree(f->os_desc_table);
-+	f->os_desc_n = 0;
++	/*
++	 * Skip chunk alloction if the bg is SYSTEM, this is to avoid system
++	 * chunk allocation storm to exhaust the system chunk array.  Otherwise
++	 * we still want to try our best to mark the block group read-only.
++	 */
++	if (!do_chunk_alloc && ret == -ENOSPC &&
++	    (cache->flags & BTRFS_BLOCK_GROUP_SYSTEM))
++		goto unlock_out;
 +
- 	if (ncm->notify_req) {
- 		kfree(ncm->notify_req->buf);
- 		usb_ep_free_request(ncm->notify, ncm->notify_req);
-@@ -1603,16 +1623,22 @@ static void ncm_free_inst(struct usb_fun
- 		gether_cleanup(netdev_priv(opts->net));
- 	else
- 		free_netdev(opts->net);
-+	kfree(opts->ncm_interf_group);
- 	kfree(opts);
- }
+ 	alloc_flags = btrfs_get_alloc_profile(fs_info, cache->space_info->flags);
+ 	ret = btrfs_chunk_alloc(trans, alloc_flags, CHUNK_ALLOC_FORCE);
+ 	if (ret < 0)
+diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
+index ca8d6979c7887..0d1715ebdef9c 100644
+--- a/fs/btrfs/scrub.c
++++ b/fs/btrfs/scrub.c
+@@ -3812,13 +3812,20 @@ int scrub_enumerate_chunks(struct scrub_ctx *sctx,
  
- static struct usb_function_instance *ncm_alloc_inst(void)
- {
- 	struct f_ncm_opts *opts;
-+	struct usb_os_desc *descs[1];
-+	char *names[1];
-+	struct config_group *ncm_interf_group;
- 
- 	opts = kzalloc(sizeof(*opts), GFP_KERNEL);
- 	if (!opts)
- 		return ERR_PTR(-ENOMEM);
-+	opts->ncm_os_desc.ext_compat_id = opts->ncm_ext_compat_id;
-+
- 	mutex_init(&opts->lock);
- 	opts->func_inst.free_func_inst = ncm_free_inst;
- 	opts->net = gether_setup_default();
-@@ -1621,8 +1647,20 @@ static struct usb_function_instance *ncm
- 		kfree(opts);
- 		return ERR_CAST(net);
- 	}
-+	INIT_LIST_HEAD(&opts->ncm_os_desc.ext_prop);
-+
-+	descs[0] = &opts->ncm_os_desc;
-+	names[0] = "ncm";
- 
- 	config_group_init_type_name(&opts->func_inst.group, "", &ncm_func_type);
-+	ncm_interf_group =
-+		usb_os_desc_prepare_interf_dir(&opts->func_inst.group, 1, descs,
-+					       names, THIS_MODULE);
-+	if (IS_ERR(ncm_interf_group)) {
-+		ncm_free_inst(&opts->func_inst);
-+		return ERR_CAST(ncm_interf_group);
-+	}
-+	opts->ncm_interf_group = ncm_interf_group;
- 
- 	return &opts->func_inst;
- }
-@@ -1648,6 +1686,9 @@ static void ncm_unbind(struct usb_config
- 
- 	hrtimer_cancel(&ncm->task_timer);
- 
-+	kfree(f->os_desc_table);
-+	f->os_desc_n = 0;
-+
- 	ncm_string_defs[0].id = 0;
- 	usb_free_all_descriptors(f);
- 
---- a/drivers/usb/gadget/function/u_ncm.h
-+++ b/drivers/usb/gadget/function/u_ncm.h
-@@ -20,6 +20,9 @@ struct f_ncm_opts {
- 	struct net_device		*net;
- 	bool				bound;
- 
-+	struct config_group		*ncm_interf_group;
-+	struct usb_os_desc		ncm_os_desc;
-+	char				ncm_ext_compat_id[16];
- 	/*
- 	 * Read/write access to configfs attributes is handled by configfs.
- 	 *
+ 		if (ret == 0) {
+ 			ro_set = 1;
+-		} else if (ret == -ENOSPC && !sctx->is_dev_replace) {
++		} else if (ret == -ENOSPC && !sctx->is_dev_replace &&
++			   !(cache->flags & BTRFS_BLOCK_GROUP_RAID56_MASK)) {
+ 			/*
+ 			 * btrfs_inc_block_group_ro return -ENOSPC when it
+ 			 * failed in creating new chunk for metadata.
+ 			 * It is not a problem for scrub, because
+ 			 * metadata are always cowed, and our scrub paused
+ 			 * commit_transactions.
++			 *
++			 * For RAID56 chunks, we have to mark them read-only
++			 * for scrub, as later we would use our own cache
++			 * out of RAID56 realm.
++			 * Thus we want the RAID56 bg to be marked RO to
++			 * prevent RMW from screwing up out cache.
+ 			 */
+ 			ro_set = 0;
+ 		} else if (ret == -ETXTBSY) {
+-- 
+2.39.2
+
 
 
