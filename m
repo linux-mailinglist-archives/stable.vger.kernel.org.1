@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B7E57353CF
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:49:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A450C735418
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:52:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232051AbjFSKs7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:48:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52056 "EHLO
+        id S232186AbjFSKwN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:52:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232190AbjFSKsq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:48:46 -0400
+        with ESMTP id S232174AbjFSKvo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:51:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE8D41737
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:48:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8ACCE2685
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:50:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3251360B8D
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:48:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45133C433C0;
-        Mon, 19 Jun 2023 10:48:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 051B960A4D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:50:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A8F7C433C0;
+        Mon, 19 Jun 2023 10:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171718;
-        bh=2tamyKIfjOWDZ+m0BMMMNh/RZR9xpgh14xTAtdzML5E=;
+        s=korg; t=1687171850;
+        bh=Ud4q9yrOX7kDetQGGwKZ1Z085BHIA3euUUXeHzhOWhg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eARRbL+AoezcEyv01VdaLSrdHe8FiEw6npgzN+jWOF+m2NTMm7JMaexvP7z7ovrrf
-         BXR20icQihfb0uLyEyuHOhaKT8jC9FllzrEOaDWKWiJdiDfW2vUzEc7ctFVWeWZ1Hx
-         IGG9yX1bB0bq8xz9Xq5mu7ttNrMhL7mFAnvFXOZA=
+        b=cZYmEJNZ+ouKnXU0mDovCToELzko/4PJ+OIHquOYETlxeGlDxIvMNXOPFjLhqBeCV
+         yh1QvzIk1C7YOrTs0pyTCQhoa5/85AF1pYcDBra/5zeyFis78S/hh+4DbEhwpeD9OI
+         GnyQoCXekA4K2bF97vN88YKCbUCVNF1q4dnS396c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Evan Quan <Evan.Quan@amd.com>,
+        Lijo Lazar <Lijo.Lazar@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 131/166] net: phylink: use a dedicated helper to parse usgmii control word
-Date:   Mon, 19 Jun 2023 12:30:08 +0200
-Message-ID: <20230619102201.146238648@linuxfoundation.org>
+Subject: [PATCH 5.4 13/64] power: supply: Fix logic checking if system is running from battery
+Date:   Mon, 19 Jun 2023 12:30:09 +0200
+Message-ID: <20230619102133.528426325@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
+References: <20230619102132.808972458@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,84 +57,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 923454c0368b8092e9d05c020f50abca577e7290 ]
+[ Upstream commit 95339f40a8b652b5b1773def31e63fc53c26378a ]
 
-Q-USGMII is a derivative of USGMII, that uses a specific formatting for
-the control word. The layout is close to the USXGMII control word, but
-doesn't support speeds over 1Gbps. Use a dedicated decoding logic for
-the USGMII control word, re-using USXGMII definitions but only considering
-10/100/1000Mbps speeds
+The logic used for power_supply_is_system_supplied() counts all power
+supplies and assumes that the system is running from AC if there is
+either a non-battery power-supply reporting to be online or if no
+power-supplies exist at all.
 
-Fixes: 5e61fe157a27 ("net: phy: Introduce QUSGMII PHY mode")
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The second rule is for desktop systems, that don't have any
+battery/charger devices. These systems will incorrectly report to be
+powered from battery once a device scope power-supply is registered
+(e.g. a HID device), since these power-supplies increase the counter.
+
+Apart from HID devices, recent dGPUs provide UCSI power supplies on a
+desktop systems. The dGPU by default doesn't have anything plugged in so
+it's 'offline'. This makes power_supply_is_system_supplied() return 0
+with a count of 1 meaning all drivers that use this get a wrong judgement.
+
+To fix this case adjust the logic to also examine the scope of the power
+supply. If the power supply is deemed a device power supply, then don't
+count it.
+
+Cc: Evan Quan <Evan.Quan@amd.com>
+Suggested-by: Lijo Lazar <Lijo.Lazar@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phylink.c | 39 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
+ drivers/power/supply/power_supply_core.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index acd3405ddc9c6..5b064a1de92f0 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -3263,6 +3263,41 @@ void phylink_decode_usxgmii_word(struct phylink_link_state *state,
- }
- EXPORT_SYMBOL_GPL(phylink_decode_usxgmii_word);
+diff --git a/drivers/power/supply/power_supply_core.c b/drivers/power/supply/power_supply_core.c
+index 3fdc988595b3a..2d6836b33da33 100644
+--- a/drivers/power/supply/power_supply_core.c
++++ b/drivers/power/supply/power_supply_core.c
+@@ -347,6 +347,10 @@ static int __power_supply_is_system_supplied(struct device *dev, void *data)
+ 	struct power_supply *psy = dev_get_drvdata(dev);
+ 	unsigned int *count = data;
  
-+/**
-+ * phylink_decode_usgmii_word() - decode the USGMII word from a MAC PCS
-+ * @state: a pointer to a struct phylink_link_state.
-+ * @lpa: a 16 bit value which stores the USGMII auto-negotiation word
-+ *
-+ * Helper for MAC PCS supporting the USGMII protocol and the auto-negotiation
-+ * code word.  Decode the USGMII code word and populate the corresponding fields
-+ * (speed, duplex) into the phylink_link_state structure. The structure for this
-+ * word is the same as the USXGMII word, except it only supports speeds up to
-+ * 1Gbps.
-+ */
-+static void phylink_decode_usgmii_word(struct phylink_link_state *state,
-+				       uint16_t lpa)
-+{
-+	switch (lpa & MDIO_USXGMII_SPD_MASK) {
-+	case MDIO_USXGMII_10:
-+		state->speed = SPEED_10;
-+		break;
-+	case MDIO_USXGMII_100:
-+		state->speed = SPEED_100;
-+		break;
-+	case MDIO_USXGMII_1000:
-+		state->speed = SPEED_1000;
-+		break;
-+	default:
-+		state->link = false;
-+		return;
-+	}
++	if (!psy->desc->get_property(psy, POWER_SUPPLY_PROP_SCOPE, &ret))
++		if (ret.intval == POWER_SUPPLY_SCOPE_DEVICE)
++			return 0;
 +
-+	if (lpa & MDIO_USXGMII_FULL_DUPLEX)
-+		state->duplex = DUPLEX_FULL;
-+	else
-+		state->duplex = DUPLEX_HALF;
-+}
-+
- /**
-  * phylink_mii_c22_pcs_decode_state() - Decode MAC PCS state from MII registers
-  * @state: a pointer to a &struct phylink_link_state.
-@@ -3299,9 +3334,11 @@ void phylink_mii_c22_pcs_decode_state(struct phylink_link_state *state,
+ 	(*count)++;
+ 	if (psy->desc->type != POWER_SUPPLY_TYPE_BATTERY)
+ 		if (!psy->desc->get_property(psy, POWER_SUPPLY_PROP_ONLINE,
+@@ -365,8 +369,8 @@ int power_supply_is_system_supplied(void)
+ 				      __power_supply_is_system_supplied);
  
- 	case PHY_INTERFACE_MODE_SGMII:
- 	case PHY_INTERFACE_MODE_QSGMII:
--	case PHY_INTERFACE_MODE_QUSGMII:
- 		phylink_decode_sgmii_word(state, lpa);
- 		break;
-+	case PHY_INTERFACE_MODE_QUSGMII:
-+		phylink_decode_usgmii_word(state, lpa);
-+		break;
- 
- 	default:
- 		state->link = false;
+ 	/*
+-	 * If no power class device was found at all, most probably we are
+-	 * running on a desktop system, so assume we are on mains power.
++	 * If no system scope power class device was found at all, most probably we
++	 * are running on a desktop system, so assume we are on mains power.
+ 	 */
+ 	if (count == 0)
+ 		return 1;
 -- 
 2.39.2
 
