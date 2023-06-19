@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 674EA735429
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:52:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8AA973533C
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:43:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232276AbjFSKw6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:52:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52076 "EHLO
+        id S229909AbjFSKnJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:43:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230394AbjFSKwg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:52:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC3352D47
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:51:29 -0700 (PDT)
+        with ESMTP id S230344AbjFSKmp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:42:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7749C1
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:42:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CC30160B5B
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:51:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA8F3C433C9;
-        Mon, 19 Jun 2023 10:51:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E62E60B51
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:42:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6757AC433C8;
+        Mon, 19 Jun 2023 10:42:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171889;
-        bh=GeYiJEk5rv9+QjkRUqzIvrDomvXWpHGJuAv1UJMNoaY=;
+        s=korg; t=1687171358;
+        bh=ZeTGurbKT4eMNLGFM/TZlnQn9kab+3MNwEvhoBCUZm4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0UbtGw/3GN5QcphEK/VgCln97pn+QwjX0es7HmVuUCl6k09F0qVyVAj+WU5G+cqM/
-         j4U4J6ljk1v+pRrb/GXAFMQ4X4ERwKnEZ17JHX6+pKr8/azpyJLGdLlhHX6IfI2Kbm
-         l1Mbn0wun6O80z983xsmnNGcUpqjOmotbX5uM4vg=
+        b=c00ZmOHLr42Zvh7gjpdEpawYLfbawSM8neeiEn4YSIrEO3o5VKI/9Lt+Bnjic9rgy
+         4CFQFa1apXjUpSj+JPN+gsUh/VD0QGM2aLLjc+WlAT29fMjwEVFxhcWQzsPVLDA+rA
+         56z5wUx3FRBfPbXAoF/pNBro3gmDGECZC3GCjt2k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 08/64] ARM: dts: vexpress: add missing cache properties
-Date:   Mon, 19 Jun 2023 12:30:04 +0200
-Message-ID: <20230619102133.258615831@linuxfoundation.org>
+Subject: [PATCH 4.19 27/49] netfilter: nfnetlink: skip error delivery on batch in case of ENOMEM
+Date:   Mon, 19 Jun 2023 12:30:05 +0200
+Message-ID: <20230619102131.291832509@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
-References: <20230619102132.808972458@linuxfoundation.org>
+In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
+References: <20230619102129.856988902@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,35 +54,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 328acc5657c6197753238d7ce0a6924ead829347 ]
+[ Upstream commit a1a64a151dae8ac3581c1cbde44b672045cb658b ]
 
-As all level 2 and level 3 caches are unified, add required
-cache-unified property to fix warnings like:
+If caller reports ENOMEM, then stop iterating over the batch and send a
+single netlink message to userspace to report OOM.
 
-  vexpress-v2p-ca5s.dtb: cache-controller@2c0f0000: 'cache-unified' is a required property
-
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230423150837.118466-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: cbb8125eb40b ("netfilter: nfnetlink: deliver netlink errors on batch completion")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/vexpress-v2p-ca5s.dts | 1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nfnetlink.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/vexpress-v2p-ca5s.dts b/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
-index d5b47d526f9ef..7f1edc3ba6a1e 100644
---- a/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
-+++ b/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
-@@ -132,6 +132,7 @@ L2: cache-controller@2c0f0000 {
- 		reg = <0x2c0f0000 0x1000>;
- 		interrupts = <0 84 4>;
- 		cache-level = <2>;
-+		cache-unified;
- 	};
- 
- 	pmu {
+diff --git a/net/netfilter/nfnetlink.c b/net/netfilter/nfnetlink.c
+index 39e369e18cb87..0267be2e9cfe8 100644
+--- a/net/netfilter/nfnetlink.c
++++ b/net/netfilter/nfnetlink.c
+@@ -452,7 +452,8 @@ static void nfnetlink_rcv_batch(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 			 * processed, this avoids that the same error is
+ 			 * reported several times when replaying the batch.
+ 			 */
+-			if (nfnl_err_add(&err_list, nlh, err, &extack) < 0) {
++			if (err == -ENOMEM ||
++			    nfnl_err_add(&err_list, nlh, err, &extack) < 0) {
+ 				/* We failed to enqueue an error, reset the
+ 				 * list of errors and send OOM to userspace
+ 				 * pointing to the batch header.
 -- 
 2.39.2
 
