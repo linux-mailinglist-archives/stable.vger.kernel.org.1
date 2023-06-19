@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DF9D735280
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:35:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C11A735355
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:44:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230498AbjFSKfk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:35:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42006 "EHLO
+        id S230344AbjFSKo0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:44:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230493AbjFSKfM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:35:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA18DE58
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:35:11 -0700 (PDT)
+        with ESMTP id S231961AbjFSKnu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:43:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 549591703
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:43:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B87E60B0D
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:35:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 719BCC433C0;
-        Mon, 19 Jun 2023 10:35:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DE72C60A50
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:43:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E47C433C0;
+        Mon, 19 Jun 2023 10:43:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687170910;
-        bh=acHPDgvibvG3g4jXcS9jq8sPcqXOS7+ZZyNYKwl6Jzo=;
+        s=korg; t=1687171412;
+        bh=hmCtJpQjdp9jItNQhrqO208ugFMQmvJywnybkkkOh5o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A22kbNCdL+j+8OJ/S+aS6XI0n+vTcVcrSCnSdJWD38sF/PHrc0zuJqJqpikeZ4VFj
-         uyK8qiZhurJ70SbGLwXmnyUfKf2+fNkdiXievEMzyd9NBZEaXDZTfKVczkQHfoaAPH
-         l5P9RYMTZZ7SChbD+H5Yo8BlOCM9nmNpq1Flo9HE=
+        b=epWTRASeRbsZ4B5e+Bs9nwBC/nSazXcHj3vbDcTc/QsAvun/lXmNE+nT/c4mwRjhA
+         mVyzekeoGbbWSG/YO/EQpYpjjN62dnUQNLa+bzVOdFI/lI52WERrb7P2ffpRdy7FCp
+         8izJD03Kmm6Pm8ZwsDXlMwzhN5h1skBqmG5+VTAA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wes Huang <wes.huang@moxa.com>,
-        =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.3 080/187] net: usb: qmi_wwan: add support for Compal RXM-G1
+        patches@lists.linux.dev, Julius Werner <jwerner@chromium.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 021/166] irqchip/gic-v3: Disable pseudo NMIs on Mediatek devices w/ firmware issues
 Date:   Mon, 19 Jun 2023 12:28:18 +0200
-Message-ID: <20230619102201.486864452@linuxfoundation.org>
+Message-ID: <20230619102155.763960813@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,85 +55,137 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wes Huang <wes.huang@moxa.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit 863199199713908afaa47ba09332b87621c12496 upstream.
+[ Upstream commit 44bd78dd2b8897f59b7e3963f088caadb7e4f047 ]
 
-Add support for Compal RXM-G1 which is based on Qualcomm SDX55 chip.
-This patch adds support for two compositions:
+Some Chromebooks with Mediatek SoCs have a problem where the firmware
+doesn't properly save/restore certain GICR registers. Newer
+Chromebooks should fix this issue and we may be able to do firmware
+updates for old Chromebooks. At the moment, the only known issue with
+these Chromebooks is that we can't enable "pseudo NMIs" since the
+priority register can be lost. Enabling "pseudo NMIs" on Chromebooks
+with the problematic firmware causes crashes and freezes.
 
-0x9091: DIAG + MODEM + QMI_RMNET + ADB
-0x90db: DIAG + DUN + RMNET + DPL + QDSS(Trace) + ADB
+Let's detect devices with this problem and then disable "pseudo NMIs"
+on them. We'll detect the problem by looking for the presence of the
+"mediatek,broken-save-restore-fw" property in the GIC device tree
+node. Any devices with fixed firmware will not have this property.
 
-T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=05c6 ProdID=9091 Rev= 4.14
-S:  Manufacturer=QCOM
-S:  Product=SDXPRAIRIE-MTP _SN:719AB680
-S:  SerialNumber=719ab680
-C:* #Ifs= 4 Cfg#= 1 Atr=80 MxPwr=896mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=(none)
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=(none)
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=84(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+Our detection plan works because we never bake a Chromebook's device
+tree into firmware. Instead, device trees are always bundled with the
+kernel. We'll update the device trees of all affected Chromebooks and
+then we'll never enable "pseudo NMI" on a kernel that is bundled with
+old device trees. When a firmware update is shipped that fixes this
+issue it will know to patch the device tree to remove the property.
 
-T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=05c6 ProdID=90db Rev= 4.14
-S:  Manufacturer=QCOM
-S:  Product=SDXPRAIRIE-MTP _SN:719AB680
-S:  SerialNumber=719ab680
-C:* #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=896mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=(none)
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=(none)
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=84(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-E:  Ad=8f(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+In order to make this work, the quick detection mechanism of the GICv3
+code is extended to be able to look for properties in addition to
+looking at "compatible".
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Wes Huang <wes.huang@moxa.com>
-Acked-by: Bjørn Mork <bjorn@mork.no>
-Link: https://lore.kernel.org/r/20230608030141.3546-1-wes.huang@moxa.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Julius Werner <jwerner@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230515131353.v2.2.I88dc0a0eb1d9d537de61604cd8994ecc55c0cac1@changeid
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/irqchip/irq-gic-common.c |  8 ++++++--
+ drivers/irqchip/irq-gic-common.h |  1 +
+ drivers/irqchip/irq-gic-v3.c     | 20 ++++++++++++++++++++
+ 3 files changed, 27 insertions(+), 2 deletions(-)
 
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1220,7 +1220,9 @@ static const struct usb_device_id produc
- 	{QMI_FIXED_INTF(0x05c6, 0x9080, 8)},
- 	{QMI_FIXED_INTF(0x05c6, 0x9083, 3)},
- 	{QMI_FIXED_INTF(0x05c6, 0x9084, 4)},
-+	{QMI_QUIRK_SET_DTR(0x05c6, 0x9091, 2)},	/* Compal RXM-G1 */
- 	{QMI_FIXED_INTF(0x05c6, 0x90b2, 3)},    /* ublox R410M */
-+	{QMI_QUIRK_SET_DTR(0x05c6, 0x90db, 2)},	/* Compal RXM-G1 */
- 	{QMI_FIXED_INTF(0x05c6, 0x920d, 0)},
- 	{QMI_FIXED_INTF(0x05c6, 0x920d, 5)},
- 	{QMI_QUIRK_SET_DTR(0x05c6, 0x9625, 4)},	/* YUGA CLM920-NC5 */
+diff --git a/drivers/irqchip/irq-gic-common.c b/drivers/irqchip/irq-gic-common.c
+index a610821c8ff2a..de47b51cdadbe 100644
+--- a/drivers/irqchip/irq-gic-common.c
++++ b/drivers/irqchip/irq-gic-common.c
+@@ -16,7 +16,11 @@ void gic_enable_of_quirks(const struct device_node *np,
+ 			  const struct gic_quirk *quirks, void *data)
+ {
+ 	for (; quirks->desc; quirks++) {
+-		if (!of_device_is_compatible(np, quirks->compatible))
++		if (quirks->compatible &&
++		    !of_device_is_compatible(np, quirks->compatible))
++			continue;
++		if (quirks->property &&
++		    !of_property_read_bool(np, quirks->property))
+ 			continue;
+ 		if (quirks->init(data))
+ 			pr_info("GIC: enabling workaround for %s\n",
+@@ -28,7 +32,7 @@ void gic_enable_quirks(u32 iidr, const struct gic_quirk *quirks,
+ 		void *data)
+ {
+ 	for (; quirks->desc; quirks++) {
+-		if (quirks->compatible)
++		if (quirks->compatible || quirks->property)
+ 			continue;
+ 		if (quirks->iidr != (quirks->mask & iidr))
+ 			continue;
+diff --git a/drivers/irqchip/irq-gic-common.h b/drivers/irqchip/irq-gic-common.h
+index 27e3d4ed4f328..3db4592cda1c0 100644
+--- a/drivers/irqchip/irq-gic-common.h
++++ b/drivers/irqchip/irq-gic-common.h
+@@ -13,6 +13,7 @@
+ struct gic_quirk {
+ 	const char *desc;
+ 	const char *compatible;
++	const char *property;
+ 	bool (*init)(void *data);
+ 	u32 iidr;
+ 	u32 mask;
+diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
+index 2182f87d2d12e..11f7c53e4b634 100644
+--- a/drivers/irqchip/irq-gic-v3.c
++++ b/drivers/irqchip/irq-gic-v3.c
+@@ -38,6 +38,7 @@
+ 
+ #define FLAGS_WORKAROUND_GICR_WAKER_MSM8996	(1ULL << 0)
+ #define FLAGS_WORKAROUND_CAVIUM_ERRATUM_38539	(1ULL << 1)
++#define FLAGS_WORKAROUND_MTK_GICR_SAVE		(1ULL << 2)
+ 
+ #define GIC_IRQ_TYPE_PARTITION	(GIC_IRQ_TYPE_LPI + 1)
+ 
+@@ -1730,6 +1731,15 @@ static bool gic_enable_quirk_msm8996(void *data)
+ 	return true;
+ }
+ 
++static bool gic_enable_quirk_mtk_gicr(void *data)
++{
++	struct gic_chip_data *d = data;
++
++	d->flags |= FLAGS_WORKAROUND_MTK_GICR_SAVE;
++
++	return true;
++}
++
+ static bool gic_enable_quirk_cavium_38539(void *data)
+ {
+ 	struct gic_chip_data *d = data;
+@@ -1802,6 +1812,11 @@ static const struct gic_quirk gic_quirks[] = {
+ 		.compatible = "qcom,msm8996-gic-v3",
+ 		.init	= gic_enable_quirk_msm8996,
+ 	},
++	{
++		.desc	= "GICv3: Mediatek Chromebook GICR save problem",
++		.property = "mediatek,broken-save-restore-fw",
++		.init	= gic_enable_quirk_mtk_gicr,
++	},
+ 	{
+ 		.desc	= "GICv3: HIP06 erratum 161010803",
+ 		.iidr	= 0x0204043b,
+@@ -1844,6 +1859,11 @@ static void gic_enable_nmi_support(void)
+ 	if (!gic_prio_masking_enabled())
+ 		return;
+ 
++	if (gic_data.flags & FLAGS_WORKAROUND_MTK_GICR_SAVE) {
++		pr_warn("Skipping NMI enable due to firmware issues\n");
++		return;
++	}
++
+ 	ppi_nmi_refs = kcalloc(gic_data.ppi_nr, sizeof(*ppi_nmi_refs), GFP_KERNEL);
+ 	if (!ppi_nmi_refs)
+ 		return;
+-- 
+2.39.2
+
 
 
