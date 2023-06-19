@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 539B273547F
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:56:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9381A7353CD
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:48:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232396AbjFSK4q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:56:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58546 "EHLO
+        id S230428AbjFSKs5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:48:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232401AbjFSK4S (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:56:18 -0400
+        with ESMTP id S232202AbjFSKsv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:48:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E26813D
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:54:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 542701AC
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:48:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AC9A660B4B
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:54:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C07C3C433C8;
-        Mon, 19 Jun 2023 10:54:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CE0AC60B86
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:48:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D7FC433C9;
+        Mon, 19 Jun 2023 10:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172059;
-        bh=qEUsjwhhl3BEEVwSGFW2pv6M333EyUzh6VO+NOAFXjg=;
+        s=korg; t=1687171721;
+        bh=l+XSFbHjeYFrHE2NhuscM/4r1Z/1VZ9huz33h8fkovA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M1fuBVOo3taPYbY87Tz5YgVvy7jrG4mqUFOuvLYmalbhIJQrauVWfWakb+s0x/LDg
-         E8ay1g4UVYL1lzF4D41Ea+kc7xNMC/ISl4jVWz+8WqR3D940JDwDmKyzcsdNfeG2ar
-         3sm0597c9r0pmdjYM0ccx6Lrb5wLiUFbEoe08HwE=
+        b=OWmKqMBPquhmESAbrJFQJM2RfTQe9QCtrLWpZSTBtgC+Hg4w+3t4+NA7FR8CrZO71
+         80HaPXiPZcMgOciy3dH3fF/QjVVKBOJfY/bCsp0zLa6VDuQZx3OttdrnxHKFvX7jFE
+         vdHjGP4Jmi5yaJp+7ucTFFySx6GAz4s+erFwGzUM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Ratchanan Srirattanamet <peathot@hotmail.com>,
+        Karol Herbst <kherbst@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 21/89] MIPS: Alchemy: fix dbdma2
+Subject: [PATCH 6.1 132/166] drm/nouveau: dont detect DSM for non-NVIDIA device
 Date:   Mon, 19 Jun 2023 12:30:09 +0200
-Message-ID: <20230619102139.256666792@linuxfoundation.org>
+Message-ID: <20230619102201.187115421@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,85 +56,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Manuel Lauss <manuel.lauss@gmail.com>
+From: Ratchanan Srirattanamet <peathot@hotmail.com>
 
-[ Upstream commit 2d645604f69f3a772d58ead702f9a8e84ab2b342 ]
+[ Upstream commit 11d24327c2d7ad7f24fcc44fb00e1fa91ebf6525 ]
 
-Various fixes for the Au1200/Au1550/Au1300 DBDMA2 code:
+The call site of nouveau_dsm_pci_probe() uses single set of output
+variables for all invocations. So, we must not write anything to them
+unless it's an NVIDIA device. Otherwise, if we are called with another
+device after the NVIDIA device, we'll clober the result of the NVIDIA
+device.
 
-- skip cache invalidation if chip has working coherency circuitry.
-- invalidate KSEG0-portion of the (physical) data address.
-- force the dma channel doorbell write out to bus immediately with
-  a sync.
+For example, if the other device doesn't have _PR3 resources, the
+detection later would miss the presence of power resource support, and
+the rest of the code will keep using Optimus DSM, breaking power
+management for that machine.
 
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Also, because we're detecting NVIDIA's DSM, it doesn't make sense to run
+this detection on a non-NVIDIA device anyway. Thus, check at the
+beginning of the detection code if this is an NVIDIA card, and just
+return if it isn't.
+
+This, together with commit d22915d22ded ("drm/nouveau/devinit/tu102-:
+wait for GFW_BOOT_PROGRESS == COMPLETED") developed independently and
+landed earlier, fixes runtime power management of the NVIDIA card in
+Lenovo Legion 5-15ARH05. Without this patch, the GPU resumption code
+will "timeout", sometimes hanging userspace.
+
+As a bonus, we'll also stop preventing _PR3 usage from the bridge for
+unrelated devices, which is always nice, I guess.
+
+Fixes: ccfc2d5cdb02 ("drm/nouveau: Use generic helper to check _PR3 presence")
+Signed-off-by: Ratchanan Srirattanamet <peathot@hotmail.com>
+Closes: https://gitlab.freedesktop.org/drm/nouveau/-/issues/79
+Reviewed-by: Karol Herbst <kherbst@redhat.com>
+Signed-off-by: Karol Herbst <kherbst@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/DM6PR19MB2780805D4BE1E3F9B3AC96D0BC409@DM6PR19MB2780.namprd19.prod.outlook.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/alchemy/common/dbdma.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_acpi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/mips/alchemy/common/dbdma.c b/arch/mips/alchemy/common/dbdma.c
-index 4ca2c28878e0f..e9ee9ab90a0c6 100644
---- a/arch/mips/alchemy/common/dbdma.c
-+++ b/arch/mips/alchemy/common/dbdma.c
-@@ -30,6 +30,7 @@
-  *
-  */
+diff --git a/drivers/gpu/drm/nouveau/nouveau_acpi.c b/drivers/gpu/drm/nouveau/nouveau_acpi.c
+index 8cf096f841a90..a2ae8c21e4dce 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_acpi.c
++++ b/drivers/gpu/drm/nouveau/nouveau_acpi.c
+@@ -220,6 +220,9 @@ static void nouveau_dsm_pci_probe(struct pci_dev *pdev, acpi_handle *dhandle_out
+ 	int optimus_funcs;
+ 	struct pci_dev *parent_pdev;
  
-+#include <linux/dma-map-ops.h> /* for dma_default_coherent */
- #include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/slab.h>
-@@ -623,17 +624,18 @@ u32 au1xxx_dbdma_put_source(u32 chanid, dma_addr_t buf, int nbytes, u32 flags)
- 		dp->dscr_cmd0 &= ~DSCR_CMD0_IE;
- 
- 	/*
--	 * There is an errata on the Au1200/Au1550 parts that could result
--	 * in "stale" data being DMA'ed. It has to do with the snoop logic on
--	 * the cache eviction buffer.  DMA_NONCOHERENT is on by default for
--	 * these parts. If it is fixed in the future, these dma_cache_inv will
--	 * just be nothing more than empty macros. See io.h.
-+	 * There is an erratum on certain Au1200/Au1550 revisions that could
-+	 * result in "stale" data being DMA'ed. It has to do with the snoop
-+	 * logic on the cache eviction buffer.  dma_default_coherent is set
-+	 * to false on these parts.
- 	 */
--	dma_cache_wback_inv((unsigned long)buf, nbytes);
-+	if (!dma_default_coherent)
-+		dma_cache_wback_inv(KSEG0ADDR(buf), nbytes);
- 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
- 	wmb(); /* drain writebuffer */
- 	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
- 	ctp->chan_ptr->ddma_dbell = 0;
-+	wmb(); /* force doorbell write out to dma engine */
- 
- 	/* Get next descriptor pointer. */
- 	ctp->put_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
-@@ -685,17 +687,18 @@ u32 au1xxx_dbdma_put_dest(u32 chanid, dma_addr_t buf, int nbytes, u32 flags)
- 			  dp->dscr_source1, dp->dscr_dest0, dp->dscr_dest1);
- #endif
- 	/*
--	 * There is an errata on the Au1200/Au1550 parts that could result in
--	 * "stale" data being DMA'ed. It has to do with the snoop logic on the
--	 * cache eviction buffer.  DMA_NONCOHERENT is on by default for these
--	 * parts. If it is fixed in the future, these dma_cache_inv will just
--	 * be nothing more than empty macros. See io.h.
-+	 * There is an erratum on certain Au1200/Au1550 revisions that could
-+	 * result in "stale" data being DMA'ed. It has to do with the snoop
-+	 * logic on the cache eviction buffer.  dma_default_coherent is set
-+	 * to false on these parts.
- 	 */
--	dma_cache_inv((unsigned long)buf, nbytes);
-+	if (!dma_default_coherent)
-+		dma_cache_inv(KSEG0ADDR(buf), nbytes);
- 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
- 	wmb(); /* drain writebuffer */
- 	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
- 	ctp->chan_ptr->ddma_dbell = 0;
-+	wmb(); /* force doorbell write out to dma engine */
- 
- 	/* Get next descriptor pointer. */
- 	ctp->put_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
++	if (pdev->vendor != PCI_VENDOR_ID_NVIDIA)
++		return;
++
+ 	*has_pr3 = false;
+ 	parent_pdev = pci_upstream_bridge(pdev);
+ 	if (parent_pdev) {
 -- 
 2.39.2
 
