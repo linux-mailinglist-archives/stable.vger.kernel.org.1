@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D9DC73550B
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:01:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2189B7353EC
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:50:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232115AbjFSLA7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:00:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34052 "EHLO
+        id S230157AbjFSKu0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:50:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231801AbjFSLAe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:00:34 -0400
+        with ESMTP id S232187AbjFSKtq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:49:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89F611FD9
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:59:33 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29B6110D9
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:49:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1650E60BA2
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:59:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D23C433CB;
-        Mon, 19 Jun 2023 10:59:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 77A8B60B5B
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:49:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A020C433C0;
+        Mon, 19 Jun 2023 10:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172372;
-        bh=HAEnoUdDsP5vGw7nTN+6vZNliMdtd+ooTaOPYgDOwo8=;
+        s=korg; t=1687171770;
+        bh=RjumdRFAsAUu7MVmkJIN3iUft/0CfxnAWvcSpNwSb3A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VcZUI/JGajl6+jrc2uS6xh36cJ74L+5fXfJNUi/00Bm6X5x3eT4rF7Di482rKGVd7
-         ozszIz6W0UtEflXG47CaKuA/xXa+lc5OJ2nc1Lsy5aTGEJRI1Ms1RpDqekN6s6YZO5
-         ngye5XTuLopTmJzqU1y9HlMn5P8sXvRGxHQpWCXw=
+        b=XDahvWF3fTc1PJDd7dxkoFAS4nhip5Gc3wYaBv2ybj3BaWChbC5d3mCj5TpF0MWhz
+         4z2N5CRU7/nSyoBYvvwSWeg4ENs0f8d/0NuQBWNRcPVMHoFZKpQEEet8YQ+58MU03m
+         9b1AwCzK+7AGedgHauzxXMNPS5IhEsR1NaHzO5R0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lukasz Tyl <ltyl@hem-e.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 044/107] ALSA: usb-audio: Add quirk flag for HEM devices to enable native DSD playback
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Florian Westphal <fw@strlen.de>,
+        Tung Nguyen <tung.q.nguyen@dektech.com.au>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 151/166] net: tipc: resize nlattr array to correct size
 Date:   Mon, 19 Jun 2023 12:30:28 +0200
-Message-ID: <20230619102143.603104141@linuxfoundation.org>
+Message-ID: <20230619102202.023322539@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,39 +57,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lukasz Tyl <ltyl@hem-e.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-commit 122e2cb7e1a30438cc0e8bf70d4279db245d7d5b upstream.
+[ Upstream commit 44194cb1b6045dea33ae9a0d54fb7e7cd93a2e09 ]
 
-This commit adds new DEVICE_FLG with QUIRK_FLAG_DSD_RAW and Vendor Id for
-HEM devices which supports native DSD. Prior to this change Linux kernel
-was not enabling native DSD playback for HEM devices, and as a result,
-DSD audio was being converted to PCM "on the fly". HEM devices,
-when connected to the system, would only play audio in PCM format,
-even if the source material was in DSD format. With the addition of new
-VENDOR_FLG in the quircks.c file, the devices are now correctly
-recognized, and raw DSD data is transmitted to the device,
-allowing for native DSD playback.
+According to nla_parse_nested_deprecated(), the tb[] is supposed to the
+destination array with maxtype+1 elements. In current
+tipc_nl_media_get() and __tipc_nl_media_set(), a larger array is used
+which is unnecessary. This patch resize them to a proper size.
 
-Signed-off-by: Lukasz Tyl <ltyl@hem-e.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230614122524.30271-1-ltyl@hem-e.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1e55417d8fc6 ("tipc: add media set to new netlink api")
+Fixes: 46f15c6794fb ("tipc: add media get/dump to new netlink api")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Tung Nguyen <tung.q.nguyen@dektech.com.au>
+Link: https://lore.kernel.org/r/20230614120604.1196377-1-linma@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/tipc/bearer.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -1921,6 +1921,8 @@ static const struct usb_audio_quirk_flag
- 		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x2ab6, /* T+A devices */
- 		   QUIRK_FLAG_DSD_RAW),
-+	VENDOR_FLG(0x3336, /* HEM devices */
-+		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x3353, /* Khadas devices */
- 		   QUIRK_FLAG_DSD_RAW),
- 	VENDOR_FLG(0x3842, /* EVGA */
+diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
+index 53881406e2006..cdcd2731860ba 100644
+--- a/net/tipc/bearer.c
++++ b/net/tipc/bearer.c
+@@ -1258,7 +1258,7 @@ int tipc_nl_media_get(struct sk_buff *skb, struct genl_info *info)
+ 	struct tipc_nl_msg msg;
+ 	struct tipc_media *media;
+ 	struct sk_buff *rep;
+-	struct nlattr *attrs[TIPC_NLA_BEARER_MAX + 1];
++	struct nlattr *attrs[TIPC_NLA_MEDIA_MAX + 1];
+ 
+ 	if (!info->attrs[TIPC_NLA_MEDIA])
+ 		return -EINVAL;
+@@ -1307,7 +1307,7 @@ int __tipc_nl_media_set(struct sk_buff *skb, struct genl_info *info)
+ 	int err;
+ 	char *name;
+ 	struct tipc_media *m;
+-	struct nlattr *attrs[TIPC_NLA_BEARER_MAX + 1];
++	struct nlattr *attrs[TIPC_NLA_MEDIA_MAX + 1];
+ 
+ 	if (!info->attrs[TIPC_NLA_MEDIA])
+ 		return -EINVAL;
+-- 
+2.39.2
+
 
 
