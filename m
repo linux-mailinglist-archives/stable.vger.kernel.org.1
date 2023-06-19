@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD2107354C5
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3749735558
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:03:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232427AbjFSK67 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:58:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58864 "EHLO
+        id S232598AbjFSLDs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 07:03:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232428AbjFSK6j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:58:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8453210C1
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:56:57 -0700 (PDT)
+        with ESMTP id S232624AbjFSLDZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:03:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 730CF173F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:02:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 22B4960B7C
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:56:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3828EC433C0;
-        Mon, 19 Jun 2023 10:56:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B826A60BA9
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:02:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A67C4C433CC;
+        Mon, 19 Jun 2023 11:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172216;
-        bh=wjLsN2cerv3wu94En8S6rYdMwrhKHRbP8u5NM2sPg7A=;
+        s=korg; t=1687172549;
+        bh=Sx4RLs5Z41PKnN9SPvXWlOpLNpUTFOW17g7RNtYMFZY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PJC2Y7PFAEY8kDtsPD4IWiwOSFzbFe1KQm73Bd5V4uJgqLYjiWj1ihaNA32ISnOXh
-         dQ1t0HKHq2Ob9LArR9+0CEHvlKFS1jeL2n8xfmLvDRVgJ98QyHfg7L9xTjoDW/n/Ol
-         Px1siiB7G2jdqDq8OXFt1qUqwgjmskYhSL/Mxkiw=
+        b=v6ecmdwucnPbClRwfb64ELE7mktZ1DT8TgSqCGkitlKe8vlNu8FdaKPE8nCtSIKAI
+         nrSUloF0LLIgz1RFO51FF4Q611VdI94cpun9aUOPMPVEtxRj7g3CP5nfg3q0n/iOJW
+         u8PEGEXBTu/xXEp2RhnJu2cr5dy5QTjxwRvqM3oA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guillaume Nault <gnault@redhat.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10 78/89] net: Remove DECnet leftovers from flow.h.
+        patches@lists.linux.dev, Sagi Grimberg <sagi@grimberg.me>,
+        Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 082/107] IB/isert: Fix incorrect release of isert connection
 Date:   Mon, 19 Jun 2023 12:31:06 +0200
-Message-ID: <20230619102141.823036149@linuxfoundation.org>
+Message-ID: <20230619102145.324719498@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,76 +57,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
 
-commit 9bc61c04ff6cce6a3756b86e6b34914f7b39d734 upstream.
+[ Upstream commit 699826f4e30ab76a62c238c86fbef7e826639c8d ]
 
-DECnet was removed by commit 1202cdd66531 ("Remove DECnet support from
-kernel"). Let's also revome its flow structure.
+The ib_isert module is releasing the isert connection both in
+isert_wait_conn() handler as well as isert_free_conn() handler.
+In isert_wait_conn() handler, it is expected to wait for iSCSI
+session logout operation to complete. It should free the isert
+connection only in isert_free_conn() handler.
 
-Compile-tested only (allmodconfig).
+When a bunch of iSER target is cleared, this issue can lead to
+use-after-free memory issue as isert conn is twice released
 
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Acked-by: Stephen Hemminger <stephen@networkplumber.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b02efbfc9a05 ("iser-target: Fix implicit termination of connections")
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://lore.kernel.org/r/20230606102531.162967-4-saravanan.vajravel@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/flow.h |   26 --------------------------
- 1 file changed, 26 deletions(-)
+ drivers/infiniband/ulp/isert/ib_isert.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/include/net/flow.h
-+++ b/include/net/flow.h
-@@ -54,11 +54,6 @@ union flowi_uli {
- 		__u8	code;
- 	} icmpt;
- 
--	struct {
--		__le16	dport;
--		__le16	sport;
--	} dnports;
+diff --git a/drivers/infiniband/ulp/isert/ib_isert.c b/drivers/infiniband/ulp/isert/ib_isert.c
+index 6082695a02d88..b71711defb81d 100644
+--- a/drivers/infiniband/ulp/isert/ib_isert.c
++++ b/drivers/infiniband/ulp/isert/ib_isert.c
+@@ -2570,8 +2570,6 @@ static void isert_wait_conn(struct iscsi_conn *conn)
+ 	isert_put_unsol_pending_cmds(conn);
+ 	isert_wait4cmds(conn);
+ 	isert_wait4logout(isert_conn);
 -
- 	__be32		spi;
- 	__be32		gre_key;
- 
-@@ -156,27 +151,11 @@ struct flowi6 {
- 	__u32			mp_hash;
- } __attribute__((__aligned__(BITS_PER_LONG/8)));
- 
--struct flowidn {
--	struct flowi_common	__fl_common;
--#define flowidn_oif		__fl_common.flowic_oif
--#define flowidn_iif		__fl_common.flowic_iif
--#define flowidn_mark		__fl_common.flowic_mark
--#define flowidn_scope		__fl_common.flowic_scope
--#define flowidn_proto		__fl_common.flowic_proto
--#define flowidn_flags		__fl_common.flowic_flags
--	__le16			daddr;
--	__le16			saddr;
--	union flowi_uli		uli;
--#define fld_sport		uli.ports.sport
--#define fld_dport		uli.ports.dport
--} __attribute__((__aligned__(BITS_PER_LONG/8)));
--
- struct flowi {
- 	union {
- 		struct flowi_common	__fl_common;
- 		struct flowi4		ip4;
- 		struct flowi6		ip6;
--		struct flowidn		dn;
- 	} u;
- #define flowi_oif	u.__fl_common.flowic_oif
- #define flowi_iif	u.__fl_common.flowic_iif
-@@ -210,11 +189,6 @@ static inline struct flowi_common *flowi
- 	return &(flowi6_to_flowi(fl6)->u.__fl_common);
+-	queue_work(isert_release_wq, &isert_conn->release_work);
  }
  
--static inline struct flowi *flowidn_to_flowi(struct flowidn *fldn)
--{
--	return container_of(fldn, struct flowi, u.dn);
--}
--
- __u32 __get_hash_from_flowi6(const struct flowi6 *fl6, struct flow_keys *keys);
- 
- #endif
+ static void isert_free_conn(struct iscsi_conn *conn)
+-- 
+2.39.2
+
 
 
