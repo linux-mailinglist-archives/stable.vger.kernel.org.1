@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48AFB73552C
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:02:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 243FB7354B9
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:58:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232523AbjFSLCV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:02:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34020 "EHLO
+        id S232297AbjFSK6k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:58:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232535AbjFSLBq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:01:46 -0400
+        with ESMTP id S232354AbjFSK6X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:58:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DC4D198B
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:00:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA4BA1FCD
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:56:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EB27B60BA9
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:00:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5C2C433C9;
-        Mon, 19 Jun 2023 11:00:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7EC0260A4D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:56:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF82C433C9;
+        Mon, 19 Jun 2023 10:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172453;
-        bh=mUxazbtijndZeWbbpicFksuF6x2wtYJvWKWc1D0YLXY=;
+        s=korg; t=1687172188;
+        bh=/NOwE4/M2QRU0b0OMCwK9UC2+b2FYJe1Ru2+euKvkG0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OcfwxV6JcM0RS8vBnIA0gVvHi5yEUPteSTFkwo5oKIwHWHj1r7puHt1iK+5Aanu9u
-         NZRPbucym00GPJBd8a+KpJewazRPbjeSJD3tSiWnbHnGAmzfypWIKicOm/7sWdlEtv
-         6bAlvGiCDr+NsogP02nWdt9ixbkrnyxLq92Klqlg=
+        b=XXZKHicTpXeZjIbQKb2dU+RNEVZzIlqNnpNK/3i48cKk42wZMrT8bSGdAoOCGuuTl
+         b5YkGUwpiZxYkzEXLIke7uzYkZci/SxFJ/06z2FHj1K+U7qZtQOQ5EGpqZOhOeYtJn
+         qqIgnyqCu02dOUt/SpgfnnrW+7QyvO4OD0Cv8pOE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+eba589d8f49c73d356da@syzkaller.appspotmail.com,
-        Zhu Yanjun <yanjun.zhu@linux.dev>,
-        Jason Gunthorpe <jgg@nvidia.com>,
+        patches@lists.linux.dev, Mingshuai Ren <renmingshuai@huawei.com>,
+        Vlad Buslov <vladbu@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 073/107] RDMA/rxe: Fix the use-before-initialization error of resp_pkts
+Subject: [PATCH 5.10 69/89] net/sched: cls_api: Fix lockup on flushing explicitly created chain
 Date:   Mon, 19 Jun 2023 12:30:57 +0200
-Message-ID: <20230619102144.935695280@linuxfoundation.org>
+Message-ID: <20230619102141.406867979@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,80 +56,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Vlad Buslov <vladbu@nvidia.com>
 
-[ Upstream commit 2a62b6210ce876c596086ab8fd4c8a0c3d10611a ]
+[ Upstream commit c9a82bec02c339cdda99b37c5e62b3b71fc4209c ]
 
-In the following:
+Mingshuai Ren reports:
 
-  Call Trace:
-   <TASK>
-   __dump_stack lib/dump_stack.c:88 [inline]
-   dump_stack_lvl+0xd9/0x150 lib/dump_stack.c:106
-   assign_lock_key kernel/locking/lockdep.c:982 [inline]
-   register_lock_class+0xdb6/0x1120 kernel/locking/lockdep.c:1295
-   __lock_acquire+0x10a/0x5df0 kernel/locking/lockdep.c:4951
-   lock_acquire kernel/locking/lockdep.c:5691 [inline]
-   lock_acquire+0x1b1/0x520 kernel/locking/lockdep.c:5656
-   __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
-   _raw_spin_lock_irqsave+0x3d/0x60 kernel/locking/spinlock.c:162
-   skb_dequeue+0x20/0x180 net/core/skbuff.c:3639
-   drain_resp_pkts drivers/infiniband/sw/rxe/rxe_comp.c:555 [inline]
-   rxe_completer+0x250d/0x3cc0 drivers/infiniband/sw/rxe/rxe_comp.c:652
-   rxe_qp_do_cleanup+0x1be/0x820 drivers/infiniband/sw/rxe/rxe_qp.c:761
-   execute_in_process_context+0x3b/0x150 kernel/workqueue.c:3473
-   __rxe_cleanup+0x21e/0x370 drivers/infiniband/sw/rxe/rxe_pool.c:233
-   rxe_create_qp+0x3f6/0x5f0 drivers/infiniband/sw/rxe/rxe_verbs.c:583
+When a new chain is added by using tc, one soft lockup alarm will be
+ generated after delete the prio 0 filter of the chain. To reproduce
+ the problem, perform the following steps:
+(1) tc qdisc add dev eth0 root handle 1: htb default 1
+(2) tc chain add dev eth0
+(3) tc filter del dev eth0 chain 0 parent 1: prio 0
+(4) tc filter add dev eth0 chain 0 parent 1:
 
-This is a use-before-initialization problem.
+Fix the issue by accounting for additional reference to chains that are
+explicitly created by RTM_NEWCHAIN message as opposed to implicitly by
+RTM_NEWTFILTER message.
 
-It happens because rxe_qp_do_cleanup is called during error unwind before
-the struct has been fully initialized.
-
-Move the initialization of the skb earlier.
-
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Link: https://lore.kernel.org/r/20230602035408.741534-1-yanjun.zhu@intel.com
-Reported-by: syzbot+eba589d8f49c73d356da@syzkaller.appspotmail.com
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 726d061286ce ("net: sched: prevent insertion of new classifiers during chain flush")
+Reported-by: Mingshuai Ren <renmingshuai@huawei.com>
+Closes: https://lore.kernel.org/lkml/87legswvi3.fsf@nvidia.com/T/
+Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
+Link: https://lore.kernel.org/r/20230612093426.2867183-1-vladbu@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_qp.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ net/sched/cls_api.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_qp.c b/drivers/infiniband/sw/rxe/rxe_qp.c
-index 64c2729f4c0c0..13b237d93a616 100644
---- a/drivers/infiniband/sw/rxe/rxe_qp.c
-+++ b/drivers/infiniband/sw/rxe/rxe_qp.c
-@@ -203,6 +203,9 @@ static void rxe_qp_init_misc(struct rxe_dev *rxe, struct rxe_qp *qp,
- 	spin_lock_init(&qp->rq.producer_lock);
- 	spin_lock_init(&qp->rq.consumer_lock);
+diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
+index befe42aad04ba..beedd0d2b5097 100644
+--- a/net/sched/cls_api.c
++++ b/net/sched/cls_api.c
+@@ -533,8 +533,8 @@ static void __tcf_chain_put(struct tcf_chain *chain, bool by_act,
+ {
+ 	struct tcf_block *block = chain->block;
+ 	const struct tcf_proto_ops *tmplt_ops;
++	unsigned int refcnt, non_act_refcnt;
+ 	bool free_block = false;
+-	unsigned int refcnt;
+ 	void *tmplt_priv;
  
-+	skb_queue_head_init(&qp->req_pkts);
-+	skb_queue_head_init(&qp->resp_pkts);
-+
- 	atomic_set(&qp->ssn, 0);
- 	atomic_set(&qp->skb_out, 0);
- }
-@@ -263,8 +266,6 @@ static int rxe_qp_init_req(struct rxe_dev *rxe, struct rxe_qp *qp,
- 	qp->req.opcode		= -1;
- 	qp->comp.opcode		= -1;
+ 	mutex_lock(&block->lock);
+@@ -554,13 +554,15 @@ static void __tcf_chain_put(struct tcf_chain *chain, bool by_act,
+ 	 * save these to temporary variables.
+ 	 */
+ 	refcnt = --chain->refcnt;
++	non_act_refcnt = refcnt - chain->action_refcnt;
+ 	tmplt_ops = chain->tmplt_ops;
+ 	tmplt_priv = chain->tmplt_priv;
  
--	skb_queue_head_init(&qp->req_pkts);
--
- 	rxe_init_task(&qp->req.task, qp, rxe_requester);
- 	rxe_init_task(&qp->comp.task, qp, rxe_completer);
- 
-@@ -311,8 +312,6 @@ static int rxe_qp_init_resp(struct rxe_dev *rxe, struct rxe_qp *qp,
- 		}
+-	/* The last dropped non-action reference will trigger notification. */
+-	if (refcnt - chain->action_refcnt == 0 && !by_act) {
+-		tc_chain_notify_delete(tmplt_ops, tmplt_priv, chain->index,
+-				       block, NULL, 0, 0, false);
++	if (non_act_refcnt == chain->explicitly_created && !by_act) {
++		if (non_act_refcnt == 0)
++			tc_chain_notify_delete(tmplt_ops, tmplt_priv,
++					       chain->index, block, NULL, 0, 0,
++					       false);
+ 		/* Last reference to chain, no need to lock. */
+ 		chain->flushing = false;
  	}
- 
--	skb_queue_head_init(&qp->resp_pkts);
--
- 	rxe_init_task(&qp->resp.task, qp, rxe_responder);
- 
- 	qp->resp.opcode		= OPCODE_NONE;
 -- 
 2.39.2
 
