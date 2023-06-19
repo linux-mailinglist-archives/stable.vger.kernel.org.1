@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3ADC97353E9
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:49:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3C9C735505
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:00:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232140AbjFSKtg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:49:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53304 "EHLO
+        id S232493AbjFSLAo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 07:00:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232174AbjFSKtS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:49:18 -0400
+        with ESMTP id S232598AbjFSLAJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:00:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CA99B9
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:49:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 130F910D9
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:59:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E703F60B86
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:49:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3ECBC433C0;
-        Mon, 19 Jun 2023 10:49:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9AC7860B9C
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:59:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BD7C433C8;
+        Mon, 19 Jun 2023 10:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171754;
-        bh=u7arquJ/0Y8MYINl9rJwyGBTs/7zGRbhhdUlguKJA6o=;
+        s=korg; t=1687172356;
+        bh=t6BM1ispRrrUdWx8WNvPLixKSPnfmDzRY+ZEq6s6z9Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tq8m+c/lvWZQOIoGW2qmLx2qcogp09J37gSLJR1h7ak8uj3fb3K8spbmZvV8W6j/Q
-         lyF7qu13uZ67BkB9pWhgc99hllq9IhquTezLhUU7XodDHfDiBQ/ek/swWeQrzurUkj
-         Wf/6f8FiK9dy+Fd2kY6JMA1+Ytp9vw6XAgh4LLZM=
+        b=glOIyHoU+0YYaPNK17bQ8POG0pIgjlG60mp+13EnPkuWxn/yKzRD6i8nygqePk3jd
+         BxFrhwx5Si5Sc1w+3spiA1/60/8KArgBZH364UikIzec79QurcW+1VZbADLIK2BTQ6
+         oJCA7wzwRS14FZ+jMSAykJqbfGgM7tp8cBN5prD8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mingshuai Ren <renmingshuai@huawei.com>,
-        Vlad Buslov <vladbu@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 145/166] net/sched: cls_api: Fix lockup on flushing explicitly created chain
-Date:   Mon, 19 Jun 2023 12:30:22 +0200
-Message-ID: <20230619102201.757409207@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        syzbot+b0a35a5c1f7e846d3b09@syzkaller.appspotmail.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 039/107] nilfs2: fix incomplete buffer cleanup in nilfs_btnode_abort_change_key()
+Date:   Mon, 19 Jun 2023 12:30:23 +0200
+Message-ID: <20230619102143.382429029@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,71 +56,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vlad Buslov <vladbu@nvidia.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit c9a82bec02c339cdda99b37c5e62b3b71fc4209c ]
+commit 2f012f2baca140c488e43d27a374029c1e59098d upstream.
 
-Mingshuai Ren reports:
+A syzbot fault injection test reported that nilfs_btnode_create_block, a
+helper function that allocates a new node block for b-trees, causes a
+kernel BUG for disk images where the file system block size is smaller
+than the page size.
 
-When a new chain is added by using tc, one soft lockup alarm will be
- generated after delete the prio 0 filter of the chain. To reproduce
- the problem, perform the following steps:
-(1) tc qdisc add dev eth0 root handle 1: htb default 1
-(2) tc chain add dev eth0
-(3) tc filter del dev eth0 chain 0 parent 1: prio 0
-(4) tc filter add dev eth0 chain 0 parent 1:
+This was due to unexpected flags on the newly allocated buffer head, and
+it turned out to be because the buffer flags were not cleared by
+nilfs_btnode_abort_change_key() after an error occurred during a b-tree
+update operation and the buffer was later reused in that state.
 
-Fix the issue by accounting for additional reference to chains that are
-explicitly created by RTM_NEWCHAIN message as opposed to implicitly by
-RTM_NEWTFILTER message.
+Fix this issue by using nilfs_btnode_delete() to abandon the unused
+preallocated buffer in nilfs_btnode_abort_change_key().
 
-Fixes: 726d061286ce ("net: sched: prevent insertion of new classifiers during chain flush")
-Reported-by: Mingshuai Ren <renmingshuai@huawei.com>
-Closes: https://lore.kernel.org/lkml/87legswvi3.fsf@nvidia.com/T/
-Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
-Link: https://lore.kernel.org/r/20230612093426.2867183-1-vladbu@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20230513102428.10223-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+b0a35a5c1f7e846d3b09@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/000000000000d1d6c205ebc4d512@google.com
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/cls_api.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ fs/nilfs2/btnode.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index 0dbfc37d97991..445ab1b0537da 100644
---- a/net/sched/cls_api.c
-+++ b/net/sched/cls_api.c
-@@ -552,8 +552,8 @@ static void __tcf_chain_put(struct tcf_chain *chain, bool by_act,
- {
- 	struct tcf_block *block = chain->block;
- 	const struct tcf_proto_ops *tmplt_ops;
-+	unsigned int refcnt, non_act_refcnt;
- 	bool free_block = false;
--	unsigned int refcnt;
- 	void *tmplt_priv;
- 
- 	mutex_lock(&block->lock);
-@@ -573,13 +573,15 @@ static void __tcf_chain_put(struct tcf_chain *chain, bool by_act,
- 	 * save these to temporary variables.
- 	 */
- 	refcnt = --chain->refcnt;
-+	non_act_refcnt = refcnt - chain->action_refcnt;
- 	tmplt_ops = chain->tmplt_ops;
- 	tmplt_priv = chain->tmplt_priv;
- 
--	/* The last dropped non-action reference will trigger notification. */
--	if (refcnt - chain->action_refcnt == 0 && !by_act) {
--		tc_chain_notify_delete(tmplt_ops, tmplt_priv, chain->index,
--				       block, NULL, 0, 0, false);
-+	if (non_act_refcnt == chain->explicitly_created && !by_act) {
-+		if (non_act_refcnt == 0)
-+			tc_chain_notify_delete(tmplt_ops, tmplt_priv,
-+					       chain->index, block, NULL, 0, 0,
-+					       false);
- 		/* Last reference to chain, no need to lock. */
- 		chain->flushing = false;
- 	}
--- 
-2.39.2
-
+--- a/fs/nilfs2/btnode.c
++++ b/fs/nilfs2/btnode.c
+@@ -285,6 +285,14 @@ void nilfs_btnode_abort_change_key(struc
+ 	if (nbh == NULL) {	/* blocksize == pagesize */
+ 		xa_erase_irq(&btnc->i_pages, newkey);
+ 		unlock_page(ctxt->bh->b_page);
+-	} else
+-		brelse(nbh);
++	} else {
++		/*
++		 * When canceling a buffer that a prepare operation has
++		 * allocated to copy a node block to another location, use
++		 * nilfs_btnode_delete() to initialize and release the buffer
++		 * so that the buffer flags will not be in an inconsistent
++		 * state when it is reallocated.
++		 */
++		nilfs_btnode_delete(nbh);
++	}
+ }
 
 
