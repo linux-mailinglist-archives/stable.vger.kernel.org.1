@@ -2,47 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2311734CAF
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 09:50:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4A2D734CB2
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 09:52:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229605AbjFSHum (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 03:50:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41684 "EHLO
+        id S229523AbjFSHv7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 03:51:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229933AbjFSHul (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 03:50:41 -0400
+        with ESMTP id S229974AbjFSHv6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 03:51:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EF521AA
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 00:50:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CA75137;
+        Mon, 19 Jun 2023 00:51:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B446161556
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 07:50:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF57C433C0;
-        Mon, 19 Jun 2023 07:50:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D081A61529;
+        Mon, 19 Jun 2023 07:51:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC68C433C8;
+        Mon, 19 Jun 2023 07:51:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687161039;
-        bh=mtCDmWnvyRZ+MksUjHlna3IsVSv85c3nLkDttiZ4B20=;
+        s=korg; t=1687161115;
+        bh=wcUFCTgaQzOZpExfHFs7UPcmfiTCw61/ZsId+1DngaM=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=uZsxpm+gVe9oywup3F6tGmKOZeGxyuog+38la4CXUv4kTwxZ+1x0q0hFULFXkbHjJ
-         dM9fXppcbOoNQsQIXnfVIM7IYQSva7VBEJqzTIDzMilM5PZN/Oa8R+Wuo+VXq9uFh3
-         1yqkNmPNOuyD6dA6OZXJmvo5aDpWD1v8Xw2yzJpg=
-Date:   Mon, 19 Jun 2023 09:50:21 +0200
+        b=LDhMTQB+nLNSZH8KLJtCtru9gT8PJM8FnYCvCdr9lTYVhknLTaa+dPsLi4e6qNBCX
+         wU1nhHPF7Ec9b9CXy3F7EsHFXvs9FvGrslHnW9cuIt2cSC2jox/Q/7n6KrHtCt529L
+         +YudYYV0R7X75c5CVWQ5XXje2fcVTPxeN3m2l1eU=
+Date:   Mon, 19 Jun 2023 09:51:44 +0200
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     ovidiu.panait@windriver.com
-Cc:     stable@vger.kernel.org, Dinghao Liu <dinghao.liu@zju.edu.cn>,
-        Sean Young <sean@mess.org>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: Re: [PATCH 5.10 1/3] media: dvbdev: Fix memleak in
- dvb_register_device
-Message-ID: <2023061912-framing-cheesy-5390@gregkh>
-References: <20230612133907.2999114-1-ovidiu.panait@windriver.com>
+To:     Nathan Chancellor <nathan@kernel.org>
+Cc:     sashal@kernel.org, ndesaulniers@google.com,
+        naresh.kamboju@linaro.org, stable@vger.kernel.org,
+        llvm@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
+        Linux Kernel Functional Testing <lkft@linaro.org>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        tsbogend@alpha.franken.de, linux-mips@vger.kernel.org,
+        Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH 6.1 0/4] Update as-{instr,option} to use KBUILD_AFLAGS
+Message-ID: <2023061934-scuttle-unveiled-1801@gregkh>
+References: <20230612-6-1-asssembler-target-llvm-17-v1-0-75605d553401@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230612133907.2999114-1-ovidiu.panait@windriver.com>
+In-Reply-To: <20230612-6-1-asssembler-target-llvm-17-v1-0-75605d553401@kernel.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -53,22 +56,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jun 12, 2023 at 04:39:05PM +0300, ovidiu.panait@windriver.com wrote:
-> From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+On Wed, Jun 14, 2023 at 11:04:34AM -0700, Nathan Chancellor wrote:
+> Hi all,
 > 
-> commit 167faadfcf9339088910e9e85a1b711fcbbef8e9 upstream.
+> This series backports commit d5c8d6e0fa61 ("kbuild: Update assembler
+> calls to use proper flags and language target") to linux-6.1.y to
+> address a recent issue caused by a change in behavior in clang:
 > 
-> When device_create() fails, dvbdev and dvbdevfops should
-> be freed just like when dvb_register_media_device() fails.
+> https://lore.kernel.org/CA+G9fYsJq0sPC+q6vLNKUgBqCGmmjDrfeP4R1-95Eu28FJRY_A@mail.gmail.com/
+> https://lore.kernel.org/20230612185424.GA2891387@dev-arch.thelio-3990X/
 > 
-> Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-> Signed-off-by: Sean Young <sean@mess.org>
-> Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-> ---
->  drivers/media/dvb-core/dvbdev.c | 3 +++
->  1 file changed, 3 insertions(+)
+> While that was not the original intention of the aforementioned change,
+> it ends up resolving the issue for the same reason, by not passing flags
+> that are not supported or necessary for the current language target
+> (KBUILD_CFLAGS for .c files and KBUILD_AFLAGS for .S files) when testing
+> flags for that language target.
+> 
+> All patches except the second one are direct backports from mainline.
+> The second patch is a stable specific patch because the upstream
+> solution could break stable due to the minimum supported version of
+> binutils in mainline being a newer version than 6.1 and earlier; it
+> chooses to do the more conservative fix, which was alluded to in the
+> changelog of the upstream commit.
+> 
+> For now, this is just a 6.1 issue. If the issue occurs in older
+> releases, I will send separate backports. If there are any issues or
+> objections to this series, please let me know.
 
-All queued up, thanks.
+All now queued up, thanks.
 
 greg k-h
