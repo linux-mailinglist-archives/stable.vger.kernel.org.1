@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC8FC73521B
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:30:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41BCD7353BA
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:48:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230375AbjFSKai (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:30:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38690 "EHLO
+        id S231982AbjFSKsZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:48:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230435AbjFSKac (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:30:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD1B0CC
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:30:31 -0700 (PDT)
+        with ESMTP id S232098AbjFSKsH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:48:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1794B1BC1
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:47:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 61EBE60B3E
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:30:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 710EAC433C8;
-        Mon, 19 Jun 2023 10:30:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E23560A50
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:47:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E6DC433C0;
+        Mon, 19 Jun 2023 10:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687170630;
-        bh=YWgqQoB9YcYxt973V/BSWSpvnzGx4ljnsi+xNH+dHLA=;
+        s=korg; t=1687171655;
+        bh=/SN+nJwgPPz/9CEA1Fg6E2GnXv0zZ4/1ziZNQrSnIY8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wyv+6/EMqzqq8OWpFYGkDyfvfKdCVM03Kgif1r6qThLqwq9PN7JI0jXYx/7i7RdY0
-         w3b6kFZJNbQGu/Bt6AXwWcNiS895/1SGhma2v7WvjOgwlIgSKRa01yvFeiYVrL/HC4
-         yuU9Ldets+4oS3J0XR4gg8/hAa/TR1i2YhLwBZ2M=
+        b=e/roNDfcYm/90fN+jwE83wWrsOurFniqKGhZIbL6gXCQHZsxgg8GttsgyGCsjPHFd
+         taDR7EX5nOc5uDJhlcFvf85/XKqLzmhsUoC4oy3yEFVP3u82W/rBsS8Pm/vjvqTtBc
+         hJ3gu7xfgFUxErthN1qxBJRuFLWoNGkJlbTR/30k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Ellerman <mpe@ellerman.id.au>,
-        Alyssa Ross <hi@alyssa.is>
-Subject: [PATCH 4.14 31/32] powerpc: Fix defconfig choice logic when cross compiling
+        patches@lists.linux.dev,
+        Bernhard Seibold <mail@bernhard-seibold.de>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.1 082/166] serial: lantiq: add missing interrupt ack
 Date:   Mon, 19 Jun 2023 12:29:19 +0200
-Message-ID: <20230619102129.192773653@linuxfoundation.org>
+Message-ID: <20230619102158.792001581@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102127.461443957@linuxfoundation.org>
-References: <20230619102127.461443957@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,51 +55,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Bernhard Seibold <mail@bernhard-seibold.de>
 
-commit af5cd05de5dd38cf25d14ea4d30ae9b791d2420b upstream.
+commit 306320034e8fbe7ee1cc4f5269c55658b4612048 upstream.
 
-Our logic for choosing defconfig doesn't work well in some situations.
+Currently, the error interrupt is never acknowledged, so once active it
+will stay active indefinitely, causing the handler to be called in an
+infinite loop.
 
-For example if you're on a ppc64le machine but you specify a non-empty
-CROSS_COMPILE, in order to use a non-default toolchain, then defconfig
-will give you ppc64_defconfig (big endian):
-
-  $ make CROSS_COMPILE=~/toolchains/gcc-8/bin/powerpc-linux- defconfig
-  *** Default configuration is based on 'ppc64_defconfig'
-
-This is because we assume that CROSS_COMPILE being set means we
-can't be on a ppc machine and rather than checking we just default to
-ppc64_defconfig.
-
-We should just ignore CROSS_COMPILE, instead check the machine with
-uname and if it's one of ppc, ppc64 or ppc64le then use that
-defconfig. If it's none of those then we fall back to ppc64_defconfig.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Alyssa Ross <hi@alyssa.is>
+Fixes: 2f0fc4159a6a ("SERIAL: Lantiq: Add driver for MIPS Lantiq SOCs.")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Bernhard Seibold <mail@bernhard-seibold.de>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Message-ID: <20230602133029.546-1-mail@bernhard-seibold.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/Makefile |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/tty/serial/lantiq.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -29,11 +29,10 @@ endif
+--- a/drivers/tty/serial/lantiq.c
++++ b/drivers/tty/serial/lantiq.c
+@@ -278,6 +278,7 @@ lqasc_err_int(int irq, void *_port)
+ 	struct ltq_uart_port *ltq_port = to_ltq_uart_port(port);
  
- export CROSS32CC CROSS32AR
- 
--ifeq ($(CROSS_COMPILE),)
--KBUILD_DEFCONFIG := $(shell uname -m)_defconfig
--else
--KBUILD_DEFCONFIG := ppc64_defconfig
--endif
-+# If we're on a ppc/ppc64/ppc64le machine use that defconfig, otherwise just use
-+# ppc64_defconfig because we have nothing better to go on.
-+uname := $(shell uname -m)
-+KBUILD_DEFCONFIG := $(if $(filter ppc%,$(uname)),$(uname),ppc64)_defconfig
- 
- ifeq ($(CONFIG_PPC64),y)
- new_nm := $(shell if $(NM) --help 2>&1 | grep -- '--synthetic' > /dev/null; then echo y; else echo n; fi)
+ 	spin_lock_irqsave(&ltq_port->lock, flags);
++	__raw_writel(ASC_IRNCR_EIR, port->membase + LTQ_ASC_IRNCR);
+ 	/* clear any pending interrupts */
+ 	asc_update_bits(0, ASCWHBSTATE_CLRPE | ASCWHBSTATE_CLRFE |
+ 		ASCWHBSTATE_CLRROE, port->membase + LTQ_ASC_WHBSTATE);
 
 
