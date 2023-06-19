@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D5227353F4
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:50:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 234EB73550D
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:01:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232166AbjFSKub (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:50:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53580 "EHLO
+        id S232513AbjFSLBH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 07:01:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232266AbjFSKuK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:50:10 -0400
+        with ESMTP id S232515AbjFSLAq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:00:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F38B10E6
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:49:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5A9C2105
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:59:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DD6C360B9C
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:49:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1CB7C433C9;
-        Mon, 19 Jun 2023 10:49:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 75B8660B9F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:59:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E92BC433C0;
+        Mon, 19 Jun 2023 10:59:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171776;
-        bh=Jymx44z1iSgD3yMJLBhiJFfnCFgTfXcvMi/u8kKELJY=;
+        s=korg; t=1687172377;
+        bh=bPKsItAIooprituL3gk7NtPh12L2K6351xNYA5dSr5g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MwjuAS1MeOei/6IT+PyYw4NJ18aCQmI/MR6AmJp32TrBxFC8pTTG5Y/mFE5AbOqdf
-         F290zui3CdbWrW7j9+yqS8ByNXjIG0nhy+uD6nSoW8MoouQuFB//TgiwX91OkyG73L
-         waWUi5B5CT+p5GxNZbRDYkcPw3sKY33CsiUVAtSw=
+        b=LfCtMNAKMHdMXObjTRqnieCSUjAkT9BkK71aNFiTOkKG2pZT2tSb0cyffRtA/4V40
+         xaF3+d0b5tMl/ij23/RuNXOGPEtDTS4DeNcNRbKRhykg3wZ5mbAvbDrBctvQ7Vl9DM
+         SRh/9qaoa5xWfER/KwUBOvuxtEBriw2SqQnNI5uQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 153/166] octeon_ep: Add missing check for ioremap
+        patches@lists.linux.dev, Karol Herbst <kherbst@redhat.com>,
+        Dave Airlie <airlied@redhat.com>
+Subject: [PATCH 5.15 046/107] nouveau: fix client work fence deletion race
 Date:   Mon, 19 Jun 2023 12:30:30 +0200
-Message-ID: <20230619102202.109872619@linuxfoundation.org>
+Message-ID: <20230619102143.717763275@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,50 +54,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Dave Airlie <airlied@redhat.com>
 
-[ Upstream commit 9a36e2d44d122fe73a2a76ba73f1d50a65cf8210 ]
+commit c8a5d5ea3ba6a18958f8d76430e4cd68eea33943 upstream.
 
-Add check for ioremap() and return the error if it fails in order to
-guarantee the success of ioremap().
+This seems to have existed for ever but is now more apparant after
+commit 9bff18d13473 ("drm/ttm: use per BO cleanup workers")
 
-Fixes: 862cd659a6fb ("octeon_ep: Add driver framework and device initialization")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Link: https://lore.kernel.org/r/20230615033400.2971-1-jiasheng@iscas.ac.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+My analysis: two threads are running, one in the irq signalling the
+fence, in dma_fence_signal_timestamp_locked, it has done the
+DMA_FENCE_FLAG_SIGNALLED_BIT setting, but hasn't yet reached the
+callbacks.
+
+The second thread in nouveau_cli_work_ready, where it sees the fence is
+signalled, so then puts the fence, cleanups the object and frees the
+work item, which contains the callback.
+
+Thread one goes again and tries to call the callback and causes the
+use-after-free.
+
+Proposed fix: lock the fence signalled check in nouveau_cli_work_ready,
+so either the callbacks are done or the memory is freed.
+
+Reviewed-by: Karol Herbst <kherbst@redhat.com>
+Fixes: 11e451e74050 ("drm/nouveau: remove fence wait code from deferred client work handler")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://lore.kernel.org/dri-devel/20230615024008.1600281-1-airlied@gmail.com/
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeon_ep/octep_main.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nouveau_drm.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-index b45dd7f04e213..8979dd05e873f 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-@@ -928,6 +928,9 @@ int octep_device_setup(struct octep_device *oct)
- 		oct->mmio[i].hw_addr =
- 			ioremap(pci_resource_start(oct->pdev, i * 2),
- 				pci_resource_len(oct->pdev, i * 2));
-+		if (!oct->mmio[i].hw_addr)
-+			goto unmap_prev;
+--- a/drivers/gpu/drm/nouveau/nouveau_drm.c
++++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
+@@ -126,10 +126,16 @@ nouveau_name(struct drm_device *dev)
+ static inline bool
+ nouveau_cli_work_ready(struct dma_fence *fence)
+ {
+-	if (!dma_fence_is_signaled(fence))
+-		return false;
+-	dma_fence_put(fence);
+-	return true;
++	bool ret = true;
 +
- 		oct->mmio[i].mapped = 1;
- 	}
++	spin_lock_irq(fence->lock);
++	if (!dma_fence_is_signaled_locked(fence))
++		ret = false;
++	spin_unlock_irq(fence->lock);
++
++	if (ret == true)
++		dma_fence_put(fence);
++	return ret;
+ }
  
-@@ -966,7 +969,9 @@ int octep_device_setup(struct octep_device *oct)
- 	return 0;
- 
- unsupported_dev:
--	for (i = 0; i < OCTEP_MMIO_REGIONS; i++)
-+	i = OCTEP_MMIO_REGIONS;
-+unmap_prev:
-+	while (i--)
- 		iounmap(oct->mmio[i].hw_addr);
- 
- 	kfree(oct->conf);
--- 
-2.39.2
-
+ static void
 
 
