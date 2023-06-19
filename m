@@ -2,50 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A0B3735371
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:45:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC62073529F
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:36:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229967AbjFSKpq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:45:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47176 "EHLO
+        id S230476AbjFSKgv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:36:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231561AbjFSKpX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:45:23 -0400
+        with ESMTP id S231738AbjFSKgc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:36:32 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16AA6172C
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:44:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C590E1738
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:36:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A647F60B86
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:44:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B83C433C0;
-        Mon, 19 Jun 2023 10:44:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 55C0460B0D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:36:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DDBCC433C9;
+        Mon, 19 Jun 2023 10:36:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171487;
-        bh=99xfb4tsifNZoI9PtdgAdNnaeBeuGeNVgfM4kUZfT00=;
+        s=korg; t=1687170985;
+        bh=pS2N2lntY2VpsyD69X43BDpNELB8gRZ8brV56N2u4WA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WOQuzv5LSVEvYN7a9gu5wMopZ2WUz7dQApxYdDpBE1FQIbq1nGoAfr0h4cKJY7NvA
-         34BFHBDmY5UjKi1Q2RCRG/V+Bu9WYczOz/JQRRL5t1hAMBfce+gpaWt7BIq1ZBp1Od
-         mKrk1nHPRAfEyXcW8DNdndSsd7Joh+4a/nFqeXWg=
+        b=ITivpHafqJrxOj9CP4JPn8+GVJZ4LIB+rk/JC0ePnJWBYZWFLCMpbXnOS6VnfaRXt
+         HlMBFXn9fZMCmV37tu5Qoekm0HHBv2kx4Z85qI0Bagf8uWy4eLhjHpn5TZ9grN7Kp8
+         R+oTZDMgiNnnb7VTRORDM3O9CsK6Ccp3HRHPJvug=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nhat Pham <nphamcs@gmail.com>,
-        Dan Streetman <ddstreet@ieee.org>,
-        Domenico Cerasuolo <cerasuolodomenico@gmail.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Seth Jennings <sjenning@redhat.com>,
-        Vitaly Wool <vitaly.wool@konsulko.com>,
-        Yosry Ahmed <yosryahmed@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 048/166] zswap: do not shrink if cgroup may not zswap
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Elson Roy Serrao <quic_eserrao@quicinc.com>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.3 107/187] usb: dwc3: gadget: Reset num TRBs before giving back the request
 Date:   Mon, 19 Jun 2023 12:28:45 +0200
-Message-ID: <20230619102157.059210586@linuxfoundation.org>
+Message-ID: <20230619102202.747335083@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,70 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nhat Pham <nphamcs@gmail.com>
+From: Elson Roy Serrao <quic_eserrao@quicinc.com>
 
-commit 0bdf0efa180a9cb1361cbded4e2260a49306ac89 upstream.
+commit 00f8205ffcf112dcef14f8151d78075d38d22c08 upstream.
 
-Before storing a page, zswap first checks if the number of stored pages
-exceeds the limit specified by memory.zswap.max, for each cgroup in the
-hierarchy.  If this limit is reached or exceeded, then zswap shrinking is
-triggered and short-circuits the store attempt.
+Consider a scenario where cable disconnect happens when there is an active
+usb reqest queued to the UDC. As part of the disconnect we would issue an
+end transfer with no interrupt-on-completion before giving back this
+request. Since we are giving back the request without skipping TRBs the
+num_trbs field of dwc3_request still holds the stale value previously used.
+Function drivers re-use same request for a given bind-unbind session and
+hence their dwc3_request context gets preserved across cable
+disconnect/connect. When such a request gets re-queued after cable connect,
+we would increase the num_trbs field on top of the previous stale value
+thus incorrectly representing the number of TRBs used. Fix this by
+resetting num_trbs field before giving back the request.
 
-However, since the zswap's LRU is not memcg-aware, this can create the
-following pathological behavior: the cgroup whose zswap limit is 0 will
-evict pages from other cgroups continually, without lowering its own zswap
-usage.  This means the shrinking will continue until the need for swap
-ceases or the pool becomes empty.
-
-As a result of this, we observe a disproportionate amount of zswap
-writeback and a perpetually small zswap pool in our experiments, even
-though the pool limit is never hit.
-
-More generally, a cgroup might unnecessarily evict pages from other
-cgroups before we drive the memcg back below its limit.
-
-This patch fixes the issue by rejecting zswap store attempt without
-shrinking the pool when obj_cgroup_may_zswap() returns false.
-
-[akpm@linux-foundation.org: fix return of unintialized value]
-[akpm@linux-foundation.org: s/ENOSPC/ENOMEM/]
-Link: https://lkml.kernel.org/r/20230530222440.2777700-1-nphamcs@gmail.com
-Link: https://lkml.kernel.org/r/20230530232435.3097106-1-nphamcs@gmail.com
-Fixes: f4840ccfca25 ("zswap: memcg accounting")
-Signed-off-by: Nhat Pham <nphamcs@gmail.com>
-Cc: Dan Streetman <ddstreet@ieee.org>
-Cc: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Seth Jennings <sjenning@redhat.com>
-Cc: Vitaly Wool <vitaly.wool@konsulko.com>
-Cc: Yosry Ahmed <yosryahmed@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 09fe1f8d7e2f ("usb: dwc3: gadget: track number of TRBs per request")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Elson Roy Serrao <quic_eserrao@quicinc.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Message-ID: <1685654850-8468-1-git-send-email-quic_eserrao@quicinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/zswap.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/usb/dwc3/gadget.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -1138,9 +1138,16 @@ static int zswap_frontswap_store(unsigne
- 		goto reject;
- 	}
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -180,6 +180,7 @@ static void dwc3_gadget_del_and_unmap_re
+ 	list_del(&req->list);
+ 	req->remaining = 0;
+ 	req->needs_extra_trb = false;
++	req->num_trbs = 0;
  
-+	/*
-+	 * XXX: zswap reclaim does not work with cgroups yet. Without a
-+	 * cgroup-aware entry LRU, we will push out entries system-wide based on
-+	 * local cgroup limits.
-+	 */
- 	objcg = get_obj_cgroup_from_page(page);
--	if (objcg && !obj_cgroup_may_zswap(objcg))
--		goto shrink;
-+	if (objcg && !obj_cgroup_may_zswap(objcg)) {
-+		ret = -ENOMEM;
-+		goto reject;
-+	}
- 
- 	/* reclaim space if needed */
- 	if (zswap_is_full()) {
+ 	if (req->request.status == -EINPROGRESS)
+ 		req->request.status = status;
 
 
