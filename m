@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C9C4735207
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:29:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C6BE73538A
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:46:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229585AbjFSK3n (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:29:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38376 "EHLO
+        id S231811AbjFSKqU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:46:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229506AbjFSK3l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:29:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C675CA
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:29:40 -0700 (PDT)
+        with ESMTP id S231829AbjFSKpu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:45:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0263C6
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:45:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0DBAD60B3E
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:29:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2046BC433C9;
-        Mon, 19 Jun 2023 10:29:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3AAAC60670
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:45:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A4FFC433C8;
+        Mon, 19 Jun 2023 10:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687170579;
-        bh=9QJv9bL0oO5x7SJ7dyVSeWu9ze8ewPSikeZc4ORUk6s=;
+        s=korg; t=1687171528;
+        bh=h4DCIJ3UGoN6GvpgulwLtd764IOqw/nNJ/Y/qZtCJ44=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AzN4AT5DrKBh9enKhP66FUwGs6kGUC31hNok+jBkalUCNlJviBrUJ+1ft4j5NE977
-         WBsrQr5qvJ/kZ51XjyS7UClu4PuxQVJFDJhsH428FjMdouLls0xmD3Ec3gtZbYP1Yq
-         Vn4CPumXsoXcdQZqg3H+22M/dX86UfC/2HBrOSOo=
+        b=hUvPmPP2+oR48jfT0yZXlBHiTTSk0iYQU+JlO86r+kmQHS1io6SnE1K6btY80evSU
+         LAo3o0BtrA2naDh11b9GFFoDFZgFSSPM6RSLX8VLV2NEkTjIWWsyVfSiQQPjAARCI+
+         b70HVhCQSW5yaTwo8h1+jcYHBs1MuuelihqdDeH0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+b0a35a5c1f7e846d3b09@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.14 13/32] nilfs2: fix incomplete buffer cleanup in nilfs_btnode_abort_change_key()
+        patches@lists.linux.dev, Li Lingfeng <lilingfeng3@huawei.com>,
+        Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 6.1 064/166] dm thin metadata: check fail_io before using data_sm
 Date:   Mon, 19 Jun 2023 12:29:01 +0200
-Message-ID: <20230619102128.214390233@linuxfoundation.org>
+Message-ID: <20230619102157.890399334@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102127.461443957@linuxfoundation.org>
-References: <20230619102127.461443957@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,53 +54,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-commit 2f012f2baca140c488e43d27a374029c1e59098d upstream.
+commit cb65b282c9640c27d3129e2e04b711ce1b352838 upstream.
 
-A syzbot fault injection test reported that nilfs_btnode_create_block, a
-helper function that allocates a new node block for b-trees, causes a
-kernel BUG for disk images where the file system block size is smaller
-than the page size.
+Must check pmd->fail_io before using pmd->data_sm since
+pmd->data_sm may be destroyed by other processes.
 
-This was due to unexpected flags on the newly allocated buffer head, and
-it turned out to be because the buffer flags were not cleared by
-nilfs_btnode_abort_change_key() after an error occurred during a b-tree
-update operation and the buffer was later reused in that state.
+       P1(kworker)                             P2(message)
+do_worker
+ process_prepared
+  process_prepared_discard_passdown_pt2
+   dm_pool_dec_data_range
+                                    pool_message
+                                     commit
+                                      dm_pool_commit_metadata
+                                        ↓
+                                       // commit failed
+                                      metadata_operation_failed
+                                       abort_transaction
+                                        dm_pool_abort_metadata
+                                         __open_or_format_metadata
+                                           ↓
+                                          dm_sm_disk_open
+                                            ↓
+                                           // open failed
+                                           // pmd->data_sm is NULL
+    dm_sm_dec_blocks
+      ↓
+     // try to access pmd->data_sm --> UAF
 
-Fix this issue by using nilfs_btnode_delete() to abandon the unused
-preallocated buffer in nilfs_btnode_abort_change_key().
+As shown above, if dm_pool_commit_metadata() and
+dm_pool_abort_metadata() fail in pool_message process, kworker may
+trigger UAF.
 
-Link: https://lkml.kernel.org/r/20230513102428.10223-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+b0a35a5c1f7e846d3b09@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/000000000000d1d6c205ebc4d512@google.com
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: be500ed721a6 ("dm space maps: improve performance with inc/dec on ranges of blocks")
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/btnode.c |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/md/dm-thin-metadata.c |   20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
---- a/fs/nilfs2/btnode.c
-+++ b/fs/nilfs2/btnode.c
-@@ -304,6 +304,14 @@ void nilfs_btnode_abort_change_key(struc
- 		radix_tree_delete(&btnc->page_tree, newkey);
- 		spin_unlock_irq(&btnc->tree_lock);
- 		unlock_page(ctxt->bh->b_page);
--	} else
--		brelse(nbh);
-+	} else {
-+		/*
-+		 * When canceling a buffer that a prepare operation has
-+		 * allocated to copy a node block to another location, use
-+		 * nilfs_btnode_delete() to initialize and release the buffer
-+		 * so that the buffer flags will not be in an inconsistent
-+		 * state when it is reallocated.
-+		 */
-+		nilfs_btnode_delete(nbh);
+--- a/drivers/md/dm-thin-metadata.c
++++ b/drivers/md/dm-thin-metadata.c
+@@ -1750,13 +1750,15 @@ int dm_thin_remove_range(struct dm_thin_
+ 
+ int dm_pool_block_is_shared(struct dm_pool_metadata *pmd, dm_block_t b, bool *result)
+ {
+-	int r;
++	int r = -EINVAL;
+ 	uint32_t ref_count;
+ 
+ 	down_read(&pmd->root_lock);
+-	r = dm_sm_get_count(pmd->data_sm, b, &ref_count);
+-	if (!r)
+-		*result = (ref_count > 1);
++	if (!pmd->fail_io) {
++		r = dm_sm_get_count(pmd->data_sm, b, &ref_count);
++		if (!r)
++			*result = (ref_count > 1);
 +	}
- }
+ 	up_read(&pmd->root_lock);
+ 
+ 	return r;
+@@ -1764,10 +1766,11 @@ int dm_pool_block_is_shared(struct dm_po
+ 
+ int dm_pool_inc_data_range(struct dm_pool_metadata *pmd, dm_block_t b, dm_block_t e)
+ {
+-	int r = 0;
++	int r = -EINVAL;
+ 
+ 	pmd_write_lock(pmd);
+-	r = dm_sm_inc_blocks(pmd->data_sm, b, e);
++	if (!pmd->fail_io)
++		r = dm_sm_inc_blocks(pmd->data_sm, b, e);
+ 	pmd_write_unlock(pmd);
+ 
+ 	return r;
+@@ -1775,10 +1778,11 @@ int dm_pool_inc_data_range(struct dm_poo
+ 
+ int dm_pool_dec_data_range(struct dm_pool_metadata *pmd, dm_block_t b, dm_block_t e)
+ {
+-	int r = 0;
++	int r = -EINVAL;
+ 
+ 	pmd_write_lock(pmd);
+-	r = dm_sm_dec_blocks(pmd->data_sm, b, e);
++	if (!pmd->fail_io)
++		r = dm_sm_dec_blocks(pmd->data_sm, b, e);
+ 	pmd_write_unlock(pmd);
+ 
+ 	return r;
 
 
