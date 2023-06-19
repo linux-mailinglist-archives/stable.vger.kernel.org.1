@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 92AD4735525
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:01:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD5A87354DA
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:59:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232384AbjFSLBt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:01:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34062 "EHLO
+        id S231573AbjFSK7S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:59:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232434AbjFSLBd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:01:33 -0400
+        with ESMTP id S232483AbjFSK6z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:58:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCF2630EC
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:00:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFA141726
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:57:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6936E60B78
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:00:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80960C433C8;
-        Mon, 19 Jun 2023 11:00:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8CE1F60B5F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:57:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F9E3C433C0;
+        Mon, 19 Jun 2023 10:57:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172438;
-        bh=ry/3wrTq4NfdsFJUOZxLBB2BeANMNny2fFTz6vO4Dxg=;
+        s=korg; t=1687172250;
+        bh=6RKCs0wMRDGWK8DsBROFb/lfeMXrmeEI6AuGMA5xHuI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OGcZUuBZoyCY032uqqlJGQaxf6UWCC+t6LlHoE+GGVAXralszBw4GgV3GWV7vGzTP
-         DSgSNzHAjK4INq0UUwaA4gFiJzvTliLSDPpMm9q8SLAlrmiV9RnQkrbkQk2QXoqNPo
-         Mn1fmDJNUenwiStJMJsnzpc8jro8j9Ib6XqkJsbk=
+        b=IJ5nb3rqPY1cbKeuohRRRjqHLuNjePEevqxdKkvN0JHQEZFY+gynAzj06Lw+XiYoH
+         ov6y4Gpeic2pUMoe0VcgUaUOWP02xvpVFkw6TgjuWr71xhypfKrHd6npqUR/vHsWtJ
+         mLTJAkoNb0vrkanVi26iqbcbPXwLaLOcFezAeH+Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Max Tottenham <mtottenh@akamai.com>,
-        Josh Hunt <johunt@akamai.com>,
-        kernel test robot <lkp@intel.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        Ratchanan Srirattanamet <peathot@hotmail.com>,
+        Karol Herbst <kherbst@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 069/107] net/sched: act_pedit: Parse L3 Header for L4 offset
+Subject: [PATCH 5.10 65/89] drm/nouveau: dont detect DSM for non-NVIDIA device
 Date:   Mon, 19 Jun 2023 12:30:53 +0200
-Message-ID: <20230619102144.756427284@linuxfoundation.org>
+Message-ID: <20230619102141.222468036@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,138 +56,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Max Tottenham <mtottenh@akamai.com>
+From: Ratchanan Srirattanamet <peathot@hotmail.com>
 
-[ Upstream commit 6c02568fd1ae53099b4ab86365c5be1ff15f586b ]
+[ Upstream commit 11d24327c2d7ad7f24fcc44fb00e1fa91ebf6525 ]
 
-Instead of relying on skb->transport_header being set correctly, opt
-instead to parse the L3 header length out of the L3 headers for both
-IPv4/IPv6 when the Extended Layer Op for tcp/udp is used. This fixes a
-bug if GRO is disabled, when GRO is disabled skb->transport_header is
-set by __netif_receive_skb_core() to point to the L3 header, it's later
-fixed by the upper protocol layers, but act_pedit will receive the SKB
-before the fixups are completed. The existing behavior causes the
-following to edit the L3 header if GRO is disabled instead of the UDP
-header:
+The call site of nouveau_dsm_pci_probe() uses single set of output
+variables for all invocations. So, we must not write anything to them
+unless it's an NVIDIA device. Otherwise, if we are called with another
+device after the NVIDIA device, we'll clober the result of the NVIDIA
+device.
 
-    tc filter add dev eth0 ingress protocol ip flower ip_proto udp \
- dst_ip 192.168.1.3 action pedit ex munge udp set dport 18053
+For example, if the other device doesn't have _PR3 resources, the
+detection later would miss the presence of power resource support, and
+the rest of the code will keep using Optimus DSM, breaking power
+management for that machine.
 
-Also re-introduce a rate-limited warning if we were unable to extract
-the header offset when using the 'ex' interface.
+Also, because we're detecting NVIDIA's DSM, it doesn't make sense to run
+this detection on a non-NVIDIA device anyway. Thus, check at the
+beginning of the detection code if this is an NVIDIA card, and just
+return if it isn't.
 
-Fixes: 71d0ed7079df ("net/act_pedit: Support using offset relative to
-the conventional network headers")
-Signed-off-by: Max Tottenham <mtottenh@akamai.com>
-Reviewed-by: Josh Hunt <johunt@akamai.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202305261541.N165u9TZ-lkp@intel.com/
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+This, together with commit d22915d22ded ("drm/nouveau/devinit/tu102-:
+wait for GFW_BOOT_PROGRESS == COMPLETED") developed independently and
+landed earlier, fixes runtime power management of the NVIDIA card in
+Lenovo Legion 5-15ARH05. Without this patch, the GPU resumption code
+will "timeout", sometimes hanging userspace.
+
+As a bonus, we'll also stop preventing _PR3 usage from the bridge for
+unrelated devices, which is always nice, I guess.
+
+Fixes: ccfc2d5cdb02 ("drm/nouveau: Use generic helper to check _PR3 presence")
+Signed-off-by: Ratchanan Srirattanamet <peathot@hotmail.com>
+Closes: https://gitlab.freedesktop.org/drm/nouveau/-/issues/79
+Reviewed-by: Karol Herbst <kherbst@redhat.com>
+Signed-off-by: Karol Herbst <kherbst@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/DM6PR19MB2780805D4BE1E3F9B3AC96D0BC409@DM6PR19MB2780.namprd19.prod.outlook.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_pedit.c | 48 ++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 43 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_acpi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
-index e3bc5bb6c60ef..e77da0545b553 100644
---- a/net/sched/act_pedit.c
-+++ b/net/sched/act_pedit.c
-@@ -13,7 +13,10 @@
- #include <linux/rtnetlink.h>
- #include <linux/module.h>
- #include <linux/init.h>
-+#include <linux/ip.h>
-+#include <linux/ipv6.h>
- #include <linux/slab.h>
-+#include <net/ipv6.h>
- #include <net/netlink.h>
- #include <net/pkt_sched.h>
- #include <linux/tc_act/tc_pedit.h>
-@@ -313,28 +316,58 @@ static bool offset_valid(struct sk_buff *skb, int offset)
- 	return true;
- }
+diff --git a/drivers/gpu/drm/nouveau/nouveau_acpi.c b/drivers/gpu/drm/nouveau/nouveau_acpi.c
+index 69a84d0197d0a..7b946d44ab2c1 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_acpi.c
++++ b/drivers/gpu/drm/nouveau/nouveau_acpi.c
+@@ -220,6 +220,9 @@ static void nouveau_dsm_pci_probe(struct pci_dev *pdev, acpi_handle *dhandle_out
+ 	int optimus_funcs;
+ 	struct pci_dev *parent_pdev;
  
--static void pedit_skb_hdr_offset(struct sk_buff *skb,
-+static int pedit_l4_skb_offset(struct sk_buff *skb, int *hoffset, const int header_type)
-+{
-+	const int noff = skb_network_offset(skb);
-+	int ret = -EINVAL;
-+	struct iphdr _iph;
++	if (pdev->vendor != PCI_VENDOR_ID_NVIDIA)
++		return;
 +
-+	switch (skb->protocol) {
-+	case htons(ETH_P_IP): {
-+		const struct iphdr *iph = skb_header_pointer(skb, noff, sizeof(_iph), &_iph);
-+
-+		if (!iph)
-+			goto out;
-+		*hoffset = noff + iph->ihl * 4;
-+		ret = 0;
-+		break;
-+	}
-+	case htons(ETH_P_IPV6):
-+		ret = ipv6_find_hdr(skb, hoffset, header_type, NULL, NULL) == header_type ? 0 : -EINVAL;
-+		break;
-+	}
-+out:
-+	return ret;
-+}
-+
-+static int pedit_skb_hdr_offset(struct sk_buff *skb,
- 				 enum pedit_header_type htype, int *hoffset)
- {
-+	int ret = -EINVAL;
- 	/* 'htype' is validated in the netlink parsing */
- 	switch (htype) {
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_ETH:
--		if (skb_mac_header_was_set(skb))
-+		if (skb_mac_header_was_set(skb)) {
- 			*hoffset = skb_mac_offset(skb);
-+			ret = 0;
-+		}
- 		break;
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_NETWORK:
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_IP4:
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_IP6:
- 		*hoffset = skb_network_offset(skb);
-+		ret = 0;
- 		break;
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_TCP:
-+		ret = pedit_l4_skb_offset(skb, hoffset, IPPROTO_TCP);
-+		break;
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_UDP:
--		if (skb_transport_header_was_set(skb))
--			*hoffset = skb_transport_offset(skb);
-+		ret = pedit_l4_skb_offset(skb, hoffset, IPPROTO_UDP);
- 		break;
- 	default:
- 		break;
- 	}
-+	return ret;
- }
- 
- static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
-@@ -369,6 +402,7 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
- 		int hoffset = 0;
- 		u32 *ptr, hdata;
- 		u32 val;
-+		int rc;
- 
- 		if (tkey_ex) {
- 			htype = tkey_ex->htype;
-@@ -377,7 +411,11 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
- 			tkey_ex++;
- 		}
- 
--		pedit_skb_hdr_offset(skb, htype, &hoffset);
-+		rc = pedit_skb_hdr_offset(skb, htype, &hoffset);
-+		if (rc) {
-+			pr_info_ratelimited("tc action pedit unable to extract header offset for header type (0x%x)\n", htype);
-+			goto bad;
-+		}
- 
- 		if (tkey->offmask) {
- 			u8 *d, _d;
+ 	*has_pr3 = false;
+ 	parent_pdev = pci_upstream_bridge(pdev);
+ 	if (parent_pdev) {
 -- 
 2.39.2
 
