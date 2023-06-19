@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50A737352B1
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:37:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CA95735364
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:45:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231245AbjFSKhZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:37:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43144 "EHLO
+        id S231256AbjFSKpU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:45:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231145AbjFSKhJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:37:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84B4A100
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:37:08 -0700 (PDT)
+        with ESMTP id S231199AbjFSKog (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:44:36 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BCB1E9
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:44:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A11260B51
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:37:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30FC1C433C8;
-        Mon, 19 Jun 2023 10:37:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2894960B80
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:44:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C3C8C433C0;
+        Mon, 19 Jun 2023 10:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171027;
-        bh=gDrRAn/3Di0ZftnLSoA+mqE0h0skAQn1H02GdAnvofI=;
+        s=korg; t=1687171450;
+        bh=3oHX6kZ+MMX2KYiMsfklMP9Awa185FLNHSRbAuPbN4A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TAMze8bnvn/rmPPQaaPSYedf5T9AtkGXxlH9zoIlSnpeGuNS8TByCwvg0Oppto00i
-         dbi6GB3AmX083lmOtpoHhKqkkvkAK71LY6zqJFNP6o4QdTuzWgstL0YD4IPKdxb/uc
-         Tf9hKcEchKSdFtMh/HEtewd8Kx7SrDk/mk20usvc=
+        b=kXhB90zLi2Jyf7zkI/EMR+YPe2ksCtYBN3Xc1HghydvF6I4pWbDz+xAQyConI40wR
+         +6Mi0g3kHxfIrS5dcBOSWUTDrVzryhXIBUwRsAcaam3wkvROOc3u+MinJf2mXGLa5K
+         cMWG/lcsnm0JMZWWlrS5kXQNSkFEAXcwWYIrZclU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, beld zhang <beldzhang@gmail.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.3 095/187] thunderbolt: Mask ring interrupt on Intel hardware as well
+        patches@lists.linux.dev,
+        Stefan Binding <sbinding@opensource.cirrus.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 036/166] ASoC: cs35l41: Fix default regmap values for some registers
 Date:   Mon, 19 Jun 2023 12:28:33 +0200
-Message-ID: <20230619102202.194424270@linuxfoundation.org>
+Message-ID: <20230619102156.499609603@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,50 +56,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-commit 9f9666e65359d5047089aef97ac87c50f624ecb0 upstream.
+[ Upstream commit e2d035f5a7d597bbabc268e236ec6c0408c4af0e ]
 
-When resuming from system sleep states the driver issues following
-warning on Intel hardware:
+Several values do not match the defaults of CS35L41, fix them.
 
-  thunderbolt 0000:07:00.0: interrupt for TX ring 0 is already enabled
-
-The reason for this is that the commit in question did not mask the ring
-interrupt on Intel hardware leaving the interrupt active. Fix this by
-masking it also in Intel hardware.
-
-Reported-by: beld zhang <beldzhang@gmail.com>
-Tested-by: beld zhang <beldzhang@gmail.com>
-Closes: https://lore.kernel.org/linux-usb/ZHKW5NeabmfhgLbY@debian.me/
-Fixes: c4af8e3fecd0 ("thunderbolt: Clear registers properly when auto clear isn't in use")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Acked-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20230414152552.574502-4-sbinding@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/nhi.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ sound/soc/codecs/cs35l41-lib.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/thunderbolt/nhi.c
-+++ b/drivers/thunderbolt/nhi.c
-@@ -56,9 +56,14 @@ static int ring_interrupt_index(const st
- 
- static void nhi_mask_interrupt(struct tb_nhi *nhi, int mask, int ring)
- {
--	if (nhi->quirks & QUIRK_AUTO_CLEAR_INT)
--		return;
--	iowrite32(mask, nhi->iobase + REG_RING_INTERRUPT_MASK_CLEAR_BASE + ring);
-+	if (nhi->quirks & QUIRK_AUTO_CLEAR_INT) {
-+		u32 val;
-+
-+		val = ioread32(nhi->iobase + REG_RING_INTERRUPT_BASE + ring);
-+		iowrite32(val & ~mask, nhi->iobase + REG_RING_INTERRUPT_BASE + ring);
-+	} else {
-+		iowrite32(mask, nhi->iobase + REG_RING_INTERRUPT_MASK_CLEAR_BASE + ring);
-+	}
- }
- 
- static void nhi_clear_interrupt(struct tb_nhi *nhi, int ring)
+diff --git a/sound/soc/codecs/cs35l41-lib.c b/sound/soc/codecs/cs35l41-lib.c
+index 04be71435491e..c2c56e5608094 100644
+--- a/sound/soc/codecs/cs35l41-lib.c
++++ b/sound/soc/codecs/cs35l41-lib.c
+@@ -46,7 +46,7 @@ static const struct reg_default cs35l41_reg[] = {
+ 	{ CS35L41_DSP1_RX5_SRC,			0x00000020 },
+ 	{ CS35L41_DSP1_RX6_SRC,			0x00000021 },
+ 	{ CS35L41_DSP1_RX7_SRC,			0x0000003A },
+-	{ CS35L41_DSP1_RX8_SRC,			0x00000001 },
++	{ CS35L41_DSP1_RX8_SRC,			0x0000003B },
+ 	{ CS35L41_NGATE1_SRC,			0x00000008 },
+ 	{ CS35L41_NGATE2_SRC,			0x00000009 },
+ 	{ CS35L41_AMP_DIG_VOL_CTRL,		0x00008000 },
+@@ -58,8 +58,8 @@ static const struct reg_default cs35l41_reg[] = {
+ 	{ CS35L41_IRQ1_MASK2,			0xFFFFFFFF },
+ 	{ CS35L41_IRQ1_MASK3,			0xFFFF87FF },
+ 	{ CS35L41_IRQ1_MASK4,			0xFEFFFFFF },
+-	{ CS35L41_GPIO1_CTRL1,			0xE1000001 },
+-	{ CS35L41_GPIO2_CTRL1,			0xE1000001 },
++	{ CS35L41_GPIO1_CTRL1,			0x81000001 },
++	{ CS35L41_GPIO2_CTRL1,			0x81000001 },
+ 	{ CS35L41_MIXER_NGATE_CFG,		0x00000000 },
+ 	{ CS35L41_MIXER_NGATE_CH1_CFG,		0x00000303 },
+ 	{ CS35L41_MIXER_NGATE_CH2_CFG,		0x00000303 },
+-- 
+2.39.2
+
 
 
