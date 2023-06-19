@@ -2,53 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C867C735225
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:31:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DAB27352C4
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:38:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230434AbjFSKbE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:31:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39086 "EHLO
+        id S231342AbjFSKh5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:37:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231295AbjFSKay (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:30:54 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABEA7CA
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:30:53 -0700 (PDT)
+        with ESMTP id S231738AbjFSKhs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:37:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0A16CD
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:37:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 47F7760B67
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:30:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D04CC433C8;
-        Mon, 19 Jun 2023 10:30:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 36AD360B7F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:37:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7F5C433C9;
+        Mon, 19 Jun 2023 10:37:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687170652;
-        bh=TvKaVSV7PH0o2IDTEJPk7NGATkfqXbuxkh9jlKRJAGI=;
+        s=korg; t=1687171066;
+        bh=PALvgKeFB9iwkUaWZCC5xRKYAOW3MdJ78OEK+a+W8Lg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n9IdHDQc2xuhLuJZSTF4ox1y7hSPxHxOw496v57JnNly7eX9c2h3eXj2gqtixIc6q
-         Qv6QwvHYMKDf9P7je40OeLT0qvJLJDv8uEiKTeN4umMBahbahRf2KrcsvIQ1eGOLi6
-         RJd1B3k5Ez1NsSLwYx7TfK+6BqfAcOxnmHFGASg4=
+        b=ZhqVXIEG1/UQO7+S61rz2ZZx2nyByQaeulSJ9Ommp4Bx87A5t/DEEYBSnbhEs51ay
+         OU4mhJSUiekV02I/qpBZn8OLqV0r4m0+Bmv9bGWEDykeflZugpWWb8jMQ1nFBEuiJF
+         bLl6VQnVwF/1IKMDVVW/jOeNRl2XceMLLOI260sg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Martin Schiller <ms@dev.tdt.de>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Ahmed Zaki <ahmed.zaki@intel.com>,
+        Rafal Romanowski <rafal.romanowski@intel.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 26/32] net: lapbether: only support ethernet devices
+Subject: [PATCH 6.3 136/187] iavf: remove mask from iavf_irq_enable_queues()
 Date:   Mon, 19 Jun 2023 12:29:14 +0200
-Message-ID: <20230619102128.938068028@linuxfoundation.org>
+Message-ID: <20230619102204.209905390@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102127.461443957@linuxfoundation.org>
-References: <20230619102127.461443957@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,94 +59,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ahmed Zaki <ahmed.zaki@intel.com>
 
-[ Upstream commit 9eed321cde22fc1afd76eac563ce19d899e0d6b2 ]
+[ Upstream commit c37cf54c12cfaa51e7aaf88708167b0d3259e64e ]
 
-It probbaly makes no sense to support arbitrary network devices
-for lapbether.
+Enable more than 32 IRQs by removing the u32 bit mask in
+iavf_irq_enable_queues(). There is no need for the mask as there are no
+callers that select individual IRQs through the bitmask. Also, if the PF
+allocates more than 32 IRQs, this mask will prevent us from using all of
+them.
 
-syzbot reported:
+Modify the comment in iavf_register.h to show that the maximum number
+allowed for the IRQ index is 63 as per the iAVF standard 1.0 [1].
 
-skbuff: skb_under_panic: text:ffff80008934c100 len:44 put:40 head:ffff0000d18dd200 data:ffff0000d18dd1ea tail:0x16 end:0x140 dev:bond1
-kernel BUG at net/core/skbuff.c:200 !
-Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
-Modules linked in:
-CPU: 0 PID: 5643 Comm: dhcpcd Not tainted 6.4.0-rc5-syzkaller-g4641cff8e810 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/25/2023
-pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : skb_panic net/core/skbuff.c:196 [inline]
-pc : skb_under_panic+0x13c/0x140 net/core/skbuff.c:210
-lr : skb_panic net/core/skbuff.c:196 [inline]
-lr : skb_under_panic+0x13c/0x140 net/core/skbuff.c:210
-sp : ffff8000973b7260
-x29: ffff8000973b7270 x28: ffff8000973b7360 x27: dfff800000000000
-x26: ffff0000d85d8150 x25: 0000000000000016 x24: ffff0000d18dd1ea
-x23: ffff0000d18dd200 x22: 000000000000002c x21: 0000000000000140
-x20: 0000000000000028 x19: ffff80008934c100 x18: ffff8000973b68a0
-x17: 0000000000000000 x16: ffff80008a43bfbc x15: 0000000000000202
-x14: 0000000000000000 x13: 0000000000000001 x12: 0000000000000001
-x11: 0000000000000201 x10: 0000000000000000 x9 : f22f7eb937cced00
-x8 : f22f7eb937cced00 x7 : 0000000000000001 x6 : 0000000000000001
-x5 : ffff8000973b6b78 x4 : ffff80008df9ee80 x3 : ffff8000805974f4
-x2 : 0000000000000001 x1 : 0000000100000201 x0 : 0000000000000086
-Call trace:
-skb_panic net/core/skbuff.c:196 [inline]
-skb_under_panic+0x13c/0x140 net/core/skbuff.c:210
-skb_push+0xf0/0x108 net/core/skbuff.c:2409
-ip6gre_header+0xbc/0x738 net/ipv6/ip6_gre.c:1383
-dev_hard_header include/linux/netdevice.h:3137 [inline]
-lapbeth_data_transmit+0x1c4/0x298 drivers/net/wan/lapbether.c:257
-lapb_data_transmit+0x8c/0xb0 net/lapb/lapb_iface.c:447
-lapb_transmit_buffer+0x178/0x204 net/lapb/lapb_out.c:149
-lapb_send_control+0x220/0x320 net/lapb/lapb_subr.c:251
-lapb_establish_data_link+0x94/0xec
-lapb_device_event+0x348/0x4e0
-notifier_call_chain+0x1a4/0x510 kernel/notifier.c:93
-raw_notifier_call_chain+0x3c/0x50 kernel/notifier.c:461
-__dev_notify_flags+0x2bc/0x544
-dev_change_flags+0xd0/0x15c net/core/dev.c:8643
-devinet_ioctl+0x858/0x17e4 net/ipv4/devinet.c:1150
-inet_ioctl+0x2ac/0x4d8 net/ipv4/af_inet.c:979
-sock_do_ioctl+0x134/0x2dc net/socket.c:1201
-sock_ioctl+0x4ec/0x858 net/socket.c:1318
-vfs_ioctl fs/ioctl.c:51 [inline]
-__do_sys_ioctl fs/ioctl.c:870 [inline]
-__se_sys_ioctl fs/ioctl.c:856 [inline]
-__arm64_sys_ioctl+0x14c/0x1c8 fs/ioctl.c:856
-__invoke_syscall arch/arm64/kernel/syscall.c:38 [inline]
-invoke_syscall+0x98/0x2c0 arch/arm64/kernel/syscall.c:52
-el0_svc_common+0x138/0x244 arch/arm64/kernel/syscall.c:142
-do_el0_svc+0x64/0x198 arch/arm64/kernel/syscall.c:191
-el0_svc+0x4c/0x160 arch/arm64/kernel/entry-common.c:647
-el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:665
-el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:591
-Code: aa1803e6 aa1903e7 a90023f5 947730f5 (d4210000)
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Martin Schiller <ms@dev.tdt.de>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+link: [1] https://www.intel.com/content/dam/www/public/us/en/documents/product-specifications/ethernet-adaptive-virtual-function-hardware-spec.pdf
+Fixes: 5eae00c57f5e ("i40evf: main driver core")
+Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20230608200226.451861-1-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wan/lapbether.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/intel/iavf/iavf.h          |  2 +-
+ drivers/net/ethernet/intel/iavf/iavf_main.c     | 15 ++++++---------
+ drivers/net/ethernet/intel/iavf/iavf_register.h |  2 +-
+ 3 files changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wan/lapbether.c b/drivers/net/wan/lapbether.c
-index 6233805fc032c..b2ede9acb4bcf 100644
---- a/drivers/net/wan/lapbether.c
-+++ b/drivers/net/wan/lapbether.c
-@@ -344,6 +344,9 @@ static int lapbeth_new_device(struct net_device *dev)
+diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
+index 746ff76f2fb1e..0615bb2b3c33b 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf.h
++++ b/drivers/net/ethernet/intel/iavf/iavf.h
+@@ -526,7 +526,7 @@ void iavf_set_ethtool_ops(struct net_device *netdev);
+ void iavf_update_stats(struct iavf_adapter *adapter);
+ void iavf_reset_interrupt_capability(struct iavf_adapter *adapter);
+ int iavf_init_interrupt_scheme(struct iavf_adapter *adapter);
+-void iavf_irq_enable_queues(struct iavf_adapter *adapter, u32 mask);
++void iavf_irq_enable_queues(struct iavf_adapter *adapter);
+ void iavf_free_all_tx_resources(struct iavf_adapter *adapter);
+ void iavf_free_all_rx_resources(struct iavf_adapter *adapter);
  
- 	ASSERT_RTNL();
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 2de4baff4c205..4a66873882d12 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -359,21 +359,18 @@ static void iavf_irq_disable(struct iavf_adapter *adapter)
+ }
  
-+	if (dev->type != ARPHRD_ETHER)
-+		return -EINVAL;
-+
- 	ndev = alloc_netdev(sizeof(*lapbeth), "lapb%d", NET_NAME_UNKNOWN,
- 			    lapbeth_setup);
- 	if (!ndev)
+ /**
+- * iavf_irq_enable_queues - Enable interrupt for specified queues
++ * iavf_irq_enable_queues - Enable interrupt for all queues
+  * @adapter: board private structure
+- * @mask: bitmap of queues to enable
+  **/
+-void iavf_irq_enable_queues(struct iavf_adapter *adapter, u32 mask)
++void iavf_irq_enable_queues(struct iavf_adapter *adapter)
+ {
+ 	struct iavf_hw *hw = &adapter->hw;
+ 	int i;
+ 
+ 	for (i = 1; i < adapter->num_msix_vectors; i++) {
+-		if (mask & BIT(i - 1)) {
+-			wr32(hw, IAVF_VFINT_DYN_CTLN1(i - 1),
+-			     IAVF_VFINT_DYN_CTLN1_INTENA_MASK |
+-			     IAVF_VFINT_DYN_CTLN1_ITR_INDX_MASK);
+-		}
++		wr32(hw, IAVF_VFINT_DYN_CTLN1(i - 1),
++		     IAVF_VFINT_DYN_CTLN1_INTENA_MASK |
++		     IAVF_VFINT_DYN_CTLN1_ITR_INDX_MASK);
+ 	}
+ }
+ 
+@@ -387,7 +384,7 @@ void iavf_irq_enable(struct iavf_adapter *adapter, bool flush)
+ 	struct iavf_hw *hw = &adapter->hw;
+ 
+ 	iavf_misc_irq_enable(adapter);
+-	iavf_irq_enable_queues(adapter, ~0);
++	iavf_irq_enable_queues(adapter);
+ 
+ 	if (flush)
+ 		iavf_flush(hw);
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_register.h b/drivers/net/ethernet/intel/iavf/iavf_register.h
+index bf793332fc9d5..a19e88898a0bb 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_register.h
++++ b/drivers/net/ethernet/intel/iavf/iavf_register.h
+@@ -40,7 +40,7 @@
+ #define IAVF_VFINT_DYN_CTL01_INTENA_MASK IAVF_MASK(0x1, IAVF_VFINT_DYN_CTL01_INTENA_SHIFT)
+ #define IAVF_VFINT_DYN_CTL01_ITR_INDX_SHIFT 3
+ #define IAVF_VFINT_DYN_CTL01_ITR_INDX_MASK IAVF_MASK(0x3, IAVF_VFINT_DYN_CTL01_ITR_INDX_SHIFT)
+-#define IAVF_VFINT_DYN_CTLN1(_INTVF) (0x00003800 + ((_INTVF) * 4)) /* _i=0...15 */ /* Reset: VFR */
++#define IAVF_VFINT_DYN_CTLN1(_INTVF) (0x00003800 + ((_INTVF) * 4)) /* _i=0...63 */ /* Reset: VFR */
+ #define IAVF_VFINT_DYN_CTLN1_INTENA_SHIFT 0
+ #define IAVF_VFINT_DYN_CTLN1_INTENA_MASK IAVF_MASK(0x1, IAVF_VFINT_DYN_CTLN1_INTENA_SHIFT)
+ #define IAVF_VFINT_DYN_CTLN1_SWINT_TRIG_SHIFT 2
 -- 
 2.39.2
 
