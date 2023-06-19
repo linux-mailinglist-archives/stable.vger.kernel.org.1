@@ -2,53 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DBE473521D
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 355BD73538D
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:46:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229656AbjFSKal (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:30:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38692 "EHLO
+        id S232070AbjFSKqg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:46:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231271AbjFSKai (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:30:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77105CA
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:30:37 -0700 (PDT)
+        with ESMTP id S230282AbjFSKqG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:46:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBDA310DE
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:45:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EF67C60B58
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:30:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1144FC433C8;
-        Mon, 19 Jun 2023 10:30:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 67B9B60B73
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:45:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C61BC433C0;
+        Mon, 19 Jun 2023 10:45:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687170636;
-        bh=IAaAA3F23NJfIOA6rdpIvVejUwfAYLk5v9h3cGY7u50=;
+        s=korg; t=1687171547;
+        bh=xg/w/o0y1XyJU7/F+wAVFl3bYQkP2mRkFeRz0oHhQtQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K09M6qA8qNeVZWQOcBR4qo4D+rrOOPsWbhNOvBEQVH7VdATUIeRMwQTSV5sRacCLE
-         CwjpXymC6wIy3G0u7Jr6jmxt0xgNEisGTMyBIeQoRloFJs4+zTVb4NQGyfYOyrtuZr
-         msA2KcMqTdpXDkczD6LBP4bhS+aZwWfwSIqfiK+0=
+        b=OCTlAEjrWsFZU6USBu3WKedDEetUKiC5u6qJMe5pB4SvKxkLcqtBldjgk+htw0No6
+         9mBVoZhadKSbIKMHZBHjJ9r7ye7Oy+MLUxUEmwTGEXMAlYN3USjUUuUiqbE2QCIkAH
+         yYyeOSlqegmgse2CpyzLbZg9tS4pdCmXWmLpxWoE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sagi Grimberg <sagi@grimberg.me>,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 20/32] IB/isert: Fix dead lock in ib_isert
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Stylon Wang <stylon.wang@amd.com>,
+        Hersen Wu <hersenxs.wu@amd.com>, Roman Li <roman.li@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.1 071/166] drm/amd/display: edp do not add non-edid timings
 Date:   Mon, 19 Jun 2023 12:29:08 +0200
-Message-ID: <20230619102128.611621588@linuxfoundation.org>
+Message-ID: <20230619102158.203900182@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102127.461443957@linuxfoundation.org>
-References: <20230619102127.461443957@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,121 +58,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-[ Upstream commit 691b0480933f0ce88a81ed1d1a0aff340ff6293a ]
+commit e749dd10e5f292061ad63d2b030194bf7d7d452c upstream.
 
-- When a iSER session is released, ib_isert module is taking a mutex
-  lock and releasing all pending connections. As part of this, ib_isert
-  is destroying rdma cm_id. To destroy cm_id, rdma_cm module is sending
-  CM events to CMA handler of ib_isert. This handler is taking same
-  mutex lock. Hence it leads to deadlock between ib_isert & rdma_cm
-  modules.
+[Why] most edp support only timings from edid. applying
+non-edid timings, especially those timings out of edp
+bandwidth, may damage edp.
 
-- For fix, created local list of pending connections and release the
-  connection outside of mutex lock.
+[How] do not add non-edid timings for edp.
 
-Calltrace:
----------
-[ 1229.791410] INFO: task kworker/10:1:642 blocked for more than 120 seconds.
-[ 1229.791416]       Tainted: G           OE    --------- -  - 4.18.0-372.9.1.el8.x86_64 #1
-[ 1229.791418] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-[ 1229.791419] task:kworker/10:1    state:D stack:    0 pid:  642 ppid:     2 flags:0x80004000
-[ 1229.791424] Workqueue: ib_cm cm_work_handler [ib_cm]
-[ 1229.791436] Call Trace:
-[ 1229.791438]  __schedule+0x2d1/0x830
-[ 1229.791445]  ? select_idle_sibling+0x23/0x6f0
-[ 1229.791449]  schedule+0x35/0xa0
-[ 1229.791451]  schedule_preempt_disabled+0xa/0x10
-[ 1229.791453]  __mutex_lock.isra.7+0x310/0x420
-[ 1229.791456]  ? select_task_rq_fair+0x351/0x990
-[ 1229.791459]  isert_cma_handler+0x224/0x330 [ib_isert]
-[ 1229.791463]  ? ttwu_queue_wakelist+0x159/0x170
-[ 1229.791466]  cma_cm_event_handler+0x25/0xd0 [rdma_cm]
-[ 1229.791474]  cma_ib_handler+0xa7/0x2e0 [rdma_cm]
-[ 1229.791478]  cm_process_work+0x22/0xf0 [ib_cm]
-[ 1229.791483]  cm_work_handler+0xf4/0xf30 [ib_cm]
-[ 1229.791487]  ? move_linked_works+0x6e/0xa0
-[ 1229.791490]  process_one_work+0x1a7/0x360
-[ 1229.791491]  ? create_worker+0x1a0/0x1a0
-[ 1229.791493]  worker_thread+0x30/0x390
-[ 1229.791494]  ? create_worker+0x1a0/0x1a0
-[ 1229.791495]  kthread+0x10a/0x120
-[ 1229.791497]  ? set_kthread_struct+0x40/0x40
-[ 1229.791499]  ret_from_fork+0x1f/0x40
-
-[ 1229.791739] INFO: task targetcli:28666 blocked for more than 120 seconds.
-[ 1229.791740]       Tainted: G           OE    --------- -  - 4.18.0-372.9.1.el8.x86_64 #1
-[ 1229.791741] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-[ 1229.791742] task:targetcli       state:D stack:    0 pid:28666 ppid:  5510 flags:0x00004080
-[ 1229.791743] Call Trace:
-[ 1229.791744]  __schedule+0x2d1/0x830
-[ 1229.791746]  schedule+0x35/0xa0
-[ 1229.791748]  schedule_preempt_disabled+0xa/0x10
-[ 1229.791749]  __mutex_lock.isra.7+0x310/0x420
-[ 1229.791751]  rdma_destroy_id+0x15/0x20 [rdma_cm]
-[ 1229.791755]  isert_connect_release+0x115/0x130 [ib_isert]
-[ 1229.791757]  isert_free_np+0x87/0x140 [ib_isert]
-[ 1229.791761]  iscsit_del_np+0x74/0x120 [iscsi_target_mod]
-[ 1229.791776]  lio_target_np_driver_store+0xe9/0x140 [iscsi_target_mod]
-[ 1229.791784]  configfs_write_file+0xb2/0x110
-[ 1229.791788]  vfs_write+0xa5/0x1a0
-[ 1229.791792]  ksys_write+0x4f/0xb0
-[ 1229.791794]  do_syscall_64+0x5b/0x1a0
-[ 1229.791798]  entry_SYSCALL_64_after_hwframe+0x65/0xca
-
-Fixes: bd3792205aae ("iser-target: Fix pending connections handling in target stack shutdown sequnce")
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Link: https://lore.kernel.org/r/20230606102531.162967-2-saravanan.vajravel@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Acked-by: Stylon Wang <stylon.wang@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Reviewed-by: Roman Li <roman.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/isert/ib_isert.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/ulp/isert/ib_isert.c b/drivers/infiniband/ulp/isert/ib_isert.c
-index ee3f630c92179..6a2c31528560b 100644
---- a/drivers/infiniband/ulp/isert/ib_isert.c
-+++ b/drivers/infiniband/ulp/isert/ib_isert.c
-@@ -2513,6 +2513,7 @@ isert_free_np(struct iscsi_np *np)
- {
- 	struct isert_np *isert_np = np->np_context;
- 	struct isert_conn *isert_conn, *n;
-+	LIST_HEAD(drop_conn_list);
- 
- 	if (isert_np->cm_id)
- 		rdma_destroy_id(isert_np->cm_id);
-@@ -2532,7 +2533,7 @@ isert_free_np(struct iscsi_np *np)
- 					 node) {
- 			isert_info("cleaning isert_conn %p state (%d)\n",
- 				   isert_conn, isert_conn->state);
--			isert_connect_release(isert_conn);
-+			list_move_tail(&isert_conn->node, &drop_conn_list);
- 		}
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -6942,7 +6942,13 @@ static int amdgpu_dm_connector_get_modes
+ 				drm_add_modes_noedid(connector, 640, 480);
+ 	} else {
+ 		amdgpu_dm_connector_ddc_get_modes(connector, edid);
+-		amdgpu_dm_connector_add_common_modes(encoder, connector);
++		/* most eDP supports only timings from its edid,
++		 * usually only detailed timings are available
++		 * from eDP edid. timings which are not from edid
++		 * may damage eDP
++		 */
++		if (connector->connector_type != DRM_MODE_CONNECTOR_eDP)
++			amdgpu_dm_connector_add_common_modes(encoder, connector);
+ 		amdgpu_dm_connector_add_freesync_modes(connector, edid);
  	}
- 
-@@ -2543,11 +2544,16 @@ isert_free_np(struct iscsi_np *np)
- 					 node) {
- 			isert_info("cleaning isert_conn %p state (%d)\n",
- 				   isert_conn, isert_conn->state);
--			isert_connect_release(isert_conn);
-+			list_move_tail(&isert_conn->node, &drop_conn_list);
- 		}
- 	}
- 	mutex_unlock(&isert_np->mutex);
- 
-+	list_for_each_entry_safe(isert_conn, n, &drop_conn_list, node) {
-+		list_del_init(&isert_conn->node);
-+		isert_connect_release(isert_conn);
-+	}
-+
- 	np->np_context = NULL;
- 	kfree(isert_np);
- }
--- 
-2.39.2
-
+ 	amdgpu_dm_fbc_init(connector);
 
 
