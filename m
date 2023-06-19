@@ -2,51 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9AA1735205
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:29:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 813367352DA
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:38:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229639AbjFSK3h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:29:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38312 "EHLO
+        id S231649AbjFSKis (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:38:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbjFSK3f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:29:35 -0400
+        with ESMTP id S231744AbjFSKir (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:38:47 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF645B3
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:29:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23EA1E9
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:38:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7749A60180
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:29:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92CCFC433C8;
-        Mon, 19 Jun 2023 10:29:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5BB6F60B62
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:38:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 465E2C433C8;
+        Mon, 19 Jun 2023 10:38:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687170573;
-        bh=+ucmSK/cUeNvZM1O/vpJTZona2MyX0ZdHkWJ4D1fqsw=;
+        s=korg; t=1687171124;
+        bh=s23RElRo4I1+btZKi2DFt49uU+2pyWw/JgJmuo7oVGc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WUzJhbbjGN1uLMULauJQMZrdqm3u42xG4yF4PYhTm5rjLQlvwJl8UXvNXXsMcif2W
-         ZXsBoaoYoCTuutMu/swEw7T215RZzpqNapRm2n/8ghmDZSHG3o3WhdsmMQElBSvXle
-         omDA8o3QQayeazAsqcJwseFqK5/HcTvnh7MLl+1c=
+        b=LGydXn/RTYr3ZtqiAgyV7xRo9iulvwLRCltBYfPZ1Dglz/RFR+/jiD33K9AYsZN0/
+         CY6J2X5Z0mxLLQP6D76Zy8/o92CJ1WuHxrL8wH0lgp5M7R4tWxN2aiPFtWb/sz2ZtL
+         V0bS/yyfIseA3YWbHrbEcNFo88nnBMwO70A8i3MI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Lu=C3=ADs=20Henriques?= <lhenriques@suse.de>,
-        Mark Fasheh <mark@fasheh.com>,
-        Joseph Qi <joseph.qi@linux.alibaba.com>,
-        Joel Becker <jlbec@evilplan.org>,
-        Junxiao Bi <junxiao.bi@oracle.com>,
-        Changwei Ge <gechangwei@live.cn>, Gang He <ghe@suse.com>,
-        Jun Piao <piaojun@huawei.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.14 11/32] ocfs2: check new file size on fallocate call
+        patches@lists.linux.dev, Kamil Maziarz <kamil.maziarz@intel.com>,
+        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Chandan Kumar Rout <chandanx.rout@intel.com>
+Subject: [PATCH 6.3 121/187] ice: Fix XDP memory leak when NIC is brought up and down
 Date:   Mon, 19 Jun 2023 12:28:59 +0200
-Message-ID: <20230619102128.104595366@linuxfoundation.org>
+Message-ID: <20230619102203.392476661@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102127.461443957@linuxfoundation.org>
-References: <20230619102127.461443957@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -61,54 +57,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luís Henriques <ocfs2-devel@oss.oracle.com>
+From: Kamil Maziarz <kamil.maziarz@intel.com>
 
-commit 26a6ffff7de5dd369cdb12e38ba11db682f1dec0 upstream.
+[ Upstream commit 78c50d6961fc05491ebbc71c35d87324b1a4f49a ]
 
-When changing a file size with fallocate() the new size isn't being
-checked.  In particular, the FSIZE ulimit isn't being checked, which makes
-fstest generic/228 fail.  Simply adding a call to inode_newsize_ok() fixes
-this issue.
+Fix the buffer leak that occurs while switching
+the port up and down with traffic and XDP by
+checking for an active XDP program and freeing all empty TX buffers.
 
-Link: https://lkml.kernel.org/r/20230529152645.32680-1-lhenriques@suse.de
-Signed-off-by: Luís Henriques <lhenriques@suse.de>
-Reviewed-by: Mark Fasheh <mark@fasheh.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: efc2214b6047 ("ice: Add support for XDP")
+Signed-off-by: Kamil Maziarz <kamil.maziarz@intel.com>
+Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
+Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/file.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/ocfs2/file.c
-+++ b/fs/ocfs2/file.c
-@@ -2109,14 +2109,20 @@ static long ocfs2_fallocate(struct file
- 	struct ocfs2_space_resv sr;
- 	int change_size = 1;
- 	int cmd = OCFS2_IOC_RESVSP64;
-+	int ret = 0;
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 0d8b8c6f9bd35..0c949ed22a313 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -7048,6 +7048,10 @@ int ice_down(struct ice_vsi *vsi)
+ 	ice_for_each_txq(vsi, i)
+ 		ice_clean_tx_ring(vsi->tx_rings[i]);
  
- 	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE))
- 		return -EOPNOTSUPP;
- 	if (!ocfs2_writes_unwritten_extents(osb))
- 		return -EOPNOTSUPP;
++	if (ice_is_xdp_ena_vsi(vsi))
++		ice_for_each_xdp_txq(vsi, i)
++			ice_clean_tx_ring(vsi->xdp_rings[i]);
++
+ 	ice_for_each_rxq(vsi, i)
+ 		ice_clean_rx_ring(vsi->rx_rings[i]);
  
--	if (mode & FALLOC_FL_KEEP_SIZE)
-+	if (mode & FALLOC_FL_KEEP_SIZE) {
- 		change_size = 0;
-+	} else {
-+		ret = inode_newsize_ok(inode, offset + len);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	if (mode & FALLOC_FL_PUNCH_HOLE)
- 		cmd = OCFS2_IOC_UNRESVSP64;
+-- 
+2.39.2
+
 
 
