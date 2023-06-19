@@ -2,48 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 493907354A2
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:58:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5669735535
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:02:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232304AbjFSK6G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:58:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56842 "EHLO
+        id S232589AbjFSLCd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 07:02:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232317AbjFSK5h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:57:37 -0400
+        with ESMTP id S232475AbjFSLCO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:02:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0DB13596
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:55:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B2E11BF9
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:01:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 45E1060B4B
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:55:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D8F4C433C0;
-        Mon, 19 Jun 2023 10:55:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7BD6D60B42
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:01:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9243CC433C9;
+        Mon, 19 Jun 2023 11:01:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172136;
-        bh=dQ0HxSnJfNGCquyFoKv00UWmKtFyIrU/8rPr5MrLuiA=;
+        s=korg; t=1687172466;
+        bh=xUIZ23c+3tN02lO0oTMrtSf2owuRlG5/4NrqvimrJLU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o43gcGFsrHRbppAZYyH6POo/zrlwF0s418SpqEIesdktEOf5PFp4s+wNn42fpXItq
-         HXfHbGBUPokF7wO6YkrXlL5oYS4HbbzMoMskzHEw/HWm7WnLCT2jjXW+1FXJ08kcLR
-         O/n8v6rjF2hV6fjh2NYXw+K9hTegquED2PyH9AwI=
+        b=lwWJ1CmbPPJ/WrnYPSA+ehaVa1oY4WclBtY3ASLVngKwgBuGm7jD3XeUtn1W3LucO
+         d46mQorXxbtjQ8i7vHd8m6Jq02oLgloO/QJJpzR7MXzf/CqQC8Lpm3FTgK00BuhZiZ
+         UMQ2hDwrlEIDIpyX1rN5msad6qTCSDzxh+WLKOX4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Guillaume Nault <gnault@redhat.com>,
-        David Ahern <dsahern@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 49/89] ping6: Fix send to link-local addresses with VRF.
+        patches@lists.linux.dev, Pengfei Xu <pengfei.xu@intel.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 5.15 053/107] thunderbolt: dma_test: Use correct value for absent rings when creating paths
 Date:   Mon, 19 Jun 2023 12:30:37 +0200
-Message-ID: <20230619102140.514443039@linuxfoundation.org>
+Message-ID: <20230619102144.037842483@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
-References: <20230619102138.279161276@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,58 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit 91ffd1bae1dafbb9e34b46813f5b058581d9144d ]
+commit 70c2e03e9aaf17496c63f6e42333c012f5ae5307 upstream.
 
-Ping sockets can't send packets when they're bound to a VRF master
-device and the output interface is set to a slave device.
+Both tb_xdomain_enable_paths() and tb_xdomain_disable_paths() expect -1,
+not 0, if the corresponding ring is not needed. For this reason change
+the driver to use correct value for the rings that are not needed.
 
-For example, when net.ipv4.ping_group_range is properly set, so that
-ping6 can use ping sockets, the following kind of commands fails:
-  $ ip vrf exec red ping6 fe80::854:e7ff:fe88:4bf1%eth1
-
-What happens is that sk->sk_bound_dev_if is set to the VRF master
-device, but 'oif' is set to the real output device. Since both are set
-but different, ping_v6_sendmsg() sees their value as inconsistent and
-fails.
-
-Fix this by allowing 'oif' to be a slave device of ->sk_bound_dev_if.
-
-This fixes the following kselftest failure:
-  $ ./fcnal-test.sh -t ipv6_ping
-  [...]
-  TEST: ping out, vrf device+address bind - ns-B IPv6 LLA        [FAIL]
-
-Reported-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Closes: https://lore.kernel.org/netdev/b6191f90-ffca-dbca-7d06-88a9788def9c@alu.unizg.hr/
-Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Fixes: 5e457896986e ("net: ipv6: Fix ping to link-local addresses.")
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/6c8b53108816a8d0d5705ae37bdc5a8322b5e3d9.1686153846.git.gnault@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 180b0689425c ("thunderbolt: Allow multiple DMA tunnels over a single XDomain connection")
+Cc: stable@vger.kernel.org
+Reported-by: Pengfei Xu <pengfei.xu@intel.com>
+Tested-by: Pengfei Xu <pengfei.xu@intel.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ping.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/thunderbolt/dma_test.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv6/ping.c b/net/ipv6/ping.c
-index 6ac88fe24a8e0..7fab29f3ce6e8 100644
---- a/net/ipv6/ping.c
-+++ b/net/ipv6/ping.c
-@@ -96,7 +96,8 @@ static int ping_v6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
- 	addr_type = ipv6_addr_type(daddr);
- 	if ((__ipv6_addr_needs_scope_id(addr_type) && !oif) ||
- 	    (addr_type & IPV6_ADDR_MAPPED) ||
--	    (oif && sk->sk_bound_dev_if && oif != sk->sk_bound_dev_if))
-+	    (oif && sk->sk_bound_dev_if && oif != sk->sk_bound_dev_if &&
-+	     l3mdev_master_ifindex_by_index(sock_net(sk), oif) != sk->sk_bound_dev_if))
- 		return -EINVAL;
+--- a/drivers/thunderbolt/dma_test.c
++++ b/drivers/thunderbolt/dma_test.c
+@@ -192,9 +192,9 @@ static int dma_test_start_rings(struct d
+ 	}
  
- 	/* TODO: use ip6_datagram_send_ctl to get options from cmsg */
--- 
-2.39.2
-
+ 	ret = tb_xdomain_enable_paths(dt->xd, dt->tx_hopid,
+-				      dt->tx_ring ? dt->tx_ring->hop : 0,
++				      dt->tx_ring ? dt->tx_ring->hop : -1,
+ 				      dt->rx_hopid,
+-				      dt->rx_ring ? dt->rx_ring->hop : 0);
++				      dt->rx_ring ? dt->rx_ring->hop : -1);
+ 	if (ret) {
+ 		dma_test_free_rings(dt);
+ 		return ret;
+@@ -218,9 +218,9 @@ static void dma_test_stop_rings(struct d
+ 		tb_ring_stop(dt->tx_ring);
+ 
+ 	ret = tb_xdomain_disable_paths(dt->xd, dt->tx_hopid,
+-				       dt->tx_ring ? dt->tx_ring->hop : 0,
++				       dt->tx_ring ? dt->tx_ring->hop : -1,
+ 				       dt->rx_hopid,
+-				       dt->rx_ring ? dt->rx_ring->hop : 0);
++				       dt->rx_ring ? dt->rx_ring->hop : -1);
+ 	if (ret)
+ 		dev_warn(&dt->svc->dev, "failed to disable DMA paths\n");
+ 
 
 
