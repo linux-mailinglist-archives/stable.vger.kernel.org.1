@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65880735412
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:51:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7972C735518
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:01:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232193AbjFSKvo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:51:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52110 "EHLO
+        id S232512AbjFSLB0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 07:01:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232202AbjFSKvQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:51:16 -0400
+        with ESMTP id S232519AbjFSLBH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:01:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51C7019AA
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:50:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74D881700
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:00:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 799FC60B62
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:50:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B8E6C433C0;
-        Mon, 19 Jun 2023 10:50:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0AEA960B7F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:00:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D36C433C0;
+        Mon, 19 Jun 2023 11:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171841;
-        bh=xofLHve9NdTRBvTndbHU2RqSkaajMrMqmzcFrW5GaR4=;
+        s=korg; t=1687172408;
+        bh=aKwqI6tZDyg7br+kH4IlcuCUN1y75uHhHikEfe3Qw1E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=staCBEwsbRbzJP10ppHpyW8Hnd8GhipZLlmUXBIfDGbHNjD5B47NCquV0IAPcCEr/
-         bTBV+LFb8QmTSDGIBLzALhiSu9M50jh0jfIVe0kKs4FDxojyr5WDfHT34+7WMsJdiN
-         M7u361mcqM7vHpQr++DqHwJJ3ebaT3PYAWFeYZwE=
+        b=2wLWxkH9YJuh+tZblFlAGr52eX5/J7S7+Ii+Wfi+kWgN09Yeklxv4CDZJ/8Pd4qDs
+         trKwVyJEST/o/EeuK1YnjsgukZyBi5wLVvW0Y80148N64pxxMhGDxsbzCYp7ON3ZWR
+         2OJRRjrmj5gZtMG5xjnZkrNI/I5QyUPmhmlqe7No=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexandru Sorodoc <ealex95@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 10/64] platform/x86: asus-wmi: Ignore WMI events with codes 0x7B, 0xC0
+Subject: [PATCH 5.15 022/107] parisc: Improve cache flushing for PCXL in arch_sync_dma_for_cpu()
 Date:   Mon, 19 Jun 2023 12:30:06 +0200
-Message-ID: <20230619102133.357354108@linuxfoundation.org>
+Message-ID: <20230619102142.600000812@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
-References: <20230619102132.808972458@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,48 +54,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alexandru Sorodoc <ealex95@gmail.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 362c1f2ec82cb65940e1c73e15a395a7a891fc6f ]
+[ Upstream commit 59fa12646d9f56c842b4d5b6418ed77af625c588 ]
 
-On ASUS GU604V the key 0x7B is issued when the charger is connected or
-disconnected, and key 0xC0 is issued when an external display is
-connected or disconnected.
+Add comment in arch_sync_dma_for_device() and handle the direction flag in
+arch_sync_dma_for_cpu().
 
-This commit maps them to KE_IGNORE to slience kernel messages about
-unknown keys, such as:
+When receiving data from the device (DMA_FROM_DEVICE) unconditionally
+purge the data cache in arch_sync_dma_for_cpu().
 
-    kernel: asus_wmi: Unknown key code 0x7b
-
-Signed-off-by: Alexandru Sorodoc <ealex95@gmail.com>
-Link: https://lore.kernel.org/r/20230512101517.47416-1-ealex95@gmail.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-nb-wmi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/parisc/kernel/pci-dma.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
-index 6424bdb33d2f0..78d357de2f040 100644
---- a/drivers/platform/x86/asus-nb-wmi.c
-+++ b/drivers/platform/x86/asus-nb-wmi.c
-@@ -555,6 +555,7 @@ static const struct key_entry asus_nb_wmi_keymap[] = {
- 	{ KE_KEY, 0x6B, { KEY_TOUCHPAD_TOGGLE } },
- 	{ KE_IGNORE, 0x6E, },  /* Low Battery notification */
- 	{ KE_KEY, 0x7a, { KEY_ALS_TOGGLE } }, /* Ambient Light Sensor Toggle */
-+	{ KE_IGNORE, 0x7B, }, /* Charger connect/disconnect notification */
- 	{ KE_KEY, 0x7c, { KEY_MICMUTE } },
- 	{ KE_KEY, 0x7D, { KEY_BLUETOOTH } }, /* Bluetooth Enable */
- 	{ KE_KEY, 0x7E, { KEY_BLUETOOTH } }, /* Bluetooth Disable */
-@@ -580,6 +581,7 @@ static const struct key_entry asus_nb_wmi_keymap[] = {
- 	{ KE_KEY, 0xA6, { KEY_SWITCHVIDEOMODE } }, /* SDSP CRT + TV + HDMI */
- 	{ KE_KEY, 0xA7, { KEY_SWITCHVIDEOMODE } }, /* SDSP LCD + CRT + TV + HDMI */
- 	{ KE_KEY, 0xB5, { KEY_CALC } },
-+	{ KE_IGNORE, 0xC0, }, /* External display connect/disconnect notification */
- 	{ KE_KEY, 0xC4, { KEY_KBDILLUMUP } },
- 	{ KE_KEY, 0xC5, { KEY_KBDILLUMDOWN } },
- 	{ KE_IGNORE, 0xC6, },  /* Ambient Light Sensor notification */
+diff --git a/arch/parisc/kernel/pci-dma.c b/arch/parisc/kernel/pci-dma.c
+index 36a57aa38e87e..3b0227b17c070 100644
+--- a/arch/parisc/kernel/pci-dma.c
++++ b/arch/parisc/kernel/pci-dma.c
+@@ -446,11 +446,27 @@ void arch_dma_free(struct device *dev, size_t size, void *vaddr,
+ void arch_sync_dma_for_device(phys_addr_t paddr, size_t size,
+ 		enum dma_data_direction dir)
+ {
++	/*
++	 * fdc: The data cache line is written back to memory, if and only if
++	 * it is dirty, and then invalidated from the data cache.
++	 */
+ 	flush_kernel_dcache_range((unsigned long)phys_to_virt(paddr), size);
+ }
+ 
+ void arch_sync_dma_for_cpu(phys_addr_t paddr, size_t size,
+ 		enum dma_data_direction dir)
+ {
+-	flush_kernel_dcache_range((unsigned long)phys_to_virt(paddr), size);
++	unsigned long addr = (unsigned long) phys_to_virt(paddr);
++
++	switch (dir) {
++	case DMA_TO_DEVICE:
++	case DMA_BIDIRECTIONAL:
++		flush_kernel_dcache_range(addr, size);
++		return;
++	case DMA_FROM_DEVICE:
++		purge_kernel_dcache_range_asm(addr, addr + size);
++		return;
++	default:
++		BUG();
++	}
+ }
 -- 
 2.39.2
 
