@@ -2,56 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A08D3734BE8
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 08:54:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5618C734BEB
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 08:54:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229673AbjFSGy1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 02:54:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50886 "EHLO
+        id S229765AbjFSGyt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 02:54:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229992AbjFSGy0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 02:54:26 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF9851A4;
-        Sun, 18 Jun 2023 23:54:24 -0700 (PDT)
-Received: from dggpemm500014.china.huawei.com (unknown [172.30.72.56])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Ql0m33pBkzMp5B;
-        Mon, 19 Jun 2023 14:51:15 +0800 (CST)
-Received: from [10.174.178.120] (10.174.178.120) by
- dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 19 Jun 2023 14:54:22 +0800
-Message-ID: <0ce6abb5-bf32-a5dc-c6eb-0a96e12a8ebd@huawei.com>
-Date:   Mon, 19 Jun 2023 14:54:21 +0800
+        with ESMTP id S230104AbjFSGys (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 02:54:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F01713D
+        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 23:54:47 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D875460DDD
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 06:54:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D47C433C9;
+        Mon, 19 Jun 2023 06:54:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1687157686;
+        bh=+vqzWMZ1aaA9YhHvAgL6q7yeHH7M1mALg0ND3CLdAGI=;
+        h=Subject:To:Cc:From:Date:From;
+        b=WxCRmNrtfpYYsivqrXrF/wD083RaJTvlvKXASJoVpbbZsNyjnqUiaihIOliv9Pqs/
+         wHxOvj/qFW/D1gYpgzusXOUGnHfea48JX1VZNoAbvGlB8/rTSYWEoYAhD3tQA6e8Qi
+         jjSUvwzbAql/x9c/56QppkWiVQx5cMo4+yXtgahI=
+Subject: FAILED: patch "[PATCH] net/sched: qdisc_destroy() old ingress and clsact Qdiscs" failed to apply to 5.15-stable tree
+To:     peilin.ye@bytedance.com, hdanton@sina.com, jhs@mojatatu.com,
+        pabeni@redhat.com, vladbu@mellanox.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Mon, 19 Jun 2023 08:54:41 +0200
+Message-ID: <2023061941-anaerobic-washing-b481@gregkh>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-CC:     <mawupeng1@huawei.com>, <akpm@linux-foundation.org>,
-        <david@redhat.com>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-        <richard.weiyang@linux.alibaba.com>, <mst@redhat.com>,
-        <jasowang@redhat.com>, <pankaj.gupta.linux@gmail.com>,
-        <mhocko@kernel.org>, <osalvador@suse.de>
-Subject: Re: [PATCH stable 5.10 1/1] mm/memory_hotplug: extend
- offline_and_remove_memory() to handle more than one memory block
-Content-Language: en-US
-To:     <gregkh@linuxfoundation.org>
-References: <20230614061900.3296725-1-mawupeng1@huawei.com>
- <20230614061900.3296725-2-mawupeng1@huawei.com>
- <2023061440-showing-happiest-937e@gregkh>
- <cd9688dc-a716-3031-489e-a867df0d1ea2@huawei.com>
- <2023061927-parsnip-gauging-86e9@gregkh>
-From:   mawupeng <mawupeng1@huawei.com>
-In-Reply-To: <2023061927-parsnip-gauging-86e9@gregkh>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.178.120]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpemm500014.china.huawei.com (7.185.36.153)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -59,79 +50,261 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-On 2023/6/19 14:20, Greg KH wrote:
-> On Wed, Jun 14, 2023 at 02:45:58PM +0800, mawupeng wrote:
->>
->>
->> On 2023/6/14 14:35, Greg KH wrote:
->>> On Wed, Jun 14, 2023 at 02:19:00PM +0800, Wupeng Ma wrote:
->>>> From: David Hildenbrand <david@redhat.com>
->>>>
->>>> virtio-mem soon wants to use offline_and_remove_memory() memory that
->>>> exceeds a single Linux memory block (memory_block_size_bytes()). Let's
->>>> remove that restriction.
->>>>
->>>> Let's remember the old state and try to restore that if anything goes
->>>> wrong. While re-onlining can, in general, fail, it's highly unlikely to
->>>> happen (usually only when a notifier fails to allocate memory, and these
->>>> are rather rare).
->>>>
->>>> This will be used by virtio-mem to offline+remove memory ranges that are
->>>> bigger than a single memory block - for example, with a device block
->>>> size of 1 GiB (e.g., gigantic pages in the hypervisor) and a Linux memory
->>>> block size of 128MB.
->>>>
->>>> While we could compress the state into 2 bit, using 8 bit is much
->>>> easier.
->>>>
->>>> This handling is similar, but different to acpi_scan_try_to_offline():
->>>>
->>>> a) We don't try to offline twice. I am not sure if this CONFIG_MEMCG
->>>> optimization is still relevant - it should only apply to ZONE_NORMAL
->>>> (where we have no guarantees). If relevant, we can always add it.
->>>>
->>>> b) acpi_scan_try_to_offline() simply onlines all memory in case
->>>> something goes wrong. It doesn't restore previous online type. Let's do
->>>> that, so we won't overwrite what e.g., user space configured.
->>>>
->>>> Reviewed-by: Wei Yang <richard.weiyang@linux.alibaba.com>
->>>> Cc: "Michael S. Tsirkin" <mst@redhat.com>
->>>> Cc: Jason Wang <jasowang@redhat.com>
->>>> Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
->>>> Cc: Michal Hocko <mhocko@kernel.org>
->>>> Cc: Oscar Salvador <osalvador@suse.de>
->>>> Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
->>>> Cc: Andrew Morton <akpm@linux-foundation.org>
->>>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>>> Link: https://lore.kernel.org/r/20201112133815.13332-28-david@redhat.com
->>>> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
->>>> Acked-by: Andrew Morton <akpm@linux-foundation.org>
->>>> ---
->>>>  mm/memory_hotplug.c | 105 +++++++++++++++++++++++++++++++++++++-------
->>>>  1 file changed, 89 insertions(+), 16 deletions(-)
->>>
->>> As you forwarded this patch on, you too need to sign-off on it.
->>
->> Thanks for reminding me.
->>
->> Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
->>
->>>
->>> Also, what is the git id of the commit in Linus's tree?
->>
->> Sorry, here is the commit in Linus's tree.
->>
->> commit 8dc4bb58a146655eb057247d7c9d19e73928715b upstream.
-> 
-> Please resend the change with both of these things fixed up, so I don't
-> have to manually do it :)
+To reproduce the conflict and resubmit, you may use the following commands:
 
-I have resend the patch but use the parent message id for in-reply-to.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 84ad0af0bccd3691cb951c2974c5cb2c10594d4a
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061941-anaerobic-washing-b481@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-Sorry.
+Possible dependencies:
 
-> 
-> thanks,
-> 
-> greg k-h
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 84ad0af0bccd3691cb951c2974c5cb2c10594d4a Mon Sep 17 00:00:00 2001
+From: Peilin Ye <peilin.ye@bytedance.com>
+Date: Sat, 10 Jun 2023 20:30:25 -0700
+Subject: [PATCH] net/sched: qdisc_destroy() old ingress and clsact Qdiscs
+ before grafting
+
+mini_Qdisc_pair::p_miniq is a double pointer to mini_Qdisc, initialized
+in ingress_init() to point to net_device::miniq_ingress.  ingress Qdiscs
+access this per-net_device pointer in mini_qdisc_pair_swap().  Similar
+for clsact Qdiscs and miniq_egress.
+
+Unfortunately, after introducing RTNL-unlocked RTM_{NEW,DEL,GET}TFILTER
+requests (thanks Hillf Danton for the hint), when replacing ingress or
+clsact Qdiscs, for example, the old Qdisc ("@old") could access the same
+miniq_{in,e}gress pointer(s) concurrently with the new Qdisc ("@new"),
+causing race conditions [1] including a use-after-free bug in
+mini_qdisc_pair_swap() reported by syzbot:
+
+ BUG: KASAN: slab-use-after-free in mini_qdisc_pair_swap+0x1c2/0x1f0 net/sched/sch_generic.c:1573
+ Write of size 8 at addr ffff888045b31308 by task syz-executor690/14901
+...
+ Call Trace:
+  <TASK>
+  __dump_stack lib/dump_stack.c:88 [inline]
+  dump_stack_lvl+0xd9/0x150 lib/dump_stack.c:106
+  print_address_description.constprop.0+0x2c/0x3c0 mm/kasan/report.c:319
+  print_report mm/kasan/report.c:430 [inline]
+  kasan_report+0x11c/0x130 mm/kasan/report.c:536
+  mini_qdisc_pair_swap+0x1c2/0x1f0 net/sched/sch_generic.c:1573
+  tcf_chain_head_change_item net/sched/cls_api.c:495 [inline]
+  tcf_chain0_head_change.isra.0+0xb9/0x120 net/sched/cls_api.c:509
+  tcf_chain_tp_insert net/sched/cls_api.c:1826 [inline]
+  tcf_chain_tp_insert_unique net/sched/cls_api.c:1875 [inline]
+  tc_new_tfilter+0x1de6/0x2290 net/sched/cls_api.c:2266
+...
+
+@old and @new should not affect each other.  In other words, @old should
+never modify miniq_{in,e}gress after @new, and @new should not update
+@old's RCU state.
+
+Fixing without changing sch_api.c turned out to be difficult (please
+refer to Closes: for discussions).  Instead, make sure @new's first call
+always happen after @old's last call (in {ingress,clsact}_destroy()) has
+finished:
+
+In qdisc_graft(), return -EBUSY if @old has any ongoing filter requests,
+and call qdisc_destroy() for @old before grafting @new.
+
+Introduce qdisc_refcount_dec_if_one() as the counterpart of
+qdisc_refcount_inc_nz() used for filter requests.  Introduce a
+non-static version of qdisc_destroy() that does a TCQ_F_BUILTIN check,
+just like qdisc_put() etc.
+
+Depends on patch "net/sched: Refactor qdisc_graft() for ingress and
+clsact Qdiscs".
+
+[1] To illustrate, the syzkaller reproducer adds ingress Qdiscs under
+TC_H_ROOT (no longer possible after commit c7cfbd115001 ("net/sched:
+sch_ingress: Only create under TC_H_INGRESS")) on eth0 that has 8
+transmission queues:
+
+  Thread 1 creates ingress Qdisc A (containing mini Qdisc a1 and a2),
+  then adds a flower filter X to A.
+
+  Thread 2 creates another ingress Qdisc B (containing mini Qdisc b1 and
+  b2) to replace A, then adds a flower filter Y to B.
+
+ Thread 1               A's refcnt   Thread 2
+  RTM_NEWQDISC (A, RTNL-locked)
+   qdisc_create(A)               1
+   qdisc_graft(A)                9
+
+  RTM_NEWTFILTER (X, RTNL-unlocked)
+   __tcf_qdisc_find(A)          10
+   tcf_chain0_head_change(A)
+   mini_qdisc_pair_swap(A) (1st)
+            |
+            |                         RTM_NEWQDISC (B, RTNL-locked)
+         RCU sync                2     qdisc_graft(B)
+            |                    1     notify_and_destroy(A)
+            |
+   tcf_block_release(A)          0    RTM_NEWTFILTER (Y, RTNL-unlocked)
+   qdisc_destroy(A)                    tcf_chain0_head_change(B)
+   tcf_chain0_head_change_cb_del(A)    mini_qdisc_pair_swap(B) (2nd)
+   mini_qdisc_pair_swap(A) (3rd)                |
+           ...                                 ...
+
+Here, B calls mini_qdisc_pair_swap(), pointing eth0->miniq_ingress to
+its mini Qdisc, b1.  Then, A calls mini_qdisc_pair_swap() again during
+ingress_destroy(), setting eth0->miniq_ingress to NULL, so ingress
+packets on eth0 will not find filter Y in sch_handle_ingress().
+
+This is just one of the possible consequences of concurrently accessing
+miniq_{in,e}gress pointers.
+
+Fixes: 7a096d579e8e ("net: sched: ingress: set 'unlocked' flag for Qdisc ops")
+Fixes: 87f373921c4e ("net: sched: ingress: set 'unlocked' flag for clsact Qdisc ops")
+Reported-by: syzbot+b53a9c0d1ea4ad62da8b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/0000000000006cf87705f79acf1a@google.com/
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: Vlad Buslov <vladbu@mellanox.com>
+Signed-off-by: Peilin Ye <peilin.ye@bytedance.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+
+diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
+index 27271f2b37cb..12eadecf8cd0 100644
+--- a/include/net/sch_generic.h
++++ b/include/net/sch_generic.h
+@@ -137,6 +137,13 @@ static inline void qdisc_refcount_inc(struct Qdisc *qdisc)
+ 	refcount_inc(&qdisc->refcnt);
+ }
+ 
++static inline bool qdisc_refcount_dec_if_one(struct Qdisc *qdisc)
++{
++	if (qdisc->flags & TCQ_F_BUILTIN)
++		return true;
++	return refcount_dec_if_one(&qdisc->refcnt);
++}
++
+ /* Intended to be used by unlocked users, when concurrent qdisc release is
+  * possible.
+  */
+@@ -652,6 +659,7 @@ void dev_deactivate_many(struct list_head *head);
+ struct Qdisc *dev_graft_qdisc(struct netdev_queue *dev_queue,
+ 			      struct Qdisc *qdisc);
+ void qdisc_reset(struct Qdisc *qdisc);
++void qdisc_destroy(struct Qdisc *qdisc);
+ void qdisc_put(struct Qdisc *qdisc);
+ void qdisc_put_unlocked(struct Qdisc *qdisc);
+ void qdisc_tree_reduce_backlog(struct Qdisc *qdisc, int n, int len);
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index 094ca3a5b633..aa6b1fe65151 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -1086,10 +1086,22 @@ static int qdisc_graft(struct net_device *dev, struct Qdisc *parent,
+ 		if ((q && q->flags & TCQ_F_INGRESS) ||
+ 		    (new && new->flags & TCQ_F_INGRESS)) {
+ 			ingress = 1;
+-			if (!dev_ingress_queue(dev)) {
++			dev_queue = dev_ingress_queue(dev);
++			if (!dev_queue) {
+ 				NL_SET_ERR_MSG(extack, "Device does not have an ingress queue");
+ 				return -ENOENT;
+ 			}
++
++			q = rtnl_dereference(dev_queue->qdisc_sleeping);
++
++			/* This is the counterpart of that qdisc_refcount_inc_nz() call in
++			 * __tcf_qdisc_find() for filter requests.
++			 */
++			if (!qdisc_refcount_dec_if_one(q)) {
++				NL_SET_ERR_MSG(extack,
++					       "Current ingress or clsact Qdisc has ongoing filter requests");
++				return -EBUSY;
++			}
+ 		}
+ 
+ 		if (dev->flags & IFF_UP)
+@@ -1110,8 +1122,16 @@ static int qdisc_graft(struct net_device *dev, struct Qdisc *parent,
+ 				qdisc_put(old);
+ 			}
+ 		} else {
+-			dev_queue = dev_ingress_queue(dev);
+-			old = dev_graft_qdisc(dev_queue, new);
++			old = dev_graft_qdisc(dev_queue, NULL);
++
++			/* {ingress,clsact}_destroy() @old before grafting @new to avoid
++			 * unprotected concurrent accesses to net_device::miniq_{in,e}gress
++			 * pointer(s) in mini_qdisc_pair_swap().
++			 */
++			qdisc_notify(net, skb, n, classid, old, new, extack);
++			qdisc_destroy(old);
++
++			dev_graft_qdisc(dev_queue, new);
+ 		}
+ 
+ skip:
+@@ -1125,8 +1145,6 @@ static int qdisc_graft(struct net_device *dev, struct Qdisc *parent,
+ 
+ 			if (new && new->ops->attach)
+ 				new->ops->attach(new);
+-		} else {
+-			notify_and_destroy(net, skb, n, classid, old, new, extack);
+ 		}
+ 
+ 		if (dev->flags & IFF_UP)
+diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+index 3248259eba32..5d7e23f4cc0e 100644
+--- a/net/sched/sch_generic.c
++++ b/net/sched/sch_generic.c
+@@ -1046,7 +1046,7 @@ static void qdisc_free_cb(struct rcu_head *head)
+ 	qdisc_free(q);
+ }
+ 
+-static void qdisc_destroy(struct Qdisc *qdisc)
++static void __qdisc_destroy(struct Qdisc *qdisc)
+ {
+ 	const struct Qdisc_ops  *ops = qdisc->ops;
+ 
+@@ -1070,6 +1070,14 @@ static void qdisc_destroy(struct Qdisc *qdisc)
+ 	call_rcu(&qdisc->rcu, qdisc_free_cb);
+ }
+ 
++void qdisc_destroy(struct Qdisc *qdisc)
++{
++	if (qdisc->flags & TCQ_F_BUILTIN)
++		return;
++
++	__qdisc_destroy(qdisc);
++}
++
+ void qdisc_put(struct Qdisc *qdisc)
+ {
+ 	if (!qdisc)
+@@ -1079,7 +1087,7 @@ void qdisc_put(struct Qdisc *qdisc)
+ 	    !refcount_dec_and_test(&qdisc->refcnt))
+ 		return;
+ 
+-	qdisc_destroy(qdisc);
++	__qdisc_destroy(qdisc);
+ }
+ EXPORT_SYMBOL(qdisc_put);
+ 
+@@ -1094,7 +1102,7 @@ void qdisc_put_unlocked(struct Qdisc *qdisc)
+ 	    !refcount_dec_and_rtnl_lock(&qdisc->refcnt))
+ 		return;
+ 
+-	qdisc_destroy(qdisc);
++	__qdisc_destroy(qdisc);
+ 	rtnl_unlock();
+ }
+ EXPORT_SYMBOL(qdisc_put_unlocked);
+
