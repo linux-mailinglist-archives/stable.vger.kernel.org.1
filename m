@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1473A7352EB
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:40:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 501F17353DE
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:49:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231221AbjFSKkU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:40:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45660 "EHLO
+        id S232138AbjFSKtP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:49:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231984AbjFSKjc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:39:32 -0400
+        with ESMTP id S230282AbjFSKs5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:48:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34CCD18C
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:39:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3258110D4
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:48:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BBFD660B73
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:39:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B68B6C433C8;
-        Mon, 19 Jun 2023 10:39:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BB37660B86
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:48:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE1DC433C8;
+        Mon, 19 Jun 2023 10:48:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171169;
-        bh=YBTDJJCZEkChdkTkp1dIAV5uS1w/tYgwnsW+uFIKwCE=;
+        s=korg; t=1687171735;
+        bh=39jA+KFleRtNfiWm1RhXVMESQvmWYqdMNUx351vQ0yc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n848PIb5bRtg4HpuYzN5yYw68d4j1x9n7xQkftu4a2Vc2PgbvckkrhiSN6MJuGnFM
-         k0pPYWtBbaIc0JVfGG2InS58WHgPdNYaxnfaMc68cDwEUsCmzdkUOjoIJBJAfYrqzM
-         Had1xHBkZZlRGduKvYhhaJj6TQZ1FXmiSyA7YWj8=
+        b=UPpDlyD/9xubfQkEwap3FxI+loSH7Oo9F3Gr4rhhcLzbUZhGn9vdeCxmf4sQaMtro
+         ZovQBdSZuLUrZ37tIo7WEFHh5uIpxYL2ODEzPM9TLrdXK22kInu8Htg0XPfRcGFN0K
+         CSb6XTlsUYHXMXzgN6ckl5aPOxjp1IMY5qSX43NM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Jakub Buchocki <jakubx.buchocki@intel.com>,
-        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        patches@lists.linux.dev, Ahmed Zaki <ahmed.zaki@intel.com>,
+        Rafal Romanowski <rafal.romanowski@intel.com>,
         Simon Horman <simon.horman@corigine.com>,
+        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.3 172/187] ice: Fix ice module unload
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 113/166] iavf: remove mask from iavf_irq_enable_queues()
 Date:   Mon, 19 Jun 2023 12:29:50 +0200
-Message-ID: <20230619102205.987191282@linuxfoundation.org>
+Message-ID: <20230619102200.314038290@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -60,119 +59,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jakub Buchocki <jakubx.buchocki@intel.com>
+From: Ahmed Zaki <ahmed.zaki@intel.com>
 
-[ Upstream commit 24b454bc354ab7b1aa918a4fe3d7696516f592d4 ]
+[ Upstream commit c37cf54c12cfaa51e7aaf88708167b0d3259e64e ]
 
-Clearing the interrupt scheme before PFR reset,
-during the removal routine, could cause the hardware
-errors and possibly lead to system reboot, as the PF
-reset can cause the interrupt to be generated.
+Enable more than 32 IRQs by removing the u32 bit mask in
+iavf_irq_enable_queues(). There is no need for the mask as there are no
+callers that select individual IRQs through the bitmask. Also, if the PF
+allocates more than 32 IRQs, this mask will prevent us from using all of
+them.
 
-Place the call for PFR reset inside ice_deinit_dev(),
-wait until reset and all pending transactions are done,
-then call ice_clear_interrupt_scheme().
+Modify the comment in iavf_register.h to show that the maximum number
+allowed for the IRQ index is 63 as per the iAVF standard 1.0 [1].
 
-This introduces a PFR reset to multiple error paths.
-
-Additionally, remove the call for the reset from
-ice_load() - it will be a part of ice_unload() now.
-
-Error example:
-[   75.229328] ice 0000:ca:00.1: Failed to read Tx Scheduler Tree - User Selection data from flash
-[   77.571315] {1}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 1
-[   77.571418] {1}[Hardware Error]: event severity: recoverable
-[   77.571459] {1}[Hardware Error]:  Error 0, type: recoverable
-[   77.571500] {1}[Hardware Error]:   section_type: PCIe error
-[   77.571540] {1}[Hardware Error]:   port_type: 4, root port
-[   77.571580] {1}[Hardware Error]:   version: 3.0
-[   77.571615] {1}[Hardware Error]:   command: 0x0547, status: 0x4010
-[   77.571661] {1}[Hardware Error]:   device_id: 0000:c9:02.0
-[   77.571703] {1}[Hardware Error]:   slot: 25
-[   77.571736] {1}[Hardware Error]:   secondary_bus: 0xca
-[   77.571773] {1}[Hardware Error]:   vendor_id: 0x8086, device_id: 0x347a
-[   77.571821] {1}[Hardware Error]:   class_code: 060400
-[   77.571858] {1}[Hardware Error]:   bridge: secondary_status: 0x2800, control: 0x0013
-[   77.572490] pcieport 0000:c9:02.0: AER: aer_status: 0x00200000, aer_mask: 0x00100020
-[   77.572870] pcieport 0000:c9:02.0:    [21] ACSViol                (First)
-[   77.573222] pcieport 0000:c9:02.0: AER: aer_layer=Transaction Layer, aer_agent=Receiver ID
-[   77.573554] pcieport 0000:c9:02.0: AER: aer_uncor_severity: 0x00463010
-[   77.691273] {2}[Hardware Error]: Hardware error from APEI Generic Hardware Error Source: 1
-[   77.691738] {2}[Hardware Error]: event severity: recoverable
-[   77.691971] {2}[Hardware Error]:  Error 0, type: recoverable
-[   77.692192] {2}[Hardware Error]:   section_type: PCIe error
-[   77.692403] {2}[Hardware Error]:   port_type: 4, root port
-[   77.692616] {2}[Hardware Error]:   version: 3.0
-[   77.692825] {2}[Hardware Error]:   command: 0x0547, status: 0x4010
-[   77.693032] {2}[Hardware Error]:   device_id: 0000:c9:02.0
-[   77.693238] {2}[Hardware Error]:   slot: 25
-[   77.693440] {2}[Hardware Error]:   secondary_bus: 0xca
-[   77.693641] {2}[Hardware Error]:   vendor_id: 0x8086, device_id: 0x347a
-[   77.693853] {2}[Hardware Error]:   class_code: 060400
-[   77.694054] {2}[Hardware Error]:   bridge: secondary_status: 0x0800, control: 0x0013
-[   77.719115] pci 0000:ca:00.1: AER: can't recover (no error_detected callback)
-[   77.719140] pcieport 0000:c9:02.0: AER: device recovery failed
-[   77.719216] pcieport 0000:c9:02.0: AER: aer_status: 0x00200000, aer_mask: 0x00100020
-[   77.719390] pcieport 0000:c9:02.0:    [21] ACSViol                (First)
-[   77.719557] pcieport 0000:c9:02.0: AER: aer_layer=Transaction Layer, aer_agent=Receiver ID
-[   77.719723] pcieport 0000:c9:02.0: AER: aer_uncor_severity: 0x00463010
-
-Fixes: 5b246e533d01 ("ice: split probe into smaller functions")
-Signed-off-by: Jakub Buchocki <jakubx.buchocki@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+link: [1] https://www.intel.com/content/dam/www/public/us/en/documents/product-specifications/ethernet-adaptive-virtual-function-hardware-spec.pdf
+Fixes: 5eae00c57f5e ("i40evf: main driver core")
+Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Link: https://lore.kernel.org/r/20230612171421.21570-1-anthony.l.nguyen@intel.com
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20230608200226.451861-1-anthony.l.nguyen@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf.h          |  2 +-
+ drivers/net/ethernet/intel/iavf/iavf_main.c     | 15 ++++++---------
+ drivers/net/ethernet/intel/iavf/iavf_register.h |  2 +-
+ 3 files changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 0c949ed22a313..98e8ce743fb2e 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -4794,9 +4794,13 @@ static int ice_init_dev(struct ice_pf *pf)
- static void ice_deinit_dev(struct ice_pf *pf)
+diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
+index 93a998f169de7..6625625f91e47 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf.h
++++ b/drivers/net/ethernet/intel/iavf/iavf.h
+@@ -525,7 +525,7 @@ void iavf_set_ethtool_ops(struct net_device *netdev);
+ void iavf_update_stats(struct iavf_adapter *adapter);
+ void iavf_reset_interrupt_capability(struct iavf_adapter *adapter);
+ int iavf_init_interrupt_scheme(struct iavf_adapter *adapter);
+-void iavf_irq_enable_queues(struct iavf_adapter *adapter, u32 mask);
++void iavf_irq_enable_queues(struct iavf_adapter *adapter);
+ void iavf_free_all_tx_resources(struct iavf_adapter *adapter);
+ void iavf_free_all_rx_resources(struct iavf_adapter *adapter);
+ 
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 34711a88dbaa0..965d02d7ff80f 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -359,21 +359,18 @@ static void iavf_irq_disable(struct iavf_adapter *adapter)
+ }
+ 
+ /**
+- * iavf_irq_enable_queues - Enable interrupt for specified queues
++ * iavf_irq_enable_queues - Enable interrupt for all queues
+  * @adapter: board private structure
+- * @mask: bitmap of queues to enable
+  **/
+-void iavf_irq_enable_queues(struct iavf_adapter *adapter, u32 mask)
++void iavf_irq_enable_queues(struct iavf_adapter *adapter)
  {
- 	ice_free_irq_msix_misc(pf);
--	ice_clear_interrupt_scheme(pf);
- 	ice_deinit_pf(pf);
- 	ice_deinit_hw(&pf->hw);
-+
-+	/* Service task is already stopped, so call reset directly. */
-+	ice_reset(&pf->hw, ICE_RESET_PFR);
-+	pci_wait_for_pending_transaction(pf->pdev);
-+	ice_clear_interrupt_scheme(pf);
+ 	struct iavf_hw *hw = &adapter->hw;
+ 	int i;
+ 
+ 	for (i = 1; i < adapter->num_msix_vectors; i++) {
+-		if (mask & BIT(i - 1)) {
+-			wr32(hw, IAVF_VFINT_DYN_CTLN1(i - 1),
+-			     IAVF_VFINT_DYN_CTLN1_INTENA_MASK |
+-			     IAVF_VFINT_DYN_CTLN1_ITR_INDX_MASK);
+-		}
++		wr32(hw, IAVF_VFINT_DYN_CTLN1(i - 1),
++		     IAVF_VFINT_DYN_CTLN1_INTENA_MASK |
++		     IAVF_VFINT_DYN_CTLN1_ITR_INDX_MASK);
+ 	}
  }
  
- static void ice_init_features(struct ice_pf *pf)
-@@ -5086,10 +5090,6 @@ int ice_load(struct ice_pf *pf)
- 	struct ice_vsi *vsi;
- 	int err;
+@@ -387,7 +384,7 @@ void iavf_irq_enable(struct iavf_adapter *adapter, bool flush)
+ 	struct iavf_hw *hw = &adapter->hw;
  
--	err = ice_reset(&pf->hw, ICE_RESET_PFR);
--	if (err)
--		return err;
--
- 	err = ice_init_dev(pf);
- 	if (err)
- 		return err;
-@@ -5346,12 +5346,6 @@ static void ice_remove(struct pci_dev *pdev)
- 	ice_setup_mc_magic_wake(pf);
- 	ice_set_wake(pf);
+ 	iavf_misc_irq_enable(adapter);
+-	iavf_irq_enable_queues(adapter, ~0);
++	iavf_irq_enable_queues(adapter);
  
--	/* Issue a PFR as part of the prescribed driver unload flow.  Do not
--	 * do it via ice_schedule_reset() since there is no need to rebuild
--	 * and the service task is already stopped.
--	 */
--	ice_reset(&pf->hw, ICE_RESET_PFR);
--	pci_wait_for_pending_transaction(pdev);
- 	pci_disable_device(pdev);
- }
- 
+ 	if (flush)
+ 		iavf_flush(hw);
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_register.h b/drivers/net/ethernet/intel/iavf/iavf_register.h
+index bf793332fc9d5..a19e88898a0bb 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_register.h
++++ b/drivers/net/ethernet/intel/iavf/iavf_register.h
+@@ -40,7 +40,7 @@
+ #define IAVF_VFINT_DYN_CTL01_INTENA_MASK IAVF_MASK(0x1, IAVF_VFINT_DYN_CTL01_INTENA_SHIFT)
+ #define IAVF_VFINT_DYN_CTL01_ITR_INDX_SHIFT 3
+ #define IAVF_VFINT_DYN_CTL01_ITR_INDX_MASK IAVF_MASK(0x3, IAVF_VFINT_DYN_CTL01_ITR_INDX_SHIFT)
+-#define IAVF_VFINT_DYN_CTLN1(_INTVF) (0x00003800 + ((_INTVF) * 4)) /* _i=0...15 */ /* Reset: VFR */
++#define IAVF_VFINT_DYN_CTLN1(_INTVF) (0x00003800 + ((_INTVF) * 4)) /* _i=0...63 */ /* Reset: VFR */
+ #define IAVF_VFINT_DYN_CTLN1_INTENA_SHIFT 0
+ #define IAVF_VFINT_DYN_CTLN1_INTENA_MASK IAVF_MASK(0x1, IAVF_VFINT_DYN_CTLN1_INTENA_SHIFT)
+ #define IAVF_VFINT_DYN_CTLN1_SWINT_TRIG_SHIFT 2
 -- 
 2.39.2
 
