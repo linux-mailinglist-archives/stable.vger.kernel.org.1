@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A20247352AF
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:37:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06E8C7353A0
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:47:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230393AbjFSKhX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:37:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43718 "EHLO
+        id S232079AbjFSKrJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:47:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230253AbjFSKhE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:37:04 -0400
+        with ESMTP id S230345AbjFSKqs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:46:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07CAD10C8
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:37:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81750CA
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:46:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 98D3E60B51
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:37:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6708C433CA;
-        Mon, 19 Jun 2023 10:37:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D9E0460A50
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:46:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEEB8C433C0;
+        Mon, 19 Jun 2023 10:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171022;
-        bh=LX0GQvJ/fAh+JVfDm0XTrda5Tu99gZs3gZ7M11qm2bs=;
+        s=korg; t=1687171584;
+        bh=/8u2YGMamvgtIb1Dp0sCEkBKYroO0UHz6yvICtRNazU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lkupi2gKe7WiyV5Djv0liSTicwyfrb2hOS7kaQKjSypPgCyFprHqyMkhnw11sn3t8
-         3j0SlTc9GyD96xnmgaxPMd6c4Usyjpts5w/2nCBa1ZkZrnJpWofw4b2WanJ3wJVKAS
-         85JhN7wNyEUGdqBeYZAiSVYLL06cYDDQSbSg7ApM=
+        b=Iw95r6miPYvPEdVJ9/u/uBBBD0+DEnYweev/a9gNkkGiEW85VcKdx+rfEqljlrCmg
+         BDHPMHqYKbPj5/qh69IypW3YcWTVlXwLXiD0gEnBGjxMHTe8BonlY6yuSuSm9aTE8d
+         ezIM4oKNfu5DPUVGsDTHBJgVJfkU9Qo5FuXeOZb8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michal Schmidt <mschmidt@redhat.com>,
-        Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Sunitha Mekala <sunithax.d.mekala@intel.com>
-Subject: [PATCH 6.3 119/187] ice: do not busy-wait to read GNSS data
+        patches@lists.linux.dev,
+        syzbot+ee90502d5c8fd1d0dd93@syzkaller.appspotmail.com,
+        Filipe Manana <fdmanana@suse.com>,
+        Christoph Hellwig <hch@lst.de>, David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 060/166] btrfs: fix iomap_begin length for nocow writes
 Date:   Mon, 19 Jun 2023 12:28:57 +0200
-Message-ID: <20230619102203.305540672@linuxfoundation.org>
+Message-ID: <20230619102157.714617010@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,153 +56,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 2f8fdcb0a73a1831cc4f205f23493a17c0e5536f ]
+commit 7833b865953c8e62abc76a3261c04132b2fb69de upstream.
 
-The ice-gnss-<dev_name> kernel thread, which reads data from the u-blox
-GNSS module, keep a CPU core almost 100% busy. The main reason is that
-it busy-waits for data to become available.
+can_nocow_extent can reduce the len passed in, which needs to be
+propagated to btrfs_dio_iomap_begin so that iomap does not submit
+more data then is mapped.
 
-A simple improvement would be to replace the "mdelay(10);" in
-ice_gnss_read() with sleeping. A better fix is to not do any waiting
-directly in the function and just requeue this delayed work as needed.
-The advantage is that canceling the work from ice_gnss_exit() becomes
-immediate, rather than taking up to ~2.5 seconds (ICE_MAX_UBX_READ_TRIES
-* 10 ms).
+This problems exists since the btrfs_get_blocks_direct helper was added
+in commit c5794e51784a ("btrfs: Factor out write portion of
+btrfs_get_blocks_direct"), but the ordered_extent splitting added in
+commit b73a6fd1b1ef ("btrfs: split partial dio bios before submit")
+added a WARN_ON that made a syzkaller test fail.
 
-This lowers the CPU usage of the ice-gnss-<dev_name> thread on my system
-from ~90 % to ~8 %.
-
-I am not sure if the larger 0.1 s pause after inserting data into the
-gnss subsystem is really necessary, but I'm keeping that as it was.
-
-Of course, ideally the driver would not have to poll at all, but I don't
-know if the E810 can watch for GNSS data availability over the i2c bus
-by itself and notify the driver.
-
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Reviewed-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Stable-dep-of: 05a1308a2e08 ("ice: Don't dereference NULL in ice_gnss_read error path")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+ee90502d5c8fd1d0dd93@syzkaller.appspotmail.com
+Fixes: c5794e51784a ("btrfs: Factor out write portion of btrfs_get_blocks_direct")
+CC: stable@vger.kernel.org # 6.1+
+Tested-by: syzbot+ee90502d5c8fd1d0dd93@syzkaller.appspotmail.com
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_gnss.c | 42 ++++++++++-------------
- drivers/net/ethernet/intel/ice/ice_gnss.h |  3 +-
- 2 files changed, 20 insertions(+), 25 deletions(-)
+ fs/btrfs/inode.c |   18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_gnss.c b/drivers/net/ethernet/intel/ice/ice_gnss.c
-index 12086aafb42fb..bd0ed155e11b6 100644
---- a/drivers/net/ethernet/intel/ice/ice_gnss.c
-+++ b/drivers/net/ethernet/intel/ice/ice_gnss.c
-@@ -85,6 +85,7 @@ static void ice_gnss_read(struct kthread_work *work)
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -7387,7 +7387,7 @@ static struct extent_map *create_io_em(s
+ static int btrfs_get_blocks_direct_write(struct extent_map **map,
+ 					 struct inode *inode,
+ 					 struct btrfs_dio_data *dio_data,
+-					 u64 start, u64 len,
++					 u64 start, u64 *lenp,
+ 					 unsigned int iomap_flags)
  {
- 	struct gnss_serial *gnss = container_of(work, struct gnss_serial,
- 						read_work.work);
-+	unsigned long delay = ICE_GNSS_POLL_DATA_DELAY_TIME;
- 	unsigned int i, bytes_read, data_len, count;
- 	struct ice_aqc_link_topo_addr link_topo;
- 	struct ice_pf *pf;
-@@ -104,11 +105,6 @@ static void ice_gnss_read(struct kthread_work *work)
- 		return;
+ 	const bool nowait = (iomap_flags & IOMAP_NOWAIT);
+@@ -7398,6 +7398,7 @@ static int btrfs_get_blocks_direct_write
+ 	struct btrfs_block_group *bg;
+ 	bool can_nocow = false;
+ 	bool space_reserved = false;
++	u64 len = *lenp;
+ 	u64 prev_len;
+ 	int ret = 0;
  
- 	hw = &pf->hw;
--	buf = (char *)get_zeroed_page(GFP_KERNEL);
--	if (!buf) {
--		err = -ENOMEM;
--		goto exit;
--	}
+@@ -7468,15 +7469,19 @@ static int btrfs_get_blocks_direct_write
+ 		free_extent_map(em);
+ 		*map = NULL;
  
- 	memset(&link_topo, 0, sizeof(struct ice_aqc_link_topo_addr));
- 	link_topo.topo_params.index = ICE_E810T_GNSS_I2C_BUS;
-@@ -119,25 +115,24 @@ static void ice_gnss_read(struct kthread_work *work)
- 	i2c_params = ICE_GNSS_UBX_DATA_LEN_WIDTH |
- 		     ICE_AQC_I2C_USE_REPEATED_START;
+-		if (nowait)
+-			return -EAGAIN;
++		if (nowait) {
++			ret = -EAGAIN;
++			goto out;
++		}
  
--	/* Read data length in a loop, when it's not 0 the data is ready */
--	for (i = 0; i < ICE_MAX_UBX_READ_TRIES; i++) {
--		err = ice_aq_read_i2c(hw, link_topo, ICE_GNSS_UBX_I2C_BUS_ADDR,
--				      cpu_to_le16(ICE_GNSS_UBX_DATA_LEN_H),
--				      i2c_params, (u8 *)&data_len_b, NULL);
--		if (err)
--			goto exit_buf;
-+	err = ice_aq_read_i2c(hw, link_topo, ICE_GNSS_UBX_I2C_BUS_ADDR,
-+			      cpu_to_le16(ICE_GNSS_UBX_DATA_LEN_H),
-+			      i2c_params, (u8 *)&data_len_b, NULL);
-+	if (err)
-+		goto requeue;
+ 		/*
+ 		 * If we could not allocate data space before locking the file
+ 		 * range and we can't do a NOCOW write, then we have to fail.
+ 		 */
+-		if (!dio_data->data_space_reserved)
+-			return -ENOSPC;
++		if (!dio_data->data_space_reserved) {
++			ret = -ENOSPC;
++			goto out;
++		}
  
--		data_len = be16_to_cpu(data_len_b);
--		if (data_len != 0 && data_len != U16_MAX)
--			break;
-+	data_len = be16_to_cpu(data_len_b);
-+	if (data_len == 0 || data_len == U16_MAX)
-+		goto requeue;
- 
--		mdelay(10);
--	}
-+	/* The u-blox has data_len bytes for us to read */
- 
- 	data_len = min_t(typeof(data_len), data_len, PAGE_SIZE);
--	if (!data_len) {
-+
-+	buf = (char *)get_zeroed_page(GFP_KERNEL);
-+	if (!buf) {
- 		err = -ENOMEM;
--		goto exit_buf;
-+		goto requeue;
+ 		/*
+ 		 * We have to COW and we have already reserved data space before,
+@@ -7517,6 +7522,7 @@ out:
+ 		btrfs_delalloc_release_extents(BTRFS_I(inode), len);
+ 		btrfs_delalloc_release_metadata(BTRFS_I(inode), len, true);
  	}
++	*lenp = len;
+ 	return ret;
+ }
  
- 	/* Read received data */
-@@ -151,7 +146,7 @@ static void ice_gnss_read(struct kthread_work *work)
- 				      cpu_to_le16(ICE_GNSS_UBX_EMPTY_DATA),
- 				      bytes_read, &buf[i], NULL);
- 		if (err)
--			goto exit_buf;
-+			goto free_buf;
- 	}
+@@ -7693,7 +7699,7 @@ static int btrfs_dio_iomap_begin(struct
  
- 	count = gnss_insert_raw(pf->gnss_dev, buf, i);
-@@ -159,10 +154,11 @@ static void ice_gnss_read(struct kthread_work *work)
- 		dev_warn(ice_pf_to_dev(pf),
- 			 "gnss_insert_raw ret=%d size=%d\n",
- 			 count, i);
--exit_buf:
-+	delay = ICE_GNSS_TIMER_DELAY_TIME;
-+free_buf:
- 	free_page((unsigned long)buf);
--	kthread_queue_delayed_work(gnss->kworker, &gnss->read_work,
--				   ICE_GNSS_TIMER_DELAY_TIME);
-+requeue:
-+	kthread_queue_delayed_work(gnss->kworker, &gnss->read_work, delay);
- exit:
- 	if (err)
- 		dev_dbg(ice_pf_to_dev(pf), "GNSS failed to read err=%d\n", err);
-diff --git a/drivers/net/ethernet/intel/ice/ice_gnss.h b/drivers/net/ethernet/intel/ice/ice_gnss.h
-index d95ca3928b2ea..d206afe550a56 100644
---- a/drivers/net/ethernet/intel/ice/ice_gnss.h
-+++ b/drivers/net/ethernet/intel/ice/ice_gnss.h
-@@ -5,6 +5,7 @@
- #define _ICE_GNSS_H_
- 
- #define ICE_E810T_GNSS_I2C_BUS		0x2
-+#define ICE_GNSS_POLL_DATA_DELAY_TIME	(HZ / 100) /* poll every 10 ms */
- #define ICE_GNSS_TIMER_DELAY_TIME	(HZ / 10) /* 0.1 second per message */
- #define ICE_GNSS_TTY_WRITE_BUF		250
- #define ICE_MAX_I2C_DATA_SIZE		FIELD_MAX(ICE_AQC_I2C_DATA_SIZE_M)
-@@ -20,8 +21,6 @@
-  * passed as I2C addr parameter.
-  */
- #define ICE_GNSS_UBX_WRITE_BYTES	(ICE_MAX_I2C_WRITE_BYTES + 1)
--#define ICE_MAX_UBX_READ_TRIES		255
--#define ICE_MAX_UBX_ACK_READ_TRIES	4095
- 
- /**
-  * struct gnss_serial - data used to initialize GNSS TTY port
--- 
-2.39.2
-
+ 	if (write) {
+ 		ret = btrfs_get_blocks_direct_write(&em, inode, dio_data,
+-						    start, len, flags);
++						    start, &len, flags);
+ 		if (ret < 0)
+ 			goto unlock_err;
+ 		unlock_extents = true;
 
 
