@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D19D673551B
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:01:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16EBD7354B3
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:58:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232530AbjFSLB3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:01:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60634 "EHLO
+        id S232333AbjFSK6e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:58:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232536AbjFSLBJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:01:09 -0400
+        with ESMTP id S232424AbjFSK6C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:58:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 125BAC1
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:00:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAA8B3C19
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:55:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A498C60B78
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:00:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA429C433C8;
-        Mon, 19 Jun 2023 11:00:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7318C6068B
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:55:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A9DC433C0;
+        Mon, 19 Jun 2023 10:55:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172417;
-        bh=xapfUydBY81SVUbKj1KTB3E/atXvI0LmV2QKvdZeqlw=;
+        s=korg; t=1687172158;
+        bh=6GzSfgiQWmo3kU36CG7SFCR0GWiPj2HMkXY1OakdfKk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eU0uPC2hgHQVVVUpMhqisgEQhP77dor3O6X6EwgdUu2MmlvgJhLAiVO18pyaLLS97
-         lmo+P17HbVel0gt5k/UnL11H6oR0BIMsNee7DXKLcqcsPu2nPhl1O0iW4l780A7XvO
-         OCeSuehPPzLOinC6hTMD7QuVbJFe7T1/LDgs01vc=
+        b=yF8QgzS+h+lKrxYdQEKFTmCZwD9WXstQ2q4J1Q3N7X8DGDSei7OUY0gXdnMm5eJxd
+         fHg9kmhwNUxemf+rSh2I5/jBJKszSX6nKTfwgQ0SMMw1jPj4LfTpIGnC67e2idjWdN
+         2xXW2R+V87zWXmfBRTSrAyinrxZWpft7B39z+V2k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Lisa=20Chen=20 ?= <minjie.chen@geekplus.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Mark Zhang <markzhang@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 061/107] spi: fsl-dspi: avoid SCK glitches with continuous transfers
+Subject: [PATCH 5.10 57/89] RDMA/cma: Always set static rate to 0 for RoCE
 Date:   Mon, 19 Jun 2023 12:30:45 +0200
-Message-ID: <20230619102144.393758944@linuxfoundation.org>
+Message-ID: <20230619102140.860189827@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,90 +55,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Mark Zhang <markzhang@nvidia.com>
 
-[ Upstream commit c5c31fb71f16ba75bad4ade208abbae225305b65 ]
+[ Upstream commit 58030c76cce473b6cfd630bbecb97215def0dff8 ]
 
-The DSPI controller has configurable timing for
+Set static rate to 0 as it should be discovered by path query and
+has no meaning for RoCE.
+This also avoid of using the rtnl lock and ethtool API, which is
+a bottleneck when try to setup many rdma-cm connections at the same
+time, especially with multiple processes.
 
-(a) tCSC: the interval between the assertion of the chip select and the
-    first clock edge
-
-(b) tASC: the interval between the last clock edge and the deassertion
-    of the chip select
-
-What is a bit surprising, but is documented in the figure "Example of
-continuous transfer (CPHA=1, CONT=1)" in the datasheet, is that when the
-chip select stays asserted between multiple TX FIFO writes, the tCSC and
-tASC times still apply. With CONT=1, chip select remains asserted, but
-SCK takes a break and goes to the idle state for tASC + tCSC ns.
-
-In other words, the default values (of 0 and 0 ns) result in SCK
-glitches where the SCK transition to the idle state, as well as the SCK
-transition from the idle state, will have no delay in between, and it
-may appear that a SCK cycle has simply gone missing. The resulting
-timing violation might cause data corruption in many peripherals, as
-their chip select is asserted.
-
-The driver has device tree bindings for tCSC ("fsl,spi-cs-sck-delay")
-and tASC ("fsl,spi-sck-cs-delay"), but these are only specified to apply
-when the chip select toggles in the first place, and this timing
-characteristic depends on each peripheral. Many peripherals do not have
-explicit timing requirements, so many device trees do not have these
-properties present at all.
-
-Nonetheless, the lack of SCK glitches is a common sense requirement, and
-since the SCK stays in the idle state during transfers for tCSC+tASC ns,
-and that in itself should look like half a cycle, then let's ensure that
-tCSC and tASC are at least a quarter of a SCK period, such that their
-sum is at least half of one.
-
-Fixes: 95bf15f38641 ("spi: fsl-dspi: Add ~50ns delay between cs and sck")
-Reported-by: Lisa Chen (陈敏捷) <minjie.chen@geekplus.com>
-Debugged-by: Lisa Chen (陈敏捷) <minjie.chen@geekplus.com>
-Tested-by: Lisa Chen (陈敏捷) <minjie.chen@geekplus.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://lore.kernel.org/r/20230529223402.1199503-1-vladimir.oltean@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 3c86aa70bf67 ("RDMA/cm: Add RDMA CM support for IBoE devices")
+Signed-off-by: Mark Zhang <markzhang@nvidia.com>
+Link: https://lore.kernel.org/r/f72a4f8b667b803aee9fa794069f61afb5839ce4.1685960567.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/infiniband/core/cma.c |  4 ++--
+ include/rdma/ib_addr.h        | 23 -----------------------
+ 2 files changed, 2 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index fd004c9db9dc0..0d9201a2999de 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -975,7 +975,9 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- static int dspi_setup(struct spi_device *spi)
+diff --git a/drivers/infiniband/core/cma.c b/drivers/infiniband/core/cma.c
+index fdcad8d6a5a07..db24f7dfa00f7 100644
+--- a/drivers/infiniband/core/cma.c
++++ b/drivers/infiniband/core/cma.c
+@@ -3069,7 +3069,7 @@ static int cma_resolve_iboe_route(struct rdma_id_private *id_priv)
+ 	route->path_rec->traffic_class = tos;
+ 	route->path_rec->mtu = iboe_get_mtu(ndev->mtu);
+ 	route->path_rec->rate_selector = IB_SA_EQ;
+-	route->path_rec->rate = iboe_get_rate(ndev);
++	route->path_rec->rate = IB_RATE_PORT_CURRENT;
+ 	dev_put(ndev);
+ 	route->path_rec->packet_life_time_selector = IB_SA_EQ;
+ 	/* In case ACK timeout is set, use this value to calculate
+@@ -4719,7 +4719,7 @@ static int cma_iboe_join_multicast(struct rdma_id_private *id_priv,
+ 	if (!ndev)
+ 		return -ENODEV;
+ 
+-	ib.rec.rate = iboe_get_rate(ndev);
++	ib.rec.rate = IB_RATE_PORT_CURRENT;
+ 	ib.rec.hop_limit = 1;
+ 	ib.rec.mtu = iboe_get_mtu(ndev->mtu);
+ 
+diff --git a/include/rdma/ib_addr.h b/include/rdma/ib_addr.h
+index b0e636ac66900..8c5c9582c4fb9 100644
+--- a/include/rdma/ib_addr.h
++++ b/include/rdma/ib_addr.h
+@@ -193,29 +193,6 @@ static inline enum ib_mtu iboe_get_mtu(int mtu)
+ 		return 0;
+ }
+ 
+-static inline int iboe_get_rate(struct net_device *dev)
+-{
+-	struct ethtool_link_ksettings cmd;
+-	int err;
+-
+-	rtnl_lock();
+-	err = __ethtool_get_link_ksettings(dev, &cmd);
+-	rtnl_unlock();
+-	if (err)
+-		return IB_RATE_PORT_CURRENT;
+-
+-	if (cmd.base.speed >= 40000)
+-		return IB_RATE_40_GBPS;
+-	else if (cmd.base.speed >= 30000)
+-		return IB_RATE_30_GBPS;
+-	else if (cmd.base.speed >= 20000)
+-		return IB_RATE_20_GBPS;
+-	else if (cmd.base.speed >= 10000)
+-		return IB_RATE_10_GBPS;
+-	else
+-		return IB_RATE_PORT_CURRENT;
+-}
+-
+ static inline int rdma_link_local_addr(struct in6_addr *addr)
  {
- 	struct fsl_dspi *dspi = spi_controller_get_devdata(spi->controller);
-+	u32 period_ns = DIV_ROUND_UP(NSEC_PER_SEC, spi->max_speed_hz);
- 	unsigned char br = 0, pbr = 0, pcssck = 0, cssck = 0;
-+	u32 quarter_period_ns = DIV_ROUND_UP(period_ns, 4);
- 	u32 cs_sck_delay = 0, sck_cs_delay = 0;
- 	struct fsl_dspi_platform_data *pdata;
- 	unsigned char pasc = 0, asc = 0;
-@@ -1003,6 +1005,19 @@ static int dspi_setup(struct spi_device *spi)
- 		sck_cs_delay = pdata->sck_cs_delay;
- 	}
- 
-+	/* Since tCSC and tASC apply to continuous transfers too, avoid SCK
-+	 * glitches of half a cycle by never allowing tCSC + tASC to go below
-+	 * half a SCK period.
-+	 */
-+	if (cs_sck_delay < quarter_period_ns)
-+		cs_sck_delay = quarter_period_ns;
-+	if (sck_cs_delay < quarter_period_ns)
-+		sck_cs_delay = quarter_period_ns;
-+
-+	dev_dbg(&spi->dev,
-+		"DSPI controller timing params: CS-to-SCK delay %u ns, SCK-to-CS delay %u ns\n",
-+		cs_sck_delay, sck_cs_delay);
-+
- 	clkrate = clk_get_rate(dspi->clk);
- 	hz_to_spi_baud(&pbr, &br, spi->max_speed_hz, clkrate);
- 
+ 	if (addr->s6_addr32[0] == htonl(0xfe800000) &&
 -- 
 2.39.2
 
