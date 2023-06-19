@@ -2,111 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59D3C7358A6
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 15:33:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EF1E7358BC
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 15:38:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230447AbjFSNdK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 09:33:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38494 "EHLO
+        id S229642AbjFSNiM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 09:38:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231258AbjFSNdG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 09:33:06 -0400
-Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C04EFE7C
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 06:33:03 -0700 (PDT)
-Received: by mail-oi1-x233.google.com with SMTP id 5614622812f47-38dec65ab50so2600125b6e.2
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 06:33:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687181583; x=1689773583;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:sender:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aXdXXYJFqC8VyAIbUMRsLK8kC4+RccqWSrq3lwcnNn0=;
-        b=qzwptOOc5d9KRi41BOKdXTYNe00r4RtZEy8yzwrX8eQsggmtVkGqo5um/q7AehQtRj
-         RZN+2ADQebSYDsDieEHp6PmMXJf9sIYDAoYnOiiqlfyWG7SeZkK71AXD2t/udC2T20FN
-         8yklNkpXkXtVvTBYefxAEKig02DM4ALdrIitlILSRUzbL3B8bO7B8bPuiTCe/PmS9ExY
-         AI6qYNqo2+5SFPsOQGk8UsG3mImr873yzHu7WViCIa+OhcRdrSTmtvXJsFdOcPMvqSQP
-         bVH4/q7SKq4Id27ARONOk9vz76fg289jguPpEPUkZYiASJ46vjnBrrLTVABiZ4gU7t/J
-         ll+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687181583; x=1689773583;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:sender:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=aXdXXYJFqC8VyAIbUMRsLK8kC4+RccqWSrq3lwcnNn0=;
-        b=dlChU5tEszLU3aSE6sI+jt19j/BI1ukDL1BDujcjrwefS6G57XJSkvNQyZhWWMnnHU
-         UxYD557nAEqj5mBIZBk4MoRkZukVFW9mx0gWwOSZy2k2oLIP7T0+ntRWjVhd7yM0/a7o
-         2kdr9KJl24ravwaKAltsdIF3tD7A3CXs0Fe2ndipWWsAVHGec1Wv6vSlbjkvZsQx7Xwr
-         7/5YXcypNnpK0JBUboozcft7kyvxZpEYtVbX2V4qo1dXd1MQ8xE+KgLOryaXJKSMRO4P
-         ot94/lTZ8DrSy1hG8xDvPMl8kxEgLP5COKDyHoTZ2FbrbgHcWEVyiTFGWsk2FJPgsoiH
-         2BPw==
-X-Gm-Message-State: AC+VfDzINzBCeQZNJgSe0H6H1WAV6QepTX8d4+3N31x9yJzBx7Od8VMe
-        oROHKooYZKTh1COyd/OrPGn4O6USVA==
-X-Google-Smtp-Source: ACHHUZ6a2GM3oWgMYdmKE/m+C1k9/x0VEN2WtiZMF2HdD5zczVwHdsdRJR4aLA4vJBcLz7f6yPG3Hw==
-X-Received: by 2002:a05:6808:1cf:b0:3a0:33a6:a05c with SMTP id x15-20020a05680801cf00b003a033a6a05cmr448112oic.42.1687181582013;
-        Mon, 19 Jun 2023 06:33:02 -0700 (PDT)
-Received: from serve.minyard.net (serve.minyard.net. [2001:470:b8f6:1b::1])
-        by smtp.gmail.com with ESMTPSA id 7-20020aca0f07000000b003a033fc87c7sm139076oip.30.2023.06.19.06.33.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jun 2023 06:33:01 -0700 (PDT)
-Sender: Corey Minyard <tcminyard@gmail.com>
-Received: from mail.minyard.net (unknown [IPv6:2001:470:b8f6:1b:f28b:4a5a:d6b1:259b])
-        by serve.minyard.net (Postfix) with ESMTPSA id AF6191800BF;
-        Mon, 19 Jun 2023 13:33:00 +0000 (UTC)
-Date:   Mon, 19 Jun 2023 08:32:59 -0500
-From:   Corey Minyard <minyard@acm.org>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     "Janne Huttunen (Nokia)" <janne.huttunen@nokia.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: IPMI related kernel panics since v4.19.286
-Message-ID: <ZJBZCxyRTPsuGQ0l@mail.minyard.net>
-Reply-To: minyard@acm.org
-References: <7ae67dbec16b93f0e6356337e52bf21921b0897c.camel@nokia.com>
- <2023061927-fox-constrict-1918@gregkh>
+        with ESMTP id S231417AbjFSNiK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 09:38:10 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7D53E58;
+        Mon, 19 Jun 2023 06:38:09 -0700 (PDT)
+Received: from dggpeml500012.china.huawei.com (unknown [172.30.72.56])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Ql9lH1KhczLmqY;
+        Mon, 19 Jun 2023 21:36:11 +0800 (CST)
+Received: from [10.67.110.218] (10.67.110.218) by
+ dggpeml500012.china.huawei.com (7.185.36.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Mon, 19 Jun 2023 21:38:06 +0800
+Message-ID: <3544fa2b-ce22-c2fa-ad22-77d3a897d53a@huawei.com>
+Date:   Mon, 19 Jun 2023 21:38:06 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2023061927-fox-constrict-1918@gregkh>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH 5.10] tracing: Add
+ tracing_reset_all_online_cpus_unlocked() function
+To:     Greg KH <gregkh@linuxfoundation.org>
+CC:     <rostedt@goodmis.org>, <mhiramat@kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-trace-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20230615204931.3250659-1-zhengyejian1@huawei.com>
+ <2023061913-dosage-repacking-678e@gregkh>
+Content-Language: en-US
+From:   Zheng Yejian <zhengyejian1@huawei.com>
+In-Reply-To: <2023061913-dosage-repacking-678e@gregkh>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.110.218]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpeml500012.china.huawei.com (7.185.36.15)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Jun 19, 2023 at 02:23:47PM +0200, Greg KH wrote:
-> On Mon, Jun 19, 2023 at 11:11:16AM +0000, Janne Huttunen (Nokia) wrote:
-> > 
-> > We recently updated an internal test server from kernel v4.19.273
-> > to v4.19.286 and since then it has already multiple times triggered
-> > a kernel panic due to a hard lockup. The lockups look e.g. like
-> > this:
+On 2023/6/19 16:26, Greg KH wrote:
+> On Fri, Jun 16, 2023 at 04:49:31AM +0800, Zheng Yejian wrote:
+>> From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+>>
+>> commit e18eb8783ec4949adebc7d7b0fdb65f65bfeefd9 upstream.
+>>
+>> Currently the tracing_reset_all_online_cpus() requires the
+>> trace_types_lock held. But only one caller of this function actually has
+>> that lock held before calling it, and the other just takes the lock so
+>> that it can call it. More users of this function is needed where the lock
+>> is not held.
+>>
+>> Add a tracing_reset_all_online_cpus_unlocked() function for the one use
+>> case that calls it without being held, and also add a lockdep_assert to
+>> make sure it is held when called.
+>>
+>> Then have tracing_reset_all_online_cpus() take the lock internally, such
+>> that callers do not need to worry about taking it.
+>>
+>> Link: https://lkml.kernel.org/r/20221123192741.658273220@goodmis.org
+>>
+>> Cc: Masami Hiramatsu <mhiramat@kernel.org>
+>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>> Cc: Zheng Yejian <zhengyejian1@huawei.com>
+>> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+>> [this patch is pre-depended by be111ebd8868d4b7c041cb3c6102e1ae27d6dc1d
+>> due to tracing_reset_all_online_cpus() should be called after taking lock]
+>> Fixes: be111ebd8868 ("tracing: Free buffers when a used dynamic event is removed")
+>> Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+>> ---
 > 
-> Does this also happen on newer 5.4 and 6.4-rc7 releases?
+> 
+> What about for 5.15.y?  You can't apply a fix to just an older tree as
+> you will then have a regression when you update.
+> 
+> I'll drop this one from my queue, please resend a backport for all
+> relevent stable releases.
 
-If I am correct, no, it will not happen there.  I was surprised 
+Hi, greg,
 
-I believe the change that causes this issue was:
+I have resend the patch to relevent stable releases:
+5.15.y: 
+https://lore.kernel.org/all/20230620013052.1127047-1-zhengyejian1@huawei.com/
+5.10.y: 
+https://lore.kernel.org/all/20230620013104.1127100-1-zhengyejian1@huawei.com/
+5.4.y: 
+https://lore.kernel.org/all/20230620013113.1127152-1-zhengyejian1@huawei.com/
 
-  b4a34aa6d "ipmi: Fix how the lower layers are told to watch for messages"
-
-which was backported into 4.9.  But there was a locking change:
-
-  e1891cffd4c4 "ipmi: Make the smi watcher be disabled immediately when not needed"
-
-that came in 5.1.  That was required for b4a34aa6d to work correctly,
-and I didn't realize that.  If Janne tests that patch (and the other fix
-for it), then kernels 5.1 and later are good as they are.
+---
 
 Thanks,
-
--corey
+Zheng Yejian
 
 > 
 > thanks,
 > 
 > greg k-h
+
