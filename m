@@ -2,47 +2,64 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B59127352AA
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:37:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD7F073539A
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:46:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229769AbjFSKhO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:37:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41964 "EHLO
+        id S232103AbjFSKqz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:46:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231649AbjFSKgu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:36:50 -0400
+        with ESMTP id S231982AbjFSKqX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:46:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16495E62
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:36:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E850A1995
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:46:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A861A60B73
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:36:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0172C433C8;
-        Mon, 19 Jun 2023 10:36:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 83E1260B86
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:46:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E587C433C8;
+        Mon, 19 Jun 2023 10:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171008;
-        bh=ZojzQArF8LHlDg6Ouxo9YOSW5FsreN61RO9jAhLuFss=;
+        s=korg; t=1687171569;
+        bh=O7sfz/FjLi44YVZZQ8DKN2aXuFSgVriEsjbmUJBE8Mc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uHMLtd8pmXzzzglqr8OPer5JjkhSpeeX7hM/atsNL4pPpVkP+4ajycdjhRZTumQWU
-         I9QC+6n6PoJ226XGWQn2A5eIIACGS1nSG+9dWhXysx3nt/UMEMiuix1yCrgC/BYTPh
-         PSHuhDDAj3c+PRLGSGXiofgU3FEwFCjuiLbj69gU=
+        b=kviRI+kqf3xV8Fx461AZNVTGco9USodbg8t5Y0AKYQgXQhPHIxuPKRYlMT1QSVBzw
+         1onuMi6ziZD2Ro6AJHJ9iG8yizhYLYM3yqYkJ3HpNhy1ctSteaAkZyHYhHeeApHgkx
+         7Pe8vqPcwowWY10wC2sBldcoYHWcNBzZXZ/tltEQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Lisa=20Chen=20 ?= <minjie.chen@geekplus.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 114/187] spi: fsl-dspi: avoid SCK glitches with continuous transfers
+        patches@lists.linux.dev, Ricardo Ribalda <ribalda@chromium.org>,
+        Ross Zwisler <zwisler@google.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Philipp Rudo <prudo@redhat.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, Baoquan He <bhe@redhat.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Dave Young <dyoung@redhat.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Simon Horman <horms@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tom Rix <trix@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 055/166] kexec: support purgatories with .text.hot sections
 Date:   Mon, 19 Jun 2023 12:28:52 +0200
-Message-ID: <20230619102203.082051418@linuxfoundation.org>
+Message-ID: <20230619102157.416620169@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,92 +74,102 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit c5c31fb71f16ba75bad4ade208abbae225305b65 ]
+commit 8652d44f466ad5772e7d1756e9457046189b0dfc upstream.
 
-The DSPI controller has configurable timing for
+Patch series "kexec: Fix kexec_file_load for llvm16 with PGO", v7.
 
-(a) tCSC: the interval between the assertion of the chip select and the
-    first clock edge
+When upreving llvm I realised that kexec stopped working on my test
+platform.
 
-(b) tASC: the interval between the last clock edge and the deassertion
-    of the chip select
+The reason seems to be that due to PGO there are multiple .text sections
+on the purgatory, and kexec does not supports that.
 
-What is a bit surprising, but is documented in the figure "Example of
-continuous transfer (CPHA=1, CONT=1)" in the datasheet, is that when the
-chip select stays asserted between multiple TX FIFO writes, the tCSC and
-tASC times still apply. With CONT=1, chip select remains asserted, but
-SCK takes a break and goes to the idle state for tASC + tCSC ns.
 
-In other words, the default values (of 0 and 0 ns) result in SCK
-glitches where the SCK transition to the idle state, as well as the SCK
-transition from the idle state, will have no delay in between, and it
-may appear that a SCK cycle has simply gone missing. The resulting
-timing violation might cause data corruption in many peripherals, as
-their chip select is asserted.
+This patch (of 4):
 
-The driver has device tree bindings for tCSC ("fsl,spi-cs-sck-delay")
-and tASC ("fsl,spi-sck-cs-delay"), but these are only specified to apply
-when the chip select toggles in the first place, and this timing
-characteristic depends on each peripheral. Many peripherals do not have
-explicit timing requirements, so many device trees do not have these
-properties present at all.
+Clang16 links the purgatory text in two sections when PGO is in use:
 
-Nonetheless, the lack of SCK glitches is a common sense requirement, and
-since the SCK stays in the idle state during transfers for tCSC+tASC ns,
-and that in itself should look like half a cycle, then let's ensure that
-tCSC and tASC are at least a quarter of a SCK period, such that their
-sum is at least half of one.
+  [ 1] .text             PROGBITS         0000000000000000  00000040
+       00000000000011a1  0000000000000000  AX       0     0     16
+  [ 2] .rela.text        RELA             0000000000000000  00003498
+       0000000000000648  0000000000000018   I      24     1     8
+  ...
+  [17] .text.hot.        PROGBITS         0000000000000000  00003220
+       000000000000020b  0000000000000000  AX       0     0     1
+  [18] .rela.text.hot.   RELA             0000000000000000  00004428
+       0000000000000078  0000000000000018   I      24    17     8
 
-Fixes: 95bf15f38641 ("spi: fsl-dspi: Add ~50ns delay between cs and sck")
-Reported-by: Lisa Chen (陈敏捷) <minjie.chen@geekplus.com>
-Debugged-by: Lisa Chen (陈敏捷) <minjie.chen@geekplus.com>
-Tested-by: Lisa Chen (陈敏捷) <minjie.chen@geekplus.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://lore.kernel.org/r/20230529223402.1199503-1-vladimir.oltean@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+And both of them have their range [sh_addr ... sh_addr+sh_size] on the
+area pointed by `e_entry`.
+
+This causes that image->start is calculated twice, once for .text and
+another time for .text.hot. The second calculation leaves image->start
+in a random location.
+
+Because of this, the system crashes immediately after:
+
+kexec_core: Starting new kernel
+
+Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-0-b05c520b7296@chromium.org
+Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-1-b05c520b7296@chromium.org
+Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Ross Zwisler <zwisler@google.com>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reviewed-by: Philipp Rudo <prudo@redhat.com>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Tom Rix <trix@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ kernel/kexec_file.c |   14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index e419642eb10e5..0da5c6ec46fb1 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -1002,7 +1002,9 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- static int dspi_setup(struct spi_device *spi)
- {
- 	struct fsl_dspi *dspi = spi_controller_get_devdata(spi->controller);
-+	u32 period_ns = DIV_ROUND_UP(NSEC_PER_SEC, spi->max_speed_hz);
- 	unsigned char br = 0, pbr = 0, pcssck = 0, cssck = 0;
-+	u32 quarter_period_ns = DIV_ROUND_UP(period_ns, 4);
- 	u32 cs_sck_delay = 0, sck_cs_delay = 0;
- 	struct fsl_dspi_platform_data *pdata;
- 	unsigned char pasc = 0, asc = 0;
-@@ -1031,6 +1033,19 @@ static int dspi_setup(struct spi_device *spi)
- 		sck_cs_delay = pdata->sck_cs_delay;
- 	}
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -898,10 +898,22 @@ static int kexec_purgatory_setup_sechdrs
+ 		}
  
-+	/* Since tCSC and tASC apply to continuous transfers too, avoid SCK
-+	 * glitches of half a cycle by never allowing tCSC + tASC to go below
-+	 * half a SCK period.
-+	 */
-+	if (cs_sck_delay < quarter_period_ns)
-+		cs_sck_delay = quarter_period_ns;
-+	if (sck_cs_delay < quarter_period_ns)
-+		sck_cs_delay = quarter_period_ns;
+ 		offset = ALIGN(offset, align);
 +
-+	dev_dbg(&spi->dev,
-+		"DSPI controller timing params: CS-to-SCK delay %u ns, SCK-to-CS delay %u ns\n",
-+		cs_sck_delay, sck_cs_delay);
-+
- 	clkrate = clk_get_rate(dspi->clk);
- 	hz_to_spi_baud(&pbr, &br, spi->max_speed_hz, clkrate);
- 
--- 
-2.39.2
-
++		/*
++		 * Check if the segment contains the entry point, if so,
++		 * calculate the value of image->start based on it.
++		 * If the compiler has produced more than one .text section
++		 * (Eg: .text.hot), they are generally after the main .text
++		 * section, and they shall not be used to calculate
++		 * image->start. So do not re-calculate image->start if it
++		 * is not set to the initial value, and warn the user so they
++		 * have a chance to fix their purgatory's linker script.
++		 */
+ 		if (sechdrs[i].sh_flags & SHF_EXECINSTR &&
+ 		    pi->ehdr->e_entry >= sechdrs[i].sh_addr &&
+ 		    pi->ehdr->e_entry < (sechdrs[i].sh_addr
+-					 + sechdrs[i].sh_size)) {
++					 + sechdrs[i].sh_size) &&
++		    !WARN_ON(kbuf->image->start != pi->ehdr->e_entry)) {
+ 			kbuf->image->start -= sechdrs[i].sh_addr;
+ 			kbuf->image->start += kbuf->mem + offset;
+ 		}
 
 
