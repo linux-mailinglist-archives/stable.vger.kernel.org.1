@@ -2,54 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E717735324
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:42:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E374735513
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:01:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230396AbjFSKmH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:42:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46502 "EHLO
+        id S232445AbjFSLBT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 07:01:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230053AbjFSKlp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:41:45 -0400
+        with ESMTP id S232449AbjFSLBB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:01:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88E0CC1
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:41:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B651B2965
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:59:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1D57A60B82
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:41:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FDFFC433C8;
-        Mon, 19 Jun 2023 10:41:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5101160B7F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:59:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 682F3C433C0;
+        Mon, 19 Jun 2023 10:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171303;
-        bh=6Yre4pVb3Yt4tj8jAyXY1EpOeFe+nYiWp9GY2sCTs0A=;
+        s=korg; t=1687172394;
+        bh=cY/GuX6hSgMAouYLFJkTqnAYtlxDr9QH8fHKSkKTri4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nxBaXoWvLL78T8rmxAs8UkpdHDFXdxSVqjZVac7mVZuoIZ8O8gEE7n5q6I90pDCai
-         EgbupS8LA6MmiE11aaacvjKl2LVTpD6EbOmtRJ83P+hFHllz3Hu58W8sXlpErVJS4T
-         7qkC+7ngSWV1oEhr6PenqTY+5CpBwIQG4B4voF6A=
+        b=tssUJDu9sgEmudtxPp8WzJ8ngNfJaONhzTBrIcCb0LfJJilN3xxhBwFAT9IiWYadB
+         Vfr3RQhVIkl2dUDGFeTeGPolBvq/TnRrgb6Plbfd/dnKKOIayOp740LMRaFfKUjL5y
+         PfkZMMM0jukEjFcsEvR1AfJAoWOqLJFRAxJXcZzU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sagi Grimberg <sagi@grimberg.me>,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev, Maxim Kochetkov <fido_max@inbox.ru>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 33/49] IB/isert: Fix dead lock in ib_isert
+Subject: [PATCH 5.15 027/107] ASoC: dwc: move DMA init to snd_soc_dai_driver probe()
 Date:   Mon, 19 Jun 2023 12:30:11 +0200
-Message-ID: <20230619102131.606069063@linuxfoundation.org>
+Message-ID: <20230619102142.830770107@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
-References: <20230619102129.856988902@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,119 +55,144 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+From: Maxim Kochetkov <fido_max@inbox.ru>
 
-[ Upstream commit 691b0480933f0ce88a81ed1d1a0aff340ff6293a ]
+[ Upstream commit 011a8719d6105dcb48077ea7a6a88ac019d4aa50 ]
 
-- When a iSER session is released, ib_isert module is taking a mutex
-  lock and releasing all pending connections. As part of this, ib_isert
-  is destroying rdma cm_id. To destroy cm_id, rdma_cm module is sending
-  CM events to CMA handler of ib_isert. This handler is taking same
-  mutex lock. Hence it leads to deadlock between ib_isert & rdma_cm
-  modules.
+When using DMA mode we are facing with Oops:
+[  396.458157] Unable to handle kernel access to user memory without uaccess routines at virtual address 000000000000000c
+[  396.469374] Oops [#1]
+[  396.471839] Modules linked in:
+[  396.475144] CPU: 0 PID: 114 Comm: arecord Not tainted 6.0.0-00164-g9a8eccdaf2be-dirty #68
+[  396.483619] Hardware name: YMP ELCT FPGA (DT)
+[  396.488156] epc : dmaengine_pcm_open+0x1d2/0x342
+[  396.493227]  ra : dmaengine_pcm_open+0x1d2/0x342
+[  396.498140] epc : ffffffff807fe346 ra : ffffffff807fe346 sp : ffffffc804e138f0
+[  396.505602]  gp : ffffffff817bf730 tp : ffffffd8042c8ac0 t0 : 6500000000000000
+[  396.513045]  t1 : 0000000000000064 t2 : 656e69676e65616d s0 : ffffffc804e13990
+[  396.520477]  s1 : ffffffd801b86a18 a0 : 0000000000000026 a1 : ffffffff816920f8
+[  396.527897]  a2 : 0000000000000010 a3 : fffffffffffffffe a4 : 0000000000000000
+[  396.535319]  a5 : 0000000000000000 a6 : ffffffd801b87040 a7 : 0000000000000038
+[  396.542740]  s2 : ffffffd801b94a00 s3 : 0000000000000000 s4 : ffffffd80427f5e8
+[  396.550153]  s5 : ffffffd80427f5e8 s6 : ffffffd801b44410 s7 : fffffffffffffff5
+[  396.557569]  s8 : 0000000000000800 s9 : 0000000000000001 s10: ffffffff8066d254
+[  396.564978]  s11: ffffffd8059cf768 t3 : ffffffff817d5577 t4 : ffffffff817d5577
+[  396.572391]  t5 : ffffffff817d5578 t6 : ffffffc804e136e8
+[  396.577876] status: 0000000200000120 badaddr: 000000000000000c cause: 000000000000000d
+[  396.586007] [<ffffffff806839f4>] snd_soc_component_open+0x1a/0x68
+[  396.592439] [<ffffffff807fdd62>] __soc_pcm_open+0xf0/0x502
+[  396.598217] [<ffffffff80685d86>] soc_pcm_open+0x2e/0x4e
+[  396.603741] [<ffffffff8066cea4>] snd_pcm_open_substream+0x442/0x68e
+[  396.610313] [<ffffffff8066d1ea>] snd_pcm_open+0xfa/0x212
+[  396.615868] [<ffffffff8066d39c>] snd_pcm_capture_open+0x3a/0x60
+[  396.622048] [<ffffffff8065b35a>] snd_open+0xa8/0x17a
+[  396.627421] [<ffffffff801ae036>] chrdev_open+0xa0/0x218
+[  396.632893] [<ffffffff801a5a28>] do_dentry_open+0x17c/0x2a6
+[  396.638713] [<ffffffff801a6d9a>] vfs_open+0x1e/0x26
+[  396.643850] [<ffffffff801b8544>] path_openat+0x96e/0xc96
+[  396.649518] [<ffffffff801b9390>] do_filp_open+0x7c/0xf6
+[  396.655034] [<ffffffff801a6ff2>] do_sys_openat2+0x8a/0x11e
+[  396.660765] [<ffffffff801a735a>] sys_openat+0x50/0x7c
+[  396.666068] [<ffffffff80003aca>] ret_from_syscall+0x0/0x2
+[  396.674964] ---[ end trace 0000000000000000 ]---
 
-- For fix, created local list of pending connections and release the
-  connection outside of mutex lock.
+It happens because of play_dma_data/capture_dma_data pointers are NULL.
+Current implementation assigns these pointers at snd_soc_dai_driver
+startup() callback and reset them back to NULL at shutdown(). But
+soc_pcm_open() sequence uses DMA pointers in dmaengine_pcm_open()
+before snd_soc_dai_driver startup().
+Most generic DMA capable I2S drivers use snd_soc_dai_driver probe()
+callback to init DMA pointers only once at probe. So move DMA init
+to dw_i2s_dai_probe and drop shutdown() and startup() callbacks.
 
-Calltrace:
----------
-[ 1229.791410] INFO: task kworker/10:1:642 blocked for more than 120 seconds.
-[ 1229.791416]       Tainted: G           OE    --------- -  - 4.18.0-372.9.1.el8.x86_64 #1
-[ 1229.791418] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-[ 1229.791419] task:kworker/10:1    state:D stack:    0 pid:  642 ppid:     2 flags:0x80004000
-[ 1229.791424] Workqueue: ib_cm cm_work_handler [ib_cm]
-[ 1229.791436] Call Trace:
-[ 1229.791438]  __schedule+0x2d1/0x830
-[ 1229.791445]  ? select_idle_sibling+0x23/0x6f0
-[ 1229.791449]  schedule+0x35/0xa0
-[ 1229.791451]  schedule_preempt_disabled+0xa/0x10
-[ 1229.791453]  __mutex_lock.isra.7+0x310/0x420
-[ 1229.791456]  ? select_task_rq_fair+0x351/0x990
-[ 1229.791459]  isert_cma_handler+0x224/0x330 [ib_isert]
-[ 1229.791463]  ? ttwu_queue_wakelist+0x159/0x170
-[ 1229.791466]  cma_cm_event_handler+0x25/0xd0 [rdma_cm]
-[ 1229.791474]  cma_ib_handler+0xa7/0x2e0 [rdma_cm]
-[ 1229.791478]  cm_process_work+0x22/0xf0 [ib_cm]
-[ 1229.791483]  cm_work_handler+0xf4/0xf30 [ib_cm]
-[ 1229.791487]  ? move_linked_works+0x6e/0xa0
-[ 1229.791490]  process_one_work+0x1a7/0x360
-[ 1229.791491]  ? create_worker+0x1a0/0x1a0
-[ 1229.791493]  worker_thread+0x30/0x390
-[ 1229.791494]  ? create_worker+0x1a0/0x1a0
-[ 1229.791495]  kthread+0x10a/0x120
-[ 1229.791497]  ? set_kthread_struct+0x40/0x40
-[ 1229.791499]  ret_from_fork+0x1f/0x40
-
-[ 1229.791739] INFO: task targetcli:28666 blocked for more than 120 seconds.
-[ 1229.791740]       Tainted: G           OE    --------- -  - 4.18.0-372.9.1.el8.x86_64 #1
-[ 1229.791741] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-[ 1229.791742] task:targetcli       state:D stack:    0 pid:28666 ppid:  5510 flags:0x00004080
-[ 1229.791743] Call Trace:
-[ 1229.791744]  __schedule+0x2d1/0x830
-[ 1229.791746]  schedule+0x35/0xa0
-[ 1229.791748]  schedule_preempt_disabled+0xa/0x10
-[ 1229.791749]  __mutex_lock.isra.7+0x310/0x420
-[ 1229.791751]  rdma_destroy_id+0x15/0x20 [rdma_cm]
-[ 1229.791755]  isert_connect_release+0x115/0x130 [ib_isert]
-[ 1229.791757]  isert_free_np+0x87/0x140 [ib_isert]
-[ 1229.791761]  iscsit_del_np+0x74/0x120 [iscsi_target_mod]
-[ 1229.791776]  lio_target_np_driver_store+0xe9/0x140 [iscsi_target_mod]
-[ 1229.791784]  configfs_write_file+0xb2/0x110
-[ 1229.791788]  vfs_write+0xa5/0x1a0
-[ 1229.791792]  ksys_write+0x4f/0xb0
-[ 1229.791794]  do_syscall_64+0x5b/0x1a0
-[ 1229.791798]  entry_SYSCALL_64_after_hwframe+0x65/0xca
-
-Fixes: bd3792205aae ("iser-target: Fix pending connections handling in target stack shutdown sequnce")
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Link: https://lore.kernel.org/r/20230606102531.162967-2-saravanan.vajravel@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Maxim Kochetkov <fido_max@inbox.ru>
+Link: https://lore.kernel.org/r/20230512110343.66664-1-fido_max@inbox.ru
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/isert/ib_isert.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ sound/soc/dwc/dwc-i2s.c | 41 +++++++++--------------------------------
+ 1 file changed, 9 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/isert/ib_isert.c b/drivers/infiniband/ulp/isert/ib_isert.c
-index f39670c5c25c5..51e4f4e112841 100644
---- a/drivers/infiniband/ulp/isert/ib_isert.c
-+++ b/drivers/infiniband/ulp/isert/ib_isert.c
-@@ -2515,6 +2515,7 @@ isert_free_np(struct iscsi_np *np)
- {
- 	struct isert_np *isert_np = np->np_context;
- 	struct isert_conn *isert_conn, *n;
-+	LIST_HEAD(drop_conn_list);
- 
- 	if (isert_np->cm_id)
- 		rdma_destroy_id(isert_np->cm_id);
-@@ -2534,7 +2535,7 @@ isert_free_np(struct iscsi_np *np)
- 					 node) {
- 			isert_info("cleaning isert_conn %p state (%d)\n",
- 				   isert_conn, isert_conn->state);
--			isert_connect_release(isert_conn);
-+			list_move_tail(&isert_conn->node, &drop_conn_list);
- 		}
+diff --git a/sound/soc/dwc/dwc-i2s.c b/sound/soc/dwc/dwc-i2s.c
+index 14ad8023fcdcb..feed7281ba215 100644
+--- a/sound/soc/dwc/dwc-i2s.c
++++ b/sound/soc/dwc/dwc-i2s.c
+@@ -183,30 +183,6 @@ static void i2s_stop(struct dw_i2s_dev *dev,
  	}
- 
-@@ -2545,11 +2546,16 @@ isert_free_np(struct iscsi_np *np)
- 					 node) {
- 			isert_info("cleaning isert_conn %p state (%d)\n",
- 				   isert_conn, isert_conn->state);
--			isert_connect_release(isert_conn);
-+			list_move_tail(&isert_conn->node, &drop_conn_list);
- 		}
- 	}
- 	mutex_unlock(&isert_np->mutex);
- 
-+	list_for_each_entry_safe(isert_conn, n, &drop_conn_list, node) {
-+		list_del_init(&isert_conn->node);
-+		isert_connect_release(isert_conn);
-+	}
-+
- 	np->np_context = NULL;
- 	kfree(isert_np);
  }
+ 
+-static int dw_i2s_startup(struct snd_pcm_substream *substream,
+-		struct snd_soc_dai *cpu_dai)
+-{
+-	struct dw_i2s_dev *dev = snd_soc_dai_get_drvdata(cpu_dai);
+-	union dw_i2s_snd_dma_data *dma_data = NULL;
+-
+-	if (!(dev->capability & DWC_I2S_RECORD) &&
+-			(substream->stream == SNDRV_PCM_STREAM_CAPTURE))
+-		return -EINVAL;
+-
+-	if (!(dev->capability & DWC_I2S_PLAY) &&
+-			(substream->stream == SNDRV_PCM_STREAM_PLAYBACK))
+-		return -EINVAL;
+-
+-	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
+-		dma_data = &dev->play_dma_data;
+-	else if (substream->stream == SNDRV_PCM_STREAM_CAPTURE)
+-		dma_data = &dev->capture_dma_data;
+-
+-	snd_soc_dai_set_dma_data(cpu_dai, substream, (void *)dma_data);
+-
+-	return 0;
+-}
+-
+ static void dw_i2s_config(struct dw_i2s_dev *dev, int stream)
+ {
+ 	u32 ch_reg;
+@@ -305,12 +281,6 @@ static int dw_i2s_hw_params(struct snd_pcm_substream *substream,
+ 	return 0;
+ }
+ 
+-static void dw_i2s_shutdown(struct snd_pcm_substream *substream,
+-		struct snd_soc_dai *dai)
+-{
+-	snd_soc_dai_set_dma_data(dai, substream, NULL);
+-}
+-
+ static int dw_i2s_prepare(struct snd_pcm_substream *substream,
+ 			  struct snd_soc_dai *dai)
+ {
+@@ -382,8 +352,6 @@ static int dw_i2s_set_fmt(struct snd_soc_dai *cpu_dai, unsigned int fmt)
+ }
+ 
+ static const struct snd_soc_dai_ops dw_i2s_dai_ops = {
+-	.startup	= dw_i2s_startup,
+-	.shutdown	= dw_i2s_shutdown,
+ 	.hw_params	= dw_i2s_hw_params,
+ 	.prepare	= dw_i2s_prepare,
+ 	.trigger	= dw_i2s_trigger,
+@@ -624,6 +592,14 @@ static int dw_configure_dai_by_dt(struct dw_i2s_dev *dev,
+ 
+ }
+ 
++static int dw_i2s_dai_probe(struct snd_soc_dai *dai)
++{
++	struct dw_i2s_dev *dev = snd_soc_dai_get_drvdata(dai);
++
++	snd_soc_dai_init_dma_data(dai, &dev->play_dma_data, &dev->capture_dma_data);
++	return 0;
++}
++
+ static int dw_i2s_probe(struct platform_device *pdev)
+ {
+ 	const struct i2s_platform_data *pdata = pdev->dev.platform_data;
+@@ -642,6 +618,7 @@ static int dw_i2s_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	dw_i2s_dai->ops = &dw_i2s_dai_ops;
++	dw_i2s_dai->probe = dw_i2s_dai_probe;
+ 
+ 	dev->i2s_base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+ 	if (IS_ERR(dev->i2s_base))
 -- 
 2.39.2
 
