@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8D9A735506
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E1EB7353EB
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:49:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232518AbjFSLAq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:00:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60852 "EHLO
+        id S231189AbjFSKtp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:49:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232611AbjFSLAK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:00:10 -0400
+        with ESMTP id S232194AbjFSKtW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:49:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C95A810E2
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:59:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC0FC10FB
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:49:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 66BFE60BA1
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:59:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C0CEC433C0;
-        Mon, 19 Jun 2023 10:59:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 705D960B88
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:49:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87917C433C9;
+        Mon, 19 Jun 2023 10:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172358;
-        bh=yYRZOfSY4K/fBcSUl6kbFY/O8J+kUVfRISDeqiFaAuM=;
+        s=korg; t=1687171759;
+        bh=sXLCpU1Nx+YHYGHQTIKM7BpemttFvx0+kjSJ1m28B+E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gV1/F4uwW88E+NPPHdN0oHwrDsntXm9ApMFwAsYlUIKUED+Wlh4e5dEcQOP9bN7vy
-         IeYHGWrrClC8MMmAOiSiVE5dx+EIt6tNRl2sDvfbwi8yCQNntzvyQYVEBN+FAVN09C
-         3tFmSziNdMpluLmPFDVXHPCjDUnmNtufhXlVplEU=
+        b=09brh0JxUVcxWuwc5k9Thl/9ALzzaCvEqvvQaiZdL/lGANiX6gV6eGdmVIfav97qn
+         ryv0WqzkUm4htmAqoXrI+mlecAGus/x1gesAw56kc6++OvCAEgDuz79FhHyhHzw5dL
+         6nIjD/dbhuzI9QecLkEojrHA48ooCir+buC66Ivk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+33494cd0df2ec2931851@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 040/107] nilfs2: fix possible out-of-bounds segment allocation in resize ioctl
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Martin Schiller <ms@dev.tdt.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 147/166] net: lapbether: only support ethernet devices
 Date:   Mon, 19 Jun 2023 12:30:24 +0200
-Message-ID: <20230619102143.423903365@linuxfoundation.org>
+Message-ID: <20230619102201.844433905@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,62 +57,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit fee5eaecca86afa544355569b831c1f90f334b85 upstream.
+[ Upstream commit 9eed321cde22fc1afd76eac563ce19d899e0d6b2 ]
 
-Syzbot reports that in its stress test for resize ioctl, the log writing
-function nilfs_segctor_do_construct hits a WARN_ON in
-nilfs_segctor_truncate_segments().
+It probbaly makes no sense to support arbitrary network devices
+for lapbether.
 
-It turned out that there is a problem with the current implementation of
-the resize ioctl, which changes the writable range on the device (the
-range of allocatable segments) at the end of the resize process.
+syzbot reported:
 
-This order is necessary for file system expansion to avoid corrupting the
-superblock at trailing edge.  However, in the case of a file system
-shrink, if log writes occur after truncating out-of-bounds trailing
-segments and before the resize is complete, segments may be allocated from
-the truncated space.
+skbuff: skb_under_panic: text:ffff80008934c100 len:44 put:40 head:ffff0000d18dd200 data:ffff0000d18dd1ea tail:0x16 end:0x140 dev:bond1
+kernel BUG at net/core/skbuff.c:200 !
+Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
+Modules linked in:
+CPU: 0 PID: 5643 Comm: dhcpcd Not tainted 6.4.0-rc5-syzkaller-g4641cff8e810 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/25/2023
+pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : skb_panic net/core/skbuff.c:196 [inline]
+pc : skb_under_panic+0x13c/0x140 net/core/skbuff.c:210
+lr : skb_panic net/core/skbuff.c:196 [inline]
+lr : skb_under_panic+0x13c/0x140 net/core/skbuff.c:210
+sp : ffff8000973b7260
+x29: ffff8000973b7270 x28: ffff8000973b7360 x27: dfff800000000000
+x26: ffff0000d85d8150 x25: 0000000000000016 x24: ffff0000d18dd1ea
+x23: ffff0000d18dd200 x22: 000000000000002c x21: 0000000000000140
+x20: 0000000000000028 x19: ffff80008934c100 x18: ffff8000973b68a0
+x17: 0000000000000000 x16: ffff80008a43bfbc x15: 0000000000000202
+x14: 0000000000000000 x13: 0000000000000001 x12: 0000000000000001
+x11: 0000000000000201 x10: 0000000000000000 x9 : f22f7eb937cced00
+x8 : f22f7eb937cced00 x7 : 0000000000000001 x6 : 0000000000000001
+x5 : ffff8000973b6b78 x4 : ffff80008df9ee80 x3 : ffff8000805974f4
+x2 : 0000000000000001 x1 : 0000000100000201 x0 : 0000000000000086
+Call trace:
+skb_panic net/core/skbuff.c:196 [inline]
+skb_under_panic+0x13c/0x140 net/core/skbuff.c:210
+skb_push+0xf0/0x108 net/core/skbuff.c:2409
+ip6gre_header+0xbc/0x738 net/ipv6/ip6_gre.c:1383
+dev_hard_header include/linux/netdevice.h:3137 [inline]
+lapbeth_data_transmit+0x1c4/0x298 drivers/net/wan/lapbether.c:257
+lapb_data_transmit+0x8c/0xb0 net/lapb/lapb_iface.c:447
+lapb_transmit_buffer+0x178/0x204 net/lapb/lapb_out.c:149
+lapb_send_control+0x220/0x320 net/lapb/lapb_subr.c:251
+lapb_establish_data_link+0x94/0xec
+lapb_device_event+0x348/0x4e0
+notifier_call_chain+0x1a4/0x510 kernel/notifier.c:93
+raw_notifier_call_chain+0x3c/0x50 kernel/notifier.c:461
+__dev_notify_flags+0x2bc/0x544
+dev_change_flags+0xd0/0x15c net/core/dev.c:8643
+devinet_ioctl+0x858/0x17e4 net/ipv4/devinet.c:1150
+inet_ioctl+0x2ac/0x4d8 net/ipv4/af_inet.c:979
+sock_do_ioctl+0x134/0x2dc net/socket.c:1201
+sock_ioctl+0x4ec/0x858 net/socket.c:1318
+vfs_ioctl fs/ioctl.c:51 [inline]
+__do_sys_ioctl fs/ioctl.c:870 [inline]
+__se_sys_ioctl fs/ioctl.c:856 [inline]
+__arm64_sys_ioctl+0x14c/0x1c8 fs/ioctl.c:856
+__invoke_syscall arch/arm64/kernel/syscall.c:38 [inline]
+invoke_syscall+0x98/0x2c0 arch/arm64/kernel/syscall.c:52
+el0_svc_common+0x138/0x244 arch/arm64/kernel/syscall.c:142
+do_el0_svc+0x64/0x198 arch/arm64/kernel/syscall.c:191
+el0_svc+0x4c/0x160 arch/arm64/kernel/entry-common.c:647
+el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:665
+el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:591
+Code: aa1803e6 aa1903e7 a90023f5 947730f5 (d4210000)
 
-The userspace resize tool was fine as it limits the range of allocatable
-segments before performing the resize, but it can run into this issue if
-the resize ioctl is called alone.
-
-Fix this issue by changing nilfs_sufile_resize() to update the range of
-allocatable segments immediately after successful truncation of segment
-space in case of file system shrink.
-
-Link: https://lkml.kernel.org/r/20230524094348.3784-1-konishi.ryusuke@gmail.com
-Fixes: 4e33f9eab07e ("nilfs2: implement resize ioctl")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+33494cd0df2ec2931851@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/0000000000005434c405fbbafdc5@google.com
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Martin Schiller <ms@dev.tdt.de>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/sufile.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/wan/lapbether.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/nilfs2/sufile.c
-+++ b/fs/nilfs2/sufile.c
-@@ -779,6 +779,15 @@ int nilfs_sufile_resize(struct inode *su
- 			goto out_header;
+diff --git a/drivers/net/wan/lapbether.c b/drivers/net/wan/lapbether.c
+index d62a904d2e422..56326f38fe8a3 100644
+--- a/drivers/net/wan/lapbether.c
++++ b/drivers/net/wan/lapbether.c
+@@ -384,6 +384,9 @@ static int lapbeth_new_device(struct net_device *dev)
  
- 		sui->ncleansegs -= nsegs - newnsegs;
+ 	ASSERT_RTNL();
+ 
++	if (dev->type != ARPHRD_ETHER)
++		return -EINVAL;
 +
-+		/*
-+		 * If the sufile is successfully truncated, immediately adjust
-+		 * the segment allocation space while locking the semaphore
-+		 * "mi_sem" so that nilfs_sufile_alloc() never allocates
-+		 * segments in the truncated space.
-+		 */
-+		sui->allocmax = newnsegs - 1;
-+		sui->allocmin = 0;
- 	}
- 
- 	kaddr = kmap_atomic(header_bh->b_page);
+ 	ndev = alloc_netdev(sizeof(*lapbeth), "lapb%d", NET_NAME_UNKNOWN,
+ 			    lapbeth_setup);
+ 	if (!ndev)
+-- 
+2.39.2
+
 
 
