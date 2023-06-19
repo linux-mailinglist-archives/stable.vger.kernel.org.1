@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6107673540F
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:51:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E5F3735407
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:51:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231599AbjFSKve (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:51:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52022 "EHLO
+        id S232223AbjFSKvT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:51:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232277AbjFSKvG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:51:06 -0400
+        with ESMTP id S232225AbjFSKuo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:50:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81F3910F4
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:50:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6DEDE68
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:50:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A0BF60B85
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:50:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D7BAC433C0;
-        Mon, 19 Jun 2023 10:50:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 58E576068B
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:50:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD25C433C8;
+        Mon, 19 Jun 2023 10:50:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171836;
-        bh=dTMHqZm+d11Fd23qGB6AK54XsswmqL+O+qaQmWOZawU=;
+        s=korg; t=1687171822;
+        bh=2+N8B/NQLrP9utTMbxYa1LUZDM4rvFGPlMdOGNjBeXg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T1B+3dAw/FabbsgD7dLbca0fs2hAO7RhHAmsSpgV5zrYFHNaDb+ye7oZU2brU6+EH
-         4tTbjt4bFJtvUi5nizzkXVaOtNJMo6iCP8BK/+a3tBnTKZnUYpQw8xjR244mXVUue0
-         5GFnZR047TTmFjfI+FyKQmz9P6WSwOjjS4HldUKc=
+        b=ZiXp1wuGhPN+dGnt55oTXnlqMYpxy4aSJl8EcY9BB3w0OTOOVBSGl8EjENHlsWfa+
+         Va6XZVVoSzy5oILtS6AeVGTX4nBZ7Ns5WoARg/LK2PishNblPsMzVaVaqN3qHuj2Mk
+         XqQ9N/s0KLmOPd65tAf2mSHg/jWzeYvtcL38jZLw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Leon Romanovsky <leonro@nvidia.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 161/166] neighbour: delete neigh_lookup_nodev as not used
-Date:   Mon, 19 Jun 2023 12:30:38 +0200
-Message-ID: <20230619102202.497239823@linuxfoundation.org>
+        patches@lists.linux.dev, Bob Pearson <rpearsonhpe@gmail.com>,
+        Mike Christie <michael.christie@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 162/166] scsi: target: core: Fix error path in target_setup_session()
+Date:   Mon, 19 Jun 2023 12:30:39 +0200
+Message-ID: <20230619102202.540925738@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
 References: <20230619102154.568541872@linuxfoundation.org>
@@ -56,75 +55,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Bob Pearson <rpearsonhpe@gmail.com>
 
-commit 76b9bf965c98c9b53ef7420b3b11438dbd764f92 upstream.
+commit 91271699228bfc66f1bc8abc0327169dc156d854 upstream.
 
-neigh_lookup_nodev isn't used in the kernel after removal
-of DECnet. So let's remove it.
+In the error exits in target_setup_session(), if a branch is taken to
+free_sess: transport_free_session() may call to target_free_cmd_counter()
+and then fall through to call target_free_cmd_counter() a second time.
+This can, and does, sometimes cause seg faults since the data field in
+cmd_cnt->refcnt has been freed in the first call.
 
-Fixes: 1202cdd66531 ("Remove DECnet support from kernel")
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/eb5656200d7964b2d177a36b77efa3c597d6d72d.1678267343.git.leonro@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this problem by simply returning after the call to
+transport_free_session(). The second call is redundant for those cases.
+
+Fixes: 4edba7e4a8f3 ("scsi: target: Move cmd counter allocation")
+Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
+Link: https://lore.kernel.org/r/20230613144259.12890-1-rpearsonhpe@gmail.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/neighbour.h |    2 --
- net/core/neighbour.c    |   31 -------------------------------
- 2 files changed, 33 deletions(-)
+ drivers/target/target_core_transport.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/include/net/neighbour.h
-+++ b/include/net/neighbour.h
-@@ -336,8 +336,6 @@ void neigh_table_init(int index, struct
- int neigh_table_clear(int index, struct neigh_table *tbl);
- struct neighbour *neigh_lookup(struct neigh_table *tbl, const void *pkey,
- 			       struct net_device *dev);
--struct neighbour *neigh_lookup_nodev(struct neigh_table *tbl, struct net *net,
--				     const void *pkey);
- struct neighbour *__neigh_create(struct neigh_table *tbl, const void *pkey,
- 				 struct net_device *dev, bool want_ref);
- static inline struct neighbour *neigh_create(struct neigh_table *tbl,
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -627,37 +627,6 @@ struct neighbour *neigh_lookup(struct ne
- }
- EXPORT_SYMBOL(neigh_lookup);
+--- a/drivers/target/target_core_transport.c
++++ b/drivers/target/target_core_transport.c
+@@ -504,6 +504,8 @@ target_setup_session(struct se_portal_gr
  
--struct neighbour *neigh_lookup_nodev(struct neigh_table *tbl, struct net *net,
--				     const void *pkey)
--{
--	struct neighbour *n;
--	unsigned int key_len = tbl->key_len;
--	u32 hash_val;
--	struct neigh_hash_table *nht;
--
--	NEIGH_CACHE_STAT_INC(tbl, lookups);
--
--	rcu_read_lock_bh();
--	nht = rcu_dereference_bh(tbl->nht);
--	hash_val = tbl->hash(pkey, NULL, nht->hash_rnd) >> (32 - nht->hash_shift);
--
--	for (n = rcu_dereference_bh(nht->hash_buckets[hash_val]);
--	     n != NULL;
--	     n = rcu_dereference_bh(n->next)) {
--		if (!memcmp(n->primary_key, pkey, key_len) &&
--		    net_eq(dev_net(n->dev), net)) {
--			if (!refcount_inc_not_zero(&n->refcnt))
--				n = NULL;
--			NEIGH_CACHE_STAT_INC(tbl, hits);
--			break;
--		}
--	}
--
--	rcu_read_unlock_bh();
--	return n;
--}
--EXPORT_SYMBOL(neigh_lookup_nodev);
--
- static struct neighbour *
- ___neigh_create(struct neigh_table *tbl, const void *pkey,
- 		struct net_device *dev, u32 flags,
+ free_sess:
+ 	transport_free_session(sess);
++	return ERR_PTR(rc);
++
+ free_cnt:
+ 	target_free_cmd_counter(cmd_cnt);
+ 	return ERR_PTR(rc);
 
 
