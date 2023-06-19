@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6283F7353DD
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:49:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9FC6735300
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231800AbjFSKtN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:49:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51852 "EHLO
+        id S231810AbjFSKlG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:41:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230268AbjFSKs0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:48:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 585D310F3
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:48:20 -0700 (PDT)
+        with ESMTP id S231977AbjFSKkX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:40:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B812518C
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:40:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E24A760B6D
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:48:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002E4C433C8;
-        Mon, 19 Jun 2023 10:48:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5673160B7F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:40:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A984C433C8;
+        Mon, 19 Jun 2023 10:40:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171699;
-        bh=Y6MBSY97SJc6gArE0pDXarPoM4AXlqY9EeogjInlCE0=;
+        s=korg; t=1687171221;
+        bh=6Omcazp4ERw0XeCK4FxAOQ7zDZ5HzxGDwzhDS7KwBuI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U/V51NtQryROb7+wa4xXsw3VYyz2hQCf6yTts0qS6APQsr5hnoBQERUIS/4qSuQCc
-         LQPF4xB24X0Cf5tbenWRrDNgBPHDqKMIYgX4otxQgjygX7ry0FF52Txa3t3XPsWkez
-         w9Ujx4FLhF2V70tguGZYH3lQRrxBsULXzbKlakOw=
+        b=G7WhwKdrcoDMf+/NKCepGf/x8LqE0s6LJtIRq9vqN+0yfV2VEsr8Bz514BVqsPy9K
+         zq7fyWhyuC2Hb3WF9rJ5YUB5KkFMFQGN4stoic4xBbL/XAG12h42f1eWLk1KfdulXQ
+         oIeQJhqWUVGpolmsSOm3NiFS721UrFxr/+GVSy8w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hangbin Liu <liuhangbin@gmail.com>,
-        Larysa Zaremba <larysa.zaremba@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 125/166] ipvlan: fix bound dev checking for IPv6 l3s mode
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.3 184/187] arm64: dts: qcom: sm8550: Use the correct LLCC register scheme
 Date:   Mon, 19 Jun 2023 12:30:02 +0200
-Message-ID: <20230619102200.887638688@linuxfoundation.org>
+Message-ID: <20230619102206.618457421@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,50 +55,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit ce57adc222aba32431c42632b396e9213d0eb0b8 ]
+commit 661a4f089317c877aecd598fb70cd46510cc8d29 upstream.
 
-The commit 59a0b022aa24 ("ipvlan: Make skb->skb_iif track skb->dev for l3s
-mode") fixed ipvlan bonded dev checking by updating skb skb_iif. This fix
-works for IPv4, as in raw_v4_input() the dif is from inet_iif(skb), which
-is skb->skb_iif when there is no route.
+During the ABI-breaking (for good reasons) conversion of the LLCC
+register description, SM8550 was not taken into account, resulting
+in LLCC being broken on any kernel containing the patch referenced
+in the fixes tag.
 
-But for IPv6, the fix is not enough, because in ipv6_raw_deliver() ->
-raw_v6_match(), the dif is inet6_iif(skb), which is returns IP6CB(skb)->iif
-instead of skb->skb_iif if it's not a l3_slave. To fix the IPv6 part
-issue. Let's set IP6CB(skb)->iif to correct ifindex.
+Fix it by describing the regions properly.
 
-BTW, ipvlan handles NS/NA specifically. Since it works fine, I will not
-reset IP6CB(skb)->iif when addr->atype is IPVL_ICMPV6.
-
-Fixes: c675e06a98a4 ("ipvlan: decouple l3s mode dependencies from other modes")
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2196710
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ee13b5008707 ("qcom: llcc/edac: Fix the base address used for accessing LLCC banks")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230517-topic-kailua-llcc-v1-2-d57bd860c43e@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ipvlan/ipvlan_l3s.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ipvlan/ipvlan_l3s.c b/drivers/net/ipvlan/ipvlan_l3s.c
-index 71712ea25403d..d5b05e8032199 100644
---- a/drivers/net/ipvlan/ipvlan_l3s.c
-+++ b/drivers/net/ipvlan/ipvlan_l3s.c
-@@ -102,6 +102,10 @@ static unsigned int ipvlan_nf_input(void *priv, struct sk_buff *skb,
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -3423,9 +3423,16 @@
  
- 	skb->dev = addr->master->dev;
- 	skb->skb_iif = skb->dev->ifindex;
-+#if IS_ENABLED(CONFIG_IPV6)
-+	if (addr->atype == IPVL_IPV6)
-+		IP6CB(skb)->iif = skb->dev->ifindex;
-+#endif
- 	len = skb->len + ETH_HLEN;
- 	ipvlan_count_rx(addr->master, len, true, false);
- out:
--- 
-2.39.2
-
+ 		system-cache-controller@25000000 {
+ 			compatible = "qcom,sm8550-llcc";
+-			reg = <0 0x25000000 0 0x800000>,
++			reg = <0 0x25000000 0 0x200000>,
++			      <0 0x25200000 0 0x200000>,
++			      <0 0x25400000 0 0x200000>,
++			      <0 0x25600000 0 0x200000>,
+ 			      <0 0x25800000 0 0x200000>;
+-			reg-names = "llcc_base", "llcc_broadcast_base";
++			reg-names = "llcc0_base",
++				    "llcc1_base",
++				    "llcc2_base",
++				    "llcc3_base",
++				    "llcc_broadcast_base";
+ 			interrupts = <GIC_SPI 266 IRQ_TYPE_LEVEL_HIGH>;
+ 		};
+ 
 
 
