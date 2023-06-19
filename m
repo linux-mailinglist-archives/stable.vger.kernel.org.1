@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FF68735393
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:46:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39C6973520E
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:30:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231279AbjFSKqo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:46:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47176 "EHLO
+        id S229952AbjFSK37 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:29:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231240AbjFSKqI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:46:08 -0400
+        with ESMTP id S229817AbjFSK36 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:29:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 975C01702
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:45:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 255ABB3
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:29:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2CF8A60B73
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:45:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D1EBC433C0;
-        Mon, 19 Jun 2023 10:45:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AC67C60A50
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:29:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE04EC433C8;
+        Mon, 19 Jun 2023 10:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171550;
-        bh=bqPR8NIY00okH2KeJu7laBUha6vW9xHkuckTz/BhmxQ=;
+        s=korg; t=1687170597;
+        bh=1th7K4benKDf8xLe4i3xE+g776zmGvOg2YGEAoAVoxQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aRZQe8HuGoP+p7v0/EHScup/jAhbujsh9gMGC/d6VF/0gYvZz6QPdaP48AQwe6ABU
-         Q/axeUqJoE3qAF4BaVYbVPdVcD7zPm1GMk2j+eF5FUUpIl+A8V7FbYK+vdMlffYXGo
-         yqxYnx4r6YrwcX4OMjsJJXtNwNTDCg0occJNgZI0=
+        b=Z+TWa4ebDHjRwPmy9x0BqIsDBo4xHRwDpqzb1vP6eewt9D5f5QHBYArE7JrRd5ffc
+         9Smi/5Db0E1tNIFb1E3OOn3BaM4pnl1sJ4ZZ4OVG/XJMXh18D6Owruk7n1oZ06KPU/
+         sYHqrmheFhd7DpFnYhjqOgZuHcEHOxar5xzfLILU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
-        Marek Majkowski <marek@cloudflare.com>
-Subject: [PATCH 6.1 054/166] io_uring/net: save msghdr->msg_control for retries
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 03/32] ARM: dts: vexpress: add missing cache properties
 Date:   Mon, 19 Jun 2023 12:28:51 +0200
-Message-ID: <20230619102157.372843953@linuxfoundation.org>
+Message-ID: <20230619102127.653333819@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102127.461443957@linuxfoundation.org>
+References: <20230619102127.461443957@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,60 +56,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit cac9e4418f4cbd548ccb065b3adcafe073f7f7d2 upstream.
+[ Upstream commit 328acc5657c6197753238d7ce0a6924ead829347 ]
 
-If the application sets ->msg_control and we have to later retry this
-command, or if it got queued with IOSQE_ASYNC to begin with, then we
-need to retain the original msg_control value. This is due to the net
-stack overwriting this field with an in-kernel pointer, to copy it
-in. Hitting that path for the second time will now fail the copy from
-user, as it's attempting to copy from a non-user address.
+As all level 2 and level 3 caches are unified, add required
+cache-unified property to fix warnings like:
 
-Cc: stable@vger.kernel.org # 5.10+
-Link: https://github.com/axboe/liburing/issues/880
-Reported-and-tested-by: Marek Majkowski <marek@cloudflare.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  vexpress-v2p-ca5s.dtb: cache-controller@2c0f0000: 'cache-unified' is a required property
+
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230423150837.118466-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/net.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/vexpress-v2p-ca5s.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -65,6 +65,7 @@ struct io_sr_msg {
- 	u16				addr_len;
- 	u16				buf_group;
- 	void __user			*addr;
-+	void __user			*msg_control;
- 	/* used only for send zerocopy */
- 	struct io_kiocb 		*notif;
- };
-@@ -182,11 +183,15 @@ static int io_sendmsg_copy_hdr(struct io
- 			       struct io_async_msghdr *iomsg)
- {
- 	struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
-+	int ret;
+diff --git a/arch/arm/boot/dts/vexpress-v2p-ca5s.dts b/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
+index 32f1906ffecfe..994edbc615cb0 100644
+--- a/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
++++ b/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
+@@ -117,6 +117,7 @@ L2: cache-controller@2c0f0000 {
+ 		reg = <0x2c0f0000 0x1000>;
+ 		interrupts = <0 84 4>;
+ 		cache-level = <2>;
++		cache-unified;
+ 	};
  
- 	iomsg->msg.msg_name = &iomsg->addr;
- 	iomsg->free_iov = iomsg->fast_iov;
--	return sendmsg_copy_msghdr(&iomsg->msg, sr->umsg, sr->msg_flags,
-+	ret = sendmsg_copy_msghdr(&iomsg->msg, sr->umsg, sr->msg_flags,
- 					&iomsg->free_iov);
-+	/* save msg_control as sys_sendmsg() overwrites it */
-+	sr->msg_control = iomsg->msg.msg_control;
-+	return ret;
- }
- 
- int io_send_prep_async(struct io_kiocb *req)
-@@ -284,6 +289,7 @@ int io_sendmsg(struct io_kiocb *req, uns
- 
- 	if (req_has_async_data(req)) {
- 		kmsg = req->async_data;
-+		kmsg->msg.msg_control = sr->msg_control;
- 	} else {
- 		ret = io_sendmsg_copy_hdr(req, &iomsg);
- 		if (ret)
+ 	pmu {
+-- 
+2.39.2
+
 
 
