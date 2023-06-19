@@ -2,64 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D9BF73550A
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:00:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D64D735339
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:43:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232385AbjFSLAz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:00:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60940 "EHLO
+        id S230073AbjFSKnD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:43:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232424AbjFSLAS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:00:18 -0400
+        with ESMTP id S231359AbjFSKmh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:42:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89CED1BE4
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:59:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBCF6173F
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:42:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2623360B78
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:59:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C8AC433C8;
-        Mon, 19 Jun 2023 10:59:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 19E4C60B86
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:42:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25786C433C8;
+        Mon, 19 Jun 2023 10:42:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172369;
-        bh=XIXwth59SuEvQaGLTsV9sBhMTEGy6Sea6erPeQpXrh0=;
+        s=korg; t=1687171350;
+        bh=au3L0gv9ya6iFAYqsIbyad3Hm1RDLShwKOns8thGmZM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Va92aDXIcPj/Uf9HUJ8s7ihdY7QxRM8cqp37Ub7e1uVMjGZNJyREdfUQNWByu3wKh
-         tA5mGaCBtnohroTz+Kab9XZg1RxfGLML7OyKVkbp0I0TOhfkDGTXx5UCBUtClkKJ14
-         0xQa1EAUMT5PvIK8JXamh7i7XwO1zjR93BeuG9Po=
+        b=Eg6kPfRBBzl2A0KwaDr9mPby6nUxJgMPoOSiX86KEgCJjiNQizUAdxWWnqKajaj7J
+         MTPvJNgvGIJhxlsIhyXjCZtNhULZk7uaatTYcRhP1Nb7gygMNzbjgUWFWlvCEf+xSY
+         pdThG0pTJPwpHURUaALDW+y+gpaE2FkOkDPSiSDs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ricardo Ribalda <ribalda@chromium.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Albert Ou <aou@eecs.berkeley.edu>, Baoquan He <bhe@redhat.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Dave Young <dyoung@redhat.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Philipp Rudo <prudo@redhat.com>,
-        Ross Zwisler <zwisler@google.com>,
-        Simon Horman <horms@kernel.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tom Rix <trix@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 043/107] powerpc/purgatory: remove PGO flags
+        patches@lists.linux.dev, Christian Loehle <cloehle@hyperstone.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 4.19 49/49] mmc: block: ensure error propagation for non-blk
 Date:   Mon, 19 Jun 2023 12:30:27 +0200
-Message-ID: <20230619102143.559641774@linuxfoundation.org>
+Message-ID: <20230619102132.476456630@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
+References: <20230619102129.856988902@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -74,59 +55,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Christian Loehle <CLoehle@hyperstone.com>
 
-commit 20188baceb7a1463dc0bcb0c8678b69c2f447df6 upstream.
+commit 003fb0a51162d940f25fc35e70b0996a12c9e08a upstream.
 
-If profile-guided optimization is enabled, the purgatory ends up with
-multiple .text sections.  This is not supported by kexec and crashes the
-system.
+Requests to the mmc layer usually come through a block device IO.
+The exceptions are the ioctl interface, RPMB chardev ioctl
+and debugfs, which issue their own blk_mq requests through
+blk_execute_rq and do not query the BLK_STS error but the
+mmcblk-internal drv_op_result. This patch ensures that drv_op_result
+defaults to an error and has to be overwritten by the operation
+to be considered successful.
 
-Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-3-b05c520b7296@chromium.org
-Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: <stable@vger.kernel.org>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Palmer Dabbelt <palmer@rivosinc.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Philipp Rudo <prudo@redhat.com>
-Cc: Ross Zwisler <zwisler@google.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Tom Rix <trix@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The behavior leads to a bug where the request never propagates
+the error, e.g. by directly erroring out at mmc_blk_mq_issue_rq if
+mmc_blk_part_switch fails. The ioctl caller of the rpmb chardev then
+can never see an error (BLK_STS_IOERR, but drv_op_result is unchanged)
+and thus may assume that their call executed successfully when it did not.
+
+While always checking the blk_execute_rq return value would be
+advised, let's eliminate the error by always setting
+drv_op_result as -EIO to be overwritten on success (or other error)
+
+Fixes: 614f0388f580 ("mmc: block: move single ioctl() commands to block requests")
+Signed-off-by: Christian Loehle <cloehle@hyperstone.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/59c17ada35664b818b7bd83752119b2d@hyperstone.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Christian Loehle <cloehle@hyperstone.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/purgatory/Makefile |    5 +++++
+ drivers/mmc/core/block.c |    5 +++++
  1 file changed, 5 insertions(+)
 
---- a/arch/powerpc/purgatory/Makefile
-+++ b/arch/powerpc/purgatory/Makefile
-@@ -4,6 +4,11 @@ KASAN_SANITIZE := n
- 
- targets += trampoline_$(BITS).o purgatory.ro kexec-purgatory.c
- 
-+# When profile-guided optimization is enabled, llvm emits two different
-+# overlapping text sections, which is not supported by kexec. Remove profile
-+# optimization flags.
-+KBUILD_CFLAGS := $(filter-out -fprofile-sample-use=% -fprofile-use=%,$(KBUILD_CFLAGS))
-+
- LDFLAGS_purgatory.ro := -e purgatory_start -r --no-undefined
- 
- $(obj)/purgatory.ro: $(obj)/trampoline_$(BITS).o FORCE
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -250,6 +250,7 @@ static ssize_t power_ro_lock_store(struc
+ 		goto out_put;
+ 	}
+ 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_BOOT_WP;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	blk_execute_rq(mq->queue, NULL, req, 0);
+ 	ret = req_to_mmc_queue_req(req)->drv_op_result;
+ 	blk_put_request(req);
+@@ -689,6 +690,7 @@ static int mmc_blk_ioctl_cmd(struct mmc_
+ 	idatas[0] = idata;
+ 	req_to_mmc_queue_req(req)->drv_op =
+ 		rpmb ? MMC_DRV_OP_IOCTL_RPMB : MMC_DRV_OP_IOCTL;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	req_to_mmc_queue_req(req)->drv_op_data = idatas;
+ 	req_to_mmc_queue_req(req)->ioc_count = 1;
+ 	blk_execute_rq(mq->queue, NULL, req, 0);
+@@ -758,6 +760,7 @@ static int mmc_blk_ioctl_multi_cmd(struc
+ 	}
+ 	req_to_mmc_queue_req(req)->drv_op =
+ 		rpmb ? MMC_DRV_OP_IOCTL_RPMB : MMC_DRV_OP_IOCTL;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	req_to_mmc_queue_req(req)->drv_op_data = idata;
+ 	req_to_mmc_queue_req(req)->ioc_count = num_of_cmds;
+ 	blk_execute_rq(mq->queue, NULL, req, 0);
+@@ -2748,6 +2751,7 @@ static int mmc_dbg_card_status_get(void
+ 	if (IS_ERR(req))
+ 		return PTR_ERR(req);
+ 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_GET_CARD_STATUS;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	blk_execute_rq(mq->queue, NULL, req, 0);
+ 	ret = req_to_mmc_queue_req(req)->drv_op_result;
+ 	if (ret >= 0) {
+@@ -2786,6 +2790,7 @@ static int mmc_ext_csd_open(struct inode
+ 		goto out_free;
+ 	}
+ 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_GET_EXT_CSD;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	req_to_mmc_queue_req(req)->drv_op_data = &ext_csd;
+ 	blk_execute_rq(mq->queue, NULL, req, 0);
+ 	err = req_to_mmc_queue_req(req)->drv_op_result;
 
 
