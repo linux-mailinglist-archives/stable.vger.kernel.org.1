@@ -2,48 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AF497353BD
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:48:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6DFD7352D0
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:38:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229731AbjFSKsh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:48:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51098 "EHLO
+        id S231782AbjFSKia (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:38:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229952AbjFSKsN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:48:13 -0400
+        with ESMTP id S231980AbjFSKiT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:38:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB43D171B
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:47:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56EF110D8
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:38:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 57F0F60B89
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:47:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67069C433C0;
-        Mon, 19 Jun 2023 10:47:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E738B60B62
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:38:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06817C433C8;
+        Mon, 19 Jun 2023 10:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171668;
-        bh=pmNeNoP+3h+S6rfjAykYcgi0HCeznCuN8SzMCzWD/rE=;
+        s=korg; t=1687171097;
+        bh=lZP1iuI/2FNH6M3aZknDWd6hHcb76Img6GIg4DG4vvw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=11EUbu4fNA3NGzdyhzuhqf1K1g7mS3bk5fSOn7u4KRWM3Vvlx0nJEvJA3UeraoFH0
-         0+HNoapf3vhOowEJnELgteIhaXenZMkgFfwRovZU6FZUSx0vZwGCpgN5DkEFMloh2R
-         IRbuYrGqUge+sgMRUKjU960Vhigw7MKZw6UeMsqw=
+        b=p2nmqdQX+G0ydXjeZQYOFb+Cl5zCqUg0KANon6ardsOhIyFznN6mN/peWTEs0qRFS
+         KuGsN6pbQFRtpdeRrguGqI1vF1z8E98X5N7KiGYtpTTAMuJbMpRXDk1SLcDfpjI/il
+         5pA4/PNOW4eEgmaaZRIWFauZsp0H+ypyOW24ZZiA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Sandeep Maheswaram <quic_c_sanm@quicinc.com>,
-        Krishna Kurapati <quic_kriskura@quicinc.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.1 087/166] USB: dwc3: qcom: fix NULL-deref on suspend
+        patches@lists.linux.dev, Sagi Grimberg <sagi@grimberg.me>,
+        Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 146/187] IB/isert: Fix incorrect release of isert connection
 Date:   Mon, 19 Jun 2023 12:29:24 +0200
-Message-ID: <20230619102159.013264853@linuxfoundation.org>
+Message-ID: <20230619102204.715678515@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,62 +57,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
 
-commit d2d69354226de0b333d4405981f3d9c41ba8430a upstream.
+[ Upstream commit 699826f4e30ab76a62c238c86fbef7e826639c8d ]
 
-The Qualcomm dwc3 glue driver is currently accessing the driver data of
-the child core device during suspend and on wakeup interrupts. This is
-clearly a bad idea as the child may not have probed yet or could have
-been unbound from its driver.
+The ib_isert module is releasing the isert connection both in
+isert_wait_conn() handler as well as isert_free_conn() handler.
+In isert_wait_conn() handler, it is expected to wait for iSCSI
+session logout operation to complete. It should free the isert
+connection only in isert_free_conn() handler.
 
-The first such layering violation was part of the initial version of the
-driver, but this was later made worse when the hack that accesses the
-driver data of the grand child xhci device to configure the wakeup
-interrupts was added.
+When a bunch of iSER target is cleared, this issue can lead to
+use-after-free memory issue as isert conn is twice released
 
-Fixing this properly is not that easily done, so add a sanity check to
-make sure that the child driver data is non-NULL before dereferencing it
-for now.
-
-Note that this relies on subtleties like the fact that driver core is
-making sure that the parent is not suspended while the child is probing.
-
-Reported-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/all/20230325165217.31069-4-manivannan.sadhasivam@linaro.org/
-Fixes: d9152161b4bf ("usb: dwc3: Add Qualcomm DWC3 glue layer driver")
-Fixes: 6895ea55c385 ("usb: dwc3: qcom: Configure wakeup interrupts during suspend")
-Cc: stable@vger.kernel.org	# 3.18: a872ab303d5d: "usb: dwc3: qcom: fix use-after-free on runtime-PM wakeup"
-Cc: Sandeep Maheswaram <quic_c_sanm@quicinc.com>
-Cc: Krishna Kurapati <quic_kriskura@quicinc.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Message-ID: <20230607100540.31045-2-johan+linaro@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b02efbfc9a05 ("iser-target: Fix implicit termination of connections")
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://lore.kernel.org/r/20230606102531.162967-4-saravanan.vajravel@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-qcom.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/infiniband/ulp/isert/ib_isert.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/usb/dwc3/dwc3-qcom.c
-+++ b/drivers/usb/dwc3/dwc3-qcom.c
-@@ -308,7 +308,16 @@ static void dwc3_qcom_interconnect_exit(
- /* Only usable in contexts where the role can not change. */
- static bool dwc3_qcom_is_host(struct dwc3_qcom *qcom)
- {
--	struct dwc3 *dwc = platform_get_drvdata(qcom->dwc3);
-+	struct dwc3 *dwc;
-+
-+	/*
-+	 * FIXME: Fix this layering violation.
-+	 */
-+	dwc = platform_get_drvdata(qcom->dwc3);
-+
-+	/* Core driver may not have probed yet. */
-+	if (!dwc)
-+		return false;
- 
- 	return dwc->xhci;
+diff --git a/drivers/infiniband/ulp/isert/ib_isert.c b/drivers/infiniband/ulp/isert/ib_isert.c
+index 00a7303c8cc60..92e1e7587af8b 100644
+--- a/drivers/infiniband/ulp/isert/ib_isert.c
++++ b/drivers/infiniband/ulp/isert/ib_isert.c
+@@ -2570,8 +2570,6 @@ static void isert_wait_conn(struct iscsit_conn *conn)
+ 	isert_put_unsol_pending_cmds(conn);
+ 	isert_wait4cmds(conn);
+ 	isert_wait4logout(isert_conn);
+-
+-	queue_work(isert_release_wq, &isert_conn->release_work);
  }
+ 
+ static void isert_free_conn(struct iscsit_conn *conn)
+-- 
+2.39.2
+
 
 
