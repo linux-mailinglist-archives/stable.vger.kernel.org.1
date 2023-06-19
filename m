@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 370EC7353C0
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:48:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADBE07352EF
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:40:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232141AbjFSKsl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:48:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51994 "EHLO
+        id S231980AbjFSKkY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:40:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232145AbjFSKsU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:48:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F04C4E9
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:48:00 -0700 (PDT)
+        with ESMTP id S232027AbjFSKkD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:40:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EE2310C8
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:39:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 66C5C60B6D
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:48:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8CDC433C0;
-        Mon, 19 Jun 2023 10:47:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F47360B51
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:39:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF574C433C8;
+        Mon, 19 Jun 2023 10:39:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171679;
-        bh=gydSX09BhyDBtYcRCr1K2HHeoP4+PHrLxACAIu/RAo8=;
+        s=korg; t=1687171183;
+        bh=tXhMCFxisL2fE5Uqh9W7TnU3c8I2hYeSlTnHeVSr16k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zuuwqxCMJw3rNXZvkxsaFxJe92HcgTUL2v3aK+4s1sOb5tM1X1rz3yey622kv+uth
-         U5BaiIr0Y6xjkfwdhAf6+a9IHMIZAQOqXI4Uj+SMoTMgrdBsNb+NvtFeks6QDdfzcb
-         ckTiRcIgWQnGgry/WooHmu/EfbMe1013heuG+Ofg=
+        b=0Dr8FJLO2EAAPBSnbCJN2sesXZRYUkCDWdzlntRoefFGjTdkjWeJBqX+AIHQDnj65
+         0+8fPYVfUPZ0x5yrJJuta6T//6j/9SYE9EvrxhVYer7gAkkKjXMnlL0gJPjsWUT3FS
+         MyKzmFVQVWKNtI+ZGQFPVV4FRd9Y8Gz5C9RPDM1w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Zhang <markzhang@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev, Yanghang Liu <yanghliu@redhat.com>,
+        =?UTF-8?q?=C3=8D=C3=B1igo=20Huguet?= <ihuguet@redhat.com>,
+        Martin Habets <habetsm.xilinx@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 118/166] RDMA/cma: Always set static rate to 0 for RoCE
+Subject: [PATCH 6.3 177/187] sfc: fix XDP queues mode with legacy IRQ
 Date:   Mon, 19 Jun 2023 12:29:55 +0200
-Message-ID: <20230619102200.567356514@linuxfoundation.org>
+Message-ID: <20230619102206.245430575@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,82 +57,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Mark Zhang <markzhang@nvidia.com>
+From: Íñigo Huguet <ihuguet@redhat.com>
 
-[ Upstream commit 58030c76cce473b6cfd630bbecb97215def0dff8 ]
+[ Upstream commit e84a1e1e683f3558e30f437d7c99df35afb8b52c ]
 
-Set static rate to 0 as it should be discovered by path query and
-has no meaning for RoCE.
-This also avoid of using the rtnl lock and ethtool API, which is
-a bottleneck when try to setup many rdma-cm connections at the same
-time, especially with multiple processes.
+In systems without MSI-X capabilities, xdp_txq_queues_mode is calculated
+in efx_allocate_msix_channels, but when enabling MSI-X fails, it was not
+changed to a proper default value. This was leading to the driver
+thinking that it has dedicated XDP queues, when it didn't.
 
-Fixes: 3c86aa70bf67 ("RDMA/cm: Add RDMA CM support for IBoE devices")
-Signed-off-by: Mark Zhang <markzhang@nvidia.com>
-Link: https://lore.kernel.org/r/f72a4f8b667b803aee9fa794069f61afb5839ce4.1685960567.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fix it by setting xdp_txq_queues_mode to the correct value if the driver
+fallbacks to MSI or legacy IRQ mode. The correct value is
+EFX_XDP_TX_QUEUES_BORROWED because there are no XDP dedicated queues.
+
+The issue can be easily visible if the kernel is started with pci=nomsi,
+then a call trace is shown. It is not shown only with sfc's modparam
+interrupt_mode=2. Call trace example:
+ WARNING: CPU: 2 PID: 663 at drivers/net/ethernet/sfc/efx_channels.c:828 efx_set_xdp_channels+0x124/0x260 [sfc]
+ [...skip...]
+ Call Trace:
+  <TASK>
+  efx_set_channels+0x5c/0xc0 [sfc]
+  efx_probe_nic+0x9b/0x15a [sfc]
+  efx_probe_all+0x10/0x1a2 [sfc]
+  efx_pci_probe_main+0x12/0x156 [sfc]
+  efx_pci_probe_post_io+0x18/0x103 [sfc]
+  efx_pci_probe.cold+0x154/0x257 [sfc]
+  local_pci_probe+0x42/0x80
+
+Fixes: 6215b608a8c4 ("sfc: last resort fallback for lack of xdp tx queues")
+Reported-by: Yanghang Liu <yanghliu@redhat.com>
+Signed-off-by: Íñigo Huguet <ihuguet@redhat.com>
+Acked-by: Martin Habets <habetsm.xilinx@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/cma.c |  4 ++--
- include/rdma/ib_addr.h        | 23 -----------------------
- 2 files changed, 2 insertions(+), 25 deletions(-)
+ drivers/net/ethernet/sfc/efx_channels.c       | 2 ++
+ drivers/net/ethernet/sfc/siena/efx_channels.c | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/infiniband/core/cma.c b/drivers/infiniband/core/cma.c
-index c6a671edba5c8..4632b1833381a 100644
---- a/drivers/infiniband/core/cma.c
-+++ b/drivers/infiniband/core/cma.c
-@@ -3293,7 +3293,7 @@ static int cma_resolve_iboe_route(struct rdma_id_private *id_priv)
- 	route->path_rec->traffic_class = tos;
- 	route->path_rec->mtu = iboe_get_mtu(ndev->mtu);
- 	route->path_rec->rate_selector = IB_SA_EQ;
--	route->path_rec->rate = iboe_get_rate(ndev);
-+	route->path_rec->rate = IB_RATE_PORT_CURRENT;
- 	dev_put(ndev);
- 	route->path_rec->packet_life_time_selector = IB_SA_EQ;
- 	/* In case ACK timeout is set, use this value to calculate
-@@ -4955,7 +4955,7 @@ static int cma_iboe_join_multicast(struct rdma_id_private *id_priv,
- 	if (!ndev)
- 		return -ENODEV;
+diff --git a/drivers/net/ethernet/sfc/efx_channels.c b/drivers/net/ethernet/sfc/efx_channels.c
+index fcea3ea809d77..41b33a75333cd 100644
+--- a/drivers/net/ethernet/sfc/efx_channels.c
++++ b/drivers/net/ethernet/sfc/efx_channels.c
+@@ -301,6 +301,7 @@ int efx_probe_interrupts(struct efx_nic *efx)
+ 		efx->tx_channel_offset = 0;
+ 		efx->n_xdp_channels = 0;
+ 		efx->xdp_channel_offset = efx->n_channels;
++		efx->xdp_txq_queues_mode = EFX_XDP_TX_QUEUES_BORROWED;
+ 		rc = pci_enable_msi(efx->pci_dev);
+ 		if (rc == 0) {
+ 			efx_get_channel(efx, 0)->irq = efx->pci_dev->irq;
+@@ -322,6 +323,7 @@ int efx_probe_interrupts(struct efx_nic *efx)
+ 		efx->tx_channel_offset = efx_separate_tx_channels ? 1 : 0;
+ 		efx->n_xdp_channels = 0;
+ 		efx->xdp_channel_offset = efx->n_channels;
++		efx->xdp_txq_queues_mode = EFX_XDP_TX_QUEUES_BORROWED;
+ 		efx->legacy_irq = efx->pci_dev->irq;
+ 	}
  
--	ib.rec.rate = iboe_get_rate(ndev);
-+	ib.rec.rate = IB_RATE_PORT_CURRENT;
- 	ib.rec.hop_limit = 1;
- 	ib.rec.mtu = iboe_get_mtu(ndev->mtu);
+diff --git a/drivers/net/ethernet/sfc/siena/efx_channels.c b/drivers/net/ethernet/sfc/siena/efx_channels.c
+index 06ed74994e366..1776f7f8a7a90 100644
+--- a/drivers/net/ethernet/sfc/siena/efx_channels.c
++++ b/drivers/net/ethernet/sfc/siena/efx_channels.c
+@@ -302,6 +302,7 @@ int efx_siena_probe_interrupts(struct efx_nic *efx)
+ 		efx->tx_channel_offset = 0;
+ 		efx->n_xdp_channels = 0;
+ 		efx->xdp_channel_offset = efx->n_channels;
++		efx->xdp_txq_queues_mode = EFX_XDP_TX_QUEUES_BORROWED;
+ 		rc = pci_enable_msi(efx->pci_dev);
+ 		if (rc == 0) {
+ 			efx_get_channel(efx, 0)->irq = efx->pci_dev->irq;
+@@ -323,6 +324,7 @@ int efx_siena_probe_interrupts(struct efx_nic *efx)
+ 		efx->tx_channel_offset = efx_siena_separate_tx_channels ? 1 : 0;
+ 		efx->n_xdp_channels = 0;
+ 		efx->xdp_channel_offset = efx->n_channels;
++		efx->xdp_txq_queues_mode = EFX_XDP_TX_QUEUES_BORROWED;
+ 		efx->legacy_irq = efx->pci_dev->irq;
+ 	}
  
-diff --git a/include/rdma/ib_addr.h b/include/rdma/ib_addr.h
-index d808dc3d239e8..811a0f11d0dbe 100644
---- a/include/rdma/ib_addr.h
-+++ b/include/rdma/ib_addr.h
-@@ -194,29 +194,6 @@ static inline enum ib_mtu iboe_get_mtu(int mtu)
- 		return 0;
- }
- 
--static inline int iboe_get_rate(struct net_device *dev)
--{
--	struct ethtool_link_ksettings cmd;
--	int err;
--
--	rtnl_lock();
--	err = __ethtool_get_link_ksettings(dev, &cmd);
--	rtnl_unlock();
--	if (err)
--		return IB_RATE_PORT_CURRENT;
--
--	if (cmd.base.speed >= 40000)
--		return IB_RATE_40_GBPS;
--	else if (cmd.base.speed >= 30000)
--		return IB_RATE_30_GBPS;
--	else if (cmd.base.speed >= 20000)
--		return IB_RATE_20_GBPS;
--	else if (cmd.base.speed >= 10000)
--		return IB_RATE_10_GBPS;
--	else
--		return IB_RATE_PORT_CURRENT;
--}
--
- static inline int rdma_link_local_addr(struct in6_addr *addr)
- {
- 	if (addr->s6_addr32[0] == htonl(0xfe800000) &&
 -- 
 2.39.2
 
