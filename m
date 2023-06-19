@@ -2,52 +2,70 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F6F87353C8
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:48:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68838735313
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232144AbjFSKsm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:48:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52008 "EHLO
+        id S231356AbjFSKlT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:41:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232148AbjFSKsU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:48:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0BDAD7
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:48:03 -0700 (PDT)
+        with ESMTP id S230003AbjFSKlE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:41:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 064FAB3
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:41:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3DCF560B85
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:48:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5126AC433C8;
-        Mon, 19 Jun 2023 10:48:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 919B960B62
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:41:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35823C433C0;
+        Mon, 19 Jun 2023 10:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171682;
-        bh=VXEv/PMPG9sHzKGA9zlWeLeTWAtVM8DyIuAfjtIizRQ=;
+        s=korg; t=1687171262;
+        bh=PTQx3dUYaRuxrT7bbh8CQPhOoan1KYTv+UDJqe4gqzg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WleQ4ngToFDI9Nb5XOh+lSlp+05tKk99wLv/a+JpFmV+qieeLX2qkJFaJRNbIq3dP
-         rGTZ3hKzhYaXvT/I1k8nS5D5/HoRJQ9SvpVRY1108HaYf4ollQNJwp/FwWgLu2zcSs
-         vLAI0z+5+7AXUFaJCCRTjUKoY02MPGTn9ZJENStA=
+        b=rrbJ4xIXQ2yprvvXTTBVFiDKjNHSECNOK1CSTPgRVQJFpt5S0z8K9JwXq+tgN5Xfj
+         J3q53Y8rkxb9O9TUFqaeY3n2zamWIke+3udqzbC//Pe+MpFqhIlnoJXS7XU+XUKkSF
+         hn7z9q3PjzKGPcpHlupdbT1tnKAgNQvxuBdDxOgs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maor Gottlieb <maorg@nvidia.com>,
-        Yishai Hadas <yishaih@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 119/166] IB/uverbs: Fix to consider event queue closing also upon non-blocking mode
+        patches@lists.linux.dev, Ricardo Ribalda <ribalda@chromium.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Albert Ou <aou@eecs.berkeley.edu>, Baoquan He <bhe@redhat.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Dave Young <dyoung@redhat.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Philipp Rudo <prudo@redhat.com>,
+        Ross Zwisler <zwisler@google.com>,
+        Simon Horman <horms@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tom Rix <trix@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 18/49] powerpc/purgatory: remove PGO flags
 Date:   Mon, 19 Jun 2023 12:29:56 +0200
-Message-ID: <20230619102200.616311392@linuxfoundation.org>
+Message-ID: <20230619102130.803524527@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
+References: <20230619102129.856988902@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,68 +74,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yishai Hadas <yishaih@nvidia.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 62fab312fa1683e812e605db20d4f22de3e3fb2f ]
+commit 20188baceb7a1463dc0bcb0c8678b69c2f447df6 upstream.
 
-Fix ib_uverbs_event_read() to consider event queue closing also upon
-non-blocking mode.
+If profile-guided optimization is enabled, the purgatory ends up with
+multiple .text sections.  This is not supported by kexec and crashes the
+system.
 
-Once the queue is closed (e.g. hot-plug flow) all the existing events
-are cleaned-up as part of ib_uverbs_free_event_queue().
-
-An application that uses the non-blocking FD mode should get -EIO in
-that case to let it knows that the device was removed already.
-
-Otherwise, it can loose the indication that the device was removed and
-won't recover.
-
-As part of that, refactor the code to have a single flow with regards to
-'is_closed' for both blocking and non-blocking modes.
-
-Fixes: 14e23bd6d221 ("RDMA/core: Fix locking in ib_uverbs_event_read")
-Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
-Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
-Link: https://lore.kernel.org/r/97b00116a1e1e13f8dc4ec38a5ea81cf8c030210.1685960567.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-3-b05c520b7296@chromium.org
+Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: <stable@vger.kernel.org>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Philipp Rudo <prudo@redhat.com>
+Cc: Ross Zwisler <zwisler@google.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Tom Rix <trix@redhat.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/uverbs_main.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ arch/powerpc/purgatory/Makefile |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/infiniband/core/uverbs_main.c b/drivers/infiniband/core/uverbs_main.c
-index d544340887277..fa937cd268219 100644
---- a/drivers/infiniband/core/uverbs_main.c
-+++ b/drivers/infiniband/core/uverbs_main.c
-@@ -222,8 +222,12 @@ static ssize_t ib_uverbs_event_read(struct ib_uverbs_event_queue *ev_queue,
- 	spin_lock_irq(&ev_queue->lock);
+--- a/arch/powerpc/purgatory/Makefile
++++ b/arch/powerpc/purgatory/Makefile
+@@ -1,6 +1,11 @@
+ # SPDX-License-Identifier: GPL-2.0
+ targets += trampoline.o purgatory.ro kexec-purgatory.c
  
- 	while (list_empty(&ev_queue->event_list)) {
--		spin_unlock_irq(&ev_queue->lock);
-+		if (ev_queue->is_closed) {
-+			spin_unlock_irq(&ev_queue->lock);
-+			return -EIO;
-+		}
++# When profile-guided optimization is enabled, llvm emits two different
++# overlapping text sections, which is not supported by kexec. Remove profile
++# optimization flags.
++KBUILD_CFLAGS := $(filter-out -fprofile-sample-use=% -fprofile-use=%,$(KBUILD_CFLAGS))
++
+ LDFLAGS_purgatory.ro := -e purgatory_start -r --no-undefined
  
-+		spin_unlock_irq(&ev_queue->lock);
- 		if (filp->f_flags & O_NONBLOCK)
- 			return -EAGAIN;
- 
-@@ -233,12 +237,6 @@ static ssize_t ib_uverbs_event_read(struct ib_uverbs_event_queue *ev_queue,
- 			return -ERESTARTSYS;
- 
- 		spin_lock_irq(&ev_queue->lock);
--
--		/* If device was disassociated and no event exists set an error */
--		if (list_empty(&ev_queue->event_list) && ev_queue->is_closed) {
--			spin_unlock_irq(&ev_queue->lock);
--			return -EIO;
--		}
- 	}
- 
- 	event = list_entry(ev_queue->event_list.next, struct ib_uverbs_event, list);
--- 
-2.39.2
-
+ $(obj)/purgatory.ro: $(obj)/trampoline.o FORCE
 
 
