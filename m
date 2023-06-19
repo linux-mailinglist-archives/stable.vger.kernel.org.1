@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF42B735515
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:01:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AE83735326
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:42:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232553AbjFSLBV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:01:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33510 "EHLO
+        id S231151AbjFSKmH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:42:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232490AbjFSLBE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:01:04 -0400
+        with ESMTP id S231545AbjFSKlv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:41:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 528A92D44
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:00:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76B83D7
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:41:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D312160B7F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:00:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6769C433C0;
-        Mon, 19 Jun 2023 10:59:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D649E60670
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:41:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED754C433C8;
+        Mon, 19 Jun 2023 10:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172400;
-        bh=g6NhmV78z08Lac/1ldM3n+uyvFYj8HlhFusbW3+gfCo=;
+        s=korg; t=1687171309;
+        bh=E3NB0T0XcszvM/6kUQe/ASL6b/m0RYz4HGOxlI69whg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cwHxGYTZhefrLtvgNJ15fb3rCfIQXpeQWWPsXsBC0pukoQ2gZJVO1zsqY0d1RHqAD
-         PX49i9+nHnjDnE2CX2iloQ6hNuV0lwefkbqTH9E5jYjc5XbdIHRKKB0G4VPKrqZin/
-         4NQoH+orVNl0AzN9Tu3OPUz2nehGKU7mcRSlFoy8=
+        b=ZT3zf/LnL9+g3HF19PNYAUKKA7w8jkkEODLdAZrSOrPd7CP1zj4MbdADdCebTQe26
+         PkAsFeeGwvVdsafKy0Lf/PpqbWOQP+7eDbFIMHW27VzxXKyQXglOAiLj1eS0izxpWB
+         sfsmLDjCdrtHVkw8jC4fIq5IazesQXcFXy5a8o6o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sukrut Bellary <sukrut.bellary@linux.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, Sagi Grimberg <sagi@grimberg.me>,
+        Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 029/107] drm:amd:amdgpu: Fix missing buffer object unlock in failure path
+Subject: [PATCH 4.19 35/49] IB/isert: Fix incorrect release of isert connection
 Date:   Mon, 19 Jun 2023 12:30:13 +0200
-Message-ID: <20230619102142.917811339@linuxfoundation.org>
+Message-ID: <20230619102131.736389872@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
+References: <20230619102129.856988902@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,57 +57,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sukrut Bellary <sukrut.bellary@linux.com>
+From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
 
-[ Upstream commit 60ecaaf54886b0642d5c4744f7fbf1ff0d6b3e42 ]
+[ Upstream commit 699826f4e30ab76a62c238c86fbef7e826639c8d ]
 
-smatch warning -
-1) drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c:3615 gfx_v9_0_kiq_resume()
-warn: inconsistent returns 'ring->mqd_obj->tbo.base.resv'.
+The ib_isert module is releasing the isert connection both in
+isert_wait_conn() handler as well as isert_free_conn() handler.
+In isert_wait_conn() handler, it is expected to wait for iSCSI
+session logout operation to complete. It should free the isert
+connection only in isert_free_conn() handler.
 
-2) drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c:6901 gfx_v10_0_kiq_resume()
-warn: inconsistent returns 'ring->mqd_obj->tbo.base.resv'.
+When a bunch of iSER target is cleared, this issue can lead to
+use-after-free memory issue as isert conn is twice released
 
-Signed-off-by: Sukrut Bellary <sukrut.bellary@linux.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: b02efbfc9a05 ("iser-target: Fix implicit termination of connections")
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://lore.kernel.org/r/20230606102531.162967-4-saravanan.vajravel@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 4 +++-
- drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c  | 4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/infiniband/ulp/isert/ib_isert.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index 9da0d5d6d73d8..938f13956aeef 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -7197,8 +7197,10 @@ static int gfx_v10_0_kiq_resume(struct amdgpu_device *adev)
- 		return r;
+diff --git a/drivers/infiniband/ulp/isert/ib_isert.c b/drivers/infiniband/ulp/isert/ib_isert.c
+index 60594dad55455..de6fc8887c4a4 100644
+--- a/drivers/infiniband/ulp/isert/ib_isert.c
++++ b/drivers/infiniband/ulp/isert/ib_isert.c
+@@ -2654,8 +2654,6 @@ static void isert_wait_conn(struct iscsi_conn *conn)
+ 	isert_put_unsol_pending_cmds(conn);
+ 	isert_wait4cmds(conn);
+ 	isert_wait4logout(isert_conn);
+-
+-	queue_work(isert_release_wq, &isert_conn->release_work);
+ }
  
- 	r = amdgpu_bo_kmap(ring->mqd_obj, (void **)&ring->mqd_ptr);
--	if (unlikely(r != 0))
-+	if (unlikely(r != 0)) {
-+		amdgpu_bo_unreserve(ring->mqd_obj);
- 		return r;
-+	}
- 
- 	gfx_v10_0_kiq_init_queue(ring);
- 	amdgpu_bo_kunmap(ring->mqd_obj);
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-index 5f325ded7f752..de1fab165041f 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-@@ -3871,8 +3871,10 @@ static int gfx_v9_0_kiq_resume(struct amdgpu_device *adev)
- 		return r;
- 
- 	r = amdgpu_bo_kmap(ring->mqd_obj, (void **)&ring->mqd_ptr);
--	if (unlikely(r != 0))
-+	if (unlikely(r != 0)) {
-+		amdgpu_bo_unreserve(ring->mqd_obj);
- 		return r;
-+	}
- 
- 	gfx_v9_0_kiq_init_queue(ring);
- 	amdgpu_bo_kunmap(ring->mqd_obj);
+ static void isert_free_conn(struct iscsi_conn *conn)
 -- 
 2.39.2
 
