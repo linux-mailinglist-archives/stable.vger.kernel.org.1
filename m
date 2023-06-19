@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39C6973520E
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:30:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA6E273520F
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:30:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229952AbjFSK37 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:29:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38492 "EHLO
+        id S229997AbjFSKaC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:30:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229817AbjFSK36 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:29:58 -0400
+        with ESMTP id S229967AbjFSKaC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:30:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 255ABB3
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:29:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E79A8CA
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:30:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AC67C60A50
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:29:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE04EC433C8;
-        Mon, 19 Jun 2023 10:29:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 75E7260180
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:30:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837C0C433C8;
+        Mon, 19 Jun 2023 10:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687170597;
-        bh=1th7K4benKDf8xLe4i3xE+g776zmGvOg2YGEAoAVoxQ=;
+        s=korg; t=1687170599;
+        bh=zbqPbSENyw3DdOvFt3+ZGl33ytCQkw9IgcL13hy02bQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Z+TWa4ebDHjRwPmy9x0BqIsDBo4xHRwDpqzb1vP6eewt9D5f5QHBYArE7JrRd5ffc
-         9Smi/5Db0E1tNIFb1E3OOn3BaM4pnl1sJ4ZZ4OVG/XJMXh18D6Owruk7n1oZ06KPU/
-         sYHqrmheFhd7DpFnYhjqOgZuHcEHOxar5xzfLILU=
+        b=ZtbdKv5SQdTFazt8N8TA556t55Mx0R6qc3MlL+scCBnoWn+OVQjnJkdqRihjThz2b
+         g1+4ErWBbgFhgqqRmCC+UTO6X+rq1ZkqgWnXJYch0v0TTFUaO6gGP6VCRxwDKumVzU
+         +lBVLh1ABo+F5a1OVCrVBPBMtxNDSwr8RABMtmKk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Sudeep Holla <sudeep.holla@arm.com>,
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 03/32] ARM: dts: vexpress: add missing cache properties
-Date:   Mon, 19 Jun 2023 12:28:51 +0200
-Message-ID: <20230619102127.653333819@linuxfoundation.org>
+Subject: [PATCH 4.14 04/32] power: supply: Ratelimit no data debug output
+Date:   Mon, 19 Jun 2023 12:28:52 +0200
+Message-ID: <20230619102127.698908787@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230619102127.461443957@linuxfoundation.org>
 References: <20230619102127.461443957@linuxfoundation.org>
@@ -56,35 +56,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 328acc5657c6197753238d7ce0a6924ead829347 ]
+[ Upstream commit 155c45a25679f571c2ae57d10db843a9dfc63430 ]
 
-As all level 2 and level 3 caches are unified, add required
-cache-unified property to fix warnings like:
+Reduce the amount of output this dev_dbg() statement emits into logs,
+otherwise if system software polls the sysfs entry for data and keeps
+getting -ENODATA, it could end up filling the logs up.
 
-  vexpress-v2p-ca5s.dtb: cache-controller@2c0f0000: 'cache-unified' is a required property
+This does in fact make systemd journald choke, since during boot the
+sysfs power supply entries are polled and if journald starts at the
+same time, the journal is just being repeatedly filled up, and the
+system stops on trying to start journald without booting any further.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230423150837.118466-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/vexpress-v2p-ca5s.dts | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/power/supply/power_supply_sysfs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/vexpress-v2p-ca5s.dts b/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
-index 32f1906ffecfe..994edbc615cb0 100644
---- a/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
-+++ b/arch/arm/boot/dts/vexpress-v2p-ca5s.dts
-@@ -117,6 +117,7 @@ L2: cache-controller@2c0f0000 {
- 		reg = <0x2c0f0000 0x1000>;
- 		interrupts = <0 84 4>;
- 		cache-level = <2>;
-+		cache-unified;
- 	};
+diff --git a/drivers/power/supply/power_supply_sysfs.c b/drivers/power/supply/power_supply_sysfs.c
+index 2ccaf4ff4be47..2cb8a31e9dac0 100644
+--- a/drivers/power/supply/power_supply_sysfs.c
++++ b/drivers/power/supply/power_supply_sysfs.c
+@@ -88,7 +88,8 @@ static ssize_t power_supply_show_property(struct device *dev,
  
- 	pmu {
+ 		if (ret < 0) {
+ 			if (ret == -ENODATA)
+-				dev_dbg(dev, "driver has no data for `%s' property\n",
++				dev_dbg_ratelimited(dev,
++					"driver has no data for `%s' property\n",
+ 					attr->attr.name);
+ 			else if (ret != -ENODEV && ret != -EAGAIN)
+ 				dev_err_ratelimited(dev,
 -- 
 2.39.2
 
