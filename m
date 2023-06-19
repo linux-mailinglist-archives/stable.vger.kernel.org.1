@@ -2,145 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1581735604
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:41:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F81B735606
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:43:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231249AbjFSLlw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:41:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55602 "EHLO
+        id S229730AbjFSLnD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 07:43:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231209AbjFSLls (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:41:48 -0400
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 068A31BB
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:41:32 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-31110aea814so3415752f8f.2
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:41:31 -0700 (PDT)
+        with ESMTP id S229609AbjFSLnC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:43:02 -0400
+Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1250D1;
+        Mon, 19 Jun 2023 04:43:01 -0700 (PDT)
+Received: by mail-qv1-xf32.google.com with SMTP id 6a1803df08f44-62ffcc309bfso22529286d6.1;
+        Mon, 19 Jun 2023 04:43:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1687174890; x=1689766890;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/PMzb6UMa6csn+79C2qrrJ7RqCLkRm7ZFcPhWGH3AR0=;
-        b=Sio84A7W3MT35bkR6b5BwQ+v/rGOy6oHwrQ+x9cIMAJCrjtGKdM7mtsosXvD17Mu5D
-         dq82nMQhg9FPiWnRQQWqhuc5z8YwAechswOBa9JMnJ4gmrrP6q3a15W6Kc4zWNQnNMav
-         NivuPOV0CTdvver3z4E3tqRWChA/KkSIUzOmg=
+        d=gmail.com; s=20221208; t=1687174981; x=1689766981;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xTBAhkNEAfivnk42N/MFkAxpYvk7m//AEyhvZcmNRzo=;
+        b=NiVr6xLhrXpongF3PI3mhC9/bYP7HlHDnCovgkQMEFWnC+lwDITWQwgkyl0MMjxTF9
+         6Gb2uFiZHFYs0KKl5xftXF+/Sp9t/5ZBh5P/5l+5blmAYfnEXEO7gCXdFX/5mHxPCjEo
+         h63Qr/cqxDOUjujxReqsDGOkkSWxv3aO5TVTeqL5ammZle5hDlUt4B+lhhA8/0h+mhAe
+         G0BNTN2OIbtf3iJuCLsVAxVOfQcGirdMIgwc41SxNivJPjw7vW9/lBBNlotjYbIhS421
+         7Eh+NLKFjnTIMrvaeNbSf3YUR5xnkhltHnh9Q0NLjlTG1hKxJ/VhA28Krr+4KsHNUMnY
+         xD3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687174890; x=1689766890;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/PMzb6UMa6csn+79C2qrrJ7RqCLkRm7ZFcPhWGH3AR0=;
-        b=lWJB4O93TXIj2stYwylO9Q0htqPGTurfwTK8/emGOLxSeUsz6kK8AE5gW/VLDAjfux
-         sUY8IwX/6YvTXt2vQodwMByI+uYaee9ytbXA0urIy0p7BzMKLnW2zH5GIdsN5LZvnVFR
-         r4vMwFrp1byELVrnEay83tdR9VcB7LkLQP/vKPddK8J0BZ80T0HfgwsveDmB4SeyjoYu
-         APLAhquw17yclEZ/nwymSOXeAqaWIta03TcNkhHETd1OyrWhaitWgGZJSCMnxmHhypA7
-         shnlj1NG7vvZr+NGxuG2VwtDmuP2Y3xo8AqRkqLRFwcKpC4SNgiwqnQwWNUGJau/YVf+
-         Fr6g==
-X-Gm-Message-State: AC+VfDz0ZQKGMlBELci6Tgh1DK1iQknnpR6xvYrkBUc5aSmAewulsGGC
-        UNrIpm4LpezsuZNgGl6tEtIcUl+JNmAVC20q10A=
-X-Google-Smtp-Source: ACHHUZ7b1yObTgaTgkZjSR0Cpm3h8wuFgFlDCbwMow2D8g6KLjbzBxCvNuKX+iNVgYG/GtXHNbyo4Q==
-X-Received: by 2002:a5d:464e:0:b0:30f:c801:aa7c with SMTP id j14-20020a5d464e000000b0030fc801aa7cmr10322825wrs.43.1687174890328;
-        Mon, 19 Jun 2023 04:41:30 -0700 (PDT)
-Received: from alco.corp.google.com ([2620:0:1059:10:fee5:1f79:8e7b:8da3])
-        by smtp.gmail.com with ESMTPSA id i1-20020adff301000000b002f28de9f73bsm31314724wro.55.2023.06.19.04.41.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Jun 2023 04:41:29 -0700 (PDT)
-From:   Ricardo Ribalda <ribalda@chromium.org>
-To:     stable@vger.kernel.org
-Cc:     Ricardo Ribalda <ribalda@chromium.org>,
-        Albert Ou <aou@eecs.berkeley.edu>, Baoquan He <bhe@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Dave Young <dyoung@redhat.com>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Philipp Rudo <prudo@redhat.com>,
-        Ross Zwisler <zwisler@google.com>,
-        Simon Horman <horms@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tom Rix <trix@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4.y] x86/purgatory: remove PGO flags
-Date:   Mon, 19 Jun 2023 13:41:24 +0200
-Message-ID: <20230619114124.233299-1-ribalda@chromium.org>
-X-Mailer: git-send-email 2.41.0.162.gfafddb0af9-goog
-In-Reply-To: <2023061759-gilled-droop-f51d@gregkh>
-References: <2023061759-gilled-droop-f51d@gregkh>
+        d=1e100.net; s=20221208; t=1687174981; x=1689766981;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xTBAhkNEAfivnk42N/MFkAxpYvk7m//AEyhvZcmNRzo=;
+        b=gGu+nuD+MUIFPiAzkeAQopCF9MBOB53Ca6lxTNpEPDTGYFIi43Ldnhlb9OSppfZpuZ
+         Kcr38zS9hgaGoV4SzrEGV4XXzQ3dce/cRluEoAStBdk4b1mVWP/Jzd9yWjTWqRhidsU7
+         TWrcGZnvrJSfnkAfa1pKcLnm8DqPedmKmlgXhOzxYHJmY/Qw0WgPCZXVlQdHD57ZHthp
+         czIAw74zqiuTETBb/66ZmE8ofrg7znfOByTSQvJk3GuI+kkaykZidauzmEwkXxiaPwwV
+         YLyUw+7VYOi81sxjJ1/E3YxCPIHZtepna1sIiNXqINoH+DNWFbzAglLcVsR/giNi2FSE
+         2Auw==
+X-Gm-Message-State: AC+VfDwtquJH41Wj7qb6soFONFBcMqj89QCVZjvvZpYJz4UlsB7H93J9
+        cCoCoRqJ2XwMoOgvdeSL+nU=
+X-Google-Smtp-Source: ACHHUZ5lU7mEdDjnTyUD7XRJituWNTi2xBw5Vavk0uAHv8cfxcQUL1c/ybCv7UiWS386WA/GlL6KdA==
+X-Received: by 2002:a05:6214:21a3:b0:5ef:5138:1e5d with SMTP id t3-20020a05621421a300b005ef51381e5dmr11365499qvc.49.1687174980696;
+        Mon, 19 Jun 2023 04:43:00 -0700 (PDT)
+Received: from [10.178.67.29] ([192.19.248.250])
+        by smtp.gmail.com with ESMTPSA id oj2-20020a056214440200b005ef442226bbsm10390842qvb.8.2023.06.19.04.42.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Jun 2023 04:42:59 -0700 (PDT)
+Message-ID: <cf3cbd12-f108-685d-38db-9a4a448acd1b@gmail.com>
+Date:   Mon, 19 Jun 2023 12:42:57 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH 5.4 00/64] 5.4.248-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+References: <20230619102132.808972458@linuxfoundation.org>
+Content-Language: en-US
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-If profile-guided optimization is enabled, the purgatory ends up with
-multiple .text sections.  This is not supported by kexec and crashes the
-system.
 
-Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-2-b05c520b7296@chromium.org
-Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Cc: <stable@vger.kernel.org>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Palmer Dabbelt <palmer@rivosinc.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Philipp Rudo <prudo@redhat.com>
-Cc: Ross Zwisler <zwisler@google.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Tom Rix <trix@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 97b6b9cbba40a21c1d9a344d5c1991f8cfbf136e)
-Signed-off-by: Ricardo Ribalda Delgado <ribalda@chromium.org>
----
- arch/x86/purgatory/Makefile | 5 +++++
- 1 file changed, 5 insertions(+)
 
-diff --git a/arch/x86/purgatory/Makefile b/arch/x86/purgatory/Makefile
-index 969d2b2eb7d7..8309e230aeed 100644
---- a/arch/x86/purgatory/Makefile
-+++ b/arch/x86/purgatory/Makefile
-@@ -14,6 +14,11 @@ $(obj)/sha256.o: $(srctree)/lib/crypto/sha256.c FORCE
- 
- CFLAGS_sha256.o := -D__DISABLE_EXPORTS
- 
-+# When profile-guided optimization is enabled, llvm emits two different
-+# overlapping text sections, which is not supported by kexec. Remove profile
-+# optimization flags.
-+KBUILD_CFLAGS := $(filter-out -fprofile-sample-use=% -fprofile-use=%,$(KBUILD_CFLAGS))
-+
- LDFLAGS_purgatory.ro := -e purgatory_start -r --no-undefined -nostdlib -z nodefaultlib
- targets += purgatory.ro
- 
+On 6/19/2023 11:29 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.4.248 release.
+> There are 64 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 21 Jun 2023 10:21:12 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.248-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
+
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.41.0.162.gfafddb0af9-goog
-
+Florian
