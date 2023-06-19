@@ -2,51 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7638D735204
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDD7E7352B0
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:37:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229567AbjFSK3e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:29:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38306 "EHLO
+        id S231673AbjFSKhY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:37:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbjFSK3d (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:29:33 -0400
+        with ESMTP id S231383AbjFSKhG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:37:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B408B3
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:29:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDFCFE68
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:37:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CCAE160B3E
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:29:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0EBC433C8;
-        Mon, 19 Jun 2023 10:29:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5A9B160B6D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:37:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D84C433C8;
+        Mon, 19 Jun 2023 10:37:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687170571;
-        bh=WPH0VvRM0KpFY/Q8zsTcLLIl9hcYu6t5Ivq+VTtOinw=;
+        s=korg; t=1687171024;
+        bh=kk7G0JQ/GsMop0i9mZcn4FnLKX/wUXftZ9AoPDes9K8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n+8pTg9EKC/SjLsmp03415JTPuh8dHs1vNkEDQw8RKESCUijmb06CGBOaWXjyEpQ9
-         T6NXSGW5osVWPZZvdacpkXGUZSe+k3dTUfPMk/zBDEjAVvoJIl78x/0F1qLfpi0i5w
-         x4XJwCpFfGCj3zLWEJzU3GBYzPsjjZJEBDicFw20=
+        b=KB9RfzPeYONcaa9P26K9ayrFKhlcXaqm6Z0u4+GY28lZ/gsIwIjvTvTTV+5r3W6Tl
+         X5m9xb1I/Tj8j35t3AU7ZpsICggNpmN87QL+WxSn8fQ6r1iMtIX/apSpSn9/TuXhWl
+         7a2FkRukW/u/SAm0AbQNSNpXSvaEQOXF3Zw0hjtc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Lu=C3=ADs=20Henriques?= <lhenriques@suse.de>,
-        Joseph Qi <joseph.qi@linux.alibaba.com>,
-        Mark Fasheh <mark@fasheh.com>,
-        Joel Becker <jlbec@evilplan.org>,
-        Junxiao Bi <junxiao.bi@oracle.com>,
-        Changwei Ge <gechangwei@live.cn>, Gang He <ghe@suse.com>,
-        Jun Piao <piaojun@huawei.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.14 10/32] ocfs2: fix use-after-free when unmounting read-only filesystem
+        patches@lists.linux.dev, Simon Horman <horms@kernel.org>,
+        Tariq Toukan <tariqt@nvidia.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Sunitha Mekala <sunithax.d.mekala@intel.com>
+Subject: [PATCH 6.3 120/187] ice: Dont dereference NULL in ice_gnss_read error path
 Date:   Mon, 19 Jun 2023 12:28:58 +0200
-Message-ID: <20230619102128.048003491@linuxfoundation.org>
+Message-ID: <20230619102203.348810378@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102127.461443957@linuxfoundation.org>
-References: <20230619102127.461443957@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -61,97 +57,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luís Henriques <ocfs2-devel@oss.oracle.com>
+From: Simon Horman <horms@kernel.org>
 
-commit 50d927880e0f90d5cb25e897e9d03e5edacc79a8 upstream.
+[ Upstream commit 05a1308a2e08e4a375bf60eb4c6c057a201d81fc ]
 
-It's trivial to trigger a use-after-free bug in the ocfs2 quotas code using
-fstest generic/452.  After a read-only remount, quotas are suspended and
-ocfs2_mem_dqinfo is freed through ->ocfs2_local_free_info().  When unmounting
-the filesystem, an UAF access to the oinfo will eventually cause a crash.
+If pf is NULL in ice_gnss_read() then it will be dereferenced
+in the error path by a call to dev_dbg(ice_pf_to_dev(pf), ...).
 
-BUG: KASAN: slab-use-after-free in timer_delete+0x54/0xc0
-Read of size 8 at addr ffff8880389a8208 by task umount/669
-...
-Call Trace:
- <TASK>
- ...
- timer_delete+0x54/0xc0
- try_to_grab_pending+0x31/0x230
- __cancel_work_timer+0x6c/0x270
- ocfs2_disable_quotas.isra.0+0x3e/0xf0 [ocfs2]
- ocfs2_dismount_volume+0xdd/0x450 [ocfs2]
- generic_shutdown_super+0xaa/0x280
- kill_block_super+0x46/0x70
- deactivate_locked_super+0x4d/0xb0
- cleanup_mnt+0x135/0x1f0
- ...
- </TASK>
+Avoid this by simply returning in this case.
+If logging is desired an alternate approach might be to
+use pr_err() before returning.
 
-Allocated by task 632:
- kasan_save_stack+0x1c/0x40
- kasan_set_track+0x21/0x30
- __kasan_kmalloc+0x8b/0x90
- ocfs2_local_read_info+0xe3/0x9a0 [ocfs2]
- dquot_load_quota_sb+0x34b/0x680
- dquot_load_quota_inode+0xfe/0x1a0
- ocfs2_enable_quotas+0x190/0x2f0 [ocfs2]
- ocfs2_fill_super+0x14ef/0x2120 [ocfs2]
- mount_bdev+0x1be/0x200
- legacy_get_tree+0x6c/0xb0
- vfs_get_tree+0x3e/0x110
- path_mount+0xa90/0xe10
- __x64_sys_mount+0x16f/0x1a0
- do_syscall_64+0x43/0x90
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
+Flagged by Smatch as:
 
-Freed by task 650:
- kasan_save_stack+0x1c/0x40
- kasan_set_track+0x21/0x30
- kasan_save_free_info+0x2a/0x50
- __kasan_slab_free+0xf9/0x150
- __kmem_cache_free+0x89/0x180
- ocfs2_local_free_info+0x2ba/0x3f0 [ocfs2]
- dquot_disable+0x35f/0xa70
- ocfs2_susp_quotas.isra.0+0x159/0x1a0 [ocfs2]
- ocfs2_remount+0x150/0x580 [ocfs2]
- reconfigure_super+0x1a5/0x3a0
- path_mount+0xc8a/0xe10
- __x64_sys_mount+0x16f/0x1a0
- do_syscall_64+0x43/0x90
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
+  .../ice_gnss.c:196 ice_gnss_read() error: we previously assumed 'pf' could be null (see line 131)
 
-Link: https://lkml.kernel.org/r/20230522102112.9031-1-lhenriques@suse.de
-Signed-off-by: Luís Henriques <lhenriques@suse.de>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Tested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 43113ff73453 ("ice: add TTY for GNSS module for E810T device")
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/super.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_gnss.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
---- a/fs/ocfs2/super.c
-+++ b/fs/ocfs2/super.c
-@@ -985,8 +985,10 @@ static void ocfs2_disable_quotas(struct
- 	for (type = 0; type < OCFS2_MAXQUOTAS; type++) {
- 		if (!sb_has_quota_loaded(sb, type))
- 			continue;
--		oinfo = sb_dqinfo(sb, type)->dqi_priv;
--		cancel_delayed_work_sync(&oinfo->dqi_sync_work);
-+		if (!sb_has_quota_suspended(sb, type)) {
-+			oinfo = sb_dqinfo(sb, type)->dqi_priv;
-+			cancel_delayed_work_sync(&oinfo->dqi_sync_work);
-+		}
- 		inode = igrab(sb->s_dquot.files[type]);
- 		/* Turn off quotas. This will remove all dquot structures from
- 		 * memory and so they will be automatically synced to global
+diff --git a/drivers/net/ethernet/intel/ice/ice_gnss.c b/drivers/net/ethernet/intel/ice/ice_gnss.c
+index bd0ed155e11b6..75c9de675f202 100644
+--- a/drivers/net/ethernet/intel/ice/ice_gnss.c
++++ b/drivers/net/ethernet/intel/ice/ice_gnss.c
+@@ -96,12 +96,7 @@ static void ice_gnss_read(struct kthread_work *work)
+ 	int err = 0;
+ 
+ 	pf = gnss->back;
+-	if (!pf) {
+-		err = -EFAULT;
+-		goto exit;
+-	}
+-
+-	if (!test_bit(ICE_FLAG_GNSS, pf->flags))
++	if (!pf || !test_bit(ICE_FLAG_GNSS, pf->flags))
+ 		return;
+ 
+ 	hw = &pf->hw;
+@@ -159,7 +154,6 @@ static void ice_gnss_read(struct kthread_work *work)
+ 	free_page((unsigned long)buf);
+ requeue:
+ 	kthread_queue_delayed_work(gnss->kworker, &gnss->read_work, delay);
+-exit:
+ 	if (err)
+ 		dev_dbg(ice_pf_to_dev(pf), "GNSS failed to read err=%d\n", err);
+ }
+-- 
+2.39.2
+
 
 
