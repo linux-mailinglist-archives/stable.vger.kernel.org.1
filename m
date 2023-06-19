@@ -2,47 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2945F73540E
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:51:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA6837354A9
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:58:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230282AbjFSKvZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:51:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53462 "EHLO
+        id S232468AbjFSK6S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:58:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232276AbjFSKvD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:51:03 -0400
+        with ESMTP id S232390AbjFSK57 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:57:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C826E10D8
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:50:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AF1F3C0D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:55:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B1D66068B
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:50:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 720D6C433C8;
-        Mon, 19 Jun 2023 10:50:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F80160670
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:55:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3310DC433C8;
+        Mon, 19 Jun 2023 10:55:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171833;
-        bh=u+A3rDTqHkFMUNqOHneOO7Peb2+RUs/R5O+t+mRlmko=;
+        s=korg; t=1687172153;
+        bh=NsNcypueXLkV3MHVAdiWRima7C5jc046NFW5hzh+k3Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q0EEY0vb1qzpprgoiYHA4iCFjxymihFGLng7T8a9/Ztt0wC7QFsTyUwbWkPNXBEat
-         JIELer9QMyGukyEcFRjP9ErpH9bzt7GNFRDTP5aKmJVIeMCzcPlMCQBT3pozwtLSH0
-         xZb9b/61WWSH/s9e3hEMcxywZjK5OHwjROuL6cgM=
+        b=RdJsd1KpDan9q6206FDrGoeG+SwhDf1xOq1Tj2kpQC2H9yEPLtFiQBZX5H9lJ3PMS
+         gNwMvTpztZmliO4ibrX9/rRD7faILCSY5cE89wADIO8u0xMHuK83kSVJAUOoKeserX
+         +Li3ap+8iVlF1+V4CptyReuR+4oNO1j7gcig7WDs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Linux Kernel Functional Testing <lkft@linaro.org>,
-        Anders Roxell <anders.roxell@linaro.org>
-Subject: [PATCH 6.1 166/166] kbuild: Update assembler calls to use proper flags and language target
+        patches@lists.linux.dev, Satha Rao <skoteshwar@marvell.com>,
+        Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+        Naveen Mamindlapalli <naveenm@marvell.com>,
+        Sridhar Samudrala <sridhar.samudrala@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 55/89] octeontx2-af: fixed resource availability check
 Date:   Mon, 19 Jun 2023 12:30:43 +0200
-Message-ID: <20230619102202.726577792@linuxfoundation.org>
+Message-ID: <20230619102140.775452772@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,91 +58,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nick Desaulniers <ndesaulniers@google.com>
+From: Satha Rao <skoteshwar@marvell.com>
 
-commit d5c8d6e0fa61401a729e9eb6a9c7077b2d3aebb0 upstream.
+[ Upstream commit 4e635f9d86165e47f5440196f2ebdb258efb8341 ]
 
-as-instr uses KBUILD_AFLAGS, but as-option uses KBUILD_CFLAGS. This can
-cause as-option to fail unexpectedly when CONFIG_WERROR is set, because
-clang will emit -Werror,-Wunused-command-line-argument for various -m
-and -f flags in KBUILD_CFLAGS for assembler sources.
+txschq_alloc response have two different arrays to store continuous
+and non-continuous schedulers of each level. Requested count should
+be checked for each array separately.
 
-Callers of as-option and as-instr should be adding flags to
-KBUILD_AFLAGS / aflags-y, not KBUILD_CFLAGS / cflags-y. Use
-KBUILD_AFLAGS in all macros to clear up the initial problem.
-
-Unfortunately, -Wunused-command-line-argument can still be triggered
-with clang by the presence of warning flags or macro definitions because
-'-x assembler' is used, instead of '-x assembler-with-cpp', which will
-consume these flags. Switch to '-x assembler-with-cpp' in places where
-'-x assembler' is used, as the compiler is always used as the driver for
-out of line assembler sources in the kernel.
-
-Finally, add -Werror to these macros so that they behave consistently
-whether or not CONFIG_WERROR is set.
-
-[nathan: Reworded and expanded on problems in commit message
-         Use '-x assembler-with-cpp' in a couple more places]
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/1699
-Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Anders Roxell <anders.roxell@linaro.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5d9b976d4480 ("octeontx2-af: Support fixed transmit scheduler topology")
+Signed-off-by: Satha Rao <skoteshwar@marvell.com>
+Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
+Signed-off-by: Naveen Mamindlapalli <naveenm@marvell.com>
+Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Kconfig.include   |    2 +-
- scripts/Makefile.compiler |    8 ++++----
- scripts/as-version.sh     |    2 +-
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/scripts/Kconfig.include
-+++ b/scripts/Kconfig.include
-@@ -33,7 +33,7 @@ ld-option = $(success,$(LD) -v $(1))
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+index 9886a30e9723c..449f5224d1aeb 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+@@ -1385,7 +1385,8 @@ static int nix_check_txschq_alloc_req(struct rvu *rvu, int lvl, u16 pcifunc,
+ 		free_cnt = rvu_rsrc_free_count(&txsch->schq);
+ 	}
  
- # $(as-instr,<instr>)
- # Return y if the assembler supports <instr>, n otherwise
--as-instr = $(success,printf "%b\n" "$(1)" | $(CC) $(CLANG_FLAGS) -c -x assembler -o /dev/null -)
-+as-instr = $(success,printf "%b\n" "$(1)" | $(CC) $(CLANG_FLAGS) -c -x assembler-with-cpp -o /dev/null -)
+-	if (free_cnt < req_schq || req_schq > MAX_TXSCHQ_PER_FUNC)
++	if (free_cnt < req_schq || req->schq[lvl] > MAX_TXSCHQ_PER_FUNC ||
++	    req->schq_contig[lvl] > MAX_TXSCHQ_PER_FUNC)
+ 		return NIX_AF_ERR_TLX_ALLOC_FAIL;
  
- # check if $(CC) and $(LD) exist
- $(error-if,$(failure,command -v $(CC)),C compiler '$(CC)' not found)
---- a/scripts/Makefile.compiler
-+++ b/scripts/Makefile.compiler
-@@ -29,16 +29,16 @@ try-run = $(shell set -e;		\
- 	fi)
- 
- # as-option
--# Usage: cflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
-+# Usage: aflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
- 
- as-option = $(call try-run,\
--	$(CC) $(KBUILD_CFLAGS) $(1) -c -x assembler /dev/null -o "$$TMP",$(1),$(2))
-+	$(CC) -Werror $(KBUILD_AFLAGS) $(1) -c -x assembler-with-cpp /dev/null -o "$$TMP",$(1),$(2))
- 
- # as-instr
--# Usage: cflags-y += $(call as-instr,instr,option1,option2)
-+# Usage: aflags-y += $(call as-instr,instr,option1,option2)
- 
- as-instr = $(call try-run,\
--	printf "%b\n" "$(1)" | $(CC) $(KBUILD_AFLAGS) -c -x assembler -o "$$TMP" -,$(2),$(3))
-+	printf "%b\n" "$(1)" | $(CC) -Werror $(KBUILD_AFLAGS) -c -x assembler-with-cpp -o "$$TMP" -,$(2),$(3))
- 
- # __cc-option
- # Usage: MY_CFLAGS += $(call __cc-option,$(CC),$(MY_CFLAGS),-march=winchip-c6,-march=i586)
---- a/scripts/as-version.sh
-+++ b/scripts/as-version.sh
-@@ -45,7 +45,7 @@ orig_args="$@"
- # Get the first line of the --version output.
- IFS='
- '
--set -- $(LC_ALL=C "$@" -Wa,--version -c -x assembler /dev/null -o /dev/null 2>/dev/null)
-+set -- $(LC_ALL=C "$@" -Wa,--version -c -x assembler-with-cpp /dev/null -o /dev/null 2>/dev/null)
- 
- # Split the line on spaces.
- IFS=' '
+ 	/* If contiguous queues are needed, check for availability */
+-- 
+2.39.2
+
 
 
