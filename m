@@ -2,48 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4454E7353B6
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:48:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F175D7352E1
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:39:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232132AbjFSKsX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:48:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52058 "EHLO
+        id S230397AbjFSKjI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:39:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231873AbjFSKsE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:48:04 -0400
+        with ESMTP id S231750AbjFSKjG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:39:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5305D10CE
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:47:26 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 751EBC6
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:39:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DFF2D60A50
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:47:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03120C433C0;
-        Mon, 19 Jun 2023 10:47:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 07EB960B62
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:39:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E45CC433C0;
+        Mon, 19 Jun 2023 10:39:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171645;
-        bh=60mE8sp1zSZyRzaIBgs5xZ3/H4dhuUMgkH167kXYk5Y=;
+        s=korg; t=1687171144;
+        bh=stPe9b63U5cT0SiAJofv2e8YadX5D58QS4E1dJJg8Uo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZKFSAZn0dwnFwELnRAud3mopRIcXEwQEyRKOQNvjRBtzwu1H+vw+BC7u3iFShTEZx
-         PbPdNJys4y/UtXzyhEdOaGTRlwPqdND5hZVv3m1BMlGmND7EjmRDWHCgzIXz+oqkRS
-         jff5yFCTME7vbRFpfoGqsQ+S88BfB2BYVsnRQI2g=
+        b=DEAFAeF/9GP+dNCskSnZykbJvGLNgVxxQ1MRyQUdC8RsvO8x76YSaLTZIJ5l47UbY
+         8AhHWFHv4HmQ+ji2jW1XNZcGVjOS4tVFtw0UFfG5hmiM+XRqnIiUo1YXsz4fwX2hdH
+         732bTqv5qfUbw0g5xtFQ4oTMuVBK7qzDzna6EeMk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Max Tottenham <mtottenh@akamai.com>,
-        Josh Hunt <johunt@akamai.com>,
-        kernel test robot <lkp@intel.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Vlad Buslov <vladbu@nvidia.com>,
+        Paul Blakey <paulb@nvidia.com>,
+        Florian Westphal <fw@strlen.de>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 105/166] net/sched: act_pedit: Parse L3 Header for L4 offset
+Subject: [PATCH 6.3 164/187] net/sched: act_ct: Fix promotion of offloaded unreplied tuple
 Date:   Mon, 19 Jun 2023 12:29:42 +0200
-Message-ID: <20230619102159.875205480@linuxfoundation.org>
+Message-ID: <20230619102205.550181130@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,138 +57,155 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Max Tottenham <mtottenh@akamai.com>
+From: Paul Blakey <paulb@nvidia.com>
 
-[ Upstream commit 6c02568fd1ae53099b4ab86365c5be1ff15f586b ]
+[ Upstream commit 41f2c7c342d3adb1c4dd5f2e3dd831adff16a669 ]
 
-Instead of relying on skb->transport_header being set correctly, opt
-instead to parse the L3 header length out of the L3 headers for both
-IPv4/IPv6 when the Extended Layer Op for tcp/udp is used. This fixes a
-bug if GRO is disabled, when GRO is disabled skb->transport_header is
-set by __netif_receive_skb_core() to point to the L3 header, it's later
-fixed by the upper protocol layers, but act_pedit will receive the SKB
-before the fixups are completed. The existing behavior causes the
-following to edit the L3 header if GRO is disabled instead of the UDP
-header:
+Currently UNREPLIED and UNASSURED connections are added to the nf flow
+table. This causes the following connection packets to be processed
+by the flow table which then skips conntrack_in(), and thus such the
+connections will remain UNREPLIED and UNASSURED even if reply traffic
+is then seen. Even still, the unoffloaded reply packets are the ones
+triggering hardware update from new to established state, and if
+there aren't any to triger an update and/or previous update was
+missed, hardware can get out of sync with sw and still mark
+packets as new.
 
-    tc filter add dev eth0 ingress protocol ip flower ip_proto udp \
- dst_ip 192.168.1.3 action pedit ex munge udp set dport 18053
+Fix the above by:
+1) Not skipping conntrack_in() for UNASSURED packets, but still
+   refresh for hardware, as before the cited patch.
+2) Try and force a refresh by reply-direction packets that update
+   the hardware rules from new to established state.
+3) Remove any bidirectional flows that didn't failed to update in
+   hardware for re-insertion as bidrectional once any new packet
+   arrives.
 
-Also re-introduce a rate-limited warning if we were unable to extract
-the header offset when using the 'ex' interface.
-
-Fixes: 71d0ed7079df ("net/act_pedit: Support using offset relative to
-the conventional network headers")
-Signed-off-by: Max Tottenham <mtottenh@akamai.com>
-Reviewed-by: Josh Hunt <johunt@akamai.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202305261541.N165u9TZ-lkp@intel.com/
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 6a9bad0069cf ("net/sched: act_ct: offload UDP NEW connections")
+Co-developed-by: Vlad Buslov <vladbu@nvidia.com>
+Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
+Signed-off-by: Paul Blakey <paulb@nvidia.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Link: https://lore.kernel.org/r/1686313379-117663-1-git-send-email-paulb@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_pedit.c | 48 ++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 43 insertions(+), 5 deletions(-)
+ include/net/netfilter/nf_flow_table.h |  2 +-
+ net/netfilter/nf_flow_table_core.c    | 13 ++++++++++---
+ net/netfilter/nf_flow_table_ip.c      |  4 ++--
+ net/sched/act_ct.c                    |  9 ++++++++-
+ 4 files changed, 21 insertions(+), 7 deletions(-)
 
-diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
-index 48e14cbcd8ffe..180669aa9d097 100644
---- a/net/sched/act_pedit.c
-+++ b/net/sched/act_pedit.c
-@@ -13,7 +13,10 @@
- #include <linux/rtnetlink.h>
- #include <linux/module.h>
- #include <linux/init.h>
-+#include <linux/ip.h>
-+#include <linux/ipv6.h>
- #include <linux/slab.h>
-+#include <net/ipv6.h>
- #include <net/netlink.h>
- #include <net/pkt_sched.h>
- #include <linux/tc_act/tc_pedit.h>
-@@ -312,28 +315,58 @@ static bool offset_valid(struct sk_buff *skb, int offset)
- 	return true;
- }
+diff --git a/include/net/netfilter/nf_flow_table.h b/include/net/netfilter/nf_flow_table.h
+index ebb28ec5b6faf..f37f9f34430c1 100644
+--- a/include/net/netfilter/nf_flow_table.h
++++ b/include/net/netfilter/nf_flow_table.h
+@@ -268,7 +268,7 @@ int flow_offload_route_init(struct flow_offload *flow,
  
--static void pedit_skb_hdr_offset(struct sk_buff *skb,
-+static int pedit_l4_skb_offset(struct sk_buff *skb, int *hoffset, const int header_type)
+ int flow_offload_add(struct nf_flowtable *flow_table, struct flow_offload *flow);
+ void flow_offload_refresh(struct nf_flowtable *flow_table,
+-			  struct flow_offload *flow);
++			  struct flow_offload *flow, bool force);
+ 
+ struct flow_offload_tuple_rhash *flow_offload_lookup(struct nf_flowtable *flow_table,
+ 						     struct flow_offload_tuple *tuple);
+diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
+index 04bd0ed4d2ae7..b0ef48b21dcb4 100644
+--- a/net/netfilter/nf_flow_table_core.c
++++ b/net/netfilter/nf_flow_table_core.c
+@@ -317,12 +317,12 @@ int flow_offload_add(struct nf_flowtable *flow_table, struct flow_offload *flow)
+ EXPORT_SYMBOL_GPL(flow_offload_add);
+ 
+ void flow_offload_refresh(struct nf_flowtable *flow_table,
+-			  struct flow_offload *flow)
++			  struct flow_offload *flow, bool force)
+ {
+ 	u32 timeout;
+ 
+ 	timeout = nf_flowtable_time_stamp + flow_offload_get_timeout(flow);
+-	if (timeout - READ_ONCE(flow->timeout) > HZ)
++	if (force || timeout - READ_ONCE(flow->timeout) > HZ)
+ 		WRITE_ONCE(flow->timeout, timeout);
+ 	else
+ 		return;
+@@ -334,6 +334,12 @@ void flow_offload_refresh(struct nf_flowtable *flow_table,
+ }
+ EXPORT_SYMBOL_GPL(flow_offload_refresh);
+ 
++static bool nf_flow_is_outdated(const struct flow_offload *flow)
 +{
-+	const int noff = skb_network_offset(skb);
-+	int ret = -EINVAL;
-+	struct iphdr _iph;
-+
-+	switch (skb->protocol) {
-+	case htons(ETH_P_IP): {
-+		const struct iphdr *iph = skb_header_pointer(skb, noff, sizeof(_iph), &_iph);
-+
-+		if (!iph)
-+			goto out;
-+		*hoffset = noff + iph->ihl * 4;
-+		ret = 0;
-+		break;
-+	}
-+	case htons(ETH_P_IPV6):
-+		ret = ipv6_find_hdr(skb, hoffset, header_type, NULL, NULL) == header_type ? 0 : -EINVAL;
-+		break;
-+	}
-+out:
-+	return ret;
++	return test_bit(IPS_SEEN_REPLY_BIT, &flow->ct->status) &&
++		!test_bit(NF_FLOW_HW_ESTABLISHED, &flow->flags);
 +}
 +
-+static int pedit_skb_hdr_offset(struct sk_buff *skb,
- 				 enum pedit_header_type htype, int *hoffset)
+ static inline bool nf_flow_has_expired(const struct flow_offload *flow)
  {
-+	int ret = -EINVAL;
- 	/* 'htype' is validated in the netlink parsing */
- 	switch (htype) {
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_ETH:
--		if (skb_mac_header_was_set(skb))
-+		if (skb_mac_header_was_set(skb)) {
- 			*hoffset = skb_mac_offset(skb);
-+			ret = 0;
-+		}
- 		break;
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_NETWORK:
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_IP4:
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_IP6:
- 		*hoffset = skb_network_offset(skb);
-+		ret = 0;
- 		break;
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_TCP:
-+		ret = pedit_l4_skb_offset(skb, hoffset, IPPROTO_TCP);
-+		break;
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_UDP:
--		if (skb_transport_header_was_set(skb))
--			*hoffset = skb_transport_offset(skb);
-+		ret = pedit_l4_skb_offset(skb, hoffset, IPPROTO_UDP);
- 		break;
- 	default:
- 		break;
+ 	return nf_flow_timeout_delta(flow->timeout) <= 0;
+@@ -423,7 +429,8 @@ static void nf_flow_offload_gc_step(struct nf_flowtable *flow_table,
+ 				    struct flow_offload *flow, void *data)
+ {
+ 	if (nf_flow_has_expired(flow) ||
+-	    nf_ct_is_dying(flow->ct))
++	    nf_ct_is_dying(flow->ct) ||
++	    nf_flow_is_outdated(flow))
+ 		flow_offload_teardown(flow);
+ 
+ 	if (test_bit(NF_FLOW_TEARDOWN, &flow->flags)) {
+diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
+index 19efba1e51ef9..3bbaf9c7ea46a 100644
+--- a/net/netfilter/nf_flow_table_ip.c
++++ b/net/netfilter/nf_flow_table_ip.c
+@@ -384,7 +384,7 @@ nf_flow_offload_ip_hook(void *priv, struct sk_buff *skb,
+ 	if (skb_try_make_writable(skb, thoff + hdrsize))
+ 		return NF_DROP;
+ 
+-	flow_offload_refresh(flow_table, flow);
++	flow_offload_refresh(flow_table, flow, false);
+ 
+ 	nf_flow_encap_pop(skb, tuplehash);
+ 	thoff -= offset;
+@@ -650,7 +650,7 @@ nf_flow_offload_ipv6_hook(void *priv, struct sk_buff *skb,
+ 	if (skb_try_make_writable(skb, thoff + hdrsize))
+ 		return NF_DROP;
+ 
+-	flow_offload_refresh(flow_table, flow);
++	flow_offload_refresh(flow_table, flow, false);
+ 
+ 	nf_flow_encap_pop(skb, tuplehash);
+ 
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index 9cc0bc7c71ed7..abc71a06d634a 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -610,6 +610,7 @@ static bool tcf_ct_flow_table_lookup(struct tcf_ct_params *p,
+ 	struct flow_offload_tuple tuple = {};
+ 	enum ip_conntrack_info ctinfo;
+ 	struct tcphdr *tcph = NULL;
++	bool force_refresh = false;
+ 	struct flow_offload *flow;
+ 	struct nf_conn *ct;
+ 	u8 dir;
+@@ -647,6 +648,7 @@ static bool tcf_ct_flow_table_lookup(struct tcf_ct_params *p,
+ 			 * established state, then don't refresh.
+ 			 */
+ 			return false;
++		force_refresh = true;
  	}
-+	return ret;
- }
  
- static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
-@@ -368,6 +401,7 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
- 		int hoffset = 0;
- 		u32 *ptr, hdata;
- 		u32 val;
-+		int rc;
+ 	if (tcph && (unlikely(tcph->fin || tcph->rst))) {
+@@ -660,7 +662,12 @@ static bool tcf_ct_flow_table_lookup(struct tcf_ct_params *p,
+ 	else
+ 		ctinfo = IP_CT_ESTABLISHED_REPLY;
  
- 		if (tkey_ex) {
- 			htype = tkey_ex->htype;
-@@ -376,7 +410,11 @@ static int tcf_pedit_act(struct sk_buff *skb, const struct tc_action *a,
- 			tkey_ex++;
- 		}
- 
--		pedit_skb_hdr_offset(skb, htype, &hoffset);
-+		rc = pedit_skb_hdr_offset(skb, htype, &hoffset);
-+		if (rc) {
-+			pr_info_ratelimited("tc action pedit unable to extract header offset for header type (0x%x)\n", htype);
-+			goto bad;
-+		}
- 
- 		if (tkey->offmask) {
- 			u8 *d, _d;
+-	flow_offload_refresh(nf_ft, flow);
++	flow_offload_refresh(nf_ft, flow, force_refresh);
++	if (!test_bit(IPS_ASSURED_BIT, &ct->status)) {
++		/* Process this flow in SW to allow promoting to ASSURED */
++		return false;
++	}
++
+ 	nf_conntrack_get(&ct->ct_general);
+ 	nf_ct_set(skb, ct, ctinfo);
+ 	if (nf_ft->flags & NF_FLOWTABLE_COUNTER)
 -- 
 2.39.2
 
