@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFE38735462
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:55:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D795873551F
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:01:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232321AbjFSKzY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:55:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56684 "EHLO
+        id S229982AbjFSLBh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 07:01:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232391AbjFSKy4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:54:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 418FF10F9
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:53:22 -0700 (PDT)
+        with ESMTP id S232342AbjFSLBT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:01:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D11FB19B6
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:00:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9CB1760B5E
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:53:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CE8C433C8;
-        Mon, 19 Jun 2023 10:53:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6848860B5B
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:00:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79446C433C0;
+        Mon, 19 Jun 2023 11:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172001;
-        bh=VyZ1xoQ/c/qTma/aijGGuo2oo/G61WqJ2O9mKfy+TJk=;
+        s=korg; t=1687172427;
+        bh=HS1cTY3VVhtPUJC+ppQf1KbW49mLOBSFk4Xl5dTrVEc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P6Rl4dsI55Ul4UEyi4B7ngDuzxWER9LNVF8/mNgmwhrh1Y9ZPY0Eb4e740S6bmPLW
-         NZPohgTN0IDW9rMaQM5XiJYg8BiueM6SuO1eb+CvFBcuI6Hup3itcsT7d8qhBhXS8H
-         t1i3anx0qhmr8KoD/XqKINrGQEF1dx8sI/Y97fGM=
+        b=J+LeFZus3bljrN8A0aENcqUK8OFzKFedViFAzgWlMM+Xung5QDCV+T5nLgUxIAFy1
+         XPzENjht3tTRy8/pnIXy3/Yf0hwvl9lE44B+lBEAEBAMErR+5INdL8hi7BzhyG1Iku
+         hQ2gbAmUUioLMY0i3TJ2t5Um0vqc1Rohw+4Io5Zk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lyude Paul <lyude@redhat.com>,
-        Ben Skeggs <bskeggs@redhat.com>,
+        patches@lists.linux.dev, Wei Fang <wei.fang@nxp.com>,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 53/64] drm/nouveau/kms: Dont change EDID when it hasnt actually changed
+Subject: [PATCH 5.15 065/107] net: enetc: correct the indexes of highest and 2nd highest TCs
 Date:   Mon, 19 Jun 2023 12:30:49 +0200
-Message-ID: <20230619102135.606323120@linuxfoundation.org>
+Message-ID: <20230619102144.571666223@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
-References: <20230619102132.808972458@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,166 +57,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lyude Paul <lyude@redhat.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-[ Upstream commit f28e32d3906eac2e1cb3291b448f0d528ec93996 ]
+[ Upstream commit 21225873be1472b7c59ed3650396af0e40578112 ]
 
-Currently in nouveau_connector_ddc_detect() and
-nouveau_connector_detect_lvds(), we start the connector probing process
-by releasing the previous EDID and informing DRM of the change. However,
-since commit 5186421cbfe2 ("drm: Introduce epoch counter to
-drm_connector") drm_connector_update_edid_property() actually checks
-whether the new EDID we've specified is different from the previous one,
-and updates the connector's epoch accordingly if it is. But, because we
-always set the EDID to NULL first in nouveau_connector_ddc_detect() and
-nouveau_connector_detect_lvds() we end up making DRM think that the EDID
-changes every single time we do a connector probe - which isn't needed.
+For ENETC hardware, the TCs are numbered from 0 to N-1, where N
+is the number of TCs. Numerically higher TC has higher priority.
+It's obvious that the highest priority TC index should be N-1 and
+the 2nd highest priority TC index should be N-2.
 
-So, let's fix this by not clearing the EDID at the start of the
-connector probing process, and instead simply changing or removing it
-once near the end of the probing process. This will help prevent us from
-sending unneeded hotplug events to userspace when nothing has actually
-changed.
+However, the previous logic uses netdev_get_prio_tc_map() to get
+the indexes of highest priority and 2nd highest priority TCs, it
+does not make sense and is incorrect to give a "tc" argument to
+netdev_get_prio_tc_map(). So the driver may get the wrong indexes
+of the two highest priotiry TCs which would lead to failed to set
+the CBS for the two highest priotiry TCs.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Reviewed-by: Ben Skeggs <bskeggs@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20200826182456.322681-19-lyude@redhat.com
-Stable-dep-of: 55b94bb8c424 ("drm/nouveau: add nv_encoder pointer check for NULL")
+e.g.
+$ tc qdisc add dev eno0 parent root handle 100: mqprio num_tc 6 \
+	map 0 0 1 1 2 3 4 5 queues 1@0 1@1 1@2 1@3 2@4 2@6 hw 1
+$ tc qdisc replace dev eno0 parent 100:6 cbs idleslope 100000 \
+	sendslope -900000 hicredit 12 locredit -113 offload 1
+$ Error: Specified device failed to setup cbs hardware offload.
+  ^^^^^
+
+In this example, the previous logic deems the indexes of the two
+highest priotiry TCs should be 3 and 2. Actually, the indexes are
+5 and 4, because the number of TCs is 6. So it would be failed to
+configure the CBS for the two highest priority TCs.
+
+Fixes: c431047c4efe ("enetc: add support Credit Based Shaper(CBS) for hardware offload")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_connector.c | 54 ++++++++++-----------
- 1 file changed, 27 insertions(+), 27 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc_qos.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_connector.c b/drivers/gpu/drm/nouveau/nouveau_connector.c
-index 18c3aae91be26..048a04701910e 100644
---- a/drivers/gpu/drm/nouveau/nouveau_connector.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
-@@ -538,6 +538,17 @@ nouveau_connector_set_encoder(struct drm_connector *connector,
- 	}
- }
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_qos.c b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
+index 4e9cb1deaf810..c348b6fb0e6f9 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_qos.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
+@@ -197,8 +197,8 @@ int enetc_setup_tc_cbs(struct net_device *ndev, void *type_data)
+ 	int bw_sum = 0;
+ 	u8 bw;
  
-+static void
-+nouveau_connector_set_edid(struct nouveau_connector *nv_connector,
-+			   struct edid *edid)
-+{
-+	struct edid *old_edid = nv_connector->edid;
-+
-+	drm_connector_update_edid_property(&nv_connector->base, edid);
-+	kfree(old_edid);
-+	nv_connector->edid = edid;
-+}
-+
- static enum drm_connector_status
- nouveau_connector_detect(struct drm_connector *connector, bool force)
- {
-@@ -551,13 +562,6 @@ nouveau_connector_detect(struct drm_connector *connector, bool force)
- 	int ret;
- 	enum drm_connector_status conn_status = connector_status_disconnected;
+-	prio_top = netdev_get_prio_tc_map(ndev, tc_nums - 1);
+-	prio_next = netdev_get_prio_tc_map(ndev, tc_nums - 2);
++	prio_top = tc_nums - 1;
++	prio_next = tc_nums - 2;
  
--	/* Cleanup the previous EDID block. */
--	if (nv_connector->edid) {
--		drm_connector_update_edid_property(connector, NULL);
--		kfree(nv_connector->edid);
--		nv_connector->edid = NULL;
--	}
--
- 	/* Outputs are only polled while runtime active, so resuming the
- 	 * device here is unnecessary (and would deadlock upon runtime suspend
- 	 * because it waits for polling to finish). We do however, want to
-@@ -570,22 +574,23 @@ nouveau_connector_detect(struct drm_connector *connector, bool force)
- 		ret = pm_runtime_get_sync(dev->dev);
- 		if (ret < 0 && ret != -EACCES) {
- 			pm_runtime_put_autosuspend(dev->dev);
-+			nouveau_connector_set_edid(nv_connector, NULL);
- 			return conn_status;
- 		}
- 	}
- 
- 	nv_encoder = nouveau_connector_ddc_detect(connector);
- 	if (nv_encoder && (i2c = nv_encoder->i2c) != NULL) {
-+		struct edid *new_edid;
-+
- 		if ((vga_switcheroo_handler_flags() &
- 		     VGA_SWITCHEROO_CAN_SWITCH_DDC) &&
- 		    nv_connector->type == DCB_CONNECTOR_LVDS)
--			nv_connector->edid = drm_get_edid_switcheroo(connector,
--								     i2c);
-+			new_edid = drm_get_edid_switcheroo(connector, i2c);
- 		else
--			nv_connector->edid = drm_get_edid(connector, i2c);
-+			new_edid = drm_get_edid(connector, i2c);
- 
--		drm_connector_update_edid_property(connector,
--							nv_connector->edid);
-+		nouveau_connector_set_edid(nv_connector, new_edid);
- 		if (!nv_connector->edid) {
- 			NV_ERROR(drm, "DDC responded, but no EDID for %s\n",
- 				 connector->name);
-@@ -619,6 +624,8 @@ nouveau_connector_detect(struct drm_connector *connector, bool force)
- 		conn_status = connector_status_connected;
- 		drm_dp_cec_set_edid(&nv_connector->aux, nv_connector->edid);
- 		goto out;
-+	} else {
-+		nouveau_connector_set_edid(nv_connector, NULL);
- 	}
- 
- 	nv_encoder = nouveau_connector_of_detect(connector);
-@@ -661,18 +668,12 @@ nouveau_connector_detect_lvds(struct drm_connector *connector, bool force)
- 	struct nouveau_drm *drm = nouveau_drm(dev);
- 	struct nouveau_connector *nv_connector = nouveau_connector(connector);
- 	struct nouveau_encoder *nv_encoder = NULL;
-+	struct edid *edid = NULL;
- 	enum drm_connector_status status = connector_status_disconnected;
- 
--	/* Cleanup the previous EDID block. */
--	if (nv_connector->edid) {
--		drm_connector_update_edid_property(connector, NULL);
--		kfree(nv_connector->edid);
--		nv_connector->edid = NULL;
--	}
--
- 	nv_encoder = find_encoder(connector, DCB_OUTPUT_LVDS);
- 	if (!nv_encoder)
--		return connector_status_disconnected;
-+		goto out;
- 
- 	/* Try retrieving EDID via DDC */
- 	if (!drm->vbios.fp_no_ddc) {
-@@ -691,7 +692,8 @@ nouveau_connector_detect_lvds(struct drm_connector *connector, bool force)
- 	 * valid - it's not (rh#613284)
- 	 */
- 	if (nv_encoder->dcb->lvdsconf.use_acpi_for_edid) {
--		if ((nv_connector->edid = nouveau_acpi_edid(dev, connector))) {
-+		edid = nouveau_acpi_edid(dev, connector);
-+		if (edid) {
- 			status = connector_status_connected;
- 			goto out;
- 		}
-@@ -711,12 +713,10 @@ nouveau_connector_detect_lvds(struct drm_connector *connector, bool force)
- 	 * stored for the panel stored in them.
- 	 */
- 	if (!drm->vbios.fp_no_ddc) {
--		struct edid *edid =
--			(struct edid *)nouveau_bios_embedded_edid(dev);
-+		edid = (struct edid *)nouveau_bios_embedded_edid(dev);
- 		if (edid) {
--			nv_connector->edid =
--					kmemdup(edid, EDID_LENGTH, GFP_KERNEL);
--			if (nv_connector->edid)
-+			edid = kmemdup(edid, EDID_LENGTH, GFP_KERNEL);
-+			if (edid)
- 				status = connector_status_connected;
- 		}
- 	}
-@@ -729,7 +729,7 @@ nouveau_connector_detect_lvds(struct drm_connector *connector, bool force)
- 		status = connector_status_unknown;
- #endif
- 
--	drm_connector_update_edid_property(connector, nv_connector->edid);
-+	nouveau_connector_set_edid(nv_connector, edid);
- 	nouveau_connector_set_encoder(connector, nv_encoder);
- 	return status;
- }
+ 	/* Support highest prio and second prio tc in cbs mode */
+ 	if (tc != prio_top && tc != prio_next)
 -- 
 2.39.2
 
