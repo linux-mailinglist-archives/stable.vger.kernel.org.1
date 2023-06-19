@@ -2,48 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A7727352D6
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:38:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AE8E73520A
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:29:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231630AbjFSKil (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:38:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44242 "EHLO
+        id S229840AbjFSK3y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:29:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231842AbjFSKig (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:38:36 -0400
+        with ESMTP id S229506AbjFSK3x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:29:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF734B3
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:38:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A160BB3
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:29:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4467E60B33
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:38:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53085C433C8;
-        Mon, 19 Jun 2023 10:38:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2AB6160180
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:29:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42ECAC433CA;
+        Mon, 19 Jun 2023 10:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171113;
-        bh=J3lpYZiCqTHDafXyj1O2xPum0suji6rUHBPBx8WA+wM=;
+        s=korg; t=1687170591;
+        bh=zeyMFsdCLSGo0WpeTd5gS/7JFScK2NkDm4rLQpSBd0Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hddMwJ38y4meXfTYx25UNdN4JGRZSN32LZK07vF7UMQY9oP0DLgb7k7KIJ6sZz5vV
-         e0Uj+cQUTUy67d5v923jXbTTM1KlCKcakIjZPCOBrLO5c/yaTu2VbtM/k4vVhEz7ap
-         5GbbK1y8iZ5QJHBLBOLsdJix3qgxdToHZryFBbZY=
+        b=sidhDXbrGCxCqAqBWDGsISZ45tJg92495M0rv8fVGe4s4vMWrWLvTqtgzaxPPWr//
+         1dw7uM+StNkvXGbpl9ExPgXM1Yf/XcfosW7GhsD1Em8wV28uKlX7d39gC2qYFyqsTp
+         eLggFMY5lEdC0YcYG8YuY8U07Wrand5/hnmX66BQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Max Tottenham <mtottenh@akamai.com>,
-        Josh Hunt <johunt@akamai.com>,
-        kernel test robot <lkp@intel.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.3 127/187] net/sched: act_pedit: Parse L3 Header for L4 offset
+        patches@lists.linux.dev, Jerry Meng <jerry-meng@foxmail.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.14 17/32] USB: serial: option: add Quectel EM061KGL series
 Date:   Mon, 19 Jun 2023 12:29:05 +0200
-Message-ID: <20230619102203.713411829@linuxfoundation.org>
+Message-ID: <20230619102128.454551892@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102127.461443957@linuxfoundation.org>
+References: <20230619102127.461443957@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,140 +54,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Max Tottenham <mtottenh@akamai.com>
+From: Jerry Meng <jerry-meng@foxmail.com>
 
-[ Upstream commit 6c02568fd1ae53099b4ab86365c5be1ff15f586b ]
+commit f1832e2b5e498e258b090af3b065b85cf8cc5161 upstream.
 
-Instead of relying on skb->transport_header being set correctly, opt
-instead to parse the L3 header length out of the L3 headers for both
-IPv4/IPv6 when the Extended Layer Op for tcp/udp is used. This fixes a
-bug if GRO is disabled, when GRO is disabled skb->transport_header is
-set by __netif_receive_skb_core() to point to the L3 header, it's later
-fixed by the upper protocol layers, but act_pedit will receive the SKB
-before the fixups are completed. The existing behavior causes the
-following to edit the L3 header if GRO is disabled instead of the UDP
-header:
+Add support for Quectel EM061KGL series which are based on Qualcomm
+SDX12 chip:
 
-    tc filter add dev eth0 ingress protocol ip flower ip_proto udp \
- dst_ip 192.168.1.3 action pedit ex munge udp set dport 18053
+EM061KGL_LTA(0x2c7c / 0x0123): MBIM + GNSS + DIAG + NMEA + AT + QDSS + DPL
+EM061KGL_LMS(0x2c7c / 0x0124): MBIM + GNSS + DIAG + NMEA + AT + QDSS + DPL
+EM061KGL_LWW(0x2c7c / 0x6008): MBIM + GNSS + DIAG + NMEA + AT + QDSS + DPL
+EM061KGL_LCN(0x2c7c / 0x6009): MBIM + GNSS + DIAG + NMEA + AT + QDSS + DPL
 
-Also re-introduce a rate-limited warning if we were unable to extract
-the header offset when using the 'ex' interface.
+Above products use the exact same interface layout and
+option driver is for interfaces DIAG, NMEA and AT.
 
-Fixes: 71d0ed7079df ("net/act_pedit: Support using offset relative to
-the conventional network headers")
-Signed-off-by: Max Tottenham <mtottenh@akamai.com>
-Reviewed-by: Josh Hunt <johunt@akamai.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202305261541.N165u9TZ-lkp@intel.com/
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=02 Dev#=  5 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2c7c ProdID=6008 Rev= 5.04
+S:  Manufacturer=Quectel
+S:  Product=Quectel EM061K-GL
+S:  SerialNumber=f6fa08b6
+C:* #Ifs= 8 Cfg#= 1 Atr=a0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=70 Driver=(none)
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 7 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
+E:  Ad=8f(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Jerry Meng <jerry-meng@foxmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_pedit.c | 48 ++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 43 insertions(+), 5 deletions(-)
+ drivers/usb/serial/option.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/net/sched/act_pedit.c b/net/sched/act_pedit.c
-index 1e7e959b90e48..300b5ae760dcc 100644
---- a/net/sched/act_pedit.c
-+++ b/net/sched/act_pedit.c
-@@ -13,7 +13,10 @@
- #include <linux/rtnetlink.h>
- #include <linux/module.h>
- #include <linux/init.h>
-+#include <linux/ip.h>
-+#include <linux/ipv6.h>
- #include <linux/slab.h>
-+#include <net/ipv6.h>
- #include <net/netlink.h>
- #include <net/pkt_sched.h>
- #include <linux/tc_act/tc_pedit.h>
-@@ -313,28 +316,58 @@ static bool offset_valid(struct sk_buff *skb, int offset)
- 	return true;
- }
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -251,6 +251,8 @@ static void option_instat_callback(struc
+ #define QUECTEL_VENDOR_ID			0x2c7c
+ /* These Quectel products use Quectel's vendor ID */
+ #define QUECTEL_PRODUCT_EC21			0x0121
++#define QUECTEL_PRODUCT_EM061K_LTA		0x0123
++#define QUECTEL_PRODUCT_EM061K_LMS		0x0124
+ #define QUECTEL_PRODUCT_EC25			0x0125
+ #define QUECTEL_PRODUCT_EG91			0x0191
+ #define QUECTEL_PRODUCT_EG95			0x0195
+@@ -269,6 +271,8 @@ static void option_instat_callback(struc
+ #define QUECTEL_PRODUCT_RM520N			0x0801
+ #define QUECTEL_PRODUCT_EC200U			0x0901
+ #define QUECTEL_PRODUCT_EC200S_CN		0x6002
++#define QUECTEL_PRODUCT_EM061K_LWW		0x6008
++#define QUECTEL_PRODUCT_EM061K_LCN		0x6009
+ #define QUECTEL_PRODUCT_EC200T			0x6026
+ #define QUECTEL_PRODUCT_RM500K			0x7001
  
--static void pedit_skb_hdr_offset(struct sk_buff *skb,
-+static int pedit_l4_skb_offset(struct sk_buff *skb, int *hoffset, const int header_type)
-+{
-+	const int noff = skb_network_offset(skb);
-+	int ret = -EINVAL;
-+	struct iphdr _iph;
-+
-+	switch (skb->protocol) {
-+	case htons(ETH_P_IP): {
-+		const struct iphdr *iph = skb_header_pointer(skb, noff, sizeof(_iph), &_iph);
-+
-+		if (!iph)
-+			goto out;
-+		*hoffset = noff + iph->ihl * 4;
-+		ret = 0;
-+		break;
-+	}
-+	case htons(ETH_P_IPV6):
-+		ret = ipv6_find_hdr(skb, hoffset, header_type, NULL, NULL) == header_type ? 0 : -EINVAL;
-+		break;
-+	}
-+out:
-+	return ret;
-+}
-+
-+static int pedit_skb_hdr_offset(struct sk_buff *skb,
- 				 enum pedit_header_type htype, int *hoffset)
- {
-+	int ret = -EINVAL;
- 	/* 'htype' is validated in the netlink parsing */
- 	switch (htype) {
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_ETH:
--		if (skb_mac_header_was_set(skb))
-+		if (skb_mac_header_was_set(skb)) {
- 			*hoffset = skb_mac_offset(skb);
-+			ret = 0;
-+		}
- 		break;
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_NETWORK:
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_IP4:
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_IP6:
- 		*hoffset = skb_network_offset(skb);
-+		ret = 0;
- 		break;
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_TCP:
-+		ret = pedit_l4_skb_offset(skb, hoffset, IPPROTO_TCP);
-+		break;
- 	case TCA_PEDIT_KEY_EX_HDR_TYPE_UDP:
--		if (skb_transport_header_was_set(skb))
--			*hoffset = skb_transport_offset(skb);
-+		ret = pedit_l4_skb_offset(skb, hoffset, IPPROTO_UDP);
- 		break;
- 	default:
- 		break;
- 	}
-+	return ret;
- }
- 
- TC_INDIRECT_SCOPE int tcf_pedit_act(struct sk_buff *skb,
-@@ -370,6 +403,7 @@ TC_INDIRECT_SCOPE int tcf_pedit_act(struct sk_buff *skb,
- 		int hoffset = 0;
- 		u32 *ptr, hdata;
- 		u32 val;
-+		int rc;
- 
- 		if (tkey_ex) {
- 			htype = tkey_ex->htype;
-@@ -378,7 +412,11 @@ TC_INDIRECT_SCOPE int tcf_pedit_act(struct sk_buff *skb,
- 			tkey_ex++;
- 		}
- 
--		pedit_skb_hdr_offset(skb, htype, &hoffset);
-+		rc = pedit_skb_hdr_offset(skb, htype, &hoffset);
-+		if (rc) {
-+			pr_info_ratelimited("tc action pedit unable to extract header offset for header type (0x%x)\n", htype);
-+			goto bad;
-+		}
- 
- 		if (tkey->offmask) {
- 			u8 *d, _d;
--- 
-2.39.2
-
+@@ -1192,6 +1196,18 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K, 0xff, 0x00, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM060K, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LCN, 0xff, 0xff, 0x30) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LCN, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LCN, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LMS, 0xff, 0xff, 0x30) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LMS, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LMS, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LTA, 0xff, 0xff, 0x30) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LTA, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LTA, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LWW, 0xff, 0xff, 0x30) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LWW, 0xff, 0x00, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM061K_LWW, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM12, 0xff, 0xff, 0xff),
+ 	  .driver_info = RSVD(1) | RSVD(2) | RSVD(3) | RSVD(4) | NUMEP2 },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM12, 0xff, 0, 0) },
 
 
