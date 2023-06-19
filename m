@@ -2,41 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97C7E7353AD
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:48:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45ED47353AF
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:48:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232056AbjFSKsK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:48:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51876 "EHLO
+        id S232116AbjFSKsN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:48:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230358AbjFSKrp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:47:45 -0400
+        with ESMTP id S232118AbjFSKrs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:47:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B6EE10F9
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:47:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCADBE51
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:47:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C966760B5E
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:47:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D09F7C433C8;
-        Mon, 19 Jun 2023 10:46:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 951E660B86
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:47:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80510C433C0;
+        Mon, 19 Jun 2023 10:47:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171620;
-        bh=EtghdKTmX7hI7Lsgk6W6tp2CjApi7H5GgSjAmKeCgL8=;
+        s=korg; t=1687171626;
+        bh=3qMs19V20rxAa6XydV67oY9NHoARv6STgPuZx7mLNUc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M9Elid2pMy88rETTsGLGNC1pVnp0dFvIU66/WG3OdiLqicAdL2JNl1cKusOjG3OM8
-         C8kiY73afdf6Woo6FAHak0HmdU6j9vlTelWXhKveSj2AJlG8w/CJMOCakaXWpttBuV
-         atspKOxgD1kMGa2pXbgBerE0umT8WXDJmOYQ74yg=
+        b=MNY8ciTFPCYNcwFt4iCPTwTLvizDGboDiAM5zvvdVzJGPM6LZaik3rAi1t2vQMDbq
+         N/xhY/QWJQr4H1o/iCujfds0ivz3Xf6ukauEQw/c3X92s1DCiAu8z3RMaXKLEhMoZ8
+         myiC2zWyIhMRUExv+w7nEQb3bofZcg8OFBoQYJEA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 097/166] netfilter: nfnetlink: skip error delivery on batch in case of ENOMEM
-Date:   Mon, 19 Jun 2023 12:29:34 +0200
-Message-ID: <20230619102159.497690997@linuxfoundation.org>
+        patches@lists.linux.dev, Kamil Maziarz <kamil.maziarz@intel.com>,
+        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Chandan Kumar Rout <chandanx.rout@intel.com>
+Subject: [PATCH 6.1 098/166] ice: Fix XDP memory leak when NIC is brought up and down
+Date:   Mon, 19 Jun 2023 12:29:35 +0200
+Message-ID: <20230619102159.538325048@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
 References: <20230619102154.568541872@linuxfoundation.org>
@@ -54,34 +57,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Kamil Maziarz <kamil.maziarz@intel.com>
 
-[ Upstream commit a1a64a151dae8ac3581c1cbde44b672045cb658b ]
+[ Upstream commit 78c50d6961fc05491ebbc71c35d87324b1a4f49a ]
 
-If caller reports ENOMEM, then stop iterating over the batch and send a
-single netlink message to userspace to report OOM.
+Fix the buffer leak that occurs while switching
+the port up and down with traffic and XDP by
+checking for an active XDP program and freeing all empty TX buffers.
 
-Fixes: cbb8125eb40b ("netfilter: nfnetlink: deliver netlink errors on batch completion")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: efc2214b6047 ("ice: Add support for XDP")
+Signed-off-by: Kamil Maziarz <kamil.maziarz@intel.com>
+Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
+Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/netfilter/nfnetlink.c b/net/netfilter/nfnetlink.c
-index ae7146475d17a..c9fbe0f707b5f 100644
---- a/net/netfilter/nfnetlink.c
-+++ b/net/netfilter/nfnetlink.c
-@@ -533,7 +533,8 @@ static void nfnetlink_rcv_batch(struct sk_buff *skb, struct nlmsghdr *nlh,
- 			 * processed, this avoids that the same error is
- 			 * reported several times when replaying the batch.
- 			 */
--			if (nfnl_err_add(&err_list, nlh, err, &extack) < 0) {
-+			if (err == -ENOMEM ||
-+			    nfnl_err_add(&err_list, nlh, err, &extack) < 0) {
- 				/* We failed to enqueue an error, reset the
- 				 * list of errors and send OOM to userspace
- 				 * pointing to the batch header.
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 6a50f8ba3940c..4095fe40dfc9b 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -6784,6 +6784,10 @@ int ice_down(struct ice_vsi *vsi)
+ 	ice_for_each_txq(vsi, i)
+ 		ice_clean_tx_ring(vsi->tx_rings[i]);
+ 
++	if (ice_is_xdp_ena_vsi(vsi))
++		ice_for_each_xdp_txq(vsi, i)
++			ice_clean_tx_ring(vsi->xdp_rings[i]);
++
+ 	ice_for_each_rxq(vsi, i)
+ 		ice_clean_rx_ring(vsi->rx_rings[i]);
+ 
 -- 
 2.39.2
 
