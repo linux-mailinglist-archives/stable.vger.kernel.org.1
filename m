@@ -2,58 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D8A6735504
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:00:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C11EF7354AC
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:58:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232305AbjFSLAg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:00:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60820 "EHLO
+        id S232450AbjFSK6X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:58:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232583AbjFSLAI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:00:08 -0400
+        with ESMTP id S232429AbjFSK6E (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:58:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B74810CA
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:59:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9121F3C20
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:56:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E600E60B9F
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:59:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A34C433C0;
-        Mon, 19 Jun 2023 10:59:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 283E160670
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:56:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D721C433C0;
+        Mon, 19 Jun 2023 10:56:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172350;
-        bh=2HczgtxYc6JmHN3wKYx/Nz4YbnYNJLgqwCzfiRFWGVo=;
+        s=korg; t=1687172164;
+        bh=yYRZOfSY4K/fBcSUl6kbFY/O8J+kUVfRISDeqiFaAuM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yLrcssUeUV+0svGDZwHf5ON5INbvvF/MATpCqtRgqBfQoF41Y7n33OQU3GweVEtPQ
-         UJkEGi68D/WYST/snNDgaTf2VBfIkSsaGgrEZm95+wSfTsd0jxkyUhzH+K3ONFi4HH
-         DtfZCy4RtRCDXJfwRPwtl7U2PW56aBCyKihDACD8=
+        b=GichQijKUIOIMRvN4A6XU/R8r3Bl2SApzvHmAgclJ8isQT8zMZo1a5GAxwdceA/RJ
+         55HrdjndN/HKSoSN/VjSdEltQoF6c6kXJtpYqdiJ8IML3OpSWm8XrYy++s1HgzIIrk
+         7k7wafP2b3/txJz8tRpW1mmKVcgPK/tn5trqiBKk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Lu=C3=ADs=20Henriques?= <lhenriques@suse.de>,
-        Mark Fasheh <mark@fasheh.com>,
-        Joseph Qi <joseph.qi@linux.alibaba.com>,
-        Joel Becker <jlbec@evilplan.org>,
-        Junxiao Bi <junxiao.bi@oracle.com>,
-        Changwei Ge <gechangwei@live.cn>, Gang He <ghe@suse.com>,
-        Jun Piao <piaojun@huawei.com>,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        syzbot+33494cd0df2ec2931851@syzkaller.appspotmail.com,
         Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 037/107] ocfs2: check new file size on fallocate call
+Subject: [PATCH 5.10 33/89] nilfs2: fix possible out-of-bounds segment allocation in resize ioctl
 Date:   Mon, 19 Jun 2023 12:30:21 +0200
-Message-ID: <20230619102143.294732530@linuxfoundation.org>
+Message-ID: <20230619102139.795199793@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,54 +56,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luís Henriques <ocfs2-devel@oss.oracle.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 26a6ffff7de5dd369cdb12e38ba11db682f1dec0 upstream.
+commit fee5eaecca86afa544355569b831c1f90f334b85 upstream.
 
-When changing a file size with fallocate() the new size isn't being
-checked.  In particular, the FSIZE ulimit isn't being checked, which makes
-fstest generic/228 fail.  Simply adding a call to inode_newsize_ok() fixes
-this issue.
+Syzbot reports that in its stress test for resize ioctl, the log writing
+function nilfs_segctor_do_construct hits a WARN_ON in
+nilfs_segctor_truncate_segments().
 
-Link: https://lkml.kernel.org/r/20230529152645.32680-1-lhenriques@suse.de
-Signed-off-by: Luís Henriques <lhenriques@suse.de>
-Reviewed-by: Mark Fasheh <mark@fasheh.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
+It turned out that there is a problem with the current implementation of
+the resize ioctl, which changes the writable range on the device (the
+range of allocatable segments) at the end of the resize process.
+
+This order is necessary for file system expansion to avoid corrupting the
+superblock at trailing edge.  However, in the case of a file system
+shrink, if log writes occur after truncating out-of-bounds trailing
+segments and before the resize is complete, segments may be allocated from
+the truncated space.
+
+The userspace resize tool was fine as it limits the range of allocatable
+segments before performing the resize, but it can run into this issue if
+the resize ioctl is called alone.
+
+Fix this issue by changing nilfs_sufile_resize() to update the range of
+allocatable segments immediately after successful truncation of segment
+space in case of file system shrink.
+
+Link: https://lkml.kernel.org/r/20230524094348.3784-1-konishi.ryusuke@gmail.com
+Fixes: 4e33f9eab07e ("nilfs2: implement resize ioctl")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+33494cd0df2ec2931851@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/0000000000005434c405fbbafdc5@google.com
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/file.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/nilfs2/sufile.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/fs/ocfs2/file.c
-+++ b/fs/ocfs2/file.c
-@@ -2103,14 +2103,20 @@ static long ocfs2_fallocate(struct file
- 	struct ocfs2_space_resv sr;
- 	int change_size = 1;
- 	int cmd = OCFS2_IOC_RESVSP64;
-+	int ret = 0;
+--- a/fs/nilfs2/sufile.c
++++ b/fs/nilfs2/sufile.c
+@@ -779,6 +779,15 @@ int nilfs_sufile_resize(struct inode *su
+ 			goto out_header;
  
- 	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE))
- 		return -EOPNOTSUPP;
- 	if (!ocfs2_writes_unwritten_extents(osb))
- 		return -EOPNOTSUPP;
+ 		sui->ncleansegs -= nsegs - newnsegs;
++
++		/*
++		 * If the sufile is successfully truncated, immediately adjust
++		 * the segment allocation space while locking the semaphore
++		 * "mi_sem" so that nilfs_sufile_alloc() never allocates
++		 * segments in the truncated space.
++		 */
++		sui->allocmax = newnsegs - 1;
++		sui->allocmin = 0;
+ 	}
  
--	if (mode & FALLOC_FL_KEEP_SIZE)
-+	if (mode & FALLOC_FL_KEEP_SIZE) {
- 		change_size = 0;
-+	} else {
-+		ret = inode_newsize_ok(inode, offset + len);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	if (mode & FALLOC_FL_PUNCH_HOLE)
- 		cmd = OCFS2_IOC_UNRESVSP64;
+ 	kaddr = kmap_atomic(header_bh->b_page);
 
 
