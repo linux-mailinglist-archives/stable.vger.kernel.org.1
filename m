@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 310A1735398
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:46:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 863E1735223
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:31:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231790AbjFSKqv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:46:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47364 "EHLO
+        id S231142AbjFSKau (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:30:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231774AbjFSKqQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:46:16 -0400
+        with ESMTP id S230435AbjFSKat (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:30:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F00CA1982
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:46:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64A77C6
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:30:48 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 69B4860670
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:46:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77208C433C8;
-        Mon, 19 Jun 2023 10:46:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 00BEC60B67
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:30:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1550DC433C9;
+        Mon, 19 Jun 2023 10:30:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171561;
-        bh=5SRHxz0VzTHZQEDld0p6FNwZpQKvc3mUFFQLp1lMavM=;
+        s=korg; t=1687170647;
+        bh=0hyHBWw2GcIRx/yq2ukc6WXhaMxkk9eeRjMrcKYLXuA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PdFjSsmH1ptEEMldTpFG+JSBqUqBv3oCjJ88USlWdWsFlYUvBdts3tkoyQnQPeHvc
-         9g/+uhqZ4ZatvvDKWS5K5MZ70B+SO0mupMQ6F9/ZGLaAQPuq+Q5Kwj0lGYP2nR0viJ
-         oVnarBqC6Of/DTdQKKqcJSoYswWKjod/LuqkhuNE=
+        b=CMqfsu831w3drFFctmlrx9chveriAAEsvWlOc+KoX/XJeB2e1h40pu5NlMzIMzcHE
+         V9KAPA+eUQESTMPEw+gWXjk/ifE4ghhLEpfN4g2UOcsWkbO5wT36LrcHB9P8Dfq0g0
+         TXXPZt49dal9xLLXbybVBa7+bWiA3RURjzTd01jg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, michel@daenzer.net,
-        =?UTF-8?q?Michel=20D=C3=A4nzer?= <mdaenzer@redhat.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 075/166] drm/amdgpu: add missing radeon secondary PCI ID
+        patches@lists.linux.dev,
+        Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 24/32] igb: fix nvm.ops.read() error handling
 Date:   Mon, 19 Jun 2023 12:29:12 +0200
-Message-ID: <20230619102158.406902835@linuxfoundation.org>
+Message-ID: <20230619102128.831475442@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102127.461443957@linuxfoundation.org>
+References: <20230619102127.461443957@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,32 +56,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-commit e61f67749b351c19455ce3085af2ae9af80023bc upstream.
+[ Upstream commit 48a821fd58837800750ec1b3962f0f799630a844 ]
 
-0x5b70 is a missing RV370 secondary id.  Add it so
-we don't try and probe it with amdgpu.
+Add error handling into igb_set_eeprom() function, in case
+nvm.ops.read() fails just quit with error code asap.
 
-Cc: michel@daenzer.net
-Reviewed-by: Michel Dänzer <mdaenzer@redhat.com>
-Tested-by: Michel Dänzer <mdaenzer@redhat.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9d5c824399de ("igb: PCI-Express 82575 Gigabit Ethernet driver")
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/igb/igb_ethtool.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -1605,6 +1605,7 @@ static const u16 amdgpu_unsupported_pcii
- 	0x5874,
- 	0x5940,
- 	0x5941,
-+	0x5b70,
- 	0x5b72,
- 	0x5b73,
- 	0x5b74,
+diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+index 049a67c14780c..77108b0a07f51 100644
+--- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
++++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+@@ -831,6 +831,8 @@ static int igb_set_eeprom(struct net_device *netdev,
+ 		 */
+ 		ret_val = hw->nvm.ops.read(hw, last_word, 1,
+ 				   &eeprom_buff[last_word - first_word]);
++		if (ret_val)
++			goto out;
+ 	}
+ 
+ 	/* Device's eeprom is always little-endian, word addressable */
+@@ -850,6 +852,7 @@ static int igb_set_eeprom(struct net_device *netdev,
+ 		hw->nvm.ops.update(hw);
+ 
+ 	igb_set_fw_version(adapter);
++out:
+ 	kfree(eeprom_buff);
+ 	return ret_val;
+ }
+-- 
+2.39.2
+
 
 
