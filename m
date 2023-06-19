@@ -2,52 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 187F37353CC
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:48:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BA6073547A
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:56:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232143AbjFSKs5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:48:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51996 "EHLO
+        id S232402AbjFSK4m (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:56:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231240AbjFSKsk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:48:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A0D5198E
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:48:34 -0700 (PDT)
+        with ESMTP id S232388AbjFSK4F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:56:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F02081FE9
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:54:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CC0FB60B6D
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:48:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2F4C433C0;
-        Mon, 19 Jun 2023 10:48:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CADE360A4D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:54:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F5FC433C8;
+        Mon, 19 Jun 2023 10:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171713;
-        bh=jT/F4aVNcyFVRS17mEh1jSnUVkpExAZNju2PTvHgTG8=;
+        s=korg; t=1687172048;
+        bh=HVFzA5/xpPgFBqpHQHkv/BgPv5Wfc3xZi5LakHxOE1s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BfkRyHfyJnHAhCOWYSGEPYAYVsrvWABlz97YFbuaVXJzjutzv1dRv79XJMiA0u7sB
-         WO55HLOmI0uf3C6lb6KMGh9a99OhrhbhcAn9eXL1z/lpIoSe7J7OQqsS6N5yQw1c32
-         ygIanH08jn+aQbV67MsabpCYqJCq7DbMd7irb/1k=
+        b=EvBSpnkZdcfliAH0zW7BcpaMaAXdBHVlU0K/9ym20u26QC0QESyLrDQhc+dtaT0Ld
+         wP2MhMmUaYIjdFU2aoWGVEcVlABQmvSBglVhr6zp46aw3hBFmJOJj2rtom+9tBkOmb
+         AjkUgXr1urglBIthX6jiYY7QtF6R1k+7ngpShDNI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 129/166] igb: fix nvm.ops.read() error handling
+        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 18/89] ASoC: soc-pcm: test if a BE can be prepared
 Date:   Mon, 19 Jun 2023 12:30:06 +0200
-Message-ID: <20230619102201.054922008@linuxfoundation.org>
+Message-ID: <20230619102139.115808974@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,42 +53,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+From: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
 
-[ Upstream commit 48a821fd58837800750ec1b3962f0f799630a844 ]
+[ Upstream commit e123036be377ddf628226a7c6d4f9af5efd113d3 ]
 
-Add error handling into igb_set_eeprom() function, in case
-nvm.ops.read() fails just quit with error code asap.
+In the BE hw_params configuration, the existing code checks if any of the
+existing FEs are prepared, running, paused or suspended - and skips the
+configuration in those cases. This allows multiple calls of hw_params
+which the ALSA state machine supports.
 
-Fixes: 9d5c824399de ("igb: PCI-Express 82575 Gigabit Ethernet driver")
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+This check is not handled for the prepare stage, which can lead to the
+same BE being prepared multiple times. This patch adds a check similar to
+that of the hw_params, with the main difference being that the suspended
+state is allowed: the ALSA state machine allows a transition from
+suspended to prepared with hw_params skipped.
+
+This problem was detected on Intel IPC4/SoundWire devices, where the BE
+dailink .prepare stage is used to configure the SoundWire stream with a
+bank switch. Multiple .prepare calls lead to conflicts with the .trigger
+operation with IPC4 configurations. This problem was not detected earlier
+on Intel devices, HDaudio BE dailinks detect that the link is already
+prepared and skip the configuration, and for IPC3 devices there is no BE
+trigger.
+
+Link: https://github.com/thesofproject/sof/issues/7596
+Signed-off-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com
+Link: https://lore.kernel.org/r/20230517185731.487124-1-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igb/igb_ethtool.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/sound/soc-dpcm.h |  4 ++++
+ sound/soc/soc-pcm.c      | 20 ++++++++++++++++++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-index ff911af16a4b5..96fa1c420f910 100644
---- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
-+++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-@@ -822,6 +822,8 @@ static int igb_set_eeprom(struct net_device *netdev,
- 		 */
- 		ret_val = hw->nvm.ops.read(hw, last_word, 1,
- 				   &eeprom_buff[last_word - first_word]);
-+		if (ret_val)
-+			goto out;
- 	}
+diff --git a/include/sound/soc-dpcm.h b/include/sound/soc-dpcm.h
+index 0f6c50b17bba8..bd8795198a7d6 100644
+--- a/include/sound/soc-dpcm.h
++++ b/include/sound/soc-dpcm.h
+@@ -121,6 +121,10 @@ int snd_soc_dpcm_can_be_free_stop(struct snd_soc_pcm_runtime *fe,
+ int snd_soc_dpcm_can_be_params(struct snd_soc_pcm_runtime *fe,
+ 		struct snd_soc_pcm_runtime *be, int stream);
  
- 	/* Device's eeprom is always little-endian, word addressable */
-@@ -841,6 +843,7 @@ static int igb_set_eeprom(struct net_device *netdev,
- 		hw->nvm.ops.update(hw);
++/* can this BE perform prepare */
++int snd_soc_dpcm_can_be_prepared(struct snd_soc_pcm_runtime *fe,
++				 struct snd_soc_pcm_runtime *be, int stream);
++
+ /* is the current PCM operation for this FE ? */
+ int snd_soc_dpcm_fe_can_update(struct snd_soc_pcm_runtime *fe, int stream);
  
- 	igb_set_fw_version(adapter);
-+out:
- 	kfree(eeprom_buff);
- 	return ret_val;
+diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
+index fb874f924bbe3..e52c030bd17a2 100644
+--- a/sound/soc/soc-pcm.c
++++ b/sound/soc/soc-pcm.c
+@@ -2332,6 +2332,9 @@ int dpcm_be_dai_prepare(struct snd_soc_pcm_runtime *fe, int stream)
+ 		if (!snd_soc_dpcm_be_can_update(fe, be, stream))
+ 			continue;
+ 
++		if (!snd_soc_dpcm_can_be_prepared(fe, be, stream))
++			continue;
++
+ 		if ((be->dpcm[stream].state != SND_SOC_DPCM_STATE_HW_PARAMS) &&
+ 		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_STOP) &&
+ 		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_SUSPEND) &&
+@@ -2972,3 +2975,20 @@ int snd_soc_dpcm_can_be_params(struct snd_soc_pcm_runtime *fe,
+ 	return snd_soc_dpcm_check_state(fe, be, stream, state, ARRAY_SIZE(state));
  }
+ EXPORT_SYMBOL_GPL(snd_soc_dpcm_can_be_params);
++
++/*
++ * We can only prepare a BE DAI if any of it's FE are not prepared,
++ * running or paused for the specified stream direction.
++ */
++int snd_soc_dpcm_can_be_prepared(struct snd_soc_pcm_runtime *fe,
++				 struct snd_soc_pcm_runtime *be, int stream)
++{
++	const enum snd_soc_dpcm_state state[] = {
++		SND_SOC_DPCM_STATE_START,
++		SND_SOC_DPCM_STATE_PAUSED,
++		SND_SOC_DPCM_STATE_PREPARE,
++	};
++
++	return snd_soc_dpcm_check_state(fe, be, stream, state, ARRAY_SIZE(state));
++}
++EXPORT_SYMBOL_GPL(snd_soc_dpcm_can_be_prepared);
 -- 
 2.39.2
 
