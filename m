@@ -2,41 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EAC2735372
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:45:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21DF4735373
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:45:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231551AbjFSKpr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:45:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47084 "EHLO
+        id S231868AbjFSKpu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:45:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231731AbjFSKp1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:45:27 -0400
+        with ESMTP id S231982AbjFSKpb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:45:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2A8019A2
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:44:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97AB419AF
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:44:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6749F60B73
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:44:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C04CC433C9;
-        Mon, 19 Jun 2023 10:44:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1BA4360B5E
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:44:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB8AC433C8;
+        Mon, 19 Jun 2023 10:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171489;
-        bh=vAdsM+hjIZKz2nXd7bnVFlV9WvNPWJyMAkawniZXSjY=;
+        s=korg; t=1687171492;
+        bh=t6BM1ispRrrUdWx8WNvPLixKSPnfmDzRY+ZEq6s6z9Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qywz2RrFoEHXILlwDBYw2fQ7EK4KQwm9gwUdHx2ZgibOSkpVE4ihXE2AnrWBknjNj
-         yveRKALtjxtxde4HOKAkSbnTmYUy+0HvzuYpUgGMYOhpJK4/2li8icpuRzfo/9+MD+
-         JuvJPnEmwce0/mKLx3EF0DW6LKyVI+iqjyzbTeFg=
+        b=d0+XaxilBVVhOMKhoom8luOB6fhMflZ72P9AFBpTkFwi97OBJ0XnzJ9gdy6E1NFnT
+         lQTr9nrvi6bOtyHhm2Lw+oYWp5fgCc1MdKftqxls4sSREACwLQXuF5fMElJt7JfZr7
+         Wf7ho2vNzAKoeELqayDvb6tJksSf84/lVIw/Js/0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Janne Grunau <j@jannau.net>,
-        Dinh Nguyen <dinguyen@kernel.org>
-Subject: [PATCH 6.1 049/166] nios2: dts: Fix tse_mac "max-frame-size" property
-Date:   Mon, 19 Jun 2023 12:28:46 +0200
-Message-ID: <20230619102157.123290485@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        syzbot+b0a35a5c1f7e846d3b09@syzkaller.appspotmail.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 050/166] nilfs2: fix incomplete buffer cleanup in nilfs_btnode_abort_change_key()
+Date:   Mon, 19 Jun 2023 12:28:47 +0200
+Message-ID: <20230619102157.184697648@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
 References: <20230619102154.568541872@linuxfoundation.org>
@@ -54,46 +56,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Janne Grunau <j@jannau.net>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 85041e12418fd0c08ff972b7729f7971afb361f8 upstream.
+commit 2f012f2baca140c488e43d27a374029c1e59098d upstream.
 
-The given value of 1518 seems to refer to the layer 2 ethernet frame
-size without 802.1Q tag. Actual use of the "max-frame-size" including in
-the consumer of the "altr,tse-1.0" compatible is the MTU.
+A syzbot fault injection test reported that nilfs_btnode_create_block, a
+helper function that allocates a new node block for b-trees, causes a
+kernel BUG for disk images where the file system block size is smaller
+than the page size.
 
-Fixes: 95acd4c7b69c ("nios2: Device tree support")
-Fixes: 61c610ec61bb ("nios2: Add Max10 device tree")
+This was due to unexpected flags on the newly allocated buffer head, and
+it turned out to be because the buffer flags were not cleared by
+nilfs_btnode_abort_change_key() after an error occurred during a b-tree
+update operation and the buffer was later reused in that state.
+
+Fix this issue by using nilfs_btnode_delete() to abandon the unused
+preallocated buffer in nilfs_btnode_abort_change_key().
+
+Link: https://lkml.kernel.org/r/20230513102428.10223-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+b0a35a5c1f7e846d3b09@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/000000000000d1d6c205ebc4d512@google.com
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Janne Grunau <j@jannau.net>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/nios2/boot/dts/10m50_devboard.dts |    2 +-
- arch/nios2/boot/dts/3c120_devboard.dts |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/nilfs2/btnode.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/arch/nios2/boot/dts/10m50_devboard.dts
-+++ b/arch/nios2/boot/dts/10m50_devboard.dts
-@@ -97,7 +97,7 @@
- 			rx-fifo-depth = <8192>;
- 			tx-fifo-depth = <8192>;
- 			address-bits = <48>;
--			max-frame-size = <1518>;
-+			max-frame-size = <1500>;
- 			local-mac-address = [00 00 00 00 00 00];
- 			altr,has-supplementary-unicast;
- 			altr,enable-sup-addr = <1>;
---- a/arch/nios2/boot/dts/3c120_devboard.dts
-+++ b/arch/nios2/boot/dts/3c120_devboard.dts
-@@ -106,7 +106,7 @@
- 				interrupt-names = "rx_irq", "tx_irq";
- 				rx-fifo-depth = <8192>;
- 				tx-fifo-depth = <8192>;
--				max-frame-size = <1518>;
-+				max-frame-size = <1500>;
- 				local-mac-address = [ 00 00 00 00 00 00 ];
- 				phy-mode = "rgmii-id";
- 				phy-handle = <&phy0>;
+--- a/fs/nilfs2/btnode.c
++++ b/fs/nilfs2/btnode.c
+@@ -285,6 +285,14 @@ void nilfs_btnode_abort_change_key(struc
+ 	if (nbh == NULL) {	/* blocksize == pagesize */
+ 		xa_erase_irq(&btnc->i_pages, newkey);
+ 		unlock_page(ctxt->bh->b_page);
+-	} else
+-		brelse(nbh);
++	} else {
++		/*
++		 * When canceling a buffer that a prepare operation has
++		 * allocated to copy a node block to another location, use
++		 * nilfs_btnode_delete() to initialize and release the buffer
++		 * so that the buffer flags will not be in an inconsistent
++		 * state when it is reallocated.
++		 */
++		nilfs_btnode_delete(nbh);
++	}
+ }
 
 
