@@ -2,52 +2,70 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DC357353F0
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:50:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08214735507
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:00:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230345AbjFSKu2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:50:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53512 "EHLO
+        id S232526AbjFSLAs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 07:00:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232203AbjFSKtY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:49:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 816E1172C
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:49:23 -0700 (PDT)
+        with ESMTP id S232616AbjFSLAL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:00:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91DCD10E6
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:59:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 16F0060670
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:49:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BDA2C433C8;
-        Mon, 19 Jun 2023 10:49:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F96360B78
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:59:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 119F7C433CD;
+        Mon, 19 Jun 2023 10:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171762;
-        bh=MS+RDxyshMG/5IO9RS3iraWPZfM1UETS5z4jCbnUr9w=;
+        s=korg; t=1687172361;
+        bh=SfNM99MH6vh1VJqH781Z/xe6otLHtQbsFp4Y9+DyND8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KkmtGmleC+pZ5FL2MKbbuXYeqyuU+c7tIeUFW47W7IIJC+IsfBTYd82h94HVvd0nf
-         887FDAmd+r2Y8Mq5bnnrO6WB2ueTRd00+ou4yAB7OMm1OlEO0OdYtV8zR6VoTsielz
-         PR9qm6OW35Ij2uq3LZTOf4OO/JbciOhBQaTFPHsA=
+        b=fXpk6oPB0x1z1DYjrMZhilgDtMS4nVi2rpt6ANe2NatBtIyU6b/LncL0efgNz9ZuK
+         PdL+9GP4AeSM58iV7oFtnsBAtcTLwFuDma39b4y0y43wFLA6n14I4tdyuz8Ziv1SfV
+         x9VY+v5ZQYin/w/SPnHuRunzBZxqXJdA9cQ4VtPk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
-        Sabrina Dubroca <sd@queasysnail.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 148/166] net: macsec: fix double free of percpu stats
+        patches@lists.linux.dev, Ricardo Ribalda <ribalda@chromium.org>,
+        Ross Zwisler <zwisler@google.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Philipp Rudo <prudo@redhat.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, Baoquan He <bhe@redhat.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Dave Young <dyoung@redhat.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Simon Horman <horms@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tom Rix <trix@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 041/107] kexec: support purgatories with .text.hot sections
 Date:   Mon, 19 Jun 2023 12:30:25 +0200
-Message-ID: <20230619102201.888804141@linuxfoundation.org>
+Message-ID: <20230619102143.466968994@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,63 +74,102 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 0c0cf3db83f8c7c9bb141c2771a34043bcf952ef ]
+commit 8652d44f466ad5772e7d1756e9457046189b0dfc upstream.
 
-Inside macsec_add_dev() we free percpu macsec->secy.tx_sc.stats and
-macsec->stats on some of the memory allocation failure paths. However, the
-net_device is already registered to that moment: in macsec_newlink(), just
-before calling macsec_add_dev(). This means that during unregister process
-its priv_destructor - macsec_free_netdev() - will be called and will free
-the stats again.
+Patch series "kexec: Fix kexec_file_load for llvm16 with PGO", v7.
 
-Remove freeing percpu stats inside macsec_add_dev() because
-macsec_free_netdev() will correctly free the already allocated ones. The
-pointers to unallocated stats stay NULL, and free_percpu() treats that
-correctly.
+When upreving llvm I realised that kexec stopped working on my test
+platform.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+The reason seems to be that due to PGO there are multiple .text sections
+on the purgatory, and kexec does not supports that.
 
-Fixes: 0a28bfd4971f ("net/macsec: Add MACsec skb_metadata_dst Tx Data path support")
-Fixes: c09440f7dcb3 ("macsec: introduce IEEE 802.1AE driver")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+
+This patch (of 4):
+
+Clang16 links the purgatory text in two sections when PGO is in use:
+
+  [ 1] .text             PROGBITS         0000000000000000  00000040
+       00000000000011a1  0000000000000000  AX       0     0     16
+  [ 2] .rela.text        RELA             0000000000000000  00003498
+       0000000000000648  0000000000000018   I      24     1     8
+  ...
+  [17] .text.hot.        PROGBITS         0000000000000000  00003220
+       000000000000020b  0000000000000000  AX       0     0     1
+  [18] .rela.text.hot.   RELA             0000000000000000  00004428
+       0000000000000078  0000000000000018   I      24    17     8
+
+And both of them have their range [sh_addr ... sh_addr+sh_size] on the
+area pointed by `e_entry`.
+
+This causes that image->start is calculated twice, once for .text and
+another time for .text.hot. The second calculation leaves image->start
+in a random location.
+
+Because of this, the system crashes immediately after:
+
+kexec_core: Starting new kernel
+
+Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-0-b05c520b7296@chromium.org
+Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-1-b05c520b7296@chromium.org
+Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Ross Zwisler <zwisler@google.com>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reviewed-by: Philipp Rudo <prudo@redhat.com>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Eric W. Biederman <ebiederm@xmission.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Palmer Dabbelt <palmer@rivosinc.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Tom Rix <trix@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/macsec.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ kernel/kexec_file.c |   14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 038a787943927..983cabf9a0f67 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -3981,17 +3981,15 @@ static int macsec_add_dev(struct net_device *dev, sci_t sci, u8 icv_len)
- 		return -ENOMEM;
+--- a/kernel/kexec_file.c
++++ b/kernel/kexec_file.c
+@@ -910,10 +910,22 @@ static int kexec_purgatory_setup_sechdrs
+ 		}
  
- 	secy->tx_sc.stats = netdev_alloc_pcpu_stats(struct pcpu_tx_sc_stats);
--	if (!secy->tx_sc.stats) {
--		free_percpu(macsec->stats);
-+	if (!secy->tx_sc.stats)
- 		return -ENOMEM;
--	}
- 
- 	secy->tx_sc.md_dst = metadata_dst_alloc(0, METADATA_MACSEC, GFP_KERNEL);
--	if (!secy->tx_sc.md_dst) {
--		free_percpu(secy->tx_sc.stats);
--		free_percpu(macsec->stats);
-+	if (!secy->tx_sc.md_dst)
-+		/* macsec and secy percpu stats will be freed when unregistering
-+		 * net_device in macsec_free_netdev()
+ 		offset = ALIGN(offset, align);
++
++		/*
++		 * Check if the segment contains the entry point, if so,
++		 * calculate the value of image->start based on it.
++		 * If the compiler has produced more than one .text section
++		 * (Eg: .text.hot), they are generally after the main .text
++		 * section, and they shall not be used to calculate
++		 * image->start. So do not re-calculate image->start if it
++		 * is not set to the initial value, and warn the user so they
++		 * have a chance to fix their purgatory's linker script.
 +		 */
- 		return -ENOMEM;
--	}
- 
- 	if (sci == MACSEC_UNDEF_SCI)
- 		sci = dev_to_sci(dev, MACSEC_PORT_ES);
--- 
-2.39.2
-
+ 		if (sechdrs[i].sh_flags & SHF_EXECINSTR &&
+ 		    pi->ehdr->e_entry >= sechdrs[i].sh_addr &&
+ 		    pi->ehdr->e_entry < (sechdrs[i].sh_addr
+-					 + sechdrs[i].sh_size)) {
++					 + sechdrs[i].sh_size) &&
++		    !WARN_ON(kbuf->image->start != pi->ehdr->e_entry)) {
+ 			kbuf->image->start -= sechdrs[i].sh_addr;
+ 			kbuf->image->start += kbuf->mem + offset;
+ 		}
 
 
