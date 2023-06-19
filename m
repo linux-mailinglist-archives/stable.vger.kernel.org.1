@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B364D735557
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:03:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD2107354C5
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:59:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232575AbjFSLDr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 07:03:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33432 "EHLO
+        id S232427AbjFSK67 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:58:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232214AbjFSLDW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 07:03:22 -0400
+        with ESMTP id S232428AbjFSK6j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:58:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 503C11723
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 04:02:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8453210C1
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:56:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E097A60B78
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 11:02:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0569BC433C0;
-        Mon, 19 Jun 2023 11:02:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 22B4960B7C
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:56:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3828EC433C0;
+        Mon, 19 Jun 2023 10:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687172546;
-        bh=0Hv8uLEQHCyvrtpUFoEaSpcXQyuUIMlO6P3ZdQ26+YI=;
+        s=korg; t=1687172216;
+        bh=wjLsN2cerv3wu94En8S6rYdMwrhKHRbP8u5NM2sPg7A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wUR0/z2BeYKUXzSpS7gzEX9H1EBMYcfKU7Z79n6joy3/XAsWR+rZmN4UpZzPkcVvC
-         Eiw2tllhuwHhzP7L2VNZNqq7srMTzoD6k6E46jmXjJjRtGEefLXm4f4ycQxHNxfOU7
-         puUWPzia7wW/A85oxZQihFQtREdxu+f6whjM/rr8=
+        b=PJC2Y7PFAEY8kDtsPD4IWiwOSFzbFe1KQm73Bd5V4uJgqLYjiWj1ihaNA32ISnOXh
+         dQ1t0HKHq2Ob9LArR9+0CEHvlKFS1jeL2n8xfmLvDRVgJ98QyHfg7L9xTjoDW/n/Ol
+         Px1siiB7G2jdqDq8OXFt1qUqwgjmskYhSL/Mxkiw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Saravanan Vajravel <saravanan.vajravel@broadcom.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 081/107] IB/isert: Fix possible list corruption in CMA handler
-Date:   Mon, 19 Jun 2023 12:31:05 +0200
-Message-ID: <20230619102145.282231062@linuxfoundation.org>
+        patches@lists.linux.dev, Guillaume Nault <gnault@redhat.com>,
+        Stephen Hemminger <stephen@networkplumber.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 78/89] net: Remove DECnet leftovers from flow.h.
+Date:   Mon, 19 Jun 2023 12:31:06 +0200
+Message-ID: <20230619102141.823036149@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
+References: <20230619102138.279161276@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,45 +55,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
+From: Guillaume Nault <gnault@redhat.com>
 
-[ Upstream commit 7651e2d6c5b359a28c2d4c904fec6608d1021ca8 ]
+commit 9bc61c04ff6cce6a3756b86e6b34914f7b39d734 upstream.
 
-When ib_isert module receives connection error event, it is
-releasing the isert session and removes corresponding list
-node but it doesn't take appropriate mutex lock to remove
-the list node.  This can lead to linked  list corruption
+DECnet was removed by commit 1202cdd66531 ("Remove DECnet support from
+kernel"). Let's also revome its flow structure.
 
-Fixes: bd3792205aae ("iser-target: Fix pending connections handling in target stack shutdown sequnce")
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Saravanan Vajravel <saravanan.vajravel@broadcom.com>
-Link: https://lore.kernel.org/r/20230606102531.162967-3-saravanan.vajravel@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Compile-tested only (allmodconfig).
+
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Acked-by: Stephen Hemminger <stephen@networkplumber.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/isert/ib_isert.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/net/flow.h |   26 --------------------------
+ 1 file changed, 26 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/isert/ib_isert.c b/drivers/infiniband/ulp/isert/ib_isert.c
-index fbee14c8f6116..6082695a02d88 100644
---- a/drivers/infiniband/ulp/isert/ib_isert.c
-+++ b/drivers/infiniband/ulp/isert/ib_isert.c
-@@ -656,9 +656,13 @@ static int
- isert_connect_error(struct rdma_cm_id *cma_id)
- {
- 	struct isert_conn *isert_conn = cma_id->qp->qp_context;
-+	struct isert_np *isert_np = cma_id->context;
+--- a/include/net/flow.h
++++ b/include/net/flow.h
+@@ -54,11 +54,6 @@ union flowi_uli {
+ 		__u8	code;
+ 	} icmpt;
  
- 	ib_drain_qp(isert_conn->qp);
-+
-+	mutex_lock(&isert_np->mutex);
- 	list_del_init(&isert_conn->node);
-+	mutex_unlock(&isert_np->mutex);
- 	isert_conn->cm_id = NULL;
- 	isert_put_conn(isert_conn);
+-	struct {
+-		__le16	dport;
+-		__le16	sport;
+-	} dnports;
+-
+ 	__be32		spi;
+ 	__be32		gre_key;
  
--- 
-2.39.2
-
+@@ -156,27 +151,11 @@ struct flowi6 {
+ 	__u32			mp_hash;
+ } __attribute__((__aligned__(BITS_PER_LONG/8)));
+ 
+-struct flowidn {
+-	struct flowi_common	__fl_common;
+-#define flowidn_oif		__fl_common.flowic_oif
+-#define flowidn_iif		__fl_common.flowic_iif
+-#define flowidn_mark		__fl_common.flowic_mark
+-#define flowidn_scope		__fl_common.flowic_scope
+-#define flowidn_proto		__fl_common.flowic_proto
+-#define flowidn_flags		__fl_common.flowic_flags
+-	__le16			daddr;
+-	__le16			saddr;
+-	union flowi_uli		uli;
+-#define fld_sport		uli.ports.sport
+-#define fld_dport		uli.ports.dport
+-} __attribute__((__aligned__(BITS_PER_LONG/8)));
+-
+ struct flowi {
+ 	union {
+ 		struct flowi_common	__fl_common;
+ 		struct flowi4		ip4;
+ 		struct flowi6		ip6;
+-		struct flowidn		dn;
+ 	} u;
+ #define flowi_oif	u.__fl_common.flowic_oif
+ #define flowi_iif	u.__fl_common.flowic_iif
+@@ -210,11 +189,6 @@ static inline struct flowi_common *flowi
+ 	return &(flowi6_to_flowi(fl6)->u.__fl_common);
+ }
+ 
+-static inline struct flowi *flowidn_to_flowi(struct flowidn *fldn)
+-{
+-	return container_of(fldn, struct flowi, u.dn);
+-}
+-
+ __u32 __get_hash_from_flowi6(const struct flowi6 *fl6, struct flow_keys *keys);
+ 
+ #endif
 
 
