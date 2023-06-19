@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A1037353AB
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:48:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B3E37352F4
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:40:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232081AbjFSKsC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:48:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52030 "EHLO
+        id S231997AbjFSKk2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:40:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231731AbjFSKrh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:47:37 -0400
+        with ESMTP id S232067AbjFSKkO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:40:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA4E21997
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:46:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2623110E6
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:39:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 36B8860B8D
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:46:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 494B7C433C0;
-        Mon, 19 Jun 2023 10:46:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B6F1160B33
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:39:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE12EC433C8;
+        Mon, 19 Jun 2023 10:39:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171614;
-        bh=oifwgF/xbbszUp9o/4+B8jtytDPKuIYtIXlp1FHcjB8=;
+        s=korg; t=1687171194;
+        bh=mlQ/2IpwAJTzLuTBpuQwYiSybCg+QLFECnSqPMW3/JE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Hpo/Cs3WZGz79y5Q9jiRyXx4R3QzLefNbSzZ2ZvmNyu/pEK6Ezgd/PPHLZcQcBsdt
-         mr9nQgH8KQX6fJL0jB1/km08p9ivlf5pg1+vwdE/mQLnDxc1ndQpYhsaBCoG8VGZtJ
-         Uq5ybJZJtZUdY/QT2KyvTBXHQ8I7bc4ez2cmEh/4=
+        b=rkmffxei/P0DwrnTneV/Q08joC3EvZWtjoOpsUH48s6OWo8dbo378P6/C1SCZtBjg
+         GamZe5ilyb04lJ4C43AChQSQvfjnU3idgGz/i0X9cAc67303wpXwwNYPN5dqNUk4NZ
+         07RGsqnqdUBHybjKtqVueBP13IdnmxZUIOB71Pxw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Lisa=20Chen=20 ?= <minjie.chen@geekplus.com>,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Mark Brown <broonie@kernel.org>,
+        Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 095/166] spi: fsl-dspi: avoid SCK glitches with continuous transfers
-Date:   Mon, 19 Jun 2023 12:29:32 +0200
-Message-ID: <20230619102159.400202165@linuxfoundation.org>
+Subject: [PATCH 6.3 155/187] net: phylink: use a dedicated helper to parse usgmii control word
+Date:   Mon, 19 Jun 2023 12:29:33 +0200
+Message-ID: <20230619102205.095119583@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,90 +57,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-[ Upstream commit c5c31fb71f16ba75bad4ade208abbae225305b65 ]
+[ Upstream commit 923454c0368b8092e9d05c020f50abca577e7290 ]
 
-The DSPI controller has configurable timing for
+Q-USGMII is a derivative of USGMII, that uses a specific formatting for
+the control word. The layout is close to the USXGMII control word, but
+doesn't support speeds over 1Gbps. Use a dedicated decoding logic for
+the USGMII control word, re-using USXGMII definitions but only considering
+10/100/1000Mbps speeds
 
-(a) tCSC: the interval between the assertion of the chip select and the
-    first clock edge
-
-(b) tASC: the interval between the last clock edge and the deassertion
-    of the chip select
-
-What is a bit surprising, but is documented in the figure "Example of
-continuous transfer (CPHA=1, CONT=1)" in the datasheet, is that when the
-chip select stays asserted between multiple TX FIFO writes, the tCSC and
-tASC times still apply. With CONT=1, chip select remains asserted, but
-SCK takes a break and goes to the idle state for tASC + tCSC ns.
-
-In other words, the default values (of 0 and 0 ns) result in SCK
-glitches where the SCK transition to the idle state, as well as the SCK
-transition from the idle state, will have no delay in between, and it
-may appear that a SCK cycle has simply gone missing. The resulting
-timing violation might cause data corruption in many peripherals, as
-their chip select is asserted.
-
-The driver has device tree bindings for tCSC ("fsl,spi-cs-sck-delay")
-and tASC ("fsl,spi-sck-cs-delay"), but these are only specified to apply
-when the chip select toggles in the first place, and this timing
-characteristic depends on each peripheral. Many peripherals do not have
-explicit timing requirements, so many device trees do not have these
-properties present at all.
-
-Nonetheless, the lack of SCK glitches is a common sense requirement, and
-since the SCK stays in the idle state during transfers for tCSC+tASC ns,
-and that in itself should look like half a cycle, then let's ensure that
-tCSC and tASC are at least a quarter of a SCK period, such that their
-sum is at least half of one.
-
-Fixes: 95bf15f38641 ("spi: fsl-dspi: Add ~50ns delay between cs and sck")
-Reported-by: Lisa Chen (陈敏捷) <minjie.chen@geekplus.com>
-Debugged-by: Lisa Chen (陈敏捷) <minjie.chen@geekplus.com>
-Tested-by: Lisa Chen (陈敏捷) <minjie.chen@geekplus.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://lore.kernel.org/r/20230529223402.1199503-1-vladimir.oltean@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 5e61fe157a27 ("net: phy: Introduce QUSGMII PHY mode")
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-dspi.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/net/phy/phylink.c | 39 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index a33e547b7d395..01930b52c4fb8 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -975,7 +975,9 @@ static int dspi_transfer_one_message(struct spi_controller *ctlr,
- static int dspi_setup(struct spi_device *spi)
- {
- 	struct fsl_dspi *dspi = spi_controller_get_devdata(spi->controller);
-+	u32 period_ns = DIV_ROUND_UP(NSEC_PER_SEC, spi->max_speed_hz);
- 	unsigned char br = 0, pbr = 0, pcssck = 0, cssck = 0;
-+	u32 quarter_period_ns = DIV_ROUND_UP(period_ns, 4);
- 	u32 cs_sck_delay = 0, sck_cs_delay = 0;
- 	struct fsl_dspi_platform_data *pdata;
- 	unsigned char pasc = 0, asc = 0;
-@@ -1003,6 +1005,19 @@ static int dspi_setup(struct spi_device *spi)
- 		sck_cs_delay = pdata->sck_cs_delay;
- 	}
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 65ff118f22314..0598debb93dea 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -3297,6 +3297,41 @@ void phylink_decode_usxgmii_word(struct phylink_link_state *state,
+ }
+ EXPORT_SYMBOL_GPL(phylink_decode_usxgmii_word);
  
-+	/* Since tCSC and tASC apply to continuous transfers too, avoid SCK
-+	 * glitches of half a cycle by never allowing tCSC + tASC to go below
-+	 * half a SCK period.
-+	 */
-+	if (cs_sck_delay < quarter_period_ns)
-+		cs_sck_delay = quarter_period_ns;
-+	if (sck_cs_delay < quarter_period_ns)
-+		sck_cs_delay = quarter_period_ns;
++/**
++ * phylink_decode_usgmii_word() - decode the USGMII word from a MAC PCS
++ * @state: a pointer to a struct phylink_link_state.
++ * @lpa: a 16 bit value which stores the USGMII auto-negotiation word
++ *
++ * Helper for MAC PCS supporting the USGMII protocol and the auto-negotiation
++ * code word.  Decode the USGMII code word and populate the corresponding fields
++ * (speed, duplex) into the phylink_link_state structure. The structure for this
++ * word is the same as the USXGMII word, except it only supports speeds up to
++ * 1Gbps.
++ */
++static void phylink_decode_usgmii_word(struct phylink_link_state *state,
++				       uint16_t lpa)
++{
++	switch (lpa & MDIO_USXGMII_SPD_MASK) {
++	case MDIO_USXGMII_10:
++		state->speed = SPEED_10;
++		break;
++	case MDIO_USXGMII_100:
++		state->speed = SPEED_100;
++		break;
++	case MDIO_USXGMII_1000:
++		state->speed = SPEED_1000;
++		break;
++	default:
++		state->link = false;
++		return;
++	}
 +
-+	dev_dbg(&spi->dev,
-+		"DSPI controller timing params: CS-to-SCK delay %u ns, SCK-to-CS delay %u ns\n",
-+		cs_sck_delay, sck_cs_delay);
++	if (lpa & MDIO_USXGMII_FULL_DUPLEX)
++		state->duplex = DUPLEX_FULL;
++	else
++		state->duplex = DUPLEX_HALF;
++}
 +
- 	clkrate = clk_get_rate(dspi->clk);
- 	hz_to_spi_baud(&pbr, &br, spi->max_speed_hz, clkrate);
+ /**
+  * phylink_mii_c22_pcs_decode_state() - Decode MAC PCS state from MII registers
+  * @state: a pointer to a &struct phylink_link_state.
+@@ -3333,9 +3368,11 @@ void phylink_mii_c22_pcs_decode_state(struct phylink_link_state *state,
  
+ 	case PHY_INTERFACE_MODE_SGMII:
+ 	case PHY_INTERFACE_MODE_QSGMII:
+-	case PHY_INTERFACE_MODE_QUSGMII:
+ 		phylink_decode_sgmii_word(state, lpa);
+ 		break;
++	case PHY_INTERFACE_MODE_QUSGMII:
++		phylink_decode_usgmii_word(state, lpa);
++		break;
+ 
+ 	default:
+ 		state->link = false;
 -- 
 2.39.2
 
