@@ -2,64 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4B95735311
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 370EC7353C0
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:48:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232040AbjFSKlS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:41:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46312 "EHLO
+        id S232141AbjFSKsl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:48:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231356AbjFSKlA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:41:00 -0400
+        with ESMTP id S232145AbjFSKsU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:48:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DF6CB3
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:40:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F04C4E9
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:48:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 15F0560B73
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:40:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04539C433C8;
-        Mon, 19 Jun 2023 10:40:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 66C5C60B6D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:48:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B8CDC433C0;
+        Mon, 19 Jun 2023 10:47:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171258;
-        bh=eb4HKlLylpTx1UrYVEV/ol2lKZmrpY6OMJtd4azxg40=;
+        s=korg; t=1687171679;
+        bh=gydSX09BhyDBtYcRCr1K2HHeoP4+PHrLxACAIu/RAo8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mGnKP8NXUUsb4/6ajwsvx8+N4aMHyNaq1uKTOdZms4P6WTBZJP7NhOLV/qPlVw9yZ
-         fkClp25DQUa0pDrGGe+4/OxHgsHyvEauEIeJ50E1mitQzpoD5A4LcXESxlOJoP8LVd
-         tX4ReKhPfsvHjjm5iRi8WzWmsEW24WEM68YcA2aY=
+        b=zuuwqxCMJw3rNXZvkxsaFxJe92HcgTUL2v3aK+4s1sOb5tM1X1rz3yey622kv+uth
+         U5BaiIr0Y6xjkfwdhAf6+a9IHMIZAQOqXI4Uj+SMoTMgrdBsNb+NvtFeks6QDdfzcb
+         ckTiRcIgWQnGgry/WooHmu/EfbMe1013heuG+Ofg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ricardo Ribalda <ribalda@chromium.org>,
-        Ross Zwisler <zwisler@google.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Philipp Rudo <prudo@redhat.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Baoquan He <bhe@redhat.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Dave Young <dyoung@redhat.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Simon Horman <horms@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tom Rix <trix@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 17/49] kexec: support purgatories with .text.hot sections
+        patches@lists.linux.dev, Mark Zhang <markzhang@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 118/166] RDMA/cma: Always set static rate to 0 for RoCE
 Date:   Mon, 19 Jun 2023 12:29:55 +0200
-Message-ID: <20230619102130.749126168@linuxfoundation.org>
+Message-ID: <20230619102200.567356514@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
-References: <20230619102129.856988902@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -74,102 +55,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Mark Zhang <markzhang@nvidia.com>
 
-commit 8652d44f466ad5772e7d1756e9457046189b0dfc upstream.
+[ Upstream commit 58030c76cce473b6cfd630bbecb97215def0dff8 ]
 
-Patch series "kexec: Fix kexec_file_load for llvm16 with PGO", v7.
+Set static rate to 0 as it should be discovered by path query and
+has no meaning for RoCE.
+This also avoid of using the rtnl lock and ethtool API, which is
+a bottleneck when try to setup many rdma-cm connections at the same
+time, especially with multiple processes.
 
-When upreving llvm I realised that kexec stopped working on my test
-platform.
-
-The reason seems to be that due to PGO there are multiple .text sections
-on the purgatory, and kexec does not supports that.
-
-
-This patch (of 4):
-
-Clang16 links the purgatory text in two sections when PGO is in use:
-
-  [ 1] .text             PROGBITS         0000000000000000  00000040
-       00000000000011a1  0000000000000000  AX       0     0     16
-  [ 2] .rela.text        RELA             0000000000000000  00003498
-       0000000000000648  0000000000000018   I      24     1     8
-  ...
-  [17] .text.hot.        PROGBITS         0000000000000000  00003220
-       000000000000020b  0000000000000000  AX       0     0     1
-  [18] .rela.text.hot.   RELA             0000000000000000  00004428
-       0000000000000078  0000000000000018   I      24    17     8
-
-And both of them have their range [sh_addr ... sh_addr+sh_size] on the
-area pointed by `e_entry`.
-
-This causes that image->start is calculated twice, once for .text and
-another time for .text.hot. The second calculation leaves image->start
-in a random location.
-
-Because of this, the system crashes immediately after:
-
-kexec_core: Starting new kernel
-
-Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-0-b05c520b7296@chromium.org
-Link: https://lkml.kernel.org/r/20230321-kexec_clang16-v7-1-b05c520b7296@chromium.org
-Fixes: 930457057abe ("kernel/kexec_file.c: split up __kexec_load_puragory")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Ross Zwisler <zwisler@google.com>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Reviewed-by: Philipp Rudo <prudo@redhat.com>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Eric W. Biederman <ebiederm@xmission.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Palmer Dabbelt <palmer@rivosinc.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Simon Horman <horms@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Tom Rix <trix@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3c86aa70bf67 ("RDMA/cm: Add RDMA CM support for IBoE devices")
+Signed-off-by: Mark Zhang <markzhang@nvidia.com>
+Link: https://lore.kernel.org/r/f72a4f8b667b803aee9fa794069f61afb5839ce4.1685960567.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kexec_file.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/infiniband/core/cma.c |  4 ++--
+ include/rdma/ib_addr.h        | 23 -----------------------
+ 2 files changed, 2 insertions(+), 25 deletions(-)
 
---- a/kernel/kexec_file.c
-+++ b/kernel/kexec_file.c
-@@ -793,10 +793,22 @@ static int kexec_purgatory_setup_sechdrs
- 		}
+diff --git a/drivers/infiniband/core/cma.c b/drivers/infiniband/core/cma.c
+index c6a671edba5c8..4632b1833381a 100644
+--- a/drivers/infiniband/core/cma.c
++++ b/drivers/infiniband/core/cma.c
+@@ -3293,7 +3293,7 @@ static int cma_resolve_iboe_route(struct rdma_id_private *id_priv)
+ 	route->path_rec->traffic_class = tos;
+ 	route->path_rec->mtu = iboe_get_mtu(ndev->mtu);
+ 	route->path_rec->rate_selector = IB_SA_EQ;
+-	route->path_rec->rate = iboe_get_rate(ndev);
++	route->path_rec->rate = IB_RATE_PORT_CURRENT;
+ 	dev_put(ndev);
+ 	route->path_rec->packet_life_time_selector = IB_SA_EQ;
+ 	/* In case ACK timeout is set, use this value to calculate
+@@ -4955,7 +4955,7 @@ static int cma_iboe_join_multicast(struct rdma_id_private *id_priv,
+ 	if (!ndev)
+ 		return -ENODEV;
  
- 		offset = ALIGN(offset, align);
-+
-+		/*
-+		 * Check if the segment contains the entry point, if so,
-+		 * calculate the value of image->start based on it.
-+		 * If the compiler has produced more than one .text section
-+		 * (Eg: .text.hot), they are generally after the main .text
-+		 * section, and they shall not be used to calculate
-+		 * image->start. So do not re-calculate image->start if it
-+		 * is not set to the initial value, and warn the user so they
-+		 * have a chance to fix their purgatory's linker script.
-+		 */
- 		if (sechdrs[i].sh_flags & SHF_EXECINSTR &&
- 		    pi->ehdr->e_entry >= sechdrs[i].sh_addr &&
- 		    pi->ehdr->e_entry < (sechdrs[i].sh_addr
--					 + sechdrs[i].sh_size)) {
-+					 + sechdrs[i].sh_size) &&
-+		    !WARN_ON(kbuf->image->start != pi->ehdr->e_entry)) {
- 			kbuf->image->start -= sechdrs[i].sh_addr;
- 			kbuf->image->start += kbuf->mem + offset;
- 		}
+-	ib.rec.rate = iboe_get_rate(ndev);
++	ib.rec.rate = IB_RATE_PORT_CURRENT;
+ 	ib.rec.hop_limit = 1;
+ 	ib.rec.mtu = iboe_get_mtu(ndev->mtu);
+ 
+diff --git a/include/rdma/ib_addr.h b/include/rdma/ib_addr.h
+index d808dc3d239e8..811a0f11d0dbe 100644
+--- a/include/rdma/ib_addr.h
++++ b/include/rdma/ib_addr.h
+@@ -194,29 +194,6 @@ static inline enum ib_mtu iboe_get_mtu(int mtu)
+ 		return 0;
+ }
+ 
+-static inline int iboe_get_rate(struct net_device *dev)
+-{
+-	struct ethtool_link_ksettings cmd;
+-	int err;
+-
+-	rtnl_lock();
+-	err = __ethtool_get_link_ksettings(dev, &cmd);
+-	rtnl_unlock();
+-	if (err)
+-		return IB_RATE_PORT_CURRENT;
+-
+-	if (cmd.base.speed >= 40000)
+-		return IB_RATE_40_GBPS;
+-	else if (cmd.base.speed >= 30000)
+-		return IB_RATE_30_GBPS;
+-	else if (cmd.base.speed >= 20000)
+-		return IB_RATE_20_GBPS;
+-	else if (cmd.base.speed >= 10000)
+-		return IB_RATE_10_GBPS;
+-	else
+-		return IB_RATE_PORT_CURRENT;
+-}
+-
+ static inline int rdma_link_local_addr(struct in6_addr *addr)
+ {
+ 	if (addr->s6_addr32[0] == htonl(0xfe800000) &&
+-- 
+2.39.2
+
 
 
