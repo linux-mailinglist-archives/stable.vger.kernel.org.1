@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D2F573539F
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:47:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF797735213
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:30:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232064AbjFSKrD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:47:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47262 "EHLO
+        id S230000AbjFSKaN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:30:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231229AbjFSKqg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:46:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1947199
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:46:22 -0700 (PDT)
+        with ESMTP id S229807AbjFSKaM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:30:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFA1DC6
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:30:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 235BF60670
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:46:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38475C433C0;
-        Mon, 19 Jun 2023 10:46:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6CED460B5E
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:30:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D2BDC433C8;
+        Mon, 19 Jun 2023 10:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171581;
-        bh=ahAXRhV/3oHiZiSoG97CCtQGaiEaq5R07un1/Qqg/z8=;
+        s=korg; t=1687170610;
+        bh=Nf0sgHpLiHFr81n72nHj6LFAvUY7W1n5UsPyv7F0P9s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VrrzUvOPXV31OORNkHfPsOfje26tggoyEkn9oxFOojvoJv8nPmNFhm9MTOh1LQpkH
-         5/OgoMho9BWqLIKn3yBw0jGoATFQato/MG1+5pZlz8o483DO5tKAmLAofSykaUB3mG
-         6z23HlFbHk0snCQV9BOpWtyjGAjVgLgQ1jDre1Tw=
+        b=qlUoWaZoHDpOfAb34HtJ0B+qUah6cEZXOl4cEdgR0YknBV3bHrsVtY+YtV5/vMBEV
+         IjdIS4hkDWPbc+ioE8i+g8aZEwbpaPX/C1UslDN2kiWw6dLTpgWSEJ9t5cddZpteYd
+         Kb1gIPOxqFgee/fx0TT9O64EZlTS5P48QF13eV98=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+a694851c6ab28cbcfb9c@syzkaller.appspotmail.com,
-        Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 059/166] btrfs: do not ASSERT() on duplicated global roots
+        patches@lists.linux.dev, Liviu Dudau <liviu@dudau.co.uk>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 08/32] mips: Move initrd_start check after initrd address sanitisation.
 Date:   Mon, 19 Jun 2023 12:28:56 +0200
-Message-ID: <20230619102157.644306339@linuxfoundation.org>
+Message-ID: <20230619102127.933588052@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102127.461443957@linuxfoundation.org>
+References: <20230619102127.461443957@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,120 +55,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Qu Wenruo <wqu@suse.com>
+From: Liviu Dudau <liviu@dudau.co.uk>
 
-commit 745806fb4554f334e6406fa82b328562aa48f08f upstream.
+[ Upstream commit 4897a898a216058dec55e5e5902534e6e224fcdf ]
 
-[BUG]
-Syzbot reports a reproducible ASSERT() when using rescue=usebackuproot
-mount option on a corrupted fs.
+PAGE_OFFSET is technically a virtual address so when checking the value of
+initrd_start against it we should make sure that it has been sanitised from
+the values passed by the bootloader. Without this change, even with a bootloader
+that passes correct addresses for an initrd, we are failing to load it on MT7621
+boards, for example.
 
-The full report can be found here:
-https://syzkaller.appspot.com/bug?extid=c4614eae20a166c25bf0
-
-  BTRFS error (device loop0: state C): failed to load root csum
-  assertion failed: !tmp, in fs/btrfs/disk-io.c:1103
-  ------------[ cut here ]------------
-  kernel BUG at fs/btrfs/ctree.h:3664!
-  invalid opcode: 0000 [#1] PREEMPT SMP KASAN
-  CPU: 1 PID: 3608 Comm: syz-executor356 Not tainted 6.0.0-rc7-syzkaller-00029-g3800a713b607 #0
-  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/26/2022
-  RIP: 0010:assertfail+0x1a/0x1c fs/btrfs/ctree.h:3663
-  RSP: 0018:ffffc90003aaf250 EFLAGS: 00010246
-  RAX: 0000000000000032 RBX: 0000000000000000 RCX: f21c13f886638400
-  RDX: 0000000000000000 RSI: 0000000080000000 RDI: 0000000000000000
-  RBP: ffff888021c640a0 R08: ffffffff816bd38d R09: ffffed10173667f1
-  R10: ffffed10173667f1 R11: 1ffff110173667f0 R12: dffffc0000000000
-  R13: ffff8880229c21f7 R14: ffff888021c64060 R15: ffff8880226c0000
-  FS:  0000555556a73300(0000) GS:ffff8880b9b00000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 000055a2637d7a00 CR3: 00000000709c4000 CR4: 00000000003506e0
-  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  Call Trace:
-   <TASK>
-   btrfs_global_root_insert+0x1a7/0x1b0 fs/btrfs/disk-io.c:1103
-   load_global_roots_objectid+0x482/0x8c0 fs/btrfs/disk-io.c:2467
-   load_global_roots fs/btrfs/disk-io.c:2501 [inline]
-   btrfs_read_roots fs/btrfs/disk-io.c:2528 [inline]
-   init_tree_roots+0xccb/0x203c fs/btrfs/disk-io.c:2939
-   open_ctree+0x1e53/0x33df fs/btrfs/disk-io.c:3574
-   btrfs_fill_super+0x1c6/0x2d0 fs/btrfs/super.c:1456
-   btrfs_mount_root+0x885/0x9a0 fs/btrfs/super.c:1824
-   legacy_get_tree+0xea/0x180 fs/fs_context.c:610
-   vfs_get_tree+0x88/0x270 fs/super.c:1530
-   fc_mount fs/namespace.c:1043 [inline]
-   vfs_kern_mount+0xc9/0x160 fs/namespace.c:1073
-   btrfs_mount+0x3d3/0xbb0 fs/btrfs/super.c:1884
-
-[CAUSE]
-Since the introduction of global roots, we handle
-csum/extent/free-space-tree roots as global roots, even if no
-extent-tree-v2 feature is enabled.
-
-So for regular csum/extent/fst roots, we load them into
-fs_info::global_root_tree rb tree.
-
-And we should not expect any conflicts in that rb tree, thus we have an
-ASSERT() inside btrfs_global_root_insert().
-
-But rescue=usebackuproot can break the assumption, as we will try to
-load those trees again and again as long as we have bad roots and have
-backup roots slot remaining.
-
-So in that case we can have conflicting roots in the rb tree, and
-triggering the ASSERT() crash.
-
-[FIX]
-We can safely remove that ASSERT(), as the caller will properly put the
-offending root.
-
-To make further debugging easier, also add two explicit error messages:
-
-- Error message for conflicting global roots
-- Error message when using backup roots slot
-
-Reported-by: syzbot+a694851c6ab28cbcfb9c@syzkaller.appspotmail.com
-Fixes: abed4aaae4f7 ("btrfs: track the csum, extent, and free space trees in a rb tree")
-CC: stable@vger.kernel.org # 6.1+
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Liviu Dudau <liviu@dudau.co.uk>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/mips/kernel/setup.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -1098,13 +1098,18 @@ int btrfs_global_root_insert(struct btrf
- {
- 	struct btrfs_fs_info *fs_info = root->fs_info;
- 	struct rb_node *tmp;
-+	int ret = 0;
+diff --git a/arch/mips/kernel/setup.c b/arch/mips/kernel/setup.c
+index abd7ee9e90ab0..d205d3875e2c2 100644
+--- a/arch/mips/kernel/setup.c
++++ b/arch/mips/kernel/setup.c
+@@ -257,10 +257,6 @@ static unsigned long __init init_initrd(void)
+ 		pr_err("initrd start must be page aligned\n");
+ 		goto disable;
+ 	}
+-	if (initrd_start < PAGE_OFFSET) {
+-		pr_err("initrd start < PAGE_OFFSET\n");
+-		goto disable;
+-	}
  
- 	write_lock(&fs_info->global_root_lock);
- 	tmp = rb_find_add(&root->rb_node, &fs_info->global_root_tree, global_root_cmp);
- 	write_unlock(&fs_info->global_root_lock);
--	ASSERT(!tmp);
+ 	/*
+ 	 * Sanitize initrd addresses. For example firmware
+@@ -273,6 +269,11 @@ static unsigned long __init init_initrd(void)
+ 	initrd_end = (unsigned long)__va(end);
+ 	initrd_start = (unsigned long)__va(__pa(initrd_start));
  
--	return tmp ? -EEXIST : 0;
-+	if (tmp) {
-+		ret = -EEXIST;
-+		btrfs_warn(fs_info, "global root %llu %llu already exists",
-+				root->root_key.objectid, root->root_key.offset);
++	if (initrd_start < PAGE_OFFSET) {
++		pr_err("initrd start < PAGE_OFFSET\n");
++		goto disable;
 +	}
-+	return ret;
- }
- 
- void btrfs_global_root_delete(struct btrfs_root *root)
-@@ -2934,6 +2939,7 @@ static int __cold init_tree_roots(struct
- 			/* We can't trust the free space cache either */
- 			btrfs_set_opt(fs_info->mount_opt, CLEAR_CACHE);
- 
-+			btrfs_warn(fs_info, "try to load backup roots slot %d", i);
- 			ret = read_backup_root(fs_info, i);
- 			backup_index = ret;
- 			if (ret < 0)
++
+ 	ROOT_DEV = Root_RAM0;
+ 	return PFN_UP(end);
+ disable:
+-- 
+2.39.2
+
 
 
