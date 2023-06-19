@@ -2,43 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BB5D735294
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:36:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59336735346
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:43:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231814AbjFSKgf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:36:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42266 "EHLO
+        id S231883AbjFSKns (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:43:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231961AbjFSKgK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:36:10 -0400
+        with ESMTP id S231994AbjFSKn2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:43:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59FC910D8
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:35:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C4E7173D
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:43:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E441B60B58
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:35:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0955BC433C8;
-        Mon, 19 Jun 2023 10:35:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0E6C960B62
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:43:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285FBC433C8;
+        Mon, 19 Jun 2023 10:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687170955;
-        bh=mdbmSESeonHWN1aK4IwDHNYlhsoIxMfPZ0/Z6vaPIGE=;
+        s=korg; t=1687171384;
+        bh=PsRJJ5ZxMa7cs8GT5ohChX59MmmNPMIucMA3Mt/cmNs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u4bASEKqTHda8PA8FxWRkY/g/W7VMUMGvr+u3JWa+NMVlTlnL8RBEkP+IeHwFi9Op
-         ztAN+ARtgYh1ceQjQLM4MMHDLAYZVCB9FuzJniG7bPkyhxByJ8+1JLyfTPgiSpqJhS
-         /2T/NDrnOUZIee9Tu8BThC6Ui5ELuR6URYnnHUAA=
+        b=wPb7z2HcnDQYpAhys8gmykIcUh3OqgkbQRds0BtOkQhxrNty47KrNzvYcuYluJeMU
+         3aZXwDz1tE1wbhoeXYD0B4KdRfsAW1ZsHcCWfkkQC1FiFSV9LD5UcNFTeNU6su+1uG
+         tpIGlyINN/P0Wi0x8YD4HElHMTDkBK7NhgOqb1mM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.3 070/187] ALSA: usb-audio: Fix broken resume due to UAC3 power state
-Date:   Mon, 19 Jun 2023 12:28:08 +0200
-Message-ID: <20230619102201.040498478@linuxfoundation.org>
+        patches@lists.linux.dev, Orson Zhai <orsonzhai@gmail.com>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 012/166] power: supply: sc27xx: Fix external_power_changed race
+Date:   Mon, 19 Jun 2023 12:28:09 +0200
+Message-ID: <20230619102155.272755040@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+References: <20230619102154.568541872@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,47 +58,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 8ba61c9f6c9bdfbf9d197b0282641d24ae909778 upstream.
+[ Upstream commit 4d5c129d6c8993fe96e9ae712141eedcb9ca68c2 ]
 
-As reported in the bugzilla below, the PM resume of a UAC3 device may
-fail due to the incomplete power state change, stuck at D1.  The
-reason is that the driver expects the full D0 power state change only
-at hw_params, while the normal PCM resume procedure doesn't call
-hw_params.
+sc27xx_fgu_external_power_changed() dereferences data->battery,
+which gets sets in ab8500_btemp_probe() like this:
 
-For fixing the bug, we add the same power state update to D0 at the
-prepare callback, which is certainly called by the resume procedure.
+	data->battery = devm_power_supply_register(dev, &sc27xx_fgu_desc,
+                                                   &fgu_cfg);
 
-Note that, with this change, the power state change in the hw_params
-becomes almost redundant, since snd_usb_hw_params() doesn't touch the
-parameters (at least it tires so).  But dropping it is still a bit
-risky (e.g. we have the media-driver binding), so I leave the D0 power
-state change in snd_usb_hw_params() as is for now.
+As soon as devm_power_supply_register() has called device_add()
+the external_power_changed callback can get called. So there is a window
+where sc27xx_fgu_external_power_changed() may get called while
+data->battery has not been set yet leading to a NULL pointer dereference.
 
-Fixes: a0a4959eb4e9 ("ALSA: usb-audio: Operate UAC3 Power Domains in PCM callbacks")
-Cc: <stable@vger.kernel.org>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217539
-Link: https://lore.kernel.org/r/20230612132818.29486-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixing this is easy. The external_power_changed callback gets passed
+the power_supply which will eventually get stored in data->battery,
+so sc27xx_fgu_external_power_changed() can simply directly use
+the passed in psy argument which is always valid.
+
+After this change sc27xx_fgu_external_power_changed() is reduced to just
+"power_supply_changed(psy);" and it has the same prototype. While at it
+simply replace it with making the external_power_changed callback
+directly point to power_supply_changed.
+
+Cc: Orson Zhai <orsonzhai@gmail.com>
+Cc: Chunyan Zhang <zhang.lyra@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/pcm.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/power/supply/sc27xx_fuel_gauge.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
---- a/sound/usb/pcm.c
-+++ b/sound/usb/pcm.c
-@@ -650,6 +650,10 @@ static int snd_usb_pcm_prepare(struct sn
- 		goto unlock;
- 	}
+diff --git a/drivers/power/supply/sc27xx_fuel_gauge.c b/drivers/power/supply/sc27xx_fuel_gauge.c
+index 632977f84b954..bd23c4d9fed43 100644
+--- a/drivers/power/supply/sc27xx_fuel_gauge.c
++++ b/drivers/power/supply/sc27xx_fuel_gauge.c
+@@ -733,13 +733,6 @@ static int sc27xx_fgu_set_property(struct power_supply *psy,
+ 	return ret;
+ }
  
-+	ret = snd_usb_pcm_change_state(subs, UAC3_PD_STATE_D0);
-+	if (ret < 0)
-+		goto unlock;
-+
-  again:
- 	if (subs->sync_endpoint) {
- 		ret = snd_usb_endpoint_prepare(chip, subs->sync_endpoint);
+-static void sc27xx_fgu_external_power_changed(struct power_supply *psy)
+-{
+-	struct sc27xx_fgu_data *data = power_supply_get_drvdata(psy);
+-
+-	power_supply_changed(data->battery);
+-}
+-
+ static int sc27xx_fgu_property_is_writeable(struct power_supply *psy,
+ 					    enum power_supply_property psp)
+ {
+@@ -774,7 +767,7 @@ static const struct power_supply_desc sc27xx_fgu_desc = {
+ 	.num_properties		= ARRAY_SIZE(sc27xx_fgu_props),
+ 	.get_property		= sc27xx_fgu_get_property,
+ 	.set_property		= sc27xx_fgu_set_property,
+-	.external_power_changed	= sc27xx_fgu_external_power_changed,
++	.external_power_changed	= power_supply_changed,
+ 	.property_is_writeable	= sc27xx_fgu_property_is_writeable,
+ 	.no_thermal		= true,
+ };
+-- 
+2.39.2
+
 
 
