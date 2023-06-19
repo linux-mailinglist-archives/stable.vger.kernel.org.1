@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B5087353C4
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:48:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2578E73521C
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:30:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232090AbjFSKs2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:48:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52104 "EHLO
+        id S229730AbjFSKak (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:30:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229567AbjFSKsI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:48:08 -0400
+        with ESMTP id S231223AbjFSKah (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:30:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8CFA1BC9
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:47:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4F23CC
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:30:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4E96460A50
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:47:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6449CC433C8;
-        Mon, 19 Jun 2023 10:47:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4134E60B3E
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:30:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D55CC433C8;
+        Mon, 19 Jun 2023 10:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171657;
-        bh=E2lpTGPZ7rvR7MuQPEYvXmAOO1DAY8csw6d3kblZGKA=;
+        s=korg; t=1687170633;
+        bh=BLnny9P80DTsbVfPIMz2veYcJo9yC4WgQAKsJewoqFU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E+53r5wFKdE2qOv4b3yNk/UQzKrLGZ5Ayjyfd4NAi98DQ8VTt9wLWkWGS5m5EpLi/
-         M8wu/AH99A0BsvGfRESzHEFPZ6ucEgPqkIwce/Acc5ZWp/atcIJUq02NCAMZXYJMH/
-         2t+ZED2sIAAr6QdSA+iuNNL2meSoVHC33+T7MXAM=
+        b=QZvMKTYpmfhxCgbo/7wAnHMK0p1v+miquN8RkdtbFct0ljy8QasNbqfQkYcu1TlJz
+         zHqCYSaSwhhrxM34l4PCXpC2UbRslP7ffxR3d8aHhfA+n/U1SxrXuSVxTRyHePiBqg
+         faqDgOymU4yK1EGzy7uY6DJ+8GmnipyuEACEoiro=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephan Bolten <stephan.bolten@gmx.net>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.1 083/166] usb: typec: ucsi: Fix command cancellation
+        patches@lists.linux.dev, Christian Loehle <cloehle@hyperstone.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 4.14 32/32] mmc: block: ensure error propagation for non-blk
 Date:   Mon, 19 Jun 2023 12:29:20 +0200
-Message-ID: <20230619102158.838226760@linuxfoundation.org>
+Message-ID: <20230619102129.248431251@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102127.461443957@linuxfoundation.org>
+References: <20230619102127.461443957@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,51 +55,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+From: Christian Loehle <CLoehle@hyperstone.com>
 
-commit c4a8bfabefed706bb9150867db528ceefd5cb5fe upstream.
+commit 003fb0a51162d940f25fc35e70b0996a12c9e08a upstream.
 
-The Cancel command was passed to the write callback as the
-offset instead of as the actual command which caused NULL
-pointer dereference.
+Requests to the mmc layer usually come through a block device IO.
+The exceptions are the ioctl interface, RPMB chardev ioctl
+and debugfs, which issue their own blk_mq requests through
+blk_execute_rq and do not query the BLK_STS error but the
+mmcblk-internal drv_op_result. This patch ensures that drv_op_result
+defaults to an error and has to be overwritten by the operation
+to be considered successful.
 
-Reported-by: Stephan Bolten <stephan.bolten@gmx.net>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217517
-Fixes: 094902bc6a3c ("usb: typec: ucsi: Always cancel the command if PPM reports BUSY condition")
+The behavior leads to a bug where the request never propagates
+the error, e.g. by directly erroring out at mmc_blk_mq_issue_rq if
+mmc_blk_part_switch fails. The ioctl caller of the rpmb chardev then
+can never see an error (BLK_STS_IOERR, but drv_op_result is unchanged)
+and thus may assume that their call executed successfully when it did not.
+
+While always checking the blk_execute_rq return value would be
+advised, let's eliminate the error by always setting
+drv_op_result as -EIO to be overwritten on success (or other error)
+
+Fixes: 614f0388f580 ("mmc: block: move single ioctl() commands to block requests")
+Signed-off-by: Christian Loehle <cloehle@hyperstone.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Message-ID: <20230606115802.79339-1-heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/59c17ada35664b818b7bd83752119b2d@hyperstone.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Christian Loehle <cloehle@hyperstone.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/mmc/core/block.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -132,10 +132,8 @@ static int ucsi_exec_command(struct ucsi
- 	if (ret)
- 		return ret;
- 
--	if (cci & UCSI_CCI_BUSY) {
--		ucsi->ops->async_write(ucsi, UCSI_CANCEL, NULL, 0);
--		return -EBUSY;
--	}
-+	if (cmd != UCSI_CANCEL && cci & UCSI_CCI_BUSY)
-+		return ucsi_exec_command(ucsi, UCSI_CANCEL);
- 
- 	if (!(cci & UCSI_CCI_COMMAND_COMPLETE))
- 		return -EIO;
-@@ -149,6 +147,11 @@ static int ucsi_exec_command(struct ucsi
- 		return ucsi_read_error(ucsi);
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -243,6 +243,7 @@ static ssize_t power_ro_lock_store(struc
+ 		goto out_put;
  	}
- 
-+	if (cmd == UCSI_CANCEL && cci & UCSI_CCI_CANCEL_COMPLETE) {
-+		ret = ucsi_acknowledge_command(ucsi);
-+		return ret ? ret : -EBUSY;
-+	}
-+
- 	return UCSI_CCI_LENGTH(cci);
- }
- 
+ 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_BOOT_WP;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	blk_execute_rq(mq->queue, NULL, req, 0);
+ 	ret = req_to_mmc_queue_req(req)->drv_op_result;
+ 	blk_put_request(req);
+@@ -671,6 +672,7 @@ static int mmc_blk_ioctl_cmd(struct mmc_
+ 	idatas[0] = idata;
+ 	req_to_mmc_queue_req(req)->drv_op =
+ 		rpmb ? MMC_DRV_OP_IOCTL_RPMB : MMC_DRV_OP_IOCTL;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	req_to_mmc_queue_req(req)->drv_op_data = idatas;
+ 	req_to_mmc_queue_req(req)->ioc_count = 1;
+ 	blk_execute_rq(mq->queue, NULL, req, 0);
+@@ -741,6 +743,7 @@ static int mmc_blk_ioctl_multi_cmd(struc
+ 	}
+ 	req_to_mmc_queue_req(req)->drv_op =
+ 		rpmb ? MMC_DRV_OP_IOCTL_RPMB : MMC_DRV_OP_IOCTL;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	req_to_mmc_queue_req(req)->drv_op_data = idata;
+ 	req_to_mmc_queue_req(req)->ioc_count = num_of_cmds;
+ 	blk_execute_rq(mq->queue, NULL, req, 0);
+@@ -2590,6 +2593,7 @@ static int mmc_dbg_card_status_get(void
+ 	if (IS_ERR(req))
+ 		return PTR_ERR(req);
+ 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_GET_CARD_STATUS;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	blk_execute_rq(mq->queue, NULL, req, 0);
+ 	ret = req_to_mmc_queue_req(req)->drv_op_result;
+ 	if (ret >= 0) {
+@@ -2628,6 +2632,7 @@ static int mmc_ext_csd_open(struct inode
+ 		goto out_free;
+ 	}
+ 	req_to_mmc_queue_req(req)->drv_op = MMC_DRV_OP_GET_EXT_CSD;
++	req_to_mmc_queue_req(req)->drv_op_result = -EIO;
+ 	req_to_mmc_queue_req(req)->drv_op_data = &ext_csd;
+ 	blk_execute_rq(mq->queue, NULL, req, 0);
+ 	err = req_to_mmc_queue_req(req)->drv_op_result;
 
 
