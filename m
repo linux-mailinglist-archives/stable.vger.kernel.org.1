@@ -2,50 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71A52734BDF
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 08:51:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ABA6734BE5
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 08:54:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230058AbjFSGva (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 02:51:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49836 "EHLO
+        id S229798AbjFSGyM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 02:54:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229779AbjFSGv3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 02:51:29 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F33B713D;
-        Sun, 18 Jun 2023 23:51:27 -0700 (PDT)
-Received: from dggpemm500014.china.huawei.com (unknown [172.30.72.55])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4Ql0m93YPPz1GDDs;
-        Mon, 19 Jun 2023 14:51:21 +0800 (CST)
-Received: from localhost.localdomain (10.175.112.125) by
- dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Mon, 19 Jun 2023 14:51:25 +0800
-From:   Wupeng Ma <mawupeng1@huawei.com>
-To:     <akpm@linux-foundation.org>, <david@redhat.com>,
-        <gregkh@linuxfoundation.org>
-CC:     <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-        <mawupeng1@huawei.com>, <stable@vger.kernel.org>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-        Michal Hocko <mhocko@kernel.org>,
-        Oscar Salvador <osalvador@suse.de>
-Subject: [PATCH stable 5.10] mm/memory_hotplug: extend offline_and_remove_memory() to handle more than one memory block
-Date:   Mon, 19 Jun 2023 14:51:21 +0800
-Message-ID: <20230619065121.1720912-1-mawupeng1@huawei.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cd9688dc-a716-3031-489e-a867df0d1ea2@huawei.com>
-References: <cd9688dc-a716-3031-489e-a867df0d1ea2@huawei.com>
+        with ESMTP id S229673AbjFSGyL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 02:54:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C84A9C6
+        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 23:54:10 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 64988614D1
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 06:54:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4009BC433C8;
+        Mon, 19 Jun 2023 06:54:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1687157649;
+        bh=Dh3Vo4qK+TMC0uh3THMvQTut9U6Xabfg6I4v78yfCB8=;
+        h=Subject:To:Cc:From:Date:From;
+        b=FiV60y2XVCVLREdAp8ep5nGDVXbi4nH9a2Oh7gxKl651I5BlwiftZ9Fw5rFH2FZaF
+         4R+c6RHTIGX0GfFQOmv/gXm0D4X8ik+oi9Oq4lebScil4eT7T2HIpI4jhC5BsXlJlE
+         2mViOdK0iVSq5af5EKL2ZHB64gHVYFOiDSXJaT2c=
+Subject: FAILED: patch "[PATCH] wifi: iwlwifi: mvm: spin_lock_bh() to fix lockdep regression" failed to apply to 6.3-stable tree
+To:     hughd@google.com, johannes.berg@intel.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Mon, 19 Jun 2023 08:54:05 +0200
+Message-ID: <2023061905-bonelike-reorder-8961@gregkh>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.112.125]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemm500014.china.huawei.com (7.185.36.153)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,187 +48,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: David Hildenbrand <david@redhat.com>
 
-commit 8dc4bb58a146655eb057247d7c9d19e73928715b upstream.
+The patch below does not apply to the 6.3-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-virtio-mem soon wants to use offline_and_remove_memory() memory that
-exceeds a single Linux memory block (memory_block_size_bytes()). Let's
-remove that restriction.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Let's remember the old state and try to restore that if anything goes
-wrong. While re-onlining can, in general, fail, it's highly unlikely to
-happen (usually only when a notifier fails to allocate memory, and these
-are rather rare).
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.3.y
+git checkout FETCH_HEAD
+git cherry-pick -x f1a0898b5d6a77d332d036da03bad6fa9770de5b
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061905-bonelike-reorder-8961@gregkh' --subject-prefix 'PATCH 6.3.y' HEAD^..
 
-This will be used by virtio-mem to offline+remove memory ranges that are
-bigger than a single memory block - for example, with a device block
-size of 1 GiB (e.g., gigantic pages in the hypervisor) and a Linux memory
-block size of 128MB.
+Possible dependencies:
 
-While we could compress the state into 2 bit, using 8 bit is much
-easier.
 
-This handling is similar, but different to acpi_scan_try_to_offline():
 
-a) We don't try to offline twice. I am not sure if this CONFIG_MEMCG
-optimization is still relevant - it should only apply to ZONE_NORMAL
-(where we have no guarantees). If relevant, we can always add it.
+thanks,
 
-b) acpi_scan_try_to_offline() simply onlines all memory in case
-something goes wrong. It doesn't restore previous online type. Let's do
-that, so we won't overwrite what e.g., user space configured.
+greg k-h
 
-Reviewed-by: Wei Yang <richard.weiyang@linux.alibaba.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Link: https://lore.kernel.org/r/20201112133815.13332-28-david@redhat.com
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
----
- mm/memory_hotplug.c | 105 +++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 89 insertions(+), 16 deletions(-)
+------------------ original commit in Linus's tree ------------------
 
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index f0633f9a9116..9ec9e1e67705 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1788,39 +1788,112 @@ int remove_memory(int nid, u64 start, u64 size)
- }
- EXPORT_SYMBOL_GPL(remove_memory);
+From f1a0898b5d6a77d332d036da03bad6fa9770de5b Mon Sep 17 00:00:00 2001
+From: Hugh Dickins <hughd@google.com>
+Date: Fri, 9 Jun 2023 14:29:39 -0700
+Subject: [PATCH] wifi: iwlwifi: mvm: spin_lock_bh() to fix lockdep regression
+
+Lockdep on 6.4-rc on ThinkPad X1 Carbon 5th says
+=====================================================
+WARNING: SOFTIRQ-safe -> SOFTIRQ-unsafe lock order detected
+6.4.0-rc5 #1 Not tainted
+-----------------------------------------------------
+kworker/3:1/49 [HC0[0]:SC0[4]:HE1:SE0] is trying to acquire:
+ffff8881066fa368 (&mvm_sta->deflink.lq_sta.rs_drv.pers.lock){+.+.}-{2:2}, at: rs_drv_get_rate+0x46/0xe7
+
+and this task is already holding:
+ffff8881066f80a8 (&sta->rate_ctrl_lock){+.-.}-{2:2}, at: rate_control_get_rate+0xbd/0x126
+which would create a new lock dependency:
+ (&sta->rate_ctrl_lock){+.-.}-{2:2} -> (&mvm_sta->deflink.lq_sta.rs_drv.pers.lock){+.+.}-{2:2}
+
+but this new dependency connects a SOFTIRQ-irq-safe lock:
+ (&sta->rate_ctrl_lock){+.-.}-{2:2}
+etc. etc. etc.
+
+Changing the spin_lock() in rs_drv_get_rate() to spin_lock_bh() was not
+enough to pacify lockdep, but changing them all on pers.lock has worked.
+
+Fixes: a8938bc881d2 ("wifi: iwlwifi: mvm: Add locking to the rate read flow")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Link: https://lore.kernel.org/r/79ffcc22-9775-cb6d-3ffd-1a517c40beef@google.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
+index 23266d0c9ce4..9a20468345e4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.c
+@@ -2692,7 +2692,7 @@ static void rs_drv_get_rate(void *mvm_r, struct ieee80211_sta *sta,
  
-+static int try_offline_memory_block(struct memory_block *mem, void *arg)
-+{
-+	uint8_t online_type = MMOP_ONLINE_KERNEL;
-+	uint8_t **online_types = arg;
-+	struct page *page;
-+	int rc;
-+
-+	/*
-+	 * Sense the online_type via the zone of the memory block. Offlining
-+	 * with multiple zones within one memory block will be rejected
-+	 * by offlining code ... so we don't care about that.
-+	 */
-+	page = pfn_to_online_page(section_nr_to_pfn(mem->start_section_nr));
-+	if (page && zone_idx(page_zone(page)) == ZONE_MOVABLE)
-+		online_type = MMOP_ONLINE_MOVABLE;
-+
-+	rc = device_offline(&mem->dev);
-+	/*
-+	 * Default is MMOP_OFFLINE - change it only if offlining succeeded,
-+	 * so try_reonline_memory_block() can do the right thing.
-+	 */
-+	if (!rc)
-+		**online_types = online_type;
-+
-+	(*online_types)++;
-+	/* Ignore if already offline. */
-+	return rc < 0 ? rc : 0;
-+}
-+
-+static int try_reonline_memory_block(struct memory_block *mem, void *arg)
-+{
-+	uint8_t **online_types = arg;
-+	int rc;
-+
-+	if (**online_types != MMOP_OFFLINE) {
-+		mem->online_type = **online_types;
-+		rc = device_online(&mem->dev);
-+		if (rc < 0)
-+			pr_warn("%s: Failed to re-online memory: %d",
-+				__func__, rc);
-+	}
-+
-+	/* Continue processing all remaining memory blocks. */
-+	(*online_types)++;
-+	return 0;
-+}
-+
- /*
-- * Try to offline and remove a memory block. Might take a long time to
-- * finish in case memory is still in use. Primarily useful for memory devices
-- * that logically unplugged all memory (so it's no longer in use) and want to
-- * offline + remove the memory block.
-+ * Try to offline and remove memory. Might take a long time to finish in case
-+ * memory is still in use. Primarily useful for memory devices that logically
-+ * unplugged all memory (so it's no longer in use) and want to offline + remove
-+ * that memory.
-  */
- int offline_and_remove_memory(int nid, u64 start, u64 size)
- {
--	struct memory_block *mem;
--	int rc = -EINVAL;
-+	const unsigned long mb_count = size / memory_block_size_bytes();
-+	uint8_t *online_types, *tmp;
-+	int rc;
+ 	lq_sta = mvm_sta;
  
- 	if (!IS_ALIGNED(start, memory_block_size_bytes()) ||
--	    size != memory_block_size_bytes())
--		return rc;
-+	    !IS_ALIGNED(size, memory_block_size_bytes()) || !size)
-+		return -EINVAL;
-+
-+	/*
-+	 * We'll remember the old online type of each memory block, so we can
-+	 * try to revert whatever we did when offlining one memory block fails
-+	 * after offlining some others succeeded.
-+	 */
-+	online_types = kmalloc_array(mb_count, sizeof(*online_types),
-+				     GFP_KERNEL);
-+	if (!online_types)
-+		return -ENOMEM;
-+	/*
-+	 * Initialize all states to MMOP_OFFLINE, so when we abort processing in
-+	 * try_offline_memory_block(), we'll skip all unprocessed blocks in
-+	 * try_reonline_memory_block().
-+	 */
-+	memset(online_types, MMOP_OFFLINE, mb_count);
- 
- 	lock_device_hotplug();
--	mem = find_memory_block(__pfn_to_section(PFN_DOWN(start)));
--	if (mem)
--		rc = device_offline(&mem->dev);
--	/* Ignore if the device is already offline. */
--	if (rc > 0)
--		rc = 0;
-+
-+	tmp = online_types;
-+	rc = walk_memory_blocks(start, size, &tmp, try_offline_memory_block);
- 
- 	/*
--	 * In case we succeeded to offline the memory block, remove it.
-+	 * In case we succeeded to offline all memory, remove it.
- 	 * This cannot fail as it cannot get onlined in the meantime.
- 	 */
- 	if (!rc) {
- 		rc = try_remove_memory(nid, start, size);
--		WARN_ON_ONCE(rc);
-+		if (rc)
-+			pr_err("%s: Failed to remove memory: %d", __func__, rc);
-+	}
-+
-+	/*
-+	 * Rollback what we did. While memory onlining might theoretically fail
-+	 * (nacked by a notifier), it barely ever happens.
-+	 */
-+	if (rc) {
-+		tmp = online_types;
-+		walk_memory_blocks(start, size, &tmp,
-+				   try_reonline_memory_block);
+-	spin_lock(&lq_sta->pers.lock);
++	spin_lock_bh(&lq_sta->pers.lock);
+ 	iwl_mvm_hwrate_to_tx_rate_v1(lq_sta->last_rate_n_flags,
+ 				     info->band, &info->control.rates[0]);
+ 	info->control.rates[0].count = 1;
+@@ -2707,7 +2707,7 @@ static void rs_drv_get_rate(void *mvm_r, struct ieee80211_sta *sta,
+ 		iwl_mvm_hwrate_to_tx_rate_v1(last_ucode_rate, info->band,
+ 					     &txrc->reported_rate);
  	}
- 	unlock_device_hotplug();
- 
-+	kfree(online_types);
- 	return rc;
+-	spin_unlock(&lq_sta->pers.lock);
++	spin_unlock_bh(&lq_sta->pers.lock);
  }
- EXPORT_SYMBOL_GPL(offline_and_remove_memory);
--- 
-2.25.1
+ 
+ static void *rs_drv_alloc_sta(void *mvm_rate, struct ieee80211_sta *sta,
+@@ -3264,11 +3264,11 @@ void iwl_mvm_rs_tx_status(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
+ 	/* If it's locked we are in middle of init flow
+ 	 * just wait for next tx status to update the lq_sta data
+ 	 */
+-	if (!spin_trylock(&mvmsta->deflink.lq_sta.rs_drv.pers.lock))
++	if (!spin_trylock_bh(&mvmsta->deflink.lq_sta.rs_drv.pers.lock))
+ 		return;
+ 
+ 	__iwl_mvm_rs_tx_status(mvm, sta, tid, info, ndp);
+-	spin_unlock(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
++	spin_unlock_bh(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
+ }
+ 
+ #ifdef CONFIG_MAC80211_DEBUGFS
+@@ -4117,9 +4117,9 @@ void iwl_mvm_rs_rate_init(struct iwl_mvm *mvm,
+ 	} else {
+ 		struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
+ 
+-		spin_lock(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
++		spin_lock_bh(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
+ 		rs_drv_rate_init(mvm, sta, band);
+-		spin_unlock(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
++		spin_unlock_bh(&mvmsta->deflink.lq_sta.rs_drv.pers.lock);
+ 	}
+ }
+ 
 
