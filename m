@@ -2,309 +2,137 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1567734BF0
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 08:55:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 270D0734C08
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 09:03:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229754AbjFSGzB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 02:55:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51280 "EHLO
+        id S229849AbjFSHDT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 03:03:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229806AbjFSGy7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 02:54:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6F781A4
-        for <stable@vger.kernel.org>; Sun, 18 Jun 2023 23:54:57 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 83DA6614D9
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 06:54:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A7CC433C8;
-        Mon, 19 Jun 2023 06:54:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687157696;
-        bh=cuI8Y6MR5tf8xGELkEzeWZQADG4mPc5rlgH8CEW64mA=;
-        h=Subject:To:Cc:From:Date:From;
-        b=FBDjtqziB5Ky8D392sFnhhVJTxDHnuV51CQVE60BNO8BsYyTwHlU1wltHIaYze+Ug
-         oWKG34cE3jddgg6Gs9fLTAdQteO8r79LB2zwsEZyMuNNGzcqgn8+xOUJAY+G2qnkOQ
-         GlrbuDzjyPxtHwLiY3QHQ0id8Dvsi/rAXOqAGxJk=
-Subject: FAILED: patch "[PATCH] net/sched: qdisc_destroy() old ingress and clsact Qdiscs" failed to apply to 5.4-stable tree
-To:     peilin.ye@bytedance.com, hdanton@sina.com, jhs@mojatatu.com,
-        pabeni@redhat.com, vladbu@mellanox.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 19 Jun 2023 08:54:49 +0200
-Message-ID: <2023061948-emerald-clamor-35c8@gregkh>
+        with ESMTP id S229571AbjFSHDS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 03:03:18 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92C291A4
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 00:03:17 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-985b04c47c3so439833566b.1
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 00:03:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=grsecurity.net; s=grsec; t=1687158196; x=1689750196;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=q3rqfHA0Nd19rgAWfp2F5qidNzud1h37rmbnwQb682o=;
+        b=TGQDNU0BpqGYdHGjy6BrrzEce5pZhCjmiFId+J7p3+ABmZTiOJTNg1QcGRDkgGhylR
+         9C0/AzW3S/Y6Pty3mgwSXw5mA0AUtuxM3I67N1yIJkAmNHw8H/HhHaixgCEs95JVdwCM
+         W1naNHiVgkZ32W/m1Ykl7HZI+bmpXUhzCXv123nuskQVmdXG8Pi/upKUT3QiTBQ3zaec
+         M3KLb+gkZf66b6GLtBOAo6lfxQrcOKpUt4st9hsgD34IvGRFS13FnxL713rnafk4qtmc
+         MwAbAX6vz+qnIkf4aiO5yWnLd4CIlKcOHSE/stGSW79QTo2x5YOQN7JIbLHjFf5aJNkC
+         T15w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687158196; x=1689750196;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=q3rqfHA0Nd19rgAWfp2F5qidNzud1h37rmbnwQb682o=;
+        b=UknszWT5uYnxCJfQuP05kGGbzKe67Ig+cwHtE6gQvoWteNMDwpgH6tq8G3IWWWYvCI
+         5WMs1b1TbsAWOIszDGTL/D2w3AYIDR5K2C505PJSQl91RV4E4dZpa4XU+YzkQ1N7VVUW
+         tDDc0vQqZtAzNyiEzlcQEijTeDKQxajC2jetZi48nEZwN3zswEGkZswSORyX4BsJW9nk
+         Z+vf8y5VeGxuK9u0Wxj6yC+OFTrx031XHcBBGcsZKqYuJUvwik+3aq5zTpw/GOnnFcyH
+         G8DpGVCHO19V3hqSyNX6uZDeT4GhZYyYdAe3STVNY/153t9DQakKMOqNXknZ4ax9xFZw
+         pgLA==
+X-Gm-Message-State: AC+VfDxj9eShibj6j43+5I/ODDjnBKT4paH9sGMhblPJcVE7K5Jam0v4
+        aufHC6mpOe7UnrMpg3pWxfxkAHareGobmKnt9lU=
+X-Google-Smtp-Source: ACHHUZ74DXiBzeGvqRXm3wJinBjsQHDL9fxXFtrROkbzhJ1C0WjNOxrr2DIcDghun9+0rHpM3Y4WgA==
+X-Received: by 2002:a17:907:1b0b:b0:978:90cc:bf73 with SMTP id mp11-20020a1709071b0b00b0097890ccbf73mr7230696ejc.48.1687158195918;
+        Mon, 19 Jun 2023 00:03:15 -0700 (PDT)
+Received: from ?IPV6:2003:f6:af18:b100:f20f:c000:6662:fd49? (p200300f6af18b100f20fc0006662fd49.dip0.t-ipconnect.de. [2003:f6:af18:b100:f20f:c000:6662:fd49])
+        by smtp.gmail.com with ESMTPSA id p4-20020a1709060dc400b0096f937b0d3esm14220377eji.3.2023.06.19.00.03.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Jun 2023 00:03:15 -0700 (PDT)
+Message-ID: <2d6def18-58d4-6a24-22ab-9fd065809e7f@grsecurity.net>
+Date:   Mon, 19 Jun 2023 09:03:14 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH] tick/common: Align tick period during sched_timer setup.
+To:     Greg KH <gregkh@linuxfoundation.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc:     Luiz Capitulino <luizcap@amazon.com>,
+        Sven-Haegar Koch <haegar@sdinet.de>,
+        "Bhatnagar, Rishabh" <risbhat@amazon.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "sashal@kernel.org" <sashal@kernel.org>, abuehaze@amazon.com,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>
+References: <12c6f9a3-d087-b824-0d05-0d18c9bc1bf3@amazon.com>
+ <c4724b40-89f6-5aa7-720d-c4a4af57cf45@amazon.com>
+ <2023061428-compacter-economic-b648@gregkh>
+ <20230614092045.tNY8USjq@linutronix.de>
+ <4c4178a1-1050-ced4-e6fb-f95c3bdefc98@amazon.com>
+ <2a3fa097-8ba0-5b0e-f506-779fee5b8fef@sdinet.de>
+ <f5d2cc62-4aae-2579-1468-2e6e389f28dc@amazon.com>
+ <23fb8ad7-beb0-ae1c-fa5a-a682a57f79b0@grsecurity.net>
+ <20230615091830.RxMV2xf_@linutronix.de>
+ <2023061944-uprising-applaud-990a@gregkh>
+Content-Language: en-US, de-DE
+From:   Mathias Krause <minipli@grsecurity.net>
+In-Reply-To: <2023061944-uprising-applaud-990a@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 19.06.23 08:18, Greg KH wrote:
+> On Thu, Jun 15, 2023 at 11:18:30AM +0200, Sebastian Andrzej Siewior wrote:
+>> From: Thomas Gleixner <tglx@linutronix.de>
+>>
+>> The tick period is aligned very early while the first clock_event_device
+>> is registered. The system runs in periodic mode and switches later to
+>> one-shot mode if possible.
+>>
+>> The next wake-up event is programmed based on aligned value
+>> (tick_next_period) but the delta value, that is used to program the
+>> clock_event_device, is computed based on ktime_get().
+>>
+>> With the subtracted offset, the devices fires in less than the exacted
+>> time frame. With a large enough offset the system programs the timer for
+>> the next wake-up and the remaining time left is too little to make any
+>> boot progress. The system hangs.
+>>
+>> Move the alignment later to the setup of tick_sched timer. At this point
+>> the system switches to oneshot mode and a highres clocksource is
+>> available. It safe to update tick_next_period ktime_get() will now
+>> return accurate (not jiffies based) time.
+>>
+>> [bigeasy: Patch description + testing].
+>>
+>> Reported-by: Mathias Krause <minipli@grsecurity.net>
+>> Reported-by: "Bhatnagar, Rishabh" <risbhat@amazon.com>
+>> Fixes: e9523a0d81899 ("tick/common: Align tick period with the HZ tick.")
+>> Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+>> Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+>> Link: https://lore.kernel.org/5a56290d-806e-b9a5-f37c-f21958b5a8c0@grsecurity.net
+>> Link: https://lore.kernel.org/12c6f9a3-d087-b824-0d05-0d18c9bc1bf3@amazon.com
+>> ---
+>>  kernel/time/tick-common.c | 11 +----------
+>>  kernel/time/tick-sched.c  | 13 ++++++++++++-
+>>  2 files changed, 13 insertions(+), 11 deletions(-)
+> 
+> What's the status of this fix, I didn't see it in -rc7, am I looking in
+> the wrong place?
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+It's in the tip tree since Friday, but yeah, no pull request yet:
 
-To reproduce the conflict and resubmit, you may use the following commands:
+https://git.kernel.org/tip/13bb06f8dd42
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x 84ad0af0bccd3691cb951c2974c5cb2c10594d4a
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023061948-emerald-clamor-35c8@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 84ad0af0bccd3691cb951c2974c5cb2c10594d4a Mon Sep 17 00:00:00 2001
-From: Peilin Ye <peilin.ye@bytedance.com>
-Date: Sat, 10 Jun 2023 20:30:25 -0700
-Subject: [PATCH] net/sched: qdisc_destroy() old ingress and clsact Qdiscs
- before grafting
-
-mini_Qdisc_pair::p_miniq is a double pointer to mini_Qdisc, initialized
-in ingress_init() to point to net_device::miniq_ingress.  ingress Qdiscs
-access this per-net_device pointer in mini_qdisc_pair_swap().  Similar
-for clsact Qdiscs and miniq_egress.
-
-Unfortunately, after introducing RTNL-unlocked RTM_{NEW,DEL,GET}TFILTER
-requests (thanks Hillf Danton for the hint), when replacing ingress or
-clsact Qdiscs, for example, the old Qdisc ("@old") could access the same
-miniq_{in,e}gress pointer(s) concurrently with the new Qdisc ("@new"),
-causing race conditions [1] including a use-after-free bug in
-mini_qdisc_pair_swap() reported by syzbot:
-
- BUG: KASAN: slab-use-after-free in mini_qdisc_pair_swap+0x1c2/0x1f0 net/sched/sch_generic.c:1573
- Write of size 8 at addr ffff888045b31308 by task syz-executor690/14901
-...
- Call Trace:
-  <TASK>
-  __dump_stack lib/dump_stack.c:88 [inline]
-  dump_stack_lvl+0xd9/0x150 lib/dump_stack.c:106
-  print_address_description.constprop.0+0x2c/0x3c0 mm/kasan/report.c:319
-  print_report mm/kasan/report.c:430 [inline]
-  kasan_report+0x11c/0x130 mm/kasan/report.c:536
-  mini_qdisc_pair_swap+0x1c2/0x1f0 net/sched/sch_generic.c:1573
-  tcf_chain_head_change_item net/sched/cls_api.c:495 [inline]
-  tcf_chain0_head_change.isra.0+0xb9/0x120 net/sched/cls_api.c:509
-  tcf_chain_tp_insert net/sched/cls_api.c:1826 [inline]
-  tcf_chain_tp_insert_unique net/sched/cls_api.c:1875 [inline]
-  tc_new_tfilter+0x1de6/0x2290 net/sched/cls_api.c:2266
-...
-
-@old and @new should not affect each other.  In other words, @old should
-never modify miniq_{in,e}gress after @new, and @new should not update
-@old's RCU state.
-
-Fixing without changing sch_api.c turned out to be difficult (please
-refer to Closes: for discussions).  Instead, make sure @new's first call
-always happen after @old's last call (in {ingress,clsact}_destroy()) has
-finished:
-
-In qdisc_graft(), return -EBUSY if @old has any ongoing filter requests,
-and call qdisc_destroy() for @old before grafting @new.
-
-Introduce qdisc_refcount_dec_if_one() as the counterpart of
-qdisc_refcount_inc_nz() used for filter requests.  Introduce a
-non-static version of qdisc_destroy() that does a TCQ_F_BUILTIN check,
-just like qdisc_put() etc.
-
-Depends on patch "net/sched: Refactor qdisc_graft() for ingress and
-clsact Qdiscs".
-
-[1] To illustrate, the syzkaller reproducer adds ingress Qdiscs under
-TC_H_ROOT (no longer possible after commit c7cfbd115001 ("net/sched:
-sch_ingress: Only create under TC_H_INGRESS")) on eth0 that has 8
-transmission queues:
-
-  Thread 1 creates ingress Qdisc A (containing mini Qdisc a1 and a2),
-  then adds a flower filter X to A.
-
-  Thread 2 creates another ingress Qdisc B (containing mini Qdisc b1 and
-  b2) to replace A, then adds a flower filter Y to B.
-
- Thread 1               A's refcnt   Thread 2
-  RTM_NEWQDISC (A, RTNL-locked)
-   qdisc_create(A)               1
-   qdisc_graft(A)                9
-
-  RTM_NEWTFILTER (X, RTNL-unlocked)
-   __tcf_qdisc_find(A)          10
-   tcf_chain0_head_change(A)
-   mini_qdisc_pair_swap(A) (1st)
-            |
-            |                         RTM_NEWQDISC (B, RTNL-locked)
-         RCU sync                2     qdisc_graft(B)
-            |                    1     notify_and_destroy(A)
-            |
-   tcf_block_release(A)          0    RTM_NEWTFILTER (Y, RTNL-unlocked)
-   qdisc_destroy(A)                    tcf_chain0_head_change(B)
-   tcf_chain0_head_change_cb_del(A)    mini_qdisc_pair_swap(B) (2nd)
-   mini_qdisc_pair_swap(A) (3rd)                |
-           ...                                 ...
-
-Here, B calls mini_qdisc_pair_swap(), pointing eth0->miniq_ingress to
-its mini Qdisc, b1.  Then, A calls mini_qdisc_pair_swap() again during
-ingress_destroy(), setting eth0->miniq_ingress to NULL, so ingress
-packets on eth0 will not find filter Y in sch_handle_ingress().
-
-This is just one of the possible consequences of concurrently accessing
-miniq_{in,e}gress pointers.
-
-Fixes: 7a096d579e8e ("net: sched: ingress: set 'unlocked' flag for Qdisc ops")
-Fixes: 87f373921c4e ("net: sched: ingress: set 'unlocked' flag for clsact Qdisc ops")
-Reported-by: syzbot+b53a9c0d1ea4ad62da8b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/r/0000000000006cf87705f79acf1a@google.com/
-Cc: Hillf Danton <hdanton@sina.com>
-Cc: Vlad Buslov <vladbu@mellanox.com>
-Signed-off-by: Peilin Ye <peilin.ye@bytedance.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-
-diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
-index 27271f2b37cb..12eadecf8cd0 100644
---- a/include/net/sch_generic.h
-+++ b/include/net/sch_generic.h
-@@ -137,6 +137,13 @@ static inline void qdisc_refcount_inc(struct Qdisc *qdisc)
- 	refcount_inc(&qdisc->refcnt);
- }
- 
-+static inline bool qdisc_refcount_dec_if_one(struct Qdisc *qdisc)
-+{
-+	if (qdisc->flags & TCQ_F_BUILTIN)
-+		return true;
-+	return refcount_dec_if_one(&qdisc->refcnt);
-+}
-+
- /* Intended to be used by unlocked users, when concurrent qdisc release is
-  * possible.
-  */
-@@ -652,6 +659,7 @@ void dev_deactivate_many(struct list_head *head);
- struct Qdisc *dev_graft_qdisc(struct netdev_queue *dev_queue,
- 			      struct Qdisc *qdisc);
- void qdisc_reset(struct Qdisc *qdisc);
-+void qdisc_destroy(struct Qdisc *qdisc);
- void qdisc_put(struct Qdisc *qdisc);
- void qdisc_put_unlocked(struct Qdisc *qdisc);
- void qdisc_tree_reduce_backlog(struct Qdisc *qdisc, int n, int len);
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index 094ca3a5b633..aa6b1fe65151 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -1086,10 +1086,22 @@ static int qdisc_graft(struct net_device *dev, struct Qdisc *parent,
- 		if ((q && q->flags & TCQ_F_INGRESS) ||
- 		    (new && new->flags & TCQ_F_INGRESS)) {
- 			ingress = 1;
--			if (!dev_ingress_queue(dev)) {
-+			dev_queue = dev_ingress_queue(dev);
-+			if (!dev_queue) {
- 				NL_SET_ERR_MSG(extack, "Device does not have an ingress queue");
- 				return -ENOENT;
- 			}
-+
-+			q = rtnl_dereference(dev_queue->qdisc_sleeping);
-+
-+			/* This is the counterpart of that qdisc_refcount_inc_nz() call in
-+			 * __tcf_qdisc_find() for filter requests.
-+			 */
-+			if (!qdisc_refcount_dec_if_one(q)) {
-+				NL_SET_ERR_MSG(extack,
-+					       "Current ingress or clsact Qdisc has ongoing filter requests");
-+				return -EBUSY;
-+			}
- 		}
- 
- 		if (dev->flags & IFF_UP)
-@@ -1110,8 +1122,16 @@ static int qdisc_graft(struct net_device *dev, struct Qdisc *parent,
- 				qdisc_put(old);
- 			}
- 		} else {
--			dev_queue = dev_ingress_queue(dev);
--			old = dev_graft_qdisc(dev_queue, new);
-+			old = dev_graft_qdisc(dev_queue, NULL);
-+
-+			/* {ingress,clsact}_destroy() @old before grafting @new to avoid
-+			 * unprotected concurrent accesses to net_device::miniq_{in,e}gress
-+			 * pointer(s) in mini_qdisc_pair_swap().
-+			 */
-+			qdisc_notify(net, skb, n, classid, old, new, extack);
-+			qdisc_destroy(old);
-+
-+			dev_graft_qdisc(dev_queue, new);
- 		}
- 
- skip:
-@@ -1125,8 +1145,6 @@ static int qdisc_graft(struct net_device *dev, struct Qdisc *parent,
- 
- 			if (new && new->ops->attach)
- 				new->ops->attach(new);
--		} else {
--			notify_and_destroy(net, skb, n, classid, old, new, extack);
- 		}
- 
- 		if (dev->flags & IFF_UP)
-diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-index 3248259eba32..5d7e23f4cc0e 100644
---- a/net/sched/sch_generic.c
-+++ b/net/sched/sch_generic.c
-@@ -1046,7 +1046,7 @@ static void qdisc_free_cb(struct rcu_head *head)
- 	qdisc_free(q);
- }
- 
--static void qdisc_destroy(struct Qdisc *qdisc)
-+static void __qdisc_destroy(struct Qdisc *qdisc)
- {
- 	const struct Qdisc_ops  *ops = qdisc->ops;
- 
-@@ -1070,6 +1070,14 @@ static void qdisc_destroy(struct Qdisc *qdisc)
- 	call_rcu(&qdisc->rcu, qdisc_free_cb);
- }
- 
-+void qdisc_destroy(struct Qdisc *qdisc)
-+{
-+	if (qdisc->flags & TCQ_F_BUILTIN)
-+		return;
-+
-+	__qdisc_destroy(qdisc);
-+}
-+
- void qdisc_put(struct Qdisc *qdisc)
- {
- 	if (!qdisc)
-@@ -1079,7 +1087,7 @@ void qdisc_put(struct Qdisc *qdisc)
- 	    !refcount_dec_and_test(&qdisc->refcnt))
- 		return;
- 
--	qdisc_destroy(qdisc);
-+	__qdisc_destroy(qdisc);
- }
- EXPORT_SYMBOL(qdisc_put);
- 
-@@ -1094,7 +1102,7 @@ void qdisc_put_unlocked(struct Qdisc *qdisc)
- 	    !refcount_dec_and_rtnl_lock(&qdisc->refcnt))
- 		return;
- 
--	qdisc_destroy(qdisc);
-+	__qdisc_destroy(qdisc);
- 	rtnl_unlock();
- }
- EXPORT_SYMBOL(qdisc_put_unlocked);
-
+Thanks,
+Mathias
