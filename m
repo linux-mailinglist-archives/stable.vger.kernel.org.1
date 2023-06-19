@@ -2,51 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD7A673538C
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:46:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EC217352D9
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:38:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232083AbjFSKqe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:46:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47496 "EHLO
+        id S231739AbjFSKip (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:38:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231226AbjFSKqE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:46:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14D3E10D4
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:45:46 -0700 (PDT)
+        with ESMTP id S231391AbjFSKin (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:38:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2974CC
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:38:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9DC6E60B85
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:45:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3BBC433C8;
-        Mon, 19 Jun 2023 10:45:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5FEF960B67
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:38:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76FCFC433C0;
+        Mon, 19 Jun 2023 10:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171545;
-        bh=YoGVE1eqIsFP53ya2/Pnnb0ZOMFHukzoST7p0CfUP4M=;
+        s=korg; t=1687171121;
+        bh=NEa/W8pZ1NLjnYDn0S+kesJjh3wqAdNaACusIIVuuzc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ii9pSFXFgj5WW5n+ZbRGTD7o0AoT39E8Z33W5CEESTN+rW86K/tnLJRwDau4sGqpt
-         jMz7xcf+NbYFiDSJP6B2MFc94E9rlq5LfSssQOugSxNspVHAhZStDWepc5LN8ywpKd
-         P3XxxPay4vgDyKXQbFuVCMlHh3qen++YhFIGNaGg=
+        b=h0cdNUfeWO/n60WeFddZPciLszsORbRYDRifeStVKpjDKKeIeh4yZEcnLUck+g+U/
+         cbA8E0OTLlR0rgwnGAbcy4x/UEA5bPkLW7eRRXL8RidA3J2MWCGBHe2cKhsPH3/7sM
+         wVyl6qR4ptKcM1HhTpoa5BZwDuzJ8obFJ/Qqq1Fw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wes Huang <wes.huang@moxa.com>,
-        =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 070/166] net: usb: qmi_wwan: add support for Compal RXM-G1
-Date:   Mon, 19 Jun 2023 12:29:07 +0200
-Message-ID: <20230619102158.162611293@linuxfoundation.org>
+        patches@lists.linux.dev,
+        syzbot+04afcb3d2c840447559a@syzkaller.appspotmail.com,
+        Zhengchao Shao <shaozhengchao@huawei.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.3 130/187] net/sched: taprio: fix slab-out-of-bounds Read in taprio_dequeue_from_txq
+Date:   Mon, 19 Jun 2023 12:29:08 +0200
+Message-ID: <20230619102203.889638125@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,85 +58,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wes Huang <wes.huang@moxa.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-commit 863199199713908afaa47ba09332b87621c12496 upstream.
+[ Upstream commit be3618d9651002cd5ff190dbfc6cf78f03e34e27 ]
 
-Add support for Compal RXM-G1 which is based on Qualcomm SDX55 chip.
-This patch adds support for two compositions:
+As shown in [1], out-of-bounds access occurs in two cases:
+1)when the qdisc of the taprio type is used to replace the previously
+configured taprio, count and offset in tc_to_txq can be set to 0. In this
+case, the value of *txq in taprio_next_tc_txq() will increases
+continuously. When the number of accessed queues exceeds the number of
+queues on the device, out-of-bounds access occurs.
+2)When packets are dequeued, taprio can be deleted. In this case, the tc
+rule of dev is cleared. The count and offset values are also set to 0. In
+this case, out-of-bounds access is also caused.
 
-0x9091: DIAG + MODEM + QMI_RMNET + ADB
-0x90db: DIAG + DUN + RMNET + DPL + QDSS(Trace) + ADB
+Now the restriction on the queue number is added.
 
-T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=05c6 ProdID=9091 Rev= 4.14
-S:  Manufacturer=QCOM
-S:  Product=SDXPRAIRIE-MTP _SN:719AB680
-S:  SerialNumber=719ab680
-C:* #Ifs= 4 Cfg#= 1 Atr=80 MxPwr=896mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=(none)
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=(none)
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=84(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-T:  Bus=03 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=05c6 ProdID=90db Rev= 4.14
-S:  Manufacturer=QCOM
-S:  Product=SDXPRAIRIE-MTP _SN:719AB680
-S:  SerialNumber=719ab680
-C:* #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=896mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=(none)
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=(none)
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=84(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-E:  Ad=8f(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-E:  Ad=85(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Wes Huang <wes.huang@moxa.com>
-Acked-by: Bjørn Mork <bjorn@mork.no>
-Link: https://lore.kernel.org/r/20230608030141.3546-1-wes.huang@moxa.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1] https://groups.google.com/g/syzkaller-bugs/c/_lYOKgkBVMg
+Fixes: 2f530df76c8c ("net/sched: taprio: give higher priority to higher TCs in software dequeue mode")
+Reported-by: syzbot+04afcb3d2c840447559a@syzkaller.appspotmail.com
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Tested-by: Pedro Tammela <pctammela@mojatatu.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/sched/sch_taprio.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1219,7 +1219,9 @@ static const struct usb_device_id produc
- 	{QMI_FIXED_INTF(0x05c6, 0x9080, 8)},
- 	{QMI_FIXED_INTF(0x05c6, 0x9083, 3)},
- 	{QMI_FIXED_INTF(0x05c6, 0x9084, 4)},
-+	{QMI_QUIRK_SET_DTR(0x05c6, 0x9091, 2)},	/* Compal RXM-G1 */
- 	{QMI_FIXED_INTF(0x05c6, 0x90b2, 3)},    /* ublox R410M */
-+	{QMI_QUIRK_SET_DTR(0x05c6, 0x90db, 2)},	/* Compal RXM-G1 */
- 	{QMI_FIXED_INTF(0x05c6, 0x920d, 0)},
- 	{QMI_FIXED_INTF(0x05c6, 0x920d, 5)},
- 	{QMI_QUIRK_SET_DTR(0x05c6, 0x9625, 4)},	/* YUGA CLM920-NC5 */
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index a6cf56a969421..7190482b52e05 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -795,6 +795,9 @@ static struct sk_buff *taprio_dequeue_tc_priority(struct Qdisc *sch,
+ 
+ 			taprio_next_tc_txq(dev, tc, &q->cur_txq[tc]);
+ 
++			if (q->cur_txq[tc] >= dev->num_tx_queues)
++				q->cur_txq[tc] = first_txq;
++
+ 			if (skb)
+ 				return skb;
+ 		} while (q->cur_txq[tc] != first_txq);
+-- 
+2.39.2
+
 
 
