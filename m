@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A882C735212
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:30:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 423707352AD
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:37:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230125AbjFSKaL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:30:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38556 "EHLO
+        id S231214AbjFSKhV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 06:37:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229807AbjFSKaK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:30:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BE01B3
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:30:09 -0700 (PDT)
+        with ESMTP id S229865AbjFSKg6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:36:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5218A10F8
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:36:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ACE1C60B5E
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:30:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C17DBC433C8;
-        Mon, 19 Jun 2023 10:30:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BF33060B62
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:36:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D28EEC433C8;
+        Mon, 19 Jun 2023 10:36:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687170608;
-        bh=r7jCTs05P1TocNEkA/9VDItcaXinkn85dCGSKyL0hD8=;
+        s=korg; t=1687171016;
+        bh=SjFV1MrddTKiP/lHTT+G2cfvEac2T+ytwnpGVjZunN4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g56QHqfl4OH6Y/PiW7IVttdyDccTyTxBh2Lh2BhSN+LSbOFURlXjmIXNqoRPtzuRz
-         Gj8I9NYyv4ctM25FeFGR3rdiHkfSWoRCk7Srt7mWJzzfgiQh8EJFVf1Z+6ZNFXNUG/
-         0lfdoK6nor8/IQ07+7VpEXTLFIyLuHH15nexonPs=
+        b=AfwqBXqydXeBfhx7OJLbry74+ECngHHGPDpMzEJj2yv6lIqLl8dcmTR+jjJs81FE/
+         WTTTR20hfQGdtqf06y++zmM7N3k3h6giBFAHpbVFztRXLZOJE9cs1zffuDu8/FpjdZ
+         HUFbkqdggI/tpZ2K2O/UdHcRlApMNQieKzkqi3WQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 07/32] MIPS: Alchemy: fix dbdma2
+Subject: [PATCH 6.3 117/187] netfilter: nf_tables: integrate pipapo into commit protocol
 Date:   Mon, 19 Jun 2023 12:28:55 +0200
-Message-ID: <20230619102127.882423018@linuxfoundation.org>
+Message-ID: <20230619102203.216232666@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102127.461443957@linuxfoundation.org>
-References: <20230619102127.461443957@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+References: <20230619102157.579823843@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,85 +54,314 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Manuel Lauss <manuel.lauss@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 2d645604f69f3a772d58ead702f9a8e84ab2b342 ]
+[ Upstream commit 212ed75dc5fb9d1423b3942c8f872a868cda3466 ]
 
-Various fixes for the Au1200/Au1550/Au1300 DBDMA2 code:
+The pipapo set backend follows copy-on-update approach, maintaining one
+clone of the existing datastructure that is being updated. The clone
+and current datastructures are swapped via rcu from the commit step.
 
-- skip cache invalidation if chip has working coherency circuitry.
-- invalidate KSEG0-portion of the (physical) data address.
-- force the dma channel doorbell write out to bus immediately with
-  a sync.
+The existing integration with the commit protocol is flawed because
+there is no operation to clean up the clone if the transaction is
+aborted. Moreover, the datastructure swap happens on set element
+activation.
 
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+This patch adds two new operations for sets: commit and abort, these new
+operations are invoked from the commit and abort steps, after the
+transactions have been digested, and it updates the pipapo set backend
+to use it.
+
+This patch adds a new ->pending_update field to sets to maintain a list
+of sets that require this new commit and abort operations.
+
+Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/alchemy/common/dbdma.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ include/net/netfilter/nf_tables.h |  4 ++-
+ net/netfilter/nf_tables_api.c     | 56 +++++++++++++++++++++++++++++++
+ net/netfilter/nft_set_pipapo.c    | 55 +++++++++++++++++++++---------
+ 3 files changed, 99 insertions(+), 16 deletions(-)
 
-diff --git a/arch/mips/alchemy/common/dbdma.c b/arch/mips/alchemy/common/dbdma.c
-index fc482d900dddb..122f8c0d258ef 100644
---- a/arch/mips/alchemy/common/dbdma.c
-+++ b/arch/mips/alchemy/common/dbdma.c
-@@ -30,6 +30,7 @@
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index 3eb7d20ddfc97..300bce4d67cec 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -462,7 +462,8 @@ struct nft_set_ops {
+ 					       const struct nft_set *set,
+ 					       const struct nft_set_elem *elem,
+ 					       unsigned int flags);
+-
++	void				(*commit)(const struct nft_set *set);
++	void				(*abort)(const struct nft_set *set);
+ 	u64				(*privsize)(const struct nlattr * const nla[],
+ 						    const struct nft_set_desc *desc);
+ 	bool				(*estimate)(const struct nft_set_desc *desc,
+@@ -557,6 +558,7 @@ struct nft_set {
+ 	u16				policy;
+ 	u16				udlen;
+ 	unsigned char			*udata;
++	struct list_head		pending_update;
+ 	/* runtime data below here */
+ 	const struct nft_set_ops	*ops ____cacheline_aligned;
+ 	u16				flags:14,
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 368aeabd8f8f1..f90b1113e5ecc 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4850,6 +4850,7 @@ static int nf_tables_newset(struct sk_buff *skb, const struct nfnl_info *info,
+ 
+ 	set->num_exprs = num_exprs;
+ 	set->handle = nf_tables_alloc_handle(table);
++	INIT_LIST_HEAD(&set->pending_update);
+ 
+ 	err = nft_trans_set_add(&ctx, NFT_MSG_NEWSET, set);
+ 	if (err < 0)
+@@ -9190,10 +9191,25 @@ static void nf_tables_commit_audit_log(struct list_head *adl, u32 generation)
+ 	}
+ }
+ 
++static void nft_set_commit_update(struct list_head *set_update_list)
++{
++	struct nft_set *set, *next;
++
++	list_for_each_entry_safe(set, next, set_update_list, pending_update) {
++		list_del_init(&set->pending_update);
++
++		if (!set->ops->commit)
++			continue;
++
++		set->ops->commit(set);
++	}
++}
++
+ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
+ {
+ 	struct nftables_pernet *nft_net = nft_pernet(net);
+ 	struct nft_trans *trans, *next;
++	LIST_HEAD(set_update_list);
+ 	struct nft_trans_elem *te;
+ 	struct nft_chain *chain;
+ 	struct nft_table *table;
+@@ -9359,6 +9375,11 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
+ 			nf_tables_setelem_notify(&trans->ctx, te->set,
+ 						 &te->elem,
+ 						 NFT_MSG_NEWSETELEM);
++			if (te->set->ops->commit &&
++			    list_empty(&te->set->pending_update)) {
++				list_add_tail(&te->set->pending_update,
++					      &set_update_list);
++			}
+ 			nft_trans_destroy(trans);
+ 			break;
+ 		case NFT_MSG_DELSETELEM:
+@@ -9373,6 +9394,11 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
+ 				atomic_dec(&te->set->nelems);
+ 				te->set->ndeact--;
+ 			}
++			if (te->set->ops->commit &&
++			    list_empty(&te->set->pending_update)) {
++				list_add_tail(&te->set->pending_update,
++					      &set_update_list);
++			}
+ 			break;
+ 		case NFT_MSG_NEWOBJ:
+ 			if (nft_trans_obj_update(trans)) {
+@@ -9435,6 +9461,8 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
+ 		}
+ 	}
+ 
++	nft_set_commit_update(&set_update_list);
++
+ 	nft_commit_notify(net, NETLINK_CB(skb).portid);
+ 	nf_tables_gen_notify(net, skb, NFT_MSG_NEWGEN);
+ 	nf_tables_commit_audit_log(&adl, nft_net->base_seq);
+@@ -9494,10 +9522,25 @@ static void nf_tables_abort_release(struct nft_trans *trans)
+ 	kfree(trans);
+ }
+ 
++static void nft_set_abort_update(struct list_head *set_update_list)
++{
++	struct nft_set *set, *next;
++
++	list_for_each_entry_safe(set, next, set_update_list, pending_update) {
++		list_del_init(&set->pending_update);
++
++		if (!set->ops->abort)
++			continue;
++
++		set->ops->abort(set);
++	}
++}
++
+ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
+ {
+ 	struct nftables_pernet *nft_net = nft_pernet(net);
+ 	struct nft_trans *trans, *next;
++	LIST_HEAD(set_update_list);
+ 	struct nft_trans_elem *te;
+ 
+ 	if (action == NFNL_ABORT_VALIDATE &&
+@@ -9602,6 +9645,12 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
+ 			nft_setelem_remove(net, te->set, &te->elem);
+ 			if (!nft_setelem_is_catchall(te->set, &te->elem))
+ 				atomic_dec(&te->set->nelems);
++
++			if (te->set->ops->abort &&
++			    list_empty(&te->set->pending_update)) {
++				list_add_tail(&te->set->pending_update,
++					      &set_update_list);
++			}
+ 			break;
+ 		case NFT_MSG_DELSETELEM:
+ 		case NFT_MSG_DESTROYSETELEM:
+@@ -9612,6 +9661,11 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
+ 			if (!nft_setelem_is_catchall(te->set, &te->elem))
+ 				te->set->ndeact--;
+ 
++			if (te->set->ops->abort &&
++			    list_empty(&te->set->pending_update)) {
++				list_add_tail(&te->set->pending_update,
++					      &set_update_list);
++			}
+ 			nft_trans_destroy(trans);
+ 			break;
+ 		case NFT_MSG_NEWOBJ:
+@@ -9654,6 +9708,8 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
+ 		}
+ 	}
+ 
++	nft_set_abort_update(&set_update_list);
++
+ 	synchronize_rcu();
+ 
+ 	list_for_each_entry_safe_reverse(trans, next,
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index 06d46d1826347..15e451dc3fc46 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -1600,17 +1600,10 @@ static void pipapo_free_fields(struct nft_pipapo_match *m)
+ 	}
+ }
+ 
+-/**
+- * pipapo_reclaim_match - RCU callback to free fields from old matching data
+- * @rcu:	RCU head
+- */
+-static void pipapo_reclaim_match(struct rcu_head *rcu)
++static void pipapo_free_match(struct nft_pipapo_match *m)
+ {
+-	struct nft_pipapo_match *m;
+ 	int i;
+ 
+-	m = container_of(rcu, struct nft_pipapo_match, rcu);
+-
+ 	for_each_possible_cpu(i)
+ 		kfree(*per_cpu_ptr(m->scratch, i));
+ 
+@@ -1625,7 +1618,19 @@ static void pipapo_reclaim_match(struct rcu_head *rcu)
+ }
+ 
+ /**
+- * pipapo_commit() - Replace lookup data with current working copy
++ * pipapo_reclaim_match - RCU callback to free fields from old matching data
++ * @rcu:	RCU head
++ */
++static void pipapo_reclaim_match(struct rcu_head *rcu)
++{
++	struct nft_pipapo_match *m;
++
++	m = container_of(rcu, struct nft_pipapo_match, rcu);
++	pipapo_free_match(m);
++}
++
++/**
++ * nft_pipapo_commit() - Replace lookup data with current working copy
+  * @set:	nftables API set representation
   *
+  * While at it, check if we should perform garbage collection on the working
+@@ -1635,7 +1640,7 @@ static void pipapo_reclaim_match(struct rcu_head *rcu)
+  * We also need to create a new working copy for subsequent insertions and
+  * deletions.
   */
+-static void pipapo_commit(const struct nft_set *set)
++static void nft_pipapo_commit(const struct nft_set *set)
+ {
+ 	struct nft_pipapo *priv = nft_set_priv(set);
+ 	struct nft_pipapo_match *new_clone, *old;
+@@ -1660,6 +1665,26 @@ static void pipapo_commit(const struct nft_set *set)
+ 	priv->clone = new_clone;
+ }
  
-+#include <linux/dma-map-ops.h> /* for dma_default_coherent */
- #include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/slab.h>
-@@ -623,17 +624,18 @@ u32 au1xxx_dbdma_put_source(u32 chanid, dma_addr_t buf, int nbytes, u32 flags)
- 		dp->dscr_cmd0 &= ~DSCR_CMD0_IE;
++static void nft_pipapo_abort(const struct nft_set *set)
++{
++	struct nft_pipapo *priv = nft_set_priv(set);
++	struct nft_pipapo_match *new_clone, *m;
++
++	if (!priv->dirty)
++		return;
++
++	m = rcu_dereference(priv->match);
++
++	new_clone = pipapo_clone(m);
++	if (IS_ERR(new_clone))
++		return;
++
++	priv->dirty = false;
++
++	pipapo_free_match(priv->clone);
++	priv->clone = new_clone;
++}
++
+ /**
+  * nft_pipapo_activate() - Mark element reference as active given key, commit
+  * @net:	Network namespace
+@@ -1667,8 +1692,7 @@ static void pipapo_commit(const struct nft_set *set)
+  * @elem:	nftables API element representation containing key data
+  *
+  * On insertion, elements are added to a copy of the matching data currently
+- * in use for lookups, and not directly inserted into current lookup data, so
+- * we'll take care of that by calling pipapo_commit() here. Both
++ * in use for lookups, and not directly inserted into current lookup data. Both
+  * nft_pipapo_insert() and nft_pipapo_activate() are called once for each
+  * element, hence we can't purpose either one as a real commit operation.
+  */
+@@ -1684,8 +1708,6 @@ static void nft_pipapo_activate(const struct net *net,
  
- 	/*
--	 * There is an errata on the Au1200/Au1550 parts that could result
--	 * in "stale" data being DMA'ed. It has to do with the snoop logic on
--	 * the cache eviction buffer.  DMA_NONCOHERENT is on by default for
--	 * these parts. If it is fixed in the future, these dma_cache_inv will
--	 * just be nothing more than empty macros. See io.h.
-+	 * There is an erratum on certain Au1200/Au1550 revisions that could
-+	 * result in "stale" data being DMA'ed. It has to do with the snoop
-+	 * logic on the cache eviction buffer.  dma_default_coherent is set
-+	 * to false on these parts.
- 	 */
--	dma_cache_wback_inv((unsigned long)buf, nbytes);
-+	if (!dma_default_coherent)
-+		dma_cache_wback_inv(KSEG0ADDR(buf), nbytes);
- 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
- 	wmb(); /* drain writebuffer */
- 	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
- 	ctp->chan_ptr->ddma_dbell = 0;
-+	wmb(); /* force doorbell write out to dma engine */
+ 	nft_set_elem_change_active(net, set, &e->ext);
+ 	nft_set_elem_clear_busy(&e->ext);
+-
+-	pipapo_commit(set);
+ }
  
- 	/* Get next descriptor pointer. */
- 	ctp->put_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
-@@ -685,17 +687,18 @@ u32 au1xxx_dbdma_put_dest(u32 chanid, dma_addr_t buf, int nbytes, u32 flags)
- 			  dp->dscr_source1, dp->dscr_dest0, dp->dscr_dest1);
- #endif
- 	/*
--	 * There is an errata on the Au1200/Au1550 parts that could result in
--	 * "stale" data being DMA'ed. It has to do with the snoop logic on the
--	 * cache eviction buffer.  DMA_NONCOHERENT is on by default for these
--	 * parts. If it is fixed in the future, these dma_cache_inv will just
--	 * be nothing more than empty macros. See io.h.
-+	 * There is an erratum on certain Au1200/Au1550 revisions that could
-+	 * result in "stale" data being DMA'ed. It has to do with the snoop
-+	 * logic on the cache eviction buffer.  dma_default_coherent is set
-+	 * to false on these parts.
- 	 */
--	dma_cache_inv((unsigned long)buf, nbytes);
-+	if (!dma_default_coherent)
-+		dma_cache_inv(KSEG0ADDR(buf), nbytes);
- 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
- 	wmb(); /* drain writebuffer */
- 	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
- 	ctp->chan_ptr->ddma_dbell = 0;
-+	wmb(); /* force doorbell write out to dma engine */
+ /**
+@@ -1931,7 +1953,6 @@ static void nft_pipapo_remove(const struct net *net, const struct nft_set *set,
+ 		if (i == m->field_count) {
+ 			priv->dirty = true;
+ 			pipapo_drop(m, rulemap);
+-			pipapo_commit(set);
+ 			return;
+ 		}
  
- 	/* Get next descriptor pointer. */
- 	ctp->put_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
+@@ -2230,6 +2251,8 @@ const struct nft_set_type nft_set_pipapo_type = {
+ 		.init		= nft_pipapo_init,
+ 		.destroy	= nft_pipapo_destroy,
+ 		.gc_init	= nft_pipapo_gc_init,
++		.commit		= nft_pipapo_commit,
++		.abort		= nft_pipapo_abort,
+ 		.elemsize	= offsetof(struct nft_pipapo_elem, ext),
+ 	},
+ };
+@@ -2252,6 +2275,8 @@ const struct nft_set_type nft_set_pipapo_avx2_type = {
+ 		.init		= nft_pipapo_init,
+ 		.destroy	= nft_pipapo_destroy,
+ 		.gc_init	= nft_pipapo_gc_init,
++		.commit		= nft_pipapo_commit,
++		.abort		= nft_pipapo_abort,
+ 		.elemsize	= offsetof(struct nft_pipapo_elem, ext),
+ 	},
+ };
 -- 
 2.39.2
 
