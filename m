@@ -2,51 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 741AE73530D
-	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 12:41:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63F227354F7
+	for <lists+stable@lfdr.de>; Mon, 19 Jun 2023 13:00:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232019AbjFSKlP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 06:41:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46210 "EHLO
+        id S232429AbjFSLAW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 07:00:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230379AbjFSKkq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:40:46 -0400
+        with ESMTP id S232455AbjFSK7Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 06:59:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0E27CD
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:40:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C373D198A
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 03:58:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 62FD360670
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:40:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DF1C433C8;
-        Mon, 19 Jun 2023 10:40:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B35160B78
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 10:58:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62962C433C0;
+        Mon, 19 Jun 2023 10:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1687171244;
-        bh=WPH0VvRM0KpFY/Q8zsTcLLIl9hcYu6t5Ivq+VTtOinw=;
+        s=korg; t=1687172319;
+        bh=Fnc5zGA4j6ghl6fyO2w9uVpYMGVQa4LWs+UzjIponNY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gAH7b8AiWZYELDsdskojgjlBiPxnsorhMhEhpd4wzeqxYWJ5HALrjU//jh8rIckfY
-         hXzQcel34BeAXUGMtvoBdK8REcbvIUcta01fbr1MmqQT5tgc7De5tAp3zyqjPmsifZ
-         mfL6XafL0Jn/wi+hB/tqWYb+V9m0EDY2R7H9LfYo=
+        b=eQlbEccGeLGJC4DD8RYE7DhJdyNzjG1bqcfB8TpxABeugu0k3PylX1KcmpwGXnxJ7
+         6yxyPMY6tVwQxTV6dX5lKzjnsvFWXEQApzBv83e3iAc3jzYuKLknHJzMtrzcSUSqiZ
+         Lgk9KGAVJtb2JQVe8rQRW6WfVI2loUJs5JuTaUOY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Lu=C3=ADs=20Henriques?= <lhenriques@suse.de>,
-        Joseph Qi <joseph.qi@linux.alibaba.com>,
-        Mark Fasheh <mark@fasheh.com>,
-        Joel Becker <jlbec@evilplan.org>,
-        Junxiao Bi <junxiao.bi@oracle.com>,
-        Changwei Ge <gechangwei@live.cn>, Gang He <ghe@suse.com>,
-        Jun Piao <piaojun@huawei.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 12/49] ocfs2: fix use-after-free when unmounting read-only filesystem
+        patches@lists.linux.dev, Frank Rowand <frank.rowand@sony.com>,
+        Rob Herring <robh@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 006/107] of: overlay: rename variables to be consistent
 Date:   Mon, 19 Jun 2023 12:29:50 +0200
-Message-ID: <20230619102130.497164166@linuxfoundation.org>
+Message-ID: <20230619102141.840951746@linuxfoundation.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230619102129.856988902@linuxfoundation.org>
-References: <20230619102129.856988902@linuxfoundation.org>
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+References: <20230619102141.541044823@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -61,97 +54,270 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luís Henriques <ocfs2-devel@oss.oracle.com>
+From: Frank Rowand <frank.rowand@sony.com>
 
-commit 50d927880e0f90d5cb25e897e9d03e5edacc79a8 upstream.
+[ Upstream commit 1e4089667c7c732dd1b92c4c6bc7bd240ca30213 ]
 
-It's trivial to trigger a use-after-free bug in the ocfs2 quotas code using
-fstest generic/452.  After a read-only remount, quotas are suspended and
-ocfs2_mem_dqinfo is freed through ->ocfs2_local_free_info().  When unmounting
-the filesystem, an UAF access to the oinfo will eventually cause a crash.
+Variables change name across function calls when there is not a good
+reason to do so.  Fix by changing "fdt" to "new_fdt" and "tree" to
+"overlay_root".
 
-BUG: KASAN: slab-use-after-free in timer_delete+0x54/0xc0
-Read of size 8 at addr ffff8880389a8208 by task umount/669
-...
-Call Trace:
- <TASK>
- ...
- timer_delete+0x54/0xc0
- try_to_grab_pending+0x31/0x230
- __cancel_work_timer+0x6c/0x270
- ocfs2_disable_quotas.isra.0+0x3e/0xf0 [ocfs2]
- ocfs2_dismount_volume+0xdd/0x450 [ocfs2]
- generic_shutdown_super+0xaa/0x280
- kill_block_super+0x46/0x70
- deactivate_locked_super+0x4d/0xb0
- cleanup_mnt+0x135/0x1f0
- ...
- </TASK>
+The name disparity was confusing when creating the following commit.
+The name changes are in this separate commit to make review of the
+following commmit less complex.
 
-Allocated by task 632:
- kasan_save_stack+0x1c/0x40
- kasan_set_track+0x21/0x30
- __kasan_kmalloc+0x8b/0x90
- ocfs2_local_read_info+0xe3/0x9a0 [ocfs2]
- dquot_load_quota_sb+0x34b/0x680
- dquot_load_quota_inode+0xfe/0x1a0
- ocfs2_enable_quotas+0x190/0x2f0 [ocfs2]
- ocfs2_fill_super+0x14ef/0x2120 [ocfs2]
- mount_bdev+0x1be/0x200
- legacy_get_tree+0x6c/0xb0
- vfs_get_tree+0x3e/0x110
- path_mount+0xa90/0xe10
- __x64_sys_mount+0x16f/0x1a0
- do_syscall_64+0x43/0x90
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-Freed by task 650:
- kasan_save_stack+0x1c/0x40
- kasan_set_track+0x21/0x30
- kasan_save_free_info+0x2a/0x50
- __kasan_slab_free+0xf9/0x150
- __kmem_cache_free+0x89/0x180
- ocfs2_local_free_info+0x2ba/0x3f0 [ocfs2]
- dquot_disable+0x35f/0xa70
- ocfs2_susp_quotas.isra.0+0x159/0x1a0 [ocfs2]
- ocfs2_remount+0x150/0x580 [ocfs2]
- reconfigure_super+0x1a5/0x3a0
- path_mount+0xc8a/0xe10
- __x64_sys_mount+0x16f/0x1a0
- do_syscall_64+0x43/0x90
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-Link: https://lkml.kernel.org/r/20230522102112.9031-1-lhenriques@suse.de
-Signed-off-by: Luís Henriques <lhenriques@suse.de>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Tested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Frank Rowand <frank.rowand@sony.com>
+Signed-off-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20220420222505.928492-2-frowand.list@gmail.com
+Stable-dep-of: 39affd1fdf65 ("of: overlay: Fix missing of_node_put() in error case of init_overlay_changeset()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/super.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/of/overlay.c | 94 ++++++++++++++++++++++----------------------
+ 1 file changed, 47 insertions(+), 47 deletions(-)
 
---- a/fs/ocfs2/super.c
-+++ b/fs/ocfs2/super.c
-@@ -985,8 +985,10 @@ static void ocfs2_disable_quotas(struct
- 	for (type = 0; type < OCFS2_MAXQUOTAS; type++) {
- 		if (!sb_has_quota_loaded(sb, type))
+diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
+index 424682372417d..56afef5594112 100644
+--- a/drivers/of/overlay.c
++++ b/drivers/of/overlay.c
+@@ -57,8 +57,8 @@ struct fragment {
+  * struct overlay_changeset
+  * @id:			changeset identifier
+  * @ovcs_list:		list on which we are located
+- * @fdt:		base of memory allocated to hold aligned FDT that was unflattened to create @overlay_tree
+- * @overlay_tree:	expanded device tree that contains the fragment nodes
++ * @new_fdt:		Memory allocated to hold unflattened aligned FDT
++ * @overlay_root:	expanded device tree that contains the fragment nodes
+  * @count:		count of fragment structures
+  * @fragments:		fragment nodes in the overlay expanded device tree
+  * @symbols_fragment:	last element of @fragments[] is the  __symbols__ node
+@@ -67,8 +67,8 @@ struct fragment {
+ struct overlay_changeset {
+ 	int id;
+ 	struct list_head ovcs_list;
+-	const void *fdt;
+-	struct device_node *overlay_tree;
++	const void *new_fdt;
++	struct device_node *overlay_root;
+ 	int count;
+ 	struct fragment *fragments;
+ 	bool symbols_fragment;
+@@ -183,7 +183,7 @@ static int overlay_notify(struct overlay_changeset *ovcs,
+ 
+ /*
+  * The values of properties in the "/__symbols__" node are paths in
+- * the ovcs->overlay_tree.  When duplicating the properties, the paths
++ * the ovcs->overlay_root.  When duplicating the properties, the paths
+  * need to be adjusted to be the correct path for the live device tree.
+  *
+  * The paths refer to a node in the subtree of a fragment node's "__overlay__"
+@@ -219,7 +219,7 @@ static struct property *dup_and_fixup_symbol_prop(
+ 
+ 	if (path_len < 1)
+ 		return NULL;
+-	fragment_node = __of_find_node_by_path(ovcs->overlay_tree, path + 1);
++	fragment_node = __of_find_node_by_path(ovcs->overlay_root, path + 1);
+ 	overlay_node = __of_find_node_by_path(fragment_node, "__overlay__/");
+ 	of_node_put(fragment_node);
+ 	of_node_put(overlay_node);
+@@ -716,19 +716,20 @@ static struct device_node *find_target(struct device_node *info_node)
+ 
+ /**
+  * init_overlay_changeset() - initialize overlay changeset from overlay tree
+- * @ovcs:	Overlay changeset to build
+- * @fdt:	base of memory allocated to hold aligned FDT that was unflattened to create @tree
+- * @tree:	Contains the overlay fragments and overlay fixup nodes
++ * @ovcs:		Overlay changeset to build
++ * @new_fdt:		Memory allocated to hold unflattened aligned FDT
++ * @overlay_root:	Contains the overlay fragments and overlay fixup nodes
+  *
+  * Initialize @ovcs.  Populate @ovcs->fragments with node information from
+- * the top level of @tree.  The relevant top level nodes are the fragment
+- * nodes and the __symbols__ node.  Any other top level node will be ignored.
++ * the top level of @overlay_root.  The relevant top level nodes are the
++ * fragment nodes and the __symbols__ node.  Any other top level node will
++ * be ignored.
+  *
+  * Return: 0 on success, -ENOMEM if memory allocation failure, -EINVAL if error
+- * detected in @tree, or -ENOSPC if idr_alloc() error.
++ * detected in @overlay_root, or -ENOSPC if idr_alloc() error.
+  */
+ static int init_overlay_changeset(struct overlay_changeset *ovcs,
+-		const void *fdt, struct device_node *tree)
++		const void *new_fdt, struct device_node *overlay_root)
+ {
+ 	struct device_node *node, *overlay_node;
+ 	struct fragment *fragment;
+@@ -739,17 +740,17 @@ static int init_overlay_changeset(struct overlay_changeset *ovcs,
+ 	 * Warn for some issues.  Can not return -EINVAL for these until
+ 	 * of_unittest_apply_overlay() is fixed to pass these checks.
+ 	 */
+-	if (!of_node_check_flag(tree, OF_DYNAMIC))
+-		pr_debug("%s() tree is not dynamic\n", __func__);
++	if (!of_node_check_flag(overlay_root, OF_DYNAMIC))
++		pr_debug("%s() overlay_root is not dynamic\n", __func__);
+ 
+-	if (!of_node_check_flag(tree, OF_DETACHED))
+-		pr_debug("%s() tree is not detached\n", __func__);
++	if (!of_node_check_flag(overlay_root, OF_DETACHED))
++		pr_debug("%s() overlay_root is not detached\n", __func__);
+ 
+-	if (!of_node_is_root(tree))
+-		pr_debug("%s() tree is not root\n", __func__);
++	if (!of_node_is_root(overlay_root))
++		pr_debug("%s() overlay_root is not root\n", __func__);
+ 
+-	ovcs->overlay_tree = tree;
+-	ovcs->fdt = fdt;
++	ovcs->overlay_root = overlay_root;
++	ovcs->new_fdt = new_fdt;
+ 
+ 	INIT_LIST_HEAD(&ovcs->ovcs_list);
+ 
+@@ -762,7 +763,7 @@ static int init_overlay_changeset(struct overlay_changeset *ovcs,
+ 	cnt = 0;
+ 
+ 	/* fragment nodes */
+-	for_each_child_of_node(tree, node) {
++	for_each_child_of_node(overlay_root, node) {
+ 		overlay_node = of_get_child_by_name(node, "__overlay__");
+ 		if (overlay_node) {
+ 			cnt++;
+@@ -770,7 +771,7 @@ static int init_overlay_changeset(struct overlay_changeset *ovcs,
+ 		}
+ 	}
+ 
+-	node = of_get_child_by_name(tree, "__symbols__");
++	node = of_get_child_by_name(overlay_root, "__symbols__");
+ 	if (node) {
+ 		cnt++;
+ 		of_node_put(node);
+@@ -783,7 +784,7 @@ static int init_overlay_changeset(struct overlay_changeset *ovcs,
+ 	}
+ 
+ 	cnt = 0;
+-	for_each_child_of_node(tree, node) {
++	for_each_child_of_node(overlay_root, node) {
+ 		overlay_node = of_get_child_by_name(node, "__overlay__");
+ 		if (!overlay_node)
  			continue;
--		oinfo = sb_dqinfo(sb, type)->dqi_priv;
--		cancel_delayed_work_sync(&oinfo->dqi_sync_work);
-+		if (!sb_has_quota_suspended(sb, type)) {
-+			oinfo = sb_dqinfo(sb, type)->dqi_priv;
-+			cancel_delayed_work_sync(&oinfo->dqi_sync_work);
-+		}
- 		inode = igrab(sb->s_dquot.files[type]);
- 		/* Turn off quotas. This will remove all dquot structures from
- 		 * memory and so they will be automatically synced to global
+@@ -805,7 +806,7 @@ static int init_overlay_changeset(struct overlay_changeset *ovcs,
+ 	 * if there is a symbols fragment in ovcs->fragments[i] it is
+ 	 * the final element in the array
+ 	 */
+-	node = of_get_child_by_name(tree, "__symbols__");
++	node = of_get_child_by_name(overlay_root, "__symbols__");
+ 	if (node) {
+ 		ovcs->symbols_fragment = 1;
+ 		fragment = &fragments[cnt];
+@@ -859,12 +860,12 @@ static void free_overlay_changeset(struct overlay_changeset *ovcs)
+ 	}
+ 	kfree(ovcs->fragments);
+ 	/*
+-	 * There should be no live pointers into ovcs->overlay_tree and
+-	 * ovcs->fdt due to the policy that overlay notifiers are not allowed
+-	 * to retain pointers into the overlay devicetree.
++	 * There should be no live pointers into ovcs->overlay_root and
++	 * ovcs->new_fdt due to the policy that overlay notifiers are not
++	 * allowed to retain pointers into the overlay devicetree.
+ 	 */
+-	kfree(ovcs->overlay_tree);
+-	kfree(ovcs->fdt);
++	kfree(ovcs->overlay_root);
++	kfree(ovcs->new_fdt);
+ 	kfree(ovcs);
+ }
+ 
+@@ -872,16 +873,15 @@ static void free_overlay_changeset(struct overlay_changeset *ovcs)
+  * internal documentation
+  *
+  * of_overlay_apply() - Create and apply an overlay changeset
+- * @fdt:	base of memory allocated to hold the aligned FDT
+- * @tree:	Expanded overlay device tree
+- * @ovcs_id:	Pointer to overlay changeset id
++ * @new_fdt:		Memory allocated to hold the aligned FDT
++ * @overlay_root:	Expanded overlay device tree
++ * @ovcs_id:		Pointer to overlay changeset id
+  *
+  * Creates and applies an overlay changeset.
+  *
+  * If an error occurs in a pre-apply notifier, then no changes are made
+  * to the device tree.
+  *
+-
+  * A non-zero return value will not have created the changeset if error is from:
+  *   - parameter checks
+  *   - building the changeset
+@@ -911,8 +911,8 @@ static void free_overlay_changeset(struct overlay_changeset *ovcs)
+  * id is returned to *ovcs_id.
+  */
+ 
+-static int of_overlay_apply(const void *fdt, struct device_node *tree,
+-		int *ovcs_id)
++static int of_overlay_apply(const void *new_fdt,
++		struct device_node *overlay_root, int *ovcs_id)
+ {
+ 	struct overlay_changeset *ovcs;
+ 	int ret = 0, ret_revert, ret_tmp;
+@@ -924,16 +924,16 @@ static int of_overlay_apply(const void *fdt, struct device_node *tree,
+ 
+ 	if (devicetree_corrupt()) {
+ 		pr_err("devicetree state suspect, refuse to apply overlay\n");
+-		kfree(fdt);
+-		kfree(tree);
++		kfree(new_fdt);
++		kfree(overlay_root);
+ 		ret = -EBUSY;
+ 		goto out;
+ 	}
+ 
+ 	ovcs = kzalloc(sizeof(*ovcs), GFP_KERNEL);
+ 	if (!ovcs) {
+-		kfree(fdt);
+-		kfree(tree);
++		kfree(new_fdt);
++		kfree(overlay_root);
+ 		ret = -ENOMEM;
+ 		goto out;
+ 	}
+@@ -941,20 +941,20 @@ static int of_overlay_apply(const void *fdt, struct device_node *tree,
+ 	of_overlay_mutex_lock();
+ 	mutex_lock(&of_mutex);
+ 
+-	ret = of_resolve_phandles(tree);
++	ret = of_resolve_phandles(overlay_root);
+ 	if (ret)
+ 		goto err_free_tree;
+ 
+-	ret = init_overlay_changeset(ovcs, fdt, tree);
++	ret = init_overlay_changeset(ovcs, new_fdt, overlay_root);
+ 	if (ret)
+ 		goto err_free_tree;
+ 
+ 	/*
+-	 * after overlay_notify(), ovcs->overlay_tree related pointers may have
++	 * After overlay_notify(), ovcs->overlay_root related pointers may have
+ 	 * leaked to drivers, so can not kfree() tree, aka ovcs->overlay_tree;
+ 	 * and can not free memory containing aligned fdt.  The aligned fdt
+-	 * is contained within the memory at ovcs->fdt, possibly at an offset
+-	 * from ovcs->fdt.
++	 * is contained within the memory at ovcs->new_fdt, possibly at an
++	 * offset from ovcs->new_fdt.
+ 	 */
+ 	ret = overlay_notify(ovcs, OF_OVERLAY_PRE_APPLY);
+ 	if (ret) {
+@@ -996,8 +996,8 @@ static int of_overlay_apply(const void *fdt, struct device_node *tree,
+ 	goto out_unlock;
+ 
+ err_free_tree:
+-	kfree(fdt);
+-	kfree(tree);
++	kfree(new_fdt);
++	kfree(overlay_root);
+ 
+ err_free_overlay_changeset:
+ 	free_overlay_changeset(ovcs);
+-- 
+2.39.2
+
 
 
