@@ -2,62 +2,62 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A548737165
+	by mail.lfdr.de (Postfix) with ESMTP id 1DE88737164
 	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 18:25:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230320AbjFTQZB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 12:25:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51998 "EHLO
+        id S229961AbjFTQZA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 12:25:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231326AbjFTQY5 (ORCPT
+        with ESMTP id S231528AbjFTQY5 (ORCPT
         <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 12:24:57 -0400
-Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7B92130
-        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 09:24:54 -0700 (PDT)
-Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-3f900cd3f69so33674195e9.0
-        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 09:24:54 -0700 (PDT)
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCFCD170C
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 09:24:55 -0700 (PDT)
+Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-3f90a1aa204so41268185e9.0
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 09:24:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tessares.net; s=google; t=1687278293; x=1689870293;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KZiePvQp+al3FKzqRXjxppdYvMnDeS6krGk8yswyq9Q=;
-        b=fI/g/+kKD47r49rMcbAbcJPR+NnnqJfKICsB7eL0o5deyMZKztnVC73myKB9iRtztC
-         4Hn0BVeTuQP5t3t6Vd1k5jHM9yZshtNWIibtlQifw+lCLjHcFVxKe/CwbIas9yv1JI1I
-         /o3pXsIVNndYYnHcL7rJwHZsviZxCM0bBIpwOyDEQcD9zkAgliutLs9JkDOgX9k4hQg9
-         PcdKCdRclYGW14VSRigyA/7ZedsVpVK0dpw0ck6Kq/qXcnM+dB4tt/yJ2ypTgsPovJi+
-         FB3kPB9w4ebf29536naaOnUlPMIS6Pm3IaMBt8Z0GobnS7irhx2wkgg5JppHa6/vNgU7
-         7S9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687278293; x=1689870293;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=tessares.net; s=google; t=1687278294; x=1689870294;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=KZiePvQp+al3FKzqRXjxppdYvMnDeS6krGk8yswyq9Q=;
-        b=M9GrRfveRi6h7Tkylrw5mQVI3a7FOKnj1hzepmLSr1zKaa9IRo/L4scNV2QUIV0WZy
-         6cG2r72hUfRxVZlv9NZ76GMmnrZTxiG3PdV2PQwuVWolY2yJluGyi9ZJNMGOvWaXNrHL
-         JjZ2UEbL58xXPl9V1Zz+2czFgyKS0SzpUTDQ86X+2CjZeDOPkj/s6I6mB6EvtXjDPZEY
-         A2/S7gx4XpivhOQaIxPq5wPAODV90tXkC6LQ++EpmmpNvws0KPaQwJud/wAZs8lNwMxu
-         6AxAOt5GLaruPaKhwBtr+Y/MQZJS+73aywf0B2NnXP6AIOfnDlC9NdR+Q1IJ+FymGxLL
-         jEuQ==
-X-Gm-Message-State: AC+VfDxAn36ivGRXcglE7/BOSCqzhQMF7Jr7sfE236jXM7Y554LY3w91
-        AjFQJBbIKLcrcRQD0DVFzyt+nsUBxb1NRz41/Ct14A==
-X-Google-Smtp-Source: ACHHUZ4X++gNkgkYQ9NR8U6rUE/PLbEipynm2A8AZLg+tAv7RRPTrtOeK0PvfcP4WlkHktxcCRMyGQ==
-X-Received: by 2002:a1c:4b0c:0:b0:3f9:b0c2:9ffb with SMTP id y12-20020a1c4b0c000000b003f9b0c29ffbmr4371716wma.27.1687278293150;
-        Tue, 20 Jun 2023 09:24:53 -0700 (PDT)
+        bh=ZvRhWfjGWijJY7sMUNegX5KJAcsspmzp2LrXYV55wcM=;
+        b=MqfBxYwoNRo9z3rwWOhLJzKGA/MTPdB9WcqMI/eXo3AJ0N3zssdzha33djxkMdiH81
+         mzDozRI0sYIV+n4sJvP4R4PxOR2sjdrpoE0hzn1URYrZnCufh4vZ+jTgKt8qne4XJlCN
+         Y31NEGK644D6o7trb2QSjyK5wpNaoIBwET1IBnW3bAPkfx/FN0yahmYx73HXgxBznbob
+         9GCG+9WFq/W4pEGAs+UyNPlOUkWCiXrpXaQAJwUCYArX2lEpnf8PLZ4GA6GVVAxTDzM1
+         P7YJYB69vcjTZ4sPnSWixsZxheRmGi1kACgiKQ/UtQ19+uwZRamILsZ5g4S4ZVCn8q0x
+         jWpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687278294; x=1689870294;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZvRhWfjGWijJY7sMUNegX5KJAcsspmzp2LrXYV55wcM=;
+        b=R+hhTyzuMeMsIFHFJMgvHP03sNXFS4uk0CQTz4+wjtSorKWoSgQNXUdX95xPxYObe4
+         nk19iFuaEYHwEJhJtn8YGbIP7hI3PYWdQxThB1heMJBBCDOAZMY6Hb9r3kjPSyrP/K1y
+         fs9kuTfN43lW5oPk5iULmk6gKi1WyiitFzHoq4L6TGIZ2tpcOV8+aZwrrJjyKX7AOHwD
+         Zn25+n4qUvWpL2FuUUXs0PLaNFgRzIaG5YVj41yiHg+NtMLT9zXOERSqmaXr/rKRDzDN
+         29PMDviUMnKG8kN+LqievCKfsqmkUrn5yQ4e6ngOjAa5a9P0Jm8SU1hK2Cm1tLjk1BtD
+         M0Pg==
+X-Gm-Message-State: AC+VfDzKdgHWeSd20NBhABlCiHu88zoqt8TZE4ogwRIOl6TPEB2BwvOn
+        1fbx92i0YUjYqKwtae3w6P8SDQ==
+X-Google-Smtp-Source: ACHHUZ6JUhdxUZI+KfLnH6b3dYHiv9qi5f0P6CsV6QoRDSnZN0a8iowlc6lPvNU/ZfCRF3vh5QlNmg==
+X-Received: by 2002:a05:600c:2113:b0:3f9:b345:d4a3 with SMTP id u19-20020a05600c211300b003f9b345d4a3mr4373434wml.14.1687278294175;
+        Tue, 20 Jun 2023 09:24:54 -0700 (PDT)
 Received: from vdi08.nix.tessares.net (static.219.156.76.144.clients.your-server.de. [144.76.156.219])
-        by smtp.gmail.com with ESMTPSA id o19-20020a05600c511300b003f8fe1933e4sm15753056wms.3.2023.06.20.09.24.52
+        by smtp.gmail.com with ESMTPSA id o19-20020a05600c511300b003f8fe1933e4sm15753056wms.3.2023.06.20.09.24.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jun 2023 09:24:52 -0700 (PDT)
+        Tue, 20 Jun 2023 09:24:53 -0700 (PDT)
 From:   Matthieu Baerts <matthieu.baerts@tessares.net>
-Subject: [PATCH net 0/6] mptcp: fixes for 6.4
-Date:   Tue, 20 Jun 2023 18:24:17 +0200
-Message-Id: <20230620-upstream-net-20230620-misc-fixes-for-v6-4-v1-0-f36aa5eae8b9@tessares.net>
+Date:   Tue, 20 Jun 2023 18:24:18 +0200
+Subject: [PATCH net 1/6] mptcp: handle correctly disconnect() failures
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIALHSkWQC/z2MSQ7CMAxFr1J5jUVIByGuglikwaFeNK3stEKqe
- ndcJFi+P7wNlIRJ4VZtILSy8pQNLqcK4hDyi5CfxuCdr13nHS6zFqEwYqaC/3RkjZj4TYppElw
- 7bLBtKTX11Sa+AfP1QQl7CTkOh7Gcf6qjnIW+d2vuYGp47PsHY5hLqJ0AAAA=
+Message-Id: <20230620-upstream-net-20230620-misc-fixes-for-v6-4-v1-1-f36aa5eae8b9@tessares.net>
+References: <20230620-upstream-net-20230620-misc-fixes-for-v6-4-v1-0-f36aa5eae8b9@tessares.net>
+In-Reply-To: <20230620-upstream-net-20230620-misc-fixes-for-v6-4-v1-0-f36aa5eae8b9@tessares.net>
 To:     mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
@@ -68,21 +68,21 @@ Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         Matthieu Baerts <matthieu.baerts@tessares.net>,
         stable@vger.kernel.org, Christoph Paasch <cpaasch@apple.com>
 X-Mailer: b4 0.12.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2098;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2867;
  i=matthieu.baerts@tessares.net; h=from:subject:message-id;
- bh=MNa5Zv2WFB2ZD/+VqaVhvs5aElxmpw5Mk5036ctzZRA=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBkkdLTrZXGyWJzsiM93UPDbxMayZGi+q+lQqlwQ
- lE9mY6wj3mJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZJHS0wAKCRD2t4JPQmmg
- cyhvEACAvM4cqa/ydDhDCawGPClVtar8UI4PjG6ao+G7lEP8B4oH7sP+TDEawGc4JM+1Wm9JEWB
- /suKJ6vMWwbL7i5lqpk8a6y35pfPVl184tth9q2Gtm2uRqWyfBAxesZHuCL+TuP/Ig/PAjmI87Z
- RqfLcg9JJgesS/cRlZfCehYRspt3IYkEUyPHW/Wemr7CkNgq4qHshmy53yTpkOVMA3ebvHHi2sB
- aKS8kLUOLOji9GNmLxE2CrURJHUjmLu8h2MXH6+32U7kDNlQIULT99mX8Y6ch4xedJZ3rcaceCh
- kKt8adyNx8aW+1l/2mS6N/hphYDJP73sVSclLiTM9MPWPz3qa3mGXieAatqjrHHJWP1o9PDZIcV
- EqG4w28G/z4AvQLP6r///6Un1qNhKfB9PXejE4riUT3UAYHmzNiHVl+HfwSHOBTSfPhDaryeAvC
- 6PcztG2KdwEVTLDMshc29RC4uXC6QDvGL7TNrX76dChRcKC5wqSKwPSlYCmwMJmhx1fRtSmVsrf
- OyBM5p0aV5gXN25PjmfAMvbLCxjrGRC4hXTr0Fcokmqhr0ucWMDqGg1VIRbTR57UmBH/SntfJ6i
- M72B4ZuW1k3Zo0jzzhzsgt0lyQhOxfrvH4em7QehaDO7pFj1MbxPqQ0wvl+w3+WhOZDv/H4UuJf
- TJVoZyX5aifKV8A==
+ bh=Prhhf4fFguSy1+KxJcHFfLoLbT8zaG1uIQ7YWZ/gXmY=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBkkdLTBELYBTn8FzTSZGyQa0VRa6kUfsOLMAWbn
+ xe7xQ+KQKGJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZJHS0wAKCRD2t4JPQmmg
+ c7U0D/4x7EfPKNtzI8F433H9Lr6FHrJ+T6wYMokxHsZcWQWGx3/pAJguLYDi0QDkwySr9eWWy4n
+ TPEl3WNlGwBerB+Nn5EeYNM09pjKqQ1K5vt87O76T7l3TKIRgrBDi8wyHuTjECCi9FvJBaO0F5D
+ TJLHqcNYs20dAzVlyp4dUVgcYEYSyU85xrVFmAUnvf6Y59OasKIuFR7qZzXrTT7Gp2ykH6Q24kQ
+ 5+PHAO20NLCYU3bWIVckc+8Eb7eNfK4tOVxbV8DeAtSeKGlmcuGvyRGd9CARus/cIw01+DKa0Ed
+ vcMc9sZaTzWaQT+dVGV651fsYaN6ed3Ff4iZ7dMTIZNJYAINY5298vk98HpjH2k5G0VwlJ10Gf4
+ ohfWCpmGRdm7HfG7b8jPPXrOUUifC0Ei9WYoi3zcz9hSBeHihx9k/s8G2FN7WQm/uZnmB51Q3Vd
+ RtfFByVT/EUcdeCVpfTpWA7JtfzAc3o5uD+xTyBpySG0SV1HEIbuXKBrR6gmvUYplUiMdjTQ7lH
+ K6XD0BgKNQ8d49tO7IZm0qvJz6lUcuvrbM2j7c+Et1uCADN1yjzm1ouMijODnnbmJRShhRFqA/m
+ /gr+SBiW2NPBDd2rYm6IjmtITlqclttq+G4sj1r/XJHI/lCieHtDSsa0CqEg4odgPCLZub4ZnCe
+ /LFNgRld0O0CbOQ==
 X-Developer-Key: i=matthieu.baerts@tessares.net; a=openpgp;
  fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -95,52 +95,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Patch 1 correctly handles disconnect() failures that can happen in some
-specific cases: now the socket state is set as unconnected as expected.
-That fixes an issue introduced in v6.2.
+From: Paolo Abeni <pabeni@redhat.com>
 
-Patch 2 fixes a divide by zero bug in mptcp_recvmsg() with a fix similar
-to a recent one from Eric Dumazet for TCP introducing sk_wait_pending
-flag. It should address an issue present in MPTCP from almost the
-beginning, from v5.9.
+Currently the mptcp code has assumes that disconnect() can fail only
+at mptcp_sendmsg_fastopen() time - to avoid a deadlock scenario - and
+don't even bother returning an error code.
 
-Patch 3 fixes a possible list corruption on passive MPJ even if the race
-seems very unlikely, better be safe than sorry. The possible issue is
-present from v5.17.
+Soon mptcp_disconnect() will handle more error conditions: let's track
+them explicitly.
 
-Patch 4 consolidates fallback and non fallback state machines to avoid
-leaking some MPTCP sockets. The fix is likely needed for versions from
-v5.11.
+As a bonus, explicitly annotate TCP-level disconnect as not failing:
+the mptcp code never blocks for event on the subflows.
 
-Patch 5 drops code that is no longer used after the introduction of
-patch 4/6. This is not really a fix but this patch can probably land in
-the -net tree as well not to leave unused code.
-
-Patch 6 ensures listeners are unhashed before updating their sk status
-to avoid possible deadlocks when diag info are going to be retrieved
-with a lock. Even if it should not be visible with the way we are
-currently getting diag info, the issue is present from v5.17.
-
+Fixes: 7d803344fdc3 ("mptcp: fix deadlock in fastopen error path")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Tested-by: Christoph Paasch <cpaasch@apple.com>
+Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
 Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
 ---
-Paolo Abeni (6):
-      mptcp: handle correctly disconnect() failures
-      mptcp: fix possible divide by zero in recvmsg()
-      mptcp: fix possible list corruption on passive MPJ
-      mptcp: consolidate fallback and non fallback state machine
-      mptcp: drop legacy code around RX EOF
-      mptcp: ensure listener is unhashed before updating the sk status
+ net/mptcp/protocol.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
- net/mptcp/pm_netlink.c |   1 +
- net/mptcp/protocol.c   | 160 ++++++++++++++++++++-----------------------------
- net/mptcp/protocol.h   |   5 +-
- net/mptcp/subflow.c    |  17 +++---
- 4 files changed, 76 insertions(+), 107 deletions(-)
----
-base-commit: 9a43827e876c9a071826cc81783aa2222b020f1d
-change-id: 20230620-upstream-net-20230620-misc-fixes-for-v6-4-55ef43802324
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 67311e7d5b21..86f8a7621aff 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1727,7 +1727,13 @@ static int mptcp_sendmsg_fastopen(struct sock *sk, struct msghdr *msg,
+ 		if (ret && ret != -EINPROGRESS && ret != -ERESTARTSYS && ret != -EINTR)
+ 			*copied_syn = 0;
+ 	} else if (ret && ret != -EINPROGRESS) {
+-		mptcp_disconnect(sk, 0);
++		/* The disconnect() op called by tcp_sendmsg_fastopen()/
++		 * __inet_stream_connect() can fail, due to looking check,
++		 * see mptcp_disconnect().
++		 * Attempt it again outside the problematic scope.
++		 */
++		if (!mptcp_disconnect(sk, 0))
++			sk->sk_socket->state = SS_UNCONNECTED;
+ 	}
+ 	inet_sk(sk)->defer_connect = 0;
+ 
+@@ -2389,7 +2395,10 @@ static void __mptcp_close_ssk(struct sock *sk, struct sock *ssk,
+ 
+ 	need_push = (flags & MPTCP_CF_PUSH) && __mptcp_retransmit_pending_data(sk);
+ 	if (!dispose_it) {
+-		tcp_disconnect(ssk, 0);
++		/* The MPTCP code never wait on the subflow sockets, TCP-level
++		 * disconnect should never fail
++		 */
++		WARN_ON_ONCE(tcp_disconnect(ssk, 0));
+ 		msk->subflow->state = SS_UNCONNECTED;
+ 		mptcp_subflow_ctx_reset(subflow);
+ 		release_sock(ssk);
+@@ -2812,7 +2821,7 @@ void mptcp_subflow_shutdown(struct sock *sk, struct sock *ssk, int how)
+ 			break;
+ 		fallthrough;
+ 	case TCP_SYN_SENT:
+-		tcp_disconnect(ssk, O_NONBLOCK);
++		WARN_ON_ONCE(tcp_disconnect(ssk, O_NONBLOCK));
+ 		break;
+ 	default:
+ 		if (__mptcp_check_fallback(mptcp_sk(sk))) {
+@@ -3075,11 +3084,10 @@ static int mptcp_disconnect(struct sock *sk, int flags)
+ 
+ 	/* We are on the fastopen error path. We can't call straight into the
+ 	 * subflows cleanup code due to lock nesting (we are already under
+-	 * msk->firstsocket lock). Do nothing and leave the cleanup to the
+-	 * caller.
++	 * msk->firstsocket lock).
+ 	 */
+ 	if (msk->fastopening)
+-		return 0;
++		return -EBUSY;
+ 
+ 	mptcp_listen_inuse_dec(sk);
+ 	inet_sk_state_store(sk, TCP_CLOSE);
 
-Best regards,
 -- 
-Matthieu Baerts <matthieu.baerts@tessares.net>
+2.40.1
 
