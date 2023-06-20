@@ -2,69 +2,75 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 180E1736FAE
-	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 17:03:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2811D736FD0
+	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 17:07:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233577AbjFTPDf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 11:03:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35226 "EHLO
+        id S233455AbjFTPH0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 11:07:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233571AbjFTPDT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 11:03:19 -0400
-Received: from mail-ua1-x92f.google.com (mail-ua1-x92f.google.com [IPv6:2607:f8b0:4864:20::92f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0609A1BC3
-        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 08:02:06 -0700 (PDT)
-Received: by mail-ua1-x92f.google.com with SMTP id a1e0cc1a2514c-78caeb69125so1841236241.3
-        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 08:02:06 -0700 (PDT)
+        with ESMTP id S233453AbjFTPHZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 11:07:25 -0400
+Received: from mail-vk1-xa2f.google.com (mail-vk1-xa2f.google.com [IPv6:2607:f8b0:4864:20::a2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF897DD
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 08:07:23 -0700 (PDT)
+Received: by mail-vk1-xa2f.google.com with SMTP id 71dfb90a1353d-471658cc106so1337829e0c.0
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 08:07:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1687273324; x=1689865324;
+        d=google.com; s=20221208; t=1687273643; x=1689865643;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ex9LH41sBtxSu4nGJTMmDXReVKlwhUxbkE+orFPF3pU=;
-        b=pEGrgLluw3fEB0PMi/FzPPl+r1kOgefq6EBZyOoe0OuEHrYu03EfAv35dGeq+ACO8M
-         Of1fL6arzMkS8jARtmqMBo0vEmKgdCdFOAbIpx6WCCH/e69vQG3aYK/zDQcu0l9gOEH3
-         HQhu5X1suHp/3kOQd82etkSn8Pv5AHBtTOIw00NJ2Bg0l0qRLN43AHqrkBSteWkS03GY
-         c8GY9UPpemcKNaGs7oxYq8bxpCpAYv3cbSduw8tT1n2017U+VpBKQELyIgAi1kOhPhEq
-         JAqegnjEu/LAAYki1uAzuFvk5Ack3cOK3aSfvHgHddaMYhT2rAeciuCEwhnrExGKvaaL
-         rZ1w==
+        bh=nu+Xr6h3aJ6hrDihAENTAwjE21lX4dsN0DdvvEc0zpY=;
+        b=4uNSAlI4tPJM+0kDEQ3Xs8m8o+h885+DYvUyEEqM1Q3xUaL/Zkac4rYDVD5VV3k69y
+         QnJ+X6pZflYUWAfDmGx3KQbOCUfSElOR8MWCOyxMQigZTQB0F5U/vXfgQz+nVHm7JgFe
+         zPxHHx0QiAS6zIRh5LTna1ZDaAT0LM1d3CYeqQBXg8Lvxt+HiMz1jiJCsSLDmHtZX11G
+         EpfV9JeKtWMhTkP+hF8WhgfPf+D0P5ODet5RxxWMwun9woKcQyCvPe794rr3cZawXdtp
+         J25Wo4tc74aotGpx3E9VgQhnLQmyiDFwzEmS7CM7u6MHsfy/y7YIEbkaEg3cgkWmLefz
+         C2+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687273324; x=1689865324;
+        d=1e100.net; s=20221208; t=1687273643; x=1689865643;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Ex9LH41sBtxSu4nGJTMmDXReVKlwhUxbkE+orFPF3pU=;
-        b=Usdnl/EIcnmUl15ICqGlWQoY4i58Xgh8TtAGhvg21dXzwr3NffkO+RW1RVc5wchj4I
-         dhax3XzI1VM6oHsocVV8+IMs2159aHAq0gx+tlMhhz4QvZhsHJHsRiPJGj0OUfZQcgpP
-         TYm8KzNlRoLzW6AXzhY+HqHn0OnPA7Uv2uhinjTWwz8Cd60BebN7d2q0x+7zN81gJVH3
-         Hi6dY4lsooFZTIa3wwf/zFfAkdrSmRS1/jySYs46YPnNp0yYtcsvMErKVCztnJVfg3kO
-         1EEtcP1xEuPSvi4Mg93c25Rkot80J4ZYdpb+i5akn/k232fWsBOqgpseqZPXGrZpZPmu
-         S+7Q==
-X-Gm-Message-State: AC+VfDx8/C6PYxS7v7w2uAVEhKCHfYyUOZQu0N9pw33xzyrVgqXoB2Ja
-        4nu/OmzVM4k4b9mWn16bYAupAnUsuU3ohr6tSMe2XQ==
-X-Google-Smtp-Source: ACHHUZ61l8hktY/IAC0pNcJtikH+zgj6xoAJwkJSzEsBNwtd6tNhRDNAQy0SnFlAQuG3RwlFEXR2znduvlY1D+ZT/90=
-X-Received: by 2002:a67:f99a:0:b0:43f:567b:c61a with SMTP id
- b26-20020a67f99a000000b0043f567bc61amr5038917vsq.33.1687273323749; Tue, 20
- Jun 2023 08:02:03 -0700 (PDT)
+        bh=nu+Xr6h3aJ6hrDihAENTAwjE21lX4dsN0DdvvEc0zpY=;
+        b=Ymj5g9nWp4cM3cCgPyel6vA+T80SyO8p098Ht1UienyG5wwBH8ASIrfVHjd/VKBl4V
+         9WchF1SpBxL3Nx1pvVSaHH7QzahSBF59vb1+YNsmO4FM+8lnQk6MrAuJ7jj0llUYB++F
+         l8oo5j7SRwNOgnTL5uZ5cl8MacqwWH/xndFcepox3Sh/K9ofWCvwOgAiWj/JNhf/CcM5
+         MMl0Vl1w+/hkvL501JgAOqdOW9wwvV9EN9L1NgZlWABmMc/v8lWAjvKSPOaOlqpfdBgl
+         L+PBme0pUSpYkGIWArXX6u3JjFGon8qzuZUPpfBXaXyDPRayoIrQdMkCmCqp7fgmnu2y
+         1ECQ==
+X-Gm-Message-State: AC+VfDy9C9BXVkLkRDj8Ixz/9tZXjduVvz+nqaB7PZ+WFpM7eVnQoLEv
+        edSr21jYp7Az310eUiF+7WJzrOXPYZOEW+QznH+tNg==
+X-Google-Smtp-Source: ACHHUZ5vngzvnC7UegKxQKg2uyHGXDbhDi5IOIg/YI2HnKU4l09bZNgBzggiucC0ZQ4lI+/z7uZrliKEuxvWJA1puIM=
+X-Received: by 2002:a67:ce84:0:b0:440:b0eb:4fd7 with SMTP id
+ c4-20020a67ce84000000b00440b0eb4fd7mr3963408vse.23.1687273642685; Tue, 20 Jun
+ 2023 08:07:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230619102132.808972458@linuxfoundation.org>
-In-Reply-To: <20230619102132.808972458@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Tue, 20 Jun 2023 20:31:52 +0530
-Message-ID: <CA+G9fYt_1vxhnHywwbLmLqWNytxu8VcU4mzmCcdH88gt+CpjTw@mail.gmail.com>
-Subject: Re: [PATCH 5.4 00/64] 5.4.248-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+References: <20230615145607.3469985-1-revest@chromium.org> <CAEf4BzbjCt3tKJ40tg12rMjCLXrm7UoGuOdC62vGnpTTt8-buw@mail.gmail.com>
+ <CABRcYmK=yXDumZj3tdW7341+sSV1zmZw1UpQkfSF6RFgnBQjew@mail.gmail.com>
+ <c26de68d-4a56-03a0-2625-25c7e2997d45@meta.com> <CAKwvOdnehNwrDNV5LvBBwM=jqPJvL7vB9HwF0YU-X5=zbByrmg@mail.gmail.com>
+ <6b63301f-96b2-74b9-c156-3a34fb5ad346@meta.com>
+In-Reply-To: <6b63301f-96b2-74b9-c156-3a34fb5ad346@meta.com>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Tue, 20 Jun 2023 11:07:10 -0400
+Message-ID: <CAKwvOdna=1Sg4Aab=BE6F86H9ZE7kPRM=VTkqQuGiF-Jdze-cA@mail.gmail.com>
+Subject: Re: [PATCH bpf] bpf/btf: Accept function names that contain dots
+To:     Yonghong Song <yhs@meta.com>
+Cc:     Florent Revest <revest@chromium.org>,
+        Andrii Nakryiko <andrii.nakryiko@gmail.com>,
+        bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev, martin.lau@linux.dev, ast@kernel.org,
+        daniel@iogearbox.net, andrii@kernel.org, song@kernel.org,
+        yhs@fb.com, john.fastabend@gmail.com, kpsingh@kernel.org,
+        sdf@google.com, haoluo@google.com, jolsa@kernel.org,
+        nathan@kernel.org, trix@redhat.com, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,170 +78,115 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 19 Jun 2023 at 16:21, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Tue, Jun 20, 2023 at 10:53=E2=80=AFAM Yonghong Song <yhs@meta.com> wrote=
+:
 >
-> This is the start of the stable review cycle for the 5.4.248 release.
-> There are 64 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
 >
-> Responses should be made by Wed, 21 Jun 2023 10:21:12 +0000.
-> Anything received after that time might be too late.
 >
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.4.248-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.4.y
-> and the diffstat can be found below.
+> On 6/20/23 7:38 AM, Nick Desaulniers wrote:
+> > 3. you did not run defconfig/menuconfig to have kconfig check for
+> > DWARFv5 support.
 >
-> thanks,
+> Yes, I didn't run defconfig/menuconfig.
+
+That doesn't mean the odd combo of clang+gas doesn't work.
+
+Just like how using scripts/config is a hazard since it also doesn't
+run kconfig and allows you to set incompatible configurations. Garbage
+in; garbage out.
+
 >
-> greg k-h
+> >
+> > The kconfigs should prevent you from selecting DWARFv5 if your
+> > toolchain combination doesn't support it; if you run kconfig.
+> >
+> >> /tmp/video-bios-59fa52.s:4: Error: file number less than one
+> >> /tmp/video-bios-59fa52.s:5: Error: junk at end of line, first
+> >> unrecognized character is `"'
+> >> /tmp/video-bios-59fa52.s:6: Error: junk at end of line, first
+> >> unrecognized character is `"'
+> >> /tmp/video-bios-59fa52.s:7: Error: junk at end of line, first
+> >> unrecognized character is `"'
+> >> /tmp/video-bios-59fa52.s:8: Error: junk at end of line, first
+> >> unrecognized character is `"'
+> >> /tmp/video-bios-59fa52.s:9: Error: junk at end of line, first
+> >> unrecognized character is `"'
+> >> /tmp/video-bios-59fa52.s:10: Error: junk at end of line, first
+> >> unrecognized character is `"'
+> >> /tmp/video-bios-59fa52.s:68: Error: junk at end of line, first
+> >> unrecognized character is `"'
+> >> clang: error: assembler command failed with exit code 1 (use -v to see
+> >> invocation)
+> >> make[4]: *** [/home/yhs/work/bpf-next/scripts/Makefile.build:252:
+> >> arch/x86/realmode/rm/video-bios.o] Error 1
+> >> make[4]: *** Waiting for unfinished jobs....
+> >> /tmp/wakemain-88777c.s: Assembler messages:
+> >> /tmp/wakemain-88777c.s:4: Error: junk at end of line, first unrecogniz=
+ed
+> >> character is `"'
+> >> /tmp/wakemain-88777c.s:4: Error: file number less than one
+> >> /tmp/wakemain-88777c.s:5: Error: junk at end of line, first unrecogniz=
+ed
+> >> character is `"'
+> >> /tmp/wakemain-88777c.s:6: Error: junk at end of line, first unrecogniz=
+ed
+> >> character is `"'
+> >> /tmp/wakemain-88777c.s:7: Error: junk at end of line, first unrecogniz=
+ed
+> >> character is `"'
+> >> /tmp/wakemain-88777c.s:8: Error: junk at end of line, first unrecogniz=
+ed
+> >> character is `"'
+> >> /tmp/wakemain-88777c.s:81: Error: junk at end of line, first
+> >> unrecognized character is `"'
+> >> /tmp/wakemain-88777c.s:312: Error: junk at end of line, first
+> >> unrecognized character is `"'
+> >> clang: error: assembler command failed with exit code 1 (use -v to see
+> >> invocation)
+> >>
+> >> Potentially because of my local gnu assembler 2.30-120.el8 won't work
+> >
+> > It's recorded in lib/Kconfig.debug that 2.35.2 is required for DWARFv5
+> > support if you're using GAS.  My machine has 2.40.
+> >
+> >> with some syntax generated by clang. Mixing clang compiler and arbitra=
+ry
+> >> gnu assembler are not a good idea (see the above example). It might
+> >
+> > I agree, but for older branches of stable which are still supported,
+> > we didn't quite have clang assembler support usable.  We still need to
+> > support those branches of stable.
+>
+> Thanks Florent pointing out 5.10 stable kernels which have this issue.
+
+No, all kernels have this issue, when using `LLVM=3D1 LLVM_IAS=3D0`.  It's
+more likely that someone is using that combination for branches of
+stable that predate 4.19 (such as 4.14) but we do still try to support
+that combination somewhat, even if we recommend just using `LLVM=3D1`.
+Interop between toolchains is still important, even if "why would you
+do that?"
+
+> I am okay with backporting to old stable kernels if that is needed.
+> But the patch going to bpf-next should not have a bug-fix tag and
+> the patch commit message can be tweaked for backport to 5.10 though.
+>
+> >
+> >> work with close-to-latest gnu assembler.
+> >>
+> >> To support function name like '<fname>.isra', some llvm work will be
+> >> needed, and it may take some time.
+> >>
+> >> So in my opinion, this patch is NOT a bug fix. It won't affect distro.
+> >> Whether we should backport to the old kernel, I am not sure whether it
+> >> is absolutely necessary as casual build can always remove LLVM_IAS=3D0=
+ or
+> >> hack the kernel source itself.
+> >
+> >
+> >
 
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build
-* kernel: 5.4.248-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-5.4.y
-* git commit: d4a1c8c10fcdfa1193f2b8a5a632ee5918e74a55
-* git describe: v5.4.247-65-gd4a1c8c10fcd
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.4.y/build/v5.4.2=
-47-65-gd4a1c8c10fcd
-
-## Test Regressions (compared to v5.4.246)
-
-## Metric Regressions (compared to v5.4.246)
-
-## Test Fixes (compared to v5.4.246)
-
-## Metric Fixes (compared to v5.4.246)
-
-## Test result summary
-total: 135818, pass: 111037, fail: 3470, skip: 21217, xfail: 94
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 148 total, 129 passed, 19 failed
-* arm64: 48 total, 44 passed, 4 failed
-* i386: 30 total, 22 passed, 8 failed
-* mips: 30 total, 29 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 33 total, 32 passed, 1 failed
-* riscv: 15 total, 14 passed, 1 failed
-* s390: 8 total, 8 passed, 0 failed
-* sh: 14 total, 12 passed, 2 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 41 total, 39 passed, 2 failed
-
-## Test suites summary
-* boot
-* fwts
-* igt-gpu-tools
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-* vdso
-
---
-Linaro LKFT
-https://lkft.linaro.org
+--=20
+Thanks,
+~Nick Desaulniers
