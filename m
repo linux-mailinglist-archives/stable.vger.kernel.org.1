@@ -2,139 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 807A7736E3F
-	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 16:03:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28517736E50
+	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 16:09:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232906AbjFTOD1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 10:03:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57460 "EHLO
+        id S232972AbjFTOJG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 10:09:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232894AbjFTOD0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 10:03:26 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0F99C7;
-        Tue, 20 Jun 2023 07:03:25 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qBbHb-00037T-Nz; Tue, 20 Jun 2023 15:20:31 +0200
-Message-ID: <1b3fd148-44d7-d476-e9e6-f9d8c8ec0ee6@leemhuis.info>
-Date:   Tue, 20 Jun 2023 15:20:31 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: amd_sfh driver causes kernel oops during boot
-Content-Language: en-US, de-DE
-To:     Malte Starostik <malte@starostik.de>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        "Limonciello, Mario" <mario.limonciello@amd.com>
-Cc:     Bagas Sanjaya <bagasdotme@gmail.com>, basavaraj.natikar@amd.com,
-        linux-input@vger.kernel.org, linux@hexchain.org,
+        with ESMTP id S231528AbjFTOJF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 10:09:05 -0400
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37560E58;
+        Tue, 20 Jun 2023 07:09:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+        ; s=x; h=Subject:Content-Transfer-Encoding:Content-Type:Mime-Version:
+        References:In-Reply-To:Message-Id:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=ekPPUQAmVVrrWr1qBlhGGDjUTFbwDIDMgk2nEuBhZRY=; b=Pttv+VUNGuJ461RzDONyDnw806
+        3P6etPgLo+dBFcM7lIC85HVrvF4fc6w8YNDyVGDJDd4ZRBCRvfkjELMfeB2A8vlZth6N6mUZff1de
+        5wAZPsiPO+EBdkG4Be0uG2WjiUtH28SSGNHd4tLUi2/Cu9h5jyKQy5504K1fBFJ2vXuE=;
+Received: from modemcable061.19-161-184.mc.videotron.ca ([184.161.19.61]:48278 helo=pettiford)
+        by mail.hugovil.com with esmtpa (Exim 4.92)
+        (envelope-from <hugo@hugovil.com>)
+        id 1qBc2J-0000F2-9L; Tue, 20 Jun 2023 10:08:48 -0400
+Date:   Tue, 20 Jun 2023 10:08:46 -0400
+From:   Hugo Villeneuve <hugo@hugovil.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        jirislaby@kernel.org, jringle@gridpoint.com,
+        tomasz.mon@camlingroup.com, l.perczak@camlintechnologies.com,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
         stable@vger.kernel.org
-References: <ZG3ipauL9FTnQJiC@debian.me>
- <aci7a4jnosozypn6sffsdoaezg4p42zgjy5dwnjyvnbav7chdm@wettfjwb4enw>
- <79bd270e-4a0d-b4be-992b-73c65d085624@amd.com> <5980752.YW5z2jdOID@zen>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <5980752.YW5z2jdOID@zen>
+Message-Id: <20230620100846.d58436efc061fb91074fa7e5@hugovil.com>
+In-Reply-To: <CAHp75VeWFPBmsD8zsSAaQGNNXtfgLtQuM9AMGfLPk-6p0VW=Pg@mail.gmail.com>
+References: <20230602152626.284324-1-hugo@hugovil.com>
+        <20230602152626.284324-6-hugo@hugovil.com>
+        <2023060454-cotton-paramount-e33e@gregkh>
+        <CAHp75Ve6W-hcB4YAeKukgv-uOEzBY7Tx5Sdf3doTRYKzNPcVGw@mail.gmail.com>
+        <20230604134459.3c3844012e9714fa2a61e642@hugovil.com>
+        <CAHp75VeWFPBmsD8zsSAaQGNNXtfgLtQuM9AMGfLPk-6p0VW=Pg@mail.gmail.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1687269805;2ad691bc;
-X-HE-SMSGID: 1qBbHb-00037T-Nz
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 184.161.19.61
+X-SA-Exim-Mail-From: hugo@hugovil.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v7 5/9] serial: sc16is7xx: fix regression with GPIO
+ configuration
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
-for once, to make this easily accessible to everyone.
+On Sun, 4 Jun 2023 22:31:04 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-What happens to this? From here it looks like there was no progress to
-resolve the regression in the past two weeks, but maybe I just missed
-something.
+> On Sun, Jun 4, 2023 at 8:45 PM Hugo Villeneuve <hugo@hugovil.com> wrote:
+> >
+> > On Sun, 4 Jun 2023 14:57:31 +0300
+> > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> >
+> > > On Sun, Jun 4, 2023 at 10:47 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+> > > > On Fri, Jun 02, 2023 at 11:26:21AM -0400, Hugo Villeneuve wrote:
+> > >
+> > > ...
+> > >
+> > > > > +static u8 sc16is7xx_setup_mctrl_ports(struct device *dev)
+> > > >
+> > > > This returns what, mctrl?  If so, please document that, it doesn't look
+> > > > obvious.
+> > >
+> > > Good suggestion. Because I also stumbled over the returned type.
+> > >
+> > > >  And as the kernel test robot reported, you do nothing with the
+> > > > return value so why compute it?
+> > >
+> > > It seems that the entire function and respective call has to be moved
+> > > under #ifdef CONFIG_GPIOLIB.
+> >
+> > Hi,
+> > it cannot. See my explanations in response to Greg's comments.
+> 
+> Then as Greg suggested, store in the structure and make this function
+> to return an error code (with int), with this amendment you don't need
+> to add a comment about the returned variable anymore.
 
-On 07.06.23 00:57, Malte Starostik wrote:
-> Am Dienstag, 6. Juni 2023, 17:25:13 CEST schrieb Limonciello, Mario:
->> On 6/6/2023 3:08 AM, Benjamin Tissoires wrote:
->>> On Jun 06 2023, Linux regression tracking (Thorsten Leemhuis) wrote:
->>>>> On Mon, Jun 05, 2023 at 01:24:25PM +0200, Malte Starostik wrote:
->>>>>> Hello,
->>>>>>
->>>>>> chiming in here as I'm experiencing what looks like the exact same
->>>>>> issue, also on a Lenovo Z13 notebook, also on Arch:
->>>>>> Oops during startup in task udev-worker followed by udev-worker
->>>>>> blocking all attempts to suspend or cleanly shutdown/reboot the
->>>>>> machine
-> 
->>> I have a suspicion on commit 7bcfdab3f0c6 ("HID: amd_sfh: if no sensors
->>> are enabled, clean up") because the stack trace says that there is a bad
->>> list_add, which could happen if the object is not correctly initialized.
->>>
->>> However, that commit was present in v6.2, so it might not be that one.
->>>
->> If I'm not mistaken the Z13 doesn't actually have any
->> sensors connected to SFH.  So I think the suspicion on
->> 7bcfdab3f0c6 and theory this is triggered by HID init makes
->> a lot of sense.
->>
->> Can you try this patch?
->>
->> diff --git a/drivers/hid/amd-sfh-hid/amd_sfh_client.c
->> b/drivers/hid/amd-sfh-hid/amd_sfh_client.c
->> index d9b7b01900b5..fa693a5224c6 100644
->> --- a/drivers/hid/amd-sfh-hid/amd_sfh_client.c
->> +++ b/drivers/hid/amd-sfh-hid/amd_sfh_client.c
->> @@ -324,6 +324,7 @@ int amd_sfh_hid_client_init(struct amd_mp2_dev
->> *privdata)
->>                          devm_kfree(dev, cl_data->report_descr[i]);
->>                  }
->>                  dev_warn(dev, "Failed to discover, sensors not enabled
->> is %d\n", cl_data->is_any_sensor_enabled);
->> +               cl_data->num_hid_devices = 0;
->>                  return -EOPNOTSUPP;
->>          }
->>          schedule_delayed_work(&cl_data->work_buffer,
->> msecs_to_jiffies(AMD_SFH_IDLE_LOOP));
-> 
-> I applied this to 9e87b63ed37e202c77aa17d4112da6ae0c7c097c now, which was the 
-> origin when I started the whole bisection. Clean rebuild, issue still 
-> persists.
-> 
-> Out of 50 boots, I got:
-> 
-> 25 clean
-> 22 Oops as posted by the OP
-> 1 same Oops, followed by a panic
-> 1 lockup [1]
-> 1 hanging with just a blank screen
-> 
-> Not sure whether the lockups are related, but [1] mentions modprobe and udev-
-> worker as well and all problems including the blank screen one appear roughly 
-> at the same time during boot. As this is before a graphics mode switch, I 
-> suspect the last mentioned case may be like [1] while the screen was blanked.
-> To support the timing correlation: the UVC error for the IR cam shown in the 
-> photo (normal boot noise) also appears right before the BUG in the non-lockup 
-> bad case.
-> 
-> I do see the dev_warn in dmesg, so the code path modified in your patch is 
-> indeed hit:
-> [   10.897521] pcie_mp2_amd 0000:63:00.7: Failed to discover, sensors not 
-> enabled is 1
-> [   10.897533] pcie_mp2_amd: probe of 0000:63:00.7 failed with error -95
-> 
-> BR Malte
-> 
-> [1] https://photos.app.goo.gl/2FAvQ7DqBsHEF6Bd8
+Hi Andy,
+did you have a chance to look at V8 (sent two weks ago) which fixed all
+of what we discussed?
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
-
-#regzbot poke
+Thank you,
+Hugo.
