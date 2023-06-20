@@ -2,75 +2,74 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2811D736FD0
-	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 17:07:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F07FC737030
+	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 17:19:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233455AbjFTPH0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 11:07:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40380 "EHLO
+        id S233285AbjFTPS4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 11:18:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233453AbjFTPHZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 11:07:25 -0400
-Received: from mail-vk1-xa2f.google.com (mail-vk1-xa2f.google.com [IPv6:2607:f8b0:4864:20::a2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF897DD
-        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 08:07:23 -0700 (PDT)
-Received: by mail-vk1-xa2f.google.com with SMTP id 71dfb90a1353d-471658cc106so1337829e0c.0
-        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 08:07:23 -0700 (PDT)
+        with ESMTP id S232978AbjFTPSw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 11:18:52 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40D6E1709;
+        Tue, 20 Jun 2023 08:18:50 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-51a5eec783cso2602166a12.3;
+        Tue, 20 Jun 2023 08:18:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1687273643; x=1689865643;
+        d=gmail.com; s=20221208; t=1687274329; x=1689866329;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nu+Xr6h3aJ6hrDihAENTAwjE21lX4dsN0DdvvEc0zpY=;
-        b=4uNSAlI4tPJM+0kDEQ3Xs8m8o+h885+DYvUyEEqM1Q3xUaL/Zkac4rYDVD5VV3k69y
-         QnJ+X6pZflYUWAfDmGx3KQbOCUfSElOR8MWCOyxMQigZTQB0F5U/vXfgQz+nVHm7JgFe
-         zPxHHx0QiAS6zIRh5LTna1ZDaAT0LM1d3CYeqQBXg8Lvxt+HiMz1jiJCsSLDmHtZX11G
-         EpfV9JeKtWMhTkP+hF8WhgfPf+D0P5ODet5RxxWMwun9woKcQyCvPe794rr3cZawXdtp
-         J25Wo4tc74aotGpx3E9VgQhnLQmyiDFwzEmS7CM7u6MHsfy/y7YIEbkaEg3cgkWmLefz
-         C2+A==
+        bh=6ZDKKOakvN05hpS3AjCZw+OdYDZU5cyEh1RFlcjf8m8=;
+        b=EGh2zndZ642Kg7kJIUKZ+qnpYZXT8OGe8Pi22E05jfCUVVpM3w68U1GGzySWBtBXDl
+         QHxwGbRhYPcimhS+IlKNc0KsdUPEF7XYr68jsjShLAWZgGEFfjuvmC/lq25uBxYFRxNs
+         lKpVyd4gnAICDFqnNVdTG7n38kZrkRjQUPMYZHGSN4x+1AvCDweoop0KCQyh7Gvv/O7A
+         Z+aJPb0htqwvQfE33h6GhSL8QWCDAzUw2Yvmal/cBgJo2uzNZTpRCgi818gStOUpuyAQ
+         H7wMw2g6GFLWt4wq5e8zOl11B0Tqp9cq5RJQ0oes0KqFt94iYI2gsO+82phW41ZVoV24
+         1ujg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687273643; x=1689865643;
+        d=1e100.net; s=20221208; t=1687274329; x=1689866329;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nu+Xr6h3aJ6hrDihAENTAwjE21lX4dsN0DdvvEc0zpY=;
-        b=Ymj5g9nWp4cM3cCgPyel6vA+T80SyO8p098Ht1UienyG5wwBH8ASIrfVHjd/VKBl4V
-         9WchF1SpBxL3Nx1pvVSaHH7QzahSBF59vb1+YNsmO4FM+8lnQk6MrAuJ7jj0llUYB++F
-         l8oo5j7SRwNOgnTL5uZ5cl8MacqwWH/xndFcepox3Sh/K9ofWCvwOgAiWj/JNhf/CcM5
-         MMl0Vl1w+/hkvL501JgAOqdOW9wwvV9EN9L1NgZlWABmMc/v8lWAjvKSPOaOlqpfdBgl
-         L+PBme0pUSpYkGIWArXX6u3JjFGon8qzuZUPpfBXaXyDPRayoIrQdMkCmCqp7fgmnu2y
-         1ECQ==
-X-Gm-Message-State: AC+VfDy9C9BXVkLkRDj8Ixz/9tZXjduVvz+nqaB7PZ+WFpM7eVnQoLEv
-        edSr21jYp7Az310eUiF+7WJzrOXPYZOEW+QznH+tNg==
-X-Google-Smtp-Source: ACHHUZ5vngzvnC7UegKxQKg2uyHGXDbhDi5IOIg/YI2HnKU4l09bZNgBzggiucC0ZQ4lI+/z7uZrliKEuxvWJA1puIM=
-X-Received: by 2002:a67:ce84:0:b0:440:b0eb:4fd7 with SMTP id
- c4-20020a67ce84000000b00440b0eb4fd7mr3963408vse.23.1687273642685; Tue, 20 Jun
- 2023 08:07:22 -0700 (PDT)
+        bh=6ZDKKOakvN05hpS3AjCZw+OdYDZU5cyEh1RFlcjf8m8=;
+        b=TvTKUzi2y15vozE/nDYTPGpZRdbHHn2iNNiztc+H6J/K1P72lr6claMNJSO3X9CaaM
+         TYMdZHrWrYdpn66E81C/wCGgYKOlL89fTGmmuF0LcQET6KgO+JEVHSJbfS7F5P6DS5vg
+         ZztWHEkgQBaHG0/9lS0uAMw+PlTWTjUlBP1N4HJQvFu3EZHa/fQl+42plfIJCWMzn/81
+         pXMTBAFC4QWRxmypJxiwx0GayWYCKlwVSzfjt1k1BJcqGvZ/p6AyY4nxfAlYcV7bNSDd
+         tcDPKlJfwBm7qiNM/nWgYdg2rqdomELPfjnpVWdltQcb4uZYflSgq9wtGwOosxfB9gBr
+         94gA==
+X-Gm-Message-State: AC+VfDxjQExlLFnj0vHUHLv8LybmhO26eZ95ebkXpRkAYyj5mnkrx95C
+        bOnHJNY3neOiQAiO4qjiiUgl+E5Yxh8TdSLSUjA=
+X-Google-Smtp-Source: ACHHUZ4K8IHLVxWGs/x+ckmsWQp/GKbNdQqaxI28mZt/qOXmQJkEfLWRBtVzuuFF77VTfWzYfGY7jOHN0P1FVgcZjYI=
+X-Received: by 2002:a17:907:728b:b0:988:e0cd:99c4 with SMTP id
+ dt11-20020a170907728b00b00988e0cd99c4mr3863115ejc.31.1687274328475; Tue, 20
+ Jun 2023 08:18:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230615145607.3469985-1-revest@chromium.org> <CAEf4BzbjCt3tKJ40tg12rMjCLXrm7UoGuOdC62vGnpTTt8-buw@mail.gmail.com>
- <CABRcYmK=yXDumZj3tdW7341+sSV1zmZw1UpQkfSF6RFgnBQjew@mail.gmail.com>
- <c26de68d-4a56-03a0-2625-25c7e2997d45@meta.com> <CAKwvOdnehNwrDNV5LvBBwM=jqPJvL7vB9HwF0YU-X5=zbByrmg@mail.gmail.com>
- <6b63301f-96b2-74b9-c156-3a34fb5ad346@meta.com>
-In-Reply-To: <6b63301f-96b2-74b9-c156-3a34fb5ad346@meta.com>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Tue, 20 Jun 2023 11:07:10 -0400
-Message-ID: <CAKwvOdna=1Sg4Aab=BE6F86H9ZE7kPRM=VTkqQuGiF-Jdze-cA@mail.gmail.com>
-Subject: Re: [PATCH bpf] bpf/btf: Accept function names that contain dots
-To:     Yonghong Song <yhs@meta.com>
-Cc:     Florent Revest <revest@chromium.org>,
-        Andrii Nakryiko <andrii.nakryiko@gmail.com>,
-        bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev, martin.lau@linux.dev, ast@kernel.org,
-        daniel@iogearbox.net, andrii@kernel.org, song@kernel.org,
-        yhs@fb.com, john.fastabend@gmail.com, kpsingh@kernel.org,
-        sdf@google.com, haoluo@google.com, jolsa@kernel.org,
-        nathan@kernel.org, trix@redhat.com, stable@vger.kernel.org
+References: <20230602152626.284324-1-hugo@hugovil.com> <20230602152626.284324-6-hugo@hugovil.com>
+ <2023060454-cotton-paramount-e33e@gregkh> <CAHp75Ve6W-hcB4YAeKukgv-uOEzBY7Tx5Sdf3doTRYKzNPcVGw@mail.gmail.com>
+ <20230604134459.3c3844012e9714fa2a61e642@hugovil.com> <CAHp75VeWFPBmsD8zsSAaQGNNXtfgLtQuM9AMGfLPk-6p0VW=Pg@mail.gmail.com>
+ <20230620100846.d58436efc061fb91074fa7e5@hugovil.com>
+In-Reply-To: <20230620100846.d58436efc061fb91074fa7e5@hugovil.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Tue, 20 Jun 2023 18:18:12 +0300
+Message-ID: <CAHp75VcWSVgA8LFLo0-b5TfKWdHb2GfLpXV-V3PZvthTv1Xc4A@mail.gmail.com>
+Subject: Re: [PATCH v7 5/9] serial: sc16is7xx: fix regression with GPIO configuration
+To:     Hugo Villeneuve <hugo@hugovil.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        jirislaby@kernel.org, jringle@gridpoint.com,
+        tomasz.mon@camlingroup.com, l.perczak@camlintechnologies.com,
+        linux-serial@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,115 +77,18 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Jun 20, 2023 at 10:53=E2=80=AFAM Yonghong Song <yhs@meta.com> wrote=
-:
->
->
->
-> On 6/20/23 7:38 AM, Nick Desaulniers wrote:
-> > 3. you did not run defconfig/menuconfig to have kconfig check for
-> > DWARFv5 support.
->
-> Yes, I didn't run defconfig/menuconfig.
+On Tue, Jun 20, 2023 at 5:08=E2=80=AFPM Hugo Villeneuve <hugo@hugovil.com> =
+wrote:
+> On Sun, 4 Jun 2023 22:31:04 +0300
+> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-That doesn't mean the odd combo of clang+gas doesn't work.
+...
 
-Just like how using scripts/config is a hazard since it also doesn't
-run kconfig and allows you to set incompatible configurations. Garbage
-in; garbage out.
+> did you have a chance to look at V8 (sent two weks ago) which fixed all
+> of what we discussed?
 
->
-> >
-> > The kconfigs should prevent you from selecting DWARFv5 if your
-> > toolchain combination doesn't support it; if you run kconfig.
-> >
-> >> /tmp/video-bios-59fa52.s:4: Error: file number less than one
-> >> /tmp/video-bios-59fa52.s:5: Error: junk at end of line, first
-> >> unrecognized character is `"'
-> >> /tmp/video-bios-59fa52.s:6: Error: junk at end of line, first
-> >> unrecognized character is `"'
-> >> /tmp/video-bios-59fa52.s:7: Error: junk at end of line, first
-> >> unrecognized character is `"'
-> >> /tmp/video-bios-59fa52.s:8: Error: junk at end of line, first
-> >> unrecognized character is `"'
-> >> /tmp/video-bios-59fa52.s:9: Error: junk at end of line, first
-> >> unrecognized character is `"'
-> >> /tmp/video-bios-59fa52.s:10: Error: junk at end of line, first
-> >> unrecognized character is `"'
-> >> /tmp/video-bios-59fa52.s:68: Error: junk at end of line, first
-> >> unrecognized character is `"'
-> >> clang: error: assembler command failed with exit code 1 (use -v to see
-> >> invocation)
-> >> make[4]: *** [/home/yhs/work/bpf-next/scripts/Makefile.build:252:
-> >> arch/x86/realmode/rm/video-bios.o] Error 1
-> >> make[4]: *** Waiting for unfinished jobs....
-> >> /tmp/wakemain-88777c.s: Assembler messages:
-> >> /tmp/wakemain-88777c.s:4: Error: junk at end of line, first unrecogniz=
-ed
-> >> character is `"'
-> >> /tmp/wakemain-88777c.s:4: Error: file number less than one
-> >> /tmp/wakemain-88777c.s:5: Error: junk at end of line, first unrecogniz=
-ed
-> >> character is `"'
-> >> /tmp/wakemain-88777c.s:6: Error: junk at end of line, first unrecogniz=
-ed
-> >> character is `"'
-> >> /tmp/wakemain-88777c.s:7: Error: junk at end of line, first unrecogniz=
-ed
-> >> character is `"'
-> >> /tmp/wakemain-88777c.s:8: Error: junk at end of line, first unrecogniz=
-ed
-> >> character is `"'
-> >> /tmp/wakemain-88777c.s:81: Error: junk at end of line, first
-> >> unrecognized character is `"'
-> >> /tmp/wakemain-88777c.s:312: Error: junk at end of line, first
-> >> unrecognized character is `"'
-> >> clang: error: assembler command failed with exit code 1 (use -v to see
-> >> invocation)
-> >>
-> >> Potentially because of my local gnu assembler 2.30-120.el8 won't work
-> >
-> > It's recorded in lib/Kconfig.debug that 2.35.2 is required for DWARFv5
-> > support if you're using GAS.  My machine has 2.40.
-> >
-> >> with some syntax generated by clang. Mixing clang compiler and arbitra=
-ry
-> >> gnu assembler are not a good idea (see the above example). It might
-> >
-> > I agree, but for older branches of stable which are still supported,
-> > we didn't quite have clang assembler support usable.  We still need to
-> > support those branches of stable.
->
-> Thanks Florent pointing out 5.10 stable kernels which have this issue.
-
-No, all kernels have this issue, when using `LLVM=3D1 LLVM_IAS=3D0`.  It's
-more likely that someone is using that combination for branches of
-stable that predate 4.19 (such as 4.14) but we do still try to support
-that combination somewhat, even if we recommend just using `LLVM=3D1`.
-Interop between toolchains is still important, even if "why would you
-do that?"
-
-> I am okay with backporting to old stable kernels if that is needed.
-> But the patch going to bpf-next should not have a bug-fix tag and
-> the patch commit message can be tweaked for backport to 5.10 though.
->
-> >
-> >> work with close-to-latest gnu assembler.
-> >>
-> >> To support function name like '<fname>.isra', some llvm work will be
-> >> needed, and it may take some time.
-> >>
-> >> So in my opinion, this patch is NOT a bug fix. It won't affect distro.
-> >> Whether we should backport to the old kernel, I am not sure whether it
-> >> is absolutely necessary as casual build can always remove LLVM_IAS=3D0=
- or
-> >> hack the kernel source itself.
-> >
-> >
-> >
-
-
+The patch 6 already has my tag, anything specific you want me to do?
 
 --=20
-Thanks,
-~Nick Desaulniers
+With Best Regards,
+Andy Shevchenko
