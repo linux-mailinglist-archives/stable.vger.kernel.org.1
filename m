@@ -2,61 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F07FC737030
-	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 17:19:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AA11737086
+	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 17:33:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233285AbjFTPS4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 11:18:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48806 "EHLO
+        id S232915AbjFTPdZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 11:33:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232978AbjFTPSw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 11:18:52 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40D6E1709;
-        Tue, 20 Jun 2023 08:18:50 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-51a5eec783cso2602166a12.3;
-        Tue, 20 Jun 2023 08:18:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687274329; x=1689866329;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6ZDKKOakvN05hpS3AjCZw+OdYDZU5cyEh1RFlcjf8m8=;
-        b=EGh2zndZ642Kg7kJIUKZ+qnpYZXT8OGe8Pi22E05jfCUVVpM3w68U1GGzySWBtBXDl
-         QHxwGbRhYPcimhS+IlKNc0KsdUPEF7XYr68jsjShLAWZgGEFfjuvmC/lq25uBxYFRxNs
-         lKpVyd4gnAICDFqnNVdTG7n38kZrkRjQUPMYZHGSN4x+1AvCDweoop0KCQyh7Gvv/O7A
-         Z+aJPb0htqwvQfE33h6GhSL8QWCDAzUw2Yvmal/cBgJo2uzNZTpRCgi818gStOUpuyAQ
-         H7wMw2g6GFLWt4wq5e8zOl11B0Tqp9cq5RJQ0oes0KqFt94iYI2gsO+82phW41ZVoV24
-         1ujg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687274329; x=1689866329;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6ZDKKOakvN05hpS3AjCZw+OdYDZU5cyEh1RFlcjf8m8=;
-        b=TvTKUzi2y15vozE/nDYTPGpZRdbHHn2iNNiztc+H6J/K1P72lr6claMNJSO3X9CaaM
-         TYMdZHrWrYdpn66E81C/wCGgYKOlL89fTGmmuF0LcQET6KgO+JEVHSJbfS7F5P6DS5vg
-         ZztWHEkgQBaHG0/9lS0uAMw+PlTWTjUlBP1N4HJQvFu3EZHa/fQl+42plfIJCWMzn/81
-         pXMTBAFC4QWRxmypJxiwx0GayWYCKlwVSzfjt1k1BJcqGvZ/p6AyY4nxfAlYcV7bNSDd
-         tcDPKlJfwBm7qiNM/nWgYdg2rqdomELPfjnpVWdltQcb4uZYflSgq9wtGwOosxfB9gBr
-         94gA==
-X-Gm-Message-State: AC+VfDxjQExlLFnj0vHUHLv8LybmhO26eZ95ebkXpRkAYyj5mnkrx95C
-        bOnHJNY3neOiQAiO4qjiiUgl+E5Yxh8TdSLSUjA=
-X-Google-Smtp-Source: ACHHUZ4K8IHLVxWGs/x+ckmsWQp/GKbNdQqaxI28mZt/qOXmQJkEfLWRBtVzuuFF77VTfWzYfGY7jOHN0P1FVgcZjYI=
-X-Received: by 2002:a17:907:728b:b0:988:e0cd:99c4 with SMTP id
- dt11-20020a170907728b00b00988e0cd99c4mr3863115ejc.31.1687274328475; Tue, 20
- Jun 2023 08:18:48 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230602152626.284324-1-hugo@hugovil.com> <20230602152626.284324-6-hugo@hugovil.com>
- <2023060454-cotton-paramount-e33e@gregkh> <CAHp75Ve6W-hcB4YAeKukgv-uOEzBY7Tx5Sdf3doTRYKzNPcVGw@mail.gmail.com>
- <20230604134459.3c3844012e9714fa2a61e642@hugovil.com> <CAHp75VeWFPBmsD8zsSAaQGNNXtfgLtQuM9AMGfLPk-6p0VW=Pg@mail.gmail.com>
- <20230620100846.d58436efc061fb91074fa7e5@hugovil.com>
-In-Reply-To: <20230620100846.d58436efc061fb91074fa7e5@hugovil.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Tue, 20 Jun 2023 18:18:12 +0300
-Message-ID: <CAHp75VcWSVgA8LFLo0-b5TfKWdHb2GfLpXV-V3PZvthTv1Xc4A@mail.gmail.com>
-Subject: Re: [PATCH v7 5/9] serial: sc16is7xx: fix regression with GPIO configuration
-To:     Hugo Villeneuve <hugo@hugovil.com>
+        with ESMTP id S231879AbjFTPdY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 11:33:24 -0400
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23E7612C;
+        Tue, 20 Jun 2023 08:33:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+        ; s=x; h=Subject:Content-Transfer-Encoding:Content-Type:Mime-Version:
+        References:In-Reply-To:Message-Id:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=n+RAOOHAb5rPLprDvBYviasWoAGNfIitCEKKme4iNms=; b=CSTmpUqdbb6SP4fXwy1wfdElLh
+        4CRz/saCEcYxlo1udLw2qzFr5XXsYbJveRLEgB7GGQ07lhw/yPpdJZ6mA5QqaBoLniBqonpakDA2T
+        M3jk+AXUDyccBPCKBbGoFJXNiyTedj5eud4EFnAsTYrcc7HE9tCbFENpus6vJgQLNXzY=;
+Received: from modemcable061.19-161-184.mc.videotron.ca ([184.161.19.61]:58756 helo=pettiford)
+        by mail.hugovil.com with esmtpa (Exim 4.92)
+        (envelope-from <hugo@hugovil.com>)
+        id 1qBdM1-0000xJ-Er; Tue, 20 Jun 2023 11:33:13 -0400
+Date:   Tue, 20 Jun 2023 11:33:12 -0400
+From:   Hugo Villeneuve <hugo@hugovil.com>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
 Cc:     Greg KH <gregkh@linuxfoundation.org>, robh+dt@kernel.org,
         krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
         jirislaby@kernel.org, jringle@gridpoint.com,
@@ -65,30 +38,59 @@ Cc:     Greg KH <gregkh@linuxfoundation.org>, robh+dt@kernel.org,
         linux-kernel@vger.kernel.org, linux-gpio@vger.kernel.org,
         Hugo Villeneuve <hvilleneuve@dimonoff.com>,
         stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Message-Id: <20230620113312.882d8f0c7d5603b1c93f33fb@hugovil.com>
+In-Reply-To: <CAHp75VcWSVgA8LFLo0-b5TfKWdHb2GfLpXV-V3PZvthTv1Xc4A@mail.gmail.com>
+References: <20230602152626.284324-1-hugo@hugovil.com>
+        <20230602152626.284324-6-hugo@hugovil.com>
+        <2023060454-cotton-paramount-e33e@gregkh>
+        <CAHp75Ve6W-hcB4YAeKukgv-uOEzBY7Tx5Sdf3doTRYKzNPcVGw@mail.gmail.com>
+        <20230604134459.3c3844012e9714fa2a61e642@hugovil.com>
+        <CAHp75VeWFPBmsD8zsSAaQGNNXtfgLtQuM9AMGfLPk-6p0VW=Pg@mail.gmail.com>
+        <20230620100846.d58436efc061fb91074fa7e5@hugovil.com>
+        <CAHp75VcWSVgA8LFLo0-b5TfKWdHb2GfLpXV-V3PZvthTv1Xc4A@mail.gmail.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 184.161.19.61
+X-SA-Exim-Mail-From: hugo@hugovil.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v7 5/9] serial: sc16is7xx: fix regression with GPIO
+ configuration
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Jun 20, 2023 at 5:08=E2=80=AFPM Hugo Villeneuve <hugo@hugovil.com> =
-wrote:
-> On Sun, 4 Jun 2023 22:31:04 +0300
-> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Tue, 20 Jun 2023 18:18:12 +0300
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-...
+> On Tue, Jun 20, 2023 at 5:08 PM Hugo Villeneuve <hugo@hugovil.com> wrote:
+> > On Sun, 4 Jun 2023 22:31:04 +0300
+> > Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> 
+> ...
+> 
+> > did you have a chance to look at V8 (sent two weks ago) which fixed all
+> > of what we discussed?
+> 
+> The patch 6 already has my tag, anything specific you want me to do?
 
-> did you have a chance to look at V8 (sent two weks ago) which fixed all
-> of what we discussed?
+Hi Andy,
+I forgot to remove your "Reviewed-by: Andy..." tag before sending V8
+since there were some changes involved in patch 6 and I wanted you to
+review them. Can you confirm if the changes are correct?
 
-The patch 6 already has my tag, anything specific you want me to do?
+I also added a new patch "remove obsolete out_thread label". It has no 
+real impact on the code generation itself, but maybe you can review and
+confirm if tags are ok or not, based on commit message and also
+additional commit message.
 
---=20
-With Best Regards,
-Andy Shevchenko
+Thank you, Hugo.
