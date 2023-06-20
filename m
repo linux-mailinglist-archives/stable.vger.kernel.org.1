@@ -2,141 +2,246 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0D2A7365A5
-	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 10:04:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E539F73675A
+	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 11:13:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230032AbjFTIEj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 04:04:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58856 "EHLO
+        id S232170AbjFTJNj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 05:13:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229462AbjFTIEi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 04:04:38 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D737B1;
-        Tue, 20 Jun 2023 01:04:37 -0700 (PDT)
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out2.suse.de (Postfix) with ESMTP id 33FFE1F37C;
-        Tue, 20 Jun 2023 08:04:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1687248276; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7OJL+2ljSAsX+K1gdyXTKpGUjBVDC+iSX2Dkj5l9F1E=;
-        b=VwbYO1I6T2fGkPwnvn8GfJx+WUb0vQY9rr31AUTLpwwKOPrVZv8b7Lp3E8scFLga/iXhKF
-        4J+n9bzh5K7KoTqbMZDkhu7GRdzExRvH+v0jCYnNgOIj1A9ICZgQA2qTZm/+h/rOYZVw+w
-        7EVW6DSk9IQie8tiGFoGvneGqoe5GKU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1687248276;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7OJL+2ljSAsX+K1gdyXTKpGUjBVDC+iSX2Dkj5l9F1E=;
-        b=UCMTO8CD/webcRI2Fo5EoQLq/NF5sqXQ42k43dTN1pLahxxl7WrTimou6gZWuLATpKgGBV
-        vidFDbrvfCFwdHCg==
-Received: from kitsune.suse.cz (kitsune.suse.cz [10.100.12.127])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by relay2.suse.de (Postfix) with ESMTPS id B94712C141;
-        Tue, 20 Jun 2023 08:04:35 +0000 (UTC)
-Date:   Tue, 20 Jun 2023 10:04:34 +0200
-From:   Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To:     Helge Deller <deller@gmx.de>
-Cc:     Cyril Brulebois <cyril@debamax.com>, Rob Herring <robh@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        Salvatore Bonaccorso <carnil@debian.org>,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] fbdev/offb: Update expected device name
-Message-ID: <20230620080434.GD9196@kitsune.suse.cz>
-References: <20230412095509.2196162-1-cyril@debamax.com>
- <20230412095509.2196162-2-cyril@debamax.com>
- <ZDvrY7X9mpJ7WZ3z@eldamar.lan>
- <11b342dc-1a46-d1be-5fdd-c6eee661e15a@leemhuis.info>
- <fe3b90b0-b52f-9677-0245-a201975c3e0c@suse.de>
- <20230615132107.GA9196@kitsune.suse.cz>
- <20230615200901.GA1572644-robh@kernel.org>
- <20230615211924.cf2qs52cfaf7m3f7@debamax.com>
- <3d8c3a8c-68be-422a-c4ff-6d2e99c3f01b@gmx.de>
+        with ESMTP id S232167AbjFTJNU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 05:13:20 -0400
+Received: from mail-vk1-xa35.google.com (mail-vk1-xa35.google.com [IPv6:2607:f8b0:4864:20::a35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E56B6E6C
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 02:12:54 -0700 (PDT)
+Received: by mail-vk1-xa35.google.com with SMTP id 71dfb90a1353d-471b3f3b989so624905e0c.3
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 02:12:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1687252373; x=1689844373;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FbQjn1tsaYx8cD6Lvja4El7hMzJhB/RR9mXACpuXYKg=;
+        b=RO7DMg6eHeMJsZ3rkYfFbNwHm4z8KwGzU9m5P8EqecZpbYl171KkFnLeafZsoOjORn
+         iKi+2gDnR1uWUPUhjVhxzusDQwHGhCsKJqttpZpevJ6sQdVHnJJWilnVC58s3atrwx78
+         3M80sRQvyBd+7M4mDgQUM33caZsBJYj5Nq3FEgah1f69OhKNlU9I0XLkxOIba25esNW6
+         70dwBQnOe8lfuTrKoFqWqxTBtI5Q1Q8Xcr0urZQDX650vumEDpmdeRvS/YnlqBQ/Hw0m
+         nt2e0isu7c7r1erLNgxlxDkcHpa249cwY9iwgXzPctx+Lbny9nbloTbQzxAxCcyvzQga
+         EEXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687252373; x=1689844373;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FbQjn1tsaYx8cD6Lvja4El7hMzJhB/RR9mXACpuXYKg=;
+        b=HgitsRywfRV6mWyOuayvONyVo27k7YBoBePwXknv+jXhZ0y9VmcogszfrVlhw1d29H
+         W2rn6RWDtskVWQRnYiC9gruLpoHyFGMUG1A5Hdx9cSH5vj3arcFAJINvH+HynQKfZtca
+         wpWaGaOOQ75fgoVSbSL/26Dz+1sDqu8bJDsLJp2p/ns7ID2ElCe/TVzAUhUEYfhz4B0n
+         z1l1CBA7VWyV0kddK7BJLZhxW/JAvTlaSNvSEo7kGJ3VsGW2fmEHOC9F6ZtHyErsMTrX
+         mMQqPqUEQnYIrFo/fTfMqAp7TuYk5aQR2XCHE8HrYZJF0IDePWmXiDYC+mhG7Y/8nS7B
+         ObdA==
+X-Gm-Message-State: AC+VfDxCcR1L/ZtyEfioiv3BRcKqcGx7bLGJKQFJBHDFtctYFLPFdiMN
+        dPjyTDAL8zxmtWDvQsMw+eB28V1OiRZA1ZZksFOU0w==
+X-Google-Smtp-Source: ACHHUZ4Jt/xSCN2HOTfCa7g37yezHwvxeYaGJuZtETywEW2ozSAOCh1OVZ8YiUNP/kIADVsU4uMuwZQ5RZu8w9fQznc=
+X-Received: by 2002:a05:6102:3a72:b0:440:be9c:bc99 with SMTP id
+ bf18-20020a0561023a7200b00440be9cbc99mr1093071vsb.15.1687252373473; Tue, 20
+ Jun 2023 02:12:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3d8c3a8c-68be-422a-c4ff-6d2e99c3f01b@gmx.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230619102154.568541872@linuxfoundation.org>
+In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 20 Jun 2023 14:42:42 +0530
+Message-ID: <CA+G9fYs2WDvPO34TDPyPWSqrc-ieM7OP0DDi1ZYF2jz3OdoXiQ@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/166] 6.1.35-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Jun 20, 2023 at 08:24:34AM +0200, Helge Deller wrote:
-> On 6/15/23 23:19, Cyril Brulebois wrote:
-> > Hi Rob,
-> > 
-> > Rob Herring <robh@kernel.org> (2023-06-15):
-> > > On Thu, Jun 15, 2023 at 03:21:07PM +0200, Michal Suchánek wrote:
-> > > > At the time this was proposed it was said that "of-display", is wrong,
-> > > > and that "of-display.0" must be used for the first device instead, and
-> > > > if something breaks an alias can be provided.
-> > > > 
-> > > > So how does one provide an alias so that offb can find "of-display.0"
-> > > > as "of-display"?
-> > > 
-> > > I'm not aware of any way. There isn't because device names and paths are
-> > > not considered ABI. There are mechanisms for getting stable class device
-> > > indices (e.g. i2c0, mmcblk0, fb0, fb1, etc.) though not implemented for
-> > > fbN (and please don't add it).
-> > > 
-> > > In any case, this should be an easy fix. Though if "linux,opened" or
-> > > "linux,boot-display" is not set, then you'd still get "of-display.0":
-> > > 
-> > > diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-> > > index 78ae84187449..e46482cef9c7 100644
-> > > --- a/drivers/of/platform.c
-> > > +++ b/drivers/of/platform.c
-> > > @@ -553,7 +553,7 @@ static int __init of_platform_default_populate_init(void)
-> > >                          if (!of_get_property(node, "linux,opened", NULL) ||
-> > >                              !of_get_property(node, "linux,boot-display", NULL))
-> > >                                  continue;
-> > > -                       dev = of_platform_device_create(node, "of-display.0", NULL);
-> > > +                       dev = of_platform_device_create(node, "of-display", NULL);
-> > >                          of_node_put(node);
-> > >                          if (WARN_ON(!dev))
-> > >                                  return -ENOMEM;
-> 
-> Michal, does that patch look correct?
-> I don't have that hardware, but that way the boot-display gets named
-> "of-display" while all others get "of-display.x"....
+On Mon, 19 Jun 2023 at 16:13, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.35 release.
+> There are 166 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 21 Jun 2023 10:21:12 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.35-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Yes, that's inconsistent, and IIRC it's what I originally proposed to
-preserve compatibility as much as possible.
 
-The patch went through multiple iteration by me and Rob and the final
-version that was merged uses the consistent but incompatible naming.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-The other option would be to adapt the offb driver, presumably.
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-I don't understand how the device name figures in attaching the driver
-to the device, the only other occurence of of-display is the name of the
-offb and ofdrm drivers.
+## Build
+* kernel: 6.1.35-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.1.y
+* git commit: 1781b36a0958c09ec269d0591f929be0590eeb96
+* git describe: v6.1.34-167-g1781b36a0958
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.3=
+4-167-g1781b36a0958
 
-> > I've just replaced my clueless workaround with this patch on top of the
-> > kernel found in Debian 12 (Bookworm), i.e. 6.1.27 at this point, and it
-> > indeed fixes the black screen problem in the installer's context.
-> 
-> ... at least it fixes the issue.
+## Test Regressions (compared to v6.1.33)
 
-I would expect as much. I don't have the hardware either but keeping
-what was there before, and only adding on top is kind of the least
-disruptive way of adding new stuff.
+## Metric Regressions (compared to v6.1.33)
 
-Thanks
+## Test Fixes (compared to v6.1.33)
 
-Michal
+## Metric Fixes (compared to v6.1.33)
+
+## Test result summary
+total: 173166, pass: 144515, fail: 3419, skip: 25079, xfail: 153
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 151 total, 150 passed, 1 failed
+* arm64: 57 total, 56 passed, 1 failed
+* i386: 41 total, 38 passed, 3 failed
+* mips: 30 total, 28 passed, 2 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 38 total, 36 passed, 2 failed
+* riscv: 16 total, 15 passed, 1 failed
+* s390: 16 total, 16 passed, 0 failed
+* sh: 14 total, 12 passed, 2 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 46 total, 46 passed, 0 failed
+
+## Test suites summary
+* boot
+* fwts
+* igt-gpu-tools
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+* vdso
+
+--
+Linaro LKFT
+https://lkft.linaro.org
