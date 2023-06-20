@@ -2,98 +2,110 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1008736ADF
-	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 13:24:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B94C736B17
+	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 13:34:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232187AbjFTLYI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 07:24:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54064 "EHLO
+        id S231741AbjFTLer (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 07:34:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232568AbjFTLYD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 07:24:03 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2D6410F8;
-        Tue, 20 Jun 2023 04:23:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1687260237; x=1718796237;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ObSwR3z5gLc7CWALv2Ch7IeWIRyke2xnjULZNZqbszg=;
-  b=Ul4KqJJQntcBCwGTrprVM26zTf7coH+I+dT6SAmTmFBf+9HYy05cvt4v
-   Oz6g/NvFysA0k9Yx4gaBOlhIu68wQ0wZ82yLkxVvkeDob6g/t77AKqsc/
-   e3Rr3VD/wZnx1h2//lpnWwHm+XCqzePQUvxRlhJUw2ubxsEuRwTKYcnSy
-   f4f2D0vWNslagoQduucUf5Dpif9NAhRDt1K+DCV4PQIX40xeOnG9NzdsK
-   1ICj3Ib9Y0eK6y0GXp8xmQXD/dFMlAX9cXMkneNpMkfGRuWZe0sEWAItS
-   BEXUxuycVQkgVjA2BaL9YTTBwxleiuh6Pyk20ORCXrldpsmudlIzBdC0a
-   A==;
-X-IronPort-AV: E=Sophos;i="6.00,256,1681196400"; 
-   d="asc'?scan'208";a="231095395"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 20 Jun 2023 04:23:56 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Tue, 20 Jun 2023 04:23:56 -0700
-Received: from wendy (10.10.115.15) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
- Transport; Tue, 20 Jun 2023 04:23:53 -0700
-Date:   Tue, 20 Jun 2023 12:23:27 +0100
-From:   Conor Dooley <conor.dooley@microchip.com>
+        with ESMTP id S229746AbjFTLeq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 07:34:46 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5117FE;
+        Tue, 20 Jun 2023 04:34:44 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-307d58b3efbso3619623f8f.0;
+        Tue, 20 Jun 2023 04:34:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687260883; x=1689852883;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wNmsRYXp3LiMqLeElIlXoDkwLqAfcZRTSlTeIqHQMaw=;
+        b=gwnNn5B6lVlUbAXTwAt+yfhy6qCOBy+QHoiWSvoijiW/fbPhfoQRhGpjlvbMJn8Quv
+         Ol04JoXSx/BhqgeHX4cg4sXvYowweqDffc7xTIBt4nq3STc98+gZBAO8pDgRkMfRIUtQ
+         CpBcqDpji77J/OEb8gfe1Q0NEZ0Ne136da7BUtnq3Tmk1LwNnKf4lOwwjZwdVNgy3J6s
+         Y5e7LKaQggLU0sEFyMjgIQ4wEVVjBW8y3LCAXyafOg5rcUKto7lYRo9qIRE7R3LdGF0f
+         jqY3T+U2gNjW0ZxFPXJ3YzITFh+rTm/gNWtdN9Q/USlC0jAcisPoq49h+r5DY5QbGp9k
+         J/oA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687260883; x=1689852883;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wNmsRYXp3LiMqLeElIlXoDkwLqAfcZRTSlTeIqHQMaw=;
+        b=G/OL3hBGQEqFBJT5/TlyO02edEnGKZXRVbTM04PP3ZkG3ArA/Et1S2db89c/7xwWP8
+         im2ln4TCBZM/14Z+yvqwnoSENxthJ/ecNW+D125O1GI0c5XeP2IbeA1D9y8jOvdOkz5h
+         jlf/DfRTxJpu78qB+RbJfYiAUjJzmB00pGROfPpqoDsL8rP7tqZRQggJPDjqJkcvH78y
+         wubDrK0siWnT1G2Bc2Y32yYHMcB9RgHsNP7WQLZDGH5mn+sK1ZUMIm2s/8S4jILR1P2i
+         pykBCKD6f4IIJ/a2uuS6aB+PxJIE8TRBJD33WYpFeBSi1qiR6MbqrnbHMfwxxlvO71GN
+         JwWQ==
+X-Gm-Message-State: AC+VfDwWbmQwCpcRVnNdA7O27jkQZZklG13WKwCJGYo4OZjsRfvWXQMK
+        d8olGvlOetmlGyt/a57OAM4=
+X-Google-Smtp-Source: ACHHUZ7FRsTITb47OtP9ObIFUmd0XF8iyk78I8fpCv07AssJh1O0cUuctFjrufZYXNKwsEQuA04d/A==
+X-Received: by 2002:a5d:6289:0:b0:311:ac3:909f with SMTP id k9-20020a5d6289000000b003110ac3909fmr8263127wru.56.1687260883200;
+        Tue, 20 Jun 2023 04:34:43 -0700 (PDT)
+Received: from debian ([63.135.72.41])
+        by smtp.gmail.com with ESMTPSA id i14-20020a5d558e000000b0030ab5ebefa8sm1795944wrv.46.2023.06.20.04.34.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jun 2023 04:34:42 -0700 (PDT)
+Date:   Tue, 20 Jun 2023 12:34:40 +0100
+From:   "Sudip Mukherjee (Codethink)" <sudipm.mukherjee@gmail.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     <stable@vger.kernel.org>, <patches@lists.linux.dev>,
-        <linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
-        <akpm@linux-foundation.org>, <linux@roeck-us.net>,
-        <shuah@kernel.org>, <patches@kernelci.org>,
-        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
-        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
-        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-        <rwarsow@gmx.de>
-Subject: Re: [PATCH 6.1 000/166] 6.1.35-rc1 review
-Message-ID: <20230620-mandate-capsize-e8dfcce96656@wendy>
-References: <20230619102154.568541872@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com, srw@sladewatkins.net,
+        rwarsow@gmx.de
+Subject: Re: [PATCH 5.15 000/107] 5.15.118-rc1 review
+Message-ID: <ZJGO0LTm9Fu4lNc1@debian>
+References: <20230619102141.541044823@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="X5M9avvAq7l2RkVl"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230619102154.568541872@linuxfoundation.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---X5M9avvAq7l2RkVl
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi Greg,
 
-On Mon, Jun 19, 2023 at 12:27:57PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.35 release.
-> There are 166 patches in this series, all will be posted as a response
+On Mon, Jun 19, 2023 at 12:29:44PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.118 release.
+> There are 107 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
+Build test (gcc version 12.2.1 20230511):
+mips: 62 configs -> no failure
+arm: 99 configs -> no failure
+arm64: 3 configs -> no failure
+x86_64: 4 configs -> no failure
+alpha allmodconfig -> no failure
+csky allmodconfig -> no failure
+powerpc allmodconfig -> no failure
+riscv allmodconfig -> no failure
+s390 allmodconfig -> no failure
+xtensa allmodconfig -> no failure
 
-Cheers,
-Conor.
+Boot test:
+x86_64: Booted on my test laptop. No regression.
+x86_64: Booted on qemu. No regression. [1]
+arm64: Booted on rpi4b (4GB model). No regression. [2]
+mips: Booted on ci20 board. No regression. [3]
 
---X5M9avvAq7l2RkVl
-Content-Type: application/pgp-signature; name="signature.asc"
+[1]. https://openqa.qa.codethink.co.uk/tests/4074
+[2]. https://openqa.qa.codethink.co.uk/tests/4072
+[3]. https://openqa.qa.codethink.co.uk/tests/4070
 
------BEGIN PGP SIGNATURE-----
+Tested-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZJGMLgAKCRB4tDGHoIJi
-0njvAP0XYkx/pajmHmA2RE+wIYvGrRd0VoRhKQJyWeZ8viOryQD/SxOX2X5bd0qu
-huJFxG1Xv4VngDi7MgDUWqTh5JSFvQQ=
-=9L50
------END PGP SIGNATURE-----
-
---X5M9avvAq7l2RkVl--
+-- 
+Regards
+Sudip
