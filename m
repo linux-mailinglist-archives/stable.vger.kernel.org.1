@@ -2,70 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D0CB736BC8
-	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 14:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3DD1736C1F
+	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 14:42:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232434AbjFTMUR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 08:20:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49118 "EHLO
+        id S231710AbjFTMmG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 08:42:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232348AbjFTMUN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 08:20:13 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADEFD10E2;
-        Tue, 20 Jun 2023 05:20:11 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-3f90b51ab39so31992635e9.1;
-        Tue, 20 Jun 2023 05:20:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1687263610; x=1689855610;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YN4XeAAW9Msbpq4rVR/lXtHCKRrTEhKEAVXjSUlPPNY=;
-        b=busncoqU/9hcpDtBZvdrY/THUyqTAoJ5hkQDAzgfzxZR0IMV4l3dNoPjUFYYHLZetW
-         jf/5wunI/AU+rA3VTswiPQjns5p8diTzP77zE52hCdHQiAPpMcXHYEAmtIHkTbvqdK+J
-         H7PZ+2zM47UXgZlwaf0IOx81ieDhrjh3HBaAawyVmDdw4wQseSZ+HGtw1TBIc5R5Vik1
-         8lNpgWpUxYt3ZxLoWP5ssxtbTsnRruSzADbspW5ZAQoxMxwA7ZShMm58QapqMtI+kYus
-         dvGl9BdBT1ztwqoaxIz2nbgdExHCYQeNBPLmUvqyZBXtW9UEnrx1d6cY0Cdjzy1Re/v8
-         aN5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687263610; x=1689855610;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YN4XeAAW9Msbpq4rVR/lXtHCKRrTEhKEAVXjSUlPPNY=;
-        b=VsjmkuPkEJ3jNTpyQCErjRvLPhs4b9L8fpc77Iy4nvpMP6iabFY7udnrSuNGg7ToMX
-         VIvzNzgf62sbJwv86Ev9FZzZUwZlaqp+Yl8A24JNP1BwXhWP2gI3KddhxJawzHMr2gQP
-         dZEX+anHnvlDU3ivjQBJj4coQJHYT3ikUqsu1qzkrEsPkyKIAitN5lIYj2KnRXofp/Dh
-         yMH5sJ0hSilis2qnsbHrAh14879LwF19JOcLgkJoPs0py5fOtKTIaA/WcDQuQEJV5n4m
-         lZhT5CrCSBDIEis5kIICODvFtAxgFY+VupMt6NJN7h6M6WccIQVXxujN3uPTcAt23n63
-         qHXQ==
-X-Gm-Message-State: AC+VfDyVP/ceyQp4/wiTBs/h5XCFwi6F4TsRfa0nYaaNg1KZPjEr6aeK
-        y06xnfwvj1KqkjwC790lAkM=
-X-Google-Smtp-Source: ACHHUZ4O+NZZj+sKZX5xYKL3BHLJ2/pBF7IkPd8LnTYybGpvOtE4qgprz+QVS3Y/LdEwKd/Fp2xQWg==
-X-Received: by 2002:a7b:c391:0:b0:3f9:b3f5:b8f with SMTP id s17-20020a7bc391000000b003f9b3f50b8fmr2994679wmj.34.1687263609980;
-        Tue, 20 Jun 2023 05:20:09 -0700 (PDT)
-Received: from debian ([63.135.72.41])
-        by smtp.gmail.com with ESMTPSA id q19-20020a1cf313000000b003f7361ca753sm13081501wmq.24.2023.06.20.05.20.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jun 2023 05:20:09 -0700 (PDT)
-Date:   Tue, 20 Jun 2023 13:20:08 +0100
-From:   "Sudip Mukherjee (Codethink)" <sudipm.mukherjee@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com, srw@sladewatkins.net,
-        rwarsow@gmx.de
-Subject: Re: [PATCH 6.3 000/187] 6.3.9-rc1 review
-Message-ID: <ZJGZeFafSMZGszdg@debian>
-References: <20230619102157.579823843@linuxfoundation.org>
+        with ESMTP id S230451AbjFTMmF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 08:42:05 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5C4C10DD;
+        Tue, 20 Jun 2023 05:42:04 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qBagI-000343-QS; Tue, 20 Jun 2023 14:41:58 +0200
+Message-ID: <2d7ed7bb-38ba-8840-6629-d210937b8513@leemhuis.info>
+Date:   Tue, 20 Jun 2023 14:41:58 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: New kernel warning after updating from LTS 5.15.110 to 5.15.112
+ (and 5.15.113)
+Content-Language: en-US, de-DE
+To:     Greg KH <gregkh@linuxfoundation.org>,
+        Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Cc:     Bagas Sanjaya <bagasdotme@gmail.com>,
+        Chris Packham <Chris.Packham@alliedtelesis.co.nz>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Linux Kernel Integrity <linux-integrity@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        stable@vger.kernel.org
+References: <fe6f7aa0-56c2-3729-ce8c-0f2d943b33f4@alliedtelesis.co.nz>
+ <ZHQIFLWvrWUNMVxb@debian.me>
+ <6e470461-1a9b-ec51-bac5-f2beb1dc11c9@alliedtelesis.co.nz>
+ <2b09d2ed-0852-bbc9-b792-aad92235c7fa@gmail.com>
+ <03daca5c-e468-8889-4dc2-e625a664d571@alliedtelesis.co.nz>
+ <ec5245bd-3103-f0c7-d3ef-85aabb4d4712@alliedtelesis.co.nz>
+ <ZH6TIjXeXJVMvSKa@debian.me> <2023060606-unlatch-yiddish-a45f@gregkh>
+ <ac5b76af-87dc-b04d-6035-8eda8ba5ed12@kunbus.com>
+ <2023060736-immodest-doormat-f957@gregkh>
+From:   "Linux regression tracking #update (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <2023060736-immodest-doormat-f957@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1687264924;c426119d;
+X-HE-SMSGID: 1qBagI-000343-QS
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -74,38 +63,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
+[TLDR: This mail in primarily relevant for Linux kernel regression
+tracking. See link in footer if these mails annoy you.]
 
-On Mon, Jun 19, 2023 at 12:26:58PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.3.9 release.
-> There are 187 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 07.06.23 19:49, Greg KH wrote:
+> On Wed, Jun 07, 2023 at 05:47:57PM +0200, Lino Sanfilippo wrote:
+>> On 06.06.23 08:45, Greg KH wrote:
+>>>>
+>>>> Lino, it looks like this regression is caused by (backported) commit of yours.
+>>>> Would you like to take a look on it?
 
-Build test (gcc version 12.2.1 20230511):
-mips: 52 configs -> no failure
-arm: 71 configs -> no failure
-arm64: 3 configs -> no failure
-x86_64: 4 configs -> no failure
-alpha allmodconfig -> no failure
-csky allmodconfig -> no failure
-powerpc allmodconfig -> no failure
-riscv allmodconfig -> no failure
-s390 allmodconfig -> no failure
-xtensa allmodconfig -> no failure
+>>>> Anyway, telling regzbot:
+>>>>
+>>>> #regzbot introduced: 51162b05a44cb5
+>>>
+>>> There's some tpm backports to 5.15.y that were suspect and I'll look
+>>> into reverting them and see if this was one of the ones that was on that
+>>> list.  Give me a few days...
+>>
+>> Could you please consider to apply (mainline) commit 0c7e66e5fd69 ("tpm, tpm_tis: Request threaded
+>> interrupt handler") to 5.15.y?
+>>
+>> As Chris confirmed it fixes the regression caused by 51162b05a44cb5 ("tpm, tpm_tis: Claim locality
+>> before writing interrupt registers").
+>>
+>> Commit 0c7e66e5fd69 is also needed for 5.10.y, 6.1.y and 6.3.y.
+> 
+> Now queued up, thanks.
 
-Boot test:
-x86_64: Booted on my test laptop. No regression.
-x86_64: Booted on qemu. No regression. [1]
-arm64: Booted on rpi4b (4GB model). No regression. [2]
-mips: Booted on ci20 board. No regression. [3]
+#regzbot fix: 0c7e66e5fd69
+#regzbot ignore-activity
 
-[1]. https://openqa.qa.codethink.co.uk/tests/4085
-[2]. https://openqa.qa.codethink.co.uk/tests/4081
-[3]. https://openqa.qa.codethink.co.uk/tests/4079
-
-Tested-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
-
--- 
-Regards
-Sudip
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
