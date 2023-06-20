@@ -2,117 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D9CD736017
-	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 01:21:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A699736087
+	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 02:11:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229920AbjFSXVO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 19 Jun 2023 19:21:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44052 "EHLO
+        id S229521AbjFTALH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 19 Jun 2023 20:11:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229823AbjFSXUr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 19:20:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAC0D10C6;
-        Mon, 19 Jun 2023 16:20:43 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 255C960F57;
-        Mon, 19 Jun 2023 23:20:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE84C433C0;
-        Mon, 19 Jun 2023 23:20:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1687216842;
-        bh=o3tAGB1OaBUq+iFFYKuAnjwnh6jmefzgvcRLwVdoKJ8=;
-        h=Date:To:From:Subject:From;
-        b=J5BT6EVFwDGf/jM0k4klTMAUHcoQTL047TiXmaFZHGZ4jL9PmIpx+/z6V9UKbmB28
-         1vEd3Q3fw333MrYNhKKa/pg/ZkewdXKGTw3IOHbHUF5HWxo+F2iZbgGEg4hMvwQOSf
-         DE2+bE6vKVQGAlz1rlblu+VGfkhWUT+r5VX3fL7U=
-Date:   Mon, 19 Jun 2023 16:20:41 -0700
-To:     mm-commits@vger.kernel.org, viro@zeniv.linux.org.uk,
-        stable@vger.kernel.org, hughd@google.com, dhowells@redhat.com,
-        roberto.sassu@huawei.com, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] shmem-use-ramfs_kill_sb-for-kill_sb-method-of-ramfs-based-tmpfs.patch removed from -mm tree
-Message-Id: <20230619232042.7EE84C433C0@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229492AbjFTALG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 19 Jun 2023 20:11:06 -0400
+Received: from qproxy1-pub.mail.unifiedlayer.com (qproxy1-pub.mail.unifiedlayer.com [173.254.64.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9DAB1AD
+        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 17:11:05 -0700 (PDT)
+Received: from gproxy2-pub.mail.unifiedlayer.com (unknown [69.89.18.3])
+        by qproxy1.mail.unifiedlayer.com (Postfix) with ESMTP id 7485C8033EF2
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 00:11:05 +0000 (UTC)
+Received: from cmgw14.mail.unifiedlayer.com (unknown [10.0.90.129])
+        by progateway4.mail.pro1.eigbox.com (Postfix) with ESMTP id B705D10043B4C
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 00:11:04 +0000 (UTC)
+Received: from box5620.bluehost.com ([162.241.219.59])
+        by cmsmtp with ESMTP
+        id BOxcq0lxJLmMcBOxcqxzmM; Tue, 20 Jun 2023 00:11:04 +0000
+X-Authority-Reason: nr=8
+X-Authority-Analysis: v=2.4 cv=GtGHRm5C c=1 sm=1 tr=0 ts=6490ee98
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19 a=IkcTkHD0fZMA:10:nop_charset_1
+ a=of4jigFt-DYA:10:nop_rcvd_month_year
+ a=-Ou01B_BuAIA:10:endurance_base64_authed_username_1 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10:nop_charset_2
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=OyyE2RJBli59W8yfJ4YzSvH97YquIDkGxCydQ6BcqbI=; b=TX4Hh6ZsvEL12ZzyhxOId3awEf
+        JxfJ4G5ZC4TWhAwLg3VmE7cLxHig/mrIwHmwPgipGegrH0LxQRRrZwCH8LZ/oAvrDv1W90b2Jsi+A
+        SSdRi/ntEQrb643CrCUeO+gRtrkLaG8cyu7iePpUYVM3/UwpBbcOsfghd1lCgd9PmYqoQFV11ft79
+        q1xQIugV1/i2PnIJ5oMHoUpeg2aCpnlGoSCFt58XkJqRqZ0Cxw0Mm73B38tdzESL/XfQyyDXeFGbF
+        YJOh1rdg2l+dwRN8GHd38G4EQFR/MkBUpQwe1ASpGnFpvCmaHzcyEYwN7K3kg7Glh5cPke2fXvlqz
+        /W/1PXHg==;
+Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:44594 helo=[10.0.1.47])
+        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.95)
+        (envelope-from <re@w6rz.net>)
+        id 1qBOxb-0005X5-LG;
+        Mon, 19 Jun 2023 18:11:03 -0600
+Subject: Re: [PATCH 6.3 000/187] 6.3.9-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de
+References: <20230619102157.579823843@linuxfoundation.org>
+In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
+From:   Ron Economos <re@w6rz.net>
+Message-ID: <480442f3-fc56-1845-6022-a3e864bee179@w6rz.net>
+Date:   Mon, 19 Jun 2023 17:11:01 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.232.9
+X-Source-L: No
+X-Exim-ID: 1qBOxb-0005X5-LG
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:44594
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 6/19/23 3:26 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.3.9 release.
+> There are 187 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 21 Jun 2023 10:21:12 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.3.9-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.3.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-The quilt patch titled
-     Subject: shmem: use ramfs_kill_sb() for kill_sb method of ramfs-based tmpfs
-has been removed from the -mm tree.  Its filename was
-     shmem-use-ramfs_kill_sb-for-kill_sb-method-of-ramfs-based-tmpfs.patch
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-This patch was dropped because it was merged into the mm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: Roberto Sassu <roberto.sassu@huawei.com>
-Subject: shmem: use ramfs_kill_sb() for kill_sb method of ramfs-based tmpfs
-Date: Wed, 7 Jun 2023 18:15:23 +0200
-
-As the ramfs-based tmpfs uses ramfs_init_fs_context() for the
-init_fs_context method, which allocates fc->s_fs_info, use ramfs_kill_sb()
-to free it and avoid a memory leak.
-
-Link: https://lkml.kernel.org/r/20230607161523.2876433-1-roberto.sassu@huaweicloud.com
-Fixes: c3b1b1cbf002 ("ramfs: add support for "mode=" mount option")
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/ramfs/inode.c      |    2 +-
- include/linux/ramfs.h |    1 +
- mm/shmem.c            |    2 +-
- 3 files changed, 3 insertions(+), 2 deletions(-)
-
---- a/fs/ramfs/inode.c~shmem-use-ramfs_kill_sb-for-kill_sb-method-of-ramfs-based-tmpfs
-+++ a/fs/ramfs/inode.c
-@@ -278,7 +278,7 @@ int ramfs_init_fs_context(struct fs_cont
- 	return 0;
- }
- 
--static void ramfs_kill_sb(struct super_block *sb)
-+void ramfs_kill_sb(struct super_block *sb)
- {
- 	kfree(sb->s_fs_info);
- 	kill_litter_super(sb);
---- a/include/linux/ramfs.h~shmem-use-ramfs_kill_sb-for-kill_sb-method-of-ramfs-based-tmpfs
-+++ a/include/linux/ramfs.h
-@@ -7,6 +7,7 @@
- struct inode *ramfs_get_inode(struct super_block *sb, const struct inode *dir,
- 	 umode_t mode, dev_t dev);
- extern int ramfs_init_fs_context(struct fs_context *fc);
-+extern void ramfs_kill_sb(struct super_block *sb);
- 
- #ifdef CONFIG_MMU
- static inline int
---- a/mm/shmem.c~shmem-use-ramfs_kill_sb-for-kill_sb-method-of-ramfs-based-tmpfs
-+++ a/mm/shmem.c
-@@ -4199,7 +4199,7 @@ static struct file_system_type shmem_fs_
- 	.name		= "tmpfs",
- 	.init_fs_context = ramfs_init_fs_context,
- 	.parameters	= ramfs_fs_parameters,
--	.kill_sb	= kill_litter_super,
-+	.kill_sb	= ramfs_kill_sb,
- 	.fs_flags	= FS_USERNS_MOUNT,
- };
- 
-_
-
-Patches currently in -mm which might be from roberto.sassu@huawei.com are
-
+Tested-by: Ron Economos <re@w6rz.net>
 
