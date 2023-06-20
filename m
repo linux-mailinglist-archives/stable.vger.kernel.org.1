@@ -2,56 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4EC373765F
-	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 23:04:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9413737661
+	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 23:04:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230095AbjFTVER (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 17:04:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44222 "EHLO
+        id S230103AbjFTVEu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 17:04:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229903AbjFTVEP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 17:04:15 -0400
-Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB5CD1733
-        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 14:04:14 -0700 (PDT)
-Received: by mail-io1-xd2e.google.com with SMTP id ca18e2360f4ac-77e3c55843cso38234539f.0
-        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 14:04:14 -0700 (PDT)
+        with ESMTP id S229647AbjFTVEt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 17:04:49 -0400
+Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0DFE1727
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 14:04:47 -0700 (PDT)
+Received: by mail-io1-xd36.google.com with SMTP id ca18e2360f4ac-77e3c55843cso38255339f.0
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 14:04:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1687295054; x=1689887054;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=linuxfoundation.org; s=google; t=1687295087; x=1689887087;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=gjrlNog9VUmWQ4CeTJ0zT3GopxHeGj3HfK3FziRfHlY=;
-        b=AiSFNVi74b4/QYZ++fP27D6qMecoPP9WELi3ff1Q2o9+DCQogAAyxG66lKIKFcVHKs
-         nytMo+5R1dIiwtoPClgLLft/vhlnEFVC4um3B4FMQchpQqhbeggkLpX6rBaLWQCJrMHI
-         nNu2vQK93jk03Y+mVFkt2YWFGAhW9i7nXFp6M=
+        bh=AYujz9veDd2CO7G1dpy8ilcu4Kv8MRTtnNHN6uTYZNQ=;
+        b=bFwYNvAcJpiZD8EVOOpBW5NIKQDuzbimB/glzhn4+Ek0kY8SC1Vwvg9f/WYcymgYl8
+         77/0YR9JD6p04MQhaSDTuXAnTX2cHGkP8SG3V/9AUEpfNhcwKWezrAAljEdegUiQ1XTX
+         wkvvQe3+pkn1UVl6oOgsqcGKpcf+fWI5aRdRM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687295054; x=1689887054;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20221208; t=1687295087; x=1689887087;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gjrlNog9VUmWQ4CeTJ0zT3GopxHeGj3HfK3FziRfHlY=;
-        b=ZQnOt0irBHlprjRgmso09qxoQI3TL5SAJeeUmPSuSEk23ZuNK6WsqAOA7MrEGCmHWL
-         AaVrMBRshZhVLoOxYY04ykHaSt/Eycrqi4/mZUDjTiwv+QAQwTipw+xMeaAk+eWtc5fU
-         MGFpj5rQ/rPaeYAQtrCPsa7oZwBe7FkqXZcRRfrMDWYBKILyE7R/asJEmRo5+sU6LPbH
-         jAalzeZf482vUlqJO393t9vCi7oUJ54UoYJ9P/QTk9MJ/hTvB5Bdf6REglVcpvsb6CZM
-         bAMfKox0uffJ3K9jgxCjpMWvPUG2ZD24B/jYQT0TCSndHZIaMqCHu1F0EZnccmPOEtal
-         BTaQ==
-X-Gm-Message-State: AC+VfDxcMsMsOE4IxQehGOomtYQ4DaD3n5IiA4tD5hyCbZF3zoS/RnNi
-        oadkMHy+B8DZwn8Erf5XcA6pEUP7qxoM0gHA0pU=
-X-Google-Smtp-Source: ACHHUZ67pM/+HD6HxI1DKWKKG34tNljc5QMIctdDs8pRmiKA5LIWM3veIBSPKOLJ+4RyySUz/FkMKw==
-X-Received: by 2002:a92:7c05:0:b0:340:ae63:38a4 with SMTP id x5-20020a927c05000000b00340ae6338a4mr11589087ilc.2.1687295053815;
-        Tue, 20 Jun 2023 14:04:13 -0700 (PDT)
+        bh=AYujz9veDd2CO7G1dpy8ilcu4Kv8MRTtnNHN6uTYZNQ=;
+        b=jjN2+NlpjCOp7Z31kK5uhFwZTKClJ57L5HRFkw6KQ1pZ20vwSCNx5Ej7yvf37Q58te
+         gRv83zib/CVHkjRkiL99GXv1/1Fv3bdjMthek3nblKKwXcwrPFjcsfB6Z2ocfG0dnKTU
+         O83fIW7aXXWmGRHNrbnFzSbr9o+Jyl9UrU0352kBHyaI2IsmyxNrjN3iDNqK8AzDVC2i
+         zrVKEnutKsuZIPcISoFNfwg/zBjFr7K65RxSYhbmIelCbCz9FXMjlJvS50mw81e+wh4S
+         icM+fw6VJUDlgwABNtEbJHNK5C/cggsmsJqtRZd89YfP+pgycHSzWAJMEf1zxh6NlCtC
+         64LA==
+X-Gm-Message-State: AC+VfDywc8FMdFaKEioC+DTFHCFBv4e52b6XE9od9vxFo6JlE8McQ1F4
+        bvUovhwYrKRWUXGQieVQhFZXBw==
+X-Google-Smtp-Source: ACHHUZ4VTwsl8aTrVK7Amfm6wbtGoXnbQw0L84oWsJQMh4ZBwhsU57quym3SYzHuZcgpSWwry4grjg==
+X-Received: by 2002:a05:6602:3998:b0:780:a83a:7684 with SMTP id bw24-20020a056602399800b00780a83a7684mr2493834iob.2.1687295085634;
+        Tue, 20 Jun 2023 14:04:45 -0700 (PDT)
 Received: from [192.168.1.128] ([38.15.45.1])
-        by smtp.gmail.com with ESMTPSA id c5-20020a92d3c5000000b0034202d05fadsm831865ilh.72.2023.06.20.14.04.13
+        by smtp.gmail.com with ESMTPSA id h1-20020a5e8401000000b0077e35ffac2fsm903309ioj.32.2023.06.20.14.04.44
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Jun 2023 14:04:13 -0700 (PDT)
-Message-ID: <f7bf3aa8-f1b8-a1b5-8e51-46d51d002633@linuxfoundation.org>
-Date:   Tue, 20 Jun 2023 15:04:12 -0600
+        Tue, 20 Jun 2023 14:04:45 -0700 (PDT)
+Message-ID: <facbb44d-5f33-fc8b-84df-c191bc7effb1@linuxfoundation.org>
+Date:   Tue, 20 Jun 2023 15:04:44 -0600
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Subject: Re: [PATCH 5.15 000/107] 5.15.118-rc1 review
+Subject: Re: [PATCH 5.10 00/89] 5.10.185-rc1 review
+Content-Language: en-US
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org
 Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
@@ -61,16 +62,15 @@ Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
         f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
         srw@sladewatkins.net, rwarsow@gmx.de,
         Shuah Khan <skhan@linuxfoundation.org>
-References: <20230619102141.541044823@linuxfoundation.org>
-Content-Language: en-US
+References: <20230619102138.279161276@linuxfoundation.org>
 From:   Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
+In-Reply-To: <20230619102138.279161276@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -78,8 +78,8 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 On 6/19/23 04:29, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.118 release.
-> There are 107 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 5.10.185 release.
+> There are 89 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
@@ -87,9 +87,9 @@ On 6/19/23 04:29, Greg Kroah-Hartman wrote:
 > Anything received after that time might be too late.
 > 
 > The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.118-rc1.gz
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.185-rc1.gz
 > or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
 > and the diffstat can be found below.
 > 
 > thanks,
@@ -97,11 +97,9 @@ On 6/19/23 04:29, Greg Kroah-Hartman wrote:
 > greg k-h
 > 
 
-Compiled and boots, but doesn't get to login prompt. Keeps running
-into NMIs and watchdog detects had lockups.
+Compiled and booted on my test system. No dmesg regressions.
 
-I am starting bisect and will keep you updated.
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
 thanks,
 -- Shuah
-
