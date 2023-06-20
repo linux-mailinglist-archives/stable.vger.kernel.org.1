@@ -2,245 +2,265 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 010D8736DA9
-	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 15:46:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 406C5736DAF
+	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 15:47:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233056AbjFTNqQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 09:46:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44226 "EHLO
+        id S233125AbjFTNrF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 09:47:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232834AbjFTNqO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 09:46:14 -0400
-Received: from mail-vk1-xa34.google.com (mail-vk1-xa34.google.com [IPv6:2607:f8b0:4864:20::a34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8F0D1B6
-        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 06:46:12 -0700 (PDT)
-Received: by mail-vk1-xa34.google.com with SMTP id 71dfb90a1353d-4718f761333so1093114e0c.0
-        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 06:46:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1687268772; x=1689860772;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WcJCG56qv3SmBGDxfHQD2CThgz4mtwNLX+rRWuwbSbw=;
-        b=C6lG92cgKkpAVqdPf/+kfYhbGfzGw0ijZRCo1LZ5+Dds967JBZd/mMhSmnIalidWWy
-         yhBnmSpWERId0kz3K4S+579oH1XNQy4Cbl1bnGqVFB5YnbsCX1aEu6nBBtFocfURNW5l
-         ekCO0yCPIxJWbYbd4LLvhl0Uc3n45EhNWzFK6yQtBri1Zzy3EifQDSSerf2w2XZ83j31
-         o5A6taC6X1OVjML94K4vZnvwRPxyq8yFkVMSlwkURpbLS7f2IMIFqqfPG0fB4+0fcSgJ
-         8W8xcXeQ3HTNaau3QzwBgWGsWvCSqp9D2SkaNBuyhDZvk9cONGJHi0v5vqhmVzmWTaB+
-         zxMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687268772; x=1689860772;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WcJCG56qv3SmBGDxfHQD2CThgz4mtwNLX+rRWuwbSbw=;
-        b=DVZUfruFUE7xeXzmSBirxUdX5lywwcOQyWtCHaw5Wl9GOl6W6JeyF5/2DvN+AURdvw
-         DNSNfuV/SAZmI/E3U/aVBXGq0w8YpiplMabU5hyYppU2sKS4OZSvgdyP2EAsZyhRu98s
-         m1hSJSHTsmQ3IrdkdjsFlk/VtNVtlHuERMq+tPNk+k59du01QPQTwftEKw1qysBrKcE5
-         eoq1uTY+cb9O0pSQ8s/w09+Ys2WfQNakLxFlVd/L6lH6Su9hlePDzkzXfuD2yhRCHfmy
-         i5vBLttxtGtb47Thd4eW7HCrKH8l9ubqz+UixtEsGy2sFjjMB7OIQoZDr59daSg5JpLR
-         U7wg==
-X-Gm-Message-State: AC+VfDwSs7+mjE0gsASzYL3aDCXGuEUxoXCzSsCruGL/mbuEaLNBhpab
-        aRRoI5kBN8YIgXlVrwkfwP23APiat5irVT+0ZP+1fWIuDxorwZsLIlxVCw==
-X-Google-Smtp-Source: ACHHUZ7LyLpgdajqJ8eAW188Ghx5k/iDZpGh8m5wskPIyToCVUBLZmhjwi1g5PH+fXKJaQSqUxbkRjlnnvaKZCQfIYk=
-X-Received: by 2002:a1f:e1c7:0:b0:46e:7102:7211 with SMTP id
- y190-20020a1fe1c7000000b0046e71027211mr4487185vkg.11.1687268771687; Tue, 20
- Jun 2023 06:46:11 -0700 (PDT)
+        with ESMTP id S233132AbjFTNq6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 09:46:58 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAF6EFC;
+        Tue, 20 Jun 2023 06:46:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1687268814; x=1718804814;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=e/XThoTZG2lba6ufz2pGTi9lzYZmwij3ijLjvkPGOmg=;
+  b=QpZnHAp+TArs2TctmQgjZqlfqKT7/0UZaSzDzx/FtqF1HAzzA0STJCA7
+   FKD/URotoTYnrb5bYjGirJj1yEDoOw5g8y9fyO9dQOC6SuYL+PPLHCAWK
+   aJ7Ox/gKSU+GwEjgpWpEboh07H1z3DW4O7X980RdSJ6i1yEEPZuyi0A5w
+   Tym7aTKsPiMd1yev7QFqzX8bd5SptyEbsp15UuT/0uApVAxn7Gohdk+Jd
+   VLYDFoMBhGWhkXyvc62yDKGaWrXpYihDi/eyw9OktRdd30aFGjcdwrbJJ
+   xxo954Z+VQSxZbdtayObWSs7E52d/weT8GF7+YPGMXCoAbJuyVSBKsYmR
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="362401300"
+X-IronPort-AV: E=Sophos;i="6.00,257,1681196400"; 
+   d="scan'208";a="362401300"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 06:46:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10747"; a="827006637"
+X-IronPort-AV: E=Sophos;i="6.00,257,1681196400"; 
+   d="scan'208";a="827006637"
+Received: from eshaanan-mobl.ger.corp.intel.com (HELO ijarvine-mobl2.ger.corp.intel.com) ([10.252.61.137])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2023 06:46:42 -0700
+From:   =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     linux-pci@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Rob Herring <robh@kernel.org>,
+        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Jesse Barnes <jbarnes@virtuousgeek.org>,
+        Yijing Wang <wangyijing@huawei.com>,
+        Jiang Liu <jiang.liu@huawei.com>,
+        Shaohua Li <shaohua.li@intel.com>,
+        Greg Kroah-Hartman <gregkh@suse.de>,
+        Doug Ledford <dledford@redhat.com>,
+        Dean Luick <dean.luick@intel.com>,
+        Ashutosh Dixit <ashutosh.dixit@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Mike Marciniszyn <mike.marciniszyn@intel.com>,
+        Ricky Wu <ricky_wu@realtek.com>,
+        Rui Feng <rui_feng@realsil.com.cn>,
+        Lee Jones <lee.jones@linaro.org>,
+        Micky Ching <micky_ching@realsil.com.cn>,
+        Wei WANG <wei_wang@realsil.com.cn>,
+        Samuel Ortiz <sameo@linux.intel.com>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Matt Carlson <mcarlson@broadcom.com>,
+        Michael Chan <mchan@broadcom.com>,
+        Francois Romieu <romieu@fr.zoreil.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Bruce Allan <bruce.w.allan@intel.com>,
+        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
+        Jeff Garzik <jeff@garzik.org>,
+        Auke Kok <auke-jan.h.kok@intel.com>,
+        "John W. Linville" <linville@tuxdriver.com>,
+        Vasanthakumar Thiagarajan <vasanth@atheros.com>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Kalle Valo <kvalo@kernel.org>, Felix Fietkau <nbd@nbd.name>,
+        linux-kernel@vger.kernel.org
+Cc:     Dean Luick <dean.luick@cornelisnetworks.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        stable@vger.kernel.org
+Subject: [PATCH v3 01/10] PCI: Add locking to RMW PCI Express Capability Register accessors
+Date:   Tue, 20 Jun 2023 16:46:15 +0300
+Message-Id: <20230620134624.99688-2-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20230620134624.99688-1-ilpo.jarvinen@linux.intel.com>
+References: <20230620134624.99688-1-ilpo.jarvinen@linux.intel.com>
 MIME-Version: 1.0
-References: <20230619102141.541044823@linuxfoundation.org>
-In-Reply-To: <20230619102141.541044823@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Tue, 20 Jun 2023 19:16:00 +0530
-Message-ID: <CA+G9fYuLStZT5JN0DngsfeTZf_TBLB1UQqEcNgDJYaut_27FvA@mail.gmail.com>
-Subject: Re: [PATCH 5.15 000/107] 5.15.118-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 19 Jun 2023 at 16:28, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.15.118 release.
-> There are 107 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 21 Jun 2023 10:21:12 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.15.118-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Many places in the kernel write the Link Control and Root Control PCI
+Express Capability Registers without proper concurrency control and
+this could result in losing the changes one of the writers intended to
+make.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Add pcie_cap_lock spinlock into the struct pci_dev and use it to
+protect bit changes made in the RMW capability accessors. Protect only
+a selected set of registers by differentiating the RMW accessor
+internally to locked/unlocked variants using a wrapper which has the
+same signature as pcie_capability_clear_and_set_word(). As the
+Capability Register (pos) given to the wrapper is always a constant,
+the compiler should be able to simplify all the dead-code away.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+The RMW locking is only added to pcie_capability_clear_and_set_word()
+because so far only the Link Control Register (ASPM, hotplug, link
+retraining, various drivers) and the Root Control Register (AER & PME)
+require RMW locking.
 
-## Build
-* kernel: 5.15.118-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-5.15.y
-* git commit: 71c980089d7356d54f2dc0be100c29d8c4534602
-* git describe: v5.15.117-108-g71c980089d73
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
-.117-108-g71c980089d73
+Fixes: c7f486567c1d ("PCI PM: PCIe PME root port service driver")
+Fixes: f12eb72a268b ("PCI/ASPM: Use PCI Express Capability accessors")
+Fixes: 7d715a6c1ae5 ("PCI: add PCI Express ASPM support")
+Fixes: affa48de8417 ("staging/rdma/hfi1: Add support for enabling/disabling PCIe ASPM")
+Fixes: 849a9366cba9 ("misc: rtsx: Add support new chip rts5228 mmc: rtsx: Add support MMC_CAP2_NO_MMC")
+Fixes: 3d1e7aa80d1c ("misc: rtsx: Use pcie_capability_clear_and_set_word() for PCI_EXP_LNKCTL")
+Fixes: c0e5f4e73a71 ("misc: rtsx: Add support for RTS5261")
+Fixes: 3df4fce739e2 ("misc: rtsx: separate aspm mode into MODE_REG and MODE_CFG")
+Fixes: 121e9c6b5c4c ("misc: rtsx: modify and fix init_hw function")
+Fixes: 19f3bd548f27 ("mfd: rtsx: Remove LCTLR defination")
+Fixes: 773ccdfd9cc6 ("mfd: rtsx: Read vendor setting from config space")
+Fixes: 8275b77a1513 ("mfd: rts5249: Add support for RTS5250S power saving")
+Fixes: 5da4e04ae480 ("misc: rtsx: Add support for RTS5260")
+Fixes: 0f49bfbd0f2e ("tg3: Use PCI Express Capability accessors")
+Fixes: 5e7dfd0fb94a ("tg3: Prevent corruption at 10 / 100Mbps w CLKREQ")
+Fixes: b726e493e8dc ("r8169: sync existing 8168 device hardware start sequences with vendor driver")
+Fixes: e6de30d63eb1 ("r8169: more 8168dp support.")
+Fixes: 8a06127602de ("Bluetooth: hci_bcm4377: Add new driver for BCM4377 PCIe boards")
+Fixes: 6f461f6c7c96 ("e1000e: enable/disable ASPM L0s and L1 and ERT according to hardware errata")
+Fixes: 1eae4eb2a1c7 ("e1000e: Disable L1 ASPM power savings for 82573 mobile variants")
+Fixes: 8060e169e02f ("ath9k: Enable extended synch for AR9485 to fix L0s recovery issue")
+Fixes: 69ce674bfa69 ("ath9k: do btcoex ASPM disabling at initialization time")
+Fixes: f37f05503575 ("mt76: mt76x2e: disable pcie_aspm by default")
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
+Cc: stable@vger.kernel.org
+---
+ drivers/pci/access.c | 20 +++++++++++++++++---
+ drivers/pci/probe.c  |  1 +
+ include/linux/pci.h  | 34 ++++++++++++++++++++++++++++++++--
+ 3 files changed, 50 insertions(+), 5 deletions(-)
 
-## Test Regressions (compared to v5.15.116)
+diff --git a/drivers/pci/access.c b/drivers/pci/access.c
+index 3c230ca3de58..0b2e90d2f04f 100644
+--- a/drivers/pci/access.c
++++ b/drivers/pci/access.c
+@@ -497,8 +497,8 @@ int pcie_capability_write_dword(struct pci_dev *dev, int pos, u32 val)
+ }
+ EXPORT_SYMBOL(pcie_capability_write_dword);
+ 
+-int pcie_capability_clear_and_set_word(struct pci_dev *dev, int pos,
+-				       u16 clear, u16 set)
++int pcie_capability_clear_and_set_word_unlocked(struct pci_dev *dev, int pos,
++						u16 clear, u16 set)
+ {
+ 	int ret;
+ 	u16 val;
+@@ -512,7 +512,21 @@ int pcie_capability_clear_and_set_word(struct pci_dev *dev, int pos,
+ 
+ 	return ret;
+ }
+-EXPORT_SYMBOL(pcie_capability_clear_and_set_word);
++EXPORT_SYMBOL(pcie_capability_clear_and_set_word_unlocked);
++
++int pcie_capability_clear_and_set_word_locked(struct pci_dev *dev, int pos,
++					      u16 clear, u16 set)
++{
++	unsigned long flags;
++	int ret;
++
++	spin_lock_irqsave(&dev->pcie_cap_lock, flags);
++	ret = pcie_capability_clear_and_set_word_unlocked(dev, pos, clear, set);
++	spin_unlock_irqrestore(&dev->pcie_cap_lock, flags);
++
++	return ret;
++}
++EXPORT_SYMBOL(pcie_capability_clear_and_set_word_locked);
+ 
+ int pcie_capability_clear_and_set_dword(struct pci_dev *dev, int pos,
+ 					u32 clear, u32 set)
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 0b2826c4a832..53ac0d3287a8 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -2318,6 +2318,7 @@ struct pci_dev *pci_alloc_dev(struct pci_bus *bus)
+ 		.end = -1,
+ 	};
+ 
++	spin_lock_init(&dev->pcie_cap_lock);
+ #ifdef CONFIG_PCI_MSI
+ 	raw_spin_lock_init(&dev->msi_lock);
+ #endif
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 60b8772b5bd4..ab7682ed172f 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -467,6 +467,7 @@ struct pci_dev {
+ 	pci_dev_flags_t dev_flags;
+ 	atomic_t	enable_cnt;	/* pci_enable_device has been called */
+ 
++	spinlock_t	pcie_cap_lock;		/* Protects RMW ops in capability accessors */
+ 	u32		saved_config_space[16]; /* Config space saved at suspend time */
+ 	struct hlist_head saved_cap_space;
+ 	int		rom_attr_enabled;	/* Display of ROM attribute enabled? */
+@@ -1217,11 +1218,40 @@ int pcie_capability_read_word(struct pci_dev *dev, int pos, u16 *val);
+ int pcie_capability_read_dword(struct pci_dev *dev, int pos, u32 *val);
+ int pcie_capability_write_word(struct pci_dev *dev, int pos, u16 val);
+ int pcie_capability_write_dword(struct pci_dev *dev, int pos, u32 val);
+-int pcie_capability_clear_and_set_word(struct pci_dev *dev, int pos,
+-				       u16 clear, u16 set);
++int pcie_capability_clear_and_set_word_unlocked(struct pci_dev *dev, int pos,
++						u16 clear, u16 set);
++int pcie_capability_clear_and_set_word_locked(struct pci_dev *dev, int pos,
++					      u16 clear, u16 set);
+ int pcie_capability_clear_and_set_dword(struct pci_dev *dev, int pos,
+ 					u32 clear, u32 set);
+ 
++/**
++ * pcie_capability_clear_and_set_word - RMW accessor for PCI Express Capability Registers
++ * @dev:	PCI device structure of the PCI Express device
++ * @pos:	PCI Express Capability Register
++ * @clear:	Clear bitmask
++ * @set:	Set bitmask
++ *
++ * Perform a Read-Modify-Write (RMW) operation using @clear and @set
++ * bitmasks on PCI Express Capability Register at @pos. Certain PCI Express
++ * Capability Registers are accessed concurrently in RMW fashion, hence
++ * require locking which is handled transparently to the caller.
++ */
++static inline int pcie_capability_clear_and_set_word(struct pci_dev *dev,
++						     int pos,
++						     u16 clear, u16 set)
++{
++	switch (pos) {
++	case PCI_EXP_LNKCTL:
++	case PCI_EXP_RTCTL:
++		return pcie_capability_clear_and_set_word_locked(dev, pos,
++								 clear, set);
++	default:
++		return pcie_capability_clear_and_set_word_unlocked(dev, pos,
++								   clear, set);
++	}
++}
++
+ static inline int pcie_capability_set_word(struct pci_dev *dev, int pos,
+ 					   u16 set)
+ {
+-- 
+2.30.2
 
-## Metric Regressions (compared to v5.15.116)
-
-## Test Fixes (compared to v5.15.116)
-
-## Metric Fixes (compared to v5.15.116)
-
-## Test result summary
-total: 133496, pass: 108841, fail: 3835, skip: 20716, xfail: 104
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 117 total, 116 passed, 1 failed
-* arm64: 45 total, 43 passed, 2 failed
-* i386: 35 total, 32 passed, 3 failed
-* mips: 27 total, 26 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 27 total, 26 passed, 1 failed
-* riscv: 11 total, 11 passed, 0 failed
-* s390: 12 total, 11 passed, 1 failed
-* sh: 14 total, 12 passed, 2 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 38 total, 36 passed, 2 failed
-
-## Test suites summary
-* boot
-* fwts
-* igt-gpu-tools
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-* vdso
-
---
-Linaro LKFT
-https://lkft.linaro.org
