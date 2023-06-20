@@ -2,123 +2,91 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A010E737327
-	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 19:47:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FA1D737353
+	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 19:55:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229961AbjFTRrQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 13:47:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41318 "EHLO
+        id S230497AbjFTRzr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 13:55:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229932AbjFTRrP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 13:47:15 -0400
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 997F71712
-        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 10:47:14 -0700 (PDT)
-Received: by mail-io1-xd2c.google.com with SMTP id ca18e2360f4ac-77acb944bdfso261001339f.0
-        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 10:47:14 -0700 (PDT)
+        with ESMTP id S230473AbjFTRzp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 13:55:45 -0400
+Received: from mail-yw1-x1132.google.com (mail-yw1-x1132.google.com [IPv6:2607:f8b0:4864:20::1132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64332173F
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 10:55:41 -0700 (PDT)
+Received: by mail-yw1-x1132.google.com with SMTP id 00721157ae682-5703cb4bcb4so45539197b3.3
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 10:55:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20221208.gappssmtp.com; s=20221208; t=1687283234; x=1689875234;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=15DPaA2yeu/H18i78SGzieR0HTDMni/2Vd4N6ujG6o0=;
-        b=aTtRZPZqtgwc5I721QSaypapvp1fmtoxp46lXEwwqeV8Cx3/xu0P4O6+j4nDRwEc9/
-         BD5x8UZcbcG4mrc78TEeFneGMaEbVM4XNy0+xR9fMHl7GUBysx2Z1kr35fKxtZmBc7Pk
-         x6KPn89pvcNeIOVWS4UiPeetwhGwFkCuObOFPTTxBAC/G5kihLlR1X4t/ZAJRiy+JziZ
-         ywBITnZhBjVbyLgCFy5eaqyFXpW/A2wLLhEAGeEHaLCi7uoLpEdDdxTrxbVUKkjK7M+1
-         lu7sMrI34wK99BFtGJUUGMyfUdPjVWLkygpREtEs0pPkUamt4Y8N/CH1wMtK1oiOzCGZ
-         aDQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687283234; x=1689875234;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20221208; t=1687283740; x=1689875740;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=15DPaA2yeu/H18i78SGzieR0HTDMni/2Vd4N6ujG6o0=;
-        b=aMvJ1yIEv2IyEyW50wrAAQvY59o/guGozYPgfwKhNH/KDxGx51qyypFOH/NR8Qe79N
-         nsuvTyMuDoV+6HL1wnA3zFXyfw8MKxc0nVdIWbFP6CpE6RIvJKQJc9o+YZpGDtLnqWpu
-         9DPzRWuOGu7WWpiV8Xe74H3/k/T2gOZAHC5pTiD/M6lOIe+54jrbPjiOcTpnqCkDY2Zl
-         fMbQC7TBa2/xBPcL1MmDqZAMO+MzGi33lyf4ou1LtNfTSvrwmXTE/xvSyXuxXK1cGdrZ
-         0Ukm2QqMoShpUXZt6CDJ4W8mdTzo3pkqegdeTUMdrAYE452J7brTaxbblOirkhIPsWdG
-         BZyw==
-X-Gm-Message-State: AC+VfDxwfmGdmuRxaw/2+3D0yE8qixmltTRtzNi3FD38Mde7OnVRlOsI
-        JHMV+Eg1HwEN1zKVmW7hav54qg==
-X-Google-Smtp-Source: ACHHUZ6rjQwegQvtImo7ns7efOyigl4kEmCwH7fakP/gcU5ynvAfw/nPMtbbEjaQoTtSL3YR71n+bw==
-X-Received: by 2002:a92:4b02:0:b0:33a:adaa:d6d1 with SMTP id m2-20020a924b02000000b0033aadaad6d1mr11837316ilg.15.1687283233896;
-        Tue, 20 Jun 2023 10:47:13 -0700 (PDT)
-Received: from localhost ([50.221.140.188])
-        by smtp.gmail.com with ESMTPSA id l18-20020a656812000000b00514256c05c2sm1561789pgt.7.2023.06.20.10.47.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jun 2023 10:47:13 -0700 (PDT)
-Date:   Tue, 20 Jun 2023 10:47:13 -0700 (PDT)
-X-Google-Original-Date: Tue, 20 Jun 2023 10:46:34 PDT (-0700)
-Subject:     Re: [PATCH 6.3] riscv: Link with '-z norelro'
-In-Reply-To: <20230620-6-3-fix-got-relro-error-lld-v1-1-f3e71ec912d1@kernel.org>
-CC:     Greg KH <gregkh@linuxfoundation.org>, sashal@kernel.org,
-        Conor Dooley <conor@kernel.org>, ndesaulniers@google.com,
-        nathan@kernel.org, linux-riscv@lists.infradead.org,
-        stable@vger.kernel.org, llvm@lists.linux.dev, lkp@intel.com
-From:   Palmer Dabbelt <palmer@dabbelt.com>
-To:     nathan@kernel.org
-Message-ID: <mhng-70da67b5-db97-4e69-9e0a-041b0b7fe80f@palmer-ri-x1c9a>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        bh=dNKXcZ39Z10NVBkiTIhQmIoTjYz8PY/jDnJTeB9TmWc=;
+        b=UFHcVNRgkeY635daGhoi/fIQLSvF6t6kSDruzQUr6UZvI1enwmwkKlT4X+XSSqYI13
+         JYV+8g2dudsKX/RZ0x+TweL08U4d1TiqHhVJbY4N4t996nceoVzkw3MBfKL7JvmuXdVc
+         jV02HfWoztqcCu7rAv1mOym4MgDqC6tnlrsQEqWAUcvevZOyP/8STcyUn/nA4Cz377Qg
+         tF3v8LCK+ihuPIFFJJxJTEjxK57FfZPl6vqsi2wGeG+FzRGy8zvx87yYr2B0jYlqeUL4
+         PiuA4UBhyBVBx6564O3T3tfiWATuPqvVeoFXJ/NSAy4IyAX45q2aWw2kMxPooKB7Wrvs
+         oOSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687283740; x=1689875740;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dNKXcZ39Z10NVBkiTIhQmIoTjYz8PY/jDnJTeB9TmWc=;
+        b=GOw7D445udXcoMxEWlV8RbA3ZJHbB3BWn2YMzEw1LjcyspDKj8Atqwbiu62pdbt9nH
+         uTHpavK6g0Qef/S8OUrvYHd/+X4rrHO3zPK/EA9a+9Kmdf8C9pMLktlbixTVRAAzKGlf
+         +kKt/iCJlUcW1SRfDGt8Yhd8zr/olNOunzG5/yModhrGvgXzGVlC2CVnYWaBgdI5lAlo
+         mjxvgdu9OxLVK7Jc3AM3QwQBUf1ex7urfeY0XBkxx0qVjCRzu7ZmWyx2xYUZi6KQ4jkB
+         sN3seDsuQRYcHqfoKqHQLWEzJj/eLuSyZMK2Txt7YUTBM7JRiDjgrxYS9STiwe2sUzzb
+         SOFw==
+X-Gm-Message-State: AC+VfDwBvxsG1UIGSM4qCrxh+QJ3SXqS5C6VecmygBwm1FmJOqK6NP4f
+        2+RWWIgV51k7erBKXQraaO2ompaq3XgYpPypPrVBfw==
+X-Google-Smtp-Source: ACHHUZ4kFhYGq1McBHCrKGBedUf2xwnSf+RXgEGL3EzRFdNA+PwrVJgxb55iiZYNwNR7iwv3SzyxB835GCQeBrcfSkg=
+X-Received: by 2002:a25:2e0c:0:b0:bc3:843a:953a with SMTP id
+ u12-20020a252e0c000000b00bc3843a953amr8727613ybu.18.1687283740311; Tue, 20
+ Jun 2023 10:55:40 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230614013548.1382385-1-surenb@google.com> <20230614013548.1382385-3-surenb@google.com>
+ <2023061925-overact-flakily-9830@gregkh>
+In-Reply-To: <2023061925-overact-flakily-9830@gregkh>
+From:   Suren Baghdasaryan <surenb@google.com>
+Date:   Tue, 20 Jun 2023 10:55:29 -0700
+Message-ID: <CAJuCfpHWpmLGjBTRAAtSiPSo=q273j7qRGXCt+bZ2qyHOP9x8A@mail.gmail.com>
+Subject: Re: [RESEND 1/1] linux-6.1/rcu/kvfree: Avoid freeing new kfree_rcu()
+ memory after old grace period
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, urezki@gmail.com,
+        oleksiy.avramchenko@sony.com, ziwei.dai@unisoc.com,
+        quic_mojha@quicinc.com, paulmck@kernel.org, wufangsuo@gmail.com,
+        rcu@vger.kernel.org, kernel-team@android.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 20 Jun 2023 10:44:50 PDT (-0700), nathan@kernel.org wrote:
-> This patch fixes a stable only patch, so it has no direct upstream
-> equivalent.
+On Sun, Jun 18, 2023 at 11:21=E2=80=AFPM Greg KH <gregkh@linuxfoundation.or=
+g> wrote:
 >
-> After a stable only patch to explicitly handle the '.got' section to
-> handle an orphan section warning from the linker, certain configurations
-> error when linking with ld.lld, which enables relro by default:
+> On Tue, Jun 13, 2023 at 06:35:47PM -0700, Suren Baghdasaryan wrote:
+> > From: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
+> >
+> > From: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
 >
->   ld.lld: error: section: .got is not contiguous with other relro sections
->
-> This has come up with other architectures before, such as arm and arm64
-> in commit 0cda9bc15dfc ("ARM: 9038/1: Link with '-z norelro'") and
-> commit 3b92fa7485eb ("arm64: link with -z norelro regardless of
-> CONFIG_RELOCATABLE"). Additionally, '-z norelro' is used unconditionally
-> for RISC-V upstream after commit 26e7aacb83df ("riscv: Allow to
-> downgrade paging mode from the command line"), which alluded to this
-> issue for the same reason. Bring 6.3 in line with mainline and link with
-> '-z norelro', which resolves the above link failure.
->
-> Fixes: e6d1562dd4e9 ("riscv: vmlinux.lds.S: Explicitly handle '.got' section")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202306192231.DJmWr6BX-lkp@intel.com/
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> ---
->  arch/riscv/Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-> index b05e833a022d..d46b6722710f 100644
-> --- a/arch/riscv/Makefile
-> +++ b/arch/riscv/Makefile
-> @@ -7,7 +7,7 @@
->  #
->
->  OBJCOPYFLAGS    := -O binary
-> -LDFLAGS_vmlinux :=
-> +LDFLAGS_vmlinux := -z norelro
->  ifeq ($(CONFIG_DYNAMIC_FTRACE),y)
->  	LDFLAGS_vmlinux := --no-relax
->  	KBUILD_CPPFLAGS += -DCC_USING_PATCHABLE_FUNCTION_ENTRY
->
-> ---
-> base-commit: f2427f9a3730e9a1a11b69f6b767f7f2fad87523
-> change-id: 20230620-6-3-fix-got-relro-error-lld-397f3112860b
->
-> Best regards,
+> That's not the author of this commit, where did it come from?
 
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+True, that's the author of the backport. The commit author is Ziwei
+Dai <ziwei.dai@unisoc.com>
 
-Thanks!
+>
+> confused,
+>
+> greg k-h
