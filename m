@@ -2,134 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E78C1736CAC
-	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 15:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16878736D0F
+	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 15:19:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232693AbjFTNCC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 09:02:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42542 "EHLO
+        id S232938AbjFTNTd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 09:19:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232790AbjFTNBb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 09:01:31 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 784B31BD5;
-        Tue, 20 Jun 2023 06:01:16 -0700 (PDT)
-Date:   Tue, 20 Jun 2023 13:00:52 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1687266053;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=+dAf0GEt2bqtXlVtGRtDFvrC3WajYNjMM7B5erNke8E=;
-        b=jVCRRZVh+lA0lLZlUw3HnBDGOL36IvOHtINUzSR5E26Z7TDDlMKtbgZcGibcp52BYaEflt
-        3rrq6UeYD9MDcdSQnV2Ip6sfPBIIB5W7fCPRwjGu0gnSlRQXUQSbqoPoy57nDIZTdRtUOa
-        KLcv6csS3xTAzTuUpdOStDAxhlQX2lSYxy9AtniSN0yyXk+1NzRCyW4Vxr3KflQNjJxMGC
-        K5zCZGS6zh7GtDtZEHuzJckDOGmrQ4g9PlreMgH0e1L1lh2cWH5iXSVCcH5/LGKo4wvdJN
-        XiRkj6v9q/C8fYLZn1nq2Evj2uste8SQv8WLI0kJ6PELuo1/0sClozVrS3m3rQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1687266053;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=+dAf0GEt2bqtXlVtGRtDFvrC3WajYNjMM7B5erNke8E=;
-        b=ED35lgG54RyXwtKhzVfj8yzvysx/HWnIGHW0RCJ3ToamY0nkwLl3GodGOoiplMu9N5nijh
-        hugQAq0m4XNoN/Cw==
-From:   "tip-bot2 for Tony Battersby" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/core] x86/smp: Dont access non-existing CPUID leaf
-Cc:     Tony Battersby <tonyb@cybernetics.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <3817d810-e0f1-8ef8-0bbd-663b919ca49b@cybernetics.com>
-References: <3817d810-e0f1-8ef8-0bbd-663b919ca49b@cybernetics.com>
+        with ESMTP id S232884AbjFTNSp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 09:18:45 -0400
+Received: from mail-io1-xd2b.google.com (mail-io1-xd2b.google.com [IPv6:2607:f8b0:4864:20::d2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 725351FD3
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 06:18:23 -0700 (PDT)
+Received: by mail-io1-xd2b.google.com with SMTP id ca18e2360f4ac-77dcff76e35so53611039f.1
+        for <stable@vger.kernel.org>; Tue, 20 Jun 2023 06:18:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20221208.gappssmtp.com; s=20221208; t=1687267101; x=1689859101;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qLVHgwkUvI5frBa0zQY5JXyD7/vRwXg7Z/40OmKjKWY=;
+        b=vfbwQ/arg0v8WEFSyRtGXp8mzfaAnK3jv3bBI9ziMOBB1rMZ6GsnXqTQEeE8KJ71aX
+         BNXttGGbEXIypNDUJ4e+E2pfH1Rcar0vJ+wXMyaJUEfUHgPfd1AEctNUQUoVvlqyIKkL
+         6iy/I9vWnpzN7eRu9wvaZw12W0OQUjb0yUat4yrvKFEM2YGglzhI6Zqpqtfm8bO48GoF
+         46rqM16HYQf3XDrBoJ0j4bjw9okt/sPkLl/stSntcmwCYqg4G6y95fX/SpAxEK4G2KPh
+         bXzR2eJ3ylHuIcs48Qi3xlK0vKCX02DQLyKIcWU16yp4rR87LtPRMoSG+zQf1SUcsHEn
+         hCgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687267101; x=1689859101;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qLVHgwkUvI5frBa0zQY5JXyD7/vRwXg7Z/40OmKjKWY=;
+        b=VY6VnjEZs17ZeZ7hFzuxoxZh8Tpu3DJSv1PIdFTESbS0qjbsBOmcThZ91tj4XQ2MkA
+         89BUmre9s8KqMIUFQoknIIOxJOZQBl/JhEusZeeVXmFM1aoZNFssptA3WdpA0Lddsknr
+         XSKX9kDaiSVCcCRY+JzuBF1TK6xv4cqSDmugGiZQ7hLTPFHNrFrdMSUNz5qHOyzCdTbX
+         S+n+NyzXFsVgMEs7fuUm3u8wb56fh+45c9bDQe6y7dBO0XLz0iJ2GlYytUGeHD7ILCCn
+         3J9+0SFBL29mBRQVftAcRLmPqZX3jkyI+Zut3x2zwA9q9e4YqlvnINs1mV+s8d7WaPby
+         ozNA==
+X-Gm-Message-State: AC+VfDziP/7JeN7dhiAIsn7kztKT76AvIWYssYWKm9ZMcyXY2nYlaZOK
+        Ii7ojFrCL/OSuXxmylesVmNMhg==
+X-Google-Smtp-Source: ACHHUZ7i6NQjY2D0sHTWi3V0GJgHJ2MKRNFUPsDrcm+rxtrkHypCG6HQLTj9Xum/4/+rwfmuZB58Vw==
+X-Received: by 2002:a05:6e02:2182:b0:343:9470:4ee8 with SMTP id j2-20020a056e02218200b0034394704ee8mr3878694ila.3.1687267101454;
+        Tue, 20 Jun 2023 06:18:21 -0700 (PDT)
+Received: from [127.0.0.1] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id r23-20020a634417000000b005143448896csm1399994pga.58.2023.06.20.06.18.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Jun 2023 06:18:20 -0700 (PDT)
+From:   Jens Axboe <axboe@kernel.dk>
+To:     Demi Marie Obenour <demi@invisiblethingslab.com>
+Cc:     linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Christoph Hellwig <hch@infradead.org>, stable@vger.kernel.org
+In-Reply-To: <20230607170837.1559-1-demi@invisiblethingslab.com>
+References: <20230607170837.1559-1-demi@invisiblethingslab.com>
+Subject: Re: [PATCH] block: increment diskseq on all media change events
+Message-Id: <168726710016.3595534.9633662613974186996.b4-ty@kernel.dk>
+Date:   Tue, 20 Jun 2023 07:18:20 -0600
 MIME-Version: 1.0
-Message-ID: <168726605213.404.14930030700633140033.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Mailer: b4 0.13-dev-c6835
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The following commit has been merged into the x86/core branch of tip:
 
-Commit-ID:     9b040453d4440659f33dc6f0aa26af418ebfe70b
-Gitweb:        https://git.kernel.org/tip/9b040453d4440659f33dc6f0aa26af418ebfe70b
-Author:        Tony Battersby <tonyb@cybernetics.com>
-AuthorDate:    Thu, 15 Jun 2023 22:33:52 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 20 Jun 2023 14:51:46 +02:00
+On Wed, 07 Jun 2023 13:08:37 -0400, Demi Marie Obenour wrote:
+> Currently, associating a loop device with a different file descriptor
+> does not increment its diskseq.  This allows the following race
+> condition:
+> 
+> 1. Program X opens a loop device
+> 2. Program X gets the diskseq of the loop device.
+> 3. Program X associates a file with the loop device.
+> 4. Program X passes the loop device major, minor, and diskseq to
+>    something.
+> 5. Program X exits.
+> 6. Program Y detaches the file from the loop device.
+> 7. Program Y attaches a different file to the loop device.
+> 8. The opener finally gets around to opening the loop device and checks
+>    that the diskseq is what it expects it to be.  Even though the
+>    diskseq is the expected value, the result is that the opener is
+>    accessing the wrong file.
+> 
+> [...]
 
-x86/smp: Dont access non-existing CPUID leaf
+Applied, thanks!
 
-stop_this_cpu() tests CPUID leaf 0x8000001f::EAX unconditionally. Intel
-CPUs return the content of the highest supported leaf when a non-existing
-leaf is read, while AMD CPUs return all zeros for unsupported leafs.
+[1/1] block: increment diskseq on all media change events
+      commit: b90ecc0379eb7bbe79337b0c7289390a98752646
 
-So the result of the test on Intel CPUs is lottery.
+Best regards,
+-- 
+Jens Axboe
 
-While harmless it's incorrect and causes the conditional wbinvd() to be
-issued where not required.
 
-Check whether the leaf is supported before reading it.
 
-[ tglx: Adjusted changelog ]
-
-Fixes: 08f253ec3767 ("x86/cpu: Clear SME feature flag when not in use")
-Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/3817d810-e0f1-8ef8-0bbd-663b919ca49b@cybernetics.com
-Link: https://lore.kernel.org/r/20230615193330.322186388@linutronix.de
-
----
- arch/x86/kernel/process.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index 05924bc..ff9b80a 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -763,6 +763,7 @@ struct cpumask cpus_stop_mask;
- 
- void __noreturn stop_this_cpu(void *dummy)
- {
-+	struct cpuinfo_x86 *c = this_cpu_ptr(&cpu_info);
- 	unsigned int cpu = smp_processor_id();
- 
- 	local_irq_disable();
-@@ -777,7 +778,7 @@ void __noreturn stop_this_cpu(void *dummy)
- 	 */
- 	set_cpu_online(cpu, false);
- 	disable_local_APIC();
--	mcheck_cpu_clear(this_cpu_ptr(&cpu_info));
-+	mcheck_cpu_clear(c);
- 
- 	/*
- 	 * Use wbinvd on processors that support SME. This provides support
-@@ -791,7 +792,7 @@ void __noreturn stop_this_cpu(void *dummy)
- 	 * Test the CPUID bit directly because the machine might've cleared
- 	 * X86_FEATURE_SME due to cmdline options.
- 	 */
--	if (cpuid_eax(0x8000001f) & BIT(0))
-+	if (c->extended_cpuid_level >= 0x8000001f && (cpuid_eax(0x8000001f) & BIT(0)))
- 		native_wbinvd();
- 
- 	/*
