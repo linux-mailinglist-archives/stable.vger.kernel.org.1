@@ -2,61 +2,61 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25D5A7375E8
-	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 22:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6084D7375EA
+	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 22:18:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230357AbjFTUSS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 16:18:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55144 "EHLO
+        id S229720AbjFTUST (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 16:18:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230203AbjFTUSF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 16:18:05 -0400
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D81131BEA;
-        Tue, 20 Jun 2023 13:17:34 -0700 (PDT)
-Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1b539d2f969so29752455ad.0;
-        Tue, 20 Jun 2023 13:17:34 -0700 (PDT)
+        with ESMTP id S230212AbjFTUSG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 16:18:06 -0400
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38FFE1728;
+        Tue, 20 Jun 2023 13:17:35 -0700 (PDT)
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1b51780bed0so41300585ad.3;
+        Tue, 20 Jun 2023 13:17:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20221208; t=1687292253; x=1689884253;
         h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=+6UCFNg4ScFWTGZ3Vx9Eu23SfSzKM8aQG3DQ2QqYdjs=;
-        b=R0LonCNXLmUPqGHBYylagYDafMHdO5iO4h8sdlp3ecgHQAQ1poSKFZn3eNF7uRly5C
-         T2V8ecsGMhBY+0ui71nxIhMNfDZ2a8LRhZs7Znn3bMAE7VCaakhkOw3ExvrvoJ92VBGU
-         B2u9828FxLFdkhXgu+3NppAdRG+M5+dfWnP52WHB2pcl2oi+6slYodmVgoHjZkOg3I6A
-         TzYNbzMaOgLG2Rdv0DqHqfZm/DyH5GCYsi/CVd28Oa+3/uQ6FdcEbd6wo1jLn63hIpuM
-         CTuZzymoOqBSvYpb87nOCy/jK08IRImbFH2ntu9072LBtEQqawY3U+yzj88o996Yq0Xq
-         SCLg==
+        bh=Cm7myBzENeth//c3gWLJa2AnqvJYxKWafrda0LE9Q3c=;
+        b=l/ODN4k1VR+GWFFUuOxlnjlODQDY8pAalSOD7Qfw6UQ8AmZnvvrRnnjxZXWLCtCCMa
+         FN6joXsZqpmwRdQBZK8VJuOQ/7vFv3Nhrz+nRtpYq42IL3Kf6uRpYIty3KeKCUcvyjqp
+         Swg/3P8S0C4k7sA/ue0jTVR8PfmkyPExF7+fRSJ3x4D2M2qMqA4f+05902mL5y4dLKj/
+         KpD3SHq9Q2b0kPXWbL3Nx2ZP4ItiF7LwFjgvgiUlhmL9XRyKznOBJrO6OFGCQbJUhbJX
+         cfA0Sta1tW+DColxyiZtXQO9O1yny1w4VkPGn2u0EByHJCby5Sk5Q/X8nAt3L8DxwRuJ
+         3VtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20221208; t=1687292253; x=1689884253;
         h=references:in-reply-to:message-id:date:subject:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+6UCFNg4ScFWTGZ3Vx9Eu23SfSzKM8aQG3DQ2QqYdjs=;
-        b=kOX9lvGVB0rX3GW1Dq9a948u7SMsDh4GFZrzh69/lF+XbCUTy3lA5DbpQMcccnMx7z
-         FcdmaV6nMKcgDtKHlQKt/YnSbZ53MyCxoaaOz+73fGXFxtngTizf923gXFbk9zcpxKBS
-         p9Otn0cAe55rxdr9QXCyRsvC+gn2LksyLU15qB4vvhrjwVRagttjkmloVV8ez62hGZrm
-         mS0K/y7W959gseqzrZirGb6PHVshENvMJaXD2W9dtYyeUnOTmh29199Rh4QlJdJHfRgL
-         AjLgTVXwZ3hQnrkSNNcAvPblkv5BawttVYe3zxTC3BJD6BVEWZ5E53WPD+lJQYXMagMd
-         SbDA==
-X-Gm-Message-State: AC+VfDwZN2wxrlZ9MKJe0zzeU91Fh/n3o3htnR4GJkaeF3Ar4M2vG6xs
-        97+sangFQ68J1zLM9rUe1kE=
-X-Google-Smtp-Source: ACHHUZ4U3Yo0Sk7r11zdKI8hnnbWTGfS94nYBh96Fjq8uhWgDK9EEBqkZspSNgBbCVqvzwm6B1LRhg==
-X-Received: by 2002:a17:902:ec85:b0:1b0:f31:a386 with SMTP id x5-20020a170902ec8500b001b00f31a386mr29052751plg.26.1687292252600;
-        Tue, 20 Jun 2023 13:17:32 -0700 (PDT)
+        bh=Cm7myBzENeth//c3gWLJa2AnqvJYxKWafrda0LE9Q3c=;
+        b=CP1fuUoXFHGxld1J0t5ZICIt74OPDEHKjPWOJOqtaYP8tcyoWRjgy/8HAlzBtKMO3P
+         MJpjKD0Y1pcal+awkpXQnai+qfYKhkYJqFV7DqOuHu3fw6XLlRRP/73vcyUe21abnKj3
+         UhRjZN9pOc2wTwYrlCq3og4Lpm28SQQ6yxOxfZhP74EZx3UR0/ShnyFdJdJvvCn1LvX9
+         A7aKvGR4Q6lRkwJK+9ZSjqpe8Tl0wAs8D6odKsvWJyeZ3TePKNLbWXblHR26afU/9JcD
+         +YDwFZw/9/tCF1HM06F6z/0Q8BhtnwJOYboGXhaxd5UZzg7TwhpINxk9nPjMLF97+mWf
+         RsNQ==
+X-Gm-Message-State: AC+VfDxHrL3BVtQaXXiAtp1YyB2aDDKQRpeGTFb+sB2yIJYpH01/HSVP
+        sT9iQwDymaSF0lsXL9Aavdo=
+X-Google-Smtp-Source: ACHHUZ5YcdhmnmqsrRTnsCaOsgTAYpy7lMGixbNCr9mD2lcG0OBTMAr9PIXC6HW1upDmsjetNVAPiQ==
+X-Received: by 2002:a17:902:6ac5:b0:1ae:3991:e4f9 with SMTP id i5-20020a1709026ac500b001ae3991e4f9mr12181407plt.61.1687292253436;
+        Tue, 20 Jun 2023 13:17:33 -0700 (PDT)
 Received: from xplor.waratah.dyndns.org (222-152-217-2-adsl.sparkbb.co.nz. [222.152.217.2])
-        by smtp.gmail.com with ESMTPSA id g9-20020a170902740900b001b54a88e6adsm1960939pll.309.2023.06.20.13.17.31
+        by smtp.gmail.com with ESMTPSA id iz18-20020a170902ef9200b001ae6e270d8bsm1999473plb.131.2023.06.20.13.17.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jun 2023 13:17:31 -0700 (PDT)
+        Tue, 20 Jun 2023 13:17:33 -0700 (PDT)
 Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
-        id A37843603D9; Wed, 21 Jun 2023 08:17:28 +1200 (NZST)
+        id 5E51E36045A; Wed, 21 Jun 2023 08:17:29 +1200 (NZST)
 From:   Michael Schmitz <schmitzmic@gmail.com>
 To:     linux-block@vger.kernel.org, axboe@kernel.dk
 Cc:     linux-m68k@vger.kernel.org, geert@linux-m68k.org, hch@lst.de,
         martin@lichtvoll.de, fthain@linux-m68k.org,
         Michael Schmitz <schmitzmic@gmail.com>, stable@vger.kernel.org
-Subject: [PATCH v13 1/3] block: fix signed int overflow in Amiga partition support
-Date:   Wed, 21 Jun 2023 08:17:23 +1200
-Message-Id: <20230620201725.7020-2-schmitzmic@gmail.com>
+Subject: [PATCH v13 2/3] block: change all __u32 annotations to __be32 in affs_hardblocks.h
+Date:   Wed, 21 Jun 2023 08:17:24 +1200
+Message-Id: <20230620201725.7020-3-schmitzmic@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20230620201725.7020-1-schmitzmic@gmail.com>
 References: <20230620201725.7020-1-schmitzmic@gmail.com>
@@ -73,15 +73,24 @@ X-Mailing-List: stable@vger.kernel.org
 The Amiga partition parser module uses signed int for partition sector
 address and count, which will overflow for disks larger than 1 TB.
 
-Use sector_t as type for sector address and size to allow using disks
-up to 2 TB without LBD support, and disks larger than 2 TB with LBD.
+Use u64 as type for sector address and size to allow using disks up to
+2 TB without LBD support, and disks larger than 2 TB with LBD. The RBD
+format allows to specify disk sizes up to 2^128 bytes (though native
+OS limitations reduce this somewhat, to max 2^68 bytes), so check for
+u64 overflow carefully to protect against overflowing sector_t.
 
 This bug was reported originally in 2012, and the fix was created by
 the RDB author, Joanne Dow <jdow@earthlink.net>. A patch had been
 discussed and reviewed on linux-m68k at that time but never officially
-submitted. This patch differs from Joanne's patch only in its use of
-sector_t instead of unsigned int. No checking for overflows is done
-(see patch 3 of this series for that).
+submitted (now resubmitted as patch 1 of this series).
+
+Patch 3 (this series) adds additional error checking and warning
+messages. One of the error checks now makes use of the previously
+unused rdb_CylBlocks field, which causes a 'sparse' warning
+(cast to restricted __be32).
+
+Annotate all 32 bit fields in affs_hardblocks.h as __be32, as the
+on-disk format of RDB and partition blocks is always big endian.
 
 Reported-by: Martin Steigerwald <Martin@lichtvoll.de>
 Closes: https://bugzilla.kernel.org/show_bug.cgi?id=43511
@@ -89,67 +98,126 @@ Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Message-ID: <201206192146.09327.Martin@lichtvoll.de>
 Cc: <stable@vger.kernel.org> # 5.2
 Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-Tested-by: Martin Steigerwald <Martin@lichtvoll.de>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
 ---
 
-Changes from v3:
+Changes from v10:
 
-- split off change of sector address type as quick fix.
-- cast to sector_t in sector address calculations.
-- move overflow checking to separate patch for more thorough review.
+Christoph Hellwig:
+- change annotation of all __u32 fields to __be32
 
-Changes from v4:
+Changes from v11:
 
-Andreas Schwab:
-- correct cast to sector_t in sector address calculations
+Geert Uytterhoeven:
+- also change annotation of the two __s32 checksum fields
 
-Changes from v7:
+Changes from v12:
 
-Christoph Hellwig
-- correct style issues
-
-Changes from v9:
-
-- add Fixes: tags and stable backport prereq
+- change patch subject to reflect changes in v11 and v12
 ---
- block/partitions/amiga.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ include/uapi/linux/affs_hardblocks.h | 68 ++++++++++++++--------------
+ 1 file changed, 34 insertions(+), 34 deletions(-)
 
-diff --git a/block/partitions/amiga.c b/block/partitions/amiga.c
-index 5c8624e26a54..85c5c79aae48 100644
---- a/block/partitions/amiga.c
-+++ b/block/partitions/amiga.c
-@@ -31,7 +31,8 @@ int amiga_partition(struct parsed_partitions *state)
- 	unsigned char *data;
- 	struct RigidDiskBlock *rdb;
- 	struct PartitionBlock *pb;
--	int start_sect, nr_sects, blk, part, res = 0;
-+	sector_t start_sect, nr_sects;
-+	int blk, part, res = 0;
- 	int blksize = 1;	/* Multiplier for disk block size */
- 	int slot = 1;
+diff --git a/include/uapi/linux/affs_hardblocks.h b/include/uapi/linux/affs_hardblocks.h
+index 5e2fb8481252..a5aff2eb5f70 100644
+--- a/include/uapi/linux/affs_hardblocks.h
++++ b/include/uapi/linux/affs_hardblocks.h
+@@ -7,42 +7,42 @@
+ /* Just the needed definitions for the RDB of an Amiga HD. */
  
-@@ -96,14 +97,14 @@ int amiga_partition(struct parsed_partitions *state)
+ struct RigidDiskBlock {
+-	__u32	rdb_ID;
++	__be32	rdb_ID;
+ 	__be32	rdb_SummedLongs;
+-	__s32	rdb_ChkSum;
+-	__u32	rdb_HostID;
++	__be32	rdb_ChkSum;
++	__be32	rdb_HostID;
+ 	__be32	rdb_BlockBytes;
+-	__u32	rdb_Flags;
+-	__u32	rdb_BadBlockList;
++	__be32	rdb_Flags;
++	__be32	rdb_BadBlockList;
+ 	__be32	rdb_PartitionList;
+-	__u32	rdb_FileSysHeaderList;
+-	__u32	rdb_DriveInit;
+-	__u32	rdb_Reserved1[6];
+-	__u32	rdb_Cylinders;
+-	__u32	rdb_Sectors;
+-	__u32	rdb_Heads;
+-	__u32	rdb_Interleave;
+-	__u32	rdb_Park;
+-	__u32	rdb_Reserved2[3];
+-	__u32	rdb_WritePreComp;
+-	__u32	rdb_ReducedWrite;
+-	__u32	rdb_StepRate;
+-	__u32	rdb_Reserved3[5];
+-	__u32	rdb_RDBBlocksLo;
+-	__u32	rdb_RDBBlocksHi;
+-	__u32	rdb_LoCylinder;
+-	__u32	rdb_HiCylinder;
+-	__u32	rdb_CylBlocks;
+-	__u32	rdb_AutoParkSeconds;
+-	__u32	rdb_HighRDSKBlock;
+-	__u32	rdb_Reserved4;
++	__be32	rdb_FileSysHeaderList;
++	__be32	rdb_DriveInit;
++	__be32	rdb_Reserved1[6];
++	__be32	rdb_Cylinders;
++	__be32	rdb_Sectors;
++	__be32	rdb_Heads;
++	__be32	rdb_Interleave;
++	__be32	rdb_Park;
++	__be32	rdb_Reserved2[3];
++	__be32	rdb_WritePreComp;
++	__be32	rdb_ReducedWrite;
++	__be32	rdb_StepRate;
++	__be32	rdb_Reserved3[5];
++	__be32	rdb_RDBBlocksLo;
++	__be32	rdb_RDBBlocksHi;
++	__be32	rdb_LoCylinder;
++	__be32	rdb_HiCylinder;
++	__be32	rdb_CylBlocks;
++	__be32	rdb_AutoParkSeconds;
++	__be32	rdb_HighRDSKBlock;
++	__be32	rdb_Reserved4;
+ 	char	rdb_DiskVendor[8];
+ 	char	rdb_DiskProduct[16];
+ 	char	rdb_DiskRevision[4];
+ 	char	rdb_ControllerVendor[8];
+ 	char	rdb_ControllerProduct[16];
+ 	char	rdb_ControllerRevision[4];
+-	__u32	rdb_Reserved5[10];
++	__be32	rdb_Reserved5[10];
+ };
  
- 		/* Tell Kernel about it */
+ #define	IDNAME_RIGIDDISK	0x5244534B	/* "RDSK" */
+@@ -50,16 +50,16 @@ struct RigidDiskBlock {
+ struct PartitionBlock {
+ 	__be32	pb_ID;
+ 	__be32	pb_SummedLongs;
+-	__s32	pb_ChkSum;
+-	__u32	pb_HostID;
++	__be32	pb_ChkSum;
++	__be32	pb_HostID;
+ 	__be32	pb_Next;
+-	__u32	pb_Flags;
+-	__u32	pb_Reserved1[2];
+-	__u32	pb_DevFlags;
++	__be32	pb_Flags;
++	__be32	pb_Reserved1[2];
++	__be32	pb_DevFlags;
+ 	__u8	pb_DriveName[32];
+-	__u32	pb_Reserved2[15];
++	__be32	pb_Reserved2[15];
+ 	__be32	pb_Environment[17];
+-	__u32	pb_EReserved[15];
++	__be32	pb_EReserved[15];
+ };
  
--		nr_sects = (be32_to_cpu(pb->pb_Environment[10]) + 1 -
--			    be32_to_cpu(pb->pb_Environment[9])) *
-+		nr_sects = ((sector_t)be32_to_cpu(pb->pb_Environment[10]) + 1 -
-+			   be32_to_cpu(pb->pb_Environment[9])) *
- 			   be32_to_cpu(pb->pb_Environment[3]) *
- 			   be32_to_cpu(pb->pb_Environment[5]) *
- 			   blksize;
- 		if (!nr_sects)
- 			continue;
--		start_sect = be32_to_cpu(pb->pb_Environment[9]) *
-+		start_sect = (sector_t)be32_to_cpu(pb->pb_Environment[9]) *
- 			     be32_to_cpu(pb->pb_Environment[3]) *
- 			     be32_to_cpu(pb->pb_Environment[5]) *
- 			     blksize;
+ #define	IDNAME_PARTITION	0x50415254	/* "PART" */
 -- 
 2.17.1
 
