@@ -2,68 +2,78 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74E4D73632B
-	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 07:30:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D95973636E
+	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 08:14:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230235AbjFTFaC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 01:30:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56696 "EHLO
+        id S230514AbjFTGOD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 02:14:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230206AbjFTFaB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 01:30:01 -0400
-Received: from mail-ua1-x92d.google.com (mail-ua1-x92d.google.com [IPv6:2607:f8b0:4864:20::92d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A655185
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 22:30:00 -0700 (PDT)
-Received: by mail-ua1-x92d.google.com with SMTP id a1e0cc1a2514c-78f3f8ecc42so802055241.0
-        for <stable@vger.kernel.org>; Mon, 19 Jun 2023 22:30:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1687238999; x=1689830999;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=801oa+DLA4Ef9kDMkAwEab4R+1WW+i+tgb6pOy6o1MY=;
-        b=bywN+ROadmbYEi+zWpU+PUtZTpC2Plg10u9tqckzJsfSr2C6Th4SVDoL4EfBulUDrC
-         xz3IvnD7ALxdVLQSvPutW7Ykxwe6Lg2zirtBEBGy4WWwfbQQpbTv97OU/bi1mq1aUnHb
-         hzIYYPgWDf5p2iuRaG98bGv54hOz/+tvWasN+pA6BPWtMeGE+oiQMwbw2QaKsBxQZCZV
-         1uOzqkMU0PJtg1wC3mpLBXZJStNUfGeWv4iQD/15ynslzgxoxjtdsoPVIBJ9IdkZ7wIb
-         sBmp26M5qh1TOOtayY1zJME+UYOGEHF3dgUxi8owL8Ys7QXVQYXOMgA+U3Qs1k2Nbb8j
-         RGKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687238999; x=1689830999;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=801oa+DLA4Ef9kDMkAwEab4R+1WW+i+tgb6pOy6o1MY=;
-        b=fRmzo5GpQyKMdRMwXn1Pnb5NBfJDqdN1kxkPyZ1YmbParQgmJg7pPLNKZ9yJne9r4f
-         deEFnSAg6a8VyI1Fu4kLYBotGcspUkJaLLoLKbdAxRqqlNr3gA6aPY4IwEhpzTznsbgz
-         JcWjQEA7Z1HD4pgFcbp0/8EoS4pWQg5kYTh02xjjngLE4xH9OFeo+AwobuDk5RPY8wyF
-         Z/d4dHUx80J6S/Hce9hg7h1cNAozR5evZVqfBN2OKP8cqP81AXwyZLe+sh00yKdssNp7
-         5/syYa4H/NUhkNnizhmfNMKBEotmRETLvJsUH7Eso3LTiBXDWy08BCMK6RjF0qEgkT3I
-         x9Tg==
-X-Gm-Message-State: AC+VfDxgAqJWCGfJlhn16mmmrt39UTm3xJ6/lVuw0ggWghL8YgK8aFwK
-        8l6tTqhDQKqsQ7n9fjZF+UBGnKY1oTTvmQFa7ImnNA==
-X-Google-Smtp-Source: ACHHUZ4vlUUcBSkw3SYLsCg6Zuqv1wWvojRjlGXb7Uhi4Q75I4wVrEfAF4UbAV3+Tfu5H+e+wLtEUhvT/Fp4S9lv62w=
-X-Received: by 2002:a1f:5e48:0:b0:473:4e4d:8a8d with SMTP id
- s69-20020a1f5e48000000b004734e4d8a8dmr84082vkb.11.1687238999085; Mon, 19 Jun
- 2023 22:29:59 -0700 (PDT)
+        with ESMTP id S230218AbjFTGOC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 02:14:02 -0400
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1E4310D7;
+        Mon, 19 Jun 2023 23:14:01 -0700 (PDT)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 35K5xOJn013840;
+        Tue, 20 Jun 2023 06:13:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=Q5zsPzlifA3wE+OG3e0VDwThrrdWXITSvpqMnJmucHU=;
+ b=JdNYKTfZ7ifClpiiUHQEfK/AIVe5t4VQFeAdPOpn+CdcjOtXtjB0+5XgfI2+BByMyaes
+ rSr0SkcJ/hTgX6AdoqJPn9mB+mo1Hn76g/0bLgy50tEXcVur7pw4Wu3ICbH2efen2q6Q
+ WnINBPv/kGCjqr20HAEPQgeeaDMaj6GODviwKX91OV9t6LWg+4zXAlDKcN5F/FLfwZJC
+ FLTNPhmyvv6dv0mfPjvFip12ltovLNbUiI9zFIgZf3Nka1dYKHdBecFoeqwlAC8Twk+U
+ E1IS0ryophx9U5zAgkEyok/lgqykUBszJzDLYpOvm+qet1HO6kGCkHXRroWSycwSWKog kA== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3rb3gur8yg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 20 Jun 2023 06:13:32 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 35K6DWFt016918
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 20 Jun 2023 06:13:32 GMT
+Received: from [10.201.2.96] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42; Mon, 19 Jun
+ 2023 23:13:29 -0700
+Message-ID: <2f915104-952f-3e3d-b3d5-4c0400b4f331@quicinc.com>
+Date:   Tue, 20 Jun 2023 11:43:26 +0530
 MIME-Version: 1.0
-References: <20230619102157.579823843@linuxfoundation.org>
-In-Reply-To: <20230619102157.579823843@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Tue, 20 Jun 2023 10:59:47 +0530
-Message-ID: <CA+G9fYv9fWPCKndjk3Fy6rF2v-MusMarhV5Ppd70TEVCzDYvnQ@mail.gmail.com>
-Subject: Re: [PATCH 6.3 000/187] 6.3.9-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.0
+Subject: Re: [PATCH V2] firmware: qcom_scm: use the SCM_CONVENTION based on
+ ARM / ARM64
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Elliot Berman <eberman@codeaurora.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     <quic_eberman@quicinc.com>, <stable@vger.kernel.org>
+References: <20230607045345.25049-1-quic_kathirav@quicinc.com>
+Content-Language: en-US
+From:   Kathiravan T <quic_kathirav@quicinc.com>
+In-Reply-To: <20230607045345.25049-1-quic_kathirav@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: vMdxPtZbujt0GBwjLluTsjyv7uqxDZ6G
+X-Proofpoint-GUID: vMdxPtZbujt0GBwjLluTsjyv7uqxDZ6G
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-06-20_03,2023-06-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ spamscore=0 suspectscore=0 lowpriorityscore=0 mlxscore=0 mlxlogscore=999
+ priorityscore=1501 phishscore=0 clxscore=1011 bulkscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
+ definitions=main-2306200056
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -72,173 +82,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 19 Jun 2023 at 16:02, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+
+On 6/7/2023 10:23 AM, Kathiravan T wrote:
+> During SCM probe, to identify the SCM convention, scm call is made with
+> SMC_CONVENTION_ARM_64 followed by SMC_CONVENTION_ARM_32. Based on the
+> result what convention to be used is decided.
 >
-> This is the start of the stable review cycle for the 6.3.9 release.
-> There are 187 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> IPQ chipsets starting from IPQ807x, supports both 32bit and 64bit kernel
+> variants, however TZ firmware runs in 64bit mode. When running on 32bit
+> kernel, scm call is made with SMC_CONVENTION_ARM_64 is causing the
+> system crash, due to the difference in the register sets between ARM and
+> AARCH64, which is accessed by the TZ.
 >
-> Responses should be made by Wed, 21 Jun 2023 10:21:12 +0000.
-> Anything received after that time might be too late.
+> To avoid this, use SMC_CONVENTION_ARM_64 only on ARM64 builds.
+
+
+Gentle Reminder...
+
+
 >
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.3.9-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.3.y
-> and the diffstat can be found below.
+> Cc: stable@vger.kernel.org
+> Fixes: 9a434cee773a ("firmware: qcom_scm: Dynamically support SMCCC and legacy conventions")
+> Signed-off-by: Kathiravan T <quic_kathirav@quicinc.com>
+> ---
+> Changes in V2:
+> 	- Added the Fixes tag and cc'd stable mailing list
 >
-> thanks,
+>   drivers/firmware/qcom_scm.c | 2 ++
+>   1 file changed, 2 insertions(+)
 >
-> greg k-h
-
-
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
-
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build
-* kernel: 6.3.9-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.3.y
-* git commit: c4f2a2d855d4abab5f904b8deec55ff390f954e0
-* git describe: v6.3.8-188-gc4f2a2d855d4
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.3.y/build/v6.3.8=
--188-gc4f2a2d855d4
-
-## Test Regressions (compared to v6.3.7)
-
-## Metric Regressions (compared to v6.3.7)
-
-## Test Fixes (compared to v6.3.7)
-
-## Metric Fixes (compared to v6.3.7)
-
-## Test result summary
-total: 181373, pass: 152623, fail: 3225, skip: 25380, xfail: 145
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 145 total, 144 passed, 1 failed
-* arm64: 54 total, 53 passed, 1 failed
-* i386: 41 total, 40 passed, 1 failed
-* mips: 30 total, 28 passed, 2 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 38 total, 36 passed, 2 failed
-* riscv: 26 total, 25 passed, 1 failed
-* s390: 16 total, 14 passed, 2 failed
-* sh: 14 total, 12 passed, 2 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 46 total, 46 passed, 0 failed
-
-## Test suites summary
-* boot
-* fwts
-* igt-gpu-tools
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-* vdso
-
---
-Linaro LKFT
-https://lkft.linaro.org
+> diff --git a/drivers/firmware/qcom_scm.c b/drivers/firmware/qcom_scm.c
+> index fde33acd46b7..db6754db48a0 100644
+> --- a/drivers/firmware/qcom_scm.c
+> +++ b/drivers/firmware/qcom_scm.c
+> @@ -171,6 +171,7 @@ static enum qcom_scm_convention __get_convention(void)
+>   	if (likely(qcom_scm_convention != SMC_CONVENTION_UNKNOWN))
+>   		return qcom_scm_convention;
+>   
+> +#if IS_ENABLED(CONFIG_ARM64)
+>   	/*
+>   	 * Device isn't required as there is only one argument - no device
+>   	 * needed to dma_map_single to secure world
+> @@ -191,6 +192,7 @@ static enum qcom_scm_convention __get_convention(void)
+>   		forced = true;
+>   		goto found;
+>   	}
+> +#endif
+>   
+>   	probed_convention = SMC_CONVENTION_ARM_32;
+>   	ret = __scm_smc_call(NULL, &desc, probed_convention, &res, true);
