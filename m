@@ -2,164 +2,252 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D72C4736C3E
-	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 14:48:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62547736C9C
+	for <lists+stable@lfdr.de>; Tue, 20 Jun 2023 15:01:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232544AbjFTMsO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 20 Jun 2023 08:48:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34420 "EHLO
+        id S232741AbjFTNB1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 20 Jun 2023 09:01:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230411AbjFTMsN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 08:48:13 -0400
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3E181709;
-        Tue, 20 Jun 2023 05:48:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RuR1VK9jUZiR5HzhtLRImTpD+6vyLB1E2FWBtGCDBvYECihp/gQV+s1rbkomFB+ju58viwdaLDkJN+Zl0KVly0gIcetpjfIZigKIOoJO7utetznLCJs9iqUaCmoEegUigGF7F1fs6DlDsSX5h4yXrn4ht5iJfKd8CI0AfRYOVZuj2i5sSWom8k5kIkN/aTnN0Q560U5ZOOuy+e0Fjkfo24/jYj7kOdK3zYJMELlcfG/5HCUZbqg7GjXluDXt9uOxWtPkxa0fe+KZ+vYCcgv2cjkaTTBoEanNxffNXcmOpmVw075ughkp8x8JCIw1jUUeU1kc3sUoH+5rWvmaC/XfyA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Sz4XGrh7PiSSXmoFSjRHr3MF1EtSxuxUrBCjcc38mPI=;
- b=jT0+6mnmkuNN7lX67kTOCEYtK5mPYDBZ4s2xJtq5xx6SHYRyW7U7wQRhmeIrY0DCQ+o5DKv79p7qjuWpredxH7CZlEX1y9nEoyWy7G9pq8qvKIw6ENRqgf+C9VS/qeZHkpHUfp4anlg13Ud2IMlMkzpqR6x6sOy0d12FSYOZoYh3xuwVvjIXDnebfXnjXb/2v+dNbxXPGIx/Bd5oaTxgZZVM1+nkaewox9Qc9b1dMlsOWgOJRqE9q34sFJEOl9TCBcvGBOSUWsmsUo+iaH1Z5p9mL/s+grA9h5ByvlqNMyP6QCxBHkyYyoSgHRtdxa4dZ1kvcha75LdnzE6EtB0/wA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Sz4XGrh7PiSSXmoFSjRHr3MF1EtSxuxUrBCjcc38mPI=;
- b=3pMszQBmAZK5PON6AOlObL3mfZ73+6CDsdoPla+yi/r9Az+Aq5LMNiMetXAKZHd/nnbV/FDwX2oVhSHZN9rXLfKUGhJW7xj0ptNool/z1MLVwLIQFNJglpyFQhpwbyUR4b/LBLE//HbwPX9+vQjAcajjz9auqQ/Ep7U6iQXHvfk=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM5PR12MB2504.namprd12.prod.outlook.com (2603:10b6:4:b5::19) by
- BY5PR12MB4162.namprd12.prod.outlook.com (2603:10b6:a03:201::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6500.37; Tue, 20 Jun
- 2023 12:48:02 +0000
-Received: from DM5PR12MB2504.namprd12.prod.outlook.com
- ([fe80::8a7:d4dc:7ac8:9017]) by DM5PR12MB2504.namprd12.prod.outlook.com
- ([fe80::8a7:d4dc:7ac8:9017%5]) with mapi id 15.20.6500.036; Tue, 20 Jun 2023
- 12:48:02 +0000
-Date:   Tue, 20 Jun 2023 20:47:37 +0800
-From:   Huang Rui <ray.huang@amd.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     "Karny, Wyes" <Wyes.Karny@amd.com>,
-        "viresh.kumar@linaro.org" <viresh.kumar@linaro.org>,
-        "trenn@suse.com" <trenn@suse.com>,
-        "shuah@kernel.org" <shuah@kernel.org>,
-        "Shenoy, Gautham Ranjal" <gautham.shenoy@amd.com>,
-        "Limonciello, Mario" <Mario.Limonciello@amd.com>,
-        "Yuan, Perry" <Perry.Yuan@amd.com>,
-        "linux-pm@vger.kernel.org" <linux-pm@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH 1/6] amd-pstate: Make amd-pstate epp driver name
- hyphenated
-Message-ID: <ZJGf6ZCeMZxbJND4@amd.com>
-References: <20230612113615.205353-1-wyes.karny@amd.com>
- <20230612113615.205353-2-wyes.karny@amd.com>
- <ZIwKNI6OvhZles5F@amd.com>
- <CAJZ5v0j0AqosqH6wx2ToGOM-zGdowJiZtxG2kZrSd9QcJyXdtw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0j0AqosqH6wx2ToGOM-zGdowJiZtxG2kZrSd9QcJyXdtw@mail.gmail.com>
-X-ClientProxiedBy: SI2PR01CA0051.apcprd01.prod.exchangelabs.com
- (2603:1096:4:193::6) To DM5PR12MB2504.namprd12.prod.outlook.com
- (2603:10b6:4:b5::19)
+        with ESMTP id S232752AbjFTNBQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 20 Jun 2023 09:01:16 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0308419A4;
+        Tue, 20 Jun 2023 06:00:52 -0700 (PDT)
+Date:   Tue, 20 Jun 2023 13:00:50 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1687266051;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Fk9EflcXQS6AEQ2DMFBvgsGzU0jVoz68awZdHSQfTNg=;
+        b=O1NElTPoSGpOoKoWggeNQ4H3euVzFL7WwY4jmpydNyG7fu9ZIqhxOvEY8m/vFejpz16kwV
+        N4QWsa9UT0keXmtW/8wx2AuL7hVjHH8px70KTZgpJHdbV2hlaxbbhAK+1+nEO6XeyKiFHP
+        jI1YdBVgtvNFxH/nA96wr6oqzNTyZYUk3CKP0+k8pG2vUHRTE5Q/NcW5tOhxkL4Ue3QuyJ
+        pj4AMLHLe563ilnZYcKUpE1LFhFyt5oSzETHunvUC2nCIEsgW3PoJ17XDzyi1Iq1FVtB3X
+        1ECSzBckw6y+IBO8s6lG3cHf1MJc1qlyFV8Bf2vYUsGROc+1pbl6yFu+tpomSg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1687266051;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Fk9EflcXQS6AEQ2DMFBvgsGzU0jVoz68awZdHSQfTNg=;
+        b=/D0Q8ab5R3iMyYF8F0bD5kE1r7YFi4AmKGIS9XNsYXmA9/c7FQnstjlUyE5dGvzlpqI91n
+        dEP7oir4GSsUtQBg==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/core] x86/smp: Cure kexec() vs. mwait_play_dead() breakage
+Cc:     Ashok Raj <ashok.raj@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230615193330.492257119@linutronix.de>
+References: <20230615193330.492257119@linutronix.de>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM5PR12MB2504:EE_|BY5PR12MB4162:EE_
-X-MS-Office365-Filtering-Correlation-Id: e66dd3c8-d3ff-4341-a9ea-08db718c954e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: kvyoMB0ly4THh8Q5mJi5bFs21EMX5Lr5GysNvJ4fIujszo4nG/KzeHKfQEDLEyHO8j4o7X76mqsrR/CuXjnY6opzzfeiB+yUtWcCRcxg3e6DaldF0OYErZl73gqknYuaslX6k8KE8Wk7OmdOeYvh8AvESGjF1cClE8o+BFuBBvFLpONVsRq76dYRF6T4ERb+R3R8THkTlMoPpN3ozE/Ls8GqBiSoCnfwc1+CxITG3yNRWVD4k+EH85cH8APV/hz0SHXQEw43/TC2feMXR5JebWX7zNvqiXaQiIwCN0MNJvD6+FeCNK4nllPTOLCIE6LM25LNTh2vk/pcbowoCn8TTquJHw4wYomQaV9R6A64RktNMUtdX0IeIaw89+4i2pSGfXN2YonG+HbRN88zNYfNY0G1GXhSiCGE5bsM6EMeXLuFSt5xBOcw59Y4nh+en3E2PnRqkUQFt4LKxvi3QOUB/7EPyeNEJjhyI3B/WBGcnqvnZVeZit3jb9yazVbQJuU6Ekn122K7SrXm7ViP4gz2+mHwO3juGSGU2dMn1IJ09ndWdZW4hzU16UroHm8RdfID
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR12MB2504.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(376002)(366004)(39860400002)(346002)(136003)(451199021)(478600001)(6666004)(66946007)(36756003)(8676002)(6916009)(66556008)(4326008)(66476007)(41300700001)(2616005)(38100700002)(6486002)(86362001)(2906002)(5660300002)(54906003)(8936002)(316002)(6506007)(53546011)(6512007)(26005)(186003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SnozakUyVFVGWEhyU01qQkUramFaOEhkUnFrRmRUNG9UMjh4RWxhY2hvdTNH?=
- =?utf-8?B?YkNmSnVpOE05SnZ0K0t4a3l4a2lRdXo3dW12T1Y1MC9qcXNFS2lNem1mclFF?=
- =?utf-8?B?TWd1OVRFUW8wblZJRmRJSVd4Y1lENXlFWnRrc3REcXJQK0luT0lqTEdsNEJ4?=
- =?utf-8?B?S2tFV1c3bTBEWG9sTFVUNWlWRlgva2JtYi9FKzhlTHROUVNzY0F0bmVzSElX?=
- =?utf-8?B?ZTd0bDVxV1l1ZjcvNVdoaC9hVzFIcnZJakkwYkxBOFFvaEplMnNIam9MOERZ?=
- =?utf-8?B?WkltS0JLa2hobG02L085NkJVUjRMR2ZzdFAza2dvcGNSVE5WNUZBbkVMNnVM?=
- =?utf-8?B?NVNnd3NsVlVIWTJwSjBoSEdUaEVHeThKdHJwWTlJYWYwU0c3dTFaQ3pNTWpQ?=
- =?utf-8?B?bStuS3lrc0EyYjFOcURaalNPL1lJUy9Fa0JTNFFEdm9UQ3VmRGVYWlN4aU91?=
- =?utf-8?B?WGZFbDVPdTRLN2o0Zm9zZXVqNStlZVR5ekFESTRGSWJ5Wk5DSExvb3RxWHFp?=
- =?utf-8?B?REpDOStFT05DQ0l1OXFSdFdYcldDQXoxUTVpeUxIeGFVbTFJNUpjcFQrQWZR?=
- =?utf-8?B?Y2plWG9RVWtWREtFYWlWVVpuaXZTOXJWZnYzTkc3L0dnaGhJUHJ4L3lmc005?=
- =?utf-8?B?VW16RG5henVVOFo1bDRTc29Ld3c2SmU0MFNqUjFYSTgzb25CSnY4M0kzV1Ji?=
- =?utf-8?B?VXBua0twMDFKQUxRaTROZUUyOTlLR3Mwa2RPY1BiUlZXRU53YzhXcEQ0OUty?=
- =?utf-8?B?VUhSV0x0aUEwam9laW1kSmdCUkp4S2Mya2RmOUtkY0JRTkFNS3p4aUVZZ045?=
- =?utf-8?B?ZG5UcTBGYWpGYzBKY3NFcTJDVXdDL2labzF6azRPNDFEcHMzdUR6S0pXaG5F?=
- =?utf-8?B?Q3U4ZkV5T1RBVEtlUTJrdGR5R1RUbkcveldPWVVWY0lUZG0xZDQ0YmNsSVQr?=
- =?utf-8?B?WkZiTlNVUXhQTU9LcTZ0TWg1QWpGQ2lmWGdkQWZTNjZlOHZ0U0hPK1BUZE5v?=
- =?utf-8?B?WEcwYUhlK3Bid0lhN2dGcHlKSlliSFYwdlhKNUNTY2lRczFhNUpIV2R6SHds?=
- =?utf-8?B?NXhROVdZYTIzMXJBdHVUQkVvVDdRN0ZMMTdOa2tRNzRXMTAzdHhQRmM2eldZ?=
- =?utf-8?B?Wld3ekNud2Z1ZEdmcmNwUEhBZXNaVGc4U0ZDZzc0a2hFWjJUWlJVLzhsSEZN?=
- =?utf-8?B?bnd3RGdGZFlxL3VCR1Rka1Z0RStweHRDeVVtcUR4R0N6Z1d0NEdhVElSOXVF?=
- =?utf-8?B?RENsZTRudGg4TGY5L1NrZUEwNFdLbXFIdkpocjVpL2JaZGc1RUNjazAwRUp4?=
- =?utf-8?B?TDUvRnFUSldUOUs0dU1XZlZzdFpsbUVxUkZ3c3RUOEl0T1VrNGNrZ05udU5p?=
- =?utf-8?B?OEIzeDgxNXErR2Fwemg4cUEyMzMwc1FpWkF6N2lmZ2xhdysyR3R4NVRhWGxN?=
- =?utf-8?B?RTR3Z3dNVmgyN2kySCtTZ1BmY01lb25aRmNNTld5aVJvUUo1NTF6Q2ZmMHl6?=
- =?utf-8?B?cURRRHh3L3RVU2F0U1VpOW5pclpjWXlYeExOZ1hucGJ0WDJ6bVBXYmMzcHVR?=
- =?utf-8?B?d3M4OG1TTW9rV3N3b1BWZzFwSWNoeDJNQm1Oa1I4RnZvS05WT1ZENFVDTTYx?=
- =?utf-8?B?S09kb2UraUIwcXkzNDhCdnBxd0w1bWhUa2h0M2V2UHJmellVdTNwVnBoMG0y?=
- =?utf-8?B?cHJWYnJ6NHZZbWZYdWJSRzE3RVA2T3BGa2NvVWN3VmxNMmcxemdKR0xHeUx4?=
- =?utf-8?B?OTBpb2ROS3BXNFdwYy9oMXVHZUtoSHpSZlBPTXFUeG5wRUdMT3RFTDIrT3Qr?=
- =?utf-8?B?QnlpYXNvM1FLVFlTd05ieDFYa3k1dDVvSUozS1ZHbG1UWENSMkhmTUQ2YVYv?=
- =?utf-8?B?YityUURtaEpPbHNqNGZ0dXBCbHl6Mlg2OFR0WGNvcDVNL2hlQ3hUclBPWlgx?=
- =?utf-8?B?RzNpcTNxK2ZlNDZLdFZxUjY0RGh4UHozOWZmNXNhMXFPYzZySEhsZ0wvSm5O?=
- =?utf-8?B?QzJWNWI2NC9KV1ZjaHFkMnBNWTdsbmNaL3FzcUYxc3RRYjlheU81TTJkQlRh?=
- =?utf-8?B?dDhBdlBZN3ZYS0F6RmJpM01qejJqdXU4aVdXRG94b2RzTXZubmJxUU16NHpp?=
- =?utf-8?Q?i11cPlKWptXru00llvIjMpFEA?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e66dd3c8-d3ff-4341-a9ea-08db718c954e
-X-MS-Exchange-CrossTenant-AuthSource: DM5PR12MB2504.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2023 12:48:01.9408
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tKuBdCDRTsTdAyytSvMgvwWM7zWHt533bWgyQgxT0o5OWlojUipe4ratGzrQruKV/skf+7c4OAnxsGdlhdER6A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4162
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+Message-ID: <168726605092.404.12077647740780792295.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Jun 16, 2023 at 08:33:30PM +0800, Rafael J. Wysocki wrote:
-> On Fri, Jun 16, 2023 at 9:08 AM Huang Rui <ray.huang@amd.com> wrote:
-> >
-> > On Mon, Jun 12, 2023 at 07:36:10PM +0800, Karny, Wyes wrote:
-> > > amd-pstate passive mode driver is hyphenated. So make amd-pstate active
-> > > mode driver consistent with that rename "amd_pstate_epp" to
-> > > "amd-pstate-epp".
-> > >
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: ffa5096a7c33 ("cpufreq: amd-pstate: implement Pstate EPP support for the AMD processors")
-> > > Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-> > > Signed-off-by: Wyes Karny <wyes.karny@amd.com>
-> >
-> > Acked-by: Huang Rui <ray.huang@amd.com>
-> >
-> > And yes, we should seprate it from cpupower as Rafael mentioned. cpupower
-> > tool may go to another repo.
-> 
-> Not only that.
-> 
-> It is generally better to send individual fixes that don't depend on
-> anything else as separate patches, because this allows them to be
-> picked up and fast-tracked at multiple levels (mainline, stable,
-> distro kernels etc.).
+The following commit has been merged into the x86/core branch of tip:
 
-Get it. Thanks for the clarification.
+Commit-ID:     d7893093a7417527c0d73c9832244e65c9d0114f
+Gitweb:        https://git.kernel.org/tip/d7893093a7417527c0d73c9832244e65c9d0114f
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Thu, 15 Jun 2023 22:33:57 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 20 Jun 2023 14:51:47 +02:00
 
-Best Regards,
-Ray
+x86/smp: Cure kexec() vs. mwait_play_dead() breakage
+
+TLDR: It's a mess.
+
+When kexec() is executed on a system with offline CPUs, which are parked in
+mwait_play_dead() it can end up in a triple fault during the bootup of the
+kexec kernel or cause hard to diagnose data corruption.
+
+The reason is that kexec() eventually overwrites the previous kernel's text,
+page tables, data and stack. If it writes to the cache line which is
+monitored by a previously offlined CPU, MWAIT resumes execution and ends
+up executing the wrong text, dereferencing overwritten page tables or
+corrupting the kexec kernels data.
+
+Cure this by bringing the offlined CPUs out of MWAIT into HLT.
+
+Write to the monitored cache line of each offline CPU, which makes MWAIT
+resume execution. The written control word tells the offlined CPUs to issue
+HLT, which does not have the MWAIT problem.
+
+That does not help, if a stray NMI, MCE or SMI hits the offlined CPUs as
+those make it come out of HLT.
+
+A follow up change will put them into INIT, which protects at least against
+NMI and SMI.
+
+Fixes: ea53069231f9 ("x86, hotplug: Use mwait to offline a processor, fix the legacy case")
+Reported-by: Ashok Raj <ashok.raj@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Ashok Raj <ashok.raj@intel.com>
+Reviewed-by: Ashok Raj <ashok.raj@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230615193330.492257119@linutronix.de
+
+---
+ arch/x86/include/asm/smp.h |  2 +-
+ arch/x86/kernel/smp.c      |  5 +++-
+ arch/x86/kernel/smpboot.c  | 59 +++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 66 insertions(+)
+
+diff --git a/arch/x86/include/asm/smp.h b/arch/x86/include/asm/smp.h
+index 4e91054..d4ce5cb 100644
+--- a/arch/x86/include/asm/smp.h
++++ b/arch/x86/include/asm/smp.h
+@@ -132,6 +132,8 @@ void wbinvd_on_cpu(int cpu);
+ int wbinvd_on_all_cpus(void);
+ void cond_wakeup_cpu0(void);
+ 
++void smp_kick_mwait_play_dead(void);
++
+ void native_smp_send_reschedule(int cpu);
+ void native_send_call_func_ipi(const struct cpumask *mask);
+ void native_send_call_func_single_ipi(int cpu);
+diff --git a/arch/x86/kernel/smp.c b/arch/x86/kernel/smp.c
+index d842875..174d623 100644
+--- a/arch/x86/kernel/smp.c
++++ b/arch/x86/kernel/smp.c
+@@ -21,6 +21,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/cpu.h>
+ #include <linux/gfp.h>
++#include <linux/kexec.h>
+ 
+ #include <asm/mtrr.h>
+ #include <asm/tlbflush.h>
+@@ -157,6 +158,10 @@ static void native_stop_other_cpus(int wait)
+ 	if (atomic_cmpxchg(&stopping_cpu, -1, cpu) != -1)
+ 		return;
+ 
++	/* For kexec, ensure that offline CPUs are out of MWAIT and in HLT */
++	if (kexec_in_progress)
++		smp_kick_mwait_play_dead();
++
+ 	/*
+ 	 * 1) Send an IPI on the reboot vector to all other CPUs.
+ 	 *
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index c5ac5d7..483df04 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -53,6 +53,7 @@
+ #include <linux/tboot.h>
+ #include <linux/gfp.h>
+ #include <linux/cpuidle.h>
++#include <linux/kexec.h>
+ #include <linux/numa.h>
+ #include <linux/pgtable.h>
+ #include <linux/overflow.h>
+@@ -106,6 +107,9 @@ struct mwait_cpu_dead {
+ 	unsigned int	status;
+ };
+ 
++#define CPUDEAD_MWAIT_WAIT	0xDEADBEEF
++#define CPUDEAD_MWAIT_KEXEC_HLT	0x4A17DEAD
++
+ /*
+  * Cache line aligned data for mwait_play_dead(). Separate on purpose so
+  * that it's unlikely to be touched by other CPUs.
+@@ -173,6 +177,10 @@ static void smp_callin(void)
+ {
+ 	int cpuid;
+ 
++	/* Mop up eventual mwait_play_dead() wreckage */
++	this_cpu_write(mwait_cpu_dead.status, 0);
++	this_cpu_write(mwait_cpu_dead.control, 0);
++
+ 	/*
+ 	 * If waken up by an INIT in an 82489DX configuration
+ 	 * cpu_callout_mask guarantees we don't get here before
+@@ -1807,6 +1815,10 @@ static inline void mwait_play_dead(void)
+ 			(highest_subcstate - 1);
+ 	}
+ 
++	/* Set up state for the kexec() hack below */
++	md->status = CPUDEAD_MWAIT_WAIT;
++	md->control = CPUDEAD_MWAIT_WAIT;
++
+ 	wbinvd();
+ 
+ 	while (1) {
+@@ -1824,10 +1836,57 @@ static inline void mwait_play_dead(void)
+ 		mb();
+ 		__mwait(eax, 0);
+ 
++		if (READ_ONCE(md->control) == CPUDEAD_MWAIT_KEXEC_HLT) {
++			/*
++			 * Kexec is about to happen. Don't go back into mwait() as
++			 * the kexec kernel might overwrite text and data including
++			 * page tables and stack. So mwait() would resume when the
++			 * monitor cache line is written to and then the CPU goes
++			 * south due to overwritten text, page tables and stack.
++			 *
++			 * Note: This does _NOT_ protect against a stray MCE, NMI,
++			 * SMI. They will resume execution at the instruction
++			 * following the HLT instruction and run into the problem
++			 * which this is trying to prevent.
++			 */
++			WRITE_ONCE(md->status, CPUDEAD_MWAIT_KEXEC_HLT);
++			while(1)
++				native_halt();
++		}
++
+ 		cond_wakeup_cpu0();
+ 	}
+ }
+ 
++/*
++ * Kick all "offline" CPUs out of mwait on kexec(). See comment in
++ * mwait_play_dead().
++ */
++void smp_kick_mwait_play_dead(void)
++{
++	u32 newstate = CPUDEAD_MWAIT_KEXEC_HLT;
++	struct mwait_cpu_dead *md;
++	unsigned int cpu, i;
++
++	for_each_cpu_andnot(cpu, cpu_present_mask, cpu_online_mask) {
++		md = per_cpu_ptr(&mwait_cpu_dead, cpu);
++
++		/* Does it sit in mwait_play_dead() ? */
++		if (READ_ONCE(md->status) != CPUDEAD_MWAIT_WAIT)
++			continue;
++
++		/* Wait up to 5ms */
++		for (i = 0; READ_ONCE(md->status) != newstate && i < 1000; i++) {
++			/* Bring it out of mwait */
++			WRITE_ONCE(md->control, newstate);
++			udelay(5);
++		}
++
++		if (READ_ONCE(md->status) != newstate)
++			pr_err_once("CPU%u is stuck in mwait_play_dead()\n", cpu);
++	}
++}
++
+ void __noreturn hlt_play_dead(void)
+ {
+ 	if (__this_cpu_read(cpu_info.x86) >= 4)
